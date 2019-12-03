@@ -67,8 +67,8 @@ mv "$TEMPLATE_BUILD/image.qcow2" "$TEMPLATE_BUILD/$hd"
 cat << EOF > "$TEMPLATE_BUILD/${xml}"
 <?xml version="1.0" ?><domain type="kvm">
   <name>${name}</name>
-  <memory unit="KiB">1048576</memory>
-  <currentMemory unit="KiB">1048576</currentMemory>
+  <memory unit="KiB">2097152</memory>
+  <currentMemory unit="KiB">2097152</currentMemory>
   <vcpu placement="static">1</vcpu>
   <resource>
     <partition>/machine</partition>
