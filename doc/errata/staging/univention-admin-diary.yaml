@@ -7,4 +7,4 @@ fix: 1.0.0-48A~4.4.0.201912031525
 desc: |
  This update addresses the following issue(s):
  * The package now uses dh_python2 instead of python-support.
-bug: [49168]
+bug: [49169]
