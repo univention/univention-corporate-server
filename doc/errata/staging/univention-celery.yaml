@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-celery
+fix: 3.0.0-2A~4.4.0.201912031652
+desc: |
+ This update addresses the following issue(s):
+* Unused python code has been removed.
+bug: [49170]
