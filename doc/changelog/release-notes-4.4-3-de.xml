@@ -170,26 +170,6 @@ Checking ldap_schema ...                          OK
 
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
-		<section id="relnotes:udm">
-			<title>&ucsUDM;</title>
-			<para>
-				Folgende Attribute wurden dem UDM Modul <classname>users/user</classname> hinzugefügt: <property>initials</property>,
-				<property>postOfficeBox</property>, <property>preferredLanguage</property>, <property>physicalDeliveryOfficeName</property>,
-				<property>preferredDeliveryMethod</property>.
-				Jedes erweiterte Attribut für diese Eigenschaften sollte dahingehend geändert werden, dass es den Namen des UDM Attributes verwendet.
-			</para>
-		</section>
-
-		<section id="relnotes:notifier">
-			<title>&ucsUDN;</title>
-			<para>
-				Durch einen Entwurfsfehler im &ucsUDN; Netzwerkprotokoll Version 2 kann jeder Benutzer an Informationen über Änderungen am LDAP-Verzeichnisdienst kommen.
-				Ein neues Protokoll Version 3 wurde mit <u:erratum release='4.3-3'>427</u:erratum> implementiert.
-				Für die Kompatibilität mit alten UCS Systemen bot &ucsUDN; standardmäßig weiterhin Version 2 an.
-				Beginnend mit UCS-4.4 bieten neue Installationen standardmäßig nur noch Version 3 an.
-				Protokoll 2 kann reaktiviert werden, indem die &ucsUCRV; <envar>notifier/protocol/version</envar> auf <literal>2</literal> geändert und &ucsUDN; neu gestartet wird.
-			</para>
-		</section>
 
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>

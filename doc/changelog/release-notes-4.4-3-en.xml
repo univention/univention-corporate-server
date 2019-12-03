@@ -171,27 +171,6 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:packages">
 		<title>Notes on selected packages</title>
 
-		<section id="relnotes:udm">
-			<title>&ucsUDM;</title>
-			<para>
-				The following properties have been added to the UDM module <classname>users/user</classname>: <property>initials</property>,
-				<property>postOfficeBox</property>, <property>preferredLanguage</property>, <property>physicalDeliveryOfficeName</property>,
-				<property>preferredDeliveryMethod</property>.
-				Any extended attribute for those properties should be changed to use the same property name as the UDM <property>CLIName</property>.
-			</para>
-		</section>
-
-		<section id="relnotes:notifier">
-			<title>&ucsUDN;</title>
-			<para>
-				Due to a design flaw in the &ucsUDN; network protocol version 2 any user can retrieve information about changes to the LDAP directory.
-				A new protocol version 3 was implemented with <u:erratum release='4.3-3'>427</u:erratum>.
-				For backward compatibility with old UCS systems the &ucsUDN; still provided version 2 by default.
-				For new installations starting with UCS-4.4 only version 3 is enabled by default.
-				Protocol version 2 can be re-enabled by changing the &ucsUCRV; <envar>notifier/protocol/version</envar> to <literal>2</literal> and restarting the &ucsUDN;.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
