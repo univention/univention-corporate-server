@@ -53,6 +53,45 @@ material-shadow(level)
 	// general styling
 	min-height: 100%
 
+	#portalLiveSearchWrapper
+		height: 48px
+		width: 48px
+
+		&:hover,
+		&:focus
+			.portalLiveSearch--collapsed .umcSearchBox
+				background-color: rgba(0, 0, 0, 0.0784)
+
+		&:active
+			.portalLiveSearch--collapsed .umcSearchBox
+				background-color: rgba(0, 0, 0, 0.16)
+
+	.portalLiveSearch
+		width: 220px
+		position: absolute
+		left: 0
+		transition: left 0.2s
+
+		.umcSearchBox
+			height: 48px
+			box-shadow: 0 1px 6px rgba(1,0,0,0.117647), 0 1px 4px rgba(0,1,0,0.117647)
+			border-color: transparent
+			border-radius: 0 2px 2px 0
+			transition: box-shadow 0.2s, background-color 0.25s
+
+		.umcSearchIcon
+			margin: 0 14px 0 0
+
+		.umcInlineLabel
+			display: flex
+			align-items: center
+
+		&--collapsed
+			pointer-events: none
+			left: -172px // search width - sidebar width (220 - 48)
+
+			.umcSearchBox
+				box-shadow: none
 
 	.portalLoginButton
 		margin: 0
@@ -91,7 +130,6 @@ material-shadow(level)
 			background: #fff
 
 	#sidebar
-		overflow: hidden // needed for the hamburger menu button
 		position: fixed
 		left: 0
 		top: 0

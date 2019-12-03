@@ -1277,7 +1277,7 @@ define([
 			}
 
 			this._initProperties();
-			// this._registerEventHandlerForSearch();
+			this._registerEventHandlerForSearch();
 			this._setupEditModeIfAuthorized();
 			this._renderSidebar();
 			this._render(portalTools.RenderMode.NORMAL);
@@ -1292,7 +1292,7 @@ define([
 		},
 
 		_initProperties: function() {
-			this._search = registry.byId('umcLiveSearch');
+			this._search = registry.byId('portalLiveSearch');
 			this._categoryIndex = 0;
 			this._portalCategories = [];
 			this._iframeMap = {};
@@ -1305,7 +1305,16 @@ define([
 		},
 
 		_registerEventHandlerForSearch: function() {
+			on(dom.byId('portalLiveSearchWrapper'), 'click', lang.hitch(this, function() {
+				this._search.expandSearch();
+				this._search.focus();
+			}));
 			this._search.on('search', lang.hitch(this, 'filterPortal'));
+			this._search.on('blur', lang.hitch(this, function() {
+				if (!this._search.get('value')) {
+					this._search.collapseSearch();
+				}
+			}));
 		},
 
 		_setupEditModeIfAuthorized: function() {
@@ -1447,7 +1456,7 @@ define([
 			this._updateCssClassForCurrentRenderMode(renderMode);
 			this._renderHeader(renderMode);
 			this._renderContent(renderMode);
-			// this._updateSearch(renderMode);
+			this._updateSearch(renderMode);
 
 			this._rearrangeCategories();
 		},
@@ -1529,7 +1538,7 @@ define([
 		_renderCategories: function(renderMode) {
 			var categories = this._getCategories(renderMode);
 
-			// domClass.toggle(this._search.domNode, 'dijitDisplayNone', !categories.length);
+			// domClass.toggle(this._search.domNode, 'dijitDisplayNone', !categories.length); // TODO maybe disable now instead
 			if (!categories.length && !tools.status('loggedIn')) {
 				this._renderAnonymousEmptyMessage();
 				return;
@@ -1688,10 +1697,12 @@ define([
 			switch (renderMode) {
 				case portalTools.RenderMode.NORMAL:
 				case portalTools.RenderMode.EDIT:
-					this._search.set('value', this._lastSearch);
-					this._search.expandSearch();
-					this._search.focus();
-					this._search.search();
+					if (this._lastSearch) {
+						this._search.set('value', this._lastSearch);
+						this._search.expandSearch();
+						this._search.focus();
+						this._search.search();
+					}
 					break;
 				case portalTools.RenderMode.DND:
 					this._search.set('value', '');
@@ -1791,6 +1802,8 @@ define([
 		},
 
 		filterPortal: function() {
+			this._selectHome();
+
 			var searchPattern = lang.trim(this._search.get('value'));
 			var searchQuery = this._search.getSearchQuery(searchPattern);
 
