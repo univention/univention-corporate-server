@@ -1,3 +1,9 @@
+univention-radius (6.0.2-16) unstable; urgency=medium
+
+  * Bug #49175: fix ftbfs: add missing build dependency
+
+ -- Florian Best <best@univention.de>  Tue, 03 Dec 2019 16:18:51 +0100
+
 univention-radius (6.0.2-15) unstable; urgency=medium
 
   * Bug #49175: migrate univention-radius to dh_python
