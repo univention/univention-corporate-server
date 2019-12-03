@@ -1,13 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-15 21:47+0100\n"
+"Project-Id-Version: python-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2019-12-04 15:01+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,86 +11,88 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mswmifilter.py:47
-msgid "Settings: MS WMI Filter"
-msgstr "Einstellungen: MS WMI Filter"
-
-#: mswmifilter.py:53
-msgid "Name"
-msgstr "Name"
-
-#: mswmifilter.py:63
-msgid "Description"
-msgstr "Beschreibung"
-
-#: mswmifilter.py:73
-msgid "Display name"
-msgstr "Anzeigename"
-
-#: mswmifilter.py:83
-msgid "MS WMI ID"
-msgstr "MS WMI ID"
-
-#: mswmifilter.py:93
-msgid "MS WMI Author"
-msgstr "MS WMI Autor"
-
-#: mswmifilter.py:103
-msgid "MS WMI Creation Date"
-msgstr "MS WMI Erstellungsdatum"
-
-#: mswmifilter.py:113
-msgid "MS WMI Change Date"
-msgstr "MS WMI Änderungsdatum"
-
-#: mswmifilter.py:123
-msgid "MS WMI Parameter1"
-msgstr "MS WMI Parameter1"
-
-#: mswmifilter.py:133
-msgid "MS WMI Parameter2"
-msgstr "MS WMI Parameter2"
-
-#: mswmifilter.py:143
-msgid "MS WMI Parameter3"
-msgstr "MS WMI Parameter3"
-
-#: mswmifilter.py:153
-msgid "MS WMI Parameter4"
-msgstr "MS WMI Parameter4"
-
-#: mswmifilter.py:163
-msgid "MS WMI Flags1"
-msgstr "MS WMI Flags1"
-
-#: mswmifilter.py:173
-msgid "MS WMI Flags2"
-msgstr "MS WMI Flags2"
-
-#: mswmifilter.py:183
-msgid "MS WMI Flags3"
-msgstr "MS WMI Flags3"
-
-#: mswmifilter.py:193
-msgid "MS WMI Flags4"
-msgstr "MS WMI Flags4"
-
-#: mswmifilter.py:203
-msgid "MS WMI Source Organization"
-msgstr "MS WMI Ursprungsorganisation"
-
-#: mswmifilter.py:215 mswmifilter.py:216
-msgid "General"
-msgstr "Allgemein"
-
-#: mswmifilter.py:215
+#: modules/univention/admin/handlers/settings/mswmifilter.py:142
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: mswmifilter.py:221 mswmifilter.py:222
-msgid "WMI filter"
-msgstr "WMI Filter"
+#: modules/univention/admin/handlers/settings/mswmifilter.py:64
+msgid "Description"
+msgstr "Beschreibung"
 
-#: mswmifilter.py:221
+#: modules/univention/admin/handlers/settings/mswmifilter.py:69
+msgid "Display name"
+msgstr "Anzeigename"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:142
+#: modules/univention/admin/handlers/settings/mswmifilter.py:143
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:80
+msgid "MS WMI Author"
+msgstr "MS WMI Autor"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:90
+msgid "MS WMI Change Date"
+msgstr "MS WMI Änderungsdatum"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:85
+msgid "MS WMI Creation Date"
+msgstr "MS WMI Erstellungsdatum"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:115
+msgid "MS WMI Flags1"
+msgstr "MS WMI Flags1"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:120
+msgid "MS WMI Flags2"
+msgstr "MS WMI Flags2"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:125
+msgid "MS WMI Flags3"
+msgstr "MS WMI Flags3"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:130
+msgid "MS WMI Flags4"
+msgstr "MS WMI Flags4"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:74
+msgid "MS WMI ID"
+msgstr "MS WMI ID"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:95
+msgid "MS WMI Parameter1"
+msgstr "MS WMI Parameter1"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:100
+msgid "MS WMI Parameter2"
+msgstr "MS WMI Parameter2"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:105
+msgid "MS WMI Parameter3"
+msgstr "MS WMI Parameter3"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:110
+msgid "MS WMI Parameter4"
+msgstr "MS WMI Parameter4"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:135
+msgid "MS WMI Source Organization"
+msgstr "MS WMI Ursprungsorganisation"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:148
 msgid "MS WMI filter"
 msgstr "MS WMI Filter"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:58
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:47
+msgid "Settings: MS WMI Filter"
+msgstr "Einstellungen: MS WMI Filter"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:148
+#: modules/univention/admin/handlers/settings/mswmifilter.py:149
+msgid "WMI filter"
+msgstr "WMI Filter"
