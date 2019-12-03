@@ -1,3 +1,9 @@
+univention-updater (14.0.2-10) unstable; urgency=low
+
+  * Bug #50586: Remove docker check from p*up.sh scripts.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 03 Dec 2019 17:41:15 +0100
+
 univention-updater (14.0.2-9) unstable; urgency=medium
 
   * Bug #50554: Remove obsolete docker upgrade check from preup,

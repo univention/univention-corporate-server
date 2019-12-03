@@ -146,21 +146,6 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
-# Bug #50166: Docker update only worked smoothly with stopped containers...
-if [ -f /var/univention-join/joined ]; then
-	echo "Starting all Docker Apps again..."
-	python -c "
-from univention.appcenter.log import log_to_stream
-from univention.appcenter.app_cache import Apps
-from univention.appcenter.actions import get_action
-log_to_stream()
-apps = [app for app in Apps().get_all_locally_installed_apps() if app.docker]  # single container apps and multi container apps alike
-start = get_action('start')
-for app in apps:
-	start.call(app=app)"
-	echo "... Docker Apps started."
-fi
-
 echo "
 
 
