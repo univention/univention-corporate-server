@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-printserver
+fix: 12.0.1-14A~4.4.0.201912031532
+desc: |
+ This update addresses the following issue(s):
+ * The package now uses dh_python2 instead of python-support.
+bug: [49174]
