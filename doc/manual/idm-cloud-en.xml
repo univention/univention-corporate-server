@@ -147,7 +147,7 @@
 
 		</section>
 		<section id="idmcloud:o365:multipleconnections">
-			<title></title>
+			<title>Synchronization of Users in multiple Azure Active Directories</title>
 			<para>
 			The Office365 Connector is able to synchronize users to multiple Azure Active Directories.
 			For each user account, multiple Azure AD instances can be assigned, where an account should be created.

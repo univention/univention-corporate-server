@@ -149,7 +149,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 
 	</section>
 	<section id="idmcloud:o365:multipleconnections">
-		<title></title>
+		<title>Synchronisation von Benutzern in mehrere Azure <foreignphrase>Active Directories</foreignphrase></title>
 		<para>
 		Der Office365 Connector kann Benutzer in mehrere Azure <foreignphrase>Active Directories</foreignphrase> synchronisieren.
 		Sind mehrere Verbindungen verfügbar, können an jedem Benutzerkonto individuell die Azure AD Instanzen zugewiesen werden, in denen ein Account erstellt werden soll.
