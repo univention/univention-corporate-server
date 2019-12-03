@@ -66,7 +66,7 @@
 					Most packages have been converted from <package>python-support</package> to <package>dh_python2</package> in preparation for the switch from Python 2 to Python 3.
 			</para></listitem>
 			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-2, e.g. Samba, the Linux kernel and Dovecot.
+					Various security updates have been integrated into UCS 4.4-3, e.g. Samba, the Linux kernel and Dovecot.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
