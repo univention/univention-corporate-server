@@ -41,6 +41,7 @@ connections to remote |UMC| servers
 import ssl
 import json
 import locale
+import six
 import sys
 if sys.version_info >= (3,):
 	from http.cookies import SimpleCookie
@@ -311,7 +312,7 @@ class Response(object):
 		:returns: |JSON| data is returned as a dictionary, all other as raw.
 		:rtype: dict or str
 		"""
-		data = self.body
+		data = six.ensure_str(self.body)
 		if self.get_header('Content-Type', '').startswith('application/json'):
 			try:
 				data = json.loads(data)
@@ -535,7 +536,7 @@ class Client(object):
 		:raises ConnectionError: if the request cannot be send.
 		:raises HTTPError: if an |UMC| error occurs.
 		"""
-		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+		cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
 		request.headers = dict(self._headers, Cookie=cookie, **request.headers)
 		if 'UMCSessionId' in self.cookies:
 			request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
