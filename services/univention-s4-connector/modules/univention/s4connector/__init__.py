@@ -472,7 +472,7 @@ class ucs:
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate']
+		self.ucs_no_recode = ['krb5Key', 'userPassword', 'pwhistory', 'sambaNTPassword', 'sambaLMPassword', 'userCertificate', 'msieee80211-Data', 'ms-net-ieee-8023-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', 'msiScript', 'productCode', 'upgradeProductCode', 'categoryId', 'ipsecData']
 
 		self.baseConfig = baseConfig
 		self.property = _property  # this is the mapping!

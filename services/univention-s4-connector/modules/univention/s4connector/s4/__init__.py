@@ -56,7 +56,7 @@ import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
 
-DECODE_IGNORELIST = ['dNSProperty', 'securityIdentifier', 'jpegPhoto', 'mSMQDigests', 'msExchMailboxSecurityDescriptor', 'userCertificate', 'logonHours', 'mSMQSites', 'objectSid', 'ipsecData', 'dnsRecord', 'mSMQSignKey', 'dSASignature', 'may', 'objectGUID', 'linkTrackSecret', 'mSMQEncryptKey', 'currentLocation', 'repsFrom', 'mS-DS-CreatorSID', 'replUpToDateVector', 'mSMQSignCertificates', 'msExchMailboxGuid', 'sIDHistory']
+DECODE_IGNORELIST = ['dNSProperty', 'securityIdentifier', 'jpegPhoto', 'mSMQDigests', 'msExchMailboxSecurityDescriptor', 'userCertificate', 'logonHours', 'mSMQSites', 'objectSid', 'ipsecData', 'dnsRecord', 'mSMQSignKey', 'dSASignature', 'may', 'objectGUID', 'linkTrackSecret', 'mSMQEncryptKey', 'currentLocation', 'repsFrom', 'mS-DS-CreatorSID', 'replUpToDateVector', 'mSMQSignCertificates', 'msExchMailboxGuid', 'sIDHistory', 'msieee80211-Data', 'ms-net-ieee-8023-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', 'msiScript', 'productCode', 'upgradeProductCode', 'categoryId', 'ipsecData']
 
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
