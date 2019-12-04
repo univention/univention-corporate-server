@@ -69,17 +69,17 @@ property_descriptions = {
 		short_description=_('IPsec Owners reference'),
 		long_description='',
 		multivalue=True,
-		syntax=univention.admin.syntax.ipsecOwner,
+		syntax=univention.admin.syntax.string,  # ipsecOwner,
 	),
 	'ipsecName': univention.admin.property(
 		short_description=_('IPsec Name'),
 		long_description='',
-		syntax=univention.admin.syntax.ipsecName,
+		syntax=univention.admin.syntax.string,  # ipsecName,
 	),
 	'ipsecID': univention.admin.property(
 		short_description=_('IPsec ID'),
 		long_description='',
-		syntax=univention.admin.syntax.ipsecID,
+		syntax=univention.admin.syntax.string,  # ipsecID,
 	),
 	'ipsecDataType': univention.admin.property(
 		short_description=_('IPsec Data Type'),
@@ -94,13 +94,13 @@ property_descriptions = {
 	'ipsecNegotiationPolicyReference': univention.admin.property(
 		short_description=_('IPsec Negotiation Policy Reference'),
 		long_description='',
-		syntax=univention.admin.syntax.ipsecNegotiationPolicy,
+		syntax=univention.admin.syntax.string,  # ipsecNegotiationPolicy,
 	),
 	'ipsecFilterReference': univention.admin.property(
 		short_description=_('IPsec Filter reference'),
 		long_description='',
 		multivalue=True,
-		syntax=univention.admin.syntax.ipsecFilter,
+		syntax=univention.admin.syntax.string,  # ipsecFilter,
 	),
 }
 

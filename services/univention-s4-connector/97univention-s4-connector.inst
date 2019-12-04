@@ -149,6 +149,9 @@ udm container/cn create "$@" --ignore_exists \
 			--set name=SOM || die
 
 ucs_registerLDAPExtension "$@" \
+	--udm_syntax usr/lib/python2.7/dist-packages/univention/admin/syntax.d/s4_connector.py
+
+ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
 	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/container/msgpo.py || die
