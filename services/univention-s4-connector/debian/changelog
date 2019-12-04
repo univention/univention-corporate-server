@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.2-59) unstable; urgency=medium
+
+  * Bug #49838: add MS Wireless/Wired Group Policy
+  * Bug #49838: add MS Software installation policy
+  * Bug #49838: add MS Software installation policy
+
+ -- Florian Best <best@univention.de>  Tue, 03 Dec 2019 21:59:30 +0100
+
 univention-s4-connector (13.0.2-58) unstable; urgency=medium
 
   * Bug #49792: Allow re-creation of deleted group object with same objectSid in Samba/AD

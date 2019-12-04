@@ -281,7 +281,7 @@ def main():
 	while True:
 		try:
 			connect()
-		except SystemExit:
+		except (KeyboardInterrupt, SystemExit):
 			lock_file.close()
 			raise
 		except:

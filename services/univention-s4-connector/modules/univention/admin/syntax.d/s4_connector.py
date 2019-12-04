@@ -1,7 +1,7 @@
-#!/bin/bash
+# -*- coding: utf-8 -*-
 #
-# Univention Samba4 Connector
-#  postinst script of the samba4 connector package
+# Univention S4 Connector
+#  UDM syntax classes
 #
 # Copyright 2019 Univention GmbH
 #
@@ -30,15 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# Legacy code with python-support
-# Needs to be done because the source package uses dh_python2, but UDM modules
-# are still installed the old way
-# TODO: Remove once we migrated UDM: Bug #49147
-if which update-python-modules >/dev/null 2>&1; then
-	update-python-modules python-univention-connector-s4.public
-	update-python-modules --post-install
-fi
+from univention.admin.syntax import string, integer, _
+import univention.admin.uexceptions
 
-#DEBHELPER#
 
-exit 0
+class SignedInteger(integer):  # Workaround for Bug #50591
+
+	@classmethod
+	def parse(cls, text):
+		try:
+			return str(int(text))
+		except ValueError:
+			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
+
+
+class octetstring(string):
+	pass

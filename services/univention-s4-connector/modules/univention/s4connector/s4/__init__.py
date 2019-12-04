@@ -56,7 +56,7 @@ import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
 
-DECODE_IGNORELIST = ['dNSProperty', 'securityIdentifier', 'jpegPhoto', 'mSMQDigests', 'msExchMailboxSecurityDescriptor', 'userCertificate', 'logonHours', 'mSMQSites', 'objectSid', 'ipsecData', 'dnsRecord', 'mSMQSignKey', 'dSASignature', 'may', 'objectGUID', 'linkTrackSecret', 'mSMQEncryptKey', 'currentLocation', 'repsFrom', 'mS-DS-CreatorSID', 'replUpToDateVector', 'mSMQSignCertificates', 'msExchMailboxGuid', 'sIDHistory']
+DECODE_IGNORELIST = ['dNSProperty', 'securityIdentifier', 'jpegPhoto', 'mSMQDigests', 'msExchMailboxSecurityDescriptor', 'userCertificate', 'logonHours', 'mSMQSites', 'objectSid', 'ipsecData', 'dnsRecord', 'mSMQSignKey', 'dSASignature', 'may', 'objectGUID', 'linkTrackSecret', 'mSMQEncryptKey', 'currentLocation', 'repsFrom', 'mS-DS-CreatorSID', 'replUpToDateVector', 'mSMQSignCertificates', 'msExchMailboxGuid', 'sIDHistory', 'msieee80211-Data', 'ms-net-ieee-8023-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', 'msiScript', 'productCode', 'upgradeProductCode', 'categoryId', 'ipsecData']
 
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
@@ -2579,9 +2579,21 @@ class s4(univention.s4connector.ucs):
 									else:
 										if to_remove:
 											r = current_s4_values & to_remove
+											if attribute_type[attribute].compare_function:
+												for _value in to_remove:
+													for org in current_s4_values:
+														if attribute_type[attribute].compare_function([_value], [org]):  # values are equal
+															r.add(org)
 											if r:
 												modlist.append((ldap.MOD_DELETE, s4_attribute, r))
 										if to_add:
+											to_really_add = copy.copy(to_add)
+											if attribute_type[attribute].compare_function:
+												for _value in to_add:
+													for org in current_s4_values:
+														if attribute_type[attribute].compare_function([_value], [org]):  # values are equal
+															to_really_add.discard(_value)
+											to_add = to_really_add
 											a = to_add - current_s4_values
 											if a:
 												modlist.append((ldap.MOD_ADD, s4_attribute, a))
