@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-94) unstable; urgency=medium
+
+  * Bug #50592: Add dev-test-setup command
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 04 Dec 2019 15:38:54 +0100
+
 univention-appcenter (8.0.11-93) unstable; urgency=medium
 
   * Bug #31796: Commited and reverted
