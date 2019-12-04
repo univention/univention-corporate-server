@@ -2579,9 +2579,21 @@ class s4(univention.s4connector.ucs):
 									else:
 										if to_remove:
 											r = current_s4_values & to_remove
+											if attribute_type[attribute].compare_function:
+												for _value in to_remove:
+													for org in current_s4_values:
+														if attribute_type[attribute].compare_function([_value], [org]):  # values are equal
+															r.add(org)
 											if r:
 												modlist.append((ldap.MOD_DELETE, s4_attribute, r))
 										if to_add:
+											to_really_add = copy.copy(to_add)
+											if attribute_type[attribute].compare_function:
+												for _value in to_add:
+													for org in current_s4_values:
+														if attribute_type[attribute].compare_function([_value], [org]):  # values are equal
+															to_really_add.discard(_value)
+											to_add = to_really_add
 											a = to_add - current_s4_values
 											if a:
 												modlist.append((ldap.MOD_ADD, s4_attribute, a))

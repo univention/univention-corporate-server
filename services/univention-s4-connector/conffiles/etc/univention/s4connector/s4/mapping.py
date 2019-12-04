@@ -1065,6 +1065,7 @@ s4_mapping = {
 				ucs_attribute='ipsecOwnersReference',
 				ldap_attribute='ipsecOwnersReference',
 				con_attribute='ipsecOwnersReference',
+				compare_function=univention.s4connector.compare_lowercase,
 				single_value=False,
 			),
 			'ipsecName': univention.s4connector.attribute(
@@ -1120,6 +1121,7 @@ s4_mapping = {
 				ucs_attribute='ipsecOwnersReference',
 				ldap_attribute='ipsecOwnersReference',
 				con_attribute='ipsecOwnersReference',
+				compare_function=univention.s4connector.compare_lowercase,
 				single_value=False,
 			),
 			'ipsecName': univention.s4connector.attribute(
@@ -1175,6 +1177,7 @@ s4_mapping = {
 				ucs_attribute='ipsecOwnersReference',
 				ldap_attribute='ipsecOwnersReference',
 				con_attribute='ipsecOwnersReference',
+				compare_function=univention.s4connector.compare_lowercase,
 				single_value=False,
 			),
 			'ipsecName': univention.s4connector.attribute(
@@ -1242,6 +1245,7 @@ s4_mapping = {
 				ucs_attribute='ipsecOwnersReference',
 				ldap_attribute='ipsecOwnersReference',
 				con_attribute='ipsecOwnersReference',
+				compare_function=univention.s4connector.compare_lowercase,
 				single_value=False,
 			),
 			'ipsecName': univention.s4connector.attribute(
@@ -1309,6 +1313,7 @@ s4_mapping = {
 				ucs_attribute='ipsecOwnersReference',
 				ldap_attribute='ipsecOwnersReference',
 				con_attribute='ipsecOwnersReference',
+				compare_function=univention.s4connector.compare_lowercase,
 				single_value=False,
 			),
 			'ipsecName': univention.s4connector.attribute(
