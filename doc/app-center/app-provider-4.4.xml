@@ -1097,6 +1097,7 @@ curl http://localhost/myapp/login ...
 univention-install univention-appcenter-dev
 univention-app dev-use-test-appcenter
 univention-app install my-app
+univention-app dev-test-setup  # installs common testing libs like selenium
 univention-app dev-test \
   --appcenter-server http://appcenter-test.software-univention.de\
   my-app \  # every additional parameter is passed to the script
