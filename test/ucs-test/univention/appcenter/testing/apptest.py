@@ -10,6 +10,7 @@ import sys
 import importlib
 import tempfile
 import shutil
+from http.client import HTTPConnection
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ def pip_modules(modules):
 	if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
 		yield
 	if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:
-		raise RuntimeError('pip3 is required. Install python3-pip')
+		subprocess.check_call(['univention-install', '-y', 'python-pip3'], check=True)
 	installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)
 	logger.info(modules)
 	for line in installed.stdout.splitlines()[2:]:
@@ -114,9 +115,15 @@ class Session(object):
 			url = self.base_url + url
 		self.driver.get(url)
 
+	def reload(self):
+		self.driver.refresh()
+
 	def find_all(self, css):
 		logger.info("Searching for %r", css)
 		return self.driver.find_elements_by_css_selector(css)
+
+	def find_all_below(self, element, css):
+		return element.find_elements_by_css_selector(css)
 
 	def find_first(self, css):
 		elements = self.find_all(css)
@@ -130,16 +137,46 @@ class Session(object):
 		assert len(elements) == 1, 'len(elements) == {}'.format(len(elements))
 		return elements[0]
 
+	def assert_one_below(self, element, css):
+		elements = self.find_all_below(element, css)
+		assert len(elements) == 1, 'len(elements) == {}'.format(len(elements))
+		return elements[0]
+
 	def click_element(self, css):
 		self.assert_one(css).click()
+
+	def click_element_below(self, element, css):
+		self.assert_one_below(element, css).click()
+
+	def change_tab(self, idx):
+		self.driver.switch_to.window(self.driver.window_handles[idx])
+
+	def close_tab(self):
+		self.driver.close()
 
 	def enter_input(self, input_name, value):
 		self.enter_input_element('[name={}]'.format(input_name), value)
 
 	def enter_input_element(self, css, value):
+		from selenium.common.exceptions import InvalidElementStateException
 		elem = self.assert_one(css)
-		elem.clear()
+		try:
+			elem.clear()
+		except InvalidElementStateException:
+			pass
 		elem.send_keys(value)
+
+	def enter_return(self, css=None):
+		from selenium.webdriver.common.keys import Keys
+		if css:
+			self.enter_input_element(css, Keys.RETURN)
+		else:
+			self.send_keys(Keys.RETURN)
+
+	def send_keys(self, keys):
+		from selenium.webdriver import ActionChains
+		action = ActionChains(self.driver)
+		action.send_keys(keys).perform()
 
 	def save_screenshot(self, name):
 		timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -217,6 +254,81 @@ else:
 		return ret
 
 	@pytest.fixture(scope='session')
+	def umc(hostname, admin_username, admin_password):
+		umc_lib = os.environ.get('UCS_TEST_UMC_CLIENT_LIB', 'univention.testing._umc')
+		try:
+			umc_lib = importlib.import_module(umc_lib)
+		except ImportError:
+			logger.critical('Could not import {}. Maybe set $UCS_TEST_UMC_CLIENT_LIB'.format(umc_lib))
+			raise
+		Client = umc_lib.Client
+		scheme, hostname = hostname.split('//')
+		if scheme == 'http:':
+			Client.ConnectionType = HTTPConnection
+		client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test')
+		return client
+
+	@pytest.fixture(scope='session')
+	def appcenter(umc):
+		class AppCenter(object):
+			def __init__(self, client):
+				self.client = client
+
+			def install_newest(self, app_id):
+				app = self.get(app_id)
+				app_function = None
+				if app['is_installed']:
+					logger.info('App already installed')
+					if 'candidate_version' in app:
+						logger.info('Upgrading App...')
+						app_function = 'update'
+				else:
+					logger.info('Installing App...')
+					app_function = 'install'
+				if not app_function:
+					return app
+				if app['docker_image'] or app['docker_main_service']:
+					logger.info('Installing Docker App')
+					response = self.client.umc_command('appcenter/docker/invoke', {
+						'app': app_id,
+						'function': app_function,
+						'force': True,
+						})
+					progress_id = response.result['id']
+					progress_command = 'appcenter/docker/progress'
+				else:
+					logger.info('Installing Non-Docker App')
+					response = self.client.umc_command('appcenter/invoke', {
+						'application': app_id,
+						'function': app_function,
+						'only_dry_run': False,
+						})
+					progress_id = response.result['id']
+					progress_command = 'appcenter/progress'
+				finished = False
+				i = 0
+				while not finished:
+					time.sleep(2)
+					i += 1
+					if i > 600:
+						raise RuntimeError('Did not finish within 20 minutes')
+					result = self.client.umc_command(progress_command, {'progress_id': progress_id}).result
+					finished = result.get('finished')
+					assert not result.get('serious_problems')
+					for message in result.get('intermediate', []):
+						logger.info(message)
+				app = self.get(app_id)
+				assert app['is_installed']
+				return app
+
+			def get(self, app_id):
+				logger.info('Retrieving App {}'.format(app_id))
+				response = self.client.umc_command('appcenter/get', {'application': app_id})
+				return response.result
+
+		return AppCenter(umc)
+
+	@pytest.fixture(scope='session')
 	def udm(hostname, config, admin_username, admin_password):
 		"""A UDM instance (REST client)"""
 		rest_lib = os.environ.get('UCS_TEST_REST_CLIENT_LIB', 'univention.testing._udm_rest')
@@ -239,7 +351,7 @@ else:
 	def users(udm):
 		user_mod = udm.get('users/user')
 		users = {}
-		user_id_cache = {'X': 1}
+		user_id_cache = {'X': 1}  # very elegant...
 		def _users(user_id=None, attrs={}):
 			username = attrs.get('username')
 			if username is None:
@@ -260,7 +372,15 @@ else:
 					user.properties['password'] = 'univention'
 				user.save()
 				users[username] = user
-			return users[username]
+			else:
+				if attrs:
+					user = users[username]
+					user.reload()
+					user.properties.update(attrs)
+					user.save()
+			user = users[username]
+			user.reload()
+			return user
 		try:
 			yield _users
 		finally:
