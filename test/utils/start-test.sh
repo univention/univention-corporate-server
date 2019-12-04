@@ -10,7 +10,8 @@ die () {
 	exit 1
 }
 
-test -f "$1" || die "Missing test config file!"
+[ -f "$1" ] ||
+	die "Missing test config file!"
 
 release='4.4-3'
 old_release='4.3-5'
@@ -38,13 +39,12 @@ export CFG="$1"
 
 # jenkins defaults
 if [ "$USER" = "jenkins" ]; then
-	KVM_USER="build"
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export HALT="${HALT:=true}"
 	export KVM_USER="build"
-	# in jenkins do not terminate vms if setup is broken,
+	# in jenkins do not terminate VMs if setup is broken,
 	# so we can investigate the situation and use replace
-	# to overwrite old vms
+	# to overwrite old VMs
 	export TERMINATE_ON_SUCCESS="${HALT:=true}"
 	export REPLACE="${REPLACE:=true}"
 else
@@ -57,11 +57,11 @@ fi
 
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
-if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
-	BUILD_HOST="10.200.18.180"
-	REPO_UCS=git@git.knut.univention.de:univention/ucs.git
-	REPO_UCSSCHOOL=git@git.knut.univention.de:univention/ucsschool.git
-	if echo "$UCSSCHOOL_BRANCH" | egrep -q "^[0-9].[0-9]$" ; then
+if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
+	BUILD_HOST='10.200.18.180'
+	REPO_UCS='git@git.knut.univention.de:univention/ucs.git'
+	REPO_UCSSCHOOL='git@git.knut.univention.de:univention/ucsschool.git'
+	if echo "$UCSSCHOOL_BRANCH" | grep -Eq '^[0-9].[0-9]$' ; then
 		BUILD_BRANCH="$UCS_BRANCH"
 		BUILD_REPO="$REPO_UCS"
 	else
@@ -71,7 +71,8 @@ if [ -n "$UCSSCHOOL_BRANCH" -o -n "$UCS_BRANCH" ]; then
 	# check branch test
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD_HOST}" python3 \
 		/home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" \
-		> utils/apt-get-branch-repo.list || exit 1
+		> utils/apt-get-branch-repo.list ||
+		die 'Branch build failed'
 	# replace non deb lines
 	sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 fi
@@ -79,14 +80,12 @@ fi
 # create the command and run in ec2 or kvm depending on cfg
 KVM=false
 grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
-test "$KVM_BUILD_SERVER" = "EC2" && KVM=false
+[ "$KVM_BUILD_SERVER" = "EC2" ] && KVM=false
 
-if $KVM; then
+if "$KVM"; then
 	exe='ucs-kvm-create'
-	test -e ./ucs-ec2-tools/ucs-kvm-create && exe="./ucs-ec2-tools/ucs-kvm-create"
 else
 	exe='ucs-ec2-create'
-	test -e ./ucs-ec2-tools/ucs-ec2-create && exe="./ucs-ec2-tools/ucs-ec2-create"
 fi
 
 # start the test
@@ -94,6 +93,8 @@ declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
-PATH="${PATH:+$PATH:}./ucs-ec2-tools"
+# shellcheck disable=SC2123
+PATH="./ucs-ec2-tools${PATH:+:$PATH}"
+
 "${cmd[@]}" &&
-[ -e "./COMMAND_SUCCESS" ]
+	[ -e "./COMMAND_SUCCESS" ]
