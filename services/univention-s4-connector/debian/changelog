@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-60) unstable; urgency=medium
+
+  * Bug #49838: fix typo registering syntax class
+
+ -- Florian Best <best@univention.de>  Thu, 05 Dec 2019 09:26:40 +0100
+
 univention-s4-connector (13.0.2-59) unstable; urgency=medium
 
   * Bug #49838: add MS Wireless/Wired Group Policy
