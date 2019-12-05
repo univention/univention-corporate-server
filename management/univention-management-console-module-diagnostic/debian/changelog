@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-24) unstable; urgency=medium
+
+  * Bug #50599: 58_check_memberOf.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 05 Dec 2019 10:38:15 +0100
+
 univention-management-console-module-diagnostic (5.0.1-23) unstable; urgency=medium
 
   * Bug #49151: remove pysupport directory
