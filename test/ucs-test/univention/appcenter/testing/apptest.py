@@ -63,15 +63,17 @@ def xserver(capture_video=None):
 		yield
 	else:
 		from xvfbwrapper import Xvfb
-		with Xvfb(width=1280, height=720) as xvfb:
+		with Xvfb(width=1920, height=1080) as xvfb:
+			time.sleep(2)
 			if capture_video:
 				pid = ffmpg_start(capture_video, xvfb.vdisplay_num)
+			time.sleep(2)
 			yield
 			if capture_video:
 				ffmpg_stop(pid)
 
 def ffmpg_start(capture_video, display):
-	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1280x720', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1920x1080', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 	return process.pid
 
 def ffmpg_stop(pid):
