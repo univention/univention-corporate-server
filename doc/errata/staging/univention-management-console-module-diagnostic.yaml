@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-management-console-module-diagnostic
+fix: 5.0.1-24A~4.4.0.201912051043
+desc: |
+ This update addresses the following issue(s):
+ * A module to check if the LDAP module memberOf is activated
+   has been added.
+bug: [50599]
