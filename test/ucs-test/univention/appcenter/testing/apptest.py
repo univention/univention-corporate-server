@@ -11,7 +11,6 @@ import importlib
 import tempfile
 import shutil
 from http.client import HTTPConnection
-import pathlib
 
 logger = logging.getLogger(__name__)
 
@@ -73,10 +72,10 @@ def xserver():
 
 def ffmpg_start(capture_video, display):
 	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1920x1080', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-	return process
+	return process.pid
 
-def ffmpg_stop(process):
-	process.kill()
+def ffmpg_stop(pid):
+	subprocess.Popen(['kill', str(pid)])
 
 class Session(object):
 	def __init__(self, display_num, base_url, screenshot_path, driver):
@@ -97,11 +96,11 @@ class Session(object):
 	@contextmanager
 	def capture(self, name):
 		filename = self._new_filename(name, 'mkv')
-		process = ffmpg_start(filename, self.display_num)
+		pid = ffmpg_start(filename, self.display_num)
 		try:
 			yield
 		finally:
-			ffmpg_stop(process)
+			ffmpg_stop(pid)
 			self.save_screenshot(name)
 
 	def goto_portal(self):
