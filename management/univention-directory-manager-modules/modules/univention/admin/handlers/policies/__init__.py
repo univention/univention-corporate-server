@@ -48,7 +48,7 @@ def import_py3():
 	path = os.path.abspath(os.path.dirname(__file__))
 	for w_root, w_dirs, w_files in os.walk(path):
 		for file_ in w_files:
-			if not file_.endswith('.py') or file_.startswith('__') or file_ not in ('policy.py', 'base.py'):
+			if not file_.endswith('.py') or file_.startswith('__') or file_ in ('policy.py', 'base.py'):
 				continue
 			file_path = os.path.join(w_root, file_)
 			module_name = base_name + "." + file_[: -3]
@@ -62,7 +62,7 @@ def import_py2():
 	path = os.path.abspath(os.path.dirname(__file__))
 	for w_root, w_dirs, w_files in os.walk(path):
 		for file_ in w_files:
-			if not file_.endswith('.py') or file_.startswith('__') or file_ not in ('policy.py', 'base.py'):
+			if not file_.endswith('.py') or file_.startswith('__') or file_ in ('policy.py', 'base.py'):
 				continue
 			policies.append(__import__(file_[: -3], globals(), locals(), ['']))
 
