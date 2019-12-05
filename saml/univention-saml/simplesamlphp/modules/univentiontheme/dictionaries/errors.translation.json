@@ -29,22 +29,31 @@
 		"de": "Der Samba Account ist abgelaufen, Login verweigert"
 	},
 	"title_LDAP_PWCHANGE": {
-		"de": "Passwortänderung notwendig"
+		"de": "Ihr Passwort ist abgelaufen"
 	},
 	"descr_LDAP_PWCHANGE": {
-		"de": "Eine Änderung des LDAP Passworts ist notwendig, Login verweigert"
+		"de": "Bitte %s und melden sich erneut an."
+	},
+	"linktitle_LDAP_PWCHANGE": {
+		"en": "ändern Sie Ihr Passwort"
 	},
 	"title_KRB_PWCHANGE": {
-		"de": "Passwortänderung notwendig"
+		"de": "Ihr Passwort ist abgelaufen"
 	},
 	"descr_KRB_PWCHANGE": {
-		"de": "Eine Änderung des Kerberos Passworts ist notwendig, Login verweigert"
+		"de": "Bitte %s und melden sich erneut an."
+	},
+	"linktitle_KRB_PWCHANGE": {
+		"en": "ändern Sie Ihr Passwort"
 	},
 	"title_SAMBA_PWCHANGE": {
-		"de": "Passwortänderung notwendig"
+		"de": "Ihr Passwort ist abgelaufen"
 	},
 	"descr_SAMBA_PWCHANGE": {
-		"de": "Eine Änderung des Samba Passworts ist notwendig, Login verweigert"
+		"de": "Bitte %s und melden sich erneut an."
+	},
+	"linktitle_SAMBA_PWCHANGE": {
+		"en": "ändern Sie Ihr Passwort"
 	},
 	"title_SAMBA_ACCLOCKED": {
 		"de": "Account gesperrt"

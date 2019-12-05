@@ -1,3 +1,9 @@
+univention-saml (6.0.2-18) unstable; urgency=medium
+
+  * Bug #50594: display link when password is expired
+
+ -- Florian Best <best@univention.de>  Thu, 05 Dec 2019 19:54:46 +0100
+
 univention-saml (6.0.2-17) unstable; urgency=medium
 
   * Bug #50510: ensure the HOST header has the same case as in the idp config

@@ -30,22 +30,31 @@
 		"en": "The Samba account is expired, login is denied"
 	},
 	"title_LDAP_PWCHANGE": {
-		"en": "Password change required"
+		"en": "Your password is expired"
 	},
 	"descr_LDAP_PWCHANGE": {
-		"en": "An LDAP password change is required before login is possible"
+		"en": "Please %s and log in again."
+	},
+	"linktitle_LDAP_PWCHANGE": {
+		"en": "change your password"
 	},
 	"title_KRB_PWCHANGE": {
-		"en": "Password change required"
+		"en": "Your password is expired"
 	},
 	"descr_KRB_PWCHANGE": {
-		"en": "A Kerberos password change is required before login is possible"
+		"en": "Please %s and log in again."
+	},
+	"linktitle_KRB_PWCHANGE": {
+		"en": "change your password"
 	},
 	"title_SAMBA_PWCHANGE": {
-		"en": "Password change required"
+		"en": "Your password is expired"
 	},
 	"descr_SAMBA_PWCHANGE": {
-		"en": "A Samba password change is required before login is possible"
+		"en": "Please %s and log in again."
+	},
+	"linktitle_SAMBA_PWCHANGE": {
+		"en": "change your password"
 	},
 	"title_SAMBA_ACCLOCKED": {
 		"en": "Account locked"
