@@ -30,7 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import random
-import univention.utf8
+import six
 
 STR_NUMERIC = u'0123456789'
 STR_ALPHA = u'abcdefghijklmnopqrstuvwxyz'
@@ -59,7 +59,7 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 			result += random.choice(STR_ALPHA)
 		elif numeric:
 			result += random.choice(STR_NUMERIC)
-	return univention.utf8.ensure_str(result, encoding=encoding, errors='strict')
+	return six.ensure_str(result, encoding=encoding, errors='strict')
 
 
 def random_name(length=10):
