@@ -84,7 +84,7 @@ property_descriptions = {
 	'categoryId': univention.admin.property(
 		short_description=_('category ID'),
 		long_description='',
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 	),
 }
 
@@ -95,7 +95,7 @@ layout = [
 			'managedBy',
 			'localizedDescription',
 			'localeID',
-			#'categoryId',  # better hide binary attributes
+			'categoryId',
 		]),
 	]),
 ]
@@ -106,7 +106,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListToString)
 mapping.register('localizedDescription', 'localizedDescription')
 mapping.register('localeID', 'localeID')
-mapping.register('categoryId', 'categoryId', None, univention.admin.mapping.ListToString)
+mapping.register('categoryId', 'categoryId', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 
 
 class object(univention.admin.handlers.simpleLdap):

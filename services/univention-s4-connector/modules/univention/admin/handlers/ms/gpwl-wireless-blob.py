@@ -77,7 +77,7 @@ property_descriptions = {
 	'msieee80211-Data': univention.admin.property(
 		short_description=_('Data'),
 		long_description='',
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 		size='Two',
 	),
 }
@@ -90,7 +90,7 @@ layout = [
 		Group(_('Policy settings'), layout=[
 			'msieee80211-ID',
 			'msieee80211-DataType',
-			# 'msieee80211-Data',  # better hide binary attributes
+			'msieee80211-Data',
 		]),
 	]),
 ]
@@ -100,7 +100,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('msieee80211-ID', 'msieee80211-ID', None, univention.admin.mapping.ListToString)
 mapping.register('msieee80211-DataType', 'msieee80211-DataType', None, univention.admin.mapping.ListToString)
-mapping.register('msieee80211-Data', 'msieee80211-Data', None, univention.admin.mapping.ListToString)
+mapping.register('msieee80211-Data', 'msieee80211-Data', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 
 
 class object(univention.admin.handlers.simpleLdap):

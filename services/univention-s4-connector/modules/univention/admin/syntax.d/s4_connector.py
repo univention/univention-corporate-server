@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.admin.syntax import string, integer, _
+from univention.admin.syntax import integer, _
 import univention.admin.uexceptions
 
 
@@ -42,7 +42,3 @@ class SignedInteger(integer):  # Workaround for Bug #50591
 			return str(int(text))
 		except ValueError:
 			raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
-
-
-class octetstring(string):
-	pass

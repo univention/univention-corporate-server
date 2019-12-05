@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-61) unstable; urgency=medium
+
+  * Bug #49838: add base64 presentation in UMC
+
+ -- Florian Best <best@univention.de>  Thu, 05 Dec 2019 15:36:07 +0100
+
 univention-s4-connector (13.0.2-60) unstable; urgency=medium
 
   * Bug #49838: fix typo registering syntax class

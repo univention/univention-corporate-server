@@ -67,7 +67,7 @@ property_descriptions = {
 	'ms-net-ieee-80211-GP-PolicyReserved': univention.admin.property(
 		short_description=_('Policy Reserved'),
 		long_description='',
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 	),
 	'ms-net-ieee-80211-GP-PolicyData': univention.admin.property(
 		short_description=_('Policy Data'),
@@ -90,7 +90,7 @@ layout = [
 		Group(_('Policy settings'), layout=[
 			'ms-net-ieee-80211-GP-PolicyGUID',
 			'ms-net-ieee-80211-GP-PolicyData',
-			# 'ms-net-ieee-80211-GP-PolicyReserved',  # better hide binary attributes
+			'ms-net-ieee-80211-GP-PolicyReserved',
 		]),
 	]),
 ]
@@ -98,7 +98,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', None, univention.admin.mapping.ListToString)
+mapping.register('ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('ms-net-ieee-80211-GP-PolicyData', 'ms-net-ieee-80211-GP-PolicyData', None, univention.admin.mapping.ListToString)
 mapping.register('ms-net-ieee-80211-GP-PolicyGUID', 'ms-net-ieee-80211-GP-PolicyGUID', None, univention.admin.mapping.ListToString)
 

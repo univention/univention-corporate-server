@@ -98,7 +98,7 @@ property_descriptions = {
 		short_description=_('Upgrade product code'),
 		long_description='',
 		multivalue=True,
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 	),
 	'setupCommand': univention.admin.property(
 		short_description=_('Setup command'),
@@ -108,7 +108,7 @@ property_descriptions = {
 	'productCode': univention.admin.property(
 		short_description=_('product code'),
 		long_description='',
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 	),
 	'packageType': univention.admin.property(
 		short_description=_('package type'),
@@ -143,7 +143,7 @@ property_descriptions = {
 	'msiScript': univention.admin.property(
 		short_description=_('MSI script'),
 		long_description='',
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 	),
 	'msiFileList': univention.admin.property(
 		short_description=_('MSI file list'),
@@ -237,9 +237,9 @@ layout = [
 			'vendor',
 			'url',
 			'revision',
-			# 'upgradeProductCode',  # better hide binary attributes
+			'upgradeProductCode',
 			'setupCommand',
-			# 'productCode',  # better hide binary attributes
+			'productCode',
 			'packageType',
 			'packageName',
 			'packageFlags',
@@ -257,7 +257,7 @@ layout = [
 			'msiScriptSize',
 			'msiScriptPath',
 			'msiScriptName',
-			# 'msiScript',  # better hide binary attributes
+			'msiScript',
 			'msiFileList',
 		]),
 		Group(_('COM'), layout=[
@@ -269,6 +269,19 @@ layout = [
 	]),
 ]
 
+
+def multivalueMapBase64(data):
+	if data:
+		return [univention.admin.mapping.mapBase64(d) for d in data]
+	return []
+
+
+def multivalueUnmapBase64(data):
+	if data:
+		return [univention.admin.mapping.unmapBase64(data)]  # stupid broken function in UDM
+	return []
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
@@ -278,16 +291,16 @@ mapping.register('versionNumberHi', 'versionNumberHi', None, univention.admin.ma
 mapping.register('vendor', 'vendor', None, univention.admin.mapping.ListToString)
 mapping.register('url', 'url', None, univention.admin.mapping.ListToString)
 mapping.register('revision', 'revision', None, univention.admin.mapping.ListToString)
-mapping.register('upgradeProductCode', 'upgradeProductCode')
+mapping.register('upgradeProductCode', 'upgradeProductCode', multivalueMapBase64, multivalueUnmapBase64)
 mapping.register('setupCommand', 'setupCommand', None, univention.admin.mapping.ListToString)
-mapping.register('productCode', 'productCode', None, univention.admin.mapping.ListToString)
+mapping.register('productCode', 'productCode', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('packageType', 'packageType', None, univention.admin.mapping.ListToString)
 mapping.register('packageName', 'packageName', None, univention.admin.mapping.ListToString)
 mapping.register('packageFlags', 'packageFlags', None, univention.admin.mapping.ListToString)
 mapping.register('msiScriptSize', 'msiScriptSize', None, univention.admin.mapping.ListToString)
 mapping.register('msiScriptPath', 'msiScriptPath', None, univention.admin.mapping.ListToString)
 mapping.register('msiScriptName', 'msiScriptName', None, univention.admin.mapping.ListToString)
-mapping.register('msiScript', 'msiScript', None, univention.admin.mapping.ListToString)
+mapping.register('msiScript', 'msiScript', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('msiFileList', 'msiFileList')
 mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListToString)
 mapping.register('machineArchitecture', 'machineArchitecture')

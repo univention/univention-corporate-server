@@ -32,6 +32,7 @@
 
 import os
 import imp
+import base64
 
 import univention.s4connector.s4
 import univention.s4connector.s4.mapping
@@ -133,6 +134,18 @@ def get_sid_mapping():
 			single_value=True,
 			compare_function=univention.s4connector.s4.compare_sid_lists,
 		)
+
+
+def _map_s4_to_udm_base64(property_name):
+	def mapping(connector, key, obj):
+		return list(map(lambda x: base64.encodestring(x).rstrip('\n'), obj['attributes'][property_name]))
+	return mapping
+
+
+def _map_ldap_to_s4(property_name):
+	def mapping(connector, key, obj):
+		return obj['attributes'][property_name]
+	return mapping
 
 
 sync_mode_ou = configRegistry.get('connector/s4/mapping/ou/syncmode', configRegistry.get('connector/s4/mapping/syncmode'))
@@ -905,6 +918,7 @@ s4_mapping = {
 				ucs_attribute='ms-net-ieee-80211-GP-PolicyReserved',
 				ldap_attribute='ms-net-ieee-80211-GP-PolicyReserved',
 				con_attribute='ms-net-ieee-80211-GP-PolicyReserved',
+				mapping=(_map_ldap_to_s4('ms-net-ieee-80211-GP-PolicyReserved'), _map_s4_to_udm_base64('ms-net-ieee-80211-GP-PolicyReserved')),
 				single_value=True,
 			),
 			'ms-net-ieee-80211-GP-PolicyData': univention.s4connector.attribute(
@@ -948,6 +962,7 @@ s4_mapping = {
 				ucs_attribute='ms-net-ieee-8023-GP-PolicyReserved',
 				ldap_attribute='ms-net-ieee-8023-GP-PolicyReserved',
 				con_attribute='ms-net-ieee-8023-GP-PolicyReserved',
+				mapping=(_map_ldap_to_s4('ms-net-ieee-8023-GP-PolicyReserved'), _map_s4_to_udm_base64('ms-net-ieee-8023-GP-PolicyReserved')),
 				single_value=True,
 			),
 			'ms-net-ieee-8023-GP-PolicyData': univention.s4connector.attribute(
@@ -1003,6 +1018,7 @@ s4_mapping = {
 				ucs_attribute='msieee80211-Data',
 				ldap_attribute='msieee80211-Data',
 				con_attribute='msieee80211-Data',
+				mapping=(_map_ldap_to_s4('msieee80211-Data'), _map_s4_to_udm_base64('msieee80211-Data')),
 				single_value=True,
 			),
 		},
@@ -1090,6 +1106,7 @@ s4_mapping = {
 				ucs_attribute='ipsecData',
 				ldap_attribute='ipsecData',
 				con_attribute='ipsecData',
+				mapping=(_map_ldap_to_s4('ipsecData'), _map_s4_to_udm_base64('ipsecData')),
 				single_value=True,
 			),
 		},
@@ -1146,6 +1163,7 @@ s4_mapping = {
 				ucs_attribute='ipsecData',
 				ldap_attribute='ipsecData',
 				con_attribute='ipsecData',
+				mapping=(_map_ldap_to_s4('ipsecData'), _map_s4_to_udm_base64('ipsecData')),
 				single_value=True,
 			),
 		},
@@ -1202,6 +1220,7 @@ s4_mapping = {
 				ucs_attribute='ipsecData',
 				ldap_attribute='ipsecData',
 				con_attribute='ipsecData',
+				mapping=(_map_ldap_to_s4('ipsecData'), _map_s4_to_udm_base64('ipsecData')),
 				single_value=True,
 			),
 			'iPSECNegotiationPolicyType': univention.s4connector.attribute(
@@ -1270,6 +1289,7 @@ s4_mapping = {
 				ucs_attribute='ipsecData',
 				ldap_attribute='ipsecData',
 				con_attribute='ipsecData',
+				mapping=(_map_ldap_to_s4('ipsecData'), _map_s4_to_udm_base64('ipsecData')),
 				single_value=True,
 			),
 			'ipsecNegotiationPolicyReference': univention.s4connector.attribute(
@@ -1338,6 +1358,7 @@ s4_mapping = {
 				ucs_attribute='ipsecData',
 				ldap_attribute='ipsecData',
 				con_attribute='ipsecData',
+				mapping=(_map_ldap_to_s4('ipsecData'), _map_s4_to_udm_base64('ipsecData')),
 				single_value=True,
 			),
 			'ipsecNFAReference': univention.s4connector.attribute(
@@ -1399,6 +1420,7 @@ s4_mapping = {
 				ucs_attribute='categoryId',
 				ldap_attribute='categoryId',
 				con_attribute='categoryId',
+				mapping=(_map_ldap_to_s4('categoryId'), _map_s4_to_udm_base64('categoryId')),
 				single_value=True,
 			),
 		},
@@ -1528,6 +1550,7 @@ s4_mapping = {
 				ucs_attribute='upgradeProductCode',
 				ldap_attribute='upgradeProductCode',
 				con_attribute='upgradeProductCode',
+				mapping=(_map_ldap_to_s4('upgradeProductCode'), _map_s4_to_udm_base64('upgradeProductCode')),
 				single_value=False,
 			),
 			'setupCommand': univention.s4connector.attribute(
@@ -1540,6 +1563,7 @@ s4_mapping = {
 				ucs_attribute='productCode',
 				ldap_attribute='productCode',
 				con_attribute='productCode',
+				mapping=(_map_ldap_to_s4('productCode'), _map_s4_to_udm_base64('productCode')),
 				single_value=True,
 			),
 			'packageType': univention.s4connector.attribute(
@@ -1582,6 +1606,7 @@ s4_mapping = {
 				ucs_attribute='msiScript',
 				ldap_attribute='msiScript',
 				con_attribute='msiScript',
+				mapping=(_map_ldap_to_s4('msiScript'), _map_s4_to_udm_base64('msiScript')),
 				single_value=True,
 			),
 			'msiFileList': univention.s4connector.attribute(
@@ -1729,7 +1754,7 @@ if not configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 	s4_mapping.pop('msWMIFilter')
 if not configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False):
 	s4_mapping.pop('msPrintConnectionPolicy')
-if not configRegistry.is_true('connector/s4/mapping/msgwl', False):
+if not configRegistry.is_true('connector/s4/mapping/msgpwl', False):
 	s4_mapping.pop('ms/gpwl-wireless')
 	s4_mapping.pop('ms/gpwl-wired')
 	s4_mapping.pop('ms/gpwl-wireless-blob')

@@ -89,7 +89,7 @@ property_descriptions = {
 	'ipsecData': univention.admin.property(
 		short_description=_('IPsec Data'),
 		long_description='',
-		syntax=univention.admin.syntax.octetstring,
+		syntax=univention.admin.syntax.TextArea,
 	),
 }
 
@@ -102,6 +102,7 @@ layout = [
 			'ipsecName',
 			'ipsecID',
 			'ipsecDataType',
+			'ipsecData',
 		]),
 	]),
 ]
@@ -113,7 +114,7 @@ mapping.register('ipsecOwnersReference', 'ipsecOwnersReference')
 mapping.register('ipsecName', 'ipsecName', None, univention.admin.mapping.ListToString)
 mapping.register('ipsecID', 'ipsecID', None, univention.admin.mapping.ListToString)
 mapping.register('ipsecDataType', 'ipsecDataType', None, univention.admin.mapping.ListToString)
-mapping.register('ipsecData', 'ipsecData', None, univention.admin.mapping.ListToString)
+mapping.register('ipsecData', 'ipsecData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 
 
 class object(univention.admin.handlers.simpleLdap):
