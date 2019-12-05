@@ -212,7 +212,7 @@ class Session(object):
 	@classmethod
 	@contextmanager
 	def running_chrome(cls, name, base_url, screenshot_path):
-		with xserver(pathlib.Path(screenshot_path) / '{}.mkv'.format(name)):
+		with xserver(str(pathlib.Path(screenshot_path) / '{}.mkv'.format(name))):
 			obj = cls.chrome(name, base_url, screenshot_path)
 			with obj:
 				yield obj
@@ -422,12 +422,12 @@ else:
 			yield conn
 
 	@pytest.fixture(scope='session')
-	def selenium_base_url():
+	def selenium_base_url(hostname):
 		"""Base URL for selenium"""
 		ret = os.environ.get('UCS_TEST_SELENIUM_BASE_URL')
 		if ret is None:
 			logger.warning('$UCS_TEST_SELENIUM_BASE_URL not set')
-			ret = 'http://localhost'
+			ret = hostname
 			logger.warning('  using {}'.format(ret))
 		return ret
 
