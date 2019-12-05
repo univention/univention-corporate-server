@@ -18,8 +18,6 @@ def run_test_file(fname):
 	with tempfile.NamedTemporaryFile(suffix='.py') as tmpfile:
 		logger.info('Copying file to {}'.format(tmpfile.name))
 		shutil.copy2(fname, tmpfile.name)
-		if 'UCS_TEST_SESSION_NAME' not in os.environ:
-			os.environ['UCS_TEST_SESSION_NAME'] = os.path.basename(tmpfile.name)
 		with pip_modules(['pytest', 'selenium', 'xvfbwrapper', 'uritemplate']):
 			importlib.reload(sys.modules[__name__])
 			import pytest
@@ -215,7 +213,7 @@ class Session(object):
 
 	@classmethod
 	@contextmanager
-	def running_chrome(cls, name, base_url, screenshot_path):
+	def running_chrome(cls, base_url, screenshot_path):
 		with xserver() as xvfb:
 			obj = cls.chrome(xvfb.new_display, base_url, screenshot_path)
 			with obj:
@@ -448,6 +446,5 @@ else:
 	@pytest.fixture
 	def chrome(selenium_base_url, selenium_screenshot_path):
 		"""A running chrome instance, controllable by selenium"""
-		name = os.environ.get('UCS_TEST_SESSION_NAME') or 'test'
-		with Session.running_chrome(name, selenium_base_url, selenium_screenshot_path) as c:
+		with Session.running_chrome(selenium_base_url, selenium_screenshot_path) as c:
 			yield c
