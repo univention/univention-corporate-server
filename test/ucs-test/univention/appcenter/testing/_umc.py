@@ -318,7 +318,7 @@ class Response(object):
 		data = self.body
 		if self.get_header('Content-Type', '').startswith('application/json'):
 			try:
-				data = json.loads(data)
+				data = json.loads(data.decode('utf-8'))
 			except ValueError as exc:
 				raise ConnectionError('Malformed response data: %r' % (data,), reason=exc)
 		return data
