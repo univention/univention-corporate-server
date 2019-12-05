@@ -58,19 +58,13 @@ def pip_modules(modules):
 			subprocess.check_output(['pip3', 'uninstall', '--yes'] + modules)
 
 @contextmanager
-def xserver(capture_video=None):
+def xserver():
 	if os.environ.get('DISPLAY'):
 		yield
 	else:
 		from xvfbwrapper import Xvfb
 		with Xvfb(width=1920, height=1080) as xvfb:
-			time.sleep(2)
-			if capture_video:
-				pid = ffmpg_start(capture_video, xvfb.vdisplay_num)
-			time.sleep(2)
-			yield
-			if capture_video:
-				ffmpg_stop(pid)
+			yield xvfb
 		if 'DISPLAY' in os.environ:
 			# work around xvfb setting DISPLAY to :0 here
 			# so that a second xserver() would not go into this else
@@ -79,14 +73,14 @@ def xserver(capture_video=None):
 
 def ffmpg_start(capture_video, display):
 	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1920x1080', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-	return process.pid
+	return process
 
-def ffmpg_stop(pid):
-	subprocess.run(['kill', str(pid)])
+def ffmpg_stop(process):
+	process.kill()
 
 class Session(object):
-	def __init__(self, name, base_url, screenshot_path, driver):
-		self.name = name
+	def __init__(self, display_num, base_url, screenshot_path, driver):
+		self.display_num = display_num
 		self.base_url = base_url
 		self.screenshot_path = screenshot_path
 		self.driver = driver
@@ -95,13 +89,20 @@ class Session(object):
 		yield self
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		try:
-			self.save_screenshot()
-		finally:
-			self.driver.quit()
+		self.driver.quit()
 
 	def __del__(self):
 		self.driver.quit()
+
+	@contextmanager
+	def capture(self, name):
+		filename = self._new_filename(name, 'mkv')
+		process = ffmpg_start(filename, self.display_num)
+		try:
+			yield
+		finally:
+			ffmpg_stop(process)
+			self.save_screenshot(name)
 
 	def goto_portal(self):
 		self.get('/univention/portal')
@@ -200,27 +201,29 @@ class Session(object):
 		action = ActionChains(self.driver)
 		action.send_keys(keys).perform()
 
-	def save_screenshot(self, name=None):
-		name = name or self.name
+	def _new_filename(self, name, ext):
 		timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 		os.makedirs(self.screenshot_path, exist_ok=True)
-		filename = os.path.join(self.screenshot_path, '%s_%s.png' % (name, timestamp))
+		return os.path.join(self.screenshot_path, '%s_%s.%s' % (name, timestamp, ext))
+
+	def save_screenshot(self, name):
+		filename = self._new_filename(name, 'png')
 		logger.info('Saving screenshot %r', filename)
 		self.driver.save_screenshot(filename)
 
 	@classmethod
-	def chrome(cls, name, base_url, screenshot_path):
+	def chrome(cls, display_num, base_url, screenshot_path):
 		from selenium import webdriver
 		options = webdriver.ChromeOptions()
 		options.add_argument('--no-sandbox')  # chrome complains about being executed as root
 		driver = webdriver.Chrome(options=options)
-		return cls(name, base_url, screenshot_path, driver)
+		return cls(display_num, base_url, screenshot_path, driver)
 
 	@classmethod
 	@contextmanager
 	def running_chrome(cls, name, base_url, screenshot_path):
-		with xserver(str(pathlib.Path(screenshot_path) / '{}.mkv'.format(name))):
-			obj = cls.chrome(name, base_url, screenshot_path)
+		with xserver() as xvfb:
+			obj = cls.chrome(xvfb.vdisplay_num, base_url, screenshot_path)
 			with obj:
 				yield obj
 
