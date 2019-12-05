@@ -509,6 +509,8 @@ Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
  univention-appcenter-dev,
+ python3-pip,
+ ffmpeg,
  python-lxml,
  python-requests,
  python-pytest,

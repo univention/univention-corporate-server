@@ -11,6 +11,7 @@ import importlib
 import tempfile
 import shutil
 from http.client import HTTPConnection
+import pathlib
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,8 @@ def run_test_file(fname):
 	with tempfile.NamedTemporaryFile(suffix='.py') as tmpfile:
 		logger.info('Copying file to {}'.format(tmpfile.name))
 		shutil.copy2(fname, tmpfile.name)
+		if 'UCS_TEST_SESSION_NAME' not in os.environ:
+			os.environ['UCS_TEST_SESSION_NAME'] = os.path.basename(tmpfile.name)
 		with pip_modules(['pytest', 'selenium', 'xvfbwrapper', 'uritemplate']):
 			importlib.reload(sys.modules[__name__])
 			import pytest
@@ -33,7 +36,7 @@ def pip_modules(modules):
 	if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
 		yield
 	if subprocess.run(['which', 'pip3'], stdout=subprocess.DEVNULL).returncode != 0:
-		subprocess.check_call(['univention-install', '-y', 'python-pip3'], check=True)
+		raise RuntimeError('pip3 is required. Install python3-pip')
 	installed = subprocess.run(['pip3', 'list', '--format=columns'], stdout=subprocess.PIPE)
 	logger.info(modules)
 	for line in installed.stdout.splitlines()[2:]:
@@ -55,16 +58,28 @@ def pip_modules(modules):
 			subprocess.check_output(['pip3', 'uninstall', '--yes'] + modules)
 
 @contextmanager
-def xserver():
+def xserver(capture_video=None):
 	if os.environ.get('DISPLAY'):
 		yield
 	else:
 		from xvfbwrapper import Xvfb
-		with Xvfb(width=1280, height=720):
+		with Xvfb(width=1280, height=720) as xvfb:
+			if capture_video:
+				pid = ffmpg_start(capture_video, xvfb.vdisplay_num)
 			yield
+			if capture_video:
+				ffmpg_stop(pid)
+
+def ffmpg_start(capture_video, display):
+	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1280x720', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+	return process.pid
+
+def ffmpg_stop(pid):
+	subprocess.run(['kill', str(pid)])
 
 class Session(object):
-	def __init__(self, base_url, screenshot_path, driver):
+	def __init__(self, name, base_url, screenshot_path, driver):
+		self.name = name
 		self.base_url = base_url
 		self.screenshot_path = screenshot_path
 		self.driver = driver
@@ -74,7 +89,7 @@ class Session(object):
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		try:
-			self.save_screenshot('exit')
+			self.save_screenshot()
 		finally:
 			self.driver.quit()
 
@@ -178,7 +193,8 @@ class Session(object):
 		action = ActionChains(self.driver)
 		action.send_keys(keys).perform()
 
-	def save_screenshot(self, name):
+	def save_screenshot(self, name=None):
+		name = name or self.name
 		timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 		os.makedirs(self.screenshot_path, exist_ok=True)
 		filename = os.path.join(self.screenshot_path, '%s_%s.png' % (name, timestamp))
@@ -186,18 +202,18 @@ class Session(object):
 		self.driver.save_screenshot(filename)
 
 	@classmethod
-	def chrome(cls, base_url, screenshot_path):
+	def chrome(cls, name, base_url, screenshot_path):
 		from selenium import webdriver
 		options = webdriver.ChromeOptions()
 		options.add_argument('--no-sandbox')  # chrome complains about being executed as root
 		driver = webdriver.Chrome(options=options)
-		return cls(base_url, screenshot_path, driver)
+		return cls(name, base_url, screenshot_path, driver)
 
 	@classmethod
 	@contextmanager
-	def running_chrome(cls, base_url, screenshot_path):
-		with xserver():
-			obj = cls.chrome(base_url, screenshot_path)
+	def running_chrome(cls, name, base_url, screenshot_path):
+		with xserver(pathlib.Path(screenshot_path) / '{}.mkv'.format(name)):
+			obj = cls.chrome(name, base_url, screenshot_path)
 			with obj:
 				yield obj
 
@@ -428,5 +444,6 @@ else:
 	@pytest.fixture
 	def chrome(selenium_base_url, selenium_screenshot_path):
 		"""A running chrome instance, controllable by selenium"""
-		with Session.running_chrome(selenium_base_url, selenium_screenshot_path) as c:
+		name = os.environ.get('UCS_TEST_SESSION_NAME') or 'test'
+		with Session.running_chrome(name, selenium_base_url, selenium_screenshot_path) as c:
 			yield c
