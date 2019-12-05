@@ -1,3 +1,9 @@
+ucs-test (9.0.3-119) unstable; urgency=medium
+
+  * Bug #50589: Adjust to newer version of xvfbwrapper
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Dec 2019 17:19:55 +0100
+
 ucs-test (9.0.3-118) unstable; urgency=medium
 
   * Bug #50589: Capture video of selenium test
