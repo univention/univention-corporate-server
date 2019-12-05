@@ -18,6 +18,7 @@ Depends: ${python:Depends}, ${python3:Depends},
  univention-directory-manager-tools (>= 14.0.14-10),
  univention-management-console-server (>= 11.0.4-37),
  univention-directory-reports,
+ python-notifier,
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
 Description: UMC module for UCS Directory Manager

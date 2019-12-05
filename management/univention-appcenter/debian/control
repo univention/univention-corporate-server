@@ -27,6 +27,7 @@ Depends: univention-management-console-server (>= 11.0.4-37),
  univention-config,
  univention-updater,
  univention-management-console-module-lib,
+ python-notifier,
  ${misc:Depends},
  ${python:Depends},
 Replaces: univention-management-console-module-packages (<< 2.0.55-1)

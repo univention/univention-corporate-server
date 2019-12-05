@@ -15,6 +15,7 @@ Architecture: all
 Depends: ${python:Depends}, ${python3:Depends},
  univention-management-console-server (>= 11.0.4-37),
  python-univention-config-registry (>= 14.0.0-11),
+ python-notifier,
 Description: UMC module for system services
  This package contains the UMC module for the system services
  .

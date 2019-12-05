@@ -441,6 +441,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  curl,
  ucs-test-umc-module,
  python-pytest,
+ python-notifier,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for UMC
