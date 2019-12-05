@@ -20,7 +20,7 @@ if __name__ == '__main__':
 		searchResult = lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + pos.getDomain(), attr=['univentionDefaultGroup'])
 		if not searchResult or not searchResult[0][1]:
 			utils.fail('Test system is broken: univentionDefaultGroup value not found')
-		groupdn = searchResult[0][1]['univentionDefaultGroup'][0]
+		groupdn = searchResult[0][1]['univentionDefaultGroup'][0].decode('utf-8')
 
 		# lookup previous members for comparison
 		searchResult = lo.search(base=groupdn, scope='base', attr=['uniqueMember', 'memberUid'])
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 		userdn, uid = udm.create_user(primaryGroup=groupdn)
 
 		# and check if the object has been added to univentionDefaultGroup
-		uniqueMember.append(userdn)
-		memberUid.append(uid)
+		uniqueMember.append(userdn.encode('utf-8'))
+		memberUid.append(uid.encode('utf-8'))
 		utils.verify_ldap_object(groupdn, {'uniqueMember': uniqueMember})
 		utils.verify_ldap_object(groupdn, {'memberUid': memberUid})

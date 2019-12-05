@@ -16,8 +16,8 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		user = udm.create_user()[0]
 
-		with open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg') as jpeg:
+		with open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg', "rb") as jpeg:
 			jpeg_data = jpeg.read()
 
-		udm.modify_object('users/user', dn=user, jpegPhoto=base64.b64encode(jpeg_data))
+		udm.modify_object('users/user', dn=user, jpegPhoto=base64.b64encode(jpeg_data).decode('ascii'))
 		utils.verify_ldap_object(user, {'jpegPhoto': [jpeg_data]})

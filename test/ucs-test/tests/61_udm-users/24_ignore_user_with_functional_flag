@@ -29,7 +29,7 @@ if __name__ == '__main__':
 		user_dn = udm.create_user(check_for_drs_replication=False, wait_for=False)[0]
 		utils.verify_ldap_object(user_dn)
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-		if not user_dn.lower() in stdout.lower():
+		if not user_dn.lower().encode('UTF-8') in stdout.lower():
 			utils.fail('Cannot find user DN %s in output of "udm users/user list":\n%s' % (user_dn, stdout))
 
 		# perform a license check

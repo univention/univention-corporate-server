@@ -28,7 +28,7 @@ if __name__ == '__main__':
 		print('created user %r with dn=%r' % (username, dn))
 		lo = univention.admin.uldap.access(binddn=dn, bindpw=password)
 		assert dn in lo.lo.lo.whoami_s()
-		assert username == lo.get(dn)['uid'][0]
+		assert username == lo.get(dn)['uid'][0].decode('utf-8')
 		print('successfully did LDAP bind.')
 
 		client = Client(ucr['hostname'], username, password)

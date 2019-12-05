@@ -56,7 +56,7 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 			locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
 			subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 
-	krb_state = '254' if disabled_state == '1' or 'kerberos' in disabled_state else '126'
+	krb_state = b'254' if disabled_state == '1' or 'kerberos' in disabled_state else b'126'
 	smb_disabled = disabled_state == '1' or 'windows' in disabled_state
 	smb_locked = locked_state in ('1')
 	if transitions_log:
@@ -67,13 +67,13 @@ def modify_and_check(udm, dn, disabled_state, locked_state):
 	user = lo.get(dn)
 	if user['krb5KDCFlags'] != [krb_state]:
 		fail('krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags']))
-	if smb_disabled and 'D' not in user['sambaAcctFlags'][0]:
+	if smb_disabled and b'D' not in user['sambaAcctFlags'][0]:
 		fail('sambaAcctFlags: expected D in flags, found {!r}'.format(user['sambaAcctFlags']))
-	if (smb_locked and not smb_disabled) and 'L' not in user['sambaAcctFlags'][0]:
+	if (smb_locked and not smb_disabled) and b'L' not in user['sambaAcctFlags'][0]:
 		fail('sambaAcctFlags: expected L in flags, found {!r}'.format(user['sambaAcctFlags']))
-	if (smb_locked and smb_disabled) and 'L' in user['sambaAcctFlags'][0]:
+	if (smb_locked and smb_disabled) and b'L' in user['sambaAcctFlags'][0]:
 		fail('sambaAcctFlags: unexpected L in flags: {!r}'.format(user['sambaAcctFlags']))
-	if (disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != '1':
+	if (disabled_state == '1' or 'posix' in disabled_state) and user['shadowExpire'][0] != b'1':
 		fail('shadowExpire: expected {!r} found {!r}'.format(['1'], user['shadowExpire']))
 	print('*** OK.')
 	if transitions_log:
