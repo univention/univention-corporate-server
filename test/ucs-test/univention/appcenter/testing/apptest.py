@@ -71,6 +71,11 @@ def xserver(capture_video=None):
 			yield
 			if capture_video:
 				ffmpg_stop(pid)
+		if 'DISPLAY' in os.environ:
+			# work around xvfb setting DISPLAY to :0 here
+			# so that a second xserver() would not go into this else
+			# clause, causing problems as no xserver is running
+			del os.environ['DISPLAY']
 
 def ffmpg_start(capture_video, display):
 	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1920x1080', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
