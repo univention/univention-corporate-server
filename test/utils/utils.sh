@@ -29,6 +29,11 @@
 
 set -x
 
+is_ec2 () {
+	test "$(ucr get updater/identify)" = "UCS (EC2 Test)" && return 0
+	return 1
+}
+
 basic_setup () {
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
@@ -65,15 +70,6 @@ rotate_logfiles () {
 }
 
 jenkins_updates () {
-
-	# check extra component
-	if [ -n  "${EXTRA_COMPONENT}" ]; then
-		ucr set \
-			repository/online/component/${EXTRA_COMPONENT}=enabled \
-			repository/online/component/${EXTRA_COMPONENT}/server=updates-test.software-univention.de \
-			repository/online=true
-	fi
-
 	ucr set update43/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
@@ -140,8 +136,21 @@ upgrade_to_latest_test_errata () {
 
 upgrade_to_testing () {
 	ucr set update42/skip/updater/check=yes
-	ucr set repository/online/server=updates-test.software-univention.de
+	set_repository_to_testing
 	upgrade_to_latest "$@"
+}
+
+set_repository_to_testing () {
+	if is_ec2; then
+		ucr set repository/online/server=updates-test.software-univention.de
+	else
+		ucr set repository/online/server=updates-test.knut.univention.de
+	fi
+}
+
+check_repository_to_testing () {
+	local testing=${1:?missing testing switch}
+	test "$testing" = "testing" && set_repository_to_testing
 }
 
 upgrade_to_latest () {
@@ -212,7 +221,9 @@ run_setup_join_on_non_master () {
 
 wait_until_update_server_is_resolvable () {
 	local i=0
-	for server in updates.software-univention.de updates-test.software-univention.de; do
+	local servers=""
+	is_ec2 && servers="updates.software-univention.de updates-test.software-univention.de" || server="updates.knut.univention.de updates-test.knut.univention.de"
+	for server in $servers; do
 		while [ $i -lt 900 ]
 		do
 			host $server >/dev/null && break
