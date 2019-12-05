@@ -64,11 +64,6 @@ def xserver():
 		from xvfbwrapper import Xvfb
 		with Xvfb(width=1920, height=1080) as xvfb:
 			yield xvfb
-		if 'DISPLAY' in os.environ:
-			# work around xvfb setting DISPLAY to :0 here
-			# so that a second xserver() would not go into this else
-			# clause, causing problems as no xserver is running
-			del os.environ['DISPLAY']
 
 def ffmpg_start(capture_video, display):
 	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1920x1080', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -222,7 +217,7 @@ class Session(object):
 	@contextmanager
 	def running_chrome(cls, name, base_url, screenshot_path):
 		with xserver() as xvfb:
-			obj = cls.chrome(xvfb.vdisplay_num, base_url, screenshot_path)
+			obj = cls.chrome(xvfb.new_display, base_url, screenshot_path)
 			with obj:
 				yield obj
 
