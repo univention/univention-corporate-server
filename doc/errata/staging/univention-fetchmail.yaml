@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-fetchmail
-fix: 12.0.4-6A~4.4.0.201912061605
+fix: 12.0.4-7A~4.4.0.201912061609
 desc: |-
   This update addresses the following issue(s):
   * The schema file and the ACL file for fechmail are now properly registered
