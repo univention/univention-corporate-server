@@ -150,7 +150,10 @@ set_repository_to_testing () {
 
 check_repository_to_testing () {
 	local testing=${1:?missing testing switch}
-	test "$testing" = "testing" && set_repository_to_testing
+	if [ "$testing" = "testing" ]; then
+		set_repository_to_testing
+	fi
+	return 0
 }
 
 upgrade_to_latest () {
