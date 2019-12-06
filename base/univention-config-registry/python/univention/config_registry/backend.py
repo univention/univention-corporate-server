@@ -516,10 +516,12 @@ class _ConfigRegistry(dict):
 			import_failed = True
 		else:
 			import_failed = reg_file.readline() == '' and reg_file.readline() == ''
+			if import_failed:
+				reg_file.close()
 
 		if import_failed:
 			try:
-				reg_file = open(self.backup_file, 'r')
+				reg_file = io.open(self.backup_file, 'r')
 			except EnvironmentError:
 				return
 
