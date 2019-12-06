@@ -1,3 +1,9 @@
+univention-postgresql (11.0.1-3) unstable; urgency=medium
+
+  * Bug #51112: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 16 Apr 2020 12:54:34 +0200
+
 univention-postgresql (11.0.1-2) unstable; urgency=medium
 
   * Bug #42241: fix univention service definition
