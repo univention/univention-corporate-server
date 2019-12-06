@@ -379,7 +379,7 @@ class TestConfigRegistry2(unittest.TestCase):
 		if not pid1:  # child 1
 			os.close(read_end)
 			ucr.lock()
-			os.write(write_end, '1')
+			os.write(write_end, b'1')
 			time.sleep(delay)
 			ucr.unlock()
 			os._exit(0)
