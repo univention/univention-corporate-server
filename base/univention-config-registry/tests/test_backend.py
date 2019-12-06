@@ -225,6 +225,7 @@ class TestConfigRegistry(unittest.TestCase):
 			sorted([('foo', (ConfigRegistry.FORCED, 'FORCED')), ('bar', (ConfigRegistry.FORCED, 'FORCED')), ('baz', (ConfigRegistry.NORMAL, 'NORMAL'))])
 		)
 
+	@unittest.skipIf(sys.version_info >= (3,), "removed in python3")
 	def test_iteritems(self):
 		"""Test merged items."""
 		ucr = self._setup_layers()
@@ -241,6 +242,7 @@ class TestConfigRegistry(unittest.TestCase):
 			sorted(['foo', 'bar', 'baz'])
 		)
 
+	@unittest.skipIf(sys.version_info >= (3,), "removed in python3")
 	def test_iterkeys(self):
 		"""Test merged keys."""
 		ucr = self._setup_layers()
@@ -257,6 +259,7 @@ class TestConfigRegistry(unittest.TestCase):
 			sorted(['FORCED', 'FORCED', 'NORMAL'])
 		)
 
+	@unittest.skipIf(sys.version_info >= (3,), "removed in python3")
 	def test_itervalues(self):
 		"""Test merged items."""
 		ucr = self._setup_layers()
