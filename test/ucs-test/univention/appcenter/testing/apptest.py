@@ -57,14 +57,15 @@ def pip_modules(modules):
 @contextmanager
 def xserver():
 	if os.environ.get('DISPLAY'):
-		yield
+		display = int(os.environ['DISPLAY'].split(':')[1])
+		yield display
 	else:
 		from xvfbwrapper import Xvfb
 		with Xvfb(width=1920, height=1080) as xvfb:
-			yield xvfb
+			yield xvfb.new_display
 
 def ffmpg_start(capture_video, display):
-	process = subprocess.Popen(['ffmpeg', '-y', '-f', 'x11grab', '-video_size', '1920x1080', '-i', ':{}'.format(display), capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+	process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', ':{}'.format(display), '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 	return process.pid
 
 def ffmpg_stop(pid):
@@ -214,8 +215,9 @@ class Session(object):
 	@classmethod
 	@contextmanager
 	def running_chrome(cls, base_url, screenshot_path):
-		with xserver() as xvfb:
-			obj = cls.chrome(xvfb.new_display, base_url, screenshot_path)
+		with xserver() as display:
+			obj = cls.chrome(display, base_url, screenshot_path)
+			obj.driver.maximize_window()
 			with obj:
 				yield obj
 
