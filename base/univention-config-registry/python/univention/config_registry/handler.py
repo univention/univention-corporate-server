@@ -63,6 +63,7 @@ __all__ = ['ConfigHandlers']
 VARIABLE_PATTERN = re.compile('@%@([^@]+)@%@')
 VARIABLE_TOKEN = re.compile('@%@')
 EXECUTE_TOKEN = re.compile('@!@')
+EXECUTE_PY3_TOKEN = re.compile('@!3@')
 WARNING_PATTERN = re.compile('(UCRWARNING|BCWARNING|UCRWARNING_ASCII)=(.+)')
 
 INFO_DIR = '/etc/univention/templates/info'
@@ -125,7 +126,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			end = next(i)
 
 			proc = subprocess.Popen(
-				(sys.executable,),
+				'/usr/bin/python2.7',
 				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 				close_fds=True, universal_newlines=six.PY3)
 			value = proc.communicate('''\
@@ -135,6 +136,28 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 # for compatibility
 baseConfig = configRegistry
+%s
+''' % template[start.end():end.start()])[0]
+			template = template[:start.start()] + value + template[end.end():]
+
+		except StopIteration:
+			break
+
+	while True:
+		i = EXECUTE_PY3_TOKEN.finditer(template)
+		try:
+			start = next(i)
+			end = next(i)
+
+			proc = subprocess.Popen(
+				'/usr/bin/python3',
+				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+				close_fds=True, universal_newlines=six.PY3)
+			value = proc.communicate('''\
+# -*- coding: utf-8 -*-
+import univention.config_registry
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 %s
 ''' % template[start.end():end.start()])[0]
 			template = template[:start.start()] + value + template[end.end():]
