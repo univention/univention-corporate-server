@@ -21,17 +21,17 @@ $config = array (
 saml20_enabled = 'false'
 if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
 	saml20_enabled = 'true'
-print "	'enable.saml20-idp'	=> %s," % saml20_enabled
+print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 
-print "	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin')
-print "	'debug'		=> %s," % configRegistry.get('saml/idp/log/debug/enabled', 'FALSE')
-print "	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR')
-print "	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2]
-print "	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default')
-print "	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator')
-print "	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname')))
-print "	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', ''))
-print "	'domainname'	=> '%s'," % configRegistry.get('domainname', '')
+print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
+print("	'debug'		=> %s," % configRegistry.get('saml/idp/log/debug/enabled', 'FALSE'))
+print("	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
+print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
+print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
+print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
+print("	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))))
+print("	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', '')))
+print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
 @!@
 	/**
 	 * Setup the following parameters to match the directory of your installation.
@@ -75,7 +75,7 @@ print "	'domainname'	=> '%s'," % configRegistry.get('domainname', '')
 	//'debug' => FALSE,
 
 @!@
-print "	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-errors') else 'FALSE')
+print("	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-errors') else 'FALSE'))
 @!@
 	/**
 	 * Custom error show function called from SimpleSAML_Error_Error::show.
@@ -232,7 +232,7 @@ print "	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('sam
 	 */
 	//'session.duration'		=>  8 * (60*60), // 8 hours.
 @!@
-print "	'session.duration'            =>	%s," % configRegistry.get('saml/idp/session-duration', '43200')
+print("	'session.duration'            =>	%s," % configRegistry.get('saml/idp/session-duration', '43200'))
 @!@
 
 	/*
@@ -572,7 +572,7 @@ print "	'session.duration'            =>	%s," % configRegistry.get('saml/idp/ses
 	 * (This option replaces the old 'session.handler'-option.)
 	 */
 @!@
-print "\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', 'memcache'),)
+print("\t'store.type' => '%s'," % (configRegistry.get('saml/idp/session-type', 'memcache'),))
 @!@
 
 	/*
@@ -655,11 +655,11 @@ fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname
 for key, server in configRegistry.items():
 	if not key.startswith('ucs/server/saml-idp-server/') or server == fqdn:
 		continue
-	print '''
+	print('''
 		array(
 			array('hostname' => 'unix:///var/run/univention-saml/%s.socket'),
 		),
-''' % (server,)
+''' % (server,))
 @!@
 	),
 

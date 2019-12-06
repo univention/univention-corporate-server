@@ -55,18 +55,18 @@ config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\''
 
 attributes = "%s, %s" % (config_attributes, expiry_attributes)
 
-print "	'hostname'		=> '%s'," % hostname
-print "	'enable_tls'		=> %s," % configRegistry.get('saml/idp/ldap/enable_tls', 'true')
-print "	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE')
-print "	'attributes'		=> array(%s)," % attributes
-print "	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null')
-print "	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\'')
+print("	'hostname'		=> '%s'," % hostname)
+print("	'enable_tls'		=> %s," % configRegistry.get('saml/idp/ldap/enable_tls', 'true'))
+print("	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE'))
+print("	'attributes'		=> array(%s)," % attributes)
+print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
+print("	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\''))
 
 ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
 if configRegistry.get('saml/idp/ldap/user'):
 	ldap_user = configRegistry.get('saml/idp/ldap/user')
 
-print "	'search.username'	=> '%s'," % ldap_user
+print("	'search.username'	=> '%s'," % ldap_user)
 
 password = ''
 try:
@@ -75,7 +75,7 @@ except (IOError, OSError):
 	import sys
 	print >> sys.stderr, '/etc/idp-ldap-user.secret could not be read!'
 
-print "	'search.password'	=> '%s'," % password
+print("	'search.password'	=> '%s'," % password)
 @!@
 
 
