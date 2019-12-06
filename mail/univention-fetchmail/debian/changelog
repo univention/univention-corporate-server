@@ -1,3 +1,9 @@
+univention-fetchmail (12.0.4-6) unstable; urgency=medium
+
+  * Bug #50607: Increase joinscript version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 06 Dec 2019 16:04:15 +0100
+
 univention-fetchmail (12.0.4-5) unstable; urgency=medium
 
   * Bug #50607: Cleanup UCR definitions (3)
