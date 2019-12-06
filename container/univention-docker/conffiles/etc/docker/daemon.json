@@ -6,9 +6,9 @@
 	"log-driver": "@%@docker/daemon/default/opts/log-driver@%@",
 @!@
 if configRegistry.is_true('docker/daemon/default/parameter/live-restore'):
-	print '\t"live-restore": true,'
+	print('\t"live-restore": true,')
 else:
-	print '\t"live-restore": false,'
+	print('\t"live-restore": false,')
 @!@
 	"bip": "@%@docker/daemon/default/opts/bip@%@"
 }

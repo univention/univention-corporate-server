@@ -22,16 +22,16 @@ for var in configRegistry:
 		if configRegistry.is_true(var):
 			opt = var.split('/')[-1]
 			docker_opts += '--%s ' % (opt)
-print 'DOCKER_OPTS="%s"' % docker_opts
+print('DOCKER_OPTS="%s"' % docker_opts)
 @!@
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
 @!@
 pr = configRegistry.get("proxy/http")
 if pr:
-	print 'export http_proxy="%s"' % pr
+	print('export http_proxy="%s"' % pr)
 else:
-	print '#export http_proxy="http://127.0.0.1:3128/" set UCR variable proxy/http to change this'
+	print('#export http_proxy="http://127.0.0.1:3128/" set UCR variable proxy/http to change this')
 @!@
 # This is also a handy place to tweak where Docker's temporary files go.
 #export TMPDIR="/mnt/bigdrive/docker-tmp"

@@ -2,7 +2,7 @@
 
 @!@
 if configRegistry.is_true('aptconf/dockerclean'):
-	print '''
+	print('''
 # Since for most Docker users, package installs happen in "docker build" steps,
 # they essentially become individual layers due to the way Docker handles
 # layering, especially using CoW filesystems.  What this means for us is that
@@ -23,5 +23,5 @@ Dir::Cache::srcpkgcache "";
 
 # Note that we do realize this isn't the ideal way to do this, and are always
 # open to better suggestions (https://github.com/docker/docker/issues).
-'''
+''')
 @!@
