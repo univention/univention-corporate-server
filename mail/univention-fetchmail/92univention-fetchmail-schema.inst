@@ -35,14 +35,15 @@
 VERSION=3
 
 . /usr/share/univention-lib/base.sh
+. /usr/share/univention-lib/ldap.sh
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
 eval "$(univention-config-registry shell)"
 
 ucs_registerLDAPExtension "$@" \
-	schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
-	acl /usr/share/univention-fetchmail-schema/58univention-fetchmail_acl-settings
+	--schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
+	--acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl
 
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
