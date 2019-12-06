@@ -173,7 +173,7 @@ def do_package(package):
 	f_prerm.write('# End automatically added section\n')
 	f_prerm.close()
 
-	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
+	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 14.0.0-12-python3-5)");' % package)
 
 
 def main():
