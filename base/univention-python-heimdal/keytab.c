@@ -82,13 +82,6 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 	if (self == NULL)
 		return NULL;
 
-	if ((self->keytab = malloc(sizeof(krb5_keytab))) == NULL) {
-		free(self->context);
-		Py_DECREF(self);
-		PyErr_NoMemory();
-		return NULL;
-	}
-
 	Py_INCREF(context);
 	self->context = context;
 
@@ -102,10 +95,9 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 		keytab_string = keytab_buf;
 	}
 
-	err = krb5_kt_resolve(self->context->context, keytab_string, self->keytab);
+	err = krb5_kt_resolve(self->context->context, keytab_string, &self->keytab);
 	if (err) {
 		krb5_warn(self->context->context, err, "resolving keytab %s", keytab_string);
-		free(self->keytab);
 		Py_DECREF(self);
 		return NULL;
 	}
@@ -115,10 +107,7 @@ krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 
 static void keytab_dealloc(krb5KeytabObject *self)
 {
-	if (self->keytab) {
-		krb5_kt_close(self->context->context, *self->keytab);
-		free(self->keytab);
-	}
+	krb5_kt_close(self->context->context, self->keytab);
 	Py_DECREF(self->context);
 	Py_TYPE(self)->tp_free(self);
 }
@@ -181,7 +170,7 @@ static PyObject *keytab_add(krb5KeytabObject *self, PyObject *args)
 
 	entry.vno = kvno;
 	entry.timestamp = time (NULL);
-	err = krb5_kt_add_entry(self->context->context, &self->keytab, &entry);
+	err = krb5_kt_add_entry(self->context->context, self->keytab, &entry);
 	if(err) {
 		krb5_exception(self->context->context, err, "add");
 		goto out;
@@ -200,18 +189,18 @@ static PyObject *keytab_list(krb5KeytabObject *self)
 	krb5_kt_cursor cursor;
 	PyObject *list = NULL;
 
-	err = krb5_kt_start_seq_get(self->context->context, *self->keytab, &cursor);
+	err = krb5_kt_start_seq_get(self->context->context, self->keytab, &cursor);
 	if(err) {
 		krb5_exception(self->context->context, err, "krb5_kt_start_seq_get");
 		return NULL;
 	}
 
 	if ((list = PyList_New(0)) == NULL) {
-		krb5_kt_end_seq_get(self->context->context, *self->keytab, &cursor);
+		krb5_kt_end_seq_get(self->context->context, self->keytab, &cursor);
 		return PyErr_NoMemory();
 	}
 
-	while((err = krb5_kt_next_entry(self->context->context, *self->keytab, &entry, &cursor)) == 0){
+	while((err = krb5_kt_next_entry(self->context->context, self->keytab, &entry, &cursor)) == 0){
 		char *etype, *principal;
 		PyObject *tuple;
 
@@ -254,7 +243,7 @@ static PyObject *keytab_list(krb5KeytabObject *self)
 		PyList_Append(list, tuple);
 		krb5_kt_free_entry(self->context->context, &entry);
 	}
-	krb5_kt_end_seq_get(self->context->context, *self->keytab, &cursor);
+	krb5_kt_end_seq_get(self->context->context, self->keytab, &cursor);
 
 	return list;
 }
@@ -302,7 +291,7 @@ static PyObject *keytab_remove(krb5KeytabObject *self, PyObject *args)
 	entry.principal = principal;
 	entry.keyblock.keytype = enctype;
 	entry.vno = kvno;
-	err = krb5_kt_remove_entry(self->context->context, *self->keytab, &entry);
+	err = krb5_kt_remove_entry(self->context->context, self->keytab, &entry);
 
 	if(err) {
 		krb5_exception(self->context->context, err);
