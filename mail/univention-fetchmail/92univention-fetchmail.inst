@@ -40,11 +40,6 @@ joinscript_init
 
 ucs_addServiceToLocalhost "Fetchmail" "$@"
 
-ucs_registerLDAPExtension "$@" \
-	schema /usr/share/univention-fetchmail/univention-fetchmail.schema \
-	acl /usr/share/univention-fetchmail/58univention-fetchmail_acl-settings
-
-
 joinscript_save_current_version
 
 exit 0
