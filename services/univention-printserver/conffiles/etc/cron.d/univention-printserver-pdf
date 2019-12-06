@@ -12,5 +12,5 @@ DISABLED = ''
 if not configRegistry.is_true('cups/cups-pdf/cleanup/enabled', False) or not os.path.exists(CUPSPDF_DIR):
 	DISABLED = '# '
 
-print '%s%s root find %s -type f -name "*.pdf" -mtime +%s -delete' % (DISABLED, INTERVAL, CUPSPDF_DIR, KEEP)
+print('%s%s root find %s -type f -name "*.pdf" -mtime +%s -delete' % (DISABLED, INTERVAL, CUPSPDF_DIR, KEEP))
 @!@

@@ -9,6 +9,6 @@ import os
 path = "/etc/cups/cupsd.local.conf"
 if configRegistry.is_true("cups/include/local", False) and os.path.isfile(path):
 	with open(path) as fd:
-		print fd.read()
+		print(fd.read())
 @!@
 

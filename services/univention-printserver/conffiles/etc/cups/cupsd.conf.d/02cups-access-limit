@@ -34,7 +34,7 @@ if configRegistry.is_true('cups/access/limit', True):
 						policies[policy]['limits'][counter]['ops'] = configRegistry[key]
 			# cups/policy/default/JobPrivateAccess=default
 			else:
-				if not 'settings' in policies[policy]:
+				if 'settings' not in policies[policy]:
 					policies[policy]['settings'] = dict()
 				policies[policy]['settings'][keys[3]] = configRegistry[key]
 
@@ -48,30 +48,30 @@ if configRegistry.is_true('cups/access/limit', True):
 
 	for policy in policies:
 		all = False
-		print '<Policy %s>' % policy
+		print('<Policy %s>' % policy)
 		if 'settings' in policies[policy]:
 			for setting in policies[policy]['settings']:
-				print '\t%s %s' % (setting, policies[policy]['settings'][setting])
+				print('\t%s %s' % (setting, policies[policy]['settings'][setting]))
 		if 'limits' in policies[policy]:
 			for counter in sorted(policies[policy]['limits'].keys()):
 				if 'ops' in policies[policy]['limits'][counter]:
-					print
+					print('')
 					if 'All' in policies[policy]['limits'][counter]['ops'].split():
 						all = True
-					print '\t<Limit %s>' % policies[policy]['limits'][counter]['ops']
+					print('\t<Limit %s>' % policies[policy]['limits'][counter]['ops'])
 					del policies[policy]['limits'][counter]['ops']
 					for mode in policies[policy]['limits'][counter]:
 						for value in policies[policy]['limits'][counter][mode].split(';'):
-							print '\t\t%s %s' % (mode, value)
+							print('\t\t%s %s' % (mode, value))
 					if configRegistry.get('cups/printmode/hosts/none', None):
-						print '\t\tDeny from %s' % configRegistry.get('cups/printmode/hosts/none')
-					print '\t</Limit>'
+						print('\t\tDeny from %s' % configRegistry.get('cups/printmode/hosts/none'))
+					print('\t</Limit>')
 		if not all:
-			print
-			print '\t<Limit All>'
-			print '\t\tOrder deny,allow'
+			print('')
+			print('\t<Limit All>')
+			print('\t\tOrder deny,allow')
 			if configRegistry.get('cups/printmode/hosts/none', None):
-				print '\t\tDeny from %s' % configRegistry.get('cups/printmode/hosts/none')
-			print '\t</Limit>'
-		print '</Policy>'
+				print('\t\tDeny from %s' % configRegistry.get('cups/printmode/hosts/none'))
+			print('\t</Limit>')
+		print('</Policy>')
 @!@
