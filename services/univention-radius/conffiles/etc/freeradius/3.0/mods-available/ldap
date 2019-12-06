@@ -24,7 +24,7 @@ ldap {
 	#  Port to connect on, defaults to 389, will be ignored for LDAP URIs.
 #	port = 389
 @!@
-print '\tport = "%s"' % (configRegistry.get('ldap/server/port', '7389'), )
+print('\tport = "%s"' % (configRegistry.get('ldap/server/port', '7389'), ))
 @!@
 
 	#  Administrator account for searching and possibly modifying.
@@ -33,8 +33,8 @@ print '\tport = "%s"' % (configRegistry.get('ldap/server/port', '7389'), )
 	identity = "@%@ldap/hostdn@%@"
 #	password = mypass
 @!@
-credfile=open('/etc/machine.secret', 'r')
-print("\tpassword = \"%s\"" % credfile.readline().rstrip("\n"))
+with open('/etc/machine.secret', 'r') as credfile:
+	print("\tpassword = \"%s\"" % credfile.readline().rstrip("\n"))
 @!@
 
 	#  Unless overridden in another section, the dn from which all
@@ -137,13 +137,13 @@ print("\tpassword = \"%s\"" % credfile.readline().rstrip("\n"))
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-	print 'control:LM-Password\t\t:=\tsambaLMPassword'
-	print 'control:NT-Password\t\t:=\tsambaNTPassword'
+	print('control:LM-Password\t\t:=\tsambaLMPassword')
+	print('control:NT-Password\t\t:=\tsambaNTPassword')
 else:
-	print 'control:LM-Password\t\t:=\tlmPassword'
-	print 'control:NT-Password\t\t:=\tntPassword'
-	print 'control:LM-Password\t\t:=\tsambaLmPassword'
-	print 'control:NT-Password\t\t:=\tsambaNtPassword'
+	print('control:LM-Password\t\t:=\tlmPassword')
+	print('control:NT-Password\t\t:=\tntPassword')
+	print('control:LM-Password\t\t:=\tsambaLmPassword')
+	print('control:NT-Password\t\t:=\tsambaNtPassword')
 @!@
 	}
 
@@ -188,7 +188,7 @@ if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
 	filter = 'mschap:User-Name'
 else:
 	filter = 'Stripped-User-Name'
-print '\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter
+print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
 @!@
 
 		#  SASL parameters to use for user binds
@@ -521,7 +521,7 @@ print '\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter
 		# using ldaps (port 636) connections
 #		start_tls = yes
 @!@
-print '\t\tstart_tls = %s' % configRegistry.get('freeradius/conf/starttls', 'no')
+print('\t\tstart_tls = %s' % configRegistry.get('freeradius/conf/starttls', 'no'))
 @!@
 
 #		ca_file	= ${certdir}/cacert.pem

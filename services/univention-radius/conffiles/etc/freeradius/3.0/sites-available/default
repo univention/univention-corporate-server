@@ -106,7 +106,7 @@ listen {
 	#	integer port number (1812)
 	#	0 means "use /etc/services for the proper port"
 @!@
-print '\tport = %s' % (configRegistry.get('freeradius/conf/port', '0'), )
+print('\tport = %s' % (configRegistry.get('freeradius/conf/port', '0'), ))
 @!@
 
 	#  Some systems support binding to an interface, in addition
@@ -178,7 +178,7 @@ listen {
 	ipaddr = *
 #	ipv6addr = ::
 @!@
-print '\tport = %s' % (configRegistry.get('freeradius/conf/accountingport', '0'), )
+print('\tport = %s' % (configRegistry.get('freeradius/conf/accountingport', '0'), ))
 @!@
 	type = acct
 #	interface = eth0
@@ -313,9 +313,9 @@ authorize {
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print '\t\tchap'
+       print('\t\tchap')
 else:
-       print '#\tchap'
+       print('#\tchap')
 @!@
 
 	#
@@ -328,9 +328,9 @@ else:
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print '\tmschap'
+       print('\tmschap')
 else:
-       print '#\tmschap'
+       print('#\tmschap')
 @!@
 
 	#
@@ -363,7 +363,7 @@ else:
 #	suffix
 #	ntdomain
 @!@
-print '%s' % configRegistry.get('freeradius/conf/realm', 'suffix')
+print('%s' % configRegistry.get('freeradius/conf/realm', 'suffix'))
 @!@
 
 	#
@@ -398,7 +398,7 @@ print '%s' % configRegistry.get('freeradius/conf/realm', 'suffix')
 	#  Read the 'users' file.  In v3, this is located in
 	#  raddb/mods-config/files/authorize
 @!@
-print '%s' % configRegistry.get('freeradius/conf/users', 'files')
+print('%s' % configRegistry.get('freeradius/conf/users', 'files'))
 @!@
 
 	#
@@ -495,13 +495,13 @@ authenticate {
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print '\tAuth-Type CHAP {'
-       print '\t\tchap'
-       print '\t}'
+       print('\tAuth-Type CHAP {')
+       print('\t\tchap')
+       print('\t}')
 else:
-       print '#      Auth-Type CHAP {'
-       print '#\tchap'
-       print '#      }'
+       print('#      Auth-Type CHAP {')
+       print('#\tchap')
+       print('#      }')
 @!@
 
 	#
@@ -510,13 +510,13 @@ else:
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print '\tAuth-Type MS-CHAP {'
-       print '\t\tmschap'
-       print '\t}'
+       print('\tAuth-Type MS-CHAP {')
+       print('\t\tmschap')
+       print('\t}')
 else:
-       print '#      Auth-Type MS-CHAP {'
-       print '#\tmschap'
-       print '#      }'
+       print('#      Auth-Type MS-CHAP {')
+       print('#\tmschap')
+       print('#      }')
 @!@
 
 	#
@@ -619,14 +619,14 @@ preacct {
 #	suffix
 #	ntdomain
 @!@
-print '%s' % configRegistry.get('freeradius/conf/realm', 'suffix')
+print('%s' % configRegistry.get('freeradius/conf/realm', 'suffix'))
 @!@
 
 	#
 	#  Read the 'acct_users' file
 #	files
 @!@
-print '%s' % configRegistry.get('freeradius/conf/users', 'files')
+print('%s' % configRegistry.get('freeradius/conf/users', 'files'))
 @!@
 }
 

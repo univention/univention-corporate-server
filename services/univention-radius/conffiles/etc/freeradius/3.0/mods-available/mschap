@@ -19,7 +19,7 @@ mschap {
 	#
 #	use_mppe = no
 @!@
-print '\t\tuse_mppe = %s' % configRegistry.get('freeradius/conf/auth-type/mschap/mppe', 'yes')
+print('\t\tuse_mppe = %s' % configRegistry.get('freeradius/conf/auth-type/mschap/mppe', 'yes'))
 @!@
 
 	# if mppe is enabled require_encryption makes
@@ -27,7 +27,7 @@ print '\t\tuse_mppe = %s' % configRegistry.get('freeradius/conf/auth-type/mschap
 	#
 #	require_encryption = yes
 @!@
-print '\t\trequire_encryption = %s' % configRegistry.get('freeradius/conf/auth-type/mschap/requireencryption', 'yes')
+print('\t\trequire_encryption = %s' % configRegistry.get('freeradius/conf/auth-type/mschap/requireencryption', 'yes'))
 @!@
 
 	# require_strong always requires 128 bit key
@@ -35,7 +35,7 @@ print '\t\trequire_encryption = %s' % configRegistry.get('freeradius/conf/auth-t
 	#
 #	require_strong = yes
 @!@
-print '\t\trequire_strong = %s' % configRegistry.get('freeradius/conf/auth-type/mschap/strongencryption', 'yes')
+print('\t\trequire_strong = %s' % configRegistry.get('freeradius/conf/auth-type/mschap/strongencryption', 'yes'))
 @!@
 
 	# The module can perform authentication itself, OR

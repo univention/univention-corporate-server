@@ -31,7 +31,7 @@ auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 eap_type = 'md5'
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
 	eap_type = 'peap'
-print '\t\tdefault_eap_type = %s' % eap_type
+print('\t\tdefault_eap_type = %s' % eap_type)
 @!@
 
 	#  A list is maintained to correlate EAP-Response
@@ -183,8 +183,8 @@ print '\t\tdefault_eap_type = %s' % eap_type
 import os
 secret_file = configRegistry.get("freeradius/conf/private/key/secret/file", False)
 if secret_file and os.path.isfile(secret_file):
-	fh = open(secret_file, 'r')
-	print("\t\tprivate_key_password = \"%s\"" % fh.readline().rstrip("\n"))
+	with open(secret_file, 'r') as fh:
+		print("\t\tprivate_key_password = \"%s\"" % fh.readline().rstrip("\n"))
 else:
 	print("\t\t#private_key_password = liquid")
 @!@
@@ -598,11 +598,11 @@ else:
 @!@
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-	print '\t\t#ttls {'
+	print('\t\t#ttls {')
 elif configRegistry.is_false('freeradius/conf/auth-type/ttls', False):
-	print '\t\t#ttls {'
+	print('\t\t#ttls {')
 else:
-	print '\t\tttls {'
+	print('\t\tttls {')
 @!@
 		#  Which tls-config section the TLS negotiation parameters
 		#  are in - see EAP-TLS above for an explanation.
@@ -695,11 +695,11 @@ else:
 @!@
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-	print '\t\t#}'
+	print('\t\t#}')
 elif configRegistry.is_false('freeradius/conf/auth-type/ttls', False):
-	print '\t\t#}'
+	print('\t\t#}')
 else:
-	print '\t\t}'
+	print('\t\t}')
 @!@
 
 
@@ -749,9 +749,9 @@ else:
 @!@
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-	print '\t\tpeap {'
+	print('\t\tpeap {')
 else:
-	print '\t\t# peap {'
+	print('\t\t# peap {')
 @!@
 		#  Which tls-config section the TLS negotiation parameters
 		#  are in - see EAP-TLS above for an explanation.
@@ -774,9 +774,9 @@ else:
 @!@
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-	print '\t\t\tdefault_eap_type = mschapv2'
+	print('\t\t\tdefault_eap_type = mschapv2')
 else:
-	print '\t\t\t# default_eap_type = mschapv2'
+	print('\t\t\t# default_eap_type = mschapv2')
 @!@
 
 		#  The PEAP module also has these configuration
@@ -841,9 +841,9 @@ else:
 @!@
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-	print '\t\t}'
+	print('\t\t}')
 else:
-	print '\t\t# }'
+	print('\t\t# }')
 @!@
 
 	#

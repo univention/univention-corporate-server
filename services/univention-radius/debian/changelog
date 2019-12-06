@@ -1,3 +1,9 @@
+univention-radius (6.0.2-22) unstable; urgency=medium
+
+  * Bug #51130: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 13:10:24 +0200
+
 univention-radius (6.0.2-21) unstable; urgency=medium
 
   * Bug #50545: Fix file permissions in new log files
