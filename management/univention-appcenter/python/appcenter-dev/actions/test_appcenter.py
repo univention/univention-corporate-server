@@ -90,7 +90,7 @@ class DevTestSetup(UniventionAppAction):
 		chromium_version = "71.0.3578.80-1~deb9u1"  # Bug #48856
 		prev_unmaintained = ucr_get('repository/online/unmaintained', 'no')
 		ucr_save({'repository/online/unmaintained': 'true'})
-		ret_code = self._subprocess(['univention-install', '-y', 'python-pip', 'python3-pip', 'ucs-test', 'xvfb', 'chromium=%s' % chromium_version, 'chromium-driver=%s' % chromium_version, 'python-xvfbwrapper']).returncode
+		ret_code = self._subprocess(['univention-install', '-y', 'python-pip', 'ucs-test', 'xvfb', 'chromium=%s' % chromium_version, 'chromium-driver=%s' % chromium_version, 'python-xvfbwrapper']).returncode
 		ret_code = self._subprocess(['pip', 'install', 'selenium==3.6.0']).returncode or ret_code
 		ucr_save({'repository/online/unmaintained': prev_unmaintained})
 		return ret_code != 0
