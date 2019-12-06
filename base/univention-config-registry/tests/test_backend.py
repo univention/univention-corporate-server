@@ -360,8 +360,17 @@ class TestConfigRegistry(unittest.TestCase):
 		self.assertEqual(ucr.get('bar'), 'baz')
 		self.assertEqual(ucr.get('baz'), 'bar')
 
+
+class TestConfigRegistry2(unittest.TestCase):
+
+	"""Unit test for univention.config_registry.backend.ConfigRegistry
+	But without start up and tear down methods."""
+
 	def test_locking(self):
 		"""Test inter-process-locking."""
+		self.work_dir = tempfile.mkdtemp()
+		ConfigRegistry.PREFIX = self.work_dir
+		# Finish start up
 		delay = 1.0
 		ucr = ConfigRegistry()
 		read_end, write_end = os.pipe()
@@ -405,6 +414,8 @@ class TestConfigRegistry(unittest.TestCase):
 				self.fail('Unknown child status: %d, %x' % (pid, status))
 		else:
 			self.fail('Timeout')
+		# tear down
+		shutil.rmtree(self.work_dir)
 
 
 if __name__ == '__main__':
