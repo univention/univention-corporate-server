@@ -1,3 +1,9 @@
+univention-fetchmail (12.0.4-7) unstable; urgency=medium
+
+  * Bug #50607: ucs_registerLDAPExtension or die
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 06 Dec 2019 16:08:48 +0100
+
 univention-fetchmail (12.0.4-6) unstable; urgency=medium
 
   * Bug #50607: Increase joinscript version

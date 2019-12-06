@@ -43,7 +43,7 @@ eval "$(univention-config-registry shell)"
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
-	--acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl
+	--acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl || die
 
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
