@@ -36,8 +36,6 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh
 
-ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
-
 call_joinscript 92univention-fetchmail-schema.inst
 
 exit 0

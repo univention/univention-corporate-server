@@ -40,6 +40,11 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
+ucs_registerLDAPExtension "$@" \
+	schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
+	acl /usr/share/univention-fetchmail-schema/58univention-fetchmail_acl-settings
+
+
 univention-directory-manager container/cn create "$@" --ignore_exists \
 		--position "cn=custom attributes,cn=univention,$ldap_base" \
 		--set name=mail || die
