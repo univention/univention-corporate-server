@@ -37,7 +37,10 @@ import fcntl
 import re
 import errno
 import time
-from collections import MutableMapping
+if sys.version_info >= (3,):
+	from collections.abc import MutableMapping
+else:
+	from collections import MutableMapping
 import six
 try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
