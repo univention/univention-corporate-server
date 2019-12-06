@@ -1,4 +1,4 @@
-univention-fetchmail (12.0.1-4) unstable; urgency=medium
+univention-fetchmail (12.0.4-1) unstable; urgency=medium
 
   * Bug #50607: Register Schema and ACL in univention-fetchmail; do not rely
     on univention-fetchmal-schema
