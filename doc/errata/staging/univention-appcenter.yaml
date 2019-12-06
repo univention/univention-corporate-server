@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-94A~4.4.0.201912041545
+fix: 8.0.11-95A~4.4.0.201912061517
 desc: |
  This update addresses the following issue(s):
  * The command univention-app dev-test-setup has been added that installs
