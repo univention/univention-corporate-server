@@ -19,7 +19,7 @@ if configRegistry.is_true('apache2/hsts'):
 	]
 	if configRegistry.is_true('apache2/hsts/includeSubDomains'):
 		options.append('includeSubDomains')
-	print '<IfModule mod_headers.c>'
-	print 'Header always set Strict-Transport-Security "%s"' % ('; '.join(options),)
-	print '</IfModule>'
+	print('<IfModule mod_headers.c>')
+	print('Header always set Strict-Transport-Security "%s"' % ('; '.join(options),))
+	print('</IfModule>')
 @!@
