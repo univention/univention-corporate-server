@@ -1,3 +1,5 @@
+univention-fetchmail.schema usr/share/univention-fetchmail
+conffiles/etc/ldap/slapd.conf.d/58univention-fetchmail_acl-settings usr/share/univention-fetchmail
 92univention-fetchmail.inst usr/lib/univention-install
 93univention-fetchmail-uninstall.uinst usr/lib/univention-uninstall
 fetchmailrc.py usr/lib/univention-directory-listener/system
