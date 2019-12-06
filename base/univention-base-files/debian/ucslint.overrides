@@ -30,6 +30,10 @@
 # No header in displayed files
 0004-16: conffiles/etc/hostname
 0004-16: conffiles/boot/boot.msg
+0004-16: conffiles/etc/lsb-release
+0004-16: conffiles/etc/issue
+0004-16: conffiles/etc/issue.net
+0004-16: conffiles/etc/welcome.msg
 # No copyright claim for copied files
 0010-2: conffiles/etc/init.d/nscd
 0010-2: conffiles/etc/init.d/rdate
