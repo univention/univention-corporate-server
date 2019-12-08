@@ -29,6 +29,8 @@
 
 import unittest
 from tempfile import NamedTemporaryFile
+from base64 import b64decode
+
 import heimdal
 
 TYPES = {
@@ -62,7 +64,9 @@ TYPES = {
 	'camellia256-cts-cmac': 26,
 	'camellia256-cts': 26,
 }
-USER = 'Administrator@EXAMPLE.COM'
+REALM = 'EXAMPLE.COM'
+USERNAME = 'Administrator'
+USER = '{}@{}'.format(USERNAME, REALM)
 ENCSTR = "des-cbc-md5"
 ENCINT = 3
 KVNO = 0
@@ -93,19 +97,26 @@ class TestPrincipal(unittest.TestCase):
 		self.assertLessEqual({'realm'}, set(dir(self.principal)))
 
 
+@unittest.skip('Requires working kerberos services')
 class TestCreds(unittest.TestCase):
 	def setUp(self):
-		self.context = heimdal.context()
-
-	@unittest.skip('Requires working kerberos services')
-	def test_creds(self):
-		principal = heimdal.principal(self.context, USER)
+		context = heimdal.context()
+		principal = heimdal.principal(context, USER)
 		tkt_service = ""
-		creds = heimdal.creds(self.context, principal, PASSWORD, tkt_service)
+		self.creds = heimdal.creds(self.context, principal, PASSWORD, tkt_service)
 
-		(enctype, kvno, name, principal) = creds.parse()
+	def test_parse(self):
+		(enctype, kvno, name) = self.creds.parse()
+		self.assertIn(enctype, TYPES)
+		self.assertInstance(kvno, int)
+		self.assertEqual(name, 'krbtgt/{0}@{0}'.format(REALM))
 
-		creds.change_password(PASSWORD)
+	@unittest.skip('WIP')
+	def test_change_password(self):
+		self.creds.change_password(PASSWORD)
+
+	def test_dir(self):
+		self.assertEqual({'parse', 'change_password'}, set(dir(self.creds)))
 
 
 class TestKeytab(unittest.TestCase):
@@ -162,7 +173,7 @@ class TestKeytab(unittest.TestCase):
 
 
 class TestSalt(unittest.TestCase):
-	VALUE = 'EXAMPLE.COMAdministrator'
+	VALUE = '{}{}'.format(REALM, USERNAME)
 
 	def setUp(self):
 		self.context = heimdal.context()
@@ -194,7 +205,7 @@ class TestEnctype(unittest.TestCase):
 
 
 class TestKeyblock(unittest.TestCase):
-	VALUE = '\x83\xa8\xa1\xbc\x8f\xeav\xa1'
+	VALUE = b64decode('g6ihvI/qdqE=')
 
 	def setUp(self):
 		self.context = heimdal.context()
@@ -223,9 +234,9 @@ class TestKeyblock(unittest.TestCase):
 
 
 class TestASN1(unittest.TestCase):
-	VALUE = '\x0e\xfbE\r\xae\xd5\xdc\xad'
-	SALT = 'PHAHN.DEVAdministrator'
-	ASN1 = 'MDihEzARoAMCAQOhCgQIDvtFDa7V3K2iITAfoAMCAQOhGAQWUEhBSE4uREVWQWRtaW5pc3RyYXRvcg=='.decode('base64')
+	VALUE = b64decode('DvtFDa7V3K0=')
+	SALT = '{}{}'.format('PHAHN.DEV', USERNAME)
+	ASN1 = b64decode('MDihEzARoAMCAQOhCgQIDvtFDa7V3K2iITAfoAMCAQOhGAQWUEhBSE4uREVWQWRtaW5pc3RyYXRvcg==')
 
 	def test_asn1_decode_key(self):
 		(keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1)
