@@ -292,6 +292,14 @@ class TestASN1(unittest.TestCase):
 		self.assertEqual(self.SALT, salt.saltvalue())
 		self.assertEqual(KVNO, kvno)
 
+	def test_asn1_decode_key_with_context(self):
+		context = heimdal.context()
+		(keyblock, salt, kvno) = heimdal.asn1_decode_key(self.ASN1, context)
+		self.assertEqual(ENCSTR, str(keyblock.keytype()))
+		self.assertEqual(self.VALUE, keyblock.keyvalue())
+		self.assertEqual(self.SALT, salt.saltvalue())
+		self.assertEqual(KVNO, kvno)
+
 	def test_asn1_encode_key(self):
 		context = heimdal.context()
 		keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)

@@ -35,6 +35,7 @@
 #include <hdb.h>
 
 #include "keyblock.h"
+#include "context.h"
 #include "salt.h"
 #include "error.h"
 
@@ -141,8 +142,9 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 	Key asn1_key;
 	size_t len;
 	PyObject *self = NULL;
+	krb5ContextObject *context = NULL;
 
-	if (!PyArg_ParseTuple(args, "s#", &key_buf, &key_len))
+	if (!PyArg_ParseTuple(args, "s#|O!", &key_buf, &key_len, &krb5ContextType, &context))
 		return NULL;
 
 	err = decode_Key(key_buf, key_len, &asn1_key, &len);
@@ -151,11 +153,23 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 		goto except;
 	}
 
+	if (context == NULL) {
+		context = context_open(NULL);
+		if (context == NULL) {
+			PyErr_NoMemory();
+			goto except;
+		}
+	} else {
+		Py_INCREF(context);
+	}
+
 	keyblock = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
 	if (keyblock == NULL) {
 		PyErr_NoMemory();
 		goto except;
 	}
+	Py_INCREF(context);
+	keyblock->context = context;
 	keyblock->keyblock.keytype = asn1_key.key.keytype;
 	keyblock->keyblock.keyvalue.data = malloc(asn1_key.key.keyvalue.length);
 	if (keyblock->keyblock.keyvalue.data == NULL) {
@@ -170,6 +184,8 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 		PyErr_NoMemory();
 		goto except;
 	}
+	Py_INCREF(context);
+	salt->context = context;
 	if (asn1_key.salt != NULL) {
 		salt->salt.salttype = asn1_key.salt->type;
 		salt->salt.saltvalue.data = malloc(asn1_key.salt->salt.length);
@@ -192,8 +208,16 @@ PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 	goto finally;
 
 except:
-	free(keyblock->keyblock.keyvalue.data);
+	if (keyblock) {
+		free(keyblock->keyblock.keyvalue.data);
+		keyblock->keyblock.keyvalue.data = NULL;
+	}
+	if (salt) {
+		free(salt->salt.saltvalue.data);
+		salt->salt.saltvalue.data = NULL;
+	}
 finally:
+	Py_XDECREF(context);
 	Py_XDECREF(keyblock);
 	Py_XDECREF(salt);
 	return self;
