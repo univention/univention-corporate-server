@@ -38,6 +38,10 @@
 #include "context.h"
 #include "enctype.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_FromLong PyLong_FromLong
+#endif
+
 krb5EnctypeObject *enctype_from_enctype(krb5ContextObject *context, krb5_enctype enctype)
 {
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);

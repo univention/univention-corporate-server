@@ -69,6 +69,10 @@
 #include "keytab.h"
 #include "context.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_FromLong PyLong_FromLong
+#endif
+
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)
 {
 	char *keytab_string;

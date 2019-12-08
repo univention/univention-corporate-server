@@ -107,8 +107,13 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	if (PyObject_TypeCheck(py_enctype, &krb5EnctypeType)) {
 		krb5EnctypeObject *enctype_obj = (krb5EnctypeObject*)py_enctype;
 		enctype = enctype_obj->enctype;
+#if PY_MAJOR_VERSION >= 3
+	} else if (PyLong_Check(py_enctype)) {
+		enctype = PyLong_AsLong(py_enctype);
+#else
 	} else if (PyInt_Check(py_enctype)) {
 		enctype = PyInt_AsLong(py_enctype);
+#endif
 	} else {
 		PyErr_SetString(PyExc_TypeError, "enctype must be of type integer or krb5EnctypeObject");
 		Py_DECREF(self);

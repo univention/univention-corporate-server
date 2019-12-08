@@ -34,6 +34,10 @@
 #include <krb5.h>
 #include <krb5_err.h>
 
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_FromLong PyLong_FromLong
+#endif
+
 PyObject *Krb5_exception_class;
 
 static PyObject *error_objects;

@@ -39,6 +39,10 @@
 #include "principal.h"
 #include "creds.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_FromLong PyLong_FromLong
+#endif
+
 static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 	       const char *name, const char *banner, int num_prompts,
 	       krb5_prompt prompts[])
