@@ -1,3 +1,11 @@
+univention-python-heimdal (9.0.0-3) unstable; urgency=low
+
+  * Bug #50475: Add Python 3 support
+  * Bug #49383: Fix memory leaks, memory corruption and segmentation faults
+  * Bug #38736: Improve error handling
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 08 Dec 2019 23:49:32 +0100
+
 univention-python-heimdal (9.0.0-2) unstable; urgency=low
 
   * Bug #49139: Migrate to dh_python2
