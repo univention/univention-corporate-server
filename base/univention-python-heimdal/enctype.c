@@ -45,8 +45,10 @@
 krb5EnctypeObject *enctype_from_enctype(krb5ContextObject *context, krb5_enctype enctype)
 {
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	Py_INCREF(context);
 	self->context = context;
@@ -64,8 +66,10 @@ krb5EnctypeObject *enctype_new(PyObject *unused, PyObject *args)
 		return NULL;
 
 	krb5EnctypeObject *self = (krb5EnctypeObject *) PyObject_NEW(krb5EnctypeObject, &krb5EnctypeType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	Py_INCREF(context);
 	self->context = context;

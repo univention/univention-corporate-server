@@ -64,8 +64,10 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 		return NULL;
 
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	Py_INCREF(context);
 	self->context = context;
@@ -90,8 +92,10 @@ krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
 		return NULL;
 
 	krb5SaltObject *self = (krb5SaltObject *) PyObject_NEW(krb5SaltObject, &krb5SaltType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	Py_INCREF(context);
 	self->context = context;

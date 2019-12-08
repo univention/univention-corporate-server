@@ -48,8 +48,10 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 		return NULL;
 
 	krb5CcacheObject *self = (krb5CcacheObject *) PyObject_NEW(krb5CcacheObject, &krb5CcacheType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	Py_INCREF(context);
 	self->context = context;

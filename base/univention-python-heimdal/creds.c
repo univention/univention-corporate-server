@@ -85,8 +85,10 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 		return NULL;
 
 	krb5CredsObject *self = (krb5CredsObject *) PyObject_NEW(krb5CredsObject, &krb5CredsType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	/* FIXME */
 	if (in_tkt_service[0] == '\0')

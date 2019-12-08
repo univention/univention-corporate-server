@@ -98,8 +98,10 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 		return NULL;
 
 	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
-	if (self == NULL)
+	if (self == NULL) {
+		PyErr_NoMemory();
 		return NULL;
+	}
 
 	Py_INCREF(context);
 	self->context = context;
