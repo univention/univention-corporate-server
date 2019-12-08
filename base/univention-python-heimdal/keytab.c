@@ -320,6 +320,7 @@ static struct PyMethodDef keytab_methods[] = {
 PyTypeObject krb5KeytabType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.Keytab",
+	.tp_doc = "Heimdal Kerberos key table",
 	.tp_basicsize = sizeof(krb5KeytabObject),
 	/* methods */
 	.tp_dealloc = (destructor)keytab_dealloc,

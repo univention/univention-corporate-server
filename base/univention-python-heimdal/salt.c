@@ -131,6 +131,7 @@ static struct PyMethodDef salt_methods[] = {
 PyTypeObject krb5SaltType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Salt",
+	.tp_doc = "Heimdal Kerberos salt",
 	.tp_basicsize = sizeof(krb5SaltObject),
 	/* methods */
 	.tp_dealloc = (destructor)salt_dealloc,

@@ -169,6 +169,7 @@ static struct PyMethodDef keyblock_methods[] = {
 PyTypeObject krb5KeyblockType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Keyblock",
+	.tp_doc = "Heimdal Kerberos key block",
 	.tp_basicsize = sizeof(krb5KeyblockObject),
 	/* methods */
 	.tp_dealloc = (destructor)keyblock_dealloc,

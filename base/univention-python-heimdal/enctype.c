@@ -124,6 +124,7 @@ static struct PyMethodDef enctype_methods[] = {
 PyTypeObject krb5EnctypeType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Enctype",
+	.tp_doc = "Heimdal Kerberos encryption type",
 	.tp_basicsize = sizeof(krb5EnctypeObject),
 	/* methods */
 	.tp_dealloc = (destructor)enctype_dealloc,

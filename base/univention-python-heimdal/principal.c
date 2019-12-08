@@ -115,6 +115,7 @@ static struct PyMethodDef principal_methods[] = {
 PyTypeObject krb5PrincipalType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Principal",
+	.tp_doc = "Heimdal Kerberos principal",
 	.tp_basicsize = sizeof(krb5PrincipalObject),
 	/* methods */
 	.tp_dealloc = (destructor)principal_dealloc,

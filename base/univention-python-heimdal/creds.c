@@ -199,6 +199,7 @@ static struct PyMethodDef creds_methods[] = {
 PyTypeObject krb5CredsType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Creds",
+	.tp_doc = "Heimdal Kerberos credentials",
 	.tp_basicsize = sizeof(krb5CredsObject),
 	/* methods */
 	.tp_dealloc = (destructor)creds_dealloc,

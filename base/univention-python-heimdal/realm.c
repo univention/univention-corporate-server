@@ -69,6 +69,7 @@ static struct PyMethodDef realm_methods[] = {
 PyTypeObject krb5RealmType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Realm",
+	.tp_doc = "Heimdal Kerberos realm",
 	.tp_basicsize = sizeof(krb5RealmObject),
 	/* methods */
 	.tp_dealloc = (destructor)realm_dealloc,

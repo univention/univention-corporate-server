@@ -118,6 +118,7 @@ static struct PyMethodDef context_methods[] = {
 PyTypeObject krb5ContextType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Context",
+	.tp_doc = "Heimdal Kerberos context",
 	.tp_basicsize = sizeof(krb5ContextObject),
 	/* methods */
 	.tp_dealloc = (destructor)context_dealloc,

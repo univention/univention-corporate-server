@@ -191,6 +191,7 @@ static struct PyMethodDef ccache_methods[] = {
 PyTypeObject krb5CcacheType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Ccache",
+	.tp_doc = "Heimdal Kerberos credential cache",
 	.tp_basicsize = sizeof(krb5CcacheObject),
 	/* methods */
 	.tp_dealloc = (destructor)ccache_dealloc,

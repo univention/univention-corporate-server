@@ -65,6 +65,7 @@ static void ticket_dealloc(krb5TicketObject *self)
 PyTypeObject krb5TicketType = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	.tp_name = "heimdal.krb5Ticket",
+	.tp_doc = "Heimdal Kerberos ticket",
 	.tp_basicsize = sizeof(krb5TicketObject),
 	/* methods */
 	.tp_dealloc = (destructor)ticket_dealloc,
