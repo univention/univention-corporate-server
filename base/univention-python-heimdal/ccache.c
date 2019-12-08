@@ -54,6 +54,7 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 	Py_INCREF(context);
 	self->context = context;
 
+	self->ccache = NULL;
 	err = krb5_cc_default(self->context->context, &self->ccache);
 	if (err) {
 		krb5_exception(self->context->context, err);
@@ -76,22 +77,24 @@ krb5CcacheObject *ccache_open(PyObject *unused, PyObject *args)
 
 static void ccache_dealloc(krb5CcacheObject *self)
 {
-	krb5_error_code err;
-	err = krb5_cc_close(self->context->context, self->ccache);
-	if (err)
-		krb5_exception(self->context->context, err, "krb5_cc_close");
+	if (self->ccache) {
+		krb5_error_code err = krb5_cc_close(self->context->context, self->ccache);
+		self->ccache = NULL;
+		if (err)
+			krb5_exception(self->context->context, err, "krb5_cc_close");
+	}
 	Py_DECREF(self->context);
 	Py_TYPE(self)->tp_free(self);
 }
 
 static PyObject *ccache_destroy(krb5CcacheObject *self)
 {
-	krb5_error_code err;
-	err = krb5_cc_destroy(self->context->context, self->ccache);
-	if (err) {
-		krb5_exception(self->context->context, err, "krb5_cc_destroy");
+	if (self->ccache) {
+		krb5_error_code err = krb5_cc_destroy(self->context->context, self->ccache);
+		self->ccache = NULL;
+		if (err)
+			krb5_exception(self->context->context, err, "krb5_cc_destroy");
 	}
-	PyObject_Del(self);
 
 	Py_RETURN_NONE;
 }
@@ -102,6 +105,11 @@ static PyObject *ccache_list(krb5CcacheObject *self)
 	krb5_cc_cursor cursor;
 	krb5_creds creds;
 	PyObject *list = NULL;
+
+	if (!self->ccache) {
+		krb5_exception(NULL, ENOENT);
+		return NULL;
+	}
 
 	err = krb5_cc_start_seq_get (self->context->context, self->ccache, &cursor);
 	if (err) {
@@ -134,6 +142,11 @@ static PyObject *ccache_initialize(krb5CcacheObject *self, PyObject *args)
 {
 	krb5_error_code err;
 	krb5PrincipalObject *principal;
+
+	if (!self->ccache) {
+		krb5_exception(NULL, ENOENT);
+		return NULL;
+	}
 
 	if (!PyArg_ParseTuple(args, "O!", &krb5PrincipalType, &principal))
 		return NULL;

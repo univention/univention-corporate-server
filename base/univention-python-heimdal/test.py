@@ -249,6 +249,37 @@ class TestKeyblock(unittest.TestCase):
 		self.assertLessEqual({'keytype', 'keyvalue'}, set(dir(keyblock)))
 
 
+class TestCcache(unittest.TestCase):
+	def setUp(self):
+		self.context = heimdal.context()
+		self.principal = heimdal.principal(self.context, USER)
+		self.ccache = heimdal.ccache(self.context)
+
+	def test_list(self):
+		with self.assertRaises(IOError):
+			self.ccache.list()
+
+	def test_init(self):
+		self.ccache.initialize(self.principal)
+		self.assertEqual(self.ccache.list(), [])
+		self.ccache.destroy()
+		self.ccache.destroy()
+
+	def test_use_after_destroy(self):
+		self.ccache.initialize(self.principal)
+		self.ccache.destroy()
+		with self.assertRaises(IOError):
+			self.ccache.list()
+
+	@unittest.skip('WIP')
+	@unittest.skip('Requires working kerberos services')
+	def test_store_cred(self):
+		self.ccache.initialize(self.principal)
+		tkt_service = ""
+		creds = heimdal.creds(self.context, self.principal, PASSWORD, tkt_service)
+		self.ccache.store_cred(creds)
+
+
 class TestASN1(unittest.TestCase):
 	VALUE = b64decode('DvtFDa7V3K0=')
 	SALT = '{}{}'.format('PHAHN.DEV', USERNAME)
