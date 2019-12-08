@@ -39,6 +39,10 @@
 #include "salt.h"
 #include "error.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
+#endif
+
 /*
 In case you are looking into some problem here, note that asn1_Key.c and asn1_Salt.c are generated at compile
 time in the heimdal sources by means of asn1_compile from lib/hdb/hdb.asn1.

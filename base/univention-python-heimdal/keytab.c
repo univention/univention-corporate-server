@@ -71,6 +71,8 @@
 
 #if PY_MAJOR_VERSION >= 3
 #define PyInt_FromLong PyLong_FromLong
+#define PyString_FromString PyUnicode_FromString
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
 #endif
 
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args)

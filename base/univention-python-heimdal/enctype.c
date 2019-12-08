@@ -40,6 +40,7 @@
 
 #if PY_MAJOR_VERSION >= 3
 #define PyInt_FromLong PyLong_FromLong
+#define PyString_FromString PyUnicode_FromString
 #endif
 
 krb5EnctypeObject *enctype_from_enctype(krb5ContextObject *context, krb5_enctype enctype)

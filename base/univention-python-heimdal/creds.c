@@ -41,6 +41,7 @@
 
 #if PY_MAJOR_VERSION >= 3
 #define PyInt_FromLong PyLong_FromLong
+#define PyString_FromString PyUnicode_FromString
 #endif
 
 static krb5_error_code kerb_prompter(krb5_context ctx, void *data,

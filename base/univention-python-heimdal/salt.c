@@ -39,6 +39,10 @@
 #include "principal.h"
 #include "salt.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyString_FromStringAndSize PyUnicode_FromStringAndSize
+#endif
+
 #if 0
 krb5SaltObject *salt_from_salt(krb5ContextObject *context, krb5_salt salt)
 {

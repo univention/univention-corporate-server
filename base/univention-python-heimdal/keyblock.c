@@ -42,6 +42,10 @@
 #include "salt.h"
 #include "keyblock.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
+#endif
+
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code err;
@@ -94,7 +98,11 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	int key_len;
 	krb5_enctype enctype;
 
+#if PY_MAJOR_VERSION >= 3
+	if (!PyArg_ParseTuple(args, "O!Oy#", &krb5ContextType, &context, &py_enctype, &key_data, &key_len))
+#else
 	if (!PyArg_ParseTuple(args, "O!Os#", &krb5ContextType, &context, &py_enctype, &key_data, &key_len))
+#endif
 		return NULL;
 
 	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);

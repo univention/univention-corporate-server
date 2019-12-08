@@ -39,6 +39,10 @@
 #include "realm.h"
 #include "principal.h"
 
+#if PY_MAJOR_VERSION >= 3
+#define PyString_FromString PyUnicode_FromString
+#endif
+
 krb5PrincipalObject *principal_new(PyObject *unused, PyObject *args)
 {
 	krb5_error_code err;
