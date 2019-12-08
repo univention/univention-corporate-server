@@ -296,7 +296,6 @@ class TestKeytab(unittest.TestCase):
 
 			self.assertEqual(-1765328203, ex.exception.code)  # #define KRB5_KT_NOTFOUND
 
-	@unittest.skip('Memory corruption')
 	def test_keytab_remove_existing(self):
 		with NamedTemporaryFile() as tmpfile:
 			keytab = heimdal.keytab(self.context, tmpfile.name)
@@ -305,7 +304,6 @@ class TestKeytab(unittest.TestCase):
 			keytab.add(USER, KVNO, ENCSTR, PASSWORD, salt_flag, random_flag)
 			keytab.remove(USER, KVNO, ENCSTR)
 
-	@unittest.skip('SIGSEGV')
 	def test_dir(self):
 		with NamedTemporaryFile() as tmpfile:
 			keytab = heimdal.keytab(self.context, tmpfile.name)
