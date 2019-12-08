@@ -1,11 +1,14 @@
 heimdal.so
 heimdal.*.so
+heimdal_d.so
 build/
 *.egg-info/
 debian/.debhelper/
 debian/debhelper-build-stamp
 debian/files
 debian/python-univention-heimdal/
+debian/python-univention-heimdal-dbg/
 debian/python3-univention-heimdal/
+debian/python3-univention-heimdal-dbg/
 debian/*.debhelper.log
 debian/*.substvars

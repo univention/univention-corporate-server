@@ -35,5 +35,9 @@ override_dh_auto_test:
 	dh_auto_test
 	ucslint
 
+override_dh_strip:
+	dh_strip -ppython-$(PYBUILD_NAME) --dbg-package=python-$(PYBUILD_NAME)-dbg
+	dh_strip -ppython3-$(PYBUILD_NAME) --dbg-package=python3-$(PYBUILD_NAME)-dbg
+
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild
