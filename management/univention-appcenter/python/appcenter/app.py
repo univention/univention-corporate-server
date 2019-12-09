@@ -49,7 +49,7 @@ from json import loads, dumps
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, container_mode, _
+from univention.appcenter.utils import app_ports, mkdir, get_free_disk_space, get_current_ram_available, get_locale, container_mode, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
 from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
@@ -702,6 +702,11 @@ class App(object):
 			(without Swap) when trying to install the application.
 			When the test fails, the user may still override it
 			and install it.
+		min_free_disk_space: The minimal amount of free disk space in MB.
+			This value is compared with the current free disk space
+			at the installation destination when trying to install the
+			application. When the test fails, the user may still override it
+			and install it.
 		shop_url: If given, a button is added to the App Center which
 			users can click to buy a license.
 		ad_member_issue_hide: When UCS is not managing the domain but
@@ -902,6 +907,7 @@ class App(object):
 	server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
 	min_physical_ram = AppIntAttribute(default=0)
+	min_free_disk_space = AppIntAttribute(default=None)
 
 	shop_url = AppAttribute(localisable=True)
 
@@ -951,6 +957,8 @@ class App(object):
 			setattr(self, attr.name, _attrs.get(attr.name))
 		self.ucs_version = self.get_ucs_version()  # compatibility
 		if self.docker:
+			if self.min_free_disk_space is None:
+				self.min_free_disk_space = 4000
 			self.supported_architectures = ['amd64']
 			if self.plugin_of:
 				for script in ['docker_script_restore_data_before_setup', 'docker_script_restore_data_after_setup']:
@@ -1560,6 +1568,18 @@ class App(object):
 					depending_apps.append({'id': app.id, 'name': app.name})
 		if depending_apps:
 			return depending_apps
+		return True
+
+	@soft_requirement('install')
+	def shall_have_enough_free_disk_space(self):
+		'''The application requires %(minimum)d MB of free disk space but only
+		%(current)d MB are available.'''
+		required_free_disk_space = self.min_free_disk_space
+		if required_free_disk_space <= 0:
+			return True
+		current_free_disk_space = get_free_disk_space()
+		if current_free_disk_space and current_free_disk_space < required_free_disk_space:
+			return {'minimum': required_free_disk_space, 'current': current_free_disk_space}
 		return True
 
 	@soft_requirement('install', 'upgrade')
