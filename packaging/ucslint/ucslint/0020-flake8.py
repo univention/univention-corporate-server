@@ -31,6 +31,7 @@
 from __future__ import print_function
 import re
 import os
+import io
 import sys
 import subprocess
 from argparse import ArgumentParser
@@ -39,6 +40,14 @@ try:
 	import univention.ucslint.base as uub
 except ImportError:
 	import ucslint.base as uub
+
+EXECUTE_TOKEN = re.compile('@!@(.+?)@!@', re.MULTILINE | re.DOTALL)
+UCR_HEADER = '''\
+# -*- coding: utf-8 -*-
+import univention.config_registry  # noqa
+from fake import configRegistry, baseConfig  # noqa
+
+'''
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
@@ -308,24 +317,46 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		errors = []
 		for python in self.python_versions:
 			for ignore, pathes in self._iter_pathes(path):
-				cmd = [python, '/usr/bin/flake8', '--config=/dev/null']
-				if ignore:
-					cmd.extend(['--ignore', ignore])
-				if self.DEFAULT_SELECT:
-					cmd.extend(['--select', self.DEFAULT_SELECT])
-				cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
-				cmd.extend(['--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s'])
-				if self.show_statistics:
-					cmd.append('--statistics')
-				if self.debuglevel > 0:
-					cmd.append('--show-source')
-				cmd.append('--')
-				cmd.extend(pathes)
-
-				process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-				errors.extend(process.communicate()[0].splitlines())
+				errors.extend(self.flake8(python, pathes, ignore, False))
+			errors.extend(self.check_conffiles(python))
 
 		self.format_errors(errors)
+
+	def check_conffiles(self, python):
+		errors = []
+		header_length = len(UCR_HEADER.splitlines()) + 1
+		for conffile in uub.FilteredDirWalkGenerator('conffiles'):
+			with io.open(conffile, 'rb') as fd:
+				text = fd.read()
+				for i, match in enumerate(EXECUTE_TOKEN.findall(text)):
+					leading_lines = len(text[:text.index(match)].splitlines())
+					for error in self.flake8(python, ['-'], self.DEFAULT_IGNORE, UCR_HEADER + match):
+						errno, filename, lineno, position, descr = error.split(' ', 4)
+						lineno = str(int(lineno) - header_length + leading_lines)
+						errors.append(' '.join((errno, conffile, lineno, position, descr)))
+		return errors
+
+	def flake8(self, python, pathes, ignore=None, stdin=None):
+		cmd = [python, '/usr/bin/flake8', '--config=/dev/null']
+		if ignore:
+			cmd.extend(['--ignore', ignore])
+		if self.DEFAULT_SELECT:
+			cmd.extend(['--select', self.DEFAULT_SELECT])
+		cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
+		cmd.extend(['--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s'])
+		if self.show_statistics:
+			cmd.append('--statistics')
+		if self.debuglevel > 0:
+			cmd.append('--show-source')
+		cmd.append('--')
+		cmd.extend(pathes)
+
+		process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE if stdin else None)
+		if stdin:
+			process.stdin.write(stdin)
+			process.stdin.close()
+		process.wait()
+		return process.stdout.read().splitlines()
 
 	def fix(self, path, *args):
 		for ignore, pathes in self._iter_pathes(path):
@@ -356,9 +387,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		return ignored.iteritems()
 
 	def format_errors(self, errors):
+		done = set()
 		for i, line in enumerate(errors, 1):
-			if not line.startswith('0020-'):
+			if not line.startswith('0020-') or line in done:
 				continue
+			done.add(line)
 			code, path, row, col, text = line.split(' ', 4)
 			source = []
 			while len(errors) > i + 1 and not errors[i].startswith('0020-'):
