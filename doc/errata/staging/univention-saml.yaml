@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * A link to the password changing functionality has been implemented
+   in the login dialog.
+bug: [50594]
