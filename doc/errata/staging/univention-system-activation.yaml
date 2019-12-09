@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-system-activation
+fix: 4.4.0.201912091045
+desc: |
+ This update addresses the following issue(s):
+ * Send the system uuid to reporting in Appliance setup
+bug: [49555]
