@@ -1,3 +1,9 @@
+python-notifier (0.9.7-7) unstable; urgency=medium
+
+  * Bug #50461: fix some PEP 8 warnings
+
+ -- Florian Best <best@univention.de>  Mon, 09 Dec 2019 14:50:12 +0100
+
 python-notifier (0.9.7-6) unstable; urgency=medium
 
   * Bug #50461: Migrate to dh-python and Python 3
