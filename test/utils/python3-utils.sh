@@ -36,6 +36,25 @@ fakepackage() { equivs-control "$1" && sed "s/^Package: .*/Package: $1/g; s/^# V
 fake_package_install () {
 	install_with_unmaintained equivs
 	fakepackage python3-trml2pdf
-	fakepackage python3-univention-heimdal 4.2
-	install_with_unmaintained python3-univention python3-univention-config-registry python3-univention-connector-s4 python3-univention-debug python3-univention-directory-manager python3-univention-directory-manager-cli python3-univention-directory-manager-rest python3-univention-directory-reports python3-univention-heimdal python3-univention-ipcalc python3-univention-lib python3-univention-license python3-univention-management-console python3-univention-updater
+	install_with_unmaintained \
+		python3-univention \
+		python3-univention-admin-diary \
+		python3-univention-admin-diary-backend \
+		python3-univention-config-registry \
+		python3-univention-connector-s4 \
+		python3-univention-debug \
+		python3-univention-directory-manager \
+		python3-univention-directory-manager-cli \
+		python3-univention-directory-manager-rest \
+		python3-univention-directory-manager-uvmm \
+		python3-univention-directory-reports \
+		python3-univention-heimdal \
+		python3-univention-ipcalc \
+		python3-univention-lib \
+		python3-univention-license \
+		python3-univention-management-console \
+		python3-univention-pkgdb \
+		python3-univention-radius \
+		python3-univention-updater \
+		python3-univention-virtual-machine-manager
 }
