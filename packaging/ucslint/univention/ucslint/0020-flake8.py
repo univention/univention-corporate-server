@@ -32,12 +32,22 @@ import univention.ucslint.base as uub
 from univention.ucslint.python import python_files
 import re
 import os
+import io
 import sys
 import subprocess
 from argparse import ArgumentParser
+from typing import List  # noqa F401
 
 RE_PY2 = re.compile(r'\s*dh .*--with.*python2')
 RE_PY3 = re.compile(r'\s*dh .*--with.*python3')
+
+EXECUTE_TOKEN = re.compile('@!@(.+?)@!@', re.MULTILINE | re.DOTALL)
+UCR_HEADER = '''\
+# -*- coding: utf-8 -*-
+import univention.config_registry  # noqa
+from fake import configRegistry, baseConfig  # noqa
+
+'''
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckBase):
@@ -302,35 +312,64 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		errors = []
 		for python in self.python_versions:
 			for ignore, pathes in self._iter_pathes(path):
-				cmd = [python, '/usr/bin/flake8', '--config=/dev/null']
-				if ignore:
-					cmd.extend(['--ignore', ignore])
-				if self.DEFAULT_SELECT:
-					cmd.extend(['--select', self.DEFAULT_SELECT])
-				cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
-				cmd.extend(['--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s'])
-				if self.show_statistics:
-					cmd.append('--statistics')
-				if self.debuglevel > 0:
-					cmd.append('--show-source')
-				cmd.append('--')
-				cmd.extend(pathes)
+				errors += self.flake8(python, pathes, ignore)
 
-				process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-				stdout, stderr = process.communicate()
-				text = stdout.decode('utf-8', 'replace')
-				errors.extend(text.splitlines())
+			errors += self.check_conffiles(python)
 
 		self.format_errors(errors)
 
+	def check_conffiles(self, python):
+		errors = []
+		header_length = len(UCR_HEADER.splitlines()) + 1
+		for conffile in uub.FilteredDirWalkGenerator('conffiles'):
+			with open(conffile, 'r') as fd:
+				text = fd.read()
+
+			for i, match in enumerate(EXECUTE_TOKEN.findall(text)):
+				leading_lines = len(text[:text.index(match)].splitlines())
+				match = match.rstrip() + '\n'  # prevent "blank line at end of file" and "blank line contains whitespace" false positives
+				for error in self.flake8(python, ['-'], self.DEFAULT_IGNORE, UCR_HEADER + match):
+					errno, filename, lineno, position, descr = error.split(' ', 4)
+					lineno = str(int(lineno) - header_length + leading_lines)
+					errors.append(' '.join((errno, conffile, lineno, position, descr)))
+		return errors
+
+	def flake8(self, python, pathes, ignore='', stdin=''):  # type: (str, List[str], str, str) -> List[str]
+		cmd = [
+			python,
+			'-m', 'flake8',
+			'--config=/dev/null',
+			'--max-line-length', str(self.MAX_LINE_LENGTH),
+			'--format', '0020-%(code)s %(path)s %(row)s %(col)s %(text)s',
+		]
+		if ignore:
+			cmd += ['--ignore', ignore]
+		if self.DEFAULT_SELECT:
+			cmd += ['--select', self.DEFAULT_SELECT]
+		if self.show_statistics:
+			cmd.append('--statistics')
+		if self.debuglevel > 0:
+			cmd.append('--show-source')
+		cmd.append('--')
+		cmd.extend(pathes)
+
+		process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE if stdin else None)
+		stdout, stderr = process.communicate(stdin.encode('utf-8') if stdin else None)
+		text = stdout.decode('utf-8', 'replace')
+		return text.splitlines()
+
 	def fix(self, path, *args):
 		for ignore, pathes in self._iter_pathes(path):
-			cmd = ['autopep8', '-i', '-aaa']
+			cmd = [
+				'autopep8',
+				'-i',
+				'-aaa',
+				'--max-line-length', str(self.MAX_LINE_LENGTH),
+			]
 			if ignore:
 				cmd.extend(['--ignore', ignore])
 			if self.DEFAULT_SELECT:
 				cmd.extend(['--select', self.DEFAULT_SELECT])
-			cmd.extend(['--max-line-length', str(self.MAX_LINE_LENGTH)])
 			cmd.extend(args)
 			cmd.append('--')
 			cmd.extend(pathes)
@@ -352,9 +391,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		return ignored.items()
 
 	def format_errors(self, errors):
+		done = set()
 		for i, line in enumerate(errors, 1):
-			if not line.startswith('0020-'):
+			if not line.startswith('0020-') or line in done:
 				continue
+			done.add(line)
 			code, path, row, col, text = line.split(' ', 4)
 			source = []
 			while len(errors) > i + 1 and not errors[i].startswith('0020-'):
