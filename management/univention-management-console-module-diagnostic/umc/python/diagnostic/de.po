@@ -1042,12 +1042,12 @@ msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
 
 #: umc/python/diagnostic/plugins/58_check_memberOf.py:39
-msgid "Check LDAP overlay memberOf"
-msgstr "Prüfe LDAP overly membeOf"
+msgid "Check LDAP attribute memberOf"
+msgstr "Prüfe LDAP-Attribut memberOf"
 
 #: umc/python/diagnostic/plugins/58_check_memberOf.py:40
 msgid "Check whether the LDAP overlay memberOf is locally activated."
-msgstr ""
+msgstr "Prüfe ob das LDAP-Attribut memberOf auf diesem LDAP-Server aktiviert ist."
 
 #: umc/python/diagnostic/plugins/58_check_memberOf.py:41
 msgid ""

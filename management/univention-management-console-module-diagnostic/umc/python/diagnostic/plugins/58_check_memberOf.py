@@ -36,7 +36,7 @@ from univention.management.console.config import ucr
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check LDAP overlay memberOf')
+title = _('Check LDAP attribute memberOf')
 description = _('Check whether the LDAP overlay memberOf is locally activated.')
 warning_message = _('The "memberOf" group membership attribute is not available in the LDAP server on this host. This feature is activated by default in new installations since UCS version 4.3-0, and serveral services depend on it. This feature will be a prerequisite in future UCS releases. You may want to consider activating the memberOf feature for the LDAP server according to:')
 links = [{
