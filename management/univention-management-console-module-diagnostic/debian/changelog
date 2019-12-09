@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-26) unstable; urgency=medium
+
+  * Bug #50599: 58_check_memberOf.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Dec 2019 15:39:04 +0100
+
 univention-management-console-module-diagnostic (5.0.1-25) unstable; urgency=medium
 
   * Bug #50599: 58_check_memberOf.py

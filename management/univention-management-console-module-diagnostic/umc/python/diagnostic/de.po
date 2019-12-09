@@ -1041,6 +1041,41 @@ msgstr "Anzahl unspezifischer Windows-Computer-Objekte mit inkonsistentem "
 msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
 
+#: umc/python/diagnostic/plugins/58_check_memberOf.py:39
+msgid "Check LDAP overlay memberOf"
+msgstr "Prüfe LDAP overly membeOf"
+
+#: umc/python/diagnostic/plugins/58_check_memberOf.py:40
+msgid "Check whether the LDAP overlay memberOf is locally activated."
+msgstr ""
+
+#: umc/python/diagnostic/plugins/58_check_memberOf.py:41
+msgid ""
+"The \"memberOf\" group membership attribute is not available in the LDAP "
+"server on this host. This feature is activated by default in new "
+"installations since UCS version 4.3-0, and serveral services depend on it. "
+"This feature will be a prerequisite in future UCS releases. You may want to "
+"consider activating the memberOf feature for the LDAP server according to:"
+msgstr ""
+"Das Attribut für Gruppenmitgliedschaften \"memberOf\" ist auf dem LDAP-Server "
+"auf diesem Host nicht verfügbar. Diese Funktion wird bei Neuinstallationen seit "
+"UCS Version 4.3-0 standardmäßig aktiviert, und verschiedene Dienste hängen davon ab. "
+"Dieses Attribut wird in zukünftigen UCS-Versionen vorausgesetzt. "
+"Sie können die memberOf-Funktion für den LDAP-Server folgendermaßen aktivieren:"
+
+#: umc/python/diagnostic/plugins/58_check_memberOf.py:44
+msgid ""
+"https://help.univention.com/t/memberof-attribute-group-memberships-of-user-"
+"and-computer-objects/6439"
+msgstr ""
+"https://help.univention.com/t/memberof-attribute-group-memberships-of-user-"
+"and-computer-objects/6439"
+
+#: umc/python/diagnostic/plugins/58_check_memberOf.py:45
+msgid "Activate the memberOf LDAP overlay"
+msgstr "Aktivierung des LDAP-Moduls memberOf"
+
+
 #~ msgid "All nameserver entries are ok."
 #~ msgstr "Alle Nameserver Einträge sind in Ordnung."
 
