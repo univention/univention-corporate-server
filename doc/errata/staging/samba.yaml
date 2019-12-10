@@ -6,5 +6,13 @@ src: samba
 fix: 2:4.10.1-1A~4.4.0.201912031949
 desc: |
  This update addresses the following issues:
- * TODO
+ * An authenticated user can crash the Samba DCE/RPC DNS management server
+   by creating records matching the zone name.
+   For details see https://www.samba.org/samba/security/CVE-2019-14861.html
+ * The DelegationNotAllowed Kerberos feature restriction was not being applied
+   when processing protocol transition requests (S4U2Self), in the AD DC KDC.
+   For details see https://www.samba.org/samba/security/CVE-2019-14870.html
 bug: [50581]
+cve:
+ - CVE-2019-14861
+ - CVE-2019-14870
