@@ -1,3 +1,9 @@
+univention-updater (14.0.2-11) unstable; urgency=medium
+
+  * Bug #47834: Adjust wording of univention-upgrade help text
+
+ -- Jan-Niklas Korte <jkorte@univention.de>  Tue, 10 Dec 2019 13:45:04 +0100
+
 univention-updater (14.0.2-10) unstable; urgency=low
 
   * Bug #50586: Remove docker check from p*up.sh scripts.

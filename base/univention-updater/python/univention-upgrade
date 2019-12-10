@@ -355,7 +355,7 @@ def parse_args():
     group.add_option(
         "--enable-app-updates",
         dest="app_updates", action="store_true",
-        help="Skip updating installed Apps")
+        help="Update installed Apps")
     group.add_option(
         "--disable-app-updates",
         dest="app_updates", action="store_false",
