@@ -1,0 +1,40 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if there are any school-slaves with the attribute userAccountControl of a windows computer
+## packages: [ucs-school-import, univention-samba4, univention-s4-connector]
+## bugs: [50280]
+## roles:
+## - domaincontroller_master
+## tags: [apptest]
+## exposure: safe
+
+from sys import exit
+from time import sleep
+from subprocess import Popen, PIPE
+
+import univention.testing.utils as utils
+from univention.testing.codes import TestCodes
+from univention.config_registry import ConfigRegistry
+from univention.testing.strings import random_username
+
+if __name__ == '__main__':
+	print "\nChecking if the attribute userAccountControl is set correctly on all domaincontroller slaves"
+
+	p1 = Popen(['univention-ldapsearch','univentionObjectType=computers/domaincontroller_slave', 'cn', '-LLL'], stdout=PIPE, stderr=PIPE, shell=False)
+	(stdout, stderr) = p1.communicate()
+	schoolslaves = stdout.strip().splitlines()
+	schoolslaves_cn = []
+	for line in schoolslaves:
+		if 'cn:' in line:
+			schoolslaves_cn.append(line.split(':' )[1])
+	print('List of Ucs-school-slaves: %s' % (schoolslaves_cn,))
+
+	for slave in schoolslaves_cn:
+		p2 = Popen(['univention-s4search', '--cross-ncs', '(&(cn=%s)(userAccountControl:1.2.840.113556.1.4.803:=4096))' %(slave,)], stdout=PIPE, stderr=PIPE, shell=False)
+		(stdout, stderr) = p2.communicate()
+		faulty_schools = []
+		for line in stdout.strip().splitlines():
+			if line.startswith('dn:'):
+				faulty_schools.append(line.split(':')[1])
+		if faulty_schools:
+			utils.fail("\nTest failed. School slaves with incorrect userAccountControl found.\n%s\n" %(faulty_schools,))
+

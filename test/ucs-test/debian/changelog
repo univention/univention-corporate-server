@@ -1,3 +1,9 @@
+ucs-test (9.0.3-123) unstable; urgency=medium
+
+  * Bug #50280: Test if there are any ucs-school-slaves that have the wrong userAccountControl value set
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 10 Dec 2019 19:11:47 +0100
+
 ucs-test (9.0.3-122) unstable; urgency=medium
 
   * Bug #50594: adjust test case for new texts in login dialog
