@@ -34,7 +34,7 @@ class SamlLoginError(SamlError):
 		self._error_evaluation()
 
 	def _error_evaluation(self):
-			if re.search('<b>Password change required.</b>', bytes(self.page.text)):
+			if re.search('<b>Your password is expired.</b>', bytes(self.page.text)):
 				self.message = "Got password expired notice"
 			elif re.search('<b>Account expired.</b>', bytes(self.page.text)):
 				self.message = "Got account expired notice"

@@ -1,3 +1,9 @@
+ucs-test (9.0.3-122) unstable; urgency=medium
+
+  * Bug #50594: adjust test case for new texts in login dialog
+
+ -- Florian Best <best@univention.de>  Tue, 10 Dec 2019 10:33:11 +0100
+
 ucs-test (9.0.3-121) unstable; urgency=medium
 
   * Bug #50589: Fix capture videos on laptops
