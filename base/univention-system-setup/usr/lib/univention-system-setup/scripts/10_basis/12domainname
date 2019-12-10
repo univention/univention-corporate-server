@@ -202,7 +202,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certif
 	rm -rf /etc/univention/ssl/univention-directory-manager.$old_domainname
 	univention-certificate new -name "univention-directory-manager.$new_domainname"
 	rm -f /etc/univention/ssl/univention-directory-manager
-	ln -sf /etc/univention/ssl/univention-directory-manager.$new_domainname /etc/univention/ssl/univention-directory-manager
+	ln -snf "univention-directory-manager.$new_domainname" /etc/univention/ssl/univention-directory-manager
 elif [ "$server_role" != "basesystem" ]; then # download certificate from master
 	if [ -x "/usr/sbin/univention-scp" ]; then
 		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
@@ -226,8 +226,8 @@ elif [ "$server_role" != "basesystem" ]; then # download certificate from master
 fi
 
 if [ "$server_role" != "basesystem" ]; then
-	rm -f /etc/univention/ssl/$hostname
-	ln -sf /etc/univention/ssl/$hostname.$new_domainname /etc/univention/ssl/$hostname
+	rm -f "/etc/univention/ssl/$hostname"
+	ln -snf "$hostname.$new_domainname" "/etc/univention/ssl/$hostname"
 
 	if [ -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
 		echo `date` : "Include new host certificate for CUPS"  >> /var/log/univention/setup.log

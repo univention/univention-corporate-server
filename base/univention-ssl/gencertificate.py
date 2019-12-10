@@ -36,14 +36,20 @@ __package__ = ''  # workaround for PEP 366
 from listener import configRegistry, setuid, unsetuid
 import grp
 import os
+from shutil import rmtree
+from errno import ENOENT
 
 import univention.debug as ud
 import subprocess
+try:
+	from typing import Dict, List, Optional  # noqa F401
+except ImportError:
+	pass
 
 name = 'gencertificate'
 description = 'Generate new Certificates'
 filter = '(|%s)' % ''.join('(objectClass=%s)' % oc for oc in set(configRegistry['ssl/host/objectclass'].split(',')))
-attributes = []
+attributes = []  # type: List[str]
 modrdn = "1"
 
 
@@ -53,11 +59,18 @@ _delay = None
 
 
 def initialize():
+	# type: () -> None
 	"""Initialize the module once on first start or after clean."""
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Initialize')
 
 
 def domain(info):
+	# type: (Dict[str, List[str]]) -> str
+	"""
+	Return domain name of machine account.
+
+	:param info: LDAP attribute values.
+	"""
 	try:
 		return info['associatedDomain'][0]
 	except LookupError:
@@ -71,7 +84,15 @@ def wildcard_certificate(info):
 
 
 def handler(dn, new, old, command=''):
-	"""Handle changes to 'dn'."""
+	# type: (str, Optional[Dict[str, List[str]]], Optional[Dict[str, List[str]]], str) -> None
+	"""
+	Handle changes to 'dn'.
+
+	:param dn: Distinguished name.
+	:param new: Current LDAP attribute values.
+	:param old: Previous LDAP attribute values.
+	:param command: LDAp transaction type.
+	"""
 	if configRegistry['server/role'] != 'domaincontroller_master':
 		return
 
@@ -118,50 +139,58 @@ def handler(dn, new, old, command=''):
 			# Reset permissions
 			fqdn = "%s.%s" % (new['cn'][0], domain(new))
 			certpath = os.path.join(SSLDIR, fqdn)
-			os.path.walk(certpath, set_permissions, (dn, new))
+			fix_permissions(certpath, dn, new)
 			if wildcard_certificate(new):
 				fqdn = "*.%s.%s" % (new['cn'][0], domain(new))
 				certpath = os.path.join(SSLDIR, fqdn)
-				os.path.walk(certpath, set_permissions, (dn, new))
+				fix_permissions(certpath, dn, new)
 	finally:
 		unsetuid()
 
 
-def set_permissions(arg, directory, fnames):
-	"""Set file permission on directory and files within."""
-	dn, new = arg
+def fix_permissions(certpath, dn, new):
+	# type: (str, str, Dict[str, List[str]]) -> None
+	"""
+	Set file permission on directory and files within.
+
+	:param certpath: Base directory path.
+	:param dn: Distinguished name.
+	:param new: LDAP attribute values.
+	"""
 	try:
 		uidNumber = int(new.get('uidNumber', ['0'])[0])
 	except (LookupError, TypeError, ValueError):
 		uidNumber = 0
 
 	try:
-		gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
+		ent = grp.getgrnam('DC Backup Hosts')
+		gidNumber = int(ent.gr_gid)
 	except (LookupError, TypeError, ValueError):
 		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
 		gidNumber = 0
 
-	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
-	os.chown(directory, uidNumber, gidNumber)
-	os.chmod(directory, 0o750)
+	for directory, dirnames, filenames in os.walk(certpath):
+		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
+		os.chown(directory, uidNumber, gidNumber)
+		os.chmod(directory, 0o750)
 
-	for fname in fnames:
-		filename = os.path.join(directory, fname)
-		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
-		os.chown(filename, uidNumber, gidNumber)
-		os.chmod(filename, 0o640)
-
-
-def remove_dir(_arg, directory, fnames):
-	"""Remove directory and all files within."""
-	for fname in fnames:
-		filename = os.path.join(directory, fname)
-		os.remove(filename)
-	os.rmdir(directory)
+		for fname in filenames:
+			filename = os.path.join(directory, fname)
+			if os.path.islink(filename):
+				continue
+			ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissions for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
+			os.chown(filename, uidNumber, gidNumber)
+			os.chmod(filename, 0o640)
 
 
 def create_certificate(hostname, domainname):
-	"""Create SSL host certificate."""
+	# type: (str, str) -> None
+	"""
+	Create SSL host certificate.
+
+	:param hostname: host name.
+	:param domainname: domain name,
+	"""
 	fqdn = '%s.%s' % (hostname, domainname)
 	certpath = os.path.join(SSLDIR, fqdn)
 	link_path = os.path.join(SSLDIR, hostname)
@@ -180,16 +209,23 @@ def create_certificate(hostname, domainname):
 	# Create symlink
 	try:
 		os.remove(link_path)
-	except OSError:
-		pass
+	except EnvironmentError as ex:
+		if ex.errno != ENOENT:
+			ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to remove %s: %s' % (link_path, ex))
 	try:
-		os.symlink(certpath, link_path)
-	except OSError:
-		pass
+		os.symlink(fqdn, link_path)
+	except EnvironmentError as ex:
+		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to create %s: %s' % (link_path, ex))
 
 
 def remove_certificate(hostname, domainname):
-	"""Remove SSL host certificate."""
+	# type: (str, str) -> None
+	"""
+	Remove SSL host certificate.
+
+	:param hostname: host name.
+	:param domainname: domain name,
+	"""
 	fqdn = '%s.%s' % (hostname, domainname)
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Revoke certificate %s' % (fqdn,))
 	subprocess.call(('/usr/sbin/univention-certificate', 'revoke', '-name', fqdn))
@@ -200,14 +236,16 @@ def remove_certificate(hostname, domainname):
 
 	certpath = os.path.join(SSLDIR, fqdn)
 	if os.path.exists(certpath):
-		os.path.walk(certpath, remove_dir, None)
+		rmtree(certpath, ignore_errors=True)
 
 
 def clean():
+	# type: () -> None
 	"""Handle request to clean-up the module."""
 	return
 
 
 def postrun():
+	# type: () -> None
 	"""Transition from prepared-state to not-prepared."""
 	return

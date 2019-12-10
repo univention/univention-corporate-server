@@ -253,8 +253,8 @@ if [ "$server_role" != "basesystem" ]; then
 
 	echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
 
-	rm -f /etc/univention/ssl/$new_hostname
-	ln -sf /etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/$new_hostname
+	rm -f "/etc/univention/ssl/$new_hostname"
+	ln -snf "$new_hostname.$domainname" "/etc/univention/ssl/$new_hostname"
 
 
 	echo `date` : "Restart LDAP server"  >> /var/log/univention/setup.log

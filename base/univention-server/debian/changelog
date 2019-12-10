@@ -1,3 +1,9 @@
+univention-server (14.0.0-10) unstable; urgency=low
+
+  * Bug #49036: Fix file permission when creating new host certificates
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 10 Oct 2019 15:34:05 +0200
+
 univention-server (14.0.0-10) unstable; urgency=medium
 
   * Bug #50171: install UDM REST API by default on DC Master/Backup
