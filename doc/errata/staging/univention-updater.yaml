@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-updater
+fix: 14.0.2-11A~4.4.0.201912101400
+desc: |
+ This update addresses the following issue(s):
+ * The wording of the univention-updater help text has been corrected.
+bug: [47834]
