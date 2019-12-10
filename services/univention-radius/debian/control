@@ -43,8 +43,8 @@ Architecture: any
 Depends:
  ${misc:Depends},
  ${python3:Depends},
- python-passlib,
- python-univention,
+ python3-passlib,
+ python3-univention,
 Provides: ${python3:Provides}
 Description:
  Python 3 library for the univention radius integration.

@@ -1,3 +1,9 @@
+univention-radius (6.0.2-17) unstable; urgency=medium
+
+  * Bug #49175: fix python 3 dependencies
+
+ -- Florian Best <best@univention.de>  Tue, 10 Dec 2019 12:01:49 +0100
+
 univention-radius (6.0.2-16) unstable; urgency=medium
 
   * Bug #49175: fix ftbfs: add missing build dependency
