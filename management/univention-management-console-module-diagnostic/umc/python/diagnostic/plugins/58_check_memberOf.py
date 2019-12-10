@@ -48,6 +48,7 @@ links = [{
 
 def run(_umc_instance):
 	if util.is_service_active('LDAP'):
+		ucr.load()
 		if not ucr.is_true('ldap/overlay/memberof'):
 			MODULE.error(warning_message)
 			raise Warning(description=warning_message)
