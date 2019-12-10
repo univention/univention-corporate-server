@@ -1,9 +1,9 @@
 product: ucs
 release: "4.4"
 version: [0]
-scope: ucs_4.4-0-errata4.4-0
+scope: ucs_4.4-0-errata4.4-3
 src: univention-ssl
-fix: 13.0.0-2
+fix: 13.0.0-6A~4.4.0.201912101852
 desc: |
  This update addresses the following issue:
  * An issue in the Univention Directory Listener module `gencertificate.py` to
