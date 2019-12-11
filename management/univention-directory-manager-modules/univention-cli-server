@@ -57,10 +57,11 @@ class MyRequestHandler(socketserver.BaseRequestHandler):
 
 	def handle(self):
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] new connection [%s]' % (os.getppid(), os.getpid()))
-		sarglist = ''
+		sarglist = b''
+		buff_len = 1024
 		while True:
-			buf = self.request.recv(1024)
-			if buf[-1] == '\0':
+			buf = self.request.recv(buff_len)
+			if len(buf) < buff_len:
 				buf = buf[:-1]
 				sarglist += buf
 				break
