@@ -9,3 +9,5 @@ desc: |
  * A module to check if the LDAP module memberOf is activated
    has been added.
 bug: [50599]
+erratum: 395
+announced: 2019-12-11
