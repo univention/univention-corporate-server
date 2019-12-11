@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package now uses dh_python2 instead of python-support.
 bug: [49175]
+erratum: 398
+announced: 2019-12-11
