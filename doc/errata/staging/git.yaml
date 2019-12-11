@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [2, 3]
+scope: ucs_4.4-0-errata4.4-3
+src: git
+fix: 1:2.11.0-3+deb9u5
+desc: |
+ This update addresses the following issues:
+ * Arbitrary path overwriting via export-marks command option (CVE-2019-1348)
+ * recursive submodule cloning allows using git directory twice with
+   synonymous directory name written in .git/ (CVE-2019-1349)
+ * Files inside the .git directory may be overwritten during cloning via NTFS
+   Alternate Data Streams (CVE-2019-1352)
+ * NTFS protections inactive when running Git in the Windows Subsystem for
+   Linux (CVE-2019-1353)
+ * remote code execution in recursive clones (CVE-2019-1387)
+bug: [50622]
+cve:
+- CVE-2019-1348
+- CVE-2019-1349
+- CVE-2019-1352
+- CVE-2019-1353
+- CVE-2019-1387
