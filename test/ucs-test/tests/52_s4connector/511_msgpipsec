@@ -1,0 +1,125 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check msgpipsec policies"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 49838
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+eval "$(ucr shell)"
+
+ucr set connector/s4/mapping/msgpipsec=yes
+
+service univention-s4-connector restart
+
+echo -e "
+dn: CN=IP Security2,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: container
+cn: IP Security2
+
+dn: CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: ipsecBase
+objectClass: ipsecPolicy
+cn: ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000}
+description: For all IP traffic, always require security using Kerberos trust. Do NOT allow unsecured communication with untrusted clients.
+ipsecName: Secure Server (Require Security)
+ipsecID: {7238523C-70FA-11D1-864C-14A300000000}
+ipsecDataType: 598
+ipsecData:: YyEgIkxP0RGGOwCgJI0wIQQAAAAwKgAAAA==
+#ipsecNFAReference: CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base
+#ipsecISAKMPReference: CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base
+
+dn: CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: ipsecBase
+objectClass: ipsecISAKMPPolicy
+cn: ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000}
+ipsecID: {7238523D-70FA-11D1-864C-14A300000000}
+ipsecDataType: 598
+ipsecData:: uCDcgMgu0RGongCgJI0wIUABAAD5ckJZHQfTEa0iAGCw7MoXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAADNzQMAAABAAAAACAAAAAIAAABAAAAAAAAAAAAAAAAAAAAAAAAAAADNzc0CAAAAAAAAAAAAAACAcAAAzc3NzQAAzc0DAAAAQAAAAAgAAAABAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAzc3NAgAAAAAAAAAAAAAAgHAAAM3Nzc0AAM3NAQAAAEAAAAAIAAAAAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAM3NzQEAAAAAAAAAAAAAAIBwAADNzc3NAADNzQEAAABAAAAACAAAAAEAAABAAAAAAAAAAAAAAAAAAAAAAAAAAADNzc0BAAAAAAAAAAAAAACAcAAAzc3NzQA=
+ipsecOwnersReference: CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base
+
+dn: CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: ipsecBase
+objectClass: ipsecNFA
+cn: ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17}
+ipsecID: {59319C04-5EE3-11D2-ACE8-0060B0ECCA17}
+ipsecDataType: 598
+ipsecData:: AKy7EY1J0RGGOQCgJI0wISoAAAABAAAABQAAAAIAAAAAAP3///8CAAAAAAAAAAAAAAAAAAEAAAACAAAAAAAA
+ipsecOwnersReference: CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base
+#ipsecNegotiationPolicyReference: CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base
+
+dn: CN=ipsecFilter{7238523A-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: ipsecBase
+objectClass: ipsecFilter
+cn: ipsecFilter{7238523A-70FA-11D1-864C-14A300000000}
+description: Matches all IP packets from this computer to any other computer, except broadcast, multicast, Kerberos, RSVP and ISAKMP (IKE).
+ipsecName: All IP Traffic
+ipsecID: {7238523A-70FA-11D1-864C-14A300000000}
+ipsecDataType: 598
+ipsecOwnersReference: CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base
+ipsecData:: tSDcgMgu0RGongCgJI0wIUoAAAABAAAAAgAAAAAAAgAAAAAAAgAAAAAA3ZsxWeNe0hGs6ABgsOzKFwEAAAAAAAAA/////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+
+dn: CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: ipsecBase
+objectClass: ipsecNegotiationPolicy
+cn: ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17}
+ipsecID: {59319BDF-5EE3-11D2-ACE8-0060B0ECCA17}
+ipsecDataType: 598
+ipsecData:: uSDcgMgu0RGongCgJI0wIeQBAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAADAAAAAgAAAAIAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAMAAAABAAAAAgAAAEAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAIAAAACAAAAQAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAIAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAAQAAAEAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAABAAAAQAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+ipsecOwnersReference: CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base
+iPSECNegotiationPolicyType: {62F49E13-6C37-11D1-864C-14A300000000}
+iPSECNegotiationPolicyAction: {8A171DD3-77E3-11D1-8659-A04F00000000}
+" | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-ldapsearch -b "CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=ipsecFilter{7238523A-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
+
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecFilter{7238523A-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-ldapsearch -b "CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=ipsecFilter{7238523A-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
+
+ldbdel -H /var/lib/samba/private/sam.ldb -r "CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+univention-ldapsearch -b "CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
+
+ucr set connector/s4/mapping/msgpipsec="$connector_s4_mapping_msgpipsec"
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
