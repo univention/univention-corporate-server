@@ -1,0 +1,27 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: firefox-esr
+fix: 68.3.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Tor Browser through 8.5.3 has an information exposure vulnerability. It
+   allows remote attackers to detect the browser's language via vectors
+   involving an IFRAME element, because text in that language is included in
+   the title attribute of a LINK element for a non-HTML page. This is related
+   to a behavior of Firefox before 68. (CVE-2019-13075)
+ * Buffer overflow in plain text serializer (CVE-2019-17005)
+ * Use-after-free in worker destruction (CVE-2019-17008)
+ * Use-after-free when performing device orientation checks (CVE-2019-17010)
+ * Use-after-free when retrieving a document in antitracking (CVE-2019-17011)
+ * Memory safety bugs fixed in Firefox 71 and Firefox ESR 68.3
+   (CVE-2019-17012)
+bug: [50623]
+cve:
+- CVE-2019-13075
+- CVE-2019-17005
+- CVE-2019-17008
+- CVE-2019-17010
+- CVE-2019-17011
+- CVE-2019-17012
