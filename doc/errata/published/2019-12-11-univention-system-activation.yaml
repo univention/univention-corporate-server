@@ -9,3 +9,5 @@ desc: |
  * Activating an app appliance now also sends the uuid/system UCR variable
    for analytical purposes.
 bug: [49555]
+erratum: 399
+announced: 2019-12-11
