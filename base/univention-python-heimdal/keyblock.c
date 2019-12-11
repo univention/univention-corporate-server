@@ -30,6 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #include <krb5.h>
@@ -95,7 +96,7 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	krb5ContextObject *context;
 	PyObject *py_enctype;
 	char *key_data = NULL;
-	int key_len;
+	Py_ssize_t key_len;
 	krb5_enctype enctype;
 
 #if PY_MAJOR_VERSION >= 3

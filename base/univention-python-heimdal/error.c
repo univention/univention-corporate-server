@@ -30,6 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
 #include <krb5_err.h>

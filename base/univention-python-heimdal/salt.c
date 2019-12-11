@@ -30,6 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #include <krb5.h>
@@ -90,7 +91,7 @@ krb5SaltObject *salt_new(PyObject *unused, PyObject *args)
 krb5SaltObject *salt_raw_new(PyObject *unused, PyObject *args) {
 	krb5ContextObject *context;
 	char *saltstring = NULL;
-	int saltlen;
+	Py_ssize_t saltlen;
 
 	if (!PyArg_ParseTuple(args, "O!s#", &krb5ContextType, &context, &saltstring, &saltlen))
 		return NULL;

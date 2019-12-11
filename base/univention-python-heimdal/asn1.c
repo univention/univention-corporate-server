@@ -30,6 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
 #include <hdb.h>
@@ -139,7 +140,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 PyObject* asn1_decode_key(PyObject *unused, PyObject* args)
 {
 	uint8_t *key_buf;
-	size_t key_len;
+	Py_ssize_t key_len;
 	krb5KeyblockObject *keyblock = NULL;
 	krb5SaltObject *salt = NULL;
 	krb5_error_code err;

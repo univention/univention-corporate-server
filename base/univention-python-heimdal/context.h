@@ -32,6 +32,7 @@
 #ifndef __CONTEXT_H__
 #define __CONTEXT_H__
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
 

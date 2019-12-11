@@ -65,6 +65,7 @@
 #ifndef __KEYTAB_H__
 #define __KEYTAB_H__
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
 #include "context.h"
