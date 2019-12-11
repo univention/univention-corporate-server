@@ -11,3 +11,5 @@ desc: |
  * The App Center will now check the available disk space before installing an
    App.
 bug: [50592, 31796]
+erratum: 392
+announced: 2019-12-11
