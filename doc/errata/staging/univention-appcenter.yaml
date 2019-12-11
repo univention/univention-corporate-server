@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
 fix: 8.0.11-96A~4.4.0.201912091101
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The command univention-app dev-test-setup has been added that installs
    components needed to run selenium based app tests.
  * The App Center will now check the available disk space before installing an

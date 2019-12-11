@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-3
 src: python-notifier
 fix: 0.9.7-7A~4.4.0.201912091451
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The package has been migrated to dh-python and Python 3.
 bug: [50461]
