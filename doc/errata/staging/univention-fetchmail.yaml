@@ -6,7 +6,7 @@ src: univention-fetchmail
 fix: 12.0.4-7A~4.4.0.201912061609
 desc: |-
   This update addresses the following issue(s):
-  * The schema file and the ACL file for fechmail are now properly registered
+  * The schema file and the ACL file for fetchmail are now properly registered
     using the newer ucs_registerLDAPExtension. This prevents errors when a
     Backup system is promoted to be the new DC Master.
 bug: [50607]
