@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: python-univention-connector-s4\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-12-04 15:01+0100\n"
+"POT-Creation-Date: 2019-12-11 10:20+0100\n"
 "PO-Revision-Date: 2019-10-09 12:46+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -14,57 +14,57 @@ msgstr ""
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:94
 msgid "App schema version"
-msgstr ""
+msgstr "App-Schema Version"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:86
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:86
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:106
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:107
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:92
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:101
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:96
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:107
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:97
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:108
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:232
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:107
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:108
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:86
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:96
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:97
 msgid "Basic settings"
-msgstr ""
+msgstr "Grundeinstellungen"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:263
 msgid "COM"
-msgstr ""
+msgstr "COM"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:212
 msgid "COM class ID"
-msgstr ""
+msgstr "COM Class ID"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:206
 msgid "COM interface ID"
-msgstr ""
+msgstr "COM Interface ID"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:200
 msgid "COM prog ID"
-msgstr ""
+msgstr "COM Prog ID"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:194
 msgid "COM type lib ID"
-msgstr ""
+msgstr "COM type lib ID"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:224
 msgid "Can upgrade script"
-msgstr ""
+msgstr "Can-Upgrade-Skript"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:218
 msgid "Category"
-msgstr ""
+msgstr "Kategorie"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:78
 msgid "Data"
-msgstr ""
+msgstr "Daten"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:73
 msgid "Data type"
-msgstr ""
+msgstr "Datentyp"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:63
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:63
@@ -78,178 +78,178 @@ msgstr ""
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:63
 #: modules/univention/admin/handlers/ms/gpipsec-filter.py:63
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:63
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:63
 msgid "Display name"
-msgstr ""
+msgstr "Anzeigename"
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:88
 msgid "Extension name"
-msgstr ""
+msgstr "Name der Erweiterung"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:86
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:87
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:86
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:87
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:106
 #: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:107
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:108
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:92
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:93
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:101
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:102
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:96
 #: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:97
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:107
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:98
 #: modules/univention/admin/handlers/ms/gpipsec-nfa.py:108
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:109
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:232
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:233
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:107
 #: modules/univention/admin/handlers/ms/gpipsec-policy.py:108
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:109
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:86
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:87
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:96
 #: modules/univention/admin/handlers/ms/gpipsec-filter.py:97
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:98
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:68
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:89
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:89
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:89
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:89
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:89
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:90
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:90
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:90
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:90
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:90
 msgid "IPsec Data"
-msgstr ""
+msgstr "IPsec Daten"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:84
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:84
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:84
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:84
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:84
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:85
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:85
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:85
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:85
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:85
 msgid "IPsec Data Type"
-msgstr ""
+msgstr "IPsec Datentyp"
 
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:99
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:100
 msgid "IPsec Filter reference"
-msgstr ""
+msgstr "IPsec Filter-Referenz"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:79
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:79
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:79
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:79
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:79
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:80
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:80
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:80
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:80
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:80
 msgid "IPsec ID"
-msgstr ""
+msgstr "IPsec ID"
 
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:100
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:101
 msgid "IPsec ISAKMP Reference"
-msgstr ""
+msgstr "IPsec ISAKMP-Referenz"
 
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:94
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:95
 msgid "IPsec NFA Reference"
-msgstr ""
+msgstr "IPsec NFA-Referenz"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:74
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:74
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:74
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:74
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:74
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:75
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:75
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:75
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:75
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:75
 msgid "IPsec Name"
-msgstr ""
+msgstr "IPsec Name"
 
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:94
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:95
 msgid "IPsec Negotiation Policy Reference"
-msgstr ""
+msgstr "IPsec Negotiation Policy-Referenz"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:99
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:100
 msgid "IPsec Negotiation Policy action"
-msgstr ""
+msgstr "IPsec Negotiation Policy Aktion"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:94
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:95
 msgid "IPsec Negotiation Policy type"
-msgstr ""
+msgstr "IPsec Negotiation Policy Typ"
 
-#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:68
-#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:68
-#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:68
-#: modules/univention/admin/handlers/ms/gpipsec-policy.py:68
-#: modules/univention/admin/handlers/ms/gpipsec-filter.py:68
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:69
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:69
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:69
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:69
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:69
 msgid "IPsec Owners reference"
-msgstr ""
+msgstr "IPsec Eigentümer-Referenz"
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:83
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:172
 msgid "Last update sequence"
-msgstr ""
+msgstr "Letzte Aktualisierungssequenz"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:166
 msgid "Locale ID"
-msgstr ""
+msgstr "Locale-ID"
 
 #: modules/univention/admin/handlers/ms/gpipsec-policy.py:45
 msgid "MS IPsec policy"
-msgstr ""
+msgstr "MS IPsec Richtlinie"
 
 #: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:45
 msgid "MS IPsec policy: ISAKMP Policy"
-msgstr ""
+msgstr "MS IPsec Richtlinie: ISAKMP Richtlinie"
 
 #: modules/univention/admin/handlers/ms/gpipsec-nfa.py:45
 msgid "MS IPsec policy: NFA"
-msgstr ""
+msgstr "MS IPsec Richtlinie: NFA"
 
 #: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:45
 msgid "MS IPsec policy: Negotiation Policy"
-msgstr ""
+msgstr "MS IPsec Richtlinie: Negotiation Richtlinie"
 
 #: modules/univention/admin/handlers/ms/gpipsec-filter.py:45
 msgid "MS IPsec policy: filter"
-msgstr ""
+msgstr "MS IPsec Richtlinie: Filter"
 
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:45
 msgid "MS Software Installation Group Policy: Category Registration"
-msgstr ""
+msgstr "MS Software Installation Gruppenrichtlinie: Kategorie Registrierung"
 
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:45
 msgid "MS wired Group Policy"
-msgstr ""
+msgstr "MS Wired Gruppenrichtlinie"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:45
 msgid "MS wireless Group Policy"
-msgstr ""
+msgstr "MS Wireless Gruppenrichtlinie"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:45
 msgid "MS wireless Group Policy blob"
-msgstr ""
+msgstr "MS wireless blob Gruppenrichtlinie"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:256
 msgid "MSI"
-msgstr ""
+msgstr "MSI"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:149
 msgid "MSI file list"
-msgstr ""
+msgstr "MSI Dateiliste"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:144
 msgid "MSI script"
-msgstr ""
+msgstr "MSI-Skript"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:139
 msgid "MSI script name"
-msgstr ""
+msgstr "MSI Skriptname"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:134
 msgid "MSI script path"
-msgstr ""
+msgstr "MSI Skriptpfad"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:129
 msgid "MSI script size"
-msgstr ""
+msgstr "MSI Skriptgröße"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:56
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:56
@@ -263,21 +263,21 @@ msgstr ""
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:56
 #: modules/univention/admin/handlers/ms/gpipsec-filter.py:56
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:78
 msgid "Next level store"
-msgstr ""
+msgstr "Next-Level-Speicher"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:73
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:73
 msgid "Policy Data"
-msgstr ""
+msgstr "Richtlinien Daten"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:79
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:79
 msgid "Policy GUID"
-msgstr ""
+msgstr "Richtlinien GUID"
 
 #: modules/univention/admin/handlers/ms/gpwl-wireless.py:68
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:68
@@ -288,93 +288,93 @@ msgstr ""
 #: modules/univention/admin/handlers/ms/gpwl-wired.py:90
 #: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:90
 msgid "Policy settings"
-msgstr ""
+msgstr "Richtlinien-Einstellungen"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:93
 msgid "Revision"
-msgstr ""
+msgstr "Revision"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:104
 msgid "Setup command"
-msgstr ""
+msgstr "Setup-Befehl"
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:45
 msgid "Software Installation Group Policy: Class Store"
-msgstr ""
+msgstr "Software-Installation Gruppenrichtlinie: Klassenspeicher"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:45
 msgid "Software Installation Group Policy: Package Registration"
-msgstr ""
+msgstr "Software-Installation Gruppenrichtlinie: Paketregistrierung"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:88
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:98
 msgid "Upgrade product code"
-msgstr ""
+msgstr "Aktualisierungs Produktcode"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:83
 msgid "Vendor"
-msgstr ""
+msgstr "Hersteller"
 
 #: modules/univention/admin/handlers/ms/gpsi-class-store.py:73
 msgid "Version number"
-msgstr ""
+msgstr "Versionnummer"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:78
 msgid "Version number high"
-msgstr ""
+msgstr "Höchste Versionsnummer"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:73
 msgid "Version number low"
-msgstr ""
+msgstr "Kleinste Versionsnummer"
 
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:85
 msgid "category ID"
-msgstr ""
+msgstr "Kategorie-ID"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:188
 msgid "file ext priority"
-msgstr ""
+msgstr "Dateierweiterungs-Priorität"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:182
 msgid "icon path"
-msgstr ""
+msgstr "Icon-Pfad"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:177
 msgid "install UI level"
-msgstr ""
+msgstr "Installations UI-Level"
 
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:79
 msgid "locale ID"
-msgstr ""
+msgstr "Locale ID"
 
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:73
 msgid "localized description"
-msgstr ""
+msgstr "Lokalisierte Beschreibung"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:160
 msgid "machine architecture"
-msgstr ""
+msgstr "Maschinen Architektur"
 
 #: modules/univention/admin/handlers/ms/gpsi-category-registration.py:68
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:155
 msgid "managed by"
-msgstr ""
+msgstr "Verwaltet von"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:124
 msgid "package flags"
-msgstr ""
+msgstr "Paketflags"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:119
 msgid "package name"
-msgstr ""
+msgstr "Paketname"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:114
 msgid "package type"
-msgstr ""
+msgstr "Pakettyp"
 
 #: modules/univention/admin/handlers/ms/gpsi-package-registration.py:109
 msgid "product code"
-msgstr ""
+msgstr "Produktcode"
