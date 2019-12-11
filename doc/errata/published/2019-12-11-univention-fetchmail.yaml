@@ -10,3 +10,5 @@ desc: |-
    using the newer ucs_registerLDAPExtension. This prevents errors when a
    Backup system is promoted to be the new DC Master.
 bug: [50607]
+erratum: 394
+announced: 2019-12-11
