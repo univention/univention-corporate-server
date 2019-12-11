@@ -1,9 +1,9 @@
 product: ucs
 release: "4.4"
-version: [1]
-scope: ucs_4.4-0-errata4.4-1
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
 src: univention-server
-fix: 14.0.0-7
+fix: 14.0.0-11A~4.4.0.201912111753
 desc: |
  This update addresses the following issue:
  * Fixed symbolic link creation for host certificate.
