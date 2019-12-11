@@ -36,6 +36,8 @@ import socket
 from select import select
 import os
 import ast
+import json
+import six
 import sys
 import errno
 import traceback
@@ -170,15 +172,28 @@ def server_main(args):
 def doit(sarglist, conn):
 	"""Process single UDM request."""
 
-	def send_message(output):
+	def send_message_as_json(output):
+		"""Send answer back."""
+		back = six.ensure_binary(json.dumps(output), encoding='utf-8', errors='strict')
+		conn.send(back + '\0')
+		conn.close()
+
+	def send_message_as_ast(output):
 		"""Send answer back."""
 		back = repr(output)
 		conn.send(back + '\0')
 		conn.close()
 
 	global logfile
-	arglist = ast.literal_eval(sarglist)
-
+	msg_sender = send_message_as_json
+	try:
+		arglist = json.loads(sarglist)
+	except ValueError as exp:
+		msg_sender = send_message_as_ast
+		try:
+			arglist = ast.literal_eval(sarglist)
+		except Exception as exp:
+			return
 	next_is_logfile = False
 	secret = False
 	show_help = False
@@ -205,9 +220,8 @@ def doit(sarglist, conn):
 				continue
 		else:
 			if not show_help:
-				send_message(["E: Permission denied, try --logfile, --binddn and --bindpwd"])
+				msg_sender(["E: Permission denied, try --logfile, --binddn and --bindpwd"])
 				sys.exit(1)
-
 	if logfile != oldlogfile:
 		ud.exit()
 		ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
@@ -235,8 +249,7 @@ def doit(sarglist, conn):
 		output = traceback.format_exception(ext, exv, extb)
 		output = [line[:-1] for line in output]
 		output.append("OPERATION FAILED")
-
-	send_message(output)
+	msg_sender(output)
 
 	if show_help and not secret:
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] [%s] stopped, because User has no read/write permissions' % (os.getppid(), os.getpid()))

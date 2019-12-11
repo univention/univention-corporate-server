@@ -31,12 +31,14 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import json
 import locale
 import socket
 import stat
 import time
 import ast
 import os
+import six
 import sys
 from univention.config_registry import ConfigRegistry
 
@@ -184,12 +186,18 @@ def main():
 	if cmdfile == 'univention-passwd':
 		password = get_password()
 		sys.argv += ['--pwd', password]
-
-	sock.send(repr(sys.argv) + '\0')
+	msg = repr(sys.argv)
+	msg = six.ensure_binary(json.dumps(sys.argv), encoding='utf-8', errors='strict')
+	sock.send(msg + b'\0')
 	data = receive_answer(sock)
 	sock.close()
-
-	output = ast.literal_eval(data)
+	try:
+		output = json.loads(data)
+	except ValueError as _exp:
+		try:
+			output = ast.literal_eval(data)
+		except Exception as _exp:
+			return
 	result = process_output(output, cmdfile)
 	sys.exit(result)
 
