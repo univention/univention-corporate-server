@@ -1,0 +1,139 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check policies"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 49838
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+eval "$(ucr shell)"
+
+ucr set connector/s4/mapping/msgpsi=yes
+
+service univention-s4-connector restart
+
+policy_name="{E1E20275-CBF3-46D4-B926-$(random_chars 12 "ABCDEF0123456789")}"
+policy_base="CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base"
+policy_base_ucs="CN=$policy_name,CN=Policies,CN=System,$ldap_base"
+
+echo -e "
+dn: CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: container
+objectClass: groupPolicyContainer
+cn: $policy_name
+displayName: Neues Gruppenrichtlinienobjekt
+gPCFileSysPath: \\\\$domainname\\SysVol\\$domainname\\Policies\\$policy_name
+gPCFunctionalityVersion: 2
+flags: 0
+gPCMachineExtensionNames: [{0ACDD40C-75AC-47AB-BAA0-BF6DE7E7FE63}{2DA6AA7F-8C88-4194-A558-0D36E7FD3E64}][{B587E2B1-4D59-4E7E-AED9-22B9DF11D053}{06993B16-A5C7-47EB-B61C-B1CB7EE600AC}][{C6DC5466-785A-11D2-84D0-00C04FB169F7}{942A8E4F-A261-11D1-A760-00C04FB9603F}]
+versionNumber: 10
+
+dn: CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: container
+cn: Machine
+
+dn: CN=Microsoft,CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: container
+cn: Microsoft
+
+dn: CN=Windows,CN=Microsoft,CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: container
+cn: Windows
+
+dn: CN=Class Store,CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: classStore
+cn: Class Store
+description: Application Store
+displayName: LDAP://CN=$policy_name,CN=POLICIES,CN=SYSTEM,$samba4_ldap_base
+extensionName: Neues Gruppenrichtlinienobjekt
+appSchemaVersion: 1740
+lastUpdateSequence: 20191203220853
+
+dn: CN=Packages,CN=Class Store,CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: classStore
+cn: Packages
+description: Application Packages
+
+dn: CN=10fafe6a-333b-45d1-9f61-b4566abab127,CN=Packages,CN=Class Store,CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: packageRegistration
+cn: 10fafe6a-333b-45d1-9f61-b4566abab127
+displayName: Mozilla Firefox 72.0b2 x64 gn
+msiScriptPath: \\\\$domainname\\SysVol\\$domainname\\Policies\\$policy_name\\Machine\\Applications\\{C7513893-D53C-4366-9A7C-8ADA038F4FA4}.aas
+cOMClassID: 00000000-0000-0000-0000-000000000000:0
+localeID: 0
+machineArchitecture: 150996226
+revision: 0
+packageType: 5
+packageName: Mozilla Firefox 72.0b2 x64 gn
+versionNumberHi: 0
+versionNumberLo: 0
+msiFileList: 0:C:\\Users\\Administrator\\Downloads\\Firefox Setup 72.0b2.msi
+upgradeProductCode:: TKsYMTO0u0+5+o+cpLXBAw==
+productCode:: xaSUEneZD0iUl8DqHmMBMA==
+installUiLevel: 5
+lastUpdateSequence: 20191203220853
+url: http://mozilla.org
+packageFlags: -1610593168
+msiScriptName: A
+categories: c83b9741-9831-4473-a6f8-acdb68f37094
+
+dn: CN=c83b9741-9831-4473-a6f8-acdb68f37094,CN=Packages,CN=Class Store,CN=Machine,CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base
+objectClass: top
+objectClass: leaf
+objectClass: categoryRegistration
+cn: c83b9741-9831-4473-a6f8-acdb68f37094
+categoryId: c83b9741-9831-4473-a6f8-acdb68f37094
+localizedDescription: 0 :: TestCat
+" | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  || fail_test 110
+univention-ldapsearch -b "CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=10fafe6a-333b-45d1-9f61-b4566abab127,CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
+univention-ldapsearch -b "CN=c83b9741-9831-4473-a6f8-acdb68f37094,CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
+
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=10fafe6a-333b-45d1-9f61-b4566abab127,CN=Packages,CN=Class Store,CN=Machine,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=c83b9741-9831-4473-a6f8-acdb68f37094,CN=Packages,CN=Class Store,CN=Machine,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=Packages,CN=Class Store,CN=Machine,$policy_base" || fail_test 110
+ldbdel -H /var/lib/samba/private/sam.ldb "CN=Class Store,CN=Machine,$policy_base" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+univention-ldapsearch -b "CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=c83b9741-9831-4473-a6f8-acdb68f37094,CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
+univention-ldapsearch -b "CN=10fafe6a-333b-45d1-9f61-b4566abab127,CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
+
+ldbdel -H /var/lib/samba/private/sam.ldb -r "$policy_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  && fail_test 110
+
+ucr set connector/s4/mapping/msgpsi="$connector_s4_mapping_msgpsi"
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
