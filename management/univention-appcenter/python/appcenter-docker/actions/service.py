@@ -140,3 +140,4 @@ class Status(Service):
 				out = out[500:]
 			except Exception as e:
 				out = str(e)
+			return out

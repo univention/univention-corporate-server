@@ -49,4 +49,18 @@ if dpkg --compare-versions "$2" lt 8.0.11-46; then
 	univention-directory-listener-ctrl resync app_attributes
 fi
 
+if dpkg --compare-versions "$2" lt 8.0.11-97; then
+	# Bug #49675
+	python -c "from univention.appcenter.actions import get_action
+import json
+query_cache_file = '/var/cache/univention-appcenter/umc-query.json'
+list_apps = get_action('list')
+domain = get_action('domain')
+apps = list_apps.get_apps()
+info = domain.to_dict(apps)
+with open(query_cache_file, 'wb') as fd:
+	json.dump(info, fd)
+"
+fi
+
 exit 0

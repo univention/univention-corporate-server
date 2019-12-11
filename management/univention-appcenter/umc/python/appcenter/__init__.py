@@ -45,6 +45,7 @@ from json import load
 import notifier
 import notifier.threads
 import apt  # for independent apt.Cache
+import json
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
@@ -234,8 +235,15 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def query(self, quick=False):
-		if not quick:
-			self.update_applications()
+		query_cache_file = '/var/cache/univention-appcenter/umc-query.json'
+		if quick:
+			try:
+				with open(query_cache_file) as fd:
+					return json.load(fd)
+			except EnvironmentError as exc:
+				MODULE.error('Error returning cached query: %s' % exc)
+				return []
+		self.update_applications()
 		self.ucr.load()
 		reload_package_manager()
 		list_apps = get_action('list')
@@ -245,19 +253,9 @@ class Instance(umcm.Base, ProgressMixin):
 			if not self._test_for_docker_service():
 				raise umcm.UMC_Error(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 		info = domain.to_dict(apps)
-		if quick:
-			ret = []
-			for app in info:
-				if app is None:
-					ret.append(None)
-				else:
-					short_info = {}
-					for attr in ['id', 'name', 'vendor', 'maintainer', 'description', 'long_description', 'app_categories', 'end_of_life', 'update_available', 'logo_name', 'is_installed_anywhere', 'is_installed', 'installations', 'rating', 'vote_for_app', 'license', 'license_description', 'candidate_needs_install_permissions']:
-						short_info[attr] = app[attr]
-					ret.append(short_info)
-			return ret
-		else:
-			return info
+		with open(query_cache_file, 'wb') as fd:
+			json.dump(info, fd)
+		return info
 
 	def update_applications(self):
 		if self.ucr.is_true('appcenter/umc/update/always', True):
