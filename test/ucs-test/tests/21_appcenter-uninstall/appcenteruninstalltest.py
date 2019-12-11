@@ -34,6 +34,7 @@ from univention.appcenter.app_cache import Apps
 
 APPCENTER_FILE = "/var/cache/appcenter-uninstalled.txt"
 
+
 def get_requested_apps():
 	ret = []
 	try:

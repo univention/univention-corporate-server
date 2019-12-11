@@ -14,6 +14,7 @@ from http.client import HTTPConnection
 
 logger = logging.getLogger(__name__)
 
+
 def run_test_file(fname):
 	with tempfile.NamedTemporaryFile(suffix='.py') as tmpfile:
 		logger.info('Copying file to {}'.format(tmpfile.name))
@@ -27,6 +28,7 @@ def run_test_file(fname):
 			else:
 				pass
 				sys.exit(pytest.main([tmpfile.name, '-p', __name__]))
+
 
 @contextmanager
 def pip_modules(modules):
@@ -54,6 +56,7 @@ def pip_modules(modules):
 			logger.info('Uninstalling modules via pip3')
 			subprocess.check_output(['pip3', 'uninstall', '--yes'] + modules)
 
+
 @contextmanager
 def xserver():
 	if os.environ.get('DISPLAY'):
@@ -64,12 +67,15 @@ def xserver():
 		with Xvfb(width=1920, height=1080) as xvfb:
 			yield xvfb.new_display
 
+
 def ffmpg_start(capture_video, display):
 	process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', ':{}'.format(display), '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 	return process.pid
 
+
 def ffmpg_stop(pid):
 	subprocess.Popen(['kill', str(pid)])
+
 
 class Session(object):
 	def __init__(self, display_num, base_url, screenshot_path, driver):

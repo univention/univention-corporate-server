@@ -36,6 +36,7 @@ def _get_connection():
 def _search(lo):
 	lo.searchDn('cn=users')
 
+
 def _dump_journal():
 	subprocess.Popen(['journalctl', '-xn']).wait()
 
@@ -72,6 +73,7 @@ def _print_test_header(header):
 	print '\n************************************************************************'
 	print header
 	print '************************************************************************'
+
 
 def _give_systemd_some_time():
 	sleep(5)

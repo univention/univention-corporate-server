@@ -443,6 +443,7 @@ class CheckPackages(Check):
 				yield Verdict(Verdict.ERROR, 'Package %s is installed, but should not be' % (pkg,), TestCodes.REASON_INSTALLED)
 				break
 
+
 class CheckExposure(Check):
 
 	"""

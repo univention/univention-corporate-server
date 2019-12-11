@@ -44,19 +44,23 @@ import locale
 from http.cookies import SimpleCookie
 from http.client import HTTPSConnection, HTTPException
 
+
 def _get_ucr():
 	from univention.config_registry import ConfigRegistry
 	ucr = ConfigRegistry()
 	ucr.load()
 	return ucr
 
+
 def _get_useragent():
 	ucr = _get_ucr()
 	return 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0'), ucr.get('version/patchlevel', '0'), ucr.get('version/erratalevel', '0')),
 
+
 def _get_fqdn():
 	ucr = _get_ucr()
 	return '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+
 
 class _HTTPType(type):
 	"""

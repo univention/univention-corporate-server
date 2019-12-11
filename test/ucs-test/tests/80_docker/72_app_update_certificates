@@ -11,6 +11,7 @@ import pytest
 import os
 import subprocess
 
+
 def cleanup(app):
 	if os.path.isdir(app.check_dir):
 		os.rmdir(app.check_dir)
@@ -18,6 +19,7 @@ def cleanup(app):
 		for i in app.cert_files:
 			if os.path.isfile(app.file(i)):
 				os.remove(app.file(i))
+
 
 def verify_certs(app):
 	print 'looking for %s' % app.check_dir

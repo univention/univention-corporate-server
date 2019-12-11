@@ -11,6 +11,7 @@ import univention.testing.udm as udm_test
 import time
 import subprocess
 
+
 def main():
 	subprocess.call(['service', 'postfix', 'restart'], close_fds=True)
 	subprocess.call(['service', 'univention-self-service-invitation', 'restart'], close_fds=True)

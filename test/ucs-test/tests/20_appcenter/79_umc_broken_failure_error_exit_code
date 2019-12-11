@@ -29,6 +29,7 @@ def _test_app_installation_fails(test):
 	finally:
 		cleanup(test.application)
 
+
 def _test_app_uninstallation_fails(test):
 	try:
 		with test.test_install_safe():
@@ -39,6 +40,7 @@ def _test_app_uninstallation_fails(test):
 				app_test.fail("Uninstall of broken app did not produce dpkg errors.")
 	finally:
 		cleanup(test.application)
+
 
 @app_test.test_case
 def test_install_preinst_error(app_center, application):
@@ -125,6 +127,7 @@ def cleanup(application):
 		pass
 	else:
 		subprocess.check_call(['dpkg', '--remove', application])
+
 
 def main():
 	app_test.app_logger.log_to_stream()

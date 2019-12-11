@@ -21,6 +21,7 @@ import lxml.html
 import urllib3
 urllib3.disable_warnings()
 
+
 def check_status(app):
 	if app.docker:
 		print '    Checking running Docker Container'
@@ -61,6 +62,7 @@ def check_ldap(app, apps):
 			continue
 		dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
 		utils.verify_ldap_object(dn, should_exist=False)
+
 
 def check_webinterface(app):
 	if not app.web_interface:
