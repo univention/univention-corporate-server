@@ -1,4 +1,4 @@
-univention-system-setup (12.0.2-16) unstable; urgency=low
+univention-system-setup (12.0.2-19) unstable; urgency=low
 
   * Bug #49036: Fix file permission when creating new host certificates
 
