@@ -1,3 +1,11 @@
+univention-ldap (15.0.0-32) unstable; urgency=medium
+
+  * Bug #50616: The init script now looks for an already running process only
+    below parent pid 1 specifically. This allows another process "slapd" to be
+    run in a container
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 11 Dec 2019 15:40:06 +0100
+
 univention-ldap (15.0.0-31) unstable; urgency=medium
 
   * Bug #50481: set_handler_message in postrun
