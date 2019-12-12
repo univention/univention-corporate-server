@@ -107,7 +107,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 
 	test -e /etc/univention/ssl/password    && chgrp "DC Backup Hosts" /etc/univention/ssl/password       && chmod g+rw /etc/univention/ssl/password
 
-	test -d "/etc/univention/ssl/$hostname" && chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$hostname" && chmod g+rw "/etc/univention/ssl/$hostname" && find "/etc/univention/ssl/$hostname/" -type f | xargs chmod g+rw
+	test -d "/etc/univention/ssl/$hostname" && chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$hostname" && chmod g+rx "/etc/univention/ssl/$hostname" && find "/etc/univention/ssl/$hostname/" -type f | xargs chmod g+rw
 
 	if [ -d /etc/univention/ssl/ucsCA ]; then
 		chgrp -R "DC Backup Hosts" /etc/univention/ssl/ucsCA
