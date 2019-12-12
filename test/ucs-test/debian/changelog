@@ -1,3 +1,9 @@
+ucs-test (9.0.3-125) unstable; urgency=medium
+
+  * Bug #38178: flaky test; debugging
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Dec 2019 18:22:42 +0100
+
 ucs-test (9.0.3-124) unstable; urgency=medium
 
   * Bug #49838: add test cases for MS group policies
