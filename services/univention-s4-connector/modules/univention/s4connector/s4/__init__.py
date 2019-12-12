@@ -1364,12 +1364,14 @@ class s4(univention.s4connector.ucs):
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
-        if add_members or del_members:
-            s4_members |= add_members  # Note: add_members are only lowercase
-            s4_members -= del_members  # Note: del_members are case sensitive
-            ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %r" % s4_members)
+        member_changes = []
+        if add_members:
+            member_changes.append((ldap.MOD_ADD, 'member', [x.encode('UTF-8') for x in add_members]))
+        if del_members:
+            member_changes.append((ldap.MOD_DEL, 'member', [x.encode('UTF-8') for x in del_members]))
 
-            self.lo_s4.lo.modify_s(object['dn'], [(ldap.MOD_REPLACE, 'member', [x.encode('UTF-8') for x in s4_members])])
+        if member_changes:
+            self.lo_s4.lo.modify_s(object['dn'], member_changes)
 
         return True
 
