@@ -76,7 +76,15 @@ def domain(info):
 	except LookupError:
 		return configRegistry['domainname']
 
+
 def wildcard_certificate(info):
+	# type: (Dict[str, List[str]]) -> bool
+	"""
+	Check if a wildcard certificate should be created for the host.
+
+	:param info: LDAP attribute values.
+	:returns: `True` for a wildcard name, `False` otherwise.
+	"""
 	if 'univentionService' in info:
 		if 'Wildcard Certificate' in info['univentionService']:
 			return True
