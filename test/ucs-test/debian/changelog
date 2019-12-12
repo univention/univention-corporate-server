@@ -1,3 +1,9 @@
+ucs-test (9.0.3-124) unstable; urgency=medium
+
+  * Bug #49838: add test cases for MS group policies
+
+ -- Florian Best <best@univention.de>  Thu, 12 Dec 2019 08:35:57 +0100
+
 ucs-test (9.0.3-123) unstable; urgency=medium
 
   * Bug #50280: Test if there are any ucs-school-slaves that have the wrong userAccountControl value set
