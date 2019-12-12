@@ -1802,24 +1802,10 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
-		if add_members or del_members:
-			ad_members = ad_members + add_members
-			for member in del_members:
-				ad_members.remove(member)
-			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % ad_members)
-			object_ucs['dn'].lower()
-
-			modlist_members = []
-			for member in ad_members:
-				modlist_members.append(compatible_modstring(member))
-
-			try:
-				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'member', modlist_members)])
-			except (ldap.SERVER_DOWN, SystemExit):
-				raise
-			except:  # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.WARN, "group_members_sync_from_ucs: failed to sync members: (%s,%s)" % (object['dn'], [(ldap.MOD_REPLACE, 'member', modlist_members)]))
-				raise
+		if add_members:
+			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_ADD, 'member', list(map(compatible_modstring, add_members)))])
+		if del_members:
+			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_DEL, 'member', list(map(compatible_modstring, del_members)))])
 
 		return True
 
