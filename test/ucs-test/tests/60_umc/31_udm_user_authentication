@@ -144,6 +144,8 @@ class TestUMCUserAuthentication(UDMModule):
         # approx. amount of seconds in 1 month is 2630000
         expiry_date = self.generate_expiry_date(2630000)
         self.UDM.modify_object('users/user', dn=self.test_user_dn, userexpiry=expiry_date)
+        utils.wait_for_connector_replication()
+        sleep(30)  # wait for sync
 
         print("\nDeactivating the test user '%s' account and trying to authenticate:\n" % self.test_username)
         # user modified two times as disabling account and

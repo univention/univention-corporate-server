@@ -1,3 +1,9 @@
+ucs-test (9.0.3-126) unstable; urgency=medium
+
+  * Bug #47720: wait for sync
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Dec 2019 18:44:54 +0100
+
 ucs-test (9.0.3-125) unstable; urgency=medium
 
   * Bug #38178: flaky test; debugging
