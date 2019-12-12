@@ -325,8 +325,8 @@ define([
 			// query all applications
 			quick = quick !== false;
 			this._applications = null;
-			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
-				this._markAppsAsSuggested(applications).then(lang.hitch(this, function() {
+			return when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
+				return this._markAppsAsSuggested(applications).then(lang.hitch(this, function() {
 					var metaLabels = [];
 					array.forEach(this.metaCategories, function(metaObj) {
 						metaObj.set('store', applications);
@@ -377,9 +377,10 @@ define([
 						this._searchSidebar.set('licenses', licenses);
 						this._searchSidebar.onSearch();
 					}
+
+					this.filterApplications();
 				}));
 			}));
-			return updating;
 		},
 
 		_sortLicenses(licenses) {
