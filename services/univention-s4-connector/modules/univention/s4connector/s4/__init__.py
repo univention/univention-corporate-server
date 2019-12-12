@@ -1118,7 +1118,7 @@ class s4(univention.s4connector.ucs):
             if object['dn'].lower() not in s4_members_lower:  # add as member
                 s4_members.append(object['dn'])
                 log.debug("primary_group_sync_from_ucs: primary Group needs change of membership in S4")
-                self.lo_s4.lo.modify_s(s4_group_object['dn'], [(ldap.MOD_REPLACE, 'member', [x.encode('UTF-8') for x in s4_members])])
+                self.lo_s4.lo.modify_s(s4_group_object['dn'], [(ldap.MOD_ADD, 'member', [object['dn'].encode('UTF-8')])])
 
             # set new primary group
             log.debug("primary_group_sync_from_ucs: changing primary Group in S4")
@@ -1371,12 +1371,14 @@ class s4(univention.s4connector.ucs):
         log.debug("group_members_sync_from_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_from_ucs: members to del: %s", del_members)
 
-        if add_members or del_members:
-            s4_members |= add_members  # Note: add_members are only lowercase
-            s4_members -= del_members  # Note: del_members are case sensitive
-            log.debug("group_members_sync_from_ucs: members result: %r", s4_members)
+        member_changes = []
+        if add_members:
+            member_changes.append((ldap.MOD_ADD, 'member', [x.encode('UTF-8') for x in add_members]))
+        if del_members:
+            member_changes.append((ldap.MOD_DEL, 'member', [x.encode('UTF-8') for x in del_members]))
 
-            self.lo_s4.lo.modify_s(object['dn'], [(ldap.MOD_REPLACE, 'member', [x.encode('UTF-8') for x in s4_members])])
+        if member_changes:
+            self.lo_s4.lo.modify_s(object['dn'], member_changes)
 
         return True
 

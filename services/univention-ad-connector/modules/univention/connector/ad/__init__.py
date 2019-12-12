@@ -1127,7 +1127,7 @@ class ad(univention.connector.ucs):
             if object['dn'].lower() not in ad_members_lower:  # add as member
                 ad_members.append(object['dn'])
                 log.debug("primary_group_sync_from_ucs: primary Group needs change of membership in AD")
-                self.lo_ad.lo.modify_s(ad_group_object['dn'], [(ldap.MOD_REPLACE, 'member', [x.encode('UTF-8') for x in ad_members])])
+                self.lo_ad.lo.modify_s(ad_group_object['dn'], [(ldap.MOD_ADD, 'member', [object['dn'].encode('UTF-8')])])
 
             # set new primary group
             log.debug("primary_group_sync_from_ucs: changing primary Group in AD")
