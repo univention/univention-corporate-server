@@ -25,7 +25,7 @@ SLAPDCONF=/etc/ldap/slapd.conf
 
 getpid ()
 {
-	pgrep -f "$DAEMON" -P 1
+	pgrep -f "^$DAEMON" -P 1
 }
 
 exit_if_start_is_running ()

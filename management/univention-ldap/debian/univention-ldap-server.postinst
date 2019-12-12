@@ -93,6 +93,8 @@ if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 14.0.2-21; then
 fi
 [ -s /etc/ldap/dh_2048.pem ] || cp /usr/share/univention-ldap/dh_2048.pem /etc/ldap/
 
+[ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 15.0.0-33 && systemctl daemon-reload
+
 mdb_max=2147483648 # 2 GB
 if [ "i686" = "$(uname -m)" ]; then
 	mdb_max=1992294400 # 1.9 GB
