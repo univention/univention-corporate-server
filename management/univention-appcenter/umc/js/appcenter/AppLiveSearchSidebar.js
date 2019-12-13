@@ -36,12 +36,13 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dojo/regexp",
+	"umc/tools",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Form",
 	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, has, Deferred, domConstruct, regexp, CheckBox, ContainerWidget, Form, SearchBox, _) {
+], function(declare, lang, array, has, Deferred, domConstruct, regexp, tools, CheckBox, ContainerWidget, Form, SearchBox, _) {
 	return declare("umc.modules.appcenter.AppLiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
@@ -84,6 +85,27 @@ define([
 					this.onSearch();
 				}
 			})));
+		},
+
+		getFilterValues: function() {
+			var values = {};
+			tools.forIn(this._filterForms, function(id, formContainer) {
+				values[id] = formContainer.$form.get('value');
+			});
+			return values;
+		},
+
+		// this will trigger onSearch for every single checkbox. maybe clean that up
+		setFilterValues: function(values) {
+			tools.forIn(values, lang.hitch(this, function(id, _values) {
+				if (Object.prototype.hasOwnProperty.call(this._filterForms, id)) {
+					this._filterForms[id].$form.setFormValues(_values);
+					// don't use set('value', _values)
+					// the _setValueAttr implementation of dijit/form/_FormMixin
+					// does not work with the _getValueAttr implementation of
+					// umc/widgets/Form
+				}
+			}));
 		},
 
 		_isInSearchMode: function() {
@@ -171,6 +193,7 @@ define([
 				widgets: widgets,
 			});
 			formContainer.addChild(form);
+			formContainer.$form = form;
 			formContainer.own(form);
 		},
 
