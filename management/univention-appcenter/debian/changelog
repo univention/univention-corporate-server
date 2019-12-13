@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-97) unstable; urgency=medium
+
+  * Bug #49675: appcenter/query is now cached
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Dec 2019 10:55:19 +0100
+
 univention-appcenter (8.0.11-96) unstable; urgency=medium
 
   * Bug #31796: reapply commits with the following contents:
