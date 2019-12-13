@@ -6,5 +6,7 @@ src: univention-join
 fix: 11.0.1-28A~4.4.0.201912121737
 desc: |
  This update addresses the following issue:
- * Fixed symbolic link creation for host certificate.
+ * An issue in the Joinscript `20univention-join.inst` to
+   create new host certificates has been fixed, which lead to directories
+   getting the wrong file permissions.
 bug: [49036]
