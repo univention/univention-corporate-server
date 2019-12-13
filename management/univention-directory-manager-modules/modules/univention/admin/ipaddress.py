@@ -208,10 +208,10 @@ def is_ip_in_range(ip, range):
 def is_range_overlapping(range1, range2):
 	# type: (Tuple[str, str], Tuple[str, str]) -> int
 	"""
-	Check if two |IPv4| address overlap.
+	Check if two |IPv4| addresses overlap.
 
-	:param range1: The first range as a 2-tuple (low, hight) of |IPv4| addresses.
-	:param range2: The second range as a 2-tuple (low, hight) of |IPv4| addresses.
+	:param range1: The first range as a 2-tuple (low, high) of |IPv4| addresses.
+	:param range2: The second range as a 2-tuple (low, high) of |IPv4| addresses.
 	:returns: `1` if the ranges overlap, `0` otherwise.
 
 	>>> is_range_overlapping(('192.0.2.0', '192.0.2.127'), ('192.0.2.128', '192.0.2.255'))

@@ -30,10 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import ipaddr
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.ipaddress
 import univention.admin.localization
 
 from .__common import DHCPBase, add_dhcp_options, rangeUnmap, rangeMap
@@ -107,6 +108,14 @@ add_dhcp_options(__name__)
 
 class object(DHCPBase):
 	module = module
+
+	def ready(self):
+		super(object, self).ready()
+
+		if ipaddr.IPv4Network('%(subnet)s/%(subnetmask)s' % self.info).network != ipaddr.IPv4Address('%(subnet)s' % self.info):
+			raise univention.admin.uexceptions.valueError(_('The subnet mask does not match the subnet.'), property='subnetmask')
+
+		# TODO: don't we need the range checks from dhcp/subnet here as well?!
 
 
 lookup_filter = object.lookup_filter

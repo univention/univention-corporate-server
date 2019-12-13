@@ -30,13 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import ipaddr
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.ipaddress
 import univention.admin.localization
 
-from .__common import DHCPBase, add_dhcp_options, rangeUnmap
+from .__common import DHCPBase, add_dhcp_options, rangeUnmap, rangeMap
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -44,7 +46,7 @@ _ = translation.translate
 module = 'dhcp/subnet'
 operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
-childs = 1
+childs = True
 childmodules = ['dhcp/pool']
 short_description = _('DHCP: Subnet')
 object_name = _('DHCP subnet')
@@ -100,48 +102,36 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
-
+mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 add_dhcp_options(__name__)
 
 
 class object(DHCPBase):
 	module = module
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self.info['range'] = rangeUnmap(self.oldattr.get('dhcpRange', []))
-		self.oldinfo['range'] = rangeUnmap(self.oldattr.get('dhcpRange', []))
+	def ready(self):
+		super(object, self).ready()
 
-	def _ldap_modlist(self):
-		ml = super(object, self)._ldap_modlist()
+		if ipaddr.IPv4Network('%(subnet)s/%(subnetmask)s' % self.info).network != ipaddr.IPv4Address('%(subnet)s' % self.info):
+			raise univention.admin.uexceptions.valueError(_('The subnet mask does not match the subnet.'), property='subnetmask')
 
-		if self.hasChanged('range'):
-			dhcpRange = []
-			for i in self['range']:
-				for j in self['range']:
-					if i != j and univention.admin.ipaddress.is_range_overlapping(i, j):
-						raise univention.admin.uexceptions.rangesOverlapping('%s-%s; %s-%s' % (i[0], i[1], j[0], j[1]))
+		subnet = ipaddr.IPNetwork('%(subnet)s/%(subnetmask)s' % self.info)
+		if self.hasChanged('range') or not self.exists():
+			# TODO: replace univention.admin.ipaddress.*() with ipaddr module
+			for addresses in self['range']:
+				for addresses2 in self['range']:
+					if addresses != addresses2 and univention.admin.ipaddress.is_range_overlapping(addresses, addresses2):
+						raise univention.admin.uexceptions.rangesOverlapping('%s-%s; %s-%s' % (addresses[0], addresses[1], addresses2[0], addresses2[1]))
 
-				ip_in_network = True
-				for j in i:
-					if not univention.admin.ipaddress.ip_is_in_network(self['subnet'], self['subnetmask'], j):
-						ip_in_network = False
+				for addr in addresses:
+					if univention.admin.ipaddress.ip_is_network_address(self['subnet'], self['subnetmask'], addr):
+						raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (addresses[0], addresses[1]))
 
-					if univention.admin.ipaddress.ip_is_network_address(self['subnet'], self['subnetmask'], j):
-						raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (i[0], i[1]))
+					if univention.admin.ipaddress.ip_is_broadcast_address(self['subnet'], self['subnetmask'], addr):
+						raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (addresses[0], addresses[1]))
 
-					if univention.admin.ipaddress.ip_is_broadcast_address(self['subnet'], self['subnetmask'], j):
-						raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (i[0], i[1]))
-
-				if ip_in_network:
-					dhcpRange.append(' '.join(i))
-				else:
-					raise univention.admin.uexceptions.rangeNotInNetwork('%s-%s' % (i[0], i[1]))
-			# ud.debug(ud.ADMIN, ud.ERROR, 'old Range: %s' % self.oldinfo['range'])
-			if '' in dhcpRange:
-				dhcpRange.remove('')
-			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', []), dhcpRange))
-		return ml
+					if ipaddr.IPAddress(addr) not in subnet:
+						raise univention.admin.uexceptions.rangeNotInNetwork(addr)
 
 	@staticmethod
 	def unmapped_lookup_filter():

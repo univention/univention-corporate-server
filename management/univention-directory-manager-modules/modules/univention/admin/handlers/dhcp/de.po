@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"POT-Creation-Date: 2019-12-18 08:50+0100\n"
 "PO-Revision-Date: 2006-11-02 17:18+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -75,8 +75,8 @@ msgstr "Weitere Optionen für DHCP"
 msgid "Additional statements for DHCP"
 msgstr "Weitere Statements für DHCP"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:70
-#: modules/univention/admin/handlers/dhcp/subnet.py:70
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:72
+#: modules/univention/admin/handlers/dhcp/subnet.py:72
 msgid "Address prefix length (or Netmask)"
 msgstr "Prefixlänge (oder Netzmaske)"
 
@@ -142,7 +142,7 @@ msgstr "Erlaube bekannte Clients"
 msgid "Allow unknown clients"
 msgstr "Erlaube unbekannte Clients"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:52
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:54
 msgid "An IP address range used in a shared network."
 msgstr "Ein IP-Adressbereich innerhalb eines Shared Netzwerkes."
 
@@ -160,8 +160,8 @@ msgid "Associate a service with a server."
 msgstr "Assoziert einen Dienst mit einem Server."
 
 #: modules/univention/admin/handlers/dhcp/shared.py:72
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:89
-#: modules/univention/admin/handlers/dhcp/subnet.py:89
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:91
+#: modules/univention/admin/handlers/dhcp/subnet.py:91
 #: modules/univention/admin/handlers/dhcp/pool.py:106
 #: modules/univention/admin/handlers/dhcp/host.py:83
 #: modules/univention/admin/handlers/dhcp/service.py:70
@@ -169,8 +169,8 @@ msgstr "Assoziert einen Dienst mit einem Server."
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:76
-#: modules/univention/admin/handlers/dhcp/subnet.py:76
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:78
+#: modules/univention/admin/handlers/dhcp/subnet.py:78
 msgid "Broadcast address"
 msgstr "Broadcast-Adresse"
 
@@ -248,11 +248,11 @@ msgstr "DHCP-Dienste"
 msgid "DHCP shared network description"
 msgstr "Bezeichnung - DHCP-Shared Network"
 
-#: modules/univention/admin/handlers/dhcp/subnet.py:50
+#: modules/univention/admin/handlers/dhcp/subnet.py:52
 msgid "DHCP subnet"
 msgstr "DHCP-Subnetz"
 
-#: modules/univention/admin/handlers/dhcp/subnet.py:51
+#: modules/univention/admin/handlers/dhcp/subnet.py:53
 msgid "DHCP subnets"
 msgstr "DHCP-Subnetze"
 
@@ -276,22 +276,22 @@ msgstr "DHCP: Service"
 msgid "DHCP: Shared network"
 msgstr "DHCP: Shared Network"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:49
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:51
 msgid "DHCP: Shared subnet"
 msgstr "DHCP: Shared Subnet"
 
-#: modules/univention/admin/handlers/dhcp/subnet.py:49
+#: modules/univention/admin/handlers/dhcp/subnet.py:51
 msgid "DHCP: Subnet"
 msgstr "DHCP: Subnetz"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:82
-#: modules/univention/admin/handlers/dhcp/subnet.py:82
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:84
+#: modules/univention/admin/handlers/dhcp/subnet.py:84
 #: modules/univention/admin/handlers/dhcp/pool.py:73
 msgid "Define a pool of addresses available for dynamic address assignment."
 msgstr "Definiere einen IP-Adressbereich für die dynamische Adresszuweisung."
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:81
-#: modules/univention/admin/handlers/dhcp/subnet.py:81
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:83
+#: modules/univention/admin/handlers/dhcp/subnet.py:83
 msgid "Dynamic address assignment"
 msgstr "Dynamische Adresszuweisung"
 
@@ -305,8 +305,8 @@ msgstr "Feste IP-Adressen"
 
 #: modules/univention/admin/handlers/dhcp/shared.py:72
 #: modules/univention/admin/handlers/dhcp/server.py:73
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:89
-#: modules/univention/admin/handlers/dhcp/subnet.py:89
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:91
+#: modules/univention/admin/handlers/dhcp/subnet.py:91
 #: modules/univention/admin/handlers/dhcp/pool.py:106
 #: modules/univention/admin/handlers/dhcp/host.py:83
 #: modules/univention/admin/handlers/dhcp/service.py:70
@@ -322,11 +322,11 @@ msgstr "Grundeinstellungen - DHCP-Rechner"
 msgid "General DHCP pool settings"
 msgstr "Grundeinstellungen - DHCP-Pool"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:90
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:92
 msgid "General DHCP shared subnet settings"
 msgstr "Grundeinstellungen - DHCP-Shared Subnet"
 
-#: modules/univention/admin/handlers/dhcp/subnet.py:90
+#: modules/univention/admin/handlers/dhcp/subnet.py:92
 msgid "General DHCP subnet settings"
 msgstr "Grundeinstellungen - DHCP-Subnetz"
 
@@ -375,11 +375,11 @@ msgstr "Servername"
 msgid "Service name"
 msgstr "Service-Name"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:50
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:52
 msgid "Shared DHCP subnet"
 msgstr "Shared DHCP-Subnetz"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:51
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:53
 msgid "Shared DHCP subnets"
 msgstr "Shared DHCP-Subnetze"
 
@@ -392,20 +392,20 @@ msgstr "Shared Network"
 msgid "Shared network name"
 msgstr "Shared Network Name"
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:61
-#: modules/univention/admin/handlers/dhcp/subnet.py:61
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:63
+#: modules/univention/admin/handlers/dhcp/subnet.py:63
 msgid "Subnet address"
 msgstr "Subnetz-Adresse"
 
-#: modules/univention/admin/handlers/dhcp/subnet.py:52
+#: modules/univention/admin/handlers/dhcp/subnet.py:54
 msgid ""
 "The IP address range used in a dedicated (non-shared) physical network."
 msgstr ""
 "Der IP-Adressbereich, der innerhalb eines exklusiv dafür genutzten Netzwerks"
 " verwendet wird."
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:77
-#: modules/univention/admin/handlers/dhcp/subnet.py:77
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:79
+#: modules/univention/admin/handlers/dhcp/subnet.py:79
 msgid "The IP addresses used to send data to all hosts inside the network."
 msgstr ""
 "Die IP-Adresse die verwendet wird, um Daten an alle Rechner innerhalb eines "
@@ -419,18 +419,23 @@ msgstr "Der Name der zu benutzenden \"Failover Peer\" Konfiguration."
 msgid "The name of the server, which should handle this DHCP service."
 msgstr "Der Name des Rechners, der diesen DHCP-Dienst anbieten soll."
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:62
-#: modules/univention/admin/handlers/dhcp/subnet.py:62
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:64
+#: modules/univention/admin/handlers/dhcp/subnet.py:64
 msgid "The network address."
 msgstr "Die Netzwerkadresse."
 
-#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:71
-#: modules/univention/admin/handlers/dhcp/subnet.py:71
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:73
+#: modules/univention/admin/handlers/dhcp/subnet.py:73
 msgid ""
 "The number of leading bits of the IP address used to identify the network."
 msgstr ""
 "Die Anzahl der führenden Bits der IP-Adresse die benutzt werden, um das "
 "Netzwerk zu identifizieren."
+
+#: modules/univention/admin/handlers/dhcp/sharedsubnet.py:117
+#: modules/univention/admin/handlers/dhcp/subnet.py:116
+msgid "The subnet mask does not match the subnet."
+msgstr "Die Netzmaske passt nicht zum Subnetz."
 
 #: modules/univention/admin/handlers/dhcp/service.py:50
 msgid "The top-level container for a DHCP configuration."

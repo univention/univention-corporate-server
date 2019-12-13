@@ -33,7 +33,6 @@
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.ipaddress
 import univention.admin.localization
 
 from .__common import DHCPBase, add_dhcp_options
@@ -44,7 +43,7 @@ _ = translation.translate
 module = 'dhcp/shared'
 operations = ['add', 'edit', 'remove', 'search']
 superordinate = 'dhcp/service'
-childs = 1
+childs = True
 childmodules = ('dhcp/sharedsubnet',)
 short_description = _('DHCP: Shared network')
 object_name = _('Shared network')
