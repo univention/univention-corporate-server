@@ -164,6 +164,10 @@ ucs_registerLDAPExtension "$@" \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
 
 ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/domainpolicy.schema \
+	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" || die
+
+ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpwl.schema || die
 
 for udm_module in gpwl-wireless.py gpwl-wired.py gpwl-wireless-blob.py; do
