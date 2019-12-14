@@ -99,7 +99,7 @@ def stop_slapd():
     # look for process and wait up to 15 seconds for its termination:
     for proc in psutil.process_iter():
         try:
-            if 'slapd' in proc.name():
+            if 'slapd' in proc.name() and proc.ppid() == 1:
                 print "\nThe 'slapd' is still running, waiting..."
                 try:
                     proc.wait(15)
@@ -132,7 +132,7 @@ def wait_for_slapd_to_be_started():
     Looks for slapd process and sleeos few seconds if not found.
     """
     for proc in psutil.process_iter():
-        if 'slapd' in proc.name():
+        if 'slapd' in proc.name() and proc.ppid() == 1:
             # 'slapd' process found
             return
 

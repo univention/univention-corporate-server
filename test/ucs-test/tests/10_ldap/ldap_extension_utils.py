@@ -44,7 +44,7 @@ def wait_for_ldap():
 	print "\n** Waiting for slapd"
 	for count in xrange(WAIT_FOR_LDAP_TIME):
 		try:
-			pinfo = [proc.name() for proc in psutil.process_iter() if proc.name() == 'slapd']
+			pinfo = [proc.name() for proc in psutil.process_iter() if proc.name() == 'slapd' and proc.ppid() == 1]
 		except psutil.NoSuchProcess:
 			pass
 		else:

@@ -37,7 +37,7 @@ do
 		echo "Done"
 
 		echo -ne "Has the service been stopped?\t"
-		if pgrep -f "$sbinarys"
+		if pgrep -f "$sbinarys" -P 1
 		then
 			echo "Error"
 			returnCode=$returnERROR
@@ -50,7 +50,7 @@ do
 		echo "Done"
 
 		echo -ne "Is this service running?\t"
-		if pgrep -f "$sbinarys"
+		if pgrep -f "$sbinarys" -P 1
 		then
 			echo "Ok"
 		else
