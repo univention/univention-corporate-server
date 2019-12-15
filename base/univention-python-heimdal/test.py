@@ -449,6 +449,11 @@ class TestException(unittest.TestCase):
 			raise heimdal.KRB5KDC_ERR_NONE()
 		self.assertEqual(cm.exception.code, self.KRB5KDC_ERR_NONE)
 
+	def test_exception(self):
+		with self.assertRaises(heimdal.Krb5Error) as cm:
+			heimdal.asn1_decode_key("")
+		self.assertIsNone(cm.exception.code)
+
 
 if __name__ == '__main__':
 	unittest.main()

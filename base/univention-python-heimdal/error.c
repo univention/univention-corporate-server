@@ -39,7 +39,7 @@
 #define PyInt_FromLong PyLong_FromLong
 #endif
 
-PyObject *Krb5_exception_class;
+static PyObject *Krb5_exception_class;
 
 static PyObject *error_objects;
 
@@ -69,23 +69,22 @@ PyObject *krb5_exception(krb5_context context, int code, ...)
 
 void error_init(PyObject *self)
 {
-	Krb5_exception_class = PyErr_NewException("heimdal.Krb5Error",
-			NULL,
-			NULL);
+	PyObject *dict = PyDict_New();
+	PyDict_SetItemString(dict, "code", Py_None);
+	Krb5_exception_class = PyErr_NewException("heimdal.Krb5Error", NULL, dict);
+	Py_DECREF(dict);
 	PyDict_SetItemString(self, "Krb5Error", Krb5_exception_class);
+
 	error_objects = PyDict_New();
 
-#	define seterrobj2(n, o) { \
-		PyObject *i = PyInt_FromLong(n);			\
-		PyDict_SetItem(error_objects, i, o);			\
-	}
-
 #	define seterrobj(n) { \
-		PyObject *e, *d = PyDict_New();				\
-		PyDict_SetItemString(d, "code", PyInt_FromLong(n));	\
-		e = PyErr_NewException("heimdal."#n,			\
-				Krb5_exception_class, d);		\
-		seterrobj2(n, e);					\
+		PyObject *i = PyInt_FromLong(n);			\
+		PyObject *d = PyDict_New();				\
+		PyDict_SetItemString(d, "code", i);	\
+		PyObject *e = PyErr_NewException("heimdal."#n, Krb5_exception_class, d);		\
+		Py_DECREF(d);						\
+		PyDict_SetItem(error_objects, i, e);			\
+		Py_DECREF(i);						\
 		PyDict_SetItemString(self, #n, e);			\
 		Py_DECREF(e);						\
 	}
