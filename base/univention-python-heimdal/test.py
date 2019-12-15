@@ -308,5 +308,14 @@ class TestASN1(unittest.TestCase):
 		self.assertEqual(self.ASN1, asn1)
 
 
+class TestException(unittest.TestCase):
+	KRB5KDC_ERR_NONE = -1765328384
+
+	def test_KRB5KDC_ERR_NONE(self):
+		with self.assertRaises(heimdal.KRB5KDC_ERR_NONE) as cm:
+			raise heimdal.KRB5KDC_ERR_NONE()
+		self.assertEqual(cm.exception.code, self.KRB5KDC_ERR_NONE)
+
+
 if __name__ == '__main__':
 	unittest.main()

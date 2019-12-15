@@ -46,18 +46,16 @@ static PyObject *error_objects;
 PyObject *krb5_exception(krb5_context context, int code, ...)
 {
 	PyObject *errobj;
-	PyObject *info;
 
 	if (code == ENOENT) {
-		PyErr_SetObject(PyExc_IOError, Py_None);
+		PyErr_SetNone(PyExc_IOError);
 	} else {
 		PyObject *i = PyInt_FromLong(code);
 		errobj = PyDict_GetItem(error_objects, i);
+		Py_DECREF(i);
 		if (errobj == NULL)
 			errobj = Krb5_exception_class;
-		info = Py_BuildValue("{s:i}", "code", code);
-
-		PyErr_SetObject(errobj, info);
+		PyErr_SetNone(errobj);
 	}
 
 	return NULL;
