@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-s4-connector
-fix: 
+fix: 13.0.2-62A~4.4.0.201912161655
 desc: |
  This update addresses the following issue(s):
  * Microsoft Wireless/Wired Group Policy, IPsec policy and
