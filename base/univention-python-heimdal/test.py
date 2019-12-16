@@ -27,11 +27,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import sys
 import unittest
 from tempfile import NamedTemporaryFile
 from base64 import b64decode
 
 import heimdal
+
+PY2 = sys.version_info[:2] < (3, 0)
 
 TYPES = {
 	'des-cbc-crc': 1,
@@ -71,6 +74,135 @@ ENCSTR = "des-cbc-md5"
 ENCINT = 3
 KVNO = 0
 PASSWORD = 'univention'
+
+
+@unittest.skipUnless(hasattr(sys, 'gettotalrefcount'), 'requires Python debug build')
+class TestRefcount(unittest.TestCase):
+	def test_context(self):
+		before = middle = after = 0
+		before = sys.gettotalrefcount()
+		context = heimdal.context()
+		middle = sys.gettotalrefcount()
+		del context
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	def test_principal(self):
+		context = heimdal.context()
+
+		before = middle = after = 0
+		before = sys.gettotalrefcount()
+		principal = heimdal.principal(context, USER)
+		middle = sys.gettotalrefcount()
+		del principal
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	@unittest.skip('Requires working kerberos services')
+	def test_creds(self):
+		context = heimdal.context()
+		principal = heimdal.principal(context, USER)
+		tkt_service = ""
+
+		before = middle = after = 0
+		before = sys.gettotalrefcount()
+		creds = heimdal.creds(context, principal, PASSWORD, tkt_service)
+		middle = sys.gettotalrefcount()
+		del creds
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	def test_keytab(self):
+		context = heimdal.context()
+
+		before = middle = after = 0
+		with NamedTemporaryFile() as tmpfile:
+			before = sys.gettotalrefcount()
+			keytab = heimdal.keytab(context, tmpfile.name)
+			middle = sys.gettotalrefcount()
+			del keytab
+			after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	def test_salt(self):
+		context = heimdal.context()
+		principal = heimdal.principal(context, USER)
+
+		before = middle = after = 0
+		before = sys.gettotalrefcount()
+		salt = heimdal.salt(context, principal)
+		middle = sys.gettotalrefcount()
+		del salt
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	def test_enctype(self):
+		context = heimdal.context()
+
+		before = middle = after = 0
+		before = sys.gettotalrefcount()
+		enctype = heimdal.enctype(context, ENCSTR)
+		middle = sys.gettotalrefcount()
+		del enctype
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	def test_keyblock(self):
+		context = heimdal.context()
+
+		before = middle = after = 0
+		before = sys.gettotalrefcount()
+		keyblock = heimdal.keyblock_raw(context, ENCINT, TestKeyblock.VALUE)
+		middle = sys.gettotalrefcount()
+		del keyblock
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
+
+	def test_exception(self):
+		before = middle = after = 0
+
+		def inner():
+			try:
+				raise heimdal.KRB5KDC_ERR_NONE()
+			except heimdal.KRB5KDC_ERR_NONE as ex:
+				middle = sys.gettotalrefcount()
+				del ex
+
+			if PY2:
+				# Py2 keeps a reference for the last exception for re-raising
+				# <https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/>
+				sys.exc_clear()
+
+			return middle
+
+		before = sys.gettotalrefcount()
+		middle = inner()
+		after = sys.gettotalrefcount()
+
+		self.assertGreater(middle, before)
+		self.assertLess(after, middle)
+		self.assertEqual(before, after)
 
 
 class TestContext(unittest.TestCase):
