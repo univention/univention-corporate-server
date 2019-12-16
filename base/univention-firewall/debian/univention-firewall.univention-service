@@ -1,0 +1,7 @@
+[univention-firewall]
+Description[de]=Univention Firewall
+Description[en]=Univention firewall
+programs=
+start_type=firewall/autostart
+systemd=univention-firewall.service
+icon=service/firewall
