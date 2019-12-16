@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 
 
+from __future__ import print_function
 import sys
 import atexit
 import univention.uldap
@@ -35,5 +36,5 @@ if __name__ == '__main__':
 	ptr = ldap.search(filter='(&(relativeDomainName=40)(pTRRecord=%s))' % ptrRecordEntry)[0][1]['pTRRecord']
 	for entry in ptr:
 		if entry.startswith(computerName):
-			print 'Test FAILED. Found entry of the modified computer in the PTR record. PTR: %r' % ptr
+			print('Test FAILED. Found entry of the modified computer in the PTR record. PTR: %r' % ptr)
 			sys.exit(1)

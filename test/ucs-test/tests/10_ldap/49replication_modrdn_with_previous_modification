@@ -15,6 +15,7 @@
 ##  - 34355
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener, restart_listener
 import univention.testing.udm as udm_test
@@ -33,7 +34,7 @@ ucr.load()
 
 def get_entryUUID(lo, dn):
 	result = lo.search(base=dn, scope=ldap.SCOPE_BASE, attr=['*', '+'])
-	print 'DN: %s\n%s' % (dn, result)
+	print('DN: %s\n%s' % (dn, result))
 	return result[0][1].get('entryUUID')[0]
 
 
@@ -102,12 +103,12 @@ new_computer_UUID = get_entryUUID(lo, new_computer_dn)
 
 # The container should have be replaced by the computer object
 if computer_UUID != new_computer_UUID:
-	print 'ERROR: entryUUID of moved object do not match'
+	print('ERROR: entryUUID of moved object do not match')
 	success = False
 
 delete_handler_file = '/tmp/%s-test' % computer_name
 if os.path.exists(delete_handler_file):
-	print 'ERROR: the delete handler was called for the modified and moved object'
+	print('ERROR: the delete handler was called for the modified and moved object')
 	success = False
 	os.remove(delete_handler_file)
 

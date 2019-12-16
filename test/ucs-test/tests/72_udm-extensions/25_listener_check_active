@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 import univention.testing.udm as udm_test
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import wait_for_replication_and_postrun, verify_ldap_object
@@ -20,7 +21,7 @@ if __name__ == '__main__':
 
 	with udm_test.UCSTestUDM() as udm:
 		for extension_type in ('hook', 'syntax', 'module'):
-			print '========================= TESTING EXTENSION %s =============================' % extension_type
+			print('========================= TESTING EXTENSION %s =============================' % extension_type)
 			extension_name = get_extension_name(extension_type)
 			extension_filename = get_extension_filename(extension_type, extension_name)
 			extension_buffer = get_extension_buffer(extension_type, extension_name)

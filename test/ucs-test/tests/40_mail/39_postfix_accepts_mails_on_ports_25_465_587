@@ -5,6 +5,7 @@
 ## packages:
 ##  - univention-mail-server
 
+from __future__ import print_function
 import syslog
 from essential.mail import send_mail, check_delivery
 import univention.testing.ucr as ucr_test

@@ -5,6 +5,7 @@
 ## packages: [univention-mail-server]
 ## bugs: []
 
+from __future__ import print_function
 from univention.config_registry import handler_set
 import socket
 import subprocess
@@ -31,7 +32,7 @@ def set_postfix_networks(networks='127.0.0.0/8'):
 
 
 def restart_postfix():
-	print '\n* restarting postfix'
+	print('\n* restarting postfix')
 	cmd = ['service', 'postfix', 'restart']
 	subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 
@@ -43,7 +44,7 @@ def reverse_dns_name(ip):
 
 
 def print_header(section_string):
-	print 'info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+'
+	print('info', 40 * '+', '\n%s\ninfo' % section_string, 40 * '+')
 
 
 ucr = ucr_test.UCSTestConfigRegistry()

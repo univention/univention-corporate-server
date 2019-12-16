@@ -6,6 +6,7 @@
 ##  - univention-directory-listener (>= 9.0.2-6)
 ## exposure: dangerous
 
+from __future__ import print_function
 __package__ = ''
 from tempfile import mkdtemp
 from shutil import rmtree
@@ -41,7 +42,7 @@ class Environment(object):
 
 	def __enter__(self):
 		self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR)
-		print 'I: tmpdir=%r' % (self.tmpdir,)
+		print('I: tmpdir=%r' % (self.tmpdir,))
 		chown(self.tmpdir, self.uid, -1)
 
 		self.mdir = self.mkdir('module')
@@ -97,9 +98,9 @@ class Listener(object):
 			'-i',
 		]
 		proc = Popen(cmd, close_fds=True)
-		print 'I: %d = %r' % (proc.pid, cmd,)
+		print('I: %d = %r' % (proc.pid, cmd,))
 		ret = proc.wait()
-		print 'I: ret=%r' % (ret,)
+		print('I: ret=%r' % (ret,))
 		if ret:
 			exit(ret)
 
@@ -109,7 +110,7 @@ class Listener(object):
 			'-F',
 		]
 		self.proc = Popen(cmd, close_fds=True)
-		print 'I: %d = %r' % (self.proc.pid, cmd,)
+		print('I: %d = %r' % (self.proc.pid, cmd,))
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
@@ -118,7 +119,7 @@ class Listener(object):
 		self.kill_listener()
 
 		ret = self.proc.wait()
-		print 'I: ret=%d' % (ret,)
+		print('I: ret=%d' % (ret,))
 		self.proc = None
 
 	def wait_transactions(self):
@@ -127,7 +128,7 @@ class Listener(object):
 		while i < 10:
 			master = self.get_master_transaction()
 			local = self.get_local_transaction()
-			print "I: %d <= %d >= %d %d..." % (local, master, prev_master, i)
+			print("I: %d <= %d >= %d %d..." % (local, master, prev_master, i))
 			if local == master:
 				return
 			i = i + 1 if master == prev_master else 0
@@ -147,7 +148,7 @@ class Listener(object):
 
 			sock.close()
 		except socket_error as ex:
-			print 'E: error talking to UDN on %s: %s' % (hostname, ex)
+			print('E: error talking to UDN on %s: %s' % (hostname, ex))
 			return
 
 		lines = result.splitlines()
@@ -166,7 +167,7 @@ class Listener(object):
 		self.proc.terminate()
 		for i in xrange(6):
 			ret = self.proc.poll()
-			print 'I: ret=%s %d...' % (ret, i,)
+			print('I: ret=%s %d...' % (ret, i,))
 			if ret is not None:
 				break
 			sleep((1 << i) / 10.0)
@@ -207,14 +208,14 @@ def unexpected_transactions(env, ucr):
 		for line in log:
 			line = line.strip()
 			if line == repr((dn, True, False, 'a')):
-				print 'I: Found add: %s' % (line,)
+				print('I: Found add: %s' % (line,))
 				found_add = True
 			elif line == repr((dn, True, False, 'm')):
-				print 'I: Found modify: %s' % (line,)
+				print('I: Found modify: %s' % (line,))
 				found_modify = True
 			elif eval(line)[0].endswith(dn):
 				found_other = True
-				print 'E: Found other: %s' % (line,)
+				print('E: Found other: %s' % (line,))
 
 	return found_other or not found_add or not found_modify
 
@@ -231,7 +232,7 @@ def is_not_in_cache(env, ucr):
 		'-O', dump,
 	]
 	proc = Popen(cmd, close_fds=True)
-	print 'I: %d = %r' % (proc.pid, cmd,)
+	print('I: %d = %r' % (proc.pid, cmd,))
 	proc.wait()
 
 	with open(dump, 'r') as cache:
@@ -239,16 +240,16 @@ def is_not_in_cache(env, ucr):
 			line = line.strip()
 			if line == dn:
 				error = True
-				print 'E: Found DN: %s' % (line,)
+				print('E: Found DN: %s' % (line,))
 			elif UNIQUE in line:
-				print 'W: Found line: %s' % (line,)
+				print('W: Found line: %s' % (line,))
 
 	return error
 
 
 def handler(dn, new, old, cmd=''):
 	with open(join(TMPDIR, UNIQUE), 'a') as log:
-		print >> log, repr((dn, bool(new), bool(old), cmd))
+		print(repr((dn, bool(new), bool(old), cmd)), file=log)
 
 
 if __name__ == '__main__':

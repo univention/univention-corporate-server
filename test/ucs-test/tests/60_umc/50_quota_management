@@ -6,6 +6,7 @@
 ##  3.0-0: skip
 ##  3.2-3: fixed
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 from umc import UMCBase
@@ -58,7 +59,7 @@ class TestUMCQuotasManagement(UMCBase):
                 self.quota_was_in_use = quota['inUse']
                 self.partition_dev = quota['partitionDevice']
                 return
-        print "Failed to select a partition for the test, skipping"
+        print("Failed to select a partition for the test, skipping")
         return self.return_code_result_skip()
 
     def is_dev_quota_active(self):

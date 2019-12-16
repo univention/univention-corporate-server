@@ -10,6 +10,7 @@
 ##  - 39792
 ##  - 39801
 
+from __future__ import print_function
 from dockertest import *
 from univention.testing.utils import get_ldap_connection
 import ldap
@@ -42,11 +43,11 @@ univention-install --yes --no-install-recommends univention-server-slave univent
 			try:
 				lo = get_ldap_connection()
 			except ldap.SERVER_DOWN():
-				print 'LDAP connection failed. Wait for ten seconds and try again.'
+				print('LDAP connection failed. Wait for ten seconds and try again.')
 				time.sleep(60)
 				lo = get_ldap_connection()
 
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionDomainController)(univentionServerRole=slave)(!(aRecord=*)))' % app_name[:5], unique=True, required=True)
+			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionDomainController)(univentionServerRole=slave)(!(aRecord=*)))' % app_name[:5], unique=True, required=True))
 
 		finally:
 			app.uninstall()

@@ -7,6 +7,7 @@
 ## packages: [univention-squid]
 ## bugs: [40095]
 
+from __future__ import print_function
 from univention.config_registry import handler_set
 import psutil
 import time
@@ -53,7 +54,7 @@ def main():
 
 		MAX_ATTEMPTS = 6
 		for attempt in xrange(MAX_ATTEMPTS):
-			print 'Attempt %d of %d:' % (attempt + 1, MAX_ATTEMPTS)
+			print('Attempt %d of %d:' % (attempt + 1, MAX_ATTEMPTS))
 			time.sleep(2**attempt)  # wait 1, 2, 4, 8, 16, 32 seconds
 			ok = True
 			for process in psutil.process_iter():
@@ -63,9 +64,9 @@ def main():
 
 			for key, value in result.items():
 				if expected[key] != value:
-					print 'ERROR: Found process %r %d times but expected %d times.' % (key, value, expected[key])
+					print('ERROR: Found process %r %d times but expected %d times.' % (key, value, expected[key]))
 				else:
-					print 'Found process %r %d times.' % (key, value)
+					print('Found process %r %d times.' % (key, value))
 			if ok:
 				break
 		else:

@@ -6,6 +6,7 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+from __future__ import print_function
 from sys import exit
 import sys
 sys.path.insert(0, '.')
@@ -54,7 +55,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		'intermediate_test_container' inside the 'base_test_container'
 		for the test.
 		"""
-		print "\nCreating a 'base_test_container' in the 'ldap_base':\n"
+		print("\nCreating a 'base_test_container' in the 'ldap_base':\n")
 		self.base_container_dn = self.UDM.create_object('container/cn', name='base_test_container', position=self.ldap_base)
 
 		print("\nCreating an 'intermediate_test_container' inside the 'base_test_container':\n")
@@ -71,7 +72,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		For the 'intermediate_test_container': length=4; pwLength=4.
 		For the 'umc_test_user_policy': length=3; pwLength=3.
 		"""
-		print "\nCreating a policy for the 'base_test_container':\n"
+		print("\nCreating a policy for the 'base_test_container':\n")
 		self.base_policy_dn = self.UDM.create_object(
 			'policies/pwhistory',
 			position="cn=policies," + self.ldap_base,
@@ -84,7 +85,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 			}
 		)
 
-		print "\nCreating a policy for the 'intermediate_test_container':\n"
+		print("\nCreating a policy for the 'intermediate_test_container':\n")
 		self.intermediate_policy_dn = self.UDM.create_object(
 			'policies/pwhistory',
 			position="cn=policies," +
@@ -181,7 +182,7 @@ class TestUMCnonUCRpolicies(UMCBase):
 		self.check_policies('4', '5', self.test_user_2_dn)
 		# self.check_policies('4', '5', self.test_user_dn)
 
-		print "\nRemoving Fixed attribute from the 'umc_test_policy_base':\n"
+		print("\nRemoving Fixed attribute from the 'umc_test_policy_base':\n")
 		self.UDM.modify_object('policies/pwhistory', **{'dn': self.base_policy_dn, 'set': {'fixedAttributes': ""}})
 
 		# Both users should have an empty pwLength (due to empty attribute

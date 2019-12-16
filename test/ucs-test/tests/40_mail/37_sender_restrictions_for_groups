@@ -3,6 +3,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mail import send_mail, restart_postfix
 import univention.testing.utils as utils
 import smtplib
@@ -67,35 +68,35 @@ def main():
 					}
 				)
 
-				print ""
+				print("")
 				for i in xrange(5):
-					print "user: %r \t email: %r emailAlt: %r" % (users[i].partition(",")[0], mails[i], alts[i])
-				print "group %r: email: %r users: %r" % (group1_name, group1_mail, mails[0])
-				print "group %r: email: %r users: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (group2_name, group2_mail, mails[4], mails[2], group1_name)
+					print("user: %r \t email: %r emailAlt: %r" % (users[i].partition(",")[0], mails[i], alts[i]))
+				print("group %r: email: %r users: %r" % (group1_name, group1_mail, mails[0]))
+				print("group %r: email: %r users: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (group2_name, group2_mail, mails[4], mails[2], group1_name))
 
 				for sender in ('noreply@univention.de', mails[1], '<>'):
-					print "\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender)
+					print("\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender))
 					check_sending_mail(sender, mails[1], mails[1], password, True)
 
-				print "\n>>> sending to unrestricted mail group %r with a null sender -> allowed" % group1_mail
+				print("\n>>> sending to unrestricted mail group %r with a null sender -> allowed" % group1_mail)
 				check_sending_mail('<>', group1_mail, mails[0], password, True)
-				print "\n>>> sending to unrestricted mail group %r with a member posix account -> allowed" % group1_mail
+				print("\n>>> sending to unrestricted mail group %r with a member posix account -> allowed" % group1_mail)
 				check_sending_mail(mails[0], group1_mail, mails[0], password, True)
-				print "\n>>> sending to unrestricted mail group %r with a non-member -> allowed" % group1_mail
+				print("\n>>> sending to unrestricted mail group %r with a non-member -> allowed" % group1_mail)
 				check_sending_mail(mails[1], group1_mail, mails[1], password, True)
-				print "\n>>> sending to restricted mail group %r with a null sender -> not allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a null sender -> not allowed" % group2_mail)
 				check_sending_mail('<>', group2_mail, mails[4], password, False)
-				print "\n>>> sending to restricted mail group %r with a member posix account -> not allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a member posix account -> not allowed" % group2_mail)
 				check_sending_mail(mails[4], group2_mail, mails[4], password, False)
-				print "\n>>> sending to restricted mail group %r with a non-member -> not allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a non-member -> not allowed" % group2_mail)
 				check_sending_mail(mails[3], group2_mail, mails[3], password, False)
-				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailPrimaryAddress -> allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailPrimaryAddress -> allowed" % group2_mail)
 				check_sending_mail(mails[2], group2_mail, mails[2], password, True)
-				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailAlternativeAddress -> allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a non-member posix account but as a user in allowedEmailUsers using its mailAlternativeAddress -> allowed" % group2_mail)
 				check_sending_mail(alts[2], group2_mail, mails[2], password, True)
-				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailPrimaryAddress -> allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailPrimaryAddress -> allowed" % group2_mail)
 				check_sending_mail(mails[0], group2_mail, mails[0], password, True)
-				print "\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailAlternativeAddress -> allowed" % group2_mail
+				print("\n>>> sending to restricted mail group %r with a non-member posix account but as a member of a group in allowedEmailGroups using its mailAlternativeAddress -> allowed" % group2_mail)
 				check_sending_mail(alts[0], group2_mail, mails[0], password, True)
 
 

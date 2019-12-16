@@ -6,6 +6,7 @@
 ## join: true
 ## exposure: dangerous
 
+from __future__ import print_function
 import subprocess
 
 import univention.testing.udm as udm_test
@@ -34,14 +35,14 @@ def main():
 		})
 
 		# user net access = 1, group net access = 1
-		print "### Test 1 ###"
+		print("### Test 1 ###")
 		try:
 			radtest(username)
 		except:
 			utils.fail("User with network access in group with network access could not authenticate!")
 
 		# user net access = 1, group net access = 0
-		print "### Test 2 ###"
+		print("### Test 2 ###")
 		udm.modify_object(
 			'groups/group',
 			dn=groupdn,
@@ -55,7 +56,7 @@ def main():
 			utils.fail("User with network access in group without network access could not authenticate!")
 
 		# user net access = 0, group net access = 0
-		print "### Test 3 ###"
+		print("### Test 3 ###")
 		udm.modify_object(
 			'users/user',
 			dn=userdn,
@@ -71,7 +72,7 @@ def main():
 			utils.fail("User without network access in group without network access was able to authenticate!")
 
 		# user net access = 0, group net access = 1
-		print "### Test 4 ###"
+		print("### Test 4 ###")
 		udm.modify_object(
 			'groups/group',
 			dn=groupdn,

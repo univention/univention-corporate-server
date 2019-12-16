@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import *
 from univention.testing.utils import get_ldap_connection
 
@@ -25,7 +26,7 @@ if __name__ == '__main__':
 			app.verify(joined=False)
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True)
+			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
 		finally:
 			app.uninstall()
 			app.remove()

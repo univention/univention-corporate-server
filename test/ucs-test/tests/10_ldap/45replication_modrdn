@@ -15,6 +15,7 @@
 ##  - 33495
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener
 import univention.testing.udm as udm_test
@@ -80,9 +81,9 @@ def check_listener_start(consider_listener):
 
 
 def dump_status(consider_listener, wait_after_each_step, name):
-	print 'Consider listener: %s' % consider_listener
-	print 'Wait for replication after each step: %s' % wait_after_each_step
-	print 'Computer name: %s\n' % name
+	print('Consider listener: %s' % consider_listener)
+	print('Wait for replication after each step: %s' % wait_after_each_step)
+	print('Computer name: %s\n' % name)
 
 
 for consider_listener in [False, True]:
@@ -94,7 +95,7 @@ for consider_listener in [False, True]:
 		for computer_name in names:
 			check_listener_stop(consider_listener)
 			name = computer_name + random_name(4)  # make name uniq
-			print '\n***** Move once *****'
+			print('\n***** Move once *****')
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
 			computer_new = udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
@@ -105,7 +106,7 @@ for consider_listener in [False, True]:
 
 			check_listener_stop(consider_listener)
 			name = computer_name + random_name(4)  # make name uniq
-			print '\n***** Move twice *****'
+			print('\n***** Move twice *****')
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
 			udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
@@ -120,7 +121,7 @@ for consider_listener in [False, True]:
 
 			check_listener_stop(consider_listener)
 			name = computer_name + random_name(4)  # make name uniq
-			print '\n***** Move thrice *****'
+			print('\n***** Move thrice *****')
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=source_ou, wait_for_replication=wait_after_each_step)
 			udm.move_object(UDM_MODULE, dn=computer, position=destination_ou1, wait_for_replication=wait_after_each_step)
@@ -139,7 +140,7 @@ for consider_listener in [False, True]:
 				utils.verify_ldap_object(computer_new3)
 
 			# create and delete target before starting
-			print '\n***** Create delete and move once *****'
+			print('\n***** Create delete and move once *****')
 			name = computer_name + random_name(4)  # make name uniq
 			dump_status(consider_listener, wait_after_each_step, name)
 			computer = udm.create_object(UDM_MODULE, name=name, position=destination_ou1, wait_for_replication=True)

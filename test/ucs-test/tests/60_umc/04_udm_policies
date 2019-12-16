@@ -8,6 +8,7 @@
 ##  - univention-management-console-module-udm
 ## exposure: safe
 
+from __future__ import print_function
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail
 from univention.testing.umc import Client
@@ -211,7 +212,7 @@ def _assert(first, second, name):
 	if set(first) != set(second):
 		fail('ERROR: %s: %r != %r' % (name, set(first), set(second)))
 	else:
-		print 'OK: %s' % name
+		print('OK: %s' % name)
 
 
 if __name__ == '__main__':

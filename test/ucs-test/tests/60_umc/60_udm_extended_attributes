@@ -6,6 +6,7 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 from umc import UDMModule
@@ -351,7 +352,7 @@ class TestUMCExtendedAttributes(UDMModule):
                                                  'value2',
                                                  'value3')
         finally:
-            print "\nRemoving created test extended attributes (if any):"
+            print("\nRemoving created test extended attributes (if any):")
             self.remove_attribute_if_exists(test_attribute_name + '_multi')
             self.remove_attribute_if_exists(test_attribute_name + '_cust')
             self.remove_attribute_if_exists(test_attribute_name + '_rand')

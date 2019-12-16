@@ -14,6 +14,7 @@
 # Finally it checks that both eMail have arrived and deletes the user.
 #################
 
+from __future__ import print_function
 from essential.mail import mail_delivered, send_mail
 from univention.config_registry import handler_set
 import subprocess
@@ -25,7 +26,7 @@ import univention.testing.utils as utils
 
 
 def reload_postfix():
-	print '** Reloading aliases and postfix'
+	print('** Reloading aliases and postfix')
 	for cmd in (['newaliases'], ['postfix', 'reload']):
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	time.sleep(5)
@@ -56,7 +57,7 @@ def main():
 						delivery_OK = True
 						break
 					else:
-						print "Mail sent to root has not been delivered yet"
+						print("Mail sent to root has not been delivered yet")
 						time.sleep(1)
 				if not delivery_OK:
 					utils.fail('Mail sent to root was not delivered')
@@ -72,7 +73,7 @@ def main():
 						delivery_OK = True
 						break
 					else:
-						print "Mail sent to %s has not been delivered yet" % mail
+						print("Mail sent to %s has not been delivered yet" % mail)
 						time.sleep(1)
 				if not delivery_OK:
 					utils.fail('Mail sent to %s was not delivered' % mail)

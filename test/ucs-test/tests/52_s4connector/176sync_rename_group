@@ -9,6 +9,7 @@
 #
 #  Bug #31324
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -32,7 +33,7 @@ if __name__ == '__main__':
 		group_sid = s4connector.get_object_sid(group_dn)
 		udm.modify_object('groups/group', dn=group_dn, name=new_group_name)
 		modified_group_dn = s4connector.correct_cleanup(group_dn, new_group_name, udm, True)
-		print modified_group_dn
+		print(modified_group_dn)
 		s4connector.wait_for_sync()
 
 		#check modified group and sync

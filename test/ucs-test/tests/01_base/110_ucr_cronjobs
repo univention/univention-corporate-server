@@ -7,6 +7,7 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 
+from __future__ import print_function
 import datetime
 import time
 
@@ -52,7 +53,7 @@ def main():
 			second=10
 		)
 		if not now > cron_plus_ten:
-			print "Sleeping {0} seconds...".format((cron_plus_ten - now).seconds)
+			print("Sleeping {0} seconds...".format((cron_plus_ten - now).seconds))
 			time.sleep((cron_plus_ten - now).seconds)
 	finally:
 		if ucrs:

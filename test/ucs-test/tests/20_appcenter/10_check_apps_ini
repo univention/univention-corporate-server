@@ -8,6 +8,7 @@
 ##   - univention-appcenter
 ## exposure: safe
 
+from __future__ import print_function
 import locale
 from os import path
 from glob import glob
@@ -31,7 +32,7 @@ def check_file(filename, local):
     if app:
 
         apps.append(app)
-        print "OK"
+        print("OK")
 
     else:
         global failures_counter
@@ -45,7 +46,7 @@ def print_all_apps_versions(number_of_files):
     """
     Prints overall statistics and versions of all Apps that were found.
     """
-    print "\nTotal", number_of_files, ".ini files for", len(apps), "apps were found:\n"
+    print("\nTotal", number_of_files, ".ini files for", len(apps), "apps were found:\n")
 
     for app in apps:
         print(repr(app))
@@ -60,7 +61,7 @@ def check_ini_files():
 
     for local in test_locales:
             for filename in test_path:
-                print "Checking", filename, "in", local, "locale:"
+                print("Checking", filename, "in", local, "locale:")
                 check_file(filename, local)
 
     print_all_apps_versions(len(test_path))
@@ -78,4 +79,4 @@ if __name__ == '__main__':
                    "evaluated correctly. Total: %d error(s)."
                    % failures_counter)
     else:
-        print "\nNo errors were detected.\n"
+        print("\nNo errors were detected.\n")

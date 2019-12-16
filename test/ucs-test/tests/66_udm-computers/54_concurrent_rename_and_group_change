@@ -5,6 +5,7 @@
 ## roles: [domaincontroller_master]
 ## exposure: careful
 
+from __future__ import print_function
 from univention.testing.udm import UCSTestUDM
 import univention.testing.strings as uts
 import univention.testing.utils as utils
@@ -18,11 +19,11 @@ def main():
 		computerdn = udm.create_object('computers/ubuntu', name=uts.random_string(), groups=[groupdn_a, groupdn_b])
 		utils.verify_ldap_object(groupdn_a, {'uniqueMember': [computerdn]})
 		utils.verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn]})
-		print 'created %s in %s and %s' % (computerdn, groupdn_a, groupdn_b)
+		print('created %s in %s and %s' % (computerdn, groupdn_a, groupdn_b))
 
 		new_name = uts.random_string()
 		computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=new_name, remove={'groups': [groupdn_a]}, append={'groups': [groupdn_c]})
-		print 'moved to %s' % (computerdn_new,)
+		print('moved to %s' % (computerdn_new,))
 		utils.verify_ldap_object(computerdn, should_exist=False)
 		utils.verify_ldap_object(computerdn_new, should_exist=True)
 		utils.verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn_new]})

@@ -7,6 +7,7 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 
+from __future__ import print_function
 import sys
 import subprocess
 
@@ -22,7 +23,7 @@ from univention.appcenter.log import log_to_stream
 requested_apps = get_requested_apps()
 if requested_apps and all(app.docker for app in requested_apps):
 	# test runs for an hour or so...
-	print 'Only testing Docker Apps. No need to check other Apps'
+	print('Only testing Docker Apps. No need to check other Apps')
 	sys.exit(0)
 
 with UCSTestConfigRegistry():
@@ -41,33 +42,33 @@ with UCSTestConfigRegistry():
 		subprocess.call(['/usr/bin/apt-get', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		packages = _packages_to_install(app)
 		cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
-		print 'Executing the command: %s' % cmd
+		print('Executing the command: %s' % cmd)
 		retcode = subprocess.call(cmd, stderr=subprocess.STDOUT)
 		register.call(apps=[app], register_task=['component'])
 		return retcode == 0
 
-	print 'Installed apps: %s' % [app for app in Apps().get_all_locally_installed_apps()]
+	print('Installed apps: %s' % [app for app in Apps().get_all_locally_installed_apps()])
 
 	failed = []
 	for app in Apps().get_all_apps():
 		if app.docker:
-			print 'Ignoring app %r: Docker App' % app
+			print('Ignoring app %r: Docker App' % app)
 			continue
 		forbidden, warning = app.check('install')
 		if forbidden:
-			print 'Ignoring app %r: requirements not met -> %r' % (app, forbidden)
+			print('Ignoring app %r: requirements not met -> %r' % (app, forbidden))
 			continue
 
-		print 'Checking app: %r' % app
+		print('Checking app: %r' % app)
 		if not _apt_get_simulate(app):
 			failed.append(app)
 
 	test_appcenter.call()
 
 	if failed:
-		print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
+		print('\nTEST FAILED: the following apps cannot be installed due to broken packages...')
 		for app in failed:
-			print '\n[ APP: %s ]' % app.id
+			print('\n[ APP: %s ]' % app.id)
 		sys.exit(1)
 
 # cat sources.list for debugging

@@ -6,6 +6,7 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 from umc import UMCBase
@@ -102,7 +103,7 @@ class TestUMCGroupsCreation(UMCBase):
         policyname = "default-udm-self"
 
         try:
-            print "Creating a test group with a name '%s'" % test_groupname
+            print("Creating a test group with a name '%s'" % test_groupname)
             self.create_group(test_groupname)
             if not self.check_obj_exists(test_groupname, "groups/group"):
                 utils.fail("Failed to query the newly created group '%s'"
@@ -133,7 +134,7 @@ class TestUMCGroupsCreation(UMCBase):
                                      test_groupname,
                                      group_policies))
         finally:
-            print "Removing created test group if it exists"
+            print("Removing created test group if it exists")
             if self.check_obj_exists(test_groupname, "groups/group"):
                 self.delete_obj(test_groupname, "groups", "groups/group")
 

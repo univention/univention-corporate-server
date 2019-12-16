@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
@@ -50,27 +51,27 @@ def _test_group_type(group_type, use_create_group_parameter, builtin_sid_expecte
 
 
 def _test_default_value():
-	print 'Test default value'
+	print('Test default value')
 	_test_group_type(group_type='-2147483646', use_create_group_parameter=False, builtin_sid_expected=False)
 
 
 def _test_global_group():
-	print 'Test global group'
+	print('Test global group')
 	_test_group_type(group_type='-2147483646', use_create_group_parameter=True, builtin_sid_expected=False)
 
 
 def _test_local_group():
-	print 'Test local group'
+	print('Test local group')
 	_test_group_type(group_type='-2147483643', use_create_group_parameter=True, builtin_sid_expected=True)
 
 
 def _test_domain_local_group():
-	print 'Test domain local group'
+	print('Test domain local group')
 	_test_group_type(group_type='-2147483644', use_create_group_parameter=True, builtin_sid_expected=False)
 
 
 def _test_universal_group():
-	print 'Test universal group'
+	print('Test universal group')
 	_test_group_type(group_type='-2147483640', use_create_group_parameter=True, builtin_sid_expected=False)
 
 

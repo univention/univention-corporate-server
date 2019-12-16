@@ -5,6 +5,7 @@
 ## packages: [univention-mail-server]
 ## bugs: []
 
+from __future__ import print_function
 from essential.mail import PopMail
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -25,19 +26,19 @@ def main():
 
 			pop = PopMail()
 
-			print '* Test pop login with the correct password:'
+			print('* Test pop login with the correct password:')
 			if not pop.login_OK(usermail, password):
 				utils.fail('POP3 login with mailPrimaryAddress failed with the correct password')
 
-			print '* Test pop login with the wrong password:'
+			print('* Test pop login with the wrong password:')
 			if pop.login_OK(usermail, uts.random_name()):
 				utils.fail('POP3 login with mailPrimaryAddress succeeded with the wrong password')
 
-			print '* Test pop login with the correct password but with username instead of mailPrimaryAddress:'
+			print('* Test pop login with the correct password but with username instead of mailPrimaryAddress:')
 			if not pop.login_OK(username, password):
 				utils.fail('POP3 login with username failed with the correct password')
 
-			print '* Test pop login with username and wrong password:'
+			print('* Test pop login with username and wrong password:')
 			if pop.login_OK(username, uts.random_name()):
 				utils.fail('POP3 login with username succeeded with the wrong password')
 

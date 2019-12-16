@@ -7,6 +7,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
+from __future__ import print_function
 import os
 import sys
 import time
@@ -21,7 +22,7 @@ TIMEOUT_MAIL = 120
 
 def main():
 	if utils.package_installed('univention-samba4'):
-		print 'Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46191'
+		print('Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46191')
 		sys.exit(137)
 
 	with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:

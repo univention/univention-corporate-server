@@ -7,6 +7,7 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
+from __future__ import print_function
 import subprocess
 import time
 
@@ -22,11 +23,11 @@ def main():
 		try:
 			mail = '%s@%s' % (uts.random_username(), uts.random_username())
 			with self_service_user(mailPrimaryAddress=mail) as user:
-				print 'test with login per username'
+				print('test with login per username')
 				test_contact(user)
 				test_reset_method_email(user)
 				time.sleep(2)
-				print 'test with login per mail address'
+				print('test with login per mail address')
 				user.username = mail
 				test_contact(user)
 				test_reset_method_email(user)

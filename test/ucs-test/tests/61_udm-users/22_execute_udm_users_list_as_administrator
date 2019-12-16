@@ -10,6 +10,7 @@
 ##   - univention-directory-manager-tools
 
 
+from __future__ import print_function
 from subprocess import Popen, PIPE
 
 import univention.testing.utils as utils
@@ -22,7 +23,7 @@ if __name__ == '__main__':
 
 	# get the Administrator username translation if case of non English domain:
 	admin_username = UCR.get('users/default/administrator') or "Administrator"
-	print "Administrator username is:", admin_username
+	print("Administrator username is:", admin_username)
 
 	cmd = ('su', admin_username, '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=' + admin_username)
 	udm = Popen(cmd, stdout=PIPE)

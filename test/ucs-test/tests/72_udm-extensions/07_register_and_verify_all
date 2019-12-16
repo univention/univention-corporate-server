@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
+from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication, verify_ldap_object
 from univention.testing.udm_extensions import *
@@ -68,14 +69,14 @@ exit 0
 			})
 
 	finally:
-		print 'Removing UDM extension from LDAP'
+		print('Removing UDM extension from LDAP')
 		for extension_type in VALID_EXTENSION_TYPES:
 			remove_extension_by_name(extension_type, extension_name[extension_type], fail_on_error=False)
 
-		print 'Uninstalling binary package %r' % package_name
+		print('Uninstalling binary package %r' % package_name)
 		package.uninstall()
 
-		print 'Removing source package'
+		print('Removing source package')
 		package.remove()
 
 

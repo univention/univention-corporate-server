@@ -8,6 +8,7 @@
 ##  - python-ldap
 ## exposure: dangerous
 
+from __future__ import print_function
 import ldap
 import pytest
 import atexit
@@ -28,7 +29,7 @@ def test_uidnumber_0():
 	dn = 'cn=foo,%s' % ucr['ldap/base']
 	cleanup.dns.append(dn)
 	with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
-		print 'add', dn
+		print('add', dn)
 		lo.add(dn, [
 			('objectClass', '', 'posixAccount'),
 			('objectClass', '', 'organizationalRole'),
@@ -38,7 +39,7 @@ def test_uidnumber_0():
 			('uidNumber', '', '0'),
 			('gidNumber', '', '1'),
 		])
-	print msg
+	print(msg)
 	assert msg.value.args[0]['info'] == 'add breaks constraint on uidNumber'
 
 
@@ -47,7 +48,7 @@ def test_gidnumber_0():
 	dn = 'cn=bar,%s' % ucr['ldap/base']
 	cleanup.dns.append(dn)
 	with pytest.raises(ldap.CONSTRAINT_VIOLATION) as msg:
-		print 'add', dn
+		print('add', dn)
 		lo.add(dn, [
 			('objectClass', '', 'posixAccount'),
 			('objectClass', '', 'organizationalRole'),
@@ -57,7 +58,7 @@ def test_gidnumber_0():
 			('uidNumber', '', '1'),
 			('gidNumber', '', '0'),
 		])
-	print msg
+	print(msg)
 	assert msg.value.args[0]['info'] == 'add breaks constraint on gidNumber'
 
 

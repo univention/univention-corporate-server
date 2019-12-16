@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-home-mounter
 
+from __future__ import print_function
 from univention.testing.utils import fail, wait_for_replication
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name, random_username
@@ -43,11 +44,11 @@ if __name__ == '__main__':
 		)
 		user, _user_name = udm.create_user(**user_prop)
 
-		print 'Waiting 30s for UDL.postrun() on master to export share...'
+		print('Waiting 30s for UDL.postrun() on master to export share...')
 		sleep(30)
 		wait_for_replication()
 
-		print '1st login...'
+		print('1st login...')
 		p1 = Popen(('su', '-c', 'cat', '-l', user_name), stdin=PIPE)
 		for _ in xrange(60):
 			if ismount(user_home):
@@ -56,13 +57,13 @@ if __name__ == '__main__':
 		else:
 			fail('Failed to mount %r' % user_home)
 
-		print '2nd login...'
+		print('2nd login...')
 		p2 = Popen(('su', '-c', 'df .', '-l', user_name), stdout=PIPE)
 
 		p1.communicate('1st')
 		stdout, _stderr = p2.communicate()
 		ret = (p1.wait(), p2.wait())
-		print stdout, ret
+		print(stdout, ret)
 
 		Popen(('umount', '-l', '-f', user_home)).wait()
 

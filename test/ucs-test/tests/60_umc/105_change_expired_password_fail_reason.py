@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Test detection of changing expired password failure reason
 ## exposure: dangerous
@@ -63,7 +64,7 @@ def enabled_password_quality_checks(ucr):
 
 @pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.iteritems() for y in x])
 def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized, ucr):
-	print 'test_password_changing_failure_reason(%r, %r)' % (new_password, reason)
+	print('test_password_changing_failure_reason(%r, %r)' % (new_password, reason))
 	with enabled_password_quality_checks(ucr):
 		_test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, Unauthorized)
 
@@ -74,7 +75,7 @@ def _test_password_changing_failure_reason(new_password, reason, udm, Client, ra
 	client = Client(language='en-US')
 	if samba4_installed:
 		utils.wait_for_connector_replication()
-	print 'change password from %r to %r' % (password, new_password)
+	print('change password from %r to %r' % (password, new_password))
 	with pytest.raises(Unauthorized) as msg:
 		client.umc_auth(username, password, new_password=new_password)
 	assert reason == msg.value.message, 'Expected error %r but got %r' % (reason, msg.value.message)

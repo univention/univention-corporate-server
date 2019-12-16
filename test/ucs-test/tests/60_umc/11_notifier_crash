@@ -7,6 +7,7 @@
 ## bugs: [40510]
 ## exposure: safe
 
+from __future__ import print_function
 import notifier
 import subprocess
 
@@ -14,12 +15,12 @@ fd = None
 
 
 def on_read(sock):
-	print 'on_read'
+	print('on_read')
 	return True
 
 
 def on_timer():
-	print 'on_timer'
+	print('on_timer')
 	notifier.socket_remove(fd)
 	return True
 

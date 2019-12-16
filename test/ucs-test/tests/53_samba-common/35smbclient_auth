@@ -13,6 +13,7 @@
 ##  - apptest
 ##  - skip_admember
 
+from __future__ import print_function
 import os
 import sys
 import atexit
@@ -39,9 +40,9 @@ class Test(object):
 		self.totalRounds = Test._get_int_env('smbauth_totalRounds', 3)
 		self.amountPerRound = Test._get_int_env('smbauth_amountPerRound', 8)
 		self.roundTime = Test._get_int_env('smbauth_roundTime', 6)
-		print "Configured for %d times %d processes in %ds." % (
+		print("Configured for %d times %d processes in %ds." % (
 			self.totalRounds, self.amountPerRound, self.roundTime
-		)
+		))
 
 		self.innerDelay = Test._calculateInnerDelay(self.roundTime, self.amountPerRound)
 
@@ -51,20 +52,20 @@ class Test(object):
 		with udm_test.UCSTestUDM() as udm:
 			_user = udm.create_user(username=self.username, password=self.password)
 
-			print "Waiting for DRS replication..."
+			print("Waiting for DRS replication...")
 			wait_for_drs_replication("(sAMAccountName=%s)" % (self.username,), attrs="objectSid")
 
 			self.start_processes()
 			self.check_processes()
 
 	def start_processes(self):
-		print "Starting parallel authentication..."
+		print("Starting parallel authentication...")
 		for index in xrange(self.totalRounds):
-			print "Round %d..." % (index,)
+			print("Round %d..." % (index,))
 			self.smbclient()
 
 	def smbclient(self):
-		print "Forking %d processes..." % (len(self.innerDelay),)
+		print("Forking %d processes..." % (len(self.innerDelay),))
 		cmd = ("/usr/bin/smbclient", "-U%s%%%s" % (self.username, self.password), "//localhost/netlogon")
 		with open(os.path.devnull, 'wb') as null:
 			for delay in self.innerDelay:
@@ -74,7 +75,7 @@ class Test(object):
 	def check_processes(self):
 		expectedResult = self.amountPerRound * self.totalRounds
 		result = Test.checkResult(expectedResult)
-		print "%s of %s have been successful." % (result, expectedResult)
+		print("%s of %s have been successful." % (result, expectedResult))
 		if result == expectedResult:
 			sys.exit(0)
 		else:
@@ -87,7 +88,7 @@ class Test(object):
 			count = len([line for line in proc.stdout if line.startswith('netlogon')])
 			if count == expectedResult:
 				return count
-			print "%d: %d < %d" % (i, count, expectedResult)
+			print("%d: %d < %d" % (i, count, expectedResult))
 			time.sleep(1)
 		return count
 

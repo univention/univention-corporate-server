@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mailclient import MailClient_SSL
 from univention.config_registry import handler_set
 import psutil
@@ -19,7 +20,7 @@ def run_cmd(cmd):
 	"""
 	Execute the given command
 	"""
-	print 'Executing: %r' % (cmd,)
+	print('Executing: %r' % (cmd,))
 	return subprocess.call(cmd, stderr=open('/dev/null', 'w'))
 
 
@@ -66,21 +67,21 @@ def main():
 			for i in xrange(700):
 				imap = MailClient_SSL(host)
 				servers.append(imap)
-			print '%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time() - time_start)
+			print('%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time() - time_start))
 
 			time_start = time.time()
 			for imap in servers:
 				imap.log_in(usermail, password)
-			print '%d IMAP logins are OK (took %f seconds)' % (i + 1, time.time() - time_start)
+			print('%d IMAP logins are OK (took %f seconds)' % (i + 1, time.time() - time_start))
 			mem_finish = used_memory()
 
 			time_start = time.time()
 			for imap in servers:
 				imap.logout()
-			print '%d IMAP logouts are OK (took %f seconds)' % (i + 1, time.time() - time_start)
+			print('%d IMAP logouts are OK (took %f seconds)' % (i + 1, time.time() - time_start))
 
 			mem_per_proc = (mem_finish - mem_start) / 1500.0
-			print 'Memory Used = %.3fMB per connection (Warning: only rough estimation)' % mem_per_proc
+			print('Memory Used = %.3fMB per connection (Warning: only rough estimation)' % mem_per_proc)
 
 
 if __name__ == '__main__':

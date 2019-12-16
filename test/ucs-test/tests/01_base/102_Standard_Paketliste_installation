@@ -8,6 +8,7 @@
 ##  3.2-3: skip
 ## packages: []
 
+from __future__ import print_function
 import re
 import subprocess
 import univention.testing.utils as utils
@@ -15,12 +16,12 @@ import univention.testing.utils as utils
 
 def run_command(cmd):
 	"""Runs cmd command in terminal"""
-	print ' ** %r' % cmd
+	print(' ** %r' % cmd)
 	popen_obj = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out, err = popen_obj.communicate()
 	ret = popen_obj.returncode
 	if ret != 0:
-		print 'Return code = %s,\nOut= %s' % (ret, out)
+		print('Return code = %s,\nOut= %s' % (ret, out))
 		return 1
 	else:
 		return out

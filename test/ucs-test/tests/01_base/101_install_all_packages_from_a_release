@@ -6,6 +6,7 @@
 ## exposure: careful
 ## packages: []
 
+from __future__ import print_function
 import glob
 import re
 import subprocess
@@ -13,7 +14,7 @@ import subprocess
 
 def run_command(cmd):
 	"""Runs cmd command in terminal"""
-	print ' ** %r' % cmd
+	print(' ** %r' % cmd)
 	popen_obj = subprocess.Popen(
 		cmd,
 		stdout=subprocess.PIPE,
@@ -22,7 +23,7 @@ def run_command(cmd):
 	out, err = popen_obj.communicate()
 	ret = popen_obj.returncode
 	if ret != 0:
-		print 'Return code = %s,\nOut= %s' % (ret, out)
+		print('Return code = %s,\nOut= %s' % (ret, out))
 		return 1
 
 
@@ -52,10 +53,10 @@ def main():
 					if test_install(pkg):
 						broken_pkgs.append(pkg)
 		if broken_pkgs:
-			print 'Broken Packages:', broken_pkgs
+			print('Broken Packages:', broken_pkgs)
 			return 1
 	else:
-		print 'apt-get update failed'
+		print('apt-get update failed')
 		return 1
 
 

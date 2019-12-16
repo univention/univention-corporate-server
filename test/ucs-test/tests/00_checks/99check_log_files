@@ -7,6 +7,7 @@
 ##  3.0-0: skip
 ##  4.0-0: fixed
 
+from __future__ import print_function
 import re
 import gzip
 from os import path
@@ -117,7 +118,7 @@ class CheckLogFiles(object):
         previous_line = ''
 
         if not path.isfile(filename):
-            print "\nThe file '%s' cannot be found, skipping..." % filename
+            print("\nThe file '%s' cannot be found, skipping..." % filename)
             return (None, None)
 
         basename = path.basename(filename)
@@ -227,14 +228,14 @@ class CheckLogFiles(object):
             if errors:
                 # Errors detected, test should fail
                 self.return_code = TestCodes.RESULT_FAIL
-                print "\nErrors found in '%s':\n" % filename
+                print("\nErrors found in '%s':\n" % filename)
                 for line in errors:
-                    print " E: %s" % line
+                    print(" E: %s" % line)
 
             if warnings:
-                print "\nWarnings found in '%s':\n" % filename
+                print("\nWarnings found in '%s':\n" % filename)
                 for line in warnings:
-                    print " W: %s" % line
+                    print(" W: %s" % line)
 
 
 if __name__ == '__main__':

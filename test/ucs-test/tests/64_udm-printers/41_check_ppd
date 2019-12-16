@@ -14,6 +14,7 @@
 ##   - univention-directory-manager-tools
 ##   - univention-printserver
 
+from __future__ import print_function
 import os
 import sys
 import univention.testing.utils as utils
@@ -23,7 +24,7 @@ if __name__ == '__main__':
 	# get local and ldap printer models
 	ldap_printer = []
 	printer_files = []
-	print 'searching for printer models'
+	print('searching for printer models')
 	for dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
 		for printerModel in attr.get('printerModel', ()):
 			try:
@@ -55,5 +56,5 @@ if __name__ == '__main__':
 	if missing_printers:
 		message += '\n\n' + 'No LDAP printer found for PPD files:\n' + '\n\t'.join(missing_printers)
 	if message:
-		print >> sys.stderr, message
+		print(message, file=sys.stderr)
 		sys.exit(1)

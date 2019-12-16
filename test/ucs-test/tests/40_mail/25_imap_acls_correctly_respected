@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mail import create_shared_mailfolder
 from essential.mailclient import MailClient_SSL
 import itertools
@@ -53,7 +54,7 @@ def main():
 					mailboxs = imap.getMailBoxes()
 					mailboxs.append(shared_mailbox)
 					for mailbox in mailboxs:
-						print '%d: Mailbox = %s, %s -> %s' % (i, mailbox, who, what)
+						print('%d: Mailbox = %s, %s -> %s' % (i, mailbox, who, what))
 						imap.deleteacl(mailbox, who)
 						if mailbox == shared_mailbox:
 							imap.check_acls({mailbox: default_shared_permissions})

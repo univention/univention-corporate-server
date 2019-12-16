@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # -*- coding: utf-8 -*-
 ## desc: Test UDM cannot get broken by users with missing object classes
@@ -83,7 +84,7 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 				al.extend([(key, val % defaults) for key, val in mapping[option].items() if key != 'objectClass'])
 			al.append(('objectClass', ocs))
 			dn = 'uid=%(uid)s,cn=users,%(base)s' % defaults
-			print 'Adding', dn, 'with', options, 'and', al
+			print('Adding', dn, 'with', options, 'and', al)
 			lo.add(dn, al)
 			dns.append(dn)
 
@@ -97,11 +98,11 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 			try:
 				udm.verify_udm_object('users/user', dn, None)
 			except univention.admin.uexceptions.wrongObjectType:
-				print 'dn', dn, 'correctly identified as wrong'
+				print('dn', dn, 'correctly identified as wrong')
 
 	finally:
 		for dn in dns:
 			try:
 				lo.delete(dn)
 			except:
-				print traceback.format_exc()
+				print(traceback.format_exc())

@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication, fail
 from univention.testing.strings import random_name, random_version
@@ -21,7 +22,7 @@ if __name__ == '__main__':
 	filename = 'ucs_test_64_filename_attack'
 
 	for extension_type in ('hook', 'syntax', 'module'):
-		print '========================= TESTING EXTENSION %s =============================' % extension_type
+		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
 		package_version = get_package_version()
 		app_id = '%s-%s' % (random_name(), random_version())
@@ -41,7 +42,7 @@ if __name__ == '__main__':
 					active='FALSE'
 				)
 			except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-				print 'NOTICE: creating malicious UDM %s extension object failed' % extension_type
+				print('NOTICE: creating malicious UDM %s extension object failed' % extension_type)
 				continue
 
 			# wait for replication before local filesystem is checked

@@ -10,6 +10,7 @@
 #  Bug #33768
 
 
+from __future__ import print_function
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 import univention.testing.udm as udm_test
@@ -129,7 +130,7 @@ class Testclass_GPO_Security_Descriptor(object):
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
-			print 'GPO Cleanup after exception: %s %s' % (exc_type, exc_value)
+			print('GPO Cleanup after exception: %s %s' % (exc_type, exc_value))
 		if self.previous_ucr_unset or self.previous_ucr_set:
 			set_ucr(self.previous_ucr_set, self.previous_ucr_unset, ucr=self.ucr)
 			self.restart_s4_connector()
@@ -265,11 +266,11 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 	def run(self):
 		sync_from = "UDM"
 		sync_to = "SAM"
-		print "GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to)
+		print("GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to))
 		PHASE = "preparation"
 
 		self.create_gpo(logtag=PHASE)
-		print 'GPO Name: %s' % self.gponame
+		print('GPO Name: %s' % self.gponame)
 		ldb_msg = self.get_ldb_gpo(self.gponame)
 		sam_ntsd = self.get_ntsd(ldb_msg)
 		self.assert_owner(sam_ntsd, self.DA_SID, logtag=PHASE)
@@ -336,11 +337,11 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 	def run(self):
 		sync_from = "SAM"
 		sync_to = "UDM"
-		print "GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to)
+		print("GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to))
 		PHASE = "preparation"
 
 		self.create_gpo(logtag=PHASE)
-		print 'GPO Name: %s' % self.gponame
+		print('GPO Name: %s' % self.gponame)
 		ldb_msg = self.get_ldb_gpo(self.gponame)
 		sam_ntsd = self.get_ntsd(ldb_msg)
 		self.assert_owner(sam_ntsd, self.DA_SID, logtag=PHASE)
@@ -376,8 +377,8 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-			print 'ucs_ntsd.as_sddl: %s' % ucs_ntsd.as_sddl()
-			print 'sam_ntsd.as_sddl: %s' % sam_ntsd.as_sddl()
+			print('ucs_ntsd.as_sddl: %s' % ucs_ntsd.as_sddl())
+			print('sam_ntsd.as_sddl: %s' % sam_ntsd.as_sddl())
 			utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE, sync_from, sync_to))
 
 		PHASE = "cleanup"

@@ -7,6 +7,7 @@
 ##   - univention-s4-connector
 ##   - dnsutils
 
+from __future__ import print_function
 import univention.testing.udm as udm_test
 from univention.testing.utils import fail, wait_for_replication_and_postrun
 import dnstests

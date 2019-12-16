@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Try to hack through manipulated share paths
 ## tags: [SKIP]
@@ -108,7 +109,7 @@ def test_filename_validation(modify, path, file_):
 			'univentionShareHost': ['%(hostname)s.%(domainname)s'],
 		}
 		al = [(key, [v % dict(ucr) for v in val]) for key, val in attrs.items()]
-		print('Creating', dn)
+		print(('Creating', dn))
 		dn = lo.add(dn, al) or dn
 		try:
 			utils.wait_for_replication_and_postrun()
@@ -117,7 +118,7 @@ def test_filename_validation(modify, path, file_):
 				lo.modify(dn, [
 					('univentionSharePath', '/home/', path),
 				])
-				print('Modified', dn)
+				print(('Modified', dn))
 				utils.wait_for_replication_and_postrun()
 
 			check()

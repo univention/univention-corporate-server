@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mail import send_mail
 from univention.testing.network import NetworkRedirector
 import univention.testing.strings as uts
@@ -47,15 +48,15 @@ def main():
 				try:
 					result = send_mail(sender=recipient_email, recipients=['noreply@univention.de'], port=port, tls=tls, ssl=ssl, username=recipient_email, password='univention')
 					if failure_expected:
-						print 'TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = ERROR: UNEXPECTED SUCCESS: %r' % (port, tls, ssl, failure_expected, result)
+						print('TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = ERROR: UNEXPECTED SUCCESS: %r' % (port, tls, ssl, failure_expected, result))
 						utils.fail('mail unexpectedly sent')
 					else:
-						print 'TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = SUCCESS: %r' % (port, tls, ssl, failure_expected, result)
+						print('TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = SUCCESS: %r' % (port, tls, ssl, failure_expected, result))
 				except Exception, ex:
 					if failure_expected:
-						print 'TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = exception as expected: %r' % (port, tls, ssl, failure_expected, ex)
+						print('TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = exception as expected: %r' % (port, tls, ssl, failure_expected, ex))
 					else:
-						print 'TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = ERROR: UNEXPECTED EXCEPTION: %r' % (port, tls, ssl, failure_expected, ex)
+						print('TEST (port=%r,tls=%r,ssl=%r,exception expected=%r) = ERROR: UNEXPECTED EXCEPTION: %r' % (port, tls, ssl, failure_expected, ex))
 						raise
 
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Run all diagnostic checks
 ## exposure: safe

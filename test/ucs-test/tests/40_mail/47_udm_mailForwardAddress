@@ -10,6 +10,7 @@
 
 # pylint: disable=attribute-defined-outside-init
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -192,6 +193,6 @@ if __name__ == '__main__':
 					'mailForwardCopyToSelf': '1',
 				})
 			except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-				print 'OK: Creation of user without mPA but mFA failed as expected'
+				print('OK: Creation of user without mPA but mFA failed as expected')
 			else:
 				utils.fail('Creation of user without mPA but mFA was unexpectedly successful')

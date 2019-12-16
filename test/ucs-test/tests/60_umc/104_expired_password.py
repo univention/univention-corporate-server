@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Test UMC authentication with expired accounts
 ## exposure: dangerous
@@ -30,7 +31,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_expired_password_detection_create_pwdchangenextlogin(self, options, udm, Client, random_string, Unauthorized):
-		print 'test_expired_password_detection_create_pwdchangenextlogin(%r)' % (options,)
+		print('test_expired_password_detection_create_pwdchangenextlogin(%r)' % (options,))
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
 		client = Client(language='en-US')
@@ -40,7 +41,7 @@ class TestPwdChangeNextLogin(object):
 
 	@pytest.mark.parametrize('options', PWD_CHANGE_NEXT_LOGIN_OPTIONS)
 	def test_expired_password_detection_modify_pwdchangenextlogin(self, options, udm, Client, random_string, Unauthorized):
-		print 'test_expired_password_detection_modify_pwdchangenextlogin(%r)' % (options,)
+		print('test_expired_password_detection_modify_pwdchangenextlogin(%r)' % (options,))
 		password = random_string()
 		userdn, username = udm.create_user(options=options, password=password)
 		client = Client(language='en-US')
@@ -62,7 +63,7 @@ class TestPwdChangeNextLogin(object):
 		[],
 	])
 	def test_change_password(self, options, udm, Client, random_string, Unauthorized, wait_for_replication):
-		print 'test_change_password(%r)' % (options,)
+		print('test_change_password(%r)' % (options,))
 		password = random_string()
 		new_password = random_string(5) + random_string(5).upper() + '@99'
 		userdn, username = udm.create_user(options=options, password=password, pwdChangeNextLogin=1)
@@ -71,12 +72,12 @@ class TestPwdChangeNextLogin(object):
 			wait_for_drs_replication(filter_format('sAMAccountName=%s', [username]))
 
 		client = Client(language='en-US')
-		print 'check login with pwdChangeNextLogin=1'
+		print('check login with pwdChangeNextLogin=1')
 		with pytest.raises(Unauthorized):
 			client.umc_auth(username, password)
 
 		client = Client(language='en-US')
-		print 'change password from %r to %r' % (password, new_password)
+		print('change password from %r to %r' % (password, new_password))
 		client.umc_auth(username, password, new_password=new_password)
 
 		wait_for_replication()
@@ -89,11 +90,11 @@ class TestPwdChangeNextLogin(object):
 			# best would be to check the local ldap backup for NOT shadowMax=1, but sleep also works for now
 			time.sleep(30)
 
-		print 'check login with new password'
+		print('check login with new password')
 		client = Client(language='en-US')
 		client.authenticate(username, new_password)
 
-		print 'ensure login with old password does not work anymore'
+		print('ensure login with old password does not work anymore')
 		with pytest.raises(Unauthorized):
 			client = Client(language='en-US')
 			client.authenticate(username, password)

@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 
 
+from __future__ import print_function
 import sys
 import atexit
 import univention.uldap
@@ -30,5 +31,5 @@ if __name__ == '__main__':
 
 	ptr = ldap.search(filter='(&(relativeDomainName=50)(pTRRecord=%s))' % ptrRecordEntry)
 	if len(ptr) < 1:
-		print 'Test FAILED. Could not find PTR record created anymore after modifying computers IP'
+		print('Test FAILED. Could not find PTR record created anymore after modifying computers IP')
 		sys.exit(1)

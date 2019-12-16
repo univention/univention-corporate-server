@@ -8,6 +8,7 @@
 ##   - python-univention-directory-manager
 ##   - python-univention
 
+from __future__ import print_function
 import subprocess
 import univention.uldap
 import ldap
@@ -15,7 +16,7 @@ import ldap
 lo = univention.uldap.getMachineConnection()
 dn = lo.lo.whoami_s()[3:]
 attrs = lo.get(dn)
-print('Attrs=', attrs)
+print(('Attrs=', attrs))
 subprocess.call(['service', 'slapd', 'stop'])
 try:
 	try:
@@ -27,7 +28,7 @@ try:
 
 	subprocess.call(['service', 'slapd', 'start'])
 	new_attrs = lo.get(dn)
-	print('New Attrs=', new_attrs)
+	print(('New Attrs=', new_attrs))
 	assert attrs == new_attrs
 finally:
 	subprocess.call(['service', 'slapd', 'restart'])

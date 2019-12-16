@@ -7,6 +7,7 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
+from __future__ import print_function
 import os
 import re
 from sys import stderr, exit
@@ -36,7 +37,7 @@ class AppCheck(object):
         '--quiet' argument was given.
         """
         if not parsed.quiet:
-            print 'FILE:', self.pname, msg % args
+            print('FILE:', self.pname, msg % args)
 
     def check(self):
         """
@@ -44,7 +45,7 @@ class AppCheck(object):
         Checks can be skipped when respective App is not installed
         and no '--all' argument was given or if App instance cannot be created.
         """
-        print "\nChecking file '%s':" % self.pname
+        print("\nChecking file '%s':" % self.pname)
         try:
                 appid = self.config.get('Application', 'ID')
         except NoSectionError, NoOptionError:
@@ -64,7 +65,7 @@ class Error(Exception):
     def __init__(self, msg):
         global failures
         failures += 1
-        print "\nERROR:", msg
+        print("\nERROR:", msg)
 
 
 class Optional(Exception):
@@ -79,7 +80,7 @@ class Fatal(Exception):
     def __init__(self, msg):
         global failures
         failures += 1
-        print "\nFATAL:", msg
+        print("\nFATAL:", msg)
 
 
 class Value(object):
@@ -274,7 +275,7 @@ class Section(object):
             value = self.config.get(self.section, option)
         except NoOptionError as exc:
             if not parsed.quiet:
-                print >> stderr, exc
+                print(exc, file=stderr)
             value = None
         return Value(value, self.appid)
 
@@ -341,4 +342,4 @@ if __name__ == '__main__':
     if failures:
         utils.fail("\nThere were %d error(s) detected. Please check "
                    "the complete test output.\n" % failures)
-    print "\nNo errors were detected.\n"
+    print("\nNo errors were detected.\n")

@@ -14,6 +14,7 @@
 ##  - 33495
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener
 import univention.testing.udm as udm_test
@@ -50,7 +51,7 @@ addlist_subobject = [
 
 def get_entryUUID(lo, dn):
 	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
-	print 'DN: %s\n%s' % (dn, result)
+	print('DN: %s\n%s' % (dn, result))
 	return result[0][1].get('entryUUID')[0]
 
 
@@ -93,10 +94,10 @@ new_computer_UUID = get_entryUUID(lo, dn)
 
 # The container should have be replaced by the computer object
 if computer_UUID != new_computer_UUID:
-	print 'ERROR: entryUUID of moved object do not match'
-	print '  new_computer_UUID: %s' % computer_UUID
-	print '      computer_UUID: %s' % new_computer_UUID
-	print '     container_UUID: %s' % container_UUID
+	print('ERROR: entryUUID of moved object do not match')
+	print('  new_computer_UUID: %s' % computer_UUID)
+	print('      computer_UUID: %s' % new_computer_UUID)
+	print('     container_UUID: %s' % container_UUID)
 	success = False
 
 found_backup_container = False
@@ -114,10 +115,10 @@ if os.path.exists(BACKUP_DIR):
 		fd.close()
 
 if not found_backup_container:
-	print 'ERROR: Backup of container with UUID %s was not found' % container_UUID
+	print('ERROR: Backup of container with UUID %s was not found' % container_UUID)
 	success = False
 if not found_backup_subcontainer:
-	print 'ERROR: Backup of subcontainer with UUID %s was not found' % subcontainer_UUID
+	print('ERROR: Backup of subcontainer with UUID %s was not found' % subcontainer_UUID)
 	success = False
 
 

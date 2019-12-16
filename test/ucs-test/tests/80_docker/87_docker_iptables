@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import Appcenter, App, get_app_name
 from univention.testing.utils import restart_firewall
 import subprocess

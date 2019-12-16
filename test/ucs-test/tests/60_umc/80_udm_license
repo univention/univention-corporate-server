@@ -6,6 +6,7 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 from umc import UDMModule
@@ -47,7 +48,7 @@ class TestUMCLicenseManagement(UDMModule):
         Restarts the UMC Server (to release active connections and memory),
         waits and creates a new connection after
         """
-        print "\nRestarting the UMC Server to release active connections"
+        print("\nRestarting the UMC Server to release active connections")
         check_call(("service", "univention-management-console-server", "restart"))
         sleep(10)  # wait while server is restarting
         self.create_connection_authenticate()
@@ -174,7 +175,7 @@ class TestUMCLicenseManagement(UDMModule):
         request with the license details in options to import it
         """
         if not path.exists(license_file):
-            print "The '%s' license file cannot be found" % license_file
+            print("The '%s' license file cannot be found" % license_file)
             self.return_code_result_skip()
         try:
             with open(license_file, 'r') as license:
@@ -196,7 +197,7 @@ class TestUMCLicenseManagement(UDMModule):
         launched 'univention-ldapsearch' with self.license_dn argument
         If done without errors, sets 'self.license_dump_successful'=True
         """
-        print "\nSaving initial license to file: '%s'" % license_file
+        print("\nSaving initial license to file: '%s'" % license_file)
         try:
             with open(license_file, 'w') as license:
                 proc = Popen(("univention-ldapsearch",
@@ -255,29 +256,29 @@ class TestUMCLicenseManagement(UDMModule):
                        "of '%s's to 5 only, but in fact created: %s"
                        % (obj_type, amount_created))
         else:
-            print "In fact were created: ", amount_created
+            print("In fact were created: ", amount_created)
 
     def run_free_license_checks(self):
         """
         Uploads a free license, checks its info, attempts to create
         computers and users and removes those that were created after
         """
-        print "\nUploading a 'Free' license: 'FreeForPersonalUseTest.license'"
+        print("\nUploading a 'Free' license: 'FreeForPersonalUseTest.license'")
         self.import_new_license('FreeForPersonalUseTest.license')
 
-        print "\nChecking the 'Free' license info"
+        print("\nChecking the 'Free' license info")
         self.check_free_license_info()
 
-        print "\nAttempting to create 10 computers with a 'Free' license"
+        print("\nAttempting to create 10 computers with a 'Free' license")
         self.free_license_limits_check('computer')
 
-        print "\nRemoving created test computers for the next test case:"
+        print("\nRemoving created test computers for the next test case:")
         self.delete_created_computers()
 
-        print "\nAttempting to create 10 users with a 'Free' license"
+        print("\nAttempting to create 10 users with a 'Free' license")
         self.free_license_limits_check('user')
 
-        print "\nRemoving created test users for the next test case:"
+        print("\nRemoving created test users for the next test case:")
         self.delete_created_users()
 
     def expired_license_limits_check(self, obj_type):
@@ -290,7 +291,7 @@ class TestUMCLicenseManagement(UDMModule):
                        "any '%s's, however '%s' were created"
                        % (obj_type, amount_created))
         else:
-            print "In fact were created: ", amount_created
+            print("In fact were created: ", amount_created)
 
     def run_expired_license_checks(self):
         """
@@ -300,10 +301,10 @@ class TestUMCLicenseManagement(UDMModule):
         print("\nUploading an expired license 'ExpiredTest.license' for the test")
         self.import_new_license(self.temp_license_folder + '/ExpiredTest.license')
 
-        print "\nAttempting to create 10 computers with an expired license"
+        print("\nAttempting to create 10 computers with an expired license")
         self.expired_license_limits_check('computer')
 
-        print "\nAttempting to create 10 users with an expired license"
+        print("\nAttempting to create 10 users with an expired license")
         self.expired_license_limits_check('user')
 
     def valid_license_limits_check(self, obj_type):
@@ -317,26 +318,26 @@ class TestUMCLicenseManagement(UDMModule):
                        "in fact were created: '%s'"
                        % (obj_type, amount_created))
         else:
-            print "In fact were created: ", amount_created
+            print("In fact were created: ", amount_created)
 
     def run_valid_license_checks(self):
         """
         Uploads a valid license, creates 10 computers and users with it
         """
-        print "\nUploading a valid license 'ValidTest.license' for the test"
+        print("\nUploading a valid license 'ValidTest.license' for the test")
         self.import_new_license(self.temp_license_folder +
                                 '/ValidTest.license')
 
-        print "\nAttempting to create 10 computers with a valid license"
+        print("\nAttempting to create 10 computers with a valid license")
         self.valid_license_limits_check('computer')
 
-        print "\nRemoving created test computers for the next test case:"
+        print("\nRemoving created test computers for the next test case:")
         self.delete_created_computers()
 
-        print "\nAttempting to create 10 users with a valid license"
+        print("\nAttempting to create 10 users with a valid license")
         self.valid_license_limits_check('user')
 
-        print "\nRemoving created test users for the next test case:"
+        print("\nRemoving created test users for the next test case:")
         self.delete_created_users()
 
     def modified_license_limits_check(self, obj_type):
@@ -349,14 +350,14 @@ class TestUMCLicenseManagement(UDMModule):
                        "any '%s's, however '%s' were created"
                        % (obj_type, amount_created))
         else:
-            print "In fact were created: ", amount_created
+            print("In fact were created: ", amount_created)
 
     def run_modified_signature_license_checks(self):
         """
         Modifies the current license LDAP object and tries to create
         a number of computers and users after
         """
-        print "\nModifing license signature in LDAP to a random value"
+        print("\nModifing license signature in LDAP to a random value")
         self.modify_license_signature(random_username(50))
 
         print("\nAttempting to create 10 computers with a modified "
@@ -377,20 +378,20 @@ class TestUMCLicenseManagement(UDMModule):
                        "any '%s's, however '%s' were created"
                        % (obj_type, amount_created))
         else:
-            print "In fact were created: ", amount_created
+            print("In fact were created: ", amount_created)
 
     def run_junk_license_checks(self):
         """
         Uploads a 'junk' license and tries to create computers
         and users with it
         """
-        print "\nUploading a 'junk' license 'JunkTest.license' for the test"
+        print("\nUploading a 'junk' license 'JunkTest.license' for the test")
         self.import_new_license(self.temp_license_folder + '/JunkTest.license')
 
-        print "\nAttempting to create 10 computers with a 'junk' license"
+        print("\nAttempting to create 10 computers with a 'junk' license")
         self.junk_license_limits_check('computer')
 
-        print "\nAttempting to create 10 users with a 'junk' license"
+        print("\nAttempting to create 10 users with a 'junk' license")
         self.junk_license_limits_check('user')
 
     def get_valid_license(self):
@@ -398,7 +399,7 @@ class TestUMCLicenseManagement(UDMModule):
         Gets a 'ValidTest.license' by ordering and downloading it
         from the licensing server via LicenseClient tool
         """
-        print "\nObtaining a valid license for the test:"
+        print("\nObtaining a valid license for the test:")
         end_date = time()
         end_date += 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
@@ -419,7 +420,7 @@ class TestUMCLicenseManagement(UDMModule):
         Gets an 'ExpiredTest.license' by ordering and downloading it
         from the licensing server via LicenseClient tool
         """
-        print "\nObtaining an expired license for the test:"
+        print("\nObtaining an expired license for the test:")
         end_date = time()
         end_date -= 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
@@ -440,7 +441,7 @@ class TestUMCLicenseManagement(UDMModule):
         Modifies the 'FreeForPersonalUseTest.license' to have a correct
         BaseDN. Skipps the test if Free license template was not found.
         """
-        print "\nModifing the Free license template for the test"
+        print("\nModifing the Free license template for the test")
         if not path.exists('FreeForPersonalUseTest.license'):
             print("Cannot find the 'FreeForPersonalUseTest.license' file, "
                   "skipping the test...")
@@ -463,7 +464,7 @@ class TestUMCLicenseManagement(UDMModule):
         Copies the 'ValidTest.license' file to a 'JunkTest.license' file and
         changes a line with license signature.
         """
-        print "\nGenerating a junk license based on valid license for the test"
+        print("\nGenerating a junk license based on valid license for the test")
         junk_license_file = self.temp_license_folder + '/JunkTest.license'
         file_copy(self.temp_license_folder + '/ValidTest.license',
                   junk_license_file)
@@ -509,7 +510,7 @@ class TestUMCLicenseManagement(UDMModule):
             print("An OSError while deleting the temporary"
                   "folder with license files: '%s'" % exc)
 
-        print "\nRemoving created test computers and users (if any):"
+        print("\nRemoving created test computers and users (if any):")
         self.delete_created_computers()
         self.delete_created_users()
 

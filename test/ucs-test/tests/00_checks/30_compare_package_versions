@@ -5,6 +5,7 @@
 ## tags: [producttest]
 ## exposure: safe
 
+from __future__ import print_function
 from lxml.html import fromstring
 from optparse import OptionParser
 from distutils.version import StrictVersion
@@ -64,10 +65,10 @@ def perform_cleanup():
     """
     Removes all the folders/files located in the 'cleanup_folders' list.
     """
-    print "\nPerforming cleanup after the test:"
+    print("\nPerforming cleanup after the test:")
 
     for folder in cleanup_folders:
-        print "Removing folder:", folder
+        print("Removing folder:", folder)
         try:
             rmtree(folder, False)
 
@@ -86,7 +87,7 @@ def download_packages_file(url, version, arch, temp_directory):
     file_path = file_name + arch + '/Packages.gz'  # a complete path to the 'Packages.gz' file
 
     url += version + '/' + arch + '/Packages.gz'
-    print "\nDownloading:", url
+    print("\nDownloading:", url)
 
     try:
         makedirs(file_name + arch)
@@ -117,7 +118,7 @@ def load_packages_file(filename, target_dict, ucs_version):
     Creates a entry object for each found package and fills the target_dict.
     """
     if not path.exists(filename):
-        print "Error: file %s does not exist" % filename
+        print("Error: file %s does not exist" % filename)
         return
 
     try:
@@ -172,7 +173,7 @@ def load_version(url):
 
             if file_name:
                 # only load the packages file when it was downloaded
-                print "Loading packages file:", file_name + arch + '/Packages.gz'
+                print("Loading packages file:", file_name + arch + '/Packages.gz')
                 load_packages_file(path.join(file_name, arch, 'Packages.gz'),
                                    target,
                                    'ucs_' + version)
@@ -192,13 +193,13 @@ def compare(old, new):
         if package in old:
             if version_compare(old[package].version, new[package].version) > 0:
                 if errors == 0:
-                    print '\n---------------------------------------------------------'
-                    print '  The following packages use a smaller package version:'
-                    print '---------------------------------------------------------\n'
+                    print('\n---------------------------------------------------------')
+                    print('  The following packages use a smaller package version:')
+                    print('---------------------------------------------------------\n')
 
-                print " Package: %s" % package
-                print "   %s: %s" % (old[package].ucs_version, old[package].version)
-                print "   %s: %s" % (new[package].ucs_version, new[package].version)
+                print(" Package: %s" % package)
+                print("   %s: %s" % (old[package].ucs_version, old[package].version))
+                print("   %s: %s" % (new[package].ucs_version, new[package].version))
 
                 src_package = new[package].sourcepkg
                 if not src_package:
@@ -206,16 +207,16 @@ def compare(old, new):
 
                 src_package_list.add(src_package)
 
-                print "  Source package: %s" % src_package
+                print("  Source package: %s" % src_package)
                 errors += 1
 
     if errors:
-        print "\nAffected source packages:"
+        print("\nAffected source packages:")
         for package in sorted(list(src_package_list)):
-            print "  %s" % package
+            print("  %s" % package)
 
-        print "\nNumber of affected binary packages: %d" % errors
-        print "Number of affected source packages: %d" % len(src_package_list)
+        print("\nNumber of affected binary packages: %d" % errors)
+        print("Number of affected source packages: %d" % len(src_package_list))
 
         global total_errors
         total_errors += errors
@@ -271,7 +272,7 @@ def select_minor_levels(repo_major_url):
         utils.fail("Could not find at least one patch level number in "
                    "the given repository at '%s'" % repo_major_url)
 
-    print "\nThe following patch levels will be checked:", check_patchlevels
+    print("\nThe following patch levels will be checked:", check_patchlevels)
     return check_patchlevels
 
 
@@ -325,7 +326,7 @@ def parse_arguments():
                        "version numbers" % exc)
         return args
 
-    print "\nThe UCS versions for the test will be determined automatically:"
+    print("\nThe UCS versions for the test will be determined automatically:")
 
 
 if __name__ == '__main__':
@@ -355,7 +356,7 @@ if __name__ == '__main__':
 
             # comparing first maintained and than unmaintained sections:
             for repo_type in ('maintained/', 'unmaintained/'):
-                print "\nChecking %s packages:" % repo_type[:-1]
+                print("\nChecking %s packages:" % repo_type[:-1])
                 previous_version = repo_url + check_versions[0] + '/' + repo_type
                 current_version = repo_url + check_versions[1] + '/' + repo_type
 
@@ -368,4 +369,4 @@ if __name__ == '__main__':
             utils.fail("There were %d errors detected in total. Please check"
                        " the complete test output." % total_errors)
 
-        print "\nNo errors were detected.\n"
+        print("\nNo errors were detected.\n")

@@ -6,6 +6,7 @@
 ## bugs: [35924]
 
 
+from __future__ import print_function
 from subprocess import Popen, PIPE
 
 import univention.testing.utils as utils
@@ -41,12 +42,12 @@ def check_pfs_cipher():
 	"""
 	Makes a localhost connection with openssl client and looks for cipher used.
 	"""
-	print "\nExpecting one of the following ciphers to be used:", PFS_CIPHERS
+	print("\nExpecting one of the following ciphers to be used:", PFS_CIPHERS)
 	openssl_out = run_openssl()
 
 	for possible_cipher in PFS_CIPHERS:
 		if possible_cipher in openssl_out:
-			print "\nCipher '%s' was found.\n" % possible_cipher
+			print("\nCipher '%s' was found.\n" % possible_cipher)
 			return
 
 	utils.fail("None of the possible ciphers were found in the output "
@@ -66,19 +67,19 @@ def run_openssl():
 	stdout, stderr = proc.communicate()
 
 	if stderr:
-		print "The following message(s) appeared in STDERR:\n", stderr
+		print("The following message(s) appeared in STDERR:\n", stderr)
 	if not stdout:
 		utils.fail("The 'openssl' client did not produce any output to STDOUT")
 
-	print "Openssl client STDOUT:\n", stdout
+	print("Openssl client STDOUT:\n", stdout)
 	# grep for cipher:
 	cmd = ('grep', '--ignore-case', 'cipher')
 	proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
 	grep_stdout, stderr = proc.communicate(stdout)
 
 	if stderr:
-		print("The following message(s) appeared in STDERR while grep'ing "
-			  "for 'cipher':\n", stderr)
+		print(("The following message(s) appeared in STDERR while grep'ing "
+			  "for 'cipher':\n", stderr))
 	if not grep_stdout:
 		utils.fail("No 'cipher' string was found in the output from "
 				   "openssl client. Probably TLS/PFS does not work.")

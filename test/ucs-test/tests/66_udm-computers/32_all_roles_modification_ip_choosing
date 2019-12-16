@@ -5,6 +5,7 @@
 ## exposure: careful
 ## bugs: [16923]
 
+from __future__ import print_function
 import ldap.dn
 
 import univention.testing.udm as udm_test
@@ -29,19 +30,19 @@ def main():
 				dhcpEntryZone=service,
 				ipRange='%s.2 %s.253' % (NET, NET))
 
-			print 'Let Network choose the IP'
+			print('Let Network choose the IP')
 			computerName, mac, ip = create(udm, role, network=network)
 			verify(computerName, service, mac)
 
-			print 'Give explicit IP, but DHCP from Network'
+			print('Give explicit IP, but DHCP from Network')
 			computerName, mac, ip = create(udm, role, ip=True, network=network)
 			verify(computerName, service, mac, ip=[ip])
 
-			print 'Manual DHCP with dynamic IP from known-hosts-pool'
+			print('Manual DHCP with dynamic IP from known-hosts-pool')
 			computerName, mac, ip = create(udm, role, dhcp=service)
 			verify(computerName, service, mac, ip=[''])
 
-			print 'Manual DHCP with fixed IP'
+			print('Manual DHCP with fixed IP')
 			computerName, mac, ip = create(udm, role, ip=True, dhcp=service)
 			verify(computerName, service, mac, ip=[ip])
 

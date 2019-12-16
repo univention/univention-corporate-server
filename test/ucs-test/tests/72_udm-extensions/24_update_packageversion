@@ -6,6 +6,7 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication, fail
@@ -22,7 +23,7 @@ if __name__ == '__main__':
 	wait_for_replication()
 
 	for extension_type in ('hook', 'syntax', 'module'):
-		print '========================= TESTING EXTENSION %s =============================' % extension_type
+		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
 		package_version_base = get_package_version()
 		app_id = '%s-%s' % (random_name(), random_version())
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 							**properties
 						)
 					except udm_test.UCSTestUDM_ModifyUDMObjectFailed, ex:
-						print 'CAUGHT EXCEPTION: %s' % ex
+						print('CAUGHT EXCEPTION: %s' % ex)
 						if (oldversion < newversion):
 							raise
 

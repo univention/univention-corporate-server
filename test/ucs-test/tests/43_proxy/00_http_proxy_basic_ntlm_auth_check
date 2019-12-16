@@ -5,6 +5,7 @@
 ## exposure: dangerous
 ## packages: [univention-squid]
 
+from __future__ import print_function
 from essential.simplecurl import SimpleCurl
 from essential.simplesquid import SimpleSquid
 from univention.config_registry import handler_set, handler_unset
@@ -25,7 +26,7 @@ def checkAuths(host, passwd, url, (basic, ntlm), expect_wrong_password):
 
 
 def checkBasic(host, passwd, url, http_code):
-	print 'Performing Basic proxy auth check'
+	print('Performing Basic proxy auth check')
 	curl = SimpleCurl(proxy=host, password=passwd, auth=pycurl.HTTPAUTH_BASIC)
 	result = curl.response(url)
 	if http_code != result:
@@ -33,7 +34,7 @@ def checkBasic(host, passwd, url, http_code):
 
 
 def checkNTLM(host, passwd, url, http_code):
-	print 'Performing NTLM proxy auth check'
+	print('Performing NTLM proxy auth check')
 	curl = SimpleCurl(proxy=host, password=passwd, auth=pycurl.HTTPAUTH_NTLM)
 	result = curl.response(url)
 	if http_code != result:
@@ -54,10 +55,10 @@ def setAuthVariables(squid, (basic, ntlm)):
 
 
 def printHeader(state, passwd, expect_wrong_password):
-	print '-' * 40
-	print '(Basic, NTLM) = %s' % (state,)
-	print 'Password used: %s, expect_wrong_password: %s' % (
-		passwd, expect_wrong_password)
+	print('-' * 40)
+	print('(Basic, NTLM) = %s' % (state,))
+	print('Password used: %s, expect_wrong_password: %s' % (
+		passwd, expect_wrong_password))
 
 
 def main():

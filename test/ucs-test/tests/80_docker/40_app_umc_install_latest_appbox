@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import Appcenter, App, get_app_name, UCTTest_DockerApp_UMCInstallFailed
 
 import requests
@@ -39,7 +40,7 @@ exit 1
 				app.install_via_umc()
 			except UCTTest_DockerApp_UMCInstallFailed as exc:
 				progress, errors = exc.args
-				print errors
+				print(errors)
 				assert {u'message': u'This message goes to ERROR_FILE\n', u'level': u'CRITICAL'} in errors
 			else:
 				raise AssertionError('Should not have been installed successfully!')

@@ -8,6 +8,7 @@
 ##   - python-univention-directory-manager
 ##   - python-univention
 
+from __future__ import print_function
 import univention.testing.ucr as ucr_test
 import univention.testing.utils as utils
 import univention.testing.udm
@@ -28,15 +29,15 @@ def delayed_slapd_restart():
 	global restart_finished
 	subprocess.call(['systemctl', 'daemon-reload'])
 	time.sleep(3)
-	print 'Restarting slapd'
+	print('Restarting slapd')
 	subprocess.call(['service', 'slapd', 'stop'])
 	subprocess.call(['service', 'slapd', 'start'])
 	time.sleep(5)
-	print 'Restarting slapd again'
+	print('Restarting slapd again')
 	subprocess.call(['service', 'slapd', 'stop'])
 	subprocess.call(['service', 'slapd', 'start'])
 	time.sleep(3)
-	print 'Restart finished'
+	print('Restart finished')
 	restart_finished = True
 
 
@@ -65,9 +66,9 @@ def main():
 			if isinstance(lo, tuple):
 				lo = lo[0]
 
-			print 'Starting test set with connection %r' % (lo,)
+			print('Starting test set with connection %r' % (lo,))
 
-			print 'Testing lo.search operation...'
+			print('Testing lo.search operation...')
 			restart_finished = False
 			start_new_thread(delayed_slapd_restart, ())
 			filter_s = filter_format('(uid=%s)', (account.username,))
@@ -90,7 +91,7 @@ def main():
 				print('LDAP search finished successfully {} times.'.format(count))
 			except Exception as exc:
 				print('LDAP modify failed after succeeding {} times.'.format(count))
-				print traceback.format_exc()
+				print(traceback.format_exc())
 				utils.fail('lo.search() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
 
 			# test lo.modify operation
@@ -119,7 +120,7 @@ def main():
 				pass  # On DC Slaves no objects can be modified
 			except Exception as exc:
 				print('LDAP modify failed after succeeding {} times.'.format(count))
-				print traceback.format_exc()
+				print(traceback.format_exc())
 				utils.fail('lo.modify() is not restart-safe with %r follow_referral=%r: %s' % (lo, follow_referral, exc,))
 
 			# TODO: add a check for rename() and add()

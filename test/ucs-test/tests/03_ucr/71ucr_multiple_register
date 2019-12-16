@@ -5,6 +5,7 @@
 ##  - univention-base-files
 ## exposure: dangerous
 
+from __future__ import print_function
 import pickle
 import univention.config_registry.handler as ucrh
 from univention.config_registry.frontend import handler_register
@@ -12,7 +13,7 @@ from univention.testing import utils
 
 UCR_CACHE = '/var/cache/univention-config/cache'
 
-print 'Re-registering package univention-base-files...'
+print('Re-registering package univention-base-files...')
 handler_register(['univention-base-files'])
 
 with open(UCR_CACHE) as f:
@@ -21,7 +22,7 @@ with open(UCR_CACHE) as f:
 
 modules = []
 
-print 'Check if UCR variable xorg/keyboard/options/XkbModel has more than one module attached...'
+print('Check if UCR variable xorg/keyboard/options/XkbModel has more than one module attached...')
 value = d['xorg/keyboard/options/XkbModel']
 for val in value:
 	if isinstance(val, ucrh.ConfigHandlerModule):

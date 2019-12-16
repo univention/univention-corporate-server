@@ -5,6 +5,7 @@
 ## tags: [basic, apptest]
 ## exposure: safe
 
+from __future__ import print_function
 from subprocess import Popen, PIPE
 
 from univention.config_registry import ConfigRegistry
@@ -30,7 +31,7 @@ def check_user_groups_sids():
     Checks that 'test_username' and 'test_groups' have correct SIDs
     when applicable.
     """
-    print "\nChecking SIDs where applicable:"
+    print("\nChecking SIDs where applicable:")
 
     # following SIDs should be 'S-1-5-21-' + domainSID + specific ending
     sid_check_dict = {"uid=" + test_username: "-500",  # Administrator
@@ -43,8 +44,8 @@ def check_user_groups_sids():
         if not sid_in_ldap:
             utils.fail("The 'sambaSID' for '%s' is empty." % key)
 
-        print "\nRecord:", key
-        print "SID:", sid_in_ldap
+        print("\nRecord:", key)
+        print("SID:", sid_in_ldap)
 
         if not (sid_in_ldap.startswith('S-1-5-21-') and sid_in_ldap.endswith(sid_ending)):
             print("\nThe SID '%s' for '%s' is incorrect. Expected to start "
@@ -57,7 +58,7 @@ def check_user_in_groups():
     """
     Checks if 'test_username' user is a member of test_groups.
     """
-    print "\nChecking group members:"
+    print("\nChecking group members:")
 
     for group in test_groups:
         if test_username not in get_members_in_group(group):
@@ -71,7 +72,7 @@ def get_localized_translations():
     Returns the Administrator username and groups in localazed translation
     or in English if there are no translations found in the UCR.
     """
-    print "Determining Administrator username and group translations if any."
+    print("Determining Administrator username and group translations if any.")
 
     # Administrator username translation:
     translated_username = UCR.get('users/default/administrator') or "Administrator"
@@ -118,13 +119,13 @@ def get_sid_for_user_group(name):
     stdout, stderr = create_and_run_process(cmd)
 
     if stderr:
-        print "\nThe following message occurred in stderr:", stderr
+        print("\nThe following message occurred in stderr:", stderr)
 
     sed_cmd = ("sed", "-n", "s/^sambaSID: //p")
     sed_stdout, sed_stderr = create_and_run_process(sed_cmd, PIPE, stdout)
 
     if sed_stderr:
-        print "\nThe following message occurred in stderr:", stderr
+        print("\nThe following message occurred in stderr:", stderr)
 
     return sed_stdout.strip('\n')
 
@@ -137,8 +138,8 @@ def get_members_in_group(group_name):
     stdout, stderr = create_and_run_process(cmd)
 
     if stderr:
-        print "\nThe following message occurred in stderr while using 'getent':"
-        print stderr
+        print("\nThe following message occurred in stderr while using 'getent':")
+        print(stderr)
 
     stdout = stdout.strip()
     if not stdout:
@@ -148,8 +149,8 @@ def get_members_in_group(group_name):
     # remove the group name, password, gid and separate members by commas:
     members = stdout[(stdout.rfind(':') + 1):].split(',')
 
-    print "\nGroup:", group_name
-    print "Members of the group:", members
+    print("\nGroup:", group_name)
+    print("Members of the group:", members)
     return members
 
 
@@ -160,7 +161,7 @@ if __name__ == '__main__':
     Check SIDs for Administrator and groups where applicable.
     """
     test_username, test_groups = get_localized_translations()
-    print "\nUser name to be tested:", test_username
+    print("\nUser name to be tested:", test_username)
     print("Groups where %s should be a member: %s" % (test_username, test_groups))
 
     check_user_in_groups()

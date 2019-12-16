@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # -*- coding: utf-8 -*-
 ## desc: Test various things in users/user
@@ -420,7 +421,7 @@ class TestUsers(object):
 		subprocess.call(['python', '-m', 'univention.lib.account', 'lock', '--dn', user, '--lock-time', locktime])
 		lo.modify(user, [('sambaBadPasswordCount', '0', '20')])
 		new = lo.get(user)
-		print(locktime, old, new)
+		print((locktime, old, new))
 		udm.modify_object('users/user', dn=user, locked='0')
 		try:
 			udm.modify_object('users/user', dn=user, locked='0')

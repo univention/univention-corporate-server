@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 import time
 import subprocess
 import imaplib
@@ -43,38 +44,38 @@ class AuthTests(object):
 				ssl=False,
 				username=self.email,
 				password=self.password)
-			print '>>> test_smtp_auth({}): successfully sent mail - auth is ok'.format(user)
+			print('>>> test_smtp_auth({}): successfully sent mail - auth is ok'.format(user))
 			return True
 		except Exception as exc:
-			print '>>> test_smtp_auth({}): sending mail failed - {}'.format(user, exc)
+			print('>>> test_smtp_auth({}): sending mail failed - {}'.format(user, exc))
 			return False
 
 	def test_imap_auth(self, user):
 		try:
 			imapcon = imaplib.IMAP4_SSL(host='localhost')
-			print imapcon.login(user, self.password)
-			print '>>> test_imap_auth({}): successful IMAP auth'.format(user)
+			print(imapcon.login(user, self.password))
+			print('>>> test_imap_auth({}): successful IMAP auth'.format(user))
 			return True
 		except Exception as exc:
-			print '>>> test_imap_auth({}): IMAP auth failed - {}'.format(user, exc)
+			print('>>> test_imap_auth({}): IMAP auth failed - {}'.format(user, exc))
 			return False
 
 	def test_pop3_auth(self, user):
 		try:
 			pop3con = poplib.POP3_SSL(host='localhost')
-			print pop3con.user(user)
-			print pop3con.pass_(self.password)
-			print '>>> test_pop3_auth({}): successful POP3 auth'.format(user)
+			print(pop3con.user(user))
+			print(pop3con.pass_(self.password))
+			print('>>> test_pop3_auth({}): successful POP3 auth'.format(user))
 			return True
 		except Exception as exc:
-			print '>>> test_pop3_auth({}): POP3 auth failed - {}'.format(user, exc)
+			print('>>> test_pop3_auth({}): POP3 auth failed - {}'.format(user, exc))
 			return False
 
 	def test_saslauthd(self, user):
 		if not self.ucr.is_true('mail/cyrus'):
 			return None
 		exitcode = subprocess.call(['testsaslauthd', '-u', self.username, '-p', self.password])
-		print '>>> test_saslauthd(%s): exitcode=%r' % (user, exitcode)
+		print('>>> test_saslauthd(%s): exitcode=%r' % (user, exitcode))
 		return exitcode == 0
 
 	def test_sieve(self, user):
@@ -88,7 +89,7 @@ class AuthTests(object):
 			'--list'], stdin=subprocess.PIPE)
 		proc.communicate('%s\n' % (self.password,))
 		exitcode = proc.returncode
-		print '>>> test_sieve(%s): exitcode=%r' % (user, exitcode)
+		print('>>> test_sieve(%s): exitcode=%r' % (user, exitcode))
 		return exitcode == 0
 
 	def restart_services(self):
@@ -131,11 +132,11 @@ class AuthTests(object):
 		for (key, user, func) in checks:
 			result['post_change_{}'.format(key)] = func(user)
 
-		print 'RESULT:'
-		print '=' * 55
+		print('RESULT:')
+		print('=' * 55)
 		results = sorted(result.items(), key=lambda x: x[0], reverse=True)
 		for key, val in results:
-			print '{:<45}: {}'.format(key, {True: 'OK', False: 'FAILED', None: 'SKIPPED'}[val])
+			print('{:<45}: {}'.format(key, {True: 'OK', False: 'FAILED', None: 'SKIPPED'}[val]))
 
 		if any(x is False for x in result.values()):
 			utils.fail('Not all authentication were okay!')

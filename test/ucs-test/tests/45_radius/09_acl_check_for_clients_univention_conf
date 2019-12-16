@@ -10,6 +10,7 @@
 # This test expects, that univention-radius has been successfully installed on the local system.
 #
 
+from __future__ import print_function
 import univention.uldap
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test

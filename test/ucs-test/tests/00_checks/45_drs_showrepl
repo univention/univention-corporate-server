@@ -6,6 +6,7 @@
 ## packages:
 ## - univention-samba4
 
+from __future__ import print_function
 from subprocess import PIPE, Popen
 import univention.testing.utils as utils
 import re
@@ -14,11 +15,11 @@ proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()
 
-print '** STDERR'
-print stderr.strip()
-print '** STDOUT'
-print stdout.strip()
-print '**'
+print('** STDERR')
+print(stderr.strip())
+print('** STDOUT')
+print(stdout.strip())
+print('**')
 
 if stderr.strip():
 	utils.fail('samba-tool drsi showrepl returned on stderr: %s' % stderr.strip())

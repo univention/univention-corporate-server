@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mail import send_mail, check_delivery
 import time
 import univention.testing.strings as uts
@@ -46,7 +47,7 @@ def main():
 						users_list.append(user_dn)
 					group_name = uts.random_name()
 					group_mail = '%s@%s' % (group_name, domain)
-					print 'Users List = ', users_list
+					print('Users List = ', users_list)
 					group_dn = udm.create_object(
 						'groups/group',
 						set={
@@ -71,7 +72,7 @@ def main():
 						should_be_delivered = False
 						if i in [1, 2]:
 							should_be_delivered = True
-						print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+						print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
 						check_delivery(token, mail, should_be_delivered)
 
 					udm.modify_object(
@@ -87,7 +88,7 @@ def main():
 						should_be_delivered = True
 						if i == 0:
 							should_be_delivered = False
-						print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+						print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
 						check_delivery(token, mail, should_be_delivered)
 
 					udm.modify_object(
@@ -101,7 +102,7 @@ def main():
 					send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
 					for i, mail in enumerate(mails_list):
 						should_be_delivered = True
-						print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
+						print(40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered))
 						check_delivery(token, mail, should_be_delivered)
 
 

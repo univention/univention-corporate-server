@@ -7,6 +7,7 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: dangerous
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.config_registry
 import univention.uldap as uldap
@@ -23,9 +24,9 @@ install = get_action('install')
 
 failed = []
 for app in get_requested_apps():
-	print 'Checking', app
+	print('Checking', app)
 	if not app._allowed_on_local_server():
-		print 'Not allowed ... skipping'
+		print('Not allowed ... skipping')
 		continue
 	if not install.call(app=app, noninteractive=True, pwdfile=pwdfile, username=username):
 		failed.append(app.id)

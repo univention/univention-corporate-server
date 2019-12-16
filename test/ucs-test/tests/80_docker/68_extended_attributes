@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 import os
 import subprocess
 from contextlib import contextmanager
@@ -157,11 +158,11 @@ DescriptionDe=Das ist mein Attribut. Und es ist dufte!
 
 
 if __name__ == '__main__':
-	print 'GENERATE SCHEMA'
+	print('GENERATE SCHEMA')
 	generate_schema()
-	print 'OWN SCHEMA'
+	print('OWN SCHEMA')
 	own_schema()
-	print 'ATTRS W/O'
+	print('ATTRS W/O')
 	attributes_file_without_attribute()
-	print 'ATTRS W/'
+	print('ATTRS W/')
 	attributes_file_with_attribute()

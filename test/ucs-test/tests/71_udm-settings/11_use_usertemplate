@@ -4,6 +4,7 @@
 ## exposure: careful
 ## bugs: [42765,43428,29672]
 
+from __future__ import print_function
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_name, random_int
@@ -147,7 +148,7 @@ if __name__ == '__main__':
 			dn_user = obj_user.create()
 
 		udm._cleanup.setdefault(MOD_USER, []).append(dn_user)
-		print 'dn_user=%s' % (dn_user,)
+		print('dn_user=%s' % (dn_user,))
 
 		utils.verify_ldap_object(dn_user, {
 			'univentionObjectType': [MOD_USER],

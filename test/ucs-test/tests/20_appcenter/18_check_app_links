@@ -9,6 +9,7 @@
 #from urllib2 import urlopen, URLError, HTTPError, Request
 #from multiprocessing import Process, Pipe as m_Pipe
 
+from __future__ import print_function
 import re
 import requests
 import time
@@ -75,7 +76,7 @@ def findall_urls(app):
     all_urls = []
 
     filename = app.get_ini_file()
-    print "\nChecking file:", filename
+    print("\nChecking file:", filename)
     try:
         with open(filename, 'r') as ini_file:
             for line in ini_file:
@@ -99,7 +100,7 @@ def collect_links():
     links_to_check = set()
 
     for app in get_requested_apps():
-        print "\nChecking App:", app
+        print("\nChecking App:", app)
         # determine links to be checked (duplicates are ignored):
         links_to_check.update(findall_urls(app))
     return links_to_check
@@ -112,22 +113,22 @@ def check_ini_files():
     """
     for link in collect_links():
         if link in forbidden_links:
-	    print "\nIgnore link:", link
+	    print("\nIgnore link:", link)
             continue
         time.sleep(1)
-        print "\nChecking link:", link
+        print("\nChecking link:", link)
         requests_timeout = 10
         headers = requests.utils.default_headers()
         headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0'})
         try:
             r = requests.get(link, timeout=requests_timeout, verify=False, headers=headers)
         except Exception as exc:
-            print "Response code indicates a problem. %s" % str(exc)
+            print("Response code indicates a problem. %s" % str(exc))
             fail_the_test(link)
             continue
-        print r.status_code
+        print(r.status_code)
         if str(r.status_code).startswith(('4', '5')):
-            print "Response code indicates a problem."
+            print("Response code indicates a problem.")
             fail_the_test(link)
 
 
@@ -140,4 +141,4 @@ if __name__ == '__main__':
                    "check a complete test output.\n Problematic links are: %s"
                    % (failures_counter, bad_links))
     else:
-        print "\nNo errors were detected.\n"
+        print("\nNo errors were detected.\n")

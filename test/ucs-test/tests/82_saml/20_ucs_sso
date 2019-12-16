@@ -5,6 +5,7 @@
 ## packages:
 ##   - univention-saml
 
+from __future__ import print_function
 import dns.resolver
 import dns.ipv6
 from univention.testing.utils import get_ldap_connection, fail

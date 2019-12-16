@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import Appcenter, App, get_app_name, get_app_version, get_docker_appbox_ucs, get_docker_appbox_image
 from univention.testing.utils import get_ldap_connection
 import socket
@@ -15,10 +16,10 @@ def _open_port(port):
 	try:
 		s.bind(('', port))
 	except socket.error as msg:
-		print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+		print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
 		return
 	s.listen(10)
-	print 'Opened socket on port %d' % port
+	print('Opened socket on port %d' % port)
 	return s
 
 
@@ -52,7 +53,7 @@ if __name__ == '__main__':
 			app.verify_basic_modproxy_settings()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True)
+			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app_name[:5], unique=True, required=True))
 		finally:
 			app.uninstall()
 			app.remove()

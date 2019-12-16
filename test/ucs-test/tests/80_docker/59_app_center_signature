@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 import os
 from dockertest import *
 from subprocess import call
@@ -64,7 +65,7 @@ class SyncedAppcenter(Appcenter):
 		res = call('univention-app update', shell=True)
 		if res == 0:
 			fail('_test_index_without_gpg failed')
-		print '### _test_index_without_gpg passed'
+		print('### _test_index_without_gpg passed')
 
 	def test_index_with_gpg(self):
 		self.download_index_json()
@@ -72,7 +73,7 @@ class SyncedAppcenter(Appcenter):
 		res = call('univention-app update', shell=True)
 		if res != 0:
 			fail('_test_index_with_gpg failed')
-		print '### _test_index_with_gpg passed'
+		print('### _test_index_with_gpg passed')
 
 	def test_modify_index(self):
 		self.download_index_json()
@@ -86,7 +87,7 @@ class SyncedAppcenter(Appcenter):
 		res = call('univention-app update', shell=True)
 		if res == 0:
 			fail('_test_modify_index failed')
-		print '### _test_modify_index passed'
+		print('### _test_modify_index passed')
 
 	def test_modify_inst(self):
 		self.download_index_json()
@@ -100,7 +101,7 @@ class SyncedAppcenter(Appcenter):
 		# Check only if the file was removed from the local cache
 		if self.file_exists_in_cache(filename):
 			fail('_test_modify_inst failed')
-		print '### _test_modify_inst passed'
+		print('### _test_modify_inst passed')
 
 	def test(self):
 		self.test_index_without_gpg()

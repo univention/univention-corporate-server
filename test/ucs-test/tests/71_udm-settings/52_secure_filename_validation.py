@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Creates Schema and ACL extensions in invalid paths
 ## bugs: [41780]
@@ -46,7 +47,7 @@ def test_filename_validation(modify, prefix, path, position, attr, ocs, name):
 			attr.replace('Filename', 'Active'): ['TRUE'],
 		}
 		al = [(key, [v for v in val]) for key, val in attrs.items()]
-		print('Creating', dn)
+		print(('Creating', dn))
 		dn = lo.add(dn, al) or dn
 		try:
 			utils.wait_for_replication_and_postrun()
@@ -55,12 +56,12 @@ def test_filename_validation(modify, prefix, path, position, attr, ocs, name):
 				if ocs == 'univentionLDAPExtensionACL':
 					assert os.path.exists(fullpath + '.info')
 
-				print('Modifying into', dn_modify)
+				print(('Modifying into', dn_modify))
 				dn = lo.modify(dn, [
 					(attr, filename, filename_modify),
 					('cn', filename, filename_modify),
 				]) or dn
-				print('Modified', dn)
+				print(('Modified', dn))
 				assert dn == dn_modify
 				utils.wait_for_replication_and_postrun()
 

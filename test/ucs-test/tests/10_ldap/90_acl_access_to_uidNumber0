@@ -11,6 +11,7 @@
 ##  - python-ldap
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing import utils
 import univention.testing.strings as uts
 import univention.uldap
@@ -62,17 +63,17 @@ class Hacking(object):
 	def __call__(self, lo):
 		failures = set()
 		lo_admin = utils.get_ldap_connection()
-		print >> sys.stderr, 'Testing for %r' % (lo.binddn,)
+		print('Testing for %r' % (lo.binddn,), file=sys.stderr)
 
 		for dn, al in self.testcases(self.creations):
 			try:
 				lo.add(dn, al)
 			except ldap.INSUFFICIENT_ACCESS:
-				print "OK: ldapadd of %s denied" % (dn,)
+				print("OK: ldapadd of %s denied" % (dn,))
 			except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT) as exc:
-				print 'SKIP: %s: %s' % (dn, exc)
+				print('SKIP: %s: %s' % (dn, exc))
 			else:
-				print >> sys.stderr, "FAIL: ldapadd of %s (al=%r) successful" % (dn, al)
+				print("FAIL: ldapadd of %s (al=%r) successful" % (dn, al), file=sys.stderr)
 				failures.add(dn)
 				lo_admin.delete(dn)
 
@@ -80,14 +81,14 @@ class Hacking(object):
 			try:
 				lo.modify(dn, ml)
 			except ldap.INSUFFICIENT_ACCESS:
-				print "OK: ldapmodify of %s denied" % (dn,)
+				print("OK: ldapmodify of %s denied" % (dn,))
 			except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT, ldap.ALREADY_EXISTS) as exc:
-				print 'SKIP: %s: %s' % (dn, exc)
+				print('SKIP: %s: %s' % (dn, exc))
 			else:
-				print >> sys.stderr, "FAIL: ldapmodify of %s (ml=%r) successful" % (dn, ml)
+				print("FAIL: ldapmodify of %s (ml=%r) successful" % (dn, ml), file=sys.stderr)
 				failures.add(dn)
 				lo_admin.modify(dn, [(attr, new, old) for attr, old, new in ml])
-		print ''
+		print('')
 
 		if failures:
 			raise Hacked('hijacking by %s succeeded for the following %d DNs: %s' % (lo.binddn, len(failures), '\n'.join(failures),))

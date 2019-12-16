@@ -7,6 +7,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import *
 from univention.testing.utils import get_ldap_connection, fail
 from univention.config_registry import ConfigRegistry
@@ -50,11 +51,11 @@ if __name__ == '__main__':
 			app.verify_basic_modproxy_settings()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True)
+			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True))
 			ucr = ConfigRegistry()
 			ucr.load()
 			container_uuid = ucr.get('appcenter/apps/%s/container' % app_name)
-			print 'Container UUID: %s' % container_uuid
+			print('Container UUID: %s' % container_uuid)
 
 			app = App(name=app_name, version='2', container_version=get_docker_appbox_ucs(), package_name=package_name, app_directory_suffix=app_directory_suffix)
 			app.set_ini_parameter(
@@ -78,11 +79,11 @@ if __name__ == '__main__':
 			app.verify_basic_modproxy_settings()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True)
+			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True))
 
 			ucr.load()
 			container_uuid_new = ucr.get('appcenter/apps/%s/container' % app_name)
-			print 'Container UUID: %s' % container_uuid_new
+			print('Container UUID: %s' % container_uuid_new)
 			if container_uuid != container_uuid_new:
 				fail('The container UUID has been changed.')
 

@@ -5,6 +5,7 @@
 ## packages: [python-univention-directory-manager]
 ## bugs: [38385]
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_string
@@ -20,13 +21,13 @@ if __name__ == '__main__':
 		utils.stop_s4connector()
 
 	with udm_test.UCSTestUDM() as udm:
-		print '>>> create user with default settings'
+		print('>>> create user with default settings')
 		firstname = random_string()
 		lastname = random_string()
 		userdn = udm.create_user(firstname=firstname, lastname=lastname, check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname, lastname)]})
 
-		print '>>> change firstname and then lastname'
+		print('>>> change firstname and then lastname')
 		firstname2 = random_string()
 		lastname2 = random_string()
 		udm.modify_object('users/user', dn=userdn, firstname=firstname2, check_for_drs_replication=False)
@@ -34,36 +35,36 @@ if __name__ == '__main__':
 		udm.modify_object('users/user', dn=userdn, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname2)]})
 
-		print '>>> create user with default settings'
+		print('>>> create user with default settings')
 		firstname = random_string()
 		lastname = random_string()
 		userdn = udm.create_user(firstname=firstname, lastname=lastname, check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname, lastname)]})
 
-		print '>>> change firstname and lastname in one step'
+		print('>>> change firstname and lastname in one step')
 		firstname2 = random_string()
 		lastname2 = random_string()
 		udm.modify_object('users/user', dn=userdn, firstname=firstname2, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': ['%s %s' % (firstname2, lastname2)]})
 
-		print '>>> create user with default settings'
+		print('>>> create user with default settings')
 		lastname = random_string()
 		userdn = udm.create_user(firstname='', lastname=lastname, check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(userdn, {'displayName': [lastname]})
 
-		print '>>> change lastname'
+		print('>>> change lastname')
 		lastname2 = random_string()
 		udm.modify_object('users/user', dn=userdn, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': [lastname2]})
 
-		print '>>> create user with custom displayName'
+		print('>>> create user with custom displayName')
 		firstname = random_string()
 		lastname = random_string()
 		displayName = random_string()
 		userdn = udm.create_user(firstname=firstname, lastname=lastname, displayName=displayName, check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(userdn, {'displayName': [displayName]})
 
-		print '>>> change firstname and then lastname'
+		print('>>> change firstname and then lastname')
 		firstname2 = random_string()
 		lastname2 = random_string()
 		udm.modify_object('users/user', dn=userdn, firstname=firstname2, check_for_drs_replication=False)
@@ -71,20 +72,20 @@ if __name__ == '__main__':
 		udm.modify_object('users/user', dn=userdn, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': [displayName]})
 
-		print '>>> create user with custom displayName'
+		print('>>> create user with custom displayName')
 		firstname = random_string()
 		lastname = random_string()
 		displayName = random_string()
 		userdn = udm.create_user(firstname=firstname, lastname=lastname, displayName=displayName, check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(userdn, {'displayName': [displayName]})
 
-		print '>>> change firstname and lastname in one step'
+		print('>>> change firstname and lastname in one step')
 		firstname2 = random_string()
 		lastname2 = random_string()
 		udm.modify_object('users/user', dn=userdn, firstname=firstname2, lastname=lastname2, check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': [displayName]})
 
-		print '>>> change firstname and lastname in one step and set displayName'
+		print('>>> change firstname and lastname in one step and set displayName')
 		firstname3 = random_string()
 		lastname3 = random_string()
 		displayName3 = random_string()
@@ -96,7 +97,7 @@ if __name__ == '__main__':
 			check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': [displayName3]})
 
-		print '>>> change displayName back to default'
+		print('>>> change displayName back to default')
 		displayName4 = '%s %s' % (firstname3, lastname3)
 		udm.modify_object(
 			'users/user', dn=userdn,
@@ -104,7 +105,7 @@ if __name__ == '__main__':
 			check_for_drs_replication=False)
 		utils.verify_ldap_object(userdn, {'displayName': [displayName4]})
 
-		print '>>> change firstname and lastname in one step'
+		print('>>> change firstname and lastname in one step')
 		firstname4 = random_string()
 		lastname4 = random_string()
 		udm.modify_object('users/user', dn=userdn, firstname=firstname4, lastname=lastname4, check_for_drs_replication=False)

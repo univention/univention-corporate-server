@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import Appcenter, get_app_version, App, UCSTest_DockerApp_InstallationFailed, get_docker_appbox_image, get_app_name
 from univention.testing.utils import is_port_open
 import pytest
@@ -22,13 +23,13 @@ def cleanup(app):
 
 
 def verify_certs(app):
-	print 'looking for %s' % app.check_dir
+	print('looking for %s' % app.check_dir)
 	assert os.path.isdir(app.check_dir) is True
-	print '%s exists' % app.check_dir
+	print('%s exists' % app.check_dir)
 	for i in app.cert_files:
-		print 'looking for %s in container' % i
+		print('looking for %s in container' % i)
 		assert os.path.isfile(app.file(i)) is True
-		print '%s exists' % i
+		print('%s exists' % i)
 
 if __name__ == '__main__':
 	with Appcenter() as appcenter:

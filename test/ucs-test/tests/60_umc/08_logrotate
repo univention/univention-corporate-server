@@ -6,6 +6,7 @@
 ## exposure: dangerous
 ## bugs: [38143, 37317]
 
+from __future__ import print_function
 import os
 import os.path
 from time import sleep
@@ -47,12 +48,12 @@ class LogrotateService(object):
 			file_ = os.path.join('/proc/%d/fd/' % (pid,), file_)
 			if os.path.islink(file_) and os.readlink(file_).startswith(self.logfile_pattern):
 				return file_
-		print 'No logfile for service %s found.' % (self.service,)
+		print('No logfile for service %s found.' % (self.service,))
 
 	def stat(self, logfile):
 		try:
 			stat = os.stat(logfile)
-			print logfile, stat
+			print(logfile, stat)
 		except OSError:
 			raise LogrotateError('%s does not exists (service=%s)' % (logfile, self.service))
 		return stat

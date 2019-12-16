@@ -9,6 +9,7 @@
 ##  - python-univention-lib
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail
 from univention.config_registry import ConfigRegistry
@@ -71,7 +72,7 @@ access to ="%(container)s" attrs="description"
 	call_join_script(join_script_name)
 
 	# The ldap server needs a few seconds
-	print 'sleep 5'
+	print('sleep 5')
 	sleep(5)
 
 	lo = get_ldap_master_connection(user_dn)

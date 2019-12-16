@@ -7,6 +7,7 @@
 
 # skipped until we have 4.3-4 or 4.4-1 appbox
 
+from __future__ import print_function
 from dockertest import *
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import get_ldap_connection, fail, UCSTestDomainAdminCredentials
@@ -42,7 +43,7 @@ if __name__ == '__main__':
 			app.verify()
 
 			lo = get_ldap_connection()
-			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True)
+			print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer))' % app_name[:5], unique=True, required=True))
 			app.execute_command_in_container('univention-upgrade --noninteractive --updateto=%s-99 --disable-app-updates' % ucr['version/version'])
 
 			app.execute_command_in_container('univention-install %s' % package_name)

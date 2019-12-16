@@ -8,6 +8,7 @@
 ## exposure: safe
 
 
+from __future__ import print_function
 import subprocess
 import re
 
@@ -19,11 +20,11 @@ from univention.appcenter.ucr import ucr_get, ucr_keys, ucr_is_true
 
 def check_status(app):
 	if app.docker:
-		print '    Checking removed Docker Container'
+		print('    Checking removed Docker Container')
 		assert ucr_get('appcenter/apps/%s/status' % app.id) is None
 	else:
 		packages = app.default_packages
-		print '    Checking packages', ', '.join(packages)
+		print('    Checking packages', ', '.join(packages))
 		for package in packages:
 			try:
 				output = subprocess.check_output(['dpkg', '-s', package], stderr=subprocess.STDOUT)
@@ -33,7 +34,7 @@ def check_status(app):
 				for line in output.splitlines():
 					if line.startswith('Status: '):
 						if line != 'Status: deinstall ok config-files':
-							print output
+							print(output)
 							utils.fail('ERROR: A package is not uninstalled!')
 		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
 			packages = app.default_packages_master
@@ -46,9 +47,9 @@ def check_status(app):
 					for line in output.splitlines():
 						if line.startswith('Status: '):
 							if line != 'Status: install ok installed':
-								print output
+								print(output)
 								utils.fail('ERROR: A package is not installed!')
-		print '    Checking component'
+		print('    Checking component')
 		if ucr_is_true('repository/online/component/%s' % app.component_id):
 			utils.fail('FAIL: component %s still active' % app.component)
 
@@ -62,19 +63,19 @@ def check_ldap(app):
 
 
 def check_webinterface(app):
-	print '    Webinterface for', app
+	print('    Webinterface for', app)
 	for key in ucr_keys():
 		if re.match('ucs/web/overview/entries/.*/%s/link', key):
 			utils.fail('FAIL: webinterface still configured' % app.id)
 
 
 def _check_url(url):
-	print '       Checking', url
+	print('       Checking', url)
 	import requests
 	import lxml
 	requests_timeout = 30
 	r = requests.get(url, timeout=requests_timeout, verify=False)
-	print '       ...', r.status_code
+	print('       ...', r.status_code)
 	assert not str(r.status_code).startswith(('4', '5'))
 
 	# check meta refresh
@@ -83,7 +84,7 @@ def _check_url(url):
 	if refresh:
 		refresh_url = refresh[0].get('content')
 		if refresh_url:
-			print 'Found meta refresh: %s' % refresh_url
+			print('Found meta refresh: %s' % refresh_url)
 			# e.g., 0;URL=controller.pl?action=LoginScreen/user_login
 			index = refresh_url.lower().find('url=')
 			if index > 0:
@@ -94,9 +95,9 @@ def _check_url(url):
 
 
 for app in get_requested_apps():
-	print 'Checking', app
+	print('Checking', app)
 	if not app._allowed_on_local_server():
-		print 'Not allowed ... skipping'
+		print('Not allowed ... skipping')
 		continue
 	check_status(app)
 	check_ldap(app)

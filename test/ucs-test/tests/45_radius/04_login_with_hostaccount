@@ -6,6 +6,7 @@
 ## join: true
 ## exposure: dangerous
 
+from __future__ import print_function
 import subprocess
 import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test

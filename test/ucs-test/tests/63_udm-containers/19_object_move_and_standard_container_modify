@@ -9,6 +9,7 @@
 ##   - univention-directory-manager-tools
 
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_string
@@ -18,7 +19,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		for object_type in ('container/cn', 'container/ou'):
 			defalt_containers = 'cn=default containers,%s' % (udm.UNIVENTION_CONTAINER,)
-			print 'testing', object_type
+			print('testing', object_type)
 			computerPath = lo.getAttr(defalt_containers, 'univentionComputersObject')
 			userPath = lo.getAttr(defalt_containers, 'univentionUsersObject')
 

@@ -4,6 +4,7 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
+from __future__ import print_function
 import tempfile
 import time
 import dns.resolver
@@ -21,11 +22,11 @@ TIMEOUT = 90  # sec
 
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
-	print "Waiting for an email delivery to a mailsink"
+	print("Waiting for an email delivery to a mailsink")
 	for i in xrange(TIMEOUT):
 		if token in open(mailsink_file).read():
 			delivered = True
-			print 'Mail Delivered'
+			print('Mail Delivered')
 			break
 		else:
 			time.sleep(1)

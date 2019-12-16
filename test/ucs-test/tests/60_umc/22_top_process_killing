@@ -3,6 +3,7 @@
 ## bugs: [34593, 38174]
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 
@@ -79,7 +80,7 @@ class TestUMCProcessKilling(UMCBase):
         Kills/Terminates process with a given 'signame' via UMC;
         Performs clean-up using psutil if needed.
         """
-        print "\nTesting UMC process killing with signal '%s'" % signame
+        print("\nTesting UMC process killing with signal '%s'" % signame)
         signum = getattr(signal, signame)
         try:
             pid = self.create_process(ignore_signal)
@@ -93,7 +94,7 @@ class TestUMCProcessKilling(UMCBase):
                     if child:
                         break
 
-                print "Process Exit Status is: ", exit_status
+                print("Process Exit Status is: ", exit_status)
                 exit_code = WTERMSIG(exit_status)
 
                 if ignore_signal:
@@ -122,7 +123,7 @@ class TestUMCProcessKilling(UMCBase):
         Method to start the test of the UMC backend process killing.
         """
         self.create_connection_authenticate()
-        print "Test process max running time (sec) is:", self.MAX_PROCESS_TIME
+        print("Test process max running time (sec) is:", self.MAX_PROCESS_TIME)
 
         # case 1: killing process using signal 'SIGTERM'
         self.test('SIGTERM')

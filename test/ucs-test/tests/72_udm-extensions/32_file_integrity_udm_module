@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
+from __future__ import print_function
 import os
 import hashlib
 import difflib
@@ -43,7 +44,7 @@ def test_module():
 	unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
 	extension_buffer = get_extension_buffer(extension_type, extension_name)
 
-	print joinscript_buffer
+	print(joinscript_buffer)
 
 	package = DebianPackage(name=package_name, version=package_version)
 	try:
@@ -68,17 +69,17 @@ def test_module():
 		# check if registered file has been replicated to local system
 		target_fn = get_absolute_extension_filename(extension_type, extension_filename)
 		if os.path.exists(target_fn):
-			print 'FILE REPLICATED: %r' % target_fn
+			print('FILE REPLICATED: %r' % target_fn)
 		else:
 			fail('ERROR: target file %s does not exist' % target_fn)
 
 		# check if sha1(buffer) == sha1(file)
 		hash_buffer = hashlib.sha1(extension_buffer).hexdigest()
 		hash_file = hashlib.sha1(open(target_fn).read()).hexdigest()
-		print 'HASH BUFFER: %r' % hash_buffer
-		print 'HASH FILE: %r' % hash_file
+		print('HASH BUFFER: %r' % hash_buffer)
+		print('HASH FILE: %r' % hash_file)
 		if hash_buffer != hash_file:
-			print '\n'.join(difflib.context_diff(open(target_fn).read(), extension_buffer, fromfile='filename', tofile='buffer'))
+			print('\n'.join(difflib.context_diff(open(target_fn).read(), extension_buffer, fromfile='filename', tofile='buffer')))
 			fail('ERROR: sha1 sums of file and BUFFER DIffer (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
 
 		for option_type, src_fn, filename in TEST_DATA:
@@ -88,7 +89,7 @@ def test_module():
 			hash_buffer = hashlib.sha1(buffers[src_fn]).hexdigest()
 			hash_file = hashlib.sha1(open(filename).read()).hexdigest()
 			if hash_buffer != hash_file:
-				print '\n'.join(difflib.context_diff(open(filename).read(), buffers[src_fn], fromfile='filename', tofile='buffer'))
+				print('\n'.join(difflib.context_diff(open(filename).read(), buffers[src_fn], fromfile='filename', tofile='buffer')))
 				fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (filename, hash_file, hash_buffer))
 
 		call_unjoin_script('66%s-uninstall.uinst' % package_name)
@@ -104,16 +105,16 @@ def test_module():
 		if os.path.exists(target_fn):
 			fail('ERROR: target file %s is still present' % target_fn)
 		else:
-			print 'FILE HAS BEEN REMOVED: %r' % target_fn
+			print('FILE HAS BEEN REMOVED: %r' % target_fn)
 
 	finally:
-		print 'Removing UDM extension from LDAP'
+		print('Removing UDM extension from LDAP')
 		remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
 
-		print 'Uninstalling binary package %r' % package_name
+		print('Uninstalling binary package %r' % package_name)
 		package.uninstall()
 
-		print 'Removing source package'
+		print('Removing source package')
 		package.remove()
 
 

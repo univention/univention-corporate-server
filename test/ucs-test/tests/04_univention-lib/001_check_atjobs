@@ -6,6 +6,7 @@
 ##   - python-univention-lib
 ## exposure: dangerous
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.strings as strings
 import univention.lib.atjobs as atjobs
@@ -19,7 +20,7 @@ def get_output(cmd):
 
 
 def print_job(job, msg=''):
-	print '%s%r\nNumber: %r\nCommand: %r\nComments: %r\nExecTime: %r\nOwner: %r' % (msg, job, job.nr, job.command, job.comments, job.execTime, job.owner)
+	print('%s%r\nNumber: %r\nCommand: %r\nComments: %r\nExecTime: %r\nOwner: %r' % (msg, job, job.nr, job.command, job.comments, job.execTime, job.owner))
 
 
 def main():
@@ -67,8 +68,8 @@ def main():
 
 		new_atq_output = get_output('atq')
 		if old_atq_output != new_atq_output:
-			print 'old_atq_output = %r' % (old_atq_output)
-			print 'new_atq_output = %r' % (new_atq_output)
+			print('old_atq_output = %r' % (old_atq_output))
+			print('new_atq_output = %r' % (new_atq_output))
 			utils.fail('old and new atq output differ! remove() may have failed')
 
 

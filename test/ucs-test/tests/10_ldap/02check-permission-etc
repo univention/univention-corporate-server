@@ -10,6 +10,7 @@
 ##  - univention-ldap-server
 ## exposure: safe
 
+from __future__ import print_function
 import sys
 import os
 import grp
@@ -40,7 +41,7 @@ def main():
 			if not os.path.exists(filename):
 				if filename == '/etc/slave-join.secret' and ucr.get('server/role') == 'domaincontroller_backup':
 					# see https://forge.univention.org/bugzilla/show_bug.cgi?id=27662
-					print 'Ignore /etc/slave-join.secret on DC Backup'
+					print('Ignore /etc/slave-join.secret on DC Backup')
 					continue
 			return_code = check_owner_groupname(filename, shouldowner, filegroup)
 			if not return_code:
@@ -49,7 +50,7 @@ def main():
 			if not return_code:
 				exit_code = RETURN_FAIL_CODE
 	except OSError, error:
-		print >> sys.stderr, "An error occurred with: %s" % (error, )
+		print("An error occurred with: %s" % (error, ), file=sys.stderr)
 		sys.exit(RETURN_FAIL_CODE)
 
 	sys.exit(exit_code)
@@ -64,10 +65,10 @@ def check_owner_groupname(filename, shouldowner, shouldgroup):
 	owner = pwd.getpwuid(uid)[0]  # get username/owner
 	group = grp.getgrgid(gid)[0]  # get groupname
 	if owner != shouldowner:
-		print >> sys.stderr, "ERROR: '%s' has wrong owner '%s' but should be '%s'" % (filename, owner, shouldowner)
+		print("ERROR: '%s' has wrong owner '%s' but should be '%s'" % (filename, owner, shouldowner), file=sys.stderr)
 		return_code = False
 	if group != shouldgroup:
-		print >> sys.stderr, "ERROR: '%s' has wrong group '%s' but should be '%s'" % (filename, group, shouldgroup)
+		print("ERROR: '%s' has wrong group '%s' but should be '%s'" % (filename, group, shouldgroup), file=sys.stderr)
 		return_code = False
 	return return_code
 
@@ -80,10 +81,10 @@ def check_permissions(filename):
 	if (stat.S_IRUSR & stat_info_stmode) and (stat.S_IWUSR & stat_info_stmode) and (stat.S_IRGRP & stat_info_stmode):
 		pass
 	elif (stat.S_IXUSR | stat.S_IWGRP | stat.S_IXGRP | stat.S_IRWXO) & stat_info_stmode:
-		print >> sys.stderr, "ERROR: '%s' has wrong permissions %04o. Should be exactly -rw-r-----" % (filename, stat_info_stmode)
+		print("ERROR: '%s' has wrong permissions %04o. Should be exactly -rw-r-----" % (filename, stat_info_stmode), file=sys.stderr)
 		return_code = False
 	else:
-		print >> sys.stderr, "ERROR: '%s' has wrong permissions %04o. Should be exactly -rw-r-----" % (filename, stat_info_stmode)
+		print("ERROR: '%s' has wrong permissions %04o. Should be exactly -rw-r-----" % (filename, stat_info_stmode), file=sys.stderr)
 		return_code = False
 	return return_code
 

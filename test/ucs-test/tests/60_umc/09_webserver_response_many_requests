@@ -15,6 +15,7 @@
 ## exposure: dangerous
 
 
+from __future__ import print_function
 import ssl
 import httplib
 import subprocess
@@ -37,13 +38,13 @@ class AsyncClient(Client):
 
 
 def main():
-	print 'Setting up the connections ...'
+	print('Setting up the connections ...')
 
-	print 'Sending %d not responding requests' % NUMBER_OF_NOT_RESPONDING_REQUESTS
+	print('Sending %d not responding requests' % NUMBER_OF_NOT_RESPONDING_REQUESTS)
 	for request in range(NUMBER_OF_NOT_RESPONDING_REQUESTS):
 		AsyncClient.get_test_connection(timeout=10).async_request('ucstest/norespond')
 
-	print 'Verfying the webserver still respond to a request ...'
+	print('Verfying the webserver still respond to a request ...')
 	try:
 		assert AsyncClient.get_test_connection(timeout=10).umc_command('ucstest/respond').status == 200
 	except ssl.SSLError:

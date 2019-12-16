@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
+from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication
 from univention.testing.udm_extensions import *
@@ -47,7 +48,7 @@ def test_extension(extension_type):
 		# check if registered file has been replicated to local system
 		target_fn = get_absolute_extension_filename(extension_type, extension_filename)
 		if os.path.exists(target_fn):
-			print 'FILE REPLICATED: %r' % target_fn
+			print('FILE REPLICATED: %r' % target_fn)
 		else:
 			fail('ERROR: target file %s does not exist' % target_fn)
 
@@ -55,7 +56,7 @@ def test_extension(extension_type):
 		current_mode = oct(os.stat(target_fn).st_mode & (stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO))
 		expected_mode = '0644'
 		if current_mode == expected_mode:
-			print 'PERMISSIONS OK: mode=%s' % current_mode
+			print('PERMISSIONS OK: mode=%s' % current_mode)
 		else:
 			fail('ERROR: permissions of target file %s are not ok (current=%s  expected=%s)' % (target_fn, current_mode, expected_mode))
 
@@ -65,15 +66,15 @@ def test_extension(extension_type):
 		current_uid = os.stat(target_fn).st_uid
 		current_group = os.stat(target_fn).st_gid
 		if current_uid == expected_uid and current_group in expected_groups:
-			print 'FILE OWNER/GROUP OK'
+			print('FILE OWNER/GROUP OK')
 		else:
 			fail('ERROR: owner/group of target file %s is not ok (current=%s:%s  expected_uid=%s expected_gid=%s)' % (target_fn, current_uid, current_group, expected_uid, expected_groups))
 
 		# check if sha1(buffer) == sha1(file)
 		hash_buffer = hashlib.sha1(extension_buffer).hexdigest()
 		hash_file = hashlib.sha1(open(target_fn).read()).hexdigest()
-		print 'HASH BUFFER: %r' % hash_buffer
-		print 'HASH FILE: %r' % hash_file
+		print('HASH BUFFER: %r' % hash_buffer)
+		print('HASH FILE: %r' % hash_file)
 		if hash_buffer != hash_file:
 			fail('ERROR: sha1 sums of file and buffer differ (fn=%s ; file=%s ; buffer=%s)' % (target_fn, hash_file, hash_buffer))
 
@@ -90,20 +91,20 @@ def test_extension(extension_type):
 		if os.path.exists(target_fn):
 			fail('ERROR: target file %s is still present' % target_fn)
 		else:
-			print 'FILE HAS BEEN REMOVED: %r' % target_fn
+			print('FILE HAS BEEN REMOVED: %r' % target_fn)
 
 	finally:
-		print 'Removing UDM extension from LDAP'
+		print('Removing UDM extension from LDAP')
 		remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
 
-		print 'Uninstalling binary package %r' % package_name
+		print('Uninstalling binary package %r' % package_name)
 		package.uninstall()
 
-		print 'Removing source package'
+		print('Removing source package')
 		package.remove()
 
 
 if __name__ == '__main__':
 	for extension_type in VALID_EXTENSION_TYPES:
-		print '========================= TESTING EXTENSION %s =============================' % extension_type
+		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		test_extension(extension_type)

@@ -9,6 +9,7 @@
 ##  4.0-0: skip
 ##  4.0-1: fixed
 
+from __future__ import print_function
 import psutil
 from time import sleep
 from Queue import Empty, Full
@@ -29,7 +30,7 @@ def restore_retry_count():
     Sets UCR 'ldap/client/retry/count' to 'ucr_retry_count'.
     """
     stop_slapd()
-    print "Restoring initial UCR 'ldap/client/retry/count' to", ucr_retry_count
+    print("Restoring initial UCR 'ldap/client/retry/count' to", ucr_retry_count)
     set_ucr_retry_count(ucr_retry_count)
     start_slapd()
 
@@ -51,9 +52,9 @@ def univention_ldapsearch(fail_on_success):
 
     stdout, stderr = proc.communicate()
     if stderr:
-        print "\n""univention-ldapsearch STDERR:\n", stderr.strip()
+        print("\n""univention-ldapsearch STDERR:\n", stderr.strip())
     if stdout:
-        print "\n""univention-ldapsearch STDOUT:\n", stdout.strip()
+        print("\n""univention-ldapsearch STDOUT:\n", stdout.strip())
 
     if ((base_dn in stdout) and fail_on_success):
         fail("\nThe 'univention-ldapsearch' worked when it is "
@@ -70,7 +71,7 @@ def perform_univention_ldapsearch(fail_on_success=False):
     avoid deadlocks. Checks the exit code of the process with
     'univention-ldapsearch'.
     """
-    print "\nPerforming 'univention-ldapsearch -s base dn -LLL'"
+    print("\nPerforming 'univention-ldapsearch -s base dn -LLL'")
     try:
         # start a separate process with timeout
         Proc = Process(target=univention_ldapsearch, args=(fail_on_success,))
@@ -100,10 +101,10 @@ def stop_slapd():
     for proc in psutil.process_iter():
         try:
             if 'slapd' in proc.name() and proc.ppid() == 1:
-                print "\nThe 'slapd' is still running, waiting..."
+                print("\nThe 'slapd' is still running, waiting...")
                 try:
                     proc.wait(15)
-                    print "slapd terminated."
+                    print("slapd terminated.")
                 except psutil.TimeoutExpired:
                     fail("\nFailed to wait for slapd to terminate.\n")
         except psutil.NoSuchProcess:
@@ -141,9 +142,9 @@ def wait_for_slapd_to_be_started():
 
 
 def print_test_header(header):
-    print '\n**********************************************************************************'
-    print header
-    print '**********************************************************************************'
+    print('\n**********************************************************************************')
+    print(header)
+    print('**********************************************************************************')
 
 
 def main():
@@ -200,8 +201,8 @@ if __name__ == '__main__':
     Tests that reconnect of univention-ldapsearch works with slapd restart.
     """
     ucr_retry_count = UCR.get('ldap/client/retry/count')
-    print("Saving initial 'ldap/client/retry/count' UCR setting =",
-          ucr_retry_count)
+    print(("Saving initial 'ldap/client/retry/count' UCR setting =",
+          ucr_retry_count))
     base_dn = UCR.get('ldap/base')
 
     main()

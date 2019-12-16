@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Creates DNS forward zone entries with invalid names
 ## bugs: [41005]
@@ -54,7 +55,7 @@ def test_invalid_zone_names(zone):
 			'sOARecord': ['%(hostname)s.%(domainname)s. root.%(domainname)s. 9 28800 7200 604800 10800'],
 		}
 		al = [(key, [v % dict(ucr) for v in val]) for key, val in attrs.items()]
-		print('Creating', dn)
+		print(('Creating', dn))
 		lo.add(dn, al)
 		try:
 			utils.wait_for_replication_and_postrun()

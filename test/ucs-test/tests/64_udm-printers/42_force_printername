@@ -15,6 +15,7 @@
 ##   - samba-common-bin
 
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.ucr as ucr_test
@@ -54,7 +55,7 @@ def rename_share_and_check(udm, printer, expected_value):
 	if samba_force_printername != expected_value:
 		utils.fail("samba option \"force printername\" changed after UDM share modification")
 	else:
-		print "Ok, samba option \"force printername\" still set to %s" % (expected_value,)
+		print("Ok, samba option \"force printername\" still set to %s" % (expected_value,))
 
 
 def test_run(ucr, test_ucr_value):
@@ -100,7 +101,7 @@ def test_run(ucr, test_ucr_value):
 		if samba_force_printername != expected_value:
 			utils.fail("samba option \"force printername\" not set to %s" % (expected_value,))
 		else:
-			print "Ok, samba option \"force printername\" set to %s" % (expected_value,)
+			print("Ok, samba option \"force printername\" set to %s" % (expected_value,))
 
 		# Check behavior during UDM modification
 		rename_share_and_check(udm, printer, expected_value)

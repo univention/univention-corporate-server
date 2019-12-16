@@ -8,6 +8,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
+from __future__ import print_function
 import os
 import time
 from univention.config_registry import handler_set
@@ -79,14 +80,14 @@ def main():
 					if not os.path.isdir(maildir):
 						utils.fail('maildir for %r does not exist: %r' % (user.addr, maildir))
 					else:
-						print 'OK: does exist: %r' % (maildir,)
+						print('OK: does exist: %r' % (maildir,))
 
 					mixed_case_maildir = get_mixed_case_maildir(user.addr)
 					if maildir != mixed_case_maildir:
 						if os.path.isdir(mixed_case_maildir):
 							utils.fail('mixed maildir for %r does exist: %r' % (user.addr, mixed_case_maildir))
 						else:
-							print 'OK: does not exist: %r' % (mixed_case_maildir,)
+							print('OK: does not exist: %r' % (mixed_case_maildir,))
 
 				#
 				# send email to each user
@@ -102,7 +103,7 @@ def main():
 					for user in userbase:
 						if file_search_mail(tokenlist=[user.msgid], mail_address=user.addr):
 							found += 1
-					print 'Found %d of %d mails' % (found, len(userbase))
+					print('Found %d of %d mails' % (found, len(userbase)))
 					if found == len(userbase):
 						break
 					time.sleep(1)
@@ -116,14 +117,14 @@ def main():
 					if not os.path.isdir(maildir):
 						utils.fail('maildir for %r does not exist: %r' % (user.addr, maildir))
 					else:
-						print 'OK: does exist: %r' % (maildir,)
+						print('OK: does exist: %r' % (maildir,))
 
 					mixed_case_maildir = get_mixed_case_maildir(user.addr)
 					if maildir != mixed_case_maildir:
 						if os.path.isdir(mixed_case_maildir):
 							utils.fail('mixed maildir for %r does exist: %r' % (user.addr, mixed_case_maildir))
 						else:
-							print 'OK: does not exist: %r' % (mixed_case_maildir,)
+							print('OK: does not exist: %r' % (mixed_case_maildir,))
 
 				#
 				# test removing user object
@@ -137,14 +138,14 @@ def main():
 					if os.path.isdir(maildir):
 						utils.fail('maildir for %r has not been removed: %r' % (user.addr, maildir))
 					else:
-						print 'OK: does not exist: %r' % (maildir,)
+						print('OK: does not exist: %r' % (maildir,))
 
 					mixed_case_maildir = get_mixed_case_maildir(user.addr)
 					if maildir != mixed_case_maildir:
 						if os.path.isdir(mixed_case_maildir):
 							utils.fail('maildir for %r does exist: %r' % (user.addr, mixed_case_maildir))
 						else:
-							print 'OK: does not exist: %r' % (mixed_case_maildir,)
+							print('OK: does not exist: %r' % (mixed_case_maildir,))
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
 ## exposure: careful
 ## packages: [univention-postgrey]
 
+from __future__ import print_function
 import psutil
 import subprocess
 import time
@@ -40,7 +41,7 @@ def main():
 	if is_running('/usr/sbin/postg'):
 		utils.fail('/etc/init.d/postgrey stop did not stop the process')
 	else:
-		print '** /etc/init.d/postgrey stop stopped the process successfully'
+		print('** /etc/init.d/postgrey stop stopped the process successfully')
 
 	# revert to original state
 	if postgrey_is_running:

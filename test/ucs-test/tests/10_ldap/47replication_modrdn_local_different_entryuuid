@@ -14,6 +14,7 @@
 ##  - 33495
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication, stop_listener, start_listener
 import univention.testing.udm as udm_test
@@ -40,7 +41,7 @@ modlist = [
 
 def get_entryUUID(lo, dn):
 	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
-	print 'DN: %s\n%s' % (dn, result)
+	print('DN: %s\n%s' % (dn, result))
 	return result[0][1].get('entryUUID')[0]
 
 
@@ -81,9 +82,9 @@ new_local_UUID = get_entryUUID(lo_local, new_dn)
 new_remote_UUID = get_entryUUID(lo_remote, new_dn)
 
 if new_local_UUID != new_remote_UUID:
-	print 'ERROR: local and remote UUID do not match'
-	print '  local_UUID: %s' % new_local_UUID
-	print ' remote_UUID: %s' % new_remote_UUID
+	print('ERROR: local and remote UUID do not match')
+	print('  local_UUID: %s' % new_local_UUID)
+	print(' remote_UUID: %s' % new_remote_UUID)
 	success = False
 
 utils.verify_ldap_object(dn, should_exist=False)

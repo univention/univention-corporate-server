@@ -10,6 +10,7 @@
 
 # pylint: disable=attribute-defined-outside-init
 
+from __future__ import print_function
 import time
 import dns.resolver
 import tempfile
@@ -51,12 +52,12 @@ class Bunch(object):
 
 def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 	delivered = False
-	print "Waiting for an email delivery"
+	print("Waiting for an email delivery")
 	for i in xrange(TIMEOUT):
 		for fn in mailsink_files:
 			if token in open(fn).read():
 				delivered = True
-				print 'Mail delivered to sink %r' % (fn,)
+				print('Mail delivered to sink %r' % (fn,))
 				break
 		if not delivered:
 			time.sleep(1)
@@ -122,7 +123,7 @@ if __name__ == '__main__':
 						(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
 						(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
 					):
-						print '*** %s' % (msg,)
+						print('*** %s' % (msg,))
 						token = str(time.time())
 						send_mail(
 							recipients=addr,
@@ -145,7 +146,7 @@ if __name__ == '__main__':
 						(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
 						(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
 					):
-						print '*** %s' % (msg,)
+						print('*** %s' % (msg,))
 						token = str(time.time())
 						send_mail(
 							recipients=addr,

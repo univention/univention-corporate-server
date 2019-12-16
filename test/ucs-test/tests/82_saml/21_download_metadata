@@ -3,6 +3,7 @@
 ## tags: [saml]
 ## exposure: safe
 
+from __future__ import print_function
 import urllib2
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import fail
@@ -19,12 +20,12 @@ if __name__ == '__main__':
 
 	# read at least five times because ucs-sso is an alias for different IPs
 	for i in range(0, 5):
-		print '%d: Query metadata for %r' % (i, metadata_url)
+		print('%d: Query metadata for %r' % (i, metadata_url))
 		response = urllib2.urlopen(metadata_url)
 		metadata = response.read()
 		if not metadata:
 			fail('Empty response')
-		print metadata
+		print(metadata)
 		res.append(metadata)
 
 	for i in range(0, 4):

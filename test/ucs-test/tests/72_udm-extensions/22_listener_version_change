@@ -8,6 +8,7 @@
 ## bugs:
 ##   - 38752
 
+from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication, fail
@@ -32,7 +33,7 @@ if __name__ == '__main__':
 	wait_for_replication()
 
 	for extension_type in ('hook', 'syntax', 'module'):
-		print '========================= TESTING EXTENSION %s =============================' % extension_type
+		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
 		package_version = get_package_version()
 		app_id = '%s-%s' % (random_name(), random_version())
@@ -51,7 +52,7 @@ if __name__ == '__main__':
 				('9.0-0', '9.1-0', False),   # range above current version
 			):
 
-				print '=== Testing range from %s to %s with expected result exists=%s ===' % (version_start, version_end, should_exist)
+				print('=== Testing range from %s to %s with expected result exists=%s ===' % (version_start, version_end, should_exist))
 				extension_name = get_extension_name(extension_type)
 				extension_filename = get_extension_filename(extension_type, extension_name)
 				extension_buffer = get_extension_buffer(extension_type, extension_name)

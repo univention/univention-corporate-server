@@ -6,6 +6,7 @@
 ## versions:
 ##  4.1-2: skip
 
+from __future__ import print_function
 from essential.mail import send_mail, check_delivery, create_shared_mailfolder
 from essential.mailclient import MailClient_SSL
 import subprocess
@@ -87,8 +88,8 @@ def main():
 								imap.log_in(owner_user, password)
 								mailboxs = imap.getMailBoxes()
 								for mailbox in mailboxs:
-									print '** %s Mailbox = %s, Setting %s -> %s' % (
-										owner_user, mailbox, independent_user, permission)
+									print('** %s Mailbox = %s, Setting %s -> %s' % (
+										owner_user, mailbox, independent_user, permission))
 									imap.setacl(mailbox, independent_user, permission)
 									imap2 = MailClient_SSL(host)
 									imap2.log_in(independent_user, password)
@@ -102,8 +103,8 @@ def main():
 								imap = MailClient_SSL(host)
 								imap.log_in(owner_user, password)
 								mailbox = 'INBOX'
-								print '** %s Mailbox = %s, Setting %s -> %s' % (
-									owner_user, mailbox, groupname, permission)
+								print('** %s Mailbox = %s, Setting %s -> %s' % (
+									owner_user, mailbox, groupname, permission))
 								imap.setacl(mailbox, groupname, permission)
 								time.sleep(20)
 								imap2 = MailClient_SSL(host)

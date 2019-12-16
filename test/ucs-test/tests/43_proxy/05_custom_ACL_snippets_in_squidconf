@@ -5,6 +5,7 @@
 ## exposure: dangerous
 ## packages: [univention-squid]
 
+from __future__ import print_function
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from essential.simplecurl import SimpleCurl
 from essential.simplesquid import SimpleSquid
@@ -25,7 +26,7 @@ class TestServer(object):
 		# start http server in a different thread on (127.0.0.1:60025)
 		p = Process(target=startHttpServer, kwargs={'port': 60025})
 		p.start()
-		print p, p.is_alive()
+		print(p, p.is_alive())
 		self.p = p
 
 	def __enter__(self):
@@ -37,7 +38,7 @@ class TestServer(object):
 		self.p.join(5)
 		self.p.terminate()
 		time.sleep(0.5)
-		print 'Http server is terminated...\n%r' % self.p.is_alive()
+		print('Http server is terminated...\n%r' % self.p.is_alive())
 		handler_unset(['hosts/static/127.0.100.100'])
 
 
@@ -53,7 +54,7 @@ def startHttpServer(host='localhost', port=80):
 	httpd = ServerClass(server_address, HandlerClass)
 
 	sa = httpd.socket.getsockname()
-	print "Serving HTTP on", sa[0], "port", sa[1], "..."
+	print("Serving HTTP on", sa[0], "port", sa[1], "...")
 	httpd.serve_forever()
 
 
@@ -126,14 +127,14 @@ def perform_test(test_case):
 def do_test(test_case):
 	for (permission, expected_response, acl_type, value_type, used_value, value) in test_case:
 		name = uts.random_name()
-		print
-		print '** Name =\t%s' % name
-		print '** Permission =\t%s' % permission
-		print '** Type =\t%s' % acl_type
-		print '** Value Type =\t%s' % value_type
-		print '** Set Value =\t%s' % value
-		print '** Used Value =\t%s' % used_value
-		print '** Expected Response =\t%d' % expected_response
+		print()
+		print('** Name =\t%s' % name)
+		print('** Permission =\t%s' % permission)
+		print('** Type =\t%s' % acl_type)
+		print('** Value Type =\t%s' % value_type)
+		print('** Set Value =\t%s' % value)
+		print('** Used Value =\t%s' % used_value)
+		print('** Expected Response =\t%d' % expected_response)
 
 		set_ucr_variables(name, permission, acl_type, value_type, value)
 
@@ -154,11 +155,11 @@ def do_test(test_case):
 			url = '127.0.100.100:%d' % used_value
 
 		response = curl.response(url)
-		print "Response = %d" % response
+		print("Response = %d" % response)
 		if response != expected_response:
 			utils.fail("Unexpected Response: %d != %d" % (response, expected_response))
 		else:
-			print ':::: OK ::::'
+			print(':::: OK ::::')
 
 
 def set_ucr_variables(name, permission, acl_type, value_type, value):

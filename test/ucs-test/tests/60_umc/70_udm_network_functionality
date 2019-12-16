@@ -6,6 +6,7 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 import pytest
@@ -329,10 +330,10 @@ class TestUMCNetworkFunctionality(UDMModule):
         """
         Checks the network query structure and that syntax validation works
         """
-        print "Querying the networks and checking the response structure"
+        print("Querying the networks and checking the response structure")
         self.check_networks_query_structure()
 
-        print "\nChecking the syntax validation of network parameters"
+        print("\nChecking the syntax validation of network parameters")
         self.check_syntax_validation("foo", ["foo", "bar"], "foo")
         self.check_syntax_validation("12345",
                                      ["10.20.25.256", "10.20.25.257"],
@@ -362,7 +363,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             self.run_address_reservation_checks()
             self.run_dns_dhcp_choices_checks()
         finally:
-            print "\nRemoving created test objects (if any):"
+            print("\nRemoving created test objects (if any):")
             if self.check_obj_exists(self.test_computer_name + '_2',
                                      "computers/computer"):
                 self.delete_obj(self.test_computer_name + '_2',

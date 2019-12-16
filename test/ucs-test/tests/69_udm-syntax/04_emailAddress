@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import univention.testing.strings as uts
@@ -40,7 +41,7 @@ if __name__ == '__main__':
 			# check invalid values
 			for value in ('foo', 'example.com', '@', 'foo', 'foo@', '@example.com'):
 				try:
-					print '*** Testing value for %r for %s syntax' % (value, syntax)
+					print('*** Testing value for %r for %s syntax' % (value, syntax))
 					udm.create_user(**{cli_name: value})
 				except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 					continue

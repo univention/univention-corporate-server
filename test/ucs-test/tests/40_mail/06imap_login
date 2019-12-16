@@ -5,6 +5,7 @@
 ## packages: [univention-mail-server]
 ## bugs: []
 
+from __future__ import print_function
 from essential.mailclient import MailClient_SSL
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -32,12 +33,12 @@ def main():
 							mailPrimaryAddress=mailAddress,
 						)
 						try:
-							print '* Test imap login with the correct password:'
+							print('* Test imap login with the correct password:')
 							imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
 							if imap.login_ok(mailAddress, password):
 								utils.fail('IMAP login failed with the correct password')
 
-							print '* Test imap login with the wrong password:'
+							print('* Test imap login with the wrong password:')
 							imap = MailClient_SSL('%s.%s' % (ucr.get('hostname'), ucr.get('domainname')))
 							if imap.login_ok(mailAddress, uts.random_name(), expected_to_succeed=False):
 								utils.fail('IMAP login succeeded with the wrong password')

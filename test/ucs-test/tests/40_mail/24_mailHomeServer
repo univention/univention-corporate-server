@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mail import send_mail, check_delivery
 import univention.admin.uldap
 from univention.admin.uexceptions import authFail
@@ -22,11 +23,11 @@ TIMEOUT = 60  # sec
 
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
-	print "Waiting for an email delivery"
+	print("Waiting for an email delivery")
 	for i in xrange(TIMEOUT):
 		if token in open(mailsink_file).read():
 			delivered = True
-			print 'Mail Delivered'
+			print('Mail Delivered')
 			break
 		else:
 			time.sleep(1)

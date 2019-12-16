@@ -7,6 +7,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
+from __future__ import print_function
 import time
 import os
 import sys
@@ -34,7 +35,7 @@ def main():
 	logfiles = ['/var/log/dovecot.log', '/var/log/mail.log']
 
 	if utils.package_installed('univention-samba4'):
-		print 'Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46190'
+		print('Skip test case in case Samba 4 is installed, see https://forge.univention.org/bugzilla/show_bug.cgi?id=46190')
 		sys.exit(137)
 
 	with utils.AutomaticListenerRestart() as alr, \
@@ -111,18 +112,18 @@ def main():
 			if os.path.exists(new_dir):
 				utils.fail('Test %d: new_dir = %r does not exist! %r' % (i, new_dir, folder))
 
-			print '\n\n==> MODIFYING ADDRESS OF SHARED FOLDER FROM %r to %r' % (old_address, new_address)
-			print '==> FOLDER OLD: %r' % (old_dir,)
-			print '==> FOLDER NEW: %r' % (new_dir,)
-			print '==> RENAME=%r' % (flag_rename,)
-			print '==> DELETE=%r' % (flag_delete,)
+			print('\n\n==> MODIFYING ADDRESS OF SHARED FOLDER FROM %r to %r' % (old_address, new_address))
+			print('==> FOLDER OLD: %r' % (old_dir,))
+			print('==> FOLDER NEW: %r' % (new_dir,))
+			print('==> RENAME=%r' % (flag_rename,))
+			print('==> DELETE=%r' % (flag_delete,))
 			udm.modify_object('mail/folder', dn=folder.dn, set={'mailPrimaryAddress': new_address})
 
 			if os.path.exists(old_dir):
 				utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, folder))
 			cnt = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (new_address,), use_ssl=True)
 			if not cnt:
-				print 'Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt)
+				print('Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt))
 				time.sleep(180)
 				utils.fail('Test %d: maildir does not contain old mails' % (i,))
 

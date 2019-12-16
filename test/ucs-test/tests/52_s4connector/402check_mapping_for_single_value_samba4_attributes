@@ -10,6 +10,7 @@
 ##   - 37259
 ##   - 38813
 
+from __future__ import print_function
 import univention.testing.utils as utils
 
 import os
@@ -49,18 +50,18 @@ class S4ConnectorWrapper(univention.s4connector.s4.s4):
 
 					if self.is_single_value_in_s4(con_attribute):
 						if not mapping_attributes[attr_key].single_value and not getattr(mapping_attributes[attr_key], 'con_other_attribute'):
-							print 'ERROR: "%s": Mapping for Samba4 attribute should be adjusted to single_value=True!' % (con_attribute,)
+							print('ERROR: "%s": Mapping for Samba4 attribute should be adjusted to single_value=True!' % (con_attribute,))
 							result = False
 					else:
 						if mapping_attributes[attr_key].single_value:
-							print 'WARN: "%s": Mapping for Samba4 attribute should be adjusted to single_value=False.' % (con_attribute,)
+							print('WARN: "%s": Mapping for Samba4 attribute should be adjusted to single_value=False.' % (con_attribute,))
 		return result
 
 	def is_single_value_in_s4(self, s4_attribute):
 		ldap_filter = 'lDAPDisplayName=%s' % (s4_attribute,)
 		resultlist = self._s4__search_s4(base=self.schema_basedn, scope=ldap.SCOPE_SUBTREE, filter=ldap_filter, attrlist=['isSingleValued'], show_deleted=False)
 		if not resultlist:
-			print "WARN: con_attribute %s not found in Samba4 schema"
+			print("WARN: con_attribute %s not found in Samba4 schema")
 			return
 
 		if resultlist[0][1]['isSingleValued'][0] == 'TRUE':
@@ -87,7 +88,7 @@ def connect():
 			configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
 			configRegistry['%s/s4/listener/dir' % CONFIGBASENAME])
 	except ldap.SERVER_DOWN:
-		print "ERROR: Can't initialize LDAP-Connections."
+		print("ERROR: Can't initialize LDAP-Connections.")
 		raise
 
 	return s4c
@@ -95,7 +96,7 @@ def connect():
 
 if __name__ == '__main__':
 
-	print "INFO: Checking if all Samba4 attributes in the S4-Connector mapping are properly declared as Single-Value"
+	print("INFO: Checking if all Samba4 attributes in the S4-Connector mapping are properly declared as Single-Value")
 	s4c = connect()
 	if not s4c.single_value_mapping_is_ok_for_s4_connector_attributes():
 		utils.fail("ERROR: Some single valued Samba4 attributes are not configured properly in the S4-Connector mapping.")

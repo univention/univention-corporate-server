@@ -1,3 +1,4 @@
+from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 # -*- coding: utf-8 -*-
 ## desc: Test UDM umc call to request a new license
@@ -51,7 +52,7 @@ class LicenseServer(object):
 		# Terminating Http server
 		self.server.terminate()
 		self.server.join(5)
-		print 'Http server is terminated...\n%r' % self.server.is_alive()
+		print('Http server is terminated...\n%r' % self.server.is_alive())
 		handler_unset(['hosts/static/127.0.100.101'])
 		shutil.rmtree(self.cert_basedir)
 

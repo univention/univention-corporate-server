@@ -5,6 +5,7 @@
 ## packages: [univention-squid]
 ## bugs: [26452,37931]
 
+from __future__ import print_function
 from univention.config_registry import handler_set, handler_unset
 import apt
 import os
@@ -75,7 +76,7 @@ class Job(object):
 				if c.getinfo(pycurl.HTTP_CODE) == 200:
 					return 0
 			except pycurl.error as ex:
-				print ex
+				print(ex)
 				return 1
 		finally:
 			c.close()
@@ -109,7 +110,7 @@ def main():
 
 		end = time.time()
 		duration = end - start
-		print 'Test took %.2f seconds' % (duration,)
+		print('Test took %.2f seconds' % (duration,))
 
 	MAX_DURATION = max_duration()
 	if duration > MAX_DURATION:

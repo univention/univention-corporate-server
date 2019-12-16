@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import *
 
 
@@ -31,7 +32,7 @@ if __name__ == '__main__':
 			app.verify()
 
 			identify = app.execute_command_in_container('ucr get updater/identify')
-			print 'Identify: %s' % identify
+			print('Identify: %s' % identify)
 			if identify.strip() != 'Docker App':
 				raise UCSTest_DockerApp_Identify()
 

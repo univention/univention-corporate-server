@@ -5,6 +5,7 @@
 ## packages:
 ##   - univention-docker
 
+from __future__ import print_function
 import subprocess
 import apt
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -82,7 +83,7 @@ class TestCase:
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
-			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
+			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
 		self.cleanup()
 
 

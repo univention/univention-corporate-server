@@ -5,6 +5,7 @@
 ## packages: [univention-mail-server]
 ## bugs: [36907]
 
+from __future__ import print_function
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -35,7 +36,7 @@ def main():
 				imap.get_connection(mailHomeServer, mailPrimaryAddress, password)
 
 				# no subject tag test
-				print '*** check default behavior, no subject tag'
+				print('*** check default behavior, no subject tag')
 				subject = 'my subject %s' % time.time()
 				essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
 				for i in xrange(60):
@@ -45,14 +46,14 @@ def main():
 						break
 				if len(msg) != 1:
 					utils.fail('Test 1: got %d mails with subject: %s' % (len(msg), subject))
-				print '%s == %s ?' % (subject, msg[0]['Subject'])
+				print('%s == %s ?' % (subject, msg[0]['Subject']))
 				if subject != msg[0]['Subject']:
 					utils.fail('Test 1: received subject "%s" differs from sent subject "%s"' % (msg[0]['Subject'], subject))
 				else:
-					print '*** SUBJECT IS CORRECT'
+					print('*** SUBJECT IS CORRECT')
 
 				# subject tag test
-				print '*** check if subject is modified if mail/antispam/headertag is set'
+				print('*** check if subject is modified if mail/antispam/headertag is set')
 				tag = '*** UCS_TEST ***'
 				essential.mail.activate_spam_header_tag(tag)
 				essential.mail.reload_amavis_postfix()
@@ -66,11 +67,11 @@ def main():
 						break
 				if len(msg) != 1:
 					utils.fail('Test 2: got %d mails with subject: %s' % (len(msg), subject))
-				print '%s == %s ?' % (wanted, msg[0]['Subject'])
+				print('%s == %s ?' % (wanted, msg[0]['Subject']))
 				if wanted != msg[0]['Subject']:
 					utils.fail('Test 2: received subject "%s" differs from what we want "%s"' % (msg[0]['Subject'], wanted))
 				else:
-					print '*** SUBJECT IS CORRECT'
+					print('*** SUBJECT IS CORRECT')
 		finally:
 			essential.mail.reload_amavis_postfix()
 

@@ -7,6 +7,7 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
+from __future__ import print_function
 from univention.testing import utils
 from test_self_service import SelfServiceUser
 from univention.lib.umc import HTTPError

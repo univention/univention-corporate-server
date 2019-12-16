@@ -7,6 +7,7 @@
 ##   - univention-s4-connector
 ##   - dnsutils
 
+from __future__ import print_function
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import dnstests
@@ -28,21 +29,21 @@ if __name__ == '__main__':
 	try:
 		admin_dn = os.environ["tests_domainadmin_account"]
 	except KeyError as exc:
-		print "No Domain Administrator credentials given, trying cn=admin"
+		print("No Domain Administrator credentials given, trying cn=admin")
 		try:
 			with open("/etc/ldap.secret", "r") as f:
 				admin_pwd = f.read().strip()
 				admin_dn = "cn=admin,%s" % dnstests.ucr["ldap/base"]
 		except IOError as exc2:
 			utils.fail("Domain Administrator credentials required")
-			print str(exc)
+			print(str(exc))
 
 	cmd = ["/usr/share/univention-directory-manager-tools/univention-dnsedit", "--binddn=%s" % admin_dn, "--bindpwd=%s" % admin_pwd, "--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs"] + location.split(" ")
-	print " ".join(cmd)
+	print(" ".join(cmd))
 	p = subprocess.Popen(cmd)
 	p.wait()
 	if p.returncode:
-		print "WARNING: command exited with non-zero return code:\n%s" % (" ".join(cmd),)
+		print("WARNING: command exited with non-zero return code:\n%s" % (" ".join(cmd),))
 	forward_zone_dn = "zoneName=%s,cn=dns,%s" % (domainname, dnstests.ucr["ldap/base"])
 
 	test_relativeDomainName = "_%s._msdcs" % s4_RR_val

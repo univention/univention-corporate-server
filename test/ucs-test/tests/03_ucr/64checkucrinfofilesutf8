@@ -6,6 +6,7 @@
 ##  - apptest
 ## exposure: safe
 
+from __future__ import print_function
 exit_code = 100
 
 import os
@@ -23,11 +24,11 @@ def visit(arg, dirname, names):
 					try:
 						line.decode('utf8')
 					except UnicodeDecodeError, E:
-						print >>sys.stderr, 'Error. Invalid UTF-8-character in file %s, line %s, at position %s' % (filename, i, E.end)
+						print('Error. Invalid UTF-8-character in file %s, line %s, at position %s' % (filename, i, E.end), file=sys.stderr)
 						exit_code = 111
 						break
 				else:
-					print "OK: %s" % (filename,)
+					print("OK: %s" % (filename,))
 			finally:
 				f.close()
 

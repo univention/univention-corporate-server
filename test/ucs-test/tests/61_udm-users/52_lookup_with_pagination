@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
 
@@ -19,7 +20,7 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		name = random_username()
 		dns = [udm.create_user(username=name + str(i), wait_for_replication=False, check_for_drs_replication=False, wait_for=False)[0] for i in range(1, 8)]
-		print('Created users:', dns)
+		print(('Created users:', dns))
 
 		univention.admin.modules.update()
 
@@ -34,7 +35,7 @@ if __name__ == '__main__':
 
 		while True:
 			entries.append([x.dn for x in users.lookup(None, lo, 'username=%s*' % (name,), serverctrls=ctrls, response=res)])
-			print('Found', entries[-1])
+			print(('Found', entries[-1]))
 			for control in res['ctrls']:
 				if control.controlType == SimplePagedResultsControl.controlType:
 					pctrl.cookie = control.cookie

@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
@@ -100,7 +101,7 @@ def _test_domain_local_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			print 'E: Domain local group has another domain local group as member. Change to universal group was possible which should not be.'
+			print('E: Domain local group has another domain local group as member. Change to universal group was possible which should not be.')
 			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group6, adGroupType=GROUP_TYPE_UNIVERSAL)
@@ -156,7 +157,7 @@ def _test_global_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			print 'E: Global group is member of another global group. Change to universal group was possible which should not be.'
+			print('E: Global group is member of another global group. Change to universal group was possible which should not be.')
 			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group9, adGroupType=GROUP_TYPE_UNIVERSAL)
@@ -201,7 +202,7 @@ def _test_universal_group_change():
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 		else:
-			print 'E: Universal group has another universal group as member. Change to global group was possible which should not be.'
+			print('E: Universal group has another universal group as member. Change to global group was possible which should not be.')
 			raise GroupChangePossible()
 
 		udm.modify_object('groups/group', dn=group6, adGroupType=GROUP_TYPE_GLOBAL)

@@ -4,6 +4,7 @@
 ## packages:
 ## - univention-s4-connector
 
+from __future__ import print_function
 import grep_traceback
 try:
 	grep_traceback.main('/var/log/univention/connector-s4.log')

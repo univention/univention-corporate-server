@@ -7,6 +7,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
+from __future__ import print_function
 import os
 import subprocess
 from time import sleep
@@ -48,16 +49,16 @@ def main():
 				for dn, name, addr, msgid in userbase:
 					if imap_search_mail(messageid=msgid, server=fqdn, imap_user=addr, imap_folder='INBOX', use_ssl=True):
 						found += 1
-				print 'Found %d of %d mails' % (found, len(userbase))
+				print('Found %d of %d mails' % (found, len(userbase)))
 				if found == len(userbase):
 					break
 				else:
 					sleep(1)
 				if loopcnt == 15:
-					print 'There are still mails missing - trying to force postfix to deliver mails:'
+					print('There are still mails missing - trying to force postfix to deliver mails:')
 					subprocess.call(['/usr/sbin/postqueue', '-f'])
 			if loopcnt == 0:
-				print 'Not all mails have been delivered yet. Running /usr/bin/mailq:'
+				print('Not all mails have been delivered yet. Running /usr/bin/mailq:')
 				subprocess.call(['/usr/bin/mailq'])
 				utils.fail('Could only deliver %d of %d mails to test users' % (found, len(userbase)))
 
@@ -98,7 +99,7 @@ def main():
 						utils.fail('Test %d: old_dir = %r has not been renamed! %r' % (i, old_dir, userbase[i]))
 					cnt = imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True)
 					if not cnt:
-						print 'Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt)
+						print('Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt))
 						utils.fail('Test %d: maildir does not contain old mails' % (i,))
 
 

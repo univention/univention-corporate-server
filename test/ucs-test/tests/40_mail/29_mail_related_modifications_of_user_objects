@@ -4,6 +4,7 @@
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
+from __future__ import print_function
 from essential.mailclient import MailClient_SSL
 import univention.config_registry
 import subprocess
@@ -69,7 +70,7 @@ def main():
 				# Change mailPrimaryAddress
 				# → mailbox with NEW name should have been created and is accessible
 				# → mailbox with OLD name should NOT be accessible
-				print "== case 1 =="
+				print("== case 1 ==")
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
@@ -95,7 +96,7 @@ def main():
 				# → mailbox should NOT have been created
 				# Add local FQDN as mailHomeServer
 				# → mailbox should have been created and is accessible
-				print "== case 2 =="
+				print("== case 2 ==")
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
@@ -118,7 +119,7 @@ def main():
 				# → mailbox should NOT have been created
 				# Add "foreign" FQDN as mailHomeServer
 				# → mailbox should NOT have been created
-				print "== case 3 =="
+				print("== case 3 ==")
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
@@ -141,7 +142,7 @@ def main():
 				# → mailbox should NOT have been created
 				# Add mailPrimaryAddress
 				# → mailbox should have been created and is accessible
-				print "== case 4 =="
+				print("== case 4 ==")
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
 					set={
@@ -164,7 +165,7 @@ def main():
 				# → mailbox should have been created and is accessible
 				# Change mailHomeServer
 				# → mailbox should NOT be accessible
-				print "== case 5 =="
+				print("== case 5 ==")
 				ip = uts.random_ip()
 				new_host = uts.random_name()
 				udm.create_object(
@@ -200,7 +201,7 @@ def main():
 				# → mailbox should have been created and is accessible
 				# Remove mailHomeServer
 				# → mailbox should still be accessible
-				print "== case 6 =="
+				print("== case 6 ==")
 				ip = uts.random_ip()
 				new_host = uts.random_name()
 				udm.create_object(
@@ -236,7 +237,7 @@ def main():
 				# → mailbox should have been created and is accessible
 				# Remove mailPrimaryAddress
 				# → mailbox should NOT be accessible
-				print "== case 7 =="
+				print("== case 7 ==")
 				ip = uts.random_ip()
 				new_host = uts.random_name()
 				udm.create_object(

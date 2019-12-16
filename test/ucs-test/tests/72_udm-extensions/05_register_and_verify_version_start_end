@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 ##   - shell-univention-lib
 
+from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import wait_for_replication, verify_ldap_object, fail
 from univention.testing.strings import random_name, random_version, random_ucs_version
@@ -29,7 +30,7 @@ def test_extension(extension_type):
 		app_id=app_id, version_start=version_start, version_end=version_end
 	)
 	extension_buffer = get_extension_buffer(extension_type, extension_name)
-	print joinscript_buffer
+	print(joinscript_buffer)
 
 	package = DebianPackage(name=package_name, version=package_version)
 	try:
@@ -58,17 +59,17 @@ def test_extension(extension_type):
 			'univentionUCSVersionEnd': [version_end],
 		})
 	finally:
-		print 'Removing UDM extension from LDAP'
+		print('Removing UDM extension from LDAP')
 		remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
 
-		print 'Uninstalling binary package %r' % package_name
+		print('Uninstalling binary package %r' % package_name)
 		package.uninstall()
 
-		print 'Removing source package'
+		print('Removing source package')
 		package.remove()
 
 
 if __name__ == '__main__':
 	for extension_type in ('hook', 'syntax', 'module'):
-		print '========================= TESTING EXTENSION %s =============================' % extension_type
+		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		test_extension(extension_type)

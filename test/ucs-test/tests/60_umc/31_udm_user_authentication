@@ -7,6 +7,7 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 from umc import UDMModule
@@ -67,12 +68,12 @@ class TestUMCUserAuthentication(UDMModule):
         Makes a 'udm/put' UMC request with a 'new_password' and
         a 'user_dn' in options to change the password.
         """
-        print "\nChanging '%s' user password to '%s'" % (user_dn, new_password)
+        print("\nChanging '%s' user password to '%s'" % (user_dn, new_password))
         options = [{"object": {"password": new_password, "$dn$": user_dn}, "options": {"objectType": "users/user"}}]
 
         request_result = self.request("udm/put", options, "users/user")
         if not request_result[0].get('success'):
-            print "Change password UMC response: '%s'" % request_result
+            print("Change password UMC response: '%s'" % request_result)
             utils.fail("The UMC request to change 'user'=%s password to '%s' " "failed, as there are no 'success'=True in response" % (user_dn, new_password))
         sleep(30)  # wait for new password to sync
 

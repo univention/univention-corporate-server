@@ -5,6 +5,7 @@
 ## packages: [univention-directory-manager-tools]
 ## bugs: [35088]
 
+from __future__ import print_function
 from datetime import datetime, timedelta
 import univention.admin.uldap
 import univention.admin.modules as udm_modules
@@ -25,7 +26,7 @@ def main():
 		atexit.register(utils.start_s4connector)
 		utils.stop_s4connector()
 
-	print time.ctime()
+	print(time.ctime())
 	with udm_test.UCSTestUDM() as udm:
 		udm_modules.update()
 		lo, position = univention.admin.uldap.getAdminConnection()
@@ -63,20 +64,20 @@ def main():
 
 		results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
 		if len(results) != len(userdata):
-			print 'RESULTS: %r' % (pprint.PrettyPrinter(indent=2).pformat(results),)
+			print('RESULTS: %r' % (pprint.PrettyPrinter(indent=2).pformat(results),))
 			utils.fail('Did not find all users prior to script execution!')
 		for entry in results:
 			entry.open()
 			if not entry['locked'] == userdata[entry['username']][0]:
 				utils.fail('uid=%s should not be locked for posix prior to script execution!' % (entry['username'],))
 
-		print 'Calling lock_expired_accounts...'
+		print('Calling lock_expired_accounts...')
 		subprocess.check_call(['/usr/share/univention-directory-manager-tools/lock_expired_accounts', '--only-last-week'])
-		print 'DONE'
+		print('DONE')
 
 		results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
 		if len(results) != len(userdata):
-			print 'RESULTS: %r' % (pprint.PrettyPrinter(indent=2).pformat(results),)
+			print('RESULTS: %r' % (pprint.PrettyPrinter(indent=2).pformat(results),))
 			utils.fail('Did not find all users after script execution!')
 		for entry in results:
 			entry.open()

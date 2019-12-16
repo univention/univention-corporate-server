@@ -7,6 +7,7 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
+from __future__ import print_function
 import subprocess
 
 import univention.testing.utils as utils
@@ -24,32 +25,32 @@ urllib3.disable_warnings()
 
 def check_status(app):
 	if app.docker:
-		print '    Checking running Docker Container'
+		print('    Checking running Docker Container')
 		assert ucr_get('appcenter/apps/%s/status' % app.id) == 'installed'
 		container = ucr_get('appcenter/apps/%s/container' % app.id)
 		output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).rstrip('\n')
 		if output != 'true':
 			utils.fail('ERROR: Container not running!')
 		if app.docker_image and app.docker_image.startswith('docker.software-univention.de/ucs-appbox-amd64:'):
-			print '    Within container, checking packages', ', '.join(app.default_packages)
+			print('    Within container, checking packages', ', '.join(app.default_packages))
 			output = subprocess.check_output(['univention-app', 'shell', app.id, 'dpkg', '-s'] + app.default_packages, stderr=subprocess.STDOUT)
 			for line in output.splitlines():
 				if line.startswith('Status: '):
 					if line != 'Status: install ok installed':
-						print output
+						print(output)
 						utils.fail('ERROR: A package is not installed!')
 		else:
-			print '    No appbox image, not checking packages'
+			print('    No appbox image, not checking packages')
 	else:
 		packages = app.default_packages
 		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
 			packages.extend(app.default_packages_master)
-		print '    Checking packages', ', '.join(packages)
+		print('    Checking packages', ', '.join(packages))
 		output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
 		for line in output.splitlines():
 			if line.startswith('Status: '):
 				if line != 'Status: install ok installed':
-					print output
+					print(output)
 					utils.fail('ERROR: A package is not installed!')
 
 
@@ -66,9 +67,9 @@ def check_ldap(app, apps):
 
 def check_webinterface(app):
 	if not app.web_interface:
-		print '    Skipping Webinterface check'
+		print('    Skipping Webinterface check')
 		return
-	print '    Webinterface for', app
+	print('    Webinterface for', app)
 	if app.has_local_web_interface():
 		fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		if app.web_interface_port_http:
@@ -96,13 +97,13 @@ def check_webinterface(app):
 
 
 def _check_url(url):
-	print '       Checking', url
+	print('       Checking', url)
 	requests_timeout = 30
 	r = requests.get(url, timeout=requests_timeout, verify=False)
-	print '       ...', r.status_code
+	print('       ...', r.status_code)
 	if r.status_code not in [401, 403]:
 		assert not str(r.status_code).startswith(('4', '5'))
-	print '       ...', r.url
+	print('       ...', r.url)
 	url = r.url
 
 	# check meta refresh
@@ -111,7 +112,7 @@ def _check_url(url):
 	if refresh:
 		refresh_url = refresh[0].get('content')
 		if refresh_url:
-			print 'Found meta refresh: %s' % refresh_url
+			print('Found meta refresh: %s' % refresh_url)
 			# e.g., 0;URL=controller.pl?action=LoginScreen/user_login
 			index = refresh_url.lower().find('url=')
 			if index > 0:
@@ -122,9 +123,9 @@ def _check_url(url):
 
 apps = Apps()
 for app in get_requested_apps():
-	print 'Checking', app
+	print('Checking', app)
 	if not app._allowed_on_local_server():
-		print '    Not allowed ... skipping'
+		print('    Not allowed ... skipping')
 		continue
 	check_status(app)
 	check_ldap(app, apps)

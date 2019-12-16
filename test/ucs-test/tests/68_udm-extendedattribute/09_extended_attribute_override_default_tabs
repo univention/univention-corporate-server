@@ -8,6 +8,7 @@
 ##   - univention-directory-manager-tools
 
 
+from __future__ import print_function
 import subprocess
 import univention.testing.strings as uts
 import univention.testing.utils as utils
@@ -37,7 +38,7 @@ def main():
 					utils.fail('Could not find attribute CLI name under tab')
 				try:
 					if not module_help_text[i + 2].endswith(':'):
-						print '--> ', module_help_text[i + 2]
+						print('--> ', module_help_text[i + 2])
 						utils.fail('Tab not overridden')
 				except IndexError:
 					# no more help, tab is overwritten

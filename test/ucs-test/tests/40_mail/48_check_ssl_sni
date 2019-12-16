@@ -6,6 +6,7 @@
 ## bugs: [48485]
 
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 import univention.config_registry
@@ -34,7 +35,7 @@ def check_if_correct_cert_is_served(fqdn, servername, port, must_fail=False):
 		ssl.match_hostname(cert, servername)
 	except ssl.CertificateError as e:
 		if must_fail:
-			print '\nOK: Server was not configurd to deliver certificate for %s, the ssl.match_hostname() failed as expected\n' % (servername)
+			print('\nOK: Server was not configurd to deliver certificate for %s, the ssl.match_hostname() failed as expected\n' % (servername))
 		else:
 			utils.fail('Incorrect certificate returned: Requested certificate from %s:%s for servername %s, error: %s' % (fqdn, port, servername, e))
 
@@ -54,10 +55,10 @@ if __name__ == '__main__':
 			])
 		subprocess.call(['service', 'dovecot', 'restart'])
 
-		print '\nTest if host %s returns a certificate for %s' % (fqdn, fqdn)
+		print('\nTest if host %s returns a certificate for %s' % (fqdn, fqdn))
 		check_if_correct_cert_is_served(fqdn, fqdn, 993)
 		check_if_correct_cert_is_served(fqdn, fqdn, 995)
-		print 'Test if host %s returns a certificate for ucs-sso.%s' % (fqdn, domain)
+		print('Test if host %s returns a certificate for ucs-sso.%s' % (fqdn, domain))
 		check_if_correct_cert_is_served(fqdn, 'ucs-sso.%s' % domain, 993)
 		check_if_correct_cert_is_served(fqdn, 'ucs-sso.%s' % domain, 995)
 

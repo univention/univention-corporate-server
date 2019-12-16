@@ -10,6 +10,7 @@
 ##  - 34292
 ## exposure: dangerous
 
+from __future__ import print_function
 import univention.uldap
 import subprocess
 import ldap
@@ -22,7 +23,7 @@ ucr.load()
 
 
 def _cleanup(old_retry_count):
-	print 'CLEANUP'
+	print('CLEANUP')
 	_set_retry_count(old_retry_count)
 	_start_slapd()
 	# Give the system a few seconds otherwise the following test case might be fail
@@ -70,9 +71,9 @@ def _set_retry_count(count):
 
 
 def _print_test_header(header):
-	print '\n************************************************************************'
-	print header
-	print '************************************************************************'
+	print('\n************************************************************************')
+	print(header)
+	print('************************************************************************')
 
 
 def _give_systemd_some_time():

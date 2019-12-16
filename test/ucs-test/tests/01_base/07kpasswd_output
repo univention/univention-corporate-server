@@ -19,6 +19,7 @@
 ##  - univention-heimdal-kdc
 ## exposure: dangerous
 
+from __future__ import print_function
 import pexpect
 import tempfile
 import sys
@@ -81,14 +82,14 @@ if __name__ == "__main__":
 		try:
 			shell = create_ssh_session(username, password)
 		except Exception, e:
-			print e  # print error
+			print(e)  # print error
 			sys.exit(120)
 
 		newpassword = '%02x' % (random.getrandbits(8),)  # a short password to trigger the bug
 		shell.sendline('kpasswd')
 		status = shell.expect([pexpect.TIMEOUT, '[Pp]assword:', ])
 		if status == 0:  # timeout
-			print 'kpasswd behaved unexpectedly! Output:\n\t%r' % (shell.before,)
+			print('kpasswd behaved unexpectedly! Output:\n\t%r' % (shell.before,))
 			sys.exit(120)
 		shell.sendline(password)
 		status = shell.expect([pexpect.TIMEOUT, 'New password:', ])
@@ -109,28 +110,28 @@ if __name__ == "__main__":
 		except Exception, e:
 			accepted_new_pwd = False
 		if accepted_old_pwd == accepted_new_pwd:
-			print 'ERROR: Both passwords were',
+			print('ERROR: Both passwords were', end=' ')
 			if accepted_old_pwd and accepted_new_pwd:
-				print 'accepted'
+				print('accepted')
 			else:
-				print 'rejected'
+				print('rejected')
 			sys.exit(120)  # Transient error
 		password_changed = accepted_new_pwd
 
 		if kpasswd_reported_success:
-			print 'TEST FAILED: "kpasswd" reported acceptance of too short password',
+			print('TEST FAILED: "kpasswd" reported acceptance of too short password', end=' ')
 		else:
-			print 'TEST SUCCEEDED: "kpasswd" reported refusal of too short password',
+			print('TEST SUCCEEDED: "kpasswd" reported refusal of too short password', end=' ')
 		if kpasswd_reported_success == password_changed:
-			print 'and',
+			print('and', end=' ')
 		else:
-			print 'but',
+			print('but', end=' ')
 		if password_changed:
-			print 'the password was changed'
+			print('the password was changed')
 		else:
-			print 'the password was not changed'
+			print('the password was not changed')
 		if password_changed:
-			print '\tThe short password "%s" was accepted - this should not happen.' % (newpassword,)
+			print('\tThe short password "%s" was accepted - this should not happen.' % (newpassword,))
 			sys.exit(120)  # Transient error
 
 		if kpasswd_reported_success:

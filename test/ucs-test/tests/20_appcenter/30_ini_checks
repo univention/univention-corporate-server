@@ -4,6 +4,7 @@
 ## roles: [domaincontroller_master]
 ## exposure: safe
 
+from __future__ import print_function
 import sys
 import subprocess
 from ConfigParser import NoSectionError, NoOptionError
@@ -16,16 +17,16 @@ returncode = 100
 codes = {}
 for app in Apps(locale='en').get_every_single_app():
 	if app.id.endswith('-test'):
-		print 'Ignoring test App %s' % app
+		print('Ignoring test App %s' % app)
 		continue
 	else:
-		print 'Checking %r' % app
+		print('Checking %r' % app)
 	# codes
 	code = app.code
 	if code:
 		if code in codes:
 			if codes[code] != app.id:
-				print ' FAIL: Code %r has already been taken by %r!' % (code, codes[code])
+				print(' FAIL: Code %r has already been taken by %r!' % (code, codes[code]))
 				returncode = 1
 		else:
 			codes[code] = app.id
@@ -45,7 +46,7 @@ for app in Apps(locale='en').get_every_single_app():
 			url = '%s/meta-inf/%s/%s/%s' % (app.get_server(), app.get_ucs_version(), app.id, logo_name)
 			stdout = subprocess.check_output(['curl', '-Is', url])
 			if 'HTTP/1.1 200 OK' not in stdout.splitlines():
-				print 'FAIL: Could not find %s' % url
+				print('FAIL: Could not find %s' % url)
 				returncode = 1
 
 sys.exit(returncode)

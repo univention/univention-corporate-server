@@ -8,6 +8,7 @@
 ##  - ucs-test-umc-module
 ## exposure: dangerous
 
+from __future__ import print_function
 import time
 import ssl
 import psutil
@@ -27,7 +28,7 @@ def kill_ucstest():
 	search_mask = set(['/usr/sbin/univention-management-console-module', '-m', 'ucstest'])
 	for process in psutil.process_iter():
 		if not (search_mask - set(process.cmdline())):
-			print 'Found module process %s %r and killing it ...' % (process.pid, process.cmdline(),)
+			print('Found module process %s %r and killing it ...' % (process.pid, process.cmdline(),))
 			process.kill()
 			try:  # if kill did not succeed, terminate
 				process.terminate()
@@ -52,34 +53,34 @@ class AsyncClient(Client):
 		headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
 		headers['X-XSRF-Protection'] = self.cookies.get('UMCSessionId', '')
 		connection = httplib.HTTPSConnection(self.hostname, timeout=10)
-		print '*** POST to /univention/command/%s with headers=%r' % (path, headers)
+		print('*** POST to /univention/command/%s with headers=%r' % (path, headers))
 		connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
 		return connection
 
 
 def main():
-	print 'Setting up the connections and sending requests...'
+	print('Setting up the connections and sending requests...')
 	connections = [
 		AsyncClient.get_test_connection(timeout=10).async_request('ucstest/norespond')
 		for i in range(NUMBER_OF_CONNECTIONS)
 	]
 	time.sleep(2)
 
-	print 'Killing module process...'
+	print('Killing module process...')
 	kill_ucstest()
 	time.sleep(2)
 
-	print 'Verfying that requests are answered with an error code...'
+	print('Verfying that requests are answered with an error code...')
 	success = True
 	for i_connection in connections:
 		try:
 			response = i_connection.getresponse()
-			print '*** RESPONSE Status=%s; body=\n%r\n***' % (response.status, response.read())
+			print('*** RESPONSE Status=%s; body=\n%r\n***' % (response.status, response.read()))
 			if response.status not in RESPONSE_STATUS_CODES:
-				print 'ERROR: Unexpected status of response %s (expected was one of %s)' % (response.status, RESPONSE_STATUS_CODES)
+				print('ERROR: Unexpected status of response %s (expected was one of %s)' % (response.status, RESPONSE_STATUS_CODES))
 				success = False
 		except ssl.SSLError:
-			print 'ERROR: request timed out'
+			print('ERROR: request timed out')
 
 	if not success:
 		utils.fail('ERROR: Requests are not answered with an error code')

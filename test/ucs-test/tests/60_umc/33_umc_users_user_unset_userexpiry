@@ -6,6 +6,7 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
+from __future__ import print_function
 import sys
 sys.path.insert(0, '.')
 from umc import UMCBase
@@ -75,17 +76,17 @@ class TestUMCUserAuthentication(UMCBase):
 			try:
 				assert response[0]["userexpiry"] == "2015-02-02", "userexpiry not initialized properly: %s" % (response[0]["userexpiry"],)
 			except KeyError:  # Bug #37924
-				print 'FAIL! https://forge.univention.org/bugzilla/show_bug.cgi?id=37924'
-				print 'PRIOR=%r' % (prior_testval,)
+				print('FAIL! https://forge.univention.org/bugzilla/show_bug.cgi?id=37924')
+				print('PRIOR=%r' % (prior_testval,))
 				after_testval = utils.get_ldap_connection().get(self.test_user_dn)
-				print 'AFTER=%r' % (after_testval,)
-				print 'Equal=%s' % (prior_testval == after_testval,)
+				print('AFTER=%r' % (after_testval,))
+				print('Equal=%s' % (prior_testval == after_testval,))
 				raise
 
 			self.set_userexpiry_empty()
 			response = self.get_object([self.test_user_dn], 'users/user')
 			assert not response[0].get('userexpiry'), "unset of userexpiry via empty string failed"
-			print "OK: unset of userexpiry via empty string succeeded"
+			print("OK: unset of userexpiry via empty string succeeded")
 
 			self.set_userexpiry_testval()
 			response = self.get_object([self.test_user_dn], 'users/user')
@@ -94,7 +95,7 @@ class TestUMCUserAuthentication(UMCBase):
 			self.set_userexpiry_None()
 			response = self.get_object([self.test_user_dn], 'users/user')
 			assert not response[0].get('userexpiry'), "unset of userexpiry via None failed"
-			print "OK: unset of userexpiry via None succeeded"
+			print("OK: unset of userexpiry via None succeeded")
 
 
 if __name__ == '__main__':

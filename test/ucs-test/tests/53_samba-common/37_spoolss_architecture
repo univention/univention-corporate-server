@@ -11,6 +11,7 @@
 ##   - univention-samba | univention-samba4
 ##   - univention-config
 
+from __future__ import print_function
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 import univention.config_registry
@@ -38,7 +39,7 @@ def check_spoolss_architecture(expected_value):
 		utils.fail("Wrong value for samba option 'spoolss: architecture', expected '%s', got '%s'"
 			% (expected_value, spoolss_architecture))
 	else:
-		print "Ok, samba option 'spoolss: architecture' is set to '%s'" % (expected_value,)
+		print("Ok, samba option 'spoolss: architecture' is set to '%s'" % (expected_value,))
 
 
 def host_architecture():

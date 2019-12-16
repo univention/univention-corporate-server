@@ -9,6 +9,7 @@
 ##  - python-univention-lib
 ## exposure: dangerous
 
+from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_int
 from univention.testing.utils import fail
@@ -71,7 +72,7 @@ try:
 
     for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
         if attribute_entry.startswith(attribute_identifier):
-            print 'The schema entry was found: %s' % attribute_entry
+            print('The schema entry was found: %s' % attribute_entry)
             break
     else:
         fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})

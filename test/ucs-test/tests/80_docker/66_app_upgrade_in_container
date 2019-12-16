@@ -5,6 +5,7 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import print_function
 from dockertest import *
 from univention.testing.utils import get_ldap_connection, fail
 from univention.config_registry import ConfigRegistry

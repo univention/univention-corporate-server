@@ -4,6 +4,7 @@
 ## packages:
 ##    - univention-management-console-web-server (>= 3.0.152)
 
+from __future__ import print_function
 from httplib import HTTPConnection
 
 import ldap
@@ -33,18 +34,18 @@ def main():
 	username = ldap.explode_rdn(usernamd_dn)[0].split('=', 1)[-1]
 
 	with network.NetworkRedirector() as nethelper:
-		print '*** Check with different remote addresses'
+		print('*** Check with different remote addresses')
 		for addr2 in ('4.3.2.1', '1.1.1.1', '2.2.2.2'):
 			nethelper.add_loop('1.2.3.4', addr2)
 
 			result = get_ip_address('1.2.3.4', username, password)
-			print 'Result: %r' % result
+			print('Result: %r' % result)
 			if addr2 not in result:
 				utils.fail('UMC webserver is unable to determine correct UMCP client address (expected=%r result=%r)' % (addr2, result))
 
 			nethelper.remove_loop('1.2.3.4', addr2)
 
-		print '*** Check with localhost'
+		print('*** Check with localhost')
 		result = get_ip_address('localhost', username, password)
 		if result:
 			utils.fails('Response is expected to be empty')

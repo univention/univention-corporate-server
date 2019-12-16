@@ -7,6 +7,7 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
+from __future__ import print_function
 from test_self_service import self_service_user, capture_mails
 from univention.testing.ucr import UCSTestConfigRegistry as UCR
 from univention.config_registry import handler_set, handler_unset
@@ -69,26 +70,26 @@ def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=N
 
 
 def fail_after(user, x, retry_after):
-	print 'We should fail after', x
+	print('We should fail after', x)
 	for i in range(x):
-		print 'Attempt (we shall not fail)', i + 1
+		print('Attempt (we shall not fail)', i + 1)
 		user.send_token('email')
 
 	try:
-		print 'We should fail now...'
+		print('We should fail now...')
 		user.send_token('email')
 	except ServiceUnavailable as exc:
 		retry_after = 'Please retry in %s.' % (retry_after,)
 		assert exc.message
-		print 'Yippie, failed!'
+		print('Yippie, failed!')
 		return True
 	assert False, 'limit not evaluated'
 
 
 def dont_fail(user):
-	print 'Now we should not fail anymore'
+	print('Now we should not fail anymore')
 	user.send_token('email')
-	print 'Did not fail ;)'
+	print('Did not fail ;)')
 
 
 @contextlib.contextmanager
@@ -109,7 +110,7 @@ def reset_server_limits():
 
 def wait(minutes):
 	# TODO: set the server time otherwise this test blocks that long
-	print 'Waiting %d minutes' % (minutes,)
+	print('Waiting %d minutes' % (minutes,))
 	sleep((minutes * 60) + 1)
 
 

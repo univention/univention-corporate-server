@@ -7,6 +7,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
+from __future__ import print_function
 import os
 from univention.config_registry import handler_set
 import univention.testing.ucr as ucr_test
@@ -69,7 +70,7 @@ def main():
 								user_permission=['"%s" "%s"' % (user_addr, 'all')])
 							folder = Bunch(dn=dn, name=name, mail_address=address)
 
-							print folder
+							print(folder)
 
 							# check folder with mail address
 							path = get_dovecot_shared_folder_maildir(folder.name)

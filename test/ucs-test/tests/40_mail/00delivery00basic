@@ -15,6 +15,7 @@
 # this script.
 #################
 
+from __future__ import print_function
 from essential.mail import file_search_mail, send_mail
 import time
 import univention.testing.strings as uts
