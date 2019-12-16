@@ -233,6 +233,9 @@ class TestPrincipal(unittest.TestCase):
 	def test_principal(self):
 		self.assertEqual(USER, str(self.principal))
 
+	def test_realm(self):
+		self.assertEqual(REALM, self.principal.realm())
+
 	def test_dir(self):
 		self.assertLessEqual({'realm'}, set(dir(self.principal)))
 

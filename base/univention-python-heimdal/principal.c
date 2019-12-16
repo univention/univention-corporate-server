@@ -89,14 +89,11 @@ static PyObject *principal_name(krb5PrincipalObject *self)
 
 static PyObject *principal_realm(krb5PrincipalObject *self, PyObject *args)
 {
-	//krb5_error_code err;
-	//krb5_realm *realm;
+	const char *realm;
 	PyObject *realm_string;
 
-	//realm = krb5_princ_realm(self->context, self->principal);
-	//return realm_from_realm(self->context, realm);
-	//realm_string = PyString_FromString(krb5_realm_data(realm));
-	realm_string = PyString_FromString("FIXME");
+	realm = krb5_principal_get_realm(self->context->context, self->principal);
+	realm_string = PyString_FromString(realm);
 	return realm_string;
 }
 
