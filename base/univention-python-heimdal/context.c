@@ -51,25 +51,27 @@ static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 	PyObject* list = NULL;
 	int i;
 
-	if ((list = PyList_New(0)) == NULL) {
-		PyErr_NoMemory();
-		goto exception;
-	}
-
 	err = krb5_get_permitted_enctypes(self->context, &etypes);
 	if (err) {
 		krb5_exception(NULL, err);
 		goto exception;
 	}
 
-	for (i=0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++) {
+	for (i = 0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++)
+		;
+
+	if ((list = PyList_New(i)) == NULL) {
+		PyErr_NoMemory();
+		goto exception;
+	}
+
+	while (i--) {
 		krb5EnctypeObject *enctype;
 		enctype = enctype_from_enctype(self, etypes[i]);
 		if (enctype == NULL) {
 			goto exception;
 		}
-		PyList_Append(list, (PyObject*) enctype);
-		Py_DECREF(enctype);
+		PyList_SetItem(list, i, (PyObject *)enctype);
 	}
 	goto finally;
 
