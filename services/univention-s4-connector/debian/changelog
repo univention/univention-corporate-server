@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-62) unstable; urgency=medium
+
+  * Bug #49838: translations
+
+ -- Florian Best <best@univention.de>  Mon, 16 Dec 2019 16:47:13 +0100
+
 univention-s4-connector (13.0.2-61) unstable; urgency=medium
 
   * Bug #49838: add base64 presentation in UMC
