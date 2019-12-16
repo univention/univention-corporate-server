@@ -91,6 +91,7 @@ krb5CredsObject *creds_new(PyObject *unused, PyObject *args)
 		PyErr_NoMemory();
 		return NULL;
 	}
+	memset(&self->creds, 0, sizeof(self->creds));
 
 	/* FIXME */
 	if (in_tkt_service[0] == '\0')
