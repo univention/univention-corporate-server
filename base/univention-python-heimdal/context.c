@@ -69,6 +69,7 @@ static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 			goto exception;
 		}
 		PyList_Append(list, (PyObject*) enctype);
+		Py_DECREF(enctype);
 	}
 	goto finally;
 

@@ -129,6 +129,7 @@ static PyObject *ccache_list(krb5CcacheObject *self)
 		krb5CredsObject *i;
 		i = creds_from_creds(self->context, creds);
 		PyList_Append(list, (PyObject *)i);
+		Py_DECREF(i);
 	}
 
 	err = krb5_cc_end_seq_get (self->context->context, self->ccache, &cursor);

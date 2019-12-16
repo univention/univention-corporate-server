@@ -246,6 +246,7 @@ static PyObject *keytab_list(krb5KeytabObject *self)
 		PyTuple_SetItem(tuple, 4, PyString_FromStringAndSize(entry.keyblock.keyvalue.data, entry.keyblock.keyvalue.length));
 
 		PyList_Append(list, tuple);
+		Py_DECREF(tuple);
 		krb5_kt_free_entry(self->context->context, &entry);
 	}
 	krb5_kt_end_seq_get(self->context->context, self->keytab, &cursor);
