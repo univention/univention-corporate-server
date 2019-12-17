@@ -34,6 +34,7 @@ import re
 from functools import wraps
 import random
 
+import six
 import ldap
 import ldap.schema
 import ldap.sasl
@@ -190,8 +191,8 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 			try:
 				return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 			# LDAP server down, try next server
-			except ldap.SERVER_DOWN as exc:
-				pass
+			except ldap.SERVER_DOWN as oexc:
+				exc = oexc
 		raise exc
 
 
@@ -240,7 +241,11 @@ class access(object):
 		self.host = host
 		self.base = base
 		self.binddn = binddn
+		if six.PY2 and isinstance(self.binddn, bytes):
+			self.binddn = self.binddn.decode('UTF-8')
 		self.bindpw = bindpw
+		if six.PY2 and isinstance(self.bindpw, bytes):
+			self.bindpw = self.bindpw.decode('UTF-8')
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
 		self.reconnect = reconnect
@@ -282,12 +287,6 @@ class access(object):
 
 		self.__open(ca_certfile)
 
-	def __encode_pwd(self, pwd):
-		if isinstance(pwd, unicode):
-			return str(pwd)
-		else:
-			return pwd
-
 	@_fix_reconnect_handling
 	def bind(self, binddn, bindpw):
 		# type: (str, str) -> None
@@ -300,7 +299,7 @@ class access(object):
 		self.binddn = binddn
 		self.bindpw = bindpw
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
-		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+		self.lo.simple_bind_s(self.binddn, self.bindpw)
 
 	@_fix_reconnect_handling
 	def bind_saml(self, bindpw):
@@ -336,7 +335,7 @@ class access(object):
 		:rtype: str
 		"""
 		dn = self.lo.whoami_s()
-		return re.sub('^dn:', '', dn)
+		return re.sub(u'^dn:', u'', dn)
 
 	def _reconnect(self):
 		# type: () -> None
@@ -361,7 +360,7 @@ class access(object):
 			if self.start_tls == 1:
 				try:
 					self.__starttls()
-				except:
+				except Exception:
 					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
 			elif self.start_tls == 2:
 				self.__starttls()
@@ -381,9 +380,11 @@ class access(object):
 		self.lo.start_tls_s()
 
 	def __encode(self, value):
+		if six.PY3:
+			return value
 		if value is None:
 			return value
-		elif isinstance(value, unicode):
+		elif six.PY2 and isinstance(value, unicode):  # noqa: F821
 			return str(value)
 		elif isinstance(value, (list, tuple)):
 			return map(self.__encode, value)
@@ -391,11 +392,15 @@ class access(object):
 			return value
 
 	def __recode_attribute(self, attr, val):
+		if six.PY3:
+			return val
 		if attr in self.decode_ignorelist:
 			return val
 		return self.__encode(val)
 
 	def __recode_entry(self, entry):
+		if six.PY3:
+			return entry
 		if isinstance(entry, tuple) and len(entry) == 3:
 			return (entry[0], entry[1], self.__recode_attribute(entry[1], entry[2]))
 		elif isinstance(entry, tuple) and len(entry) == 2:
@@ -684,7 +689,7 @@ class access(object):
 			key, val = i[0], i[-1]
 			if not val:
 				continue
-			if isinstance(val, basestring):
+			if isinstance(val, (bytes, six.text_type)):
 				val = [val]
 			nal.setdefault(key, set())
 			nal[key] |= set(val)
@@ -724,7 +729,7 @@ class access(object):
 		ml = []
 		for key, oldvalue, newvalue in changes:
 			if oldvalue and newvalue:
-				if oldvalue == newvalue or (not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue)):
+				if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
 					continue  # equal values
 				op = ldap.MOD_REPLACE
 				val = newvalue
@@ -763,15 +768,17 @@ class access(object):
 		>>> get_dn = access._access__get_new_dn
 		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'foo')])[0]
 		'univentionAppID=foo,dc=bar'
-		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'föo')])[0]
-		'univentionAppID=f\\xc3\\xb6o,dc=bar'
+		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'föo')])[0] == u'univentionAppID=föo,dc=bar'
+		True
 		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'bar')])[0]
 		'univentionAppID=bar,dc=bar'
 		"""
 		rdn = ldap.dn.str2dn(dn)[0]
 		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
-		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
-		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]])
+		new_vals = dict((key.lower(), val if isinstance(val, (bytes, six.text_type)) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+		new_rdn_ava = [(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]
+		new_rdn_unicode = [(key, val.decode('UTF-8'), ava_type) if isinstance(val, bytes) else (key, val, ava_type) for key, val, ava_type in new_rdn_ava]
+		new_rdn = ldap.dn.dn2str([new_rdn_unicode])
 		rdn = ldap.dn.dn2str([rdn])
 		if rdn != new_rdn:
 			return ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:]), new_rdn
@@ -989,12 +996,12 @@ class access(object):
 			if self.start_tls == 1:
 				try:
 					lo_ref.start_tls_s()
-				except:
+				except Exception:
 					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'Could not start TLS')
 			elif self.start_tls == 2:
 				lo_ref.start_tls_s()
 
-			lo_ref.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+			lo_ref.simple_bind_s(self.binddn, self.bindpw)
 			return lo_ref
 
 		else:
