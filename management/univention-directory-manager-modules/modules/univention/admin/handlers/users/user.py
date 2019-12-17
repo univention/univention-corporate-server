@@ -1263,11 +1263,11 @@ class object(univention.admin.handlers.simpleLdap):
 	def _simulate_legacy_options(self):
 		'''simulate old options behavior to provide backward compatibility for udm extensions'''
 		options = dict(
-			posix='posixAccount',
-			samba='sambaSamAccount',
-			kerberos='krb5Principal',
-			mail='univentionMail',
-			person='person',
+			posix=b'posixAccount',
+			samba=b'sambaSamAccount',
+			kerberos=b'krb5Principal',
+			mail=b'univentionMail',
+			person=b'person',
 		)
 		for opt, oc in options.iteritems():
 			# existing object
