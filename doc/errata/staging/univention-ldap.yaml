@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-ldap
-fix:
+fix: 15.0.0-34A~4.4.0.201912171121
 desc: |-
   This update addresses the following issue(s):
   * The init script now looks for an already running process only below parent
