@@ -59,22 +59,13 @@ eval "$(univention-config-registry shell)"
 
 info_header "$0" "$(gettext "Generating SSL certificate")"
 
-new_ssl_common=$(get_profile_var "ssl/common")
-new_ssl_locality=$(get_profile_var "ssl/locality")
-new_ssl_organization=$(get_profile_var "ssl/organization")
-new_ssl_country=$(get_profile_var "ssl/country")
-new_ssl_state=$(get_profile_var "ssl/state")
-new_ssl_organizationalunit=$(get_profile_var "ssl/organizationalunit")
-new_ssl_email=$(get_profile_var "ssl/email")
-
-for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
-	old="ssl_$var"
-	new="new_ssl_$var"
-
-	if [ -n "${!new}" -a "${!old}" != "${!new}" ]; then
-		recreate=true
-		break
-	fi
+declare -a changed=()
+for var in common locality organization country state organizationalunit email
+do
+	val="$(get_profile_var "ssl/$var")"
+	old="ssl_${var}"
+	[ "$val" = "${!old}" ] ||
+		changed+=("ssl/$var=$val") recreate=true
 done
 
 if "$recreate"
@@ -99,12 +90,8 @@ then
 	fi
 
 	# set UCR variables
-	for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
-		new="new_ssl_$var"
-		if [ -n "${!new}" ]; then
-			univention-config-registry set "${old/_//}=${!new}"
-		fi
-	done
+	[ -n "${changed[*]}" ] &&
+		univention-config-registry set "${changed[@]}"
 
 	_certificate_creation_failed() {
 		progress_next_step 10
@@ -124,29 +111,25 @@ then
 
 	progress_next_step 7
 	[ -d /etc/univention/ssl.orig ] && (
-		cd /etc/univention/ssl.orig
-		for fqdn in *; do
+		cd /etc/univention/ssl.orig || exit 1
+		for fqdn in *.*
+		do
 			# just check directories for certificates
-			if [ ! -d "$fqdn" ]; then
-				continue
-			fi
-			# ignore ucsCA and directory not containing a dot
-			if [ "$fqdn" = "ucsCA" ] || ! echo "$fqdn" | grep '\.' &>/dev/null; then
-				continue
-			fi
+			[ -d "$fqdn" ] || continue
 			# if there is no certificate, ignore it
-			if [ ! -e "$fqdn/cert.pem" ]; then
-				continue
-			fi
+			[ -e "$fqdn/cert.pem" ] || continue
 			# Do not regenerate the certificate for default directory
-			if [ "$fqdn" = "unassigned-hostname.unassigned-domain" ]; then
-				continue
-			fi
+			case "$fqdn" in
+			unassigned-hostname.*) continue ;;
+			*.unassigned-domain) continue ;;
+			esac
 			# get the hostname
+			# shellcheck disable=SC2059
 			progress_msg "$(printf "$(gettext 'Recreate SSL certificate for %s')" "$fqdn")"
-			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
+			# shellcheck disable=SC2059
 			univention-certificate new -name "$fqdn" || progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
-			ln -snf "$host.$domainname" "/etc/univention/ssl/$host"
+			[ "$fqdn" = "${fqdn%.$domainname}" ] ||
+				ln -snf "$fqdn" "/etc/univention/ssl/${fqdn%%.*}"
 		done
 	)
 	progress_next_step 9

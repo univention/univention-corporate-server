@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [5]
+scope: ucs_5.0-0-errata5.0-5
+src: univention-system-setup
+fix: 13.0.9-4
+desc: |
+ This update addresses the following issues:
+ * The process to renew all SSL/TLS certificates has been improved. For each
+   host the symbolic link pointing to the fully-qualified host name is now
+   created as a relative link. Error cases are better detected and handled.
+   All changed SSL/TLS profile settings are now propagated into a new CA.
+bug: [34106]
