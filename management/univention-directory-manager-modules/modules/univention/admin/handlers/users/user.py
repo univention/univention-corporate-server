@@ -1817,8 +1817,8 @@ class object(univention.admin.handlers.simpleLdap):
 			pwdCheck.enableQualityCheck = True
 			try:
 				pwdCheck.check(self['password'])
-			except ValueError as e:
-				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
+			except univention.password.CheckFailed as exc:
+				raise univention.admin.uexceptions.pwQuality(str(exc))
 
 	def _modlist_samba_password(self, ml, pwhistoryPolicy):
 		if self.exists() and not self.hasChanged('password'):
