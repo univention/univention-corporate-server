@@ -31,7 +31,6 @@
 
 from __future__ import absolute_import
 
-import re
 import ldap
 import time
 
@@ -648,8 +647,7 @@ class access(object):
 		:returns: The distinguished name.
 		:rtype: str
 		"""
-		dn = self.lo.lo.whoami_s()
-		return re.sub(u'^dn:', u'', dn)
+		return self.lo.whoami()
 
 	def requireLicense(self, require=1):
 		# type: (int) -> None
