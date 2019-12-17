@@ -1366,25 +1366,27 @@ class object(univention.admin.handlers.simpleLdap):
 		if 'automountInformation' not in self.oldattr:
 			return
 		try:
-			flags, unc = re.split(' *', self.oldattr['automountInformation'][0], 1)
-			host, path = unc.split(':', 1)
+			flags, unc = re.split(b' *', self.oldattr['automountInformation'][0], 1)
+			host, path = unc.split(b':', 1)
 		except ValueError:
 			return
+
+		host, path = host.decode('UTF-8'), path.decode('UTF-8')
 
 		sharepath = path
 		while len(sharepath) > 1:
 			filter_ = univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('univentionShareHost', host, escape=True),
 				univention.admin.filter.conjunction('|', [
-					univention.admin.filter.expression('univentionSharePath', sharepath.rstrip('/'), escape=True),
-					univention.admin.filter.expression('univentionSharePath', '%s/' % (sharepath.rstrip('/')), escape=True),
+					univention.admin.filter.expression('univentionSharePath', sharepath.rstrip(u'/'), escape=True),
+					univention.admin.filter.expression('univentionSharePath', u'%s/' % (sharepath.rstrip(u'/')), escape=True),
 				])
 			])
 			res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
 			if len(res) == 1:
 				self['homeShare'] = res[0].dn
-				relpath = path.replace(sharepath, '')
-				if len(relpath) > 0 and relpath[0] == '/':
+				relpath = path.replace(sharepath, u'')
+				if len(relpath) > 0 and relpath[0] == u'/':
 					relpath = relpath[1:]
 				self['homeSharePath'] = relpath
 				break
