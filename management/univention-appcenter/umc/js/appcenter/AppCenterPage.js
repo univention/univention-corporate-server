@@ -325,15 +325,14 @@ define([
 			// query all applications
 			quick = quick !== false;
 			this._applications = null;
-			var updating = when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
-				this._markAppsAsSuggested(applications).then(lang.hitch(this, function() {
-					var metaLabels = [];
+			return when(this.getApplications(quick)).then(lang.hitch(this, function(applications) {
+				return this._markAppsAsSuggested(applications).then(lang.hitch(this, function() {
+					var scroll = this._scroll();
 					array.forEach(this.metaCategories, function(metaObj) {
 						metaObj.set('store', applications);
-						metaLabels.push(metaObj.label);
 					});
 
-					if (quick && this.liveSearch) {
+					if (this.liveSearch) {
 						var badges = [];
 						var categories = [];
 						var licenses = [];
@@ -348,10 +347,10 @@ define([
 								}
 							});
 							array.forEach(application.rating, function(rating) {
-								if (rating.name == 'VendorSupported') {
+								if (rating.name === 'VendorSupported') {
 									return;
 								}
-								if (array.indexOf(badges, rating.name) < 0) {
+								if (array.indexOf(badges.map(x => x.id), rating.name) < 0) {
 									badges.push({
 										id: rating.name,
 										description: rating.label
@@ -371,15 +370,18 @@ define([
 						badges.sort((a, b) => a.description > b.description ? 1 : -1);
 						categories.sort((a, b) => a.description > b.description ? 1 : -1);
 						this._sortLicenses(licenses);
+						var filterValues = this._searchSidebar.getFilterValues();
 						this._searchSidebar.set('badges', badges);
 						this._searchSidebar.set('voteForApps', voteForApps);
 						this._searchSidebar.set('categories', categories);
 						this._searchSidebar.set('licenses', licenses);
-						this._searchSidebar.onSearch();
+						this._searchSidebar.setFilterValues(filterValues);
 					}
+
+					this.filterApplications();
+					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
 				}));
 			}));
-			return updating;
 		},
 
 		_sortLicenses(licenses) {

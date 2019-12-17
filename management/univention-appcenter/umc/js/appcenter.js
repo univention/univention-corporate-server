@@ -169,7 +169,9 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				addWarning: lang.hitch(this, 'addWarning'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
-				openApp: this.props && this.props.app
+				openApp: this.props && this.props.app,
+				_scroll: lang.hitch(this, '_scroll'),
+				_scrollTo: lang.hitch(this, '_scrollTo')
 			});
 			// switched from app center to app details and back
 			this._appCenterPage.on('showApp', lang.hitch(this, 'showApp'));
@@ -183,17 +185,23 @@ define([
 			AppCenterPage.prototype.appCenterInformationReadAgain = AppDetailsPage.prototype.appCenterInformationReadAgain;
 		},
 
-		_scrollTo: function(x, y1, y2) {
-			this._bottom.domNode.scrollTo(x, y1);
+		_scroll: function() {
+			return {
+				bottomY: this._bottom.domNode.scrollTop,
+				tabContainerY: lang.getObject('umc.app._tabContainer.domNode.scrollTop')
+			};
+		},
+
+		_scrollTo: function(x, bottomY, tabContainerY) {
+			this._bottom.domNode.scrollTo(x, bottomY);
 			var tabContainer = lang.getObject('umc.app._tabContainer');
 			if (tabContainer) {
-				tabContainer.domNode.scrollTo(x, y2);
+				tabContainer.domNode.scrollTo(x, tabContainerY);
 			}
 		},
 
 		showApp: function(app, fromSuggestionCategory = false) {
-			this._bottomScrollYBeforeShowApp = this._bottom.domNode.scrollTop;
-			this._tabContainerScrollYBeforeShowApp = lang.getObject('umc.app._tabContainer.domNode.scrollTop');
+			var scroll = this._scroll();
 			if (this._appDetailsPage) {
 				this._appDetailsPage.destroyRecursive();
 			}
@@ -260,7 +268,7 @@ define([
 				this.removeChild(appChooseHostDialog);
 				this.removeChild(this._appDetailsPage);
 				this._appDetailsPage.destroyRecursive();
-				this._scrollTo(0, this._bottomScrollYBeforeShowApp, this._tabContainerScrollYBeforeShowApp);
+				this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
 			}));
 			this.addChild(this._appDetailsPage);
 
