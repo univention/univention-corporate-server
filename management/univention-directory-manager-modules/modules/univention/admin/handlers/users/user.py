@@ -2241,12 +2241,12 @@ class object(univention.admin.handlers.simpleLdap):
 	def __allocate_rid(self, rid):
 		searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 		domainsid = searchResult[0][1]['sambaSID'][0]
-		sid = domainsid + '-' + rid
+		sid = domainsid.decode('ASCII') + u'-' + rid
 		try:
 			userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			self.alloc.append(('sid', userSid))
 		except univention.admin.uexceptions.noLock:
-			raise univention.admin.uexceptions.sidAlreadyUsed(': %s' % rid)
+			raise univention.admin.uexceptions.sidAlreadyUsed(rid)
 		return userSid
 
 	def __generate_user_sid(self, uidNum):
