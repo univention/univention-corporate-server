@@ -1621,8 +1621,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self.exists() and not self.oldinfo.get('password') and not self['password']:
 			# password property is required but LDAP ACL's disallow reading them
-			self.info['password'] = '*'
-			self.oldinfo['password'] = '*'
+			self.info['password'] = self.oldinfo['password'] = u'*'
 			self.info['disabled'] = self.oldinfo['disabled']
 
 		if not self.exists() or self.hasChanged('primaryGroup'):
@@ -1650,9 +1649,9 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
 		if self['unlock'] == '1':
-			self['locked'] = '0'
+			self['locked'] = u'0'
 		if self['disabled'] == '1':
-			self['locked'] = '0'  # Samba/AD behavior
+			self['locked'] = u'0'  # Samba/AD behavior
 
 		# legacy options to make old hooks happy (46539)
 		self._simulate_legacy_options()
