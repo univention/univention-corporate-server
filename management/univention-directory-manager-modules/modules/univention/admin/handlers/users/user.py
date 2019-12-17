@@ -34,7 +34,6 @@ from __future__ import absolute_import
 
 import hashlib
 import os
-import string
 import re
 import copy
 import time
@@ -871,13 +870,11 @@ def posixDaysToDate(days):
 
 
 def sambaWorkstationsMap(workstations):
-	ud.debug(ud.ADMIN, ud.ALL, 'samba: sambaWorkstationMap: in=%s; out=%s' % (workstations, string.join(workstations, ',')))
-	return string.join(workstations, ',')
+	return ','.join(workstations)
 
 
 def sambaWorkstationsUnmap(workstations):
-	ud.debug(ud.ADMIN, ud.ALL, 'samba: sambaWorkstationUnmap: in=%s; out=%s' % (workstations[0], string.split(workstations[0], ',')))
-	return string.split(workstations[0], ',')
+	return workstations[0].split(',')
 
 
 def logonHoursMap(logontimes):
@@ -1014,7 +1011,7 @@ load_certificate.ATTR = {
 def mapHomePostalAddress(old):
 	new = []
 	for i in old:
-		new.append(string.join(i, '$'))
+		new.append('$'.join(i))
 	return new
 
 
