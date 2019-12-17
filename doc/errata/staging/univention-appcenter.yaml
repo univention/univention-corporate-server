@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-97A~4.4.0.201912131056
+fix: 8.0.11-98A~4.4.0.201912171616
 desc: |-
   This update addresses the following issue(s):
   * The startup performance of the UMC module has been improved.
