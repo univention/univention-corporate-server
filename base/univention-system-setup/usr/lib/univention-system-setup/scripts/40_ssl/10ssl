@@ -33,12 +33,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-force_recreate=0
+recreate=false
 
 while [ "$#" -gt 0 ]; do
-	case $1 in
+	case "$1" in
 		--force-recreate)
-			force_recreate=1
+			recreate=true
 			shift 1
 			;;
 		*)
@@ -48,14 +48,14 @@ while [ "$#" -gt 0 ]; do
 	esac
 done
 
+# shellcheck source=../setup_utils.sh
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 eval "$(univention-config-registry shell)"
 
 # SSL certificate can only be created on a Primary Directory Node
-if [ "$server_role" != "domaincontroller_master" ]; then
+[ "$server_role" = "domaincontroller_master" ] ||
 	exit 0
-fi
 
 info_header "$0" "$(gettext "Generating SSL certificate")"
 
@@ -72,20 +72,19 @@ for var in "common" "locality" "organization" "country" "state" "organizationalu
 	new="new_ssl_$var"
 
 	if [ -n "${!new}" -a "${!old}" != "${!new}" ]; then
-		recreate="yes"
+		recreate=true
 		break
 	fi
 done
 
-if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
+if "$recreate"
+then
 	progress_steps 10
 	progress_next_step 2
 	progress_msg "$(gettext "Backing up old SSL certificate")"
 
 	# remove old backup
-	if [ -d /etc/univention/ssl.orig ]; then
-		rm -rf /etc/univention/ssl.orig
-	fi
+	rm -rf /etc/univention/ssl.orig
 
 	# backup old SSL certificates
 	mv /etc/univention/ssl /etc/univention/ssl.orig
@@ -101,7 +100,6 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 
 	# set UCR variables
 	for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
-		old="ssl_$var"
 		new="new_ssl_$var"
 		if [ -n "${!new}" ]; then
 			univention-config-registry set "${old/_//}=${!new}"
@@ -110,9 +108,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 
 	_certificate_creation_failed() {
 		progress_next_step 10
-		if [ -d /etc/univention/ssl ]; then
-			rm -rf /etc/univention/ssl
-		fi
+		rm -rf /etc/univention/ssl
 		mv /etc/univention/ssl.orig /etc/univention/ssl
 
 		progress_error "$(gettext "The SSL certificate creation failed. The old certificates have been restored.")"
@@ -122,6 +118,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	# create new CA und certificates
 	progress_next_step 5
 	progress_msg "$(gettext "Generating SSL CA certificate.")"
+	# shellcheck source=/dev/null
 	. /usr/share/univention-ssl/make-certificates.sh
 	init || _certificate_creation_failed
 
