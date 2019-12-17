@@ -1315,20 +1315,20 @@ class object(univention.admin.handlers.simpleLdap):
 	def _load_groups(self, loadGroups):
 		if self.exists():
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
-				self['groups'] = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
+				self['groups'] = self.lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
 			else:
 				ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
 			self.groupsLoaded = loadGroups
-			primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
+			primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
 			if primaryGroupNumber:
-				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
+				primaryGroupResult = self.lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
 				if primaryGroupResult:
 					self['primaryGroup'] = primaryGroupResult[0]
 				else:
 					try:
 						primaryGroup = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
 						try:
-							primaryGroup = primaryGroup[0][1]["univentionDefaultGroup"][0]
+							primaryGroup = primaryGroup[0][1]["univentionDefaultGroup"][0].decode('UTF-8')
 						except:
 							primaryGroup = None
 					except:
@@ -1348,14 +1348,14 @@ class object(univention.admin.handlers.simpleLdap):
 	def _set_default_group(self):
 		primary_group_from_template = self['primaryGroup']
 		if not primary_group_from_template:
-			searchResult = self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
+			searchResult = self.lo.search(filter=u'(objectClass=univentionDefault)', base=u'cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup'])
 			if not searchResult or not searchResult[0][1]:
 				self.info['primaryGroup'] = None
 				self.save()
 				raise univention.admin.uexceptions.primaryGroup(self.dn)
 
 			for tmp, number in searchResult:
-				primaryGroupResult = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
+				primaryGroupResult = self.lo.searchDn(filter=filter_format(u'(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0].decode('UTF-8'), 1)[0],)), base=self.position.getDomain(), scope='domain')
 				if primaryGroupResult:
 					self['primaryGroup'] = primaryGroupResult[0]
 					# self.save() must not be called after this point in self.open()
@@ -1363,7 +1363,7 @@ class object(univention.admin.handlers.simpleLdap):
 					# univentionDefaultGroup because "not self.hasChanged('primaryGroup')"
 
 	def _unmap_pwd_change_next_login(self):
-		if self.oldattr.get('shadowLastChange', [''])[0] == '0':
+		if self.oldattr.get('shadowLastChange', [b''])[0] == b'0':
 			self['pwdChangeNextLogin'] = '1'
 		elif self['passwordexpiry']:
 			today = time.strftime('%Y-%m-%d').split('-')
