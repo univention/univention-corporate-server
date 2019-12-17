@@ -157,11 +157,11 @@ class simpleLdap(object):
 
 	use_performant_ldap_search_filter = False
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
+	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
 		self._exists = False
-		self.co = co
+		self.co = None
 		self.lo = lo
-		self.dn = dn
+		self.dn = dn.decode('utf-8') if isinstance(dn, bytes) else dn
 		self.old_dn = self.dn
 		self.superordinate = superordinate
 
@@ -169,24 +169,18 @@ class simpleLdap(object):
 		if not self.dn:  # this object is newly created and so we can use the default values
 			self.set_defaults = 1
 
-		if not hasattr(self, 'position'):
-			self.position = position
-		if not hasattr(self, 'info'):
-			self.info = {}
-		if not hasattr(self, 'oldinfo'):
-			self.oldinfo = {}
-		if not hasattr(self, 'policies'):
-			self.policies = []
-		if not hasattr(self, 'oldpolicies'):
-			self.oldpolicies = []
-		if not hasattr(self, 'policyObjects'):
-			self.policyObjects = {}
+		self.position = position
+		self.info = {}
+		self.oldinfo = {}
+		self.policies = []
+		self.oldpolicies = []
+		self.policyObjects = {}
 		self.__no_default = []
 
 		if not self.position:
 			self.position = univention.admin.uldap.position(lo.base)
-			if dn:
-				self.position.setDn(dn)
+			if self.dn:
+				self.position.setDn(self.dn)
 		self._open = False
 		self.options = []
 		self.old_options = []
@@ -205,7 +199,7 @@ class simpleLdap(object):
 		global s4connector_present
 		if s4connector_present is None:
 			s4connector_present = False
-			searchResult = self.lo.searchDn('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector)(|(aRecord=*)(aAAARecord=*)))')
+			searchResult = self.lo.searchDn(u'(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector)(|(aRecord=*)(aAAARecord=*)))')
 			s4connector_present = bool(searchResult)
 		self.s4connector_present = s4connector_present
 
@@ -219,7 +213,6 @@ class simpleLdap(object):
 		if not hasattr(self, 'descriptions'):
 			self.descriptions = getattr(m, 'property_descriptions', None)
 
-		self.info = {}
 		self.oldattr = {}
 		if attributes:
 			self.oldattr = attributes
@@ -242,7 +235,7 @@ class simpleLdap(object):
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
 			self.info.update(oldinfo)
 
-		self.policies = self.oldattr.get('univentionPolicyReference', [])
+		self.policies = [x.decode('utf-8') for x in self.oldattr.get('univentionPolicyReference', [])]
 		self.__set_options()
 		self.save()
 
@@ -320,7 +313,7 @@ class simpleLdap(object):
 			if p.options and not set(p.options) & set(self.options):
 				continue
 
-			if p.required and (not self[name] or (isinstance(self[name], list) and self[name] == [''])):
+			if p.required and (not self[name] or (isinstance(self[name], list) and self[name] == [u''])):
 				ud.debug(ud.ADMIN, ud.INFO, "property %s is required but not set." % name)
 				missing.append(name)
 		if missing:
@@ -660,17 +653,17 @@ class simpleLdap(object):
 		self._write_admin_diary_event('MODIFIED')
 
 	def _create_temporary_ou(self):
-		name = 'temporary_move_container_%s' % time.time()
+		name = u'temporary_move_container_%s' % time.time()
 
 		module = univention.admin.modules.get('container/ou')
-		position = univention.admin.uldap.position('%s' % self.lo.base)
+		position = univention.admin.uldap.position(u'%s' % self.lo.base)
 
 		temporary_object = module.object(None, self.lo, position)
 		temporary_object.open()
 		temporary_object['name'] = name
 		temporary_object.create()
 
-		return 'ou=%s' % ldap.dn.escape_dn_chars(name)
+		return u'ou=%s' % ldap.dn.escape_dn_chars(name)
 
 	def _delete_temporary_ou_if_empty(self, temporary_ou):  # type: (str) -> None
 		"""
@@ -681,7 +674,7 @@ class simpleLdap(object):
 		if not temporary_ou:
 			return
 
-		dn = '%s,%s' % (temporary_ou, self.lo.base)
+		dn = u'%s,%s' % (temporary_ou, self.lo.base)
 
 		module = univention.admin.modules.get('container/ou')
 		temporary_object = univention.admin.modules.lookup(module, None, self.lo, scope='base', base=dn, required=True, unique=True)[0]
@@ -761,7 +754,7 @@ class simpleLdap(object):
 				copyobject.create()
 				to_be_moved = []
 				moved = []
-				pattern = re.compile('%s$' % (re.escape(self.dn),), flags=re.I)
+				pattern = re.compile(u'%s$' % (re.escape(self.dn),), flags=re.I)
 				try:
 					for subolddn, suboldattrs in subelements:
 						# Convert the DNs to lowercase before the replacement. The cases might be mixed up if the python lib is
@@ -778,7 +771,7 @@ class simpleLdap(object):
 						submodule = univention.admin.modules.get(submodule)
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 						if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
-							subold_rdn = '+'.join(explode_rdn(subolddn, 1))
+							subold_rdn = u'+'.join(explode_rdn(subolddn, 1))
 							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
 						to_be_moved.append((subobject, subolddn, subnewdn))
 
@@ -833,12 +826,12 @@ class simpleLdap(object):
 			try:
 				for subolddn, suboldattrs in subelements:
 					ud.debug(ud.ADMIN, ud.INFO, 'move: subelement %s' % subolddn)
-					subnewdn = re.sub('%s$' % (re.escape(olddn),), newdn, subolddn)  # FIXME: looks broken
+					subnewdn = re.sub(u'%s$' % (re.escape(olddn),), newdn, subolddn)  # FIXME: looks broken
 					submodule = univention.admin.modules.identifyOne(subolddn, suboldattrs)
 					submodule = univention.admin.modules.get(submodule)
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 					if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
-						subold_rdn = '+'.join(explode_rdn(subolddn, 1))
+						subold_rdn = u'+'.join(explode_rdn(subolddn, 1))
 						raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
 					subobject.open()
 					subobject._move(subnewdn)
@@ -883,10 +876,10 @@ class simpleLdap(object):
 		:rtype: str
 		:raises univention.admin.uexceptions.primaryGroup: if the object has no primary group.
 		"""
-		gidNum = '99999'
+		gidNum = u'99999'
 		if self['primaryGroup']:
 			try:
-				gidNum = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)[0]
+				gidNum = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)[0].decode('ASCII')
 			except ldap.NO_SUCH_OBJECT:
 				raise univention.admin.uexceptions.primaryGroup(self['primaryGroup'])
 		return gidNum
@@ -900,7 +893,7 @@ class simpleLdap(object):
 		:raises univention.admin.uexceptions.primaryGroup: if the object has no primary group.
 		"""
 		try:
-			sidNum = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)[0]
+			sidNum = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)[0].decode('ASCII')
 		except ldap.NO_SUCH_OBJECT:
 			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 		return sidNum
@@ -924,7 +917,7 @@ class simpleLdap(object):
 		for name, prop in self.descriptions.items():
 			if prop.identifies:
 				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]), 2))
-		return '%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
+		return u'%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
 
 	def _ldap_post_create(self):  # type: () -> None
 		"""Hook which is called after the object creation."""
@@ -974,7 +967,7 @@ class simpleLdap(object):
 		m = univention.admin.modules.get(self.module)
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			if prop.syntax == 'boolean' and not info.get(prop.name):
-				info[prop.name] = '0'
+				info[prop.name] = u'0'
 		return info
 
 	def exists(self):
@@ -1090,7 +1083,7 @@ class simpleLdap(object):
 		self.options = []
 		options = univention.admin.modules.options(self.module)
 		if 'objectClass' in self.oldattr:
-			ocs = set(self.oldattr['objectClass'])
+			ocs = set(map(lambda x: x.decode('UTF-8'), self.oldattr['objectClass']))
 			for opt, option in options.iteritems():
 				if not option.disabled and option.matches(ocs) and self.__app_option_enabled(opt, option):
 					self.options.append(opt)
@@ -1127,7 +1120,7 @@ class simpleLdap(object):
 			if not ldap.dn.is_dn(policy):
 				raise univention.admin.uexceptions.valueInvalidSyntax(policy)
 			try:
-				if 'univentionPolicy' not in self.lo.getAttr(policy, 'objectClass', required=True):
+				if b'univentionPolicy' not in self.lo.getAttr(policy, 'objectClass', required=True):
 					raise univention.admin.uexceptions.valueError('Object is not a policy', policy)
 			except ldap.NO_SUCH_OBJECT:
 				raise univention.admin.uexceptions.noObject('Policy does not exists', policy)
@@ -1156,8 +1149,8 @@ class simpleLdap(object):
 		:rtype: str
 		"""
 		if self.dn:
-			return '+'.join(explode_rdn(self.dn, 1))
-		return 'none'
+			return u'+'.join(explode_rdn(self.dn, 1))
+		return u'none'
 
 	def _post_unmap(self, info, values):
 		"""
@@ -1212,12 +1205,12 @@ class simpleLdap(object):
 		ml = self._post_map(ml, diff_ml)
 
 		if self.policiesChanged():
-			policy_ocs_set = 'univentionPolicyReference' in self.oldattr.get('objectClass', [])
+			policy_ocs_set = b'univentionPolicyReference' in self.oldattr.get('objectClass', [])
 			if self.policies and not policy_ocs_set:
-				ml.append(('objectClass', '', ['univentionPolicyReference']))
+				ml.append(('objectClass', b'', [b'univentionPolicyReference']))
 			elif not self.policies and policy_ocs_set:
-				ml.append(('objectClass', 'univentionPolicyReference', ''))
-			ml.append(('univentionPolicyReference', self.oldpolicies, self.policies))
+				ml.append(('objectClass', b'univentionPolicyReference', b''))
+			ml.append(('univentionPolicyReference', [x.encode('UTF-8') for x in self.oldpolicies], [x.encode('UTF-8') for x in self.policies]))
 
 		return ml
 
@@ -1240,7 +1233,7 @@ class simpleLdap(object):
 		ocs = set()
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
-			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
+			if prop.syntax == 'boolean' and self.info.get(prop.name) == u'0':
 				continue
 			if self.has_property(prop.name) and self.info.get(prop.name):
 				ocs.add(prop.objClass)
@@ -1259,15 +1252,15 @@ class simpleLdap(object):
 		for i in al:
 			key, val = i[0], i[-1]  # might be a triple
 			if val and key.lower() == 'objectclass':
-				ocs -= set([val] if isinstance(val, basestring) else val)
+				ocs -= set([val] if isinstance(val, basestring) else val)  # TODO: basestring → bytes
 		if ocs:
-			al.append(('objectClass', list(ocs)))
+			al.append(('objectClass', [x.encode('UTF-8') for x in ocs]))
 
 		al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
 
 		# ensure univentionObject is set
-		al.append(('objectClass', ['univentionObject', ]))
-		al.append(('univentionObjectType', [self.module, ]))
+		al.append(('objectClass', [b'univentionObject', ]))
+		al.append(('univentionObjectType', [self.module.encode('utf-8'), ]))
 
 		ud.debug(ud.ADMIN, ud.INFO, "create object with dn: %s" % (self.dn,))
 		ud.debug(ud.ADMIN, 99, 'Create dn=%r;\naddlist=%r;' % (self.dn, al))
@@ -1361,8 +1354,8 @@ class simpleLdap(object):
 			return set(x.lower() for x in vals)
 
 		ocs = lowerset(_MergedAttributes(self, ml).get_attribute('objectClass'))
-		unneeded_ocs = set()  # type: Set[str]
-		required_ocs = set()  # type: Set[str]
+		unneeded_ocs = set()  # type: Set[unicode]
+		required_ocs = set()  # type: Set[unicode]
 
 		# evaluate (extended) options
 		module_options = univention.admin.modules.options(self.module)
@@ -1394,14 +1387,14 @@ class simpleLdap(object):
 			# if the value is unset we need to remove the attribute completely
 			if self.oldattr.get(prop.ldapMapping):
 				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
-				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
+				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), b''))
 
 		unneeded_ocs |= reduce(set.union, (set(module_options[option].objectClasses) for option in removed_options), set())
 		required_ocs |= reduce(set.union, (set(module_options[option].objectClasses) for option in added_options), set())
 
 		ocs -= lowerset(unneeded_ocs)
 		ocs |= lowerset(required_ocs)
-		if lowerset(self.oldattr.get('objectClass', [])) == ocs:
+		if lowerset([x.decode('utf-8') for x in self.oldattr.get('objectClass', [])]) == ocs:
 			return ml
 
 		ud.debug(ud.ADMIN, ud.INFO, 'OCS=%r; required=%r; removed: %r' % (ocs, required_ocs, unneeded_ocs))
@@ -1425,33 +1418,33 @@ class simpleLdap(object):
 		allowed = set(name.lower() for attr in may.values() for name in attr.names) | set(name.lower() for attr in must.values() for name in attr.names)
 
 		ml = [x for x in ml if x[0].lower() != 'objectclass']
-		ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+		ml.append(('objectClass', self.oldattr.get('objectClass', []), [x.encode('utf-8') for x in ocs]))
 		newattr = ldap.cidict.cidict(_MergedAttributes(self, ml).get_attributes())
 
 		# make sure only attributes known by the object classes are set
 		for attr, val in newattr.items():
 			if not val:
 				continue
-			if re.sub(';binary$', '', attr.lower()) not in allowed:
+			if re.sub(u';binary$', u'', attr.lower()) not in allowed:
 				ud.debug(ud.ADMIN, ud.WARN, 'The attribute %r is not allowed by any object class.' % (attr,))
 				# ml.append((attr, val, [])) # TODO: Remove the now invalid attribute instead
 				return ml
 
 		# require all MUST attributes to be set
 		for attr in must.values():
-			if not any(newattr.get(name) or newattr.get('%s;binary' % (name,)) for name in attr.names):
+			if not any(newattr.get(name) or newattr.get(u'%s;binary' % (name,)) for name in attr.names):
 				ud.debug(ud.ADMIN, ud.WARN, 'The attribute %r is required by the current object classes.' % (attr.names,))
 				return ml
 
 		ml = [x for x in ml if x[0].lower() != 'objectclass']
-		ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+		ml.append(('objectClass', self.oldattr.get('objectClass', []), [x.encode('utf-8') for x in ocs]))
 
 		return ml
 
 	def _move_in_subordinates(self, olddn):
-		result = self.lo.searchDn(base=self.lo.base, filter=filter_format('(&(objectclass=person)(secretary=%s))', [olddn]))
+		result = self.lo.searchDn(base=self.lo.base, filter=filter_format(u'(&(objectclass=person)(secretary=%s))', [olddn]))
 		for subordinate in result:
-			self.lo.modify(subordinate, [('secretary', olddn, self.dn)])
+			self.lo.modify(subordinate, [('secretary', olddn.encode('utf-8'), self.dn.encode('utf-8'))])
 
 	def _move_in_groups(self, olddn):
 		for group in self.oldinfo.get('groups', []) + [self.oldinfo.get('machineAccountGroup', '')]:
@@ -1459,12 +1452,13 @@ class simpleLdap(object):
 				members = self.lo.getAttr(group, 'uniqueMember')
 				newmembers = []
 				for member in members:
+					member = member.decode('utf-8')
 					if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), ):
 						newmembers.append(member)
 				newmembers.append(self.dn)
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
 
-	def _move(self, newdn, modify_childs=1, ignore_license=0):  # type: (str, int, int) -> str
+	def _move(self, newdn, modify_childs=True, ignore_license=False):  # type: (str, bool, bool) -> str
 		"""Moves this object to the new DN. Should only be called by :func:`univention.admin.handlers.simpleLdap.move`."""
 		self._ldap_pre_move(newdn)
 
@@ -1488,7 +1482,7 @@ class simpleLdap(object):
 	def _write_admin_diary_move(self, position):
 		self._write_admin_diary_event('MOVED', {'position': position})
 
-	def _remove(self, remove_childs=0):  # type: (int) -> None
+	def _remove(self, remove_childs=False):  # type: (bool) -> None
 		"""Removes this object. Should only be called by :func:`univention.admin.handlers.simpleLdap.remove`."""
 		ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() called for %r with remove_childs=%r' % (self.dn, remove_childs))
 
@@ -1500,7 +1494,7 @@ class simpleLdap(object):
 
 		if remove_childs:
 			subelements = []  # type: List[Tuple[str, Dict[str, List[str]]]]
-			if 'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
+			if b'FALSE' not in self.lo.getAttr(self.dn, 'hasSubordinates'):
 				ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() children of base dn %s' % (self.dn,))
 				subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 
@@ -1532,8 +1526,6 @@ class simpleLdap(object):
 
 	def loadPolicyObject(self, policy_type, reset=0):  # type: (str, int) -> "simplePolicy"
 		pathlist = []
-		errors = 0
-		pathResult = None
 
 		ud.debug(ud.ADMIN, ud.INFO, "loadPolicyObject: policy_type: %s" % policy_type)
 		policy_module = univention.admin.modules.get(policy_type)
@@ -1544,33 +1536,29 @@ class simpleLdap(object):
 		univention.admin.ucr_overwrite_module_layout(policy_module)
 
 		# retrieve path info from 'cn=directory,cn=univention,<current domain>' object
-		try:
-			pathResult = self.lo.get('cn=directory,cn=univention,' + self.position.getDomain())
-			if not pathResult:
-				pathResult = self.lo.get('cn=default containers,cn=univention,' + self.position.getDomain())
-		except:
-			errors = 1
-		infoattr = "univentionPolicyObject"
-		if pathResult.get(infoattr):
-			for i in pathResult[infoattr]:
-				try:
-					self.lo.searchDn(base=i, scope='base')
-					pathlist.append(i)
-					ud.debug(ud.ADMIN, ud.INFO, "loadPolicyObject: added path %s" % i)
-				except Exception:
-					ud.debug(ud.ADMIN, ud.INFO, "loadPolicyObject: invalid path setting: %s does not exist in LDAP" % i)
-					continue  # looking for next policy container
-				break  # at least one item has been found; so we can stop here since only pathlist[0] is used
+		pathResult = self.lo.get('cn=directory,cn=univention,' + self.position.getDomain())
+		if not pathResult:
+			pathResult = self.lo.get('cn=default containers,cn=univention,' + self.position.getDomain())
+		for i in pathResult.get('univentionPolicyObject', []):
+			i = i.decode('utf-8')
+			try:
+				self.lo.searchDn(base=i, scope='base')
+				pathlist.append(i)
+				ud.debug(ud.ADMIN, ud.INFO, "loadPolicyObject: added path %s" % i)
+			except Exception:
+				ud.debug(ud.ADMIN, ud.INFO, "loadPolicyObject: invalid path setting: %s does not exist in LDAP" % i)
+				continue  # looking for next policy container
+			break  # at least one item has been found; so we can stop here since only pathlist[0] is used
 
-		if not pathlist or errors:
+		if not pathlist:
 			policy_position = self.position
 		else:
 			policy_position = univention.admin.uldap.position(self.position.getBase())
 			policy_path = pathlist[0]
 			try:
 				prefix = univention.admin.modules.policyPositionDnPrefix(policy_module)
-				self.lo.searchDn(base="%s,%s" % (prefix, policy_path), scope='base')
-				policy_position.setDn("%s,%s" % (prefix, policy_path))
+				self.lo.searchDn(base=u"%s,%s" % (prefix, policy_path), scope='base')
+				policy_position.setDn(u"%s,%s" % (prefix, policy_path))
 			except:
 				policy_position.setDn(policy_path)
 
@@ -1675,7 +1663,7 @@ class simpleLdap(object):
 	def _is_synced_object(self):  # type: () -> bool
 		"""Checks whether this object was synchronized from Active Directory to UCS."""
 		flags = self.oldattr.get('univentionObjectFlag', [])
-		return 'synced' in flags and 'docker' not in flags
+		return b'synced' in flags and b'docker' not in flags
 
 	@classmethod
 	def get_default_containers(cls, lo):
@@ -1724,7 +1712,7 @@ class simpleLdap(object):
 		filter_s = cls.lookup_filter(filter_s, lo)
 		if superordinate:
 			filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
-		filter_str = unicode(filter_s or '')
+		filter_str = unicode(filter_s or u'')
 		attr = cls._ldap_attributes()
 		result = []
 		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
@@ -1771,12 +1759,12 @@ class simpleLdap(object):
 		"""
 		filter_conditions = []
 		if cls.use_performant_ldap_search_filter:
-			filter_conditions.append(univention.admin.filter.expression('univentionObjectType', cls.module, escape=True))
+			filter_conditions.append(univention.admin.filter.expression(u'univentionObjectType', cls.module, escape=True))
 		else:
-			object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
-			filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes)
+			object_classes = univention.admin.modules.options(cls.module).get(u'default', univention.admin.option()).objectClasses - {u'top', u'univentionPolicy', u'univentionObjectMetadata', u'person'}
+			filter_conditions.extend(univention.admin.filter.expression(u'objectClass', ocs) for ocs in object_classes)
 
-		return univention.admin.filter.conjunction('&', filter_conditions)
+		return univention.admin.filter.conjunction(u'&', filter_conditions)
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
@@ -1793,9 +1781,9 @@ class simpleLdap(object):
 				filter.value = [filter.value]
 		elif not property_ and key == 'options' and filter.value in getattr(mod, 'options', {}):
 			ocs = mod.options[filter.value]
-			filter.variable = 'objectClass'
+			filter.variable = u'objectClass'
 			if len(ocs.objectClasses) > 1:
-				con = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', oc, escape=True) for oc in ocs.objectClasses])
+				con = univention.admin.filter.conjunction(u'&', [univention.admin.filter.expression(u'objectClass', oc, escape=True) for oc in ocs.objectClasses])
 				filter.transform_to_conjunction(con)
 			elif ocs.objectClasses:
 				filter.value = list(ocs.objectClasses)[0]
@@ -1823,7 +1811,7 @@ class simpleLdap(object):
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
-		ocs = set(attr.get('objectClass', []))
+		ocs = set([x.decode('utf-8') for x in attr.get('objectClass', [])])
 		required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
 		return (ocs & required_object_classes) == required_object_classes
 
