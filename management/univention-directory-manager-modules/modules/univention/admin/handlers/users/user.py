@@ -1202,7 +1202,6 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailForwardAddress', 'mailForwardAddress')
-mapping.register('mailForwardCopyToSelf', 'mailForwardCopyToSelf', None, univention.admin.mapping.ListToString)
 
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
@@ -1254,26 +1253,6 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	use_performant_ldap_search_filter = True
-
-	@property
-	def __forward_copy_to_self(self):
-		return self.get('mailForwardCopyToSelf') == '1'
-
-	def __remove_old_mpa(self, forward_list):
-		if forward_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'] != self['mailPrimaryAddress']:
-			try:
-				forward_list.remove(self.oldattr['mailPrimaryAddress'])
-			except ValueError:
-				pass
-
-	def __set_mpa_for_forward_copy_to_self(self, forward_list):
-		if self.__forward_copy_to_self and self['mailForwardAddress']:
-			forward_list.append(self['mailPrimaryAddress'])
-		else:
-			try:
-				forward_list.remove(self['mailPrimaryAddress'])
-			except ValueError:
-				pass
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		self.groupsLoaded = True
@@ -1376,9 +1355,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def _unmap_mail_forward(self):
 		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
 		# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
-		# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
+		# is removed from info for correct display in CLI/UMC and for proper detection of changes.
 		if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
-			self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
 			self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
 			self['mailForwardCopyToSelf'] = '1'
 		else:
@@ -1661,8 +1639,8 @@ class object(univention.admin.handlers.simpleLdap):
 		al = super(object, self)._ldap_addlist()
 
 		# Kerberos
-		al.append(('krb5MaxLife', '86400'))
-		al.append(('krb5MaxRenew', '604800'))
+		al.append((u'krb5MaxLife', b'86400'))
+		al.append((u'krb5MaxRenew', b'604800'))
 
 		return al
 
@@ -1686,7 +1664,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('sambaRID'):
 			old_sid = self.oldattr.get('sambaSID', [''])[0]
 			if old_sid:
-				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid)
+				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid.decode('UTF-8'))
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('mailPrimaryAddress'):
@@ -1696,7 +1674,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('username'):
 			username = self['username']
 			try:
-				newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
+				newdn = u'uid=%s,%s' % (ldap.dn.escape_dn_chars(username), self.lo.parentDn(self.dn))
 				self._move(newdn)
 			finally:
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
@@ -1740,15 +1718,16 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('sambaPrivileges'):
 			# add univentionSambaPrivileges objectclass
 			if self['sambaPrivileges'] and 'univentionSambaPrivileges' not in self.oldattr.get('objectClass', []):
-				ml.append(('objectClass', '', 'univentionSambaPrivileges'))
+				ml.append(('objectClass', b'', b'univentionSambaPrivileges'))
 		return ml
 
 	def _modlist_cn(self, ml):
 		cnAtts = univention.admin.configRegistry.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
 		prop = univention.admin.property()
 		old_cn = self.oldattr.get('cn', [''])[0]
-		cn = prop._replace(cnAtts, self)
+		cn = prop._replace(cnAtts, self)  # TODO: prop._replac() must return unicode
 		cn = cn.strip() or cn
+		cn = cn.encode('UTF-8')
 		if cn != old_cn:
 			ml.append(('cn', old_cn, cn))
 		return ml
@@ -1759,9 +1738,10 @@ class object(univention.admin.handlers.simpleLdap):
 			old_gecos = self.oldattr.get('gecos', [''])[0]
 			gecos = prop._replace(prop.base_default, self)
 			if old_gecos:
-				current_gecos = prop._replace(prop.base_default, self.oldinfo)
+				current_gecos = prop._replace(prop.base_default, self.oldinfo)  # TODO: prop._replac() must return unicode
+				current_gecos = current_gecos.encode('utf-8')
 				if current_gecos == old_gecos:
-					ml.append(('gecos', old_gecos, gecos))
+					ml.append(('gecos', old_gecos, gecos.encode('utf-8')))
 		return ml
 
 	def _modlist_display_name(self, ml):
@@ -1773,12 +1753,12 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.oldinfo.get('displayName', '') == old_default_displayName:
 				# yes ==> update displayName automatically
 				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
-				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
+				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName.encode('utf-8')))
 		return ml
 
 	def _modlist_krb_principal(self, ml):
 		if not self.exists() or self.hasChanged('username'):
-			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal()]))
+			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal().encode('utf-8')]))  # TODO: decide to let krb5_principal return bytestring?!
 		return ml
 
 	# If you change anything here, please also check users/ldap.py
@@ -1788,14 +1768,14 @@ class object(univention.admin.handlers.simpleLdap):
 		if self['overridePWHistory'] == '1':
 			return ml
 
-		pwhistory = self.oldattr.get('pwhistory', [''])[0]
+		pwhistory = self.oldattr.get('pwhistory', [b''])[0].decode('ASCII')
 
 		if univention.admin.password.password_already_used(self['password'], pwhistory):
 			raise univention.admin.uexceptions.pwalreadyused()
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
 			newPWHistory = univention.admin.password.get_password_history(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
-			ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
+			ml.append(('pwhistory', self.oldattr.get('pwhistory', [b''])[0], newPWHistory.encode('ASCII')))
 
 		return ml
 
@@ -1822,14 +1802,15 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.exists() and not self.hasChanged('password'):
 			return ml
 
-		password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+		password_nt, password_lm = univention.admin.password.ntlm(self['password'])  # TODO: decide to let ntlm() return bytestring?!
+		password_nt, password_lm = password_nt.encode('ASCII'), password_lm.encode('ASCII')
 		ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 		ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
 			smbpwhistory = self.oldattr.get('sambaPasswordHistory', [''])[0]
 			newsmbPWHistory = self.__getsmbPWHistory(password_nt, smbpwhistory, pwhistoryPolicy.pwhistoryLength)
-			ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory))
+			ml.append(('sambaPasswordHistory', self.oldattr.get('sambaPasswordHistory', [''])[0], newsmbPWHistory.encode('ASCII')))
 		return ml
 
 	def _modlist_kerberos_password(self, ml):
@@ -1837,7 +1818,7 @@ class object(univention.admin.handlers.simpleLdap):
 			return ml
 
 		krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
-		krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
+		krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1).encode('ASCII')
 		ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
 		ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 		return ml
@@ -1848,32 +1829,35 @@ class object(univention.admin.handlers.simpleLdap):
 
 		now = (long(time.time()) / 3600 / 24)
 		shadowLastChange = str(int(now))
-		shadowMax = str(pwhistoryPolicy.expiryInterval or '')
+		shadowMax = str(pwhistoryPolicy.expiryInterval or u'')  # FIXME: is pwhistoryPolicy.expiryInterval a unicode or bytestring?
 		if pwd_change_next_login:
 			# force user to change password on next login
 			shadowMax = shadowMax or '1'
 			shadowLastChange = str(int(now) - int(shadowMax) - 1)
 		elif unset_pwd_change_next_login:
-			shadowMax = ''
+			shadowMax = u''
 
 		if not pwhistoryPolicy.expiryInterval and not self.hasChanged('pwdChangeNextLogin'):
 			# An empty field means that password aging features are disabled.
-			shadowLastChange = ''
+			shadowLastChange = u''
 
-		old_shadowMax = self.oldattr.get('shadowMax', [''])[0]
+		shadowMax = shadowMax.encode('ASCII')
+		old_shadowMax = self.oldattr.get('shadowMax', [b''])[0]
 		if old_shadowMax != shadowMax:
 			ml.append(('shadowMax', old_shadowMax, shadowMax))
 
+		shadowLastChange = shadowLastChange.encode('ASCII')
 		if shadowLastChange:  # FIXME: this check causes, that the value is not unset. Is this correct?
 			ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [''])[0], shadowLastChange))
 
 		# if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
 		# OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
-		sambaPwdLastSetValue = '0' if pwd_change_next_login else str(long(time.time()))
+		sambaPwdLastSetValue = u'0' if pwd_change_next_login else str(long(time.time()))
 		ud.debug(ud.ADMIN, ud.INFO, 'sambaPwdLastSetValue: %s' % sambaPwdLastSetValue)
+		sambaPwdLastSetValue = sambaPwdLastSetValue.encode('UTF-8')
 		ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
-		krb5PasswordEnd = ''
+		krb5PasswordEnd = u''
 		if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
 			expiry = long(time.time())
 			if not pwd_change_next_login:
@@ -1881,7 +1865,8 @@ class object(univention.admin.handlers.simpleLdap):
 			krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 
 		ud.debug(ud.ADMIN, ud.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
-		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [''])[0]
+		old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [b''])[0]
+		krb5PasswordEnd = krb5PasswordEnd.encode('ASCII')
 		if old_krb5PasswordEnd != krb5PasswordEnd:
 			ml.append(('krb5PasswordEnd', old_krb5PasswordEnd, krb5PasswordEnd))
 
@@ -1914,7 +1899,7 @@ class object(univention.admin.handlers.simpleLdap):
 		"""
 		if not self.exists() or self.hasChanged(['disabled', 'locked']):
 			try:
-				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', ['0'])[0])
+				old_kdcflags = int(self.oldattr.get('krb5KDCFlags', [b'0'])[0])
 			except ValueError:
 				old_kdcflags = 0
 			krb_kdcflags = old_kdcflags
@@ -1930,13 +1915,13 @@ class object(univention.admin.handlers.simpleLdap):
 #			elif self['locked'] == '1':  # lock kerberos password
 #				krb_kdcflags |= (1 << 17)
 
-			ml.append(('krb5KDCFlags', str(old_kdcflags), str(krb_kdcflags)))
+			ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), str(krb_kdcflags).encode('ASCII')))
 		return ml
 
 	# If you change anything here, please also check users/ldap.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
-			old_password = self.oldattr.get('userPassword', [''])[0]
+			old_password = self.oldattr.get('userPassword', [b''])[0]
 			password = self['password']
 
 			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
@@ -1947,64 +1932,67 @@ class object(univention.admin.handlers.simpleLdap):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
-			password_crypt = univention.admin.password.lock_password(password)
+			password_crypt = univention.admin.password.lock_password(password)  # TODO: decode to let lock_password() and unlock_passowrd() return bytestring?!
 			if self['disabled'] != '1':
 				password_crypt = univention.admin.password.unlock_password(password_crypt)
+			password_crypt = password_crypt.encode('ASCII')
 			ml.append(('userPassword', old_password, password_crypt))
 		return ml
 
 	def _modlist_pwd_account_locked_time(self, ml):
 		# remove pwdAccountLockedTime during unlocking
 		if self.hasChanged('locked') and self['locked'] == '0':
-			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
+			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [b''])[0]
 			if pwdAccountLockedTime:
-				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, b''))
 		return ml
 
 	def _modlist_samba_bad_pw_count(self, ml):
 		if self.hasChanged('locked') and self['locked'] == '0':
 			# reset bad pw count
-			ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [''])[0], "0"))
-			ml.append(('sambaBadPasswordTime', self.oldattr.get('sambaBadPasswordTime', [''])[0], '0'))
+			ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [b''])[0], b"0"))
+			ml.append(('sambaBadPasswordTime', self.oldattr.get('sambaBadPasswordTime', [b''])[0], b'0'))
 		return ml
 
 	def _modlist_samba_kickoff_time(self, ml):
 		if self.hasChanged('userexpiry'):
-			sambaKickoffTime = ''
+			sambaKickoffTime = b''
 			if self['userexpiry']:
-				sambaKickoffTime = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
+				sambaKickoffTime = b"%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")))
 				ud.debug(ud.ADMIN, ud.INFO, 'sambaKickoffTime: %s' % sambaKickoffTime)
-			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', '')
+			old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', [b''])[0]
 			if old_sambaKickoffTime != sambaKickoffTime:
-				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [''])[0], sambaKickoffTime))
+				ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [b''])[0], sambaKickoffTime))
 		return ml
 
 	def _modlist_krb5_valid_end(self, ml):
 		if self.hasChanged('userexpiry'):
-			krb5ValidEnd = ''
+			krb5ValidEnd = u''
 			if self['userexpiry']:
-				krb5ValidEnd = "%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
+				krb5ValidEnd = u"%s%s%s000000Z" % (self['userexpiry'][0:4], self['userexpiry'][5:7], self['userexpiry'][8:10])
 				ud.debug(ud.ADMIN, ud.INFO, 'krb5ValidEnd: %s' % krb5ValidEnd)
-			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', '')
+			krb5ValidEnd = krb5ValidEnd.encode('ASCII')
+			old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', [b''])[0]
 			if old_krb5ValidEnd != krb5ValidEnd:
 				if not self['userexpiry']:
-					ml.append(('krb5ValidEnd', old_krb5ValidEnd, '0'))
+					ml.append(('krb5ValidEnd', old_krb5ValidEnd, b'0'))
 				else:
-					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [''])[0], krb5ValidEnd))
+					ml.append(('krb5ValidEnd', self.oldattr.get('krb5ValidEnd', [b''])[0], krb5ValidEnd))
 		return ml
 
 	def _modlist_shadow_expire(self, ml):
 		if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
 			if self['disabled'] == '1' and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
-				shadowExpire = '1'
+				shadowExpire = u'1'
 			elif self['userexpiry']:
-				shadowExpire = "%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
+				shadowExpire = u"%d" % long(time.mktime(time.strptime(self['userexpiry'], "%Y-%m-%d")) / 3600 / 24 + 1)
 			elif self['disabled'] == '1':
-				shadowExpire = '1'
+				shadowExpire = u'1'
 			else:
-				shadowExpire = ''
+				shadowExpire = u''
 
-			old_shadowExpire = self.oldattr.get('shadowExpire', '')
+			old_shadowExpire = self.oldattr.get('shadowExpire', [b''])[0]
+			shadowExpire = shadowExpire.encode('ASCII')
 			if old_shadowExpire != shadowExpire:
 				ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
 		return ml
@@ -2012,39 +2000,36 @@ class object(univention.admin.handlers.simpleLdap):
 	def _modlist_mail_forward(self, ml):
 		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if messages should be forwarded for it.'))
-		if self.__forward_copy_to_self and not self['mailPrimaryAddress']:
+		if self.get('mailForwardCopyToSelf') == '1' and not self['mailPrimaryAddress']:
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
 
-		# remove virtual property mailForwardCopyToSelf from modlist
-		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != 'mailForwardCopyToSelf']
+		try:
+			new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]
+		except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
+			new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 
-		# add mailPrimaryAddress to mailForwardAddress if "mailForwardCopyToSelf" is True
-		for num_, (key_, old_, new_) in enumerate(ml[:]):
-			if key_ == 'mailForwardAddress':
-				# old in ml may be missing the mPA removed in open()
-				if old_:
-					ml[num_][1][:] = self.oldattr.get('mailForwardAddress')
-				if new_:
-					self.__remove_old_mpa(new_)
-					self.__set_mpa_for_forward_copy_to_self(new_)
-				break
-		else:
-			mod_ = (
-				'mailForwardAddress',
-				self.oldattr.get('mailForwardAddress', []),
-				self['mailForwardAddress'][:]
-			)
-			if self['mailForwardAddress']:
-				self.__remove_old_mpa(mod_[2])
-				self.__set_mpa_for_forward_copy_to_self(mod_[2])
-			if mod_[1] != mod_[2]:
-				ml.append(mod_)
+		if self.hasChanged('mailPrimaryAddress') and self.oldattr.get('mailPrimaryAddress'):
+			try:
+				new.remove(self.oldattr['mailPrimaryAddress'][0])
+			except ValueError:
+				pass
+
+		if self['mailPrimaryAddress']:
+			mail_primary_address = self.mapping.mapValue('mailPrimaryAddress', self['mailPrimaryAddress'])
+			if self.get('mailForwardCopyToSelf') == '1' and self['mailForwardAddress']:
+				new.append(mail_primary_address)
+			elif mail_primary_address in new:
+				new.remove(mail_primary_address)
+
+		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != u'mailForwardAddress']
+		if self.oldattr.get('mailForwardAddress', []) != new:
+			ml.append(('mailForwardAddress', self.oldattr.get('mailForwardAddress'), new))
 		return ml
 
 	def _modlist_univention_person(self, ml):
 		# make sure that univentionPerson is set as objectClass when needed
 		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')) and 'univentionPerson' not in self.oldattr.get('objectClass', []):
-			ml.append(('objectClass', '', 'univentionPerson'))  # TODO: check if exists already
+			ml.append(('objectClass', b'', b'univentionPerson'))  # TODO: check if exists already
 		return ml
 
 	def _modlist_home_share(self, ml):
@@ -2054,12 +2039,12 @@ class object(univention.admin.handlers.simpleLdap):
 				try:
 					share = share_mod.object(None, self.lo, self.position, self['homeShare'])
 					share.open()
-				except:
+				except Exception:  # FIXME: specify correct exception
 					raise univention.admin.uexceptions.noObject(_('DN given as share is not valid.'))
 
 				if share['host'] and share['path']:
 					if 'automount' not in self.oldattr.get('objectClass', []):
-						ml.append(('objectClass', '', 'automount'))
+						ml.append(('objectClass', b'', b'automount'))
 
 					am_host = share['host']
 					if not self['homeSharePath'] or not isinstance(self['homeSharePath'], six.string_types):
@@ -2069,39 +2054,40 @@ class object(univention.admin.handlers.simpleLdap):
 						if not am_path.startswith(share['path']):
 							raise univention.admin.uexceptions.valueError(_('%s: Invalid path') % _('Home share path'), property='homeShare')
 
-					am_old = self.oldattr.get('automountInformation', [''])[0]
-					am_new = '-rw %s:%s' % (am_host, am_path)
+					am_old = self.oldattr.get('automountInformation', [b''])[0]
+					am_new = b'-rw %s:%s' % (am_host.encode('UTF-8'), am_path.encode('UTF-8'))  # TODO: check if automountInformation is really UTF-8
 					ml.append(('automountInformation', am_old, am_new))
 				else:
 					raise univention.admin.uexceptions.noObject(_('Given DN is no share.'))
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
 				if 'automount' not in self.oldattr.get('objectClass', []):
-					ml.append(('objectClass', '', 'automount'))
-				am_old = self.oldattr.get('automountInformation', [''])[0]
+					ml.append(('objectClass', b'', b'automount'))
+				am_old = self.oldattr.get('automountInformation', [b''])[0]
 				if am_old:
-					ml.append(('automountInformation', am_old, ''))
+					ml.append(('automountInformation', am_old, b''))
 		return ml
 
 	def _modlist_samba_sid(self, ml):
 		if not self.exists() or self.hasChanged('sambaRID'):
 			sid = self.__generate_user_sid(self['uidNumber'])
-			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [sid]))
+			sid = sid.encode('ASCII')
+			ml.append(('sambaSID', self.oldattr.get('sambaSID', [b'']), [sid]))
 		return ml
 
 	def _modlist_primary_group(self, ml):
 		if not self.exists() or self.hasChanged('primaryGroup'):
 			# Posix
-			ml.append(('gidNumber', self.oldattr.get('gidNumber', ['']), [self.get_gid_for_primary_group()]))
+			ml.append(('gidNumber', self.oldattr.get('gidNumber', [b'']), [self.get_gid_for_primary_group().encode('ASCII')]))
 			# Samba
-			ml.append(('sambaPrimaryGroupSID', self.oldattr.get('sambaPrimaryGroupSID', ['']), [self.get_sid_for_primary_group()]))
+			ml.append(('sambaPrimaryGroupSID', self.oldattr.get('sambaPrimaryGroupSID', [b'']), [self.get_sid_for_primary_group().encode('ASCII')]))
 		return ml
 
 	def _modlist_sambaAcctFlags(self, ml):
 		if self.exists() and not self.hasChanged(['disabled', 'locked']):
 			return ml
 
-		old_flags = self.oldattr.get("sambaAcctFlags", [''])[0]
+		old_flags = self.oldattr.get("sambaAcctFlags", [b''])[0]
 		acctFlags = univention.admin.samba.acctFlags(old_flags)
 		if self['disabled'] == '1':
 			# disable samba account
@@ -2116,8 +2102,9 @@ class object(univention.admin.handlers.simpleLdap):
 		else:
 			acctFlags.unset('L')
 
-		if str(old_flags) != str(acctFlags.decode()):
-			ml.append(('sambaAcctFlags', old_flags, acctFlags.decode()))
+		new_flags = acctFlags.decode().encode('ASCII')
+		if old_flags != new_flags:
+			ml.append(('sambaAcctFlags', old_flags, new_flags))
 		return ml
 
 	def _ldap_post_remove(self):
