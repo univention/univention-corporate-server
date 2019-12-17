@@ -25,6 +25,12 @@ SLAPDCONF=/etc/ldap/slapd.conf
 
 getpid ()
 {
+	# Bug #50616: without further args, pgrep would find any slapd process,
+	# including those in docker containers. We care about only that one
+	# process that is a direct child of PID 1. We also added that
+	# restriction to start-stop-daemon. Should this script get an overhaul,
+	# we need to keep docker processes in mind. Granted, pidfile should
+	# work better.
 	pgrep -f "^$DAEMON" -P 1
 }
 
