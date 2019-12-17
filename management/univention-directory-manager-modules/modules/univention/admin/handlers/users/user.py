@@ -1477,31 +1477,31 @@ class object(univention.admin.handlers.simpleLdap):
 		return super(object, self).hasChanged(key)
 
 #		if key == 'disabled':
-#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
+#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0]).decode()
 #			krb5Flags = self.oldattr.get('krb5KDCFlags', [])
 #			shadowExpire = self.oldattr.get('shadowExpire', [])
 #
 #			if not acctFlags and not krb5Flags and not shadowExpire:
 #				return False
 #			if self['disabled'] == 'all':
-#				return 'D' not in acctFlags or '126' in krb5Flags or '1' not in shadowExpire
+#				return 'D' not in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
 #			elif self['disabled'] == 'windows':
-#				return 'D' not in acctFlags or '254' in krb5Flags or '1' in shadowExpire
+#				return 'D' not in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
 #			elif self['disabled'] == 'kerberos':
-#				return 'D' in acctFlags or '126' in krb5Flags or '1' in shadowExpire
+#				return 'D' in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
 #			elif self['disabled'] == 'posix':
-#				return 'D' in acctFlags or '254' in krb5Flags or '1' not in shadowExpire
+#				return 'D' in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
 #			elif self['disabled'] == 'windows_kerberos':
-#				return 'D' not in acctFlags or '126' in krb5Flags or '1' in shadowExpire
+#				return 'D' not in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
 #			elif self['disabled'] == 'windows_posix':
-#				return 'D' not in acctFlags or '254' in krb5Flags or '1' not in shadowExpire
+#				return 'D' not in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
 #			elif self['disabled'] == 'posix_kerberos':
-#				return 'D' in acctFlags or '126' in krb5Flags or '1' not in shadowExpire
+#				return 'D' in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
 #			else:  # enabled
-#				return 'D' in acctFlags or '254' in krb5Flags or '1' in shadowExpire
+#				return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
 #		elif key == 'locked':
 #			password = self['password']
-#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
+#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0]).decode()
 #			if not password and not acctFlags:
 #				return False
 #			if self['locked'] == 'all':
