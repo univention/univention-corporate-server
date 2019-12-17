@@ -908,10 +908,10 @@ remove_apps_via_umc () {
 	# un-install in reverse order (requiredApps)
 	for app in "$@"; do
 		reverse="$app $reverse"
+		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
 	for app in $reverse; do
 		python -m shared-utils/apps -U "$username" -p "$password" -a $app -r || rv=$?
-		echo "$app" >>/var/cache/appcenter-uninstalled.txt
 	done
 	return $rv
 }
