@@ -1043,7 +1043,7 @@ def unmapShadowExpireToUserexpiry(oldattr):
 
 def unmapKrb5ValidEndToUserexpiry(oldattr):
 	if 'krb5ValidEnd' in oldattr:
-		krb5validend = oldattr['krb5ValidEnd'][0]
+		krb5validend = oldattr['krb5ValidEnd'][0].decode('ASCII')
 		ud.debug(ud.ADMIN, ud.INFO, 'krb5validend is: %s' % krb5validend)
 		return "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
@@ -1098,7 +1098,7 @@ def unmapSambaDisabled(oldattr):
 
 def unmapKerberosDisabled(oldattr):
 	try:
-		kdcflags = int(oldattr.get('krb5KDCFlags', ['0'])[0])
+		kdcflags = int(oldattr.get('krb5KDCFlags', [b'0'])[0])
 	except ValueError:
 		kdcflags = 0
 	return kdcflags & (1 << 7) == (1 << 7)
@@ -1123,8 +1123,8 @@ def inconsistentLockedState(oldattr):
 
 
 def isPosixLocked(oldattr):
-	userPassword = oldattr.get('userPassword', [''])[0]
-	return userPassword and univention.admin.password.is_locked(userPassword)
+	userPassword = oldattr.get('userPassword', [b''])[0]
+	return userPassword and univention.admin.password.is_locked(userPassword.decode('ASCII'))
 
 
 def isSambaLocked(oldattr):
@@ -1139,7 +1139,7 @@ def isSambaLocked(oldattr):
 
 
 def isKerberosLocked(oldattr):
-	flags = oldattr.get('krb5KDCFlags', ['0'])[0]
+	flags = oldattr.get('krb5KDCFlags', [b'0'])[0]
 	try:
 		state = 1 << 17
 		return int(flags) & state == state
@@ -1148,21 +1148,21 @@ def isKerberosLocked(oldattr):
 
 
 def isLDAPLocked(oldattr):
-	return bool(oldattr.get('pwdAccountLockedTime', [''])[0])
+	return bool(oldattr.get('pwdAccountLockedTime', [b''])[0])
 
 
 def unmapSambaRid(oldattr):
-	sid = oldattr.get('sambaSID', [''])[0]
-	pos = sid.rfind('-')
-	return sid[pos + 1:]
+	sid = oldattr.get('sambaSID', [b''])[0]
+	pos = sid.rfind(b'-')
+	return sid[pos + 1:].decode('ASCII')
 
 
 def mapKeyAndValue(old):
-	return ['='.join(entry) for entry in old]
+	return [u'='.join(entry).encode('utf-8') for entry in old]
 
 
 def unmapKeyAndValue(old):
-	return [entry.split('=', 1) for entry in old]
+	return [entry.decode('UTF-8').split(u'=', 1) for entry in old]
 
 
 def mapWindowsFiletime(old):
