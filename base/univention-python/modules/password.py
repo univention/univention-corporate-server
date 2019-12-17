@@ -33,7 +33,11 @@ import univention.uldap
 import univention.config_registry as ucr
 
 
-class Check:
+class CheckFailed(Exception):
+	pass
+
+
+class Check(object):
 
 	def __init__(self, lo, username=None):
 		self.ConfigRegistry = ucr.ConfigRegistry()
@@ -92,7 +96,7 @@ class Check:
 			else:
 				dn = self.lo.searchDn('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))' % username)[0]
 		except IndexError:
-			raise ValueError('User was not found.')
+			raise CheckFailed('User was not found.')
 
 		policy_result = self.lo.getPolicies(dn)
 		if policy_result.get('univentionPolicyPWHistory'):
@@ -107,7 +111,7 @@ class Check:
 	def check(self, password):
 		if self.min_length > 0:
 			if len(password) < self.min_length:
-				raise ValueError('Password is too short')
+				raise CheckFailed('Password is too short')
 		else:
 			cracklib.MIN_LENGTH = 4  # this seems to be the lowest valid value
 
@@ -116,18 +120,21 @@ class Check:
 		if self.enableQualityCheck:
 			for c in self.forbidden_chars:
 				if c in password:
-					raise ValueError('Password contains forbidden characters')
+					raise CheckFailed('Password contains forbidden characters')
 			if self.required_chars:
 				for c in self.required_chars:
 					if c in password:
 						break
 				else:
-					raise ValueError('Password does not contain one of required characters: "%s"' % self.required_chars)
+					raise CheckFailed('Password does not contain one of required characters: "%s"' % self.required_chars)
 
 			cracklib.MIN_LENGTH = self.min_length
 
-			if cracklib.VeryFascistCheck(password) == password:
-				return True
+			try:
+				if cracklib.VeryFascistCheck(password) == password:
+					return True
+			except ValueError as exc:
+				raise CheckFailed(str(exc).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))  # FIXME: remove this by decoding properly
 
 
 # def test_case1():
