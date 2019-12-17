@@ -37,7 +37,11 @@ from samba import check_password_quality as samba_check_password_quality
 from ldap.filter import filter_format
 
 
-class Check:
+class CheckFailed(Exception):
+	pass
+
+
+class Check(object):
 
 	def __init__(self, lo, username=None):
 		self.ConfigRegistry = ucr.ConfigRegistry()
@@ -90,7 +94,7 @@ class Check:
 		# optionally activate Microsoft standard criteria
 		self.mspolicy = self.ConfigRegistry.get('password/quality/mspolicy', None)
 		# normalize True values
-		self.mspolicy = self.ConfigRegistry.is_true(value = self.mspolicy) or self.mspolicy
+		self.mspolicy = self.ConfigRegistry.is_true(value=self.mspolicy) or self.mspolicy
 
 	def _userPolicy(self, username):
 		# username or kerberos principal
@@ -100,7 +104,7 @@ class Check:
 			else:
 				dn = self.lo.searchDn(filter_format('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))', [username]))[0]
 		except IndexError:
-			raise ValueError('User was not found.')
+			raise CheckFailed('User was not found.')
 
 		policy_result = self.lo.getPolicies(dn)
 		if policy_result.get('univentionPolicyPWHistory'):
@@ -114,7 +118,7 @@ class Check:
 	def check(self, password, username=None, displayname=None):
 		if self.min_length > 0:
 			if len(password) < self.min_length:
-				raise ValueError('Password is too short')
+				raise CheckFailed('Password is too short')
 		else:
 			cracklib.MIN_LENGTH = 4  # this seems to be the lowest valid value
 
@@ -130,29 +134,32 @@ class Check:
 			if self.mspolicy in (True, 'sufficient'):
 				# See https://docs.microsoft.com/de-de/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
 				if not samba_check_password_quality(password):
-					raise ValueError('Password does not meet the password complexity requirements.')
+					raise CheckFailed('Password does not meet the password complexity requirements.')
 				if username and len(username) > 3 and username.lower() in password.lower():
-					raise ValueError('Password contains user account name.')
+					raise CheckFailed('Password contains user account name.')
 				if displayname:
 					for namepart in re.split('[-,._# \t]+', displayname):
 						if len(namepart) > 3 and namepart.lower() in password.lower():
-							raise ValueError('Password contains parts of the full user name.')
+							raise CheckFailed('Password contains parts of the full user name.')
 			if self.mspolicy == 'sufficient':
 				return True  # skip all other checks
 			for c in self.forbidden_chars:
 				if c in password:
-					raise ValueError('Password contains forbidden characters')
+					raise CheckFailed('Password contains forbidden characters')
 			if self.required_chars:
 				for c in self.required_chars:
 					if c in password:
 						break
 				else:
-					raise ValueError('Password does not contain one of required characters: "%s"' % self.required_chars)
+					raise CheckFailed('Password does not contain one of required characters: "%s"' % self.required_chars)
 
 			cracklib.MIN_LENGTH = self.min_length
 
-			if cracklib.VeryFascistCheck(password) == password:
-				return True
+			try:
+				if cracklib.VeryFascistCheck(password) == password:
+					return True
+			except ValueError as exc:
+				raise CheckFailed(str(exc).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))  # FIXME: remove this by decoding properly
 
 
 # def test_case1():
