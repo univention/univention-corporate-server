@@ -328,7 +328,7 @@ class access(object):
 		:rtype: str
 		"""
 		dn = self.lo.whoami_s()
-		return re.sub('^dn:', '', dn)
+		return re.sub(u'^dn:', u'', dn)
 
 	def _reconnect(self):
 		# type: () -> None
@@ -341,10 +341,16 @@ class access(object):
 
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
-			self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+			try:
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1, bytes_mode=False)
+			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-			self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
+			try:
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None, bytes_mode=False)
+			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
 		if ca_certfile:
 			self.lo.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_certfile)
