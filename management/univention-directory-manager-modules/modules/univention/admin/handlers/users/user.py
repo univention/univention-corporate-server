@@ -1569,7 +1569,7 @@ class object(univention.admin.handlers.simpleLdap):
 					new_uids.append(UIDs[0])
 					if len(UIDs) > 1:
 						ud.debug(ud.ADMIN, ud.WARN, 'users/user: A groupmember has multiple UIDs (%s %r)' % (memberDNstr, UIDs))
-		self.lo.modify(group, [('memberUid', uids, new_uids)])
+		self.lo.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct
 
 	def __primary_group(self):
 		if not self.hasChanged('primaryGroup'):
@@ -1600,7 +1600,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
-		ud.debug(ud.ADMIN, ud.INFO, 'users/user: dn was set to %s' % self.dn)
+		ud.debug(ud.ADMIN, ud.INFO, 'users/user: dn was set to %s' % (self.dn,))
 
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
