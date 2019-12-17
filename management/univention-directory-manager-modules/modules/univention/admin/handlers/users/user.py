@@ -71,7 +71,7 @@ module = 'users/user'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 template = 'settings/usertemplate'
 
-childs = 0
+childs = False
 short_description = _('User')
 object_name = _('User')
 object_name_plural = _('Users')
@@ -847,14 +847,16 @@ layout = [
 def check_prohibited_username(lo, username):
 	"""check if the username is allowed"""
 	module = univention.admin.modules.get('settings/prohibited_username')
-	for prohibited_object in (module.lookup(None, lo, '') or []):
+	for prohibited_object in (module.lookup(None, lo, u'') or []):
 		if username in prohibited_object['usernames']:
 			raise univention.admin.uexceptions.prohibitedUsername(username)
 
 
 def case_insensitive_in_list(dn, list):
+	assert isinstance(dn, six.text_type)
 	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+		assert isinstance(element, six.text_type)
+		if dn.lower() == element.lower():
 			return True
 	return False
 
@@ -1259,10 +1261,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def __forward_copy_to_self(self):
 		return self.get('mailForwardCopyToSelf') == '1'
 
-	def __remove_old_mpa(self, forward_list):
-		if forward_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'] != self['mailPrimaryAddress']:
+	def __remove_old_mpa(self, forward_list):  # FIXME FIXME FIXME: check the input type to be unicode
+		if forward_list and self.oldattr.get('mailPrimaryAddress') and self.oldattr['mailPrimaryAddress'].decode('UTF-8') != self['mailPrimaryAddress']:
 			try:
-				forward_list.remove(self.oldattr['mailPrimaryAddress'])
+				forward_list.remove(self.oldattr['mailPrimaryAddress'][0].decode('UTf-8'))
 			except ValueError:
 				pass
 
@@ -1275,7 +1277,7 @@ class object(univention.admin.handlers.simpleLdap):
 			except ValueError:
 				pass
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
+	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
 		self.groupsLoaded = True
 		self.password_length = 8
 
