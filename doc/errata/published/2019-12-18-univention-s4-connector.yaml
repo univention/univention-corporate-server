@@ -10,3 +10,5 @@ desc: |
    Software installation policy objects can now be synchronized
    between OpenLDAP and Samba 4.
 bug: [49838]
+erratum: 407
+announced: 2019-12-18
