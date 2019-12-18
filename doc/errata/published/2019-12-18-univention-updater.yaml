@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The wording of the univention-updater help text has been corrected.
 bug: [47834]
+erratum: 409
+announced: 2019-12-18
