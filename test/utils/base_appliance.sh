@@ -96,6 +96,14 @@ app = Apps().find('$app')
 print app.get_ini_file()"
 }
 
+app_appliance_hook ()
+{
+	local app=$1
+	python -c "from univention.appcenter.app_cache import Apps
+app = Apps().find('$app')
+print app.get_cache_file('appliance_hook')"
+}
+
 get_app_attr_raw_line ()
 {
 	local app=$1
@@ -446,6 +454,17 @@ __EOF__
 	fi
 }
 
+install_appliance_hook () {
+	local app="$1"
+	local counter="$2"
+	local hook_file="$(app_appliance_hook $app)"
+	if [ -e "$hook_file" ]; then
+		local appliance_hook_file="/usr/lib/univention-system-setup/appliance-hooks.d/90_${counter}_${app}"
+		cp "$hook_file" "$appliance_hook_file"
+		chmod 755 "$appliance_hook_file"
+	fi
+}
+
 register_app_components ()
 {
 	local main_app="$1"
@@ -488,6 +507,7 @@ prepare_apps ()
 				prepare_package_app "$app" "$counter"
 
 			fi
+			install_appliance_hook "$app" "$counter"
 			counter=$((counter+1))
 			# pre installed packages
 			packages="$(get_app_attr $app AppliancePreInstalledPackages)"
