@@ -267,7 +267,7 @@ def install_python_file(objectclass, target_subdir, target_filename, data):
 		with open(filename, 'w') as f:
 			f.write(data)
 		ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
-		subprocess.call(['/usr/bin/pycompile', filename])
+		subprocess.call(['/usr/bin/pycompile', '-q', filename])
 		return True
 	except Exception as exc:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Writing new data to %s failed: %s.' % (name, filename, exc))
