@@ -76,8 +76,15 @@ class moduleRemovalFailed(Exception):
 
 
 def initialize():
-	ud.debug(ud.LISTENER, ud.WARN, 'Migrating all UDM extensions from python-support to dh-python')
 	listener.setuid(0)
+	try:
+		migrate_to_dh_python()
+	finally:
+		listener.unsetuid()
+
+
+def migrate_to_dh_python():
+	ud.debug(ud.LISTENER, ud.WARN, 'Migrating all UDM extensions from python-support to dh-python')
 	lo, po = udm_uldap.getMachineConnection()
 	for dn, attrs in lo.search('(|(objectClass=univentionUDMModule)(objectClass=univentionUDMSyntax)(objectClass=univentionUDMHook))'):
 		ocs = attrs.get('objectClass', [])
@@ -101,9 +108,9 @@ def initialize():
 				__remove_pymodules_links(objectclass, target_subdir, target_filename)  # remove obsolete symlinks
 				listener.setuid(0)
 				__remove_pyshared_file(target_subdir, target_filename)  # drop obsolete pyshared files
+				ud.debug(ud.LISTENER, ud.INFO, 'Migrated %s/%s to dh-python.' % (target_subdir, target_filename))
 			except Exception:
 				ud.debug(ud.LISTENER, ud.ERROR, 'ignoring fatal error %s' % (traceback.format_exc(),))
-	listener.unsetuid()
 
 
 def handler(dn, new, old):
@@ -260,6 +267,7 @@ def install_python_file(objectclass, target_subdir, target_filename, data):
 		with open(filename, 'w') as f:
 			f.write(data)
 		ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
+		subprocess.call(['/usr/bin/pycompile', filename])
 		return True
 	except Exception as exc:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Writing new data to %s failed: %s.' % (name, filename, exc))
@@ -320,6 +328,11 @@ def remove_python_files(python_basedir, target_subdir, target_filename):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, filename))
 			except OSError as exc:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, filename, exc))
+			if filename.endswith('.py') and os.path.exists(filename + 'c'):
+				try:
+					os.unlink(filename + 'c')
+				except OSError as exc:
+					ud.debug(ud.LISTENER, ud.WARN, '%s: Removal of pycompiled %sc failed: %s.' % (name, filename, exc))
 
 	try:
 		cleanup_python_moduledir(python_basedir, target_subdir, os.path.dirname(target_filename))
