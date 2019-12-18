@@ -1,3 +1,9 @@
+ucs-test (9.0.3-132) unstable; urgency=medium
+
+  * Bug #50505: app test selenium library now works with portal overlays
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 18 Dec 2019 17:15:55 +0100
+
 ucs-test (9.0.3-131) unstable; urgency=medium
 
   * Bug #50631: convert to print function in all test cases

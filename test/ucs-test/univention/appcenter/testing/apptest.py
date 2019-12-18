@@ -60,7 +60,7 @@ def pip_modules(modules):
 @contextmanager
 def xserver():
 	if os.environ.get('DISPLAY'):
-		display = int(os.environ['DISPLAY'].split(':')[1])
+		display = os.environ['DISPLAY'].split(':')[1]
 		yield display
 	else:
 		from xvfbwrapper import Xvfb
@@ -106,6 +106,8 @@ class Session(object):
 	def goto_portal(self):
 		self.get('/univention/portal')
 		time.sleep(2)
+		if self.find_first('span.umcApplianceReadmeCloseButton'):
+			self.click_element('span.umcApplianceReadmeCloseButton')
 		self.click_element('#umc_menu_Button_0')
 		time.sleep(1)
 		self.click_element('#umcMenuLanguage')
@@ -227,6 +229,7 @@ class Session(object):
 			with obj:
 				yield obj
 
+
 try:
 	import pytest
 except ImportError:
@@ -319,7 +322,7 @@ else:
 						'app': app_id,
 						'function': app_function,
 						'force': True,
-						})
+					})
 					progress_id = response.result['id']
 					progress_command = 'appcenter/docker/progress'
 				else:
@@ -328,7 +331,7 @@ else:
 						'application': app_id,
 						'function': app_function,
 						'only_dry_run': False,
-						})
+					})
 					progress_id = response.result['id']
 					progress_command = 'appcenter/progress'
 				finished = False
@@ -378,6 +381,7 @@ else:
 		user_mod = udm.get('users/user')
 		users = {}
 		user_id_cache = {'X': 1}  # very elegant...
+
 		def _users(user_id=None, attrs={}):
 			username = attrs.get('username')
 			if username is None:
