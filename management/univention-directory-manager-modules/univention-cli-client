@@ -35,10 +35,16 @@ import locale
 import socket
 import stat
 import time
-import ast
 import os
 import sys
+import json
+
+import six
+
 from univention.config_registry import ConfigRegistry
+
+if six.PY3:
+	raw_input = input
 
 
 default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
@@ -114,13 +120,13 @@ def get_password():
 
 def receive_answer(sock):
 	"""Receive complete answer from server."""
-	data = ''
+	data = b''
 	while True:
 		buf = sock.recv(1024)
 		if len(buf) == 0:
 			print('E: Daemon died.', file=sys.stderr)
 			sys.exit(1)
-		elif buf[-1] == '\0':
+		elif buf[-1:] == b'\0':
 			buf = buf[0:-1]
 			data += buf
 			break
@@ -144,7 +150,7 @@ def process_output(output, cmdfile):
 			result = 3
 			output = output[:-1]
 		for line in output:
-			if isinstance(line, unicode):
+			if six.PY2 and isinstance(line, unicode):  # noqa: F821
 				line = line.encode(locale.getpreferredencoding(), 'replace')
 			print(line)
 	return result
@@ -185,11 +191,14 @@ def main():
 		password = get_password()
 		sys.argv += ['--pwd', password]
 
-	sock.send(repr(sys.argv) + '\0')
+	data = json.dumps(sys.argv, ensure_ascii=True)
+	if not isinstance(data, bytes):
+		data = data.encode('ASCII')
+	sock.send(data + b'\0')
 	data = receive_answer(sock)
 	sock.close()
 
-	output = ast.literal_eval(data)
+	output = json.loads(data.decode('ASCII'))
 	result = process_output(output, cmdfile)
 	sys.exit(result)
 
