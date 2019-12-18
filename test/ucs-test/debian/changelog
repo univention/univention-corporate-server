@@ -1,3 +1,9 @@
+ucs-test (9.0.3-131) unstable; urgency=medium
+
+  * Bug #50631: convert to print function in all test cases
+
+ -- Florian Best <best@univention.de>  Wed, 18 Dec 2019 16:00:00 +0100
+
 ucs-test (9.0.3-130) unstable; urgency=medium
 
   * Bug #50401: adjust pyshared pathes

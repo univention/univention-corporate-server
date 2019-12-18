@@ -1,8 +1,9 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Run all diagnostic checks
 ## exposure: safe
 ## packages: [univention-management-console-module-diagnostic]
+
+from __future__ import print_function
 
 import subprocess
 import tempfile

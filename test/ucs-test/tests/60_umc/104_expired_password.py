@@ -1,10 +1,11 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Test UMC authentication with expired accounts
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## tags: [skip_admember]
+
+from __future__ import print_function
 
 import pytest
 import time

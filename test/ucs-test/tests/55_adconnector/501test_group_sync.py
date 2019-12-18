@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with groups"
@@ -9,6 +8,8 @@ from __future__ import print_function
 ##  - 11658
 ## tags:
 ##  - skip_admember
+
+from __future__ import print_function
 
 import ldap
 import pytest

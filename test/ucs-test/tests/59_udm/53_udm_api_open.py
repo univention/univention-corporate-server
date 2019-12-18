@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs module.meta.auto_open feature
@@ -7,6 +6,8 @@ from __future__ import print_function
 ## tags: [udm_api, skip_admember]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
+
+from __future__ import print_function
 
 from unittest import main, TestCase
 import univention.debug as ud

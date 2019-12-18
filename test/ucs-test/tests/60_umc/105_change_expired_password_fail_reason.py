@@ -1,10 +1,11 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Test detection of changing expired password failure reason
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 ## roles: [domaincontroller_master]
 ## tags: [skip_admember]
+
+from __future__ import print_function
 
 import pytest
 import contextlib

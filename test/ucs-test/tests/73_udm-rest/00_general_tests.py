@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # -*- coding: utf-8 -*-
 ## desc: Test various functions in the UDM REST API
@@ -7,6 +6,8 @@ from __future__ import print_function
 ## exposure: careful
 ## packages:
 ##   - univention-directory-manager-rest
+
+from __future__ import print_function
 
 import pytest
 import subprocess

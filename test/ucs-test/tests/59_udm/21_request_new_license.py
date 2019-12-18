@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 # -*- coding: utf-8 -*-
 ## desc: Test UDM umc call to request a new license
@@ -7,6 +6,8 @@ from __future__ import print_function
 ## tags: [udm_api, skip_admember]
 ## packages: [univention-management-console-module-udm]
 ## bugs: [49384]
+
+from __future__ import print_function
 
 import subprocess
 import shutil

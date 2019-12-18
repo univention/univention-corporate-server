@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
@@ -7,6 +6,8 @@ from __future__ import print_function
 ## tags: [udm_api]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
+
+from __future__ import print_function
 
 import sys
 from collections import defaultdict

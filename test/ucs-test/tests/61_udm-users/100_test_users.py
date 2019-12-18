@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # -*- coding: utf-8 -*-
 ## desc: Test various things in users/user
@@ -6,6 +5,8 @@ from __future__ import print_function
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
 ## timeout: 0
+
+from __future__ import print_function
 
 import pytest
 import time

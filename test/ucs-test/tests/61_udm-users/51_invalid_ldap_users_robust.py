@@ -1,10 +1,11 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # -*- coding: utf-8 -*-
 ## desc: Test UDM cannot get broken by users with missing object classes
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 ## packages: [python-univention-directory-manager]
+
+from __future__ import print_function
 
 import random
 import traceback

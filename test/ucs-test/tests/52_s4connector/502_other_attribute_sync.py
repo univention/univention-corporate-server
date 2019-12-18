@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode for `con_other_attribute`s."
@@ -14,6 +13,8 @@ from __future__ import print_function
 
 # We skip this since 4.2-2, as the corresponding implementation is not yet committed.
 # See https://forge.univention.org/bugzilla/show_bug.cgi?id=45252.
+
+from __future__ import print_function
 
 import pytest
 

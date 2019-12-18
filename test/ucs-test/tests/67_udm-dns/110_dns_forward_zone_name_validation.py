@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Creates DNS forward zone entries with invalid names
 ## bugs: [41005]
@@ -11,6 +10,8 @@ from __future__ import print_function
 ##  - skip_admember
 ##  - SKIP
 ## exposure: dangerous
+
+from __future__ import print_function
 
 import os.path
 

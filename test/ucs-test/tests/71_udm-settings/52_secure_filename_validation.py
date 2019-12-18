@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: Creates Schema and ACL extensions in invalid paths
 ## bugs: [41780]
@@ -7,6 +6,8 @@ from __future__ import print_function
 ## packages:
 ##   - univention-config
 ## exposure: dangerous
+
+from __future__ import print_function
 
 import bz2
 import os.path

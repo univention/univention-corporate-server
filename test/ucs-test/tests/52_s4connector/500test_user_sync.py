@@ -1,4 +1,3 @@
-from __future__ import print_function
 #!/usr/share/ucs-test/runner /usr/bin/py.test -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with users"
@@ -7,6 +6,8 @@ from __future__ import print_function
 ## - univention-s4-connector
 ## bugs:
 ##  - 43598
+
+from __future__ import print_function
 
 import ldap
 import pytest
