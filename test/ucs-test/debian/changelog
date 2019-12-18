@@ -1,3 +1,9 @@
+ucs-test (9.0.3-130) unstable; urgency=medium
+
+  * Bug #50401: adjust pyshared pathes
+
+ -- Florian Best <best@univention.de>  Wed, 18 Dec 2019 15:48:43 +0100
+
 ucs-test (9.0.3-129) unstable; urgency=medium
 
   * Bug #50631: Python 3 migration

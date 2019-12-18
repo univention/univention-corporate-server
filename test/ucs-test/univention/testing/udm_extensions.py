@@ -364,11 +364,11 @@ def get_absolute_extension_filename(extension_type, filename):
 	assert(extension_type in VALID_EXTENSION_TYPES)
 	if extension_type == 'module':
 		assert('/' in filename)
-	return {
-		'hook': '/usr/share/pyshared/univention/admin/hooks.d/%s',
-		'syntax': '/usr/share/pyshared/univention/admin/syntax.d/%s',
-		'module': '/usr/share/pyshared/univention/admin/handlers/%s',
-	}[extension_type] % filename
+	return '/usr/lib/python2.7/dist-packages%s' % ({
+		'hook': '/univention/admin/hooks.d/%s',
+		'syntax': '/univention/admin/syntax.d/%s',
+		'module': '/univention/admin/handlers/%s',
+	}[extension_type] % filename)
 
 
 def get_dn_of_extension_by_name(extension_type, name):
