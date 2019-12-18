@@ -31,36 +31,38 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import SocketServer
 import socket
 from select import select
 import os
-import ast
 import sys
 import errno
 import traceback
+import signal
+import json
+from argparse import ArgumentParser
+
+from six.moves import socketserver
+
 from univention.config_registry import ConfigRegistry
 import univention.debug as ud
 import univention.admincli.adduser
 import univention.admincli.admin
 import univention.admincli.passwd
-import signal
-from argparse import ArgumentParser
 import univention.admincli.license_check
 
 logfile = ''
 
 
-class MyRequestHandler(SocketServer.BaseRequestHandler):
+class MyRequestHandler(socketserver.BaseRequestHandler):
 
-	"""Handle request on listeneing socket to open new connection."""
+	"""Handle request on listening socket to open new connection."""
 
 	def handle(self):
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] new connection [%s]' % (os.getppid(), os.getpid()))
-		sarglist = ''
+		sarglist = b''
 		while True:
 			buf = self.request.recv(1024)
-			if buf[-1] == '\0':
+			if buf[-1:] == b'\0':
 				buf = buf[:-1]
 				sarglist += buf
 				break
@@ -73,14 +75,14 @@ class MyRequestHandler(SocketServer.BaseRequestHandler):
 		pass
 
 
-class ForkingTCPServer(SocketServer.ForkingTCPServer):
+class ForkingTCPServer(socketserver.ForkingTCPServer):
 
 	"""UDM server listening on UNIX socket."""
 	address_family = socket.AF_UNIX
 	allow_reuse_address = 1
 
 	def server_bind(self):
-		SocketServer.TCPServer.server_bind(self)
+		socketserver.TCPServer.server_bind(self)
 		_host, port = self.socket.getsockname()[:2]
 		self.server_name = 'localhost'  # socket.getfqdn(host)
 		self.server_port = port
@@ -171,12 +173,14 @@ def doit(sarglist, conn):
 
 	def send_message(output):
 		"""Send answer back."""
-		back = repr(output)
-		conn.send(back + '\0')
+		back = json.dumps(output, ensure_ascii=True)
+		if not isinstance(back, bytes):
+			back = back.encode('ASCII')
+		conn.send(back + b'\0')
 		conn.close()
 
 	global logfile
-	arglist = ast.literal_eval(sarglist)
+	arglist = json.loads(sarglist.decode('ASCII'))
 
 	next_is_logfile = False
 	secret = False
