@@ -10,3 +10,5 @@ desc: |
    create new host certificates has been fixed, which led to directories
    getting the wrong file permissions.
 bug: [49036]
+erratum: 411
+announced: 2019-12-18
