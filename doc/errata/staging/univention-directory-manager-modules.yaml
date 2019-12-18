@@ -7,5 +7,5 @@ fix: 14.0.14-19A~4.4.0.201912181035
 desc: |
  This update addresses the following issue(s):
  * The listener module `udm_extension` has been migrated to dh_python.
- All existing UDM extensions are migrated during the package upgrade.
+   All existing UDM extensions are migrated during the package upgrade.
 bug: [50401]
