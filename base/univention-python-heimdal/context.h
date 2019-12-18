@@ -29,7 +29,10 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __CONTEXT_H__
+#define __CONTEXT_H__
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
 
@@ -40,4 +43,6 @@ typedef struct {
 
 PyTypeObject krb5ContextType;
 
-krb5ContextObject *context_open(PyObject *unused, PyObject *args);
+krb5ContextObject *context_open(PyObject *unused);
+
+#endif /* __CONTEXT_H__ */

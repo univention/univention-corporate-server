@@ -62,44 +62,22 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
 #ifndef __KEYTAB_H__
 #define __KEYTAB_H__
 
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include <krb5.h>
+#include "context.h"
 
 typedef struct {
 	PyObject_HEAD
-	krb5_keytab *keytab;
-	krb5_context *context;
+	krb5ContextObject *context;
+	krb5_keytab keytab;
 } krb5KeytabObject;
 
-static struct PyMethodDef keytab_methods[];
 PyTypeObject krb5KeytabType;
 
 krb5KeytabObject *keytab_open(PyObject *unused, PyObject *args);
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-//#include <parse_time.h>
-#include <roken.h>
-
-//#include "crypto-headers.h"
-#include <krb5.h>
-#include <kadm5/admin.h>
-#include <kadm5/kadm5_err.h>
-
-#include <sl.h>
-#include <getarg.h>
 
 #endif /* __KEYTAB_H__ */

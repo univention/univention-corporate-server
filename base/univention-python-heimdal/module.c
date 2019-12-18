@@ -40,9 +40,13 @@
 #include "enctype.h"
 #include "keyblock.h"
 #include "asn1.h"
+#if 0
+#include "realm.h"
+#include "ticket.h"
+#endif
 
 static struct PyMethodDef module_methods[] = {
-	{"context", (PyCFunction)context_open, METH_VARARGS, "Open context"},
+	{"context", (PyCFunction)context_open, METH_NOARGS, "Open context"},
 	{"principal", (PyCFunction)principal_new, METH_VARARGS, "New principal"},
 	{"creds", (PyCFunction)creds_new, METH_VARARGS, "New credentials"},
 	{"keytab", (PyCFunction)keytab_open, METH_VARARGS, "Open keytab"},
@@ -57,12 +61,68 @@ static struct PyMethodDef module_methods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC
-initheimdal(void)
-{
-	PyObject *module, *self;
-	module = Py_InitModule("heimdal", module_methods);
-	self = PyModule_GetDict(module);
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef moduledef = {
+	PyModuleDef_HEAD_INIT,
+	.m_name = "heimdal",
+	.m_doc = "Heimdal Kerberos Python binding",
+	.m_size = -1,
+	.m_methods = module_methods,
+};
+#endif
 
+static const struct types {
+	const char *name;
+	PyTypeObject *type;
+} types[] = {
+	{"krb5Ccache", &krb5CcacheType},
+	{"krb5Context", &krb5ContextType},
+	{"krb5Creds", &krb5CredsType},
+	{"krb5Enctype", &krb5EnctypeType},
+	{"krb5Keyblock", &krb5KeyblockType},
+	{"krb5Keytab", &krb5KeytabType},
+	{"krb5Principal", &krb5PrincipalType},
+#if 0
+	{"krb5Realm", &krb5RealmType},
+#endif
+	{"krb5Salt", &krb5SaltType},
+#if 0
+	{"krb5Ticket", &krb5TicketType},
+#endif
+	{NULL, NULL}
+};
+
+
+static PyObject * moduleinit(void) {
+	PyObject *module, *self;
+	const struct types *type;
+#if PY_MAJOR_VERSION >= 3
+	module = PyModule_Create(&moduledef);
+#else
+	module = Py_InitModule("heimdal", module_methods);
+#endif
+	if (module == NULL)
+		return NULL;
+
+	for (type = types; type->name; type++) {
+		if (PyType_Ready(type->type) < 0)
+			return NULL;
+		Py_INCREF(type->type);
+		PyModule_AddObject(module, type->name, (PyObject *)type->type);
+	}
+
+	self = PyModule_GetDict(module);
 	error_init(self);
+
+	return module;
 }
+
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit_heimdal(void) {
+	return moduleinit();
+}
+#else
+PyMODINIT_FUNC initheimdal(void) {
+	moduleinit();
+}
+#endif

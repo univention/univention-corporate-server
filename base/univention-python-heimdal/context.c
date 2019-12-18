@@ -30,6 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #include <krb5.h>
@@ -38,98 +39,94 @@
 #include "context.h"
 #include "enctype.h"
 
-static struct PyMethodDef context_methods[];
-
-krb5ContextObject *context_open(PyObject *unused, PyObject *args)
+krb5ContextObject *context_open(PyObject *unused)
 {
-	krb5_error_code ret;
-	krb5ContextObject *self = (krb5ContextObject *) PyObject_NEW(krb5ContextObject, &krb5ContextType);
-	int error = 0;
-
-	if (self == NULL)
-		return NULL;
-
-	ret = krb5_init_context(&self->context);
-	if (ret) {
-		error = 1;
-		krb5_exception(NULL, ret);
-		goto out;
-	}
-
- out:
-	if (error)
-		return NULL;
-	else
-		return self;
+	return (krb5ContextObject *)PyObject_CallObject((PyObject *)&krb5ContextType, NULL);
 }
 
-PyObject *context_get_permitted_enctypes(krb5ContextObject *self, PyObject *args)
+static PyObject *context_get_permitted_enctypes(krb5ContextObject *self)
 {
-	krb5_error_code ret;
-	krb5_enctype *etypes;
-	PyObject* list;
+	krb5_error_code err;
+	krb5_enctype *etypes = NULL;
+	PyObject* list = NULL;
 	int i;
-	int error = 0;
 
-	if ((list = PyList_New(0)) == NULL) {
-		/* FIXME: raise exception */
-		error = 1;
-		goto out;
+	err = krb5_get_permitted_enctypes(self->context, &etypes);
+	if (err) {
+		krb5_exception(self->context, err);
+		goto exception;
 	}
 
-	ret = krb5_get_permitted_enctypes(self->context, &etypes);
-	if (ret) {
-		error = 1;
-		krb5_exception(NULL, ret);
-		goto out;
+	for (i = 0; etypes && etypes[i] != KRB5_ENCTYPE_NULL; i++)
+		;
+
+	if ((list = PyList_New(i)) == NULL) {
+		PyErr_NoMemory();
+		goto exception;
 	}
 
-	for (i=0; etypes && etypes[i] != ETYPE_NULL; i++) {
+	while (i--) {
 		krb5EnctypeObject *enctype;
-		enctype = enctype_from_enctype(self->context, etypes[i]);
-		PyList_Append(list, (PyObject*) enctype);
-		Py_DECREF(enctype);
+		enctype = enctype_from_enctype(self, etypes[i]);
+		if (enctype == NULL) {
+			goto exception;
+		}
+		PyList_SetItem(list, i, (PyObject *)enctype);
 	}
+	goto finally;
 
- out:
-	if (error)
-		return NULL;
-	else
-		return list;
+exception:
+	Py_XDECREF(list);
+	list = NULL;
+finally:
+	if (etypes)
+#if 0
+		krb5_free_enctypes(self->context, etypes);
+#else
+		free(etypes);
+#endif
+	return list;
 }
 
-static PyObject *context_getattr(krb5ContextObject *self, char *name)
+static PyObject *context_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-	return Py_FindMethod(context_methods, (PyObject *)self, name);
+	krb5ContextObject *self = (krb5ContextObject *)type->tp_alloc(type, 0);
+	return (PyObject *)self;
 }
 
-void context_destroy(krb5ContextObject *self)
+static int context_init(krb5ContextObject *self, PyObject *args, PyObject *kwds)
+{
+	if (self->context) {
+		krb5_free_context(self->context);
+		self->context = NULL;
+	}
+	krb5_error_code err = krb5_init_context(&self->context);
+	if (err) {
+		return -1;
+	}
+	return 0;
+}
+
+static void context_dealloc(krb5ContextObject *self)
 {
 	krb5_free_context(self->context);
-	PyObject_Del( self );
+	Py_TYPE(self)->tp_free(self);
 }
 
-PyTypeObject krb5ContextType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
-	"krb5Context",			/*tp_name*/
-	sizeof(krb5ContextObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
-	/* methods */
-	(destructor)context_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	(getattrfunc)context_getattr,	/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+static struct PyMethodDef context_methods[] = {
+	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_NOARGS, "Return etypes for context"},
+	{NULL}
 };
 
-static struct PyMethodDef context_methods[] = {
-	{"get_permitted_enctypes", (PyCFunction)context_get_permitted_enctypes, METH_VARARGS, "Return etypes for context"},
-	{NULL}
+PyTypeObject krb5ContextType = {
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	.tp_name = "heimdal.krb5Context",
+	.tp_doc = "Heimdal Kerberos context",
+	.tp_basicsize = sizeof(krb5ContextObject),
+	/* methods */
+	.tp_dealloc = (destructor)context_dealloc,
+	.tp_methods = context_methods,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
+	.tp_init = (initproc)context_init,
+	.tp_new = context_new,
 };

@@ -30,6 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #include <krb5.h>
@@ -41,42 +42,32 @@
 krb5TicketObject *ticket_new(PyObject *unused, PyObject *args)
 {
 	krb5ContextObject *context;
-	krb5TicketObject *self = (krb5TicketObject *) PyObject_New(krb5TicketObject, &krb5TicketType);
-
-	if (!PyArg_ParseTuple(args, "O", &context))
+	if (!PyArg_ParseTuple(args, "O!", &krb5ContextType, &context))
 		return NULL;
 
+	krb5TicketObject *self = (krb5TicketObject *) PyObject_New(krb5TicketObject, &krb5TicketType);
 	if (self == NULL)
 		return NULL;
-	self->context = context->context;
+
+	Py_INCREF(context);
+	self->context = context;
 
 	return self;
 }
 
-void ticket_destroy(krb5TicketObject *self)
+static void ticket_dealloc(krb5TicketObject *self)
 {
-	krb5_free_ticket(self->context, &self->ticket);
-	PyObject_Del(self);
+	krb5_free_ticket(self->context->context, &self->ticket);
+	Py_DECREF(self->context);
+	Py_TYPE(self)->tp_free(self);
 }
 
 PyTypeObject krb5TicketType = {
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,				/*ob_size*/
-	"krb5Ticket",			/*tp_name*/
-	sizeof(krb5TicketObject),	/*tp_basicsize*/
-	0,				/*tp_itemsize*/
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	.tp_name = "heimdal.krb5Ticket",
+	.tp_doc = "Heimdal Kerberos ticket",
+	.tp_basicsize = sizeof(krb5TicketObject),
 	/* methods */
-	(destructor)ticket_destroy,	/*tp_dealloc*/
-	0,				/*tp_print*/
-	0,				/*tp_getattr*/
-	0,				/*tp_setattr*/
-	0,				/*tp_compare*/
-	0,				/*tp_repr*/
-	0,				/*tp_repr*/
-	0,				/*tp_as_number*/
-	0,				/*tp_as_sequence*/
-	0,				/*tp_as_mapping*/
-	0,				/*tp_hash*/
+	.tp_dealloc = (destructor)ticket_dealloc,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 };
-
-//static struct PyMethodDef ticket_methods[] = {};

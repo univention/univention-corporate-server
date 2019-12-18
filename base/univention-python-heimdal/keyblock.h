@@ -29,13 +29,17 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __KEYBLOCK_H__
+#define __KEYBLOCK_H__
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
+#include "context.h"
 
 typedef struct {
 	PyObject_HEAD
-	krb5_context context;
+	krb5ContextObject *context;
 	krb5_keyblock keyblock;
 } krb5KeyblockObject;
 
@@ -43,3 +47,5 @@ PyTypeObject krb5KeyblockType;
 
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args);
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args);
+
+#endif /* __KEYBLOCK_H__ */

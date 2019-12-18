@@ -29,9 +29,14 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#ifndef __ERROR_H__
+#define __ERROR_H__
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <krb5.h>
 
 void error_init(PyObject *self);
 PyObject *krb5_exception(krb5_context context, int code, ...);
+
+#endif /* __ERROR_H__ */
