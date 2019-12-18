@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * The listener module `udm_extension` has been migrated to dh_python.
  All existing UDM extensions are migrated during the package upgrade.
-bug: [49147]
+bug: [50401]

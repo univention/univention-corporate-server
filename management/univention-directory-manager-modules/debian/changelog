@@ -1,6 +1,6 @@
 univention-directory-manager-modules (14.0.14-19) unstable; urgency=medium
 
-  * Bug #49147: migrate listener udm_extension.py to dh-python
+  * Bug #50401: migrate listener udm_extension.py to dh-python
 
  -- Florian Best <best@univention.de>  Wed, 18 Dec 2019 10:30:32 +0100
 
