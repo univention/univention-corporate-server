@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fixed symbolic link creation for host certificate.
 bug: [49036]
+erratum: 412
+announced: 2019-12-18
