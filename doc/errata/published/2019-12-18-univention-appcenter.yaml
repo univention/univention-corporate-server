@@ -14,3 +14,5 @@ desc: |
    return which caused standby animations to end too early. This has been
    addressed.
 bug: [49675, 50649]
+erratum: 405
+announced: 2019-12-18
