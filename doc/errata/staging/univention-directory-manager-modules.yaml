@@ -3,9 +3,11 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-directory-manager-modules
-fix: 14.0.14-19A~4.4.0.201912181035
+fix: 14.0.14-22A~4.4.0.201912201018
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The listener module `udm_extension` has been migrated to dh_python.
    All existing UDM extensions are migrated during the package upgrade.
-bug: [50401]
+ * It is now prevented to create DHCP networks which break the DHCP service
+   configuration.
+bug: [50401, 44135]
