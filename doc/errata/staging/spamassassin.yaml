@@ -6,14 +6,13 @@ src: spamassassin
 fix: 3.4.2-1~deb9u2
 desc: |
  This update addresses the following issues:
- * In Apache SpamAssassin before 3.4.3, nefarious CF files can be configured
-   to run system commands without any output or errors. With this, exploits
-   can be injected in a number of scenarios. In addition to upgrading to SA
-   3.4.3, we recommend that users should only use update channels or 3rd party
-   .cf files from trusted places. (CVE-2018-11805)
- * In Apache SpamAssassin before 3.4.3, a message can be crafted in a way to
-   use excessive resources. Upgrading to SA 3.4.3 as soon as possible is the
-   recommended fix but details will not be shared publicly. (CVE-2019-12420)
+ * Nefarious CF files can be configured to run system commands without any
+   output or errors. With this, exploits can be injected in a number of
+   scenarios. In addition to upgrading we recommend that users should only use
+   update channels or 3rd party .cf files from trusted places.
+   (CVE-2018-11805)
+ * A message can be crafted in a way to use excessive resources.
+   (CVE-2019-12420)
 bug: [50650]
 cve:
 - CVE-2018-11805
