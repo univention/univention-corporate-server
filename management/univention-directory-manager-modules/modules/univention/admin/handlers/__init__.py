@@ -290,7 +290,7 @@ class simpleLdap(object):
 		:rtype: bool
 		"""
 		# FIXME: key can even be nested
-		if isinstance(key, (list, tuple)):
+		if not isinstance(key, six.string_types):
 			return any(self.hasChanged(i) for i in key)
 		if (not self.oldinfo.get(key, '') or self.oldinfo[key] == ['']) and (not self.info.get(key, '') or self.info[key] == ['']):
 			return False
