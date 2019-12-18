@@ -35,9 +35,13 @@ import locale
 import socket
 import stat
 import time
-import ast
 import os
 import sys
+import json
+
+import six
+from six.moves import input
+
 from univention.config_registry import ConfigRegistry
 
 
@@ -105,8 +109,8 @@ def fork_server(sock, socket_path):
 def get_password():
 	"""Query for interactive password."""
 	while True:
-		pwd1 = raw_input('New password ')
-		pwd2 = raw_input('Re-enter new password ')
+		pwd1 = input('New password ')
+		pwd2 = input('Re-enter new password ')
 		if pwd1 == pwd2:
 			return pwd1
 		print('password mismatch', file=sys.stderr)
@@ -114,13 +118,13 @@ def get_password():
 
 def receive_answer(sock):
 	"""Receive complete answer from server."""
-	data = ''
+	data = b''
 	while True:
 		buf = sock.recv(1024)
 		if len(buf) == 0:
 			print('E: Daemon died.', file=sys.stderr)
 			sys.exit(1)
-		elif buf[-1] == '\0':
+		elif buf[-1:] == b'\0':
 			buf = buf[0:-1]
 			data += buf
 			break
@@ -144,7 +148,7 @@ def process_output(output, cmdfile):
 			result = 3
 			output = output[:-1]
 		for line in output:
-			if isinstance(line, unicode):
+			if six.PY2 and isinstance(line, unicode):  # noqa: F821
 				line = line.encode(locale.getpreferredencoding(), 'replace')
 			print(line)
 	return result
@@ -164,7 +168,7 @@ def _create_socket(socket_path=default_socket_path):
 
 def _re_create_socket():
 	try:
-		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(map(ord, os.urandom(12))))
+		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
 		return _create_socket(socket_path)
 	except EnvironmentError:
 		print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)
@@ -185,11 +189,14 @@ def main():
 		password = get_password()
 		sys.argv += ['--pwd', password]
 
-	sock.send(repr(sys.argv) + '\0')
+	data = json.dumps(sys.argv, ensure_ascii=True)
+	if not isinstance(data, bytes):
+		data = data.encode('ASCII')
+	sock.send(data + b'\0')
 	data = receive_answer(sock)
 	sock.close()
 
-	output = ast.literal_eval(data)
+	output = json.loads(data.decode('ASCII'))
 	result = process_output(output, cmdfile)
 	sys.exit(result)
 
