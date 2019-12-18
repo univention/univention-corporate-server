@@ -74,7 +74,7 @@ define([
 		},
 
 		toHTML: function(app, details) {
-			return '<p>' + this._renderReason(app, details) + ' ' + this._renderSolution(app, details) + '</p>';
+			return this._renderReason(app, details) + ' ' + this._renderSolution(app, details);
 		}
 	});
 

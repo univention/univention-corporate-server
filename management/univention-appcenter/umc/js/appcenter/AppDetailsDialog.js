@@ -61,7 +61,7 @@ define([
 
 		title: _('App management'),
 
-		reset: function(mayContinue, title, text, actionLabel) {
+		reset: function(mayContinue, title, text, actionLabel, actionWarningLabel) {
 			this._clearWidget('_configForm', false);
 			this._clearWidget('_container', true);
 			this._clearWidget('_confirmForm', true);
@@ -75,6 +75,7 @@ define([
 			this.set('helpText', text);
 
 			this.actionLabel = actionLabel;
+			this.actionWarningLabel = actionWarningLabel;
 			var close = lang.hitch(this, function() {
 				if (mayContinue) {
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
@@ -148,7 +149,7 @@ define([
 			})));
 		},
 
-		showRequirements: function(label, stressedRequirements, appDetailsPage) {
+		showRequirements: function(label, stressedRequirements, appDetailsPage, isHardRequirement) {
 			var opts = {
 				appDetailsDialog: this,
 				appDetailsPage: appDetailsPage
@@ -165,16 +166,14 @@ define([
 				array.forEach(foundRequirements, lang.hitch(this, function(foundRequirementArray, i) {
 					var foundRequirement = foundRequirementArray[0];
 					var details = foundRequirementArray[1];
-					container.addChild(new Text({
-						content: '<hr/>'
-					}));
-					container.addChild(new Text({
+					var content = [];
+					content.push(new Text({
 						content: foundRequirement.toHTML(this.app, details)
 					}));
 					if (foundRequirement.solution) {
 						var label = foundRequirement.buttonLabel(this.app, details);
 						if (label) {
-							container.addChild(new Button({
+							content.push(new Button({
 								name: 'solution' + i,
 								label: label,
 								callback: lang.hitch(this, function() {
@@ -187,17 +186,25 @@ define([
 							}));
 						}
 					}
+					this.addContent(container, content, true, isHardRequirement);
 				}));
 				this._container.addChild(container);
+				if (!isHardRequirement) {
+					this.updateActionButtonForWarning();
+				}
 			}
 		},
 
+		updateActionButtonForWarning: function() {
+			this._confirmForm.getButton('submit').set('label', this.actionWarningLabel);
+		},
+
 		showHardRequirements: function(hardRequirements, appDetailsPage) {
-			this.showRequirements(_("It is not possible to continue"), hardRequirements, appDetailsPage);
+			this.showRequirements(_("It is not possible to continue"), hardRequirements, appDetailsPage, true);
 		},
 
 		showSoftRequirements: function(softRequirements, appDetailsPage) {
-			this.showRequirements(_("It is not recommended to continue"), softRequirements, appDetailsPage);
+			this.showRequirements(_("It is not recommended to continue"), softRequirements, appDetailsPage, false);
 		},
 
 		showUp: function() {
@@ -207,28 +214,33 @@ define([
 
 		showErrataHint: function() {
 			var repositoryButton = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\', \'components\')">{name}</a>', {name: _('Repository Settings')});
-			this._container.addChild(new Text({
-				content: _('These changes contain <strong>all package upgrades available</strong> and thus may <strong>include errata updates</strong>. If this is not intended, the corresponding components have to be temporarily deactivated first using the tab "%s" in the App Center.', repositoryButton),
-				style: {paddingBottom: '.25em'}
-			}));
+			var text = new Text({
+				content: _('These changes contain <strong>all package upgrades available</strong> and thus may <strong>include errata updates</strong>. If this is not intended, the corresponding components have to be temporarily deactivated first using the tab "%s" in the App Center.', repositoryButton)
+			});
+			this.addContent(this._container, [text], true, false);
+			this.updateActionButtonForWarning();
 		},
 
 		showUnreachableHint: function(unreachable, masterUnreachable) {
 			var componentID = this.app.candidateComponentID || this.app.componentID;
+
+			var content = [];
 			var label = _('The server tried to connect to the involved systems.') + ' ' + _('The following hosts cannot be reached or do not have access to the App Center server:');
-			this._container.addChild(new Text({
+			content.push(new Text({
 				content: label + '<ul><li>' + array.map(unreachable, function(v) { return entities.encode(v); }).join('</li><li>') + '</li></ul>'
 			}));
 			if (!masterUnreachable) {
 				var cmdLine = lang.replace('univention-app install {app_id} --only-master-packages', {app_id: entities.encode(this.app.id)});
 				var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
-				this._container.addChild(new Text({
+				content.push(new Text({
 					content: commandHint
 				}));
+				this.updateActionButtonForWarning();
 			}
+			this.addContent(this._container, content, true, masterUnreachable);
 		},
 
-		showPackageChanges: function(install, remove, broken, incompatible, opened, host) {
+		showPackageChanges: function(install, remove, broken, incompatible, host) {
 			var _packageChangesList = function(changes, label) {
 				var txt = '';
 				var details;
@@ -255,8 +267,10 @@ define([
 				}
 			};
 
+			var content = [];
+
 			if (incompatible) {
-				this._container.addChild(new Text({
+				content.push(new Text({
 					content: '<p>' + _('The version of the remote App Center is <strong>incompatible</strong> with the local one. Please update your hosts.') + '</p>'
 				}));
 			}
@@ -266,11 +280,11 @@ define([
 			_packageChangeLabel(remove, '<strong>' + _('1 package will be removed') + '</strong>', '<strong>' + _('{0} packages will be removed') + '</strong>', changeLabels);
 			_packageChangeLabel(broken, '<strong>' + _('1 package is erroneous') + '</strong>', '<strong>' + _('{0} packages are erroneous') + '</strong>', changeLabels);
 			if (!changeLabels.length) {
-				changeLabels = '<p>' + _('No software changes on %s necessary.', host || _('this host')) + '</p>';
+				changeLabels = _('No software changes on %s necessary.', host || _('this host'));
 			} else {
-				changeLabels = '<p>' + _('The following software changes on %s will be applied: ', host || _('this host')) + changeLabels.join(', ') + '</p>';
+				changeLabels = _('The following software changes on %s will be applied: ', host || _('this host')) + changeLabels.join(', ');
 			}
-			this._container.addChild(new Text({
+			content.push(new Text({
 				content: changeLabels
 			}));
 
@@ -281,12 +295,38 @@ define([
 			if (txt === '') {
 				txt = '<p>' + _('No software changes necessary.') + '</p>';
 			}
-			this._container.addChild(new TitlePane({
+			content.push(new TitlePane({
 				'class': 'umcAppMoreTitlePane',
 				title: _('More information...'),
 				open: false,
 				content: txt
 			}));
+			var isWarning = !!broken.length || incompatible;
+			this.addContent(this._container, content, isWarning, isWarning);
+		},
+
+		addContent: function(parent, content, isWarning, isHardWarning) {
+			var _class = '';
+			if (isWarning) {
+				_class = 'AppDetailsDialog__warning';
+
+				if (isHardWarning) {
+					_class += ' AppDetailsDialog__warning--hard';
+				} else {
+					_class += ' AppDetailsDialog__warning--soft';
+				}
+			}
+			var outer = new ContainerWidget({
+				'class': _class
+			});
+			var inner = new ContainerWidget({});
+
+			array.forEach(content, function(c) {
+				inner.addChild(c);
+			});
+
+			outer.addChild(inner);
+			parent.addChild(outer);
 		},
 
 		onBack: function(/*continued*/) {
