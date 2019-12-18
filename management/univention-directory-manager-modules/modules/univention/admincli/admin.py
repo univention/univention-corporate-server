@@ -41,6 +41,7 @@ import subprocess
 import traceback
 
 import ldap
+import six
 
 import univention.debug as ud
 
@@ -239,6 +240,8 @@ def module_information(module, identifies_only=0):
 
 
 def _2utf8(text):
+	if six.PY3:
+		return text
 	try:
 		return text.encode('utf-8')
 	except:
