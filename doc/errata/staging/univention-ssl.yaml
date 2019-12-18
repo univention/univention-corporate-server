@@ -7,6 +7,6 @@ fix: 13.0.0-6A~4.4.0.201912101852
 desc: |
  This update addresses the following issue:
  * An issue in the Univention Directory Listener module `gencertificate.py` to
-   create new host certificates has been fixed, which lead to directories
+   create new host certificates has been fixed, which led to directories
    getting the wrong file permissions.
 bug: [49036]

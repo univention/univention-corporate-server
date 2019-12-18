@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-s4-connector
 fix: 13.0.2-62A~4.4.0.201912161655
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Microsoft Wireless/Wired Group Policy, IPsec policy and
    Software installation policy objects can now be synchronized
-   between Open-LDAP and Samba 4.
+   between OpenLDAP and Samba 4.
 bug: [49838]
