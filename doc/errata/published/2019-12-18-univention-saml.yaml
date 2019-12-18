@@ -11,3 +11,5 @@ desc: |
    password or the password expired. The link target can be set with the
    UCR variable saml/idp/password-change-url
 bug: [50594]
+erratum: 408
+announced: 2019-12-18
