@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [2, 3]
+scope: ucs_4.4-0-errata4.4-3
+src: intel-microcode
+fix: 3.20191115.2~deb9u1
+desc: |
+ This update addresses the following issues:
+ * This update ships updated CPU microcode for some types of Intel CPUs. In
+   particular it provides mitigations for the TAA (TSX Asynchronous Abort)
+   vulnerability. For affected CPUs, to fully mitigate the vulnerability it is
+   also necessary to update the Linux kernel. (CVE-2019-11135, CVE-2019-11139)
+bug: [50656]
+cve:
+- CVE-2019-11135
+- CVE-2019-11139
