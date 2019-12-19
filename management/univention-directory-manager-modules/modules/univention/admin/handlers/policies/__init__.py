@@ -31,20 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
-
 import os.path
+import importlib
+
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 policies = []
 
 
 def __walk(root, dir, files):
-	global _policies
-	for file in files:
-		if not file.endswith('.py') or file.startswith('__') or file in ('policy.py', 'base.py'):
-			continue
-		policies.append(__import__(file[: -3], globals(), locals(), ['']))
+	for file_ in files:
+		if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('policy.py', 'base.py'):
+			policies.append(importlib.import_module('univention.admin.handlers.policies.%s' % (file_[:-3],)))
 
 
 path = os.path.abspath(os.path.dirname(__file__))
-os.path.walk(path, __walk, path)
+for w_root, w_dirs, w_files in os.walk(path):
+	__walk(w_root, w_root, w_files)
