@@ -1,0 +1,5 @@
+black
+coverage
+docutils
+flake8
+isort
