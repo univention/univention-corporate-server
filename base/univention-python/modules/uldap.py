@@ -34,6 +34,7 @@ import re
 from functools import wraps
 import random
 
+import six
 import ldap
 import ldap.schema
 import ldap.sasl
@@ -283,7 +284,9 @@ class access(object):
 		self.__open(ca_certfile)
 
 	def __encode_pwd(self, pwd):
-		if isinstance(pwd, unicode):
+		if six.PY3:
+			return pwd
+		if isinstance(pwd, unicode):  # noqa: F821
 			return str(pwd)
 		else:
 			return pwd
@@ -389,7 +392,7 @@ class access(object):
 	def __encode(self, value):
 		if value is None:
 			return value
-		elif isinstance(value, unicode):
+		elif six.PY2 and isinstance(value, unicode):  # noqa: F821
 			return str(value)
 		elif isinstance(value, (list, tuple)):
 			return map(self.__encode, value)
