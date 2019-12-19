@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-19) unstable; urgency=medium
+
+  * Bug #50643: turn self.group_members_cache_* into a set() to avoid
+    unbound resource consumption due to unlimted appending to lists.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Dec 2019 13:19:58 +0100
+
 univention-ad-connector (13.0.0-18) unstable; urgency=medium
 
   * Bug #49168: add missing python-notifier dependency
