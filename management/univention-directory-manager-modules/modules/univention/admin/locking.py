@@ -86,10 +86,12 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 		locktime = now + timeout
 	else:
 		locktime = 0
+	if not isinstance(value, bytes):
+		value = value.encode('utf-8')
 	al = [
-		('objectClass', ['top', 'lock']),
+		('objectClass', [b'top', b'lock']),
 		('cn', [value]),
-		('lockTime', [str(locktime)]),
+		('lockTime', [str(locktime).encode('ascii')]),
 	]
 	if not lo.get(dn, ['lockTime']):
 		try:
