@@ -578,9 +578,9 @@ class access(object):
 		else:
 			oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
 		if attrs and 'univentionPolicyReference' in attrs:
-			policies = attrs['univentionPolicyReference']
+			policies = [x.decode('utf-8') for x in attrs['univentionPolicyReference']]
 		elif not policies and not attrs:
-			policies = oattrs.get('univentionPolicyReference', [])
+			policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
 
 		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
@@ -597,7 +597,7 @@ class access(object):
 					parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
 				except ldap.NO_SUCH_OBJECT:
 					break
-				policies = parent.get('univentionPolicyReference', [])
+				policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
 
 		univention.debug.debug(
 			univention.debug.LDAP, univention.debug.INFO,
