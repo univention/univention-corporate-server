@@ -95,6 +95,17 @@ def is_piwik_disabled():
 	piwik_allowed = has_system_uuid() and configRegistry.is_true('umc/web/piwik') or (not piwik_ucr_is_set and has_free_license())
 	return not piwik_allowed
 
+def is_abtest_enabled():
+	if configRegistry.get('umc/web/abtesting') is None:
+		if has_free_license():
+			uuid = configRegistry.get('uuid/license', configRegistry.get('uuid/system', '0'))
+			try:
+				return int(uuid.replace('-', ''), 16) / 7 % 2 == 1
+			except:
+				return False
+		return False
+	return configRegistry.is_true('umc/web/abtesting')
+
 def get_session_timeout():
 	try:
 		return int(configRegistry.get('umc/http/session/timeout', '300'))
@@ -116,6 +127,7 @@ data = dict(
 	piwikDisabled=is_piwik_disabled(),
 	sessionTimeout=get_session_timeout(),
 	fqdn=get_fqdn(),
+	abtesting=is_abtest_enabled(),
 	has_certificates=has_certificates(),
 	administrator=custom_username('Administrator'),
 )
