@@ -36,9 +36,11 @@ import os
 import sys
 import copy
 import locale
-import imp
+import importlib
+
 import six
 import ldap
+from six.moves import reload_module
 from ldap.filter import filter_format
 
 import univention.debug as ud
@@ -100,17 +102,15 @@ def update():
 		for file in files:
 			if not file.endswith('.py') or file.startswith('__'):
 				continue
-			p = os.path.join(dir, file).replace(root, '').replace('.py', '')
-			p = p[1:]
-			ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % p)
-			if dir.startswith('/usr/lib/pymodules/python2.7/'):
+			package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
+			ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % (package,))
+			if dir.startswith('/usr/lib/pymodules/python2.7/') and not file.endswith('__init__.py'):
 				ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
-			parts = p.split(os.path.sep)
-			mod, name = '.'.join(parts), '/'.join(parts)
-			m = __import__(mod, globals(), locals(), name)
-			m.initialized = 0
+			modulepackage = '.'.join(package.split(os.path.sep))
+			m = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))  # type: Any
+			m.initialized = False
 			if not hasattr(m, 'module'):
-				ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (mod,))
+				ud.debug(ud.ADMIN, ud.ERROR, 'admin.modules.update: attribute "module" is missing in module %r' % (modulepackage,))
 				continue
 			_modules[m.module] = m
 			if isContainer(m):
@@ -118,11 +118,12 @@ def update():
 
 			superordinates.update(superordinate_names(m))
 
-	for p in sys.path:
-		dir = os.path.join(p, 'univention/admin/handlers')
-		if not os.path.isdir(dir):
+	for handler_directory in sys.path:
+		root = os.path.join(handler_directory, 'univention/admin/handlers')
+		if not os.path.isdir(root):
 			continue
-		os.path.walk(dir, _walk, p)
+		for w_root, w_dirs, w_files in os.walk(root):
+			_walk(root, w_root, w_files)
 	modules = _modules
 	_superordinates = superordinates
 
@@ -178,7 +179,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	# especially because update_extended_attributes
 	# called twice will have side-effects
 	if force_reload:
-		imp.reload(module)
+		reload_module(module)
 	# reset property descriptions to defaults if possible
 	if hasattr(module, 'default_property_descriptions'):
 		module.property_descriptions = copy.deepcopy(module.default_property_descriptions)
@@ -251,7 +252,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	# some choices depend on extended_options/attributes
 	univention.admin.syntax.update_choices()
 
-	module.initialized = 1
+	module.initialized = True
 
 
 def update_extended_options(lo, module, position):
