@@ -47,14 +47,14 @@ try:
 except ImportError:
 	pass
 
-__all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'tab', 'field', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
-
+__all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-# baseconfig legacy
-baseConfig = configRegistry
+if six.PY2:
+	# baseconfig legacy
+	baseConfig = configRegistry
 
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
@@ -567,56 +567,58 @@ class extended_attribute(object):
 		return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
 
 
-class tab:
-	"""
-	|UDM| tab to group related properties together in |UMC|.
-	"""
-	is_app_tab = False
+if six.PY2:  # deprecated, use layout.Tab instead
+	class tab:
+		"""
+		|UDM| tab to group related properties together in |UMC|.
+		"""
+		is_app_tab = False
 
-	def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):
-		self.short_description = short_description
-		self.long_description = long_description
-		self.fields = fields
-		self.advanced = advanced
-		self.help_text = help_text
+		def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):
+			self.short_description = short_description
+			self.long_description = long_description
+			self.fields = fields
+			self.advanced = advanced
+			self.help_text = help_text
 
-	def set_fields(self, fields):
-		self.fields = fields
+		def set_fields(self, fields):
+			self.fields = fields
 
-	def get_fields(self):
-		return self.fields
+		def get_fields(self):
+			return self.fields
 
-	def __repr__(self):
-		string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
-		for field in self.fields:
-			string = "%s %s," % (string, field)
-		return string + " ] }"
+		def __repr__(self):
+			string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
+			for field in self.fields:
+				string = "%s %s," % (string, field)
+			return string + " ] }"
 
 
-class field:
+if six.PY2:  # deprecated, use layout.Group instead
+	class field:
 
-	def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
-		self.property = property
-		self.type = type
-		self.first_only = first_only
-		self.short_description = short_description
-		self.long_description = long_description
-		self.hide_in_resultmode = hide_in_resultmode
-		self.hide_in_normalmode = hide_in_normalmode
-		self.colspan = colspan
-		self.width = width
+		def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
+			self.property = property
+			self.type = type
+			self.first_only = first_only
+			self.short_description = short_description
+			self.long_description = long_description
+			self.hide_in_resultmode = hide_in_resultmode
+			self.hide_in_normalmode = hide_in_normalmode
+			self.colspan = colspan
+			self.width = width
 
-	def __repr__(self):
-		return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
-			self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
+		def __repr__(self):
+			return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
+				self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
 
-	def __cmp__(self, other):
-		# at the moment the sort is only needed for layout of the registry module
-		if other.property == 'registry':
-			return 1
-		if self.property == 'registry':
-			return 0
-		return cmp(self.property, other.property)
+		def __cmp__(self, other):
+			# at the moment the sort is only needed for layout of the registry module
+			if other.property == 'registry':
+				return 1
+			if self.property == 'registry':
+				return 0
+			return cmp(self.property, other.property)  # noqa: F821
 
 
 class policiesGroup:
