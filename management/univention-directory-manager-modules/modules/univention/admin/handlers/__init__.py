@@ -1912,7 +1912,7 @@ class simpleComputer(simpleLdap):
 		"""
 		fullName = relativeDomainName + '.' + zoneName.replace('.ip6.arpa', '')
 		fullName = fullName.split('.')
-		fullName = [''.join(reversed(fullName[i:i + 4])) for i in xrange(0, len(fullName), 4)]
+		fullName = [''.join(reversed(fullName[i:i + 4])) for i in range(0, len(fullName), 4)]
 		fullName.reverse()
 		return ':'.join(fullName)
 
@@ -2307,7 +2307,7 @@ class simpleComputer(simpleLdap):
 				# ['0', '1', '8', 'b', 'd', '0', '1', '0', '0', '2', ] → ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ]
 				subnet.reverse()
 				# ['2', '0', '0', '1', '0', 'd', 'b', '8', '1', '0', ] → ['2001', '0db8', '10', ] → '2001:0db8:10'
-				subnet = ':'.join([''.join(subnet[i:i + 4]) for i in xrange(0, len(subnet), 4)])
+				subnet = ':'.join([''.join(subnet[i:i + 4]) for i in range(0, len(subnet), 4)])
 				# '2001:db8:100:5' → '2001:0db8:0100:0000:0000:0000:0000:0005'
 				ip = ipaddr.IPv6Address(ip).exploded
 				if not ip.startswith(subnet):

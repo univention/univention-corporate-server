@@ -70,7 +70,7 @@ def crypt(password, method_id=None, salt=None):
 			'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
 			'6', '7', '8', '9']
 		urandom = open("/dev/urandom", "r")
-		for i in xrange(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+		for i in range(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
 			o = ord(urandom.read(1))
 			while not o < 256 / len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
 				o = ord(urandom.read(1))
