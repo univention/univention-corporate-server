@@ -28,9 +28,9 @@ async def search(
     )
 ):
     try:
-        ucr_vars = handler_search(pattern)
-    except SystemExit as exc:
-        raise HTTPException(status_code=400, detail="Invalid pattern provided")
+        ucr_vars = list(handler_search([pattern]))
+    except SystemExit:
+        raise HTTPException(status_code=400, detail="Invalid pattern provided.")
     result = list()
     for ucr_var in ucr_vars:
         identifier, value = ucr_var.split(":", 1)
