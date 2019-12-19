@@ -1233,7 +1233,7 @@ class IA5string(string):
 	Syntax for string from International Alphabet 5 (printable |ASCII|)
 
 	>>> IA5string.parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
-	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+	u' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 	>>> IA5string.parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -1242,8 +1242,11 @@ class IA5string(string):
 
 	@classmethod
 	def parse(self, text):
+		# type: (Any) -> str
 		try:
-			text.decode("utf-8").encode('ascii')
+			if isinstance(text, bytes):
+				text = text.decode('UTF-8')
+			text.encode('ASCII')
 		except UnicodeEncodeError:
 			raise univention.admin.uexceptions.valueError(_("Field must only contain ASCII characters!"))
 		return text
@@ -1314,9 +1317,11 @@ class uid_umlauts(simple):
 
 	@classmethod
 	def parse(self, text):
-		if " " in text:
+		if isinstance(text, bytes):
+			text = text.decode('UTF-8')
+		if u" " in text:
 			raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
-		if self._re.match(text.decode("utf-8")) is not None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
@@ -1332,12 +1337,12 @@ class uid_umlauts_lower_except_first_letter(simple):
 
 	@classmethod
 	def parse(self, text):
-		unicode_text = text.decode("utf-8")
-		for c in unicode_text[1:]:
-			if c.isupper():
-				raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
+		if isinstance(text, bytes):
+			text = text.decode('UTF-8')
+		if any(c.isupper() for c in text[1:]):
+			raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
 
-		if self._re.match(unicode_text) is not None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
