@@ -35,6 +35,7 @@ import inspect
 import time
 import datetime
 
+import six
 import ldap.dn
 
 import univention.admin.uexceptions
@@ -43,6 +44,11 @@ import univention.debug as ud
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
+
+
+if six.PY3:
+	unicode = str
+	long = int
 
 
 class TypeHint(object):
