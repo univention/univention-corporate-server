@@ -9,7 +9,7 @@ app = FastAPI()
 
 
 class UCRVar(BaseModel):
-    identifier: str
+    key: str
     value: str = None
 
 
@@ -33,16 +33,16 @@ async def search(
         raise HTTPException(status_code=400, detail="Invalid pattern provided.")
     result = list()
     for ucr_var in ucr_vars:
-        identifier, value = ucr_var.split(":", 1)
+        key, value = ucr_var.split(":", 1)
         value = value[1:] if value != " <empty>" else None
-        result.append(UCRVar(identifier=identifier, value=value))
+        result.append(UCRVar(key=key, value=value))
     return result
 
 
 @app.get("/{var_name:path}", response_model=UCRVar)
 async def get(var_name: str, ucr: ConfigRegistry = Depends(get_ucr)) -> UCRVar:
     ucr_value = ucr.get(var_name)
-    return UCRVar(identifier=var_name, value=ucr_value)
+    return UCRVar(key=var_name, value=ucr_value)
 
 
 @app.post("/", status_code=HTTP_201_CREATED, response_model=List[UCRVar])
