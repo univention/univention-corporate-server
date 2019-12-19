@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
+import io
 import os
 import traceback
 
@@ -52,8 +53,8 @@ def import_hook_files():
 				if fn.startswith('/usr/lib/pymodules/python2.7/'):
 					ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 				try:
-					with open(fn, 'r') as fd:
-						exec(fd, sys.modules[__name__].__dict__)
+					with io.open(fn, 'rb') as fd:
+						exec(fd.read(), sys.modules[__name__].__dict__)
 					ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,))
 				except Exception:
 					ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: loading %r failed' % (fn,))
