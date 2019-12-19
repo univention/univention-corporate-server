@@ -827,8 +827,8 @@ class s4(univention.s4connector.ucs):
 				self.group_members_cache_con[s4_group_dn.lower()] = set()
 				if s4_group_attrs:
 					s4_members = self.get_s4_members(s4_group_dn, s4_group_attrs)
-					group_cache = self.group_members_cache_con[s4_group_dn.lower()]
-					group_cache.update(m.lower() for m in s4_members)
+					member_cache = self.group_members_cache_con[s4_group_dn.lower()]
+					member_cache.update(m.lower() for m in s4_members)
 
 			ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 

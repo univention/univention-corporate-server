@@ -1264,7 +1264,7 @@ class ucs:
 		if property_type == 'group':
 			ucs_object.open()
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from ucs group cache" % object['dn'])
-			self.group_members_cache_ucs[object['dn'].lower()] = []
+			self.group_members_cache_ucs[object['dn'].lower()] = set()
 		else:
 			ucs_object.open()
 		self.__set_values(property_type, object, ucs_object, modtype='add')

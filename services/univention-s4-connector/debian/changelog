@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-64) unstable; urgency=medium
+
+  * Bug #50644: Fix another self.group_members_cache_ucs type initialization
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Dec 2019 12:00:55 +0100
+
 univention-s4-connector (13.0.2-63) unstable; urgency=medium
 
   * Bug #50644: turn self.group_members_cache_* into a set() to avoid
