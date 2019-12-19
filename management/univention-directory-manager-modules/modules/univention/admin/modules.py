@@ -340,8 +340,28 @@ class EA_Layout(dict):
 		# type: () -> bool
 		return self.get('is_app_tab', False)
 
-	def __cmp__(self, other):
-		return cmp(self.groupName, other.groupName) or cmp(self.position, other.position)
+	if six.PY2:
+		def __cmp__(self, other):
+			return cmp(self.groupName, other.groupName) or cmp(self.position, other.position)  # noqa: F821
+
+	if six.PY3:
+		def __lt__(self, other):
+			return self.groupName < other.groupName or self.position < other.position
+
+		def __gt__(self, other):
+			return self.groupName > other.groupName or self.position > other.position
+
+		def __eq__(self, other):
+			return self.groupName == other.groupName or self.position == other.position
+
+		def __le__(self, other):
+			return self.groupName <= other.groupName or self.position <= other.position
+
+		def __ge__(self, other):
+			return self.groupName >= other.groupName or self.position >= other.position
+
+		def __ne__(self, other):
+			return self.groupName != other.groupName or self.position != other.position
 
 
 def update_extended_attributes(lo, module, position):
