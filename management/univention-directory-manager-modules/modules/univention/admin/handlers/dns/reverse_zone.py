@@ -177,7 +177,7 @@ def unmapSubnet(zone):
 	if zone.endswith(ARPA_IP6):  # IPv6
 		zone = zone[:-len(ARPA_IP6)]
 		zone = list(reversed(zone.split('.')))
-		return ':'.join([''.join(zone[i:i + 4]) for i in xrange(0, len(zone), 4)])
+		return ':'.join([''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
 	elif zone.endswith(ARPA_IP4):  # IPv4
 		zone = zone[:-len(ARPA_IP4)]
 		q = zone.split('.')
