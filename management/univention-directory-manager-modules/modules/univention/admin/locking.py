@@ -86,10 +86,11 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 		locktime = now + timeout
 	else:
 		locktime = 0
+
 	al = [
-		('objectClass', ['top', 'lock']),
+		('objectClass', [b'top', b'lock']),
 		('cn', [value]),
-		('lockTime', [str(locktime)]),
+		('lockTime', [str(locktime).encode('ascii')]),
 	]
 	if not lo.get(dn, ['lockTime']):
 		try:
@@ -143,7 +144,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 	else:
 		locktime = 0
 	ml = [
-		('lockTime', 1, str(locktime))
+		('lockTime', b'1', str(locktime).encode('ASCII'))
 	]
 	try:
 		lo.modify(dn, ml, exceptions=True)
