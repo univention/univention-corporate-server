@@ -31,6 +31,8 @@
 
 import copy
 
+import six
+
 
 class ILayoutElement(dict):
 	"""
@@ -66,7 +68,7 @@ class ILayoutElement(dict):
 			if replaced:
 				new_layout.append(item)
 				continue
-			if isinstance(item, basestring) and item == old:
+			if isinstance(item, six.string_types) and item == old:
 				new_layout.append(new)
 				replaced = True
 			elif isinstance(item, (tuple, list)):
@@ -95,7 +97,7 @@ class ILayoutElement(dict):
 				if removed:
 					new_layout.append(item)
 					continue
-				if isinstance(item, basestring) and item != field:
+				if isinstance(item, six.string_types) and item != field:
 					new_layout.append(item)
 				elif isinstance(item, (tuple, list)):
 					line = []
@@ -116,7 +118,7 @@ class ILayoutElement(dict):
 
 	def exists(self, field):
 		for item in self.layout:
-			if isinstance(item, basestring) and item == field:
+			if isinstance(item, six.string_types) and item == field:
 				return True
 			elif isinstance(item, (tuple, list)):
 				if field in item:
@@ -140,7 +142,7 @@ class ILayoutElement(dict):
 		if len(self.layout) <= currentLine or currentLine < 0:
 			self.layout.append(field)
 		else:
-			if isinstance(self.layout[currentLine], basestring):
+			if isinstance(self.layout[currentLine], six.string_types):
 				if fpos == 0:
 					self.layout[currentLine] = [field, self.layout[currentLine]]
 				else:
