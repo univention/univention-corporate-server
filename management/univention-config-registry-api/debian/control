@@ -1,0 +1,22 @@
+Source: univention-config-registry-api
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.9.8
+Build-Depends: debhelper,
+ dh-python,
+ python3-all,
+ python3-debian,
+ python3-pytest,
+ ucslint,
+ univention-config-dev
+
+Package: python3-univention-config-registry-api
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ python3-univention-config-registry,
+Provides: ${python3:Provides}
+Description:
+ HTTP API for the Univention Config Registry (UCR).

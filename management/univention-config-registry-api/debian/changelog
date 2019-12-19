@@ -1,0 +1,5 @@
+univention-config-registry-api (0.1) unstable; urgency=low
+
+  * first version
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 19 Dec 2019 11:29:28 +0100
