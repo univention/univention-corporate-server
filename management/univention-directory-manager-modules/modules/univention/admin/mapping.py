@@ -39,6 +39,11 @@ try:
 except ImportError:
 	pass
 
+try:
+	unicode
+except NameError:
+	unicode = str
+
 
 def DaysToSeconds(days):
 	# type: (str) -> str
