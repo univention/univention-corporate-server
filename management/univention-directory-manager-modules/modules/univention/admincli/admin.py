@@ -209,13 +209,13 @@ def module_usage(information, action=''):
 				if isinstance(row, Group):
 					out.append('	%s' % row.label)
 					for row in row.layout:
-						if isinstance(row, basestring):
+						if isinstance(row, six.string_types):
 							_print_property(module, action, row, out)
 							continue
 						for item in row:
 							_print_property(module, action, item, out)
 				else:
-					if isinstance(row, basestring):
+					if isinstance(row, six.string_types):
 						_print_property(module, action, row, out)
 						continue
 					for item in row:
@@ -326,11 +326,11 @@ def object_input(module, object, input, append=None, remove=None):
 					object[key] = []
 
 			else:
-				current_values = [object[key]] if isinstance(object[key], basestring) else list(object[key])
+				current_values = [object[key]] if isinstance(object[key], six.string_types) else list(object[key])
 				if value is None:
 					current_values = []
 				else:
-					vallist = [value] if isinstance(value, basestring) else value
+					vallist = [value] if isinstance(value, six.string_types) else value
 
 					for val in vallist:
 						if val in current_values:
