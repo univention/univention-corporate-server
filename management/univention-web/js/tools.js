@@ -104,6 +104,7 @@ define([
 			username: null,
 			hostname: '',
 			domainname: '',
+			abtesting: false,
 			overview: true,
 			setupGui: false,
 			loggingIn: false,
