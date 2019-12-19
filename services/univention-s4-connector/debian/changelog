@@ -1,3 +1,10 @@
+univention-s4-connector (13.0.2-63) unstable; urgency=medium
+
+  * Bug #50644: turn self.group_members_cache_* into a set() to avoid
+    unbound resource consumption due to unlimted appending to lists.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Dec 2019 11:17:58 +0100
+
 univention-s4-connector (13.0.2-62) unstable; urgency=medium
 
   * Bug #49838: translations
