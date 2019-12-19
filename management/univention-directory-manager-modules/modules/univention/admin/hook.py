@@ -33,6 +33,7 @@ import sys
 import io
 import os
 import traceback
+import six
 
 import univention.debug as ud
 from univention.admin import localization
@@ -179,7 +180,7 @@ class AttributeHook(simpleHook):
 
 		:param obj: The |UDM| object instance.
 		"""
-		assert isinstance(self.udm_attribute_name, basestring), "udm_attribute_name has to be a str"
+		assert isinstance(self.udm_attribute_name, six.string_types), "udm_attribute_name has to be a str"  # noqa: F821
 		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
 		old_value = obj[self.udm_attribute_name]
 		new_value = self.map_attribute_value_to_udm(old_value)
@@ -204,7 +205,7 @@ class AttributeHook(simpleHook):
 		:param ml: The modification list to extend.
 		:returns: The extended modification list.
 		"""
-		assert isinstance(self.ldap_attribute_name, basestring), "ldap_attribute_name has to be a str"
+		assert isinstance(self.ldap_attribute_name, six.string_types), "ldap_attribute_name has to be a str"  # noqa: F821
 		new_ml = []
 		for ml_value in ml:
 			if len(ml_value) == 2:
