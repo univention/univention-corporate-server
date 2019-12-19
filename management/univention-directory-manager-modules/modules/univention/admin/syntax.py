@@ -55,6 +55,8 @@ from io import BytesIO
 import locale
 from operator import itemgetter
 
+import six
+
 import univention.debug as ud
 import univention.admin.modules
 import univention.admin.uexceptions
@@ -295,7 +297,7 @@ class MultiSelect(ISyntax):
 	def parse(self, value):
 		# type: (Any) -> List[str]
 		# required for UDM CLI
-		if isinstance(value, basestring):
+		if isinstance(value, six.string_types):
 			value = map(lambda x: x, shlex.split(value))
 
 		if not self.empty_value and not value:
@@ -407,7 +409,7 @@ class complex(ISyntax):
 			if len(self.subsyntaxes) != len(texts) or not all(texts):
 				return ''
 
-		if isinstance(self.delimiter, basestring):
+		if isinstance(self.delimiter, six.string_types):
 			return self.delimiter.join(texts)
 
 		# FIXME: s/(delimiter)s/\1/
@@ -2041,7 +2043,7 @@ class dnsName(simple):
 	def parse(self, text):
 		if not text:
 			raise univention.admin.uexceptions.valueError(_("Missing value!"))
-		assert isinstance(text, basestring)
+		assert isinstance(text, six.string_types)
 		if not 1 <= len(text) <= 253:
 			raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
 		labels = (text[:-1] if text.endswith('.') else text).split('.')
@@ -4124,7 +4126,7 @@ class SambaLogonHours(MultiSelect):
 	@classmethod
 	def parse(self, value):
 		# required for UDM CLI: in this case the keys MUST be of type int
-		if isinstance(value, basestring):
+		if isinstance(value, six.string_types):
 			value = map(lambda x: int(x), shlex.split(value))
 
 		return MultiSelect.parse.im_func(self, value)
@@ -4868,7 +4870,7 @@ class PortalCategorySelection(simple):
 
 	@classmethod
 	def parse(self, texts, minn=None):
-		if isinstance(texts, basestring):  # for UDM-CLI
+		if isinstance(texts, six.string_types):  # for UDM-CLI
 			try:
 				texts = json.loads(texts)
 			except ValueError:
