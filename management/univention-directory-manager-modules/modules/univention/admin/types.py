@@ -35,6 +35,7 @@ import inspect
 import time
 import datetime
 
+import six
 import ldap.dn
 
 import univention.admin.uexceptions
@@ -43,6 +44,11 @@ import univention.debug as ud
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
+
+
+if six.PY3:
+	unicode = str
+	long = int
 
 
 class TypeHint(object):
@@ -599,7 +605,7 @@ class SambaLogonHours(ListType):
 	_weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
 	def decode_value(self, value):
-		return ['{} {}-{}'.format(self._weekdays[v / 24], v % 24, v % 24 + 1) for v in value]
+		return ['{} {}-{}'.format(self._weekdays[v // 24], v % 24, v % 24 + 1) for v in value]
 
 	def encode_value(self, value):
 		try:
