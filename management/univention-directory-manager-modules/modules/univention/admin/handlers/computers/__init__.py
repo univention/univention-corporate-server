@@ -31,9 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)
-
 import os.path
+import importlib
+
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)
 
 computers = []
 
@@ -41,8 +42,9 @@ computers = []
 def __walk(root, dir, files):
 	for file_ in files:
 		if file_.endswith('.py') and not file_.startswith('__') and file_ not in ('computer.py',):
-			computers.append(__import__(file_[: -3], globals(), locals(), ['']))
+			computers.append(importlib.import_module('univention.admin.handlers.policies.%s' % (file_[: -3],)))
 
 
 path = os.path.abspath(os.path.dirname(__file__))
-os.path.walk(path, __walk, path)
+for w_root, w_dirs, w_files in os.walk(path):
+	__walk(w_root, w_root, w_files)
