@@ -382,6 +382,8 @@ class access(object):
 		self.lo.start_tls_s()
 
 	def __encode(self, value):
+		if six.PY3:
+			return value
 		if value is None:
 			return value
 		elif six.PY2 and isinstance(value, unicode):  # noqa: F821
@@ -392,11 +394,15 @@ class access(object):
 			return value
 
 	def __recode_attribute(self, attr, val):
+		if six.PY3:
+			return val
 		if attr in self.decode_ignorelist:
 			return val
 		return self.__encode(val)
 
 	def __recode_entry(self, entry):
+		if six.PY3:
+			return entry
 		if isinstance(entry, tuple) and len(entry) == 3:
 			return (entry[0], entry[1], self.__recode_attribute(entry[1], entry[2]))
 		elif isinstance(entry, tuple) and len(entry) == 2:
