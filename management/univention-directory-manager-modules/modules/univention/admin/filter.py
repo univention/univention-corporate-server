@@ -29,9 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from ldap.filter import filter_format
 import re
 import univention.admin.uexceptions
+
+import six
+from ldap.filter import filter_format
 
 
 class conjunction(object):
@@ -63,7 +65,7 @@ class conjunction(object):
 		"""
 		if not self.expressions:
 			return ''
-		return '(%s%s)' % (self.type, ''.join(map(unicode, self.expressions)))
+		return '(%s%s)' % (self.type, ''.join(map(six.text_type, self.expressions)))
 
 	def __unicode__(self):
 		return self.__str__()
@@ -173,7 +175,7 @@ def parse(filter_s, begin=0, end=-1):
 	conjunction('&', [expression('key', 'va)!(ue', '=')])
 	"""
 	# filter is already parsed
-	if not isinstance(filter_s, basestring):
+	if not isinstance(filter_s, six.string_types):
 		return filter_s
 
 	def split(str):
@@ -268,7 +270,7 @@ def replace_fqdn_filter(filter_s):
 	>>> replace_fqdn_filter('(|(fqdn=host.domain.tld)(fqdn=other.domain.tld2))')
 	'(|(&(cn=host)(associatedDomain=domain.tld))(&(cn=other)(associatedDomain=domain.tld2)))'
 	"""
-	if not isinstance(filter_s, basestring):
+	if not isinstance(filter_s, six.string_types):
 		return filter_s
 	return FQDN_REGEX.sub(_replace_fqdn_filter, filter_s)
 

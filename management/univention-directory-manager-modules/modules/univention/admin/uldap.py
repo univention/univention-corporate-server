@@ -70,7 +70,7 @@ class DN(object):
 		return ldap.dn.dn2str(self._dn)
 
 	def __unicode__(self):
-		return unicode(str(self))
+		return unicode(str(self))  # noqa: F821
 
 	def __repr__(self):
 		return '<%s %r>' % (type(self).__name__, str(self),)
