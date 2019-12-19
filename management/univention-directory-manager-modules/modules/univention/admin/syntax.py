@@ -1243,7 +1243,9 @@ class IA5string(string):
 	@classmethod
 	def parse(self, text):
 		try:
-			text.decode("utf-8").encode('ascii')
+			if isinstance(text, bytes):
+				text = text.decode('UTF-8')
+			text.encode('ascii')
 		except UnicodeEncodeError:
 			raise univention.admin.uexceptions.valueError(_("Field must only contain ASCII characters!"))
 		return text
@@ -1314,9 +1316,11 @@ class uid_umlauts(simple):
 
 	@classmethod
 	def parse(self, text):
-		if " " in text:
+		if isinstance(text, bytes):
+			text = text.decode('UTF-8')
+		if u" " in text:
 			raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
-		if self._re.match(text.decode("utf-8")) is not None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
@@ -1332,12 +1336,12 @@ class uid_umlauts_lower_except_first_letter(simple):
 
 	@classmethod
 	def parse(self, text):
-		unicode_text = text.decode("utf-8")
-		for c in unicode_text[1:]:
-			if c.isupper():
-				raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
+		if isinstance(text, bytes):
+			text = text.decode('UTF-8')
+		if any(c.isupper() for c in text[1:]):
+			raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
 
-		if self._re.match(unicode_text) is not None:
+		if self._re.match(text) is not None:
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
