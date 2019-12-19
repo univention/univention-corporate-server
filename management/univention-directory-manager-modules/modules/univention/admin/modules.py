@@ -271,13 +271,13 @@ def update_extended_options(lo, module, position):
 
 	# append UDM extended options
 	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
-		oname = attrs['cn'][0]
+		oname = attrs['cn'][0].decode('UTF-8', 'replace')
 		shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
 		longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
-		default = attrs.get('univentionUDMOptionDefault', ['0'])[0] == '1'
-		editable = attrs.get('univentionUDMOptionEditable', ['0'])[0] == '1'
-		classes = attrs.get('univentionUDMOptionObjectClass', [])
-		is_app_option = attrs.get('univentionUDMOptionIsApp', ['0'])[0] == '1'
+		default = attrs.get('univentionUDMOptionDefault', [b'0'])[0] == b'1'
+		editable = attrs.get('univentionUDMOptionEditable', [b'0'])[0] == b'1'
+		classes = [x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMOptionObjectClass', [])]
+		is_app_option = attrs.get('univentionUDMOptionIsApp', [b'0'])[0] == b'1'
 
 		if not hasattr(module, 'options'):
 			module.options = {}
@@ -362,13 +362,13 @@ def update_extended_attributes(lo, module, position):
 
 	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
 		# get CLI name
-		pname = attrs['univentionUDMPropertyCLIName'][0]
-		object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0]
-		if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and 'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
+		pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
+		object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
+		if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
 			continue  # since "mail" is a default option, creating a usertemplate with any mail attribute would raise Object class violation: object class 'univentionMail' requires attribute 'uid'
 
 		# get syntax
-		propertySyntaxString = attrs.get('univentionUDMPropertySyntax', [''])[0]
+		propertySyntaxString = attrs.get('univentionUDMPropertySyntax', [b''])[0].decode('utf-8', 'replace')
 		if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString):
 			propertySyntax = getattr(univention.admin.syntax, propertySyntaxString)
 		else:
@@ -378,7 +378,7 @@ def update_extended_attributes(lo, module, position):
 				propertySyntax = univention.admin.syntax.string()
 
 		# get hooks
-		propertyHookString = attrs.get('univentionUDMPropertyHook', [''])[0]
+		propertyHookString = attrs.get('univentionUDMPropertyHook', [b''])[0].decode('utf-8', 'replace')
 		propertyHook = None
 		if propertyHookString and hasattr(univention.admin.hook, propertyHookString):
 			propertyHook = getattr(univention.admin.hook, propertyHookString)()
@@ -387,32 +387,32 @@ def update_extended_attributes(lo, module, position):
 			register_ldap_connection(lo, position)
 
 		# get default value
-		propertyDefault = attrs.get('univentionUDMPropertyDefault', [None])
+		propertyDefault = [x.decode('UTF-8') if x is not None else x for x in attrs.get('univentionUDMPropertyDefault', [None])]
 
 		# value may change
 		try:
-			mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', ['0'])[0])
+			mayChange = int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0])
 		except:
 			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
 			mayChange = 0
 
 		# value is editable (only via hooks or direkt module.info[] access)
-		editable = attrs.get('univentionUDMPropertyValueNotEditable', ['0'])[0] not in ['1', 'TRUE']
+		editable = attrs.get('univentionUDMPropertyValueNotEditable', [b'0'])[0] not in [b'1', b'TRUE']
 
-		copyable = attrs.get('univentionUDMPropertyCopyable', ['0'])[0] not in ['1', 'TRUE']
+		copyable = attrs.get('univentionUDMPropertyCopyable', [b'0'])[0] not in [b'1', b'TRUE']
 
 		# value is required
-		valueRequired = (attrs.get('univentionUDMPropertyValueRequired', ['0'])[0].upper() in ['1', 'TRUE'])
+		valueRequired = (attrs.get('univentionUDMPropertyValueRequired', [b'0'])[0].upper() in [b'1', b'TRUE'])
 
 		# value not available for searching
 		try:
-			doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', ['0'])[0])
+			doNotSearch = int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0])
 		except:
 			ud.debug(ud.ADMIN, ud.ERROR, 'modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
 			doNotSearch = 0
 
 		# check if CA is multivalue property
-		if attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1':
+		if attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1':
 			multivalue = 1
 			map_method = None
 			unmap_method = None
@@ -427,7 +427,7 @@ def update_extended_attributes(lo, module, position):
 			propertyDefault = propertyDefault[0]
 
 		# Show this attribute in UDM/UMC?
-		if attrs.get('univentionUDMPropertyLayoutDisable', [''])[0] == '1':
+		if attrs.get('univentionUDMPropertyLayoutDisable', [b''])[0] == b'1':
 			layoutDisabled = True
 		else:
 			layoutDisabled = False
@@ -441,13 +441,13 @@ def update_extended_attributes(lo, module, position):
 		longdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationLongDescription;entry-%s', 'univentionUDMPropertyLongDescription')
 
 		# create property
-		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', ['0'])[0].upper() in ['1', 'TRUE'])
+		fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE'])
 		module.property_descriptions[pname] = univention.admin.property(
 			short_description=shortdesc,
 			long_description=longdesc,
 			syntax=propertySyntax,
 			multivalue=multivalue,
-			options=attrs.get('univentionUDMPropertyOptions', []),
+			options=[x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMPropertyOptions', [])],
 			required=valueRequired,
 			may_change=mayChange,
 			dontsearch=doNotSearch,
@@ -459,30 +459,30 @@ def update_extended_attributes(lo, module, position):
 		)
 
 		# add LDAP mapping
-		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != 'objectClass'.lower():
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], unmap_method, map_method)
+		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != b'objectClass'.lower():
+			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace'), unmap_method, map_method)
 		else:
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], univention.admin.mapping.nothing, univention.admin.mapping.nothing)
+			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace'), univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 
 		if hasattr(module, 'layout'):
 			tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
-			overwriteTab = (attrs.get('univentionUDMPropertyLayoutOverwriteTab', ['0'])[0].upper() in ['1', 'TRUE'])
+			overwriteTab = (attrs.get('univentionUDMPropertyLayoutOverwriteTab', [b'0'])[0].upper() in [b'1', b'TRUE'])
 			# in the first generation of extended attributes of version 2
 			# this field was a position defining the attribute to
 			# overwrite. now it is the name of the attribute to overwrite
-			overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [''])[0]
+			overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')
 			if overwriteProp == '0':
 				overwriteProp = None
-			deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', ['0'])[0].upper() in ['1', 'TRUE'])
-			tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', ['0'])[0].upper() in ['1', 'TRUE'])
+			deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE'])
+			tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'])[0].upper() in [b'1', b'TRUE'])
 
 			groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
 			try:
-				groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', ['-1'])[0])
+				groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', [b'-1'])[0])
 			except TypeError:
 				groupPosition = 0
 
-			ud.debug(ud.ADMIN, ud.INFO, 'update_extended_attributes: extended attribute (LDAP): %s' % str(attrs))
+			ud.debug(ud.ADMIN, ud.INFO, 'update_extended_attributes: extended attribute (LDAP): %r' % (attrs,))
 
 			# only one is possible ==> overwriteTab wins
 			if overwriteTab and overwriteProp:
@@ -500,7 +500,7 @@ def update_extended_attributes(lo, module, position):
 			if not layoutDisabled:
 				# get position on tab
 				# -1 == append on top
-				priority = attrs.get('univentionUDMPropertyLayoutPosition', ['-1'])[0]
+				priority = attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0].decode('UTF-8', 'replace')
 				try:
 					priority = int(priority)
 					if priority < 1:
@@ -530,7 +530,7 @@ def update_extended_attributes(lo, module, position):
 			module.extended_udm_attributes.append(univention.admin.extended_attribute(
 				name=pname,
 				objClass=object_class,
-				ldapMapping=attrs['univentionUDMPropertyLdapMapping'][0],
+				ldapMapping=attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace'),
 				deleteObjClass=deleteObjectClass,
 				syntax=propertySyntaxString,
 				hook=propertyHook
@@ -640,8 +640,8 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
 	"""
 	global modules
 	res = []  # type: List[UdmModule]
-	if 'univentionObjectType' in attr and attr['univentionObjectType'] and attr['univentionObjectType'][0] in modules:
-		res.append(modules.get(attr['univentionObjectType'][0]))
+	if 'univentionObjectType' in attr and attr['univentionObjectType'] and attr['univentionObjectType'][0].decode('ASCII', 'replace') in modules:
+		res.append(modules.get(attr['univentionObjectType'][0].decode('ASCII', 'replace')))
 	else:
 		for name, module in modules.items():
 			if module_base is not None and not name.startswith(module_base):
@@ -1143,16 +1143,16 @@ def childModules(module_name):
 	return copy.deepcopy(getattr(module, 'childmodules', []))
 
 
-def _get_translation(locale, attrs, name, defaultname, default=''):
+def _get_translation(locale, attrs, name, defaultname, default=u''):
 	if locale:
-		locale = locale.replace('_', '-').lower()
+		locale = locale.replace(u'_', u'-').lower()
 		if name % (locale,) in attrs:
-			return attrs[name % (locale,)][0]
-		locale = locale.split('-', 1)[0]
+			return attrs[name % (locale,)][0].decode('UTF-8', 'replace')
+		locale = locale.split(u'-', 1)[0]
 		name_short_lang = name % (locale,)
 		if name_short_lang in attrs:
-			return attrs[name_short_lang][0]
+			return attrs[name_short_lang][0].decode('UTF-8', 'replace')
 		for key in attrs:
 			if key.startswith(name_short_lang):
-				return attrs[key][0]
-	return attrs.get(defaultname, [default])[0]
+				return attrs[key][0].decode('UTF-8', 'replace')
+	return attrs.get(defaultname, [default.encode('utf-8')])[0].decode('UTF-8', 'replace')
