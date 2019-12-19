@@ -15,6 +15,7 @@ Variables: umc/http/content-security-policy/connect-src
 Variables: umc/http/content-security-policy/form-action
 Variables: umc/http/content-security-policy/frame-ancestors
 Variables: umc/web/piwik
+Variables: umc/web/abtesting
 Variables: updater/maintenance
 
 Type: file
