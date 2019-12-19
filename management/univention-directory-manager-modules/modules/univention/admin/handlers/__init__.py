@@ -404,7 +404,7 @@ class simpleLdap(object):
 		if self.descriptions[key].multivalue:
 
 			# make sure value is list
-			if isinstance(value, basestring):
+			if isinstance(value, six.string_types):
 				value = [value]
 			elif not isinstance(value, list):
 				raise univention.admin.uexceptions.valueInvalidSyntax(_('The property %s must be a list') % (self.descriptions[key].short_description,), property=key)
@@ -1253,7 +1253,7 @@ class simpleLdap(object):
 		for i in al:
 			key, val = i[0], i[-1]  # might be a triple
 			if val and key.lower() == 'objectclass':
-				ocs -= set([val] if isinstance(val, basestring) else val)  # TODO: basestring → bytes
+				ocs -= set([val] if isinstance(val, six.string_types) else val)  # TODO: six.string_types → bytes
 		if ocs:
 			al.append(('objectClass', [x.encode('UTF-8') for x in ocs]))
 
@@ -1713,7 +1713,7 @@ class simpleLdap(object):
 		filter_s = cls.lookup_filter(filter_s, lo)
 		if superordinate:
 			filter_s = cls.lookup_filter_superordinate(filter_s, superordinate)
-		filter_str = unicode(filter_s or u'')
+		filter_str = six.text_type(filter_s or u'')
 		attr = cls._ldap_attributes()
 		result = []
 		for dn, attrs in lo.search(filter_str, base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
@@ -3630,8 +3630,8 @@ class _MergedAttributes(object):
 		for (att, old, new) in self.modlist:
 			if att.lower() != attr.lower():
 				continue
-			new = [] if not new else [new] if isinstance(new, basestring) else new
-			old = [] if not old else [old] if isinstance(old, basestring) else old
+			new = [] if not new else [new] if isinstance(new, six.string_types) else new
+			old = [] if not old else [old] if isinstance(old, six.string_types) else old
 			if not old and new:  # MOD_ADD
 				values |= set(new)
 			elif not new and old:  # MOD_DELETE
