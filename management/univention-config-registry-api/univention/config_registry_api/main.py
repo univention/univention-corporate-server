@@ -3,8 +3,12 @@ from typing import List
 from fastapi import Body, Depends, FastAPI, HTTPException, Query
 from pydantic import BaseModel
 from starlette.status import HTTP_201_CREATED
-
-from univention.config_registry import ConfigRegistry, handler_search, handler_set
+from univention.config_registry import (
+    ConfigRegistry,
+    handler_search,
+    handler_set,
+    handler_unset,
+)
 
 app = FastAPI()
 
@@ -66,13 +70,21 @@ async def post(
 
 
 @app.put("/{key}", response_model=List[UCRVar])
-async def put(key: str, value: str = Body(...), ucr: ConfigRegistry = Depends(get_ucr)):
+async def put(
+    key: str, value: str = Body(default=None), ucr: ConfigRegistry = Depends(get_ucr)
+):
     """
     Set or unset a UCR variable.
 
     **value**: The new value, null will unset (delete) the UCR variable
     """
-    pass
+    if type(value) == str:
+        handler_set([f"{key}={value}"])
+    else:
+        handler_unset([key])
+    ucr.load()
+    ucr_value = ucr.get(key)
+    return UCRVar(key=key, value=ucr_value)
 
 
 @app.delete("/{key}")
