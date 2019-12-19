@@ -564,7 +564,7 @@ class simpleLdap(object):
 
 	def _get_admin_diary_args_names(self, event):
 		ret = []
-		for name, prop in self.descriptions.iteritems():
+		for name, prop in self.descriptions.items():
 			if name in event.args:
 				ret.append(name)
 		return ret
@@ -573,7 +573,7 @@ class simpleLdap(object):
 		args = {'module': self.module}
 		if event.name.startswith('UDM_GENERIC_'):
 			value = self.dn
-			for k, v in self.descriptions.iteritems():
+			for k, v in self.descriptions.items():
 				if v.identifies:
 					value = self[k]
 					break
@@ -1085,7 +1085,7 @@ class simpleLdap(object):
 		options = univention.admin.modules.options(self.module)
 		if 'objectClass' in self.oldattr:
 			ocs = set(map(lambda x: x.decode('UTF-8'), self.oldattr['objectClass']))
-			for opt, option in options.iteritems():
+			for opt, option in options.items():
 				if not option.disabled and option.matches(ocs) and self.__app_option_enabled(opt, option):
 					self.options.append(opt)
 		else:
@@ -1138,7 +1138,7 @@ class simpleLdap(object):
 
 	def __app_option_enabled(self, name, option):
 		if option.is_app_option:
-			return all(self[pname] in ('TRUE', '1', 'OK') for pname, prop in self.descriptions.iteritems() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'))
+			return all(self[pname] in ('TRUE', '1', 'OK') for pname, prop in self.descriptions.items() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'))
 		return True
 
 	def description(self):  # type: () -> str
