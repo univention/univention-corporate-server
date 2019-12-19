@@ -27,7 +27,7 @@ def get_ucr() -> ConfigRegistry:
 @app.get("/", response_model=List[UCRVar])
 async def search(
     pattern: str = Query(
-        None,
+        default="",
         description="Pattern to search UCR variables with. If empty, all UCR "
         "variables will be returned. '.*' will be prepended / "
         "appended, if the pattern does not start / end with '^' / "
@@ -47,13 +47,13 @@ async def search(
     return result
 
 
-@app.get("/{var_name:path}", response_model=UCRVar)
-async def get(var_name: str, ucr: ConfigRegistry = Depends(get_ucr)) -> UCRVar:
+@app.get("/{key:path}", response_model=UCRVar)
+async def get(key: str, ucr: ConfigRegistry = Depends(get_ucr)) -> UCRVar:
     """
     Retrieve the value of a UCR variable.
     """
-    ucr_value = ucr.get(var_name)
-    return UCRVar(key=var_name, value=ucr_value)
+    ucr_value = ucr.get(key)
+    return UCRVar(key=key, value=ucr_value)
 
 
 @app.post("/", status_code=HTTP_201_CREATED, response_model=List[UCRVar])
