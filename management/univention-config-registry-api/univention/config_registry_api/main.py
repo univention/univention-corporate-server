@@ -9,8 +9,19 @@ from univention.config_registry import (
     handler_set,
     handler_unset,
 )
+from . import __version__
 
-app = FastAPI()
+
+URL_API_PREFIX = "ucr-api"
+
+app = FastAPI(
+    title="Kelvin API",
+    description="UCS@school objects HTTP API",
+    version=__version__,
+    docs_url=f"{URL_API_PREFIX}/docs",
+    redoc_url=f"{URL_API_PREFIX}/redoc",
+    openapi_url=f"{URL_API_PREFIX}/openapi.json",
+)
 
 
 class UCRVar(BaseModel):
@@ -24,7 +35,7 @@ def get_ucr() -> ConfigRegistry:
     return ucr
 
 
-@app.get("/", response_model=List[UCRVar])
+@app.get("ucr/", response_model=List[UCRVar])
 async def search(
     pattern: str = Query(
         default="",
@@ -47,7 +58,7 @@ async def search(
     return result
 
 
-@app.get("/{key:path}", response_model=UCRVar)
+@app.get("ucr/{key:path}", response_model=UCRVar)
 async def get(key: str, ucr: ConfigRegistry = Depends(get_ucr)) -> UCRVar:
     """
     Retrieve the value of a UCR variable.
@@ -56,7 +67,7 @@ async def get(key: str, ucr: ConfigRegistry = Depends(get_ucr)) -> UCRVar:
     return UCRVar(key=key, value=ucr_value)
 
 
-@app.post("/", status_code=HTTP_201_CREATED, response_model=List[UCRVar])
+@app.post("ucr/", status_code=HTTP_201_CREATED, response_model=List[UCRVar])
 async def post(
     ucr_vars: List[UCRVar], ucr: ConfigRegistry = Depends(get_ucr)
 ) -> List[UCRVar]:
@@ -69,7 +80,7 @@ async def post(
     pass
 
 
-@app.put("/{key}", response_model=List[UCRVar])
+@app.put("ucr/{key}", response_model=List[UCRVar])
 async def put(
     key: str, value: str = Body(default=None), ucr: ConfigRegistry = Depends(get_ucr)
 ):
@@ -87,7 +98,7 @@ async def put(
     return UCRVar(key=key, value=ucr_value)
 
 
-@app.delete("/{key}")
+@app.delete("ucr/{key}")
 async def delete(key: str, ucr: ConfigRegistry = Depends(get_ucr)):
     """
     Unset (delete) a UCR variable.
