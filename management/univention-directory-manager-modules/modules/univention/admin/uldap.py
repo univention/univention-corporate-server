@@ -228,7 +228,9 @@ class domain(object):
 		:returns: The name of the Kerberos realm.
 		:rtype: str
 		"""
-		return self.domain.get('krb5RealmName', [None])[0]
+		if 'krb5RealmName' not in self.domain:
+			return
+		return self.domain['krb5RealmName'][0].decode('ASCII')
 
 
 class position(object):
