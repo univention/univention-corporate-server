@@ -130,16 +130,18 @@ def pattern_replace(pattern, object):
 			elif iCmd == 'upper':
 				text = text.upper()
 			elif iCmd == 'umlauts':
+				if isinstance(text, bytes):
+					text = text.decode('UTF-8')
 				for umlaut, code in property.UMLAUTS.items():
-					text = text.replace(umlaut, code)
+					text = text.replace(umlaut.decode('utf-8'), code.decode('utf-8'))
 
-				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
+				text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
-				if not type(whitelist) == unicode:
-					whitelist = unicode(whitelist, 'utf-8')
-				if not type(text) == unicode:
-					text = unicode(text, 'utf-8')
+				if isinstance(whitelist, bytes):  # Python 2
+					whitelist = whitelist.decode('UTF-8')
+				if isinstance(text, bytes):
+					text = text.decode('UTF-8')
 				text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
@@ -189,68 +191,68 @@ def pattern_replace(pattern, object):
 
 class property:
 	UMLAUTS = {
-		'À': 'A',
-		'Á': 'A',
-		'Â': 'A',
-		'Ã': 'A',
-		'Ä': 'Ae',
-		'Å': 'A',
-		'Æ': 'AE',
-		'Ç': 'C',
-		'È': 'E',
-		'É': 'E',
-		'Ê': 'E',
-		'Ë': 'E',
-		'Ì': 'I',
-		'Í': 'I',
-		'Î': 'I',
-		'Ï': 'I',
-		'Ð': 'D',
-		'Ñ': 'N',
-		'Ò': 'O',
-		'Ó': 'O',
-		'Ô': 'O',
-		'Õ': 'O',
-		'Ö': 'Oe',
-		'Ø': 'O',
-		'Ù': 'U',
-		'Ú': 'U',
-		'Û': 'U',
-		'Ü': 'Ue',
-		'Ý': 'Y',
-		'Þ': 'P',
-		'ß': 'ss',
-		'à': 'a',
-		'á': 'a',
-		'â': 'a',
-		'ã': 'a',
-		'ä': 'ae',
-		'å': 'a',
-		'æ': 'ae',
-		'ç': 'c',
-		'è': 'e',
-		'é': 'e',
-		'ê': 'e',
-		'ë': 'e',
-		'ì': 'i',
-		'í': 'i',
-		'î': 'i',
-		'ï': 'i',
-		'ð': 'o',
-		'ñ': 'n',
-		'ò': 'o',
-		'ó': 'o',
-		'ô': 'o',
-		'õ': 'o',
-		'ö': 'oe',
-		'ø': 'o',
-		'ù': 'u',
-		'ú': 'u',
-		'û': 'u',
-		'ü': 'ue',
-		'ý': 'y',
-		'þ': 'p',
-		'ÿ': 'y'
+		u'À'.encode('utf-8'): b'A',
+		u'Á'.encode('utf-8'): b'A',
+		u'Â'.encode('utf-8'): b'A',
+		u'Ã'.encode('utf-8'): b'A',
+		u'Ä'.encode('utf-8'): b'Ae',
+		u'Å'.encode('utf-8'): b'A',
+		u'Æ'.encode('utf-8'): b'AE',
+		u'Ç'.encode('utf-8'): b'C',
+		u'È'.encode('utf-8'): b'E',
+		u'É'.encode('utf-8'): b'E',
+		u'Ê'.encode('utf-8'): b'E',
+		u'Ë'.encode('utf-8'): b'E',
+		u'Ì'.encode('utf-8'): b'I',
+		u'Í'.encode('utf-8'): b'I',
+		u'Î'.encode('utf-8'): b'I',
+		u'Ï'.encode('utf-8'): b'I',
+		u'Ð'.encode('utf-8'): b'D',
+		u'Ñ'.encode('utf-8'): b'N',
+		u'Ò'.encode('utf-8'): b'O',
+		u'Ó'.encode('utf-8'): b'O',
+		u'Ô'.encode('utf-8'): b'O',
+		u'Õ'.encode('utf-8'): b'O',
+		u'Ö'.encode('utf-8'): b'Oe',
+		u'Ø'.encode('utf-8'): b'O',
+		u'Ù'.encode('utf-8'): b'U',
+		u'Ú'.encode('utf-8'): b'U',
+		u'Û'.encode('utf-8'): b'U',
+		u'Ü'.encode('utf-8'): b'Ue',
+		u'Ý'.encode('utf-8'): b'Y',
+		u'Þ'.encode('utf-8'): b'P',
+		u'ß'.encode('utf-8'): b'ss',
+		u'à'.encode('utf-8'): b'a',
+		u'á'.encode('utf-8'): b'a',
+		u'â'.encode('utf-8'): b'a',
+		u'ã'.encode('utf-8'): b'a',
+		u'ä'.encode('utf-8'): b'ae',
+		u'å'.encode('utf-8'): b'a',
+		u'æ'.encode('utf-8'): b'ae',
+		u'ç'.encode('utf-8'): b'c',
+		u'è'.encode('utf-8'): b'e',
+		u'é'.encode('utf-8'): b'e',
+		u'ê'.encode('utf-8'): b'e',
+		u'ë'.encode('utf-8'): b'e',
+		u'ì'.encode('utf-8'): b'i',
+		u'í'.encode('utf-8'): b'i',
+		u'î'.encode('utf-8'): b'i',
+		u'ï'.encode('utf-8'): b'i',
+		u'ð'.encode('utf-8'): b'o',
+		u'ñ'.encode('utf-8'): b'n',
+		u'ò'.encode('utf-8'): b'o',
+		u'ó'.encode('utf-8'): b'o',
+		u'ô'.encode('utf-8'): b'o',
+		u'õ'.encode('utf-8'): b'o',
+		u'ö'.encode('utf-8'): b'oe',
+		u'ø'.encode('utf-8'): b'o',
+		u'ù'.encode('utf-8'): b'u',
+		u'ú'.encode('utf-8'): b'u',
+		u'û'.encode('utf-8'): b'u',
+		u'ü'.encode('utf-8'): b'ue',
+		u'ý'.encode('utf-8'): b'y',
+		u'þ'.encode('utf-8'): b'p',
+		u'ÿ'.encode('utf-8'): b'y'
 	}
 
 	def __init__(
