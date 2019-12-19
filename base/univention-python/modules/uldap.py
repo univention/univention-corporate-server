@@ -576,9 +576,9 @@ class access(object):
 		else:
 			oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
 		if attrs and 'univentionPolicyReference' in attrs:
-			policies = attrs['univentionPolicyReference']
+			policies = [x.decode('utf-8') for x in attrs['univentionPolicyReference']]
 		elif not policies and not attrs:
-			policies = oattrs.get('univentionPolicyReference', [])
+			policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
 
 		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
@@ -595,7 +595,7 @@ class access(object):
 					parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
 				except ldap.NO_SUCH_OBJECT:
 					break
-				policies = parent.get('univentionPolicyReference', [])
+				policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
 
 		univention.debug.debug(
 			univention.debug.LDAP, univention.debug.INFO,
@@ -603,7 +603,7 @@ class access(object):
 		return result
 
 	def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
-		# type: (str, str, Set[str], Dict[str, Dict[str, Any]]) -> None
+		# type: (str, str, Set[bytes], Dict[str, Dict[str, Any]]) -> None
 		"""
 		Merge policies into result.
 
@@ -617,14 +617,14 @@ class access(object):
 			return
 
 		try:
-			classes = set(pattrs['objectClass']) - set(('top', 'univentionPolicy', 'univentionObject'))
-			ptype = classes.pop()
+			classes = set(pattrs['objectClass']) - {b'top', b'univentionPolicy', b'univentionObject'}
+			ptype = classes.pop().decode('utf-8')
 		except KeyError:
 			return
 
 		if pattrs.get('ldapFilter'):
 			try:
-				self.search(pattrs['ldapFilter'][0], base=obj_dn, scope='base', unique=True, required=True)
+				self.search(pattrs['ldapFilter'][0].decode('utf-8'), base=obj_dn, scope='base', unique=True, required=True)
 			except ldap.NO_SUCH_OBJECT:
 				return
 
@@ -633,22 +633,20 @@ class access(object):
 		if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
 			return
 
-		fixed = set(pattrs.get('fixedAttributes', ()))
-		empty = set(pattrs.get('emptyAttributes', ()))
+		fixed = set(x.decode('utf-8') for x in pattrs.get('fixedAttributes', ()))
+		empty = set(x.decode('utf-8') for x in pattrs.get('emptyAttributes', ()))
 		values = result.setdefault(ptype, {})
-		for key in list(empty) + pattrs.keys() + list(fixed):
-			if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
-				continue
-
+		SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
+		for key in (empty | set(pattrs) | fixed) - SKIP:
 			if key not in values or key in fixed:
 				value = [] if key in empty else pattrs.get(key, [])
 				univention.debug.debug(
 					univention.debug.LDAP, univention.debug.INFO,
-					"getPolicies: %s sets: %s=%s" % (policy_dn, key, value))
+					"getPolicies: %s sets: %s=%r" % (policy_dn, key, value))
 				values[key] = {
 					'policy': policy_dn,
 					'value': value,
-					'fixed': 1 if key in fixed else 0,
+					'fixed': key in fixed,
 				}
 
 	@_fix_reconnect_handling
