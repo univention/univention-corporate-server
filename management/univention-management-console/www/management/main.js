@@ -46,6 +46,7 @@ define([
 	"dojo/promise/all",
 	"dojo/cookie",
 	"dojo/topic",
+	"dojo/when",
 	"dojo/io-query",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
@@ -90,7 +91,7 @@ define([
 	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, win, on, mouse, touch, tap, aspect, has,
-		Evented, Deferred, all, cookie, topic, ioQuery, Memory, Observable,
+		Evented, Deferred, all, cookie, topic, when, ioQuery, Memory, Observable,
 		dom, domAttr, domClass, domGeometry, domConstruct, style, put, hash, styles, entities, gfx, registry, tools, login, dialog, NotificationDropDownButton, NotificationSnackbar, store,
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, ConfirmDialog, i18nTools, _
@@ -1237,7 +1238,7 @@ define([
 		_loadJavascriptModules: function(modules) {
 			// register error handler
 			require.on('error', function(err) {
-				if (err.message === 'scriptError' && err.info[0].split("/").pop(-1) !== 'piwik.js') {
+				if (err.message === 'scriptError' && err.info[0].split("/").pop(-1).indexOf('__ab__') !== -1 && err.info[0].split("/").pop(-1) !== 'piwik.js') {
 					dialog.warn(_('Could not load module "%s".', err.info[0]));
 					console.log('scriptError:', err);
 				}
@@ -1265,26 +1266,36 @@ define([
 			try {
 				var path = 'umc/modules/' + module.id;
 				require([path], lang.hitch(this, function(baseClass) {
-					if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
-						deferred.resolve(baseClass);
-					} else if (baseClass === null) {
-						deferred.cancel(lang.replace('Module could not be loaded: {0}', [path]));
-					} else if (typeof baseClass === 'object') {
-						require([lang.replace('{0}!{1}', [path, module.flavor || ''])], lang.hitch(this, function(baseClass) {
-							if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
-								deferred.resolve(baseClass);
-							} else {
-								deferred.cancel(lang.replace('{0}:{1} is not a umc.widgets._ModuleMixin! (2}', [module.id, module.flavor, baseClass]));
-							}
-						}));
-					} else {
-						deferred.cancel(lang.replace('{0} is not a umc.widgets._ModuleMixin! (1}', [module.id, baseClass]));
-					}
+					when(this._resolveModule(path, module, baseClass)).then(function(mod) {
+						deferred.resolve(mod);
+					}, function(err) {
+						deferred.cancel(err);
+					});
 				}));
 			} catch (err) {
 				deferred.cancel(err);
 			}
 			return deferred;
+		},
+
+		_resolveModule: function(path, module, baseClass) {
+			return when(baseClass).then(lang.hitch(this, function(baseClass) {
+				if (typeof baseClass === "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
+					return baseClass;
+				} else if (baseClass === null) {
+					var deferred = new Deferred();
+					deferred.cancel(lang.replace('Module could not be loaded: {0}', [path]));
+					return deferred;
+				} else if (typeof baseClass === 'object') {
+					require([lang.replace('{0}!{1}', [path, module.flavor || ''])], lang.hitch(this, function(baseClass) {
+						return this._resolveModule(path, module, baseClass);
+					}));
+				} else {
+					var deferred = new Deferred();
+					deferred.cancel(lang.replace('{0}:{1} is not a umc.widgets._ModuleMixin! {1}', [module.id, module.flavor, baseClass]));
+					return deferred;
+				}
+			}));
 		},
 
 		onLoaded: function() {
