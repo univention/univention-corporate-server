@@ -1956,7 +1956,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
 				raise univention.admin.uexceptions.valueError(_('Invalid password.'), property='password')
 
-			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
+			if univention.admin.password.password_is_auth_saslpassthrough(old_password.decode('ASCII')):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
