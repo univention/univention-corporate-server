@@ -29,9 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from ldap.filter import filter_format
 import re
 import univention.admin.uexceptions
+
+import six
+from ldap.filter import filter_format
 
 
 class conjunction(object):
@@ -63,7 +65,7 @@ class conjunction(object):
 		"""
 		if not self.expressions:
 			return ''
-		return '(%s%s)' % (self.type, ''.join(map(unicode, self.expressions)))
+		return '(%s%s)' % (self.type, ''.join(map(six.text_type, self.expressions)))
 
 	def __unicode__(self):
 		return self.__str__()
@@ -173,7 +175,7 @@ def parse(filter_s, begin=0, end=-1):
 	conjunction('&', [expression('key', 'va)!(ue', '=')])
 	"""
 	# filter is already parsed
-	if not isinstance(filter_s, basestring):
+	if not isinstance(filter_s, six.string_types):
 		return filter_s
 
 	def split(str):
@@ -231,15 +233,15 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 
 	>>> filter='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
 	>>> tree = parse(filter)
-	>>> def trace(e, a): print a, e
+	>>> def trace(e, a): print(a, str(e))
 	>>> walk(tree, trace, None, 'e')
-	e (zone=univention.de)
-	e (soa=test)
-	e (nameserver=bar)
+	('e', '(zone=univention.de)')
+	('e', '(soa=test)')
+	('e', '(nameserver=bar)')
 	>>> walk(tree, None, trace, 'c')
-	c (!(zone=univention.de))
-	c (&(!(zone=univention.de))(soa=test))
-	c (|(&(!(zone=univention.de))(soa=test))(nameserver=bar))
+	('c', '(!(zone=univention.de))')
+	('c', '(&(!(zone=univention.de))(soa=test))')
+	('c', '(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))')
 	"""
 	if filter._type_ == 'conjunction':
 		for e in filter.expressions:
@@ -268,7 +270,7 @@ def replace_fqdn_filter(filter_s):
 	>>> replace_fqdn_filter('(|(fqdn=host.domain.tld)(fqdn=other.domain.tld2))')
 	'(|(&(cn=host)(associatedDomain=domain.tld))(&(cn=other)(associatedDomain=domain.tld2)))'
 	"""
-	if not isinstance(filter_s, basestring):
+	if not isinstance(filter_s, six.string_types):
 		return filter_s
 	return FQDN_REGEX.sub(_replace_fqdn_filter, filter_s)
 
