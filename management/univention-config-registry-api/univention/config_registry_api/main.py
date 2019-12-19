@@ -2,17 +2,17 @@ from typing import List
 
 from fastapi import Body, Depends, FastAPI, HTTPException, Query
 from pydantic import BaseModel
-from starlette.status import HTTP_201_CREATED
+from starlette.status import HTTP_204_NO_CONTENT
 from univention.config_registry import (
     ConfigRegistry,
     handler_search,
     handler_set,
     handler_unset,
 )
+
 from . import __version__
 
-
-URL_API_PREFIX = "ucr-api"
+URL_API_PREFIX = "/ucr-api"
 
 app = FastAPI(
     title="Kelvin API",
@@ -67,7 +67,7 @@ async def get(key: str, ucr: ConfigRegistry = Depends(get_ucr)) -> UCRVar:
     return UCRVar(key=key, value=ucr_value)
 
 
-@app.post("ucr/", status_code=HTTP_201_CREATED, response_model=List[UCRVar])
+@app.post("ucr/", response_model=List[UCRVar])
 async def post(
     ucr_vars: List[UCRVar], ucr: ConfigRegistry = Depends(get_ucr)
 ) -> List[UCRVar]:
@@ -77,7 +77,17 @@ async def post(
     **ucr_vars**: A **list of UCRVar** objects to create or update. If the
         value is null, the UCR variable will be unset (deleted).
     """
-    pass
+    params_set = list()
+    params_unset = list()
+    for ucr_var in ucr_vars:
+        if ucr_var.value:
+            params_set.append(f"{ucr_var.key}={ucr_var.value}")
+        else:
+            params_unset.append(ucr_var.key)
+    handler_set(params_set)
+    handler_unset(params_unset)
+    ucr.load()
+    return [UCRVar(key=ucr_var.key, value=ucr.get(ucr_var.key)) for ucr_var in ucr_vars]
 
 
 @app.put("ucr/{key}", response_model=List[UCRVar])
@@ -98,9 +108,10 @@ async def put(
     return UCRVar(key=key, value=ucr_value)
 
 
-@app.delete("ucr/{key}")
-async def delete(key: str, ucr: ConfigRegistry = Depends(get_ucr)):
+@app.delete("ucr/{key}", status_code=HTTP_204_NO_CONTENT)
+async def delete(key: str):
     """
     Unset (delete) a UCR variable.
     """
-    pass
+    handler_unset([key])
+    return None
