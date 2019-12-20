@@ -166,7 +166,7 @@ class ProcessorBase(Base):
 
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
-		self.password = password
+		self._password = password
 		self.auth_type = auth_type
 		self._search_user_dn()
 		self._reload_acls_and_permitted_commands()

@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-50) unstable; urgency=medium
+
+  * Bug #50498: Fix typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 20 Dec 2019 17:11:40 +0100
+
 univention-management-console (11.0.4-49) unstable; urgency=medium
 
   * Bug #50530: fix summit end date
