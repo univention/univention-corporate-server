@@ -691,7 +691,7 @@ class access(object):
 			key, val = i[0], i[-1]
 			if not val:
 				continue
-			if isinstance(val, basestring):
+			if isinstance(val, (bytes, six.text_type)):
 				val = [val]
 			nal.setdefault(key, set())
 			nal[key] |= set(val)
@@ -731,7 +731,7 @@ class access(object):
 		ml = []
 		for key, oldvalue, newvalue in changes:
 			if oldvalue and newvalue:
-				if oldvalue == newvalue or (not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue)):
+				if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
 					continue  # equal values
 				op = ldap.MOD_REPLACE
 				val = newvalue
@@ -777,7 +777,7 @@ class access(object):
 		"""
 		rdn = ldap.dn.str2dn(dn)[0]
 		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
-		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+		new_vals = dict((key.lower(), val if isinstance(val, (bytes, six.text_type)) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
 		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]])
 		rdn = ldap.dn.dn2str([rdn])
 		if rdn != new_rdn:
