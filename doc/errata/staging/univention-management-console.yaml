@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-management-console
+fix: 11.0.4-50A~4.4.0.201912201712
+desc: |-
+  This update addresses the following issue(s):
+  * SAML answers do not provide a usable password for UMC. Some UMC actions
+    require specifically this password and so the UMC frontend asks for
+    credentials before executing them. This fix stores the password across
+    different UMC modules so that users need to enter their password only once
+    per session.
+bug: [50670]
