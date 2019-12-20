@@ -1,3 +1,9 @@
+ucs-test (9.0.3-134) unstable; urgency=medium
+
+  * Bug #50631: add more python 3 compatibility
+
+ -- Florian Best <best@univention.de>  Fri, 20 Dec 2019 15:13:26 +0100
+
 ucs-test (9.0.3-133) unstable; urgency=medium
 
   * Bug #44135: add tests/65_udm-dhcp/62_dhcp_subnets_invalid_values
