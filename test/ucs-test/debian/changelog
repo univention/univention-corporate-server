@@ -1,3 +1,9 @@
+ucs-test (9.0.3-133) unstable; urgency=medium
+
+  * Bug #44135: add tests/65_udm-dhcp/62_dhcp_subnets_invalid_values
+
+ -- Florian Best <best@univention.de>  Fri, 20 Dec 2019 10:22:25 +0100
+
 ucs-test (9.0.3-132) unstable; urgency=medium
 
   * Bug #50505: app test selenium library now works with portal overlays
