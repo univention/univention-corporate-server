@@ -17,6 +17,7 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
  python3-univention-config-registry,
+ univention-config,
 Provides: ${python3:Provides}
 Description:
  HTTP API for the Univention Config Registry (UCR).

@@ -75,7 +75,7 @@ setuptools.setup(
     description="UCR HTTP API (aka 'Farad API')",
     long_description="UCR HTTP API (aka 'Farad API')",
     url="https://www.univention.de/",
-    install_requires=requirements,
+    install_requires=[],  #requirements,
     setup_requires=["docutils", "pytest-runner"],
     tests_require=requirements_test,
     extras_require={

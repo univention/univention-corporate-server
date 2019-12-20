@@ -1,0 +1,4 @@
+Type: file
+File: etc/apache2/sites-available/univention-config-registry-api.conf
+Variables: ucr/api/URL_base
+Variables: ucr/api/server_port
