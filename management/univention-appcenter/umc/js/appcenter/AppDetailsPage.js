@@ -940,12 +940,14 @@ define([
 				var nonInteractive = new Deferred();
 				deferred.then(lang.hitch(nonInteractive, 'resolve'));
 				var actionLabel = '';
+				var actionWarningLabel = '';
 				var progressMessage = '';
 				var title = '';
 				var text = '';
 				switch(func) {
 				case 'install':
 					actionLabel = _('Install');
+					actionWarningLabel = _('Install anyway');
 					title = _('Installation of %s', this.app.name);
 					text = _('Please confirm to install the application %s on this host.', this.app.name);
 					progressMessage = _('Installing %s on this host', this.app.name);
@@ -956,6 +958,7 @@ define([
 					break;
 				case 'uninstall':
 					actionLabel = _('Uninstall');
+					actionWarningLabel = _('Uninstall anyway');
 					title = _('Removal of %s', this.app.name);
 					text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
 					progressMessage = _('Uninstalling %s from this host', this.app.name);
@@ -966,6 +969,7 @@ define([
 					break;
 				case 'update':
 					actionLabel = _('Upgrade');
+					actionWarningLabel = _('Upgrade anyway');
 					title = _('Upgrade of %s', this.app.name);
 					text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
 					progressMessage = _('Upgrading %s on this host', this.app.name);
@@ -1045,25 +1049,61 @@ define([
 							title = _('Error performing the action');
 							text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
 						}
-						this.detailsDialog.reset(mayContinue, title, text, actionLabel);
+						this.detailsDialog.reset(mayContinue, title, text, actionLabel, actionWarningLabel);
 						if (mayContinue) {
 							this.detailsDialog.showConfiguration(func);
 						}
-						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
-						this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
+
+						var showUnreachableHint = result.software_changes_computed && result.unreachable.length;
+						var unreachableHintIsHard = showUnreachableHint && result.master_unreachable;
+						var packageChanges = [];
 						if (result.software_changes_computed) {
-							if (result.unreachable.length) {
-								this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
-							}
-							var noHostInfo = tools.isEqual({}, result.hosts_info);
-							if (func == 'update') {
-								this.detailsDialog.showErrataHint();
-							}
-							this.detailsDialog.showPackageChanges(result.install, result.remove, result.broken, false, noHostInfo, host);
-							tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
-								this.detailsDialog.showPackageChanges(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host);
-							}));
+							packageChanges.push({
+								install: result.install,
+								remove: result.remove,
+								broken: result.broken,
+								incompatible: false,
+								host: host
+							});
+							tools.forIn(result.hosts_info, function(host, host_info) {
+								packageChanges.push({
+									install: host_info.install,
+									remove: host_info.remove,
+									broken: host_info.broken,
+									incompatible: !host_info.compatible_version,
+									host: host
+								});
+							});
 						}
+						var brokenPackageChanges = packageChanges.filter(function(changes) {
+							return !!changes.broken.length || changes.incompatible;
+						});
+						var nonBrokenPackageChanges = packageChanges.filter(function(changes) {
+							return !changes.broken.length && !changes.incompatible;
+						});
+
+						// hard warnings
+						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
+						if (showUnreachableHint && unreachableHintIsHard) {
+							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
+						}
+						array.forEach(brokenPackageChanges, lang.hitch(this, function(changes) {
+							this.detailsDialog.showPackageChanges(changes.install, changes.remove, changes.broken, changes.incompatible, changes.host);
+						}));
+
+						// soft warnings
+						if (showUnreachableHint && !unreachableHintIsHard) {
+							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
+						}
+						this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
+						if (func === 'update') {
+							this.detailsDialog.showErrataHint();
+						}
+
+						array.forEach(nonBrokenPackageChanges, lang.hitch(this, function(changes) {
+							this.detailsDialog.showPackageChanges(changes.install, changes.remove, changes.broken, changes.incompatible, changes.host);
+						}));
+
 						nonInteractive.reject();
 						this.detailsDialog.showUp().then(
 							lang.hitch(this, function(values) {

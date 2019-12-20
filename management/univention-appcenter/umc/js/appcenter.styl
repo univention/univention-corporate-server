@@ -91,6 +91,36 @@ $app-detailspane-background-color = #fff
 			/* change icon color to white on hover */
 			background-image: url("../../dijit/themes/umc/images/icons-white.svg")
 
+.AppDetailsDialog__warning
+	display: flex
+	align-items: center
+	padding: 8px
+	margin-bottom: 16px
+
+	&:before
+		content: ''
+		display: inline-block
+		flex: 0 0 auto
+		background-size: contain
+		width: 20px
+		height: 20px
+		margin-right: 8px
+
+	.dijitButton
+		margin: 16px 0 8px 8px
+
+.AppDetailsDialog__warning--hard
+	background-color: rgba(219, 6, 46, 0.3)
+
+	&:before
+		background-image: url(../../js/dijit/themes/umc/form/images/error.svg)
+
+.AppDetailsDialog__warning--soft
+	background-color: rgba(250, 200, 0, 0.3)
+
+	&:before
+		background-image: url(appcenter/icons/warning.svg)
+
 .umcAppDetailsPage
 	.umcAppButton
 		float: right
@@ -197,41 +227,19 @@ $app-detailspane-background-color = #fff
 		margin-bottom: 0
 
 	.umcAppMoreTitlePane
-		margin-bottom: 1em
-
 		.dijitTitlePaneTitle
 			font-weight: normal
-			color: #787878
+			color: #5a5a5a
 			text-decoration: underline
 			border: none
 			font-size: 1em
-			padding-top: 0.5em
-			padding-bottom: 0.5em
+			padding: 0.5em 0 0.5em 8px
 
 		.dijitArrowNode
-			float: left
-			margin-right: 5px
-			margin-top: 2px
-			background-image: url(../../ dijit/themes/umc/images/icons-small.svg)
-			background-position: 0 -12px
-			background-size: auto
-			width: 12px
-			height: 12px
-			opacity: 0.66
+			display: none
 
 		.dijitTitlePaneTitleHover
 			color: #282828
-
-			.dijitArrowNode
-				background-position: -12px -12px
-				opacity: 1
-
-		.dijitTitlePaneTitleClosed .dijitArrowNode
-			background-position: -72px -12px
-
-		.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode
-			background-position: -84px -12px
-
 
 .umc .umcAppDetailsPage
 	.umcPageNav

@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-99) unstable; urgency=medium
+
+  * Bug #50667: highlight warnings and errors during app
+    install/remove/upgrade and group them together
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 20 Dec 2019 10:58:33 +0100
+
 univention-appcenter (8.0.11-98) unstable; urgency=medium
 
   * Bug #50649: re-render apps after query(quick=False)
