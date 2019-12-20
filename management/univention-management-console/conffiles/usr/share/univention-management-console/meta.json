@@ -96,15 +96,15 @@ def is_piwik_disabled():
 	return not piwik_allowed
 
 def is_abtest_enabled():
-	if configRegistry.get('umc/web/abtesting') is None:
-		if has_free_license():
-			uuid = configRegistry.get('uuid/license', configRegistry.get('uuid/system', '0'))
-			try:
-				return int(uuid.replace('-', ''), 16) / 7 % 2 == 1
-			except:
-				return False
-		return False
-	return configRegistry.is_true('umc/web/abtesting')
+	if configRegistry.is_false('umc/web/abtesting'):
+		return 0
+	if configRegistry.is_true('umc/web/abtesting') or has_free_license():
+		uuid = configRegistry.get('uuid/license', configRegistry.get('uuid/system', '0'))
+		try:
+			return int(uuid.replace('-', ''), 16) % 60 + 1
+		except:
+			return 0
+	return 0
 
 def get_session_timeout():
 	try:

@@ -34,13 +34,13 @@ define([
 	return {
 		load: function(path, require, load, headers) {
 			var wantsAlternative = false;
-			if (tools.status("abtesting") === true) {
+			if (tools.status("abtesting") !== 0) {
 				wantsAlternative = true;
 			}
 			var paths = path.split(/\s*,\s*/);
 			var original = paths[0];
-			var alternative = paths[1];
-			if (alternative === undefined) {
+			var alternatives = paths.slice(1);
+			if (alternatives.length === 0) {
 				var handler = require.on('error', function(err) {
 					if (err.message === 'scriptError' && err.info[0] === require.toUrl(original)) {
 						load(null);
@@ -52,6 +52,8 @@ define([
 					handler.remove();
 				});
 			} else {
+				var idx = Math.ceil(tools.status("abtesting") / 60 * alternatives.length);
+				var alternative = alternatives[idx - 1];
 				var firstTry = original;
 				if (wantsAlternative) {
 					firstTry = alternative;
