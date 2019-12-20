@@ -8,20 +8,16 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 ## versions:
+##  4.4-3: fixed
 ##  3.1-1: skip
 
 
-import sys
-import univention.testing.utils as utils
+import pytest
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service=uts.random_name())
-		try:
+		with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed, match='.*is not a superordinate for dhcp/sharedsubnet.*') as exc:
 			udm.create_object('dhcp/sharedsubnet', subnet='10.20.30.0', subnetmask='24', superordinate=dhcpService)
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-			sys.exit(0)
-
-		utils.fail('UDM did not report an error while trying to create a dhcp/sharedsubnet with DHCP service as superordinate')
