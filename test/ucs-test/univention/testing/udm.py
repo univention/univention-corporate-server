@@ -52,6 +52,7 @@ import time
 import pipes
 import subprocess
 
+import six
 import psutil
 import ldap
 import ldap.filter
@@ -333,6 +334,9 @@ class UCSTestUDM(object):
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
 
+		if six.PY3:
+			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+
 		if child.returncode:
 			raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
@@ -370,6 +374,9 @@ class UCSTestUDM(object):
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
 
+		if six.PY3:
+			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+
 		if child.returncode:
 			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
@@ -404,6 +411,9 @@ class UCSTestUDM(object):
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
 
+		if six.PY3:
+			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+
 		if child.returncode:
 			raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
@@ -434,6 +444,9 @@ class UCSTestUDM(object):
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
 
+		if six.PY3:
+			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+
 		if child.returncode:
 			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
@@ -453,7 +466,7 @@ class UCSTestUDM(object):
 			wait_for_s4connector = True
 
 		drs_replication = wait_for_drs_replication
-		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, basestring):
+		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, six.string_types):
 			drs_replication = False
 			ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
 			if ad_ldap_search_args:
@@ -555,8 +568,13 @@ class UCSTestUDM(object):
 		cmd = ['/usr/sbin/udm-test', module, 'list']
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
+
+		if six.PY3:
+			stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+
 		if child.returncode:
 			raise UCSTestUDM_ListUDMObjectFailed(child.returncode, stdout, stderr)
+
 		objects = []
 		dn = None
 		attrs = {}
@@ -590,6 +608,8 @@ class UCSTestUDM(object):
 			print('removing DN:', dn)
 			child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			(stdout, stderr) = child.communicate()
+			if six.PY3:
+				stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
 			if child.returncode or 'Object removed:' not in stdout:
 				failedObjects.setdefault(modulename, []).append(dn)
 			else:
@@ -603,6 +623,8 @@ class UCSTestUDM(object):
 
 				child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 				(stdout, stderr) = child.communicate()
+				if six.PY3:
+					stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
 
 				if child.returncode or 'Object removed:' not in stdout:
 					print('Warning: Failed to remove %r object %r' % (modulename, dn), file=sys.stderr)
@@ -711,7 +733,7 @@ def verify_udm_object(module, dn, expected_properties):
 		udm_value = udm_object.info.get(key, [])
 		if udm_value is None:
 			udm_value = []
-		if isinstance(udm_value, basestring):
+		if isinstance(udm_value, (bytes, six.string_types)):
 			udm_value = set([udm_value])
 		if not isinstance(value, (tuple, list)):
 			value = set([value])
@@ -736,9 +758,9 @@ def _prettify_cmd(cmd):
 
 
 def _to_unicode(string):
-	if isinstance(string, unicode):
-		return string
-	return unicode(string, 'utf-8')
+	if isinstance(string, bytes):
+		return string.decode('utf-8')
+	return string
 
 
 def _normalize_dn(dn):
