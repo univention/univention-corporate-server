@@ -226,9 +226,9 @@ def __verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=T
 			if difference:
 				unexpected_values[attribute] = difference
 
-	values_missing = '\n'.join('%s: %r, missing   : \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in values_missing.items())
-	unexpected_values = '\n'.join('%s: %r, unexpected: \'%s\'' % (attribute, attr.get(attribute), '\', '.join(difference)) for attribute, difference in unexpected_values.items())
-	msg = 'DN: %s\n%s\n%s' % (baseDn, values_missing, unexpected_values)
+	values_missing = u'\n'.join(u"%s: %r, missing   : '%s'" % (attribute, attr.get(attribute), u"', ".join(x.decode('UTF-8', 'replace') for x in difference)) for attribute, difference in values_missing.items())
+	unexpected_values = u'\n'.join(u"%s: %r, unexpected: '%s'" % (attribute, attr.get(attribute), u"', ".join(x.decode('UTF-8', 'replace') for x in difference)) for attribute, difference in unexpected_values.items())
+	msg = u'DN: %s\n%s\n%s' % (baseDn, values_missing, unexpected_values)
 
 	if values_missing:
 		raise LDAPObjectValueMissing(msg)
