@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-51) unstable; urgency=medium
+
+  * Bug #50670: Do not downgrade to SAML session
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 21 Dec 2019 02:17:25 +0100
+
 univention-management-console (11.0.4-50) unstable; urgency=medium
 
   * Bug #50670: Fix typo

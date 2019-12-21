@@ -953,7 +953,7 @@ class SessionHandler(ProcessorBase):
 		self.authenticated = bool(result)
 		request.authentication_result = result
 		if self.authenticated:
-			if self.processor is None or self.processor.auth_type is not None or result.credentials['auth_type']:
+			if self.processor is None or self.processor.auth_type is not None or result.credentials['auth_type'] is None:
 				# only set the credentials in 1. a new session 2. if password changed or 3. if logged in via plain authentication
 				# to prevent a downgrade of the regular login to a SAML login
 				self.__credentials = result.credentials
