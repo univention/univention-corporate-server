@@ -234,6 +234,7 @@ class simpleLdap(object):
 			oldinfo = self.mapping.unmapValues(self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
+			self.__ensure_types(oldinfo)
 			self.info.update(oldinfo)
 
 		self.policies = [x.decode('utf-8') for x in self.oldattr.get('univentionPolicyReference', [])]
@@ -241,6 +242,25 @@ class simpleLdap(object):
 		self.save()
 
 		self._validate_superordinate(False)
+
+	def __ensure_types(self, oldinfo):
+		try:
+			for key, value in oldinfo.items():
+				if isinstance(value, bytes):
+					raise TypeError('Value for property %r has not been decoded.' % (key,))
+				if isinstance(value, (list, tuple)):
+					for val in value:
+						if isinstance(val, bytes):
+							raise TypeError('Value for property %r has not been decoded.' % (key,))
+						if isinstance(val, (list, tuple)):
+							for v in val:
+								if isinstance(v, bytes):
+									raise TypeError('Value for property %r has not been decoded.' % (key,))
+		except TypeError:
+			if not six.PY3:
+				# ud.debug(ud.ADMIN, ud.WARN, str(exc))
+				return
+			raise
 
 	def save(self):  # type: () -> None
 		"""Saves the current internal object state as old state for later comparison when e.g. modifying this object.
