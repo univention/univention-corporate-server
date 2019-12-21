@@ -1354,7 +1354,7 @@ class simpleLdap(object):
 		def lowerset(vals):
 			return set(x.lower() for x in vals)
 
-		ocs = lowerset(_MergedAttributes(self, ml).get_attribute('objectClass'))
+		ocs = lowerset(x.decode('UTF-8') for x in _MergedAttributes(self, ml).get_attribute('objectClass'))
 		unneeded_ocs = set()  # type: Set[unicode]
 		required_ocs = set()  # type: Set[unicode]
 
