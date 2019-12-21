@@ -79,7 +79,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
 	"""
 	_d = ud.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))  # noqa: F841
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
 	now = int(time.time())
 	if timeout > 0:
@@ -136,7 +136,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
 	"""
 	_d = ud.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))  # noqa: F841
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
 	now = int(time.time())
 	if timeout > 0:
@@ -167,7 +167,7 @@ def unlock(lo, position, type, value, scope='domain'):
 	:param scope: The scope for the lock, e.g. `domain`.
 	"""
 	_d = ud.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))  # noqa: F841
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 	try:
 		lo.delete(dn, exceptions=True)
 	except ldap.NO_SUCH_OBJECT:
@@ -185,7 +185,7 @@ def getLock(lo, position, type, value, scope='domain'):
 	:param scope: The scope for the lock, e.g. `domain`.
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired or `0`.
 	"""
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 	try:
 		return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])
 	except ldap.NO_SUCH_OBJECT:
