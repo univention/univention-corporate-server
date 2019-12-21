@@ -73,7 +73,7 @@ def requestUserSid(lo, position, uid_s):
 	rid = str(uid * 2 + algorithmical_rid_base)
 
 	searchResult = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-	domainsid = searchResult[0][1]['sambaSID'][0]
+	domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
 	sid = domainsid + '-' + rid
 
 	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid, rid))
@@ -121,15 +121,15 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 			try:
 				if other:
 					# exception occurred while locking other, so atype was successfully locked and must be released
-					univention.admin.locking.unlock(lo, position, atype, str(startID - 1), scope=scope)
+					univention.admin.locking.unlock(lo, position, atype, str(startID - 1).encode('utf-8'), scope=scope)
 					other = None
 				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, atype))
-				univention.admin.locking.lock(lo, position, atype, str(startID), scope=scope)
+				univention.admin.locking.lock(lo, position, atype, str(startID).encode('utf-8'), scope=scope)
 				if atype in ('uidNumber', 'gidNumber'):
 					# reserve the same ID for both
 					other = 'uidNumber' if atype == 'gidNumber' else 'gidNumber'
 					ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Lock ID %r for %r' % (startID, other))
-					univention.admin.locking.lock(lo, position, other, str(startID), scope=scope)
+					univention.admin.locking.lock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
 			except univention.admin.uexceptions.noLock:
 				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Cannot Lock ID %r' % startID)
 				continue
@@ -144,15 +144,15 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: searchfor %r' % _filter)
 			if lo.searchDn(base=position.getBase(), filter=_filter):
 				ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Already used ID %r' % startID)
-				univention.admin.locking.unlock(lo, position, atype, str(startID), scope=scope)
+				univention.admin.locking.unlock(lo, position, atype, str(startID).encode('utf-8'), scope=scope)
 				if other:
-					univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
+					univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
 					other = None
 				continue
 
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: Return ID %r' % startID)
 			if other:
-				univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
+				univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
 			return str(startID)
 
 	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (atype,))
@@ -166,22 +166,22 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 		searchBase = position.getBase()
 
 	if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+		univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=univentionHost)(%s=%s))', (attr, value))):
 			return value
 	elif type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+		univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 	elif type == "groupName":  # search filter is more complex then in general case
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+		univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
 	else:
 		ud.debug(ud.ADMIN, ud.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
-		univention.admin.locking.lock(lo, position, type, value, scope=scope)
+		univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
 		if not lo.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
 			ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE return %s' % value)
 			return value
@@ -197,9 +197,9 @@ def request(lo, position, type, value=None):
 
 def confirm(lo, position, type, value, updateLastUsedValue=True):
 	if type in ('uidNumber', 'gidNumber') and updateLastUsedValue:
-		lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', '1', value)])
-	univention.admin.locking.unlock(lo, position, type, value, _type2scope[type])
+		lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', b'1', value.encode('utf-8'))])
+	univention.admin.locking.unlock(lo, position, type, value.encode('utf-8'), _type2scope[type])
 
 
 def release(lo, position, type, value):
-	univention.admin.locking.unlock(lo, position, type, value, _type2scope[type])
+	univention.admin.locking.unlock(lo, position, type, value.encode('utf-8'), _type2scope[type])
