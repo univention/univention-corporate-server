@@ -73,7 +73,7 @@ def requestUserSid(lo, position, uid_s):
 	rid = str(uid * 2 + algorithmical_rid_base)
 
 	searchResult = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-	domainsid = searchResult[0][1]['sambaSID'][0]
+	domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
 	sid = domainsid + '-' + rid
 
 	ud.debug(ud.ADMIN, ud.INFO, 'ALLOCATE: request user sid. SID = %s-%s' % (domainsid, rid))
@@ -197,7 +197,7 @@ def request(lo, position, type, value=None):
 
 def confirm(lo, position, type, value, updateLastUsedValue=True):
 	if type in ('uidNumber', 'gidNumber') and updateLastUsedValue:
-		lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', '1', value)])
+		lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()), [('univentionLastUsedValue', b'1', value.encode('utf-8'))])
 	univention.admin.locking.unlock(lo, position, type, value, _type2scope[type])
 
 
