@@ -917,7 +917,7 @@ class simpleLdap(object):
 		identifier = []
 		for name, prop in self.descriptions.items():
 			if prop.identifies:
-				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]), 2))
+				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]).decode('UTF-8'), 2))
 		return u'%s,%s' % (dn2str([identifier]), dn2str(str2dn(self.dn)[1:]) if self.exists() else self.position.getDn())
 
 	def _ldap_post_create(self):  # type: () -> None
