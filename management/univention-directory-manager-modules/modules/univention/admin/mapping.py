@@ -31,6 +31,9 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 
 from __future__ import absolute_import
 
+import six
+import inspect
+
 import univention.debug as ud
 import base64
 try:
@@ -38,6 +41,8 @@ try:
 	_E = TypeVar('_E')
 except ImportError:
 	pass
+
+getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
 
 try:
 	unicode
@@ -106,7 +111,7 @@ def ListUniq(list):
 	return result
 
 
-def ListToString(list):
+def ListToString(value, encoding=()):
 	# type: (List[str]) -> str
 	"""
 	Return first element from list.
@@ -120,10 +125,10 @@ def ListToString(list):
 	>>> ListToString(['value'])
 	'value'
 	"""
-	if len(list) > 0:
-		return list[0]
+	if value:
+		return value[0].decode(*encoding)
 	else:
-		return ''
+		return u''
 
 
 def ListToIntToString(list_):
@@ -360,7 +365,7 @@ def mapBase64(value):
 	return ""
 
 
-def BooleanListToString(list):
+def BooleanListToString(list, encoding=()):
 	# type: (List[str]) -> str
 	"""
 	Convert |LDAP| boolean to |UDM|.
@@ -373,16 +378,16 @@ def BooleanListToString(list):
 	>>> BooleanListToString(['1'])
 	'1'
 	"""
-	v = ListToString(list)
-	if v == '0':
-		return ''
+	v = ListToString(list, encoding=encoding)
+	if v == u'0':
+		return u''
 	return v
 
 
-def BooleanUnMap(value):
+def BooleanUnMap(value, encoding=()):
 	# type: (str) -> str
 	"""
-	Convert |LDAP| boolean to |UDM|.
+	Convert |UDM| boolean to |LDAP|.
 
 	:param list: One |LDAP| attribute values.
 	:returns: the empty string for `False` or otherwise the first element.
@@ -392,9 +397,9 @@ def BooleanUnMap(value):
 	>>> BooleanUnMap('1')
 	'1'
 	"""
-	if value == '0':
-		return ''
-	return value
+	if value == u'0':
+		return b''
+	return value.encode(*encoding)
 
 
 class dontMap(object):
@@ -414,8 +419,10 @@ class mapping(object):
 		self._unmap = {}
 		self._map_func = {}
 		self._unmap_func = {}
+		self._map_encoding = {}
+		self._unmap_encoding = {}
 
-	def register(self, map_name, unmap_name, map_value=None, unmap_value=None):
+	def register(self, map_name, unmap_name, map_value=None, unmap_value=None, encoding='UTF-8', encoding_errors='strict'):
 		"""
 		Register a new mapping.
 
@@ -426,6 +433,8 @@ class mapping(object):
 		"""
 		self._map[map_name] = (unmap_name, map_value)
 		self._unmap[unmap_name] = (map_name, unmap_value)
+		self._map_encoding[map_name] = (encoding, encoding_errors)
+		self._unmap_encoding[unmap_name] = (encoding, encoding_errors)
 
 	def unregister(self, map_name, pop_unmap=True):
 		# type: (str, bool) -> None
@@ -438,10 +447,12 @@ class mapping(object):
 		# unregister(pop_unmap=False) is used by LDAP_Search syntax classes with viewonly=True.
 		# See SimpleLdap._init_ldap_search().
 		unmap_name, map_value = self._map.pop(map_name, [None, None])
+		self._map_encoding.pop(map_name, None)
 		if pop_unmap:
 			self._unmap.pop(unmap_name, None)
+			self._unmap_encoding.pop(unmap_name, None)
 
-	def registerUnmapping(self, unmap_name, unmap_value):
+	def registerUnmapping(self, unmap_name, unmap_value, encoding='UTF-8', encoding_errors='strict'):
 		"""
 		Register a new unmapping from |LDAP| to |UDM|.
 
@@ -449,6 +460,7 @@ class mapping(object):
 		:param unmap_value: function to map |LDAP| attribute values to |UDM| property values.
 		"""
 		self._unmap_func[unmap_name] = unmap_value
+		self._unmap_encoding[unmap_name] = (encoding, encoding_errors)
 
 	def mapName(self, map_name):
 		"""
@@ -502,13 +514,23 @@ class mapping(object):
 		map_value = self._map[map_name][1]
 
 		if not value:
-			return ''
+			return b''
 
 		if not any(value) and map_name != 'sambaLogonHours':
 			# sambaLogonHours might be [0], see Bug #33703
-			return ''
+			return b''
 
-		return map_value(value) if map_value else value
+		encoding, strictness = self._map_encoding.get(map_name, ('UTF-8', 'strict'))
+		kwargs = {}
+		if map_value and 'encoding' in getfullargspec(map_value).args:
+			kwargs['encoding'] = (encoding, strictness)
+
+		if six.PY3 and not map_value:
+			if isinstance(value, (list, tuple)):
+				raise Exception()
+			else:
+				value = value.encode(encoding, strictness)
+		return map_value(value, **kwargs) if map_value else value
 
 	def unmapValue(self, unmap_name, value):
 		"""
@@ -527,7 +549,15 @@ class mapping(object):
 		'LDAP'
 		"""
 		unmap_value = self._unmap[unmap_name][1]
-		return unmap_value(value) if unmap_value else value
+
+		encoding, strictness = self._unmap_encoding.get(unmap_name, ('UTF-8', 'strict'))
+		kwargs = {}
+		if unmap_value and 'encoding' in getfullargspec(unmap_value).args:
+			kwargs['encoding'] = (encoding, strictness)
+
+		if six.PY3 and not unmap_value:
+			value = [val.decode(encoding, strictness) for val in value]
+		return unmap_value(value, **kwargs) if unmap_value else value
 
 	def unmapValues(self, oldattr):
 		"""
@@ -535,7 +565,10 @@ class mapping(object):
 		"""
 		info = mapDict(self, oldattr)
 		for key, func in self._unmap_func.items():
-			info[key] = func(oldattr)
+			kwargs = {}
+			if 'encoding' in getfullargspec(func).args:
+				kwargs['encoding'] = self._unmap_encoding.get(key, ('UTF-8', 'strict'))
+			info[key] = func(oldattr, **kwargs)
 		return info
 
 	def shouldMap(self, map_name):
