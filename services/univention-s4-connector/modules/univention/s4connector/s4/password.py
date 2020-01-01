@@ -46,6 +46,8 @@ import heimdal
 from ldap.controls import LDAPControl
 import traceback
 
+ETYPE_ARCFOUR_PLAIN = 4294967156  # (uint32)heimdal.ETYPE_ARCFOUR_PLAIN as used in samba/librpc/idl/drsblobs.idl
+
 
 class Krb5Context(object):
 	def __init__(self):
@@ -68,7 +70,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	if up_blob:
 		# ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: up_blob: %s" % binascii.b2a_base64(up_blob))
 		assert len(up_blob) == 16
-		key = heimdal.keyblock_raw(context, 23, up_blob)
+		key = heimdal.keyblock_raw(context, heimdal.ETYPE_ARCFOUR_HMAC_MD5, up_blob)
 		keys.append(heimdal.asn1_encode_key(key, None, kvno))
 
 	if sc_blob:
@@ -92,7 +94,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+								if k.keytype == ETYPE_ARCFOUR_PLAIN:
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
 									else:  # unknown special case
@@ -115,7 +117,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
 							except:
-								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+								if k.keytype == ETYPE_ARCFOUR_PLAIN:
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
 									else:  # unknown special case
@@ -185,19 +187,19 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			continue
 
 		ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: krb5_keytype: %s (%d)" % (enctype, enctype_id))
-		if enctype_id == 18:
+		if enctype_id == heimdal.ETYPE_AES256_CTS_HMAC_SHA1_96:
 			krb5_aes256 = key_data
 			if not krb_ctr4_salt:
 				krb_ctr4_salt = saltstring
-		elif enctype_id == 17:
+		elif enctype_id == heimdal.ETYPE_AES128_CTS_HMAC_SHA1_96:
 			krb5_aes128 = key_data
 			if not krb_ctr4_salt:
 				krb_ctr4_salt = saltstring
-		elif enctype_id == 3:
+		elif enctype_id == heimdal.ETYPE_DES_CBC_MD5:
 			krb5_des_md5 = key_data
 			if not krb_ctr3_salt:
 				krb_ctr3_salt = saltstring
-		elif enctype_id == 1:
+		elif enctype_id == heimdal.ETYPE_DES_CBC_CRC:
 			krb5_des_crc = key_data
 			if not krb_ctr3_salt:
 				krb_ctr3_salt = saltstring
@@ -216,28 +218,28 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		if krb5_aes256:
 			assert len(krb5_aes256) == 32
 			next_key = drsblobs.package_PrimaryKerberosKey4()
-			next_key.keytype = 18
+			next_key.keytype = heimdal.ETYPE_AES256_CTS_HMAC_SHA1_96
 			next_key.value = krb5_aes256
 			next_key.value_len = len(krb5_aes256)
 			kerberosKey4list.append(next_key)
 		if krb5_aes128:
 			assert len(krb5_aes128) == 16
 			next_key = drsblobs.package_PrimaryKerberosKey4()
-			next_key.keytype = 17
+			next_key.keytype = heimdal.ETYPE_AES128_CTS_HMAC_SHA1_96
 			next_key.value = krb5_aes128
 			next_key.value_len = len(krb5_aes128)
 			kerberosKey4list.append(next_key)
 		if krb5_des_md5:
 			assert len(krb5_des_md5) == 8
 			next_key = drsblobs.package_PrimaryKerberosKey4()
-			next_key.keytype = 3
+			next_key.keytype = heimdal.ETYPE_DES_CBC_MD5
 			next_key.value = krb5_des_md5
 			next_key.value_len = len(krb5_des_md5)
 			kerberosKey4list.append(next_key)
 		if krb5_des_crc:
 			assert len(krb5_des_crc) == 8
 			next_key = drsblobs.package_PrimaryKerberosKey4()
-			next_key.keytype = 1
+			next_key.keytype = heimdal.ETYPE_DES_CBC_CRC
 			next_key.value = krb5_des_crc
 			next_key.value_len = len(krb5_des_crc)
 			kerberosKey4list.append(next_key)
@@ -261,7 +263,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			if len(old_krb['ctr4'].keys) != ctr4.num_keys:
 				cleaned_old_keys = []
 				for key in old_krb['ctr4'].keys:
-					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+					if key.keytype == ETYPE_ARCFOUR_PLAIN:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys filtering keytype %s from old_keys" % key.keytype)
 						continue
 					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -277,7 +279,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			if ctr4.num_old_keys != ctr4.num_older_keys:
 				cleaned_older_keys = []
 				for key in s4_old_keys:
-					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+					if key.keytype == ETYPE_ARCFOUR_PLAIN:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos-Newer-Keys filtering keytype %s from older_keys" % key.keytype)
 						continue
 					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -355,7 +357,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 			if len(old_krb['ctr3'].keys) != ctr3.num_keys:
 				cleaned_ctr3_old_keys = []
 				for key in old_krb['ctr3'].keys:
-					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+					if key.keytype == ETYPE_ARCFOUR_PLAIN:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos filtering keytype %s from old_keys" % key.keytype)
 						continue
 					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
@@ -428,7 +430,7 @@ def extract_NThash_from_krb5key(ucs_krb5key):
 
 		enctype = keyblock.keytype()
 		enctype_id = enctype.toint()
-		if enctype_id == 23:
+		if enctype_id == heimdal.ETYPE_ARCFOUR_HMAC_MD5:
 			krb5_arcfour_hmac_md5 = keyblock.keyvalue()
 			NThash = binascii.b2a_hex(krb5_arcfour_hmac_md5)
 			break
