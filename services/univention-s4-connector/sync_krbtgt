@@ -92,7 +92,7 @@ class S4:
 			self.lo_s4.lo.set_option(ldap.OPT_REFERRALS, 0)
 		except ldap.SERVER_DOWN:
 			print "Can't initialize Samba4 LDAP connection"
-			raise ldap.SERVER_DOWN
+			raise
 
 	def open_ucs(self, binddn, bindpwd):
 		if not binddn:
@@ -110,7 +110,7 @@ class S4:
 			self.lo = univention.admin.uldap.access(host=self.ucr['ldap/master'], base=self.ucr['ldap/base'], binddn=binddn, bindpw=bindpwd, start_tls=2)
 		except ldap.SERVER_DOWN:
 			print "Can't initialize UCS LDAP connection"
-			raise ldap.SERVER_DOWN
+			raise
 
 	def _object_mapping(self, key, object, connection):
 		return key
@@ -135,7 +135,7 @@ class S4:
 			return
 		except ldap.SERVER_DOWN:
 			print "Can't initialize Samba4 LDAP connection"
-			raise ldap.SERVER_DOWN
+			raise
 		if not res_s4:
 			ud.debug(ud.LDAP, ud.PROCESS, " The Samba4 user (krbtgt) was not found.")
 			print "\nThe Samba4 user (krbtgt) was not found."
