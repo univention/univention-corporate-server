@@ -92,6 +92,56 @@ static const struct types {
 	{NULL, NULL}
 };
 
+static void const_init(PyObject *module) {
+	PyModule_AddIntMacro(module, ETYPE_NULL); // 0
+	PyModule_AddIntMacro(module, ETYPE_DES_CBC_CRC); // 1
+	PyModule_AddIntMacro(module, ETYPE_DES_CBC_MD4); // 2
+	PyModule_AddIntMacro(module, ETYPE_DES_CBC_MD5); // 3
+	PyModule_AddIntConstant(module, "ETYPE_DES_CBC_RAW", 4);
+	PyModule_AddIntMacro(module, ETYPE_DES3_CBC_MD5); // 5
+	PyModule_AddIntConstant(module, "ETYPE_DES3_CBC_RAW", 6);
+	PyModule_AddIntMacro(module, ETYPE_OLD_DES3_CBC_SHA1); // 7
+	PyModule_AddIntMacro(module, ETYPE_SIGN_DSA_GENERATE); // 8
+	PyModule_AddIntMacro(module, ETYPE_ENCRYPT_RSA_PRIV); // 9
+	PyModule_AddIntMacro(module, ETYPE_ENCRYPT_RSA_PUB); // 10
+	PyModule_AddIntConstant(module, "ETYPE_RSA_SHA1_CMS", 11); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_RC2_CBC_ENV", 12); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_RSA_ENV", 13); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_RSA_ES_OEAP_ENV", 14); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_DES_EDE3_CBC_ENV", 15); // ntsecapi.h
+	PyModule_AddIntMacro(module, ETYPE_DES3_CBC_SHA1); // 16
+	PyModule_AddIntMacro(module, ETYPE_AES128_CTS_HMAC_SHA1_96); // 17
+	PyModule_AddIntMacro(module, ETYPE_AES256_CTS_HMAC_SHA1_96); // 18
+	PyModule_AddIntMacro(module, ETYPE_AES128_CTS_HMAC_SHA256_128); // 19
+	PyModule_AddIntMacro(module, ETYPE_AES256_CTS_HMAC_SHA384_192); // 20
+	PyModule_AddIntMacro(module, ETYPE_ARCFOUR_HMAC_MD5); // 23
+	PyModule_AddIntMacro(module, ETYPE_ARCFOUR_HMAC_MD5_56); // 24
+	PyModule_AddIntConstant(module, "ETYPE_CAMELLIA128_CTS_CMAC", 25);
+	PyModule_AddIntConstant(module, "ETYPE_CAMELLIA256_CTS_CMAC", 26);
+	PyModule_AddIntMacro(module, ETYPE_ENCTYPE_PK_CROSS); // 48
+	PyModule_AddIntConstant(module, "ETYPE_SUBKEY", 65); //
+	PyModule_AddIntMacro(module, ETYPE_ARCFOUR_MD4); // -128
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_PLAIN2", -129); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_LM", -130); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_SHA", -131); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_DES_PLAIN", -132); // ntsecapi.h
+	PyModule_AddIntMacro(module, ETYPE_ARCFOUR_HMAC_OLD); // -133
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_PLAIN_OLD", -134); // ntsecapi.h
+	PyModule_AddIntMacro(module, ETYPE_ARCFOUR_HMAC_OLD_EXP); // -135
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_PLAIN_OLD_EXP", -136); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_PLAIN", -140); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_ARCFOUR_PLAIN_EXP", -141); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_AES128_CTS_HMAC_SHA1_96_PLAIN", -148); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_AES256_CTS_HMAC_SHA1_96_PLAIN", -149); // ntsecapi.h
+	PyModule_AddIntConstant(module, "ETYPE_NTLM_HASH", -150); // ntsecapi.h
+	PyModule_AddIntMacro(module, ETYPE_DES_CBC_NONE); // -4096
+	PyModule_AddIntMacro(module, ETYPE_DES3_CBC_NONE); // -4097
+	PyModule_AddIntMacro(module, ETYPE_DES_CFB64_NONE); // -4098
+	PyModule_AddIntMacro(module, ETYPE_DES_PCBC_NONE); // -4099
+	PyModule_AddIntMacro(module, ETYPE_DIGEST_MD5_NONE); // -4100
+	PyModule_AddIntMacro(module, ETYPE_CRAM_MD5_NONE); // -4101
+}
+
 
 static PyObject * moduleinit(void) {
 	PyObject *module, *self;
@@ -110,6 +160,8 @@ static PyObject * moduleinit(void) {
 		Py_INCREF(type->type);
 		PyModule_AddObject(module, type->name, (PyObject *)type->type);
 	}
+
+	const_init(module);
 
 	self = PyModule_GetDict(module);
 	error_init(self);
