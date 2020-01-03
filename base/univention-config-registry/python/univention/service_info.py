@@ -49,7 +49,7 @@ class Service(uit.LocalizedDictionary):
 	"""
 
 	REQUIRED = frozenset(('description', 'programs'))
-	OPTIONAL = frozenset(('start_type', 'systemd', 'icon', 'name', 'init_script'))
+	OPTIONAL = frozenset(('start_type', 'systemd', 'icon', 'name', 'init_script', 'use_systemd_status'))
 	KNOWN = REQUIRED | OPTIONAL
 
 	def __init__(self, *args, **kwargs):
@@ -69,13 +69,19 @@ class Service(uit.LocalizedDictionary):
 		return incomplete + unknown
 
 	def _update_status(self):
-		for prog in self['programs'].split(','):
-			prog = prog.strip()
-			if prog and not pidof(prog):
+		if self.get('use_systemd_status') and self['use_systemd_status'] == 'True':
+			if self._exec(['systemctl', 'is-active', self['systemd']])[1] == 'active':
+				self.running = True
+			else:
 				self.running = False
-				break
 		else:
-			self.running = True
+			for prog in self['programs'].split(','):
+				prog = prog.strip()
+				if prog and not pidof(prog):
+					self.running = False
+					break
+			else:
+				self.running = True
 
 	def start(self):
 		"""Start the service."""

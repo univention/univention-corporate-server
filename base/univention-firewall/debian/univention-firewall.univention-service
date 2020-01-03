@@ -1,7 +1,8 @@
 [univention-firewall]
 Description[de]=Univention Firewall
-Description[en]=Univention firewall
-programs=
+Description[en]=Univention Firewall
 start_type=firewall/autostart
 systemd=univention-firewall.service
 icon=service/firewall
+use_systemd_status=True
+programs=foo
