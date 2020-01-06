@@ -6,8 +6,7 @@ src: univention-directory-manager-modules
 fix: 14.0.14-22A~4.4.0.201912201018
 desc: |
  This update addresses the following issues:
- * The listener module `udm_extension` has been migrated to dh_python.
-   All existing UDM extensions are migrated during the package upgrade.
- * It is now prevented to create DHCP networks which break the DHCP service
-   configuration.
+ * The listener module `udm_extension` has been migrated to dh_python. All
+   existing UDM extensions are migrated during the package upgrade.
+ * Prevent creating DHCP networks which break the DHCP service configuration.
 bug: [50401, 44135]
