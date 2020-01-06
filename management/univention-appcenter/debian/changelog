@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-100) unstable; urgency=medium
+
+  * Bug #50686: Add a new App Type: &quot;Empty&quot; or &quot;One
+    Shot&quot; Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jan 2020 15:07:05 +0100
+
 univention-appcenter (8.0.11-99) unstable; urgency=medium
 
   * Bug #50667: highlight warnings and errors during app
