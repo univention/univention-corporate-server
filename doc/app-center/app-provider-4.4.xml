@@ -2982,16 +2982,9 @@ exit 0
 				define if this setting has to be set or not.
 			</para>
 			<para>
-				The attribute <guimenu>Scope</guimenu> is used to specify if
-				the value is set inside the Docker container
-				(<option>inside</option>), on the Docker host
-                (<option>outside</option>) or on both (<option>inside,
-                    outside</option>). The default is <option>inside</option>.
-                Values in the scope <option>inside</option> can be referenced
-                in the docker-compose.yml for multi container apps just like
-                UCR variables (see <xref
-                    linkend="create-app-with-docker:compose-postprocessing"
-                    /> for an example).
+				The attribute <guimenu>Scope</guimenu> is used to specify if the value is set inside the Docker container (<option>inside</option>), on the Docker host (<option>outside</option>) or on both (<option>inside, outside</option>).
+				The default is <option>inside</option>.
+				Values in the scope <option>inside</option> can be referenced in the <filename>docker-compose.yml</filename> for multi container apps just like &ucsUCRV;s (see <xref linkend="create-app-with-docker:compose-postprocessing" /> for an example).
 			</para>
 			<para>
 				The attributes <guimenu>Labels</guimenu> and
