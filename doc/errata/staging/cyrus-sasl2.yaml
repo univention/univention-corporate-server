@@ -1,0 +1,15 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: cyrus-sasl2
+fix: 2.1.27~101-g0780600+dfsg-3+deb9u1
+desc: |
+ This update addresses the following issue:
+ * cyrus-sasl (aka Cyrus SASL) 2.1.27 has an out-of-bounds write leading to
+   unauthenticated remote denial-of-service in OpenLDAP via a malformed LDAP
+   packet. The OpenLDAP crash is ultimately caused by an off-by-one error in
+   _sasl_add_string in common.c in cyrus-sasl. (CVE-2019-19906)
+bug: [50680]
+cve:
+- CVE-2019-19906
