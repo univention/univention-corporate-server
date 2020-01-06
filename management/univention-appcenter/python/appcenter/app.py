@@ -804,6 +804,9 @@ class App(object):
 			container were applied.
 		docker_ucr_style_env: Disable the passing of ucr style ("foo/bar")
 			environment variables into the container.
+		one_shot: Docker App that does not come with its own service
+			but instead only ships a binary that shall can be
+			called once (or as often as the Administrator wants)
 		host_certificate_access: Docker Apps only. The App gets access
 			to the host certificate.
 		listener_udm_modules: List of UDM modules that a listener
@@ -940,6 +943,8 @@ class App(object):
 	docker_script_configure = AppAttribute()
 	docker_ucr_style_env = AppBooleanAttribute(default=True)
 
+	one_shot = AppBooleanAttribute()
+
 	host_certificate_access = AppBooleanAttribute()
 
 	listener_udm_modules = AppListAttribute()
@@ -956,6 +961,8 @@ class App(object):
 		for attr in self._attrs:
 			setattr(self, attr.name, _attrs.get(attr.name))
 		self.ucs_version = self.get_ucs_version()  # compatibility
+		if self.one_shot:
+			self.docker_ucr_style_env = False
 		if self.docker:
 			if self.min_free_disk_space is None:
 				self.min_free_disk_space = 4000
@@ -1170,11 +1177,17 @@ class App(object):
 	def get_share_file(self, ext):
 		return os.path.join(self.get_share_dir(), '%s.%s' % (self.id, ext))
 
+	def get_bin_file(self, ext):
+		return os.path.join(self.get_bin_dir(), '%s.%s' % (self.id, ext))
+
 	def get_data_dir(self):
 		return os.path.join(DATA_DIR, self.id, 'data')
 
 	def get_conf_dir(self):
 		return os.path.join(DATA_DIR, self.id, 'conf')
+
+	def get_bin_dir(self):
+		return os.path.join(DATA_DIR, self.id, 'bin')
 
 	def get_conf_file(self, fname):
 		if fname.startswith('/'):
@@ -1236,7 +1249,11 @@ class App(object):
 
 	@property
 	def secret_on_host(self):
-		return os.path.join(DATA_DIR, self.id, 'machine.secret')
+		if self.one_shot:
+			dirname = self.get_conf_dir()
+		else:
+			dirname = os.path.join(DATA_DIR, self.id)
+		return os.path.join(dirname, 'machine.secret')
 
 	def get_thumbnail_urls(self):
 		if not self.thumbnails:

@@ -173,6 +173,12 @@ class Register(CredentialsAction):
 		mkdir(app.get_data_dir())
 		mkdir(app.get_conf_dir())
 		mkdir(app.get_share_dir())
+		mkdir(app.get_bin_dir())
+		for ext in ['listener_trigger', 'configure']:
+			fname = app.get_cache_file(ext)
+			if os.path.exists(fname):
+				self.log('Copying %s' % fname)
+				shutil.copy2(fname, app.get_bin_file(ext))
 		for ext in ['univention-config-registry-variables', 'schema']:
 			fname = app.get_cache_file(ext)
 			if os.path.exists(fname):
@@ -459,7 +465,7 @@ class AppListener(AppListener):
 
 	def _register_docker_variables(self, app):
 		updates = {}
-		if app.docker and not app.plugin_of:
+		if app.docker and not app.plugin_of and not app.one_shot:
 			try:
 				from univention.appcenter.actions.service import Service, ORIGINAL_INIT_SCRIPT
 			except ImportError:
@@ -626,7 +632,7 @@ class AppListener(AppListener):
 				updates[key] = None
 			if re.match('appreport/%s/' % app.id, key):
 				updates[key] = None
-		if app.docker and not app.plugin_of:
+		if app.docker and not app.plugin_of and not app.one_shot:
 			try:
 				from univention.appcenter.actions.service import Service
 			except ImportError:

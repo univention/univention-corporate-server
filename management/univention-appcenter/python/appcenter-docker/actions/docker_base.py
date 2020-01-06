@@ -36,10 +36,12 @@ import shutil
 import os.path
 import re
 import time
+import os
+import stat
 
 from ldap.dn import explode_dn
 
-from univention.appcenter.docker import Docker, MultiDocker
+from univention.appcenter.docker import Docker, MultiDocker, OneShotDocker
 from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import get_action
 from univention.appcenter.exceptions import DockerCouldNotStartContainer, DatabaseConnectorError, AppCenterErrorContainerStart
@@ -58,6 +60,8 @@ class DockerActionMixin(object):
 	def _get_docker(cls, app):
 		if not app.docker:
 			return
+		if app.one_shot:
+			return OneShotDocker(app, cls.logger)
 		if app.uses_docker_compose():
 			return MultiDocker(app, cls.logger)
 		return Docker(app, cls.logger)
@@ -100,6 +104,22 @@ class DockerActionMixin(object):
 			self.log('No interface defined')
 			return None
 		remote_interface_script = app.get_cache_file(interface)
+		if app.one_shot:
+			run = get_action('run')
+			binary = app.get_bin_file(interface)
+			if os.path.exists(remote_interface_script):
+				entrypoint = None
+				with open(remote_interface_script) as fd:
+					for line in fd: 
+						entrypoint = line.lstrip('#!').strip()
+						break
+				shutil.copy2(remote_interface_script, binary)
+				mode = os.stat(binary).st_mode
+				os.chmod(binary, mode | stat.S_IEXEC)
+				return run.call(app=app, entrypoint=entrypoint, commands=[binary] + (args or []))
+			else:
+				self.log('No interface defined')
+				return None
 		container_interface_script = docker.path(interface_file)
 		if os.path.exists(remote_interface_script):
 			self.log('Copying App Center\'s %s to container\'s %s' % (interface, interface_file))

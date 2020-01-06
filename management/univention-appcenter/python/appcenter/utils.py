@@ -104,11 +104,14 @@ def app_is_running(app):
 		if not app.is_installed():
 			return False
 		try:
-			from univention.appcenter.docker import Docker
+			from univention.appcenter.docker import Docker, OneShotDocker
 		except ImportError:
 			return None
 		else:
-			docker = Docker(app)
+			if app.one_shot:
+				docker = OneShotDocker(app)
+			else:
+				docker = Docker(app)
 			return docker.is_running()
 	else:
 		return None
@@ -377,7 +380,7 @@ def get_free_disk_space():
 		bytes_free = stats.f_frsize * stats.f_bavail  # block size * number of free blocks
 		mb_free = bytes_free * 1e-6
 		return mb_free
-	except Exception as exc:
+	except Exception:
 		utils_logger.debug('Free disk space could not be determined.')
 	finally:
 		try:

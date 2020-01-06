@@ -52,6 +52,8 @@ class Service(UniventionAppAction):
 		return '/etc/init.d/docker-app-%s' % app.id
 
 	def call_init(self, app, command):
+		if app.one_shot:
+			return True  # TODO...
 		init = self.get_init(app)
 		if not os.path.exists(init):
 			self.fatal('%s is not supported' % app.id)

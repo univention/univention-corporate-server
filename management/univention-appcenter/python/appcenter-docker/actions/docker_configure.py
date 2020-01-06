@@ -131,6 +131,9 @@ class Configure(Configure, DockerActionMixin):
 
 	def _run_configure_script(self, app, action):
 		success = super(Configure, self)._run_configure_script(app, action)
+		self.log(success)
+		self.log(app.docker)
+		self.log(app_is_running(app))
 		if success is not False and app.docker and app_is_running(app):
 			success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action])
 		return success

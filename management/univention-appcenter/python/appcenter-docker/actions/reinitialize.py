@@ -53,6 +53,9 @@ class Reinitialize(Upgrade):
 		if not app.is_installed():
 			self.warn('Only works for installed Apps')
 			return
+		if app.one_shot:
+			# makes no sense
+			return
 		self.old_app = app
 		if app.docker_script_setup:
 			self.warn('Cannot reinitialize an App with a setup script: Credentials are not passed')

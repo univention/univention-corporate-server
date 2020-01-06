@@ -142,7 +142,7 @@ def execute_with_process(container, args, logger=None, tty=None):
 	return call_process(args, logger)
 
 
-def create(image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
+def _run_or_create(run_or_create, image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
 	_args = []
 	if hostname:
 		_args.extend(['--hostname', hostname])
@@ -158,8 +158,16 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 	_args.append(image)
 	if command:
 		_args.extend(command)
-	args = ['docker', 'create'] + _args
+	args = ['docker', run_or_create] + _args
 	return call_process2(args)
+
+
+def run(image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
+	return _run_or_create('run', image, command, hostname, ports, volumes, env_file, args)
+
+
+def create(image, command, hostname=None, ports=None, volumes=None, env_file=None, args=None):
+	return _run_or_create('create', image, command, hostname, ports, volumes, env_file, args)
 
 
 def rmi(*images):
@@ -307,6 +315,11 @@ class Docker(object):
 
 	def ucr_filter_env_file(self, env):
 		env_file = os.path.join(self.app.get_data_dir().rstrip('data'), self.app.id + '.env')
+		if env is None:
+			if os.path.exists(env_file):
+				return env_file
+			else:
+				env_file = {}
 		# remove old env file
 		try:
 			os.remove(env_file)
@@ -328,14 +341,14 @@ class Docker(object):
 				outfile.write('%s=%s\n' % (shell_safe(key).upper(), value))
 		return env_file
 
-	def create(self, hostname, env):
+	def _container_config(self, env):
 		ports = []
 		for app_id, container_port, host_port, protocol in app_ports_with_protocol():
 			if app_id == self.app.id:
 				port_definition = '%d:%d/%s' % (host_port, container_port, protocol)
 				ports.append(port_definition)
 		volumes = set(self.app.docker_volumes[:])
-		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir()]:
+		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir(), self.app.get_bin_dir()]:
 			app_volume = '%s:%s' % (app_volume, app_volume)
 			volumes.add(app_volume)
 		if self.app.host_certificate_access:
@@ -347,15 +360,19 @@ class Docker(object):
 			if os.path.isfile('/etc/apt/apt.conf.d/80proxy'):
 				volumes.add('/etc/apt/apt.conf.d/80proxy:/etc/apt/apt.conf.d/80proxy:ro')  # apt proxy
 		env_file = self.ucr_filter_env_file(env)
-		command = None
-		if self.app.docker_script_init:
-			command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		for tmpfs in ("/run", "/run/lock"):                                 # systemd
 			args.extend(["--tmpfs", tmpfs])
 		seccomp_profile = "/etc/docker/seccomp-systemd.json"
 		args.extend(["--security-opt", "seccomp:%s" % seccomp_profile])     # systemd
 		args.extend(["-e", "container=docker"])                             # systemd
+		return ports, volumes, env_file, args
+
+	def create(self, hostname, env):
+		ports, volumes, env_file, args = self._container_config(env)
+		command = None
+		if self.app.docker_script_init:
+			command = shlex.split(self.app.docker_script_init)
 		ret, out = create(self.image, command, hostname, ports, volumes, env_file, args)
 		if ret != 0:
 			raise DockerCouldNotStartContainer(str(out))
@@ -454,7 +471,7 @@ class MultiDocker(Docker):
 
 	def _app_volumes(self):
 		volumes = self.app.docker_volumes[:]
-		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir()]:
+		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir(), self.app.get_bin_dir()]:
 			app_volume = '%s:%s' % (app_volume, app_volume)
 			volumes.append(app_volume)
 		if self.app.host_certificate_access:
@@ -612,3 +629,38 @@ class MultiDocker(Docker):
 			shutil.copy2(yml_file, yml_bak_file)
 		except EnvironmentError as exc:
 			_logger.warn('Could not backup docker-compose.yml: %s' % exc)
+
+
+class OneShotDocker(Docker):
+	def exists(self):
+		return self.app.is_installed()
+
+	def is_running(self):
+		return self.app.is_installed()
+
+	def create(self, hostname, env):
+		return None
+
+	def run(self, command=None, entrypoint=None, remove=True):
+		ports, volumes, env_file, args = self._container_config(None)
+		if entrypoint:
+			args.extend(['--entrypoint', entrypoint])
+		if remove:
+			args.append('--rm')
+		return run(self.image, command, None, ports, volumes, env_file, args, remove)
+
+	def execute(self, *args, **kwargs):
+		return call_process(['true'])  # TODO...
+
+	def path(self, filename=''):
+		dest = self.app.get_conf_dir()
+		if filename:
+			basename = os.path.basename(filename)
+			dest = os.path.join(dest, basename)
+		return dest
+
+	def cp_to_container(self, src, dest, **kwargs):
+		dest = self.path(src)
+		shutil.copy2(src, dest)
+		os.chmod(dest, 0o600)
+		return True
