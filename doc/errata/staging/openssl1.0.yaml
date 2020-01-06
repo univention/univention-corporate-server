@@ -1,0 +1,17 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: openssl1.0
+fix: 1.0.2u-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * side-channel weak encryption vulnerability (CVE-2019-1547)
+ * information disclosure in PKCS7_dataDecode and CMS_decrypt_set1_pkey
+   (CVE-2019-1563)
+ * Integer overflow in RSAZ modular exponentiation on x86_64 (CVE-2019-1551)
+bug: [50683]
+cve:
+- CVE-2019-1547
+- CVE-2019-1563
+- CVE-2019-1551
