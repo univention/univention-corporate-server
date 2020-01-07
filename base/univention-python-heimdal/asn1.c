@@ -101,8 +101,8 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	krb5_error_code err;
 	char *buf;
 	size_t len;
-	Key asn1_key;
-	Salt asn1_salt;
+	Key asn1_key = {0};
+	Salt asn1_salt = {0};
 
 	if (!PyArg_ParseTuple(args, "O!Oi", &krb5KeyblockType, &keyblock, &salt, &mkvno))
 		return NULL;
@@ -122,9 +122,6 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 		// First embed salt->salt of type krb5_salt into asn1_salt of type Salt
 		asn1_salt.type = salt->salt.salttype;
 		asn1_salt.salt = salt->salt.saltvalue;	// heim_octet_string := krb5_data, now we have void *asn1_salt.salt.data == *salt->salt.saltvalue.data
-#if HDB_INTERFACE_VERSION > 4
-		asn1_salt.opaque = NULL;	// heimdal-1.5 field
-#endif
 
 		// Then embed asn1_salt of type Salt into  asn1_key of type Key
 		asn1_key.salt = &asn1_salt;
