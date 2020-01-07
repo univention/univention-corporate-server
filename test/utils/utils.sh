@@ -476,6 +476,9 @@ ucsschool_scope_enabled () {
 install_ucsschool () {
 	local rv=0
 
+	# Bug #50690: ucs-school-webproxy would set this to yes. Which breaks out test environment
+	ucr set dhcpd/authoritative=no
+
 	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
 			switch_to_test_app_center || rv=$?
