@@ -440,6 +440,18 @@ class TestASN1(unittest.TestCase):
 		asn1 = heimdal.asn1_encode_key(keyblock, salt, KVNO)
 		self.assertEqual(self.ASN1, asn1)
 
+	def test_asn1_encode_key_without_salt(self):
+		context = heimdal.context()
+		keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
+		asn1 = heimdal.asn1_encode_key(keyblock, None, KVNO)
+		self.assertIsNotNone(asn1)
+
+	def test_asn1_encode_key_invalid_salt(self):
+		context = heimdal.context()
+		keyblock = heimdal.keyblock_raw(context, ENCINT, self.VALUE)
+		with self.assertRaises(TypeError):
+			heimdal.asn1_encode_key(keyblock, 0, KVNO)
+
 
 class TestException(unittest.TestCase):
 	KRB5KDC_ERR_NONE = -1765328384

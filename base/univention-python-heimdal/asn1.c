@@ -104,7 +104,7 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	Key asn1_key;
 	Salt asn1_salt;
 
-	if (!PyArg_ParseTuple(args, "O!O!i", &krb5KeyblockType, &keyblock, &krb5SaltType, &salt, &mkvno))
+	if (!PyArg_ParseTuple(args, "O!Oi", &krb5KeyblockType, &keyblock, &salt, &mkvno))
 		return NULL;
 
 	//asn1_key.mkvno = &mkvno;
@@ -113,7 +113,12 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 	// Embed keyblock->keyblock of type krb5_keyblock into asn1_key of type Key
 	asn1_key.key = keyblock->keyblock;	// EncryptionKey := krb5_keyblock, now we have void *asn1_key.key.keyvalue.data == keyblock->keyblock.keyvalue.data
 
-	if ((PyObject*)salt != Py_None) {
+	if ((PyObject*)salt == Py_None) {
+		asn1_key.salt = NULL;
+	} else if (!PyObject_TypeCheck(salt, &krb5SaltType)) {
+		PyErr_SetString(PyExc_TypeError, "argument 2 must be heimdal.krb5Salt or None");
+		return NULL;
+	} else {
 		// First embed salt->salt of type krb5_salt into asn1_salt of type Salt
 		asn1_salt.type = salt->salt.salttype;
 		asn1_salt.salt = salt->salt.saltvalue;	// heim_octet_string := krb5_data, now we have void *asn1_salt.salt.data == *salt->salt.saltvalue.data
@@ -123,8 +128,6 @@ PyObject* asn1_encode_key(PyObject *self, PyObject* args)
 
 		// Then embed asn1_salt of type Salt into  asn1_key of type Key
 		asn1_key.salt = &asn1_salt;
-	} else {
-		asn1_key.salt = NULL;
 	}
 
 	ASN1_MALLOC_ENCODE(Key, buf, len, &asn1_key, &len, err);
