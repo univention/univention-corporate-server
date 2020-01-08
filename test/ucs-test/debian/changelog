@@ -1,3 +1,10 @@
+ucs-test (9.0.3-135) unstable; urgency=medium
+
+  * Bug #50505: add python3-univention-config-registry to ucs-test-appcenter
+    dependencies
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 08 Jan 2020 13:04:34 +0100
+
 ucs-test (9.0.3-134) unstable; urgency=medium
 
   * Bug #50631: add more python 3 compatibility
