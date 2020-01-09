@@ -2111,9 +2111,18 @@ class ad(univention.connector.ucs):
 		ldap_object_ad = self.get_object(object['dn'])
 		modlist = None
 		if 'userPrincipalName' not in ldap_object_ad:
-			# add missing userPrincipalName
+			# if defined, map defined attribute from UCS to AD as userPrincipalName
+			userprincipalnameattribute = self.baseConfig.get('%s/ad/mapping/user/userPrincipalNameAttribute' % self.CONFIGBASENAME, None)
+			if userprincipalnameattribute:
+				ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
+				ucs_admin_object.open()
+				userPrincipalName = ucs_admin_object[userprincipalnameattribute]
+				modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [userPrincipalName])]
+				ud.debug(ud.LDAP, ud.INFO, "set_userPrincipalName_from_ucr: UPN AD user %s with modlist %s " % (object['dn'], modlist))
+
+			# add missing userPrincipalName, if no mapping attribute is defined
 			kerberosdomain = self.baseConfig.get('%s/ad/mapping/kerberosdomain' % self.CONFIGBASENAME, None)
-			if kerberosdomain:
+			if kerberosdomain and not userprincipalnameattribute:
 				ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
 				ucs_admin_object.open()
 				userPrincipalName = "%s@%s" % (ucs_admin_object['username'], kerberosdomain)
@@ -2123,7 +2132,14 @@ class ad(univention.connector.ucs):
 			if self.baseConfig.is_true('%s/ad/mapping/sync/userPrincipalName' % self.CONFIGBASENAME, True):
 				ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object_ucs['dn'])
 				ucs_admin_object.open()
-				if ucs_admin_object['username'] + '@' not in ldap_object_ad['userPrincipalName'][0]:
+
+				# if defined, synchronize specified UCS attribute to AD userPrincipalName
+				userprincipalnameattribute = self.baseConfig.get('%s/ad/mapping/user/userPrincipalNameAttribute' % self.CONFIGBASENAME, None)
+				if userprincipalnameattribute:
+					userPrincipalName = ucs_admin_object[userprincipalnameattribute]
+					modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [userPrincipalName])]
+
+				if (ucs_admin_object['username'] + '@' not in ldap_object_ad['userPrincipalName'][0]) and not userprincipalnameattribute:
 					if '@' in ldap_object_ad['userPrincipalName'][0]:
 						princ = ldap_object_ad['userPrincipalName'][0].split('@', 1)[1]
 						modlist = [(ldap.MOD_REPLACE, 'userPrincipalName', [ucs_admin_object['username'] + '@' + princ])]

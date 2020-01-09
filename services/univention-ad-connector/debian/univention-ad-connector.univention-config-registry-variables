@@ -261,3 +261,9 @@ Description[de]=Synchronisiere den UCS Benutzername auf den AD User Principal Na
 Description[en]=Synchronize the UCS user name to the AD User Principal Name (default is True).
 Type=bool
 Categories=service-adcon
+
+[con.*/ad/mapping/user/userPrincipalNameAttribute]
+Description[de]=Synchronisiere ein bestimmtes Attribut aus UCS auf den AD User Principal Name. Das Attribut muss single-valed und konform mit RFC822 sein. mapping/sync/userPrincipalName muss ebenfalls aktiviert sein. (default ist leer, ist ).
+Description[en]=Synchronize a specific attribute from UCS to the AD User Principal Name. The attribute has to be single-valued and single-valued. mapping/sync/userPrincipalName has to be enabled too. (default is empty).
+Type=bool
+Categories=service-adcon
