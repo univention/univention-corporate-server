@@ -43,6 +43,7 @@ import signal
 from optparse import OptionParser
 
 import ldap
+import setproctitle
 import traceback
 import univention
 import univention.connector
@@ -94,6 +95,9 @@ def daemon(lock_file):
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
+
+		# backwards compatibility for nagios checks not updated to UCS 4.4-3
+		setproctitle.setproctitle('univention-ad-%s # /usr/lib/pymodules/python2.7/univention/connector/ad/main.py' % CONFIGBASENAME)
 	else:
 		os._exit(0)
 

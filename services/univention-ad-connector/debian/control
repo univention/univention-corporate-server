@@ -16,6 +16,7 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
+ python-setproctitle,
  python-univention-directory-manager (>= 7.0.214),
  python-pysqlite2
 Pre-Depends: univention-config (>= 2.6.8-5)
@@ -35,6 +36,7 @@ Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends},
  python3-univention,
  python3-univention-license,
+ python3-setproctitle,
  python3-univention-directory-manager,
  python3-pysqlite2
 Pre-Depends: univention-config (>= 2.6.8-5)
