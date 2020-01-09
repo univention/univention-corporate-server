@@ -1,3 +1,9 @@
+ucs-test (9.0.3-136) unstable; urgency=medium
+
+  * Bug #50401: 72_udm-extensions/50_test_pysupport_to_dhpython_migration
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 09 Jan 2020 17:29:19 +0100
+
 ucs-test (9.0.3-135) unstable; urgency=medium
 
   * Bug #50505: add python3-univention-config-registry to ucs-test-appcenter
