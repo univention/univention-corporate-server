@@ -39,7 +39,8 @@ basic_setup () {
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
 		echo "KVM detected"
-		ucr set --force updater/identify="UCS (EC2 Test)"
+		ucr set --force updater/identify="UCS (EC2 Test)" \
+				dhclient/linklocal/fallback=no
 	elif ip -4 addr show | grep -Fq 'inet 10.210.'
 	then
 		echo "Assuming Amazon Cloud"
