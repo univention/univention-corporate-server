@@ -87,6 +87,7 @@ def create_extension(udm, extension_type):
 		'univentionAppIdentifier': [app_id],
 		'univentionUCSVersionStart': [version_start],
 		'univentionUCSVersionEnd': [version_end],
+		'univentionUDM%sActive' % (extension_type.capitalize(), ): [active],
 	})
 	assert os.path.exists(udm_ext.get_absolute_extension_filename(extension_type, extension_filename))
 	return extension_filename
@@ -117,16 +118,22 @@ def test_migration():
 		if not os.path.exists(migrated_file):
 			raise AssertionError
 
+	def check_non_migrated_file():
+		if os.path.exists(migrated_file.replace(PYTHON_DIR, PYSHARED_DIR)):
+			raise AssertionError
+		if os.path.exists(migrated_file.replace(PYTHON_DIR, PYMODULES_DIR)):
+			raise AssertionError
+		if os.path.exists(get_pysupport_filename(extension_type, extension_filename)):
+			raise AssertionError
+
 	for extension_type in ('hook', 'syntax', 'module'):
 		with udm_test.UCSTestUDM() as udm:
 			extension_filename = create_extension(udm, extension_type)
 			downgrade_extension_to_pysupport(extension_type, extension_filename)
 			subprocess.check_call(['univention-directory-listener-ctrl', 'resync', 'udm_extension'])
 			migrated_file = udm_ext.get_absolute_extension_filename(extension_type, extension_filename)
-			retry_on_error(check_migrated_file, AssertionError, delay=1)
-			assert not os.path.exists(migrated_file.replace(PYTHON_DIR, PYSHARED_DIR))
-			assert not os.path.exists(migrated_file.replace(PYTHON_DIR, PYMODULES_DIR))
-			assert not os.path.exists(get_pysupport_filename(extension_type, extension_filename))
+			retry_on_error(check_migrated_file, AssertionError, delay=2)
+			retry_on_error(check_non_migrated_file, AssertionError, delay=2)
 
 
 if __name__ == '__main__':
