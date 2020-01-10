@@ -799,7 +799,7 @@ END CATEGORY
 
 	<para>
 	  In beiden Modi wird unter UCS der Active Directory-Verbindungsdienst verwendet (kurz UCS AD-Connector), der Verzeichnisdienstobjekte zwischen einem
-	  Windows 2003/2008/2012/2016-Server mit Active Directory (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
+	  Windows Server 2003-2019 mit Active Directory (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
 	</para>
 
 	<para>

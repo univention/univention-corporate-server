@@ -219,7 +219,7 @@
 	<para>
 	  Der UCS Active Directory Connector (kurz AD Connector)
 	  ermöglicht eine Synchronisation von Verzeichnisdienstobjekten zwischen
-	  einem Microsoft Windows 2008/2012/2016 Server mit Microsoft Active Directory (AD) und dem
+	  einem Microsoft Windows Server 2003-2019 mit Microsoft Active Directory (AD) und dem
 	  OpenLDAP-Verzeichnisdienst in &ucsUCS;.
 	</para>
 
