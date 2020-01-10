@@ -1,0 +1,22 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: firefox-esr
+fix: 68.4.1esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Bypass of @namespace CSS sanitization during pasting (CVE-2019-17016)
+ * Type Confusion in XPCVariant.cpp (CVE-2019-17017)
+ * CSS sanitization does not escape HTML tags (CVE-2019-17022)
+ * Memory safety bugs fixed in Firefox 72 and Firefox ESR 68.4
+   (CVE-2019-17024)
+ * IonMonkey type confusion with StoreElementHole and FallibleStoreElement
+   (CVE-2019-17026)
+bug: [50703]
+cve:
+- CVE-2019-17016
+- CVE-2019-17017
+- CVE-2019-17022
+- CVE-2019-17024
+- CVE-2019-17026
