@@ -1803,9 +1803,9 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
 		if add_members:
-			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_ADD, 'member', list(map(compatible_modstring, add_members)))])
+			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_ADD, 'member', list(map(compatible_modstring, add_members)))])
 		if del_members:
-			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_DEL, 'member', list(map(compatible_modstring, del_members)))])
+			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_DEL, 'member', list(map(compatible_modstring, del_members)))])
 
 		return True
 
