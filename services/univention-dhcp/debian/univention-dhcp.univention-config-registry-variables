@@ -6,7 +6,7 @@ Categories=service-dhcp,system-services
 
 [dhcpd/options/.*]
 Description[de]=Es besteht die Möglichkeit an DHCP-Service- und DHCP-Subnetz-Objekten DHCP-Optionen zu registrieren. Neue Optionen müssen zunächst in UCR definiert werden. Das Format dafür ist dhcp/options/OPTIONSNAME/OPTIONSCODE=WERT.
-Description[en]=DHCP options can be registered on DHCP service and DHCP subnet objects. New options need to be registered in UCR first. The format is dhcp/options/OPTIONNAME/OPTIONCODE=VALUE.
+Description[en]=DHCP options can be registered on DHCP service and DHCP subnet objects. New options need to be registered in UCR first. The format is dhcpd/options/OPTIONNAME/OPTIONCODE=VALUE.
 Type=str
 Categories=service-dhcp
 

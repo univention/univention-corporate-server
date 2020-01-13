@@ -1,3 +1,9 @@
+univention-dhcp (13.0.0-2) unstable; urgency=medium
+
+  * Bug #46805: Fixed spelling mistake
+
+ -- Max Christian Pohle <pohle@univention.de>  Mon, 13 Jan 2020 16:22:18 +0100
+
 univention-dhcp (13.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
