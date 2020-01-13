@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-99A~4.4.0.201912201141
+fix: 8.0.11-100A~4.4.0.202001131049
 desc: |
  This update addresses the following issue(s):
  * Warnings and errors during an app installation, removal or upgrade are now
