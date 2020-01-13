@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: samba
-fix: 2:4.10.1-1A~4.4.0.202001130957
+fix: 2:4.10.1-1A~4.4.0.202001131227
 desc: |
  This update addresses the following issue(s):
  * Samba not recognizing Unix-Sids as valid caused
