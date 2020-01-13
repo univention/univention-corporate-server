@@ -1056,6 +1056,7 @@ define([
 
 						var showUnreachableHint = result.software_changes_computed && result.unreachable.length;
 						var unreachableHintIsHard = showUnreachableHint && result.master_unreachable;
+						var showErrataHint = result.software_changes_computed && func === 'update';
 						var packageChanges = [];
 						if (result.software_changes_computed) {
 							packageChanges.push({
@@ -1096,7 +1097,7 @@ define([
 							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
 						}
 						this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
-						if (func === 'update') {
+						if (showErrataHint) {
 							this.detailsDialog.showErrataHint();
 						}
 
