@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-100) unstable; urgency=medium
+
+  * Bug #50667: fix typo
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 13 Jan 2020 10:46:44 +0100
+
 univention-appcenter (8.0.11-99) unstable; urgency=medium
 
   * Bug #50667: highlight warnings and errors during app
