@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-web
 fix: 3.0.5-31A~4.4.0.202001141440
 desc: |
- This update addresses the following issue(s):
- * Fixed a typo in the description of ucr variable ucs/server/languages/ 
+ This update addresses the following issue:
+ * Fixed a typo in the description of UCR variable `ucs/server/languages/`.
 bug: [47845]
