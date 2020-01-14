@@ -903,7 +903,7 @@ class ad(univention.connector.ucs):
 				self.group_members_cache_con[group] = set()
 				if ad_group_attrs:
 					ad_members = self.get_ad_members(ad_group_dn, ad_group_attrs)
-					self.group_members_cache_con[group].extend(m.lower() for m in ad_members)
+					self.group_members_cache_con[group].update(m.lower() for m in ad_members)
 			ud.debug(ud.LDAP, ud.INFO, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
 			ucs_groups = self.search_ucs(filter='(objectClass=univentionGroup)', attr=['uniqueMember'])
@@ -1912,7 +1912,7 @@ class ad(univention.connector.ucs):
 		# The user has been removed from the cache. He must be added in any case
 		ad_group_object_dn_lower = ad_group_object['dn'].lower()
 		object_dn_lower = object['dn'].lower()
-		ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: Append user %s to group con cache of %s" % (object_dn_lower, ad_group_object_dn_lower)
+		ud.debug(ud.LDAP, ud.INFO, "one_group_member_sync_from_ucs: Append user %s to group con cache of %s" % (object_dn_lower, ad_group_object_dn_lower))
 		self.group_members_cache_con.setdefault(ad_group_object_dn_lower, set()).add(object_dn_lower)
 
 	def __group_cache_con_append_member(self, group, member):
