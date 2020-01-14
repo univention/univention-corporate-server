@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-32) unstable; urgency=medium
+
+  * Bug #50191: Remove fuzz
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 14 Jan 2020 19:10:38 +0100
+
 univention-management-console-module-diagnostic (5.0.1-31) unstable; urgency=medium
 
   * Bug #50191: Adjust translation
