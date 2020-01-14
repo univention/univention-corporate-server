@@ -1,6 +1,7 @@
 import datetime
 import sqlite3
 import json
+import gc
 
 from memory_profiler import profile
 
@@ -54,6 +55,9 @@ class Apps2(Apps):
 			app = App(json.loads(row[0]), None)
 			yield app
 
+	#def get_all_apps(self):
+        #    pass
+
 	def get_all_apps_with_id(self, app_id):
 		c = self.conn.cursor()
 
@@ -73,13 +77,14 @@ def iter_apps():
 
 @profile
 def iter_apps2():
-	apps = Apps2().get_every_single_app()
+	_apps = Apps2()
+	apps = _apps.get_every_single_app()
 	for app in apps:
 		pass
 
 
-iter_apps()
-iter_apps2()
+#iter_apps()
+#iter_apps2()
 
 @measure_time
 def find_samba_with_old_backend(timer):
@@ -99,6 +104,25 @@ find_samba_with_sql_backend()
 
 
 @measure_time
+def get_every_single_app_with_old_backend(timer):
+	for x in xrange(10):
+		with timer:
+                    for app in Apps().get_every_single_app():
+                        pass
+
+@measure_time
+def get_every_single_app_with_sql_backend(timer):
+	for x in xrange(10):
+		with timer:
+                    for app in Apps2().get_every_single_app():
+                        pass
+
+get_every_single_app_with_old_backend()
+get_every_single_app_with_sql_backend()
+
+
+
+@measure_time
 def get_all_apps_with_old_backend(timer):
 	for x in xrange(10):
 		with timer:
@@ -108,8 +132,72 @@ def get_all_apps_with_old_backend(timer):
 def get_all_apps_with_sql_backend(timer):
 	for x in xrange(10):
 		with timer:
-			Apps().get_all_apps()
+			Apps2().get_all_apps()
 
 get_all_apps_with_old_backend()
 get_all_apps_with_sql_backend()
+
+
+# new tests
+
+@measure_time
+def get_all_locally_installed_apps_with_old_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps().get_all_locally_installed_apps()
+
+@measure_time
+def get_all_locally_installed_apps_with_sql_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps2().get_all_locally_installed_apps()
+
+get_all_locally_installed_apps_with_old_backend()
+get_all_locally_installed_apps_with_sql_backend()
+
+@measure_time
+def get_all_apps_with_id_with_old_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps().get_all_apps_with_id('samba4')
+
+@measure_time
+def get_all_apps_with_id_with_sql_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps2().get_all_apps_with_id('samba4')
+
+
+get_all_apps_with_id_with_old_backend()
+get_all_apps_with_id_with_sql_backend()
+
+@measure_time
+def find_component_id_with_old_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps().find_by_component_id('samba4')
+
+@measure_time
+def find_component_id_with_sql_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps2().find_by_component_id('samba4')
+
+find_component_id_with_old_backend()
+find_component_id_with_sql_backend()
+
+@measure_time
+def find_candidate_with_old_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps().find_candidate()
+
+@measure_time
+def find_candidate_with_sql_backend(timer):
+        for x in xrange(10):
+                with timer:
+                        Apps2().find_candidate()
+
+#find_candidate_with_old_backend()
+#find_candidate_with_sql_backend()
 
