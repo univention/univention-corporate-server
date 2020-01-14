@@ -3,12 +3,13 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: samba
-fix: 2:4.10.1-1A~4.4.0.202001131227
+fix: 2:4.10.1-1A~4.4.0.202001141239
 desc: |
  This update addresses the following issue(s):
- * Samba not recognizing Unix-Sids as valid caused
-   windows explorer crashes, when opening the security
-   tab on a share where such Sids are found in the acls.
-   We found several other SIDs which could trigger a crash
-   and marked them as valid in Samba.
-bug: [50601]
+ * Samba not recognizing Unix-SIDs as valid caused crashes of the
+   Microsoft Windows Explorer, when opening the security
+   tab on a share or file where such SIDs are found in the ACLs.
+   We found several other "well known" SIDs which could trigger a crash
+   and declared them as valid in Samba.
+ * TODO Bug #50715
+bug: [50601, 50715]
