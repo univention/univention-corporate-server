@@ -9,3 +9,5 @@ desc: |
  * The group member cache handling has been improved to avoid unbound
    consumption of process memory.
 bug: [50644]
+ignore:
+  - version.scope
