@@ -1,3 +1,9 @@
+univention-web (3.0.5-30ubuntu1) UNRELEASED; urgency=medium
+
+  * Bug #47845: Fixed typo 
+
+ -- Christian Castens <castens@univention.de>  Tue, 14 Jan 2020 14:07:30 +0100
+
 univention-web (3.0.5-30) unstable; urgency=medium
 
   * Bug #33590: prevent ProgressBar from jumping when text length

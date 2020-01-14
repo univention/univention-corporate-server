@@ -1,6 +1,6 @@
 [ucs/server/languages/.*]
 Description[de]=Variablen der Form ucs/server/languages/.* definieren die Verfügbarkeit einer UCS Sprachversion und legen deren Name fest. Diese Variablen müssen in der Regel nicht angepasst werden.
-Description[en]=Variablen in the format ucs/server/languages/.* define the availability of a UCS language version and the associated name. Such variables usually do not need to be changed.
+Description[en]=Variables in the format ucs/server/languages/.* define the availability of a UCS language version and the associated name. Such variables usually do not need to be changed.
 Type=str
 Categories=management-umc
 
