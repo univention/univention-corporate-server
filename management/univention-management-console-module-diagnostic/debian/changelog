@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-29) unstable; urgency=medium
+
+  * Bug #50191: Add UMC-Check which tests if there are any other DCs which could be set to ldap/server/name on member servers
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 14 Jan 2020 18:19:26 +0100
+
 univention-management-console-module-diagnostic (5.0.1-28) unstable; urgency=medium
 
   * Bug #50599: 58_check_memberOf.py
