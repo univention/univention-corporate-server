@@ -1,0 +1,38 @@
+Filename: test.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    66     40.4 MiB     40.4 MiB   @profile
+    67                             def iter_apps():
+    68    122.2 MiB     81.8 MiB   	apps = Apps().get_every_single_app()
+    69    122.2 MiB      0.0 MiB   	for app in apps:
+    70    122.2 MiB      0.0 MiB   		pass
+
+
+Filename: test.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    74    122.2 MiB    122.2 MiB   @profile
+    75                             def iter_apps2():
+    76    122.2 MiB      0.0 MiB   	apps = Apps2().get_every_single_app()
+    77    142.6 MiB      4.5 MiB   	for app in apps:
+    78    142.6 MiB      0.0 MiB   		pass
+
+
+=== find_samba_with_old_backend ===
+1000 result(s)
+0:00:01.189960 total
+0:00:00.001189 avg
+=== find_samba_with_sql_backend ===
+1000 result(s)
+0:00:01.154209 total
+0:00:00.001154 avg
+=== get_all_apps_with_old_backend ===
+10 result(s)
+0:00:00.099077 total
+0:00:00.009907 avg
+=== get_all_apps_with_sql_backend ===
+10 result(s)
+0:00:00.107187 total
+0:00:00.010718 avg

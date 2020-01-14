@@ -1,3 +1,9 @@
-The package univention-demo is a simple UMC module that can be used as a test
-application for the Univention App Center.  The package exists already in
-several versions, so that update scenarios can be simulated.
+Currently, we are testing memory and speed performance of the App Cache
+
+On a UCS:
+
+pip install memory_profiler
+python setup.py
+pyton test.py
+
+I did this and saved the results in the file... results
