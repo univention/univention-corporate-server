@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-ad-connector
-fix: 13.0.0-19A~4.4.0.201912191323
+fix: 13.0.0-20A~4.4.0.202001141138
 desc: |
  This update addresses the following issue:
  * The group member cache handling has been improved to avoid unbound
