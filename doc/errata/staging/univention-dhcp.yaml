@@ -5,6 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-dhcp
 fix: 13.0.0-2A~4.4.0.202001141412
 desc: |
- This update addresses the following issue(s):
- * Fixed a spelling mistake in the description of the registry under 'dhcpd/options/.*'
+ This update addresses the following issue:
+ * Fixed a spelling mistake in the description of UCR variable
+   `dhcpd/options/.*`.
 bug: [46805]
