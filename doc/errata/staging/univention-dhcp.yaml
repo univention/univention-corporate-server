@@ -7,5 +7,5 @@ fix: 13.0.0-2A~4.4.0.202001141412
 desc: |
  This update addresses the following issue:
  * Fixed a spelling mistake in the description of UCR variable
-   `dhcpd/options/.*`.
+   `dhcpd/options/`.
 bug: [46805]
