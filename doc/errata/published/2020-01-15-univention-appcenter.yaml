@@ -9,3 +9,5 @@ desc: |
  * Warnings and errors during an app installation, removal or upgrade are now
    highlighted and grouped together.
 bug: [50667]
+erratum: 419
+announced: 2020-01-15
