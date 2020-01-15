@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-python-heimdal
-fix: 9.0.0-3A~4.4.0.201912181749
+fix: 9.0.0-3A~4.4.0.202001151023
 desc: |
  This update addresses the following issues:
  * Add Python 3 support.
