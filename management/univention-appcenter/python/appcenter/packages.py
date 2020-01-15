@@ -44,9 +44,10 @@ from univention.lib.package_manager import PackageManager, LockError  # LockErro
 from univention.appcenter.log import get_base_logger, LogCatcher
 from univention.appcenter.utils import call_process
 
+from debian.deb822 import Deb822
 
 package_logger = get_base_logger().getChild('packages')
-
+installed_pkgs = {}
 
 LOCK_FILE = '/var/run/univention-appcenter.lock'
 
@@ -80,9 +81,20 @@ def reload_package_manager():
 
 
 def packages_are_installed(pkgs, strict=True):
-	package_manager = get_package_manager()
-	if strict:
-		return all(package_manager.is_installed(pkg) for pkg in pkgs)
+	#package_manager = get_package_manager()
+	if True:
+		#return all(package_manager.is_installed(pkg) for pkg in pkgs)
+
+		is_all_pkgs_installed = True
+
+		if not installed_pkgs:
+			update_installed_packages()
+
+		for pkg_name in pkgs:
+			if pkg_name not in installed_pkgs:
+				is_all_pkgs_installed = False
+				break
+		return is_all_pkgs_installed
 	else:
 		# app.is_installed(package_manager, strict=True) uses
 		# apt_pkg.CURSTATE. Not desired when called during
@@ -100,6 +112,14 @@ def packages_are_installed(pkgs, strict=True):
 					return False
 		return True
 
+def update_installed_packages():
+	with open('/var/lib/dpkg/status', 'r') as dpkg_status:
+		for deb_obj in Deb822.iter_paragraphs(dpkg_status, ["Package", "Status"], use_apt_pkg=True):
+			try:
+				if deb_obj["Status"] == "install ok installed":
+					installed_pkgs.update({deb_obj["Package"] : deb_obj["Status"]})
+			except KeyError:
+				continue
 
 @contextmanager
 def package_lock():
