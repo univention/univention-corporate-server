@@ -73,7 +73,7 @@ configRegistry.load()
 logger = logging.getLogger('uvmmd.node')
 
 CACHE_STATE = '/var/run/uvmmd.cache'
-STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
+STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED', 'PMSUSPENDED')
 VIR_DOM = dict((v, k[9:]) for (k, v) in vars(libvirt).items() if k.startswith('VIR_FROM_'))
 VIR_ERR = dict((v, k[8:]) for (k, v) in vars(libvirt).items() if k.startswith('VIR_ERR_') and k not in {'VIR_ERR_NONE', 'VIR_ERR_WARNING', 'VIR_ERR_ERROR'})
 VIR_LVL = dict((v, k[8:]) for (k, v) in vars(libvirt).items() if k in {'VIR_ERR_NONE', 'VIR_ERR_WARNING', 'VIR_ERR_ERROR'})
