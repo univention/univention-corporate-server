@@ -1591,7 +1591,7 @@ define([
 			}
 
 			// else type == 'domain'
-			// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
+			// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED', 'PMSUSPENDED' )
 			return [{
 				name: 'edit',
 				label: _( 'Edit' ),

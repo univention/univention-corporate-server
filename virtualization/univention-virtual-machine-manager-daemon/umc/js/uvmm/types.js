@@ -68,7 +68,8 @@ define([
 			IDLE : _( 'running (idle)' ),
 			CRASHED : _( 'shut off (crashed)' ),
 			TERMINATED : _( 'terminated' ),
-			PENDING : _( 'pending' )
+			PENDING : _( 'pending' ),
+			PMSUSPENDED : _( 'suspended' )
 		},
 		getDomainStateDescription: function( domain ) {
 			var text = self.domainStates[ domain.state ];

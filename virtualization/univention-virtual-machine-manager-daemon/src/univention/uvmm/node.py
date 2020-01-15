@@ -1981,6 +1981,9 @@ def domain_state(uri, domain, state):
 				(libvirt.VIR_DOMAIN_CRASHED, 'RUN'): dom.create,
 				(libvirt.VIR_DOMAIN_CRASHED, 'SHUTDOWN'): None,  # TODO destroy?
 				(libvirt.VIR_DOMAIN_CRASHED, 'SHUTOFF'): None,  # TODO destroy?
+				(libvirt.VIR_DOMAIN_PMSUSPENDED, 'RUN'): lambda: dom.pMWakeup(0),
+				(libvirt.VIR_DOMAIN_PMSUSPENDED, 'SHUTDOWN'): None,  # TODO destroy?
+				(libvirt.VIR_DOMAIN_PMSUSPENDED, 'SHUTOFF'): None,  # TODO destroy?
 			}
 			transition = TRANSITION[(dom_stat.pd.state, state)]
 		except KeyError:
