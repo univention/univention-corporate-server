@@ -9,3 +9,5 @@ desc: |
  * Fixed a spelling mistake in the description of UCR variable
    `dhcpd/options/`.
 bug: [46805]
+erratum: 420
+announced: 2020-01-15
