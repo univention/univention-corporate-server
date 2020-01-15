@@ -1,7 +1,6 @@
 import datetime
 import sqlite3
 import json
-import gc
 
 from memory_profiler import profile
 
@@ -45,27 +44,29 @@ def measure_time(f):
 
 # New SQL backend; naive implementation
 class Apps2(Apps):
-	def __init__(self):
-		self.conn = sqlite3.connect('apps.db')
+	conn = sqlite3.connect('apps.db')
+	cursor = conn.cursor()
 
 	def get_every_single_app(self):
-		c = self.conn.cursor()
-
-		for row in c.execute('SELECT attrs FROM apps ORDER BY id, version'):
+		for row in self.cursor.execute('SELECT attrs FROM apps ORDER BY id, version'):
 			app = App(json.loads(row[0]), None)
 			yield app
-
-	#def get_all_apps(self):
-        #    pass
 
 	def get_all_apps_with_id(self, app_id):
-		c = self.conn.cursor()
+		for row in self.cursor.execute("SELECT attrs FROM apps WHERE id = ? ORDER BY id, version", (app_id,)):
+			app = App(json.loads(row[0]), None)
+			yield app
 
-		for row in c.execute("SELECT attrs FROM apps WHERE id = ? ORDER BY id, version", (app_id,)):
+	def get_all_locally_installed_apps(self):
+		for row in self.cursor.execute("SELECT attrs FROM apps WHERE installed = 1 ORDER BY id, version"):
 			app = App(json.loads(row[0]), None)
 			yield app
 
 
+	def find_by_component_id(self, component_id):
+		row = self.cursor.execute("SELECT attrs FROM apps WHERE component_id = ?", (component_id,)).fetchone()
+		if row:
+			return App(json.loads(row[0]), None)
 
 @profile
 def iter_apps():
@@ -98,27 +99,20 @@ def find_samba_with_sql_backend(timer):
 		with timer:
 			Apps2().find('samba4')
 
-find_samba_with_old_backend()
-find_samba_with_sql_backend()
-
 
 
 @measure_time
 def get_every_single_app_with_old_backend(timer):
 	for x in xrange(10):
 		with timer:
-                    for app in Apps().get_every_single_app():
-                        pass
+			list(Apps().get_every_single_app())
 
 @measure_time
 def get_every_single_app_with_sql_backend(timer):
 	for x in xrange(10):
 		with timer:
-                    for app in Apps2().get_every_single_app():
-                        pass
+			list(Apps2().get_every_single_app())
 
-get_every_single_app_with_old_backend()
-get_every_single_app_with_sql_backend()
 
 
 
@@ -134,70 +128,81 @@ def get_all_apps_with_sql_backend(timer):
 		with timer:
 			Apps2().get_all_apps()
 
-get_all_apps_with_old_backend()
-get_all_apps_with_sql_backend()
-
 
 # new tests
 
 @measure_time
 def get_all_locally_installed_apps_with_old_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps().get_all_locally_installed_apps()
+	for x in xrange(10):
+		with timer:
+			list(Apps().get_all_locally_installed_apps())
 
 @measure_time
 def get_all_locally_installed_apps_with_sql_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps2().get_all_locally_installed_apps()
+	for x in xrange(10):
+		with timer:
+			list(Apps2().get_all_locally_installed_apps())
 
-get_all_locally_installed_apps_with_old_backend()
-get_all_locally_installed_apps_with_sql_backend()
 
 @measure_time
 def get_all_apps_with_id_with_old_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps().get_all_apps_with_id('samba4')
+	for x in xrange(10):
+		with timer:
+			list(Apps().get_all_apps_with_id('samba4'))
 
 @measure_time
 def get_all_apps_with_id_with_sql_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps2().get_all_apps_with_id('samba4')
+	for x in xrange(10):
+		with timer:
+			list(Apps2().get_all_apps_with_id('samba4'))
 
 
-get_all_apps_with_id_with_old_backend()
-get_all_apps_with_id_with_sql_backend()
 
 @measure_time
 def find_component_id_with_old_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps().find_by_component_id('samba4')
+	for x in xrange(10):
+		with timer:
+			Apps().find_by_component_id('samba4')
 
 @measure_time
 def find_component_id_with_sql_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps2().find_by_component_id('samba4')
+	for x in xrange(10):
+		with timer:
+			Apps2().find_by_component_id('samba4')
 
-find_component_id_with_old_backend()
-find_component_id_with_sql_backend()
 
 @measure_time
 def find_candidate_with_old_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps().find_candidate()
+	app = Apps2().find('nextcloud')
+	for x in xrange(10):
+		with timer:
+			Apps().find_candidate(app)
 
 @measure_time
 def find_candidate_with_sql_backend(timer):
-        for x in xrange(10):
-                with timer:
-                        Apps2().find_candidate()
+	app = Apps2().find('nextcloud')
+	for x in xrange(10):
+		with timer:
+			Apps2().find_candidate(app)
 
-#find_candidate_with_old_backend()
-#find_candidate_with_sql_backend()
+find_samba_with_old_backend()
+find_samba_with_sql_backend()
+print('')
+get_every_single_app_with_old_backend()
+get_every_single_app_with_sql_backend()
+print('')
+get_all_apps_with_old_backend()
+get_all_apps_with_sql_backend()
+print('')
+get_all_locally_installed_apps_with_old_backend()
+get_all_locally_installed_apps_with_sql_backend()
+print('')
+get_all_apps_with_id_with_old_backend()
+get_all_apps_with_id_with_sql_backend()
+print('')
+find_component_id_with_old_backend()
+find_component_id_with_sql_backend()
+print('')
+find_candidate_with_old_backend()
+find_candidate_with_sql_backend()
 
