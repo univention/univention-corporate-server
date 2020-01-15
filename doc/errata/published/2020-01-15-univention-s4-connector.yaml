@@ -11,3 +11,5 @@ desc: |
 bug: [50644]
 ignore:
   - version.scope
+erratum: 422
+announced: 2020-01-15
