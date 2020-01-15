@@ -323,6 +323,8 @@ class Docker(object):
 					outfile.write('\n')
 			# env variables from appcenter
 			for key, value in env.iteritems():
+				if value is None:
+					continue
 				if self.app.docker_ucr_style_env:
 					outfile.write('%s=%s\n' % (shell_safe(key), value))
 				outfile.write('%s=%s\n' % (shell_safe(key).upper(), value))
