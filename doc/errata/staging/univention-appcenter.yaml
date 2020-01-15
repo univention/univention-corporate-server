@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
 fix: 8.0.11-100A~4.4.0.202001131049
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Warnings and errors during an app installation, removal or upgrade are now
    highlighted and grouped together.
 bug: [50667]
