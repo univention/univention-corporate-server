@@ -10,3 +10,5 @@ desc: |
    existing UDM extensions are migrated during the package upgrade.
  * Prevent creating DHCP networks which break the DHCP service configuration.
 bug: [50401, 44135]
+erratum: 421
+announced: 2020-01-15
