@@ -6,7 +6,7 @@ src: univention-ldap
 fix: 15.0.0-34A~4.4.0.201912171121
 desc: |
  This update addresses the following issue:
- * The init script now looks for an already running process only below parent
-   pid 1 specifically. This allows another process "slapd" to be run in a
-   container.
+ * The init script for `slapd` now looks for running process only below parent
+   pid 1 specifically. This allows running other `slapd` processes in
+   containers.
 bug: [50616]
