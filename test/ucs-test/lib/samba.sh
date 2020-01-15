@@ -3,7 +3,7 @@ DRS_REPLICATION_TIMEOUT=360
 wait_for_LDAP_replication_of_domain_sambaSid () {
 	local username t0 t sambaSID
 	username="${1:?username}"
-	t0=$(date +%Y%m%d%H%M%S)
+	t0=$(date +%s)
 	t=t0
 	test -x /usr/sbin/univention-s4search || return 0
 	sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
@@ -16,7 +16,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			sleep 1
 			echo -n "."
 			sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
-			t=$(date +%Y%m%d%H%M%S)
+			t=$(date +%s)
 		done
 		echo
 	fi
@@ -32,7 +32,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			sleep 1
 			echo -n "."
 			sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | sed -n 's/^objectSid: //p')
-			t=$(date +%Y%m%d%H%M%S)
+			t=$(date +%s)
 		done
 	fi
 	echo "S4-Connector and LDAP replication of domain sambaSID took $(($t-$t0)) seconds"
@@ -52,7 +52,7 @@ wait_for_drs_replication () {
 
 	ldap_filter="${1:?ldap_filter}"
 	attr="${2:-dn}"
-	t0=$(date +%Y%m%d%H%M%S)
+	t0=$(date +%s)
 	t=t0
 	output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr")
 	if [ $? != 0 ]; then
@@ -76,7 +76,7 @@ wait_for_drs_replication () {
 				return 1
 			fi
 			value=$(sed -n "s/^$attr: //p" <<<"$output")
-			t=$(date +%Y%m%d%H%M%S)
+			t=$(date +%s)
 		done
 		echo
 	fi
