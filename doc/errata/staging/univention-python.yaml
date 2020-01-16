@@ -8,5 +8,5 @@ desc: |-
   This update addresses the following issue:
   * The ldap-group-to-file script used to run against the master server
     by default. We randomize the LDAP server selection now, to distribute
-	the load.
+    the load.
 bug: [50191]
