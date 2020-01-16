@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
-src: univention-python
-fix: 12.0.0-17A~4.4.0.202001160934
+src: univention-pam
+fix: 12.0.2-5A~4.4.0.202001160938
 desc: |-
   This update addresses the following issue:
   * The ldap-group-to-file script used to run against the master server
