@@ -1,3 +1,9 @@
+univention-pam (12.0.2-5) unstable; urgency=medium
+
+  * Bug #50191: Randomize LDAP server selection for ldap-group-to-name.py
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 15 Jan 2020 12:54:13 +0100
+
 univention-pam (12.0.2-4) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors

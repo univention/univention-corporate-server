@@ -109,7 +109,7 @@ def main():
 	(options, args) = parser.parse_args()
 
 	try:
-		lo = univention.uldap.getMachineConnection(ldap_master=False)
+		lo = univention.uldap.getMachineConnection(ldap_master=False, random_server=True)
 	except ldap.SERVER_DOWN:
 		print("Abort: Can't contact LDAP server.")
 		sys.exit(1)
