@@ -33,3 +33,10 @@ Description[de]=Mit diesen Variablen kann Dynamic DNS konfiguriert werden. Die D
 Description[en]=With these variables Dynamic DNS can be configured. The DNS updates can not occur against the UCS nameserver, but instead against an external system. For the documentation, see <https://forge.univention.org/bugzilla/show_bug.cgi?id=9521>.
 Type=str
 Categories=service-dhcp
+
+[dhcpd/ldap/debug/file]
+Description[de]=Mit diesen Variablen kann die Erstellung einer Logdatei für Debuginformationen aktiviert werden.
+Description[en]=With this variable the creation of a debug log file can be activated.
+Type=str
+Categories=service-dhcp
+
