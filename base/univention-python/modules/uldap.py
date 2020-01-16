@@ -32,6 +32,7 @@
 
 import re
 from functools import wraps
+import random
 
 import ldap
 import ldap.schema
@@ -146,7 +147,7 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 		return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
 	# type: (int, List[str], bool, str, bool) -> access
 	"""
 	Open a LDAP connection using the machine credentials.
@@ -157,6 +158,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 	:param bool ldap_master: Open a connection to the Master if True, to the preferred LDAP server otherwise.
 	:param str secret_file: The name of a file containing the password credentials.
 	:param bool reconnect: Automatically reconect if the connection fails.
+	:param bool random_server: Choose an LDAP server randomly from ldap/server/name and ldap/server/addition.
 	:return: A LDAP access object.
 	:rtype: univention.uldap.access
 	"""
@@ -172,19 +174,27 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 	else:
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
-		try:
-			return access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-		except ldap.SERVER_DOWN as exc:
-			# ldap/server/name is down, try next server
-			if not ucr.get('ldap/server/addition'):
-				raise
-			servers = ucr.get('ldap/server/addition', '')
-			for server in servers.split():
-				try:
-					return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-				except ldap.SERVER_DOWN:
-					pass
-			raise exc
+		if random_server:
+			ldap_server_name = ucr.get('ldap/server/name')
+			servers = ucr.get('ldap/server/addition', [])
+			if servers:
+				servers = servers.split()
+			servers.append(ldap_server_name)
+			random.shuffle(servers)
+		else:
+			try:
+				return access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+			except ldap.SERVER_DOWN as exc:
+				# ldap/server/name is down, try next server
+				if not ucr.get('ldap/server/addition'):
+					raise
+				servers = ucr.get('ldap/server/addition', '').split()
+		for server in servers:
+			try:
+				return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+			except ldap.SERVER_DOWN:
+				pass
+		raise exc
 
 
 def _fix_reconnect_handling(func):

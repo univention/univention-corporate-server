@@ -1,3 +1,9 @@
+univention-python (12.0.0-17) unstable; urgency=medium
+
+  * Bug #50191: randomize ldap server selection
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 15 Jan 2020 13:07:01 +0100
+
 univention-python (12.0.0-16) unstable; urgency=medium
 
   * Bug #50033: Sync more attributes in s4connector
