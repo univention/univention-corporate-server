@@ -40,6 +40,7 @@ install_bb_api () {
 }
 
 install_kelvin_api () {
+  /usr/share/ucs-school-import/scripts/create_ou DEMOSCHOOL2
   # do not rename function: used as install_[ENV:TEST_API]_api in autotest-241-ucsschool-HTTP-API.cfg
   . utils.sh && switch_to_test_app_center || true
   echo -n univention > /tmp/univention
