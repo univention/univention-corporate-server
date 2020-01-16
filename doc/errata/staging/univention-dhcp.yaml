@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-dhcp
+fix: 13.0.0-3A~4.4.0.202001161132
+desc: |-
+ This update addresses the following issue:
+ * Debug log configuration option for dhcp
+bug: [49281]
