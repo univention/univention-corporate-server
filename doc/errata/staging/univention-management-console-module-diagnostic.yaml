@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-management-console-module-diagnostic
-fix: 5.0.1-33A~4.4.0.202001150905
+fix: 5.0.1-34A~4.4.0.202001171855
 desc: |
  This update addresses the following issue:
  * An UMC diagnostic check has been added, which checks if UCR variable
