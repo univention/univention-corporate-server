@@ -33,7 +33,6 @@
 
 from __future__ import print_function
 import sys
-import string
 import os
 import cPickle
 import types
@@ -1434,7 +1433,7 @@ class ucs:
 		def attribute_filter(filter, attributes):
 			attributes = dict_lower(attributes)
 
-			pos = string.find(filter, '=')
+			pos = filter.find('=')
 			if pos < 0:
 				raise ValueError('missing "=" in filter: %s' % filter)
 			attribute = filter[:pos].lower()
