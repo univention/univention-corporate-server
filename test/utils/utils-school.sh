@@ -43,8 +43,8 @@ install_kelvin_api () {
   # do not rename function: used as install_[ENV:TEST_API]_api in autotest-241-ucsschool-HTTP-API.cfg
   . utils.sh && switch_to_test_app_center || true
   echo -n univention > /tmp/univention
-  univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-kelvin
+  univention-app install --noninteractive --username Administrator --pwdfile /tmp/univention ucsschool-kelvin-rest-api
   docker images
   docker ps -a
-  univention-app shell ucsschool-kelvin ps aux
+  univention-app shell ucsschool-kelvin-rest-api ps aux
 }
