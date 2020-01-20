@@ -1,3 +1,9 @@
+ucs-test (9.0.3-139) unstable; urgency=medium
+
+  * Bug #50718: Test for App Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Jan 2020 14:30:23 +0100
+
 ucs-test (9.0.3-138) unstable; urgency=medium
 
   * Bug #41088: fix timeout calculation in lib/samba.sh
