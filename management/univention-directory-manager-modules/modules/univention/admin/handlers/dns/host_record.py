@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import ipaddr
-import string
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
