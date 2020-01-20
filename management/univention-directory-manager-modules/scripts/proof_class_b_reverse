@@ -36,7 +36,6 @@ from __future__ import print_function
 
 import ldap
 from ldap.filter import filter_format
-import string
 import sys
 
 import univention.config_registry
@@ -66,5 +65,5 @@ for i in range(0, len(computers)):
 		if len(reverse) != 0:
 			print('Wrong DNS Reverse Entry for %s: %s' % (computers[i][0], reverse[0][0]))
 			entry.reverse()
-			entry = string.join(entry, '.')
+			entry = '.'.join(entry)
 			lo.modrdn_s(reverse[0][0], 'relativeDomainName=%s' % entry)

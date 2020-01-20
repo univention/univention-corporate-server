@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import string
 from univention.config_registry import ConfigRegistry
 import univention.debug2 as ud
 
@@ -101,7 +100,7 @@ def ad2ucs_givenName(connector, key, object):
 
 def ucs2ad_dn_string(dn):
 	_d = ud.function('mapping.ucs2ad_dn_string')  # noqa: F841
-	return string.replace(dn, baseConfig['ldap/base'], baseConfig['connector/ad/ldap/base'])
+	return dn.replace(baseConfig['ldap/base'], baseConfig['connector/ad/ldap/base'])
 
 
 def ucs2ad_dn(connector, key, object):
@@ -111,7 +110,7 @@ def ucs2ad_dn(connector, key, object):
 
 def ad2ucs_dn_string(dn):
 	_d = ud.function('mapping.ad2ucs_dn_string')  # noqa: F841
-	return string.replace(dn, baseConfig['connector/ad/ldap/base'], baseConfig['ldap/base'])
+	return dn.replace(baseConfig['connector/ad/ldap/base'], baseConfig['ldap/base'])
 
 
 def ad2ucs_dn(connector, key, object):
@@ -121,12 +120,12 @@ def ad2ucs_dn(connector, key, object):
 
 def ucs2ad_user_dn(connector, key, object):
 	_d = ud.function('mapping.ucs2ad_user_dn')  # noqa: F841
-	return string.replace(ucs2ad_dn(connector, key, object), "uid=", "cn=")
+	return ucs2ad_dn(connector, key, object).replace("uid=", "cn=")
 
 
 def ad2ucs_user_dn(connector, key, object):
 	_d = ud.function('mapping.ad2ucs_user_dn')  # noqa: F841
-	return string.replace(ad2ucs_dn(connector, key, object), "cn=", "uid=")
+	return ad2ucs_dn(connector, key, object).replace("cn=", "uid=")
 
 
 def ucs2ad_sambaGroupType(connector, key, object):

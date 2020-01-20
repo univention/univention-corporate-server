@@ -35,7 +35,6 @@
 from __future__ import print_function
 
 import copy
-import string
 import re
 import sys
 import time
@@ -1393,7 +1392,7 @@ class s4(univention.s4connector.ucs):
 		rid = "513"  # FIXME: Fallback: should be configurable
 		if ldap_object_s4_group and 'objectSid' in ldap_object_s4_group:
 			sid = ldap_object_s4_group['objectSid'][0]
-			rid = sid[string.rfind(sid, "-") + 1:]
+			rid = sid[sid.rfind("-") + 1:]
 		else:
 			print("no SID !!!")
 
@@ -1822,7 +1821,7 @@ class s4(univention.s4connector.ucs):
 
 		# search and add members which have this as their primaryGroup
 		group_sid = ldap_object_s4['objectSid'][0]
-		group_rid = group_sid[string.rfind(group_sid, "-") + 1:]
+		group_rid = group_sid[group_sid.rfind("-") + 1:]
 		prim_members_s4_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
 		prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter)
 		for prim_dn, prim_object in prim_members_s4:
