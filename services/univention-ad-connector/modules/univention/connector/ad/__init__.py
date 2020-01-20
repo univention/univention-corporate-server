@@ -470,7 +470,7 @@ def old_user_dn_mapping(connector, given_object):
 
 			dn = object[dn_key]
 
-			pos = string.find(dn, '=')
+			pos = dn.find('=')
 			pos2 = len(univention.connector.ad.explode_unicode_dn(dn)[0]) - 1
 			attrib = dn[:pos]
 			value = dn[pos + 1:pos2]
@@ -511,7 +511,7 @@ def old_user_dn_mapping(connector, given_object):
 							raise
 						time.sleep(1)  # AD may need some time...
 
-				pos = string.find(dn, '=')
+				pos = dn.find('=')
 				pos2 = len(univention.connector.ad.explode_unicode_dn(dn)[0]) - 1
 
 				newdn = 'uid=' + samaccountname + dn[pos2:]
@@ -1109,7 +1109,7 @@ class ad(univention.connector.ucs):
 		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (string.join(cmd_block), p1.returncode, stdout))
+			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout))
 
 	def open_ad(self):
 		tls_mode = 2
@@ -1450,7 +1450,7 @@ class ad(univention.connector.ucs):
 		_d = ud.function('ldap.__dn_from_deleted_object')  # noqa: F841
 
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
-		rdn = object['dn'][:string.find(object['dn'], 'DEL:') - 3]
+		rdn = object['dn'][:object['dn'].find('DEL:') - 3]
 		if 'lastKnownParent' in object['attributes']:
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%s) and rdn (%s)" % (object['attributes']['lastKnownParent'][0], rdn))
@@ -1610,7 +1610,7 @@ class ad(univention.connector.ucs):
 		rid = "513"  # FIXME: Fallback: should be configurable
 		if ldap_object_ad_group and 'objectSid' in ldap_object_ad_group:
 			sid = ldap_object_ad_group['objectSid'][0]
-			rid = sid[string.rfind(sid, "-") + 1:]
+			rid = sid[sid.rfind("-") + 1:]
 		else:
 			print("no SID !!!")
 
@@ -2029,7 +2029,7 @@ class ad(univention.connector.ucs):
 		# FIXME: does not use dn-mapping-function
 		ldap_object_ad = self.get_object(ad_object['dn'])  # FIXME: may fail if object doesn't exist
 		group_sid = ldap_object_ad['objectSid'][0]
-		group_rid = group_sid[string.rfind(group_sid, "-") + 1:]
+		group_rid = group_sid[group_sid.rfind("-") + 1:]
 
 		ad_members = self.get_ad_members(ad_object['dn'], ldap_object_ad)
 
