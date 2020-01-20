@@ -34,7 +34,6 @@
 
 from __future__ import print_function
 import sys
-import string
 import re
 import pwd
 import os
@@ -80,7 +79,7 @@ machine_uid = pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
 old_uid = os.getuid()
 os.setuid(machine_uid)
 
-child = spawn('%s %s' % (cmd, string.join(args, ' ')))
+child = spawn('%s %s' % (cmd, ' '.join(args)))
 i = 0
 timeout = 60
 while not i == 2:

@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import ipaddr
-import string
 import ldap
 import traceback
 from ldap.filter import filter_format
@@ -267,7 +266,7 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (firstIP, lastIP, ))
 				if firstIP == network.broadcast or lastIP == network.broadcast:
 					raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP, ))
-				ipRange.append(string.join(i, ' '))
+				ipRange.append(' '.join(i))
 			ud.debug(ud.ADMIN, ud.INFO, 'old Range: %s' % self.oldinfo.get('ipRange'))
 			ml = [x for x in ml if x[0] != 'univentionIpRange']
 			ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', ['']), ipRange))

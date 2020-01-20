@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import string
 import univention.config_registry as ucr
 import univention.debug2 as ud
 import univention.s4connector.s4
@@ -102,7 +101,7 @@ def s42ucs_givenName(s4connector, key, object):
 
 def ucs2s4_dn_string(dn):
 	_d = ud.function('mapping.ucs2s4_dn_string')  # noqa: F841
-	return string.replace(dn, configRegistry['ldap/base'], configRegistry['connector/s4/ldap/base'])
+	return dn.replace(configRegistry['ldap/base'], configRegistry['connector/s4/ldap/base'])
 
 
 def ucs2s4_dn(s4connector, key, object):
@@ -112,7 +111,7 @@ def ucs2s4_dn(s4connector, key, object):
 
 def s42ucs_dn_string(dn):
 	_d = ud.function('mapping.s42ucs_dn_string')  # noqa: F841
-	return string.replace(dn, configRegistry['connector/s4/ldap/base'], configRegistry['ldap/base'])
+	return dn.replace(configRegistry['connector/s4/ldap/base'], configRegistry['ldap/base'])
 
 
 def s42ucs_dn(s4connector, key, object):
@@ -122,12 +121,12 @@ def s42ucs_dn(s4connector, key, object):
 
 def ucs2s4_user_dn(s4connector, key, object):
 	_d = ud.function('mapping.ucs2s4_user_dn')  # noqa: F841
-	return string.replace(ucs2s4_dn(s4connector, key, object), "uid=", "cn=")
+	return ucs2s4_dn(s4connector, key, object).replace("uid=", "cn=")
 
 
 def s42ucs_user_dn(s4connector, key, object):
 	_d = ud.function('mapping.s42ucs_user_dn')  # noqa: F841
-	return string.replace(s42ucs_dn(s4connector, key, object), "cn=", "uid=")
+	return s42ucs_dn(s4connector, key, object).replace("cn=", "uid=")
 
 
 def ucs2s4_sambaGroupType(s4connector, key, object):

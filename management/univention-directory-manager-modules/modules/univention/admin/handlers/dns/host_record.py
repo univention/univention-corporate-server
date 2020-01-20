@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import ipaddr
-import string
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -125,7 +124,7 @@ def mapMX(old):
 	_d = ud.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(' '.join(i))
 	return new
 
 

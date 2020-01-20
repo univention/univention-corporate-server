@@ -30,7 +30,6 @@
 
 import shutil
 import subprocess
-import string
 import tempfile
 import os
 import sys
@@ -121,7 +120,7 @@ class DebianPackage():
 			install.append('*.inst usr/lib/univention-install/')
 		if self.__unjoin_file:
 			install.append('*.uinst usr/lib/univention-uninstall/')
-		self.create_debian_file_from_buffer('install', string.join(install, '\n'))
+		self.create_debian_file_from_buffer('install', '\n'.join(install))
 
 		cwd = os.getcwd()
 		os.chdir(self._package_path)

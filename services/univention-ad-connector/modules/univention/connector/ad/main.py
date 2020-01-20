@@ -35,7 +35,6 @@
 from __future__ import print_function
 import imp
 import sys
-import string
 import fcntl
 import os
 import time
@@ -147,11 +146,11 @@ def connect():
 			new_ca = open(new_ca_filename, 'w')
 
 			ca = open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r')
-			new_ca.write(string.join(ca.readlines(), ''))
+			new_ca.write(''.join(ca.readlines()))
 			ca.close()
 
 			ca = open(baseConfig['%s/ad/ldap/certificate' % CONFIGBASENAME])
-			new_ca.write(string.join(ca.readlines(), ''))
+			new_ca.write(''.join(ca.readlines()))
 			ca.close()
 
 			new_ca.close()

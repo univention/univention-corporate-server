@@ -753,7 +753,6 @@ def restore_data_script_4_1():
 from optparse import OptionParser
 import os
 import shutil
-import string
 import univention.config_registry
 import traceback
 
@@ -779,7 +778,7 @@ def restore_files(source_dir):
 		return
 	for (path, dirs, files) in os.walk(source_dir):
 		for d in dirs:
-			r_path = string.replace(path, source_dir, '/', 1)
+			r_path = path.replace(source_dir, '/', 1)
 			dest = os.path.join(r_path, d)
 			if not os.path.exists(dest):
 				os.makedirs(dest)
@@ -787,7 +786,7 @@ def restore_files(source_dir):
 			copy_permissions(src, dest)
 		for i in files:
 			src = os.path.join(path, i)
-			dest = string.replace(src, source_dir, '', 1)
+			dest = src.replace(source_dir, '', 1)
 			if os.path.islink(src):
 				linkto = os.readlink(src)
 				if os.path.exists(dest) or os.path.islink(dest):
@@ -852,7 +851,6 @@ from optparse import OptionParser
 import glob
 import os
 import shutil
-import string
 import traceback
 
 
@@ -867,13 +865,13 @@ def copy_permissions(src, dest):
 
 # Helper function to copy the files and directory
 def copy_to_persistent_storage(src, dest):
-	l_src = string.split(src, '/')
+	l_src = src.split('/')
 	# Ignore first empty entry
 	if l_src[0] == '':
 		l_src = l_src[1:]
 	for j in range(0, len(l_src)):
-		s = os.path.join('/', string.join(l_src[0:j + 1], '/'))
-		d = os.path.join(dest, string.join(l_src[0:j + 1], '/'))
+		s = os.path.join('/', '/'.join(l_src[0:j + 1]))
+		d = os.path.join(dest, '/'.join(l_src[0:j + 1]))
 		if os.path.isdir(s):
 			if not os.path.exists(d):
 				os.makedirs(d)
