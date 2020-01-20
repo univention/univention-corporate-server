@@ -2,6 +2,7 @@
 ## desc: Test univention-app reinitialize
 ## tags: [docker]
 ## exposure: dangerous
+## bugs: [50718]
 ## packages:
 ##   - docker.io
 
@@ -36,6 +37,12 @@ Type = String
 Show = Install
 Description = Just a test
 InitialValue = 1
+
+[EMPTY_KEY]
+Type = String
+Show = Install, Settings
+Description = Shall not have a value, especially not "None"
+InitialValue = 
 '''
 
 if __name__ == '__main__':
@@ -68,6 +75,7 @@ fi
 			subprocess.call('univention-app configure %s --set TEST_KEY=2' % name, shell=True)
 			env = subprocess.check_output('univention-app shell %s env' % name, shell=True)
 			assert 'TEST_KEY=2' in env, env
+			assert 'EMPTY_KEY' not in env, env
 		finally:
 			app.uninstall()
 			app.remove()

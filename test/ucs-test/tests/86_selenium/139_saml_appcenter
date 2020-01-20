@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+# -*- coding: utf-8 -*-
+## desc: Test the SAML login in App Center module
+## roles-not:
+##  - basesystem
+## tags:
+##  - SKIP
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+import time
+import subprocess
+import datetime
+
+from univention.testing import selenium
+from univention.testing.selenium.appcenter import AppCenter
+
+
+if __name__ == '__main__':
+	with selenium.UMCSeleniumTest() as s:
+		s.driver.get(s.base_url + '/univention')
+		s.click_text('Login')
+		s.enter_input('username', s.umcLoginUsername)
+		s.enter_input('password', s.umcLoginPassword)
+		s.driver.find_element_by_id('umcLoginSubmit').click()
+		try:
+			time.sleep(3)
+			for year in set([2020, datetime.date.today().year, datetime.date.today().year + 1, datetime.date.today().year - 1]):
+				s.driver.add_cookie({'name': 'hideSummit%sDialog' % (year,), 'value': 'true'})
+				s.driver.add_cookie({'name': 'hideSummit%sNotification' % (year,), 'value': 'true'})
+			s.driver.get(s.base_url + '/univention/management/')
+			appcenter = AppCenter(s)
+			appcenter.open()
+			s.wait_for_text('Authentication required')
+			s.enter_input('password', s.umcLoginPassword)
+			s.click_button("Login")
+			time.sleep(5)
+			s.click_button("Close")
+			subprocess.call(['pkill', '-f', '--', '-m appcenter'])
+			appcenter.open()
+			s.wait_for_text('Authentication required', timeout=5)
+		finally:
+			s.end_umc_session()
