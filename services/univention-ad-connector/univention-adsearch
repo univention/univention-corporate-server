@@ -40,7 +40,6 @@ import univention.config_registry
 import ldap
 import ldap.sasl
 import subprocess
-import string
 import base64
 
 from ldap.controls import LDAPControl
@@ -130,10 +129,10 @@ if start_tls > 0:
 			# see Bug #17768 for details
 			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=17768
 			with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'r') as ca_file:
-				ca_cert = string.join(ca_file.readlines(), '')
+				ca_cert = ''.join(ca_file.readlines())
 
 			with open(ad_cert_filename, 'r') as ad_cert_file:
-				ad_cert = string.join(ad_cert_file.readlines(), '')
+				ad_cert = ''.join(ad_cert_file.readlines())
 
 			with open(certificate_chain_filename, 'w') as certificate_chain_file:
 				certificate_chain_file.write(ca_cert)
@@ -155,7 +154,7 @@ def get_kerberos_ticket():
 	p1 = subprocess.Popen(cmd_block, close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
-		raise kerberosAuthenticationFailed('The following command failed: "%s"' % string.join(cmd_block))
+		raise kerberosAuthenticationFailed('The following command failed: "%s"' % ' '.join(cmd_block))
 
 
 lo.set_option(ldap.OPT_REFERRALS, 0)

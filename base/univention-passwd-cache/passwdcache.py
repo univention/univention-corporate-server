@@ -35,7 +35,6 @@ import listener
 import os
 import univention.debug
 import grp
-import string
 
 name = 'passwdcache'
 description = 'Remove deleted user from passwd cache'
@@ -75,7 +74,7 @@ def _remove_user_from_file(filename, uid):
 
 		if modify:
 			out_file = open(filename_new, 'w')
-			out_file.write(string.join(out_lines, ''))
+			out_file.write(''.join(out_lines))
 			out_file.close()
 			os.rename(filename_new, filename_orig)
 			return True
@@ -133,7 +132,7 @@ def _cleanup_groups():
 		if modified:
 			new_fp = '/etc/univention/passwdcache/group.new'
 			out_file = open(new_fp, 'w')
-			out_file.write(string.join(groups_new, ''))
+			out_file.write(''.join(groups_new))
 			out_file.close()
 			os.rename(new_fp, group_file)
 

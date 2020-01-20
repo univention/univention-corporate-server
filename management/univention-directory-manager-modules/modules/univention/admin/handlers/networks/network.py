@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import ipaddr
-import string
 import ldap
 import traceback
 from ldap.filter import filter_format

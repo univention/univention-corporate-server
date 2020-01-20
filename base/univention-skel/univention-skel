@@ -34,7 +34,6 @@
 import os
 import sys
 import hashlib
-import string
 import subprocess
 # for file locking
 import fcntl
@@ -94,7 +93,7 @@ class Stamps:
 		fp.close()
 		fp = open(os.path.join(self.base, 'files'), 'w')
 		for file in self.files.items():
-			fp.write(string.join(file, '@%@') + '\n')
+			fp.write('\n'.join(file, '@%@'))
 		fp.close()
 
 
