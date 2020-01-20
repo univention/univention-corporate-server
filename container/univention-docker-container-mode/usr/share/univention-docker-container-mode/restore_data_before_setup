@@ -33,7 +33,6 @@
 from optparse import OptionParser
 import os
 import shutil
-import string
 import univention.config_registry
 import traceback
 
@@ -59,7 +58,7 @@ def restore_files(source_dir):
 		return
 	for (path, dirs, files) in os.walk(source_dir):
 		for d in dirs:
-			r_path = string.replace(path, source_dir, '/', 1)
+			r_path = path.replace(source_dir, '/', 1)
 			dest = os.path.join(r_path, d)
 			if not os.path.exists(dest):
 				os.makedirs(dest)
@@ -67,7 +66,7 @@ def restore_files(source_dir):
 			copy_permissions(src, dest)
 		for i in files:
 			src = os.path.join(path, i)
-			dest = string.replace(src, source_dir, '', 1)
+			dest = src.replace(source_dir, '', 1)
 			if os.path.islink(src):
 				linkto = os.readlink(src)
 				if os.path.exists(dest) or os.path.islink(dest):

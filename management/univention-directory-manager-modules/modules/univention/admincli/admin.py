@@ -35,7 +35,6 @@
 from __future__ import print_function
 import getopt
 import re
-import string
 import base64
 import os
 import subprocess
@@ -1066,7 +1065,7 @@ def _doit(arglist):
 										if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
 											out.append("    %s" % line.strip())
 											if policies_with_DN:
-												subsplit = string.split(line.strip(), ': ')
+												subsplit = line.strip().split(': ')
 												if subsplit[0] == 'Policy':
 													if policy:
 														ddict[attribute] = [policy, value]
@@ -1077,7 +1076,7 @@ def _doit(arglist):
 												elif subsplit[0] == 'Value':
 													value.append(subsplit[1])
 											else:
-												subsplit = string.split(line.strip(), '=')
+												subsplit = line.strip().split('=')
 												if subsplit[0] not in ddict:
 													ddict[subsplit[0]] = []
 												ddict[subsplit[0]].append(subsplit[1])
