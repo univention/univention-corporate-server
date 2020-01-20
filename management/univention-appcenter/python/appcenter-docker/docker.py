@@ -548,7 +548,7 @@ class MultiDocker(Docker):
 		shutil.copy2(yml_file, yml_run_file)  # "backup"
 
 	def create(self, hostname, env):
-		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems()}
+		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems() if v is not None}
 		if self.app.docker_ucr_style_env:
 			env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
 		else:

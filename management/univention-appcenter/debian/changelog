@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-102) unstable; urgency=medium
+
+  * Bug #50718: do not write None into the env file for
+    empty app settings (for compose apps)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Jan 2020 14:33:56 +0100
+
 univention-appcenter (8.0.11-101) unstable; urgency=medium
 
   * Bug #50718: do not write None into the env file for
