@@ -36,7 +36,7 @@ desc: |
    (CVE-2019-9213)
  * hwpoison implementation in mm/memory-failure.c leads to denial of service
    (CVE-2019-10124)
-notes: This is the second of three parts.
+note: This is the second of three parts.
 bug: [49377]
 cve:
 - CVE-2018-5953
