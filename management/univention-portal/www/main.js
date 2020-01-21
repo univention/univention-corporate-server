@@ -814,6 +814,7 @@ define([
 			if (id !== '$__login__$') {
 				clearInterval(this._pollSessioninfoIntervalId);
 			}
+			this._selectedIframe = id;
 		},
 
 		_selectHome: function() {
@@ -826,13 +827,19 @@ define([
 			domClass.add(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
 
 			clearInterval(this._pollSessioninfoIntervalId);
+			this._selectedIframe = null;
 		},
 
 		__createIframe: function(logoUrl, url) {
 			var iframeWrapper = put('div.iframeWrapper');
 			var iframeStatus = put('span.iframeStatus.loadingSpinner.loadingSpinner--visible');
 			var iframe = put('iframe[src=$]', url);
-			var tab = put('div.sidebar__tab div.sidebar__tab__icon.$ <', portalTools.getIconClass(logoUrl));
+			// var tab = put('div.sidebar__tab div.sidebar__tab__icon.$ <', portalTools.getIconClass(logoUrl));
+			var tab = put('div.sidebar__tab');
+			var tabCloseCover = put('div.sidebar__tab__closeCover');
+			var tabClose = put('div.sidebar__tab__close div.umcCrossIconWhite <');
+			var tabSelect = put('div.sidebar__tab__select div.sidebar__tab__select__icon.$ <', portalTools.getIconClass(logoUrl));
+			put(tab, tabClose, '+', tabCloseCover, '+', tabSelect);
 
 			// you can't open iframes with src http (no 's')
 			// when the origin is https.
@@ -846,6 +853,7 @@ define([
 			}, 4000);
 			iframe.addEventListener('load', lang.hitch(this, function() {
 				clearTimeout(maybeLoadFailed);
+				// TODO maybe the check for contentDocument is not reliable. When using saml login contentDocument is null
 				if (iframe.contentDocument) {
 					put(iframeStatus, '.dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
 				} else {
@@ -854,7 +862,7 @@ define([
 				}
 				if (iframe.contentWindow) {
 					iframe.contentWindow.onbeforeunload = lang.hitch(this, function() {
-						iframeStatus.innerHTML = _('Loading...');
+						iframeStatus.innerHTML = '';
 						put(iframeStatus, '!dijitDisplayNone.loadingSpinner.loadingSpinner--visible');
 					});
 				}
@@ -867,18 +875,23 @@ define([
 			return {
 				iframe: iframe,
 				iframeWrapper: iframeWrapper,
-				tab: tab
+				tab: tab,
+				tabSelect: tabSelect,
+				tabClose: tabClose
 			};
 		},
 
 		_createIframe: function(id, logoUrl, url) {
 			var d = this.__createIframe(logoUrl, url);
-			on(d.tab, 'click', lang.hitch(this, function() {
+			on(d.tabSelect, 'click', lang.hitch(this, function() {
+				console.log('tab click');
 				this._selectIframe(id);
+			}));
+			on(d.tabClose, 'click', lang.hitch(this, function() {
+				this._removeIframe(id);
 			}));
 			this._iframeMap[id] = {
 				iframeWrapper: d.iframeWrapper,
-				iframe: d.iframe,
 				tab: d.tab
 			};
 			put(dom.byId('iframes'), d.iframeWrapper);
@@ -956,7 +969,9 @@ define([
 			// if (id === '$__login__$') {
 				// clearInterval(this._pollSessioninfoIntervalId);
 			// }
-			this._selectHome();
+			if (id === this._selectedIframe) {
+				this._selectHome();
+			}
 			// TODO do we want to select the home when closing an iframe or rather something like "the iframe below/above"
 		},
 
@@ -1443,6 +1458,7 @@ define([
 			this._categoryIndex = 0;
 			this._portalCategories = [];
 			this._iframeMap = {};
+			this._selectedIframe = null;
 			this._globalEntryIndex = 0;
 			this._contentNode = dom.byId('content');
 			this._cleanupList = {
@@ -1592,7 +1608,7 @@ define([
 		},
 
 		_renderSidebar: function() {
-			var homeTab = put('div.sidebar__tab.sidebar__tab--selected#sidebar__homeTab div.sidebar__tab__icon <');
+			var homeTab = put('div.sidebar__tab.sidebar__tab--selected#sidebar__homeTab div.sidebar__tab__select div.sidebar__tab__select__icon <<');
 			on(homeTab, 'click', lang.hitch(this, '_selectHome'));
 			domConstruct.place(homeTab, dom.byId('sidebar'), 'first');
 		},

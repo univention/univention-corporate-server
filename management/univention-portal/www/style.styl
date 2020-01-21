@@ -172,25 +172,26 @@ material-shadow(level)
 		.sidebar__tab
 			width: 48px
 			height: 48px
-			display: grid
-			align-items: center
-			justify-items: center
 			position: relative
-			cursor: pointer
-			transition: background-color 0.25s
 
 			&:hover,
 			&:focus
-				background-color: rgba(0, 0, 0, 0.0784)
+				.sidebar__tab__select
+					background-color: rgba(0, 0, 0, 0.0784)
+
+				.sidebar__tab__close
+					left: 48px
 
 			&:active
-				background-color: rgba(0, 0, 0, 0.16)
+				.sidebar__tab__select
+					background-color: rgba(0, 0, 0, 0.16)
 
 			&--selected
-				background-color: rgba(0, 0, 0, 0.06)
+				.sidebar__tab__select
+					background-color: rgba(0, 0, 0, 0.06)
 				.dijitButtonNode
 					background-color: rgba(0, 0, 0, 0.06)
-				&:before
+				&:after
 					content: ''
 					display: block
 					position: absolute
@@ -200,12 +201,57 @@ material-shadow(level)
 					width: 6px
 					background-color: #7ab51d
 
-			& .sidebar__tab__icon
-				width: 24px
-				height: 24px
-				background-size: contain
-				background-position: center
-				background-repeat: no-repeat
+		.sidebar__tab__closeCover
+			width: 48px
+			height: 48px
+			background-color: @background-color
+			position: absolute
+			top: 0
+			left: 0
+
+		.sidebar__tab__close
+			width: 24px
+			height: 48px
+			position: absolute
+			top: 0
+			left: 24px
+			transition: left 0.25s
+			background-color: rgba(0, 0, 0, 0.4)
+			border-radius: 0 2px 2px 0
+			cursor: pointer
+			display: grid
+			align-items: center
+			justify-items: center
+
+			&:before
+				content: ''
+				display: block
+				border-radius: 2px
+				background-color: rgba(255, 255, 255, 0.2)
+				position: absolute
+				height: 18px
+				width: 18px
+				opacity: 0
+
+			&:hover:before
+				opacity: 1
+
+		.sidebar__tab__select
+			width: 48px
+			height: 48px
+			display: grid
+			align-items: center
+			justify-items: center
+			position: relative
+			cursor: pointer
+			transition: background-color 0.25s
+
+		.sidebar__tab__select__icon
+			width: 24px
+			height: 24px
+			background-size: contain
+			background-position: center
+			background-repeat: no-repeat
 
 		.sidebar__divider
 			flex: 1 0 auto
@@ -219,7 +265,7 @@ material-shadow(level)
 			margin: 0 0 8px 0
 
 	#sidebar__homeTab
-		.sidebar__tab__icon
+		.sidebar__tab__select__icon
 			height: 24px
 			width: 24px
 			background-image: url(home.svg)
