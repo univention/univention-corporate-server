@@ -5,7 +5,7 @@ scope: ucs_4.3-0-errata4.3-5
 src: samba
 fix: 2:4.10.1-1A~4.3.0.202001141253
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The DRS replication of Samba/AD domain controllers didn't handle the
    inheritance of Active Directory Service (LDAP) ACLs properly.
    These ACLs are stored in the nTSecurityDescriptor LDAP attribute.
