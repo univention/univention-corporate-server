@@ -2,37 +2,99 @@ Filename: test.py
 
 Line #    Mem usage    Increment   Line Contents
 ================================================
-    66     40.4 MiB     40.4 MiB   @profile
-    67                             def iter_apps():
-    68    122.2 MiB     81.8 MiB   	apps = Apps().get_every_single_app()
-    69    122.2 MiB      0.0 MiB   	for app in apps:
-    70    122.2 MiB      0.0 MiB   		pass
+    71     41.9 MiB     41.9 MiB   @profile
+    72                             def iter_apps():
+    73    136.5 MiB     94.5 MiB   	apps = Apps().get_every_single_app()
+    74    212.2 MiB      0.0 MiB   	for app in apps:
+    75    212.2 MiB     75.7 MiB   		app.is_installed()
+
+
+#### THIS THE FROM A SECOND RUN. HERE, is_installed() IS IMPLEMENTED WITHOUT THE PACKAGE_MANAGER, RESULTING IN A SMALLER FOOTPRINT
+Filename: test.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    71     42.3 MiB     42.3 MiB   @profile
+    72                             def iter_apps():
+    73    136.9 MiB     94.7 MiB   	apps = Apps().get_every_single_app()
+    74    137.2 MiB      0.0 MiB   	for app in apps:
+    75    137.2 MiB      0.3 MiB   		app.is_installed()
+#### END THE SECOND RUN
 
 
 Filename: test.py
 
 Line #    Mem usage    Increment   Line Contents
 ================================================
-    74    122.2 MiB    122.2 MiB   @profile
-    75                             def iter_apps2():
-    76    122.2 MiB      0.0 MiB   	apps = Apps2().get_every_single_app()
-    77    142.6 MiB      4.5 MiB   	for app in apps:
-    78    142.6 MiB      0.0 MiB   		pass
+    79    212.2 MiB    212.2 MiB   @profile
+    80                             def iter_apps2():
+    81    212.2 MiB      0.0 MiB   	_apps = Apps2()
+    82    212.2 MiB      0.0 MiB   	apps = _apps.get_every_single_app()
+    83    232.3 MiB      3.8 MiB   	for app in apps:
+    84    232.3 MiB      0.0 MiB   		app.is_installed()
+
 
 
 === find_samba_with_old_backend ===
 1000 result(s)
-0:00:01.189960 total
-0:00:00.001189 avg
+0:00:00.987117 total
+0:00:00.000987 avg
 === find_samba_with_sql_backend ===
 1000 result(s)
-0:00:01.154209 total
-0:00:00.001154 avg
+0:00:00.593895 total
+0:00:00.000593 avg
+
+=== get_every_single_app_with_old_backend ===
+10 result(s)
+0:00:00.007251 total
+0:00:00.000725 avg
+=== get_every_single_app_with_sql_backend ===
+10 result(s)
+0:00:03.466346 total
+0:00:00.346634 avg
+
 === get_all_apps_with_old_backend ===
 10 result(s)
-0:00:00.099077 total
-0:00:00.009907 avg
+0:00:00.129155 total
+0:00:00.012915 avg
 === get_all_apps_with_sql_backend ===
 10 result(s)
-0:00:00.107187 total
-0:00:00.010718 avg
+0:00:03.522540 total
+0:00:00.352254 avg
+
+=== get_all_locally_installed_apps_with_old_backend ===
+10 result(s)
+0:00:00.051450 total
+0:00:00.005145 avg
+=== get_all_locally_installed_apps_with_sql_backend ===
+10 result(s)
+0:00:00.042674 total
+0:00:00.004267 avg
+
+=== get_all_apps_with_id_with_old_backend ===
+10 result(s)
+0:00:00.009995 total
+0:00:00.000999 avg
+=== get_all_apps_with_id_with_sql_backend ===
+10 result(s)
+0:00:00.005686 total
+0:00:00.000568 avg
+
+=== find_component_id_with_old_backend ===
+10 result(s)
+0:00:00.007534 total
+0:00:00.000753 avg
+=== find_component_id_with_sql_backend ===
+10 result(s)
+0:00:00.005688 total
+0:00:00.000568 avg
+
+=== find_candidate_with_old_backend ===
+10 result(s)
+0:00:00.012090 total
+0:00:00.001209 avg
+=== find_candidate_with_sql_backend ===
+10 result(s)
+0:00:00.311441 total
+0:00:00.031144 avg
+
