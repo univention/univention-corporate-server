@@ -11,5 +11,37 @@ desc: |
    tab on a share or file where such SIDs are found in the ACLs.
    We found several other "well known" SIDs which could trigger a crash
    and declared them as valid in Samba.
- * TODO Bug #50715
+ * The DRS replication of Samba/AD domain controllers didn't handle the
+   inheritance of Active Directory Service (LDAP) ACLs properly.
+   These ACLs are stored in the nTSecurityDescriptor LDAP attribute.
+   In case an administrator explicitly changed Active Directory LDAP ACLs to
+   delegate new rights to an account (user or group), or to restrict delegated
+   rights, these changes would only automatically be inherited to all
+   subobjects in the LDAP tree on the specific domain controller where the
+   admin was working on. But on all other replicating domain controllers, the
+   automatic inheritance did not take place correctly.
+   To fix this for a particular Active Directory LDAP partition, a 'full-sync'
+   DRS operation can be initiated manually.
+   For more details and possible mitigations see
+   <https://www.samba.org/samba/security/CVE-2019-14902.html>
+ * If samba is run with "log level = 3" (or above) then the string
+   obtained from the client, after a failed character conversion, is
+   printed.  Such strings can be provided during the NTLMSSP
+   authentication exchange. On the Samba/AD domain controller in particular,
+   this may cause a long-lived process (such as the RPC server) to terminate.
+   For more details and possible mitigations see
+   <https://www.samba.org/samba/security/CVE-2019-14907.html>
+ * Samba 4.9 introduced an off-by-default feature to tombstone
+   dynamically created DNS records that had reached their expiry time.
+   This feature is controlled by the smb.conf option:
+          dns zone scavenging = yes
+   which is not active by default in UCS. The scavenging code suffered from
+   a use after free issue, a type of memory handling error that could lead
+   to unexpected behavior.
+   For more details and possible mitigations see
+   <https://www.samba.org/samba/security/CVE-2019-19344.html>
 bug: [50601, 50715]
+cve:
+ - CVE-2019-14902
+ - CVE-2019-14907
+ - CVE-2019-19344
