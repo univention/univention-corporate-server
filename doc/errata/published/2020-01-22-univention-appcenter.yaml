@@ -9,3 +9,5 @@ desc: |
  * Empty app settings are no longer set to "None" when using
    univention-app reinitialize.
 bug: [50718]
+erratum: 426
+announced: 2020-01-22
