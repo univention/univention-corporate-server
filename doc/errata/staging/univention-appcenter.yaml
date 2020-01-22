@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
 fix: 8.0.11-102A~4.4.0.202001201437
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Empty app settings are no longer set to "None" when using
    univention-app reinitialize.
 bug: [50718]
