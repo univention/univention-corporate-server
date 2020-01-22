@@ -1,3 +1,15 @@
+univention-management-console-module-diagnostic (5.0.1-43) unstable; urgency=medium
+
+  * Bug #50191: Adjust warning message and add link to sdb article
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 22 Jan 2020 12:52:59 +0100
+
+univention-management-console-module-diagnostic (5.0.1-42) unstable; urgency=medium
+
+  * Bug #50191: Adjust warning message
+
+ -- root <bremer@univention.de>  Thu, 16 Jan 2020 01:21:14 +0100
+
 univention-management-console-module-diagnostic (5.0.1-35) unstable; urgency=medium
 
   * Bug #50191: Adjust translation of 59_ldap_server_name.py

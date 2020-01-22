@@ -4,7 +4,7 @@
 import univention.uldap
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, Warning
+from univention.management.console.modules.diagnostic import Critical, Warning
 from univention.config_registry import handler_set as ucr_set
 
 from univention.lib.i18n import Translation
@@ -15,8 +15,16 @@ title = _('Check LDAP server role')
 run_descr = ['This can be checked by running: ucr get ldap/server/name']
 
 
+links = [{
+	'name': 'sdb',
+	'href': 'https://help.univention.com/t/changing-the-primary-ldap-server-to-redistribute-the-server-load/14138',
+	'label': _('Univention Support Database - Change the primary LDAP Server to redistribute the server load')
+}]
+
+
 def deactivate_test(umc_instance):
 	ucr_set(['diagnostic/check/disable/59_ldap_server_name=yes'])
+
 
 actions = {
 	'deactivate_test': deactivate_test,
@@ -46,15 +54,13 @@ def run(_umc_instance):
 
 		# Case: ldap/server/name is the domain master and there are other DCs available.
 		if res:
-			domain_cn = []
 			button = [{
 				'action': 'deactivate_test',
 				'label': _('Deactivate test'),
 			}]
-			for dn, attr in res:
-				domain_cn.append('.'.join((str(attr.get('cn')[0]), domainname)))
-				warn = (_('The ucr variable ldap/server/name is set to the UCS Master %s. Especially in bigger environments it could be beneficial to switch the LDAP server to another DC.\nPossible DCs are:\n%s\n\nYou can do this by running<pre>ucr set ldap/server/name="%s"</pre>If you do so, you can set the Master as a fallback server by appending its FQDN to ldap/server/addition by running<pre>ucr set ldap/server/addition="%s"</pre>\nIf you want to keep your configuration and disable this test run <pre>ucr set diagnostic/check/disable/59_ldap_server_name=yes</pre>') % (master_fqdn, '\n'.join(domain_cn) ,domain_cn[0], ' '.join([ucr.get('ldap/server/addition'), master_fqdn]),))
+			warn = (_('The primary LDAP Server of this System (UCS ldap/server/name) is set to the DC Master of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load of the DC Master.\nPlease see {sdb} for further information.') % (master_fqdn,))
 			raise Warning(warn, buttons=button)
+
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
