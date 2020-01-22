@@ -1,4 +1,11 @@
-univention-ad-connector (13.0.0-20) unstable; urgency=medium
+univention-ad-connector (13.0.0-25) unstable; urgency=medium
+
+  * Bug #50674: Add UCR variable 'connector/ad/mapping/user/ignorefilter'
+    for bulk ignoring via LDAP-Filter
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 22 Jan 2020 18:42:18 +0100
+
+univention-ad-connector (13.0.0-24) unstable; urgency=medium
 
   * Bug #50643: Feedback from QA
 

@@ -80,6 +80,7 @@ else:
 @!@
 from univention.connector.ad.mapping import ignore_filter_from_tmpl
 ignore_filter = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/ad/mapping/user/ignorelist')
+ignore_filter += configRegistry.get('connector/ad/mapping/user/ignorefilter', '')
 ignore_filter = '(|{}{})'.format('(userAccountControl=2080)', ignore_filter)
 if ignore_filter:
 	print "			ignore_filter=%r," % ignore_filter

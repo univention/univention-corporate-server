@@ -184,6 +184,12 @@ Description[en]=The user names specified here are not synchronised by the connec
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/user/ignorefilter]
+Description[de]=Alle User, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Description[en]=All users which match this LDAP-Filter are not synchronised by the connector.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/mapping/group/ignorelist]
 Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
