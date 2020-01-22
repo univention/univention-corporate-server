@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Handle state `VIR_DOMAIN_PMSUSPENDED`.
 bug: [50580]
+erratum: 427
+announced: 2020-01-22
