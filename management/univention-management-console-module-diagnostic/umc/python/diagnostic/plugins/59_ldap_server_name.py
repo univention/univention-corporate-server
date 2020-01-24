@@ -50,9 +50,9 @@ def run(_umc_instance):
 	master_fqdn = '.'.join([master_cn, domainname])
 
 	if master_fqdn == ldap_server_name:
-		res = lo.search(base=ucr.get('ldap/base'), filter='(|(univentionServerRole=slave)(univentionServerRole=backup))', attr=['cn'])
+		res = lo.search(base=ucr.get('ldap/base'), filter='univentionServerRole=backup', attr=['cn'])
 
-		# Case: ldap/server/name is the domain master and there are other DCs available.
+		# Case: ldap/server/name is the domain master and there are DC Backups available.
 		if res:
 			button = [{
 				'action': 'deactivate_test',

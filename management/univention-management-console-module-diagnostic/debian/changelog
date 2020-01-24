@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (5.0.1-44) unstable; urgency=medium
+univention-management-console-module-diagnostic (5.0.1-45) unstable; urgency=medium
 
   * Bug #50191: fix typo
 
