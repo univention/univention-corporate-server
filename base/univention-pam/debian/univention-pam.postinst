@@ -107,7 +107,7 @@ univention-config-registry set \
 	pamaccess/maxent?0x400001 \
 	nss/group/cachefile?yes \
 	nss/group/cachefile/invalidate_on_changes?yes \
-	nss/group/cachefile/invalidate_interval?"*/15 * * * *" \
+	nss/group/cachefile/invalidate_interval?"30 3 * * *" \
 	nss/group/cachefile/check_member?yes \
 	nscd/group/enabled?no
 

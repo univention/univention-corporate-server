@@ -1,3 +1,9 @@
+univention-pam (12.0.2-7) unstable; urgency=medium
+
+  * Bug #50191: Change default value of nss/group/cachefile/invalidate_interval in postinst
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 24 Jan 2020 11:56:45 +0100
+
 univention-pam (12.0.2-6) unstable; urgency=medium
 
   * Bug #50191: Change default interval of cronjob for ldap-group-to-name to 03:30 am with jitter 1800
