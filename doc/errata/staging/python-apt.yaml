@@ -6,7 +6,7 @@ src: python-apt
 fix: 1.4.1
 desc: |
  This update addresses the following issues:
- * Do not use MD5 for verifying downloadeds (CVE-2019-15795)
+ * Do not use MD5 for verifying downloads (CVE-2019-15795)
  * Check that repository is trusted before downloading files from it
    (CVE-2019-15796)
 bug: [50737]
