@@ -1,0 +1,14 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: python-apt
+fix: 1.4.1
+desc: |
+ This update addresses the following issues:
+ * python-apt (CVE-2019-15795)
+ * python-apt (CVE-2019-15796)
+bug: [50737]
+cve:
+- CVE-2019-15795
+- CVE-2019-15796
