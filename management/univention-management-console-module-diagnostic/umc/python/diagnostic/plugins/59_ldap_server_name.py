@@ -10,7 +10,7 @@ from univention.config_registry import handler_set as ucr_set
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = _('Check LDAP server role')
+title = _('Check primary LDAP server')
 
 run_descr = ['This can be checked by running: ucr get ldap/server/name']
 
@@ -58,7 +58,7 @@ def run(_umc_instance):
 				'action': 'deactivate_test',
 				'label': _('Deactivate test'),
 			}]
-			warn = (_('The primary LDAP Server of this System (UCS ldap/server/name) is set to the DC Master of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load of the DC Master.\nPlease see {sdb} for further information.') % (master_fqdn,))
+			warn = (_('The primary LDAP Server of this System (UCR ldap/server/name) is set to the DC Master of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load of the DC Master.\nPlease see {sdb} for further information.') % (master_fqdn,))
 			raise Warning(warn, buttons=button)
 
 

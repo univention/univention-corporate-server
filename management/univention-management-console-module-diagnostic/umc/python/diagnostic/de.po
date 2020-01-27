@@ -1076,15 +1076,15 @@ msgid "Activate the memberOf LDAP overlay"
 msgstr "Aktivierung des LDAP-Moduls memberOf"
 
 #: plugins/59_ldap_server_name.py:13
-msgid "Check LDAP server role"
-msgstr "Überprüfe die LDAP Server Rolle"
+msgid "Check primary LDAP server"
+msgstr "Überprüfung des primären LDAP-Servers"
 
 #: plugins/59_ldap_server_name.py:21
 msgid ""
 "Univention Support Database - Change the primary LDAP Server to redistribute "
 "the server load"
 msgstr ""
-"Univention Support Database - Änderung des primären LDAP Server zur "
+"Univention Support Database - Änderung des primären LDAP-Server zur "
 "Verteilung der Server Last"
 
 #: plugins/59_ldap_server_name.py:58
@@ -1094,15 +1094,15 @@ msgstr "Test deaktivieren"
 #: plugins/59_ldap_server_name.py:60
 #, python-format, python-brace-format
 msgid ""
-"The primary LDAP Server of this System (UCS ldap/server/name) is set to the "
+"The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
 "DC Master of this UCS domain (%s).\n"
 "Since this environment provides further LDAP Servers, we recommend a "
 "different configuration to reduce the load of the DC Master.\n"
 "Please see {sdb} for further information."
 msgstr ""
-"Der primäre LDAP Server dieses Systems (UCS ldap/server/name) ist in der "
+"Der primäre LDAP-Server dieses Systems (UCR ldap/server/name) ist in der "
 "Standardkonfiguration auf den DC Master der UCS Umgebung konfiguriert (%s).\n"
-"In dieser Umgebung sind weitere LDAP Server verfügbar, daher empfehlen wir "
+"In dieser Umgebung sind weitere LDAP-Server verfügbar, daher empfehlen wir "
 "zur Entlastung des DC Masters eine andere Konfiguration.\n"
 "Siehe {sdb} für weiter Hinweise zur Konfiguration."
 

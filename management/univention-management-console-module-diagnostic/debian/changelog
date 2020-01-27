@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-46) unstable; urgency=medium
+
+  * Bug #50191: adjust text
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 27 Jan 2020 11:49:42 +0100
+
 univention-management-console-module-diagnostic (5.0.1-45) unstable; urgency=medium
 
   * Bug #50191: fix typo
