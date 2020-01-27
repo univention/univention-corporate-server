@@ -170,7 +170,7 @@ create_app_images () {
 	"
 
 	# get memory specification (is saved in /tmp/.memory in image)
-	export MEMORY=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 1024")
+	export MEMORY=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 2048")
 
 	_kvm_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (KVM)"
 	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (VMware)"

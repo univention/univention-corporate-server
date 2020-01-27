@@ -182,7 +182,7 @@ appliance_dump_memory ()
 	local app="$1"
 	local targetfile="$2"
 	local value="$(get_app_attr $app ApplianceMemory)"
-	[ -z $value ] && value="1024"
+	[ -z $value ] && value="2048"
 	echo "$value" > "$targetfile"
 }
 
