@@ -35,14 +35,16 @@ System Diagnosis UMC module to check Spamassassin rules.
 import os
 import pwd
 import subprocess
-from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed, MODULE
+from univention.management.console.modules.diagnostic import Warning, ProblemFixed, MODULE
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
+
 title = _('Spamassassin Rules Check')
 description = _('All spamassassin rules ok')
 run_descr = ['Checks spamassassin rule set and configuration files']
+
 
 def run(_umc_instance, retest=False):
 
@@ -62,11 +64,13 @@ def run(_umc_instance, retest=False):
 	if result != 0:
 		buttons = [{
 			'action': 'update_signatures',
-			'label': _('Update Signatures'),}]
+			'label': _('Update Signatures'),
+		}]
 		raise Warning('Errors in configuration files', buttons=buttons)
 
 	if retest:
 		raise ProblemFixed(buttons=[])
+
 
 def update_signatures(_umc_instance):
 	MODULE.process('Updating signatures')
@@ -76,14 +80,16 @@ def update_signatures(_umc_instance):
 		raise Warning('Could not fetch signatures')
 	return run(_umc_instance, retest=True)
 
+
 def demote(user_uid, user_gid):
 	def result():
 		os.setgid(user_gid)
 		os.setuid(user_uid)
 	return result
 
+
 actions = {
-	'update_signatures' : update_signatures
+	'update_signatures': update_signatures
 }
 
 if __name__ == '__main__':
