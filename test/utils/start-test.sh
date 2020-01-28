@@ -32,6 +32,8 @@ export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
 export KVM_MEMORY="${KVM_MEMORY:=2048M}"
 export KVM_CPUS="${KVM_CPUS:=1}"
+export EXACT_MATCH"${EXACT_MATCH:=false}"
+export SHUTDOWN="${SHUTDOWN:=false}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
@@ -94,6 +96,7 @@ declare -a cmd=("$exe" -c "$CFG")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
 "$EXACT_MATCH" && cmd+=("-e")
+"$SHUTDOWN" && cmd+=("-s")
 # shellcheck disable=SC2123
 PATH="./ucs-ec2-tools${PATH:+:$PATH}"
 
