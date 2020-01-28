@@ -41,32 +41,52 @@ def measure_time(f):
 	return _f
 
 
-
 # New SQL backend; naive implementation
 class Apps2(Apps):
 	conn = sqlite3.connect('apps.db')
 	cursor = conn.cursor()
 
+	def build_app(self, row):
+		return App(json.loads(row[0]), None)
+
+	get_every_single_app_stmt = 'SELECT attrs FROM apps ORDER BY id, version'
 	def get_every_single_app(self):
-		for row in self.cursor.execute('SELECT attrs FROM apps ORDER BY id, version'):
-			app = App(json.loads(row[0]), None)
+		for row in self.cursor.execute(self.get_every_single_app_stmt):
+			app = self.build_app(row)
 			yield app
 
+	get_all_apps_with_id_stmt = "SELECT attrs FROM apps WHERE id = ? ORDER BY id, version"
 	def get_all_apps_with_id(self, app_id):
-		for row in self.cursor.execute("SELECT attrs FROM apps WHERE id = ? ORDER BY id, version", (app_id,)):
-			app = App(json.loads(row[0]), None)
+		for row in self.cursor.execute(self.get_all_apps_with_id_stmt, (app_id,)):
+			app = self.build_app(row)
 			yield app
 
+	get_all_locally_installed_apps_stmt = "SELECT attrs FROM apps WHERE installed = 1 ORDER BY id, version"
 	def get_all_locally_installed_apps(self):
-		for row in self.cursor.execute("SELECT attrs FROM apps WHERE installed = 1 ORDER BY id, version"):
-			app = App(json.loads(row[0]), None)
+		for row in self.cursor.execute(self.get_all_locally_installed_apps_stmt):
+			app = self.build_app(row)
 			yield app
 
 
+	find_by_component_id_stmt = "SELECT attrs FROM apps WHERE component_id = ?"
 	def find_by_component_id(self, component_id):
-		row = self.cursor.execute("SELECT attrs FROM apps WHERE component_id = ?", (component_id,)).fetchone()
+		row = self.cursor.execute(self.find_by_component_id_stmt, (component_id,)).fetchone()
 		if row:
-			return App(json.loads(row[0]), None)
+			return self.build_app(row)
+
+# New SQL backend; another naive implementation
+ATTRS = []
+for attr in sorted(App._attrs, cmp=lambda x, y: cmp(x.name, y.name)):
+	ATTRS.append('app_attr_%s' % attr.name)
+
+class Apps3(Apps2):
+	def build_app(self, row):
+		attrs = {}
+		for i, a in enumerate(ATTRS):
+			attrs[a[9:]] = row[i]
+		return App(attrs, None)
+
+	get_every_single_app_stmt = 'SELECT %s FROM apps ORDER BY id, version' % ', '.join(ATTRS)
 
 @profile
 def iter_apps():
@@ -112,6 +132,12 @@ def get_every_single_app_with_sql_backend(timer):
 	for x in xrange(10):
 		with timer:
 			list(Apps2().get_every_single_app())
+
+@measure_time
+def get_every_single_app_with_sql_backend3(timer):
+	for x in xrange(10):
+		with timer:
+			list(Apps3().get_every_single_app())
 
 
 
@@ -173,7 +199,7 @@ def find_component_id_with_sql_backend(timer):
 
 @measure_time
 def find_candidate_with_old_backend(timer):
-	app = Apps2().find('nextcloud')
+	app = Apps().find('nextcloud')
 	for x in xrange(10):
 		with timer:
 			Apps().find_candidate(app)
@@ -190,6 +216,7 @@ find_samba_with_sql_backend()
 print('')
 get_every_single_app_with_old_backend()
 get_every_single_app_with_sql_backend()
+get_every_single_app_with_sql_backend3()
 print('')
 get_all_apps_with_old_backend()
 get_all_apps_with_sql_backend()
