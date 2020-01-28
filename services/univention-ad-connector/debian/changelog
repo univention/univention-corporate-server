@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-27) unstable; urgency=medium
+
+  * Bug #50674: fix translation in UCR variable description
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Jan 2020 11:43:27 +0100
+
 univention-ad-connector (13.0.0-26) unstable; urgency=medium
 
   * Bug #50674: try to generate a valid ldap filter
