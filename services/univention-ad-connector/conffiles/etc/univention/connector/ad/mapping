@@ -79,9 +79,11 @@ else:
 			match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
 @!@
 from univention.connector.ad.mapping import ignore_filter_from_tmpl
-ignore_filter = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/ad/mapping/user/ignorelist')
-ignore_filter += configRegistry.get('connector/ad/mapping/user/ignorefilter', '')
-ignore_filter = '(|{}{})'.format('(userAccountControl=2080)', ignore_filter)
+user_ignore_list = ignore_filter_from_tmpl('(uid={0!e})(CN={0!e})', 'connector/ad/mapping/user/ignorelist')
+user_ignore_filter = configRegistry.get('connector/ad/mapping/user/ignorefilter', '')
+if user_ignore_filter and not user_ignore_filter.startswith('('):
+	user_ignore_filter = '({})'.format(user_ignore_filter)
+ignore_filter = '(|{}{}{})'.format('(userAccountControl=2080)', user_ignore_filter, user_ignore_list)
 if ignore_filter:
 	print "			ignore_filter=%r," % ignore_filter
 @!@
