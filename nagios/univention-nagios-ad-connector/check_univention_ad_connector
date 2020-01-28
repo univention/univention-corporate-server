@@ -89,8 +89,7 @@ fi
 # check whether the AD connector is running; for this, get the exact command
 # that was used to launch the process; remove multiple whitespaces and quotes
 # in order to match the command via check_procs
-cmd=$(grep /usr/bin/python /usr/sbin/univention-ad-${CONNECTOR} | sed 's/\s\{1,\}/ /g; s/["'"'"']//g')
-/usr/lib/nagios/plugins/check_procs -w :1 -c 1: --ereg-argument-array "^${cmd}\$" >/dev/null 2>&1
+/usr/lib/nagios/plugins/check_procs -w :1 -c 1: --ereg-argument-array "^([^ ]+)?python.*univention.connector.ad.main(.py)?\$" >/dev/null 2>&1
 ret="$?"
 
 # WARNING: if more then one instance of the same connector is running
