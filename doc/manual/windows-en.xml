@@ -1286,6 +1286,13 @@ All containers which are ignored due to corresponding filters are
 exempted from synchronization as standard. This can be found in the
 <filename>/etc/univention/connector/ad/mapping</filename> configuration file
 under the <emphasis>global_ignore_subtree</emphasis> setting.
+To except users from synchronisation they can be added to the
+&ucsUCRV; <envar>connector/ad/mapping/user/ignorelist</envar>.
+For more flexibility a filter can be set in the &ucsUCRV;
+<envar>connector/ad/mapping/user/ignorefilter</envar>. However this filter
+does not support the full LDAP filter syntax. It is always case sensitive
+and the placeholder "*" can only be used as a single value without any other
+characters.
 </para>
 
 <section id="ad-connector:container-und-organisationseinheiten"><title>Containers and organizational units</title>
