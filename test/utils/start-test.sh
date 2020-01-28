@@ -93,6 +93,7 @@ declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
+"$EXACT_MATCH" && cmd+=("-e")
 # shellcheck disable=SC2123
 PATH="./ucs-ec2-tools${PATH:+:$PATH}"
 
