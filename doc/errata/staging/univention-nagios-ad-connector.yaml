@@ -6,6 +6,6 @@ src: univention-nagios-ad-connector
 fix: 8.0.1-2A~4.4.0.202001281137
 desc: |
  This update addresses the following issue(s):
- * Fix the "check_univention_ad_connector" nagios check to with the new
+ * Adapt the "check_univention_ad_connector" nagios check for the new
    process name introduced in bug 49168.
 bug: [50676]
