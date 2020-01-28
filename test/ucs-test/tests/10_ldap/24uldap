@@ -13,6 +13,7 @@
 from os import environ
 from os.path import exists
 from univention import uldap
+from univention.testing.utils import retry_on_error
 from unittest import (TestCase, main, skip, skipUnless)
 from tempfile import NamedTemporaryFile
 
@@ -104,15 +105,74 @@ class TestMachineConnection(TestCase):
     def testDefault(self):
         access = uldap.getMachineConnection()
         self.assertIsInstance(access, uldap.access)
+        self.assertEqual(access.host, ucr.get('ldap/master'))
 
     def testNonMaster(self):
         access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
         self.assertIsInstance(access, uldap.access)
+        self.assertEqual(access.host, ucr.get('ldap/server/name'))
 
-    def testAddition(self):
+    def testAdditionDefaultDown(self):
         with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ucr.get('ldap/server/name')}):
+            ucr_fake = ConfigRegistry()
+            ucr_fake.load()
             access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
             self.assertIsInstance(access, uldap.access)
+            self.assertEqual(access.host, ucr_fake.get('ldap/server/addition'))
+
+    def testAdditionDefaultUp(self):
+        alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+        with FakeUcr({'ldap/server/addition': ' '.join(alt_servers)}):
+            ucr_fake = ConfigRegistry()
+            ucr_fake.load()
+            access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0)
+            self.assertIsInstance(access, uldap.access)
+            self.assertEqual(access.host, ucr_fake.get('ldap/server/name'))
+
+    @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
+    def testRandomServer(self):
+        def __testRandomServer():
+            alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+            with FakeUcr({'ldap/server/addition': ' '.join(alt_servers)}):
+                ucr_fake = ConfigRegistry()
+                ucr_fake.load()
+                possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
+                used_servers = list()
+                n = 10
+                min_servers = 3
+                for _ in range(0, n):
+                    access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
+                    self.assertIsInstance(access, uldap.access)
+                    self.assertIn(access.host, possible_servers)
+                    used_servers.append(access.host)
+                # At least (min_servers - 1) different servers from ldap/server/addition
+                self.assertGreaterEqual(len(set(used_servers)), min_servers)
+                # Servers should be in random order
+                self.assertNotIn(''.join(used_servers), ''.join(possible_servers))
+        retry_on_error(__testRandomServer, exceptions=(AssertionError, ), retry_count=10, delay=0)
+
+    @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
+    def testNonRandomServer(self):
+        expected_server = '127.1.1.1'
+        alt_servers = ['255.255.255.255'] * 2 + [expected_server] + ['127.0.0.{}'.format(i) for i in range(1, 200)]
+        with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ' '.join(alt_servers)}):
+            ucr_fake = ConfigRegistry()
+            ucr_fake.load()
+            possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
+            used_servers = list()
+            n = 10
+            for _ in range(0, n):
+                access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0)
+                self.assertIsInstance(access, uldap.access)
+                self.assertIn(access.host, possible_servers)
+                used_servers.append(access.host)
+            # Should always be expected_server
+            self.assertGreaterEqual(len(set(used_servers)), 1)
+            self.assertEqual(expected_server, used_servers[0])
+
+    def testServerDown(self):
+        with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ''}):
+            self.assertRaises(ldap.SERVER_DOWN, uldap.getMachineConnection, ldap_master=False, reconnect=False)
 
 
 @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')

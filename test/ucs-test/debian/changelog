@@ -1,3 +1,9 @@
+ucs-test (9.0.3-141) unstable; urgency=medium
+
+  * Bug #50191: Test random ldap server connection
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Jan 2020 10:46:37 +0100
+
 ucs-test (9.0.3-140) unstable; urgency=medium
 
   * Bug #50428: fixed test for passwordreset permissions  
