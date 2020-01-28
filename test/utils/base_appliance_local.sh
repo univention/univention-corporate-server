@@ -172,10 +172,13 @@ create_app_images () {
 	# get memory specification (is saved in /tmp/.memory in image)
 	export MEMORY=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 2048")
 
-	_kvm_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (KVM)"
-	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (VMware)"
-	_esxi "Univention App ${UCS_VERSION} Appliance ${APP_ID} (ESX)"
-	_virtualbox_image "Univention App ${UCS_VERSION} Appliance ${APP_ID} (VirtualBox)"
+	# get appliance identifier (is saved in /tmp/.identifier in image)
+	export IDENTIFIER=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.identifier 2>/dev/null || echo $APP_ID")
+
+	_kvm_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (KVM)"
+	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (VMware)"
+	_esxi "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (ESX)"
+	_virtualbox_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (VirtualBox)"
 
 	# cleanup
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"

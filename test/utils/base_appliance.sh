@@ -186,6 +186,15 @@ appliance_dump_memory ()
 	echo "$value" > "$targetfile"
 }
 
+appliance_dump_identifier()
+{
+	local app="$1"
+	local targetfile="$2"
+	local value="$(get_app_attr $app ApplianceIdentifier)"
+	[ -z $value ] && value="$app"
+	echo "$value" > "$targetfile"
+}
+
 app_appliance_AllowPreconfiguredSetup ()
 {
 	local app="$1"
