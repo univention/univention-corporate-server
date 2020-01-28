@@ -1286,7 +1286,7 @@ All containers which are ignored due to corresponding filters are
 exempted from synchronization as standard. This can be found in the
 <filename>/etc/univention/connector/ad/mapping</filename> configuration file
 under the <emphasis>global_ignore_subtree</emphasis> setting.
-To except users from synchronization they can be added to the
+To except users from synchronization their user name can be added to the
 &ucsUCRV; <envar>connector/ad/mapping/user/ignorelist</envar>.
 For more flexibility a filter can be set in the &ucsUCRV;
 <envar>connector/ad/mapping/user/ignorefilter</envar>. However this filter
