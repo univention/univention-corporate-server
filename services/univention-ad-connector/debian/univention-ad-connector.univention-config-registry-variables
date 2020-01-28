@@ -185,7 +185,7 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/user/ignorefilter]
-Description[de]=Alle User, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Description[de]=Alle Benutzer, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
 Description[en]=All users which match this LDAP-Filter are not synchronised by the connector.
 Type=str
 Categories=service-adcon
