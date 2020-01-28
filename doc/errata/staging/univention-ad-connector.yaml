@@ -3,11 +3,12 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-ad-connector
-fix: 13.0.0-27A~4.4.0.202001281145
+fix: 13.0.0-28A~4.4.0.202001281356
 desc: |
  This update addresses the following issue:
  * It is now possible to ignore bulks of users by setting
    the UCR variable connector/ad/mapping/user/ignorefilter to an LDAP filter.
    Every user that matches this LDAP filter will be ignored 
    by the connector.
-bug: [50674]
+ * Fix python library path in prepare-new-instance.
+bug: [50674, 50713]
