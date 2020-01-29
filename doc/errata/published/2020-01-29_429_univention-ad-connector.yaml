@@ -13,3 +13,5 @@ desc: |
    to synchronize several Active Directory domains with one UCS directory
    service.
 bug: [50674, 50713]
+erratum: 429
+announced: 2020-01-29
