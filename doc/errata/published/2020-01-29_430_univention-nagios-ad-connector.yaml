@@ -9,3 +9,5 @@ desc: |
  * Fix the check `check_univention_ad_connector` by adapting to the new
    process name introduced in UCS 4.4-3 erratum 390 from bug 49168.
 bug: [50676]
+erratum: 430
+announced: 2020-01-29
