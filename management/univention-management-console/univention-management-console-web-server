@@ -366,6 +366,25 @@ class User(object):
 		except ValueError:  # no SAML, no client
 			return 0
 
+	def is_saml_user(self):
+		# self.saml indicates that it was originally a
+		# saml user. but it may have upgraded and got a
+		# real password. the saml user object is still there,
+		# though
+		return self.password is None and self.saml
+
+	def get_umc_password(self):
+		if self.is_saml_user():
+			return self.saml.message
+		else:
+			return self.password
+
+	def get_umc_auth_type(self):
+		if self.is_saml_user():
+			return "SAML"
+		else:
+			return None
+
 	def timed_out(self):
 		return self.saml.timed_out()
 
@@ -759,7 +778,11 @@ class CPgeneric(Ressource):
 		client = UMCP_Dispatcher.sessions.get(sessionid)
 		if user and (user.password or user.saml) and (not client or not client.authenticated):
 			auth = Request('AUTH')
-			auth.body = {'username': user.username, 'password': user.saml.message if user.saml else user.password, 'auth_type': "SAML" if user.saml else None}
+			auth.body = {
+					'username': user.username,
+					'password': user.get_umc_password(),
+					'auth_type': user.get_umc_auth_type(),
+					}
 			try:
 				self.make_queue_request(sessionid, auth)
 				self.set_session(sessionid, user.username, password=user.password)

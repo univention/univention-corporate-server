@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-52) unstable; urgency=medium
+
+  * Bug #50670: Fix downgrading to SAML session in UMC Web server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Jan 2020 09:47:48 +0100
+
 univention-management-console (11.0.4-51) unstable; urgency=medium
 
   * Bug #50670: Do not downgrade to SAML session
