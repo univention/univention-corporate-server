@@ -9,3 +9,5 @@ desc: |
  * The script `ldap-group-to-file` used to run against the UCS Master by
    default. We randomize the LDAP server selection now to distribute the load.
 bug: [50191]
+erratum: 433
+announced: 2020-01-29
