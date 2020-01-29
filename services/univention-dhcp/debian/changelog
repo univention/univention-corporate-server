@@ -1,3 +1,8 @@
+univention-dhcp (13.0.0-4) unstable; urgency=medium
+
+  * Bug #49281: Debug log configuration option for dhcp (changed to bool)
+
+ -- Max Christian Pohle <pohle@univention.de>  Thu, 29 Jan 2020 10:30:00 +0100
 univention-dhcp (13.0.0-3) unstable; urgency=medium
 
   * Bug #49281: Debug log configuration option for dhcp
