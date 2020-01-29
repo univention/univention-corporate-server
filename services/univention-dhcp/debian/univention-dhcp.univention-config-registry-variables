@@ -35,8 +35,8 @@ Type=str
 Categories=service-dhcp
 
 [dhcpd/ldap/debug]
-Description[de]=Ist diese Variable aktiviert, dann loggt der DHCP-Dienst LDAP Ereignisse zum Debuggen in diese Logdatei: /var/log/dhcp-ldap-startup.log
-Description[en]=If this option is activated, the DHCP Service logs LDAP events for debugging purposes into this log file: /var/log/dhcp-ldap-startup.log
+Description[de]=Mit diesen Variablen kann die Erstellung einer Logdatei für Debuginformationen aktiviert werden.
+Description[en]=With this variable the creation of a debug log file can be activated.
 Type=bool
 Categories=service-dhcp
 

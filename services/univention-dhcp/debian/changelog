@@ -1,4 +1,4 @@
-univention-dhcp (13.0.0-5) unstable; urgency=medium
+univention-dhcp (13.0.0-6) unstable; urgency=medium
 
   * Bug #49281: Debug log configuration option for dhcp
 
