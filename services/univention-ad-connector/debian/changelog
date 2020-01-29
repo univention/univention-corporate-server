@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-29) unstable; urgency=medium
+
+  * Bug #50674: add "$@" to prepare-new-instance
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 29 Jan 2020 10:37:06 +0100
+
 univention-ad-connector (13.0.0-28) unstable; urgency=medium
 
   * Bug #50674: fix ad-connector prepare-new-instance

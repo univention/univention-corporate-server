@@ -146,7 +146,7 @@ then
     
     echo "-- copy startup script"
     cp /usr/sbin/univention-ad-connector /usr/sbin/univention-ad-"$CONFIGBASENAME"
-    sed -i "s|/usr/bin/python2.7 -W ignore -m univention.connector.ad.main.*|/usr/bin/python2.7 -W ignore -m univention.connector.ad.main --configbase \"$CONFIGBASENAME\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
+    sed -i "s|/usr/bin/python2.7 -W ignore -m univention.connector.ad.main.*|/usr/bin/python2.7 -W ignore -m univention.connector.ad.main --configbase \"$CONFIGBASENAME\" \"\$@\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
     sed -i "s|/etc/univention/connector/ad/mapping|/etc/univention/$CONFIGBASENAME/ad/mapping|g" /usr/sbin/univention-ad-"$CONFIGBASENAME"
     
     
