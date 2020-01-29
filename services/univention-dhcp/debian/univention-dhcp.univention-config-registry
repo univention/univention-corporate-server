@@ -10,7 +10,7 @@ Variables: dhcpd/autostart
 Variables: dhcpd/ddns.*
 Variables: dhcpd/options/.*
 Variables: domainname
-Variables: dhcpd/ldap/debug/file
+Variables: dhcpd/ldap/debug
 
 Type: file
 File: etc/init.d/isc-dhcp-server
