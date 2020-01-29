@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-ad-connector
-fix: 13.0.0-28A~4.4.0.202001281356
+fix: 13.0.0-29A~4.4.0.202001291041
 desc: |
  This update addresses the following issue:
  * It is now possible to ignore bulks of users by setting
