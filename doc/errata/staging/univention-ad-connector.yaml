@@ -6,11 +6,10 @@ src: univention-ad-connector
 fix: 13.0.0-29A~4.4.0.202001291041
 desc: |
  This update addresses the following issues:
- * It is now possible to ignore bulks of users by setting
-   the UCR variable connector/ad/mapping/user/ignorefilter to an LDAP filter.
-   Every user that matches this LDAP filter will be ignored 
-   by the connector.
- * Fix python library path in prepare-new-instance. This fixes the
-   feature to synchronize several Active Directory domains with one
-   UCS directory service
+ * It is now possible to filter out users from synchronization by setting the
+   UCR variable `connector/ad/mapping/user/ignorefilter` to an LDAP filter.
+   Every user matched by this LDAP filter will be ignored by the connector.
+ * Fix python library path in `prepare-new-instance`. This fixes the feature
+   to synchronize several Active Directory domains with one UCS directory
+   service.
 bug: [50674, 50713]
