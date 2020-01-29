@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-appcenter
+fix: 8.0.11-102A~4.4.0.202001291130
+desc: |-
+  This update addresses the following issue(s):
+  * In some cases, an unsuccessful app installation
+    was still acknowledged as successful. This fix
+    ensures that the appcenter receives a correct 
+    status code for those cases.
+bug: [49104]
