@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-nagios-ad-connector
 fix: 8.0.1-2A~4.4.0.202001281137
 desc: |
- This update addresses the following issue(s):
- * Adapt the "check_univention_ad_connector" nagios check for the new
-   process name introduced in bug 49168.
+ This update addresses the following issue:
+ * Fix the check "check_univention_ad_connector" by adapting to the new
+   process name introduced in UCS 4.4-3 errata 390, from bug 49168.
 bug: [50676]

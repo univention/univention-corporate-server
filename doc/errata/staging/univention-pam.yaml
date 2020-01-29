@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-pam
 fix: 12.0.2-7A~4.4.0.202001241209
 desc: |-
-  This update addresses the following issue:
-  * The ldap-group-to-file script used to run against the master server
-    by default. We randomize the LDAP server selection now, to distribute
-    the load.
+ This update addresses the following issue:
+ * The ldap-group-to-file script used to run against the master server
+   by default. We randomize the LDAP server selection now, to distribute
+   the load.
 bug: [50191]
