@@ -10,3 +10,5 @@ desc: |
    `ldap/server/name` points to the master domain controller on member
    servers.
 bug: [50191]
+erratum: 431
+announced: 2020-01-29
