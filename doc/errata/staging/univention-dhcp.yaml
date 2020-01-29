@@ -4,9 +4,9 @@ version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-dhcp
 fix: 13.0.0-6A~4.4.0.202001291523
-desc: |-
+desc: |
  This update addresses the following issue:
- * The new UCR variable `dhcpd/ldap/debug` has been added for debugging
-   purposes. If activated, it creates a log file named
-   /var/log/dhcp-ldap-startup.log
+ * The new UCR variable `dhcpd/ldap/debug` has been added for debugging the
+   configuration from LDAP. If activated, it creates a log file named
+   `/var/log/dhcp-ldap-startup.log`.
 bug: [49281]
