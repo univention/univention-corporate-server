@@ -144,7 +144,9 @@ class InstallRemoveUpgrade(Register):
 		except AppCenterError as exc:
 			status = exc.code
 			raise
-		except Exception:
+		except Exception as e:
+			status = 502
+			status_details = (str(e))
 			raise
 		else:
 			return status == 200

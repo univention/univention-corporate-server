@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-103) unstable; urgency=medium
+
+  * Bug #49104: Added ResidualInstallationError (statuscode: 502)
+    for handling unexpected errors before installation
+
+ -- Toni Uwe Roehmeyer <roehmeyer@univention.de>  Wed, 29 Jan 2020 10:23:09 +0100
+
 univention-appcenter (8.0.11-102) unstable; urgency=medium
 
   * Bug #50718: do not write None into the env file for

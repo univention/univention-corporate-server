@@ -336,3 +336,8 @@ class AppCenterError(Exception):
 class AppCenterErrorContainerStart(AppCenterError):
 	code = 501
 	title = _('The docker container could not be started!')
+
+
+class ResidualInstallationError(AppCenterError):
+	code = 502
+	title = _('An unexpected error occured before the installation started!')
