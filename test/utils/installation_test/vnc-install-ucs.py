@@ -29,6 +29,7 @@ def main():
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
 	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'applianceEC2', 'applianceLVM'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
+	parser.add_argument('--no-second-interface', help='no not set configure second interface', action='store_true')
 	args = parser.parse_args()
 	if args.role in ['slave', 'backup', 'member', 'admember']:
 		assert args.dns is not None
