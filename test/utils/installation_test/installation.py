@@ -391,7 +391,7 @@ class UCSInstallation(object):
 			self.ucsschool()
 			self.software_configuration()
 			self.finish()
-			if self.args.no_second_interface:
+			if not self.args.no_second_interface:
 				# TODO activate ens6 so that ucs-kvm-create can connect to instance
 				# this is done via login and setting interfaces/eth0/type, is there a better way?
 				self.configure_kvm_network()
