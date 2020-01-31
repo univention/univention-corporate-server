@@ -110,7 +110,7 @@ class MailSink(object):
 		cmd.append('{}:{}'.format(self.address, self.port))
 		cmd.append('10')
 		print('*** {!r}'.format(cmd))
-		self.process = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.STDOUT)
+		self.process = subprocess.Popen(cmd, stderr=sys.stdout, stdout=sys.stdout)
 
 	def stop(self):
 		if self.process is not None:
