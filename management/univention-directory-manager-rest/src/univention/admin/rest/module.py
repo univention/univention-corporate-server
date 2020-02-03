@@ -1105,7 +1105,7 @@ class Relations(Resource):
 
 class OpenAPI(Resource):
 
-	requires_authentication = False
+	requires_authentication =  ucr.is_true('directory/manager/rest/require-auth', True)
 
 	def prepare(self):
 		super(OpenAPI, self).prepare()
