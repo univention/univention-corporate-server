@@ -34,24 +34,27 @@ class SamlLoginError(SamlError):
 		self._error_evaluation()
 
 	def _error_evaluation(self):
-			if re.search('<b>Your password is expired.</b>', bytes(self.page.text)):
-				self.message = "Got password expired notice"
-			elif re.search('<b>Account expired.</b>', bytes(self.page.text)):
-				self.message = "Got account expired notice"
-			elif re.search('<b>Incorrect username or password.</b>', bytes(self.page.text)):
-				self.message = "Got incorrect username or password notice"
-			else:
-				self.message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
+		if re.search('<b>Your password is expired.</b>', bytes(self.page.text)):
+			self.message = "Got password expired notice"
+		elif re.search('<b>Account expired.</b>', bytes(self.page.text)):
+			self.message = "Got account expired notice"
+		elif re.search('<b>Incorrect username or password.</b>', bytes(self.page.text)):
+			self.message = "Got incorrect username or password notice"
+		else:
+			self.message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
 
 
 class GuaranteedIdP(object):
 	def __init__(self, ip):
 		self.ip = ip
+		ucr = configRegistry.ConfigRegistry()
+		ucr.load()
+		self.sso_fqdn = ucr['ucs/server/sso/fqdn']
 
 	def __enter__(self):
-		subprocess.call(['ucr', 'set', 'hosts/static/%s=ucs-sso.univention.intranet' % self.ip])
+		subprocess.call(['ucr', 'set', 'hosts/static/%s=%s' % (self.ip, self.sso_fqdn)])
 		subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
-		IdP_IP = socket.gethostbyname('ucs-sso.univention.intranet')
+		IdP_IP = socket.gethostbyname(self.sso_fqdn)
 		if IdP_IP != self.ip:
 			utils.fail("Couldn't set guaranteed IdP")
 		print('Set IdP to: %s' % self.ip)
