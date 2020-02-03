@@ -1,3 +1,10 @@
+ucs-test (9.0.3-146) unstable; urgency=medium
+
+  * Bug #50774: Add Saml test auth
+  * Bug #43333: fix hardcoded domain name in GuaranteedIdP
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 04 Feb 2020 13:57:20 +0100
+
 ucs-test (9.0.3-145) unstable; urgency=medium
 
   * Adding import sys 
