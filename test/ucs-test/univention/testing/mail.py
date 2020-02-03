@@ -34,7 +34,7 @@ import time
 import os
 import pwd
 import subprocess
-
+import sys
 
 class MailSinkGuard(object):
 	"""
