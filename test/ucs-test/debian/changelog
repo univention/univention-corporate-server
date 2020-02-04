@@ -1,3 +1,9 @@
+ucs-test (9.0.3-147) unstable; urgency=medium
+
+  * Bug #50732: Add testcase for rest
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 04 Feb 2020 11:56:22 +0100
+
 ucs-test (9.0.3-146) unstable; urgency=medium
 
   * Bug #50774: Add Saml test auth
@@ -7,7 +13,7 @@ ucs-test (9.0.3-146) unstable; urgency=medium
 
 ucs-test (9.0.3-145) unstable; urgency=medium
 
-  * Adding import sys 
+  * Adding import sys
 
  -- Tobias Wenzel <wenzel@univention.de>  Mon, 03 Feb 2020 09:15:32 +0100
 
