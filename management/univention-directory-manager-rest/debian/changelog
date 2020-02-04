@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-7) unstable; urgency=medium
+
+  * Bug #50732: Require authentication to access openapi.json, add ucr-variable
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 04 Feb 2020 11:58:02 +0100
+
 univention-directory-manager-rest (9.0.16-6) unstable; urgency=medium
 
   * Bug #49147: remove unnecessary dependency
