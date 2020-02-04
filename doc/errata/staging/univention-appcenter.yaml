@@ -10,4 +10,6 @@ desc: |-
     was still acknowledged as successful. This fix
     ensures that the appcenter receives a correct 
     status code for those cases.
-bug: [49104]
+  * During app installation there was a mix of popup dialogs and dedicated
+    pages. These have been unified into an installation wizard.
+bug: [49104, 50771]
