@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 Univention GmbH
+ * Copyright 2020 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -30,42 +30,27 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-class",
-], function(declare, domClass) {
-	return declare("umc.modules.appcenter._AppDialogMixin", null, {
-		app: null,
-		noFooter: true,
-		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2',
-		headerTextAllowHTML: false,
-		helpTextAllowHTML: false,
-		headerTextRegion: 'main',
-		helpTextRegion: 'main',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'umcAppCenterDialog');
-		},
-
-		_clearWidget: function(attr) {
-			if (!this[attr]) {
-				// nothing to do
-				return;
+	"umc/widgets/Text",
+	"umc/i18n!umc/modules/appcenter"
+], function(declare, Text, _) {
+	return {
+		getPageConf: function(app) {
+			if (!app.licenseAgreement) {
+				return null;
 			}
-			this[attr].destroyRecursive();
-			this[attr] = null;
-		},
 
-		onUpdate: function() {
-		},
-
-		onShowUp: function() {
-		},
-
-		onNext: function() {
-		},
-
-		onBack: function() {
+			return {
+				name: 'licenseAgreement',
+				headerText: '',
+				helpText: _('License agreement'),
+				widgets: [{
+					type: Text,
+					'class': 'appInstallDialog__readme',
+					name: 'licenseAgreement_licenseAgreement',
+					content: app.licenseAgreement
+				}]
+			};
 		}
-	});
+	};
 });
 

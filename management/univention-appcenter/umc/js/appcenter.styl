@@ -219,10 +219,8 @@ $app-detailspane-background-color = #fff
 .appDetailsPageActions
 	margin-bottom: 3em
 
-.umc .umcAppCenterDialog
-	.dijitDefaultButton
-		float: right
-
+.umc .umcAppCenterDialog,
+.umc .umcAppCenterInstallDialog
 	.umcPageNav
 		margin-bottom: 0
 
@@ -240,6 +238,18 @@ $app-detailspane-background-color = #fff
 
 		.dijitTitlePaneTitleHover
 			color: #282828
+
+.umc .umcAppCenterDialog
+	.dijitDefaultButton
+		float: right
+
+.umcAppCenterInstallWizard
+	margin: 7px 0 !important
+
+.umcAppCenterInstallDialog
+	.umcPageHelpText
+		font-weight: bold
+		margin-bottom: 0.5em
 
 .umc .umcAppDetailsPage
 	.umcPageNav
@@ -574,6 +584,23 @@ $app-detailspane-background-color = #fff
 
 			&:hover
 				opacity: 1
+
+.umc .appInstallWizard__dryRunPage
+	.umcPageMain
+		min-height: 150px
+
+.umc .appInstallWizard__detailsPage
+	.dijitContentPane
+		padding: 0
+
+.umc .appInstallDialog__readmeTitle
+	font-weight: bold
+
+.umc .appInstallDialog__readme
+	max-height: 350px
+	overflow-y: auto
+	overflow-x: hidden
+	padding: 0
 
 .umc .umcModule[id^=umc_modules_appcenter_],
 .umc .umcModule[id^=umc_modules_apps_]

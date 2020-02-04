@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 Univention GmbH
+ * Copyright 2020 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -26,46 +26,20 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-class",
-], function(declare, domClass) {
-	return declare("umc.modules.appcenter._AppDialogMixin", null, {
-		app: null,
-		noFooter: true,
-		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2',
-		headerTextAllowHTML: false,
-		helpTextAllowHTML: false,
-		headerTextRegion: 'main',
-		helpTextRegion: 'main',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'umcAppCenterDialog');
+	"dojo/_base/lang",
+	"umc/tools",
+	"umc/widgets/Form",
+], function(declare, lang, tools, Form) {
+	return declare("umc.modules.appcenter.AppSettingsForm", [ Form ], {
+		_getValueAttr: function() {
+			return tools.objFilter(this.inherited(arguments), lang.hitch(this, function(k, _) {
+				return !this.getWidget(k).get('disabled');
+			}));
 		},
-
-		_clearWidget: function(attr) {
-			if (!this[attr]) {
-				// nothing to do
-				return;
-			}
-			this[attr].destroyRecursive();
-			this[attr] = null;
-		},
-
-		onUpdate: function() {
-		},
-
-		onShowUp: function() {
-		},
-
-		onNext: function() {
-		},
-
-		onBack: function() {
-		}
 	});
 });
 
