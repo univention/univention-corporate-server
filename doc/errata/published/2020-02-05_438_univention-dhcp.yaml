@@ -10,3 +10,5 @@ desc: |
    configuration from LDAP. If activated, it creates a log file named
    `/var/log/dhcp-ldap-startup.log`.
 bug: [49281]
+erratum: 438
+announced: 2020-02-05
