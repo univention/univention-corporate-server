@@ -3,7 +3,7 @@ release: "4.3"
 version: [5]
 scope: ucs_4.3-0-errata4.3-5
 src: qemu
-fix: 1:2.8+dfsg-6+deb9u9
+fix: 1:2.8+dfsg-6+deb9u9A~4.3.5.202002051630
 desc: |
  This update addresses the following issues:
  * Slirp: use-after-free during packet reassembly (CVE-2019-15890)
