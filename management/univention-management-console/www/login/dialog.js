@@ -216,7 +216,6 @@ define([
 			Tooltip.show(text, node);
 			on.once(dojo.body(), 'click', function(evt) {
 				Tooltip.hide(node);
-				dojoEvent.stop(evt);
 			});
 		}
 	};
