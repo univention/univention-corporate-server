@@ -79,7 +79,9 @@ define([
 	});
 
 	// add "Forgot password?" link to login page
-	dialog.addLink('<a href="/univention/self-service/#page=passwordreset">' + entities.encode(_('Forgot your password?')) + '</a>');
-
+	dialog.addLinkFromUcr('forgot_your_password', {
+		text: _('Forgot your password?'),
+		href: '/univention/self-service/#page=passwordreset'
+	});
 });
 
