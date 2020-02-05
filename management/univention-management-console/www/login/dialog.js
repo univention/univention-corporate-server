@@ -47,8 +47,9 @@ define([
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
+	"umc/i18n/tools",
 	"umc/i18n!login"
-], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, json, Deferred, Tooltip, entities, dialog, tools, _) {
+], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, json, Deferred, Tooltip, entities, dialog, tools, i18nTools, _) {
 
 	return {
 		_loginDialogRenderedDeferred: new Deferred(),
@@ -58,22 +59,78 @@ define([
 			this._loginDialogRenderedDeferred.then(lang.hitch(this, '_renderLink', link));
 		},
 
+		addLinkFromUcr: function(name, defaults) {
+			this._loginDialogRenderedDeferred.then(lang.hitch(this, '_addLinkFromUcr', name, defaults));
+		},
+
+		_addLinkFromUcr: function(name, defaults) {
+			defaults = defaults || {};
+			var loginLinks = tools.status('login_links');
+			var enabled = loginLinks[name + '/enabled'] !== undefined ? loginLinks[name + '/enabled'] : defaults.enabled;
+			if (!enabled) {
+				return;
+			}
+
+			var locale = i18nTools.defaultLang().substring(0, 2);
+			var ucrLinkConf = {};
+			['href', 'text', 'tooltip'].forEach(function(key) {
+				var localizedKey = key + '/' + locale;
+				ucrLinkConf[key] = loginLinks[name + '/' + key];
+				ucrLinkConf[localizedKey] = loginLinks[name + '/' + localizedKey];
+			});
+			ucrLinkConf.target = loginLinks[name + '/target'];
+			ucrLinkConf = tools.objFilter(ucrLinkConf, function(k, v) {
+				return v !== undefined;
+			});
+
+			var linkConf = lang.mixin({
+				href: 'javascript:void(0)',
+				text: '',
+				tooltip: '',
+				target: '_self'
+			}, defaults, ucrLinkConf);
+
+			var href = linkConf['href/' + locale] !== undefined ? linkConf['href/' + locale] : linkConf.href;
+			var text = linkConf['text/' + locale] !== undefined ? linkConf['text/' + locale] : linkConf.text;
+			var tooltip = linkConf['tooltip/' + locale] !== undefined ? linkConf['tooltip/' + locale] : linkConf.tooltip;
+			var target = linkConf.target;
+
+			var link = lang.replace('<a href="{href}" title="{tooltip}" target="{target}">{text}</a>', {
+				href: entities.encode(href),
+				tooltip: entities.encode(tooltip),
+				text: entities.encode(text),
+				target: entities.encode(target)
+			});
+			this._renderLink(link);
+		},
+
 		renderLoginDialog: function() {
 			this._addDefaultLinks();
-			this.checkCookiesEnabled();
+			this._checkCookiesEnabled();
 			this._watchUsernameField();
 			this._loginDialogRenderedDeferred.resolve();
 		},
 
 		_addDefaultLinks: function() {
 			array.forEach(this._getDefaultLinks(), lang.hitch(this, '_renderLink'));
+
+			// add "How do I login" link
+			var tooltip = _('Please login with a valid username and password.') + ' ';
+			if (getQuery('username') === 'root') {
+				tooltip += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
+			} else {
+				tooltip += _('The default user to manage the domain is %s which has the same initial password as the <i>root</i> account.', this._administratorLink());
+			}
+			this._addLinkFromUcr('how_do_i_login', {
+				text: _('How do I login?'),
+				tooltip: tooltip
+			});
 		},
 
 		_getDefaultLinks: function() {
 			var links = [];
-			links.push(this.warningBrowserOutdated());
-			links.push(this.insecureConnection());
-			links.push(this.howToLogin());
+			links.push(this._warningBrowserOutdated());
+			links.push(this._insecureConnection());
 			return links;
 		},
 
@@ -81,13 +138,13 @@ define([
 			if (link) {
 				var node = domConstruct.place(domConstruct.toDom(link), dom.byId('umcLoginLinks'));
 				if (node.title) {
-					on(node, 'mouseover', lang.hitch(this, 'showTooltip', node, node.title));
+					on(node, 'mouseover', lang.hitch(this, '_showTooltip', node, node.title));
 					domAttr.remove(node, 'title');
 				}
 			}
 		},
 
-		insecureConnection: function() {
+		_insecureConnection: function() {
 			// Show warning if connection is unsecured
 			if (window.location.protocol === 'https:' || window.location.host === 'localhost') {
 				return;
@@ -99,7 +156,7 @@ define([
 			});
 		},
 
-		warningBrowserOutdated: function() {
+		_warningBrowserOutdated: function() {
 			if (has('ie') || has('trident') || has('edge') < 18.17763 || has('ff') < 60 || has('chrome') < 71 || has('safari') < 12) {
 				// by umc (4.1.0) supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
 				// they should work with UMC. albeit, they are
@@ -127,16 +184,6 @@ define([
 			}));
 		},
 
-		howToLogin: function() {
-			var helpText = _('Please login with a valid username and password.') + ' ';
-			if (getQuery('username') === 'root') {
-				helpText += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
-			} else {
-				helpText += _('The default user to manage the domain is %s which has the same initial password as the <i>root</i> account.', this._administratorLink());
-			}
-			return lang.replace('<a href="javascript:void(0);" title="{tooltip}">{text}</a>', {tooltip: entities.encode(helpText), text: entities.encode(_('How do I login?'))});
-		},
-
 		_administratorLink: function() {
 			var username = tools.status('administrator') || 'Administrator';
 			return '<b><a href="javascript:void();" onclick=\'_fillUsernameField(' + json.stringify(username) + ')\'>' + entities.encode(username) + '</a></b>';
@@ -158,14 +205,14 @@ define([
 			return true;
 		},
 
-		checkCookiesEnabled: function() {
+		_checkCookiesEnabled: function() {
 			if (this._cookiesEnabled()) {
 				return;
 			}
 			login._loginDialog.disableForm(_('Please enable your browser cookies which are necessary for using Univention Services.'));
 		},
 
-		showTooltip: function(node, text) {
+		_showTooltip: function(node, text) {
 			Tooltip.show(text, node);
 			on.once(dojo.body(), 'click', function(evt) {
 				Tooltip.hide(node);

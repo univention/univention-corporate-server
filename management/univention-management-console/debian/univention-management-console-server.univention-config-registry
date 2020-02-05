@@ -65,6 +65,7 @@ Variables: server/amazon
 Variables: system/setup/showloginmessage
 Variables: umc/http/session/timeout
 Variables: umc/web/.*
+Variables: umc/login/links/.*
 Variables: umc/server/upload/max
 Variables: license/base
 Variables: uuid/system
