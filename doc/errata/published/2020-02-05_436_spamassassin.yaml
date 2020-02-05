@@ -28,3 +28,5 @@ bug: [50780]
 cve:
 - CVE-2020-1930
 - CVE-2020-1931
+erratum: 436
+announced: 2020-02-05
