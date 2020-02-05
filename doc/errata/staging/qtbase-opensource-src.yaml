@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: qtbase-opensource-src
+fix: 5.7.1+dfsg-3+deb9u2
+desc: |
+ This update addresses the following issue:
+ * qtbase-opensource-src (CVE-2020-0569)
+bug: [50786]
+cve:
+- CVE-2020-0569
