@@ -2,7 +2,6 @@
 $this->includeAtTemplateBase('includes/header.php');
 
 $this->data['header'] = $this->t('{login:user_pass_header}');
-$this->data['autofocus'] = strlen($this->data['username']) > 0 ? 'password' : 'username';
 ?>
 		<div id="umcLoginWrapper">
 			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('domainname', ''))); ?></h1>
@@ -109,6 +108,18 @@ if (!empty($this->data['links'])) {
 }
 ?>
 		</div>
+		<script type="text/javascript">
+			require(['dojo/domReady!'], function() {
+				<?php
+					printf("var node = document.getElementById('%s');\n", strlen($this->data['username']) > 0 ? 'umcLoginPassword' : 'umcLoginUsername');
+				?>
+				if (node) {
+					setTimeout(function() {
+						node.focus();
+					}, 0);
+				}
+			});
+		</script>
 <?php
 $this->includeAtTemplateBase('includes/footer.php');
 ?>
