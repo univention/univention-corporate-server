@@ -6,7 +6,10 @@ src: qtbase-opensource-src
 fix: 5.7.1+dfsg-3+deb9u2
 desc: |
  This update addresses the following issue:
- * qtbase-opensource-src (CVE-2020-0569)
+ * QPluginLoader in Qt would search for certain plugins first on the current
+   working directory of the application, which allows an attacker that can
+   place files in the file system and influence the working directory of
+   Qt-based applications to load and execute malicious code (CVE-2020-0569)
 bug: [50782]
 cve:
 - CVE-2020-0569
