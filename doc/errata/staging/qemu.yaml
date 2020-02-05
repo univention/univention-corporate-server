@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u9A~4.4.3.202002050747
+desc: |
+ This update addresses the following issues:
+ * Slirp: use-after-free during packet reassembly (CVE-2019-15890)
+ * slirp: OOB buffer access while emulating tcp protocols in tcp_emu()
+   (CVE-2020-7039)
+bug: [50779]
+cve:
+- CVE-2019-15890
+- CVE-2020-7039
