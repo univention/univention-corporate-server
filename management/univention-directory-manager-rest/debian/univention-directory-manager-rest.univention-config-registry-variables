@@ -11,8 +11,8 @@ Type=str
 Categories=service-udm
 
 [directory/manager/rest/require-auth]
-Description[de]=Definiert ob die Authentifikation beim Zugriff auf "http(s)://FQDN/univention/udm/schema/*" und "univention/udm/openapi.json" notwendig ist. Nach dem Setzen dieser Variable muss der Dienst durch "service univention-directory-manager-rest restart" neu gestartet werden. Ist die Variable nicht gesetzt, dann ist die Authentifikation notwendig.
-Description[en]=Defines whether authentication is necessary when accessing "http(s)://FQDN/univention/udm/schema/*" and "univention/udm/openapi.json" . After setting this variable the service has to be restarted by running "service univention-directory-manager-rest restart".
+Description[de]=Definiert ob eine Authentifizierung beim Zugriff auf "http(s)://FQDN/univention/udm/schema/*" und "univention/udm/openapi.json" notwendig ist. Nach dem Setzen dieser Variable muss der Dienst durch "service univention-directory-manager-rest restart" neu gestartet werden. Ist die Variable nicht gesetzt, dann ist keine Authentifizierung notwendig.
+Description[en]=Defines whether authentication is necessary when accessing "http(s)://FQDN/univention/udm/schema/*" and "univention/udm/openapi.json". After setting this variable the service has to be restarted by running "service univention-directory-manager-rest restart".
 Type=bool
 Categories=service-udm
 
