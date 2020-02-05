@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: sudo
+fix: 1.8.19p1-2.1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Stack based buffer overflow in when pwfeedback is enabled (CVE-2019-18634)
+bug: [50783]
+cve:
+- CVE-2019-18634
