@@ -6,27 +6,25 @@ src: spamassassin
 fix: 3.4.2-1~deb9u3
 desc: |
  This update addresses the following issues:
- * A command execution issue was found in Apache SpamAssassin prior to 3.4.3.
-   Carefully crafted nefarious rule configuration (.cf) files can be
-   configured to run system commands similar to CVE-2018-11805. With this bug
-   unpatched, exploits can be injected in a number of scenarios including the
-   same privileges as spamd is run which may be elevated though doing so
-   remotely is difficult. In addition to upgrading to SA 3.4.4, we again
-   recommend that users should only use update channels or 3rd party .cf files
-   from trusted places. If you cannot upgrade, do not use 3rd party rulesets,
-   do not use sa-compile and do not run spamd as an account with elevated
-   privileges. (CVE-2020-1930)
- * A command execution issue was found in Apache SpamAssassin prior to 3.4.3.
-   Carefully crafted nefarious Configuration (.cf) files can be configured to
-   run system commands similar to CVE-2018-11805. This issue is less stealthy
-   and attempts to exploit the issue will throw warnings. Thanks to Damian
-   Lukowski at credativ for reporting the issue ethically. With this bug
-   unpatched, exploits can be injected in a number of scenarios though doing
-   so remotely is difficult. In addition to upgrading to SA 3.4.4, we again
-   recommend that users should only use update channels or 3rd party .cf files
-   from trusted places. (CVE-2020-1931)
+ * A command execution issue was found in Apache SpamAssassin: Carefully
+   crafted nefarious Configuration (`.cf`) files can be configured to run
+   system commands similar to CVE-2018-11805. This issue is less stealthy and
+   attempts to exploit the issue will throw warnings. With this bug unpatched,
+   exploits can be injected in a number of scenarios though doing so remotely
+   is difficult. In addition to upgrading we again recommend that users should
+   only use update channels or 3rd party `.cf` files from trusted places.
+   (CVE-2020-1931)
+ * A command execution issue was found in Apache SpamAssassin: Carefully
+   crafted nefarious rule configuration (`.cf`) files can be configured to run
+   system commands similar to CVE-2018-11805. With this bug unpatched,
+   exploits can be injected in a number of scenarios including the same
+   privileges as `spamd` is run which may be elevated though doing so remotely
+   is difficult. In addition to upgrading we again recommend that users should
+   only use update channels or 3rd party `.cf` files from trusted places. If
+   you cannot upgrade, do not use 3rd party rulesets, do not use `sa-compile`
+   and do not run `spamd` as an account with elevated privileges.
+   (CVE-2020-1930)
 bug: [50780]
 cve:
 - CVE-2020-1930
 - CVE-2020-1931
-- CVE-2018-11805
