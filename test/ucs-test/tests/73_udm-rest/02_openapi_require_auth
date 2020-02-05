@@ -7,10 +7,34 @@
 ##   - univention-directory-manager-rest
 
 . "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
 
 set -x
 
-if [[ $(curl http://localhost/univention/udm/openapi.json) ]]; then
+echo "Test default"
+ucr unset directory/manager/rest/require-auth
+service univention-directory-manager-rest restart
+sleep 3
+if [[ $(curl -vvv http://localhost/univention/udm/openapi.json > /dev/zero) ]]; then
 		fail_fast 1
 fi
 
+echo -e "\n\n\n\n\n\nTest explicit auth required"
+ucr set directory/manager/rest/require-auth="True"
+service univention-directory-manager-rest restart
+sleep 3
+if [[ $(curl -vvv http://localhost/univention/udm/openapi.json > /dev/zero) ]]; then
+		fail_fast 1
+fi
+
+echo -e "\n\n\n\n\n\Test explicit auth not required"
+ucr set directory/manager/rest/require-auth="False"
+service univention-directory-manager-rest restart
+sleep 3
+if [[ ! $(curl -vvv http://localhost/univention/udm/openapi.json > /dev/zero) ]]; then
+		fail_fast 0
+fi
+
+ucr_restore
+service univention-directory-manager-rest restart
+sleep 3
