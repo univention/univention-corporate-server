@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-105) unstable; urgency=medium
+
+  * Bug #50771: remove debug code
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Feb 2020 16:09:00 +0100
+
 univention-appcenter (8.0.11-104) unstable; urgency=medium
 
   * Bug #50771: added AppInstallDialog 
