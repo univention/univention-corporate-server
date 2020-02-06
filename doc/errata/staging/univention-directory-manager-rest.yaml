@@ -6,8 +6,10 @@ src: univention-directory-manager-rest
 fix: 9.0.16-7A~4.4.0.202002061906
 desc: |
  This update addresses the following issue:
- * When accessing http(s)://FQDN/univention/udm/schema/ and  http(s)://FQDN/univention/udm/openapi.json
-   authentication is now required by default. "ucr set directory/manager/rest/require-auth=no" can be used to disable this.
-   After setting this UCR Variable the univention-directory-manager-rest service needs to be restarted.
+ * When accessing "http(s)://FQDN/univention/udm/schema/" or
+   "http(s)://FQDN/univention/udm/openapi.json" authentication is now
+   required by default. "ucr set directory/manager/rest/require-auth=no" can
+   be used to disable this. After setting this UCR Variable the
+   "univention-directory-manager-rest" service needs to be restarted.
    
 bug: [50732]
