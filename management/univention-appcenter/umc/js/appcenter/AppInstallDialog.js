@@ -83,7 +83,6 @@ define([
 			var appChooseHostWizard = new AppChooseHostWizard({
 				app: backpack.app
 			});
-			appChooseHostWizard.needsToBeShown = true;
 			lang.mixin(backpack, {
 				chooseHostWizardWasVisible: appChooseHostWizard.needsToBeShown
 			});
