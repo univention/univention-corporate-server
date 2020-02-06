@@ -32,6 +32,9 @@
 
 #DEBHELPER#
 
+# set default UCR settings
+univention-config-registry set umc/login/links/how_do_i_login/enabled?true
+
 if [ ! -e "/usr/share/univention-management-console-login/css/custom.css" ]; then
 	cp /usr/share/univention-management-console-login/css/custom.css.example /usr/share/univention-management-console-login/css/custom.css
 fi

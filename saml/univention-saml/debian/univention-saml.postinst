@@ -47,7 +47,10 @@ configure)
 		ucs/server/sso/virtualhost?"true" \
 		saml/idp/negotiate?"true" \
 		kerberos/defaults/ignore_acceptor_hostname=true \
-		saml/idp/authsource?univention-ldap
+		saml/idp/authsource?univention-ldap \
+		umc/login/links/login_without_sso/enabled?true \
+		umc/login/links/login_without_sso/text?"Login without Single Sign On" \
+		umc/login/links/login_without_sso/text/de?"Ohne Single Sign-On anmelden"
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
 	do

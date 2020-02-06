@@ -57,3 +57,51 @@ Description[de]=Diese Variable spezifiziert die SSL Cipher Liste, die für SSL V
 Description[en]=This variable specifies the SSL cipher list which is accepted and used for ssl connections.
 Type=str
 Categories=management-umc
+
+[umc/login/links/.*/enabled]
+Description[de]=Ist eine Variable der Form 'umc/login/links/.*/enabled' deaktiviert, wird der gegebene Link nicht mehr auf der Login-Seite angezeigt. Z.B. 'umc/login/links/how_do_i_login/enabled=false'.
+Description[en]=If a variable in the format 'umc/login/links/.*/enabled' is deactivated, then the given link is no longer shown on the login page. E.g. 'umc/login/links/how_do_i_login/enabled=false'.
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/text]
+Description[de]=Gibt den Text für den gegebenen Link an. Manche Links haben ihren Text im UCS Source-Code definiert und diese Variable ist dann nicht gesetzt. Der Text kann aber trotzdem durch setzen dieser Variable überschrieben werden. Um den vorgegebenen Wert wieder herzustellen, muss diese Variable entfernt werden, anstatt sie auf einen leeren String zu setzen. Z.B. 'umc/login/links/how_do_i_login/text="HOW do I login?"'
+Description[en]=Specifies the text for the given link. Some links have their text defined in the UCS source code and this variable is then not set. The text can still be overwritten by setting this variable. To restore the given value, this variable must be removed instead of setting it to an empty string. E.g. 'umc/login/links/how_do_i_login/text="HOW do I login?"''
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/text/.*]
+Description[de]=Mit dieser Variable kann eine Übersetzung für den Text eines gegebenen Links gesetzt werden. Z.B. 'umc/login/links/how_do_i_login/text/de="Wie melde ich mich an?"'
+Description[en]=With this variable a translation can be set for the text of a given link. E.g. 'umc/login/links/how_do_i_login/text/de="Wie melde ich mich an?"'.
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/href]
+Description[de]=Gibt die URL für den gegebenen Link an. Manche Links haben ihre URL im UCS Source-Code definiert und diese Variable ist dann nicht gesetzt. Die URL kann aber trotzdem durch setzen dieser Variable überschrieben werden. Um den vorgegebenen Wert wieder herzustellen, muss diese Variable entfernt werden, anstatt sie auf einen leeren String zu setzen. Z.B. 'umc/login/links/how_do_i_login/href="/doc/how_do_i_login"'
+Description[en]=Specifies the URL for the given link. Some links have their URL defined in the UCS source code and this variable is then not set. The URL can still be overwritten by setting this variable. To restore the given value, this variable must be removed instead of setting it to an empty string. E.g. 'umc/login/links/how_do_i_login/href="/doc/how_do_i_login"''
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/href/.*]
+Description[de]=Mit dieser Variable kann eine lokalisierte URL für einen gegebenen Link gesetzt werden. Z.B. 'umc/login/links/how_do_i_login/href/de="/doc/how_do_i_login/de"'
+Description[en]=With this variable a localized URL can be set for a given link. E.g. 'umc/login/links/how_do_i_login/href/de="/doc/how_do_i_login/de"'.
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/tooltip]
+Description[de]=Mit dieser Variable kann ein Tooltip für einen gegebenen Link definiert werden, der beim hovern über dem Link angezeigt wird. Manche Links haben einen Tooltip im UCS Source-Code definiert und diese Variable ist dann nicht gesetzt. Der Tooltip kann aber trotzdem durch setzen dieser Variable überschrieben werden. Um den vorgegebenen Wert wieder herzustellen, muss diese Variable entfernt werden, anstatt sie auf einen leeren String zu setzen. Z.B. 'umc/login/links/how_do_i_login/tooltip="Dies ist in der Tat ein Tooltip"'
+Description[en]=This variable can be used to define a tooltip for a given link, which will be displayed when hovering over the link. Some links have a tooltip defined in the UCS source code and this variable is then not set. The tooltip can still be overwritten by setting this variable. To restore the default value, this variable must be removed instead of setting it to an empty string. For example 'umc/login/links/how_do_i_login/tooltip="This is indeed a tooltip"'.
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/tooltip/.*]
+Description[de]=Mit dieser Variable kann eine Übersetzung für den Tooltip eines gegebenen Links gesetzt werden. Z.B. 'umc/login/links/how_do_i_login/tooltip/de="Die Übersetzung für diesen Tooltip"'
+Description[en]=With this variable a translation for the tooltip of a given link can be set. For example 'umc/login/links/how_do_i_login/tooltip/de="Die Übersetzung für diesen Tooltip"'.
+Type=str
+Categories=management-umc
+
+[umc/login/links/.*/target]
+Description[de]=Mit dieser Variable kann das 'target' Attribut des gegebenen Links gesetzt werden. Z.B. 'umc/login/links/how_do_i_login/target="_blank"'
+Description[en]=With this variable the 'target' attribute of the given link can be set. For example 'umc/login/links/how_do_i_login/target="_blank"'.
+Type=str
+Categories=management-umc

@@ -101,10 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<script type="text/javascript" src="/univention/js/dojo/dojo.js"></script>
 		<script type="text/javascript">
 			require(['login/dialog'], function(login) {
-			<?php
-				if (isset($this->data['SPMetadata']) && isset($this->data['SPMetadata']['entityid']))
-				printf("login.addLink('<a href=\"%s\">%s</a>');", htmlspecialchars(str_replace('/univention/saml/metadata', '/univention/login/', $this->data['SPMetadata']['entityid'])), htmlspecialchars($this->t('{univentiontheme:univention:nosaml}')));
-			?>
+				<?php
+					if (isset($this->data['SPMetadata']) && isset($this->data['SPMetadata']['entityid'])) {
+						printf("login.addLinkFromUcr('login_without_sso', { href: '%s' });\n", htmlspecialchars(str_replace('/univention/saml/metadata', '/univention/login/', $this->data['SPMetadata']['entityid'])));
+					}
+				?>
 			});
 		</script>
 	</head>

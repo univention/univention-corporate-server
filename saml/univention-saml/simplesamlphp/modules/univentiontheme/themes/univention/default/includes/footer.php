@@ -5,5 +5,5 @@ if (!empty($this->data['htmlinject']['htmlContentPost'])) {
 	}
 }
 ?>
-</body>
+	</body>
 </html>
