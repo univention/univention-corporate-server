@@ -1,3 +1,11 @@
+univention-management-console (11.0.4-53) unstable; urgency=medium
+
+  * Bug #50609: added login/dialog.addLinkFromUcr and made
+    "How do I login?" link configurable via
+    umc/login/links/how_do_i_login/.*
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Feb 2020 14:17:37 +0100
+
 univention-management-console (11.0.4-52) unstable; urgency=medium
 
   * Bug #50670: Fix downgrading to SAML session in UMC Web server
