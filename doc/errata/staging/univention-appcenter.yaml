@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-104A~4.4.0.202002061332
+fix: 8.0.11-105A~4.4.0.202002061610
 desc: |-
   This update addresses the following issue(s):
   * In some cases, an unsuccessful app installation
