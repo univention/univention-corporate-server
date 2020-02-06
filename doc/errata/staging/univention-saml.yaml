@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-saml
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The "Login without Single Sign On" link on the login page can now be
+   configured via the umc/login/links/login_without_sso/.* UCR variables.
+bug: [50610]
