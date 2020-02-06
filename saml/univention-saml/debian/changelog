@@ -1,3 +1,9 @@
+univention-saml (6.0.2-20) unstable; urgency=medium
+
+  * Bug #50619: fix syntax errors in errors.translation.json
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Feb 2020 17:08:13 +0100
+
 univention-saml (6.0.2-19) unstable; urgency=medium
 
   * Bug #50610: made "Login without SSO" configurable via
