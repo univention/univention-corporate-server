@@ -1,9 +1,10 @@
 {
 	"title_WRONGUSERPASS": {
 		"de": "Nutzername oder Passwort falsch"
-	}
+	},
 	"descr_WRONGUSERPASS": {
 		"de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. \u00dcberpr\u00fcfen Sie die Zugangsdaten und probieren Sie es nochmal"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"de": "Account deaktiviert"
 	},
