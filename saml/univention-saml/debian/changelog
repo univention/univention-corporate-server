@@ -1,3 +1,11 @@
+univention-saml (6.0.2-19) unstable; urgency=medium
+
+  * Bug #50610: made "Login without SSO" configurable via
+    umc/login/links/login_without_sso/.*
+    + autofocus username or password field
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Feb 2020 14:22:40 +0100
+
 univention-saml (6.0.2-18) unstable; urgency=medium
 
   * Bug #50594: display link when password is expired
