@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-106) unstable; urgency=medium
+
+  * Bug #50771: add missing condition for docker warning
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 06 Feb 2020 16:21:57 +0100
+
 univention-appcenter (8.0.11-105) unstable; urgency=medium
 
   * Bug #50771: remove debug code
