@@ -35,8 +35,8 @@ define([
 	"umc/i18n!umc/modules/appcenter"
 ], function(declare, Text, CheckBox, _) {
 	return {
-		getPageConf: function(appcenterDockerSeen) {
-			if (appcenterDockerSeen) {
+		getPageConf: function(app, appcenterDockerSeen) {
+			if (appcenterDockerSeen || !app.installsAsDocker()) {
 				return null;
 			}
 

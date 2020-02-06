@@ -134,7 +134,7 @@ define([
 		},
 
 		_addDockerWarningPage: function() {
-			var pageConf = DockerWarningPage.getPageConf(this.appcenterDockerSeen);
+			var pageConf = DockerWarningPage.getPageConf(this.app, this.appcenterDockerSeen);
 			if (pageConf) {
 				this.pages.push(pageConf);
 			}
