@@ -38,18 +38,16 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
-	"umc/widgets/TextBox",
-	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/TitlePane",
 	"umc/widgets/Page",
 	"./_AppDialogMixin",
 	"./AppSettings",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, Deferred, entities, tools, ProgressBar, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, AppSettings, _) {
+], function(declare, lang, array, Deferred, entities, tools, ProgressBar, Form, Text, ComboBox, ContainerWidget, Page, _AppDialogMixin, AppSettings, _) {
 	return declare("umc.modules.appcenter.AppConfigDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
+		_appSettingsForm: null,
 		title: _('App management'),
 
 		showUp: function() {
@@ -64,9 +62,8 @@ define([
 			this.own(this._progressBar);
 		},
 
-
 		_showUp: function(result) {
-			this._clearWidget('_container', true);
+			this._clearWidget('_container');
 
 			this.set('headerText', _('Configure %s', entities.encode(this.app.name)));
 
@@ -83,15 +80,12 @@ define([
 						}
 						serviceValues = this._serviceForm.get('value');
 					}
-					if (this._settingsForm) {
-						if (! this._settingsForm.validate()) {
+					if (this._appSettingsForm) {
+						if (!this._appSettingsForm.validate()) {
+							this._appSettingsForm.focusFirstInvalidWidget();
 							return;
 						}
-						tools.forIn(this._settingsForm.get('value'), lang.hitch(this, function(key, value) {
-							if (! this._settingsForm.getWidget(key).get('disabled')) {
-								confValues[key] = value;
-							}
-						}));
+						confValues = this._appSettingsForm.get('value');
 					}
 					this.apply(serviceValues, confValues).then(lang.hitch(this, 'onBack', true));
 				})
@@ -164,8 +158,8 @@ define([
 
 			var form = AppSettings.getForm(this.app, result.values, 'Settings');
 			if (form) {
-					this._settingsForm = form;
-					this._container.addChild(this._settingsForm);
+				this._appSettingsForm = form;
+				this._container.addChild(this._appSettingsForm);
 			}
 			this.onShowUp();
 		},

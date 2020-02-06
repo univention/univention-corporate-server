@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 Univention GmbH
+ * Copyright 2020 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -30,42 +30,37 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-class",
-], function(declare, domClass) {
-	return declare("umc.modules.appcenter._AppDialogMixin", null, {
-		app: null,
-		noFooter: true,
-		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2',
-		headerTextAllowHTML: false,
-		helpTextAllowHTML: false,
-		headerTextRegion: 'main',
-		helpTextRegion: 'main',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'umcAppCenterDialog');
-		},
-
-		_clearWidget: function(attr) {
-			if (!this[attr]) {
-				// nothing to do
-				return;
+	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
+	"umc/i18n!umc/modules/appcenter"
+], function(declare, Text, CheckBox, _) {
+	return {
+		getPageConf: function(appcenterDockerSeen) {
+			if (appcenterDockerSeen) {
+				return null;
 			}
-			this[attr].destroyRecursive();
-			this[attr] = null;
-		},
 
-		onUpdate: function() {
-		},
+			var text = '<p>' + _('This App uses a container technology. Containers have to be downloaded once. After that they can be used multiple times.') + '</p>' +
+					'<p>' + _('Depending on your internet connection and on your server performance, the download and the App installation may take up to 15 minutes') + '</p>';
 
-		onShowUp: function() {
-		},
-
-		onNext: function() {
-		},
-
-		onBack: function() {
+			return {
+				name: 'dockerWarning',
+				headerText: '',
+				widgets: [{
+					type: Text,
+					'class': 'appInstallWizard__dockerWarningText',
+					name: 'dockerWarning_text',
+					content: text
+				}, {
+					type: CheckBox,
+					name: 'dockerWarning_doNotShowAgain',
+					label: _("Do not show this message again")
+				}]
+			};
 		}
-	});
+	};
 });
+
+
+
 

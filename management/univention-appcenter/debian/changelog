@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-104) unstable; urgency=medium
+
+  * Bug #50771: added AppInstallDialog 
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 Feb 2020 10:37:36 +0100
+
 univention-appcenter (8.0.11-103) unstable; urgency=medium
 
   * Bug #49104: Added ResidualInstallationError (statuscode: 502)

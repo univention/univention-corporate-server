@@ -4,21 +4,17 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojox/html/entities",
 	"umc/tools",
-	"umc/widgets/Form",
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/NumberSpinner",
-	"umc/widgets/Uploader",
 	"umc/widgets/PasswordInputBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/TitlePane",
-	"umc/modules/appcenter/AppSettingsFileUploader",
+	"./AppSettingsFileUploader",
+	"./AppSettingsForm",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, entities, tools, Form, Text, TextBox, NumberSpinner, Uploader, PasswordInputBox, CheckBox, ComboBox, ContainerWidget, TitlePane, AppSettingsFileUploader, _) {
+], function(declare, lang, array, tools, Text, TextBox, NumberSpinner, PasswordInputBox, CheckBox, ComboBox, AppSettingsFileUploader, AppSettingsForm, _) {
 	return {
 		getWidgets: function(app, values, phase) {
 			var ret = [];
@@ -108,32 +104,6 @@ define([
 			return ret;
 		},
 
-		getForm: function(app, values, phase) {
-			var widgets = this.getWidgets(app, values, phase);
-			if (widgets.length === 0) {
-				return;
-			}
-			var groups = this.getGroups(app, widgets);
-			var layout = [];
-			array.forEach(groups, function(group, i) {
-				if (group.widgets.length === 0) {
-					return;
-				}
-				var groupName = '_group' + i;
-				widgets.push({
-					type: Text,
-					name: groupName,
-					content: '<h2>' + group.label + '</h2>'
-				});
-				layout.push(groupName);
-				layout = layout.concat(array.map(group.widgets, function(w) { return w.name; }));
-			});
-			return new Form({
-				widgets: widgets,
-				layout: layout
-			});
-		},
-
 		getGroups: function(app, widgets) {
 			var groups = [];
 			array.forEach(app.settings, function(setting) {
@@ -150,6 +120,53 @@ define([
 				return groupDef;
 			});
 			return groups;
+		},
+
+		_getFormConf: function(app, values, phase, smallHeaders) {
+			var widgets = this.getWidgets(app, values, phase);
+			if (widgets.length === 0) {
+				return null;
+			}
+			var groups = this.getGroups(app, widgets);
+			var layout = [];
+			array.forEach(groups, function(group, i) {
+				if (group.widgets.length === 0) {
+					return null;
+				}
+				var groupName = '_group' + i;
+				var content = '<h2>' + group.label + '</h2>';
+				if (smallHeaders) {
+					content = '<h3>' + group.label + '</h2>';
+				}
+				widgets.push({
+					type: Text,
+					name: groupName,
+					content: content
+				});
+				layout.push(groupName);
+				layout = layout.concat(array.map(group.widgets, function(w) { return w.name; }));
+			});
+			return {
+				widgets: widgets,
+				layout: layout
+			};
+		},
+
+		getForm: function(app, values, phase, smallHeaders) {
+			var formConf = this._getFormConf(app, values, phase, smallHeaders);
+			return formConf ? new AppSettingsForm(formConf) : null;
+		},
+
+		getFormConfDeferred: function(app, phase, smallHeaders) {
+			return tools.umcpCommand('appcenter/config', {app: app.id, phase: phase}).then(lang.hitch(this, function(data) {
+				return this._getFormConf(app, data.result.values, phase, smallHeaders);
+			}));
+		},
+
+		getFormDeferred: function(app, phase, smallHeaders) {
+			return this.getFormConfDeferred(app, phase, smallHeaders).then(function(formConf) {
+				return formConf ? new AppSettingsForm(formConf) : null; 
+			});
 		}
 	};
 });

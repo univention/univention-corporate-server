@@ -72,7 +72,7 @@ define([
 		}
 	});
 
-	return declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
+	var AppDetailsPage = declare("umc.modules.appcenter.AppDetailsPage", [ Page ], {
 		appLoadingDeferred: null,
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		'class': 'umcAppDetailsPage',
@@ -146,9 +146,9 @@ define([
 		},
 
 		_configureDialogs: function(app) {
-			this.hostDialog.set('app', app);
 			this.detailsDialog.set('app', app);
 			this.configDialog.set('app', app);
+			this.installDialog.set('app', app);
 		},
 
 		_setModuleTitleAttr: function(name) {
@@ -769,56 +769,33 @@ define([
 			}));
 		},
 
-
 		installAppDialog: function() {
-			this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
-				this.showReadme(this.app.readmeInstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
-					if (this.app.installationData) {
-						var hosts = [];
-						var removedDueToInstalled = [];
-						var removedDueToRole = [];
-						array.forEach(this.app.installationData, function(item) {
-							if (item.canInstall()) {
-								if (item.isLocal()) {
-									hosts.unshift({
-										label: item.displayName,
-										id: item.hostName
-									});
-								} else {
-									hosts.push({
-										label: item.displayName,
-										id: item.hostName
-									});
-								}
-							} else {
-								if (item.isInstalled) {
-									removedDueToInstalled.push(item.displayName);
-								} else if (!item.hasFittingRole()) {
-									removedDueToRole.push(item.displayName);
-								}
-							}
-						});
-						this.hostDialog.reset(hosts, removedDueToInstalled, removedDueToRole);
-						this.hostDialog.showUp().then(lang.hitch(this, function(values) {
-							this.installApp(values.host);
-						}));
-					} else {
-						this.installApp();
+			if (this.fromSuggestionCategory) {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `installFromSuggestion`);
+			} else {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'install');
+			}
+
+			this.installDialog.startInstallation(this)
+				.then(lang.hitch(this, function(values) {
+					if (values.hasOwnProperty('appcenterDockerSeen')) {
+						tools.setUserPreference({appcenterDockerSeen: values.appcenterDockerSeen});
 					}
+					this.installApp(values.host, values.appSettings);
+				}), lang.hitch(this, function() {
+					this.markupErrors('install');
 				}));
-			}));
 		},
 
-		installApp: function(host) {
-			this.callInstaller('install', host).then(
-				lang.hitch(this, function() {
+		installApp: function(host, appSettings) {
+			this.callInstaller('install', host, true, null, appSettings)
+				.then(lang.hitch(this, function() {
 					// put dedicated module of this app into favorites
 					UMCApplication.addFavoriteModule('apps', this.app.id);
 					this.showReadme(this.app.readmePostInstall, _('Install Information')).then(lang.hitch(this, 'markupErrors'));
 				}), lang.hitch(this, function() {
 					this.markupErrors('install');
-				})
-			);
+				}));
 		},
 
 		upgradeApp: function(host) {
@@ -883,17 +860,8 @@ define([
 		},
 
 		_showDockerWarning: function() {
-			var prefDeferred = new Deferred();
-			tools.getUserPreferences().then(
-				function(data) {
-					prefDeferred.resolve(data.appcenterDockerSeen);
-				},
-				function() {
-					prefDeferred.resolve('true');
-				}
-			);
-			return when(prefDeferred).always(lang.hitch(this, function(appcenterDockerSeen) {
-				if (tools.isTrue(appcenterDockerSeen)) {
+			return when(_appcenterDockerSeen()).always(lang.hitch(this, function(appcenterDockerSeen) {
+				if (appcenterDockerSeen) {
 					return;
 				} else {
 					return dialog.confirmForm({
@@ -1034,7 +1002,6 @@ define([
 						data = {'result': data};
 					}
 					var result = data.result;
-					var mayContinue = true;
 
 					if ('success' in result) {
 						if (result.success) {
@@ -1043,68 +1010,13 @@ define([
 							deferred.reject();
 						}
 					} else if (!result.can_continue) {
-						mayContinue = !result.serious_problems;
+						var mayContinue = !result.serious_problems;
 						if (!mayContinue) {
 							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
 							title = _('Error performing the action');
 							text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
 						}
-						this.detailsDialog.reset(mayContinue, title, text, actionLabel, actionWarningLabel);
-						if (mayContinue) {
-							this.detailsDialog.showConfiguration(func);
-						}
-
-						var showUnreachableHint = result.software_changes_computed && result.unreachable.length;
-						var unreachableHintIsHard = showUnreachableHint && result.master_unreachable;
-						var showErrataHint = result.software_changes_computed && func === 'update';
-						var packageChanges = [];
-						if (result.software_changes_computed) {
-							packageChanges.push({
-								install: result.install,
-								remove: result.remove,
-								broken: result.broken,
-								incompatible: false,
-								host: host
-							});
-							tools.forIn(result.hosts_info, function(host, host_info) {
-								packageChanges.push({
-									install: host_info.install,
-									remove: host_info.remove,
-									broken: host_info.broken,
-									incompatible: !host_info.compatible_version,
-									host: host
-								});
-							});
-						}
-						var brokenPackageChanges = packageChanges.filter(function(changes) {
-							return !!changes.broken.length || changes.incompatible;
-						});
-						var nonBrokenPackageChanges = packageChanges.filter(function(changes) {
-							return !changes.broken.length && !changes.incompatible;
-						});
-
-						// hard warnings
-						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
-						if (showUnreachableHint && unreachableHintIsHard) {
-							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
-						}
-						array.forEach(brokenPackageChanges, lang.hitch(this, function(changes) {
-							this.detailsDialog.showPackageChanges(changes.install, changes.remove, changes.broken, changes.incompatible, changes.host);
-						}));
-
-						// soft warnings
-						if (showUnreachableHint && !unreachableHintIsHard) {
-							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
-						}
-						this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
-						if (showErrataHint) {
-							this.detailsDialog.showErrataHint();
-						}
-
-						array.forEach(nonBrokenPackageChanges, lang.hitch(this, function(changes) {
-							this.detailsDialog.showPackageChanges(changes.install, changes.remove, changes.broken, changes.incompatible, changes.host);
-						}));
-
+						this.detailsDialog.reset(func, actionLabel, actionWarningLabel, result, host, this, mayContinue, title, text);
 						nonInteractive.reject();
 						this.detailsDialog.showUp().then(
 							lang.hitch(this, function(values) {
@@ -1419,5 +1331,63 @@ define([
 		onBack: function() {
 		}
 	});
+
+	var _appcenterDockerSeen = function() {
+		return tools.getUserPreferences()
+			.then(function(data) {
+				return tools.isTrue(data.appcenterDockerSeen);
+			})
+			.otherwise(function() {
+				return true;
+			});
+	};
+	AppDetailsPage.appcenterDockerSeen = _appcenterDockerSeen;
+
+	AppDetailsPage.performDryRun = function(host, app, progressBar) {
+		// TODO copy pasted from callInstaller
+		//
+		var command = 'appcenter/invoke_dry_run';
+		if (app.installsAsDocker()) {
+			command = 'appcenter/docker/invoke';
+			var isRemoteAction = host && tools.status('hostname') != host;
+			if (isRemoteAction) {
+				command = 'appcenter/docker/remote/invoke';
+			}
+		}
+		var commandArguments = {
+			'function': 'install',
+			'application': app.id,
+			'app': app.id,
+			'host': host,
+			'force': false,
+			'values': {}
+		};
+
+		progressBar.reset(_('%s: Performing software tests on involved systems', app.name));
+		progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+		var invokation;
+		if (app.installsAsDocker()) {
+			invokation = tools.umcpProgressCommand(progressBar, command, commandArguments).then(
+					undefined,
+					undefined,
+					function(result) {
+						var errors = array.map(result.intermediate, function(res) {
+							if (res.level == 'ERROR' || res.level == 'CRITICAL') {
+								return res.message;
+							}
+						});
+						progressBar._addErrors(errors);
+					}
+			);
+		} else {
+			invokation = tools.umcpCommand(command, commandArguments);
+		}
+
+		return invokation.then(function(data) {
+			return ('result' in data) ? data.result : data;
+		});
+	};
+
+	return AppDetailsPage;
 });
 

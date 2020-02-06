@@ -46,13 +46,13 @@ define([
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/modules/appcenter/AppConfigDialog",
-	"umc/modules/appcenter/AppChooseHostDialog",
+	"umc/modules/appcenter/AppInstallDialog",
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppInstallDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
@@ -69,6 +69,12 @@ define([
 
 		unique: true, // only one appcenter may be open at once
 		idProperty: 'package',
+
+		_appPages: null,
+
+		constructor: function() {
+			this._appPages = [];
+		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -200,122 +206,107 @@ define([
 			}
 		},
 
-		showApp: function(app, fromSuggestionCategory = false) {
+		showApp: function(app, fromSuggestionCategory) {
+			fromSuggestionCategory = fromSuggestionCategory || false;
+			this._cleanUpLastShowApp();
 			var scroll = this._scroll();
-			if (this._appDetailsPage) {
-				this._appDetailsPage.destroyRecursive();
-			}
+			this.set('title', entities.encode(app.name) || 'App Center');
+
 			if (fromSuggestionCategory) {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'showFromSuggestion');
 			} else {
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 			}
-			var appDetailsDialog = new AppDetailsDialog({
+
+			var detailsDialog = new AppDetailsDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			this.addChild(appDetailsDialog);
-
-			var appChooseHostDialog = new AppChooseHostDialog({
+			var configDialog = new AppConfigDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			this.addChild(appChooseHostDialog);
-
-			var appConfigDialog = new AppConfigDialog({
+			var installDialog = new AppInstallDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			this.addChild(appConfigDialog);
-
-			this._appDetailsPage = new AppDetailsPage({
+			var appDetailsPage = new AppDetailsPage({
 				app: app,
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
-				detailsDialog: appDetailsDialog,
-				configDialog: appConfigDialog,
-				hostDialog: appChooseHostDialog,
+				detailsDialog: detailsDialog,
+				configDialog: configDialog,
+				installDialog: installDialog,
 				visibleApps: this._appCenterPage.getVisibleApps(),
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),
 				fromSuggestionCategory: fromSuggestionCategory
 			});
-			this._appDetailsPage.own(appChooseHostDialog);
-			this._appDetailsPage.own(appDetailsDialog);
-			this._appDetailsPage.own(appConfigDialog);
-			this._appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
-				if (newVal) {
-					this.set('title', entities.encode(newVal));
-				}
-			}));
-			this._appDetailsPage.watch('app', lang.hitch(this, function(){
+
+			appDetailsPage.own(
+				appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
+					if (newVal) {
+						this.set('title', entities.encode(newVal));
+					}
+				})),
+				appDetailsPage.watch('app', lang.hitch(this, function(){
+					this._scrollTo(0, 0, 0);
+				})),
+				installDialog.on('showUp', lang.hitch(this, 'selectChild', installDialog)),
+				detailsDialog.on('showUp', lang.hitch(this, 'selectChild', detailsDialog)),
+				configDialog.on('showUp', lang.hitch(this, 'selectChild', configDialog)),
+				installDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
+				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
+				appDetailsPage.on('back', lang.hitch(this, function() {
+					this.set('title', 'App Center');
+					this.selectChild(this._appCenterPage);
+					tools.forIn(this._appCenterPage.metaCategories, function(metaKey, metaObj) {
+						metaObj._centerApps();
+					});
+					this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
+				})),
+				configDialog.on('back', lang.hitch(this, function(applied) {
+					var loadPage = true;
+					if (applied) {
+						loadPage = all([appDetailsPage.updateApplications(), appDetailsPage.reloadPage()]);
+						this.standbyDuring(loadPage);
+					}
+					when(loadPage).then(lang.hitch(this, function() {
+						this.selectChild(appDetailsPage);
+					}));
+				})),
+				configDialog.on('update', lang.hitch(this, function() {
+					var loadPage = all([appDetailsPage.updateApplications(), appDetailsPage.reloadPage()]);
+					loadPage = loadPage.then(function() {
+						configDialog.showUp();
+					});
+					this.standbyDuring(loadPage);
+				}))
+			);
+
+			this.addChild(detailsDialog);
+			this.addChild(configDialog);
+			this.addChild(installDialog);
+			this.addChild(appDetailsPage);
+			this._appPages.push(detailsDialog, configDialog, installDialog, appDetailsPage);
+
+			this.standbyDuring(appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
+				this.selectChild(appDetailsPage);
 				this._scrollTo(0, 0, 0);
 			}));
+		},
 
-			this.set('title', entities.encode(app.name) || 'App Center');
-			this._appDetailsPage.on('back', lang.hitch(this, function() {
-				this.set('title', 'App Center');
-				this.selectChild(this._appCenterPage);
-				tools.forIn(this._appCenterPage.metaCategories, function(metaKey, metaObj) {
-					metaObj._centerApps();
-				});
-				this.removeChild(appDetailsDialog);
-				this.removeChild(appChooseHostDialog);
-				this.removeChild(this._appDetailsPage);
-				this._appDetailsPage.destroyRecursive();
-				this._scrollTo(0, scroll.bottomY, scroll.tabContainerY);
+		_cleanUpLastShowApp: function() {
+			array.forEach(this._appPages, lang.hitch(this, function(page) {
+				this.removeChild(page);
+				page.destroyRecursive();
 			}));
-			this.addChild(this._appDetailsPage);
-
-			this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
-				this.selectChild(this._appDetailsPage);
-				this._scrollTo(0, 0, 0);
-			}));
-
-			appChooseHostDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(appChooseHostDialog);
-			}));
-			appDetailsDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(appDetailsDialog);
-			}));
-			appConfigDialog.on('showUp', lang.hitch(this, function() {
-				this.selectChild(appConfigDialog);
-			}));
-			appChooseHostDialog.on('back', lang.hitch(this, function() {
-				this.selectChild(this._appDetailsPage);
-			}));
-			appDetailsDialog.on('back', lang.hitch(this, function(continued) {
-				var loadPage = true;
-				if (!continued) {
-					loadPage = this._appDetailsPage.reloadPage();
-					this.standbyDuring(loadPage);
-				}
-				when(loadPage).then(lang.hitch(this, function() {
-					this.selectChild(this._appDetailsPage);
-				}));
-			}));
-			appConfigDialog.on('back', lang.hitch(this, function(applied) {
-				var loadPage = true;
-				if (applied) {
-					loadPage = all([this._appDetailsPage.updateApplications(), this._appDetailsPage.reloadPage()]);
-					this.standbyDuring(loadPage);
-				}
-				when(loadPage).then(lang.hitch(this, function() {
-					this.selectChild(this._appDetailsPage);
-				}));
-			}));
-			appConfigDialog.on('update', lang.hitch(this, function() {
-				var loadPage = all([this._appDetailsPage.updateApplications(), this._appDetailsPage.reloadPage()]);
-				loadPage = loadPage.then(function() {
-					appConfigDialog.showUp();
-				});
-				this.standbyDuring(loadPage);
-			}));
+			this._appPages = [];
 		},
 
 		_renderPackages: function() {
