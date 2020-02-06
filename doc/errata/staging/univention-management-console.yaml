@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-management-console
-fix:
+fix: 11.0.4-53A~4.4.0.202002061434
 desc: |-
   This update addresses the following issue:
   * SAML answers do not provide a usable password for UMC. Some UMC actions
