@@ -158,6 +158,7 @@ def write_configuration_file(dn, new, filename):
 			fd.write("$further = array(\n")
 		else:
 			fd.write('$metadata[%s] = array(\n' % php_string(entityid))
+			fd.write("      'sign.logout' => TRUE,")
 			fd.write("	'AssertionConsumerService'	=> %s,\n" % php_array(new.get('AssertionConsumerService')))
 			if new.get('singleLogoutService'):
 				fd.write("	'SingleLogoutService'	=> %s,\n" % php_array(new.get('singleLogoutService')))
