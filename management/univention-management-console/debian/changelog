@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-54) unstable; urgency=medium
+
+  * Bug #50609: fix missing ucr var to bool
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 07 Feb 2020 13:07:52 +0100
+
 univention-management-console (11.0.4-53) unstable; urgency=medium
 
   * Bug #50609: added login/dialog.addLinkFromUcr and made
