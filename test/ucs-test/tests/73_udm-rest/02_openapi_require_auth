@@ -8,6 +8,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/ucr.sh" || exit 137
+. /usr/share/univention-lib/ldap.sh || exit 137
 
 set -x
 
@@ -16,6 +17,14 @@ ucr unset directory/manager/rest/require-auth
 service univention-directory-manager-rest restart
 sleep 3
 if [[ $(curl -vvv http://localhost/univention/udm/openapi.json > /dev/zero) ]]; then
+		fail_fast 1
+fi
+echo -e "\n\n\n\n\n\nTest with login"
+if [[ $(curl -vvv http://"$(ucs_convertDN2UID ${tests_domainadmin_account}):${tests_domainadmin_pwd}"@localhost/univention/udm/openapi.json > /dev/zero) ]]; then
+		fail_fast 0
+fi
+echo -e "\n\n\n\n\n\nTest with wrong login"
+if [[ $(curl -vvv http://"$(ucs_convertDN2UID ${tests_domainadmin_account}):this_should_be_a_wrong_password"@localhost/univention/udm/openapi.json > /dev/zero) ]]; then
 		fail_fast 1
 fi
 

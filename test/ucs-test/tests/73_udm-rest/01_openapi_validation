@@ -7,6 +7,7 @@
 ##   - univention-directory-manager-rest
 
 . "$TESTLIBPATH/base.sh" || exit 137
+. /usr/share/univention-lib/ldap.sh || exit 137
 
 set -x
 
@@ -17,4 +18,4 @@ cleanup() {
 }
 trap cleanup INT TERM EXIT
 
-curl http://localhost/univention/udm/openapi.json | python -m openapi_spec_validator - || fail_fast 1
+curl http://"$(ucs_convertDN2UID ${tests_domainadmin_account})":"${tests_domainadmin_pwd}"@localhost/univention/udm/openapi.json | python -m openapi_spec_validator - || fail_fast 1

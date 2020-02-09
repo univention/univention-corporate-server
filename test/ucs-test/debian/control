@@ -680,6 +680,8 @@ Package: ucs-test-udm-rest
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
  python-pytest,
+ python-pip,
+ ucs-test-udm-users,
  ${misc:Depends}
 Recommends: ucs-test-framework
 Provides: ucs-test-module
