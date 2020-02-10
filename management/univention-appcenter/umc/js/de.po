@@ -1368,7 +1368,7 @@ msgstr "Informationen zur Aktualisierung"
 
 #: umc/js/appcenter/AppDetailsPage.js:940
 msgid "Upgrade anyway"
-msgstr "Trozdem aktualisieren"
+msgstr "Trotzdem aktualisieren"
 
 #: umc/js/appcenter/AppDetailsPage.js:941
 #, javascript-format
