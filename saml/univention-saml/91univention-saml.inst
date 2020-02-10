@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION="8"
+VERSION="9"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -349,7 +349,14 @@ if joinscript_check_version_in_range_executed 1 6; then
 	done
 fi
 
-
+if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_executed 1 8; then
+	dn=($(udm saml/serviceprovider list "$@" | sed -n 's/^DN: //p'))
+	for name in "${dn[@]}"; do
+		echo "$name"
+		udm saml/serviceprovider modify "$@" --dn $name \
+			--set signLogouts="TRUE"
+	done
+fi
 
 # Bug #39739: the listener will be installed and running before univention-saml has configured the 
 # simplesamlphp config. The listener will then not be able to write the SP metadata. Reinitialize it here
