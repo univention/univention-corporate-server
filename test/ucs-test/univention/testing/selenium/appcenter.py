@@ -52,17 +52,37 @@ class AppCenter(object):
 
 		self.selenium.click_button(_('Install'))
 
+		# ChooseHostWizard
 		try:
 			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=15)
 			self.selenium.click_button(_('Next'))
 		except TimeoutException:
 			pass
 
-		self.close_info_dialog_if_visisble()
-
-		self.selenium.wait_for_text(_('Please confirm to install the application'))
+		# wait for dry run
 		self.selenium.wait_until_all_standby_animations_disappeared()
-		self.selenium.click_button(_('Install'))
+
+		self.selenium.wait_for_text('Installation of')
+		install_clicked = False
+		while not install_clicked:
+			try:
+				self.selenium.click_button(_('Next'), timeout=1)
+			except TimeoutException:
+				pass
+			try:
+				self.selenium.click_button(_('Continue anyway'), timeout=1)
+			except TimeoutException:
+				pass
+			try:
+				self.selenium.click_button(_('Install app'), timeout=1)
+				install_clicked = True
+			except TimeoutException:
+				pass
+			try:
+				self.selenium.click_button(_('Install anyway'), timeout=1)
+				install_clicked = True
+			except TimeoutException:
+				pass
 
 		self.selenium.wait_for_text(_('Installing'))
 		self.selenium.wait_for_any_text_in_list([_('Uninstall'), _('Manage domain wide installations')], timeout=900)
