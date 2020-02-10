@@ -1,3 +1,9 @@
+ucs-test (9.0.3-148) unstable; urgency=medium
+
+  * Bug #50771: adapt selenium 'install_app' to new frontend changes
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Feb 2020 11:55:53 +0100
+
 ucs-test (9.0.3-147) unstable; urgency=medium
 
   * Bug #50732: Add testcase for rest
