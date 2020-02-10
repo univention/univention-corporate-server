@@ -136,6 +136,13 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string,
 		dontsearch=True,
 	),
+	'signLogouts': univention.admin.property(
+		short_description=_('Enable signed Logouts'),
+		long_description=_('Enable signed Logouts'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default="TRUE",
+		size='Two',
+	),
 }
 
 layout = [
@@ -149,6 +156,7 @@ layout = [
 			["simplesamlNameIDAttribute", ],
 			["serviceProviderOrganizationName", ],
 			["serviceproviderdescription", ],
+			["signLogouts", ],
 		]),
 	]),
 	Tab(_(u'Extended Settings'), _(u'Additional configuration options'), layout=[
@@ -176,6 +184,7 @@ mapping.register('attributesNameFormat', 'attributesNameFormat', None, univentio
 mapping.register('singleLogoutService', 'singleLogoutService', None, univention.admin.mapping.ListToString)
 mapping.register('serviceProviderMetadata', 'serviceProviderMetadata', None, univention.admin.mapping.ListToString)
 mapping.register('rawsimplesamlSPconfig', 'rawsimplesamlSPconfig', None, univention.admin.mapping.ListToString)
+mapping.register('signLogouts', 'signLogouts', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

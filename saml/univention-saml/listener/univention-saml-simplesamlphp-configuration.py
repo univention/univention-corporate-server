@@ -158,11 +158,12 @@ def write_configuration_file(dn, new, filename):
 			fd.write("$further = array(\n")
 		else:
 			fd.write('$metadata[%s] = array(\n' % php_string(entityid))
-			fd.write("      'sign.logout' => TRUE,")
 			fd.write("	'AssertionConsumerService'	=> %s,\n" % php_array(new.get('AssertionConsumerService')))
 			if new.get('singleLogoutService'):
 				fd.write("	'SingleLogoutService'	=> %s,\n" % php_array(new.get('singleLogoutService')))
 
+		if new.get('signLogouts') and new.get('signLogouts')[0] == "TRUE":
+			fd.write("      'sign.logout' => TRUE,\n")
 		if new.get('NameIDFormat'):
 			fd.write("	'NameIDFormat'	=> %s,\n" % php_string(new.get('NameIDFormat')[0]))
 		if new.get('simplesamlNameIDAttribute'):

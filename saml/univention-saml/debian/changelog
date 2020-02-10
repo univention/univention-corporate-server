@@ -1,3 +1,9 @@
+univention-saml (6.0.2-22) unstable; urgency=medium
+
+  * Bug #49305: New udm attribute signLogouts for saml/serviceprovider, default true set in joinscript
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 10 Feb 2020 17:33:39 +0100
+
 univention-saml (6.0.2-21) unstable; urgency=medium
 
   * Bug #49305: fix signed logout
