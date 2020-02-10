@@ -1,4 +1,4 @@
-univention-saml (6.0.2-22) unstable; urgency=medium
+univention-saml (6.0.2-23) unstable; urgency=medium
 
   * Bug #49305: New udm attribute signLogouts for saml/serviceprovider, default true set in joinscript
 
