@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-55) unstable; urgency=medium
+
+  * Bug #50609: change description of ucr variables
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Feb 2020 14:01:35 +0100
+
 univention-management-console (11.0.4-54) unstable; urgency=medium
 
   * Bug #50609: fix missing ucr var to bool
