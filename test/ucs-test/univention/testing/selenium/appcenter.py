@@ -55,7 +55,7 @@ class AppCenter(object):
 		# ChooseHostWizard
 		try:
 			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=15)
-			self.selenium.click_button(_('Next'))
+			self.selenium.click_button(_('Continue'))
 		except TimeoutException:
 			pass
 
@@ -64,7 +64,10 @@ class AppCenter(object):
 
 		self.selenium.wait_for_text('Installation of')
 		install_clicked = False
-		while not install_clicked:
+		x = 0
+		max_pages = 6
+		while not install_clicked and x < max_pages:
+			x += 1
 			try:
 				self.selenium.click_button(_('Next'), timeout=1)
 			except TimeoutException:
