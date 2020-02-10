@@ -10,6 +10,6 @@ desc: |
    configured via the umc/login/links/login_without_sso/.* UCR variables.
  * Error messages in the SAML login dialog are now translated to German again.
  * A new udm attribute signLogouts for the udm module saml/serviceprovider
-   has been implemented. Its value determines hether to sign logout messages 
+   has been implemented. Its value determines whether to sign logout messages
    sent to this SP. Its default value is "True".
 bug: [50610, 50619, 49305]
