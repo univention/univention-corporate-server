@@ -3,11 +3,13 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-saml
-fix: 6.0.2-21A~4.4.0.202002070958
+fix: 6.0.2-23A~4.4.0.202002101801
 desc: |
  This update addresses the following issue(s):
  * The "Login without Single Sign On" link on the login page can now be
    configured via the umc/login/links/login_without_sso/.* UCR variables.
  * Error messages in the SAML login dialog are now translated to German again.
- * Signed logouts enabled 
+ * A new udm attribute signLogouts for the udm module saml/serviceprovider
+   has been implemented. Its value determines hether to sign logout messages 
+   sent to this SP. Its default value is "True".
 bug: [50610, 50619, 49305]
