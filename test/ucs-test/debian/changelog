@@ -1,3 +1,9 @@
+ucs-test (9.0.3-149) unstable; urgency=medium
+
+  * Bug #50771: prevent possible endless loop
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 11 Feb 2020 08:39:27 +0100
+
 ucs-test (9.0.3-148) unstable; urgency=medium
 
   * Bug #50771: adapt selenium 'install_app' to new frontend changes
