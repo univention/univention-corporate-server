@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-108) unstable; urgency=medium
+
+  * Bug #50771: fix apps.js
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 11 Feb 2020 08:36:47 +0100
+
 univention-appcenter (8.0.11-107) unstable; urgency=medium
 
   * Bug #50771: fix typo
