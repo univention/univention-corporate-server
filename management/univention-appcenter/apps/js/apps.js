@@ -37,9 +37,10 @@ define([
 	"umc/widgets/Module",
 	"umc/modules/appcenter/AppDetailsPage",
 	"umc/modules/appcenter/AppConfigDialog",
+	"umc/modules/appcenter/AppInstallDialog",
 	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/i18n!umc/modules/apps"
-], function(declare, lang, topic, when, all, Module, AppDetailsPage, AppConfigDialog, AppDetailsDialog, _) {
+], function(declare, lang, topic, when, all, Module, AppDetailsPage, AppConfigDialog, AppInstallDialog, AppDetailsDialog, _) {
 	return declare("umc.modules.apps", Module, {
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -54,6 +55,11 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
+			var installDialog = new AppInstallDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
 			var appDetailsPage = new AppDetailsPage({
 				app: {id: this.moduleFlavor},
 				moduleID: this.moduleID,
@@ -62,6 +68,7 @@ define([
 				getAppCommand: 'apps/get',
 				detailsDialog: detailsDialog,
 				configDialog: configDialog,
+				installDialog: installDialog,
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
@@ -70,10 +77,12 @@ define([
 			this.own(
 				detailsDialog.on('showUp', lang.hitch(this, 'selectChild', detailsDialog)),
 				configDialog.on('showUp', lang.hitch(this, 'selectChild', configDialog)),
-				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
+				installDialog.on('showUp', lang.hitch(this, 'selectChild', installDialog)),
 				appDetailsPage.on('back', lang.hitch(this, function() {
 					topic.publish('/umc/tabs/close', this);
 				})),
+				detailsDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
+				installDialog.on('back', lang.hitch(this, 'selectChild', appDetailsPage)),
 				configDialog.on('back', lang.hitch(this, function(applied) {
 					var loadPage = true;
 					if (applied) {
@@ -95,6 +104,7 @@ define([
 
 			this.addChild(detailsDialog);
 			this.addChild(configDialog);
+			this.addChild(installDialog);
 			this.addChild(appDetailsPage);
 
 			this.standbyDuring(appDetailsPage.appLoadingDeferred);
