@@ -1,3 +1,9 @@
+univention-saml (6.0.2-24) unstable; urgency=medium
+
+  * Bug #49305: Support for DNs with spaces
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 11 Feb 2020 09:45:40 +0100
+
 univention-saml (6.0.2-23) unstable; urgency=medium
 
   * Bug #49305: New udm attribute signLogouts for saml/serviceprovider, default true set in joinscript
