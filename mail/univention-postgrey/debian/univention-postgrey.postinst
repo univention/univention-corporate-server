@@ -53,6 +53,13 @@ then
 	install -m 0644 -o 0 -g 0 /dev/null "/etc/postgrey/whitelist_clients.local"
 fi
 
+if dpkg --compare-versions "$2" eq ""
+then
+	univention-config-registry set "mail/postfix/greylisting/client/whitelist=/etc/postgrey/whitelist_clients /etc/postgrey/whitelist_clients.local" \
+                               "mail/postfix/greylisting/recipient/whitelist=/etc/postgrey/whitelist_recipients /etc/postgrey/whitelist_recipients.local"
+fi
+
+
 invoke-rc.d postgrey restart
 invoke-rc.d postfix restart
 

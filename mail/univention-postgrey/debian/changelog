@@ -1,3 +1,9 @@
+univention-postgrey (7.0.0-2) unstable; urgency=medium
+
+  * Bug #50647: Set the values of the UCRV mail/postfix/greylisting/client/whitelist and mail/postfix/greylisting/recipient/whitelist to update /etc/default/postgrey correctly during the installation of univention-postgrey.
+
+ -- Tobias Wenzel <wenzel@univention.de>  Wed, 12 Feb 2020 09:18:41 +0100
+
 univention-postgrey (7.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
