@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Email domain validity
+## tags: [apptest]
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+
+def main():
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		with udm_test.UCSTestUDM() as udm:
+			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+			try:
+				mailAddress = '%s@%s' % (uts.random_name(), uts.random_name())
+				userdn, username = udm.create_user(
+					set={
+						'password': 'univention',
+						'mailHomeServer': fqdn,
+						'mailPrimaryAddress': mailAddress
+					}
+				)
+			except udm_test.UCSTestUDM_CreateUDMObjectFailed as e:
+				if ('The domain part of the primary mail address is not in list of configured mail domains' not in str(e)):
+					utils.fail('Domain which is not in list of configured mail domains was accepted by udm')
+
+
+if __name__ == '__main__':
+	main()
+# vim: ft=python:ts=4:sw=4:noet:
