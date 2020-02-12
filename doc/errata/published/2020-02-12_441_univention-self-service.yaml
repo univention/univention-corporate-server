@@ -9,3 +9,5 @@ desc: |
  * The "Forgot your password?" link on the login page can now be configured
    via the umc/login/links/forgot_your_password/.* UCR variables.
 bug: [50608]
+erratum: 441
+announced: 2020-02-12
