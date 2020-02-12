@@ -13,3 +13,5 @@ desc: |
    has been implemented. Its value determines whether to sign logout messages
    sent to this SP. Its default value is "True".
 bug: [50610, 50619, 49305]
+erratum: 443
+announced: 2020-02-12
