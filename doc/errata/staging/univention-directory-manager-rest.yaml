@@ -11,5 +11,4 @@ desc: |
    required by default. "ucr set directory/manager/rest/require-auth=no" can
    be used to disable this. After setting this UCR Variable the
    "univention-directory-manager-rest" service needs to be restarted.
-   
 bug: [50732]
