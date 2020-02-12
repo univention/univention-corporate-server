@@ -12,3 +12,5 @@ desc: |
    be used to disable this. After setting this UCR Variable the
    "univention-directory-manager-rest" service needs to be restarted.
 bug: [50732]
+erratum: 440
+announced: 2020-02-12
