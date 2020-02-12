@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: 
+fix: 7.0.0-2A~4.4.0.202002120944
+desc: |
+ This update addresses the following issue(s):
+ * Set the ucr variables of postgrey during the initial installion (Bug #50647)
+bug: [50647]
