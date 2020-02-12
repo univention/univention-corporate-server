@@ -14,3 +14,5 @@ desc: |-
  * The "How do I login?" link on the login page can now be configured via
    the umc/login/links/how_do_i_login/.* UCR variables.
 bug: [50670, 50609]
+erratum: 442
+announced: 2020-02-12
