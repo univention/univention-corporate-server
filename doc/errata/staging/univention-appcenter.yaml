@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-108A~4.4.0.202002110840
+fix: 8.0.11-108A~4.4.0.202002121307
 desc: |-
   This update addresses the following issue(s):
   * In some cases, an unsuccessful app installation
@@ -12,4 +12,6 @@ desc: |-
     status code for those cases.
   * During app installation there was a mix of popup dialogs and dedicated
     pages. These have been unified into an installation wizard.
-bug: [49104, 50771]
+  * Errors in a cached response in the UMC module could lead to tracebacks. 
+    This hase been fixed.
+bug: [49104, 50771, 50775]
