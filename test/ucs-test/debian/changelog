@@ -1,3 +1,10 @@
+ucs-test (9.0.3-150) unstable; urgency=medium
+
+  * Bug #50775: Traceback during appcenter/query: &quot;ValueError: No
+    JSON object could be decoded&quot;
+
+ -- Toni Uwe Roehmeyer <troehmey@lack.knut.univention.de>  Wed, 12 Feb 2020 11:17:39 +0100
+
 ucs-test (9.0.3-149) unstable; urgency=medium
 
   * Bug #50771: prevent possible endless loop
