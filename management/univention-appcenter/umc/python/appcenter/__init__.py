@@ -240,7 +240,7 @@ class Instance(umcm.Base, ProgressMixin):
 			try:
 				with open(query_cache_file) as fd:
 					return json.load(fd)
-			except EnvironmentError as exc:
+			except (EnvironmentError, ValueError) as exc:
 				MODULE.error('Error returning cached query: %s' % exc)
 				return []
 		self.update_applications()
