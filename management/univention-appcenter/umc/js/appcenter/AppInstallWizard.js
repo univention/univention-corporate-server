@@ -40,9 +40,8 @@ define([
 	"./AppInstallWizardLicenseAgreementPage",
 	"./AppInstallWizardReadmeInstallPage",
 	"./AppInstallWizardAppSettingsPage",
-	"./AppInstallWizardDockerWarningPage",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, domClass, on, ContentPane, Wizard, AppDetailsContainer, LicenseAgreementPage, ReadmeInstallPage, AppSettingsPage, DockerWarningPage, _) {
+], function(declare, array, lang, domClass, on, ContentPane, Wizard, AppDetailsContainer, LicenseAgreementPage, ReadmeInstallPage, AppSettingsPage, _) {
 	return declare('umc.modules.appcenter.AppInstallWizard', [Wizard], {
 		pageMainBootstrapClasses: 'col-xs-12',
 		pageNavBootstrapClasses: 'col-xs-12',
@@ -53,7 +52,6 @@ define([
 		host: null,
 		app: null,
 		appSettingsFormConf: null,
-		appcenterDockerSeen: null,
 		dryRunResults: null,
 		appDetailsPage: null,
 		//
@@ -77,7 +75,6 @@ define([
 			this._addReadmeInstallPage();
 			this._addDetailsPage('details', _('Package changes'));
 			this._addAppSettingsPage();
-			this._addDockerWarningPage();
 		},
 
 		_addDetailsPage: function(name, helpText) {
@@ -128,13 +125,6 @@ define([
 
 		_addAppSettingsPage: function() {
 			var pageConf = AppSettingsPage.getPageConf(this.app, this.appSettingsFormConf);
-			if (pageConf) {
-				this.pages.push(pageConf);
-			}
-		},
-
-		_addDockerWarningPage: function() {
-			var pageConf = DockerWarningPage.getPageConf(this.app, this.appcenterDockerSeen);
 			if (pageConf) {
 				this.pages.push(pageConf);
 			}
