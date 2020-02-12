@@ -1,3 +1,10 @@
+ucs-test (9.0.3-150) unstable; urgency=medium
+
+  * Bug #50747: Syntax emailAddressValidDomain does not check for valid
+    domains
+
+ -- Toni Uwe Roehmeyer <troehmey@lack.knut.univention.de>  Wed, 12 Feb 2020 10:48:17 +0100
+
 ucs-test (9.0.3-149) unstable; urgency=medium
 
   * Bug #50771: prevent possible endless loop
