@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.3-0
+src: pypolicyd-spf
+fix: 2.0.1-1
+maintained: true
+desc: |
+ This update addresses the following issue(s):
+ * The pypolicyd-spf package has been added to maintained
+bug: [50777]
