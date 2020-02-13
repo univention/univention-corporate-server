@@ -778,9 +778,6 @@ define([
 
 			this.installDialog.startInstallation(this)
 				.then(lang.hitch(this, function(values) {
-					if (values.hasOwnProperty('appcenterDockerSeen')) {
-						tools.setUserPreference({appcenterDockerSeen: values.appcenterDockerSeen});
-					}
 					this.installApp(values.host, values.appSettings);
 				}), lang.hitch(this, function() {
 					this.markupErrors('install');
@@ -859,186 +856,142 @@ define([
 			return this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Close'), null);
 		},
 
-		_showDockerWarning: function() {
-			return when(_appcenterDockerSeen()).always(lang.hitch(this, function(appcenterDockerSeen) {
-				if (appcenterDockerSeen) {
-					return;
-				} else {
-					return dialog.confirmForm({
-						title: _('App installation notes'),
-						widgets: [
-							{
-								type: Text,
-								name: 'help_text',
-								content: '<div style="width: 535px">' +
-									'<p>' + _('This App uses a container technology. Containers have to be downloaded once. After that they can be used multiple times.') + '</p>' +
-									'<p>' + _('Depending on your internet connection and on your server performance, the download and the App installation may take up to 15 minutes') + '</p>' +
-								'</div>'
-							},
-							{
-								type: CheckBox,
-								name: 'do_not_show_again',
-								label: _("Do not show this message again")
-							}
-						],
-						buttons: [{
-							name: 'submit',
-							'default': true,
-							label: _('Continue')
-						}]
-					}).then(
-						lang.hitch(this, function(data) {
-							tools.setUserPreference({appcenterDockerSeen: data.do_not_show_again ? 'true' : 'false'});
-						})
-					);
-				}
-			}));
-		},
-
 		callInstaller: function(func, host, force, deferred, values) {
 			var isRemoteAction = host && tools.status('hostname') != host;
-			var warningDeferred = new Deferred();
-			if (this.app.installsAsDocker() && !force && func != 'uninstall') {
-				warningDeferred = this._showDockerWarning();
-			} else {
-				warningDeferred.resolve();
+			deferred = deferred || new Deferred();
+			var nonInteractive = new Deferred();
+			deferred.then(lang.hitch(nonInteractive, 'resolve'));
+			var actionLabel = '';
+			var actionWarningLabel = '';
+			var progressMessage = '';
+			var title = '';
+			var text = '';
+			switch(func) {
+			case 'install':
+				actionLabel = _('Install');
+				actionWarningLabel = _('Install anyway');
+				title = _('Installation of %s', this.app.name);
+				text = _('Please confirm to install the application %s on this host.', this.app.name);
+				progressMessage = _('Installing %s on this host', this.app.name);
+				if (isRemoteAction) {
+					text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
+					progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
+				}
+				break;
+			case 'uninstall':
+				actionLabel = _('Uninstall');
+				actionWarningLabel = _('Uninstall anyway');
+				title = _('Removal of %s', this.app.name);
+				text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
+				progressMessage = _('Uninstalling %s from this host', this.app.name);
+				if (isRemoteAction) {
+					text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: this.app.name, host: host});
+					progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
+				}
+				break;
+			case 'update':
+				actionLabel = _('Upgrade');
+				actionWarningLabel = _('Upgrade anyway');
+				title = _('Upgrade of %s', this.app.name);
+				text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
+				progressMessage = _('Upgrading %s on this host', this.app.name);
+				if (isRemoteAction) {
+					text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
+					progressMessage = _('Upgrading %(name)s on host %(host)s', {name: this.app.name, host: host});
+				}
+				break;
+			default:
+				console.warn(func, 'is not a known function');
+				break;
 			}
-			return warningDeferred.then(lang.hitch(this, function() {
-				deferred = deferred || new Deferred();
-				var nonInteractive = new Deferred();
-				deferred.then(lang.hitch(nonInteractive, 'resolve'));
-				var actionLabel = '';
-				var actionWarningLabel = '';
-				var progressMessage = '';
-				var title = '';
-				var text = '';
-				switch(func) {
-				case 'install':
-					actionLabel = _('Install');
-					actionWarningLabel = _('Install anyway');
-					title = _('Installation of %s', this.app.name);
-					text = _('Please confirm to install the application %s on this host.', this.app.name);
-					progressMessage = _('Installing %s on this host', this.app.name);
-					if (isRemoteAction) {
-						text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
-						progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
-					}
-					break;
-				case 'uninstall':
-					actionLabel = _('Uninstall');
-					actionWarningLabel = _('Uninstall anyway');
-					title = _('Removal of %s', this.app.name);
-					text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
-					progressMessage = _('Uninstalling %s from this host', this.app.name);
-					if (isRemoteAction) {
-						text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: this.app.name, host: host});
-						progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
-					}
-					break;
-				case 'update':
-					actionLabel = _('Upgrade');
-					actionWarningLabel = _('Upgrade anyway');
-					title = _('Upgrade of %s', this.app.name);
-					text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
-					progressMessage = _('Upgrading %s on this host', this.app.name);
-					if (isRemoteAction) {
-						text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
-						progressMessage = _('Upgrading %(name)s on host %(host)s', {name: this.app.name, host: host});
-					}
-					break;
-				default:
-					console.warn(func, 'is not a known function');
-					break;
-				}
 
-				if (!force) {
-					if (this.fromSuggestionCategory) {
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `${func}FromSuggestion`);
-					} else {
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
-					}
-				}
-
-				var command = 'appcenter/invoke';
-				if (!force) {
-					command = 'appcenter/invoke_dry_run';
-				}
-				if (this.app.installsAsDocker()) {
-					command = 'appcenter/docker/invoke';
-					if (isRemoteAction) {
-						command = 'appcenter/docker/remote/invoke';
-					}
-				}
-				var commandArguments = {
-					'function': func,
-					'application': this.app.id,
-					'app': this.app.id,
-					'host': host || '',
-					'force': force === true,
-					'values': values || {}
-				};
-
-				this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
-				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-				var invokation;
-				if (this.app.installsAsDocker()) {
-					invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
-							undefined,
-							undefined,
-							lang.hitch(this, function(result) {
-								var errors = array.map(result.intermediate, function(res) {
-									if (res.level == 'ERROR' || res.level == 'CRITICAL') {
-										return res.message;
-									}
-								});
-								this._progressBar._addErrors(errors);
-							})
-					);
+			if (!force) {
+				if (this.fromSuggestionCategory) {
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, `${func}FromSuggestion`);
 				} else {
-					invokation = tools.umcpCommand(command, commandArguments);
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
 				}
-				invokation = invokation.then(lang.hitch(this, function(data) {
-					if (!('result' in data)) {
-						data = {'result': data};
-					}
-					var result = data.result;
+			}
 
-					if ('success' in result) {
-						if (result.success) {
-							deferred.resolve();
-						} else {
+			var command = 'appcenter/invoke';
+			if (!force) {
+				command = 'appcenter/invoke_dry_run';
+			}
+			if (this.app.installsAsDocker()) {
+				command = 'appcenter/docker/invoke';
+				if (isRemoteAction) {
+					command = 'appcenter/docker/remote/invoke';
+				}
+			}
+			var commandArguments = {
+				'function': func,
+				'application': this.app.id,
+				'app': this.app.id,
+				'host': host || '',
+				'force': force === true,
+				'values': values || {}
+			};
+
+			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
+			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+			var invokation;
+			if (this.app.installsAsDocker()) {
+				invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
+						undefined,
+						undefined,
+						lang.hitch(this, function(result) {
+							var errors = array.map(result.intermediate, function(res) {
+								if (res.level == 'ERROR' || res.level == 'CRITICAL') {
+									return res.message;
+								}
+							});
+							this._progressBar._addErrors(errors);
+						})
+				);
+			} else {
+				invokation = tools.umcpCommand(command, commandArguments);
+			}
+			invokation = invokation.then(lang.hitch(this, function(data) {
+				if (!('result' in data)) {
+					data = {'result': data};
+				}
+				var result = data.result;
+
+				if ('success' in result) {
+					if (result.success) {
+						deferred.resolve();
+					} else {
+						deferred.reject();
+					}
+				} else if (!result.can_continue) {
+					var mayContinue = !result.serious_problems;
+					if (!mayContinue) {
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
+						title = _('Error performing the action');
+						text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
+					}
+					this.detailsDialog.reset(func, actionLabel, actionWarningLabel, result, host, this, mayContinue, title, text);
+					nonInteractive.reject();
+					this.detailsDialog.showUp().then(
+						lang.hitch(this, function(values) {
+							this.callInstaller(func, host, true, deferred, values);
+						}),
+						function() {
 							deferred.reject();
 						}
-					} else if (!result.can_continue) {
-						var mayContinue = !result.serious_problems;
-						if (!mayContinue) {
-							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
-							title = _('Error performing the action');
-							text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
+					);
+				} else {
+					this.switchToProgressBar(progressMessage).then(
+						function() {
+							deferred.resolve();
+						}, function() {
+							deferred.reject();
 						}
-						this.detailsDialog.reset(func, actionLabel, actionWarningLabel, result, host, this, mayContinue, title, text);
-						nonInteractive.reject();
-						this.detailsDialog.showUp().then(
-							lang.hitch(this, function(values) {
-								this.callInstaller(func, host, true, deferred, values);
-							}),
-							function() {
-								deferred.reject();
-							}
-						);
-					} else {
-						this.switchToProgressBar(progressMessage).then(
-							function() {
-								deferred.resolve();
-							}, function() {
-								deferred.reject();
-							}
-						);
-					}
-				}));
-				this.standbyDuring(all([warningDeferred, invokation, deferred, nonInteractive]), this._progressBar);
-				return deferred;
+					);
+				}
 			}));
+			this.standbyDuring(all([invokation, deferred, nonInteractive]), this._progressBar);
+			return deferred;
 		},
 
 		showLicenseRequest: function(action) {
@@ -1331,17 +1284,6 @@ define([
 		onBack: function() {
 		}
 	});
-
-	var _appcenterDockerSeen = function() {
-		return tools.getUserPreferences()
-			.then(function(data) {
-				return tools.isTrue(data.appcenterDockerSeen);
-			})
-			.otherwise(function() {
-				return true;
-			});
-	};
-	AppDetailsPage.appcenterDockerSeen = _appcenterDockerSeen;
 
 	AppDetailsPage.performDryRun = function(host, app, progressBar) {
 		// TODO copy pasted from callInstaller

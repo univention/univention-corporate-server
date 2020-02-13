@@ -121,7 +121,6 @@ define([
 			
 			var progressBar = new ProgressBar({});
 			var _all = all({
-				appcenterDockerSeen: AppDetailsPage.appcenterDockerSeen(),
 				appSettingsFormConf: AppSettings.getFormConfDeferred(backpack.app, 'Install', true),
 				dryRunResults: AppDetailsPage.performDryRun(backpack.host, backpack.app, progressBar),
 			}).then(lang.hitch(this, function(values) {
@@ -140,7 +139,6 @@ define([
 				host: backpack.host,
 				app: backpack.app,
 				appSettingsFormConf: backpack.appSettingsFormConf,
-				appcenterDockerSeen: backpack.appcenterDockerSeen,
 				dryRunResults: backpack.dryRunResults,
 				appDetailsPage: backpack.appDetailsPage
 			});
@@ -169,9 +167,6 @@ define([
 				host: backpack.host,
 				appSettings: backpack.appSettings_appSettings || {}
 			};
-			if (backpack.hasOwnProperty('dockerWarning_doNotShowAgain')) {
-				values.appcenterDockerSeen = backpack.dockerWarning_doNotShowAgain;
-			}
 			this._installationDeferred.resolve(values);
 			this.onBack();
 		},

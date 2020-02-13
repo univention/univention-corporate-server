@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-109) unstable; urgency=medium
+
+  * Bug #50814: remove docker warning
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 13 Feb 2020 11:39:16 +0100
+
 univention-appcenter (8.0.11-108) unstable; urgency=medium
 
   * Bug #50771: fix apps.js
