@@ -14,4 +14,6 @@ desc: |-
     pages. These have been unified into an installation wizard.
   * Errors in a cached response in the UMC module could lead to tracebacks. 
     This hase been fixed.
-bug: [49104, 50771, 50775]
+  * The warning message indicating a potentially long installation time of
+    container based apps has been removed.
+bug: [49104, 50771, 50775, 50814]
