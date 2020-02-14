@@ -54,42 +54,64 @@ class AppCenter(object):
 
 		# ChooseHostWizard
 		try:
-			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=15)
-			self.selenium.click_button(_('Continue'))
+			self.selenium.wait_for_text(_('In order to proceed with the installation'), timeout=1)
 		except TimeoutException:
 			pass
+		else:
+			self.selenium.click_button(_('Continue'))
+			self.selenium.wait_until_all_standby_animations_disappeared()
 
-		# wait for dry run
-		self.selenium.wait_until_all_standby_animations_disappeared()
+		try:
+			self.selenium.wait_for_any_text_in_list([_('Accept license'), _('Next'), _('Continue anyway'), _('Install app'), _('Install anyway')], timeout=2)
+			install_clicked = False
+			x = 0
+			max_pages = 6
+			while not install_clicked and x < max_pages:
+				x += 1
+				try:
+					self.selenium.click_button(_('Accept license'), timeout=0)
+				except TimeoutException:
+					pass
+				else:
+					continue
+				try:
+					self.selenium.click_button(_('Next'), timeout=0)
+				except TimeoutException:
+					pass
+				else:
+					continue
+				try:
+					self.selenium.click_button(_('Continue anyway'), timeout=0)
+				except TimeoutException:
+					pass
+				else:
+					continue
+				try:
+					self.selenium.click_button(_('Install app'), timeout=0)
+					install_clicked = True
+				except TimeoutException:
+					pass
+				else:
+					continue
+				try:
+					self.selenium.click_button(_('Install anyway'), timeout=0)
+					install_clicked = True
+				except TimeoutException:
+					pass
+				else:
+					continue
+		except TimeoutException:
+			pass
+		finally:
+			# header of progress bar
+			self.selenium.wait_for_text(_('Installing'))
 
-		self.selenium.wait_for_text('Installation of')
-		install_clicked = False
-		x = 0
-		max_pages = 6
-		while not install_clicked and x < max_pages:
-			x += 1
-			try:
-				self.selenium.click_button(_('Next'), timeout=1)
-			except TimeoutException:
-				pass
-			try:
-				self.selenium.click_button(_('Continue anyway'), timeout=1)
-			except TimeoutException:
-				pass
-			try:
-				self.selenium.click_button(_('Install app'), timeout=1)
-				install_clicked = True
-			except TimeoutException:
-				pass
-			try:
-				self.selenium.click_button(_('Install anyway'), timeout=1)
-				install_clicked = True
-			except TimeoutException:
-				pass
-
-		self.selenium.wait_for_text(_('Installing'))
-		self.selenium.wait_for_any_text_in_list([_('Uninstall'), _('Manage domain wide installations')], timeout=900)
-
+		self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations')], timeout=900)
+		# readme install
+		try:
+			self.selenium.click_button(_('Continue'), timeout=1)
+		except TimeoutException:
+			pass
 		self.selenium.wait_until_all_standby_animations_disappeared()
 
 	def uninstall_app(self, app):
