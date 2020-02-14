@@ -761,7 +761,7 @@ END CATEGORY
 	</para>
 
 	<para>
-	  In both modes, the Active Directory Connection service is used in UCS (UCS AD Connector for short), which can synchronize the directory service objects between a Windows 2003/2008/2012/2016 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
+	  In both modes, the Active Directory Connection service is used in UCS (UCS AD Connector for short), which can synchronize the directory service objects between a Windows 2012/2016/2019 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
 	</para>
 
 	<para>
