@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-25 22:19+0100\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2020-02-14 22:20+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,102 +12,108 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/admindiary/DetailsPage.js:84
-#, python-format
+#: umc/js/admindiary/DetailsPage.js:85
 msgid "%(username)s on %(hostname)s"
 msgstr "%(username)s auf %(hostname)s"
 
-#: umc/js/admindiary/DetailsPage.js:96
+#: umc/js/admindiary/DetailsPage.js:97
 msgid "Add comment"
 msgstr "Kommentar hinzufügen"
 
-#: umc/js/admindiary.js:77
+#: umc/js/admindiary.js:87
 msgid "Admin Diary"
 msgstr "Admin Diary"
 
-#: umc/js/admindiary.js:99
-#, python-brace-format
+#: umc/js/admindiary.js:109
 msgid "Admin Diary: {event_name}"
 msgstr "Admin Diary: {event_name}"
 
-#: umc/js/admindiary/OverviewPage.js:209 umc/js/admindiary/OverviewPage.js:272
+#: umc/js/admindiary/OverviewPage.js:213 umc/js/admindiary/OverviewPage.js:304
 msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
-#: umc/js/admindiary/OverviewPage.js:136
+#: umc/js/admindiary/OverviewPage.js:140
 msgid "All"
 msgstr "Alle"
 
-#: umc/js/admindiary/DetailsPage.js:76
-#, python-brace-format
+#: umc/js/admindiary/DetailsPage.js:77
 msgid "All entries with context {context_id}"
 msgstr "Alle Einträge im Kontext {context_id}"
 
-#: umc/js/admindiary/OverviewPage.js:175
+#: umc/js/admindiary/OverviewPage.js:179
 msgid "Author"
 msgstr "Autor"
 
-#: umc/js/admindiary/DetailsPage.js:62
+#: umc/js/admindiary/DetailsPage.js:63
 msgid "Back to Diary"
 msgstr "Zurück zum Diary"
 
-#: umc/js/admindiary/DetailsPage.js:91
+#: umc/js/admindiary/DetailsPage.js:92
 msgid "Comment"
 msgstr "Kommentar"
 
-#: umc/js/admindiary/OverviewPage.js:108
+#: umc/js/admindiary/OverviewPage.js:112
 msgid "Comments"
 msgstr "Kommentare"
 
-#: umc/js/admindiary/OverviewPage.js:103
+#: umc/js/admindiary/OverviewPage.js:107
 msgid "Date"
 msgstr "Datum"
 
-#: umc/js/admindiary/OverviewPage.js:166
+#: umc/js/admindiary/OverviewPage.js:170
 msgid "Event"
 msgstr "Event"
 
-#: umc/js/admindiary/OverviewPage.js:143
+#: umc/js/admindiary/OverviewPage.js:147
 msgid "From"
 msgstr "Von"
 
-#: umc/js/admindiary/OverviewPage.js:98
+#: umc/js/admindiary/OverviewPage.js:102
 msgid "Message"
 msgstr "Nachricht"
 
-#: umc/js/admindiary/DetailsPage.js:56
+#: umc/js/admindiary/DetailsPage.js:57
 msgid "New Comment"
 msgstr "Neuer Kommentar"
 
-#: umc/js/admindiary/OverviewPage.js:73
+#: umc/js/admindiary/OverviewPage.js:77
 msgid "Next week"
 msgstr "Nächste Woche"
 
-#: umc/js/admindiary/OverviewPage.js:68
+#: umc/js/admindiary/OverviewPage.js:72
 msgid "Previous week"
 msgstr "Vorherige Woche"
 
-#: umc/js/admindiary/OverviewPage.js:196
+#: umc/js/admindiary/OverviewPage.js:200
 msgid "Search..."
 msgstr "Suche..."
 
-#: umc/js/admindiary/OverviewPage.js:114
+#: umc/js/admindiary/OverviewPage.js:118
 msgid "Show"
 msgstr "Anzeigen"
 
-#: umc/js/admindiary/OverviewPage.js:269
+#: umc/js/admindiary/OverviewPage.js:301
 msgid "Simple Search"
 msgstr "Vereinfachte Suche"
 
-#: umc/js/admindiary/OverviewPage.js:184
+#: umc/js/admindiary/OverviewPage.js:188
 msgid "Source"
 msgstr "Quelle"
 
-#: umc/js/admindiary/OverviewPage.js:157
+#: umc/js/admindiary/OverviewPage.js:161
 msgid "Tags"
 msgstr "Tags"
 
-#: umc/js/admindiary/OverviewPage.js:60
+#: umc/js/admindiary/OverviewPage.js:244
+#, javascript-format
+msgid ""
+"The search query has reached the limit of %s entries. The limit can be "
+"adjusted with the UCR variable admin/diary/query/limit."
+msgstr ""
+"Die Suchanfrage hat das Limit von %s Einträgen erreicht. "
+"Das Limit kann mit der UCR Variable admin/diary/query/limit angepasst werden."
+
+#: umc/js/admindiary/OverviewPage.js:62
 msgid ""
 "This module lists all entries of the Admin Diary. You may comment on the "
 "events."
@@ -115,6 +121,6 @@ msgstr ""
 "Dieses Modul zeigt alle Einträge des Admin Diary. Sie können die Events "
 "kommentieren."
 
-#: umc/js/admindiary/OverviewPage.js:150
+#: umc/js/admindiary/OverviewPage.js:154
 msgid "Until"
 msgstr "Bis"

@@ -8,6 +8,7 @@
 			<category name="domain"/>
 		</categories>
 		<command name="admindiary/query" function="query" />
+		<command name="admindiary/get_query_limit" function="get_query_limit" />
 		<command name="admindiary/get" function="get" />
 		<command name="admindiary/options" function="options" />
 		<command name="admindiary/add_comment" function="add_comment" />

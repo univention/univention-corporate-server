@@ -45,7 +45,7 @@ import univention.management.console as umc
 from univention.management.console.log import MODULE
 
 from univention.admindiary.client import add_comment
-from univention.admindiary.backend import get_client, get_engine
+from univention.admindiary.backend import get_client, get_engine, get_query_limit
 from univention.admindiary.events import DiaryEvent
 
 
@@ -132,6 +132,10 @@ class Instance(Base):
 				res_entry = self._format_entry(entry, client)
 				result.append(res_entry)
 			return sorted(result, key=lambda x: x['date'])
+
+	@simple_response
+	def get_query_limit(self):
+		return get_query_limit()
 
 	@simple_response
 	def add_comment(self, context_id, message):

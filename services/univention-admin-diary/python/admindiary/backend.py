@@ -43,6 +43,17 @@ from univention.admindiary import get_logger
 get_logger = partial(get_logger, 'backend')
 
 
+def get_query_limit():
+	ucr = ConfigRegistry()
+	ucr.load()
+	limit = ucr.get('admin/diary/query/limit', '')
+	try:
+		limit = int(limit)
+	except ValueError:
+		limit = 1000  # default query limit
+	return limit
+
+
 def get_engine():
 	ucr = ConfigRegistry()
 	ucr.load()
@@ -276,6 +287,9 @@ class Client(object):
 			entries = self._session.query(Entry).filter(Entry.event_id != None)  # noqa: E711
 		else:
 			entries = self._session.query(Entry).filter(Entry.id.in_(ids), Entry.event_id != None)  # noqa: E711
+		limit = get_query_limit()
+		if limit:
+			entries = entries.limit(limit)
 		res = []
 		for entry in entries:
 			event = entry.event

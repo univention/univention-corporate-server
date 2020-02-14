@@ -41,10 +41,11 @@ define([
 	"umc/widgets/SearchForm",
 	"umc/widgets/DateBox",
 	"umc/widgets/ComboBox",
+	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/SearchBox",
 	"umc/i18n!umc/modules/admindiary"
-], function(declare, lang, array, locale, entities, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, TextBox, SearchBox, _) {
+], function(declare, lang, array, locale, entities, dialog, tools, Page, Grid, SearchForm, DateBox, ComboBox, Text, TextBox, SearchBox, _) {
 	return declare("umc.modules.admindiary.OverviewPage", [ Page ], {
 
 		'class': 'admindiaryOverview',
@@ -226,11 +227,34 @@ define([
 						delete options[widgetName];
 					}
 				}));
+				var limitDeferred = tools.umcpCommand('admindiary/get_query_limit', null, false).then(function(data) {
+					return data.result;
+				}, function() {
+					return null;
+				});
 				this._grid.filter(options).then(lang.hitch(this, function() {
 					this._autoSearch = true;
+					limitDeferred.then(lang.hitch(this, function(limit) {
+						this._queryLimitWarning.set('visible', false);
+						if (!limit) {
+							return;
+						}
+
+						if (limit === this._grid.getAllItems().length) {
+							var content = _('The search query has reached the limit of %s entries. The limit can be adjusted with the UCR variable admin/diary/query/limit.', limit);
+							this._queryLimitWarning.set('content', content);
+							this._queryLimitWarning.set('visible', true);
+						}
+					}));
 				}));
 			}));
 
+			this._queryLimitWarning = new Text({
+				'class': 'admindiaryOverview__queryLimitWarning',
+				visible: false
+			});
+
+			this.addChild(this._queryLimitWarning);
 			this.addChild(this._searchForm);
 			this.addChild(this._grid);
 
