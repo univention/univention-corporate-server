@@ -1,3 +1,9 @@
+ucs-test (9.0.3-152) unstable; urgency=medium
+
+  * Bug #50814: fix selenium.appcenter.install_app
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 14 Feb 2020 15:16:33 +0100
+
 ucs-test (9.0.3-151) unstable; urgency=medium
 
   * Bug #50748: Added test for checking if invalid email domain gets rejected by udm
