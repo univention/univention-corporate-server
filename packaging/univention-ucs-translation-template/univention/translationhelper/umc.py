@@ -51,9 +51,11 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import io
 import re
 import os
 import sys
+import warnings
 import copy
 import json
 from email.utils import formatdate
@@ -61,7 +63,7 @@ from email.utils import formatdate
 import polib
 import xml.etree.ElementTree as ET
 
-from debian.deb822 import Deb822
+from debian.deb822 import Deb822, Packages
 from . import helper
 try:
 	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
@@ -70,7 +72,6 @@ except ImportError:
 
 MODULE = 'Module'
 PYTHON = 'Python'
-PYTHON_VERSION = 'PythonVersion'
 DEFINITION = 'Definition'
 JAVASCRIPT = 'Javascript'
 CATEGORY = 'Category'
@@ -121,9 +122,14 @@ class UMC_Module(dict):
 			return None
 
 	@property
-	def python_version(self):
-		# type: () -> float
-		return 3 if self.get(PYTHON_VERSION, ['2.7'])[0].startswith('3') else 2.7
+	def python_versions(self):
+		# type: () -> list[float]
+		versions = [2.7]
+		if '${python3:Provides}' in self['provides']:
+			versions.append(3)
+			if '${python:Provides}' not in self['provides']:
+				versions.remove(2.7)
+		return versions
 
 	@property
 	def js_path(self):
@@ -250,9 +256,18 @@ def read_modules(package, core=False):
 	modules = []  # type: List[UMC_Module]
 
 	file_umc_module = os.path.join('debian/', package + '.umc-modules')
+	file_control = os.path.join('debian/control')
 
 	if not os.path.isfile(file_umc_module):
 		return modules
+
+	provides = []
+	with io.open(file_control, 'r', encoding='utf-8') as fd:
+		with warnings.catch_warnings():  # debian/deb822.py:982: UserWarning: cannot parse package relationship "${python3:Depends}", returning it raw
+			for pkg in Packages.iter_paragraphs(fd):
+				if pkg.get('Package') == package:
+					provides = [p[0]['name'] for p in pkg.relations['provides']]
+					break
 
 	with open(file_umc_module, 'rb') as fd:
 		for item in Deb822.iter_paragraphs(fd):
@@ -265,6 +280,7 @@ def read_modules(package, core=False):
 
 			# single values
 			item['package'] = package
+			item['provides'] = provides
 			module = UMC_Module(item)
 			if core:
 				if module.module_name != 'umc-core' or not module.xml_categories:

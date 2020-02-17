@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python2.7 -W ignore
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -51,7 +51,7 @@ class Module(object):
 	def __init__(self, module):
 		self.module = module
 		self.destdir = os.path.join('debian', self.module.package)
-		self.python_destdirs = [os.path.join(self.destdir, 'usr/lib/python%s/dist-packages/' % (self.module.python_version,))]
+		self.python_destdirs = [os.path.join(self.destdir, 'usr/lib/python%s/dist-packages/' % (version,)) for version in self.module.python_versions]
 		self.languages = dh_umc.LANGUAGES
 
 	def dh_module_install(self):
