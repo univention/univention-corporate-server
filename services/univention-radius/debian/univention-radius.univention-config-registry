@@ -84,3 +84,7 @@ Variables: freeradius/conf/auth-type/mschap/.*
 Variables: freeradius/conf/realm
 Variables: freeradius/conf/users
 Variables: freeradius/conf/inner-tunnel-port
+
+Type: file
+File: etc/logrotate.d/univention-radius
+Variables: logrotate/.*

@@ -1,3 +1,9 @@
+univention-radius (6.0.2-18) bionic; urgency=medium
+
+  * Bug #50545: added logrotate functionality for radius_ntlm_auth.log
+
+ -- Max Christian Pohle <mpohle@klabb.knut.univention.de>  Wed, 12 Feb 2020 13:26:36 +0100
+
 univention-radius (6.0.2-17) unstable; urgency=medium
 
   * Bug #49175: fix python 3 dependencies

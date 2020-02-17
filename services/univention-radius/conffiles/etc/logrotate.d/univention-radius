@@ -1,0 +1,12 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import univention.lib.ucrLogrotate
+
+name = "radius_ntlm_auth"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print("/var/log/univention/{name}.log {{\n\t{config}\n}}".format(
+	name=name, config='\n\t'.join(settings.values())))
+
+@!@
