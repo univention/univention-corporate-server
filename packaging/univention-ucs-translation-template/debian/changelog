@@ -1,3 +1,10 @@
+univention-ucs-translation-template (6.0.0-14) unstable; urgency=medium
+
+  * Bug #50332: add information on whether umc module provides
+    python2 and/or python3
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 12:44:12 +0100
+
 univention-ucs-translation-template (6.0.0-13) unstable; urgency=low
 
   * Bug #50521: Document .univention-l10n format

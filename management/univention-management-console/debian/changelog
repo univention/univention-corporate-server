@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-56) unstable; urgency=medium
+
+  * Bug #50332: install umc modules under python2.7 and/or python3 depending
+    on what they provide
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 12:45:35 +0100
+
 univention-management-console (11.0.4-55) unstable; urgency=medium
 
   * Bug #50609: change description of ucr variables
