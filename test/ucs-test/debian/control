@@ -627,6 +627,15 @@ Provides: ucs-test-module
 Description: Test scripts to test the Self Service
  This package includes test-cases for Self Service
 
+Package: ucs-test-admindiary
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test scripts to test the Univention Admin Diary
+ This package includes test-cases for the Univention Admin Diary
+
 Package: ucs-test-admember
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
