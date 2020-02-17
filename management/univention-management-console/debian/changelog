@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-57) unstable; urgency=medium
+
+  * Bug #50332: remove option from shebang
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 13:15:43 +0100
+
 univention-management-console (11.0.4-56) unstable; urgency=medium
 
   * Bug #50332: install umc modules under python2.7 and/or python3 depending
