@@ -1,3 +1,9 @@
+ucs-test (9.0.3-154) unstable; urgency=medium
+
+  * Bug #50531: add ucs-test-admindiary package
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 11:57:25 +0100
+
 ucs-test (9.0.3-153) unstable; urgency=medium
 
   * Bug #50531: added 87_admindiary/01_query_limit
