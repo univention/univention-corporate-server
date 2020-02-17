@@ -32,6 +32,7 @@
 #DEBHELPER#
 
 ucr set admin/diary/backend/port?10514
+ucr set admin/diary/query/limit?1000
 
 eval "$(ucr shell admin/diary/backend/port)"
 

@@ -1,3 +1,10 @@
+univention-admin-diary (1.0.0-49) unstable; urgency=medium
+
+  * Bug #50531: added admin/diary/query/limit ucr variable
+    that limits the results of a query
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 11:37:54 +0100
+
 univention-admin-diary (1.0.0-48) unstable; urgency=medium
 
   * Bug #49169: migrate univention-admin-diary to dh_python

@@ -3,3 +3,9 @@ Description[de]=Der TCP-Port auf dem das Admin Diary Backend per rsyslog relp+TL
 Description[en]=The TCP port where the Admin Diary Backend accepts messages via rsyslog relp+TLS. If the variable is unset, 10514 is used. The univention-firewall must be configured accordingly (UCR variable: security/packetfilter/package/admin/diary/$port/all=ACCEPT).
 Type=str
 Categories=admin-diary
+
+[admin/diary/query/limit]
+Description[de]=Diese Variable definiert die maximale Anzahl von Einträgen, die von einer Suchanfrage zurückgegeben werden. Ein hohes Maximum kann viel Arbeitsspeicher während einer Suchanfrage in Anspruch nehmen und dazu führen, dass das System nicht mehr reagiert. Wird diese Variable auf 0 gesetzt, wird kein Limit angewandt. Ist diese Variable nicht gesetzt oder kann nicht in eine ganze Zahl umgewandelt werden, wird ein Limit von 1000 benutzt.
+Description[en]=This variable defines the maximum number of entries returned by a search query. A high limit can take up a lot of memory during a search query and cause the system to stop responding. If this variable is set to 0, no limit is applied. If this variable is not set or cannot be converted to an integer, a limit of 1000 is used.
+Type=str
+Categories=admin-diary
