@@ -21,6 +21,13 @@ if configRegistry.is_true('ldap/shadowbind', True):
 	print 'overlay\t\tshadowbind'
 	if 'ldap/shadowbind/ignorefilter' in configRegistry:
 		print 'shadowbind-ignore-filter "%s"' % configRegistry['ldap/shadowbind/ignorefilter']
+if configRegistry.is_true('ldap/overlay/lastbind', False):
+	print 'overlay lastbind'
+	lastbind_precision = configRegistry.get('ldap/overlay/lastbind/precision', None)
+	if lastbind_precision:
+		print 'lastbind-precision %s' % (lastbind_precision,)
+else:
+	print '# lastbind overlay module has been disabled by UCR'
 
 print '\n'
 if configRegistry['ldap/database/type'] == "mdb":
