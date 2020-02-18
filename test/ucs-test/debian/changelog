@@ -1,3 +1,9 @@
+ucs-test (9.0.3-156) unstable; urgency=medium
+
+  * Bug #50531: adapt 87_admindiary/01_query_limit file
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Feb 2020 15:51:56 +0100
+
 ucs-test (9.0.3-155) unstable; urgency=medium
 
   * Bug #50531: 87_admindiary/01_query_limit file
