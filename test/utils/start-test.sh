@@ -3,7 +3,7 @@
 # Execute UCS tests in EC2 or KVM environment
 #
 
-set -x
+#set -x
 
 die () {
 	echo "$*" >&2
@@ -99,6 +99,7 @@ declare -a cmd=("$exe" -c "$CFG")
 "$SHUTDOWN" && cmd+=("-s")
 # shellcheck disable=SC2123
 PATH="./ucs-ec2-tools${PATH:+:$PATH}"
+echo "starting test with ${cmd[@]}"
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
