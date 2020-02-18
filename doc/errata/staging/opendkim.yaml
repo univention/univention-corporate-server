@@ -8,4 +8,7 @@ maintained: true
 desc: |
  This update addresses the following issue(s):
  * The opendkim package has been added to maintained
+ignore:
+ - release+scope.consistent
+ - version.scope
 bug: [50777]
