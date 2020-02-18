@@ -1,3 +1,9 @@
+univention-admin-diary (1.0.0-50) unstable; urgency=medium
+
+  * Bug #50531: negative limits are ignored and the default is used
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Feb 2020 12:06:58 +0100
+
 univention-admin-diary (1.0.0-49) unstable; urgency=medium
 
   * Bug #50531: added admin/diary/query/limit ucr variable
