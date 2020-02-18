@@ -5,17 +5,19 @@
 ## exposure: dangerous
 ## packages:
 ##   - univention-admin-diary-backend
-##   - univention-management-console-module-admindiary
 
 
 import univention.admindiary.backend
 import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 
 
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr, univention.admindiary.backend.get_client(version=1) as client:
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, univention.admindiary.backend.get_client(version=1) as client:
 		limit = 2
+		for _ in range(limit + 1):
+			udm.create_user()
 		handler_set(["admin/diary/query/limit=0"])
 		len_without_limit = len(client.query())
 		handler_set(["admin/diary/query/limit=%s" % limit])
