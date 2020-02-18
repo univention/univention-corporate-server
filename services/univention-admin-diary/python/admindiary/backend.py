@@ -47,10 +47,14 @@ def get_query_limit():
 	ucr = ConfigRegistry()
 	ucr.load()
 	limit = ucr.get('admin/diary/query/limit', '')
+	default_limit = 1000
 	try:
 		limit = int(limit)
 	except ValueError:
-		limit = 1000  # default query limit
+		limit = default_limit
+	else:
+		if limit < 0:
+			limit = default_limit
 	return limit
 
 
