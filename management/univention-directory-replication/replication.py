@@ -78,6 +78,7 @@ EXCLUDE_ATTRIBUTES = [
 	'hasSubordinates',
 	'entryDN',
 	'memberOf', 'MEMBEROF',
+	'authTimestamp', 'AUTHTIMESTAMP',
 	'pwdChangedTime', 'PWDCHANGEDTIME',
 	'pwdAccountLockedTime', 'PWDACCOUNTLOCKEDTIME',
 	'pwdFailureTime', 'PWDFAILURETIME',
@@ -428,6 +429,7 @@ BUILTIN_OIDS = [
 	'1.3.6.1.1.1.1.0',  # uidNumber
 	# memberOf overlay
 	'1.2.840.113556.1.2.102',  # memberOf
+	'1.3.6.1.4.1.453.16.2.188',  # authTimestamp
 	# ppolicy overlay
 	'1.3.6.1.4.1.42.2.27.8.1.16',  # pwdChangedTime
 	'1.3.6.1.4.1.42.2.27.8.1.17',  # pwdAccountLockedTime
@@ -608,7 +610,6 @@ def subschema_sort(subschema, ldap_type):
 
 
 def update_schema(attr):
-
 	def _insert_linebereak(obj):
 		# Bug 46743: Ensure lines are not longer than 2000 characters or slapd fails to start
 		max_length = 2000
