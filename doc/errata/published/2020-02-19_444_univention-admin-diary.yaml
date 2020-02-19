@@ -10,3 +10,5 @@ desc: |
    default limit of 1000 entries can be modified with the
    UCR variable admin/diary/query/limit.
 bug: [50531]
+erratum: 444
+announced: 2020-02-19
