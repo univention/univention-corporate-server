@@ -12,3 +12,5 @@ ignore:
  - release+scope.consistent
  - version.scope
 bug: [50777]
+erratum: 446
+announced: 2020-02-19
