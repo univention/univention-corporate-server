@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.3-0
+src: py3dns
+fix: 3.1.1-1
+maintained: true
+desc: |
+ This update addresses the following issue:
+ * The py3dns package has been added to maintained
+ignore:
+ - release+scope.consistent
+ - version.scope
+bug: [50777]

@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-1
+src: dns-root-data
+fix: 2019031302~deb9u1
+maintained: true
+desc: |
+ This update addresses the following issue:
+ * The dns-root-data package has been added to maintained
+ignore:
+ - release+scope.consistent
+ - version.scope
+bug: [50777]
