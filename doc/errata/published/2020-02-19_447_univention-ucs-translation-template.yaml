@@ -9,3 +9,5 @@ desc: |
  * UMC modules are now installed under Python 2 and/or Python 3 depending
    on what they provide.
 bug: [50332]
+erratum: 447
+announced: 2020-02-19
