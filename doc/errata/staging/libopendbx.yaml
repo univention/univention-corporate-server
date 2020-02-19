@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.3-0
 src: libopendbx
-fix: "1.4.6-11+b1"
+fix: "1.4.6-11"
 maintained: true
 desc: |
  This update addresses the following issue:
