@@ -47,16 +47,9 @@ run_descr = ['Checks spamassassin rule set and configuration files']
 
 
 def run(_umc_instance, retest=False):
-
-	uid = -1
-	gid = -1
-	try:
-		pw = pwd.getpwnam('debian-spamd')
-		uid = pw[2]
-		gid = pw[3]
-	except KeyError:
-		raise Warning('No user debian-spamd')
-		return
+	pw = pwd.getpwnam('debian-spamd')
+	uid = pw[2]
+	gid = pw[3]
 
 	process = subprocess.Popen(['/usr/bin/spamassassin', '--lint'], preexec_fn=demote(uid, gid))
 	result = process.wait()
@@ -74,7 +67,7 @@ def run(_umc_instance, retest=False):
 
 def update_signatures(_umc_instance):
 	MODULE.process('Updating signatures')
-	cron_result = subprocess.Popen(['sh', '/etc/cron.daily/spamassassin'], shell=True).wait()
+	cron_result = subprocess.Popen(['sh', '/etc/cron.daily/spamassassin']).wait()
 
 	if cron_result:
 		raise Warning('Could not fetch signatures')
