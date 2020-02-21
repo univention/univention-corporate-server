@@ -10,22 +10,27 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 
+EXPECTED_ERROR_MSG = 'Invalid Syntax: Primary e-mail address: Not a valid email address!'
+
+
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
-			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-			try:
-				mailAddress = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
-				userdn, username = udm.create_user(
-					set={
-						'password': 'univention',
-						'mailHomeServer': fqdn,
-						'mailPrimaryAddress': mailAddress
-					}
-				)
-			except udm_test.UCSTestUDM_CreateUDMObjectFailed as e:
-				if ('Invalid Syntax: Primary e-mail address: Not a valid email address!' not in str(e)):
-					utils.fail('Mail address %s contains spaces but was accepted by UDM' % (mailAddress))
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		is_test_failed = True
+		try:
+			mail_address = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
+			userdn, username = udm.create_user(
+				set={
+					'password': 'univention',
+					'mailHomeServer': fqdn,
+					'mailPrimaryAddress': mail_address
+				}
+			)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
+			if (EXPECTED_ERROR_MSG in str(exc)):
+				is_test_failed = False
+		if is_test_failed:
+			utils.fail('Mail address %s contains spaces but was accepted by UDM' % (mailAddress))
 
 
 if __name__ == '__main__':
