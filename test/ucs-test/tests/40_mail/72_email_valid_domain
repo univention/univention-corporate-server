@@ -16,6 +16,7 @@ EXPECTED_ERROR_MSG = 'The domain part of the primary mail address is not in list
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		is_test_failed = True
 		try:
 			mail_address = '%s@%s' % (uts.random_name(), uts.random_name())
 			udm.create_user(
@@ -26,8 +27,10 @@ def main():
 				}
 			)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
-			if EXPECTED_ERROR_MSG not in str(exc):
-				utils.fail('Domain which is not in list of configured mail domains was accepted by udm')
+			if EXPECTED_ERROR_MSG in str(exc):
+				is_test_failed = False
+		if is_test_failed:
+			utils.fail('Domain which is not in list of configured mail domains was accepted by udm')
 
 
 if __name__ == '__main__':
