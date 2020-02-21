@@ -1,0 +1,186 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention LDAP
+#
+# Copyright 2004-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
+
+import argparse
+import ldap
+import sys
+
+from univention.udm import UDM
+import univention.udm.exceptions
+from univention.config_registry import ConfigRegistry
+import univention.admin.uldap
+
+
+def get_connections():
+	udm = UDM.machine().version(2)
+	connections = []
+	modules = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
+	for module in modules:
+		for comp in udm.get(module).search():
+			try:
+				lo = univention.admin.uldap.access(host=comp.props.fqdn, base=udm.connection.base, binddn=udm.connection.binddn, bindpw=udm.connection.bindpw)
+			except ldap.SERVER_DOWN:
+				warning('Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (comp.props.fqdn,))
+			else:
+				connections.append(lo)
+	return connections
+
+
+def get_users(binddn, bindpwdfile, only_this_user=None):
+	udm = get_writable_udm(binddn, bindpwdfile)
+	if only_this_user:
+		if '=' in only_this_user:
+			users = [udm.get('users/user').get(only_this_user)]
+		else:
+			users = [udm.get('users/user').get_by_id(only_this_user)]
+	else:
+		users = udm.get('users/user').search()
+	return users
+
+
+def get_youngest_timestamp(user, connections):
+	timestamps = [timestamp for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
+	timestamps = sorted(timestamps)
+	return timestamps[-1] if len(timestamps) else None
+
+
+def save_timestamp(user, timestamp):
+	if not timestamp:
+		return
+	if user.props.lastbind == timestamp:
+		return
+	user.props.lastbind = timestamp
+	try:
+		user.save()
+	except univention.udm.exceptions.ModifyError as err:
+		warning('Could not save new timestamp (%s) to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err))
+
+
+def update_users(binddn, bindpwdfile, only_this_user=None):
+	if not is_setup_done():
+		error('The "lastbind" extended attribute has not yet been created. Execute this script once with --setup.')
+	connections = get_connections()
+	for user in get_users(binddn, bindpwdfile, only_this_user):
+		timestamp = get_youngest_timestamp(user, connections)
+		save_timestamp(user, timestamp)
+
+
+def do_setup(binddn, bindpwdfile):
+	udm = get_writable_udm(binddn, bindpwdfile)
+	if is_setup_done():
+		print('"cn=lastbind,cn=custom attributes,%s" already exists.' % (udm.connection.base,))
+		print('Doing nothing.')
+		return
+	m = udm.get('settings/extended_attribute')
+	o = m.new('cn=univention,%s' % (udm.connection.base,))
+	o.position = 'cn=custom attributes,cn=univention,%s' % (udm.connection.base,)
+	o.props.name = 'lastbind'
+	o.props.CLIName = 'lastbind'
+	o.props.shortDescription = 'Timestamp of the last successful login'
+	#  o.props.longDescription = ''
+	o.props.module = ['users/user']
+	o.props.objectClass = 'univentionPerson'
+	o.props.ldapMapping = 'univentionAuthTimestamp'
+	o.props.syntax = 'string'
+	o.props.mayChange = True
+	o.save()
+	print('Successfully created "%s".' % (o.dn,))
+	print('This extended attribute is at the moment not visible in the user UMC module.')
+	print('The visibility and more can be changed with the UMC specific attributes of the')
+	print('extended attribute (see http://docs.software-univention.de/manual-4.4.html#central:extendedattrs_9).')
+
+
+def get_writable_udm(binddn, bindpwdfile):
+	if binddn:
+		if not bindpwdfile:
+			error('"binddn" provided but not "bindpwdfile".')
+		try:
+			with open(bindpwdfile, 'r') as f:
+				bindpwd = f.read().strip()
+		except IOError as err:
+			error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err))
+		ucr = ConfigRegistry()
+		ucr.load()
+		try:
+			udm = UDM.credentials(binddn, bindpwd, ucr.get('ldap/base'), ucr.get('ldap/master'), ucr.get('ldap/master/port'))
+		except univention.udm.exceptions.ConnectionError as err:
+			error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err))
+	else:
+		try:
+			udm = UDM.admin()
+		except univention.udm.exceptions.ConnectionError as err:
+			error('Could not create a writable connection to UDM on this server. Try to provide "binddn" and "bindpwdfile": %s' % (err,))
+	udm.version(2)
+	return udm
+
+
+def is_setup_done():
+	udm = UDM.machine().version(2)
+	dn = 'cn=lastbind,cn=custom attributes,cn=univention,%s' % (udm.connection.base,)
+	try:
+		udm.get('settings/extended_attribute').get(dn)
+	except univention.udm.exceptions.NoObject:
+		return False
+	else:
+		return True
+
+
+def error(msg):
+	print('Error: %s' % (msg,), file=sys.stderr)
+	sys.exit(1)
+
+
+def warning(msg):
+	print('Warning: %s' % (msg,), file=sys.stderr)
+
+
+def main():
+	parser = argparse.ArgumentParser(description='Save the youngest "authTimestamp" attribute of an user, from all reachable LDAP servers, into the "lastbind" extended attribute of the user. The "authTimestamp" attribute is set on a successful bind to a LDAP server when the "ldap/overlay/lastbind" UCR variable is set.')
+	parser.add_argument("--setup", action="store_true", help='Create the "lastbind" extended attribute into which this script saves the timestamp of the last successful LDAP bind.')
+	parser.add_argument("--user", help='Update the "lastbind" extended attribute of the given user. Can be either a DN or just the uid.')
+	parser.add_argument("--allusers", action="store_true", help='Update the "lastbind" extended attribute of all users.')
+	parser.add_argument("--binddn", help='The DN that is used for a writable UDM connection.')
+	parser.add_argument("--bindpwdfile", help='Path to the file that contains the password for --binddn.')
+	args = parser.parse_args()
+
+	if args.setup:
+		do_setup(args.binddn, args.bindpwdfile)
+	elif not args.user and not args.allusers:
+		# --allusers is used as a safety net to prevent accidental execution for all users.
+		error('Provide either --user USER or --allusers.')
+	else:
+		update_users(args.binddn, args.bindpwdfile, args.user)
+
+if __name__ == '__main__':
+	main()
