@@ -1,3 +1,9 @@
+univention-directory-replication (12.0.0-4) unstable; urgency=medium
+
+  * Bug #49700: don't replicate slapo-lastbind 'authTimestamp'
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 24 Feb 2020 15:13:40 +0100
+
 univention-directory-replication (12.0.0-3) unstable; urgency=medium
 
   * Bug #48606: QA feedback
