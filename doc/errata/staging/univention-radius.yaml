@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-radius
-fix: 6.0.2-18A~4.4.0.202002171137
+fix: 6.0.2-18ubuntu1A~4.4.0.202002241636
 desc: |-
  This update addresses the following issue:
  * Added logrotate functionality for radius_ntlm_auth.log
