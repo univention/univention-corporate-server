@@ -42,7 +42,22 @@ from univention.config_registry import ConfigRegistry
 import univention.admin.uldap
 
 
-def get_connections():
+class ScriptError(Exception):
+	pass
+
+
+def error(msg):
+	# type: (str) -> NoReturn
+	raise ScriptError(msg)
+
+
+def warning(msg):
+	# type: (str) -> None
+	print('Warning: %s' % (msg,), file=sys.stderr)
+
+
+def get_ldap_connections():
+	# type: () -> List[univention.admin.uldap.access]
 	udm = UDM.machine().version(2)
 	connections = []
 	modules = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
@@ -57,25 +72,30 @@ def get_connections():
 	return connections
 
 
-def get_users(binddn, bindpwdfile, only_this_user=None):
+def get_users(binddn=None, bindpwdfile=None, only_this_user=None):
+	# type: (Optional[str], Optional[str], Optional[str]) -> Iterable[univention.udm.modules.users_user.UsersUserObject]
 	udm = get_writable_udm(binddn, bindpwdfile)
 	if only_this_user:
-		if '=' in only_this_user:
-			users = [udm.get('users/user').get(only_this_user)]
-		else:
-			users = [udm.get('users/user').get_by_id(only_this_user)]
+		get_user = 'get' if '=' in only_this_user else 'get_by_id'
+		get_user = getattr(udm.get('users/user'), get_user)
+		try:
+			users = [get_user(only_this_user)]
+		except (univention.udm.exceptions.NoObject, univention.udm.exceptions.MultipleObjects) as err:
+			error('The provided user "%s" could not be found: %s' % (only_this_user, err,))
 	else:
 		users = udm.get('users/user').search()
 	return users
 
 
 def get_youngest_timestamp(user, connections):
+	# type: (univention.udm.modules.users_user.UsersUserObject, List[univention.admin.uldap.access]) -> Optional[str]
 	timestamps = [timestamp for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
 	timestamps = sorted(timestamps)
 	return timestamps[-1] if len(timestamps) else None
 
 
-def save_timestamp(user, timestamp):
+def save_timestamp(user, timestamp=None):
+	# type: (univention.udm.modules.users_user.UsersUserObject, Optional[str]) -> None
 	if not timestamp:
 		return
 	if user.props.lastbind == timestamp:
@@ -84,44 +104,19 @@ def save_timestamp(user, timestamp):
 	try:
 		user.save()
 	except univention.udm.exceptions.ModifyError as err:
-		warning('Could not save new timestamp (%s) to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err))
+		warning('Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing: %s' % (timestamp, user.dn, err,))
 
 
-def update_users(binddn, bindpwdfile, only_this_user=None):
-	if not is_setup_done():
-		error('The "lastbind" extended attribute has not yet been created. Execute this script once with --setup.')
-	connections = get_connections()
+def update_users(binddn=None, bindpwdfile=None, only_this_user=None):
+	# type: (Optional[str], Optional[str], Optional[str]) -> None
+	connections = get_ldap_connections()
 	for user in get_users(binddn, bindpwdfile, only_this_user):
 		timestamp = get_youngest_timestamp(user, connections)
 		save_timestamp(user, timestamp)
 
 
-def do_setup(binddn, bindpwdfile):
-	udm = get_writable_udm(binddn, bindpwdfile)
-	if is_setup_done():
-		print('"cn=lastbind,cn=custom attributes,%s" already exists.' % (udm.connection.base,))
-		print('Doing nothing.')
-		return
-	m = udm.get('settings/extended_attribute')
-	o = m.new('cn=univention,%s' % (udm.connection.base,))
-	o.position = 'cn=custom attributes,cn=univention,%s' % (udm.connection.base,)
-	o.props.name = 'lastbind'
-	o.props.CLIName = 'lastbind'
-	o.props.shortDescription = 'Timestamp of the last successful login'
-	#  o.props.longDescription = ''
-	o.props.module = ['users/user']
-	o.props.objectClass = 'univentionPerson'
-	o.props.ldapMapping = 'univentionAuthTimestamp'
-	o.props.syntax = 'string'
-	o.props.mayChange = True
-	o.save()
-	print('Successfully created "%s".' % (o.dn,))
-	print('This extended attribute is at the moment not visible in the user UMC module.')
-	print('The visibility and more can be changed with the UMC specific attributes of the')
-	print('extended attribute (see http://docs.software-univention.de/manual-4.4.html#central:extendedattrs_9).')
-
-
-def get_writable_udm(binddn, bindpwdfile):
+def get_writable_udm(binddn=None, bindpwdfile=None):
+	# type: (Optional[str], Optional[str]) -> univention.udm.udm.UDM
 	if binddn:
 		if not bindpwdfile:
 			error('"binddn" provided but not "bindpwdfile".')
@@ -129,13 +124,13 @@ def get_writable_udm(binddn, bindpwdfile):
 			with open(bindpwdfile, 'r') as f:
 				bindpwd = f.read().strip()
 		except IOError as err:
-			error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err))
+			error('Could not open "bindpwdfile" "%s": %s' % (bindpwdfile, err,))
 		ucr = ConfigRegistry()
 		ucr.load()
 		try:
 			udm = UDM.credentials(binddn, bindpwd, ucr.get('ldap/base'), ucr.get('ldap/master'), ucr.get('ldap/master/port'))
 		except univention.udm.exceptions.ConnectionError as err:
-			error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err))
+			error('Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s": %s' % (ucr.get('ldap/master'), binddn, bindpwdfile, err,))
 	else:
 		try:
 			udm = UDM.admin()
@@ -145,42 +140,26 @@ def get_writable_udm(binddn, bindpwdfile):
 	return udm
 
 
-def is_setup_done():
-	udm = UDM.machine().version(2)
-	dn = 'cn=lastbind,cn=custom attributes,cn=univention,%s' % (udm.connection.base,)
-	try:
-		udm.get('settings/extended_attribute').get(dn)
-	except univention.udm.exceptions.NoObject:
-		return False
-	else:
-		return True
+def main(args):
+	# type: (argparse.Namespace) -> None
+	if not args.user and not args.allusers:
+		# --allusers is used as a safety net to prevent accidental execution for all users.
+		raise ScriptError('Provide either --user USER or --allusers.')
+	update_users(args.binddn, args.bindpwdfile, args.user)
 
 
-def error(msg):
-	print('Error: %s' % (msg,), file=sys.stderr)
-	sys.exit(1)
-
-
-def warning(msg):
-	print('Warning: %s' % (msg,), file=sys.stderr)
-
-
-def main():
-	parser = argparse.ArgumentParser(description='Save the youngest "authTimestamp" attribute of an user, from all reachable LDAP servers, into the "lastbind" extended attribute of the user. The "authTimestamp" attribute is set on a successful bind to a LDAP server when the "ldap/overlay/lastbind" UCR variable is set.')
-	parser.add_argument("--setup", action="store_true", help='Create the "lastbind" extended attribute into which this script saves the timestamp of the last successful LDAP bind.')
+def parse_args(args=None):
+	# type: (Optional[List[str]]) -> argparse.Namespace
+	parser = argparse.ArgumentParser(description='Save the youngest "authTimestamp" attribute of an user, from all reachable LDAP servers, into the "lastbind" extended attribute of the user. The "authTimestamp" attribute is set on a successful bind to an LDAP server when the "ldap/overlay/lastbind" UCR variable is set.')
 	parser.add_argument("--user", help='Update the "lastbind" extended attribute of the given user. Can be either a DN or just the uid.')
 	parser.add_argument("--allusers", action="store_true", help='Update the "lastbind" extended attribute of all users.')
-	parser.add_argument("--binddn", help='The DN that is used for a writable UDM connection.')
+	parser.add_argument("--binddn", help='The DN that is used to create a writable UDM connection.')
 	parser.add_argument("--bindpwdfile", help='Path to the file that contains the password for --binddn.')
-	args = parser.parse_args()
+	return parser.parse_args(args)
 
-	if args.setup:
-		do_setup(args.binddn, args.bindpwdfile)
-	elif not args.user and not args.allusers:
-		# --allusers is used as a safety net to prevent accidental execution for all users.
-		error('Provide either --user USER or --allusers.')
-	else:
-		update_users(args.binddn, args.bindpwdfile, args.user)
 
 if __name__ == '__main__':
-	main()
+	try:
+		main(parse_args())
+	except ScriptError as err:
+		print('Error: %s' % (err,), file=sys.stderr)
