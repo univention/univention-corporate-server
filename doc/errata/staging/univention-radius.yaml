@@ -7,4 +7,5 @@ fix: 6.0.2-18A~4.4.0.202002171137
 desc: |-
  This update addresses the following issue:
  * Added logrotate functionality for radius_ntlm_auth.log
-bug: [50545]
+ * Described further radius related UCR variables
+bug: [50545,48709]

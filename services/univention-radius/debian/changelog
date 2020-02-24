@@ -1,3 +1,9 @@
+univention-radius (6.0.2-18ubuntu1) bionic; urgency=medium
+
+  * Bug #48709: Documented further UCR variables for radius
+
+ -- Max Christian Pohle <mpohle@klabb.knut.univention.de>  Mon, 24 Feb 2020 16:19:54 +0100
+
 univention-radius (6.0.2-18) bionic; urgency=medium
 
   * Bug #50545: added logrotate functionality for radius_ntlm_auth.log
