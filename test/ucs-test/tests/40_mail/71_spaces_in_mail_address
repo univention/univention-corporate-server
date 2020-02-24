@@ -2,7 +2,7 @@
 ## desc: Spaces in mail addresses
 ## tags: [apptest]
 ## exposure: dangerous
-## packages: [univention-mail-server]
+## packages: [univention-mail-postfix]
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -16,9 +16,8 @@ EXPECTED_ERROR_MSG = 'Invalid Syntax: Primary e-mail address: Not a valid email 
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		is_test_failed = True
 		try:
-			mail_address = '%s @%s' % (uts.random_name(), ucr.get('domainname'))
+			mail_address = '%s %s@%s' % (uts.random_name(), uts.random_name(), ucr.get('domainname'))
 			userdn, username = udm.create_user(
 				set={
 					'password': 'univention',
@@ -26,11 +25,12 @@ def main():
 					'mailPrimaryAddress': mail_address
 				}
 			)
+			utils.fail('Mail address %r contains spaces but was accepted by UDM' % (mail_address,))
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
-			if (EXPECTED_ERROR_MSG in str(exc)):
-				is_test_failed = False
-		if is_test_failed:
-			utils.fail('Mail address %s contains spaces but was accepted by UDM' % (mailAddress))
+			if EXPECTED_ERROR_MSG in str(exc):
+				print("OK: expected error happened: {}".format(exc))
+			else:
+				utils.fail('User creation failed because of unexpected error: {}'.format(exc))
 
 
 if __name__ == '__main__':
