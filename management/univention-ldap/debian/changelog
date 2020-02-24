@@ -1,3 +1,10 @@
+univention-ldap (15.0.0-35) unstable; urgency=medium
+
+  * Bug #49700: add ucr variables to configure slapo-lastbind
+    overlay and added univention_lastbind.py
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 24 Feb 2020 15:14:25 +0100
+
 univention-ldap (15.0.0-34) unstable; urgency=medium
 
   * Bug #50616: Mention this bug in the init script

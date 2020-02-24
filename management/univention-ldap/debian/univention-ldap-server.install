@@ -10,3 +10,4 @@ scripts/create-dh-parameter-files	usr/share/univention-ldap/
 dh_2048.pem	usr/share/univention-ldap/
 scripts/ldap_setup_index	usr/share/univention-ldap/
 scripts/setup-translog	usr/share/univention-ldap/
+scripts/univention_lastbind.py usr/share/univention-ldap/

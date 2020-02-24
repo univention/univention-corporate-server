@@ -2,17 +2,14 @@ product: ucs
 release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
-src: univention-ldap
+src: univention-directory-replication
 fix: 
 desc: |
- This update addresses the following issue:
- * The init script for `slapd` now looks for running process only below parent
-   pid 1 specifically. This allows running other `slapd` processes in
-   containers.
+ This update addresses the following issue(s):
  * The 'slapo-lastbind' LDAP overlay can now be activated via the
    'ldap/overlay/lastbind' UCR variable which when activated stores the
    timestamp of an successful bind to an LDAP server. The 
    '/usr/share/univention-ldap/univention_lastbind.py' script can be used to
    store the youngest of these timestamps, from all reachable LDAP servers,
    into the 'lastbind' extended attribute of an specified user. 
-bug: [50616, 49700]
+bug: [49700]

@@ -78,6 +78,7 @@ Variables: ldap/k5pwd
 Variables: ldap/pwd_scheme_kinit
 Variables: ldap/ppolicy
 Variables: ldap/shadowbind
+Variables: ldap/overlay/lastbind
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -114,6 +115,8 @@ Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
 Variables: ldap/shadowbind
 Variables: ldap/shadowbind/ignorefilter
+Variables: ldap/overlay/lastbind
+Variables: ldap/overlay/lastbind/precision
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
