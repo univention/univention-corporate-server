@@ -1,3 +1,9 @@
+ucs-test (9.0.3-157) unstable; urgency=low
+
+  * Bug #50748: simplify test logic
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 24 Feb 2020 12:21:16 +0100
+
 ucs-test (9.0.3-156) unstable; urgency=medium
 
   * Bug #50531: adapt 87_admindiary/01_query_limit file

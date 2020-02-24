@@ -2,23 +2,26 @@
 ## desc: Email domain validity
 ## tags: [apptest]
 ## exposure: dangerous
-## packages: [univention-mail-server]
+## packages: [univention-mail-postfix]
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
-
-EXPECTED_ERROR_MSG = 'The domain part of the primary mail address is not in list of configured mail domains'
+# UCS syntax (primaryEmailAddressValidDomain) and OX app syntax checks
+EXPECTED_ERROR_MSGS = (
+  "The domain part of the primary mail address is not in list of configured mail domains",
+  "The mail address' domain does not match any mail domain object."
+)
 
 
 def main():
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
 		fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-		is_test_failed = True
+		test_domain = '{}.com'.format(uts.random_name())
+		mail_address = '%s@%s' % (uts.random_name(), test_domain)
 		try:
-			mail_address = '%s@%s' % (uts.random_name(), uts.random_name())
 			udm.create_user(
 				set={
 					'password': 'univention',
@@ -26,11 +29,15 @@ def main():
 					'mailPrimaryAddress': mail_address
 				}
 			)
+			utils.fail(
+			  'UDM accepted domain {!r}, which is not in the list of configured mail'
+			  ' domains.'.format(test_domain)
+      )
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as exc:
-			if EXPECTED_ERROR_MSG in str(exc):
-				is_test_failed = False
-		if is_test_failed:
-			utils.fail('Domain which is not in list of configured mail domains was accepted by udm')
+			if any(error_msg in str(exc) for error_msg in EXPECTED_ERROR_MSGS):
+				print("OK: expected error happened: {}".format(exc))
+			else:
+				utils.fail('User creation failed because of unexpected error: {}'.format(exc))
 
 
 if __name__ == '__main__':
