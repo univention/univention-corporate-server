@@ -259,7 +259,7 @@ class Docker(object):
 					_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
 		ret, out = call_process2(['docker', 'pull', self.image], logger=_logger)
 		if ret != 0:
-			raise DockerImagePullFailed(self.image, out)
+			raise DockerImagePullFailed(image=self.image, out=out, code=ret)
 
 	def verify(self):
 		# deprecated and not used anymore. Bug #48670
@@ -452,7 +452,7 @@ class MultiDocker(Docker):
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
-			raise DockerImagePullFailed(self.image, out)
+			raise DockerImagePullFailed(image=self.image, out=out, code=ret)
 
 	def _app_volumes(self):
 		volumes = self.app.docker_volumes[:]

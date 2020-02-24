@@ -290,7 +290,7 @@ class ConnectionFailedConnectError(ConnectionFailed):
 		return msg
 
 
-class DockerImagePullFailed(Abort):
+class DockerImagePullFailed(AbortWithDetails):
 	code = 435
 	default_error_msg = 'Downloading Docker image %(image)s failed: %(out)s'
 
