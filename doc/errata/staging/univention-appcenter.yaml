@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-109A~4.4.0.202002131147
+fix: 8.0.11-110A~4.4.0.202002241225
 desc: |-
   This update addresses the following issue(s):
   * In some cases, an unsuccessful app installation
@@ -16,4 +16,5 @@ desc: |-
     This hase been fixed.
   * The warning message indicating a potentially long installation time of
     container based apps has been removed.
-bug: [49104, 50771, 50775, 50814]
+  * The error tracking for failed docker pull has been improved.
+bug: [49104, 50771, 50775, 50814, 50849]
