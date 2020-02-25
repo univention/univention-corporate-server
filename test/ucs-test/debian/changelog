@@ -1,3 +1,9 @@
+ucs-test (9.0.3-159) unstable; urgency=medium
+
+  * Bug #49700: skip 10_ldap/110_univention_lastbind.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Feb 2020 10:08:04 +0100
+
 ucs-test (9.0.3-158) unstable; urgency=medium
 
   * Bug #49700: added 10_ldap/110_univention_lastbind.py

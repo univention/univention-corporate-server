@@ -2,6 +2,8 @@
 ## desc: Test the management/univention-ldap/scripts/univention_lastbind.py script
 ## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
 ## exposure: dangerous
+## tags:
+##  - SKIP
 
 
 import pytest
