@@ -17,3 +17,5 @@ desc: |-
    container based apps has been removed.
  * The error tracking for failed docker pull requests has been improved.
 bug: [49104, 50771, 50775, 50814, 50849]
+erratum: 455
+announced: 2020-02-26
