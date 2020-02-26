@@ -1,3 +1,10 @@
+ucs-test (9.0.3-160) unstable; urgency=medium
+
+  * Bug #50589: App tests: Add current_url and allow skipping certificate
+    checks
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Feb 2020 12:04:47 +0100
+
 ucs-test (9.0.3-159) unstable; urgency=medium
 
   * Bug #49700: skip 10_ldap/110_univention_lastbind.py
