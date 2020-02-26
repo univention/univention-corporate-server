@@ -55,6 +55,21 @@ Description: UCS - LDAP client configuration
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
+Package: univention-ldap-config-master
+Architecture: all
+Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-join (>= 5.0.20-1),
+ shell-univention-lib (>= 2.0.17-1)
+Description: UCS - LDAP configuration for master and backup servers
+ This package contains configurations related to the OpenLDAP server
+ for master and backup domain controllers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
 Package: univention-ldap-config
 Architecture: all
 Pre-Depends: slapd

@@ -81,9 +81,10 @@ attributetype ( 1.3.6.1.4.1.10176.100 NAME 'univentionUMCProperty'
 # Used by univention-lastbind.py
 attributetype ( 1.3.6.1.4.1.10176.17 NAME 'univentionAuthTimestamp'
 	DESC 'Timestamp of the last successful login across multiple LDAP servers. See univention-lastbind.py'
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE
+	EQUALITY generalizedTimeMatch
+	ORDERING generalizedTimeOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
 	)
 
 objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
