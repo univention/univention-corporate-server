@@ -5,4 +5,4 @@ start_type=firewall/autostart
 systemd=univention-firewall.service
 icon=service/firewall
 use_systemd_status=True
-programs=foo
+programs=None
