@@ -139,6 +139,9 @@ class Session(object):
 			url = self.base_url + url
 		self.driver.get(url)
 
+	def get_current_url(self):
+		return self.driver.current_url
+
 	def reload(self):
 		self.driver.refresh()
 
@@ -217,6 +220,8 @@ class Session(object):
 		from selenium import webdriver
 		options = webdriver.ChromeOptions()
 		options.add_argument('--no-sandbox')  # chrome complains about being executed as root
+		if os.environ.get('UCS_TEST_SELENIUM_IGNORE_CERTS'):
+			options.add_argument('--ignore-certificate-errors')
 		driver = webdriver.Chrome(options=options)
 		return cls(display_num, base_url, screenshot_path, driver)
 
