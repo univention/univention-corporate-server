@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-server
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The 'univention-server-master' and 'univention-server-backup' packages
+   now depend on the new 'univention-ldap-config-master' package.
+bug: [49700]
