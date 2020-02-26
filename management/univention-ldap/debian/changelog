@@ -1,3 +1,11 @@
+univention-ldap (15.0.0-36) unstable; urgency=medium
+
+  * Bug #49700: univention_lastbind.py is not only installed
+    on master and backup servers via the new univention-ldap-config-master
+    binary package; + lastbind ext attr now uses GeneralizedTimeOrderingMatch
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 Feb 2020 14:22:44 +0100
+
 univention-ldap (15.0.0-35) unstable; urgency=medium
 
   * Bug #49700: add ucr variables to configure slapo-lastbind

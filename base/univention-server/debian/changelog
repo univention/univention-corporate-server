@@ -1,3 +1,10 @@
+univention-server (14.0.0-12) unstable; urgency=medium
+
+  * Bug #49700: added new package univention-ldap-config-master to
+    univention-server-master/univention-server-backup dependencies
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 26 Feb 2020 14:21:15 +0100
+
 univention-server (14.0.0-11) unstable; urgency=low
 
   * Bug #49036: Fix file permission when creating new host certificates
