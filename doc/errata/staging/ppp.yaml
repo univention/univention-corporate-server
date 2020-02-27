@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: ppp
+fix: 2.4.7-1+4+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Buffer overflow in the eap_request and eap_response functions in eap.c
+   (CVE-2020-8597)
+bug: [50869]
+cve:
+- CVE-2020-8597
