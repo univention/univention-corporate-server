@@ -1,3 +1,9 @@
+univention-kernel-image-signed (5.0.0-10) unstable; urgency=medium
+
+  * Bug #50870: Update to linux-4.9.210-1
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 27 Feb 2020 15:51:49 +0100
+
 univention-kernel-image-signed (5.0.0-9) unstable; urgency=medium
 
   * Bug #50486: Update to linux-4.9.189-3+deb9u2
