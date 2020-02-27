@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-113) unstable; urgency=medium
+
+  * Bug #50858: fixed template
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Feb 2020 11:38:00 +0100
+
 univention-appcenter (8.0.11-112) unstable; urgency=medium
 
   * Bug #50858: fixed *.univention-config-registry
