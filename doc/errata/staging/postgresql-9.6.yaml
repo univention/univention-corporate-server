@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: postgresql-9.6
+fix: 9.6.17-0+deb9u1
+desc: |
+ This update addresses the following issue:
+
+ * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
+
+ * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
+
+ * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
+
+ * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
+
+ * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
+ * postgresql-9.6 (CVE-2020-1720)
+bug: [50862]
+cve:
+- CVE-2020-1720
