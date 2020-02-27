@@ -1,6 +1,12 @@
+univention-appcenter (8.0.11-112) unstable; urgency=medium
+
+  * Bug #50858: fixed *.univention-config-registry
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Feb 2020 11:10:26 +0100
+
 univention-appcenter (8.0.11-111) unstable; urgency=medium
 
-  * Bug 50858: added pg_hba entry for docker compose
+  * Bug #50858: added pg_hba entry for docker compose
 
  -- Felix Botner <botner@univention.de>  Thu, 27 Feb 2020 11:03:18 +0100
 

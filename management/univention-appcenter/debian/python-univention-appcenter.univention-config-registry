@@ -11,6 +11,7 @@ Type: subfile
 Multifile: etc/postgresql/9.4/main/pg_hba.conf
 Subfile: etc/postgresql/9.4/main/pg_hba.conf.d/10-appcenter
 Variables: docker/daemon/default/opts/bip
+Variables: appcenter/docker/compose/network
 Variables: appcenter/apps/.*/version
 Variables: appcenter/apps/.*/status
 
@@ -18,6 +19,7 @@ Type: subfile
 Multifile: etc/postgresql/9.6/main/pg_hba.conf
 Subfile: etc/postgresql/9.6/main/pg_hba.conf.d/10-appcenter
 Variables: docker/daemon/default/opts/bip
+Variables: appcenter/docker/compose/network
 Variables: appcenter/apps/.*/version
 Variables: appcenter/apps/.*/status
 
