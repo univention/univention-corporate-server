@@ -1,14 +1,13 @@
 #!/usr/share/ucs-test/runner /usr/bin/py.test
 ## desc: Test the management/univention-ldap/scripts/univention_lastbind.py script
-## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
+## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
-## tags:
-##  - SKIP
 
 
 import pytest
 
 import subprocess
+import random
 import time
 import imp
 
@@ -44,20 +43,19 @@ def is_multi_domain():
 	return len(get_other_servers())
 
 
-#  @pytest.fixture(scope="module")
-#  def univention_lastbind():
-	#  return imp.load_source('univention_lastbind', '/usr/share/univention-ldap/univention_lastbind.py')
-
-
 @pytest.fixture(scope="module")
 def other_server():
-	return get_other_servers()[0]
+	other_servers = get_other_servers()
+	idx = random.randrange(len(other_servers))
+	return other_servers[idx]
 
 
 @pytest.fixture
-def preserve_other_server_ucr(bindpwdfile, other_server):
+def activate_lastbind_on_other_server(bindpwdfile, other_server):
 	lastbind = subprocess.check_output(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind']).strip()
 	precision = subprocess.check_output(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind/precision']).strip()
+	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'set', 'ldap/overlay/lastbind=true'])
+	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
 	yield
 	if lastbind:
 		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind=%s' % (lastbind,)])
@@ -67,6 +65,15 @@ def preserve_other_server_ucr(bindpwdfile, other_server):
 		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind/precision=%s' % (precision,)])
 	else:
 		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'unset', 'ldap/overlay/lastbind/precision'])
+	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
+
+
+@pytest.fixture
+def activate_lastbind(ucr):
+	handler_set(['ldap/overlay/lastbind=true'])
+	subprocess.call(['service', 'slapd', 'restart'])
+	yield
+	subprocess.call(['service', 'slapd', 'restart'])
 
 
 @pytest.fixture
@@ -171,7 +178,7 @@ def bind_for_timestamp(dn, host=None):
 def test_save_timestamp(testudm, readudm, binddn, bindpwdfile, capsys):
 	dn, _ = testudm.create_user()
 	o = readudm.obj_by_dn(dn)
-	timestamp = 'foo'
+	timestamp = '2020010101Z'
 	capsys.readouterr()  # flush
 	univention_lastbind.save_timestamp(o, timestamp)
 	assert 'Warning: Could not save new timestamp "%s" to "lastbind" extended attribute of user "%s". Continuing' % (timestamp, o.dn,) in capsys.readouterr()[1]
@@ -191,9 +198,7 @@ def test_save_timestamp(testudm, readudm, binddn, bindpwdfile, capsys):
 
 
 @pytest.mark.slow
-def test_main_single_server(binddn, bindpwdfile, ucr, testudm, readudm):
-	handler_set(['ldap/overlay/lastbind=true'])
-	subprocess.call(['service', 'slapd', 'restart'])
+def test_main_single_server(binddn, bindpwdfile, testudm, readudm, activate_lastbind):
 	o = readudm.obj_by_dn(testudm.create_user()[0])
 	assert o.props.lastbind is None
 	timestamp = bind_for_timestamp(o.dn)
@@ -206,11 +211,7 @@ def test_main_single_server(binddn, bindpwdfile, ucr, testudm, readudm):
 
 @pytest.mark.skipif(not is_multi_domain(), reason="Test only in multi domain")
 @pytest.mark.slow
-def test_main_multi_server(binddn, bindpwdfile, testudm, readudm, other_server, preserve_other_server_ucr):
-	handler_set(['ldap/overlay/lastbind=true'])
-	subprocess.call(['service', 'slapd', 'restart'])
-	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'set', 'ldap/overlay/lastbind=true'])
-	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
+def test_main_multi_server(binddn, bindpwdfile, testudm, readudm, other_server, activate_lastbind, activate_lastbind_on_other_server):
 	o = readudm.obj_by_dn(testudm.create_user()[0])
 	assert o.props.lastbind is None
 	local_timestamp = bind_for_timestamp(o.dn)

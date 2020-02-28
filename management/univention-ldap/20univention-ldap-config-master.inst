@@ -36,8 +36,6 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-univention-config-registry set ldap/overlay/lastbind/precision?"30"
-
 eval "$(ucr shell)"
 
 # create extended attribute for univention_lastbind.py

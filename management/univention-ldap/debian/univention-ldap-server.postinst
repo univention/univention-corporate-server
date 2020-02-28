@@ -76,6 +76,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-config-registry set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
 fi
 
+# configure lastbind
+univention-config-registry set ldap/overlay/lastbind/precision?"30"
+
 # configure firewall
 ucr set \
 	security/packetfilter/package/univention-ldap-server/tcp/389/all="ACCEPT" \
