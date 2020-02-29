@@ -3,7 +3,7 @@
 # Univention RADIUS
 #  join script (network access schema and extended attribute)
 #
-# Copyright 2014-2019 Univention GmbH
+# Copyright 2014-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -41,6 +41,7 @@ joinscript_init
 ucs_addServiceToLocalhost 'RADIUS' "$@"
 
 mkdir -p /etc/freeradius/ssl
+chmod 2755 /etc/freeradius/ssl
 cp "/etc/univention/ssl/$(hostname)/private.key" /etc/freeradius/ssl/private.key
 cp "/etc/univention/ssl/$(hostname)/cert.pem" /etc/freeradius/ssl/cert.pem
 openssl dhparam -out /etc/freeradius/ssl/dh 1024
