@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-47) unstable; urgency=medium
+
+  * Bug #50889: Add 60_old_schema_registration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Mar 2020 15:18:39 +0100
+
 univention-management-console-module-diagnostic (5.0.1-46) unstable; urgency=medium
 
   * Bug #50191: adjust text
