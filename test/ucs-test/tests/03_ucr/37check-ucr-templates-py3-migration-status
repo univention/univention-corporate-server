@@ -32,28 +32,32 @@ start && /@!@/ {
     # number of lines contained
     print "|" lines
     # write header and code into a file
+    system("rm -f /tmp/cover.py")
     print preamble "\n" code > "/tmp/cover.py" ; close("/tmp/cover.py")
     # execute code coverage for python2. NOTE: debian has symlinked sh->dash,
     # awk uses sh to call any script, but we want bash
     cmd = "bash -c \"rm -f .coverage ;" \
-          "python2-coverage run --branch --include /tmp/cover.py /tmp/cover.py &>/tmp/py2.out && " \
-          "python2-coverage report | egrep -o [0-9]+%\$ || echo ⛔ \""
-    printf "|" ; print code | cmd ; close(cmd)
+          "python2-coverage run --branch --timid --include /tmp/cover.py /tmp/cover.py" \
+	  "  &>/tmp/py2.out && echo \|✅ || echo \|❎" \
+          "; echo -n \| ; python2-coverage report | egrep -o [0-9]+%\$ || echo ❓ \""
+    print code | cmd ; close(cmd)
     # same thing (coverage) for python3. NOTE: egrep finds within the
     # coverage report the only line ending with a percent value
     cmd = "bash -c \"rm -f .coverage ;" \
-          "python3-coverage run --branch --include /tmp/cover.py /tmp/cover.py &>/tmp/py3.out && " \
-          "python3-coverage report | egrep -o [0-9]+%\$ || echo ⛔ \""
-    printf "|" ; print code | cmd ; close(cmd)
+          "python3-coverage run --branch --timid --include /tmp/cover.py /tmp/cover.py" \
+	  "  &>/tmp/py3.out && echo \|✅ || echo \|❎" \
+          "; echo -n \| ; python3-coverage report | egrep -o [0-9]+%\$ || echo ❓ \""
+    print code | cmd ; close(cmd)
     # compare what output both runs produced and if diff returns with an exit
     # code unequal to zero it means that there were differences in both files
-    printf "|%s\n", (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") ? "⛔" : "✅")
+    printf "|%s\n", (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") ? "❎" : "✅")
     # separate table columns by a blank line
     print ""
     # reinit for next run...
     code = ""
     lines = 0
     start = 0
+    fflush("/dev/stdout")
     next
 }
 # if start is set and we have not yet found its end: append line to the code
@@ -63,10 +67,11 @@ AWK
 
 # print markdown table header. NOTE: the markdown dialect is asciidoctor,
 # because that allows table column definitions to span multiple lines
-(echo "|==="
- echo "|section|filename|code lines|python2|python3|identical"
- find /etc/univention/templates/ -type f -name '*.conf' -exec awk -f /tmp/check-between.awk '{}' \;
+(
  echo "|==="
-) |& tee /tmp/output.md
+ echo "|section|filename|code lines|python2|coverage|python3|coverage|output identical"
+ find /etc/univention/templates/ -type f -exec awk -f /tmp/check-between.awk '{}' \;
+ echo "|==="
+) |& tee -a /tmp/output.md
 
 # vim:set ft=sh:awk:
