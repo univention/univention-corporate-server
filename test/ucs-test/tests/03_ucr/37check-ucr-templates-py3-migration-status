@@ -1,0 +1,72 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking for modified UCR templates
+## tags:
+##  - basic
+##  - apptest
+## exposure: safe
+## versions:
+##  1.0-0: skip
+##  2.4-0: fixed
+
+cat <<"AWK" > /tmp/check-between.awk 
+#!/usr/bin/env -S awk -f between.awk test.conf
+BEGIN {
+    # in order to behave as univention/config_registry/handler.py we have to
+    # prepend each code section with a header, initialized as a string
+    # variable:
+    preamble = "# -*- coding: utf-8 -*-"                                    \
+        "\n" "import univention.config_registry"                            \
+        "\n" "configRegistry = univention.config_registry.ConfigRegistry()" \
+        "\n" "configRegistry.load()"                                        \
+        "\n" "# for compatibility"                                          \
+        "\n" "baseConfig = configRegistry"
+}
+# if start is 0 and we found a @!@-line: set start
+!start && /@!@/ { start = 1 ; next }
+# if start is set (and we still are within a code section) and there comes a @!@
+start && /@!@/ {
+    section++
+    # filename
+    print "|" section
+    print "|" ARGV[1]
+    # number of lines contained
+    print "|" lines
+    # write header and code into a file
+    print preamble "\n" code > "/tmp/cover.py" ; close("/tmp/cover.py")
+    # execute code coverage for python2. NOTE: debian has symlinked sh->dash,
+    # awk uses sh to call any script, but we want bash
+    cmd = "bash -c \"rm -f .coverage ;" \
+          "python2-coverage run --branch --include /tmp/cover.py /tmp/cover.py &>/tmp/py2.out && " \
+          "python2-coverage report | egrep -o [0-9]+%\$ || echo ⛔ \""
+    printf "|" ; print code | cmd ; close(cmd)
+    # same thing (coverage) for python3. NOTE: egrep finds within the
+    # coverage report the only line ending with a percent value
+    cmd = "bash -c \"rm -f .coverage ;" \
+          "python3-coverage run --branch --include /tmp/cover.py /tmp/cover.py &>/tmp/py3.out && " \
+          "python3-coverage report | egrep -o [0-9]+%\$ || echo ⛔ \""
+    printf "|" ; print code | cmd ; close(cmd)
+    # compare what output both runs produced and if diff returns with an exit
+    # code unequal to zero it means that there were differences in both files
+    printf "|%s\n", (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") ? "⛔" : "✅")
+    # separate table columns by a blank line
+    print ""
+    # reinit for next run...
+    code = ""
+    lines = 0
+    start = 0
+    next
+}
+# if start is set and we have not yet found its end: append line to the code
+# variable and increment the code line counter
+start { code = code "\n" $0 ; lines++ }
+AWK
+
+# print markdown table header. NOTE: the markdown dialect is asciidoctor,
+# because that allows table column definitions to span multiple lines
+(echo "|==="
+ echo "|section|filename|code lines|python2|python3|identical"
+ find /etc/univention/templates/ -type f -name '*.conf' -exec awk -f /tmp/check-between.awk '{}' \;
+ echo "|==="
+) |& tee /tmp/output.md
+
+# vim:set ft=sh:awk:
