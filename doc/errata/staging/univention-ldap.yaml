@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-ldap
-fix: 15.0.0-37A~4.4.0.202002281212
+fix: 15.0.0-38A~4.4.0.202003031723
 desc: |
  This update addresses the following issue:
  * The init script for `slapd` now looks for running process only below parent
