@@ -3,8 +3,9 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-113A~4.4.0.202002271139
+fix: 8.0.11-114A~4.4.0.202003031003
 desc: |
  This update addresses the following issue(s):
  * Added postgres pg_hba configuration for docker compose networks.
-bug: [50858]
+ * Installing certain Apps on a non-Master system did not work via UMC.
+bug: [50858, 50890]
