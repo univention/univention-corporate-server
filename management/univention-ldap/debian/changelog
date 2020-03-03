@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-38) unstable; urgency=medium
+
+  * Bug #49700: increase default for ldap/overlay/lastbind/precision
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 03 Mar 2020 16:20:01 +0100
+
 univention-ldap (15.0.0-37) unstable; urgency=medium
 
   * Bug #49700: adjust lastbind UCR variable descriptions +

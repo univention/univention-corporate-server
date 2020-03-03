@@ -1203,15 +1203,17 @@ univention-director-manager users/user
 			The <literal>lastbind</literal> overlay module can be activated by setting the &ucsUCRV; <envar>ldap/overlay/lastbind</envar> to <envar>yes</envar> and restarting the OpenLDAP server.
 			When the module is activated on an UCS server, a timestamp is written to the account's <property>authTimestamp</property> attribute when that account logs into the LDAP server.
 			The &ucsUCRV; <envar>ldap/overlay/lastbind/precision</envar> can be used to configure the time in seconds that has to pass before the <property>authTimestamp</property> attribute is updated.
-			This prevents large numbers of write operations which may penalize performance.
+			This prevents a large number of write operations that can impair performance.
         </para>
 
         <para>
 			The <property>authTimestamp</property> attribute can only be queried on the LDAP server where the
 			<literal>lastbind</literal> overlay module is activated. It is not replicated to other LDAP servers.
-			The script <filename>/usr/share/univention-ldap/univention_lastbind.py</filename> can be executed to collect and save the youngest
-			<property>authTimestamp</property> value from all reachable LDAP servers in the UCS domain.
-			The script can be invoked to update the <property>lastbind</property> extended UDM attribute of one or all users, which maps to the <property>univentionAuthTimestamp</property> LDAP attribute.
+			For that reason the <filename>/usr/share/univention-ldap/univention_lastbind.py</filename> script
+			can be executed to collect the youngest <property>authTimestamp</property> value from all reachable
+			LDAP servers in the UCS domain and save it into the <property>lastbind</property> extended attribute of an user.
+			The script can be invoked to update the <property>lastbind</property> extended attribute of one or all users.
+			The <property>lastbind</property> extended attribute maps to the <property>univentionAuthTimestamp</property> LDAP attribute.
         </para>
 
         <para>

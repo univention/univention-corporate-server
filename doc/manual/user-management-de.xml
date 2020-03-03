@@ -1232,41 +1232,43 @@ univention-directory-manager users/user
 		</para>
     </section>
     <section id="users:lastbind-overlay-module">
-        <title>Overlay-Modul zur Erkennung unbenutzter Benutzerkonten</title>
+        <title>Overlay-Modul zur Aufzeichnung der letzten erfolgreichen LDAP-Anmeldung eines Kontos</title>
 
         <caution>
         <para>
-			Bevor Sie diese Funktion verwenden, lesen Sie bitte diesen <ulink url="https://help.univention.com/t/activating-the-lastbind-overlay-module/14404">Support-Artikel über die Aktivierung des <literal>lastbind</literal> <literal>Overlay-Moduls</literal></ulink>.
+			Bevor Sie diese Funktion verwenden, lesen Sie bitte diesen <ulink url="https://help.univention.com/t/14404">Support-Artikel über die Aktivierung des <literal>lastbind</literal> <literal>Overlay-Moduls</literal></ulink>.
         </para>
     	</caution>
 
         <para>
-			Das optionale <ulink url=""><literal>lastbind</literal> Overlay-Modul</ulink> für LDAP ermöglicht
+			Das optionale <ulink url=""><literal>lastbind</literal> Overlay-Modul</ulink> für OpenLDAP ermöglicht
 			die Aufzeichnung des Zeitstempels der letzten erfolgreichen LDAP-Anmeldung im <property>authTimestamp</property>
 			Attribut und kann z.B. zur Erkennung nicht genutzter Konten verwendet werden.
         </para>
 
         <para>
-			Das <literal>lastbind</literal> Overlay-Modul kann mit der &ucsUCRV; <envar>ldap/overlay/lastbind</envar> aktiviert werden.
-			Die &ucsUCRV; <envar>ldap/overlay/lastbind/precision</envar> kann verwendet werden, um zu konfigurieren, wie oft das
-			<property>authTimestamp</property> Attribut aktualisiert wird. 
+			Das <literal>lastbind</literal> Overlay-Modul kann aktiviert werden, indem die &ucsUCRV; <envar>ldap/overlay/lastbind</envar>
+			auf <envar>yes</envar> gesetzt und der OpenLDAP-Server neu gestartet wird. Wenn das Modul auf einem UCS-Server aktiviert ist,
+			wird der Zeitstempel einer erfolgreichen LDAP-Anmeldung eines Kontos, in das <property>authTimestamp</property> Attribut jenes Kontos geschrieben.
+			Die &ucsUCRV; <envar>ldap/overlay/lastbind/precision</envar> kann verwendet werden, um die Zeit in Sekunden zu konfigurieren, die vergehen muss,
+			bevor das <property>authTimestamp</property> Attribut aktualisiert wird. Dies verhindert eine große Anzahl von Schreiboperationen, die die Leistung beeinträchtigen können.
         </para>
 
         <para>
 			Das <property>authTimestamp</property> Attribut kann nur auf dem LDAP-Server abgefragt werden,
 			auf dem das <literal>lastbind</literal> Overlay-Modul aktiviert ist. Es wird nicht auf andere LDAP-Server repliziert.
-			Da das <property>authTimestamp</property> Attribut nicht auf alle LDAP-Server repliziert wird,
-			stellt das <package>univention-ldap</package> Paket das Skript <filename>/usr/share/univention-ldap/univention_lastbind.py</filename>
-			zur Verfügung. Dieses Skript speichert den jüngsten <property>authTimestamp</property> Wert
-			von allen erreichbaren LDAP-Servern, im erweiterten Attribut <literal>lastbind</literal> eines angegebenen Benutzers.
-			Das Skript kann auch aufgerufen werden, um das erweiterte Attribut <literal>lastbind</literal> aller Benutzer zu aktualisieren.
+			Aus diesem Grund kann das Skript <filename>/usr/share/univention-ldap/univention_lastbind.py</filename> ausgeführt werden,
+			um den jüngsten <property>authTimestamp</property> Wert von allen erreichbaren LDAP-Servern in der UCS-Domäne zu sammeln
+			und in das erweiterte Attribut <property>lastbind</property> eines Benutzers zu speichern.
+			Das Skript kann aufgerufen werden, um das erweiterte Attribut <property>lastbind</property> eines oder aller Benutzer zu aktualisieren.
+			Das erweiterte Attribut <property>lastbind</property> wird auf das LDAP-Attribut <property>univentionAuthTimestamp</property> abgebildet.
         </para>
 
         <para>
 			Eine Möglichkeit, das erweiterte Attribute <property>lastbind</property> aktuell zu halten, ist durch das Anlagen eines Cron-Jobs via UCR:
         	<programlisting language="sh">
-ucr set cron/my_lastbind_cron_job/command='/usr/share/univention-ldap/univention_lastbind.py --allusers'
-ucr set cron/my_lastbind_cron_job/time='00 06 * * *'  # Täglich um 06:00 Uhr
+ucr set cron/update_lastbind_attribute/command='/usr/share/univention-ldap/univention_lastbind.py --allusers'
+ucr set cron/update_lastbind_attribute/time='00 06 * * *'  # Täglich um 06:00 Uhr
         	</programlisting>
 			Weitere Informationen über die Einstellung von Cron-Jobs über UCR können in <xref linkend="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"/> gefunden werden.
         </para>
