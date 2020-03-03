@@ -74,9 +74,9 @@ define([
 				});
 				tools.forIn(this.details.hosts_info, function(host, host_info) {
 					packageChanges.push({
-						install: host_info.install,
-						remove: host_info.remove,
-						broken: host_info.broken,
+						install: host_info.result.install,
+						remove: host_info.result.remove,
+						broken: host_info.result.broken,
 						incompatible: !host_info.compatible_version,
 						host: host
 					});
