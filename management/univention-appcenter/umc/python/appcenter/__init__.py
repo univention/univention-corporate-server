@@ -569,6 +569,8 @@ class Instance(umcm.Base, ProgressMixin):
 		# make sure that the application can be installed/updated
 		action = get_action(function)()
 		args = action._build_namespace(app=app, username=self.username, password=self.password, noninteractive=True, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], send_info=not only_master_packages, set_vars=values, dry_run=True, install_master_packages_remotely=False, only_master_packages=only_master_packages)
+		if only_master_packages:
+			args.skip_checks.append('must_not_be_installed')
 
 		can_continue = True
 		delayed_can_continue = True
