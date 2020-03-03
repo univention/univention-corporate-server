@@ -72,6 +72,6 @@ AWK
  echo "|section|filename|code lines|python2|coverage|python3|coverage|output identical"
  find /etc/univention/templates/ -type f -exec awk -f /tmp/check-between.awk '{}' \;
  echo "|==="
-) |& tee -a /tmp/output.md
+) |& tee /tmp/output.md
 
 # vim:set ft=sh:awk:

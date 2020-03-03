@@ -1,8 +1,9 @@
 ucs-test (9.0.3-162) unstable; urgency=medium
 
-  * Bug #50889: add test 60_umc/35_umc_diagnostics_old_schema_registration
+  * Bug #50889: added test 60_umc/35_umc_diagnostics_old_schema_registration
+  * Bug #751: added test 03_ucr/37check-ucr-templates-py3-migration-status
 
- -- Jannik Ahlers <ahlers@univention.de>  Tue, 03 Mar 2020 15:46:15 +0100
+ -- Max Christian Pohle <pohle@univention.de>  Tue, 03 Mar 2020 16:18:45 +0100
 
 ucs-test (9.0.3-161) unstable; urgency=medium
 
