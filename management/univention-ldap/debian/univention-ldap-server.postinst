@@ -77,7 +77,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 fi
 
 # configure lastbind
-univention-config-registry set ldap/overlay/lastbind/precision?"30"
+univention-config-registry set ldap/overlay/lastbind/precision?"3600"
 
 # configure firewall
 ucr set \
