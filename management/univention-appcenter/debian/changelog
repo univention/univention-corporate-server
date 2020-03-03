@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-115) unstable; urgency=medium
+
+  * Bug #50890: Do not check installation status if you want to install only
+    master packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Mar 2020 13:44:50 +0100
+
 univention-appcenter (8.0.11-114) unstable; urgency=medium
 
   * Bug #50890: Fix wrong attribute access to computed software changes on
