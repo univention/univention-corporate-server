@@ -303,7 +303,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
 					for j in i.value_ctr.values:
 						unicode_blob = j.blob
 						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found unicodePwd blob")
-			if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials:
+			if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.baseConfig.is_true('%s/ad/mapping/user/password/kerberos/enabled' % connector.CONFIGBASENAME, False):
 				if i.value_ctr.values:
 					for j in i.value_ctr.values:
 						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found supplementalCredentials blob")

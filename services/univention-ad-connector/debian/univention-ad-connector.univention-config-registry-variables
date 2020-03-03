@@ -232,6 +232,12 @@ Description[en]=If the password should not be synced between the UCS LDAP server
 Type=bool
 Categories=service-adcon
 
+[con.*/ad/mapping/user/password/kerberos/enabled]
+Description[de]=Wenn die Kerberos Hashes von dem Active Directory zum UCS LDAP-Server synchronisiert werden sollen, so kann diese Variable auf true gesetzt werden. Ist die Variable nicht gesetzt, so werden die Kerberos Hashes nicht synchronisiert.
+Description[en]=If the Kerberos hashes should be synced from Active Directory to the UCS LDAP server, this variable can be set to true. If the variable is not set, these hashes will not be synchronized.
+Type=bool
+Categories=service-adcon
+
 [con.*/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'con*/ad/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the master domain controller will be used. This value should only by changed if 'con*/ad/mapping/syncmode' is set to 'write'.
