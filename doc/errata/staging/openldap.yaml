@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: openldap
-fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202003031149
+fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202003031624
 desc: |
  This update addresses the following issue:
  * The k5pwd overlay module used the default kerberos salt
