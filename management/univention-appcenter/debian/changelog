@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-114) unstable; urgency=medium
+
+  * Bug #50890: Fix wrong attribute access to computed software changes on
+    remote servers
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Mar 2020 09:59:45 +0100
+
 univention-appcenter (8.0.11-113) unstable; urgency=medium
 
   * Bug #50858: fixed template
