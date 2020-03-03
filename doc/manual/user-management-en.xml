@@ -1186,40 +1186,39 @@ univention-director-manager users/user
 	</section>
 
     <section id="users:lastbind-overlay-module">
-        <title>Overlay module for detecting unused user accounts</title>
+        <title>Overlay module for recording an account's last successful LDAP bind</title>
 
         <caution>
         <para>
-			Before using this feature please read this <ulink url="https://help.univention.com/t/activating-the-lastbind-overlay-module/14404">support article about activating the <literal>lastbind</literal> overlay module</ulink>.
+			Before using this feature please read this <ulink url="https://help.univention.com/t/14404">support article about activating the OpenLDAP <literal>lastbind</literal> overlay module</ulink>.
         </para>
     	</caution>
 
         <para>
-			The optional <ulink url="http://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html"><literal>lastbind</literal> overlay module</ulink> for LDAP
+			The optional <ulink url="http://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html"><literal>lastbind</literal> overlay module</ulink> for OpenLDAP
 			allows recording the timestamp of the last successful LDAP bind in the <property>authTimestamp</property> attribute and can for example be used to detect unused accounts.
         </para>
 
         <para>
-			The <literal>lastbind</literal> overlay module can be activated with the &ucsUCRV; <envar>ldap/overlay/lastbind</envar>.
-			The &ucsUCRV; <envar>ldap/overlay/lastbind/precision</envar> can be used to configure how often the <property>authTimestamp</property> attribute is updated.
+			The <literal>lastbind</literal> overlay module can be activated by setting the &ucsUCRV; <envar>ldap/overlay/lastbind</envar> to <envar>yes</envar> and restarting the OpenLDAP server.
+			When the module is activated on an UCS server, a timestamp is written to the account's <property>authTimestamp</property> attribute when that account logs into the LDAP server.
+			The &ucsUCRV; <envar>ldap/overlay/lastbind/precision</envar> can be used to configure the time in seconds that has to pass before the <property>authTimestamp</property> attribute is updated.
+			This prevents large numbers of write operations which may penalize performance.
         </para>
 
         <para>
 			The <property>authTimestamp</property> attribute can only be queried on the LDAP server where the
 			<literal>lastbind</literal> overlay module is activated. It is not replicated to other LDAP servers.
-			Since the <property>authTimestamp</property> attribute is not replicated to all LDAP servers the
-			<package>univention-ldap</package> package provides the
-			<filename>/usr/share/univention-ldap/univention_lastbind.py</filename> script. This script will save the youngest
-			<property>authTimestamp</property> value from all reachable LDAP servers,
-			into the <property>lastbind</property> extended attribute of a specified user.
-			The script can also be invoked to update the <property>lastbind</property> extended attribute of all users.
+			The script <filename>/usr/share/univention-ldap/univention_lastbind.py</filename> can be executed to collect and save the youngest
+			<property>authTimestamp</property> value from all reachable LDAP servers in the UCS domain.
+			The script can be invoked to update the <property>lastbind</property> extended UDM attribute of one or all users, which maps to the <property>univentionAuthTimestamp</property> LDAP attribute.
         </para>
 
         <para>
 			One way to keep the <property>lastbind</property> extended attribute up-to-date is by creating a cron job via UCR:
         	<programlisting language="sh">
-ucr set cron/my_lastbind_cron_job/command='/usr/share/univention-ldap/univention_lastbind.py --allusers'
-ucr set cron/my_lastbind_cron_job/time='00 06 * * *'  # daily at 06:00 a.m.
+ucr set cron/update_lastbind_attribute/command='/usr/share/univention-ldap/univention_lastbind.py --allusers'
+ucr set cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m.
         	</programlisting>
         	More information on how to set cron jobs via UCR can be found in <xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>.
         </para>
