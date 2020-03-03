@@ -1211,7 +1211,7 @@ univention-director-manager users/user
 			<literal>lastbind</literal> overlay module is activated. It is not replicated to other LDAP servers.
 			For that reason the <filename>/usr/share/univention-ldap/univention_lastbind.py</filename> script
 			can be executed to collect the youngest <property>authTimestamp</property> value from all reachable
-			LDAP servers in the UCS domain and save it into the <property>lastbind</property> extended attribute of an user.
+			LDAP servers in the UCS domain and save it into the <property>lastbind</property> extended UDM attribute of an user.
 			The script can be invoked to update the <property>lastbind</property> extended attribute of one or all users.
 			The <property>lastbind</property> extended attribute maps to the <property>univentionAuthTimestamp</property> LDAP attribute.
         </para>
@@ -1219,8 +1219,8 @@ univention-director-manager users/user
         <para>
 			One way to keep the <property>lastbind</property> extended attribute up-to-date is by creating a cron job via UCR:
         	<programlisting language="sh">
-ucr set cron/update_lastbind_attribute/command='/usr/share/univention-ldap/univention_lastbind.py --allusers'
-ucr set cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m.
+ucr set cron/update_lastbind_attribute/command='/usr/share/univention-ldap/univention_lastbind.py --allusers' \
+        cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m.
         	</programlisting>
         	More information on how to set cron jobs via UCR can be found in <xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>.
         </para>
