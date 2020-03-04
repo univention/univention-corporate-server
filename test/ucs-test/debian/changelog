@@ -1,3 +1,9 @@
+ucs-test (9.0.3-165) unstable; urgency=medium
+
+  * Bug #50889: set roles for 60_umc/35_umc_diagnostics_old_schema_registration
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 04 Mar 2020 12:00:38 +0100
+
 ucs-test (9.0.3-164) unstable; urgency=medium
 
   * Bug #50492: Test kerberos hash sync

@@ -3,6 +3,8 @@
 ## tags:
 ##  - ldapextensions
 ##  - apptest
+## roles:
+##  - domaincontroller_master
 ## roles-not:
 ##  - basesystem
 ## packages:
