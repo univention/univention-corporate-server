@@ -1,4 +1,4 @@
-univention-ad-connector (13.0.0-23) unstable; urgency=medium
+univention-ad-connector (13.0.0-30) unstable; urgency=medium
 
   * Bug #50492: Sync kerberos hashes
 
