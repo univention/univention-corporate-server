@@ -1,3 +1,9 @@
+ucs-test (9.0.3-163) unstable; urgency=medium
+
+  * Bug #50492: Test kerberos hash sync
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 04 Mar 2020 10:12:19 +0100
+
 ucs-test (9.0.3-162) unstable; urgency=medium
 
   * Bug #50889: added test 60_umc/35_umc_diagnostics_old_schema_registration
