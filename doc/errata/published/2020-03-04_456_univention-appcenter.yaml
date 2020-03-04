@@ -9,3 +9,5 @@ desc: |
  * Added postgres pg_hba configuration for docker compose networks.
  * Installing certain Apps on a non-Master system did not work via UMC.
 bug: [50858, 50890]
+erratum: 456
+announced: 2020-03-04
