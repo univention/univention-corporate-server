@@ -59,12 +59,8 @@ def activate_lastbind_on_other_server(bindpwdfile, other_server):
 	yield
 	if lastbind:
 		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind=%s' % (lastbind,)])
-	else:
-		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'unset', 'ldap/overlay/lastbind'])
 	if precision:
 		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind/precision=%s' % (precision,)])
-	else:
-		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'unset', 'ldap/overlay/lastbind/precision'])
 	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
 
 
@@ -102,6 +98,7 @@ def failbinddn():
 def ucr():
 	with UCSTestConfigRegistry() as ucr:
 		yield ucr
+	handler_set(['ldap/overlay/lastbind=true'])
 
 
 @pytest.fixture(scope="module")
