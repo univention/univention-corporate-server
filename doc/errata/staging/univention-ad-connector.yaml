@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-ad-connector
-fix: 13.0.0-23A~4.4.0.202003041015
+fix: 13.0.0-30A~4.4.0.202003041103
 desc: |
  This update addresses the following issue:
  * The Ad-Connector is now able to sync kerberos hashes from the
