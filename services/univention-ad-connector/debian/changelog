@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-31) unstable; urgency=medium
+
+  * Bug #50630: Fix  Group members are replaced as whole instead of applying a diff
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 05 Mar 2020 09:36:59 +0100
+
 univention-ad-connector (13.0.0-30) unstable; urgency=medium
 
   * Bug #50492: Sync kerberos hashes
