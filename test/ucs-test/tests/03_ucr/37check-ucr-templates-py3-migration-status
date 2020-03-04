@@ -3,11 +3,25 @@
 ## tags:
 ##  - basic
 ##  - apptest
-## exposure: safe
-## versions:
-##  1.0-0: skip
-##  2.4-0: fixed
+## exposure: careful
 
+# Install dependencies: We decided to do this within this script, because we
+# can than simply delete it after the python3 migration has finished.  Note:
+# The debian python-coverage and python3-coverage binary packages install files
+# with that name under /usr/bin/ - whereas pip simply calls these binaries
+# coverage2 and coverage3
+if test -x /usr/bin/python2-coverage && test -x /usr/bin/python3-coverage; then
+    export PY2_COV=python2-coverage
+    export PY3_COV=python3-coverage
+else
+    pip install coverage
+    pip3 install coverage
+
+    export PY2_COV=coverage2
+    export PY3_COV=coverage3
+fi
+
+# safe the following awk script to disk:
 cat <<"AWK" > /tmp/check-between.awk 
 #!/usr/bin/env -S awk -f between.awk test.conf
 BEGIN {
@@ -20,7 +34,9 @@ BEGIN {
         "\n" "configRegistry.load()"                                        \
         "\n" "# for compatibility"                                          \
         "\n" "baseConfig = configRegistry"
+    exit_code = 0
 }
+END { exit exit_code }
 # if start is 0 and we found a @!@-line: set start
 !start && /@!@/ { start = 1 ; next }
 # if start is set (and we still are within a code section) and there comes a @!@
@@ -37,20 +53,25 @@ start && /@!@/ {
     # execute code coverage for python2. NOTE: debian has symlinked sh->dash,
     # awk uses sh to call any script, but we want bash
     cmd = "bash -c \"rm -f .coverage ;" \
-          "python2-coverage run --branch --timid --include /tmp/cover.py /tmp/cover.py" \
+          "$PY2_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
 	  "  &>/tmp/py2.out && echo \|✅ || echo \|❎" \
-          "; echo -n \| ; python2-coverage report | egrep -o [0-9]+%\$ || echo ❓ \""
+          "; echo -n \| ; $PY2_COV report | egrep -o [0-9]+%\$ || echo ❓ \""
     print code | cmd ; close(cmd)
     # same thing (coverage) for python3. NOTE: egrep finds within the
     # coverage report the only line ending with a percent value
     cmd = "bash -c \"rm -f .coverage ;" \
-          "python3-coverage run --branch --timid --include /tmp/cover.py /tmp/cover.py" \
+          "$PY3_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
 	  "  &>/tmp/py3.out && echo \|✅ || echo \|❎" \
-          "; echo -n \| ; python3-coverage report | egrep -o [0-9]+%\$ || echo ❓ \""
+          "; echo -n \| ; $PY3_COV report | egrep -o [0-9]+%\$ || echo ❓ \""
     print code | cmd ; close(cmd)
     # compare what output both runs produced and if diff returns with an exit
     # code unequal to zero it means that there were differences in both files
-    printf "|%s\n", (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") ? "❎" : "✅")
+    if (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") == 0) {
+        print "|✅"
+    } else {
+        print "|❎"
+        exit_code=127
+    }
     # separate table columns by a blank line
     print ""
     # reinit for next run...
@@ -65,13 +86,20 @@ start && /@!@/ {
 start { code = code "\n" $0 ; lines++ }
 AWK
 
-# print markdown table header. NOTE: the markdown dialect is asciidoctor,
-# because that allows table column definitions to span multiple lines
+# find all templates and create a markdown table. first prints the markdown
+# table header. NOTE: the markdown dialect is asciidoctor, because that allows
+# table column definitions to span multiple lines
 (
- echo "|==="
- echo "|section|filename|code lines|python2|coverage|python3|coverage|output identical"
- find /etc/univention/templates/ -type f -exec awk -f /tmp/check-between.awk '{}' \;
- echo "|==="
-) |& tee /tmp/output.md
+  echo "|==="
+  echo "|section|filename|code lines|python2|coverage|python3|coverage|output identical"
+  let total=0
+  let success=0
+  for F in $(find /etc/univention/templates/ -type f); do
+     let total=$(expr $total + 1)
+     awk -f /tmp/check-between.awk "$F" && let success=$(expr $success + 1)
+  done
+  echo "|==="
+  echo $success/$total successful
+) |& tee $0.md
 
 # vim:set ft=sh:awk:
