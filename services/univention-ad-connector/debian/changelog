@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-23) unstable; urgency=medium
+
+  * Bug #50492: Sync kerberos hashes
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 03 Mar 2020 17:36:35 +0100
+
 univention-ad-connector (13.0.0-29) unstable; urgency=medium
 
   * Bug #50674: add "$@" to prepare-new-instance

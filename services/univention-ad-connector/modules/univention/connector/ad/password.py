@@ -39,15 +39,30 @@ import hashlib
 import binascii
 import time
 
-from struct import pack
 from Crypto.Cipher import DES, ARC4
-
-from samba.dcerpc import drsuapi, lsa, misc, security
+import Crypto
+from samba.dcerpc import drsuapi, lsa, misc, security, drsblobs
 from samba.ndr import ndr_unpack
+from struct import pack
+import struct
+import traceback
 import samba.dcerpc.samr
+import heimdal
+
+
+class Krb5Context(object):
+
+	def __init__(self):
+		self.ctx = heimdal.context()
+		self.etypes = self.ctx.get_permitted_enctypes()
+		self.etype_ids = [et.toint() for et in self.etypes]
+
+
+krb5_context = Krb5Context()
 
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
+
 	# all arcfour-hmac-md5 keys begin this way
 	key = '0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
 
@@ -122,6 +137,76 @@ def decrypt(key, data, rid):
 	return binascii.hexlify(hash)
 
 
+def calculate_krb5keys(supplementalCredentialsblob):
+	spl = supplementalCredentialsblob
+	#cleartext_hex = None
+	keys = []
+	keytypes = []
+	kvno = 0
+	context = heimdal.context()
+#	for i in range(0, spl.sub.num_packages):
+#		pkg = spl.sub.packages[i]
+#		if pkg.name != "Primary:CLEARTEXT":
+#			continue
+#		cleartext_hex = pkg.data
+
+	krb5_old_hex = None
+
+	for i in range(0, spl.sub.num_packages):
+		pkg = spl.sub.packages[i]
+		if pkg.name != "Primary:Kerberos":
+			continue
+		krb5_old_hex = pkg.data
+
+	if krb5_old_hex is not None:
+		krb5_old_raw = binascii.a2b_hex(krb5_old_hex)
+		krb5_old = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb5_old_raw, allow_remaining=True)
+		assert krb5_old.version == 3
+		for k in krb5_old.ctr.keys:
+			if k.keytype not in keytypes:
+				ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr3.key.keytype: %s" % k.keytype)
+				try:
+					key = heimdal.keyblock_raw(context, k.keytype, k.value)
+					krb5SaltObject = heimdal.salt_raw(context, krb5_old.ctr.salt.string)
+					keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+					keytypes.append(k.keytype)
+				except:
+					if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+							ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, pkg.name))
+					else:
+						traceback.print_exc()
+						ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, pkg.name))
+
+	krb5_new_hex = None
+
+	for i in range(0, spl.sub.num_packages):
+		pkg = spl.sub.packages[i]
+		if pkg.name != "Primary:Kerberos-Newer-Keys":
+			continue
+		krb5_new_hex = pkg.data
+
+	if krb5_new_hex is not None:
+		krb_blob = binascii.unhexlify(krb5_new_hex)
+		krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+		assert krb.version == 4
+
+		for k in krb.ctr.keys:
+			if k.keytype not in keytypes:
+				ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ctr4.key.keytype: %s" % k.keytype)
+				try:
+					key = heimdal.keyblock_raw(context, k.keytype, k.value)
+					krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+					keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
+					keytypes.append(k.keytype)
+				except:
+					if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
+							ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, pkg.name))
+					else:
+						traceback.print_exc()
+						ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, pkg.name))
+	return keys
+
+
 def set_password_in_ad(connector, samaccountname, pwd):
 	_d = ud.function('ldap.ad.set_password_in_ad')  # noqa: F841
 
@@ -157,10 +242,31 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	return info
 
 
+def decrypt_supplementalCredentials(connector, spl_crypt):
+	assert len(spl_crypt) >= 20
+
+	confounder = spl_crypt[0:16]
+	enc_buffer = spl_crypt[16:]
+
+	m5 = hashlib.md5()
+	m5.update(connector.drs.user_session_key)
+	m5.update(confounder)
+	enc_key = m5.digest()
+
+	rc4 = Crypto.Cipher.ARC4.new(enc_key)
+	plain_buffer = rc4.decrypt(enc_buffer)
+
+	(crc32_v) = struct.unpack("<L", plain_buffer[0:4])
+	attr_val = plain_buffer[4:]
+	crc32_c = binascii.crc32(attr_val) & 0xffffffff
+	assert int(crc32_v[0]) == int(crc32_c), "CRC32 0x%08X != 0x%08X" % (crc32_v[0], crc32_c)
+
+	return ndr_unpack(drsblobs.supplementalCredentialsBlob, attr_val)
+
+
 def get_password_from_ad(connector, user_dn, reconnect=False):
 	_d = ud.function('ldap.ad.get_password_from_ad')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Read password from AD: %s" % user_dn)
-
 	nt_hash = None
 
 	if not connector.drs or reconnect:
@@ -181,6 +287,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
 		(level, ctr) = connector.drs.DsGetNCChanges(connector.drsuapi_handle, 8, req8)
 		rid = None
 		unicode_blob = None
+		keys = []
 		if ctr.first_object is None:
 			break
 		for i in ctr.first_object.object.attribute_ctr.attributes:
@@ -196,6 +303,13 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
 					for j in i.value_ctr.values:
 						unicode_blob = j.blob
 						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found unicodePwd blob")
+			if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.baseConfig.is_true('%s/ad/mapping/user/password/kerberos/enabled' % connector.CONFIGBASENAME, False):
+				if i.value_ctr.values:
+					for j in i.value_ctr.values:
+						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found supplementalCredentials blob")
+						spl = decrypt_supplementalCredentials(connector, j.blob)
+						keys = calculate_krb5keys(spl)
+
 		if rid and unicode_blob:
 			nt_hash = decrypt(connector.drs.user_session_key, unicode_blob, rid).upper()
 
@@ -204,7 +318,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
 
 	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: AD Hash: %s" % nt_hash)
 
-	return nt_hash
+	return nt_hash, keys
 
 
 def password_sync_ucs(connector, key, object):
@@ -352,7 +466,7 @@ def password_sync(connector, key, ucs_object):
 	if 'objectSid' in res[0][1]:
 		str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
-	ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
+	ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
 	sambaPwdLastSet = None
 	if 'sambaPwdLastSet' in ucs_result[0][1]:
@@ -383,16 +497,16 @@ def password_sync(connector, key, ucs_object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
 
 	try:
-		res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+		nt_hash, krb5Key = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
 	except Exception as e:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync: get_password_from_ad failed with %s, retry with reconnect" % str(e))
-		res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
+		nt_hash, krb5Key = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
 
-	if res:
+	if nt_hash:
 		ntPwd_ucs = ''
 		krb5Principal = ''
 
-		ntPwd = res
+		ntPwd = nt_hash
 		modlist = []
 
 		if 'sambaNTPassword' in ucs_result[0][1]:
@@ -401,6 +515,9 @@ def password_sync(connector, key, ucs_object):
 			krb5Principal = ucs_result[0][1]['krb5PrincipalName'][0]
 
 		pwd_changed = False
+		if krb5Key:
+			krb5Key_ucs = ucs_result[0][1]['krb5Key'][0]
+			modlist.append(('krb5Key', krb5Key_ucs, krb5Key))
 
 		if ntPwd.upper() != ntPwd_ucs.upper():
 			if ntPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
