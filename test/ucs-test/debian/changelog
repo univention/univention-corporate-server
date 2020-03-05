@@ -1,3 +1,9 @@
+ucs-test (9.0.3-169) unstable; urgency=medium
+
+  * Bug #49700: 110_univention_lastbind.py cleanup + test tracebacks
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 05 Mar 2020 17:04:23 +0100
+
 ucs-test (9.0.3-168) unstable; urgency=medium
 
   * Bug #49700: Explicitly use portnumber with -h in ldapsearch
