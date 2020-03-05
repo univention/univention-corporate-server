@@ -1,3 +1,9 @@
+ucs-test (9.0.3-168) unstable; urgency=medium
+
+  * Bug #49700: Explicitly use portnumber with -h in ldapsearch
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 05 Mar 2020 15:46:35 +0100
+
 ucs-test (9.0.3-167) unstable; urgency=medium
 
   * Bug #50897: fixed test 03_ucr/37check-ucr-templates-py3-migration-status
