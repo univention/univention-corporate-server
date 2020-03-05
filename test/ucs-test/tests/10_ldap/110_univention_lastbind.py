@@ -23,9 +23,9 @@ except ImportError:
 	univention_lastbind = imp.load_source('univention_lastbind', '/usr/share/univention-ldap/univention_lastbind.py')
 
 
-def is_role(role):
-	with UCSTestConfigRegistry() as ucr:
-		return ucr.get('server/role') == role
+#  def is_role(role):
+	#  with UCSTestConfigRegistry() as ucr:
+		#  return ucr.get('server/role') == role
 
 
 def get_other_servers():
@@ -40,41 +40,36 @@ def get_other_servers():
 
 
 def is_multi_domain():
-	return len(get_other_servers())
+	return len(get_other_servers()) > 0
 
 
 @pytest.fixture(scope="module")
 def other_server():
+	other_server = None
 	other_servers = get_other_servers()
-	idx = random.randrange(len(other_servers))
-	return other_servers[idx]
+	if other_servers:
+		idx = random.randrange(len(other_servers))
+		other_server = other_servers[idx]
+	print('other_server is: %s' % (other_server,))
+	return other_server
 
 
-@pytest.fixture
-def activate_lastbind_on_other_server(bindpwdfile, other_server):
-	lastbind = subprocess.check_output(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind']).strip()
-	precision = subprocess.check_output(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind/precision']).strip()
-	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'set', 'ldap/overlay/lastbind=true'])
-	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
-	yield
-	if lastbind:
-		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind=%s' % (lastbind,)])
-	if precision:
-		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'get', 'ldap/overlay/lastbind/precision=%s' % (precision,)])
-	subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
-
-
-@pytest.fixture
-def activate_lastbind(ucr):
+# Once the lastbind overlay module is activated it can't be deactivated again
+# since LDAP entries could now contain an authTimestamp attribute entry
+# but the schema for authTimestamp would no longer exist when lastbind
+# overlay is deactivatedd again.
+@pytest.fixture(scope="module")
+def activate_lastbind(bindpwdfile, other_server):
 	handler_set(['ldap/overlay/lastbind=true'])
 	subprocess.call(['service', 'slapd', 'restart'])
-	yield
-	subprocess.call(['service', 'slapd', 'restart'])
+	if other_server:
+		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'set', 'ldap/overlay/lastbind=true'])
+		subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
 
 
-@pytest.fixture
-def bindpwdfile(tmpdir):
-	path = tmpdir.join('bindpwdfile')
+@pytest.fixture(scope="module")
+def bindpwdfile(tmpdir_factory):
+	path = tmpdir_factory.mktemp('data').join('bindpwdfile')
 	path.write('univention')
 	return str(path)
 
@@ -98,7 +93,6 @@ def failbinddn():
 def ucr():
 	with UCSTestConfigRegistry() as ucr:
 		yield ucr
-	handler_set(['ldap/overlay/lastbind=true'])
 
 
 @pytest.fixture(scope="module")
@@ -123,46 +117,7 @@ def bind_for_timestamp(dn, host=None):
 	return timestamp
 
 
-#  @pytest.mark.skipif(is_role('domaincontroller_slave'), reason="domaincontroller_slave can't open admin connection to UDM")
-#  def test_setup_admin(univention_lastbind, capsys):
-	#  args = univention_lastbind.parse_args(['--setup'])
-	#  univention_lastbind.main(args)
-	#  assert univention_lastbind.is_setup_done()
-	#  univention_lastbind.main(args)
-	#  captured = capsys.readouterr()
-	#  assert 'already exists. Doing nothing.' in captured.out
-	#  univention_lastbind.undo_setup()
-	#  assert not univention_lastbind.is_setup_done()
-	#  univention_lastbind.undo_setup()
-	#  captured = capsys.readouterr()
-	#  assert 'does not exist. Doing nothing.' in captured.out
-
-
-#  def test_setup_credentials(univention_lastbind, binddn, bindpwdfile, capsys):
-	#  args = univention_lastbind.parse_args(['--setup', '--binddn', binddn, '--bindpwdfile', bindpwdfile])
-	#  univention_lastbind.main(args)
-	#  assert univention_lastbind.is_setup_done()
-	#  univention_lastbind.undo_setup(binddn, bindpwdfile)
-	#  assert not univention_lastbind.is_setup_done()
-
-
-#  def test_setup_with_wrong_bind(univention_lastbind, binddn, failbinddn, bindpwdfile, failbindpwdfile, ucr):
-	#  args = univention_lastbind.parse_args(['--setup', '--binddn', binddn])
-	#  with pytest.raises(univention_lastbind.ScriptError) as excinfo:
-		#  univention_lastbind.main(args)
-	#  assert '"binddn" provided but not "bindpwdfile".' in str(excinfo.value)
-
-	#  args = univention_lastbind.parse_args(['--setup', '--binddn', binddn, '--bindpwdfile', failbindpwdfile])
-	#  with pytest.raises(univention_lastbind.ScriptError) as excinfo:
-		#  univention_lastbind.main(args)
-	#  assert 'Could not open "bindpwdfile" "%s"' % (failbindpwdfile) in str(excinfo.value)
-
-	#  args = univention_lastbind.parse_args(['--setup', '--binddn', failbinddn, '--bindpwdfile', bindpwdfile])
-	#  with pytest.raises(univention_lastbind.ScriptError) as excinfo:
-		#  univention_lastbind.main(args)
-	#  assert 'Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s"' % (ucr.get('ldap/server/name'), failbinddn, bindpwdfile)
-
-
+#  univention_lastbind.py is not longer installed on slaves
 #  @pytest.mark.skipif(not is_role('domaincontroller_slave'), reason="Only domaincontroller_slave cannot create admin connection without binddn/bindpwdfile")
 #  def test_setup_on_slave_without_bind(univention_lastbind):
 	#  args = univention_lastbind.parse_args(['--setup'])
@@ -195,7 +150,7 @@ def test_save_timestamp(testudm, readudm, binddn, bindpwdfile, capsys):
 
 
 @pytest.mark.slow
-def test_main_single_server(binddn, bindpwdfile, testudm, readudm, activate_lastbind):
+def test_main_single_server(activate_lastbind, binddn, bindpwdfile, testudm, readudm):
 	o = readudm.obj_by_dn(testudm.create_user()[0])
 	assert o.props.lastbind is None
 	timestamp = bind_for_timestamp(o.dn)
@@ -208,7 +163,8 @@ def test_main_single_server(binddn, bindpwdfile, testudm, readudm, activate_last
 
 @pytest.mark.skipif(not is_multi_domain(), reason="Test only in multi domain")
 @pytest.mark.slow
-def test_main_multi_server(binddn, bindpwdfile, testudm, readudm, other_server, activate_lastbind, activate_lastbind_on_other_server):
+def test_main_multi_server(activate_lastbind, binddn, bindpwdfile, testudm, readudm, other_server):
+	assert other_server is not None
 	o = readudm.obj_by_dn(testudm.create_user()[0])
 	assert o.props.lastbind is None
 	local_timestamp = bind_for_timestamp(o.dn)
@@ -250,3 +206,20 @@ def test_invalid_user(binddn, bindpwdfile):
 	with pytest.raises(univention_lastbind.ScriptError) as excinfo:
 		univention_lastbind.main(args)
 	assert 'The provided user "%s" could not be found' % (user,) in str(excinfo.value)
+
+
+def test_tracebacks(binddn, failbinddn, bindpwdfile, failbindpwdfile, ucr):
+	args = univention_lastbind.parse_args(['--user', 'foo', '--binddn', binddn])
+	with pytest.raises(univention_lastbind.ScriptError) as excinfo:
+		univention_lastbind.main(args)
+	assert '"binddn" provided but not "bindpwdfile".' in str(excinfo.value)
+
+	args = univention_lastbind.parse_args(['--user', 'foo', '--binddn', binddn, '--bindpwdfile', failbindpwdfile])
+	with pytest.raises(univention_lastbind.ScriptError) as excinfo:
+		univention_lastbind.main(args)
+	assert 'Could not open "bindpwdfile" "%s"' % (failbindpwdfile) in str(excinfo.value)
+
+	args = univention_lastbind.parse_args(['--user', 'foo', '--binddn', failbinddn, '--bindpwdfile', bindpwdfile])
+	with pytest.raises(univention_lastbind.ScriptError) as excinfo:
+		univention_lastbind.main(args)
+	assert 'Could not connect to server "%s" with provided "binddn" "%s" and "bindpwdfile" "%s"' % (ucr.get('ldap/server/name'), failbinddn, bindpwdfile)
