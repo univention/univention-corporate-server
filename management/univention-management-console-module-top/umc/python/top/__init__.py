@@ -38,7 +38,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.log import MODULE
 
-from univention.management.console.modules.decorators import sanitize, simple_response
+from univention.management.console.modules.decorators import sanitize, simple_response, allow_get_request
 from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer, ListSanitizer, IntegerSanitizer
 
 _ = Translation('univention-management-console-module-top').translate
@@ -113,3 +113,7 @@ class Instance(Base):
 		if failed:
 			failed = ', '.join(failed)
 			raise UMC_Error(_('No process found with PID %s') % (failed))
+
+	@allow_get_request
+	def headers(self, request):
+		self.finished(request.id, request.headers)

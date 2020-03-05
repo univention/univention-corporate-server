@@ -1,3 +1,13 @@
+univention-management-console-module-top (8.0.1-4) unstable; urgency=medium
+
+  * Quick hack to show headers in umc module
+  test with:
+  '''
+  curl -H "X-company-special-header: is-known-worker" http://10.200.41.130/univention/command/top/header
+  '''
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 05 Mar 2020 12:50:27 +0100
+
 univention-management-console-module-top (8.0.1-3) unstable; urgency=medium
 
   * Bug #49158: migrate to dh_python

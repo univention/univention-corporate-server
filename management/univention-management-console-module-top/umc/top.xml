@@ -9,5 +9,6 @@
 		</categories>
 		<command name="top/query" function="query" />
 		<command name="top/kill" function="kill" />
+		<command name="top/headers" function="headers" allow_anonymous="true"/>
 	</module>
 </umc>
