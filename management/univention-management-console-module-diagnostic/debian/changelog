@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-48) unstable; urgency=medium
+
+  * Bug #50889: Finding a not yet registered file is a warning, not critical
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Mar 2020 10:38:11 +0100
+
 univention-management-console-module-diagnostic (5.0.1-47) unstable; urgency=medium
 
   * Bug #50889: Add 60_old_schema_registration

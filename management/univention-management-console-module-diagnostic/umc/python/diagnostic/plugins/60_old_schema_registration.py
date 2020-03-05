@@ -5,7 +5,7 @@ import os.path
 import subprocess
 
 from univention.management.console.config import ucr
-from univention.management.console.modules.diagnostic import Critical, ProblemFixed, MODULE
+from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed, MODULE
 
 from univention.udm import UDM, NoObject
 
@@ -76,7 +76,7 @@ def run(_umc_instance):
 
 	if unregistered:
 		MODULE.error(description + repr(unregistered))
-		raise Critical(description + '\n' + _('The following files seem to be registered in the old way:') + '\n * ' + '\n * '.join(unregistered), buttons=[{
+		raise Warning(description + '\n' + _('The following files seem to be registered in the old way:') + '\n * ' + '\n * '.join(unregistered), buttons=[{
 			'action': 'register_schema',
 			'label': _('Register Schema files'),
 		}])
