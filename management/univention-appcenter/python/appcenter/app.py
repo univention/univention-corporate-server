@@ -743,6 +743,10 @@ class App(object):
 			*app_report_object_type*.
 		docker_image: Docker Image for the container. If specified the
 			App implicitly becomes a Docker App.
+		docker_inject_env_file: For Multi-Container Docker Apps, this
+			attribute specifies whether the (optional) environment file
+			shall be injected into the main, all or no services in the
+			docker compose file.
 		docker_main_service: For Multi-Container Docker Apps, this
 			attribute specifies the main service in the compose
 			file. This service's container will be used to run
@@ -921,6 +925,7 @@ class App(object):
 	app_report_attribute_filter = AppAttribute()
 
 	docker_image = AppAttribute()
+	docker_inject_env_file = AppAttribute()
 	docker_main_service = AppAttribute()
 	docker_migration_works = AppBooleanAttribute()
 	docker_migration_link = AppAttribute()

@@ -207,6 +207,7 @@ class Docker(object):
 		self.logger = logger or _logger
 		self.container = ucr_get(self.app.ucr_container_key)
 		self._root_dir = None
+		self.env_file_created = None
 
 	def inspect_image(self):
 		return inspect(self.image)
@@ -449,6 +450,7 @@ class MultiDocker(Docker):
 
 	def pull(self):
 		self._setup_yml(recreate=True)
+		self._setup_env()
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
@@ -543,9 +545,36 @@ class MultiDocker(Docker):
 					used_ports[self.app.docker_main_service][container_port] = host_port
 		for service_name, ports in used_ports.iteritems():
 			content['services'][service_name]['ports'] = ['%s:%s' % (host_port, container_port) for container_port, host_port in ports.iteritems()]
+		if self.env_file_created and self.app.docker_inject_env_file is not None:
+			for service_name, service in content['services'].iteritems():
+				if (self.app.docker_inject_env_file == 'main' and service_name == self.app.docker_main_service) or (self.app.docker_inject_env_file == 'all'):
+					if service.get('env_file'):
+						if self.env_file_created not in service['env_file']:
+							service['env_file'].append(self.env_file_created)
+					else:
+						service['env_file'] = list()
+						service['env_file'].append(self.env_file_created)
 		with open(yml_file, 'wb') as fd:
 			yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)
 		shutil.copy2(yml_file, yml_run_file)  # "backup"
+
+	def _setup_env(self, env=None):
+		if os.path.exists(self.app.get_cache_file('env')) and self.app.docker_inject_env_file:
+			env_file_name = '{}.env'.format(self.app.id)
+			env_file = os.path.join(self.app.get_compose_dir(), env_file_name)
+			# remove old env file
+			try:
+				os.remove(env_file)
+			except OSError:
+				pass
+			# create new env file
+			fd = os.open(env_file, os.O_RDWR | os.O_CREAT)
+			os.chmod(env_file, 0o400)
+			with os.fdopen(fd, 'w') as outfile:
+				with open(self.app.get_cache_file('env'), 'r') as infile:
+					outfile.write(ucr_run_filter(infile.read(), env))
+					outfile.write('\n')
+			self.env_file_created = env_file_name
 
 	def create(self, hostname, env):
 		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems() if v is not None}
@@ -554,6 +583,7 @@ class MultiDocker(Docker):
 		else:
 			env = {shell_safe(k).upper(): v for k, v in env.iteritems()}
 		self._setup_yml(recreate=True, env=env)
+		self._setup_env(env=env)
 		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		if ret != 0:
 			raise DockerCouldNotStartContainer(out_up)
