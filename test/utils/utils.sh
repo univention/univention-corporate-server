@@ -568,6 +568,12 @@ run_adconnector_tests () {
 	run_tests -s checks -s adconnector "$@"
 }
 
+run_adconnector_and_s4connector_tests () {
+	# Test if the failed Jenkins test are timing issues
+	sed -i 's|AD_ESTIMATED_MAX_COMPUTATION_TIME=3|AD_ESTIMATED_MAX_COMPUTATION_TIME=16|' /usr/share/ucs-test/55_adconnector/adconnector.sh
+	run_tests -s checks -s adconnector -s samba4 -s s4connector -s end "$@"
+}
+
 run_win_member_gpo_tests () {
 	run_tests -r windows_gpo_test "$@"
 }
