@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-appcenter
+fix: 8.0.11-116A~4.4.0.202003051011
+desc: |
+ This update addresses the following issue(s):
+ * Added DockerInjectEnvFile parameter for env file support in
+   docker compose apps.
+bug: [50898]
