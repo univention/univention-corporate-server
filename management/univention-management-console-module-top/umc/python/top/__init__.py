@@ -114,6 +114,6 @@ class Instance(Base):
 			failed = ', '.join(failed)
 			raise UMC_Error(_('No process found with PID %s') % (failed))
 
-	@allow_get_request
+	@allow_get_request(xsrf_check=True, referer_check=True)
 	def headers(self, request):
 		self.finished(request.id, request.headers)
