@@ -14,5 +14,5 @@ desc: |
    timestamp of a successful bind to an LDAP server. The 
    '/usr/share/univention-ldap/univention_lastbind.py' script can be used to
    store the youngest of these timestamps, from all reachable LDAP servers,
-   into the 'lastbind' extended attribute of an specified user. 
+   into the 'lastbind' extended attribute of a specified user. 
 bug: [50616, 49700]
