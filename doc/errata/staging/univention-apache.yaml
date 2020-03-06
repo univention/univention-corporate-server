@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-apache
+fix: 11.0.1-15A~4.4.0.202003061526
+desc: |-
+  This update addresses the following issue(s):
+  * Make the package univention-apache-vhost a dependency of univention-apache
+    rather than a recommendation. This way it gets installed by default; some
+    Apps rely on it.
+bug: [50901]
