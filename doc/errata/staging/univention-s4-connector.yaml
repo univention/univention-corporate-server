@@ -11,4 +11,4 @@ desc: |
    setting the new UCR variable
    connector/ad/mapping/user/password/kerberos/enabled=true
    If this Variable is not set, the hashes will not be synced.
-bug: [50429]
+bug: [50492]

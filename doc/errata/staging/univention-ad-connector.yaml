@@ -14,4 +14,4 @@ desc: |
  * When syncing group members, the AD Connector now only
    adds/deletes the edited members instead of replacing the
    whole list of members in that group.
-bug: [50429, 50630]
+bug: [50492, 50630]
