@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-32) unstable; urgency=medium
+
+  * Bug #50492: Code cleanup
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 08 Mar 2020 16:39:06 +0100
+
 univention-ad-connector (13.0.0-31) unstable; urgency=medium
 
   * Bug #50630: Fix  Group members are replaced as whole instead of applying a diff
