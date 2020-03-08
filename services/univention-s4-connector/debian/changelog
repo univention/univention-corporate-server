@@ -1,3 +1,10 @@
+univention-s4-connector (13.0.2-65) unstable; urgency=medium
+
+  * Bug #50492: Fill missing des-cbc-crc with dummy hash, since samba needs
+    the number of "old" hashes to be exactly 2
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 08 Mar 2020 16:22:00 +0100
+
 univention-s4-connector (13.0.2-64) unstable; urgency=medium
 
   * Bug #50644: Fix another self.group_members_cache_ucs type initialization

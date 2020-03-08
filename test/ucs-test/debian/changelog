@@ -1,3 +1,9 @@
+ucs-test (9.0.3-170); urgency=medium
+
+  * Bug #50492: Adjust testcase for kerberos hash sync
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 08 Mar 2020 16:21:22 +0100
+
 ucs-test (9.0.3-169) unstable; urgency=medium
 
   * Bug #49700: 110_univention_lastbind.py cleanup + test tracebacks
