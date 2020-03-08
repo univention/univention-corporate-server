@@ -2,16 +2,13 @@ product: ucs
 release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
-src: univention-ad-connector
-fix: 13.0.0-32A~4.4.0.202003081641
+src: univention-s4-connector
+fix: 13.0.2-65A~4.4.0.202003081635
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * The Ad-Connector is now able to sync kerberos hashes from the
    Active Directory to the UCS LDAP-Server. This can be enabled by
    setting the new UCR variable
    connector/ad/mapping/user/password/kerberos/enabled=true
    If this Variable is not set, the hashes will not be synced.
- * When syncing group members, the AD Connector now only
-   adds/deletes the edited members instead of replacing the
-   whole list of members in that group.
-bug: [50429, 50630]
+bug: [50429]
