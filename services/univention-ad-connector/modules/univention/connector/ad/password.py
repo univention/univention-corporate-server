@@ -50,17 +50,6 @@ import samba.dcerpc.samr
 import heimdal
 
 
-class Krb5Context(object):
-
-	def __init__(self):
-		self.ctx = heimdal.context()
-		self.etypes = self.ctx.get_permitted_enctypes()
-		self.etype_ids = [et.toint() for et in self.etypes]
-
-
-krb5_context = Krb5Context()
-
-
 def nt_password_to_arcfour_hmac_md5(nt_password):
 
 	# all arcfour-hmac-md5 keys begin this way
@@ -392,22 +381,22 @@ def password_sync_ucs(connector, key, object):
 
 	pwd_set = False
 	try:
-		pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+		nt_hash, krb5Key = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
 	except Exception as e:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % str(e))
-		pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
+		nt_hash, krb5Key = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
 
-	if not pwd_ad:
+	if not nt_hash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: No password hash could be read from AD")
 	res = ''
 
-	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s" % (pwd_ad, pwd))
-	if not pwd == pwd_ad:
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s" % (nt_hash, pwd))
+	if not pwd == nt_hash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD and Hash UCS differ")
 		pwd_set = True
 		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
 
-	if not pwd_set or pwd_ad:
+	if not pwd_set or nt_hash:
 		newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
 		# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
 		# password expired, must be changed on next login
@@ -515,9 +504,6 @@ def password_sync(connector, key, ucs_object):
 			krb5Principal = ucs_result[0][1]['krb5PrincipalName'][0]
 
 		pwd_changed = False
-		if krb5Key:
-			krb5Key_ucs = ucs_result[0][1]['krb5Key'][0]
-			modlist.append(('krb5Key', krb5Key_ucs, krb5Key))
 
 		if ntPwd.upper() != ntPwd_ucs.upper():
 			if ntPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
@@ -529,6 +515,9 @@ def password_sync(connector, key, ucs_object):
 					connector.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'krb5Key', nt_password_to_arcfour_hmac_md5(ntPwd.upper()))])
 
 		if pwd_changed:
+			if krb5Key:
+				krb5Key_ucs = ucs_result[0][1]['krb5Key'][0]
+				modlist.append(('krb5Key', krb5Key_ucs, krb5Key))
 
 			connector.lo.lo.modify_s(univention.connector.ad.compatible_modstring(ucs_object['dn']), [(ldap.MOD_REPLACE, 'userPassword', '{K5KEY}')])
 
