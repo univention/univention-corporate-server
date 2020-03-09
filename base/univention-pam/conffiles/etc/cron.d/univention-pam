@@ -8,7 +8,7 @@ if not configRegistry.is_true('nss/group/cachefile', False):
 	disabled = '# '
 interval = configRegistry.get('nss/group/cachefile/invalidate_interval', '30 3 * * *')
 check_member = ''
-if configRegistry.is_true('nss/group/cachefile/check_member', True):
+if configRegistry.is_true('nss/group/cachefile/check_member', False):
 	check_member = '--check_member'
 if interval == 'disabled':
 	print '# /usr/lib/univention-pam/ldap-group-to-file.py is disabled via UCR variable nss/group/cachefile/invalidate_interval'
