@@ -1,3 +1,9 @@
+univention-pam (12.0.2-8) unstable; urgency=medium
+
+  * Bug #50904: change check_member default
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 09 Mar 2020 10:56:17 +0100
+
 univention-pam (12.0.2-7) unstable; urgency=medium
 
   * Bug #50191: Change default value of nss/group/cachefile/invalidate_interval in postinst
