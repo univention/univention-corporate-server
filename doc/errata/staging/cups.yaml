@@ -1,0 +1,17 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: cups
+fix: 2.2.1-8+deb9u5A~4.3.5.202003091522
+desc: |
+ This update addresses the following issue:
+ * In array_find of array.c, there is a possible out-of-bounds read due to an
+   incorrect bounds check. This could lead to local information disclosure in
+   the printer spooler with no additional execution privileges needed. User
+   interaction is not needed for exploitation.Product: AndroidVersions:
+   Android-8.0 Android-8.1 Android-9 Android-10Android ID: A-111210196
+   (CVE-2019-2228)
+bug: [50907]
+cve:
+- CVE-2019-2228
