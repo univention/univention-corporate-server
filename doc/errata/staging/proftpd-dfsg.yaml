@@ -1,0 +1,21 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: proftpd-dfsg
+fix: 1.3.5b-4+deb9u4
+desc: |
+ This update addresses the following issues:
+ * An issue was discovered in tls_verify_crl in ProFTPD through 1.3.6b. A
+   dereference of a NULL pointer may occur. This pointer is returned by the
+   OpenSSL sk_X509_REVOKED_value() function when encountering an empty CRL
+   installed by a system administrator. The dereference occurs when validating
+   the certificate of a client connecting to the server in a TLS client/server
+   mutual-authentication setup. (CVE-2019-19269)
+ * In ProFTPD 1.3.7, it is possible to corrupt the memory pool by interrupting
+   the data transfer channel. This triggers a use-after-free in alloc_pool in
+   pool.c, and possible remote code execution. (CVE-2020-9273)
+bug: [50917]
+cve:
+- CVE-2019-19269
+- CVE-2020-9273
