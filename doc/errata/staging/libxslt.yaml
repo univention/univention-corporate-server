@@ -6,7 +6,7 @@ src: libxslt
 fix: 1.1.29-2.1+deb9u2
 desc: |
  This update addresses the following issue:
- * use after free in xsltCopyText in transform.c could lead to information
+ * Use after free in xsltCopyText in transform.c could lead to information
    disclosure (CVE-2019-18197)
 bug: [50864]
 cve:
