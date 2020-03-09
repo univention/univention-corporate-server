@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: libxslt
+fix: 1.1.29-2.1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * use after free in xsltCopyText in transform.c could lead to information
+   disclosure (CVE-2019-18197)
+bug: [50925]
+cve:
+- CVE-2019-18197
