@@ -19,8 +19,7 @@ desc: |
    application to the Linux Kernel. No user interaction is required to exploit
    this vulnerability, however exploitation does require either the
    installation of a malicious local application or a separate vulnerability
-   in a network facing application.Product: AndroidAndroid ID: A-141720095
-   (CVE-2019-2215)
+   in a network facing application. (CVE-2019-2215)
  * CIFS: Relative paths injection in directory entry lists (CVE-2019-10220)
  * NULL pointer dereference in dlpar_parse_cc_property in
    arch/powerrc/platforms/pseries/dlpar.c causing denial of service
