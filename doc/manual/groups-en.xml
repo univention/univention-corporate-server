@@ -314,11 +314,11 @@
 		</para>
 
 		<para>
-		  When the group cache file is being generated, the script verifies whether the group
-		  members are still present in the LDAP directory. If only &ucsUMC; is used for user
-		  management, this additional check is not necessary and can be
-		  disabled by setting the &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
-		  <literal>false</literal>.
+		  When the group cache file is being generated, the script can verify whether the group
+		  members are still present in the LDAP directory. If not only &ucsUMC; is used for user
+		  management, this additional check can be can be enabled by setting the
+		  &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
+		  <literal>true</literal>.
 		</para>
 	</section>
 
