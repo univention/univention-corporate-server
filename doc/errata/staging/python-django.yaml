@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: python-django
+fix: 1:1.10.7-2+deb9u8
+desc: |
+ This update addresses the following issue:
+ * potential SQL injection via StringAgg(delimiter) (CVE-2020-7471)
+bug: [50915]
+cve:
+- CVE-2020-7471
