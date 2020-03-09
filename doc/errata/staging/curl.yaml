@@ -8,8 +8,8 @@ desc: |
  This update addresses the following issues:
  * TFTP receive heap buffer overflow in tftp_receive_packet() function
    (CVE-2019-5436)
- * double free due to subsequent call of realloc() (CVE-2019-5481)
- * heap buffer overflow in function tftp_receive_packet() (CVE-2019-5482)
+ * Double free due to subsequent call of realloc() (CVE-2019-5481)
+ * Heap buffer overflow in function tftp_receive_packet() (CVE-2019-5482)
 bug: [50877]
 cve:
 - CVE-2019-5436
