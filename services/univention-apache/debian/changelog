@@ -1,3 +1,9 @@
+univention-apache (11.0.1-16) unstable; urgency=medium
+
+  * Bug #50901: Break circular dependency
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Mar 2020 10:55:10 +0100
+
 univention-apache (11.0.1-15) unstable; urgency=medium
 
   * Bug #50901: Make univention-apache-vhost a dependency rather than a

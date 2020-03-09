@@ -28,10 +28,11 @@ Description: UCS - Apache2 configuration
 Package: univention-apache-vhost
 Architecture: all
 Depends: ${misc:Depends},
- univention-apache,
  python-click,
  python-univention-directory-manager,
  univention-ssl
+Suggests:
+ univention-apache
 Description: UCS - Apache2 vhost
  This packages provides a tool to add virtual hosts to
  Apache web server.
