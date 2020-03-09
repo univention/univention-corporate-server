@@ -3,10 +3,10 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: python-pysaml2
-fix: 3.0.0-5+deb9u1A~4.4.3.202002271527
+fix: 3.0.0-5+deb9u1A~4.4.3.2020031032
 desc: |
  This update addresses the following issue:
- * does not check that the signature in a SAML document is enveloped
+ * Does not check that the signature in a SAML document is enveloped
    (CVE-2020-5390)
 bug: [50860]
 cve:
