@@ -1,0 +1,18 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: pillow
+fix: 4.0.0-4+deb9u1
+desc: |
+ This update addresses the following issues:
+ * uncontrolled resource consumption in FpxImagePlugin.py (CVE-2019-19911)
+ * improperly restricted operations on memory buffer in libImaging/PcxDecode.c
+   (CVE-2020-5312)
+ * out-of-bounds read in ImagingFliDecode when loading FLI images
+   (CVE-2020-5313)
+bug: [50928]
+cve:
+- CVE-2019-19911
+- CVE-2020-5312
+- CVE-2020-5313
