@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: libidn
+fix: 1.33-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * Integer overflow in puny_decode.c/decode_digit (CVE-2017-14062)
+bug: [50916]
+cve:
+- CVE-2017-14062
