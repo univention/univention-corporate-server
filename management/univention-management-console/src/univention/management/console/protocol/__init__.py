@@ -163,8 +163,14 @@ Authentication request
 
 ::
 
-	REQUEST/130928961341733-1/147/application/json: AUTH
+	REQUEST/130928961341733-1/47/application/json: AUTH
 	{"username": "root", "password": "univention"}
+
+	REQUEST/130928961341733-2/705/application/json: SET
+	{"options":{"locale":"de_DE.UTF-8","credentials":{"auth_type":null,"user_dn":"uid=Administrator,cn=users,dc=test,dc=local","username":"Administrator","password":"univention"},"commands":{"description":"Overview of processes on the local system","translationId":"","keywords":["process","Process overview"],"id":"top","categories":["system"],"icon":null,"flavors":[],"commands":[{"allow_anonymous":false,"method":"query","name":"top/query"},{"allow_anonymous":false,"method":"kill","name":"top/kill"}],"name":"Process overview","url":null,"priority":50.0,"required_commands":[],"version":"8.0.1-3A~4.4.0.201910141206"},"acls":[{"fromUser":false,"flavor":"*","command":"top/*","host":"dc0","options":{}}]}}
+
+	REQUEST/130928961341733-3/16/application/json: COMMAND top/query
+	{"options": {}}
 
 Request: Search for users
 =========================
