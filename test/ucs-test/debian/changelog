@@ -1,3 +1,9 @@
+ucs-test (9.0.3-172) unstable; urgency=medium
+
+  * Bug #50897: improved 03_ucr/37check-ucr-templates-py3-migration-status
+
+ -- Max Christian Pohle <pohle@univention.de>  Wed, 10 Mar 2020 09:45:00 +0100
+
 ucs-test (9.0.3-171) unstable; urgency=medium
 
   * Bug #50910: Use appbox:4.4-3

@@ -3,23 +3,23 @@
 ## tags:
 ##  - basic
 ##  - apptest
-## exposure: careful
+##  - python3
+## exposure: dangerous
+
+# hard coded lowest number of successful tests below which this test fails
+export SUCCESS_MIN=125
+
+
+# Start markdown generation
+echo "= Template migration status ="
+echo "date $(date)"
+echo ""
 
 # Install dependencies: We decided to do this within this script, because we
-# can than simply delete it after the python3 migration has finished.  Note:
-# The debian python-coverage and python3-coverage binary packages install files
-# with that name under /usr/bin/ - whereas pip simply calls these binaries
-# coverage2 and coverage3
-if test -x /usr/bin/python2-coverage && test -x /usr/bin/python3-coverage; then
-    export PY2_COV=python2-coverage
-    export PY3_COV=python3-coverage
-else
-    pip install coverage
-    pip3 install coverage
-
-    export PY2_COV=coverage2
-    export PY3_COV=coverage3
-fi
+# can than simply delete it after the python3 migration has finished.
+echo "== $0: Dependencies =="
+which pip2 && pip2 -q install coverage || exit 1
+which pip3 && pip3 -q install coverage || exit 1
 
 # safe the following awk script to disk:
 cat <<"AWK" > /tmp/check-between.awk 
@@ -34,46 +34,54 @@ BEGIN {
         "\n" "configRegistry.load()"                                        \
         "\n" "# for compatibility"                                          \
         "\n" "baseConfig = configRegistry"
-    exit_code = 0
+    exit_code = 127
 }
 END { exit exit_code }
 # if start is 0 and we found a @!@-line: set start
 !start && /@!@/ { start = 1 ; next }
+# skip disclaimer message in UCR templates (only matters if @%@UCRWARNING@%@ is
+# used within a python code block, enclosed by @!@)
+/@%@UCRWARNING=# @%@/ { next }
 # if start is set (and we still are within a code section) and there comes a @!@
 start && /@!@/ {
     section++
-    # filename
-    print "|" section
-    print "|" ARGV[1]
-    # number of lines contained
-    print "|" lines
     # write header and code into a file
-    system("rm -f /tmp/cover.py")
     print preamble "\n" code > "/tmp/cover.py" ; close("/tmp/cover.py")
     # execute code coverage for python2. NOTE: debian has symlinked sh->dash,
     # awk uses sh to call any script, but we want bash
-    cmd = "bash -c \"rm -f .coverage ;" \
-          "$PY2_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
-	  "  &>/tmp/py2.out && echo \|✅ || echo \|❎" \
-          "; echo -n \| ; $PY2_COV report | egrep -o [0-9]+%\$ || echo ❓ \""
-    print code | cmd ; close(cmd)
+    system("rm -f .coverage")
+    system("bash -c \"python2 -m coverage run /tmp/cover.py" \
+           "  &>/tmp/py2.out && printf '|%-8s' '✅' || printf '|%-8s' '❎' ;\"")
+    system("printf '|%-9s' $(python2 -m coverage report | grep cover.py | egrep -o [0-9]+%\$ || echo 0%)")
     # same thing (coverage) for python3. NOTE: egrep finds within the
     # coverage report the only line ending with a percent value
-    cmd = "bash -c \"rm -f .coverage ;" \
-          "$PY3_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
-	  "  &>/tmp/py3.out && echo \|✅ || echo \|❎" \
-          "; echo -n \| ; $PY3_COV report | egrep -o [0-9]+%\$ || echo ❓ \""
-    print code | cmd ; close(cmd)
+    system("rm -f .coverage")
+    system("bash -c \"python3 -m coverage run /tmp/cover.py" \
+           "  &>/tmp/py3.out && printf '|%-8s' '✅' || printf '|%-8s' '❎' ;\"")
+    system("printf '|%-9s' $(python3 -m coverage report | grep cover.py | egrep -o [0-9]+%\$ || echo 0%)")
     # compare what output both runs produced and if diff returns with an exit
     # code unequal to zero it means that there were differences in both files
     if (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") == 0) {
-        print "|✅"
+        printf "|%-13s", "✅"
+        exit_code=0
     } else {
-        print "|❎"
-        exit_code=127
+        printf "|%-13s", "❎"
+		exit_code = 127
     }
-    # separate table columns by a blank line
+
+    # number of lines contained
+    printf "|%-12d", lines
+    # the package that installed the file
+    printf "|%s", package
+    # the code section
+    printf "|% 6d", section
+    # filename
+    FILE=ARGV[1]
+    gsub("/etc/univention/templates/", "", FILE)
+	printf "|%s", FILE
+    # separate table rows with a blank line
     print ""
+
     # reinit for next run...
     code = ""
     lines = 0
@@ -89,17 +97,31 @@ AWK
 # find all templates and create a markdown table. first prints the markdown
 # table header. NOTE: the markdown dialect is asciidoctor, because that allows
 # table column definitions to span multiple lines
+
+
+export SUCCESS=0
+export TOTAL=0
+
+echo ""
+echo ".Migration status"
+echo "|==="
+echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|section|path"
 (
-  echo "|==="
-  echo "|section|filename|code lines|python2|coverage|python3|coverage|output identical"
   let total=0
   let success=0
   for F in $(find /etc/univention/templates/ -type f); do
      let total=$(expr $total + 1)
-     awk -f /tmp/check-between.awk "$F" && let success=$(expr $success + 1)
+     PACKAGE=$(dpkg -S "$F" 2>/dev/null | cut -d: -f1)
+     if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
+	   let success=$(expr $success + 1)
+     fi
   done
   echo "|==="
-  echo $success/$total successful
-) |& tee $0.md
+  echo ""
+  echo "== Summary =="
+  echo $success/$total successful. limit: $SUCCESS_MIN.
+  exit $(test $success -ge $SUCCESS_MIN)
+) | tee /var/log/univention/$0.md
+exit ${PIPESTATUS[0]}
 
 # vim:set ft=sh:awk:
