@@ -1,0 +1,21 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: clamav
+fix: 0.102.1+dfsg-0+deb9u2A~4.3.5.202003091522
+desc: |
+ This update addresses the following issue:
+ * A vulnerability in the email parsing module Clam AntiVirus (ClamAV)
+   Software versions 0.102.0, 0.101.4 and prior could allow an
+   unauthenticated, remote attacker to cause a denial of service condition on
+   an affected device. The vulnerability is due to inefficient MIME parsing
+   routines that result in extremely long scan times of specially formatted
+   email files. An attacker could exploit this vulnerability by sending a
+   crafted email file to an affected device. An exploit could allow the
+   attacker to cause the ClamAV scanning process to scan the crafted email
+   file indefinitely, resulting in a denial of service condition.
+   (CVE-2019-15961)
+bug: [50909]
+cve:
+- CVE-2019-15961
