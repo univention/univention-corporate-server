@@ -10,7 +10,7 @@ desc: |
    (CVE-2020-6796)
  * Incorrect parsing of template tag could result in JavaScript injection
    (CVE-2020-6798)
- * Memory safety bugs fixed in Firefox 73 and Firefox ESR 68.5 (CVE-2020-6800)
+ * Memory safety bugs (CVE-2020-6800)
 bug: [50912]
 cve:
 - CVE-2020-6796
