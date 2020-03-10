@@ -444,6 +444,7 @@ class Instance(umcm.Base, ProgressMixin):
 		serious_problems = False
 		if function == 'upgrade':
 			_original_app = app
+			# TODO support app_id=version
 			app = Apps().find_candidate(app)
 		if app is None:
 			# Bug #44384: Under mysterious circumstances, app may be None after the .find_candidate()
@@ -529,7 +530,10 @@ class Instance(umcm.Base, ProgressMixin):
 			function = 'remove'
 
 		app_id = request.options.get('application')
-		app = Apps().find(app_id)
+		app_version = None
+		if '=' in app_id:
+			app_id, app_version = tuple(app_id.split('=', 1))
+		app = Apps().find(app_id, app_version=app_version)
 		if app is None:
 			raise umcm.UMC_Error(_('Could not find an application for %s') % (app_id,))
 		force = request.options.get('force')
@@ -594,6 +598,7 @@ class Instance(umcm.Base, ProgressMixin):
 			can_continue = False
 		if can_continue and not only_master_packages:
 			if function == 'upgrade':
+				# TODO support app_id=version
 				app = Apps().find_candidate(app)
 			if app is None:
 				forbidden, warnings = {'must_have_candidate': False}, {}

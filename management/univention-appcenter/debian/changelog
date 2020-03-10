@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-117) unstable; urgency=medium
+
+  * Bug #50931: support app_id=version for install in
+    umc docker_invoke/invoke
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Mar 2020 17:33:20 +0100
+
 univention-appcenter (8.0.11-116) unstable; urgency=medium
 
   * Bug #50898: added DockerInjectEnvFile parameter for env file
