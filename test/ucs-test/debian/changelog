@@ -1,3 +1,10 @@
+ucs-test (9.0.3-173) unstable; urgency=medium
+
+  * Bug #50931: install newest published (or given) version in
+    univention.testing.apptest.appcenter.install_newest()
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Mar 2020 17:35:26 +0100
+
 ucs-test (9.0.3-172) unstable; urgency=medium
 
   * Bug #50897: improved 03_ucr/37check-ucr-templates-py3-migration-status

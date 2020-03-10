@@ -10,9 +10,11 @@ import sys
 import importlib
 import tempfile
 import shutil
+import requests
 from http.client import HTTPConnection
 
 logger = logging.getLogger(__name__)
+PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-catalog.json'
 
 
 def run_test_file(fname):
@@ -309,7 +311,15 @@ else:
 				self.client = client
 
 			def install_newest(self, app_id):
+				app_version = None
+				if '=' in app_id:
+					app_id, app_version = tuple(app_id.split('=', 1))
+				else:
+					app_version = self.get_published_version(app_id)
 				app = self.get(app_id)
+				# overwright version with published or given version
+				if app_version:
+					app['version'] = app_version
 				app_function = None
 				if app['is_installed']:
 					logger.info('App already installed')
@@ -322,18 +332,18 @@ else:
 				if not app_function:
 					return app
 				if app['docker_image'] or app['docker_main_service']:
-					logger.info('Installing Docker App')
+					logger.info('Installing Docker App {}={}'.format(app_id, app['version']))
 					response = self.client.umc_command('appcenter/docker/invoke', {
-						'app': app_id,
+						'app': '{}={}'.format(app_id, app['version']),
 						'function': app_function,
 						'force': True,
 					})
 					progress_id = response.result['id']
 					progress_command = 'appcenter/docker/progress'
 				else:
-					logger.info('Installing Non-Docker App')
+					logger.info('Installing Non-Docker App {}={}'.format(app_id, app['version']))
 					response = self.client.umc_command('appcenter/invoke', {
-						'application': app_id,
+						'application': '{}={}'.format(app_id, app['version']),
 						'function': app_function,
 						'only_dry_run': False,
 					})
@@ -354,6 +364,14 @@ else:
 				app = self.get(app_id)
 				assert app['is_installed']
 				return app
+
+			def get_published_version(self, app_id):
+				logger.info('Retrieving published App {}'.format(app_id))
+				r = requests.get(PROVIDER_PORTAL_JSON)
+				for app in r.json():
+					if app_id == app['id']:
+						return app['version']
+				return None
 
 			def get(self, app_id):
 				logger.info('Retrieving App {}'.format(app_id))
