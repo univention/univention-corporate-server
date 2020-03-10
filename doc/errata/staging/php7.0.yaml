@@ -8,9 +8,9 @@ desc: |
  This update addresses the following issues:
  * PHP DirectoryIterator class accepts filenames with embedded \0 byte and
    treats them as terminating at that byte (CVE-2019-11045)
- * OOB read in bc_shift_addsub (CVE-2019-11046)
- * information disclosure in exif_read_data() (CVE-2019-11047)
- * out-of-bounds read when parsing EXIF information (CVE-2019-11050)
+ * Out-of-bounds read in bc_shift_addsub (CVE-2019-11046)
+ * Information disclosure in exif_read_data() (CVE-2019-11047)
+ * Out-of-bounds read when parsing EXIF information (CVE-2019-11050)
  * Out of bounds read in php_strip_tags_ex (CVE-2020-7059)
  * Global buffer-overflow in mbfl_filt_conv_big5_wchar function
    (CVE-2020-7060)
