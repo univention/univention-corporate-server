@@ -220,7 +220,7 @@ man_pages = [
 epub_title = u'Univention Management Console'
 epub_author = u'Univention GmbH'
 epub_publisher = u'Univention GmbH'
-epub_copyright = u'2012, Univention GmbH'
+epub_copyright = u'2012-2020, Univention GmbH'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

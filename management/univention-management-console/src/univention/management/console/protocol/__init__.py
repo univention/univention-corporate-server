@@ -87,52 +87,66 @@ Message header
 ==============
 
 The header defines the message type, a unique identifier, the length of
-the message body in bytes, the command and the mime type of the body. ::
+the message body in bytes, the command and the MIME type of the body. ::
 
 	(REQUEST|RESPONSE)/<id>/<length of body>[/<mime-type>]: <command>[ <arguments>]
 
-By the first keyword the message type is defined. Supported message
-types are *REQUEST* and *RESPONSE*. Any other type will be
-ignored. Separated by a ''/'' the message id follows that must be unique
-within a communication channel. By default it consists of a timestamp
-and a counter. The next field is a number defining the length of the
-body in bytes. Starting to count after the empty line. Since *UMCP 2.0*
-there is as another field specifying the mime type of the body. If not
-given the guessed value for the mime type is application/json. If
-the body can not be decoded using a json parser the message is invalid.
+The message contains the following parts:
 
-The last two fields define the UMCP command that should be executed by
-the server. The following commands are supported:
+MESSAGE TYPE
+	By the first keyword the message type is defined. Supported message
+	types are *REQUEST* and *RESPONSE*. Any other type will be
+	ignored.
 
-AUTH
-	sends an authentication request. It must be the first command send
-	by the client. All commands send before a successful authentication
-	are rejected.
+ID
+	Separated by a `/` the message id follows that must be unique
+	within a communication channel. By default it consists of a timestamp
+	and a counter.
 
-GET
-	is used to retrieve information from the UMC server, e.g. a list of
-	all UMC modules available in this session.
+LENGTH
+	The next field is a number defining the length of the
+	body in bytes. Starting to count after the empty line.
 
-SET
-	is used to define settings for the session, e.g. the language.
+MIME TYPE
+	Since *UMCP 2.0* there is as another field specifying the MIME type of the body. If not
+	given the guessed value for the MIME type is application/json. If
+	the body can not be decoded using a JSON parser the message is invalid.
 
 COMMAND
-	This command is used to pass requests to UMC modules. Each
-	module defines a set of commands that it implements. The UMC module
-	command is defined by the first argument in the UMCP header, e.g. a
-	request like ::
+	The last two fields define the UMCP command that should be executed by
+	the server. The following commands are supported:
 
-		REQUEST/123423423-01/42/application/json: COMMAND ucr/query
+	AUTH
+		sends an authentication request. It must be the first command send
+		by the client. All commands send before a successful authentication
+		are rejected.
+		This is no longer true and the `AUTH` command can be replaced by a `SET`
+		command to set information about the user and other details.
 
-	passes on the module command ucr/query to a UMC module.
+	GET
+		is used to retrieve information from the UMC server, e.g. a list of
+		all UMC modules available in this session.
+
+	SET
+		is used to define settings for the session, e.g. the language.
+
+	COMMAND
+		This command is used to pass requests to UMC modules. Each
+		module defines a set of commands that it implements. The UMC module
+		command is defined by the first argument in the UMCP header, e.g. a
+		request like ::
+
+			REQUEST/123423423-01/42/application/json: COMMAND ucr/query
+
+		passes on the module command ucr/query to a UMC module.
 
 
 Message body
 ============
 
 The message body may contain one object of any type, e.g. an image, an
-open office document or JSON, which is the default type and is the only
-supported mime type for request messages. It contains a dictionary that
+Open Office document or JSON, which is the default type and is the only
+supported MIME type for `REQUEST` messages. It contains a dictionary that
 has a few pre-defined keys (for both message types):
 
 options
@@ -163,8 +177,19 @@ Authentication request
 
 ::
 
-	REQUEST/130928961341733-1/147/application/json: AUTH
+	REQUEST/130928961341733-1/47/application/json: AUTH
 	{"username": "root", "password": "univention"}
+
+	REQUEST/130928961341733-2/705/application/json: SET
+	{"options":{"locale":"de_DE.UTF-8","credentials":{"auth_type":null,"user_dn":"uid=Administrator,cn=users,dc=test,dc=local","username":"Administrator","password":"univention"},"commands":{"description":"Overview of processes on the local system","translationId":"","keywords":["process","Process overview"],"id":"top","categories":["system"],"icon":null,"flavors":[],"commands":[{"allow_anonymous":false,"method":"query","name":"top/query"},{"allow_anonymous":false,"method":"kill","name":"top/kill"}],"name":"Process overview","url":null,"priority":50.0,"required_commands":[],"version":"8.0.1-3A~4.4.0.201910141206"},"acls":[{"fromUser":false,"flavor":"*","command":"top/*","host":"dc0","options":{}}]}}
+
+Request: Run `top` query
+========================
+
+::
+
+	REQUEST/130928961341733-3/16/application/json: COMMAND top/query
+	{"options": {}}
 
 Request: Search for users
 =========================

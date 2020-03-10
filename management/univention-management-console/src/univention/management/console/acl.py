@@ -42,18 +42,22 @@ UMC ACLs are defined by creating *UMC operation set* objects that are added
 to *UMC policies*. These policies can be connected with users or
 groups.
 
-An *UMC operation set* consists of a list of UMC command patterns like ::
+An *UMC operation set* consists of a list of UMC command patterns like
+
+.. code-block:: none
 
 	udm/* objectType=nagios/*
 
-This specifies that all commands hat match the pattern *udm/\** can be
+This specifies that all commands hat match the pattern `udm/\*` can be
 called if the option *objectType* is given and the value matches the
-pattern *nagios/\**.
+pattern `nagios/\*`.
 
 Patterns for commands and options may just use the asterik and know no
 other wildcards. For options there is one additional format allowed to
 specify that the option may not exist. Therefore the following format is
-used ::
+used
+
+.. code-block:: none
 
 	udm/* !objectType
 """
