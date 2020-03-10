@@ -555,12 +555,9 @@ class Instance(Base):
 	@staticmethod
 	def create_token(length):
 		# remove easily confusable characters
-		chars = string.ascii_letters.replace("l", "").replace("I", "").replace("O", "") + "".join(map(str, range(2, 10)))
+		chars = ''.join(set(string.ascii_letters) | set(string.digits) - {"0", "O", "1", "I", "l"})
 		rand = random.SystemRandom()
-		res = ""
-		for _ in range(length):
-			res += rand.choice(chars)
-		return res
+		return ''.join(rand.choice(chars) for _ in range(length))
 
 	def send_message(self, username, method, address, token):
 		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
