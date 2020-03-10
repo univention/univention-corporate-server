@@ -126,7 +126,7 @@ class IP_Iter(object):
 	def __iter__(self):
 		return self
 
-	def next(self):
+	def __next__(self):
 		if self.index < self.max_range:
 			ip_list = [
 				self.index,
@@ -139,6 +139,8 @@ class IP_Iter(object):
 			return ip
 		else:
 			raise StopIteration()
+
+	next = __next__  # Python 2
 
 
 def random_ip(ip_iter=IP_Iter()):

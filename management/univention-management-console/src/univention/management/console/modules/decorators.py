@@ -460,7 +460,7 @@ class RequestOptionsIterator(object):
 		self.current = 0
 		return self
 
-	def next(self):
+	def __next__(self):
 		if self:
 			values = self.everything[self.current]
 			self.current += 1
@@ -470,6 +470,8 @@ class RequestOptionsIterator(object):
 				return [values[name] for name in self.names]
 		else:
 			raise StopIteration
+
+	next = __next__  # Python 2
 
 
 def arginspect(function):
