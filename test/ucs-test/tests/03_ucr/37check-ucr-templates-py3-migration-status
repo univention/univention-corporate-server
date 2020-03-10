@@ -7,7 +7,7 @@
 ## exposure: dangerous
 
 # hard coded lowest number of successful tests below which this test fails
-export SUCCESS_MIN=125
+export SUCCESS_MIN=8
 
 
 # Start markdown generation
