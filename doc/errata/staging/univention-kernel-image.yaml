@@ -2,8 +2,8 @@ product: ucs
 release: "4.3"
 version: [5]
 scope: ucs_4.3-0-errata4.3-5
-src: linux
-fix: 4.9.210-1
+src: univention-kernel-image
+fix: 11.0.1-14A~4.3.0.202003100755
 desc: |
  This updates the Linux kernel to version 4.9.210, which addresses (among
  others) the following security issues:
@@ -144,7 +144,7 @@ desc: |
  * In binder_thread_release of binder.c, there is a possible use after free
    due to a race condition. This could lead to local escalation of privilege
    with no additional execution privileges needed. (CVE-2020-0030)
-note: This is the 1st of three related updates.
+note: This is the 3rd of three related updates.
 bug: [50923]
 cve:
 - CVE-2018-13093
