@@ -8,9 +8,9 @@ desc: |
  This update addresses the following issues:
  * Floating point exception vulnerability in openjpeg2 when processing
    untrusted images (CVE-2016-9112)
- * integer overflow in function opj_get_encoding_parameters in openjp2/pi.c
+ * Integer overflow in function opj_get_encoding_parameters in openjp2/pi.c
    (CVE-2018-20847)
- * heap buffer overflow in color_apply_icc_profile in bin/common/color.c
+ * Heap buffer overflow in color_apply_icc_profile in bin/common/color.c
    (CVE-2018-21010)
 bug: [50918]
 cve:
