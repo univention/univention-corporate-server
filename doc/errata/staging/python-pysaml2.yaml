@@ -6,7 +6,7 @@ src: python-pysaml2
 fix: 3.0.0-5+deb9u1A~4.3.5.202003091522
 desc: |
  This update addresses the following issue:
- * does not check that the signature in a SAML document is enveloped
+ * Does not check that the signature in a SAML document is enveloped
    (CVE-2020-5390)
 bug: [50908]
 cve:
