@@ -7,19 +7,17 @@ fix: 8u242-b08-1~deb9u1
 desc: |
  This update addresses the following issues:
  * Incorrect exception processing during deserialization in BeanContextSupport
-   (Serialization, 8224909) (CVE-2020-2583)
- * Improper checks of SASL message properties in GssKrb5Base (Security,
-   8226352) (CVE-2020-2590)
+   (CVE-2020-2583)
+ * Improper checks of SASL message properties in GssKrb5Base (CVE-2020-2590)
  * Incorrect isBuiltinStreamHandler check causing URL normalization issues
-   (Networking, 8228548) (CVE-2020-2593)
- * Use of unsafe RSA-MD5 checksum in Kerberos TGS (Security, 8229951)
-   (CVE-2020-2601)
+   (CVE-2020-2593)
+ * Use of unsafe RSA-MD5 checksum in Kerberos TGS (CVE-2020-2601)
  * Serialization filter changes via jdk.serialFilter property modification
-   (Serialization, 8231422) (CVE-2020-2604)
+   (CVE-2020-2604)
  * Excessive memory usage in OID processing in X.509 certificate parsing
-   (Libraries, 8234037) (CVE-2020-2654)
+   (CVE-2020-2654)
  * Incomplete enforcement of maxDatagramSockets limit in DatagramChannelImpl
-   (Networking, 8231795) (CVE-2020-2659)
+   (CVE-2020-2659)
 bug: [50927]
 cve:
 - CVE-2020-2583
