@@ -5,18 +5,14 @@ scope: ucs_4.3-0-errata4.3-5
 src: postgresql-9.6
 fix: 9.6.17-0+deb9u1
 desc: |
- This update addresses the following issue:
-
- * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
-
- * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
-
- * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
-
- * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
-
- * 9.6.16-0+deb9u1 (Mon, 18 Nov 2019 11:25:55 +0100) * New upstream version.
- * postgresql-9.6 (CVE-2020-1720)
+ This updates PostreSQL to version 9.6.17, which among others addresses the
+ following security issue:
+ * Add missing permissions checks for `ALTER ... DEPENDS ON EXTENSION`.
+   Marking an object as dependent on an extension did not have any privilege
+   check whatsoever. This oversight allowed any user to mark routines,
+   triggers, materialized views, or indexes as droppable by anyone able to
+   drop an extension. Require that the calling user own the specified object
+   (and hence have privilege to drop it). (CVE-2020-1720)
 bug: [50914]
 cve:
 - CVE-2020-1720
