@@ -42,10 +42,10 @@ from textwrap import dedent, wrap
 
 from univention.config_registry import ConfigRegistry, handler_commit, handler_set
 import univention.updater.repository as urepo
+from univention.lib.ucs import UCS_Version
 from univention.updater.mirror import UniventionMirror, makedirs
 from univention.updater.errors import UpdaterException, VerificationError
 from univention.updater.locking import UpdaterLock
-from univention.updater.ucs_version import UCS_Version
 
 configRegistry = ConfigRegistry()
 configRegistry.load()

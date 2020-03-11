@@ -365,6 +365,9 @@
 			<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+					The implementations of <classname>UCS_Version</classname> in <package>univention-updater</package> has been merged into the implementation in <package>univention-lib</package> (<u:bug>32821</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

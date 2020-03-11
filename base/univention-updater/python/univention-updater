@@ -67,12 +67,12 @@ except ImportError:
     import univention.debug2 as ud
 
 from univention.config_registry import ConfigRegistry
+from univention.lib.ucs import UCS_Version
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
-from univention.updater.ucs_version import UCS_Version
 from univention.updater.tools import UniventionUpdater, LocalUpdater
 from univention.updater.locking import UpdaterLock
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
