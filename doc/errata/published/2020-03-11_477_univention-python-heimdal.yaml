@@ -10,3 +10,5 @@ desc: |
  * Fix many memory leaks, memory corruption and segmentation faults.
  * Improve error messages.
 bug: [50475, 49383, 38736]
+erratum: 477
+announced: 2020-03-11
