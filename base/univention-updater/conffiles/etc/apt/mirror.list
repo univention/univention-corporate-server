@@ -12,7 +12,7 @@ set recreate_packages @%@repository/mirror/recreate_packages@%@
 @!@
 import sys
 import traceback
-from univention.updater.ucs_version import UCS_Version
+from univention.lib.ucs import UCS_Version
 from univention.updater.mirror import UniventionMirror
 
 try:
