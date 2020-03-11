@@ -596,6 +596,28 @@ if six.PY2:  # deprecated, use layout.Tab instead
 
 if six.PY2:  # deprecated, use layout.Group instead
 	class field:
+		"""
+		>>> field('bar') < field('foo')
+		True
+		>>> field('bar') <= field('foo')
+		True
+		>>> field('bar') == field('foo')
+		False
+		>>> field('bar') != field('foo')
+		True
+		>>> field('bar') >= field('foo')
+		False
+		>>> field('bar') > field('foo')
+		False
+		>>> field('registry') < field('foo')
+		True
+		>>> field('registry') <= field('foo')
+		True
+		>>> field('registry') >= field('foo')
+		False
+		>>> field('registry') > field('foo')
+		False
+		"""
 
 		def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
 			self.property = property
