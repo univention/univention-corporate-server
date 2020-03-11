@@ -142,6 +142,31 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 
 	"""
 	UCS version.
+
+	>>> UCSVersion(1) < UCSVersion(2)
+	True
+	>>> UCSVersion(1) < UCSVersion(1)
+	False
+	>>> UCSVersion(1) <= UCSVersion(1)
+	True
+	>>> UCSVersion(2) <= UCSVersion(1)
+	False
+	>>> UCSVersion(1) == UCSVersion(1)
+	True
+	>>> UCSVersion(1) == UCSVersion(2)
+	False
+	>>> UCSVersion(1) != UCSVersion(2)
+	True
+	>>> UCSVersion(1) != UCSVersion(1)
+	False
+	>>> UCSVersion(1) >= UCSVersion(1)
+	True
+	>>> UCSVersion(1) >= UCSVersion(2)
+	False
+	>>> UCSVersion(2) > UCSVersion(1)
+	True
+	>>> UCSVersion(1) > UCSVersion(1)
+	False
 	"""
 	RE_VERSION = re.compile("^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 	_CONVERTER = {
