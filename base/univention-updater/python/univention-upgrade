@@ -40,13 +40,13 @@ import traceback
 import logging
 import socket
 
+from univention.lib.ucs import UCS_Version
 from univention.config_registry import ConfigRegistry, handler_set
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS, UPDATE_FINISHED_FAILURE
 
 from univention.updater.errors import ConfigurationError
-from univention.updater.ucs_version import UCS_Version
 from univention.updater.tools import UniventionUpdater
 from univention.updater.locking import UpdaterLock
 
