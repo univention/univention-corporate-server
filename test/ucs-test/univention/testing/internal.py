@@ -245,26 +245,23 @@ class UCSVersion(object):  # pylint: disable-msg=R0903
 	def __repr__(self):
 		return '%s(%r)' % (self.__class__.__name__, self.__str__(),)
 
-	def __cmp__(self, other):
-		return cmp(self.ver, other.ver)  # noqa: F821
-
-	def __eq__(self, other):
-		return self.ver == other.ver
-
-	def __ne__(self, other):
-		return self.ver != other.ver
-
 	def __lt__(self, other):
-		return self.ver < other.ver
+		return self.ver < other.ver if isinstance(other, UCSVersion) else NotImplemented
 
 	def __le__(self, other):
-		return self.ver <= other.ver
+		return self.ver <= other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-	def __gt__(self, other):
-		return self.ver > other.ver
+	def __eq__(self, other):
+		return self.ver == other.ver if isinstance(other, UCSVersion) else NotImplemented
+
+	def __ne__(self, other):
+		return self.ver != other.ver if isinstance(other, UCSVersion) else NotImplemented
 
 	def __ge__(self, other):
-		return self.ver >= other.ver
+		return self.ver >= other.ver if isinstance(other, UCSVersion) else NotImplemented
+
+	def __gt__(self, other):
+		return self.ver > other.ver if isinstance(other, UCSVersion) else NotImplemented
 
 	def match(self, other):
 		"""
