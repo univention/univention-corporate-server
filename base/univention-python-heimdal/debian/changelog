@@ -1,3 +1,9 @@
+univention-python-heimdal (9.0.0-4) unstable; urgency=low
+
+  * Bug #50475: Fix Python 3 support
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Mar 2020 11:53:11 +0100
+
 univention-python-heimdal (9.0.0-3) unstable; urgency=low
 
   * Bug #50475: Add Python 3 support

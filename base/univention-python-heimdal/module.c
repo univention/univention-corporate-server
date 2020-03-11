@@ -158,7 +158,11 @@ static PyObject * moduleinit(void) {
 		if (PyType_Ready(type->type) < 0)
 			return NULL;
 		Py_INCREF(type->type);
-		PyModule_AddObject(module, type->name, (PyObject *)type->type);
+		if (PyModule_AddObject(module, type->name, (PyObject *)type->type) < 0) {
+			Py_DECREF(module);
+			Py_DECREF(type->type);
+			return NULL;
+		}
 	}
 
 	const_init(module);
