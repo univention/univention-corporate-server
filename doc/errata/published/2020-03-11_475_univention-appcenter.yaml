@@ -11,3 +11,5 @@ desc: |
  * Added support for 'app_id=version' in the app parameter for
    the UMC app install functions.
 bug: [50898, 50931]
+erratum: 475
+announced: 2020-03-11
