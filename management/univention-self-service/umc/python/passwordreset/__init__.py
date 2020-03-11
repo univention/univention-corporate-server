@@ -461,31 +461,7 @@ class Instance(Base):
 
 		if len(user[plugin.udm_property]) > 0:
 			# found contact info
-			try:
-				token_from_db = self.db.get_one(username=username)
-			except MultipleTokensInDB as e:
-				# this should not happen, delete all tokens
-				MODULE.error("send_token(): {}".format(e))
-				self.db.delete_tokens(username=username)
-				token_from_db = None
-
-			token = self.create_token(plugin.token_length)
-			if token_from_db:
-				# replace with fresh token
-				MODULE.info("send_token(): Updating token for user '{}'...".format(username))
-				self.db.update_token(username, method, token)
-			else:
-				# store a new token
-				MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
-				self.db.insert_token(username, method, token)
-			try:
-				self.send_message(username, method, user[plugin.udm_property], token)
-			except:
-				MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
-					method=method, username=username))
-				self.db.delete_tokens(username=username)
-				raise
-			raise UMC_Error(_("Successfully send token.").format(method), status=200)
+			self.send_message(username, method, user[plugin.udm_property])
 
 		# no contact info
 		raise MissingContactInformation()
@@ -562,14 +538,46 @@ class Instance(Base):
 			res += rand.choice(chars)
 		return res
 
-	def send_message(self, username, method, address, token):
-		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
+	def send_message(self, username, method, address):
+		plugin = self._get_send_plugin(method)
+		try:
+			token_from_db = self.db.get_one(username=username)
+		except MultipleTokensInDB as e:
+			# this should not happen, delete all tokens
+			MODULE.error("send_token(): {}".format(e))
+			self.db.delete_tokens(username=username)
+			token_from_db = None
+
+		token = self.create_token(plugin.token_length)
+		if token_from_db:
+			# replace with fresh token
+			MODULE.info("send_token(): Updating token for user '{}'...".format(username))
+			self.db.update_token(username, method, token)
+		else:
+			# store a new token
+			MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
+			self.db.insert_token(username, method, token)
+		try:
+			self._call_send_msg_plugin(username, method, address, token)
+		except Exception:
+			MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
+				method=method, username=username))
+			self.db.delete_tokens(username=username)
+			raise
+		raise UMC_Error(_("Successfully send token.").format(method), status=200)
+
+	def _get_send_plugin(self, method):
 		try:
 			plugin = self.send_plugins[method]
 			if not plugin.is_enabled:
 				raise KeyError
 		except KeyError:
 			raise UMC_Error("Method not allowed!", status=403)
+		return plugin
+
+	def _call_send_msg_plugin(self, username, method, address, token):
+		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
+		plugin = self._get_send_plugin(method)
 
 		plugin.set_data({
 			"username": username,
