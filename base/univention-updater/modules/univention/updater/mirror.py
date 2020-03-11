@@ -40,8 +40,8 @@ import logging
 from operator import itemgetter
 
 from .tools import UniventionUpdater
-from .ucs_version import UCS_Version
 from .repo_url import UcsRepoUrl
+from univention.lib.ucs import UCS_Version
 try:
     import univention.debug as ud
 except ImportError:

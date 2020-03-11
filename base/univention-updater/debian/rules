@@ -58,7 +58,6 @@ override_dh_installinit:
 override_dh_auto_test:
 	# doctest
 	PYTHONPATH=modules python2.7 -m univention.updater.locking -v
-	PYTHONPATH=modules python2.7 -m univention.updater.ucs_version -v
 	PYTHONPATH=modules python2.7 -m univention.updater.repo_url -v
 	PYTHONPATH=modules python2.7 -m univention.updater.tools -v
 	PYTHONPATH=modules python2.7 -m univention.updater.mirror -v
