@@ -89,13 +89,14 @@ class UCSTestDomainAdminCredentials(object):
 	This class fetches the username, the LDAP bind DN and the password
 	for a domain admin user account from UCR. The account may be used for testing.
 
-	>>> account = UCSTestDomainAdminCredentials()
+	>>> dummy_ucr = {'ldap/base': 'dc=example,dc=com', 'tests/domainadmin/pwdfile': '/dev/null'}
+	>>> account = UCSTestDomainAdminCredentials(ucr=dummy_ucr)
 	>>> account.username
 	'Administrator'
 	>>> account.binddn
 	'uid=Administrator,cn=users,dc=example,dc=com'
 	>>> account.bindpw
-	'univention'
+	''
 	"""
 
 	def __init__(self, ucr=None):
@@ -297,12 +298,12 @@ def restart_firewall():
 
 class AutomaticListenerRestart(object):
 	"""
-	Automatically restart Univention Directory Listener when leaving the "with" block.
+	Automatically restart Univention Directory Listener when leaving the "with" block::
 
-	>>> with AutomaticListenerRestart() as alr:
-	>>> 	with ucr_test.UCSTestConfigRegistry() as ucr:
-	>>> 		# set some ucr variables, that influence the Univention Directory Listener
-	>>> 		univention.config_registry.handler_set(['foo/bar=ding/dong'])
+	    with AutomaticListenerRestart() as alr:
+	        with ucr_test.UCSTestConfigRegistry() as ucr:
+	            # set some ucr variables, that influence the Univention Directory Listener
+	            univention.config_registry.handler_set(['foo/bar=ding/dong'])
 	"""
 
 	def __enter__(self):
@@ -316,23 +317,23 @@ class AutoCallCommand(object):
 
 	"""
 	Automatically call the given commands when entering/leaving the "with" block.
-	The keyword arguments enter_cmd and exit_cmd are optional.
+	The keyword arguments enter_cmd and exit_cmd are optional::
 
-	>>> with AutoCallCommand(
-	>>> 		enter_cmd=['/etc/init.d/dovecot', 'reload'],
-	>>> 		exit_cmd=['/etc/init.d/dovecot', 'restart']) as acc:
-	>>> 	with ucr_test.UCSTestConfigRegistry() as ucr:
-	>>> 		# set some ucr variables, that influence the Univention Directory Listener
-	>>> 		univention.config_registry.handler_set(['foo/bar=ding/dong'])
+	    with AutoCallCommand(
+	            enter_cmd=['/etc/init.d/dovecot', 'reload'],
+	            exit_cmd=['/etc/init.d/dovecot', 'restart']) as acc:
+	        with ucr_test.UCSTestConfigRegistry() as ucr:
+	            # set some ucr variables, that influence the Univention Directory Listener
+	            univention.config_registry.handler_set(['foo/bar=ding/dong'])
 
 	In case some filedescriptors for stdout/stderr have to be passed to the executed
-	command, they may be passed as kwarg:
+	command, they may be passed as kwarg::
 
-	>>> with AutoCallCommand(
-	>>> 		enter_cmd=['/etc/init.d/dovecot', 'reload'],
-	>>> 		exit_cmd=['/etc/init.d/dovecot', 'restart'],
-	>>> 		stderr=open('/dev/zero', 'w')) as acc:
-	>>> 	pass
+	    with AutoCallCommand(
+	            enter_cmd=['/etc/init.d/dovecot', 'reload'],
+	            exit_cmd=['/etc/init.d/dovecot', 'restart'],
+	            stderr=open('/dev/zero', 'w')) as acc:
+	        pass
 	"""
 
 	def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None):
@@ -362,17 +363,17 @@ class FollowLogfile(object):
 	an exception occurred.
 	Set always=True to also print them without exception.
 	You may wish to make the server flush its logs before existing the
-	with block. Use AutoCallCommand inside the block for that.
+	with block. Use AutoCallCommand inside the block for that::
 
-	>>> with FollowLogfile(logfiles=['/var/log/syslog', '/var/log/mail.log']) as flf:
-	>>> 	with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
-	>>> 		exit_cmd=['doveadm', 'log', 'reopen']) as acc:
-	>>> 		...
+	    with FollowLogfile(logfiles=['/var/log/syslog', '/var/log/mail.log']) as flf:
+	        with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
+	            exit_cmd=['doveadm', 'log', 'reopen']) as acc:
+	            pass
 
-	>>> with FollowLogfile(logfiles=['/var/log/syslog'], always=True) as flf:
-	>>> 	with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
-	>>> 		exit_cmd=['doveadm', 'log', 'reopen']) as acc:
-	>>> 		...
+	    with FollowLogfile(logfiles=['/var/log/syslog'], always=True) as flf:
+	        with utils.AutoCallCommand(enter_cmd=['doveadm', 'log', 'reopen'],
+	            exit_cmd=['doveadm', 'log', 'reopen']) as acc:
+	            pass
 	"""
 
 	def __init__(self, logfiles=None, always=False):

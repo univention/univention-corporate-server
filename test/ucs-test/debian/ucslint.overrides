@@ -1,5 +1,6 @@
 # Invalid domain name
 0002-3: debian/changelog
+0002-3: debian/rules
 # Generic python version
 0009-2: bin/ldiff
 0009-2: bin/runner
