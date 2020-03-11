@@ -11,3 +11,5 @@ desc: |-
    properly if they were added to the system using an outdated installation
    mechanism.
 bug: [50889]
+erratum: 476
+announced: 2020-03-11
