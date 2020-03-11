@@ -804,6 +804,7 @@ if __name__ == '__main__':
 	import doctest
 	print(doctest.testmod())
 
+if __name__ == '__disabled__':
 	ucr = univention.testing.ucr.UCSTestConfigRegistry()
 	ucr.load()
 

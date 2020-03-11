@@ -46,6 +46,17 @@ override_dh_install:
 
 override_dh_auto_test:
 	./lint
+	python -m univention.testing.data -v
+	python -m univention.testing.errors -v
+	python -m univention.testing.format/html -v
+	python -m univention.testing.format/jenkins -v
+	python -m univention.testing.format/junit -v
+	python -m univention.testing.format/tap -v
+	python -m univention.testing.format/text -v
+	python -m univention.testing.internal -v
+	python -m univention.testing.ldif --test-internal -v
+	python -m univention.testing.udm -v
+	python -m univention.testing.utils -v
 
 override_dh_auto_build:
 	dh-umc-module-build
