@@ -31,6 +31,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+try:
+	from typing import List, Tuple, Union
+except ImportError:
+	pass
 
 
 class UCS_Version(object):
@@ -58,14 +62,32 @@ class UCS_Version(object):
 		>>> UCS_Version(v) == v
 		True
 		"""
-		if isinstance(version, (tuple, list)) and len(version) == 3:
-			self.major, self.minor, self.patchlevel = map(int, version)
-		elif isinstance(version, str):
+		if isinstance(version, (tuple, list)):
+			self.mmp = map(int, version)
+		elif isinstance(version, basestring):
 			self.set(version)
 		elif isinstance(version, UCS_Version):
-			self.major, self.minor, self.patchlevel = version.major, version.minor, version.patchlevel
+			self.mmp = version.mmp
 		else:
 			raise TypeError("not a tuple, list or string")
+
+	@property
+	def mm(self):
+		"""
+		2-tuple (major, minor) version
+		"""
+		return (self.major, self.minor)
+
+	@property
+	def mmp(self):
+		"""
+		3-tuple (major, minor, patch-level) version
+		"""
+		return (self.major, self.minor, self.patchlevel)
+
+	@mmp.setter
+	def mmp(self, mmp):
+		(self.major, self.minor, self.patchlevel) = mmp
 
 	def __cmp__(self, right):
 		# type: (UCS_Version) -> int
@@ -108,7 +130,7 @@ class UCS_Version(object):
 		match = UCS_Version._regexp.match(version)
 		if not match:
 			raise ValueError('string does not match UCS version pattern')
-		self.major, self.minor, self.patchlevel = map(int, match.groups())
+		self.mmp = map(int, match.groups())
 
 	def __getitem__(self, k):
 		# type: (str) -> int
@@ -129,10 +151,10 @@ class UCS_Version(object):
 
 	def __hash__(self):
 		# type: () -> int
-		return hash((self.major, self.minor, self.patchlevel))
+		return hash(self.mmp)
 
 	def __eq__(self, other):
-		return (self.major, self.minor, self.patchlevel) == (other.major, other.minor, other.patchlevel)
+		return self.mmp == other.mmp
 
 	def __repr__(self):
 		# type: () -> str
@@ -142,4 +164,9 @@ class UCS_Version(object):
 		>>> UCS_Version((1,2,3))
 		UCS_Version((1,2,3))
 		"""
-		return 'UCS_Version((%d,%d,%r))' % (self.major, self.minor, self.patchlevel)
+		return 'UCS_Version((%d,%d,%r))' % self.mmp
+
+
+if __name__ == '__main__':
+	import doctest
+	exit(doctest.testmod()[0])

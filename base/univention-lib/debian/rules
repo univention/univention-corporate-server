@@ -32,6 +32,7 @@
 
 override_dh_auto_test:
 	ucslint
+	python -m doctest python/ucs.py  -v
 
 override_dh_auto_install:
 	univention-install-config-registry

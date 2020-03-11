@@ -42,8 +42,8 @@ import sys
 from textwrap import dedent
 
 from univention.config_registry import ConfigRegistry, handler_set
+from univention.lib.ucs import UCS_Version
 import univention.updater.repository as urepo
-from univention.updater.ucs_version import UCS_Version
 from univention.updater.locking import UpdaterLock
 from univention.updater.mirror import makedirs
 

@@ -1,3 +1,9 @@
+univention-updater (14.0.2-12) unstable; urgency=medium
+
+  * Bug #32821: Use UCS_Version from univention.lib
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Mar 2020 17:52:49 +0100
+
 univention-updater (14.0.2-11) unstable; urgency=medium
 
   * Bug #47834: Adjust wording of univention-upgrade help text

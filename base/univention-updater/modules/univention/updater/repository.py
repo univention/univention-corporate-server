@@ -40,7 +40,7 @@ import sys
 import gzip
 
 from univention.config_registry import ConfigRegistry
-from .ucs_version import UCS_Version  # noqa F401
+from univention.lib.ucs import UCS_Version
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
