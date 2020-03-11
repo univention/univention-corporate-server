@@ -108,6 +108,19 @@ class Phase(object):
 	def __cmp__(self, other):
 		"""
 		Order phases by priority.
+
+		>>> Phase(None) < Phase(None)
+		False
+		>>> Phase(None) <= Phase(None)
+		True
+		>>> Phase(None) == Phase(None)
+		True
+		>>> Phase(None) != Phase(None)
+		False
+		>>> Phase(None) >= Phase(None)
+		True
+		>>> Phase(None) > Phase(None)
+		False
 		"""
 		return cmp(self.priority, other.priority) or cmp(str(self), str(other)) or cmp(id(self), id(other))
 
