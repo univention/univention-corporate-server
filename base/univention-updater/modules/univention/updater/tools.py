@@ -53,8 +53,8 @@ from .errors import (
     ProxyError,
     VerificationError,
 )
-from .ucs_version import UCS_Version
 from .repo_url import UcsRepoUrl
+from univention.lib.ucs import UCS_Version
 
 import errno
 import sys
