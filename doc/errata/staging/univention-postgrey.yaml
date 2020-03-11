@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-postgrey
 fix: 7.0.0-2A~4.4.0.202002120944
 desc: |
- This update addresses the following issue(s):
- * Set the ucr variables of postgrey during the initial installion (Bug #50647)
+ This update addresses the following issue:
+ * Set the ucr variables of postgrey during the initial installion
 bug: [50647]

@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-radius
 fix: 6.0.2-19A~4.4.0.202002241643
 desc: |-
- This update addresses the following issue:
+ This update addresses the following issues:
  * Added logrotate functionality for radius_ntlm_auth.log
  * Described further radius related UCR variables
 bug: [50545,48709]
