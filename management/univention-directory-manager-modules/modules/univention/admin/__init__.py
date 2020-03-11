@@ -634,13 +634,25 @@ if six.PY2:  # deprecated, use layout.Group instead
 			return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
 				self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
 
-		def __cmp__(self, other):
-			# at the moment the sort is only needed for layout of the registry module
-			if other.property == 'registry':
-				return 1
-			if self.property == 'registry':
-				return 0
-			return cmp(self.property, other.property)  # noqa: F821
+		# at the moment the sort is only needed for layout of the registry module
+
+		def __lt__(self, other):
+			return (self.property != 'registry', self.property) < (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
+
+		def __le__(self, other):
+			return (self.property != 'registry', self.property) <= (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
+
+		def __eq__(self, other):
+			return self.property == other.property if isinstance(other, field) else NotImplemented
+
+		def __ne__(self, other):
+			return self.property != other.property if isinstance(other, field) else NotImplemented
+
+		def __ge__(self, other):
+			return (self.property != 'registry', self.property) >= (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
+
+		def __gt__(self, other):
+			return (self.property != 'registry', self.property) > (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
 
 
 class policiesGroup:
