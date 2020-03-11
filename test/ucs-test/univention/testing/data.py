@@ -931,4 +931,4 @@ def __run_test(filename):
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()
-	__run_test('tst3')
+	# __run_test('tst3')
