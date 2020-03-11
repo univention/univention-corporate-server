@@ -10,3 +10,5 @@ desc: |-
    rather than a recommendation. This way it gets installed by default; some
    Apps rely on it.
 bug: [50901]
+erratum: 474
+announced: 2020-03-11
