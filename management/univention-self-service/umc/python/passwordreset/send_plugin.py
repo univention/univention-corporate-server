@@ -56,6 +56,10 @@ class UniventionSelfServiceTokenEmitter(object):
 		return _("????")
 
 	@staticmethod
+	def message_application():
+		return 'password_reset'
+
+	@staticmethod
 	def is_enabled():
 		ucr = ConfigRegistry()
 		ucr.load()

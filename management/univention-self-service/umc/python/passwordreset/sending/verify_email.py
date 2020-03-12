@@ -48,18 +48,22 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 
 	def __init__(self, *args, **kwargs):
 		super(VerifyEmail, self).__init__(*args, **kwargs)
-		self.server = self.ucr.get("umc/self-service/accountverify/email/server", "localhost")
+		self.server = self.ucr.get("umc/self-service/contactverify/email/server", "localhost")
 
 	@staticmethod
 	def send_method():
 		return "verify_email"
 
 	@staticmethod
+	def message_application():
+		return 'email_verification'
+
+	@staticmethod
 	def is_enabled():
 		return True
 		ucr = ConfigRegistry()
 		ucr.load()
-		return ucr.is_true("umc/self-service/accountverify/email/enabled")
+		return ucr.is_true("umc/self-service/contactverify/email/enabled")
 
 	@property
 	def udm_property(self):
@@ -67,7 +71,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def token_length(self):
-		length = self.ucr.get("umc/self-service/accountverify/email/token_length", 64)
+		length = self.ucr.get("umc/self-service/contactverify/email/token_length", 64)
 		try:
 			length = int(length)
 		except ValueError:
@@ -75,7 +79,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 		return length
 
 	def send(self):
-		path_ucr = self.ucr.get("umc/self-service/accountverify/email/text_file")
+		path_ucr = self.ucr.get("umc/self-service/contactverify/email/text_file")
 		if path_ucr and os.path.exists(path_ucr):
 			path = path_ucr
 		else:
@@ -84,9 +88,14 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 			txt = fp.read()
 
 		fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
-		frontend_server = self.ucr.get("umc/self-service/accountverify/email/webserver_address", fqdn)
-		link = "https://{fqdn}/univention/self-service/#page=accountverify".format(fqdn=frontend_server)
-		tokenlink = "https://{fqdn}/univention/self-service/#page=accountverify&token={token}&username={username}".format(fqdn=frontend_server, username=urllib.quote(self.data["username"]), token=urllib.quote(self.data["token"]))
+		frontend_server = self.ucr.get("umc/self-service/contactverify/email/webserver_address", fqdn)
+		link = "https://{fqdn}/univention/self-service/#page=contactverify".format(fqdn=frontend_server)
+		tokenlink = "https://{fqdn}/univention/self-service/#page=contactverify&token={token}&username={username}&method={method}".format(
+			fqdn=frontend_server,
+			username=urllib.quote(self.data["username"]),
+			token=urllib.quote(self.data["token"]),
+			method=self.send_method(),
+		)
 
 		txt = txt.format(username=self.data["username"], token=self.data["token"], link=link, tokenlink=tokenlink)
 
@@ -95,7 +104,7 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 		cs.body_encoding = email.charset.QP
 		msg["Subject"] = "Password reset"
 		msg["Date"] = formatdate(localtime=True)
-		msg["From"] = self.ucr.get("umc/self-service/accountverify/email/sender_address", "Password Reset Service <noreply@{}>".format(fqdn))
+		msg["From"] = self.ucr.get("umc/self-service/contactverify/email/sender_address", "Password Reset Service <noreply@{}>".format(fqdn))
 		msg["To"] = self.data["address"]
 		msg.set_payload(txt, charset=cs)
 

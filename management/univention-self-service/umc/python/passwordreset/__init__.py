@@ -237,6 +237,7 @@ class Instance(Base):
 
 		self.token_validity_period = ucr_try_int("umc/self-service/passwordreset/token_validity_period", 3600)
 		self.send_plugins = get_sending_plugins(MODULE.process)
+		self.password_reset_plugins = {k: v for k, v in self.send_plugins.items() if v.message_application() == 'password_reset'}
 		self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
 
 		limit_total_minute = ucr_try_int("umc/self-service/passwordreset/limit/total/minute", 0)
@@ -279,14 +280,14 @@ class Instance(Base):
 			raise ServiceForbidden()
 
 		user = self.get_udm_user(username=username)
-		if not self.send_plugins:
+		if not self.password_reset_plugins:
 			raise ServiceForbidden()
 
 		return [{
 			"id": p.send_method(),
 			"label": p.send_method_label(),
 			"value": user[p.udm_property]
-		} for p in self.send_plugins.values() if p.udm_property in user]
+		} for p in self.password_reset_plugins.values() if p.udm_property in user]
 
 	@forward_to_master
 	@sanitize(
@@ -450,9 +451,9 @@ class Instance(Base):
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		try:
-			plugin = self.send_plugins[method]
+			plugin = self.password_reset_plugins[method]
 		except KeyError:
-			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
+			MODULE.error("send_token() method '{}' not in {}.".format(method, self.password_reset_plugins.keys()))
 			raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 
 		if self.is_blacklisted(username):
@@ -472,13 +473,14 @@ class Instance(Base):
 	@sanitize(
 		token=StringSanitizer(required=True),
 		username=StringSanitizer(required=True),
+		method=StringSanitizer(required=True),
 	)
 	@simple_response
-	def verify_account(self, token, username):
-		self._check_token(username, token)
-		# TODO: email2user ???
+	def verify_contact(self, token, username, method):
+		plugin = self._get_send_plugin(method)
+		self._check_token(username, token, token_application=plugin.message_application())
 		user = self.udm_user.get_by_id(username)
-		user.props.PasswordRecoveryEmailVerified = 'TRUE'
+		setattr(user.props, plugin.udm_property, 'TRUE')
 		user.save()
 		self.db.delete_tokens(token=token, username=username)
 		return 'User has been validated'
@@ -508,7 +510,7 @@ class Instance(Base):
 			raise UMC_Error(_("Successfully changed your password."), status=200)
 		raise UMC_Error(_('Failed to change password.'), status=500)
 
-	def _check_token(self, username, token):
+	def _check_token(self, username, token, token_application='password_reset'):
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
@@ -529,6 +531,12 @@ class Instance(Base):
 			self.db.delete_tokens(token=token, username=username)
 			raise TokenNotFound()
 
+		if not self._get_send_plugin(token_from_db['method']).message_application() == token_application:
+			# token is correct but should not be used for this application
+			MODULE.info("Receive correct token for '{}' but it should be used for another application.".format(username))
+			self.db.delete_tokens(token=token, username=username)
+			raise TokenNotFound()
+
 	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(username=StringSanitizer(required=True, minimum=1))
@@ -538,11 +546,14 @@ class Instance(Base):
 			raise NoMethodsAvailable()
 
 		user = self.get_udm_user(username=username)
-		if not self.send_plugins:
+		if not self.password_reset_plugins:
 			raise NoMethodsAvailable()
 
 		# return list of method names, for all LDAP attribs user has data
-		reset_methods = [{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.udm_property]]
+		reset_methods = [{
+			"id": p.send_method(),
+			"label": p.send_method_label()
+		} for p in self.password_reset_plugins.values() if user[p.udm_property]]
 		if not reset_methods:
 			raise NoMethodsAvailable()
 		return reset_methods
