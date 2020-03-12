@@ -73,7 +73,7 @@ class Reinitialize(Upgrade):
 			set_vars={},
 			register_attributes=False,
 			register_host=False,
-			pull_image=True,
+			pull_image=False,
 			remove_image=False,
 			backup=True,
 			noninteractive=True)
