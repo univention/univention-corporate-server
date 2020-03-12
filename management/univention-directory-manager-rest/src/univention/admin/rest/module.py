@@ -176,7 +176,7 @@ class DictSanitizer(DictSanitizer):
 		altered_value = copy.deepcopy(value) if self._copy_value else value
 
 		multi_error = MultiValidationError()
-		for attr in set(value.keys() + self.sanitizers.keys()):
+		for attr in set(value) | set(self.sanitizers):
 			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
 			try:
 				if self.key_sanitizer:
@@ -1769,8 +1769,7 @@ class Modules(Resource):
 
 			self.add_link(result, 'udm:object-modules', self.urljoin(quote(main_type)) + '/', name='all' if main_type == 'navigation' else main_type, title=title)
 
-		modules = udm_modules.modules.keys()
-		for name in sorted(modules):
+		for name in sorted(udm_modules.modules):
 			_module = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			self.add_link(result, 'udm:object-types', self.urljoin(quote(_module.name)) + '/', name=_module.name, title=_module.title, dont_set_http_header=True)
 
@@ -2719,7 +2718,7 @@ class Object(FormBase, Resource):
 		if properties:
 			values = obj.info.copy()
 			if '*' not in properties:
-				for key in list(values.keys()):
+				for key in list(values):
 					if key not in properties:
 						values.pop(key)
 			else:
@@ -3696,7 +3695,7 @@ class Application(tornado.web.Application):
 
 	def __init__(self, **kwargs):
 		#module_type = '([a-z]+)'
-		module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping.keys())
+		module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
 		object_type = '([a-z]+/[a-z_]+)'
 		policies_object_type = '(policies/[a-z_]+)'
 		dn = '((?:[^/]+%s.+,)?%s)' % (self.multi_regex('='), self.multi_regex(ucr['ldap/base']),)
