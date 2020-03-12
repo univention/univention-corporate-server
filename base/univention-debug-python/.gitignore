@@ -1,9 +1,0 @@
-.cache/
-.pybuild/
-build/
-debian/*.debhelper
-debian/debhelper-build-stamp
-debian/files
-debian/python-univention-debug/
-debian/python3-univention-debug/
-debian/tmp/

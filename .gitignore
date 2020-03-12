@@ -1,0 +1,15 @@
+.cache/
+.pybuild/
+build/
+*.buildinfo
+*.egg-info/
+*/*/debian/debhelper-build-stamp
+*/*/debian/files
+*/*/debian/.debhelper/
+*/*/debian/*.debhelper
+*/*/debian/*.debhelper.log
+*/*/debian/*.substvars
+*/*/debian/*/
+!*/*/debian/patches/
+!*/*/debian/source/
+!*/*/debian/po/
