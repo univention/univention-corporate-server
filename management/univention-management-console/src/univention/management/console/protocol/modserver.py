@@ -54,6 +54,11 @@ from univention.management.console.log import MODULE, PROTOCOL
 
 from univention.lib.i18n import Translation
 
+try:
+	from typing import Any, NoReturn, Optional  # noqa F401
+except ImportError:
+	pass
+
 _ = Translation('univention.management.console').translate
 
 
@@ -68,6 +73,7 @@ class ModuleServer(Server):
 	"""
 
 	def __init__(self, socket, module, timeout=300, check_acls=True):
+		# type: (str, str, int, bool) -> None
 		self.__name = module
 		self.__module = module
 		self.__commands = Module()
@@ -94,6 +100,7 @@ class ModuleServer(Server):
 		self.signal_connect('session_new', self._client)
 
 	def _load_module(self):
+		# type: () -> None
 		MODULE.process('Loading python module.')
 		modname = self.__module
 		from ..error import UMC_Error
@@ -130,6 +137,7 @@ class ModuleServer(Server):
 		self.response(msg)
 
 	def _timer(self):
+		# type: () -> None
 		"""In order to avoid problems when the system time is changed (e.g.,
 		via rdate), we register a timer event that counts down the session
 		timeout second-wise."""
@@ -146,6 +154,7 @@ class ModuleServer(Server):
 			notifier.timer_add(1000, self._timer)
 
 	def _timed_out(self):
+		# type: () -> NoReturn
 		MODULE.info('Committing suicide')
 		if self.__handler:
 			self.__handler.destroy()
@@ -158,6 +167,7 @@ class ModuleServer(Server):
 		notifier.socket_add(self.__comm, self._recv)
 
 	def _recv(self, sock):
+		# type: (socket.socket) -> bool
 		try:
 			data = sock.recv(RECV_BUFFER_SIZE)
 		except socket.error as exc:
@@ -204,6 +214,7 @@ class ModuleServer(Server):
 		return True
 
 	def error_handling(self, request, method, etype, exc, etraceback):
+		#PY3# <https://portingguide.readthedocs.io/en/latest/exceptions.html#removed-sys-exc-type-sys-exc-value-sys-exc-traceback>
 		if self.__handler:
 			self.__handler._Base__requests[request.id] = (request, method)
 			self.__handler._Base__error_handling(request, method, etype, exc, etraceback)
@@ -225,6 +236,7 @@ class ModuleServer(Server):
 		self.response(resp)
 
 	def handle(self, msg):
+		# type: (Request) -> None
 		"""Handles incoming UMCP requests. This function is called only
 		when it is a valid UMCP request.
 
@@ -318,6 +330,7 @@ class ModuleServer(Server):
 			raise UMC_Error('Not initialized.', status=403)
 
 	def command_get(self, command_name):
+		# type: (str) -> Optional[Any]
 		"""Returns the command object that matches the given command name"""
 		for cmd in self.__commands.commands:
 			if cmd.name == command_name:
@@ -325,6 +338,7 @@ class ModuleServer(Server):
 		return None
 
 	def command_is_known(self, command_name):
+		# type: (str) -> bool
 		"""Checks if a command with the given command name is known
 
 		:rtype: bool
