@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-23) unstable; urgency=medium
+
+  * Bug #46599: spaces are now forbidden in mail addresses
+
+ -- Toni Uwe Roehmeyer <roehmeyer@univention.de>  Thu, 12 Mar 2020 15:52:42 +0100
+
 univention-directory-manager-modules (14.0.14-22) unstable; urgency=medium
 
   * Bug #44135: prevent adding DHCP (sub)nets which break the dhcpd

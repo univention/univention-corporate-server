@@ -1,3 +1,9 @@
+ucs-test (9.0.3-176) unstable; urgency=medium
+
+  * Bug # 46599: added test for checking if a space in a mail address gets rejected by udm
+
+ -- Toni Uwe Roehmeyer <roehmeyer@univention.de>  Thu, 12 Mar 2020 15:49:15 +0100
+
 ucs-test (9.0.3-175) unstable; urgency=medium
 
   * Bug #38178: 60_umc.07_expired_password failed with
