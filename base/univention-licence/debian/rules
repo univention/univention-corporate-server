@@ -36,7 +36,7 @@
 override_dh_auto_clean:
 	[ ! -f setup.py ] || dh_auto_clean --buildsystem=python_distutils
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
-	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tools/Makefile.in internal-tools/Makefile.in
+	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tools/Makefile.in
 	$(RM) configure
 	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
 
@@ -55,11 +55,6 @@ override_dh_auto_build:
 override_dh_auto_install:
 	dh_auto_install --buildsystem=makefile
 	dh_auto_install --buildsystem=python_distutils
-
-override_dh_install:
-	dh_install
-	mv debian/univention-license-tools/usr/sbin/make_license.sh debian/univention-license-tools/usr/sbin/univention_make_license
-	mv debian/univention-license-tools/usr/bin/tklicensegen.py debian/univention-license-tools/usr/bin/tklicensegen
 
 override_dh_auto_test:
 	[ ! -x /usr/bin/ucslint ] || /usr/bin/ucslint

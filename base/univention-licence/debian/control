@@ -75,21 +75,6 @@ Description: UCS - license validation library (Python interface)
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-license-tools
-Architecture: any
-Depends:
- uuid,
- ${misc:Depends}, ${shlibs:Depends},
-Recommends: python-tk
-Description: UCS - tools to create and sign licenses
- This package contains tools to create and sign licenses
- to be used with UCS.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: univention-license-import
 Architecture: all
 Depends: ${misc:Depends},
