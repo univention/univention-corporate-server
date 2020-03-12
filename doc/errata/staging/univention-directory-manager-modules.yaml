@@ -3,7 +3,7 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-directory-manager-modules
-fix: 14.0.14-22A~4.4.0.202003121556
+fix: 14.0.14-23A~4.4.0.202003121738
 desc: |-
   This update addresses the following issue(s):
   * An internal syntax check allowed spaces in mail addresses.
