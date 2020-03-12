@@ -381,6 +381,7 @@ class Client(signals.Provider, Translation):
 
 if __name__ == '__main__':
 	from getpass import getpass
+	from six.moves import input
 
 	notifier.init(notifier.GENERIC)
 
@@ -392,7 +393,7 @@ if __name__ == '__main__':
 	client.connect()
 
 	authRequest = Request('AUTH')
-	authRequest.body['username'] = raw_input('Username: ')
+	authRequest.body['username'] = input('Username: ')
 	authRequest.body['password'] = getpass()
 	client.authenticate(authRequest)
 
