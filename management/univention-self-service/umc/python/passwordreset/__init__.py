@@ -574,7 +574,7 @@ class Instance(Base):
 			if not plugin.is_enabled:
 				raise KeyError
 		except KeyError:
-			raise UMC_Error("Method not allowed!", status=403)
+			raise UMC_Error("Unknown send message method", status=500)
 		return plugin
 
 	def _call_send_msg_plugin(self, username, method, address, token):
