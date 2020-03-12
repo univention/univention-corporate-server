@@ -8,4 +8,6 @@ desc: |-
   This update addresses the following issue(s):
   * Reinitializing an installed app lead to an superfluous image pull.
     This fix skips this pull to increase the speed.
-bug: [50938]
+  * Fixed an issue where installation of apps on remote UCS systems would not
+    work when using wildcard SSL certificates.
+bug: [50938,50770]
