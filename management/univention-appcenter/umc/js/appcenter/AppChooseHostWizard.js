@@ -60,12 +60,12 @@ define([
 						if (item.isLocal()) {
 							hosts.unshift({
 								label: item.displayName,
-								id: item.hostName
+								id: item.fqdn
 							});
 						} else {
 							hosts.push({
 								label: item.displayName,
-								id: item.hostName
+								id: item.fqdn
 							});
 						}
 					} else {

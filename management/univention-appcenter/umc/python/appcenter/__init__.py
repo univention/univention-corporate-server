@@ -544,9 +544,17 @@ class Instance(umcm.Base, ProgressMixin):
 		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, app_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
 
 		# REMOTE invocation!
-		if host and host != self.ucr.get('hostname'):
+		if host and host != self.ucr.get('hostname') and host != '%s.%s' % (self.ucr.get('hostname'), self.ucr.get('domainname')):
 			try:
 				client = Client(host, self.username, self.password)
+				# shortening hostname for compatability
+				version = get_action('info').get_ucs_version()
+				remote_version = client.umc_command('appcenter/version2', {'version': version}).result.get('version')
+				if remote_version <= '4.4-3 errata482':
+					host_shortname = host.split('.')[0]
+					request.options['host'] = host_shortname
+					client = Client(host_shortname, self.username, self.password)
+
 				result = client.umc_command('appcenter/invoke', request.options).result
 			except (ConnectionError, HTTPError) as exc:
 				MODULE.error('Error during remote appcenter/invoke: %s' % (exc,))

@@ -159,7 +159,7 @@ define([
 			}
 			var installHost = null;
 			if (!this.isLocal()) {
-				installHost = this.hostName;
+				installHost = this.fqdn;
 			}
 			this.install = lang.hitch(page, 'installAppDialog');
 			this.upgrade = lang.hitch(page, 'upgradeApp', installHost);
@@ -167,7 +167,7 @@ define([
 		},
 
 		isLocal: function() {
-			return this.hostName == tools.status('hostname');
+			return this.hostName == tools.status('hostname') || this.fqdn == tools.status('hostname') + '.' + tools.status('domainname');
 		},
 
 		hasMaintainer: function() {
@@ -410,7 +410,7 @@ define([
 						}
 						var ihost = {
 							server: item.displayName,
-							id: item.hostName,
+							id: item.fqdn,
 							data: item,
 							appStatus: appStatus
 						};
@@ -431,7 +431,7 @@ define([
 					}
 					hosts.push({
 						server: this.displayName,
-						id: this.hostName,
+						id: this.fqdn,
 						data: this,
 						appStatus: appStatus
 					});
