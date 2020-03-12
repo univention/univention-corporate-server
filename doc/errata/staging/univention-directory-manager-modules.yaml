@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-directory-manager-modules
+fix: 14.0.14-22A~4.4.0.202003121556
+desc: |-
+  This update addresses the following issue(s):
+  * An internal syntax check allowed spaces in mail addresses.
+    This fix ensures that spaces in mail addresses now get rejected.
+bug: [46599]
