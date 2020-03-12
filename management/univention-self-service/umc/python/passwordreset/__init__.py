@@ -45,12 +45,13 @@ import pylibmc
 from univention.lib.i18n import Translation
 from univention.lib.umc import Client, HTTPError, ConnectionError, Unauthorized
 import univention.admin.objects
+from univention.udm import UDM
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import StringSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer, EmailSanitizer
 from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import get_user_connection, get_machine_connection, get_admin_connection, machine_connection
 
@@ -218,6 +219,8 @@ class Instance(Base):
 
 		self._usersmod = None
 		self.groupmod = None
+		udm = UDM.admin().version(1)
+		self.udm_user = udm.get('users/user')
 
 		self.db = TokenDB(MODULE)
 		self.conn = self.db.conn
@@ -466,6 +469,20 @@ class Instance(Base):
 		# no contact info
 		raise MissingContactInformation()
 
+	@sanitize(
+		token=StringSanitizer(required=True),
+		username=StringSanitizer(required=True),
+	)
+	@simple_response
+	def verify_account(self, token, username):
+		self._check_token(username, token)
+		# TODO: email2user ???
+		user = self.udm_user.get_by_id(username)
+		user.props.PasswordRecoveryEmailVerified = 'TRUE'
+		user.save()
+		self.db.delete_tokens(token=token, username=username)
+		return 'User has been validated'
+
 	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
@@ -529,6 +546,24 @@ class Instance(Base):
 		if not reset_methods:
 			raise NoMethodsAvailable()
 		return reset_methods
+
+	@sanitize(
+		lastname=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1),
+		username=StringSanitizer(required=True, minimum=1),
+		email=EmailSanitizer(required=True),
+	)
+	@simple_response
+	def create_account(self, lastname, password, username, email):
+		new_user = self.udm_user.new()
+		new_user.props.lastname = lastname
+		new_user.props.password = password
+		new_user.props.username = username
+		new_user.props.PasswordRecoveryEmail = email
+		new_user.props.PasswordRecoveryEmailVerified = 'FALSE'
+		new_user.save()
+		self.send_message(username, 'verify_email', email)
+		return 'OK user is ready for verification'
 
 	@staticmethod
 	def create_token(length):
