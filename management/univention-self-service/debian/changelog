@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-16) unstable; urgency=medium
+
+  * Bug #50930: Add self registration and email verification
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 11 Mar 2020 14:04:04 +0100
+
 univention-self-service (4.0.3-15) unstable; urgency=medium
 
   * Bug #50608: made "Forgot your password?" link in the login
