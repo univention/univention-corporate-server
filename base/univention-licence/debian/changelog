@@ -1,3 +1,9 @@
+univention-licence (10.0.0-4) unstable; urgency=low
+
+  * Bug #50943: Remove doxgen usage.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Mar 2020 19:27:33 +0100
+
 univention-licence (10.0.0-3) unstable; urgency=medium
 
   * Bug #49137: migrate to dh_python
