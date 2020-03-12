@@ -393,6 +393,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if uid and not _case_insensitive_in_list(uid, uids):
 				add_uidlist.append(uid)
 		if add_uidlist:
+			add_uidlist = [x.encode('UTF-8') for x in add_uidlist]
 			ml.append(('memberUid', '', add_uidlist))
 
 		add_memberdnlist = []
@@ -400,6 +401,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if memberdn and not _case_insensitive_in_list(memberdn, members):
 				add_memberdnlist.append(memberdn)
 		if add_memberdnlist:
+			add_memberdnlist = [x.encode('UTF-8') for x in add_memberdnlist]
 			ml.append(('uniqueMember', '', add_memberdnlist))
 
 		if ml:
@@ -429,6 +431,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if uid and _case_insensitive_in_list(uid, uids):
 				remove_uidlist.append(_case_insensitive_get_item_in_list(uid, uids))
 		if remove_uidlist:
+			remove_uidlist = [x.encode('UTF-8') for x in remove_uidlist]
 			ml.append(('memberUid', remove_uidlist, ''))
 
 		remove_memberdnlist = []
@@ -436,6 +439,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if memberdn and _case_insensitive_in_list(memberdn, members):
 				remove_memberdnlist.append(_case_insensitive_get_item_in_list(memberdn, members))
 		if remove_memberdnlist:
+			remove_memberdnlist = [x.encode('UTF-8') for x in remove_memberdnlist]
 			ml.append(('uniqueMember', remove_memberdnlist, ''))
 
 		if ml:
@@ -530,7 +534,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		al = []
 		if 'posix' not in self.options:
-			al.append(['objectClass', 'organizationalRole'])  # any STRUCTURAL class with 'cn'
+			al.append(['objectClass', b'organizationalRole'])  # any STRUCTURAL class with 'cn'
 
 		if set(('posix', 'samba')) & set(self.options):
 			al.append(('gidNumber', [self.gidNum]))
@@ -547,12 +551,12 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.hasChanged('sambaPrivileges'):
 				o = self.oldattr.get('objectClass', [])
 				# add univentionSambaPrivileges objectclass
-				if self['sambaPrivileges'] and "univentionSambaPrivileges" not in o:
-					ml.insert(0, ('objectClass', '', 'univentionSambaPrivileges'))
+				if self['sambaPrivileges'] and b'univentionSambaPrivileges' not in o:
+					ml.insert(0, ('objectClass', b'', b'univentionSambaPrivileges'))
 
 			if self.hasChanged('sambaRID') and not hasattr(self, 'groupSid'):
-				self.groupSid = self.__generate_group_sid(self.oldattr['gidNumber'][0])
-				ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.groupSid]))
+				self.groupSid = self.__generate_group_sid(self.oldattr['gidNumber'][0].decode('ASCII'))
+				ml.append(('sambaSID', self.oldattr.get('sambaSID', [b'']), [self.groupSid.encode('ASCII')]))
 				self.update_sambaPrimaryGroupSid = True
 
 		if self.hasChanged('mailAddress') and self['mailAddress']:
@@ -603,18 +607,22 @@ class object(univention.admin.handlers.simpleLdap):
 
 			if uniqueMemberRemove:
 				uniqueMemberRemove = keepCase(uniqueMemberRemove, old)
+				uniqueMemberRemove = [x.encode('UTF-8') for x in uniqueMemberRemove]
 				ml.append(('uniqueMember', uniqueMemberRemove, ''))
 
 			if uniqueMemberAdd:
+				uniqueMemberAdd = [x.encode('UTF-8') for x in uniqueMemberAdd]
 				ml.append(('uniqueMember', '', uniqueMemberAdd))
 
-			oldMemberUids = self.oldattr.get('memberUid', ())
+			oldMemberUids = [x.decode('UTF-8') for x in self.oldattr.get('memberUid', ())]
 			if memberUidRemove:
 				memberUidRemove = keepCase(memberUidRemove, oldMemberUids)
+				memberUidRemove = [x.encode('UTF-8') for x in memberUidRemove]
 				ml.append(('memberUid', memberUidRemove, ''))
 
 			memberUidAdd = list(set(memberUidAdd) - set(oldMemberUids))
 			if memberUidAdd:
+				memberUidAdd = [x.encode('UTF-8') for x in memberUidAdd]
 				ml.append(('memberUid', '', memberUidAdd))
 
 		return ml
@@ -635,16 +643,16 @@ class object(univention.admin.handlers.simpleLdap):
 			univention.admin.allocators.confirm(self.lo, self.position, 'mailPrimaryAddress', self['mailAddress'])
 		self.__update_membership()
 		if hasattr(self, 'groupSid'):
-			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [])[0], self.groupSid)
+			self._update_sambaPrimaryGroupSID(self.oldattr.get('sambaSID', [b''])[0].decode('ASCII'), self.groupSid)
 
 	def _ldap_pre_remove(self):
 		if not hasattr(self, "options"):
 			self.open()
 		self.open()
 		if 'posix' in self.options:
-			self.gidNum = self.oldattr['gidNumber'][0]
+			self.gidNum = self.oldattr['gidNumber'][0].decode('ASCII')
 		if 'samba' in self.options:
-			self.groupSid = self.oldattr['sambaSID'][0]
+			self.groupSid = self.oldattr['sambaSID'][0].decode('ASCII')
 		# is this group in mentioned in settings/default?
 		try:
 			dn, attrs = self.lo.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
@@ -957,7 +965,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.__is_groupType_local(new_groupType):
 				sid = 'S-1-5-32-' + self['sambaRID']
 			else:
-				domainsid = searchResult[0][1]['sambaSID'][0]
+				domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
 				sid = domainsid + '-' + self['sambaRID']
 			groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			self.alloc.append(('sid', groupSid))
@@ -981,7 +989,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if hasattr(self, 'update_sambaPrimaryGroupSid') and self.update_sambaPrimaryGroupSid:
 			res = self.lo.search(ldap.filter.filter_format('(sambaPrimaryGroupSID=%s)', [oldSid]), attr=['sambaPrimaryGroupSID'])
 			for dn, attr in res:
-				self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid])])
+				self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid.encode('ASCII')])])
 			self.update_sambaPrimaryGroupSid = False
 
 	@classmethod
