@@ -271,7 +271,7 @@ class DictSanitizer(Sanitizer):
 		altered_value = copy.deepcopy(value) if self._copy_value else value
 
 		multi_error = MultiValidationError()
-		for attr in set(value.keys() + self.sanitizers.keys()):
+		for attr in set(value) | set(self.sanitizers):
 			sanitizer = self.sanitizers.get(attr, self.default_sanitizer)
 			try:
 				if sanitizer:
