@@ -347,7 +347,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self['users'] = []
 			self['hosts'] = []
 			self['nestedGroup'] = []
-			for i in self.oldattr.get('uniqueMember', []):
+			for i in [x.decode('utf-8') for x in self.oldattr.get('uniqueMember', [])]:
 				if cache_uniqueMember.is_valid(i):
 					membertype = cache_uniqueMember.get(i).get('type')
 					if membertype == 'user':
