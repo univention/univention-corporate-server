@@ -2,6 +2,7 @@ univention-licence (10.0.0-4) unstable; urgency=low
 
   * Bug #50943: Remove doxgen usage.
   * Bug #50943: Remove internal tools.
+  * Bug #50943: Split Python into separate package.
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 12 Mar 2020 19:27:33 +0100
 

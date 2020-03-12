@@ -13,7 +13,6 @@ Makefile
 Makefile.in
 tools/univention-license-import
 tools/univentionLicenseTest
-setup.py
 # auto*
 compile
 config.guess

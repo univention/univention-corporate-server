@@ -1,0 +1,49 @@
+Source: univention-license-python
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends:
+ debhelper (>= 9),
+ dh-python,
+ libunivention-license-dev (>= 10.0.0-4),
+ python-all-dev,
+ python3-all-dev,
+ python-debian,
+ python3-debian,
+ ucslint-univention,
+
+Package: python-univention-license
+Architecture: any
+Depends:
+ libunivention-license0,
+ python-univention-namespace (>= 12.0.0-10),
+ ${misc:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+Provides: ${python:Provides}
+Description: UCS - license validation library (Python interface)
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-license
+Architecture: any
+Depends:
+ libunivention-license0,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
+Provides: ${python3:Provides}
+Description: UCS - license validation library (Python interface)
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

@@ -1,0 +1,14 @@
+Makefile.in
+lib/Makefile.in
+include/Makefile.in
+include/univention/Makefile.in
+tools/Makefile.in
+aclocal.m4
+compile
+config.*
+configure
+depcomp
+install-sh
+ltmain.sh
+missing
+mkinstalldirs

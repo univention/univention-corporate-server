@@ -31,10 +31,9 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@
 
 override_dh_auto_clean:
-	[ ! -f setup.py ] || dh_auto_clean --buildsystem=python_distutils
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
 	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tools/Makefile.in
 	$(RM) configure
@@ -46,15 +45,6 @@ override_dh_auto_configure:
 	autoconf
 	automake --add-missing
 	dh_auto_configure
-	dh_auto_configure --buildsystem=python_distutils
-
-override_dh_auto_build:
-	dh_auto_build --buildsystem=makefile
-	dh_auto_build --buildsystem=python_distutils
-
-override_dh_auto_install:
-	dh_auto_install --buildsystem=makefile
-	dh_auto_install --buildsystem=python_distutils
 
 override_dh_auto_test:
 	[ ! -x /usr/bin/ucslint ] || /usr/bin/ucslint
