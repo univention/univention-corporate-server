@@ -384,11 +384,11 @@ if __name__ == '__main__':
 
 	notifier.init(notifier.GENERIC)
 
-	def auth(success, response):
+	def auth_cb(success, response):
 		print('authentication', success, response.status, response.message)
 
 	client = Client()
-	client.signal_connect('authenticated', auth)
+	client.signal_connect('authenticated', auth_cb)
 	client.connect()
 
 	authRequest = Request('AUTH')
