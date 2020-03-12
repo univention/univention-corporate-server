@@ -1770,7 +1770,8 @@ class emailAddress(simple):
 	def parse(self, text):
 		if not text.startswith('@') and \
 			'@' in text and \
-			not text.endswith('@'):
+			not text.endswith('@') and \
+			' ' not in text:
 			return text
 		raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
 
