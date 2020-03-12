@@ -362,10 +362,10 @@ class object(univention.admin.handlers.simpleLdap):
 				else:
 					result = self.lo.getAttr(i, 'objectClass')
 					if result:
-						if 'univentionGroup' in result:
+						if b'univentionGroup' in result:
 							self['nestedGroup'].append(i)
 							cache_uniqueMember.set(i, {'type': 'group'})
-						elif 'univentionHost' in result:
+						elif b'univentionHost' in result:
 							self['hosts'].append(i)
 							cache_uniqueMember.set(i, {'type': 'host'})
 						else:
