@@ -3,7 +3,7 @@
 #
 # Selenium Tests
 #
-# Copyright 2017-2019 Univention GmbH
+# Copyright 2017-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

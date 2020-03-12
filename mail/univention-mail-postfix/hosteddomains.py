@@ -3,7 +3,7 @@
 # Univention Mail Stack
 #  listener module: mail domain configuration
 #
-# Copyright 2005-2019 Univention GmbH
+# Copyright 2005-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

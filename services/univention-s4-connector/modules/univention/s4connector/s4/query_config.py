@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  reads the internal configuration
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

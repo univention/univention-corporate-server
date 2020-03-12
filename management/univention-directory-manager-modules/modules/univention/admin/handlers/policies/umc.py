@@ -3,7 +3,7 @@
 # Univention Management Console
 #  admin module: policy defining access restriction for UMC
 #
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2011-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

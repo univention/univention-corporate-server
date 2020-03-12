@@ -1,7 +1,7 @@
 #!/bin/sh
 # preinst script for python-univention-config-registry
 #
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2011-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

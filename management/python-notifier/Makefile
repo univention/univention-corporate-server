@@ -3,7 +3,7 @@
 # python-notifier
 #  Makefile for building/installing the package
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

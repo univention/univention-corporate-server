@@ -4,7 +4,7 @@
 # Univention Directory Listener
 """Read LDAP from the DC Master and create LDIF file (and update local schema)"""
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

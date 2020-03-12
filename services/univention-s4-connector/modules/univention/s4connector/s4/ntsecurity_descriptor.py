@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  nTSecurityDescriptor sync
 #
-# Copyright 2014-2019 Univention GmbH
+# Copyright 2014-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

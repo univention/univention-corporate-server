@@ -4,7 +4,7 @@ Upstream-Contact: <package@univention.de>
 Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: 2015-2019 Univention GmbH
+Copyright: 2015-2020 Univention GmbH
 License: LGPL-2.1
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ License: LGPL-2.1
  License can be found in /usr/share/common-licenses/LGPL-2.1 file.
 
 Files: debian/* Makefile
-Copyright: 2015-2019 Univention GmbH
+Copyright: 2015-2020 Univention GmbH
 License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available

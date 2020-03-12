@@ -3,7 +3,7 @@
 # Univention Samba4
 #  Re-create /etc/krb5.keytab
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

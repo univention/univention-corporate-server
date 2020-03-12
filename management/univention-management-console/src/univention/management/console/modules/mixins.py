@@ -4,7 +4,7 @@
 # Univention Management Console
 #  Mixins for UMC 2.0 modules
 #
-# Copyright 2013-2019 Univention GmbH
+# Copyright 2013-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  control the password sync communication with the s4 password service
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

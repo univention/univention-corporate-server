@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager
 #  UDM Virtual Machine Manager syntax classes
 #
-# Copyright 2013-2019 Univention GmbH
+# Copyright 2013-2020 Univention GmbH
 #
 # http://www.univention.de/
 #

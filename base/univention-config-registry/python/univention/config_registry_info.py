@@ -4,7 +4,7 @@
 #  Config Registry information: read information about registered Config Registry
 #  variables
 #
-# Copyright 2007-2019 Univention GmbH
+# Copyright 2007-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

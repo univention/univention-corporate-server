@@ -3,7 +3,7 @@
 """Univention Configuration Registry command line implementation."""
 #  main configuration registry classes
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -530,7 +530,7 @@ def handler_help(args, opts=dict(), out=sys.stdout):
 	"""
 	print('''
 univention-config-registry: base configuration for UCS
-copyright (c) 2001-2019 Univention GmbH, Germany
+copyright (c) 2001-2020 Univention GmbH, Germany
 
 Syntax:
   univention-config-registry [options] <action> [options] [parameters]

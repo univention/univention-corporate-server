@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  admin module for the admin modules
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

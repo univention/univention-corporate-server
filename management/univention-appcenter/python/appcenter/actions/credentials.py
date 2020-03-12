@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-app module for actions needing credentials
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

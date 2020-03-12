@@ -2,7 +2,7 @@
 #
 # Univention RADIUS
 #
-# Copyright (C) 2012-2019 Univention GmbH
+# Copyright (C) 2012-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

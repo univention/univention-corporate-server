@@ -3,7 +3,7 @@
 # Univention SAML
 # Listener module to set up SAML configuration
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

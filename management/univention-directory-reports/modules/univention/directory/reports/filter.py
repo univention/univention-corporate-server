@@ -3,7 +3,7 @@
 # Univention Directory Reports
 #  write an interpreted token structure to a file
 #
-# Copyright 2007-2019 Univention GmbH
+# Copyright 2007-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

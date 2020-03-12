@@ -2,7 +2,7 @@
 #
 # Univention Password Self Service frontend base class
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

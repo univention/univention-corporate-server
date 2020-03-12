@@ -5,7 +5,7 @@
 #  univention-app module for uninstalling an app
 #  (docker version)
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

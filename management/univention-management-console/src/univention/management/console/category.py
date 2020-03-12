@@ -3,7 +3,7 @@
 # Univention Management Console
 #  UMC category definitions
 #
-# Copyright 2006-2019 Univention GmbH
+# Copyright 2006-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

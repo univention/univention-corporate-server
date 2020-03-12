@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  directory manager module for Portal entries
 #
-# Copyright 2018-2019 Univention GmbH
+# Copyright 2018-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

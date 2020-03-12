@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  UDM module for BLOB-based wireless Group Policy
 #
-# Copyright 2019 Univention GmbH
+# Copyright 2019-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

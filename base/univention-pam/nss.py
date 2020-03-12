@@ -4,7 +4,7 @@
 # Univention nss updater
 #  Univention Listener Module
 #
-# Copyright 2012-2019 Univention GmbH
+# Copyright 2012-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

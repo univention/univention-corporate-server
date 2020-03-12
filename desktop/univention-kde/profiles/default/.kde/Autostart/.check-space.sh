@@ -4,7 +4,7 @@
 #  create 1M file in home dir. if an error occurs, home is nearly full
 #  (quota) and user will be warned.
 #
-# Copyright (C) 2004-2019 Univention GmbH
+# Copyright (C) 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -4,7 +4,7 @@
 Read and write :file:`/etc/fstab`.
 """
 from __future__ import print_function
-# Copyright 2006-2019 Univention GmbH
+# Copyright 2006-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

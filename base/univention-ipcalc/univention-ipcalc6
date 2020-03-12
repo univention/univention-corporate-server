@@ -2,7 +2,7 @@
 #
 """Univention IP Calculator for DNS records (IPv6 edition)."""
 #
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2011-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

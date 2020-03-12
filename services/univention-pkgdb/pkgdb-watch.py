@@ -3,7 +3,7 @@
 # Univention Software-Monitor
 #  listener module that watches the availability of the software monitor service
 #
-# Copyright 2010-2019 Univention GmbH
+# Copyright 2010-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

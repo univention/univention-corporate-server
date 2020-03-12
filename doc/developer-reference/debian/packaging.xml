@@ -685,7 +685,7 @@ Upstream-Contact: <package@univention.de>
 Source: https://docs.software-univention.de/
 
 Files: *
-Copyright: 2013-2018 Univention GmbH
+Copyright: 2013-2020 Univention GmbH
 License: AGPL
 			]]></programlisting>
 		</section>

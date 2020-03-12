@@ -3,7 +3,7 @@
 """
 Python function to register |UDM| extensions in |LDAP|.
 """
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2011-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

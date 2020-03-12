@@ -3,7 +3,7 @@
 # Univention Nagios Plugin
 #  check_univention_nscd: check if nscd is bound to its socket.
 #
-# Copyright 2017-2019 Univention GmbH
+# Copyright 2017-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -24,7 +24,7 @@ Example::
 """
 from __future__ import print_function
 #
-# Copyright 2011-2019 Univention GmbH
+# Copyright 2011-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

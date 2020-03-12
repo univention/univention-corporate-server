@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  this baseconfig script automatically generates the SSL certificate for the AD host
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

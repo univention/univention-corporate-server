@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: software management / app center
 #
-# Copyright 2012-2019 Univention GmbH
+# Copyright 2012-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -3,7 +3,7 @@
 # Univention Admin Diary
 # Listener module to set up Admin Diary configuration
 #
-# Copyright 2018-2019 Univention GmbH
+# Copyright 2018-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

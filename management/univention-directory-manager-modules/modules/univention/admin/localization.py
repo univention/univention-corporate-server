@@ -7,7 +7,7 @@ usage::
 	translation = univention.admin.localization.translation()
 	_ = translation.translate
 """
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

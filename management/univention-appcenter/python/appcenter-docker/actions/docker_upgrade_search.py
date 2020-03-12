@@ -5,7 +5,7 @@
 #  univention-app module for searching for available upgrading
 #  (docker version)
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

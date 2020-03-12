@@ -5,7 +5,7 @@ Python native Univention debugging library.
 See :py:mod:`univention.debug` for an alternative being a wrapper for the C
 implementation.
 """
-# Copyright 2008-2019 Univention GmbH
+# Copyright 2008-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

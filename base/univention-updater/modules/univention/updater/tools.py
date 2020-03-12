@@ -3,7 +3,7 @@
 """
 Univention Update tools.
 """
-# Copyright 2008-2019 Univention GmbH
+# Copyright 2008-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

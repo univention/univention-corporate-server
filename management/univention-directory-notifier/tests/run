@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2019 Univention GmbH
+# Copyright 2019-2020 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0
 
 set -e -u  # -x

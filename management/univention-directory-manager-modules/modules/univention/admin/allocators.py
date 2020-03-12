@@ -2,7 +2,7 @@
 """
 |UDM| allocators to allocate and lock resources for |LDAP| object creation.
 """
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

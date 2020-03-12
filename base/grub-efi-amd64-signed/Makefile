@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Copyright 2018-2019 Univention GmbH
+# Copyright 2018-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -4,7 +4,7 @@
 Univention specific JSON-based format) from multiple source files by file type.
 """
 #
-# Copyright 2013-2019 Univention GmbH
+# Copyright 2013-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

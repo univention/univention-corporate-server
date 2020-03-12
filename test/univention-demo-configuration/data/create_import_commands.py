@@ -2,7 +2,7 @@
 #
 # Import example user data including profile images to UCS
 #
-# Copyright 2013-2019 Univention GmbH
+# Copyright 2013-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

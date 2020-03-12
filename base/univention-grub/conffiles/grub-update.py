@@ -3,7 +3,7 @@
 # Univention Grub
 #  baseconfig module for the grub update
 #
-# Copyright 2007-2019 Univention GmbH
+# Copyright 2007-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

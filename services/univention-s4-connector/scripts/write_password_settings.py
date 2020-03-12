@@ -4,7 +4,7 @@
 # Univention S4 Connector
 #  Upgrade script for samba domain password setting attributes
 #
-# Copyright 2012-2019 Univention GmbH
+# Copyright 2012-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

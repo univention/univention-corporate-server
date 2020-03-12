@@ -4,7 +4,7 @@
 # Univention Management Console
 #  UMC module init
 #
-# Copyright 2006-2019 Univention GmbH
+# Copyright 2006-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

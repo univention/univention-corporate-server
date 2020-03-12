@@ -4,7 +4,7 @@
 """helper script: base on IP address and network mask the script
 calculates broadcast address, network address and DNS entries"""
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

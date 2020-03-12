@@ -3,7 +3,7 @@
 #
 # Send a token to a user using a text message service.
 #
-# Copyright 2015-2019 Univention GmbH
+# Copyright 2015-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

@@ -2,7 +2,7 @@
 // Univention Nagios Plugin
 //  wrapper to call script for checking slapd_mdb_maxsize
 //
-// Copyright 2015-2019 Univention GmbH
+// Copyright 2015-2020 Univention GmbH
 //
 // https://www.univention.de/
 //

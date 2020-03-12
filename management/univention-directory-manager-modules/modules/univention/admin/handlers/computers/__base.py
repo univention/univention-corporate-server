@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for generic computer objects
 #
-# Copyright 2019 Univention GmbH
+# Copyright 2019-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

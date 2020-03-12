@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 # -*- coding: utf-8 -*-
 #
-# Copyright 2016-2019 Univention GmbH
+# Copyright 2016-2020 Univention GmbH
 #
 # https://www.univention.de/
 #

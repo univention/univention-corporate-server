@@ -4,7 +4,7 @@
 # Univention Admin Diary
 #  CLI Tool adding diary entry into Rsyslog to be added to the DB - eventually
 #
-# Copyright 2019 Univention GmbH
+# Copyright 2019-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
