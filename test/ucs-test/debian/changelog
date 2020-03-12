@@ -1,3 +1,26 @@
+ucs-test (9.0.3-175) unstable; urgency=medium
+
+  * Bug #38178: 60_umc.07_expired_password failed with
+
+    01:42:35
+    UMC authentication against expired password succeeded!
+    **************** Test failed above this line (110) ****************
+
+    on samba master. Connector log shows that the actual change in samba
+    took a little longer
+
+    01:42:41
+    sync from ucs: [          user] [    modify] cn=3j4cbmrb,...
+    password_sync_ucs_to_s4: The UCS object (uid=3j4cbmrb,...)
+      was not found. The object was removed.
+    primary_group_sync_from_ucs: The UCS object (uid=3j4cbmrb,...)
+      was not found. The object was removed.
+
+    added wait_samba_attr() to wait for pwdLastSet==0 on test user after
+    udm ... --set pwdChangeNextLogin=1
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Mar 2020 11:44:29 +0100
+
 ucs-test (9.0.3-174) unstable; urgency=medium
 
   * Bug #50898: Test docker_inject_env_file
