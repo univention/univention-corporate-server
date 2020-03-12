@@ -49,6 +49,13 @@ from univention.management.console.log import PARSER, PROTOCOL
 
 from univention.lib.i18n import Translation
 
+try:
+	from typing import Any, Dict, List, Optional, Union  # noqa F401
+	RequestType = int
+	UmcpBody = Union[dict, str, bytes]
+except ImportError:
+	pass
+
 _ = Translation('univention.management.console').translate
 
 
@@ -86,11 +93,12 @@ class Message(object):
 	__counter = 0
 
 	def __init__(self, type=REQUEST, command='', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
+		# type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
 		self._id = None
 		self._length = 0
 		self._type = type
 		if mime_type == MIMETYPE_JSON:
-			self.body = {}
+			self.body = {}  # type: UmcpBody
 		else:
 			self.body = ''
 		self.command = command
@@ -103,6 +111,7 @@ class Message(object):
 
 	@staticmethod
 	def _formattedMessage(_id, _type, mimetype, command, body, arguments):
+		# type: (int, RequestType, str, str, UmcpBody, List[str]) -> bytes
 		'''Returns formatted message.'''
 		type = 'RESPONSE'
 		if _type == Message.REQUEST:
@@ -191,6 +200,7 @@ class Message(object):
 	http_method = property(lambda self: self._get_key('method'), lambda self, value: self._set_key('method', value))
 
 	def parse(self, msg):
+		# type: (bytes) -> None
 		"""Parses data and creates in case of a valid UMCP message the
 		corresponding object. If the data contains more than the message
 		the rest of the data is returned.
@@ -266,6 +276,7 @@ class Response(Message):
 	frontend to the console daemon"""
 
 	def __init__(self, request=None, data=None, mime_type=MIMETYPE_JSON):
+		# type: (Request, Any, str) -> None
 		Message.__init__(self, Message.RESPONSE, mime_type=mime_type)
 		if request:
 			self._id = request._id
@@ -281,6 +292,7 @@ class Response(Message):
 	recreate_id = None
 
 	def set_body(self, filename, mimetype=None):
+		# type: (str, str) -> None
 		'''Set body of response by guessing the mime type of the given
 		file if not specified and adding the content of the file to the body. The mime
 		type is guessed using the extension of the filename.'''
