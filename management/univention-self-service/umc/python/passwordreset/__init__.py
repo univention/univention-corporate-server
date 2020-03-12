@@ -476,7 +476,22 @@ class Instance(Base):
 	def set_password(self, token, username, password):
 		MODULE.info("set_password(): username: '{}'.".format(username))
 		username = self.email2username(username)
+		self._check_token(username, token)
 
+		# token is correct and valid
+		MODULE.info("Receive valid token for '{}'.".format(username))
+		if self.is_blacklisted(username):
+			# this should not happen
+			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
+			self.db.delete_tokens(token=token, username=username)
+			raise ServiceForbidden()  # TokenNotFound() ?
+		ret = self.udm_set_password(username, password)
+		self.db.delete_tokens(token=token, username=username)
+		if ret:
+			raise UMC_Error(_("Successfully changed your password."), status=200)
+		raise UMC_Error(_('Failed to change password.'), status=500)
+
+	def _check_token(self, username, token):
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
@@ -496,19 +511,6 @@ class Instance(Base):
 			MODULE.info("Receive correct but expired token for '{}'.".format(username))
 			self.db.delete_tokens(token=token, username=username)
 			raise TokenNotFound()
-
-		# token is correct and valid
-		MODULE.info("Receive valid token for '{}'.".format(username))
-		if self.is_blacklisted(username):
-			# this should not happen
-			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
-			self.db.delete_tokens(token=token, username=username)
-			raise ServiceForbidden()  # TokenNotFound() ?
-		ret = self.udm_set_password(username, password)
-		self.db.delete_tokens(token=token, username=username)
-		if ret:
-			raise UMC_Error(_("Successfully changed your password."), status=200)
-		raise UMC_Error(_('Failed to change password.'), status=500)
 
 	@forward_to_master
 	@prevent_denial_of_service
