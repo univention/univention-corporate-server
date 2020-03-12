@@ -46,6 +46,7 @@ def import_hook_files():
 	"""
 	Load all additional hook files from :file:`.../univention/admin/hooks.d/*.py`
 	"""
+	return  #PY3# Convert to importlib?
 	for dir_ in sys.path:
 		hooks_d = os.path.join(dir_, 'univention/admin/hooks.d/')
 		if os.path.isdir(hooks_d):

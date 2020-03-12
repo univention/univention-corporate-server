@@ -81,6 +81,7 @@ def import_syntax_files():
 	"""
 	Load all additional syntax files from :file:`*/univention/admin/syntax.d/*.py`.
 	"""
+	return  #PY3# Convert to importlib?
 	global _  # don't allow syntax to overwrite our global _ function.
 	gettext = _
 	for dir_ in sys.path:
