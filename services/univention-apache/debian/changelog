@@ -1,3 +1,9 @@
+univention-apache (11.0.1-17) unstable; urgency=medium
+
+  * Bug #50936: increased timeout in univention-add-vhost
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Mar 2020 10:53:18 +0100
+
 univention-apache (11.0.1-16) unstable; urgency=medium
 
   * Bug #50901: Break circular dependency

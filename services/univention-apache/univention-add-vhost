@@ -164,7 +164,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 			click.echo('Checking on {}...'.format(fqdn))
 			# normally, we would need to check for aliases as well
 			# but checking the most important one should be good enough
-			timeout = 20
+			timeout = 60
 			pause = 5
 			while timeout > 0:
 				if resolve_host(fqdn, pause) == dns_should_resolve:
