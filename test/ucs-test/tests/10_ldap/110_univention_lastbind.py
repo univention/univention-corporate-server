@@ -69,6 +69,9 @@ def activate_lastbind(bindpwdfile, other_server):
 
 @pytest.fixture(scope="module")
 def bindpwdfile(tmpdir_factory):
+	with UCSTestConfigRegistry() as ucr:
+		if ucr.get("tests/domainadmin/pwdfile", None):
+			return str(ucr.get("tests/domainadmin/pwdfile"))
 	path = tmpdir_factory.mktemp('data').join('bindpwdfile')
 	path.write('univention')
 	return str(path)
@@ -81,7 +84,10 @@ def failbindpwdfile():
 
 @pytest.fixture
 def binddn(ucr):
-	return "uid=Administrator,cn=users,%s" % (ucr.get('ldap/base'),)
+	if ucr.get("tests/domainadmin/account", None):
+		return str(ucr.get("tests/domainadmin/account"))
+	else:
+		return "uid=Administrator,cn=users,%s" % (ucr.get('ldap/base'),)
 
 
 @pytest.fixture

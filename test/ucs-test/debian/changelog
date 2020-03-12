@@ -1,3 +1,10 @@
+ucs-test (9.0.3-177) unstable; urgency=medium
+
+  * Bug #49700: 10_ldap/110_univention_lastbind.py
+    use UCR tests/domainadmin/account and tests/domainadmin/pwdfile when set
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 12 Mar 2020 17:50:00 +0100
+
 ucs-test (9.0.3-176) unstable; urgency=medium
 
   * Bug # 46599: added test for checking if a space in a mail address gets
