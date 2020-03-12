@@ -470,6 +470,7 @@ class Instance(Base):
 		# no contact info
 		raise MissingContactInformation()
 
+	@forward_to_master
 	@sanitize(
 		token=StringSanitizer(required=True),
 		username=StringSanitizer(required=True),
@@ -558,6 +559,7 @@ class Instance(Base):
 			raise NoMethodsAvailable()
 		return reset_methods
 
+	@forward_to_master
 	@sanitize(
 		lastname=StringSanitizer(required=True, minimum=1),
 		password=StringSanitizer(required=True, minimum=1),
