@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 # vim: set fileencoding=utf-8 et sw=4 ts=4 :
 
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 import six
 

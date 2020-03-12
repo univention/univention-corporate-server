@@ -31,9 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from pkgutil import extend_path
-__path__ = extend_path(__path__, __name__)
+__path__ = __import__("pkgutil").extend_path(__path__, __name__)  # type: ignore
 
 import univention.management.console.protocol  # noqa: F401
 from univention.management.console.base import *  # noqa: F401,F403
-from univention.management.console.base import _, __doc__  # noqa: F401
