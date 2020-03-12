@@ -40,7 +40,9 @@ The UMC server does not load the python modules to get the details about
 the modules name, description and functionality. Therefore each UMC
 module must provide an XML file containing this kind of information.
 
-The following example defines a module with the id *udm* ::
+The following example defines a module with the id `udm`:
+
+.. code-block:: xml
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<umc version="2.0">

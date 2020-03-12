@@ -39,7 +39,9 @@ sort the available UMC modules into groups. Each module can be in as
 many groups as desired.
 
 The category definitions are stored in XML files that structured as in
-the following example ::
+the following example
+
+.. code-block:: xml
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<umc version="2.0">

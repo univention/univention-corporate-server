@@ -1,15 +1,15 @@
 """Decorators for common ldap functionality.
-Example usage:
+Example usage::
 
-@machine_connection(write=True)
-def foobar(self, ldap_connection=None, ldap_position=None):
-	return ldap_connection.search('uid=Administrator')
+	@machine_connection(write=True)
+	def foobar(self, ldap_connection=None, ldap_position=None):
+		return ldap_connection.search('uid=Administrator')
 
-def foobar():
-	def bind(lo):
-		lo.bind('Administrator', 'univention')
-	lo, po = get_user_connection(bind=bind, write=True)
-	return lo.search('uid=Administrator')
+	def foobar():
+		def bind(lo):
+			lo.bind('Administrator', 'univention')
+		lo, po = get_user_connection(bind=bind, write=True)
+		return lo.search('uid=Administrator')
 
 """
 
