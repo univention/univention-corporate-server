@@ -1,0 +1,25 @@
+autom4te.cache/
+.deps/
+.libs/
+*.la
+*.lo
+*.o
+*.so
+*.log
+*.trs
+aclocal.m4
+config.status
+configure
+Makefile
+Makefile.in
+tests/test_debug
+# auto*
+compile
+config.guess
+config.sub
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+test-driver
