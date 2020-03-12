@@ -100,7 +100,7 @@ class ModuleServer(Server):
 		try:
 			try:
 				file_ = 'univention.management.console.modules.%s' % (modname,)
-				self.__module = __import__(file_, [], [], modname)
+				self.__module = __import__(file_, {}, {}, modname)
 				MODULE.process('Imported python module.')
 				self.__handler = self.__module.Instance()
 				MODULE.process('Module instance created.')
