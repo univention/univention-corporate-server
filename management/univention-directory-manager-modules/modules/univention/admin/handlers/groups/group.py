@@ -334,7 +334,7 @@ class object(univention.admin.handlers.simpleLdap):
 			pass
 
 		if 'samba' in self.options:
-			sid = self.oldattr.get('sambaSID', [''])[0]
+			sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
 			sid, has_rid, rid = sid.rpartition('-')
 			if has_rid and rid.isdigit():
 				self.info['sambaRID'] = rid
