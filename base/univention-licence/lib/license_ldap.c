@@ -6,7 +6,7 @@
 
 #include <univention/ldap.h>
 
-univention_ldap_parameters_t* lp = NULL;
+static univention_ldap_parameters_t* lp = NULL;
 
 #define _UNIVENTION_LDAP_MACHINE_SECRET_LEN_MAX 60
 int univention_ldap_set_machine_connection( univention_ldap_parameters_t *lp )
@@ -14,7 +14,7 @@ int univention_ldap_set_machine_connection( univention_ldap_parameters_t *lp )
 	FILE *secret;
 	size_t len;
 
-	asprintf(&lp->binddn, univention_config_get_string("ldap/hostdn"));
+	lp->binddn = univention_config_get_string("ldap/hostdn");
 	if (!lp->binddn) {
 		goto err;
 	}

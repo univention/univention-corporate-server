@@ -42,9 +42,9 @@ Description: UCS - license validation library (development files)
 Package: univention-license-import
 Architecture: all
 Depends: ${misc:Depends},
- univention-config,
  univention-config (>= 1.20),
- ldap-utils
+ ldap-utils,
+ ${shlibs:Depends},
 Description: UCS - tool to import new licenses
  This package contains the tool to import new UCS
  licenses.
