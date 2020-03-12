@@ -32,11 +32,11 @@
 System Diagnosis UMC module to check Spamassassin rules.
 """
 
+import pty
 import os
 import pwd
 import subprocess
 from univention.management.console.modules.diagnostic import Warning, ProblemFixed, MODULE
-
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
 
@@ -47,13 +47,17 @@ run_descr = ['Checks spamassassin rule set and configuration files']
 
 
 def run(_umc_instance, retest=False):
-	pw = pwd.getpwnam('debian-spamd')
-	uid = pw[2]
-	gid = pw[3]
+	uid = -1
+	gid = -1
+	try:
+		pw = pwd.getpwnam('debian-spamd')
+		uid = pw[2]
+		gid = pw[3]
+	except KeyError:
+		return
 
 	process = subprocess.Popen(['/usr/bin/spamassassin', '--lint'], preexec_fn=demote(uid, gid))
 	result = process.wait()
-
 	if result != 0:
 		buttons = [{
 			'action': 'update_signatures',
@@ -67,7 +71,10 @@ def run(_umc_instance, retest=False):
 
 def update_signatures(_umc_instance):
 	MODULE.process('Updating signatures')
-	cron_result = subprocess.Popen(['sh', '/etc/cron.daily/spamassassin']).wait()
+	master, slave = pty.openpty() # cron script requires pseudo terminal to skip sleep
+	cron_result = subprocess.Popen(['/etc/cron.daily/spamassassin'], stdin=slave).wait()
+	os.close(slave)
+	MODULE.process('Updating signatures done')
 
 	if cron_result:
 		raise Warning('Could not fetch signatures')
