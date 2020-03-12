@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-66) unstable; urgency=medium
+
+  * Bug #50492: Fill new dummy hash with nt_hash
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 12 Mar 2020 22:05:17 +0100
+
 univention-s4-connector (13.0.2-65) unstable; urgency=medium
 
   * Bug #50492: Fill missing des-cbc-crc with dummy hash, since samba needs

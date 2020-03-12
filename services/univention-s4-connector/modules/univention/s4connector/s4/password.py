@@ -137,7 +137,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 	return keys
 
 
-def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
+def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, nt_hash):
 	old_krb = {}
 	if old_supplementalCredentials:
 		sc = ndr_unpack(drsblobs.supplementalCredentialsBlob, old_supplementalCredentials)
@@ -246,8 +246,11 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		if not krb5_des_crc:
 			next_key = drsblobs.package_PrimaryKerberosKey4()
 			next_key.keytype = 4294967156
-			next_key.value = None
-			next_key.value_len = 0
+			next_key.value = nt_hash
+			if nt_hash:
+				next_key.value_len = len(nt_hash)
+			else:
+				next_key.value_len = 0
 			kerberosKey4list.append(next_key)
 
 		salt4 = drsblobs.package_PrimaryKerberosString()
@@ -332,83 +335,85 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials):
 		cred_List.append(cred_Primary_Kerberos_Newer)
 		package_names.append('Kerberos-Newer-Keys')
 	# Primary:Kerberos : MD5 and CRC keys
-		
+
 	ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: building Primary:Kerberos blob")
 	kerberosKey3list = []
 
-	# Always send primary:kerberos keys, whether they exist or not.
-	# Samba does not allow primary:kerberos to be missing, while primary:kerberso-newer is allowed to be missing
-	if krb5_des_md5:
-		next_key = drsblobs.package_PrimaryKerberosKey3()
-		next_key.keytype = 3
-		next_key.value = krb5_des_md5
-		next_key.value_len = len(krb5_des_md5)
-		kerberosKey3list.append(next_key)
-	if krb5_des_crc:
-		next_key = drsblobs.package_PrimaryKerberosKey3()
-		next_key.keytype = 1
-		next_key.value = krb5_des_crc
-		next_key.value_len = len(krb5_des_crc)
-		kerberosKey3list.append(next_key)
-	# Windows Server 2012 does not always send the des encryption types.
-	# Samba does not allow a key number != 2, which is why we add a "dummy" hash.
-	if not krb5_des_crc:
-		next_key = drsblobs.package_PrimaryKerberosKey3()
-		next_key.keytype = 4294967156
-		next_key.value = None
-		next_key.value_len = 0
-		kerberosKey3list.append(next_key)
+	if krb5_des_md5 or krb5_des_crc:
+		if krb5_des_md5:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = 3
+			next_key.value = krb5_des_md5
+			next_key.value_len = len(krb5_des_md5)
+			kerberosKey3list.append(next_key)
+		if krb5_des_crc:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = 1
+			next_key.value = krb5_des_crc
+			next_key.value_len = len(krb5_des_crc)
+			kerberosKey3list.append(next_key)
+		# Windows Server 2012 does not always send the des encryption types.
+		# Samba does not allow a key number != 2, which is why we add a "dummy" hash.
+		if not krb5_des_crc:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = 4294967156
+			next_key.value = nt_hash
+			if nt_hash:
+				next_key.value_len = len(nt_hash)
+			else:
+				next_key.value_len = 0
+			kerberosKey3list.append(next_key)
 
-	salt = drsblobs.package_PrimaryKerberosString()
-	salt.string = krb_ctr3_salt
+		salt = drsblobs.package_PrimaryKerberosString()
+		salt.string = krb_ctr3_salt
 
-	ctr3 = drsblobs.package_PrimaryKerberosCtr3()
-	ctr3.salt = salt
-	ctr3.num_keys = len(kerberosKey3list)
-	ctr3.keys = kerberosKey3list
+		ctr3 = drsblobs.package_PrimaryKerberosCtr3()
+		ctr3.salt = salt
+		ctr3.num_keys = len(kerberosKey3list)
+		ctr3.keys = kerberosKey3list
 
-	if old_krb.get('ctr3'):
-		# keys -> old_keys
-		if len(old_krb['ctr3'].keys) > ctr3.num_keys:
-			cleaned_ctr3_old_keys = []
-			for key in old_krb['ctr3'].keys:
-				if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
-					ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos filtering keytype %s from old_keys" % key.keytype)
-					continue
-				else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
-					cleaned_ctr3_old_keys.append(key)
+		if old_krb.get('ctr3'):
+			# keys -> old_keys
+			if len(old_krb['ctr3'].keys) > ctr3.num_keys:
+				cleaned_ctr3_old_keys = []
+				for key in old_krb['ctr3'].keys:
+					if key.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) to include the arc4 hash
+						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: Primary:Kerberos filtering keytype %s from old_keys" % key.keytype)
+						continue
+					else:  # TODO: can we do something better at this point to make old_keys == num_keys ?
+						cleaned_ctr3_old_keys.append(key)
 
-			ctr3.old_keys = cleaned_ctr3_old_keys
-			ctr3.num_old_keys = len(cleaned_ctr3_old_keys)
-		else:
-			ctr3.old_keys = old_krb['ctr3'].keys
-			ctr3.num_old_keys = old_krb['ctr3'].num_keys
+				ctr3.old_keys = cleaned_ctr3_old_keys
+				ctr3.num_old_keys = len(cleaned_ctr3_old_keys)
+			else:
+				ctr3.old_keys = old_krb['ctr3'].keys
+				ctr3.num_old_keys = old_krb['ctr3'].num_keys
 
-	if ctr3.num_old_keys != 0 and ctr3.num_old_keys != ctr3.num_keys:
-		# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
-		ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_keys = %s" % ctr3.num_keys)
-		for k in ctr3.keys:
-			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
-		ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
-		for k in ctr3.old_keys:
-			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.old_key.keytype: %s" % k.keytype)
+		if ctr3.num_old_keys != 0 and ctr3.num_old_keys != ctr3.num_keys:
+			# TODO: Recommended policy is to fill up old_keys to match num_keys, this will result in a traceback, can we do something better?
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_keys = %s" % ctr3.num_keys)
+			for k in ctr3.keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
+			ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: Primary:Kerberos num_old_keys = %s" % ctr3.num_old_keys)
+			for k in ctr3.old_keys:
+				ud.debug(ud.LDAP, ud.WARN, "calculate_supplementalCredentials: ctr3.old_key.keytype: %s" % k.keytype)
 
-	krb = drsblobs.package_PrimaryKerberosBlob()
-	krb.version = 3
-	krb.ctr = ctr3
-	krb3_blob = ndr_pack(krb)
+		krb = drsblobs.package_PrimaryKerberosBlob()
+		krb.version = 3
+		krb.ctr = ctr3
+		krb3_blob = ndr_pack(krb)
 
-	creddata_Primary_Kerberos = binascii.hexlify(krb3_blob)
-	credname_Primary_Kerberos = "Primary:Kerberos"
+		creddata_Primary_Kerberos = binascii.hexlify(krb3_blob)
+		credname_Primary_Kerberos = "Primary:Kerberos"
 
-	cred_Primary_Kerberos = drsblobs.supplementalCredentialsPackage()
-	cred_Primary_Kerberos.name = credname_Primary_Kerberos
-	cred_Primary_Kerberos.name_len = len(credname_Primary_Kerberos)
-	cred_Primary_Kerberos.data = creddata_Primary_Kerberos
-	cred_Primary_Kerberos.data_len = len(creddata_Primary_Kerberos)
-	cred_Primary_Kerberos.reserved = 1
-	cred_List.append(cred_Primary_Kerberos)
-	package_names.append('Kerberos')
+		cred_Primary_Kerberos = drsblobs.supplementalCredentialsPackage()
+		cred_Primary_Kerberos.name = credname_Primary_Kerberos
+		cred_Primary_Kerberos.name_len = len(credname_Primary_Kerberos)
+		cred_Primary_Kerberos.data = creddata_Primary_Kerberos
+		cred_Primary_Kerberos.data_len = len(creddata_Primary_Kerberos)
+		cred_Primary_Kerberos.reserved = 1
+		cred_List.append(cred_Primary_Kerberos)
+		package_names.append('Kerberos')
 
 	if package_names:
 		krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')
@@ -575,6 +580,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		else:
 			if userPrincipalName_attr:  # old and not new
 				modlist.append((ldap.MOD_DELETE, 'userPrincipalName', userPrincipalName_attr))
+	unicodePwd_new = None
 	if not ucsNThash == s4NThash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))
 		# Now if ucsNThash is empty there should at least some timestamp in UCS,
@@ -582,7 +588,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		# Usecase: LDB module on ucs_3.0-0-ucsschool slaves creates XP computers/windows in UDM without password
 		if ucsNThash or sambaPwdLastSet:
 			pwd_set = True
-			unicodePwd_new = None
 			if ucsNThash:
 				try:
 					unicodePwd_new = binascii.a2b_hex(ucsNThash)
@@ -606,7 +611,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		if krb5Principal:
 			# encoding of Samba4 supplementalCredentials
 			if krb5Key:
-				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials)
+				supplementalCredentials_new = calculate_supplementalCredentials(krb5Key, supplementalCredentials, unicodePwd_new)
 				if supplementalCredentials_new:
 					modlist.append((ldap.MOD_REPLACE, 'supplementalCredentials', supplementalCredentials_new))
 				else:
