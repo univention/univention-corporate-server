@@ -36,7 +36,7 @@
 		"de": "Bitte %s und melden sich erneut an."
 	},
 	"linktitle_LDAP_PWCHANGE": {
-		"en": "ändern Sie Ihr Passwort"
+		"de": "ändern Sie Ihr Passwort"
 	},
 	"title_KRB_PWCHANGE": {
 		"de": "Ihr Passwort ist abgelaufen"
@@ -45,7 +45,7 @@
 		"de": "Bitte %s und melden sich erneut an."
 	},
 	"linktitle_KRB_PWCHANGE": {
-		"en": "ändern Sie Ihr Passwort"
+		"de": "ändern Sie Ihr Passwort"
 	},
 	"title_SAMBA_PWCHANGE": {
 		"de": "Ihr Passwort ist abgelaufen"
@@ -54,7 +54,7 @@
 		"de": "Bitte %s und melden sich erneut an."
 	},
 	"linktitle_SAMBA_PWCHANGE": {
-		"en": "ändern Sie Ihr Passwort"
+		"de": "ändern Sie Ihr Passwort"
 	},
 	"title_SAMBA_ACCLOCKED": {
 		"de": "Account gesperrt"
