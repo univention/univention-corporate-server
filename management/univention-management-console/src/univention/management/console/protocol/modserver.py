@@ -73,7 +73,7 @@ class ModuleServer(Server):
 		self.__commands = Module()
 		self.__comm = None
 		self.__client = None
-		self.__buffer = ''
+		self.__buffer = b''
 		self.__acls = None
 		self.__timeout = timeout
 		self.__time_remaining = timeout
@@ -183,7 +183,7 @@ class ModuleServer(Server):
 		while self.__buffer:
 			try:
 				msg = Message()
-				self.__buffer = msg.parse(self.__buffer)
+				self.__buffer = msg.parse(self.__buffer.decode('UTF-8'))  #PY3# FIXME
 				MODULE.info("Received request %s" % msg.id)
 				self.handle(msg)
 			except IncompleteMessageError:
@@ -338,7 +338,7 @@ class ModuleServer(Server):
 		if len(self.__queue) > 0:
 			length = len(self.__queue)
 			try:
-				ret = self.__comm.send(self.__queue)
+				ret = self.__comm.send(self.__queue.encode('UTF-8'))  #PY3# FIXME
 			except socket.error as e:
 				if e[0] == errno.EWOULDBLOCK:
 					return True
