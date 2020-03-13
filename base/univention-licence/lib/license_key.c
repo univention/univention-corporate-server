@@ -33,6 +33,7 @@ static RSA *rsa_private = NULL;
         @retval 0 on error
 */
 int univention_license_key_init(void) {
+	univention_license_key_free();
 	public_keys = calloc(NUM_PUBLIC_KEYS, sizeof(char *));
 	if (!public_keys)
 		return 0;

@@ -13,6 +13,7 @@ int univention_ldap_set_machine_connection(univention_ldap_parameters_t *lp) {
 	FILE *secret;
 	size_t len;
 
+	free(lp->binddn);
 	lp->binddn = univention_config_get_string("ldap/hostdn");
 	if (!lp->binddn) {
 		goto err;
@@ -22,6 +23,7 @@ int univention_ldap_set_machine_connection(univention_ldap_parameters_t *lp) {
 	if (!secret)
 		goto err1;
 
+	free(lp->bindpw);
 	lp->bindpw = calloc(_UNIVENTION_LDAP_MACHINE_SECRET_LEN_MAX, sizeof(char));
 	if (!lp->bindpw) {
 		fclose(secret);
@@ -68,6 +70,7 @@ err:
         @retval 0 on error
 */
 int univention_license_ldap_init(void) {
+	univention_ldap_close(lp);
 	lp = univention_ldap_new();
 	if (!lp)
 		return 0;
