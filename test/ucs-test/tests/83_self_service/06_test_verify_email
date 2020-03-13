@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner python
+## desc: Tests the Univention Self Service
+## tags: [apptest]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-self-service
+##   - univention-self-service-passwordreset-umc
+
+import univention.testing.utils as utils
+from univention.lib.umc import Client
+from univention.config_registry import ConfigRegistry
+from test_self_service import capture_mails
+
+
+class EmailVerification(object):
+
+	def __init__(self):
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
+		self.c = Client()
+		self.user = {
+			'lastname': 'foo1',
+			'username': 'bar',
+			'email': 'root@localhost',
+			'password': 'univention',
+		}
+		self.dn = 'uid={},cn=users,{}'.format(self.user['username'], self.ucr.get('ldap/base'))
+
+	def test_verification_email(self):
+		timeout = 5
+		with capture_mails(timeout=timeout) as mails:
+		    self.c.umc_command('passwordreset/create_account', self.user)
+		    utils.verify_ldap_object(self.dn, {'univentionPasswordRecoveryEmailVerified': ['FALSE']})
+
+		mail = mails.data and mails.data[0]
+		print(mail)
+                assert mail, 'No email has been received in %s seconds' % (timeout,)
+
+
+def main():
+	ev = EmailVerification()
+	ev.test_verification_email()
+
+
+if __name__ == '__main__':
+	main()
