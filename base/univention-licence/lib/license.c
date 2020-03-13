@@ -114,15 +114,15 @@ int univention_license_select(const char *licensetyp) {
 
 							ret = 0;
 							if (!univention_license_check_signature()) {
-								ret += 1;
+								ret |= 1;
 								valid &= 0;
 							}
 							if (!univention_license_check_enddate()) {
-								ret += 2;
+								ret |= 2;
 								valid &= 0;
 							}
 							if (!univention_license_check_basedn()) {
-								ret += 4;
+								ret |= 4;
 								valid &= 0;
 							}
 
@@ -221,13 +221,13 @@ int univention_license_check(const char *objectDN) {
 		if (global_license != NULL) {
 			ret = 0;
 			if (!univention_license_check_signature())
-				ret += 1;
+				ret |= 1;
 			if (!univention_license_check_enddate())
-				ret += 2;
+				ret |= 2;
 			if (!univention_license_check_basedn())
-				ret += 4;
+				ret |= 4;
 			if (!univention_license_check_searchpath(objectDN))
-				ret += 8;
+				ret |= 8;
 			univention_licenseObject_free(global_license);
 			global_license = NULL;
 		}
