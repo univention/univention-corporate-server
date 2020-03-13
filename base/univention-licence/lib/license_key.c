@@ -34,6 +34,8 @@ static RSA *rsa_private = NULL;
 */
 int univention_license_key_init(void) {
 	public_keys = calloc(NUM_PUBLIC_KEYS, sizeof(char *));
+	if (!public_keys)
+		return 0;
 	// setup public key strings
 	/*add here new publicKeys*/
 	/*don't forget to add '\n\' to each line end, and don't reformate the string.*/
@@ -75,6 +77,8 @@ mTp+dauS/6Iy0plubIIljUiN8qsPdRSywmvzQvPNAhXYaRDVTVb6Lp9Gw0whMpN6\n\
 
 	// setup public key memory
 	rsa_public = calloc(NUM_PUBLIC_KEYS, sizeof(RSA *));
+	if (!rsa_public)
+		return 0;
 
 	if (!public_keys_installed) {
 		if (!univention_license_key_public_key_load()) {

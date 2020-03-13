@@ -74,6 +74,8 @@ int univention_license_select(const char *licensetyp) {
 		lStrings *searchPath = NULL;
 		char *baseDN = univention_license_ldap_get_basedn();
 		int len = 0;
+		if (!baseDN)
+			goto err1;
 
 		// clean old global_licese
 		if (global_license != NULL) {
@@ -84,6 +86,9 @@ int univention_license_select(const char *licensetyp) {
 		// build directoryDN
 		len = strlen(baseDN) + strlen("cn=directory,cn=univention,");
 		directoryDN = malloc(sizeof(char) * (len + 1));
+		if (!directoryDN)
+			goto err1;
+
 		sprintf(directoryDN, "cn=directory,cn=univention,%s", baseDN);
 
 		// find location of licenses
@@ -91,6 +96,8 @@ int univention_license_select(const char *licensetyp) {
 			free(directoryDN);
 			len = strlen(baseDN) + strlen("cn=default containers,cn=univention,");
 			directoryDN = malloc(sizeof(char) * (len + 1));
+			if (!directoryDN)
+				goto err1;
 			sprintf(directoryDN, "cn=default containers,cn=univention,%s", baseDN);
 			directoryDN[len] = 0;
 
@@ -155,6 +162,7 @@ int univention_license_select(const char *licensetyp) {
 		// cleanup
 		free(directoryDN);
 	}
+err1:
 	return ret;
 }
 
@@ -401,6 +409,9 @@ int univention_license_check_searchpath(const char *objectDN) {
 		// build directoryDN
 		len = strlen(baseDN) + strlen("cn=directory,cn=univention,");
 		directoryDN = malloc(sizeof(char) * (len + 1));
+		if (!directoryDN)
+			return 0;
+
 		sprintf(directoryDN, "cn=directory,cn=univention,%s", baseDN);
 		directoryDN[len] = 0;
 
@@ -509,6 +520,11 @@ lObj *univention_license_sort(lObj *license) {
 		// printf("DEBUG:do a sort with %i elements.\n",size);
 
 		sortarray = malloc(sizeof(sortElement) * size);
+		if (!sortarray) {
+			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "malloc()");
+			return NULL;
+		}
+
 		for (i = 0; i < size; i++) {
 			sortarray[i].key = license->key[i];
 			sortarray[i].val = license->val[i];
@@ -531,11 +547,13 @@ lObj *univention_license_sort(lObj *license) {
         @brief	allocate the memory for a new lObj and initialize all ptrs to NULL
         @param	size	the number of parameters that should be stored in this object
         @retval	ptr the new allocated lObj structure
-        @todo	do malloc error handling
 */
 lObj *univention_licenseObject_malloc(int size) {
 	lObj *license = NULL;
 	license = malloc(sizeof(lObj));
+	if (!license)
+		return NULL;
+
 	// printf("LicenseMalloc:%i,%p.\n",size,license);
 
 	license->size = size;
@@ -550,12 +568,14 @@ lObj *univention_licenseObject_malloc(int size) {
         @brief	allocate the memory for a new lStrings Object and initialize all ptrs to NULL
         @param	num	the number of lines the shoulb be stored later inside.
         @retval	ptr the new allocated lStrings structure
-        @todo	do malloc error handling
 */
 lStrings *univention_licenseStrings_malloc(int num) {
 	lStrings *ret = NULL;
 	if (num > 0) {
 		ret = malloc(sizeof(lStrings));
+		if (!ret)
+			return NULL;
+
 		ret->num = num;
 		ret->line = calloc(ret->num, sizeof(char *));
 	}
@@ -645,6 +665,7 @@ lStrings *univention_license_get_value(const char *attribute) {
 			while (i < global_license->size && count < value->num) {
 				if (strcmp((global_license->key[i]), attribute) == 0) {
 					value->line[count++] = strdup(global_license->val[i]);
+					// FIXME: check memory allocation error
 				}
 				i++;
 			}

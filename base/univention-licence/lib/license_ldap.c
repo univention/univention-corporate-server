@@ -69,6 +69,8 @@ err:
 */
 int univention_license_ldap_init(void) {
 	lp = univention_ldap_new();
+	if (!lp)
+		return 0;
 	if (univention_ldap_set_admin_connection(lp)) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "univention_ldap_set_admin_connection() failed, trying univention_ldap_set_machine_connection().");
 		univention_ldap_set_machine_connection(lp);
@@ -94,6 +96,8 @@ void univention_license_ldap_free(void) {
         @retval 0 on error
 */
 char *univention_license_ldap_get_basedn(void) {
+	if (lp == NULL)
+		return NULL;
 	return lp->base;
 }
 
@@ -139,12 +143,15 @@ lObj *univention_license_ldap_search_licenseObject(const char *searchBaseDN, con
 	// build searchfilter
 	filter_len = strlen("(&(objectClass=univentionLicense)(univentionLicenseModule=") + strlen(licensetyp) + strlen("))");
 	filter = malloc(sizeof(char) * filter_len + 1);
+	if (!filter)
+		goto out;
 	filter[filter_len] = 0;
 	sprintf(filter, "(&(objectClass=univentionLicense)(univentionLicenseModule=%s))", licensetyp);
 
 	ret = univention_license_ldap_get(searchBaseDN, scope, filter, attr, "univentionLicense", num);
 
 	free(filter);
+out:
 	return ret;
 }
 
@@ -165,12 +172,15 @@ lObj *univention_license_ldap_get_licenseObject(const char *licenseDN) {
 	// build searchfilter
 	filter_len = strlen("objectClass=univentionLicense");
 	filter = malloc(sizeof(char) * filter_len + 1);
+	if (!filter)
+		goto out;
 	filter[filter_len] = 0;
 	sprintf(filter, "objectClass=univentionLicense");
 
 	ret = univention_license_ldap_get(licenseDN, scope, filter, attr, "univentionLicense", 0);
 
 	free(filter);
+out:
 	return ret;
 }
 
@@ -196,6 +206,8 @@ lStrings *univention_license_ldap_get_strings(const char *objectDN, const char *
 
 	filterLen = strlen(attribute) + strlen("=*");
 	filter = malloc(sizeof(char) * (filterLen + 1));
+	if (!filter)
+		goto out;
 	sprintf(filter, "%s=*", attribute);
 	filter[filterLen] = 0;
 
@@ -215,6 +227,8 @@ lStrings *univention_license_ldap_get_strings(const char *objectDN, const char *
 			}
 			if (count > 0) {
 				ret = univention_licenseStrings_malloc(count);
+				if (!ret)
+					goto err1;
 
 				i = 0;
 				while (i < license->size && numRet < ret->num) {
@@ -226,11 +240,12 @@ lStrings *univention_license_ldap_get_strings(const char *objectDN, const char *
 				}
 			}
 		}
+err1:
 		univention_licenseObject_free(license);
 	} else {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Can't get Attribute '%s' from Object '%s'.", attribute, objectDN);
 	}
-
+out:
 	free(filter);
 	return ret;
 }
@@ -321,6 +336,8 @@ lObj *univention_license_ldap_get(const char *search_base, int scope, const char
 					if (valuecount > 0) {
 						int i = 0;
 						ret = univention_licenseObject_malloc(valuecount);
+						if (!ret)
+							goto err1;
 
 						/*convert LDAPMessage to C Object*/
 						for (attributeName = ldap_first_attribute(lp->ld, element, &ber_walker); attributeName != NULL; attributeName = ldap_next_attribute(lp->ld, element, ber_walker)) {
@@ -332,7 +349,9 @@ lObj *univention_license_ldap_get(const char *search_base, int scope, const char
 									int count = ldap_count_values_len(values);
 									int x = 0;
 									while (x < count) {
+										// FIXME: check memory allocation error
 										ret->key[i] = strdup(attributeName);
+										// FIXME: bv_val may be binary and not a \0 terminated srting
 										ret->val[i] = strdup(values[x]->bv_val);
 										// printf("%p:key[%i]:%s.\n",ret->key[i],i,ret->key[i]);
 										// printf("%p:val[%i]:%s.\n",ret->val[i],i,ret->val[i]);
@@ -351,6 +370,7 @@ lObj *univention_license_ldap_get(const char *search_base, int scope, const char
 				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "The LDAP-Result has 0 elements, this should be normal if nothing is found.");
 			}
 		}
+err1:
 		/*WARNING!!! only free a ldapmessage after you have all you need from, this
 		cleans all, also subparts of the message!!!*/
 		if (result != NULL) {

@@ -27,6 +27,8 @@ char *univention_license_build_data(lObj *license) {
 
 	if (len > 0) {
 		data = calloc(len + 1, sizeof(char));
+		if (!data)
+			goto err;
 
 		for (i = 0; i < license->size; i++) {
 			if (!(strcmp(license->key[i], "univentionLicenseSignature") == 0)) {
@@ -40,6 +42,7 @@ char *univention_license_build_data(lObj *license) {
 	} else {
 		univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_WARN, "License is empty! Can't create data.");
 	}
+err:
 	return data;
 }
 
@@ -117,16 +120,20 @@ char *univention_license_sign_license(const char *licenseDN) {
         @retval len	the amount of chars in returned rawdata
 */
 unsigned int univention_license_base64_to_raw(const char *base64data, unsigned char **rawdata) {
-	unsigned int rawlen;
+	unsigned int rawlen, ret = 0;
 	char *temp = NULL;
 	int templen;
-	BIO *b64;
-	BIO *mem;
+	BIO *b64 = NULL;
+	BIO *mem = NULL;
 
 	b64 = BIO_new(BIO_f_base64());               // base64 encode BIO
+	if (!b64)
+		goto out;
 	BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);  // no newline
 
 	mem = BIO_new_mem_buf((char *)base64data, -1);  // BIO to read from mem
+	if (!mem)
+		goto out;
 	BIO_set_close(mem, BIO_NOCLOSE);                // So BIO_free() leaves BUF_MEM alone
 
 	b64 = BIO_push(b64, mem);  // connect b64 with mem, so b64 will read from mem
@@ -134,6 +141,8 @@ unsigned int univention_license_base64_to_raw(const char *base64data, unsigned c
 	// create temp memory
 	templen = strlen(base64data);
 	temp = malloc((templen + 1) * sizeof(char));
+	if (!temp)
+		goto out;
 
 	// convert from base64
 	rawlen = BIO_read(b64, (void *)temp, templen);
@@ -144,17 +153,21 @@ unsigned int univention_license_base64_to_raw(const char *base64data, unsigned c
 		free(*rawdata);
 	}
 	*rawdata = malloc(rawlen * sizeof(char));
+	if (!*rawdata)
+		goto out;
 
 	// copy data to return string
 	memcpy(*rawdata, temp, rawlen * sizeof(char));
+	ret = rawlen;
 
+out:
 	// clean temp data
 	free(temp);
 
 	// cleanup BIOs
 	BIO_free(mem);
 	BIO_free(b64);
-	return rawlen;
+	return ret;
 }
 
 /******************************************************************************/
@@ -168,12 +181,16 @@ char *univention_license_raw_to_base64(const unsigned char *data, unsigned int d
 {
 	long retlen = 0;
 	char *ret = NULL;
-	BIO *b64;
-	BIO *mem;
+	BIO *b64 = NULL;
+	BIO *mem = NULL;
 
 	b64 = BIO_new(BIO_f_base64());               // base64 encode BIO
+	if (!b64)
+		goto out;
 	BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);  // no newline
 	mem = BIO_new(BIO_s_mem());                  // memstorage BIO
+	if (!mem)
+		goto out;
 	b64 = BIO_push(b64, mem);                    // connect b64 with mem, so write to b64 will write to mem
 
 	// convert to base64
@@ -183,6 +200,8 @@ char *univention_license_raw_to_base64(const unsigned char *data, unsigned int d
 	// calculate base64 data length, and allocate
 	retlen = BIO_get_mem_data(mem, &ret);
 	ret = malloc(sizeof(char) * (retlen + 1));
+	if (!ret)
+		goto out;
 
 	// get base64 encoded data
 	BIO_read(mem, ret, retlen);
@@ -190,6 +209,7 @@ char *univention_license_raw_to_base64(const unsigned char *data, unsigned int d
 	// 0 terminating
 	ret[retlen] = 0;
 
+out:
 	// cleanup BIOs
 	BIO_free(mem);
 	BIO_free(b64);
