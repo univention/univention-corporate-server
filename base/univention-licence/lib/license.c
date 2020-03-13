@@ -486,20 +486,7 @@ int univention_license_qsort_hook(sortElement *a, sortElement *b) {
         @retval	-1	if a is 'greater' then b
 */
 int univention_license_compare_string(const char *a, const char *b) {
-	int i = 0;
-	while (i < strlen(a) && i < strlen(b)) {
-		if (a[i] < b[i])
-			return -1;
-		else if (a[i] > b[i])
-			return 1;
-		else
-			i++;
-	}
-	if (strlen(a) < strlen(b))
-		return -1;
-	else if (strlen(a) > strlen(b))
-		return 1;
-	return 0;
+	return strcmp(a, b);
 }
 
 /*****************************************************************************/
