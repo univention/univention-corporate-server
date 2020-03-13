@@ -270,7 +270,7 @@ int univention_license_verify(const char *data, const char *signature) {
 			}
 			free(rawsignature);
 		} else {
-			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Can't veriy Data(%s) with Signature(%s).", data, signature);
+			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Can't veriy Data(%s) with Signature(%s).", data ? data : "", signature ? signature : "");
 		}
 	}
 	return ret;

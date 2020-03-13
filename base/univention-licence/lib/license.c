@@ -285,7 +285,7 @@ int univention_license_check_basedn() {
 				univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "This License is limited to the Base DN '%s' but the Base DN of your system is '%s'.", licenseBaseDN->line[0], baseDN);
 			}
 		} else {
-			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Value Error: baseDN:%s, LicenseBaseDN:%s.", baseDN, licenseBaseDN->line[0]);
+			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Value Error: baseDN:%s, LicenseBaseDN:%s.", baseDN ? baseDN : "", licenseBaseDN ? licenseBaseDN->line[0] : "");
 		}
 
 		univention_licenseStrings_free(licenseBaseDN);
