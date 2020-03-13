@@ -73,7 +73,7 @@ int univention_license_select(const char *licensetyp) {
 	int ret = -1;
 	// check init
 	if (univention_license_init()) {
-		char *directoryDN = NULL;
+		AUTOPTR(char) directoryDN = NULL;
 		lStrings *searchPath = NULL;
 		char *baseDN = univention_license_ldap_get_basedn();
 		int len = 0;
@@ -161,9 +161,6 @@ int univention_license_select(const char *licensetyp) {
 		} else {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "Could not retrieve the location of licenses from: %s.", directoryDN);
 		}
-
-		// cleanup
-		free(directoryDN);
 	}
 err1:
 	return ret;
@@ -377,7 +374,7 @@ int univention_license_check_searchpath(const char *objectDN) {
 	return 1;
 
 	if (univention_license_init()) {
-		char *directoryDN = NULL;
+		AUTOPTR(char) directoryDN = NULL;
 		int len = 0;
 		lStrings *searchPath = NULL;
 		char *baseDN = univention_license_ldap_get_basedn();
@@ -430,7 +427,6 @@ int univention_license_check_searchpath(const char *objectDN) {
 		} else {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "Could not retrieve the location of licenses from: %s.", directoryDN);
 		}
-		free(directoryDN);
 	}
 	return found;
 }
@@ -492,7 +488,7 @@ lObj *univention_license_sort(lObj *license) {
 	int size = license->size;
 	if (size > 1) {
 		int i;
-		sortElement *sortarray = NULL;
+		AUTOPTR(sortElement) sortarray = NULL;
 		// printf("DEBUG:do a sort with %i elements.\n",size);
 
 		sortarray = malloc(sizeof(sortElement) * size);
@@ -512,8 +508,6 @@ lObj *univention_license_sort(lObj *license) {
 			license->key[i] = sortarray[i].key;
 			license->val[i] = sortarray[i].val;
 		}
-
-		free(sortarray);
 	}
 	return license;
 }

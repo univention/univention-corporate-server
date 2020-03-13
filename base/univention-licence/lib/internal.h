@@ -35,5 +35,8 @@
 
 DEFINE_AUTOPTR_FUNC(lStrings, univention_licenseStrings_free)
 DEFINE_AUTOPTR_FUNC(lObj, univention_licenseObject_free)
+DEFINE_AUTOPTR_FUNC(char, free);
+DEFINE_AUTOPTR_FUNC(sortElement, free);
+DEFINE_AUTOPTR_FUNC(BIO, BIO_free)
 
 #endif

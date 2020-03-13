@@ -123,8 +123,8 @@ unsigned int univention_license_base64_to_raw(const char *base64data, unsigned c
 	unsigned int rawlen, ret = 0;
 	char *temp = NULL;
 	int templen;
-	BIO *b64 = NULL;
-	BIO *mem = NULL;
+	AUTOPTR(BIO) b64 = NULL;
+	AUTOPTR(BIO) mem = NULL;
 
 	b64 = BIO_new(BIO_f_base64());               // base64 encode BIO
 	if (!b64)
@@ -161,12 +161,7 @@ unsigned int univention_license_base64_to_raw(const char *base64data, unsigned c
 	ret = rawlen;
 
 out:
-	// clean temp data
 	free(temp);
-
-	// cleanup BIOs
-	BIO_free(mem);
-	BIO_free(b64);
 	return ret;
 }
 
@@ -181,8 +176,8 @@ char *univention_license_raw_to_base64(const unsigned char *data, unsigned int d
 {
 	long retlen = 0;
 	char *ret = NULL;
-	BIO *b64 = NULL;
-	BIO *mem = NULL;
+	AUTOPTR(BIO) b64 = NULL;
+	AUTOPTR(BIO) mem = NULL;
 
 	b64 = BIO_new(BIO_f_base64());               // base64 encode BIO
 	if (!b64)
@@ -210,9 +205,6 @@ char *univention_license_raw_to_base64(const unsigned char *data, unsigned int d
 	ret[retlen] = 0;
 
 out:
-	// cleanup BIOs
-	BIO_free(mem);
-	BIO_free(b64);
 	return ret;
 }
 /*eof*/
