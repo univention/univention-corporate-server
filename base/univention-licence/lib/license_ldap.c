@@ -92,8 +92,6 @@ void univention_license_ldap_free(void) {
 /******************************************************************************/
 /*!
         @brief	get the baseDN of the ldap server
-        @retval 1 if ok
-        @retval 0 on error
 */
 char *univention_license_ldap_get_basedn(void) {
 	if (lp == NULL)
