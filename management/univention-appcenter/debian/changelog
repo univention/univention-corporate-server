@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-120) unstable; urgency=medium
+
+  * Bug #50967: listener-converter now gets called by systemd service 
+
+ -- Toni Uwe Roehmeyer <roehmeyer@univention.de>  Fri, 13 Mar 2020 16:23:12 +0100
+
 univention-appcenter (8.0.11-119) unstable; urgency=medium
 
   * Bug #50770: fix global appcenter for wildcard ssl certificates

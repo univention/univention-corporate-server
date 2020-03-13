@@ -189,18 +189,8 @@ def main():
 		sys.exit(3)
 	interval = int(ucr_get('appcenter/converter/sleep', '5'))
 	logger.info('Converter for %s ready' % app)
-	while True:
-		try:
-			find_and_convert_files(app, lo, pos)
-			run_trigger(app)
-		except Exception:
-			logger.error('Error in the Listener converter', exc_info=1)
-			logger.error('The Listener converter should be restarted in a few moments and try again')
-			raise
-		if args.once:
-			break
-		time.sleep(interval)
-
+	find_and_convert_files(app, lo, pos)
+	run_trigger(app)
 
 if __name__ == '__main__':
 	main()

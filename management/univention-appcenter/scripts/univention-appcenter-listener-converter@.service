@@ -8,5 +8,5 @@ After=docker.target
 [Service]
 Type=simple
 ExecStart=/usr/share/univention-appcenter-listener-converter %i
-Restart=on-failure
+Restart=always
 RestartSec=5
