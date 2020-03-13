@@ -216,8 +216,7 @@ lStrings *univention_license_ldap_get_strings(const char *objectDN, const char *
 
 	if (license != NULL) {
 		if (license->size > 0) {
-			int i = 0;
-			int count = 0;
+			int i, count = 0;
 			for (i = 0; i < license->size; i++) {
 				// count entries
 				if (strcmp(license->key[i], attribute) == 0)
@@ -228,13 +227,11 @@ lStrings *univention_license_ldap_get_strings(const char *objectDN, const char *
 				if (!ret)
 					goto err1;
 
-				i = 0;
-				while (i < license->size && numRet < ret->num) {
+				for (i = 0; i < license->size && numRet < ret->num; i++) {
 					if (strcmp(license->key[i], attribute) == 0) {
 						// copy strings
 						ret->line[numRet++] = strdup(license->val[i]);
 					}
-					i++;
 				}
 			}
 		}
@@ -344,17 +341,14 @@ lObj *univention_license_ldap_get(const char *search_base, int scope, const char
 
 								values = ldap_get_values_len(lp->ld, element, attributeName);
 								if (values != NULL) {
-									int count = ldap_count_values_len(values);
-									int x = 0;
-									while (x < count) {
+									int x, count = ldap_count_values_len(values);
+									for (x = 0; x < count; i++, x++) {
 										// FIXME: check memory allocation error
 										ret->key[i] = strdup(attributeName);
 										// FIXME: bv_val may be binary and not a \0 terminated srting
 										ret->val[i] = strdup(values[x]->bv_val);
 										// printf("%p:key[%i]:%s.\n",ret->key[i],i,ret->key[i]);
 										// printf("%p:val[%i]:%s.\n",ret->val[i],i,ret->val[i]);
-										i++;
-										x++;
 									}
 									ldap_value_free_len(values);
 								}

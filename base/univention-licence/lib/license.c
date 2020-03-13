@@ -646,13 +646,11 @@ void univention_licenseObject_free(lObj *license) {
 lStrings *univention_license_get_value(const char *attribute) {
 	lStrings *value = NULL;
 	if (global_license != NULL) {
-		int i = 0;
-		int count = 0;
+		int i, count;
 		// count elements
-		while (i < global_license->size) {
+		for (i = count = 0; i < global_license->size; i++) {
 			if (strcmp((global_license->key[i]), attribute) == 0)
 				count++;
-			i++;
 		}
 
 		if (count > 0) {
@@ -660,14 +658,11 @@ lStrings *univention_license_get_value(const char *attribute) {
 			value = univention_licenseStrings_malloc(count);
 
 			// copy value
-			count = 0;
-			i = 0;
-			while (i < global_license->size && count < value->num) {
+			for (i = count = 0; i < global_license->size && count < value->num; i++) {
 				if (strcmp((global_license->key[i]), attribute) == 0) {
 					value->line[count++] = strdup(global_license->val[i]);
 					// FIXME: check memory allocation error
 				}
-				i++;
 			}
 		} else {
 			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_WARN, "Key \"%s\" not found in license object.", attribute);
