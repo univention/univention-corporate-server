@@ -50,6 +50,8 @@ static PyObject *PyGetValue(PyObject *self, PyObject *args) {
 			// free(param);
 			univention_licenseStrings_free(values);
 			values = NULL;
+		} else {
+			PyErr_SetString(PyExc_KeyError, arg);
 		}
 	}
 	return retObj;
