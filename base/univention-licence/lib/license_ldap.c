@@ -90,6 +90,7 @@ int univention_license_ldap_init(void) {
 */
 void univention_license_ldap_free(void) {
 	univention_ldap_close(lp);
+	lp = NULL;
 }
 
 /******************************************************************************/
@@ -123,6 +124,7 @@ int univention_license_ldap_open_connection(void) {
 */
 void univention_license_ldap_close_connection(void) {
 	univention_ldap_close(lp);
+	lp = NULL;
 }
 
 /******************************************************************************/
