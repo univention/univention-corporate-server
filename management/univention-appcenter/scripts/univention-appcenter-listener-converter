@@ -187,7 +187,6 @@ def main():
 	if lo is None:
 		logger.critical('LDAP connection failed')
 		sys.exit(3)
-	interval = int(ucr_get('appcenter/converter/sleep', '5'))
 	logger.info('Converter for %s ready' % app)
 	find_and_convert_files(app, lo, pos)
 	run_trigger(app)
