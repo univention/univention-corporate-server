@@ -326,6 +326,7 @@ lObj *univention_license_ldap_get(const char *search_base, int scope, const char
 
 							if (values != NULL) {
 								valuecount += ldap_count_values_len(values);
+								ldap_value_free_len(values);
 							}
 						} else {
 							univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "Ignore object attribute '%s' because it don't begin with '%s'.", attributeName, attrFilter);
