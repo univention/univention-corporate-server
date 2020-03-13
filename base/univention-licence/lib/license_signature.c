@@ -33,8 +33,7 @@ char *univention_license_build_data(lObj *license) {
 				// debug
 				// printf("%i,%i:%s.\n",i,strlen(license[i]),license[i]);
 
-				sprintf(&(data[pos]), "%s\n", license->val[i]);
-				pos += (strlen(license->val[i]) + 1);
+				pos += sprintf(&(data[pos]), "%s\n", license->val[i]);
 			}
 		}
 		data[pos] = 0;
