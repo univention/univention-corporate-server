@@ -33,7 +33,7 @@ static RSA *rsa_private = NULL;
         @retval 0 on error
 */
 int univention_license_key_init(void) {
-	public_keys = malloc(NUM_PUBLIC_KEYS * sizeof(char *));
+	public_keys = calloc(NUM_PUBLIC_KEYS, sizeof(char *));
 	// setup public key strings
 	/*add here new publicKeys*/
 	/*don't forget to add '\n\' to each line end, and don't reformate the string.*/

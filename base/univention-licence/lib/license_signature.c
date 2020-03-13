@@ -26,8 +26,7 @@ char *univention_license_build_data(lObj *license) {
 	}
 
 	if (len > 0) {
-		data = malloc(sizeof(char) * len + 1);
-		memset(data, 0, sizeof(char) * len + 1);
+		data = calloc(len + 1, sizeof(char));
 
 		for (i = 0; i < license->size; i++) {
 			if (!(strcmp(license->key[i], "univentionLicenseSignature") == 0)) {
