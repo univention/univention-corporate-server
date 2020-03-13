@@ -306,83 +306,56 @@ int univention_license_check_basedn() {
         @retval 1 if everything is fine
 */
 int univention_license_check_enddate() {
-	if (global_license != NULL) {
-		lStrings *licensedate = univention_license_get_value("univentionLicenseEndDate");
-
-		if (licensedate != NULL) {
-			if (strcmp(licensedate->line[0], "unlimited") == 0) {
-				return 1;
-			} else {
-				int endDay = 0, endMonth = 0, endYear = 0;
-				time_t cur_time;
-				struct tm tim;
-				char *s;
-				char *date = strdup(licensedate->line[0]);  // must be done because strtok modifies
-
-				if ((s = strtok(date, ".")) == NULL) {
-					free(date);
-					return 0;
-				} else {
-					endDay = atoi(s);
-					univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "EndDay %d", endDay);
-				}
-				if ((s = strtok(NULL, ".")) == NULL) {
-					free(date);
-					return 0;
-				} else {
-					endMonth = atoi(s);
-					univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "EndMonth %d", endMonth);
-				}
-				if ((s = strtok(NULL, ".")) == NULL) {
-					free(date);
-					return 0;
-				} else {
-					endYear = atoi(s);
-					univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "EndYear %d", endYear);
-				}
-
-				free(date);
-
-				cur_time = time(NULL);
-				localtime_r(&cur_time, &tim);
-
-				if ((endYear - 1900) > tim.tm_year) {
-					return 1;
-				} else if ((endYear - 1900) < tim.tm_year) {
-					univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(year)", licensedate->line[0], tim.tm_mday, tim.tm_mon + 1,
-					                 tim.tm_year + 1900);
-					return 0;
-				} else {
-					/* same year */
-					if (endMonth > (tim.tm_mon + 1)) {
-						return 1;
-					} else if (endMonth < (tim.tm_mon + 1)) {
-						univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(month)", licensedate->line[0], tim.tm_mday, tim.tm_mon + 1,
-						                 tim.tm_year + 1900);
-						return 0;
-					} else {
-						/* same month */
-						if (endDay > tim.tm_mday) {
-							return 1;
-						} else if (endDay < tim.tm_mday) {
-							univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_INFO, "This License expired on '%s'. Current date is '%i.%i.%i'.(day)", licensedate->line[0], tim.tm_mday,
-							                 tim.tm_mon + 1, tim.tm_year + 1900);
-							return 0;
-						} else {
-							/* same day */
-							return 1;
-						}
-					}
-				}
-			}
-		}
-		univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "This License is invalid because it lacks the attribute EndDate!");
-		univention_licenseStrings_free(licensedate);
-		licensedate = NULL;
-	} else {
+	if (global_license == NULL) {
 		univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "No license selected.");
+		return 0;
 	}
 
+	AUTOPTR(lStrings) licensedate = univention_license_get_value("univentionLicenseEndDate");
+	if (licensedate == NULL) {
+		univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "This License is invalid because it lacks the attribute EndDate!");
+		return 0;
+	}
+
+	if (strcmp(licensedate->line[0], "unlimited") == 0)
+		return 1;
+
+	int endDay = 0, endMonth = 0, endYear = 0;
+	if (sscanf(licensedate->line[0], "%d.%d.%d", &endDay, &endMonth, &endYear) != 3)
+		return 0;
+
+	time_t cur_time;
+	cur_time = time(NULL);
+
+	struct tm tim;
+	localtime_r(&cur_time, &tim);
+
+	if ((endYear - 1900) > tim.tm_year) {
+		return 1;
+	} else if ((endYear - 1900) < tim.tm_year) {
+		// expired
+	} else {
+		/* same year */
+		if (endMonth > (tim.tm_mon + 1)) {
+			return 1;
+		} else if (endMonth < (tim.tm_mon + 1)) {
+			// expired
+		} else {
+			/* same month */
+			if (endDay > tim.tm_mday) {
+				return 1;
+			} else if (endDay < tim.tm_mday) {
+				// expired
+			} else {
+				/* same day */
+				return 1;
+			}
+		}
+	}
+	univention_debug(
+		UV_DEBUG_LICENSE, UV_DEBUG_INFO,
+		"This License expired on '%s'. Current date is '%i.%i.%i'.(day)",
+		licensedate->line[0], tim.tm_mday, tim.tm_mon + 1, tim.tm_year + 1900);
 	return 0;
 }
 

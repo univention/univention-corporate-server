@@ -22,4 +22,18 @@
 
 #include <univention/license.h>
 
+#define AUTOPTR_FUNC_NAME(type) type##AutoPtrFree
+#define DEFINE_AUTOPTR_FUNC(type, func) \
+    static inline void AUTOPTR_FUNC_NAME(type)(type **_ptr) \
+    { \
+        if (*_ptr) \
+            (func)(*_ptr); \
+        *_ptr = NULL; \
+    }
+#define AUTOPTR(type) \
+    __attribute__((cleanup(AUTOPTR_FUNC_NAME(type)))) type *
+
+DEFINE_AUTOPTR_FUNC(lStrings, univention_licenseStrings_free)
+DEFINE_AUTOPTR_FUNC(lObj, univention_licenseObject_free)
+
 #endif
