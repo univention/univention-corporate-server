@@ -274,7 +274,7 @@ define([
 		_showError: function(error_msg) {
 			error_msg = error_msg.replace(/\n/g, '<br/>');
 			var title = _('The following error occurred:');
-			var footer = _('If you encounter problems during the activation, please send an email to: <strong><a href="mailto:feedback@univention.de" style="color:#000">feedback@univention.de</a></strong>');
+			var footer = _('An error has occurred. More information on how to avoid this error can be found <a href="https://help.univention.com/t/14544" target="_blank" rel="noreferrer noopener">in our support database</a>.');
 			var msg = lang.replace('<p>{error_msg}</p><p>{footer}</p>', {error_msg: error_msg, footer: footer});
 			dialog.alert(msg, title);
 		},

@@ -91,15 +91,16 @@ msgstr ""
 "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
 "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
 
-#: www/ActivationWizard.js:275
+#: www/ActivationWizard.js:277
 msgid ""
-"If you encounter problems during the activation, please send an email to: "
-"<strong><a href=\"mailto:feedback@univention.de\" "
-"style=\"color:#000\">feedback@univention.de</a></strong>"
+"An error has occurred. More information on how to "
+"avoid this error can be found <a href=\"https://help.univention.com/t/14544\""
+" target=\"_blank\" rel=\"noreferrer noopener\">in our support database</a>."
 msgstr ""
-"Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-Mail"
-" an: <strong><a href=\"mailto:feedback@univention.de\" "
-"style=\"color:#000\">feedback@univention.de</a></strong>"
+"Ein Fehler ist aufgetreten. "
+"Informationen um diesen Fehler zu vermeiden stehen <a "
+"href=\"https://help.univention.com/t/14544\" target=\"_blank\" "
+"rel=\"noreferrer noopener\"> in unserer Support-Datenbank</a> zur Verfügung."
 
 #: www/ActivationWizard.js:59
 msgid "License request for %(appliance_name)s Appliance"

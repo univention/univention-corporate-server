@@ -1,3 +1,9 @@
+univention-system-activation (4.0.0-10) unstable; urgency=medium
+
+  * Bug #50951: link to sdb article in case of error
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 13 Mar 2020 14:16:05 +0100
+
 univention-system-activation (4.0.0-9) unstable; urgency=medium
 
   * Bug #49555: track system-uuid after appliance activation
