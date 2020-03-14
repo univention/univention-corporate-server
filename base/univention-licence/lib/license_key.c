@@ -124,6 +124,8 @@ void univention_license_key_free(void) {
 		rsa_private = NULL;
 		EVP_cleanup();  // cleans the encryption chiper of the private key
 	}
+
+	public_keys_installed = false;
 }
 
 /******************************************************************************/

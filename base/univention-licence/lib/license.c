@@ -44,6 +44,9 @@ void univention_license_free(void) {
 		univention_licenseObject_free(global_license);
 		global_license = NULL;
 	}
+	// FIXME: This will globally disable univention.debug, but nobody calls this function (except the Python unit test)
+	univention_debug_exit();
+	is_init = 0;
 }
 
 lObj *univention_license_get_global_license(void) {
