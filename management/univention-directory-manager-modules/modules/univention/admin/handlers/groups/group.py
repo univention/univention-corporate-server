@@ -680,7 +680,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for group in self.info.get('memberOf', []):
 			if isinstance(group, type([])):
 				group = group[0]
-			members = self.lo.getAttr(group, 'uniqueMember')
+			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			if not self.__case_insensitive_in_list(self.dn, members):
 				continue
 			newmembers = copy.deepcopy(members)
@@ -700,7 +700,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for group in self.info.get('memberOf', []):
 			if isinstance(group, type([])):
 				group = group[0]
-			members = self.lo.getAttr(group, 'uniqueMember')
+			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			if not self.__case_insensitive_in_list(olddn, members):
 				continue
 			newmembers = copy.deepcopy(members)
@@ -731,7 +731,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for group in self.info.get('memberOf', []):
 				if isinstance(group, list):
 					group = group[0]
-				members = self.lo.getAttr(group, 'uniqueMember')
+				members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 				newmembers = copy.deepcopy(members)
 				newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
 				newmembers.append(self.dn)
@@ -751,7 +751,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for group in add_to_group:
 			if isinstance(group, list):
 				group = group[0]
-			members = self.lo.getAttr(group, 'uniqueMember')
+			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			if self.__case_insensitive_in_list(self.dn, members):
 				continue
 			newmembers = copy.deepcopy(members)
@@ -762,7 +762,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for group in remove_from_group:
 			if isinstance(group, list):
 				group = group[0]
-			members = self.lo.getAttr(group, 'uniqueMember')
+			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			newmembers = copy.deepcopy(members)
 			if self.__case_insensitive_in_list(self.dn, members):
 				newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
@@ -773,7 +773,9 @@ class object(univention.admin.handlers.simpleLdap):
 				self.__set_membership_attributes(group, members, newmembers)
 
 	def __set_membership_attributes(self, group, members, newmembers):
-		self.lo.modify(group, [('uniqueMember', members, newmembers)])
+		members_bytes = [x.encode('UTF-8') for x in members]
+		newmembers_bytes = [x.encode('UTF-8') for x in newmembers]
+		self.lo.modify(group, [('uniqueMember', members_bytes, newmembers_bytes)])
 		# don't set the memberUid attribute for nested groups, see Bug #11868
 		# uids = self.lo.getAttr( group, 'memberUid' )
 		# newuids = map(lambda x: x[x.find('=') + 1: x.find(',')], newmembers)
@@ -781,13 +783,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __case_insensitive_in_list(self, dn, list):
 		for element in list:
-			if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			if dn.lower() == element.lower():
 				return True
 		return False
 
 	def __case_insensitive_remove_from_list(self, dn, list):
 		for element in list:
-			if dn.decode('utf8').lower() == element.decode('utf8').lower():
+			if dn.lower() == element.lower():
 				remove_element = element
 		list.remove(remove_element)
 		return list
