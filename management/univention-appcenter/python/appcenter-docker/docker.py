@@ -580,6 +580,41 @@ class MultiDocker(Docker):
 					outfile.write('\n')
 			self.env_file_created = env_file_name
 
+	def _get_main_service_container_id(self):
+		name = None
+		yml_file = self.app.get_compose_file('docker-compose.yml')
+		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+		# name from yaml
+		if content['services'][self.app.docker_main_service].get('container_name'):
+			name = content['services'][self.app.docker_main_service]['container_name']
+		else:
+			# name from docker-compose ps
+			ps = str()
+			for i in range(3):
+				try:
+					ps = check_output(['docker-compose', '-p', self.app.id, 'ps'], cwd=self.app.get_compose_dir())
+					break
+				except Exception as e:
+					_logger.warn('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
+					time.sleep(5)
+			for line in ps.splitlines():
+				c_name = line.split(' ', 1)[0]
+				if '_{}_'.format(self.app.docker_main_service) in c_name:
+					name = c_name
+		# default
+		if name is None:
+			name = '{}_{}_1'.format(self.app.id, self.app.docker_main_service)
+		# get containert id
+		for i in range(3):
+			try:
+				insp = inspect(name)
+				return insp['Id']
+			except Exception as e:
+				_logger.warn('Inspect for main service container {} failed: {}'.format(name, e))
+				time.sleep(5)
+		return None
+
+
 	def create(self, hostname, env):
 		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems() if v is not None}
 		if self.app.docker_ucr_style_env:
@@ -591,21 +626,13 @@ class MultiDocker(Docker):
 		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		if ret != 0:
 			raise DockerCouldNotStartContainer(out_up)
-		name_main_service = '{}_{}_1'.format(self.app.id, self.app.docker_main_service)
-		for i in range(3):
-			try:
-				insp = inspect(name_main_service)
-				self.container = insp['Id']
-				break
-			except Exception as e:
-				_logger.warn('Inspect for main service container {} failed: {}'.format(name_main_service, e))
-				time.sleep(5)
+		self.container = self._get_main_service_container_id()
 		if self.container is None:
 			try:
 				out_ps = ps(only_running=True)
 			except Exception as e:
 				out_ps = str()
-			raise DockerCouldNotStartContainer('could not find container for service %s (%s)! docker-ps: %s docker-compose: %s)' % (self.app.docker_main_service, name_main_service, out_ps, out_up))
+			raise DockerCouldNotStartContainer('could not find container for service %s! docker-ps: %s docker-compose: %s)' % (self.app.docker_main_service, out_ps, out_up))
 		else:
 			ucr_save({self.app.ucr_container_key: self.container})
 			return self.container

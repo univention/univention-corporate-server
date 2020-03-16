@@ -1,3 +1,10 @@
+univention-appcenter (8.0.11-123) unstable; urgency=medium
+
+  * Bug #50969: fixed "get container id for main service" for
+    docker compose
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Mar 2020 14:36:59 +0100
+
 univention-appcenter (8.0.11-122) unstable; urgency=medium
 
   * Bug #50967: make listener-converter more performant; remove log messages
