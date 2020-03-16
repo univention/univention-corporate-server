@@ -7,13 +7,14 @@ Build-Depends:
  dh-python,
  python-all,
  python-apt,
- python-ldap,
  python-enum34,
+ python-ldap,
  python-psutil,
  python-yaml,
  python3-all,
  univention-config,
  univention-management-console-dev,
+ python-univention-directory-manager,
  univention-ucs-translation-template,
 Standards-Version: 3.6.1
 
@@ -280,6 +281,10 @@ Recommends:
 Depends:
  python-pycountry,
  ucs-test-libs (= ${source:Version}),
+ python-pytest,
+ python-psutil,
+ python-ldap,
+ python-univention-directory-manager,
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -293,6 +298,8 @@ Recommends:
  ucs-test-framework,
 Depends:
  ucs-test-libs (= ${source:Version}),
+ python-ldap,
+ python-univention-directory-manager,
  ${misc:Depends},
 Provides:
  ucs-test-module,
