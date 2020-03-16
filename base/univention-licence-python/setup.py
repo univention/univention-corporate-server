@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import io
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 from email.utils import parseaddr
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
