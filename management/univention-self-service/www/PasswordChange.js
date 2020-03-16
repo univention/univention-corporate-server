@@ -49,9 +49,12 @@ define([
 ], function(lang, on, keys, dom, json, Deferred, xhr, Button, entities, put, login, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
+		hash: 'passwordchange',
+		enabledViaUcr: false,
+		visible: true,
+
 		title: _('Password change'),
 		desc: _('Change your (expired) password.'),
-		hash: 'passwordchange',
 		contentContainer: null,
 		steps: null,
 		startup: function() {

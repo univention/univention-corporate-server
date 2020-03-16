@@ -56,6 +56,7 @@ def self_service_user(email=None, **kwargs):
 		yield SelfServiceUser(username, password)
 
 
+# copy pasted to 86_selenium/test_self_service.py
 @contextlib.contextmanager
 def capture_mails(timeout=5):
 

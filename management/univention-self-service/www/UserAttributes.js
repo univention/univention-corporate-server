@@ -49,12 +49,14 @@ define([
 ], function(lang, array, keys, Deferred, all, on, entities, login, render, tools, dialog, Form, Button, TextBox, PasswordBox, put, _) {
 
 	return {
+		hash: 'profiledata',
+		enabledViaUcr: 'umc/self-service/profiledata/enabled',
+		visible: true,
+
 		title: _('Your profile'),
 		desc: _('Customize your profile'),
-		hash: 'profiledata',
 		contentContainer: null,
 		steps: null,
-		standby: null,
 
 		startup: function() {
 			if (this._username.value !== '') {
@@ -159,7 +161,7 @@ define([
 		_getUserAttributes: function() {
 			var validCredentials = this._username.isValid() && this._password.isValid();
 			if (validCredentials) {
-				this.standby.show();
+				this.standby(true);
 				var data = {
 					'username': this._username.get('value'),
 					'password': this._password.get('value')
@@ -174,7 +176,7 @@ define([
 					.otherwise(lang.hitch(this, function(data) {
 						this._username.reset();
 						this._password.reset();
-						this.standby.hide();
+						this.standby(false);
 					}));
 			} else {
 				if (!this._username.isValid()) {
@@ -218,7 +220,7 @@ define([
 						this._form.ready()
 							.then(lang.hitch(this, function() {
 								this._initialFormValues = this._form.get('value');
-								this.standby.hide();
+								this.standby(false);
 							}));
 					}));
 					this._form.startup();
@@ -258,7 +260,7 @@ define([
 			}
 
 			// backend validation
-			this.standby.show();
+			this.standby(true);
 			var data = {
 				username: this._username.get('value'),
 				password: this._password.get('value'),
@@ -293,9 +295,9 @@ define([
 							dialog.contextNotify(entities.encode(data.result));
 							this._initialFormValues = this._form.get('value');
 						}))
-						.always(lang.hitch(this.standby, 'hide'));
+						.always(lang.hitch(this, 'standby', false));
 				}))
-				.otherwise(lang.hitch(this.standby, 'hide'));
+				.otherwise(lang.hitch(this, 'standby', false));
 		},
 
 		_deleteUserAttributesStep: function() {

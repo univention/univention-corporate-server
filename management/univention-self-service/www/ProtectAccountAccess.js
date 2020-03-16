@@ -45,9 +45,12 @@ define([
 ], function(lang, array, on, keys, Button, put, login, tools, dialog, lib, PasswordBox, TextBox, _) {
 
 	return {
+		hash: 'setcontactinformation',
+		enabledViaUcr: false,
+		visible: true,
+
 		title: _('Protect account'),
 		desc: _('Everyone forgets his password now and then. Protect yourself and activate the opportunity to set a new password.'),
-		hash: 'setcontactinformation',
 		contentContainer: null,
 		steps: null,
 
@@ -111,6 +114,7 @@ define([
 			put(step, label);
 			this._username = new TextBox({
 				'class': 'soloLabelPane',
+				'name': 'username',
 				isValid: function() {
 					return !!this.get('value');
 				},
@@ -139,6 +143,7 @@ define([
 			put(step, label);
 			this._password = new PasswordBox({
 				'class': 'soloLabelPane',
+				'name': 'password',
 				required: true,
 			});
 			this._password.on('keyup', lang.hitch(this, function(evt) {
@@ -290,18 +295,29 @@ define([
 
 			if (allOptionsAreValid) {
 				var data = this._getNewContactInformation();
-				tools.umcpCommand('passwordreset/set_contact', data).then(lang.hitch(this, function() {
-						var redirectUrl = lib._getUrlForRedirect();
-						if (redirectUrl) {
-							window.open(redirectUrl, "_self");
+				tools.umcpCommand('passwordreset/set_contact', data).then(function(res) {
+					res = res.result;
+					var msg = _('Your contact data has been successfully changed.');
+					if (res.verificationEmailSend) {
+						var verification_msg = _('Your account has to be verified again after changing your email. We have sent you an email to <b>%s</b>. Please follow the instructions in the email to verify your account.', res.email);
+						msg = lang.replace('<p>{0}</p><p>{1}</p>', [msg, verification_msg]);
+					}
+					dialog.confirm(msg, [{
+						label: _('OK'),
+						callback: function() {
+							var redirectUrl = lib._getUrlForRedirect();
+							if (redirectUrl) {
+								window.open(redirectUrl, "_self");
+							}
 						}
-					}), lang.hitch(this, function(){
-						array.forEach(this._renewInputs, function(input){
-							input.reset();
-						});
-						this._cancelButton.set('disabled', false);
-						this._saveButton.set('disabled', false);
-					}));
+					}]);
+				}, lang.hitch(this, function(){
+					array.forEach(this._renewInputs, function(input){
+						input.reset();
+					});
+					this._cancelButton.set('disabled', false);
+					this._saveButton.set('disabled', false);
+				}));
 			} else {
 				this._cancelButton.set('disabled', false);
 				this._saveButton.set('disabled', false);

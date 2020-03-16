@@ -141,6 +141,8 @@ ucr_vars = [
 	('umc/server/upload/max', ),
 	('umc/web/sso/enabled', ),
 	('umc/self-service/profiledata/enabled', ),
+	('umc/self-service/account-registration/frontend/enabled', None, False, ),
+	('umc/self-service/account-verification/frontend/enabled', None, False, ),
 ]
 
 data.update([get_ucr_entry(*i) for i in ucr_vars])
