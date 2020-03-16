@@ -39,12 +39,12 @@ export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
 export CFG="$1"
 
-# jenkins defaults
+# Jenkins defaults
 if [ "$USER" = "jenkins" ]; then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export HALT="${HALT:=true}"
 	export KVM_USER="build"
-	# in jenkins do not terminate VMs if setup is broken,
+	# in Jenkins do not terminate VMs if setup is broken,
 	# so we can investigate the situation and use replace
 	# to overwrite old VMs
 	export TERMINATE_ON_SUCCESS="${HALT:=true}"
@@ -99,31 +99,31 @@ declare -a cmd=("$exe" -c "$CFG")
 "$SHUTDOWN" && cmd+=("-s")
 # shellcheck disable=SC2123
 PATH="./ucs-ec2-tools${PATH:+:$PATH}"
-echo "starting test with ${cmd[@]}"
-echo -e "\tCURRENT_AMI=$CURRENT_AMI"
-echo -e "\tOLD_AMI=$OLD_AMI"
-echo -e "\tUCS_MINORRELEASE=$UCS_MINORRELEASE"
-echo -e "\tTARGET_VERSION=$TARGET_VERSION"
-echo -e "\tUCS_VERSION=$UCS_VERSION"
-echo -e "\tOLD_VERSION=$OLD_VERSION"
-echo -e "\tKVM_TEMPLATE=$KVM_TEMPLATE"
-echo -e "\tKVM_UCSVERSION=$KVM_UCSVERSION"
-echo -e "\tKVM_OLDUCSVERSION=$KVM_OLDUCSVERSION"
-echo -e "\tKVM_BUILD_SERVER=$KVM_BUILD_SERVER"
-echo -e "\tKVM_MEMORY=$KVM_MEMORY"
-echo -e "\tKVM_CPUS=$KVM_CPUS"
-echo -e "\tEXACT_MATCH=$EXACT_MATCH"
-echo -e "\tSHUTDOWN=$SHUTDOWN"
-echo -e "\tRELEASE_UPDATE=$RELEASE_UPDATE"
-echo -e "\tERRATA_UPDATE=$ERRATA_UPDATE"
-echo -e "\tUCSSCHOOL_RELEASE=$UCSSCHOOL_RELEASE"
-echo -e "\tHALT=$HALT"
-echo -e "\tUCS_TEST_RUN=$UCS_TEST_RUN"
-echo -e "\tKVM_USER=$KVM_USER"
-echo -e "\tTERMINATE_ON_SUCCESS=$TERMINATE_ON_SUCCESS"
-echo -e "\tREPLACE=$REPLACE"
-echo -e "\tUCSSCHOOL_BRANCH=$UCSSCHOOL_BRANCH"
-echo -e "\tUCS_BRANCH=$UCS_BRANCH"
+echo "starting test with ${cmd[*]}"
+echo "	CURRENT_AMI=$CURRENT_AMI"
+echo "	OLD_AMI=$OLD_AMI"
+echo "	UCS_MINORRELEASE=$UCS_MINORRELEASE"
+echo "	TARGET_VERSION=$TARGET_VERSION"
+echo "	UCS_VERSION=$UCS_VERSION"
+echo "	OLD_VERSION=$OLD_VERSION"
+echo "	KVM_TEMPLATE=$KVM_TEMPLATE"
+echo "	KVM_UCSVERSION=$KVM_UCSVERSION"
+echo "	KVM_OLDUCSVERSION=$KVM_OLDUCSVERSION"
+echo "	KVM_BUILD_SERVER=$KVM_BUILD_SERVER"
+echo "	KVM_MEMORY=$KVM_MEMORY"
+echo "	KVM_CPUS=$KVM_CPUS"
+echo "	EXACT_MATCH=$EXACT_MATCH"
+echo "	SHUTDOWN=$SHUTDOWN"
+echo "	RELEASE_UPDATE=$RELEASE_UPDATE"
+echo "	ERRATA_UPDATE=$ERRATA_UPDATE"
+echo "	UCSSCHOOL_RELEASE=$UCSSCHOOL_RELEASE"
+echo "	HALT=$HALT"
+echo "	UCS_TEST_RUN=$UCS_TEST_RUN"
+echo "	KVM_USER=$KVM_USER"
+echo "	TERMINATE_ON_SUCCESS=$TERMINATE_ON_SUCCESS"
+echo "	REPLACE=$REPLACE"
+echo "	UCSSCHOOL_BRANCH=$UCSSCHOOL_BRANCH"
+echo "	UCS_BRANCH=$UCS_BRANCH"
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]

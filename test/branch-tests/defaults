@@ -3,7 +3,6 @@ environment:
  TEST_SECTIONS=[ENV:TEST_SECTIONS]
  TEST_TAGS=[ENV:TEST_TAGS]
  UCS_VERSION=[ENV:UCS_VERSION]
- ERRATA_TESTS=[ENV:ERRATA_TESTS]
 files:
   utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/

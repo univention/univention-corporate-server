@@ -95,8 +95,6 @@ jenkins_updates () {
 	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 	echo "errata_update=$errata_update"
 
-	test -n "$ERRATA_TESTS" && errata_update=testing
-
 	case "${errata_update:-}" in
 	testing) upgrade_to_latest_test_errata || rc=$? ;;
 	public) upgrade_to_latest_errata || rc=$? ;;
