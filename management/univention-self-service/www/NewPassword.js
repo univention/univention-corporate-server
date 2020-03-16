@@ -44,10 +44,13 @@ define([
 ], function(lang, on, keys, Button, put, entities, tools, dialog, TextBox, PasswordBox, lib, _) {
 
 	return {
+		hash: 'newpassword',
+		enabledViaUcr: false,
+		visible: false,
+
 		title: _("Set new password"),
 		desc: _("Set a new password: "),
 		altDesc: _(""),
-		hash: 'newpassword',
 		contentContainer: null,
 		steps: null,
 		selectedRenewOption: null,

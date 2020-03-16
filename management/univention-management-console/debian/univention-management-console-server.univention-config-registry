@@ -71,3 +71,4 @@ Variables: license/base
 Variables: uuid/system
 Variables: server/role
 Variables: umc/self-service/profiledata/enabled
+Variables: umc/self-service/account-registration/enabled
