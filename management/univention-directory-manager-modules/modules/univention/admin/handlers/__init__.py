@@ -2835,8 +2835,8 @@ class simpleComputer(simpleLdap):
 						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
-			ml.append(('aRecord', oldARecord, newARecord, ))
-			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
+			ml.append(('aRecord', oldARecord, newARecord.encode('ASCII')))
+			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord.encode('ASCII')))
 
 		if self.hasChanged('ip'):
 			for ipAddress in self['ip']:
@@ -2870,7 +2870,7 @@ class simpleComputer(simpleLdap):
 				self.__changes['ip']['remove'].append(ipAddress)
 
 		if self.hasChanged('name'):
-			ml.append(('sn', self.oldattr.get('sn', [None])[0], self['name']))
+			ml.append(('sn', self.oldattr.get('sn', [None])[0], self['name'].encode('UTF-8')))
 			self.__changes['name'] = (self.oldattr.get('sn', [None])[0], self['name'])
 
 		if self.hasChanged('ip') or self.hasChanged('mac'):
