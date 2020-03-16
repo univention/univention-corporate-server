@@ -47,6 +47,7 @@ import httplib
 import ssl
 from base64 import encodestring
 from ipaddr import IPv4Network, IPv4Address
+import time
 
 import ruamel.yaml as yaml
 
@@ -213,7 +214,9 @@ class Docker(object):
 		return inspect(self.image)
 
 	def inspect_container(self):
-		return inspect(self.container)
+		if self.container:
+			return inspect(self.container)
+		return None
 
 	@property
 	def root_dir(self):
@@ -499,10 +502,11 @@ class MultiDocker(Docker):
 		if 'networks' not in content:
 			network = self._get_app_network()
 			if network:
-				content['networks'] = {'appcenter_net':
-					{'ipam': {
-						'driver': 'default',
-						'config': [{'subnet': network.compressed}]
+				content['networks'] = {
+					'appcenter_net': {
+						'ipam': {
+							'driver': 'default',
+							'config': [{'subnet': network.compressed}]
 						}
 					}
 				}
@@ -587,26 +591,24 @@ class MultiDocker(Docker):
 		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		if ret != 0:
 			raise DockerCouldNotStartContainer(out_up)
-		try:
-			out_ps = ps(only_running=True)
-		except CalledProcessError:
-			out_ps = str()
-		else:
-			yml_file = self.app.get_compose_file('docker-compose.yml')
-			content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
-			docker_image = content['services'][self.app.docker_main_service]['image']
-			for line in out_ps.splitlines():
-				try:
-					container, image = line.split()[:2]
-				except ValueError:
-					pass
-				else:
-					if image == docker_image:
-						ucr_save({self.app.ucr_container_key: container})
-						self.container = container
-						return container
+		name_main_service = '{}_{}_1'.format(self.app.id, self.app.docker_main_service)
+		for i in range(3):
+			try:
+				insp = inspect(name_main_service)
+				self.container = insp['Id']
+				break
+			except Exception as e:
+				_logger.warn('Inspect for main service container {} failed: {}'.format(name_main_service, e))
+				time.sleep(5)
 		if self.container is None:
-			raise DockerCouldNotStartContainer('could not find container for %s (image: %s) in docker-ps %s (docker-compose: %s)' % (self.app.docker_main_service, docker_image, out_ps, out_up))
+			try:
+				out_ps = ps(only_running=True)
+			except Exception as e:
+				out_ps = str()
+			raise DockerCouldNotStartContainer('could not find container for service %s (%s)! docker-ps: %s docker-compose: %s)' % (self.app.docker_main_service, name_main_service, out_ps, out_up))
+		else:
+			ucr_save({self.app.ucr_container_key: self.container})
+			return self.container
 
 	def start(self):
 		self._setup_yml(recreate=False)
