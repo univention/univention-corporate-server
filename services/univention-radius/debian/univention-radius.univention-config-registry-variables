@@ -53,8 +53,8 @@ Type=int
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/mppe]
-Description[de]=Aktiviert die NPPE Verschlüsselung. Siehe auch: `strongencryption` und `requireencryption`.
-Description[en]=Activates NPPE encryption. See also: `strongencryption` and `requireencryption`.
+Description[de]=Aktiviert die MPPE-Verschlüsselung. Siehe auch: `strongencryption` und `requireencryption`.
+Description[en]=Activates MPPE encryption. See also: `strongencryption` and `requireencryption`.
 Type=bool
 Categories=service-radius
 
@@ -65,7 +65,7 @@ Type=bool
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/strongencryption]
-Description[de]=erzwingt 128 bit Verschlüsselung, aber nur wenn `mppe` ebenfalls aktiviert ist.
+Description[de]=erzwingt 128-Bit-Verschlüsselung, aber nur wenn `mppe` ebenfalls aktiviert ist.
 Description[en]=enforces 128 bit key encryption, but only if `mppe` is also enabled.
 Type=bool
 Categories=service-radius
@@ -101,7 +101,7 @@ Type=str
 Categories=service-radius
 
 [freeradius/conf/private/key/file]
-Description[de]=Pfad zu einem privaten TLS Schlüssel.
+Description[de]=Pfad zu einem privaten TLS-Schlüssel.
 Description[en]=Path to a private TLS key.
 Type=str
 Categories=service-radius
@@ -137,13 +137,13 @@ Type=int
 Categories=service-radius
 
 [freeradius/conf/starttls]
-Description[de]=Verwende TLS verschlüsselte Verbindungen zum LDAP Verzeichnis. Mögliche Werte: no, yes
+Description[de]=Verwende TLS-verschlüsselte Verbindungen zum LDAP-Verzeichnis. Mögliche Werte: no, yes
 Description[en]=Make use of TLS encrypted connections to the LDAP database. Possible values: no, yes
 Type=str
 Categories=service-radius
 
 [freeradius/conf/users]
-Description[de]=Aktiviert weitere Authentifizierungsmodule für Benutzer. Bleibt diese Variable undefiniert, wird durch das `files` Modul eine abwärtskompatible Benutzerdatei erlaubt. Siehe auch: `man 5 users`
+Description[de]=Aktiviert weitere Authentifizierungsmodule für Benutzer. Bleibt diese Variable undefiniert, wird durch das Modul `files` eine abwärtskompatible Benutzerdatei erlaubt. Siehe auch: `man 5 users`
 Description[en]=Activates further authentication modules for users. If left undefined, this variable defaults to `files` and activates backward compatible user files. See also: `man 5 users`
 Type=str
 Categories=service-radius
