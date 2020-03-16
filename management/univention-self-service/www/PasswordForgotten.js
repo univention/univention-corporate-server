@@ -47,10 +47,13 @@ define([
 ], function(hash, lang, array, on, keys, ioQuery, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
 
 	return {
+		hash: 'passwordreset',
+		enabledViaUcr: false,
+		visible: true,
+
 		title: _("Password forgotten"),
 		desc: _("Forgot your password? Set a new one: "),
 		altDesc: _("Set a new password!"),
-		hash: 'passwordreset',
 		contentContainer: null,
 		steps: null,
 		selectedRenewOption: null,

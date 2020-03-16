@@ -1,0 +1,15 @@
+Dear user {username},
+
+we have received your email verification request. To verify
+your email address, please follow this link:
+
+{tokenlink}
+
+If the link does not work, you can go to 
+
+{link}
+
+and enter the following token manually:
+
+{token}
+
