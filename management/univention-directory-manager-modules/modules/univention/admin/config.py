@@ -118,4 +118,4 @@ def getDefaultValue(lo, name, position=None):
 		dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
 	else:
 		dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
-	return attrs.get(att, [None])[0]
+	return attrs.get(att, [None])[0].decode('UTF-8')
