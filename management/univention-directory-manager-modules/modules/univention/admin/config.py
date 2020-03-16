@@ -33,6 +33,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 import univention.admin.modules
 import univention.admin.uldap
 try:
@@ -42,7 +44,7 @@ except ImportError:
 	pass
 
 
-class config:
+class config(object):
 	"""
 	|UDM| configuration object.
 
@@ -65,8 +67,9 @@ class config:
 	def __setitem__(self, key, value):
 		self.data[key] = value
 
-	def has_key(self, key):
-		return key in self
+	if six.PY2:
+		def has_key(self, key):
+			return key in self
 
 	def __contains__(self, key):
 		return key in self.data
@@ -118,4 +121,6 @@ def getDefaultValue(lo, name, position=None):
 		dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
 	else:
 		dn, attrs = lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
-	return attrs.get(att, [None])[0]
+	result = attrs.get(att, [None])[0]
+	if result is not None:
+		return result.decode('UTF-8')
