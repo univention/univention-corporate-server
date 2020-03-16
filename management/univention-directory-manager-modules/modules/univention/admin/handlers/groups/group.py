@@ -896,7 +896,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return False
 
 	def _has_domain_local_member(self):
-		for member_dn in self.oldattr.get('uniqueMember', []):
+		for member_dn in [x.decode('UTF-8') for x in self.oldattr.get('uniqueMember', [])]:
 			searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
 			if searchResult:
 				if self.__is_groupType_domain_local(searchResult[0]):
@@ -904,7 +904,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return False
 
 	def _has_universal_member(self):
-		for member_dn in self.oldattr.get('uniqueMember', []):
+		for member_dn in [x.decode('UTF-8') for x in self.oldattr.get('uniqueMember', [])]:
 			searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
 			if searchResult:
 				if self.__is_groupType_universal(searchResult[0]):
