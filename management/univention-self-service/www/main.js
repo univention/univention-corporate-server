@@ -29,6 +29,7 @@
 /*global define,require*/
 
 define([
+	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
@@ -36,30 +37,25 @@ define([
 	"dojo/io-query",
 	"dojo/topic",
 	"dojo/dom",
+	"dojo/Deferred",
 	"dojox/widget/Standby",
 	"dijit/layout/StackContainer",
 	"dijit/layout/ContentPane",
 	"umc/tools",
+	"umc/widgets/StandbyMixin",
 	"put-selector/put",
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
+	"./CreateAccount",
+	"./ContactVerify",
 	"./NewPassword",
 	"./PasswordChange",
 	"./UserAttributes"
-], function(lang, array, baseWin, hash, ioQuery, topic, dom, Standby, StackContainer, ContentPane, tools, put, PasswordForgotten, ProtectAccountAccess, NewPassword, PasswordChange, UserAttributes) {
+], function(declare, lang, array, baseWin, dojoHash, ioQuery, topic, dom, Deferred, Standby, StackContainer, ContentPane, tools, StandbyMixin, put, PasswordForgotten, ProtectAccountAccess, CreateAccount, ContactVerify, NewPassword, PasswordChange, UserAttributes) {
+	var _Container = declare([StackContainer, StandbyMixin]);
 	return {
 		content_container: null,
-		backend_info: null,
-		subpages: {
-			"password_forgotten": PasswordForgotten,
-			"protect_account_access": ProtectAccountAccess,
-			"new_password": NewPassword,
-			"password_change": PasswordChange,
-			"user_attributes": UserAttributes
-		},
-		site_hashes: {},
-
-		_standby: null,
+		_pagePanes: {},
 
 		/**
 		 * Builds the active subpages of the
@@ -68,7 +64,27 @@ define([
 		start: function() {
 			this._initContainer();
 			this._subscribeOnHashEvents();
-			this._addSubPages(Object.keys(this.subpages));
+			this._addSubPages(this._getEnabledPages());
+		},
+
+		_getEnabledPages: function() {
+			var pages = [PasswordForgotten, ProtectAccountAccess, CreateAccount, ContactVerify, NewPassword, PasswordChange, UserAttributes];
+			var enabledKeys = pages.filter(function(page) {
+				return page.enabledViaUcr;
+			}).map(function(page) {
+				return page.enabledViaUcr;
+			});
+
+			var enabled = {};
+			enabledKeys.forEach(function(key) {
+				enabled[key] = tools.isTrue(tools.status(key));
+			});
+
+			var enabledPages = pages.filter(function(page) {
+				return page.enabledViaUcr ? enabled[page.enabledViaUcr] : true;
+			});
+
+			return enabledPages;
 		},
 
 		_subscribeOnHashEvents: function() {
@@ -78,86 +94,64 @@ define([
 		},
 
 		_initContainer : function() {
-			this.content_container = new StackContainer({
+			this.content_container = new _Container({
 				"class" : "PasswordServiceContent umcCard",
 				id: "contentContainer",
 				doLayout: false
 			});
 			this.content_container.startup();
-
-			this._standby = new Standby({
-				target: this.content_container.domNode,
-				image: require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString(),
-				duration: 200
-			});
-			this._standby.placeAt(baseWin.body());
 			this.content_container.placeAt('content');
 		},
 
 		/**
 		 * Adds the subpages by name to the Password Service.
 		 * */
-		_addSubPages: function(page_list) {
-			array.forEach(page_list, lang.hitch(this, function(page_name){
-				if (page_name === 'user_attributes' && tools.isFalse(tools.status('umc/self-service/profiledata/enabled'))) {
-					return;
-				}
-				var module = this.subpages[page_name];
-				if (module) {
-					module.standby = this._standby;
-					var content = module.getContent();
+		_addSubPages: function(pages) {
+			array.forEach(pages, lang.hitch(this, function(page){
+				page.standby = lang.hitch(this.content_container, 'standby');
+				page.standbyDuring = lang.hitch(this.content_container, 'standbyDuring');
+				var content = page.getContent();
 
-					// insert navigation bar before first child of the returned page content
-					var navHeader = put(content.firstChild, '- div.umcHeaderPage');
-					array.forEach(page_list, function(ipage){
-						if (ipage === 'user_attributes' && tools.isFalse(tools.status('umc/self-service/profiledata/enabled'))) {
-							return;
-						}
-						var imodule = this.subpages[ipage];
-						if (!imodule || ipage === 'new_password') {
-							return;
-						}
-						if  (ipage === page_name) {
-							put(navHeader, 'span', imodule.getTitle());
-						} else {
-							put(navHeader, 'a[href=$]', '#' + imodule.hash, imodule.getTitle());
-						}
-					}, this);
+				// insert navigation bar before first child of the returned page content
+				var navHeader = put(content.firstChild, '- div.umcHeaderPage');
+				array.forEach(pages, function(ipage){
+					if (!ipage.visible) {
+						return;
+					}
+					if (ipage.hash === page.hash) {
+						put(navHeader, 'span', ipage.getTitle());
+					} else {
+						put(navHeader, 'a[href=$]', '#page=' + ipage.hash, ipage.getTitle());
+					}
+				}, this);
 
-					// create page object
-					var subpage = new ContentPane({
-						"class": "PasswordServiceContentChild",
-						content: content,
-						page_name: page_name
-					});
-					this.site_hashes[module.hash] = subpage;
-					this.content_container.addChild(subpage);
-				}
+				// create page object
+				var pagePane = new ContentPane({
+					"class": "PasswordServiceContentChild",
+					content: content,
+					$page: page
+				});
+				this._pagePanes[page.hash] = pagePane;
+				this.content_container.addChild(pagePane);
 			}));
-			this._loadSubpage(hash());
+			this._loadSubpage(dojoHash());
 		},
 
 		_loadSubpage: function(changedHash) {
-			var page = ioQuery.queryToObject(changedHash).page;
-			if (!page) {
+			var hash = ioQuery.queryToObject(changedHash).page;
+			if (!hash) {
 				// Old style hash (prior 4.2)
-				page = changedHash;
+				hash = changedHash;
 			}
-			var isValidPage = array.some(Object.keys(this.site_hashes), function(site_hash) {
-				return site_hash === page;
-			});
+			var isValidPage = this._pagePanes.hasOwnProperty(hash);
 			if (!isValidPage) {
-				hash(ioQuery.objectToQuery({page: "passwordreset"}));
+				dojoHash(ioQuery.objectToQuery({page: "passwordreset"}));
 				return;
 			}
-			var subpage = this.site_hashes[page];
-			if (!subpage) {
-				subpage = this.content_container.getChildren()[0];
-			}
-			var page_name = this.site_hashes[page].page_name;
-			var module = this.subpages[page_name];
-			this.content_container.selectChild(subpage);
-			module.startup();
+
+			var pagePane = this._pagePanes[hash];
+			this.content_container.selectChild(pagePane);
+			pagePane.$page.startup();
 		}
     };
 });

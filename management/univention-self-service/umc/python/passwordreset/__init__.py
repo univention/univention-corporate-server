@@ -45,12 +45,13 @@ import pylibmc
 from univention.lib.i18n import Translation
 from univention.lib.umc import Client, HTTPError, ConnectionError, Unauthorized
 import univention.admin.objects
+import univention.admin.syntax
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import StringSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer, EmailSanitizer
 from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import get_user_connection, get_machine_connection, get_admin_connection, machine_connection
 
@@ -69,7 +70,8 @@ IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) =
 if IS_SELFSERVICE_MASTER:
 	try:
 		from univention.management.console.modules.udm.syntax import widget
-		from univention.management.console.modules.udm.udm_ldap import UDM_Error
+		from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
+		from univention.udm import UDM, NoObject
 	except ImportError as exc:
 		MODULE.error('Could not load udm module: %s' % (exc,))
 		widget = None
@@ -234,6 +236,7 @@ class Instance(Base):
 
 		self.token_validity_period = ucr_try_int("umc/self-service/passwordreset/token_validity_period", 3600)
 		self.send_plugins = get_sending_plugins(MODULE.process)
+		self.password_reset_plugins = {k: v for k, v in self.send_plugins.items() if v.message_application() == 'password_reset'}
 		self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
 
 		limit_total_minute = ucr_try_int("umc/self-service/passwordreset/limit/total/minute", 0)
@@ -276,14 +279,14 @@ class Instance(Base):
 			raise ServiceForbidden()
 
 		user = self.get_udm_user(username=username)
-		if not self.send_plugins:
+		if not self.password_reset_plugins:
 			raise ServiceForbidden()
 
 		return [{
 			"id": p.send_method(),
 			"label": p.send_method_label(),
 			"value": user[p.udm_property]
-		} for p in self.send_plugins.values() if p.udm_property in user]
+		} for p in self.password_reset_plugins.values() if p.udm_property in user]
 
 	@forward_to_master
 	@sanitize(
@@ -349,6 +352,44 @@ class Instance(Base):
 		return widget_descriptions
 
 	@forward_to_master
+	@simple_response
+	def get_registration_attributes(self):
+		ucr.load()
+		property_ids = ['PasswordRecoveryEmail', 'password']
+		for id_ in [attr.strip() for attr in ucr.get('umc/self-service/registration/udm_attributes', '').split(',')]:
+			if id_ and id_ not in property_ids:
+				property_ids.append(id_)
+		lo, po = get_machine_connection()
+		users_mod = UDM_Module('users/user', True, lo, po)
+		properties = {prop['id']: prop for prop in users_mod.properties(None) if 'dynamicValues' not in prop and 'udm' not in prop['type']}
+		if 'PasswordRecoveryEmail' in properties:
+			properties['PasswordRecoveryEmail']['label'] = _('Email')
+			properties['PasswordRecoveryEmail']['description'] = ''
+		self._update_required_properties_for_registration(properties)
+		properties = [properties[id_] for id_ in property_ids if id_ in properties]
+		return {
+			'widget_descriptions': properties,
+			'layout': [prop['id'] for prop in properties],
+		}
+
+	def _update_required_properties_for_registration(self, properties):
+		for k in properties.keys():
+			if isinstance(properties[k], dict):
+				properties[k]['required'] = False
+			else:
+				properties[k].required = False
+		required_ids = ['PasswordRecoveryEmail', 'password']
+		for id_ in [attr.strip() for attr in ucr.get('umc/self-service/registration/udm_attributes/required', '').split(',')]:
+			if id_ and id_ not in required_ids:
+				required_ids.append(id_)
+		for id_ in required_ids:
+			if id_ in properties:
+				if isinstance(properties[id_], dict):
+					properties[id_]['required'] = True
+				else:
+					properties[id_].required = True
+
+	@forward_to_master
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
 		password=StringSanitizer(required=True, minimum=1))
@@ -357,10 +398,43 @@ class Instance(Base):
 		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise ServiceForbidden()
+		return self._validate_user_attributes(attributes)
 
+	@forward_to_master
+	@simple_response
+	def validate_registration_attributes(self, attributes):
+		res = self._validate_user_attributes(attributes, self._update_required_properties_for_registration)
+		# check username taken
+		if 'username' in attributes:
+			usersmod = UDM.machine().version(2).get('users/user')
+			try:
+				user = usersmod.get_by_id(attributes['username'])
+			except NoObject:
+				user = None
+			if user:
+				res['username'] = {
+					'isValid': False,
+					'message': _('The username is already taken'),
+				}
+		# check passwd syntax
+		#  if 'password' in attributes:
+			#  try:
+				#  univention.admin.syntax.passwd.parse(attributes['password'])
+			#  except univention.admin.uexceptions.valueError as exc:
+				#  res['password'] = {
+					#  'isValid': False,
+					#  'message': str(exc),
+				#  }
+		return res
+
+	def _validate_user_attributes(self, attributes, map_properties_func=None):
 		res = {}
+		properties = self.usersmod.property_descriptions
+		if map_properties_func:
+			properties = properties.copy()
+			map_properties_func(properties)
 		for propname, value in attributes.items():
-			prop = self.usersmod.property_descriptions.get(propname)
+			prop = properties.get(propname)
 			if not prop:
 				continue
 
@@ -387,8 +461,7 @@ class Instance(Base):
 					isValid = False
 					message = str(e)
 
-			_isValid = all(isValid) if type(isValid) == list else isValid
-			if _isValid and prop.required and not value:
+			if prop.required and not value:
 				isValid = False
 				message = _('This value is required')
 			res[propname] = {
@@ -422,6 +495,61 @@ class Instance(Base):
 		return _("Successfully changed your profile data.")
 
 	@forward_to_master
+	@simple_response
+	def create_self_registered_account(self, attributes):
+		ucr.load()
+		univention.admin.modules.update()
+		lo, po = get_admin_connection()
+
+		# get usertemplate
+		template_dn = ucr.get('umc/self-service/registration/usertemplate', '')
+		usertemplate = None
+		if template_dn:
+			usertemplate_mod = univention.admin.modules.get('settings/usertemplate')
+			univention.admin.modules.init(lo, po, usertemplate_mod, None, True)
+			try:
+				usertemplate = usertemplate_mod.object(None, lo, None, template_dn)
+			except udm_errors.noObject:
+				pass
+
+		# init user module with template
+		usersmod = univention.admin.modules.get('users/user')
+		univention.admin.modules.init(lo, po, usersmod, usertemplate, True)
+
+		# get user container
+		udm = UDM.admin().version(2)
+		user_position = univention.admin.uldap.position(po.getBase())
+		for dn in [ucr.get('umc/self-service/registration/usercontainer', '')] + usersmod.object.get_default_containers(lo):
+			try:
+				container = udm.obj_by_dn(dn)
+			except NoObject:
+				pass
+			else:
+				user_position.setDn(container.dn)
+				break
+
+		# create user
+		attributes['PasswordRecoveryEmailVerified'] = 'FALSE'
+		new_user = usersmod.object(None, lo, user_position)
+		new_user.open()
+		for key, value in attributes.items():
+			if key in new_user and value:
+				new_user[key] = value
+		try:
+			new_user.create()
+		except univention.admin.uexceptions.base as exc:
+			MODULE.error('create_self_registered_account(): could not create user: %s' % (traceback.format_exc(),))
+			raise UMC_Error(_('The account could not be created: %s') % (UDM_Error(exc)))
+		self.send_message(attributes['username'], 'verify_email', attributes['PasswordRecoveryEmail'])
+
+		# TODO cleanup
+		# reinit user module without template.
+		# This has to be done since the modules are singletons?
+		univention.admin.modules.update()
+		self._usersmod = None
+		#  univention.admin.modules.init(lo, po, usersmod, None, True)
+
+	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
@@ -447,9 +575,9 @@ class Instance(Base):
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		try:
-			plugin = self.send_plugins[method]
+			plugin = self.password_reset_plugins[method]
 		except KeyError:
-			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
+			MODULE.error("send_token() method '{}' not in {}.".format(method, self.password_reset_plugins.keys()))
 			raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 
 		if self.is_blacklisted(username):
@@ -461,34 +589,27 @@ class Instance(Base):
 
 		if len(user[plugin.udm_property]) > 0:
 			# found contact info
-			try:
-				token_from_db = self.db.get_one(username=username)
-			except MultipleTokensInDB as e:
-				# this should not happen, delete all tokens
-				MODULE.error("send_token(): {}".format(e))
-				self.db.delete_tokens(username=username)
-				token_from_db = None
-
-			token = self.create_token(plugin.token_length)
-			if token_from_db:
-				# replace with fresh token
-				MODULE.info("send_token(): Updating token for user '{}'...".format(username))
-				self.db.update_token(username, method, token)
-			else:
-				# store a new token
-				MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
-				self.db.insert_token(username, method, token)
-			try:
-				self.send_message(username, method, user[plugin.udm_property], token)
-			except:
-				MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
-					method=method, username=username))
-				self.db.delete_tokens(username=username)
-				raise
-			raise UMC_Error(_("Successfully send token.").format(method), status=200)
+			self.send_message(username, method, user[plugin.udm_property])
 
 		# no contact info
 		raise MissingContactInformation()
+
+	@forward_to_master
+	@sanitize(
+		token=StringSanitizer(required=True),
+		username=StringSanitizer(required=True),
+		method=StringSanitizer(required=True),
+	)
+	@simple_response
+	def verify_contact(self, token, username, method):
+		plugin = self._get_send_plugin(method)
+		self._check_token(username, token, token_application=plugin.message_application())
+		users_mod = UDM.admin().version(1).get('users/user')
+		user = users_mod.get_by_id(username)
+		setattr(user.props, plugin.udm_property, 'TRUE')
+		user.save()
+		self.db.delete_tokens(token=token, username=username)
+		return username
 
 	@forward_to_master
 	@prevent_denial_of_service
@@ -500,7 +621,22 @@ class Instance(Base):
 	def set_password(self, token, username, password):
 		MODULE.info("set_password(): username: '{}'.".format(username))
 		username = self.email2username(username)
+		self._check_token(username, token)
 
+		# token is correct and valid
+		MODULE.info("Receive valid token for '{}'.".format(username))
+		if self.is_blacklisted(username):
+			# this should not happen
+			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
+			self.db.delete_tokens(token=token, username=username)
+			raise ServiceForbidden()  # TokenNotFound() ?
+		ret = self.udm_set_password(username, password)
+		self.db.delete_tokens(token=token, username=username)
+		if ret:
+			raise UMC_Error(_("Successfully changed your password."), status=200)
+		raise UMC_Error(_('Failed to change password.'), status=500)
+
+	def _check_token(self, username, token, token_application='password_reset'):
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
@@ -521,18 +657,11 @@ class Instance(Base):
 			self.db.delete_tokens(token=token, username=username)
 			raise TokenNotFound()
 
-		# token is correct and valid
-		MODULE.info("Receive valid token for '{}'.".format(username))
-		if self.is_blacklisted(username):
-			# this should not happen
-			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
+		if not self._get_send_plugin(token_from_db['method']).message_application() == token_application:
+			# token is correct but should not be used for this application
+			MODULE.info("Receive correct token for '{}' but it should be used for another application.".format(username))
 			self.db.delete_tokens(token=token, username=username)
-			raise ServiceForbidden()  # TokenNotFound() ?
-		ret = self.udm_set_password(username, password)
-		self.db.delete_tokens(token=token, username=username)
-		if ret:
-			raise UMC_Error(_("Successfully changed your password."), status=200)
-		raise UMC_Error(_('Failed to change password.'), status=500)
+			raise TokenNotFound()
 
 	@forward_to_master
 	@prevent_denial_of_service
@@ -543,11 +672,14 @@ class Instance(Base):
 			raise NoMethodsAvailable()
 
 		user = self.get_udm_user(username=username)
-		if not self.send_plugins:
+		if not self.password_reset_plugins:
 			raise NoMethodsAvailable()
 
 		# return list of method names, for all LDAP attribs user has data
-		reset_methods = [{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.udm_property]]
+		reset_methods = [{
+			"id": p.send_method(),
+			"label": p.send_method_label()
+		} for p in self.password_reset_plugins.values() if user[p.udm_property]]
 		if not reset_methods:
 			raise NoMethodsAvailable()
 		return reset_methods
@@ -562,14 +694,46 @@ class Instance(Base):
 			res += rand.choice(chars)
 		return res
 
-	def send_message(self, username, method, address, token):
-		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
+	def send_message(self, username, method, address):
+		plugin = self._get_send_plugin(method)
+		try:
+			token_from_db = self.db.get_one(username=username)
+		except MultipleTokensInDB as e:
+			# this should not happen, delete all tokens
+			MODULE.error("send_token(): {}".format(e))
+			self.db.delete_tokens(username=username)
+			token_from_db = None
+
+		token = self.create_token(plugin.token_length)
+		if token_from_db:
+			# replace with fresh token
+			MODULE.info("send_token(): Updating token for user '{}'...".format(username))
+			self.db.update_token(username, method, token)
+		else:
+			# store a new token
+			MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
+			self.db.insert_token(username, method, token)
+		try:
+			self._call_send_msg_plugin(username, method, address, token)
+		except Exception:
+			MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
+				method=method, username=username))
+			self.db.delete_tokens(username=username)
+			raise
+		raise UMC_Error(_("Successfully send token.").format(method), status=200)
+
+	def _get_send_plugin(self, method):
 		try:
 			plugin = self.send_plugins[method]
 			if not plugin.is_enabled:
 				raise KeyError
 		except KeyError:
-			raise UMC_Error("Method not allowed!", status=403)
+			raise UMC_Error("Unknown send message method", status=500)
+		return plugin
+
+	def _call_send_msg_plugin(self, username, method, address, token):
+		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
+		plugin = self._get_send_plugin(method)
 
 		plugin.set_data({
 			"username": username,

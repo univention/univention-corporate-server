@@ -45,9 +45,12 @@ define([
 ], function(lang, array, on, keys, Button, put, login, tools, dialog, lib, PasswordBox, TextBox, _) {
 
 	return {
+		hash: 'setcontactinformation',
+		enabledViaUcr: false,
+		visible: true,
+
 		title: _('Protect account'),
 		desc: _('Everyone forgets his password now and then. Protect yourself and activate the opportunity to set a new password.'),
-		hash: 'setcontactinformation',
 		contentContainer: null,
 		steps: null,
 
