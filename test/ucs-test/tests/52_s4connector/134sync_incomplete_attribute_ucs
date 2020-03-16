@@ -3,12 +3,17 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector
-
+## bugs:
+## - 42532
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
+if [ "$(command -v univention-ad-connector)" ]; then
+	echo "SKIP if AD-Connector installed: The AD-Connector can not handle incomplete sync. See Bug #42532"
+	exit 138
+fi
 
 . "s4connector.sh" || exit 137
 test -n "$connector_s4_ldap_host" || exit 137

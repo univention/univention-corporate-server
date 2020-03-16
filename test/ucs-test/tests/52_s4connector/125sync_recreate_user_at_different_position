@@ -32,7 +32,7 @@ ad_set_sync_mode "sync"
 udm_create "users/user" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 udm_remove "users/user" || fail_test 110
-
+sleep 10
 udm_create "users/user" "" "" "cn=groups,$ldap_base"|| fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 ad_exists "$AD_DN"; fail_bool 1 110
@@ -42,7 +42,7 @@ udm_exists "users/user" "" "" "cn=users,$ldap_base"; fail_bool 1 110
 
 udm_remove "users/user" "" "" "cn=groups,$ldap_base" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-
+sleep 10
 udm_exists "users/user" "" "" "cn=groups,$ldap_base"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

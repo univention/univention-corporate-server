@@ -11,6 +11,11 @@
 . "$TESTLIBPATH/udm.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
+if [ "$(command -v univention-ad-connector)" ]; then
+	echo "SKIP if AD-Connector installed: Flaky if AD-Connector is also installed"
+	exit 138
+fi
+
 . "s4connector.sh" || exit 137
 test -n "$connector_s4_ldap_host" || exit 137
 connector_running_on_this_host || exit 137

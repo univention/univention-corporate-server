@@ -1,3 +1,10 @@
+ucs-test (9.0.3-183) unstable; urgency=medium
+
+  * Bug #50944: Skip s4-tests that test stuff the AD-Connector can not do, 
+    if AD-Connector is installed
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 16 Mar 2020 13:25:09 +0100
+
 ucs-test (9.0.3-182) unstable; urgency=medium
 
   * Bug #51041: fix 82_saml.28_saml_sp_metadata_replication
