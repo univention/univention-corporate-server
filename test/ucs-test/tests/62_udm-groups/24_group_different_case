@@ -41,7 +41,7 @@ def changed_cases(members):
 		for key, dn in members.items():
 			dn = ldap.dn.str2dn(dn)
 			rdn = dn.pop(0)
-			rdn = [tuple([transform(rdn[0][0])] + list(rdn[0][1:]))]
+			rdn = [tuple([transform(str(rdn[0][0]))] + list(rdn[0][1:]))]
 			dn.insert(0, rdn)
 			result[key] = [ldap.dn.dn2str(dn)]
 		variants.append(result)

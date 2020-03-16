@@ -16,13 +16,12 @@
 
 from __future__ import print_function
 from univention.testing.strings import random_name
-from univention.testing.utils import wait_for_replication, stop_listener, start_listener
+from univention.testing.utils import wait_for_replication
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
 import univention.uldap
 import ldap
-import re
 import sys
 
 success = True
@@ -45,23 +44,7 @@ def get_entryUUID(lo, dn):
 	return result[0][1].get('entryUUID')[0]
 
 
-def get_rootpw():
-	pwd = ''
-	f = open('/etc/ldap/rootpw.conf', 'r')
-	rootdn_pattern = re.compile('^rootpw[ \t]+"([^"]+)"')
-	for line in f.readlines():
-		line = line[0:-1]
-		if rootdn_pattern.match(line):
-			pwd = rootdn_pattern.findall(line)[0]
-			break
-	f.close()
-	return pwd
-
-
-rootpw = get_rootpw()
-lo_local = ldap.open('127.0.0.1', 7389)
-lo_local.simple_bind_s('cn=update,' + ucr.get('ldap/base'), rootpw)
-
+lo_local = univention.uldap.getRootDnConnection().lo
 lo_remote = univention.uldap.getMachineConnection().lo
 
 # create computer

@@ -52,40 +52,40 @@ def main():
 		utils.verify_ldap_object(binddn)
 
 		lo = univention.uldap.access(binddn=binddn, bindpw=password)
-		lo.bind(binddn, password)
+		# lo.bind(binddn, password)  # TODO: This looks like unnecessary?
 		lo = lo.lo
 		print('I am', lo.whoami_s())
 		dn = 'uid=%s,cn=admin-settings,%s' % (ldap.dn.escape_dn_chars(uid), udm.UNIVENTION_CONTAINER)
 
 		valid = [{
-			'objectClass': ('univentionAdminUserSettings',),
+			'objectClass': (b'univentionAdminUserSettings',),
 			'uid': [uid],
 		}, {
-			'objectClass': ('univentionAdminUserSettings',),
+			'objectClass': (b'univentionAdminUserSettings',),
 			'uid': [uid],
-			'univentionAdminShowSelf': ['1'],
-			'univentionAdminSelfAttributes': ['foo'],
-			'univentionPolicyObject': [binddn],
-			'univentionDnsObject': [dn],
+			'univentionAdminShowSelf': [b'1'],
+			'univentionAdminSelfAttributes': [b'foo'],
+			'univentionPolicyObject': [binddn.encode('UTF-8')],
+			'univentionDnsObject': [dn.encode('UTF-8')],
 		}]
 		invalid = [{
 			'objectClass': ('uidObject', 'person'),
-			'uid': uid,
-			'sn': 'foo',
-			'cn': 'bar',
+			'uid': [uid],
+			'sn': [b'foo'],
+			'cn': [b'bar'],
 		}, {
 			'objectClass': ('uidObject', 'univentionAdminUserSettings'),
-			'uid': uid,
+			'uid': [uid],
 		}, {
 			'objectClass': ('CourierMailAccount', 'univentionAdminUserSettings'),
-			'uid': uid,
-			'uidNumber': '0',
-			'gidNumber': '0'
+			'uid': [uid],
+			'uidNumber': [b'0'],
+			'gidNumber': [b'0']
 		}, {
 			'objectClass': ('CourierMailAccount', 'univentionAdminUserSettings'),
-			'uid': uid,
-			'uidNumber': '1',
-			'gidNumber': '1'
+			'uid': [uid],
+			'uidNumber': [b'1'],
+			'gidNumber': [b'1']
 		}]
 		print('Trying invalid combinations')
 		for attr in invalid:

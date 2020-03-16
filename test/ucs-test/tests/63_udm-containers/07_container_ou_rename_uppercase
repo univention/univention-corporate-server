@@ -54,7 +54,7 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(new_ou, {'ou': [ou_name_new]}, should_exist=True)
 			if add_user:
 				for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
-					if entry.get('uid')[0] != user_name:
+					if entry.get('uid')[0] != user_name.encode('UTF-8'):
 						utils.fail('CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name))
 				utils.verify_ldap_object(new_user, should_exist=True)
 

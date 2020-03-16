@@ -19,6 +19,7 @@ from univention.testing.ucs_samba import wait_for_s4connector
 import univention.testing.utils as utils
 import re
 
+
 if __name__ == '__main__':
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
@@ -45,10 +46,11 @@ if __name__ == '__main__':
 		zone_fqdn = '%s.%s' % (zonename, partentzone)
 		p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
+		stdout = stdout.decode('UTF-8', 'replace')
 		if p1.returncode != 0:
 			utils.fail("DNS dig query failed")
 
-		found = [x for x in nameservers if re.search("^%s\.[ \t][0-9]+[ \t]IN\tNS\t%s\." % (zone_fqdn, x), stdout, re.MULTILINE)]
+		found = [x for x in nameservers if re.search("^%s\\.[ \t][0-9]+[ \t]IN\tNS\t%s\\." % (re.escape(zone_fqdn), re.escape(x)), stdout, re.MULTILINE)]
 
 		if nameservers != found:
 			utils.fail("Record not found: %s" % ([set(nameservers) - set(found)],))

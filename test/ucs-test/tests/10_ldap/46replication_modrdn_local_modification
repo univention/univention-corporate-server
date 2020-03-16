@@ -15,15 +15,18 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-from univention.testing.strings import random_name
-from univention.testing.utils import wait_for_replication, stop_listener, start_listener
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
-from univention.config_registry import ConfigRegistry
+
 import os
-import ldap
 import re
 import sys
+
+import ldap
+
+from univention.testing.strings import random_name
+from univention.testing.utils import wait_for_replication
+import univention.testing.udm as udm_test
+from univention.config_registry import ConfigRegistry
+import univention.uldap
 
 success = True
 
@@ -54,28 +57,13 @@ def get_entryUUID(lo, dn):
 	print('DN: %s\n%s' % (dn, result))
 	return result[0][1].get('entryUUID')[0]
 
-
-def get_rootpw():
-	pwd = ''
-	f = open('/etc/ldap/rootpw.conf', 'r')
-	rootdn_pattern = re.compile('^rootpw[ \t]+"([^"]+)"')
-	for line in f.readlines():
-		line = line[0:-1]
-		if rootdn_pattern.match(line):
-			pwd = rootdn_pattern.findall(line)[0]
-			break
-	f.close()
-	return pwd
-
 # create computer
 
 
 udm = udm_test.UCSTestUDM()
 computer = udm.create_object(UDM_MODULE, name=name, position=ucr.get('ldap/base'), wait_for_replication=True)
 
-rootpw = get_rootpw()
-lo = ldap.open('127.0.0.1', 7389)
-lo.simple_bind_s('cn=update,' + ucr.get('ldap/base'), rootpw)
+lo = univention.uldap.getRootDnConnection().lo
 
 # read computer uuid
 computer_UUID = get_entryUUID(lo, computer)

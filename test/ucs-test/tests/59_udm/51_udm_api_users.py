@@ -191,7 +191,7 @@ class TestUdmUsersBasic(TestCase):
 		utils.verify_ldap_object(
 			dn,
 			expected_attr={
-				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
+				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad._asdict()) for ad in addresses],
 			},
 		)
 
@@ -216,7 +216,7 @@ class TestUdmUsersBasic(TestCase):
 		utils.verify_ldap_object(
 			dn,
 			expected_attr={
-				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
+				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad._asdict()) for ad in addresses],
 			},
 		)
 

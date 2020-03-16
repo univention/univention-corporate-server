@@ -301,6 +301,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ python-ipaddress,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:

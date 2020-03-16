@@ -39,7 +39,7 @@ class %s(univention.admin.hook.simpleHook):
 
 			univention.testing.utils.wait_for_replication()
 			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': ['%s']}, retry_count=0)
+				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': [b'%s']}, retry_count=0)
 			except univention.testing.utils.LDAPObjectValueMissing:
 				fp.write('\\nObject was not yet modified when LDAP post modify hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base'], hook_name))

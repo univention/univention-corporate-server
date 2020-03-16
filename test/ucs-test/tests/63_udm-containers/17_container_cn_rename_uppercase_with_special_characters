@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
 			cn = udm.create_object('container/cn', position=parent, name=cn_name)
 			if add_user:
-				user = udm.create_user(position=cn, username=user_name)
+				udm.create_user(position=cn, username=user_name)
 
 			try:
 				udm.modify_object('container/cn', dn=cn, name=cn_name_new)
@@ -67,12 +67,12 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(new_cn, should_exist=True)
 			if add_user:
 				for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
-					if entry.get('uid')[0] != user_name:
+					if entry.get('uid')[0] != user_name.encode('UTF-8'):
 						utils.fail('CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name))
 				utils.verify_ldap_object(new_user, should_exist=True)
 
 			for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name_new])):
-				if entry.get('cn')[0] != cn_name_new:
+				if entry.get('cn')[0] != cn_name_new.encode('UTF-8'):
 					utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))
 			return new_cn
 

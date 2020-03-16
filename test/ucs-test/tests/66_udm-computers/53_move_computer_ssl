@@ -24,7 +24,7 @@ def get_ssl(name):
 		proc = Popen(cmd, stdout=PIPE)
 		for line in proc.stdout:
 			seq, fqdn = line.split(None, 1)
-			if fqdn.startswith(name):
+			if fqdn.startswith(name.encode('UTF-8')):
 				return int(seq, 16)
 		print(i)
 		sleep(1)

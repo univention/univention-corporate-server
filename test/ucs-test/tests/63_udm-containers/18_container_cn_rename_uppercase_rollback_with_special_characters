@@ -15,6 +15,7 @@ import univention.testing.strings as uts
 import univention.config_registry as configRegistry
 import ldap.dn
 import ldap.filter
+import pytest
 
 
 if __name__ == '__main__':
@@ -33,10 +34,8 @@ if __name__ == '__main__':
 		user = udm.create_user(position=cn, username=user_name)
 		network = udm.create_object('networks/network', position=cn, name=network_name, network='1.1.1.1', netmask='24')
 
-		try:
+		with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
 			udm.modify_object('container/cn', dn=cn, name=cn_name_new)
-		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-			pass
 
 		new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
 		new_user = 'uid=%s,cn=%s,%s' % (ldap.dn.escape_dn_chars(user_name), ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
@@ -45,5 +44,5 @@ if __name__ == '__main__':
 
 		lo = utils.get_ldap_connection()
 		for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
-			if entry.get('cn')[0] != cn_name:
+			if entry.get('cn')[0] != cn_name.encode('UTF-8'):
 				utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name))

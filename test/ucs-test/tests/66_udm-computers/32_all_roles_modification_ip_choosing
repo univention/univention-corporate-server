@@ -48,7 +48,7 @@ def main():
 
 
 def create(udm, role, ip=False, network=None, dhcp=None):
-	unique = UNIQUE.next()
+	unique = next(UNIQUE)
 	computerName = "%s%d" % (NAME, unique)
 	mac = '%s:%02x' % (MAC, unique)
 	ip = '%s.%d' % (NET, unique) if ip else None
@@ -75,7 +75,7 @@ def verify(computerName, service, mac, ip=None):
 	utils.verify_ldap_object(dn, expected)
 	if ip is None:
 		lo = utils.get_ldap_connection()
-		ip = lo.getAttr(dn, 'univentionDhcpFixedAddress')[0]
+		ip = lo.getAttr(dn, 'univentionDhcpFixedAddress')[0].decode('ASCII')
 		assert ip.startswith('%s.' % (NET,))
 
 

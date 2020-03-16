@@ -28,8 +28,7 @@ if __name__ == '__main__':
 
 		with udm_test.UCSTestUDM() as udm:
 
-			domainname = ucr.get('domainname')
-			dNSCn = 'cn=dns,dc=' + (',dc=').join(domainname.split('.'))
+			dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
 
 			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
 
@@ -52,7 +51,7 @@ if __name__ == '__main__':
 			udm.modify_object(role, dn=computer, network=network)
 			aRecord = utils.get_ldap_connection().getAttr(computer, 'aRecord')[0]
 
-			#FIXME: workaround for possibly remaining locks
+			# FIXME: workaround for possibly remaining locks
 			udm.addCleanupLock('aRecord', aRecord)
 			udm.addCleanupLock('mac', '01:23:45:67:89:ab')
 

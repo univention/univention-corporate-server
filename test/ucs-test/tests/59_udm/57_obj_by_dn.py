@@ -43,5 +43,6 @@ class TestUdmAutoOpen(TestCase):
 		with self.assertRaises(NoObject):
 			udm.obj_by_dn('cn=backup,%s' % ucr_test['ldap/base'])
 
+
 if __name__ == '__main__':
 	main(verbosity=2)

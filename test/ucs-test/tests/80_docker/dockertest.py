@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from univention.testing.strings import random_name, random_version
 from univention.testing.debian_package import DebianPackage
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -211,18 +212,17 @@ def get_app_version():
 
 def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 	target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
-	print 'cp %s %s' % (package_name, target)
+	print('cp %s %s' % (package_name, target))
 	shutil.copy(package_name, target)
-	print '''
+	command = '''
+		set -x -e;
 		cd /var/www/univention-repository/%(version)s/maintained/component;
 		apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
 		gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
 	''' % {'version': ucs_version, 'app': app_directory}
-	subprocess.call('''
-		cd /var/www/univention-repository/%(version)s/maintained/component;
-		apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
-		gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
-	''' % {'version': ucs_version, 'app': app_directory}, shell=True)
+	print('Creating packages in local repository:')
+	print(command)
+	print(subprocess.check_output(command, shell=True))
 
 
 class App(object):
@@ -282,14 +282,14 @@ class App(object):
 		self.admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		self.admin_pwdfile = self.ucr.get('tests/domainadmin/pwdfile')
 
-		print repr(self)
+		print(repr(self))
 
 	def __repr__(self):
 		return '%s(app_name=%r, app_version=%r)' % (super(App, self).__repr__(), self.app_name, self.app_version)
 
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
-			print 'set_ini_parameter(%s=%s)' % (key, value)
+			print('set_ini_parameter(%s=%s)' % (key, value))
 			self.ini[key] = value
 
 	def add_to_local_appcenter(self):
@@ -303,7 +303,7 @@ class App(object):
 			self.scripts[key] = value
 
 	def install(self):
-		print 'App.install()'
+		print('App.install()')
 		self._update()
 		cmd = ['univention-app', 'install']
 		if self.call_join_scripts is False:
@@ -312,7 +312,7 @@ class App(object):
 		cmd.append('--username=%s' % self.admin_user)
 		cmd.append('--pwdfile=%s' % self.admin_pwdfile)
 		cmd.append('%s=%s' % (self.app_name, self.app_version))
-		print cmd
+		print(cmd)
 		ret = subprocess.call(' '.join(cmd), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_InstallationFailed()
@@ -351,7 +351,7 @@ class App(object):
 				client.umc_command("appcenter/keep_alive")
 			finally:
 				event.set()
-		print 'App.umc_install()'
+		print('App.umc_install()')
 		client = umc.Client.get_test_connection()
 		client.umc_get('session-info')
 
@@ -390,7 +390,7 @@ class App(object):
 		self._update()
 		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
 		cmd = 'univention-add-app -a -l %s' % self.app_name
-		print cmd
+		print(cmd)
 		ret = subprocess.call(cmd, shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_InstallationFailed()
@@ -404,15 +404,15 @@ class App(object):
 			raise UCSTest_DockerApp_UpdateFailed()
 
 	def register(self):
-		print 'App.register()'
+		print('App.register()')
 		cmd = ['univention-app', 'register', '--app']
-		print cmd
+		print(cmd)
 		ret = subprocess.call(' '.join(cmd), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_RegisterFailed()
 
 	def upgrade(self):
-		print 'App.upgrade()'
+		print('App.upgrade()')
 		self._update()
 		cmd = ['univention-app', 'upgrade']
 		if self.call_join_scripts is False:
@@ -421,7 +421,7 @@ class App(object):
 		cmd.append('--username=%s' % self.admin_user)
 		cmd.append('--pwdfile=%s' % self.admin_pwdfile)
 		cmd.append('%s=%s' % (self.app_name, self.app_version))
-		print cmd
+		print(cmd)
 		ret = subprocess.call(' '.join(cmd), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
@@ -430,7 +430,7 @@ class App(object):
 		self.installed = True
 
 	def verify(self, joined=True):
-		print 'App.verify(%r)' % (joined,)
+		print('App.verify(%r)' % (joined,))
 		ret = subprocess.call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
@@ -451,7 +451,7 @@ class App(object):
 				raise UCSTest_DockerApp_VerifyFailed('univention-app shell failed')
 
 	def uninstall(self):
-		print 'App.uninstall()'
+		print('App.uninstall()')
 		if self.installed:
 			cmd = ['univention-app', 'remove']
 			if self.call_join_scripts is False:
@@ -460,17 +460,17 @@ class App(object):
 			cmd.append('--username=%s' % self.admin_user)
 			cmd.append('--pwdfile=%s' % self.admin_pwdfile)
 			cmd.append('%s=%s' % (self.app_name, self.app_version))
-			print cmd
+			print(cmd)
 			ret = subprocess.call(' '.join(cmd), shell=True)
 			if ret != 0:
 				raise UCSTest_DockerApp_RemoveFailed()
 
 	def execute_command_in_container(self, cmd):
-		print 'Execute: %s' % cmd
+		print('Execute: %s' % cmd)
 		return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True)
 
 	def remove(self):
-		print 'App.remove()'
+		print('App.remove()')
 		if self.package:
 			self.package.remove()
 
@@ -484,13 +484,13 @@ class App(object):
 
 		target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
 		f = open(target, 'w')
-		print 'Write ini file: %s' % target
+		print('Write ini file: %s' % target)
 		f.write('[Application]\n')
-		print '[Application]'
+		print('[Application]')
 		for key in self.ini.keys():
 			f.write('%s: %s\n' % (key, self.ini[key]))
-			print '%s: %s' % (key, self.ini[key])
-		print
+			print('%s: %s' % (key, self.ini[key]))
+		print()
 		f.close()
 		svg = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, self.ini.get('Logo'))
 		f = open(svg, 'w')
@@ -504,8 +504,8 @@ class App(object):
 				os.makedirs(comp_path)
 			target = os.path.join(comp_path, script)
 
-			print 'Create %s' % target
-			print self.scripts[script]
+			print('Create %s' % target)
+			print(self.scripts[script])
 
 			f = open(target, 'w')
 			f.write(self.scripts[script])
@@ -626,10 +626,10 @@ class Appcenter(object):
 		self.apps = list()
 
 		if os.path.exists('/var/www/meta-inf'):
-			print 'ERROR: /var/www/meta-inf already exists'
+			print('ERROR: /var/www/meta-inf already exists')
 			raise AppcenterMetainfAlreadyExists()
 		if os.path.exists('/var/www/univention-repository'):
-			print 'ERROR: /var/www/univention-repository already exists'
+			print('ERROR: /var/www/univention-repository already exists')
 			raise AppcenterRepositoryAlreadyExists()
 
 		if not version:
@@ -646,7 +646,7 @@ class Appcenter(object):
 			self._write_ucs_ini('[%s]\nSupportedUCSVersions=%s\n' % (version, version))
 			self._write_suggestions_json()
 
-		print repr(self)
+		print(repr(self))
 
 	def _write_suggestions_json(self):
 		f = open('/var/www/meta-inf/suggestions.json', 'w')
@@ -720,7 +720,7 @@ Virtualization=Virtualisierung''')
 			directory = os.path.join('/var/www/meta-inf/', vv)
 			if not os.path.isdir(directory):
 				continue
-			print 'create_appcenter_json.py for %s' % vv
+			print('create_appcenter_json.py for %s' % vv)
 			subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s -t /var/www/meta-inf/%(version)s/all.tar' %
 				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 			subprocess.call('zsyncmake -u http://%(fqdn)s/meta-inf/%(version)s/all.tar.gz -z -o /var/www/meta-inf/%(version)s/all.tar.zsync /var/www/meta-inf/%(version)s/all.tar' %
@@ -739,12 +739,12 @@ Virtualization=Virtualisierung''')
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		if exc_type:
-			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
+			print('Cleanup after exception: %s %s' % (exc_type, exc_value))
 		try:
 			for app in self.apps:
 				app.uninstall()
 		except Exception as ex:
-			print 'removing app %s in __exit__ failed with: %s' % (app, str(ex))
+			print('removing app %s in __exit__ failed with: %s' % (app, str(ex)))
 		self.cleanup()
 
 

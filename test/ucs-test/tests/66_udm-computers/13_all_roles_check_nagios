@@ -46,8 +46,8 @@ if __name__ == '__main__':
 			utils.verify_ldap_object(computer, {
 				'univentionNagiosEmail': [computerProperties['nagiosContactEmail']],
 				'univentionNagiosEnabled': ['1'],
-				'univentionNagiosParent': ['%s.%s' % (nagiosParentProperties['name'], ldap.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])]
+				'univentionNagiosParent': [b'%s.%s' % (nagiosParentProperties['name'].encode('UTF-8'), ldap.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])]
 			})
 
 			# check if computer has been added to nagios service
-			utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], ldap.getAttr(computer, 'associatedDomain')[0])]})
+			utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerProperties['name'].encode('UTF-8'), ldap.getAttr(computer, 'associatedDomain')[0])]})

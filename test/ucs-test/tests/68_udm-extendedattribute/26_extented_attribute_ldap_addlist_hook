@@ -31,7 +31,7 @@ class %s(univention.admin.hook.simpleHook):
 		with open('/tmp/%s_executed', 'w') as fp:
 			if not isinstance(obj, univention.admin.handlers.users.user.object):
 				fp.write('LDAP addlist hook called with wrong object parameter (Type: %%s)' %% type(obj))
-		return al + [('description', '%s')]
+		return al + [('description', b'%s')]
 """ % (hook_name, hook_name, hook_name))
 
 	with udm_test.UCSTestUDM() as udm:

@@ -19,14 +19,15 @@ import os
 import sys
 import univention.testing.utils as utils
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
 	# get local and ldap printer models
 	ldap_printer = []
 	printer_files = []
 	print('searching for printer models')
 	for dn, attr in utils.get_ldap_connection().search(filter='(objectClass=univentionPrinterModels)', attr=['printerModel']):
 		for printerModel in attr.get('printerModel', ()):
+			printerModel = printerModel.decode('UTF-8')
 			try:
 				model = printerModel.split('"')[1].split('/')[-1]
 				desc = printerModel.split('"')[3]

@@ -14,7 +14,7 @@ import shutil
 import ssl
 from socket import gethostname
 from multiprocessing import Process
-import BaseHTTPServer
+from six.moves import BaseHTTPServer
 from unittest import main, TestCase
 from univention.config_registry import handler_set, handler_unset
 import univention.testing.utils as utils
@@ -102,7 +102,7 @@ class TestRequestLicense(TestCase):
 			'udm/request_new_license',
 			'--flavor', 'license-request',
 			'--option', 'email=brodersen@univention.de',
-		])
+		]).decode('UTF-8', 'replace')
 		print(ans)
 		assert 'STATUS   : 200' in ans
 
@@ -118,7 +118,7 @@ class TestRequestLicense(TestCase):
 			'udm/request_new_license',
 			'--flavor', 'license-request',
 			'--option', 'email=brodersen@univention.de',
-		])
+		]).decode('UTF-8', 'replace')
 		print(ans)
 		assert 'STATUS   : 200' in ans
 

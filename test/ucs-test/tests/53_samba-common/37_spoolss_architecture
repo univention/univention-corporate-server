@@ -69,7 +69,7 @@ def test_run(ucr, arch):
 		expected_value = expected_spoolss_architecture[arch]
 		if previous_value != expected_value:
 			keyval = "%s=%s" % (ucr_var, expected_value)
-			univention.config_registry.handler_set([keyval.encode()])
+			univention.config_registry.handler_set([keyval])
 
 	check_spoolss_architecture(expected_value)
 

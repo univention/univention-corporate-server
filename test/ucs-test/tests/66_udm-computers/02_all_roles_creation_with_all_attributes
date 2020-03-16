@@ -25,8 +25,8 @@ if __name__ == '__main__':
 		atexit.register(utils.start_s4connector)
 		utils.stop_s4connector()
 
-	available_ip_nums = range(1, 10)  # will be used for IP endings
-	available_mac_nums = range(11, 99)  # will be used for MAC endings
+	available_ip_nums = list(range(1, 10))  # will be used for IP endings
+	available_mac_nums = list(range(11, 99))  # will be used for MAC endings
 
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		if role == 'computers/macos':
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 				expectedLdap['uid'] = ['%s$' % properties['name']]
 				expectedLdap['displayName'] = [properties['name']]
 				expectedLdap['sambaNTPassword'] = [passlib.hash.nthash.hash(properties['password'].lower()).upper()]
-				expectedLdap['krb5PrincipalName'] = ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
+				expectedLdap['krb5PrincipalName'] = [b'host/%s.%s@%s' % (properties['name'].encode('UTF-8'), properties['domain'].lower().encode('UTF-8'), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 
 			if role not in ('computers/domaincontroller_master', 'computers/domaincontroller_backup',
 					'computers/domaincontroller_slave', 'computers/memberserver',
@@ -122,7 +122,7 @@ if __name__ == '__main__':
 				computer_sambaSID = ldap.getAttr(computer_DN, 'sambaSID')[0]
 				udm.addCleanupLock('sid', computer_sambaSID)
 				if utils.s4connector_present():
-					if not computer_sambaSID.startswith('S-1-4'):
+					if not computer_sambaSID.decode('ASCII').startswith('S-1-4'):
 						utils.fail('"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN)
 				else:
 					sambaDomainSID = ldap.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0]

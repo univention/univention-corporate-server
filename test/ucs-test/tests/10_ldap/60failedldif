@@ -14,7 +14,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 testldif () {
-	[ -f "$1" ] || continue
+	[ -f "$1" ] || return
 
 	declare -i PERM="$(stat -c %a "$1")"
 	local OWNER="$(stat -c %U "$1")"

@@ -39,7 +39,7 @@ class %s(univention.admin.hook.simpleHook):
 
 			univention.testing.utils.wait_for_replication()
 			try:
-				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist = False)
+				univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist=False)
 			except univention.testing.utils.LDAPUnexpectedObjectFound:
 				fp.write('\\nObject had not yet been removed when LDAP post remove hook was called')
 """ % (hook_name, hook_name, hook_name, ucr['ldap/base']))

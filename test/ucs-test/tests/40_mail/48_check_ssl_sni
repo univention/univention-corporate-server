@@ -52,7 +52,7 @@ if __name__ == '__main__':
 		univention.config_registry.handler_set(
 			['mail/dovecot/ssl/sni/ucs-sso.%(domain)s/certificate=/etc/univention/ssl/ucs-sso.%(domain)s/cert.pem' % {'domain': domain},
 				'mail/dovecot/ssl/sni/ucs-sso.%(domain)s/key=/etc/univention/ssl/ucs-sso.%(domain)s/private.key' % {'domain': domain}
-			])
+		])
 		subprocess.call(['service', 'dovecot', 'restart'])
 
 		print('\nTest if host %s returns a certificate for %s' % (fqdn, fqdn))
