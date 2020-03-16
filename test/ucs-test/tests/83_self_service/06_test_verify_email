@@ -7,10 +7,14 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
+import email
+from urlparse import urlparse, parse_qs
 import univention.testing.utils as utils
 from univention.lib.umc import Client
 from univention.config_registry import ConfigRegistry
 from test_self_service import capture_mails
+from univention.admin.uldap import getAdminConnection
+from univention.admin.uexceptions import noObject
 
 
 class EmailVerification(object):
@@ -30,17 +34,38 @@ class EmailVerification(object):
 	def test_verification_email(self):
 		timeout = 5
 		with capture_mails(timeout=timeout) as mails:
-		    self.c.umc_command('passwordreset/create_account', self.user)
-		    utils.verify_ldap_object(self.dn, {'univentionPasswordRecoveryEmailVerified': ['FALSE']})
+			self.c.umc_command('passwordreset/create_account', self.user)
+			utils.verify_ldap_object(self.dn, {'univentionPasswordRecoveryEmailVerified': ['FALSE']})
 
-		mail = mails.data and mails.data[0]
+		mail = email.message_from_string(mails.data and mails.data[0]).get_payload(decode=True)
 		print(mail)
-                assert mail, 'No email has been received in %s seconds' % (timeout,)
+		assert mail, 'No email has been received in %s seconds' % (timeout,)
+		for line in mail.split():
+			if line.startswith('https://'):
+				verify_link = line
+				break
+		verify_fragment = urlparse(verify_link).fragment
+		verify_params = parse_qs(verify_fragment)
+		print(verify_params)
+		self.c.umc_command('passwordreset/verify_contact', {
+			'username': verify_params['username'][0],
+			'token': verify_params['token'][0],
+			'method': verify_params['method'][0],
+		})
+		print('checking account')
+		utils.verify_ldap_object(self.dn, {'univentionPasswordRecoveryEmailVerified': ['TRUE']})
 
 
 def main():
 	ev = EmailVerification()
-	ev.test_verification_email()
+	try:
+		ev.test_verification_email()
+	finally:
+		lo, po = getAdminConnection()
+		try:
+			lo.delete(ev.dn)
+		except noObject:
+			pass
 
 
 if __name__ == '__main__':
