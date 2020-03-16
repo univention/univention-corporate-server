@@ -68,7 +68,7 @@ ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD
 # replace non deb lines
 sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
-release=4.4-2
+release=4.4-3
 
 export TEMPLATE_VERSION="${TEMPLATE_VERSION:=$release}"
 export TEMPLATE_NAME="${TEMPLATE_NAME:=generic-unsafe}"
