@@ -33,6 +33,8 @@
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
+import six
+
 ARPA_IP4 = '.in-addr.arpa'
 ARPA_IP6 = '.ip6.arpa'
 
@@ -87,7 +89,7 @@ def escapeSOAemail(email):
 	return local + '.' + domain
 
 
-def stripDot(old):
+def stripDot(old, encoding=()):
 	"""
 	>>> stripDot(['example.com.', 'example.com'])
 	['example.com', 'example.com']
@@ -100,8 +102,8 @@ def stripDot(old):
 	>>> stripDot(None)
 	"""
 	if isinstance(old, list):
-		return [stripDot(_) for _ in old]
-	return old[:-1] if isinstance(old, basestring) and old.endswith('.') else old
+		return [stripDot(_, encoding) for _ in old]
+	return old[:-1].encode(*encoding) if isinstance(old, (bytes, six.text_type)) and old.endswith('.') else old.encode(*encoding)
 
 
 if __name__ == '__main__':
