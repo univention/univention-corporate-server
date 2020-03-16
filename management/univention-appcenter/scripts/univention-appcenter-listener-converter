@@ -37,7 +37,6 @@ import os
 import os.path
 from argparse import ArgumentParser
 from glob import glob
-import time
 import json
 import shutil
 
@@ -77,7 +76,6 @@ def run_trigger(app):
 	filenames = glob(os.path.join(app.get_data_dir(), 'listener', '*.json'))
 	if not filenames:
 		return
-	logger.info('Running trigger')
 	success = True
 	if app.docker:
 		try:
@@ -139,32 +137,37 @@ def convert(app, dumped, filename, lo, pos):
 	return True
 
 
-def find_and_convert_files(app, lo, pos):
+def find_and_convert_files(app):
 	filenames = sorted(glob(os.path.join(LISTENER_DUMP_DIR, app.id, '*.json')))
 	used_entry_uuids = {}
 	dumped_objects = {}
 	used_filenames = []
 	obsolete_filenames = []
-	for filename in filenames:
-		logger.debug('Converting %s' % filename)
-		dumped = json.load(open(filename))
-		entry_uuid = dumped['entry_uuid']
-		if entry_uuid in used_entry_uuids:
-			obsolete_filename = used_entry_uuids.pop(entry_uuid)
-			logger.debug('%s replaces earlier %s' % (filename, obsolete_filename))
-			used_filenames.remove(obsolete_filename)
-			obsolete_filenames.append(obsolete_filename)
-		used_filenames.append(filename)
-		used_entry_uuids[entry_uuid] = filename
-		dumped_objects[filename] = dumped
-	for filename in obsolete_filenames:
-		logger.debug('Deleting unused %s' % filename)
-		os.unlink(filename)
-	for filename in used_filenames:
-		dumped = dumped_objects[filename]
-		if convert(app, dumped, filename, lo, pos):
-			logger.debug('Deleting used %s' % filename)
+	if filenames:
+		lo, pos = get_app_connection(app)
+		if lo is None:
+			logger.critical('LDAP connection failed')
+			sys.exit(3)
+		for filename in filenames:
+			logger.debug('Converting %s' % filename)
+			dumped = json.load(open(filename))
+			entry_uuid = dumped['entry_uuid']
+			if entry_uuid in used_entry_uuids:
+				obsolete_filename = used_entry_uuids.pop(entry_uuid)
+				logger.debug('%s replaces earlier %s' % (filename, obsolete_filename))
+				used_filenames.remove(obsolete_filename)
+				obsolete_filenames.append(obsolete_filename)
+			used_filenames.append(filename)
+			used_entry_uuids[entry_uuid] = filename
+			dumped_objects[filename] = dumped
+		for filename in obsolete_filenames:
+			logger.debug('Deleting unused %s' % filename)
 			os.unlink(filename)
+		for filename in used_filenames:
+			dumped = dumped_objects[filename]
+			if convert(app, dumped, filename, lo, pos):
+				logger.debug('Deleting used %s' % filename)
+				os.unlink(filename)
 
 
 def main():
@@ -183,13 +186,9 @@ def main():
 	if not app.is_installed():
 		logger.critical('App not installed')
 		sys.exit(2)
-	lo, pos = get_app_connection(app)
-	if lo is None:
-		logger.critical('LDAP connection failed')
-		sys.exit(3)
-	logger.info('Converter for %s ready' % app)
-	find_and_convert_files(app, lo, pos)
+	find_and_convert_files(app)
 	run_trigger(app)
+
 
 if __name__ == '__main__':
 	main()
