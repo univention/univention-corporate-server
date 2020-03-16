@@ -252,14 +252,14 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 
 def _case_insensitive_in_list(dn, list):
 	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+		if dn.lower() == element.lower():
 			return True
 	return False
 
 
 def _case_insensitive_get_item_in_list(dn, list):
 	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+		if dn.lower() == element.lower():
 			return element
 	return None
 
@@ -267,7 +267,7 @@ def _case_insensitive_get_item_in_list(dn, list):
 def _case_insensitive_remove_from_list(dn, list):
 	remove_element = None
 	for element in list:
-		if dn.decode('utf8').lower() == element.decode('utf8').lower():
+		if dn.lower() == element.lower():
 			remove_element = element
 	if remove_element:
 		list.remove(remove_element)
@@ -385,8 +385,8 @@ class object(univention.admin.handlers.simpleLdap):
 		members = []
 		searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
 		if searchResult:
-			uids = searchResult.get('memberUid', [])
-			members = searchResult.get('uniqueMember', [])
+			uids = [x.decode('UTF-8') for x in searchResult.get('memberUid', [])]
+			members = [x.decode('UTF-8') for x in searchResult.get('uniqueMember', [])]
 
 		add_uidlist = []
 		for uid in uidlist:
@@ -423,8 +423,8 @@ class object(univention.admin.handlers.simpleLdap):
 		members = []
 		searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
 		if searchResult:
-			uids = searchResult.get('memberUid', [])
-			members = searchResult.get('uniqueMember', [])
+			uids = [x.decode('UTF-8') for x in searchResult.get('memberUid', [])]
+			members = [x.decode('UTF-8') for x in searchResult.get('uniqueMember', [])]
 
 		remove_uidlist = []
 		for uid in uidlist:
