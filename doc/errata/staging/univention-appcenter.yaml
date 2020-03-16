@@ -3,10 +3,10 @@ release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
-fix: 8.0.11-123A~4.4.0.202003161438
+fix: 8.0.11-124A~4.4.0.202003161622
 desc: |-
   This update addresses the following issue(s):
-  * Reinitializing an installed app lead to an superfluous image pull.
+  * Reinitializing an installed app lead to an unnecessary image pull.
     This fix skips this pull to increase the speed.
   * Fixed an issue where installation of apps on remote UCS systems would not
     work when using wildcard SSL certificates.
