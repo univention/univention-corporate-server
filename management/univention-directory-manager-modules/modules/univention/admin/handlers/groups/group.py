@@ -537,9 +537,9 @@ class object(univention.admin.handlers.simpleLdap):
 			al.append(['objectClass', b'organizationalRole'])  # any STRUCTURAL class with 'cn'
 
 		if set(('posix', 'samba')) & set(self.options):
-			al.append(('gidNumber', [self.gidNum]))
+			al.append(('gidNumber', [self.gidNum.encode('ASCII')]))
 		if 'samba' in self.options:
-			al.append(('sambaSID', [self.groupSid]))
+			al.append(('sambaSID', [self.groupSid.encode('ASCII')]))
 
 		return al
 
@@ -659,7 +659,7 @@ class object(univention.admin.handlers.simpleLdap):
 		except ldap.NO_SUCH_OBJECT:
 			pass
 		else:
-			for attr, value in attrs.iteritems():
+			for attr, value in attrs.items():
 				if attr.lower().endswith('group') and self.dn in value:
 					raise univention.admin.uexceptions.primaryGroupUsed(_('It is used as %s.') % attr)
 		if getattr(self, 'gidNum', None):
