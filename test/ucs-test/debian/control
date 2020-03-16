@@ -298,6 +298,7 @@ Package: ucs-test-udm-users
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ python-pytest,
  ${misc:Depends},
  python-pycountry
 Provides: ucs-test-module
