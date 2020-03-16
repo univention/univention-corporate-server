@@ -590,7 +590,7 @@ class object(univention.admin.handlers.simpleLdap):
 						uid_list = self.lo.getAttr(uniqueMember, 'uid')
 						# a group have no uid attribute, see Bug #12644
 						if uid_list:
-							result.append(uid_list[0])
+							result.append(uid_list[0].decode('UTF-8'))
 							if len(uid_list) > 1:
 								ud.debug(ud.ADMIN, ud.WARN, 'groups/group: A groupmember has multiple UIDs (%s %r)' % (uniqueMember, uid_list))
 				return result
