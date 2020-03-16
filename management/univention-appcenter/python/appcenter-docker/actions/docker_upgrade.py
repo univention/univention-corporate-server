@@ -162,6 +162,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			self.log('Pulling Docker image %s' % docker.image)
 			docker.backup_run_file()
 			docker.pull()
+		else:
+			docker.setup_docker_files()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		Start.call(app=self.old_app)
 		settings = self._get_configure_settings(self.old_app, filter_action=False)

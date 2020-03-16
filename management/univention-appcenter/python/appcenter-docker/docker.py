@@ -265,6 +265,10 @@ class Docker(object):
 		if ret != 0:
 			raise DockerImagePullFailed(image=self.image, out=out, code=ret)
 
+	def setup_docker_files(self):
+		# only needed for MultiDocker
+		pass
+
 	def verify(self):
 		# deprecated and not used anymore. Bug #48670
 		return
@@ -452,12 +456,15 @@ class MultiDocker(Docker):
 		return
 
 	def pull(self):
-		self._setup_yml(recreate=True)
-		self._setup_env()
+		self.setup_docker_files()
 		self.logger.info('Downloading app images')
 		ret, out = call_process2(['docker-compose', '-p', self.app.id, 'pull'], cwd=self.app.get_compose_dir(), logger=_logger)
 		if ret != 0:
 			raise DockerImagePullFailed(image=self.image, out=out, code=ret)
+
+	def setup_docker_files(self):
+		self._setup_env()
+		self._setup_yml(recreate=True)
 
 	def _app_volumes(self):
 		volumes = self.app.docker_volumes[:]
