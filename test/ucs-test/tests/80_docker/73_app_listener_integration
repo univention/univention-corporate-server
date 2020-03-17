@@ -123,6 +123,15 @@ def systemd_service_active(service):
 	return active
 
 
+def systemd_service_enabled(service):
+	cmd = ['systemctl', 'is-enabled', service]
+	try:
+		out = subprocess.check_output(cmd)
+	except subprocess.CalledProcessError:
+		out = ''
+	return 'enabled' in out
+
+
 if __name__ == '__main__':
 
 	name = APP_NAME
@@ -234,6 +243,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		# check handler file/listener restart during remove
 		app.uninstall()
 		new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+		assert not systemd_service_enabled(systemd_service)
 		assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
 		assert not li_pid == new_li_pid
 
