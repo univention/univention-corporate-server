@@ -700,7 +700,7 @@ class Base64GzipText(TextArea):
 	@classmethod
 	def parse(self, text):
 		try:
-			gziped_data = base64.decodestring(text)
+			gziped_data = base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
@@ -720,7 +720,7 @@ class Base64Bzip2Text(TextArea):
 	@classmethod
 	def parse(self, text):
 		try:
-			compressed_data = base64.decodestring(text)
+			compressed_data = base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		try:
@@ -740,7 +740,7 @@ class Base64Upload(Upload):
 	@classmethod
 	def parse(self, text):
 		try:
-			base64.decodestring(text)
+			base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		else:
@@ -754,7 +754,7 @@ class Base64BaseUpload(Base64Upload):
 	@classmethod
 	def parse(self, text):
 		try:
-			base64.decodestring(text)
+			base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		else:
@@ -815,7 +815,7 @@ class Base64Bzip2XML(TextArea):
 	@classmethod
 	def parse(self, text):
 		try:
-			compressed_data = base64.decodestring(text)
+			compressed_data = base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % (text,))
 		try:
@@ -837,7 +837,7 @@ class Base64UMCIcon(TextArea):
 	@classmethod
 	def parse(self, text):
 		try:
-			data = base64.decodestring(text)
+			data = base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		image_mime_type_of_buffer(data)  # exact return value irrelevant, only exceptions matter at this point
@@ -854,7 +854,7 @@ class GNUMessageCatalog(TextArea):
 	@classmethod
 	def parse(self, text):
 		try:
-			data = base64.decodestring(text)
+			data = base64.b64decode(text)
 		except:
 			raise univention.admin.uexceptions.valueError(_('Not a valid Base64 string: %s') % str(text))
 		if not get_mime_description(data).startswith('GNU message catalog'):
