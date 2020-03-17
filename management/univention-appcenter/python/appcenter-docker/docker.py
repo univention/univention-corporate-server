@@ -571,6 +571,7 @@ class MultiDocker(Docker):
 
 	def _setup_env(self, env=None):
 		if os.path.exists(self.app.get_cache_file('env')) and self.app.docker_inject_env_file:
+			mkdir(self.app.get_compose_dir())
 			env_file_name = '{}.env'.format(self.app.id)
 			env_file = os.path.join(self.app.get_compose_dir(), env_file_name)
 			# remove old env file
