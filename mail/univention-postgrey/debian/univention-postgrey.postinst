@@ -30,6 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+if [ ! -f "/etc/postgrey/whitelist_recipients.local" ]
+then
+	install -m 0644 -o 0 -g 0 /dev/null "/etc/postgrey/whitelist_recipients.local"
+fi
+if [ ! -f "/etc/postgrey/whitelist_clients.local" ]
+then
+	install -m 0644 -o 0 -g 0 /dev/null "/etc/postgrey/whitelist_clients.local"
+fi
+
 #DEBHELPER#
 
 univention-config-registry set "mail/postfix/greylisting?enabled" \
@@ -43,21 +52,6 @@ univention-config-registry set "mail/postfix/greylisting?enabled" \
                                "mail/postfix/greylisting/recipient/whitelist?/etc/postgrey/whitelist_recipients /etc/postgrey/whitelist_recipients.local"
 
 univention-config-registry commit "/etc/init.d/postgrey"
-
-if [ ! -f "/etc/postgrey/whitelist_recipients.local" ]
-then
-	install -m 0644 -o 0 -g 0 /dev/null "/etc/postgrey/whitelist_recipients.local"
-fi
-if [ ! -f "/etc/postgrey/whitelist_clients.local" ]
-then
-	install -m 0644 -o 0 -g 0 /dev/null "/etc/postgrey/whitelist_clients.local"
-fi
-
-if dpkg --compare-versions "$2" eq ""
-then
-	univention-config-registry set "mail/postfix/greylisting/client/whitelist=/etc/postgrey/whitelist_clients /etc/postgrey/whitelist_clients.local" \
-                               "mail/postfix/greylisting/recipient/whitelist=/etc/postgrey/whitelist_recipients /etc/postgrey/whitelist_recipients.local"
-fi
 
 
 invoke-rc.d postgrey restart
