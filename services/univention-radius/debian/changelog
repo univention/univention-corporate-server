@@ -1,3 +1,9 @@
+univention-radius (6.0.2-21) unstable; urgency=medium
+
+  * Bug #50545: Fix file permissions in new log files
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 17 Mar 2020 16:35:51 +0100
+
 univention-radius (6.0.2-20) unstable; urgency=medium
 
   * Bug #48709: Fix typos in UCR variables
@@ -8,13 +14,13 @@ univention-radius (6.0.2-19) bionic; urgency=medium
 
   * Bug #48709: Documented further UCR variables for radius
 
- -- Max Christian Pohle <mpohle@klabb.knut.univention.de>  Mon, 24 Feb 2020 16:19:54 +0100
+ -- Max Christian Pohle <mpohle@univention.de>  Mon, 24 Feb 2020 16:19:54 +0100
 
 univention-radius (6.0.2-18) bionic; urgency=medium
 
   * Bug #50545: added logrotate functionality for radius_ntlm_auth.log
 
- -- Max Christian Pohle <mpohle@klabb.knut.univention.de>  Wed, 12 Feb 2020 13:26:36 +0100
+ -- Max Christian Pohle <mpohle@univention.de>  Wed, 12 Feb 2020 13:26:36 +0100
 
 univention-radius (6.0.2-17) unstable; urgency=medium
 
