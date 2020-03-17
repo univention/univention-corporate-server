@@ -974,7 +974,7 @@ def load_certificate(user_certificate):
 	if not user_certificate:
 		return {}
 	try:
-		certificate = base64.decodestring(user_certificate)
+		certificate = base64.b64decode(user_certificate)
 	except base64.binascii.Error:
 		return {}
 	try:
