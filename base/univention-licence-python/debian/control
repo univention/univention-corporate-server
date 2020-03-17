@@ -1,0 +1,88 @@
+Source: univention-license-python
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ cython-dbg,
+ cython3-dbg,
+ debhelper (>= 9),
+ dh-python,
+ libunivention-license-dev (>= 10.0.0-4),
+ python-dbg,
+ python-debian,
+ python-dev,
+ python-setuptools,
+ python3-dbg,
+ python3-debian,
+ python3-dev,
+ python3-setuptools,
+ ucslint-univention,
+Standards-Version: 3.8.2
+X-Python-Version: 2.7, 3.5
+
+Package: python-univention-license
+Architecture: any
+Depends:
+ python-univention-namespace (>= 12.0.0-10),
+ ${misc:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+Provides: ${python:Provides}
+Description: UCS - license validation library for Python 2
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python-univention-license-dbg
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+ python-univention-license (= ${binary:Version}),
+Provides: ${python:Provides}
+Description: UCS - license validation library for Python 2 - Debug version
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-license
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
+Provides: ${python3:Provides}
+Description: UCS - license validation library for Python 3
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-license-dbg
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${shlibs:Depends},
+ python3-univention-license (= ${binary:Version}),
+Provides: ${python3:Provides}
+Description: UCS - license validation library for Python 3 - Debug version
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

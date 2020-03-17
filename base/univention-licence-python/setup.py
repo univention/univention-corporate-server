@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Debug
@@ -30,21 +30,31 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-from distutils.core import setup, Extension
+import io
+from setuptools import setup, Extension
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
+
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+realname, email_address = parseaddr(dsc['Maintainer'])
 
 setup(
-	name='univention-license',
-	version='@VERSION@',
-	py_modules=['univention.license'],
-	package_dir={'univention': '@top_srcdir@/python'},
-	ext_modules=[Extension(
-		'univention.license',
-		['python/py_license.c'],  # BUG: top_srcdir not distutils compatible
-		include_dirs=['@top_srcdir@/include'],
-		library_dirs=['@top_builddir@/lib/.libs'],
-		libraries=['univentionlicense'])],
-	author='Univention GmbH',
-	author_email='packages@univention.de',
-	url='https://www.univention.de/',
+	package_dir={'': 'python'},
 	description='Univention license validation library',
+
+	ext_modules=[Extension(
+		'univention.license', ['python/univention/py_license.c'],
+		libraries=['univentionlicense'])],
+
+	url='https://www.univention.de/',
+	license='GNU Affero General Public License v3',
+
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
+
+	test_suite='test',
 )

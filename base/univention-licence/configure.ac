@@ -23,4 +23,4 @@ AC_CHECK_HEADER([ldap.h], [], [AC_MSG_ERROR([LDAP developmenmt files are missing
 AC_SUBST([CRYPTO_LIB])
 AC_SUBST([LDAP_LIB])
 
-AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile tools/Makefile internal-tools/Makefile setup.py tools/univention-license-import)
+AC_OUTPUT(Makefile include/univention/Makefile include/Makefile lib/Makefile tools/Makefile tools/univention-license-import)

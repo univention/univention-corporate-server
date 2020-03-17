@@ -11,12 +11,8 @@ config.status
 configure
 Makefile
 Makefile.in
-debian/current.doxcfg
-internal-tools/univentionLicenseCreateSignature
-internal-tools/univentionLicenseGenerate
 tools/univention-license-import
 tools/univentionLicenseTest
-setup.py
 # auto*
 compile
 config.guess
