@@ -526,13 +526,13 @@ layout = [
 
 def boolToString(value):
 	if value == '1':
-		return 'yes'
+		return b'yes'
 	else:
-		return 'no'
+		return b'no'
 
 
 def stringToBool(value):
-	if value[0].lower() == 'yes':
+	if value[0].lower() == b'yes':
 		return '1'
 	else:
 		return '0'
