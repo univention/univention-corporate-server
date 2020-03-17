@@ -204,7 +204,6 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		with open('/var/lib/univention-directory-listener/handlers/%s' % name, 'r') as f:
 			status = f.readline()
 			assert status == '3'
-		assert systemd_service_active(systemd_service)
 		test_listener()
 
 		# check listener/converter restart during update
@@ -231,14 +230,10 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		assert 'stable' not in images, images
 
 		li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-		con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
-		#assert not old_li_pid == li_pid TODO is this OK?
-		assert not old_con_pid == con_pid
 
-		# check converter stop/handler file/listener restart during remove
+		# check handler file/listener restart during remove
 		app.uninstall()
 		new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-		assert not systemd_service_active(systemd_service)
 		assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
 		assert not li_pid == new_li_pid
 

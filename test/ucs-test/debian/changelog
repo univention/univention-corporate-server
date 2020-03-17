@@ -1,3 +1,9 @@
+ucs-test (9.0.3-178) unstable; urgency=medium
+
+  * Bug #50967: adapt 80_docker/73_app_listener_integration to changes
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 17 Mar 2020 14:30:50 +0100
+
 ucs-test (9.0.3-177) unstable; urgency=medium
 
   * Bug #49700: 10_ldap/110_univention_lastbind.py
