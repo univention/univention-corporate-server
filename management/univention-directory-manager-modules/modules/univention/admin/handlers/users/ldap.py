@@ -232,7 +232,7 @@ class object(univention.admin.handlers.simpleLdap):
 	# If you change anything here, please also check users/user.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
-			old_password = self.oldattr.get('userPassword', [''])[0]
+			old_password = self.oldattr.get('userPassword', [b''])[0].decode('ASCII')
 			password = self['password']
 
 			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
@@ -246,7 +246,7 @@ class object(univention.admin.handlers.simpleLdap):
 			password_crypt = univention.admin.password.lock_password(password)
 			if self['disabled'] != '1':
 				password_crypt = univention.admin.password.unlock_password(password_crypt)
-			ml.append(('userPassword', old_password, password_crypt))
+			ml.append(('userPassword', old_password, password_crypt.encode('ASCII')))
 		return ml
 
 	def _modlist_lastname(self, ml):
@@ -268,7 +268,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('locked') and self['locked'] == '0':
 			pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [''])[0]
 			if pwdAccountLockedTime:
-				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, ''))
+				ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, b''))
 		return ml
 
 	# If you change anything here, please also check users/user.py
@@ -278,14 +278,14 @@ class object(univention.admin.handlers.simpleLdap):
 		if self['overridePWHistory'] == '1':
 			return ml
 
-		pwhistory = self.oldattr.get('pwhistory', [''])[0]
+		pwhistory = self.oldattr.get('pwhistory', [b''])[0].decode('ASCII')
 
 		if univention.admin.password.password_already_used(self['password'], pwhistory):
 			raise univention.admin.uexceptions.pwalreadyused()
 
 		if pwhistoryPolicy.pwhistoryLength is not None:
 			newPWHistory = univention.admin.password.get_password_history(univention.admin.password.crypt(self['password']), pwhistory, pwhistoryPolicy.pwhistoryLength)
-			ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
+			ml.append(('pwhistory', self.oldattr.get('pwhistory', [b''])[0], newPWHistory.encode('ASCII')))
 
 		return ml
 
@@ -321,8 +321,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
 		olddn = self.dn
 		tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
-		al = [('objectClass', ['top', 'organizationalRole']), ('cn', ['%s-subtree' % self['username']])]
-		subelements = self.lo.search(base=self.dn, scope='one', attr=['objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
+		al = [('objectClass', [b'top', b'organizationalRole']), ('cn', [b'%s-subtree' % self['username'].encode('UTF-8')])]
+		subelements = self.lo.search(base=self.dn, scope='one', attr=[b'objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
 		if subelements:
 			try:
 				self.lo.add(tmpdn, al)
