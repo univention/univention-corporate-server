@@ -622,7 +622,6 @@ class MultiDocker(Docker):
 				time.sleep(5)
 		return None
 
-
 	def create(self, hostname, env):
 		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems() if v is not None}
 		if self.app.docker_ucr_style_env:
@@ -639,7 +638,7 @@ class MultiDocker(Docker):
 			try:
 				out_ps = ps(only_running=True)
 			except Exception as e:
-				out_ps = str()
+				out_ps = str(e)
 			raise DockerCouldNotStartContainer('could not find container for service %s! docker-ps: %s docker-compose: %s)' % (self.app.docker_main_service, out_ps, out_up))
 		else:
 			ucr_save({self.app.ucr_container_key: self.container})
