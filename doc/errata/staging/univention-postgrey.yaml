@@ -6,5 +6,11 @@ src: univention-postgrey
 fix: 7.0.0-3A~4.4.0.202003171334
 desc: |
  This update addresses the following issue:
- * Set the ucr variables of postgrey during the initial installion
+ * In a fresh installation of univention-postgrey, the files
+   /etc/postgrey/whitelist_clients.local and
+   /etc/postgrey/whitelist_recipients.local are not included in the
+   postgrey configuration, even though the corresponding UCR variables
+   should force this. The creation of the .local files and the update
+   of the postgrey configuration has been rearranged to fix this
+   problem (Bug #50647).
 bug: [50647]
