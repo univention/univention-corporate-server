@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [3]
+scope: ucs_4.4-0-errata4.4-3
+src: univention-licence
+fix: 10.0.0-4A~4.4.0.202003171616
+desc: |-
+ This update addresses the following issue:
+ * Add Python 3 support.
+bug: [50943]
