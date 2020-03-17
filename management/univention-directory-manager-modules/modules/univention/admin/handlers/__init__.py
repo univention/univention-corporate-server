@@ -1453,10 +1453,10 @@ class simpleLdap(object):
 				members = self.lo.getAttr(group, 'uniqueMember')
 				newmembers = []
 				for member in members:
-					member = member.decode('utf-8')
+					member = member
 					if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), ):
 						newmembers.append(member)
-				newmembers.append(self.dn)
+				newmembers.append(self.dn.encode('UTF-8'))
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):  # type: (str, bool, bool) -> str

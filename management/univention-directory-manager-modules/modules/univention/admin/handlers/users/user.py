@@ -1548,7 +1548,7 @@ class object(univention.admin.handlers.simpleLdap):
 		for memberDNstr in members:
 			memberDN = ldap.dn.str2dn(memberDNstr)
 			if memberDN[0][0][0] == 'uid':  # UID is stored in DN --> use UID directly
-				new_uids.append(memberDN[0][0][1])
+				new_uids.append(memberDN[0][0][1].encode('UTF-8'))
 			else:
 				UIDs = self.lo.getAttr(memberDNstr, 'uid')
 				if UIDs:
