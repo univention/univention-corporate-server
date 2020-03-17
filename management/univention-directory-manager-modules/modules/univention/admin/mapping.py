@@ -311,12 +311,12 @@ def unmapBase64(value):
 	"""
 	if len(value) > 1:
 		try:
-			return map(base64.b64encode, value)
+			return [base64.b64encode(x).decode('ASCII') for x in value]
 		except Exception as e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in unmapBase64: %s' % e)
 	else:
 		try:
-			return base64.b64encode(value[0])
+			return base64.b64encode(value[0]).decode('ASCII')
 		except Exception as e:
 			ud.debug(ud.ADMIN, ud.ERROR, 'ERROR in unmapBase64: %s' % e)
 	return ""
