@@ -1,6 +1,7 @@
 univention-postgrey (7.0.0-3) unstable; urgency=medium
 
   * Bug #50647: Change of order in postinst script.
+  * Bug #50647: reverted last change
 
  -- Tobias Wenzel <wenzel@univention.de>  Tue, 17 Mar 2020 13:19:54 +0100
 
