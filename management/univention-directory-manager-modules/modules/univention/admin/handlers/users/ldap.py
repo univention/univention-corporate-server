@@ -179,6 +179,11 @@ mapping.registerUnmapping('locked', unmapLocked)
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
+		self.password_length = 8
+
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+
 	def open(self):
 		super(object, self).open()
 		if self.exists():
