@@ -7,12 +7,12 @@ fix: 15.0.0-38A~4.4.0.202003031723
 desc: |
  This update addresses the following issues:
  * The init script for `slapd` now looks for running process only below parent
-   pid 1 specifically. This allows running other `slapd` processes in
+   PID 1 specifically. This allows running other `slapd` processes in
    containers.
- * The 'slapo-lastbind' LDAP overlay can now be activated via the
-   'ldap/overlay/lastbind' UCR variable which when activated stores the
-   timestamp of a successful bind to an LDAP server. The 
-   '/usr/share/univention-ldap/univention_lastbind.py' script can be used to
-   store the youngest of these timestamps, from all reachable LDAP servers,
-   into the 'lastbind' extended attribute of a specified user. 
+ * The 'slapo-lastbind' LDAP overlay can now be activated via the UCR variable
+   `ldap/overlay/lastbind` which when activated stores the time-stamp of a
+   successful bind to an LDAP server. The script
+   `/usr/share/univention-ldap/univention_lastbind.py` can be used to store
+   the youngest of these timestamps, from all reachable LDAP servers, into the
+   `lastbind` extended attribute of a specified user.
 bug: [50616, 49700]
