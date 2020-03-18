@@ -13,3 +13,5 @@ desc: |
    the youngest of these timestamps, from all reachable LDAP servers, into the
    `lastbind` extended attribute of a specified user.
 bug: [49700]
+erratum: 496
+announced: 2020-03-18
