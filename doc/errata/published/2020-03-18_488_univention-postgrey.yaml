@@ -13,3 +13,5 @@ desc: |
    this. The creation of the `.local` files and the update of the postgrey
    configuration has been rearranged to fix this problem.
 bug: [50647]
+erratum: 488
+announced: 2020-03-18
