@@ -6,10 +6,10 @@ src: univention-directory-replication
 fix: 12.0.0-4A~4.4.0.202002241532
 desc: |
  This update addresses the following issue:
- * The 'slapo-lastbind' LDAP overlay can now be activated via the
-   'ldap/overlay/lastbind' UCR variable which when activated stores the
-   timestamp of an successful bind to an LDAP server. The 
-   '/usr/share/univention-ldap/univention_lastbind.py' script can be used to
-   store the youngest of these timestamps, from all reachable LDAP servers,
-   into the 'lastbind' extended attribute of a specified user. 
+ * The `slapo-lastbind` LDAP overlay can now be activated via the UCR variable
+   `ldap/overlay/lastbind` which when activated stores the timestamp of an
+   successful bind to an LDAP server. The script
+   `/usr/share/univention-ldap/univention_lastbind.py` can be used to store
+   the youngest of these timestamps, from all reachable LDAP servers, into the
+   `lastbind` extended attribute of a specified user.
 bug: [49700]
