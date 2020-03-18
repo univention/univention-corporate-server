@@ -11,3 +11,5 @@ desc: |
    heavy duty RADIUS servers.
  * Various radius-related UCR variables have received a description text.
 bug: [50545, 48709]
+erratum: 489
+announced: 2020-03-18
