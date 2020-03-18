@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The timeout in univention-add-vhost has been increased.
 bug: [50936]
+erratum: 484
+announced: 2020-03-18
