@@ -10,3 +10,5 @@ desc: |
    to check the password during simplebind.
    We now use the correct salt, found in the k5key itself.
 bug: [50492]
+erratum: 493
+announced: 2020-03-18
