@@ -1251,7 +1251,7 @@ class simpleLdap(object):
 		m = univention.admin.modules.get(self.module)
 
 		# evaluate extended attributes
-		ocs = set()
+		ocs = set()  # type: Set[unicode]
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
 			if prop.syntax == 'boolean' and self.info.get(prop.name) == u'0':
@@ -1273,7 +1273,9 @@ class simpleLdap(object):
 		for i in al:
 			key, val = i[0], i[-1]  # might be a triple
 			if val and key.lower() == 'objectclass':
-				ocs -= set([val] if isinstance(val, six.string_types) else val)  # TODO: six.string_types → bytes
+				val_list = [val] if not isinstance(val, (tuple, list)) else val
+				val_unicode = [x.decode('UTF-8') if isinstance(x, bytes) else x for x in val_list]
+				ocs -= set(val_unicode)  # TODO: check six.string_types vs bytes everywhere for ocs calculations
 		if ocs:
 			al.append(('objectClass', [x.encode('UTF-8') for x in ocs]))
 
@@ -1473,7 +1475,6 @@ class simpleLdap(object):
 				members = self.lo.getAttr(group, 'uniqueMember')
 				newmembers = []
 				for member in members:
-					member = member
 					if dn2str(str2dn(member)).lower() not in (dn2str(str2dn(olddn)).lower(), dn2str(str2dn(self.dn)).lower(), ):
 						newmembers.append(member)
 				newmembers.append(self.dn.encode('UTF-8'))
@@ -3646,8 +3647,8 @@ class _MergedAttributes(object):
 		for (att, old, new) in self.modlist:
 			if att.lower() != attr.lower():
 				continue
-			new = [] if not new else [new] if isinstance(new, six.string_types) else new
-			old = [] if not old else [old] if isinstance(old, six.string_types) else old
+			new = [] if not new else [new] if isinstance(new, bytes) else new
+			old = [] if not old else [old] if isinstance(old, bytes) else old
 			if not old and new:  # MOD_ADD
 				values |= set(new)
 			elif not new and old:  # MOD_DELETE
