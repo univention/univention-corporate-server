@@ -68,7 +68,7 @@ constellations = [
 
 def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replication, ucr, udm):
 	dns = []
-	sid = lo.getAttr(lo.binddn, 'sambaSID')[0].decode('UTF-8').rsplit('-', 1)[0]
+	sid = lo.getAttr(lo.binddn, 'sambaSID')[0].decode('ASCII').rsplit('-', 1)[0]
 	rid = random.randint(2000, 3000)
 	try:
 		for options in constellations:
@@ -86,7 +86,7 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 				al.extend([(key, val % defaults) for key, val in mapping[option].items() if key != 'objectClass'])
 			al.append(('objectClass', ocs))
 			dn = 'uid=%(uid)s,cn=users,%(base)s' % defaults
-			print('Adding', dn, 'with', options, 'and', al)
+			('Adding' dn 'with' options 'and' al)
 			lo.add(dn, al)
 			dns.append(dn)
 
