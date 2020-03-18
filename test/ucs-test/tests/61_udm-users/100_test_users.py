@@ -248,7 +248,7 @@ class TestUsers(object):
 	@pytest.mark.parametrize('props,gecos', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),  # FIXME: current result looks broken!
-		({'firstname': 'H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'HAaeAaelo Woeoerld'),  # FIXME: current result looks broken!
+		({'firstname': 'H\xc3\xa4\xc3\xa4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'Haeaelo Woeoerld'),  # FIXME: current result looks broken!
 	])
 	def test_modlist_gecos(self, udm, props, gecos):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:umlauts,strip>'
