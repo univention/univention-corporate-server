@@ -102,8 +102,8 @@ parse_sections () {
 }
 parse_sections "${TEST_SECTIONS:-}"
 
-export TEMPLATE_VERSION="${TEMPLATE_VERSION:=$release}"
-export TEMPLATE_NAME="${TEMPLATE_NAME:=generic-unsafe}"
+export KVM_UCSVERSION="${TEMPLATE_VERSION:=$release}"
+export KVM_TEMPLATE="${TEMPLATE_NAME:=generic-unsafe}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export TARGET_VERSION="${UCS_VERSION}"
 export RELEASE_UPDATE="${release_update:=public}"
