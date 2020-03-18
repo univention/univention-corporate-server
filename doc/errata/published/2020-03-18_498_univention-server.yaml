@@ -9,3 +9,5 @@ desc: |
  * The packages `univention-server-master` and `univention-server-backup`
    now depend on the new package `univention-ldap-config-master`.
 bug: [49700]
+erratum: 498
+announced: 2020-03-18
