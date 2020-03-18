@@ -9,3 +9,5 @@ desc: |
  * Changed the default of `nss/group/cachefile/check_member`
    to false on new installations for improved performance.
 bug: [50904]
+erratum: 487
+announced: 2020-03-18
