@@ -15,3 +15,5 @@ desc: |
    adds/deletes the edited members instead of replacing the
    whole list of members in that group.
 bug: [50492, 50630]
+erratum: 494
+announced: 2020-03-18
