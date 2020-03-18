@@ -621,7 +621,7 @@ run_tests () {
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 
 	# check is ucs-test run is allowed
-	if [ -n "$UCS_TEST_RUN" -a "$UCS_TEST_RUN" = "false" ]; then
+	if [ "$UCS_TEST_RUN" = "false" ]; then
 		echo "ucs-test disabled by env UCS_TEST_RUN=$UCS_TEST_RUN"
 		return 0
 	fi
