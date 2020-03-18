@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.14-23) unstable; urgency=medium
+
+  * Bug #50648: Several Python3 fixes for groups/group, users/user etc.
+
+ -- Arvid <requate@univention.de>  Wed, 18 Mar 2020 21:05:47 +0100
+
 univention-directory-manager-modules (14.0.14-22) unstable; urgency=medium
 
   * Bug #44135: prevent adding DHCP (sub)nets which break the dhcpd
