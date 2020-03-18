@@ -6,6 +6,6 @@ src: univention-server
 fix: 14.0.0-12A~4.4.0.202002261435
 desc: |
  This update addresses the following issue:
- * The 'univention-server-master' and 'univention-server-backup' packages
-   now depend on the new 'univention-ldap-config-master' package.
+ * The packages `univention-server-master` and `univention-server-backup`
+   now depend on the new package `univention-ldap-config-master`.
 bug: [49700]
