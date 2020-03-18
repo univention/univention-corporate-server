@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Move Python binding into separate package.
 bug: [50943]
+erratum: 492
+announced: 2020-03-18
