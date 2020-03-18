@@ -528,7 +528,8 @@ class mapping(object):
 				asdf
 			print(map_name, repr(value))
 			if isinstance(value, (list, tuple)):
-				raise Exception()
+				# FIXME: properties that have not been unmapped e.g. via ListToString (like 'secretary') end up as Lists in diff_ml:
+				value = [x.encode(encoding, strictness) for x in value]
 			else:
 				value = value.encode(encoding, strictness)
 			print(map_name, repr(value))
