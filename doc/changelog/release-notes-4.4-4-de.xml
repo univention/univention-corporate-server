@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-3">
+<book lang="de" id="releasenotes-de-4.4-4">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-3</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-4</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-3 steht das dritte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 4.4-4 steht das dritte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
@@ -66,7 +66,7 @@
 					Die meisten Pakete wurden von <package>python-support</package> auf <package>dh_python2</package> als Vorbereitung für den Wechsel von Python 2 zu Python 3 umgestellt.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-3 integriert, bspw. für Samba, den Linux Kernel und OpenLDAP.
+					Diverse Security Updates wurden in UCS 4.4-4 integriert, bspw. für Samba, den Linux Kernel und OpenLDAP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -239,10 +239,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-2</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-3</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-4.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
