@@ -1,3 +1,9 @@
+univention-updater (14.0.2-12) unstable; urgency=medium
+
+  * Bug #50954: Adapt links and components for 4.4-4
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Mar 2020 16:20:08 +0100
+
 univention-updater (14.0.2-11) unstable; urgency=medium
 
   * Bug #47834: Adjust wording of univention-upgrade help text
