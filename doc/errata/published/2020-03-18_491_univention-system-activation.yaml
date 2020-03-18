@@ -9,3 +9,5 @@ desc: |
  * In case of an error during license activation in an appliance, refer to an
    article in the support database.
 bug: [50951]
+erratum: 491
+announced: 2020-03-18
