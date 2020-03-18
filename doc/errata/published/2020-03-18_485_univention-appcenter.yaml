@@ -15,3 +15,5 @@ desc: |-
  * Fixed the logic to identify the main service container for multicontainer
    apps.
 bug: [50938, 50770, 50967, 50969]
+erratum: 485
+announced: 2020-03-18
