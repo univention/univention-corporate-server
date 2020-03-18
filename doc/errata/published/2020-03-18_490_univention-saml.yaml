@@ -9,3 +9,5 @@ desc: |
  * An issue in a translation file caused a weblink to not appear in case a
    password was expired or had to be reset.
 bug: [50884]
+erratum: 490
+announced: 2020-03-18
