@@ -1,4 +1,4 @@
-Source: univention-license-python
+Source: univention-licence-python
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -28,9 +28,9 @@ Depends:
  ${python:Depends},
  ${shlibs:Depends},
 Provides: ${python:Provides}
-Description: UCS - license validation library for Python 2
+Description: UCS - licence validation library for Python 2
  This package contains a Python interface to the UCS
- license validation library.
+ licence validation library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -45,9 +45,9 @@ Depends:
  ${shlibs:Depends},
  python-univention-license (= ${binary:Version}),
 Provides: ${python:Provides}
-Description: UCS - license validation library for Python 2 - Debug version
+Description: UCS - licence validation library for Python 2 - Debug version
  This package contains a Python interface to the UCS
- license validation library.
+ licence validation library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -61,9 +61,9 @@ Depends:
  ${python3:Depends},
  ${shlibs:Depends},
 Provides: ${python3:Provides}
-Description: UCS - license validation library for Python 3
+Description: UCS - licence validation library for Python 3
  This package contains a Python interface to the UCS
- license validation library.
+ licence validation library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -78,9 +78,9 @@ Depends:
  ${shlibs:Depends},
  python3-univention-license (= ${binary:Version}),
 Provides: ${python3:Provides}
-Description: UCS - license validation library for Python 3 - Debug version
+Description: UCS - licence validation library for Python 3 - Debug version
  This package contains a Python interface to the UCS
- license validation library.
+ licence validation library.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -1,4 +1,4 @@
-univention-license-python (10.0.0-4) unstable; urgency=low
+univention-licence-python (10.0.0-4) unstable; urgency=low
 
   * Bug #50943: Remove doxgen usage.
   * Bug #50943: Remove internal tools.

@@ -2,9 +2,9 @@ product: ucs
 release: "4.4"
 version: [3]
 scope: ucs_4.4-0-errata4.4-3
-src: univention-license-python
-fix: 10.0.0-4A~4.4.0.202003171621
+src: univention-licence-python
+fix: 10.0.0-4
 desc: |-
  This update addresses the following issue:
- * Add Python 3 support.
+ * Split Python binding into separate package to add Python 3 support.
 bug: [50943]
