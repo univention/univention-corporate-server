@@ -1,3 +1,9 @@
+univention-net-installer (12.0.1-6) unstable; urgency=medium
+
+  * Bug #50953: Adapt to UCS-4.4-4
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 18 Mar 2020 15:33:56 +0100
+
 univention-net-installer (12.0.1-5) unstable; urgency=medium
 
   * Bug #50553: Adapt to UCS-4.4-3
