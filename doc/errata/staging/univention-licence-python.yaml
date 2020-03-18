@@ -8,5 +8,4 @@ desc: |-
  This update addresses the following issue:
  * Split Python binding into separate package to add Python 3 support.
 bug: [50943]
-erratum: 492
 maintained: true
