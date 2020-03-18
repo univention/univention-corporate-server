@@ -4,11 +4,10 @@ version: [3]
 scope: ucs_4.4-0-errata4.4-3
 src: univention-radius
 fix: 6.0.2-21A~4.4.0.202003171637
-desc: |-
+desc: |
  This update addresses the following issues:
- * For the logfile /var/log/univention/radius_ntlm_auth.log an automatic
-   logrotate functionality has been added to prevent oversized logfiles
-   on heavy duty RADIUS servers (Bug #50545).
- * Various radius-related UCR variables have received a description text
-   (Bug #48709).
-bug: [50545,48709,49621]
+ * For the logfile `/var/log/univention/radius_ntlm_auth.log` an automatic
+   logrotate functionality has been added to prevent oversized logfiles on
+   heavy duty RADIUS servers.
+ * Various radius-related UCR variables have received a description text.
+bug: [50545, 48709]
