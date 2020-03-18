@@ -195,7 +195,7 @@ class License(object):
 		# Try to set the version even if the license load was not successful
 		self.searchResult = lo.search(filter=filter_format('(&(objectClass=univentionLicense)(univentionLicenseModule=%s))', [module]))
 		if self.searchResult:
-			self.version = self.searchResult[0][1].get('univentionLicenseVersion', ['1'])[0]
+			self.version = self.searchResult[0][1].get('univentionLicenseVersion', ['1'])[0].decode('ASCII')
 
 	def select(self, module, lo=None):
 		if not self.__selected:
@@ -263,7 +263,7 @@ class License(object):
 					try:
 						mod.operations.remove('add')
 						mod.operations.remove('edit')
-					except:
+					except Exception:
 						pass
 
 	def __cmp_gt(self, val1, val2):
@@ -422,12 +422,14 @@ class License(object):
 			value = univention.license.getValue(key)
 			self.new_license = True
 			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s allowed %s' % (name, str(value)))
-		except:
+		except Exception:
 			if self.searchResult:
 				if isinstance(default, type([])):
 					value = self.searchResult[0][1].get(key, default)
 				else:
 					value = self.searchResult[0][1].get(key, [default])[0]
+				if isinstance(value, bytes):
+					value = value.decode('ASCII')
 				self.new_license = True
 			else:
 				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s' % errormsg)
