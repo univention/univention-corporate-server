@@ -627,7 +627,7 @@ class access(object):
 			return
 
 		try:
-			classes = set(pattrs['objectClass']) - set(('top', 'univentionPolicy', 'univentionObject'))
+			classes = set(pattrs['objectClass']) - set((b'top', b'univentionPolicy', b'univentionObject'))
 			ptype = classes.pop()
 		except KeyError:
 			return
@@ -652,6 +652,7 @@ class access(object):
 
 			if key not in values or key in fixed:
 				value = [] if key in empty else pattrs.get(key, [])
+				# value = [x.decode('UTF-8') for x in value]   # TODO: This would be ugly here
 				univention.debug.debug(
 					univention.debug.LDAP, univention.debug.INFO,
 					"getPolicies: %s sets: %s=%s" % (policy_dn, key, value))
