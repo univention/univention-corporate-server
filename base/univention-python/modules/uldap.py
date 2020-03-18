@@ -241,6 +241,8 @@ class access(object):
 		self.host = host
 		self.base = base
 		self.binddn = binddn
+		if six.PY2 and isinstance(self.binddn, unicode):
+			self.binddn = self.binddn.encode('UTF-8')
 		self.bindpw = bindpw
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
@@ -287,7 +289,7 @@ class access(object):
 		if six.PY3:
 			return pwd
 		if isinstance(pwd, unicode):  # noqa: F821
-			return str(pwd)
+			return pwd.encode('UTF-8')
 		else:
 			return pwd
 
@@ -353,13 +355,13 @@ class access(object):
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
 			try:
-				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1, bytes_mode=False)
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1, bytes_mode=False, bytes_strictness='warn')
 			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
 				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 			try:
-				self.lo = ldap.initialize(self.uri, trace_stack_limit=None, bytes_mode=False)
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None, bytes_mode=False, bytes_strictness='warn')
 			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
 				self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
