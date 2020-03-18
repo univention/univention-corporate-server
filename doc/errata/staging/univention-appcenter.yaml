@@ -5,12 +5,13 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-appcenter
 fix: 8.0.11-126A~4.4.0.202003170945
 desc: |-
-  This update addresses the following issue(s):
-  * Reinitializing an installed app lead to an unnecessary image pull.
-    This fix skips this pull to increase the speed.
-  * Fixed an issue where installation of apps on remote UCS systems would not
-    work when using wildcard SSL certificates.
-  * Minor fix that makes it easier to change the cycle for calling the
-    appcenter listener converter
-  * Fixed docker compose startup.
+ This update addresses the following issues:
+ * Reinitializing an installed app led to an unnecessary image pull.
+   This fix skips this pull to increase the reinitialization speed.
+ * Fixed an issue where installation of apps on remote UCS systems would not
+   work when using wildcard SSL certificates.
+ * Minor fix that makes it easier to change the timeout between calls for the
+   appcenter listener converter
+ * Fixed the logic to identify the main service container for multicontainer
+   apps.
 bug: [50938, 50770, 50967, 50969]

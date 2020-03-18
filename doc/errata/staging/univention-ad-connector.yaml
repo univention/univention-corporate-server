@@ -6,7 +6,7 @@ src: univention-ad-connector
 fix: 13.0.0-32A~4.4.0.202003081641
 desc: |
  This update addresses the following issues:
- * The Ad-Connector is now able to sync kerberos hashes from the
+ * The Ad Connector is now able to sync kerberos hashes from the
    Active Directory to the UCS LDAP-Server. This can be enabled by
    setting the new UCR variable
    connector/ad/mapping/user/password/kerberos/enabled=true

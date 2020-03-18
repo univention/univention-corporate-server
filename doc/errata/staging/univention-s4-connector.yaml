@@ -6,7 +6,7 @@ src: univention-s4-connector
 fix: 13.0.2-66A~4.4.0.202003122223
 desc: |
  This update addresses the following issue:
- * The Ad-Connector is now able to sync kerberos hashes from the
+ * The Ad Connector is now able to sync kerberos hashes from the
    Active Directory to the UCS LDAP-Server.
    This update adds compatibility for the new feature to the S4-Connector.
 bug: [50492]

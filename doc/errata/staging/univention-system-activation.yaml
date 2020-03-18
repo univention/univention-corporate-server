@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-3
 src: univention-system-activation
 fix: 4.0.0-10A~4.4.0.202003131425
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * In case of an error during license activation in an appliance, refer to an
    article in the support database.
 bug: [50951]
