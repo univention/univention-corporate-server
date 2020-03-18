@@ -195,7 +195,7 @@ class License(object):
 		# Try to set the version even if the license load was not successful
 		self.searchResult = lo.search(filter=filter_format('(&(objectClass=univentionLicense)(univentionLicenseModule=%s))', [module]))
 		if self.searchResult:
-			self.version = self.searchResult[0][1].get('univentionLicenseVersion', ['1'])[0]
+			self.version = self.searchResult[0][1].get('univentionLicenseVersion', [b'1'])[0].decode('ASCII')
 
 	def select(self, module, lo=None):
 		if not self.__selected:
@@ -229,8 +229,6 @@ class License(object):
 							val = val(self)
 						if operator.isSequenceType(val):
 							module.options[opt].disabled, module.options[opt].default = val
-						else:
-							default = val
 						ud.debug(ud.ADMIN, ud.INFO, 'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
 
 	def checkModules(self):
@@ -263,7 +261,7 @@ class License(object):
 					try:
 						mod.operations.remove('add')
 						mod.operations.remove('edit')
-					except:
+					except Exception:
 						pass
 
 	def __cmp_gt(self, val1, val2):
@@ -409,25 +407,27 @@ class License(object):
 	def __raiseException(self):
 		if self.error != 0:
 			if self.error == -1:
-				raise univention.admin.uexceptions.licenseNotFound
+				raise univention.admin.uexceptions.licenseNotFound()
 			elif self.error == 2:
-				raise univention.admin.uexceptions.licenseExpired
+				raise univention.admin.uexceptions.licenseExpired()
 			elif self.error == 4:
-				raise univention.admin.uexceptions.licenseWrongBaseDn
+				raise univention.admin.uexceptions.licenseWrongBaseDn()
 			else:
-				raise univention.admin.uexceptions.licenseInvalid
+				raise univention.admin.uexceptions.licenseInvalid()
 
 	def __getValue(self, key, default, name='', errormsg=''):
 		try:
 			value = univention.license.getValue(key)
 			self.new_license = True
 			ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention %s allowed %s' % (name, str(value)))
-		except:
+		except Exception:
 			if self.searchResult:
-				if isinstance(default, type([])):
-					value = self.searchResult[0][1].get(key, default)
+				if isinstance(default, list):
+					value = [x.decode('ASCII') for x in self.searchResult[0][1].get(key, default)]
 				else:
 					value = self.searchResult[0][1].get(key, [default])[0]
+					if isinstance(value, bytes):
+						value = value.decode('ASCII')
 				self.new_license = True
 			else:
 				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s' % errormsg)
@@ -444,7 +444,7 @@ class License(object):
 			self.licenses[self.version][License.DESKTOP] = self.__getValue(self.keys[self.version][License.DESKTOP], 2, 'Desktops', 'Univention Desktops not found')
 			self.licenses[self.version][License.GROUPWARE] = self.__getValue(self.keys[self.version][License.GROUPWARE], 2, 'Groupware Accounts', 'Groupware not found')
 			# if no type field is found it must be an old UCS license (<=1.3-0)
-			self.types = self.__getValue('univentionLicenseType', ['UCS'], 'License Type', 'Type attribute not found')
+			self.types = self.__getValue('univentionLicenseType', [b'UCS'], 'License Type', 'Type attribute not found')
 			if not isinstance(self.types, (list, tuple)):
 				self.types = [self.types]
 			self.types = list(self.types)
@@ -456,7 +456,7 @@ class License(object):
 			self.licenses[self.version][License.SERVERS] = self.__getValue(self.keys[self.version][License.SERVERS], None, 'Servers', 'Servers not found')
 			self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(self.keys[self.version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found')
 			self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found')
-			self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'], 'License Product', 'Product attribute not found')
+			self.types = self.__getValue('univentionLicenseProduct', [b'Univention Corporate Server'], 'License Product', 'Product attribute not found')
 			if not isinstance(self.types, (list, tuple)):
 				self.types = [self.types]
 			self.types = list(self.types)
