@@ -527,7 +527,8 @@ class mapping(object):
 
 		if six.PY3 and not map_value:
 			if isinstance(value, (list, tuple)):
-				raise Exception()
+				# FIXME: properties that have not been unmapped e.g. via ListToString (like 'secretary') end up as Lists in diff_ml:
+				value = [x.encode(encoding, strictness) for x in value]
 			else:
 				value = value.encode(encoding, strictness)
 		return map_value(value, **kwargs) if map_value else value
