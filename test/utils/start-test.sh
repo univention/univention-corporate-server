@@ -3,7 +3,7 @@
 # Execute UCS tests in EC2 or KVM environment
 #
 
-#set -x
+set -e -u # -x
 
 die () {
 	echo "$*" >&2
@@ -32,44 +32,45 @@ export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
 export KVM_MEMORY="${KVM_MEMORY:=2G}"
 export KVM_CPUS="${KVM_CPUS:=1}"
-export EXACT_MATCH"${EXACT_MATCH:=false}"
-export SHUTDOWN="${SHUTDOWN:=false}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
-export CFG="$1"
+CFG="$1"
 
 # Jenkins defaults
 if [ "$USER" = "jenkins" ]; then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
-	export HALT="${HALT:=true}"
+	HALT="${HALT:=true}"
 	export KVM_USER="build"
 	# in Jenkins do not terminate VMs if setup is broken,
 	# so we can investigate the situation and use replace
 	# to overwrite old VMs
-	export TERMINATE_ON_SUCCESS="${HALT:=true}"
-	export REPLACE="${REPLACE:=true}"
+	TERMINATE_ON_SUCCESS="${HALT:=true}"
+	REPLACE="${REPLACE:=true}"
 else
-	export HALT="${HALT:=false}"
+	HALT="${HALT:=false}"
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
 	export KVM_USER="${KVM_USER:=$USER}"
-	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
-	export REPLACE="${REPLACE:=false}"
+	TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
+	REPLACE="${REPLACE:=false}"
 fi
 
 
 # if the default branch of UCS@school is given, then build UCS else build UCS@school
-if [ -n "$UCSSCHOOL_BRANCH" ] || [ -n "$UCS_BRANCH" ]; then
+if [ -n "${UCSSCHOOL_BRANCH:-}" ] || [ -n "${UCS_BRANCH:-}" ]; then
 	BUILD_HOST='10.200.18.180'
 	REPO_UCS='git@git.knut.univention.de:univention/ucs.git'
 	REPO_UCSSCHOOL='git@git.knut.univention.de:univention/ucsschool.git'
-	if echo "$UCSSCHOOL_BRANCH" | grep -Eq '^[0-9].[0-9]$' ; then
+	case "${UCSSCHOOL_BRANCH:-}" in
+	''|[0-9].[0-9])
 		BUILD_BRANCH="$UCS_BRANCH"
 		BUILD_REPO="$REPO_UCS"
-	else
+		;;
+	*)
 		BUILD_BRANCH="$UCSSCHOOL_BRANCH"
 		BUILD_REPO="$REPO_UCSSCHOOL"
-	fi
+		;;
+	esac
 	# check branch test
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD_HOST}" python3 \
 		/home/jenkins/build -r "${BUILD_REPO}" -b "${BUILD_BRANCH}" \
@@ -95,35 +96,12 @@ declare -a cmd=("$exe" -c "$CFG")
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
-"$EXACT_MATCH" && cmd+=("-e")
-"$SHUTDOWN" && cmd+=("-s")
+"${EXACT_MATCH:=false}" && cmd+=("-e")
+"${SHUTDOWN:-false}" && cmd+=("-s")
 # shellcheck disable=SC2123
 PATH="./ucs-ec2-tools${PATH:+:$PATH}"
 echo "starting test with ${cmd[*]}"
-echo "	CURRENT_AMI=$CURRENT_AMI"
-echo "	OLD_AMI=$OLD_AMI"
-echo "	UCS_MINORRELEASE=$UCS_MINORRELEASE"
-echo "	TARGET_VERSION=$TARGET_VERSION"
-echo "	UCS_VERSION=$UCS_VERSION"
-echo "	OLD_VERSION=$OLD_VERSION"
-echo "	KVM_TEMPLATE=$KVM_TEMPLATE"
-echo "	KVM_UCSVERSION=$KVM_UCSVERSION"
-echo "	KVM_OLDUCSVERSION=$KVM_OLDUCSVERSION"
-echo "	KVM_BUILD_SERVER=$KVM_BUILD_SERVER"
-echo "	KVM_MEMORY=$KVM_MEMORY"
-echo "	KVM_CPUS=$KVM_CPUS"
-echo "	EXACT_MATCH=$EXACT_MATCH"
-echo "	SHUTDOWN=$SHUTDOWN"
-echo "	RELEASE_UPDATE=$RELEASE_UPDATE"
-echo "	ERRATA_UPDATE=$ERRATA_UPDATE"
-echo "	UCSSCHOOL_RELEASE=$UCSSCHOOL_RELEASE"
-echo "	HALT=$HALT"
-echo "	UCS_TEST_RUN=$UCS_TEST_RUN"
-echo "	KVM_USER=$KVM_USER"
-echo "	TERMINATE_ON_SUCCESS=$TERMINATE_ON_SUCCESS"
-echo "	REPLACE=$REPLACE"
-echo "	UCSSCHOOL_BRANCH=$UCSSCHOOL_BRANCH"
-echo "	UCS_BRANCH=$UCS_BRANCH"
+env | sort
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
