@@ -1,3 +1,13 @@
+univention-python (12.0.0-17) unstable; urgency=medium
+
+  * Bug #50648: Make access.__get_new_dn handle bytes in modlist
+  * Bug #50648: Fix UDM policy objectclass mapping (partially)
+  * Bug #50648: Temporarily switch to bytes_strictness='warn' to
+    make ucs-test (Python2) udm tests work without prefixing all
+    unicode literals in udm-modules
+
+ -- Arvid <requate@univention.de>  Wed, 18 Mar 2020 21:08:30 +0100
+
 univention-python (12.0.0-16) unstable; urgency=medium
 
   * Bug #50033: Sync more attributes in s4connector
