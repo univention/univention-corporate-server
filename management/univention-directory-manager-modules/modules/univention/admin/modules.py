@@ -1064,7 +1064,7 @@ def policyOc(module_name):
 	:returns: the objectClass.
 	"""
 	module = get(module_name)
-	return getattr(module, 'policy_oc', '')
+	return getattr(module, 'policy_oc', '').encode('UTF-8')
 
 
 def policiesGroup(module_name):
