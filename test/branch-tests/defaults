@@ -2,7 +2,7 @@ environment:
  GIT_BRANCH=[ENV:GIT_BRANCH]
  TEST_SECTIONS=[ENV:TEST_SECTIONS]
  TEST_TAGS=[ENV:TEST_TAGS]
- UCS_VERSION=[ENV:UCS_VERSION]
+ TARGET_VERSION=[ENV:TARGET_VERSION]
 files:
   utils/utils.sh /root/
  ~/ec2/license/license.secret /etc/
