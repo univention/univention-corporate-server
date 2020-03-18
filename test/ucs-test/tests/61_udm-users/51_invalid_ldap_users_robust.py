@@ -7,6 +7,7 @@
 
 from __future__ import print_function
 
+import base64
 import random
 import traceback
 import univention.admin.uexceptions
@@ -16,7 +17,7 @@ mapping = {
 		'sn': 'foo',
 		'cn': 'foo',
 		'uid': '%(uid)s',
-		'userPassword': 'e2NyeXB0fSQ2JDVZcjNsMGxReHN5d2Z1Ni8kQnR3bjRsL3BPcFNmUFJBYnllME1heTdWemVwUFFZRHJNWTBuUU1NZUhneHBmZUdybWJjVmdKaU1EY3hvQk0venRvZXFNWTlORWFoWUwybkwwMlVRWC4='.decode('base64'),
+		'userPassword': base64.b64decode('e2NyeXB0fSQ2JDVZcjNsMGxReHN5d2Z1Ni8kQnR3bjRsL3BPcFNmUFJBYnllME1heTdWemVwUFFZRHJNWTBuUU1NZUhneHBmZUdybWJjVmdKaU1EY3hvQk0venRvZXFNWTlORWFoWUwybkwwMlVRWC4='),
 		'objectClass': ['person', 'univentionObject'],
 		'univentionObjectType': 'users/user',
 	},
@@ -45,7 +46,7 @@ mapping = {
 	'kerberos': {
 		'objectClass': ['krb5KDCEntry', 'krb5Principal'],
 		'krb5KDCFlags': '126',
-		'krb5Key': 'MDGhEzARoAMCAQGhCgQI3IyR5c6FsymiGjAYoAMCAQOhEQQPREVWLkxPQ0FMZm9vYmFy'.decode('base64'),
+		'krb5Key': base64.b64decode('MDGhEzARoAMCAQGhCgQI3IyR5c6FsymiGjAYoAMCAQOhEQQPREVWLkxPQ0FMZm9vYmFy'),
 		'krb5KeyVersionNumber': '1',
 		'krb5MaxLife': '86400',
 		'krb5MaxRenew': '604800',
@@ -67,7 +68,7 @@ constellations = [
 
 def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replication, ucr, udm):
 	dns = []
-	sid = lo.getAttr(lo.binddn, 'sambaSID')[0].rsplit('-', 1)[0]
+	sid = lo.getAttr(lo.binddn, 'sambaSID')[0].decode('ASCII').rsplit('-', 1)[0]
 	rid = random.randint(2000, 3000)
 	try:
 		for options in constellations:
@@ -85,7 +86,7 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 				al.extend([(key, val % defaults) for key, val in mapping[option].items() if key != 'objectClass'])
 			al.append(('objectClass', ocs))
 			dn = 'uid=%(uid)s,cn=users,%(base)s' % defaults
-			print('Adding', dn, 'with', options, 'and', al)
+			('Adding' dn 'with' options 'and' al)
 			lo.add(dn, al)
 			dns.append(dn)
 
