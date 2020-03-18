@@ -9,3 +9,5 @@ desc: |-
  * Split Python binding into separate package to add Python 3 support.
 bug: [50943]
 maintained: true
+erratum: 499
+announced: 2020-03-18
