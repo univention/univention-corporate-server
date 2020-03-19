@@ -86,7 +86,7 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
 				al.extend([(key, val % defaults) for key, val in mapping[option].items() if key != 'objectClass'])
 			al.append(('objectClass', ocs))
 			dn = 'uid=%(uid)s,cn=users,%(base)s' % defaults
-			('Adding' dn 'with' options 'and' al)
+			print('Adding', dn, 'with', options, 'and', al)
 			lo.add(dn, al)
 			dns.append(dn)
 
