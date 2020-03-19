@@ -939,6 +939,59 @@
 				</varlistentry>
 			</variablelist>
 		</section>
+		<section>
+			<title>Self registration</title>
+			<para>
+				The Self Service allows for users to register themself, which will crate an user account that has to be activated via email.
+			</para>
+			<figure id="user-registration">
+				<title>Registration via the Self Service</title>
+				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_registration_en.png"/>
+			</figure>
+			<para>
+				The self registration can be configured with the following &ucsUCRV;s.
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><envar>umc/self-service/registration/enabled</envar></term>
+					<listitem><simpara>
+						This variable enables/disabled the "Create an account" page of the Self Service for the host where this variable is set.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/registration/usertemplate</envar></term>
+					<listitem><simpara>
+						With this variable a user template (<xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>)
+						can be specified that will be used when creating a user account via the "Create an account" page of the Self Service.
+						This variable must be set on the master domain controller.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/registration/usercontainer</envar></term>
+					<listitem><simpara>
+						With this variable a container can be specified under which the user accounts created via the "Create an account" page of the Self Service are located.
+						This variable must be set on the master domain controller.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/registration/udm_attributes</envar></term>
+					<listitem><simpara>
+						This variable configures which UDM attributes of an user account are shown on the "Create an account" page of the Self Service.
+						The names of the UDM attributes must be provided as an comma seperated list.
+						This variable must be set on the master domain controller.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/registration/udm_attributes/required</envar></term>
+					<listitem><simpara>
+						This variable configures which of the UDM attributes set via &ucsUCRV; <envar>umc/self-service/registration/udm_attributes</envar>
+						are required for the user to provide.
+						The names of the UDM attributes must be provided as an comma seperated list.
+						This variable must be set on the master domain controller.
+					</simpara></listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
 	</section>
 
     <section id="users:faillog">
