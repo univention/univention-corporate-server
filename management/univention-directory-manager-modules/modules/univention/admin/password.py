@@ -87,7 +87,7 @@ def crypt(password, method_id=None, salt=None):
 		}.get(hashing_method, '6')
 
 	import crypt
-	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+	return crypt.crypt(password, '$%s$%s$' % (method_id, salt, ))
 
 
 def ntlm(password):
