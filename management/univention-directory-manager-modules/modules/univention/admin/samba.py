@@ -31,17 +31,18 @@
 
 import string
 import six
+from collections import OrderedDict
 
 
-class acctFlags:
+class acctFlags(object):
 
 	def __init__(self, flagstring=None, flags=None, fallbackflags=None):
 		if flags is not None:
-			self.__flags = flags
+			self.__flags = OrderedDict(flags)
 			return
 		if not flagstring or not isinstance(flagstring, six.string_types) or len(flagstring) != 13:
 			if fallbackflags is not None:
-				self.__flags = fallbackflags
+				self.__flags = OrderedDict(fallbackflags)
 				return
 			flagstring = "[U          ]"
 		flags = {}
@@ -49,7 +50,7 @@ class acctFlags:
 		for letter in flagstring:
 			if letter not in string.whitespace:
 				flags[letter] = 1
-		self.__flags = flags
+		self.__flags = OrderedDict(flags)
 
 	def __setitem__(self, key, value):
 		self.__flags[key] = value
