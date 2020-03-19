@@ -33,7 +33,7 @@ import univention.uldap
 import univention.config_registry as ucr
 
 
-class CheckFailed(CheckFailed):
+class CheckFailed(Exception):
 	pass
 
 
