@@ -379,7 +379,7 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
+	if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
 		return False
 
 	required_ocs = {'person', 'simpleSecurityObject', 'uidObject', }
