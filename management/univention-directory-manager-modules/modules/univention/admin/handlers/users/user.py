@@ -1092,7 +1092,7 @@ def inconsistentDisabledState(oldattr):
 def unmapSambaDisabled(oldattr):
 	flags = oldattr.get('sambaAcctFlags', None)
 	if flags:
-		acctFlags = univention.admin.samba.acctFlags(flags[0])
+		acctFlags = univention.admin.samba.acctFlags(flags[0].decode('ASCII'))
 		try:
 			return acctFlags['D'] == 1
 		except KeyError:
@@ -1481,7 +1481,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return super(object, self).hasChanged(key)
 
 #		if key == 'disabled':
-#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0]).decode()
+#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
 #			krb5Flags = self.oldattr.get('krb5KDCFlags', [])
 #			shadowExpire = self.oldattr.get('shadowExpire', [])
 #
@@ -1505,7 +1505,7 @@ class object(univention.admin.handlers.simpleLdap):
 #				return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
 #		elif key == 'locked':
 #			password = self['password']
-#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0]).decode()
+#			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
 #			if not password and not acctFlags:
 #				return False
 #			if self['locked'] == 'all':
@@ -2116,7 +2116,7 @@ class object(univention.admin.handlers.simpleLdap):
 			return ml
 
 		old_flags = self.oldattr.get('sambaAcctFlags', [b''])[0]
-		acctFlags = univention.admin.samba.acctFlags(old_flags)
+		acctFlags = univention.admin.samba.acctFlags(old_flags.decode('ASCII'))
 		if self['disabled'] == '1':
 			# disable samba account
 			acctFlags.set('D')
