@@ -1127,14 +1127,14 @@ def inconsistentLockedState(oldattr):
 
 
 def isPosixLocked(oldattr):
-	userPassword = oldattr.get('userPassword', [b''])[0]
-	return userPassword and univention.admin.password.is_locked(userPassword.decode('ASCII'))
+	userPassword = oldattr.get('userPassword', [b''])[0].decode('ASCII')
+	return userPassword and univention.admin.password.is_locked(userPassword)
 
 
 def isSambaLocked(oldattr):
 	flags = oldattr.get('sambaAcctFlags', None)
 	if flags:
-		acctFlags = univention.admin.samba.acctFlags(flags[0])
+		acctFlags = univention.admin.samba.acctFlags(flags[0].decode('ASCII'))
 		try:
 			return acctFlags['L'] == 1
 		except KeyError:
