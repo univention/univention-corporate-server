@@ -359,7 +359,7 @@
 					This fix ensures that the App Center receives a correct status code for those cases (<u:bug>49104</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Empty app settings are no longer set to <literal>"None"</literal> when using <command>univention-app reinitialize</command> (<u:bug>50718</u:bug>).
+					Empty app settings are no longer set to <literal>None</literal> when using <command>univention-app reinitialize</command> (<u:bug>50718</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Warnings and errors during an app installation, removal or upgrade are now highlighted and grouped together (<u:bug>50667</u:bug>).
@@ -509,7 +509,7 @@
 					Error messages in the SAML login dialog are now translated to German again (<u:bug>50619</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <guilabel>Login without Single Sign On</guilabel> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/login_without_sso/.*</envar> (<u:bug>50610</u:bug>).
+					The <quote>Login without Single Sign On</quote> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/login_without_sso/.*</envar> (<u:bug>50610</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					A link to the password changing functionality has been implemented in the SAML login dialog, which is shown when the user has to change his password or the password expired.
@@ -522,7 +522,7 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The <guilabel>Forgot your password?</guilabel> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/forgot_your_password/.*</envar> (<u:bug>50608</u:bug>).
+					The <quote>Forgot your password?</quote> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/forgot_your_password/.*</envar> (<u:bug>50608</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

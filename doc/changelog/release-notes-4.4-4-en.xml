@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2019 Univention GmbH
+				(c) 2002-2020 Univention GmbH
 			</para>
 
 			<para>
@@ -60,14 +60,14 @@
 			<listitem><para>
 					The AD Connector now officially supports Windows Server 2019.
 					The synchronization of changes to large groups has been accelerated by transferring only changes (new / removed members) and not always the complete list of current group members.
-					In the context of group synchronization, a memory leak has also been fixed.
+					In the context of group synchronization a memory leak has also been fixed.
 			</para></listitem>
 			<listitem><para>
-					User guidance has been improved in the App Center: The number of steps in the installation of apps is now displayed, the different message types appear in a clearer, uniform look and feel and have been partially combined onto a single page.
+					User guidance has been improved in the App Center: The number of steps required for installing apps is now displayed, the different message types appear in a clearer, uniform look and feel and have been partially combined onto a single page.
 			</para></listitem>
 			<listitem><para>
-					The SAML login to the portal and apps has more configuration options, including the various links ("How to log in", "Login without SSO") can be customized.
-					A new feature is a configurable link to the "Forgot password" function of the Self Service.
+					The SAML login to the portal and apps has more configuration options, including the various links (<quote>How to log in</quote>, <quote>Login without SSO</quote>) can be customized.
+					A new feature is a configurable link to the <quote>Forgot password</quote> function of the Self Service.
 			</para></listitem>
 			<listitem><para>
 					Various security updates have been integrated into UCS 4.4-4, e.g. Samba, the Linux kernel and PHP.

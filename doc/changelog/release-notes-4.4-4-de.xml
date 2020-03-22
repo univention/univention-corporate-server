@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2019 Univention GmbH
+				(c) 2002-2020 Univention GmbH
 			</para>
 
 			<para>
@@ -66,8 +66,8 @@
 					Im App Center wurde die Nutzerführung verbessert: Die Anzahl der Schritte bei der Installation von Apps wird jetzt angezeigt, die unterschiedlichen Meldungen erscheinen in einem klareren, einheitlichen <wordasword>Look-and-Feel</wordasword> und wurden teilweise zusammen gefasst.
 			</para></listitem>
 			<listitem><para>
-					Der SAML Login zu Portal und Apps hat mehr Konfigurationsoptionen, u.a. können die verschiedenen Links ("Wie melde ich mich an","Login ohne SSO") individualisiert werden.
-					Neu ist ein konfigurierbarer Link zur "Passwort vergessen" Funktion der <wordasword>Self Service-App</wordasword>.
+					Der SAML Login zu Portal und Apps hat mehr Konfigurationsoptionen, u.a. können die verschiedenen Links (<quote>Wie melde ich mich an</quote>, <quote>Login ohne SSO</quote>) individualisiert werden.
+					Neu ist ein konfigurierbarer Link zur <quote>Passwort vergessen</quote> Funktion der <wordasword>Self Service-App</wordasword>.
 			</para></listitem>
 			<listitem><para>
 					Diverse Security Updates wurden in UCS 4.4-4 integriert, bspw. für Samba, den Linux Kernel und PHP.
