@@ -150,6 +150,23 @@ app = Apps().find('$app')
 print app.component_id"
 }
 
+app_get_appliance_hook_download_link ()
+{
+	local app=$1
+	local server="$(ucr get repository/app_center/server)"
+	python -c "
+from univention.appcenter.app_cache import Apps
+app = Apps().find('$app')
+print 'https://$server/univention-repository/%s/maintained/component/%s/appliance_hook' % (app.ucs_version, app.component_id)"
+}
+
+app_download_appliance_hook ()
+{
+	local app=$1
+	local srclink="$(app_get_appliance_hook_download_link $1)"
+	wget "$srclink" -O "$(app_appliance_hook $app)" || true
+}
+
 app_get_compose_file ()
 {
 	local app=$1
@@ -467,6 +484,7 @@ install_appliance_hook () {
 	local app="$1"
 	local counter="$2"
 	local hook_file="$(app_appliance_hook $app)"
+	app_download_appliance_hook "$app"
 	if [ -e "$hook_file" ]; then
 		local appliance_hook_file="/usr/lib/univention-system-setup/appliance-hooks.d/90_${counter}_${app}"
 		cp "$hook_file" "$appliance_hook_file"
