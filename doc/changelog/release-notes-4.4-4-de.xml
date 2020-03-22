@@ -63,7 +63,7 @@
 					Im Kontext der Gruppen-Synchronisation wurde auch ein Memory-Leak beseitigt.
 			</para></listitem>
 			<listitem><para>
-					Im App Center wurde die Nutzerführung verbessert: Die Anzahl der Schritte bei der Installation von Apps wird jetzt angezeigt, die Unterschiedlichen Meldungstypen erscheinen in einem klareren, einheitlichen <wordasword>Look-and-Feel<wordasword> und wurden teilweise zusammen gefasst.
+					Im App Center wurde die Nutzerführung verbessert: Die Anzahl der Schritte bei der Installation von Apps wird jetzt angezeigt, die Unterschiedlichen Meldungstypen erscheinen in einem klareren, einheitlichen <wordasword>Look-and-Feel</wordasword> und wurden teilweise zusammen gefasst.
 			</para></listitem>
 			<listitem><para>
 					Der SAML Login zu Portal und Apps hat mehr Konfigurationsoptionen, u.a. können die verschiedenen Links ("Wie melde ich mich an","Login ohne SSO") individualisiert werden.
