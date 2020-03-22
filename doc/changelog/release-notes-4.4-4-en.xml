@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS can now <ulink url="https://docs.software-univention.de/manual-4.4.html#users:lastbind-overlay-module">log when the last authentication on the LDAP server took place</ulink>, for example when users logged on using the SAML IDP.
+					UCS can now <ulink url="https://docs.software-univention.de/manual-4.4.html#users:lastbind-overlay-module">log when the last authentication on the LDAP server took place</ulink>, for example when users logged on using the SAML identity provider.
 					A use case could be the detection of accounts that are no longer in use.
 			</para></listitem>
 			<listitem><para>

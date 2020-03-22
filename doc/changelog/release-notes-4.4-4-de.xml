@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-					UCS kann jetzt <ulink url="https://docs.software-univention.de/handbuch-4.4.html#users:lastbind-overlay-module">protokollieren, wann die letzte Authentifikation am LDAP Server stattgefunden hat</ulink>, beispielsweise wenn sich Nutzer am SAML IDP angemeldet haben.
+					UCS kann jetzt <ulink url="https://docs.software-univention.de/handbuch-4.4.html#users:lastbind-overlay-module">protokollieren, wann die letzte Authentifikation am LDAP Server stattgefunden hat</ulink>, beispielsweise wenn sich Nutzer am SAML Identity Provider angemeldet haben.
 					Ein Anwendungsfall kann zum Beispiel das Erkennen nicht mehr genutzter Accounts sein.
 			</para></listitem>
 			<listitem><para>
@@ -60,14 +60,14 @@
 			<listitem><para>
 					Der AD Connector unterstützt jetzt auch offiziell Windows Server 2019.
 					Die Synchronisation von Änderungen an großen Gruppen wurde beschleunigt, in dem nur noch Änderungen (neue / entfernte Mitglieder) übertragen werden und nicht immer die vollständige Liste der aktuellen Gruppenmitglieder.
-					Im Kontext der Gruppen-Synchronisation wurde auch ein Memory-Leak beseitigt.
+					Im Kontext der Gruppen-Synchronisation wurde auch ein Speicherleck beseitigt.
 			</para></listitem>
 			<listitem><para>
-					Im App Center wurde die Nutzerführung verbessert: Die Anzahl der Schritte bei der Installation von Apps wird jetzt angezeigt, die Unterschiedlichen Meldungstypen erscheinen in einem klareren, einheitlichen <wordasword>Look-and-Feel</wordasword> und wurden teilweise zusammen gefasst.
+					Im App Center wurde die Nutzerführung verbessert: Die Anzahl der Schritte bei der Installation von Apps wird jetzt angezeigt, die unterschiedlichen Meldungen erscheinen in einem klareren, einheitlichen <wordasword>Look-and-Feel</wordasword> und wurden teilweise zusammen gefasst.
 			</para></listitem>
 			<listitem><para>
 					Der SAML Login zu Portal und Apps hat mehr Konfigurationsoptionen, u.a. können die verschiedenen Links ("Wie melde ich mich an","Login ohne SSO") individualisiert werden.
-					Neu ist ein konfigurierbarer Link zur "Passwort vergessen" Funktion des Self Service.
+					Neu ist ein konfigurierbarer Link zur "Passwort vergessen" Funktion der <wordasword>Self Service-App</wordasword>.
 			</para></listitem>
 			<listitem><para>
 					Diverse Security Updates wurden in UCS 4.4-4 integriert, bspw. für Samba, den Linux Kernel und PHP.
