@@ -44,29 +44,33 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-4, the third point release of &ucsUCS; (UCS) 4.4 is now available.
+			With &ucsUCS; 4.4-4, the fourth point release of &ucsUCS; (UCS) 4.4 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Several details of the &ucsUMC; have been improved:
-					The size of the RAM is now already checked during the installation.
-					A new document exists for setting up printer drivers, which is directly linked.
-					Searching for IPv4 addresses and the configuration of mail distribution lists has been simplified.
+					UCS can now <ulink url="https://docs.software-univention.de/manual-4.4.html#users:lastbind-overlay-module">log when the last authentication on the LDAP server took place</ulink>, for example when users logged on using the SAML IDP.
+					A use case could be the detection of accounts that are no longer in use.
 			</para></listitem>
 			<listitem><para>
-					The &ucsS4C; has received many small improvements, e.g. when renaming host and DNS entries, a fix for account expiry dates in certain time zones, and for exceptional cases when objects are restored in &ucsUAS; environments.
+					The <ulink url="https://help.univention.com/t/14454">AD Connector can synchronize Kerberos hashes from AD</ulink> and thus work without NTLM hashes.
 			</para></listitem>
 			<listitem><para>
-					A crash issue in OpenLDAP and a problem when accessing shares with Windows Explorer has been fixed.
+					The AD Connector now officially supports Windows Server 2019.
+					The synchronization of changes to large groups has been accelerated by transferring only changes (new / removed members) and not always the complete list of current group members.
+					In the context of group synchronization, a memory leak has also been fixed.
 			</para></listitem>
 			<listitem><para>
-					Most packages have been converted from <package>python-support</package> to <package>dh_python2</package> in preparation for the switch from Python 2 to Python 3.
+					User guidance has been improved in the App Center: The number of steps in the installation of apps is now displayed, the different message types appear in a clearer, uniform look and feel and have been partially combined onto a single page.
 			</para></listitem>
 			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-4, e.g. Samba, the Linux kernel and Dovecot.
+					The SAML login to the portal and apps has more configuration options, including the various links ("How to log in", "Login without SSO") can be customized.
+					A new feature is a configurable link to the "Forgot password" function of the Self Service.
+			</para></listitem>
+			<listitem><para>
+					Various security updates have been integrated into UCS 4.4-4, e.g. Samba, the Linux kernel and PHP.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
