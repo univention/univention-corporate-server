@@ -11,6 +11,7 @@ Build-Depends: debhelper (>= 8.0.0),
  python-apt,
  python-psutil,
  python-ldap,
+ python-univention-directory-manager,
  univention-management-console-dev,
  univention-config,
  univention-ucs-translation-template,
@@ -303,6 +304,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  python-pytest,
  python-psutil,
  python-ldap,
+ python-univention-directory-manager,
  ${misc:Depends},
  python-pycountry
 Provides: ucs-test-module
@@ -315,6 +317,7 @@ Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  python-ldap,
+ python-univention-directory-manager,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for the groups/group-module of the UDM
