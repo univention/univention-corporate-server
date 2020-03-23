@@ -914,8 +914,10 @@
 		<section id="user-management:password-changes-by-users:self-service">
 			<title>Passwort-Verwaltung über <foreignphrase>Self Service-App</foreignphrase></title>
 			<para>
-				Durch die Installation der <wordasword>UCS-Komponente</wordasword> <guimenu>Self Service</guimenu>
-				über das <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
+                Durch die Installation der <wordasword>UCS-Komponenten</wordasword>
+                <guimenu>Self Service Backend</guimenu> auf dem UCS Master und 
+                <guimenu>Self Service</guimenu> in der Domäne über das 
+                <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
 				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
 			<para>
