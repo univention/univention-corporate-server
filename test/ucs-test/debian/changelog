@@ -1,3 +1,9 @@
+ucs-test (9.0.3-225) unstable; urgency=medium
+
+  * Bug #51471
+
+ -- Arvid <requate@univention.de>  Thu, 11 Jun 2020 18:12:46 +0200
+
 ucs-test (9.0.3-224) unstable; urgency=medium
 
   * Bug #51298: small fix in 55_adconnector/503te...
