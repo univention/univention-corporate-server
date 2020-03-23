@@ -10,6 +10,7 @@ Build-Depends:
  python-yaml,
  python3-all,
  python-enum34,
+ python-psutil,
  univention-config,
  univention-management-console-dev,
  univention-ucs-translation-template,
@@ -277,6 +278,7 @@ Depends:
  python-pycountry,
  ucs-test-libs (= ${source:Version}),
  python-pytest,
+ python-psutil,
  ${misc:Depends},
 Provides:
  ucs-test-module,
