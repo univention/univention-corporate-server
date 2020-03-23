@@ -104,7 +104,7 @@ class AppCenter(object):
 			pass
 		finally:
 			# header of progress bar
-			self.selenium.wait_for_text(_('Installing'))
+			self.selenium.wait_for_any_text_in_list([_('Installing'), 'Installiere'])
 
 		self.selenium.wait_for_any_text_in_list([_('Install Information'), _('Uninstall'), _('Manage domain wide installations')], timeout=900)
 		# readme install
