@@ -444,7 +444,7 @@ class TestUsers(object):
 		({'locked': 'all'}, ['[UL         ]']),
 		({'disabled': 'all'}, ['[UD         ]']),
 		({'disabled': 'none', 'description': 'asdf'}, ['[U          ]']),
-		({'locked': 'all', 'disabled': 'all'}, ['[UDL        ]']),
+		({'locked': 'all', 'disabled': 'all'}, ['[UD         ]']),
 		({'locked': 'none', 'disabled': 'none', 'description': 'asdf'}, ['[U          ]']),
 	])
 	def test_modlist_sambaAcctFlags(self, udm, props, flags):
