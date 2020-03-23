@@ -14,6 +14,7 @@ Build-Depends:
  python-ldap,
  univention-config,
  univention-management-console-dev,
+ python-univention-directory-manager,
  univention-ucs-translation-template,
 Standards-Version: 3.6.1
 
@@ -281,6 +282,7 @@ Depends:
  python-pytest,
  python-psutil,
  python-ldap,
+ python-univention-directory-manager,
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -295,6 +297,7 @@ Recommends:
 Depends:
  ucs-test-libs (= ${source:Version}),
  python-ldap,
+ python-univention-directory-manager,
  ${misc:Depends},
 Provides:
  ucs-test-module,
