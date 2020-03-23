@@ -335,7 +335,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if 'samba' in self.options:
 			sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
-			sid, has_rid, rid = sid.rpartition('-')
+			sid, has_rid, rid = sid.rpartition(u'-')
 			if has_rid and rid.isdigit():
 				self.info['sambaRID'] = rid
 
@@ -698,7 +698,7 @@ class object(univention.admin.handlers.simpleLdap):
 		settings_object.modify()
 
 		for group in self.info.get('memberOf', []):
-			if isinstance(group, type([])):
+			if isinstance(group, list):
 				group = group[0]
 			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			if not self.__case_insensitive_in_list(olddn, members):
@@ -965,10 +965,10 @@ class object(univention.admin.handlers.simpleLdap):
 		if self['sambaRID']:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			if self.__is_groupType_local(new_groupType):
-				sid = 'S-1-5-32-' + self['sambaRID']
+				sid = u'S-1-5-32-' + self['sambaRID']
 			else:
 				domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
-				sid = domainsid + '-' + self['sambaRID']
+				sid = domainsid + u'-' + self['sambaRID']
 			groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			self.alloc.append(('sid', groupSid))
 		else:
@@ -976,7 +976,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.s4connector_present and not self.__is_groupType_local(new_groupType):
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
 				# new sambaSID back from Samba 4.
-				groupSid = 'S-1-4-%s' % num
+				groupSid = u'S-1-4-%s' % num
 			else:
 				generateDomainLocalSid = self.__is_groupType_local(new_groupType)
 				while not groupSid or groupSid == 'None':
