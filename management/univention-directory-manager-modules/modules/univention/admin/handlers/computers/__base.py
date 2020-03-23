@@ -102,8 +102,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				res = univention.admin.config.getDefaultValue(self.lo, self.CONFIG_NAME, position=self.position)
 				if res:
-					with open('/tmp/6', 'a') as f:
-						f.write('BBB: %s %s\n' % (res, type(res)))
 					self['primaryGroup'] = res
 
 	def _ldap_pre_create(self):
