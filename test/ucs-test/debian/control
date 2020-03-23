@@ -9,6 +9,7 @@ Build-Depends: debhelper (>= 8.0.0),
  python3-all,
  python-yaml,
  python-apt,
+ python-psutil,
  univention-management-console-dev,
  univention-config,
  univention-ucs-translation-template,
@@ -299,6 +300,7 @@ Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  python-pytest,
+ python-psutil,
  ${misc:Depends},
  python-pycountry
 Provides: ucs-test-module
