@@ -1,4 +1,4 @@
-univention-directory-manager-modules (14.0.14-23) unstable; urgency=medium
+univention-directory-manager-modules (14.0.14-22-python3-3) unstable; urgency=medium
 
   * Bug #50648: Several Python3 fixes for groups/group, users/user etc.
 

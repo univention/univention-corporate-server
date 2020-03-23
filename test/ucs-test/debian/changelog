@@ -1,4 +1,4 @@
-ucs-test (9.0.3-134) unstable; urgency=medium
+ucs-test (9.0.3-133-python3-3) unstable; urgency=medium
 
   * Bug #50648: Adjustments to 61_udm-users and 62_udm-groups:
   * Fix LDAP value decoding in 61_udm-users/51_invalid_ldap_users_robust.py
