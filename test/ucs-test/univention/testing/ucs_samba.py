@@ -174,7 +174,7 @@ def _ldap_replication_complete(verbose=True):
 	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
 
 
-def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=5):
+def wait_for_s4connector(timeout=360, delta_t=1, s4cooldown_t=1):
 	ucr = config_registry.ConfigRegistry()
 	ucr.load()
 
