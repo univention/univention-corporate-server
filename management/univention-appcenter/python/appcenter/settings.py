@@ -56,6 +56,7 @@ class Setting(TypedIniSectionObject):
 	group = IniSectionAttribute(localisable=True)
 	show = IniSectionListAttribute(default=['Settings'], choices=['Install', 'Upgrade', 'Remove', 'Settings'])
 	show_read_only = IniSectionListAttribute(choices=['Install', 'Upgrade', 'Remove', 'Settings'])
+	show_advanced = IniSectionListAttribute(choices=['Install', 'Upgrade', 'Remove', 'Settings'])
 
 	initial_value = IniSectionAttribute()
 	required = IniSectionBooleanAttribute()
@@ -141,7 +142,7 @@ class Setting(TypedIniSectionObject):
 		return value
 
 	def should_go_into_image_configuration(self, app):
-		return self.is_inside(app) and ('Install' in self.show or 'Upgrade' in self.show)
+		return self.is_inside(app) and {'Install', 'Upgrade'} & set(self.show + self.show_read_only + self.show_advanced)
 
 
 class StringSetting(Setting):
