@@ -390,17 +390,17 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.oldinfo.get('displayName', '') == old_default_displayName:
 				# yes ==> update displayName automatically
 				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
-				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
+				ml.append(('displayName', self.oldattr.get('displayName', [b''])[0], new_displayName.encode('UTF-8')))
 		return ml
 
 	def _modlist_univention_person(self, ml):
 		if self.hasChanged('birthday'):
 			# make sure that univentionPerson is set as objectClass when birthday is set
 			if self['birthday'] and 'univentionPerson' not in self.oldattr.get('objectClass', []):
-				ml.append(('objectClass', '', 'univentionPerson'))
+				ml.append(('objectClass', b'', b'univentionPerson'))
 			# remove univentionPerson as objectClass when birthday is unset
 			elif not self['birthday'] and 'univentionPerson' in self.oldattr.get('objectClass', []):
-				ml.append(('objectClass', 'univentionPerson', ''))
+				ml.append(('objectClass', b'univentionPerson', b''))
 		return ml
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):

@@ -208,13 +208,17 @@ class object(univention.admin.handlers.simpleLdap):
 		self.oldinfo['a'] = []
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
-			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(self.oldattr['aRecord'])
+			values = [x.decode('ASCII') for x in self.oldattr['aRecord']]
+			self.oldinfo['a'].extend(values)
+			self.info['a'].extend(values)
 		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			values = [x.decode('ASCII') for x in self.oldattr['aAAARecord']]
+			values = [ipaddr.IPv6Address(x).exploded for x in values]
+			self.oldinfo['a'].extend(values)
+			self.info['a'].extend(values)
 
 		soa = self.oldattr.get('sOARecord', [''])[0].split(' ')
+		soa = [x.decode('UTF-8') for x in soa]
 		if len(soa) > 6:
 			self['contact'] = unescapeSOAemail(soa[1])
 			self['serial'] = soa[2]
@@ -245,8 +249,8 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = '%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
-			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
+			soa = u'%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
+			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa.encode('UTF-8')]))
 
 		oldAddresses = self.oldinfo.get('a')
 		newAddresses = self.info.get('a')
@@ -258,15 +262,15 @@ class object(univention.admin.handlers.simpleLdap):
 			if oldAddresses:
 				for address in oldAddresses:
 					if ':' in address:  # IPv6
-						oldAaaaRecord.append(address)
+						oldAaaaRecord.append(address.encode('ASCII'))
 					else:
-						oldARecord.append(address)
+						oldARecord.append(address.encode('ASCII'))
 			if newAddresses:
 				for address in newAddresses:
 					if ':' in address:  # IPv6
-						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
+						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded.encode('ASCII'))
 					else:
-						newARecord.append(address)
+						newARecord.append(address.encode('ASCII'))
 			ml.append(('aRecord', oldARecord, newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
