@@ -172,9 +172,9 @@ lookup = object.lookup
 
 def identify(dn, attr, canonical=0):
 	return all([
-		'dNSZone' in attr.get('objectClass', []),
-		'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', ['.in-addr.arpa'])[0].endswith('.in-addr.arpa'),
-		not attr.get('zoneName', ['.ip6.arpa'])[0].endswith('.ip6.arpa'),
+		b'dNSZone' in attr.get('objectClass', []),
+		b'@' not in attr.get('relativeDomainName', []),
+		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('UTF-8').endswith(ARPA_IP4),
+		not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('UTF-8').endswith(ARPA_IP6),
 		attr.get('sRVRecord', [])
 	])

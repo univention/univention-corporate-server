@@ -299,4 +299,4 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionWindows' in attr.get('objectClass', []) and 'windows_domaincontroller' not in attr.get('univentionServerRole', [])
+	return b'univentionHost' in attr.get('objectClass', []) and b'univentionWindows' in attr.get('objectClass', []) and b'windows_domaincontroller' not in attr.get('univentionServerRole', [])

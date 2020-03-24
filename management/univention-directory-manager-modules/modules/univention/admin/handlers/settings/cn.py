@@ -88,4 +88,4 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'organizationalRole' in attr.get('objectClass', []) and attr.get('cn', []) == ['univention']
+	return b'organizationalRole' in attr.get('objectClass', []) and attr.get('cn', []) == [b'univention']

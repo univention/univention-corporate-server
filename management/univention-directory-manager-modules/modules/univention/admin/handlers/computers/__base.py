@@ -346,6 +346,6 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
-		if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member' and cls.SERVER_ROLE not in attr.get('univentionServerRole', []):
+		if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member' and cls.SERVER_ROLE not in [x.decode('UTF-8') for x in attr.get('univentionServerRole', [])]:
 			return False
 		return super(ComputerObject, cls).identify(dn, attr, canonical)

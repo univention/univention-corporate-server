@@ -231,7 +231,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('relativeDomainName', ['@'])
+			('relativeDomainName', [b'@'])
 		]
 
 	def _ldap_modlist(self):
@@ -295,4 +295,4 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith(ARPA_IP4) and not attr['zoneName'][0].endswith(ARPA_IP6)
+	return b'dNSZone' in attr.get('objectClass', []) and [b'@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6)
