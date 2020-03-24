@@ -125,11 +125,11 @@ class object(univention.admin.handlers.simpleLdap):
 		acctFlags = univention.admin.samba.acctFlags(flags={'I': 1})
 
 		al = []
-		ocs = ['top', 'person', 'sambaSamAccount']
+		ocs = [b'top', b'person', b'sambaSamAccount']
 
-		al.append(('sambaSID', [self.machineSid]))
-		al.append(('sambaAcctFlags', [acctFlags.decode()]))
-		al.append(('sn', self['name']))
+		al.append(('sambaSID', [self.machineSid.encode('ASCII')]))
+		al.append(('sambaAcctFlags', [acctFlags.decode().encode('ASCII')]))
+		al.append(('sn', self['name'].encode('UTF-8')))
 
 		al.insert(0, ('objectClass', ocs))
 
@@ -173,12 +173,12 @@ class object(univention.admin.handlers.simpleLdap):
 				return []
 
 			self.alloc.append(('uid', self.uid))
-			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
+			ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid.encode('ASCII')))
 
 		if self.modifypassword:
 			password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
-			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
+			ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [b''])[0], password_nt.encode('ASCII')))
+			ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [b''])[0], password_lm.encode('ASCII')))
 
 		return ml
 

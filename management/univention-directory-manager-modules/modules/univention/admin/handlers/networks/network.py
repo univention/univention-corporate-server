@@ -266,14 +266,14 @@ class object(univention.admin.handlers.simpleLdap):
 					raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (firstIP, lastIP, ))
 				if firstIP == network.broadcast or lastIP == network.broadcast:
 					raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP, ))
-				ipRange.append(string.join(i, ' '))
+				ipRange.append(' '.join(i).encode('ASCII'))
 			ud.debug(ud.ADMIN, ud.INFO, 'old Range: %s' % self.oldinfo.get('ipRange'))
 			ml = [x for x in ml if x[0] != 'univentionIpRange']
-			ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', ['']), ipRange))
+			ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', [b'']), ipRange))
 
 		if next_ip_changed:
 			ml = [x for x in ml if x[0] != 'univentionNextIp']
-			ml.append(('univentionNextIp', self.oldattr.get('univentionNextIp', ''), self['nextIp']))
+			ml.append(('univentionNextIp', self.oldattr.get('univentionNextIp', b''), self['nextIp'].encode('ASCII')))
 
 		return ml
 
