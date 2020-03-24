@@ -168,7 +168,7 @@ class object(DHCPBase):
 				except LookupError:
 					pass
 				try:
-					permit = self.info[prop].decode'(UTF-8')
+					permit = self.info[prop].decode('UTF-8')
 					new.append(b"%s %s" % (permit, value))
 				except LookupError:
 					pass

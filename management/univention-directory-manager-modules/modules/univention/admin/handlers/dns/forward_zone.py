@@ -208,11 +208,11 @@ class object(univention.admin.handlers.simpleLdap):
 		self.oldinfo['a'] = []
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
-			values = [x.decode('ASCII') for x in self.oldattr['aRecord'])
+			values = [x.decode('ASCII') for x in self.oldattr['aRecord']]
 			self.oldinfo['a'].extend(aRecord)
 			self.info['a'].extend(aRecord)
 		if 'aAAARecord' in self.oldattr:
-			values = [x.decode('ASCII') for x in self.oldattr['aAAARecord'])
+			values = [x.decode('ASCII') for x in self.oldattr['aAAARecord']]
 			values = [ipaddr.IPv6Address(x).exploded for x in values]
 			self.oldinfo['a'].extend(values)
 			self.info['a'].extend(values)
