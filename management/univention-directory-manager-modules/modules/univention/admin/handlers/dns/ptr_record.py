@@ -35,6 +35,8 @@ import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.filter import (expression, conjunction)
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6
+
 import univention.debug as ud
 import ipaddr
 
@@ -277,9 +279,9 @@ lookup = object.lookup
 
 def identify(dn, attr):
 	return all([
-		'dNSZone' in attr.get('objectClass', []),
-		'@' not in attr.get('relativeDomainName', []),
-		(attr.get('zoneName', [''])[0].endswith('.in-addr.arpa') or attr.get('zoneName', [''])[0].endswith('.ip6.arpa'))
+		b'dNSZone' in attr.get('objectClass', []),
+		b'@' not in attr.get('relativeDomainName', []),
+		(attr.get('zoneName', [b''])[0].decode('UTF-8').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('UTF-8').endswith(ARPA_IP6))
 	])
 
 

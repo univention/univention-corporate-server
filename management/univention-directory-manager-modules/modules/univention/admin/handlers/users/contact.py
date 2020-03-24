@@ -449,10 +449,10 @@ lookup = object.lookup
 
 def identify(dn, attr, canonical=0):
 	# FIXME is this if block needed? copy pasted from users/user
-	if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
+	if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
 		return False
 
-	required_ocs = {'person', 'inetOrgPerson', 'organizationalPerson', }
-	forbidden_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'simpleSecurityObject', 'uidObject', 'pkiUser', }
+	required_ocs = {b'person', b'inetOrgPerson', b'organizationalPerson', }
+	forbidden_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'krb5Principal', b'krb5KDCEntry', b'univentionMail', b'simpleSecurityObject', b'uidObject', b'pkiUser', }
 	ocs = set(attr.get('objectClass', []))
 	return (ocs & required_ocs == required_ocs) and not (ocs & forbidden_ocs)
