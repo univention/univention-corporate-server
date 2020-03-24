@@ -402,4 +402,4 @@ def identify(dn, attr, canonical=False):
 	u"""Prüft ob die verwaltete Objektklasse diese Moduls in der übergebenen Liste enthalten ist,
 	d.h. ob dieses Modul für die Handhabung des Objekts zuständig ist."""
 
-	return 'testPhone' in attr.get('objectClass', [])
+	return b'testPhone' in attr.get('objectClass', [])

@@ -38,7 +38,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import stripDot
+from univention.admin.handlers.dns import stripDot, ARPA_IP4, ARPA_IP6
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -149,8 +149,8 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa') and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
+	return b'dNSZone' in attr.get('objectClass', []) and b'@' not in attr.get('relativeDomainName', []) and \
+		not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6) and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
 
 
 def lookup_alias_filter(lo, filter_s):
