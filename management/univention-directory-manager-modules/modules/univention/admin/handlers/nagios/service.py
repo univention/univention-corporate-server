@@ -227,17 +227,18 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	OPTION_BITS = {
-		'notificationOptionWarning': 'w',
-		'notificationOptionCritical': 'c',
-		'notificationOptionUnreachable': 'u',
-		'notificationOptionRecovered': 'r',
+		'notificationOptionWarning': b'w',
+		'notificationOptionCritical': b'c',
+		'notificationOptionUnreachable': b'u',
+		'notificationOptionRecovered': b'r',
 	}
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		if self.exists():
-			if self.oldattr.get('univentionNagiosNotificationOptions', []):
-				options = self.oldattr.get('univentionNagiosNotificationOptions', [])[0].split(',')
+			value = self.oldattr.get('univentionNagiosNotificationOptions', [b''])[0]
+			if value:
+				options = value.split(b',')  # type: List[bytes]
 				for key, value in self.OPTION_BITS.iteritems():
 					self[key] = '1' if value in options else '0'
 
@@ -246,7 +247,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# convert host FQDN to host DN
 		hostlist = []
 		hosts = self.oldattr.get('univentionNagiosHostname', [])
-		for host in hosts:
+		for host in [x.decode('UTF-8') for x in hosts]:
 			# split into relDomainName and zoneName
 			if host and _re.match(host) is not None:
 				(relDomainName, zoneName) = _re.match(host).groups()
@@ -257,14 +258,14 @@ class object(univention.admin.handlers.simpleLdap):
 				else:
 					# found dNSZone
 					filter = '(&(objectClass=univentionHost)'
-					for aRecord in res[0][1]['aRecord']:
+					for aRecord in [x.decode('ASCII') for x in res[0][1]['aRecord']]:
 						filter += filter_format('(aRecord=%s)', [aRecord])
 					filter += filter_format('(cn=%s))', [relDomainName])
 
 					# find dn of host that is related to given aRecords
 					res = self.lo.search(filter=filter)
 					if res:
-						hostlist.append(res[0][0])
+						hostlist.append(res[0][0])  # type: List[str]
 
 		self['assignedHosts'] = hostlist
 
@@ -276,13 +277,13 @@ class object(univention.admin.handlers.simpleLdap):
 		options = []
 		for key, value in self.OPTION_BITS.iteritems():
 			if self[key] == '1':
-				options.append(value)
+				options.append(value)  # type: List[bytes]
 
 		# univentionNagiosNotificationOptions is required in LDAP schema
 		if not options:
-			options.append('n')
+			options.append(b'n')
 
-		newoptions = ','.join(options)
+		newoptions = b','.join(options)
 		ml.append(('univentionNagiosNotificationOptions', self.oldattr.get('univentionNagiosNotificationOptions', []), newoptions))
 
 		# save assigned hosts
@@ -291,14 +292,14 @@ class object(univention.admin.handlers.simpleLdap):
 			for hostdn in self.info.get('assignedHosts', []):
 				try:
 					host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True)
-					cn = host['cn']
+					cn = host['cn'][0]  # type: bytes
 				except (univention.admin.uexceptions.noObject, ldap.NO_SUCH_OBJECT):
 					raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,), property='assignedHosts')
 				except KeyError:
 					raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,), property='assignedHosts')
 
-				domain = host.get('associatedDomain', [configRegistry.get("domainname")])
-				hostlist.append("%s.%s" % (cn[0], domain[0]))
+				domain = host.get('associatedDomain', [configRegistry.get("domainname").encode('UTF-8')])[0]  # type: bytes
+				hostlist.append(b"%s.%s" % (cn, domain))
 
 			ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', []), hostlist))
 
