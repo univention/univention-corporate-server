@@ -129,8 +129,8 @@ class Support(object):
 		self.nagiosRemoveFromServices = False
 
 	def __getFQDN(self):
-		hostname = self.oldattr.get("cn", [None])[0]
-		domain = self.oldattr.get("associatedDomain", [None])[0]
+		hostname = self.oldattr.get("cn", [b''])[0].decode('UTF-8')
+		domain = self.oldattr.get("associatedDomain", [b''])[0].decode('UTF-8')
 		if not domain:
 			domain = configRegistry.get("domainname", None)
 		if domain and hostname:
@@ -159,7 +159,7 @@ class Support(object):
 
 		parentlist = []
 		parents = self.oldattr.get('univentionNagiosParent', [])
-		for parent in parents:
+		for parent in [x.decode('UTF-8') for x in parents]:
 			if parent and _re.match(parent) is not None:
 				(relDomainName, zoneName) = _re.match(parent).groups()
 
@@ -192,7 +192,7 @@ class Support(object):
 				if not domain:
 					domain = [configRegistry.get("domainname")]
 				if cn and domain:
-					parentlist.append('%s.%s' % (cn[0], domain[0]))
+					parentlist.append('.'.join((cn[0], domain[0])).encode('UTF-8'))
 			ml.insert(0, ('univentionNagiosParent', self.oldattr.get('univentionNagiosParent', []), parentlist))
 
 	def nagios_ldap_modlist(self, ml):
@@ -210,15 +210,15 @@ class Support(object):
 		# add nagios option
 		if self.option_toggled('nagios') and 'nagios' in self.options:
 			ud.debug(ud.ADMIN, ud.INFO, 'added nagios option')
-			if 'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
-				ml.insert(0, ('univentionNagiosEnabled', '', '1'))
+			if b'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
+				ml.insert(0, ('univentionNagiosEnabled', b'', b'1'))
 
 		# remove nagios option
 		if self.option_toggled('nagios') and 'nagios' not in self.options:
 			ud.debug(ud.ADMIN, ud.INFO, 'remove nagios option')
 			for key in ['univentionNagiosParent', 'univentionNagiosEmail', 'univentionNagiosEnabled']:
 				if self.oldattr.get(key, []):
-					ml.insert(0, (key, self.oldattr.get(key, []), ''))
+					ml.insert(0, (key, self.oldattr.get(key, []), b''))
 
 			# trigger deletion from services
 			self.nagiosRemoveFromServices = True
