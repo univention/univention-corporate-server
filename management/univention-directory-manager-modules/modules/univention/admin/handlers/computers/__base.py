@@ -325,7 +325,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
 			]))
 		elif filter.variable == 'dnsAlias':
-			found = univention.admin.filter.parse(univention.admin.handlers.dns.alias.lookup_alias_filter(lo, unicode(filter)))
+			found = univention.admin.filter.parse(univention.admin.handlers.dns.alias.lookup_alias_filter(lo, str(filter)))
 			if isinstance(found, univention.admin.filter.conjunction):
 				filter.transform_to_conjunction(found)
 			else:
