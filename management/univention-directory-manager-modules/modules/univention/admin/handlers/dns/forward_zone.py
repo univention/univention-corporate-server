@@ -218,6 +218,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.info['a'].extend(values)
 
 		soa = self.oldattr.get('sOARecord', [''])[0].split(' ')
+		soa = [x.decode('UTF-8') for x in soa]
 		if len(soa) > 6:
 			self['contact'] = unescapeSOAemail(soa[1])
 			self['serial'] = soa[2]
@@ -248,7 +249,7 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = '%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
+			soa = u'%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa.encode('UTF-8')]))
 
 		oldAddresses = self.oldinfo.get('a')
