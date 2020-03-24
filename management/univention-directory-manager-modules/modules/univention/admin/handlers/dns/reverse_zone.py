@@ -231,7 +231,7 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = '%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
+			soa = u'%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa.encode('UTF-8')))
 		return ml
 
@@ -242,7 +242,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('relativeDomainName', ['@'])
+			('relativeDomainName', [b'@'])
 		]
 
 	# FIXME: there should be general solution; subnet is just a naming
@@ -272,9 +272,9 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr):
-	return 'dNSZone' in attr.get('objectClass', []) and\
-		['@'] == attr.get('relativeDomainName', []) and\
-		(attr['zoneName'][0].endswith(ARPA_IP4) or attr['zoneName'][0].endswith(ARPA_IP6))
+	return b'dNSZone' in attr.get('objectClass', []) and\
+		[b'@'] == attr.get('relativeDomainName', []) and\
+		(attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) or attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6))
 
 
 def quickDescription(rdn):
