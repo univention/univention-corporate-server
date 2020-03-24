@@ -395,4 +395,4 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionUDMProperty' in attr.get('objectClass', []) and attr.get('univentionUDMPropertyVersion', ['0'])[0] == '2'
+	return b'univentionUDMProperty' in attr.get('objectClass', []) and attr.get('univentionUDMPropertyVersion', [b'0'])[0] == b'2'

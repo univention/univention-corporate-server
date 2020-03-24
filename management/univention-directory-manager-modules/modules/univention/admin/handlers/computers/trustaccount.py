@@ -206,4 +206,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=0):
-	return 'sambaSamAccount' in attr.get('objectClass', []) and '[I          ]' in attr.get('sambaAcctFlags', [])
+	return b'sambaSamAccount' in attr.get('objectClass', []) and b'[I          ]' in attr.get('sambaAcctFlags', [])

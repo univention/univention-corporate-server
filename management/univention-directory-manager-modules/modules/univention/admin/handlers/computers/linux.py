@@ -291,4 +291,4 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionLinuxClient' in attr.get('objectClass', []) and ('posixAccount' in attr.get('objectClass', []) or ('krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', [])))
+	return b'univentionHost' in attr.get('objectClass', []) and b'univentionLinuxClient' in attr.get('objectClass', []) and (b'posixAccount' in attr.get('objectClass', []) or (b'krb5KDCEntry' in attr.get('objectClass', []) and b'krb5Principal' in attr.get('objectClass', [])))
