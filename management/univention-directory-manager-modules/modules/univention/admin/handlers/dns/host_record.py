@@ -246,12 +246,13 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
+	mod = module.encode('ASCII')
 	return all([
-		'dNSZone' in attr.get('objectClass', []),
-		'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', ['.arpa'])[0].endswith('.arpa'),
+		b'dNSZone' in attr.get('objectClass', []),
+		b'@' not in attr.get('relativeDomainName', []),
+		not attr.get('zoneName', [b'.arpa'])[0].decode('UTF-8').endswith('.arpa'),
 		not attr.get('cNAMERecord', []),
 		not attr.get('sRVRecord', []),
-		any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or module in attr.get('univentionObjectType', []),
-		module in attr.get('univentionObjectType', [module])
+		any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or mod in attr.get('univentionObjectType', []),
+		mod in attr.get('univentionObjectType', [mod])
 	])

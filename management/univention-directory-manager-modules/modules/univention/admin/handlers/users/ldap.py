@@ -382,7 +382,7 @@ def identify(dn, attr, canonical=0):
 	if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
 		return False
 
-	required_ocs = {'person', 'simpleSecurityObject', 'uidObject', }
-	forbidden_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'univentionMail', 'krb5Principal', 'krb5KDCEntry'}
+	required_ocs = {b'person', b'simpleSecurityObject', b'uidObject', }
+	forbidden_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'univentionMail', b'krb5Principal', b'krb5KDCEntry'}
 	ocs = set(attr.get('objectClass', []))
 	return (ocs & required_ocs == required_ocs) and not (ocs & forbidden_ocs)
