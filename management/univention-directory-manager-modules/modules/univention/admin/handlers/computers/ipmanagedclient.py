@@ -265,7 +265,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
+	for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
 		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
