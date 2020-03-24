@@ -208,7 +208,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_pre_create()
 
 	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionHost', 'univentionClient', 'person'])]
+		return [('objectClass', [b'top', b'univentionHost', b'univentionClient', b'person'])]
 
 	def _ldap_post_create(self):
 		univention.admin.handlers.simpleComputer._ldap_post_create(self)

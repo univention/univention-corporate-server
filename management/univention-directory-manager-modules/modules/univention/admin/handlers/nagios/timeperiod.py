@@ -164,8 +164,9 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		if self.exists():
-			if self.oldattr.get('univentionNagiosTimeperiod', []):
-				periods = self.oldattr.get('univentionNagiosTimeperiod', [])[0].split('#')
+			value = self.oldattr.get('univentionNagiosTimeperiod', [b''])[0].decode('ASCII')
+			if value:
+				periods = value.split('#')
 				self['periodMonday'] = periods[0]
 				self['periodTuesday'] = periods[1]
 				self['periodWednesday'] = periods[2]
@@ -207,7 +208,7 @@ class object(univention.admin.handlers.simpleLdap):
 				periodslist[i] = ''
 		newperiods = '#'.join(periodslist)
 
-		ml.append(('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), newperiods))
+		ml.append(('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), newperiods.encode('ASCII')))
 
 		return ml
 
