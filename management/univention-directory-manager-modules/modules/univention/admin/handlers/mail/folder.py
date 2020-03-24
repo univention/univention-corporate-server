@@ -149,17 +149,17 @@ class object(univention.admin.handlers.simpleLdap):
 		return {'module': self.module, 'nameWithMailDomain': self.description()}
 
 	def _post_unmap(self, oldinfo, oldattr):
-		cn = oldattr.get('cn', [])
+		cn = oldattr.get('cn', [b''])[0].decode('UTF-8')
 		if cn:
-			oldinfo['name'] = cn[0].split('@', 1)[0]
-			oldinfo['mailDomain'] = cn[0].split('@', 1)[1]
+			oldinfo['name'] = cn.split('@', 1)[0]
+			oldinfo['mailDomain'] = cn.split('@', 1)[1]
 
 		# fetch values for ACLs
 		acls = oldattr.get('univentionMailACL', [])
 		oldinfo['sharedFolderUserACL'] = []
 		oldinfo['sharedFolderGroupACL'] = []
 		if acls:
-			for acl in acls:
+			for acl in [x.decode('UTF-8') for x in acls]:
 				if acl.find('@') > 0 or acl.startswith('anyone'):
 					oldinfo['sharedFolderUserACL'].append(acl.rsplit(' ', 1))
 				else:
@@ -183,7 +183,8 @@ class object(univention.admin.handlers.simpleLdap):
 		al = []
 
 		if self['mailPrimaryAddress']:
-			al.append(('univentionMailSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())))
+			value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
+			al.append(('univentionMailSharedFolderDeliveryAddress', value.encode('UTF-8')))
 
 			address = '%s@%s' % (self['name'], self['mailDomain'])
 			if self['mailPrimaryAddress'] != address:
@@ -194,7 +195,8 @@ class object(univention.admin.handlers.simpleLdap):
 					univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', value=self['mailPrimaryAddress'])
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		al.append(('cn', "%s@%s" % (self.info['name'], self.info['mailDomain'])))
+		value = "%s@%s" % (self.info['name'], self.info['mailDomain'])
+		al.append(('cn', value.encode('UTF-8')))
 
 		return al
 
@@ -215,10 +217,11 @@ class object(univention.admin.handlers.simpleLdap):
 				if i == 'mailPrimaryAddress':
 					break
 			else:
+				value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
 				ml.append((
 					'univentionMailSharedFolderDeliveryAddress',
 					self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []),
-					['univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())]
+					[value.encode('UTF-8')]
 				))
 
 				address = '%s@%s' % (self['name'], self['mailDomain'])
@@ -259,6 +262,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for (a, b, c) in ml:
 				if a in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
 					ml.remove((a, b, c))
+			new_acls_tmp = [x.encode('UTF-8') for x in new_acls_tmp]
 			ml.append(('univentionMailACL', self.oldattr.get('univentionMailACL', []), new_acls_tmp))
 
 		return ml

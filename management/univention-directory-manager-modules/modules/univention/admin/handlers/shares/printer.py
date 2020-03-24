@@ -276,9 +276,9 @@ class object(univention.admin.handlers.simpleLdap):
 			printergroups_filter = '(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 			group_cn = []
 			for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
-				for member_cn in member_list.get('univentionPrinterGroupMember', []):
+				for member_cn in [x.decode('UTF-8') for x in member_list.get('univentionPrinterGroupMember', [])]:
 					if member_cn == self.info['name']:
-						group_cn.append(member_list['cn'][0])
+						group_cn.append(member_list['cn'][0].decode('UTF-8'))
 			if len(group_cn) > 0:
 				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 
@@ -286,11 +286,11 @@ class object(univention.admin.handlers.simpleLdap):
 		printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 		rm_attrib = []
 		for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
-			for member_cn in member_list['univentionPrinterGroupMember']:
+			for member_cn in [x.decode('UTF-8') for x in member_list['univentionPrinterGroupMember']]:
 				if member_cn == self.info['name']:
 					rm_attrib.append(pg_dn)
 					if len(member_list['univentionPrinterGroupMember']) < 2:
-						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0]})
+						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0].decode('UTF-8')})
 		printergroup_module = univention.admin.modules.get('shares/printergroup')
 		for rm_dn in rm_attrib:
 			printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)

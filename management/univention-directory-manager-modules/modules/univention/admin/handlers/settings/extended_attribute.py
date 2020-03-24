@@ -344,7 +344,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for key in self.oldattr.keys():
 				if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey):
 					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())
-					txt = self.oldattr.get(key)[0]
+					txt = self.oldattr.get(key)[0].decode('UTF-8')
 					translations.append((lang, txt))
 
 			ud.debug(ud.ADMIN, ud.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, str(translations)))
@@ -365,16 +365,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 				for lang, txt in self.oldinfo.get('translation%s' % transKey, []):
 					lang = lang.replace('_', '-')
-					oldlist[lang] = txt
+					oldlist[lang] = txt.encode('UTF-8')
 					if lang not in newlist:
-						newlist[lang] = ''
+						newlist[lang] = b''
 
 				# duplicate lang entries will be removed due to use of dictionary
 				for lang, txt in self.info.get('translation%s' % transKey, []):
 					lang = lang.replace('_', '-')
-					newlist[lang] = txt
+					newlist[lang] = txt.encode('UTF-8')
 					if lang not in oldlist:
-						oldlist[lang] = ''
+						oldlist[lang] = b''
 
 				# modlist for new items
 				for lang, txt in oldlist.items():

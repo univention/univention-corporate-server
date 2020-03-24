@@ -150,7 +150,7 @@ class object(univention.admin.handlers.simplePolicy):
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 		self.cron_parsed = 0
-		oldcron = self.oldattr.get('univentionRepositoryCron', [''])[0]
+		oldcron = self.oldattr.get('univentionRepositoryCron', [b''])[0].decode('ASCII')
 		if oldcron:
 			self.parse_cron(oldcron)
 			self.cron_parsed = 1
@@ -199,7 +199,7 @@ class object(univention.admin.handlers.simplePolicy):
 			if self.has_property('weekday'):
 				list['weekday'] = self['weekday']
 			cron = univention.admin.cron.cron_create(list)
-			ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', []), [cron]))
+			ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', []), [cron.encode('ASCII')]))
 		return ml
 
 
