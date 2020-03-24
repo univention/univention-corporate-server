@@ -698,7 +698,7 @@ class object(univention.admin.handlers.simpleLdap):
 		settings_object.modify()
 
 		for group in self.info.get('memberOf', []):
-			if isinstance(group, list()):
+			if isinstance(group, list):
 				group = group[0]
 			members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
 			if not self.__case_insensitive_in_list(olddn, members):
