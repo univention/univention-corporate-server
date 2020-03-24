@@ -204,7 +204,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		soa = self.oldattr.get('sOARecord', [''])[0].split(' ')
+		soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
+		soa = [x.decode('UTF-8') for x in soa]
 		if len(soa) > 6:
 			self['contact'] = unescapeSOAemail(soa[1])
 			self['serial'] = soa[2]
@@ -231,7 +232,7 @@ class object(univention.admin.handlers.simpleLdap):
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
 			soa = '%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
-			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
+			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa.encode('UTF-8')))
 		return ml
 
 	def _ldap_pre_modify(self, modify_childs=1):

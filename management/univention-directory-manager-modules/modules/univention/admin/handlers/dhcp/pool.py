@@ -129,10 +129,10 @@ class object(DHCPBase):
 	module = module
 
 	permits_udm2dhcp = {
-		'known_clients': "known clients",
-		'unknown_clients': "unknown clients",
-		'dynamic_bootp_clients': "dynamic bootp clients",
-		'all_clients': "all clients",
+		'known_clients': b"known clients",
+		'unknown_clients': b"unknown clients",
+		'dynamic_bootp_clients': b"dynamic bootp clients",
+		'all_clients': b"all clients",
 	}
 	permits_dhcp2udm = dict((value, key) for (key, value) in permits_udm2dhcp.items())
 
@@ -140,10 +140,10 @@ class object(DHCPBase):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for i in self.oldattr.get('dhcpPermitList', []):
-			permit, name = i.split(' ', 1)
+			permit, name = i.split(b' ', 1)
 			if name in self.permits_dhcp2udm:
 				prop = self.permits_dhcp2udm[name]
-				self[prop] = permit
+				self[prop] = permit.encode('UTF-8')
 
 		self.save()
 
@@ -163,13 +163,13 @@ class object(DHCPBase):
 
 			for prop, value in self.permits_udm2dhcp.items():
 				try:
-					permit = self.oldinfo[prop]
-					new.remove("%s %s" % (permit, value))
+					permit = self.oldinfo[prop].decode('UTF-8')
+					new.remove(b"%s %s" % (permit, value))
 				except LookupError:
 					pass
 				try:
-					permit = self.info[prop]
-					new.append("%s %s" % (permit, value))
+					permit = self.info[prop].decode'(UTF-8')
+					new.append(b"%s %s" % (permit, value))
 				except LookupError:
 					pass
 

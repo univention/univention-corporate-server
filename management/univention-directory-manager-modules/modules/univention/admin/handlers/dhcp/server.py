@@ -90,7 +90,7 @@ class object(DHCPBase):
 			raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
 		return [
-			('dhcpServiceDN', self.superordinate.dn),
+			('dhcpServiceDN', self.superordinate.dn.encode('UTF-8')),
 		]
 
 	def _ldap_post_move(self, olddn):
@@ -100,7 +100,7 @@ class object(DHCPBase):
 		module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
 		obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
 		shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
-		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
+		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn.encode('UTF-8'))])
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
