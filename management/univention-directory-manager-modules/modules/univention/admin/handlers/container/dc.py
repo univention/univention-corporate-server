@@ -170,7 +170,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
 		if not self.info.get('name'):
-			self.info['name'] = self.oldattr.get('l', self.oldattr.get('o', self.oldattr.get('c', self.oldattr.get('ou', self.oldattr.get('dc', '')))))
+			self.info['name'] = self.oldattr.get('l', self.oldattr.get('o', self.oldattr.get('c', self.oldattr.get('ou', self.oldattr.get('dc', [b''])))))[0].decode('UTF-8')
 			self.save()
 
 	def open(self):

@@ -155,11 +155,14 @@ class object(univention.admin.handlers.simpleLdap):
 		self.oldinfo['a'] = []
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
-			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(self.oldattr['aRecord'])
+			values = [x.decode('ASCII') for x in self.oldattr['aRecord']]
+			self.oldinfo['a'].extend(values)
+			self.info['a'].extend(values)
 		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			values = [x.decode('ASCII') for x in self.oldattr['aAAARecord']]
+			values = [ipaddr.IPv6Address(x).exploded for x in values]
+			self.oldinfo['a'].extend(values)
+			self.info['a'].extend(values)
 
 	def _ldap_addlist(self):
 		return [
@@ -178,18 +181,19 @@ class object(univention.admin.handlers.simpleLdap):
 			if oldAddresses:
 				for address in oldAddresses:
 					if ':' in address:  # IPv6
-						oldAaaaRecord.append(address)
+						oldAaaaRecord.append(address.encode('ASCII'))
 					else:
-						oldARecord.append(address)
+						oldARecord.append(address.encode('ASCII'))
 			if newAddresses:
 				for address in newAddresses:
 					if ':' in address:  # IPv6
-						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
+						newAaaaRecord.append(address)
 					else:
 						newARecord.append(address)
 
 			# explode all IPv6 addresses and remove duplicates
-			newAaaaRecord = list(set(map(lambda x: ipaddr.IPv6Address(x).exploded, newAaaaRecord)))
+			newAaaaRecord = list(set([ipaddr.IPv6Address(x).exploded for x in newAaaaRecord]))
+			newAaaaRecord = [x.encode('ASCII') for x in newAaaaRecord]
 
 			ml.append(('aRecord', oldARecord, newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
