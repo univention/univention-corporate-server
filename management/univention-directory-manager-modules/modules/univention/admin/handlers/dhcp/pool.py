@@ -143,7 +143,7 @@ class object(DHCPBase):
 			permit, name = i.split(b' ', 1)
 			if name in self.permits_dhcp2udm:
 				prop = self.permits_dhcp2udm[name]
-				self[prop] = permit.encode('UTF-8')
+				self[prop] = permit.decode('UTF-8')
 
 		self.save()
 
@@ -163,13 +163,13 @@ class object(DHCPBase):
 
 			for prop, value in self.permits_udm2dhcp.items():
 				try:
-					permit = self.oldinfo[prop].decode('UTF-8')
-					new.remove(b"%s %s" % (permit, value))
+					permit = self.oldinfo[prop].encode('UTF-8')
+					new.remove(b" ".join((permit, value)))
 				except LookupError:
 					pass
 				try:
-					permit = self.info[prop].decode('UTF-8')
-					new.append(b"%s %s" % (permit, value))
+					permit = self.info[prop].encode('UTF-8')
+					new.append(b" ".join((permit, value)))
 				except LookupError:
 					pass
 
