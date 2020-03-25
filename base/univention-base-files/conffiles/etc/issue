@@ -16,13 +16,13 @@ else:
 	menutitle="Univention Corporate Server"
 
 if configRegistry.get('version/version'):
-	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
+	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
 else:
-	print menutitle
+	print(menutitle)
 
 
 if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
-	print
+	print('')
 	startsite = ""
 	host = configRegistry.get('hostname')
 	domain = configRegistry.get('domainname')
@@ -38,16 +38,16 @@ if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontr
 			startsite = "%s (%s)" % (startsite, ip)
 
 	if configRegistry.get('server/role') == 'domaincontroller_master':
-		print 'The UCS management system is available at https://' + startsite
+		print('The UCS management system is available at https://' + startsite)
 	else:
-		print 'The UCS management system can be reached by following the link to the domain controller'
-		print 'master at https://' + startsite + ' and selecting the'
-		print 'Univention Management Console.'
+		print('The UCS management system can be reached by following the link to the domain controller')
+		print('master at https://' + startsite + ' and selecting the')
+		print('Univention Management Console.')
 
-	print
-	print 'You can log into the Univention Management Console - the principal tool to manage '
-	print 'users, groups, etc. - using the "Administrator" account and the password selected '
-	print 'for the root user on the master domain controller.'
+	print('')
+	print('You can log into the Univention Management Console - the principal tool to manage ')
+	print('users, groups, etc. - using the "Administrator" account and the password selected ')
+	print('for the root user on the master domain controller.')
 
 @!@
 

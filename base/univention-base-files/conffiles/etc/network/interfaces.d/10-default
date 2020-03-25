@@ -5,11 +5,11 @@ from operator import itemgetter
 
 def auto(interface, start):
 	"""Print 'auto iface' statements only once."""
-	print
+	print('')
 	if not start:
 		return
 	if interface not in auto.printed_interfaces:
-		print 'auto %s' % (interface,)
+		print('auto %s' % (interface,))
 		auto.printed_interfaces.add(interface)
 auto.printed_interfaces = set()
 
@@ -17,7 +17,7 @@ def ipv4(ucr, interfaces):
 	"""Setup IPv4."""
 	gateway = interfaces.ipv4_gateway
 	if gateway is False:
-		print '# WARNING: invalid IPv4 address in gateway'
+		print('# WARNING: invalid IPv4 address in gateway')
 
 	for name, iface in interfaces.all_interfaces:
 		addr = iface.ipv4_address()
@@ -25,49 +25,49 @@ def ipv4(ucr, interfaces):
 			if interfaces.handler == 'ifplugd' and \
 					ucr.is_true(value=iface.get('ifplugd', '1')):
 				auto(iface.name, iface.start)
-				print 'iface %s inet dhcp' % (iface.name,)
+				print('iface %s inet dhcp' % (iface.name,))
 			else:
 				continue
 		elif iface.type == 'manual':
 			auto(iface.name, iface.start)
-			print 'iface %s inet manual' % (iface.name,)
+			print('iface %s inet manual' % (iface.name,))
 		elif addr is False:
-			print '# ERROR: invalid IPv4 address for interface %s' % (name,)
+			print('# ERROR: invalid IPv4 address for interface %s' % (name,))
 			continue
 		elif addr:
 			auto(iface.name, iface.start)
-			print 'iface %s inet static' % (iface.name,)
-			print '\taddress %s' % (addr.ip,)
-			print '\tnetmask %s' % (addr.netmask,)
+			print('iface %s inet static' % (iface.name,))
+			print('\taddress %s' % (addr.ip,))
+			print('\tnetmask %s' % (addr.netmask,))
 			if iface.network:
-				print '\tnetwork %s' % (iface.network,)
+				print('\tnetwork %s' % (iface.network,))
 			if iface.broadcast:
-				print '\tbroadcast %s' % (iface.broadcast,)
+				print('\tbroadcast %s' % (iface.broadcast,))
 			if 'mtu' in iface:
-				print '\tmtu %(mtu)s' % iface
+				print('\tmtu %(mtu)s' % iface)
 			if gateway:
 				if addr.prefixlen == addr.max_prefixlen and \
 						interfaces.primary in (name, iface.name):
-					print '\tpointopoint %s' % (gateway,)
-					print '\tgateway %s' % (gateway,)
+					print('\tpointopoint %s' % (gateway,))
+					print('\tgateway %s' % (gateway,))
 					gateway = None
 				elif gateway in addr:
-					print '\tgateway %s' % (gateway,)
+					print('\tgateway %s' % (gateway,))
 					gateway = None
 		else:
 			continue
 
 		for route in iface.routes:
-			print '\tup route add -%s dev %s' % (route, iface.name)
+			print('\tup route add -%s dev %s' % (route, iface.name))
 
 		for value in iface.options:
-			print '\t%s' % (value,)
+			print('\t%s' % (value,))
 
 def ipv6(interfaces):
 	"""Setup IPv6."""
 	gateway = interfaces.ipv6_gateway
 	if gateway is False:
-		print '# WARNING: invalid IPv6 address in ipv6/gateway'
+		print('# WARNING: invalid IPv6 address in ipv6/gateway')
 	gateway_zoneindex = interfaces.ipv6_gateway_zone_index
 
 	# Validate addresses
@@ -76,13 +76,13 @@ def ipv6(interfaces):
 		for name in iface.ipv6_names:
 			addr = iface.ipv6_address(name)
 			if not addr:
-				print '# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
-					(iface.name, name)
+				print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
+					(iface.name, name))
 				continue
 			addresses = interface_addresses.setdefault(iface.name, set())
 			if addr.ip in addresses:
-				print '# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
-					(iface.name, name)
+				print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
+					(iface.name, name))
 				continue
 			addresses.add(addr.ip)
 
@@ -94,10 +94,10 @@ def ipv6(interfaces):
 			continue  # validation failed
 
 		auto(iface.name, iface.start)
-		print 'iface %s inet6 static' % (iface.name,)
+		print('iface %s inet6 static' % (iface.name,))
 
 		if gateway and gateway_zoneindex == iface.name:
-			print '\tgateway %s' % (gateway, )
+			print('\tgateway %s' % (gateway, ))
 			gateway = None
 		for i, (iface, name) in enumerate(names):
 			addr = iface.ipv6_address(name)
@@ -105,33 +105,33 @@ def ipv6(interfaces):
 				addresses.remove(addr.ip)
 			except KeyError:
 				continue  # invalid or duplicate
-			print '# %s' % (name,)
+			print('# %s' % (name,))
 			if i == 0:  # first
-				print '\taddress %s' % (addr.ip,)
-				print '\tnetmask %s' % (addr.prefixlen,)
+				print('\taddress %s' % (addr.ip,))
+				print('\tnetmask %s' % (addr.prefixlen,))
 			else:
-				print '\tup   ip -6 addr add %s dev %s' % (addr, iface.name)
-				print '\tdown ip -6 addr del %s dev %s' % (addr, iface.name)
+				print('\tup   ip -6 addr add %s dev %s' % (addr, iface.name))
+				print('\tdown ip -6 addr del %s dev %s' % (addr, iface.name))
 			if 'mtu' in iface:
-				print '\tmtu %(mtu)s' % iface
+				print('\tmtu %(mtu)s' % iface)
 			if gateway_zoneindex is None:
 				# check if gateway is local on this interface
 				if gateway:
 					if addr.prefixlen == addr.max_prefixlen and \
 							iface.name == interfaces.primary:
 						data = (gateway, iface.name)
-						print '\tup   ip -6 route add %s dev %s' % data
-						print '\tup   ip -6 route add default via %s dev %s' % data
-						print '\tdown ip -6 route del default via %s dev %s' % data
-						print '\tdown ip -6 route del %s dev %s' % data
+						print('\tup   ip -6 route add %s dev %s' % data)
+						print('\tup   ip -6 route add default via %s dev %s' % data)
+						print('\tdown ip -6 route del default via %s dev %s' % data)
+						print('\tdown ip -6 route del %s dev %s' % data)
 						gateway = None
 					elif gateway in addr:
-						print '\tgateway %s' % (gateway,)
+						print('\tgateway %s' % (gateway,))
 						gateway = None
 
 		if not iface.ipv4_address():
 			for value in iface.options:
-				print '\t%s' % (value,)
+				print('\t%s' % (value,))
 
 def main():
 	"""Create configured interfaces."""

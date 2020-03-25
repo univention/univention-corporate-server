@@ -2,11 +2,11 @@
 
 @!@
 if configRegistry.is_true('update/secure_apt', False):
-	print 'APT::Get::AllowUnauthenticated 0 ;'
-	print 'Binary::apt-get::Acquire::AllowInsecureRepositories "false";'
-	print 'Acquire::AllowInsecureRepositories "false";'
+	print('APT::Get::AllowUnauthenticated 0 ;')
+	print('Binary::apt-get::Acquire::AllowInsecureRepositories "false";')
+	print('Acquire::AllowInsecureRepositories "false";')
 else:
-	print 'APT::Get::AllowUnauthenticated 1 ;'
-	print 'Binary::apt-get::Acquire::AllowInsecureRepositories "true";'
-	print 'Acquire::AllowInsecureRepositories "true";'
+	print('APT::Get::AllowUnauthenticated 1 ;')
+	print('Binary::apt-get::Acquire::AllowInsecureRepositories "true";')
+	print('Acquire::AllowInsecureRepositories "true";')
 @!@

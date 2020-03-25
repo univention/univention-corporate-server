@@ -5,8 +5,8 @@ DISTRIB_RELEASE="@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version
 @!@
 release = configRegistry.get("version/releasename").strip()
 if len(release.split()) > 1:
-	print 'DISTRIB_CODENAME="%s"' % release
+	print('DISTRIB_CODENAME="%s"' % release)
 else:
-	print 'DISTRIB_CODENAME=%s' % release
+	print('DISTRIB_CODENAME=%s' % release)
 @!@
 DISTRIB_DESCRIPTION="Univention Corporate Server @%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@ (@%@version/releasename@%@)"

@@ -1,3 +1,10 @@
+univention-base-files (8.0.0-6) unstable; urgency=medium
+
+  * Migrated templates to python3
+  * Added dependency to six
+
+ -- Max Christian Pohle <pohle@univention.de>  Mon, 23 Mar 2020 17:44:46 +0100
+
 univention-base-files (8.0.0-5) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors

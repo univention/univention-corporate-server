@@ -2,26 +2,27 @@
 
 @!@
 def print_proxy(proxy, proto):
-	print 'Acquire'
-	print '{'
-	print '    %s' % (proto,)
-	print '    {'
-	print '        Proxy "%s";' % proxy
-	print '    }'
-	print '}'
-	print
+    print('Acquire')
+    print('{')
+    print('    %s' % (proto,))
+    print('    {')
+    print('        Proxy "%s";' % proxy)
+    print('    }')
+    print('}')
+    print('')
 
-proxy = configRegistry.get('proxy/http', None)
+
+proxy = configRegistry.get('proxy/http', "")
 if proxy:
-	if '://' not in proxy:
-		proxy = 'http://%s' % proxy
-	print_proxy(proxy, 'http')
-	if not configRegistry.get('proxy/https', None):
-		print_proxy(proxy, 'https')
+    if '://' not in proxy:
+        proxy = 'http://%s' % proxy
+    print_proxy(proxy, 'http')
+    if not configRegistry.get('proxy/https', None):
+        print_proxy(proxy, 'https')
 
 proxy = configRegistry.get('proxy/https', None)
 if proxy:
-	if '://' not in proxy:
-		proxy = 'http://%s' % proxy
-	print_proxy(proxy, 'https')
+    if '://' not in proxy:
+        proxy = 'http://%s' % proxy
+    print_proxy(proxy, 'https')
 @!@

@@ -12,7 +12,7 @@ primary = configRegistry.get('interfaces/primary')
 entries = []
 primary_entries = []
 default_hosts = '%(hostname)s.%(domainname)s %(hostname)s' % configRegistry
-for key, value in configRegistry.items():
+for key, value in list(configRegistry.items()):
 	match = RE_IPV4.match(key)
 	if match:
 		(iface,) = match.groups()
@@ -36,7 +36,7 @@ for key, value in configRegistry.items():
 			else:
 				entries.append((iface, name, '%s\t%s' % (value, hosts)))
 for (iface, name, line) in sorted(primary_entries):  # IPv4 < IPv6.default < IPv6.*
-	print line
+	print(line)
 for (iface, name, line) in sorted(entries):  # IPv4 < IPv6.default < IPv6.*
-	print line
+	print(line)
 @!@

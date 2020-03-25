@@ -24,7 +24,9 @@ Depends: ${misc:Depends},
  psmisc,
  lsb-base,
  lsb-release,
- lockfile-progs
+ lockfile-progs,
+ python-six,
+ python3-six
 Recommends: vim,
  less,
  elinks,

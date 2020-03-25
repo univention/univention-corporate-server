@@ -4,5 +4,5 @@
 if configRegistry['kernel/modules']:
 	modules=configRegistry['kernel/modules'].split(';')
 	for mod in modules:
-		print mod
+		print(mod)
 @!@

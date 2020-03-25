@@ -15,7 +15,7 @@ def setup_cronjob(key):
 			raise IndexError()
 		job = tmp[1]
 	except IndexError:
-		print >> sys.stderr, "E: This cron UCR key is not properly formatted: %s" % key
+		sys.stderr.write("E: This cron UCR key is not properly formatted: %s" % key)
 		return
 	if job not in jobs:
 		jobs.append(job)
@@ -31,25 +31,25 @@ def setup_cronjob(key):
 			return
 
 		if not (time and command):
-			print >> sys.stderr, "E: Time or command is missing for cron job cron/%s" % job
+			sys.stderr.write("E: Time or command is missing for cron job cron/%s" % job)
 			return
 
-		print '\n'
+		print('\n')
 		if description:
-			print "# %s" % description
+			print("# %s" % description)
 		if mailto == "NONE":
 			mailto = '""'
-		print "MAILTO=%s" % mailto
-		print "%s %s %s" % (time, user, command)
+		print("MAILTO=%s" % mailto)
+		print("%s %s %s" % (time, user, command))
 
 path = configRegistry.get('cron/path', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
-print 'PATH="%s"' % path
+print('PATH="%s"' % path)
 
 disabled_globally = configRegistry.is_true('cron/ucrdisabled', False)
 if disabled_globally:
-	print '\n# cron jobs defined by UCR have been disabled by cron/ucr/disabled'
+	print('\n# cron jobs defined by UCR have been disabled by cron/ucr/disabled')
 else:
-	for key in configRegistry.keys():
+	for key in list(configRegistry.keys()):
 		if key.startswith('cron/'):
 			setup_cronjob(key)
 @!@

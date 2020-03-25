@@ -2,5 +2,5 @@
 
 @!@
 if configRegistry.get('locale/default'):
-	print 'LANG=%s' % configRegistry['locale/default'].split(':')[0]
+	print('LANG=%s' % configRegistry['locale/default'].split(':')[0])
 @!@

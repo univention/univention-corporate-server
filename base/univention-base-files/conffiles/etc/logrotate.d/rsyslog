@@ -27,7 +27,7 @@ for (path, cat) in findall('(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
 
 other_logfiles = set()
 other_settings = getLogrotateConfig('syslog-other', configRegistry)
-for (cat, (paths, settings)) in FILES.items():
+for (cat, (paths, settings)) in list(FILES.items()):
 	custom = getLogrotateConfig(cat, configRegistry)
 	if custom == other_settings:
 		other_logfiles |= paths
@@ -36,17 +36,17 @@ for (cat, (paths, settings)) in FILES.items():
 		settings.update(custom)
 FILES[None] = (other_logfiles, other_settings)
 
-for (cat, (paths, settings)) in FILES.iteritems():
+for (cat, (paths, settings)) in FILES.items():
 	for path in sorted(paths):
-		print path
-	print '{'
-	for setting in settings.values():
-		print '\t%s' % (setting, )
-	print """\
+		print(path)
+	print('{')
+	for setting in list(settings.values()):
+		print('\t%s' % (setting, ))
+	print("""\
 	delaycompress
 	sharedscripts
 	postrotate
 		invoke-rc.d rsyslog rotate > /dev/null
 	endscript
-}"""
+}""")
 @!@

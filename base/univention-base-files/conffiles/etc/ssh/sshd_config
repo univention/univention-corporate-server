@@ -14,18 +14,18 @@
 @!@
 import sys
 
-print 'Port %s' % configRegistry.get('sshd/port', '22')
+print('Port %s' % configRegistry.get('sshd/port', '22'))
 if configRegistry.get('sshd/AddressFamily'):
-	print 'AddressFamily %(sshd/AddressFamily)s' % configRegistry
+	print('AddressFamily %(sshd/AddressFamily)s' % configRegistry)
 else:
-	print '#AddressFamily any'
+	print('#AddressFamily any')
 if configRegistry.get('sshd/ListenAddress'):
-	for ip in filter(None, configRegistry.get('sshd/ListenAddress', '').split(',')):
-		print 'ListenAddress %s' % ip
+	for ip in [_f for _f in configRegistry.get('sshd/ListenAddress', '').split(',') if _f]:
+		print('ListenAddress %s' % ip)
 else:
-	print '#ListenAddress 0.0.0.0'
-	print '#ListenAddress ::'
-print ''
+	print('#ListenAddress 0.0.0.0')
+	print('#ListenAddress ::')
+print('')
 from os.path import exists
 for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	if '/' in key:
@@ -38,133 +38,133 @@ for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	else:
 		filename = '/etc/ssh/ssh_host_%s_key' % (key,)
 	if exists(filename):
-		print "HostKey %s" % (filename,)
-print ''
-print ''
-print '# Ciphers and keying'
+		print("HostKey %s" % (filename,))
+print('')
+print('')
+print('# Ciphers and keying')
 if configRegistry.get('sshd/RekeyLimit'):
-	print 'RekeyLimit %(sshd/RekeyLimit)s' % configRegistry
+	print('RekeyLimit %(sshd/RekeyLimit)s' % configRegistry)
 else:
-	print '#RekeyLimit default none'
-print ''
-print '# Logging'
+	print('#RekeyLimit default none')
+print('')
+print('# Logging')
 if configRegistry.get('sshd/SyslogFacility'):
-	print 'SyslogFacility %(sshd/SyslogFacility)s' % configRegistry
+	print('SyslogFacility %(sshd/SyslogFacility)s' % configRegistry)
 else:
-	print '#SyslogFacility AUTH'
+	print('#SyslogFacility AUTH')
 if configRegistry.get('sshd/LogLevel'):
-	print 'LogLevel %(sshd/LogLevel)s' % configRegistry
+	print('LogLevel %(sshd/LogLevel)s' % configRegistry)
 else:
-	print '#LogLevel INFO'
-print ''
-print '# Authentication:'
-print ''
+	print('#LogLevel INFO')
+print('')
+print('# Authentication:')
+print('')
 if configRegistry.get('sshd/LoginGraceTime'):
-	print 'LoginGraceTime %(sshd/LoginGraceTime)s' % configRegistry
+	print('LoginGraceTime %(sshd/LoginGraceTime)s' % configRegistry)
 else:
-	print 'LoginGraceTime 600'
-print 'PermitRootLogin %s' % configRegistry.get('sshd/permitroot', 'prohibit-password')
+	print('LoginGraceTime 600')
+print('PermitRootLogin %s' % configRegistry.get('sshd/permitroot', 'prohibit-password'))
 if configRegistry.get('sshd/StrictModes'):
-	print 'StrictModes %(sshd/StrictModes)s' % configRegistry
+	print('StrictModes %(sshd/StrictModes)s' % configRegistry)
 else:
-	print '#StrictModes yes'
+	print('#StrictModes yes')
 if configRegistry.get('sshd/MaxAuthTries'):
-	print 'MaxAuthTries %(sshd/MaxAuthTries)s' % configRegistry
+	print('MaxAuthTries %(sshd/MaxAuthTries)s' % configRegistry)
 else:
-	print '#MaxAuthTries 6'
+	print('#MaxAuthTries 6')
 if configRegistry.get('sshd/MaxSessions'):
-	print 'MaxSessions %(sshd/MaxSessions)s' % configRegistry
+	print('MaxSessions %(sshd/MaxSessions)s' % configRegistry)
 else:
-	print '#MaxSessions 10'
-print ''
+	print('#MaxSessions 10')
+print('')
 if configRegistry.get('sshd/PubkeyAuthentication'):
-	print 'PubkeyAuthentication %(sshd/PubkeyAuthentication)s' % configRegistry
+	print('PubkeyAuthentication %(sshd/PubkeyAuthentication)s' % configRegistry)
 else:
-	print '#PubkeyAuthentication yes'
-print ''
-print '# Expect .ssh/authorized_keys2 to be disregarded by default in future.'
+	print('#PubkeyAuthentication yes')
+print('')
+print('# Expect .ssh/authorized_keys2 to be disregarded by default in future.')
 if configRegistry.get('sshd/AuthorizedKeysFile'):
-	print 'AuthorizedKeysFile %(sshd/AuthorizedKeysFile)s' % configRegistry
+	print('AuthorizedKeysFile %(sshd/AuthorizedKeysFile)s' % configRegistry)
 else:
-	print '#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2'
-print ''
+	print('#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2')
+print('')
 if configRegistry.get('sshd/AuthorizedPrincipalsFile'):
-	print 'AuthorizedPrincipalsFile %(sshd/AuthorizedPrincipalsFile)s' % configRegistry
+	print('AuthorizedPrincipalsFile %(sshd/AuthorizedPrincipalsFile)s' % configRegistry)
 else:
-	print '#AuthorizedPrincipalsFile none'
-print ''
+	print('#AuthorizedPrincipalsFile none')
+print('')
 if configRegistry.get('sshd/AuthorizedKeysCommand'):
-	print 'AuthorizedKeysCommand %(sshd/AuthorizedKeysCommand)s' % configRegistry
+	print('AuthorizedKeysCommand %(sshd/AuthorizedKeysCommand)s' % configRegistry)
 else:
-	print '#AuthorizedKeysCommand none'
+	print('#AuthorizedKeysCommand none')
 if configRegistry.get('sshd/AuthorizedKeysCommandUser'):
-	print 'AuthorizedKeysCommandUser %(sshd/AuthorizedKeysCommandUser)s' % configRegistry
+	print('AuthorizedKeysCommandUser %(sshd/AuthorizedKeysCommandUser)s' % configRegistry)
 else:
-	print '#AuthorizedKeysCommandUser nobody'
-print ''
-print '# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts'
+	print('#AuthorizedKeysCommandUser nobody')
+print('')
+print('# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts')
 if configRegistry.get('sshd/HostbasedAuthentication'):
-	print 'HostbasedAuthentication %(sshd/HostbasedAuthentication)s' % configRegistry
+	print('HostbasedAuthentication %(sshd/HostbasedAuthentication)s' % configRegistry)
 else:
-	print '#HostbasedAuthentication no'
-print '# Change to yes if you don\'t trust ~/.ssh/known_hosts for'
-print '# HostbasedAuthentication'
+	print('#HostbasedAuthentication no')
+print('# Change to yes if you don\'t trust ~/.ssh/known_hosts for')
+print('# HostbasedAuthentication')
 if configRegistry.get('sshd/IgnoreUserKnownHosts'):
-	print 'IgnoreUserKnownHosts %(sshd/IgnoreUserKnownHosts)s' % configRegistry
+	print('IgnoreUserKnownHosts %(sshd/IgnoreUserKnownHosts)s' % configRegistry)
 else:
-	print '#IgnoreUserKnownHosts no'
-print '# Don\'t read the user\'s ~/.rhosts and ~/.shosts files'
+	print('#IgnoreUserKnownHosts no')
+print('# Don\'t read the user\'s ~/.rhosts and ~/.shosts files')
 if configRegistry.get('sshd/IgnoreRhosts'):
-	print 'IgnoreRhosts %(sshd/IgnoreRhosts)s' % configRegistry
+	print('IgnoreRhosts %(sshd/IgnoreRhosts)s' % configRegistry)
 else:
-	print '#IgnoreRhosts yes'
-print ''
-print '# To disable tunneled clear text passwords, change to no here!'
-print 'PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'yes')
+	print('#IgnoreRhosts yes')
+print('')
+print('# To disable tunneled clear text passwords, change to no here!')
+print('PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'yes'))
 if configRegistry.get('sshd/PermitEmptyPasswords'):
-	print 'PermitEmptyPasswords %(sshd/PermitEmptyPasswords)s' % configRegistry
+	print('PermitEmptyPasswords %(sshd/PermitEmptyPasswords)s' % configRegistry)
 else:
-	print '#PermitEmptyPasswords no'
-print ''
-print '# Change to yes to enable challenge-response passwords (beware issues with'
-print '# some PAM modules and threads)'
+	print('#PermitEmptyPasswords no')
+print('')
+print('# Change to yes to enable challenge-response passwords (beware issues with')
+print('# some PAM modules and threads)')
 if configRegistry.get('sshd/challengeresponse'):
-	print "ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse')
+	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
-		print >> sys.stderr, 'WARNING: The value for ChallengeResponseAuthentication is ' \
-			'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse'
+		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
+			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse')
 else:
-	print "ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes')
-print ''
-print '# Kerberos options'
+	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
+print('')
+print('# Kerberos options')
 if configRegistry.get('sshd/KerberosAuthentication'):
-	print 'KerberosAuthentication %(sshd/KerberosAuthentication)s' % configRegistry
+	print('KerberosAuthentication %(sshd/KerberosAuthentication)s' % configRegistry)
 else:
-	print '#KerberosAuthentication no'
+	print('#KerberosAuthentication no')
 if configRegistry.get('sshd/KerberosOrLocalPasswd'):
-	print 'KerberosOrLocalPasswd %(sshd/KerberosOrLocalPasswd)s' % configRegistry
+	print('KerberosOrLocalPasswd %(sshd/KerberosOrLocalPasswd)s' % configRegistry)
 else:
-	print '#KerberosOrLocalPasswd yes'
+	print('#KerberosOrLocalPasswd yes')
 if configRegistry.get('sshd/KerberosTicketCleanup'):
-	print 'KerberosTicketCleanup %(sshd/KerberosTicketCleanup)s' % configRegistry
+	print('KerberosTicketCleanup %(sshd/KerberosTicketCleanup)s' % configRegistry)
 else:
-	print '#KerberosTicketCleanup yes'
+	print('#KerberosTicketCleanup yes')
 if configRegistry.get('sshd/KerberosGetAFSToken'):
-	print 'KerberosGetAFSToken %(sshd/KerberosGetAFSToken)s' % configRegistry
+	print('KerberosGetAFSToken %(sshd/KerberosGetAFSToken)s' % configRegistry)
 else:
-	print '#KerberosGetAFSToken no'
-print ''
-print '# GSSAPI options'
-print 'GSSAPIAuthentication %s' % configRegistry.get('sshd/GSSAPIAuthentication', 'yes')
+	print('#KerberosGetAFSToken no')
+print('')
+print('# GSSAPI options')
+print('GSSAPIAuthentication %s' % configRegistry.get('sshd/GSSAPIAuthentication', 'yes'))
 if configRegistry.get('sshd/GSSAPICleanupCredentials'):
-	print 'GSSAPICleanupCredentials %(sshd/GSSAPICleanupCredentials)s' % configRegistry
+	print('GSSAPICleanupCredentials %(sshd/GSSAPICleanupCredentials)s' % configRegistry)
 else:
-	print '#GSSAPICleanupCredentials yes'
+	print('#GSSAPICleanupCredentials yes')
 if configRegistry.get('sshd/GSSAPIStrictAcceptorCheck'):
-	print 'GSSAPIStrictAcceptorCheck %(sshd/GSSAPIStrictAcceptorCheck)s' % configRegistry
+	print('GSSAPIStrictAcceptorCheck %(sshd/GSSAPIStrictAcceptorCheck)s' % configRegistry)
 else:
-	print '#GSSAPIStrictAcceptorCheck yes'
-print 'GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes')
+	print('#GSSAPIStrictAcceptorCheck yes')
+print('GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes'))
 @!@
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -178,118 +178,118 @@ print 'GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes
 @!@
 import sys
 
-print 'UsePAM %s' % configRegistry.get('sshd/UsePAM', 'yes')
-print ''
+print('UsePAM %s' % configRegistry.get('sshd/UsePAM', 'yes'))
+print('')
 if configRegistry.get('sshd/AllowAgentForwarding'):
-	print 'AllowAgentForwarding %(sshd/AllowAgentForwarding)s' % configRegistry
+	print('AllowAgentForwarding %(sshd/AllowAgentForwarding)s' % configRegistry)
 else:
-	print '#AllowAgentForwarding yes'
+	print('#AllowAgentForwarding yes')
 if configRegistry.get('sshd/AllowTcpForwarding'):
-	print 'AllowTcpForwarding %(sshd/AllowTcpForwarding)s' % configRegistry
+	print('AllowTcpForwarding %(sshd/AllowTcpForwarding)s' % configRegistry)
 else:
-	print '#AllowTcpForwarding yes'
+	print('#AllowTcpForwarding yes')
 if configRegistry.get('sshd/GatewayPorts'):
-	print 'GatewayPorts %(sshd/GatewayPorts)s' % configRegistry
+	print('GatewayPorts %(sshd/GatewayPorts)s' % configRegistry)
 else:
-	print '#GatewayPorts no'
+	print('#GatewayPorts no')
 if configRegistry.get('sshd/xforwarding'):
-	print "X11Forwarding %s" % configRegistry.get('sshd/xforwarding')
+	print("X11Forwarding %s" % configRegistry.get('sshd/xforwarding'))
 	if configRegistry.get('sshd/X11Forwarding'):
-		print >> sys.stderr, 'WARNING: The value for X11Forwarding is ' \
-			'set twice: via sshd/X11Forwarding and sshd/xforwarding'
+		sys.stderr.write('WARNING: The value for X11Forwarding is ' \
+			'set twice: via sshd/X11Forwarding and sshd/xforwarding')
 else:
-	print "X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no')
+	print("X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no'))
 if configRegistry.get('sshd/xdisplayoffset'):
-	print "X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset')
+	print("X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset'))
 	if configRegistry.get('sshd/X11DisplayOffset'):
-		print >> sys.stderr, 'WARNING: The value for X11DisplayOffset is ' \
-			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset'
+		sys.stderr.write('WARNING: The value for X11DisplayOffset is ' \
+			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset')
 elif configRegistry.get('sshd/X11DisplayOffset'):
-	print "X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset')
+	print("X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset'))
 if configRegistry.get('sshd/xuselocalhost'):
-	print "X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost')
+	print("X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost'))
 	if configRegistry.get('sshd/X11UseLocalHost'):
-		print >> sys.stderr, 'WARNING: The value for X11UseLocalHost is ' \
-			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost'
+		sys.stderr.write('WARNING: The value for X11UseLocalHost is ' \
+			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost')
 elif configRegistry.get('sshd/X11UseLocalHost'):
-	print "X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost')
-print ''
+	print("X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost'))
+print('')
 if configRegistry.get('sshd/PermitTTY'):
-	print 'PermitTTY %(sshd/PermitTTY)s' % configRegistry
+	print('PermitTTY %(sshd/PermitTTY)s' % configRegistry)
 else:
-	print '#PermitTTY yes'
-print 'PrintMotd %s' % configRegistry.get('sshd/PrintMotd', 'no')
+	print('#PermitTTY yes')
+print('PrintMotd %s' % configRegistry.get('sshd/PrintMotd', 'no'))
 if configRegistry.get('sshd/TCPKeepAlive'):
-	print 'TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry
+	print('TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry)
 else:
-	print '#TCPKeepAlive yes'
+	print('#TCPKeepAlive yes')
 if configRegistry.get('sshd/PrintLastLog'):
-	print 'PrintLastLog %(sshd/PrintLastLog)s' % configRegistry
+	print('PrintLastLog %(sshd/PrintLastLog)s' % configRegistry)
 else:
-	print '#PrintLastLog yes'
-print ''
+	print('#PrintLastLog yes')
+print('')
 if configRegistry.get('sshd/UsePrivilegeSeparation'):
-	print 'UsePrivilegeSeparation %(sshd/UsePrivilegeSeparation)s' % configRegistry
+	print('UsePrivilegeSeparation %(sshd/UsePrivilegeSeparation)s' % configRegistry)
 else:
-	print '#UsePrivilegeSeparation sandbox'
+	print('#UsePrivilegeSeparation sandbox')
 if configRegistry.get('sshd/PermitUserEnvironment'):
-	print 'PermitUserEnvironment %(sshd/PermitUserEnvironment)s' % configRegistry
+	print('PermitUserEnvironment %(sshd/PermitUserEnvironment)s' % configRegistry)
 else:
-	print '#PermitUserEnvironment no'
+	print('#PermitUserEnvironment no')
 if configRegistry.get('sshd/Compression'):
-	print 'Compression %(sshd/Compression)s' % configRegistry
+	print('Compression %(sshd/Compression)s' % configRegistry)
 else:
-	print '#Compression delayed'
+	print('#Compression delayed')
 if configRegistry.get('sshd/ClientAliveInterval'):
-	print 'ClientAliveInterval %(sshd/ClientAliveInterval)s' % configRegistry
+	print('ClientAliveInterval %(sshd/ClientAliveInterval)s' % configRegistry)
 else:
-	print '#ClientAliveInterval 0'
+	print('#ClientAliveInterval 0')
 if configRegistry.get('sshd/ClientAliveCountMax'):
-	print 'ClientAliveCountMax %(sshd/ClientAliveCountMax)s' % configRegistry
+	print('ClientAliveCountMax %(sshd/ClientAliveCountMax)s' % configRegistry)
 else:
-	print '#ClientAliveCountMax 3'
+	print('#ClientAliveCountMax 3')
 if configRegistry.get('sshd/UseDNS'):
-	print 'UseDNS %(sshd/UseDNS)s' % configRegistry
+	print('UseDNS %(sshd/UseDNS)s' % configRegistry)
 else:
-	print '#UseDNS no'
+	print('#UseDNS no')
 if configRegistry.get('sshd/PidFile'):
-	print 'PidFile %(sshd/PidFile)s' % configRegistry
+	print('PidFile %(sshd/PidFile)s' % configRegistry)
 else:
-	print '#PidFile /var/run/sshd.pid'
+	print('#PidFile /var/run/sshd.pid')
 if configRegistry.get('sshd/MaxStartups'):
-	print 'MaxStartups %(sshd/MaxStartups)s' % configRegistry
+	print('MaxStartups %(sshd/MaxStartups)s' % configRegistry)
 else:
-	print '#MaxStartups 10:30:100'
+	print('#MaxStartups 10:30:100')
 if configRegistry.get('sshd/PermitTunnel'):
-	print 'PermitTunnel %(sshd/PermitTunnel)s' % configRegistry
+	print('PermitTunnel %(sshd/PermitTunnel)s' % configRegistry)
 else:
-	print '#PermitTunnel no'
+	print('#PermitTunnel no')
 if configRegistry.get('sshd/ChrootDirectory'):
-	print 'ChrootDirectory %(sshd/ChrootDirectory)s' % configRegistry
+	print('ChrootDirectory %(sshd/ChrootDirectory)s' % configRegistry)
 else:
-	print '#ChrootDirectory none'
+	print('#ChrootDirectory none')
 if configRegistry.get('sshd/VersionAddendum'):
-	print 'VersionAddendum %(sshd/VersionAddendum)s' % configRegistry
+	print('VersionAddendum %(sshd/VersionAddendum)s' % configRegistry)
 else:
-	print '#VersionAddendum none'
+	print('#VersionAddendum none')
 if configRegistry.get('sshd/banner'):
-	print ''
-	print '# no default banner path'
-	print "Banner %s" % configRegistry.get('sshd/banner')
+	print('')
+	print('# no default banner path')
+	print("Banner %s" % configRegistry.get('sshd/banner'))
 	if configRegistry.get('sshd/Banner'):
-		print >> sys.stderr, 'WARNING: The value for Banner is ' \
-			'set twice: via sshd/Banner and sshd/banner'
+		sys.stderr.write('WARNING: The value for Banner is ' \
+			'set twice: via sshd/Banner and sshd/banner')
 elif configRegistry.get('sshd/Banner'):
-	print ''
-	print '# no default banner path'
-	print "Banner %s" % configRegistry.get('sshd/Banner')
-print ''
-print ''
+	print('')
+	print('# no default banner path')
+	print("Banner %s" % configRegistry.get('sshd/Banner'))
+print('')
+print('')
 if configRegistry.get('sshd/AcceptEnv'):
-	print 'AcceptEnv %(sshd/AcceptEnv)s' % configRegistry
+	print('AcceptEnv %(sshd/AcceptEnv)s' % configRegistry)
 else:
-	print '# Allow client to pass locale environment variables'
-	print 'AcceptEnv LANG LC_*'
+	print('# Allow client to pass locale environment variables')
+	print('AcceptEnv LANG LC_*')
 @!@
 # override default of no subsystems
 Subsystem	sftp	/usr/lib/openssh/sftp-server
@@ -303,11 +303,11 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 
 @!@
 if configRegistry.get('sshd/MACs'):
-	print "MACs %(sshd/MACs)s" % configRegistry
+	print("MACs %(sshd/MACs)s" % configRegistry)
 if configRegistry.get('sshd/Ciphers'):
-	print "Ciphers %(sshd/Ciphers)s" % configRegistry
+	print("Ciphers %(sshd/Ciphers)s" % configRegistry)
 if configRegistry.get('sshd/KexAlgorithms'):
-	print "KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry
+	print("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry)
 @!@
 
 # Start of additional configuration options defined via ucr 'sshd/config/.*'
@@ -316,9 +316,9 @@ PREFIX = 'sshd/config/'
 DIGITS = '0123456789'
 config = [
 	'%s %s' % (key[len(PREFIX):], value)
-	for (key, value) in configRegistry.items()
+	for (key, value) in list(configRegistry.items())
 	if key.startswith(PREFIX)
 ]
 if config:
-	print '\n'.join(line.lstrip(DIGITS) for line in sorted(config))
+	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))
 @!@

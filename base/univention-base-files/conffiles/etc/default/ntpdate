@@ -6,14 +6,14 @@ timeserver = configRegistry.get('timeserver')
 if timeserver != 'local':
 	# Expect on the master, add master and all other backup DCs as timeserver
 	role = configRegistry.get('server/role')
-	dcs = filter(None, [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' '))
+	dcs = [_f for _f in [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' ') if _f]
 	if role != "domaincontroller_master":
 		fqdn = '%(hostname)s.%(domainname)s' % configRegistry
-		servers.extend(filter(lambda dc: dc != fqdn, dcs))
+		servers.extend([dc for dc in dcs if dc != fqdn])
 	# Always add the explicitly configured time servers
 	for ts in [timeserver] + [configRegistry.get('timeserver%d' % d) for d in range(2, 4)]:
 		if ts and ts not in dcs:
 			servers.append(ts)
 if servers:
-	print 'NTPSERVERS="%s"' % ' '.join(servers)
+	print('NTPSERVERS="%s"' % ' '.join(servers))
 @!@
