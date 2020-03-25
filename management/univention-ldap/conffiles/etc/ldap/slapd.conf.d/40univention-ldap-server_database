@@ -1,57 +1,57 @@
 ### database definition
 @!@
-print '\n'
-print 'database\t%(ldap/database/type)s' % configRegistry
-print 'suffix\t\t"%(ldap/base)s"' % configRegistry
+print('\n')
+print('database\t%(ldap/database/type)s' % configRegistry)
+print('suffix\t\t"%(ldap/base)s"' % configRegistry)
 
-print ''
+print('')
 if configRegistry.get('ldap/translogfile'):
-	print "overlay\t\ttranslog"
-	print "translog\t%s" % configRegistry['ldap/translogfile']
+	print("overlay\t\ttranslog")
+	print("translog\t%s" % configRegistry['ldap/translogfile'])
 if configRegistry.is_true('ldap/k5pwd', True):
-	print "overlay\t\tk5pwd"
+	print("overlay\t\tk5pwd")
 if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
-	print "overlay\t\tpwd_scheme_kinit"
+	print("overlay\t\tpwd_scheme_kinit")
 if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy', False):
-	print "overlay\t\tppolicy"
+	print("overlay\t\tppolicy")
 	if configRegistry.is_true('ldap/ppolicy/enabled', False):
 		ppolicy_default = 'cn=default,cn=ppolicy,cn=univention,%(ldap/base)s' % configRegistry
-		print 'ppolicy_default\t"%s"' % configRegistry.get('ldap/ppolicy/default', ppolicy_default)
+		print('ppolicy_default\t"%s"' % configRegistry.get('ldap/ppolicy/default', ppolicy_default))
 if configRegistry.is_true('ldap/shadowbind', True):
-	print 'overlay\t\tshadowbind'
+	print('overlay\t\tshadowbind')
 	if 'ldap/shadowbind/ignorefilter' in configRegistry:
-		print 'shadowbind-ignore-filter "%s"' % configRegistry['ldap/shadowbind/ignorefilter']
+		print('shadowbind-ignore-filter "%s"' % configRegistry['ldap/shadowbind/ignorefilter'])
 if configRegistry.is_true('ldap/overlay/lastbind', False):
-	print 'overlay lastbind'
+	print('overlay lastbind')
 	lastbind_precision = configRegistry.get('ldap/overlay/lastbind/precision', None)
 	if lastbind_precision:
-		print 'lastbind-precision %s' % (lastbind_precision,)
+		print('lastbind-precision %s' % (lastbind_precision,))
 else:
-	print '# lastbind overlay module has been disabled by UCR'
+	print('# lastbind overlay module has been disabled by UCR')
 
-print '\n'
+print('\n')
 if configRegistry['ldap/database/type'] == "mdb":
-	print "maxsize\t%s" % configRegistry.get("ldap/database/mdb/maxsize", "2147483648") # 2GB default (sparse!)
+	print("maxsize\t%s" % configRegistry.get("ldap/database/mdb/maxsize", "2147483648")) # 2GB default (sparse!)
 else:
-	print "cachesize\t%s" % configRegistry.get("ldap/cachesize")
-	print "idlcachesize\t%s" % configRegistry.get("ldap/idlcachesize")
+	print("cachesize\t%s" % configRegistry.get("ldap/cachesize"))
+	print("idlcachesize\t%s" % configRegistry.get("ldap/idlcachesize"))
 
-print ''
-print "threads\t\t%(ldap/threads)s" % configRegistry
-print "tool-threads\t%(ldap/tool-threads)s" % configRegistry
-print ''
+print('')
+print("threads\t\t%(ldap/threads)s" % configRegistry)
+print("tool-threads\t%(ldap/tool-threads)s" % configRegistry)
+print('')
 
 if configRegistry['ldap/database/type'] == "bdb":
 	if configRegistry.get('ldap/database/bdb/checkpoint'):
-		print 'checkpoint %s'%configRegistry['ldap/database/bdb/checkpoint']
+		print('checkpoint %s'%configRegistry['ldap/database/bdb/checkpoint'])
 	else:
-		print 'checkpoint 1024 30'
+		print('checkpoint 1024 30')
 
 if configRegistry['ldap/database/type'] == "mdb":
 	if configRegistry.get('ldap/database/mdb/checkpoint'):
-		print 'checkpoint %s'%configRegistry['ldap/database/mdb/checkpoint']
+		print('checkpoint %s'%configRegistry['ldap/database/mdb/checkpoint'])
 	if configRegistry.get('ldap/database/mdb/envflags', None):
-		print 'envflags %s'%configRegistry['ldap/database/mdb/envflags']
+		print('envflags %s'%configRegistry['ldap/database/mdb/envflags'])
 
 index_attrs={}
 indextypes=['pres','eq','sub','approx']
@@ -93,27 +93,27 @@ for indexcombination in indexcombinations:
 		out = 'index\t%s ' + ','.join(indexes)
 		for attrib in attribs:
 			if len(line + ',' + attrib) > 2000:
-				print out % line
+				print(out % line)
 				line = attrib
 			else:
 				line = line + ',' + attrib if line else attrib
 		if line:
-			print out % line
+			print(out % line)
 
-print
+print('')
 for key in configRegistry.get('ldap/limits', '').split(';'):
 	if key:
-		print "limits %s" % key
+		print("limits %s" % key)
 
-print
+print('')
 if configRegistry['ldap/server/type'] == "master":
-	print 'rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry
+	print('rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry)
 elif configRegistry['ldap/server/type'] == "slave":
-	print 'rootdn\t\t"cn=update,%s"'%configRegistry['ldap/base']
-	print 'include\t\t/etc/ldap/rootpw.conf'
-	print 'updatedn\t"cn=update,%s"'%configRegistry["ldap/base"]
+	print('rootdn\t\t"cn=update,%s"'%configRegistry['ldap/base'])
+	print('include\t\t/etc/ldap/rootpw.conf')
+	print('updatedn\t"cn=update,%s"'%configRegistry["ldap/base"])
 	if configRegistry.is_true("ldap/online/master", True):
-		print 'updateref\tldap://%s:%s'% (configRegistry["ldap/master"], configRegistry.get("ldap/master/port", 7389))
+		print('updateref\tldap://%s:%s'% (configRegistry["ldap/master"], configRegistry.get("ldap/master/port", 7389)))
 @!@
 
 directory	"/var/lib/univention-ldap/ldap"

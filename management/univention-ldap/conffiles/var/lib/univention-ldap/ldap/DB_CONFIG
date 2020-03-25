@@ -3,30 +3,30 @@
 @!@
 if configRegistry['ldap/database/type'] == "bdb":
 	if configRegistry.get('ldap/database/bdb/set_cachesize'):
-		print 'set_cachesize %s'%configRegistry['ldap/database/bdb/set_cachesize']
+		print('set_cachesize %s'%configRegistry['ldap/database/bdb/set_cachesize'])
 	else:
-		print 'set_cachesize 0 90000000 1'
+		print('set_cachesize 0 90000000 1')
 
 	if configRegistry.get('ldap/database/bdb/set_lg_bsize'):
-		print 'set_lg_bsize %s'%configRegistry['ldap/database/bdb/set_lg_bsize']
+		print('set_lg_bsize %s'%configRegistry['ldap/database/bdb/set_lg_bsize'])
 	else:
-		print 'set_lg_bsize 262144'
+		print('set_lg_bsize 262144')
 
 	if configRegistry.get('ldap/database/bdb/set_lg_max'):
-		print 'set_lg_max %s'%configRegistry['ldap/database/bdb/set_lg_max']
+		print('set_lg_max %s'%configRegistry['ldap/database/bdb/set_lg_max'])
 	else:
-		print 'set_lg_max 1048576'
+		print('set_lg_max 1048576')
 
 	if configRegistry.get('ldap/database/bdb/db_config_options'):
 		for option in configRegistry['ldap/database/bdb/db_config_options'].split(','):
 			if configRegistry.get('ldap/database/bdb/%s'%option):
-				print '%s %s'%(option,configRegistry['ldap/database/bdb/%s'%option])
+				print('%s %s'%(option,configRegistry['ldap/database/bdb/%s'%option]))
 
 	# Default values: Bug #24791
 	if not configRegistry.get('ldap/database/bdb/set_lk_max_objects', None):
-		print 'set_lk_max_objects 9000'
+		print('set_lk_max_objects 9000')
 	if not configRegistry.get('ldap/database/bdb/set_lk_max_locks', None):
-		print 'set_lk_max_locks 9000'
+		print('set_lk_max_locks 9000')
 	if not configRegistry.get('ldap/database/bdb/set_lk_max_lockers', None):
-		print 'set_lk_max_lockers 9000'
+		print('set_lk_max_lockers 9000')
 @!@

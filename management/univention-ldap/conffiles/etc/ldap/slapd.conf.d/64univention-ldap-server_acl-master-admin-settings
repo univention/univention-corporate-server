@@ -2,28 +2,28 @@
 ldap_base = configRegistry['ldap/base']
 access = 'write' if configRegistry['ldap/server/type'] == 'master' else 'read'
 
-print '''
+print('''
 access to dn="cn=admin-settings,cn=univention,%(base)s" attrs=children
 	by users %(access)s
 	by * +0 break
-''' % {'base': ldap_base, 'access': access}
+''' % {'base': ldap_base, 'access': access})
 
-print '''
+print('''
 access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=objectClass value=univentionAdminUserSettings
-	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
+	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access})
 if configRegistry['ldap/server/type'] == "slave":
-	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
-print '\tby * none stop'
+	print('\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access})
+print('\tby * none stop')
 
-print '''
+print('''
 access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=objectClass
-	by dn.regex="^uid=$1,.*%(base)s$$" none''' % {'base': ldap_base}
-print '\tby * +0 break'
+	by dn.regex="^uid=$1,.*%(base)s$$" none''' % {'base': ldap_base})
+print('\tby * +0 break')
 
-print '''
+print('''
 access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=entry,@univentionAdminUserSettings
-	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
+	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access})
 if configRegistry['ldap/server/type'] == "slave":
-	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
-print '\tby * none stop'
+	print('\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access})
+print('\tby * none stop')
 @!@

@@ -7,5 +7,5 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 script = '/usr/share/univention-ldap/create-dh-parameter-files'
 interval = configRegistry.get('ldap/tls/dh/cron', '30 4  * * *')
 if interval:
-	print '%s	root	%s' % (interval, script)
+	print('%s	root	%s' % (interval, script))
 @!@

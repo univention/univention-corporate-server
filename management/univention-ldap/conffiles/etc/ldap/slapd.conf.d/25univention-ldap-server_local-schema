@@ -47,5 +47,5 @@ if configRegistry.get('ldap/server/type', 'slave') == 'master':
 	if os.path.exists('/var/lib/univention-ldap/local-schema'):
 		for schemaFile in sorted(os.listdir('/var/lib/univention-ldap/local-schema')):
 			if not isSchemaFileIncluded(schemaFile):
-				print 'include         /var/lib/univention-ldap/local-schema/%s' % schemaFile
+				print('include         /var/lib/univention-ldap/local-schema/%s' % schemaFile)
 @!@
