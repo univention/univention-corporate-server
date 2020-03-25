@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-passwd-store
+fix: 12.0.0-2
+desc: |
+ This update addresses the following issue(s):
+ * Internal change: the UCR templates of univention-passwd-store are now python3-compatible (Bug #51008).
+bug: [51008]
