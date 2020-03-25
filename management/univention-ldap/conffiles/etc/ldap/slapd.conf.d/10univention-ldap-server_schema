@@ -3,45 +3,45 @@
 @!@
 import os.path
 if configRegistry['ldap/server/type'] == "master":
-	print 'include         /etc/ldap/schema/core.schema'
-	print 'include         /etc/ldap/schema/cosine.schema'
-	print 'include         /etc/ldap/schema/nis.schema'
-	print 'include         /etc/ldap/schema/inetorgperson.schema'
-	print 'include         /etc/ldap/schema/ppolicy.schema'
-	print 'include         /usr/share/univention-ldap/schema/samba.schema'
-	print 'include         /usr/share/univention-ldap/schema/mail.schema'
-	print 'include         /usr/share/univention-ldap/schema/user.schema'
-	print 'include         /usr/share/univention-ldap/schema/directory.schema'
-	print 'include         /usr/share/univention-ldap/schema/policy.schema'
-	print 'include         /usr/share/univention-ldap/schema/dnszone.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention.schema'
-	print 'include         /usr/share/univention-ldap/schema/lock.schema'
-	print 'include         /usr/share/univention-ldap/schema/custom-attribute.schema'
-	print 'include         /usr/share/univention-ldap/schema/krb5-kdc.schema'
-	print 'include         /usr/share/univention-ldap/schema/dhcp.schema'
-	print 'include         /usr/share/univention-ldap/schema/portal.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-dhcp.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-default.schema'
-	print 'include         /usr/share/univention-ldap/schema/license.schema'
-	print 'include         /usr/share/univention-ldap/schema/share.schema'
-	print 'include         /usr/share/univention-ldap/schema/printer.schema'
-	print 'include         /usr/share/univention-ldap/schema/automount.schema'
-	print 'include         /usr/share/univention-ldap/schema/network.schema'
-	print 'include         /usr/share/univention-ldap/schema/solaris.schema'
-	print 'include         /usr/share/univention-ldap/schema/courier.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-scalix.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-syntax.schema'
-	print 'include         /usr/share/univention-ldap/schema/admin-settings.schema'
-	print 'include         /usr/share/univention-ldap/schema/template.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-ldap-acl.schema'
-	print 'include         /usr/share/univention-ldap/schema/nagios.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-directory.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-objecttype.schema'
-	print 'include         /usr/share/univention-ldap/schema/msgpo.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-object-metadata.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-ldap-extension.schema'
-	print 'include         /usr/share/univention-ldap/schema/udm-extension.schema'
-	print 'include         /usr/share/univention-ldap/schema/univention-data.schema'
+	print('include         /etc/ldap/schema/core.schema')
+	print('include         /etc/ldap/schema/cosine.schema')
+	print('include         /etc/ldap/schema/nis.schema')
+	print('include         /etc/ldap/schema/inetorgperson.schema')
+	print('include         /etc/ldap/schema/ppolicy.schema')
+	print('include         /usr/share/univention-ldap/schema/samba.schema')
+	print('include         /usr/share/univention-ldap/schema/mail.schema')
+	print('include         /usr/share/univention-ldap/schema/user.schema')
+	print('include         /usr/share/univention-ldap/schema/directory.schema')
+	print('include         /usr/share/univention-ldap/schema/policy.schema')
+	print('include         /usr/share/univention-ldap/schema/dnszone.schema')
+	print('include         /usr/share/univention-ldap/schema/univention.schema')
+	print('include         /usr/share/univention-ldap/schema/lock.schema')
+	print('include         /usr/share/univention-ldap/schema/custom-attribute.schema')
+	print('include         /usr/share/univention-ldap/schema/krb5-kdc.schema')
+	print('include         /usr/share/univention-ldap/schema/dhcp.schema')
+	print('include         /usr/share/univention-ldap/schema/portal.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-dhcp.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-default.schema')
+	print('include         /usr/share/univention-ldap/schema/license.schema')
+	print('include         /usr/share/univention-ldap/schema/share.schema')
+	print('include         /usr/share/univention-ldap/schema/printer.schema')
+	print('include         /usr/share/univention-ldap/schema/automount.schema')
+	print('include         /usr/share/univention-ldap/schema/network.schema')
+	print('include         /usr/share/univention-ldap/schema/solaris.schema')
+	print('include         /usr/share/univention-ldap/schema/courier.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-scalix.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-syntax.schema')
+	print('include         /usr/share/univention-ldap/schema/admin-settings.schema')
+	print('include         /usr/share/univention-ldap/schema/template.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-ldap-acl.schema')
+	print('include         /usr/share/univention-ldap/schema/nagios.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-directory.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-objecttype.schema')
+	print('include         /usr/share/univention-ldap/schema/msgpo.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-object-metadata.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-ldap-extension.schema')
+	print('include         /usr/share/univention-ldap/schema/udm-extension.schema')
+	print('include         /usr/share/univention-ldap/schema/univention-data.schema')
 else:
-	print 'include         /var/lib/univention-ldap/schema.conf'
+	print('include         /var/lib/univention-ldap/schema.conf')
 @!@

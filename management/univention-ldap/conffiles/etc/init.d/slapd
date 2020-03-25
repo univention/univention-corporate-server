@@ -127,8 +127,8 @@ check_subschema ()
 	done
 @!@
 if configRegistry.is_true('ldap/schema/export'):
-		print '\tcp $tmpfile /var/www/ldap-schema.txt'
-		print '\tchmod a+r /var/www/ldap-schema.txt'
+		print('\tcp $tmpfile /var/www/ldap-schema.txt')
+		print('\tchmod a+r /var/www/ldap-schema.txt')
 @!@
 	md5=`md5sum $tmpfile | awk '{print $1}'`
 	rm -f "$tmpfile"
@@ -202,10 +202,10 @@ case "$1" in
 	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 @!@
 if configRegistry['ldap/database/type'] == 'bdb':
-	print '\t# check backend database'
-	print '\tbdbrecover'
+	print('\t# check backend database')
+	print('\tbdbrecover')
 if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
-	print '\tcheck_replog_file'
+	print('\tcheck_replog_file')
 @!@
 
 	log_action_begin_msg "Starting ldap server(s): slapd "
@@ -216,9 +216,9 @@ for p in configRegistry.get('slapd/port', '7389').split(','):
 	uris.append('ldap://:%s/' % p)
 for p in configRegistry.get('slapd/port/ldaps', '7636').split(','):
 	uris.append('ldaps://:%s/' % p)
-print '\turis="%s"' % ' '.join(uris)
+print('\turis="%s"' % ' '.join(uris))
 if configRegistry.get('ldap/maxopenfiles'):
-	print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
+	print('\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles'])
 @!@		start-stop-daemon --start --ppid 1 --quiet \
 			--exec $DAEMON -- -h "${uris}"
 	rvalue=$?
@@ -244,9 +244,9 @@ if configRegistry.get('ldap/maxopenfiles'):
 
 @!@
 if configRegistry['ldap/server/type']=="master":
-	print '\tlog_action_begin_msg "Checking Schema ID: "'
-	print '\tcheck_subschema 2>&1'
-	print '\tlog_action_end_msg 0'
+	print('\tlog_action_begin_msg "Checking Schema ID: "')
+	print('\tcheck_subschema 2>&1')
+	print('\tlog_action_end_msg 0')
 @!@
 
 	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then

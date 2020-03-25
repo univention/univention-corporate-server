@@ -10,198 +10,198 @@ groups_default_windowshosts = custom_groupname('Windows Hosts')
 nestedGroups = configRegistry.is_true('ldap/acl/nestedgroups', True)
 
 if configRegistry.is_true('ldap/acl/slavepdc', True):
-	print 'access to dn.regex="^cn=([^,]+),cn=([^,]+),cn=temporary,cn=univention,%s$" filter="objectClass=lock" attrs="entry,@univentionObject,@lock"' % ldap_base
+	print('access to dn.regex="^cn=([^,]+),cn=([^,]+),cn=temporary,cn=univention,%s$" filter="objectClass=lock" attrs="entry,@univentionObject,@lock"' % ldap_base)
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-	print 'access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=children,entry' % ldap_base
+	print('access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=children,entry' % ldap_base)
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-	print 'access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=univentionLastUsedValue' % ldap_base
+	print('access to dn.regex="^cn=([^,]+),cn=temporary,cn=univention,%s$" attrs=univentionLastUsedValue' % ldap_base)
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-	print 'access to dn.subtree="cn=computers,%s" attrs=children,entry' % (ldap_base)
+	print('access to dn.subtree="cn=computers,%s" attrs=children,entry' % (ldap_base))
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
 	# FIXME: the following rule is incomplete as it allows creating and modifying of any object type
-	print 'access to dn.children="%s" filter="(objectClass=univentionWindows)" attrs="!univentionShare"' % (ldap_base,)
+	print('access to dn.children="%s" filter="(objectClass=univentionWindows)" attrs="!univentionShare"' % (ldap_base,))
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
 	# FIXME: the following rule is incomplete as it allows creating and modifying of any object type
-	print 'access to dn.children="%s" filter="(&(objectClass=univentionGroup)(cn=%s))" attrs="!posixAccount,!univentionShare"' % (ldap_base, groups_default_windowshosts)
+	print('access to dn.children="%s" filter="(&(objectClass=univentionGroup)(cn=%s))" attrs="!posixAccount,!univentionShare"' % (ldap_base, groups_default_windowshosts))
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-	print 'access to dn.base="cn=samba,%s" attrs=children' % (ldap_base,)
+	print('access to dn.base="cn=samba,%s" attrs=children' % (ldap_base,))
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-	print 'access to dn.children="%s" filter="(objectClass=sambaDomain)" attrs=@sambaDomain' % (ldap_base)
+	print('access to dn.children="%s" filter="(objectClass=sambaDomain)" attrs=@sambaDomain' % (ldap_base))
 	if configRegistry['ldap/server/type'] == "slave":
-		print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+		print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-print 'access to dn.regex="^cn=.*,cn=dc,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % (ldap_base)
+print('access to dn.regex="^cn=.*,cn=dc,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % (ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by self %s' % (usr)
-print '   by dn.children="cn=dc,cn=computers,%s" read' % (ldap_base)
-print '   by * none'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by self %s' % (usr))
+print('   by dn.children="cn=dc,cn=computers,%s" read' % (ldap_base))
+print('   by * none')
 
-print 'access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % (ldap_base)
+print('access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % (ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-print '   by self %s' % (usr)
-print '   by * none'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+print('   by self %s' % (usr))
+print('   by * none')
 
-print 'access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=objectClass,sambaSID,sambaPrimaryGroupSID,displayName,sambaAcctFlags' % (ldap_base)
+print('access to dn.regex="^cn=.*,cn=memberserver,cn=computers,%s$" attrs=objectClass,sambaSID,sambaPrimaryGroupSID,displayName,sambaAcctFlags' % (ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-print '   by * +0 break'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+print('   by * +0 break')
 
-print 'access to attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword'
+print('access to attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword')
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-print '   by dn.children="cn=memberserver,cn=computers,%s" read' % (ldap_base)
-print '   by * none'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+print('   by dn.children="cn=memberserver,cn=computers,%s" read' % (ldap_base))
+print('   by * none')
 
 if configRegistry['ldap/server/type'] == "master":
-	print 'access to attrs=sambaAcctFlags'
+	print('access to attrs=sambaAcctFlags')
 	if nestedGroups:
-		print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+		print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 	else:
-		print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-	print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-	print '   by * +0 break'
+		print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+	print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+	print('   by * +0 break')
 
-print 'access to attrs=shadowMax,krb5PasswordEnd,shadowLastChange'
+print('access to attrs=shadowMax,krb5PasswordEnd,shadowLastChange')
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-print '   by dn.children="cn=memberserver,cn=computers,%s" read' % (ldap_base)
-print '   by * +0 break'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+print('   by dn.children="cn=memberserver,cn=computers,%s" read' % (ldap_base))
+print('   by * +0 break')
 
-print 'access to dn.base="cn=idmap,cn=univention,%s" attrs=children,@organizationalRole,@sambaIdmapEntry,@sambaSidEntry' % (ldap_base)
+print('access to dn.base="cn=idmap,cn=univention,%s" attrs=children,@organizationalRole,@sambaIdmapEntry,@sambaSidEntry' % (ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-print '   by dn.children="cn=memberserver,cn=computers,%s" write' % (ldap_base)
-print '   by * none'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+print('   by dn.children="cn=memberserver,cn=computers,%s" write' % (ldap_base))
+print('   by * none')
 
-print 'access to dn.children="cn=idmap,cn=univention,%s" attrs=entry,@univentionObject,@sambaUnixIdPool,@sambaIdmapEntry,@sambaSidEntry,@organizationalRole' % (ldap_base)
+print('access to dn.children="cn=idmap,cn=univention,%s" attrs=entry,@univentionObject,@sambaUnixIdPool,@sambaIdmapEntry,@sambaSidEntry,@organizationalRole' % (ldap_base))
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
-print '   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr)
-print '   by dn.children="cn=memberserver,cn=computers,%s" write' % (ldap_base)
-print '   by * none'
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
+print('   by dn.children="cn=dc,cn=computers,%s" %s' % (ldap_base, usr))
+print('   by dn.children="cn=memberserver,cn=computers,%s" write' % (ldap_base))
+print('   by * none')
 
 if configRegistry.is_false('ldap/acl/read/anonymous'):
-	print 'access to dn.subtree="%s" attrs=entry,uid' % (ldap_base,)
+	print('access to dn.subtree="%s" attrs=entry,uid' % (ldap_base,))
 	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
-			print '   by peername.ip=%s read' % ip
-	print '   by anonymous auth'
-	print '   by * +0 break'
+			print('   by peername.ip=%s read' % ip)
+	print('   by anonymous auth')
+	print('   by * +0 break')
 
-print 'access to *'
+print('access to *')
 if configRegistry['ldap/server/type'] == "slave":
-	print '   by dn.base="cn=admin,%s" %s' % (ldap_base, usr)
+	print('   by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
 if nestedGroups:
-	print '   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by set="user & [cn=%s,cn=groups,%s]/uniqueMember*" %s' % (groups_default_domainadmins, ldap_base, usr))
 else:
-	print '   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr)
+	print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
 if configRegistry.is_false('ldap/acl/read/anonymous'):
-	print '   by users read'
+	print('   by users read')
 	ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
 	if ldap_acl_read_anonymous_ips:
 		for ip in ldap_acl_read_anonymous_ips.split(','):
-			print '   by peername.ip=%s read' % ip
+			print('   by peername.ip=%s read' % ip)
 else:
-	print '   by * read'
+	print('   by * read')
 
 if configRegistry.is_true('ldap/replog', False):
-	print "replogfile /var/lib/univention-ldap/replog/replog"
+	print("replogfile /var/lib/univention-ldap/replog/replog")
 @!@

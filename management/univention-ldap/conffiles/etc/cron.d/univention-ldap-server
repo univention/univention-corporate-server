@@ -11,7 +11,7 @@ command = '/usr/sbin/univention-ldap-backup'
 interval = configRegistry.get('slapd/backup/cron', '0 0 * * *')
 user = 'root'
 if configRegistry.is_true('slapd/backup', True):
-	print '%s %s %s' % (interval, user, command)
+	print('%s %s %s' % (interval, user, command))
 else:
-	print '# %s disabled by UCR slapd/backup' % command
+	print('# %s disabled by UCR slapd/backup' % command)
 @!@
