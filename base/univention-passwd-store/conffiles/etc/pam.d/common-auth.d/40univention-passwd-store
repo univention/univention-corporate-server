@@ -1,4 +1,4 @@
 @!@
 if configRegistry.is_true('auth/passwdstore', False):
-	print 'auth     required                           pam_runasroot.so save_pass'
+	print('auth     required                           pam_runasroot.so save_pass')
 @!@
