@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import codecs
+
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
@@ -121,8 +123,8 @@ class object(univention.admin.handlers.simplePolicy):
 		info['registry'] = []
 		for key, value in values.items():
 			if key.startswith('univentionRegistry;entry-hex-'):
-				key_name = key.split('univentionRegistry;entry-hex-', 1)[1].decode('hex')
-				info['registry'].append([key_name, values[key][0].strip()])
+				key_name = codecs.decode(key.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
+				info['registry'].append([key_name, value[0].decode('UTF-8').strip()])
 
 		info['registry'].sort()
 
@@ -140,16 +142,16 @@ class object(univention.admin.handlers.simplePolicy):
 				new_dict = dict([k.strip(), v] for k, v in new)  # strip leading and trailing whitespace in variable names
 
 				for var, value in old_dict.items():
-					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
+					attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(var.encode('utf-8'), 'hex').decode('ASCII')
 					if var not in new_dict:  # variable has been removed
-						modlist.append((attr_name, value, None))
+						modlist.append((attr_name, value.encode('UTF-8'), None))
 					elif value != new_dict[var]:  # value has been changed
-						modlist.append((attr_name, value, new_dict[var]))
+						modlist.append((attr_name, value.encode('UTF-8'), new_dict[var].encode('utf-8')))
 
 				for var, value in new_dict.items():
-					attr_name = 'univentionRegistry;entry-hex-%s' % var.encode('hex')
+					attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(var.encode('utf-8'), 'hex').decode('ASCII')
 					if var not in old_dict:  # variable has been added
-						modlist.append((attr_name, None, new_dict[var]))
+						modlist.append((attr_name, None, new_dict[var].encode('UTF-8')))
 				break
 
 		return modlist
@@ -160,7 +162,7 @@ class object(univention.admin.handlers.simplePolicy):
 		for attr_name, value_dict in self.policy_attrs.items():
 			values[attr_name] = value_dict['value']
 			if attr_name.startswith('univentionRegistry;entry-hex-'):
-				key_name = attr_name.split('univentionRegistry;entry-hex-', 1)[1].decode('hex')
+				key_name = codecs.decode(attr_name.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
 				value_dict['value'].insert(0, key_name)
 				self.polinfo_more['registry'].append(value_dict)
 			elif attr_name:
