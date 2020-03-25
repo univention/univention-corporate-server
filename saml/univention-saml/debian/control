@@ -34,6 +34,8 @@ Depends:
  univention-directory-manager-tools,
  univention-heimdal-common,
  univention-saml-schema (= ${source:Version}),
+ python-six,
+ python3-six,
  ${misc:Depends},
 Breaks:
  univention-saml-schema (<< 3.0.16-1),
