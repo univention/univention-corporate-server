@@ -1887,17 +1887,17 @@ class simpleComputer(simpleLdap):
 		if rid:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
-			sid = domainsid + '-' + rid
+			sid = domainsid + u'-' + rid
 			univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			return sid
 		else:
 			# if no rid is given, create a domain sid or local sid if connector is present
 			if self.s4connector_present:
-				return 'S-1-4-%s' % uidNum
+				return u'S-1-4-%s' % uidNum
 			else:
 				num = uidNum
-				machineSid = ""
-				while not machineSid or machineSid == 'None':
+				machineSid = u""
+				while not machineSid or machineSid == u'None':
 					try:
 						machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
 					except univention.admin.uexceptions.noLock:
@@ -2326,7 +2326,7 @@ class simpleComputer(simpleLdap):
 			if results:
 				for dn, attr in results:
 					if 'zoneName' in attr:
-						hostname = '%s.%s.' % (name, attr['zoneName'][0].decode('UTF-8'))
+						hostname = u'%s.%s.' % (name, attr['zoneName'][0].decode('UTF-8'))
 						if hostname not in hostname_list:
 							hostname_list.append(hostname)
 
