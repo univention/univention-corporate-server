@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.2-67) unstable; urgency=medium
+
+  * Bug #50593: Objects in UCS are now compared by their entryUUID/objectGUID
+    before deletion, so that a new object with the same DN is not mistakenly
+    deleted.
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 26 Mar 2020 13:36:03 +0100
+
 univention-s4-connector (13.0.2-66) unstable; urgency=medium
 
   * Bug #50492: Fill new dummy hash with nt_hash
