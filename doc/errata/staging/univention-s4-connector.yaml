@@ -6,7 +6,7 @@ src: univention-s4-connector
 fix: 13.0.2-67A~4.4.0.202003261342
 desc: |
  This update addresses the following issue:
- * Objects Objects in UCS are now compared by their entryUUID/objectGUID
+ * Objects in UCS are now compared by their entryUUID/objectGUID
    before deletion, so that a new object with the same DN is not mistakenly
    deleted.
 bug: [50593]
