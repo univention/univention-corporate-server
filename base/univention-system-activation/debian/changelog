@@ -1,3 +1,9 @@
+univention-system-activation (4.0.0-11) unstable; urgency=medium
+
+  * Bug #51024: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 26 Mar 2020 15:20:56 +0100
+
 univention-system-activation (4.0.0-10) unstable; urgency=medium
 
   * Bug #50951: link to sdb article in case of error

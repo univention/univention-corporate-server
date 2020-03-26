@@ -23,5 +23,5 @@ try:
 except IOError:
 	pass
 
-print json.dumps(data, indent=2)
+print(json.dumps(data, indent=2))
 @!@

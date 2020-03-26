@@ -10,5 +10,5 @@ for l in locale.split(' '):
                 locales.append((l.replace('_', '-'), configured_locale))
 
 import json
-print(json.dumps([{'id':id, 'label':label} for id, label in locales]))
+print(json.dumps([{'id': id_, 'label': label} for id_, label in locales]))
 @!@
