@@ -2,13 +2,13 @@
 
 @!@
 roles = ["domaincontroller_backup", "domaincontroller_master", "domaincontroller_slave", "memberserver"]
-print "# collect system stats"
+print("# collect system stats")
 if configRegistry.is_true("system/stats", False) and configRegistry["server/role"] in roles:
 	cron = configRegistry.get("system/stats/cron", "0,30 * * * * ")
-	file = "/usr/sbin/univention-system-stats"
-	print "SHELL=/bin/sh"
-	print "PATH=/sbin:/bin:/usr/sbin:/usr/bin"
-	print "%s root [ -x %s ] && %s >/dev/null" % (cron, file, file)
+	filename = "/usr/sbin/univention-system-stats"
+	print("SHELL=/bin/sh")
+	print("PATH=/sbin:/bin:/usr/sbin:/usr/bin")
+	print("%s root [ -x %s ] && %s >/dev/null" % (cron, filename, filename))
 else:
-	print "# not enabled via system/stats/cron or not one of those system roles:\n#%s" % roles
+	print("# not enabled via system/stats/cron or not one of those system roles:\n#%s" % roles)
 @!@
