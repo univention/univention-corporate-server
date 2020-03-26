@@ -1,3 +1,9 @@
+univention-ssl (13.0.0-7) unstable; urgency=medium
+
+  * Bug #51022: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 26 Mar 2020 15:11:02 +0100
+
 univention-ssl (13.0.0-6) unstable; urgency=low
 
   * Bug #49036: Fix file permission when creating new host certificates
