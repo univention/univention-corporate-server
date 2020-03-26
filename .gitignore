@@ -13,3 +13,5 @@ build/
 !*/*/debian/patches/
 !*/*/debian/source/
 !*/*/debian/po/
+.*.sw?
+*.py[co]
