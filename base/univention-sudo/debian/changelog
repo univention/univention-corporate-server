@@ -1,3 +1,9 @@
+univention-sudo (4.0.0-2) unstable; urgency=medium
+
+  * Bug #51023: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 26 Mar 2020 15:15:55 +0100
+
 univention-sudo (4.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

@@ -6,5 +6,5 @@ import re
 group = configRegistry.get("groups/default/domainadmins", "Domain Admins")
 if group and configRegistry.is_true('auth/sudo'):
 	da = re.sub(r'([ !=:,()\\])', r'\\\1', group)
-	print "%{} ALL=(ALL:ALL) ALL".format(da)
+	print("%{} ALL=(ALL:ALL) ALL".format(da))
 @!@
