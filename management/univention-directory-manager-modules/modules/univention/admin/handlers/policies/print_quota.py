@@ -129,17 +129,17 @@ layout = [
 ]
 
 
-def unmapQuotaEntries(old):
+def unmapQuotaEntries(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(i.split(' ', 2))
+		new.append(i.decode(*encoding).split(u' ', 2))
 	return new
 
 
-def mapQuotaEntries(old):
+def mapQuotaEntries(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(u' '.join(i).encode(*encoding))
 	return new
 
 
