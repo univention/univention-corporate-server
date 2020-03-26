@@ -1,3 +1,9 @@
+univention-app-appliance (3.0.1-11) unstable; urgency=low
+
+  * Bug #51026: make UCR templates python3-compatible
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Mar 2020 15:44:03 +0100
+
 univention-app-appliance (3.0.1-10) unstable; urgency=medium
 
   * Bug #50516: revert changes after QA feedback
