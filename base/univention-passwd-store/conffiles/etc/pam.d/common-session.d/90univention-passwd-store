@@ -1,4 +1,4 @@
 @!@
 if configRegistry.is_true('auth/passwdstore', False):
-	print 'session    required   pam_runasroot.so export_pass program=/usr/sbin/univention-passwd-store silent'
+	print('session    required   pam_runasroot.so export_pass program=/usr/sbin/univention-passwd-store silent')
 @!@
