@@ -6,5 +6,6 @@ src: univention-base-files
 fix: 8.0.0-6A~4.4.4.202003261151
 desc: |
  This update addresses the following issue:
- * The UCR templates of univention-base-files have been adapted to be python2 and python3 compatible.
+ * The UCR templates of univention-base-files have been adapted
+   to be python2 and python3 compatible.
 bug: [51006]
