@@ -283,7 +283,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
-		if self.oldattr.get('univentionLicenseVersion', []) == ['2']:
+		if self.oldattr.get('univentionLicenseVersion', []) == [b'2']:
 			self.options.append('Version 2')
 		else:
 			self.options.append('Version 1')
