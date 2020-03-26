@@ -110,12 +110,12 @@ layout = [
 ]
 
 
-def unmapMounts(old):
-	return map(lambda x: x.split(' '), old)
+def unmapMounts(old, encoding=()):
+	return [x.decode(*encoding).split(u' ') for x in old]
 
 
-def mapMounts(old):
-	return map(lambda x: ' '.join(x), old)
+def mapMounts(old, encoding=()):
+	return [u' '.join(x).encode(*encoding) for x in old]
 
 
 mapping = univention.admin.mapping.mapping()
