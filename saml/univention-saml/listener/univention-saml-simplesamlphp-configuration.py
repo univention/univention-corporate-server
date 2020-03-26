@@ -163,7 +163,7 @@ def write_configuration_file(dn, new, filename):
 				fd.write("	'SingleLogoutService'	=> %s,\n" % php_array(new.get('singleLogoutService')))
 
 		if new.get('signLogouts') and new.get('signLogouts')[0] == "TRUE":
-			fd.write("      'sign.logout' => TRUE,\n")
+			fd.write("	'sign.logout' => TRUE,\n")
 		if new.get('NameIDFormat'):
 			fd.write("	'NameIDFormat'	=> %s,\n" % php_string(new.get('NameIDFormat')[0]))
 		if new.get('simplesamlNameIDAttribute'):
@@ -171,10 +171,11 @@ def write_configuration_file(dn, new, filename):
 		if new.get('simplesamlAttributes'):
 			fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
 		if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == "TRUE":
-			simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', []))
+			simplesamlLDAPattributes = [entry.split('=', 1)[0] for entry in list(new.get('simplesamlLDAPattributes', []))]
 			if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
 				simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
 			fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
+			simplesamlLDAPattributes = [entry.split('=', 1) for entry in list(new.get('simplesamlLDAPattributes', [])) if entry.split('=')[0] and len(entry.split('='))>1 and entry.split('=')[1] and entry.split('=')[0] != entry.split('=')[1]]
 		if new.get('attributesNameFormat'):
 			fd.write("	'attributes.NameFormat'	=> %s,\n" % php_string(new.get('attributesNameFormat')[0]))
 		if new.get('serviceproviderdescription'):
@@ -191,9 +192,18 @@ def write_configuration_file(dn, new, filename):
 			fd.write("		'class' => 'authorize:Authorize',\n")
 			fd.write("		'regex' => FALSE,\n")
 			fd.write("		'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
-			fd.write("		)\n")
+			fd.write("		),\n")
+			if simplesamlLDAPattributes:
+				fd.write("		50 => array(\n		'class' => 'core:AttributeMap',\n")
+				for attr in simplesamlLDAPattributes:
+					if ',' in attr[1]:
+						fd.write("		'%s' => array('%s'),\n" % (attr[0], "','".join(attr[1].split(','))))
+					else:
+						fd.write("		'%s' => '%s',\n" % (attr[0], attr[1]))
+				fd.write("		),\n")
 		else:
 			fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")
+
 		fd.write("	),\n")
 
 		fd.write(");\n")
