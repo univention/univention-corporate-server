@@ -6,5 +6,6 @@ src: univention-printclient
 fix: 12.0.0-2A~4.4.0.202003261115
 desc: |
  This update addresses the following issue(s):
- * Internal change: the UCR templates of univention-printclient are now python3-compatible (Bug #51009).
+ * Internal change: the UCR templates of univention-printclient are now
+   python3-compatible.
 bug: [51009]

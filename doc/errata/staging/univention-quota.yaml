@@ -6,5 +6,6 @@ src: univention-quota
 fix: 13.0.1-7A~4.4.0.202003261119
 desc: |
  This update addresses the following issue(s):
- * Internal change: the UCR templates of univention-quota are now python3-compatible (Bug #51010).
+ * Internal change: the UCR templates of univention-quota are now
+   python3-compatible.
 bug: [51010]
