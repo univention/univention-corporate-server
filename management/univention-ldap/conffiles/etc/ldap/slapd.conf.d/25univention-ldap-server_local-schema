@@ -34,7 +34,7 @@ def isSchemaFileIncluded(schemaFile):
 		p1 = subprocess.Popen(["cat", "/etc/univention/templates/files/etc/ldap/slapd.conf.d/%s" % f], stdout=subprocess.PIPE)
 		p2 = subprocess.Popen(["ucr", "filter"], stdin=p1.stdout, stdout=subprocess.PIPE)
 		p1.stdout.close()
-		output = p2.communicate()[0]
+		output = p2.communicate()[0].decode('utf-8', 'replace')
 		pattern = re.compile('include.*%s' % schemaFile)
 		for line in output.split('\n'):
 			if line and pattern.match(line):
