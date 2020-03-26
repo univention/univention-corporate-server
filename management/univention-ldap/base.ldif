@@ -1,57 +1,57 @@
 @!@
-dn=baseConfig['ldap/base'].split('=')[0]
-print 'dn: %s' % baseConfig['ldap/base']
-print 'objectClass: top'
-print 'objectClass: krb5Realm'
-print 'objectClass: univentionPolicyReference'
-print 'objectClass: nisDomainObject'
-print 'objectClass: domainRelatedObject'
+dn=configRegistry['ldap/base'].split('=')[0]
+print('dn: %s' % configRegistry['ldap/base'])
+print('objectClass: top')
+print('objectClass: krb5Realm')
+print('objectClass: univentionPolicyReference')
+print('objectClass: nisDomainObject')
+print('objectClass: domainRelatedObject')
 if dn == 'dc':
-	print 'objectClass: domain'
-	print 'dc: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+	print('objectClass: domain')
+	print('dc: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
 elif dn == 'o':
-	print 'objectClass: organization'
-	print 'o: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+	print('objectClass: organization')
+	print('o: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
 elif dn == 'ou':
-	print 'objectClass: organizationalUnit'
-	print 'ou: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+	print('objectClass: organizationalUnit')
+	print('ou: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
 elif dn == 'l':
-	print 'objectClass: organization'
-	print 'l: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
-	print 'o: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+	print('objectClass: organization')
+	print('l: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
+	print('o: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
 elif dn == 'cn':
-	print 'objectClass: organizationalRole'
-	print 'cn: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+	print('objectClass: organizationalRole')
+	print('cn: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
 elif dn == 'c':
-	print 'objectClass: country'
-	print 'c: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
-print 'objectClass: univentionBase'
-print 'objectClass: univentionObject'
-print 'univentionObjectType: container/dc'
-print 'krb5RealmName: %s' % baseConfig['domainname'].upper()
-print 'nisDomain: %s' % baseConfig['domainname']
-print 'associatedDomain: %s' % baseConfig['domainname']
-print 'univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,%s' % baseConfig['ldap/base']
-print 'univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % baseConfig['ldap/base']
-print 'univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=policies,%s' % baseConfig['ldap/base']
-print ''
-print 'dn: cn=samba,%s' % baseConfig['ldap/base']
-print 'objectClass: top'
-print 'objectClass: organizationalRole'
-print 'objectClass: univentionObject'
-print 'univentionObjectType: container/cn'
-print 'cn: samba'
-print ''
-print 'dn: sambaDomainName=@@%%@@sambadomain@@%%@@,cn=samba,%s' % ( baseConfig['ldap/base'])
-print 'sambaDomainName: @@%%@@sambadomain@@%%@@'
-print 'sambaSID: @@%%@@sid@@%%@@'
-print 'objectClass: sambaDomain'
-print 'objectClass: univentionObject'
-print 'univentionObjectType: settings/sambadomain'
-print 'sambaNextUserRid: 1000'
-print 'sambaNextGroupRid: 1000'
-print 'sambaMinPwdLength: 8'
-print 'univentionSamba4pwdProperties: 1'
+	print('objectClass: country')
+	print('c: %s' % configRegistry['ldap/base'].split('=')[1].split(',')[0])
+print('objectClass: univentionBase')
+print('objectClass: univentionObject')
+print('univentionObjectType: container/dc')
+print('krb5RealmName: %s' % configRegistry['domainname'].upper())
+print('nisDomain: %s' % configRegistry['domainname'])
+print('associatedDomain: %s' % configRegistry['domainname'])
+print('univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,%s' % configRegistry['ldap/base'])
+print('univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % configRegistry['ldap/base'])
+print('univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=policies,%s' % configRegistry['ldap/base'])
+print('')
+print('dn: cn=samba,%s' % configRegistry['ldap/base'])
+print('objectClass: top')
+print('objectClass: organizationalRole')
+print('objectClass: univentionObject')
+print('univentionObjectType: container/cn')
+print('cn: samba')
+print('')
+print('dn: sambaDomainName=@@%%@@sambadomain@@%%@@,cn=samba,%s' % ( configRegistry['ldap/base']))
+print('sambaDomainName: @@%%@@sambadomain@@%%@@')
+print('sambaSID: @@%%@@sid@@%%@@')
+print('objectClass: sambaDomain')
+print('objectClass: univentionObject')
+print('univentionObjectType: settings/sambadomain')
+print('sambaNextUserRid: 1000')
+print('sambaNextGroupRid: 1000')
+print('sambaMinPwdLength: 8')
+print('univentionSamba4pwdProperties: 1')
 @!@
 dn: cn=admin,@%@ldap/base@%@
 objectClass: top
