@@ -1,3 +1,9 @@
+univention-initrd (11.0.0-2) unstable; urgency=medium
+
+  * Bug #51019: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 26 Mar 2020 14:53:25 +0100
+
 univention-initrd (11.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
