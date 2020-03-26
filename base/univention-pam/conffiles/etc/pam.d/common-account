@@ -2,7 +2,7 @@
 
 @!@
 if configRegistry.is_true('auth/faillog', False):
-	print 'account	required	pam_tally.so'
+	print('account	required	pam_tally.so')
 @!@
 
 # local unix authentication; don't cache passwords, deny access if account is expired
@@ -25,25 +25,24 @@ account  <action>                         pam_passwdcache.so'''
 
 def pam_section(template, index):
 	if index <= 1:
-		action='required  '
+		action = 'required  '
 	else:
-		action='sufficient'	
+		action = 'sufficient'	
 	return template.replace('<action>', action)
 
-methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
-	configRegistry['auth/methods'].split(' '))
+methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']]
 index = len(methods)
 
 if 'krb5' in methods:
-	print pam_section(pam_krb5, index)
+	print(pam_section(pam_krb5, index))
 	index -= 1
 if 'ldap' in methods:
-	print pam_section(pam_ldap, index)
+	print(pam_section(pam_ldap, index))
 	index -= 1
 if 'winbind' in methods:
-	print pam_section(pam_winbind, index)
+	print(pam_section(pam_winbind, index))
 	index -= 1
 if 'cache' in methods:
-	print pam_section(pam_cache, index)
+	print(pam_section(pam_cache, index))
 	index -= 1
 @!@

@@ -12,18 +12,18 @@ if configRegistry.is_true(accessfileFlag, False):
 		'account required pam_access.so',
 		'accessfile=%s' % (accessfile,),
 		'listsep=,',
-		]
+	]
 	maxent = configRegistry.get('pamaccess/maxent', False)
 	if maxent:
 		line.append('maxent=%s' % (maxent,))
-	print ' '.join(line)
+	print(' '.join(line))
 @!@
 @include common-account
 @include common-session
 session    optional   pam_mail.so standard noenv
 @!@
-if not configRegistry.is_true('system/setup/showloginmessage', False): # The welcome message in appliance mode has precedence
+if not configRegistry.is_true('system/setup/showloginmessage', False):  # The welcome message in appliance mode has precedence
    if configRegistry.is_true('sshd/motd', True):
-      print 'session optional pam_motd.so motd=/etc/welcome.msg'
+      print('session optional pam_motd.so motd=/etc/welcome.msg')
 @!@
 @include common-password
