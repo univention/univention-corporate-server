@@ -5,10 +5,10 @@
 	-->
 @!@
 if configRegistry.get('server/role', '') != 'domaincontroller_master':
-	print '''
+	print('''
 	<module id="setup">
 		<flavor id="certificate" deactivated="yes"/>
 	</module>
-	'''
+	''')
 @!@
 </umc>

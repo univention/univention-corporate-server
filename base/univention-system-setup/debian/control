@@ -69,6 +69,8 @@ Depends:
  x11-xkb-utils,
  x11-xserver-utils,
  openbox,
+ python-six,
+ python3-six,
 Recommends: smbclient,
  xinit,
  firefox-esr,

@@ -2,7 +2,10 @@
 import socket
 import fcntl
 import struct
-import urllib2
+
+from six.moves.urllib_request import urlopen
+from six.moves.urllib_error import URLError
+
 from univention.config_registry.interfaces import Interfaces
 
 msg_amazon = '''
@@ -64,21 +67,24 @@ following web browsers are supported:
 
 '''
 
+
 def query_ec2(key):
 	url = 'http://169.254.169.254/latest/meta-data/' + key
 	socket.setdefaulttimeout(2)
 	try:
-		result = urllib2.urlopen(url)
+		result = urlopen(url)
 		value = result.read().strip()
 		return value
-	except urllib2.URLError:
+	except URLError:
 		pass
+
 
 def get_ip_address(ifname):
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	ifname = ifname.encode('utf-8')
 	try:
 		# SIOCGIFADDR == 0x8915
-		addr = socket.inet_ntoa(fcntl.ioctl( s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+		addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
 	except IOError:
 		addr = None
 	s.close()
@@ -109,7 +115,7 @@ if not url_list:
 			url_list.append('https://[%s]/' % (addr.ip,))
 
 msg = msg_amazon if configRegistry.is_true('server/amazon') else msg_di_uss
-print msg % {
+print(msg % {
 	'url_list': '\n  '.join(url_list),
-}
+})
 @!@

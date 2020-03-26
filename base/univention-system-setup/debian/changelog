@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-20) unstable; urgency=medium
+
+  * Bug #51025: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 26 Mar 2020 15:36:43 +0100
+
 univention-system-setup (12.0.2-19) unstable; urgency=low
 
   * Bug #49036: Fix file permission when creating new host certificates
