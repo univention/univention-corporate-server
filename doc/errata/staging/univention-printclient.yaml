@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-printclient
-fix: 12.0.0-2
+fix: 12.0.0-2A~4.4.0.202003261115
 desc: |
  This update addresses the following issue(s):
  * Internal change: the UCR templates of univention-printclient are now python3-compatible (Bug #51009).
