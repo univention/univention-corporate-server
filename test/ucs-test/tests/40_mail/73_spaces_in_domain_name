@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner python
+## desc: Spaces in domain name
+## tags: [apptest]
+## exposure: dangerous
+## packages: [univention-mail-server]
+
+
+import univention.testing.utils as utils
+from univention.admin.syntax import dnsName
+from univention.admin.uexceptions import valueError
+
+def main():
+	is_test_failed = True
+	try:
+		res = dnsName.parse("uni vention.de") # should contain a space
+	except valueError:
+		is_test_failed = False
+	if is_test_failed:
+		utils.fail('Mail domain contained spaces but was accepted by UDM')
+
+
+if __name__ == '__main__':
+	main()
+# vim: ft=python:ts=4:sw=4:noet:

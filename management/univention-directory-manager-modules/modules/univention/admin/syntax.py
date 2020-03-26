@@ -2033,8 +2033,9 @@ class dnsName(simple):
 	...
 	valueError: Full domain name must be between 1 and 253 characters long!
 	"""
-	min_length = 1
-	max_length = 253
+
+	# source for re: https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s15.html
+	regex_domain_name = re.compile(r'^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$')
 
 	@classmethod
 	def parse(self, text):
@@ -2046,6 +2047,8 @@ class dnsName(simple):
 		labels = (text[:-1] if text.endswith('.') else text).split('.')
 		if not all(1 <= len(label) <= 63 for label in labels):
 			raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
+		if not self.regex_domain_name.match(text):
+			raise univention.admin.uexceptions.valueError(_("Domain name has invalid syntax!"))
 		return text
 
 
