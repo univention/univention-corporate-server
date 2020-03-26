@@ -7,25 +7,25 @@ export LANG=C
 @!@
 from pipes import quote
 default = configRegistry.get('grub/default', '0')
-print 'GRUB_DEFAULT=%s' % (quote(default),)
+print('GRUB_DEFAULT=%s' % (quote(default),))
 savedefault = configRegistry.is_true('grub/savedefault', False)
-print 'GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',)
+print('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',))
 @!@
 GRUB_TIMEOUT=@%@grub/timeout@%@
 GRUB_DISTRIBUTOR=Univention
 
 @!@
 defoptions=''
-if configRegistry.get('grub/quiet', "False").lower() in ['yes', 'true', '1']:
+if configRegistry.is_true('grub/quiet', False):
 	defoptions += ' quiet'
 if configRegistry.get('grub/loglevel', False):
 	defoptions += ' loglevel=%s' % configRegistry['grub/loglevel']
 
-rootdelay= configRegistry.get('grub/rootdelay', '5')
+rootdelay = configRegistry.get('grub/rootdelay', '5')
 defoptions += ' rootdelay=%s' % rootdelay
 
 defoptions += ' %s' % configRegistry.get('grub/bootsplash', 'splash')
-print 'GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions
+print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)
 @!@
 
 GRUB_CMDLINE_LINUX="@%@grub/append@%@"
@@ -40,17 +40,17 @@ GRUB_CMDLINE_XEN="@%@grub/xenhopt@%@"
 @!@
 terminal = configRegistry.get('grub/terminal')
 if terminal:
-	print 'GRUB_TERMINAL="%s"' % (terminal,)
+	print('GRUB_TERMINAL="%s"' % (terminal,))
 else:
-	print '#GRUB_TERMINAL="console"'
+	print('#GRUB_TERMINAL="console"')
 @!@
 # Configure UCR Variable "grub/serialcommand" to adapt GRUB_SERIAL_COMMAND settings 
 @!@
 serial = configRegistry.get('grub/serialcommand')
 if serial:
-	print 'GRUB_SERIAL_COMMAND="%s"' % (serial,)
+	print('GRUB_SERIAL_COMMAND="%s"' % (serial,))
 else:
-	print '#GRUB_SERIAL_COMMAND="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"'
+	print('#GRUB_SERIAL_COMMAND="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"')
 @!@
 # The resolution used on graphical terminal
 # note that you can use only modes which your graphic card supports via VBE
@@ -70,15 +70,15 @@ GRUB_GFXPAYLOAD_LINUX=@%@grub/gfxpayload@%@
 # Background image and menu color
 @!@
 if configRegistry.get('grub/backgroundimage', ''):
-	print 'GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"]
+	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])
 if configRegistry.get('grub/color/normal', ''):
-	print 'GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"]
+	print('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"])
 if configRegistry.get('grub/color/highlight', ''):
-	print 'GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"]
+	print('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"])
 if configRegistry.get('grub/menu/color/normal', ''):
-	print 'GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"]
+	print('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"])
 if configRegistry.get('grub/menu/color/highlight', ''):
-	print 'GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"]
+	print('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"])
 @!@
 
 # Uncomment to get a beep at grub start
