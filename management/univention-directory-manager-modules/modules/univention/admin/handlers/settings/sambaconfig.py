@@ -41,21 +41,21 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-def logonToChangePWMap(val):
+def logonToChangePWMap(udm_value):
 	"""
 	'User must logon to change PW' behaves like an integer (at least
 	to us), but must be stored as either 0 (allow) or 2 (disallow)
 	"""
 
-	if (val == "1"):
-		return "2"
+	if (udm_value == "1"):
+		return b"2"
 	else:
-		return "0"
+		return b"0"
 
 
-def logonToChangePWUnmap(val):
+def logonToChangePWUnmap(ldap_value):
 
-	if (val[0] == "2"):
+	if (ldap_value[0] == b"2"):
 		return "1"
 	else:
 		return "2"
