@@ -96,7 +96,7 @@ property_descriptions = {
 	'LDAPattributes': univention.admin.property(
 		short_description=_(u'List of ldap attributes to transmit'),
 		long_description=_(u'A list of ldap attributes that are transmitted to the service provider'),
-		syntax=univention.admin.syntax.FiveThirdsString,
+		syntax=univention.admin.syntax.attributeMapping,
 		multivalue=True,
 	),
 	'serviceproviderdescription': univention.admin.property(
@@ -169,6 +169,12 @@ layout = [
 	]),
 ]
 
+def mapKeyAndValue(old):
+	return [entry[0] + '=' + entry[1] if len(entry)>1 and entry[0] and entry[1] else entry[0] for entry in old]
+
+def unmapKeyAndValue(old):
+	return [entry.split('=', 1) for entry in old]
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('isActivated', 'isServiceProviderActivated', None, univention.admin.mapping.ListToString)
 mapping.register('Identifier', 'SAMLServiceProviderIdentifier', None, univention.admin.mapping.ListToString)
@@ -176,7 +182,7 @@ mapping.register('AssertionConsumerService', 'AssertionConsumerService')
 mapping.register('NameIDFormat', 'NameIDFormat', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlNameIDAttribute', 'simplesamlNameIDAttribute', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlAttributes', 'simplesamlAttributes', None, univention.admin.mapping.ListToString)
-mapping.register('LDAPattributes', 'simplesamlLDAPattributes')
+mapping.register('LDAPattributes', 'simplesamlLDAPattributes', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('serviceproviderdescription', 'serviceproviderdescription', None, univention.admin.mapping.ListToString)
 mapping.register('serviceProviderOrganizationName', 'serviceProviderOrganizationName', None, univention.admin.mapping.ListToString)
 mapping.register('privacypolicyURL', 'privacypolicyURL', None, univention.admin.mapping.ListToString)
