@@ -1,3 +1,9 @@
+univention-heimdal (12.0.1-4) unstable; urgency=medium
+
+  * Bug #51016: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 26 Mar 2020 14:37:02 +0100
+
 univention-heimdal (12.0.1-3) unstable; urgency=medium
 
   * Bug #49134: remove python_support

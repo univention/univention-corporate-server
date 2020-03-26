@@ -7,9 +7,9 @@ KDC_PARAMS="--config-file=/etc/heimdal-kdc/kdc.conf"
 # the kpasswdd?
 @!@
 if configRegistry.get('server/role') == 'domaincontroller_master':
-	print "KPASSWDD_ENABLED=yes"
+	print("KPASSWDD_ENABLED=yes")
 else:
-	print "KPASSWDD_ENABLED=no"
+	print("KPASSWDD_ENABLED=no")
 @!@
 KPASSWDD_PARAMS=""
 

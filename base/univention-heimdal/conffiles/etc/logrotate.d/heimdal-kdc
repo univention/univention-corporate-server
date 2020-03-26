@@ -5,15 +5,15 @@ import univention.lib.ucrLogrotate
 
 name = "heimdal-kdc"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/%s.log {" % name
+print("/var/log/%s.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+	print("\t%s" % settings[setting])
+print("}")
 
 name = "heimdal-database"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/%s.log {" % name
+print("/var/log/%s.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+	print("\t%s" % settings[setting])
+print("}")
 @!@
