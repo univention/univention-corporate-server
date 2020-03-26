@@ -84,15 +84,18 @@ layout = [
 ]
 
 
-def unmapDriverList(old):
-	return map(lambda x: shlex.split(x), old)
+def unmapDriverList(ldap_value, encoding=()):
+	return [shlex.split(x.decode(*encoding)) for x in ldap_value]
 
 
-def mapDriverList(old):
-	str = []
-	for i in old:
-		str.append('"%s" "%s"' % (i[0], i[1]))
-	return str
+def mapDriverList(udm_value, encoding=()):
+	def q(s):
+		return s.replace(u'"', u'\\"')
+	ldap_attr_list = []
+	for x in udm_value:
+		value = u'"%s" "%s"' % (q(x[0]), q(x[1]))
+		ldap_attr_list.append(value.encode(*encoding))
+	return ldap_attr_list
 
 
 mapping = univention.admin.mapping.mapping()
