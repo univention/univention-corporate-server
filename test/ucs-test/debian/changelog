@@ -1,3 +1,9 @@
+ucs-test (9.0.3-181) unstable; urgency=medium
+
+  * Bug #50982: version bump
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Mar 2020 11:37:43 +0100
+
 ucs-test (9.0.3-180) unstable; urgency=medium
 
   * Bug #50982: fix 86_selenium.137_appcenter on member and backup
