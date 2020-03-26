@@ -75,7 +75,7 @@ def SecondsToDays(seconds):
 	>>> SecondsToDays(('86401',))
 	'1'
 	"""
-	return str((int(seconds[0])) / (60 * 60 * 24))
+	return str((int(seconds[0])) // (60 * 60 * 24))
 
 
 def StringToLower(string):
@@ -247,29 +247,29 @@ def unmapUNIX_TimeInterval(value):
 	:returns: a 2-tuple (value, unit)
 
 	>>> unmapUNIX_TimeInterval(['0'])
-	[u'0', 'days']
+	[u'0', u'days']
 	>>> unmapUNIX_TimeInterval(('1',))
-	[u'1', 'seconds']
+	[u'1', u'seconds']
 	>>> unmapUNIX_TimeInterval('60')
-	[u'1', 'minutes']
+	[u'1', u'minutes']
 	>>> unmapUNIX_TimeInterval('3600')
-	[u'1', 'hours']
+	[u'1', u'hours']
 	>>> unmapUNIX_TimeInterval('86400')
-	[u'1', 'days']
+	[u'1', u'days']
 	"""
 	if isinstance(value, (list, tuple)):
 		value = value[0]
 	value = _stringToInt(value)
-	unit = 'seconds'
+	unit = u'seconds'
 	if value % 60 == 0:
-		value /= 60
-		unit = 'minutes'
+		value //= 60
+		unit = u'minutes'
 		if value % 60 == 0:
-			value /= 60
-			unit = 'hours'
+			value //= 60
+			unit = u'hours'
 			if value % 24 == 0:
-				value /= 24
-				unit = 'days'
+				value //= 24
+				unit = u'days'
 	return [unicode(value), unit]
 
 
@@ -282,13 +282,13 @@ def mapUNIX_TimeInterval(value):
 	:returns: the number of seconds.
 
 	>>> mapUNIX_TimeInterval(0)
-	u'0'
+	'0'
 	>>> mapUNIX_TimeInterval([1, 'days'])
-	u'86400'
+	'86400'
 	>>> mapUNIX_TimeInterval((1, 'hours'))
-	u'3600'
+	'3600'
 	>>> mapUNIX_TimeInterval((1, 'minutes'))
-	u'60'
+	'60'
 	"""
 	unit = 'seconds'
 	if isinstance(value, (tuple, list)):
@@ -296,13 +296,13 @@ def mapUNIX_TimeInterval(value):
 			unit = value[1]
 		value = value[0]
 	value = _stringToInt(value)
-	if unit == 'days':
+	if unit == u'days':
 		value *= 24 * 60 * 60
-	elif unit == 'hours':
+	elif unit == u'hours':
 		value *= 60 * 60
-	elif unit == 'minutes':
+	elif unit == u'minutes':
 		value *= 60
-	return unicode(value)
+	return unicode(value).encode('ASCII')
 
 
 def unmapBase64(value):
