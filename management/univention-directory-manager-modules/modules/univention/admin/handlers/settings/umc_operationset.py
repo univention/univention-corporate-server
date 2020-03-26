@@ -109,17 +109,17 @@ layout = [
 ]
 
 
-def mapUMC_CommandPattern(value):
-	return map(lambda x: ':'.join(x), value)
+def mapUMC_CommandPattern(udm_value, encoding=()):
+	return [u':'.join(x).encode(*encoding) for x in udm_value]
 
 
-def unmapUMC_CommandPattern(value):
+def unmapUMC_CommandPattern(ldap_value, encoding=()):
 	unmapped = []
-	for item in value:
-		if item.find(':') >= 0:
-			unmapped.append(item.split(':', 1))
+	for item in [x.decode(*encoding) for x in ldap_value]:
+		if u':' in item:
+			unmapped.append(item.split(u':', 1))
 		else:
-			unmapped.append((item, ''))
+			unmapped.append((item, u''))
 	return unmapped
 
 
