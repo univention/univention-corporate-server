@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
 from ldap.dn import escape_dn_chars
 
 from univention.admin.layout import Tab, Group
@@ -216,7 +217,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self._add_self_to_portal(portal_dn)
 
 	def _remove_self_from_portal(self, portal_obj):
-		if isinstance(portal_obj, basestring):
+		if isinstance(portal_obj, six.string_types):
 			try:
 				portal_mod = univention.admin.modules.get('settings/portal')
 				portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
@@ -240,7 +241,7 @@ class object(univention.admin.handlers.simpleLdap):
 			portal_obj.modify()
 
 	def _add_self_to_portal(self, portal_obj):
-		if isinstance(portal_obj, basestring):
+		if isinstance(portal_obj, six.string_types):
 			portal_mod = univention.admin.modules.get('settings/portal')
 			portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
 
