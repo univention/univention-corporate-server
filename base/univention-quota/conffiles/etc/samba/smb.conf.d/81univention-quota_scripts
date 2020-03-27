@@ -1,5 +1,5 @@
 @!@
 quota_command = configRegistry.get('samba/quota/command')
 if quota_command != 'None':
-	print('\tset quota command =',  quota_command)
+	print('\tset quota command = %s' % (quota_command,))
 @!@
