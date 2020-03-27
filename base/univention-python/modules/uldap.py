@@ -148,7 +148,7 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 
 
 def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
-	# type: (int, List[str], bool, str, bool) -> access
+	# type: (int, List[str], bool, str, bool, bool) -> access
 	"""
 	Open a LDAP connection using the machine credentials.
 
