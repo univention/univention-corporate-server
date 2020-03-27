@@ -38,11 +38,6 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-
-def plusBase(object, arg):
-	return [arg + ',' + object.position.getDomain()]
-
-
 module = 'settings/default'
 superordinate = 'settings/cn'
 childs = 0
