@@ -24,7 +24,7 @@ msgstr ""
 
 #: www/VerifyAccount.js:51
 msgid "Account verification"
-msgstr "Konto-Verifizierung"
+msgstr "Kontoverifizierung"
 
 #: www/ProtectAccountAccess.js:219
 msgid "Activate renew options."
