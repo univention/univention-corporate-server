@@ -192,9 +192,9 @@ class object(univention.admin.handlers.simplePolicy):
 		for key in keys:
 			if key in cron:
 				self[key] = []
-				for i in range(0, len(cron[key])):
-					if str(cron[key][i]) != '*':
-						univention.admin.handlers.simplePolicy.__getitem__(self, key).append(str(cron[key][i]))
+				for value in cron[key]:
+					if value != u'*':
+						univention.admin.handlers.simplePolicy.__getitem__(self, key).append(value)
 
 	def __getitem__(self, key):
 		value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need this first to initialize policy-results
@@ -214,18 +214,18 @@ class object(univention.admin.handlers.simplePolicy):
 		ml = univention.admin.handlers.simplePolicy._ldap_modlist(self)
 		if self.hasChanged(['minute', 'hour', 'day', 'month', 'weekday']):
 
-			list = {}
+			cron = {}
 			if self.has_property('minute'):
-				list['minute'] = self['minute']
+				cron['minute'] = self['minute']
 			if self.has_property('hour'):
-				list['hour'] = self['hour']
+				cron['hour'] = self['hour']
 			if self.has_property('day'):
-				list['day'] = self['day']
+				cron['day'] = self['day']
 			if self.has_property('month'):
-				list['month'] = self['month']
+				cron['month'] = self['month']
 			if self.has_property('weekday'):
-				list['weekday'] = self['weekday']
-			cron = univention.admin.cron.cron_create(list)
+				cron['weekday'] = self['weekday']
+			cron = univention.admin.cron.cron_create(cron)
 			ml.append(('univentionCron', self.oldattr.get('univentionCron', []), [cron.encode('ASCII')]))
 		return ml
 
