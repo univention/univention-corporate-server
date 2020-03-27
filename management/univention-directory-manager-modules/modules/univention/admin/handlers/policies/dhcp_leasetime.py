@@ -134,9 +134,11 @@ class object(univention.admin.handlers.simplePolicy):
 	module = module
 
 	def __setitem__(self, key, value):
-		if value and value[0]:
-			if not ((key == 'lease_time_min' or key == 'lease_time_max' or key == 'lease_time_default') and value[0] == ''):
-				univention.admin.handlers.simplePolicy.__setitem__(self, key, value)
+		if not value or not value[0]:
+			return  # FIXME: why?
+		if key in ('lease_time_min', 'lease_time_max', 'lease_time_default') and value and value[0] == '':
+			return
+		univention.admin.handlers.simplePolicy.__setitem__(self, key, value)
 
 
 lookup = object.lookup
