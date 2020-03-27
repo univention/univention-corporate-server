@@ -27,7 +27,7 @@ def pam_section(template, index):
 	if index <= 1:
 		action = 'required  '
 	else:
-		action = 'sufficient'	
+		action = 'sufficient'
 	return template.replace('<action>', action)
 
 methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']]
