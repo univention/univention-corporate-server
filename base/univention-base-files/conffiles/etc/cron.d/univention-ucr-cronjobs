@@ -15,7 +15,7 @@ def setup_cronjob(key):
 			raise IndexError()
 		job = tmp[1]
 	except IndexError:
-		sys.stderr.write("E: This cron UCR key is not properly formatted: %s" % key)
+		sys.stderr.write("E: This cron UCR key is not properly formatted: %s\n" % key)
 		return
 	if job not in jobs:
 		jobs.append(job)
@@ -31,7 +31,7 @@ def setup_cronjob(key):
 			return
 
 		if not (time and command):
-			sys.stderr.write("E: Time or command is missing for cron job cron/%s" % job)
+			sys.stderr.write("E: Time or command is missing for cron job cron/%s\n" % job)
 			return
 
 		print('\n')

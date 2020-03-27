@@ -132,7 +132,7 @@ if configRegistry.get('sshd/challengeresponse'):
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
 		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
-			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse')
+			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
 else:
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
 print('')
@@ -196,21 +196,21 @@ if configRegistry.get('sshd/xforwarding'):
 	print("X11Forwarding %s" % configRegistry.get('sshd/xforwarding'))
 	if configRegistry.get('sshd/X11Forwarding'):
 		sys.stderr.write('WARNING: The value for X11Forwarding is ' \
-			'set twice: via sshd/X11Forwarding and sshd/xforwarding')
+			'set twice: via sshd/X11Forwarding and sshd/xforwarding\n')
 else:
 	print("X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no'))
 if configRegistry.get('sshd/xdisplayoffset'):
 	print("X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset'))
 	if configRegistry.get('sshd/X11DisplayOffset'):
 		sys.stderr.write('WARNING: The value for X11DisplayOffset is ' \
-			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset')
+			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset\n')
 elif configRegistry.get('sshd/X11DisplayOffset'):
 	print("X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset'))
 if configRegistry.get('sshd/xuselocalhost'):
 	print("X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost'))
 	if configRegistry.get('sshd/X11UseLocalHost'):
 		sys.stderr.write('WARNING: The value for X11UseLocalHost is ' \
-			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost')
+			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost\n')
 elif configRegistry.get('sshd/X11UseLocalHost'):
 	print("X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost'))
 print('')
@@ -278,7 +278,7 @@ if configRegistry.get('sshd/banner'):
 	print("Banner %s" % configRegistry.get('sshd/banner'))
 	if configRegistry.get('sshd/Banner'):
 		sys.stderr.write('WARNING: The value for Banner is ' \
-			'set twice: via sshd/Banner and sshd/banner')
+			'set twice: via sshd/Banner and sshd/banner\n')
 elif configRegistry.get('sshd/Banner'):
 	print('')
 	print('# no default banner path')
