@@ -158,7 +158,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for key in self.oldattr.keys():
 				if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey):
 					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())
-					txt = self.oldattr.get(key)[0].decode('UTF-8')
+					txt = self.oldattr[key][0].decode('UTF-8')
 					translations.append((lang, txt))
 
 			debug(ADMIN, INFO, 'extended_option: added translations for %s: %s' % (transKey, translations))
