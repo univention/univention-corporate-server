@@ -216,28 +216,28 @@ layout = [
 ]
 
 
-def mapLinkValue(vals):
-	return ['$$'.join(val) for val in vals]
+def mapLinkValue(vals, encoding=()):
+	return [u'$$'.join(val).encode(*encoding) for val in vals]
 
 
-def unmapLinkValue(vals):
-	return [val.split('$$', 3) for val in vals]
+def unmapLinkValue(vals, encoding=()):
+	return [val.decode(*encoding).split(u'$$', 3) for val in vals]
 
 
-def mapTranslationValue(vals):
-	return [' '.join(val) for val in vals]
+def mapTranslationValue(vals, encoding=()):
+	return [u' '.join(val).encode(*encoding) for val in vals]
 
 
-def unmapTranslationValue(vals):
-	return [val.split(' ', 1) for val in vals]
+def unmapTranslationValue(vals, encoding=()):
+	return [val.decode(*encoding).split(u' ', 1) for val in vals]
 
 
-def mapContent(vals):
-	return json.dumps(vals)
+def mapContent(vals, encoding=()):
+	return json.dumps(vals).encode(*encoding)
 
 
-def unmapContent(vals):
-	return json.loads(vals[0])
+def unmapContent(vals, encoding=()):
+	return json.loads(vals[0].decode(*encoding))
 
 
 mapping = univention.admin.mapping.mapping()
