@@ -1,3 +1,9 @@
+univention-quota (13.0.1-8) unstable; urgency=low
+
+  * Bug #51010: make UCR templates compatible to python3
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 27 Mar 2020 10:27:37 +0100
+
 univention-quota (13.0.1-7) unstable; urgency=low
 
   * Bug #51010: make UCR templates compatible to python3
