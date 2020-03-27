@@ -14,7 +14,10 @@ if not IS_64BITS:
 		'ldap/database/bdb/set_lk_max_locks': 9000,
 		'ldap/database/bdb/set_lk_max_lockers': 9000,
 	}
-	ucr = dict(DEFAULT.items() + FALLBACK.items() + configRegistry.items())
+	ucr = dict()
+	ucr.update(DEFAULT)
+	ucr.update(FALLBACK)
+	ucr.update(configRegistry)
 	options = set(DEFAULT) | set(FALLBACK) | set(PREFIX + option for option in ucr.get('ldap/database/bdb/db_config_options', '').split(',') if option)
 
 	for option in sorted(options):
