@@ -119,61 +119,42 @@ define([
 				return;
 			}
 
-			// backend validation
+			// create user
 			var creationDeferred = new Deferred();
 			this.standbyDuring(creationDeferred);
-			var data = {
-				attributes: this._form.get('value')
-			};
-			tools.umcpCommand('passwordreset/validate_registration_attributes', data)
-				.then(lang.hitch(this, function(data) {
-					var isValid = function(v) {
-						return Array.isArray(v.isValid) ? v.isValid.every(function(_isValid) { return _isValid; }) : v.isValid;
-					};
-
-					var allValid = tools.values(data.result).every(function(v) {
-						return isValid(v);
-					});
-
-					var validDeferred = new Deferred();
-					if (allValid) {
-						validDeferred.resolve();
+			tools.umcpCommand('passwordreset/create_self_registered_account', { attributes: this._form.get('value') })
+				.then(lang.hitch(this, function(res) {
+					res = res.result;
+					if (!res.success) {
+						switch (res.failType) {
+							case 'INVALID_ATTRIBUTES':
+								this._form.setValid(res.data);
+								this._form.focusFirstInvalidWidget();
+								break;
+							case 'CREATION_FAILED':
+								dialog.alert('<p class="umcServerErrorMessage">' + entities.encode(res.data).replace(/\n/g, '<br/>') + '</p>');
+								break;
+						}
 					} else {
-						this._form.setValid(tools.objFilter(data.result, function(k, v) {
-							return !isValid(v);
-						}));
-						this._form.focusFirstInvalidWidget();
-						validDeferred.reject();
+						this._createVerificationMessage(res.verifyTokenSuccessfullySend, res.data);
 					}
-
-					return validDeferred;
-				}))
-				.then(lang.hitch(this, function() {
-					// create account
-					return tools.umcpCommand('passwordreset/create_self_registered_account', data, false)
-						.then(lang.hitch(this, function(data) {
-							this._createVerificationStep(data.result);
-						}), function(error) {
-							var info = tools.parseError(error);
-							if (info.message.startsWith(_('The account could not be created'))) {
-								var message = info.message;
-								dialog.alert('<p class="umcServerErrorMessage">' + entities.encode(message).replace(/\n/g, '<br/>') + '</p>');
-							} else {
-								var errorHandler = tools.__getErrorHandler(true);
-								errorHandler.error(info);
-							}
-						});
 				}))
 				.always(function() {
 					creationDeferred.resolve();
 				});
 		},
 
-		_createVerificationStep: function(data) {
+		_createVerificationMessage: function(verifyTokenSuccessfullySend, data) {
 			this._form.destroyRecursive();
-			var msg = _('Hello <b>%s</b>, we have sent you an email to <b>%s</b>. Please follow the instructions in the email to verify your account.', entities.encode(data.username), entities.encode(data.email));
+			var msg = '';
+			if (verifyTokenSuccessfullySend) {
+				msg = _('Hello <b>%s</b>, we have sent you an email to <b>%s</b>. Please follow the instructions in the email to verify your account.', entities.encode(data.username), entities.encode(data.email));
+			} else {
+				msg = _('An error occurred while sending the verification token for your account. Please <a href="#page=verifyaccount&username=%s">request a new one</a>.', entities.encode(data.username));
+			}
 			msg = domConstruct.toDom(msg);
-			put(this.contentContainer, 'div.createaccount__verificationmsg', msg);
+			msg = put('p', msg);
+			put(this.contentContainer, msg);
 		}
 	};
 });

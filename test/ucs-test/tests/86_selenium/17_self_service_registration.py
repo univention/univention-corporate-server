@@ -76,13 +76,17 @@ def registration_info(ucr):
 
 # test the umc/self-service/registration/enabled ucr variable
 def test_registration_enabled(ucr, selenium):
-	handler_set(['umc/self-service/account-registration/enabled=false'])
+	# test that the default is false
 	selenium.driver.get(selenium.base_url + 'univention/self-service')
 	with pytest.raises(selenium_exceptions.TimeoutException):
 		selenium.wait_for_text('Create an account', 2)
 	handler_set(['umc/self-service/account-registration/enabled=true'])
 	selenium.driver.get(selenium.base_url + 'univention/self-service')
 	selenium.wait_for_text('Create an account', 2)
+	handler_set(['umc/self-service/account-registration/enabled=false'])
+	selenium.driver.get(selenium.base_url + 'univention/self-service')
+	with pytest.raises(selenium_exceptions.TimeoutException):
+		selenium.wait_for_text('Create an account', 2)
 
 
 # tests existence of all attributes umc/self-service/registration/udm_attributes

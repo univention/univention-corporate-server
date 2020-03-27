@@ -51,7 +51,7 @@ from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import StringSanitizer, EmailSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import get_user_connection, get_machine_connection, get_admin_connection, machine_connection
 
@@ -356,8 +356,8 @@ class Instance(Base):
 	def get_registration_attributes(self):
 		ucr.load()
 		property_ids = ['PasswordRecoveryEmail', 'password']
-		for id_ in [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',')]:
-			if id_ and id_ not in property_ids:
+		for id_ in [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()]:
+			if id_ not in property_ids:
 				property_ids.append(id_)
 		lo, po = get_machine_connection()
 		users_mod = UDM_Module('users/user', True, lo, po)
@@ -365,23 +365,20 @@ class Instance(Base):
 		if 'PasswordRecoveryEmail' in properties:
 			properties['PasswordRecoveryEmail']['label'] = _('Email')
 			properties['PasswordRecoveryEmail']['description'] = ''
-		self._update_required_properties_for_registration(properties)
+		self._update_required_attr_of_props_for_registration(properties)
 		properties = [properties[id_] for id_ in property_ids if id_ in properties]
 		return {
 			'widget_descriptions': properties,
 			'layout': [prop['id'] for prop in properties],
 		}
 
-	def _update_required_properties_for_registration(self, properties):
+	def _update_required_attr_of_props_for_registration(self, properties):
 		for k in properties.keys():
 			if isinstance(properties[k], dict):
 				properties[k]['required'] = False
 			else:
 				properties[k].required = False
-		required_ids = ['PasswordRecoveryEmail', 'password']
-		for id_ in [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',')]:
-			if id_ and id_ not in required_ids:
-				required_ids.append(id_)
+		required_ids = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()])
 		for id_ in required_ids:
 			if id_ in properties:
 				if isinstance(properties[id_], dict):
@@ -399,33 +396,6 @@ class Instance(Base):
 		if self.is_blacklisted(username):
 			raise ServiceForbidden()
 		return self._validate_user_attributes(attributes)
-
-	@forward_to_master
-	@simple_response
-	def validate_registration_attributes(self, attributes):
-		res = self._validate_user_attributes(attributes, self._update_required_properties_for_registration)
-		# check username taken
-		if 'username' in attributes:
-			usersmod = UDM.machine().version(2).get('users/user')
-			try:
-				user = usersmod.get_by_id(attributes['username'])
-			except NoObject:
-				user = None
-			if user:
-				res['username'] = {
-					'isValid': False,
-					'message': _('The username is already taken'),
-				}
-		# check passwd syntax
-		#  if 'password' in attributes:
-			#  try:
-				#  univention.admin.syntax.passwd.parse(attributes['password'])
-			#  except univention.admin.uexceptions.valueError as exc:
-				#  res['password'] = {
-					#  'isValid': False,
-					#  'message': str(exc),
-				#  }
-		return res
 
 	def _validate_user_attributes(self, attributes, map_properties_func=None):
 		res = {}
@@ -489,7 +459,7 @@ class Instance(Base):
 				user[propname] = value
 		try:
 			user.modify()
-		except univention.admin.uexceptions.base as exc:
+		except udm_errors.base as exc:
 			MODULE.error('set_user_attributes(): modifying the user failed: %s' % (traceback.format_exc(),))
 			raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
 		return _("Successfully changed your profile data.")
@@ -497,6 +467,37 @@ class Instance(Base):
 	@forward_to_master
 	@simple_response
 	def create_self_registered_account(self, attributes):
+		# filter out attributes that are not valid to set
+		allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()])
+		attributes = {k: v for (k, v) in attributes.items() if k in allowed_to_set}
+		# validate attributes
+		res = self._validate_user_attributes(attributes, self._update_required_attr_of_props_for_registration)
+		# check username taken
+		if 'username' in attributes:
+			usersmod = UDM.machine().version(2).get('users/user')
+			try:
+				user = usersmod.get_by_id(attributes['username'])
+			except NoObject:
+				user = None
+			if user:
+				res['username'] = {
+					'isValid': False,
+					'message': _('The username is already taken'),
+				}
+		invalid = {k: v for (k, v) in res.items() if not (all(v['isValid']) if isinstance(v['isValid'], list) else v['isValid'])}
+		if len(invalid):
+			return {
+				'success': False,
+				'failType': 'INVALID_ATTRIBUTES',
+				'data': invalid,
+			}
+
+		# check for missing required attributes from umc/self-service/account-registration/udm_attributes/required
+		required_attrs = [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()]
+		not_found = [attr for attr in required_attrs if attr not in attributes]
+		if not_found:
+			raise UMC_Error(_('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n%s') % ('\n'.join(not_found),))
+
 		ucr.load()
 		univention.admin.modules.update()
 		lo, po = get_admin_connection()
@@ -540,23 +541,62 @@ class Instance(Base):
 			new_user.create()
 		except univention.admin.uexceptions.base as exc:
 			MODULE.error('create_self_registered_account(): could not create user: %s' % (traceback.format_exc(),))
-			raise UMC_Error(_('The account could not be created: %s') % (UDM_Error(exc)))
+			return {
+				'success': False,
+				'failType': 'CREATION_FAILED',
+				'data': _('The account could not be created:\n%s') % UDM_Error(exc),
+			}
+		finally:
+			# TODO cleanup
+			# reinit user module without template.
+			# This has to be done since the modules are singletons?
+			univention.admin.modules.update()
+			self._usersmod = None
+			#  univention.admin.modules.init(lo, po, usersmod, None, True)
 		try:
-			self.send_message(new_user['username'], 'verify_email', new_user['PasswordRecoveryEmail'])
-		except UMC_Error as exc:
-			if exc.status == 200:
-				pass
-			else:
-				raise exc
-		# TODO cleanup
-		# reinit user module without template.
-		# This has to be done since the modules are singletons?
-		univention.admin.modules.update()
-		self._usersmod = None
-		#  univention.admin.modules.init(lo, po, usersmod, None, True)
+			self.send_message(new_user['username'], 'verify_email', new_user['PasswordRecoveryEmail'], raise_on_success=False)
+		except Exception:
+			verify_token_successfully_send = False
+		else:
+			verify_token_successfully_send = True
 		return {
-			'username': new_user['username'],
-			'email': new_user['PasswordRecoveryEmail'],
+			'success': True,
+			'verifyTokenSuccessfullySend': verify_token_successfully_send,
+			'data': {
+				'username': new_user['username'],
+				'email': new_user['PasswordRecoveryEmail'],
+			}
+		}
+
+	@forward_to_master
+	@prevent_denial_of_service
+	@sanitize(
+		username=StringSanitizer(required=True))
+	@simple_response
+	def send_verification_token(self, username):
+		MODULE.info("send_verification_token(): username: {}".format(username))
+		users_mod = UDM.machine().version(2).get('users/user')
+		try:
+			user = users_mod.get_by_id(username)
+		except NoObject:
+			return {
+				'success': False,
+				'failType': 'INVALID_INFORMATION',
+			}
+		try:
+			email = user.props.PasswordRecoveryEmail
+		except AttributeError:
+			return {
+				'success': False,
+				'failType': 'INVALID_INFORMATION',
+			}
+		self.send_message(username, 'verify_email', email, raise_on_success=False)
+		return {
+			'success': True,
+			'data': {
+				'username': username,
+				'email': email,
+			}
 		}
 
 	@forward_to_master
@@ -605,6 +645,7 @@ class Instance(Base):
 		raise MissingContactInformation()
 
 	@forward_to_master
+	@prevent_denial_of_service
 	@sanitize(
 		token=StringSanitizer(required=True),
 		username=StringSanitizer(required=True),
@@ -612,27 +653,39 @@ class Instance(Base):
 	)
 	@simple_response
 	def verify_contact(self, token, username, method):
+		users_mod = UDM.admin().version(1).get('users/user')
+		try:
+			user = users_mod.get_by_id(username)
+		except NoObject:
+			return {
+				'success': False,
+				'failType': 'INVALID_INFORMATION',
+			}
 		ucr.load()
 		next_steps = ucr.get('umc/self-service/account-verification/next-steps/%s' % self.locale.language, '')
 		if not next_steps:
 			next_steps = ucr.get('umc/self-service/account-verification/next-steps', '')
-		users_mod = UDM.admin().version(1).get('users/user')
-		user = users_mod.get_by_id(username)
 		plugin = self._get_send_plugin(method)
 		if getattr(user.props, plugin.udm_property) == 'TRUE':  # cleanup. map property to actual boolean?
 			return {
-				'type': 'ALREADY_VERIFIED',
-				'username': username,
-				'nextSteps': next_steps,
+				'success': True,
+				'successType': 'ALREADY_VERIFIED',
+				'data': {
+					'username': username,
+					'nextSteps': next_steps,
+				}
 			}
 		self._check_token(username, token, token_application=plugin.message_application())
 		setattr(user.props, plugin.udm_property, 'TRUE')
 		user.save()
 		self.db.delete_tokens(token=token, username=username)
 		return {
-			'type': 'VERIFIED',
-			'username': username,
-			'nextSteps': next_steps,
+			'success': True,
+			'successType': 'VERIFIED',
+			'data': {
+				'username': username,
+				'nextSteps': next_steps,
+			}
 		}
 
 	@forward_to_master
@@ -718,7 +771,7 @@ class Instance(Base):
 			res += rand.choice(chars)
 		return res
 
-	def send_message(self, username, method, address):
+	def send_message(self, username, method, address, raise_on_success=True):
 		plugin = self._get_send_plugin(method)
 		try:
 			token_from_db = self.db.get_one(username=username)
@@ -744,7 +797,10 @@ class Instance(Base):
 				method=method, username=username))
 			self.db.delete_tokens(username=username)
 			raise
-		raise UMC_Error(_("Successfully send token.").format(method), status=200)
+		if raise_on_success:
+			raise UMC_Error(_("Successfully send token.").format(method), status=200)
+		else:
+			return True
 
 	def _get_send_plugin(self, method):
 		try:

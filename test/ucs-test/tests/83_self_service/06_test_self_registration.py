@@ -17,19 +17,25 @@ from urlparse import urlparse, parse_qs
 
 from univention.admin.uldap import getAdminConnection
 from univention.admin.uexceptions import noObject
-from univention.lib.umc import Client
-from univention.config_registry import handler_set
+from univention.config_registry import handler_set as hs
+from univention.udm import UDM
+from univention.lib.umc import HTTPError
 
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from test_self_service import capture_mails
 import univention.testing.strings as uts
 import univention.testing.utils as utils
+from univention.testing.umc import Client
+
+
+MAILS_TIMEOUT = 5
 
 
 @pytest.fixture
 def ucr():
 	with UCSTestConfigRegistry() as ucr:
+		setattr(ucr, 'handler_set', hs)
 		yield ucr
 
 
@@ -40,13 +46,13 @@ def testudm():
 
 
 @pytest.fixture
-def mails_timeout():
-	return 5
+def readudm():
+	return UDM.machine().version(2)
 
 
 @pytest.fixture
-def mails(mails_timeout):
-	with capture_mails(timeout=mails_timeout) as mails:
+def mails():
+	with capture_mails(timeout=MAILS_TIMEOUT) as mails:
 		yield mails
 
 
@@ -56,52 +62,46 @@ def umc_client():
 
 
 @pytest.fixture
-def registration_info_different_container(ucr):
-	container = 'cn=users,%s' % (ucr.get('ldap/base'),)
-	handler_set(['umc/self-service/account-registration/usercontainer=%s' % (container,)])
-	ucr.load()
-	data = _registration_info(ucr)
-	yield data
-	_cleanup_registration_info(data)
+def get_registration_info(ucr):
+	class local:
+		dn = None
 
-
-@pytest.fixture
-def registration_info(ucr):
-	data = _registration_info(ucr)
-	yield data
-	_cleanup_registration_info(data)
-
-
-def _registration_info(ucr):
-	container = ucr.get('umc/self-service/account-registration/usercontainer')
-	username = uts.random_name()
-	dn = "uid=%s,%s" % (username, container)
-	data = {
-		'attributes': {
+	def _get_registration_info(attributes=None, container_without_base=None):
+		if container_without_base:
+			container_dn = '%s,%s' % (container_without_base, ucr.get('ldap/base'),)
+			ucr.handler_set(['umc/self-service/account-registration/usercontainer=%s' % (container_dn,)])
+			ucr.load()
+		container_dn = ucr.get('umc/self-service/account-registration/usercontainer')
+		username = uts.random_name()
+		_attributes = {
 			'username': username,
 			'lastname': username,
 			'password': 'univention',
 			'PasswordRecoveryEmail': 'root@localhost'
 		}
-	}
-	return {
-		'dn': dn,
-		'data': data
-	}
-
-
-def _cleanup_registration_info(data):
+		if attributes:
+			_attributes.update(attributes)
+		local.dn = "uid=%s,%s" % (_attributes['username'], container_dn)
+		return {
+			'dn': local.dn,
+			'attributes': _attributes,
+			'data': {
+				'attributes': _attributes
+			}
+		}
+	yield _get_registration_info
 	lo, po = getAdminConnection()
 	try:
-		lo.delete(data['dn'])
+		lo.delete(local.dn)
 	except noObject:
 		pass
 
 
 def _get_mail(mails):
-	mail = email.message_from_string(mails.data and mails.data[0])
+	assert mails.data, 'No mails have been captured in %s seconds' % (MAILS_TIMEOUT,)
+	mail = email.message_from_string(mails.data[0])
 	body = mail.get_payload(decode=True)
-	assert body, 'No email has been received in %s seconds' % (mails_timeout,)
+	assert body, 'No email has been received in %s seconds' % (MAILS_TIMEOUT,)
 	verify_link = ''
 	for line in body.split():
 		if line.startswith('https://'):
@@ -117,9 +117,13 @@ def _get_mail(mails):
 	}
 
 
-def test_user_creation(mails, mails_timeout, umc_client, registration_info):
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info['data'])
-	utils.verify_ldap_object(registration_info['dn'], {
+def test_user_creation(umc_client, mails, get_registration_info):
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	utils.verify_ldap_object(info['dn'], {
+		'univentionPasswordSelfServiceEmail': [info['attributes']['PasswordRecoveryEmail']],
+		'sn': [info['attributes']['lastname']],
+		'uid': [info['attributes']['username']],
 		'univentionPasswordRecoveryEmailVerified': ['FALSE'],
 		'univentionRegisteredThroughSelfService': ['TRUE'],
 	})
@@ -129,57 +133,89 @@ def test_user_creation(mails, mails_timeout, umc_client, registration_info):
 		'token': params['token'][0],
 		'method': params['method'][0],
 	})
-	utils.verify_ldap_object(registration_info['dn'], {'univentionPasswordRecoveryEmailVerified': ['TRUE']})
+	utils.verify_ldap_object(info['dn'], {'univentionPasswordRecoveryEmailVerified': ['TRUE']})
 
 
-def test_container(umc_client, registration_info_different_container):
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info_different_container['data'])
-	utils.verify_ldap_object(registration_info_different_container['dn'], {
+def test_udm_attributes_ucr_var(umc_client, readudm, ucr, get_registration_info):
+	# test that only the attributes in umc/self-service/account-registration/udm_attributes can be set
+	ucr.handler_set(['umc/self-service/account-registration/udm_attributes=lastname,username,description'])
+	info = get_registration_info(attributes={
+		'description': 'This is description',
+		'uidNumber': '1',
+	})
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	utils.verify_ldap_object(info['dn'], {
+		'description': [info['attributes']['description']],
+	})
+	u = readudm.obj_by_dn(info['dn'])
+	assert u.props.uidNumber != info['attributes']['uidNumber']
+
+
+def test_udm_attributes_required_ucr_var(umc_client, ucr, get_registration_info):
+	ucr.handler_set(['umc/self-service/account-registration/udm_attributes=lastname,username,title', 'umc/self-service/account-registration/udm_attributes/required=lastname,username,title'])
+	info = get_registration_info()
+	del info['data']['attributes']['username']
+	with pytest.raises(HTTPError) as excinfo:
+		umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	assert excinfo.value.message.startswith('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n')
+	for attr in ['username', 'title']:
+		assert '\n%s' % (attr,) in excinfo.value.message
+
+
+def test_usercontainer_ucr_var(umc_client, get_registration_info):
+	info = get_registration_info(container_without_base='cn=users')
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	utils.verify_ldap_object(info['dn'], {
 		'univentionPasswordRecoveryEmailVerified': ['FALSE'],
 		'univentionRegisteredThroughSelfService': ['TRUE'],
 	})
 
 
-def test_template(umc_client, testudm, ucr, registration_info):
+def test_usertemplate_ucr_var(umc_client, testudm, ucr, get_registration_info):
+	# TODO test all fields
 	template_dn = testudm.create_object('settings/usertemplate', name=uts.random_name(), title="<username>")
-	handler_set(['umc/self-service/account-registration/usertemplate=%s' % (template_dn,)])
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info['data'])
-	utils.verify_ldap_object(registration_info['dn'], {
+	ucr.handler_set(['umc/self-service/account-registration/usertemplate=%s' % (template_dn,)])
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	utils.verify_ldap_object(info['dn'], {
 		'univentionPasswordRecoveryEmailVerified': ['FALSE'],
 		'univentionRegisteredThroughSelfService': ['TRUE'],
-		'title': [registration_info['data']['attributes']['username']],
+		'title': [info['attributes']['username']],
 	})
 
 
-def test_email_test_file(umc_client, mails, ucr, registration_info, tmpdir):
-	p = tmpdir.mkdir("sub").join("body.txt")
-	body = "This is mail"
-	p.write(body)
-	handler_set(['umc/self-service/account-verification/email/text_file=%s' % (p,)])
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info['data'])
-	mail_body = _get_mail(mails)['body']
-	assert mail_body == body
+def test_text_file_ucr_var(umc_client, mails, ucr, get_registration_info, tmpdir):
+	file_path = tmpdir.mkdir("sub").join("mail_body.txt")
+	mail_body = "This is mail"
+	file_path.write(mail_body)
+	ucr.handler_set(['umc/self-service/account-verification/email/text_file=%s' % (file_path,)])
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	assert _get_mail(mails)['body'] == mail_body
 
 
-def test_email_token_length(umc_client, mails, ucr, registration_info):
-	length = 4
-	handler_set(['umc/self-service/account-verification/email/token_length=%s' % (length,)])
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info['data'])
+def test_token_length_ucr_var(umc_client, mails, ucr, get_registration_info):
+	token_length = 4
+	ucr.handler_set(['umc/self-service/account-verification/email/token_length=%s' % (token_length,)])
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
 	params = _get_mail(mails)['params']
-	assert len(params['token'][0]) == length
+	assert len(params['token'][0]) == token_length
 
 
-def test_email_webserver_addresss(umc_client, mails, ucr, registration_info):
-	address = 'foo.bar.com'
-	handler_set(['umc/self-service/account-verification/email/webserver_address=%s' % (address,)])
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info['data'])
+def test_webserver_addresss_ucr_var(umc_client, mails, ucr, get_registration_info):
+	webserver_address = 'foo.bar.com'
+	ucr.handler_set(['umc/self-service/account-verification/email/webserver_address=%s' % (webserver_address,)])
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
 	link = _get_mail(mails)['link']
-	assert link.startswith('https://%s' % (address,))
+	assert link.startswith('https://%s' % (webserver_address,))
 
 
-def test_email_sender_address(umc_client, mails, ucr, registration_info):
-	address = 'foobar@mail.com'
-	handler_set(['umc/self-service/account-verification/email/sender_address=%s' % (address,)])
-	umc_client.umc_command('passwordreset/create_self_registered_account', registration_info['data'])
+def test_sender_address_ucr_var(umc_client, mails, ucr, get_registration_info):
+	sender_address = 'foobar@mail.com'
+	ucr.handler_set(['umc/self-service/account-verification/email/sender_address=%s' % (sender_address,)])
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
 	mail = _get_mail(mails)['mail']
-	assert mail.get('from') == address
+	assert mail.get('from') == sender_address
