@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
 import random
 
 STR_NUMERIC = u'0123456789'
@@ -58,7 +59,9 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 			result += random.choice(STR_ALPHA)
 		elif numeric:
 			result += random.choice(STR_NUMERIC)
-	return result.encode(encoding)
+	if six.PY2:
+		result = result.encode(encoding)
+	return result
 
 
 def random_name(length=10):
