@@ -648,10 +648,8 @@ class access(object):
 		fixed = set(pattrs.get('fixedAttributes', ()))
 		empty = set(pattrs.get('emptyAttributes', ()))
 		values = result.setdefault(ptype, {})
-		for key in list(empty) + list(pattrs.keys()) + list(fixed):
-			if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
-				continue
-
+		SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
+		for key in (empty | set(pattrs) | fixed) - SKIP:
 			if key not in values or key in fixed:
 				value = [] if key in empty else pattrs.get(key, [])
 				# value = [x.decode('UTF-8') for x in value]   # TODO: This would be ugly here
