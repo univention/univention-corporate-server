@@ -2716,13 +2716,11 @@ class Object(FormBase, Resource):
 
 		values = {}
 		if properties:
-			values = obj.info.copy()
 			if '*' not in properties:
-				for key in list(values):
-					if key not in properties:
-						values.pop(key)
+				values = dict((key, value) for (key, value) in obj.info.items() if key in properties)
 			else:
 				values = dict((key, obj[key]) for key in obj.descriptions if add or obj.has_property(key))
+
 			for passwd in module.password_properties:
 				values[passwd] = None
 			values = dict(decode_properties(module, obj, values))
