@@ -101,6 +101,9 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 
 			if name in directory:
 				value = directory[name]
+				if not isinstance(value, str):
+					# Python 2 with unicode value
+					value = value.encode('UTF-8')  # important! template must not be of type unicode ever (in py2), otherwise some characters are lost in the below subprocess stdinput
 			else:
 				match = WARNING_PATTERN.match(name)
 				if match:
