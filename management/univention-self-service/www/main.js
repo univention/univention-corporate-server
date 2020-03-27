@@ -47,11 +47,11 @@ define([
 	"./PasswordForgotten",
 	"./ProtectAccountAccess",
 	"./CreateAccount",
-	"./ContactVerify",
+	"./VerifyAccount",
 	"./NewPassword",
 	"./PasswordChange",
 	"./UserAttributes"
-], function(declare, lang, array, baseWin, dojoHash, ioQuery, topic, dom, Deferred, Standby, StackContainer, ContentPane, tools, StandbyMixin, put, PasswordForgotten, ProtectAccountAccess, CreateAccount, ContactVerify, NewPassword, PasswordChange, UserAttributes) {
+], function(declare, lang, array, baseWin, dojoHash, ioQuery, topic, dom, Deferred, Standby, StackContainer, ContentPane, tools, StandbyMixin, put, PasswordForgotten, ProtectAccountAccess, CreateAccount, VerifyAccount, NewPassword, PasswordChange, UserAttributes) {
 	var _Container = declare([StackContainer, StandbyMixin]);
 	return {
 		content_container: null,
@@ -68,7 +68,7 @@ define([
 		},
 
 		_getEnabledPages: function() {
-			var pages = [PasswordForgotten, ProtectAccountAccess, CreateAccount, ContactVerify, NewPassword, PasswordChange, UserAttributes];
+			var pages = [PasswordForgotten, ProtectAccountAccess, CreateAccount, VerifyAccount, NewPassword, PasswordChange, UserAttributes];
 			var enabledKeys = pages.filter(function(page) {
 				return page.enabledViaUcr;
 			}).map(function(page) {

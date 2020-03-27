@@ -135,9 +135,7 @@ define([
 
 		focusInvalid: function() {
 			if ('validate' in this && typeof this.validate === 'function') {
-				if ('_hasBeenBlurred' in this) {
-					this._hasBeenBlurred = true;
-				}
+				this._hasBeenBlurred = true;
 				this.validate();
 			}
 			this.focus();

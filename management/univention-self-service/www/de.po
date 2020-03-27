@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-02-27 18:31+0100\n"
+"POT-Creation-Date: 2020-03-26 06:28+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,7 +16,13 @@ msgstr ""
 msgid " (retype)"
 msgstr " (Wiederholung)"
 
-#: www/ContactVerify.js:51
+#: www/VerifyAccount.js:198
+msgid "A verification token could not be sent. Please verify your input."
+msgstr ""
+"Ein Verifizierungs-Token konnte nicht gesendet werden. Bitte überprüfen Sie "
+"Ihre Eingabe"
+
+#: www/VerifyAccount.js:51
 msgid "Account verification"
 msgstr "Konto-Verifizierung"
 
@@ -24,11 +30,21 @@ msgstr "Konto-Verifizierung"
 msgid "Activate renew options."
 msgstr "Wiederherstellungsoptionen aktivieren."
 
-#: www/UserAttributes.js:211 www/ProtectAccountAccess.js:267
+#: www/CreateAccount.js:153
+#, javascript-format
+msgid ""
+"An error occurred while sending the verification token for your account. "
+"Please <a href=\"#page=verifyaccount&username=%s\">request a new one</a>."
+msgstr ""
+"Beim Senden des Verifizierungs-Tokens für Ihr Konto ist ein Fehler "
+"aufgetreten. Bitte <a href=\"#page=verifyaccount&username=%s\">fordern Sie "
+"einen neuen an</a>."
+
+#: www/ProtectAccountAccess.js:267 www/UserAttributes.js:211
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: www/NewPassword.js:244 www/PasswordChange.js:193
+#: www/PasswordChange.js:193 www/NewPassword.js:244
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -68,7 +84,7 @@ msgstr ""
 msgid "Forgot your password? Set a new one: "
 msgstr "Haben Sie ihr Passwort vergessen? Setzen Sie ein Neues:"
 
-#: www/CreateAccount.js:174
+#: www/CreateAccount.js:151 www/VerifyAccount.js:204
 #, javascript-format
 msgid ""
 "Hello <b>%s</b>, we have sent you an email to <b>%s</b>. Please follow the "
@@ -89,20 +105,20 @@ msgstr ""
 msgid "Invalid credentials. Password change failed."
 msgstr "Ungültige Zugangsdaten. Passwortwechsel fehlgeschlagen."
 
-#: www/NewPassword.js:201 www/PasswordChange.js:160
+#: www/PasswordChange.js:160 www/NewPassword.js:201
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: www/NewPassword.js:216 www/PasswordChange.js:170
+#: www/PasswordChange.js:170 www/NewPassword.js:216
 msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: www/UserAttributes.js:152 www/PasswordForgotten.js:130
-#: www/PasswordForgotten.js:176 www/ProtectAccountAccess.js:163
+#: www/PasswordForgotten.js:130 www/PasswordForgotten.js:176
+#: www/ProtectAccountAccess.js:163 www/UserAttributes.js:152
 msgid "Next"
 msgstr "Weiter"
 
-#: www/NewPassword.js:266 www/PasswordChange.js:299
+#: www/PasswordChange.js:299 www/NewPassword.js:266
 msgid "OK"
 msgstr "OK"
 
@@ -110,7 +126,7 @@ msgstr "OK"
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: www/UserAttributes.js:142 www/ProtectAccountAccess.js:141
+#: www/ProtectAccountAccess.js:141 www/UserAttributes.js:142
 msgid "Password"
 msgstr "Passwort"
 
@@ -130,7 +146,11 @@ msgstr "Bitte wählen Sie eine Wiederherstellungsoption aus."
 msgid "Protect account"
 msgstr "Kontozugang schützen"
 
-#: www/UserAttributes.js:206 www/ProtectAccountAccess.js:262
+#: www/VerifyAccount.js:151
+msgid "Request new token"
+msgstr "Neuen Token anfordern"
+
+#: www/ProtectAccountAccess.js:262 www/UserAttributes.js:206
 msgid "Save"
 msgstr "Speichern"
 
@@ -146,9 +166,11 @@ msgstr "Ein neues Password setzen:"
 msgid "Set new password"
 msgstr "Neues Passwort setzen"
 
-#: www/CreateAccount.js:158
-msgid "The account could not be created"
-msgstr "Das Konto konnte nicht erstellt werden"
+#: www/VerifyAccount.js:169
+msgid "The account could not be verified. Please verify your input."
+msgstr ""
+"Das Konto konnte nicht verifiziert werden. Bitte überprüfen Sie Ihre "
+"Eingabe."
 
 #: www/ProtectAccountAccess.js:233
 msgid "The entries do not match, please retype again."
@@ -158,7 +180,7 @@ msgstr "Die Eingaben stimmen nicht überein. Bitte versuchen Sie es erneut."
 msgid "The password has been changed successfully."
 msgstr "Das Passwort wurde erfolgreich geändert."
 
-#: www/NewPassword.js:225 www/PasswordChange.js:179
+#: www/PasswordChange.js:179 www/NewPassword.js:225
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -166,17 +188,17 @@ msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 msgid "There is no profile data data defined that you can edit"
 msgstr "Es sind keine Profildaten definiert, die Sie bearbeiten können"
 
-#: www/NewPassword.js:176 www/ContactVerify.js:127
+#: www/VerifyAccount.js:144 www/NewPassword.js:176
 msgid "Token"
 msgstr "Token"
 
-#: www/UserAttributes.js:119 www/PasswordForgotten.js:112
-#: www/NewPassword.js:151 www/PasswordChange.js:117 www/ContactVerify.js:111
-#: www/ProtectAccountAccess.js:113
+#: www/PasswordChange.js:117 www/VerifyAccount.js:131
+#: www/PasswordForgotten.js:112 www/ProtectAccountAccess.js:113
+#: www/UserAttributes.js:119 www/NewPassword.js:151
 msgid "Username"
 msgstr "Benutzername"
 
-#: www/ContactVerify.js:132
+#: www/VerifyAccount.js:158
 msgid "Verify account"
 msgstr "Konto verifizieren"
 
@@ -191,7 +213,8 @@ msgstr ""
 "prüfen Sie Ihre E-Mails und folgen Sie den Link, um Ihr Passwort zu "
 "erneuern."
 
-#: www/ContactVerify.js:150
+#: www/VerifyAccount.js:185
+#, javascript-format
 msgid "Welcome <b>%s</b>, %s."
 msgstr "Wilkommen <b>%s</b>, %s."
 
@@ -199,7 +222,7 @@ msgstr "Wilkommen <b>%s</b>, %s."
 msgid "You have mail!"
 msgstr "Sie haben eine neue E-Mail!"
 
-#: www/ContactVerify.js:92
+#: www/VerifyAccount.js:234
 msgid "Your account is being verified."
 msgstr "Ihr Konto wird verifiziert."
 
@@ -211,11 +234,11 @@ msgstr "Ihr Profil"
 msgid "Your profile data is up to date"
 msgstr "Ihre Profildaten sind auf dem neuesten Stand"
 
-#: www/ContactVerify.js:146
+#: www/VerifyAccount.js:181
 msgid "your account has already been verified"
 msgstr "ihr Konto wurde bereits verifiziert"
 
-#: www/ContactVerify.js:143
+#: www/VerifyAccount.js:178
 msgid "your account has been successfully verified"
 msgstr "ihr Konto wurde erfolgreich verifiziert"
 
