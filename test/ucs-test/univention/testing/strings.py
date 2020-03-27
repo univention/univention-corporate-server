@@ -41,7 +41,7 @@ STR_UMLAUT = u'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
-def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='utf-8'):
+def random_string(length=10, alpha=True, numeric=True, charset=None, encoding=()):
 	"""
 	Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
 	Default is an alphanumeric string of 10 characters length. A custom character set
@@ -58,7 +58,9 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 			result += random.choice(STR_ALPHA)
 		elif numeric:
 			result += random.choice(STR_NUMERIC)
-	return result.encode(encoding)
+	if encoding:
+		result = result.encode(*encoding)
+	return result
 
 
 def random_name(length=10):
