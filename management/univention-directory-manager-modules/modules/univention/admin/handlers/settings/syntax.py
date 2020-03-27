@@ -163,7 +163,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			# split ldap attribute value into two parts and add them to separate dir manager widgets
 			for item in self.oldattr.get('univentionSyntaxLDAPAttribute', []):
-				if ':' in item:
+				if b':' in item:
 					self['attribute'].append(item.decode('UTF-8'))
 				else:
 					self['ldapattribute'].append(item.decode('UTF-8'))
@@ -175,6 +175,8 @@ class object(univention.admin.handlers.simpleLdap):
 				self['value'] = val
 			else:
 				self['ldapvalue'] = val
+
+			self.save()
 
 	def _ldap_pre_create(self):
 		self.__check()
