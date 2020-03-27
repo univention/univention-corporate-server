@@ -38,14 +38,15 @@ define([
 	"put-selector/put",
 	"dojox/html/entities",
 	"umc/tools",
+	"umc/dialog",
 	"dompurify/purify",
 	"./TextBox",
 	"umc/i18n!."
-], function(lang, keys, dojoHash, ioQuery, domConstruct, Button, put, entities, tools, dompurify, TextBox, _) {
+], function(lang, keys, dojoHash, ioQuery, domConstruct, Button, put, entities, tools, dialog, dompurify, TextBox, _) {
 
 	return {
 		hash: 'verifyaccount',
-		enabledViaUcr: false,
+		enabledViaUcr: 'umc/self-service/account-verification/frontend/enabled',
 		visible: true,
 
 		title: _('Account verification'),

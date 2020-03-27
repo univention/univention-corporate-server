@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-passwordreset\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-03-26 06:28+0100\n"
+"POT-Creation-Date: 2020-03-26 10:51+0100\n"
 "PO-Revision-Date: 2015-09-22 09:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "????"
 msgstr "????"
 
-#: umc/python/passwordreset/__init__.py:616
+#: umc/python/passwordreset/__init__.py:622
 msgid "Changing contact data failed."
 msgstr "Ändern der Kontaktdaten fehlgeschlagen."
 
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Email"
 msgstr "E-Mail"
 
-#: umc/python/passwordreset/__init__.py:826
+#: umc/python/passwordreset/__init__.py:834
 msgid "Error sending token: {}"
 msgstr "Fehler beim Versenden des Tokens: {}"
 
@@ -41,7 +41,7 @@ msgstr "Fehler beim Versenden des Tokens: {}"
 msgid "External"
 msgstr "Extern"
 
-#: umc/python/passwordreset/__init__.py:713
+#: umc/python/passwordreset/__init__.py:721
 msgid "Failed to change password."
 msgstr "Passwortänderung fehlgeschlagen."
 
@@ -65,11 +65,11 @@ msgstr ""
 "Für diesen Benutzer wurden keine Kontaktinformationen hinterlegt. Das "
 "Zurücksetzen des Passworts ist daher nicht möglich."
 
-#: umc/python/passwordreset/__init__.py:615
+#: umc/python/passwordreset/__init__.py:621
 msgid "Successfully changed your contact data."
 msgstr "Ihre Kontaktdaten wurden erfolgreich geändert."
 
-#: umc/python/passwordreset/__init__.py:712
+#: umc/python/passwordreset/__init__.py:720
 msgid "Successfully changed your password."
 msgstr "Ihr Passwort wurde erfolgreich geändert."
 
@@ -77,11 +77,11 @@ msgstr "Ihr Passwort wurde erfolgreich geändert."
 msgid "Successfully changed your profile data."
 msgstr "Ihre Profildaten wurden erfolgreich geändert."
 
-#: umc/python/passwordreset/__init__.py:800
+#: umc/python/passwordreset/__init__.py:808
 msgid "Successfully send token."
 msgstr "Der Token wurde erfolgreich versendet."
 
-#: umc/python/passwordreset/__init__.py:546
+#: umc/python/passwordreset/__init__.py:549
 #, python-format
 msgid ""
 "The account could not be created:\n"
@@ -90,7 +90,7 @@ msgstr ""
 "Das Konto konnte nicht erstellt werden:\n"
 "%s"
 
-#: umc/python/passwordreset/__init__.py:498
+#: umc/python/passwordreset/__init__.py:502
 #, python-format
 msgid ""
 "The account could not be created:\n"
@@ -99,9 +99,18 @@ msgid ""
 "%s"
 msgstr ""
 "Das Konto konnte nicht erstellt werden:\n"
-"Die angegebenen Informationen reichen nicht aus. "
-"Die folgenden Eigenschaften fehlen:\n"
+"Die angegebenen Informationen reichen nicht aus. Die folgenden Eigenschaften "
+"fehlen:\n"
 "%s"
+
+#: umc/python/passwordreset/__init__.py:472
+msgid "The account registration was disabled via the Univention Configuration Registry."
+msgstr "Die Kontoregistrierung wurde durch die Univention Configuration Registry deaktiviert."
+
+#: umc/python/passwordreset/__init__.py:581
+#: umc/python/passwordreset/__init__.py:663
+msgid "The account verification was disabled via the Univention Configuration Registry."
+msgstr "Die Konto-Verifizierung wurde durch die Univention Configuration Registry  deaktiviert."
 
 #: umc/python/passwordreset/__init__.py:180
 msgid ""
@@ -116,7 +125,7 @@ msgstr ""
 msgid "The attributes could not be saved: %s"
 msgstr "Die Attribute konnten nicht gespeichert werden: %s"
 
-#: umc/python/passwordreset/__init__.py:865
+#: umc/python/passwordreset/__init__.py:873
 msgid ""
 "The configuration of the password reset service is not complete. The UCR "
 "variables \"ad/reset/username\" and \"ad/reset/password\" need to be set "
@@ -150,7 +159,7 @@ msgstr ""
 "Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist entweder "
 "abgelaufen oder ungültig. Bitte fordern Sie einen neuen an."
 
-#: umc/python/passwordreset/__init__.py:485
+#: umc/python/passwordreset/__init__.py:488
 msgid "The username is already taken"
 msgstr "Der Benutzername ist bereits vergeben"
 
@@ -158,7 +167,7 @@ msgstr "Der Benutzername ist bereits vergeben"
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"
 
-#: umc/python/passwordreset/__init__.py:630
+#: umc/python/passwordreset/__init__.py:636
 msgid "Unknown recovery method '{}'."
 msgstr "Unbekannte Wiederherstellungsfunktion '{}'."
 

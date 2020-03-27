@@ -45,7 +45,7 @@ define([
 
 	return {
 		hash: 'createaccount',
-		enabledViaUcr: 'umc/self-service/account-registration/enabled',
+		enabledViaUcr: 'umc/self-service/account-registration/frontend/enabled',
 		visible: true,
 
 		title: _('Create an account'),

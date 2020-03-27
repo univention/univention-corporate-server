@@ -467,6 +467,9 @@ class Instance(Base):
 	@forward_to_master
 	@simple_response
 	def create_self_registered_account(self, attributes):
+		ucr.load()
+		if ucr.is_false('umc/self-service/account-registration/backend/enabled', True):
+			raise UMC_Error(_('The account registration was disabled via the Univention Configuration Registry.'))
 		# filter out attributes that are not valid to set
 		allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()])
 		attributes = {k: v for (k, v) in attributes.items() if k in allowed_to_set}
@@ -498,7 +501,6 @@ class Instance(Base):
 		if not_found:
 			raise UMC_Error(_('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n%s') % ('\n'.join(not_found),))
 
-		ucr.load()
 		univention.admin.modules.update()
 		lo, po = get_admin_connection()
 
@@ -574,6 +576,9 @@ class Instance(Base):
 		username=StringSanitizer(required=True))
 	@simple_response
 	def send_verification_token(self, username):
+		ucr.load()
+		if ucr.is_false('umc/self-service/account-verification/backend/enabled', True):
+			raise UMC_Error(_('The account verification was disabled via the Univention Configuration Registry.'))
 		MODULE.info("send_verification_token(): username: {}".format(username))
 		users_mod = UDM.machine().version(2).get('users/user')
 		try:
@@ -653,6 +658,9 @@ class Instance(Base):
 	)
 	@simple_response
 	def verify_contact(self, token, username, method):
+		ucr.load()
+		if ucr.is_false('umc/self-service/account-verification/backend/enabled', True):
+			raise UMC_Error(_('The account verification was disabled via the Univention Configuration Registry.'))
 		users_mod = UDM.admin().version(1).get('users/user')
 		try:
 			user = users_mod.get_by_id(username)
@@ -661,7 +669,6 @@ class Instance(Base):
 				'success': False,
 				'failType': 'INVALID_INFORMATION',
 			}
-		ucr.load()
 		next_steps = ucr.get('umc/self-service/account-verification/next-steps/%s' % self.locale.language, '')
 		if not next_steps:
 			next_steps = ucr.get('umc/self-service/account-verification/next-steps', '')

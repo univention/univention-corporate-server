@@ -32,6 +32,16 @@ from univention.testing.umc import Client
 MAILS_TIMEOUT = 5
 
 
+@pytest.fixture(scope="module", autouse=True)
+def activate_self_registration():
+	with UCSTestConfigRegistry() as ucr:
+		hs(['umc/self-service/account-registration/backend/enabled=true'])
+		hs(['umc/self-service/account-registration/frontend/enabled=true'])
+		hs(['umc/self-service/account-verification/backend/enabled=true'])
+		hs(['umc/self-service/account-verification/frontend/enabled=true'])
+		yield ucr
+
+
 @pytest.fixture
 def ucr():
 	with UCSTestConfigRegistry() as ucr:
@@ -58,7 +68,7 @@ def mails():
 
 @pytest.fixture
 def umc_client():
-	return Client()
+	return Client(language="en_US")
 
 
 @pytest.fixture
@@ -134,6 +144,28 @@ def test_user_creation(umc_client, mails, get_registration_info):
 		'method': params['method'][0],
 	})
 	utils.verify_ldap_object(info['dn'], {'univentionPasswordRecoveryEmailVerified': ['TRUE']})
+
+
+def test_registration_backend_enabled_ucr_var(umc_client, ucr, get_registration_info):
+	ucr.handler_set(['umc/self-service/account-registration/backend/enabled=false'])
+	info = get_registration_info()
+	with pytest.raises(HTTPError) as excinfo:
+		umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	assert excinfo.value.message == 'The account registration was disabled via the Univention Configuration Registry.'
+
+
+def test_verification_backend_enabled_ucr_var(umc_client, mails, ucr, get_registration_info):
+	ucr.handler_set(['umc/self-service/account-verification/backend/enabled=false'])
+	info = get_registration_info()
+	umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
+	params = _get_mail(mails)['params']
+	with pytest.raises(HTTPError) as excinfo:
+		umc_client.umc_command('passwordreset/verify_contact', {
+			'username': params['username'][0],
+			'token': params['token'][0],
+			'method': params['method'][0],
+		})
+	assert excinfo.value.message == 'The account verification was disabled via the Univention Configuration Registry.'
 
 
 def test_udm_attributes_ucr_var(umc_client, readudm, ucr, get_registration_info):

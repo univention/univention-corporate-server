@@ -981,113 +981,149 @@
 				und das <property>PasswordRecoveryEmailVerified</property> Attribut auf <wordasword>FALSE</wordasword> gesetzt. Nachdem der Benutzer sein Konto über
 				die <wordasword>Verifizierungs-E-Mail</wordasword> verifiziert hat wird das <property>PasswordRecoveryEmailVerified</property> Attribut auf <wordasword>TRUE</wordasword> gesetzt.
 			</para>
-			<figure id="user-registration">
-				<title>Registrierung durch den <foreignphrase>Self Service</foreignphrase></title>
-				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_registration_de.png"/>
-			</figure>
-			<para>
-				Die Selbstregistrierung kann mit der &ucsUCRV; <envar>umc/self-service/account-registration/enabled</envar> auf einzelnen Systemen aktiviert bzw. deaktiviert werden.
-			</para>
-			<para>
-				Die Seite "Konto erstellen" und Aspekte der Kontoerstellung können mit den folgenden &ucsUCRV;n konfiguriert werden.
-				Diese Variablen müssen auf dem <foreignphrase>Self-Service-Master</foreignphrase> gesetzt werden, der über die &ucsUCRV; <envar>self-service/backend-server</envar>
-				definiert ist, da Anfragen bezüglich dieser Variablen an den <foreignphrase>Self-Service-Master</foreignphrase> weitergeleitet werden.
-			</para>
-			<variablelist>
-				<varlistentry>
-					<term><envar>umc/self-service/account-registration/usertemplate</envar></term>
-					<listitem><simpara>
-						Mit dieser Variable kann eine Benutzervorlage (<xref linkend="users:templates"/>) angegeben werden,
-						die für die Erstellung von selbst registrierten Konten verwendet wird.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-registration/usercontainer</envar></term>
-					<listitem><simpara>
-						Mit dieser Variable kann ein Container angegeben werden, unter dem die selbst registrierten Benutzer angelegt werden.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-registration/udm_attributes</envar></term>
-					<listitem><simpara>
-						Diese Variable konfiguriert, welche <wordasword>UDM-Attribute</wordasword> eines Benutzerkontos auf der Seite "Konto erstellen" des <foreignphrase>Self Service</foreignphrase>  angezeigt werden.
-						Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als <wordasword>kommagetrennte</wordasword> Liste angegeben werden.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-registration/udm_attributes/required</envar></term>
-					<listitem><simpara>
-						Diese Variable konfiguriert, welche der über die &ucsUCRV; <envar>umc/self-service/account-registration/udm_attributes</envar> definierten <wordasword>UDM-Attribute</wordasword>
-						vom Benutzer angegeben werden müssen.
-						Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als <wordasword>kommagetrennte</wordasword> Liste angegeben werden.
-					</simpara></listitem>
-				</varlistentry>
-			</variablelist>
-
-			<para>
-				Nachdem ein Benutzer auf <guimenu>Konto erstellen</guimenu> geklickt hat, sieht er eine Nachricht, dass eine E-Mail für die Kontoverifizierung versendet wurde.
-			</para>
-			<figure id="user-verification-email">
-				<title>Senden der <wordasword>Verifizierungs-E-Mail</wordasword></title>
-				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_email_de.png"/>
-			</figure>
-			<para>
-				Aspekte der <wordasword>Verifizierungs-E-Mail</wordasword> und des <wordasword>Verifizierungs-Tokens</wordasword> können über die folgenden &ucsUCRV;n konfiguriert werden.
-				Diese Variablen müssen auf dem <foreignphrase>Self-Service-Master</foreignphrase> gesetzt werden, der über die &ucsUCRV; <envar>self-service/backend-server</envar>
-				definiert ist, da Anfragen bezüglich dieser Variablen an den <foreignphrase>Self-Service-Master</foreignphrase> weitergeleitet werden.
-			</para>
-			<variablelist>
-				<varlistentry>
-					<term><envar>umc/self-service/account-verification/email/enabled</envar></term>
-					<listitem><simpara>
-							Aktiviert das Senden von <wordasword>Verifizierungs-Token</wordasword> per E-Mail.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-verification/email/webserver_address</envar></term>
-					<listitem><simpara>
+			<section>
+				<title>Kontoerstellung</title>
+				<figure id="user-registration">
+					<title>Selbstregistrierung</title>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_registration_de.png"/>
+				</figure>
+				<para>
+					Die "Konto erstellen" Seite kann mit der &ucsUCRV; <envar>umc/self-service/account-registration/frontend/enabled</envar>
+					auf einzelnen Systemen aktiviert bzw. deaktiviert werden.
+				</para>
+				<para>
+					Aspekte der "Konto erstellen" Seite und der Kontoerstellung selbst können mit den folgenden &ucsUCRV;n konfiguriert werden.
+					Diese Variablen müssen auf dem <foreignphrase>Self Service Backend</foreignphrase> gesetzt werden, das über die &ucsUCRV; <envar>self-service/backend-server</envar>
+					definiert ist, da Anfragen bezüglich dieser Variablen an das <foreignphrase>Self Service Backend</foreignphrase> weitergeleitet werden.
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><envar>umc/self-service/account-registration/backend/enabled</envar></term>
+						<listitem><simpara>
+							Mit dieser Variable kann die Selbstregistrierung deaktiviert/aktiviert werden.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-registration/usertemplate</envar></term>
+						<listitem><simpara>
+							Mit dieser Variable kann eine Benutzervorlage (<xref linkend="users:templates"/>) angegeben werden,
+							die für die Erstellung von selbst registrierten Konten verwendet wird.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-registration/usercontainer</envar></term>
+						<listitem><simpara>
+							Mit dieser Variable kann ein Container angegeben werden, unter dem die selbst registrierten Benutzer angelegt werden.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-registration/udm_attributes</envar></term>
+						<listitem><simpara>
+							Diese Variable konfiguriert, welche <wordasword>UDM-Attribute</wordasword> eines Benutzerkontos auf der Seite "Konto erstellen" des <foreignphrase>Self Service</foreignphrase>  angezeigt werden.
+							Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als <wordasword>kommagetrennte</wordasword> Liste angegeben werden.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-registration/udm_attributes/required</envar></term>
+						<listitem><simpara>
+							Diese Variable konfiguriert, welche der über die &ucsUCRV; <envar>umc/self-service/account-registration/udm_attributes</envar> definierten <wordasword>UDM-Attribute</wordasword>
+							vom Benutzer angegeben werden müssen.
+							Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als <wordasword>kommagetrennte</wordasword> Liste angegeben werden.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+			</section>
+			<section>
+				<title><wordasword>Verifizierungs-E-Mail</wordasword></title>
+				<para>
+					Nachdem ein Benutzer auf <guimenu>Konto erstellen</guimenu> geklickt hat, sieht er eine Nachricht, dass eine E-Mail für die Kontoverifizierung versendet wurde.
+				</para>
+				<figure id="user-verification-email">
+					<title>Senden der <wordasword>Verifizierungs-E-Mail</wordasword></title>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_email_de.png"/>
+				</figure>
+				<para>
+					Aspekte der <wordasword>Verifizierungs-E-Mail</wordasword> und des <wordasword>Verifizierungs-Tokens</wordasword> können über die folgenden &ucsUCRV;n konfiguriert werden.
+					Diese Variablen müssen auf dem <foreignphrase>Self Service Backend</foreignphrase> gesetzt werden, der über die &ucsUCRV; <envar>self-service/backend-server</envar>
+					definiert ist, da Anfragen bezüglich dieser Variablen an den <foreignphrase>Self Service Backend</foreignphrase> weitergeleitet werden.
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><envar>umc/self-service/account-verification/email/enabled</envar></term>
+						<listitem><simpara>
+								Aktiviert das Senden von <wordasword>Verifizierungs-Token</wordasword> per E-Mail.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-verification/email/webserver_address</envar></term>
+						<listitem><simpara>
 							Definiert den <wordasword>Host-Teil</wordasword>, der in der <wordasword>Verifizierungs-Link-URL</wordasword> verwendet werden soll.
-						Standardmäßig wird der FQDN des über die &ucsUCRV; <envar>self-service/backend-server</envar> definierten <foreignphrase>Self-Service-Master</foreignphrase> verwendet, da diese &ucsUCRV; dort ausgewertet wird.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-verification/email/sender_address</envar></term>
-					<listitem><simpara>
-							Definiert die <wordasword>Absenderadresse</wordasword> der <wordasword>Verifizierungs-E-Mail</wordasword>. Die Voreinstellung ist "<foreignphrase>Account Verification Service  &lt;<wordasword>noreply@FQDN</wordasword>&gt;</foreignphrase>".
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-verification/email/server</envar></term>
-					<listitem><simpara>
-						Servername oder IP-Adresse des zu verwendenden Mail-Servers.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-verification/email/text_file</envar></term>
-					<listitem><simpara>
+							Standardmäßig wird der FQDN des über die &ucsUCRV; <envar>self-service/backend-server</envar> definierten
+							<foreignphrase>Self Service Backend</foreignphrase> verwendet, da diese &ucsUCRV; dort ausgewertet wird.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-verification/email/sender_address</envar></term>
+						<listitem><simpara>
+							Definiert die <wordasword>Absenderadresse</wordasword> der <wordasword>Verifizierungs-E-Mail</wordasword>.
+							Die Voreinstellung ist "<foreignphrase>Account Verification Service  &lt;<wordasword>noreply@FQDN</wordasword>&gt;</foreignphrase>".
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-verification/email/server</envar></term>
+						<listitem><simpara>
+							Servername oder IP-Adresse des zu verwendenden Mail-Servers.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-verification/email/text_file</envar></term>
+						<listitem><simpara>
 							Ein Pfad zu einer Textdatei, deren Inhalt für den Körper der <wordasword>Verifizierungs-E-Mail</wordasword> verwendet wird.
-						Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden: {link}, {<wordasword>token</wordasword>}, {<wordasword>tokenlink</wordasword>} und {<wordasword>username</wordasword>}.
-						Als Standard wird die Datei <filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/verification_email_body.txt</filename> verwendet.
-					</simpara></listitem>
-				</varlistentry>
-				<varlistentry>
-					<term><envar>umc/self-service/account-verification/email/token_length</envar></term>
-					<listitem><simpara>
-							Definiert die Anzahl der Zeichen, die für den <wordasword>Verifizierungs-Token</wordasword> verwendet wird. Als Standard werden 64 Zeichen verwendet.
-					</simpara></listitem>
-				</varlistentry>
-			</variablelist>
-			<para>
-				Wird der <wordasword>Verifizierungs-Link</wordasword> aus der E-Mail aufgerufen, wird das Konto verifiziert und eine Nachricht angezeigt, was der Benutzer als nächstes tun kann.
-			</para>
-			<figure id="user-verification-message">
+							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
+							{link}, {<wordasword>token</wordasword>}, {<wordasword>tokenlink</wordasword>} und {<wordasword>username</wordasword>}.
+							Als Standard wird die Datei
+							<filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/verification_email_body.txt</filename> verwendet.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-verification/email/token_length</envar></term>
+						<listitem><simpara>
+								Definiert die Anzahl der Zeichen, die für den <wordasword>Verifizierungs-Token</wordasword> verwendet wird. Als Standard werden 64 Zeichen verwendet.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+			</section>
+			<section>
 				<title>Kontoverifizierung</title>
-				<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_message_de.png"/>
-			</figure>
-			<para>
-				Diese Nachricht kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/next-steps</envar> konfiguriert werden.
-				Eine lokalisierte Nachricht kann konfiguriert werden, indem eine Locale an die Variable angehängt wird. Z.B. <envar>umc/self-service/account-verification/next-steps/de</envar>.
-			</para>
+				<para>
+					Wenn der Benutzer dem <wordasword>Verifizierungs-Link</wordasword> aus der E-Mail folgt, gelangt er auf die Seite "Kontoverifizierung" des <foreignphrase>Self Service</foreignphrase>.
+				</para>
+				<figure id="user-verification">
+					<title>Kontoverifizierung</title>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_de.png"/>
+				</figure>
+				<para>
+					Die "Kontoverifizierung" Seite kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/frontend/enabled</envar>
+					auf einzelnen Systemen aktiviert bzw. deaktiviert werden.
+				</para>
+				<para>
+					Die Kontoverifizierung und die Anforderung neuer <wordasword>Verifizierungs-Token</wordasword>
+					kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/backen/enabled</envar>
+					deaktiviert/aktiviert werden.
+					Diese Variablen muss auf dem <foreignphrase>Self Service Backend</foreignphrase> gesetzt werden,
+					das über die &ucsUCRV; <envar>self-service/backend-server</envar> definiert ist.
+				</para>
+				<para>
+					Nach erfolgreicher Kontoverifizierung wird eine Nachricht angezeigt, was der Benutzer als nächstes tun kann.
+					Diese Nachricht kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/next-steps</envar> konfiguriert werden.
+					Eine lokalisierte Nachricht kann konfiguriert werden, indem eine Locale an die Variable
+					angehängt wird. Z.B. <envar>umc/self-service/account-verification/next-steps/de</envar>.
+				</para>
+				<figure id="user-verification-message">
+					<title>Kontoverifizierung</title>
+					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_message_de.png"/>
+				</figure>
+			</section>
 		</section>
     </section>
 	<section id="users:faillog">
