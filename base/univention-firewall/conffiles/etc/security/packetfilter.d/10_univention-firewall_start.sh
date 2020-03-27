@@ -130,7 +130,7 @@ for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfi
 		filterlist[ '/'.join(items[-3:]) ] = key
 
 # print values
-for ucrkey in filterlist.values():
+for ucrkey in sorted(filterlist.values()):
 	print_descriptions(ucrkey)
 	print_packetfilter(ucrkey, configRegistry[ucrkey])
 
