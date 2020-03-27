@@ -316,7 +316,7 @@ PREFIX = 'sshd/config/'
 DIGITS = '0123456789'
 config = [
 	'%s %s' % (key[len(PREFIX):], value)
-	for (key, value) in list(configRegistry.items())
+	for (key, value) in configRegistry.items()
 	if key.startswith(PREFIX)
 ]
 if config:

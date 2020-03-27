@@ -12,7 +12,7 @@ primary = configRegistry.get('interfaces/primary')
 entries = []
 primary_entries = []
 default_hosts = '%(hostname)s.%(domainname)s %(hostname)s' % configRegistry
-for key, value in list(configRegistry.items()):
+for key, value in configRegistry.items():
 	match = RE_IPV4.match(key)
 	if match:
 		(iface,) = match.groups()

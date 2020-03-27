@@ -49,7 +49,7 @@ disabled_globally = configRegistry.is_true('cron/ucrdisabled', False)
 if disabled_globally:
 	print('\n# cron jobs defined by UCR have been disabled by cron/ucr/disabled')
 else:
-	for key in list(configRegistry.keys()):
+	for key in configRegistry:
 		if key.startswith('cron/'):
 			setup_cronjob(key)
 @!@
