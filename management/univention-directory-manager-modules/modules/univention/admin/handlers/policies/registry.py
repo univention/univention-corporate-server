@@ -119,12 +119,12 @@ register_policy_mapping(mapping)
 class object(univention.admin.handlers.simplePolicy):
 	module = module
 
-	def _post_unmap(self, info, values):
+	def _post_unmap(self, info, oldattr):
 		info['registry'] = []
-		for key, value in values.items():
-			if key.startswith('univentionRegistry;entry-hex-'):
-				key_name = codecs.decode(key.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
-				info['registry'].append([key_name, value[0].decode('UTF-8').strip()])
+		for attr_name, ldap_value in oldattr.items():
+			if attr_name.startswith('univentionRegistry;entry-hex-'):
+				key_name = codecs.decode(attr_name.split('univentionRegistry;entry-hex-', 1)[1], 'hex').decode('UTF-8')
+				info['registry'].append([key_name, ldap_value[0].decode('UTF-8').strip()])
 
 		info['registry'].sort()
 
@@ -141,17 +141,18 @@ class object(univention.admin.handlers.simplePolicy):
 				old_dict = dict(old)
 				new_dict = dict([k.strip(), v] for k, v in new)  # strip leading and trailing whitespace in variable names
 
-				for var, value in old_dict.items():
-					attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(var.encode('utf-8'), 'hex').decode('ASCII')
-					if var not in new_dict:  # variable has been removed
-						modlist.append((attr_name, value.encode('UTF-8'), None))
-					elif value != new_dict[var]:  # value has been changed
-						modlist.append((attr_name, value.encode('UTF-8'), new_dict[var].encode('utf-8')))
+				for key_name, old_value in old_dict.items():
+					if key_name not in new_dict:  # UCR key has been removed
+						attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII')
+						modlist.append((attr_name, old_value.encode('UTF-8'), None))
+					elif old_value != new_dict[key_name]:  # UCR variable has been changed
+						attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII')
+						modlist.append((attr_name, old_value.encode('UTF-8'), new_dict[key_name].encode('utf-8')))
 
-				for var, value in new_dict.items():
-					attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(var.encode('utf-8'), 'hex').decode('ASCII')
-					if var not in old_dict:  # variable has been added
-						modlist.append((attr_name, None, new_dict[var].encode('UTF-8')))
+				for key_name, new_value in new_dict.items():
+					if key_name not in old_dict:  # UCR key has been added
+						attr_name = 'univentionRegistry;entry-hex-%s' % codecs.encode(key_name.encode('utf-8'), 'hex').decode('ASCII')
+						modlist.append((attr_name, None, new_value.encode('UTF-8')))
 				break
 
 		return modlist
