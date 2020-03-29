@@ -81,32 +81,32 @@ def print_packetfilter(key, value):
 	if addrv4 is not None:
 		if addrv4:
 			addrv4 = '-d ' + ''.join([ x for x in addrv4 if x in set('0123456789.')])
-		print 'iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv4,
 			'port': items[-2],
 			'action': value,
-			}
+			})
 
 	if addrv6 is not None:
 		if addrv6:
 			addrv6 = '-d ' + ''.join([ x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
-		print 'ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv6,
 			'port': items[-2],
 			'action': value,
-			}
+			})
 
 
 def print_descriptions(var):
-	print
+	print('')
 	for key in [ x for x in configRegistry.keys() if x.startswith('%s/' % var) ]:
 		items = key.split('/')
 		pkg = 'user'
 		if key.startswith('security/packetfilter/package/'):
 			pkg = items[3]
-		print '# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key))
+		print('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key)))
 
 
 filterlist = {}
@@ -130,7 +130,7 @@ for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfi
 		filterlist[ '/'.join(items[-3:]) ] = key
 
 # print values
-for ucrkey in filterlist.values():
+for ucrkey in sorted(filterlist.values()):
 	print_descriptions(ucrkey)
 	print_packetfilter(ucrkey, configRegistry[ucrkey])
 
