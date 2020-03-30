@@ -1,5 +1,0 @@
-[hal/devices/group]
-Description[de]=Mit dieser Variable kann eine Gruppe konfiguriert werden, die auf dem KDE-Desktop die folgenden Berechtigungen erhält: Suspend/Herunterfahren des Systems, Konfiguration der Helligkeitseinstellungen von Notebook-Displays, Einbinden/Aushängen von Dateisystemen.
-Description[en]=With this variable a group can be configured which is granted the following permissions: Suspend/shutdown of the system, configuration of brightness settings of a notebook display, mount/umount of filesystems.
-Type=str
-Categories=system-desktop

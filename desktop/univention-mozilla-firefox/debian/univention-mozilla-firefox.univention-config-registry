@@ -1,6 +1,0 @@
-Type: file
-File: etc/firefox-esr/univention.js
-Variables: firefox/prefs/.*
-
-Type: file
-File: etc/firefox-esr/univention.cfg
