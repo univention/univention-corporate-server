@@ -1,7 +1,7 @@
 [kerberos/password/quality/check]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, erfolgt eine weitergehende Prüfung der Passwortstärke. Weitere Informationen finden sich im UCS-Handbuch.
 Description[en]=If this variable is set to 'yes', additional checks for the password strength are made. Additional information can be found in the UCS manual.
-Type=str
+Type=bool
 Categories=service-heimdal
 
 [kerberos/adminusers]
