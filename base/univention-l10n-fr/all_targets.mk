@@ -58,9 +58,6 @@ ALL_TARGETS = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-c
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-ipchange.mo \
 	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/ipchange.json \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/ipchange.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-mrtg.mo \
-	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/mrtg.json \
-	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/mrtg.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-server-overview.mo \
 	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/serveroverview.json \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/serveroverview.mo \
@@ -176,9 +173,6 @@ $(DESTDIR)/usr/share/univention-management-console/i18n/fr/join.mo: fr/managemen
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-ipchange.mo: fr/management/univention-management-console-module-ipchange/umc/python/ipchange/fr.po
 $(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/ipchange.json: fr/management/univention-management-console-module-ipchange/umc/js/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/ipchange.mo: fr/management/univention-management-console-module-ipchange/umc/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-mrtg.mo: fr/management/univention-management-console-module-mrtg/umc/python/mrtg/fr.po
-$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/mrtg.json: fr/management/univention-management-console-module-mrtg/umc/js/fr.po
-$(DESTDIR)/usr/share/univention-management-console/i18n/fr/mrtg.mo: fr/management/univention-management-console-module-mrtg/umc/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-server-overview.mo: fr/management/univention-server-overview/umc/python/serveroverview/fr.po
 $(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/serveroverview.json: fr/management/univention-server-overview/umc/js/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/serveroverview.mo: fr/management/univention-server-overview/umc/fr.po
