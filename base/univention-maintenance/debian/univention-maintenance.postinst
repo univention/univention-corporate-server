@@ -34,14 +34,13 @@ case "$1" in
 	configure)
 		if [ -z "$2" ]; then
 			#run script every 15 minutes
-			univention-config-registry set mrtg/cron?"*/15 * * * *" \
+			univention-config-registry set \
 								system/stats?yes \
 								system/stats/cron?'0,30 * * * * '
 		fi
 	;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
-
 	;;
 
 	*)
@@ -51,12 +50,5 @@ case "$1" in
 esac
 
 #DEBHELPER#
-
-a2enmod authz_groupfile
-
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "9.0.0-5"; then
-	mv /var/www/statistik/* /usr/share/univention-maintenance/
-	rmdir /var/www/statistik
-fi
 
 exit 0

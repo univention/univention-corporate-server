@@ -30,15 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-
 override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry
-
-override_dh_install:
-	dh_install
-	sed -i "s/@%@package_version@%@/${version}/g" debian/univention-maintenance/usr/sbin/univention-mrtg
 
 %:
 	dh $@

@@ -32,17 +32,19 @@
 date=$(date)
 log="/var/log/univention/system-stats.log"
 
-cmds[0]="$(which df) -lhT"
-cmds[1]="$(which ps) auxf"
-cmds[2]="$(which top) -b -n2"
-cmds[3]="$(which free)"
-cmds[4]="$(which uptime)"
-cmds[5]="$(which sensors)"
-cmds[6]="$(which smbstatus)"
+declare -a cmds=(
+	"$(command -v df) -lhT"
+	"$(command -v ps) auxf"
+	"$(command -v top) -b -n2"
+	"$(command -v free)"
+	"$(command -v uptime)"
+	"$(command -v sensors)"
+	"$(command -v smbstatus)"
+)
 
 # print usage
 function usage () {
-	echo usage: $(basename $0) [-h]
+	echo "usage: ${0##*/} [-h]"
 	echo "This script logs some systems stats (df, free, ...) in \"$log\"."
 
 	exit 0
@@ -50,31 +52,30 @@ function usage () {
 
 # get options
 while getopts ':h:' OPTION ; do
-	case $OPTION in
+	case "$OPTION" in
 		h)   usage ;;
 		*)   usage ;;
 	esac
 done
 
-if [ ! -e "$log" ]; then
+[ -e "$log" ] ||
 	: > "$log"
-fi
-chmod 640 $log
-chgrp adm $log
+chmod 0640 "$log"
+chgrp adm "$log"
 
 # redirect output
 exec 1>>"$log"
 exec 2>/dev/null
 
 echo "--- system stats for $date"
-echo 
+echo
 
 for cmd in "${cmds[@]}"; do
 	tool=${cmd/ */}
 	if [ -x "$tool" ]; then
 		echo "-> $cmd"
-		$cmd 
-		echo 
+		$cmd
+		echo
 	fi
 done
 

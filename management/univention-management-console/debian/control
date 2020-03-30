@@ -20,7 +20,6 @@ Depends:
  univention-management-console-module-diagnostic,
  univention-management-console-module-join,
  univention-management-console-module-lib,
- univention-management-console-module-mrtg,
  univention-management-console-module-passwordchange,
  univention-management-console-module-reboot,
  univention-management-console-module-services,
