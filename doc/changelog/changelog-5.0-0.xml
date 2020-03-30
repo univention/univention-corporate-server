@@ -650,6 +650,9 @@
 			<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-java</package> has been removed (<u:bug>51983</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
