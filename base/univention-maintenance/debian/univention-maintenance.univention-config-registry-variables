@@ -1,9 +1,3 @@
-[mrtg/cron]
-Description[de]=Diese Variable konfiguriert, in welchem Intervall Auslastungsstatistiken für das UMC-Modul 'Systemstatistiken' erzeugt werden. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
-Description[en]=This variable configures the interval in which system statistics are collected for the UMC module 'Statistics'. The configuration is done in Cron syntax, see 'man 5 crontab'.
-Type=str
-Categories=system-statistics
-
 [system/stats]
 Description[de]=Wird diese Option aktiviert, werden Systemparameter wie die aktuellen Prozesse, der freie Platten- und Arbeitsspeicher, die Uptime und die aktuellen Samba-Verbindungen regelmässig in der Datei /var/log/univention/system-stats.log protokolliert.
 Description[en]=If this option is enabled, system properties such as the active processes, free disk space/system memory, the uptime and active Samba connections are logged regularly in the file /var/log/univention/system-stats.log.

@@ -1,1 +1,2 @@
-usr/share/univention-maintenance/
+var/log/univention
+var/univention-backup/etc
