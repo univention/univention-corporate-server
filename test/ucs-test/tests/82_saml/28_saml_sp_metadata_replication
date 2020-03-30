@@ -12,6 +12,7 @@
 from __future__ import print_function
 import subprocess
 import os.path
+import difflib
 
 import univention.config_registry as configRegistry
 import univention.admin.modules as udm_modules
@@ -34,6 +35,13 @@ def main():
 	lo = utils.get_ldap_connection(admin_uldap=True)
 	master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
 	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
+	cmd_disable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=FALSE']
+	cmd_enable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=TRUE']
+	# Force update of the sp config to avoid test failures due to old configs
+	subprocess.check_call(cmd_disable)
+	utils.wait_for_replication()
+	subprocess.check_call(cmd_enable)
+	utils.wait_for_replication()
 
 	try:
 		# Copy service provider config from UMC, delete it, and re-inject it as a new service provider
@@ -43,7 +51,6 @@ def main():
 			metadata = metadata_file.read()
 
 		# set udm saml/sp object to 'deactivated' so the file is removed
-		cmd_disable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=FALSE']
 		subprocess.check_call(cmd_disable)
 		utils.wait_for_replication()
 		if os.path.exists(metadata_filename):
@@ -79,7 +86,6 @@ def main():
 		utils.fail(exc.message)
 	finally:
 		# enable SP config in any case to reset state
-		cmd_enable = ['/usr/sbin/udm', 'saml/serviceprovider', 'modify', '--dn=SAMLServiceProviderIdentifier=https://%s/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,%s' % (master_hostname, ucr.get('ldap/base')), '--set', 'isActivated=TRUE']
 		subprocess.check_call(cmd_enable)
 		utils.wait_for_replication()
 		if not os.path.exists(metadata_filename):
@@ -89,6 +95,13 @@ def main():
 		if metadata_new != metadata:
 			print('old: {}'.format(metadata))
 			print('new: {}'.format(metadata_new))
+			print('##########################')
+			print('{}'.format('\n'.join(difflib.unified_diff(
+				metadata.splitlines(),
+				metadata_new.splitlines(),
+				fromfile='old metadata',
+				tofile='new metadata',
+			))))
 			raise ListenerError('Metadata written by the listener differs from old metadata!')
 
 

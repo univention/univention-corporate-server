@@ -1,3 +1,9 @@
+ucs-test (9.0.3-182) unstable; urgency=medium
+
+  * Bug #51041: fix 82_saml.28_saml_sp_metadata_replication
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 30 Mar 2020 12:51:52 +0200
+
 ucs-test (9.0.3-181) unstable; urgency=medium
 
   * Bug #50982: version bump
