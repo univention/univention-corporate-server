@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  univention-dojo-dev,
  univention-management-console-dev,
- ucs-test-translation-template,
+ univention-ucs-translation-template,
  stylus
 Standards-Version: 3.8.2
 
