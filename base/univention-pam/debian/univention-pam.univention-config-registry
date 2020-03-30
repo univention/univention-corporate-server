@@ -61,17 +61,12 @@ Variables: security/limits(/[^/]+){4}
 Variables: users/default/.*
 Variables: groups/default/.*
 
-Type: file
-File: etc/security/pam_env.conf
-Variables: auth/kdeprofile
-
 Type: multifile
 Multifile: etc/pam.d/common-session
 Variables: homedir/create
 Variables: homedir/mount
 Variables: homedir/mount/required
 Variables: quota/userdefault
-Variables: auth/kdeprofile
 Variables: auth/methods
 Variables: auth/faillog
 Variables: auth/faillog/limit
@@ -83,7 +78,6 @@ Subfile: etc/pam.d/common-session.d/10univention-pam_common
 Variables: homedir/create
 Variables: homedir/mount
 Variables: homedir/mount/required
-Variables: auth/kdeprofile
 Variables: auth/methods
 Variables: pam/krb5/minimum_uid
 Variables: pam/session/systemd
@@ -191,71 +185,6 @@ Type: file
 File: etc/security/access-ftp.conf
 Variables: auth/ftp/group/.*
 Variables: auth/ftp/user/.*
-Variables: users/default/.*
-Variables: groups/default/.*
-
-Type: file
-File: etc/pam.d/gdm
-Variables: auth/gdm/restrict
-Variables: auth/gdm/accessfile
-Variables: pamaccess/maxent
-
-Type: file
-File: etc/security/access-gdm.conf
-Variables: auth/gdm/group/.*
-Variables: auth/gdm/user/.*
-Variables: users/default/.*
-Variables: groups/default/.*
-
-Type: file
-File: etc/pam.d/kdm
-Variables: auth/kdm/restrict
-Variables: auth/kdm/accessfile
-Variables: pamaccess/maxent
-
-Type: file
-File: etc/security/access-kdm.conf
-Variables: auth/kdm/group/.*
-Variables: auth/kdm/user/.*
-Variables: users/default/.*
-Variables: groups/default/.*
-
-Type: file
-File: etc/pam.d/kcheckpass
-Variables: auth/kcheckpass/accessfile
-Variables: auth/kcheckpass/restrict
-Variables: pamaccess/maxent
-
-Type: file
-File: etc/security/access-kcheckpass.conf
-Variables: auth/kcheckpass/group/.*
-Variables: auth/kcheckpass/user/.*
-Variables: users/default/.*
-Variables: groups/default/.*
-
-Type: file
-File: etc/pam.d/kde
-Variables: auth/kde/accessfile
-Variables: auth/kde/restrict
-Variables: pamaccess/maxent
-
-Type: file
-File: etc/security/access-kde.conf
-Variables: auth/kde/group/.*
-Variables: auth/kde/user/.*
-Variables: users/default/.*
-Variables: groups/default/.*
-
-Type: file
-File: etc/pam.d/kscreensaver
-Variables: auth/kscreensaver/accessfile
-Variables: auth/kscreensaver/restrict
-Variables: pamaccess/maxent
-
-Type: file
-File: etc/security/access-kscreensaver.conf
-Variables: auth/kscreensaver/group/.*
-Variables: auth/kscreensaver/user/.*
 Variables: users/default/.*
 Variables: groups/default/.*
 

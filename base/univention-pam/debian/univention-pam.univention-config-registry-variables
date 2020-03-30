@@ -251,8 +251,8 @@ Type=bool
 Categories=system-base
 
 [auth/.*/restrict]
-Description[de]=Die Option aktiviert über das PAM-Modul pam_access Anmeldebeschränkungen für den angegebenen Dienst. Ist die Variable auth/SERVICE/restrict aktiviert,  können sich nur Benutzer anmelden,  die über weitere Variablen in der Form auth/SERVICE/user/BENUTZERNAME=yes oder auth/SERVICE/group/GRUPPENNAME=yes zugelassen sind. Mögliche Werte als Service sind: chfn, chsh, cron, ftp, gdm, kdm, kcheckpass, kde, kscreensaver, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su und sudo.
-Description[en]=This option activates login restrictions for the given service using pam_access. If the variable auth/SERVICE/restrict is activated,  only users can login,  which are allows using variables in the form auth/SERVICE/user/USERNAME=yes or auth/SERVICE/group/GROUPNAME=yes. Possible values for the service are: chfn, chsh, cron, ftp, gdm, kdm, kcheckpass, kde, kscreensaver, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su and sudo.
+Description[de]=Die Option aktiviert über das PAM-Modul pam_access Anmeldebeschränkungen für den angegebenen Dienst. Ist die Variable auth/SERVICE/restrict aktiviert,  können sich nur Benutzer anmelden,  die über weitere Variablen in der Form auth/SERVICE/user/BENUTZERNAME=yes oder auth/SERVICE/group/GRUPPENNAME=yes zugelassen sind. Mögliche Werte als Service sind: chfn, chsh, cron, ftp, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su und sudo.
+Description[en]=This option activates login restrictions for the given service using pam_access. If the variable auth/SERVICE/restrict is activated,  only users can login,  which are allows using variables in the form auth/SERVICE/user/USERNAME=yes or auth/SERVICE/group/GROUPNAME=yes. Possible values for the service are: chfn, chsh, cron, ftp, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su and sudo.
 Type=bool
 Categories=system-base
 

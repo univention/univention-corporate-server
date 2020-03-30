@@ -197,7 +197,6 @@ $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-samba4.mo: fr/services/uni
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-container-msgpo.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/container/msgpo/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/mswmifilter/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-root-login-notification.mo: fr/desktop/univention-kde/./fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo: fr/saml/univention-saml/modules/univention/admin/handlers/saml/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager-schema.mo: fr/virtualization/univention-virtual-machine-manager-schema/modules/univention/admin/handlers/uvmm/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager.mo: fr/virtualization/univention-virtual-machine-manager-daemon/src/fr.po

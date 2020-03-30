@@ -12,7 +12,6 @@ univention-management-console-module-setup
 univention-management-console-server
 univention-management-console-web-server
 xinit
-kde-window-manager
 univention-cloud-init
 univention-system-activation
 univention-welcome-screen
@@ -96,12 +95,6 @@ univention-dhcp
 
 univention-fetchmail
 univention-fetchmail-schema
-
-univention-kde
-kde-l10n-de
-okular
-univention-mozilla-firefox
-univention-x-core
 
 univention-radius
 

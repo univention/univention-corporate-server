@@ -1,3 +1,10 @@
+univention-pam (13.0.0-2) unstable; urgency=low
+
+  * Bug #43211: Remove univention-skel
+  * Bug #51977: Remove univention-kde
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Jun 2020 18:06:15 +0200
+
 univention-pam (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

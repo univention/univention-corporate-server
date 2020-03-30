@@ -48,10 +48,6 @@ if [ -z "$2" ]; then
 /etc/univention/templates/files/etc/pam.d/common-session 4dd99fd8f9dc8117ab0d2159cd83760a
 /etc/univention/templates/files/etc/pam.d/cron 3fa40fc573dd0aa5921b3bb11281dbd1
 /etc/univention/templates/files/etc/pam.d/ftp b1c8c2bb7af7f8c3d372de4b3403aa26
-/etc/univention/templates/files/etc/pam.d/gdm 8cb19d7a542a243b0299ecbecf2a25fe
-/etc/univention/templates/files/etc/pam.d/kcheckpass b8c3cceaa5023d9ab7a2c06fd1c7bc94
-/etc/univention/templates/files/etc/pam.d/kde 729f032067f3055a70e0728c3f41ecc1
-/etc/univention/templates/files/etc/pam.d/kscreensaver 9abad36a222603fb7589a1d0dae4f405
 /etc/univention/templates/files/etc/pam.d/login 0cd897495dd644b334dde13b3ee36523
 /etc/univention/templates/files/etc/pam.d/other f8d726de2d8590a356a9c84bc7283a9c
 /etc/univention/templates/files/etc/pam.d/passwd 92b9fec4ac27b08bb3291537b2641b1b

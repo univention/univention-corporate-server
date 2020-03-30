@@ -77,12 +77,6 @@ class SoftwareScript(AptScript):
 		self.finish_task('Autoremove')
 
 		for pkg in self.packages_install:
-			if pkg == 'univention-kde':
-				ucr = univention.config_registry.ConfigRegistry()
-				ucr.load()
-				default_locale = ucr.get('locale/default')
-				if default_locale and default_locale.startswith('de_'):
-					self.install('firefox-esr-l10n-de')
 			# apt-get install pkg
 			self.install(pkg)
 			self.finish_task(pkg)

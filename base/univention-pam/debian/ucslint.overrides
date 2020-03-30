@@ -3,11 +3,7 @@
 0004-12: conffiles/etc/pam.d/passwd
 0004-12: conffiles/etc/pam.d/su
 0004-12: conffiles/etc/pam.d/rsh
-0004-12: conffiles/etc/pam.d/gdm
-0004-12: conffiles/etc/pam.d/kdm
-0004-12: conffiles/etc/pam.d/kscreensaver
 0004-12: conffiles/etc/pam.d/screen
-0004-12: conffiles/etc/pam.d/kcheckpass
 0004-12: conffiles/etc/pam.d/sshd
 0004-12: conffiles/etc/pam.d/ppp
 0004-12: conffiles/etc/pam.d/other
@@ -20,7 +16,6 @@
 0004-12: conffiles/etc/security/access-rlogin.conf
 0004-12: conffiles/etc/pam.d/chfn
 0004-12: conffiles/etc/pam.d/chsh
-0004-12: conffiles/etc/pam.d/kde
 # Copyright for unit tests
 0010-2: tests/test_common_unix
 0010-2: tests/test_common_ldap

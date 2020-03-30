@@ -615,7 +615,7 @@ download_system_setup_packages ()
 
 		if ! app_appliance_is_software_blacklisted $app; then
 			packages="$packages univention-management-console-module-adtakeover univention-printserver univention-printquota univention-dhcp
-				univention-fetchmail univention-kde univention-radius univention-virtual-machine-manager-node-kvm univention-mail-server
+				univention-fetchmail univention-radius univention-virtual-machine-manager-node-kvm univention-mail-server
 				univention-nagios-server univention-pkgdb univention-samba4 univention-s4-connector univention-squid
 				univention-virtual-machine-manager-daemon univention-self-service univention-self-service-passwordreset-umc
 				univention-self-service-master"
