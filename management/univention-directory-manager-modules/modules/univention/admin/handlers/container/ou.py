@@ -194,8 +194,9 @@ class object(univention.admin.handlers.simpleLdap):
 		for prop in self.PATH_KEYS:
 			self.info[prop] = '0'
 
-		for prop, attr in self.PATH_KEYS.iteritems():
-			if any(x == self.dn for x in pathResult.get(attr, [])):
+		dn_bytes = self.dn.encode('UTF-8')
+		for prop, attr in self.PATH_KEYS.items():
+			if any(x == dn_bytes for x in pathResult.get(attr, [])):
 				self.info[prop] = '1'
 
 		self.save()
@@ -203,7 +204,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
 		if configRegistry.is_false('directory/manager/child/cn/ou', True):
-			if self.position.getDn() != configRegistry.get('ldap/base'):
+			if not self.lo.compare_dn(self.position.getDn(), configRegistry.get('ldap/base')):
 				# it is possible to have a basedn with cn=foo
 				# in this case it is allowed to create a ou
 				# under a cn.
@@ -213,15 +214,16 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_create(self):
 		changes = []
 
+		dn_bytes = self.dn.encode('UTF-8')
 		for (prop, attr) in self.PATH_KEYS.items():
 			if self.oldinfo.get(prop) != self.info.get(prop):
 				entries = self.lo.getAttr(self.default_dn, attr)
 				if self.info[prop] == '0':
-					if self.dn in entries:
-						changes.append((attr, self.dn, ''))
+					if dn_bytes in entries:
+						changes.append((attr, self.dn.encode('utf-8'), b''))
 				else:
-					if self.dn not in entries:
-						changes.append((attr, '', self.dn))
+					if dn_bytes not in entries:
+						changes.append((attr, b'', self.dn.encode('utf-8')))
 
 		if changes:
 			self.lo.modify(self.default_dn, changes)
@@ -243,12 +245,13 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_modify(self):
 		changes = []
 
+		dn_bytes = self.dn.encode('UTF-8')
 		for prop, attr in self.PATH_KEYS.items():
 			if self.oldinfo.get(prop) != self.info.get(prop):
 				if self.info[prop] == '0':
-					changes.append((attr, self.dn, ''))
+					changes.append((attr, dn_bytes, b''))
 				else:
-					changes.append((attr, '', self.dn))
+					changes.append((attr, b'', dn_bytes))
 		if changes:
 			self.lo.modify(self.default_dn, changes)
 
@@ -257,9 +260,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.open()
 
+		dn_bytes = self.dn.encode('UTF-8')
 		for prop, attr in self.PATH_KEYS.items():
 			if self.oldinfo.get(prop) == '1':
-				changes.append((attr, self.dn, ''))
+				changes.append((attr, dn_bytes, b''))
 		self.lo.modify(self.default_dn, changes)
 
 	@classmethod
@@ -275,4 +279,4 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	return 'organizationalUnit' in attr.get('objectClass', []) and 'univentionBase' not in attr.get('objectClass', [])
+	return b'organizationalUnit' in attr.get('objectClass', []) and b'univentionBase' not in attr.get('objectClass', [])
