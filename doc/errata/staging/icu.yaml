@@ -1,0 +1,99 @@
+product: ucs
+release: "4.3"
+version: [4]
+scope: ucs_4.3-0-errata4.3-4
+src: icu
+fix: 57.1-6+deb9u4
+desc: |
+ This update addresses the following issue:
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+
+ * 57.1-6+deb9u3 (Wed, 07 Aug 2019 16:30:43 +0000) * Fix pkgdata command
+   segfault.
+ * Integer overflow in UnicodeString::doAppend() (CVE-2020-10531)
+bug: [51040]
+cve:
+- CVE-2020-10531
