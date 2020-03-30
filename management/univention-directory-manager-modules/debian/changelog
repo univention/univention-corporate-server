@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.14-24) unstable; urgency=medium
+
+  * Bug #51002: keep defaults for module options when initializing modules
+    with template and template has no options set
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 30 Mar 2020 11:54:40 +0200
+
 univention-directory-manager-modules (14.0.14-23) unstable; urgency=medium
 
   * Bug #46599: spaces are now forbidden in mail addresses
