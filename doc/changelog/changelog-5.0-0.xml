@@ -340,6 +340,12 @@
 				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The old system statistics based on <application>MRTG</application> has been removed (<u:bug>44475</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
