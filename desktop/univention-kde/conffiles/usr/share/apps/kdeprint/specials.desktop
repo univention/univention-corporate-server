@@ -1,977 +1,0 @@
-@%@UCRWARNING=# @%@
-
-[General]
-Number=6
-
-[Printer 0]
-Name=Print to File (PostScript)
-Name[af]=Druk na LÃÂªer (Postscript)
-Name[ar]=ÃÂ§ÃÂ·ÃÅ¡ÃÂ¹ ÃÂÃÂ ÃÂÃÂÃÂ (ÃÅ¡ÃÂÃÂ³ÃÂª ÃÂ³ÃÂÃÂ±ÃÂÃÅ¡ÃÂª)
-Name[be]=ÃÂÃÂÃÂÃÂºÃÂ°ÃÂ²ÃÂ°ÃÂÃÂ ÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ» (PostScript)
-Name[bs]=ÃÂ tampaj u datoteku (PostScript)
-Name[ca]=Imprimeix al fitxer (PostScript)
-Name[cs]=Tisk do souboru (PostScript)
-Name[da]=Udskriv til fil (PostScript)
-Name[de]=In Datei drucken (PostScript)
-Name[el]=ÃÂÃÂºÃÂÃÂÃÂÃÂÃÂÃÂ· ÃÂÃÂµ ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿ (PostScript)
-Name[eo]=Presu al dosiero (Postskripto)
-Name[es]=Imprimir en archivo (PostScript)
-Name[et]=Faili trÃÅkkimine (Postscript)
-Name[eu]=Fitxategira Inprimatu (PostScript)
-Name[fa]=ÃÂÃÂ§ÃÅž ÃÂ¯ÃÂ± ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂ (PostScript)
-Name[fi]=Tulosta tiedostoon (PostScript)
-Name[fr]=Imprimer dans un fichier (PostScript)
-Name[ga]=PriontÃÂ¡il go Comhad (PostScript)
-Name[he]=ÃÂÃÂÃâ¬ÃÂ¡ ÃÂÃÂ§ÃÂÃÂÃÂ¥ (PostScript)
-Name[hu]=NyomtatÃÂ¡s fÃÂ¡jlba (PostScript)
-Name[is]=Prenta ÃÂ­ skrÃÂ¡ (Postscript)
-Name[it]=Stampa su file (PostScript)
-Name[ja]=Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂ«Ã¥ÂÂºÃ¥ÂÂ (PostScript)
-Name[lt]=Spausdinti ÃÂ¯ bylÃÂ (PostScript)
-Name[lv]=DrukÃÂt FailÃÂ (PostSkripts)
-Name[mk]=ÃÂÃÂµÃÂÃÂ°ÃÂÃÅŸ ÃÂ²ÃÅž ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ° (PostScript)
-Name[mn]=Ãâ¬ÃÂ°ÃÂ¹ÃÂ» ÃÂÃÂÃÂ ÃÂÃÂÃÂ²ÃÂ»ÃÂÃÂ (PostScript)
-Name[mt]=Printja ÃÂ¡o fajl (PostScript)
-Name[nb]=Skriv til fil (PostScript)
-Name[nl]=Naar bestand afdrukken (PostScript)
-Name[nn]=Skriv til fil (PostScript)
-Name[nso]=Gatisetsa go Faele (PostScript)
-Name[pl]=Wydruk do pliku (PostScriptu)
-Name[pt]=Imprimir para um Ficheiro (PostScript)
-Name[pt_BR]=Imprimir para o Arquivo (PostScript)
-Name[ro]=TipÃÂrire ÃÂ®n fiÃÂier (PostScript)
-Name[ru]=ÃÂÃÂµÃÂÃÂ°ÃÂÃÂ ÃÂ² ÃÂÃÂ°ÃÂ¹ÃÂ» (PostScript)
-Name[se]=ÃÂÃÂ¡lit fiilii (PostScript)
-Name[sk]=TlaÃÂiÃÂ¥ do sÃÂºboru (PostScript)
-Name[sl]=Tiskanje v datoteko (postscript)
-Name[ss]=Shicilela kuya fayilini (PostScript)
-Name[sv]=Skriv ut till fil (Postscript)
-Name[ta]=ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂÃÂ¬ÃÂ ÃÂ«ÃÂ®ÃÂºÃÂ¢ÃÂ (PostScript)
-Name[tr]=Dosyaya YazdÃÂ±r (PostScript)
-Name[uk]=ÃÂÃÂÃÂÃÂº ÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ» (PostScript)
-Name[ven]=Phirinthani kha faela (Bammbiri la poso)
-Name[xh]=Shicilela Kwifayile (PostScript)
-Name[zh_CN]=ÃŠÂÂÃ¥ÂÂ°Ã¥ÂÂ°ÃŠÂÂÃ€Â»Â¶(PostScript)
-Name[zh_TW]=Ã¥ÂÂÃ¥ÂÂ°Ã¥ÂÂ°ÃŠÂªÂÃŠÂ¡Â(PostScript)
-Name[zu]=Shicilela Efayeleni (PostScript)
-Description=Write PostScript file
-Description[af]=Skryf Postscript lÃÂªer
-Description[ar]=ÃÂÃÂªÃÂ§ÃÅ¡ÃÂ© ÃÂÃÂÃÂ ÃÅ¡ÃÂÃÂ³ÃÂª ÃÂ³ÃÂÃÂ±ÃÂÃÅ¡ÃÂª
-Description[az]=PostScript fayl yaz
-Description[be]=ÃÂÃÂ°ÃÂ¿ÃÂÃÂÃÂ°ÃÂÃÂ ÃÂ PostScript ÃÂÃÂ°ÃÂ¹ÃÂ»
-Description[bg]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂ ÃÅÃÂ° ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂ²ÃÂÃÂ² ÃÂÃÅžÃÂÃÅÃÂ°ÃÂ ÃÅÃÂ° PostScript
-Description[bs]=PiÃÂ¡i u PostScript datoteku
-Description[ca]=Escriure en un fitxer PostScript
-Description[cs]=Zapisuje do PostScriptovÃÂ©ho souboru
-Description[da]=Skriv PostScript-fil
-Description[de]=Eine PostScript-Datei schreiben
-Description[el]=ÃÂÃÂ³ÃÂ³ÃÂÃÂ±ÃÂÃÂ® ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿ÃÂ PostScript
-Description[eo]=Skribas Postskripto-dosieron
-Description[es]=Escribir archivo PostScript
-Description[et]=PS faili kirjutamine
-Description[eu]=PostScript fitxategia Idatzi
-Description[fa]=ÃÂÃÂÃÅœÃÂªÃÂ ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ PostScript
-Description[fi]=Kirjoita PostScript-tiedosto
-Description[fr]=Imprimer dans un fichier PostScript
-Description[ga]=ScrÃÂ­obh comhad PostScript
-Description[he]=ÃÂÃÂªÃÂÃÂ ÃÂ§ÃÂÃÂÃÂ¥ PostScript
-Description[hr]=IspiÃÂ¡i u PostScript datoteku
-Description[hu]=PostScript fÃÂ¡jlba ÃÂ­rÃÂ¡s
-Description[is]=Skrifa PostScript skrÃÂ¡
-Description[it]=Scrive file PostScript
-Description[ja]=PostScript Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂ®Ã€ÅÂÃŠÂÂ
-Description[ko]=Ã­ÂÂ¬Ã¬Ââ¬Ã­ÂÅŸÃ¬Ââ¬Ã­ÂÂ¬Ã«Å ÅÃ­ÂÅŸ Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã¬ÂÂÃ«ÂÂÃ«Ââ¬
-Description[lt]=RaÃÂ¡yti Postscript bylÃÂ
-Description[lv]=RakstÃÂ«t PostSkript failÃÂ
-Description[mk]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÅŸ PostScript ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ°
-Description[mn]=PostScript-ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂ±ÃÅŸÃÂÃÅŸÃÂ
-Description[mt]=Ikteb fajl PostScript
-Description[nb]=Skriv PostScript-fil
-Description[nl]=Schrijf PostScript-bestand
-Description[nn]=Skriv PostScript-fil
-Description[nso]=Ngwala faele ya PostScript
-Description[pl]=Zapisz plik PostScriptu
-Description[pt]=Escrever ficheiro PostScript
-Description[pt_BR]=Escrever Arquivo PostScript
-Description[ro]=Scrie fiÃÂier PostScript
-Description[ru]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ»ÃÂ° PostScript
-Description[se]=ÃÂÃÂ¡le PostScript fiilla
-Description[sk]=ZapÃÂ­saÃÂ¥ sÃÂºbor PostScript
-Description[sl]=Izdela postscriptno datoteko
-Description[sr]=ZapiÃÂ¡i PostScript fajl
-Description[ss]=Bhala lifayela le PostScript 
-Description[sv]=Skriv Postscript-fil
-Description[ta]=PostScript ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂ ÃÂ±ÃÂÃÂ
-Description[th]=Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂµÃ ÅŸÂ¢Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂªÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂªÃ ÅŸÂÃ ÅŸÂ£Ã ÅŸÅœÃ ÅŸÂÃ ÅŸÂÃ Â¹Â
-Description[tr]=PostScript dosyasÃÂ±na yaz
-Description[uk]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÂ°ÃÂÃÅŸ ÃÂÃÂ°ÃÂ¹ÃÂ» PostScript
-Description[ven]=Nwalani faela ya bammbiri la poso
-Description[vi]=ViÃ¡ÂºÂ¿t ra file PostScript 
-Description[xh]=Bhala ifayile ye PostScript
-Description[zh_CN]=Ã¥ÂÂÃ¥ÂÂ¥ PostScript ÃŠÂÂÃ€Â»Â¶
-Description[zh_TW]=Ã¥Â¯Â«ÃŠÂÂ PostScript ÃŠÂªÂÃŠÂ¡Â
-Description[zu]=Bhala ifayile le-PosrtScript
-Comment=Local file
-Comment[af]=Plaaslike lÃÂªer
-Comment[ar]=ÃÂÃÂÃÂ ÃÂÃÂ­ÃÂÃÂ
-Comment[az]=Lokal faylÃÂ±
-Comment[be]=ÃÂÃÂÃÂºÃÂ°ÃÂ»ÃÂÃÅÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[bg]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÂµÃÅ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[bs]=Lokalna datoteka
-Comment[ca]=Fitxer local
-Comment[cs]=LokÃÂ¡lnÃÂ­ soubor
-Comment[da]=Lokal fil
-Comment[de]=Lokale Datei
-Comment[el]=Ãâ¬ÃÂ¿ÃÂÃÂ¹ÃÂºÃÂ ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿
-Comment[eo]=Loka dosiero
-Comment[es]=Archivo local
-Comment[et]=Kohalik fail
-Comment[eu]=Fitxategi Lokala
-Comment[fa]=ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ ÃÂÃÂ­ÃÂÃÂ
-Comment[fi]=Paikallinen tiedosto
-Comment[fr]=Fichier local
-Comment[ga]=Comhad logÃÂ¡nta
-Comment[he]=ÃÂ§ÃÂÃÂÃÂ¥ ÃÂÃÂ§ÃÂÃÂÃÂ
-Comment[hr]=Lokalna datoteka
-Comment[hu]=Helyi fÃÂ¡jl
-Comment[is]=StaÃÂ°bundin skrÃÂ¡
-Comment[it]=File locale
-Comment[ja]=Ã£ÂÂ­Ã£ÂÅÃ£ÂÂ«Ã£ÂÂ«Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«
-Comment[ko]=Ã¬ÂÅŸ Ã¬ÂÂ Ã­ÂÂÃ¬ÂÅ
-Comment[lt]=VietinÃÂ byla
-Comment[lv]=LokÃÂls fails
-Comment[mk]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÅÃÂ° ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ°
-Comment[mn]=ÃÂ»ÃÅžÃÂºÃÂ°ÃÂ» ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[mt]=Fajl lokali
-Comment[nb]=Lokal fil
-Comment[nl]=Lokaal bestand
-Comment[nn]=Lokal fil
-Comment[nso]=Faele ya selegae
-Comment[pl]=Plik lokalny
-Comment[pt]=Ficheiro local
-Comment[pt_BR]=Arquivo Local
-Comment[ro]=FiÃÂier local
-Comment[ru]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÂÃÅÃÂÃÂ¹ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[se]=BÃÂ¡ikkÃÂ¡laÃÂ¡ fiila
-Comment[sk]=LokÃÂ¡lny sÃÂºbor
-Comment[sl]=Krajevna datoteka
-Comment[sr]=Lokalni fajl
-Comment[ss]=Lifayela langekhatsi
-Comment[sv]=Lokal fil
-Comment[ta]=ÃÂ¯ÃÂ»ÃÂÃÅ¡ÃÂÃÂ¬ ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂ
-Comment[th]=Ã Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã ÅŸÂ Ã ÅŸÂ²Ã ÅŸÂ¢Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂ£Ã ÅŸÂ°Ã ÅŸÂÃ ÅŸÂ
-Comment[tr]=Yerel dosya
-Comment[uk]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÂÃÅÃÅŸÃÂ¹ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[ven]=Faela ya henefhano
-Comment[vi]=File ÃÂÃ¡Â»Âa phÃÂ°ÃÂ¡ng 
-Comment[wa]=FitchÃÂ® locÃÂ¥l
-Comment[xh]=Ifayile yobulali
-Comment[zh_CN]=ÃŠÂÂ¬Ã¥ÂÂ°ÃŠÂÂÃ€Â»Â¶
-Comment[zh_TW]=ÃŠÂÂ¬Ã¥ÂÂ°ÃŠÂªÂÃŠÂ¡Â
-Comment[zu]=Ifayela laseduze
-Icon=filesave
-Command=
-File=1
-Extension=ps
-
-[Printer 1]
-Name=Print to File (PDF)
-Name[af]=Druk na LÃÂªer (Pdf)
-Name[ar]=ÃÂ§ÃÂ·ÃÅ¡ÃÂ¹ ÃÂÃÂ ÃÂÃÂÃÂ (PDF)
-Name[be]=ÃÂÃÂÃÂÃÂºÃÂ°ÃÂ²ÃÂ°ÃÂÃÂ ÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ» (PDF)
-Name[bs]=ÃÂ tampaj u datoteku (PDF)
-Name[ca]=Imprimeix al fitxer (PDF)
-Name[cs]=Tisk do souboru (PDF)
-Name[da]=Udskriv til fil (PDF)
-Name[de]=In Datei drucken (PDF)
-Name[el]=ÃÂÃÂºÃÂÃÂÃÂÃÂÃÂÃÂ· ÃÂÃÂµ ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿ (PDF)
-Name[eo]=Presu al dosiero (PDF)
-Name[es]=Imprimir en archivo (PDF)
-Name[et]=Faili trÃÅkkimine (PDF)
-Name[eu]=Fitxategira Inprimatu (PDF)
-Name[fa]=ÃÂÃÂ§ÃÅž ÃÂ¯ÃÂ± ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂ (PDF)
-Name[fi]=Tulosta tiedostoon (PDF)
-Name[fr]=Imprimer dans un fichier (PDF)
-Name[ga]=PriontÃÂ¡il go Comhad (PDF)
-Name[he]=ÃÂÃÂÃâ¬ÃÂ¡ ÃÂÃÂ§ÃÂÃÂÃÂ¥ (PDF)
-Name[hu]=NyomtatÃÂ¡s fÃÂ¡jlba (PDF)
-Name[is]=Prenta ÃÂ­ skrÃÂ¡ (PDF)
-Name[it]=Stampa su file (PDF)
-Name[ja]=Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂ«Ã¥ÂÂºÃ¥ÂÂ (PDF)
-Name[lt]=Spausdinti ÃÂ¯ bylÃÂ (PDF)
-Name[lv]=DrukÃÂt FailÃÂ (PDF)
-Name[mk]=ÃÂÃÂµÃÂÃÂ°ÃÂÃÅŸ ÃÂ²ÃÅž ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ° (PDF)
-Name[mn]=Ãâ¬ÃÂ°ÃÂ¹ÃÂ» ÃÂÃÂÃÂ ÃÂÃÂÃÂ²ÃÂ»ÃÂÃÂ (PDF/Acrobat)
-Name[mt]=Printja ÃÂ¡o fajl (PDF)
-Name[nb]=Skriv til fil (PDF/Acrobat)
-Name[nl]=Naar bestand afdrukken (PDF/Acrobat)
-Name[nn]=Skriv til fil (PDF/Acrobat)
-Name[nso]=Gatisetsa go Faele (PDF)
-Name[pl]=Wydruk do pliku (PDF/Acrobat)
-Name[pt]=Imprimir para um Ficheiro (PDF/Acrobat)
-Name[pt_BR]=Imprimir para o Arquivo (PDF)
-Name[ro]=TipÃÂrire ÃÂ®n fiÃÂier (PDF)
-Name[ru]=ÃÂÃÂµÃÂÃÂ°ÃÂÃÂ ÃÂ² ÃÂÃÂ°ÃÂ¹ÃÂ» (PDF)
-Name[se]=ÃÂÃÂ¡lit fiilii (PDF)
-Name[sk]=TlaÃÂiÃÂ¥ do sÃÂºboru (PDF)
-Name[sl]=Tiskanje v datoteko (PDF)
-Name[ss]=shicilela kuya efayelini (PDF)
-Name[sv]=Skriv ut till fil (PDF)
-Name[ta]=ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂÃÂ¬ÃÂ ÃÂ«ÃÂ®ÃÂºÃÂ¢ÃÂ (PDF)
-Name[tr]=Dosyaya YazdÃÂ±r (PDF)
-Name[uk]=ÃÂÃÂÃÂÃÂº ÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ» (PDF)
-Name[ven]=Phirinthani ni kone u faela (PDF)
-Name[xh]=Shicilela Kwifayile (PDF)
-Name[zh_CN]=ÃŠÂÂÃ¥ÂÂ°Ã¥ÂÂ°ÃŠÂÂÃ€Â»Â¶(PDF)
-Name[zh_TW]=Ã¥ÂÂÃ¥ÂÂ°Ã¥ÂÂ°ÃŠÂÂÃ€Â»Â¶(PDF)
-Name[zu]=Shicilela Efayeleni (PDF)
-Description=Write PDF/Acrobat file
-Description[af]=Skryf Pdf/Acrobat lÃÂªer
-Description[ar]=ÃÂÃÂªÃÂ§ÃÅ¡ÃÂ© ÃÂÃÂÃÂ PDF/ÃÂ£ÃÂÃÂ±ÃÂÃÅ¡ÃÂ§ÃÂª
-Description[az]=PDF/Acrobat fayl yaz
-Description[be]=ÃÂÃÂ°ÃÂ¿ÃÂÃÂÃÂ°ÃÂÃÂ ÃÂ PDF ÃÂÃÂ°ÃÂ¹ÃÂ»
-Description[bg]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂ ÃÅÃÂ° ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂ²ÃÂÃÂ² ÃÂÃÅžÃÂÃÅÃÂ°ÃÂ ÃÅÃÂ° PDF/Acrobat
-Description[bs]=PiÃÂ¡i u PDF/Acrobat datoteku
-Description[ca]=Escriure en un fitxer PDF/Acrobat
-Description[cs]=Zapisuje do PDF souboru
-Description[da]=Skriv PDF-fil
-Description[de]=Eine PDF-Datei (Acrobat-Format) schreiben
-Description[el]=ÃÂÃÂ³ÃÂ³ÃÂÃÂ±ÃÂÃÂ® ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿ÃÂ PDF/Acrobat
-Description[eo]=Skribas PDF/Akrobato-dosieron
-Description[es]=Escribir archivo PDF/Acrobat
-Description[et]=PDF/Acrobat faili kirjutamine
-Description[eu]=PDF/Acrobat fitxategia Idatzi
-Description[fa]=ÃÂÃÂÃÅœÃÂªÃÂ ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ PDF/Acrobat
-Description[fi]=Kirjoita PDF/Acrobat-tiedosto
-Description[fr]=Imprime dans un fichier PDF/Acrobat
-Description[ga]=ScrÃÂ­obh comhad PDF/Acrobat
-Description[he]=ÃÂÃÂªÃÂÃÂ ÃÂ§ÃÂÃÂÃÂ¥ PDF/Acrobat
-Description[hr]=IspiÃÂ¡i u PDF/Acrobat datoteku
-Description[hu]=PDF/Acrobat fÃÂ¡jlba ÃÂ­rÃÂ¡s
-Description[is]=Skrifa PDF/Acrobat skrÃÂ¡
-Description[it]=Scrive file PDF/Acrobat
-Description[ja]=PDF/Acrobat Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂ®Ã€ÅÂÃŠÂÂ
-Description[ko]=PDF/Ã¬ÂÂÃ­ÂÂ¬Ã«Â¡ÂÃ«Â±Â Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã¬ÂÂÃ«ÂÂÃ«Ââ¬
-Description[lt]=RaÃÂ¡yti PDF/Acrobat bylÃÂ
-Description[lv]=RakstÃÂ«t PDF/AkrobÃÂta failÃÂ
-Description[mk]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÅŸ PDF/Acrobat ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ°
-Description[mn]=PDF-ÃÂÃÂ°ÃÂ¹ÃÂ» (Acrobat-Format) ÃÂ±ÃÅŸÃÂÃÅŸÃÂ
-Description[mt]=Ikteb fajl PDF/Acrobat
-Description[nb]=Skriv PDF/Acrobat-fil
-Description[nl]=Schrijf PDF/Acrobat-bestand
-Description[nn]=Skriv PDF/Acrobat-fil
-Description[nso]=Ngwala faele ya PDF/Acrobat
-Description[pl]=Zapisz plik PDF/Acrobat
-Description[pt]=Escrever ficheiro PDF/Acrobat
-Description[pt_BR]=Escrever Arquivo  PDF/Acrobat 
-Description[ro]=Scrie fiÃÂier PDF/Acrobat
-Description[ru]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ»ÃÂ° PDF/Acrobat
-Description[se]=ÃÂÃÂ¡le PDF/Acrobat fiilla
-Description[sk]=ZapÃÂ­saÃÂ¥ sÃÂºbor PDF/Acrobat
-Description[sl]=Izdela datoteko v PDF/Acrobat
-Description[sr]=ZapiÃÂ¡i PDF/Acrobat fajl
-Description[ss]=Bhala i-PDF/lifayela le Acrobat
-Description[sv]=Skriv PDF/Acrobat-fil
-Description[ta]=PDF/Acrobat ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂ ÃÂ±ÃÂÃÂ
-Description[th]=Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂµÃ ÅŸÂ¢Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡ PDF/Acrobat
-Description[tr]=PDF/Acrobat dosyasÃÂ±na yaz
-Description[uk]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÂ°ÃÂÃÅŸ ÃÂÃÂ°ÃÂ¹ÃÂ» PDF/Acrobat
-Description[ven]=Nwalani PDF/faela ya Acrobat
-Description[vi]=ViÃ¡ÂºÂ¿t ra file PDF/Acrobat 
-Description[xh]=Bhala PDF/Ifayile ye Acrobat
-Description[zh_CN]=Ã¥ÂÂÃ¥ÂÂ¥ PDF/Acrobat ÃŠÂÂÃ€Â»Â¶
-Description[zh_TW]=Ã¥Â¯Â«ÃŠÂÂ PDF/Acrobat ÃŠÂªÂÃŠÂ¡Â
-Description[zu]=Bhala  ifayela le-IPDF/Acrobat
-Comment=Local file
-Comment[af]=Plaaslike lÃÂªer
-Comment[ar]=ÃÂÃÂÃÂ ÃÂÃÂ­ÃÂÃÂ
-Comment[az]=Lokal faylÃÂ±
-Comment[be]=ÃÂÃÂÃÂºÃÂ°ÃÂ»ÃÂÃÅÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[bg]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÂµÃÅ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[bs]=Lokalna datoteka
-Comment[ca]=Fitxer local
-Comment[cs]=LokÃÂ¡lnÃÂ­ soubor
-Comment[da]=Lokal fil
-Comment[de]=Lokale Datei
-Comment[el]=Ãâ¬ÃÂ¿ÃÂÃÂ¹ÃÂºÃÂ ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿
-Comment[eo]=Loka dosiero
-Comment[es]=Archivo local
-Comment[et]=Kohalik fail
-Comment[eu]=Fitxategi Lokala
-Comment[fa]=ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ ÃÂÃÂ­ÃÂÃÂ
-Comment[fi]=Paikallinen tiedosto
-Comment[fr]=Fichier local
-Comment[ga]=Comhad logÃÂ¡nta
-Comment[he]=ÃÂ§ÃÂÃÂÃÂ¥ ÃÂÃÂ§ÃÂÃÂÃÂ
-Comment[hr]=Lokalna datoteka
-Comment[hu]=Helyi fÃÂ¡jl
-Comment[is]=StaÃÂ°bundin skrÃÂ¡
-Comment[it]=File locale
-Comment[ja]=Ã£ÂÂ­Ã£ÂÅÃ£ÂÂ«Ã£ÂÂ«Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«
-Comment[ko]=Ã¬ÂÅŸ Ã¬ÂÂ Ã­ÂÂÃ¬ÂÅ
-Comment[lt]=VietinÃÂ byla
-Comment[lv]=LokÃÂls fails
-Comment[mk]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÅÃÂ° ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ°
-Comment[mn]=ÃÂ»ÃÅžÃÂºÃÂ°ÃÂ» ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[mt]=Fajl lokali
-Comment[nb]=Lokal fil
-Comment[nl]=Lokaal bestand
-Comment[nn]=Lokal fil
-Comment[nso]=Faele ya selegae
-Comment[pl]=Plik lokalny
-Comment[pt]=Ficheiro local
-Comment[pt_BR]=Arquivo Local
-Comment[ro]=FiÃÂier local
-Comment[ru]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÂÃÅÃÂÃÂ¹ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[se]=BÃÂ¡ikkÃÂ¡laÃÂ¡ fiila
-Comment[sk]=LokÃÂ¡lny sÃÂºbor
-Comment[sl]=Krajevna datoteka
-Comment[sr]=Lokalni fajl
-Comment[ss]=Lifayela langekhatsi
-Comment[sv]=Lokal fil
-Comment[ta]=ÃÂ¯ÃÂ»ÃÂÃÅ¡ÃÂÃÂ¬ ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂ
-Comment[th]=Ã Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã ÅŸÂ Ã ÅŸÂ²Ã ÅŸÂ¢Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂ£Ã ÅŸÂ°Ã ÅŸÂÃ ÅŸÂ
-Comment[tr]=Yerel dosya
-Comment[uk]=ÃÂÃÅžÃÂºÃÂ°ÃÂ»ÃÂÃÅÃÅŸÃÂ¹ ÃÂÃÂ°ÃÂ¹ÃÂ»
-Comment[ven]=Faela ya henefhano
-Comment[vi]=File ÃÂÃ¡Â»Âa phÃÂ°ÃÂ¡ng 
-Comment[wa]=FitchÃÂ® locÃÂ¥l
-Comment[xh]=Ifayile yobulali
-Comment[zh_CN]=ÃŠÂÂ¬Ã¥ÂÂ°ÃŠÂÂÃ€Â»Â¶
-Comment[zh_TW]=ÃŠÂÂ¬Ã¥ÂÂ°ÃŠÂªÂÃŠÂ¡Â
-Comment[zu]=Ifayela laseduze
-Icon=acroread
-Command=ps2pdf
-File=1
-Extension=pdf
-Require=exec:/ps2pdf
-
-[Printer 2]
-Name=Send to Fax
-Name[af]=Stuur na Faks
-Name[ar]=ÃÂ£ÃÂ±ÃÂ³ÃÂ ÃÂ§ÃÂÃÂ ÃÂ§ÃÂÃÂÃÂ§ÃÂÃÂ³
-Name[be]=ÃÂÃÂ°ÃÂÃÂ»ÃÂ°ÃÂÃÂ ÃÂ¿ÃÂ° ÃÂÃÂ°ÃÂºÃÂÃÂ
-Name[bs]=ÃÂ alji na fax
-Name[ca]=Envia al Fax
-Name[cs]=Poslat na fax
-Name[da]=Send til fax
-Name[de]=An Fax weiterleiten
-Name[el]=ÃÂÃÂÃÂ¿ÃÂÃÂÃÂ¿ÃÂ»ÃÂ® ÃÂÃÂµ ÃÂÃÂ±ÃÅž
-Name[eo]=Sendu al fakso
-Name[es]=Enviar a fax
-Name[et]=Faxile saatmine
-Name[eu]=Faxera Bidali
-Name[fa]=ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÅ¡ÃÂ ÃÂ¯ÃÂÃÂ±ÃÂÃÂ¯ÃÂ§ÃÂ±
-Name[fi]=LÃâ¬hetÃâ¬ faksille
-Name[fr]=Envoyer au fax
-Name[ga]=Seol go Faics
-Name[he]=ÃÂ©ÃÂÃÂ ÃÂÃâ¬ÃÂ§ÃÂ¡
-Name[hu]=ElkÃÅldÃÂ©s faxkÃÂ©nt
-Name[is]=Senda ÃÂ¡ faxiÃÂ°
-Name[it]=Manda come fax
-Name[ja]=FaxÃ£ÂÂ«Ã©ÂÂÃ€Â¿Â¡
-Name[lt]=SiÃÂ³sti ÃÂ¯ faksÃÂ
-Name[lv]=SÃÂ«tÃÂ«t uz Faksu
-Name[mk]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂÃÅŸ ÃÅÃÂ° ÃÂÃÂ°ÃÂºÃÂ
-Name[mn]=Ãâ¬ÃÂ°ÃÂºÃÂ ÃÂÃÂÃÂ ÃÂ³ÃÂ°ÃÂÃÂ³ÃÂ°ÃÂ
-Name[mt]=IbgÃÂ§at bÃÂ§ala fax
-Name[nb]=Send til faks
-Name[nl]=Naar fax verzenden
-Name[nn]=Send til faks
-Name[nso]=Romela go Fax
-Name[pl]=WyÃÂlij na faks
-Name[pt]=Enviar por Fax
-Name[pt_BR]=Enviar para o Fax
-Name[ro]=Trimite prin FAX
-Name[ru]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂ²ÃÅŸÃÂÃÂ ÃÅÃÂ° ÃÂÃÂ°ÃÂºÃÂ
-Name[se]=SÃÂ¡dde fÃÂ¡ksii
-Name[sk]=PoslaÃÂ¥ na fax
-Name[sl]=PoÃÂ¡lji faks
-Name[ss]=Tfumela ku Fax
-Name[sv]=Skicka till fax
-Name[ta]=ÃÅ ÃÅžÃÂ¡ÃÅ¡ÃÂÃÂ¿ÃÅŸÃÂÃÂ¢ÃÂ¬ÃÂ ÃÂ«ÃÂÃÅœÃÂ
-Name[tr]=Faksa Yolla
-Name[uk]=ÃÂÃÂÃÅœÃÂÃÂÃÂ»ÃÂ°ÃÂÃÅŸ ÃÅÃÂ° ÃÂÃÂ°ÃÂºÃÂ
-Name[ven]=Rumela kha fekisi
-Name[xh]=Thumela kwi Fax
-Name[zh_CN]=Ã¥ÂÂÃ©ÂÂÃšÂÂ³Ã€ÅÂ Ã§ÂÂ
-Name[zh_TW]=Ã§ÂÅÃ©ÂÂÃšÂÂ³Ã¥ÂÂ³Ã§ÂÂ
-Name[zu]=Thumela kwi-fax
-Description=Send to external fax system
-Description[af]=Stuur na eksterne faks stelsel
-Description[ar]=ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂ§ÃÂÃÂ ÃÂ¬ÃÂÃÂ§ÃÂ² ÃÂ§ÃÂÃÂÃÂ§ÃÂÃÂ³ ÃÂ§ÃÂÃÂ®ÃÂ§ÃÂ±ÃÂ¬ÃÂ
-Description[az]=Xarici faks sisteminÃÂ yolla
-Description[bg]=ÃÂÃÂ·ÃÂ¿ÃÂÃÂ°ÃÂÃÂ°ÃÅÃÂµ ÃÂºÃÂÃÅ ÃÂ²ÃÂÃÅÃÂÃÅÃÂ° ÃÂÃÂ°ÃÂºÃÂ ÃÂÃÅŸÃÂÃÂÃÂµÃÅÃÂ°
-Description[bs]=ÃÂ alji na vanjski fax sistem
-Description[ca]=Envia al sistema de fax extern
-Description[cs]=OdesÃÂ­lÃÂ¡ do externÃÂ­ho faxovÃÂ©ho systÃÂ©mu
-Description[da]=Send til eksternt fax-system
-Description[de]=An externes Faxsystem weiterleiten
-Description[el]=ÃÂÃÂÃÂ¿ÃÂÃÂÃÂ¿ÃÂ»ÃÂ® ÃÂÃÂµ ÃÂµÃÅžÃÂÃÂÃÂµÃÂÃÂ¹ÃÂºÃÂ ÃÂÃÂÃÂÃÂÃÂ·ÃÅÃÂ± ÃÂÃÂ±ÃÅž
-Description[eo]=Sendas al ekstera faksosistemo
-Description[es]=Enviar a sistema de fax externo
-Description[et]=VÃâ¬lisele faxisÃÅsteemile saatmine
-Description[eu]=Kanpoko fax sistema batera bidali
-Description[fa]=ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÅ¡ÃÂ ÃÂ³ÃÂÃÂ³ÃÂªÃÂ ÃÂ¯ÃÂÃÂ±ÃÂÃÂ¯ÃÂ§ÃÂ± ÃÂ®ÃÂ§ÃÂ±ÃÂ¬ÃÂ
-Description[fi]=LÃâ¬hetÃâ¬ faksille
-Description[fr]=Envoyer ÃÂ  un systÃÅ¡me de fax externe
-Description[ga]=Seol go cÃÂ³ras faics eachtrach
-Description[he]=ÃÂ©ÃÂÃÂ ÃÂÃÂÃÂ¢ÃÅ¡ÃÂÃÂª Ãâ¬ÃÂ§ÃÂ¡ ÃÂÃÂÃÅ ÃÂÃÂ ÃÂÃÂª
-Description[hr]=poÃÂ¡alji na vanjski faks sustav
-Description[hu]=KÃÅlsÃÂ faxgÃÂ©pre kÃÅldÃÂ©s
-Description[is]=Senda ÃÂ¡ utanaÃÂ°komandi fax kerfi
-Description[it]=Spedisce ad un sistema di fax esterno
-Description[ja]=Ã¥â¬ÂÃ©ÂÅ¡faxÃ£ÂÂ·Ã£ÂÂ¹Ã£ÂÂÃ£ÂÂ Ã£ÂÂ«Ã©ÂÂÃ€Â¿Â¡
-Description[ko]=Ã«Â°ÂÃªÂ¹Â¥Ã¬ÂÂ Ã¬ÂÂÃ«ÂÂ Ã­ÂÂ©Ã¬Ââ¬ Ã¬ÂÂÃ¬Ââ¬Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã«Â³ÅœÃ«ÂÂÃ«ÂÂÃ«Ââ¬
-Description[lt]=SiÃÂ³sti ÃÂ¯ iÃÂ¡orinÃÂ fakso sistemÃÂ
-Description[lv]=SÃÂ«tÃÂ«t uz ÃÂrÃÂjo faksa sistÃÂmu
-Description[mk]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂÃÅŸ ÃÅÃÂ° ÃÂµÃÂºÃÂÃÂÃÂµÃÂÃÂµÃÅ ÃÂÃÂ°ÃÂºÃÂ-ÃÂÃÅŸÃÂÃÂÃÂµÃÅ
-Description[mn]=ÃÂÃÂ°ÃÅœÃÂ°ÃÂ°ÃÅœ ÃÂÃÂ°ÃÂºÃÂÃÂÃÅ ÃÂÃÅŸÃÂÃÂÃÂµÃÅ ÃÂÃÂ¯ÃÂ¯ ÃÅŸÃÂ»ÃÂ³ÃÂÃÂÃÂ
-Description[mt]=IbgÃÂ§at lis-sistema esterna tal-fax
-Description[nb]=Send til eksternt telefaks-system
-Description[nl]=Naar een extern faxsysteem sturen
-Description[nn]=Send til eksternt faks-system
-Description[nso]=Romela go system ya kantle ya fax
-Description[pl]=WyÃÂlij do zewnÃÂtrznego faksu
-Description[pt]=Enviar para um programa de fax
-Description[pt_BR]=Enviar a um sistema de fax externo
-Description[ro]=Trimite cÃÂtre un sistem de FAX extern
-Description[ru]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂ²ÃÂºÃÂ° ÃÅÃÂ° ÃÂ²ÃÅÃÂµÃÂÃÅÃÅŸÃÂ¹ ÃÂÃÂ°ÃÂºÃÂ
-Description[se]=SÃÂ¡dde olggoldas fÃÂ¡ksavuogÃÂ¡dahkii
-Description[sk]=PoslaÃÂ¥ do externÃÂ©ho faxovÃÂ©ho systÃÂ©mu
-Description[sl]=PoÃÂ¡lje faks v zunanji faksirni sistem
-Description[sr]=PoÃÂ¡alji na eksterni fax sistem
-Description[ss]=Tfumela kumshini we fax wangaphandle
-Description[sv]=Skicka till externt faxsystem
-Description[ta]=ÃÅ ÃÂÃÂÃÂ¢ÃÂ² ÃÅ ÃÅžÃÂ¡ÃÅ¡ÃÂÃÂ¿ÃÅŸÃÂÃÂ¢ÃÂ¬ÃÂ ÃÂ«ÃÂÃÅœÃÂ
-Description[th]=Ã ÅŸÂªÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂ¢Ã ÅŸÂ±Ã ÅŸÂÃ ÅŸÂ£Ã ÅŸÂ°Ã ÅŸÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂ£Ã ÅŸÂªÃ ÅŸÂ²Ã ÅŸÂ£Ã ÅŸÂ Ã ÅŸÂ²Ã ÅŸÂ¢Ã ÅŸÂÃ ÅŸÂ­Ã ÅŸÂ
-Description[tr]=DÃÂ±ÃÂ faks sistemine yolla
-Description[uk]=ÃÂÃÂÃÅœÃÂÃÂÃÂ»ÃÂ°ÃÂÃÅŸ ÃÅÃÂ° ÃÂ·ÃÅžÃÂ²ÃÅÃÂÃÂÃÅÃÂ ÃÂÃÅŸÃÂÃÂÃÂµÃÅÃÂ ÃÂÃÂ°ÃÂºÃÂÃÂ
-Description[ven]=Rumelani kha sisitemu ya maitele a nnda a fekisi
-Description[vi]=GÃ¡Â»Â­i tÃ¡Â»Âi hÃ¡Â»ÂEthÃ¡Â»Âng fax Ã¡Â»ÂEbÃÂªn ngoÃÂ i (external) 
-Description[xh]=Thumela kwindlela engaphandle ye fax
-Description[zh_CN]=Ã¥ÂÂÃšÂÂ³Ã¥â¬ÂÃ©ÂÅ¡Ã€ÅÂ Ã§ÂÂÃ§Â³Â»Ã§Â»Â
-Description[zh_TW]=Ã§ÂÅÃ©ÂÂÃ¥ÂÂ°Ã¥â¬ÂÃ©ÂÅ¡Ã¥ÂÂ³Ã§ÂÂÃ§Â³Â»Ã§ÂµÂ±
-Description[zu]=Thumela kwisistimu yangaphandle ye-fax
-Comment=External
-Comment[af]=Eksterne
-Comment[ar]=ÃÂ®ÃÂ§ÃÂ±ÃÂ¬ÃÂ
-Comment[az]=Xarici
-Comment[bg]=ÃÂÃÂÃÅÃÂÃÂµÃÅ
-Comment[bs]=Vanjski
-Comment[ca]=Extern
-Comment[cs]=ExternÃÂ­
-Comment[da]=Ekstern
-Comment[de]=Extern
-Comment[el]=ÃÂÃÅžÃÂÃÂÃÂµÃÂÃÂ¹ÃÂºÃÂ
-Comment[eo]=Ekstera
-Comment[es]=Externo
-Comment[et]=VÃâ¬line
-Comment[eu]=Kanpokoa
-Comment[fa]=ÃÂ®ÃÂ§ÃÂ±ÃÂ¬ÃÂ
-Comment[fi]=Ulkoinen
-Comment[fr]=Externe
-Comment[ga]=Eachtrach
-Comment[he]=ÃÂÃÂÃÅ ÃÂÃÂ ÃÂ
-Comment[hr]=Vanjsko
-Comment[hu]=KÃÅlsÃÂ
-Comment[is]=UtanaÃÂ°komandi
-Comment[it]=Esterno
-Comment[ja]=Ã¥â¬ÂÃ©ÂÅ¡
-Comment[ko]=Ã«Â°ÂÃªÂ¹Â¥
-Comment[lt]=IÃÂ¡orinÃÂ
-Comment[lv]=ÃÂrÃÂjs
-Comment[mk]=ÃÂÃÂºÃÂÃÂÃÂµÃÂÃÅÃÅž
-Comment[mn]=ÃÂÃÂ°ÃÅœÃÂ°ÃÂ°ÃÅœ
-Comment[mt]=Estern
-Comment[nb]=Ekstern
-Comment[nl]=Extern
-Comment[nn]=Ekstern
-Comment[nso]=Ya kantle
-Comment[pl]=ZewnÃÂtrzny
-Comment[pt]=Externo
-Comment[pt_BR]=Externo
-Comment[ro]=Extern
-Comment[ru]=ÃÂÃÅÃÂµÃÂÃÅÃÅŸÃÂ¹
-Comment[se]=Olggoldas
-Comment[sk]=ExternÃÅ
-Comment[sl]=Zunanji
-Comment[sr]=Eksterni
-Comment[ss]=Kwangaphandle
-Comment[sv]=Extern
-Comment[ta]=ÃÅ ÃÂÃÂÃÂ¢
-Comment[th]=Ã ÅŸÂ Ã ÅŸÂ²Ã ÅŸÂ¢Ã ÅŸÂÃ ÅŸÂ­Ã ÅŸÂ
-Comment[tr]=DÃÂ±ÃÂ
-Comment[uk]=ÃÂÃÅžÃÂ²ÃÅÃÂÃÂÃÅÃÂÃÂ¹
-Comment[ven]=Zwangannda
-Comment[vi]=BÃÂªn ngoÃÂ i(external) 
-Comment[xh]=Ngaphandle
-Comment[zh_CN]=Ã¥â¬ÂÃ©ÂÅ¡
-Comment[zh_TW]=Ã¥â¬ÂÃ©ÂÅ¡
-Comment[zu]=Ngaphandle
-Icon=kdeprintfax
-Command=kdeprintfax %in
-File=0
-Extension=
-Require=exec:/kdeprintfax
-
-[Printer 3]
-Command=ps2pdf -sPAPERSIZE=%psl %in %out && kmail --composer --attach file:%out && sleep 15 && rm -f %out
-Comment=Attachment for KMail Composer
-Comment[af]=Aanhegsel vir Kpos Saamsteller
-Comment[ar]=ÃÂÃÂ±ÃÂÃÂÃÂ§ÃÂª ÃÂÃÂ§ÃÂªÃÅ¡ KMail
-Comment[az]=Kmail YazÃÂ±ÃÂ§ÃÂ±sÃÂ±na ÃÂ°liÃÂdirilmiÃÂ
-Comment[bg]=ÃÂÃÂÃÅŸÃÂºÃÂ°ÃÂÃÂµÃÅ ÃÂ·ÃÂ° KMail
-Comment[bs]=Attachment za KMail Composer
-Comment[ca]=Adjunt per a l'editor del KMail
-Comment[cs]=PÃÂÃÂ­loha pro editor KMailu
-Comment[da]=Bilag til KMail Brevskriver
-Comment[de]=Anhang des KMail-Editors
-Comment[el]=ÃÂ£ÃÂÃÅÃÂ·ÃÅÃÅÃÂ­ÃÅÃÂ¿ ÃÂ³ÃÂ¹ÃÂ± ÃÂÃÂ¿ ÃÂÃÂÃÅÃÅŸÃÂ­ÃÂÃÂ· ÃÂÃÂ¿ÃÂ KMail
-Comment[eo]=KunsendaÃÂµo por retpoÃÂta mesaÃÂredaktilo
-Comment[es]=Adjunto para el editor de KMail
-Comment[et]=KMaili kirja kaasamine
-Comment[eu]=KMail-Composer-endako eranskina
-Comment[fa]=ÃÂ¶ÃÂÃÂÃÂÃÂ ÃÅ¡ÃÂ±ÃÂ§ÃÂ ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂ©ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ KMail
-Comment[fi]=SÃâ¬hkÃÂ¶postiliite KMailille
-Comment[fr]=PiÃÅ¡ce jointe du logiciel de messagerie ÃÂ©lectronique KMail
-Comment[he]=ÃÂ§ÃÂÃÂÃÂ¥ ÃÂÃÅ ÃÂÃÅ¡ÃÂ£ ÃÂÃÂÃÂªÃÂÃÂ ÃÂ©ÃÂ KMail
-Comment[hr]=Prilog za KMail
-Comment[hu]=CsatolÃÂ¡s a KMail szerkesztÃÂprogramhoz
-Comment[is]=ViÃÂ°hengi viÃÂ° KMail pÃÂ³st
-Comment[it]=Allegato per il compositore di KMail
-Comment[ja]=KMailÃ£ÂÂ³Ã£ÂÂ³Ã£ÂÂÃ£ÂÅÃ£ÂÂ¶Ã£ÂÂ®ÃŠÂ·Â»Ã€Â»Â
-Comment[ko]=KDE Ã­ÂÅŸÃ¬Â§ÂÃ¬ÂÂ© Ã­ÂÅŸÃ¬Â§ÂÃªÅŸÂ°Ã«Â¡Â Ã«ÂÂ§Ã«Â¶ÂÃ¬ÂÂ¬ Ã«Â³ÅœÃ«ÂÂÃ«ÂÂÃ«Ââ¬
-Comment[lt]=KMail raÃÂ¡yklÃÂs priesaga
-Comment[lv]=Pielikums KPasta VeidotÃÂjam
-Comment[mk]=ÃÂÃÂÃÂ°ÃÂÃÅÃÂµÃÅÃÂ ÃÂ·ÃÂ° ÃÂÃÅžÃÂÃÂÃÂ°ÃÂ²ÃÂÃÂ²ÃÂ°ÃÂÃÅžÃÂ ÃÂ²ÃÅž KMail
-Comment[mn]=KMail-ÃÂ±ÃÅžÃÂ»ÃÅžÃÂ²ÃÂÃÂÃÂÃÂÃÂ»ÃÂ°ÃÂ³ÃÂÃÅŸÃÂ¹ÃÅ ÃÂÃÂ°ÃÂ²ÃÂÃÂÃÂ°ÃÂ³ÃÂ°
-Comment[mt]=Abbinament gÃÂ§all-kompoÃÅitur KMail
-Comment[nb]=Vedlegg for e-postredigering i KMail
-Comment[nl]=Bijlage voor KMail Opsteller
-Comment[nn]=Vedlegg for e-postredigering i KMail
-Comment[nso]=Kgwathiso ya Mohlagisi wa KPoso
-Comment[pl]=ZaÃÂÃÂcznik KMaila
-Comment[pt]=Anexo para o programa KMail
-Comment[pt_BR]=Anexo para o Kmail 
-Comment[ro]=AtaÃÂament pentru KMail
-Comment[ru]=ÃÂÃÂ»ÃÅžÃÂ¶ÃÂµÃÅÃÅŸÃÂµ ÃÅœÃÂ»ÃÂ KMail
-Comment[se]=KMail:a e-boastadoaimmaheaddji mielddus
-Comment[sk]=PrÃÂ­loha pre composer KMailu
-Comment[sl]=Pripeta datoteka za sestavljalnik Kmail
-Comment[sr]=Prilog za KMail kompozer
-Comment[ss]=Lokunanyatsiliseliwe kwesisunguli se Kmail
-Comment[sv]=Bilaga till Kmails e-posteditor
-Comment[ta]=KMail ÃÂ¯ÃÂÃÂÃÂ¡ÃÂ¬ÃÅŸÃÂ¢ÃÂÃÂ¢ÃÅŸ ÃÅžÃÅ¡ÃÅÃÅœÃÂ
-Comment[th]=Ã ÅŸÂÃ ÅŸÂ²Ã ÅŸÂ£Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã ÅŸÂªÃ ÅŸÂ³Ã ÅŸÂ«Ã ÅŸÂ£Ã ÅŸÂ±Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂ£Ã ÅŸÂ·Ã Â¹ÂÃ ÅŸÂ­Ã ÅŸÂÃ ÅŸÂ¡Ã ÅŸÂ·Ã ÅŸÂ­Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂµÃ ÅŸÂ¢Ã ÅŸÂÃ ÅŸÂÃ ÅŸÂÃ ÅŸÂ«Ã ÅŸÂ¡Ã ÅŸÂ²Ã ÅŸÂ¢ KMail
-Comment[tr]=KMaÃÂ±l iÃÂ§in ek
-Comment[uk]=ÃÂÃÅžÃÂ»ÃÂÃÂÃÂµÃÅÃÅÃÂ ÃÅœÃÂ»ÃÂ ÃÂÃÂµÃÅœÃÂ°ÃÂºÃÂÃÅžÃÂÃÂ° KMail
-Comment[ven]=U tangana na mubveledzi wa meili wa K
-Comment[vi]=ÃÂÃÂ­nh vÃÂ o trÃÂ¬nh soÃ¡ÂºÂ¡n Kmail
-Comment[xh]=Ufakelo Lomqhambi we KMail
-Comment[zh_CN]=Ã€ÅÂÃ€ÅŸÂº KMail Ã§ÅÂÃ¥ÂÂÃ¥ÂÅ¡Ã©ÂÂÃ€Â»Â¶
-Comment[zh_TW]=Ã§ÂÂ¶Ã€ÅÂ KMail Ã©ÂÂµÃ€Â»Â¶Ã§Â·Å¡ÃšÅÂ¯Ã¥ÂÅ¡Ã§ÂÂÃ©ÂÂÃ€Â»Â¶
-Comment[zu]=Ukunamathisela Komsunguli we-KMail
-Description=Creates PDF/Acrobat file as attachment for KMail
-Description[af]=Skep Pdf/Acrobat lÃÂªer as aanhegsel vir Kpos
-Description[ar]=ÃÂªÃÂÃÂÃÂÃÂ¯ ÃÂÃÂÃÂ PDF/ÃÂ£ÃÂÃÂ±ÃÂÃÅ¡ÃÂ§ÃÂª ÃÂÃÂÃÂÃÂ­ÃÂ ÃÂÃÂ±ÃÂ³ÃÂ§ÃÂÃÂ© ÃÂ¹ÃÂ ÃÂ·ÃÂ±ÃÂÃÂ KMail
-Description[az]=KmailÃÂ iliÃÂdirmÃÂk ÃÅÃÂ§ÃÅn PDF/Acrobat faylÃÂ± yaradÃÂ±r
-Description[be]=ÃÂ¡ÃÂÃÂ²ÃÂ°ÃÂÃÂ°ÃÂµ PDF ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂÃÂº ÃÅœÃÂ°ÃÂ»ÃÂÃÂÃÂÃÅÃÂÃÅÃÂµ ÃÅœÃÂ»ÃÂ KMail
-Description[bg]=ÃÂ¡ÃÂÃÂ·ÃÅœÃÂ°ÃÅœÃÂµÃÅÃÅŸ PDF/Acrobat ÃÂÃÂ°ÃÂ¹ÃÂ»ÃÅžÃÂ²ÃÂµ ÃÂ·ÃÂ° ÃÂ¿ÃÂÃÅŸÃÂºÃÂ°ÃÂÃÂ²ÃÂ°ÃÅÃÂµ ÃÅÃÂ° KMail
-Description[bs]=Kreira PDF/Acrobat dokument kao attachment za KMail
-Description[ca]=Crea un fitxer PDF/Acrobat com a adjunt per al KMail
-Description[cs]=VytvoÃÂÃÂ­ PDF/Acrobat soubor jako pÃÂÃÂ­lohu pro KMail
-Description[da]=Opretter PDF-fil som bilag for KMail
-Description[de]=Eine PDF-Datei (Acrobat-Format) als Anhang fÃÅr KMail erstellen
-Description[el]=ÃÂÃÂ·ÃÅÃÂ¹ÃÂ¿ÃÂÃÂÃÂ³ÃÂµÃÂ¯ ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ± PDF/Acrobat ÃÂºÃÂ±ÃÂ¹ ÃÂÃÂ± ÃÂµÃÂÃÂ¹ÃÂÃÂÃÅÃÂ¬ÃÂÃÂÃÂµÃÂ¹ ÃÂÃÂÃÂ¿ KMail
-Description[eo]=Kreas PDF/Akrobato-dosieron kiel kunsendaÃÂµo de PoÃÂtilo
-Description[es]=Crear archivo PDF/Acrobat como adjunto para KMail
-Description[et]=Tekitab PDF/Acrobat faili ja kaasab selle KMaili meili
-Description[eu]=PDF/Acrobat fitxategiak sortzen ditu KMail-en eransteko
-Description[fa]=ÃÂ§ÃÂÃÂ¬ÃÂ§ÃÂ¯ ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ PDF/Acrobat ÃÅ¡ÃÂ ÃÂ¹ÃÂÃÂÃÂ§ÃÂ ÃÂ¶ÃÂÃÂÃÂÃÂ ÃÅ¡ÃÂ±ÃÂ§ÃÂ KMail
-Description[fi]=Luo PDF/Acrobat-tiedoston sÃâ¬hkÃÂ¶postiliitteenÃâ¬ KMailille
-Description[fr]=CrÃÂ©e un fichier PDF en tant que piÃÅ¡ce jointe pour KMail
-Description[ga]=CruthaÃÂ­onn comhad PDF/Acrobat mar iatÃÂ¡n do KMail
-Description[he]=ÃÂÃÂÃÅ ÃÅ¡ ÃÂ§ÃÂÃÂÃÂ¥ PDF/Acrobat ÃÂÃÂªÃÂÃÅ¡ ÃÂÃÅ ÃÂÃÅ¡ÃÂ£ ÃÂ©ÃÂ KMail
-Description[hr]=Pravi PDF/Acrobat datoteku kao prilog za KMail
-Description[hu]=PDF/Acrobat fÃÂ¡jl lÃÂ©trehozÃÂ¡sa KMail csatolÃÂ¡skÃÂ©nt
-Description[is]=BÃÅr til PDF/Acrobat skrÃÂ¡ sem viÃÂ°hengi fyrir KMail
-Description[it]=Crea un file di allegato PDF/Acrobat per KMail
-Description[ja]=PDF/Acrobat Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂKMailÃ£ÂÂ®ÃŠÂ·Â»Ã€Â»ÂÃ£ÂÅ¡Ã£ÂÂÃ£ÂÅ Ã€ÅÂÃŠÂÂ
-Description[ko]=KDE Ã­ÂÅŸÃ¬Â§ÂÃ¬ÂÂ Ã«ÂÂ§Ã«Â¶ÂÃ¬ÂÅ PDF/Ã¬ÂÅœÃ­ÂÂ¬Ã«Â¡ÂÃ«Â±Â Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã«Â§ÂÃ«ÂÂ­Ã«ÂÂÃ«Ââ¬
-Description[lt]=RaÃÂ¡yti PDF/Acrobat bylÃÂ kaip priesagÃÂ KMail programai
-Description[lv]=Izveido PDF/AkrobÃÂta failu kÃÂ pielikumu KPastam
-Description[mk]=ÃÂ¡ÃÅžÃÂ·ÃÅœÃÂ°ÃÂ²ÃÂ° PDF/Acrobat ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ° ÃÂºÃÂ°ÃÂºÃÅž ÃÂ°ÃÂÃÂ°ÃÂÃÅÃÂµÃÅÃÂ ÃÂ·ÃÂ° KMail
-Description[mn]=PDF-ÃÂÃÂ°ÃÂ¹ÃÂ» (Acrobat-Format) KMail-ÃÅ ÃÂÃÂÃÂ²ÃÂÃÅœ ÃÂÃÂ°ÃÂ²ÃÂÃÂÃÂ°ÃÂ³ÃÂ°ÃÂ°ÃÂ ÃÂ¯ÃÂ¯ÃÂÃÂ³ÃÂÃÂ
-Description[mt]=JoÃÂ§loq fajl PDF/Acrobat bÃÂ§ala abbinament gÃÂ§all-KMail
-Description[nb]=Lager PDF/Acrobat-fil som vedlegg til KMail
-Description[nl]=CreÃÂ«ert PDF/Acrobat-bestand als bijlage voor KMail
-Description[nn]=Lagar PDF/Acrobat-fil som vedlegg i KMail
-Description[nso]=E hlagisa faele ya PDF/Acrobat bjale ka kgwathiso go KPoso
-Description[pl]=Tworzy plik PDF/Acrobata jako zaÃÂÃÂcznik do wiadomoÃÂci KMaila
-Description[pt]=Cria um ficheiro PDF/Acrobat como anexo para o KMail
-Description[pt_BR]=Cria arquivos  PDF/Acrobat como anexos para o  Kmail
-Description[ro]=CreeazÃÂ fiÃÂier PDF/Acrobat ca ataÃÂament pentru KMail
-Description[ru]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ»ÃÂ° PDF/Acrobat ÃÂºÃÂ°ÃÂº ÃÂ²ÃÂ»ÃÅžÃÂ¶ÃÂµÃÅÃÅŸÃÂ ÃÅœÃÂ»ÃÂ KMail
-Description[se]=RÃÂ¡hkada PDF/Acrobat-fiilla KMail'ii mielddusin
-Description[sk]=VytvorÃÂ­ sÃÂºbor PDF/Acrobat ako prÃÂ­lohu pre KMail
-Description[sl]=Izdela datoteko v PDF/Acrobat kot prilogo za Kmail
-Description[sr]=Stvara PDF-Acrobat fajl kao prilog za KMail
-Description[ss]=Calisa lifayela lePDF/Acrobat njengelokunanyatsiselwe ku- KMail
-Description[sv]=Skapar PDF/Acrobat-fil som en bilaga till Kmail
-Description[ta]=KMail ÃÅžÃÅ¡ÃÅÃÅœÃÂÃÂ¡ÃÅŸ, PDF/Acrobat ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂÃÂ¢ÃÅ¡ÃÂ ÃÂ¯ÃÂÃÂÃÂ¡ÃÂ¬ÃÂÃÂµ
-Description[th]=Ã ÅŸÂªÃ ÅŸÂ£Ã Â¹ÂÃ ÅŸÂ²Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡ PDF/Acrobat Ã ÅŸÂªÃ ÅŸÂ³Ã ÅŸÂ«Ã ÅŸÂ£Ã ÅŸÂ±Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂÃ ÅŸÂ±Ã ÅŸÂ KMail
-Description[tr]=KMail iÃÂ§in, ek ÃÂeklinde, PDF/Acrobat dosyasÃÂ± oluÃÂturur.
-Description[uk]=ÃÂ¡ÃÂÃÂ²ÃÅžÃÂÃÂÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ» PDF/Acrobat ÃÂÃÂº ÃÅœÃÅžÃÂ»ÃÂÃÂÃÂµÃÅÃÅÃÂ ÃÅœÃÂ»ÃÂ KMail
-Description[ven]=Itani PDF/Faela ya Acrobat sa vhutumani ha meili ya K
-Description[vi]=TÃ¡ÂºÂ¡o file PDF/Acrobat dÃÂ°Ã¡Â»Âi dÃ¡ÂºÂ¡ng file ÃÂÃÂ­nh 
-Description[xh]=Yenza PDF/Ifayile yomenzi womthambo njengofakelelo lwe KMail
-Description[zh_CN]=Ã¥ÂÂÃ¥Â»Âº PDF/Acrobat ÃŠÂÂÃ€Â»Â¶Ã€ÅÂÃ€ÅŸÂº KMail Ã©ÂÂÃ€Â»Â¶
-Description[zh_TW]=Ã¥Â»ÂºÃ§Â«Â PDF/Acrobat ÃŠÂÂÃ€Â»Â¶Ã€ÅÂÃ§ÂÂº KMail Ã©ÂÂÃ€Â»Â¶
-Description[zu]=Idala ifayela le-PDF/Acrobat libe njengokunamathisela kwe-KMail
-Extension=pdf
-File=1
-Icon=kmail
-Name=Mail PDF file
-Name[af]=Pos Pdf lÃÂªer
-Name[ar]=ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂÃÂÃÂ PDF
-Name[az]=MÃÂktub RDF faylÃÂ±
-Name[be]=ÃÂÃÂ°ÃÂÃÂ»ÃÂ°ÃÂÃÂ PDF ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂ¿ÃÂ° ÃÂÃÂ»ÃÂµÃÂºÃÂÃÂÃÅžÃÅÃÅÃÂ°ÃÂ¹ ÃÂ¿ÃÅžÃÂÃÂÃÂµ
-Name[bg]=ÃÂÃÅžÃÂÃÂµÃÅÃÂÃÂºÃÅŸ PDF ÃÂÃÂ°ÃÂ¹ÃÂ»
-Name[bs]=PoÃÂ¡alji PDF dokument na mail
-Name[ca]=Envia fitxer PDF per correu
-Name[cs]=Odeslat PDF soubor emailem
-Name[da]=Post PDF-fil
-Name[de]=PDF-Datei verschicken
-Name[el]=ÃÂÃÂÃÂ¿ÃÂÃÂÃÂ¿ÃÂ»ÃÂ® ÃÅÃÂ­ÃÂÃÂ mail ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿ÃÂ PDF
-Name[eo]=Sendu PDF-dosieron
-Name[es]=Enviar archivo PDF por correo
-Name[et]=PDF faili meiliga saatmine
-Name[eu]=PDF Fitxategia Bidali
-Name[fa]=ÃÅžÃÂ³ÃÂª ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ PDF
-Name[fi]=LÃâ¬hetÃâ¬ PDF-tiedosto sÃâ¬hkÃÂ¶postilla
-Name[fr]=PiÃÅ¡ce jointe PDF
-Name[ga]=Seol Comhad PDF mar RÃÂ­omhphost
-Name[he]=ÃÂ©ÃÂÃÂ ÃÂ§ÃÂÃÂÃÂ¥ PDF ÃÂÃÂÃÂÃÂÃÅ¡
-Name[hr]=PoÃÂ¡alji PDF elektronskom poÃÂ¡tom
-Name[hu]=PDF fÃÂ¡jl elkÃÅldÃÂ©se levÃÂ©lben
-Name[is]=Senda PDF skrÃÂ¡ ÃÂ­ pÃÂ³sti
-Name[it]=Spedisci file PDF
-Name[ja]=PDFÃ£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂÃ£ÂÂ¡Ã£ÂÅÃ£ÂÂ«
-Name[ko]=PDF Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã¬Â°ÂÃ¬ÂÅœ Ã­ÂÅŸÃ¬Â§ÂÃ«Â¡Â Ã«Â³ÅœÃ«ÂÅœÃªÅŸÂ°
-Name[lt]=PaÃÂ¡to RDF byla
-Name[lv]=Mailot PDF failu
-Name[mk]=PDF ÃÂ¿ÃÅž e-mail
-Name[mn]=PDF-ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÅŸÃÂ»ÃÂ³ÃÂÃÂÃÂ
-Name[mt]=IbgÃÂ§at fajl PDF bil-Mail
-Name[nb]=Send PDF-fil
-Name[nl]=PDF-bestand verzenden
-Name[nn]=Send PDF-fil
-Name[nso]=Faele ya PDF ya poso
-Name[pl]=WyÃÂlij plik PDF
-Name[pt]=Enviar PDF por email
-Name[pt_BR]=Enviar por E-Mail Arquivo PDF
-Name[ro]=Trimite prin mail ca PDF
-Name[ru]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂ²ÃÅŸÃÂÃÂ PDF ÃÂÃÂ°ÃÂ¹ÃÂ»
-Name[se]=SÃÂ¡dde PDF-fiilla
-Name[sk]=PoslaÃÂ¥ sÃÂºbor PDF
-Name[sl]=PoÃÂ¡lji PDF po poÃÂ¡ti
-Name[sr]=Slanje PDF fajla elektronskom poÃÂ¡tom
-Name[ss]=lifayela leliposi le PDF
-Name[sv]=Skicka PDF-fil
-Name[ta]=PDF ÃÂ¬ÃÂÃÅÃÂ²ÃÅ¡ÃÅž ÃÂ«ÃÂ¯ÃÂºÃÂÃÂ¢ÃÂ
-Name[th]=Ã Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã ÅŸÂÃ ÅŸÂÃ ÅŸÂ«Ã ÅŸÂ¡Ã ÅŸÂ²Ã ÅŸÂ¢ PDF
-Name[tr]=PDF dosyasÃÂ±nÃÂ± postala
-Name[uk]=ÃÂÃÂÃÅœÃÂÃÂÃÂ»ÃÂ°ÃÂÃÅŸ ÃÂÃÂ°ÃÂ¹ÃÂ» RDF ÃÂ¿ÃÅžÃÂÃÂÃÅžÃÂ
-Name[ven]=Faela ya PDF ya meili
-Name[xh]=Posa ifayile ye PDF
-Name[zh_CN]=Ã©ÂÂ®Ã¥Â¯Â PDF ÃŠÂÂÃ€Â»Â¶
-Name[zh_TW]=Ã©ÂÂµÃ¥Â¯Â PDF ÃŠÂÂÃ€Â»Â¶
-Name[zu]=Posa ifayela le-PDF
-Require=exec:/ps2pdf,exec:/kmail
-
-
-[Printer 4]
-Command=ksendfax %in
-Comment=KSendFax
-Comment[be]=K ÃÂÃÂ°ÃÂÃÂ»ÃÂ°ÃÂÃÂ ÃÂÃÂ°ÃÂºÃÂ
-Comment[eo]=SendFaksilo
-Comment[is]=KsendFax
-Comment[nso]=KFax ya Thomelo
-Comment[sv]=Ksendfax
-Comment[ven]=K i rumela Fekisi
-Description=Use ksendfax to fax the current document
-Description[ar]=ÃÂ§ÃÂ³ÃÂªÃÂ®ÃÂ¯ÃÂ ksendfax Ã¯Â»Â¹ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂ§ÃÂÃÂÃÂ³ÃÂªÃÂÃÂ¯ ÃÂ§ÃÂÃÂ­ÃÂ§ÃÂÃÂ ÃÅ¡ÃÂ§ÃÂÃÂÃÂ§ÃÂÃÂ³
-Description[bs]=Koristite ksendfax za slanje trenutnog dokumenta na fax
-Description[ca]=Empra el ksendfax per a enviar per fax l'actual document
-Description[cs]=PouÃÅžÃÂ­t ksendfax k odfaxovÃÂ¡nÃÂ­ souÃÂasnÃÂ©ho dokumentu
-Description[da]=Brug ksendfax til at faxe det aktuelle dokument
-Description[de]=KSendFax zum Faxen des Dokuments verwenden
-Description[el]=ÃÂ§ÃÂÃÂ®ÃÂÃÂ· ÃÂÃÂ¿ÃÂ ksendfax ÃÂ³ÃÂ¹ÃÂ± ÃÂÃÂ·ÃÅ ÃÂ±ÃÂÃÂ¿ÃÂÃÂÃÂ¿ÃÂ»ÃÂ® ÃÅÃÂµ ÃÂÃÂ±ÃÅž ÃÂÃÂ¿ÃÂ ÃÂÃÂÃÂ­ÃÂÃÂ¿ÃÅÃÂÃÂ¿ÃÂ ÃÂµÃÂ³ÃÂ³ÃÂÃÂ¬ÃÂÃÂ¿ÃÂ
-Description[eo]=Uzu ksendfax por faksi la nunan dokumenton
-Description[es]=Use ksendfax para enviar un fax del documento actual
-Description[et]=Ksendfax'i kasutamine aktiivse dokumendi faksimiseks
-Description[eu]=Erabili ksendfax uneko dokumentua faxez bidaltzeko
-Description[fa]=ÃÂ§ÃÂ³ÃÂªÃÂÃÂ§ÃÂ¯ÃÂ ÃÂ§ÃÂ² ksendfax ÃÅ¡ÃÂ±ÃÂ§ÃÂ ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂ³ÃÂÃÂ¯ ÃÂÃÂ¹ÃÂÃÂ
-Description[fi]=KÃâ¬ytÃâ¬ kdendfax ohjelmaa faksataksesi asiakirjan
-Description[fr]=Utiliser KSendfax pour faxer le document actuel
-Description[ga]=ÃÂsÃÂ¡id ksendfax chun an chÃÂ¡ipÃÂ©is reatha a sheoladh mar faics
-Description[he]=ÃÂÃÂ©ÃÂªÃÂÃÂ© ÃÂ-ksendfax ÃÂÃÂÃÂ ÃÂÃÂ©ÃÂÃÂÃÂ ÃÂÃÂª ÃÂÃÂÃÂ¡ÃÂÃÂ ÃÂÃÂ ÃÂÃÂÃÂÃÂ ÃÂÃâ¬ÃÂ§ÃÂ¡
-Description[hu]=A KSendFax hasznÃÂ¡lata az aktuÃÂ¡lis dokumentum elfaxolÃÂ¡sÃÂ¡hoz
-Description[is]=Nota ksendfax til aÃÂ° senda skjal ÃÂ¡ faxtÃÅ ki
-Description[it]=Usa ksendfax per faxare il documento corrente
-Description[ja]=ksendfax Ã£ÂÂ¯Ã§ÂÅžÃ¥ÂÅ¡Ã£ÂÂ®Ã£ÂÂÃ£ÂÂ­Ã£ÂÂ¥Ã£ÂÂ¡Ã£ÂÂ³Ã£ÂÂÃ£ÂÂFaxÃ£ÂÂÃ£ÂÂÃ£ÂÂ®Ã£ÂÂ«Ã€ÅÂ¿Ã£ÂÂÃ£ÂÅžÃ£ÂÂ
-Description[ko]=Ã­ÂÂÃ¬ÂÂ¬ Ã«Â¬ÅŸÃ¬ÂÂÃ«Â¥Å Ã­ÂÂ©Ã¬Ââ¬Ã«Â¡Â Ã«Â³ÅœÃ«ÂÅœÃªÅŸÂ° Ã¬ÂÂÃ­ÂÅœ ksendfaxÃ«Â¥Å Ã¬ÂÂÃ«ÂÂÃ«Ââ¬
-Description[lt]=Naudoja ksendfax esamam dokumentui siÃÂ³sti faksu.
-Description[lv]=Izmanto ksendfax lai aizfaksÃÂtu tekoÃÂ¡o dokumentu
-Description[mk]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂÃÂ°ÃÂÃÂµ ÃÅÃÂ° ÃÂÃÂµÃÂºÃÅžÃÂ²ÃÅÃÅŸÃÅžÃÂ ÃÅœÃÅžÃÂºÃÂÃÅÃÂµÃÅÃÂ ÃÂ¿ÃÅž ÃÂÃÂ°ÃÂºÃÂ ÃÂÃÅž ksendfax
-Description[mn]=ÃÂ­ÃÅÃÂ ÃÂ±ÃÂ°ÃÂÃÅŸÃÅÃÂÃÂÃÂ³ ÃÂÃÂ°ÃÂºÃÂÃÅœÃÂ°ÃÂÃÅœÃÂ°ÃÂ° ksendfax-ÃÂ³ ÃÂÃÂÃÂÃÂÃÂ³ÃÂ»ÃÂ
-Description[mt]=UÃÅa ksendfax biex tiffaksja d-dokument kurrenti
-Description[nb]=Bruk ksendfax for ÃÂ¥ fakse det aktive dokumentet
-Description[nl]=Gebruik KSendfax voor het faxen van het huidige document
-Description[nn]=Bruk ksendfax til ÃÂ¥ faksa dokument
-Description[nso]=Somisa ksendfax go faxa tokomane ya bjale
-Description[pl]=Program do wysÃÂania faksem bieÃÅÃÂcego dokumentu
-Description[pt]=Use o ksendfax para enviar o documento actual por fax
-Description[pt_BR]=Use o ksendfax para enviar por fax o documento corrente
-Description[ro]=UtilizeazÃÂ ksendfax pentru a trimite prin FAX documentul current
-Description[ru]=ÃÂÃÂÃÂ¿ÃÅžÃÂ»ÃÂÃÂ·ÃÅžÃÂ²ÃÂ°ÃÅÃÅŸÃÂµ ksendfax ÃÅœÃÂ»ÃÂ ÃÅžÃÂÃÂ¿ÃÂÃÂ°ÃÂ²ÃÂºÃÅŸ ÃÅœÃÅžÃÂºÃÂÃÅÃÂµÃÅÃÂÃÂ° ÃÂ¿ÃÅž ÃÂÃÂ°ÃÂºÃÂÃÂ
-Description[se]=Geavat ksendfax dÃÂ¡lÃÂ¡ dokumentta fÃÂ¡ksemii
-Description[sk]=PouÃÅžite ksendfax pre odfaxovanie aktuÃÂ¡lneho dokumentu
-Description[sl]=Uporabite kdsendfax za faksiranje trenutnega dokumenta
-Description[ss]=Sebentisa i-ksendfax kutfumela ngefax kwelidokhumente lanyalo
-Description[sv]=AnvÃâ¬nd Ksendfax fÃÂ¶r att faxa aktuellt dokument
-Description[ta]=ksendfax ÃÂ£ÃÂÃÂµ ÃÂ¿ÃÅÃÅœÃÂ ÃÂ¬ÃÂÃÅÃÂ²ÃÅ¡ÃÅž ÃÅ ÃÅžÃÂ¡ÃÅ¡ÃÂÃÂ¿ÃÅŸÃÂÃÂ¢ÃÂ
-Description[tr]=GÃÅncel belgeyi fakslamak iÃÂ§in ksendfaz kullan
-Description[uk]=ÃÂÃÅŸÃÂºÃÅžÃÂÃÅŸÃÂÃÂÃÅžÃÂ²ÃÂÃÂ ksendfax ÃÅœÃÂ»ÃÂ ÃÂ²ÃÂÃÅœÃÂÃÅŸÃÂ»ÃÂ°ÃÅÃÅÃÂ ÃÂ¿ÃÅžÃÂÃÅžÃÂÃÅÃÅžÃÂ³ÃÅž ÃÅœÃÅžÃÂºÃÂÃÅÃÂµÃÅÃÂÃÂ ÃÅÃÂ° ÃÂÃÂ°ÃÂºÃÂ
-Description[ven]=Shumisani fekisi yau rumele kha k u fekisa manwalwa a zwino
-Description[xh]=Sebenzisa i ksendfax ukuthumela i fax yoxwebhu lwangoku
-Description[zh_CN]=Ã€ÅÂ¿Ã§ÂÅ¡ ksendfax Ã¥ÂÂÃ©ÂÂÃ¥ÅÂÃ¥ÂÂÃŠÂÂÃŠÂ¡Â£
-Description[zh_TW]=Ã€ÅÂ¿Ã§ÂÅ¡ ksendfax Ã¥Â°ÂÃ§ÂÂ®Ã¥ÂÂÃŠÂÂÃ€Â»Â¶Ã¥ÂÂ³Ã§ÂÂÃ¥ÂÂºÃ¥ÂÂ»
-Description[zu]=Sebenzisa i-ksendfax ukuthumela i-fax yohlu lwamafayela amanje
-Extension=
-File=0
-Icon=kdeprintfax
-Name=Advanced Faxing Tool (ksendfax)
-Name[ar]=ÃÂ£ÃÂ¯ÃÂ§ÃÂ© ÃÂ¥ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂÃÂ§ÃÂÃÂ³ ÃÂÃÂªÃÂÃÂ¯ÃÂÃÂ© (ksendfax)
-Name[bs]=Napredni alat za slanje faxova (ksendfax)
-Name[ca]=Eina avanÃÂ§ada per a enviar per fax (ksendfax)
-Name[cs]=PokroÃÂilÃÅ faxovacÃÂ­ nÃÂ¡stroj (ksendfax)
-Name[da]=Avanceret fax-vÃÅ rktÃÅŸj (ksendfax)
-Name[de]=Erweitertes Faxprogramm (ksendfax)
-Name[el]=ÃÂ ÃÂÃÂ¿ÃÂÃÂÃÂÃÂ·ÃÅÃÂ­ÃÅÃÂ¿ ÃÂµÃÂÃÂ³ÃÂ±ÃÂ»ÃÂµÃÂ¯ÃÂ¿ ÃÂ±ÃÂÃÂ¿ÃÂÃÂÃÂ¿ÃÂ»ÃÂ®ÃÂ ÃÂÃÂ±ÃÅž (ksendfax)
-Name[eo]=Pliluksa Faksilo (ksendfax)
-Name[es]=Herramienta avanzada de envio de faxes (ksendfax)
-Name[et]=VÃÂµimas faksimise rakendus (ksendfax)
-Name[eu]=Fax Tresna Aurreratua (ksendfax)
-Name[fa]=ÃÂ§ÃÅ¡ÃÂ²ÃÂ§ÃÂ± ÃÂ¯ÃÂÃÂ±ÃÂÃÂ¯ÃÂ§ÃÂ± ÃÅžÃÂÃÅœÃÂ±ÃÂÃÂªÃÂ (ksendfax)
-Name[fi]=Edistynyt faksaustyÃÂ¶kalu (ksendfax)
-Name[fr]=Outil de fax avancÃÂ© (KSendfax)
-Name[he]=ÃÂÃÂÃÂ ÃÂÃÂªÃÂ§ÃÂÃÂ ÃÂÃÂ©ÃÂÃÂÃÂÃÂª Ãâ¬ÃÂ§ÃÂ¡ÃÂÃÂ (ksendfax)
-Name[hu]=FaxolÃÂ¡si segÃÂ©dprogram (KSendFax)
-Name[is]=ÃÂrÃÂ³aÃÂ° faxtÃÂ³l (ksendfax)
-Name[it]=Strumento avanzato per i fax (ksendfax)
-Name[ja]=Ã©Â«ÂÃŠÂ©ÂÃšÂÅ Fax Ã£ÂÂÃ£ÂÅÃ£ÂÂ« (ksendfax)
-Name[lt]=SudÃÂtingesnis faksÃÂ³ siuntimo ÃÂ¯rankis (ksendfax)
-Name[lv]=AdvancÃÂts FaksÃÂÃÂ¡anas RÃÂ«ks (ksendfax)
-Name[mk]=ÃÂÃÂ°ÃÂ¿ÃÂÃÂµÃÅœÃÅÃÂ° ÃÂ°ÃÂ»ÃÂ°ÃÂÃÂºÃÂ° ÃÂ·ÃÂ° ÃÂÃÂ°ÃÂºÃÂÃÅžÃÂ²ÃÅŸ (ksendfax)
-Name[mn]=ÃÂÃÂÃÂ²ÃÂÃÅŸÃÂ»ÃÂÃÂÃÂ ÃÂÃÂ°ÃÂºÃÂ ÃÂÃÂÃÂÃÂÃÂ³ÃÂÃÂÃÂ» (ksendfax)
-Name[mt]=GÃÂ§odda avvanzata gÃÂ§all-fax (ksendfax)
-Name[nb]=Avansert faxverktÃÅŸy (ksendfax)
-Name[nl]=Geavanceerd faxprogramma (ksendfax)
-Name[nn]=Avansert faksverktÃÅŸy (ksendfax)
-Name[nso]=Sebereka sago Faxa seo se Beetswegopele (kromelafax)
-Name[pl]=Zaawansowane narzÃÂdzie do faksowania (ksendfax)
-Name[pt]=Ferramenta AvanÃÂ§ada de Fax (ksendfax)
-Name[pt_BR]=Ferramenta AvanÃÂ§ada de Fax (ksendfax)
-Name[ro]=Utilitar de FAX avansat (ksendfax)
-Name[ru]=ÃÂ£ÃÂÃÅŸÃÂ»ÃÅŸÃÂÃÂ° ÃÅžÃÂÃÂ¿ÃÂÃÂ°ÃÂ²ÃÂºÃÅŸ ÃÂÃÂ°ÃÂºÃÂÃÅžÃÂ² (ksendfax)
-Name[se]=Nana buorre fÃÂ¡ksaneavvu (ksendfax)
-Name[sk]=PokroÃÂilÃÅ nÃÂ¡stroj pre faxy (ksendfax)
-Name[sl]=Napredno orodje za faksiranje (ksendfax)
-Name[ss]=Lithulusi lekufexa lelisembili (ksendfax)
-Name[sv]=Avancerat faxverktyg (Ksendfax)
-Name[ta]=ÃÂ§ÃÂÃÂµÃÂÃÂ°ÃÅ ÃÅ ÃÅžÃÂ¡ÃÅ¡ÃÂÃÂ¿ÃÅŸÃÂÃÂ¢ÃÂ¬ ÃÅŸÃÂÃÂÃÂ¢ (ksendfax)
-Name[tr]=GeliÃÂmiÃÂ Faks AracÃÂ± (ksendfax)
-Name[uk]=ÃÂÃÅœÃÅžÃÂÃÂºÃÅžÃÅÃÂ°ÃÂ»ÃÂµÃÅÃÅŸÃÂ¹ ÃÂ·ÃÂ°ÃÂÃÂÃÂ± ÃÂ²ÃÂÃÅœÃÂÃÅŸÃÂ»ÃÂ°ÃÅÃÅÃÂ ÃÂÃÂ°ÃÂºÃÂÃÂÃÂ² (ksendfax)
-Name[ven]=Tshishumiswa tsha fekisi ya khwinesa (ksendfax)
-Name[xh]=Isixhobo se Fax Esibhekisa phambili (ksendfax)
-Name[zh_CN]=Ã©Â«ÂÃ§ÂºÂ§Ã€ÅÂ Ã§ÂÂÃ¥Â·Â¥Ã¥ÂÂ·(ksendfax)
-Name[zh_TW]=Ã©Â«ÂÃ©ÂÂÃ¥ÂÂ³Ã§ÂÂÃ¥Â·Â¥Ã¥ÂÂ· (ksendfax)
-Name[zu]=Ithuluz Lezinga eliphezulu lokuthumela i-fax (ksendfax)
-Require=exec:/ksendfax
-
-[Printer 5]
-Command=ps2pdf -sPAPERSIZE=%psl %in %out && /usr/bin/evolution mailto:?attach=%out && sleep 15 && rm -f %out
-Comment=Attachment for Evolution Composer
-Comment[af]=Aanhegsel vir Kpos Saamsteller
-Comment[ar]=ÃÂÃÂ±ÃÂÃÂÃÂ§ÃÂª ÃÂÃÂ§ÃÂªÃÅ¡ Evolution
-Comment[az]=Evolution YazÃÂ±ÃÂ§ÃÂ±sÃÂ±na ÃÂ°liÃÂdirilmiÃÂ
-Comment[bg]=ÃÂÃÂÃÅŸÃÂºÃÂ°ÃÂÃÂµÃÅ ÃÂ·ÃÂ° Evolution
-Comment[bs]=Attachment za Evolution Composer
-Comment[ca]=Adjunt per a l'editor del Evolution
-Comment[cs]=PÃÂÃÂ­loha pro editor Evolutionu
-Comment[da]=Bilag til Evolution Brevskriver
-Comment[de]=Anhang des Evolution-Editors
-Comment[el]=ÃÂ£ÃÂÃÅÃÂ·ÃÅÃÅÃÂ­ÃÅÃÂ¿ ÃÂ³ÃÂ¹ÃÂ± ÃÂÃÂ¿ ÃÂÃÂÃÅÃÅŸÃÂ­ÃÂÃÂ· ÃÂÃÂ¿ÃÂ Evolution
-Comment[eo]=KunsendaÃÂµo por retpoÃÂta mesaÃÂredaktilo
-Comment[es]=Adjunto para el editor de Evolution
-Comment[et]=Evolutioni kirja kaasamine
-Comment[eu]=Evolution-Composer-endako eranskina
-Comment[fa]=ÃÂ¶ÃÂÃÂÃÂÃÂ ÃÅ¡ÃÂ±ÃÂ§ÃÂ ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂ©ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ Evolution
-Comment[fi]=SÃâ¬hkÃÂ¶postiliite Evolutionille
-Comment[fr]=PiÃÅ¡ce jointe du logiciel de messagerie ÃÂ©lectronique Evolution
-Comment[he]=ÃÂ§ÃÂÃÂÃÂ¥ ÃÂÃÅ ÃÂÃÅ¡ÃÂ£ ÃÂÃÂÃÂªÃÂÃÂ ÃÂ©ÃÂ Evolution
-Comment[hr]=Prilog za Evolution
-Comment[hu]=CsatolÃÂ¡s a Evolution szerkesztÃÂprogramhoz
-Comment[is]=ViÃÂ°hengi viÃÂ° Evolution pÃÂ³st
-Comment[it]=Allegato per il compositore di Evolution
-Comment[ja]=EvolutionÃ£ÂÂ³Ã£ÂÂ³Ã£ÂÂÃ£ÂÅÃ£ÂÂ¶Ã£ÂÂ®ÃŠÂ·Â»Ã€Â»Â
-Comment[ko]=KDE Ã­ÂÅŸÃ¬Â§ÂÃ¬ÂÂ© Ã­ÂÅŸÃ¬Â§ÂÃªÅŸÂ°Ã«Â¡Â Ã«ÂÂ§Ã«Â¶ÂÃ¬ÂÂ¬ Ã«Â³ÅœÃ«ÂÂÃ«ÂÂÃ«Ââ¬
-Comment[lt]=Evolution raÃÂ¡yklÃÂs priesaga
-Comment[lv]=Pielikums KPasta VeidotÃÂjam
-Comment[mk]=ÃÂÃÂÃÂ°ÃÂÃÅÃÂµÃÅÃÂ ÃÂ·ÃÂ° ÃÂÃÅžÃÂÃÂÃÂ°ÃÂ²ÃÂÃÂ²ÃÂ°ÃÂÃÅžÃÂ ÃÂ²ÃÅž Evolution
-Comment[mn]=Evolution-ÃÂ±ÃÅžÃÂ»ÃÅžÃÂ²ÃÂÃÂÃÂÃÂÃÂ»ÃÂ°ÃÂ³ÃÂÃÅŸÃÂ¹ÃÅ ÃÂÃÂ°ÃÂ²ÃÂÃÂÃÂ°ÃÂ³ÃÂ°
-Comment[mt]=Abbinament gÃÂ§all-kompoÃÅitur Evolution
-Comment[nb]=Vedlegg for e-postredigering i Evolution
-Comment[nl]=Bijlage voor Evolution Opsteller
-Comment[nn]=Vedlegg for e-postredigering i Evolution
-Comment[nso]=Kgwathiso ya Mohlagisi wa KPoso
-Comment[pl]=ZaÃÂÃÂcznik Evolutiona
-Comment[pt]=Anexo para o programa Evolution
-Comment[pt_BR]=Anexo para o Evolution 
-Comment[ro]=AtaÃÂament pentru Evolution
-Comment[ru]=ÃÂÃÂ»ÃÅžÃÂ¶ÃÂµÃÅÃÅŸÃÂµ ÃÅœÃÂ»ÃÂ Evolution
-Comment[se]=Evolution:a e-boastadoaimmaheaddji mielddus
-Comment[sk]=PrÃÂ­loha pre composer Evolutionu
-Comment[sl]=Pripeta datoteka za sestavljalnik Evolution
-Comment[sr]=Prilog za Evolution kompozer
-Comment[ss]=Lokunanyatsiliseliwe kwesisunguli se Evolution
-Comment[sv]=Bilaga till Evolutions e-posteditor
-Comment[ta]=Evolution ÃÂ¯ÃÂÃÂÃÂ¡ÃÂ¬ÃÅŸÃÂ¢ÃÂÃÂ¢ÃÅŸ ÃÅžÃÅ¡ÃÅÃÅœÃÂ
-Comment[th]=Ã ÅŸÂÃ ÅŸÂ²Ã ÅŸÂ£Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã ÅŸÂªÃ ÅŸÂ³Ã ÅŸÂ«Ã ÅŸÂ£Ã ÅŸÂ±Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂ£Ã ÅŸÂ·Ã Â¹ÂÃ ÅŸÂ­Ã ÅŸÂÃ ÅŸÂ¡Ã ÅŸÂ·Ã ÅŸÂ­Ã Â¹ÂÃ ÅŸÂÃ ÅŸÂµÃ ÅŸÂ¢Ã ÅŸÂÃ ÅŸÂÃ ÅŸÂÃ ÅŸÂ«Ã ÅŸÂ¡Ã ÅŸÂ²Ã ÅŸÂ¢ Evolution
-Comment[tr]=KMaÃÂ±l iÃÂ§in ek
-Comment[uk]=ÃÂÃÅžÃÂ»ÃÂÃÂÃÂµÃÅÃÅÃÂ ÃÅœÃÂ»ÃÂ ÃÂÃÂµÃÅœÃÂ°ÃÂºÃÂÃÅžÃÂÃÂ° Evolution
-Comment[ven]=U tangana na mubveledzi wa meili wa K
-Comment[vi]=ÃÂÃÂ­nh vÃÂ o trÃÂ¬nh soÃ¡ÂºÂ¡n Evolution
-Comment[xh]=Ufakelo Lomqhambi we Evolution
-Comment[zh_CN]=Ã€ÅÂÃ€ÅŸÂº Evolution Ã§ÅÂÃ¥ÂÂÃ¥ÂÅ¡Ã©ÂÂÃ€Â»Â¶
-Comment[zh_TW]=Ã§ÂÂ¶Ã€ÅÂ Evolution Ã©ÂÂµÃ€Â»Â¶Ã§Â·Å¡ÃšÅÂ¯Ã¥ÂÅ¡Ã§ÂÂÃ©ÂÂÃ€Â»Â¶
-Comment[zu]=Ukunamathisela Komsunguli we-Evolution
-Description=Creates PDF/Acrobat file as attachment for Evolution
-Description[af]=Skep Pdf/Acrobat lÃÂªer as aanhegsel vir Kpos
-Description[ar]=ÃÂªÃÂÃÂÃÂÃÂ¯ ÃÂÃÂÃÂ PDF/ÃÂ£ÃÂÃÂ±ÃÂÃÅ¡ÃÂ§ÃÂª ÃÂÃÂÃÂÃÂ­ÃÂ ÃÂÃÂ±ÃÂ³ÃÂ§ÃÂÃÂ© ÃÂ¹ÃÂ ÃÂ·ÃÂ±ÃÂÃÂ Evolution
-Description[az]=EvolutionÃÂ iliÃÂdirmÃÂk ÃÅÃÂ§ÃÅn PDF/Acrobat faylÃÂ± yaradÃÂ±r
-Description[be]=ÃÂ¡ÃÂÃÂ²ÃÂ°ÃÂÃÂ°ÃÂµ PDF ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂÃÂº ÃÅœÃÂ°ÃÂ»ÃÂÃÂÃÂÃÅÃÂÃÅÃÂµ ÃÅœÃÂ»ÃÂ Evolution
-Description[bg]=ÃÂ¡ÃÂÃÂ·ÃÅœÃÂ°ÃÅœÃÂµÃÅÃÅŸ PDF/Acrobat ÃÂÃÂ°ÃÂ¹ÃÂ»ÃÅžÃÂ²ÃÂµ ÃÂ·ÃÂ° ÃÂ¿ÃÂÃÅŸÃÂºÃÂ°ÃÂÃÂ²ÃÂ°ÃÅÃÂµ ÃÅÃÂ° Evolution
-Description[bs]=Kreira PDF/Acrobat dokument kao attachment za Evolution
-Description[ca]=Crea un fitxer PDF/Acrobat com a adjunt per al Evolution
-Description[cs]=VytvoÃÂÃÂ­ PDF/Acrobat soubor jako pÃÂÃÂ­lohu pro Evolution
-Description[da]=Opretter PDF-fil som bilag for Evolution
-Description[de]=Eine PDF-Datei (Acrobat-Format) als Anhang fÃÅr Evolution erstellen
-Description[el]=ÃÂÃÂ·ÃÅÃÂ¹ÃÂ¿ÃÂÃÂÃÂ³ÃÂµÃÂ¯ ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ± PDF/Acrobat ÃÂºÃÂ±ÃÂ¹ ÃÂÃÂ± ÃÂµÃÂÃÂ¹ÃÂÃÂÃÅÃÂ¬ÃÂÃÂÃÂµÃÂ¹ ÃÂÃÂÃÂ¿ Evolution
-Description[eo]=Kreas PDF/Akrobato-dosieron kiel kunsendaÃÂµo de PoÃÂtilo
-Description[es]=Crear archivo PDF/Acrobat como adjunto para Evolution
-Description[et]=Tekitab PDF/Acrobat faili ja kaasab selle Evolutioni meili
-Description[eu]=PDF/Acrobat fitxategiak sortzen ditu Evolution-en eransteko
-Description[fa]=ÃÂ§ÃÂÃÂ¬ÃÂ§ÃÂ¯ ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ PDF/Acrobat ÃÅ¡ÃÂ ÃÂ¹ÃÂÃÂÃÂ§ÃÂ ÃÂ¶ÃÂÃÂÃÂÃÂ ÃÅ¡ÃÂ±ÃÂ§ÃÂ Evolution
-Description[fi]=Luo PDF/Acrobat-tiedoston sÃâ¬hkÃÂ¶postiliitteenÃâ¬ Evolutionille
-Description[fr]=CrÃÂ©e un fichier PDF en tant que piÃÅ¡ce jointe pour Evolution
-Description[ga]=CruthaÃÂ­onn comhad PDF/Acrobat mar iatÃÂ¡n do Evolution
-Description[he]=ÃÂÃÂÃÅ ÃÅ¡ ÃÂ§ÃÂÃÂÃÂ¥ PDF/Acrobat ÃÂÃÂªÃÂÃÅ¡ ÃÂÃÅ ÃÂÃÅ¡ÃÂ£ ÃÂ©ÃÂ Evolution
-Description[hr]=Pravi PDF/Acrobat datoteku kao prilog za Evolution
-Description[hu]=PDF/Acrobat fÃÂ¡jl lÃÂ©trehozÃÂ¡sa Evolution csatolÃÂ¡skÃÂ©nt
-Description[is]=BÃÅr til PDF/Acrobat skrÃÂ¡ sem viÃÂ°hengi fyrir Evolution
-Description[it]=Crea un file di allegato PDF/Acrobat per Evolution
-Description[ja]=PDF/Acrobat Ã£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂEvolutionÃ£ÂÂ®ÃŠÂ·Â»Ã€Â»ÂÃ£ÂÅ¡Ã£ÂÂÃ£ÂÅ Ã€ÅÂÃŠÂÂ
-Description[ko]=KDE Ã­ÂÅŸÃ¬Â§ÂÃ¬ÂÂ Ã«ÂÂ§Ã«Â¶ÂÃ¬ÂÅ PDF/Ã¬ÂÅœÃ­ÂÂ¬Ã«Â¡ÂÃ«Â±Â Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã«Â§ÂÃ«ÂÂ­Ã«ÂÂÃ«Ââ¬
-Description[lt]=RaÃÂ¡yti PDF/Acrobat bylÃÂ kaip priesagÃÂ Evolution programai
-Description[lv]=Izveido PDF/AkrobÃÂta failu kÃÂ pielikumu KPastam
-Description[mk]=ÃÂ¡ÃÅžÃÂ·ÃÅœÃÂ°ÃÂ²ÃÂ° PDF/Acrobat ÃÅœÃÂ°ÃÂÃÅžÃÂÃÂµÃÂºÃÂ° ÃÂºÃÂ°ÃÂºÃÅž ÃÂ°ÃÂÃÂ°ÃÂÃÅÃÂµÃÅÃÂ ÃÂ·ÃÂ° Evolution
-Description[mn]=PDF-ÃÂÃÂ°ÃÂ¹ÃÂ» (Acrobat-Format) Evolution-ÃÅ ÃÂÃÂÃÂ²ÃÂÃÅœ ÃÂÃÂ°ÃÂ²ÃÂÃÂÃÂ°ÃÂ³ÃÂ°ÃÂ°ÃÂ ÃÂ¯ÃÂ¯ÃÂÃÂ³ÃÂÃÂ
-Description[mt]=JoÃÂ§loq fajl PDF/Acrobat bÃÂ§ala abbinament gÃÂ§all-Evolution
-Description[nb]=Lager PDF/Acrobat-fil som vedlegg til Evolution
-Description[nl]=CreÃÂ«ert PDF/Acrobat-bestand als bijlage voor Evolution
-Description[nn]=Lagar PDF/Acrobat-fil som vedlegg i Evolution
-Description[nso]=E hlagisa faele ya PDF/Acrobat bjale ka kgwathiso go KPoso
-Description[pl]=Tworzy plik PDF/Acrobata jako zaÃÂÃÂcznik do wiadomoÃÂci Evolutiona
-Description[pt]=Cria um ficheiro PDF/Acrobat como anexo para o Evolution
-Description[pt_BR]=Cria arquivos  PDF/Acrobat como anexos para o  Evolution
-Description[ro]=CreeazÃÂ fiÃÂier PDF/Acrobat ca ataÃÂament pentru Evolution
-Description[ru]=ÃÂÃÂ°ÃÂ¿ÃÅŸÃÂÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ»ÃÂ° PDF/Acrobat ÃÂºÃÂ°ÃÂº ÃÂ²ÃÂ»ÃÅžÃÂ¶ÃÂµÃÅÃÅŸÃÂ ÃÅœÃÂ»ÃÂ Evolution
-Description[se]=RÃÂ¡hkada PDF/Acrobat-fiilla Evolution'ii mielddusin
-Description[sk]=VytvorÃÂ­ sÃÂºbor PDF/Acrobat ako prÃÂ­lohu pre Evolution
-Description[sl]=Izdela datoteko v PDF/Acrobat kot prilogo za Evolution
-Description[sr]=Stvara PDF-Acrobat fajl kao prilog za Evolution
-Description[ss]=Calisa lifayela lePDF/Acrobat njengelokunanyatsiselwe ku- Evolution
-Description[sv]=Skapar PDF/Acrobat-fil som en bilaga till Evolution
-Description[ta]=Evolution ÃÅžÃÅ¡ÃÅÃÅœÃÂÃÂ¡ÃÅŸ, PDF/Acrobat ÃÂ§ÃÅŸÃÂ¡ÃÅœÃÂÃÂ¢ÃÅ¡ÃÂ ÃÂ¯ÃÂÃÂÃÂ¡ÃÂ¬ÃÂÃÂµ
-Description[th]=Ã ÅŸÂªÃ ÅŸÂ£Ã Â¹ÂÃ ÅŸÂ²Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡ PDF/Acrobat Ã ÅŸÂªÃ ÅŸÂ³Ã ÅŸÂ«Ã ÅŸÂ£Ã ÅŸÂ±Ã ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂÃ ÅŸÂÃ ÅŸÂ±Ã ÅŸÂ Evolution
-Description[tr]=Evolution iÃÂ§in, ek ÃÂeklinde, PDF/Acrobat dosyasÃÂ± oluÃÂturur.
-Description[uk]=ÃÂ¡ÃÂÃÂ²ÃÅžÃÂÃÂÃÂ ÃÂÃÂ°ÃÂ¹ÃÂ» PDF/Acrobat ÃÂÃÂº ÃÅœÃÅžÃÂ»ÃÂÃÂÃÂµÃÅÃÅÃÂ ÃÅœÃÂ»ÃÂ Evolution
-Description[ven]=Itani PDF/Faela ya Acrobat sa vhutumani ha meili ya K
-Description[vi]=TÃ¡ÂºÂ¡o file PDF/Acrobat dÃÂ°Ã¡Â»Âi dÃ¡ÂºÂ¡ng file ÃÂÃÂ­nh 
-Description[xh]=Yenza PDF/Ifayile yomenzi womthambo njengofakelelo lwe Evolution
-Description[zh_CN]=Ã¥ÂÂÃ¥Â»Âº PDF/Acrobat ÃŠÂÂÃ€Â»Â¶Ã€ÅÂÃ€ÅŸÂº Evolution Ã©ÂÂÃ€Â»Â¶
-Description[zh_TW]=Ã¥Â»ÂºÃ§Â«Â PDF/Acrobat ÃŠÂÂÃ€Â»Â¶Ã€ÅÂÃ§ÂÂº Evolution Ã©ÂÂÃ€Â»Â¶
-Description[zu]=Idala ifayela le-PDF/Acrobat libe njengokunamathisela kwe-Evolution
-Extension=pdf
-File=1
-Icon=evolution-small
-Name=Mail PDF file with Evolution
-Name[af]=Pos Pdf lÃÂªer (Evolution)
-Name[ar]=ÃÂ§ÃÂ±ÃÂ³ÃÂ§ÃÂ ÃÂÃÂÃÂ PDF (Evolution)
-Name[az]=MÃÂktub RDF faylÃÂ± (Evolution)
-Name[be]=ÃÂÃÂ°ÃÂÃÂ»ÃÂ°ÃÂÃÂ PDF ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÂ¿ÃÂ° ÃÂÃÂ»ÃÂµÃÂºÃÂÃÂÃÅžÃÅÃÅÃÂ°ÃÂ¹ ÃÂ¿ÃÅžÃÂÃÂÃÂµ (Evolution)
-Name[bg]=ÃÂÃÅžÃÂÃÂµÃÅÃÂÃÂºÃÅŸ PDF ÃÂÃÂ°ÃÂ¹ÃÂ» (Evolution)
-Name[bs]=PoÃÂ¡alji PDF dokument na mail (Evolution)
-Name[ca]=Envia fitxer PDF per correu (Evolution)
-Name[cs]=Odeslat PDF soubor emailem (Evolution)
-Name[da]=Post PDF-fil (Evolution)
-Name[de]=PDF-Datei verschicken (Evolution)
-Name[el]=ÃÂÃÂÃÂ¿ÃÂÃÂÃÂ¿ÃÂ»ÃÂ® ÃÅÃÂ­ÃÂÃÂ mail ÃÂ±ÃÂÃÂÃÂµÃÂ¯ÃÂ¿ÃÂ PDF (Evolution)
-Name[eo]=Sendu PDF-dosieron (Evolution)
-Name[es]=Enviar archivo PDF por correo (Evolution)
-Name[et]=PDF faili meiliga saatmine (Evolution)
-Name[eu]=PDF Fitxategia Bidali (Evolution)
-Name[fa]=ÃÅžÃÂ³ÃÂª ÃÅžÃÂ±ÃÂÃÂÃÂ¯ÃÂÃ¢ÂÂÃÂ PDF (Evolution)
-Name[fi]=LÃâ¬hetÃâ¬ PDF-tiedosto sÃâ¬hkÃÂ¶postilla (Evolution)
-Name[fr]=PiÃÅ¡ce jointe PDF (Evolution)
-Name[ga]=Seol Comhad PDF mar RÃÂ­omhphost (Evolution)
-Name[he]=ÃÂ©ÃÂÃÂ ÃÂ§ÃÂÃÂÃÂ¥ PDF ÃÂÃÂÃÂÃÂÃÅ¡ (Evolution)
-Name[hr]=PoÃÂ¡alji PDF elektronskom poÃÂ¡tom (Evolution)
-Name[hu]=PDF fÃÂ¡jl elkÃÅldÃÂ©se levÃÂ©lben (Evolution)
-Name[is]=Senda PDF skrÃÂ¡ ÃÂ­ pÃÂ³sti (Evolution)
-Name[it]=Spedisci file PDF (Evolution)
-Name[ja]=PDFÃ£ÂÂÃ£ÂÂ¡Ã£Ââ¬Ã£ÂÂ«Ã£ÂÂÃ£ÂÂ¡Ã£ÂÅÃ£ÂÂ« (Evolution)
-Name[ko]=PDF Ã­ÂÂÃ¬ÂÅÃ«Â¡Â Ã¬Â°ÂÃ¬ÂÅœ Ã­ÂÅŸÃ¬Â§ÂÃ«Â¡Â Ã«Â³ÅœÃ«ÂÅœÃªÅŸÂ° (Evolution)
-Name[lt]=PaÃÂ¡to RDF byla (Evolution)
-Name[lv]=Mailot PDF failu (Evolution)
-Name[mk]=PDF ÃÂ¿ÃÅž e-mail (Evolution)
-Name[mn]=PDF-ÃÂÃÂ°ÃÂ¹ÃÂ» ÃÅŸÃÂ»ÃÂ³ÃÂÃÂÃÂ (Evolution)
-Name[mt]=IbgÃÂ§at fajl PDF bil-Mail (Evolution)
-Name[nb]=Send PDF-fil (Evolution)
-Name[nl]=PDF-bestand verzenden (Evolution)
-Name[nn]=Send PDF-fil (Evolution)
-Name[nso]=Faele ya PDF ya poso (Evolution)
-Name[pl]=WyÃÂlij plik PDF (Evolution)
-Name[pt]=Enviar PDF por email (Evolution)
-Name[pt_BR]=Enviar por E-Mail Arquivo PDF (Evolution)
-Name[ro]=Trimite prin mail ca PDF (Evolution)
-Name[ru]=ÃÂÃÂÃÂ¿ÃÂÃÂ°ÃÂ²ÃÅŸÃÂÃÂ PDF ÃÂÃÂ°ÃÂ¹ÃÂ» (Evolution)
-Name[se]=SÃÂ¡dde PDF-fiilla (Evolution)
-Name[sk]=PoslaÃÂ¥ sÃÂºbor PDF (Evolution)
-Name[sl]=PoÃÂ¡lji PDF po poÃÂ¡ti (Evolution)
-Name[sr]=Slanje PDF fajla elektronskom poÃÂ¡tom (Evolution)
-Name[ss]=lifayela leliposi le PDF (Evolution)
-Name[sv]=Skicka PDF-fil (Evolution)
-Name[ta]=PDF ÃÂ¬ÃÂÃÅÃÂ²ÃÅ¡ÃÅž ÃÂ«ÃÂ¯ÃÂºÃÂÃÂ¢ÃÂ (Evolution)
-Name[th]=Ã Â¹ÂÃ ÅŸÂÃ Â¹ÂÃ ÅŸÂ¡Ã ÅŸÂÃ ÅŸÂÃ ÅŸÂ«Ã ÅŸÂ¡Ã ÅŸÂ²Ã ÅŸÂ¢ PDF (Evolution)
-Name[tr]=PDF dosyasÃÂ±nÃÂ± postala (Evolution)
-Name[uk]=ÃÂÃÂÃÅœÃÂÃÂÃÂ»ÃÂ°ÃÂÃÅŸ ÃÂÃÂ°ÃÂ¹ÃÂ» RDF ÃÂ¿ÃÅžÃÂÃÂÃÅžÃÂ (Evolution)
-Name[ven]=Faela ya PDF ya meili (Evolution)
-Name[xh]=Posa ifayile ye PDF (Evolution)
-Name[zh_CN]=Ã©ÂÂ®Ã¥Â¯Â PDF ÃŠÂÂÃ€Â»Â¶ (Evolution)
-Name[zh_TW]=Ã©ÂÂµÃ¥Â¯Â PDF ÃŠÂÂÃ€Â»Â¶ (Evolution)
-Name[zu]=Posa ifayela le-PDF (Evolution)
-Require=exec:/ps2pdf,exec:/evolution
