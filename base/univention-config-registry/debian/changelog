@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-14) unstable; urgency=medium
+
+  * Bug #51021: FTBFS: UCR interfaces
+
+ -- Florian Best <best@univention.de>  Mon, 30 Mar 2020 10:50:33 +0200
+
 univention-config-registry (14.0.0-13) unstable; urgency=medium
 
   * Bug #51021: UCR interfaces: use absolute imports

@@ -55,7 +55,7 @@ override_dh_auto_test-indep:
 	python tests/test_backend_threading.py
 	python python/univention/debhelper.py
 	python python/univention/config_registry/misc.py
-	UNIVENTION_BASECONF=tests/base.conf python python/univention/config_registry/interfaces.py
+	PYTHONPATH=python UNIVENTION_BASECONF=tests/base.conf python python/univention/config_registry/interfaces.py
 	tests/unwrap/test.sh
 
 override_dh_auto_test-arch:
