@@ -31,7 +31,7 @@ Categories=system-base
 [grub/quiet]
 Description[de]=Ist diese Variable auf 'yes' gesetzt werden die meisten Meldungen während des Systemstarts unterdrückt.
 Description[en]=If this variable is set to 'yes', messages are suppressed during startup .
-Type=str
+Type=bool
 Categories=system-base
 
 [grub/efi]
