@@ -662,6 +662,9 @@
 			<listitem><simpara>
 				The desktop package <package>univention-kde</package> has been removed (<u:bug>51977</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-ftp</package> has been removed (<u:bug>51978</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

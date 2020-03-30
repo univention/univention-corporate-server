@@ -67,10 +67,6 @@ univention-config-registry set \
 	nscd/group/invalidate_cache_on_changes?"false" \
 	nscd/debug/level?0 \
 	auth/methods?"krb5 ldap unix" \
-	auth/ftp/restrict?"yes" \
-	"auth/ftp/group/Domain Admins?yes" \
-	auth/ftp/group/Administrators?"yes" \
-	auth/ftp/user/root?"yes" \
 	auth/gdm/restrict?"yes" \
 	"auth/gdm/group/Domain Admins?yes" \
 	auth/gdm/group/Administrators?"yes" \

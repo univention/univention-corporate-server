@@ -8,7 +8,6 @@
 0004-12: conffiles/etc/pam.d/ppp
 0004-12: conffiles/etc/pam.d/other
 0004-12: conffiles/etc/pam.d/cron
-0004-12: conffiles/etc/pam.d/ftp
 0004-12: conffiles/etc/nscd.conf
 0004-12: conffiles/etc/libnss-ldap.conf
 0004-12: conffiles/etc/pam.d/login

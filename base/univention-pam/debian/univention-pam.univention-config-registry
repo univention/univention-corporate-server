@@ -176,19 +176,6 @@ Variables: users/default/.*
 Variables: groups/default/.*
 
 Type: file
-File: etc/pam.d/ftp
-Variables: auth/ftp/accessfile
-Variables: auth/ftp/restrict
-Variables: pamaccess/maxent
-
-Type: file
-File: etc/security/access-ftp.conf
-Variables: auth/ftp/group/.*
-Variables: auth/ftp/user/.*
-Variables: users/default/.*
-Variables: groups/default/.*
-
-Type: file
 File: etc/pam.d/login
 Variables: auth/login/accessfile
 Variables: auth/login/restrict
