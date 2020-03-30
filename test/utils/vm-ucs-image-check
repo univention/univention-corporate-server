@@ -241,7 +241,7 @@ check_dpkg () {
 check_kernel () {  # Bug #37144
 	local arch current desired status error pkg
 	arch="$(dpkg --print-architecture)"
-	current="$(dpkg-query -s univention-kernel-image | sed -rne "/^Depends:/s/.*(linux-image-.*-${arch})(-signed)?(,.*)?\$/\\1/p")"
+	current="$(dpkg-query -s linux-image-amd64 | sed -rne "/^Depends:/s/.*(linux-image-.*-${arch})(-signed)?(,.*)?\$/\\1/p")"
 	dpkg-query -f '${Status} ${Package}\n' -W "linux-image-*-${arch}" >"$tmp"
 	while read -r desired status error pkg
 	do

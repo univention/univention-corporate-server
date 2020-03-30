@@ -98,7 +98,7 @@ d-i apt-setup/no_mirror boolean true
 d-i apt-setup/services-select multiselect none
 d-i apt-setup/cdrom/set-first boolean false
 tasksel tasksel/first multiselect none
-d-i pkgsel/include string univention-system-setup-boot univention-management-console-web-server univention-management-console-module-setup univention-kernel-image openssh-server
+d-i pkgsel/include string univention-system-setup-boot univention-management-console-web-server univention-management-console-module-setup linux-image-amd64 openssh-server
 postfix postfix/main_mailer_type string No configuration
 openssh-server ssh/disable_cr_auth boolean false
 d-i ucf/changeprompt select keep_current
