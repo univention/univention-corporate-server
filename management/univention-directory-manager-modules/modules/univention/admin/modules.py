@@ -229,9 +229,6 @@ def init(lo, position, module, template_object=None, force_reload=False):
 					if template_object[key] != [''] and template_object[key] != []:
 						for option in module.options.keys():
 							module.options[option].default = option in template_object[key]
-					else:
-						for option in module.options.keys():
-							module.options[option].default = True
 				else:
 					if template_object.descriptions[key].multivalue:
 						if module.property_descriptions[key].multivalue:
