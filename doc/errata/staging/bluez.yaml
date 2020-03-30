@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: bluez
+fix: 5.43-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * Improper access control in subsystem could result in privilege escalation
+   and DoS (CVE-2020-0556)
+bug: [51039]
+cve:
+- CVE-2020-0556
