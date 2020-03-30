@@ -1,3 +1,0 @@
-rm_conffile /etc/univention/templates/files/etc/firefox-esr/pref/firefox-esr.js 12.0.0-2~
-rm_conffile /etc/univention/templates/files/opt/firefox/defaults/pref/firefox.js 12.0.0-2~
-rm_conffile /etc/univention/templates/files/etc/mozilla-firefox/pref/firefox.js 12.0.0-2~
