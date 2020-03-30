@@ -99,3 +99,10 @@ Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird
 Description[en]=If this option is activated or the variable is unset, an automatic registration as additional authoritative nameserver for the locally used DNS reverse zone is performed.
 Type=bool
 Categories=service-bind
+
+[dns/timeout-start]
+Description[de]=Diese Variable konfiguriert die maximale Wartezeit in Sekunden für den Start des LDAP-Dienstes.
+Description[en]=This variable configures the maximum waiting time in seconds for the LDAP-Service to start.
+Type=int
+Categories=service-bind
+

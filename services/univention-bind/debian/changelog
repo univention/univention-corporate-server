@@ -1,3 +1,9 @@
+univention-bind (13.0.1-8) bionic; urgency=medium
+
+  * Bug #50662: Made LDAP-Service start timeout configurable
+
+ -- Max Christian Pohle <mpohle@univention.de>  Fri, 27 Mar 2020 10:02:25 +0100
+
 univention-bind (13.0.1-7) unstable; urgency=low
 
   * Bug #49493: allow setting the maximum number of open sockets via UCR

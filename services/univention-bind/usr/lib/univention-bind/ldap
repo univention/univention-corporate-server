@@ -56,7 +56,8 @@ case "$1" in
 		/usr/sbin/rndc -p 55555 stop
 		;;
 	wait-for-startup)
-		/usr/bin/timeout 30 /bin/sh -c \
+		timeout="$(ucr get dns/timeout-start)"
+		/usr/bin/timeout ${timeout:-120} /bin/sh -c \
 			"until rndc -p 55555 status | grep --quiet 'server is up and running'; do sleep 1; done"
 		;;
 esac

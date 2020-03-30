@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-bind
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The start of the LDAP server has a timeout value to prevent deadlocks and
+   allow monitoring solutions to log failed start attempts. That value was made
+   configurable, because the necessary time depends on the number of domains.
+bug: [50662]
