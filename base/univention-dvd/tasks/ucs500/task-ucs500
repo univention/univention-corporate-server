@@ -24,7 +24,7 @@ univention-appcenter-docker
 cgroupfs-mount
 
 /* Kernel Packages */
-univention-kernel-image
+linux-image-amd64
 univention-initrd
 dkms
 firmware-linux

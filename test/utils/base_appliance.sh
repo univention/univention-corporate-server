@@ -609,7 +609,7 @@ download_system_setup_packages ()
 
 		# welcome-screen + dependencies for all roles
 		# libgif4 is removed upon uninstalling X, so put it in package cache
-		packages="$packages univention-welcome-screen univention-kernel-headers"
+		packages="$packages univention-welcome-screen linux-headers-amd64"
 
 		packages="$packages firefox-esr-l10n-de"
 
