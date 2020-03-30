@@ -1,8 +1,4 @@
 Type: file
-File: etc/cron.d/univention-mrtg
-Variables: mrtg/cron
-
-Type: file
 File: etc/cron.d/univention-system-stats
 Variables: system/stats
 Variables: system/stats/cron

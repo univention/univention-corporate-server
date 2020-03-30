@@ -32,10 +32,6 @@ fi
 # logfiles within the directory are exposed to arbitrary users:
 check_perm -d /var/log/xen 02750 root adm || RETVAL=110
 
-# /var/log/mrtg should only be accessible by root:adm . If not, the world-readable
-# logfiles within the directory are exposed to arbitrary users:
-check_perm -d /var/log/mrtg 0750 root adm || RETVAL=110
-
 tmpfile=$(mktemp)
 
 echo "***Searching for world-readable logfiles:"
@@ -72,7 +68,6 @@ find /var/log \
 		-o -path "/var/log/lpr.log" \
 		-o -path "/var/log/ltsp-mounts.log" \
 		-o -path "/var/log/mgetty" \
-		-o -path "/var/log/mrtg/*" \
 		-o -path "/var/log/php_error.log" \
 		-o -path "/var/log/postgresql" \
 		-o -path "/var/log/printserver-start.log" \
@@ -138,6 +133,6 @@ exit $RETVAL
 
 
 # Covered by test cases limiting the root directories:
-# mrtg, samba, nagios, xen
+# samba, nagios, xen
 
 # vim:set ft=sh:
