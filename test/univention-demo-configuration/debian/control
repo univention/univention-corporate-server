@@ -6,7 +6,7 @@ Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  univention-config-dev,
- stylus,
+ node-stylus,
  univention-ucs-translation-template
 
 Package: univention-demo-configuration

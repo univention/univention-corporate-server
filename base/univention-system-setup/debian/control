@@ -22,7 +22,7 @@ Build-Depends: debhelper (>= 9),
  unzip,
  po-debconf (>= 0.5.0),
  python-lxml,
- stylus
+ node-stylus,
 
 Package: univention-system-setup
 Architecture: all

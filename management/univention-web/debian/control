@@ -10,9 +10,9 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  univention-management-console-dev,
  imagemagick,
- nodejs,
+ nodejs-legacy,
  librsvg2-bin,
- stylus,
+ node-stylus,
  unzip,
  sed
 

@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9),
  univention-config-dev,
  univention-ucs-translation-template,
  ucslint,
- stylus
+ node-stylus,
 Standards-Version: 3.9.5
 
 Package: univention-portal

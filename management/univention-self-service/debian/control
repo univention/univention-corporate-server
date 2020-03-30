@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
- stylus,
+ node-stylus,
 Standards-Version: 3.7.2
 
 Package: univention-self-service

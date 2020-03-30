@@ -10,7 +10,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  ucslint,
  univention-management-console-dev (>= 11.0.4-37),
  univention-config-dev,
- stylus
+ node-stylus,
 Standards-Version: 3.7.2
 
 Package: univention-admin-diary-backend

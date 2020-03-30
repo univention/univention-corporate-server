@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  python-all,
  python3-all,
  ucslint,
- stylus
+ node-stylus,
 Standards-Version: 3.8.2
 
 Package: univention-management-console-module-appcenter
