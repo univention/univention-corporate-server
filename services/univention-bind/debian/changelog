@@ -1,4 +1,4 @@
-univention-bind (13.0.1-8) bionic; urgency=medium
+univention-bind (13.0.1-8) unstable; urgency=medium
 
   * Bug #50662: Made LDAP-Service start timeout configurable
 
