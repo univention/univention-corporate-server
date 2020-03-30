@@ -1,4 +1,0 @@
-Type: file
-File: etc/default/kdm.d/ucsrc
-Variables: kdm/usetheme
-Variables: kdm/theme
