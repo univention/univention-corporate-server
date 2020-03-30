@@ -13,5 +13,5 @@ Categories=service-samba
 [quota/userdefault]
 Description[de]=Die im UCS-Managementsystem definierten Quota-Einstellungen werden bei der Anmeldung an UCS-Systemen durch das im PAM-Stack aufgerufene Tool univention-user-quota ausgewertet und aktiviert. Wird diese Variable auf 'no' gesetzt, wird diese Auswertung deaktiviert.
 Description[en]=The quota settings defined in the UCS management system are evaluated and enabled during login to UCS systems by the tool univention-user-quota run in the PAM stack. If this variable is set to 'no', this evaluation is deactivated.
-Type=str
+Type=boot
 Categories=system-base
