@@ -37,8 +37,8 @@ class CustomInstall(install):
 
 
 # path /tmp/univention-config-registry created during Docker build
-dch = Changelog(io.open("/tmp/univention-config-registry/debian/changelog", "r", encoding="utf-8"))
-dsc = Deb822(io.open("/tmp/univention-config-registry/debian/control", "r", encoding="utf-8"))
+dch = Changelog(io.open("debian/changelog", "r", encoding="utf-8"))
+dsc = Deb822(io.open("debian/control", "r", encoding="utf-8"))
 realname, email_address = parseaddr(dsc["Maintainer"])
 
 
@@ -49,7 +49,7 @@ setuptools.setup(
     maintainer_email=email_address,
     description="Python interface to configuration registry",
     long_description="Python interface to configuration registry",
-    url="https://www.univention.de/",
+    url="https://docs.software-univention.de/ucs-python-api/univention.config_registry.html",
     install_requires=["six"],
     packages=["univention", "univention.config_registry"],
     scripts=["univention-config-registry"],
