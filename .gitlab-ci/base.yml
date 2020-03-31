@@ -1,0 +1,41 @@
+default:
+  artifacts:
+    expire_in: 1 day
+
+stages:
+  - prepare
+  - lint
+  - build
+
+variables:
+  ucs: 444
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULE_STRATEGY: none
+  GIT_DEPTH: "3"
+  DEB: docker-registry.knut.univention.de/phahn/ucs-devbase:$ucs
+  DOC: docker-registry.knut.univention.de/docbook
+  LINT: docker-registry.knut.univention.de/ucslint:$ucs
+
+.lint:
+  stage: lint
+  image: $LINT
+  script:
+    - ucslint $base
+
+prepare ucslint:
+  stage: prepare
+  services:
+    - name: docker-registry.knut.univention.de/ucs/docker:dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+  tags:
+    - docker
+  image: docker:stable
+  script:
+    - docker build --pull -t $LINT -f .gitlab-ci/Dockerfile.ucslint packaging/ucslint
+    - docker push $LINT
+  rules:
+    - changes:
+      - packaging/ucslint/**/*
