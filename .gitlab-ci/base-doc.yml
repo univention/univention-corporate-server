@@ -1,16 +1,6 @@
-default:
-  artifacts:
-    expire_in: 1 day
-
 stages:
   - build
   - deploy
-
-variables:
-  GIT_STRATEGY: fetch
-  GIT_SUBMODULE_STRATEGY: none
-  GIT_DEPTH: "3"
-  DOC: docker-registry.knut.univention.de/docbook
 
 .doc:
   stage: build

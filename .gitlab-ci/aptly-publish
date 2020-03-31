@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e -u
+
+JSON='{
+"SourceKind":"local",
+"Sources":[{"Name":"'"$CI_COMMIT_REF_SLUG"'"}],
+"Label":"Univention Corporate Server",
+"Origin":"Univention",
+"ForceOverwrite":true,
+"AcquireByHash":true,
+"Architectures":["amd64","source"]
+}'
+exec curl \
+	--silent \
+	--show-error \
+	-X POST \
+	-H 'Content-Type: application/json' \
+	--data "$JSON" \
+	"$APTLY/publish/:."

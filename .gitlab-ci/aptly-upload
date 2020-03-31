@@ -1,0 +1,35 @@
+#!/bin/sh
+set -e -u
+
+base="$(dirname "$1")"
+RE='^ [0-9a-f]{32} [0-9]+ ((([a-zA-Z0-9_.-]+/)?[a-zA-Z0-9_.-]+|-) ([a-zA-Z]+|-) )?(.*)$'
+args="$(sed -rne "s!${RE}!-F file=@${base}/\\5!p" "$1")"
+curl \
+	--fail \
+	--show-error \
+	-X POST \
+	$args \
+	"${APTLY}/files/${CI_JOB_ID}"
+
+JSON='{
+"forceReplace":1
+}'
+curl \
+	--fail \
+	--show-error \
+	-X POST \
+	-H 'Content-Type: application/json' \
+	--data "$JSON" \
+	"$APTLY/repos/$CI_COMMIT_REF_SLUG/file/$CI_JOB_ID"
+
+JSON='{
+"AcquireByHash":true,
+"ForceOverwrite":true
+}'
+exec curl \
+	--silent \
+	--show-error \
+	-X PUT \
+	-H 'Content-Type: application/json' \
+	--data "$JSON" \
+	"$APTLY/publish//$CI_COMMIT_REF_SLUG"

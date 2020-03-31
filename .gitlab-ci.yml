@@ -1,3 +1,5 @@
+include: '/.gitlab-ci/base.yml'
+
 generate-config:
   stage: build
   script:
@@ -6,6 +8,31 @@ generate-config:
     paths:
       - generated-config-doc.yml
       - generated-config-deb.yml
+
+prepare aptly:
+  stage: build
+  image: curlimages/curl
+  script:
+    - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
+    - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
+  environment:
+    name: $CI_COMMIT_REF_NAME
+    url: $APT/dists/$CI_COMMIT_REF_SLUG/
+    on_stop: drop aptly
+    auto_stop_in: 6 month
+
+drop aptly:
+  stage: build
+  variables:
+    GIT_STRATEGY: none
+  image: curlimages/curl
+  script:
+    - "curl --silent --show-error -X DELETE $APTLY/publish//$CI_COMMIT_REF_SLUG || :"
+    - "curl --silent --show-error -X DELETE $APTLY/repos/$CI_COMMIT_REF_SLUG || :"
+  when: manual
+  environment:
+    name: $CI_COMMIT_REF_NAME
+    action: stop
 
 .doc-pipeline:
   stage: test

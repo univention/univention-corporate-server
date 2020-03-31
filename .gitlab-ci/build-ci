@@ -2,6 +2,7 @@
 set -e -u
 
 exec >generated-config-deb.yml
+cat "${0%/*}/base.yml"
 cat "${0%/*}/base-deb.yml"
 
 for cl in */*/debian/changelog
@@ -18,10 +19,31 @@ do
 	echo '    - changes:'
 	echo "      - ${path}/**/*"
 	echo '      - packaging/ucslint/**/*'
+
+	case "${path##*/}" in
+		univention-kernel-image-signed) continue ;;  # EFI
+		grub-efi-amd64-signed) continue ;;  # EFI
+		shim) continue ;;  # Depends on scope ucs_3.2-0-uefi-secureboot-tools
+		python-notifier) continue ;;  # Depends on git submodule
+		univention-kvm-compat) continue ;;  # Depends on very old ipxe-qemu not in dist/Packages
+		univention-foomatic-ppds)  continue ;;  # build-time >1h
+	esac
+
+	echo
+	echo "build ${pkg}:"
+	echo '  variables:'
+	echo "    base: $path"
+	echo '  extends: .deb'
+	echo '  rules:'
+	echo '    - changes:'
+	echo "      - ${path}/**/*"
+	# echo '  needs:'
+	# echo "    - job: ${dep}
 done
 
 
 exec >generated-config-doc.yml
+cat "${0%/*}/base.yml"
 cat "${0%/*}/base-doc.yml"
 
 for make in doc/*/Makefile

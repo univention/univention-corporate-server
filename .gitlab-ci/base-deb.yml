@@ -1,20 +1,7 @@
-default:
-  artifacts:
-    expire_in: 1 day
-
 stages:
   - prepare
   - lint
-
-variables:
-  ucs: 444
-  GIT_STRATEGY: fetch
-  GIT_SUBMODULE_STRATEGY: none
-  GIT_DEPTH: "3"
-  DEB: docker-registry.knut.univention.de/phahn/ucs-devbase:$ucs
-  LINT: docker-registry.knut.univention.de/ucslint
-  LINT_REF: $LINT:$CI_COMMIT_REF_SLUG
-  LINT_UCS: $LINT:$ucs
+  - build
 
 .lint:
   stage: lint
@@ -24,16 +11,19 @@ variables:
   script:
     - ucslint $base
 
-.docker:
-  services:
-    - name: docker-registry.knut.univention.de/ucs/docker:dind
-      alias: docker
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-  tags:
-    - docker
-  image: docker:stable
+.deb:
+  stage: build
+  image: $DEB
+  before_script:
+    - echo "deb [trusted=yes] $APT git $CI_COMMIT_REF_SLUG" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
+    - apt-get -qq update
+    - cd $base
+    - apt-get -qq build-dep .
+  script:
+    - dpkg-buildpackage -uc -us -b --jobs-try=auto
+    - cd $CI_PROJECT_DIR
+    - apt-get -qq --no-install-recommends install curl
+    - .gitlab-ci/aptly-upload ${base}_*.changes
 
 prepare ucslint:
   stage: prepare
@@ -62,5 +52,7 @@ push ucslint:
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 dummy:
   stage: .post
+  variables:
+    GIT_STRATEGY: none
   script:
     - ":"
