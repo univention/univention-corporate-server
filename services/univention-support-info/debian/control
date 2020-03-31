@@ -4,8 +4,6 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  ucslint-univention,
- python-support,
- python-all
 Standards-Version: 3.8.2
 
 Package: univention-support-info

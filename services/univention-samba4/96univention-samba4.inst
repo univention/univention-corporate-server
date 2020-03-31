@@ -729,7 +729,7 @@ fi
 
 /usr/share/univention-samba4/scripts/mount_extfs_with_user_xattr.py
 
-## the code in /usr/share/pyshared/samba/provision.py derives the 'domaindn' from the realm, save it for later use
+## the code in :py:mod:`samba.provision` derives the 'domaindn' from the realm, save it for later use
 set_samba4_ldap_base
 
 if [ -n "$samba4_join_site" ]; then

@@ -454,11 +454,10 @@ w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-a
 					This can be done by using <command>ucs_registerLDAPExtension</command> which is described in <xref linkend="join:libraries:shell"/>.
 				</para>
 				<para>
-					As an alternative the file can be put into the directory <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename> and linked into the directory <filename class="directory">/usr/lib/pymodules/python2.7/univention/admin/syntax.d/</filename>.
-					When included into a Debian package, the linking is normally done by <command>dh_python</command>.
+					As an alternative the file can be put into the directory <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
 				</para>
 				<para>
-					The following example is comparable to the default example in file <filename>/usr/share/pyshared/univention/admin/syntax.d/example.py</filename>:
+					The following example is comparable to the default example in file <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/example.py</filename>:
 				</para>
 				<programlisting language="python"><![CDATA[
 class StaticSelection(select):
@@ -474,7 +473,7 @@ class StaticSelection(select):
 				<para>
 					A dynamic list is implemented as an <acronym>LDAP</acronym> search, which is described in <xref linkend="udm:syntax:ldap"/>.
 					For performance reason it is recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
-					The file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename> contains several examples.
+					The file <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.py</filename> contains several examples.
 				</para>
 				<example id="udm:ea:select:dynamic:example">
 					<title>Dynamic selection list for Extended Attributes</title>
@@ -549,7 +548,7 @@ udm settings/extended_attribute create --position "cn=custom attributes,$base" \
 						If they do not match, a new tab or group is added.
 						This also applies to the translation:
 						They must match the already translated strings and must be repeated for every Extended Attribute again and again.
-						The untranslated strings are best extracted directly from the Python source code of the modules in <filename>/usr/share/pyshared/univention/admin/handlers/*/*.py</filename>.
+						The untranslated strings are best extracted directly from the Python source code of the modules in <filename>/usr/lib/python2.7/dist-packages/univention/admin/handlers/*/*.py</filename>.
 						For the translated strings run <command>msgunfmt /usr/share/locale/<replaceable>language-code</replaceable>/LC_MESSAGES/univention-admin*.mo</command>.
 					</simpara>
 				</listitem>
@@ -689,12 +688,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				Hooks provide a mechanism to pre- and post-process the values of Extended Attributes.
 				Normally <acronym>UDM</acronym> properties are stored as-is in <acronym>LDAP</acronym> attributes.
 				Hooks can modify the <acronym>LDAP</acronym> operations when an object is created, modified, deleted or retrieved.
-				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/share/pyshared/univention/admin/hooks.d/</filename><footnote>
-					<simpara>
-						This assumes that the hook file is packaged and linked by <command>dh_pysupport</command> to <filename>/usr/lib/pymodules/python<replaceable>2.7</replaceable>/univention/admin/hooks.d/</filename> for Python 2.7 or whatever Python version is used.
-						If the file is installed manually, it must be placed on a path listed in <literal>sys.path</literal>.
-					</simpara>
-				</footnote>.
+				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/</filename>.
 				The file name must end with <filename class="extension">.py</filename>.
 			</para>
 			<para>
@@ -891,7 +885,7 @@ udm settings/extended_attribute modify \
 		<remark>PMH: Bug #24236</remark>
 		<para>
 			Every <acronym>UDM</acronym> property has a syntax, which is used to check the value for correctness.
-			&ucsUCS; already provides several syntax types, which are defined in the Python file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename>.
+			&ucsUCS; already provides several syntax types, which are defined in the Python file <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.py</filename>.
 			The following list of syntaxes is not complete, for a complete overview the file should be consulted directly.
 		</para>
 		<variablelist>
@@ -1008,7 +1002,7 @@ udm settings/extended_attribute modify \
 			</varlistentry>
 		</variablelist>
 		<para>
-			Additional syntax classes can be added by placing a Python file in <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename>.
+			Additional syntax classes can be added by placing a Python file in <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
 			They're automatically imported by <acronym>UDM</acronym>.
 		</para>
 
@@ -1039,7 +1033,7 @@ udm settings/extended_attribute modify \
 			<para>
 				It is often required to present a list of entries to the user, from which she can select one or — in case of a multi-valued property — more entries.
 				Several syntax classes derived from <classname>select</classname> provide a fixed list of choices.
-				If the set of values is known and fixed, it's best to derive an own class from <classname>select</classname> and provide the Python file in <filename class="directory">/usr/share/pyshared/univention/admin/syntax.d/</filename>.
+				If the set of values is known and fixed, it's best to derive an own class from <classname>select</classname> and provide the Python file in <filename class="directory">/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
 			</para>
 			<para>
 				If on the other hand the list is dynamic and is stored in <acronym>LDAP</acronym>, <acronym>UDM</acronym> provides three methods to retrieve the values.
@@ -1252,7 +1246,7 @@ class MyServers(UDM_Objects):
 								<term><firstterm>Python API</firstterm></term>
 								<listitem>
 									<simpara>
-										By implementing a Python class derived from <classname>LDAP_Search</classname> and providing that implementation in <filename>/usr/share/pyshared/univention/admin/syntax.d/</filename>.
+										By implementing a Python class derived from <classname>LDAP_Search</classname> and providing that implementation in <filename>/usr/lib/python2.7/dist-packages/univention/admin/syntax.d/</filename>.
 									</simpara>
 								</listitem>
 							</varlistentry>

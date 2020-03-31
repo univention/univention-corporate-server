@@ -434,7 +434,7 @@ samba4_ldb_sam_module_prepend()
 		sam_ldb="/var/lib/samba/private/sam.ldb"
 		LDB_URI="tdb://$sam_ldb"
 
-		domaindn="DC=${kerberos_realm//./,DC=}" # that's what /usr/share/pyshared/samba/provision.py uses
+		domaindn="DC=${kerberos_realm//./,DC=}" # that's what :py:mod:`samba.provision` uses
 		if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
 			echo "Samba4 does not seem to be provisioned, skipping samba4_ldb_sam_module_prepend"
 			exit 1

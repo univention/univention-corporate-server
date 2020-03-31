@@ -515,12 +515,6 @@ elif [ -n "$res_users" ]; then
 	echo
 fi
 
-if [ -f /usr/share/pyshared/univention/admin/handlers/policies/thinclient.py ] ; then
-	# Remove the old master from the default settings of thin clients
-	def_dn=$(univention-directory-manager policies/thinclient list | sed -ne 's|DN: ||p')
-	univention-directory-manager policies/thinclient modify --dn "$def_dn" --remove fileServer="$old_ldap_master"
-fi
-
 # Remove the reference to old master from krb5PrincipalName for LDAP access
 ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
 

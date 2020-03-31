@@ -2,4 +2,5 @@ usr/share/univention-system-activation/www/css/
 usr/share/univention-app-appliance/images/
 usr/lib/python2.7/dist-packages/univention/app_appliance
 var/www/univention-management-console/js/umc/modules/appliance
-/var/cache/univention-app-appliance
+var/www/icon
+var/cache/univention-app-appliance

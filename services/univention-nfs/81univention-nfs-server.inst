@@ -41,10 +41,6 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-if [ -f /usr/share/pyshared/univention/admin/handlers/policies/thinclient.py ] ; then
-	univention-directory-manager policies/thinclient modify "$@" --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --append fileServer=$hostname.$domainname || die
-fi
-
 # make existing host share container a standard share container
 if ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
 	univention-directory-manager container/cn modify "$@" --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1 || die

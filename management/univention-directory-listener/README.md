@@ -53,7 +53,7 @@ univention-install virtualenv libpython2.7-dev libpython3.4-dev
 virtualenv -p python3 --system-site-packages virtenv3_mypy
 . virtenv3_mypy/bin/activate
 (virtenv3_mypy) pip install -U mypy
-(virtenv3_mypy) mypy --py2 --ignore-missing-imports --follow-imports skip /usr/share/pyshared/univention/listener/*
+(virtenv3_mypy) mypy --py2 --ignore-missing-imports --follow-imports skip /usr/lib/python2.7/dist-packages//univention/listener/*
 (virtenv3_mypy) deactivate
 ```
 

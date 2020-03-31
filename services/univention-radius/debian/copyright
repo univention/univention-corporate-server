@@ -29,7 +29,3 @@ License: AGPL-3.0-only
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
  <https://www.gnu.org/licenses/>.
-
-Files: usr/share/pyshared/univention/pyDes.py
-Copyright: 2009 Todd Whiteman
-License: public-domain

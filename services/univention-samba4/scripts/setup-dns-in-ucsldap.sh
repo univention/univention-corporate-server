@@ -107,7 +107,7 @@ eval "$(univention-config-registry shell)"
 # LDB_URI="ldapi:///var/lib/samba/private/ldap_priv/ldapi"	# seems to open a bit too late after samba4 startup
 LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
 
-domaindn="DC=${kerberos_realm//./,DC=}"	# that's what /usr/share/pyshared/samba/provision.py uses
+domaindn="DC=${kerberos_realm//./,DC=}"	# that's what :py:mod:`samba.provision` uses
 if ! ldbsearch -H "$LDB_URI" -b "$domaindn" -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
 	echo "Samba4 does not seem to be provisioned, exiting $0"
 	exit 1

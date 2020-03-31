@@ -138,15 +138,7 @@ warnings.filterwarnings("ignore", category=FutureWarning, append=True)
 import apt
 import apt_pkg
 
-try:
-	from univention import config_registry
-except ImportError:
-	if os.path.isfile('/usr/share/pyshared/univention/config_registry.py'):
-		import imp
-		config_registry = imp.load_source('config_registry', '/usr/share/pyshared/univention/config_registry.py')
-	else:
-		sys.path.append('/usr/share/pyshared')
-		from univention import config_registry
+from univention import config_registry
 
 ucr = config_registry.ConfigRegistry()
 ucr.load()

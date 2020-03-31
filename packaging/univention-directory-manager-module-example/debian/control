@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-config-dev,
  ucslint-univention,
  python-all,
- python-support
+ dh-python,
 Standards-Version: 3.7.2
 
 Package: univention-directory-manager-module-example

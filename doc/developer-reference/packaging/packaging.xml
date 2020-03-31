@@ -333,8 +333,6 @@ dh binary
    dh_installemacsen
    dh_installifupdown
    dh_installinfo
-   dh_pysupport
-dh_pysupport: This program is deprecated, you should use dh_python2 instead. Migration guide: http://deb.li/dhs2p
    dh_installinit
    dh_installmenu
    dh_installmime
