@@ -411,6 +411,9 @@
 			<title>MariaDB</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The package <package>univention-mysql</package> has been removed in favor of MariaDB (<u:bug>51979</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
