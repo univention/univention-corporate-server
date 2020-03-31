@@ -32,4 +32,4 @@ exec curl \
 	-X PUT \
 	-H 'Content-Type: application/json' \
 	--data "$JSON" \
-	"$APTLY/publish//$CI_COMMIT_REF_SLUG"
+	"$APTLY/publish/$CI_COMMIT_REF_SLUG/git"

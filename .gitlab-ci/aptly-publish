@@ -3,7 +3,8 @@ set -e -u
 
 JSON='{
 "SourceKind":"local",
-"Sources":[{"Name":"'"$CI_COMMIT_REF_SLUG"'"}],
+"Sources":[{"Name":"'"$CI_COMMIT_REF_SLUG"'","Component":"main"}],
+"Distribution":"git",
 "Label":"Univention Corporate Server",
 "Origin":"Univention",
 "ForceOverwrite":true,
@@ -16,4 +17,4 @@ exec curl \
 	-X POST \
 	-H 'Content-Type: application/json' \
 	--data "$JSON" \
-	"$APTLY/publish/:."
+	"$APTLY/publish/$CI_COMMIT_REF_SLUG"

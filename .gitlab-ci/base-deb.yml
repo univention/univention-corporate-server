@@ -15,7 +15,7 @@ stages:
   stage: build
   image: $DEB
   before_script:
-    - echo "deb [trusted=yes] $APT git $CI_COMMIT_REF_SLUG" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
+    - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
     - cd $base
     - apt-get -qq build-dep .

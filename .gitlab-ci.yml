@@ -27,7 +27,7 @@ drop aptly:
     GIT_STRATEGY: none
   image: curlimages/curl
   script:
-    - "curl --silent --show-error -X DELETE $APTLY/publish//$CI_COMMIT_REF_SLUG || :"
+    - "curl --silent --show-error -X DELETE $APTLY/publish/$CI_COMMIT_REF_SLUG/git || :"
     - "curl --silent --show-error -X DELETE $APTLY/repos/$CI_COMMIT_REF_SLUG || :"
   when: manual
   environment:

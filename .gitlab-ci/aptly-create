@@ -5,7 +5,7 @@ JSON='{
 "Name":"'"$CI_COMMIT_REF_SLUG"'",
 "Comment":"'"$CI_COMMIT_REF_NAME"'",
 "DefaultDistribution":"git",
-"DefaultComponent":"'"$CI_COMMIT_REF_SLUG"'"
+"DefaultComponent":"main"
 }'
 exec curl \
 	--silent \
