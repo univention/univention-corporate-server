@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Internal change: the UCR templates of univention-grub are now
    python3-compatible.
- bug: [51018]
+bug: [51018]

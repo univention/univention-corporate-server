@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Internal change: the UCR templates of univention-sudo are now
    python3-compatible.
- bug: [51023]
+bug: [51023]

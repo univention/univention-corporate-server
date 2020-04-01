@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Python absolute imports are now used in univention.config_registy.interfaces
    for Python 3 compatibility.
- bug: [51021]
+bug: [51021]
