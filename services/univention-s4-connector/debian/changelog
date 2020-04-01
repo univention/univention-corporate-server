@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-68) unstable; urgency=medium
+
+  * Bug #50593: Revert 706f9854e0.
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 01 Apr 2020 10:57:40 +0200
+
 univention-s4-connector (13.0.2-67) unstable; urgency=medium
 
   * Bug #50593: Objects in UCS are now compared by their entryUUID/objectGUID
