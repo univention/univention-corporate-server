@@ -16,10 +16,11 @@ from debian.deb822 import Deb822
 dch = Changelog(io.open("debian/changelog", "r", encoding="utf-8"))
 dsc = Deb822(io.open("debian/control", "r", encoding="utf-8"))
 realname, email_address = parseaddr(dsc["Maintainer"])
+version = dch.version.full_version.replace("-", ".")  # 14.0.0-12 would be renamed to 14.0.0.post12
 
 setuptools.setup(
     name=dch.package,
-    version=dch.version.full_version,
+    version=version,
     maintainer=realname,
     maintainer_email=email_address,
     description="Python interface to configuration registry",
