@@ -7,6 +7,7 @@ fix: 13.0.1-8A~4.4.4.202003301127
 desc: |
  This update addresses the following issue(s):
  * The start of the LDAP server has a timeout value to prevent deadlocks and
-   allow monitoring solutions to log failed start attempts. That value was made
-   configurable, because the necessary time depends on the number of domains.
+   allow monitoring solutions to log failed start attempts. That value was
+   made configurable, because the necessary time depends on the number of
+   domains. The variable is called dns/timeout-start.
 bug: [50662]
