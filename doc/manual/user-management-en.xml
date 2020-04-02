@@ -1081,6 +1081,12 @@
 					<title>Account verification</title>
 					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_message_en.png"/>
 				</figure>
+				<para>
+					The SSO login can be configured to deny login from unverified, self registered accounts. This is configured through
+					the &ucsUCRV; <envar>saml/idp/selfservice/check_email_verification</envar>. This needs to be set
+					on the domain controller master and all domain controller backups. The setting has no effect on
+					accounts created by an administrator.
+				</para>
 			</section>
 		</section>
 	</section>
