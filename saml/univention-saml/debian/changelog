@@ -1,3 +1,9 @@
+univention-saml (6.0.2-26) unstable; urgency=medium
+
+  * Bug #48927: Add ldap attribute mapping to arbitrary values
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 02 Apr 2020 18:18:48 +0200
+
 univention-saml (6.0.2-25) unstable; urgency=medium
 
   * Bug #50884: Fix translation

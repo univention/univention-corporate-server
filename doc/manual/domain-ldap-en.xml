@@ -1464,6 +1464,9 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>List of LDAP attributes to transmit</entry>
 					<entry>
 						Every LDAP attribute that should be transmitted to the service provider can be entered here.
+						Additionally, one or more Service attribute names can be added to each LDAP attribute in the field next to it.
+						These Service attribute names have the purpose to translate the LDAP Attribute names for the Service provider.
+						More than one Service attribute name have to be seperated by commas.
 						In order for the UCS identity provider to process these attributes, they need to be registered additionally via the &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar>.
 						Values in the &ucsUCRV; have to be surrounded by apostrophes and be separated by commas, e.g., <option>'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'</option>.
 					</entry>
