@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-system-setup are now
    python3-compatible.
 bug: [51025]
+erratum: 519
+announced: 2020-04-02
