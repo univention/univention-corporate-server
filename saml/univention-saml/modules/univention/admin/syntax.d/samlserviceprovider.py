@@ -41,10 +41,8 @@ class samlserviceprovider(univention.admin.syntax.UDM_Objects):
 
 class attributeMapping(univention.admin.syntax.complex):
 	"""
-	Syntax for key-value-pairs separated by `=`.
+	Syntax for key-value-pairs separated by `=` where the value is optional.
 
-	>>> keyAndValue.parse(('key', 'value'))
-	['key', 'value']
 	"""
 	delimiter = ' = '
 	subsyntaxes = [(_('LDAP Attribute Name'), univention.admin.syntax.string), (_('Service Attribute Name'), univention.admin.syntax.string)]

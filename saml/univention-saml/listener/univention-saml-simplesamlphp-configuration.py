@@ -197,9 +197,9 @@ def write_configuration_file(dn, new, filename):
 				fd.write("		50 => array(\n		'class' => 'core:AttributeMap',\n")
 				for attr in simplesamlLDAPattributes:
 					if ',' in attr[1]:
-						fd.write("		'%s' => array('%s'),\n" % (attr[0], "','".join(attr[1].split(','))))
+						fd.write("		%s => %s,\n" % (php_string(attr[0]), php_array(attr[1].split(','))))
 					else:
-						fd.write("		'%s' => '%s',\n" % (attr[0], attr[1]))
+						fd.write("		%s => %s,\n" % (php_string(attr[0]), php_string(attr[1])))
 				fd.write("		),\n")
 		else:
 			fd.write("		100 => array('class' => 'core:AttributeMap', 'name2oid'),\n")

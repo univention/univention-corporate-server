@@ -1,4 +1,4 @@
-univention-saml (6.0.2-26) unstable; urgency=medium
+univention-saml (6.0.2-27) unstable; urgency=medium
 
   * Bug #48927: Add ldap attribute mapping to arbitrary values
 

@@ -169,11 +169,14 @@ layout = [
 	]),
 ]
 
+
 def mapKeyAndValue(old):
 	return [entry[0] + '=' + entry[1] if len(entry)>1 and entry[0] and entry[1] else entry[0] for entry in old]
 
+
 def unmapKeyAndValue(old):
 	return [entry.split('=', 1) for entry in old]
+
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('isActivated', 'isServiceProviderActivated', None, univention.admin.mapping.ListToString)
