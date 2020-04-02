@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-saml
+fix: 6.0.2-26A~4.4.0.202004021829
+desc: |
+ This update addresses the following issue:
+ * The configuration of SAML identity providers has been extended
+   by the possibility to configure an attribute mapping
+   for the LDAPattributes required by the Service providers.
+bug: [48927]
