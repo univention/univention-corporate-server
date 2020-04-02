@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-maintenance are now
    python3-compatible.
 bug: [51020]
+erratum: 510
+announced: 2020-04-02
