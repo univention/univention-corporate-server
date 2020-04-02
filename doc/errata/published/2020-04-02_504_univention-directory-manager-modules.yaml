@@ -10,3 +10,5 @@ desc: |
    set, the defaults for the module options are kept instead of setting them
    all to true.
 bug: [51002]
+erratum: 504
+announced: 2020-04-02
