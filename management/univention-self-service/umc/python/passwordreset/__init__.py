@@ -361,12 +361,19 @@ class Instance(Base):
 				property_ids.append(id_)
 		lo, po = get_machine_connection()
 		users_mod = UDM_Module('users/user', True, lo, po)
-		properties = {prop['id']: prop for prop in users_mod.properties(None) if 'dynamicValues' not in prop and 'udm' not in prop['type']}
+		properties = {prop['id']: prop for prop in users_mod.properties(None)}
+		not_existing = set(property_ids) - set(properties.keys())
+		properties = {k: v for (k, v) in properties.items() if 'dynamicValues' not in v and 'udm' not in v['type']}  # filter out not supported props
+		not_supported = set(property_ids) - set(properties.keys()) - not_existing
 		if 'PasswordRecoveryEmail' in properties:
 			properties['PasswordRecoveryEmail']['label'] = _('Email')
 			properties['PasswordRecoveryEmail']['description'] = ''
 		self._update_required_attr_of_props_for_registration(properties)
 		properties = [properties[id_] for id_ in property_ids if id_ in properties]
+		if not_existing:
+			MODULE.warn("get_registration_attributes(): the following attributes defined by umc/self-service/account-registration/udm_attributes do not exist on users/user: {}".format(", ".join(not_existing)))
+		if not_supported:
+			MODULE.warn("get_registration_attributes(): the following attributes defined by umc/self-service/account-registration/udm_attributes are not supported: {}".format(", ".join(not_supported)))
 		return {
 			'widget_descriptions': properties,
 			'layout': [prop['id'] for prop in properties],
@@ -467,9 +474,12 @@ class Instance(Base):
 	@forward_to_master
 	@simple_response
 	def create_self_registered_account(self, attributes):
+		MODULE.info('create_self_registered_account(): attributes: {}'.format(attributes))
 		ucr.load()
 		if ucr.is_false('umc/self-service/account-registration/backend/enabled', True):
-			raise UMC_Error(_('The account registration was disabled via the Univention Configuration Registry.'))
+			msg = _('The account registration was disabled via the Univention Configuration Registry.')
+			MODULE.error('create_self_registered_account(): {}'.format(msg))
+			raise UMC_Error(msg)
 		# filter out attributes that are not valid to set
 		allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()])
 		attributes = {k: v for (k, v) in attributes.items() if k in allowed_to_set}
@@ -477,12 +487,11 @@ class Instance(Base):
 		res = self._validate_user_attributes(attributes, self._update_required_attr_of_props_for_registration)
 		# check username taken
 		if 'username' in attributes:
-			usersmod = UDM.machine().version(2).get('users/user')
 			try:
-				user = usersmod.get_by_id(attributes['username'])
+				UDM.machine().version(2).get('users/user').get_by_id(attributes['username'])
 			except NoObject:
-				user = None
-			if user:
+				pass
+			else:
 				res['username'] = {
 					'isValid': False,
 					'message': _('The username is already taken'),
@@ -499,7 +508,9 @@ class Instance(Base):
 		required_attrs = [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()]
 		not_found = [attr for attr in required_attrs if attr not in attributes]
 		if not_found:
-			raise UMC_Error(_('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n%s') % ('\n'.join(not_found),))
+			msg = _('The account could not be created:\nInformation provided is not sufficient. The following properties are missing:\n%s') % ('\n'.join(not_found),)
+			MODULE.error('create_self_registered_account(): {}'.format(msg))
+			raise UMC_Error(msg)
 
 		univention.admin.modules.update()
 		lo, po = get_admin_connection()
@@ -513,23 +524,36 @@ class Instance(Base):
 			try:
 				usertemplate = usertemplate_mod.object(None, lo, None, template_dn)
 			except udm_errors.noObject:
-				pass
+				msg = _('The user template "{}" set by the "umc/self-service/account-registration/usertemplate" UCR variable does not exist. A user account can not be created. Please contact your system administrator.'.format(template_dn))
+				MODULE.error('create_self_registered_account(): {}'.format(msg))
+				raise UMC_Error(msg)
 
 		# init user module with template
 		usersmod = univention.admin.modules.get('users/user')
 		univention.admin.modules.init(lo, po, usersmod, usertemplate, True)
 
 		# get user container
-		udm = UDM.admin().version(2)
+		udm = UDM.machine().version(2)
 		user_position = univention.admin.uldap.position(po.getBase())
-		for dn in [ucr.get('umc/self-service/account-registration/usercontainer', '')] + usersmod.object.get_default_containers(lo):
+		container_dn = ucr.get('umc/self-service/account-registration/usercontainer', None)
+		if container_dn:
 			try:
-				container = udm.obj_by_dn(dn)
+				container = udm.obj_by_dn(container_dn)
 			except NoObject:
-				pass
+				msg = _('The container "{}" set by the "umc/self-service/account-registration/usercontainer" UCR variable does not exist. A user account can not be created. Please contact your system administrator.'.format(container_dn))
+				MODULE.error('create_self_registered_account(): {}'.format(msg))
+				raise UMC_Error(msg)
 			else:
 				user_position.setDn(container.dn)
-				break
+		else:
+			for dn in usersmod.object.get_default_containers(lo):
+				try:
+					container = udm.obj_by_dn(dn)
+				except NoObject:
+					pass
+				else:
+					user_position.setDn(container.dn)
+					break
 
 		# create user
 		attributes['PasswordRecoveryEmailVerified'] = 'FALSE'
@@ -576,10 +600,12 @@ class Instance(Base):
 		username=StringSanitizer(required=True))
 	@simple_response
 	def send_verification_token(self, username):
+		MODULE.info("send_verification_token(): username: {}".format(username))
 		ucr.load()
 		if ucr.is_false('umc/self-service/account-verification/backend/enabled', True):
-			raise UMC_Error(_('The account verification was disabled via the Univention Configuration Registry.'))
-		MODULE.info("send_verification_token(): username: {}".format(username))
+			msg = _('The account verification was disabled via the Univention Configuration Registry.')
+			MODULE.error('send_verification_token(): {}'.format(msg))
+			raise UMC_Error(msg)
 		users_mod = UDM.machine().version(2).get('users/user')
 		try:
 			user = users_mod.get_by_id(username)
@@ -658,9 +684,12 @@ class Instance(Base):
 	)
 	@simple_response
 	def verify_contact(self, token, username, method):
+		MODULE.info('verify_contact(): token: {} username: {} method: {}'.format(token, username, method))
 		ucr.load()
 		if ucr.is_false('umc/self-service/account-verification/backend/enabled', True):
-			raise UMC_Error(_('The account verification was disabled via the Univention Configuration Registry.'))
+			msg = _('The account verification was disabled via the Univention Configuration Registry.')
+			MODULE.error('verify_contact(): {}'.format(msg))
+			raise UMC_Error(msg)
 		users_mod = UDM.admin().version(1).get('users/user')
 		try:
 			user = users_mod.get_by_id(username)

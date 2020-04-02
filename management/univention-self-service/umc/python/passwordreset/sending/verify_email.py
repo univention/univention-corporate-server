@@ -61,9 +61,10 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 	@staticmethod
 	def is_enabled():
 		return True
-		ucr = ConfigRegistry()
-		ucr.load()
-		return ucr.is_true("umc/self-service/account-verification/email/enabled")
+		#  For now this sending message is always enabled (unless we have for methods for sending verification tokens)
+		#  ucr = ConfigRegistry()
+		#  ucr.load()
+		#  return ucr.is_true("umc/self-service/account-verification/email/enabled")
 
 	@property
 	def udm_property(self):

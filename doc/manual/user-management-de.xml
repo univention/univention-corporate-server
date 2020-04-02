@@ -1110,7 +1110,7 @@
 				</para>
 				<para>
 					Die Kontoverifizierung und die Anforderung neuer <wordasword>Verifizierungs-Token</wordasword>
-					kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/backen/enabled</envar>
+					kann mit der &ucsUCRV; <envar>umc/self-service/account-verification/backend/enabled</envar>
 					deaktiviert/aktiviert werden.
 					Diese Variablen muss auf dem <foreignphrase>Self Service Backend</foreignphrase> gesetzt werden,
 					das über die &ucsUCRV; <envar>self-service/backend-server</envar> definiert ist.
