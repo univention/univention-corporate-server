@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-quota are now
    python3-compatible.
 bug: [51010]
+erratum: 514
+announced: 2020-04-02
