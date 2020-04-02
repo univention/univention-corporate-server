@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-sudo are now
    python3-compatible.
 bug: [51023]
+erratum: 517
+announced: 2020-04-02
