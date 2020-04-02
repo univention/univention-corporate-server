@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-10 17:58+0100\n"
+"POT-Creation-Date: 2020-04-02 16:15+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <damrose@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -26,7 +26,7 @@ msgstr "SAML IdP Konfigurationen"
 
 #: idpconfig.py:42
 msgid "univention simplesamlphp identity provider settings"
-msgstr ""
+msgstr "SAML Service Provider Grundeinstellungen"
 
 #: idpconfig.py:45 serviceprovider.py:45
 #, python-format
@@ -260,3 +260,6 @@ msgstr "Weitere Einstellungen"
 #: serviceprovider.py:162
 msgid "Additional configuration options"
 msgstr "Zusätzliche Konfigurationsoptionen"
+
+#~ msgid "Service Attribute Name"
+#~ msgstr "Service Attribut-Name"
