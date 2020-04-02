@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-passwd-store are now
    python3-compatible.
 bug: [51008]
+erratum: 512
+announced: 2020-04-02
