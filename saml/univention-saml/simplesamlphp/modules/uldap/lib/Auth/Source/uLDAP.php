@@ -64,6 +64,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			throw $e;
 		}
 		$this->throw_common_login_errors($attributes);
+		$this->throw_self_service_login_errors($attributes);
 		return $attributes;
 
 	}
@@ -150,6 +151,27 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		// ldap: locking ldap is done by modifying password > but then ldap bind has failed anyway
 
 		return;
+	}
+
+	/**
+	 * Check if the account needs and has a verified email address
+	 *
+	 * @param array $attributes
+	 */
+	private function throw_self_service_login_errors($attributes) {
+		// Self service: email not verified
+		// TODO: it should be possible to disable this check
+		$is_self_registered = isset($attributes['univentionRegisteredThroughSelfService']) &&
+			$attributes['univentionRegisteredThroughSelfService'][0] === 'TRUE';
+		$selfservice_email_verified = isset($attributes['univentionPasswordRecoveryEmailVerified']) &&
+			$attributes['univentionPasswordRecoveryEmailVerified'][0] === 'TRUE';
+		if ($is_self_registered && !$selfservice_email_verified) {
+			SimpleSAML_Logger::debug('Self service mail not verified');
+			// The double dot in the error marks this as custom error which is not defined in
+			// lib/SimpleSAML/Error/ErrorCodes.php
+			// Without it a cgi errot is thrown "PHP Notice:  Undefined index: SELFSERVICE_ACCUNVERIFIED"
+			throw new SimpleSAML_Error_Error('univention:SELFSERVICE_ACCUNVERIFIED');
+		}
 	}
 
 }

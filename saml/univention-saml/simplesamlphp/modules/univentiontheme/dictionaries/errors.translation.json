@@ -67,5 +67,11 @@
 	},
 	"descr_KRB_ACCLOCKED": {
 		"de": "Der Kerberos Account ist gesperrt, Login verweigert"
+	},
+	"title_univention:SELFSERVICE_ACCUNVERIFIED": {
+		"de": "Email-Adresse verifizieren"
+	},
+	"descr_univention:SELFSERVICE_ACCUNVERIFIED": {
+		"de": "Bitte verifizieren Sie Ihre Email-Adresse vor dem Login"
 	}
 }

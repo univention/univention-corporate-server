@@ -67,5 +67,11 @@
 	},
 	"descr_KRB_ACCLOCKED": {
 		"en": "The Kerberos account is locked, login is denied"
+	},
+	"title_univention:SELFSERVICE_ACCUNVERIFIED": {
+		"en": "Verify email address"
+	},
+	"descr_univention:SELFSERVICE_ACCUNVERIFIED": {
+		"en": "Please verify your email address before you login"
 	}
 }

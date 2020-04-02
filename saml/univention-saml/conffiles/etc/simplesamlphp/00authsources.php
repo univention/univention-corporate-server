@@ -49,7 +49,7 @@ $config = array(
 from univention.lib.misc import getLDAPURIs
 hostname = getLDAPURIs()
 
-expiry_attributes = "'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags'"
+expiry_attributes = "'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags', 'univentionRegisteredThroughSelfService', 'univentionPasswordRecoveryEmailVerified'"
 
 config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
 
