@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-heimdal are now
    python3-compatible.
 bug: [51016]
+erratum: 507
+announced: 2020-04-02
