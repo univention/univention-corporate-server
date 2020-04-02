@@ -1125,6 +1125,14 @@
 					<title>Kontoverifizierung</title>
 					<graphic scalefit="1" width="65%" align="center" fileref="illustrations44/users_self-service_verification_message_de.png"/>
 				</figure>
+				<para>
+					Der SSO Login kann konfiguriert werden den Login für unverifizierte, selbst registrierte Konten zu
+					verbieten.
+					Dies wird über &ucsUCRV; <envar>saml/idp/selfservice/check_email_verification</envar> konfiguriert.
+					Diese Einstellung muss auf dem Domänencontroller Master und allen Domänencontroller Backup
+					vorgenommen werden. Für durch einen Administrator erstellte Konten hat diese Einstellung keine
+					Auswirkung.
+				</para>
 			</section>
 		</section>
     </section>
