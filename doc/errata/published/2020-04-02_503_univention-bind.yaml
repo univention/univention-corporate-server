@@ -11,3 +11,5 @@ desc: |
    made configurable, because the necessary time depends on the number of
    domains. The variable is called dns/timeout-start.
 bug: [50662]
+erratum: 503
+announced: 2020-04-02
