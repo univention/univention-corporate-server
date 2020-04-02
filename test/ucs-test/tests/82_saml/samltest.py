@@ -40,6 +40,8 @@ class SamlLoginError(SamlError):
 			self.message = "Got account expired notice"
 		elif re.search('<b>Incorrect username or password.</b>', bytes(self.page.text)):
 			self.message = "Got incorrect username or password notice"
+		elif re.search('<b>Verify email address.</b>', bytes(self.page.text)):
+			self.message = "Got unverified email notice"
 		else:
 			self.message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
 
