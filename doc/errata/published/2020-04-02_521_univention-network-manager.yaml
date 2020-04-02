@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-network-manager are now
    python3-compatible.
 bug: [51021]
+erratum: 521
+announced: 2020-04-02
