@@ -61,6 +61,7 @@ print("	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE'))
 print("	'attributes'		=> array(%s)," % attributes)
 print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
 print("	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\''))
+print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/selfservice/check_email_verification', False) else 'FALSE'))
 
 ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
 if configRegistry.get('saml/idp/ldap/user'):

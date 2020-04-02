@@ -195,3 +195,9 @@ Description[de]=Konfiguriert die vom SAML Identity Provider definierte Dauer ein
 Description[en]=Configures the duration of a login session defined by the SAML Identity Provider, in seconds. After this time has elapsed, users must re-authenticate to the UCS SAML Identity Provider. (Default: '43200', this corresponds to 12 hours)
 Type=str
 Categories=saml
+
+[saml/idp/selfservice/check_email_verification]
+Description[de]=Wenn diese Variable auf true gesetzt ist, müssen Nutzer, die Ihr Konto über den Self-Service selbst erstellt haben, über eine verifizierte Email-Adresse verfügen. Sonst wird der Login verweigert.
+Description[en]=If this variable is set to true, users which have registered their account themself through the selfservice need a verified email address. Otherwise the login is denied.
+Type=str
+Categories=saml
