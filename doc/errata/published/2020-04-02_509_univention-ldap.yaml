@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-ldap are now
    python3-compatible.
 bug: [51029]
+erratum: 509
+announced: 2020-04-02
