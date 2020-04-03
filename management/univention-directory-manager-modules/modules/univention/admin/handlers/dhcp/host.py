@@ -90,22 +90,23 @@ layout = [
 ]
 
 
-def unmapHWAddress(old):
+def unmapHWAddress(old, encoding=()):
 	ud.debug(ud.ADMIN, ud.INFO, 'host.py: unmapHWAddress: old: %s' % old)
 	if not old:
-		return ['', '']
-	return old[0].split(' ')
+		return [u'', u'']
+	return old[0].decode(*encoding).split(u' ')
 
 
-def mapHWAddress(old):
+def mapHWAddress(old, encoding=()):
 	ud.debug(ud.ADMIN, ud.INFO, 'host.py: mapHWAddress: old: %s' % old)
 	if not old[0]:
-		return ''
+		return b''
 	else:
 		if len(old) > 1:
-			return '%s %s' % (old[0], old[1])
+			value = u'%s %s' % (old[0], old[1])
+			return value.encode(*encoding)
 		else:
-			return old
+			return old.encode(*encoding)
 
 
 mapping = univention.admin.mapping.mapping()
