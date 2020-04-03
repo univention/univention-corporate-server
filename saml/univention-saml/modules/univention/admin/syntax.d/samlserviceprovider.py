@@ -48,3 +48,5 @@ class attributeMapping(univention.admin.syntax.complex):
 	subsyntaxes = [(_('LDAP Attribute Name'), univention.admin.syntax.string), (_('Service Attribute Name'), univention.admin.syntax.string)]
 	subsyntax_key_value = True
 	all_required = 0
+	min_elements = 1
+
