@@ -1,3 +1,9 @@
+univention-directory-replication (11.0.0-8) unstable; urgency=low
+
+  * Bug #51062: Fix exception handling
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 03 Apr 2020 17:19:34 +0200
+
 univention-directory-replication (11.0.0-7) unstable; urgency=medium
 
   * Bug #41514: version bump

@@ -952,13 +952,53 @@ def handler(dn, new, listener_old, operation):
 
 
 def log_ldap(severity, msg, ex, dn=None):
-	ud.debug(ud.LISTENER, severity, 'replication: %s%s: %s' % (ex[0]['desc'], '; dn="%s"' % (dn,) if dn else '', msg))
+	# type: (int, str, ldap.LDAPError, str) -> None
+	"""
+	Log LDAP exception with details.
+
+	:param int severity: Severity level of message.
+	:param str msg: Additional message text.
+	:param ldap.LDAPError ex: the LDAP exception to log.
+	:param str dn: Distinguished name which triggered the exception.
+
+	>>> ud.debug = lambda facility, level, txt: sys.stdout.write(txt.lstrip()+chr(10))
+
+	>>> # ldap.initialize('xxx')
+	>>> log_ldap(ud.ALL, 'MSG', ldap.LDAPError(2, 'No such file or directory'))
+	replication: LDAPError(2, 'No such file or directory'): MSG
+
+	>>> # ldap.initialize('ldap://localhost:9').whoami_s()
+	>>> log_ldap(ud.ALL, 'MSG', ldap.SERVER_DOWN({
+	...         'info': 'Transport endpoint is not connected',
+	...         'errno': 107,
+	...         'desc': u"Can't contact LDAP server",
+	...     },))
+	replication: Can't contact LDAP server: MSG
+	additional info: Transport endpoint is not connected
+
+	>>> log_ldap(ud.ALL, 'MSG', ldap.LDAPError({'errnum': 42}))
+	replication: LDAPError({'errnum': 42},): MSG
+
+	>>> # ldap.dn.str2dn('x')
+	>>> log_ldap(ud.ALL, 'MSG', ldap.DECODING_ERROR())
+	replication: DECODING_ERROR(): MSG
+	"""
 	try:
-		ud.debug(ud.LISTENER, severity, '\tadditional info: %s' % ex[0]['info'])
+		args, = ex.args
+		desc = args['desc']
+	except (ValueError, LookupError):
+		args = {}
+		desc = '%s%r' % (type(ex).__name__, ex.args)
+
+	ud.debug(ud.LISTENER, severity, 'replication: %s%s: %s' % (desc, '; dn="%s"' % (dn,) if dn else '', msg))
+
+	try:
+		ud.debug(ud.LISTENER, severity, '\tadditional info: %(info)s' % args)
 	except LookupError:
 		pass
+
 	try:
-		ud.debug(ud.LISTENER, severity, '\tmachted dn: %s' % ex[0]['matched'])
+		ud.debug(ud.LISTENER, severity, '\tmachted dn: %(matched)s' % args)
 	except LookupError:
 		pass
 
