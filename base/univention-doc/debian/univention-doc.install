@@ -1,6 +1,0 @@
-univention-doc	usr/bin/
-doc/index.rst usr/share/univention-doc/src/univention-doc/
-doc/conf.py usr/share/univention-doc/src/univention-doc/
-doc/Makefile usr/share/univention-doc/src/univention-doc/
-icon/univention_dev_logo.png /var/www/icon/
-icon/50x50/univention_dev_logo.png /var/www/icon/50x50/
