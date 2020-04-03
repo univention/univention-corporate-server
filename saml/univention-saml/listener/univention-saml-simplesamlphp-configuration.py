@@ -80,6 +80,18 @@ def php_array(list_):
 	return "array('%s')" % "', '".join(escape_php_string(x) for x in list_)
 
 
+def ldap_attribute_join(old):
+	result_keys = {}
+	for attr in old:
+		if attr[0] not in result_keys.keys() and len(attr) > 1:
+			result_keys[attr[0]] = "%s" %(attr[1],)
+		elif attr[0] in result_keys.keys() and len(attr) > 1:
+			result_keys[attr[0]] += ", %s" % (attr[1],)
+		elif len(attr) == 1:
+			result_keys[attr[0]] = ''
+	return[[key,value] for key, value in result_keys.items()]
+
+
 def php_bool(bool_):
 	mapped = {
 		'true': True,
@@ -171,7 +183,7 @@ def write_configuration_file(dn, new, filename):
 		if new.get('simplesamlAttributes'):
 			fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
 		if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == "TRUE":
-			simplesamlLDAPattributes = [entry.split('=', 1)[0] for entry in list(new.get('simplesamlLDAPattributes', []))]
+			simplesamlLDAPattributes = list(dict.fromkeys([entry.split('=', 1)[0] for entry in list(new.get('simplesamlLDAPattributes', []))]))
 			if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
 				simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
 			fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
@@ -195,6 +207,7 @@ def write_configuration_file(dn, new, filename):
 			fd.write("		),\n")
 			if simplesamlLDAPattributes:
 				fd.write("		50 => array(\n		'class' => 'core:AttributeMap',\n")
+				simplesamlLDAPattributes = ldap_attribute_join(simplesamlLDAPattributes)
 				for attr in simplesamlLDAPattributes:
 					if ',' in attr[1]:
 						fd.write("		%s => %s,\n" % (php_string(attr[0]), php_array(attr[1].split(','))))
