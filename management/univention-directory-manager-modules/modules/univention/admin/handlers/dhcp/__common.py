@@ -70,12 +70,12 @@ _mappings = (
 )
 
 
-def rangeMap(value):
-	return [' '.join(x) for x in value]
+def rangeMap(value, encoding=()):
+	return [u' '.join(x).encode(*encoding) for x in value]
 
 
-def rangeUnmap(value):
-	return [x.split() for x in value]
+def rangeUnmap(value, encoding=()):
+	return [x.decode(*encoding).split() for x in value]
 
 
 def add_dhcp_options(module_name):
