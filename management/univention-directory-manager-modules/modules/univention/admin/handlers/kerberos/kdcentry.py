@@ -175,7 +175,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5PrincipalName.encode('UTF-8')]))
 
 		if self.info.get('generateRandomPassword', '').lower() in ['true', 'yes', '1']:
-			self['password'] = string.join(random.sample(string.letters + string.digits, 24), '')
+			self['password'] = ''.join(random.sample(string.ascii_letters + string.digits, 24))
 
 		if self.hasChanged('password'):
 			krb_keys = univention.admin.password.krb5_asn1(self.krb5PrincipalName, self['password'])
