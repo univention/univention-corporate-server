@@ -30,11 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from ipaddress import IPv4Address, IPv4Network
 import sys
 
 import univention.admin.localization
+import univention.admin.uexceptions as uex
 from univention.admin.layout import Tab
 from univention.admin.handlers import simpleLdap
+
+try:
+	from typing import List, Tuple, Sequence  # noqa F401
+	Range = Tuple[IPv4Address, IPv4Address]
+except ImportError:
+	pass
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -100,5 +108,102 @@ def add_dhcp_options(module_name):
 	))
 
 
+def check_range_overlap(ranges):  # type: (Sequence[Range]) -> None
+	"""
+	Check IPv4 address ranges for overlapping
+
+	:param ranges: List of 2-tuple (first-IP, last-IP) of type :py:class:`IPv4Address`.
+	:raises uex.rangesOverlapping: when an overlap exists.
+
+	>>> first = (IPv4Address(u"192.0.2.0"), IPv4Address(u"192.0.2.127"))
+	>>> second = (IPv4Address(u"192.0.2.128"), IPv4Address(u"192.0.2.255"))
+	>>> both = (IPv4Address(u"192.0.2.0"), IPv4Address(u"192.0.2.255"))
+	>>> check_range_overlap([])
+	>>> check_range_overlap([first])
+	>>> check_range_overlap([first, second])
+	>>> check_range_overlap([first, both]) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	rangesOverlapping: 192.0.2.0-192.0.2.127; 192.0.2.0-192.0.2.255
+	"""
+	prev = []  # type: List[Range]
+	for r1 in ranges:
+		(s1, e1) = r1
+		assert s1 <= e1  # already checked by syntax.IPv4_AddressRange
+
+		for r2 in prev:
+			(s2, e2) = r2
+			if e2 < s1:
+				# [s2 <= e2] << [s1 <= e1]
+				pass
+			elif e1 < s2:
+				# [s1 <= e1] << [s2 <= e2]
+				pass
+			else:
+				raise uex.rangesOverlapping('%s-%s; %s-%s' % (r1 + r2))
+
+		prev.append(r1)
+
+
+def check_range_subnet(subnet, ranges):  # type: (IPv4Network, Sequence[Range]) -> None
+	"""
+	Check IPv4 address ranges are inside the given network.
+
+	:param subnet: IPv4 subnet.
+	:param ranges: List of 2-tuple (first-IP, last-IP) of type :py:class:`ipaddress.IPv4Address`.
+	:raises uex.rangeInNetworkAddress: when a range includes the reserved network address.
+	:raises uex.rangeInBroadcastAddress: when a range includes the reserved broadcast address.
+	:raises uex.rangeNotInNetwork: when a range is outside the sub-network.
+
+	>>> subnet = IPv4Network(u'192.0.2.0/24')
+	>>> range_ = (subnet[1], subnet[-2])
+	>>> check_range_subnet(subnet, [])
+	>>> check_range_subnet(subnet, [(subnet[1], subnet[-2])])
+	>>> check_range_subnet(subnet, [(subnet[0], subnet[-2])])
+	Traceback (most recent call last):
+	...
+	rangeInNetworkAddress: 192.0.2.0-192.0.2.254
+	>>> check_range_subnet(subnet, [(subnet[1], subnet[-1])])
+	Traceback (most recent call last):
+	...
+	rangeInBroadcastAddress: 192.0.2.1-192.0.2.255
+	>>> local = IPv4Address(u"127.0.0.1")
+	>>> check_range_subnet(subnet, [(local, local)])
+	Traceback (most recent call last):
+	...
+	rangeNotInNetwork: 127.0.0.1
+	"""
+	for r1 in ranges:
+		for ip in r1:
+			if ip == subnet.network_address:
+				raise uex.rangeInNetworkAddress('%s-%s' % r1)
+
+			if ip == subnet.broadcast_address:
+				raise uex.rangeInBroadcastAddress('%s-%s' % r1)
+
+			if ip not in subnet:
+				raise uex.rangeNotInNetwork(ip)
+
+
 class DHCPBase(simpleLdap):
 	pass
+
+
+class DHCPBaseSubnet(DHCPBase):
+	def ready(self):
+		super(DHCPBaseSubnet, self).ready()
+
+		try:
+			subnet = IPv4Network(u'%(subnet)s/%(subnetmask)s' % self.info)
+		except ValueError:
+			raise uex.valueError(_('The subnet mask does not match the subnet.'), property='subnetmask')
+
+		if self.hasChanged('range') or not self.exists():
+			ranges = [tuple(IPv4Address(u'%s' % (ip,)) for ip in range_) for range_ in self['range']]
+			check_range_overlap(ranges)
+			check_range_subnet(subnet, ranges)
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
