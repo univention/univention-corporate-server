@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
-import ipaddr
+import ipaddress
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -149,10 +149,11 @@ class object(DHCPBase):
 
 	def ready(self):
 		super(object, self).ready()
-		subnet = ipaddr.IPNetwork('%(subnet)s/%(subnetmask)s' % self.superordinate.info)
+		# Use ipaddress.IPv4Interface().network to be liberal with subnet notation
+		subnet = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % self.superordinate.info).network
 		for addresses in self.info['range']:
 			for addr in addresses:
-				if ipaddr.IPAddress(addr) not in subnet:
+				if ipaddress.IPv4Address(u'%s' % (addr,)) not in subnet:
 					raise univention.admin.uexceptions.rangeNotInNetwork(addr)
 
 	def _ldap_modlist(self):
