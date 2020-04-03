@@ -140,7 +140,7 @@ class object(DHCPBase):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for i in [x.decode('UTF-8') for x in self.oldattr.get('dhcpPermitList', [])]:
-			permit, name = i.split(' ', 1)
+			permit, name = i.split(u' ', 1)
 			if name in self.permits_dhcp2udm:
 				prop = self.permits_dhcp2udm[name]
 				self[prop] = permit
@@ -164,12 +164,12 @@ class object(DHCPBase):
 			for prop, value in self.permits_udm2dhcp.items():
 				try:
 					permit = self.oldinfo[prop]
-					new.remove(' '.join((permit, value)).encode('UTF-8'))
+					new.remove(u' '.join((permit, value)).encode('UTF-8'))
 				except LookupError:
 					pass
 				try:
 					permit = self.info[prop]
-					new.append(' '.join((permit, value)).encode('UTF-8'))
+					new.append(u' '.join((permit, value)).encode('UTF-8'))
 				except LookupError:
 					pass
 
@@ -180,14 +180,8 @@ class object(DHCPBase):
 
 	@classmethod
 	def rewrite_filter(cls, filter, mapping):
-		values = {
-			'known_clients': 'known clients',
-			'unknown_clients': 'unknown clients',
-			'dynamic_bootp_clients': 'dynamic bootp clients',
-			'all_clients': 'all clients'
-		}
-		if filter.variable in values:
-			filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
+		if filter.variable in cls.permits_udm2dhcp:
+			filter.value = '%s %s' % (filter.value.strip('*'), cls.permits_udm2dhcp[filter.variable])
 			filter.variable = 'dhcpPermitList'
 		else:
 			super(object, cls).rewrite_filter(filter, mapping)
