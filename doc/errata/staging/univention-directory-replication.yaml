@@ -1,0 +1,10 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: univention-directory-replication
+fix: 11.0.0-8A~4.3.0.202004050704
+desc: |-
+ This update addresses the following issue:
+ * Fix exception logging in corner cases.
+bug: [51062]
