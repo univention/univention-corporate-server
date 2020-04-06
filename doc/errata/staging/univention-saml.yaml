@@ -9,4 +9,8 @@ desc: |
  * The configuration of SAML identity providers has been extended
    by the possibility to configure an attribute mapping
    for the LDAPattributes required by the Service providers.
-bug: [48927]
+ * The self service can now be set up to allow users to create their
+   own account (see also bug 51067). For this new feature the SAML identity
+   provider has been adapted, to be configurable to deny login for
+   unverified, self registered accounts.
+bug: [48927, 51068]
