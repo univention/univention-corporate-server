@@ -1,3 +1,9 @@
+univention-ldb-modules (8.0.0-6) unstable; urgency=low
+
+  * Bug #48823: Fix error message in postinst
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Feb 2022 11:49:49 +0100
+
 univention-ldb-modules (8.0.0-5) unstable; urgency=medium
 
   * Bug #53567: migrate univention-ldb-modules to Python 3
