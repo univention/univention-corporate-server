@@ -30,13 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_clean:
-	cd src; $(MAKE) clean; cd -
-	dh_auto_clean
-
-override_dh_auto_build:
-	cd src; $(MAKE); cd -
-	dh_auto_build
-
 %:
-	dh $@
+	dh $@ --parallel --sourcedirectory=src
