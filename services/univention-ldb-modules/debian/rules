@@ -30,53 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-CFLAGS = -g -Wall -I/usr/include/samba-4.0
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-CFLAGS += -O0
-else
-CFLAGS += -O2
-endif
-
+CFLAGS += -I/usr/include/samba-4.0
 LDFLAGS += -Wl,--as-needed
 
-DESTDIR=$(CURDIR)/debian/tmp
-WAF=buildtools/bin/waf
-
-export PYTHON=$(shell which `pyversions -r`)
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	dh $@ --with ucr
+	dh $@ --buildsystem=makefile --with ucr
 
 override_dh_auto_configure:
-	dh_testdir
 	CFLAGS="$(CFLAGS)" ./configure \
 		--prefix=/usr \
 		--disable-rpath-install \
 		--libdir=/usr/lib/$(DEB_HOST_MULTIARCH) \
 		--with-modulesdir=/usr/lib/$(DEB_HOST_MULTIARCH)/samba
-
-override_dh_auto_build:
-	dh_auto_build --buildsystem=makefile
-
-ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-override_dh_auto_test:
-	$(MAKE) check
-endif
-
-override_dh_auto_install:
-	$(MAKE) install DESTDIR=$(DESTDIR)
-
-override_dh_install:
-	## put the following to files into dh_install sourcedir
-	install ucs-school-create_windows_computer $(DESTDIR)
-	dh_install --fail-missing --list-missing --sourcedir=$(DESTDIR)
-
-override_dh_auto_clean:
-	dh_testdir
-	dh_testroot
-	-$(WAF) clean
-	rm -rf buildtools/bin/.waf-*
-	rm -f buildtools/wafsamba/*.pyc
-	dh_clean

@@ -1,0 +1,2 @@
+buildtools/bin/.waf-*/
+buildtools/wafsamba/*.pyc

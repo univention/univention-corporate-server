@@ -1,3 +1,1 @@
-usr/lib/*/samba/ldb/univention_samaccountname_ldap_check.so
-usr/lib/*/samba/ldb/univention_ldb_log.so
-ucs-school-create_windows_computer usr/sbin
+ucs-school-create_windows_computer	usr/sbin/
