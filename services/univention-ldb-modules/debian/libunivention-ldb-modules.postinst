@@ -52,7 +52,6 @@ case "$1" in
 		systemctl try-restart univention-directory-listener
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
-		:
 		;;
 	*)
 		echo "postinst called with unknown argument \`$1'" >&2
@@ -61,4 +60,3 @@ case "$1" in
 esac
 
 exit 0
-

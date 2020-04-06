@@ -1,4 +1,4 @@
-/* 
+/*
  * Samba LDB module univention_samaccountname_ldap_check
  *	LDB Module for checking samaccountname adds against external LDAP
  *
@@ -39,7 +39,7 @@
      ** NOTE! The following LGPL license applies to the ldb
      ** library. This does NOT imply that all of Samba is released
      ** under the LGPL
-   
+
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
    License as published by the Free Software Foundation; either
@@ -160,7 +160,6 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 	usersid = sid_to_string(d_sid);
 	ldb_debug(ldb, LDB_DEBUG_TRACE, ("%s: sid: %s\n"), ldb_module_get_name(module), usersid);
 
-	
 	attribute = ldb_msg_find_element(req->op.add.message, "objectClass");
 	for (i=0; i<attribute->num_values; i++) {
 		if ( !(strcasecmp((const char *)attribute->values[i].data, "computer")) ) {
@@ -173,14 +172,14 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			is_user = true;
 		}
 	}
-			
+
 	if ( is_computer ) {
 		attribute = ldb_msg_find_element(req->op.add.message, "sAMAccountName");
 		if( attribute == NULL ) {
 			// we can't handle this
 			return ldb_next_request(module, req);
 		}
-			
+
 		char *opt_name = malloc(5 + attribute->values[0].length + 1);
 		if (opt_name == NULL) {
 			return ldb_module_oom(module);
@@ -259,7 +258,7 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			} else {
 				status = execl("/usr/sbin/ucs-school-create_windows_computer", "/usr/sbin/ucs-school-create_windows_computer", "-s", ldap_master, "-P", machine_pass, "-U", opt_my_samaccoutname, "selectiveudm/create_windows_computer", "-o", opt_name, "-o", opt_usersid, NULL);
 			}
- 
+
 			if (status == -1) {     // otherwise es wouldn't be here
 				ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: exec of /usr/sbin/ucs-school-create_windows_computer failed: %s\n"), ldb_module_get_name(module), strerror(errno));
 			}
@@ -314,10 +313,10 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		}
 
 		// Trim trailing space
-  		char *end_ptr = target_dn_str + nbytes - 1;
-  		while(end_ptr > target_dn_str && isspace((unsigned char)*end_ptr)) end_ptr--;
-  		// Write new null terminator
-  		*(end_ptr+1) = 0;
+		char *end_ptr = target_dn_str + nbytes - 1;
+		while(end_ptr > target_dn_str && isspace((unsigned char)*end_ptr)) end_ptr--;
+		// Write new null terminator
+		*(end_ptr+1) = 0;
 
 		// Now modify request DN
 		msg = ldb_msg_copy_shallow(req, req->op.add.message);
@@ -342,7 +341,7 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		if (ret != LDB_SUCCESS) {
 			return ret;
 		}
-	 
+
 		return ldb_next_request(module, down_req);
 
 	} else if ( is_user || is_group ) {

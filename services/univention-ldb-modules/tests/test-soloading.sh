@@ -34,4 +34,3 @@ sAMAccountName: $testaccount
 EOF
 
 $VALGRIND ldbsearch "(sAMAccountName=$testaccount)" | grep "sAMAccountName: $testaccount" || exit 1
-

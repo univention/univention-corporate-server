@@ -1,4 +1,4 @@
-/* 
+/*
  * Samba LDB module univention_ldb_log
  *	LDB Module for monitoring LDB operations
  *
@@ -39,7 +39,7 @@
      ** NOTE! The following LGPL license applies to the ldb
      ** library. This does NOT imply that all of Samba is released
      ** under the LGPL
-   
+
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
    License as published by the Free Software Foundation; either
@@ -76,11 +76,11 @@ static int univention_ldb_log(struct ldb_module *module, struct ldb_request *req
 		fprintf(fp, " dn: %s\n",
 			      ldb_dn_is_null(req->op.search.base)?"<rootDSE>":
 			      ldb_dn_get_linearized(req->op.search.base));
-		fprintf(fp, " scope: %s\n", 
+		fprintf(fp, " scope: %s\n",
 			  req->op.search.scope==LDB_SCOPE_BASE?"base":
 			  req->op.search.scope==LDB_SCOPE_ONELEVEL?"one":
 			  req->op.search.scope==LDB_SCOPE_SUBTREE?"sub":"UNKNOWN");
-		fprintf(fp, " expr: %s\n", 
+		fprintf(fp, " expr: %s\n",
 			  ldb_filter_from_tree(tmp_ctx, req->op.search.tree));
 		if (req->op.search.attrs == NULL) {
 			fprintf(fp, " attr: <ALL>\n");
@@ -92,14 +92,14 @@ static int univention_ldb_log(struct ldb_module *module, struct ldb_request *req
 		break;
 	case LDB_DELETE:
 		fprintf(fp, "ldb_trace_request: DELETE\n");
-		fprintf(fp, " dn: %s\n", 
+		fprintf(fp, " dn: %s\n",
 			      ldb_dn_get_linearized(req->op.del.dn));
 		break;
 	case LDB_RENAME:
 		fprintf(fp, "ldb_trace_request: RENAME\n");
-		fprintf(fp, " olddn: %s\n", 
+		fprintf(fp, " olddn: %s\n",
 			      ldb_dn_get_linearized(req->op.rename.olddn));
-		fprintf(fp, " newdn: %s\n", 
+		fprintf(fp, " newdn: %s\n",
 			      ldb_dn_get_linearized(req->op.rename.newdn));
 		break;
 	case LDB_EXTENDED:
@@ -109,30 +109,30 @@ static int univention_ldb_log(struct ldb_module *module, struct ldb_request *req
 		break;
 	case LDB_ADD:
 		fprintf(fp, "ldb_trace_request: ADD\n");
-		fprintf(fp, "%s\n", 
-			      ldb_ldif_message_string(ldb, tmp_ctx, 
-						      LDB_CHANGETYPE_ADD, 
+		fprintf(fp, "%s\n",
+			      ldb_ldif_message_string(ldb, tmp_ctx,
+						      LDB_CHANGETYPE_ADD,
 						      req->op.add.message));
 		break;
 	case LDB_MODIFY:
 		fprintf(fp, "ldb_trace_request: MODIFY\n");
-		fprintf(fp, "%s\n", 
-			      ldb_ldif_message_string(ldb, tmp_ctx, 
-						      LDB_CHANGETYPE_ADD, 
+		fprintf(fp, "%s\n",
+			      ldb_ldif_message_string(ldb, tmp_ctx,
+						      LDB_CHANGETYPE_ADD,
 						      req->op.mod.message));
 		break;
 	case LDB_REQ_REGISTER_CONTROL:
 		fprintf(fp, "ldb_trace_request: REGISTER_CONTROL\n");
-		fprintf(fp, "%s\n", 
+		fprintf(fp, "%s\n",
 			      req->op.reg_control.oid);
 		break;
 	case LDB_REQ_REGISTER_PARTITION:
 		fprintf(fp, "ldb_trace_request: REGISTER_PARTITION\n");
-		fprintf(fp, "%s\n", 
+		fprintf(fp, "%s\n",
 			      ldb_dn_get_linearized(req->op.reg_partition.dn));
 		break;
 	default:
-		fprintf(fp, "ldb_trace_request: UNKNOWN(%u)\n", 
+		fprintf(fp, "ldb_trace_request: UNKNOWN(%u)\n",
 			      req->operation);
 		break;
 	}
