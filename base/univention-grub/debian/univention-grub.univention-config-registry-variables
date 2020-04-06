@@ -100,18 +100,6 @@ Description[en]=This variable configures a time span in seconds, which is being 
 Type=int
 Categories=system-base
 
-[grub/generate-menu-lst]
-Description[de]=Wenn diese Option aktiviert ist, wird zusätzlich zur Grub 2-Konfiguration eine /boot/grub/menu.lst im Format von Grub 1 generiert.
-Description[en]=If this option is activated, in addition to the Grub 2 configuration a /boot/grub/menu.lst file is generated in Grub 1 format.
-Type=bool
-Categories=system-base
-
-[grub/grub1root]
-Description[de]=Der hier übergebene Wert wird für die Root-Partition in der generierten Grub1-Konfiguration verwendet (siehe 'grub/generate-menu-lst'). Ist die Variable nicht gesetzt, wird der Wert automatisch ermittelt.
-Description[en]=This value is used for the root partition in the generated Grub1 configuration (see 'grub/generate-menu-lst'). If the variable is unset, the value is detected automatically.
-Type=str
-Categories=system-base
-
 [grub/title]
 Description[de]=Titel für den Eintrag von UCS im GRUB Boot Menü. Standard ist "Univention Corporate Server".
 Description[en]=Title for the entry of UCS in the GRUB boot menu. Default is "Univention Corporate Server".

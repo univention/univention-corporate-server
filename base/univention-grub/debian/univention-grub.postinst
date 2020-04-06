@@ -65,8 +65,7 @@ univention-config-registry set grub/timeout?5 \
 	grub/color/normal?"black/black" \
 	grub/color/highlight?"white/green" \
 	grub/menu/color/normal?"black/black" \
-	grub/menu/color/highlight?"white/green" \
-	grub/generate-menu-lst?"yes"
+	grub/menu/color/highlight?"white/green"
 
 # grub needs to read the file unicode.pf2 for gfxmode,
 # /usr/share/grub/unicode.pf2 is the default, but /
@@ -208,11 +207,6 @@ then # Bug 40654
 	fi
 	echo "Done checking grub-pc/install_devices for errors."
 fi
-
-if ! [ -e /boot/grub/menu.lst ] ; then
-    /usr/sbin/univention-grub-generate-menu-lst
-fi
-
 grepcnt=$(grep -c "^dm-mod$" /etc/initramfs-tools/modules)
 if [ "$grepcnt" = "0" ] ; then
 	echo "LVM kernel module 'dm-mod' is missing in initrd - recreating initrd"
