@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-saml
-fix: 6.0.2-29A~4.4.0.202004031742
+fix: 6.0.2-30A~4.4.0.202004061810
 desc: |
  This update addresses the following issue:
  * The configuration of SAML identity providers has been extended
