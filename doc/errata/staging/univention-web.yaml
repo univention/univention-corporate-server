@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-web
-fix: 
+fix: 3.0.5-32A~4.4.0.202004062317
 desc: |
  This update addresses the following issue(s):
  * The error messages in input fields were sometimes not immediately shown.

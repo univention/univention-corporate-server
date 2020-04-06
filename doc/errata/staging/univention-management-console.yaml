@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-management-console
-fix: 
+fix: 11.0.4-58A~4.4.0.202004062324
 desc: |
  This update addresses the following issue(s):
  * The Self Service now has an option that allows anonymous users to create
