@@ -39,17 +39,8 @@ def configure(conf):
     conf.CHECK_LIB('talloc')
     conf.CHECK_HEADERS('talloc.h')
     conf.CHECK_HEADERS('tevent.h')
-    conf.CHECK_LIB('ldap')
-    conf.CHECK_HEADERS('ldap.h')
-    conf.CHECK_LIB('univentionpolicy')
-    conf.CHECK_HEADERS('univention/ldap.h')
     conf.CHECK_LIB('univentionconfig')
     conf.CHECK_HEADERS('univention/config.h')
-    # conf.CHECK_LIB('univentiondebug')
-    # conf.CHECK_HEADERS('univention/debug.h')
-    # conf.CHECK_FUNCS_IN('univention_config_get_string', 'univentionconfig', headers='univention/config.h')
-    # conf.CHECK_FUNCS_IN('univention_ldap_open', 'univentionpolicy', headers='univention/ldap.h')
-    # conf.CHECK_FUNCS_IN('ldap_search_ext_s ldap_msgfree ldap_unbind_ext', 'ldap', headers='univention/ldap.h')
 
 
 def build(bld):
@@ -67,7 +58,7 @@ def build(bld):
                      init_function='ldb_univention_samaccountname_ldap_check_init',
                      internal_module=False,
                      module_init_name='ldb_init_module',
-                     deps='ldb talloc univentionpolicy univentionconfig ldap',
+                     deps='ldb talloc univentionconfig',
                      subsystem='ldb')
 
     bld.SAMBA_MODULE('ldb_univention_ldb_log',

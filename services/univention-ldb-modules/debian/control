@@ -5,11 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  ldb-tools,
- libldb-dev (>= 2:1.1.25-1),
- libtalloc-dev,
- libtevent-dev,
  libunivention-config-dev,
- libunivention-policy-dev,
  python3,
  samba-dev,
  univention-config-dev (>= 15.0.3),
@@ -20,9 +16,6 @@ Architecture: any
 Section: libs
 Depends:
  ldb-tools,
- libldb2,
- libunivention-config0,
- libunivention-policy0,
  python3-samba,
  ${misc:Depends},
  ${shlibs:Depends},
