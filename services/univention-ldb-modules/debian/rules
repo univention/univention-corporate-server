@@ -73,9 +73,6 @@ override_dh_install:
 	install ucs-school-create_windows_computer $(DESTDIR)
 	dh_install --fail-missing --list-missing --sourcedir=$(DESTDIR)
 
-override_dh_strip:
-	dh_strip -a --dbg-package=libunivention-ldb-modules-dbg
-
 override_dh_auto_clean:
 	dh_testdir
 	dh_testroot

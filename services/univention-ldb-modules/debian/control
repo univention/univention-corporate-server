@@ -33,20 +33,3 @@ Description: Univention LDB modules
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-
-Package: libunivention-ldb-modules-dbg
-Architecture: any
-Section: libs
-Depends:
- libunivention-ldb-modules (= ${binary:Version}),
- ${misc:Depends},
-Description: Univention LDB modules debug symbols
- This package provides debugging symbols for UCS specific LDB modules
- .
- This package provides debugging information for the UCS specific
- LDB modules. Install it to get a better backtrace in the event of a
- crash.
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
