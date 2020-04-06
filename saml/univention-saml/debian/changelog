@@ -1,3 +1,9 @@
+univention-saml (6.0.2-26) unstable; urgency=medium
+
+  * Bug #51068: check email verification status for self registered accounts
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Apr 2020 11:16:36 +0200
+
 univention-saml (6.0.2-25) unstable; urgency=medium
 
   * Bug #50884: Fix translation
