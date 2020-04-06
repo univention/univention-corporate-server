@@ -74,6 +74,19 @@
 // From openldap/servers/slapd/slap.h
 #define SLAP_LDAPDN_MAXLEN 8192
 
+#define AUTOPTR_FUNC_NAME(type) type##AutoPtrFree
+#define DEFINE_AUTOPTR_FUNC(type, func) \
+    static inline void AUTOPTR_FUNC_NAME(type)(type **_ptr) \
+    { \
+        if (*_ptr) \
+            (func)(*_ptr); \
+        *_ptr = NULL; \
+    }
+#define AUTOPTR(type) \
+    __attribute__((cleanup(AUTOPTR_FUNC_NAME(type)))) type *
+DEFINE_AUTOPTR_FUNC(char, free);
+
+
 char *sid_to_string(const struct dom_sid *sid)
 {
 	char buf[DOM_SID_STR_BUFLEN];
@@ -138,7 +151,6 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 	bool is_computer = false;
 	bool is_group = false;
 	bool is_user = false;
-	char *usersid;
 	int i, fd[2], nbytes, ret;
 	char target_dn_str[SLAP_LDAPDN_MAXLEN+1] = "";	// initialize with NULs
 
@@ -157,7 +169,7 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 	struct auth_session_info *session_info = (struct auth_session_info *)ldb_get_opaque(ldb, "sessionInfo");
 	struct security_token *sec_token = (struct security_token *)session_info->security_token;
 	struct dom_sid *d_sid = (struct dom_sid *)sec_token->sids;
-	usersid = sid_to_string(d_sid);
+	AUTOPTR(char) usersid = sid_to_string(d_sid);
 	ldb_debug(ldb, LDB_DEBUG_TRACE, ("%s: sid: %s\n"), ldb_module_get_name(module), usersid);
 
 	attribute = ldb_msg_find_element(req->op.add.message, "objectClass");
@@ -180,19 +192,18 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			return ldb_next_request(module, req);
 		}
 
-		char *opt_name = malloc(5 + attribute->values[0].length + 1);
+		AUTOPTR(char) opt_name = malloc(5 + attribute->values[0].length + 1);
 		if (opt_name == NULL) {
 			return ldb_module_oom(module);
 		}
 		sprintf(opt_name, "name=%s", attribute->values[0].data);
 		opt_name[5 + attribute->values[0].length] = 0;
 
-		char *opt_unicodePwd = NULL;
+		AUTOPTR(char) opt_unicodePwd = NULL;
 		attribute = ldb_msg_find_element(req->op.add.message, "unicodePwd");
 		if( attribute != NULL ) {
-			char *unicodePwd_base64;
 			size_t unicodePwd_base64_strlen = BASE64_ENCODE_LEN(attribute->values[0].length);
-			unicodePwd_base64 = malloc(unicodePwd_base64_strlen + 1);
+			AUTOPTR(char) unicodePwd_base64 = malloc(unicodePwd_base64_strlen + 1);
 			if (unicodePwd_base64 == NULL) {
 				return ldb_module_oom(module);
 			}
@@ -203,31 +214,29 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			}
 			sprintf(opt_unicodePwd, "password=%s", unicodePwd_base64);
 			opt_unicodePwd[9 + unicodePwd_base64_strlen] = 0;
-			free(unicodePwd_base64);
 		} else {
 			ldb_debug(ldb, LDB_DEBUG_WARNING, ("%s: new computer object without initial unicodePwd\n"), ldb_module_get_name(module));
 		}
 
-		char *ldap_master = univention_config_get_string("ldap/master");
-		char *machine_pass = read_pwd_from_file("/etc/machine.secret");
+		AUTOPTR(char) ldap_master = univention_config_get_string("ldap/master");
+		AUTOPTR(char) machine_pass = read_pwd_from_file("/etc/machine.secret");
 		if (machine_pass == NULL) {
 			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: Error reading /etc/machine.secret\n"), ldb_module_get_name(module));
 			return LDB_ERR_OPERATIONS_ERROR;
 		}
 
-		char *my_hostname = univention_config_get_string("hostname");
-		char *opt_my_samaccoutname = malloc(strlen(my_hostname) + 2);
+		AUTOPTR(char) my_hostname = univention_config_get_string("hostname");
+		AUTOPTR(char) opt_my_samaccoutname = malloc(strlen(my_hostname) + 2);
 		if (opt_my_samaccoutname == NULL) {
 			return ldb_module_oom(module);
 		}
 		sprintf(opt_my_samaccoutname, "%s$", my_hostname);
 		opt_my_samaccoutname[strlen(my_hostname)+1] = 0;
-		char *opt_usersid = malloc(strlen(usersid) + strlen("usersid=") + 1);
+		AUTOPTR(char) opt_usersid = malloc(strlen(usersid) + strlen("usersid=") + 1);
 		if (opt_usersid == NULL) {
 			return ldb_module_oom(module);
 		}
 		sprintf(opt_usersid, "usersid=%s", usersid);
-		free(my_hostname);
 
 		int errno_wait = 0;
 		sighandler_t sh;
@@ -241,7 +250,6 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		int status;
 		int pid=fork();
 		if ( pid < 0 ) {
-
 			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: fork failed\n"), ldb_module_get_name(module));
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 
@@ -272,16 +280,6 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 			}
 
 			signal(SIGCHLD, sh);
-		}
-
-		free(ldap_master);
-		free(machine_pass);
-		free(opt_my_samaccoutname);
-		free(opt_name);
-		free(usersid);
-		free(opt_usersid);
-		if (opt_unicodePwd != NULL) {
-			free(opt_unicodePwd);
 		}
 
 		if( ! WIFEXITED(status) ) {
