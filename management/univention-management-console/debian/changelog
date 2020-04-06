@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-58) unstable; urgency=medium
+
+  * Bug #51067: self service - self registration
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 06 Apr 2020 19:42:44 +0200
+
 univention-management-console (11.0.4-57) unstable; urgency=medium
 
   * Bug #50332: remove option from shebang
