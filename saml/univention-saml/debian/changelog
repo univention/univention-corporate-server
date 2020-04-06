@@ -1,3 +1,9 @@
+univention-saml (6.0.2-30) unstable; urgency=medium
+
+  * Bug #51068: check email verification status for self registered accounts
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Apr 2020 18:09:12 +0200
+
 univention-saml (6.0.2-29) unstable; urgency=medium
 
   * Bug #48927: If key is given more than once: append value dont overwrite
