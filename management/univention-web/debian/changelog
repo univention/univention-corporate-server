@@ -1,3 +1,9 @@
+univention-web (3.0.5-32) unstable; urgency=medium
+
+  * Bug #51067: fix syntax error messages not showing up
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 06 Apr 2020 19:44:02 +0200
+
 univention-web (3.0.5-31) unstable; urgency=medium
 
   * Bug #47845: Fixed typo

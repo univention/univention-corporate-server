@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-16) unstable; urgency=medium
+
+  * Bug #51067: self service - self registration
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 06 Apr 2020 19:43:18 +0200
+
 univention-self-service (4.0.3-15) unstable; urgency=medium
 
   * Bug #50608: made "Forgot your password?" link in the login

@@ -1,0 +1,8 @@
+Dear user {username},
+
+we have received a request to change your account recovery
+email from {old_email} to {new_email}.
+
+If you did not request this change please
+contact your system administrator.
+

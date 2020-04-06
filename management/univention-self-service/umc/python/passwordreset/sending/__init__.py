@@ -21,8 +21,13 @@ def get_plugins(log):
 		res = imp.load_module(_module["name"], *_module["info"])
 		for thing in dir(res):
 			possible_plugin_class = getattr(res, thing)
-			if inspect.isclass(possible_plugin_class) and issubclass(possible_plugin_class, UniventionSelfServiceTokenEmitter):
-				return possible_plugin_class
+			if not inspect.isclass(possible_plugin_class):
+				continue
+			if possible_plugin_class is UniventionSelfServiceTokenEmitter:
+				continue
+			if not issubclass(possible_plugin_class, UniventionSelfServiceTokenEmitter):
+				continue
+			return possible_plugin_class
 		return None
 
 	for _plugin in find_plugins():
