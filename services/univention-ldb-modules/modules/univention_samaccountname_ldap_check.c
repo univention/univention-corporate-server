@@ -234,7 +234,10 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 		sighandler_t sh;
 		sh = signal(SIGCHLD, SIG_DFL);
 
-		pipe(fd);
+		if (pipe(fd)) {
+			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: pipe failed\n"), ldb_module_get_name(module));
+			return LDB_ERR_UNWILLING_TO_PERFORM;
+		}
 
 		int status;
 		int pid=fork();
@@ -245,7 +248,10 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 
 		} else if ( pid == 0 ) {
 			close(fd[0]);   // close reading end
-			dup2(fd[1], STDOUT_FILENO);
+			if (fd[1] != STDOUT_FILENO) {
+				dup2(fd[1], STDOUT_FILENO);
+				close(fd[1]);
+			}
 
 			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: calling ucs-school-create_windows_computer\n"), ldb_module_get_name(module));
 			if (opt_unicodePwd != NULL) {
