@@ -59,8 +59,6 @@ SERVICES = {
 LDAP_UVMM_RDN = "cn=Virtual Machine Manager"
 LDAP_INFO_RDN = "cn=Information,%s" % LDAP_UVMM_RDN
 LDAP_PROFILES_RDN = "cn=Profiles,%s" % LDAP_UVMM_RDN
-LDAP_CLOUD_CONNECTION_RDN = "cn=CloudConnection,%s" % LDAP_UVMM_RDN
-LDAP_CLOUD_TYPE_RDN = "cn=CloudType,%s" % LDAP_UVMM_RDN
 
 
 class LdapError(TranslatableException):
@@ -204,91 +202,3 @@ def ldap_modify(uuid):
 		record.commit = record.create
 	return record
 
-
-def ldap_cloud_connections():
-	""" Return a list of all cloud connections."""
-	filt = '(objectClass=univentionVirtualMachineCloudConnection)'
-	# ensure that we should manage the host
-	filt = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % (filt, HOST_FQDN)
-	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
-	try:
-		cloudconnections = []
-		res = lo.search(filt)
-		for dn, data in res:
-			if 'univentionVirtualMachineCloudConnectionParameter' in data:
-				c = {}
-				c['dn'] = dn
-				c['name'] = data['cn'][0]
-				# Search cloudtype parameter
-				typebase = data['univentionVirtualMachineCloudConnectionTypeRef'][0]
-				res = lo.search(base=typebase)
-				cloudtype = res[0][1]['cn'][0]
-				c['type'] = cloudtype
-				for p in data['univentionVirtualMachineCloudConnectionParameter']:
-					if '=' not in p:
-						logger.error('Expected "=" in cloud connection parameter. Connection %s, parameter %s', dn, p)
-						continue
-					p_name = p.split('=', 1)[0]
-					p_value = p.split('=', 1)[1]
-					c[p_name] = p_value
-				c['ucs_images'] = data['univentionVirtualMachineCloudConnectionIncludeUCSImages'][0]
-				c['search_pattern'] = data.get('univentionVirtualMachineCloudConnectionImageSearchPattern', [''])[0]
-				c['preselected_images'] = []
-				if 'univentionVirtualMachineCloudConnectionImageList' in data:
-					c['preselected_images'] = data['univentionVirtualMachineCloudConnectionImageList']
-				cloudconnections.append(c)
-
-		return cloudconnections
-	except LDAPError:
-		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
-
-
-def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search_pattern="*", preselected_images=[]):
-	""" Add a new cloud connection."""
-	try:
-		lo, position = univention.admin.uldap.getMachineConnection()
-		dn = 'cn=%s,%s,%s' % (name, LDAP_CLOUD_CONNECTION_RDN, position.getDn())
-		dn_typeref = 'cn=%s,%s,%s' % (cloudtype, LDAP_CLOUD_TYPE_RDN, position.getDn())
-		parameter_lst = []
-
-		if ucs_images is True:
-			ucs_images = "1"
-		if ucs_images is False:
-			ucs_images = "0"
-
-		for k, v in parameter.items():
-			if k and v:
-				parameter_lst.append('%s=%s' % (k, v))
-		attrs = {
-			'objectClass': ['univentionVirtualMachineCloudConnection', 'univentionVirtualMachineHostOC', 'univentionObject'],
-			'univentionObjectType': 'uvmm/cloudconnection',
-			'cn': name,
-			'univentionVirtualMachineCloudConnectionTypeRef': dn_typeref,
-			'univentionVirtualMachineCloudConnectionParameter': parameter_lst,
-			'univentionVirtualMachineCloudConnectionIncludeUCSImages': ucs_images,
-			'univentionVirtualMachineCloudConnectionImageSearchPattern': search_pattern
-		}
-		if preselected_images:
-			attrs['univentionVirtualMachineCloudConnectionImageList'] = preselected_images
-		modlist = attrs.items()
-		lo.add(dn, modlist)
-
-	except LDAPError:
-		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
-
-
-def ldap_cloud_types():
-	""" Return a list of all cloud types."""
-	filt = '(objectClass=univentionVirtualMachineCloudType)'
-	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
-	try:
-		cloudtypes = []
-		res = lo.search(filt)
-		for dn, data in res:
-			c = {}
-			c['name'] = data['cn'][0]
-			cloudtypes.append(c)
-
-		return cloudtypes
-	except LDAPError:
-		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))

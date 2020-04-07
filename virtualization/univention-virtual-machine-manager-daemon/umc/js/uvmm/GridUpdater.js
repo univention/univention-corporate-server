@@ -73,7 +73,7 @@ define([
 		},
 
 		_treeUpdate: function() {
-			var commands = {default: 'uvmm/node/query', cloudconnections: 'uvmm/cloud/query'};
+			var commands = {default: 'uvmm/node/query'};
 			for (var type in this._treeStoreCache) {
 				this.tree.model.getNodes(commands[type], lang.hitch(this, '_updateTreeStore', type));
 			}
