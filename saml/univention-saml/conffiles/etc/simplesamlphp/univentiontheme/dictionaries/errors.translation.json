@@ -1,0 +1,41 @@
+@!@
+import json
+
+
+def get_selfservice_translations():
+	def get_translations_title_account_unverified():
+		variable = 'saml/idp/selfservice/account-verification/error-title/'
+		translations = {
+			'de': 'Konto nicht verifiziert'
+		}
+		for key in configRegistry.keys():
+			if key.startswith(variable):
+				translations[key[len(variable):]] = configRegistry[key]
+		return translations
+
+
+	def get_translations_descr_account_unverified():
+		variable = 'saml/idp/selfservice/account-verification/error-descr/'
+		translations = {
+			'de': 'Sie müssen Ihr Konto <a href="/univention/self-service/#page=verifyaccount">verifizieren</a>, bevor Sie sich einloggen können.'
+		}
+		for key in configRegistry.keys():
+			if key.startswith(variable):
+				translations[key[len(variable):]] = configRegistry[key]
+		return translations
+
+
+	selfservice_translations = {
+		'title_univention:SELFSERVICE_ACCUNVERIFIED': get_translations_title_account_unverified(),
+		'descr_univention:SELFSERVICE_ACCUNVERIFIED': get_translations_descr_account_unverified(),
+	}
+	return selfservice_translations
+
+
+with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_static.translation.json', 'r') as errors_static:
+	errors_translation = json.loads(errors_static.read())
+	errors_translation.update(get_selfservice_translations())
+
+
+print(json.dumps(errors_translation))
+@!@

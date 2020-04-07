@@ -37,7 +37,7 @@ if ($this->data['errorcode'] !== NULL) {
 if ($this->data['errorcode'] !== NULL) {
 ?>
 	<p class="umcLoginWarning" >
-		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>.</b>
+		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>.</b><br>
 <?php
 if (in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'SAMBA_PWCHANGE'))) {
 	$password_change_url = $this->configuration->getValue('password_change_url', '');
@@ -48,7 +48,7 @@ if (in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'S
 	);
 	echo '</span>';
 } else {
-	echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams']));
+	echo '<div id="error_decription"></div>';
 }
 ?>
 	</p>
@@ -117,6 +117,15 @@ if (!empty($this->data['links'])) {
 					setTimeout(function() {
 						node.focus();
 					}, 0);
+				}
+			});
+			require(['dojo/dom', 'dompurify/purify', 'dojo/domReady!'], function(dom, purify) {
+				var node = dom.byId("error_decription");
+				<?php
+					printf("var error_description_text = purify.sanitize(%s);\n", json_encode($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])))
+				?>
+				if (node) {
+					node.innerHTML = error_description_text;
 				}
 			});
 		</script>

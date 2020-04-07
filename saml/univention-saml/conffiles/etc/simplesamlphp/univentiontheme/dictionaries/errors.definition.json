@@ -1,0 +1,34 @@
+@!@
+import json
+
+def get_selfservice_definitions():
+	def get_title_account_unverified():
+		variable = 'saml/idp/selfservice/account-verification/error-title'
+		fallback = 'Account not verified'
+		return configRegistry.get(variable + '/en', configRegistry.get(variable, fallback))
+
+
+	def get_descr_account_unverified():
+		variable = 'saml/idp/selfservice/account-verification/error-descr'
+		fallback = 'You must <a href="/univention/self-service/#page=verifyaccount">verify</a> your account before you can login.'
+		return configRegistry.get(variable + '/en', configRegistry.get(variable, fallback))
+
+
+	selfservice_definitions = {
+		'title_univention:SELFSERVICE_ACCUNVERIFIED': {
+			'en': get_title_account_unverified(),
+		},
+		'descr_univention:SELFSERVICE_ACCUNVERIFIED': {
+			'en': get_descr_account_unverified(),
+		},
+	}
+	return selfservice_definitions
+
+
+with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_static.definition.json', 'r') as errors_static:
+	errors_definition = json.loads(errors_static.read())
+	errors_definition.update(get_selfservice_definitions())
+
+
+print(json.dumps(errors_definition))
+@!@

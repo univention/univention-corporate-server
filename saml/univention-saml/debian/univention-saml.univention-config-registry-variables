@@ -201,3 +201,27 @@ Description[de]=Wenn diese Variable auf true gesetzt ist, müssen Nutzer, die Ih
 Description[en]=If this variable is set to true, users which have registered their account themself through the selfservice need a verified email address. Otherwise the login is denied.
 Type=str
 Categories=saml
+
+[saml/idp/selfservice/account-verification/error-title]
+Description[de]=Diese Überschrift wird dem Benutzer bei fehlender Kontoverifizierung angezeigt.
+Description[en]=This header is shown to users with missing account verification.
+Type=str
+Categories=saml
+
+[saml/idp/selfservice/account-verification/error-title/.*]
+Description[de]=Gibt eine lokalisierte Version von saml/idp/selfservice/account-verification/error-title an. Z.B. saml/idp/selfservice/account-verification/error-title/de="...".
+Description[en]=Specifies a localized version of saml/idp/selfservice/account-verification/error-title. E.g. saml/idp/selfservice/account-verification/error-title/en="...".
+Type=str
+Categories=saml
+
+[saml/idp/selfservice/account-verification/error-descr]
+Description[de]=Dieser Text wird dem Benutzer bei fehlender Kontoverifizierung angezeigt. Der Text kann gültiges HTML enthalten, was z.B. zur Anzeige von Links verwendet werden kann.
+Description[en]=This text is shown to users with missing account verification. The text can contain valid HTML, which can be used to display links, for example.
+Type=str
+Categories=saml
+
+[saml/idp/selfservice/account-verification/error-descr/.*]
+Description[de]=Gibt eine lokalisierte Version von saml/idp/selfservice/account-verification/error-msg an. Z.B. saml/idp/selfservice/account-verification/error-descr/de="...".
+Description[en]=Specifies a localized version of saml/idp/selfservice/account-verification/error-msg. E.g. saml/idp/selfservice/account-verification/error-descr/en="...".
+Type=str
+Categories=saml
