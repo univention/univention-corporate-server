@@ -505,6 +505,7 @@ class MultiDocker(Docker):
 		container_def['volumes'] = volumes
 		exposed_ports = {}
 		used_ports = {}
+		prots = {}
 		ip_addresses = None
 		if 'networks' not in content:
 			network = self._get_app_network()
@@ -524,13 +525,20 @@ class MultiDocker(Docker):
 			exposed_ports[service_name] = (int(port) for port in service.get('expose', []))
 			used_ports[service_name] = {}
 			for port in service.get('ports', []):
+				prot = None
+				if '/' in str(port):
+					port, prot = port.split('/', 1)
 				try:
 					_port = int(port)
 				except ValueError:
 					host_port, container_port = (int(_port) for _port in port.split(':'))
 					used_ports[service_name][container_port] = host_port
+					if prot:
+						prots[container_port] = prot
 				else:
 					used_ports[service_name][_port] = _port
+					if prot:
+						prots[_port] = prot
 			if ip_addresses and not service.get('networks') and service.get('network_mode') != 'bridge':
 				service['networks'] = {'appcenter_net': {'ipv4_address': str(ip_addresses.next())}}
 		if 'environment' not in container_def:
@@ -555,7 +563,12 @@ class MultiDocker(Docker):
 				else:
 					used_ports[self.app.docker_main_service][container_port] = host_port
 		for service_name, ports in used_ports.iteritems():
-			content['services'][service_name]['ports'] = ['%s:%s' % (host_port, container_port) for container_port, host_port in ports.iteritems()]
+			content['services'][service_name]['ports'] = list()
+			for container_port, host_port in ports.iteritems():
+				if prots.get(container_port):
+					container_port = '{}/{}'.format(container_port, prots[container_port])
+				content['services'][service_name]['ports'].append('{}:{}'.format(host_port, container_port))
+
 		if self.env_file_created and self.app.docker_inject_env_file is not None:
 			for service_name, service in content['services'].iteritems():
 				if (self.app.docker_inject_env_file == 'main' and service_name == self.app.docker_main_service) or (self.app.docker_inject_env_file == 'all'):
