@@ -35,17 +35,13 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 8.0.1-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2019-07-23 08:32+0200\n"
-"PO-Revision-Date: 2019-07-23 08:44+0200\n"
+"PO-Revision-Date: 2020-04-07 07:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: umc/python/uvmm/cloud.py:74
-msgid "Cloud connection"
-msgstr "Cloud-Verbindung"
 
 #: umc/python/uvmm/domains.py:371
 msgid "Could not determine architecture for domain"

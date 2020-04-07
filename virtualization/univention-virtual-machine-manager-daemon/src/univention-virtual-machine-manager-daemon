@@ -289,13 +289,8 @@ if __name__ == '__main__':
 	for uri in arguments:
 		node_add(uri)
 
-	# Add cloud connections
-	from univention.uvmm.cloudnode import cloudconnections
-	if not options.clean and options.cache != '':
-		cloudconnections.set_cache(options.cache)
-
 	# Add nodes from LDAP
-	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError, ldap_cloud_connections
+	from univention.uvmm.uvmm_ldap import cached, ldap_uris, LdapError
 	try:
 		if not options.clean and options.cache != '':
 			def get_ldap_uris():
@@ -306,13 +301,6 @@ if __name__ == '__main__':
 
 		for uri in uris:
 			node_add(uri)
-
-		for connection in ldap_cloud_connections():
-			try:
-				cloudconnections.add_connection(connection, testconnection=False)
-			except:
-				logger.error("Could not add connection %s (from ldap)", connection["name"])
-
 	except LdapError as msg:
 		logger.warning(msg)
 

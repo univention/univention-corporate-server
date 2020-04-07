@@ -92,10 +92,6 @@ if [ "$(check_package_status python-univention-directory-manager-legacy-ucd-tcs)
 		--append module="computers/mobileclient" || die
 fi
 
-univention-directory-manager settings/extended_attribute modify "$@" \
-	--dn "cn=ManageableBy,cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
-	--append module="uvmm/cloudconnection" || die
-
 univention-directory-manager settings/extended_attribute create "$@" --ignore_exists \
 	--position "cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
 	--set objectClass="univentionVirtualMachineGroupOC" \
@@ -128,18 +124,6 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=Virtual Machine Manager,$ldap_base" \
 	--set name="Information" || die
-
-univention-directory-manager container/cn create "$@" --ignore_exists \
-	--position "cn=Virtual Machine Manager,$ldap_base" \
-	--set name="CloudConnection" || die
-
-univention-directory-manager container/cn create "$@" --ignore_exists \
-	--position "cn=Virtual Machine Manager,$ldap_base" \
-	--set name="CloudType" || die
-
-univention-directory-manager uvmm/cloudtype create "$@" --ignore_exists \
-	--position "cn=CloudType,cn=Virtual Machine Manager,$ldap_base" \
-	--set name="OpenStack" || die
 
 . /usr/share/univention-lib/base.sh || exit 1
 stop_udm_cli_server

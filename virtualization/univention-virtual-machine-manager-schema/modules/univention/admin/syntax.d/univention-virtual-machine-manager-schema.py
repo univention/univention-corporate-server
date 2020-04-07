@@ -52,9 +52,3 @@ class UvmmCapacity(simple):
 	regex = re.compile(r'^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$')
 	error_message = _("Value must be an positive capacity (xx.x [kmgtp][[i]B])")
 
-
-class UvmmCloudType(UDM_Objects):
-	description = _('UVMM: Cloud Types')
-	udm_modules = ('uvmm/cloudtype',)
-	label = '%(name)s'
-	use_objects = False
