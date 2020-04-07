@@ -46,7 +46,7 @@ override_dh_auto_install:
 
 override_dh_auto_test:
 	if command -v jshint >/dev/null 2>&1; then find umc/js -name \*.js -type f -exec jshint {} +; fi
-	ucslint
+	dh_auto_test
 
 override_dh_installinit:
 	dh_installinit --error-handler=error_restart -- defaults 30 70

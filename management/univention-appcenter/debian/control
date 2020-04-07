@@ -9,8 +9,6 @@ Build-Depends:
  python-all,
  python-debian,
  python3-all,
- ucslint,
- ucslint-univention,
  univention-config-dev,
  univention-join,
  univention-management-console-dev (>= 11.0.4-37),

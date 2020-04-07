@@ -45,9 +45,5 @@ override_dh_install:
 	dh_install -X.svn
 	install -m755 scripts/postrotate debian/univention-management-console-server/usr/share/univention-management-console/postrotate
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@ --with 'python2,python3'

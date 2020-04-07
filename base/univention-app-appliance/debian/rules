@@ -33,10 +33,6 @@
 %:
 	dh $@ --with 'python2,python3'
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 override_dh_auto_build:
 	univention-l10n-build de
 	dh_auto_build

@@ -13,7 +13,6 @@ Build-Depends:
  libunivention-config-dev,
  libunivention-debug-dev,
  libunivention-policy-dev,
- ucslint-univention,
 
 Package: libunivention-license0
 Architecture: any

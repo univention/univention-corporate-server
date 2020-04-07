@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  ca-certificates,
  debhelper,
- ucslint-univention,
  wget,
 Standards-Version: 3.7.2
 

@@ -7,7 +7,6 @@ Build-Depends:
  dh-python,
  python-polib,
  python2.7-dev,
- ucslint-univention,
  univention-config-dev,
  univention-ucs-translation-template,
 Standards-Version: 3.7.2

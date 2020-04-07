@@ -7,7 +7,6 @@ Build-Depends:
  foomatic-db,
  foomatic-db-engine,
  foomatic-db-gutenprint,
- ucslint-univention,
 Standards-Version: 3.8.2
 
 Package: univention-foomatic-ppds

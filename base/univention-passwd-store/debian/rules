@@ -30,10 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry
@@ -46,4 +42,3 @@ override_dh_fixperms:
 
 %:
 	dh $@
-

@@ -11,7 +11,6 @@ Build-Depends:
  python-debian,
  python-univention-debug,
  python3-all,
- ucslint-univention,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
 

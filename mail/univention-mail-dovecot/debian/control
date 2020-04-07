@@ -6,7 +6,6 @@ Build-Depends:
  debhelper,
  dh-python,
  python-all,
- ucslint-univention,
  univention-config-dev,
 Standards-Version: 3.8.2
 

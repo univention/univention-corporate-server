@@ -9,7 +9,6 @@ Build-Depends:
  python-all,
  python-ipaddr,
  python3-all,
- ucslint-univention,
 
 Package: univention-ipcalc
 Architecture: all

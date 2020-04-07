@@ -45,9 +45,6 @@ override_dh_auto_clean:
 	$(RM) debian/univention-virtual-machine-manager-node-*.conffiles
 	dh_auto_clean
 
-override_dh_auto_test:
-	ucslint
-
 override_dh_installinit:
 	dh_installinit -punivention-virtual-machine-manager-node-kvm --no-restart-on-upgrade
 	dh_installinit --remaining-packages

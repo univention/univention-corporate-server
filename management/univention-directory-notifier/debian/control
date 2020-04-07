@@ -9,7 +9,6 @@ Build-Depends:
  libsasl2-dev,
  libunivention-config-dev,
  libunivention-debug-dev,
- ucslint-univention,
  univention-config-dev,
 
 Package: univention-directory-notifier

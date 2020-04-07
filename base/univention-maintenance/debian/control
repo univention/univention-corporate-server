@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
  debhelper,
- ucslint-univention,
  univention-config-dev,
 
 Package: univention-maintenance

@@ -46,10 +46,6 @@ override_dh_auto_clean:
 override_dh_auto_build: $(MO_FILES)
 	dh_auto_build
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry

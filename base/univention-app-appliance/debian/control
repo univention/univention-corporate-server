@@ -8,7 +8,6 @@ Build-Depends:
  dh-python,
  node-stylus,
  python-all,
- ucslint-univention,
  univention-config-dev,
  univention-management-console-dev,
  univention-ucs-translation-template,

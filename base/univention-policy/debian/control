@@ -15,7 +15,6 @@ Build-Depends:
  libunivention-debug-dev (>= 5.0.2-1),
  python-all,
  python3-all,
- ucslint-univention,
 
 Package: libunivention-policy0
 Architecture: any

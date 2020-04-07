@@ -46,6 +46,3 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod 4755 debian/univention-nagios-libvirtd/usr/lib/nagios/plugins/check_libvirtd_suidwrapper
 	chmod 4755 debian/univention-nagios-uvmmd/usr/lib/nagios/plugins/check_uvmmd_suidwrapper
-
-override_dh_auto_test:
-	-ucslint

@@ -64,8 +64,5 @@ override_dh_auto_install:
 		install -m 644 "$$i" "$$o";\
 	done
 
-override_dh_auto_test:
-	ucslint
-
 %:
 	dh $@ --with python2

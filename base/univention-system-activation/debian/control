@@ -7,7 +7,6 @@ Build-Depends:
  node-stylus,
  python-support,
  sed,
- ucslint,
  univention-config-dev,
  univention-dojo-dev,
  univention-management-console-dev,

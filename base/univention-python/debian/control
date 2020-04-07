@@ -10,7 +10,6 @@ Build-Depends:
  python-debian,
  python3-all,
  python3-debian,
- ucslint-univention,
 
 Package: python-univention-namespace
 Architecture: all

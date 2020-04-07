@@ -44,9 +44,5 @@ override_dh_fixperms:
 	chmod 0755 debian/univention-nagios-smart/usr/lib/nagios/plugins/check_smart.pl
 	chmod 4755 debian/univention-nagios-smart/usr/lib/nagios/plugins/check_smart_suidwrapper
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@

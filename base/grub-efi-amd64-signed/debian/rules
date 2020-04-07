@@ -35,9 +35,5 @@ GRUB_MAIN_VERSION := $(shell dpkg-query -f '$${Version}\n' -W grub-efi-amd64-bin
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(VERSION_PREFIX)-$(GRUB_MAIN_VERSION)$(VERSION_SUFFIX) -Vgrub2:Version=$(GRUB_VERSION)
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@

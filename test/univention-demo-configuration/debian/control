@@ -6,7 +6,6 @@ Standards-Version: 3.8.2
 Build-Depends:
  debhelper,
  node-stylus,
- ucslint-univention,
  univention-config-dev,
  univention-ucs-translation-template,
 

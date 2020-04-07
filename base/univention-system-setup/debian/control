@@ -19,7 +19,6 @@ Build-Depends:
  python-univention-lib,
  python-univention-management-console,
  python3-all,
- ucslint-univention,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,

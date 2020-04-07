@@ -37,10 +37,5 @@ override_dh_auto_install:
 override_dh_installinit:
 	dh_installinit -punivention-docker-container-mode --no-start -u"defaults 98"
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@
-

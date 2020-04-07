@@ -33,9 +33,6 @@
 %:
 	dh $@
 
-override_dh_auto_test:
-	ucslint
-
 override_dh_auto_build:
 	univention-l10n-build de
 	dh_auto_build

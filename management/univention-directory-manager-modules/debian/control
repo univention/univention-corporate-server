@@ -9,7 +9,6 @@ Build-Depends:
  python-all,
  python2.7-dev,
  python3-all,
- ucslint-univention,
  univention-config-dev,
 
 Package: python-univention-directory-manager

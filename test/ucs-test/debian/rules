@@ -45,7 +45,6 @@ override_dh_install:
 	mv debian/ucs-test-udm/usr/lib/python2.7/dist-packages/univention/admin debian/ucs-test-udm/usr/share/pyshared/univention/
 
 override_dh_auto_test:
-	ucslint
 	./lint
 
 override_dh_auto_build:

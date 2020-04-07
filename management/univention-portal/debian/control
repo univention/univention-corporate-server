@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  node-stylus,
- ucslint,
  univention-config-dev,
  univention-join,
  univention-ucs-translation-template,

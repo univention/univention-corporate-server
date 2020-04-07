@@ -9,7 +9,6 @@ Build-Depends:
  python-apt,
  python-yaml,
  python3-all,
- ucslint-univention,
  univention-config,
  univention-management-console-dev,
  univention-ucs-translation-template,

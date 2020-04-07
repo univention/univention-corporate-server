@@ -6,7 +6,6 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  debootstrap,
- ucslint-univention,
 
 Package: univention-debootstrap
 Architecture: all

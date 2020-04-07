@@ -6,7 +6,6 @@ Build-Depends:
  debhelper,
  grub-efi-amd64-bin (>= 2.02~beta3),
  pesign,
- ucslint-univention,
 Standards-Version: 3.9.4
 
 Package: grub-efi-amd64-signed

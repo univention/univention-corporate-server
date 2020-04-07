@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
- ucslint,
  univention-config-dev,
 Standards-Version: 4.0.0
 

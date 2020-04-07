@@ -10,7 +10,6 @@ Build-Depends:
  python-all-dev,
  python3-all,
  python3-all-dev,
- ucslint-univention,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
 

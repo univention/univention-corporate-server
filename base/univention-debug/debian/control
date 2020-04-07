@@ -8,7 +8,6 @@ Build-Depends:
  automake,
  debhelper,
  libtool,
- ucslint-univention,
 
 Package: libunivention-debug1
 Architecture: any

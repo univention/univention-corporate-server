@@ -7,7 +7,6 @@ Build-Depends:
  debhelper,
  libpam0g-dev,
  libunivention-config-dev,
- ucslint-univention,
  univention-config-dev,
 
 Package: univention-samba4

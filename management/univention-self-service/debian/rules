@@ -41,9 +41,5 @@ override_dh_auto_install:
 	univention-l10n-install de
 	dh_auto_install
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@ --with python2,python3 --with systemd

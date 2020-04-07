@@ -13,7 +13,6 @@ Build-Depends:
  python3-all-dev,
  python3-debian,
  python3-pytest,
- ucslint-univention,
 
 Package: python-univention-debug
 Architecture: any

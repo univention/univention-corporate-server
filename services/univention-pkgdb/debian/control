@@ -8,7 +8,6 @@ Build-Depends:
  python-all,
  python-dev,
  python3-all,
- ucslint-univention,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.8.2

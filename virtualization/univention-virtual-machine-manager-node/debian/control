@@ -6,7 +6,6 @@ Uploaders:
  Philipp Hahn <hahn@univention.de>,
 Build-Depends:
  debhelper,
- ucslint-univention,
  univention-config-dev,
 Standards-Version: 3.7.3
 Homepage: https://www.univention.de/

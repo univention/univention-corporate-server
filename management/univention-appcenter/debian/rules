@@ -67,6 +67,5 @@ override_dh_auto_install:
 	dh_auto_install
 
 override_dh_auto_test:
-	ucslint
 	dh_auto_test --buildsystem=pybuild
 	dh_auto_test

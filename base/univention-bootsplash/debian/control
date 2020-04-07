@@ -7,7 +7,6 @@ Build-Depends:
  debhelper,
  dh-systemd,
  gettext,
- ucslint-univention,
  univention-config-dev,
 
 Package: univention-bootsplash
