@@ -77,7 +77,7 @@ def php_string(string):
 def php_array(list_):
 	if not list_:
 		return 'array()'
-	return "array('%s')" % "', '".join(escape_php_string(x) for x in list_)
+	return "array('%s')" % "', '".join(escape_php_string(x.strip()) for x in list_)
 
 
 def ldap_attribute_join(old):
@@ -182,8 +182,9 @@ def write_configuration_file(dn, new, filename):
 			fd.write("	'simplesaml.nameidattribute'	=> %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
 		if new.get('simplesamlAttributes'):
 			fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
+		simplesamlLDAPattributes = []
 		if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == "TRUE":
-			simplesamlLDAPattributes = list(dict.fromkeys([entry.split('=', 1)[0] for entry in list(new.get('simplesamlLDAPattributes', []))]))
+			simplesamlLDAPattributes = list(dict.fromkeys([entry.split('=', 1)[0].strip() for entry in list(new.get('simplesamlLDAPattributes', []))]))
 			if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
 				simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
 			fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))

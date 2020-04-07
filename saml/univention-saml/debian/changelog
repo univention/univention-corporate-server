@@ -1,3 +1,9 @@
+univention-saml (6.0.2-31) unstable; urgency=medium
+
+  * Bug #48927: Initialize simpleSamlLDAPattributes as empty list, strip trailing whitespace
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 07 Apr 2020 11:09:40 +0200
+
 univention-saml (6.0.2-30) unstable; urgency=medium
 
   * Bug #51068: check email verification status for self registered accounts
