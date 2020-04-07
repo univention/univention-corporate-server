@@ -36,10 +36,9 @@ define([
 	"umc/tools",
 	"umc/widgets/Wizard",
 	"umc/widgets/ComboBox",
-	"umc/widgets/RadioButton",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, all, tools, Wizard, ComboBox, RadioButton, types, _) {
+], function(declare, lang, array, all, tools, Wizard, ComboBox, types, _) {
 
 	return declare("umc.modules.uvmm.CreatePage", [ Wizard ], {
 		umcpCommand: null,
@@ -48,11 +47,9 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			/* ... for node or cloud */
 			var _getNodes = lang.hitch(this, function() {
 				var deferreds = [];
 				deferreds.push(this.umcpCommand('uvmm/node/query'));
-				deferreds.push(this.umcpCommand('uvmm/cloud/query'));
 
 				return all(deferreds).then(lang.hitch(this, function(results) {
 					var servers = [];
@@ -70,25 +67,9 @@ define([
 				}));
 			});
 
-			/* ... for cloud type */
-			var _getCloudTypes = lang.hitch(this, function() {
-				var deferreds = [];
-				deferreds.push(this.umcpCommand('uvmm/cloudtype/get'));
-
-				return all(deferreds).then(lang.hitch(this, function(results) {
-					var types = [];
-					array.forEach(results, function(iresult) {
-						array.forEach(iresult.result, function(itype) {
-							types.push(itype);
-						});
-					});
-					return types;
-				}));
-			});
-
 			lang.mixin(this, {
 				headerText: _('Create a virtual machine'),
-				helpText: _('Select the cloud in which a new virtual machine instance is going to be created. Alternatively, it is possible to register a new cloud connection.'),
+				helpText: _('Select the server where a new virtual machine instance is going to be created.'),
 				headerButtons: [{
 					name: 'close',
 					iconClass: 'umcCloseIconWhite',
@@ -102,57 +83,20 @@ define([
 					callback: lang.hitch(this, '_finish')
 				}],
 				pages: [{
-					name: 'general',
-					headerText: _('Create a virtual machine or a cloud connection'),
-					helpText: _('Select if you want to create a new machine using an established connection, or if you want to create a new cloud connection to a specific provider.'),
-					widgets: [{
-						type: RadioButton,
-						radioButtonGroup: 'type',
-						name: 'vm',
-						checked: true,
-						label: _('Create a new virtual machine instance.')
-					}, {
+					headerText: _('Create a virtual machine'),
+					helpText: _('Create a new virtual machine instance.'),
 						type: ComboBox,
 						name: 'server',
 						dynamicValues: _getNodes,
 						onDynamicValuesLoaded: lang.hitch(this, function(values) {
 							if (values.length === 0) {
-								this.getWidget('general', 'server').set('visible', false);
-								this.getWidget('general', 'vm').set('visible', false);
-								this.getWidget('general', 'cloud').set('checked', true);
-							} else {
-								this.getWidget('general', 'vm').set('checked', true);
+								this.getWidget('server').set('visible', false);
 							}
 						}),
 						label: _('Where should the virtual machine instance be created'),
 						labelConf: {'style': 'margin-left: 27px;'}
-					}, {
-						type: RadioButton,
-						radioButtonGroup: 'type',
-						name: 'cloud',
-						label: _('Create a new cloud connection service account.')
-					}, {
-						type: ComboBox,
-						name: 'cloudtype',
-						dynamicValues: _getCloudTypes,
-						disabled: true,
-						label: _('Which type of connection should be created'),
-						labelConf: {'style': 'margin-left: 27px;'}
-					}]
 				}]
 			});
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			this.getWidget('vm').watch('checked', lang.hitch(this, function(attr) {
-				this.getWidget('server').set('disabled', true);
-				this.getWidget('cloudtype').set('disabled', false);
-			}));
-			this.getWidget('cloud').watch('checked', lang.hitch(this, function(attr) {
-				this.getWidget('server').set('disabled', false);
-				this.getWidget('cloudtype').set('disabled', true);
-			}));
 		},
 
 		_getSelectedServer: function() {
@@ -166,37 +110,13 @@ define([
 			return server[0];
 		},
 
-		_getSelectedCloudType: function() {
-			var cloudtypeID = this.getWidget('cloudtype').get('value');
-			var cloudtype = array.filter(this.getWidget('cloudtype').getAllItems(), function(item) {
-				return item.id == cloudtypeID;
-			});
-			if (!cloudtype.length) {
-				return null;
-			}
-			return cloudtype[0];
-		},
-
 		getValues: function() {
 			// save the type that shall be created
-			var values = {};
-
-			var type = this.getWidget('general', 'vm').get('value') ? 'vm' : 'cloud';
-
-			values.type = type;
 			var server = this._getSelectedServer();
-			var cloudtype = this._getSelectedCloudType();
-			if (type == 'vm' && server.type == 'cloud') {
-				values.type = 'instance';
-				values.cloud = server.id;
-				values.cloudtype = server.cloudtype;
-			}
-			else if (type == 'vm' && server.type == 'node') {
-				values.type = 'domain';
-				values.nodeURI = server.id;
-			} else if (type == 'cloud') {
-				values.cloudtype = cloudtype.id;
-			}
+			var values = {
+				type: 'domain',
+				nodeURI: server.id
+			};
 			return values;
 		},
 

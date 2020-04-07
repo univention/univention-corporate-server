@@ -46,13 +46,12 @@ from univention.management.console.modules.uvmm.profiles import Profiles
 from univention.management.console.modules.uvmm.storages import Storages
 from univention.management.console.modules.uvmm.domains import Domains
 from univention.management.console.modules.uvmm.snapshots import Snapshots
-from univention.management.console.modules.uvmm.cloud import Cloud
 from univention.management.console.modules.uvmm.targethosts import Targethosts
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
 
-class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud, Targethosts):
+class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Targethosts):
 
 	"""
 	UMC functions for UVMM handling.
@@ -99,7 +98,7 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud, Targe
 		self.finished(request.id, data)
 
 	@sanitize(
-		type=ChoicesSanitizer(['group', 'node', 'domain', 'cloud', 'instance', 'targethost'], required=True),
+		type=ChoicesSanitizer(['group', 'node', 'domain', 'targethost'], required=True),
 		nodePattern=StringSanitizer(required=True),
 		domainPattern=StringSanitizer(required=False),
 	)
@@ -123,8 +122,6 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud, Targe
 		method = {
 			'node': self.node_query,
 			'domain': self.domain_query,
-			'cloud': self.cloud_query,
-			'instance': self.instance_query,
 			'group': group_root,
 			'targethost': self.targethost_query,
 		}[request.options['type']]

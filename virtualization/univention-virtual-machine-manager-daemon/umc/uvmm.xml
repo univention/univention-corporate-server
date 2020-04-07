@@ -29,19 +29,6 @@
 		<command name="uvmm/storage/volume/deletable" function="storage_volume_deletable"/>
 		<command name="uvmm/profile/query" function="profile_query"/>
 		<command name="uvmm/profile/get" function="profile_get"/>
-		<command name="uvmm/cloud/query" function="cloud_query"/>
-		<command name="uvmm/cloud/add" function="cloud_add"/>
-		<command name="uvmm/cloud/list/keypair" function="cloud_list_keypair"/>
-		<command name="uvmm/cloud/list/size" function="cloud_list_size"/>
-		<command name="uvmm/cloud/list/image" function="cloud_list_image"/>
-		<command name="uvmm/cloud/list/secgroup" function="cloud_list_secgroup"/>
-		<command name="uvmm/cloud/list/network" function="cloud_list_network"/>
-		<command name="uvmm/cloud/list/subnet" function="cloud_list_subnet"/>
-		<command name="uvmm/instance/query" function="instance_query"/>
-		<command name="uvmm/instance/state" function="instance_state"/>
-		<command name="uvmm/instance/remove" function="instance_remove"/>
-		<command name="uvmm/instance/add" function="instance_add"/>
-		<command name="uvmm/cloudtype/get" function="cloudtype_get"/>
 		<command name="uvmm/targethost/add" function="targethost_add"/>
 		<command name="uvmm/targethost/remove" function="targethost_remove"/>
 		<command name="uvmm/targethost/query" function="targethost_query"/>

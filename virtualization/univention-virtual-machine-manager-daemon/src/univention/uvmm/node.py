@@ -1388,9 +1388,6 @@ def group_list():
 	group = []
 	if len(node_list('default', '*')) > 0:
 		group.append('default')
-	from univention.uvmm.cloudnode import cloudconnections
-	if len(cloudconnections.list()) > 0:
-		group.append('cloudconnections')
 	return group
 
 

@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: univention-virtual-machine-manager 8.0.1-7\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2019-11-20 10:13+0100\n"
-"PO-Revision-Date: 2019-07-23 07:25+0120\n"
+"PO-Revision-Date: 2020-04-07 06:58+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -438,50 +438,6 @@ msgstr "Lesen der ini-Datei überspringen"
 #, python-format
 msgid "Snapshot not supported \"%(node)s\""
 msgstr "\"%(node)s\" unterstützt keine Sicherungspunkte."
-
-#: src/univention/uvmm/ec2cloud.py:508
-#, python-format
-msgid ""
-"The EC2 region returned an error for connection \"%(connection)s\":\n"
-"\n"
-"AuthFailure: The provided AWS access credentials could not be validated. Please ensure that you are using the correct access keys. Consult the AWS service documentation for details."
-msgstr ""
-"Die EC2 Region hat einen Fehler für die Verbindung \"%(connection)s\" zurückgegeben:\n"
-"\n"
-"AuthFailure: Die eingegebenen AWS Anmeldedaten konnten nicht bestätigt werden. Bitte stellen Sie sicher, dass die richtigen Zugriffsschlüssel eingetragen sind. Details sind der AWS-Service-Dokumentation zu entnehmen."
-
-#: src/univention/uvmm/ec2cloud.py:541
-#, python-format
-msgid ""
-"The EC2 region returned an error for connection \"%(connection)s\":\n"
-"\n"
-"RequestExpired: Please check your system time to interact with AWS."
-msgstr ""
-"Die EC2 Region hat einen Fehler für die Verbindung \"%(connection)s\" zurückgegeben:\n"
-"\n"
-"RequestExpired: Bitte die Systemzeit überprüfen um mit AWS interagieren zu können."
-
-#: src/univention/uvmm/ec2cloud.py:543
-#, python-format
-msgid ""
-"The EC2 region returned an error for connection \"%(connection)s\":\n"
-"\n"
-"UnauthorizedOperation: The provided AWS access credentials are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys. Also, the IAM user must have appropriate access rights to interact with EC2, e.g. AmazonEC2FullAccess."
-msgstr ""
-"Die EC2 Region hat einen Fehler für die Verbindung \"%(connection)s\" zurückgegeben:\n"
-"\n"
-"UnauthorizedOperation: Die eingegebenen AWS Anmeldedaten sind nicht berechtigt diese Operation durchzuführen. Prüfen Sie die IAM-Richtlinien und stellen Sie sicher, dass die richtigen Zugriffsschlüssel eingetragen sind. Zudem muss der IAM-Benutzer entsprechende Zugriffsrechte haben, um mit EC2 interagieren zu können, z.B. AmazonEC2FullAccess."
-
-#: src/univention/uvmm/ec2cloud.py:539
-#, python-format
-msgid ""
-"The EC2 region returned an error for connection \"%(connection)s\":\n"
-"\n"
-"Your AWS account is currently blocked. If you have questions, please contact AWS Support."
-msgstr ""
-"Die EC2 Region hat einen Fehler für die Verbindung \"%(connection)s\" zurückgegeben:\n"
-"\n"
-"Ihr AWS Konto ist derzeit blockiert. Wenn Sie Fragen haben, wenden Sie sich an den AWS Support."
 
 #: src/univention/uvmm/node.py:2217
 #, python-format
