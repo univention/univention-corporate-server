@@ -344,7 +344,7 @@ class access(object):
 
 	def __open(self, ca_certfile):
 		# type: (Optional[str]) -> None
-		_d = univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))  # noqa F841
+		_d = univention.debug.function('uldap.__open host=%s port=%s base=%s' % (self.host, self.port, self.base))  # noqa F841
 
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
@@ -441,10 +441,9 @@ class access(object):
 		if dn:
 			try:
 				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
-			except ldap.NO_SUCH_OBJECT:
-				result = []
-			if result:
 				return self.__decode_entry(result[0][1])
+			except (ldap.NO_SUCH_OBJECT, LookupError):
+				pass
 		if required:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return {}
@@ -470,10 +469,9 @@ class access(object):
 		if dn:
 			try:
 				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
-			except ldap.NO_SUCH_OBJECT:
-				result = []
-			if result and attr in result[0][1]:
 				return result[0][1][attr]
+			except (ldap.NO_SUCH_OBJECT, LookupError):
+				pass
 		if required:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return []
@@ -571,24 +569,25 @@ class access(object):
 			return {}
 
 		# get current dn
-		if attrs and 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
+		if 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
 			oattrs = attrs
 		else:
 			oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
-		if attrs and 'univentionPolicyReference' in attrs:
+
+		if 'univentionPolicyReference' in attrs:
 			policies = [x.decode('utf-8') for x in attrs['univentionPolicyReference']]
 		elif not policies and not attrs:
 			policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
 
 		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
-		result = {}
+		merged = {}
 		if dn:
 			obj_dn = dn
 			while True:
-				for policy_dn in policies:
-					self._merge_policy(policy_dn, obj_dn, object_classes, result)
-				dn = self.parentDn(dn)
+				for policy_dn in policies or []:
+					self._merge_policy(policy_dn, obj_dn, object_classes, merged)
+				dn = self.parentDn(dn) or ''
 				if not dn:
 					break
 				try:
@@ -599,8 +598,8 @@ class access(object):
 
 		univention.debug.debug(
 			univention.debug.LDAP, univention.debug.INFO,
-			"getPolicies: result: %s" % result)
-		return result
+			"getPolicies: result: %s" % merged)
+		return merged
 
 	def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
 		# type: (str, str, Set[bytes], Dict[str, Dict[str, Any]]) -> None
@@ -689,8 +688,8 @@ class access(object):
 				continue
 			if isinstance(val, (bytes, six.text_type)):
 				val = [val]
-			nal.setdefault(key, set())
-			nal[key] |= set(val)
+			vals = nal.setdefault(key, set())
+			vals |= set(val)
 
 		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
 
@@ -844,12 +843,12 @@ class access(object):
 		if not serverctrls:
 			serverctrls = []
 
-		if not newsdn.lower() == oldsdn.lower():
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
-			self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
-		else:
+		if oldsdn and newsdn.lower() == oldsdn.lower():
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
 			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
+		else:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
+			self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
 
 	@_fix_reconnect_handling
 	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):
