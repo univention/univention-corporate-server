@@ -1,3 +1,9 @@
+ucs-test (9.0.3-212) unstable; urgency=low
+
+  * Bug #51248: Fix wrap-and-sort debian/control
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 May 2020 09:14:02 +0200
+
 ucs-test (9.0.3-213) unstable; urgency=medium
 
   * Bug #12345: revert last change
