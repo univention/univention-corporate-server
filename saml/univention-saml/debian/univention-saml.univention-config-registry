@@ -111,3 +111,15 @@ File: etc/default/stunnel4
 User: root
 Group: root
 Mode: 644
+
+Type: file
+File: etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json
+Variables: saml/idp/selfservice/account-verification/error-title
+Variables: saml/idp/selfservice/account-verification/error-title/.*
+Variables: saml/idp/selfservice/account-verification/error-descr
+Variables: saml/idp/selfservice/account-verification/error-descr/.*
+
+Type: file
+File: etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json
+Variables: saml/idp/selfservice/account-verification/error-title/.*
+Variables: saml/idp/selfservice/account-verification/error-descr/.*
