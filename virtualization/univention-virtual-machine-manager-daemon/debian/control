@@ -38,7 +38,6 @@ Description: UCS Virtual Machine Manager Daemon
 Package: python-univention-virtual-machine-manager
 Architecture: all
 Depends:
- python-libcloud (>= 0.15.1),
  python-libvirt (>= 0.9.12),
  python-lxml,
  python-openssl,
@@ -55,7 +54,6 @@ Description: UCS Virtual Machine Manager Daemon - Python bindings
 Package: python3-univention-virtual-machine-manager
 Architecture: all
 Depends:
- python3-libcloud,
  python3-libvirt,
  python3-lxml,
  python3-openssl,

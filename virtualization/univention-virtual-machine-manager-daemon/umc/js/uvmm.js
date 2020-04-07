@@ -69,8 +69,6 @@ define([
 	"umc/modules/uvmm/TreeModel",
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
-	"umc/modules/uvmm/InstancePage",
-	"umc/modules/uvmm/InstanceWizard",
 	"umc/modules/uvmm/CreatePage",
 	"umc/modules/uvmm/types",
 	"umc/modules/uvmm/snapshot",
@@ -81,7 +79,7 @@ define([
 	all, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard,
-	InstancePage, InstanceWizard, CreatePage, types, snapshot, _
+	CreatePage, types, snapshot, _
 ) {
 
 	var isRunning = function(item) {
@@ -115,16 +113,7 @@ define([
 		return item.state === 'TERMINATED';
 	};
 
-	var isEC2 = function(item) {
-		return item.u_connection_type === 'EC2';
-	};
-
-	var isOpenStack = function(item) {
-		return item.u_connection_type === 'OpenStack';
-	};
-
 	return declare("umc.modules.uvmm", [ Module ], {
-
 		// the property field that acts as unique identifier
 		idProperty: 'id',
 
@@ -226,9 +215,7 @@ define([
 				label: _('Displayed type'),
 				staticValues: [
 					{ id: 'domain', label: _('Virtual machine') },
-					{ id: 'node', label: _('Physical server') },
-					{ id: 'instance', label: _('Cloud instance') }
-					//{ id: 'cloud', label: _('Cloud connection') }
+					{ id: 'node', label: _('Physical server') }
 				],
 				size: 'One'
 			}, {
@@ -302,25 +289,6 @@ define([
 			// add a context menu to edit/delete items
 			var menu = new Menu({});
 			// TODO: Bug #36272
-			/*menu.addChild(new MenuItem({
-				label: _( 'Edit' ),
-				iconClass: 'umcIconEdit',
-				onClick: lang.hitch(this, function(e) {
-					if(this._navContextItem) {
-						if(this._navContextItem.type == 'cloud' && this._navContextItem.dn) {
-							require('umc/app').openModule('udm', 'uvmm/cloudconnection',{'openObject': {'objectDN': this._navContextItem.dn, 'objectType': 'uvmm/cloudconnection'}});
-						} else if(this._navContextItem.type == 'cloud' || (this._navContextItem.type == 'group' && this._navContextItem.id == 'cloudconnections')) {
-							require('umc/app').openModule('udm', 'uvmm/cloudconnection');
-						}
-					}
-				})}));
-			menu.addChild(new MenuItem({
-				label: _( 'Delete' ),
-				iconClass: 'umcIconDelete',
-				onClick: lang.hitch(this, function() {
-					this.removeObjects(this._navContextItem.id);
-				})
-			}));*/
 			menu.addChild(new MenuItem({
 				label: _( 'Reload' ),
 				iconClass: 'umcIconRefresh',
@@ -390,15 +358,12 @@ define([
 
 			if (this._tree) {
 				on.once(this._tree, 'load', lang.hitch(this, function() {
-					if (this._tree._getFirst() && this._tree._getFirst().item.id === 'cloudconnections') {
-						this._searchForm.getWidget('type').set('value', 'instance');
-					}
 					this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
 						if (tools.isEqual(oldVal, newVal)) {
 							return;
 						}
 						var searchType = this._searchForm.getWidget('type').get('value');
-						if (searchType === 'domain' || searchType === 'instance') {
+						if (searchType === 'domain') {
 							this.filter();
 						}
 					})));
@@ -414,7 +379,7 @@ define([
 					}));
 					if (this._tree._getLast().item.type === 'root') {
 						var version = tools.status('ucsVersion').split('-')[0];
-						dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="https://docs.software-univention.de/manual-%s.html#uvmm:chapter">the manual</a>.', version));
+						dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="https://docs.software-univention.de/manual-%s.html#uvmm:chapter">the manual</a>.', version));
 					}
 				}));
 			}
@@ -790,66 +755,6 @@ define([
 				});
 				_dialog.show();
 			} ) );
-
-		},
-
-		_removeInstance: function( ids, items ) {
-			var _dialog = null, form = null;
-			var domain = items[ 0 ];
-			var domainURI = ids[ 0 ];
-			var widgets = [
-				{
-					type: Text,
-					name: 'question',
-					content: '<p>' + lang.replace( _( 'Should the selected instance {label} be deleted?' ), {
-						label: entities.encode(domain.label)
-					} ) + '</p>',
-					label: ''
-				} ];
-			var layout = [ 'question' ];
-
-			var _cleanup = function() {
-				_dialog.hide();
-				form.destroyRecursive();
-			};
-
-			var _remove = lang.hitch( this, function() {
-				this.showProgress();
-
-				tools.umcpCommand('uvmm/instance/remove', {
-					domainURI: domainURI
-				} ).then( lang.hitch( this, function( response ) {
-					this.hideProgress();
-					this.moduleStore.onChange();
-				} ), lang.hitch( this, function() {
-					this.hideProgress();
-				} ) );
-			} );
-
-			form = new Form({
-				widgets: widgets,
-				buttons: [{
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: _cleanup
-				}, {
-					name: 'submit',
-					label: _( 'Delete' ),
-					callback: function() {
-						_cleanup();
-						_remove();
-					}
-				}],
-				layout: layout
-			});
-
-			_dialog = new Dialog({
-				title: _( 'Delete an instance' ),
-				content: form,
-				'class' : 'umcPopup'
-			});
-			_dialog.show();
-
 		},
 
 		openCreatePage: function() {
@@ -865,8 +770,6 @@ define([
 				_cleanup();
 				var func = {
 					'domain': lang.hitch(this, '_addDomain'),
-					'cloud': lang.hitch(this, '_addCloudConnection'),
-					'instance': lang.hitch(this, '_addInstance')
 				}[values.type];
 				if (func) {
 					func(values);
@@ -906,140 +809,6 @@ define([
 				onFinished: _finished,
 				onCancel: _cleanup,
 				nodeURI: values.nodeURI
-			});
-			this.addChild(wizard);
-			this.selectChild(wizard);
-		},
-
-		_addCloudConnection: function(values) {
-			var wizard = null;
-
-			var _cleanup = lang.hitch(this, function() {
-				this.selectChild(this._searchPage);
-				this.removeChild(wizard);
-				wizard.destroyRecursive();
-			});
-
-			var _finished = lang.hitch(this, function(response, values) {
-				// add cloud connection
-				var max = 60;
-				this.showProgress();
-				// wait for available connection
-				var counter = 1;
-				var deferred = new Deferred();
-				var wait = lang.hitch(this, function() {
-					tools.umcpCommand('uvmm/cloud/query', {"nodePattern": values.name}, false).then(lang.hitch(this, function(result) {
-						var connection = array.filter(result.result, function(item) {
-							return item.label == values.name;
-						});
-						counter += 1;
-						if (connection[0].available) {
-							this.hideProgress();
-							deferred.resolve();
-							_cleanup();
-							this._tree.reload();
-						}
-						if (counter >= max) {
-							this.hideProgress();
-							deferred.resolve();
-							_cleanup();
-							this._tree.reload();
-						}
-						if (!deferred.isResolved()) {
-							tools.defer(wait, 1000);
-						}
-					}));
-				});
-				tools.defer(wait, 1000);
-			});
-
-			this.loadWizardPages(values.cloudtype).then(lang.hitch(this, function(Wizard) {
-				wizard = new Wizard({
-					autoValidate: true,
-					onFinished: _finished,
-					onCancel: _cleanup,
-					moduleStore: this.moduleStore,
-					cloudtype: values.cloudtype,
-					standby: this.standby
-				});
-				this.addChild(wizard);
-				this.selectChild(wizard);
-			}));
-		},
-
-		loadWizardPages: function(cloud) {
-			var deferred = new Deferred();
-			require(['umc/modules/uvmm/' + cloud], function(wizard) {
-				deferred.resolve(wizard);
-			});
-			return deferred;
-		},
-
-		_addInstance: function(values) {
-			var wizard = null;
-			var _cleanup = lang.hitch(this, function() {
-				this.selectChild(this._searchPage);
-				this.removeChild(wizard);
-				wizard.destroyRecursive();
-				this.filter();
-			});
-
-			var _finished = lang.hitch(this, function(values) {
-				// add cloud instance
-				var addFailed = false;
-				var max = 60;
-				this.showProgress();
-				tools.umcpCommand('uvmm/instance/add', {
-					conn_name: values.cloud,
-					name: values.name,
-					parameter: values
-				}).then( lang.hitch( this, function( response ) {
-					this.moduleStore.onChange();
-				}), lang.hitch( this, function() {
-					this.hideProgress();
-					addFailed = true; // failed umcp will display an error message, but the wizard should still be open.
-				}));
-				// wait for running instance
-				var counter = 1;
-				var deferred = new Deferred();
-				var wait = lang.hitch(this, function() {
-					tools.umcpCommand('uvmm/instance/query', {"nodePattern": values.cloud, "domainPattern": values.name}, false).then(lang.hitch(this, function(result) {
-						var connection = array.filter(result.result, function(item) {
-							return item.label == values.name;
-						});
-						counter += 1;
-						if (connection[0] && connection[0].state == "RUNNING") {
-							this.hideProgress();
-							deferred.resolve();
-							_cleanup();
-						}
-						if (addFailed) {
-							this.hideProgress();
-							deferred.resolve();
-						}
-						if (counter >= max) {
-							this.hideProgress();
-							deferred.resolve();
-							_cleanup();
-							this.addNotification(lang.replace( _( 'The instance {label} is still not running. Please wait and to update the view, click on "Search".' ), {label: entities.encode(values.name)} ));
-						}
-						if (!deferred.isResolved()) {
-							tools.defer(wait, 1000);
-						}
-						this.filter();
-					}));
-				});
-				tools.defer(wait, 1000);
-			});
-
-			var cloud = {
-				name: values.cloud,
-				type: values.cloudtype
-			};
-			wizard = new InstanceWizard({
-				onFinished: _finished,
-				onCancel: _cleanup,
-				cloud: cloud
 			});
 			this.addChild(wizard);
 			this.selectChild(wizard);
@@ -1149,74 +918,6 @@ define([
 			}));
 		},
 
-		_changeStateInstance: function(/*String*/ newState, action, ids, items ) {
-			// chain all UMCP commands
-			var deferred = new Deferred();
-			deferred.resolve();
-			var stateFailed = false;
-			this.showProgress();
-
-			array.forEach(ids, function(iid, i) {
-				deferred = deferred.then(lang.hitch(this, function() {
-					return tools.umcpCommand('uvmm/instance/state', {
-						uri: iid,
-						state: newState
-					});
-				}));
-			}, this);
-
-			// finish UMCP and add error handler
-			deferred = deferred.then(lang.hitch(this, function() {
-				this.moduleStore.onChange();
-			}), lang.hitch(this, function(error) {
-				this.moduleStore.onChange();
-				this.hideProgress();
-				stateFailed = true;
-			}));
-
-			// wait for changed instance state
-			var max = 60;
-			var counter = 1;
-			deferred = new Deferred();
-			var wait = lang.hitch(this, function() {
-				tools.umcpCommand('uvmm/instance/query', {}, false).then(lang.hitch(this, function(data) {
-					var items_update = array.filter(data.result, function(item) {
-						return array.some(items, function(_item) {
-							return item.id == _item.id;
-						});
-					});
-					counter += 1;
-					var items_update_d = {};
-					array.forEach(items_update, function(item) {
-						items_update_d[item.id] = item;
-					} );
-					var items_changed = 0;
-					array.forEach(items, function(item) {
-						if (item.state != items_update_d[item.id].state) {
-							items_changed++;
-						}
-					});
-					if (items_changed == ids.length) {
-						this.hideProgress();
-						deferred.resolve();
-					}
-					if (stateFailed) {
-						this.hideProgress();
-						deferred.resolve();
-					}
-					if (counter >= max) {
-						this.hideProgress();
-						deferred.resolve();
-					}
-					if (!deferred.isResolved()) {
-						tools.defer(wait, 1000);
-					}
-					this.filter();
-				}));
-			});
-			tools.defer(wait, 1000);
-		},
-
 		_cloneDomain: function( ids ) {
 			var _dialog = null, form = null;
 
@@ -1299,27 +1000,6 @@ define([
 			this.selectChild(this._domainPage);
 		},
 
-		openInstancePage: function(ids) {
-			if (!ids.length) {
-				return;
-			}
-			var _instancePage = new InstancePage({
-				onClose: lang.hitch(this, function() {
-					this.selectChild(this._searchPage);
-					this.set('title', this.defaultTitle);
-					_instancePage.destroyRecursive();
-				}),
-				moduleWidget: this,
-				addNotification: lang.hitch(this, 'addNotification'),
-				addWarning: lang.hitch(this, 'addWarning')
-			});
-			this.own(_instancePage);
-			this.addChild(_instancePage);
-
-			_instancePage.load(ids[0]);
-			this.selectChild(_instancePage);
-		},
-
 		_getGridColumns: function(type) {
 			if (type == 'node') {
 				return [{
@@ -1340,21 +1020,6 @@ define([
 			}
 
 			var cell_width = has("ff") ? '80px' : '60px';
-
-			if (type == 'instance') {
-				return [{
-					name: 'label',
-					label: _('Name'),
-					formatter: lang.hitch(this, 'iconFormatter')
-				}, {
-					name: 'start',
-					label: _('Start'),
-					width: cell_width,
-					'class': 'uvmmStartColumn',
-					description: _( 'Start the instance' ),
-					formatter: lang.hitch(this, '_startFormatter')
-				}];
-			}
 
 			// else type == 'domain'
 			var domainColumns = [{
@@ -1429,7 +1094,7 @@ define([
 				return '';
 			}
 			var btn;
-			var call = item.type == 'instance' ? '_changeStateInstance' : '_changeState';
+			var call = item.type == '_changeState';
 			var id = item[this._grid.moduleStore.idProperty];
 			var _runCallback = lang.hitch(this, call, 'RUN', 'start', [id], [item]);
 			var _migrationInfoCallback = lang.hitch(this, function() {
@@ -1493,7 +1158,7 @@ define([
 		},
 
 		_getGridActions: function(type) {
-			if (type == 'node' || type == 'cloud') {
+			if (type == 'node') {
 				return [{
 					name: 'add',
 					label: _( 'Create' ),
@@ -1503,93 +1168,6 @@ define([
 					callback: lang.hitch(this, 'openCreatePage' )
 				}];
 			}
-
-			if (type == 'instance') {
-				return [{
-					name: 'edit',
-					label: _( 'Edit' ),
-					isStandardAction: true,
-					isMultiAction: false,
-					iconClass: 'umcIconEdit',
-					description: _( 'Edit the configuration of the virtual machine' ),
-					callback: lang.hitch(this, 'openInstancePage'),
-					canExecute: function(item) {
-						return !isTerminated(item);
-					}
-				}, {
-					name: 'start',
-					label: _( 'Start' ),
-					iconClass: 'umcIconPlay',
-					description: _( 'Start the instance' ),
-					isStandardAction: true,
-					isMultiAction: true,
-					callback: lang.hitch(this, '_changeStateInstance', 'RUN', 'start' ),
-					canExecute: canStart
-				}, {
-					name: 'restart',
-					label: _( 'Restart (hard)' ),
-					isStandardAction: false,
-					isMultiAction: true,
-					callback: lang.hitch(this, '_changeStateInstance', 'RESTART', 'restart' ),
-					canExecute: function(item) {
-						return isRunning(item) && isOpenStack(item);
-					}
-				}, {
-					name: 'softrestart',
-					label: _( 'Restart (soft)' ),
-					isStandardAction: false,
-					isMultiAction: true,
-					callback: lang.hitch(this, '_changeStateInstance', 'SOFTRESTART', 'softrestart' ),
-					canExecute: function(item) {
-						return isRunning(item) && isEC2(item);
-					}
-				}, {
-					name: 'shutdown',
-					label: _( 'Shutdown (soft)' ),
-					isStandardAction: false,
-					isMultiAction: true,
-					callback: lang.hitch(this, '_changeStateInstance', 'SHUTDOWN', 'shutdown' ),
-					canExecute: function(item) {
-						return isRunning(item) && isEC2(item);
-					}
-				}, {
-					name: 'pause',
-					label: _( 'Pause' ),
-					isStandardAction: false,
-					isMultiAction: true,
-					callback: lang.hitch(this, '_changeStateInstance', 'PAUSE', 'pause' ),
-					canExecute: function(item) {
-						return isRunning(item) && !isPaused(item) && isOpenStack(item);
-					}
-				}, {
-					name: 'Suspend',
-					label: _( 'Suspend' ),
-					isStandardAction: false,
-					isMultiAction: true,
-					callback: lang.hitch(this, '_changeStateInstance', 'SUSPEND', 'suspend' ),
-					canExecute: function(item) {
-						return isRunning(item) && !isPaused(item) && isOpenStack(item);
-					}
-				}, {
-					name: 'remove',
-					label: _( 'Delete' ),
-					isStandardAction: false,
-					isMultiAction: false,
-					iconClass: 'umcIconDelete',
-					callback: lang.hitch(this, '_removeInstance' ),
-					canExecute: function(item) {
-						return item.node_available && !isTerminated(item);
-					}
-				}, {
-					name: 'add',
-					label: _( 'Create' ),
-					iconClass: 'umcIconAdd',
-					isMultiAction: false,
-					isContextAction: false,
-					callback: lang.hitch(this, 'openCreatePage' )
-				}];
-			}
-
 			// else type == 'domain'
 			// STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED', 'PMSUSPENDED' )
 			return [{
@@ -1792,7 +1370,7 @@ define([
 
 		_iconClass: function(item) {
 			var iconName = 'uvmm-' + item.type;
-			if (item.type == 'node' || item.type == 'cloud') {
+			if (item.type == 'node') {
 				if (item.virtech) {
 					iconName += '-' + item.virtech;
 				}
@@ -1800,7 +1378,7 @@ define([
 					iconName += '-off';
 				}
 			}
-			else if (item.type == 'domain' || item.type == 'instance') {
+			else if (item.type == 'domain') {
 				if ( !item.node_available ) {
 					iconName += '-off';
 				} else if (this._isMigrating(item)) {
@@ -1929,9 +1507,6 @@ define([
 					node: entities.encode(item.label)
 				} );
 			}
-			if (item.type == 'cloud' && !item.available && item.last_error_message) {
-				tooltip = item.last_error_message;
-			}
 			return tooltip;
 		},
 
@@ -1954,17 +1529,13 @@ define([
 			var dropdown = this._searchForm.getWidget('type');
 
 			// apply filter from search
-			if (type == 'domain' || type == 'instance') {
+			if (type == 'domain') {
 				domainPattern = search_vals.pattern;
 
 				// only search for domains of the selected node in the tree
 				if (tree_item && tree_item.type == 'node' && tree_item.id) {
 					nodePattern = tree_item.id;
 					type = 'domain';
-				}
-				if (tree_item && tree_item.type == 'cloud' && tree_item.id) {
-					nodePattern = tree_item.id;
-					type = 'instance';
 				}
 			} else {
 				nodePattern = search_vals.pattern;
@@ -1982,13 +1553,6 @@ define([
 			if (tree_item && tree_item.type == 'node') {
 				dropdown.set('value', 'domain');
 				tools.umcpCommand('uvmm/node/query', {
-					nodePattern: nodePattern
-				}).then(lang.hitch(this, function(response) {
-					this._tree.model.changes(response.result);
-				}));
-			} else if (tree_item && tree_item.type == 'cloud') {
-				dropdown.set('value', 'instance');
-				tools.umcpCommand('uvmm/cloud/query', {
 					nodePattern: nodePattern
 				}).then(lang.hitch(this, function(response) {
 					this._tree.model.changes(response.result);
