@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 9),
+ debhelper,
  node-stylus,
  ucslint,
  univention-config-dev,

@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 7.0.50~),
+ debhelper,
  dh-python,
  python-all,
  python3-all,

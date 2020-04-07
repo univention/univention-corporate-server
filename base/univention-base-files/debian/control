@@ -3,7 +3,7 @@ Section: univention
 Priority: important
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 7.0.50~),
+ debhelper,
  ucslint-univention,
  univention-config-dev,
 Standards-Version: 3.5.2

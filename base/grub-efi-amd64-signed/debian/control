@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 9),
+ debhelper,
  grub-efi-amd64-bin (>= 2.02~beta3),
  pesign,
  ucslint-univention,

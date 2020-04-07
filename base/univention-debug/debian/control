@@ -6,7 +6,7 @@ Standards-Version: 3.7.2
 Build-Depends:
  autoconf,
  automake,
- debhelper (>= 9),
+ debhelper,
  libtool,
  ucslint-univention,
 

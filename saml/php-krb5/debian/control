@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 7),
+ debhelper,
  libkrb5-dev,
  php7.0-dev,
  po-debconf,

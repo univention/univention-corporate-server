@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  cython-dbg,
  cython3-dbg,
- debhelper (>= 9),
+ debhelper,
  dh-python,
  libunivention-license-dev (>= 10.0.0-4),
  python-dbg,

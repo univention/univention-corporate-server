@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>> 7),
+ debhelper,
  foomatic-db,
  foomatic-db-engine,
  foomatic-db-gutenprint,

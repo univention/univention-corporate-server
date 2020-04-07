@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 7.0),
+ debhelper,
  gnu-efi (>= 3.0q),
  libnss3-tools,
  openssl,

@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>= 7),
+ debhelper,
 Standards-Version: 3.8.2
 
 Package: kernel-image-4.9.0-12-amd64-di-signed
