@@ -4,3 +4,4 @@ server_password_change usr/lib/univention-server/
 univention-directory-policy/univention-set-ldap-server usr/lib/univention-directory-policy/
 univention-ldap-server-available usr/sbin/
 usr/lib/univention-server/server_password_change.d/README.API usr/lib/univention-server/server_password_change.d/
+usr/lib/univention-server/server_password_change.d/univention-directory-manager-rest usr/lib/univention-server/server_password_change.d/
