@@ -110,10 +110,6 @@ define([
 				this.getNodes('uvmm/node/query', onComplete);
 			} else if (parentItem.type == 'node') {
 				onComplete([]);
-			} else if (parentItem.type == 'group' && parentItem.id == 'cloudconnections') {
-				this.getNodes('uvmm/cloud/query', onComplete);
-			} else if (parentItem.type == 'cloud') {
-				onComplete([]);
 			}
 		},
 
@@ -122,9 +118,6 @@ define([
 			switch (groupname) {
 				case 'default':
 					label = _('Physical servers');
-					break;
-				case 'cloudconnections':
-					label = _('Cloud connections');
 					break;
 				default:
 					label = groupname;

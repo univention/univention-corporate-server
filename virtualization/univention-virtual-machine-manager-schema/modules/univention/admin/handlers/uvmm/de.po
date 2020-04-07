@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-admin-handlers-uvmm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2019-11-11 10:56+0100\n"
-"PO-Revision-Date: 2019-07-23 08:53+0200\n"
+"PO-Revision-Date: 2020-04-07 07:37+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -15,11 +15,6 @@ msgstr ""
 #: modules/univention/admin/handlers/uvmm/profile.py:172
 msgid "Active VNC remote access"
 msgstr "Aktiviert den VNC Fernzugriff"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:91
-msgid "Add the listed images to the list of selectable images"
-msgstr ""
-"Fügt die aufgelisteten Abbilder zur Liste der auswählbaren Abbilder hinzu"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:157
 msgid "Amount of disk space"
@@ -69,27 +64,6 @@ msgstr "CPU Modellname z.B. von `virsh cpu-models x86_64`"
 msgid "CPUs"
 msgstr "Prozessoren"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:48
-msgid "Cloud Connection"
-msgstr "Cloud-Verbindung"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:97
-msgid "Cloud Connection parameters"
-msgstr "Parameter der Cloud-Verbindunge"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:49
-msgid "Cloud Connections"
-msgstr "Cloud-Verbindungen"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:71
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:48
-msgid "Cloud Type"
-msgstr "Cloud-Typ"
-
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:49
-msgid "Cloud Types"
-msgstr "Cloud-Typen"
-
 #: modules/univention/admin/handlers/uvmm/info.py:81
 msgid "Contact"
 msgstr "Kontakt"
@@ -122,10 +96,6 @@ msgstr "Festplatten Speicherplatz"
 msgid "Full virtualization (KVM)"
 msgstr "Volle Virtualisierung (KVM)"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:107
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:108
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:74
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:75
 #: modules/univention/admin/handlers/uvmm/info.py:95
 #: modules/univention/admin/handlers/uvmm/info.py:96
 #: modules/univention/admin/handlers/uvmm/profile.py:233
@@ -151,12 +121,6 @@ msgstr "Kernel"
 #: modules/univention/admin/handlers/uvmm/profile.py:187
 msgid "Kernel parameter"
 msgstr "Kernel Parameter"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:98
-msgid "Key-value pair storing needed parameters for the Cloud Connection"
-msgstr ""
-"Schlüssel-Wert-Paar zur Speicherung der benötigten Parameter für die Cloud-"
-"Verbindung"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:176
 #: modules/univention/admin/handlers/uvmm/profile.py:177
@@ -184,10 +148,6 @@ msgstr ""
 msgid "Memory"
 msgstr "Speicher"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:64
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:65
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:64
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:65
 #: modules/univention/admin/handlers/uvmm/profile.py:119
 #: modules/univention/admin/handlers/uvmm/profile.py:120
 msgid "Name"
@@ -241,10 +201,6 @@ msgstr "Betriebssystem"
 msgid "Order of boot devices"
 msgstr "Reihenfolge der Boot-Devices"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:77
-msgid "Pattern for filtering images"
-msgstr "Suchmuster für Abbilder"
-
 #: modules/univention/admin/handlers/uvmm/profile.py:127
 msgid "Prefix for the name of virtual machines"
 msgstr "Präfix für den Namen von virtuellen Maschinen"
@@ -278,27 +234,10 @@ msgstr "Realzeituhrversatz"
 msgid "Reference to the profile used for defining this VM"
 msgstr "Referenz auf das bei der Definition genutzte Profil"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:72
-msgid "Reference to the type of the cloud connection"
-msgstr "Referenz auf den Typ der Cloud-Verbindung"
-
 #: modules/univention/admin/handlers/uvmm/profile.py:171
 #: modules/univention/admin/handlers/uvmm/profile.py:253
 msgid "Remote access"
 msgstr "Fernzugriff"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:84
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:85
-msgid "Show UCS images when creating a new instance"
-msgstr "Zeige UCS Abbilder an beim Anlegen neuer Instanzen"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:92
-msgid ""
-"The specified images are added to the list of selectable images in the "
-"instance wizard"
-msgstr ""
-"Die angegeben Abbilder werden zur Liste der auswählbaren Abbilder beim "
-"Instanz-Assistenten hinzugefügt"
 
 #: modules/univention/admin/handlers/uvmm/info.py:65
 msgid "The unique identifier used by libvirt to identify the VM"
@@ -309,18 +248,6 @@ msgstr ""
 #: modules/univention/admin/handlers/uvmm/info.py:64
 msgid "UUID"
 msgstr "UUID"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:47
-msgid "UVMM: Cloud Connection"
-msgstr "UVMM: Cloud-Verbindung"
-
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:47
-msgid "UVMM: Cloud Type"
-msgstr "UVMM: Cloud-Typ"
-
-#: modules/univention/admin/syntax.d/univention-virtual-machine-manager-schema.py:57
-msgid "UVMM: Cloud Types"
-msgstr "UVMM: Cloud-Typen"
 
 #: modules/univention/admin/handlers/uvmm/info.py:47
 msgid "UVMM: Machine information"
@@ -355,14 +282,6 @@ msgstr "Wert muss eine positive Kapazität enthalten (xx.x [kmgtp][[i]B])"
 msgid "Virtual hardware"
 msgstr "Virtuelle Hardware"
 
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:107
-msgid "Virtual machine cloud connection"
-msgstr "Verbindungen der Cloud"
-
-#: modules/univention/admin/handlers/uvmm/cloudtype.py:74
-msgid "Virtual machine cloud type"
-msgstr "Typ der Cloud"
-
 #: modules/univention/admin/handlers/uvmm/info.py:95
 msgid "Virtual machine information"
 msgstr "Informationen zur virtuelle Maschine"
@@ -375,14 +294,6 @@ msgstr "Profil für eine virtuelle Maschine"
 #: modules/univention/admin/handlers/uvmm/profile.py:137
 msgid "Virtualisation Technology"
 msgstr "Virtualisierungstechnologie"
-
-#: modules/univention/admin/handlers/uvmm/cloudconnection.py:78
-msgid ""
-"When creating new instances, this pattern is used to further filter all "
-"available Images"
-msgstr ""
-"Beim Anlegen von neuen Instanz wird dieses Suchmuster verwendet, um die "
-"Liste der verfügbaren Abbilder zu filtern"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:66
 msgid "hard drive"
