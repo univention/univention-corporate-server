@@ -29,7 +29,7 @@
 
 override_dh_auto_test:
 	# package version number must equal UCS release version - breaks errata logic otherwise
-	egrep 'univention-errata-level \(([0-9]+)\.([0-9]+).([0-9]+)-[-+.~0-9A-Za-z]+\) ucs\1-\2-\3-0; urgency=' debian/changelog
+	egrep -m1 'univention-errata-level \(([0-9]+)\.([0-9]+).([0-9]+)-[-+.~0-9A-Za-z]+\) (unstable|ucs\1-\2-\3-0); urgency=' debian/changelog
 	dh_auto_test
 
 %:
