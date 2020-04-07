@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
-src: 
-fix: 
+src: univention-server
+fix: 14.0.0-14A~4.4.4.202004071420
 desc: |
  This update addresses the following issue(s):
  * machine account password change does not restart UDM REST API server
