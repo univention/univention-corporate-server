@@ -30,7 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 if [ "$1" = "postchange" ]; then
-	systemctl reload-or-try-restart univention-directory-manager-rest.service
+	systemctl restart univention-directory-manager-rest.service
 fi
 
 exit 0
