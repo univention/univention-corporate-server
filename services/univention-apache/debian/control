@@ -2,20 +2,23 @@ Source: univention-apache
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- univention-config-dev,
+Build-Depends:
+ debhelper (>= 7.0.50~),
  ucslint-univention,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-apache
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  apache2,
- univention-config (>= 8.0.2),
  libapache2-mod-authnz-pam,
  python2.7,
  univention-apache-vhost (= ${source:Version}),
-Conflicts: apache
+ univention-config (>= 8.0.2),
+ ${misc:Depends},
+Conflicts:
+ apache,
 Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the
  Apache web server.
@@ -27,12 +30,13 @@ Description: UCS - Apache2 configuration
 
 Package: univention-apache-vhost
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  python-click,
  python-univention-directory-manager,
- univention-ssl
+ univention-ssl,
+ ${misc:Depends},
 Suggests:
- univention-apache
+ univention-apache,
 Description: UCS - Apache2 vhost
  This packages provides a tool to add virtual hosts to
  Apache web server.

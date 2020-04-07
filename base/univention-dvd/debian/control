@@ -2,15 +2,17 @@ Source: univention-dvd
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 9)
+Build-Depends:
+ debhelper (>= 9),
 Standards-Version: 3.9.8
 
 Package: univention-dvd
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  debian-cd (>= 3.1.20),
+ dosfstools,
  mtools,
- dosfstools
+ ${misc:Depends},
 Description: UCS-DVD build settings
  This package contains the DVD build settings and DVD
  trigger files for UCS DVDs.

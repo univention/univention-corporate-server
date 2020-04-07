@@ -2,38 +2,43 @@ Source: univention-nagios
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 9),
- univention-config-dev,
+Build-Depends:
+ debhelper (>= 9),
  python-all,
- ucslint-univention
+ ucslint-univention,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-nagios-server
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends},
- univention-directory-manager-tools (>> 7.0.147),
+Depends:
+ libapache2-mod-authnz-pam,
+ monitoring-plugins,
  nagios,
  nagios-common,
  nagios-doc,
  nagios-images,
- univention-nagios-client (= ${binary:Version}),
- univention-nagios-common (= ${binary:Version}),
- monitoring-plugins,
  nagios-nrpe-plugin,
- libapache2-mod-authnz-pam,
- univention-config (>= 9.0.5-2.443.201312091553),
- univention-base-files,
- univention-directory-listener,
- univention-nagios-cups,
- univention-nagios-squid,
- univention-nagios-dansguardian,
  python-univention-lib (>= 3.0.26-14),
  shell-univention-lib,
+ univention-base-files,
+ univention-config (>= 9.0.5-2.443.201312091553),
+ univention-directory-listener,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-nagios-client (= ${binary:Version}),
+ univention-nagios-common (= ${binary:Version}),
+ univention-nagios-cups,
+ univention-nagios-dansguardian,
+ univention-nagios-squid,
+ ${misc:Depends},
+ ${python:Depends},
 Provides:
- univention-nagios-group-access
-Conflicts: nagios2 (<< 3.0),
- univention-nagios-group-access
-Breaks: nagios2 (<< 3.0)
+ univention-nagios-group-access,
+Conflicts:
+ nagios2 (<< 3.0),
+ univention-nagios-group-access,
+Breaks:
+ nagios2 (<< 3.0),
 Description: UCS: nagios server support
  This package installs required packages to allow monitoring
  clients by nagios.
@@ -45,22 +50,26 @@ Description: UCS: nagios server support
 
 Package: univention-nagios-client
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends},
- ${shlibs:Depends},
- univention-nagios-common (= ${binary:Version}),
- univention-directory-manager-tools (>> 7.0.147),
+Depends:
+ cron,
+ dnsutils,
+ dpt-i2o-raidutils,
+ lmdb-utils,
  monitoring-plugins,
  nagios-nrpe-server,
- cron,
- dpt-i2o-raidutils,
- univention-config,
- univention-base-files,
- univention-directory-listener,
  shell-univention-lib,
- dnsutils,
- lmdb-utils
-Conflicts: nagios2 (<< 3.0)
-Breaks: nagios2 (<< 3.0)
+ univention-base-files,
+ univention-config,
+ univention-directory-listener,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-nagios-common (= ${binary:Version}),
+ ${misc:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+Conflicts:
+ nagios2 (<< 3.0),
+Breaks:
+ nagios2 (<< 3.0),
 Description: UCS: nagios client support
  This package installs the required packages to allow clients
  to be monitored by nagios.
@@ -72,13 +81,16 @@ Description: UCS: nagios client support
 
 Package: univention-nagios-common
 Architecture: any
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
+Depends:
+ shell-univention-lib,
  univention-config,
  univention-directory-listener,
- shell-univention-lib
-Conflicts: nagios2 (<< 3.0)
-Breaks: nagios2 (<< 3.0)
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
+Conflicts:
+ nagios2 (<< 3.0),
+Breaks:
+ nagios2 (<< 3.0),
 Description: UCS: nagios client support
  This package installs the required packages to allow clients
  to be monitored by nagios.

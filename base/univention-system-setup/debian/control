@@ -3,43 +3,50 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper (>= 9),
- ucslint-univention,
+Build-Depends:
+ debhelper (>= 9),
  dh-python,
+ node-stylus,
+ po-debconf (>= 0.5.0),
  python-all,
+ python-apt,
+ python-dnspython,
+ python-imaging,
+ python-lxml,
+ python-notifier,
+ python-psutil,
+ python-univention-appcenter,
+ python-univention-lib,
+ python-univention-management-console,
  python3-all,
+ ucslint-univention,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
- python-apt,
- python-psutil,
- python-notifier,
- python-univention-lib,
- python-univention-management-console,
- python-univention-appcenter,
- python-imaging,
- python-dnspython,
  unzip,
- po-debconf (>= 0.5.0),
- python-lxml,
- node-stylus,
 
 Package: univention-system-setup
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
+Depends:
+ gettext-base,
+ passwd,
+ python-univention-lib (>= 6.0.9-20),
+ shell-univention-lib (>= 3.0.1-1),
  univention-config (>= 8.0-2),
  univention-ipcalc,
- whois,
- passwd,
- shell-univention-lib (>= 3.0.1-1),
- python-univention-lib (>= 6.0.9-20),
  univention-ipcalc (>= 5),
- gettext-base,
-Breaks: univention-system-setup-boot (<< 8.1.63-5)
-Recommends: univention-management-console-module-setup,
+ whois,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Breaks:
+ univention-system-setup-boot (<< 8.1.63-5),
+Recommends:
  rdate,
-Provides: ${python:Provides}, ${python3:Provides}
+ univention-management-console-module-setup,
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
 Description: UCS System Setup tools
  This package provides the tool to configure the system, especially its name,
  domain, network configuration, and software.
@@ -51,32 +58,37 @@ Description: UCS System Setup tools
 
 Package: univention-system-setup-boot
 Architecture: all
-Provides: univention-setup-boot,
- univention-system-setup-appliance
-Conflicts: univention-system-setup-appliance,
- univention-server-backup,
- univention-server-slave,
- univention-server-member,
+Provides:
+ univention-setup-boot,
+ univention-system-setup-appliance,
+Conflicts:
  univention-basesystem,
+ univention-server-backup,
+ univention-server-member,
+ univention-server-slave,
+ univention-system-setup-appliance,
 Depends:
- ${misc:Depends},
- shell-univention-lib,
- univention-system-setup (= ${source:Version}),
- univention-network-common,
+ openbox,
+ python-six,
  python-univention-appcenter,
+ python3-six,
+ shell-univention-lib,
  univention-apache (>= 7.0.16-10),
+ univention-network-common,
+ univention-system-setup (= ${source:Version}),
  x11-utils,
  x11-xkb-utils,
  x11-xserver-utils,
- openbox,
- python-six,
- python3-six,
-Recommends: smbclient,
- xinit,
- firefox-esr,
+ ${misc:Depends},
+Recommends:
  dbus-x11,
+ firefox-esr,
+ smbclient,
  univention-kernel-image,
-Replaces: univention-setup-boot, univention-system-setup-appliance
+ xinit,
+Replaces:
+ univention-setup-boot,
+ univention-system-setup-appliance,
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
  boot. This package is only allowed on the server role DC Master.
@@ -92,14 +104,15 @@ Architecture: any
 Section: debian-installer
 Priority: standard
 XB-Subarchitecture: ${subarch}
-Provides: configured-ucs
+Provides:
+ configured-ucs,
 Depends:
+ bootable-system,
  cdebconf-udeb,
- kernel-installer,
+ created-fstab,
  di-utils,
  installed-base,
- created-fstab,
- bootable-system,
+ kernel-installer,
  ${misc:Depends},
 XB-Installer-Menu-Item: 7650
 Description: Start Univention System Setup
@@ -114,27 +127,27 @@ Description: Start Univention System Setup
 Package: univention-management-console-module-setup
 Architecture: all
 Depends:
- univention-management-console-server (>= 11.0.4-37),
- ${misc:Depends},
- ${python:Depends},,
- ${python3:Depends},
+ at,
+ libsasl2-modules-gssapi-heimdal,
+ python-apt,
+ python-dnspython,
+ python-lxml,
+ python-psutil,
+ python-univention-lib (>= 4.0.5-12),
  univention-directory-manager-tools (>> 7.0.147),
- univention-system-setup (= ${source:Version}),
- univention-updater,
+ univention-heimdal-common,
+ univention-ipcalc,
+ univention-management-console-frontend,
  univention-management-console-module-lib,
  univention-management-console-module-sysinfo,
- univention-management-console-frontend,
- python-univention-lib (>= 4.0.5-12),
- python-dnspython,
- python-psutil,
- python-apt,
- univention-ipcalc,
- univention-heimdal-common,
- libsasl2-modules-gssapi-heimdal,
- python-lxml,
- xkb-data,
+ univention-management-console-server (>= 11.0.4-37),
+ univention-system-setup (= ${source:Version}),
+ univention-updater,
  x11-xkb-utils,
- at
+ xkb-data,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UMC module for Univention System Setup
  This package contains the UMC module for the UCS System Setup.
  .

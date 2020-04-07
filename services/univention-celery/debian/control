@@ -2,17 +2,19 @@ Source: univention-celery
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- univention-config-dev,
+Build-Depends:
+ debhelper (>> 7),
  ucslint-univention,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-celery
 Architecture: all
-Depends: ${misc:Depends},
- rabbitmq-server,
+Depends:
  celeryd,
  python-celery,
+ rabbitmq-server,
+ ${misc:Depends},
 Description: Celery integration package
  Code to administer and use Celery.
  .

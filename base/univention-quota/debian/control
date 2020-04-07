@@ -3,29 +3,36 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 3.0.0),
- ucslint-univention,
- univention-config-dev,
- univention-management-console-dev (>= 11.0.4-37),
+Build-Depends:
+ debhelper (>> 3.0.0),
+ dh-python,
  python-all,
  python-all-dev,
  python3-all,
  python3-all-dev,
- dh-python,
+ ucslint-univention,
+ univention-config-dev,
+ univention-management-console-dev (>= 11.0.4-37),
 
 Package: univention-quota
 Architecture: all
-Pre-Depends: quota (>= 3.14)
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
+Pre-Depends:
+ quota (>= 3.14),
+Depends:
+ ldap-utils,
+ shell-univention-lib,
+ univention-config,
  univention-directory-manager-tools (>> 7.0.147),
  univention-pam (>> 0.8),
- univention-config,
  univention-policy-tools,
- ldap-utils,
- shell-univention-lib
-Provides: ${python:Provides}, ${python3:Provides}
-Conflicts: univention-management-console (<< 0.9.33-1)
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
+Conflicts:
+ univention-management-console (<< 0.9.33-1),
 Description: UCS - set default-quotas for users
  This package can set default-quotas for a user at login.
  The quotas are set by resolving the shares corresponding
@@ -40,14 +47,18 @@ Description: UCS - set default-quotas for users
 
 Package: univention-management-console-module-quota
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
- univention-quota,
+Depends:
+ python-notifier,
+ python-univention-lib (>= 1.0.30-1),
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
- python-univention-lib (>= 1.0.30-1),
- python-notifier,
-Provides: ${python:Provides}, ${python3:Provides}
+ univention-quota,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
 Description: UMC module for filesystem quota
  This package contains the UMC module for the filesystem quota
  .

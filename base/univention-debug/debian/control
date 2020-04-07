@@ -3,15 +3,17 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 9),
+Build-Depends:
  autoconf,
  automake,
+ debhelper (>= 9),
  libtool,
  ucslint-univention,
 
 Package: libunivention-debug1
 Architecture: any
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  ${shlibs:Depends},
 Description: UCS - debugging and logging library
  This package includes the UCS debugging and logging
@@ -24,10 +26,13 @@ Description: UCS - debugging and logging library
 
 Package: libunivention-debug-dev
 Architecture: any
-Depends: ${misc:Depends},
+Depends:
  libunivention-debug1 (= ${binary:Version}),
-Replaces: libunivention-debug0
-Conflicts: libunivention-debug0
+ ${misc:Depends},
+Replaces:
+ libunivention-debug0,
+Conflicts:
+ libunivention-debug0,
 Description: UCS - debugging and logging library (development files)
  This package includes the development files for the
  UCS debugging and logging  library.
@@ -39,7 +44,8 @@ Description: UCS - debugging and logging library (development files)
 
 Package: univention-debug-tools
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  ${python:Depends},
 Description: UCS - tools for debugging and logging data
  This package contains the univention-viewlog tool to

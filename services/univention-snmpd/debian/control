@@ -3,16 +3,18 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-snmpd
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
+Depends:
+ snmp,
  snmpd,
- snmp
+ univention-config,
+ ${misc:Depends},
 Description: UCS - snmpd configuration
  This package contains the configuration for the
  snmpd package.

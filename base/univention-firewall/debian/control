@@ -3,21 +3,24 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ dh-python,
  python-all,
  python3-all,
- dh-python,
+ ucslint-univention,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
- ucslint-univention
 
 Package: univention-firewall
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
- univention-config,
+Depends:
+ iptables,
  python-ipaddr,
- iptables
+ univention-config,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UCS - firewall integration
  This package contains scripts to combine iptables with
  univention-config-registry.

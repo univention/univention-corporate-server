@@ -3,16 +3,18 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
-Build-Depends: debhelper,
- ucslint-univention,
+Build-Depends:
+ debhelper,
  dh-python,
  python-all,
- python3-all,
  python-ipaddr,
+ python3-all,
+ ucslint-univention,
 
 Package: univention-ipcalc
 Architecture: all
-Depends: python-univention-ipcalc (>= 10.0.0-2)
+Depends:
+ python-univention-ipcalc (>= 10.0.0-2),
 Description: UCS - ipcalc tool for network
  This package contain the ipcalc tool.
  .
@@ -23,11 +25,15 @@ Description: UCS - ipcalc tool for network
 
 Package: python-univention-ipcalc
 Architecture: all
-Depends: ${python:Depends},
+Depends:
  python-ipaddr,
-Provides: ${python:Provides}
-Replaces: univention-ipcalc (<< 10.0.0-2)
-Breaks: univention-ipcalc (<< 10.0.0-2)
+ ${python:Depends},
+Provides:
+ ${python:Provides},
+Replaces:
+ univention-ipcalc (<< 10.0.0-2),
+Breaks:
+ univention-ipcalc (<< 10.0.0-2),
 Description: UCS - ipcalc tool for network
  This package contain the Python 2 files for the ipcalc tool.
  .
@@ -38,9 +44,11 @@ Description: UCS - ipcalc tool for network
 
 Package: python3-univention-ipcalc
 Architecture: all
-Depends: ${python3:Depends}
-Provides: ${python3:Provides},
+Depends:
+ ${python3:Depends},
+Provides:
  python-ipaddr,
+ ${python3:Provides},
 Description: UCS - ipcalc tool for network
  This package contain the Python 3 files for the ipcalc tool.
  .

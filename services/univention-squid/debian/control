@@ -3,24 +3,28 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-squid
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
+Depends:
+ python-crypto,
+ python-ipaddress,
+ python-pexpect,
+ python-univention-lib,
  squid (>> 3.5.23),
  univention-config (>= 8.0.2),
- winbind,
+ univention-directory-manager-tools (>> 7.0.147),
  univention-heimdal-common (>>5.0.24-1),
- python-ipaddress,
- python-crypto,
- python-univention-lib,
- python-pexpect,
-Recommends: univention-nagios-squid
-Suggests: univention-firewall
+ winbind,
+ ${misc:Depends},
+Recommends:
+ univention-nagios-squid,
+Suggests:
+ univention-firewall,
 Description: UCS Squid web proxy integration
  This package integrates the Squid web proxy into UCS.
  .

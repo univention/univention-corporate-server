@@ -3,33 +3,37 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 7),
- univention-config-dev,
- ucslint-univention,
+Build-Depends:
+ debhelper (>> 7),
  libpam0g-dev,
- libunivention-config-dev
+ libunivention-config-dev,
+ ucslint-univention,
+ univention-config-dev,
 
 Package: univention-samba4
 Architecture: any
-Conflicts: univention-samba,
- samba (<<2:4.7.3+dfsg-1)
-Depends: ${misc:Depends},
+Conflicts:
+ samba (<<2:4.7.3+dfsg-1),
+ univention-samba,
+Depends:
+ ldb-tools,
+ libunivention-ldb-modules,
+ pwgen,
+ python-netifaces,
+ python-univention (>= 6.0.9-3),
+ python-univention-lib (>= 1.0.45),
+ samba (>= 2:4.7.3+dfsg-1A~4.3.0.201712181832),
+ samba-vfs-modules,
+ shell-univention-lib (>= 6.0.9-8),
  univention-config (>= 8.0.2-1),
  univention-directory-manager-tools (>= 13.0.21-21),
  univention-join (>= 10.0.0-12),
- shell-univention-lib (>= 6.0.9-8),
- python-univention-lib (>= 1.0.45),
- python-univention (>= 6.0.9-3),
- python-netifaces,
- samba (>= 2:4.7.3+dfsg-1A~4.3.0.201712181832),
- samba-vfs-modules,
- libunivention-ldb-modules,
- ldb-tools,
- winbind,
  univention-samba-local-config,
- pwgen,
- univention-samba4-sysvol-sync (= ${binary:Version})
-Recommends: univention-nagios-samba
+ univention-samba4-sysvol-sync (= ${binary:Version}),
+ winbind,
+ ${misc:Depends},
+Recommends:
+ univention-nagios-samba,
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches
  for integration of Samba4 into Univention Corporate Server (UCS)
@@ -41,12 +45,14 @@ Description: UCS - Samba4 integration package
 
 Package: univention-samba4-sysvol-sync
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
+Depends:
  rsync (>=3.0.7-2),
+ shell-univention-lib,
+ univention-config,
  util-linux,
- shell-univention-lib
-Breaks: univention-samba4 ( << 1.0.139-2)
+ ${misc:Depends},
+Breaks:
+ univention-samba4 ( << 1.0.139-2),
 Description: UCS - Samba4 sysvol synchronization
  This package contains the scripts and configuration
  for integration the Samba4 sysvol synchronisation into

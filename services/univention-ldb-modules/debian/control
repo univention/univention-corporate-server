@@ -2,28 +2,30 @@ Source: univention-ldb-modules
 Section: devel
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
-	python,
-	libldb-dev (>= 2:1.1.25-1),
-	libtalloc-dev,
-	libtevent-dev,
-	libunivention-config-dev,
-	libunivention-policy-dev,
-	ldb-tools,
-	samba-dev,
-	univention-config-dev
+Build-Depends:
+ debhelper,
+ ldb-tools,
+ libldb-dev (>= 2:1.1.25-1),
+ libtalloc-dev,
+ libtevent-dev,
+ libunivention-config-dev,
+ libunivention-policy-dev,
+ python,
+ samba-dev,
+ univention-config-dev,
 Standards-Version: 3.9.1
 
 Package: libunivention-ldb-modules
 Architecture: any
 Section: libs
-Depends: ${misc:Depends},
-	${shlibs:Depends},
-	libldb1,
-	libunivention-config0,
-	libunivention-policy0,
-	python-samba,
-	ldb-tools
+Depends:
+ ldb-tools,
+ libldb1,
+ libunivention-config0,
+ libunivention-policy0,
+ python-samba,
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: Univention LDB modules
  This package provides UCS specific LDB modules
  .
@@ -35,8 +37,9 @@ Description: Univention LDB modules
 Package: libunivention-ldb-modules-dbg
 Architecture: any
 Section: libs
-Depends: libunivention-ldb-modules (= ${binary:Version}),
-	${misc:Depends},
+Depends:
+ libunivention-ldb-modules (= ${binary:Version}),
+ ${misc:Depends},
 Description: Univention LDB modules
  This package provides debugging symbols for UCS specific LDB modules
  .

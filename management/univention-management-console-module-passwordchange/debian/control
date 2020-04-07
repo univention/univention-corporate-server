@@ -2,16 +2,18 @@ Source: univention-management-console-module-passwordchange
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper (>= 7.0.50~),
+ ucslint,
  univention-management-console-dev,
  univention-ucs-translation-template,
- ucslint,
 Standards-Version: 3.7.2
 
 Package: univention-management-console-module-passwordchange
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-management-console-server,
+ ${misc:Depends},
 Description: Password change in UMC for the user currently logged in
  .
  It is part of Univention Corporate Server (UCS), an

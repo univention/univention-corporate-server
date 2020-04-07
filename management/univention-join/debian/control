@@ -3,26 +3,29 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ dh-python,
  ucslint-univention,
  univention-config-dev,
- dh-python,
  univention-management-console-dev,
 
 Package: univention-join
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
+Depends:
+ iputils-ping,
+ ldap-utils,
+ python-univention-lib (>= 1.0.25-1),
+ shell-univention-lib (>= 3.0.26-28),
+ tofrodos,
  univention-admin-diary-client (>= 1.0.0-44),
  univention-config,
- shell-univention-lib (>= 3.0.26-28),
+ univention-directory-manager-tools (>> 7.0.147),
  univention-ssh (>= 3.0.1-2),
  univention-ssl (>= 13.0.0-5),
- iputils-ping,
- tofrodos,
- ldap-utils,
- python-univention-lib (>= 1.0.25-1)
-Breaks: univention-ldap-server (<< 14.0.2-35),
+ ${misc:Depends},
+Breaks:
+ univention-ldap-server (<< 14.0.2-35),
 Description: UCS - join domains
  This packages allows for the joining of UCS computers to a
  UCS domain.
@@ -34,16 +37,17 @@ Description: UCS - join domains
 
 Package: univention-management-console-module-join
 Architecture: all
-Depends: ${misc:Depends},
- ${python:Depends},
- ${python3:Depends},
+Depends:
  python-dnspython,
- univention-directory-manager-tools (>> 7.0.147),
- univention-management-console-server (>= 11.0.4-37),
- univention-join (= ${source:Version}),
- univention-updater,
- univention-management-console-module-lib (>= 3.0.0-1),
  python-notifier,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-join (= ${source:Version}),
+ univention-management-console-module-lib (>= 3.0.0-1),
+ univention-management-console-server (>= 11.0.4-37),
+ univention-updater,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UMC module for system join
  This package contains the UMC module for system join actions.
  .

@@ -2,12 +2,15 @@ Source: univention-runit
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, ucslint-univention
+Build-Depends:
+ debhelper,
+ ucslint-univention,
 Standards-Version: 3.7.2
 
 Package: univention-runit
 Architecture: all
-Depends: runit
+Depends:
+ runit,
 Description: UCS - service supervision
  This packages provides process supervision for several
  UCS services. See the runit package for details.

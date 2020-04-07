@@ -2,37 +2,39 @@ Source: univention-management-console
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
- python2.7-dev,
+Build-Depends:
+ debhelper (>= 7.0.50~),
  dh-python,
  python-polib,
+ python2.7-dev,
+ ucslint-univention,
  univention-config-dev,
  univention-ucs-translation-template,
 Standards-Version: 3.7.2
 
 Package: univention-management-console
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  python-univention-management-console (= ${source:Version}),
- univention-management-console-server (= ${source:Version}),
- univention-management-console-web-server (>= 5.0.5),
- univention-management-console-module-lib,
- univention-management-console-module-top,
- univention-management-console-module-reboot,
- univention-management-console-module-mrtg,
- univention-management-console-module-ucr,
- univention-management-console-module-join,
- univention-management-console-module-updater,
- univention-management-console-module-setup,
- univention-management-console-module-services,
- univention-management-console-module-sysinfo,
  univention-management-console-module-appcenter,
  univention-management-console-module-apps,
  univention-management-console-module-diagnostic,
+ univention-management-console-module-join,
+ univention-management-console-module-lib,
+ univention-management-console-module-mrtg,
  univention-management-console-module-passwordchange,
+ univention-management-console-module-reboot,
+ univention-management-console-module-services,
+ univention-management-console-module-setup,
+ univention-management-console-module-sysinfo,
+ univention-management-console-module-top,
+ univention-management-console-module-ucr,
+ univention-management-console-module-updater,
+ univention-management-console-server (= ${source:Version}),
+ univention-management-console-web-server (>= 5.0.5),
+ ${misc:Depends},
 Recommends:
- univention-management-console-module-quota
+ univention-management-console-module-quota,
 Description: UCS Management Console - Web based computer administration tool
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -46,15 +48,16 @@ Description: UCS Management Console - Web based computer administration tool
 
 Package: univention-management-console-server
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
- python-univention-management-console (= ${source:Version}),
- univention-base-files,
- shell-univention-lib (>= 1.0.10-1),
+Depends:
+ cy2-saml,
+ pam-saml,
  python-daemon,
  python-univention-lib (>= 1.0.25-1),
- pam-saml,
- cy2-saml,
+ python-univention-management-console (= ${source:Version}),
+ shell-univention-lib (>= 1.0.10-1),
+ univention-base-files,
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
 Description: UCS Management Console - server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -69,19 +72,22 @@ Description: UCS Management Console - server
 
 Package: python-univention-management-console
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- python-univention-config-registry,
- python-univention-lib (>= 1.0.80),
- python-univention-directory-manager (>=9.0.75-1),
- univention-join,
- python-univention,
+Depends:
  python-cryptography,
+ python-notifier (>= 0.9.5-1),
  python-openssl,
  python-pam,
  python-polib,
- python-notifier (>= 0.9.5-1),
  python-six,
-Provides: ${python:Provides}
+ python-univention,
+ python-univention-config-registry,
+ python-univention-directory-manager (>=9.0.75-1),
+ python-univention-lib (>= 1.0.80),
+ univention-join,
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: UCS Management Console - Python 2 Modules
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -96,20 +102,23 @@ Description: UCS Management Console - Python 2 Modules
 
 Package: python3-univention-management-console
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends},
- python3-univention-config-registry,
- python3-univention-lib,
- python3-univention-directory-manager,
- univention-join,
- python3-univention,
+Depends:
  python3-cryptography,
+ python3-daemon,
+ python3-notifier,
  python3-openssl,
  python3-pam,
  python3-polib,
- python3-notifier,
  python3-six,
- python3-daemon,
-Provides: ${python3:Provides}
+ python3-univention,
+ python3-univention-config-registry,
+ python3-univention-directory-manager,
+ python3-univention-lib,
+ univention-join,
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: UCS Management Console - Python 3 Modules
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -124,13 +133,15 @@ Description: UCS Management Console - Python 3 Modules
 
 Package: univention-management-console-dev
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- python-univention-config-registry,
- python-polib,
- univention-ucs-translation-template (>> 6.0.0-6),
- gettext,
+Depends:
  devscripts,
- imagemagick | inkscape
+ gettext,
+ imagemagick | inkscape,
+ python-polib,
+ python-univention-config-registry,
+ univention-ucs-translation-template (>> 6.0.0-6),
+ ${misc:Depends},
+ ${python:Depends},
 Description: UCS Management Console - development files
  UCS Management Console is a web based program to manage computers. It has
  an extensible architecture, using modules to implement its
@@ -144,8 +155,9 @@ Description: UCS Management Console - development files
 
 Package: univention-management-console-doc
 Architecture: all
-Depends: ${misc:Depends},
- univention-doc
+Depends:
+ univention-doc,
+ ${misc:Depends},
 Description: UCS Management Console - documentation
  UCS Management Console is a web based program to manage computers. It has
  an extensible architecture, using modules to implement its
@@ -159,12 +171,14 @@ Description: UCS Management Console - documentation
 
 Package: univention-management-console-frontend
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-apache,
+ univention-management-console-login,
  univention-web-js,
  univention-web-style,
- univention-management-console-login,
-Breaks: univention-management-console-module-sysinfo (<< 7),
+ ${misc:Depends},
+Breaks:
+ univention-management-console-module-sysinfo (<< 7),
 Description: UCS Management Console - Web based computer administration tool
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -180,23 +194,24 @@ Description: UCS Management Console - Web based computer administration tool
 
 Package: univention-management-console-web-server
 Architecture: all
-Depends: ${misc:Depends},
- univention-management-console-frontend,
- univention-management-console-server,
- python-univention-management-console (= ${source:Version}),
- univention-base-files,
+Depends:
  curl,
  openssl,
  python-cherrypy3,
  python-daemon,
+ python-defusedxml,
  python-ipaddr,
  python-pysaml2,
- python-defusedxml,
- python3-defusedxml,
  python-six,
+ python-univention-management-console (= ${source:Version}),
+ python3-defusedxml,
  python3-six,
+ shell-univention-lib,
+ univention-base-files,
+ univention-management-console-frontend,
+ univention-management-console-server,
  univention-saml-schema,
- shell-univention-lib
+ ${misc:Depends},
 Description: UCS Management Console - Web server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -210,10 +225,11 @@ Description: UCS Management Console - Web server
 
 Package: univention-management-console-login
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-apache,
  univention-web-js,
  univention-web-style,
+ ${misc:Depends},
 Description: UCS Management Console - Login page
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -223,4 +239,3 @@ Description: UCS Management Console - Login page
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-

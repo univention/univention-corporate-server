@@ -2,26 +2,29 @@ Source: univention-admin-diary
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper (>= 7.0.50~),
  dh-python,
- univention-join,
+ node-stylus,
  python-all,
  python3-all,
  ucslint,
- univention-management-console-dev (>= 11.0.4-37),
  univention-config-dev,
- node-stylus,
+ univention-join,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.7.2
 
 Package: univention-admin-diary-backend
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ python-pyparsing,
  python-univention-admin-diary-backend (= ${binary:Version}),
  rsyslog-relp,
- python-pyparsing
+ ${misc:Depends},
 Recommends:
- univention-postgresql | univention-mariadb
-Suggests: univention-management-console-module-admindiary
+ univention-postgresql | univention-mariadb,
+Suggests:
+ univention-management-console-module-admindiary,
 Description: Univention Admin Diary backend
  .
  It is part of Univention Corporate Server (UCS), an
@@ -31,12 +34,15 @@ Description: Univention Admin Diary backend
 
 Package: python-univention-admin-diary-backend
 Architecture: all
-Provides: ${python:Provides}
-Depends: ${python:Depends}, ${misc:Depends},
- python-univention-admin-diary (= ${binary:Version}),
- python-psycopg2,
+Provides:
+ ${python:Provides},
+Depends:
  python-mysqldb,
+ python-psycopg2,
  python-sqlalchemy,
+ python-univention-admin-diary (= ${binary:Version}),
+ ${misc:Depends},
+ ${python:Depends},
 Description: Univention Admin Diary backend library
  .
  It is part of Univention Corporate Server (UCS), an
@@ -46,12 +52,15 @@ Description: Univention Admin Diary backend library
 
 Package: python3-univention-admin-diary-backend
 Architecture: all
-Provides: ${python3:Provides}
-Depends: ${python3:Depends}, ${misc:Depends},
- python3-univention-admin-diary (= ${binary:Version}),
- python3-psycopg2,
+Provides:
+ ${python3:Provides},
+Depends:
  python3-mysqldb,
+ python3-psycopg2,
  python3-sqlalchemy,
+ python3-univention-admin-diary (= ${binary:Version}),
+ ${misc:Depends},
+ ${python3:Depends},
 Description: Univention Admin Diary backend library
  .
  It is part of Univention Corporate Server (UCS), an
@@ -61,10 +70,13 @@ Description: Univention Admin Diary backend library
 
 Package: univention-management-console-module-admindiary
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
+Depends:
+ python-univention-admin-diary-backend (= ${binary:Version}),
  univention-management-console-server (>= 11.0.4-37),
- python-univention-admin-diary-backend (= ${binary:Version})
-Suggests: univention-admin-diary-backend
+ ${python3:Depends},
+ ${python:Depends},
+Suggests:
+ univention-admin-diary-backend,
 Description: UMC module for the Admin Diary
  This package contains the UMC module for the Admin Diary
  .
@@ -75,10 +87,13 @@ Description: UMC module for the Admin Diary
 
 Package: univention-admin-diary-client
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ python-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
- python-univention-admin-diary (= ${binary:Version})
-Provides: ${python:Provides}, ${python3:Provides}
+ ${misc:Depends},
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
 Description: Univention Admin Diary client
  .
  It is part of Univention Corporate Server (UCS), an
@@ -88,9 +103,11 @@ Description: Univention Admin Diary client
 
 Package: python-univention-admin-diary
 Architecture: all
-Depends: ${misc:Depends},
- ${python:Depends}
-Provides: ${python:Provides}
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: Univention Admin Diary lib
  .
  It is part of Univention Corporate Server (UCS), an
@@ -100,9 +117,11 @@ Description: Univention Admin Diary lib
 
 Package: python3-univention-admin-diary
 Architecture: all
-Depends: ${misc:Depends},
- ${python3:Depends}
-Provides: ${python3:Provides}
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: Univention Admin Diary lib
  .
  It is part of Univention Corporate Server (UCS), an

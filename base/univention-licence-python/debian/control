@@ -27,7 +27,8 @@ Depends:
  ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends},
-Provides: ${python:Provides}
+Provides:
+ ${python:Provides},
 Description: UCS - licence validation library for Python 2
  This package contains a Python interface to the UCS
  licence validation library.
@@ -40,11 +41,12 @@ Description: UCS - licence validation library for Python 2
 Package: python-univention-license-dbg
 Architecture: any
 Depends:
+ python-univention-license (= ${binary:Version}),
  ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends},
- python-univention-license (= ${binary:Version}),
-Provides: ${python:Provides}
+Provides:
+ ${python:Provides},
 Description: UCS - licence validation library for Python 2 - Debug version
  This package contains a Python interface to the UCS
  licence validation library.
@@ -60,7 +62,8 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: UCS - licence validation library for Python 3
  This package contains a Python interface to the UCS
  licence validation library.
@@ -73,11 +76,12 @@ Description: UCS - licence validation library for Python 3
 Package: python3-univention-license-dbg
 Architecture: any
 Depends:
+ python3-univention-license (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
- python3-univention-license (= ${binary:Version}),
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: UCS - licence validation library for Python 3 - Debug version
  This package contains a Python interface to the UCS
  licence validation library.

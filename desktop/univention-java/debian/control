@@ -3,11 +3,14 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, ucslint-univention
+Build-Depends:
+ debhelper,
+ ucslint-univention,
 
 Package: univention-java
 Architecture: all
-Depends: default-jre
+Depends:
+ default-jre,
 Description: UCS - Java support
  This package provides Java support for UCS.
  .

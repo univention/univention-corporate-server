@@ -3,15 +3,17 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-kdm
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ kdm,
  univention-base-files,
- kdm
+ ${misc:Depends},
 Description: UCS - KDM configuration
  The KDE Display Manager (KDM) provides a graphical login
  prompt. This package provides the UCS configuration.

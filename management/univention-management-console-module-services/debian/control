@@ -2,20 +2,23 @@ Source: univention-management-console-module-services
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
+Build-Depends:
+ debhelper (>= 7.0.50~),
  dh-python,
- univention-management-console-dev (>= 11.0.4-37),
  python-all,
  python3-all,
+ ucslint-univention,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.5.2
 
 Package: univention-management-console-module-services
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- univention-management-console-server (>= 11.0.4-37),
- python-univention-config-registry (>= 14.0.0-11),
+Depends:
  python-notifier,
+ python-univention-config-registry (>= 14.0.0-11),
+ univention-management-console-server (>= 11.0.4-37),
+ ${python3:Depends},
+ ${python:Depends},
 Description: UMC module for system services
  This package contains the UMC module for the system services
  .

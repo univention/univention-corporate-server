@@ -3,21 +3,25 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.6.2
-Build-Depends: debhelper (>= 9),
- univention-config-dev,
- univention-ucs-translation-template,
+Build-Depends:
+ debhelper (>= 9),
  dh-python,
  python-all,
  python3-all,
  ucslint-univention,
+ univention-config-dev,
+ univention-ucs-translation-template,
 
 Package: univention-virtual-machine-manager-schema
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends},
+Depends:
+ python-univention-directory-manager-uvmm (= ${source:Version}),
  shell-univention-lib (>= 3.0.12),
  univention-directory-manager-tools (>> 7.0.147),
- python-univention-directory-manager-uvmm (= ${source:Version})
-Enhances: univention-ldap-config
+ ${misc:Depends},
+ ${python:Depends},
+Enhances:
+ univention-ldap-config,
 Description: UCS Virtual Machine Manager schema definitions
  This package contains the OpenLDAP schema definitions for
  the UVMM (UCS Virtual Machine Manager).
@@ -29,12 +33,16 @@ Description: UCS Virtual Machine Manager schema definitions
 
 Package: python-univention-directory-manager-uvmm
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends},
- shell-univention-lib (>= 1.0.39),
+Depends:
  python-univention,
- python-univention-directory-manager (>= 14.0.14-14)
-Suggests: univention-virtual-machine-manager-schema
-Provides: ${python:Provides},
+ python-univention-directory-manager (>= 14.0.14-14),
+ shell-univention-lib (>= 1.0.39),
+ ${misc:Depends},
+ ${python:Depends},
+Suggests:
+ univention-virtual-machine-manager-schema,
+Provides:
+ ${python:Provides},
 Description: UCS Virtual Machine Manager UDM extensions
  This package contains the UCS Directory Manager (UDM) extensions for UVMM (UCS
  Virtual Machine Manager).
@@ -46,12 +54,16 @@ Description: UCS Virtual Machine Manager UDM extensions
 
 Package: python3-univention-directory-manager-uvmm
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends},
- shell-univention-lib,
+Depends:
  python3-univention,
  python3-univention-directory-manager,
-Suggests: univention-virtual-machine-manager-schema
-Provides: ${python3:Provides},
+ shell-univention-lib,
+ ${misc:Depends},
+ ${python3:Depends},
+Suggests:
+ univention-virtual-machine-manager-schema,
+Provides:
+ ${python3:Provides},
 Description: UCS Virtual Machine Manager UDM extensions
  This package contains the UCS Directory Manager (UDM) extensions for UVMM (UCS
  Virtual Machine Manager).

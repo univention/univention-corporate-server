@@ -3,31 +3,36 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 7),
+Build-Depends:
+ debhelper (>> 7),
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-ldap-server
 Architecture: all
-Recommends: univention-virtual-machine-manager-schema
-Pre-Depends: slapd (>= 2.4.35-1.162.201407020834),
+Recommends:
+ univention-virtual-machine-manager-schema,
+Pre-Depends:
+ slapd (>= 2.4.35-1.162.201407020834),
  univention-ldap-client,
-Depends: ${misc:Depends},
+Depends:
+ bind9-host,
+ db5.3-util,
+ makepasswd,
+ python-univention-lib (>= 8.0.1-29),
+ shell-univention-lib (>= 6.0.9-8),
  univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
- db5.3-util,
- univention-ssl,
- univention-ldap-config (= ${binary:Version}),
- whois,
- makepasswd,
  univention-ipcalc,
- bind9-host,
- shell-univention-lib (>= 6.0.9-8),
- python-univention-lib (>= 8.0.1-29),
- univention-newsid,
  univention-join,
- univention-ldap-overlay-memberof
-Conflicts: univention-5250 (<< 0.5)
+ univention-ldap-config (= ${binary:Version}),
+ univention-ldap-overlay-memberof,
+ univention-newsid,
+ univention-ssl,
+ whois,
+ ${misc:Depends},
+Conflicts:
+ univention-5250 (<< 0.5),
 Description: UCS - LDAP server configuration
  This package contains the configuration for the OpenLDAP
  server.
@@ -39,13 +44,15 @@ Description: UCS - LDAP server configuration
 
 Package: univention-ldap-client
 Architecture: all
-Recommends: univention-pam,
- univention-join
-Depends: ${misc:Depends},
+Recommends:
+ univention-join,
+ univention-pam,
+Depends:
  ldap-utils,
- univention-config,
  libldap-2.4-2,
- python-univention-lib (>= 3.0.3-1)
+ python-univention-lib (>= 3.0.3-1),
+ univention-config,
+ ${misc:Depends},
 Description: UCS - LDAP client configuration
  This package contains the configuration for the OpenLDAP
  client tools.
@@ -57,10 +64,11 @@ Description: UCS - LDAP client configuration
 
 Package: univention-ldap-config-master
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ shell-univention-lib (>= 2.0.17-1),
  univention-directory-manager-tools (>> 7.0.147),
  univention-join (>= 5.0.20-1),
- shell-univention-lib (>= 2.0.17-1)
+ ${misc:Depends},
 Description: UCS - LDAP configuration for master and backup servers
  This package contains configurations related to the OpenLDAP server
  for master and backup domain controllers.
@@ -72,10 +80,13 @@ Description: UCS - LDAP configuration for master and backup servers
 
 Package: univention-ldap-config
 Architecture: all
-Pre-Depends: slapd
-Depends: ${misc:Depends}
-Conflicts: univention-5250 (<< 0.5.23),
- univention-5250-powerterm (<< 1.4.11)
+Pre-Depends:
+ slapd,
+Depends:
+ ${misc:Depends},
+Conflicts:
+ univention-5250 (<< 0.5.23),
+ univention-5250-powerterm (<< 1.4.11),
 Description: UCS - common LDAP configuration
  This package contains the general configuration for the
  OpenLDAP server such as the base LDIF file and the
@@ -88,10 +99,13 @@ Description: UCS - common LDAP configuration
 
 Package: univention-ldap-acl-master
 Architecture: all
-Pre-Depends: slapd
-Depends: ${misc:Depends},
+Pre-Depends:
+ slapd,
+Depends:
  univention-ldap-server (= ${binary:Version}),
-Conflicts: univention-ldap-acl-slave
+ ${misc:Depends},
+Conflicts:
+ univention-ldap-acl-slave,
 Description: UCS - LDAP server ACLs for master servers
  This package contains the OpenLDAP server ACLs for master
  and backup domain controllers.
@@ -103,9 +117,11 @@ Description: UCS - LDAP server ACLs for master servers
 
 Package: univention-ldap-acl-slave
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-ldap-server (= ${binary:Version}),
-Conflicts: univention-ldap-acl-master
+ ${misc:Depends},
+Conflicts:
+ univention-ldap-acl-master,
 Description: UCS - LDAP server ACLs for slave servers
  This package contains the OpenLDAP server ACLs for slave
  domain controllers.

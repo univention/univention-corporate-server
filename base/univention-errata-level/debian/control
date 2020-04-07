@@ -2,12 +2,14 @@ Source: univention-errata-level
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- ucslint-univention
+Build-Depends:
+ debhelper (>> 7),
+ ucslint-univention,
 
 Package: univention-errata-level
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: UCS - errata level handling
  This package sets the errata level.
  .

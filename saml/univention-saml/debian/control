@@ -2,38 +2,41 @@ Source: univention-saml
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 9),
- ucslint-univention,
- univention-config-dev,
+Build-Depends:
+ debhelper (>= 9),
  dh-python,
  python-all,
  python3-all,
+ ucslint-univention,
+ univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.8.4
 
 Package: univention-saml
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ adduser,
+ apache2-suexec-pristine,
+ libapache2-mod-php7.0,
+ memcached,
+ openssl,
+ php-cgi,
+ php-krb5,
+ php-ldap,
+ php-mcrypt,
+ php-memcache,
+ php-xml,
  python-univention-lib,
  shell-univention-lib,
- univention-apache,
- libapache2-mod-php7.0,
- php-xml,
- php-mcrypt,
- php-ldap,
- openssl,
  simplesamlphp (>= 1.11.0-1),
- univention-directory-manager-tools,
- univention-saml-schema (= ${source:Version}),
- php-memcache,
- memcached,
  stunnel4 (>=3:5.18-1),
- apache2-suexec-pristine,
- php-cgi,
- adduser,
- php-krb5,
+ univention-apache,
+ univention-directory-manager-tools,
  univention-heimdal-common,
-Breaks: univention-saml-schema (<< 3.0.16-1)
+ univention-saml-schema (= ${source:Version}),
+ ${misc:Depends},
+Breaks:
+ univention-saml-schema (<< 3.0.16-1),
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the
  simpleSAMLphp Identity Provider which is an authentication and federation application
@@ -56,9 +59,12 @@ Description: Integrates simpleSAMLphp Identity Provider into UCS
 
 Package: univention-saml-schema
 Architecture: all
-Depends: univention-config,
- ${misc:Depends}, ${python:Depends}, ${python3:Depends},
+Depends:
  python-univention-directory-manager (>= 14.0.14-14),
+ univention-config,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UCS simpleSAMLphp ldap integration
  This package integrates the simpleSAMLphp ldap schema into the domain
  .

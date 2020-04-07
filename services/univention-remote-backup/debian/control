@@ -3,15 +3,17 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-remote-backup
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  rsync,
- ssh
+ ssh,
+ ${misc:Depends},
 Description: UCS - remote backup
  UCS remote backup module. This package can be used to
  collect data from remote hosts, which can then be backuped

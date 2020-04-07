@@ -2,19 +2,22 @@ Source: univention-directory-policy
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
+Build-Depends:
+ debhelper (>> 7),
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.5.2
 
 Package: univention-directory-policy
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
- shell-univention-lib (>= 1.0.6),
+Depends:
  netcat-traditional,
- python-univention-lib (>= 1.0.25-1)
-Conflicts: univention-ldap-policy (<< 1.1.1)
+ python-univention-lib (>= 1.0.25-1),
+ shell-univention-lib (>= 1.0.6),
+ univention-config,
+ ${misc:Depends},
+Conflicts:
+ univention-ldap-policy (<< 1.1.1),
 Description: UCS - Directory Policy handler
  This package manages the scripts in /usr/lib/univention-directory-policy
  .

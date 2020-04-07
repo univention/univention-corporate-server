@@ -2,12 +2,18 @@ Source: pam-univentionmailcyrus
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), libpam0g-dev, libldap2-dev, ucslint-univention, libunivention-policy-dev
+Build-Depends:
+ debhelper (>> 3.0.0),
+ libldap2-dev,
+ libpam0g-dev,
+ libunivention-policy-dev,
+ ucslint-univention,
 Standards-Version: 3.5.2
 
 Package: libpam-univentionmailcyrus
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends:
+ ${shlibs:Depends},
 Description: UCS - PAM module to use e-mail address for Cyrus
  This module allows to use the e-mail address as username for
  Cyrus/Dovecot/Postfix IMAP, POP and SMTP authentication.

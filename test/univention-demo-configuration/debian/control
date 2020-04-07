@@ -3,14 +3,16 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper (>= 7.0.50~),
+ node-stylus,
  ucslint-univention,
  univention-config-dev,
- node-stylus,
- univention-ucs-translation-template
+ univention-ucs-translation-template,
 
 Package: univention-demo-configuration
 Architecture: all
 Description: restricted configuration for demo.univention.de
-Depends: univention-config | ${misc:Depends},
- univention-nagios-server
+Depends:
+ univention-config | ${misc:Depends},
+ univention-nagios-server,

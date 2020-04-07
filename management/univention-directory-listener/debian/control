@@ -3,43 +3,46 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>= 9),
- ucslint-univention,
+Build-Depends:
+ debhelper (>= 9),
  dh-python,
- libssl-dev,
+ libicu-dev,
  libldap2-dev,
  liblmdb-dev,
+ libssl-dev,
+ libunivention-config-dev,
+ libunivention-debug-dev (>= 0.8),
+ libunivention-policy-dev,
  python-all,
  python-all-dev,
+ python-debian,
+ python-six,
  python3-all,
  python3-all-dev,
- python-debian,
  python3-debian,
- python-six,
  python3-six,
- libunivention-debug-dev (>= 0.8),
- libunivention-config-dev,
- libunivention-policy-dev,
+ ucslint-univention,
  univention-config-dev,
- libunivention-policy-dev,
- libicu-dev,
 
 Package: univention-directory-listener
 Architecture: any
 Depends:
- ${misc:Depends}, ${shlibs:Depends},
- ${python:Depends},
- ${python3:Depends},
- univention-base-files,
- shell-univention-lib (>= 1.0.6),
- univention-runit,
- python2.7-univention,
- python2.7-univention-debug,
+ bash,
  python-univention-lib (>= 1.0.25-1),
  python-univention-namespace,
- bash,
-Suggests: lmdb-utils
-Conflicts: univention-ldap-listener (<< 2.2.2)
+ python2.7-univention,
+ python2.7-univention-debug,
+ shell-univention-lib (>= 1.0.6),
+ univention-base-files,
+ univention-runit,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+Suggests:
+ lmdb-utils,
+Conflicts:
+ univention-ldap-listener (<< 2.2.2),
 Description: UCS - Directory Listener
  UCS Directory Listener is a client for the UCS
  Directory Notifier which calls Python handlers upon changes. By

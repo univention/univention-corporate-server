@@ -2,17 +2,18 @@ Source: univention-support-info
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  ucslint-univention,
 Standards-Version: 3.8.2
 
 Package: univention-support-info
 Architecture: all
 Depends:
- pciutils,
- kmod,
- iproute2,
  dmidecode,
+ iproute2,
+ kmod,
+ pciutils,
 Description: UCS - collect support information
  This package contains a skcript to collect support information
  .

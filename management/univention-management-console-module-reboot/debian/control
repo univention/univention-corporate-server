@@ -2,19 +2,22 @@ Source: univention-management-console-module-reboot
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper (>= 7.0.50~),
  dh-python,
- ucslint-univention,
- univention-management-console-dev (>= 11.0.4-37),
  python-all,
  python3-all,
+ ucslint-univention,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.5.2
 
 Package: univention-management-console-module-reboot
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
- univention-directory-manager-tools (>> 7.0.147)
+ ${python3:Depends},
+ ${python:Depends},
 Description: UMC module for reboot
  This package contains the UMC module for the reboot section
  .

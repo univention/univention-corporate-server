@@ -2,17 +2,19 @@ Source: univention-admingrp-user-passwordreset
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.5.2
 
 Package: univention-admingrp-user-passwordreset
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ shell-univention-lib,
  univention-directory-manager-tools,
  univention-ldap-server,
- shell-univention-lib
+ ${misc:Depends},
 Description: Helpdesk group with permission to reset user passwords
  This package contains LDAP ACLs that grants password reset ability to
  special helpdesk user group.

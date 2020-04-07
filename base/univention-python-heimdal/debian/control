@@ -43,9 +43,9 @@ Description: UCS - Kerberos interface module for Python 2.
 Package: python-univention-heimdal-dbg
 Architecture: any
 Depends:
+ python-univention-heimdal (= ${binary:Version}),
  ${python:Depends},
  ${shlibs:Depends},
- python-univention-heimdal (= ${binary:Version}),
 Provides:
  ${python:Provides},
 Description: UCS - Kerberos interface module for Python 2 - Debug version
@@ -76,9 +76,9 @@ Description: UCS - Kerberos interface module for Python 3.
 Package: python3-univention-heimdal-dbg
 Architecture: any
 Depends:
+ python3-univention-heimdal (= ${binary:Version}),
  ${python3:Depends},
  ${shlibs:Depends},
- python3-univention-heimdal (= ${binary:Version}),
 Provides:
  ${python3:Provides},
 Description: UCS - Kerberos interface module for Python 3 - Debug version

@@ -3,27 +3,31 @@ Section: univention
 Priority: standard
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
-Build-Depends: debhelper (>> 7),
+Build-Depends:
+ debhelper (>> 7),
  ucslint-univention,
- univention-config-dev
+ univention-config-dev,
 
 Package: univention-heimdal-kdc
 Architecture: all
-Pre-Depends: heimdal-kdc (>> 0.6.3)
-Depends: ${misc:Depends},
- univention-config,
- univention-base-files,
- shell-univention-lib (>= 3.0.26-41),
- libsasl2-modules-gssapi-heimdal,
+Pre-Depends:
+ heimdal-kdc (>> 0.6.3),
+Depends:
  heimdal-servers,
+ libsasl2-modules-gssapi-heimdal,
+ python-cracklib,
  python-univention,
  python-univention-heimdal,
+ python-univention-lib (>= 1.0.25-1),
+ shell-univention-lib (>= 3.0.26-41),
+ univention-base-files,
+ univention-config,
  univention-directory-listener,
  univention-directory-manager-tools (>> 7.0.147),
- python-cracklib,
  univention-heimdal-common (= ${binary:Version}),
- python-univention-lib (>= 1.0.25-1)
-Conflicts: univention-heimdal-member
+ ${misc:Depends},
+Conflicts:
+ univention-heimdal-member,
 Description: UCS - Kerberos KDC
  This package installs a Kerberos Key Distribution Center
  (KDC) using LDAP for the key storage.
@@ -35,15 +39,17 @@ Description: UCS - Kerberos KDC
 
 Package: univention-heimdal-member
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
- libsasl2-modules-gssapi-heimdal,
+Depends:
  heimdal-clients,
  heimdal-servers,
- univention-directory-manager-tools,
+ libsasl2-modules-gssapi-heimdal,
+ univention-config,
  univention-directory-listener,
- univention-heimdal-common (= ${binary:Version})
-Conflicts: univention-heimdal-kdc
+ univention-directory-manager-tools,
+ univention-heimdal-common (= ${binary:Version}),
+ ${misc:Depends},
+Conflicts:
+ univention-heimdal-kdc,
 Description: UCS - Kerberos member server
  This package configures the computer as a Kerberos member
  server.
@@ -55,12 +61,14 @@ Description: UCS - Kerberos member server
 
 Package: univention-heimdal-common
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
+Depends:
+ heimdal-clients,
  python-univention-heimdal,
- heimdal-clients
-Breaks: univention-heimdal-kdc (<< 5.0.6-1),
- univention-heimdal-member (<< 5.0.6-1)
+ univention-config,
+ ${misc:Depends},
+Breaks:
+ univention-heimdal-kdc (<< 5.0.6-1),
+ univention-heimdal-member (<< 5.0.6-1),
 Description: UCS - Kerberos common package
  This package configures Kerberos
  .

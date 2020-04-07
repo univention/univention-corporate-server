@@ -2,28 +2,32 @@ Source: univention-ucs-translation-template
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
+Build-Depends:
+ debhelper (>= 7.0.50~),
  dh-python,
  python-all,
  python3-all,
- univention-config-dev
+ ucslint-univention,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-ucs-translation-template
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, ${python3:Depends},
- univention-management-console-dev,
+Depends:
  python-debian,
- python3-debian,
- python-magic,
- python3-magic,
- python-polib,
- python3-polib,
  python-lxml,
- python3-lxml,
+ python-magic,
+ python-polib,
  python-univention-config-registry,
- python3-univention-config-registry
+ python3-debian,
+ python3-lxml,
+ python3-magic,
+ python3-polib,
+ python3-univention-config-registry,
+ univention-management-console-dev,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UCS Management Console translation files
  This package contains tools to build localization data.
  .
@@ -34,7 +38,8 @@ Description: UCS Management Console translation files
 
 Package: univention-l10n-tools
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: Helper tools for localization of UCS
  This package contains tools to register a new localization of UCS.
  .
@@ -42,4 +47,3 @@ Description: Helper tools for localization of UCS
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-

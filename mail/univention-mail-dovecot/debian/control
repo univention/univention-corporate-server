@@ -2,36 +2,38 @@ Source: univention-mail-dovecot
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- univention-config-dev,
- ucslint-univention,
+Build-Depends:
+ debhelper (>> 7),
  dh-python,
  python-all,
+ ucslint-univention,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-mail-dovecot
 Architecture: all
 Depends:
- ${misc:Depends},
- ${python:Depends},
- ${python3:Depends},
- univention-base-files,
- univention-directory-manager-tools (>> 13.0.21),
- univention-directory-listener (>> 6.0.0),
- univention-config (>= 8.0.2),
- python-univention,
- python-univention-lib (>= 3.0.4-1),
- shell-univention-lib (>= 3.0.1-1),
- univention-join (>= 5.0.20-1),
- libpam-univentionmailcyrus,
  dovecot-imapd (>= 2.2.13) | dovecot-ee-imapd (>=2.2.13),
  dovecot-ldap (>= 2.2.13) | dovecot-ee-ldap (>=2.2.13),
  dovecot-lmtpd (>= 2.2.13) | dovecot-ee-lmtpd (>=2.2.13),
  dovecot-managesieved (>= 2.2.13) | dovecot-ee-managesieved (>=2.2.13),
  dovecot-pop3d (>= 2.2.13) | dovecot-ee-pop3d (>=2.2.13),
  dovecot-sieve (>= 2.2.13) | dovecot-ee-sieve (>=2.2.13),
- sieve-connect (>= 0.87)
-Conflicts: cyrus-admin,
+ libpam-univentionmailcyrus,
+ python-univention,
+ python-univention-lib (>= 3.0.4-1),
+ shell-univention-lib (>= 3.0.1-1),
+ sieve-connect (>= 0.87),
+ univention-base-files,
+ univention-config (>= 8.0.2),
+ univention-directory-listener (>> 6.0.0),
+ univention-directory-manager-tools (>> 13.0.21),
+ univention-join (>= 5.0.20-1),
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Conflicts:
+ cyrus-admin,
  cyrus-clients,
  cyrus-common,
  cyrus-imapd,
@@ -42,7 +44,7 @@ Conflicts: cyrus-admin,
  univention-mail-cyrus,
  univention-mail-cyrus-imap,
  univention-mail-cyrus-murder,
- univention-mail-cyrus-pop
+ univention-mail-cyrus-pop,
 Description: UCS - imap configuration
  The UCS dovecot imapd mail package.
  .

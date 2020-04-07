@@ -2,7 +2,8 @@ Source: univention-kernel-image-signed
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7)
+Build-Depends:
+ debhelper (>= 7),
 Standards-Version: 3.8.2
 
 Package: kernel-image-4.9.0-12-amd64-di-signed
@@ -25,7 +26,8 @@ Description: UCS - Linux kernel (standard)
 
 Package: linux-image-4.9.0-12-amd64-signed
 Architecture: amd64
-Depends: linux-image-4.9.0-12-amd64 (= 4.9.210-1),
+Depends:
+ linux-image-4.9.0-12-amd64 (= 4.9.210-1),
 Description: UCS - Linux kernel (standard)
  This package provides the signed version of:
  .
@@ -42,7 +44,8 @@ Description: UCS - Linux kernel (standard)
 
 Package: linux-image-4.9.0-12-686-pae-signed
 Architecture: i386
-Depends: linux-image-4.9.0-12-686-pae (= 4.9.210-1),
+Depends:
+ linux-image-4.9.0-12-686-pae (= 4.9.210-1),
 Description: UCS - Linux kernel (standard)
  This package depends on the unsigned version of:
  .

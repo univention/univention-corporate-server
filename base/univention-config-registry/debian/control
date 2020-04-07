@@ -2,27 +2,30 @@ Source: univention-config-registry
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 9),
- ucslint-univention,
- dh-python,
+Build-Depends:
  autoconf,
  automake,
- locales,
+ debhelper (>= 9),
+ dh-python,
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
- python-ipaddr,
+ locales,
  python-all,
- python3-all,
+ python-ipaddr,
  python-six,
+ python3-all,
  python3-six,
+ ucslint-univention,
 Standards-Version: 3.5.2
 
 Package: univention-config-registry
 Architecture: all
-Pre-Depends: dpkg (>= 1.15.7.2)
-Depends: ${misc:Depends},
+Pre-Depends:
+ dpkg (>= 1.15.7.2),
+Depends:
  univention-base-files,
- univention-base-packages
+ univention-base-packages,
+ ${misc:Depends},
 Description: UCS transitional package - base configuration
  This package can be safely removed, since all previously contained base
  configuration files for UCS have been moved to the univention-base-files
@@ -35,12 +38,15 @@ Description: UCS transitional package - base configuration
 
 Package: univention-config
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- python-univention-config-registry (= ${source:Version}),
+Depends:
  ldap-utils,
  python-debian,
-Replaces: univention-config-registry (<< 7.0.9~),
+ python-univention-config-registry (= ${source:Version}),
+ ${misc:Depends},
+ ${python:Depends},
+Replaces:
  shell-univention-lib (<< 8.0.1-21),
+ univention-config-registry (<< 7.0.9~),
 Breaks:
  shell-univention-lib (<< 8.0.1-21),
 Description: UCS - configuration manager
@@ -54,8 +60,10 @@ Description: UCS - configuration manager
 
 Package: univention-config-dev
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- univention-config (= ${binary:Version})
+Depends:
+ univention-config (= ${binary:Version}),
+ ${misc:Depends},
+ ${python:Depends},
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages
  that use univention-config.
@@ -67,7 +75,9 @@ Description: UCS - configuration manager (development files)
 
 Package: libunivention-config0
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: UCS - C library to configuration manager
  The included library provides a C API to access the
  UCS configuration manager.
@@ -79,9 +89,11 @@ Description: UCS - C library to configuration manager
 
 Package: libunivention-config-dev
 Architecture: any
-Depends: ${misc:Depends},
- libunivention-config0 (= ${binary:Version})
-Replaces: libunivention-config0 (<< 7)
+Depends:
+ libunivention-config0 (= ${binary:Version}),
+ ${misc:Depends},
+Replaces:
+ libunivention-config0 (<< 7),
 Description: UCS - C interface to configuration manager (development files)
  This package includes the development files to access
  the UCS configuration manager from C.
@@ -93,12 +105,15 @@ Description: UCS - C interface to configuration manager (development files)
 
 Package: python-univention-config-registry
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- python-univention-namespace,
+Depends:
+ ifupdown,
  python-ipaddr,
  python-six,
- ifupdown,
-Provides: ${python:Provides}
+ python-univention-namespace,
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: UCS - Python 2 interface to configuration registry
  This package includes the Python interface to the
  UCS configuration manager.
@@ -108,14 +123,16 @@ Description: UCS - Python 2 interface to configuration registry
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-
 Package: python3-univention-config-registry
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends},
+Depends:
+ ifupdown,
  python3-ipaddr,
  python3-six,
- ifupdown,
-Provides: ${python3:Provides}
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: UCS - Python 3 interface to configuration registry
  This package includes the Python interface to the
  UCS configuration manager.

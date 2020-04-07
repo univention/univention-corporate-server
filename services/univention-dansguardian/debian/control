@@ -3,22 +3,28 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint-univention,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-dansguardian
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ dansguardian,
  univention-directory-manager-tools (>> 7.0.147),
  univention-squid,
- dansguardian
-Replaces: univention-antivir-web
-Conflicts: univention-antivir-web (<= 5.0.0-2)
-Provides: univention-antivir-web
-Recommends: univention-nagios-dansguardian
+ ${misc:Depends},
+Replaces:
+ univention-antivir-web,
+Conflicts:
+ univention-antivir-web (<= 5.0.0-2),
+Provides:
+ univention-antivir-web,
+Recommends:
+ univention-nagios-dansguardian,
 Description: UCS - antivirus/webcontent filter
- UCS module to add antivirus and content protection 
+ UCS module to add antivirus and content protection
  to the web module.
  .
  It is part of Univention Corporate Server (UCS), an

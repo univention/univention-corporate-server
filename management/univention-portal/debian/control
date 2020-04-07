@@ -2,25 +2,27 @@ Source: univention-portal
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 9),
- univention-join,
- univention-config-dev,
- univention-ucs-translation-template,
- ucslint,
+Build-Depends:
+ debhelper (>= 9),
  node-stylus,
+ ucslint,
+ univention-config-dev,
+ univention-join,
+ univention-ucs-translation-template,
 Standards-Version: 3.9.5
 
 Package: univention-portal
 Architecture: all
-Depends: univention-management-console-server,
- univention-config,
- python-tornado,
- python-requests,
- univention-directory-listener,
- python-univention-directory-manager,
- univention-directory-manager-tools,
- python-univention-appcenter,
+Depends:
  netcat-openbsd,
+ python-requests,
+ python-tornado,
+ python-univention-appcenter,
+ python-univention-directory-manager,
+ univention-config,
+ univention-directory-listener,
+ univention-directory-manager-tools,
+ univention-management-console-server,
  ${misc:Depends},
 Description: Univention Portal - Central portal web page for a UCS domain
  Univention Portal is a web interface which allows a central view
@@ -37,7 +39,8 @@ Description: Univention Portal - Central portal web page for a UCS domain
 
 Package: univention-portal-test
 Architecture: all
-Depends: univention-portal,
+Depends:
+ univention-portal,
  ${misc:Depends},
 Description: Univention Portal - JavaScript unit tests
  This package is part of Univention Corporate Server (UCS),

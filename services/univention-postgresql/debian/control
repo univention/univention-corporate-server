@@ -3,17 +3,20 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  ucslint-univention,
- univention-config-dev
+ univention-config-dev,
 
 Package: univention-postgresql
 Architecture: all
-Pre-Depends: ${misc:Pre-Depends},
-Depends: ${misc:Depends},
- univention-postgresql-9.6 | univention-postgresql-9.4,
+Pre-Depends:
+ ${misc:Pre-Depends},
+Depends:
  shell-univention-lib (>= 3.0.4-1),
  univention-config,
+ univention-postgresql-9.6 | univention-postgresql-9.4,
+ ${misc:Depends},
 Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
  the specific postgresql-*.* package.
@@ -25,14 +28,17 @@ Description: UCS - PostgreSQL configuration
 
 Package: univention-postgresql-9.6
 Architecture: all
-Depends: ${misc:Depends},
- shell-univention-lib (>= 3.0.4-1),
+Depends:
  postgresql-9.6,
+ shell-univention-lib (>= 3.0.4-1),
  univention-config,
-Breaks: univention-postgresql (< 8),
+ ${misc:Depends},
+Breaks:
  univention-bacula (<< 7.0.1-2),
  univention-pkgdb (<< 9.0.1-2),
-Replaces: univention-postgresql (< 8),
+ univention-postgresql (< 8),
+Replaces:
+ univention-postgresql (< 8),
 Description: UCS - PostgreSQL 9.6 configuration
  This package contains the configuration for the
  postgresql-9.6 package.
@@ -44,14 +50,17 @@ Description: UCS - PostgreSQL 9.6 configuration
 
 Package: univention-postgresql-9.4
 Architecture: all
-Depends: ${misc:Depends},
- shell-univention-lib (>= 3.0.4-1),
+Depends:
  postgresql-9.4,
+ shell-univention-lib (>= 3.0.4-1),
  univention-config,
-Breaks: univention-postgresql (< 8),
+ ${misc:Depends},
+Breaks:
  univention-bacula (<< 7.0.1-2),
  univention-pkgdb (<< 9.0.1-2),
-Replaces: univention-postgresql (< 8),
+ univention-postgresql (< 8),
+Replaces:
+ univention-postgresql (< 8),
 Description: UCS - PostgreSQL 9.4 configuration
  This package contains the configuration for the
  postgresql-9.4 package.

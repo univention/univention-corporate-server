@@ -2,9 +2,10 @@ Source: univention-maintenance-mode
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
+ ucslint,
  univention-config-dev,
- ucslint
 Standards-Version: 4.0.0
 
 Package: univention-maintenance-mode

@@ -2,18 +2,20 @@ Source: univention-nagios-smart
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
- univention-config-dev,
+Build-Depends:
  build-essential,
- ucslint-univention
+ debhelper,
+ ucslint-univention,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-nagios-smart
 Architecture: any
-Depends: ${misc:Depends},
- univention-nagios-client,
+Depends:
+ smartmontools,
  univention-directory-manager-tools (>> 7.0.147),
- smartmontools
+ univention-nagios-client,
+ ${misc:Depends},
 Description: nagios smart plugin
  This package installs a nagios plugin to monitor SMART
  status of harddisks.
