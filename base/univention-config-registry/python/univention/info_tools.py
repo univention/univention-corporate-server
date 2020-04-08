@@ -201,7 +201,7 @@ class UnicodeConfig(configparser.ConfigParser):
 
 	def __init__(self):
 		if six.PY3:
-			configparser.ConfigParser.__init__(self, strict=False, interpolation=None)
+			configparser.ConfigParser.__init__(self, strict=True, interpolation=None)
 		else:
 			configparser.ConfigParser.__init__(self)
 

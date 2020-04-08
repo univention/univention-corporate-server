@@ -26,7 +26,6 @@ Variables: mail/postfix/masquerade/domains
 Variables: mail/postfix/masquerade/exceptions
 Variables: mail/relayhost
 Variables: mail/relayauth
-Variables: mail/smtp/VRFY/disabled
 Variables: mail/postfix/mynetworks_style
 Variables: mail/postfix/smtputf8_enable
 
