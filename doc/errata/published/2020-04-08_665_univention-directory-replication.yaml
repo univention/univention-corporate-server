@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Fix exception logging in corner cases.
 bug: [51062]
+erratum: 665
+announced: 2020-04-08
