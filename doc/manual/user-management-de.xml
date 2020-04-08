@@ -1122,18 +1122,18 @@
 				<para>
 					Der SSO Login kann konfiguriert werden den Login für unverifizierte, selbst registrierte Konten zu
 					verbieten.
-					Dies wird über &ucsUCRV; <envar>saml/idp/selfservice/check_email_verification</envar> konfiguriert.
-					Diese Einstellung muss auf dem Domänencontroller Master und allen Domänencontroller Backup
-					vorgenommen werden. Für durch einen Administrator erstellte Konten hat diese Einstellung keine
-					Auswirkung.
+					Dies wird über die &ucsUCRV; <envar>saml/idp/selfservice/check_email_verification</envar> konfiguriert.
+					Diese Einstellung muss auf dem Domänencontroller Master und allen Domänencontroller Backups
+					vorgenommen werden. Für Konten, die durch einen Administrator angelegt wurden hat diese
+					Einstellung keine Auswirkung.
 				</para>
 				<para>
-					Die Nachricht welche auf der SSO Login Seite für unverifizierte, selbst registrierte Konten
-					angezeigt wird, kann mit der
-					&ucsUCRV; <envar>saml/idp/selfservice/account-verification/error-title</envar> und 
-					<envar>saml/idp/selfservice/account-verification/error-descr</envar> eingestellt werden.
-					Eine Lokalisierung ist auch hier durch anhängen der Locale möglich. Z.B.
-					<envar>saml/idp/selfservice/account-verification/error-title/de</envar>.
+					Die Nachricht, welche auf der SSO Login Seite für unverifizierte, selbst registrierte Konten
+					angezeigt wird, kann mit den
+					&ucsUCRV;n <envar>saml/idp/selfservice/account-verification/error-title</envar> und 
+					<envar>saml/idp/selfservice/account-verification/error-descr</envar> konfiguriert werden.
+					Eine lokalisierte Nachricht kann konfiguriert werden, indem eine Locale an die Variable
+					angehängt wird. Z.B. <envar>saml/idp/selfservice/account-verification/error-title/de</envar>.
 				</para>
 			</section>
 		</section>
