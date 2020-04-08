@@ -1,3 +1,9 @@
+univention-saml (6.0.2-33) unstable; urgency=medium
+
+  * Bug #51068: styling
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 08 Apr 2020 16:00:10 +0200
+
 univention-saml (6.0.2-32) unstable; urgency=medium
 
   * Bug #51068: email verification error can now be adjusted
