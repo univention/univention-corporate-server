@@ -1087,6 +1087,13 @@
 					on the domain controller master and all domain controller backups. The setting has no effect on
 					accounts created by an administrator.
 				</para>
+				<para>
+					The message on the SSO login page for unverified, self registered accounts, can be set with the
+					following &ucsUCRV; <envar>saml/idp/selfservice/account-verification/error-title</envar> and
+					<envar>saml/idp/selfservice/account-verification/error-descr</envar>.
+					A localization message can be configured by adding a local to the variable.
+					E.g. <envar>saml/idp/selfservice/account-verification/error-title/en</envar>.
+				</para>
 			</section>
 		</section>
 	</section>

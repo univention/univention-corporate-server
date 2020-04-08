@@ -1127,6 +1127,14 @@
 					vorgenommen werden. Für durch einen Administrator erstellte Konten hat diese Einstellung keine
 					Auswirkung.
 				</para>
+				<para>
+					Die Nachricht welche auf der SSO Login Seite für unverifizierte, selbst registrierte Konten
+					angezeigt wird, kann mit der
+					&ucsUCRV; <envar>saml/idp/selfservice/account-verification/error-title</envar> und 
+					<envar>saml/idp/selfservice/account-verification/error-descr</envar> eingestellt werden.
+					Eine Lokalisierung ist auch hier durch anhängen der Locale möglich. Z.B.
+					<envar>saml/idp/selfservice/account-verification/error-title/de</envar>.
+				</para>
 			</section>
 		</section>
     </section>
