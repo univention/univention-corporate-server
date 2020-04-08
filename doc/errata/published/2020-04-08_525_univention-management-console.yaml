@@ -9,3 +9,5 @@ desc: |
  * The self service now has an option that allows anonymous users to create
    self registered accounts. The feature is disabled by default.
 bug: [51067]
+erratum: 525
+announced: 2020-04-08
