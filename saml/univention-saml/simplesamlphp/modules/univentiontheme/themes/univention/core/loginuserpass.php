@@ -48,7 +48,7 @@ if (in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'S
 	);
 	echo '</span>';
 } else {
-	echo '<div id="error_decription"></div>';
+	echo '<span id="error_decription"></span>';
 }
 ?>
 	</p>

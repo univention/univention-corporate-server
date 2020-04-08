@@ -17,7 +17,7 @@ def get_selfservice_translations():
 	def get_translations_descr_account_unverified():
 		variable = 'saml/idp/selfservice/account-verification/error-descr/'
 		translations = {
-			'de': 'Sie müssen Ihr Konto <a href="/univention/self-service/#page=verifyaccount">verifizieren</a>, bevor Sie sich einloggen können.'
+			'de': '<span style="color: black;">Sie müssen Ihr <a href="/univention/self-service/#page=verifyaccount">Konto verifizieren</a>, bevor Sie sich einloggen können.</span>'
 		}
 		for key in configRegistry.keys():
 			if key.startswith(variable):
