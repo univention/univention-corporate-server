@@ -6,22 +6,32 @@ def get_selfservice_translations():
 	def get_translations_title_account_unverified():
 		variable = 'saml/idp/selfservice/account-verification/error-title/'
 		translations = {
-			'de': 'Konto nicht verifiziert'
+			'de': ucr.get(variable[:-1], 'Konto nicht verifiziert'),
 		}
 		for key in configRegistry.keys():
 			if key.startswith(variable):
 				translations[key[len(variable):]] = configRegistry[key]
+		# the translation breaks if the same locale is in errors.definition.json and errors.translation.json
+		try:
+			del translations['en']
+		except KeyError:
+			pass
 		return translations
 
 
 	def get_translations_descr_account_unverified():
 		variable = 'saml/idp/selfservice/account-verification/error-descr/'
 		translations = {
-			'de': '<span style="color: black;">Sie müssen Ihr <a href="/univention/self-service/#page=verifyaccount">Konto verifizieren</a>, bevor Sie sich einloggen können.</span>'
+			'de': ucr.get(variable[:-1], '<span style="color: black;">Sie müssen Ihr <a href="/univention/self-service/#page=verifyaccount">Konto verifizieren</a>, bevor Sie sich einloggen können.</span>'),
 		}
 		for key in configRegistry.keys():
 			if key.startswith(variable):
 				translations[key[len(variable):]] = configRegistry[key]
+		# the translation breaks if the same locale is in errors.definition.json and errors.translation.json
+		try:
+			del translations['en']
+		except KeyError:
+			pass
 		return translations
 
 
