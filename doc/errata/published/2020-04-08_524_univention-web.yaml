@@ -9,3 +9,5 @@ desc: |
  * The error messages in input fields were sometimes not immediately shown.
    This problem has been addressed.
 bug: [51067]
+erratum: 524
+announced: 2020-04-08
