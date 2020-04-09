@@ -1,4 +1,4 @@
-univention-directory-manager-rest (9.0.16-7) unstable; urgency=medium
+univention-directory-manager-rest (9.0.16-8) unstable; urgency=medium
 
   * Bug #50708: password change should restart UDM REST server
 
