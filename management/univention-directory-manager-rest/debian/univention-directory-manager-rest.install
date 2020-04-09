@@ -1,2 +1,3 @@
 var
 22univention-directory-manager-rest.inst usr/lib/univention-install/
+usr/lib/univention-server/server_password_change.d/univention-directory-manager-rest usr/lib/univention-server/server_password_change.d/

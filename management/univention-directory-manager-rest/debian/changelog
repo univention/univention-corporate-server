@@ -1,5 +1,11 @@
 univention-directory-manager-rest (9.0.16-7) unstable; urgency=medium
 
+  * Bug #50708: password change should restart UDM REST server
+
+ -- Max Christian Pohle <pohle@univention.de>  Thu, 8 Apr 2020 11:43:00 +0200
+
+univention-directory-manager-rest (9.0.16-7) unstable; urgency=medium
+
   * Bug #50732: Require authentication to access openapi.json, add ucr-variable
 
  -- Julia Bremer <bremer@univention.de>  Tue, 04 Feb 2020 11:58:02 +0100
