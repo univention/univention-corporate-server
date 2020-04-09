@@ -1,3 +1,9 @@
+ucs-test (9.0.3-186) unstable; urgency=medium
+
+  * Bug #51068: saml error message has changed
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 09 Apr 2020 10:01:27 +0200
+
 ucs-test (9.0.3-185) unstable; urgency=medium
 
   * Bug #51068: 03_ucr.63checkucrwarning do not check json
