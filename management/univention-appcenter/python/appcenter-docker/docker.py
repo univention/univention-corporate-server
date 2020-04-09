@@ -641,8 +641,8 @@ class MultiDocker(Docker):
 			env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
 		else:
 			env = {shell_safe(k).upper(): v for k, v in env.iteritems()}
-		self._setup_yml(recreate=True, env=env)
 		self._setup_env(env=env)
+		self._setup_yml(recreate=True, env=env)
 		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
 		if ret != 0:
 			raise DockerCouldNotStartContainer(out_up)
