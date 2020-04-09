@@ -46,6 +46,11 @@ if [ "$1" = "configure" ]; then
 		"${registrySection}/dellogdir?${dellog}" \
 		"${registrySection}/exclude1?cn=temporary,cn=univention,$ldap_base"
 
+	if [ -z "$2" ]; then  # initial package installation
+		univention-config-registry set \
+			"${registrySection}/id-prefix?yes"
+	fi
+
 	univention-config-registry commit /etc/ldap/slapd.conf
 	invoke-rc.d slapd crestart
 	invoke-rc.d univention-directory-listener crestart

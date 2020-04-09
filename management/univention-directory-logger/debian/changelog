@@ -1,3 +1,11 @@
+univention-directory-logger (10.0.1-1) eoan; urgency=medium
+
+  * Issue #22459 / Bug #51082: Prefix record lines by ID.
+    Configurable via UCR variable ldap/logging/id-prefix, enabled
+    for new installations.
+
+ -- Arvid <requate@univention.de>  Thu, 09 Apr 2020 20:19:59 +0200
+
 univention-directory-logger (10.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

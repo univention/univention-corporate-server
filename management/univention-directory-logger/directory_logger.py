@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import time
 import syslog
@@ -136,6 +137,12 @@ def process_dellog(dn):
 	return (timestamp, dellog_id, modifier, action)
 
 
+def prefix_record(record, identifier):
+	if not listener.configRegistry.is_true('ldap/logging/id-prefix', False):
+		return record
+	return '\n'.join('ID %s: %s' % (identifier, line) for line in record.splitlines())
+
+
 def handler(dn, new_copy, old_copy):
 	if not listener.configRegistry.is_true('ldap/logging'):
 		return
@@ -204,7 +211,7 @@ def handler(dn, new_copy, old_copy):
 
 		# 3. write log file record
 		with open(logname, 'a') as logfile:  # append
-			logfile.write(record)
+			logfile.write(prefix_record(record, id))
 		# 4. calculate nexthash, omitting the final line break to make validation of the
 		#    record more intituive
 		nexthash = hashlib.new(digest, record[:-1]).hexdigest()
@@ -269,7 +276,7 @@ def initialize():
 
 		# 3. write log file record
 		with open(logname, 'a') as logfile:  # append
-			logfile.write(record)
+			logfile.write(prefix_record(record, 0))
 		# 4. calculate initial hash
 		nexthash = hashlib.new(digest, record).hexdigest()
 		# 5. cache nexthash (the actual logfile might be logrotated away..)
