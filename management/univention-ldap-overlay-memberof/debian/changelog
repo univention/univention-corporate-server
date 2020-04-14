@@ -1,3 +1,9 @@
+univention-ldap-overlay-memberof (11.0.0-3) unstable; urgency=medium
+
+  * Bug #51096: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 11:11:19 +0200
+
 univention-ldap-overlay-memberof (11.0.0-2) unstable; urgency=medium
 
   * Bug #48698: Fix user visible spelling errors
