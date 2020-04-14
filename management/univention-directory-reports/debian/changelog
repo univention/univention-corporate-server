@@ -1,3 +1,9 @@
+univention-directory-reports (11.0.0-5) unstable; urgency=medium
+
+  * Bug #51094: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 11:07:55 +0200
+
 univention-directory-reports (11.0.0-4) unstable; urgency=medium
 
   * Bug #49148: migrate to dh_python
