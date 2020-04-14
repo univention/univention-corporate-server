@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.2-1) unstable; urgency=medium
+
+  * Bug #51091: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 10:48:29 +0200
+
 univention-directory-notifier (13.0.1-18) unstable; urgency=medium
 
   * Bug #49872: Fix `univention-translog stat` check for index
