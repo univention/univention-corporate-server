@@ -1,3 +1,9 @@
+univention-join (11.0.1-29) unstable; urgency=medium
+
+  * Bug #51095: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 11:09:01 +0200
+
 univention-join (11.0.1-28) unstable; urgency=medium
 
   * Bug #49036: Fix wrong permission set in 20univention-join.inst
