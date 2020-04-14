@@ -6,9 +6,9 @@ import univention.lib.ucrLogrotate
 name = "ldap-policy"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
-print "/var/log/univention/%s.log {" % name
+print("/var/log/univention/%s.log {" % name)
 
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
+	print("\t%s" % settings[setting])
 @!@
 }

@@ -4,6 +4,6 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
 if configRegistry.get('ldap/hostdn'):
-	print "%s   root   /usr/share/univention-directory-policy/univention-directory-policy-cron" % configRegistry['ldap/policy/cron']
+	print("%s   root   /usr/share/univention-directory-policy/univention-directory-policy-cron" % configRegistry['ldap/policy/cron'])
 @!@
 
