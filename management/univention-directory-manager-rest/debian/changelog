@@ -1,3 +1,9 @@
+univention-directory-manager-rest (9.0.16-9) unstable; urgency=medium
+
+  * Bug #51090: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 10:47:03 +0200
+
 univention-directory-manager-rest (9.0.16-8) unstable; urgency=medium
 
   * Bug #50708: password change should restart UDM REST server
