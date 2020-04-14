@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.15-1) unstable; urgency=medium
+
+  * Bug #51089: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 10:43:12 +0200
+
 univention-directory-manager-modules (14.0.14-24) unstable; urgency=medium
 
   * Bug #51002: keep defaults for module options when initializing modules
