@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 from optparse import OptionParser
 import univention.debug
@@ -41,6 +42,17 @@ import univention.admin.uldap
 import ldap
 from ldap.dn import escape_dn_chars
 from random import choice
+try:
+	from typing import Iterator
+except ImportError:
+	pass
+
+
+def names(count):  # type: (int) -> Iterator[str]
+	index = 0
+	while index < count:
+		yield 'nscd%04x' % index
+		index += 1
 
 
 class MassCreate(object):
@@ -81,13 +93,13 @@ class MassCreate(object):
 			g.info['memberOf'] = ["cn=%s,%s" % (escape_dn_chars(in_group), self.gp.getDn())]
 		try:
 			dn = g.create()
-			print 'Group "%s"' % (dn,)
+			print('Group "%s"' % (dn,))
 		except univention.admin.uexceptions.groupNameAlreadyUsed as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
-			print >> sys.stderr, 'Group "%s" exists: %s' % (dn, ex)
+			print('Group "%s" exists: %s' % (dn, ex), file=sys.stderr)
 		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
-			print >> sys.stderr, 'Object "%s" exists: %s' % (dn, ex)
+			print('Object "%s" exists: %s' % (dn, ex), file=sys.stderr)
 		return dn
 
 	def user(self, name, groups):
@@ -108,13 +120,13 @@ class MassCreate(object):
 		u.info['unixhome'] = '/home/%s' % name
 		try:
 			dn = u.create()
-			print 'User "%s"' % (dn,)
+			print('User "%s"' % (dn,))
 		except univention.admin.uexceptions.uidAlreadyUsed as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
-			print >> sys.stderr, 'User "%s" exists: %s' % (dn, ex)
+			print('User "%s" exists: %s' % (dn, ex), file=sys.stderr)
 		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
-			print >> sys.stderr, 'Object "%s" exists: %s' % (dn, ex)
+			print('Object "%s" exists: %s' % (dn, ex), file=sys.stderr)
 		return dn
 
 	def group_members(self, name, uniqueMember=None, memberUid=None):
@@ -134,13 +146,13 @@ class MassCreate(object):
 		if ml:
 			try:
 				try:
-					r_type, r_data = self.access.lo.lo.modify_s(dn, ml)
+					res = self.access.lo.lo.modify_s(dn, ml)
 				except ldap.TYPE_OR_VALUE_EXISTS as ex:
-					print >> sys.stderr, 'XXX %s' % (ex,)
+					print('XXX %s' % (ex,), file=sys.stderr)
 					ml = [(ldap.MOD_REPLACE, attr, val) for (_op, attr, val) in ml]
-					r_type, r_data = self.access.lo.lo.modify_s(dn, ml)
+					res = self.access.lo.lo.modify_s(dn, ml)
 			except ldap.NO_SUCH_ATTRIBUTE as ex:
-				print >> sys.stderr, 'Group "%s" error: %s' % (dn, ex)
+				print('Group "%s" error: %s' % (dn, ex), file=sys.stderr)
 		return dn
 
 	def create(self, groups):
@@ -152,8 +164,7 @@ class MassCreate(object):
 		uniqueMember = []
 		memberUid = []
 
-		for index in xrange(self.count):
-			name = 'nscd%04x' % index
+		for name in names(self.count):
 			if name.endswith('000'):
 				self.group(name[:-3], 'nscd_all')
 			if name.endswith('00'):

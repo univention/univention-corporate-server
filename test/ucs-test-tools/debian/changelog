@@ -1,3 +1,9 @@
+ucs-test-tools (8.0.0-3) unstable; urgency=low
+
+  * Bug #51103: Fix traceback in create-32k-users
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 Apr 2020 14:52:00 +0200
+
 ucs-test-tools (8.0.0-2) unstable; urgency=medium
 
   * Bug #28497: migrate to dh_python2
