@@ -110,16 +110,15 @@ if __name__ == '__main__':
 						'mailForwardAddress': user.mailForwardAddress,
 						'mailForwardCopyToSelf': '1',
 					})
-#					utils.verify_ldap_object(
-#						user.dn,
-#						{
-#							'univentionMailHomeServer': [user.mailHomeServer],
-#							'mailPrimaryAddress': [user.mailPrimaryAddress],
-#							'mailAlternativeAddress': user.mailAlternativeAddress,
-#							'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-#						},
-#						strict=True)
-
+					utils.verify_ldap_object(
+						user.dn,
+						{
+							'univentionMailHomeServer': [user.mailHomeServer],
+							'mailPrimaryAddress': [user.mailPrimaryAddress],
+							'mailAlternativeAddress': user.mailAlternativeAddress,
+							'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+						},
+						strict=True)
 
 					# send mails
 					for addr, msg in (
@@ -130,7 +129,7 @@ if __name__ == '__main__':
 						token = str(time.time())
 						p = subprocess.Popen(['mailq'], stdout=subprocess.PIPE)
 						output = str(p.stdout.read())
-						if not "Mail queue is empty" in output:
+						if "Mail queue is empty" not in output:
 								subprocess.call(['postsuper', '-d', 'ALL'])
 						send_mail(
 							recipients=addr,
