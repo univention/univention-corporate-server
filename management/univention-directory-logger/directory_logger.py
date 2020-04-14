@@ -140,7 +140,7 @@ def process_dellog(dn):
 def prefix_record(record, identifier):
 	if not listener.configRegistry.is_true('ldap/logging/id-prefix', False):
 		return record
-	return '\n'.join('ID %s: %s' % (identifier, line) for line in record.splitlines())
+	return '\n'.join('ID %s: %s' % (identifier, line) for line in record.splitlines()) + '\n'
 
 
 def handler(dn, new_copy, old_copy):
