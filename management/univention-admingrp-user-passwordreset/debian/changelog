@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (9.0.2-1) unstable; urgency=medium
+
+  * Bug #51086: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 10:31:09 +0200
+
 univention-admingrp-user-passwordreset (9.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
