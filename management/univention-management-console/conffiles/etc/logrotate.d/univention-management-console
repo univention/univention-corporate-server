@@ -5,21 +5,21 @@ import univention.lib.ucrLogrotate
 
 name = "management-console"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s-*.log {" % name
+print("/var/log/univention/%s-*.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
+	print("\t%s" % settings[setting])
 
 # Add additional entry for management-console-server.log and management-console-web-server.log
 # to trigger a postrotate script for reloading of logfiles
-print '\tlastaction'
-print '\t\t/usr/share/univention-management-console/postrotate'
-print '\tendscript'
-print "}"
+print('\tlastaction')
+print('\t\t/usr/share/univention-management-console/postrotate')
+print('\tendscript')
+print("}")
 
 name = "directory-reports-cleanup"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
+print("/var/log/univention/%s.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+	print("\t%s" % settings[setting])
+print("}")
 @!@

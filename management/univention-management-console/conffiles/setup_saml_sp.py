@@ -32,12 +32,15 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
+
 import os
 from glob import glob
 from subprocess import call
 from time import sleep
-from urlparse import urlparse
+
+from six.moves.urllib_parse import urlparse
 from defusedxml import ElementTree
+
 workaround = set()
 
 
@@ -72,7 +75,7 @@ def cleanup():
 
 
 def valid_metadata(saml_idp):
-	idp = bytes(urlparse(saml_idp).netloc)
+	idp = str(urlparse(saml_idp).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
 	try:
 		ElementTree.parse(filename)
@@ -83,7 +86,7 @@ def valid_metadata(saml_idp):
 
 
 def download_idp_metadata(metadata):
-	idp = bytes(urlparse(metadata).netloc)
+	idp = str(urlparse(metadata).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
 	for i in range(0, 60):
 		print('Try to download idp metadata (%s/60)' % (i + 1))

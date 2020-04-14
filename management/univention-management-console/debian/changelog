@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-59) unstable; urgency=medium
+
+  * Bug #51098: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 12:36:43 +0200
+
 univention-management-console (11.0.4-58) unstable; urgency=medium
 
   * Bug #51067: self service - self registration

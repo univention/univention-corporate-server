@@ -4,10 +4,13 @@ import os
 import socket
 import fcntl
 import struct
-import urllib2
+
 import logging
 from univention.config_registry.interfaces import Interfaces
 from univention.lib.misc import custom_username
+
+from six.moves.urllib_request import urlopen
+from six.moves.urllib_error import URLError
 
 logging.basicConfig(
 	filename='/var/log/univention/ec2.log',
@@ -20,10 +23,10 @@ logging.basicConfig(
 def query_ec2(key):
 	url = 'http://169.254.169.254/latest/meta-data/' + key
 	try:
-		result = urllib2.urlopen(url, timeout=2)
+		result = urlopen(url, timeout=2)
 		value = result.read().strip()
 		return value
-	except (urllib2.URLError, socket.error, socket.timeout) as ex:
+	except (URLError, socket.error, socket.timeout) as ex:
 		logging.error('Could not query EC2 info via %s: %s', url, ex)
 		return None
 
@@ -147,5 +150,5 @@ ucr_vars = [
 
 data.update([get_ucr_entry(*i) for i in ucr_vars])
 
-print json.dumps(data, indent=2)
+print(json.dumps(data, indent=2))
 @!@
