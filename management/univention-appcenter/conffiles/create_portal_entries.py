@@ -31,11 +31,12 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
-from ldap.dn import escape_dn_chars
-from ldap import SERVER_DOWN
 from base64 import b64encode
 from copy import copy
-from urlparse import urlsplit
+
+from ldap.dn import escape_dn_chars
+from ldap import SERVER_DOWN
+from six.moves.urllib_parse import urlsplit
 
 from univention.config_registry.interfaces import Interfaces
 import univention.admin.uexceptions as udm_errors
@@ -71,6 +72,7 @@ class _Link(object):
 
 	def __nonzero__(self):
 		return str(self) != ''
+	__bool__ = __nonzero__
 
 
 def _handler(ucr, changes):
@@ -148,8 +150,8 @@ def _handler(ucr, changes):
 				try:
 					if value.startswith('/univention-management-console'):
 						value = '/univention%s' % value[30:]
-					with open('/var/www/%s' % value) as fd:
-						entry['icon'] = b64encode(fd.read())
+					with open('/var/www/%s' % value, 'rb') as fd:
+						entry['icon'] = b64encode(fd.read()).decode('ASCII')
 				except EnvironmentError:
 					pass
 			elif key == 'label':

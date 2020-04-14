@@ -1,4 +1,5 @@
 @!@
+import sys
 from polib import POFile, POEntry
 from datetime import datetime
 po = POFile()
@@ -44,5 +45,10 @@ for app in apps:
 			msgstr=msgstr or ''
 		)
 		po.append(entry)
-print po.to_binary()
+
+data = po.to_binary()
+try:  # Python 3
+	sys.stdout.buffer.write(data)
+except AttributeError:  # Python 2
+	print(data)
 @!@

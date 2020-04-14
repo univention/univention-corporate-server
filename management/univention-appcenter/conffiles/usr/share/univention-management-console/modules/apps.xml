@@ -7,12 +7,12 @@
 @!@
 # A flavor is required so that apps/get UMC call is allowed if no apps are available
 # the flavor and this module must not have a category so that no empty icon is displayed on the overview
-print '''
+print('''
 		<flavor id="apps">
 			<name></name>
 			<description></description>
 		</flavor>
-'''
+''')
 import cgi
 from univention.appcenter.app_cache import Apps
 apps = Apps().get_all_locally_installed_apps()
@@ -26,13 +26,13 @@ for app in apps:
 				<category name="apps"/>
 			</categories>
 		</flavor>'''.format(
-			id=cgi.escape(app.id or ''),
+			id=cgi.escape(app.id or '', True),
 			name=cgi.escape(app.name or ''),
 			version=cgi.escape(app.version or ''),
 			description=cgi.escape(app.description or ''),
-			icon=cgi.escape(app.logo_name or ''),
+			icon=cgi.escape(app.logo_name or '', True),
 		)
-	print xml
+	print(xml)
 @!@
 
 		<command name="apps/get" function="get" />
