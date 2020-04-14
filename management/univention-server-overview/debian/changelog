@@ -1,3 +1,9 @@
+univention-server-overview (2.0.1-5) unstable; urgency=medium
+
+  * Bug #51100: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2020 11:39:47 +0200
+
 univention-server-overview (2.0.1-4) unstable; urgency=medium
 
   * Bug #49164: migrate to dh_python
