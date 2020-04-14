@@ -11,6 +11,7 @@
 # pylint: disable=attribute-defined-outside-init
 
 from __future__ import print_function
+import subprocess
 import time
 import dns.resolver
 import tempfile
@@ -80,6 +81,7 @@ if __name__ == '__main__':
 						dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
 						dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
 					]
+					print(mx_addresses)
 
 					# setup mailsink and network redirector
 					port = 60025
@@ -108,15 +110,16 @@ if __name__ == '__main__':
 						'mailForwardAddress': user.mailForwardAddress,
 						'mailForwardCopyToSelf': '1',
 					})
-					utils.verify_ldap_object(
-						user.dn,
-						{
-							'univentionMailHomeServer': [user.mailHomeServer],
-							'mailPrimaryAddress': [user.mailPrimaryAddress],
-							'mailAlternativeAddress': user.mailAlternativeAddress,
-							'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-						},
-						strict=True)
+#					utils.verify_ldap_object(
+#						user.dn,
+#						{
+#							'univentionMailHomeServer': [user.mailHomeServer],
+#							'mailPrimaryAddress': [user.mailPrimaryAddress],
+#							'mailAlternativeAddress': user.mailAlternativeAddress,
+#							'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+#						},
+#						strict=True)
+
 
 					# send mails
 					for addr, msg in (
@@ -125,6 +128,10 @@ if __name__ == '__main__':
 					):
 						print('*** %s' % (msg,))
 						token = str(time.time())
+						p = subprocess.Popen(['mailq'], stdout=subprocess.PIPE)
+						output = str(p.stdout.read())
+						if not "Mail queue is empty" in output:
+								subprocess.call(['postsuper', '-d', 'ALL'])
 						send_mail(
 							recipients=addr,
 							msg=token,
