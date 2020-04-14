@@ -29,5 +29,6 @@
 
 from subprocess import call
 
+
 def postinst(ucr, changes):
 	call(['systemctl', 'daemon-reload'])

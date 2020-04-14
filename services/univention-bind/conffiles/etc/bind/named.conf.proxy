@@ -14,17 +14,17 @@ dns_allow_query_cache = configRegistry.get('dns/allow/query/cache')
 dns_allow_transfer = configRegistry.get('dns/allow/transfer')
 
 if dns_allow_query:
-	print '\tallow-query { %s; };' % dns_allow_query
+	print('\tallow-query { %s; };' % dns_allow_query)
 if dns_allow_query_cache:
-	print '\tallow-recursion { %s; };' % dns_allow_query_cache
-	print '\tallow-query-cache { %s; };' % dns_allow_query_cache
+	print('\tallow-recursion { %s; };' % dns_allow_query_cache)
+	print('\tallow-query-cache { %s; };' % dns_allow_query_cache)
 if dns_allow_transfer:
-	print '\tallow-transfer { %s; };' % dns_allow_transfer
+	print('\tallow-transfer { %s; };' % dns_allow_transfer)
 
 val = 'none'
 if configRegistry.is_true('dns/ipv6', True ):
 	val = 'any'
-print '\tlisten-on-v6 { %s; };' % val
+print('\tlisten-on-v6 { %s; };' % val)
 @!@};
 logging {
 	category lame-servers { null; };
@@ -36,35 +36,35 @@ logging {
 };
 @!@
 if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') or configRegistry.get('dns/forwarder3'):
-	print '\n# Found a forwarder in ucr variables, using forwarder in zone ".".'
-	print '# Ignoring any setting of dns/fakeroot.'
-	print 'zone "." {'
-	print '\ttype forward;'
-	print '\tforwarders {'
+	print('\n# Found a forwarder in ucr variables, using forwarder in zone ".".')
+	print('# Ignoring any setting of dns/fakeroot.')
+	print('zone "." {')
+	print('\ttype forward;')
+	print('\tforwarders {')
 	if configRegistry['dns/forwarder1']:
-		print '\t\t%s;' % configRegistry['dns/forwarder1']
+		print('\t\t%s;' % configRegistry['dns/forwarder1'])
 	if configRegistry['dns/forwarder2']:
-		print '\t\t%s;' % configRegistry['dns/forwarder2']
+		print('\t\t%s;' % configRegistry['dns/forwarder2'])
 	if configRegistry['dns/forwarder3']:
-		print '\t\t%s;' % configRegistry['dns/forwarder3']
-	print '\t};'
-	print '};'
+		print('\t\t%s;' % configRegistry['dns/forwarder3'])
+	print('\t};')
+	print('};')
 elif configRegistry.is_true('dns/fakeroot', True):
-	print '\n# Found no forwarder in ucr variables.'
-	print '# dns/fakeroot is either missing or set to True.'
-	print '# So setting a fake root zone ".".'
-	print 'zone "." {'
-	print '\ttype master;'
-	print '\tfile "/etc/bind/db.root.fake";'
-	print '};'
+	print('\n# Found no forwarder in ucr variables.')
+	print('# dns/fakeroot is either missing or set to True.')
+	print('# So setting a fake root zone ".".')
+	print('zone "." {')
+	print('\ttype master;')
+	print('\tfile "/etc/bind/db.root.fake";')
+	print('};')
 else:
-	print '\n# Found no forwarder in ucr variables.'
-	print '# dns/fakeroot is set to False.'
-	print '# So setting a root zone "." of type "hint" with default root servers.'
-	print 'zone "." {'
-	print '\ttype hint;'
-	print '\tfile "/etc/bind/db.root";'
-	print '};'
+	print('\n# Found no forwarder in ucr variables.')
+	print('# dns/fakeroot is set to False.')
+	print('# So setting a root zone "." of type "hint" with default root servers.')
+	print('zone "." {')
+	print('\ttype hint;')
+	print('\tfile "/etc/bind/db.root";')
+	print('};')
 @!@
 zone "localhost" {
     type master;
