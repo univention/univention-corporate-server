@@ -43,7 +43,7 @@ import ldap
 from ldap.dn import escape_dn_chars
 from random import choice
 try:
-	from typing import Iterator
+	from typing import Iterator  # noqa F401
 except ImportError:
 	pass
 
@@ -147,10 +147,12 @@ class MassCreate(object):
 			try:
 				try:
 					res = self.access.lo.lo.modify_s(dn, ml)
+					assert res
 				except ldap.TYPE_OR_VALUE_EXISTS as ex:
 					print('XXX %s' % (ex,), file=sys.stderr)
 					ml = [(ldap.MOD_REPLACE, attr, val) for (_op, attr, val) in ml]
 					res = self.access.lo.lo.modify_s(dn, ml)
+					assert res
 			except ldap.NO_SUCH_ATTRIBUTE as ex:
 				print('Group "%s" error: %s' % (dn, ex), file=sys.stderr)
 		return dn
