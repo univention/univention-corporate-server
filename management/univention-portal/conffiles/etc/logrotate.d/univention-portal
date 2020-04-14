@@ -5,8 +5,8 @@ import univention.lib.ucrLogrotate
 
 name = "portal"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
+print("/var/log/univention/%s.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+	print("\t%s" % settings[setting])
+print("}")
 @!@

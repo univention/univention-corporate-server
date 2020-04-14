@@ -50,8 +50,8 @@ def handler(config_registry, changes):
 	if new_val in ("UCS Core Edition", "Free for personal use edition"):
 		if config_registry.is_false('portal/create-univention-blog-entry', False):
 			return
-		with open('/usr/share/univention-portal/univention-blog.png') as fd:
-			icon = base64.b64encode(fd.read())
+		with open('/usr/share/univention-portal/univention-blog.png', 'rb') as fd:
+			icon = base64.b64encode(fd.read()).decode('ASCII')
 		check_call([
 			'univention-directory-manager', 'settings/portal_entry', 'create', '--ignore_exists',
 			'--position', 'cn=portal,cn=univention,%s' % (ldap_base,),

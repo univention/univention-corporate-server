@@ -73,5 +73,5 @@ for app in Apps().get_all_locally_installed_apps():
 	}
 	objs.append(entry)
 
-print dumps(objs, indent=2)
+print(dumps(objs, indent=2))
 @!@
