@@ -1,3 +1,9 @@
+ucs-test (9.0.3-187) unstable; urgency=medium
+
+  * Bug #44766: template has been fixed
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Apr 2020 13:21:46 +0200
+
 ucs-test (9.0.3-186) unstable; urgency=medium
 
   * Bug #51068: saml error message has changed
