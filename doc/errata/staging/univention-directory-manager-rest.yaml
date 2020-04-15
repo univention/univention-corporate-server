@@ -6,7 +6,9 @@ src: univention-directory-manager-rest
 fix: 9.0.16-9A~4.4.4.202004141127
 desc: |
  This update addresses the following issue(s):
- * machine account password change does not restart UDM REST API server.
+ * Bugfix: After an automatic password rotation, configurable via UCR
+   variable `server/password/interval`, the UDM REST API refused to deliver
+   an `openapi.json` file and disallows further logins.
  * Internal change: the UCR templates of univention-directory-manager-rest
    are now python3-compatible.
 bug: [50708, 51090]
