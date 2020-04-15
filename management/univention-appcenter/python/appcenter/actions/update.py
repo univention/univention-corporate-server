@@ -40,7 +40,8 @@ from gzip import open as gzip_open
 from json import loads
 import zlib
 
-from six.moves.urllib_request import Request, HTTPError
+from six.moves.urllib_request import Request
+from six.moves.urllib_error import HTTPError
 
 from univention.config_registry import handler_commit
 
