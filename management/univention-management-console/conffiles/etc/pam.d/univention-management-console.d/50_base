@@ -7,7 +7,7 @@ for k in configRegistry.keys():
 				configRegistry.is_true(k, True):
 		auth_umc_addons = True
 
-methods = configRegistry.get('auth/methods','').split(' ')
+methods = configRegistry.get('auth/methods', '').split(' ')
 
 if configRegistry.is_true('auth/passwdcache', False):
 	print('auth     sufficient                         pam_unix.so try_first_pass')
@@ -24,7 +24,7 @@ auth     [success=done new_authtok_reqd=ok          ignore=ignore default=bad]  
 # auth     required                           pam_passwdcache.so try_first_pass delete max_user=%(user)s
 # authenticate against cache (if a service fails)
 auth     sufficient                         pam_passwdcache.so try_first_pass
-''' % {'user' : user})
+''' % {'user': user})
 elif auth_umc_addons:
 	if 'krb5' in methods:
 		print('auth     [success=2 new_authtok_reqd=2 default=ignore]                         pam_unix.so try_first_pass')
