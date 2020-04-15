@@ -32,7 +32,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-# standard library
 import sys
 from subprocess import check_output, call, CalledProcessError
 import os
@@ -42,13 +41,12 @@ import shutil
 from json import loads
 from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
-import urllib2
-import httplib
 import ssl
 from base64 import encodestring
 from ipaddr import IPv4Network, IPv4Address
 import time
 
+from six.moves import urllib_request, http_client
 import ruamel.yaml as yaml
 
 from univention.appcenter.utils import app_ports_with_protocol, app_ports, call_process, call_process2, shell_safe, mkdir, unique, urlopen
@@ -100,15 +98,15 @@ def access(image):
 	url = 'https://%s/v2/%s/manifests/%s' % (hub, image_name, image_tag)
 	username = password = ucr_get('uuid/license')
 	auth = encodestring('%s:%s' % (username, password)).replace('\n', '')
-	request = urllib2.Request(url, headers={'Authorization': 'Basic %s' % auth})
+	request = urllib_request.Request(url, headers={'Authorization': 'Basic %s' % auth})
 	try:
 		urlopen(request)
-	except urllib2.HTTPError as exc:
+	except urllib_request.HTTPError as exc:
 		if exc.getcode() == 401:
 			return False
 		else:
 			return False  # TODO
-	except (urllib2.URLError, ssl.CertificateError, httplib.BadStatusLine):
+	except (urllib_request.URLError, ssl.CertificateError, http_client.BadStatusLine):
 		return False  # TODO
 	else:
 		return True

@@ -33,10 +33,8 @@
 #
 
 import os
-from ConfigParser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
 import re
 import subprocess
-import urllib2
 import shutil
 from argparse import Action
 from tempfile import NamedTemporaryFile
@@ -47,6 +45,9 @@ import gzip
 import tarfile
 from tempfile import mkdtemp
 from distutils.version import LooseVersion
+
+from six.moves.configparser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
+from six.moves.urllib_parse import urljoin
 
 from univention.config_registry.interfaces import Interfaces
 
@@ -207,10 +208,10 @@ class AppcenterApp(object):
 		path = filename
 		if with_app_dir:
 			path = os.path.join(self.app_dir, filename)
-		return urllib2.urlparse.urljoin(self.get_metainf_url(), path)
+		return urljoin(self.get_metainf_url(), path)
 
 	def _repository_url(self, filename):
-		return urllib2.urlparse.urljoin(self.get_repository_url(), filename)
+		return urljoin(self.get_repository_url(), filename)
 
 	def _components_dir(self, filename):
 		return os.path.join(self.components_dir, self.name, filename)

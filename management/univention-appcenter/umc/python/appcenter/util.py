@@ -34,13 +34,12 @@
 # standard library
 import os.path
 from contextlib import contextmanager
-import urllib2
-import httplib
 import socket
 import ssl
 from hashlib import md5
 
 # related third party
+from six.moves import urllib_request, http_client
 # import psutil # our psutil is outdated. re-enable when methods are supported
 
 # univention
@@ -132,7 +131,7 @@ def get_md5(filename):
 			return m.hexdigest()
 
 
-class HTTPSConnection(httplib.HTTPSConnection):
+class HTTPSConnection(http_client.HTTPSConnection):
 
 	def connect(self):
 		sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
@@ -142,7 +141,7 @@ class HTTPSConnection(httplib.HTTPSConnection):
 		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
 
 
-class HTTPSHandler(urllib2.HTTPSHandler):
+class HTTPSHandler(urllib_request.HTTPSHandler):
 
 	def https_open(self, req):
 		return self.do_open(HTTPSConnection, req)
@@ -157,10 +156,10 @@ def install_opener(ucr):
 	handler = []
 	proxy_http = ucr.get('proxy/http')
 	if proxy_http:
-		handler.append(urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
+		handler.append(urllib_request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
 	handler.append(HTTPSHandler())
-	opener = urllib2.build_opener(*handler)
-	urllib2.install_opener(opener)
+	opener = urllib_request.build_opener(*handler)
+	urllib_request.install_opener(opener)
 
 
 def verbose_http_error(exc):
@@ -193,7 +192,7 @@ def verbose_http_error(exc):
 def urlopen(request):
 	# use this in __init__ and app_center
 	# to have the proxy handler installed globally
-	return urllib2.urlopen(request, timeout=60)
+	return urllib_request.urlopen(request, timeout=60)
 
 
 def get_current_ram_available():

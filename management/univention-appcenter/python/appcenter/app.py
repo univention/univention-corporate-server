@@ -36,15 +36,16 @@ import sys
 import os
 import os.path
 from glob import glob
-from urlparse import urlsplit
 import re
-from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
 from copy import copy
 from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
 from weakref import ref
 from json import loads, dumps
+
+from six.moves.urllib_parse import urlsplit
+from six.moves.configparser import RawConfigParser, NoOptionError, NoSectionError
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager

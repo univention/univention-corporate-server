@@ -41,7 +41,6 @@ import tarfile
 from math import ceil
 import base64
 from StringIO import StringIO
-import ConfigParser
 import copy
 import inspect
 import locale
@@ -51,7 +50,6 @@ import stat
 import re
 from threading import Thread
 import traceback
-import urllib2
 from glob import glob
 from urlparse import urlsplit, urljoin
 from ldap import LDAPError
@@ -60,6 +58,9 @@ from operator import attrgetter
 import subprocess
 from tempfile import NamedTemporaryFile
 from json import loads
+
+# third party
+from six.moves import urllib_error, urllib_parse, configparser
 
 # univention
 from univention.management.console.log import MODULE
@@ -303,7 +304,7 @@ class Application(object):
 		# load config file
 		self._ini_file = ini_file
 		self._options = {}
-		config = ConfigParser.ConfigParser()
+		config = configparser.ConfigParser()
 		with open(ini_file, 'rb') as fp:
 			config.readfp(fp)
 		self.raw_config = config
@@ -438,11 +439,11 @@ class Application(object):
 		if locale != 'en':
 			try:
 				return self.raw_config.get(locale, key)
-			except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+			except (configparser.NoSectionError, configparser.NoOptionError):
 				pass
 		try:
 			return self.raw_config.get('Application', key)
-		except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+		except (configparser.NoSectionError, configparser.NoOptionError):
 			return ''
 
 	def get_locale_list(self, key):
@@ -455,7 +456,7 @@ class Application(object):
 				v = self.raw_config.get(section, key)
 				if v:
 					ret.append('[%s] %s' % (locale, v))
-			except ConfigParser.NoOptionError:
+			except configparser.NoOptionError:
 				pass
 		return ret
 
@@ -589,7 +590,7 @@ class Application(object):
 				# open .ini file
 				MODULE.info('opening category translation file: %s' % url)
 				fp = urlopen(url)
-				config = ConfigParser.ConfigParser()
+				config = configparser.ConfigParser()
 				config.readfp(fp)
 
 				# get the translations for the current language
@@ -600,9 +601,9 @@ class Application(object):
 					if config.has_section(loc):
 						for k, v in config.items(loc):
 							cls._category_translations[k] = v
-			except (ConfigParser.Error,) as exc:
+			except (configparser.Error,) as exc:
 				MODULE.warn('Could not load category translations from: %s\n%s' % (url, exc))
-			except (urllib2.HTTPError, urllib2.URLError) as exc:
+			except (urllib_error.HTTPError, urllib_error.URLError) as exc:
 				MODULE.warn('Could not load category translations from: %s\n%s' % (url, verbose_http_error(exc)))
 			MODULE.info('loaded category translations: %s' % cls._category_translations)
 		return cls._category_translations
@@ -671,7 +672,7 @@ class Application(object):
 		try:
 			zipped = StringIO(index_json_gz)
 			content = GzipFile(mode='rb', fileobj=zipped).read()
-		except (urllib2.HTTPError, urllib2.URLError) as exc:
+		except (urllib_error.HTTPError, urllib_error.URLError) as exc:
 			raise AppcenterServerContactFailed(exc)
 		except:
 			MODULE.error('Could not read "%s"' % json_url)
@@ -770,7 +771,7 @@ class Application(object):
 		for filename_url, filename, remote_md5sum in files_to_download:
 			# don't forget to quote: 'foo & bar.ini' -> 'foo%20%26%20bar.ini'
 			# but don't quote https:// -> https%3A//
-			path = urllib2.quote(urlsplit(filename_url).path)
+			path = urllib_parse.quote(urlsplit(filename_url).path)
 			filename_url = '%s%s' % (cls.get_server(with_scheme=True), path)
 
 			cached_filename = os.path.join(CACHE_DIR, filename)

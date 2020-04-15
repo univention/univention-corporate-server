@@ -33,7 +33,7 @@
 #
 
 
-from ConfigParser import RawConfigParser, ParsingError, NoSectionError, NoOptionError
+from six.moves.configparser import RawConfigParser, ParsingError, NoSectionError, NoOptionError
 import re
 from copy import deepcopy
 

@@ -37,10 +37,10 @@ from glob import glob
 import os.path
 from argparse import ArgumentParser, Action, Namespace
 import logging
-import urllib2
-import httplib
 import ssl
 from functools import wraps
+
+from six.moves import urllib_error, http_client
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import get_base_logger
@@ -56,7 +56,7 @@ def possible_network_error(func):
 	def _func(*args, **kwargs):
 		try:
 			return func(*args, **kwargs)
-		except (urllib2.HTTPError, urllib2.URLError, ssl.CertificateError, httplib.BadStatusLine) as exc:
+		except (urllib_error.HTTPError, urllib_error.URLError, ssl.CertificateError, http_client.BadStatusLine) as exc:
 			raise NetworkError(verbose_http_error(exc))
 	return _func
 

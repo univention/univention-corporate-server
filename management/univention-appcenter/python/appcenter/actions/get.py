@@ -36,7 +36,8 @@ from pipes import quote
 import re
 from argparse import Action
 from fnmatch import translate
-from ConfigParser import NoOptionError, NoSectionError
+
+from six.moves.configparser import NoOptionError, NoSectionError
 
 from univention.appcenter.app import CaseSensitiveConfigParser
 from univention.appcenter.app_cache import Apps

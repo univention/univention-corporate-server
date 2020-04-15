@@ -34,8 +34,9 @@
 
 import os
 from argparse import REMAINDER
-from urllib2 import Request
 from tempfile import gettempdir
+
+from six.moves.urllib_request import Request
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, possible_network_error
 from univention.appcenter.ucr import ucr_save, ucr_get

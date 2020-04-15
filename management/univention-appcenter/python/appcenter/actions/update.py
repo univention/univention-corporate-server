@@ -39,7 +39,8 @@ from glob import glob
 from gzip import open as gzip_open
 from json import loads
 import zlib
-from urllib2 import Request, HTTPError
+
+from six.moves.urllib_request import Request, HTTPError
 
 from univention.config_registry import handler_commit
 

@@ -41,16 +41,16 @@ import pipes
 from threading import Thread
 from uuid import uuid4
 import time
-import urllib2
-import urllib
-import httplib
 import ipaddr
 import ssl
 from hashlib import md5, sha256
 import socket
 import tempfile
 from locale import getlocale
-from ConfigParser import RawConfigParser, ParsingError
+
+from six.moves.configparser import RawConfigParser, ParsingError
+from six.moves import urllib_request, http_client
+from six.moves.urllib_parse import urlencode
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
@@ -291,23 +291,22 @@ def verbose_http_error(exc):
 		strerror = str(exc)
 	if isinstance(exc, ssl.CertificateError):
 		strerror = _('There is a problem with the certificate of the App Center server %s.') % get_server() + ' (' + strerror + ')'
-	if isinstance(exc, httplib.BadStatusLine):
+	if isinstance(exc, http_client.BadStatusLine):
 		strerror = _('There was a problem with the HTTP response of the server (BadStatusLine). Please try again later.')
 	return strerror
 
 
-class HTTPSConnection(httplib.HTTPSConnection):
+class HTTPSConnection(http_client.HTTPSConnection):
 
 	def connect(self):
 		sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
 		if self._tunnel_host:
 			self.sock = sock
 			self._tunnel()
-		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED,
-			ca_certs="/etc/ssl/certs/ca-certificates.crt")
+		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
 
 
-class HTTPSHandler(urllib2.HTTPSHandler):
+class HTTPSHandler(urllib_request.HTTPSHandler):
 
 	def https_open(self, req):
 		return self.do_open(HTTPSConnection, req)
@@ -318,12 +317,12 @@ def urlopen(request):
 		handler = []
 		proxy_http = ucr_get('proxy/http')
 		if proxy_http:
-			handler.append(urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
+			handler.append(urllib_request.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
 		handler.append(HTTPSHandler())
-		opener = urllib2.build_opener(*handler)
-		urllib2.install_opener(opener)
+		opener = urllib_request.build_opener(*handler)
+		urllib_request.install_opener(opener)
 		urlopen._opener_installed = True
-	return urllib2.urlopen(request, timeout=60)
+	return urllib_request.urlopen(request, timeout=60)
 
 
 urlopen._opener_installed = False
@@ -497,8 +496,8 @@ def send_information(action, app=None, status=200, value=None):
 		values['system-uuid'] = system_uuid
 	utils_logger.debug('tracking information: %s' % str(values))
 	try:
-		request_data = urllib.urlencode(values)
-		request = urllib2.Request(url, request_data)
+		request_data = urlencode(values)
+		request = urllib_request.Request(url, request_data)
 		urlopen(request)
 	except Exception as exc:
 		utils_logger.info('Error sending app infos to the App Center server: %s' % exc)

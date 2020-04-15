@@ -40,9 +40,10 @@ from contextlib import contextmanager
 from time import sleep
 from glob import glob
 from json import dump, load
-from urlparse import urlsplit
 from distutils.version import LooseVersion
-from ConfigParser import NoSectionError
+
+from six.moves.configparser import NoSectionError
+from six.moves.urllib_parse import urlsplit
 
 from univention.appcenter.app import App
 from univention.appcenter.log import get_base_logger
