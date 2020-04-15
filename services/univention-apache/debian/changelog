@@ -1,3 +1,10 @@
+univention-apache (11.0.1-19) unstable; urgency=medium
+
+  * Bug #51077: make UCR templates python3-compatible
+  * Bug #44766: ucs-sites.conf template was missing @%@UCRWARNING
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Apr 2020 13:03:31 +0200
+
 univention-apache (11.0.1-18) unstable; urgency=medium
 
   * Bug #51077: make UCR templates python3-compatible
