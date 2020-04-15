@@ -1,4 +1,5 @@
 @!@
+import json
 locale = configRegistry.get('locale', '')
 
 locales = []
@@ -9,6 +10,5 @@ for l in locale.split(' '):
         if configured_locale:
                 locales.append((l.replace('_', '-'), configured_locale))
 
-import json
-print(json.dumps([{'id':id, 'label':label} for id, label in locales]))
+print(json.dumps([{'id': id, 'label': label} for id, label in locales]))
 @!@
