@@ -1,5 +1,8 @@
 @!@
 import re
+from functools import reduce
+
+
 RE_TIME = re.compile(r'([0-9]+)([wdhms]?)')
 def parse_time(text):
 	return reduce(
@@ -13,6 +16,8 @@ def parse_time(text):
 		}[v_u[1]],
 		RE_TIME.findall(text),
 		0)
+
+
 if configRegistry.is_true('apache2/hsts'):
 	options = [
 		'max-age=%s' % parse_time(configRegistry.get('apache2/hsts/max-age', '10886400')),
