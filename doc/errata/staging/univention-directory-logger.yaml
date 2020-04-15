@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-directory-logger
-fix: 10.0.2-1A~4.4.0.202004141040
+fix: 10.0.2-2A~4.4.0.202004151107
 desc: |
  This update addresses the following issue(s):
  * univention-directory-logger is now able to prefix related log
