@@ -975,7 +975,7 @@
 				</varlistentry>
 			</variablelist>
 		</section>
-		<section>
+		<section id="user-management:password-changes-by-users:selfregistration">
 			<title>Selbstregistrierung</title>
 			<para>
 				Der <foreignphrase>Self Service</foreignphrase> ermöglicht es Benutzern, sich selbst zu registrieren, wodurch ein Benutzerkonto erstellt wird, das per E-Mail verifiziert werden muss.
@@ -983,7 +983,7 @@
 				und das <property>PasswordRecoveryEmailVerified</property> Attribut auf <wordasword>FALSE</wordasword> gesetzt. Nachdem der Benutzer sein Konto über
 				die <wordasword>Verifizierungs-E-Mail</wordasword> verifiziert hat wird das <property>PasswordRecoveryEmailVerified</property> Attribut auf <wordasword>TRUE</wordasword> gesetzt.
 			</para>
-			<section>
+			<section id="user-management:password-changes-by-users:selfregistration:account-creation">
 				<title>Kontoerstellung</title>
 				<figure id="user-registration">
 					<title>Selbstregistrierung</title>
@@ -1035,7 +1035,7 @@
 					</varlistentry>
 				</variablelist>
 			</section>
-			<section>
+			<section id="user-management:password-changes-by-users:selfregistration:verification-email">
 				<title><wordasword>Verifizierungs-E-Mail</wordasword></title>
 				<para>
 					Nachdem ein Benutzer auf <guimenu>Konto erstellen</guimenu> geklickt hat, sieht er eine Nachricht, dass eine E-Mail für die Kontoverifizierung versendet wurde.
@@ -1089,7 +1089,7 @@
 					</varlistentry>
 				</variablelist>
 			</section>
-			<section>
+			<section id="user-management:password-changes-by-users:selfregistration:account-verification">
 				<title>Kontoverifizierung</title>
 				<para>
 					Wenn der Benutzer dem <wordasword>Verifizierungs-Link</wordasword> aus der E-Mail folgt, gelangt er auf die Seite "Kontoverifizierung" des <foreignphrase>Self Service</foreignphrase>.

@@ -940,7 +940,7 @@
 				</varlistentry>
 			</variablelist>
 		</section>
-		<section>
+		<section id="user-management:password-changes-by-users:selfregistration">
 			<title>Self registration</title>
 			<para>
 				The Self Service allows for users to register themselves, which will create a user account that has to be verified via email.
@@ -948,7 +948,7 @@
 				and the <property>PasswordRecoveryEmailVerified</property> attribute set to FALSE. After the user has verified his account via
 				the verification email the <property>PasswordRecoveryEmailVerified</property> attribute will be set to <wordasword>TRUE</wordasword>.
 			</para>
-			<section>
+			<section id="user-management:password-changes-by-users:selfregistration:account-creation">
 				<title>Account creation</title>
 				<figure id="user-registration">
 					<title>Account registration</title>
@@ -1001,7 +1001,7 @@
 				</variablelist>
 			</section>
 
-			<section>
+			<section id="user-management:password-changes-by-users:selfregistration:verification-email">
 				<title>Verification email</title>
 				<para>
 					After a user has clicked on <guimenu>Create account</guimenu>, they will see a message  that an email for the account verification has been sent.
@@ -1052,7 +1052,7 @@
 					</varlistentry>
 				</variablelist>
 			</section>
-			<section>
+			<section id="user-management:password-changes-by-users:selfregistration:account-verification">
 				<title>Account verification</title>
 				<para>
 					Following the verification link from the email, the user will land on the "Account verification" page of the Self Service.
