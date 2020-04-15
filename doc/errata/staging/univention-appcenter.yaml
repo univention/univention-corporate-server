@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-appcenter
-fix: 8.0.11-129A~4.4.0.202004141330
+fix: 8.0.11-130A~4.4.0.202004151804
 desc: |
  This update addresses the following issue(s):
  * Support for udp ports in docker compose file has been added.
