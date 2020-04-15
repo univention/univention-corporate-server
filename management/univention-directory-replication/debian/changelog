@@ -1,3 +1,9 @@
+univention-directory-replication (12.0.0-7) unstable; urgency=low
+
+  * Bug #48545: Do incremental updates for group.uniqueMember
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Apr 2020 17:44:10 +0200
+
 univention-directory-replication (12.0.0-6) unstable; urgency=medium
 
   * Bug #51093: make UCR templates compatible to python3

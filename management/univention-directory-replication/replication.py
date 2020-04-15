@@ -574,15 +574,35 @@ def modlist(old, new):
 	for key, values in new.items():
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
+
 		if key not in old:
 			ml.append((ldap.MOD_ADD, key, values))
-		elif values != old[key]:
-			ml.append((ldap.MOD_REPLACE, key, values))
+			continue
+
+		set_old = set(old[key])
+		set_new = set(values)
+		if set_old == set_new:
+			continue
+
+		if key == 'uniqueMember':
+			# trigger slapd-memberof, where REPLACE is inefficient (Bug #48545)
+			added_items = set_new - set_old
+			removed_items = set_old - set_new
+			if len(added_items) + len(removed_items) < len(values):
+				if added_items:
+					ml.append((ldap.MOD_ADD, key, list(added_items)))
+				if removed_items:
+					ml.append((ldap.MOD_DELETE, key, list(removed_items)))
+				continue
+
+		ml.append((ldap.MOD_REPLACE, key, values))
+
 	for key in old:
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
 		if key not in new:
 			ml.append((ldap.MOD_DELETE, key, []))
+
 	return ml
 
 
