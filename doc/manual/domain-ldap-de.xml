@@ -1497,8 +1497,8 @@ univention-directory-listener-ctrl resync cups-printers
 						Zu jedem dieser Attribute können ebenfalls ein oder mehrere Service Attribut-Namen im nebenstehenden Feld definiert werden.
 						Diese dienen zur Übersetzung des LDAP Attribut-Namen für den Service-Provider.
 						Mehrere Einträge müssen durch Kommata getrennt werden.
-						Damit der UCS Identity Provider die angegebenen Attribute verarbeiten kann, müssen sie zusätzlich in der &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar> eingetragen werden.
-						Die Werte in der &ucsUCRV; müssen in Apostrophe umgeben und durch Kommata voneinander getrennt werden, beispielsweise <option>'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'</option>.
+						Damit der UCS Identity Provider die angegebenen Attribute verarbeiten kann, müssen sie zusätzlich am LDAP Objekt <uri>id=default-saml-idp,cn=univention,<replaceable>base DN</replaceable></uri> eingetragen werden.
+						Dort eingetragene LDAP Attribute können vom Identity Provider ausgelesen und übertragen werden.
 					</entry>
 				</row>
 			</tbody>
