@@ -14,3 +14,5 @@ desc: |
    provider has been adapted, to be configurable to deny login for
    unverified, self registered accounts.
 bug: [48927, 51068]
+erratum: 527
+announced: 2020-04-15
