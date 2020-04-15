@@ -1,6 +1,6 @@
-univention-server (14.0.0-15) unstable; urgency=medium
+univention-server (14.0.0-16) unstable; urgency=medium
 
-  * Bug #50708: forced restart, because reload in tests did not work
+  * Bug #50708: reverted, because it did not belong here.
 
  -- Max Christian Pohle <pohle@univention.de>  Tue, 07 Apr 2020 15:59:17 +0200
 
