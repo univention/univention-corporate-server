@@ -1183,7 +1183,12 @@ def unmapWindowsFiletime(old):
 			return old[0]
 		d = long(116444736000000000)  # difference between 1601 and 1970
 		unixtime = (int(old[0]) - d) / 10000000
-		return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
+		try:
+			return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(unixtime))
+		except ValueError:
+			#already unixtime, happens in environments with Samba3
+			ud.debug(ud.ADMIN, ud.INFO, 'Value of sambaBadPasswordTime is not set to a Windows Filetime (100 nanoseconds since January 1, 1601.)\nInstead its set to %s' % old[0])
+			return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(int(old[0])))
 	return ''
 
 
