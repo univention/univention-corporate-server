@@ -23,7 +23,7 @@ Type=str
 Categories=service-ldap
 
 [ldap/logging/id-prefix]
-Description[de]=Spezifiziert, ob jeder Logeintrag mit dem identifier geprefixt werden soll.
-Description[en]=Specifies, whether to prefix every log record with the identifier.
+Description[de]=Spezifiziert, ob jedem Logeintrag seine Transaktions-ID vorangestellt werden soll.
+Description[en]=Specifies, whether to prefix every log record with the transaction id.
 Type=bool
 Categories=service-ldap
