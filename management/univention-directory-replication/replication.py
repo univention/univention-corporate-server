@@ -566,24 +566,19 @@ def connect(ldif=0):
 
 
 def addlist(new):
-	al = []
-	for key in new.keys():
-		if key in EXCLUDE_ATTRIBUTES:
-			continue
-		al.append((key, new[key]))
-	return al
+	return [kv for kv in new.items() if kv[0] not in EXCLUDE_ATTRIBUTES]
 
 
 def modlist(old, new):
 	ml = []
-	for key in new.keys():
+	for key, values in new.items():
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
 		if key not in old:
-			ml.append((ldap.MOD_ADD, key, new[key]))
-		elif new[key] != old[key]:
-			ml.append((ldap.MOD_REPLACE, key, new[key]))
-	for key in old.keys():
+			ml.append((ldap.MOD_ADD, key, values))
+		elif values != old[key]:
+			ml.append((ldap.MOD_REPLACE, key, values))
+	for key in old:
 		if key in EXCLUDE_ATTRIBUTES:
 			continue
 		if key not in new:
@@ -806,7 +801,7 @@ def handler(dn, new, listener_old, operation):
 		else:
 			connected = 1
 
-	if 'pwdAttribute' in new.keys():
+	if 'pwdAttribute' in new:
 		if new['pwdAttribute'][0] == 'userPassword':
 			new['pwdAttribute'] = ['2.5.4.35']
 
@@ -818,10 +813,10 @@ def handler(dn, new, listener_old, operation):
 			# Check if both entries really match
 			match = 1
 			if len(old) != len(listener_old):
-				ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (old.keys(), listener_old.keys()))
+				ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
 				match = 0
 			else:
-				for k in old.keys():
+				for k in old:
 					if k in EXCLUDE_ATTRIBUTES:
 						continue
 					if k not in listener_old:
