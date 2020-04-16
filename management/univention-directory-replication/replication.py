@@ -565,6 +565,24 @@ def connect(ldif=0):
 	return connection
 
 
+def retry_connect(retry=30):  # type (int) -> Union[ldap.ldapobject, LDIFObject]
+	global reconnect
+	ex = None
+
+	for i in range(retry):
+		if i:
+			log_ldap(ud.WARN, 'Can not connect LDAP Server, retry in 10 seconds', ex)
+			reconnect = 1
+			time.sleep(10)
+		try:
+			return connect()
+		except ldap.LDAPError as exc:
+			ex = exc
+
+	log_ldap(ud.ERROR, 'going into LDIF mode', ex)
+	return connect(ldif=1)
+
+
 def addlist(new):
 	return [kv for kv in new.items() if kv[0] not in EXCLUDE_ATTRIBUTES]
 
@@ -802,24 +820,7 @@ def handler(dn, new, listener_old, operation):
 	if dn == 'cn=Subschema':
 		return update_schema(new)
 
-	connect_count = 0
-	connected = 0
-
-	while connect_count < 31 and not connected:
-		try:
-			l = connect()
-		except ldap.LDAPError as ex:
-			connect_count += 1
-			if connect_count >= 30:
-				log_ldap(ud.ERROR, 'going into LDIF mode', ex)
-				reconnect = 1
-				l = connect(ldif=1)
-			else:
-				log_ldap(ud.WARN, 'Can not connect LDAP Server, retry in 10 seconds', ex)
-				reconnect = 1
-				time.sleep(10)
-		else:
-			connected = 1
+	l = retry_connect()
 
 	try:
 		# Read old entry directly from LDAP server
