@@ -207,10 +207,9 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
-		soa = [x.decode('UTF-8') for x in soa]
 		if len(soa) > 6:
-			self['contact'] = unescapeSOAemail(soa[1])
-			self['serial'] = soa[2]
+			self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
+			self['serial'] = soa[2].decode('UTF-8')
 			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[3])
 			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[4])
 			self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[5])
@@ -233,8 +232,8 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = u'%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
-			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa.encode('UTF-8')))
+			soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
+			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
 		return ml
 
 	def _ldap_pre_modify(self, modify_childs=1):
@@ -274,8 +273,8 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr):
-	return b'dNSZone' in attr.get('objectClass', []) and\
-		[b'@'] == attr.get('relativeDomainName', []) and\
+	return b'dNSZone' in attr.get('objectClass', []) and \
+		[b'@'] == attr.get('relativeDomainName', []) and \
 		(attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) or attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6))
 
 
