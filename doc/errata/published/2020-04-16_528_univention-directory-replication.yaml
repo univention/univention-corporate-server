@@ -15,3 +15,5 @@ desc: |
    in OpenDLAP. With slow disks this even can lead to TIMEOUT errors as the
    LDAP connection is closed after 5 minutes by default.
 bug: [51093, 48545]
+erratum: 528
+announced: 2020-04-16
