@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-directory-replication
-fix: 12.0.0-7A~4.4.0.202004151819
+fix: 12.0.0-9A~4.4.0.202004161212
 desc: |
  This update addresses the following issues:
  * Internal change: the UCR templates of are now python3-compatible.
