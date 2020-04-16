@@ -677,7 +677,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		<title>Audit-proof logging of LDAP changes</title>
 
 		<para>
-		  The <command>univention-directory-logger</command> package allows the logging of all
+		  The <package>univention-directory-logger</package> package allows the logging of all
 		  changes in the LDAP directory service. As each data record contains the hash value of the
 		  previous data record, manipulations of the log file - such as deleted entries - can be
 		  uncovered.
@@ -714,6 +714,30 @@ END
 
 		A hash sum is calculated for each logged data record and also logged in the
 		<wordasword>daemon.info</wordasword> section of the Syslog service.
+		</para>
+		<para>
+			As of UCS 4.4-4 errata 529, the respective transaction ID of the entry is added to the file <filename>/var/log/univention/directory-logger.log</filename> before each line as a prefix:
+			<screen>
+ID 342: START
+ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985
+ID 342: DN: uid=Administrator,cn=users,dc=example,dc=com
+ID 342: ID: 342
+ID 342: Modifier: cn=admin,dc=example,dc=com
+ID 342: Timestamp: 15.04.2020 09:20:40
+ID 342: Action: modify
+ID 342: 
+ID 342: Old values:
+ID 342: description: Dhis is a description test
+ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000
+ID 342: modifyTimestamp: 20200415091936Z
+ID 342: 
+ID 342: New values:
+ID 342: description: This is a description test
+ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000
+ID 342: modifyTimestamp: 20200415092040Z
+ID 342: END
+			</screen>
+			If <package>univention-directory-logger</package> was installed before this UCS version, the old behavior (no prefix) is retained by default. By setting the &ucsUCRV; <envar>ldap/logging/id-prefix=yes</envar> the new behavior can be activated. This prefix simplifies the correlation of related lines when post-processing the log in analysis and monitoring tools.
 		</para>
 	</section>
 
