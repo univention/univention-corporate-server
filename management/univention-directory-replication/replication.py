@@ -693,7 +693,7 @@ def getOldValues(ldapconn, dn):
 	"""
 	if not isinstance(ldapconn, LDIFObject):
 		try:
-			res = ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
+			res = ldapconn.search_s(dn, ldap.SCOPE_BASE, attrlist=['*', '+'])
 		except ldap.NO_SUCH_OBJECT as ex:
 			ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL not found: %s %s" % (dn, ex))
 			old = {}
@@ -717,7 +717,7 @@ def _delete_dn_recursive(l, dn):
 		l.delete_s(dn)
 	except ldap.NOT_ALLOWED_ON_NONLEAF:
 		ud.debug(ud.LISTENER, ud.WARN, 'replication: Failed to delete non leaf object: dn=[%s];' % dn)
-		dns = [dn2 for dn2, _attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['dn'], attrsonly=1)]
+		dns = [dn2 for dn2, _attr in l.search_s(dn, ldap.SCOPE_SUBTREE, attrlist=['dn'], attrsonly=1)]
 		dns.reverse()
 		for dn in dns:
 			l.delete_s(dn)
@@ -734,7 +734,7 @@ def _backup_dn_recursive(l, dn):
 	with open(backup_file, 'w+') as fd:
 		os.fchmod(fd.fileno(), 0o600)
 		ldif_writer = ldifparser.LDIFWriter(fd)
-		for dn, entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
+		for dn, entry in l.search_s(dn, ldap.SCOPE_SUBTREE, attrlist=['*', '+']):
 			ldif_writer.unparse(dn, entry)
 
 
@@ -905,7 +905,7 @@ def handler(dn, new, listener_old, operation):
 	except ldap.ALREADY_EXISTS as ex:
 		log_ldap(ud.WARN, 'trying to apply changes', ex, dn=dn)
 		try:
-			cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
+			cur = l.search_s(dn, ldap.SCOPE_BASE)[0][1]
 		except ldap.LDAPError as ex:
 			log_ldap(ud.ERROR, 'going into LDIF mode', ex)
 			reconnect = 1
