@@ -203,25 +203,20 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.dn and not self.position:
 			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
+	def _post_unmap(self, info, values):
+		info['a'] = []
+		if 'aRecord' in values:
+			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
+		if 'aAAARecord' in values:
+			info['a'].extend([ipaddr.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
+		return info
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		self.oldinfo['a'] = []
-		self.info['a'] = []
-		if 'aRecord' in self.oldattr:
-			values = [x.decode('ASCII') for x in self.oldattr['aRecord']]
-			self.oldinfo['a'].extend(values)
-			self.info['a'].extend(values)
-		if 'aAAARecord' in self.oldattr:
-			values = [x.decode('ASCII') for x in self.oldattr['aAAARecord']]
-			values = [ipaddr.IPv6Address(x).exploded for x in values]
-			self.oldinfo['a'].extend(values)
-			self.info['a'].extend(values)
-
-		soa = self.oldattr.get('sOARecord', [''])[0].split(' ')
-		soa = [x.decode('UTF-8') for x in soa]
+		soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
 		if len(soa) > 6:
-			self['contact'] = unescapeSOAemail(soa[1])
-			self['serial'] = soa[2]
+			self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
+			self['serial'] = soa[2].decode('UTF-8')
 			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[3])
 			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[4])
 			self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[5])
@@ -249,8 +244,8 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = u'%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
-			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa.encode('UTF-8')]))
+			soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
+			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
 
 		oldAddresses = self.oldinfo.get('a')
 		newAddresses = self.info.get('a')
