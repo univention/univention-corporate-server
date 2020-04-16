@@ -584,15 +584,15 @@ def modlist(old, new):
 		if set_old == set_new:
 			continue
 
-		if key == 'uniqueMember':
+		if key == listener.baseConfig.get('ldap/overlay/memberof/member', 'uniqueMember'):
 			# trigger slapd-memberof, where REPLACE is inefficient (Bug #48545)
 			added_items = set_new - set_old
 			removed_items = set_old - set_new
 			if len(added_items) + len(removed_items) < len(values):
-				if added_items:
-					ml.append((ldap.MOD_ADD, key, list(added_items)))
 				if removed_items:
 					ml.append((ldap.MOD_DELETE, key, list(removed_items)))
+				if added_items:
+					ml.append((ldap.MOD_ADD, key, list(added_items)))
 				continue
 
 		ml.append((ldap.MOD_REPLACE, key, values))

@@ -1,3 +1,9 @@
+univention-directory-replication (12.0.0-8) unstable; urgency=low
+
+  * Bug #48545: Fix incremental updates for group.uniqueMember
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 16 Apr 2020 12:03:35 +0200
+
 univention-directory-replication (12.0.0-7) unstable; urgency=low
 
   * Bug #48545: Do incremental updates for group.uniqueMember
