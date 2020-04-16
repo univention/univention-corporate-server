@@ -112,19 +112,19 @@ layout = [
 ]
 
 
-def unmapMX(old):
+def unmapMX(old, encoding=()):
 	_d = ud.function('admin.handlers.dns.host_record.unmapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
-		new.append(i.split(' '))
+		new.append(i.decode(*encoding).split(u' '))
 	return new
 
 
-def mapMX(old):
+def mapMX(old, encoding=()):
 	_d = ud.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(u' '.join(i).encode(*encoding))
 	return new
 
 
@@ -147,22 +147,13 @@ class object(univention.admin.handlers.simpleLdap):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
-		if dn:  # TODO: document why or remove
-			self.open()
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self.oldinfo['a'] = []
-		self.info['a'] = []
-		if 'aRecord' in self.oldattr:
-			values = [x.decode('ASCII') for x in self.oldattr['aRecord']]
-			self.oldinfo['a'].extend(values)
-			self.info['a'].extend(values)
-		if 'aAAARecord' in self.oldattr:
-			values = [x.decode('ASCII') for x in self.oldattr['aAAARecord']]
-			values = [ipaddr.IPv6Address(x).exploded for x in values]
-			self.oldinfo['a'].extend(values)
-			self.info['a'].extend(values)
+	def _post_unmap(self, info, values):
+		info['a'] = []
+		if 'aRecord' in values:
+			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
+		if 'aAAARecord' in values:
+			info['a'].extend([ipaddr.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
+		return info
 
 	def _ldap_addlist(self):
 		return [
@@ -180,16 +171,16 @@ class object(univention.admin.handlers.simpleLdap):
 		if oldAddresses != newAddresses:
 			if oldAddresses:
 				for address in oldAddresses:
-					if ':' in address:  # IPv6
+					if u':' in address:  # IPv6
 						oldAaaaRecord.append(address.encode('ASCII'))
 					else:
 						oldARecord.append(address.encode('ASCII'))
 			if newAddresses:
 				for address in newAddresses:
-					if ':' in address:  # IPv6
+					if u':' in address:  # IPv6
 						newAaaaRecord.append(address)
 					else:
-						newARecord.append(address)
+						newARecord.append(address.encode('ASCII'))
 
 			# explode all IPv6 addresses and remove duplicates
 			newAaaaRecord = list(set([ipaddr.IPv6Address(x).exploded for x in newAaaaRecord]))

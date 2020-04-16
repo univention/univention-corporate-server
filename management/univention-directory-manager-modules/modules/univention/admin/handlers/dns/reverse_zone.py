@@ -144,7 +144,7 @@ layout = [
 ]
 
 
-def mapSubnet(subnet):
+def mapSubnet(subnet, encoding=()):
 	"""
 	Map subnet to reverse zone.
 	>>> mapSubnet('0123:4567:89ab:cdef')
@@ -154,15 +154,16 @@ def mapSubnet(subnet):
 	>>> mapSubnet('1.2.3')
 	'3.2.1.in-addr.arpa'
 	"""
-	if ':' in subnet:  # IPv6
-		return '%s%s' % ('.'.join(reversed(subnet.replace(':', ''))), ARPA_IP6)
+	subnet = subnet.encode(*encoding)
+	if b':' in subnet:  # IPv6
+		return b'%s%s' % (b'.'.join(reversed(subnet.replace(b':', b''))), ARPA_IP6.encode('ASCII'))
 	else:
-		q = subnet.split('.')
+		q = subnet.split(b'.')
 		q.reverse()
-		return '%s%s' % ('.'.join(q), ARPA_IP4)
+		return b'%s%s' % (b'.'.join(q), ARPA_IP4.encode('ASCII'))
 
 
-def unmapSubnet(zone):
+def unmapSubnet(zone, encoding=()):
 	"""
 	Map reverse zone to subnet.
 	>>> unmapSubnet('f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa')
@@ -174,15 +175,16 @@ def unmapSubnet(zone):
 	"""
 	if isinstance(zone, list):
 		zone = zone[0]
+	zone = zone.decode(*encoding)
 	if zone.endswith(ARPA_IP6):  # IPv6
 		zone = zone[:-len(ARPA_IP6)]
-		zone = list(reversed(zone.split('.')))
-		return ':'.join([''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
+		zone = list(reversed(zone.split(u'.')))
+		return u':'.join([u''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
 	elif zone.endswith(ARPA_IP4):  # IPv4
 		zone = zone[:-len(ARPA_IP4)]
-		q = zone.split('.')
+		q = zone.split(u'.')
 		q.reverse()
-		return '.'.join(q)
+		return u'.'.join(q)
 	else:
 		raise ValueError('Neither an IPv4 nor an IPv6 reverse address')
 
