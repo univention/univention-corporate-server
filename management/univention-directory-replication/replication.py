@@ -52,7 +52,6 @@ import univention.debug as ud
 import smtplib
 from email.MIMEText import MIMEText
 import sys
-from errno import ENOENT
 
 
 name = 'replication'
@@ -71,7 +70,6 @@ STATE_DIR = '/var/lib/univention-directory-replication'
 BACKUP_DIR = '/var/univention-backup/replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
 ROOTPW_FILE = '/etc/ldap/rootpw.conf'
-CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
 
 EXCLUDE_ATTRIBUTES = [
 	'subschemaSubentry',
@@ -740,15 +738,6 @@ def _backup_dn_recursive(l, dn):
 			ldif_writer.unparse(dn, entry)
 
 
-def _remove_file(pathname):
-	ud.debug(ud.LISTENER, ud.ALL, 'replication: removing %s' % (pathname,))
-	try:
-		os.remove(pathname)
-	except EnvironmentError as ex:
-		if ex.errno != ENOENT:
-			ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
-
-
 def _add_object_from_new(l, dn, new):
 	al = addlist(new)
 	try:
@@ -762,18 +751,6 @@ def _modify_object_from_old_and_new(l, dn, old, new):
 	if ml:
 		ud.debug(ud.LISTENER, ud.ALL, 'replication: modify: %s' % dn)
 		l.modify_s(dn, ml)
-
-
-def _read_dn_from_file(filename):
-	old_dn = None
-
-	try:
-		with open(filename, 'r') as f:
-			old_dn = f.read()
-	except EnvironmentError as ex:
-		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, ex))
-
-	return old_dn
 
 
 def check_file_system_space():
@@ -851,8 +828,12 @@ def get_old(l, dn, listener_old):  # type (Union[ldap.ldapobject, LDIFObject], s
 		return old
 
 
+old_dn = ''  # for rename/move
+
+
 def handler(dn, new, listener_old, operation):
 	global reconnect
+	global old_dn
 	if not slave:
 		return 1
 
@@ -869,13 +850,8 @@ def handler(dn, new, listener_old, operation):
 
 		# add
 		if new:
-			if os.path.exists(CURRENT_MODRDN) and not isinstance(l, LDIFObject):
-				target_uuid_file = os.readlink(CURRENT_MODRDN)
-				old_dn = _read_dn_from_file(CURRENT_MODRDN)
-
-				new_entryUUID = new['entryUUID'][0]
-				modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
-				if modrdn_cache == target_uuid_file:
+			if old_dn and not isinstance(l, LDIFObject):
+					new_entryUUID = new['entryUUID'][0]
 					ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
 
 					if old:
@@ -901,28 +877,12 @@ def handler(dn, new, listener_old, operation):
 
 						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s' % (old_dn, dn))
 						l.rename_s(old_dn, new_rdn, new_parent, delold=delold)
-						_remove_file(modrdn_cache)
 					else:
 						# the old object does not exists, so we have to re-create the new object
 						ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
 						_add_object_from_new(l, dn, new)
-						_remove_file(modrdn_cache)
-				else:  # current_modrdn points to a different file
-					ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % (target_uuid_file,))
 
-					if old_dn:
-						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the %s has to be backuped and removed' % (old_dn, CURRENT_MODRDN))
-						_backup_dn_recursive(l, old_dn)
-						_delete_dn_recursive(l, old_dn)
-					else:
-						ud.debug(ud.LISTENER, ud.WARN, 'replication: no old dn has been found')
-
-					if not old:
-						_add_object_from_new(l, dn, new)
-					elif old:
-						_modify_object_from_old_and_new(l, dn, old, new)
-
-				_remove_file(CURRENT_MODRDN)
+					old_dn = ''
 
 			elif old:  # modify: new and old
 				_modify_object_from_old_and_new(l, dn, old, new)
@@ -933,20 +893,8 @@ def handler(dn, new, listener_old, operation):
 		# delete
 		elif old and not new:
 			if operation == 'r':  # check for modrdn phase 1
-				old_entryUUID = old['entryUUID'][0]
-				ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
-				modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
-				try:
-					with open(modrdn_cache, 'w') as f:
-						os.fchmod(f.fileno(), 0o600)
-						f.write(dn)
-					_remove_file(CURRENT_MODRDN)
-					os.symlink(modrdn_cache, CURRENT_MODRDN)
-					# that's it for now for command 'r' ==> modrdn will follow in the next step
-					return
-				except EnvironmentError as ex:
-					# d'oh! output some message and continue doing a delete+add instead
-					ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, ex))
+				old_dn = dn
+				return
 
 			ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
 			_delete_dn_recursive(l, dn)
