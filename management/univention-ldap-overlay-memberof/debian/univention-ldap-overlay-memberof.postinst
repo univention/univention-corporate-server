@@ -32,17 +32,9 @@
 
 #DEBHELPER#
 
-eval "$(univention-config-registry shell)"
+univention-config-registry set ldap/overlay/memberof?true
 
 . /usr/share/univention-lib/ucr.sh
-
-univention-config-registry set \
-	ldap/overlay/memberof?true \
-	ldap/overlay/memberof/member?uniqueMember \
-	ldap/overlay/memberof/memberof?memberOf \
-	ldap/overlay/memberof/dangling?ignore \
-	ldap/overlay/memberof/refint?false \
-	ldap/overlay/memberof/modifiersname?"cn=admin,$ldap_base"
 
 test -x /etc/init.d/slapd && invoke-rc.d slapd crestart
 
