@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+import six
 from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
@@ -158,8 +159,8 @@ def lookup_alias_filter(lo, filter_s):
 
 	def _replace_alias_filter(match):
 		alias_filter = object.lookup_filter('name=%s' % match.group(1), lo)
-		alias_filter_s = unicode(alias_filter)
-		alias_base = unicode(lo.base)  # standard dns container might be a better choice
+		alias_filter_s = six.text_type(alias_filter)
+		alias_base = six.text_type(lo.base)  # standard dns container might be a better choice
 		unmatchable_filter = '(&(objectClass=top)(!(objectClass=top)))'  # if no computers for aliases found, return an impossible filter!
 		alias_replaced = ''.join(set(filter_format('(cn=%s)', [attrs['cNAMERecord'][0].split('.', 1)[0]]) for dn, attrs in lo.search(base=alias_base, scope='sub', filter=alias_filter_s, attr=['cNAMERecord'])))
 		return '(|%s)' % (alias_replaced,) if alias_replaced else unmatchable_filter
