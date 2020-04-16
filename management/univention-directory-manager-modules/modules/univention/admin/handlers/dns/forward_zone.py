@@ -179,12 +179,12 @@ layout = [
 ]
 
 
-def mapMX(old):
-	return [' '.join(entry) for entry in old]
+def mapMX(old, encoding=()):
+	return [u' '.join(entry).encode(*encoding) for entry in old]
 
 
-def unmapMX(old):
-	return [entry.split(' ', 1) for entry in old]
+def unmapMX(old, encoding=()):
+	return [entry.decode(*encoding).split(u' ', 1) for entry in old]
 
 
 mapping = univention.admin.mapping.mapping()
