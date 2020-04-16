@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-60) unstable; urgency=medium
+
+  * Bug #51098: fix python3 compatibility in meta.json
+
+ -- Florian Best <best@univention.de>  Thu, 16 Apr 2020 15:16:42 +0200
+
 univention-management-console (11.0.4-59) unstable; urgency=medium
 
   * Bug #51098: make UCR templates compatible to python3

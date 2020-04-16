@@ -40,7 +40,7 @@ def get_ip_address(ifname):
 				fcntl.ioctl(
 					sock.fileno(),
 					SIOCGIFADDR,
-					struct.pack('256s', ifname[:15])
+					struct.pack('256s', ifname[:15].encode('ASCII'))
 				)[20:24]
 			)
 		finally:
@@ -123,7 +123,7 @@ def has_certificates():
 
 def get_login_links():
 	base = 'umc/login/links/'
-	return {k[len(base):]: v for k, v in configRegistry.iteritems() if k.startswith(base)}
+	return {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
 
 
 data = dict(
