@@ -809,6 +809,48 @@ def check_file_system_space():
 	listener.run('/etc/init.d/univention-directory-listener', ['univention-directory-listener', 'stop'], uid=0, wait=True)
 
 
+def get_old(l, dn, listener_old):  # type (Union[ldap.ldapobject, LDIFObject], str, Dict[str, List[str]]) -> Dict[str, List[str]]
+		"""
+		Read old entry directly from LDAP server.
+
+		:param l: Connection to local LDAP server.
+		:param dn: Distinguished Name of the entry.
+		:param listener_old: Mapping of attribute names to list of values as read from UDL cache.
+		:returns: Mapping of attribute names to list of values.
+		"""
+		if not isinstance(l, LDIFObject):
+			old = getOldValues(l, dn)
+
+			# Check if both entries really match
+			match = True
+			if len(old) != len(listener_old):
+				ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
+				match = False
+			else:
+				for k in old:
+					if k in EXCLUDE_ATTRIBUTES:
+						continue
+					if k not in listener_old:
+						ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
+						match = False
+						break
+					if len(old[k]) != len(listener_old[k]):
+						ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
+						match = False
+						break
+					for v in old[k]:
+						if v not in listener_old[k]:
+							ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
+							match = False
+							break
+			if not match:
+				ud.debug(ud.LISTENER, ud.INFO, 'replication: old entries from LDAP server and Listener do not match')
+		else:
+			old = listener_old
+
+		return old
+
+
 def handler(dn, new, listener_old, operation):
 	global reconnect
 	if not slave:
@@ -823,36 +865,7 @@ def handler(dn, new, listener_old, operation):
 	l = retry_connect()
 
 	try:
-		# Read old entry directly from LDAP server
-		if not isinstance(l, LDIFObject):
-			old = getOldValues(l, dn)
-
-			# Check if both entries really match
-			match = 1
-			if len(old) != len(listener_old):
-				ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
-				match = 0
-			else:
-				for k in old:
-					if k in EXCLUDE_ATTRIBUTES:
-						continue
-					if k not in listener_old:
-						ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
-						match = 0
-						break
-					if len(old[k]) != len(listener_old[k]):
-						ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
-						match = 0
-						break
-					for v in old[k]:
-						if v not in listener_old[k]:
-							ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
-							match = 0
-							break
-			if not match:
-				ud.debug(ud.LISTENER, ud.INFO, 'replication: old entries from LDAP server and Listener do not match')
-		else:
-			old = listener_old
+		old = get_old(l, dn, listener_old)
 
 		# add
 		if new:
