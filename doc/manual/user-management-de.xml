@@ -1180,6 +1180,72 @@
 				</para>
 			</section>
 		</section>
+		<section>
+			<title><wordasword>Selbst-Deregistrierung</wordasword></title>
+			<para>
+				Der <foreignphrase>Self Service</foreignphrase> ermöglicht es Benutzern, die Löschung ihres eigenen Kontos zu beantragen.
+				Diese Funktion kann mit der &ucsUCRV; <envar>umc/self-service/account-deregistration/enabled</envar>
+				aktiviert werden, wodurch der Button "Meinen Account löschen" auf der Seite "Ihr Profil" des <foreignphrase>Self Service</foreignphrase>
+				angezeigt wird (<xref linkend="users:templates"/>).
+			</para>
+			<para>
+				Wenn ein Benutzer beantragt hat, sein Konto zu löschen, wird es nicht direkt gelöscht sondern deaktiviert.
+				Zusätzlich wird das <property>DeregistredThroughSelfService</property> Attribut des Benutzers
+				auf <wordasword>TRUE</wordasword> gesetzt und das <property>DeregistrationTimestamp</property> Attribut
+				des Benutzers wird in der
+				<ulink url="https://ldapwiki.com/wiki/GeneralizedTime"><wordasword>GeneralizedTime</wordasword>-LDAP-Syntax</ulink>
+				auf die aktuelle Zeit gesetzt.
+				Wenn der Benutzer eine <property>PasswordRecoveryEmail</property> angegeben hat,
+				wird er eine <wordasword>Notifikations-Email</wordasword> erhalten, die mit den folgenden &ucsUCRV;n konfiguriert werden kann.
+				<variablelist>
+					<varlistentry>
+						<term><envar>umc/self-service/account-deregistration/email/sender_address</envar></term>
+						<listitem><simpara>
+							Definiert die <wordasword>Absenderadresse</wordasword> der <wordasword>Notifikations-Email</wordasword>.
+							Die Voreinstellung ist "<foreignphrase>Password Reset Service  &lt;<wordasword>noreply@FQDN</wordasword>&gt;</foreignphrase>".
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-deregistration/email/server</envar></term>
+						<listitem><simpara>
+							Servername oder IP-Adresse des zu verwendenden Mail-Servers.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-deregistration/email/text_file</envar></term>
+						<listitem><simpara>
+							Ein Pfad zu einer Textdatei, deren Inhalt für den Körper der <wordasword>Email</wordasword> verwendet wird.
+							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
+							{<wordasword>username</wordasword>}.
+							Als Standard wird die Datei
+							<filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/deregistration_notification_email_body.txt</filename> verwendet.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+			<para>
+				Der <foreignphrase>Self Service</foreignphrase> stellt unter <filename>/usr/share/univention-self-service/delete_deregistered_accounts.py</filename>
+				ein Skript zur Verfügung, das zum Löschen aller users/user Objekte verwendet werden kann,
+				bei denen <property>DeregistredThroughSelfService</property> auf <wordasword>TRUE</wordasword>
+				gesetzt ist und deren <property>DeregistrationTimestamp</property> älter ist als eine angegebene Zeit.
+				Der folgende Befehl würde Benutzer löschen, deren <property>DeregistrationTimestamp</property> älter als 5 Tage und 2 Stunden ist.
+				<programlisting language="sh">
+/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 5 --timedelta-hours 2
+				</programlisting>
+				Für alle möglichen Argumente zum Skript siehe:
+				<programlisting language="sh">
+/usr/share/univention-self-service/delete_deregistered_accounts.py --help
+				</programlisting>
+			</para>
+			<para>
+				Das Skript kann regelmäßig ausgeführt werden, indem ein Cron-Job über &ucsUCR; erstellt wird.
+				<programlisting language="sh">
+ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 30' \
+		cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00 a.m.
+				</programlisting>
+				Weitere Informationen über die Einstellung von Cron-Jobs über UCR können in <xref linkend="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"/> gefunden werden.
+			</para>
+		</section>
     </section>
 	<section id="users:faillog">
 	    <title>Automatisches Sperren von Benutzern nach fehlgeschlagenen Anmeldungen</title>

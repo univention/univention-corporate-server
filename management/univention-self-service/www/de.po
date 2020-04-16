@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-04-17 14:19+0200\n"
+"POT-Creation-Date: 2020-04-17 13:34+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -40,11 +40,11 @@ msgstr ""
 "aufgetreten. Bitte <a href=\"#page=verifyaccount&username=%s\">fordern Sie "
 "einen neuen an</a>."
 
-#: www/UserAttributes.js:211 www/ProtectAccountAccess.js:269
+#: www/ProtectAccountAccess.js:269 www/UserAttributes.js:219
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: www/NewPassword.js:244 www/PasswordChange.js:193
+#: www/PasswordChange.js:193 www/NewPassword.js:244
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -63,6 +63,14 @@ msgstr "Konto erstellen"
 #: www/UserAttributes.js:57 www/UserAttributes.js:194
 msgid "Customize your profile"
 msgstr "Passen Sie Ihre Profildaten an"
+
+#: www/UserAttributes.js:213 www/UserAttributes.js:334
+msgid "Delete my account"
+msgstr "Meinen Account löschen"
+
+#: www/UserAttributes.js:330
+msgid "Do you really want to delete your account?"
+msgstr "Wollen Sie Ihren Account wirklich löschen?"
 
 #: www/ProtectAccountAccess.js:53
 msgid ""
@@ -105,21 +113,21 @@ msgstr ""
 msgid "Invalid credentials. Password change failed."
 msgstr "Ungültige Zugangsdaten. Passwortwechsel fehlgeschlagen."
 
-#: www/NewPassword.js:201 www/PasswordChange.js:160
+#: www/PasswordChange.js:160 www/NewPassword.js:201
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: www/NewPassword.js:216 www/PasswordChange.js:170
+#: www/PasswordChange.js:170 www/NewPassword.js:216
 msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: www/UserAttributes.js:152 www/PasswordForgotten.js:130
-#: www/PasswordForgotten.js:176 www/ProtectAccountAccess.js:165
+#: www/PasswordForgotten.js:130 www/PasswordForgotten.js:176
+#: www/ProtectAccountAccess.js:165 www/UserAttributes.js:152
 msgid "Next"
 msgstr "Weiter"
 
-#: www/ProtectAccountAccess.js:306 www/NewPassword.js:266
-#: www/PasswordChange.js:299
+#: www/PasswordChange.js:299 www/ProtectAccountAccess.js:306
+#: www/NewPassword.js:266
 msgid "OK"
 msgstr "OK"
 
@@ -127,7 +135,11 @@ msgstr "OK"
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: www/UserAttributes.js:142 www/ProtectAccountAccess.js:142
+#: www/PageNotFound.js:41
+msgid "Page Not Found"
+msgstr "Seite nicht gefunden"
+
+#: www/ProtectAccountAccess.js:142 www/UserAttributes.js:142
 msgid "Password"
 msgstr "Passwort"
 
@@ -151,7 +163,7 @@ msgstr "Kontozugang schützen"
 msgid "Request new token"
 msgstr "Neuen Token anfordern"
 
-#: www/UserAttributes.js:206 www/ProtectAccountAccess.js:264
+#: www/ProtectAccountAccess.js:264 www/UserAttributes.js:206
 msgid "Save"
 msgstr "Speichern"
 
@@ -177,11 +189,15 @@ msgstr ""
 msgid "The entries do not match, please retype again."
 msgstr "Die Eingaben stimmen nicht überein. Bitte versuchen Sie es erneut."
 
+#: www/PageNotFound.js:42
+msgid "The page is deactivated or does not exist."
+msgstr "Diese Seite ist deaktiviert oder existiert nicht."
+
 #: www/PasswordChange.js:299
 msgid "The password has been changed successfully."
 msgstr "Das Passwort wurde erfolgreich geändert."
 
-#: www/NewPassword.js:225 www/PasswordChange.js:179
+#: www/PasswordChange.js:179 www/NewPassword.js:225
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -193,9 +209,9 @@ msgstr "Es sind keine Profildaten definiert, die Sie bearbeiten können"
 msgid "Token"
 msgstr "Token"
 
-#: www/UserAttributes.js:119 www/PasswordForgotten.js:112
-#: www/ProtectAccountAccess.js:113 www/VerifyAccount.js:132
-#: www/NewPassword.js:151 www/PasswordChange.js:117
+#: www/PasswordChange.js:117 www/VerifyAccount.js:132
+#: www/PasswordForgotten.js:112 www/ProtectAccountAccess.js:113
+#: www/UserAttributes.js:119 www/NewPassword.js:151
 msgid "Username"
 msgstr "Benutzername"
 
@@ -223,6 +239,10 @@ msgstr "Wilkommen <b>%s</b>, %s."
 msgid "You have mail!"
 msgstr "Sie haben eine neue E-Mail!"
 
+#: www/UserAttributes.js:342
+msgid "Your account has been successfully deleted."
+msgstr "Ihr Konto wurde erfolgreich gelöscht."
+
 #: www/ProtectAccountAccess.js:302
 #, javascript-format
 msgid ""
@@ -246,7 +266,7 @@ msgstr "Ihre Kontaktdaten wurden erfolgreich geändert."
 msgid "Your profile"
 msgstr "Ihr Profil"
 
-#: www/UserAttributes.js:258
+#: www/UserAttributes.js:271
 msgid "Your profile data is up to date"
 msgstr "Ihre Profildaten sind auf dem neuesten Stand"
 
@@ -257,14 +277,6 @@ msgstr "ihr Konto wurde bereits verifiziert"
 #: www/VerifyAccount.js:179
 msgid "your account has been successfully verified"
 msgstr "ihr Konto wurde erfolgreich verifiziert"
-
-#: www/PageNotFound.js:56
-msgid "Page Not Found"
-msgstr "Seite nicht gefunden"
-
-#: www/PageNotFound.js:57
-msgid "The page is deactivated or does not exist."
-msgstr "Diese Seite ist deaktiviert oder existiert nicht."
 
 #~ msgid "</br><a href='/{0}'>Back to the overview.</a>"
 #~ msgstr "</br><a href='/{0}'>Zurück zur Übersicht.</a>"

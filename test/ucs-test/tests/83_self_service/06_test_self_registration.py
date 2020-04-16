@@ -13,6 +13,7 @@
 
 import pytest
 import email
+import datetime
 from urlparse import urlparse, parse_qs
 
 from univention.admin.uldap import getAdminConnection
@@ -39,6 +40,7 @@ def activate_self_registration():
 		hs(['umc/self-service/account-registration/frontend/enabled=true'])
 		hs(['umc/self-service/account-verification/backend/enabled=true'])
 		hs(['umc/self-service/account-verification/frontend/enabled=true'])
+		hs(['umc/self-service/account-deregistration/enabled=true'])
 		yield ucr
 
 
@@ -300,10 +302,87 @@ def test_send_verification_token(umc_client, mails, ucr, testudm, get_registrati
 	res = umc_client.umc_command('passwordreset/send_verification_token', {'username': username})
 	# user has no email
 	assert res.result['failType'] == 'INVALID_INFORMATION'
-	email = 'foo@bar.com'
-	_, username = testudm.create_user(**{'PasswordRecoveryEmail': email})
+	mail = 'foo@bar.com'
+	_, username = testudm.create_user(**{'PasswordRecoveryEmail': mail})
 	res = umc_client.umc_command('passwordreset/send_verification_token', {'username': username})
 	assert res.result['data']['username'] == username
-	assert res.result['data']['email'] == email
+	assert res.result['data']['email'] == mail
 	mail = _get_mail(mails)
 	assert mail['verify_data']['username'] == username
+
+
+def test_deregistration_enabled(umc_client, ucr):
+	ucr.handler_set(['umc/self-service/account-deregistration/enabled=false'])
+	with pytest.raises(HTTPError) as excinfo:
+		umc_client.umc_command('passwordreset/foo', {
+			'username': 'xxx',
+			'password': 'xxx'
+		})
+	assert excinfo.value.message == 'The account deregistration was disabled via the Univention Configuration Registry.'
+
+
+def test_deregistration_wrong_auth(umc_client, ucr):
+	with pytest.raises(HTTPError) as excinfo:
+		umc_client.umc_command('passwordreset/foo', {
+			'username': 'xxx',
+			'password': 'xxx'
+		})
+	assert excinfo.value.message == 'Either username or password is incorrect or you are not allowed to use this service.'
+
+
+def test_deregistration(umc_client, mails, testudm, readudm):
+	password = 'univention'
+	dn, username = testudm.create_user(**{
+		'PasswordRecoveryEmail': 'root@localhost',
+		'password': password,
+	})
+	utils.verify_ldap_object(dn, {
+		'univentionDeregisteredThroughSelfService': [],
+		'univentionDeregistrationTimestamp': []
+	})
+	timestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), '%Y%m%d%H%M%SZ')
+	umc_client.umc_command('passwordreset/foo', {
+		'username': username,
+		'password': password
+	})
+	user = readudm.obj_by_dn(dn)
+	assert user.props.disabled is True
+	assert user.props.DeregisteredThroughSelfService == 'TRUE'
+	assert user.props.DeregistrationTimestamp.startswith(timestamp[:3])  # checking seconds from the timestamp is too flaky
+	mail = _get_mail(mails)
+	with open('/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/deregistration_notification_email_body.txt', 'r') as fd:
+		expected_body = fd.read().format(username=username)
+	assert mail['body'].strip() == expected_body.strip()
+
+
+def test_deregistration_text_file_ucr_var(umc_client, mails, ucr, testudm, tmpdir):
+	file_path = tmpdir.mkdir("sub").join("mail_body.txt")
+	mail_body = "This is mail"
+	file_path.write(mail_body)
+	ucr.handler_set(['umc/self-service/account-deregistration/email/text_file=%s' % (file_path,)])
+	password = 'univention'
+	_, username = testudm.create_user(**{
+		'PasswordRecoveryEmail': 'root@localhost',
+		'password': password,
+	})
+	umc_client.umc_command('passwordreset/foo', {
+		'username': username,
+		'password': password
+	})
+	assert _get_mail(mails)['body'] == mail_body
+
+
+def test_deregistration_sender_address_ucr_var(umc_client, mails, ucr, testudm):
+	sender_address = 'foobar@mail.com'
+	ucr.handler_set(['umc/self-service/account-deregistration/email/sender_address=%s' % (sender_address,)])
+	password = 'univention'
+	_, username = testudm.create_user(**{
+		'PasswordRecoveryEmail': 'root@localhost',
+		'password': password,
+	})
+	umc_client.umc_command('passwordreset/foo', {
+		'username': username,
+		'password': password
+	})
+	mail = _get_mail(mails)['mail']
+	assert mail.get('from') == sender_address
