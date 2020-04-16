@@ -401,10 +401,14 @@
 		additional attributes are not written to the LDAP, but displayed on the fly by the
 		overlay module if a user object is queried.
 	  </para>
-
+	  <caution>
+		  <para>
+			Before using this feature please read <u:sdb>1278</u:sdb> about activating the OpenLDAP <literal>memberOf</literal> overlay module.
+		  </para>
+	  </caution>
 	  <para>
-		To this end, the <package>univention-ldap-overlay-memberof</package> package must be
-		installed on all LDAP servers.
+		To this end, the <package>univention-ldap-overlay-memberof</package> package must be installed on all LDAP servers.
+		Afterwards <command>/usr/share/univention-ldap-overlay-memberof/univention-update-memberof</command> must be invoked on all servers.
 	  </para>
 
 	  <para>

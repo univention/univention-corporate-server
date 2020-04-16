@@ -419,10 +419,14 @@
 		zusätzlichen Attribute werden nicht in das LDAP geschrieben, sondern bei einer Anfrage durch
 		das Overlay-Modul ermittelt und angezeigt.
 	  </para>
-
+	  <caution>
+		  <para>
+			Bevor Sie diese Funktion verwenden, lesen Sie bitte <u:sdb>1278</u:sdb> über die Aktivierung des <literal>memberOf</literal> <literal>Overlay-Moduls</literal>.
+		  </para>
+	  </caution>
 	  <para>
-		Dazu muss auf allen LDAP-Servern das Paket
-		<package>univention-ldap-overlay-memberof</package> installiert werden.
+		Dazu muss auf allen LDAP-Servern das Paket <package>univention-ldap-overlay-memberof</package> installiert werden.
+		Anschließend muss <command>/usr/share/univention-ldap-overlay-memberof/univention-update-memberof</command> auf allen Servern aufgerufen werden.
 	  </para>
 
 	  <para>
