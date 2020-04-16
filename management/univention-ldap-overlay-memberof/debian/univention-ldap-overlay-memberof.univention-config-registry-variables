@@ -32,3 +32,22 @@ Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof
 Type=str
 Default=ignore
 Categories=service-ldap
+
+[ldap/overlay/memberof/dangling/errorcode]
+Description[de]=Falls `dangling` auf `error` gesetzt ist kann dieser Konfigurationsparameter dafür genutzt werden, den Rückgabewert im Falle von Inkonsistenz festzulegen: Der Standard ist `constraint violation`, aber andere Implementierungen liefern `no such object` zurück.
+Description[en]=If `dangling` is set to `error`, this configuration parameter can be used to modify the response code returned in case of violation. It defaults to `constraint violation`, but other implementations are known to return `no such object` instead.
+Type=int
+Categories=service-ldap
+
+[ldap/overlay/memberof/modifiersname]
+Description[de]=Diese Variable legt den DN fest, der als `modifiersName` bei internen Modifikationen genutzt wird, um die inverse Gruppenzugehörigkeit zu aktualisieren. Standard ist die `rootdn` der zugrundeliegenden Datenbank.
+Description[en]=This value contains the DN that is used as `modifiersName` for internal modifications performed to update the reverse group membership. It defaults to the `rootdn` of the underlying database.
+Type=str
+Categories=service-ldap
+
+[ldap/overlay/memberof/refint]
+Description[de]=Die Einstellung legt fest, ob die referenzielle Integrität erhalten werden soll oder nicht. Bei `TRUE` werden die korrespondierenden Gruppen aktualisiert, wenn ein Eintrag mit dem `ist Mitglied von`-Attribute modifiziert wird. Standard ist `false`.
+Description[en]=This option determines whether the overlay will try to preserve referential integrity or not.  If set to `TRUE`, when an entry containing values of the `is member of` attribute is modified, the corresponding groups are modified as well. The default is 'false'.
+Type=bool
+Default=false
+Categories=service-ldap
