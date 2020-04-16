@@ -821,10 +821,6 @@ def handler(dn, new, listener_old, operation):
 		else:
 			connected = 1
 
-	if 'pwdAttribute' in new:
-		if new['pwdAttribute'][0] == 'userPassword':
-			new['pwdAttribute'] = ['2.5.4.35']
-
 	try:
 		# Read old entry directly from LDAP server
 		if not isinstance(l, LDIFObject):
