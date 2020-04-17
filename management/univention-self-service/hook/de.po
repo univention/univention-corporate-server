@@ -1,21 +1,21 @@
 # Copyright (C) 2017-2020 Univention GmbH
 # This file is distributed under the same license as the univention-self-service package.
 # Univention GmbH <packages@univention.de>, 2017.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
-"Report-Msgid-Bugs-To: forge.univention.org\n"
-"POT-Creation-Date: 2017-03-28 17:51+0200\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2020-04-17 14:19+0200\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 
-#: hook/passwordreset.js:66 hook/passwordreset.js:82
+#: hook/passwordreset.js:66 hook/passwordreset.js:83
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
 

@@ -279,6 +279,10 @@ class Instance(Base):
 
 		:return: list of dicts with users contact data
 		"""
+		if ucr.is_false('umc/self-service/protect-account/backend/enabled', True):
+			msg = _('The account protection was disabled via the Univention Configuration Registry.')
+			MODULE.error('get_contact(): {}'.format(msg))
+			raise UMC_Error(msg)
 		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise ServiceForbidden()
@@ -645,6 +649,10 @@ class Instance(Base):
 		mobile=StringSanitizer(required=False))
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
+		if ucr.is_false('umc/self-service/protect-account/backend/enabled', True):
+			msg = _('The account protection was disabled via the Univention Configuration Registry.')
+			MODULE.error('set_contact(): {}'.format(msg))
+			raise UMC_Error(msg)
 		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
 		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
@@ -661,6 +669,10 @@ class Instance(Base):
 		method=StringSanitizer(required=True))
 	@simple_response
 	def send_token(self, username, method):
+		if ucr.is_false('umc/self-service/passwordreset/backend/enabled', True):
+			msg = _('The password reset was disabled via the Univention Configuration Registry.')
+			MODULE.error('send_token(): {}'.format(msg))
+			raise UMC_Error(msg)
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		try:
 			plugin = self.password_reset_plugins[method]
@@ -788,6 +800,10 @@ class Instance(Base):
 	@sanitize(username=StringSanitizer(required=True, minimum=1))
 	@simple_response
 	def get_reset_methods(self, username):
+		if ucr.is_false('umc/self-service/passwordreset/backend/enabled', True):
+			msg = _('The password reset was disabled via the Univention Configuration Registry.')
+			MODULE.error('get_reset_methods(): {}'.format(msg))
+			raise UMC_Error(msg)
 		if self.is_blacklisted(username):
 			raise NoMethodsAvailable()
 

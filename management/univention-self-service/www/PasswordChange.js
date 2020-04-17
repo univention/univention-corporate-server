@@ -50,7 +50,7 @@ define([
 
 	return {
 		hash: 'passwordchange',
-		enabledViaUcr: false,
+		enabledViaUcr: 'umc/self-service/passwordchange/frontend/enabled',
 		visible: true,
 
 		title: _('Password change'),

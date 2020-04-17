@@ -48,7 +48,7 @@ define([
 
 	return {
 		hash: 'passwordreset',
-		enabledViaUcr: false,
+		enabledViaUcr: 'umc/self-service/passwordreset/frontend/enabled',
 		visible: true,
 
 		title: _("Password forgotten"),

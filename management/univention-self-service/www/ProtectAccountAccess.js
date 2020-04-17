@@ -46,7 +46,7 @@ define([
 
 	return {
 		hash: 'setcontactinformation',
-		enabledViaUcr: false,
+		enabledViaUcr: 'umc/self-service/protect-account/frontend/enabled',
 		visible: true,
 
 		title: _('Protect account'),

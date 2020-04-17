@@ -156,6 +156,9 @@ ucr_vars = [
 	('umc/self-service/profiledata/enabled', ),
 	('umc/self-service/account-registration/frontend/enabled', None, False, ),
 	('umc/self-service/account-verification/frontend/enabled', None, False, ),
+	('umc/self-service/passwordchange/frontend/enabled', ),
+	('umc/self-service/passwordreset/frontend/enabled', ),
+	('umc/self-service/protect-account/frontend/enabled', ),
 ]
 
 data.update([get_ucr_entry(*i) for i in ucr_vars])
