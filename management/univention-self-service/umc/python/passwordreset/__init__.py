@@ -217,7 +217,7 @@ class MissingContactInformation(UMC_Error):
 class Instance(Base):
 
 	def init(self):
-		if not ucr.is_true("umc/self-service/passwordreset/enabled"):
+		if not ucr.is_true("umc/self-service/enabled"):
 			raise UMC_Error(_('The password reset service is disabled via configuration registry.'), status=503)
 
 		if not IS_SELFSERVICE_MASTER:
