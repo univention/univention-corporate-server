@@ -755,7 +755,7 @@ ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000
 ID 342: modifyTimestamp: 20200415092040Z
 ID 342: END
 			</screen>
-			Wurde <package>univention-directory-logger</package> vor dieser UCS-Version installiert, wird per Default das alte Verhalten (kein Präfix) beibehalten. Durch das Setzen der &ucsUCRV; <envar>ldap/logging/id-prefix=yes</envar> kann das neue Verhalten aktiviert werden. Dieses Prefix erleichtert eine Korrelation der zusammenhängenden Zeilen bei einer Weiterverarbeitung des Protokolls in Analyse- und Monitoring-Tools.
+			Wurde <package>univention-directory-logger</package> vor dieser UCS-Version installiert, wird per Default das alte Verhalten (kein Präfix) beibehalten. Durch das Setzen der &ucsUCRV; <envar>ldap/logging/id-prefix=yes</envar> kann das neue Verhalten aktiviert werden. Dieses Präfix erleichtert eine Korrelation der zusammenhängenden Zeilen bei einer Weiterverarbeitung des Protokolls in Analyse- und Monitoring-Tools.
 		</para>
 	</section>
 
