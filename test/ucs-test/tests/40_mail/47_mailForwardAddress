@@ -12,6 +12,7 @@
 
 from __future__ import print_function
 import subprocess
+import random
 import time
 import dns.resolver
 import tempfile
@@ -24,18 +25,18 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 
 
-TIMEOUT = 60  # in seconds
+TIMEOUT = 360  # in seconds
 
 
 class Bunch(object):
 	"""
 	>>> y = Bunch(foo=42, bar='TEST')
-	>>> print repr(y.foo), repr(y.bar)
+	>>> print(repr(y.foo), repr(y.bar))
 	42 'TEST'
 
 	>>> x = Bunch()
 	>>> x.a = 4
-	>>> print x.a
+	>>> print(x.a)
 	4
 	"""
 	def __init__(self, **kwds):
@@ -43,7 +44,7 @@ class Bunch(object):
 
 	def __str__(self):
 		result = []
-		for key, value in self.__dict__.iteritems():
+		for key, value in self.__dict__.items():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
 
@@ -54,7 +55,7 @@ class Bunch(object):
 def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 	delivered = False
 	print("Waiting for an email delivery")
-	for i in xrange(TIMEOUT):
+	for i in range(TIMEOUT):
 		for fn in mailsink_files:
 			if token in open(fn).read():
 				delivered = True
@@ -67,97 +68,78 @@ def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 	if should_be_delivered != delivered:
 		utils.fail('Mail sent with token = %r, delivered to the mail sink = %r   expected=%r' % (token, delivered, should_be_delivered))
 
+def send_and_check(user, sink_files, in_mail_sink, in_local):
+		# send mails
+		for addr, msg in (
+			(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
+			(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
+		):
+			print('*** %s' % (msg,))
+			token = 'token: {!r}'.format(str(time.time()))
+			send_mail(
+				recipients=addr,
+				msg=token,
+			)
+			# check if mail has been delivered to mailsink AND locally
+			check_delivery_mailsink(token, [x.name for x in sink_files], in_mail_sink)
+			check_delivery(token, user.mailPrimaryAddress, in_local)
+
 
 if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr:
-		with udm_test.UCSTestUDM() as udm:
-			with MailSinkGuard() as mail_sink_guard:
-				with NetworkRedirector() as nethelper:
-					domain = ucr.get('domainname').lower()
 
-					# get IP addresses of the MX of "univention.de"
-					# FIXME: perform a dynamic lookup
-					mx_addresses = [
-						dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
-						dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
-					]
-					print(mx_addresses)
+	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, MailSinkGuard() as mail_sink_guard, NetworkRedirector() as nethelper:
+		domain = ucr.get('domainname').lower()
 
-					# setup mailsink and network redirector
-					port = 60025
-					sink_files = []
-					mail_sinks = []
-					for mx_addr in mx_addresses:
-						tmpfd = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
-						nethelper.add_redirection(mx_addr, 25, port)
-						sink = MailSink('127.0.0.1', port, filename=tmpfd.name)
-						mail_sink_guard.add(sink)
-						sink.start()
-						port += 1
-						mail_sinks.append(sink)
-						sink_files.append(tmpfd)
+		# get IP addresses of the MX of "univention.de"
+		# FIXME: perform a dynamic lookup
+		mx_addresses = [
+			dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
+			dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
+		]
+		# setup mailsink and network redirector
+		port = random.randint(60000, 61000)
+		sink_files = []
+		mail_sinks = []
+		for mx_addr in mx_addresses:
+			tmpfd = tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp')
+			nethelper.add_redirection(mx_addr, 25, port)
+			sink = MailSink('127.0.0.1', port, filename=tmpfd.name)
+			mail_sink_guard.add(sink)
+			sink.start()
+			port += 1
+			mail_sinks.append(sink)
+			sink_files.append(tmpfd)
 
-					# create user with mPA, mFA and Copy2Self=1
-					user = Bunch()
-					user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
-					user.mailAlternativeAddress = ['%s@%s' % (uts.random_string(), domain)]
-					user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
-					user.mailForwardAddress = ['noreply@univention.de']
-					user.dn, user.username = udm.create_user(set={
-						'mailHomeServer': user.mailHomeServer,
-						'mailPrimaryAddress': user.mailPrimaryAddress,
-						'mailAlternativeAddress': user.mailAlternativeAddress,
-						'mailForwardAddress': user.mailForwardAddress,
-						'mailForwardCopyToSelf': '1',
-					})
-					utils.verify_ldap_object(
-						user.dn,
-						{
-							'univentionMailHomeServer': [user.mailHomeServer],
-							'mailPrimaryAddress': [user.mailPrimaryAddress],
-							'mailAlternativeAddress': user.mailAlternativeAddress,
-							'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-						},
-						strict=True)
+		# create user with mPA, mFA and Copy2Self=1
+		user = Bunch()
+		user.mailPrimaryAddress = '%s@%s' % (uts.random_string(), domain)
+		user.mailAlternativeAddress = ['%s@%s' % (uts.random_string(), domain)]
+		user.mailHomeServer = '%s.%s' % (ucr.get('hostname'), domain)
+		user.mailForwardAddress = ['noreply@univention.de']
+		user.dn, user.username = udm.create_user(set={
+			'mailHomeServer': user.mailHomeServer,
+			'mailPrimaryAddress': user.mailPrimaryAddress,
+			'mailAlternativeAddress': user.mailAlternativeAddress,
+			'mailForwardAddress': user.mailForwardAddress,
+			'mailForwardCopyToSelf': '1',
+		})
+		utils.verify_ldap_object(
+			user.dn,
+			{
+				'univentionMailHomeServer': [user.mailHomeServer],
+				'mailPrimaryAddress': [user.mailPrimaryAddress],
+				'mailAlternativeAddress': user.mailAlternativeAddress,
+				'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+			},
+			strict=True)
 
-					# send mails
-					for addr, msg in (
-						(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
-						(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
-					):
-						print('*** %s' % (msg,))
-						token = str(time.time())
-						p = subprocess.Popen(['mailq'], stdout=subprocess.PIPE)
-						output = str(p.stdout.read())
-						if "Mail queue is empty" not in output:
-								subprocess.call(['postsuper', '-d', 'ALL'])
-						send_mail(
-							recipients=addr,
-							msg=token,
-						)
-						# check if mail has been delivered to mailsink AND locally
-						check_delivery_mailsink(token, [x.name for x in sink_files], True)
-						check_delivery(token, user.mailPrimaryAddress, True)
+		send_and_check(user, sink_files, in_mail_sink=True, in_local=True)
+		# disable copy to self
+		udm.modify_object(
+			'users/user',
+			dn=user.dn,
+			set={
+				'mailForwardCopyToSelf': '0'
+			})
+		send_and_check(user, sink_files, in_mail_sink=True, in_local=False)
 
-					# disable copy to self
-					udm.modify_object(
-						'users/user',
-						dn=user.dn,
-						set={
-							'mailForwardCopyToSelf': '0'
-						})
-
-					# send mails
-					for addr, msg in (
-						(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
-						(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
-					):
-						print('*** %s' % (msg,))
-						token = str(time.time())
-						send_mail(
-							recipients=addr,
-							msg=token,
-						)
-						# check if mail has been delivered to mailsink AND locally
-						check_delivery_mailsink(token, [x.name for x in sink_files], True)
-						check_delivery(token, user.mailPrimaryAddress, False)
