@@ -140,7 +140,7 @@ def lookup_filter(filter_s=None, superordinate=None):
 		])
 
 	if superordinate:
-		parent = superordinate.mapping.mapValue('zone', superordinate['zone'])
+		parent = superordinate.mapping.mapValueDecoded('zone', superordinate['zone'])
 		lookup_filter_obj.expressions.append(
 			univention.admin.filter.expression('zoneName', parent, escape=True)
 		)
