@@ -154,13 +154,11 @@ def mapSubnet(subnet, encoding=()):
 	>>> mapSubnet('1.2.3')
 	'3.2.1.in-addr.arpa'
 	"""
-	subnet = subnet.encode(*encoding)
-	if b':' in subnet:  # IPv6
-		return b'%s%s' % (b'.'.join(reversed(subnet.replace(b':', b''))), ARPA_IP6.encode('ASCII'))
+	if u':' in subnet:  # IPv6
+		subnet = u'%s%s' % (u'.'.join(subnet.replace(u':', u'')[::-1]), ARPA_IP6)
 	else:
-		q = subnet.split(b'.')
-		q.reverse()
-		return b'%s%s' % (b'.'.join(q), ARPA_IP4.encode('ASCII'))
+		subnet = u'%s%s' % (u'.'.join(subnet.split(u'.')[::-1]), ARPA_IP4)
+	return subnet.encode(*encoding)
 
 
 def unmapSubnet(zone, encoding=()):
@@ -178,7 +176,7 @@ def unmapSubnet(zone, encoding=()):
 	zone = zone.decode(*encoding)
 	if zone.endswith(ARPA_IP6):  # IPv6
 		zone = zone[:-len(ARPA_IP6)]
-		zone = list(reversed(zone.split(u'.')))
+		zone = zone.split(u'.')[::-1]
 		return u':'.join([u''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
 	elif zone.endswith(ARPA_IP4):  # IPv4
 		zone = zone[:-len(ARPA_IP4)]
