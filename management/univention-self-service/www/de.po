@@ -258,6 +258,14 @@ msgstr "ihr Konto wurde bereits verifiziert"
 msgid "your account has been successfully verified"
 msgstr "ihr Konto wurde erfolgreich verifiziert"
 
+#: www/PageNotFound.js:56
+msgid "Page Not Found"
+msgstr "Seite nicht gefunden"
+
+#: www/PageNotFound.js:57
+msgid "The page is deactivated or does not exist."
+msgstr "Diese Seite ist deaktiviert oder existiert nicht."
+
 #~ msgid "</br><a href='/{0}'>Back to the overview.</a>"
 #~ msgstr "</br><a href='/{0}'>Zurück zur Übersicht.</a>"
 

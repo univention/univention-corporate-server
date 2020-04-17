@@ -50,8 +50,9 @@ define([
 	"./VerifyAccount",
 	"./NewPassword",
 	"./PasswordChange",
-	"./UserAttributes"
-], function(declare, lang, array, baseWin, dojoHash, ioQuery, topic, dom, Deferred, Standby, StackContainer, ContentPane, tools, StandbyMixin, put, PasswordForgotten, ProtectAccountAccess, CreateAccount, VerifyAccount, NewPassword, PasswordChange, UserAttributes) {
+	"./UserAttributes",
+	"./PageNotFound"
+], function(declare, lang, array, baseWin, dojoHash, ioQuery, topic, dom, Deferred, Standby, StackContainer, ContentPane, tools, StandbyMixin, put, PasswordForgotten, ProtectAccountAccess, CreateAccount, VerifyAccount, NewPassword, PasswordChange, UserAttributes, PageNotFound) {
 	var _Container = declare([StackContainer, StandbyMixin]);
 	return {
 		content_container: null,
@@ -64,7 +65,7 @@ define([
 		start: function() {
 			this._initContainer();
 			this._subscribeOnHashEvents();
-			this._addSubPages(this._getEnabledPages());
+			this._addSubPages(this._getEnabledPages().concat(PageNotFound));
 		},
 
 		_getEnabledPages: function() {
@@ -145,7 +146,7 @@ define([
 			}
 			var isValidPage = this._pagePanes.hasOwnProperty(hash);
 			if (!isValidPage) {
-				dojoHash(ioQuery.objectToQuery({page: "passwordreset"}));
+				dojoHash(ioQuery.objectToQuery({page: "pagenotfound"}));
 				return;
 			}
 
