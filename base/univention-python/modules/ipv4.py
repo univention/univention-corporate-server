@@ -30,28 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
-def splitDotted(ip):
-	"""
-	Split IPv4 address from dotted quad string.
-
-	>>> splitDotted('1.2.3.4')
-	[1, 2, 3, 4]
-	"""
-	quad = map(int, ip.split('.'))[:4]
-	while len(quad) < 4:
-		quad.append(0)
-	return quad
-
-
-def joinDotted(ip):
-	"""
-	Convert IPv4 address to dotted quad string.
-
-	>>> joinDotted([1, 2, 3, 4])
-	'1.2.3.4'
-	"""
-	return '%d.%d.%d.%d' % tuple(ip[0:4])
+from ipaddress import IPv4Interface
 
 
 def networkNumber(dottedIp, dottedNetmask):
@@ -61,12 +40,7 @@ def networkNumber(dottedIp, dottedNetmask):
 	>>> networkNumber('1.2.3.4', '255.255.254.0')
 	'1.2.2.0'
 	"""
-	ip = splitDotted(dottedIp)
-	netmask = splitDotted(dottedNetmask)
-
-	network = map(lambda i_n: i_n[0] & i_n[1], zip(ip, netmask))
-
-	return joinDotted(network)
+	return str(IPv4Interface(u'%s/%s' % (dottedIp, dottedNetmask)).network.network_address)
 
 
 def broadcastNumber(dottedNetwork, dottedNetmask):
@@ -78,12 +52,7 @@ def broadcastNumber(dottedNetwork, dottedNetmask):
 	>>> broadcastNumber('1.2.3.4', '255.255.254.0')
 	'1.2.3.255'
 	"""
-	network = splitDotted(dottedNetwork)
-	netmask = splitDotted(dottedNetmask)
-
-	broadcast = map(lambda n_m: n_m[0] | (255 ^ n_m[1]), zip(network, netmask))
-
-	return joinDotted(broadcast)
+	return str(IPv4Interface(u'%s/%s' % (dottedNetwork, dottedNetmask)).network.broadcast_address)
 
 
 if __name__ == '__main__':
