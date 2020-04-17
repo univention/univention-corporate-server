@@ -29,35 +29,50 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+from sys import stderr
 import univention.uldap
 import univention.config_registry
-import ldap
-import sys
+from ldap import MOD_REPLACE
+from ldap.filter import filter_format
 
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 
-if ucr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"]:
+def main():  # type: () -> int
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	if ucr.get("server/role", "dummy") not in {"domaincontroller_master", "domaincontroller_backup", "domaincontroller_slave"}:
+		return 0
 
 	# ldap connection
 	try:
 		lo = univention.uldap.getRootDnConnection()
-	except Exception as e:
-		print "failed to get ldap connection: %s" % e
+	except Exception as ex:
+		print("failed to get ldap connection: %s" % (ex,), file=stderr)
+		return 1
 
 	# search groups and del/add uniqueMember
-	results = lo.search(attr=["uniqueMember"], filter="(&(objectClass=posixGroup)(uniqueMember=*))")
-	for result in results:
-		dn = result[0]
-		uniqueMember = result[1].get("uniqueMember", [""])
-		if dn and uniqueMember:
+	group_oc = ucr.get("ldap/overlay/memberof/objectclass", "posixGroup")
+	member_ad = ucr.get("ldap/overlay/memberof/member", "uniqueMember")
+	filterstr = filter_format("(&(objectClass=%s)(%s=*))", (group_oc, member_ad))
+	results = lo.search(attr=[member_ad], filter=filterstr)
+	for dn, attrs in results:
+		uniqueMember = attrs.get(member_ad, [])
+		if uniqueMember:
 			try:
 				# update groups
-				ml = []
-				ml.append((ldap.MOD_REPLACE, "uniqueMember", uniqueMember))
+				ml = [
+					(MOD_REPLACE, member_ad, uniqueMember),
+				]
 				print('modify {0}'.format(dn))
 				lo.modify_s(dn, ml)
 			except Exception as e:
-				sys.stderr.write("E: modifying %s failed error with %s\n" % (dn, e))
-				sys.stderr.write("   please check the membership of this group\n")
-				sys.exit(1)
+				print("E: modifying %s failed error with %s" % (dn, e), file=stderr)
+				print("   please check the membership of this group", file=stderr)
+				return 1
+
+	return 0
+
+
+if __name__ == '__main__':
+	exit(main())
