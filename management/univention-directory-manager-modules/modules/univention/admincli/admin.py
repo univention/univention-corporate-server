@@ -39,6 +39,7 @@ import base64
 import os
 import subprocess
 import traceback
+from ipaddress import IPv4Address, IPv4Network
 
 import ldap
 import six
@@ -52,7 +53,6 @@ import univention.admin.objects
 from univention.admin.layout import Group
 from univention.admin.syntax import ldapFilter
 import univention.config_registry
-import univention.admin.ipaddress
 
 univention.admin.modules.update()
 
@@ -1055,8 +1055,9 @@ def _doit(arglist):
 						# TODO: sharedsubnet_module = univention.admin.modules.get('dhcp/sharedsubnet')
 						ips = object['fixedaddress']
 						for ip in ips:
+							ip_ = IPv4Address(u"%s" % (ip,))
 							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
-								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], ip):
+								if ip_ in IPv4Network(u"%(subnet)s/%(subnetmask)s" % subnet, strict=False):
 									utf8_subnet_dn = _2utf8(subnet.dn)
 									p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
 									policyResults = p1.communicate()[0].split('\n')
