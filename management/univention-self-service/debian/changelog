@@ -1,3 +1,10 @@
+univention-self-service (4.0.3-18) unstable; urgency=medium
+
+  * Bug #51001: Rename UCRV umc/self-service/passwordreset/enabled to
+    umc/self-service/enabled
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Apr 2020 17:19:42 +0200
+
 univention-self-service (4.0.3-17) unstable; urgency=medium
 
   * Bug #51001: Add UCR variables to enable admins to switch off all pages
