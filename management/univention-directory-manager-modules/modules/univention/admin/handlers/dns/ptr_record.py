@@ -210,7 +210,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('subnet', superordinate['subnet']), escape=True))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('subnet', superordinate['subnet']), escape=True))
 		filter = rewrite_rev(filter, superordinate.info['subnet'])
 		return filter
 

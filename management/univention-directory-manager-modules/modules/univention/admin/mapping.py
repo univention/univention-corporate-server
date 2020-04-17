@@ -533,6 +533,9 @@ class mapping(object):
 				value = value.encode(encoding, strictness)
 		return map_value(value, **kwargs) if map_value else value
 
+	def mapValueDecoded(self, map_name, value):
+		return self.mapValue(map_name, value).decode(*self.getEncoding(map_name))
+
 	def unmapValue(self, unmap_name, value):
 		"""
 		Map |LDAP| attribute value to |UDM| property value.
@@ -577,6 +580,9 @@ class mapping(object):
 
 	def shouldUnmap(self, unmap_name):
 		return not isinstance(self._unmap[unmap_name][1], dontMap)
+
+	def getEncoding(self, map_name):
+		return self._map_encoding.get(map_name, self._unmap_encoding.get(map_name, ()))
 
 
 def mapCmp(mapping, key, old, new):
