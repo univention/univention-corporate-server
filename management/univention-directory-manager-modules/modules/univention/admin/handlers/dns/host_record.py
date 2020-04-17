@@ -219,7 +219,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
 		return filter
 
 	@classmethod
