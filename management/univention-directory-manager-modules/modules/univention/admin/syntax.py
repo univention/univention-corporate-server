@@ -34,7 +34,7 @@ from __future__ import absolute_import
 import re
 import ldap
 import operator
-import ipaddr
+import ipaddress
 import inspect
 import time
 import datetime
@@ -1473,7 +1473,7 @@ class ipv4Address(simple):
 	@classmethod
 	def parse(self, text):
 		try:
-			return str(ipaddr.IPv4Address(text))
+			return str(ipaddress.IPv4Address(u'%s' % (text,)))
 		except ValueError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
 
@@ -1492,7 +1492,7 @@ class ipAddress(simple):
 	@classmethod
 	def parse(self, text):
 		try:
-			return str(ipaddr.IPAddress(text))
+			return str(ipaddress.ip_address(u'%s' % (text,)))
 		except ValueError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
 
@@ -1518,7 +1518,7 @@ class hostOrIP(simple):
 	@classmethod
 	def ipAddress(self, text):
 		try:
-			ipaddr.IPAddress(text)
+			ipaddress.ip_address(u'%s' % (text,))
 			return True
 		except ValueError:
 			return False
@@ -1561,44 +1561,13 @@ class v4netmask(simple):
 
 	@classmethod
 	def netmaskBits(self, dotted):
-		def splitDotted(ip):
-			quad = [0, 0, 0, 0]
-
-			i = 0
-			for q in ip.split('.'):
-				if i > 3:
-					break
-				quad[i] = int(q)
-				i += 1
-
-			return quad
-
-		dotted = splitDotted(dotted)
-
-		bits = 0
-		for d in dotted:
-			for i in range(0, 8):
-				if ((d & 2**i) == 2**i):
-					bits += 1
-		return bits
+		return ipaddress.IPv4Network(u'0.0.0.0/%s' % (dotted,), strict=False).prefixlen
 
 	@classmethod
 	def parse(self, text):
-		_ip = ipv4Address()
-		_int = integer()
-		errors = 0
 		try:
-			_ip.parse(text)
 			return "%d" % self.netmaskBits(text)
-		except Exception:
-			try:
-				_int.parse(text)
-				if int(text) > 0 and int(text) < 32:
-					return text
-			except Exception:
-				errors = 1
-		if errors:
-			# FIXME: always raise exception here!
+		except ValueError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
 
 
@@ -1625,10 +1594,10 @@ class netmask(simple):
 
 	@classmethod
 	def parse(self, text):
-		if text.isdigit() and int(text) > 0 and int(text) < max(ipaddr.IPV4LENGTH, ipaddr.IPV6LENGTH):
+		if text.isdigit() and int(text) > 0 and int(text) < max(ipaddress.IPV4LENGTH, ipaddress.IPV6LENGTH):
 			return str(int(text))
 		try:
-			return str(ipaddr.IPv4Network('0.0.0.0/%s' % (text, )).prefixlen)
+			return str(ipaddress.IPv4Network(u'0.0.0.0/%s' % (text, ), strict=False).prefixlen)
 		except ValueError:
 			pass
 		raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
@@ -1649,7 +1618,7 @@ class ipnetwork(simple):
 	def parse(self, text):
 		try:
 			# FIXME: missing return
-			ipaddr.IPNetwork(text)
+			ipaddress.ip_network(u'%s' % (text,), strict=False)
 		except ValueError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
 
@@ -1692,7 +1661,7 @@ class IP_AddressRange(complex):
 			# FIXME: this will never happen as complex.parse() expects exactly two arguments
 			return p
 		try:
-			if ipaddr.IPAddress(first) > ipaddr.IPAddress(last):
+			if ipaddress.ip_address(u'%s' % (first,)) > ipaddress.ip_address(u'%s' % (last,)):
 				raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
 		except TypeError:
 			raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
