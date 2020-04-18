@@ -1886,26 +1886,62 @@ class simpleComputer(simpleLdap):
 				return machineSid
 
 	# HELPER
-	def __ip_from_ptr(self, zoneName, relativeDomainName):
-		if 'ip6' in zoneName:
-			return self.__ip_from_ptr_ipv6(zoneName, relativeDomainName)
-		else:
-			return self.__ip_from_ptr_ipv4(zoneName, relativeDomainName)
+	@classmethod
+	def _ip_from_ptr(cls, zoneName, relativeDomainName):  # type: (str, str) -> str
+		"""
+		Extract IP address from reverse DNS record.
 
-	def __ip_from_ptr_ipv4(self, zoneName, relativeDomainName):
+		>>> simpleComputer._ip_from_ptr("2.1.in-addr.arpa", "4.3")
+		'1.2.3.4'
+		>>> simpleComputer._ip_from_ptr("0.0.0.0.0.0.0.0.0.8.b.d.1.0.0.2.ip6.arpa", "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0")
+		'2001:db80:0000:0000:0000:0000:0000:0001'
+		"""
+		if 'ip6' in zoneName:
+			return cls._ipv6_from_ptr(zoneName, relativeDomainName)
+		else:
+			return cls._ipv4_from_ptr(zoneName, relativeDomainName)
+
+	@staticmethod
+	def _ipv4_from_ptr(zoneName, relativeDomainName):  # type: (str, str) -> str
+		"""
+		Extract IPv4 address from reverse DNS record.
+
+		>>> simpleComputer._ipv4_from_ptr("2.1.in-addr.arpa", "4.3")
+		'1.2.3.4'
+		"""
 		return '%s.%s' % (
 			'.'.join(reversed(zoneName.replace('.in-addr.arpa', '').split('.'))),
 			'.'.join(reversed(relativeDomainName.split('.'))))
 
-	def __ip_from_ptr_ipv6(self, zoneName, relativeDomainName):
+	@staticmethod
+	def _ipv6_from_ptr(zoneName, relativeDomainName):  # type: (str, str) -> str
+		"""
+		Extract IPv6 address from reverse DNS record.
+
+		>>> simpleComputer._ipv6_from_ptr("0.0.0.0.0.0.0.0.0.8.b.d.1.0.0.2.ip6.arpa", "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0")
+		'2001:db80:0000:0000:0000:0000:0000:0001'
+		"""
 		fullName = relativeDomainName + '.' + zoneName.replace('.ip6.arpa', '')
 		fullName = fullName.split('.')
 		fullName = [''.join(reversed(fullName[i:i + 4])) for i in xrange(0, len(fullName), 4)]
 		fullName.reverse()
 		return ':'.join(fullName)
 
-	def __is_ip(self, ip):
-		# return True if valid IPv4 (0.0.0.0 is allowed) or IPv6 address
+	@staticmethod
+	def _is_ip(ip):  # type: (str) -> bool
+		"""
+		Check if valid IPv4 (0.0.0.0 is allowed) or IPv6 address.
+
+		:param ip: string.
+		:returns: `True` if it is a valid IPv4 or IPv6 address., `False` otherwise.
+
+		>>> simpleComputer._is_ip('192.0.2.0')
+		True
+		>>> simpleComputer._is_ip('::1')
+		True
+		>>> simpleComputer._is_ip('')
+		False
+		"""
 		try:
 			ipaddr.IPAddress(ip)
 			ud.debug(ud.ADMIN, ud.INFO, 'IP[%s]? -> Yes' % ip)
@@ -1978,8 +2014,8 @@ class simpleComputer(simpleLdap):
 					try:
 						results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['relativeDomainName', 'zoneName'], filter=searchFilter, unique=False)
 						for dn, attr in results:
-							ip = self.__ip_from_ptr(attr['zoneName'][0], attr['relativeDomainName'][0])
-							if not self.__is_ip(ip):
+							ip = self._ip_from_ptr(attr['zoneName'][0], attr['relativeDomainName'][0])
+							if not self._is_ip(ip):
 								ud.debug(ud.ADMIN, ud.WARN, 'simpleComputer: dnsEntryZoneReverse: invalid IP address generated: %r' % (ip,))
 								continue
 							entry = [self.lo.parentDn(dn), ip]
@@ -2216,7 +2252,7 @@ class simpleComputer(simpleLdap):
 			#   0011.2233.4455 -> 00:11:22:33:44:55 -> is guaranteed to work together with our DHCP server
 			#   __split_dhcp_line may be used outside of UDM which means that MAC_Address.parse may not be called.
 			mac = univention.admin.syntax.MAC_Address.parse(entry[-1])
-			if self.__is_ip(entry[-2]):
+			if self._is_ip(entry[-2]):
 				ip = entry[-2]
 		except univention.admin.uexceptions.valueError:
 			mac = ''
@@ -2225,7 +2261,7 @@ class simpleComputer(simpleLdap):
 	def __split_dns_line(self, entry):
 		zone = entry[0]
 		if len(entry) > 1:
-			ip = self.__is_ip(entry[1]) and entry[1] or None
+			ip = self._is_ip(entry[1]) and entry[1] or None
 		else:
 			ip = None
 
