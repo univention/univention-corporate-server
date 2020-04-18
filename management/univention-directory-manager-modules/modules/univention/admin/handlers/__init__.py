@@ -2400,14 +2400,6 @@ class simpleComputer(simpleLdap):
 					if [x.decode('ASCII') for x in attr[attrEdit]] == [ip, ] and not attr.get(attrOther):  # the <ip> to be removed is the last on the object
 						# remove the object
 						self.lo.delete(dn)
-						if not zoneDn:
-							zone = self.lo.parentDn(dn)
-						else:
-							zone = zoneDn
-
-						zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
-						zone.open()
-						zone.modify()
 					else:
 						# remove only the ip address attribute
 						new_ip_list = copy.deepcopy(attr[attrEdit])
@@ -2415,14 +2407,10 @@ class simpleComputer(simpleLdap):
 
 						self.lo.modify(dn, [(attrEdit, attr[attrEdit], new_ip_list, ), ])
 
-						if not zoneDn:
-							zone = self.lo.parentDn(zoneDn)
-						else:
-							zone = zoneDn
-
-						zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
-						zone.open()
-						zone.modify()
+					zone = zoneDn or self.lo.parentDn(dn)
+					zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zone)
+					zone.open()
+					zone.modify()
 
 	def __add_related_ptrrecords(self, zoneDN, ip):  # type: (str, str) -> None
 		if not all((zoneDN, ip)):
