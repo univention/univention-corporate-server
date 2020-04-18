@@ -1932,10 +1932,9 @@ class simpleComputer(simpleLdap):
 		'2001:db80:0000:0000:0000:0000:0000:0001'
 		"""
 		fullName = relativeDomainName + '.' + zoneName.replace('.ip6.arpa', '')
-		fullName = fullName.split('.')
-		fullName = [''.join(reversed(fullName[i:i + 4])) for i in range(0, len(fullName), 4)]
-		fullName.reverse()
-		return ':'.join(fullName)
+		digits = fullName.split('.')
+		blocks = [''.join(reversed(digits[i:i + 4])) for i in range(0, len(digits), 4)]
+		return ':'.join(reversed(blocks))
 
 	@staticmethod
 	def _is_ip(ip):  # type: (str) -> bool
