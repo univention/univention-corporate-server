@@ -159,7 +159,6 @@ class simpleLdap(object):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		self._exists = False
-		self.exceptions = []
 		self.co = co
 		self.lo = lo
 		self.dn = dn
@@ -1074,7 +1073,6 @@ class simpleLdap(object):
 				this method must be called directly after the constructor and before modifying any property.
 		"""
 		self._open = True
-		self.exceptions = []
 		self.call_udm_property_hook('hook_open', self)
 		self.save()
 
@@ -1209,8 +1207,6 @@ class simpleLdap(object):
 
 			:rtype: list of tuples
 		"""
-		self.exceptions = []
-
 		diff_ml = self.diff()
 		ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
 		ml = self._post_map(ml, diff_ml)
@@ -1227,7 +1223,6 @@ class simpleLdap(object):
 
 	def _create(self, response=None, serverctrls=None):
 		"""Create the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.create`."""
-		self.exceptions = []
 		self._ldap_pre_create()
 		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_create', self)
@@ -1304,8 +1299,6 @@ class simpleLdap(object):
 
 	def _modify(self, modify_childs=1, ignore_license=0, response=None, serverctrls=None):
 		"""Modify the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.modify`."""
-		self.exceptions = []
-
 		self.__prevent_ad_property_change()
 
 		self._ldap_pre_modify()
@@ -1498,7 +1491,6 @@ class simpleLdap(object):
 	def _remove(self, remove_childs=0):  # type: (int) -> None
 		"""Removes this object. Should only be called by :func:`univention.admin.handlers.simpleLdap.remove`."""
 		ud.debug(ud.ADMIN, ud.INFO, 'handlers/__init__._remove() called for %r with remove_childs=%r' % (self.dn, remove_childs))
-		self.exceptions = []
 
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be removed.'))
@@ -3203,7 +3195,7 @@ class simpleComputer(simpleLdap):
 				try:
 					self.__remove_dns_forward_object(self['name'], dn, None)
 				except Exception as e:
-					self.exceptions.append([_('DNS forward zone'), _('delete'), e])
+					ud.debug(ud.ADMIN, ud.WARN, 'dnsEntryZoneForward.delete(%s): %s' % (dnsEntryZoneForward, e))
 
 		if self['dnsEntryZoneReverse']:
 			for dnsEntryZoneReverse in self['dnsEntryZoneReverse']:
@@ -3211,7 +3203,7 @@ class simpleComputer(simpleLdap):
 				try:
 					self.__remove_dns_reverse_object(self['name'], dn, ip)
 				except Exception as e:
-					self.exceptions.append([_('DNS reverse zone'), _('delete'), e])
+					ud.debug(ud.ADMIN, ud.WARN, 'dnsEntryZoneReverse.delete(%s): %s' % (dnsEntryZoneReverse, e))
 
 		if self['dhcpEntryZone']:
 			for dhcpEntryZone in self['dhcpEntryZone']:
@@ -3219,7 +3211,7 @@ class simpleComputer(simpleLdap):
 				try:
 					self.__remove_from_dhcp_object(mac=mac)
 				except Exception as e:
-					self.exceptions.append([_('DHCP'), _('delete'), e])
+					ud.debug(ud.ADMIN, ud.WARN, 'dhcpEntryZone.delete(%s): %s' % (dhcpEntryZone, e))
 
 		if self['dnsEntryZoneAlias']:
 			for entry in self['dnsEntryZoneAlias']:
@@ -3227,7 +3219,7 @@ class simpleComputer(simpleLdap):
 				try:
 					self.__remove_dns_alias_object(self['name'], dnsForwardZone, dnsAliasZoneContainer, alias)
 				except Exception as e:
-					self.exceptions.append([_('DNS Alias'), _('delete'), e])
+					ud.debug(ud.ADMIN, ud.WARN, 'dnsEntryZoneAlias.delete(%s): %s' % (entry, e))
 
 		# remove service record entries (see Bug #26400)
 		ud.debug(ud.ADMIN, ud.INFO, '_ldap_post_remove: clean up service records, host records, and IP address saved at the forward zone')
