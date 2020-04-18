@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-61) unstable; urgency=medium
+
+  * Bug #51001: Extend meta.json for self service link visibility
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 18 Apr 2020 16:26:37 +0200
+
 univention-management-console (11.0.4-60) unstable; urgency=medium
 
   * Bug #51098: fix python3 compatibility in meta.json
