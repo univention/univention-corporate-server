@@ -1014,7 +1014,7 @@ def get_password():
 	try:
 		with open(ROOTPW_FILE, 'r') as fd:
 			for line in fd:
-				match = get_password.RE_ROOTDN.match(line)
+				match = RE_ROOTDN.match(line)
 				if match:
 					return match.group(1).replace('\\"', '"').replace('\\\\', '\\')
 			else:
@@ -1023,7 +1023,7 @@ def get_password():
 		listener.unsetuid()
 
 
-get_password.RE_ROOTDN = re.compile(r'^rootpw[ \t]+"((?:[^"\\]|\\["\\])+)"')
+RE_ROOTDN = re.compile(r'^rootpw[ \t]+"((?:[^"\\]|\\["\\])+)"')
 
 
 def init_slapd(arg):
