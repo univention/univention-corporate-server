@@ -2234,7 +2234,7 @@ class simpleComputer(simpleLdap):
 
 	def __remove_dns_reverse_object(self, name, dnsEntryZoneReverse, ip):
 		def modify(rdn, zoneDN):
-			zone_name = zoneDN.split('=')[1].split(',')[0]
+			zone_name = explode_dn(zoneDN, True)[0]
 			for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
 				if len(attributes['pTRRecord']) == 1:
 					self.lo.delete('relativeDomainName=%s,%s' % (escape_dn_chars(rdn), zoneDN))
