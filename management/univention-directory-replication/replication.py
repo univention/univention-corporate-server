@@ -49,8 +49,6 @@ import time
 import base64
 import subprocess
 import univention.debug as ud
-import smtplib
-from email.MIMEText import MIMEText
 import sys
 
 
@@ -753,39 +751,6 @@ def _modify_object_from_old_and_new(l, dn, old, new):
 		l.modify_s(dn, ml)
 
 
-def check_file_system_space():
-	if not listener.baseConfig.is_true('ldap/replication/filesystem/check'):
-		return
-
-	stat = os.statvfs(LDAP_DIR)
-	free_space = stat.f_bavail * stat.f_frsize
-	limit = float(listener.baseConfig.get('ldap/replication/filesystem/limit', '10')) * 1024.0 * 1024.0
-	if free_space >= limit:
-		return
-
-	fqdn = '%(hostname)s.%(domainname)s' % listener.baseConfig
-	ud.debug(ud.LISTENER, ud.ERROR, 'replication: Critical disk space. The Univention LDAP Listener was stopped')
-	msg = MIMEText(
-		'The Univention LDAP Listener process was stopped on %s.\n\n\n'
-		'The result of statvfs(%s):\n'
-		' %r\n\n'
-		'Please free up some disk space and restart the Univention LDAP Listener with the following command:\n'
-		' /etc/init.d/univention-directory-listener start' % (fqdn, LDAP_DIR, stat))
-	msg['Subject'] = 'Alert: Critical disk space on %s' % (fqdn,)
-	sender = 'root'
-	recipient = listener.baseConfig.get('ldap/replication/filesystem/recipient', sender)
-
-	msg['From'] = sender
-	msg['To'] = recipient
-
-	s = smtplib.SMTP()
-	s.connect()
-	s.sendmail(sender, [recipient], msg.as_string())
-	s.close()
-
-	listener.run('/etc/init.d/univention-directory-listener', ['univention-directory-listener', 'stop'], uid=0, wait=True)
-
-
 def get_old(l, dn, listener_old):  # type (Union[ldap.ldapobject, LDIFObject], str, Dict[str, List[str]]) -> Dict[str, List[str]]
 		"""
 		Read old entry directly from LDAP server.
@@ -836,8 +801,6 @@ def handler(dn, new, listener_old, operation):
 	global old_dn
 	if not slave:
 		return 1
-
-	check_file_system_space()
 
 	ud.debug(ud.LISTENER, ud.INFO, 'replication: Running handler %s for: %s' % (operation, dn))
 	if dn == 'cn=Subschema':

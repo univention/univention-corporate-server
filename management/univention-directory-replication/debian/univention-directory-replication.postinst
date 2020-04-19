@@ -40,10 +40,6 @@ create_logfile /var/log/univention/ldap-replication-resync.log "root:adm" 640
 rootpw_filepath="/etc/ldap/rootpw.conf"
 test -f "$rootpw_filepath" && chmod 600 "$rootpw_filepath" || true
 
-univention-config-registry set	ldap/replication/filesystem/check?false \
-						ldap/replication/filesystem/limit?10 \
-						ldap/replication/filesystem/recipient?root
-
 install -d -o listener -g root -m 0700 /var/lib/univention-directory-replication
 chown -R listener:root /var/lib/univention-directory-replication
 install -d -o listener -g root -m 0700 /var/univention-backup/replication
