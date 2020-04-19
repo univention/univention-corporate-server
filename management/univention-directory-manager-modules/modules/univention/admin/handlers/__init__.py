@@ -3331,19 +3331,27 @@ class simpleComputer(simpleLdap):
 
 	def __setitem__(self, key, value):
 		raise_after = None
+
+		ips = [ip for ip in self['ip'] if ip] if self.has_property('ip') and self['ip'] else []
+		ip1 = self['ip'][0] if len(ips) == 1 else ''
+		macs = [mac for mac in self['mac'] if mac] if self.has_property('mac') and self['mac'] else []
+		mac1 = self['mac'][0] if len(macs) == 1 else ''
+
 		if key == 'network':
 			if self.old_network != value:
 				if value and value != 'None':
 					network_object = univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
 					network_object.open()
 
-					if not self['ip'] or len(self['ip']) < 1 or not self['ip'][0] or not univention.admin.ipaddress.ip_is_in_network(network_object['network'], network_object['netmask'], self['ip'][0]):
+					if not ips or not univention.admin.ipaddress.ip_is_in_network(network_object['network'], network_object['netmask'], self['ip'][0]):
 						if self.ip_freshly_set:
 							raise_after = univention.admin.uexceptions.ipOverridesNetwork
 						else:
 							# get next IP
 							network_object.refreshNextIp()
 							self['ip'] = network_object['nextIp']
+							ips = [ip for ip in self['ip'] if ip] if self.has_property('ip') and self['ip'] else []
+							ip1 = self['ip'][0] if len(ips) == 1 else ''
 							try:
 								IpAddr = univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][0])
 								self.ip_alredy_requested = 1
@@ -3353,15 +3361,13 @@ class simpleComputer(simpleLdap):
 								pass
 
 						self.network_object = network_object
-					if network_object['dnsEntryZoneForward']:
-						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
-							self['dnsEntryZoneForward'] = [[network_object['dnsEntryZoneForward'], self['ip'][0]], ]
-					if network_object['dnsEntryZoneReverse']:
-						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
-							self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], self['ip'][0]], ]
+					if network_object['dnsEntryZoneForward'] and ip1:
+						self['dnsEntryZoneForward'] = [[network_object['dnsEntryZoneForward'], ip1]]
+					if network_object['dnsEntryZoneReverse'] and ip1:
+						self['dnsEntryZoneReverse'] = [[network_object['dnsEntryZoneReverse'], ip1]]
 					if network_object['dhcpEntryZone']:
-						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1 and self.has_property('mac') and self['mac'] and len(self['mac']) == 1:
-							self['dhcpEntryZone'] = [(network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0])]
+						if ip1 and mac1:
+							self['dhcpEntryZone'] = [(network_object['dhcpEntryZone'], ip1, mac1)]
 						else:
 							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
 
@@ -3374,26 +3380,24 @@ class simpleComputer(simpleLdap):
 					univention.admin.allocators.release(self.lo, self.position, 'aRecord', self.ip)
 					self.ip_alredy_requested = 0
 				if value and self.network_object:
-					if self.network_object['dnsEntryZoneForward']:
-						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
-							self['dnsEntryZoneForward'] = [[self.network_object['dnsEntryZoneForward'], self['ip'][0]], ]
-					if self.network_object['dnsEntryZoneReverse']:
-						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1:
-							self['dnsEntryZoneReverse'] = [[self.network_object['dnsEntryZoneReverse'], self['ip'][0]]]
+					if self.network_object['dnsEntryZoneForward'] and ip1:
+						self['dnsEntryZoneForward'] = [[self.network_object['dnsEntryZoneForward'], ip1]]
+					if self.network_object['dnsEntryZoneReverse'] and ip1:
+						self['dnsEntryZoneReverse'] = [[self.network_object['dnsEntryZoneReverse'], ip1]]
 					if self.network_object['dhcpEntryZone']:
-						if self.has_property('ip') and self['ip'] and len(self['ip']) == 1 and self.has_property('mac') and self['mac'] and len(self['mac']) > 0:
-							self['dhcpEntryZone'] = [(self.network_object['dhcpEntryZone'], self['ip'][0], self['mac'][0])]
+						if ip1 and macs:
+							self['dhcpEntryZone'] = [(self.network_object['dhcpEntryZone'], ip1, mac1)]
 						else:
 							self.__saved_dhcp_entry = self.network_object['dhcpEntryZone']
-			if not self.ip or self.ip is None:
+			if not self.ip:
 				self.ip_freshly_set = False
 
 		elif key == 'mac' and self.__saved_dhcp_entry:
-			if self.has_property('ip') and self['ip'] and len(self['ip']) == 1 and self['mac'] and len(self['mac']) > 0:
+			if ip1 and macs:
 				if isinstance(value, list):
-					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, self['ip'][0], value[0])]
+					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, ip1, value[0])]
 				else:
-					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, self['ip'][0], value)]
+					self['dhcpEntryZone'] = [(self.__saved_dhcp_entry, ip1, value)]
 
 		super(simpleComputer, self).__setitem__(key, value)
 		if raise_after:
