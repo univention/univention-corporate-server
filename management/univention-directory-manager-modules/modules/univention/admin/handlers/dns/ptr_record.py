@@ -38,7 +38,7 @@ from univention.admin.filter import (expression, conjunction)
 from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6
 
 import univention.debug as ud
-import ipaddr
+import ipaddress
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -116,12 +116,12 @@ def calc_ip(rev, subnet):
 	parts.reverse()
 	if ':' in subnet:
 		string = ''.join(subnet.split(':') + parts)
-		ip = ipaddr.IPv6Address(ipv6(string))
+		ip = ipaddress.IPv6Address(u'%s' % (ipv6(string),))
 	else:
 		octets = subnet.split('.') + parts
 		assert len(octets) == 4, octets
 		addr = '.'.join(octets)
-		ip = ipaddr.IPv4Address(addr)
+		ip = ipaddress.IPv4Address(u'%s' % (addr,))
 	return ip
 
 
@@ -139,16 +139,16 @@ def calc_rev(ip, subnet):
 		prefix = len(string)
 		assert 1 <= prefix < 32
 		string += '0' * (32 - prefix)
-		net = ipaddr.IPv6Network('%s/%d' % (ipv6(string), 4 * prefix))
-		addr = ipaddr.IPv6Address(ip)
+		net = ipaddress.IPv6Network(u'%s/%d' % (ipv6(string), 4 * prefix), strict=False)
+		addr = ipaddress.IPv6Address(u'%s' % (ip,))
 		host = ''.join(addr.exploded.split(':'))
 	else:
 		octets = subnet.split('.')
 		prefix = len(octets)
 		assert 1 <= prefix < 4
 		octets += ['0'] * (4 - prefix)
-		net = ipaddr.IPv4Network('%s/%d' % ('.'.join(octets), 8 * prefix))
-		addr = ipaddr.IPv4Address(ip)
+		net = ipaddress.IPv4Network(u'%s/%d' % ('.'.join(octets), 8 * prefix), strict=False)
+		addr = ipaddress.IPv4Address(u'%s' % (ip,))
 		host = addr.exploded.split('.')
 	if addr not in net:
 		raise ValueError()

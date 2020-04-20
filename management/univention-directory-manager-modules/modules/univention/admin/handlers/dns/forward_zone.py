@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ipaddr
+import ipaddress
 
 from univention.admin.layout import Tab, Group
 from univention.admin import configRegistry
@@ -208,7 +208,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if 'aRecord' in values:
 			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
 		if 'aAAARecord' in values:
-			info['a'].extend([ipaddr.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
+			info['a'].extend([ipaddress.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
 		return info
 
 	def open(self):
@@ -263,7 +263,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if newAddresses:
 				for address in newAddresses:
 					if ':' in address:  # IPv6
-						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded.encode('ASCII'))
+						newAaaaRecord.append(ipaddress.IPv6Address(u'%s' % (address,)).exploded.encode('ASCII'))
 					else:
 						newARecord.append(address.encode('ASCII'))
 			ml.append(('aRecord', oldARecord, newARecord, ))
