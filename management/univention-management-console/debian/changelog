@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-62) unstable; urgency=medium
+
+  * Bug #51001: Fix template generation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Apr 2020 10:50:46 +0200
+
 univention-management-console (11.0.4-61) unstable; urgency=medium
 
   * Bug #51001: Extend meta.json for self service link visibility
