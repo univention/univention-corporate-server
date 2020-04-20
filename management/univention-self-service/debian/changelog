@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-20) unstable; urgency=medium
+
+  * Bug #51001: Fix wrong UCR variable interpretation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Apr 2020 14:06:16 +0200
+
 univention-self-service (4.0.3-19) unstable; urgency=medium
 
   * Bug #51001: Show first subpage if no subpage given

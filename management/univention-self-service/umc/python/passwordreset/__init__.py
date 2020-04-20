@@ -279,7 +279,7 @@ class Instance(Base):
 
 		:return: list of dicts with users contact data
 		"""
-		if ucr.is_false('umc/self-service/protect-account/backend/enabled', True):
+		if ucr.is_false('umc/self-service/protect-account/backend/enabled'):
 			msg = _('The account protection was disabled via the Univention Configuration Registry.')
 			MODULE.error('get_contact(): {}'.format(msg))
 			raise UMC_Error(msg)
@@ -649,7 +649,7 @@ class Instance(Base):
 		mobile=StringSanitizer(required=False))
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
-		if ucr.is_false('umc/self-service/protect-account/backend/enabled', True):
+		if ucr.is_false('umc/self-service/protect-account/backend/enabled'):
 			msg = _('The account protection was disabled via the Univention Configuration Registry.')
 			MODULE.error('set_contact(): {}'.format(msg))
 			raise UMC_Error(msg)
@@ -800,7 +800,7 @@ class Instance(Base):
 	@sanitize(username=StringSanitizer(required=True, minimum=1))
 	@simple_response
 	def get_reset_methods(self, username):
-		if ucr.is_false('umc/self-service/passwordreset/backend/enabled', True):
+		if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
 			msg = _('The password reset was disabled via the Univention Configuration Registry.')
 			MODULE.error('get_reset_methods(): {}'.format(msg))
 			raise UMC_Error(msg)
