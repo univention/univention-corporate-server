@@ -3,9 +3,10 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-management-console
-fix: 11.0.4-60A~4.4.0.202004161517
-desc: |
- This update addresses the following issue(s):
- * Internal change: the UCR templates of univention-management-console are now
-   python3-compatible.
-bug: [51098]
+fix: 11.0.4-62A~4.4.0.202004201052
+desc: |-
+  This update addresses the following issue(s):
+  * Internal change: the UCR templates of univention-management-console are now
+    python3-compatible.
+  * The meta.json now contains more variables for the self service pages.
+bug: [51098, 51001]
