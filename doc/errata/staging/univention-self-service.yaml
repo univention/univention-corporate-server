@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-self-service
-fix: 4.0.3-19A~4.4.0.202004201115
+fix: 4.0.3-20A~4.4.0.202004201407
 desc: |-
   This update addresses the following issue(s):
   * Added UCR variables to enable admins to switch off all pages (and backend
