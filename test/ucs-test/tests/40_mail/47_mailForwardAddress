@@ -24,7 +24,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 
 
-TIMEOUT = 360  # in seconds
+TIMEOUT = 600  # in seconds
 
 
 class Bunch(object):
