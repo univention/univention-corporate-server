@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-19) unstable; urgency=medium
+
+  * Bug #51001: Show first subpage if no subpage given
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Apr 2020 11:14:18 +0200
+
 univention-self-service (4.0.3-18) unstable; urgency=medium
 
   * Bug #51001: Rename UCRV umc/self-service/passwordreset/enabled to

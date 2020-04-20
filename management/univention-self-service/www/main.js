@@ -141,8 +141,7 @@ define([
 		_loadSubpage: function(changedHash) {
 			var hash = ioQuery.queryToObject(changedHash).page;
 			if (!hash) {
-				// Old style hash (prior 4.2)
-				hash = changedHash;
+				hash = Object.keys(this._pagePanes)[0];
 			}
 			var isValidPage = this._pagePanes.hasOwnProperty(hash);
 			if (!isValidPage) {
