@@ -1,3 +1,9 @@
+ucs-test (9.0.3-189) unstable; urgency=medium
+
+  * Bug #51001: New test to check self service sub pages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Apr 2020 13:37:07 +0200
+
 ucs-test (9.0.3-188) unstable; urgency=medium
 
   * Bug #12345: Fix 01_openapi_validation

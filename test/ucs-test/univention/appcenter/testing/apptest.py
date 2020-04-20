@@ -26,7 +26,7 @@ def run_test_file(fname):
 			import pytest
 			test_func = os.environ.get('UCS_TEST_ONE_TEST')
 			if test_func:
-				sys.exit(pytest.main([tmpfile.name + '::' + test_func, '-p', __name__, '-x', '--pdb']))
+				sys.exit(pytest.main([tmpfile.name + '::' + test_func, '-p', __name__, '-x', '--log-cli-level=INFO', '--pdb']))
 			else:
 				pass
 				sys.exit(pytest.main([tmpfile.name, '-p', __name__]))
@@ -303,6 +303,36 @@ else:
 			Client.ConnectionType = HTTPConnection
 		client = Client(hostname=hostname, username=admin_username, password=admin_password, useragent='UCS/ucs-test')
 		return client
+
+	@pytest.fixture
+	def ucr(umc):
+		class UCR(object):
+			def __init__(self, client):
+				self.client = client
+				self._old = {}
+
+			def get(self, key):
+				logger.info('Getting UCRV {}', key)
+				response = self.client.umc_command('ucr/get', [key])
+				return response.result[0]['value']
+
+			def set(self, updates, revert_afterwards=True):
+				if revert_afterwards:
+					keys = list(updates.keys())
+					response = self.client.umc_command('ucr/get', keys)
+					old = zip(keys, [res.get('value') for res in response.result])
+					for k, v in dict(old).items():
+						if k not in self._old:
+							logger.info('Saving %r=%r for later revert', k, v)
+							self._old[k] = v
+				logger.info('Updating %r', updates)
+				self.client.umc_command('ucr/put', [{'object': {'key': k, 'value': v}} for k, v in updates.items() if v is not None])
+				self.client.umc_command('ucr/remove', [{'object': k} for k, v in updates.items() if v is None])
+
+		ucr_module = UCR(umc)
+		yield ucr_module
+		if ucr_module._old:
+			ucr_module.set(ucr_module._old, revert_afterwards=False)
 
 	@pytest.fixture(scope='session')
 	def appcenter(umc):
