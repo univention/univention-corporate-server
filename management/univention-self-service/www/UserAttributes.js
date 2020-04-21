@@ -207,13 +207,26 @@ define([
 						callback: lang.hitch(this._form, 'onSubmit')
 					});
 
+					this._deleteAccountButton = null;
+					if (tools.isTrue(tools.status('umc/self-service/account-deregistration/enabled'))) {
+						this._deleteAccountButton = new Button({
+							label: _('Delete my account'),
+							callback: lang.hitch(this, '_deleteAccount')
+						});
+					}
+
 					this._cancelButton = new Button({
 						label: _('Cancel'),
 						callback: lang.hitch(this, '_deleteUserAttributesStep')
 					});
 
 					put(this._userAttributesStep, this._form.domNode);
-					put(this._userAttributesStep, 'div.buttonRow.umcPageFooter', this._cancelButton.domNode, '<', this._saveButton.domNode);
+					var buttonRow = put(this._userAttributesStep, 'div.buttonRow.umcPageFooter');
+					put(buttonRow, this._cancelButton.domNode);
+					if (this._deleteAccountButton) {
+						put(buttonRow, this._deleteAccountButton.domNode);
+					}
+					put(buttonRow, this._saveButton.domNode);
 
 					on(this._form, 'valuesInitialized', lang.hitch(this, function() {
 						this._form.setFormValues(data.values);
@@ -307,6 +320,31 @@ define([
 			this._username.reset();
 			this._password.reset();
 			this._getUserAttributesButton.show();
+		},
+
+		_deleteAccount: function() {
+			var data = {
+				username: this._username.get('value'),
+				password: this._password.get('value')
+			};
+			dialog.confirm(_('Do you really want to delete your account?'), [{
+				label: 'Cancel',
+				name: 'cancel',
+				default: true
+			}, {
+				label: _('Delete my account'),
+				name: 'delete',
+				callback: lang.hitch(this, function() {
+					var deferred = tools.umcpCommand('passwordreset/deregister_account', data)
+						.then(lang.hitch(this, function() {
+							this._deleteUserAttributesStep();
+							window.requestAnimationFrame(function() {
+								dialog.alert(_('Your account has been successfully deleted.'));
+							});
+						}));
+					this.standbyDuring(deferred);
+				})
+			}]);
 		}
 	};
 });

@@ -8,4 +8,7 @@ desc: |-
   This update addresses the following issue(s):
   * Added UCR variables to enable admins to switch off all pages (and backend
     functions) individually.
-bug: [51001]
+  * Users can now request the deletion of their account on the "Your profile"
+    page of the Self Service. This feature can be activated via the
+    umc/self-service/account-deregistration/enabled UCR variable.
+bug: [51001, 51110]

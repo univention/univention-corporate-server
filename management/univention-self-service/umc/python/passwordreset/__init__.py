@@ -72,6 +72,8 @@ MEMCACHED_MAX_KEY = 250
 SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
 IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) == SELFSERVICE_MASTER
 
+DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'
+
 if IS_SELFSERVICE_MASTER:
 	try:
 		from univention.management.console.modules.udm.syntax import widget
@@ -746,6 +748,68 @@ class Instance(Base):
 	@forward_to_master
 	@prevent_denial_of_service
 	@sanitize(
+		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True),
+	)
+	@simple_response
+	def deregister_account(self, username, password):
+		MODULE.info("deregister_account(): username: {} password: *****".format(username))
+		ucr.load()
+		if ucr.is_false('umc/self-service/account-deregistration/enabled', True):
+			msg = _('The account deregistration was disabled via the Univention Configuration Registry.')
+			MODULE.error('deregister_account(): {}'.format(msg))
+			raise UMC_Error(msg)
+		dn, username = self.auth(username, password)
+		if self.is_blacklisted(username):
+			raise ServiceForbidden()
+		try:
+			return self._deregister_account(username)
+		except Exception:
+			raise UMC_Error(_('Account could not be deleted'), status=500)
+
+	def _deregister_account(self, username):
+		try:
+			user = UDM.admin().version(2).get('users/user').get_by_id(username)
+			user.props.DeregisteredThroughSelfService = 'TRUE'
+			user.props.DeregistrationTimestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), DEREGISTRATION_TIMESTAMP_FORMATTING)
+			user.props.disabled = True
+			user.save()
+			try:
+				self._notify_about_account_deregistration(user.props.username, user.props.PasswordRecoveryEmail)
+			except Exception:
+				MODULE.error("_deregister_account(): sending of email failed: {}".format(traceback.format_exc()))
+			return
+		except Exception:
+			MODULE.error("_deregister_account(): {}".format(traceback.format_exc()))
+			raise
+
+	def _notify_about_account_deregistration(self, username, mail):
+		if not mail:
+			return
+		ucr.load()
+		path_ucr = ucr.get("umc/self-service/account-deregistration/email/text_file")
+		if path_ucr and os.path.exists(path_ucr):
+			path = path_ucr
+		else:
+			path = "/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt"
+		with open(path, "r") as fp:
+			txt = fp.read()
+		txt = txt.format(username=username)
+		msg = MIMENonMultipart('text', 'plain', charset='utf-8')
+		msg["Subject"] = "Account deletion"
+		msg["Date"] = formatdate(localtime=True)
+		msg["From"] = ucr.get("umc/self-service/account-deregistration/email/sender_address", "Password Reset Service <noreply@{}>".format(".".join([ucr["hostname"], ucr["domainname"]])))
+		msg["To"] = mail
+		cs = email.charset.Charset("utf-8")
+		cs.body_encoding = email.charset.QP
+		msg.set_payload(txt, charset=cs)
+		smtp = smtplib.SMTP(ucr.get("umc/self-service/account-deregistration/email/server", "localhost"))
+		smtp.sendmail(msg["From"], msg["To"], msg.as_string())
+		smtp.quit()
+
+	@forward_to_master
+	@prevent_denial_of_service
+	@sanitize(
 		token=StringSanitizer(required=True),
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True))  # new_password(!)
@@ -936,8 +1000,8 @@ class Instance(Base):
 		if path_ucr and os.path.exists(path_ucr):
 			path = path_ucr
 		else:
-			path = os.path.join(os.path.realpath(os.path.dirname(__file__)), "email_change_notification_email_body.txt")
-		with open(path, "rb") as fp:
+			path = "/usr/share/univention-self-service/email_bodies/email_change_notification_email_body.txt"
+		with open(path, "r") as fp:
 			txt = fp.read()
 		txt = txt.format(username=username, old_email=old_email, new_email=new_email)
 		msg = MIMENonMultipart('text', 'plain', charset='utf-8')

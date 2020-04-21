@@ -84,8 +84,8 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
 		if path_ucr and os.path.exists(path_ucr):
 			path = path_ucr
 		else:
-			path = os.path.join(os.path.realpath(os.path.dirname(__file__)), "verification_email_body.txt")
-		with open(path, "rb") as fp:
+			path = "/usr/share/univention-self-service/email_bodies/verification_email_body.txt"
+		with open(path, "r") as fp:
 			txt = fp.read()
 
 		fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])

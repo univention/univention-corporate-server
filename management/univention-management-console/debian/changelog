@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-63) unstable; urgency=medium
+
+  * Bug #51110: Accounts can now be deregistered by users
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 20 Apr 2020 11:52:53 +0200
+
 univention-management-console (11.0.4-62) unstable; urgency=medium
 
   * Bug #51001: Fix template generation

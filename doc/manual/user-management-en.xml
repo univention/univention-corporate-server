@@ -1136,6 +1136,69 @@
 				</para>
 			</section>
 		</section>
+		<section>
+			<title>Self <wordasword>deregistration</wordasword></title>
+			<para>
+				The Self Service allows for users to request the deletion of their own account.
+				This feature can be activated with the &ucsUCRV; <envar>umc/self-service/account-deregistration/enabled</envar>,
+				which will show a "Delete my account" Button on the "Your profile" page of the Self Service (<xref linkend="users:templates"/>).
+			</para>
+			<para>
+				If a user has requested to delete his account, it will not be deleted directly but deactivated.
+				In addition the <property>DeregisteredThroughSelfService</property> attribute of the user
+				will be set to <wordasword>TRUE</wordasword> and the <property>DeregistrationTimestamp</property>
+				attribute of the user will be set to the current time in the
+				<ulink url="https://ldapwiki.com/wiki/GeneralizedTime"><wordasword>GeneralizedTime</wordasword> LDAP syntax</ulink>.
+				If the user has a <property>PasswordRecoveryEmail</property> set they will receive a notification email
+				which can be configured with the following &ucsUCRV;s.
+				<variablelist>
+					<varlistentry>
+						<term><envar>umc/self-service/account-deregistration/email/sender_address</envar></term>
+						<listitem><simpara>
+							Defines the sender address of the email. Default is "Password Reset Service &lt;<wordasword>noreply@FQDN</wordasword>&gt;".
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-deregistration/email/server</envar></term>
+						<listitem><simpara>
+							Server name or IP address of the mail server to use.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><envar>umc/self-service/account-deregistration/email/text_file</envar></term>
+						<listitem><simpara>
+							A path to a text file whose content will be used for the body of the email.
+							The text can contain the following strings which will be substituted accordingly: {username}.
+							As default the file <filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/deregistration_notification_email_body.txt</filename>
+							is used.
+						</simpara></listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+			<para>
+				The Self Service provides a script under <filename>/usr/share/univention-self-service/delete_deregistered_accounts.py</filename>
+				that can be used to delete all users/user objects which have <property>DeregisteredThroughSelfService</property>
+				set to <wordasword>TRUE</wordasword> and whose <property>DeregistrationTimestamp</property> is older than
+				a specified time.
+				The following command would delete users whose <property>DeregistrationTimestamp</property>
+				is older than 5 days and 2 hours.
+				<programlisting language="sh">
+/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 5 --timedelta-hours 2
+				</programlisting>
+				For all possible arguments to the script see:
+				<programlisting language="sh">
+/usr/share/univention-self-service/delete_deregistered_accounts.py --help
+				</programlisting>
+			</para>
+			<para>
+				The script can be run regularly by creating a cron job via &ucsUCR;.
+				<programlisting language="sh">
+ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 30' \
+		cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00 a.m.
+				</programlisting>
+        		More information on how to set cron jobs via UCR can be found in <xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>.
+			</para>
+		</section>
 	</section>
 
     <section id="users:faillog">

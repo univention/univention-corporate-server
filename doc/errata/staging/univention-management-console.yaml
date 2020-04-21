@@ -9,4 +9,7 @@ desc: |-
   * Internal change: the UCR templates of univention-management-console are now
     python3-compatible.
   * The meta.json now contains more variables for the self service pages.
-bug: [51098, 51001]
+  * Users can now request the deletion of their account on the "Your profile"
+    page of the Self Service. This feature can be activated via the
+    umc/self-service/account-deregistration/enabled UCR variable.
+bug: [51098, 51001, 51110]
