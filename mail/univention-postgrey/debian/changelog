@@ -1,3 +1,9 @@
+univention-postgrey (7.0.0-4) unstable; urgency=medium
+
+  * Bug #51146: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 18:00:07 +0200
+
 univention-postgrey (7.0.0-3) unstable; urgency=medium
 
   * Bug #50647: Change of order in postinst script.

@@ -4,8 +4,10 @@ from os.path import exists
 
 SimpleIntChars = set('0123456789')
 
+
 def escapeString(string):
-	return string.replace("'","'\\''")
+	return string.replace("'", "'\\''")
+
 
 def GetSimpleIntUcr(UCRkey, default):
 	string = configRegistry.get(UCRkey, '-')
@@ -13,6 +15,7 @@ def GetSimpleIntUcr(UCRkey, default):
 		if char not in SimpleIntChars:
 			return default
 	return int(string)
+
 
 POSTGREY_OPTS = ['--inet=10023']
 POSTGREY_OPTS.append('--delay=%d' % GetSimpleIntUcr('mail/postfix/greylisting/delay', 300))
@@ -38,8 +41,8 @@ if 'mail/postfix/greylisting/recipient/whitelist' in configRegistry:
 		if exists(filename):
 			POSTGREY_OPTS.append('--whitelist-recipients=%s' % filename)
 
-print "POSTGREY_OPTS='%s'" % escapeString(' '.join(POSTGREY_OPTS))
+print("POSTGREY_OPTS='%s'" % escapeString(' '.join(POSTGREY_OPTS)))
 
 if 'mail/postfix/greylisting/text' in configRegistry:
-	print "POSTGREY_TEXT='%s'" % escapeString(configRegistry['mail/postfix/greylisting/text'])
+	print("POSTGREY_TEXT='%s'" % escapeString(configRegistry['mail/postfix/greylisting/text']))
 @!@
