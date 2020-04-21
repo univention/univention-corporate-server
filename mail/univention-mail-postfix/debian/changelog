@@ -1,3 +1,9 @@
+univention-mail-postfix (13.0.2-1) unstable; urgency=low
+
+  * Bug #51151: make UCR templates compatible to python3
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 21 Apr 2020 21:23:57 +0200
+
 univention-mail-postfix (13.0.1-2) unstable; urgency=medium
 
   * Bug #42241: fix service definition of postfix
