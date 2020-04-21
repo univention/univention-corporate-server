@@ -1,3 +1,9 @@
+ucs-test (9.0.3-191) unstable; urgency=medium
+
+  * Bug #51110: fix typo
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 21 Apr 2020 17:45:52 +0200
+
 ucs-test (9.0.3-190) unstable; urgency=medium
 
   * Bug #51001: Updated dependencies for self service tests
