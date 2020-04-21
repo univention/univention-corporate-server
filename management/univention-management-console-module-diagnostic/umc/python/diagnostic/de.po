@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-01-28 11:59+0100\n"
+"POT-Creation-Date: 2020-04-20 17:55+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -81,9 +81,9 @@ msgstr "Alle Dateien in Ordnung."
 msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
-#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:44
+#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:45
 msgid "All spamassassin rules ok"
-msgstr "Alle Spamassassin Regeln ok"
+msgstr "Alle Spamassassin Regeln in Ordnung"
 
 #: umc/python/diagnostic/plugins/00_check_server_password.py:157
 msgid "Authentication against the local LDAP failed with the machine password."
@@ -193,6 +193,10 @@ msgid "Check whether the LDAP overlay memberOf is locally activated."
 msgstr ""
 "Prüfe ob das LDAP-Attribut memberOf auf diesem LDAP-Server aktiviert ist."
 
+#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:81
+msgid "Could not fetch signatures"
+msgstr "Spamsignaturen konnten nicht heruntergeladen werden"
+
 #: umc/python/diagnostic/plugins/59_ldap_server_name.py:59
 msgid "Deactivate test"
 msgstr "Test deaktivieren"
@@ -208,6 +212,10 @@ msgstr "Fehler beim Abrufen der letzten Transaktions ID vom UDN."
 #: umc/python/diagnostic/plugins/50_check_ucr_templates.py:52
 msgid "Errors found by `univention-check-templates`."
 msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
+
+#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:66
+msgid "Errors in configuration files"
+msgstr "Fehler in Konfigurationsdateien"
 
 #: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:164
 msgid "Errors occurred while running `kinit` or `nsupdate`."
@@ -407,8 +415,8 @@ msgstr "Nameserver sind nicht ansprechbar"
 msgid "No S4 Connector rejects were found."
 msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:54
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:40
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:54
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
@@ -647,7 +655,7 @@ msgstr ""
 msgid "Some disks are nearly full:"
 msgstr "Einige Festplatten sind beinahe voll:"
 
-#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:43
+#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:44
 msgid "Spamassassin Rules Check"
 msgstr "Überprüfung der Spamassassin Regeln"
 
@@ -957,9 +965,9 @@ msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
 msgid "Univention Support Database - Troubleshooting: Listener-/Notifier"
 msgstr "Univention Support Database - Listener-/Notifier-Fehlersuche"
 
-#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:65
+#: umc/python/diagnostic/plugins/59_spamassasin_rules.py:64
 msgid "Update Signatures"
-msgstr "Erneuern der Spamsignaturen"
+msgstr "Spamsignaturen erneuern"
 
 #: umc/python/diagnostic/plugins/50_check_ucr_templates.py:54
 msgid "Updated versions will be named FILENAME.dpkg-*."

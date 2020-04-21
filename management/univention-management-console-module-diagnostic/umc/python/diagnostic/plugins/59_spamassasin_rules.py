@@ -63,7 +63,8 @@ def run(_umc_instance, retest=False):
 			'action': 'update_signatures',
 			'label': _('Update Signatures'),
 		}]
-		raise Warning('Errors in configuration files', buttons=buttons)
+		lint_warning_description = _('Errors in configuration files')
+		raise Warning(lint_warning_description, buttons=buttons)
 
 	if retest:
 		raise ProblemFixed(buttons=[])
@@ -77,7 +78,8 @@ def update_signatures(_umc_instance):
 	MODULE.process('Updating signatures done')
 
 	if cron_result:
-		raise Warning('Could not fetch signatures')
+		update_warning_description = _('Could not fetch signatures')
+		raise Warning(update_warning_description)
 	return run(_umc_instance, retest=True)
 
 
