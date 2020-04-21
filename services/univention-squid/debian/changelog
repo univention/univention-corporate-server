@@ -1,3 +1,9 @@
+univention-squid (12.0.2-1) unstable; urgency=medium
+
+  * Bug #51133: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 15:36:29 +0200
+
 univention-squid (12.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support

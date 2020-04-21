@@ -38,16 +38,16 @@ if configRegistry.is_true('squid/transparentproxy', False):
 	local_addresses = [iface.ipv4_address() for _name, iface in interfaces.ipv4_interfaces]
 
 	# allow outgoing traffic coming from proxy server
-	print 'iptables --wait -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
-	print 'iptables --wait -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 443 -j ACCEPT'
+	print('iptables --wait -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT')
+	print('iptables --wait -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 443 -j ACCEPT')
 
 	# redirect packages forwarded for other clients, but allow access to local addresses
 	for port in configRegistry.get('squid/webports', '80 443 21').split(" "):
 		for address in local_addresses:
-			print 'iptables --wait -t nat -A PREROUTING -d %s -p tcp -m tcp --dport %s -j ACCEPT' % (address, port)
-		print 'iptables --wait -t nat -A PREROUTING -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
+			print('iptables --wait -t nat -A PREROUTING -d %s -p tcp -m tcp --dport %s -j ACCEPT' % (address, port))
+		print('iptables --wait -t nat -A PREROUTING -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport))
 	
 	# redirect locally created packages
 	for port in configRegistry.get('squid/webports', '80 443 21').split(" "):
-		print 'iptables --wait -t nat -A OUTPUT -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
+		print('iptables --wait -t nat -A OUTPUT -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport))
 @!@
