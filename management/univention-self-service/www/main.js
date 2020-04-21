@@ -141,7 +141,10 @@ define([
 		_loadSubpage: function(changedHash) {
 			var hash = ioQuery.queryToObject(changedHash).page;
 			if (!hash) {
-				hash = Object.keys(this._pagePanes)[0];
+				var firstVisiblePage = this._getEnabledPages().find(function(page) {
+					return page.visible;
+				});
+				hash = firstVisiblePage ? firstVisiblePage.hash : '';
 			}
 			var isValidPage = this._pagePanes.hasOwnProperty(hash);
 			if (!isValidPage) {

@@ -669,7 +669,7 @@ class Instance(Base):
 		method=StringSanitizer(required=True))
 	@simple_response
 	def send_token(self, username, method):
-		if ucr.is_false('umc/self-service/passwordreset/backend/enabled', True):
+		if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
 			msg = _('The password reset was disabled via the Univention Configuration Registry.')
 			MODULE.error('send_token(): {}'.format(msg))
 			raise UMC_Error(msg)
