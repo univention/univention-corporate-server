@@ -67,7 +67,7 @@ Reapplies the ACLs to all shared IMAP folder on this system.'''
 	def log(level, msg):
 		ud.debug(ud.MAIN, level, msg)
 		if options.verbose:
-			print msg
+			print(msg)
 
 	ucr = ConfigRegistry()
 	ucr.load()

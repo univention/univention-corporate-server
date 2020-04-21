@@ -23,9 +23,9 @@ log_path = configRegistry.get("mail/dovecot/logging/log_path", "syslog")
 syslog_facility = configRegistry.get("mail/dovecot/logging/syslog_facility", "local5")
 
 if log_path == "syslog" and syslog_facility == "local5":
-	print "/var/log/dovecot.err /var/log/dovecot.info /var/log/dovecot.lmtp /var/log/dovecot.log /var/log/dovecot.warn {\n%s%s" % (rotate_conf, rsyslog_conf)
+	print("/var/log/dovecot.err /var/log/dovecot.info /var/log/dovecot.lmtp /var/log/dovecot.log /var/log/dovecot.warn {\n%s%s" % (rotate_conf, rsyslog_conf))
 elif log_path.startswith("/") and not log_path.startswith("/dev/"):
-	print "%s {\n%s%s" % (log_path, rotate_conf, regfile_conf)
+	print("%s {\n%s%s" % (log_path, rotate_conf, regfile_conf))
 else:
 	# ignore
 	pass

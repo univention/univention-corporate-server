@@ -1,4 +1,4 @@
 @%@UCRWARNING=# @%@
 @!@
-print "%s protocols = $protocols pop3" % ("" if configRegistry.is_true("mail/dovecot/pop3", True) else "#")
+print("%s protocols = $protocols pop3" % ("" if configRegistry.is_true("mail/dovecot/pop3", True) else "#"))
 @!@

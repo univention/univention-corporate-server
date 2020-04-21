@@ -15,5 +15,5 @@ for key, value in configRegistry.items():
 	if key.startswith("mail/dovecot/limits/") and (key.endswith("client_limit") or key.endswith("process_limit")):
 		max_conn = max(max_conn, int(value))
 if max_conn > current_limit:
-	print "ulimit -n %d" % max_conn
+	print("ulimit -n %d" % max_conn)
 @!@

@@ -1,3 +1,9 @@
+univention-mail-dovecot (5.0.1-13) unstable; urgency=medium
+
+  * Bug #51147: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 18:29:35 +0200
+
 univention-mail-dovecot (5.0.1-12) unstable; urgency=medium
 
   * Bug #49144: migrate univention-mail-dovecot to dh_python

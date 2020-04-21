@@ -27,17 +27,17 @@
 import os
 from univention.lib.misc import getLDAPURIs
 
-print 'uris = %s' % getLDAPURIs(configRegistry)
+print('uris = %s' % getLDAPURIs(configRegistry))
 
 # Distinguished Name - the username used to login to the LDAP server.
 # Leave it commented out to bind anonymously (useful with auth_bind=yes).
-print 'dn = %s' % configRegistry.get('ldap/hostdn')
+print('dn = %s' % configRegistry.get('ldap/hostdn'))
 
 # Password for LDAP server, if dn is specified.
 if os.path.exists('/etc/machine.secret'):
-	print 'dnpass = %s' % (open('/etc/machine.secret','r').read())
+	print('dnpass = %s' % (open('/etc/machine.secret', 'r').read()))
 else:
-	print 'dnpass = MACHINE.SECRET_IS_MISSING'
+	print('dnpass = MACHINE.SECRET_IS_MISSING')
 @!@
 
 # Use SASL binding instead of the simple binding. Note that this changes
@@ -55,7 +55,7 @@ else:
 tls = yes
 # TLS options, currently supported only with OpenLDAP:
 @!@
-print "tls_ca_cert_file = %s" % configRegistry.get('mail/dovecot/auth/ldap/cafile', '/etc/univention/ssl/ucsCA/CAcert.pem')
+print("tls_ca_cert_file = %s" % configRegistry.get('mail/dovecot/auth/ldap/cafile', '/etc/univention/ssl/ucsCA/CAcert.pem'))
 @!@
 #tls_ca_cert_dir =
 #tls_cipher_suite =
@@ -72,7 +72,7 @@ tls_require_cert = hard
 # -1 = everything. You may need to recompile OpenLDAP with debugging enabled
 # to get enough output.
 @!@
-print "debug_level = %s" % configRegistry.get("mail/dovecot/logging/ldap_debug_level", "0")
+print("debug_level = %s" % configRegistry.get("mail/dovecot/logging/ldap_debug_level", "0"))
 @!@
 
 # Use authentication binding for verifying password's validity. This works by
@@ -121,7 +121,8 @@ scope = subtree
 # There are also other special fields which can be returned, see
 # http://wiki2.dovecot.org/UserDatabase/ExtraFields
 @!@
-default_user_attrs = ['user_attrs = mailPrimaryAddress=user',
+default_user_attrs = [
+	'user_attrs = mailPrimaryAddress=user',
 	'=uid=dovemail',
 	'=gid=dovemail',
 	'uid=system_groups_user',
@@ -129,7 +130,7 @@ default_user_attrs = ['user_attrs = mailPrimaryAddress=user',
 additional_user_attrs = configRegistry.get("mail/dovecot/auth/ldap/user/attributes", "")
 if additional_user_attrs:
 	default_user_attrs.append(additional_user_attrs)
-print ",".join(default_user_attrs)
+print(",".join(default_user_attrs))
 @!@
 
 # Filter for user lookup. Some variables can be used (see
