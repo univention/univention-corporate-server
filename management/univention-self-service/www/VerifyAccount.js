@@ -202,7 +202,7 @@ define([
 						break;
 				}
 			} else {
-				msg = _('Hello <b>%s</b>, we have sent you an email; maybe you want to have a look at your spam folder? Please follow the instructions in the email to verify your account.', entities.encode(res.data.username));
+				msg = _('Hello <b>%s</b>, we have sent you an email to your registered address. Please follow the instructions in the email to verify your account.', entities.encode(res.data.username));
 				msg = domConstruct.toDom(msg);
 				msg = put('p', msg);
 				this._setMessage(msg);
