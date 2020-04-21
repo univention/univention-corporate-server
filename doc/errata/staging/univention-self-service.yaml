@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-self-service
-fix: 4.0.3-23A~4.4.0.202004211524
+fix: 4.0.3-24A~4.4.0.202004211933
 desc: |-
   This update addresses the following issue(s):
   * Added UCR variables to enable admins to switch off all pages (and backend
@@ -11,4 +11,6 @@ desc: |-
   * Users can now request the deletion of their account on the "Your profile"
     page of the Self Service. This feature can be activated via the
     umc/self-service/account-deregistration/enabled UCR variable.
-bug: [51001, 51110]
+  * When requesting a new token, do not disclose the email address of the
+    user.
+bug: [51001, 51110, 51152]
