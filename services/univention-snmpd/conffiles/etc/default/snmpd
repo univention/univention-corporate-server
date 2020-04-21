@@ -7,7 +7,7 @@
 export MIBS=
 
 # snmpd control (yes means start daemon).
-SNMPDRUN=@!@print configRegistry.get('snmpd/autostart', 'yes')@!@
+SNMPDRUN=@!@print(configRegistry.get('snmpd/autostart', 'yes'))@!@
 
 # snmpd options (use syslog, close stdin/out/err).
 SNMPDOPTS='-Lsd -Lf /dev/null -u snmp -g snmp -I -smux -p /var/run/snmpd.pid'
@@ -15,7 +15,7 @@ SNMPDOPTS='-Lsd -Lf /dev/null -u snmp -g snmp -I -smux -p /var/run/snmpd.pid'
 # snmptrapd control (yes means start daemon).  As of net-snmp version
 # 5.0, master agentx support must be enabled in snmpd before snmptrapd
 # can be run.  See snmpd.conf(5) for how to do this.
-TRAPDRUN=@!@print configRegistry.get('snmptrapd/autostart', 'no')@!@
+TRAPDRUN=@!@print(configRegistry.get('snmptrapd/autostart', 'no'))@!@
 
 # snmptrapd options (use syslog).
 TRAPDOPTS='-Lsd -p /var/run/snmptrapd.pid'
