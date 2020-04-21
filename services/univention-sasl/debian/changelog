@@ -1,3 +1,9 @@
+univention-sasl (7.0.0-2) unstable; urgency=medium
+
+  * Bug #51142: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 16:12:11 +0200
+
 univention-sasl (7.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

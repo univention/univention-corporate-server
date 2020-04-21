@@ -57,5 +57,5 @@ THREADS=@%@mail/saslauthd/threads@%@
 @!@
 timeout = configRegistry.get('mail/saslauthd/cache/timeout', '1800')
 options = '-c -r -m /var/run/saslauthd -t ' + timeout
-print 'OPTIONS="%s"' % options
+print('OPTIONS="%s"' % options)
 @!@
