@@ -10,7 +10,7 @@ auth += " from_attr=mailPrimaryAddress to_attr=uid"
 auth += " binddn=%s " % configRegistry.get("ldap/hostdn")
 auth += " pwfile=/etc/machine.secret"
 auth += " ldap_port=%s" % configRegistry.get("ldap/server/port", "7389")
-print auth
+print(auth)
 @!@
 auth    sufficient    pam_ldap.so use_first_pass
 auth    required      pam_krb5.so use_first_pass

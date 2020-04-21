@@ -26,18 +26,18 @@ if configRegistry.is_true("mail/postfix/smtpd/restrictions/sender/reject_unknown
 				recipient_restrictions.insert(i+1, 'reject_unknown_client_hostname')
 			break
 
-print "smtpd_recipient_restrictions = %s" % ",\n        ".join(recipient_restrictions)
+print("smtpd_recipient_restrictions = %s" % ",\n        ".join(recipient_restrictions))
 
 # get all recipient restrictions from UCR ==> [ (key, val), ... ]
 ucrlist = [x for x in configRegistry.items() if x[0].startswith('mail/postfix/submission/restrictions/recipient/')]
 ucrlist.sort()
 submission_recipient_restrictions = [x[1] for x in ucrlist]
 
-print '\n# special recipient_restrictions which may be used by smtps/submission services'
-print '# (can be configured via UCR: mail/postfix/submission/restrictions/recipient/...)'
+print('\n# special recipient_restrictions which may be used by smtps/submission services')
+print('# (can be configured via UCR: mail/postfix/submission/restrictions/recipient/...)')
 if submission_recipient_restrictions:
-	print "submission_recipient_restrictions = %s" % ",\n        ".join(submission_recipient_restrictions)
+	print("submission_recipient_restrictions = %s" % ",\n        ".join(submission_recipient_restrictions))
 else:
-	print "# submission_recipient_restrictions ="
+	print("# submission_recipient_restrictions =")
 @!@
 

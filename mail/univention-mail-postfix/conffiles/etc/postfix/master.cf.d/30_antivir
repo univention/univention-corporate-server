@@ -1,6 +1,6 @@
 @!@
 if configRegistry.is_true('mail/antivir', False):
-	print '''
+	print('''
 smtp-amavis unix -      -       n     -       %(maxproc)s  smtp
 	-o smtp_data_done_timeout=1200
 	-o smtp_send_xforward_command=yes
@@ -21,5 +21,5 @@ smtp-amavis unix -      -       n     -       %(maxproc)s  smtp
 	-o smtpd_error_sleep_time=0
 	-o smtpd_soft_error_limit=1001
 	-o smtpd_hard_error_limit=1000
-	-o receive_override_options=no_address_mappings''' % {"maxproc": configRegistry.get("mail/antivir/max_servers", "2")}
+	-o receive_override_options=no_address_mappings''' % {"maxproc": configRegistry.get("mail/antivir/max_servers", "2")})
 @!@

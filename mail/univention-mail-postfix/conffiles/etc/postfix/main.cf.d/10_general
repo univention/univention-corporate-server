@@ -4,17 +4,17 @@
 # a message, including envelope information. Default is 10240000
 @!@
 if configRegistry.get('mail/messagesizelimit'):
-	print 'message_size_limit = %s' % configRegistry.get('mail/messagesizelimit')
+	print('message_size_limit = %s' % configRegistry.get('mail/messagesizelimit'))
 else:
-	print '# message_size_limit = 10240000'
+	print('# message_size_limit = 10240000')
 @!@
 
 # mailbox_size_limit limits the max. size of local mailboxes. Default is 51200000
 @!@
 if configRegistry.get('mail/localmailboxsizelimit'):
-	print 'mailbox_size_limit = %s' % configRegistry.get('mail/localmailboxsizelimit')
+	print('mailbox_size_limit = %s' % configRegistry.get('mail/localmailboxsizelimit'))
 else:
-	print '# mailbox_size_limit = 51200000'
+	print('# mailbox_size_limit = 51200000')
 @!@
 
 # some basic path definitions
@@ -28,17 +28,17 @@ myhostname = @%@hostname@%@.@%@domainname@%@
 @!@
 fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
 if configRegistry.get('mail/postfix/myorigin'):
-	print 'myorigin = %s' % configRegistry['mail/postfix/myorigin']
+	print('myorigin = %s' % configRegistry['mail/postfix/myorigin'])
 else:
-	print 'myorigin = %s' % fqdn
-print 'smtp_helo_name = %s' % configRegistry.get('mail/smtp/helo/name', fqdn)
-print
+	print('myorigin = %s' % fqdn)
+print('smtp_helo_name = %s' % configRegistry.get('mail/smtp/helo/name', fqdn))
+print('')
 if configRegistry.is_false('mail/postfix/dnslookups', False):
-	print 'disable_dns_lookups = yes'
+	print('disable_dns_lookups = yes')
 if configRegistry.is_true('mail/postfix/softbounce', False):
-	print 'soft_bounce = yes'
+	print('soft_bounce = yes')
 if configRegistry.get('mail/postfix/smtp/hostlookup'):
-	print 'smtp_host_lookup = %s' % configRegistry.get('mail/postfix/smtp/hostlookup')
+	print('smtp_host_lookup = %s' % configRegistry.get('mail/postfix/smtp/hostlookup'))
 @!@
 
 append_dot_mydomain = no
@@ -47,54 +47,54 @@ append_dot_mydomain = no
 import re
 
 if configRegistry.get('mail/postfix/inet/interfaces'):
-	print 'inet_interfaces = %s' % configRegistry.get('mail/postfix/inet/interfaces')
-print 'inet_protocols = %s' % configRegistry.get('mail/postfix/inet/protocols', 'ipv4')
+	print('inet_interfaces = %s' % configRegistry.get('mail/postfix/inet/interfaces'))
+print('inet_protocols = %s' % configRegistry.get('mail/postfix/inet/protocols', 'ipv4'))
 
-print
+print('')
 
-print 'mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost')
-print 'mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8')
+print('mydestination = %s' % configRegistry.get('mail/postfix/mydestination', '$myhostname, localhost.$mydomain, localhost'))
+print('mynetworks = %s' % configRegistry.get('mail/postfix/mynetworks', '127.0.0.0/8'))
 # mynetworks_style default: Postfix ≥ 3.0: host, Postfix < 3.0: subnet
-print 'mynetworks_style = %s' % configRegistry.get('mail/postfix/mynetworks_style', 'subnet')
+print('mynetworks_style = %s' % configRegistry.get('mail/postfix/mynetworks_style', 'subnet'))
 
-print
+print('')
 
-print 'masquerade_domains = %s' % configRegistry.get('mail/postfix/masquerade/domains', '$mydomain')
-print 'masquerade_exceptions = %s' % configRegistry.get('mail/postfix/masquerade/exceptions', 'root')
+print('masquerade_domains = %s' % configRegistry.get('mail/postfix/masquerade/domains', '$mydomain'))
+print('masquerade_exceptions = %s' % configRegistry.get('mail/postfix/masquerade/exceptions', 'root'))
 
-print
+print('')
 
 transport_maps = re.split(',\s*', configRegistry.get('mail/postfix/maps/transport', 'hash:/etc/postfix/transport' ))
 if configRegistry.is_true('mail/postfix/transport/ldap/enabled',False):
 	transport_maps.append('ldap:/etc/postfix/ldap.transport')
-print 'transport_maps = %s' % ',\n        '.join(transport_maps)
+print('transport_maps = %s' % ',\n        '.join(transport_maps))
 
 # relay_domains default: Postfix ≥ 3.0: empty, Postfix < 3.0: $mydestination
-print 'relay_domains = %s' % configRegistry.get('mail/postfix/relay/domains', '$mydestination')
+print('relay_domains = %s' % configRegistry.get('mail/postfix/relay/domains', '$mydestination'))
 @!@
 
 # we need to name a smtp relay host to which we forward non-local
 # mails. smtp authentication is also possible.
 @!@
 if configRegistry.get('mail/relayhost'):
-	print 'relayhost = %s' % configRegistry.get('mail/relayhost')
+	print('relayhost = %s' % configRegistry.get('mail/relayhost'))
 
 if configRegistry.is_true('mail/relayauth', False):
-	print 'smtp_sasl_auth_enable = yes'
-	print 'smtp_sasl_security_options = noanonymous'
-	print 'smtp_sasl_password_maps = hash:/etc/postfix/smtp_auth'
+	print('smtp_sasl_auth_enable = yes')
+	print('smtp_sasl_security_options = noanonymous')
+	print('smtp_sasl_password_maps = hash:/etc/postfix/smtp_auth')
 @!@
 
 @!@
 yesno = { True: 'yes', False: 'no' }
-print 'disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/VRFY/disabled', False))
+print('disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/VRFY/disabled', False)))
 @!@
 
 # banner
 @!@
 if configRegistry.get('mail/postfix/smtpd/banner'):
-	print 'smtpd_banner = %s' % configRegistry['mail/postfix/smtpd/banner']
+	print('smtpd_banner = %s' % configRegistry['mail/postfix/smtpd/banner'])
 
 # set to "smtputf8_enable=yes" to reject non-ASCII addresses from clients that don't request SMTPUTF8 support
-print 'smtputf8_enable = %s' % configRegistry.get('mail/postfix/smtputf8_enable', 'no')
+print('smtputf8_enable = %s' % configRegistry.get('mail/postfix/smtputf8_enable', 'no'))
 @!@

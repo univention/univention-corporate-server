@@ -22,32 +22,32 @@ smtpd_private = 'n'
 if configRegistry.is_true('mail/postfix/postscreen/enabled', False):
 	# if postscreen is used, postscreen owns the default smtp port and
 	# passes incoming connections to the actual smtpd process.
-	print '%s      inet  n       -       n       -       1       postscreen' % (
+	print('%s      inet  n       -       n       -       1       postscreen' % (
 		configRegistry.get('mail/smtpport', 'smtp'),
-	)
-	print 'dnsblog   unix  -       -       n       -       0       dnsblog'
-	print 'tlsproxy  unix  -       -       -       -       0       tlsproxy'
+	))
+	print('dnsblog   unix  -       -       n       -       0       dnsblog')
+	print('tlsproxy  unix  -       -       -       -       0       tlsproxy')
 	smtpd_port = 'smtpd'
 	smtpd_type = 'pass'
 	smtpd_private = '-'
 
-print '%-05s     %s  %s       -       n       -       -       smtpd %s%s' % (
+print('%-05s     %s  %s       -       n       -       -       smtpd %s%s' % (
 	smtpd_port,
 	smtpd_type,
 	smtpd_private,
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtp/'),
-)
+))
 
-print 'smtps     inet  n       -       n       -       -       smtpd %s%s' % (
+print('smtps     inet  n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/smtps/'),
-)
+))
 
-print 'submission inet n       -       n       -       -       smtpd %s%s' % (
+print('submission inet n       -       n       -       -       smtpd %s%s' % (
 	opt_verbose,
 	get_options('mail/postfix/mastercf/options/submission/'),
-)
+))
 @!@
 #628      inet  n       -       n       -       -       qmqpd
 pickup    unix  n       -       n       60      1       pickup

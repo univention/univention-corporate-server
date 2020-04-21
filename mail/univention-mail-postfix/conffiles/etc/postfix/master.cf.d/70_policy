@@ -1,5 +1,5 @@
 @!@
 if configRegistry.is_true("mail/postfix/policy/listfilter", False):
-	print "listfilter     unix  -       n       n       -       %s       spawn user=listfilter argv=/usr/share/univention-mail-postfix/listfilter.py" % configRegistry.get("mail/postfix/policy/listfilter/maxproc", "30")
-	print "    -b %s " % configRegistry["ldap/base"]
+	print("listfilter     unix  -       n       n       -       %s       spawn user=listfilter argv=/usr/share/univention-mail-postfix/listfilter.py" % (configRegistry.get("mail/postfix/policy/listfilter/maxproc", "30"),))
+	print("    -b %s " % (configRegistry["ldap/base"],))
 @!@

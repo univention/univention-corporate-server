@@ -1,9 +1,9 @@
 # if virus scanning is desired, all mails can be redirected through amavis.
 @!@
 if configRegistry.is_true('mail/antivir', False):
-	print 'content_filter = smtp-amavis:[127.0.0.1]:10024'
+	print('content_filter = smtp-amavis:[127.0.0.1]:10024')
 
 if configRegistry.get('mail/archivefolder'):
-	print '# Send a blind carbon copy of every mail to this account.'
-	print 'always_bcc = %s' % configRegistry.get('mail/archivefolder')
+	print('# Send a blind carbon copy of every mail to this account.')
+	print('always_bcc = %s' % (configRegistry.get('mail/archivefolder'),))
 @!@

@@ -7,9 +7,9 @@ for key in configRegistry.keys():
 		val = configRegistry[key].strip()
 		if ' ' in val:
 			domain, transp = val.split(' ', 1)
-			print '%-30s %s' % (domain, transp)
+			print('%-30s %s' % (domain, transp))
 		else:
-			print val
+			print(val)
 @!@
 
 

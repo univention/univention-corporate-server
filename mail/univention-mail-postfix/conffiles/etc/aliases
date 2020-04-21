@@ -3,5 +3,5 @@
 @!@
 for key in configRegistry.keys():
 	if key.startswith('mail/alias/'):
-		print '%s: %s' % (key.split('/')[-1], configRegistry[key])
+		print('%s: %s' % (key.split('/')[-1], configRegistry[key]))
 @!@	

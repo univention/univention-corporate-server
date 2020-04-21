@@ -9,8 +9,8 @@ if 'ldap' in val:
 if sender_canonical_maps:
 	val_classes = [ x for x in re.split('[, ]+', configRegistry.get('mail/maps/canonical/sender/classes','')) if x ]
 	if val_classes:
-		print 'sender_canonical_classes = %s' % ', '.join(val_classes)
-	print 'sender_canonical_maps = %s' % ', '.join(sender_canonical_maps)
+		print('sender_canonical_classes = %s' % ', '.join(val_classes))
+	print('sender_canonical_maps = %s' % ', '.join(sender_canonical_maps))
 
 recipient_canonical_maps = []
 val = re.split('[, ]+', configRegistry.get('mail/maps/canonical/recipient/enable',''))
@@ -21,15 +21,15 @@ if 'ldap' in val:
 if recipient_canonical_maps:
 	val_classes = [ x for x in re.split('[, ]+', configRegistry.get('mail/maps/canonical/recipient/classes','')) if x ]
 	if val_classes:
-		print 'recipient_canonical_classes = %s' % ', '.join(val_classes)
-	print 'recipient_canonical_maps = %s' % ', '.join(recipient_canonical_maps)
+		print('recipient_canonical_classes = %s' % ', '.join(val_classes))
+	print('recipient_canonical_maps = %s' % ', '.join(recipient_canonical_maps))
 
 
 local_header_rewrite_clients = re.split('[, ]+', configRegistry.get('mail/postfix/local/header/rewrite/clients',''))
 if local_header_rewrite_clients:
-	print 'local_header_rewrite_clients = %s' % ', '.join(local_header_rewrite_clients)
+	print('local_header_rewrite_clients = %s' % ', '.join(local_header_rewrite_clients))
 
-print
+print('')
 
 # enable virtual tables if requested
 if configRegistry.is_true('mail/postfix/virtual/enabled', False):
@@ -39,22 +39,22 @@ if configRegistry.is_true('mail/postfix/virtual/enabled', False):
 	default_virtual_domains = 'ldap:/etc/postfix/ldap.virtualdomains'
 
 	virtual_alias_domains = re.split(',\s*', configRegistry.get('mail/postfix/virtual/alias/domains', '' ))
-	print '\nvirtual_alias_domains = %s' % ',\n        '.join(virtual_alias_domains)
+	print('\nvirtual_alias_domains = %s' % ',\n        '.join(virtual_alias_domains))
 
 	virtual_alias_maps = re.split(',\s*', configRegistry.get('mail/postfix/virtual/alias/maps', default_virtual_alias_maps))
 	if 'ldap' in val:
 		virtual_alias_maps.append('ldap:/etc/postfix/ldap.virtualwithcanonical')
-	print '\nvirtual_alias_maps = %s' % ',\n        '.join(virtual_alias_maps)
+	print('\nvirtual_alias_maps = %s' % ',\n        '.join(virtual_alias_maps))
 
 	virtual_mailbox_domains = re.split(',\s*', configRegistry.get('mail/postfix/virtual/mailbox/domains', default_virtual_domains ))
-	print '\nvirtual_mailbox_domains = %s' % ',\n        '.join(virtual_mailbox_domains)
+	print('\nvirtual_mailbox_domains = %s' % ',\n        '.join(virtual_mailbox_domains))
 
 	virtual_mailbox_maps = re.split(',\s*', configRegistry.get('mail/postfix/virtual/mailbox/maps', default_virtual_mailbox_maps))
 	if 'ldap' in val:
 		virtual_mailbox_maps.append('ldap:/etc/postfix/ldap.virtualwithcanonical')
-	print '\nvirtual_mailbox_maps = %s' % ',\n        '.join(virtual_mailbox_maps)
+	print('\nvirtual_mailbox_maps = %s' % ',\n        '.join(virtual_mailbox_maps))
 
-	print '\nvirtual_transport = %s' % configRegistry.get('mail/postfix/virtual/transport', 'lmtp:127.0.0.1:2003')
+	print('\nvirtual_transport = %s' % configRegistry.get('mail/postfix/virtual/transport', 'lmtp:127.0.0.1:2003'))
 @!@
 
 canonical_maps = hash:/etc/postfix/canonical
