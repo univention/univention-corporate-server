@@ -6,7 +6,11 @@ src: git
 fix: 1:2.11.0-3+deb9u6
 desc: |
  This update addresses the following issue:
- * git (CVE-2020-5260)
+  * With a crafted URL that contains a newline, the credential
+    helper machinery can be fooled to supply credential information
+    for the wrong host.  The attack has been made impossible by
+    forbidding a newline character in any value passed via the
+    credential protocol. (CVE-2020-5260)
 bug: [51118]
 cve:
 - CVE-2020-5260
