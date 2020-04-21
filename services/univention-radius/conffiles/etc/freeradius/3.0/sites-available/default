@@ -313,9 +313,9 @@ authorize {
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print('\t\tchap')
+	print('\t\tchap')
 else:
-       print('#\tchap')
+	print('#\tchap')
 @!@
 
 	#
@@ -328,9 +328,9 @@ else:
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print('\tmschap')
+	print('\tmschap')
 else:
-       print('#\tmschap')
+	print('#\tmschap')
 @!@
 
 	#
@@ -495,13 +495,13 @@ authenticate {
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print('\tAuth-Type CHAP {')
-       print('\t\tchap')
-       print('\t}')
+	print('\tAuth-Type CHAP {')
+	print('\t\tchap')
+	print('\t}')
 else:
-       print('#      Auth-Type CHAP {')
-       print('#\tchap')
-       print('#      }')
+	print('#      Auth-Type CHAP {')
+	print('#\tchap')
+	print('#      }')
 @!@
 
 	#
@@ -510,13 +510,13 @@ else:
 auth_type = configRegistry.get('freeradius/conf/auth-type/mschap', 'FALSE')
 
 if auth_type and 'TRUE' == auth_type.upper() or 'YES' == auth_type.upper():
-       print('\tAuth-Type MS-CHAP {')
-       print('\t\tmschap')
-       print('\t}')
+	print('\tAuth-Type MS-CHAP {')
+	print('\t\tmschap')
+	print('\t}')
 else:
-       print('#      Auth-Type MS-CHAP {')
-       print('#\tmschap')
-       print('#      }')
+	print('#      Auth-Type MS-CHAP {')
+	print('#\tmschap')
+	print('#      }')
 @!@
 
 	#
