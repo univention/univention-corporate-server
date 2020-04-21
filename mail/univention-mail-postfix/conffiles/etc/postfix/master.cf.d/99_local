@@ -7,7 +7,7 @@ try:
 		print('\n# The following section is included from the file {}.'.format(filename))
 		print('# Please note, that custom options in this file may interfere with the')
 		print('# standard Postfix configuration of Univention Corporate Server!')
-		with open(filename, 'rb') as fd:
+		with open(filename, 'r') as fd:
 			for line in fd:
 				print(line.rstrip())
 		print('# --- end of {} ---\n'.format(filename))
