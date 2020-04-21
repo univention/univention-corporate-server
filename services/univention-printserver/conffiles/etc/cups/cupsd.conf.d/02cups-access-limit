@@ -1,5 +1,4 @@
 @!@
-
 if configRegistry.is_true('cups/access/limit', True):
 	policies = dict()
 
@@ -16,16 +15,16 @@ if configRegistry.is_true('cups/access/limit', True):
 		keys = key.split('/')
 		if len(keys) > 3:
 			policy = keys[2]
-			if not policy in policies:
+			if policy not in policies:
 				policies[policy] = dict()
 			# cups/policy/default/limit/1="Create-Job Print-Job Print-URI Validate-Job"
 			# cups/policy/default/limit/1/Order="Deny,Allow"
 			if keys[3].lower() == 'limit':
 				if len(keys) > 4:
-					if not 'limits' in policies[policy]:
+					if 'limits' not in policies[policy]:
 						policies[policy]['limits'] = dict()
 					counter = keys[4]
-					if not counter in policies[policy]['limits']:
+					if counter not in policies[policy]['limits']:
 						policies[policy]['limits'][counter] = dict()
 					if len(keys) > 5:
 						mode = keys[5]

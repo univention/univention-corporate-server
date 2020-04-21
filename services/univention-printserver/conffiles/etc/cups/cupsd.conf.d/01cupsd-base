@@ -118,13 +118,12 @@ DefaultLanguage de
 # Default entry for cups: "ErrorPolicy stop-printer"
 
 @!@
-
-ErrorPolicy = ['stop-printer','abort-job','retry-job','retry-current-job']
-ucr_errorpolicy = configRegistry.get('cups/errorpolicy');
+ErrorPolicy = ['stop-printer', 'abort-job', 'retry-job', 'retry-current-job']
+ucr_errorpolicy = configRegistry.get('cups/errorpolicy')
 for i in ErrorPolicy:
-    if ucr_errorpolicy == i:
-       print("ErrorPolicy %s " % ucr_errorpolicy)
-       break
+	if ucr_errorpolicy == i:
+		print("ErrorPolicy %s " % ucr_errorpolicy)
+		break
 @!@
 
 #
