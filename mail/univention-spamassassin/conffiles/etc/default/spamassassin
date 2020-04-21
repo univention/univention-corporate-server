@@ -32,7 +32,7 @@ PIDFILE="/var/run/spamd.pid"
 # spamassassin's rules on a nightly basis
 @!@
 if configRegistry.is_true('mail/antispam/rules/autoupdate', True):
-	print 'CRON=1'
+	print('CRON=1')
 else:
-	print 'CRON=0'
+	print('CRON=0')
 @!@

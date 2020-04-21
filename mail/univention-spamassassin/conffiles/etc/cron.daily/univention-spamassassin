@@ -37,6 +37,6 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
 if configRegistry.is_true('mail/antispam/learndaily', False):
-	print '/usr/sbin/univention-sa-learn >> /var/log/univention/spamassassin-learn.log'
+	print('/usr/sbin/univention-sa-learn >> /var/log/univention/spamassassin-learn.log')
 @!@
 

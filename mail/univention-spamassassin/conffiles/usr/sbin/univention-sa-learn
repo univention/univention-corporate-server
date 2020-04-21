@@ -45,15 +45,15 @@ spamFolder = configRegistry.get("mail/dovecot/folder/spam") or "Spam"
 hamFolder = configRegistry.get("mail/dovecot/folder/ham") or "Ham"
 
 if spamFolder.lower() == "none":
-	print "# learning from spam folder disabled via mail/dovecot/folder/spam"
+	print("# learning from spam folder disabled via mail/dovecot/folder/spam")
 else:
-	print "# learing from spam folder %s" % spamFolder
+	print("# learing from spam folder %s" % spamFolder)
 	spamFolder = spamFolder.strip("/").replace("/", ".")
 
 if hamFolder.lower() == "none":
-	print "# learing from ham folder disabled via mail/dovecot/folder/ham"
+	print("# learing from ham folder disabled via mail/dovecot/folder/ham")
 else:
-	print "# learing from ham folder %s" % hamFolder
+	print("# learing from ham folder %s" % hamFolder)
 	hamFolder = hamFolder.strip("/").replace("/", ".")
 
 base_folder = "/var/spool/dovecot/private/"
@@ -73,13 +73,13 @@ for key, value in configRegistry.items():
 			junk += "-wholename \*/\*/Maildir/.%s" % _folder
 
 if junk:
-	print '''
+	print('''
 find %(base)s \( %(junk)s \) \\
 	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam {} \;
-''' % {"base": base_folder, "junk": junk}
+''' % {"base": base_folder, "junk": junk})
 
 if hamFolder.lower() != "none":
-	print '''find %(base)s -wholename %(user)s%(hamFolder)s \\
+	print('''find %(base)s -wholename %(user)s%(hamFolder)s \\
 	-exec $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham {} \;
-''' % {"base": base_folder, "user": user_folder, "hamFolder": hamFolder}
+''' % {"base": base_folder, "user": user_folder, "hamFolder": hamFolder})
 @!@

@@ -5,15 +5,15 @@ required_score           @%@mail/antispam/requiredhits@%@
 
 @!@
 if configRegistry.is_true('mail/antispam/learndaily'):
-	print '# Mail which scores outside this range will be fed back into SpamAssassin\'s'
-	print '# learning system automatically, to train the Bayesian scanner.'
-	print 'ifplugin Mail::SpamAssassin::Plugin::AutoLearnThreshold'
-	print 'bayes_auto_learn_threshold_nonspam	0.1'
-	print 'bayes_auto_learn_threshold_spam		12.0'
-	print 'endif # Mail::SpamAssassin::Plugin::AutoLearnThreshold'
-	print ''
-	print '# Set this to 0 to turn off auto-learning.'
-	print 'bayes_auto_learn			1'
+	print('# Mail which scores outside this range will be fed back into SpamAssassin\'s')
+	print('# learning system automatically, to train the Bayesian scanner.')
+	print('ifplugin Mail::SpamAssassin::Plugin::AutoLearnThreshold')
+	print('bayes_auto_learn_threshold_nonspam	0.1')
+	print('bayes_auto_learn_threshold_spam		12.0')
+	print('endif # Mail::SpamAssassin::Plugin::AutoLearnThreshold')
+	print('')
+	print('# Set this to 0 to turn off auto-learning.')
+	print('bayes_auto_learn			1')
 else:
-	print 'bayes_auto_learn			0'
+	print('bayes_auto_learn			0')
 @!@
