@@ -9,10 +9,10 @@
 
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group')
 	prefix = 'dansguardian/groups/%s/exception/regexp/urls/' % group
 	for key in configRegistry.keys():
-		if key.startswith( prefix ):
-			print configRegistry[ key ]
+		if key.startswith(prefix):
+			print(configRegistry[key])
 @!@

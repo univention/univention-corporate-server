@@ -3,15 +3,15 @@
 #Banned extension list
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	banned = configRegistry.get( 'dansguardian/groups/%s/banned/extensions' % group, '' )
-	for entry in banned.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group')
+	banned = configRegistry.get('dansguardian/groups/%s/banned/extensions' % group, '')
+	for entry in banned.split(' '):
+		print(entry)
 
 	# print default config file entry
 	if not banned:
-		print '''
+		print('''
 # File extensions with executable code
 
 # The following file extensions can contain executable code.
@@ -109,5 +109,5 @@ if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
 .wmf  # Movie file
 .bin # CD ISO image
 .cue # CD ISO image
-'''
+''')
 @!@

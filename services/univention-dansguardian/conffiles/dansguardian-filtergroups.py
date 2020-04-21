@@ -49,13 +49,11 @@ def handler(configRegistry, changes):
 
 		# primary filter group configuration file
 		src = os.path.join(TEMPLATE_PATH, 'dansguardianfX.conf')
-		src_fd = open(src)
-		conf = os.path.join(CONFIG_PATH, 'dansguardianf%d.conf' % (i + 1))
-		content = ucr.filter(src_fd.read(), configRegistry, srcfiles=[src])
-		src_fd.close()
-		fd = open(conf, 'w')
-		fd.write(content)
-		fd.close()
+		with open(src) as src_fd:
+			conf = os.path.join(CONFIG_PATH, 'dansguardianf%d.conf' % (i + 1))
+			content = ucr.filter(src_fd.read(), configRegistry, srcfiles=[src])
+		with open(conf, 'w') as fd:
+			fd.write(content)
 
 		ignore_templates_for_groups = ['bannediplist', 'exceptioniplist']
 		# several lists for filter groups
@@ -63,13 +61,11 @@ def handler(configRegistry, changes):
 			if entry not in ignore_templates_for_groups:
 				abs_filename = os.path.join(TEMPLATE_PATH, 'lists', entry)
 				if os.path.isfile(abs_filename):
-					template = open(abs_filename)
-					conf = os.path.join(CONFIG_PATH, 'lists', '%s-%s' % (groups[i], entry))
-					content = ucr.filter(template.read(), configRegistry, srcfiles=[abs_filename])
-					template.close()
-					fd = open(conf, 'w')
-					fd.write(content)
-					fd.close()
+					with open(abs_filename) as template:
+						conf = os.path.join(CONFIG_PATH, 'lists', '%s-%s' % (groups[i], entry))
+						content = ucr.filter(template.read(), configRegistry, srcfiles=[abs_filename])
+					with open(conf, 'w') as fd:
+						fd.write(content)
 					files_written.append(conf)
 
 	# remove old filter lists
@@ -78,8 +74,6 @@ def handler(configRegistry, changes):
 			os.unlink(f)
 
 	ucr.handler_unset(['dansguardian/current/groupno', 'dansguardian/current/group'])
-
-# test
 
 
 if __name__ == '__main__':

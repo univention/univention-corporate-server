@@ -3,9 +3,9 @@
 # MIME types the virus scanning code ignores.
 
 @!@
-if configRegistry.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not configRegistry.get('dansguardian/virus/exception/mimetypes', '') == '':
-                for extension in configRegistry['dansguardian/virus/exception/mimetypes'].split(" "):
-                        print extension
+if configRegistry.is_true('squid/virusscan'):
+	if not configRegistry.get('dansguardian/virus/exception/mimetypes', '') == '':
+		for extension in configRegistry['dansguardian/virus/exception/mimetypes'].split(" "):
+			print(extension)
 @!@
 

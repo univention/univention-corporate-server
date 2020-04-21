@@ -12,10 +12,10 @@
 
 @!@
 findex = 1
-for group in configRegistry.get( 'dansguardian/groups', '' ).split( ';' ):
-	for address in configRegistry.get( 'dansguardian/groups/%s/addresses' % group, '' ).split( ';' ):
+for group in configRegistry.get('dansguardian/groups', '').split(';'):
+	for address in configRegistry.get('dansguardian/groups/%s/addresses' % group, '').split(';'):
 		if not address:
 			continue
-		print '%s = filter%d' % ( address, findex )
+		print('%s = filter%d' % (address, findex))
 	findex += 1
 @!@

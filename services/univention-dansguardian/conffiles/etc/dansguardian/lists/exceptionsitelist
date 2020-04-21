@@ -19,9 +19,9 @@
 # windowsupdate.com
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	exception = configRegistry.get( 'dansguardian/groups/%s/exception/sites' % group, '' )
-	for entry in exception.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group')
+	exception = configRegistry.get('dansguardian/groups/%s/exception/sites' % group, '')
+	for entry in exception.split(' '):
+		print(entry)
 @!@

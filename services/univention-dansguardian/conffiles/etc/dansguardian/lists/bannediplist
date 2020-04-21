@@ -10,8 +10,8 @@
 #you want to filter.
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	banned = configRegistry.get( 'dansguardian/bannedipaddresses', '' )
-	for entry in banned.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	banned = configRegistry.get('dansguardian/bannedipaddresses', '')
+	for entry in banned.split(' '):
+		print(entry)
 @!@

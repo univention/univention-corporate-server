@@ -4,8 +4,8 @@
 # The Virus scanning code will ignore files with these extensions.
 
 @!@
-if configRegistry.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not configRegistry.get('dansguardian/virus/exception/extensions', '') == '':
-                for extension in configRegistry['dansguardian/virus/exception/extensions'].split(" "):
-                        print extension
+if configRegistry.is_true('squid/virusscan'):
+	if not configRegistry.get('dansguardian/virus/exception/extensions', '') == '':
+		for extension in configRegistry['dansguardian/virus/exception/extensions'].split(" "):
+			print(extension)
 @!@

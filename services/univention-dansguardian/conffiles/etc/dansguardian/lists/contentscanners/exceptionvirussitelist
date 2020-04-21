@@ -15,9 +15,9 @@
 
 
 @!@
-if configRegistry.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not configRegistry.get('dansguardian/virus/exception/sites', '') == '':
-                for site in configRegistry['dansguardian/virus/exception/sites'].split(" "):
-                        print site
+if configRegistry.is_true('squid/virusscan'):
+	if not configRegistry.get('dansguardian/virus/exception/sites', '') == '':
+		for site in configRegistry['dansguardian/virus/exception/sites'].split(" "):
+			print(site)
 @!@
 

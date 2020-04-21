@@ -109,7 +109,7 @@ Categories=service-webproxy
 [dansguardian/groups/system]
 Description[de]=Ist diese Variable nicht oder auf 'yes' gesetzt, werden die Standard-Gruppen aus dem LDAP für die Filtergruppen verwendet.
 Description[en]=If this variable is unset or set to 'yes', the standard groups from the LDAP directory are used as filter groups.
-Type=str
+Type=bool
 Categories=service-webproxy
 
 [dansguardian/groups/.*/members]
@@ -145,5 +145,5 @@ Categories=service-webproxy
 [dansguardian/auth/ip]
 Description[de]=Aktiviert die IP-basierte Authentifizierung (siehe 'dansguardian/groups/.*/addresses'). Ist die Variable nicht gesetzt, ist die IP-basierte Authentifizierung deaktiviert.
 Description[en]=Activates IP-based authentication (see 'dansguardian/groups/.*/addresses'). If the variable is unset, the IP-based authentication is disabled.
-Type=str
+Type=bool
 Categories=service-webproxy

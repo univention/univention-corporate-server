@@ -18,8 +18,8 @@
 #you don't want to filter.
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	exception = configRegistry.get( 'dansguardian/exceptionipaddresses', '' )
-	for entry in exception.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	exception = configRegistry.get('dansguardian/exceptionipaddresses', '')
+	for entry in exception.split(' '):
+		print(entry)
 @!@

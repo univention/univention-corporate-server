@@ -34,9 +34,9 @@
 #.Include</etc/dansguardian/blacklists/ads/urls>
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	banned = configRegistry.get( 'dansguardian/groups/%s/banned/urls' % group, '' )
-	for entry in banned.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group')
+	banned = configRegistry.get('dansguardian/groups/%s/banned/urls' % group, '')
+	for entry in banned.split(' '):
+		print(entry)
 @!@
