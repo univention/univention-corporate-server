@@ -895,20 +895,45 @@
 				contact e-mail address. The token has to be entered on the dedicated password reset web page.
 			</para>
             <para>
-                The &ucsUCRV;
-                <envar>umc/self-service/passwordchange/frontend/enabled</envar>
-                can activate or deactivate the page to change the password. The
-                page to reset the password is controlled by &ucsUCRV;
-                <envar>umc/self-service/passwordreset/frontend/enabled</envar>.
-                The corresponding &ucsUCRV;
-                <envar>umc/self-service/passwordreset/backend/enabled</envar>
-                is used to disable the function in the backend as well. The
-                &ucsUCRV;
-                <envar>umc/self-service/protect-account/frontend/enabled</envar>
-                can activate and deactivate the site to set a second contact
-                e-mail address. The corresponding &ucsUCRV; is called
-                <envar>umc/self-service/protect-account/backend/enabled</envar>.
-            </para>
+				The following &ucsUCRV;s can be used to activate or deactivate individual features
+				of the password management.
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><envar>umc/self-service/passwordreset/frontend/enabled</envar></term>
+					<listitem><simpara>
+						Activates or deactivates the "Password forgotten" page of the Self Service on individual hosts.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/passwordreset/backend/enabled</envar></term>
+					<listitem><simpara>
+						Activates or deactivates the backend of the "Password forgotten" page.
+						This &ucsUCRV; has to be set on the systems that is defined as Self Service backend via the &ucsUCRV;
+						<envar>self-service/backend-server</envar>, since requests regarding these variables are forwarded to the Self Service backend.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/protect-account/frontend/enabled</envar></term>
+					<listitem><simpara>
+						Activates or deactivates the "Protect account" page of the Self Service on individual hosts.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/protect-account/backend/enabled</envar></term>
+					<listitem><simpara>
+						Activates or deactivates the backend of the "Protect account" page.
+						This &ucsUCRV; has to be set on the systems that is defined as Self Service backend via the &ucsUCRV;
+						<envar>self-service/backend-server</envar>, since requests regarding these variables are forwarded to the Self Service backend.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/passwordchange/frontend/enabled</envar></term>
+					<listitem><simpara>
+						Activates or deactivates the "Password change" page of the Self Service on individual hosts.
+					</simpara></listitem>
+				</varlistentry>
+			</variablelist>
 			<para>
 				The design of the Self Service app can be customized via the file <filename>/usr/share/univention-self-service/www/css/custom.css</filename>.
 				This file is not overwritten during an update.

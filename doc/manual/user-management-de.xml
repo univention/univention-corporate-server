@@ -929,21 +929,49 @@
 				des Passworts wird ein <foreignphrase>Token</foreignphrase> an eine vorher dafür registrierte
 				Kontakt-E-Mail-Adresse gesendet, das dann auf der Webseite vom Benutzer einzugeben ist.
 			</para>
-            <para>
-                Durch die &ucsUCRV;
-                <envar>umc/self-service/passwordchange/frontend/enabled</envar>
-                kann die Seite zum Ändern des Passworts einzeln aktiviert bzw.
-                deaktiviert werden. Für Seite zum Zurücksetzen des Passworts
-                ist die &ucsUCRV;
-                <envar>umc/self-service/passwordreset/frontend/enabled</envar>
-                zuständig. Hier gibt es auch noch die dazugehörige &ucsUCRV;
-                <envar>umc/self-service/passwordreset/backend/enabled</envar>,
-                die die Funktion im Backend abschalten kann. Die &ucsUCRV;
-                <envar>umc/self-service/protect-account/frontend/enabled</envar>
-                aktiviert bzw. deaktiviert die Seite zum setzen einer zweiten
-                E-Mail-Adresse. Die dazugehörige &ucsUCRV; heißt
-                <envar>umc/self-service/protect-account/backend/enabled</envar>.
-            </para>
+			<para>
+				Mit den folgenden &ucsUCRV;n können einzelne Funktionen der Passwort-Verwaltung
+				aktiviert bzw. deaktiviert werden.
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><envar>umc/self-service/passwordreset/frontend/enabled</envar></term>
+					<listitem><simpara>
+						Aktiviert bzw. deaktiviert die "Passwort vergessen"-Seite des
+						<foreignphrase>Self Service</foreignphrase> auf einzelnen Systemen.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/passwordreset/backend/enabled</envar></term>
+					<listitem><simpara>
+						Aktiviert bzw. deaktiviert die Backend-Funktionalität der "Passwort vergessen"-Seite.
+						Diese &ucsUCR; muss auf dem <foreignphrase>Self Service Backend</foreignphrase> gesetzt werden, das über die &ucsUCRV; <envar>self-service/backend-server</envar>
+						definiert ist, da Anfragen bezüglich dieser Variablen an das <foreignphrase>Self Service Backend</foreignphrase> weitergeleitet werden.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/protect-account/frontend/enabled</envar></term>
+					<listitem><simpara>
+						Aktiviert bzw. deaktiviert die "Kontozugang schützen"-Seite des
+						<foreignphrase>Self Service</foreignphrase> auf einzelnen Systemen.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/protect-account/backend/enabled</envar></term>
+					<listitem><simpara>
+						Aktiviert bzw. deaktiviert die Backend-Funktionalität der "Kontozugang schützen"-Seite.
+						Diese &ucsUCR; muss auf dem <foreignphrase>Self Service Backend</foreignphrase> gesetzt werden, das über die &ucsUCRV; <envar>self-service/backend-server</envar>
+						definiert ist, da Anfragen bezüglich dieser Variablen an das <foreignphrase>Self Service Backend</foreignphrase> weitergeleitet werden.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/passwordchange/frontend/enabled</envar></term>
+					<listitem><simpara>
+						Aktiviert bzw. deaktiviert die "Passwort ändern"-Seite des
+						<foreignphrase>Self Service</foreignphrase> auf einzelnen Systemen.
+					</simpara></listitem>
+				</varlistentry>
+			</variablelist>
 			<para>
 				Das Design der <foreignphrase>Self Service-App</foreignphrase> kann durch die Datei <filename>/usr/share/univention-self-service/www/css/custom.css</filename> angepasst werden.
 				Diese Datei wird während eines Updates nicht überschrieben.
