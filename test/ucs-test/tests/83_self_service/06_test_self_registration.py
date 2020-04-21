@@ -314,7 +314,7 @@ def test_send_verification_token(umc_client, mails, ucr, testudm, get_registrati
 def test_deregistration_enabled(umc_client, ucr):
 	ucr.handler_set(['umc/self-service/account-deregistration/enabled=false'])
 	with pytest.raises(HTTPError) as excinfo:
-		umc_client.umc_command('passwordreset/foo', {
+		umc_client.umc_command('passwordreset/deregister_account', {
 			'username': 'xxx',
 			'password': 'xxx'
 		})
@@ -323,7 +323,7 @@ def test_deregistration_enabled(umc_client, ucr):
 
 def test_deregistration_wrong_auth(umc_client, ucr):
 	with pytest.raises(HTTPError) as excinfo:
-		umc_client.umc_command('passwordreset/foo', {
+		umc_client.umc_command('passwordreset/deregister_account', {
 			'username': 'xxx',
 			'password': 'xxx'
 		})
@@ -341,7 +341,7 @@ def test_deregistration(umc_client, mails, testudm, readudm):
 		'univentionDeregistrationTimestamp': []
 	})
 	timestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), '%Y%m%d%H%M%SZ')
-	umc_client.umc_command('passwordreset/foo', {
+	umc_client.umc_command('passwordreset/deregister_account', {
 		'username': username,
 		'password': password
 	})
@@ -365,7 +365,7 @@ def test_deregistration_text_file_ucr_var(umc_client, mails, ucr, testudm, tmpdi
 		'PasswordRecoveryEmail': 'root@localhost',
 		'password': password,
 	})
-	umc_client.umc_command('passwordreset/foo', {
+	umc_client.umc_command('passwordreset/deregister_account', {
 		'username': username,
 		'password': password
 	})
@@ -380,7 +380,7 @@ def test_deregistration_sender_address_ucr_var(umc_client, mails, ucr, testudm):
 		'PasswordRecoveryEmail': 'root@localhost',
 		'password': password,
 	})
-	umc_client.umc_command('passwordreset/foo', {
+	umc_client.umc_command('passwordreset/deregister_account', {
 		'username': username,
 		'password': password
 	})
