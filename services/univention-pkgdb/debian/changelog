@@ -1,3 +1,9 @@
+univention-pkgdb (12.0.1-4) unstable; urgency=medium
+
+  * Bug #51139: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 15:54:12 +0200
+
 univention-pkgdb (12.0.1-3) unstable; urgency=medium
 
   * Bug #49173: migrate univention-pkgdb to dh_python

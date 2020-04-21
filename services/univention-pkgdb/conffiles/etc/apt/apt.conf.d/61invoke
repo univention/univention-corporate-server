@@ -2,12 +2,12 @@
 
 @!@
 if configRegistry.is_true('pkgdb/scan'):
-	print 'DPkg'
-	print '{'
+	print('DPkg')
+	print('{')
 	if configRegistry.is_true('pkgdb/overwrite/joincheck', False):
 		join_test = ""
 	else:
 		join_test = "test -e /usr/share/univention-join/.joined && "
-	print '\tPost-Invoke {"%stest -x /usr/sbin/univention-pkgdb-scan && /usr/sbin/univention-pkgdb-scan || true";};' % join_test
-	print '}'
+	print('\tPost-Invoke {"%stest -x /usr/sbin/univention-pkgdb-scan && /usr/sbin/univention-pkgdb-scan || true";};' % join_test)
+	print('}')
 @!@
