@@ -2,6 +2,6 @@
 
 @!@
 # the fetchmail package init script evaluates fetchmail/autostart
-print "START_DAEMON=yes"
+print("START_DAEMON=yes")
 @!@
 
