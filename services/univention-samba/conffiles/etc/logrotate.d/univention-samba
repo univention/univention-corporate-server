@@ -5,15 +5,15 @@ import univention.lib.ucrLogrotate
 
 name = "samba-sync"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
+print("/var/log/univention/%s.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+	print("\t%s" % settings[setting])
+print("}")
 
 name = "pdc-takeover"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
+print("/var/log/univention/%s.log {" % name)
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+	print("\t%s" % settings[setting])
+print("}")
 @!@

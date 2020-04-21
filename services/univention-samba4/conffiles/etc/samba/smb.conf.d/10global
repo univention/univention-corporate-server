@@ -53,17 +53,17 @@ print('\ttls keyfile\t= /etc/univention/ssl/%s/private.key' % fqdn)
 print('\ttls certfile\t= /etc/univention/ssl/%s/cert.pem' % fqdn)
 print('\ttls cafile\t= /etc/univention/ssl/ucsCA/CAcert.pem')
 for key, smbstring in [
-		('samba/tls/dh/params/file', 'tls dh params file'),
-		('samba/tls/priority', 'tls priority'),
-	]:
+	('samba/tls/dh/params/file', 'tls dh params file'),
+	('samba/tls/priority', 'tls priority'),
+]:
 	ucrvalue = configRegistry.get(key)
 	if ucrvalue:
 		print('\t%s\t= %s' % (smbstring, ucrvalue))
 
 for key, smbstring, ucsdefault in [
-		('samba/tls/verify/peer', 'tls verify peer', 'ca_and_name'),
-		('samba/ldap/server/require/strong/auth', 'ldap server require strong auth', 'allow_sasl_over_tls'),
-	]:
+	('samba/tls/verify/peer', 'tls verify peer', 'ca_and_name'),
+	('samba/ldap/server/require/strong/auth', 'ldap server require strong auth', 'allow_sasl_over_tls'),
+]:
 	ucrvalue = configRegistry.get(key)
 	if ucrvalue:
 		print('\t%s\t= %s' % (smbstring, ucrvalue))
@@ -80,14 +80,14 @@ if max_open_files:
 	print('\tmax open files = %s' % max_open_files)
 
 for key, smbstring in [
-		('samba/interfaces', 'interfaces'),
-		('samba/interfaces/bindonly', 'bind interfaces only'),
-		('samba/server/signing', 'server signing'),
-		('samba/charset/dos', 'dos charset'),
-		('samba/charset/unix', 'unix charset'),
-		('samba/socket_options', 'socket options'),
-		('samba/netbios/aliases', 'netbios aliases'),
-	]:
+	('samba/interfaces', 'interfaces'),
+	('samba/interfaces/bindonly', 'bind interfaces only'),
+	('samba/server/signing', 'server signing'),
+	('samba/charset/dos', 'dos charset'),
+	('samba/charset/unix', 'unix charset'),
+	('samba/socket_options', 'socket options'),
+	('samba/netbios/aliases', 'netbios aliases'),
+]:
 	if configRegistry.get(key):
 		if key == 'samba/interfaces':
 			print('\t%s\t= %s' % (smbstring, configRegistry[key].replace('<interfaces/primary>', configRegistry.get('interfaces/primary', 'eth0'))))
@@ -99,9 +99,9 @@ print('\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only'
 ## legacy settings for smbd
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	for key, smbstring in [
-			('samba/charset/display', 'display charset'),
-			('samba/enable-privileges', 'enable privileges'),
-		]:
+		('samba/charset/display', 'display charset'),
+		('samba/enable-privileges', 'enable privileges'),
+	]:
 		value = configRegistry.get(key)
 		if value is not None:
 			print('\t%s\t= %s' % (smbstring, value))

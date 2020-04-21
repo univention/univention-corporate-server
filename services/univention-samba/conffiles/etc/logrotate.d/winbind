@@ -1,19 +1,20 @@
 @%@UCRWARNING=# @%@
 
 @!@
+import sys
 import univention.lib.ucrLogrotate
 
 daemon = 'winbindd'
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(daemon, configRegistry)
 
 for filename in ('winbindd', 'winbindd-idmap', 'winbindd-dc-connect', 'wb-BUILTIN', 'wb-%s' % configRegistry['windows/domain'], 'wb-%s' % configRegistry['hostname'].upper()):
-	print "/var/log/samba/log.%s" % filename,
-print "{"
+	sys.stdout.write("/var/log/samba/log.%s" % filename)
+print("{")
 
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "\tpostrotate"
-print "\t\t[ ! -f /var/run/samba/%s.pid ] || kill -HUP `cat /var/run/samba/%s.pid`" % (daemon, daemon)
-print "\tendscript"
-print "}"
+	print("\t%s" % settings[setting])
+print("\tpostrotate")
+print("\t\t[ ! -f /var/run/samba/%s.pid ] || kill -HUP `cat /var/run/samba/%s.pid`" % (daemon, daemon))
+print("\tendscript")
+print("}")
 @!@

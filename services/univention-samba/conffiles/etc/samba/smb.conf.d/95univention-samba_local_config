@@ -32,7 +32,7 @@ for key in configRegistry.keys():
 		include = True
 
 if include:
-	print "\tinclude = %s\n" % include_file
+	print("\tinclude = %s\n" % include_file)
 
 @!@
 

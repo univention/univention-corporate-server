@@ -3,51 +3,51 @@
 @!@
 ### <idmap config v6 for Samba 3.6.0>
 ## Note: ldap idmap suffix might be obsoleted by 'idmap config * : ldap_base_dn'
-print '\tldap idmap suffix = cn=idmap,cn=univention'
+print('\tldap idmap suffix = cn=idmap,cn=univention')
 
-ldap_server_name=configRegistry.get('ldap/server/name', 'localhost')
-ldap_server_port=configRegistry.get('ldap/server/port', '7389')
-ldap_base=configRegistry['ldap/base']
-admindn=configRegistry.get('samba/user')
+ldap_server_name = configRegistry.get('ldap/server/name', 'localhost')
+ldap_server_port = configRegistry.get('ldap/server/port', '7389')
+ldap_base = configRegistry['ldap/base']
+admindn = configRegistry.get('samba/user')
 if not admindn:
 	if configRegistry['server/role'] == 'domaincontroller_master':
-		admindn='cn=admin,%s' % (ldap_base)
+		admindn = 'cn=admin,%s' % (ldap_base)
 	else:
-		admindn='cn=backup,%s' % (ldap_base)
+		admindn = 'cn=backup,%s' % (ldap_base)
 
 ldapserver = configRegistry['ldap/server/name'].split(' ')
-if configRegistry.get('ldap/server/addition',''):
-	ldapserver.extend( configRegistry.get('ldap/server/addition').split(' ') )
-port=configRegistry.get('ldap/server/port', '7389')
-ldapserver=map(lambda s: '%s:%s' % (s,port) , ldapserver)
+if configRegistry.get('ldap/server/addition', ''):
+	ldapserver.extend(configRegistry.get('ldap/server/addition').split(' '))
+port = configRegistry.get('ldap/server/port', '7389')
+ldapserver = ['%s:%s' % (s, port) for s in ldapserver]
 
-print '\tidmap config * : backend\t= ldap'
-print '\tidmap config * : range\t\t= %s' % configRegistry.get('samba/idmap/range', '55000-64000')
-print '\tidmap config * : ldap_url\t= ldap://%s' % ' ldap://'.join(ldapserver)
-print '\tidmap config * : ldap_user_dn\t= %s' % (admindn)
-## print '\tidmap config * : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base)
+print('\tidmap config * : backend\t= ldap')
+print('\tidmap config * : range\t\t= %s' % configRegistry.get('samba/idmap/range', '55000-64000'))
+print('\tidmap config * : ldap_url\t= ldap://%s' % ' ldap://'.join(ldapserver))
+print('\tidmap config * : ldap_user_dn\t= %s' % (admindn))
+## print('\tidmap config * : ldap_base_dn\t= cn=idmap,cn=univention,%s' % (ldap_base))
 
 # replacement for deprecated samba/winbind/trusted/domains/only=yes
 if configRegistry.get('windows/domain'):
-	mydomain=configRegistry['windows/domain'].upper()
+	mydomain = configRegistry['windows/domain'].upper()
 	defaultrange = '1000-54999'
 	# try uppercase domain, then allow for lowercase, otherwise use defaultrange
 	range = configRegistry.get('samba/idmap/%s/range' % mydomain, configRegistry.get('samba/idmap/%s/range' % mydomain.lower(), defaultrange))
-	print '\tidmap config %s : backend = nss' % (mydomain, )
-	print '\tidmap config %s : range = %s' % (mydomain, range)
-	### </idmap config v6 for Samba 3.6.0>
+	print('\tidmap config %s : backend = nss' % (mydomain, ))
+	print('\tidmap config %s : range = %s' % (mydomain, range))
+	# </idmap config v6 for Samba 3.6.0>
 
 if configRegistry.get('samba/winbind/trusted/domains/only', 'no') in ('yes', 'true'):
-	print '\twinbind trusted domains only = yes'	# deprecated legacy setting
+	print('\twinbind trusted domains only = yes')  # deprecated legacy setting
 
-print '\n\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/clients', '500')
+print('\n\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/clients', '500'))
 
 if configRegistry.get('samba/winbind/nested/groups'):
-	print '\twinbind nested groups = %s' % configRegistry['samba/winbind/nested/groups']
+	print('\twinbind nested groups = %s' % configRegistry['samba/winbind/nested/groups'])
 
 winbind_rpc_only = configRegistry.get('samba/winbind/rpc/only')
 if winbind_rpc_only:
-	print '\twinbind rpc only = %s' % winbind_rpc_only
+	print('\twinbind rpc only = %s' % winbind_rpc_only)
 @!@
 	winbind enum users = yes
 	winbind enum groups = yes

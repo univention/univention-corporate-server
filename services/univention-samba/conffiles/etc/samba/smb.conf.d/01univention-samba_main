@@ -2,36 +2,38 @@
 
 [global]
 @!@
-print '\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 0)
-print '\tlogging\t\t= file'
-print '\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0)
+print('\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 0))
+print('\tlogging\t\t= file')
+print('\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0))
 
 max_open_files = configRegistry.get('samba/max_open_files')
 if max_open_files:
-	print '\tmax open files = %s' % max_open_files
+	print('\tmax open files = %s' % max_open_files)
 if configRegistry.get('samba/serverstring'):
-	print '\tserver string = %s' % configRegistry['samba/serverstring']
+	print('\tserver string = %s' % configRegistry['samba/serverstring'])
 else:
-	print '\tserver string = %h univention corporate server'
+	print('\tserver string = %h univention corporate server')
 
-for key, smbstring in [('samba/interfaces','interfaces'),
-		       ('samba/charset/dos', 'dos charset'),
-		       ('samba/charset/unix', 'unix charset'),
-		       ('samba/charset/display', 'display charset'),
-		       ('samba/enable-privileges', 'enable privileges'),
-			   ('samba/interfaces/bindonly', 'bind interfaces only'),]:
+for key, smbstring in [
+	('samba/interfaces', 'interfaces'),
+	('samba/charset/dos', 'dos charset'),
+	('samba/charset/unix', 'unix charset'),
+	('samba/charset/display', 'display charset'),
+	('samba/enable-privileges', 'enable privileges'),
+	('samba/interfaces/bindonly', 'bind interfaces only'),
+]:
 	if configRegistry.get(key):
-		print '\t%s = %s' % (smbstring, configRegistry[key])
+		print('\t%s = %s' % (smbstring, configRegistry[key]))
 
 if configRegistry.get('samba/socket_options'):
-	print '\tsocket options = %s' % configRegistry['samba/socket_options']
+	print('\tsocket options = %s' % configRegistry['samba/socket_options'])
 
-print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only'))
+print('\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only')))
 
-print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0))
+print('\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0)))
 
 if configRegistry.is_true('samba/acl/allow/execute/always', True):
-	print '\tacl allow execute always = True'
+	print('\tacl allow execute always = True')
 
 if configRegistry.get('samba/register/exclude/interfaces') and not configRegistry.is_true('samba/interfaces/bindonly', False):
 	from univention.config_registry.interfaces import Interfaces
@@ -45,8 +47,8 @@ if configRegistry.get('samba/register/exclude/interfaces') and not configRegistr
 		if configRegistry.get('interfaces/%s/type' % iface, '') == 'appliance-mode-temporary':
 			interface_list.remove(iface)
 	if interface_list:
-		print
-		print '\t# ignore interfaces in samba/register/exclude/interfaces'
-		print '\tbind interfaces only = yes'
-		print '\tinterfaces = lo %s' % ' '.join(interface_list)
+		print('')
+		print('\t# ignore interfaces in samba/register/exclude/interfaces')
+		print('\tbind interfaces only = yes')
+		print('\tinterfaces = lo %s' % ' '.join(interface_list))
 @!@

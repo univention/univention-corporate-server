@@ -1,11 +1,11 @@
 	netbios name = @!@
 if configRegistry.get('samba/netbios/name'):
-	print '%s' % configRegistry['samba/netbios/name']
+	print('%s' % configRegistry['samba/netbios/name'])
 else:
-	print '%s' % configRegistry['hostname']
+	print('%s' % configRegistry['hostname'])
 @!@
 
 @!@
 if configRegistry.get('samba/netbios/aliases'):
-	print '\tnetbios aliases = %s' % configRegistry['samba/netbios/aliases']
+	print('\tnetbios aliases = %s' % configRegistry['samba/netbios/aliases'])
 @!@

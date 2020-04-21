@@ -1,52 +1,54 @@
 
 	; domain
 @!@
+import sys
+
 domain_logons = configRegistry.get('samba/domain/logons', 'auto')
 if configRegistry['samba/role'] != 'memberserver':
-	if configRegistry.get( 'samba/role', '' ).lower() == 'bdc':
-		print '\tsecurity = user'
+	if configRegistry.get('samba/role', '').lower() == 'bdc':
+		print('\tsecurity = user')
 
-		if not domain_logons in [ 'yes', 'no' ]:
+		if domain_logons not in ['yes', 'no']:
 			domain_logons = 'yes'
-		print '\tdomain logons = %s' % domain_logons
+		print('\tdomain logons = %s' % domain_logons)
 
-		print '\tdomain master = no'
-		print '\tpreferred master = %s' % configRegistry.get( 'samba/preferred/master', 'yes' )
-		print '\tlocal master = %s' % configRegistry.get( 'samba/local/master', 'yes' )
+		print('\tdomain master = no')
+		print('\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes'))
+		print('\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes'))
 	else:
-		print '\tsecurity = user'
-		if not domain_logons in [ 'yes', 'no' ]:
+		print('\tsecurity = user')
+		if domain_logons not in ['yes', 'no']:
 			domain_logons = 'yes'
-		print '\tdomain logons = %s' % domain_logons
+		print('\tdomain logons = %s' % domain_logons)
 		if configRegistry['server/role'] == 'domaincontroller_master' or configRegistry.get('samba/domainmaster') == 'yes':
-			print '\tdomain master = yes'
+			print('\tdomain master = yes')
 		else:
-			print '\tdomain master = no'
-		print '\tpreferred master = %s' % configRegistry.get( 'samba/preferred/master', 'yes' )
-		print '\tlocal master = %s' % configRegistry.get( 'samba/local/master', 'yes' )
+			print('\tdomain master = no')
+		print('\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes'))
+		print('\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes'))
 else:
 	samba_domain_security = configRegistry.get('samba/domain/security', 'domain')
-	print '\tsecurity = %s' % samba_domain_security
+	print('\tsecurity = %s' % samba_domain_security)
 
 	if samba_domain_security == 'ads':
-		print '\trealm = %s' % configRegistry.get('kerberos/realm')
-	if not domain_logons in [ 'yes', 'no' ]:
+		print('\trealm = %s' % configRegistry.get('kerberos/realm'))
+	if domain_logons not in ['yes', 'no']:
 		domain_logons = 'no'
-	print '\tdomain logons = %s' % domain_logons
+	print('\tdomain logons = %s' % domain_logons)
 
-	print '\tdomain master = no'
-	print '\tpreferred master = no'
-	print '\tlocal master = no'
+	print('\tdomain master = no')
+	print('\tpreferred master = no')
+	print('\tlocal master = no')
 
 samba_os_level = configRegistry.get('samba/os/level')
 if samba_os_level:
-	print '\tos level = %s' % samba_os_level
+	print('\tos level = %s' % samba_os_level)
 
 wins_support = configRegistry.get('windows/wins-support')
 if wins_support:
-	print '\twins support = %s' % wins_support
+	print('\twins support = %s' % wins_support)
 
 wins_server = configRegistry.get('windows/wins-server')
 if wins_support != 'yes' and wins_server:
-	print '\twins server = %s' % wins_server,
+	sys.stdout.write('\twins server = %s' % wins_server)
 @!@

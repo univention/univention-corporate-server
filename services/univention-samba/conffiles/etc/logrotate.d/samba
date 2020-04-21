@@ -6,10 +6,10 @@ import univention.lib.ucrLogrotate
 name = "log.smbd"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
-print "/var/log/samba/%s {" % name
+print("/var/log/samba/%s {" % name)
 
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
+	print("\t%s" % settings[setting])
 @!@
 	postrotate
 		/etc/init.d/samba reload > /dev/null
@@ -22,10 +22,10 @@ import univention.lib.ucrLogrotate
 name = "log.nmbd"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
-print "/var/log/samba/%s {" % name
+print("/var/log/samba/%s {" % name)
 
 for setting in settings.keys():
-	print "\t%s" % settings[setting]
+	print("\t%s" % settings[setting])
 @!@
 	postrotate
 		[ ! -f /var/run/samba/nmbd.pid ] || kill -HUP `cat /var/run/samba/nmbd.pid`

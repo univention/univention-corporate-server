@@ -1,3 +1,9 @@
+univention-samba (13.0.0-8) unstable; urgency=medium
+
+  * Bug #51131: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 14:34:01 +0200
+
 univention-samba (13.0.0-7) unstable; urgency=medium
 
   * Bug #49177: migrate to dh-python2
