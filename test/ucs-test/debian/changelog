@@ -1,3 +1,9 @@
+ucs-test (9.0.3-190) unstable; urgency=medium
+
+  * Bug #51001: Updated dependencies for self service tests
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Apr 2020 14:54:38 +0200
+
 ucs-test (9.0.3-189) unstable; urgency=medium
 
   * Bug #51001: New test to check self service sub pages

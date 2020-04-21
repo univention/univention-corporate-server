@@ -510,6 +510,9 @@ Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
  univention-appcenter-dev,
+ xvfb,
+ chromium (>= 71.0.3578.80-1~deb9u1),
+ chromium-driver (>= 71.0.3578.80-1~deb9u1),
  python3-univention-config-registry,
  python3-pip,
  ffmpeg,
@@ -622,6 +625,7 @@ Description: Test scripts to test the radius integration
 Package: ucs-test-self-service
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
+ ucs-test-appcenter,
  ${misc:Depends}
 Recommends: ucs-test-framework
 Provides: ucs-test-module
