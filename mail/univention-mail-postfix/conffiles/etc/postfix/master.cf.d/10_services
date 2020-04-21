@@ -11,7 +11,7 @@ if configRegistry.is_true("mail/postfix/smtpd/debug", False):
 
 def get_options(prefix):
 	result = ''
-	for key, value in configRegistry.items():
+	for key, value in sorted(configRegistry.items()):
 		if key.startswith(prefix) and key != prefix:
 			result += ' -o %s=%s' % (key.split('/')[-1], configRegistry[key])
 	return result
