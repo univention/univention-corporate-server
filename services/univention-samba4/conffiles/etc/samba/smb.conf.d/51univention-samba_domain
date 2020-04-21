@@ -1,16 +1,16 @@
 @!@
-print '\t; domain service lookup related settings'
+print('\t; domain service lookup related settings')
 if configRegistry['samba4/role'] == 'MEMBER':
-	print '\tpreferred master = no'
-	print '\tlocal master = no'
+	print('\tpreferred master = no')
+	print('\tlocal master = no')
 else:
-	print '\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes')
-	print '\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes')
+	print('\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes'))
+	print('\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes'))
 
-print '\tdomain master = %s' % configRegistry.get('samba/domain/master', 'auto')
+print('\tdomain master = %s' % configRegistry.get('samba/domain/master', 'auto'))
 
 if configRegistry.is_true('windows/wins-support'):
-	print '\twins support = yes'
+	print('\twins support = yes')
 elif configRegistry['windows/wins-server']:
 	print '\twins server = %s' % configRegistry['windows/wins-server'],
 

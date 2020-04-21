@@ -3,28 +3,28 @@
 ; ---------------------<10global>------------------------
 [global]
 @!@
-print '\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 1)
-print '\tlogging\t\t= file'
-print '\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0)
+print('\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 1))
+print('\tlogging\t\t= file')
+print('\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0))
 
 if configRegistry.get('samba/netbios/name'):
-	print '\tnetbios name\t= %s' % configRegistry['samba/netbios/name']
+	print('\tnetbios name\t= %s' % configRegistry['samba/netbios/name'])
 else:
-	print '\tnetbios name\t= %s' % configRegistry['hostname']
+	print('\tnetbios name\t= %s' % configRegistry['hostname'])
 
 samba4_role = configRegistry.get('samba4/role')
 if samba4_role in ('DC', 'RODC'):
-	print '\tserver role\t= active directory domain controller'
-	print '\tname resolve order\t=', configRegistry.get('samba/name/resolve/order', 'wins host bcast')
+	print('\tserver role\t= active directory domain controller')
+	print('\tname resolve order\t= %s' % (configRegistry.get('samba/name/resolve/order', 'wins host bcast'),))
 
 elif samba4_role == 'MEMBER':
-	print '\tserver role\t= member server'
-	print '\tsecurity\t= ads'
-	print '\tname resolve order\t=', configRegistry.get('samba/name/resolve/order', 'wins bcast')
+	print('\tserver role\t= member server')
+	print('\tsecurity\t= ads')
+	print('\tname resolve order\t= %s' % (configRegistry.get('samba/name/resolve/order', 'wins bcast'),))
 
 
 samba_serverstring = configRegistry.get('samba/serverstring', 'Univention Corporate Server')
-print '\tserver string\t=', samba_serverstring
+print('\tserver string\t= %s' % (samba_serverstring,))
 
 ## build up and set server services option list if non-empty
 server_services = ['-dns']
@@ -37,27 +37,28 @@ if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
 if configRegistry.is_false('samba4/service/drepl'):
 	server_services.append('-drepl')
 if server_services:
-	print '\tserver services\t=', ' '.join(server_services)
+	print('\tserver services\t= %s' % (' '.join(server_services),))
 if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
-	print '\tserver role check:inhibit = yes'
-	print '\t# use nmbd; to disable set samba4/service/nmb to s4'
-	print '\tnmbd_proxy_logon:cldap_server=127.0.0.1'
+	print('\tserver role check:inhibit = yes')
+	print('\t# use nmbd; to disable set samba4/service/nmb to s4')
+	print('\tnmbd_proxy_logon:cldap_server=127.0.0.1')
 
-print '\tworkgroup\t= %s' % configRegistry['windows/domain']
-print '\trealm\t\t= %s' % configRegistry['kerberos/realm']
+print('\tworkgroup\t= %s' % configRegistry['windows/domain'])
+print('\trealm\t\t= %s' % configRegistry['kerberos/realm'])
 
-fqdn = '.'.join([ configRegistry['hostname'], configRegistry['domainname'] ])
-print
-print '\ttls enabled\t= yes'
-print '\ttls keyfile\t= /etc/univention/ssl/%s/private.key' % fqdn
-print '\ttls certfile\t= /etc/univention/ssl/%s/cert.pem' % fqdn
-print '\ttls cafile\t= /etc/univention/ssl/ucsCA/CAcert.pem'
-for key, smbstring in [('samba/tls/dh/params/file','tls dh params file'),
-		       ('samba/tls/priority', 'tls priority'),
-		      ]:
+fqdn = '.'.join([configRegistry['hostname'], configRegistry['domainname']])
+print('')
+print('\ttls enabled\t= yes')
+print('\ttls keyfile\t= /etc/univention/ssl/%s/private.key' % fqdn)
+print('\ttls certfile\t= /etc/univention/ssl/%s/cert.pem' % fqdn)
+print('\ttls cafile\t= /etc/univention/ssl/ucsCA/CAcert.pem')
+for key, smbstring in [
+		('samba/tls/dh/params/file','tls dh params file'),
+		('samba/tls/priority', 'tls priority'),
+	]:
 	ucrvalue = configRegistry.get(key)
 	if ucrvalue:
-		print '\t%s\t= %s' % (smbstring, ucrvalue)
+		print('\t%s\t= %s' % (smbstring, ucrvalue))
 
 for key, smbstring, ucsdefault in [
 	('samba/tls/verify/peer', 'tls verify peer', 'ca_and_name'),
@@ -65,48 +66,50 @@ for key, smbstring, ucsdefault in [
 	]:
 	ucrvalue = configRegistry.get(key)
 	if ucrvalue:
-		print '\t%s\t= %s' % (smbstring, ucrvalue)
+		print('\t%s\t= %s' % (smbstring, ucrvalue))
 	else:
-		print '\t%s\t= %s' % (smbstring, ucsdefault)
+		print('\t%s\t= %s' % (smbstring, ucsdefault))
 
 if configRegistry.is_true('samba4/schema/update/allowed'):
-	print '\tdsdb:schema update allowed = yes'
+	print('\tdsdb:schema update allowed = yes')
 else:
-	print '\tdsdb:schema update allowed = no'
+	print('\tdsdb:schema update allowed = no')
 
 max_open_files = configRegistry.get('samba/max_open_files')
 if max_open_files:
-	print '\tmax open files = %s' % max_open_files
+	print('\tmax open files = %s' % max_open_files)
 
-for key, smbstring in [('samba/interfaces','interfaces'),
-		       ('samba/interfaces/bindonly', 'bind interfaces only'),
-		       ('samba/server/signing', 'server signing'),
-		       ('samba/charset/dos', 'dos charset'),
-		       ('samba/charset/unix', 'unix charset'),
-		       ('samba/socket_options', 'socket options'),
-		       ('samba/netbios/aliases', 'netbios aliases'),]:
+for key, smbstring in [
+		('samba/interfaces','interfaces'),
+		('samba/interfaces/bindonly', 'bind interfaces only'),
+		('samba/server/signing', 'server signing'),
+		('samba/charset/dos', 'dos charset'),
+		('samba/charset/unix', 'unix charset'),
+		('samba/socket_options', 'socket options'),
+		('samba/netbios/aliases', 'netbios aliases'),
+	]:
 	if configRegistry.get(key):
 		if key == 'samba/interfaces':
-			print '\t%s\t= %s' % (smbstring, configRegistry[key].replace('<interfaces/primary>', configRegistry.get('interfaces/primary', 'eth0')))
+			print('\t%s\t= %s' % (smbstring, configRegistry[key].replace('<interfaces/primary>', configRegistry.get('interfaces/primary', 'eth0'))))
 		else:
-			print '\t%s\t= %s' % (smbstring, configRegistry[key])
+			print('\t%s\t= %s' % (smbstring, configRegistry[key]))
 
-print '\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only'))
+print('\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only')))
 
 ## legacy settings for smbd
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	for key, smbstring in [
-				   ('samba/charset/display', 'display charset'),
-				   ('samba/enable-privileges', 'enable privileges'),
-				   ]:
+			('samba/charset/display', 'display charset'),
+			('samba/enable-privileges', 'enable privileges'),
+		]:
 		value = configRegistry.get(key)
 		if value != None:
-			print '\t%s\t= %s' % (smbstring, value)
+			print('\t%s\t= %s' % (smbstring, value))
 
-print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0))
+print('\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0)))
 
 if configRegistry.is_true('samba/acl/allow/execute/always', True):
-	print '\tacl allow execute always = True'
+	print('\tacl allow execute always = True')
 
 if configRegistry.get('samba/register/exclude/interfaces') and not configRegistry.is_true('samba/interfaces/bindonly', False):
 	from univention.config_registry.interfaces import Interfaces
@@ -120,12 +123,12 @@ if configRegistry.get('samba/register/exclude/interfaces') and not configRegistr
 		if configRegistry.get('interfaces/%s/type' % iface, '') == 'appliance-mode-temporary':
 			interface_list.remove(iface)
 	if interface_list:
-		print
-		print '\t# ignore interfaces in samba/register/exclude/interfaces'
-		print '\tbind interfaces only = yes'
-		print '\tinterfaces = lo %s' % ' '.join(interface_list)
+		print('')
+		print('\t# ignore interfaces in samba/register/exclude/interfaces')
+		print('\tbind interfaces only = yes')
+		print('\tinterfaces = lo %s' % ' '.join(interface_list))
 
 if not configRegistry.is_true('samba4/kccsrv/samba_kcc', False):
-	print '\tkccsrv:samba_kcc = False'
+	print('\tkccsrv:samba_kcc = False')
 @!@
 ; ---------------------</10global>------------------------

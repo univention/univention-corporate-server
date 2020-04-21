@@ -2,5 +2,5 @@
 import os
 for includefilepath in ('/etc/samba/shares.conf', '/etc/samba/printers.conf'):
 	if os.path.exists(includefilepath):
-		print "\tinclude =", includefilepath
+		print("\tinclude = %s" % (includefilepath,))
 @!@

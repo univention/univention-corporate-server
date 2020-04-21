@@ -1,21 +1,21 @@
 @!@
-print '; ---------------------<smb service configuration>-----------------------'
+print('; ---------------------<smb service configuration>-----------------------')
 if configRegistry.get('samba4/service/smb', 's3fs') == 's3fs':
-	print '''
+	print('''
 	debug hirestimestamp = yes
-	debug pid = yes'''
+	debug pid = yes''')
 
 	dcerpc_endpoints = []
 	if configRegistry.is_false('samba4/dcerpc/endpoint/drsuapi'):
 		dcerpc_endpoints.append('-drsuapi')
 	if dcerpc_endpoints:
-		print '\tdcerpc endpoint servers\t=', ' '.join(dcerpc_endpoints)
+		print('\tdcerpc endpoint servers\t=%s' % (' '.join(dcerpc_endpoints),))
 
 elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
-	if configRegistry['samba4/role'] != 'MEMBER':	## otherwise it's already set in 10global
-		print '\tsecurity = ads'
+	if configRegistry['samba4/role'] != 'MEMBER':  # otherwise it's already set in 10global
+		print('\tsecurity = ads')
 
-	print '''
+	print('''
 	debug hirestimestamp = yes
 	debug pid = yes
 
@@ -51,11 +51,11 @@ elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	rpc_daemon:epmd = disabled
 	rpc_daemon:lsasd = disabled
 
-	rpc_server:tcpip = no'''
+	rpc_server:tcpip = no''')
 
 elif configRegistry.get('samba4/service/smb', 'smbd') == 's4':
 	if configRegistry.get('samba4/ntacl/backend', 'native') == 'tdb':
-		print '\tposix:eadb = /var/lib/samba/private/samba4_eadb.tdb'
+		print('\tposix:eadb = /var/lib/samba/private/samba4_eadb.tdb')
 
-print '; ---------------------</smb service configuration>----------------------'
+print('; ---------------------</smb service configuration>----------------------')
 @!@

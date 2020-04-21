@@ -1,18 +1,18 @@
 @!@
 if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 	if 'cups/server' in configRegistry and configRegistry['cups/server'] in ['127.0.0.1','localhost','%s' % configRegistry['hostname'],'%s.%s' % (configRegistry['hostname'],configRegistry['domainname'])]:
-		print '\t; printing'
-		print '\tload printers = yes'
-		print '\tprinting = cups'
-		print '\tprintcap name = cups '
+		print('\t; printing')
+		print('\tload printers = yes')
+		print('\tprinting = cups')
+		print('\tprintcap name = cups ')
 	if configRegistry.get('samba/cups/encrypt'):
-		print '\tcups encrypt = %s' % configRegistry.get('samba/cups/encrypt')
+		print('\tcups encrypt = %s' % configRegistry.get('samba/cups/encrypt'))
 
 	spoolss_architecture = configRegistry.get('samba/spoolss/architecture')
 	if spoolss_architecture:
-		print '\tspoolss: architecture = %s' % spoolss_architecture
+		print('\tspoolss: architecture = %s' % spoolss_architecture)
 	else:
 		import sys
 		if sys.maxsize > 2**32:
-			print '\tspoolss: architecture = Windows x64'
+			print('\tspoolss: architecture = Windows x64')
 @!@

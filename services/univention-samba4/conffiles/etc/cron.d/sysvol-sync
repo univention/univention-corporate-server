@@ -7,9 +7,9 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 samba4_sysvol_sync_cron = configRegistry.get('samba4/sysvol/sync/cron')
 samba4_sysvol_sync_jitter = configRegistry.get('samba4/sysvol/sync/jitter', '60')
 if not samba4_sysvol_sync_cron:
-	print "# cron job disabled because samba4/sysvol/sync/cron is not set"
+	print("# cron job disabled because samba4/sysvol/sync/cron is not set")
 	print "# ",
 	samba4_sysvol_sync_cron = "*/5 * * * *"
 
-print "%s root /usr/sbin/jitter %s /usr/share/univention-samba4/scripts/sysvol-sync.sh >>/var/log/univention/sysvol-sync.log 2>&1" % (samba4_sysvol_sync_cron, samba4_sysvol_sync_jitter)
+print("%s root /usr/sbin/jitter %s /usr/share/univention-samba4/scripts/sysvol-sync.sh >>/var/log/univention/sysvol-sync.log 2>&1" % (samba4_sysvol_sync_cron, samba4_sysvol_sync_jitter))
 @!@

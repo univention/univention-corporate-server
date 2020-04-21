@@ -7,7 +7,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 samba4_backup_cron = configRegistry.get('samba4/backup/cron')
 samba4_backup_cron_options = configRegistry.get('samba4/backup/cron/options', '')
 if samba4_backup_cron:
-	print "%s root /usr/sbin/univention-samba4-backup %s" % (samba4_backup_cron, samba4_backup_cron_options)
+	print("%s root /usr/sbin/univention-samba4-backup %s" % (samba4_backup_cron, samba4_backup_cron_options))
 else:
-	print "# disabled by samba4/backup/cron"
+	print("# disabled by samba4/backup/cron")
 @!@

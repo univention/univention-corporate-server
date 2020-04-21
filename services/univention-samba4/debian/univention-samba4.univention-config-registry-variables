@@ -91,7 +91,7 @@ Categories=service-samba
 [samba/share/home]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, wird das Heimatverzeichnis eines Samba-Benutzers in einer Freigabe mit dem Namen des Benutzers bereitgestellt.
 Description[en]=If this variable is set to 'yes', the home directory of a Samba user is provided on a share with the name of the user.
-Type=str
+Type=bool
 Categories=service-samba
 
 [samba/socket_options]

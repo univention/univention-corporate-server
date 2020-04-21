@@ -2,16 +2,16 @@
 	; idmap/winbind
 @!@
 if configRegistry.get('samba/winbind/max/clients'):
-	print '\n\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/clients')
+	print('\n\twinbind max clients = %s' % configRegistry.get('samba/winbind/max/clients'))
 
 if configRegistry.get('samba/winbind/nested/groups'):
-	print '\twinbind nested groups = %s' % configRegistry.get('samba/winbind/nested/groups')
+	print('\twinbind nested groups = %s' % configRegistry.get('samba/winbind/nested/groups'))
 
 if configRegistry.get('samba/winbind/enum/users'):
-	print '\twinbind enum users = %s' % configRegistry.get('samba/winbind/enum/users')
+	print('\twinbind enum users = %s' % configRegistry.get('samba/winbind/enum/users'))
 
 if configRegistry.get('samba/winbind/enum/groups'):
-	print '\twinbind enum groups = %s' % configRegistry.get('samba/winbind/enum/groups')
+	print('\twinbind enum groups = %s' % configRegistry.get('samba/winbind/enum/groups'))
 @!@
 	winbind separator = +
 	template shell = /bin/bash
