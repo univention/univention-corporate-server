@@ -39,7 +39,7 @@ if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 		print('\tclient max protocol = %s' % configRegistry.get('samba/client/max/protocol'))
 
 	if configRegistry['server/role'] != 'memberserver':
-		if (not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath']=='local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
+		if (not configRegistry['samba/homedirpath'] or configRegistry['samba/homedirpath'] == 'local') and configRegistry['samba/homedirserver'] and configRegistry['samba/homedirserver'] == 'local':
 			print('\tlogon home =')
 		elif configRegistry['samba/homedirserver'] and configRegistry['samba/homedirpath']:
 			print('\tlogon home = \\\\%s\%s' % (configRegistry['samba/homedirserver'], configRegistry['samba/homedirpath']))
@@ -48,8 +48,8 @@ if configRegistry.get('samba4/service/smb', 'smbd') in ('smbd', 's3fs'):
 			print('\tlogon drive = %s:' % configRegistry['samba/homedirletter'])
 		elif configRegistry['samba/homedirletter'] and configRegistry['samba/homedirletter'] == 'local':
 			print('\tlogon drive = ')
-			
-		if (not configRegistry['samba/profilepath'] or configRegistry['samba/profilepath'] == 'local' ) and configRegistry['samba/profileserver'] and configRegistry['samba/profileserver'] == 'local':
+
+		if (not configRegistry['samba/profilepath'] or configRegistry['samba/profilepath'] == 'local') and configRegistry['samba/profileserver'] and configRegistry['samba/profileserver'] == 'local':
 			print('\tlogon path =')
 		elif configRegistry['samba/profileserver'] and configRegistry['samba/profilepath']:
 			print('\tlogon path = \\\\%s\%s' % (configRegistry['samba/profileserver'], configRegistry['samba/profilepath']))

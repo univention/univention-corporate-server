@@ -1,4 +1,4 @@
-univention-samba4 (8.0.0-29) unstable; urgency=medium
+univention-samba4 (8.0.0-30) unstable; urgency=medium
 
   * Bug #51131: make UCR templates compatible to python3
 
