@@ -14,23 +14,23 @@ NEED_STATD=
 #   For more information, see rpc.statd(8) or http://wiki.debian.org/?SecuringNFS
 @!@
 if configRegistry.get('nfs/ports') == 'static':
-	print 'STATDOPTS="--port 32765 --outgoing-port 32766"'
+	print('STATDOPTS="--port 32765 --outgoing-port 32766"')
 else:
-	print 'STATDOPTS='
+	print('STATDOPTS=')
 @!@
 
 # Do you want to start the idmapd daemon? It is only needed for NFSv4.
 @!@
 if configRegistry.get('nfs/common/idmapd'):
-	print 'NEED_IDMAPD=%s' % configRegistry.get('nfs/common/idmapd')
+	print('NEED_IDMAPD=%s' % configRegistry.get('nfs/common/idmapd'))
 else:
-	print 'NEED_IDMAPD='
+	print('NEED_IDMAPD=')
 @!@
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
 @!@
 if configRegistry.get('nfs/common/gssd'):
-	print 'NEED_GSSD=%s' % configRegistry.get('nfs/common/gssd')
+	print('NEED_GSSD=%s' % configRegistry.get('nfs/common/gssd'))
 else:
-	print 'NEED_GSSD='
+	print('NEED_GSSD=')
 @!@

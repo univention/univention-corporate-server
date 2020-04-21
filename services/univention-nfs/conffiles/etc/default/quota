@@ -6,7 +6,7 @@ run_warnquota=
 # Add options to rpc.rquotad here
 @!@
 if configRegistry.get('nfs/ports') == 'static':
-	print 'RPCRQUOTADOPTS="--port 32769"'
+	print('RPCRQUOTADOPTS="--port 32769"')
 else:
-	print 'RPCRQUOTADOPTS='
+	print('RPCRQUOTADOPTS=')
 @!@

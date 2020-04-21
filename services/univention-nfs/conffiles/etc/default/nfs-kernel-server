@@ -6,7 +6,7 @@ nfsdopt = configRegistry.get('nfs/nfsd/services', '8')
 if configRegistry.is_false("nfs/nfsd/nfs4"):
 	nfsdopt += " --no-nfs-version 4"
 
-print 'RPCNFSDCOUNT="%s"' % nfsdopt
+print('RPCNFSDCOUNT="%s"' % nfsdopt)
 @!@
 
 # Runtime priority of server (see nice(1))
@@ -18,9 +18,9 @@ RPCNFSDPRIORITY=0
 # see rpc.mountd(8) or http://wiki.debian.org/?SecuringNFS
 @!@
 if configRegistry.get('nfs/ports') == 'static':
-	print 'RPCMOUNTDOPTS="--manage-gids --port 32767"'
+	print('RPCMOUNTDOPTS="--manage-gids --port 32767"')
 else:
-	print 'RPCMOUNTDOPTS="--manage-gids"'
+	print('RPCMOUNTDOPTS="--manage-gids"')
 @!@
 
 # Do you want to start the svcgssd daemon? It is only required for Kerberos
