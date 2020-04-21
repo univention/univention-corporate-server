@@ -148,8 +148,7 @@ define([
 			}
 			var isValidPage = this._pagePanes.hasOwnProperty(hash);
 			if (!isValidPage) {
-				dojoHash(ioQuery.objectToQuery({page: "pagenotfound"}));
-				return;
+				hash = "pagenotfound";
 			}
 
 			var pagePane = this._pagePanes[hash];
