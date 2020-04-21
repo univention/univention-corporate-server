@@ -1,3 +1,9 @@
+univention-mariadb (2.0.0-6) unstable; urgency=medium
+
+  * Bug #51137: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Tue, 21 Apr 2020 15:49:40 +0200
+
 univention-mariadb (2.0.0-5) unstable; urgency=medium
 
   * Bug #46901: Make system daemon reload after mariadb install

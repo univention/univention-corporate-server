@@ -3,6 +3,7 @@
 @!@
 import re
 
+
 def read_config_from_ucr():
 	RE = re.compile(r'^mysql/config/([^/]+)/([^/]+)(/?)$')
 	config = {}
@@ -15,6 +16,7 @@ def read_config_from_ucr():
 		settings[opt_name] = None if no_value else value
 	return config
 
+
 def write_config_as_ini(config):
 	escape = {
 		'\b': r'\b',
@@ -25,21 +27,21 @@ def write_config_as_ini(config):
 		' ': r'\s',
 	}
 
-	for group, settings in config.iteritems():
-		print '[%s]' % (group,)
-		for opt_name, value in settings.iteritems():
+	for group, settings in config.items():
+		print('[%s]' % (group,))
+		for opt_name, value in settings.items():
 			if value is None:
-				print opt_name
+				print(opt_name)
 			else:
 				escaped = ''.join(escape.get(c, c) for c in value)
 				if "'" not in value:
-					print "%s = '%s'" % (opt_name, escaped)
+					print("%s = '%s'" % (opt_name, escaped))
 				elif '"' not in value:
-					print '%s = "%s"' % (opt_name, escaped)
+					print('%s = "%s"' % (opt_name, escaped))
 				else:
-					print "# UCR ERROR: Don't know how to print '%s/%s'" % (
-						group, opt_name)
-		print
+					print("# UCR ERROR: Don't know how to print '%s/%s'" % (group, opt_name))
+		print('')
+
 
 config = read_config_from_ucr()
 write_config_as_ini(config)
