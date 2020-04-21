@@ -13,11 +13,11 @@ use strict;
 
 @!@
 if configRegistry.get('mail/antivir/scanner') and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
-	print '@bypass_virus_checks_maps = ('
-	print '   \%bypass_virus_checks, \@bypass_virus_checks_acl, \$bypass_virus_checks_re);'
+	print('@bypass_virus_checks_maps = (')
+	print('   \%bypass_virus_checks, \@bypass_virus_checks_acl, \$bypass_virus_checks_re);')
 else:
-	print '#@bypass_virus_checks_maps = ('
-	print '#   \%bypass_virus_checks, \@bypass_virus_checks_acl, \$bypass_virus_checks_re);'
+	print('#@bypass_virus_checks_maps = (')
+	print('#   \%bypass_virus_checks, \@bypass_virus_checks_acl, \$bypass_virus_checks_re);')
 @!@
 
 
@@ -30,11 +30,11 @@ else:
 
 @!@
 if configRegistry.is_true('mail/antivir/spam'):
-	print '@bypass_spam_checks_maps = ('
-	print '   \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);'
+	print('@bypass_spam_checks_maps = (')
+	print('   \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);')
 else:
-	print '#@bypass_spam_checks_maps = ('
-	print '#   \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);'
+	print('#@bypass_spam_checks_maps = (')
+	print('#   \%bypass_spam_checks, \@bypass_spam_checks_acl, \$bypass_spam_checks_re);')
 @!@
 
 1;  # ensure a defined return

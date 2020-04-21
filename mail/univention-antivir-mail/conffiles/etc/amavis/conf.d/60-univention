@@ -139,7 +139,7 @@ $ENV{TMPDIR} = $TEMPBASE;       # wise, but usually not necessary
 # master.cf file, like the '2' in the:  smtp-amavis unix - - n - 2 smtp
 #
 @!@
-print '$max_servers  =  %s;   # number of pre-forked children          (default 2)' % configRegistry.get("mail/antivir/max_servers", "2")
+print('$max_servers  =  %s;   # number of pre-forked children          (default 2)' % configRegistry.get("mail/antivir/max_servers", "2"))
 @!@
 $max_requests = 10;   # retire a child after that many accepts (default 10)
 
@@ -163,10 +163,10 @@ $child_timeout=5*60;  # abort child if it does not complete each task in n sec
 # you do not unintentionally override these settings further down!
 # @bypass_spam_checks_acl  = qw( . );    # No default dependency on spamassassin
 @!@
-if 'mail/antivir/spam' in configRegistry and configRegistry['mail/antivir/spam'].lower() in ['yes', 'true']:
-       print '#@bypass_spam_checks_acl  = qw( . );    '
+if configRegistry.is_true('mail/antivir/spam'):
+	print('#@bypass_spam_checks_acl  = qw( . );    ')
 else:
-       print '@bypass_spam_checks_acl  = qw( . );    '
+	print('@bypass_spam_checks_acl  = qw( . );    ')
 @!@
 
 
@@ -193,10 +193,10 @@ else:
 @!@
 key = 'mail/hosteddomains'
 if configRegistry.get(key):
-	print '@local_domains_acl = qw( %s );  # hosted mail domains' % configRegistry[key]
-	print '# @local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains'
+	print('@local_domains_acl = qw( %s );  # hosted mail domains' % configRegistry[key])
+	print('# @local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains')
 else:
-	print '@local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains'
+	print('@local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains')
 @!@
 # @local_domains_acl = ( ".$mydomain", "my.other.domain" );
 # @local_domains_acl = qw();  # default is empty, no recipient treated as local
@@ -306,7 +306,7 @@ $LOGFILE = "/var/log/amavis.log";  # (defaults to empty, no log)
 # 4: decompose parts
 # 5: more debug details
 @!@
-print "$log_level = %s;" % configRegistry.get('mail/antivir/amavis/debug/level', '0')
+print("$log_level = %s;" % configRegistry.get('mail/antivir/amavis/debug/level', '0'))
 @!@
 # Customizable template for the most interesting log file entry (e.g. with
 # $log_level=0) (take care to properly quote Perl special characters like '\')
@@ -491,9 +491,9 @@ $viruses_that_fake_sender_re = new_RE(
 
 @!@
 if configRegistry.get('mail/antivir/virus_admin'):
-	print "$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin']
+	print("$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin'])
 else:
-	print '$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname']
+	print('$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname'])
 @!@
 
 # equivalent to $virus_admin, but for spam admin notifications:
@@ -623,10 +623,10 @@ if key in configRegistry and configRegistry[key] and configRegistry[key] != 'vir
 	to = configRegistry['mail/antivir/quarantine_to']
 	if to.find('@') == -1:
 		to += '@'
-	print "$virus_quarantine_to  = '%s';\t# forward to MTA for delivery" % to
-	print "#$virus_quarantine_to = 'virus-quarantine';    # traditional local quarantine"
+	print("$virus_quarantine_to  = '%s';\t# forward to MTA for delivery" % to)
+	print("#$virus_quarantine_to = 'virus-quarantine';    # traditional local quarantine")
 else:
-	print "$virus_quarantine_to  = 'virus-quarantine';    # traditional local quarantine"
+	print("$virus_quarantine_to  = 'virus-quarantine';    # traditional local quarantine")
 @!@
 #$virus_quarantine_to = 'infected@';           # forward to MTA for delivery
 #$virus_quarantine_to = "virus-quarantine\@$mydomain";   # similar
@@ -709,23 +709,24 @@ $keep_decoded_original_re = new_RE(
 
 @!@
 v = {}
-spec = (('double', 'double_ext', ' '),
-	('basic',  'basic_ext',  ' '),
-	('long',   'long_ext',   '#'),
-	('file',   'file_type',  '#'),
-	('mime',   'mime_type',  '#'),
-	('rfc',    'rfc2046',    ' '))
+spec = (
+	('double', 'double_ext', ' '),
+	('basic', 'basic_ext', ' '),
+	('long', 'long_ext', '#'),
+	('file', 'file_type', '#'),
+	('mime', 'mime_type', '#'),
+	('rfc', 'rfc2046', ' '))
 for n, x, d in spec:
 	y = 'mail/antivir/banned/%s' % x
 	if y in configRegistry:
-		if configRegistry[y].lower() in ('yes', 'true'):
+		if configRegistry.is_true(y):
 			v[n] = ' '
 		else:
 			v[n] = '#'
 	else:
 		v[n] = d
 values = (v['double'], v['basic'], v['long'], v['long'], v['long'], v['file'], v['mime'], v['rfc'])
-print '''$banned_filename_re = new_RE(
+print('''$banned_filename_re = new_RE(
 %s  qr'\.[a-zA-Z][a-zA-Z0-9]{0,3}\.(vbs|pif|scr|bat|com|exe|dll)$'i, # double extension
 %s  qr'.\.(exe|vbs|pif|scr|bat|com)$'i,               # banned extension - basic
 %s  qr'.\.(ade|adp|bas|bat|chm|cmd|com|cpl|crt|exe|hlp|hta|inf|ins|isp|js|
@@ -734,7 +735,7 @@ print '''$banned_filename_re = new_RE(
 %s  qr'^\.(exe|zip|lha|tnef)$'i,                      # banned file(1) types
 %s  qr'^application/x-msdownload$'i,                  # banned MIME types
 %s  qr'^message/partial$'i, qr'^message/external-body$'i, # rfc2046
-);''' % values
+);''' % values)
 @!@
 # See http://support.microsoft.com/default.aspx?scid=kb;EN-US;q262631
 # and http://www.cknow.com/vtutor/vtextensions.htm
@@ -751,10 +752,10 @@ key = 'mail/antivir/banned_to'
 if configRegistry.get(key):
 	to = configRegistry['mail/antivir/banned_to']
 	if to.find('@') == -1:
-		print "$banned_quarantine_to = '%s';" % to
+		print("$banned_quarantine_to = '%s';" % to)
 	else:
-		print "$banned_files_quarantine_method='smtp:127.0.0.1:10025';"
-		print "$banned_quarantine_to = '%s';" % to
+		print("$banned_files_quarantine_method='smtp:127.0.0.1:10025';")
+		print("$banned_quarantine_to = '%s';" % to)
 
 @!@
 
@@ -1177,9 +1178,9 @@ $sa_kill_level_deflt = $sa_tag2_level_deflt; # triggers spam evasive actions
                                 # and recipient is in local_domains*)
 @!@
 if configRegistry.get('mail/antispam/headertag'):
-	print "$sa_spam_subject_tag = '%s';" % configRegistry['mail/antispam/headertag']
+	print("$sa_spam_subject_tag = '%s';" % configRegistry['mail/antispam/headertag'])
 else:
-	print '$sa_spam_subject_tag = undef;'
+	print('$sa_spam_subject_tag = undef;')
 @!@
 
 # don't add ***UNCHECKED*** to the subject
@@ -1246,8 +1247,8 @@ $undecipherable_subject_tag = undef;
 
 @!@
 if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
-	scanner=configRegistry['mail/antivir/scanner'].split(' ')
-	
+	scanner = configRegistry['mail/antivir/scanner'].split(' ')
+
 	if 'sophie' in scanner:
 		print("### http://www.vanja.com/tools/sophie/")
 		print(" ['Sophie',")
@@ -1296,7 +1297,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("  qr/(?i)<summary[^>]*>infected<\\/summary>/,")
 		print("  qr/(?i)<name>(.+)<\\/name>/ ],")
 
-	if 'kavscanner' in scanner: # default
+	if 'kavscanner' in scanner:  # default
 		print("  ['KasperskyLab kavscanner', 'kavscanner',")
 		print("    '-i0 {}', [0,10,15], [5,20,21,25],")
 		print("    qr/(?:CURED|INFECTED|CUREFAILED|WARNING|SUSPICION) (.*)/ ,")
@@ -1312,8 +1313,8 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("   sub {chdir($TEMPBASE) or die \"Can't chdir back to $TEMPBASE $!\"},")
 		print(" ],")
 
-  ### The kavdaemon and AVPDaemonClient have been removed from Kasperky
-  ### products and replaced by aveserver and aveclient
+	# The kavdaemon and AVPDaemonClient have been removed from Kasperky
+	# products and replaced by aveserver and aveclient
 	if 'kaspersky_avd' in scanner:
 		print(" ['KasperskyLab AVPDaemonClient',")
 		print("   [ '/opt/AVP/kavdaemon',       'kavdaemon',")
@@ -1321,17 +1322,17 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("     '/opt/AVP/AvpTeamDream',    'AvpTeamDream',")
 		print("     '/opt/AVP/avpdc', 'avpdc' ],")
 		print("   \"-f=$TEMPBASE {}\", [0,8], [3,4,5,6], qr/infected: ([^\\r\\n]+)/ ],")
-    # change the startup-script in /etc/init.d/kavd to:
-    #   DPARMS="-* -Y -dl -f=/var/amavis /var/amavis"
-    #   (or perhaps:   DPARMS="-I0 -Y -* /var/amavis" )
-    # adjusting /var/amavis above to match your $TEMPBASE.
-    # The '-f=/var/amavis' is needed if not running it as root, so it
-    # can find, read, and write its pid file, etc., see 'man kavdaemon'.
-    # defUnix.prf: there must be an entry "*/var/amavis" (or whatever
-    #   directory $TEMPBASE specifies) in the 'Names=' section.
-    # cd /opt/AVP/DaemonClients; configure; cd Sample; make
-    # cp AvpDaemonClient /opt/AVP/
-    # su - vscan -c "${PREFIX}/kavdaemon ${DPARMS}"
+	# change the startup-script in /etc/init.d/kavd to:
+	#   DPARMS="-* -Y -dl -f=/var/amavis /var/amavis"
+	#   (or perhaps:   DPARMS="-I0 -Y -* /var/amavis" )
+	# adjusting /var/amavis above to match your $TEMPBASE.
+	# The '-f=/var/amavis' is needed if not running it as root, so it
+	# can find, read, and write its pid file, etc., see 'man kavdaemon'.
+	# defUnix.prf: there must be an entry "*/var/amavis" (or whatever
+	#   directory $TEMPBASE specifies) in the 'Names=' section.
+	# cd /opt/AVP/DaemonClients; configure; cd Sample; make
+	# cp AvpDaemonClient /opt/AVP/
+	# su - vscan -c "${PREFIX}/kavdaemon ${DPARMS}"
 
 	if 'hbedv' in scanner:
 		print("### http://www.hbedv.com/ or http://www.centralcommand.com/")
@@ -1340,8 +1341,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("   '--allfiles -noboot -nombr -rs -s -z {}', [0], qr/ALERT:|VIRUS:/,")
 		print("   qr/(?x)^\\s* (?: ALERT: \\s* (?: \\[ | [^']* ' ) |")
 		print("        (?i) VIRUS:\\ .*?\\ virus\\ '?) ( [^\\]\\s']+ )/ ],")
-    # NOTE: remove the -z if you only have a demo version
-
+	# NOTE: remove the -z if you only have a demo version
 
 	if 'csav' in scanner:
 		print("### http://www.commandsoftware.com/")
@@ -1362,8 +1362,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("   'savsecls', '-server 127.0.0.1:7777 -mode scanrepair -details -verbose {}',")
 		print("   [0], qr/^Infected\\b/,")
 		print("   qr/^(?:Info|Virus Name):\\s+(.+)/ ],")
-    # NOTE: check options and patterns to see which entry better applies
-
+	# NOTE: check options and patterns to see which entry better applies
 
 	if 'drweb' in scanner:
 		print("### http://drweb.imshop.de/")
@@ -1433,7 +1432,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 	#		print("  '--all --archive --mail {}', [1], [2,3,4,5], qr/Infected: (.+)/ ],")
 	# # NOTE: the command line switches changed with scan engine 8.5 !
 	# # (btw, assigning stdin to /dev/null causes RAV to fail)
-	
+
 	if 'uvscan' in scanner:
 		print("### http://www.nai.com/")
 		print(" ['NAI McAfee AntiVirus (uvscan)', 'uvscan',")
@@ -1442,14 +1441,14 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("       \\ the\\ (.+)\\ (?:virus|trojan)  |")
 		print("       \\ (?:virus|trojan)\\ or\\ variant\\ ([^ ]+)  |")
 		print("       :\\ (.+)\ NOT\\ a\\ virus)/,")
-  		print("sub {$ENV{LD_PRELOAD}='/lib/libc.so.6'},")
-  		print("sub {delete $ENV{LD_PRELOAD}},")
+		print("sub {$ENV{LD_PRELOAD}='/lib/libc.so.6'},")
+		print("sub {delete $ENV{LD_PRELOAD}},")
 		print(" ],")
 
 	if 'vbuster' in scanner:
 		print("### http://www.virusbuster.hu/en/")
 		print(" ['VirusBuster', ['vbuster', 'vbengcl'],")
-		# VirusBuster Ltd. does not support the daemon version for the workstation 
+		# VirusBuster Ltd. does not support the daemon version for the workstation
 		# engine (vbuster-eng-1.12-linux-i386-libc6.tgz) any longer. The names of
 		# binaries, some parameters AND return codes (from 3 to 1) changed.
 		print("   \"{} -ss -i '*' -log=$MYHOME/vbuster.log\", [0], [1],")
@@ -1467,14 +1466,14 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 		print("### http://www.cyber.com/")
 		print(" ['CyberSoft VFind', 'vfind',")
 		print("   '--vexit {}/*', [0], [23], qr/##==>>>> VIRUS ID: CVDL (.+)/,")
-  		print("sub {$ENV{VSTK_HOME}='/usr/lib/vstk'},")
+		print("sub {$ENV{VSTK_HOME}='/usr/lib/vstk'},")
 		print(" ],")
 
 	if 'ikarus' in scanner:
 		print("### http://www.ikarus-software.com/)")
 		print(" ['Ikarus AntiVirus for Linux', 'ikarus',")
 		print("   '{}', [0], [40], qr/Signature (.+) found/ ],")
-		
+
 	if 'bdc' in scanner:
 		print("### http://www.bitdefender.com/")
 		print(" ['BitDefender', 'bdc',")
@@ -1495,7 +1494,7 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 @av_scanners_backup = (
 @!@
 if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
-	scanner=configRegistry['mail/antivir/scanner'].split(' ')
+	scanner = configRegistry['mail/antivir/scanner'].split(' ')
 
 	if 'clamscan' in scanner:
 		print("### http://clamav.elektrapro.com/")
@@ -1525,15 +1524,15 @@ if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/sca
 # Commented out because the name 'sweep' clashes with the Debian package of
 # the same name. Make sure the correct sweep is found in the path when enabling
 #
-			
+
 	if 'sweep' in scanner:
-		print ("### http://www.sophos.com/")
-		print (" ['Sophos Anti Virus (sweep)', '/usr/local/bin/sweep',")
-		print ("   '-nb -f -all -rec -ss -sc -archive {}',")
-		print ("   [0,2], qr/Virus .*? found/,")
-		print ("   qr/^>>> Virus(?:(?: fragment)? '?(.+?)'? found)/,")
-		print (" sub {$ENV{SAV_IDE}='/usr/local/sav'},")
-		print (" ],")
+		print("### http://www.sophos.com/")
+		print(" ['Sophos Anti Virus (sweep)', '/usr/local/bin/sweep',")
+		print("   '-nb -f -all -rec -ss -sc -archive {}',")
+		print("   [0,2], qr/Virus .*? found/,")
+		print("   qr/^>>> Virus(?:(?: fragment)? '?(.+?)'? found)/,")
+		print(" sub {$ENV{SAV_IDE}='/usr/local/sav'},")
+		print(" ],")
 
 # always succeeds (uncomment to avoid mail requeue if all other scanners fail)
 # ['always-clean', sub {0}],
