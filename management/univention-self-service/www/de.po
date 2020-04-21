@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-self-service\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-04-17 13:34+0200\n"
+"POT-Creation-Date: 2020-04-21 18:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -40,11 +40,11 @@ msgstr ""
 "aufgetreten. Bitte <a href=\"#page=verifyaccount&username=%s\">fordern Sie "
 "einen neuen an</a>."
 
-#: www/ProtectAccountAccess.js:269 www/UserAttributes.js:219
+#: www/UserAttributes.js:219 www/ProtectAccountAccess.js:269
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: www/PasswordChange.js:193 www/NewPassword.js:244
+#: www/NewPassword.js:244 www/PasswordChange.js:193
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -64,7 +64,7 @@ msgstr "Konto erstellen"
 msgid "Customize your profile"
 msgstr "Passen Sie Ihre Profildaten an"
 
-#: www/UserAttributes.js:213 www/UserAttributes.js:334
+#: www/UserAttributes.js:213 www/UserAttributes.js:335
 msgid "Delete my account"
 msgstr "Meinen Account löschen"
 
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Forgot your password? Set a new one: "
 msgstr "Haben Sie ihr Passwort vergessen? Setzen Sie ein Neues:"
 
-#: www/CreateAccount.js:151 www/VerifyAccount.js:205
+#: www/CreateAccount.js:151
 #, javascript-format
 msgid ""
 "Hello <b>%s</b>, we have sent you an email to <b>%s</b>. Please follow the "
@@ -100,6 +100,16 @@ msgid ""
 msgstr ""
 "Hallo <b>%s</b>, wir haben Ihnen eine E-Mail an <b>%s</b> gesendet. Bitte "
 "folgen Sie den Anweisungen in der E-Mail, um Ihr Konto zu verifizieren."
+
+#: www/VerifyAccount.js:205
+#, javascript-format
+msgid ""
+"Hello <b>%s</b>, we have sent you an email; maybe you want to have a look at"
+" your spam folder? Please follow the instructions in the email to verify "
+"your account."
+msgstr ""
+"Hallo <b>%s</b>, wir haben Ihnen erneut eine E-Mail gesendet; möglicherweise finden Sie sie in Ihrem Spam-Ordner? Bitte folgen Sie den Anweisungen in der E-Mail, um Ihr Konto zu "
+"verifizieren."
 
 #: www/PasswordForgotten.js:270
 msgid ""
@@ -113,21 +123,21 @@ msgstr ""
 msgid "Invalid credentials. Password change failed."
 msgstr "Ungültige Zugangsdaten. Passwortwechsel fehlgeschlagen."
 
-#: www/PasswordChange.js:160 www/NewPassword.js:201
+#: www/NewPassword.js:201 www/PasswordChange.js:160
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: www/PasswordChange.js:170 www/NewPassword.js:216
+#: www/NewPassword.js:216 www/PasswordChange.js:170
 msgid "New Password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: www/PasswordForgotten.js:130 www/PasswordForgotten.js:176
-#: www/ProtectAccountAccess.js:165 www/UserAttributes.js:152
+#: www/UserAttributes.js:152 www/PasswordForgotten.js:130
+#: www/PasswordForgotten.js:176 www/ProtectAccountAccess.js:165
 msgid "Next"
 msgstr "Weiter"
 
-#: www/PasswordChange.js:299 www/ProtectAccountAccess.js:306
-#: www/NewPassword.js:266
+#: www/ProtectAccountAccess.js:306 www/NewPassword.js:266
+#: www/PasswordChange.js:299
 msgid "OK"
 msgstr "OK"
 
@@ -139,7 +149,7 @@ msgstr "Altes Passwort"
 msgid "Page Not Found"
 msgstr "Seite nicht gefunden"
 
-#: www/ProtectAccountAccess.js:142 www/UserAttributes.js:142
+#: www/UserAttributes.js:142 www/ProtectAccountAccess.js:142
 msgid "Password"
 msgstr "Passwort"
 
@@ -163,7 +173,7 @@ msgstr "Kontozugang schützen"
 msgid "Request new token"
 msgstr "Neuen Token anfordern"
 
-#: www/ProtectAccountAccess.js:264 www/UserAttributes.js:206
+#: www/UserAttributes.js:206 www/ProtectAccountAccess.js:264
 msgid "Save"
 msgstr "Speichern"
 
@@ -197,7 +207,7 @@ msgstr "Diese Seite ist deaktiviert oder existiert nicht."
 msgid "The password has been changed successfully."
 msgstr "Das Passwort wurde erfolgreich geändert."
 
-#: www/PasswordChange.js:179 www/NewPassword.js:225
+#: www/NewPassword.js:225 www/PasswordChange.js:179
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -209,9 +219,9 @@ msgstr "Es sind keine Profildaten definiert, die Sie bearbeiten können"
 msgid "Token"
 msgstr "Token"
 
-#: www/PasswordChange.js:117 www/VerifyAccount.js:132
-#: www/PasswordForgotten.js:112 www/ProtectAccountAccess.js:113
-#: www/UserAttributes.js:119 www/NewPassword.js:151
+#: www/UserAttributes.js:119 www/PasswordForgotten.js:112
+#: www/ProtectAccountAccess.js:113 www/VerifyAccount.js:132
+#: www/NewPassword.js:151 www/PasswordChange.js:117
 msgid "Username"
 msgstr "Benutzername"
 

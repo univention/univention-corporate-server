@@ -638,7 +638,6 @@ class Instance(Base):
 			'success': True,
 			'data': {
 				'username': username,
-				'email': email,
 			}
 		}
 
