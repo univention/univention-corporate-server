@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-join are now
    python3-compatible.
 bug: [51095]
+erratum: 545
+announced: 2020-04-22
