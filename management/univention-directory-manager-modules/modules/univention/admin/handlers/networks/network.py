@@ -30,14 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ipaddr
-import ldap
+import ipaddress
 import traceback
+
+import ldap
 from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
 
@@ -137,12 +139,12 @@ layout = [
 ]
 
 
-def rangeMap(value):
-	return map(lambda x: ' '.join(x), value)
+def rangeMap(value, encoding=()):
+	return [u' '.join(x).encode(*encoding) for x in value]
 
 
-def rangeUnmap(value):
-	return map(lambda x: x.split(' '), value)
+def rangeUnmap(value, encoding=()):
+	return [x.decode(*encoding).split(u' ') for x in value]
 
 
 mapping = univention.admin.mapping.mapping()
@@ -161,64 +163,64 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def stepIp(self):
 		try:
-			network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
+			network = ipaddress.ip_network(u'%s/%s' % (self['network'], self['netmask']), strict=False)
 		except ValueError as exc:
 			raise univention.admin.uexceptions.valueError(str(exc), property='nextIp')
+
 		if self['nextIp']:
 			# nextIP is already set:
 			#	- check range for actual ip
 			#	- inc ip
 			#	- check for range
-			currentIp = ipaddr.IPAddress(self['nextIp'])
-			newIp = ipaddr.IPAddress(self['nextIp']) + 1
+			currentIp = ipaddress.ip_address(u'%s' % self['nextIp'])
+			newIp = ipaddress.ip_address(u'%s' % self['nextIp']) + 1
 			for ipRange in self['ipRange']:
 				if not ipRange:  # ignore bad default value self['ipRange'] = ['']
 					continue
-				firstIP = ipaddr.IPAddress(ipRange[0])
-				lastIP = ipaddr.IPAddress(ipRange[1])
+				firstIP = ipaddress.ip_address(u'%s' % ipRange[0])
+				lastIP = ipaddress.ip_address(u'%s' % ipRange[1])
 				if firstIP <= currentIp <= lastIP:
 					if firstIP <= newIp <= lastIP:
 						self['nextIp'] = str(newIp)
 					else:
 						position = (self['ipRange'].index(ipRange) + 1) % len(self['ipRange'])  # find "next" ipRange
 						self['nextIp'] = self['ipRange'][position][0]  # select first IP of that range
-						if ipaddr.IPAddress(self['nextIp']) == network.network:  # do not give out all hostbits zero
-							self['nextIp'] = str(ipaddr.IPAddress(self['nextIp']) + 1)
+						if ipaddress.ip_address(u'%s' % self['nextIp']) == network.network_address:  # do not give out all hostbits zero
+							self['nextIp'] = str(ipaddress.ip_address(u'%s' % self['nextIp']) + 1)
 					break
 			else:  # currentIp is not in any ipRange
 				if self['ipRange'] and self['ipRange'][0]:  # ignore bad default value self['ipRange'] = ['']
 					self['nextIp'] = self['ipRange'][0][0]
-					if ipaddr.IPAddress(self['nextIp']) == network.network:  # do not give out all hostbits zero
-						self['nextIp'] = str(ipaddr.IPAddress(self['nextIp']) + 1)
+					if ipaddress.ip_address(u'%s' % self['nextIp']) == network.network_address:  # do not give out all hostbits zero
+						self['nextIp'] = str(ipaddress.ip_address(u'%s' % self['nextIp']) + 1)
 				else:  # did not find nextIp in ipRanges because ipRanges are empty
 					if newIp in network:
 						self['nextIp'] = str(newIp)
 					else:
-						self['nextIp'] = str(network.network + 1)  # first usable host address in network
+						self['nextIp'] = str(network.network_address + 1)  # first usable host address in network
 		elif self['ipRange']:
 			# nextIP is not set
 			# 	- use first ip range entry
 			self['nextIp'] = self['ipRange'][0][0]
-			if ipaddr.IPAddress(self['nextIp']) == network.network:  # do not give out all hostbits zero
-				self['nextIp'] = str(ipaddr.IPAddress(self['nextIp']) + 1)
+			if ipaddress.ip_address(u'%s' % self['nextIp']) == network.network_address:  # do not give out all hostbits zero
+				self['nextIp'] = str(ipaddress.ip_address(u'%s' % self['nextIp']) + 1)
 		elif self['network']:
 			# nextIP is not set, no IPrange, then we use the first ip of the network
-			self['nextIp'] = str(network.network + 1)  # first usable host address in network
+			self['nextIp'] = str(network.network_address + 1)  # first usable host address in network
 
 	def refreshNextIp(self):
 		start_ip = self['nextIp']
 		while self.lo.search(scope='domain', attr=['aRecord'], filter=filter_format('(&(aRecord=%s))', [self['nextIp']])) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
 			self.stepIp()
 			if self['nextIp'] == start_ip:
-				raise univention.admin.uexceptions.nextFreeIp
-		self.modify(ignore_license=1)
+				raise univention.admin.uexceptions.nextFreeIp()
+		self.modify(ignore_license=True)
 
 	def _ldap_post_remove(self):
-		import univention.admin.handlers.computers.computer
 		filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn, escape=True)
-		for computer in univention.admin.handlers.computers.computer.lookup(self.co, self.lo, filter_s=filter_):
+		for computer in univention.admin.modules.get('computers/computer').lookup(None, self.lo, filter_s=filter_):
 			try:
-				self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn, '')])
+				self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
 			except (univention.admin.uexceptions.base, ldap.LDAPError):
 				ud.debug(ud.ADMIN, ud.ERROR, 'Failed to remove network %s from %s: %s' % (self.dn, computer.dn, traceback.format_exc()))
 
@@ -226,7 +228,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self['nextIp']:
 			self.stepIp()
 
-		return []
+		return super(object, self)._ldap_addlist()
 
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -235,26 +237,27 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self.hasChanged('ipRange'):
 			try:
-				network = ipaddr.IPNetwork(self['network'] + '/' + self['netmask'])
-				ipaddr.IPAddress(self['nextIp'])
+				network = ipaddress.ip_network(u'%s/%s' % (self['network'], self['netmask']), strict=False)
+				ipaddress.ip_address(u'%s' % self['nextIp'])
 			except ValueError as exc:
 				raise univention.admin.uexceptions.valueError(str(exc), property='nextIp')
+
 			if self['ipRange']:
 				self.sort_ipranges()
 				self['nextIp'] = self['ipRange'][0][0]
 			else:
-				self['nextIp'] = str(network.network + 1)
-			if self['nextIp'] != self.oldattr.get('univentionNextIp', ''):
+				self['nextIp'] = str(network.network_address + 1)
+			if self['nextIp'] != self.oldattr.get('univentionNextIp', [b''])[0].decode('UTF-8'):
 				next_ip_changed = True
 
 			ipRange = []
 			for i in self['ipRange']:
-				firstIP = ipaddr.IPAddress(i[0])
-				lastIP = ipaddr.IPAddress(i[1])
+				firstIP = ipaddress.ip_address(u'%s' % i[0])
+				lastIP = ipaddress.ip_address(u'%s' % i[1])
 				for j in self['ipRange']:
 					if i != j:
-						otherFirstIP = ipaddr.IPAddress(j[0])
-						otherLastIP = ipaddr.IPAddress(j[1])
+						otherFirstIP = ipaddress.ip_address(u'%s' % j[0])
+						otherLastIP = ipaddress.ip_address(u'%s' % j[1])
 						if firstIP < otherFirstIP < lastIP or \
 							firstIP < otherLastIP < lastIP or \
 							otherFirstIP < firstIP < otherLastIP or \
@@ -262,11 +265,12 @@ class object(univention.admin.handlers.simpleLdap):
 							raise univention.admin.uexceptions.rangesOverlapping('%s-%s; %s-%s' % (i[0], i[1], j[0], j[1]))
 				if firstIP not in network or lastIP not in network:
 					raise univention.admin.uexceptions.rangeNotInNetwork('%s-%s' % (firstIP, lastIP, ))
-				if firstIP == network.network or lastIP == network.network:
+				if firstIP == network.network_address or lastIP == network.network_address:
 					raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (firstIP, lastIP, ))
-				if firstIP == network.broadcast or lastIP == network.broadcast:
+				if firstIP == network.broadcast_address or lastIP == network.broadcast_address:
 					raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP, ))
-				ipRange.append(' '.join(i).encode('ASCII'))
+				ipRange.append(u' '.join(i).encode('ASCII'))
+
 			ud.debug(ud.ADMIN, ud.INFO, 'old Range: %s' % self.oldinfo.get('ipRange'))
 			ml = [x for x in ml if x[0] != 'univentionIpRange']
 			ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', [b'']), ipRange))
@@ -280,10 +284,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def sort_ipranges(self):
 		# make sure that the ipRanges are ordered by their start address (smallest first)
 		for i in range(1, len(self['ipRange'])):
-			if ipaddr.IPAddress(self['ipRange'][i][0]) < ipaddr.IPAddress(self['ipRange'][i - 1][0]):
+			if ipaddress.ip_address(u'%s' % self['ipRange'][i][0]) < ipaddress.ip_address(u'%s' % self['ipRange'][i - 1][0]):
 				self['ipRange'].insert(i - 1, self['ipRange'].pop(i))
 		for i in range(1, len(self['ipRange'])):
-			if ipaddr.IPAddress(self['ipRange'][i][0]) < ipaddr.IPAddress(self['ipRange'][i - 1][0]):
+			if ipaddress.ip_address(u'%s' % self['ipRange'][i][0]) < ipaddress.ip_address(u'%s' % self['ipRange'][i - 1][0]):
 				self.sort_ipranges()
 
 
