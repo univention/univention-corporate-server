@@ -193,7 +193,7 @@ def test_udm_attributes(selenium, ucr):
 # tests whether a user is created and put into the right container
 @pytest.mark.parametrize("verification_process", ['automatic', 'manual'])
 def test_user_creation(selenium, mails, get_registration_info, verification_process):
-	#creates user
+	# creates user
 	_navigate_self_service(selenium, '#page=createaccount')
 	info = get_registration_info()
 	_enter_attributes(selenium, info['attributes'], 'Create account')
@@ -202,14 +202,14 @@ def test_user_creation(selenium, mails, get_registration_info, verification_proc
 		'univentionPasswordRecoveryEmailVerified': ['FALSE'],
 	})
 	selenium.driver.find_element_by_xpath('//p[text()="Hello "]/b[text()="{}"]//parent::p[text()=", we have sent you an email to "]/b[text()="{}"]//parent::p[text()=". Please follow the instructions in the email to verify your account."]'.format(info['attributes']['username'], info['attributes']['PasswordRecoveryEmail']))
-	#tests email
+	# tests email
 	mail = _get_mail(mails)
 	if verification_process == 'automatic':
-		#tests automatic link
+		# tests automatic link
 		selenium.driver.get(mail['auto_verify_link'])
 		selenium.wait_until_standby_animation_appears_and_disappears()
 	elif verification_process == 'manual':
-		#tests manual link
+		# tests manual link
 		selenium.driver.get(mail['verify_link'])
 		_enter_attributes(selenium, {
 			'username': mail['verify_data']['username'],
@@ -253,7 +253,7 @@ def test_request_new_token(selenium, mails, get_registration_info):
 	_enter_attributes(selenium, {
 		'username': info['attributes']['username']
 	}, 'Request new token')
-	selenium.driver.find_element_by_xpath('//p[text()="Hello "]/b[text()="{}"]//parent::p[text()=", we have sent you an email to "]/b[text()="{}"]//parent::p[text()=". Please follow the instructions in the email to verify your account."]'.format(info['attributes']['username'], info['attributes']['PasswordRecoveryEmail']))
+	selenium.driver.find_element_by_xpath('//p[text()="Hello "]/b[text()="{}"]//parent::p[text()=", we have sent you an email to your registered address. Please follow the instructions in the email to verify your account."]'.format(info['attributes']['username']))
 	mail = _get_mail(mails)
 	selenium.driver.refresh()
 	selenium.driver.get(mail['auto_verify_link'])
