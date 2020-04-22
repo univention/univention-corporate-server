@@ -1,8 +1,6 @@
 
 	; domain
 @!@
-import sys
-
 domain_logons = configRegistry.get('samba/domain/logons', 'auto')
 if configRegistry['samba/role'] != 'memberserver':
 	if configRegistry.get('samba/role', '').lower() == 'bdc':
@@ -50,5 +48,5 @@ if wins_support:
 
 wins_server = configRegistry.get('windows/wins-server')
 if wins_support != 'yes' and wins_server:
-	sys.stdout.write('\twins server = %s' % wins_server)
+	print('\twins server = %s' % wins_server)
 @!@

@@ -6,5 +6,5 @@ import sys
 
 for includefilepath in ('/etc/samba/base.conf', '/etc/samba/installs.conf'):
 	if os.path.exists(includefilepath):
-		sys.stdout.write("\tinclude = %s" % (includefilepath,))
+		print("\tinclude = %s" % (includefilepath,))
 @!@
