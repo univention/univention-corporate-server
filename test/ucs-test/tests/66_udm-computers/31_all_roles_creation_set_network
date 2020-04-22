@@ -30,9 +30,7 @@ if __name__ == '__main__':
 		}
 
 		with udm_test.UCSTestUDM() as udm:
-
-			domainname = ucr.get('domainname')
-			dNSCn = 'cn=dns,dc=' + (',dc=').join(domainname.split('.'))
+			dNSCn = 'cn=dns,%s' % (ucr['ldap/base'],)
 
 			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
 
