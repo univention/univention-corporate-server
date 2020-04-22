@@ -141,10 +141,18 @@ define([
 		_loadSubpage: function(changedHash) {
 			var hash = ioQuery.queryToObject(changedHash).page;
 			if (!hash) {
-				var firstVisiblePage = this._getEnabledPages().find(function(page) {
-					return page.visible;
+				var enabledPages = this._getEnabledPages();
+				var fallbackPage = enabledPages.find(function(page) {
+					return page.hash === PasswordForgotten.hash;
 				});
-				hash = firstVisiblePage ? firstVisiblePage.hash : '';
+				if (!fallbackPage) {
+					fallbackPage = enabledPages.find(function(page) {
+						return page.visible;
+					});
+				}
+				hash = fallbackPage ? fallbackPage.hash : 'pagenotfound';
+				dojoHash(ioQuery.objectToQuery({page: hash}));
+				return;
 			}
 			var isValidPage = this._pagePanes.hasOwnProperty(hash);
 			if (!isValidPage) {

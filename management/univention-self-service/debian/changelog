@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-25) unstable; urgency=medium
+
+  * Bug #51001: Slightly change hash behaviour
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Apr 2020 10:59:02 +0200
+
 univention-self-service (4.0.3-24) unstable; urgency=medium
 
   * Bug #51152: When requesting a new token, do not disclose the email address
