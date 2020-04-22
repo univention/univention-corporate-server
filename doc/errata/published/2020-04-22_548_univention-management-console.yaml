@@ -13,3 +13,5 @@ desc: |-
    page of the Self Service. This feature can be activated via the
    umc/self-service/account-deregistration/enabled UCR variable.
 bug: [51098, 51001, 51110]
+erratum: 548
+announced: 2020-04-22
