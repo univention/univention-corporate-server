@@ -203,20 +203,20 @@ def nothing(a):
 	pass
 
 
-def IgnoreNone(list):
+def IgnoreNone(value, encoding=()):
 	# type: (str) -> Union[None, str]
 	"""
-	Return the value if it is not the sting `None`.
+	Return the value if it is not the string `None`.
 
-	:param list: Some element(s).
+	:param value: Some element(s).
 	:returns: The element(s) if it is not `None`.
 
 	>>> IgnoreNone('1')
 	'1'
 	>>> IgnoreNone('None')
 	"""
-	if list != 'None':
-		return list
+	if value != u'None':
+		return value.encode(*encoding)
 
 
 def _stringToInt(value):
