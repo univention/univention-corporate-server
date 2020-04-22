@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-apache
 fix: 11.0.1-19A~4.4.0.202004151323
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Internal change: the UCR templates of univention-apache are now
    python3-compatible.
 bug: [51077]

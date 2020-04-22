@@ -9,8 +9,8 @@ desc: |
  * Internal change: the UCR templates of univention-directory-manager-modules
    are now python3-compatible.
  * SambaBadPasswordTime, the timestamp that is created when a user gets
-   locked,can have a different time format than expected by udm
+   locked, can have a different time format than expected by udm
    when created by Samba3.
-   This led to Tracebacks in udm and rejects in the AD-Connector.
+   This led to tracebacks in udm and rejects in the AD-Connector.
    Udm can handle this time format now.
 bug: [51089, 49697]

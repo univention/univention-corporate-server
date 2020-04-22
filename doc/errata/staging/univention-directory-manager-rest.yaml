@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-directory-manager-rest
 fix: 9.0.16-9A~4.4.4.202004141127
 desc: |
- This update addresses the following issue(s):
- * Bugfix: After an automatic password rotation, configurable via UCR
+ This update addresses the following issues:
+ * After an automatic password rotation, configurable via UCR
    variable `server/password/interval`, the UDM REST API refused to deliver
    an `openapi.json` file and disallows further logins.
  * Internal change: the UCR templates of univention-directory-manager-rest

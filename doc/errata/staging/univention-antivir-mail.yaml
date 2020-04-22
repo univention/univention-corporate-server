@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-antivir-mail
 fix: 10.0.0-2A~4.4.0.202004211758
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Internal change: the UCR templates of univention-antivir-mail are now
    python3-compatible.
 bug: [51149]
