@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-31) unstable; urgency=medium
+
+  * Bug #51131: fix print statements
+
+ -- Florian Best <best@univention.de>  Wed, 22 Apr 2020 15:46:01 +0200
+
 univention-samba4 (8.0.0-30) unstable; urgency=medium
 
   * Bug #51131: make UCR templates compatible to python3

@@ -1,6 +1,4 @@
 @!@
-import sys
-
 print('\t; domain service lookup related settings')
 if configRegistry['samba4/role'] == 'MEMBER':
 	print('\tpreferred master = no')
@@ -14,6 +12,5 @@ print('\tdomain master = %s' % configRegistry.get('samba/domain/master', 'auto')
 if configRegistry.is_true('windows/wins-support'):
 	print('\twins support = yes')
 elif configRegistry['windows/wins-server']:
-	sys.stdout.write('\twins server = %s' % configRegistry['windows/wins-server'])
-
+	print('\twins server = %s' % configRegistry['windows/wins-server'])
 @!@
