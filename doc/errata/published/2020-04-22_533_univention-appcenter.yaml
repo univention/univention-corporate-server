@@ -10,3 +10,5 @@ desc: |
  * Internal change: the UCR templates of univention-appcenter are now
    python3-compatible.
 bug: [51069, 51101]
+erratum: 533
+announced: 2020-04-22
