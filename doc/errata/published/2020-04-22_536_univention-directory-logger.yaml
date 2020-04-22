@@ -14,3 +14,5 @@ desc: |
    feature manually.
  * Internal change: the UCR templates are now python3-compatible.
 bug: [51082,51088]
+erratum: 536
+announced: 2020-04-22
