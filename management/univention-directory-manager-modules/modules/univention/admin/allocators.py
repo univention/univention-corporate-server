@@ -90,7 +90,7 @@ def requestGroupSid(lo, position, gid_s, generateDomainLocalSid=False):
 		sid = 'S-1-5-32-' + rid
 	else:
 		searchResult = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-		domainsid = searchResult[0][1]['sambaSID'][0]
+		domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
 		sid = domainsid + '-' + rid
 
 	return request(lo, position, 'sid', sid)
