@@ -12,3 +12,5 @@ desc: |
  * Internal change: the UCR templates of univention-directory-manager-rest
    are now python3-compatible.
 bug: [50708, 51090]
+erratum: 538
+announced: 2020-04-22
