@@ -347,7 +347,7 @@ class object(univention.admin.handlers.simpleLdap):
 		dn = self._ldap_dn()
 		if self.exists():
 			rdn = self.lo.explodeDn(dn)[0]
-			dn = '%s,%s' % (rdn, self.lo.parentDn(self.dn))
+			dn = u'%s,%s' % (rdn, self.lo.parentDn(self.dn))
 		return dn
 
 	def unique_dn(self):
@@ -361,11 +361,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def acquire_unique_dn(self):
 		nonce = 1
-		cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
+		cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
 		self['cn'] = cn.strip()
 		while not self.unique_dn():
 			nonce += 1
-			cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
+			cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
 			self['cn'] = cn.strip()
 		return self.get_candidate_dn()
 
@@ -396,10 +396,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def _modlist_univention_person(self, ml):
 		if self.hasChanged('birthday'):
 			# make sure that univentionPerson is set as objectClass when birthday is set
-			if self['birthday'] and 'univentionPerson' not in self.oldattr.get('objectClass', []):
+			if self['birthday'] and b'univentionPerson' not in self.oldattr.get('objectClass', []):
 				ml.append(('objectClass', b'', b'univentionPerson'))
 			# remove univentionPerson as objectClass when birthday is unset
-			elif not self['birthday'] and 'univentionPerson' in self.oldattr.get('objectClass', []):
+			elif not self['birthday'] and b'univentionPerson' in self.oldattr.get('objectClass', []):
 				ml.append(('objectClass', b'univentionPerson', b''))
 		return ml
 
