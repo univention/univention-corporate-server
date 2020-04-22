@@ -1951,22 +1951,21 @@ class object(univention.admin.handlers.simpleLdap):
 	# If you change anything here, please also check users/ldap.py
 	def _modlist_posix_password(self, ml):
 		if not self.exists() or self.hasChanged(['disabled', 'password']):
-			old_password = self.oldattr.get('userPassword', [b''])[0]
+			old_password = self.oldattr.get('userPassword', [b''])[0].decode('ASCII')
 			password = self['password']
 
 			if self.hasChanged('password') and univention.admin.password.RE_PASSWORD_SCHEME.match(password):
 				# hacking attempt. user tries to change the password to e.g. {KINIT} or {crypt}$6$...
 				raise univention.admin.uexceptions.valueError(_('Invalid password.'), property='password')
 
-			if univention.admin.password.password_is_auth_saslpassthrough(old_password.decode('ASCII')):
+			if univention.admin.password.password_is_auth_saslpassthrough(old_password):
 				# do not change {SASL} password, but lock it if necessary
 				password = old_password
 
 			password_crypt = univention.admin.password.lock_password(password)  # TODO: decode to let lock_password() and unlock_passowrd() return bytestring?!
 			if self['disabled'] != '1':
 				password_crypt = univention.admin.password.unlock_password(password_crypt)
-			password_crypt = password_crypt.encode('ASCII')
-			ml.append(('userPassword', old_password, password_crypt))
+			ml.append(('userPassword', old_password.encode('ASCII'), password_crypt.encode('ASCII')))
 		return ml
 
 	def _modlist_pwd_account_locked_time(self, ml):
@@ -2379,7 +2378,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):
-		if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
+		if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
 			return False
 		required_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'person', b'krb5KDCEntry', b'krb5Principal'}
 		ocs = set(attr.get('objectClass', []))
