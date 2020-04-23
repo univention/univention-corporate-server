@@ -830,11 +830,10 @@ define([
 			this._selectedIframe = null;
 		},
 
-		__createIframe: function(logoUrl, url) {
+		__createIframe: function(id, logoUrl, url) {
 			var iframeWrapper = put('div.iframeWrapper');
 			var iframeStatus = put('span.iframeStatus.loadingSpinner.loadingSpinner--visible');
 			var iframe = put('iframe[src=$]', url);
-			// var tab = put('div.sidebar__tab div.sidebar__tab__icon.$ <', portalTools.getIconClass(logoUrl));
 			var tab = put('div.sidebar__tab');
 			var tabCloseCover = put('div.sidebar__tab__closeCover');
 			var tabClose = put('div.sidebar__tab__close div.umcCrossIconWhite <');
@@ -861,7 +860,13 @@ define([
 					put(iframeStatus, '!dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
 				}
 				if (iframe.contentWindow) {
-					iframe.contentWindow.onbeforeunload = lang.hitch(this, function() {
+					var pathname = lang.getObject('contentWindow.location.pathname', false, iframe);
+					if (pathname === '/univention/portal' || pathname === '/univention/portal/') {
+						console.log('iframe loaded /univention/portal - closing');
+						this._removeIframe(id);
+					}
+					
+					iframe.contentWindow.addEventListener('beforeunload', function() {
 						iframeStatus.innerHTML = '';
 						put(iframeStatus, '!dijitDisplayNone.loadingSpinner.loadingSpinner--visible');
 					});
@@ -882,7 +887,7 @@ define([
 		},
 
 		_createIframe: function(id, logoUrl, url) {
-			var d = this.__createIframe(logoUrl, url);
+			var d = this.__createIframe(id, logoUrl, url);
 			on(d.tabSelect, 'click', lang.hitch(this, function() {
 				console.log('tab click');
 				this._selectIframe(id);
@@ -920,7 +925,7 @@ define([
 					// console.log('portal/main loginIframe - message callback: ', evt);
 					// login.start(null, null, true);
 				// }, false);
-				var d = this.__createIframe(null, url);
+				var d = this.__createIframe(null, null, url);
 				d.tab = registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode;
 				this._iframeMap.$__login__$ = d;
 				
