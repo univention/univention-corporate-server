@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [3,4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-ldb-modules
+fix: 7.0.0-4A~4.4.0.202004212249
+desc: |
+ This update addresses the following issue:
+ * TODO
+bug: [51121]
+cve:
+ - TODO
