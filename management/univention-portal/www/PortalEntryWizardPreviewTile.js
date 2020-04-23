@@ -41,10 +41,6 @@ define([
 					'<div class="cornerPiece boxShadow bl">' +
 						'<div class="hoverBackground"></div>' +
 					'</div>' +
-					'<div class="cornerPiece boxShadow tr">' +
-						'<div class="hoverBackground"></div>' +
-					'</div>' +
-					'<div class="cornerPiece boxShadowCover bl"></div>' +
 					'<div class="appIcon umcGalleryIcon" data-dojo-attach-point="iconNode">' +
 						'<img data-dojo-attach-point="imgNode"/>' +
 					'</div>' +
@@ -54,7 +50,6 @@ define([
 								'<div class="umcGalleryName" data-dojo-attach-point="displayNameWrapperNode">' +
 									'<div class="umcGalleryNameContent" data-dojo-attach-point="displayNameNode"></div>' +
 								'</div>' +
-								'<div class="umcGallerySubName" data-dojo-attach-point="linkNode"></div>' +
 							'</div>' +
 							'<div class="appHover">' +
 								'<div data-dojo-attach-point="descriptionNode"></div>' +
@@ -86,15 +81,6 @@ define([
 		},
 		displayNameClass: null,
 		_setDisplayNameClassAttr: { node: 'displayNameWrapperNode', type: 'class' },
-
-		link: null,
-		_setLinkAttr: function(link) {
-			this.set('linkClass', link ? 'hasLink' : null);
-			this.linkNode.innerHTML = link;
-			this._set('link', link);
-		},
-		linkClass: null,
-		_setLinkClassAttr: { node: 'linkNode', type: 'class' },
 
 		description: null,
 		_setDescriptionAttr: function(description) {

@@ -46,11 +46,12 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/dnd/Source",
+	"dojox/html/entities",
 	"put-selector/put",
 	"umc/tools",
 	"umc/widgets/AppGallery",
 	"./tools"
-], function(declare, lang, array, on, aspect, query, domClass, domConstruct, domGeometry, domStyle, Memory, Observable, Source, put, tools, AppGallery, portalTools) {
+], function(declare, lang, array, on, aspect, query, domClass, domConstruct, domGeometry, domStyle, Memory, Observable, Source, entities, put, tools, AppGallery, portalTools) {
 	var _regIPv6Brackets = /^\[.*\]$/;
 
 	var find = function(list, testFunc) {
@@ -173,10 +174,6 @@ define([
 						'<div class="cornerPiece boxShadow bl">' +
 							'<div class="hoverBackground"></div>' +
 						'</div>' +
-						'<div class="cornerPiece boxShadow tr">' +
-							'<div class="hoverBackground"></div>' +
-						'</div>' +
-						'<div class="cornerPiece boxShadowCover bl"></div>' +
 					'</div>' +
 				'</div>'
 			);
@@ -251,6 +248,7 @@ define([
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
 				case portalTools.RenderMode.EDIT:
+					this.inherited(arguments);
 					var store = new Observable(new Memory({
 						data: this.entries
 					}));
@@ -275,6 +273,37 @@ define([
 
 		getStatusIconClass: function(item) {
 			return this.renderMode === portalTools.RenderMode.EDIT ? 'editIcon' : 'noStatus';
+		},
+
+		getDomForRenderRow: function(item) {
+			var domString = '' +
+				'<div class="umcGalleryWrapperItem" moduleID={itemId}>' +
+					'<div class="cornerPiece boxShadow bl">' +
+						'<div class="hoverBackground"></div>' +
+					'</div>' +
+					'<div class="appIcon umcGalleryIcon {iconClass}"></div>' +
+					'<div class="appInnerWrapper umcGalleryItem">' +
+						'<div class="contentWrapper">' +
+							'<div class="appContent">' +
+								'<div class="umcGalleryName">' +
+									'<div class="umcGalleryNameContent">{itemName}</div>' +
+								'</div>' +
+							'</div>' +
+							'<div class="appHover">' +
+								'<div>{itemHoverContent}</div>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div class="appStatusIcon {itemStatusIcon}"></div>' +
+					'<div class="appStatusIcon appStatusHoverIcon {itemStatusIcon}"></div>' +
+				'</div>';
+
+			var item2 = {};
+			tools.forIn(item, function(key, value) {
+				item2[key] = entities.encode(value);
+			});
+
+			return domConstruct.toDom(lang.replace(domString, item2));
 		},
 
 		renderRow: function(item) {
@@ -332,10 +361,6 @@ define([
 					'<div class="cornerPiece boxShadow bl">' +
 						'<div class="hoverBackground"></div>' +
 					'</div>' +
-					'<div class="cornerPiece boxShadow tr">' +
-						'<div class="hoverBackground"></div>' +
-					'</div>' +
-					'<div class="cornerPiece boxShadowCover bl"></div>' +
 					'<div class="dummyIcon"></div>' +
 				'</div>';
 			var domNode = domConstruct.toDom(domString);
@@ -430,17 +455,46 @@ define([
 			return url;
 		},
 
+		_getDefaultValuesForResize: function(cssClass) {
+			var node = this.renderRow({
+				name: '*',
+				description: '*'
+			});
+			domClass.add(node, 'dijitOffScreen');
+			domConstruct.place(node, this.contentNode);
+			var queriedNode = query(cssClass, node)[0];
+			var geom = domGeometry.position(queriedNode);
+			var fontSize = this._getItemFontSize(node, cssClass);
+			domConstruct.destroy(node);
+			return {
+				height: geom.h,
+				width: geom.w,
+				fontSize: fontSize
+			};
+		},
+
 		_resizeItemNamesOfAvatarTile: function(node) {
 			var offscreenWrapper = put(dojo.body(), 'div.dijitOffScreen', node, '<');
+			this.__resizeItemNames(node);
+			put(offscreenWrapper, '!');
+		},
+
+		_resizeItemNames: function() {
+			this.__resizeItemNames(this.contentNode);
+		},
+
+		__resizeItemNames: function(node) {
 			var defaultValues = this._getDefaultValuesForResize('.umcGalleryName');
+			var defaultHeight = defaultValues.height;
 			query('.umcGalleryNameContent', node).forEach(lang.hitch(this, function(inode) {
 				var fontSize = parseInt(defaultValues.fontSize, 10) || 16;
-				while (domGeometry.position(inode).h > defaultValues.height) {
+				var pos = domGeometry.position(inode);
+				while (pos.h > defaultValues.height || pos.w > defaultValues.width) {
 					fontSize--;
 					domStyle.set(inode, 'font-size', fontSize + 'px');
+					pos = domGeometry.position(inode);
 				}
 			}));
-			put(offscreenWrapper, '!');
 		}
 	});
 });

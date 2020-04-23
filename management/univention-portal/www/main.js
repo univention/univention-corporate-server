@@ -1216,31 +1216,6 @@ define([
 							});
 						});
 
-						// add onChange listener for link to update
-						// the preview tile if link is changed
-						var widget = wizard.getWidget('link');
-						var __addLinkOnChangeListener = function(rowIndex) {
-							var rowWidget = widget._widgets[rowIndex];
-							rowWidget[0].set('intermediateChanges', true);
-							wizard.own(on(rowWidget[0], 'change', function() {
-								var link = '';
-								var entryLinks = wizard.getWidget('link').get('value');
-								if (entryLinks.length) {
-									link = getBestLinkAndHostname(entryLinks).hostname;
-								}
-								tile.set('link', link);
-							}));
-						};
-						widget.ready().then(function() {
-							array.forEach(widget._widgets, function(iwidget, rowIndex) {
-								__addLinkOnChangeListener(rowIndex);
-							});
-						});
-						aspect.after(widget, '__appendRow', function(rowIndex) {
-							widget.ready().then(__addLinkOnChangeListener(rowIndex));
-						}, true);
-
-
 						//// listener for save / finish / cancel
 						// close wizard on cancel
 						wizard.own(on(wizard, 'cancel', lang.hitch(this, function() {
