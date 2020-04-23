@@ -38,8 +38,6 @@ import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.settings.printermodel as printermodel
-import univention.admin.handlers.settings.printeruri as printeruri
 import univention.admin.localization
 
 import univention.debug as ud
@@ -185,39 +183,26 @@ layout = [
 ]
 
 
-def boolToString(value):
-	if value == '1':
-		return ['yes']
-	else:
-		return ['no']
-
-
-def stringToBool(value):
-	if value[0].lower() == 'yes':
-		return '1'
-	else:
-		return '0'
-
-
 _AVAILABLE_PRINTER_SCHEMAS = []
 
 
-def unmapPrinterURI(value):
+def unmapPrinterURI(value, encoding=()):
 	if not value:
-		return ('', '')
-	schema = ''
-	dest = ''
+		return (u'', u'')
+	schema = u''
+	dest = u''
+	uri = value[0].decode(*encoding)
 	for sch in _AVAILABLE_PRINTER_SCHEMAS:
-		if value[0].startswith(sch):
+		if uri.startswith(sch):
 			schema = sch
-			dest = value[0][len(sch):]
+			dest = uri[len(sch):]
 			break
 
 	return (schema, dest)
 
 
-def mapPrinterURI(value):
-	return ''.join(value)
+def mapPrinterURI(value, encoding=()):
+	return u''.join(value).encode(*encoding)
 
 
 mapping = univention.admin.mapping.mapping()
@@ -240,11 +225,9 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		global _AVAILABLE_PRINTER_SCHEMAS
 		# find the printer uris
 		if not _AVAILABLE_PRINTER_SCHEMAS:
-			printer_uris = printeruri.lookup(co, lo, '')
-			_AVAILABLE_PRINTER_SCHEMAS = []
+			printer_uris = univention.admin.modules.get('settings/printeruri').lookup(co, lo, '')
 			for uri in printer_uris:
 				_AVAILABLE_PRINTER_SCHEMAS.extend(uri['printeruri'])
 
@@ -253,7 +236,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		# find the producer
 		univention.admin.handlers.simpleLdap.open(self)
-		models = printermodel.lookup(self.co, self.lo, 'printerModel="%s*' % self['model'])
+		models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
 		ud.debug(ud.ADMIN, ud.INFO, "printermodel: %s" % str(models))
 		if not models or len(models) > 1:
 			self['producer'] = []
@@ -262,16 +245,14 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
-	def _ldap_pre_create(self):
-		super(object, self)._ldap_pre_create()
+	def _ldap_pre_ready(self):
+		super(object, self)._ldap_pre_ready()
 		# cut off '/' at the beginning of the destination if it exists and protocol is file:/
 		if self['uri'] and self['uri'][0] == 'file:/' and self['uri'][1][0] == '/':
 			self['uri'][1] = re.sub(r'^/+', '', self['uri'][1])
 
 	def _ldap_pre_modify(self):  # check for membership in a quota-printerclass
-		# cut off '/' at the beginning of the destination if it exists and protocol is file:/
-		if self['uri'] and self['uri'][0] == 'file:/' and self['uri'][1][0] == '/':
-			self['uri'][1] = re.sub(r'^/+', '', self['uri'][1])
+		super(object, self)._ldap_pre_modify()
 		if self.hasChanged('setQuota') and self.info['setQuota'] == '0' and self.info.get('spoolHost'):
 			printergroups_filter = '(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 			group_cn = []
@@ -279,10 +260,11 @@ class object(univention.admin.handlers.simpleLdap):
 				for member_cn in [x.decode('UTF-8') for x in member_list.get('univentionPrinterGroupMember', [])]:
 					if member_cn == self.info['name']:
 						group_cn.append(member_list['cn'][0].decode('UTF-8'))
-			if len(group_cn) > 0:
+			if group_cn:
 				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 
 	def _ldap_pre_remove(self):  # check for last member in printerclass
+		super(object, self)._ldap_pre_remove()
 		printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
 		rm_attrib = []
 		for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
@@ -291,6 +273,7 @@ class object(univention.admin.handlers.simpleLdap):
 					rm_attrib.append(pg_dn)
 					if len(member_list['univentionPrinterGroupMember']) < 2:
 						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0].decode('UTF-8')})
+
 		printergroup_module = univention.admin.modules.get('shares/printergroup')
 		for rm_dn in rm_attrib:
 			printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)
