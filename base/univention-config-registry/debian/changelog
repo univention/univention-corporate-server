@@ -1,3 +1,10 @@
+univention-config-registry (14.0.0-15) unstable; urgency=medium
+
+  * Bug #51156: fix python3 compatibility in interfaces.py and
+    run_script()
+
+ -- Florian Best <best@univention.de>  Thu, 23 Apr 2020 11:59:13 +0200
+
 univention-config-registry (14.0.0-14) unstable; urgency=medium
 
   * Bug #51021: FTBFS: UCR interfaces
