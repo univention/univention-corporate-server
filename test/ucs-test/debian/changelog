@@ -1,3 +1,9 @@
+ucs-test (9.0.3-193) unstable; urgency=medium
+
+  * Bug #51144: Repair 01_base/75dansguardianclamav
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 23 Apr 2020 17:01:07 +0200
+
 ucs-test (9.0.3-192) unstable; urgency=medium
 
   * Bug #51152: Adjust text in test
