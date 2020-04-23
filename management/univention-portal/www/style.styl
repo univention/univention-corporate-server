@@ -941,25 +941,53 @@ material-shadow(level)
 			.dijitOffScreen .umcGalleryWrapperItem
 				width: 300px !important
 
-.umc.portal.ornamentLessTiles
-	.hoverBackground
-		width: 155px !important;
+.umc.portal
+	.umcGalleryWrapperItem
+		.appInnerWrapper
+			.contentWrapper
+				padding: 0
+				display: flex
+				flex-flow: column
+				justify-content: flex-end
 
-	.cornerPiece
-		width: 155px !important;
-		height: 165px !important;
+				.appContent
+					padding: 8px
 
-	.cornerPiece.tr
-		box-shadow: none !important;
+					.umcGalleryName
+						height: 54px
+						margin: 0
+						display: grid
+						align-items: center
+						word-break: normal
+						word-wrap: normal
 
-	.cornerPiece.tr .hoverBackground
-		display: none !important;
+		.cornerPiece
+			width: 155px
+			height: 165px
+
+			&.boxShadow .hoverBackground
+				width: 155px
+
+		.appIcon
+			margin: 20px 10px 10px 10px
+
 
 @media (max-width: 549px)
-	.umc.portal.ornamentLessTiles
-		.cornerPiece
-			width: 100% !important;
-			height: 80px !important;
+	.umc.portal
+		.umcGalleryWrapperItem
+			.appInnerWrapper
+				.contentWrapper
+					padding: 0 0 0 80px
+
+			.cornerPiece
+				width: 100%
+				height: 80px
+
+			.cornerPiece.bl
+				material-shadow(1)
+
+			.appIcon
+				margin: 8px
 
 @keyframes spin {
 	0% {
