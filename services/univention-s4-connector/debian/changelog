@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-69) unstable; urgency=medium
+
+  * Bug #51159: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Thu, 23 Apr 2020 17:25:41 +0200
+
 univention-s4-connector (13.0.2-68) unstable; urgency=medium
 
   * Bug #50593: Revert 706f9854e0.
