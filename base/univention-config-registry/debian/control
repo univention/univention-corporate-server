@@ -112,6 +112,7 @@ Description: UCS - Python 2 interface to configuration registry
 Package: python3-univention-config-registry
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends},
+ python3-ipaddr,
  python3-six,
  ifupdown,
 Provides: ${python3:Provides}

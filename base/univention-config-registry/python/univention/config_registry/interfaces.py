@@ -34,21 +34,17 @@
 # pylint: disable-msg=W0142,C0103,R0201,R0904
 from __future__ import absolute_import
 
-from sys import maxsize
 import re
+from sys import maxsize
 from functools import wraps
+
+from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+
 from univention.config_registry.backend import ConfigRegistry
-import six
-if six.PY3:
-	from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
-else:
-	from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+
 try:
 	from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type  # noqa F401
-	if six.PY3:
-		from ipaddress import IPvddress  # noqa F401
-	else:
-		from ipaddr import IPAddress  # noqa F401
+	from ipaddr import IPAddress  # noqa F401
 except ImportError:
 	pass
 
@@ -176,14 +172,14 @@ class _Iface(dict):
 	def ipv4_address(self):
 		# type: () -> IPv4Address
 		"""Return IPv4 address."""
-		return IPv4Network('%(address)s/%(netmask)s' % self)
+		return IPv4Network('%(address)s/%(netmask)s' % self, strict=False)
 
 	@forgiving_addr
 	def ipv6_address(self, name='default'):
 		# type: (str) -> IPv6Address
 		"""Return IPv6 address."""
 		key = '%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
-		return IPv6Network(key % self)
+		return IPv6Network(key % self, strict=False)
 
 	@property
 	def routes(self):
