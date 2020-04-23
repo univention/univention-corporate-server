@@ -99,7 +99,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	return univention.admin.handlers.shares.printer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.shares.printergroup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+	res = []
+	for module in (univention.admin.handlers.shares.printer, univention.admin.handlers.shares.printergroup):
+		res.extend(module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
+	return res
 
 
 def identify(dn, attr, canonical=0):
