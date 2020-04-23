@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: ldb
+fix: 2:1.5.7-1A~4.3.0.202004231326
+desc: |
+ This update addresses the following issue:
+ * TODO
+bug: [51122]
+cve:
+ - TODO
