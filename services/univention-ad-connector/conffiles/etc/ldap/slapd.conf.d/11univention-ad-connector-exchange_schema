@@ -1,4 +1,4 @@
 @!@
-if configRegistry['ldap/server/type']=="master":
-	print 'include         /usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema'
+if configRegistry['ldap/server/type'] == "master":
+	print('include         /usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema')
 @!@
