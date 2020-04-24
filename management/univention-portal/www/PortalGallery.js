@@ -488,6 +488,7 @@ define([
 			var defaultHeight = defaultValues.height;
 			query('.umcGalleryNameContent', node).forEach(lang.hitch(this, function(inode) {
 				var fontSize = parseInt(defaultValues.fontSize, 10) || 16;
+				domStyle.set(inode, 'font-size', fontSize + 'px');
 				var pos = domGeometry.position(inode);
 				while (pos.h > defaultValues.height || pos.w > defaultValues.width) {
 					fontSize--;
