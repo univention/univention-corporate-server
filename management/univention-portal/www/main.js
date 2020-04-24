@@ -1921,13 +1921,33 @@ define([
 			if (! links) {
 				return;
 			}
-			array.forEach(links.footer, function(link) {
-				if (link.locale != locale) {
+			var entries = this._prepareEntriesForPortalGallery(links, portalTools.RenderMode.NORMAL);
+			array.forEach(entries, function(link) {
+				if (! link.activated) {
 					return;
 				}
 				topic.publish("/portal/menu", "miscMenu", "addItem", {
-					onClick: function() { window.open(link.href); },
+					onClick: function() {
+						var linkTarget = link.linkTarget;
+						if (linkTarget == "useportaldefault") {
+							linkTarget = portalJson.portal.defaultLinkTarget;
+						}
+						switch (linkTarget) {
+							case 'samewindow':
+								window.location = link.web_interface;
+								break;
+							case 'newwindow':
+								window.open(link.web_interface);
+								break;
+							case 'embedded':
+								topic.publish('/portal/iframes/open', link.id, link.logo_name, link.web_interface);
+
+								break;
+						}
+					},
+					"title": link.description,
 					"label": link.name,
+					"$id": link.id,
 					"$priority": 150
 				});
 			});
