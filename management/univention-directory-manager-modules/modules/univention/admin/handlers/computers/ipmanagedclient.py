@@ -194,7 +194,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		nagios.Support.__init__(self)
 
 	def open(self):
-
 		univention.admin.handlers.simpleComputer.open(self)
 		self.nagios_open()
 
