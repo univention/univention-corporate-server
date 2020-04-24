@@ -122,6 +122,7 @@ class object(univention.admin.handlers.simpleLdap):
 			#   performance reasons. These statements and this fqdn over here have to
 			#   be in sync.
 			self['fqdn'] = '%s.%s' % (self['name'], self['domain'])
+			self.save()
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
