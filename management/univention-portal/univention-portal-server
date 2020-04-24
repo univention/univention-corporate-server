@@ -123,7 +123,7 @@ class LDAPCache(object):
 	@property
 	def udm(self):
 		if self._udm is None:
-			self._udm = UDM.machine().version(2)
+			self._udm = UDM.machine().version(3)
 		return self._udm
 
 	def _get_groups(self):
@@ -244,10 +244,18 @@ class LDAPCache(object):
 
 	def _extract_links(self, portal):
 		ret = {}
-		for link in portal.props.links:
-			location, href, locale, name = link
-			location_list = ret.setdefault(location, [])
-			location_list.append({'name': name, 'locale': locale, 'href': href})
+		for entry in portal.props.links.objs:
+			ret[entry.dn] = {
+				'dn': entry.dn,
+				'name': entry.props.displayName,
+				'description': entry.props.description,
+				'logo_name': self._save_image(portal, entry),
+				'favorite': bool(entry.props.favorite),
+				'activated': entry.props.activated,
+				'allowedGroups': entry.props.allowedGroups,
+				'links': entry.props.link,
+				'linkTarget': entry.props.linkTarget,
+			}
 		return ret
 
 	def _extract_categories(self):
@@ -365,35 +373,41 @@ class JsonHandler(tornado.web.RequestHandler):
 	def _get_portal(self, username, admin_mode):
 		portal = cache.get('portal')
 		entries = cache.get('entries')
-		groups = cache.get('groups')
 		actual_content = portal.pop('content') or []
 		filtered_content = []
 		for category_dn, entry_dns in actual_content:
-			filter_entry_dns = []
-			for entry_dn in entry_dns:
-				entry = entries.get(entry_dn)
-				if entry is None:
-					continue
-				if not admin_mode:
-					if not entry['activated']:
-						continue
-					if entry['allowedGroups']:
-						checked_groups = []
-						for group_dn in entry['allowedGroups']:
-							group = groups.get(group_dn)
-							if group is None:
-								continue
-							if self._recursive_search_in_groups(username, group, groups, checked_groups):
-								break
-						else:
-							continue
-				filter_entry_dns.append(entry_dn)
+			filter_entry_dns = self._filter_entry_dns(entry_dns, entries, username, admin_mode)
 			filtered_content.append([category_dn, filter_entry_dns])
 		portal['content'] = filtered_content
 		return portal
 
-	def _get_links(self):
-		return cache.get('links')
+	def _filter_entry_dns(self, entry_dns, entries, username, admin_mode):
+		groups = cache.get('groups')
+		filtered_dns = []
+		for entry_dn in entry_dns:
+			entry = entries.get(entry_dn)
+			if entry is None:
+				continue
+			if not admin_mode:
+				if not entry['activated']:
+					continue
+				if entry['allowedGroups']:
+					checked_groups = []
+					for group_dn in entry['allowedGroups']:
+						group = groups.get(group_dn)
+						if group is None:
+							continue
+						if self._recursive_search_in_groups(username, group, groups, checked_groups):
+							break
+					else:
+						continue
+			filtered_dns.append(entry_dn)
+		return filtered_dns
+
+	def _get_links(self, username, admin_mode):
+		links = cache.get('links')
+		entry_dns = list(links.keys())
+		return [links[dn] for dn in self._filter_entry_dns(entry_dns, links, username, admin_mode)]
 
 	def _get_categories(self, content):
 		allowed_categories = [x[0] for x in content]
@@ -463,7 +477,7 @@ class JsonHandler(tornado.web.RequestHandler):
 				get_logger('admin').info('Admin mode rejected')
 		answer = {}
 		portal_content = answer['portal'] = self._get_portal(username, admin_mode)
-		answer['links'] = self._get_links()
+		answer['links'] = self._get_links(username, admin_mode)
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
 		answer['filtered'] = not admin_mode
