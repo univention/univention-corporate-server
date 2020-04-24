@@ -48,33 +48,24 @@ _ = translation.translate
 nagios_properties = {
 	'nagiosContactEmail': univention.admin.property(
 		short_description=_('Email address of Nagios contacts'),
-		long_description=(''),
+		long_description='',
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
-		required=False,
-		may_change=True,
 		options=['nagios'],
-		identifies=False
 	),
 	'nagiosParents': univention.admin.property(
 		short_description=_('Parent hosts'),
-		long_description=(''),
+		long_description='',
 		syntax=univention.admin.syntax.nagiosHostsEnabledDn,
 		multivalue=True,
-		required=False,
-		may_change=True,
 		options=['nagios'],
-		identifies=False
 	),
 	'nagiosServices': univention.admin.property(
 		short_description=_('Assigned Nagios services'),
-		long_description=(''),
+		long_description='',
 		syntax=univention.admin.syntax.nagiosServiceDn,
 		multivalue=True,
-		required=False,
-		may_change=True,
 		options=['nagios'],
-		identifies=False
 	)
 }
 
@@ -139,18 +130,10 @@ class Support(object):
 		return None
 
 	def nagiosGetAssignedServices(self):
-
 		fqdn = self.__getFQDN()
 
 		if fqdn:
-			searchResult = self.lo.search(
-				filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]),
-				base=self.position.getDomain(), attr=[])
-			dnlist = []
-			for (dn, attrs) in searchResult:
-				dnlist.append(dn)
-			return dnlist
-
+			return self.lo.searchDn(filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]), base=self.position.getDomain())
 		return []
 
 	def nagiosGetParentHosts(self):
@@ -170,7 +153,7 @@ class Support(object):
 					# found dNSZone
 					filter = '(&(objectClass=univentionHost)'
 					for aRecord in res[0][1]['aRecord']:
-						filter += filter_format('(aRecord=%s)', [aRecord])
+						filter += filter_format('(aRecord=%s)', [aRecord.decode('ASCII')])
 					filter += filter_format('(cn=%s))', [relDomainName])
 					res = self.lo.search(filter)
 					if res:
@@ -190,9 +173,9 @@ class Support(object):
 				domain = self.lo.getAttr(parentdn, 'associatedDomain')
 				cn = self.lo.getAttr(parentdn, 'cn')
 				if not domain:
-					domain = [configRegistry.get("domainname")]
+					domain = [configRegistry["domainname"].encode('UTF-8')]
 				if cn and domain:
-					parentlist.append('.'.join((cn[0], domain[0])).encode('UTF-8'))
+					parentlist.append(b'.'.join((cn[0], domain[0])))
 			ml.insert(0, ('univentionNagiosParent', self.oldattr.get('univentionNagiosParent', []), parentlist))
 
 	def nagios_ldap_modlist(self, ml):
@@ -200,12 +183,12 @@ class Support(object):
 			if ('ip' not in self.info) or (not self.info['ip']) or (len(self.info['ip']) == 1 and self.info['ip'][0] == ''):
 				for i, j in self.alloc:
 					univention.admin.allocators.release(self.lo, self.position, i, j)
-				raise univention.admin.uexceptions.nagiosARecordRequired
+				raise univention.admin.uexceptions.nagiosARecordRequired()
 			if not self.info.get('domain', None):
 				if ('dnsEntryZoneForward' not in self.info) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == ''):
 					for i, j in self.alloc:
 						univention.admin.allocators.release(self.lo, self.position, i, j)
-					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired
+					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired()
 
 		# add nagios option
 		if self.option_toggled('nagios') and 'nagios' in self.options:
@@ -233,29 +216,31 @@ class Support(object):
 		pass
 
 	def __change_fqdn(self, oldfqdn, newfqdn):
+		oldfqdn = oldfqdn.encode('utf-8')
+		newfqdn = newfqdn.encode('utf-8')
 		for servicedn in self.oldinfo['nagiosServices']:
 			oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 			if oldfqdn in oldmembers:
 				newmembers = copy.deepcopy(oldmembers)
 				newmembers.remove(oldfqdn)
 				newmembers.append(newfqdn)
-				self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
+				self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
 
 	def nagiosModifyServiceList(self):
 		fqdn = ''
 
 		if 'nagios' in self.old_options:
 			if self.hasChanged('name') and self.hasChanged('domain'):
-				oldfqdn = '%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
-				newfqdn = '%s.%s' % (self['name'], self['domain'])
+				oldfqdn = u'%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
+				newfqdn = u'%s.%s' % (self['name'], self['domain'])
 				self.__change_fqdn(oldfqdn, newfqdn)
 			elif self.hasChanged('name'):
-				oldfqdn = '%s.%s' % (self.oldinfo['name'], self['domain'])
-				newfqdn = '%s.%s' % (self['name'], self['domain'])
+				oldfqdn = u'%s.%s' % (self.oldinfo['name'], self['domain'])
+				newfqdn = u'%s.%s' % (self['name'], self['domain'])
 				self.__change_fqdn(oldfqdn, newfqdn)
 			elif self.hasChanged('domain'):
-				oldfqdn = '%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
-				newfqdn = '%s.%s' % (self['name'], self['domain'])
+				oldfqdn = u'%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
+				newfqdn = u'%s.%s' % (self['name'], self['domain'])
 				self.__change_fqdn(oldfqdn, newfqdn)
 
 		fqdn = '%s.%s' % (self['name'], configRegistry.get("domainname"))
@@ -267,7 +252,7 @@ class Support(object):
 			for servicedn in self.oldinfo.get('nagiosServices', []):
 				if servicedn not in self.info.get('nagiosServices', []):
 					oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
-					newmembers = filter(lambda x: x.lower() != fqdn.lower(), oldmembers)
+					newmembers = [x for x in oldmembers if x.decode('UTF-8').lower() != fqdn.lower()]
 					self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
 		if 'nagios' in self.options:
@@ -282,7 +267,7 @@ class Support(object):
 					# option nagios was freshly enabled or service has been enabled just now
 					oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 					newmembers = copy.deepcopy(oldmembers)
-					newmembers.append(fqdn)
+					newmembers.append(fqdn.encode('UTF-8'))
 					ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: oldmembers: %s' % oldmembers)
 					ud.debug(ud.ADMIN, ud.WARN, 'nagios.py: NMSL: newmembers: %s' % newmembers)
 					self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
@@ -297,9 +282,8 @@ class Support(object):
 				base=self.position.getDomain(), attr=['univentionNagiosHostname'])
 
 			for (dn, attrs) in searchResult:
-				oldattrs = attrs['univentionNagiosHostname']
-				newattrs = filter(lambda x: x.lower() != fqdn.lower(), attrs['univentionNagiosHostname'])
-				self.lo.modify(dn, [('univentionNagiosHostname', oldattrs, newattrs)])
+				newattrs = [x for x in attrs['univentionNagiosHostname'] if x.decode('UTF-8').lower() != fqdn.lower()]
+				self.lo.modify(dn, [('univentionNagiosHostname', attrs['univentionNagiosHostname'], newattrs)])
 
 	def nagiosRemoveHostFromParent(self):
 		self.nagiosRemoveFromParent = False
@@ -312,9 +296,8 @@ class Support(object):
 				base=self.position.getDomain(), attr=['univentionNagiosParent'])
 
 			for (dn, attrs) in searchResult:
-				oldattrs = attrs['univentionNagiosParent']
-				newattrs = filter(lambda x: x.lower() != fqdn.lower(), attrs['univentionNagiosParent'])
-				self.lo.modify(dn, [('univentionNagiosParent', oldattrs, newattrs)])
+				newattrs = [x for x in attrs['univentionNagiosParent'] if x.decode('UTF-8').lower() != fqdn.lower()]
+				self.lo.modify(dn, [('univentionNagiosParent', attrs['univentionNagiosParent'], newattrs)])
 
 	def nagios_ldap_post_modify(self):
 		if self.nagiosRemoveFromServices:
