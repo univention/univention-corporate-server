@@ -3072,11 +3072,11 @@ class simpleComputer(simpleLdap):
 			ud.debug(ud.ADMIN, ud.ERROR, '__update_groups_after_namechange: oldname is empty')
 			return
 
-		olddn = self.old_dn
-		newdn = self.dn
+		olddn = self.old_dn.encode('UTF-8')
+		newdn = self.dn.encode('UTF-8')
 
-		oldUid = '%s$' % oldname
-		newUid = '%s$' % newname
+		oldUid = b'%s$' % oldname.encode('UTF-8')
+		newUid = b'%s$' % newname.encode('UTF-8')
 		ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
 		ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)
 
@@ -3106,7 +3106,7 @@ class simpleComputer(simpleLdap):
 
 		for group in set(self.oldinfo.get('groups', [])) - set(self.info.get('groups', [])):
 			ud.debug(ud.ADMIN, ud.INFO, '__update_groups_after_namechange: removing from grp=%s' % (group,))
-			self.lo.modify(group, [('uniqueMember', olddn, ''), ('memberUid', oldUid, ''), ])
+			self.lo.modify(group, [('uniqueMember', olddn, b''), ('memberUid', oldUid, b''), ])
 
 	def update_groups(self):  # type: () -> None
 		if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:
