@@ -2367,7 +2367,7 @@ class simpleComputer(simpleLdap):
 	def __add_related_ptrrecords(self, zoneDN, ip):  # type: (str, str) -> None
 		if not all((zoneDN, ip)):
 			return
-		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
+		ptrrecord = '%s.%s.' % (self.info['name'], str2dn(zoneDN)[0][0][1])
 		ip_split = ip.split('.')
 		ip_split.reverse()
 		search_filter = filter_format('(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))', (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2])))
@@ -2376,7 +2376,7 @@ class simpleComputer(simpleLdap):
 			self.lo.modify(dn, [('pTRRecord', '', ptrrecord)])
 
 	def __remove_related_ptrrecords(self, zoneDN, ip):  # type: (str, str) -> None
-		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
+		ptrrecord = '%s.%s.' % (self.info['name'], str2dn(zoneDN)[0][0][1])
 		ip_split = ip.split('.')
 		ip_split.reverse()
 		search_filter = filter_format('(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))', (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2])))
@@ -2391,10 +2391,10 @@ class simpleComputer(simpleLdap):
 			for zone in self['dnsEntryZoneForward']:
 				if zone == '':
 					continue
-				zoneName = univention.admin.uldap.explodeDn(zone[0], 1)[0]
+				zoneName = str2dn(zone[0])[0][0][1]
 				if len(zoneName) + len(self['name']) >= 63:
 					ud.debug(ud.ADMIN, ud.INFO, 'simpleComputer: length of Common Name is too long: %d' % (len(zoneName) + len(self['name']) + 1))
-					raise univention.admin.uexceptions.commonNameTooLong
+					raise univention.admin.uexceptions.commonNameTooLong()
 
 	@staticmethod
 	def _ip2dns(addr):  # type: (str) -> Tuple[Union[IPv4Address, IPv6Address], str]
@@ -3149,11 +3149,11 @@ class simpleComputer(simpleLdap):
 
 		primaryGroupNumber = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)
 		self.newPrimaryGroupDn = self['primaryGroup']
-		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
+		self.lo.modify(self.dn, [('gidNumber', b'None', primaryGroupNumber[0])])
 
 		if 'samba' in self.options:
 			primaryGroupSambaNumber = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)
-			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', b'None', primaryGroupSambaNumber[0])])
 
 	def cleanup(self):  # type: () -> None
 		self.open()
