@@ -236,12 +236,13 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		# find the producer
 		univention.admin.handlers.simpleLdap.open(self)
-		models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
-		ud.debug(ud.ADMIN, ud.INFO, "printermodel: %s" % str(models))
-		if not models or len(models) > 1:
-			self['producer'] = []
-		else:
-			self['producer'] = models[0].dn
+		if self['model']:
+			models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
+			ud.debug(ud.ADMIN, ud.INFO, "printermodel: %s" % str(models))
+			if not models or len(models) > 1:
+				self['producer'] = []
+			else:
+				self['producer'] = models[0].dn
 
 		self.save()
 
