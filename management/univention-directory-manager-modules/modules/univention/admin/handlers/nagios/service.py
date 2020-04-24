@@ -239,7 +239,7 @@ class object(univention.admin.handlers.simpleLdap):
 			value = self.oldattr.get('univentionNagiosNotificationOptions', [b''])[0]
 			if value:
 				options = value.split(b',')  # type: List[bytes]
-				for key, value in self.OPTION_BITS.iteritems():
+				for key, value in self.OPTION_BITS.items():
 					self[key] = '1' if value in options else '0'
 
 		_re = re.compile('^([^.]+)\.(.+?)$')
@@ -275,7 +275,7 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		options = []
-		for key, value in self.OPTION_BITS.iteritems():
+		for key, value in self.OPTION_BITS.items():
 			if self[key] == '1':
 				options.append(value)  # type: List[bytes]
 
