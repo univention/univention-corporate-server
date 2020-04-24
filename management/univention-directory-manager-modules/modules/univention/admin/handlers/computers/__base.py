@@ -80,14 +80,14 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 					else:
 						self['primaryGroup'] = None
 						self.save()
-						raise univention.admin.uexceptions.primaryGroup
+						raise univention.admin.uexceptions.primaryGroup()
 				else:
 					self['primaryGroup'] = None
 					self.save()
-					raise univention.admin.uexceptions.primaryGroup
+					raise univention.admin.uexceptions.primaryGroup()
 			if 'samba' in self.options:
 				sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
-				pos = sid.rfind('-')
+				pos = sid.rfind(u'-')
 				self.info['sambaRID'] = sid[pos + 1:]
 
 		self.modifypassword = 0
@@ -121,7 +121,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				al.append(('krb5MaxLife', b'86400'))
 				al.append(('krb5MaxRenew', b'604800'))
 				al.append(('krb5KDCFlags', b'126'))
-				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
+				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', [b'0'])[0]) + 1)
 				al.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version.encode('ASCII')))
 			elif self.SERVER_ROLE not in ('master', 'windows_domaincontroller'):
 				# can't do kerberos
@@ -144,7 +144,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [b''])[0], password_nt.encode('ASCII')))
 				al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [b''])[0], password_lm.encode('ASCII')))
-				sambaPwdLastSetValue = str(long(time.time()))
+				sambaPwdLastSetValue = str(int(time.time()))
 				al.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue.encode('ASCII')))
 			self.modifypassword = 0
 		if 'samba' in self.options:
@@ -178,13 +178,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	def _ldap_post_remove(self):
 		if 'posix' in self.options:
 			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
-		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
-		if groupObjects:
-			for i in range(0, len(groupObjects)):
-				groupObjects[i].open()
-				if self.dn in groupObjects[i]['users']:
-					groupObjects[i]['users'].remove(self.dn)
-					groupObjects[i].modify(ignore_license=1)
+
+		for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
+			group.open()
+			if self.dn in group['users']:
+				group['users'].remove(self.dn)
+				group.modify(ignore_license=True)
 
 		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove(self)
@@ -196,7 +195,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	def krb5_principal(self):
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
-		if 'domain' in self.info and self.info['domain']:
+		if self.info.get('domain'):
 			kerberos_domain = self.info['domain']
 		else:
 			kerberos_domain = domain.getKerberosRealm()
@@ -249,7 +248,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		if self.modifypassword and self['password']:
 			if 'kerberos' in self.options:
 				krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
-				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
+				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', [b'0'])[0]) + 1)
 				ml.append(('krb5Key', self.oldattr.get('password', [b'1']), krb_keys))
 				ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version.encode('ASCII')))
 			if 'posix' in self.options:
@@ -259,7 +258,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [b''])[0], password_nt.encode('ASCII')))
 				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [b''])[0], password_lm.encode('ASCII')))
-				sambaPwdLastSetValue = str(long(time.time()))
+				sambaPwdLastSetValue = str(int(time.time()))
 				ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue.encode('ASCII')))
 
 		# add samba option
@@ -270,7 +269,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('sambaSID', b'', [self.machineSid.encode('ASCII')]))
 			ml.append(('sambaAcctFlags', b'', [acctFlags.decode().encode('ASCII')]))
 			ml.append(('displayName', b'', self.info['name'].encode('ASCII')))
-			sambaPwdLastSetValue = str(long(time.time()))
+			sambaPwdLastSetValue = str(int(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue.encode('ASCII')))
 		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
 			for key in ['sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName']:
