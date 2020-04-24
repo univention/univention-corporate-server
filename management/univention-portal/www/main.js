@@ -1940,7 +1940,7 @@ define([
 								window.open(link.web_interface);
 								break;
 							case 'embedded':
-								topic.publish('/portal/iframes/open', link.id, link.logo_name, link.web_interface);
+								topic.publish('/portal/iframes/open', link.id, link.name, link.logo_name, link.web_interface);
 
 								break;
 						}
