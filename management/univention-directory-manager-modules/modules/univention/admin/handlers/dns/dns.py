@@ -85,7 +85,7 @@ def rewrite(filter_s, **args):
 		return filter_s
 	filter_p = univention.admin.filter.parse(filter_s)
 	mapping = univention.admin.mapping.mapping()
-	for key, value in args.iteritems():
+	for key, value in args.items():
 		mapping.register(key, value)
 	univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 	return six.text_type(filter_p)
