@@ -3,9 +3,13 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-s4-connector
-fix: 13.0.2-69A~4.4.0.202004231730
+fix: 13.0.2-70A~4.4.0.202004251812
 desc: |
  This update addresses the following issue(s):
  * Internal change: the UCR templates of univention-s4-connector are now
    python3-compatible.
-bug: [51159]
+ * The S4 Connector only deletes/adds objects now if they have the
+   corresponding entryUUID/objectGUID. If a new object with the 
+   same DN as an old one is created, the S4 Connector treats them now
+   correctly as different objects.
+bug: [51159, 50593]
