@@ -1,3 +1,12 @@
+univention-s4-connector (13.0.2-70) unstable; urgency=medium
+
+  * Bug #50593: Add Listener to detect objects deleted by UCS. 
+    s4connector shouldn't add objects in UCS if object was already deleted
+    by UCS.
+    Only remove Object if matching entryUUID/objectGUID, not if just same dn.
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 24 Apr 2020 19:51:41 +0200
+
 univention-s4-connector (13.0.2-69) unstable; urgency=medium
 
   * Bug #51159: make UCR templates compatible to python3
