@@ -263,7 +263,8 @@ slapadd -l ldif
 		<para>
 		  BIND can use two different backends for its configuration: OpenLDAP or the internal LDB
 		  database of Samba 4. The backend is configured via the &ucsUCRV;
-		  <envar>dns/backend</envar>.
+		  <envar>dns/backend</envar>. On &ucsMaster; and &ucsBackup; running Samba4, the backend must not be changed to OpenLDAP.
+		  Thus the backend must not be set to OpenLDAP in &ucsUAS;-environments.
 		</para>
 
 		<para>
