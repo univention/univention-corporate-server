@@ -716,7 +716,7 @@ END
 		<wordasword>daemon.info</wordasword> section of the Syslog service.
 		</para>
 		<para>
-			As of UCS 4.4-4 errata 529, the respective transaction ID of the entry is added to the file <filename>/var/log/univention/directory-logger.log</filename> before each line as a prefix:
+		  As of <u:erratum>529</u:erratum> the respective transaction ID of the entry is added to the file <filename>/var/log/univention/directory-logger.log</filename> before each line as a prefix:
 			<screen>
 ID 342: START
 ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985
@@ -737,7 +737,9 @@ ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000
 ID 342: modifyTimestamp: 20200415092040Z
 ID 342: END
 			</screen>
-			If <package>univention-directory-logger</package> was installed before this UCS version, the old behavior (no prefix) is retained by default. By setting the &ucsUCRV; <envar>ldap/logging/id-prefix=yes</envar> the new behavior can be activated. This prefix simplifies the correlation of related lines when post-processing the log in analysis and monitoring tools.
+			If <package>univention-directory-logger</package> was installed before this UCS version, the old behavior (no prefix) is retained by default.
+			By setting the &ucsUCRV; <envar>ldap/logging/id-prefix=yes</envar> the new behavior can be activated.
+			This prefix simplifies the correlation of related lines when post-processing the log in analysis and monitoring tools.
 		</para>
 	</section>
 
