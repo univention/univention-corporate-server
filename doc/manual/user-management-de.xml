@@ -1180,7 +1180,7 @@
 				</para>
 			</section>
 		</section>
-		<section>
+		<section id="user-management:password-changes-by-users:selfderegistration">
 			<title><wordasword>Selbst-Deregistrierung</wordasword></title>
 			<para>
 				Der <foreignphrase>Self Service</foreignphrase> ermöglicht es Benutzern, die Löschung ihres eigenen Kontos zu beantragen.
@@ -1191,17 +1191,17 @@
 			<para>
 				Wenn ein Benutzer beantragt hat, sein Konto zu löschen, wird es nicht direkt gelöscht sondern deaktiviert.
 				Zusätzlich wird das <property>DeregistredThroughSelfService</property> Attribut des Benutzers
-				auf <wordasword>TRUE</wordasword> gesetzt und das <property>DeregistrationTimestamp</property> Attribut
+				auf <literal>TRUE</literal> gesetzt und das <property>DeregistrationTimestamp</property> Attribut
 				des Benutzers wird in der
 				<ulink url="https://ldapwiki.com/wiki/GeneralizedTime"><wordasword>GeneralizedTime</wordasword>-LDAP-Syntax</ulink>
 				auf die aktuelle Zeit gesetzt.
 				Wenn der Benutzer eine <property>PasswordRecoveryEmail</property> angegeben hat,
-				wird er eine <wordasword>Notifikations-Email</wordasword> erhalten, die mit den folgenden &ucsUCRV;n konfiguriert werden kann.
+				wird er eine E-Mail-Benachrichtigung erhalten, die mit den folgenden &ucsUCRV;n konfiguriert werden kann.
 				<variablelist>
 					<varlistentry>
 						<term><envar>umc/self-service/account-deregistration/email/sender_address</envar></term>
 						<listitem><simpara>
-							Definiert die <wordasword>Absenderadresse</wordasword> der <wordasword>Notifikations-Email</wordasword>.
+							Definiert die E-Mail-Adresse des Absenders für Benachrichtigung.
 							Die Voreinstellung ist "<foreignphrase>Password Reset Service  &lt;<wordasword>noreply@FQDN</wordasword>&gt;</foreignphrase>".
 						</simpara></listitem>
 					</varlistentry>
@@ -1214,7 +1214,7 @@
 					<varlistentry>
 						<term><envar>umc/self-service/account-deregistration/email/text_file</envar></term>
 						<listitem><simpara>
-							Ein Pfad zu einer Textdatei, deren Inhalt für den Körper der <wordasword>Email</wordasword> verwendet wird.
+							Ein Pfad zu einer Textdatei, deren Inhalt für den Körper der E-Mail verwendet wird.
 							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
 							{<wordasword>username</wordasword>}.
 							Als Standard wird die Datei
@@ -1226,7 +1226,7 @@
 			<para>
 				Der <foreignphrase>Self Service</foreignphrase> stellt unter <filename>/usr/share/univention-self-service/delete_deregistered_accounts.py</filename>
 				ein Skript zur Verfügung, das zum Löschen aller users/user Objekte verwendet werden kann,
-				bei denen <property>DeregistredThroughSelfService</property> auf <wordasword>TRUE</wordasword>
+				bei denen <property>DeregistredThroughSelfService</property> auf <literal>TRUE</literal>
 				gesetzt ist und deren <property>DeregistrationTimestamp</property> älter ist als eine angegebene Zeit.
 				Der folgende Befehl würde Benutzer löschen, deren <property>DeregistrationTimestamp</property> älter als 5 Tage und 2 Stunden ist.
 				<programlisting language="sh">
@@ -1243,7 +1243,7 @@
 ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 30' \
 		cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00 a.m.
 				</programlisting>
-				Weitere Informationen über die Einstellung von Cron-Jobs über UCR können in <xref linkend="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"/> gefunden werden.
+				Weitere Informationen über die Einstellung von Cron-Jobs über &ucsUCR; können in <xref linkend="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"/> gefunden werden.
 			</para>
 		</section>
     </section>
@@ -1493,7 +1493,7 @@ univention-directory-manager users/user
 		Durch die Option <literal>:alphanum</literal> werden alle nicht alphanumerischen Zeichen, wie ` oder # entfernt.
 		In der UCR Variable <envar>directory/manager/templates/alphanum/whitelist</envar> können Zeichen definiert werden, die von dieser Option ignoriert werden.
 		Zu beachten ist, dass wenn diese Option auf das ganze Feld angewendet wird, auch manuell gesetzte Zeichen entfernt werden. Zum Beispiel
-		das @-Zeichen in der Email-Adresse. Daher sollte man diese Option nur auf einzelne Attribute anwenden oder die Whitelist anpassen.
+		das @-Zeichen in der E-Mail-Adresse. Daher sollte man diese Option nur auf einzelne Attribute anwenden oder die Whitelist anpassen.
 		</para>
 
         <para>

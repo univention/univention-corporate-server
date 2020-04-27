@@ -1136,7 +1136,7 @@
 				</para>
 			</section>
 		</section>
-		<section>
+		<section id="user-management:password-changes-by-users:selfderegistration">
 			<title>Self <wordasword>deregistration</wordasword></title>
 			<para>
 				The Self Service allows for users to request the deletion of their own account.
@@ -1146,7 +1146,7 @@
 			<para>
 				If a user has requested to delete his account, it will not be deleted directly but deactivated.
 				In addition the <property>DeregisteredThroughSelfService</property> attribute of the user
-				will be set to <wordasword>TRUE</wordasword> and the <property>DeregistrationTimestamp</property>
+				will be set to <literal>TRUE</literal> and the <property>DeregistrationTimestamp</property>
 				attribute of the user will be set to the current time in the
 				<ulink url="https://ldapwiki.com/wiki/GeneralizedTime"><wordasword>GeneralizedTime</wordasword> LDAP syntax</ulink>.
 				If the user has a <property>PasswordRecoveryEmail</property> set they will receive a notification email
@@ -1178,7 +1178,7 @@
 			<para>
 				The Self Service provides a script under <filename>/usr/share/univention-self-service/delete_deregistered_accounts.py</filename>
 				that can be used to delete all users/user objects which have <property>DeregisteredThroughSelfService</property>
-				set to <wordasword>TRUE</wordasword> and whose <property>DeregistrationTimestamp</property> is older than
+				set to <literal>TRUE</literal> and whose <property>DeregistrationTimestamp</property> is older than
 				a specified time.
 				The following command would delete users whose <property>DeregistrationTimestamp</property>
 				is older than 5 days and 2 hours.
@@ -1196,7 +1196,7 @@
 ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 30' \
 		cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00 a.m.
 				</programlisting>
-        		More information on how to set cron jobs via UCR can be found in <xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>.
+				More information on how to set cron jobs via &ucsUCR; can be found in <xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>.
 			</para>
 		</section>
 	</section>
