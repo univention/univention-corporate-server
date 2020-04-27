@@ -514,8 +514,6 @@ install_ucs_windows_tools () {
 }
 
 install_selenium () {
-	#install_with_unmaintained chromium-browser chromedriver chromium python-pip xvfb
-	# install old version until Bug 48856 is fixed
 	install_with_unmaintained python-pip xvfb chromium chromium-driver python-xvfbwrapper
 	pip install selenium==3.6.0
 }
