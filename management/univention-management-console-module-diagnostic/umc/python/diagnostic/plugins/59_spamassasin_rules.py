@@ -72,7 +72,7 @@ def run(_umc_instance, retest=False):
 
 def update_signatures(_umc_instance):
 	MODULE.process('Updating signatures')
-	master, slave = pty.openpty() # cron script requires pseudo terminal to skip sleep
+	master, slave = pty.openpty()  # cron script requires pseudo terminal to skip sleep
 	cron_result = subprocess.Popen(['/etc/cron.daily/spamassassin'], stdin=slave).wait()
 	os.close(slave)
 	MODULE.process('Updating signatures done')
