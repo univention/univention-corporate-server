@@ -6,6 +6,6 @@ src: univention-docker-container-mode
 fix: 4.0.0-2A~4.4.0.202004211413
 desc: |
  This update addresses the following issue(s):
- * Internal change: the UCR templates of univention-docker-container-mode are now
-   python3-compatible.
+ * Internal change: the UCR templates of univention-docker-container-mode are
+   now python3-compatible.
 bug: [51132]
