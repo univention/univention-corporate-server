@@ -734,7 +734,7 @@ END
 		Sektion <wordasword>daemon.info</wordasword> des Syslog-Dienstes protokolliert.
 		</para>
 		<para>
-			Ab <u:erratum>529</u:erratum> wird in der Datei <filename>/var/log/univention/directory-logger.log</filename> vor jede Zeile als Präfix die jeweilige Transaktions-ID des Eintrags hinzugefügt:
+			Ab <u:erratum>536</u:erratum> wird in der Datei <filename>/var/log/univention/directory-logger.log</filename> vor jede Zeile als Präfix die jeweilige Transaktions-ID des Eintrags hinzugefügt:
 			<screen>
 ID 342: START
 ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985
