@@ -1,0 +1,13 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: python-reportlab
+fix: 3.3.0-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * code injection in colors.py allows attacker to execute code
+   (CVE-2019-17626)
+bug: [51173]
+cve:
+- CVE-2019-17626
