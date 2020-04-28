@@ -115,8 +115,8 @@
                             <para>
                                 In order to ensure compatibility to non-UCS systems the creation of users
                                 which are only distinguished from each other by upper and lower case letters
-                                is prevented. Thus, if the user name <emphasis>smith</emphasis> already exists, then the user
-                                name <emphasis>Smith</emphasis> cannot be created.
+                                is prevented. Thus, if the user name <systemitem class="username">smith</systemitem> already exists, then the user
+                                name <systemitem class="username">Smith</systemitem> cannot be created.
                             </para>
                             <para>
 							  In the default setting, it is not possible to create a user with the same name as an
@@ -984,9 +984,9 @@
 			<title>Self registration</title>
 			<para>
 				The Self Service allows for users to register themselves, which will create a user account that has to be verified via email.
-				User accounts that are created via the Self Service will have the <property>RegisteredThroughSelfService</property> attribute of the user set to <wordasword>TRUE</wordasword>
+				User accounts that are created via the Self Service will have the <property>RegisteredThroughSelfService</property> attribute of the user set to <literal>TRUE</literal>
 				and the <property>PasswordRecoveryEmailVerified</property> attribute set to FALSE. After the user has verified his account via
-				the verification email the <property>PasswordRecoveryEmailVerified</property> attribute will be set to <wordasword>TRUE</wordasword>.
+				the verification email the <property>PasswordRecoveryEmailVerified</property> attribute will be set to <literal>TRUE</literal>.
 			</para>
 			<section id="user-management:password-changes-by-users:selfregistration:account-creation">
 				<title>Account creation</title>
@@ -1066,7 +1066,7 @@
 					<varlistentry>
 						<term><envar>umc/self-service/account-verification/email/sender_address</envar></term>
 						<listitem><simpara>
-							Defines the sender address of the verification email. Default is "Account Verification Service &lt;<wordasword>noreply@FQDN</wordasword>&gt;".
+							Defines the sender address of the verification email. Default is <literal>Account Verification Service &lt;noreply@FQDN&gt;</literal>.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1079,7 +1079,7 @@
 						<term><envar>umc/self-service/account-verification/email/text_file</envar></term>
 						<listitem><simpara>
 							A path to a text file whose content will be used for the body of the verification email.
-							The text can contain the following strings which will be substituted accordingly: {link}, {token}, {<wordasword>tokenlink</wordasword>} and {username}.
+							The text can contain the following strings which will be substituted accordingly: <replaceable>{link}</replaceable>, <replaceable>{token}</replaceable>, <replaceable>{tokenlink}</replaceable> and <replaceable>{username}</replaceable>.
 							As default the file <filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/verification_email_body.txt</filename>
 							is used.
 						</simpara></listitem>
@@ -1151,11 +1151,12 @@
 				<ulink url="https://ldapwiki.com/wiki/GeneralizedTime"><wordasword>GeneralizedTime</wordasword> LDAP syntax</ulink>.
 				If the user has a <property>PasswordRecoveryEmail</property> set they will receive a notification email
 				which can be configured with the following &ucsUCRV;s.
+			</para>
 				<variablelist>
 					<varlistentry>
 						<term><envar>umc/self-service/account-deregistration/email/sender_address</envar></term>
 						<listitem><simpara>
-							Defines the sender address of the email. Default is "Password Reset Service &lt;<wordasword>noreply@FQDN</wordasword>&gt;".
+							Defines the sender address of the email. Default is <literal>Password Reset Service &lt;noreply@FQDN&gt;</literal>.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1168,13 +1169,12 @@
 						<term><envar>umc/self-service/account-deregistration/email/text_file</envar></term>
 						<listitem><simpara>
 							A path to a text file whose content will be used for the body of the email.
-							The text can contain the following strings which will be substituted accordingly: {username}.
+							The text can contain the following strings which will be substituted accordingly: <replaceable>{username}</replaceable>.
 							As default the file <filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/deregistration_notification_email_body.txt</filename>
 							is used.
 						</simpara></listitem>
 					</varlistentry>
 				</variablelist>
-			</para>
 			<para>
 				The Self Service provides a script under <filename>/usr/share/univention-self-service/delete_deregistered_accounts.py</filename>
 				that can be used to delete all users/user objects which have <property>DeregisteredThroughSelfService</property>
@@ -1183,18 +1183,22 @@
 				The following command would delete users whose <property>DeregistrationTimestamp</property>
 				is older than 5 days and 2 hours.
 				<programlisting language="sh">
-/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 5 --timedelta-hours 2
+/usr/share/univention-self-service/delete_deregistered_accounts.py \
+	--timedelta-days 5 --timedelta-hours 2
 				</programlisting>
 				For all possible arguments to the script see:
 				<programlisting language="sh">
-/usr/share/univention-self-service/delete_deregistered_accounts.py --help
+/usr/share/univention-self-service/delete_deregistered_accounts.py \
+	--help
 				</programlisting>
 			</para>
 			<para>
 				The script can be run regularly by creating a cron job via &ucsUCR;.
 				<programlisting language="sh">
-ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 30' \
-		cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00 a.m.
+ucr set cron/delete_deregistered_accounts/command=\
+/usr/share/univention-self-service/delete_deregistered_accounts.py\
+' --timedelta-days 30' \
+	cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00
 				</programlisting>
 				More information on how to set cron jobs via &ucsUCR; can be found in <xref linkend="computers:Defining_cron_jobs_in_Univention_Configuration_Registry"/>.
 			</para>
@@ -1222,7 +1226,6 @@ ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-se
 				In Samba Active Directory environments, various services are provided by Samba, such as Kerberos.
 				To lockout users after too many failed log-in attempts, the tool <command>samba-tool</command> can be used.
 			</para>
-			<para>
 				<itemizedlist>
 					<listitem>
 						<simpara>
@@ -1255,7 +1258,6 @@ ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-se
 						</simpara>
 					</listitem>
 				</itemizedlist>
-			</para>
 			<para>
 				The manual unlocking of a user is done in the user administration on the tab <guimenu>Account</guimenu> by
 				activating the checkbox <guimenu>Unlock account</guimenu>.

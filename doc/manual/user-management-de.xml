@@ -122,8 +122,8 @@
                             <para>
                                 Um die Kompatibilität mit Nicht-UCS-Systemen zu gewährleisten, wird
                                 das Anlegen von Benutzern, die sich lediglich in der Groß- und Kleinschreibung
-                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <wordasword>meier</wordasword>
-                                bereits existiert, wird der Benutzername <wordasword>Meier</wordasword> nicht mehr zugelassen.
+                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <systemitem class="username">meier</systemitem>
+                                bereits existiert, wird der Benutzername <systemitem class="username">Meier</systemitem> nicht mehr zugelassen.
                             </para>
                             <para>
 							  In der Grundeinstellung kann kein Benutzer mit dem Namen einer existierenden
@@ -921,7 +921,7 @@
 				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
 			<para>
-				Die <foreignphrase>Self Service-App</foreignphrase> registriert einen Web-Dienst in dem <wordasword>Portal</wordasword>,
+				Die <foreignphrase>Self Service-App</foreignphrase> registriert einen Web-Dienst in dem >Portal,
 				auf den über eine eigene Webseite zugegriffen werden kann:
 				<guimenu>Passwort ändern</guimenu>.
 				Sie erlaubt es Benutzern, unter Angabe ihres alten Passwortes ein neues Passwort
@@ -1022,9 +1022,9 @@
 			<title>Selbstregistrierung</title>
 			<para>
 				Der <foreignphrase>Self Service</foreignphrase> ermöglicht es Benutzern, sich selbst zu registrieren, wodurch ein Benutzerkonto erstellt wird, das per E-Mail verifiziert werden muss.
-				Bei Benutzerkonten, die über den <foreignphrase>Self Service</foreignphrase> erstellt werden, wird das <property>RegisteredThroughSelfService</property> Attribut des Benutzers auf <wordasword>TRUE</wordasword>
-				und das <property>PasswordRecoveryEmailVerified</property> Attribut auf <wordasword>FALSE</wordasword> gesetzt. Nachdem der Benutzer sein Konto über
-				die <wordasword>Verifizierungs-E-Mail</wordasword> verifiziert hat wird das <property>PasswordRecoveryEmailVerified</property> Attribut auf <wordasword>TRUE</wordasword> gesetzt.
+				Bei Benutzerkonten, die über den <foreignphrase>Self Service</foreignphrase> erstellt werden, wird das <property>RegisteredThroughSelfService</property> Attribut des Benutzers auf <literal>TRUE</literal>
+				und das <property>PasswordRecoveryEmailVerified</property> Attribut auf <literal>FALSE</literal> gesetzt. Nachdem der Benutzer sein Konto über
+				die <wordasword>Verifizierungs-E-Mail</wordasword> verifiziert hat wird das <property>PasswordRecoveryEmailVerified</property> Attribut auf <literal>TRUE</literal> gesetzt.
 			</para>
 			<section id="user-management:password-changes-by-users:selfregistration:account-creation">
 				<title>Kontoerstellung</title>
@@ -1065,7 +1065,7 @@
 						<term><envar>umc/self-service/account-registration/udm_attributes</envar></term>
 						<listitem><simpara>
 							Diese Variable konfiguriert, welche <wordasword>UDM-Attribute</wordasword> eines Benutzerkontos auf der Seite "Konto erstellen" des <foreignphrase>Self Service</foreignphrase>  angezeigt werden.
-							Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als <wordasword>kommagetrennte</wordasword> Liste angegeben werden.
+							Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als kommasepariert Liste angegeben werden.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1073,7 +1073,7 @@
 						<listitem><simpara>
 							Diese Variable konfiguriert, welche der über die &ucsUCRV; <envar>umc/self-service/account-registration/udm_attributes</envar> definierten <wordasword>UDM-Attribute</wordasword>
 							vom Benutzer angegeben werden müssen.
-							Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als <wordasword>kommagetrennte</wordasword> Liste angegeben werden.
+							Die Namen der <wordasword>UDM-Attribute</wordasword> müssen als kommasepariert Liste angegeben werden.
 						</simpara></listitem>
 					</varlistentry>
 				</variablelist>
@@ -1105,7 +1105,7 @@
 						<term><envar>umc/self-service/account-verification/email/sender_address</envar></term>
 						<listitem><simpara>
 							Definiert die <wordasword>Absenderadresse</wordasword> der <wordasword>Verifizierungs-E-Mail</wordasword>.
-							Die Voreinstellung ist "<foreignphrase>Account Verification Service  &lt;<wordasword>noreply@FQDN</wordasword>&gt;</foreignphrase>".
+							Die Voreinstellung ist <literal>Account Verification Service &lt;noreply@FQDN&gt;</literal>.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1119,7 +1119,7 @@
 						<listitem><simpara>
 							Ein Pfad zu einer Textdatei, deren Inhalt für den Körper der <wordasword>Verifizierungs-E-Mail</wordasword> verwendet wird.
 							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
-							{link}, {<wordasword>token</wordasword>}, {<wordasword>tokenlink</wordasword>} und {<wordasword>username</wordasword>}.
+							<replaceable>{link}</replaceable>, <replaceable>{token}</replaceable>, <replaceable>{tokenlink}</replaceable> und <replaceable>{username}</replaceable>.
 							Als Standard wird die Datei
 							<filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/verification_email_body.txt</filename> verwendet.
 						</simpara></listitem>
@@ -1202,7 +1202,7 @@
 						<term><envar>umc/self-service/account-deregistration/email/sender_address</envar></term>
 						<listitem><simpara>
 							Definiert die E-Mail-Adresse des Absenders für Benachrichtigung.
-							Die Voreinstellung ist "<foreignphrase>Password Reset Service  &lt;<wordasword>noreply@FQDN</wordasword>&gt;</foreignphrase>".
+							Die Voreinstellung ist <literal>Password Reset Service &lt;noreply@FQDN&gt;</literal>.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -1216,7 +1216,7 @@
 						<listitem><simpara>
 							Ein Pfad zu einer Textdatei, deren Inhalt für den Körper der E-Mail verwendet wird.
 							Der Text kann die folgenden Zeichenfolgen enthalten, die entsprechend ersetzt werden:
-							{<wordasword>username</wordasword>}.
+							<replaceable>{username}</replaceable>.
 							Als Standard wird die Datei
 							<filename>/usr/lib/python2.7/dist-packages/univention/management/console/modules/passwordreset/sending/deregistration_notification_email_body.txt</filename> verwendet.
 						</simpara></listitem>
@@ -1230,18 +1230,22 @@
 				gesetzt ist und deren <property>DeregistrationTimestamp</property> älter ist als eine angegebene Zeit.
 				Der folgende Befehl würde Benutzer löschen, deren <property>DeregistrationTimestamp</property> älter als 5 Tage und 2 Stunden ist.
 				<programlisting language="sh">
-/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 5 --timedelta-hours 2
+/usr/share/univention-self-service/delete_deregistered_accounts.py \
+	--timedelta-days 5 --timedelta-hours 2
 				</programlisting>
 				Für alle möglichen Argumente zum Skript siehe:
 				<programlisting language="sh">
-/usr/share/univention-self-service/delete_deregistered_accounts.py --help
+/usr/share/univention-self-service/delete_deregistered_accounts.py \
+	--help
 				</programlisting>
 			</para>
 			<para>
 				Das Skript kann regelmäßig ausgeführt werden, indem ein Cron-Job über &ucsUCR; erstellt wird.
 				<programlisting language="sh">
-ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-service/delete_deregistered_accounts.py --timedelta-days 30' \
-		cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00 a.m.
+ucr set cron/delete_deregistered_accounts/command=\
+/usr/share/univention-self-service/delete_deregistered_accounts.py\
+' --timedelta-days 30' \
+	cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00
 				</programlisting>
 				Weitere Informationen über die Einstellung von Cron-Jobs über &ucsUCR; können in <xref linkend="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"/> gefunden werden.
 			</para>
@@ -1270,7 +1274,6 @@ ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-se
 				bspw. Kerberos. Um Benutzer nach fehlgeschlagenen Anmeldungen zu sperren, kann das Tool
 				<command>samba-tool</command> verwendet werden.
 			</para>
-			<para>
 				<itemizedlist>
 					<listitem>
 						<simpara>
@@ -1304,7 +1307,6 @@ ucr set cron/delete_deregistered_accounts/command='/usr/share/univention-self-se
 						</simpara>
 					</listitem>
 				</itemizedlist>
-			</para>
 			<para>
 				Die manuelle Entsperrung eines Benutzers erfolgt in der Benutzerverwaltung auf dem Reiter <guimenu>Konto</guimenu>
 				über die Aktivierung der Checkbox <guimenu>Aussperrung zurücksetzen</guimenu>.
