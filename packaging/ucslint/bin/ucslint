@@ -289,23 +289,28 @@ def parse_args():
 	)
 	parser.add_option(
 		'-m', '--modules', metavar='MODULES',
-		dest='enabled_modules',
+		dest='enabled_modules', action='append', default=[],
 		help='list of modules to be loaded (e.g. -m 0009,27)'
 	)
 	parser.add_option(
 		'-x', '--exclude-modules', metavar='MODULES',
-		dest='disabled_modules',
+		dest='disabled_modules', action='append', default=[],
 		help='list of modules to be disabled (e.g. -x 9,027)'
 	)
 	parser.add_option(
 		'-o', '--display-only', metavar='MODULES',
-		dest='display_only_IDs',
+		dest='display_only_IDs', action='append', default=[],
 		help='list of IDs to be displayed (e.g. -o 9-1,0027-12)'
 	)
 	parser.add_option(
 		'-i', '--ignore', metavar='MODULES',
-		dest='ignore_IDs',
+		dest='ignore_IDs', action='append', default=[],
 		help='list of IDs to be ignored (e.g. -i 0003-4,19-27)'
+	)
+	parser.add_option(
+		'--skip-univention', '-U',
+		action='append_const', dest='ignore_IDs', const='0007-2,0010-2,0010-3,0010-4,0011-3,0011-4,0011-5,0011-13',
+		help='Ignore Univention specific tests'
 	)
 	parser.add_option(
 		'-p', '--plugindir', metavar='DIRECTORY', action='append',
@@ -351,10 +356,10 @@ def main():
 		print('Using univention.ucslint.base from %s' % (uub.__file__,))
 
 	plugindirs = [abspath(path) for path in (options.plugindir or [expanduser('~/.ucslint'), dirname(uub.__file__)])]
-	ignore_IDs = [clean_id(x) for x in options.ignore_IDs.split(',')] if options.ignore_IDs else []
-	display_only_IDs = [clean_id(x) for x in options.display_only_IDs.split(',')] if options.display_only_IDs else []
-	enabled_modules = [clean_modid(x) for x in options.enabled_modules.split(',')] if options.enabled_modules else []
-	disabled_modules = [clean_modid(x) for x in options.disabled_modules.split(',')] if options.disabled_modules else []
+	ignore_IDs = [clean_id(x) for ign in options.ignore_IDs for x in ign.split(',')]
+	display_only_IDs = [clean_id(x) for dsp in options.display_only_IDs for x in dsp.split(',')]
+	enabled_modules = [clean_modid(x) for mod in options.enabled_modules for x in mod.split(',')]
+	disabled_modules = [clean_modid(x) for mod in options.disabled_modules for x in mod.split(',')]
 
 	os.chdir(pkgpath)
 	chk = DebianPackageCheck('.', plugindirs, enabled_modules=enabled_modules, disabled_modules=disabled_modules, debuglevel=options.debug)
