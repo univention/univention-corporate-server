@@ -6,7 +6,8 @@ src: ldb
 fix: 2:1.5.7-1A~4.3.0.202004231326
 desc: |
  This update addresses the following issue:
- * TODO
+ * A client combining the 'ASQ' and 'Paged Results' LDAP controls can cause a use-after-free
+   in Samba's AD DC LDAP server (CVE-2020-10700).
 bug: [51122]
 cve:
- - TODO
+ - CVE-2020-10700
