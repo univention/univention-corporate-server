@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Rebuild for new ldb library version.
 bug: [51121]
+erratum: 550
+announced: 2020-04-28
