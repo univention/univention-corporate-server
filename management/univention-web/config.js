@@ -142,10 +142,11 @@ dojoConfig = mixin({
 			require(["umc/hooks!", "umc/piwik"]);
 		}
 		var customDeps = Array.prototype.slice.call(arguments, _ndeps);
-		parser.parse();
-		if (umcConfig.autoLogin) {
-			login.start(undefined, undefined, !umcConfig.forceLogin);
-		}
-		umcConfig.callback.apply(umcConfig, customDeps);
+		parser.parse().then(function() {
+			if (umcConfig.autoLogin) {
+				login.start(undefined, undefined, !umcConfig.forceLogin);
+			}
+			umcConfig.callback.apply(umcConfig, customDeps);
+		});
 	}
 }, _customDojoConfig);
