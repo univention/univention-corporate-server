@@ -1,3 +1,9 @@
+ucs-test (9.0.3-194) unstable; urgency=medium
+
+  * Bug #47018: 86_selenium/10_product_test_password_change
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Apr 2020 17:44:22 +0200
+
 ucs-test (9.0.3-193) unstable; urgency=medium
 
   * Bug #51144: Repair 01_base/75dansguardianclamav
