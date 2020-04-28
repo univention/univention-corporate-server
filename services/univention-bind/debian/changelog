@@ -1,3 +1,9 @@
+univention-bind (13.0.1-10) unstable; urgency=medium
+
+  * Bug #50499: add warning to dns/backend 
+
+ -- Tobias Wenzel <wenzel@univention.de>  Tue, 28 Apr 2020 10:53:02 +0200
+
 univention-bind (13.0.1-9) unstable; urgency=medium
 
   * Bug #51102: make UCR templates compatible to python3
