@@ -921,7 +921,7 @@
 				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
 			<para>
-				Die <foreignphrase>Self Service-App</foreignphrase> registriert einen Web-Dienst in dem >Portal,
+				Die <foreignphrase>Self Service-App</foreignphrase> registriert einen Web-Dienst in dem Portal,
 				auf den über eine eigene Webseite zugegriffen werden kann:
 				<guimenu>Passwort ändern</guimenu>.
 				Sie erlaubt es Benutzern, unter Angabe ihres alten Passwortes ein neues Passwort
