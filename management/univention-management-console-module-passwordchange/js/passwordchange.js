@@ -78,6 +78,14 @@ define([
 		}).then(setPassword, function() {});
 	};
 
+	topic.publish('/portal/menu', 'userMenu', 'addItem', {
+		$priority: 0,
+		label: _('Change password'),
+		onClick: function() {
+			topic.publish('/umc/actions', 'menu', 'passwordchange');
+			showPasswordChangeDialog();
+		}
+	});
 	var entry = menu.addEntry({
 		id: 'umcMenuChangePassword',
 		parentMenuId: 'umcMenuUserSettings',
