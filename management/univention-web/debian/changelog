@@ -1,3 +1,9 @@
+univention-web (3.0.5-33) unstable; urgency=medium
+
+  * Bug #51180: preparations for new portal
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Apr 2020 14:06:42 +0200
+
 univention-web (3.0.5-32) unstable; urgency=medium
 
   * Bug #51067: fix syntax error messages not showing up
