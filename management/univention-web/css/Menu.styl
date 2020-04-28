@@ -135,8 +135,12 @@ There are three areas of styling for the Menu:
 	icon-image(-84, 0, '', '-small', width: 12px, height: 12px)
 
 
-.umc .dijitMenuItemHover .dijitMenuExpand
-	icon-image(-84, 0, '', '-small-white', width: 12px, height: 12px)
+.umc
+	.dijitMenuItemHover,
+	.dijitMenuItemActive,
+	.dijitMenuItemSelected
+		.dijitMenuExpand
+			icon-image(-84, 0, '', '-small-white', width: 12px, height: 12px)
 
 
 .umc .dijitMenuItemDisabled .dijitMenuItemIconCell
