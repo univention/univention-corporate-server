@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-samba4 are now
    python3-compatible.
 bug: [51131]
+erratum: 578
+announced: 2020-04-29
