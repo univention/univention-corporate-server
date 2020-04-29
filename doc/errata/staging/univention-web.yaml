@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-web
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * It is now possible to navigate to an UMC module without the overview
+   of all UMC modules and have only that UMC module open.
+   This can be achieved for example with:
+   https://fqdn/univention/management/#singlemodule=true&module=setup:network
+bug: [51185]
