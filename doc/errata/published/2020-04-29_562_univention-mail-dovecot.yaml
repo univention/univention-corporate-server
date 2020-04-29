@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-mail-dovecot are now
    python3-compatible.
 bug: [51147]
+erratum: 562
+announced: 2020-04-29
