@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-radius are now
    python3-compatible.
 bug: [51130]
+erratum: 571
+announced: 2020-04-29
