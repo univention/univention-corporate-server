@@ -988,11 +988,10 @@ class ucs:
 
 		return ucs_object
 
-	def initialize_ucs(self, resync=True):
+	def initialize_ucs(self):
 		_d = ud.function('ldap.initialize_ucs')  # noqa: F841
-		if resync:
-			print("--------------------------------------")
-			print("Initialize sync from UCS")
+		print("--------------------------------------")
+		print("Initialize sync from UCS")
 		sys.stdout.flush()
 
 		# load UCS Modules
@@ -1018,13 +1017,13 @@ class ucs:
 				for m in self.modules_others[key]:
 					if m:
 						univention.admin.modules.init(self.lo, position, m)
-		if resync:
-			# try to resync rejected changes
-			self.resync_rejected_ucs()
-			# call poll_ucs to sync
-			self.poll_ucs()
-			print("--------------------------------------")
-			sys.stdout.flush()
+
+		# try to resync rejected changes
+		self.resync_rejected_ucs()
+		# call poll_ucs to sync
+		self.poll_ucs()
+		print("--------------------------------------")
+		sys.stdout.flush()
 
 	def initialize(self):
 		# dummy
@@ -1367,9 +1366,11 @@ class ucs:
 
 		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
 		entryUUID = self._get_entryUUID(object['dn'])
-		if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-			ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
-			return True
+
+		if property_type in ['ou', 'container']:
+			if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
+				ud.debug(ud.LDAP, ud.PROCESS, "delete_in_ucs: object %s already deleted in UCS, ignoring delete" % object['dn'])
+				return True
 
 		if property_type == 'windowscomputer':
 			# Special handling for windows computer:
@@ -1455,23 +1456,15 @@ class ucs:
 		if self.property[property_type].sync_mode in ['write', 'none']:
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
+
 		ucs_object_dn = object.get('olddn', object['dn'])
 		old_object = self.get_ucs_object(property_type, ucs_object_dn)
 		if old_object and object['modtype'] == 'add':
-			if not self.was_objectGUID_deleted_by_ucs(object['attributes']['objectGUID'][0]):
-				object['modtype'] = 'modify'
-			else:
-				return True
+			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
-			if not self.was_objectGUID_deleted_by_ucs(object['attributes']['objectGUID'][0]):
-				object['modtype'] = 'add'
-			else:
-				return True
+			object['modtype'] = 'add'
 		if not old_object and object['modtype'] == 'move':
-			if not self.was_objectGUID_deleted_by_ucs(object['attributes']['objectGUID'][0]):
-				object['modtype'] = 'add'
-			else:
-				return True
+			object['modtype'] = 'add'
 
 		ud.debug(ud.LDAP, ud.PROCESS, 'sync to ucs:   [%14s] [%10s] %r' % (property_type, object['modtype'], object['dn']))
 
@@ -1823,6 +1816,7 @@ class ucs:
 			object_out['modtype'] = ''
 
 		# DN mapping
+
 		dn_mapping_stored = []
 		for dntype in ['dn', 'olddn']:  # check if all available dn's are already mapped
 			if dntype in object:

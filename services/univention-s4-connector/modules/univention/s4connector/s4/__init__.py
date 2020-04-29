@@ -2658,7 +2658,7 @@ class s4(univention.s4connector.ucs):
 			return False
 
 		entryUUID = object.get('attributes').get('entryUUID', [None])[0]
-		if entryUUID and not self.was_objectGUID_deleted_by_ucs(objectGUID):
+		if entryUUID:
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "delete_in_s4: Object without entryUUID: %s" % (object['dn'],))
