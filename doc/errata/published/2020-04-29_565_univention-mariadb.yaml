@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-mariadb are now
    python3-compatible.
 bug: [51137]
+erratum: 565
+announced: 2020-04-29
