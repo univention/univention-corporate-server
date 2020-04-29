@@ -1,3 +1,10 @@
+univention-web (3.0.5-34) unstable; urgency=medium
+
+  * Bug #51185: added 'singlemodule' hash parameter that allows
+    opening a stripped down UMC without overview and tabs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Apr 2020 12:28:54 +0200
+
 univention-web (3.0.5-33) unstable; urgency=medium
 
   * Bug #51180: preparations for new portal

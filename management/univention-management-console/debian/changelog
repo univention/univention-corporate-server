@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-64) unstable; urgency=medium
+
+  * Bug #51185: added 'singlemodule' hash parameter that allows
+    opening a stripped down UMC without overview and tabs
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Apr 2020 12:26:38 +0200
+
 univention-management-console (11.0.4-63) unstable; urgency=medium
 
   * Bug #51110: Accounts can now be deregistered by users
