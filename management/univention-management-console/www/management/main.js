@@ -1593,6 +1593,7 @@ define([
 				// last selected category
 				category = this._lastCategory;
 				category._button.set('selected', true);
+				this.category = category;
 			}
 
 			// update the 'selected' state of all category buttons
