@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-dansguardian are now
    python3-compatible.
 bug: [51144]
+erratum: 558
+announced: 2020-04-29
