@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The Python 3 compatibility has been improved.
 bug: [51156]
+erratum: 557
+announced: 2020-04-29
