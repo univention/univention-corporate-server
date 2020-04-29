@@ -10,3 +10,5 @@ desc: |
    now python3-compatible.
  * Do not set UCR variables `ldap/overlay/memberof/` before system is joined.
 bug: [51096, 47641]
+erratum: 561
+announced: 2020-04-29
