@@ -5,7 +5,7 @@
 import sys
 import re
 
-RE_ID = re.compile(r'^[UWEIS]:\d\d\d\d-\d+: ')
+RE_ID = re.compile(r'^[UWEIS]:\d\d\d\d-[BEFNW]?\d+: ')
 
 
 def main():

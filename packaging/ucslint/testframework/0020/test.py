@@ -1,2 +1,2 @@
-var: str = ""
+print("", end="")
 print var

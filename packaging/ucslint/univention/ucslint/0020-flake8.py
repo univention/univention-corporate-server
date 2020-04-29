@@ -63,7 +63,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		re.compile(r'conffiles/[^/]+/'),  # UCR templates with markers contain syntax errors
 		re.compile(r'python-notifier/'),  # external code
 		re.compile(r'univention-ldb-modules/buildtools/'),  # external code
-		re.compile(r'ucslint/testframework/'),  # don't care about tests for ucslint
 		re.compile(r'services/univention-printserver/modules/univention/management/console/handlers/cups'),  # UCS 2.4 code
 		re.compile(r'univention-directory-manager-modules/test/'),  # unrelevant, should be removed imho
 	]
@@ -332,8 +331,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				leading_lines = len(text[:text.index(match)].splitlines())
 				match = match.rstrip() + '\n'  # prevent "blank line at end of file" and "blank line contains whitespace" false positives
 				for error in self.flake8(python, ['-'], self.DEFAULT_IGNORE, UCR_HEADER + match):
-					errno, filename, lineno, position, descr = error.split(' ', 4)
-					lineno = str(int(lineno) - header_length + leading_lines)
+					try:
+						errno, filename, lineno, position, descr = error.split(' ', 4)
+						lineno = str(int(lineno) - header_length + leading_lines)
+					except ValueError as ex:
+						# flake8 --show-source provides 2 extra lines
+						self.debug('%s: %s' % (ex, error))
+						continue
 					errors.append(' '.join((errno, conffile, lineno, position, descr)))
 		return errors
 

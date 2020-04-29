@@ -1,2 +1,2 @@
 #!/usr/bin/python2
-var: str = ""
+print("", end="")
