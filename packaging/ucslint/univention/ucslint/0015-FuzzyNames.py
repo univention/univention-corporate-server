@@ -173,44 +173,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		/var/lib/univentions-client-boot/
 	""".split()))
 
-	BINARY_SUFFIXES = {
-		'.ai',  # Adobe Illustrator
-		'.bz2',
-		'.cer',  # certificate
-		'.class',  # Java Class
-		'.cvd',  # ClamAV Virus Database
-		'.deb',  # Debian package
-		'.der',  # certificate
-		'.dll',  # shared library
-		'.efi.signed',  # Extensible Firmware Interface
-		'.gd2',  # LibGD2 image
-		'.gif',  # Graphics Interchange Format
-		'.gpg',  # GNU Privacy Guard
-		'.gz',
-		'.ico',  # Windows Icon
-		'.jar',  # Java Archive
-		'.jpeg',  # Joint Photographic Experts Group
-		'.jpg',  # Joint Photographic Experts Group
-		'.mo',   # Gnutext Message object
-		'.pdf',  # Portable Document Format
-		'.png',  # Portable Network Graphics
-		'.so',  # shared library
-		'.svg',  # Scalable Vector Graphics
-		'.svgz',  # Scalable Vector Graphics
-		'.swf',  # Shockwave Flash
-		'.ttf',  # True Type Font
-		'.udeb',  # Debian package
-		'.woff',  # Web Open Font
-		'.xcf',  # GIMP
-		'.xz',
-		'.zip',
-	}
 
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=self.BINARY_SUFFIXES):
+		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
 			try:
 				with open(fn, 'r') as fd:
 					for lnr, line in enumerate(fd, start=1):

@@ -476,6 +476,38 @@ class FilteredDirWalkGenerator(object):
 		'missing',
 		'config.status',
 	}
+	BINARY_SUFFIXES = {
+		'.ai',  # Adobe Illustrator
+		'.bz2',
+		'.cer',  # certificate
+		'.class',  # Java Class
+		'.cvd',  # ClamAV Virus Database
+		'.deb',  # Debian package
+		'.der',  # certificate
+		'.dll',  # shared library
+		'.efi.signed',  # Extensible Firmware Interface
+		'.gd2',  # LibGD2 image
+		'.gif',  # Graphics Interchange Format
+		'.gpg',  # GNU Privacy Guard
+		'.gz',
+		'.ico',  # Windows Icon
+		'.jar',  # Java Archive
+		'.jpeg',  # Joint Photographic Experts Group
+		'.jpg',  # Joint Photographic Experts Group
+		'.mo',   # Gnutext Message object
+		'.pdf',  # Portable Document Format
+		'.png',  # Portable Network Graphics
+		'.so',  # shared library
+		'.svg',  # Scalable Vector Graphics
+		'.svgz',  # Scalable Vector Graphics
+		'.swf',  # Shockwave Flash
+		'.ttf',  # True Type Font
+		'.udeb',  # Debian package
+		'.woff',  # Web Open Font
+		'.xcf',  # GIMP
+		'.xz',
+		'.zip',
+	}
 
 	def __init__(
 		self,
@@ -501,7 +533,7 @@ class FilteredDirWalkGenerator(object):
 		:param ignore_suffixes: a list of additional files, that end with one of defined suffixes, will be ignored (e.g. `['~', '.bak']`)
 		:param ignore_files: list of additional files that will be ignored (e.g. `['.gitignore', 'config.sub']`).
 		:param ignore_debian_subdirs: boolean that defines if :file:`.../debian/*` directories are ignored or not.
-		:param reHashBang: if defined, only files are returned whose first bytes match specified regular expression.
+		:param reHashBang: if defined, additionally text files are returned whose first characters match specified regular expression.
 		:param readSize: number of bytes that will be read for e.g. reHashBang
 
 		example:
@@ -555,17 +587,17 @@ class FilteredDirWalkGenerator(object):
 						continue
 
 				# check if filename ends with required suffix
-				if self.suffixes:
-					if not any(filename.endswith(suffix) for suffix in self.suffixes):
-						continue
-
-				if self.reHashBang:
+				if self.suffixes and any(filename.endswith(suffix) for suffix in self.suffixes):
+					pass
+				elif self.reHashBang:
 					try:
 						content = open(fn, 'r').read(self.readSize)
 					except (EnvironmentError, UnicodeDecodeError):
 						continue
 					if not self.reHashBang.search(content):
 						continue
+				elif self.suffixes:
+					continue
 
 				# return complete filename
 				yield fn

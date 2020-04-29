@@ -29,6 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.ucslint.base as uub
+from univention.ucslint.python import python_files
 import re
 import os
 import sys
@@ -336,7 +337,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			subprocess.call(cmd)
 
 	def _iter_pathes(self, path):
-		files = list(self.find_python_files(path))
+		files = [path for path in python_files(path) if not self.ignore_path(path)]
 		if self.DEFAULT_SELECT or self.show_statistics:
 			return {
 				self.DEFAULT_IGNORE: files,
@@ -368,12 +369,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		if code == '0020-F841' and any("local variable '%s' is assigned to but never used" % (x,) in text for x in allowed_names):  # _d = univention.debug.function()
 			return True
 		return False
-
-	def find_python_files(self, base):
-		pathes = set(uub.FilteredDirWalkGenerator(base, suffixes=['.py'])) | set(uub.FilteredDirWalkGenerator(base, ignore_suffixes=['.py'], reHashBang=self.PYTHON_HASH_BANG))
-		for path in pathes:
-			if not self.ignore_path(path):
-				yield path
 
 	def ignore_path(self, path):
 		return any(pattern.search(os.path.abspath(path)) for pattern in self.IGNORED_FILES)

@@ -28,6 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.ucslint.base as uub
+from univention.ucslint.python import python_files
 import re
 
 
@@ -54,20 +55,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		py_files = []
-		for fn in uub.FilteredDirWalkGenerator(path):
-			if fn.endswith('.py'):  # add all files to list that end with ".py"
-				py_files.append(fn)
-				continue
-
-			try:
-				content = open(fn, 'r').read(100)  # add all files that contain a hashbang in first line
-			except EnvironmentError:
-				self.debug('Failed to read 100 bytes from %r' % (fn,))
-			else:
-				if content.startswith('#!'):
-					py_files.append(fn)
-
 		tester = uub.UPCFileTester()
 		tester.addTest(re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0)
 		tester.addTest(re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0)
@@ -78,23 +65,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			(?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
 			[])]''', re.VERBOSE | re.IGNORECASE),
 			'0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
-		for fn in py_files:
-			try:
-				content = open(fn, 'r').read(100)
-			except EnvironmentError:
-				self.addmsg('0009-1', 'failed to open and read file', filename=fn)
-				continue
-			self.debug('testing %s' % fn)
 
-			if not content:
-				continue
-
+		for fn in python_files(path):
 			tester.open(fn)
+			if not tester.raw:
+				continue
 			msglist = tester.runTests()
 			self.msg.extend(msglist)
 
-			firstline = content.splitlines()[0]
-			match = UniventionPackageCheck.RE_HASHBANG.match(firstline)
+			match = self.RE_HASHBANG.match(tester.lines[0])
 			if match:
 				version, space, option, tail = match.groups()
 				if not version:

@@ -157,7 +157,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		conffiles = {}
 
 		confdir = os.path.join(path, 'conffiles')
-		for fn in uub.FilteredDirWalkGenerator(confdir):
+		for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
 			conffiles[fn] = {
 				'headerfound': False,
 				'variables': [],  # Python code
