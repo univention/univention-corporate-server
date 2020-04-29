@@ -175,13 +175,22 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
 		servers = [ucr.get('ldap/server/name')]
-		servers += ucr.get('ldap/server/addition','').split()
+		additional_servers = ucr.get('ldap/server/addition', '').split()
 		if random_server:
-			random.shuffle(servers)
+			if ucr.get('server/role') in ('memberserver',) and random_server:
+				# shuffle all servers on memberservers if random_server==True
+				servers += additional_servers
+				random.shuffle(servers)
+			else:
+				# shuffle only additional server
+				random.shuffle(additional_servers)
+				servers += additional_servers
+		else:
+			servers += additional_servers
 		for server in servers:
 			try:
 				return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-			#LDAP server down, try next server
+			# LDAP server down, try next server
 			except ldap.SERVER_DOWN as exc:
 				pass
 		raise exc

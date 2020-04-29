@@ -1,3 +1,9 @@
+univention-python (12.0.0-19) unstable; urgency=low
+
+  * Bug #51182: overhaul randomization of LDAP server order in getMachineConnection
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 29 Apr 2020 15:42:37 +0200
+
 univention-python (12.0.0-18) unstable; urgency=medium
 
   * Bug #50191: Code cleanup of getMachineConnection
