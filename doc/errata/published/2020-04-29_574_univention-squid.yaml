@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-squid are now
    python3-compatible.
 bug: [51133]
+erratum: 574
+announced: 2020-04-29
