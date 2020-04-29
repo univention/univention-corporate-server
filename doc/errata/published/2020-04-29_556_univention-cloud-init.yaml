@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-cloud-init are now
    python3-compatible.
 bug: [51135]
+erratum: 556
+announced: 2020-04-29
