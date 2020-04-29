@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-admin-diary are now
    python3-compatible.
 bug: [51134]
+erratum: 555
+announced: 2020-04-29
