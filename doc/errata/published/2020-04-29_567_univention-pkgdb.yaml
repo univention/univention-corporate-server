@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-pkgdb are now
    python3-compatible.
 bug: [51139]
+erratum: 567
+announced: 2020-04-29
