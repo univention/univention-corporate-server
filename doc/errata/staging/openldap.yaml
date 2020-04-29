@@ -6,7 +6,7 @@ src: openldap
 fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202004291153
 desc: |
  This update addresses the following issues:
- * slapd to limit depth of nested filters (CVE-2020-12243)
+ * Denial of service of slapd via nested search filters (CVE-2020-12243)
 bug: [51183]
 cve:
  - CVE-2020-12243
