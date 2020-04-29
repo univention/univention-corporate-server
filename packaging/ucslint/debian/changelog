@@ -7,6 +7,7 @@ ucslint (8.0.0-14) unstable; urgency=medium
   * Bug #51246: Ignore more DH files
   * Bug #49683: Check debian/*.ucs files
   * Bug #49620: Check debian/changelog is strict-monotonical
+  * Bug #48747: Check .uinst files
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 20 May 2020 12:55:10 +0200
 

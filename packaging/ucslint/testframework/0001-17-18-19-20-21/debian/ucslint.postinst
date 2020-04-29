@@ -1,0 +1,5 @@
+#!/bin/sh
+#DEBHELPER#
+uinst='/usr/lib/univention-install/66ucslint.uinst'
+[ -e "$uinst" ] && rm "$uinst"
+exit 0

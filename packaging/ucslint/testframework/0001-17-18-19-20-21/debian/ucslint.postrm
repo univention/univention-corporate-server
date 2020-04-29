@@ -1,0 +1,5 @@
+#!/bin/sh
+#DEBHELPER#
+. /usr/share/univention-lib/base.sh
+call_unjoinscript 66ucslint.uinst
+exit 0

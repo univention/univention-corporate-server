@@ -1,0 +1,4 @@
+#!/bin/sh
+#DEBHELPER#
+cp /usr/lib/univention-uninstall/66ucslint.uinst /usr/lib/univention-install/
+exit 0
