@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-printserver are now
    python3-compatible.
 bug: [51129]
+erratum: 570
+announced: 2020-04-29
