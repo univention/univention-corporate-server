@@ -153,13 +153,11 @@ define([
 				//standby: lang.hitch(this, 'standby'),
 				//standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
-			if (!tools.status('overview')) {
-				this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
-					this.set('title', child.get('headerText'));
-				}));
-				this.set('title', this.wizard.get('selectedChildWidget').get('headerText'));
-				styles.insertCssRule(lang.replace('#{id} .umcPageHeader', this.wizard), 'display: none!important;');
-			}
+			this.wizard.watch('selectedChildWidget', lang.hitch(this, function(name, old, child) {
+				this.set('title', child.get('headerText'));
+			}));
+			this.set('title', this.wizard.get('selectedChildWidget').get('headerText'));
+			styles.insertCssRule(lang.replace('#{id} .umcPageHeader', this.wizard), 'display: none!important;');
 			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
 				// wizard is done -> call cleanup command and redirect browser to new web address
 				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');

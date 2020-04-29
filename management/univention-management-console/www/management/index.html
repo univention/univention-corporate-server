@@ -11,7 +11,6 @@
 
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
-			//<!--
 			dojoConfig.map = {
 				'*': {
 					'umc/app': 'management',
@@ -23,14 +22,10 @@
 				require(["management", "umc/tools"], function(management, tools) {
 					management.start({
 						username: getQuery('username'),
-						password: getQuery('password'),
-						module: getQuery('module'),
-						flavor: getQuery('flavor'),
-						overview: getQuery('overview', true)
+						password: getQuery('password')
 					});
 				});
 			};
-			//-->
 		</script>
 		<script type="text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>

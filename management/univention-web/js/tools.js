@@ -104,7 +104,7 @@ define([
 			username: null,
 			hostname: '',
 			domainname: '',
-			overview: true,
+			singleModule: false,
 			setupGui: false,
 			loggingIn: false,
 			loggedIn: false,
@@ -146,7 +146,6 @@ define([
 			//		* username (String): The username of the authenticated user.
 			//		* hostname (String): The hostname on which the UMC is running.
 			//		* domainname (String): The domainname on which the UMC is running.
-			//		* overview (Boolean): Specifies whether or not the overview is visible and the header is displayed or not.
 			// key: String?
 			//		If given, only the value for the specified property is returned.
 
