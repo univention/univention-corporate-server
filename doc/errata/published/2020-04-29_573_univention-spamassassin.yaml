@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-spamassassin are now
    python3-compatible.
 bug: [51145]
+erratum: 573
+announced: 2020-04-29
