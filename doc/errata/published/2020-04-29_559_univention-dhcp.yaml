@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of univention-dhcp are now
    python3-compatible.
 bug: [51136]
+erratum: 559
+announced: 2020-04-29
