@@ -1,2 +1,2 @@
-W:0020-E999: conffiles/python3:2:4: SyntaxError: invalid syntax
+W:0020-E999: conffiles/python3:2:14: SyntaxError: invalid syntax
 W:0020-E999: conffiles/python2:2:8: SyntaxError: invalid syntax
