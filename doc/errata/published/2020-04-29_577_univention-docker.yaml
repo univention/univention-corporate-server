@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates univention-docker of are now
    python3-compatible.
 bug: [51132]
+erratum: 577
+announced: 2020-04-29
