@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The styling for menu entries has been slightly adjusted.
 bug: [51180]
+erratum: 575
+announced: 2020-04-29
