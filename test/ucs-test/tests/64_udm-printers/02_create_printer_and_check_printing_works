@@ -3,6 +3,10 @@
 ## tags: [udm]
 ## roles:
 ##   - domaincontroller_master
+##   - domaincontroller_backup
+##   - domaincontroller_slave
+##   - memberserver
+##   - managedclient
 ## exposure: careful
 ## packages:
 ##   - univention-config

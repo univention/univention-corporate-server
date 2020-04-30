@@ -1,3 +1,9 @@
+ucs-test (9.0.3-197) unstable; urgency=medium
+
+  * Bug #50648: Add package ucs-test-udm-shares
+
+ -- Arvid <requate@univention.de>  Thu, 30 Apr 2020 23:39:53 +0200
+
 ucs-test (9.0.3-196) unstable; urgency=medium
 
   * Bug #51184: Test for dn_list_property_encoder_for('users/user')

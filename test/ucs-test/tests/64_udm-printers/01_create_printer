@@ -3,11 +3,14 @@
 ## tags: [udm]
 ## roles:
 ##   - domaincontroller_master
+##   - domaincontroller_backup
+##   - domaincontroller_slave
+##   - memberserver
+##   - managedclient
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-## bugs: [51196]
 
 
 from __future__ import absolute_import
