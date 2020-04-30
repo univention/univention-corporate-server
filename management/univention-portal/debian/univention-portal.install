@@ -1,5 +1,10 @@
 www/univention-management-console.svg usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/
 www/* usr/share/univention-portal/
+udm/schema/univention-portal.schema usr/lib/univention-portal/schema/
+udm/handlers/*.py usr/lib/univention-portal/udm/
+udm/syntax/*.py usr/lib/univention-portal/syntax/
+udm/api/*.py usr/lib/python2.7/dist-packages/univention/udm/modules/
+udm/migrate-to-new-portal usr/lib/univention-portal/
 listener/*.py usr/lib/univention-directory-listener/system
 univention-blog.png usr/share/univention-portal/
 univention-portal-server usr/bin/

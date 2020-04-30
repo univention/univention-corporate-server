@@ -47,7 +47,6 @@ import requests
 import tornado.ioloop
 import tornado.web
 import ldap
-from ldap.filter import filter_format
 
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
@@ -104,10 +103,6 @@ def flatten(list_of_lists):
 	return ret
 
 
-class ReloadExtendedAttributes(Exception):
-	pass
-
-
 class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
 	FALLBACK_PORTAL_CACHE = '/usr/share/univention-portal/portal-unjoined.json'
@@ -123,7 +118,7 @@ class LDAPCache(object):
 	@property
 	def udm(self):
 		if self._udm is None:
-			self._udm = UDM.machine().version(3)
+			self._udm = UDM.machine().version(2)
 		return self._udm
 
 	def _get_groups(self):
@@ -188,13 +183,6 @@ class LDAPCache(object):
 				get_logger('server').info('Reconnecting ldap connection')
 				self._udm = None
 				fd = self._refresh()
-			except ReloadExtendedAttributes:
-				get_logger('server').info('Portal extended attribute not found. Trying to reload.')
-				self._udm = None
-				try:
-					fd = self._refresh()
-				except ReloadExtendedAttributes:
-					get_logger('server').warn('Portal extended attribute does not exist.')
 		except Exception:
 			get_logger('cache').exception('Error during refresh')
 			# hopefully, we can still work with an older cache?
@@ -204,17 +192,16 @@ class LDAPCache(object):
 
 	def _refresh(self):
 		ldap_hostdn = ucr.get('ldap/hostdn')
-		localhost = self.udm.obj_by_dn(ldap_hostdn)
-		try:
-			portal_dn = localhost.props.portal
-		except AttributeError:
-			localhost._udm_module._udm_module_cache.clear()
-			raise ReloadExtendedAttributes()
-		portal = self.udm.get('settings/portal').get(portal_dn)
+		for portal in self.udm.get('portals/portal').search():
+			if ldap_hostdn in portal.props.portalComputers:
+				break
+		else:
+			raise ValueError('No Portal defined')  # default portal?
+			portal = self.udm.get('portals/portal').get('')
 		content = {}
 		content['portal'] = self._extract_portal(portal)
 		content['links'] = self._extract_links(portal)
-		content['categories'] = self._extract_categories()
+		content['categories'] = self._extract_categories(portal)
 		content['entries'] = self._extract_entries(portal)
 		with tempfile.NamedTemporaryFile(delete=False) as fd:
 			json.dump(content, fd, sort_keys=True, indent=4)
@@ -224,18 +211,18 @@ class LDAPCache(object):
 		self._write_css(portal)
 		ret = {}
 		ret['dn'] = portal.dn
-		ret['showMenu'] = portal.props.showMenu
-		ret['showLogin'] = portal.props.showLogin
-		ret['showSearch'] = portal.props.showSearch
 		ret['showApps'] = portal.props.showApps
-		ret['showServers'] = portal.props.showServers
 		ret['fontColor'] = portal.props.fontColor
 		if portal.props.logo:
 			ret['logo'] = self._write_image(portal.props.name, portal.props.logo.raw, 'logos')
 		else:
 			ret['logo'] = None
 		ret['name'] = portal.props.displayName
-		ret['content'] = portal.props.content
+		content = []
+		for category in portal.props.categories.objs:
+			category_def = [category.dn, category.props.entries]
+			content.append(category_def)
+		ret['content'] = content
 		ret['ensureLogin'] = portal.props.ensureLogin
 		ret['anonymousEmpty'] = portal.props.anonymousEmpty
 		ret['autoLayoutCategories'] = portal.props.autoLayoutCategories
@@ -244,13 +231,12 @@ class LDAPCache(object):
 
 	def _extract_links(self, portal):
 		ret = {}
-		for entry in portal.props.links.objs:
+		for entry in portal.props.menuLinks.objs:
 			ret[entry.dn] = {
 				'dn': entry.dn,
 				'name': entry.props.displayName,
 				'description': entry.props.description,
 				'logo_name': self._save_image(portal, entry),
-				'favorite': bool(entry.props.favorite),
 				'activated': entry.props.activated,
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
@@ -258,29 +244,29 @@ class LDAPCache(object):
 			}
 		return ret
 
-	def _extract_categories(self):
+	def _extract_categories(self, portal):
 		ret = {}
-		for category in self.udm.get('settings/portal_category').search():
+		for category in portal.props.categories.objs:
 			ret[category.dn] = {
 				'dn': category.dn,
-				'display_name': category.props.displayName,  # TODO: UDM encoder
+				'display_name': category.props.displayName,
 			}
 		return ret
 
 	def _extract_entries(self, portal):
 		ret = {}
-		for entry in self.udm.get('settings/portal_entry').search(filter_format('portal=%s', [portal.dn])):
-			ret[entry.dn] = {
-				'dn': entry.dn,
-				'name': entry.props.displayName,
-				'description': entry.props.description,
-				'logo_name': self._save_image(portal, entry),
-				'favorite': bool(entry.props.favorite),
-				'activated': entry.props.activated,
-				'allowedGroups': entry.props.allowedGroups,
-				'links': entry.props.link,
-				'linkTarget': entry.props.linkTarget,
-			}
+		for category in portal.props.categories.objs:
+			for entry in category.props.entries.objs:
+				ret[entry.dn] = {
+					'dn': entry.dn,
+					'name': entry.props.displayName,
+					'description': entry.props.description,
+					'logo_name': self._save_image(portal, entry),
+					'activated': entry.props.activated,
+					'allowedGroups': entry.props.allowedGroups,
+					'links': entry.props.link,
+					'linkTarget': entry.props.linkTarget,
+				}
 		return ret
 
 	def _write_css(self, portal):

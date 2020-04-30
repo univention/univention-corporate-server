@@ -41,7 +41,7 @@ ucr.load()
 
 name = 'portal_server'
 description = 'Tell portal server to refresh when something important changed'
-filter = '(|(univentionObjectType=settings/portal)(univentionObjectType=settings/portal_category)(univentionObjectType=settings/portal_entry)(&(objectClass=univentionPortalComputer)(cn=%s)))' % ucr.get('hostname')
+filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/category)(univentionObjectType=porals/entry)'
 attributes = []
 
 
