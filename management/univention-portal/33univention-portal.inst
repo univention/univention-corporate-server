@@ -50,6 +50,7 @@ fi
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/lib/univention-portal/schema/univention-portal.schema \
 	--udm_syntax /usr/lib/univention-portal/syntax/univention-portal.py \
+	--messagecatalog /usr/lib/univention-portal/udm/de.mo \
 	--udm_module /usr/lib/univention-portal/udm/portal.py || die
 
 ucs_registerLDAPExtension "$@" \
