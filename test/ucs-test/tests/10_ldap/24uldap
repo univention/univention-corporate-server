@@ -132,8 +132,35 @@ class TestMachineConnection(TestCase):
     @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
     def testRandomServer(self):
         def __testRandomServer():
-            alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
-            with FakeUcr({'ldap/server/addition': ' '.join(alt_servers)}):
+            for role in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
+                # test first server
+                alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+                with FakeUcr({'server/role': role, 'ldap/server/addition': ' '.join(alt_servers)}):
+                    ucr_fake = ConfigRegistry()
+                    ucr_fake.load()
+                    for _ in range(0, 10):
+                        access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
+                        self.assertIsInstance(access, uldap.access)
+                        self.assertIn(access.host, [ucr_fake.get('ldap/server/name')])  # on DC systems, the local system is used first
+
+                # test other servers
+                alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 200)]
+                with FakeUcr({'server/role': role, 'ldap/server/name': 'does.not.exist', 'ldap/server/addition': ' '.join(alt_servers)}):
+                    ucr_fake = ConfigRegistry()
+                    ucr_fake.load()
+                    used_servers = list()
+                    n = 10
+                    for _ in range(0, n):
+                        access = uldap.getMachineConnection(ldap_master=False, reconnect=False, start_tls=0, random_server=True)
+                        self.assertIsInstance(access, uldap.access)
+                        self.assertIn(access.host, alt_servers)  # only servers of ldap/server/addition should be returned, if ldap/server/name is not available
+                        used_servers.append(access.host)
+                    # Servers should be in random order
+                    self.assertNotIn(''.join(used_servers), ''.join(alt_servers))
+
+            # test memberserver
+            alt_servers = ['127.0.0.{}'.format(i) for i in range(1, 20)]
+            with FakeUcr({'server/role': 'memberserver', 'ldap/server/name': 'does.not.exist', 'ldap/server/addition': ' '.join(alt_servers)}):
                 ucr_fake = ConfigRegistry()
                 ucr_fake.load()
                 possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
@@ -149,6 +176,7 @@ class TestMachineConnection(TestCase):
                 self.assertGreaterEqual(len(set(used_servers)), min_servers)
                 # Servers should be in random order
                 self.assertNotIn(''.join(used_servers), ''.join(possible_servers))
+
         retry_on_error(__testRandomServer, exceptions=(AssertionError, ), retry_count=10, delay=0)
 
     @skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')

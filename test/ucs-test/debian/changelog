@@ -1,3 +1,9 @@
+ucs-test (9.0.3-195) unstable; urgency=low
+
+  * Bug #51182: update unit test for getMachineConnection
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 30 Apr 2020 17:28:38 +0200
+
 ucs-test (9.0.3-194) unstable; urgency=medium
 
   * Bug #47018: 86_selenium/10_product_test_password_change
