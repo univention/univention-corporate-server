@@ -3,8 +3,8 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-bind
-fix: 13.0.1-10A~4.4.0.202004281105
+fix: 13.0.1-11A~4.4.0.202004300919
 desc: | 
  This update addresses the following issue(s):
- * Added a warning to the UCR-V dns/backend not to use ldap for UCS master and backup systems which use running Samba4. (Bug #50499)
-bug: [50499]
+ * Added a warning to the UCR-V dns/backend not to use ldap for UCS master and backup systems which use running Samba4. (Bug #50501)
+bug: [50501]
