@@ -59,7 +59,7 @@ property_descriptions = {
 		identifies=True
 	),
 	'displayName': univention.admin.property(
-		short_description=_('Display Name'),
+		short_description=_('Display name'),
 		long_description=_('Headline of the entry. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
