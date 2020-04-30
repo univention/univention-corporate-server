@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Directory Manager Modules
-#  directory manager module for Portal entries
-#
-# Copyright 2018-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,25 +27,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import re
+
 from univention.admin.layout import Tab, Group
 import univention.admin.localization
+import univention.admin.handlers
 
-translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+translation = univention.admin.localization.translation('univention.admin.handlers.portals')
 _ = translation.translate
 
-module = 'settings/portal_category'
-superordinate = 'settings/cn'
-default_containers = ['cn=categories,cn=portal,cn=univention']
+module = 'portals/category'
+default_containers = ['cn=categories,cn=portals,cn=univention']
 childs = False
-operations = ['add', 'edit', 'remove', 'search', 'move']
+operations = ['add', 'edit', 'remove', 'search']
 short_description = _('Portal: Category')
 object_name = _('Portal category')
 object_name_plural = _('Portal categories')
-long_description = _('Object under which settings/portal_entry objects can be displayed')
+long_description = _('Object under which portals/entry objects can be displayed. Belongs to (one or more) portals/portal')
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionPortalCategory'],
+		objectClasses=['top', 'univentionNewPortalCategory'],
 	),
 }
 property_descriptions = {
@@ -58,6 +57,7 @@ property_descriptions = {
 		syntax=univention.admin.syntax.string_numbers_letters_dots,
 		include_in_default_search=True,
 		required=True,
+		may_change=False,
 		identifies=True
 	),
 	'displayName': univention.admin.property(
@@ -66,6 +66,13 @@ property_descriptions = {
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
+	),
+	'entries': univention.admin.property(
+		short_description=_('Entry'),
+		long_description=_('List of Portal Entries shown in this category'),
+		syntax=univention.admin.syntax.NewPortalEntries,
+		multivalue=True,
+		required=False,
 	),
 }
 
@@ -89,40 +96,30 @@ def unmapTranslationValue(vals):
 	return [val.split(' ', 1) for val in vals]
 
 
+def mapOrdered(ldap_values):
+	# ldap stores multi value fields unordered by default
+	# you can change this by putting X-ORDERED 'VALUES' in your schema file
+	# but then you literally get ['{0}foo', '{1}bar']
+	return ['{{{}}}{}'.format(i, value) for i, value in enumerate(ldap_values)]
+
+
+def unmapOrdered(udm_values):
+	return [re.sub('^{\d+}', '', value) for value in udm_values]
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('displayName', 'univentionPortalCategoryDisplayName', mapTranslationValue, unmapTranslationValue)
+mapping.register('displayName', 'univentionNewPortalCategoryDisplayName', mapTranslationValue, unmapTranslationValue)
+mapping.register('entries', 'univentionNewPortalCategoryEntries', mapOrdered, unmapOrdered)
 
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_post_modify(self):
-		if self.hasChanged('name'):
-			self.__update_property__content__of__portal()
-
-	def _ldap_post_move(self, olddn):
-		self.__update_property__content__of__portal()
-
-	def __update_property__content__of__portal(self):
-		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
-			portal_obj.open()
-			old_content = portal_obj.info.get('content', [])
-			new_content = [[self.dn if self.lo.compare_dn(category, self.old_dn) else category, entries] for category, entries in old_content]
-			if new_content != old_content:
-				portal_obj['content'] = new_content
-				portal_obj.modify()
-
 	def _ldap_post_remove(self):
-		for portal_obj in univention.admin.modules.lookup('settings/portal', None, self.lo, scope='sub'):
-			self._remove_self_from_portal(portal_obj)
-
-	def _remove_self_from_portal(self, portal_obj):
-		portal_obj.open()
-		old_content = portal_obj.info.get('content', [])
-		new_content = [[category, entries] for category, entries in old_content if not self.lo.compare_dn(category, self.dn)]
-		if new_content != old_content:
-			portal_obj['content'] = new_content
+		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter='categories=%s' % self.dn, scope='sub'):
+			portal_obj.open()
+			portal_obj.categories.remove(self.dn)
 			portal_obj.modify()
 
 
