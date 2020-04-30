@@ -49,9 +49,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0008-6': [uub.RESULT_ERROR, 'po-file contains invalid character set definition'],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)

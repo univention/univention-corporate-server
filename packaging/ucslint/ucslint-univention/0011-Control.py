@@ -59,9 +59,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-18': [uub.RESULT_WARN, 'debian/rules: please use --with python2,python3 instead of python_support'],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)

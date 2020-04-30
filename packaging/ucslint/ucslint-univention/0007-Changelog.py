@@ -50,9 +50,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0007-2': [uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)

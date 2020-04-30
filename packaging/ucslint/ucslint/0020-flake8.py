@@ -299,9 +299,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check(self, path):
 		super(UniventionPackageCheck, self).check(path)
 

@@ -57,9 +57,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0010-6': [uub.RESULT_WARN, 'debian/copyright is not machine-readable DEP-5'],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)

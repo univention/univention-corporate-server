@@ -122,9 +122,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0004-59': [uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Postinst:" line'],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check_invalid_variable_name(self, var):
 		"""
 		Returns True if given variable name contains invalid characters

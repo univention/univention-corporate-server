@@ -52,10 +52,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0016-6': [uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'],
 		}
 
-	def postinit(self, path):
-		"""checks to be run before real check or to create precalculated data
-		for several runs. Only called once! """
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)

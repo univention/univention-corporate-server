@@ -51,9 +51,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0009-9': [uub.RESULT_ERROR, 'hashbang contains more than one option'],
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
 
 	def check(self, path):
