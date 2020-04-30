@@ -63,7 +63,7 @@ property_descriptions = {
 		identifies=True
 	),
 	'displayName': univention.admin.property(
-		short_description=_('Display Name'),
+		short_description=_('Display name'),
 		long_description=_('Headline of the portal. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
@@ -102,7 +102,7 @@ property_descriptions = {
 	),
 	'portalComputers': univention.admin.property(
 		short_description=_('Show on server'),
-		long_description=_('This portal will be used as start site for the given server'),
+		long_description=_('This portal will be used as start site for the given servers'),
 		syntax=univention.admin.syntax.NewPortalComputer,
 		multivalue=True,
 		dontsearch=True,

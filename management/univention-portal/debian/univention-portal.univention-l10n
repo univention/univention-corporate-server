@@ -6,6 +6,14 @@
 		"po_subdir": "www/",
 		"target_type": "json",
 		"destination": "usr/share/univention-portal/i18n/{lang}/main.json"
+	},
+	{
+		"input_files": [
+			"udm/.*/.*\\.py"
+		],
+		"po_subdir": "udm/handlers/",
+		"target_type": "mo",
+		"destination": "usr/lib/univention-portal/udm/{lang}.mo"
 	}
 ]
 
