@@ -1,3 +1,9 @@
+univention-bind (13.0.1-11) unstable; urgency=medium
+
+  * Bug #50501: Correct ucv description.
+
+ -- Tobias Wenzel <wenzel@univention.de>  Thu, 30 Apr 2020 09:13:07 +0200
+
 univention-bind (13.0.1-10) unstable; urgency=medium
 
   * Bug #50499: add warning to dns/backend 
