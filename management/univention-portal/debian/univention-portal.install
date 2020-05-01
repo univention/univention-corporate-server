@@ -5,6 +5,7 @@ udm/handlers/*.py usr/lib/univention-portal/udm/
 udm/syntax/*.py usr/lib/univention-portal/syntax/
 udm/api/*.py usr/lib/python2.7/dist-packages/univention/udm/modules/
 udm/migrate-to-new-portal usr/lib/univention-portal/
+udm/umc.xml usr/lib/univention-portal/umc/univention-portal.xml
 listener/*.py usr/lib/univention-directory-listener/system
 univention-blog.png usr/share/univention-portal/
 univention-portal-server usr/bin/

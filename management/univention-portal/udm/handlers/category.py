@@ -81,8 +81,9 @@ layout = [
 		Group(_('Name'), layout=[
 			["name"],
 		]),
-		Group(_('Display name'), layout=[
+		Group(_('General'), layout=[
 			["displayName"],
+			["entries"],
 		]),
 	]),
 ]
