@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-01 00:34+0200\n"
+"POT-Creation-Date: 2020-05-01 01:37+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -32,6 +32,10 @@ msgstr "Hintergrund"
 msgid "Background image of the Portal"
 msgstr "Hintergrundbild des Portals"
 
+#: udm/handlers/all.py:68
+msgid "Basic settings"
+msgstr "Allgemeine Einstellungen"
+
 #: udm/handlers/entry.py:101
 msgid "Browser tab when opening link"
 msgstr "Browser-Tab beim Öffnen des Links"
@@ -57,7 +61,8 @@ msgid ""
 "Defines the color which is used for the fonts on the portal page as well as "
 "the icons in the header."
 msgstr ""
-"Definiert die Farbe, die für die Schrift im Portal und die Icons in der Kopfzeile genutzt wird."
+"Definiert die Farbe, die für die Schrift im Portal und die Icons in der "
+"Kopfzeile genutzt wird."
 
 #: udm/handlers/entry.py:69 udm/handlers/entry.py:117
 msgid "Description"
@@ -71,7 +76,7 @@ msgstr ""
 "Beschreibung des Eintrags. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/entry.py:62 udm/handlers/entry.py:114
+#: udm/handlers/entry.py:62 udm/handlers/entry.py:114 udm/handlers/all.py:61
 #: udm/handlers/portal.py:66 udm/handlers/category.py:64
 #: udm/handlers/category.py:84
 msgid "Display name"
@@ -101,7 +106,7 @@ msgstr "Optionen für Eintrag"
 msgid "Font color"
 msgstr "Schriftfarbe"
 
-#: udm/handlers/entry.py:109 udm/handlers/entry.py:110
+#: udm/handlers/entry.py:109 udm/handlers/entry.py:110 udm/handlers/all.py:68
 #: udm/handlers/portal.py:147 udm/handlers/category.py:80
 msgid "General"
 msgstr "Allgemein"
@@ -136,9 +141,12 @@ msgid ""
 "visible to logged in users that are in any of the selected groups. If no "
 "groups are selected then the portal entry is always visible."
 msgstr ""
-"Falls ein oder mehrere Gruppen ausgewählt sind, wird der Portaleintrag nur für angemeldete Benutzer sichtbar sein, die in einer der ausgewählten Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist der Portaleintrag für alle sichtbar."
+"Falls ein oder mehrere Gruppen ausgewählt sind, wird der Portaleintrag nur "
+"für angemeldete Benutzer sichtbar sein, die in einer der ausgewählten "
+"Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist der "
+"Portaleintrag für alle sichtbar."
 
-#: udm/handlers/entry.py:53 udm/handlers/portal.py:57
+#: udm/handlers/entry.py:53 udm/handlers/all.py:53 udm/handlers/portal.py:57
 #: udm/handlers/category.py:55
 msgid "Internal name"
 msgstr "Interner Name"
@@ -168,6 +176,10 @@ msgstr "Logo Bild für das Portal."
 msgid "Manage anonymous visitors"
 msgstr "Anonyme Besucher verwalten"
 
+#: udm/handlers/all.py:46
+msgid "Management of portals and their entries"
+msgstr "Verwaltung der Portale und ihrer Einträge"
+
 #: udm/handlers/portal.py:175
 msgid "Message when the portal is empty"
 msgstr "Nachricht, wenn das portal leer ist"
@@ -184,8 +196,7 @@ msgstr "Objekt für die Anzeige in https://fqdn/univention/portal"
 msgid ""
 "Object under which portals/entry objects can be displayed. Belongs to (one "
 "or more) portals/portal"
-msgstr ""
-"Objekt, unter dem portals/entry Objekte angezeigt werden können."
+msgstr "Objekt, unter dem portals/entry Objekte angezeigt werden können."
 
 #: udm/handlers/entry.py:44
 msgid ""
@@ -235,6 +246,10 @@ msgstr "Portal: Eintrag"
 msgid "Portal: Portal"
 msgstr "Portal: Portal"
 
+#: udm/handlers/all.py:45
+msgid "Portal: Settings"
+msgstr "Portal: Einstellungen"
+
 #: udm/handlers/portal.py:47
 msgid "Portals"
 msgstr "Portale"
@@ -264,7 +279,8 @@ msgid ""
 "Style definition for the CSS 'background' property which will be applied to "
 "the portal page, e.g. linear-gradient(black, white)"
 msgstr ""
-"Stil für das CSS 'background'-Attribut, das auf der Portalseite genutzt wird, z.B. linear-gradient(black, white)"
+"Stil für das CSS 'background'-Attribut, das auf der Portalseite genutzt "
+"wird, z.B. linear-gradient(black, white)"
 
 #: udm/handlers/portal.py:122
 msgid "The categories are displayed side by side if there is enough space"
