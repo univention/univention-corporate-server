@@ -1,4 +1,10 @@
-univention-directory-manager-modules (14.0.15-1ubuntu1) UNRELEASED; urgency=medium
+univention-directory-manager-modules (14.0.15-3) unstable; urgency=low
+
+  * Bug #51193: remove function tracing in UDM modules __getitem__()
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 01 May 2020 17:29:06 +0200
+
+univention-directory-manager-modules (14.0.15-2) unstable; urgency=medium
 
   * Bug #49697: Let udm calculate lockedtime if sambaBadPasswordtime is unix epoch
 

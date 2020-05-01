@@ -466,7 +466,6 @@ class simpleLdap(object):
 
 		.. warning:: this method changes the set value to the default if it is unset. For a side effect free retrieval of the value use :func:`univention.admin.handlers.simpleLdap.get`.
 		"""
-		_d = ud.function('admin.handlers.base.__getitem__ key = %s' % key)  # noqa  # noqa: F841
 		if not key:
 			return None
 
