@@ -7,6 +7,5 @@ fix: 13.0.1-11A~4.4.0.202004300919
 desc: | 
  This update addresses the following issue(s):
  * Added a warning to the description of the UCR variable "dns/backend"
-   not to use "ldap" for UCS domaincontroller systems which use running
-   Samba4.
+   not to use "ldap" on UCS domain controller systems running Samba4.
 bug: [50501]
