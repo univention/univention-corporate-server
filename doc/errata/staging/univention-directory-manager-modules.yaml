@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-directory-manager-modules
 fix: 14.0.15-3A~4.4.0.202005011739
 desc: |
- This update addresses the following issue(s):
- * Internal improvement: unburden log files by removing the tracing in UDM
-   modules __getitem__() function (Bug #51193).
+ This update addresses the following issue:
+ * Internal improvement: Remove excessive log trace information from UDM
+   modules method `__getitem__()`.
 bug: [51193]
