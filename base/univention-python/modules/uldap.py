@@ -58,7 +58,6 @@ def parentDn(dn, base=''):
 	:return: The parent distinguished name or None.
 	:rtype: str or None
 	"""
-	_d = univention.debug.function('uldap.parentDn dn=%s base=%s' % (dn, base))  # noqa F841
 	if dn.lower() == base.lower():
 		return None
 	dn = ldap.dn.str2dn(dn)
@@ -954,7 +953,6 @@ class access(object):
 		"""
 		Return state for pickling.
 		"""
-		_d = univention.debug.function('uldap.__getstate__')  # noqa F841
 		odict = self.__dict__.copy()
 		del odict['lo']
 		return odict
@@ -963,7 +961,6 @@ class access(object):
 		"""
 		Set state for pickling.
 		"""
-		_d = univention.debug.function('uldap.__setstate__')  # noqa F841
 		self.__dict__.update(dict)
 		self.__open(self.ca_certfile)
 
