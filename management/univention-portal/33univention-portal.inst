@@ -82,6 +82,8 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
 	--set name=entries || die
 
+/usr/lib/univention-portal/migrate-to-new-portal "$@"
+
 ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
 
@@ -104,14 +106,14 @@ if [ "$role" = "domaincontroller_master" ]; then
 
 	univention-directory-manager portals/category create "$@" --ignore_exists \
 		--position "cn=categories,cn=portals,cn=univention,$ldap_base" \
-		--set name=service \
+		--set name=domain-service \
 		--append entries="cn=umc-domain,cn=entries,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Applications"' \
 		--append displayName='"de_DE" "Applikationen"' || die
 
 	univention-directory-manager portals/category create "$@" --ignore_exists \
 		--position "cn=categories,cn=portals,cn=univention,$ldap_base" \
-		--set name=admin \
+		--set name=domain-admin \
 		--append displayName='"en_US" "Administration"' \
 		--append displayName='"de_DE" "Verwaltung"' || die
 
@@ -119,7 +121,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 	univention-directory-manager portals/portal create "$@" --ignore_exists \
 		--position "cn=portals,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain \
-		--append categories="cn=admin,cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--append categories="cn=domain-admin,cn=categories,cn=portals,cn=univention,$ldap_base" \
 		--append categories="cn=service,cn=categories,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Univention Portal"' \
 		--append displayName='"de_DE" "Univention Portal"' \
