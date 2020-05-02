@@ -148,13 +148,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if 'python-support' in build_depends:
 			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', filename=fn_control)
 
-		if 'ucslint' in build_depends:
-			pass
-		elif 'ucslint-univention' in build_depends:
-			pass
-		else:
-			self.addmsg('0011-13', 'ucslint is missing in Build-Depends', filename=fn_control)
-
 		try:
 			dep = build_depends['debhelper']
 			vstr = dep['vstr']

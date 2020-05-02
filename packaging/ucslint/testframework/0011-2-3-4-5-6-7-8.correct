@@ -1,6 +1,5 @@
 E:0011-2: debian/changelog: source package name differs in debian/changelog and debian/control
 E:0011-5: debian/control: wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"
 W:0011-11: debian/control: XS-Python-Version is not required any longer
-W:0011-13: debian/control: ucslint is missing in Build-Depends
 W:0011-3: debian/control: wrong Section entry - should be "univention"
 W:0011-4: debian/control: wrong Priority entry - should be "optional"
