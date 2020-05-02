@@ -46,7 +46,7 @@ class PortalsPortalObjectProperties(GenericObjectProperties):
 		'showApps': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'portalComputers': dn_list_property_encoder_for("auto"),
 		'ensureLogin': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
-		'anonymousEmpty': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+		'anonymousEmpty': ListOfListOflTextToDictPropertyEncoder,
 		'autoLayoutCategories': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'background': Base64BinaryPropertyEncoder,
 		'logo': Base64BinaryPropertyEncoder,
