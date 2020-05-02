@@ -12,16 +12,19 @@ variables:
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"
   DEB: docker-registry.knut.univention.de/phahn/ucs-devbase:$ucs
-  LINT: docker-registry.knut.univention.de/ucslint:$ucs
+  LINT: docker-registry.knut.univention.de/ucslint
+  LINT_REF: $LINT:$CI_COMMIT_REF_SLUG
+  LINT_UCS: $LINT:$ucs
 
 .lint:
   stage: lint
-  image: $LINT
+  image:
+    name: $LINT:$CI_COMMIT_REF_SLUG
+    entrypoint: [""]
   script:
     - ucslint $base
 
-prepare ucslint:
-  stage: prepare
+.docker:
   services:
     - name: docker-registry.knut.univention.de/ucs/docker:dind
       alias: docker
@@ -31,11 +34,29 @@ prepare ucslint:
   tags:
     - docker
   image: docker:stable
+
+prepare ucslint:
+  stage: prepare
+  extends: .docker
   script:
-    - docker build --pull -t $LINT -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
-    - docker push $LINT
+    - docker build --pull -t $LINT_REF -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
+    - docker push $LINT_REF
   rules:
     - changes:
+      - packaging/ucslint/**/*
+
+push ucslint:
+  stage: lint
+  extends: .docker
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - docker pull $LINT_REF
+    - docker tag $LINT_REF $LINT_UCS
+    - docker push $LINT_UCS
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^[1-9][0-9]*[.][0-9]+[-][0-9]+$/
+      changes:
       - packaging/ucslint/**/*
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
