@@ -58,7 +58,7 @@ define([
 			this.inherited(arguments);
 
 			this.addItem({
-				$priority: 50,
+				$priority: 250,
 				label: _('Logout'),
 				iconClass: 'dijitNoIcon',
 				onClick: function() {

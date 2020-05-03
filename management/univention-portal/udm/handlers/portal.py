@@ -124,6 +124,12 @@ property_descriptions = {
 		default='FALSE',
 		dontsearch=True,
 	),
+	'userLinks': univention.admin.property(
+		short_description=_('Entries in the user menu'),
+		long_description=_('List of portal entries that are shown when a user is logged in'),
+		syntax=univention.admin.syntax.NewPortalEntries,
+		multivalue=True,
+	),
 	'menuLinks': univention.admin.property(
 		short_description=_('Entries in the menu'),
 		long_description=_('List of portal entries that are shown when opening the menu in the portal'),
@@ -165,6 +171,7 @@ layout = [
 		Group(_('General Content'), layout=[
 			['defaultLinkTarget'],
 			['showApps'],
+			['userLinks'],
 			['menuLinks'],
 		]),
 	]),
@@ -218,6 +225,7 @@ mapping.register('background', 'univentionNewPortalBackground', None, univention
 mapping.register('cssBackground', 'univentionNewPortalCSSBackground', None, univention.admin.mapping.ListToString)
 mapping.register('fontColor', 'univentionNewPortalFontColor', None, univention.admin.mapping.ListToString)
 mapping.register('logo', 'univentionNewPortalLogo', None, univention.admin.mapping.ListToString)
+mapping.register('userLinks', 'univentionNewPortalUserLinks', mapOrdered, unmapOrdered)
 mapping.register('menuLinks', 'univentionNewPortalMenuLinks', mapOrdered, unmapOrdered)
 mapping.register('categories', 'univentionNewPortalCategories', mapOrdered, unmapOrdered)
 mapping.register('defaultLinkTarget', 'univentionNewPortalDefaultLinkTarget', None, univention.admin.mapping.ListToString)
