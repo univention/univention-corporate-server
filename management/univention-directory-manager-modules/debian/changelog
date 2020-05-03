@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.15-4) unstable; urgency=medium
+
+  * Bug #51184: Fix DnListPropertyEncoder to return proper values when the
+    attribute was not set at all
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 03 May 2020 16:06:00 +0200
+
 univention-directory-manager-modules (14.0.15-3) unstable; urgency=low
 
   * Bug #51193: remove function tracing in UDM modules __getitem__()
