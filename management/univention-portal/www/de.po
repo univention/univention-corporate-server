@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-server-overview\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-01 01:37+0200\n"
+"POT-Creation-Date: 2020-05-03 23:22+0200\n"
 "PO-Revision-Date: 2017-03-22 16:49+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -44,7 +44,7 @@ msgstr "Kategorie hinzufügen"
 msgid "Add existing category"
 msgstr "Existierende Kategorie hinzufügen"
 
-#: www/main.js:1515
+#: www/main.js:1516
 msgid "Appearance"
 msgstr "Aussehen"
 
@@ -52,7 +52,7 @@ msgstr "Aussehen"
 msgid "Back"
 msgstr "Zurück"
 
-#: www/main.js:751 www/main.js:1540 www/PortalEntryWizard.js:170
+#: www/main.js:751 www/main.js:1541 www/PortalEntryWizard.js:170
 #: www/PortalEntryWizard.js:190 www/PortalEntryWizard.js:446
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -61,7 +61,7 @@ msgstr "Abbrechen"
 msgid "Category"
 msgstr "Kategorie"
 
-#: www/main.js:1499
+#: www/main.js:1500
 msgid "Change order of portal entries via drag and drop"
 msgstr "Ändere die Reihenfolge der Portal-Einträge per Drag and Drop"
 
@@ -89,15 +89,15 @@ msgstr "Wollen Sie diesen Eintrag wirklich aus dem Portal entfernen"
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
-#: www/main.js:1516
+#: www/main.js:1517
 msgid "Edit the font color and background for this portal"
 msgstr "Die Schriftfarbe und den Hintergrund dieses Portal bearbeiten"
 
-#: www/main.js:1509
+#: www/main.js:1510
 msgid "Edit the visibility of this portal"
 msgstr "Die Sichtbarkeit dieses Portals bearbeiten"
 
-#: www/main.js:1482
+#: www/main.js:1483
 msgid "Edit this portal"
 msgstr "Dieses Portal bearbeiten"
 
@@ -109,11 +109,11 @@ msgstr "Fertigstellen"
 msgid "Load entry"
 msgstr "Eintrag laden"
 
-#: www/main.js:1704
+#: www/main.js:1705
 msgid "Local Apps"
 msgstr "Lokale Apps"
 
-#: www/LoginButton.js:44 www/main.js:1686
+#: www/LoginButton.js:44 www/main.js:1687
 msgid "Login"
 msgstr ""
 
@@ -129,11 +129,11 @@ msgstr "Weiter"
 msgid "No display name provided"
 msgstr "Kein Anzeigename definiert"
 
-#: www/main.js:1498
+#: www/main.js:1499
 msgid "Order"
 msgstr "Reihenfolge"
 
-#: www/main.js:1517
+#: www/main.js:1518
 msgid "Portal appearance"
 msgstr "Portal Aussehen"
 
@@ -141,15 +141,15 @@ msgstr "Portal Aussehen"
 msgid "Portal entry was successfully created"
 msgstr "Portal-Eintrag wurde erfolgreich erstellt"
 
-#: www/main.js:1629
+#: www/main.js:1630
 msgid "Portal logo"
 msgstr "Portal Logo"
 
-#: www/main.js:1640
+#: www/main.js:1641
 msgid "Portal title"
 msgstr "Portal Titel"
 
-#: www/main.js:1510
+#: www/main.js:1511
 msgid "Portal visibility"
 msgstr "Portal Sichtbarkeit"
 
@@ -166,7 +166,7 @@ msgstr "Aus diesem Portal entfernen"
 msgid "Save"
 msgstr "Speichern"
 
-#: www/main.js:1547
+#: www/main.js:1548
 msgid "Save entry order"
 msgstr "Reihenfolge der Einträge Speichern"
 
@@ -178,7 +178,7 @@ msgstr "Speichern der Eintragsreihenfolge ist fehlgeschlagen"
 msgid "Search term"
 msgstr ""
 
-#: www/main.js:1522
+#: www/main.js:1523
 msgid "Stop editing this portal"
 msgstr "Aufhören dieses Portal zu bearbeiten"
 
@@ -224,11 +224,11 @@ msgstr ""
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"
 
-#: www/main.js:1508
+#: www/main.js:1509
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: www/main.js:1692
+#: www/main.js:1693
 #, javascript-format
 msgid ""
 "Welcome to the portal of %s.<br><br>To be able to use all functions of this "
