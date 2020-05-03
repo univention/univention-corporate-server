@@ -86,21 +86,28 @@ attributetype ( univentionNewPortalAttributeType:11 NAME 'univentionNewPortalEnt
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( univentionNewPortalAttributeType:12 NAME 'univentionNewPortalMenuLinks'
+attributetype ( univentionNewPortalAttributeType:12 NAME 'univentionNewPortalUserLinks'
+	DESC 'User links'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	X-ORDERED 'VALUES'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalAttributeType:13 NAME 'univentionNewPortalMenuLinks'
 	DESC 'Menu links'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	X-ORDERED 'VALUES'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( univentionNewPortalAttributeType:13 NAME 'univentionNewPortalCategories'
+attributetype ( univentionNewPortalAttributeType:14 NAME 'univentionNewPortalCategories'
 	DESC 'Portal categories'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	X-ORDERED 'VALUES'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( univentionNewPortalAttributeType:14 NAME 'univentionNewPortalDefaultLinkTarget'
+attributetype ( univentionNewPortalAttributeType:15 NAME 'univentionNewPortalDefaultLinkTarget'
 	DESC 'Portal default link target'
 	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
@@ -123,6 +130,7 @@ objectclass ( univentionNewPortalObjectClass:1 NAME 'univentionNewPortal'
 			$ univentionNewPortalFontColor
 			$ univentionNewPortalLogo
 			$ univentionNewPortalEntriesOrder
+			$ univentionNewPortalUserLinks
 			$ univentionNewPortalMenuLinks
 			$ univentionNewPortalCategories
 			$ univentionNewPortalDefaultLinkTarget
