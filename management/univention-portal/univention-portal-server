@@ -200,7 +200,8 @@ class LDAPCache(object):
 			portal = self.udm.get('portals/portal').get('')
 		content = {}
 		content['portal'] = self._extract_portal(portal)
-		content['links'] = self._extract_links(portal)
+		content['user_links'] = self._extract_user_links(portal)
+		content['menu_links'] = self._extract_menu_links(portal)
 		content['categories'] = self._extract_categories(portal)
 		content['entries'] = self._extract_entries(portal)
 		with tempfile.NamedTemporaryFile(delete=False) as fd:
@@ -229,10 +230,10 @@ class LDAPCache(object):
 		ret['defaultLinkTarget'] = portal.props.defaultLinkTarget
 		return ret
 
-	def _extract_links(self, portal):
-		ret = {}
-		for entry in portal.props.menuLinks.objs:
-			ret[entry.dn] = {
+	def _extract_user_links(self, portal):
+		ret = []
+		for entry in portal.props.userLinks.objs:
+			ret.append({
 				'dn': entry.dn,
 				'name': entry.props.displayName,
 				'description': entry.props.description,
@@ -241,7 +242,22 @@ class LDAPCache(object):
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
-			}
+			})
+		return ret
+
+	def _extract_menu_links(self, portal):
+		ret = []
+		for entry in portal.props.menuLinks.objs:
+			ret.append({
+				'dn': entry.dn,
+				'name': entry.props.displayName,
+				'description': entry.props.description,
+				'logo_name': self._save_image(portal, entry),
+				'activated': entry.props.activated,
+				'allowedGroups': entry.props.allowedGroups,
+				'links': entry.props.link,
+				'linkTarget': entry.props.linkTarget,
+			})
 		return ret
 
 	def _extract_categories(self, portal):
@@ -390,10 +406,19 @@ class JsonHandler(tornado.web.RequestHandler):
 			filtered_dns.append(entry_dn)
 		return filtered_dns
 
-	def _get_links(self, username, admin_mode):
-		links = cache.get('links')
-		entry_dns = list(links.keys())
-		return [links[dn] for dn in self._filter_entry_dns(entry_dns, links, username, admin_mode)]
+	def _get_user_links(self, username, admin_mode):
+		if username is None:
+			return []
+		links = cache.get('user_links')
+		links_dict = dict((link['dn'], link) for link in links)
+		entry_dns = [link['dn'] for link in links]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
+
+	def _get_menu_links(self, username, admin_mode):
+		links = cache.get('menu_links')
+		links_dict = dict((link['dn'], link) for link in links)
+		entry_dns = [link['dn'] for link in links]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
 	def _get_categories(self, content):
 		allowed_categories = [x[0] for x in content]
@@ -463,7 +488,8 @@ class JsonHandler(tornado.web.RequestHandler):
 				get_logger('admin').info('Admin mode rejected')
 		answer = {}
 		portal_content = answer['portal'] = self._get_portal(username, admin_mode)
-		answer['links'] = self._get_links(username, admin_mode)
+		answer['user_links'] = self._get_user_links(username, admin_mode)
+		answer['menu_links'] = self._get_menu_links(username, admin_mode)
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
 		answer['filtered'] = not admin_mode

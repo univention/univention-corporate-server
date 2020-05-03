@@ -1414,7 +1414,8 @@ define([
 			this._setupEditModeIfAuthorized();
 			this._renderSidebar();
 			this._render(portalTools.RenderMode.NORMAL);
-			this._addLinks();
+			this._addLinks(portalJson.user_links, 'userMenu');
+			this._addLinks(portalJson.menu_links, 'miscMenu');
 			if (tools.status('username')) {
 				dojoQuery('body').addClass('logged-in');
 			}
@@ -1883,17 +1884,17 @@ define([
 			this._cleanupList.handlers.push(onDndCancelHandler);
 		},
 
-		_addLinks: function() {
-			var links = portalJson.links;
+		_addLinks: function(links, menu) {
 			if (! links) {
 				return;
 			}
 			var entries = this._prepareEntriesForPortalGallery(links, portalTools.RenderMode.NORMAL);
+			var priority = 150;
 			array.forEach(entries, function(link) {
 				if (! link.activated) {
 					return;
 				}
-				topic.publish("/portal/menu", "miscMenu", "addItem", {
+				topic.publish("/portal/menu", menu, "addItem", {
 					onClick: function() {
 						var linkTarget = link.linkTarget;
 						if (linkTarget == "useportaldefault") {
@@ -1912,10 +1913,10 @@ define([
 								break;
 						}
 					},
-					"title": link.description,
-					"label": link.name,
-					"$id": link.id,
-					"$priority": 150
+					title: link.description,
+					label: link.name,
+					$id: link.id,
+					$priority: priority++,
 				});
 			});
 		},
