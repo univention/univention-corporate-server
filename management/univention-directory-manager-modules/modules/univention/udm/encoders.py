@@ -357,12 +357,11 @@ class DnListPropertyEncoder(BaseEncoder):
 
 	def decode(self, value=None):
 		if value is None:
-			return value
-		else:
-			assert hasattr(value, '__iter__'), 'Value is not iterable: {!r}'.format(value)
-			new_list = self.DnsList(value)
-			new_list.objs = self.MyProxy(lambda: self._list_of_dns_to_list_of_udm_objects(value))
-			return new_list
+			value = []
+		assert hasattr(value, '__iter__'), 'Value is not iterable: {!r}'.format(value)
+		new_list = self.DnsList(value)
+		new_list.objs = self.MyProxy(lambda: self._list_of_dns_to_list_of_udm_objects(value))
+		return new_list
 
 	@staticmethod
 	def encode(value=None):

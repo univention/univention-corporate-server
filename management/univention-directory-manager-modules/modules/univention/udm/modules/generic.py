@@ -286,7 +286,7 @@ class GenericObject(BaseObject):
 					val = encoder.decode(v)
 			else:
 				val = v
-			if v is None and self._orig_udm_object.descriptions[k].multivalue:
+			if val is None and self._orig_udm_object.descriptions[k].multivalue:
 				val = []
 			setattr(self.props, k, val)
 		if self._orig_udm_object.superordinate:
