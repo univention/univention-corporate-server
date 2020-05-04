@@ -1,3 +1,9 @@
+univention-portal (3.1.0-14) unstable; urgency=medium
+
+  * Bug #51157: ACL file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 May 2020 21:47:14 +0200
+
 univention-portal (3.1.0-13) unstable; urgency=medium
 
   * Bug #51157: Version bump
