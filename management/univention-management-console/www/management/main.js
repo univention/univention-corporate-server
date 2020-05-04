@@ -98,6 +98,7 @@ define([
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(dojoHash());
 	var _overviewVisible = true;
+	var _menuVisible = true;
 
 	// helper function for sorting, sort indices with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
@@ -795,7 +796,9 @@ define([
 				iconClass: 'umcNotificationIcon',
 				'class': 'umcFlatButton'
 			}));
-			this._setupMenu();
+			if (_menuVisible) {
+				this._setupMenu();
+			}
 			this._headerRight.addChild(new ContainerWidget({
 				'class': 'univentionLogo'
 			}));
@@ -944,6 +947,7 @@ define([
 			//		  with these credentials.
 			//		* overview (Boolean): Specifies whether or not the overview of available modules
 			//		                      and the search is displayed or not. (detault: true)
+			//		* menu (Boolean): Specifies whether or not the hamburger menu is displayed. (default: true)
 
 			// username will be overridden by final authenticated username
 			tools.status('username', props.username || tools.status('username'));
@@ -952,6 +956,10 @@ define([
 
 			if (props.overview !== undefined) {
 				_overviewVisible = tools.isTrue(props.overview);
+			}
+			
+			if (props.menu !== undefined) {
+				_menuVisible = tools.isTrue(props.menu);
 			}
 
 			// check for mobile view
