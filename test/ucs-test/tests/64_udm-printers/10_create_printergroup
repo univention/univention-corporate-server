@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
 		spoolHost = random_fqdn(ucr)
 		## if setQuota=1 and target host doesn't have univention-printquota, then lpadmin fails in cups-printers listener
-		setquota = random.choice(['0', '1']) if printquota_installed else '0'
+		setQuota = random.choice(['0', '1']) if printquota_installed else '0'
 
 		printer_properties1 = {
 			'name': uts.random_name(),

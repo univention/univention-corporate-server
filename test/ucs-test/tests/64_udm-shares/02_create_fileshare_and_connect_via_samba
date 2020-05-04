@@ -33,6 +33,8 @@ boolean_to_unmapped = {'0': 'no', '1': 'yes'}
 # Most boolean syntax properties *must* be set with 0/1 but are returned as no/yes.
 # OTOH some are returned as 0/1: sambaNtAclSupport sambaInheritAcls sambaOplocks sambaLevel2Oplocks sambaFakeOplocks
 def keyAndValue_to_ldap(property_values):
+	if not isinstance(property_values, list):
+		property_values = [property_values]
 	_keyAndValue_to_ldap = {
 		'"acl xattr update mtime" yes': 'acl xattr update mtime = yes',
 		'"access based share enum" yes': 'access based share enum = yes',
