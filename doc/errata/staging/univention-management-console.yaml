@@ -10,4 +10,7 @@ desc: |
    of all UMC modules and have only that UMC module open.
    This can be achieved for example with:
    https://fqdn/univention/management/#singlemodule=true&module=setup:network
-bug: [51185]
+ * The Content-Security-Policy for UMC and its login dialog is now
+   configurable via UCR. The X-Frame-Options default header has been replaced
+   with the Content-Security-Policy frame-ancestor setting.
+bug: [51185, 51211]

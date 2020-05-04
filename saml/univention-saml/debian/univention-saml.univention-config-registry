@@ -90,6 +90,13 @@ Variables: saml/apache2/ssl/ca
 Variables: saml/apache2/ssl/certificatechain
 
 Type: file
+File: etc/apache2/sso-vhost.conf.d/csp.conf
+User: root
+Group: root
+Mode: 644
+Variables: saml/apache2/content-security-policy/.*
+
+Type: file
 File: etc/stunnel/univention_saml.conf
 User: root
 Group: root
