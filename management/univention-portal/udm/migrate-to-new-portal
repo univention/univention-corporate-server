@@ -113,7 +113,7 @@ def migrate_content(udm, old_obj, new_obj):
 			continue
 		new_category = udm.get("portals/category").new()
 		new_category.props.name = new_category_name
-		new_category.props.displayName = old_obj.props.displayName
+		new_category.props.displayName = old_category.props.displayName
 		new_entry_dns = []
 		for entry_dn in entry_dns:
 			old_entry = udm.get("settings/portal_entry").get(entry_dn)
@@ -151,9 +151,9 @@ def main(binddn, bindpwdfile):
 		server_port = ucr["ldap/master/port"]
 		udm = UDM.credentials(binddn, password, server=server, port=server_port).version(2)
 
-	#clear_objects(udm, "portals/portal")
-	#clear_objects(udm, "portals/category")
-	#clear_objects(udm, "portals/entry")
+	# clear_objects(udm, "portals/portal")
+	# clear_objects(udm, "portals/category")
+	# clear_objects(udm, "portals/entry")
 
 	click.echo("Alright, we will now migrate old portal data...")
 	click.echo("First things first, let's start with settings/portal_entry")
