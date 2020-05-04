@@ -4,6 +4,6 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
 if configRegistry.get('uvmm/check/interval', '0') != '0':
-        print "*/%s * * * *   root   /usr/lib/univention-virtual-machine-manager-daemon/uvmmd-check.sh" % configRegistry['uvmm/check/interval']
+	print("*/%s * * * *   root   /usr/lib/univention-virtual-machine-manager-daemon/uvmmd-check.sh" % configRegistry['uvmm/check/interval'])
 @!@
 
