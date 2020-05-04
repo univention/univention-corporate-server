@@ -1,3 +1,9 @@
+univention-web (3.0.5-35) unstable; urgency=medium
+
+  * Bug #51220: add default menu entries to new portal menu
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 04 May 2020 17:28:09 +0200
+
 univention-web (3.0.5-34) unstable; urgency=medium
 
   * Bug #51185: added 'singlemodule' hash parameter that allows
