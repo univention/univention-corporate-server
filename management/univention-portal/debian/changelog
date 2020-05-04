@@ -1,3 +1,9 @@
+univention-portal (3.1.0-10) unstable; urgency=medium
+
+  * Bug #51157: ACLs
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 May 2020 14:02:43 +0200
+
 univention-portal (3.1.0-9) unstable; urgency=medium
 
   * Bug #51157: Fix schema
