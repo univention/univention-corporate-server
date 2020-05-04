@@ -78,7 +78,8 @@ univention-config-registry set \
 	umc/http/content-security-policy/font-src?"'self'" \
 	umc/http/content-security-policy/connect-src?"'self'" \
 	umc/http/content-security-policy/form-action?"'self'" \
-	umc/http/content-security-policy/frame-ancestors?"'self'"
+	umc/http/content-security-policy/frame-ancestors?"'self'" \
+	umc/login/content-security-policy/frame-ancestors?"'self'"
 
 if [ "$1" = "configure" ]
 then

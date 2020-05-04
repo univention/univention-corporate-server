@@ -16,6 +16,7 @@ Variables: umc/http/content-security-policy/form-action
 Variables: umc/http/content-security-policy/frame-ancestors
 Variables: umc/web/piwik
 Variables: updater/maintenance
+Variables: umc/login/content-security-policy/.*
 
 Type: file
 File: etc/apache2/sites-available/univention-proxy.conf
