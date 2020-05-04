@@ -85,7 +85,7 @@ def migrate_portal(udm, old_obj):
 	new_obj.props.cssBackground = old_obj.props.cssBackground
 	new_obj.props.fontColor = old_obj.props.fontColor
 	new_obj.props.logo = old_obj.props.logo
-	new_obj.props.defaultLinkTarget = old_obj.props.defaultLinkTarget
+	new_obj.props.defaultLinkTarget = "embedded"  # old_obj.props.defaultLinkTarget
 	new_obj.save()
 	click.echo(click.style("We created: %s" % new_obj.dn, fg="green"))
 	if old_obj.props.links:
