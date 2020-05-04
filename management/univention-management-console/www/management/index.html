@@ -22,7 +22,8 @@
 				require(["management", "umc/tools"], function(management, tools) {
 					management.start({
 						username: getQuery('username'),
-						password: getQuery('password')
+						password: getQuery('password'),
+						overview: getQuery('overview')
 					});
 				});
 			};

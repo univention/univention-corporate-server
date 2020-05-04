@@ -104,7 +104,6 @@ define([
 			username: null,
 			hostname: '',
 			domainname: '',
-			singleModule: false,
 			setupGui: false,
 			loggingIn: false,
 			loggedIn: false,

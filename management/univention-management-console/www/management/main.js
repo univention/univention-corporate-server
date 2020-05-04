@@ -95,9 +95,9 @@ define([
 		_WidgetBase, Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer, menu, MenuButton,
 		TabController, LiveSearch, GalleryPane, ContainerWidget, Page, Form, Button, Text, ConfirmDialog, i18nTools, _
 ) {
-	// cache UCR variables
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(dojoHash());
+	var _overviewVisible = true;
 
 	// helper function for sorting, sort indices with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
@@ -661,7 +661,7 @@ define([
 		},
 
 		__updateHeaderAfterResize: function() {
-			if (!tools.status('singleModule')) {
+			if (_overviewVisible) {
 				this._updateMoreTabsVisibility();
 			}
 		},
@@ -678,7 +678,7 @@ define([
 		},
 
 		setupHeader: function() {
-			if (!tools.status('singleModule')) {
+			if (_overviewVisible) {
 				this.setupBackToOverview();
 				this._setupModuleTabs();
 			}
@@ -788,7 +788,7 @@ define([
 			});
 			this.addChild(this._headerRight);
 
-			if (!tools.status('singleModule')) {
+			if (_overviewVisible) {
 				this.setupSearchField();
 			}
 			this._headerRight.addChild(new NotificationDropDownButton({
@@ -934,7 +934,6 @@ define([
 		}
 	});
 
-	var SINGLEMODULE_HASH = 'singlemodule';
 	var app = new declare([Evented], {
 		start: function(/*Object*/ props) {
 			// summary:
@@ -943,19 +942,22 @@ define([
 			//		The following properties may be given:
 			//		* username, password: if both values are given, the UMC tries to directly
 			//		  with these credentials.
+			//		* overview (Boolean): Specifies whether or not the overview of available modules
+			//		                      and the search is displayed or not. (detault: true)
 
 			// username will be overridden by final authenticated username
 			tools.status('username', props.username || tools.status('username'));
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);
 
+			if (props.overview !== undefined) {
+				_overviewVisible = tools.isTrue(props.overview);
+			}
+
 			// check for mobile view
 			if (win.getBox().w <= 550 || has('touch')) {
 				tools.status('mobileView', true);
 			}
-
-			var state = ioQuery.queryToObject(_initialHash);
-			tools.status('forcedSingleModule', tools.isTrue(state[SINGLEMODULE_HASH]));
 
 			login.onInitialLogin(lang.hitch(this, '_authenticated'));
 		},
@@ -1281,7 +1283,9 @@ define([
 
 		onLoaded: function() {
 			var launchableModules = this._getLaunchableModules();
-			tools.status('singleModule', tools.status('forcedSingleModule') || launchableModules.length < 2);
+			if (launchableModules.length < 2) {
+				_overviewVisible = false;
+			}
 
 			if (launchableModules.length === 1) {
 				var state = ioQuery.queryToObject(_initialHash);
@@ -1340,10 +1344,6 @@ define([
 		_getStateHash: function() {
 			var moduleTab = lang.getObject('_tabContainer.selectedChildWidget', false, this);
 			var state = {};
-
-			if (tools.status('forcedSingleModule')) {
-				state[SINGLEMODULE_HASH] = true;
-			}
 
 			if (moduleTab && !moduleTab.isOverview) {
 				// module tab
@@ -1435,7 +1435,7 @@ define([
 		},
 
 		_setupOverviewPage: function() {
-			if (tools.status('singleModule')) {
+			if (!_overviewVisible) {
 				return;
 			}
 
@@ -1659,7 +1659,7 @@ define([
 					var params = lang.mixin({
 						title: module.name,
 						//iconClass: tools.getIconClass(module.icon),
-						closable: !tools.status('singleModule'),  // closing tabs is only enabled if the overview is visible
+						closable: _overviewVisible,  // closing tabs is only enabled if the overview is visible
 						moduleFlavor: module.flavor,
 						moduleID: module.id,
 						categoryColor: module.category_for_color,
