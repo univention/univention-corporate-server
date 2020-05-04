@@ -190,6 +190,12 @@ Description[en]=The path to a file containing CA certificates. They are sent to 
 Type=str
 Categories=saml
 
+[saml/apache2/content-security-policy/.*]
+Description[en]=Defines the Content-Security-Policy header for the SAML identity provider. Possible subvariables are default-src, script-src, object-src, style-src, img-src, media-src, frame-src, font-src, connect-src, form-action, frame-ancestors.
+Description[de]=Definiert den Content-Security-Policy Header für den SAML Identity Provider. Mögliche Untervariablen sind default-src, script-src, object-src, style-src, img-src, media-src, frame-src, font-src, connect-src, form-action, frame-ancestors.
+Type=str
+Categories=self-service
+
 [saml/idp/session-duration]
 Description[de]=Konfiguriert die vom SAML Identity Provider definierte Dauer einer Login Session, in Sekunden. Nach Ablauf dieser Zeit müssen sich Benutzer neu am UCS SAML Identity Provider authentifizieren. (Standard: '43200', das entspricht 12 Stunden)
 Description[en]=Configures the duration of a login session defined by the SAML Identity Provider, in seconds. After this time has elapsed, users must re-authenticate to the UCS SAML Identity Provider. (Default: '43200', this corresponds to 12 hours)
