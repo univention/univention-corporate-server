@@ -215,7 +215,7 @@ if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED
 		--append description="\"en_US\" \"Protect your account\"" \
 		--append description="\"de_DE\" \"Kontozugang schützen\"" \
 		--append link="/univention/self-service/#page=setcontactinformation" \
-		--set icon="$(base64 /usr/share/univention-self-service/www/icons/protect_account_access.png)" || die
+		--set icon="$(base64 /usr/share/univention-self-service/www/icons/password.png)" || die
 
 	univention-directory-manager "portals/portal" modify "$@" \
 		--dn="$default_portal" \
