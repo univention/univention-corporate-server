@@ -1,6 +1,6 @@
 @%@UCRWARNING=# @%@
 @!@
-group = configRegistry.get( 'uvmm/kvm/qemu/group' )
+group = configRegistry.get('uvmm/kvm/qemu/group')
 if group:
-	print 'KERNEL=="kvm",										GROUP="%s"' % group
+	print('KERNEL=="kvm",										GROUP="%s"' % group)
 @!@

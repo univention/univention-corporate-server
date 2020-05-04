@@ -6,9 +6,9 @@
 @!@
 # Set URI to an empty value if the shutdown action is set to ignore
 if configRegistry.get('uvmm/libvirt/action/shutdown', '') == 'ignore':
-	print 'URIS=""'
+	print('URIS=""')
 elif 'uvmm/libvirt/action/uris' in configRegistry:
-	print 'URIS=%(uvmm/libvirt/action/uris)s' % configRegistry
+	print('URIS=%(uvmm/libvirt/action/uris)s' % configRegistry)
 @!@
 
 # action taken on host boot
@@ -19,7 +19,8 @@ elif 'uvmm/libvirt/action/uris' in configRegistry:
 #           libvirtd
 #ON_BOOT=start
 @!@
-if 'uvmm/libvirt/action/boot' in configRegistry: print 'ON_BOOT=%(uvmm/libvirt/action/boot)s' % configRegistry
+if 'uvmm/libvirt/action/boot' in configRegistry:
+	print('ON_BOOT=%(uvmm/libvirt/action/boot)s' % configRegistry)
 @!@
 
 # action taken on host shutdown
@@ -32,11 +33,13 @@ if 'uvmm/libvirt/action/boot' in configRegistry: print 'ON_BOOT=%(uvmm/libvirt/a
 #             value suitable for your guests.
 #ON_SHUTDOWN=suspend
 @!@
-if 'uvmm/libvirt/action/shutdown' in configRegistry: print 'ON_SHUTDOWN=%(uvmm/libvirt/action/shutdown)s' % configRegistry
+if 'uvmm/libvirt/action/shutdown' in configRegistry:
+	print('ON_SHUTDOWN=%(uvmm/libvirt/action/shutdown)s' % configRegistry)
 @!@
 
 # number of seconds we're willing to wait for a guest to shut down
 #SHUTDOWN_TIMEOUT=30
 @!@
-if 'uvmm/libvirt/action/shutdown_timeout' in configRegistry: print 'SHUTDOWN_TIMEOUT=%(uvmm/libvirt/action/shutdown_timeout)s' % configRegistry
+if 'uvmm/libvirt/action/shutdown_timeout' in configRegistry:
+	print('SHUTDOWN_TIMEOUT=%(uvmm/libvirt/action/shutdown_timeout)s' % configRegistry)
 @!@

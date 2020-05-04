@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (7.0.1-6) unstable; urgency=medium
+
+  * Bug #51215: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2020 13:35:30 +0200
+
 univention-virtual-machine-manager-node (7.0.1-5) unstable; urgency=medium
 
   * Bug #49180: remove python-support build dependency
