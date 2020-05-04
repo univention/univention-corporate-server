@@ -539,32 +539,32 @@ def stringToBool(value):
 
 
 def mapKeyAndValue(old):
-	return [' = '.join(entry) for entry in old]
+	return [u' = '.join(entry).encode('UTF-8') for entry in old]
 
 
 def unmapKeyAndValue(old):
-	return [entry.split(' = ', 1) for entry in old]
+	return [entry.decode('UTF-8').split(u' = ', 1) for entry in old]
 
 
 def insertQuotes(value):
 	'Turns @group name, user name into @"group name", "user name"'
 
 	new_entries = []
-	for entry in value.split(","):
+	for entry in value.split(u','):
 		new_entry = entry.strip()
 		if not new_entry:
 			continue
-		if new_entry.startswith("@"):
+		if new_entry.startswith(u'@'):
 			is_group = True
 			new_entry = new_entry[1:].strip()
 		else:
 			is_group = False
 		if ' ' in new_entry:
-			new_entry = '"%s"' % new_entry
+			new_entry = u'"%s"' % new_entry
 		if is_group:
-			new_entry = "@%s" % new_entry
+			new_entry = u'@%s' % new_entry
 		new_entries.append(new_entry)
-	return ', '.join(new_entries)
+	return ', '.join(new_entries).encode('UTF-8')
 
 
 mapping = univention.admin.mapping.mapping()
