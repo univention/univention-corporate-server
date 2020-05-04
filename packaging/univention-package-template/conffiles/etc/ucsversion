@@ -6,13 +6,13 @@ UCS_Version = @%@version/version@%@
 # Python Code
 import os
 if os.path.exists('/etc/issue'):
-	print 'Issue=/etc/issue'
+	print('Issue=/etc/issue')
 
 # check if variable "foobar" has been set - if this is the case, add the entry "Foobar=..."
 if configRegistry.get('foobar'):
-	print 'Foobar=%s' % configRegistry.get('foobar')
+	print('Foobar=%s' % configRegistry.get('foobar'))
 
 # always add entry "BarBaz=...". If UCR variable "bar/baz/value" is undefined the default value "MyDefault" is used.
-print 'BarBaz=%s' % (configRegistry.get('bar/baz/value', 'MyDefault').lower(),)
+print('BarBaz=%s' % (configRegistry.get('bar/baz/value', 'MyDefault').lower(),))
 @!@
 
