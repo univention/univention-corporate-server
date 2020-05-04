@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-132) unstable; urgency=medium
+
+  * Bug #51034: 81proxy instead of 80proxy for docker proxy settings.
+
+ -- Christian Castens <castens@univention.de>  Mon, 04 May 2020 11:30:44 +0200
+
 univention-appcenter (8.0.11-131) unstable; urgency=medium
 
   * Bug #51101: fix typo
