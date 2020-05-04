@@ -35,8 +35,10 @@
 eval "$(univention-config-registry shell)"
 
 a2ensite univention-self-service.conf
-univention-config-registry set "umc/web/hooks/univention-self-service?passwordreset"
-univention-config-registry set "umc/login/links/forgot_your_password/enabled?true"
+univention-config-registry set \
+	"umc/web/hooks/univention-self-service?passwordreset"
+	"umc/login/links/forgot_your_password/enabled?true" \
+	"umc/self-service/content-security-policy/frame-ancestors?'none'"
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.9-1; then
 	# Update to UCS 4.2
