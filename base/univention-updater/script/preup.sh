@@ -428,6 +428,22 @@ check_master_version ()
 }
 check_master_version
 
+# Bug #51210 temporary block update with samba
+block_update_with_samba () {
+
+	if [ -e "$(which univention-s4search)" ]; then
+		echo "ERROR: The update to UCS 4.4 is currently blocked due to a bug in the samba packages,"
+		echo "       see https://forge.univention.org/bugzilla/show_bug.cgi?id=51210. We are working"
+		echo "       on a solution. For more information please visit https://help.univention.com/t/14992."
+		if is_ucr_true update44/ignore_block_samba; then
+			echo "WARNING: update44/ignore_block_samba is set to true. Skipped as requested."
+		else
+			exit 1
+		fi
+	fi
+}
+block_update_with_samba
+
 # check that no apache configuration files are manually adjusted; Bug #43520
 check_overwritten_umc_templates () {
 	if univention-check-templates 2>/dev/null | grep /etc/univention/templates/files/etc/apache2/sites-available/ >&3 2>&3
