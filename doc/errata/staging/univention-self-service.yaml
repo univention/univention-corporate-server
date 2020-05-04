@@ -3,8 +3,9 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-self-service
-fix: 4.0.3-26A~4.4.0.202005041234
+fix: 4.0.3-27A~4.4.0.202005041506
 desc: |
  This update addresses the following issue(s):
- * The Content-Security-Policy is now configurable via UCR.
+ * The Content-Security-Policy is now configurable via the
+   umc/self-service/content-security-policy/.* UCR variables.
 bug: [51211]

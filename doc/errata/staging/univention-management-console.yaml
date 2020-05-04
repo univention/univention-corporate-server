@@ -11,6 +11,8 @@ desc: |
    This can be achieved for example with:
    https://fqdn/univention/management/#singlemodule=true&module=setup:network
  * The Content-Security-Policy for UMC and its login dialog is now
-   configurable via UCR. The X-Frame-Options default header has been replaced
+   configurable via the umc/http/content-security-policy/.* and
+   umc/login/content-security-policy/.* UCR variables.
+   The X-Frame-Options default header has been replaced
    with the Content-Security-Policy frame-ancestor setting.
 bug: [51185, 51211]

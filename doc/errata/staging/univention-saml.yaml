@@ -6,5 +6,6 @@ src: univention-saml
 fix: 6.0.2-40A~4.4.0.202005041635
 desc: |
  This update addresses the following issue(s):
- * The Content-Security-Policy is now configurable via UCR.
+ * The Content-Security-Policy is now configurable via the
+   saml/apache2/content-security-policy/. UCR variables.
 bug: [51211]
