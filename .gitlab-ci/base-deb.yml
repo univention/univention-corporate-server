@@ -22,7 +22,7 @@ stages:
   script:
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
-    - apt-get -qq --no-install-recommends install curl
+    - apt-get -qq --no-install-recommends install curl || ( cat /etc/resolv.conf ; getent hosts updates.software-univention.de ; ping -c 3 updates.software-univention.de ; false )
     - .gitlab-ci/aptly-upload ${base}_*.changes
 
 prepare ucslint:
