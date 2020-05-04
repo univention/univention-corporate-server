@@ -320,7 +320,7 @@ define([
 			if (/\/\//.test(path)) {
 				path = null;
 			}
-			window.location = (path || '/univention/management/') + (uri.fragment ? '#' + uri.fragment : window.location.hash);
+			window.location = (path || '/univention/management/') + (uri.query ? '?' + uri.query : '') + (uri.fragment ? '#' + uri.fragment : window.location.hash);
 		},
 
 		_authentication_failed: function() {

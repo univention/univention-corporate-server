@@ -277,7 +277,7 @@ define([
 		redirectToLogin: function(saml) {
 			var target = saml ? '/univention/saml/' : '/univention/login/';
 			window.location = target + '?' + ioQuery.objectToQuery({
-				'location': window.location.pathname + window.location.hash,
+				'location': window.location.pathname + window.location.search + window.location.hash,
 				username: tools.status('username'),
 				lang: i18nTools.defaultLang()
 			});
