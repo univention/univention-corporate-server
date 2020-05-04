@@ -1,3 +1,9 @@
+ucs-test (9.0.3-196) unstable; urgency=medium
+
+  * Bug #51184: Test for dn_list_property_encoder_for('users/user')
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 May 2020 15:57:02 +0200
+
 ucs-test (9.0.3-195) unstable; urgency=low
 
   * Bug #51182: update unit test for getMachineConnection
