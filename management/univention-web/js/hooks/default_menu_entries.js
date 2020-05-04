@@ -32,7 +32,6 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/_base/kernel",
 	"dojo/topic",
 	"dojo/cookie",
 	"dojo/query",
@@ -46,7 +45,7 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/Button",
 	"umc/i18n!"
-], function(declare, lang, array, kernel, topic, cookie, query, styles, login, menu, tools, dialog, i18nTools, Text, CheckBox, Button, _) {
+], function(declare, lang, array, topic, cookie, query, styles, login, menu, tools, dialog, i18nTools, Text, CheckBox, Button, _) {
 	setupMenus();
 
 	function setupMenus() {
@@ -77,29 +76,46 @@ define([
 				linkRevocList = '/ucsCA.crl';
 			}
 
-			menu.addSubMenu({
-				priority: 57,
+			var conf;
+			conf = {
 				label: _('Certificates'),
+			};
+			menu.addSubMenu(lang.mixin({}, conf, {
+				priority: 57,
 				id: 'umcMenuCertificates'
-			});
+			}));
+			topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+				$priority: 20,
+				$id: 'certificatesMenu'
+			}));
 
-			menu.addEntry({
-				parentMenuId: 'umcMenuCertificates',
+			conf = {
 				label: _('Root certificate'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu', 'certificates', 'root');
 					window.location.href = linkRootCa;
 				}
-			});
-
-			menu.addEntry({
+			};
+			menu.addEntry(lang.mixin({}, conf, {
 				parentMenuId: 'umcMenuCertificates',
+			}));
+			topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+				$parentMenuId: 'certificatesMenu'
+			}));
+
+			conf = {
 				label: _('Certificate revocation list'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu', 'certificates', 'revocation-list');
 					window.location.href = linkRevocList;
 				}
-			});
+			};
+			menu.addEntry(lang.mixin({}, conf, {
+				parentMenuId: 'umcMenuCertificates',
+			}));
+			topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+				$parentMenuId: 'certificatesMenu'
+			}));
 		};
 
 		if (tools.status('has_certificates')) {
@@ -115,14 +131,24 @@ define([
 	}
 
 	function setupLanguageMenu() {
-		var languageMenu = {
-			priority: 55,
+		if (i18nTools.availableLanguages.length <= 1) {
+			return;
+		}
+
+		var languageMenuConf = {
 			label: _('Switch language'),
-			id: 'umcMenuLanguage',
 		};
+		menu.addSubMenu(lang.mixin({}, languageMenuConf, {
+			priority: 55,
+			id: 'umcMenuLanguage'
+		}));
+		topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, languageMenuConf, {
+			$priority: 10,
+			$id: 'languagesMenu'
+		}));
+
 		array.forEach(i18nTools.availableLanguages, function(language) {
-			menu.addEntry({
-				parentMenuId: 'umcMenuLanguage',
+			var conf = {
 				label: language.label,
 				disabled: language.id === i18nTools.defaultLang(),
 				onClick: function() {
@@ -142,21 +168,30 @@ define([
 					}
 					i18nTools.setLanguage(language.id);
 				}
-			});
-		});
+			};
 
-		if (i18nTools.availableLanguages.length > 1) {
-			menu.addSubMenu(languageMenu);
-		}
+			menu.addEntry(lang.mixin({}, conf, {
+				parentMenuId: 'umcMenuLanguage'
+			}));
+			topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+				$parentMenuId: 'languagesMenu'
+			}));
+		});
 	}
 
 	function setupHelpMenu() {
-		// the help context menu
-		menu.addSubMenu({
-			priority: 50,
+		var conf;
+		conf = {
 			label: _('Help'),
+		};
+		menu.addSubMenu(lang.mixin({}, conf, {
+			priority: 50,
 			id: 'umcMenuHelp'
-		});
+		}));
+		topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+			$priority: 30,
+			$id: 'helpMenu'
+		}));
 
 		var _openPage = function(url, key, query) {
 			query = typeof query === 'string' ? query : '';
@@ -165,22 +200,34 @@ define([
 			w.focus();
 		};
 
-		menu.addEntry({
-			parentMenuId: 'umcMenuHelp',
+		conf = {
 			label: _('Univention Website'),
-			priority: 120,
 			onClick: lang.hitch(this, _openPage, _('https://www.univention.com/'), 'website')
-		});
-		menu.addEntry({
+		};
+		menu.addEntry(lang.mixin({}, conf, {
 			parentMenuId: 'umcMenuHelp',
+			priority: -40
+		}));
+		topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+			$parentMenuId: 'helpMenu',
+			$priority: 40
+		}));
+
+		conf = {
 			label: _('Univention Forum "Help"'),
-			priority: 110,
 			onClick: lang.hitch(this, _openPage, _('https://help.univention.com/'), 'discourse')
-		});
-		menu.addEntry({
+		};
+		menu.addEntry(lang.mixin({}, conf, {
 			parentMenuId: 'umcMenuHelp',
+			priority: 110
+		}));
+		topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+			$parentMenuId: 'helpMenu',
+			$priority: -110
+		}));
+
+		conf = {
 			label: _('Feedback'),
-			priority: 100,
 			onClick: function() {
 				var page = location.pathname.replace(/^\/univention\/|\/[^/]*$/g, '');
 				var query = '?umc=' + page;
@@ -191,13 +238,28 @@ define([
 				}
 				_openPage(_('https://www.univention.com/feedback/'), 'feedback', query);
 			}
-		});
-		menu.addEntry({
+		};
+		menu.addEntry(lang.mixin({}, conf, {
 			parentMenuId: 'umcMenuHelp',
+			priority: 100
+		}));
+		topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+			$parentMenuId: 'helpMenu',
+			$priority: -100
+		}));
+
+		conf = {
 			label: _('Univention Blog'),
-			priority: 90,
 			onClick: lang.hitch(this, _openPage, _('https://www.univention.com/news/blog-en/'), 'blog')
-		});
+		};
+		menu.addEntry(lang.mixin({}, conf, {
+			parentMenuId: 'umcMenuHelp',
+			priority: 90
+		}));
+		topic.publish('/portal/menu', 'miscMenu', 'addItem', lang.mixin({}, conf, {
+			$parentMenuId: 'helpMenu',
+			$priority: -90
+		}));
 	}
 
 	function setupStartSiteLink() {
