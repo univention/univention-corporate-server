@@ -2,6 +2,6 @@
 import os.path
 schema = '/usr/share/univention-ldap/schema/ip-phone.schema'
 if configRegistry['ldap/server/type'] == 'master' and os.path.exists(schema):
-	print 'include         %s' % schema
+	print('include         %s' % schema)
 @!@
 
