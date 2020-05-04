@@ -112,6 +112,7 @@ define([
 
 			this.ready().then(lang.hitch(this, function() {
 				this.getWidget('name', 'allowedGroups').autoSearch = true;
+				this.getWidget('name', 'name').set('disabled', true);
 
 				// set the value of the displayName and description widget to
 				// have the available languages (the ones that are available in the menu)
@@ -162,10 +163,10 @@ define([
 		getFooterButtons: function(pageName) {
 			var footerbuttons = [{
 				name: 'remove',
-				label: _('Remove from this portal'),
+				label: _('Remove from this category'),
 				align: 'right',
 				callback: lang.hitch(this, function() {
-					dialog.confirm(_('Do you really want to remove this entry from this portal'), [{
+					dialog.confirm(_('Do you really want to remove this entry from this category?'), [{
 						name: 'cancel',
 						label: _('Cancel')
 					}, {
