@@ -96,10 +96,10 @@ def _join_basedir_filename(basedir, filename):
 
 
 def lpadmin(args):
-	args = [pipes.quote(x) for x in args]
+	quoted_args = [pipes.quote(x) for x in args]
 
 	# Show this info message by default
-	ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(args))
+	ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(quoted_args))
 
 	rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin'] + args, uid=0)
 	if rc != 0:
@@ -108,7 +108,7 @@ def lpadmin(args):
 		with open(filename, 'w+') as fd:
 			os.chmod(filename, 0o755)
 			fd.write('#!/bin/sh\n')
-			fd.write('/usr/sbin/univention-lpadmin %s\n' % (' '.join(args),))
+			fd.write('/usr/sbin/univention-lpadmin %s\n' % (' '.join(quoted_args),))
 
 
 def pkprinters(args):
