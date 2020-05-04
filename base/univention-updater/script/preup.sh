@@ -431,7 +431,8 @@ check_master_version
 # Bug #51210 temporary block update with samba
 block_update_with_samba () {
 
-	if [ -e "$(which univention-s4search)" ]; then
+	if [ "$(dpkg-query -W -f '${Version}' samba 2>/dev/null)" = "2:4.10.1-1A~4.3.0.202004231351" ] \
+	   || [ "$(dpkg-query -W -f '${Version}' libldb1 2>/dev/null)" = "2:1.5.7-1A~4.3.0.202004231326" ]; then
 		echo "ERROR: The update to UCS 4.4 is currently blocked due to a bug in the samba packages,"
 		echo "       see https://forge.univention.org/bugzilla/show_bug.cgi?id=51210. We are working"
 		echo "       on a solution. For more information please visit https://help.univention.com/t/14992."
