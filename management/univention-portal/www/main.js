@@ -473,7 +473,7 @@ define([
 			array.forEach(props, function(iprop) {
 				if (iprop.type.indexOf('MultiObjectSelect') >= 0) {
 					iprop.multivalue = false;
-					iprop.umcpCommand = store('$dn$', 'udm', 'settings/portal_all').umcpCommand;
+					iprop.umcpCommand = store('$dn$', 'udm', 'portals/all').umcpCommand;
 				} else if (iprop.multivalue && iprop.type !== 'MultiInput') {
 					iprop.subtypes = [{
 						type: iprop.type,
@@ -688,7 +688,9 @@ define([
 
 							// save initial form values
 							array.forEach(propNames, function(ipropName) {
-								initialFormValues[ipropName] = form._widgets[ipropName].get('value');
+								if (form._widgets[ipropName]) {
+									initialFormValues[ipropName] = form._widgets[ipropName].get('value');
+								}
 							});
 
 							if (initialFormValues.displayName) {
@@ -743,7 +745,7 @@ define([
 								form._widgets.portalComputers.autoSearch = true;
 							}
 
-							if (type === 'settings/portal_category' && dn) {
+							if (form._widgets.name && dn) {
 								form._widgets.name.set('disabled', true);
 							}
 
@@ -761,7 +763,7 @@ define([
 									form.submit();
 								}
 							}];
-							if (type === 'settings/portal_category' && dn) {
+							if (type === 'portals/category' && dn) {
 								options.splice(1, 0, {
 									'name': 'remove',
 									'label': _('Remove from this portal'),
@@ -1032,7 +1034,7 @@ define([
 						}], 'title');
 					})));
 					portalCategory.own(on(portalCategory, 'editCategory', lang.hitch(this, function() {
-						this._editProperties('settings/portal_category', portalCategory.category, ['name', 'displayName'], 'Edit category', portalCategory.categoryIndex);
+						this._editProperties('portals/category', portalCategory.category, ['name', 'displayName'], 'Edit category', portalCategory.categoryIndex);
 					})));
 					portalCategory.own(on(portalCategory, 'categoryNotInPortalJSON', lang.hitch(this, function() {
 						dialog.confirm(_("<p>The category with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing the page or calling<br><pre>univention-directory-listener-ctrl resync portal\nunivention-directory-listener-ctrl resync portal_entry\nunivention-directory-listener-ctrl resync portal_category</pre></p>", portalCategory.category), [{
@@ -1059,7 +1061,7 @@ define([
 			var menuItem_createNew = new MenuItem({
 				label: _('Create new category'),
 				onClick: lang.hitch(this, function() {
-					this._editProperties('settings/portal_category', null, ['name', 'displayName'], _('Create new category'));
+					this._editProperties('portal/category', null, ['name', 'displayName'], _('Create new category'));
 				})
 			});
 			var menuItem_fromExisting = new MenuItem({
@@ -1074,7 +1076,7 @@ define([
 								'label': _('Category'),
 								'dynamicValues': 'udm/syntax/choices',
 								'dynamicOptions': {
-									'syntax': 'PortalCategoryV2'
+									'syntax': 'NewPortalCategories'
 								},
 								'type': 'umc/modules/udm/ComboBox',
 								'size': 'Two',
@@ -1110,7 +1112,7 @@ define([
 			standbyWidget.show();
 			var _initialDialogTitle = item ? _('Edit entry') : _('Create entry');
 
-			this._moduleCache.getProperties('settings/portal_entry').then(lang.hitch(this, function(portalEntryProps) {
+			this._moduleCache.getProperties('portals/entry').then(lang.hitch(this, function(portalEntryProps) {
 				portalEntryProps = lang.clone(portalEntryProps);
 
 				render.requireWidgets(portalEntryProps).then(lang.hitch(this, function() {
@@ -1238,7 +1240,7 @@ define([
 							});
 
 							wizard.moduleStore.add(values, {
-								objectType: 'settings/portal_entry'
+								objectType: 'portals/entry'
 							}).then(lang.hitch(this, function(result) {
 								if (result.success) {
 									var content = lang.clone(portalJson.portal.content);
@@ -1464,7 +1466,7 @@ define([
 			var deferred = new Deferred();
 			tools.umcpCommand('get/modules').then(function(result) {
 				var isAuthorized = result.modules.some(function(module) {
-					return module.flavor === 'settings/portal_all';
+					return module.flavor === 'portals/all';
 				});
 				deferred.resolve(isAuthorized);
 			});
@@ -1477,8 +1479,8 @@ define([
 			// the univention-management-console-module-udm package installed.
 			// This method is only called when it is available
 			require(['umc/modules/udm/cache'], lang.hitch(this, function(cache) {
-				this._moduleCache = cache.get('settings/portal_all');
-				this._moduleStore = store('$dn$', 'udm', 'settings/portal_all');
+				this._moduleCache = cache.get('portals/all');
+				this._moduleStore = store('$dn$', 'udm', 'portals/all');
 
 				this._createStandbyWidget();
 				this._createEnterEditModeButton();
@@ -1528,14 +1530,14 @@ define([
 				'class': 'portalEditBarVisibilityButton',
 				label: _('Visibility'),
 				description: _('Edit the visibility of this portal'),
-				callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['portalComputers'], _('Portal visibility'))
+				callback: lang.hitch(this, '_editProperties', 'portals/portal', portalJson.portal.dn, ['portalComputers'], _('Portal visibility'))
 			});
 			var appearanceButton = new _Button({
 				iconClass: '',
 				'class': 'portalEditBarAppearanceButton',
 				label: _('Appearance'),
 				description: _('Edit the font color and background for this portal'),
-				callback: lang.hitch(this, '_editProperties', 'settings/portal', portalJson.portal.dn, ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
+				callback: lang.hitch(this, '_editProperties', 'portals/portal', portalJson.portal.dn, ['fontColor', 'background', 'cssBackground'], _('Portal appearance'))
 			});
 			var closeButton = new _Button({
 				iconClass: 'umcCrossIconWhite',
@@ -1647,7 +1649,7 @@ define([
 
 		_registerEventHandlerForHeader: function() {
 			var editPortalLogo = lang.hitch(this, function() {
-				this._editProperties('settings/portal', portalJson.portal.dn, ['logo'], _('Portal logo'));
+				this._editProperties('portals/portal', portalJson.portal.dn, ['logo'], _('Portal logo'));
 			});
 			this._cleanupList.handlers.push(
 				on(dom.byId('portalLogoEdit'), 'click', editPortalLogo)
@@ -1658,7 +1660,7 @@ define([
 
 			this._cleanupList.handlers.push(
 				on(dom.byId('portalTitle'), 'click', lang.hitch(this, function() {
-					this._editProperties('settings/portal', portalJson.portal.dn, ['displayName'], _('Portal title'));
+					this._editProperties('portals/portal', portalJson.portal.dn, ['displayName'], _('Portal title'));
 				}))
 			);
 		},
@@ -1940,12 +1942,30 @@ define([
 				return;
 			}
 
+			var changes = [];
+			var oldContent = portalJson.portal.content;
+			var oldCategories = oldContent.map(contentDef => contentDef[0]);
+			var newCategories = newContent.map(contentDef => contentDef[0]);
+			if (! tools.isEqual(oldCategories, newCategories)) {
+				changes.push(this._moduleStore.put({
+					'$dn$': portalJson.portal.dn,
+					categories: newCategories,
+				}));
+			}
+			newContent.forEach(contentDef => {
+				var categoryDN = contentDef[0];
+				var entryDNs = contentDef[1];
+				var oldEntries = oldContent.filter(_contentDef => _contentDef[0] == categoryDN).map(_contentDef => _contentDef[1]);
+				if (oldEntries.length && ! tools.isEqual(oldEntries, entryDNs)) {
+					changes.push(this._moduleStore.put({
+						'$dn$': categoryDN,
+						entries: entryDNs,
+					}));
+				}
+			});
 			this._standby.show();
-			this._moduleStore.put({
-				'$dn$': portalJson.portal.dn,
-				content: newContent
-			}).then(lang.hitch(this, function(result) {
-				if (result.success) {
+			all(changes).then(lang.hitch(this, function(result) {
+				if (result.every(res => res.success)) {
 					this._refresh(portalTools.RenderMode.EDIT).then(lang.hitch(this, function() {
 						this._standby.hide();
 						dialog.contextNotify(_('Changes saved'));
