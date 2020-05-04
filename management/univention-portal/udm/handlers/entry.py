@@ -152,9 +152,17 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_post_remove(self):
+		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter='menuLinks=%s' % self.dn, scope='sub'):
+			portal_obj.open()
+			portal_obj['menuLinks'].remove(self.dn)
+			portal_obj.modify()
+		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter='userLinks=%s' % self.dn, scope='sub'):
+			portal_obj.open()
+			portal_obj['userLinks'].remove(self.dn)
+			portal_obj.modify()
 		for category_obj in univention.admin.modules.lookup('portals/category', None, self.lo, filter='entries=%s' % self.dn, scope='sub'):
 			category_obj.open()
-			category_obj.entries.remove(self.dn)
+			category_obj['entries'].remove(self.dn)
 			category_obj.modify()
 
 
