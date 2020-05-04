@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: 13.0.1-3A~4.4.0.202005041353
+fix: univention-kde
+desc: |
+ This update addresses the following issue(s):
+ * Internal change: the UCR templates of univention-kde are now
+   python3-compatible.
+bug: [51218]
