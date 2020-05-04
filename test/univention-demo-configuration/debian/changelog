@@ -1,3 +1,9 @@
+univention-demo-configuration (7.0.0-2) unstable; urgency=medium
+
+  * Bug #51213: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2020 13:30:12 +0200
+
 univention-demo-configuration (7.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
