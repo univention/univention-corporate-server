@@ -30,7 +30,7 @@
 import univention.admin.localization
 from univention.admin.syntax import select, UDM_Objects
 
-translation = univention.admin.localization.translation('univention.admin.handlers.portals')
+translation = univention.admin.localization.translation('univention.admin.handlers.portals.portal')
 _portal = translation.translate
 
 

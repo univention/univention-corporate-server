@@ -35,7 +35,7 @@ import univention.admin.handlers.portals.category
 from univention.admin.layout import Tab
 
 
-translation = univention.admin.localization.translation('univention.admin.handlers.portals')
+translation = univention.admin.localization.translation('univention.admin.handlers.portals-portal')
 _ = translation.translate
 
 module = 'portals/all'
