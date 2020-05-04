@@ -2,7 +2,7 @@
 
 pref("general.config.obscure_value", 0);
 @!@
-for ffconf, ucrv in {
+for ffconf, ucrv in sorted({
 	'general.config.filename': 'firefox/prefs/conffile',
 	'browser.shell.checkDefaultBrowser': 'firefox/prefs/checkdefaultbrowser',
 	'spellchecker.dictionary': 'firefox/prefs/spellchecker/dictionary',
@@ -12,8 +12,8 @@ for ffconf, ucrv in {
 	'print.print_command': 'firefox/prefs/print_command',
 	'print.postscript.print_command': 'firefox/prefs/print_command',
 	'network.negotiate-auth.trusted-uris': 'domainname',
-}.iteritems():
+}.items()):
 	value = configRegistry.get(ucrv)
 	if value:
-		print 'pref("%s", "%s");' % (ffconf, value)
+		print('pref("%s", "%s");' % (ffconf, value))
 @!@
