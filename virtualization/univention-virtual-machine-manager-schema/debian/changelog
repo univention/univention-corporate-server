@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (9.0.2-9) unstable; urgency=medium
+
+  * Bug #51215: make UCR templates compatible to python3
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2020 13:34:55 +0200
+
 univention-virtual-machine-manager-schema (9.0.2-8) unstable; urgency=medium
 
   * Bug #49181: remove deprecated install file

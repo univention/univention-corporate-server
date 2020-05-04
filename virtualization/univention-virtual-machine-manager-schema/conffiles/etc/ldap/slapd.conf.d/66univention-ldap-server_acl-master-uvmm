@@ -3,7 +3,7 @@ params = {}
 params['right'] = 'write' if configRegistry['ldap/server/type'] == 'master' else 'read'
 params['base'] = configRegistry['ldap/base']
 
-print '''
+print('''
 access to dn.regex="^univentionVirtualMachineUUID=([^,]+),cn=Information,cn=Virtual Machine Manager,%(base)s$" filter="(objectClass=univentionVirtualMachine)" attrs=entry,@univentionVirtualMachine,@univentionObject
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" %(right)s
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" %(right)s
@@ -19,5 +19,5 @@ access to dn.regex="^cn=(Information|CloudConnection),cn=Virtual Machine Manager
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" %(right)s
 	by * read break
 
-''' % params
+''' % params)
 @!@
