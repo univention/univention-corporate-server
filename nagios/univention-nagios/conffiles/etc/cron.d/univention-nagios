@@ -2,9 +2,9 @@
 
 # Read RAID status
 @!@
-if 'nagios/client/checkraid' in configRegistry and configRegistry['nagios/client/checkraid'] == 'yes':
-        print '* * * * * root /usr/bin/raidutil -L physical -L logical -L controller -L raid > /var/lib/univention-nagios/check_univention_i2o_raid.status'
+if configRegistry.is_true('nagios/client/checkraid'):
+	print('* * * * * root /usr/bin/raidutil -L physical -L logical -L controller -L raid > /var/lib/univention-nagios/check_univention_i2o_raid.status')
 else:
-        print '#* * * * * root /usr/bin/raidutil -L physical -L logical -L controller -L raid > /var/lib/univention-nagios/check_univention_i2o_raid.status'
+	print('#* * * * * root /usr/bin/raidutil -L physical -L logical -L controller -L raid > /var/lib/univention-nagios/check_univention_i2o_raid.status')
 @!@
 
