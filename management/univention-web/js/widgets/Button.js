@@ -53,6 +53,8 @@ define([
 		// do not display button labels via the LabelPane
 		displayLabel: false,
 
+		description: '',
+
 		_tooltip: null,
 
 		constructor: function(props) {
