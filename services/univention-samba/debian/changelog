@@ -1,3 +1,9 @@
+univention-samba (13.0.0-10) unstable; urgency=medium
+
+  * Bug #51212: fix typo in UCR conffile
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2020 13:11:47 +0200
+
 univention-samba (13.0.0-9) unstable; urgency=medium
 
   * Bug #51131: fix print statements
