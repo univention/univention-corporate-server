@@ -27,7 +27,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
 import re
 
 from univention.admin.layout import Tab, Group
@@ -192,14 +191,6 @@ def mapTranslationValue(vals):
 
 def unmapTranslationValue(vals):
 	return [val.split(' ', 1) for val in vals]
-
-
-def mapContent(vals):
-	return json.dumps(vals)
-
-
-def unmapContent(vals):
-	return json.loads(vals[0])
 
 
 def mapOrdered(ldap_values):
