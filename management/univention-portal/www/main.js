@@ -953,7 +953,10 @@ define([
 				d.iframe.addEventListener('load', lang.hitch(this, function() {
 					var pathname = lang.getObject('contentWindow.location.pathname', false, d.iframe);
 					if (pathname === '/univention/portal/loggedin/') {
-						login.start(null, null, true);
+						login.start(null, null, true).then(lang.hitch(this, function() {
+							this._setupEditModeIfAuthorized();
+							this._refresh(portalTools.RenderMode.NORMAL);
+						}));
 						this._selectHome();
 						this._removeIframe('$__login__$');
 					}
