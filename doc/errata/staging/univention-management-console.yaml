@@ -15,4 +15,6 @@ desc: |
    umc/login/content-security-policy/.* UCR variables.
    The X-Frame-Options default header has been replaced
    with the Content-Security-Policy frame-ancestor setting.
-bug: [51185, 51211]
+ * Some preparations for the upcoming "Univention Portal" app have
+   been made.
+bug: [51185, 51211, 51226]
