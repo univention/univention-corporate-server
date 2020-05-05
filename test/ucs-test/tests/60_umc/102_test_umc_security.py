@@ -17,8 +17,8 @@ class TestSecurityHeaders(object):
 	def test_login_site(self, path, Client):
 		client = Client()
 		response = client.request('GET', path)
-		assert response.get_header("X-Frame-Options") == "SAMEORIGIN"
-		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.piwik.univention.de/ ;"
+		assert response.get_header("X-Frame-Options") is None  # changed from: == "SAMEORIGIN"
+		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval'  https://www.piwik.univention.de/ ; frame-ancestors 'self';"
 
 		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
 		assert response.get_header("X-XSS-Protection") == "1; mode=block"
@@ -35,4 +35,8 @@ class TestSecurityHeaders(object):
 		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
 		assert response.get_header("X-XSS-Protection") == "1; mode=block"
 		assert response.get_header("X-Content-Type-Options") == "nosniff"
-		assert response.get_header("X-Frame-Options") == "DENY"
+		assert response.get_header("X-Frame-Options") is None  # changed from: == "DENY"
+		if path == '/languages.json':
+			assert response.get_header("Content-Security-Policy") == "frame-ancestors 'none';"
+		else:
+			assert "frame-ancestors 'self'" in response.get_header("Content-Security-Policy")
