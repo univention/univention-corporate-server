@@ -4,6 +4,8 @@
     <!-- Translation currently broken due to Bug #35061 -->
     <name></name>
     <description></description>
+    <flavor id="settings/portal_all" deactivated="yes">
+    </flavor>
     <flavor id="portals/all">
       <name>Portal</name>
       <description>Managing the Univention Portal</description>
