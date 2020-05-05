@@ -39,8 +39,8 @@ update_ucr_template () {
 import os.path
 if (configRegistry.get('ldap/server/type') == "master") and configRegistry.is_false('ox/master/42/registered_ldap_acls', True):
 	if not os.path.isfile("/usr/share/univention-ldap/schema/legacy/kolab2.schema"):
-		print 'include        /usr/share/univention-ldap/schema/oxforucs-extra.schema'
-	print 'include         /usr/share/univention-ldap/schema/oxforucs.schema'
+		print('include        /usr/share/univention-ldap/schema/oxforucs-extra.schema')
+	print('include         /usr/share/univention-ldap/schema/oxforucs.schema')
 @!@
 EOF
 			echo "OX schema subtemplate has been updated"
