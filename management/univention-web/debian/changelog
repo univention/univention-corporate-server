@@ -1,3 +1,9 @@
+univention-web (3.0.5-36) unstable; urgency=medium
+
+  * Bug #51185: replace 'singlemodule' hash with 'overview' query
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 05 May 2020 06:01:09 +0200
+
 univention-web (3.0.5-35) unstable; urgency=medium
 
   * Bug #51220: add default menu entries to new portal menu

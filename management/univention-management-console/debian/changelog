@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-66) unstable; urgency=medium
+
+  * Bug #51185: keep url query when getting redirected to login
+    and replace 'singlemodule' hash with 'overview' query
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 05 May 2020 06:01:45 +0200
+
 univention-management-console (11.0.4-65) unstable; urgency=medium
 
   * Bug #51211: make Content-Security-Policy configurable
