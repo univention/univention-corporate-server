@@ -1126,4 +1126,27 @@ promote_ad_server () {
 	return $rv
 }
 
+fake_test_report () {
+	# fake test results, e.g. for touchstone builds
+	touch autotest-fake.log
+	touch ucs-test.log
+	mkdir -p test-reports/00_fake
+	cat << "EOF" > test-reports/00_fake/00_fake.xml
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite disabled="0" tests="1" errors="0" name="00_fake.00fake" timestamp="2020-05-05T00:06:34" time="0.785" failures="0" hostname="fake" skipped="0">
+<properties>
+<property name="hostname" value="fake"></property>
+<property name="architecture" value="x86_64"></property>
+<property name="role" value="fake"></property>
+<property name="version" value="=fake"></property>
+<property name="description" value="Fake test"></property>
+</properties>
+<testcase classname="00_fake.00_fake" name="fake" time="0.785">
+<system-out></system-out>
+<system-err></system-err>
+</testcase></testsuite>
+EOF
+	return 0
+}
+
 # vim:set filetype=sh ts=4:
