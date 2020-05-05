@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-server-overview\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-04 17:52+0200\n"
+"POT-Creation-Date: 2020-05-05 17:37+0200\n"
 "PO-Revision-Date: 2017-03-22 16:49+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -48,12 +48,12 @@ msgstr "Existierende Kategorie hinzufügen"
 msgid "Appearance"
 msgstr "Aussehen"
 
-#: www/PortalEntryWizard.js:181
+#: www/PortalEntryWizard.js:180
 msgid "Back"
 msgstr "Zurück"
 
-#: www/main.js:753 www/main.js:1543 www/PortalEntryWizard.js:171
-#: www/PortalEntryWizard.js:191 www/PortalEntryWizard.js:447
+#: www/main.js:753 www/main.js:1543 www/PortalEntryWizard.js:170
+#: www/PortalEntryWizard.js:190 www/PortalEntryWizard.js:447
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -81,7 +81,7 @@ msgstr "Eintrag erstellen"
 msgid "Create new category"
 msgstr "Neue Kategorie erstellen"
 
-#: www/PortalEntryWizard.js:169
+#: www/PortalEntryWizard.js:168
 msgid "Do you really want to remove this entry from this category?"
 msgstr "Wollen Sie diesen Eintrag wirklich aus der Kategorie entfernen?"
 
@@ -101,7 +101,7 @@ msgstr "Die Sichtbarkeit dieses Portals bearbeiten"
 msgid "Edit this portal"
 msgstr "Dieses Portal bearbeiten"
 
-#: www/PortalEntryWizard.js:201
+#: www/PortalEntryWizard.js:200
 msgid "Finish"
 msgstr "Fertigstellen"
 
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: www/PortalEntryWizard.js:187
+#: www/PortalEntryWizard.js:186
 msgid "Next"
 msgstr "Weiter"
 
@@ -153,11 +153,11 @@ msgstr "Portal Titel"
 msgid "Portal visibility"
 msgstr "Portal Sichtbarkeit"
 
-#: www/PortalEntryWizard.js:174
+#: www/PortalEntryWizard.js:173
 msgid "Remove"
 msgstr "Entfernen"
 
-#: www/PortalEntryWizard.js:166
+#: www/PortalEntryWizard.js:165
 msgid "Remove from this category"
 msgstr "Aus dieser Kategorie entfernen"
 
@@ -165,7 +165,7 @@ msgstr "Aus dieser Kategorie entfernen"
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
 
-#: www/main.js:759 www/PortalEntryWizard.js:196
+#: www/main.js:759 www/PortalEntryWizard.js:195
 msgid "Save"
 msgstr "Speichern"
 
@@ -223,7 +223,7 @@ msgstr ""
 "Die Änderungen am Portal Objekt konnten nicht gespeichert werden: "
 "%(details)s"
 
-#: www/main.js:553 www/PortalEntryWizard.js:297
+#: www/main.js:553 www/PortalEntryWizard.js:296
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"
 
