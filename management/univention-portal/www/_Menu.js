@@ -46,11 +46,13 @@ define([
 
 		_queuedMenuItems: null,
 		_queuedPopupMenuItems: null,
+		_addedIds: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._queuedMenuItems = [];
 			this._queuedPopupMenuItems = [];
+			this._addedIds = [];
 		},
 
 		buildRendering: function() {
@@ -91,6 +93,20 @@ define([
 		// $parentMenuId: string - add this menu item to the menu with $id === $parentMenuId. If $parentMenuId is not provided then the item will be added to the top level menu
 		// $priority: int - used for sorting the menu items. The higher the value, the lower in the menu. Defaults to 0
 		addItem: function(conf) {
+			if (conf.$id) {
+				var idAlreadyUsed = this._addedIds.some(function(id) {
+					return id === conf.$id;
+				});
+				if (idAlreadyUsed) {
+					console.warn(
+						'portal/_Menu: addItem(conf): conf.$id is already in use. Returning from this addItem call.', 
+						'conf.$id was:', conf.$id
+					);
+					return;
+				} else {
+					this._addedIds.push(conf.$id);
+				}
+			}
 			if (conf.onClick) {
 				this.addMenuItem(conf);
 			} else {
