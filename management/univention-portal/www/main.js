@@ -877,26 +877,22 @@ define([
 				put(iframeStatus, '!dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
 			}, 4000);
 			iframe.addEventListener('load', lang.hitch(this, function() {
+				put(iframeStatus, '.dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
 				clearTimeout(maybeLoadFailed);
-				// TODO maybe the check for contentDocument is not reliable. When using saml login contentDocument is null
-				if (iframe.contentDocument) {
-					put(iframeStatus, '.dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
-				} else {
-					iframeStatus.innerHTML = _('Content could not be loaded.');
-					put(iframeStatus, '!dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
+
+				// try to get the pathname of the iframe location.
+				// This will not always work if the portal and iframe are not of same origin
+				var pathname = lang.getObject('contentWindow.location.pathname', false, iframe);
+				if (pathname === '/univention/portal' || pathname === '/univention/portal/') {
+					this._removeIframe(id);
 				}
-				if (iframe.contentWindow) {
-					var pathname = lang.getObject('contentWindow.location.pathname', false, iframe);
-					if (pathname === '/univention/portal' || pathname === '/univention/portal/') {
-						console.log('iframe loaded /univention/portal - closing');
-						this._removeIframe(id);
-					}
-					
+
+				try {
 					iframe.contentWindow.addEventListener('beforeunload', function() {
 						iframeStatus.innerHTML = '';
 						put(iframeStatus, '!dijitDisplayNone.loadingSpinner.loadingSpinner--visible');
 					});
-				}
+				} catch(e) {}
 			}));
 			iframe.addEventListener('error', lang.hitch(this, function() {
 				iframeStatus.innerHTML = _('Content could not be loaded.');
