@@ -184,7 +184,10 @@ class NullTranslation(object):
 		"""
 		if self._translation is None:
 			return message
-		return self._translation.ugettext(message)
+		try:
+			return self._translation.ugettext(message)
+		except AttributeError:  # python 3
+			return self._translation.gettext(message)
 
 	_ = translate
 
