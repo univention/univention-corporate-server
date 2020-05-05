@@ -1149,4 +1149,10 @@ EOF
 	return 0
 }
 
+transfer_docker_image () {
+	local appid=${1:=missing appid} rv=0
+	echo on root@docker univention-app update
+	echo on root@docker univention-app internal-transfer-images $appid --username jenkins --pwdfile /root/jenkins.secret
+	return $rv
+}
 # vim:set filetype=sh ts=4:
