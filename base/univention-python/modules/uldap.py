@@ -614,7 +614,7 @@ class access(object):
 		return merged
 
 	def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
-		# type: (str, str, Set[str], Dict[str, Dict[str, Any]]) -> None
+		# type: (str, str, Set[bytes], Dict[str, Dict[str, Any]]) -> None
 		"""
 		Merge policies into result.
 
@@ -629,13 +629,13 @@ class access(object):
 
 		try:
 			classes = set(pattrs['objectClass']) - {b'top', b'univentionPolicy', b'univentionObject'}
-			ptype = classes.pop()
+			ptype = classes.pop().decode('utf-8')
 		except KeyError:
 			return
 
 		if pattrs.get('ldapFilter'):
 			try:
-				self.search(pattrs['ldapFilter'][0], base=obj_dn, scope='base', unique=True, required=True)
+				self.search(pattrs['ldapFilter'][0].decode('utf-8'), base=obj_dn, scope='base', unique=True, required=True)
 			except ldap.NO_SUCH_OBJECT:
 				return
 
@@ -644,14 +644,14 @@ class access(object):
 		if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
 			return
 
-		fixed = set(pattrs.get('fixedAttributes', ()))
-		empty = set(pattrs.get('emptyAttributes', ()))
+		fixed = set(x.decode('utf-8') for x in pattrs.get('fixedAttributes', ()))
+		empty = set(x.decode('utf-8') for x in pattrs.get('emptyAttributes', ()))
 		values = result.setdefault(ptype, {})
 		SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
 		for key in (empty | set(pattrs) | fixed) - SKIP:
 			if key not in values or key in fixed:
 				value = [] if key in empty else pattrs.get(key, [])
-				# value = [x.decode('UTF-8') for x in value]   # TODO: This would be ugly here
+				value = [x.decode('UTF-8') for x in value]   # TODO: This would be ugly here
 				univention.debug.debug(
 					univention.debug.LDAP, univention.debug.INFO,
 					"getPolicies: %s sets: %s=%s" % (policy_dn, key, value))
