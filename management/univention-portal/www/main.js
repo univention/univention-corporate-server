@@ -956,7 +956,9 @@ define([
 					if (pathname === '/univention/portal/loggedin/') {
 						login.start(null, null, true).then(lang.hitch(this, function() {
 							this._setupEditModeIfAuthorized();
-							this._refresh(portalTools.RenderMode.NORMAL);
+							this._refresh(portalTools.RenderMode.NORMAL).then(lang.hitch(this, function() {
+								this._addLinks();
+							}));
 						}));
 						this._selectHome();
 						this._removeIframe('$__login__$');
@@ -1415,8 +1417,7 @@ define([
 			this._setupEditModeIfAuthorized();
 			this._renderSidebar();
 			this._render(portalTools.RenderMode.NORMAL);
-			this._addLinks(portalJson.user_links, 'userMenu');
-			this._addLinks(portalJson.menu_links, 'miscMenu');
+			this._addLinks();
 			if (tools.status('username')) {
 				dojoQuery('body').addClass('logged-in');
 			}
@@ -1885,15 +1886,25 @@ define([
 			this._cleanupList.handlers.push(onDndCancelHandler);
 		},
 
-		_addLinks: function(links, menu) {
-			if (! links) {
+		_addLinks: function() {
+			this.__addLinks(portalJson.user_links, 'userMenu');
+			this.__addLinks(portalJson.menu_links, 'miscMenu');
+		},
+
+		__addLinks: function(links, menu) {
+			if (!links) {
 				return;
 			}
 			var entries = this._prepareEntriesForPortalGallery(links, portalTools.RenderMode.NORMAL);
-			var priority = 150;
-			array.forEach(entries, function(link) {
-				if (! link.activated) {
+			var basePrio = 150;
+			for (var x = 0; x < entries.length; x++) {
+				var link = entries[x];
+				if (!link.activated) {
 					return;
+				}
+				var linkPrio = 0;
+				if (links[x] && links[x].$priority) {
+					linkPrio = links[x].$priority;
 				}
 				topic.publish("/portal/menu", menu, "addItem", {
 					onClick: function() {
@@ -1910,16 +1921,17 @@ define([
 								break;
 							case 'embedded':
 								topic.publish('/portal/iframes/open', link.id, link.name, link.logo_name, link.web_interface);
-
 								break;
 						}
 					},
 					title: link.description,
 					label: link.name,
-					$id: link.id,
-					$priority: priority++,
+					$id: link.dn, // use link.dn instead of link.id. link.dn does not change across multiple
+					// __addLinks calls (which calls _prepareEntriesForPortalGallery) which is what we want
+					// so that we don't get multiple, duplicate menu entries
+					$priority: basePrio + linkPrio
 				});
-			});
+			}
 		},
 
 		saveEntryOrder: function() {
