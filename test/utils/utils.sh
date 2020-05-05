@@ -71,6 +71,7 @@ rotate_logfiles () {
 
 jenkins_updates () {
 	ucr set update43/checkfilesystems=no
+	ucr set update44/checkfilesystems=no
 	local version_version version_patchlevel version_erratalevel target rc=0
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
 	# Update UCS@school instances always to latest patchlevel version
@@ -115,6 +116,16 @@ upgrade_to_latest_patchlevel () {
 upgrade_to_latest_errata () {
 	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
 	upgrade_to_latest --updateto "$current"
+}
+
+upgrade_to_latest_test_errata_if () {
+	local rc=0
+	if [ "$ERRATA_UPDATE" = "testing" ]
+	then
+		upgrade_to_latest_test_errata
+		rc=$?
+	fi
+	return $rc
 }
 
 upgrade_to_latest_test_errata () {
