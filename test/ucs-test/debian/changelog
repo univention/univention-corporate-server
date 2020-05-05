@@ -1,3 +1,9 @@
+ucs-test (9.0.3-199) unstable; urgency=medium
+
+  * Bug #51211: adjust test case
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 05 May 2020 15:48:45 +0200
+
 ucs-test (9.0.3-198) unstable; urgency=medium
 
   * Bug #51211: adjust test case

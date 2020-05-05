@@ -4,6 +4,7 @@
 ## packages: [univention-management-console-server]
 
 import pytest
+from collections import defaultdict
 
 
 class TestSecurityHeaders(object):
@@ -29,7 +30,7 @@ class TestSecurityHeaders(object):
 		'/portal/',
 		'/management/',
 	])
-	def test_univention(self, path, Client):
+	def test_univention(self, path, ucr, Client):
 		client = Client()
 		response = client.request('GET', path)
 		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
@@ -39,4 +40,5 @@ class TestSecurityHeaders(object):
 		if path == '/languages.json':
 			assert response.get_header("Content-Security-Policy") == "frame-ancestors 'none';"
 		else:
-			assert "frame-ancestors 'self'" in response.get_header("Content-Security-Policy")
+			expected = "frame-ancestors 'self' https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/;" % defaultdict(lambda: '', ucr)
+			assert expected in response.get_header("Content-Security-Policy")
