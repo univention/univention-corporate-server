@@ -232,7 +232,7 @@ class LDAPCache(object):
 
 	def _extract_user_links(self, portal):
 		ret = []
-		for entry in portal.props.userLinks.objs:
+		for (idx, entry) in enumerate(portal.props.userLinks.objs):
 			ret.append({
 				'dn': entry.dn,
 				'name': entry.props.displayName,
@@ -242,12 +242,13 @@ class LDAPCache(object):
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
+				'$priority': idx,
 			})
 		return ret
 
 	def _extract_menu_links(self, portal):
 		ret = []
-		for entry in portal.props.menuLinks.objs:
+		for (idx, entry) in enumerate(portal.props.menuLinks.objs):
 			ret.append({
 				'dn': entry.dn,
 				'name': entry.props.displayName,
@@ -257,6 +258,15 @@ class LDAPCache(object):
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
+				'$priority': idx,
+				# this is supposed to be the (ordered) idx of the unfiltered (no removed links due to allowdGroups etc)
+				# portal.props.menuLinks, so that the frontend can display the menu links in the correct e.g.:
+				# menuLinks = [
+				#	{dn: A, allowdGroups: foo, $priority: 0},
+				#	{dn: B,                    $priority: 1},
+				# ]
+				# visiting portal anonymously -> menu link B is rendered
+				# user of group 'foo' logs in -> menu link A is rendered above B
 			})
 		return ret
 
