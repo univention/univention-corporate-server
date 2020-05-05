@@ -12,7 +12,7 @@ app_props = get_app_style_properties(app)
 # only print these CSS rules when appliance mode is enabled
 has_required_props = len(set(('secondary_color', 'primary_color', 'umc_header_logo')) - set(app_props.keys())) == 0
 if app and has_required_props:
-	print '''
+	print('''
 
 /* additional CSS rules for the app appliance branding */
 
@@ -33,5 +33,5 @@ if app and has_required_props:
 .umc .umc-setup-page .umcPageIcon {
 	background-position: center top
 }
-''' % app_props
+''' % app_props)
 @!@
