@@ -34,7 +34,7 @@ import univention.admin.filter
 import univention.admin.localization
 import univention.admin.handlers
 
-translation = univention.admin.localization.translation('univention.admin.handlers.portals.portal')
+translation = univention.admin.localization.translation('univention.admin.handlers.portals-portal')
 _ = translation.translate
 
 module = 'portals/portal'

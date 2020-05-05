@@ -31,7 +31,7 @@ from univention.admin.layout import Tab, Group
 import univention.admin.localization
 import univention.admin.handlers
 
-translation = univention.admin.localization.translation('univention.admin.handlers.portals')
+translation = univention.admin.localization.translation('univention.admin.handlers.portals-portal')
 _ = translation.translate
 
 module = 'portals/entry'
