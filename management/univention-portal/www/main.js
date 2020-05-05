@@ -1060,7 +1060,7 @@ define([
 			var menuItem_createNew = new MenuItem({
 				label: _('Create new category'),
 				onClick: lang.hitch(this, function() {
-					this._editProperties('portal/category', null, ['name', 'displayName'], _('Create new category'));
+					this._editProperties('portals/category', null, ['name', 'displayName'], _('Create new category'));
 				})
 			});
 			var menuItem_fromExisting = new MenuItem({

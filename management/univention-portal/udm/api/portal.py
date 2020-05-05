@@ -102,7 +102,7 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
 		'icon': Base64BinaryPropertyEncoder,
 		'portal': dn_list_property_encoder_for('portals/portal'),
-		'allowedGroups': dn_property_encoder_for('groups/group'),
+		'allowedGroups': dn_list_property_encoder_for('groups/group'),
 	}
 
 

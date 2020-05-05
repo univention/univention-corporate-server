@@ -112,7 +112,6 @@ define([
 
 			this.ready().then(lang.hitch(this, function() {
 				this.getWidget('name', 'allowedGroups').autoSearch = true;
-				this.getWidget('name', 'name').set('disabled', true);
 
 				// set the value of the displayName and description widget to
 				// have the available languages (the ones that are available in the menu)
@@ -367,6 +366,7 @@ define([
 						}
 					}));
 				}));
+				this.getWidget('name', 'name').set('disabled', !!this.dn);
 
 				//// we only want to show languages that are visible in the menu.
 				//// separate languages that are in the menu and other lanuages and
