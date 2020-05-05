@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-28) unstable; urgency=medium
+
+  * Bug #51211: fix missing UCRWARNING header
+
+ -- Florian Best <best@univention.de>  Tue, 05 May 2020 14:39:52 +0200
+
 univention-self-service (4.0.3-27) unstable; urgency=medium
 
   * Bug #51211: remove duplicated UCR variable setting
