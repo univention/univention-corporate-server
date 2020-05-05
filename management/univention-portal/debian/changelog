@@ -1,3 +1,9 @@
+univention-portal (3.1.0-17) unstable; urgency=medium
+
+  * Bug #51157: Typos
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 May 2020 02:41:28 +0200
+
 univention-portal (3.1.0-16) unstable; urgency=medium
 
   * Bug #51157: Self service links
