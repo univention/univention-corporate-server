@@ -246,7 +246,7 @@ define([
 			return this.sessionTimeout(info);
 		},
 
-		start: function(username, password, withoutRedirect) {
+		start: function(username, password, withoutRedirect, callbackIfNoRedirect) {
 			//console.debug('starting auth');
 			if (username) {
 				tools.status('username', username);
@@ -260,14 +260,23 @@ define([
 				if (tools.isFalse(tools.status('umc/web/sso/enabled') || 'yes')) {
 					if (!withoutRedirect) {
 						this.redirectToLogin(false);
-					}
+					} else {
+						if (callbackIfNoRedirect) {
+							callbackIfNoRedirect(false);
+						}
+ 					}
 					return;
 				}
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
+					var saml = !passiveLogin.isCanceled();
 					if (!withoutRedirect) {
-						this.redirectToLogin(!passiveLogin.isCanceled());
-					}
+						this.redirectToLogin(saml);
+					} else {
+						if (callbackIfNoRedirect) {
+							callbackIfNoRedirect(saml);
+						}
+ 					}
 				}));
 			}));
 
