@@ -7,5 +7,5 @@ fix: 12.0.1-16A~4.4.0.202005041257
 desc: |
  This update addresses the following issue(s):
  * A shell quoting error in the cups-printer listener module has been
-   corrected which caused an invalid evalution of the ACL's.
+   corrected which prevented the creation of printers for certain ACLs.
 bug: [51196]
