@@ -11,6 +11,7 @@ Build-Depends:
  python3-all,
  python-enum34,
  python-psutil,
+ python3-psutil,
  python-ldap,
  univention-config,
  univention-management-console-dev,
