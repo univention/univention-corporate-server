@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test mailForwardAddress and mailForwardCopyToSelf
 ## tags: [udm,apptest]
-## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - univention-config

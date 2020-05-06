@@ -1,3 +1,9 @@
+ucs-test (9.0.3-200) unstable; urgency=low
+
+  * Bug #51230: enable tests to run on all ucs roles
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 06 May 2020 08:49:06 +0200
+
 ucs-test (9.0.3-199) unstable; urgency=medium
 
   * Bug #51211: adjust test case
