@@ -9,3 +9,5 @@ desc: |
  * A shell quoting error in the cups-printer listener module has been
    corrected which prevented the creation of printers for certain ACLs.
 bug: [51196]
+erratum: 585
+announced: 2020-05-06
