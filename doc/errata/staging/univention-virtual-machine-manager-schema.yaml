@@ -2,10 +2,10 @@ product: ucs
 release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
-src: 9.0.2-9A~4.4.0.202005041339
-fix: univention-virtual-machine-manager-schema
+src: univention-virtual-machine-manager-schema
+fix: 9.0.2-9A~4.4.0.202005041339
 desc: |
  This update addresses the following issue(s):
- * Internal change: the UCR templates of univention-virtual-machine-manager-schema are now
-   python3-compatible.
+ * Internal change: the UCR templates of
+   univention-virtual-machine-manager-schema are now python3-compatible.
 bug: [51215]

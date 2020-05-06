@@ -2,10 +2,10 @@ product: ucs
 release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
-src: 8.0.1-16A~4.4.0.202005041340
-fix: univention-virtual-machine-manager-daemon
+src: univention-virtual-machine-manager-daemon
+fix: 8.0.1-16A~4.4.0.202005041340
 desc: |
  This update addresses the following issue(s):
- * Internal change: the UCR templates of univention-virtual-machine-manager-daemon are now
-   python3-compatible.
+ * Internal change: the UCR templates of
+   univention-virtual-machine-manager-daemon are now python3-compatible.
 bug: [51215]
