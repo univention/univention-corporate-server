@@ -35,9 +35,9 @@ import copy
 import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
+from six import add_metaclass
 from .plugins import Plugin
 from .exceptions import NoObject, MultipleObjects
-
 
 LdapMapping = namedtuple('LdapMapping', ('ldap2udm', 'udm2ldap'))
 
@@ -229,6 +229,7 @@ class ModuleMeta(Plugin):
 		return new_cls
 
 
+@add_metaclass(ModuleMeta)
 class BaseModule(object):
 	"""
 	Base class for UDM module classes. UDM modules are basically UDM object
@@ -260,7 +261,6 @@ class BaseModule(object):
 	        user = user_mod.get(dn)
 	        user.props.groups == []
 	"""  # noqa: E101
-	__metaclass__ = ModuleMeta
 	_udm_object_class = BaseObject
 	_udm_module_meta_class = BaseModuleMetadata
 
