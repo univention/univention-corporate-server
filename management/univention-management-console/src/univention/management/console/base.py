@@ -361,7 +361,7 @@ class Base(signals.Provider, Translation):
 			result = exc.result
 			headers = exc.headers
 			message = str(exc)
-			if not exc.traceback and exc.with_traceback:
+			if not exc.traceback and exc.include_traceback:
 				exc.traceback = traceback.format_exc()
 				if isinstance(exc.traceback, bytes):   # Python 2
 					exc.traceback = exc.traceback.decode('utf-8', 'replace')
