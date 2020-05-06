@@ -1,3 +1,9 @@
+univention-portal (3.1.0-21) unstable; urgency=medium
+
+  * Bug #51157: fix missing content on login
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 06 May 2020 11:30:07 +0200
+
 univention-portal (3.1.0-20) unstable; urgency=medium
 
   * Bug #51157: i18n typo fix
