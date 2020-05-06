@@ -1,6 +1,0 @@
-lib/*.py usr/lib/python2.7/dist-packages/univention/
-lib/*.py usr/lib/python3/dist-packages/univention/
-windows-scripts/*.vbs usr/share/ucs-windows-tools/windows-scripts/
-windows-scripts/*.bat usr/share/ucs-windows-tools/windows-scripts/
-windows-scripts/*.ps1 usr/share/ucs-windows-tools/windows-scripts/
-bin/ucs-windows-* usr/bin/
