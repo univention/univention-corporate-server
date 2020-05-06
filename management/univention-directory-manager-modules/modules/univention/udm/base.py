@@ -35,7 +35,7 @@ import copy
 import pprint
 from collections import namedtuple
 from ldap.filter import filter_format
-from six import add_metaclass
+from six import with_metaclass
 from .plugins import Plugin
 from .exceptions import NoObject, MultipleObjects
 
@@ -50,7 +50,7 @@ class BaseObjectProperties(object):
 	def __repr__(self):
 		return '{}({})'.format(
 			self.__class__.__name__,
-			pprint.pformat(dict((k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_')), indent=2)
+			pprint.pformat(dict((k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')), indent=2)
 		)
 
 	def __deepcopy__(self, memo):
@@ -167,7 +167,7 @@ class BaseModuleMetadata(object):
 	def __repr__(self):
 		return '{}({})'.format(
 			self.__class__.__name__,
-			', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.iteritems() if not str(k).startswith('_'))
+			', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_'))
 		)
 
 	def instance(self, udm_module, api_version):
@@ -229,8 +229,7 @@ class ModuleMeta(Plugin):
 		return new_cls
 
 
-@add_metaclass(ModuleMeta)
-class BaseModule(object):
+class BaseModule(with_metaclass(ModuleMeta)):
 	"""
 	Base class for UDM module classes. UDM modules are basically UDM object
 	factories.

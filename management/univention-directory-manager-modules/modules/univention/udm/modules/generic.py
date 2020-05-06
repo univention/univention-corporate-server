@@ -35,7 +35,7 @@ from __future__ import absolute_import, unicode_literals
 import sys
 import copy
 import inspect
-from six import string_types, reraise, add_metaclass
+from six import string_types, reraise, with_metaclass
 from ldap.dn import dn2str, str2dn
 import ldap
 
@@ -72,7 +72,7 @@ class GenericObjectProperties(BaseObjectProperties):
 
 	def __init__(self, udm_obj):
 		super(GenericObjectProperties, self).__init__(udm_obj)
-		for property_names, encoder_class in self._encoders.iteritems():
+		for property_names, encoder_class in self._encoders.items():
 			assert hasattr(encoder_class, 'decode')
 			assert hasattr(encoder_class, 'encode')
 
@@ -426,7 +426,7 @@ class GenericModuleMetadata(BaseModuleMetadata):
 		component in a DN, e.g. `username` (LDAP attribute `uid`) or `name`
 		(LDAP attribute `cn`).
 		"""
-		for key, udm_property in self._udm_module._orig_udm_module.property_descriptions.iteritems():
+		for key, udm_property in self._udm_module._orig_udm_module.property_descriptions.items():
 			if udm_property.identifies:
 				return key
 		return ''
@@ -460,8 +460,8 @@ class GenericModuleMetadata(BaseModuleMetadata):
 		:rtype: LdapMapping
 		"""
 		return LdapMapping(
-			udm2ldap=dict((k, v[0]) for k, v in self._udm_module._orig_udm_module.mapping._map.iteritems()),
-			ldap2udm=dict((k, v[0]) for k, v in self._udm_module._orig_udm_module.mapping._unmap.iteritems())
+			udm2ldap=dict((k, v[0]) for k, v in self._udm_module._orig_udm_module.mapping._map.items()),
+			ldap2udm=dict((k, v[0]) for k, v in self._udm_module._orig_udm_module.mapping._unmap.items())
 		)
 
 
@@ -469,8 +469,7 @@ class GenericModuleMeta(ModuleMeta):
 	udm_meta_class = GenericModuleMetadata
 
 
-@add_metaclass(GenericModuleMeta)
-class GenericModule(BaseModule):
+class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 	"""
 	Simple API to use UDM modules. Basically a GenericObject factory.
 
@@ -721,6 +720,6 @@ class GenericModule(BaseModule):
 		:raises univention.udm.exceptions.WrongObjectType: if ``univentionObjectType`` of the LDAP object
 			does not match the UDM module name
 		"""
-		uni_obj_type = getattr(orig_udm_obj, 'oldattr', {}).get('univentionObjectType')
+		uni_obj_type = getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType')
 		if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:
 			raise WrongObjectType(dn=orig_udm_obj.dn, module_name=self.name, univention_object_type=', '.join(uni_obj_type))
