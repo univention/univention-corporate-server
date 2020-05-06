@@ -66,6 +66,7 @@ from __future__ import absolute_import
 
 import os
 import ldap
+import json
 import pickle
 import itertools
 import operator
@@ -308,8 +309,14 @@ class ACLs(object):
 		filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
 
 		try:
-			with open(filename, 'r') as fd:
-				acls = pickle.load(fd)
+			try:
+				with open(filename, 'r') as fd:
+					acls = [Rule(x) for x in json.loads(fd)]
+			except ValueError:
+				if six.PY3:
+					raise
+				with open(filename, 'r') as fd:
+					acls = pickle.load(fd)
 		except EnvironmentError as exc:
 			ACL.process('Could not load ACLs of %r: %s' % (username, exc,))
 			return False
@@ -328,7 +335,7 @@ class ACLs(object):
 
 		try:
 			file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
-			os.write(file, pickle.dumps(self.acls))
+			os.write(file, json.dumps(self.acls, ensure_ascii=True).encode('ASCII'))
 			os.close(file)
 		except EnvironmentError as exc:
 			ACL.error('Could not write ACL file: %s' % (exc,))

@@ -36,6 +36,9 @@ import pickle
 import os
 from optparse import OptionParser
 import sys
+import json
+
+import six
 
 from univention.management.console.acl import Rule
 
@@ -64,17 +67,21 @@ if operation not in OPERATIONS:
 	sys.exit(1)
 
 filename = os.path.join(_cache_dir, options.user.replace('/', ''))
-if os.path.isfile(filename) and operation in ('show', 'allow', 'remove'):
+
+acls = []
+if os.path.isfile(filename) and operation in ('show', 'allow', 'remove', 'upgrade-to-json'):
 	try:
-		fd = open(filename)
-		acls = pickle.load(fd)
-		print('loaded pickle file', filename)
-	except:
-		acls = []
-	finally:
-		fd.close()
-else:
-	acls = []
+		with open(filename) as fd:
+			acls = json.load(fd)
+		print('loaded json file', filename)
+	except Exception:
+		if six.PY2:
+			try:
+				with open(filename) as fd:
+					acls = pickle.load(fd)
+				print('loaded pickle file', filename)
+			except Exception:
+				acls = []
 
 # convert old format
 new_acls = []
@@ -104,10 +111,9 @@ elif operation == 'allow':
 		else:
 			print('warning: rule %s already exists' % command)
 elif operation == 'remove':
-	acls = filter(lambda item: item.command not in options.commands, acls)
+	acls = [item for item in acls if item.command not in options.commands]
 elif operation == 'reset':
 	pass  # nothing todo as the acls dict is already "reset" and will be written in the next step
 
-fd = open(filename, 'w')
-fd.write(pickle.dumps(acls))
-fd.close()
+with open(filename, 'w') as fd:
+	fd.write(json.dumps(acls))
