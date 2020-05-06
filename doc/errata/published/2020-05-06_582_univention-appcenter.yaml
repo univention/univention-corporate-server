@@ -9,3 +9,5 @@ desc: |
  * The App Center now mounts /etc/apt/apt.conf.d/80proxy from the UCS host
    read-only to the container with the name /etc/apt/apt.conf.d/81proxy.
 bug: [51034]
+erratum: 582
+announced: 2020-05-06
