@@ -9,3 +9,5 @@ desc: |
  * In /etc/systemd/system/docker.service.d/http-proxy.conf the ucr
    var proxy/no_proxy is considered for the docker proxy settings.
 bug: [51031]
+erratum: 584
+announced: 2020-05-06
