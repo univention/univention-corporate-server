@@ -35,7 +35,7 @@ from __future__ import absolute_import, unicode_literals
 import sys
 import copy
 import inspect
-from six import string_types, reraise
+from six import string_types, reraise, add_metaclass
 from ldap.dn import dn2str, str2dn
 import ldap
 
@@ -469,6 +469,7 @@ class GenericModuleMeta(ModuleMeta):
 	udm_meta_class = GenericModuleMetadata
 
 
+@add_metaclass(GenericModuleMeta)
 class GenericModule(BaseModule):
 	"""
 	Simple API to use UDM modules. Basically a GenericObject factory.
@@ -493,7 +494,6 @@ class GenericModule(BaseModule):
 	        dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
 	        campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""  # noqa: E101
-	__metaclass__ = GenericModuleMeta
 	_udm_object_class = GenericObject
 	_udm_module_meta_class = GenericModuleMetadata
 	_udm_module_cache = {}
