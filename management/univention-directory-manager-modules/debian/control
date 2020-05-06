@@ -128,6 +128,7 @@ Package: univention-directory-manager-tools
 Architecture: all
 Depends:
  python-univention-directory-manager (= ${binary:Version}),
+ python3-univention-directory-manager (= ${binary:Version}),
  ${misc:Depends},
 Description: UCS - Command-line based administration tools
  This package contains command-line based programs to
