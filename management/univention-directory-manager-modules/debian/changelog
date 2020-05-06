@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.20-24) unstable; urgency=low
+
+  * Bug #51233: remove nested for loops in fast_member_add and
+    fast_member_remove
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 18 Oct 2021 11:28:52 +0200
+
 univention-directory-manager-modules (14.0.20-23) unstable; urgency=low
 
   * Bug #53832: Fix ImportError with update to 5.0
