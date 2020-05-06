@@ -87,7 +87,8 @@ class ModuleProcess(Client):
 		socket = '/var/run/univention-management-console/%u-%lu.socket' % (os.getpid(), int(time.time() * 1000))
 		# determine locale settings
 		modxmllist = moduleManager[module]
-		args = [MODULE_COMMAND, '-m', module, '-s', socket, '-d', str(debug)]
+		python = '/usr/bin/python3' if any(modxml.python_version == 3 for modxml in modxmllist) else '/usr/bin/python2.7'
+		args = [python, MODULE_COMMAND, '-m', module, '-s', socket, '-d', str(debug)]
 		for modxml in modxmllist:
 			if modxml.notifier:
 				args.extend(['-n', modxml.notifier])
