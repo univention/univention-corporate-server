@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-docker
 fix: 4.0.1-8A~4.4.0.202005041208
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * In /etc/systemd/system/docker.service.d/http-proxy.conf the ucr
    var proxy/no_proxy is considered for the docker proxy settings.
 bug: [51031]

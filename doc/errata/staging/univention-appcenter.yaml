@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-appcenter
 fix: 8.0.11-132A~4.4.0.202005041147
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The App Center now mounts /etc/apt/apt.conf.d/80proxy from the UCS host
    read-only to the container with the name /etc/apt/apt.conf.d/81proxy.
 bug: [51034]
