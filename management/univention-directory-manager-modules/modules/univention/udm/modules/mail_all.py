@@ -72,7 +72,7 @@ class MailAllModule(GenericModule):
 		"""
 		Allow both `mail/\*` and `oxmail/\*` in `univentionObjectType`.
 		"""
-		uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldattr', {}).get('univentionObjectType'))
+		uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType'))
 		if uni_obj_type and uni_obj_type[0].startswith('mail/'):
 			# oxmail/oxfolder -> .append(mail/folder)
 			uni_obj_type.append('oxmail/ox{}'.format(uni_obj_type[0].split('/', 1)[1]))
