@@ -66,12 +66,14 @@ from __future__ import absolute_import
 
 import os
 import ldap
+import json
 import pickle
 import itertools
 import operator
 import traceback
 from fnmatch import fnmatch
 from ldap.filter import filter_format
+import six
 
 from .config import ucr
 from .log import ACL
@@ -140,7 +142,7 @@ class ACLs(object):
 		if acls is None:
 			self.acls = []
 		else:
-			self.acls = map(lambda x: Rule(x), acls)
+			self.acls = [Rule(x) for x in acls]
 
 	def _expand_hostlist(self, hostlist):
 		hosts = []
@@ -148,6 +150,7 @@ class ACLs(object):
 			self.__ldap_base = ucr.get('ldap/base', None)
 
 		for host in hostlist:
+			host = host.decode('utf-8')
 			if host.startswith('systemrole:'):
 				role = host[len('systemrole:'):]
 				if role.lower() == ucr.get('server/role').lower():
@@ -182,11 +185,11 @@ class ACLs(object):
 		return command, options
 
 	def _append(self, fromUser, ldap_object):
-		for host in self._expand_hostlist(ldap_object.get('umcOperationSetHost', ['*'])):
-			flavor = ldap_object.get('umcOperationSetFlavor', ['*'])
-			for command in ldap_object.get('umcOperationSetCommand', ''):
-				command, options = self.__parse_command(command)
-				new_rule = Rule({'fromUser': fromUser, 'host': host, 'command': command, 'options': options, 'flavor': flavor[0]})
+		for host in self._expand_hostlist(ldap_object.get('umcOperationSetHost', [b'*'])):
+			flavor = ldap_object.get('umcOperationSetFlavor', [b'*'])
+			for command in ldap_object.get('umcOperationSetCommand', b''):
+				command, options = self.__parse_command(command.decode('utf-8'))
+				new_rule = Rule({'fromUser': fromUser, 'host': host, 'command': command, 'options': options, 'flavor': flavor[0].decode('utf-8')})
 				self.acls.append(new_rule)
 
 	def __compare_rules(self, rule1, rule2):
@@ -217,7 +220,7 @@ class ACLs(object):
 			if key not in opts:
 				continue
 
-			if isinstance(opts[key], basestring):
+			if isinstance(opts[key], six.string_types):
 				options = (opts[key], )
 			else:
 				options = opts[key]
@@ -306,8 +309,14 @@ class ACLs(object):
 		filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
 
 		try:
-			with open(filename, 'r') as fd:
-				acls = pickle.load(fd)
+			try:
+				with open(filename, 'r') as fd:
+					acls = [Rule(x) for x in json.loads(fd)]
+			except ValueError:
+				if six.PY3:
+					raise
+				with open(filename, 'r') as fd:
+					acls = pickle.load(fd)
 		except EnvironmentError as exc:
 			ACL.process('Could not load ACLs of %r: %s' % (username, exc,))
 			return False
@@ -326,7 +335,7 @@ class ACLs(object):
 
 		try:
 			file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
-			os.write(file, pickle.dumps(self.acls))
+			os.write(file, json.dumps(self.acls, ensure_ascii=True).encode('ASCII'))
 			os.close(file)
 		except EnvironmentError as exc:
 			ACL.error('Could not write ACL file: %s' % (exc,))
@@ -337,7 +346,7 @@ class ACLs(object):
 		return self.acls
 
 
-class LDAP_ACLs (ACLs):
+class LDAP_ACLs(ACLs):
 
 	"""Reads ACLs from LDAP directory for the given username. By
 	inheriting the class :class:`ACLs` the ACL definitions can be cached
@@ -398,6 +407,6 @@ class LDAP_ACLs (ACLs):
 
 		result = []
 		for k, g in itertools.groupby(self.acls, getvals):
-			result.append(g.next())
+			result.append(next(g))
 
 		self.acls[:] = result

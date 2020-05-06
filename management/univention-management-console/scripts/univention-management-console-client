@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from optparse import OptionParser, OptionGroup
+from argparse import ArgumentParser
 from getpass import getpass
 
 import datetime
@@ -41,6 +41,8 @@ import pprint
 import locale
 import sys
 
+import six
+from six.moves import input
 import notifier
 
 import univention.management.console.protocol as umcp
@@ -54,7 +56,7 @@ class ClientExit(Exception):
 
 class CLI_Client(Client):
 
-	def __init__(self, options=[], arguments=[]):
+	def __init__(self, options):
 		if options.unix_socket and os.path.exists(options.unix_socket):
 			super(CLI_Client, self).__init__(unix=options.unix_socket, ssl=False)
 		else:
@@ -75,8 +77,8 @@ class CLI_Client(Client):
 		self.signal_connect('authenticated', self._authenticated)
 		self.signal_connect('closed', self._closed)
 		self.signal_connect('error', self._error)
-		if arguments:
-			self.__wait = self.create(arguments[0], arguments[1:], options)
+		if options.arguments:
+			self.__wait = self.create(options.arguments[0], options.arguments[1:], options)
 		if options.authenticate:
 			if self._options.timing:
 				self.__started = datetime.datetime.now()
@@ -119,13 +121,13 @@ class CLI_Client(Client):
 			if not options.list_options:
 				msg.options = ast.literal_eval(options.options[0])
 			else:
-				msg.options = map(lambda x: ast.literal_eval(x), options.options)
+				msg.options = [ast.literal_eval(x) for x in options.options]
 		else:
 			for opt in options.options:
 				key, value = opt.split('=', 1)
 				if ':' in key:
 					try:
-						value = {'bool': bool, 'int': int, 'str': str, 'unicode': unicode}[key.split(':', 1)[0]](value)
+						value = {'bool': bool, 'int': int, 'str': str, 'unicode': six.text_type}[key.split(':', 1)[0]](value)
 						key = key.split(':', 1)[1]
 					except KeyError:
 						pass
@@ -191,7 +193,7 @@ class CLI_Client(Client):
 					print('  OPTIONS  : %s' % pprint.pformat(msg.options, indent=2))
 				else:
 					if isinstance(msg.options, (list, tuple)):
-						print('  OPTIONS  : %s' % ', '.join(map(lambda x: str(x), msg.options)))
+						print('  OPTIONS  : %s' % ', '.join(str(x) for x in msg.options))
 					else:
 						print('  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in msg.options.items()]))
 			print('  MESSAGE  : %s' % msg.message)
@@ -214,71 +216,72 @@ class CLI_Client(Client):
 if __name__ == '__main__':
 	notifier.init(notifier.GENERIC)
 
-	parser = OptionParser(usage="usage: %prog [options] command <arguments>")
-	group = OptionGroup(parser, 'General')
-	group.add_option(
-		'-d', '--debug', action='store', type='int', dest='debug', default=0,
-		help='if given than debugging is activated and set to the specified level [default: %default]')
-	group.add_option(
+	parser = ArgumentParser(usage="usage: %(prog)s [options] command <arguments>")
+	group = parser.add_argument_group('General')
+	group.add_argument(
+		'-d', '--debug', action='store', type=int, dest='debug', default=0,
+		help='if given than debugging is activated and set to the specified level [default: %(default)s]')
+	group.add_argument(
 		'-q', '--quiet', action='store_true', dest='quiet',
 		help='if given no output is generated')
-	group.add_option(
+	group.add_argument(
 		'-r', '--pretty-print', action='store_true', dest='prettyprint', default=False,
 		help='if given the output will be printed out using pretty print')
-	group.add_option(
+	group.add_argument(
 		'-t', '--timing', action='store_true', dest='timing',
 		help='if given the amount of time required for the UMCP request is measured. -q will not suppress the output')
-	parser.add_option_group(group)
+	parser.add_argument_group(group)
 
-	group = OptionGroup(parser, 'Connection')
-	group.add_option(
+	group = parser.add_argument_group('Connection')
+	group.add_argument(
 		'-n', '--no-auth', action='store_false', dest='authenticate', default=True,
 		help='if given the client do not try to authenticate first')
-	group.add_option(
-		'-p', '--port', type='int', action='store', dest='port', default='6670',
-		help='defines the port to connect to [default: %default]')
-	group.add_option(
-		'-P', '--password', type='string', action='store', dest='password',
+	group.add_argument(
+		'-p', '--port', type=int, action='store', dest='port', default='6670',
+		help='defines the port to connect to [default: %(default)s]')
+	group.add_argument(
+		'-P', '--password', action='store', dest='password',
 		help='set password for authentication')
-	group.add_option(
-		'-y', '--password_file', type='string', action='store', dest='password_file',
+	group.add_argument(
+		'-y', '--password_file', action='store', dest='password_file',
 		help='read password for authentication from given file')
-	group.add_option(
-		'-s', '--server', type='string', action='store', dest='server', default='localhost',
-		help='defines the host of the UMC daemon to connect to [default: %default]')
-	group.add_option(
-		'-u', '--unix-socket', type='string', action='store', dest='unix_socket',
+	group.add_argument(
+		'-s', '--server', action='store', dest='server', default='localhost',
+		help='defines the host of the UMC daemon to connect to [default: %(default)s]')
+	group.add_argument(
+		'-u', '--unix-socket', action='store', dest='unix_socket',
 		help='defines the filename of the UNIX socket')
-	group.add_option(
-		'-U', '--username', type='string', action='store', dest='username',
+	group.add_argument(
+		'-U', '--username', action='store', dest='username',
 		help='set username for authentication')
-	group.add_option(
+	group.add_argument(
 		'-x', '--exit', action='store_true', dest='exit',
 		help='if given, the client send the request to the server and exits directly after it without waiting for the response')
-	parser.add_option_group(group)
+	parser.add_argument_group(group)
 
-	group = OptionGroup(parser, 'Request arguments')
-	group.add_option(
+	group = parser.add_argument_group('Request arguments')
+	group.add_argument(
 		'-e', '--eval-option', action='store_true', dest='eval_options',
 		help='if set the only given option is evalulated as python code')
-	group.add_option(
+	group.add_argument(
 		'-f', '--flavor', action='store', dest='flavor', default=None,
 		help='set the required flavor')
-	group.add_option(
+	group.add_argument(
 		'-F', '--filename', action='store', dest='filename',
 		help='if given the content of the file is send as the body of the UMCP request. Additionally the mime type must be given')
-	group.add_option(
+	group.add_argument(
 		'-l', '--list-options', action='store_true', dest='list_options',
 		help='if set all specified options will be assembled in a list')
-	group.add_option(
+	group.add_argument(
 		'-m', '--mimetype', action='store', dest='mimetype', default=umcp.MIMETYPE_JSON,
-		help='defines the mime type of the UMCP request body [default: %default].')
-	group.add_option(
-		'-o', '--option', type='string', default=[], action='append', dest='options',
+		help='defines the mime type of the UMCP request body [default: %(default)s].')
+	group.add_argument(
+		'-o', '--option', default=[], action='append', dest='options',
 		help='append an option to the request')
-	parser.add_option_group(group)
+	parser.add_argument_group(group)
+	parser.add_argument('arguments', nargs='+')
 
-	(options, arguments) = parser.parse_args()
+	arguments = parser.parse_args()
 
 	try:
 		locale.setlocale(locale.LC_ALL, os.environ['LC_ALL'])
@@ -289,21 +292,21 @@ if __name__ == '__main__':
 	if prog.startswith('umc-'):
 		command = prog[4:]
 		if command != 'client':
-			arguments.insert(0, command)
+			arguments.arguments.insert(0, command)
 
-	log_init('/dev/stderr', options.debug)
+	log_init('/dev/stderr', arguments.debug)
 
 	if not arguments:
 		parser.error('command is missing')
-	if options.authenticate:
-		if not options.username:
-			options.username = raw_input('Username:')
-		if options.password_file:
-			options.password = open(options.password_file).read().strip()
-		if not options.password:
-			options.password = getpass('Password:')
+	if arguments.authenticate:
+		if not arguments.username:
+			arguments.username = input('Username:')
+		if arguments.password_file:
+			arguments.password = open(arguments.password_file).read().strip()
+		if not arguments.password:
+			arguments.password = getpass('Password:')
 	try:
-		client = CLI_Client(options, arguments)
+		client = CLI_Client(arguments)
 	except Exception as exc:
 		print('An fatal error occurred: %s' % (exc,), file=sys.stderr)
 		sys.exit(1)

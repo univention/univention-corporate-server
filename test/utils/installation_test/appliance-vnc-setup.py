@@ -38,9 +38,11 @@ class UCSSetup(UCSInstallation):
 		screenshot_file = os.path.join(self.args.screenshot_dir, filename)
 		self.client.captureScreen(screenshot_file)
 
-	def next(self):
+	def __next__(self):
 		self.client.waitForText('NEXT', timeout=self.timeout)
 		self.client.mouseClickOnText('NEXT')
+
+	next = __next__  # Python 2
 
 	def language(self, language):
 		if self.text_is_visible('Notification', timeout=self.timeout):

@@ -321,6 +321,13 @@ class XML_Definition(ET.ElementTree):
 		return self.root.get('notifier')
 
 	@property
+	def python_version(self):
+		try:
+			return int(float(self.root.get('python', 2)))
+		except ValueError:
+			return 2
+
+	@property
 	def icon(self):
 		return self.root.get('icon')
 
@@ -414,7 +421,7 @@ class Manager(dict):
 
 	def modules(self):
 		'''Returns list of module names'''
-		return self.keys()
+		return list(self.keys())
 
 	def load(self):
 		'''Loads the list of available modules. As the list is cleared

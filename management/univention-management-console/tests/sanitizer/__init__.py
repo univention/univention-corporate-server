@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 from univention.management.console.modules import Base
 
 from univention.lib.i18n import Translation
@@ -82,7 +84,7 @@ class Instance(Base):
 	@simple_response
 	@log
 	def email(self, value):
-		assert isinstance(value, basestring) and value.count('@') == 1, 'Value is not a string or does not contain @: %r' % (value,)
+		assert isinstance(value, six.string_types) and value.count('@') == 1, 'Value is not a string or does not contain @: %r' % (value,)
 		return '%r' % (value,)
 
 	@sanitize(value=s.IntegerSanitizer(required=True))
@@ -139,8 +141,8 @@ class Instance(Base):
 	@simple_response
 	@log
 	def string(self, value):
-		assert isinstance(value, basestring)
-		if not isinstance(value, unicode):
+		assert isinstance(value, six.string_types)
+		if not isinstance(value, six.text_type):
 			# Is it possible that we don't have unicode here?
 			try:
 				value.decode('utf-8')

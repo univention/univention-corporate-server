@@ -346,6 +346,10 @@ msgstr "Das Kommando ist fehlgeschlagen."
 msgid "The entered password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
 
+#: univention/management/console/pam.py:324
+msgid "The password is too similar to the old one."
+msgstr "Das Passwort ist dem aktuellen zu ähnlich."
+
 #: univention/management/console/protocol/definitions.py:75
 msgid "The execution of a command caused a fatal error"
 msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"

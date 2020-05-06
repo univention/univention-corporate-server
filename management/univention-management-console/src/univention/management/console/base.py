@@ -110,13 +110,13 @@ from __future__ import absolute_import
 import re
 import sys
 import locale
-import urlparse
 import traceback
 
 import six
 import ldap
 import ldap.sasl
 from notifier import signals
+from six.moves.urllib_parse import urlparse
 
 from univention.lib.i18n import Locale, Translation, I18N_Error
 
@@ -361,8 +361,10 @@ class Base(signals.Provider, Translation):
 			result = exc.result
 			headers = exc.headers
 			message = str(exc)
-			if not exc.traceback and exc.with_traceback:
-				exc.traceback = traceback.format_exc().decode('utf-8', 'replace')
+			if not exc.traceback and exc.include_traceback:
+				exc.traceback = traceback.format_exc()
+				if isinstance(exc.traceback, bytes):   # Python 2
+					exc.traceback = exc.traceback.decode('utf-8', 'replace')
 			error = {
 				'command': method,
 				'traceback': exc.traceback,
@@ -373,10 +375,14 @@ class Base(signals.Provider, Translation):
 				tb_str = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))
 			else:
 				tb_str = traceback.format_exc()
+			if isinstance(tb_str, bytes):  # Python 2
+				tb_str = tb_str.decode('utf-8', 'replace')
 			error = {
-				'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip().decode('utf-8', 'replace'),
-				'traceback': tb_str.decode('utf-8', 'replace'),
+				'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip(),
+				'traceback': tb_str,
 			}
+			if isinstance(error['command'], bytes):  # Python 2
+				error['command'] = error['command'].decode('utf-8', 'replace')
 			message = self._('Internal server error during "%(command)s".') % error
 		MODULE.process(str(message))
 		self.finished(request.id, result, message, status=status, headers=headers, error=error)
@@ -437,7 +443,7 @@ class Base(signals.Provider, Translation):
 
 		Deprecated. Please use univention.management.console.modules.sanitizers
 		"""
-		missing = filter(lambda o: o not in request.options, options)
+		missing = [o for o in options if o not in request.options]
 		if missing:
 			raise UMC_OptionMissing('%s: %s' % (UMC_OptionMissing.msg, ', '.join(missing)))
 

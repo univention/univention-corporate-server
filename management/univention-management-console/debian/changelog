@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-68) unstable; urgency=medium
+
+  * Bug #51235: migrate UMC-Server to python 3
+
+ -- Florian Best <best@univention.de>  Wed, 06 May 2020 20:58:46 +0200
+
 univention-management-console (11.0.4-67) unstable; urgency=medium
 
   * Bug #51226: add callback to login.start that is called when the login

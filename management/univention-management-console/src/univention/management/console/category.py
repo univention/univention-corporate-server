@@ -138,7 +138,7 @@ class Manager(dict):
 		dict.__init__(self)
 
 	def all(self):
-		return map(lambda x: x.json(), self.values())
+		return [x.json() for x in self.values()]
 
 	def load(self):
 		self.clear()

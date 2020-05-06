@@ -38,7 +38,7 @@ from univention.management.console.config import MODULE_DEBUG_LEVEL, ucr
 from univention.lib.i18n import Locale, Translation
 
 from daemon.daemon import DaemonContext
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import locale
 import os
@@ -54,18 +54,18 @@ if __name__ == '__main__':
 		sys.stderr.write('%s must be started as root\n' % os.path.basename(sys.argv[0]))
 		sys.exit(1)
 
-	parser = OptionParser(usage="usage: %prog [options]")
-	parser.add_option('-s', '--socket', type='string', action='store', dest='socket', help='defines the socket to bind to')
-	parser.add_option('-l', '--language', type='string', action='store', dest='language', default='C', help='defines the language to use')
-	parser.add_option('-m', '--module', type='string', action='store', dest='module', help='set the UMC daemon module to load')
-	parser.add_option('-n', '--notifier', type='string', action='store', dest='notifier', default='generic', help='defines the notifier implementation to use')
+	parser = ArgumentParser(usage="usage: %(prog)s [options]")
+	parser.add_argument('-s', '--socket', action='store', dest='socket', help='defines the socket to bind to')
+	parser.add_argument('-l', '--language', action='store', dest='language', default='C', help='defines the language to use')
+	parser.add_argument('-m', '--module', action='store', dest='module', help='set the UMC daemon module to load')
+	parser.add_argument('-n', '--notifier', action='store', dest='notifier', default='generic', help='defines the notifier implementation to use')
 
 	default_debug = MODULE_DEBUG_LEVEL
-	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug, help='if given then debugging is activated and set to the specified level [default: %default]')
-	parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %default.log]')
-	parser.add_option('-f', '--foreground', action='store_true', dest='foreground', default=False, help='do not daemonize the process')
+	parser.add_argument('-d', '--debug', action='store', type=int, dest='debug', default=default_debug, help='if given then debugging is activated and set to the specified level [default: %(default)s]')
+	parser.add_argument('-L', '--log-file', action='store', dest='logfile', default='management-console-module-%(module)s', help='specifies an alternative log file [default: %(default)s.log]')
+	parser.add_argument('-f', '--foreground', action='store_true', dest='foreground', default=False, help='do not daemonize the process')
 
-	(options, arguments) = parser.parse_args()
+	options = parser.parse_args()
 
 	if not options.foreground:
 		daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0o077)
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 	# no notifier logging
 	nflog.instance.handlers = []
 	# to activate notifier logging
-	# nflog.set_level( nflog.DEBUG )
+	# nflog.set_level(nflog.DEBUG)
 	# nflog.open()
 
 	try:
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 	except:
 		MODULE.error('The specified locale %r is not available' % (options.language,))
 
-	# this import must be after the locale is set!
+	# this import must be done after the locale is set!
 	import univention.management.console.protocol as umcp
 
 	if not options.socket:

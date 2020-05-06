@@ -39,9 +39,9 @@ import traceback
 import time
 import resource
 from errno import ESRCH
+from argparse import ArgumentParser
 
-from optparse import OptionParser
-
+import six
 import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 # from daemon.daemon import set_signal_handlers
@@ -58,26 +58,27 @@ class UMC_Daemon(DaemonRunner):
 	def __init__(self):
 		default_debug = SERVER_DEBUG_LEVEL
 		default_locale = ucr.get('locale/default', 'C').split(':', 1)[0]
-		self.parser = OptionParser()
-		self.parser.add_option(
+		self.parser = ArgumentParser()
+		self.parser.add_argument(
 			'-n', '--no-daemon', action='store_false',
 			dest='daemon_mode', default=True,
 			help='if set the process will not fork into the background')
-		self.parser.add_option(
-			'-p', '--port', action='store', type='int',
+		self.parser.add_argument(
+			'-p', '--port', action='store', type=int,
 			dest='port', default=6670,
-			help='defines an alternative port number [default %default]')
-		self.parser.add_option(
-			'-l', '--language', type='string', action='store',
+			help='defines an alternative port number [default %(default)s]')
+		self.parser.add_argument(
+			'-l', '--language', action='store',
 			dest='language', default=default_locale,
-			help='defines the language to use [default: %default]')
-		self.parser.add_option(
-			'-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
-			help='if given than debugging is activated and set to the specified level [default: %default]')
-		self.parser.add_option(
+			help='defines the language to use [default: %(default)s]')
+		self.parser.add_argument(
+			'-d', '--debug', action='store', type=int, dest='debug', default=default_debug,
+			help='if given than debugging is activated and set to the specified level [default: %(default)s]')
+		self.parser.add_argument(
 			'-L', '--log-file', action='store', dest='logfile', default='management-console-server',
-			help='specifies an alternative log file [default: %default]')
-		(self.options, self.arguments) = self.parser.parse_args()
+			help='specifies an alternative log file [default: %(default)s]')
+		self.parser.add_argument('action', default='start', nargs='?', choices=['start', 'stop', 'restart', 'crestart', 'reload'])
+		self.options = self.parser.parse_args()
 
 		# cleanup environment
 		os.environ.clear()
@@ -90,11 +91,7 @@ class UMC_Daemon(DaemonRunner):
 		else:
 			debug_fd = log_init(self.options.logfile, self.options.debug)
 
-		# default action: start
-		if not self.arguments:
-			sys.argv[1:] = ['start']
-		elif self.arguments:
-			sys.argv[1] = self.arguments[0]
+		sys.argv[1] = self.options.action
 
 		# for daemon runner
 		if self.options.daemon_mode:
@@ -120,7 +117,7 @@ class UMC_Daemon(DaemonRunner):
 			signal.SIGTERM: self.signal_terminate,
 			# signal.SIGSEGV: self.signal_segfault,
 		}
-		# set_signal_handlers( signal_map )
+		# set_signal_handlers(signal_map)
 
 		# set locale
 		try:
@@ -128,6 +125,15 @@ class UMC_Daemon(DaemonRunner):
 			locale.setlocale(locale.LC_CTYPE, locale.normalize(self.options.language))
 		except locale.Error:
 			CORE.process('Specified locale is not available (%s)' % self.options.language)
+
+	def _open_streams_from_app_stream_paths(self, app):
+		if six.PY3:
+			if not self.options.daemon_mode:
+				self.daemon_context.stdin = open(app.stdin_path, 'r')
+				self.daemon_context.stdout = open(app.stdout_path, 'w')
+				self.daemon_context.stderr = open(app.stderr_path, 'w')
+			return
+		return super(UMC_Daemon, self)._open_streams_from_app_stream_paths()
 
 	def _reload(self):
 		"""Handler for the reload action"""

@@ -119,7 +119,7 @@ class Client(signals.Provider, Translation):
 		self.__realsocket = self.__socket = None
 		self._init_socket()
 
-		self.__buffer = ''
+		self.__buffer = b''
 		self.__unfinishedRequests = {}
 		self.signal_new('response')
 		self.signal_new('authenticated')
@@ -194,7 +194,7 @@ class Client(signals.Provider, Translation):
 
 	def _resend(self, sock):
 		while self.__resend_queue.get(sock):
-			data = str(self.__resend_queue[sock][0])
+			data = bytes(self.__resend_queue[sock][0])
 			try:
 				bytessent = sock.send(data)
 				if bytessent < len(data):
@@ -274,7 +274,7 @@ class Client(signals.Provider, Translation):
 
 		if msg.command == 'AUTH':
 			self.__auth_ids.append(msg.id)
-		self.__resend_queue.setdefault(sock, []).append(str(msg))
+		self.__resend_queue.setdefault(sock, []).append(bytes(msg))
 
 		if self._resend(sock):
 			notifier.socket_add(sock, self._resend, notifier.IO_WRITE)
@@ -298,7 +298,7 @@ class Client(signals.Provider, Translation):
 
 	def _recv(self, sock):
 		try:
-			recv = ''
+			recv = b''
 			while True:
 				recv += sock.recv(RECV_BUFFER_SIZE)
 				if self.__ssl and not self.__unix:
@@ -331,7 +331,7 @@ class Client(signals.Provider, Translation):
 
 		if self.__buffer:
 			recv = self.__buffer + recv
-			self.__buffer = ''
+			self.__buffer = b''
 		try:
 			while recv:
 				response = Response()
@@ -381,18 +381,19 @@ class Client(signals.Provider, Translation):
 
 if __name__ == '__main__':
 	from getpass import getpass
+	from six.moves import input
 
 	notifier.init(notifier.GENERIC)
 
-	def auth(success, response):
+	def auth_cb(success, response):
 		print('authentication', success, response.status, response.message)
 
 	client = Client()
-	client.signal_connect('authenticated', auth)
+	client.signal_connect('authenticated', auth_cb)
 	client.connect()
 
 	authRequest = Request('AUTH')
-	authRequest.body['username'] = raw_input('Username: ')
+	authRequest.body['username'] = input('Username: ')
 	authRequest.body['password'] = getpass()
 	client.authenticate(authRequest)
 

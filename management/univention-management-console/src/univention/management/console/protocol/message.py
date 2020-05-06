@@ -44,10 +44,19 @@ import re
 import copy
 import json
 
+import six
+
 from .definitions import UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
 from univention.management.console.log import PARSER, PROTOCOL
 
 from univention.lib.i18n import Translation
+
+try:
+	from typing import Any, Dict, List, Optional, Union  # noqa F401
+	RequestType = int
+	UmcpBody = Union[dict, str, bytes]
+except ImportError:
+	pass
 
 _ = Translation('univention.management.console').translate
 
@@ -82,17 +91,18 @@ class Message(object):
 	"""
 
 	RESPONSE, REQUEST = range(0, 2)
-	_header = re.compile('(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+)(/(?P<mimetype>[a-z-/]+))?: ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE)
+	_header = re.compile(u'(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+)(/(?P<mimetype>[a-z-/]+))?: ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE)
 	__counter = 0
 
-	def __init__(self, type=REQUEST, command='', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
+	def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
+		# type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
 		self._id = None
 		self._length = 0
 		self._type = type
 		if mime_type == MIMETYPE_JSON:
-			self.body = {}
+			self.body = {}  # type: UmcpBody
 		else:
-			self.body = ''
+			self.body = b''
 		self.command = command
 		self.arguments = arguments if arguments is not None else []
 		self.mimetype = mime_type
@@ -103,26 +113,33 @@ class Message(object):
 
 	@staticmethod
 	def _formattedMessage(_id, _type, mimetype, command, body, arguments):
+		# type: (int, RequestType, str, str, UmcpBody, List[str]) -> bytes
 		'''Returns formatted message.'''
-		type = 'RESPONSE'
+		type = b'RESPONSE'
 		if _type == Message.REQUEST:
-			type = 'REQUEST'
+			type = b'REQUEST'
 		if mimetype == MIMETYPE_JSON:
 			data = json.dumps(body)
+			if not isinstance(data, bytes):  # Python 3
+				data = data.encode('utf-8')
 		else:
 			data = bytes(body)
-		args = ''
+		args = b''
 		if arguments:
-			args = ' '.join(map(lambda x: str(x), arguments))
-		return '%s/%s/%d/%s: %s %s\n%s' % (type, _id, len(data), mimetype, command or 'NONE', args, data)
+			args = b' '.join(x.encode('utf-8') if hasattr(bytes, 'encode') else bytes(x, 'utf-8') for x in arguments)
+		return b'%s/%s/%d/%s: %s %s\n%s' % (type, _id.encode('utf-8'), len(data), mimetype.encode('utf-8'), (command or u'NONE').encode('utf-8'), args, data)
 
-	def __str__(self):
+	def __bytes__(self):
 		'''Returns the formatted message'''
 		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, self.body, self.arguments)
 
+	if six.PY2:
+		def __str__(self):
+			return self.__bytes__()
+
 	def _create_id(self):
 		# cut off 'L' for long
-		self._id = '%lu-%d' % (long(time.time() * 100000), Message.__counter)
+		self._id = u'%lu-%d' % (int(time.time() * 100000), Message.__counter)
 		Message.__counter += 1
 
 	def recreate_id(self):
@@ -191,13 +208,20 @@ class Message(object):
 	http_method = property(lambda self: self._get_key('method'), lambda self, value: self._set_key('method', value))
 
 	def parse(self, msg):
+		# type: (bytes) -> None
 		"""Parses data and creates in case of a valid UMCP message the
 		corresponding object. If the data contains more than the message
 		the rest of the data is returned.
 
 		:raises: :class:`.ParseError`
 		"""
-		header, nl, body = msg.partition('\n')
+		header, nl, body = msg.partition(b'\n')
+
+		try:
+			header = header.decode('utf-8')
+		except ValueError:
+			PARSER.error('Error decoding UMCP message header: %r' % (header[:100],))
+			raise ParseError(UMCP_ERR_UNPARSABLE_HEADER, _('Invalid message header encoding.'))
 
 		# is the format of the header line valid?
 		match = Message._header.match(header)
@@ -208,7 +232,7 @@ class Message(object):
 			raise ParseError(UMCP_ERR_UNPARSABLE_HEADER, _('Unparsable message header'))
 
 		groups = match.groupdict()
-		self._type = groups['type'] == 'REQUEST' and Message.REQUEST or Message.RESPONSE
+		self._type = groups['type'] == u'REQUEST' and Message.REQUEST or Message.RESPONSE
 		self._id = groups['id']
 		if 'mimetype' in groups and groups['mimetype']:
 			self.mimetype = groups['mimetype']
@@ -222,7 +246,7 @@ class Message(object):
 		self.command = groups['command']
 
 		if groups.get('arguments'):
-			self.arguments = groups['arguments'].split(' ')
+			self.arguments = groups['arguments'].split(u' ')
 
 		# invalid/missing message body?
 		current_length = len(body)
@@ -230,7 +254,7 @@ class Message(object):
 			PARSER.info('The message body is not complete: %d of %d bytes' % (current_length, self._length))
 			raise IncompleteMessageError(_('The message body is not (yet) complete'))
 
-		remains = ''
+		remains = b''
 		if len(body) > self._length:
 			self.body, remains = body[:self._length], body[self._length:]
 		else:
@@ -238,7 +262,7 @@ class Message(object):
 
 		if self.mimetype == MIMETYPE_JSON:
 			try:
-				self.body = json.loads(self.body)
+				self.body = json.loads(self.body.decode('utf-8', 'ignore'))
 				if not isinstance(self.body, dict):
 					raise ValueError('body is a %r' % (type(self.body).__name__,))
 			except ValueError as exc:
@@ -266,6 +290,7 @@ class Response(Message):
 	frontend to the console daemon"""
 
 	def __init__(self, request=None, data=None, mime_type=MIMETYPE_JSON):
+		# type: (Request, Any, str) -> None
 		Message.__init__(self, Message.RESPONSE, mime_type=mime_type)
 		if request:
 			self._id = request._id
@@ -281,6 +306,7 @@ class Response(Message):
 	recreate_id = None
 
 	def set_body(self, filename, mimetype=None):
+		# type: (str, str) -> None
 		'''Set body of response by guessing the mime type of the given
 		file if not specified and adding the content of the file to the body. The mime
 		type is guessed using the extension of the filename.'''
@@ -297,7 +323,7 @@ class Response(Message):
 			# FIXME: should check size first
 			self.body = fd.read()
 
-	def __str__(self):
+	def __bytes__(self):
 		'''Returns the formatted message without request options'''
 		body = copy.copy(self.body)
 		if isinstance(body, dict) and 'options' in body:

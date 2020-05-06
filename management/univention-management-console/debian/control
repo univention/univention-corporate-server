@@ -108,6 +108,7 @@ Depends: ${misc:Depends}, ${python3:Depends},
  python3-polib,
  python3-notifier,
  python3-six,
+ python3-daemon,
 Provides: ${python3:Provides}
 Description: UCS Management Console - Python 3 Modules
  UCS Management Console is a web based program to manage computers.
