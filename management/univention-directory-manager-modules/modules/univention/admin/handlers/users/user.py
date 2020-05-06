@@ -2169,9 +2169,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
 		if groupObjects:
-			uid = univention.admin.uldap.explodeDn(self.dn, 1)[0]
+			uid = ldap.dn.str2dn(self.dn)[0][0][1]
 			for groupObject in groupObjects:
-				groupObject.fast_member_remove([self.dn], [uid], ignore_license=1)
+				groupObject.fast_member_remove([self.dn], [uid], ignore_license=True)
 
 		admin_settings_dn = 'uid=%s,cn=admin-settings,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
 		# delete admin-settings object of user if it exists
