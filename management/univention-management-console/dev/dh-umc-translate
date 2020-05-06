@@ -34,36 +34,33 @@ from __future__ import print_function
 
 import os
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import univention.translationhelper.umc as dh_umc
 
 
 def main():
 	# parse all options
-	parser = OptionParser(usage='usage: %prog --package <packageName> --outdir <outDir> [options] <jsFile> ...')
-	parser.add_option(
-		'-p', '--package', action='store',
-		dest='package',
+	parser = ArgumentParser(usage='usage: %(prog)s --package <packageName> --outdir <outDir> [options] <jsFile> ...')
+	parser.add_argument(
+		'-p', '--package',
 		help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
 	)
-	parser.add_option(
-		'-t', '--type', action='store', type='choice',
+	parser.add_argument(
+		'-t', '--type',
 		choices=['json', 'mo', 'po'],
-		dest='type',
 		default='json',
-		help='Type of the final output file; note that "json" and "mo" will both also create .po files [%default]'
+		help='Type of the final output file; note that "json" and "mo" will both also create .po files [%(default)s]'
 	)
-	parser.add_option(
-		'-o', '--outdir', action='store',
-		dest='outdir',
+	parser.add_argument(
+		'-o', '--outdir',
 		help='Specifies the output directory where translations from all js files are saved to. (Mandatory)')
-	parser.add_option(
+	parser.add_argument(
 		'-l', '--lang', action='append',
-		dest='lang',
 		help='Specifies the languages that are processed (default: de)')
+	parser.add_argument('args', nargs='*')
 
-	options, args = parser.parse_args()
+	options = parser.parse_args()
 
 	# update the list of languages
 	if options.lang and len(options.lang):
@@ -88,9 +85,9 @@ def main():
 	# build translation files
 	for lang in dh_umc.LANGUAGES:
 		ipo_file = os.path.join(options.outdir, '%s.po' % lang)
-		if args:
+		if options.args:
 			# only re-create po files if javascript files are given
-			dh_umc.create_po_file(ipo_file, options.package, args, 'JavaScript')
+			dh_umc.create_po_file(ipo_file, options.package, options.args, 'JavaScript')
 		create_final_output(ipo_file)
 
 

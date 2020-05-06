@@ -34,7 +34,7 @@
 from __future__ import print_function
 import pickle
 import os
-from optparse import OptionParser
+from argparse import ArgumentParser
 import sys
 import json
 
@@ -44,28 +44,21 @@ from univention.management.console.acl import Rule
 
 import univention.config_registry as ucr
 
-OPERATIONS = ('show', 'reset', 'allow', 'remove')
 _cache_dir = '/var/cache/univention-management-console/acls'
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-parser = OptionParser(usage='%%prog (%s) [options]' % '|'.join(OPERATIONS))
-parser.add_option('-u', '--user', action='store', dest='user', default='root', help='define the user who should get access [default: %default]')
-parser.add_option('-c', '--command', type='string', action='append', dest='commands', default=[], help='defines a list of UMC commands (or patterns)')
-parser.add_option('-f', '--flavor', type='string', action='store', dest='flavor', default='*', help='defines the flavor')
-parser.add_option('-H', '--host', type='string', action='store', dest='host', default=configRegistry['hostname'], help='on which host the commands are allowed [default: %default]')
+parser = ArgumentParser()
+parser.add_argument('-u', '--user', action='store', dest='user', default='root', help='define the user who should get access [default: %(default)s]')
+parser.add_argument('-c', '--command', action='append', dest='commands', default=[], help='defines a list of UMC commands (or patterns)')
+parser.add_argument('-f', '--flavor', action='store', dest='flavor', default='*', help='defines the flavor')
+parser.add_argument('-H', '--host', action='store', dest='host', default=configRegistry['hostname'], help='on which host the commands are allowed [default: %(default)s]')
+parser.add_argument('operation', choices=('show', 'reset', 'allow', 'remove', 'upgrade-to-json'))
 
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 
-if len(args) < 1:
-	parser.error('operation missing')
-	sys.exit(1)
-operation = args[0]
-if operation not in OPERATIONS:
-	parser.error('unknown operation %s' % operation)
-	sys.exit(1)
-
+operation = options.operation
 filename = os.path.join(_cache_dir, options.user.replace('/', ''))
 
 acls = []
