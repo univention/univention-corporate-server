@@ -38,7 +38,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'portals/portal'
-default_containers = ['cn=portals,cn=portals,cn=univention']
+default_containers = ['cn=portal,cn=portals,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search']
 short_description = _('Portal: Portal')
