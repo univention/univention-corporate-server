@@ -1964,8 +1964,9 @@ define([
 			newContent.forEach(contentDef => {
 				var categoryDN = contentDef[0];
 				var entryDNs = contentDef[1];
-				var oldEntries = oldContent.filter(_contentDef => _contentDef[0] == categoryDN).map(_contentDef => _contentDef[1]);
-				if (oldEntries.length && ! tools.isEqual(oldEntries, entryDNs)) {
+				var _oldCategory = oldContent.find(_contentDef => _contentDef[0] === categoryDN);
+				var oldEntries = _oldCategory ? _oldCategory[1] : [];
+				if (!tools.isEqual(oldEntries, entryDNs)) {
 					changes.push(this._moduleStore.put({
 						'$dn$': categoryDN,
 						entries: entryDNs,
