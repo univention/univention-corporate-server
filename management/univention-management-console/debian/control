@@ -199,7 +199,7 @@ Depends:
  python-cherrypy3,
  python-daemon,
  python-defusedxml,
- python-ipaddr,
+ python-ipaddress,
  python-pysaml2,
  python-six,
  python-univention-management-console (= ${source:Version}),
