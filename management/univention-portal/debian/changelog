@@ -1,3 +1,10 @@
+univention-portal (3.1.0-24) unstable; urgency=medium
+
+  * Bug #51157: portals/portal umc layout + wording +
+    fix entry order change
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 07 May 2020 11:50:12 +0200
+
 univention-portal (3.1.0-23) unstable; urgency=medium
 
   * Bug #51157: Change container name
