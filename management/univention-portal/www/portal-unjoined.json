@@ -1,22 +1,22 @@
 {
     "categories": {
-        "cn=admin,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%": {
+        "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%": {
             "display_name": {
                 "de_DE": "Verwaltung",
                 "en_US": "Administration"
             },
-            "dn": "cn=admin,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%"
+            "dn": "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%"
         },
-        "cn=service,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%": {
+        "cn=service,cn=category,cn=portals,cn=univention,%@%ldap/base%@%": {
             "display_name": {
                 "de_DE": "Applikationen",
                 "en_US": "Applications"
             },
-            "dn": "cn=service,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%"
+            "dn": "cn=service,cn=category,cn=portals,cn=univention,%@%ldap/base%@%"
         }
     },
     "entries": {
-        "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%": {
+        "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%": {
             "activated": true,
             "allowedGroups": [],
             "description": {
@@ -24,7 +24,7 @@
                 "en_US": "Univention Management Console for admin\u00adis\u00adtra\u00adting the UCS domain and the local system",
                 "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le domaine UCS et le syst\u00e8me local"
             },
-            "dn": "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%",
+            "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
             "favorite": false,
             "linkTarget": null,
             "links": [
@@ -37,7 +37,7 @@
                 "fr_FR": "R\u00e9glages du syst\u00e8me et du domaine"
             }
         },
-        "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%": {
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%": {
             "activated": true,
             "allowedGroups": [],
             "description": {
@@ -45,7 +45,7 @@
                 "en_US": "News, tips and best practices",
                 "fr_FR": "Nouvelles, conseils et bonne pratique"
             },
-            "dn": "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%",
+            "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
             "favorite": false,
             "linkTarget": "newwindow",
             "links": [
@@ -65,15 +65,15 @@
         "autoLayoutCategories": false,
         "content": [
             [
-                "cn=admin,cn=categories,cn=portal,cn=univention,%@%ldap/base%@%",
+                "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%",
                 [
-                    "cn=umc-domain,cn=portal,cn=univention,%@%ldap/base%@%",
-                    "cn=univentionblog,cn=portal,cn=univention,%@%ldap/base%@%"
+                    "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
+                    "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%"
                 ]
             ]
         ],
         "defaultLinkTarget": null,
-        "dn": "cn=domain,cn=portal,cn=univention,%@%ldap/base%@%",
+        "dn": "cn=domain,cn=portal,cn=portals,cn=univention,%@%ldap/base%@%",
         "ensureLogin": false,
         "fontColor": "black",
         "logo": null,
