@@ -93,7 +93,7 @@ def migrate_portal(udm, old_obj):
 		for link in old_obj.props.links:
 			click.echo(link)
 		click.echo("You do it like this:")
-		click.echo(" udm portals/entry create --position \"cn=entries,cn=portals,cn=univention\" --set name=... --append displayName=\"\\\"en_US\\\" \\\"...\\\"\" --append displayName=\"\\\"de_DE\\\" \\\"...\\\"\" ...")
+		click.echo(" udm portals/entry create --position \"cn=entry,cn=portals,cn=univention\" --set name=... --append displayName=\"\\\"en_US\\\" \\\"...\\\"\" --append displayName=\"\\\"de_DE\\\" \\\"...\\\"\" ...")
 		click.echo(" udm portals/portal modify --dn \"%s\" --append menuLinks=\"$DN_OF_THE_NEWLY_CREATED_OBJECT\"" % new_obj.dn)
 	migrate_content(udm, old_obj, new_obj)
 
