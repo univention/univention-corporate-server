@@ -1059,6 +1059,8 @@ transfer_docker_image () {
 	local docker_host=docker
 	local transfer_user=automation
 	local transfer_pwfile=/root/automation.secret
+	sleep $(( $RANDOM % 120 ))
+	ssh root@$docker_host univention-app update || return 1
 cat <<-EOF | ssh root@$docker_host python
 # only whitespaces here, no tabs!
 from univention.appcenter.app_cache import Apps
