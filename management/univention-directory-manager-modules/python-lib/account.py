@@ -76,7 +76,6 @@ def lock(userdn, lock_timestamp):
 	if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.
 		return
 
-	co = None
 	try:
 		lo, pos = univention.admin.uldap.getAdminConnection()
 	except:
@@ -86,7 +85,7 @@ def lock(userdn, lock_timestamp):
 
 	univention.admin.modules.init(lo, pos, module)
 
-	object = module.object(co, lo, pos, userdn)
+	object = module.object(None, lo, pos, userdn)
 	object.open()
 	states = (object.descriptions['locked'].editable, object.descriptions['locked'].may_change, object.descriptions['lockedTime'].editable, object.descriptions['lockedTime'].may_change)
 	object.descriptions['locked'].editable, object.descriptions['locked'].may_change, object.descriptions['lockedTime'].editable, object.descriptions['lockedTime'].may_change = (True, True, True, True)

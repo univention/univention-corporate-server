@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
 from ldap.filter import filter_format
 
 import univention.admin.uldap
@@ -50,7 +51,6 @@ def change(username, password):
 	>>>
 
 	"""
-	co = None
 	try:
 		lo, pos = univention.admin.uldap.getAdminConnection()
 	except:
@@ -60,15 +60,15 @@ def change(username, password):
 
 	univention.admin.modules.init(lo, pos, module)
 
-	if username.find('@') > 0:  # krb5Principal
+	if '@' in username:  # krb5Principal
 		filter = filter_format('krb5PrincipalName=%s', [username])
 	else:
 		filter = filter_format('uid=%s', [username])
-	objects = module.lookup(co, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
+	objects = module.lookup(None, lo, filter, superordinate=None, unique=True, required=True, timeout=-1, sizelimit=0)
 
 	# search was unique and required
 	object = objects[0]
 
 	object.open()
-	object['password'] = unicode(password)
+	object['password'] = six.text_type(password)
 	object.modify()
