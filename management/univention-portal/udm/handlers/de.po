@@ -164,15 +164,15 @@ msgid "List of Portal Entries shown in this category"
 msgstr "Liste der Portaleinträge in dieser Kategorie"
 
 #: udm/handlers/portal.py:128
-msgid "List of portal entries that are shown when a user is logged in"
+msgid "List of portal entries that are shown in the menu for the logged in user"
 msgstr ""
-"Liste der Portaleinträge, die im Menü des angemeldeted Benutzers gezeigt "
+"Liste der Portaleinträge, die im Menü des angemeldeten Benutzers angezeigt "
 "werden"
 
 #: udm/handlers/portal.py:134
 msgid ""
-"List of portal entries that are shown when opening the menu in the portal"
-msgstr "Liste der Portaleinträge, die im Menü des Portals gezeigt werden"
+"List of portal entries that are shown in the menu of the portal"
+msgstr "Liste der Portaleinträge, die im Menü des Portals angezeigt werden"
 
 #: udm/handlers/portal.py:178
 msgid "Login"
@@ -204,17 +204,20 @@ msgstr "Objekt für die Anzeige in https://fqdn/univention/portal"
 
 #: udm/handlers/category.py:46
 msgid ""
-"Object under which portals/entry objects can be displayed. Belongs to (one "
-"or more) portals/portal"
-msgstr "Objekt, unter dem portals/entry Objekte angezeigt werden können."
+"Object under which portals/entry objects can be displayed. "
+"Belongs to one or more portals/portal objects"
+msgstr ""
+"Objekt, unter dem portals/entry Objekte angezeigt werden können. "
+"Gehört zu einem oder mehreren portals/portal Objekten"
 
 #: udm/handlers/entry.py:44
 msgid ""
-"One link in https://fqdn/univention/portal. Belongs to one (or more) "
-"portals/category, which belong (one or more) portals/portal"
+"One link in https://fqdn/univention/portal. Belongs to one or more "
+"portals/category objects, which belong to one or more portals/portal objects"
 msgstr ""
-"Ein Eintrag in https://fqdn/univention/portal. Gehört zu einem (oder "
-"mehreren) portals/portal"
+"Ein Link in https://fqdn/univention/portal. Gehört zu einem oder "
+"mehreren portal/category Objekten, die zu einem oder mehreren "
+"portals/portal Objekten gehören"
 
 #: udm/handlers/portal.py:45
 msgid "Portal"

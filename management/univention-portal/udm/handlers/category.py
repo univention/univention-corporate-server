@@ -43,7 +43,7 @@ operations = ['add', 'edit', 'remove', 'search']
 short_description = _('Portal: Category')
 object_name = _('Portal category')
 object_name_plural = _('Portal categories')
-long_description = _('Object under which portals/entry objects can be displayed. Belongs to (one or more) portals/portal')
+long_description = _('Object under which portals/entry objects can be displayed. Belongs to one or more portals/portal objects')
 options = {
 	'default': univention.admin.option(
 		default=True,

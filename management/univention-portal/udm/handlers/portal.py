@@ -124,13 +124,13 @@ property_descriptions = {
 	),
 	'userLinks': univention.admin.property(
 		short_description=_('Entries in the user menu'),
-		long_description=_('List of portal entries that are shown when a user is logged in'),
+		long_description=_('List of portal entries that are shown in the menu for the logged in user'),
 		syntax=univention.admin.syntax.NewPortalEntries,
 		multivalue=True,
 	),
 	'menuLinks': univention.admin.property(
 		short_description=_('Entries in the menu'),
-		long_description=_('List of portal entries that are shown when opening the menu in the portal'),
+		long_description=_('List of portal entries that are shown in the menu of the portal'),
 		syntax=univention.admin.syntax.NewPortalEntries,
 		multivalue=True,
 	),
