@@ -41,7 +41,7 @@ _ = translation.translate
 module = 'portals/all'
 short_description = _('Portal: Settings')
 long_description = _('Management of portals and their entries')
-default_containers = ['cn=portals,cn=portals,cn=univention', 'cn=entries,cn=portals,cn=univention', 'cn=categories,cn=portals,cn=univention']
+default_containers = ['cn=portal,cn=portals,cn=univention', 'cn=entry,cn=portals,cn=univention', 'cn=category,cn=portals,cn=univention']
 
 operations = ['search']
 childmodules = ['portals/portal', 'portals/entry', 'portals/category']
