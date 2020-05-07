@@ -69,8 +69,7 @@ property_descriptions = {
 		required=True,
 	),
 	'showApps': univention.admin.property(
-		short_description=_('Show apps'),
-		long_description=_('Shows links to locally installed Apps'),
+		short_description=_('Show a category with all installed apps'),
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
@@ -156,6 +155,16 @@ layout = [
 		]),
 		Group(_('Categories'), layout=[
 			['categories'],
+			['showApps'],
+		]),
+		Group(_('Link behaviour'), layout=[
+			['defaultLinkTarget'],
+		]),
+		Group(_('User menu'), layout=[
+			['userLinks'],
+		]),
+		Group(_('Miscellaneous menu'), layout=[
+			['menuLinks'],
 		]),
 		Group(_('Visibility'), layout=[
 			['portalComputers'],
@@ -166,12 +175,6 @@ layout = [
 			['cssBackground'],
 			['fontColor'],
 			['autoLayoutCategories'],
-		]),
-		Group(_('General Content'), layout=[
-			['defaultLinkTarget'],
-			['showApps'],
-			['userLinks'],
-			['menuLinks'],
 		]),
 	]),
 	Tab(_('Manage anonymous visitors'), _('Manage anonymous visitors'), layout=[
