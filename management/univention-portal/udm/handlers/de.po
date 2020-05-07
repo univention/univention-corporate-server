@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-05 17:37+0200\n"
+"POT-Creation-Date: 2020-05-12 06:51+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -20,15 +20,15 @@ msgstr "Aktiviert"
 msgid "Advanced"
 msgstr "Erweitert"
 
-#: udm/handlers/portal.py:163
+#: udm/handlers/portal.py:172
 msgid "Appearance"
 msgstr "Erscheinung"
 
-#: udm/handlers/portal.py:78
+#: udm/handlers/portal.py:77
 msgid "Background"
 msgstr "Hintergrund"
 
-#: udm/handlers/portal.py:79
+#: udm/handlers/portal.py:78
 msgid "Background image of the Portal"
 msgstr "Hintergrundbild des Portals"
 
@@ -40,11 +40,11 @@ msgstr "Allgemeine Einstellungen"
 msgid "Browser tab when opening link"
 msgstr "Browser-Tab beim Öffnen des Links"
 
-#: udm/handlers/portal.py:90
+#: udm/handlers/portal.py:89
 msgid "CSS background"
 msgstr "CSS Hintergrund"
 
-#: udm/handlers/portal.py:139 udm/handlers/portal.py:157
+#: udm/handlers/portal.py:138 udm/handlers/portal.py:156
 msgid "Categories"
 msgstr "Kategorien"
 
@@ -52,11 +52,11 @@ msgstr "Kategorien"
 msgid "Category options"
 msgstr "Optionen für Kategorie"
 
-#: udm/handlers/portal.py:144
+#: udm/handlers/portal.py:143
 msgid "Default browser tab for portal entries"
 msgstr "Standard Browser-Tab für Portaleinträge"
 
-#: udm/handlers/portal.py:97
+#: udm/handlers/portal.py:96
 msgid ""
 "Defines the color which is used for the fonts on the portal page as well as "
 "the icons in the header."
@@ -76,8 +76,8 @@ msgstr ""
 "Beschreibung des Eintrags. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/entry.py:62 udm/handlers/entry.py:114 udm/handlers/all.py:59
-#: udm/handlers/portal.py:65 udm/handlers/category.py:64
+#: udm/handlers/all.py:59 udm/handlers/entry.py:62 udm/handlers/entry.py:114
+#: udm/handlers/category.py:64 udm/handlers/portal.py:65
 msgid "Display name"
 msgstr "Anzeigename"
 
@@ -89,11 +89,11 @@ msgstr ""
 "Anzeigename der Kategorie. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/portal.py:133
+#: udm/handlers/portal.py:132
 msgid "Entries in the menu"
 msgstr "Einträge im Menü"
 
-#: udm/handlers/portal.py:127
+#: udm/handlers/portal.py:126
 msgid "Entries in the user menu"
 msgstr "Einträge im Benutzermenü"
 
@@ -105,19 +105,15 @@ msgstr "Eintrag"
 msgid "Entry options"
 msgstr "Optionen für Eintrag"
 
-#: udm/handlers/portal.py:96
+#: udm/handlers/portal.py:95
 msgid "Font color"
 msgstr "Schriftfarbe"
 
-#: udm/handlers/entry.py:109 udm/handlers/entry.py:110 udm/handlers/all.py:66
-#: udm/handlers/portal.py:152 udm/handlers/category.py:80
-#: udm/handlers/category.py:84
+#: udm/handlers/all.py:66 udm/handlers/entry.py:109 udm/handlers/entry.py:110
+#: udm/handlers/category.py:80 udm/handlers/category.py:84
+#: udm/handlers/portal.py:151
 msgid "General"
 msgstr "Allgemein"
-
-#: udm/handlers/portal.py:170
-msgid "General Content"
-msgstr "Allgemeiner Inhalt"
 
 #: udm/handlers/entry.py:63
 msgid ""
@@ -150,8 +146,8 @@ msgstr ""
 "Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist der "
 "Portaleintrag für alle sichtbar."
 
-#: udm/handlers/entry.py:53 udm/handlers/all.py:51 udm/handlers/portal.py:56
-#: udm/handlers/category.py:55
+#: udm/handlers/all.py:51 udm/handlers/entry.py:53 udm/handlers/category.py:55
+#: udm/handlers/portal.py:56
 msgid "Internal name"
 msgstr "Interner Name"
 
@@ -159,30 +155,34 @@ msgstr "Interner Name"
 msgid "Link"
 msgstr "Link"
 
+#: udm/handlers/portal.py:160
+msgid "Link behaviour"
+msgstr "Link-Verhalten"
+
 #: udm/handlers/category.py:72
 msgid "List of Portal Entries shown in this category"
 msgstr "Liste der Portaleinträge in dieser Kategorie"
 
-#: udm/handlers/portal.py:128
-msgid "List of portal entries that are shown when a user is logged in"
+#: udm/handlers/portal.py:127
+msgid ""
+"List of portal entries that are shown in the menu for the logged in user"
 msgstr ""
-"Liste der Portaleinträge, die im Menü des angemeldeted Benutzers gezeigt "
+"Liste der Portaleinträge, die im Menü des angemeldeten Benutzers angezeigt "
 "werden"
 
-#: udm/handlers/portal.py:134
-msgid ""
-"List of portal entries that are shown when opening the menu in the portal"
-msgstr "Liste der Portaleinträge, die im Menü des Portals gezeigt werden"
+#: udm/handlers/portal.py:133
+msgid "List of portal entries that are shown in the menu of the portal"
+msgstr "Liste der Portaleinträge, die im Menü des Portals angezeigt werden"
 
-#: udm/handlers/portal.py:178
+#: udm/handlers/portal.py:181
 msgid "Login"
 msgstr "Login"
 
-#: udm/handlers/portal.py:85
+#: udm/handlers/portal.py:84
 msgid "Logo image for the portal."
 msgstr "Logo Bild für das Portal."
 
-#: udm/handlers/portal.py:177
+#: udm/handlers/portal.py:180
 msgid "Manage anonymous visitors"
 msgstr "Anonyme Besucher verwalten"
 
@@ -190,11 +190,15 @@ msgstr "Anonyme Besucher verwalten"
 msgid "Management of portals and their entries"
 msgstr "Verwaltung der Portale und ihrer Einträge"
 
-#: udm/handlers/portal.py:181
+#: udm/handlers/portal.py:184
 msgid "Message when the portal is empty"
 msgstr "Nachricht, wenn das portal leer ist"
 
-#: udm/handlers/portal.py:153 udm/handlers/category.py:81
+#: udm/handlers/portal.py:166
+msgid "Menu"
+msgstr "Menü"
+
+#: udm/handlers/category.py:81 udm/handlers/portal.py:152
 msgid "Name"
 msgstr "Name"
 
@@ -204,17 +208,20 @@ msgstr "Objekt für die Anzeige in https://fqdn/univention/portal"
 
 #: udm/handlers/category.py:46
 msgid ""
-"Object under which portals/entry objects can be displayed. Belongs to (one "
-"or more) portals/portal"
-msgstr "Objekt, unter dem portals/entry Objekte angezeigt werden können."
+"Object under which portals/entry objects can be displayed. Belongs to one or"
+" more portals/portal objects"
+msgstr ""
+"Objekt, unter dem portals/entry Objekte angezeigt werden können. Gehört zu "
+"einem oder mehreren portals/portal Objekten"
 
 #: udm/handlers/entry.py:44
 msgid ""
-"One link in https://fqdn/univention/portal. Belongs to one (or more) "
-"portals/category, which belong (one or more) portals/portal"
+"One link in https://fqdn/univention/portal. Belongs to one or more "
+"portals/category objects, which belong to one or more portals/portal objects"
 msgstr ""
-"Ein Eintrag in https://fqdn/univention/portal. Gehört zu einem (oder "
-"mehreren) portals/portal"
+"Ein Link in https://fqdn/univention/portal. Gehört zu einem oder mehreren "
+"portal/category Objekten, die zu einem oder mehreren portals/portal Objekten"
+" gehören"
 
 #: udm/handlers/portal.py:45
 msgid "Portal"
@@ -236,11 +243,11 @@ msgstr "Portaleinträge"
 msgid "Portal entry"
 msgstr "Portal-Eintrag"
 
-#: udm/handlers/portal.py:84
+#: udm/handlers/portal.py:83
 msgid "Portal logo"
 msgstr "Portal-Logo"
 
-#: udm/handlers/portal.py:152
+#: udm/handlers/portal.py:151
 msgid "Portal options"
 msgstr "Optionen für Portal"
 
@@ -264,7 +271,7 @@ msgstr "Portal: Einstellungen"
 msgid "Portals"
 msgstr "Portale"
 
-#: udm/handlers/portal.py:110
+#: udm/handlers/portal.py:109
 msgid "Redirect anonymous visitors to the login"
 msgstr "Anonyme Besucher zum Login umleiten"
 
@@ -276,15 +283,11 @@ msgstr "Sichtbarkeit auf Gruppen beschränken"
 msgid "Show a category with all installed apps"
 msgstr "Eine Kategorie mit allen installierten Apps anzeigen"
 
-#: udm/handlers/portal.py:103
+#: udm/handlers/portal.py:102
 msgid "Show on server"
 msgstr "Auf Server anzeigen"
 
-#: udm/handlers/portal.py:73
-msgid "Shows links to locally installed Apps"
-msgstr "Links zu lokale installierten Apps anzeigen"
-
-#: udm/handlers/portal.py:91
+#: udm/handlers/portal.py:90
 msgid ""
 "Style definition for the CSS 'background' property which will be applied to "
 "the portal page, e.g. linear-gradient(black, white)"
@@ -292,16 +295,26 @@ msgstr ""
 "Stil für das CSS 'background'-Attribut, das auf der Portalseite genutzt "
 "wird, z.B. linear-gradient(black, white)"
 
-#: udm/handlers/portal.py:121
+#: udm/handlers/portal.py:120
 msgid "The categories are displayed side by side if there is enough space"
 msgstr ""
 "Die Kategorien werden nebeneinander angezeigt, wenn genügend Platz vorhanden"
 " ist"
 
-#: udm/handlers/portal.py:104
+#: udm/handlers/portal.py:103
 msgid "This portal will be used as start site for the given servers"
 msgstr "Dieses Portal wird als Startseite der angegebenen Server dienen"
 
-#: udm/handlers/portal.py:160
+#: udm/handlers/portal.py:163
+msgid "User menu"
+msgstr "Benutzermenü"
+
+#: udm/handlers/portal.py:169
 msgid "Visibility"
 msgstr "Sichtbarkeit"
+
+#~ msgid "General Content"
+#~ msgstr "Allgemeiner Inhalt"
+
+#~ msgid "Shows links to locally installed Apps"
+#~ msgstr "Links zu lokale installierten Apps anzeigen"
