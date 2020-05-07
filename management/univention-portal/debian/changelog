@@ -1,3 +1,9 @@
+univention-portal (3.1.0-25) unstable; urgency=medium
+
+  * Bug #51157: Adjust unjoined.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 May 2020 14:09:59 +0200
+
 univention-portal (3.1.0-24) unstable; urgency=medium
 
   * Bug #51157: portals/portal umc layout + wording +
