@@ -273,8 +273,8 @@ msgid "Restrict visibility to groups"
 msgstr "Sichtbarkeit auf Gruppen beschränken"
 
 #: udm/handlers/portal.py:72
-msgid "Show apps"
-msgstr "Apps anzeigen"
+msgid "Show a category with all installed apps"
+msgstr "Eine Kategorie mit allen installierten Apps anzeigen"
 
 #: udm/handlers/portal.py:103
 msgid "Show on server"
