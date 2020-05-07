@@ -75,15 +75,15 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
-	--set name=portals || die
+	--set name=portal || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
-	--set name=categories || die
+	--set name=category || die
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
-	--set name=entries || die
+	--set name=entry || die
 
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"
@@ -96,7 +96,7 @@ role="$(ucr get server/role)"
 if [ "$role" = "domaincontroller_master" ]; then
 	# create link to UMC for domain-wide portal object
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
-		--position "cn=entries,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=umc-domain \
 		--append displayName="\"en_US\" \"System and domain settings\"" \
 		--append displayName="\"de_DE\" \"System- und Domäneneinstellungen\"" \
@@ -109,25 +109,25 @@ if [ "$role" = "domaincontroller_master" ]; then
 
 	# create applications category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
-		--position "cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain-service \
 		--append displayName='"en_US" "Applications"' \
 		--append displayName='"de_DE" "Applikationen"' || die
 
 	# create admin category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
-		--position "cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain-admin \
-		--append entries="cn=umc-domain,cn=entries,cn=portals,cn=univention,$ldap_base" \
+		--append entries="cn=umc-domain,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Administration"' \
 		--append displayName='"de_DE" "Verwaltung"' || die
 
 	# create domain-wide portal object for DC master/backup systems
 	univention-directory-manager portals/portal create "$@" --ignore_exists \
-		--position "cn=portals,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain \
-		--append categories="cn=domain-service,cn=categories,cn=portals,cn=univention,$ldap_base" \
-		--append categories="cn=domain-admin,cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--append categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append categories="cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Univention Portal"' \
 		--append displayName='"de_DE" "Univention Portal"' \
 		--append displayName='"fr_FR" "Portail Univention"' \
@@ -136,7 +136,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 
 	# create link to UMC for portal object of local start sites
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
-		--position "cn=entries,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=umc-local \
 		--append displayName="\"en_US\" \"System settings\"" \
 		--append displayName="\"de_DE\" \"Systemeinstellungen\"" \
@@ -149,25 +149,25 @@ if [ "$role" = "domaincontroller_master" ]; then
 
 	# create applications category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
-		--position "cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
 		--set name=local-service \
 		--append displayName='"en_US" "Applications"' \
 		--append displayName='"de_DE" "Applikationen"' || die
 
 	# create admin category
 	univention-directory-manager portals/category create "$@" --ignore_exists \
-		--position "cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=category,cn=portals,cn=univention,$ldap_base" \
 		--set name=local-admin \
-		--append entries="cn=umc-local,cn=entries,cn=portals,cn=univention,$ldap_base" \
+		--append entries="cn=umc-local,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Administration"' \
 		--append displayName='"de_DE" "Verwaltung"' || die
 
 	# create portal object which acts as local start site on systems which are no DC master or backup
 	univention-directory-manager portals/portal create "$@" --ignore_exists \
-		--position "cn=portals,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name="local" \
-		--append categories="cn=local-service,cn=categories,cn=portals,cn=univention,$ldap_base" \
-		--append categories="cn=local-admin,cn=categories,cn=portals,cn=univention,$ldap_base" \
+		--append categories="cn=local-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append categories="cn=local-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"en_US" "Startsite for {hostname}"' \
 		--append displayName='"de_DE" "Startseite für {hostname}"' \
 		--append displayName='"fr_FR" "page d'\''accueil pour {hostname}"' \
@@ -190,9 +190,9 @@ if [ "$role" = "domaincontroller_master" ]; then
 fi
 
 if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ]; then
-	default_portal="cn=domain,cn=portals,cn=portals,cn=univention,$ldap_base"
+	default_portal="cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base"
 else
-	default_portal="cn=local,cn=portals,cn=portals,cn=univention,$ldap_base"
+	default_portal="cn=local,cn=portal,cn=portals,cn=univention,$ldap_base"
 fi
 
 # add self service links to the portals
@@ -200,7 +200,7 @@ fi
 # TODO: should be extended to domain installation
 if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
-		--position "cn=entries,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=self-service-my-profile \
 		--append displayName="\"en_US\" \"My Profile\"" \
 		--append displayName="\"de_DE\" \"Mein Profil\"" \
@@ -210,7 +210,7 @@ if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED
 		--set icon="$(base64 /usr/share/univention-self-service/www/icons/password.png)" || die
 
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
-		--position "cn=entries,cn=portals,cn=univention,$ldap_base" \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=self-service-protect-account \
 		--append displayName="\"en_US\" \"Protect your account\"" \
 		--append displayName="\"de_DE\" \"Kontozugang schützen\"" \
@@ -221,8 +221,8 @@ if [ -d "/usr/share/univention-self-service/www/icons/" ] && [ $JS_LAST_EXECUTED
 
 	univention-directory-manager "portals/portal" modify "$@" \
 		--dn="$default_portal" \
-		--append userLinks="cn=self-service-my-profile,cn=entries,cn=portals,cn=univention,$ldap_base" \
-		--append userLinks="cn=self-service-protect-account,cn=entries,cn=portals,cn=univention,$ldap_base" || die
+		--append userLinks="cn=self-service-my-profile,cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--append userLinks="cn=self-service-protect-account,cn=entry,cn=portals,cn=univention,$ldap_base" || die
 fi
 
 set_portal="$(udm portals/portal list "$@" --filter=portalComputers="$ldap_hostdn" | grep DN:)"
