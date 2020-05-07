@@ -1012,21 +1012,20 @@ load_certificate.ATTR = {
 }
 
 
-def mapHomePostalAddress(old):
+def mapHomePostalAddress(old, encoding=()):
 	new = []
 	for i in old:
-		new.append('$'.join(i))
+		new.append(u'$'.join(i).encode(*encoding))
 	return new
 
 
-def unmapHomePostalAddress(old):
+def unmapHomePostalAddress(old, encoding=()):
 	new = []
 	for i in old:
-		if '$' in i:
-			new.append(i.split('$'))
+		if b'$' in i:
+			new.append(i.decode(*encoding).split(u'$'))
 		else:
-			new.append([i, " ", " "])
-
+			new.append([i.decode(*encoding), u" ", u" "])
 	return new
 
 
