@@ -1055,9 +1055,45 @@ EOF
 }
 
 transfer_docker_image () {
-	local appid=${1:=missing appid} rv=0
-	echo on root@docker univention-app update
-	echo on root@docker univention-app internal-transfer-images $appid --username jenkins --pwdfile /root/jenkins.secret
-	return $rv
+	local appid=${1:=missing appid}
+	local docker_host=docker
+	local transfer_user=automation
+	local transfer_pwfile=/root/automation.secret
+cat <<-EOF | ssh root@$docker_host python
+# only whitespaces here, no tabs!
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.actions import UniventionAppAction, get_action
+from subprocess import check_output
+import sys
+apps_cache = Apps()
+app_id="$appid"
+transfer_user="$transfer_user"
+transfer_pwfile="$transfer_pwfile"
+for appcenter_cache in apps_cache.get_appcenter_caches():
+    for cache in appcenter_cache.get_app_caches():
+        assert cache.get_server() == 'https://appcenter-test.software-univention.de'
+        app = cache.find(app_id, app_version=None, latest=True)
+        if app is not None:
+            app_name = '{}/{}={}'.format(cache.get_ucs_version(), app.id, app.version)
+            print(app_name)
+            if app.docker:
+                if app.docker_image and app.docker_image.lower().startswith('docker.software-univention.de/ucs-appbox'):
+                    print('found appbox image {}, do nothing'.format(app.docker_image))
+                    sys.exit(0)
+                print('transfer {}'.format(app_name))
+                #transfer = get_action('internal-transfer-images')
+                #print(dir(transfer))
+                #transfer.call(app=app, brute_yaml=True)
+                cmd = ['univention-app', 'internal-transfer-images', '--noninteractive', '--username', transfer_user, '--pwdfile', transfer_pwfile, '--brute-yaml', app_name]
+                print('running {}'.format(''.join(cmd)))
+                print(check_output(cmd))
+            else:
+                print('{} is no docker app, do nothing'.format(app_id))
+            sys.exit(0)
+print('found no app for {}'.format(app_id))
+sys.exit(1)
+EOF
+	return $?
 }
+
 # vim:set filetype=sh ts=4:
