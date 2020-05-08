@@ -257,27 +257,21 @@ def object_input(module, object, input, append=None, remove=None):
 				if len(opts) == 1:
 					object.options.extend(opts)
 					out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
+
 			if module.property_descriptions[key].syntax.name == 'file':
 				if os.path.exists(value):
-					fh = open(value, 'r')
-					content = ''
-					for line in fh.readlines():
-						content += line
-					object[key] = content
-					fh.close()
+					with open(value, 'r') as fh:
+						object[key] = fh.read()
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-				for i in range(0, len(value)):
-					test_val = value[i].split('"')
-					if test_val[0] and test_val[0] == value[i]:
-						val = value[i].split(' ')
+				for orgval in value:
+					test_val = orgval.split('"')
+					if test_val[0] and test_val[0] == orgval:
+						val = orgval.split(' ')
 					else:
-						val = []
-						for j in test_val:
-							if j and j.rstrip().lstrip():
-								val.append(j.rstrip().lstrip())
+						val = [j.strip() for j in test_val if j.strip()]
 
 					if not object.has_property(key):
 						object[key] = []
@@ -295,28 +289,21 @@ def object_input(module, object, input, append=None, remove=None):
 						object[key] = [val]
 					else:
 						try:
-							tmp = list(object[key])
-							tmp.append(val)
-							object[key] = list(tmp)
+							object[key] = list(list(object[key]) + [val])
 						except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-							out.append('E: Invalid Syntax: %s' % str(errmsg))
+							out.append('E: Invalid Syntax: %s' % (errmsg,))
+
 	if remove:
 		for key, value in remove.items():
 			if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if value:
-					for i in range(0, len(value)):
-						test_val = value[i].split('"')
-						if test_val[0] and test_val[0] == value[i]:
-							val = value[i].split(' ')
+					for orgval in value:
+						test_val = orgval.split('"')
+						if test_val[0] and test_val[0] == orgval:
+							val = orgval.split(' ')
 						else:
-							val = []
 							out.append('test_val=%s' % test_val)
-							for j in test_val:
-								if j and j.rstrip().lstrip():
-									val.append(j.rstrip().lstrip())
-
-							for j in range(0, len(val)):
-								val[j] = '"%s"' % val[j]
+							val = ['"%s"' % j.strip() for j in test_val if j.strip()]
 
 						if val and val in object[key]:
 							object[key].remove(val)
@@ -343,6 +330,7 @@ def object_input(module, object, input, append=None, remove=None):
 					except IndexError:
 						current_values = None
 				object[key] = current_values
+
 	if input:
 		for key, value in input.items():
 			if key in object and not object.has_property(key):
@@ -350,35 +338,33 @@ def object_input(module, object, input, append=None, remove=None):
 				if len(opts) == 1:
 					object.options.extend(opts)
 					out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
+
 			if module.property_descriptions[key].syntax.name == 'binaryfile':
 				if value == '':
 					object[key] = value
 				elif os.path.exists(value):
-					fh = open(value, 'r')
-					content = fh.read()
-					if "----BEGIN CERTIFICATE-----" in content:
-						content = content.replace('----BEGIN CERTIFICATE-----', '')
-						content = content.replace('----END CERTIFICATE-----', '')
-						object[key] = base64.decodestring(content)
-					else:
-						object[key] = content
-					fh.close()
+					with open(value, 'r') as fh:
+						content = fh.read()
+						if "----BEGIN CERTIFICATE-----" in content:
+							content = content.replace('----BEGIN CERTIFICATE-----', '')
+							content = content.replace('----END CERTIFICATE-----', '')
+							object[key] = base64.decodestring(content)
+						else:
+							object[key] = content
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if isinstance(value, list):
-					for i in range(0, len(value)):
-						test_val = value[i].split('"')
-						if test_val[0] and test_val[0] == value[i]:
-							val = value[i].split(' ')
+					for orgval in value:
+						test_val = orgval.split('"')
+						if test_val[0] and test_val[0] == orgval:
+							val = orgval.split(' ')
 						else:
-							val = []
-							for j in test_val:
-								if j and j.rstrip().lstrip():
-									val.append(j.rstrip().lstrip())
+							val = [j.strip() for j in test_val if j.strip()]
 				else:
 					val = value.split(' ')
+
 				if module.property_descriptions[key].multivalue:
 					object[key] = [val]
 				else:
@@ -386,21 +372,16 @@ def object_input(module, object, input, append=None, remove=None):
 			else:
 				try:
 					object[key] = value
-				except univention.admin.uexceptions.ipOverridesNetwork as e:
-					out.append('WARNING: %s' % e.message)
-				except univention.admin.uexceptions.valueMayNotChange as e:
-					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (e.message, key))
+				except univention.admin.uexceptions.ipOverridesNetwork as exc:
+					out.append('WARNING: %s' % exc.message)
+				except univention.admin.uexceptions.valueMayNotChange as exc:
+					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (exc.message, key))
 	return out
 
 
 def list_available_modules(o=[]):
-
 	o.append("Available Modules are:")
-	avail_modules = []
-	for mod in univention.admin.modules.modules.keys():
-		avail_modules.append(mod)
-	avail_modules.sort()
-	for mod in avail_modules:
+	for mod in sorted(univention.admin.modules.modules):
 		o.append("  %s" % mod)
 	return o
 
@@ -423,7 +404,7 @@ def doit(arglist):
 			if not len(msg) or len(e.args) > 1 or e.args[0] != msg[0]:
 				msg.extend(e.args)
 
-		# strip elements and make sure that a ':' is printed iff further information follows
+		# strip elements and make sure that a ':' is printed if further information follows
 		msg = [i.strip() for i in msg]
 		if len(msg) == 1:
 			msg[0] = '%s.' % msg[0].strip(':.')
@@ -463,7 +444,7 @@ def _doit(arglist):
 		out.append(str(msg))
 		return out + ["OPERATION FAILED"]
 
-	if not args == [] and isinstance(args, list):
+	if args and isinstance(args, list):
 		msg = "WARNING: the following arguments are ignored:"
 		for argument in args:
 			msg = '%s "%s"' % (msg, argument)
@@ -509,8 +490,8 @@ def _doit(arglist):
 			try:
 				with open(val) as fp:
 					bindpwd = fp.read().strip()
-			except IOError as e:
-				out.append('E: could not read bindpwd from file (%s)' % str(e))
+			except IOError as exc:
+				out.append('E: could not read bindpwd from file (%s)' % (exc,))
 				return out + ['OPERATION FAILED']
 		elif opt == '--dn':
 			dn = _2utf8(val)
@@ -537,7 +518,7 @@ def _doit(arglist):
 			policy_dereference.append(val)
 
 	if logfile:
-		ud.init(logfile, 1, 0)
+		ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
 	else:
 		out.append("WARNING: no logfile specified")
 
@@ -547,24 +528,20 @@ def _doit(arglist):
 	co = None
 	baseDN = configRegistry['ldap/base']
 
-	if configRegistry.get('directory/manager/cmd/debug/level'):
-		debug_level = configRegistry['directory/manager/cmd/debug/level']
-	else:
-		debug_level = 0
+	debug_level = int(configRegistry.get('directory/manager/cmd/debug/level', 0))
 
-	ud.set_level(ud.LDAP, int(debug_level))
-	ud.set_level(ud.ADMIN, int(debug_level))
+	ud.set_level(ud.LDAP, debug_level)
+	ud.set_level(ud.ADMIN, debug_level)
 
 	if binddn and bindpwd:
 		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
-		except Exception as e:
-			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
-			out.append('authentication error: %s' % str(e))
+		except Exception as exc:
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+			out.append('authentication error: %s' % (exc,))
 			return out + ["OPERATION FAILED"]
 		policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME not so nice
-
 	else:
 		if os.path.exists('/etc/ldap.secret'):
 			ud.debug(ud.ADMIN, ud.INFO, "using cn=admin,%s account" % baseDN)
@@ -578,18 +555,17 @@ def _doit(arglist):
 			policyOptions.extend(['-D', binddn, '-y', secretFileName])
 
 		try:
-			secretFile = open(secretFileName, 'r')
+			with open(secretFileName, 'r') as secretFile:
+				pwd = secretFile.read().strip('\n')
 		except IOError:
 			out.append('E: Permission denied, try --binddn and --bindpwd')
 			return out + ["OPERATION FAILED"]
-		pwdLine = secretFile.readline()
-		pwd = re.sub('\n', '', pwdLine)
 
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
-		except Exception as e:
-			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
-			out.append('authentication error: %s' % str(e))
+		except Exception as exc:
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+			out.append('authentication error: %s' % (exc,))
 			return out + ["OPERATION FAILED"]
 
 	if not position_dn and superordinate_dn:
@@ -604,13 +580,7 @@ def _doit(arglist):
 		out.append('E: Invalid position')
 		return out + ["OPERATION FAILED"]
 
-	try:
-		module = univention.admin.modules.get(module_name)
-	except:
-		out.append("failed to get module %s." % module_name)
-		out.append("")
-		return list_available_modules(out) + ["OPERATION FAILED"]
-
+	module = univention.admin.modules.get(module_name)
 	if not module:
 		out.append("unknown module %s." % module_name)
 		out.append("")
@@ -643,57 +613,39 @@ def _doit(arglist):
 
 	for opt, val in opts:
 		if opt == '--set':
-			pos = val.find('=')
-			name = val[:pos]
-			value = _2utf8(val[pos + 1:])
+			name, delim, value = val.partition('=')
+			value = _2utf8(value)
 
-			was_set = 0
 			for mod, (properties, options) in information.items():
 				if name in properties:
 					if properties[name].multivalue:
-						if name not in input:
-							input[name] = []
-							was_set = 1
+						input.setdefault(name, [])
 						if value:
 							input[name].append(value)
-							was_set = 1
 					else:
 						input[name] = value
-						was_set = 1
 
-			if not was_set:
+			if name not in input:
 				out.append("WARNING: No attribute with name '%s' in this module, value not set." % name)
 		elif opt == '--append':
-			pos = val.find('=')
-			name = val[:pos]
-			value = _2utf8(val[pos + 1:])
-			was_set = 0
+			name, delim, value = val.partition('=')
+			value = _2utf8(value)
 			for mod, (properties, options) in information.items():
 				if name in properties:
 					if properties[name].multivalue:
-						if name not in append:
-							append[name] = []
+						append.setdefault(name, [])
 						if value:
 							append[name].append(value)
-							was_set = 1
 					else:
 						append[name] = value
-						was_set = 1
-			if not was_set:
+			if name not in append:
 				out.append("WARNING: No attribute with name %s in this module, value not appended." % name)
 
 		elif opt == '--remove':
-			pos = val.find('=')
-			if pos == -1:
-				name = val
-				value = None
-			else:
-				name = val[:pos]
-				value = _2utf8(val[pos + 1:])
-			was_set = False
+			name, delim, value = val.partition('=')
+			value = _2utf8(value) or None
 			for mod, (properties, options) in information.items():
 				if name in properties:
-					was_set = True
 					if properties[name].multivalue:
 						if value is None:
 							remove[name] = value
@@ -703,12 +655,12 @@ def _doit(arglist):
 								remove[name].append(value)
 					else:
 						remove[name] = value
-			if not was_set:
+			if name not in remove:
 				out.append("WARNING: No attribute with name %s in this module, value not removed." % name)
 		elif opt == '--remove_referring':
-			remove_referring = 1
+			remove_referring = True
 		elif opt == '--recursive':
-			recursive = 1
+			recursive = True
 
 	#+++# ACTION CREATE #+++#
 	if action == 'create' or action == 'new':
