@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-74) unstable; urgency=medium
+
+  * Bug #51235: fix typo json.loads() → json.load()
+
+ -- Florian Best <best@univention.de>  Fri, 08 May 2020 12:54:18 +0200
+
 univention-management-console (11.0.4-73) unstable; urgency=medium
 
   * Bug #51235: explicitly only catch error in json.load() not in the

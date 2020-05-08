@@ -311,7 +311,7 @@ class ACLs(object):
 		try:
 			try:
 				with open(filename, 'r') as fd:
-					acls = json.loads(fd)
+					acls = json.load(fd)
 			except (ValueError, TypeError):
 				if six.PY3:
 					raise
