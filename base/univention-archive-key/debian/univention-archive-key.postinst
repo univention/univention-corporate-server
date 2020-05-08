@@ -30,8 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 
 if [ -x /usr/bin/apt-key ]; then
-    /usr/bin/apt-key add /usr/share/keyrings/univention-archive-key-ucs-3x.gpg
     /usr/bin/apt-key add /usr/share/keyrings/univention-archive-key-ucs-4x.gpg
+    /usr/bin/apt-key add /usr/share/keyrings/univention-archive-key-ucs-5x.gpg
 fi
 
 #DEBHELPER#
