@@ -454,6 +454,12 @@ property_descriptions = {
 		multivalue=True,
 		options=['nfs'],
 	),
+	'appendACL': univention.admin.property(
+		short_description=_('Append NACL for Samba file shares'),
+		long_description=_('Additional NTACL elements for the base directory of Samba file shares.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+	),
 }
 
 layout = [
@@ -612,6 +618,7 @@ mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolTo
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
 mapping.register('sambaCustomSettings', 'univentionShareSambaCustomSetting', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('nfsCustomSettings', 'univentionShareNFSCustomSetting')
+mapping.register('appendACL', 'univentionShareSambaBaseDirAppendACL', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
