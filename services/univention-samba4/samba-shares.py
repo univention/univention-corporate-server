@@ -33,6 +33,8 @@
 from __future__ import absolute_import
 import listener
 import os
+import re
+import subprocess
 import univention.debug
 import univention.lib.listenerSharePath
 import cPickle
@@ -271,6 +273,16 @@ def handler(dn, new, old, command):
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:
 				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+
+			if 'univentionShareSambaBaseDirAppendACL' in new:
+				proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]], stdout=subprocess.PIPE)
+				stdout, stderr = proc.communicate()
+				ace = new['univentionShareSambaBaseDirAppendACL'][0]
+				if ace not in stdout:
+					# Deny must be placed before rest => always do that!
+					owner, acl = stdout.split("D:")
+					sddl = "{}D:{}{}".format(owner, ace, acl).strip()
+					subprocess.call(['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]])
 		finally:
 			listener.unsetuid()
 
