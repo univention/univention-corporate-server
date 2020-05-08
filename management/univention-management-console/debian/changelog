@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-73) unstable; urgency=medium
+
+  * Bug #51235: explicitly only catch error in json.load() not in the
+  	evaluation of ACL rules
+
+ -- Florian Best <best@univention.de>  Fri, 08 May 2020 11:10:15 +0200
+
 univention-management-console (11.0.4-72) unstable; urgency=medium
 
   * Bug #51235: catch more errors when using json.load()

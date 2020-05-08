@@ -311,12 +311,14 @@ class ACLs(object):
 		try:
 			try:
 				with open(filename, 'r') as fd:
-					acls = [Rule(x) for x in json.loads(fd)]
+					acls = json.loads(fd)
 			except (ValueError, TypeError):
 				if six.PY3:
 					raise
 				with open(filename, 'r') as fd:
 					acls = pickle.load(fd)
+			else:
+				acls = [Rule(x) for x in acls]
 		except EnvironmentError as exc:
 			ACL.process('Could not load ACLs of %r: %s' % (username, exc,))
 			return False
