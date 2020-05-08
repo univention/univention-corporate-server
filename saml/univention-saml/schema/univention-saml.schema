@@ -145,3 +145,16 @@ objectclass ( 1.3.6.1.4.1.10176.4200.3.1 NAME 'univentionSAMLIdpConfig' SUP top 
 	MAY ( LdapGetAttributes )
 	Must ( id )
 	)
+
+attributetype ( 1.3.6.1.4.1.10176.4200.4.2
+	NAME 'enabledServiceProviderIdentifierGroup'
+	DESC 'A service provider the group is enabled to use'
+	EQUALITY caseExactIA5Match
+	SUBSTR caseExactIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4200.4.1 NAME 'univentionSAMLEnabledGroup' SUP top AUXILIARY
+	DESC 'The user is enabled to use SAML service providers'
+	MAY ( enabledServiceProviderIdentifierGroup )
+	)
+

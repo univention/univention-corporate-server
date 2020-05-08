@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION="9"
+VERSION="10"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -256,10 +256,37 @@ udm settings/extended_attribute create "$@" \
 	--set mayChange=1 \
 	--set multivalue=1 || die
 
+udm settings/extended_attribute create "$@" \
+	--ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="serviceprovidergroup" \
+	--set CLIName="serviceprovidergroup" \
+	--set module="groups/group" \
+	--set tabName="General" \
+	--set translationTabName='"de_DE" "Allgemein"' \
+	--set groupName="SAML settings" \
+	--set translationGroupName='"de_DE" "SAML Einstellungen"' \
+	--set shortDescription="Enable group for the following service providers" \
+	--append translationShortDescription='"de_DE" "Gruppe für folgende Service Provider freischalten"' \
+	--set longDescription="Enable group to use the specified service providers" \
+	--append translationLongDescription='"de_DE" "Zulassen der Gruppe für die angegebenen Service Provider"' \
+	--set objectClass="univentionSAMLEnabledGroup" \
+	--set ldapMapping="enabledServiceProviderIdentifierGroup" \
+	--set syntax="samlserviceprovider" \
+	--set tabAdvanced=0 \
+	--set mayChange=1 \
+	--set multivalue=1 || die
+
 if joinscript_check_version_in_range_executed "1" "4"; then
 	udm settings/extended_attribute modify "$@" \
 		--dn "cn=serviceprovider,cn=custom attributes,cn=univention,$ldap_base" \
 		--append module="settings/usertemplate"
+fi
+
+if joinscript_check_version_in_range_executed "1" "9"; then
+	udm saml/idpconfig modify "$@" \
+		--dn="id=default-saml-idp,cn=univention,$ldap_base" \
+		--append LdapGetAttributes="memberOf" || die
 fi
 
 udm saml/serviceprovider create "$@" \
@@ -336,6 +363,7 @@ if ! joinscript_check_any_version_executed && [ "$server_role" == "domaincontrol
 		--dn="id=default-saml-idp,cn=univention,$ldap_base" \
 		--append LdapGetAttributes="uid" \
 		--append LdapGetAttributes="mailPrimaryAddress" \
+		--append LdapGetAttributes="memberOf" \
 		--append LdapGetAttributes="enabledServiceProviderIdentifier" || die
 fi
 
