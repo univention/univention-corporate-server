@@ -1,3 +1,9 @@
+univention-ucs-translation-template (6.0.0-15) unstable; urgency=medium
+
+  * Bug #51235: fix python 3 compatibility for dh-umc-module-build
+
+ -- Florian Best <best@univention.de>  Fri, 08 May 2020 13:51:04 +0200
+
 univention-ucs-translation-template (6.0.0-14) unstable; urgency=medium
 
   * Bug #50332: add information on whether umc module provides

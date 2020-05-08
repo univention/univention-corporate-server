@@ -22,7 +22,6 @@ Example::
 	Category: umc/categories/ucr.xml
 	Icons: umc/icons
 """
-from __future__ import print_function
 #
 # Copyright 2011-2020 Univention GmbH
 #
@@ -51,6 +50,8 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import io
 import re
 import os
@@ -60,6 +61,7 @@ import copy
 import json
 from email.utils import formatdate
 
+import six
 import polib
 import xml.etree.ElementTree as ET
 
@@ -365,7 +367,7 @@ def create_po_file(po_file, package, files, language='python'):
 
 	if os.path.isfile(message_po):
 		os.unlink(message_po)
-	if isinstance(files, basestring):
+	if isinstance(files, six.string_types):
 		files = [files]
 	xgettext = helper.call(
 		'xgettext',
