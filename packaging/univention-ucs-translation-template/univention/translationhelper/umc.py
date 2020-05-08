@@ -273,7 +273,7 @@ def read_modules(package, core=False):
 
 	with open(file_umc_module, 'rb') as fd:
 		for item in Deb822.iter_paragraphs(fd):
-			item = dict((k, [v]) for k, v in item.iteritems())  # simulate dh_ucs.parseRfc822 behaviour
+			item = dict((k, [v]) for k, v in item.items())  # simulate dh_ucs.parseRfc822 behaviour
 			# required fields
 			if not core:
 				for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):

@@ -146,7 +146,7 @@ class UMCModuleTranslation(umc.UMC_Module):
 			def_file = fd.read()
 
 		attributes = Deb822(def_file)
-		attributes = dict((k, [v]) for k, v in attributes.iteritems())  # simulate dh_ucs.parseRfc822 behaviour
+		attributes = dict((k, [v]) for k, v in attributes.items())  # simulate dh_ucs.parseRfc822 behaviour
 		return attributes
 
 	@classmethod
@@ -239,7 +239,7 @@ class SpecialCase():
 				files_by_mime.setdefault(mime.get(file_path), []).append(file_path)
 
 		source_file_sets = []  # type: List[sourcefileprocessing.SourceFileSet]
-		for mime_type, file_set in files_by_mime.iteritems():
+		for mime_type, file_set in files_by_mime.items():
 			try:
 				source_file_sets.append(sourcefileprocessing.from_mimetype(os.path.join(self.source_dir, self.package_dir), self.binary_package_name, mime_type, file_set))
 			except sourcefileprocessing.UnsupportedSourceType:
