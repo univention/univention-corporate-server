@@ -996,7 +996,7 @@ class CLI(object):
 				if list_policies:
 					utf8_objectdn = _2utf8(univention.admin.objects.dn(object))
 					p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_objectdn], stdout=subprocess.PIPE)
-					policyResults = p1.communicate()[0].split('\n')
+					policyResults = p1.communicate()[0].decode('utf-8').split(u'\n')
 
 					out.append("  Policy-based Settings:")
 					policy = ''
