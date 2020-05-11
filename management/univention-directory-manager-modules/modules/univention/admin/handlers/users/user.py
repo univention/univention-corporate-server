@@ -873,12 +873,12 @@ def posixDaysToDate(days):
 	return time.strftime("%Y-%m-%d", time.gmtime(long(days) * 3600 * 24))
 
 
-def sambaWorkstationsMap(workstations):
-	return ','.join(workstations)
+def sambaWorkstationsMap(workstations, encoding=()):
+	return u','.join(workstations).encode(*encoding)
 
 
-def sambaWorkstationsUnmap(workstations):
-	return workstations[0].split(',')
+def sambaWorkstationsUnmap(workstations, encoding=()):
+	return workstations[0].decode(*encoding).split(b',')
 
 
 def logonHoursMap(logontimes):
@@ -1160,12 +1160,12 @@ def unmapSambaRid(oldattr):
 	return sid[pos + 1:].decode('ASCII')
 
 
-def mapKeyAndValue(old):
-	return [u'='.join(entry).encode('utf-8') for entry in old]
+def mapKeyAndValue(old, encoding=()):
+	return [u'='.join(entry).encode(*encoding) for entry in old]
 
 
-def unmapKeyAndValue(old):
-	return [entry.decode('UTF-8').split(u'=', 1) for entry in old]
+def unmapKeyAndValue(old, encoding=()):
+	return [entry.decode(*encoding).split(u'=', 1) for entry in old]
 
 
 def mapWindowsFiletime(old):
@@ -1175,7 +1175,7 @@ def mapWindowsFiletime(old):
 		unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
 		d = long(116444736000000000)  # difference between 1601 and 1970
 		windows_filetime = long(calendar.timegm(unixtime)) * 10000000 + d
-		return [str(int(windows_filetime))]
+		return [str(int(windows_filetime)).encode('ASCII')]
 	return []
 
 
@@ -1191,7 +1191,7 @@ def unmapWindowsFiletime(old):
 			#already unixtime, happens in environments with Samba3
 			ud.debug(ud.ADMIN, ud.INFO, 'Value of sambaBadPasswordTime is not set to a Windows Filetime (100 nanoseconds since January 1, 1601.)\nInstead its set to %s' % old[0])
 			return time.strftime('%Y%m%d%H%M%SZ', time.gmtime(int(old[0])))
-	return ''
+	return u''
 
 
 mapping = univention.admin.mapping.mapping()
