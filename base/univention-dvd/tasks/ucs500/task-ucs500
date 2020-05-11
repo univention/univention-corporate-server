@@ -1,0 +1,148 @@
+/* this file must NOT contain leading or trailing whilespaces !!! */
+
+#include <debian-installer+kernel>
+#include <forcd1>
+
+univention-debootstrap
+
+/* Univention System Setup */
+univention-system-setup
+univention-system-setup-boot
+univention-management-console-module-setup
+univention-management-console-server
+univention-management-console-web-server
+xinit
+dbus-user-session
+dbus-x11
+/* FIXME # kde-window-manager  # FIXME */
+univention-cloud-init
+univention-system-activation
+univention-welcome-screen
+rdate
+ntpdate
+firefox-esr-l10n-de
+firefox-esr
+
+univention-appcenter-docker
+cgroupfs-mount
+
+/* Kernel Packages */
+linux-image-amd64
+univention-initrd
+dkms
+firmware-linux
+/* add the list of firmware packages here too if required */
+#ifdef FORCE_FIRMWARE
+#    include <firmware>
+#endif
+
+/* UEFI */
+grub-efi
+efibootmgr
+shim-signed
+grub-efi-amd64-signed
+
+/* Recommended base packages */
+eject
+elinks
+emacs-gtk
+less
+locate
+nmap
+univention-network-common
+unzip
+vim
+wget
+zip
+bridge-utils
+ifenslave
+vlan
+man-db
+
+/* Role Packages */
+univention-server-master
+univention-server-backup
+univention-server-slave
+univention-server-member
+univention-basesystem
+univention-container-role-common
+/* Recommends */
+openssh-server
+openssh-blacklist
+python-univention-license
+/* FIXME # univention-nagios-client  # FIXME */
+univention-saml
+univention-sudo
+univention-portal
+univention-server-overview
+screen
+
+/* Translation Packages */
+univention-l10n-fr
+
+univention-management-console-module-quota
+
+
+/* usr/share/univention-system-setup/download-packages */
+
+univention-ad-connector
+/* FIXME # univention-nagios-ad-connector  # FIXME */
+
+univention-management-console-module-adtakeover
+
+univention-printserver
+/* FIXME # univention-printquota  # FIXME */
+/* FIXME # univention-nagios-cups  # FIXME */
+
+univention-dhcp
+
+univention-fetchmail
+univention-fetchmail-schema
+
+/* FIXME # univention-kde  # FIXME */
+/* FIXME # kde-l10n-de  # FIXME */
+/* FIXME # okular  # FIXME */
+/* FIXME # univention-mozilla-firefox  # FIXME */
+/* FIXME # univention-x-core  # FIXME */
+
+univention-radius
+
+/* FIXME # univention-virtual-machine-manager-node-kvm  # FIXME */
+/* FIXME # univention-kvm-virtio  # FIXME */
+/* FIXME # univention-nagios-libvirtd-kvm  # FIXME */
+/* FIXME # etherboot-qemu  # FIXME */
+
+univention-mail-server
+bsd-mailx
+univention-antivir-mail
+univention-spamassassin
+libmail-spf-perl
+re2c
+
+/* FIXME # univention-nagios-server  # FIXME */
+/* FIXME # nagios-plugins-contrib  # FIXME */
+
+univention-pkgdb
+
+univention-samba
+univention-samba4
+
+univention-s4-connector
+/* FIXME # univention-nagios-s4-connector  # FIXME */
+/* FIXME # univention-nagios-samba  # FIXME */
+sqlite3
+
+univention-squid
+/* FIXME # univention-nagios-squid  # FIXME */
+univention-firewall
+
+/* FIXME # univention-virtual-machine-manager-daemon  # FIXME */
+/* FIXME # univention-nagios-uvmmd  # FIXME */
+/* FIXME # univention-kvm-compat  # FIXME */
+/* FIXME # libvirt-clients  # FIXME */
+/* FIXME # ebtables  # FIXME */
+/* FIXME # netcat-openbsd  # FIXME */
+
+univention-self-service
+univention-self-service-passwordreset-umc
+univention-self-service-master
