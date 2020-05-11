@@ -1,0 +1,19 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: firefox-esr
+fix: 68.8.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Buffer overflow in AUTH chunk input validation (CVE-2020-6831)
+ * Use-after-free during worker shutdown (CVE-2020-12387)
+ * Arbitrary local file access with 'Copy as cURL' (CVE-2020-12392)
+ * Memory safety bugs fixed in Firefox 76 and Firefox ESR 68.8
+   (CVE-2020-12395)
+bug: [51273]
+cve:
+- CVE-2020-6831
+- CVE-2020-12387
+- CVE-2020-12392
+- CVE-2020-12395
