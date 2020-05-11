@@ -273,21 +273,36 @@ def handler(dn, new, old, command):
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:
 				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+		finally:
+			listener.unsetuid()
 
+	if 'univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old:
+		listener.setuid(0)
+		try:
+			proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]],
+			                        stdout=subprocess.PIPE, close_fds=True)
+			stdout, stderr = proc.communicate()
+			prev_aces = set()
+			new_aces = set()
+			if 'univentionShareSambaBaseDirAppendACL' in old:
+				prev_aces = set(re.findall(r'\(.+?\)', old['univentionShareSambaBaseDirAppendACL'][0]))
 			if 'univentionShareSambaBaseDirAppendACL' in new:
-				proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]], stdout=subprocess.PIPE, close_fds=True)
-				stdout, stderr = proc.communicate()
-				# Deny must be placed before rest - This is not done implicitly.
-				# Since deny might be present before, append allow.
-				new_aces = new['univentionShareSambaBaseDirAppendACL'][0]
-				new_aces = re.findall(r'\(.+?\)', new_aces)
+				new_aces = set(re.findall(r'\(.+?\)', new['univentionShareSambaBaseDirAppendACL'][0]))
+
+			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
+				# if old != new -> delete everything from old!
+				for ace in prev_aces:
+					stdout = stdout.replace(ace, '')
+				# Aces might be in there from something else (like explicit setting)
+				# We don't want duplicates.
 				new_aces = [ace for ace in new_aces if ace not in stdout]
-				if new_aces:
-					allow_ace = "".join([ace for ace in new_aces if 'A;' in ace])
-					deny_ace = "".join([ace for ace in new_aces if 'D;' in ace])
-					owner, old_aces = stdout.split("D:")
-					sddl = "{}D:{}{}{}".format(owner, deny_ace.strip(), old_aces.strip(), allow_ace.strip())
-					subprocess.call(['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]])
+				# Deny must be placed before rest. This is not done implicitly.
+				# Since deny might be present before, add allow.
+				owner, old_aces = stdout.split("D:")
+				allow_aces = "".join([ace for ace in new_aces if 'A;' in ace])
+				deny_aces = "".join([ace for ace in new_aces if 'D;' in ace])
+				sddl = "{}D:{}{}{}".format(owner, deny_aces.strip(), old_aces.strip(), allow_aces.strip())
+				subprocess.call(['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]])
 		finally:
 			listener.unsetuid()
 
