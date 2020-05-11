@@ -32,9 +32,11 @@
 
 import os
 import getopt
+
+from ldap.filter import filter_format
+
 import univention.debug as ud
 import univention.misc
-
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.modules
@@ -43,7 +45,7 @@ import univention.admin.handlers.users.user
 
 
 def doit(arglist):
-	ud.init('/var/log/univention/directory-manager-cmd.log', 1, 1)
+	ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 	out = []
 	opts, args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
 
@@ -70,20 +72,32 @@ def doit(arglist):
 
 	baseDN = configRegistry['ldap/base']
 
-	bindpw = open(pwdfile).read()
-	if bindpw[-1] == '\n' or bindpw[-1] == '\r':
-		bindpw = bindpw[0:-1]
+	with open(pwdfile) as fd:
+		bindpw = fd.read().rstrip()
 
-	ud.debug(ud.ADMIN, ud.WARN, 'binddn: %s; bindpwd: *************' % (binddn))
+	ud.debug(ud.ADMIN, ud.WARN, 'binddn: %s; bindpwd: *************' % (binddn,))
 	try:
 		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
-	except Exception as e:
-		ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
-		out.append('authentication error: %s' % e)
+	except Exception as exc:
+		ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+		out.append('authentication error: %s' % (exc,))
 		return out
 
+	if isinstance(user, bytes):  # python 2
+		user = user.decode('utf-8')
+
+	if configRegistry.get('samba/charset/unix', 'utf8') in ['utf8', 'latin']:
+		ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: known charset given: %s' % configRegistry.get('samba/charset/unix'))
+		if not isinstance(pwd, bytes):  # python 3
+			pwd = pwd.encode('UTF-8')
+		pwd = pwd.decode(configRegistry.get('samba/charset/unix', 'utf8'))
+	else:
+		ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: unknown charset given, try fallback')
+		if isinstance(pwd, bytes):  # python 2
+			pwd = pwd.decode('utf-8')
+
 	try:
-		dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=True)
+		dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
 		position = univention.admin.uldap.position(baseDN)
 
 		module = univention.admin.modules.get('users/user')
@@ -98,15 +112,7 @@ def doit(arglist):
 			object.old_options.remove('samba')
 			object._ldap_object_classes = lambda ml: ml
 
-		if 'samba/charset/unix' not in configRegistry:
-			ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: no unix-charset given')
-			object['password'] = unicode(pwd, 'utf8')
-		elif configRegistry['samba/charset/unix'] in ['utf8', 'latin']:
-			ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: known charset given: %s' % configRegistry['samba/charset/unix'])
-			object['password'] = unicode(pwd, configRegistry['samba/charset/unix'])
-		else:
-			ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: unknown charset given, try fallback')
-			object['password'] = unicode(pwd)
+		object['password'] = pwd
 
 		ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: passwd set, modify object')
 		dn = object.modify()
@@ -118,9 +124,9 @@ def doit(arglist):
 		out.append('passwd error: password already used')
 		return out
 
-	except Exception as e:
-		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % e)
-		out.append('passwd error: %s' % e)
+	except Exception as exc:
+		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
+		out.append('passwd error: %s' % (exc,))
 		return out
 
 	try:
@@ -128,26 +134,15 @@ def doit(arglist):
 		if configRegistry.is_true('ldap/replication/preferredpassword'):
 			if configRegistry.get('ldap/server/type') == 'slave':
 				if os.path.exists('/etc/ldap/rootpw.conf'):
-					bindpw = open('/etc/ldap/rootpw.conf').read()
-					bindpw = bindpw.split(' ')[1].strip('\n\r"')
-					lo = univention.admin.uldap.access(host='%s.%s' % (configRegistry['hostname'], configRegistry['domainname']), base=baseDN, binddn='cn=update,%s' % (baseDN), bindpw=bindpw, start_tls=2)
-					dn = lo.searchDn(filter=unicode('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))' % user, 'utf8'), base=baseDN, unique=True)
+					lo = univention.admin.uldap.access(lo=univention.uldap.getRootDnConnection())
+					dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
 					position = univention.admin.uldap.position(baseDN)
 					module = univention.admin.modules.get('users/user')
 					univention.admin.modules.init(lo, position, module)
 
 					object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])
 					object.open()
-
-					if 'samba/charset/unix' not in configRegistry:
-						ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: no unix-charset given')
-						object['password'] = unicode(pwd, 'utf8')
-					elif configRegistry['samba/charset/unix'] in ['utf8', 'latin']:
-						ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: known charset given: %s' % configRegistry['samba/charset/unix'])
-						object['password'] = unicode(pwd, configRegistry['samba/charset/unix'])
-					else:
-						ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: unknown charset given, try fallback')
-						object['password'] = unicode(pwd)
+					object['password'] = pwd
 
 					ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: passwd set, modify object')
 					object['overridePWHistory'] = '1'
@@ -155,7 +150,7 @@ def doit(arglist):
 					dn = object.modify()
 
 					ud.debug(ud.ADMIN, ud.INFO, 'univention-passwd: password changed')
-	except Exception as e:
-		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % e)
+	except Exception as exc:
+		ud.debug(ud.ADMIN, ud.WARN, 'passwd error: %s' % (exc,))
 
 	return out
