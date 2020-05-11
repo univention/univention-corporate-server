@@ -34,6 +34,8 @@ import getopt
 import datetime
 import traceback
 
+from ldap.filter import filter_format
+
 import univention.admin.license
 import univention.admin.uexceptions as uexceptions
 import univention.admin.uldap
@@ -77,10 +79,8 @@ def parse_options(argv):
 
 
 def default_pw():
-		secret = open('/etc/ldap.secret', 'r')
-		passwd = secret.readline().strip()
-		secret.close()
-		return passwd
+	with open('/etc/ldap.secret', 'r') as secret:
+		return secret.readline().strip()
 
 
 def format(label, num, max, expired, cmp, ignored=False):
@@ -100,10 +100,10 @@ def find_licenses(lo, baseDN, module='*'):
 			return lo.searchDn(base=dir, filter='(univentionLicenseObject=*)')
 		except uexceptions.noObject:
 			return []
-	filter = 'univentionLicenseModule=%s' % module
+	filter = filter_format('univentionLicenseModule=%s', [module])
 	dirs = ['cn=directory,cn=univention,%s' % baseDN, 'cn=default containers,cn=univention,%s' % baseDN]
 	objects = [o for d in dirs for o in find_wrap(d)]
-	containers = [c for o in objects for c in lo.get(o)['univentionLicenseObject']]
+	containers = [c.decode('UTF-8') for o in objects for c in lo.get(o)['univentionLicenseObject']]
 	licenses = [l for c in containers for l in lo.searchDn(base=c, filter=filter)]
 	return licenses
 
@@ -132,23 +132,16 @@ def check_license(lo, dn, list_dns, expired):
 			out.append('Checking %s... %s' % ((label.ljust(10)), ok))
 
 	def check_type():
-		def mylen(xs):
-			if xs is None:
-				return 0
-			return len(xs)
 		v = _license.version
 		types = _license.licenses[v]
 		if dn is None:
-			max = [_license.licenses[v][type] for type in types]
+			maximum = [_license.licenses[v][type] for type in types]
 		else:
-			max = [lo.get(dn)[_license.keys[v][type]][0] for type in types]
+			maximum = [lo.get(dn)[_license.keys[v][type]][0].decode('utf-8') for type in types]
 		objs = [lo.searchDn(filter=_license.filters[v][type]) for type in types]
-		num = [mylen(obj) for obj in objs]
-		_license.checkObjectCounts(max, num)
-		for i in range(len(types)):
-			m = max[i]
-			n = num[i]
-			odn = objs[i]
+		num = [len(obj or '') for obj in objs]
+		_license.checkObjectCounts(maximum, num)
+		for i, m, n, odn in zip(range(len(types)), maximum, num, objs):
 			if i == License.USERS or i == License.ACCOUNT:
 				n -= _license.sysAccountsFound
 				if n < 0:
@@ -163,7 +156,7 @@ def check_license(lo, dn, list_dns, expired):
 					# Ignore the server count
 					ignored = True
 				out.append(format(ln, n, m, 0, _license.compare, ignored))
-				if list_dns and not max == 'unlimited':
+				if list_dns and maximum != 'unlimited':
 					for dnout in odn:
 						out.extend(["  %s" % dnout, ])
 				if list_dns and (i == License.USERS or i == License.ACCOUNT):
@@ -171,14 +164,15 @@ def check_license(lo, dn, list_dns, expired):
 
 	def check_time():
 		now = datetime.date.today()
-		then = lo.get(dn)['univentionLicenseEndDate'][0]
-		if not then == 'unlimited':
-			(day, month, year) = then.split('.')
+		then = lo.get(dn)['univentionLicenseEndDate'][0].decode('UTF-8')
+		if then != 'unlimited':
+			(day, month, year) = then.split(u'.')
 			then = datetime.date(int(year), int(month), int(day))
 			if now > then:
 				out.append('Has expired on: %s                  -- EXPIRED' % then)
 			else:
 				out.append('Will expire on: %s' % then)
+
 	if dn is not None and list_dns:
 		out.append('License found at: %s' % dn)
 	check_code(expired)
@@ -201,11 +195,11 @@ def main(argv):
 		try:
 			bindpw = default_pw()
 		except IOError:
-			raise UsageError("Permission denied, try `--binddn' and `--bindpwd'")
+			raise UsageError("Permission denied, try `--binddn' and `--bindpw'")
 	try:
 		lo = univention.admin.uldap.access(host=master, port=port, base=baseDN, binddn=binddn, bindpw=bindpw)
 	except uexceptions.authFail:
-		raise UsageError("Authentication failed, try `--bindpwd'")
+		raise UsageError("Authentication failed, try `--bindpw'")
 
 	out = ['Base DN: %s' % baseDN]
 	try:
@@ -229,3 +223,8 @@ def doit(argv):
 		return out
 	except UsageError as msg:
 		return usage(str(msg))
+
+
+if __name__ == '__main__':
+	import sys
+	print('\n'.join(doit(sys.argv)))
