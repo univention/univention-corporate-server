@@ -1059,7 +1059,11 @@ transfer_docker_image () {
 	local docker_host=docker
 	local transfer_user=automation
 	local transfer_pwfile=/root/automation.secret
-	sleep $(( $RANDOM % 120 ))
+	#while pgrep -a -f "univention-app internal-transfer-images.*$appid.*"
+	while pgrep -a -f "univention-app internal-transfer-images"
+	do
+		sleep $(( $RANDOM % 60 ))
+	done
 	ssh root@$docker_host univention-app update || return 1
 cat <<-EOF | ssh root@$docker_host python
 # only whitespaces here, no tabs!
