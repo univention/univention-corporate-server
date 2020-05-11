@@ -26,7 +26,6 @@ LDIF can be:
  a hostname whose LDAP will be dumped using slapcat over ssh.
 If LDIF2 is omitted, a local 'slapcat' is used.
 '''
-VERSION = '%prog 1.0'
 
 
 class LdifError(Exception):
@@ -74,7 +73,7 @@ class LdifSource(object):
 	))
 
 	def __init__(self):
-		self.src = None
+		self.src = None  # type: Iterable[str]
 		self.lno = 0
 		self.exclude = LdifSource.OPERATIONAL
 
@@ -82,27 +81,17 @@ class LdifSource(object):
 		"""
 		Return line iterator.
 		"""
-		for line in self.src:
-			self.lno += 1
-			if not line.startswith('#'):
-				break
-		else:
-			return
-		line = line.rstrip()  # pylint: disable=W0631
-		try:
-			for line2 in self.src:
-				self.lno += 1
-				if line2.startswith('#'):
-					continue
-				line2 = line2.rstrip()
-				if line2[:1] in (' ', '\t'):
-					line += line2[1:]
-				else:
-					yield self.split(line)
-					line = line2
-		except StopIteration:
-			pass
-		yield self.split(line)
+		lines = []
+		for lno, line in enumerate(self.src, start=1):
+			line = line.rstrip('\r\n')
+			if line[:1] in (' ', '\t'):
+				lines.append(line[1:])
+			else:
+				yield ''.join(lines)
+				self.lno = lno
+				lines[:] = [line]
+
+		yield ''.join(lines)
 
 	def split(self, line):
 		"""
@@ -114,7 +103,6 @@ class LdifSource(object):
 		:return: A tuple (name, value).
 		:rtype: tuple
 
-		>>> LdifSource().split('')
 		>>> LdifSource().split('a:')
 		('a', None)
 		>>> LdifSource().split('a: b')
@@ -126,8 +114,6 @@ class LdifSource(object):
 		>>> LdifSource().split('a;b;c::YWFh')
 		('a', 'aaa')
 		"""
-		if not line:
-			return None
 		match = self.RE.match(line)
 		if not match:
 			raise LdifError('%d: %s' % (self.lno, line))
@@ -138,14 +124,16 @@ class LdifSource(object):
 		"""
 		Return line iterator.
 		"""
-		obj = {}
-		for key_value in self.next_line():
-			if key_value:
-				key, value = key_value
+		obj = {}   # type: Dict[str, List[Any]]
+		for line in self.next_line():
+			if line.startswith('#'):
+				continue
+			if line:
+				key, value = self.split(line)
 				if key in self.exclude:
 					continue
 				obj.setdefault(key, []).append(value)
-			else:
+			elif obj:
 				yield obj
 				obj = {}
 
@@ -436,7 +424,7 @@ def commandline():
 	"""
 	Parse command line arguments.
 	"""
-	parser = OptionParser(usage=USAGE, version=VERSION)
+	parser = OptionParser(usage=USAGE)
 	parser.description = DESCRIPTION
 	parser.disable_interspersed_args()
 	parser.set_defaults(source=LdifFile, verbose=1)
