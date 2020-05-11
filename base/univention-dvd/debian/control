@@ -13,6 +13,7 @@ Depends:
  dosfstools,
  mtools,
  ${misc:Depends},
+ ${perl:Depends},
 Description: UCS-DVD build settings
  This package contains the DVD build settings and DVD
  trigger files for UCS DVDs.
