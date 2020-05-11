@@ -1362,7 +1362,8 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		The &ucsUMC; domain module <guimenu>SAML identity provider</guimenu> allows to manage all service providers that are registered at the UCS identity provider.
 		Users have to be activated for a service provider, to be able to authenticate for it at the UCS identity provider.
-		On the user's <guimenu>Account tab</guimenu>, the service provider has to be added under <guimenu>SAML settings</guimenu>.
+		The service provider can be activated for groups, to allow authentication with that service provider for all users within that group.
+		On the users <guimenu>Account tab</guimenu> or the groups <guimenu>General tab</guimenu>, the service provider can to be added under <guimenu>SAML settings</guimenu>.
 	</para>
 	<para>
 		To register the UCS identity provider at an external service provider, the public part of the SAML certificate is required by the service provider.

@@ -1,3 +1,9 @@
+univention-saml (6.0.2-41) unstable; urgency=medium
+
+  * Bug #47567: Add saml serviceproviders to groups
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 08 May 2020 15:26:53 +0200
+
 univention-saml (6.0.2-40) unstable; urgency=medium
 
   * Bug #51211: remove wrong default value
