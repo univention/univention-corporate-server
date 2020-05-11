@@ -275,13 +275,18 @@ def handler(dn, new, old, command):
 				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 
 			if 'univentionShareSambaBaseDirAppendACL' in new:
-				proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]], stdout=subprocess.PIPE)
+				proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]], stdout=subprocess.PIPE, close_fds=True)
 				stdout, stderr = proc.communicate()
-				ace = new['univentionShareSambaBaseDirAppendACL'][0]
-				if ace not in stdout:
-					# Deny must be placed before rest => always do that!
-					owner, acl = stdout.split("D:")
-					sddl = "{}D:{}{}".format(owner, ace, acl).strip()
+				# Deny must be placed before rest - This is not done implicitly.
+				# Since deny might be present before, append allow.
+				new_aces = new['univentionShareSambaBaseDirAppendACL'][0]
+				new_aces = re.findall(r'\(.+?\)', new_aces)
+				new_aces = [ace for ace in new_aces if ace not in stdout]
+				if new_aces:
+					allow_ace = "".join([ace for ace in new_aces if 'A;' in ace])
+					deny_ace = "".join([ace for ace in new_aces if 'D;' in ace])
+					owner, old_aces = stdout.split("D:")
+					sddl = "{}D:{}{}{}".format(owner, deny_ace.strip(), old_aces.strip(), allow_ace.strip())
 					subprocess.call(['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]])
 		finally:
 			listener.unsetuid()
