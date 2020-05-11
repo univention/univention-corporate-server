@@ -1,3 +1,9 @@
+univention-dvd (5.0.0-0.2) unstable; urgency=low
+
+  * Bug #51234: UCS-5.0-0 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 May 2020 18:02:18 +0200
+
 univention-dvd (4.0.0-6) unstable; urgency=medium
 
   * Bug #51555: UCS-4.4-5 DVD
