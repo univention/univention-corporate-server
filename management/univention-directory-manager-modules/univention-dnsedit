@@ -4,7 +4,6 @@
 #
 # Univention Admin Modules
 """Create and modify dns objects easily."""
-from __future__ import print_function
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -33,10 +32,11 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 
 import sys
 import time
-from optparse import OptionParser
+from argparse import ArgumentParser, RawTextHelpFormatter
 import univention.debug as ud
 ud.init('/var/log/univention/directory-manager-cmd.log', ud.FLUSH, ud.FUNCTION)
 
@@ -59,56 +59,71 @@ import univention.admin.uexceptions  # noqa: E402
 
 def parse():
 	"""Parse command line."""
-	usage = 'Usage: %prog zone command type [args]'
+	usage = '%(prog)s zone command type [args]'
 	description = '''
-%prog my.dns.zone add	srv   ldap tcp 0 100 7389 master.fqdn
-%prog my.dns.zone remove srv   ldap tcp 0 100 7389 master.fqdn
-%prog my.dns.zone add	txt   entry-name  "Some text"
-%prog 192.168.122 add	ptr   42  host.fqdn  --reverse
-%prog my.dns.zone add	cname univention-repository apt.knut.univention.de.
-%prog my.dns.zone add	a	 host  1.2.3.4  5.6.7.8
-%prog my.dns.zone add	zone  root@fqdn 1 28800 7200 25200 10800 ns.fqdn
-'''  # FIXME: OptionParser reformats this
+%(prog)s my.dns.zone add	srv   ldap tcp 0 100 7389 master.fqdn
+%(prog)s my.dns.zone remove srv   ldap tcp 0 100 7389 master.fqdn
+%(prog)s my.dns.zone add	txt   entry-name  "Some text"
+%(prog)s 192.168.122 add	ptr   42  host.fqdn  --reverse
+%(prog)s my.dns.zone add	cname univention-repository apt.knut.univention.de.
+%(prog)s my.dns.zone add	a	 host  1.2.3.4  5.6.7.8
+%(prog)s my.dns.zone add	zone  root@fqdn 1 28800 7200 25200 10800 ns.fqdn
+'''
 	global parser
-	parser = OptionParser(usage=usage, description=description)
-	parser.add_option(
+	parser = ArgumentParser(formatter_class=RawTextHelpFormatter, usage=usage, description=description)
+	parser.add_argument(
 		'--ignore-missing-zone',
 		action='store_true', dest='ignore_missing_zone',
 		help='Skip if zone does not exist')
-	parser.add_option(
+	parser.add_argument(
 		'--ignore-exists',
 		action='store_true', dest='ignore_exists',
 		help='Skip if entry already exists')
-	parser.add_option(
+	parser.add_argument(
 		'--quiet',
 		action='store_true', dest='quiet',
 		help='Turn off verbose messages')  # not implemented
-	parser.add_option(
+	parser.add_argument(
 		'--reverse',
 		action='store_true', dest='reverse',
 		help='Modify revers zone instead of forward zone')
-	parser.add_option(
+	parser.add_argument(
 		'--overwrite',
 		action='store_true', dest='overwrite',
 		help='Overwrite existing record')
-	parser.add_option(
+	parser.add_argument(
 		'--stoptls',
 		action='store_true', dest='stoptls',
 		help='Disable TLS')
-	parser.add_option(
+	parser.add_argument(
 		'--binddn',
 		action='store', dest='binddn',
 		help='bind DN')
-	parser.add_option(
+	parser.add_argument(
 		'--bindpwd',
 		action='store', dest='bindpwd',
 		help='bind password')
-	parser.add_option(
+	parser.add_argument(
 		'--bindpwdfile',
 		action='store', dest='bindpwdfile',
 		help='bind password file')
 
-	options, arguments = parser.parse_args()
+	parser.add_argument(
+		'zone',
+		help='name of the DNS zone',
+	)
+	parser.add_argument(
+		'command',
+		choices=['add', 'remove'],
+		help='command',
+	)
+	parser.add_argument(
+		'typ',
+		choices=['srv', 'txt', 'ns', 'ptr', 'cname', 'a', 'zone'],
+		help='dns record type',
+	)
+
+	(options, args) = parser.parse_known_args()
 	msg = None
 	if options.bindpwdfile:
 		options.bindpwd = open(options.bindpwdfile).read().strip()
@@ -120,12 +135,7 @@ def parse():
 		ud.debug(ud.ADMIN, ud.ERROR, msg)
 		parser.error(msg)
 
-	try:
-		zone_name, command, typ = arguments[0:3]
-	except ValueError:
-		parser.error('Missing command or value. See --help.')
-
-	return options, zone_name, command, typ, arguments[3:]
+	return options, options.zone, options.command, options.typ, args
 
 
 def bind():
