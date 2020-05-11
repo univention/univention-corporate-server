@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-75) unstable; urgency=medium
+
+  * Bug #51211: fix ucr commit trigger for univention.conf
+
+ -- Florian Best <best@univention.de>  Mon, 11 May 2020 13:08:07 +0200
+
 univention-management-console (11.0.4-74) unstable; urgency=medium
 
   * Bug #51235: fix typo json.loads() → json.load()
