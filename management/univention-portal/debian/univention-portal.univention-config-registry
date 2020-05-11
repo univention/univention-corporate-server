@@ -1,6 +1,7 @@
 Type: file
 File: etc/apache2/sites-available/univention-portal.conf
 Variables: umc/web/piwik
+Variables: ucs/server/sso/fqdn
 
 Type: file
 File: etc/apache2/ucs-sites.conf.d/univention-portal.conf

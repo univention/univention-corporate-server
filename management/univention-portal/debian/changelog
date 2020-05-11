@@ -1,3 +1,9 @@
+univention-portal (3.0.2-5) unstable; urgency=medium
+
+  * Bug #51211: fix ucr commit trigger
+
+ -- Florian Best <best@univention.de>  Mon, 11 May 2020 20:12:18 +0200
+
 univention-portal (3.0.2-4) unstable; urgency=medium
 
   * Bug #51099: make UCR templates compatible to python3
