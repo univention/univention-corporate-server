@@ -1,1 +1,0 @@
-../stretch/x86-desktop.sh
