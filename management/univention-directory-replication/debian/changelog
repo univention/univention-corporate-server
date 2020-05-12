@@ -1,3 +1,10 @@
+univention-directory-replication (12.0.0-10) unstable; urgency=low
+
+  * Bug #46590: replicate memberOf attribute unless the memberOf overlay
+    module is disabled.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 12 May 2020 18:55:42 +0200
+
 univention-directory-replication (12.0.0-9) unstable; urgency=low
 
   * Bug #48545: Fix incremental updates for group.uniqueMember
