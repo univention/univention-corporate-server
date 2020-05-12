@@ -72,19 +72,19 @@ LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
 ROOTPW_FILE = '/etc/ldap/rootpw.conf'
 CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
 
-EXCLUDE_ATTRIBUTES = [
+EXCLUDE_ATTRIBUTES = set(attr.lower() for attr in {
 	'subschemaSubentry',
 	'hasSubordinates',
 	'entryDN',
-	'memberOf', 'MEMBEROF',
-	'pwdChangedTime', 'PWDCHANGEDTIME',
-	'pwdAccountLockedTime', 'PWDACCOUNTLOCKEDTIME',
-	'pwdFailureTime', 'PWDFAILURETIME',
-	'pwdHistory', 'PWDHISTORY',
-	'pwdGraceUseTime', 'PWDGRACEUSETIME',
-	'pwdReset', 'PWDRESET',
-	'pwdPolicySubentry', 'PWDPOLICYSUBENTRY',
-]
+	'pwdChangedTime',
+	'pwdAccountLockedTime',
+	'pwdFailureTime',
+	'pwdHistory',
+	'pwdGraceUseTime',
+	'pwdReset',
+	'pwdPolicySubentry',
+} | (set() if listener.baseConfig.is_true('ldap/overlay/memberof') else {'memberOf'}))
+ud.debug(ud.LISTENER, ud.ALL, 'replication: EXCLUDE_ATTRIBUTES=%r' % (EXCLUDE_ATTRIBUTES,))
 
 # don't use built-in OIDs from slapd
 BUILTIN_OIDS = [
@@ -563,25 +563,36 @@ def connect(ldif=0):
 
 
 def addlist(new):
-	al = []
-	for key in new.keys():
-		if key in EXCLUDE_ATTRIBUTES:
-			continue
-		al.append((key, new[key]))
-	return al
+	return [kv for kv in new.items() if kv[0].lower() not in EXCLUDE_ATTRIBUTES]
 
 
 def modlist(old, new):
 	ml = []
-	for key in new.keys():
-		if key in EXCLUDE_ATTRIBUTES:
+	for key, values in new.items():
+		if key.lower() in EXCLUDE_ATTRIBUTES:
 			continue
+
 		if key not in old:
 			ml.append((ldap.MOD_ADD, key, new[key]))
-		elif new[key] != old[key]:
-			ml.append((ldap.MOD_REPLACE, key, new[key]))
+			continue
+
+		set_old = set(old[key])
+		set_new = set(values)
+		if set_old == set_new:
+			continue
+
+		if key == listener.baseConfig.get('ldap/overlay/memberof/member', 'uniqueMember'):
+			# triggers slapd-memberof, where REPLACE is inefficient (Bug #48545)
+			added_items = set_new - set_old
+			removed_items = set_old - set_new
+			if removed_items:
+				ml.append((ldap.MOD_DELETE, key, list(removed_items)))
+			if added_items:
+				ml.append((ldap.MOD_ADD, key, list(added_items)))
+			continue
+		ml.append((ldap.MOD_REPLACE, key, values))
 	for key in old.keys():
-		if key in EXCLUDE_ATTRIBUTES:
+		if key.lower() in EXCLUDE_ATTRIBUTES:
 			continue
 		if key not in new:
 			ml.append((ldap.MOD_DELETE, key, []))
@@ -820,7 +831,7 @@ def handler(dn, new, listener_old, operation):
 				match = 0
 			else:
 				for k in old.keys():
-					if k in EXCLUDE_ATTRIBUTES:
+					if k.lower() in EXCLUDE_ATTRIBUTES:
 						continue
 					if k not in listener_old:
 						ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
