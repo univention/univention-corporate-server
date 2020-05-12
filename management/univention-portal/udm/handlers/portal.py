@@ -163,7 +163,7 @@ layout = [
 		Group(_('User menu'), layout=[
 			['userLinks'],
 		]),
-		Group(_('Miscellaneous menu'), layout=[
+		Group(_('Menu'), layout=[
 			['menuLinks'],
 		]),
 		Group(_('Visibility'), layout=[
