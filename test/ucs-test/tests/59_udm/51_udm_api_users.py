@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
@@ -191,7 +191,7 @@ class TestUdmUsersBasic(TestCase):
 		utils.verify_ldap_object(
 			dn,
 			expected_attr={
-				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
+				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad._asdict()) for ad in addresses],
 			},
 		)
 
@@ -216,7 +216,7 @@ class TestUdmUsersBasic(TestCase):
 		utils.verify_ldap_object(
 			dn,
 			expected_attr={
-				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad.__dict__) for ad in addresses],
+				'homePostalAddress': ['{street}${zipcode}${city}'.format(**ad._asdict()) for ad in addresses],
 			},
 		)
 
