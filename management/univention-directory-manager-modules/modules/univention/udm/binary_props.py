@@ -37,7 +37,7 @@ import codecs
 from collections import namedtuple
 
 import magic
-from six import string_types, StringIO
+from six import string_types, BytesIO
 
 
 FileType = namedtuple('namedtuple', ['mime_type', 'encoding', 'text'])
@@ -121,7 +121,7 @@ class BaseBinaryProperty(object):
 
 	@property
 	def content_type(self):
-		return get_file_type(StringIO(self.raw))
+		return get_file_type(BytesIO(self.raw))
 
 
 class Base64BinaryProperty(BaseBinaryProperty):

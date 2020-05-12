@@ -35,7 +35,7 @@ class TestUdmUsersBasic(TestCase):
 		obj.props.username = obj.props.lastname
 		obj.props.password = random_string()
 
-		jpg_content = open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg').read()
+		jpg_content = open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg', 'rb').read()
 		obj.props.jpegPhoto = jpg_content
 		obj.save()
 		try:
