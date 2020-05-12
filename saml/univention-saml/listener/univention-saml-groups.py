@@ -34,6 +34,8 @@ from __future__ import absolute_import
 import listener
 import os
 import json
+import pwd
+import grp
 import shutil
 
 name = 'univention-saml-groups'
@@ -42,6 +44,8 @@ filter = '(objectClass=univentionSAMLEnabledGroup)'
 attributes = ['enabledServiceProviderIdentifierGroup']
 path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json'
 tmp_path = '/tmp/serviceprovider_enabled_groups.json'
+uid = pwd.getpwnam("samlcgi").pw_uid
+gid = grp.getgrnam("samlcgi").gr_gid
 
 
 def handler(dn, new, old):
@@ -83,7 +87,7 @@ def handler(dn, new, old):
 		with open(tmp_path, 'w+') as outfile:
 			json.dump(data, outfile)
 			os.chmod(tmp_path, 0600)
-			os.chown(tmp_path, 116, 65534)
+			os.chown(tmp_path, uid, gid)
 		shutil.move(tmp_path, path)
 	finally:
 		listener.unsetuid()
