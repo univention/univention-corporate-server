@@ -3,7 +3,7 @@
 ## desc: Test UDM umc call to request a new license
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
-## tags: [udm_api, skip_admember]
+## tags: [skip_admember]
 ## packages: [univention-management-console-module-udm]
 ## bugs: [49384]
 

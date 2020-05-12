@@ -241,7 +241,7 @@ class UDM(object):
 		ldap_obj = self.connection.get(dn, attr=[str('univentionObjectType')])
 		if not ldap_obj:
 			raise NoObject(dn=dn)
-		uot = ldap_obj['univentionObjectType'][0]
+		uot = ldap_obj['univentionObjectType'][0].decode('utf-8')
 		udm_module = self.get(uot)
 		return udm_module.get(dn)
 
