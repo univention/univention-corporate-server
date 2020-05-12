@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-saml
-fix: 6.0.2-41A~4.4.0.202005111505
+fix: 6.0.2-42A~4.4.0.202005121444
 desc: |
  This update addresses the following issues:
  * The Content-Security-Policy is now configurable via the
