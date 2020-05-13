@@ -175,17 +175,12 @@ material-shadow(level)
 			height: 48px
 			position: relative
 
-			&:hover,
-			&:focus
+			&:hover
+				.sidebar__tab__hoverWrapper
+					display: flex
+
 				.sidebar__tab__select
 					background-color: rgba(0, 0, 0, 0.0784)
-
-				.sidebar__tab__close
-					left: 48px
-
-			&:active
-				.sidebar__tab__select
-					background-color: rgba(0, 0, 0, 0.16)
 
 			&--selected
 				.sidebar__tab__select
@@ -202,24 +197,55 @@ material-shadow(level)
 					width: 6px
 					background-color: #7ab51d
 
-		.sidebar__tab__closeCover
-			width: 48px
-			height: 48px
-			background-color: @background-color
+		.sidebar__tab__hoverWrapper
+			material-shadow(1)
 			position: absolute
 			top: 0
-			left: 0
+			left: 48px
+			height: 48px
+			display: flex
+			display: none
+			cursor: pointer
+
+			> :last-child
+				border-radius: 0 2px 2px 0
+
+		.sidebar__tab__titleWrapper
+			position: relative
+			display: grid
+			align-items: center
+			padding: 8px
+			width: 160px
+			height: 48px
+			background-color: white
+
+			&:hover .sidebar__tab__titleHover
+				background-color: rgba(0, 0, 0, 0.0784)
+
+			&:active .sidebar__tab__titleHover
+				background-color: rgba(0, 0, 0, 0.16)
+
+		.sidebar__tab__title
+			font-size: 16px
+
+			&--small
+				font-size: 14px
+				line-height: 16px
+
+		.sidebar__tab__titleHover
+			position: absolute
+			top: 0.2em
+			left: 0.2em
+			right: 0.2em
+			bottom: 0.2em
+			transition: background-color 0.2s
+			background-color: rgba(0, 0, 0, 0)
 
 		.sidebar__tab__close
-			width: 24px
+			width: 32px
 			height: 48px
-			position: absolute
-			top: 0
-			left: 24px
-			transition: left 0.25s
-			background-color: rgba(0, 0, 0, 0.4)
-			border-radius: 0 2px 2px 0
-			cursor: pointer
+			position: relative
+			background-color: rgba(0, 0, 0, 0.9)
 			display: grid
 			align-items: center
 			justify-items: center
@@ -246,6 +272,10 @@ material-shadow(level)
 			position: relative
 			cursor: pointer
 			transition: background-color 0.25s
+
+			&:active
+				background-color: rgba(0, 0, 0, 0.16) !important
+
 
 		.sidebar__tab__select__icon
 			width: 24px
