@@ -28,5 +28,5 @@
 # <https://www.gnu.org/licenses/>.
 
 GPG=/usr/share/keyrings/archive.gpg
-[ -e "$GPG" ] || ln -s univention-archive-key-ucs-4x.gpg "$GPG" || exit $?
+[ -e "$GPG" ] || ln -s univention-archive-key-ucs-5x.gpg "$GPG" || exit $?
 exit 0
