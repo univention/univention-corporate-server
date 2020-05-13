@@ -34,7 +34,7 @@ from __future__ import print_function
 
 import sys
 import time
-import optparse
+import argparse
 from ldap.filter import filter_format
 
 import univention.uldap
@@ -50,11 +50,11 @@ def main():
 This script searches for user accounts with expired account that have not
 been locked yet. For all found user accounts the posix login will be
 disabled."""
-	parser = optparse.OptionParser(usage=usage)
-	parser.add_option("-n", "--dry-run", dest="dry_run", default=False, action="store_true", help="perform only a dry run (disables --quiet)")
-	parser.add_option("-w", "--only-last-week", dest="last_week", default=False, action="store_true", help="check only user accounts that expired within the last 7 days")
-	parser.add_option("-q", "--quiet", dest="verbose", default=True, action="store_false", help="write process messages to logfile only")
-	(options, args) = parser.parse_args()
+	parser = argparse.ArgumentParser(usage=usage)
+	parser.add_argument("-n", "--dry-run", dest="dry_run", default=False, action="store_true", help="perform only a dry run (disables --quiet)")
+	parser.add_argument("-w", "--only-last-week", dest="last_week", default=False, action="store_true", help="check only user accounts that expired within the last 7 days")
+	parser.add_argument("-q", "--quiet", dest="verbose", default=True, action="store_false", help="write process messages to logfile only")
+	options = parser.parse_args()
 
 	if options.dry_run:
 		options.verbose = True
@@ -74,8 +74,9 @@ disabled."""
 		sys.exit(1)
 
 	print_msg('Initializing... (%s)' % (time.ctime()))
-	ud.init('/var/log/univention/lock_expired_accounts.log', 1, 0)
+	ud.init('/var/log/univention/lock_expired_accounts.log', ud.FLUSH, ud.NO_FUNCTION)
 	ud.set_level(ud.MAIN, ud.ALL)
+	ud.set_level(ud.LDAP, ud.ALL)
 	if options.last_week:
 		print_msg('Checking only accounts that expired in the last 7 days')
 

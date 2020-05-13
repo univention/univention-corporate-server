@@ -36,28 +36,28 @@ from __future__ import print_function
 import sys
 import univention.admin
 import univention.admin.uldap
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 if __name__ == '__main__':
 
 	ACTIONS = ('test', 'remove')
 
-	parser = OptionParser(usage='Usage: %%prog (%s)\nremove the sambaPwdMustChange value from all accounts' % '|'.join(ACTIONS))
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser(description='\nremove the sambaPwdMustChange value from all accounts')
+	parser.add_argument(
+		"action",
+		help="Test for sambaPwdMustChange values, or remove them. The default action is test.",
+		choices=ACTIONS,
+		nargs='?'
+	)
+
+	options = parser.parse_args()
 
 	# check argument (action)
-	if not args:
+	if not options.action:
 		print('', file=sys.stderr)
 		print('warning: no action given. default is test', file=sys.stderr)
 		print('', file=sys.stderr)
-		args = ['test']
-
-	if args[0] not in ('test', 'remove'):
-		print('error: unknown action %s' % args[0], file=sys.stderr)
-		parser.print_help()
-		sys.exit(3)
-
-	action = args[0]
+		options.action = 'test'
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
@@ -65,14 +65,13 @@ if __name__ == '__main__':
 	lo, position = univention.admin.uldap.getAdminConnection()
 
 	res = lo.search('sambaPwdMustChange=*', attr=['sambaPwdMustChange'])
-
-	if len(res) < 1:
+	if not res:
 		print('No user with sambaPwdMustChange was found.')
 	else:
 		for ob in res:
-			print('Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0], ob[0],), end=' ')
-			if action == 'remove':
-				lo.modify(ob[0], [('sambaPwdMustChange', ob[1].get('sambaPwdMustChange', []), '')])
+			print('Remove sambaPwdMustChange (%s) for %s' % (ob[1].get('sambaPwdMustChange', [])[0].decode('utf-8'), ob[0],), end=' ')
+			if options.action == 'remove':
+				lo.modify(ob[0], [('sambaPwdMustChange', ob[1].get('sambaPwdMustChange', []), b'')])
 				print('done')
 			else:
 				print('(testing mode)')
