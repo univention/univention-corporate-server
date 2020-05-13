@@ -32,7 +32,7 @@ convert base64 encoded jpegPhoto LDAP entries to binary entries (Bug #26872)'''
 from __future__ import print_function
 
 import binascii
-import optparse
+import argparse
 import sys
 import univention.config_registry as config
 import univention.uldap
@@ -96,23 +96,31 @@ def run(action, verbose=False):
 
 if __name__ == '__main__':
 	# parse arguments and options
-	parser = optparse.OptionParser(usage='Usage: %%prog [options] (%s)\nreplace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.' % '|'.join(ACTIONS))
-	parser.add_option("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
-	(options, args, ) = parser.parse_args()
+	parser = argparse.ArgumentParser(description='\nreplace base64 encoded jpegPhoto LDAP attributes for users accounts with their binary encoded version.')
+	parser.add_argument(
+		"-v", "--verbose",
+		help="print debug output",
+		dest="verbose",
+		action="store_true"
+	)
+	parser.add_argument(
+		"action",
+		help="Test for base64 images, or convert them. The default action is test.",
+		choices=ACTIONS,
+		nargs='?'
+	)
+	options = parser.parse_args()
 
 	# check argument (action)
-	if not args:
+	if not options.action:
+		print('', file=sys.stderr)
 		print('warning: no action given. default is test', file=sys.stderr)
-		args = ['test']
-
-	if args[0] not in ('test', 'convert'):
-		print('error: unknown action %s' % args[0], file=sys.stderr)
-		parser.print_help()
-		sys.exit(3)
+		print('', file=sys.stderr)
+		options.action = ['test']
 
 	# action!
 	try:
-		run(args[0], verbose=options.verbose)
+		run(options.action, verbose=options.verbose)
 	except ldap.SERVER_DOWN as e:
 		print('ERROR: could not contact LDAP server: %s' % e, file=sys.stderr)
 		sys.exit(1)
