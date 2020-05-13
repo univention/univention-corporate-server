@@ -33,8 +33,9 @@ define([
 	"dojo/dom-class",
 	"umc/widgets/Button",
 	"login/main",
+	"portal",
 	"umc/i18n!"
-], function(declare, domClass, Button, login, _) {
+], function(declare, domClass, Button, login, portal, _) {
 	return declare("portal.LoginButton", [ Button ], {
 		iconClass: 'portalLoggedOutIcon',
 
@@ -43,7 +44,9 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.callback = function() {
-				login.start();
+				login.start(null, null, true, function(saml) {
+					portal.showLoginInIFrame(saml);
+				});
 			};
 		},
 
