@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of
    univention-directory-manager-module-example are now python3-compatible.
 bug: [51216]
+erratum: 592
+announced: 2020-05-13
