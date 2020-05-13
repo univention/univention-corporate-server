@@ -1,3 +1,9 @@
+univention-portal (3.1.0-0) unstable; urgency=medium
+
+  * Bug #51157: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 23 Apr 2020 13:00:50 +0200
+
 univention-portal (3.0.2-9) unstable; urgency=medium
 
   * Bug #50302: add cookie banner
