@@ -34,18 +34,15 @@
 from __future__ import print_function
 
 import sys
-import os
-import re
 import univention.config_registry
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uexceptions
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import univention.debug as ud
 
 lo = None
-co = None
 position = None
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -60,43 +57,17 @@ class groupRecursionDetected(univention.admin.uexceptions.base):
 
 
 def get_ldap_connection(baseDN):
-	if os.path.exists('/etc/ldap.secret'):
-		ud.debug(ud.ADMIN, ud.INFO, "using cn=admin,%s account" % baseDN)
-		secretFileName = '/etc/ldap.secret'
-		binddn = 'cn=admin,' + baseDN
-	elif os.path.exists('/etc/machine.secret'):
-		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % configRegistry.get('ldap/hostdn'))
-		secretFileName = '/etc/machine.secret'
-		binddn = configRegistry.get('ldap/hostdn')
-
 	try:
-		secretFile = open(secretFileName, 'r')
-	except IOError:
-		ud.debug(ud.ADMIN, ud.ERROR, "loading %s failed" % secretFileName)
-		sys.exit(1)
-	pwdLine = secretFile.readline()
-	pwd = re.sub('\n', '', pwdLine)
-
-	try:
-		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=2)
-	except Exception as e:
-		ud.debug(ud.ADMIN, ud.ERROR, 'authentication error: %s' % str(e))
-		sys.exit(1)
-
-	try:
-		position = univention.admin.uldap.position(baseDN)
-	except univention.admin.uexceptions.noObject:
-		ud.debug(ud.ADMIN, ud.ERROR, 'invalid position: %s' % baseDN)
-		sys.exit(1)
-
-	return lo, position
+		return univention.admin.uldap.getAdminConnection()
+	except Exception:
+		return univention.admin.uldap.getMachineConnection()
 
 
 def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
-	global grp2childgrps, co, lo
+	global grp2childgrps, lo
 
 	if dn not in grp2childgrps:
-		grpobj = univention.admin.objects.get(grp_module, co, lo, position='', dn=dn, attr=None)
+		grpobj = univention.admin.objects.get(grp_module, None, lo, position='', dn=dn, attr=None)
 		grpobj.open()
 		childs = grpobj['nestedGroup']
 		grp2childgrps[dn] = childs
@@ -115,15 +86,15 @@ def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
 
 
 def main():
-	global lo, co, position
+	global lo, position
 
-	ud.init('/var/log/univention/check_group_recursion.log', 1, 0)
+	ud.init('/var/log/univention/check_group_recursion.log', ud.FLUSH, ud.NO_FUNCTION)
 
 	basedn = configRegistry['ldap/base']
 
-	parser = OptionParser()
-	parser.add_option("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
+	options = parser.parse_args()
 
 	univention.admin.modules.update()
 	lo, position = get_ldap_connection(basedn)
@@ -132,24 +103,24 @@ def main():
 
 	recursionCnt = 0
 
-	grpobjlist = univention.admin.modules.lookup(grp_module, co, lo, scope='sub', superordinate=None, base=basedn, filter=None)
+	grpobjlist = univention.admin.modules.lookup(grp_module, None, lo, scope='sub', superordinate=None, base=basedn, filter=None)
 	print('Number of groups: %d' % len(grpobjlist))
 	ud.debug(ud.ADMIN, ud.ERROR, 'Testing %d groups...' % len(grpobjlist))
-	for i in range(len(grpobjlist)):
+	for i, group in enumerate(grpobjlist):
 		if options.verbose:
 			print()
-			print('|--> %s' % grpobjlist[i].dn)
+			print('|--> %s' % group.dn)
 		else:
 			print('Testing group #%d\r' % i, end='')
 			sys.stdout.flush()
 
 		try:
-			checkChilds(grp_module, grpobjlist[i].dn, [], options.verbose)
+			checkChilds(grp_module, group.dn, [], options.verbose)
 		except groupRecursionDetected as e:
 			txtring = ''
 			for dn in e.recursionlist:
 				txtring += '--> %s\n' % dn
-			ud.debug(ud.ADMIN, ud.ERROR, 'Recursion detected: %s\n%s' % (grpobjlist[i].dn, txtring))
+			ud.debug(ud.ADMIN, ud.ERROR, 'Recursion detected: %s\n%s' % (group.dn, txtring))
 			print()
 			print('Recursion detected:')
 			for dn in e.recursionlist:
