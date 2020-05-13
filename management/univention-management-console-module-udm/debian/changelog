@@ -1,3 +1,9 @@
+univention-management-console-module-udm (9.0.15-6) unstable; urgency=medium
+
+  * Bug #50688: Portal settings via umc policy 
+
+ -- Christian Castens <castens@univention.de>  Wed, 13 May 2020 11:06:55 +0200
+
 univention-management-console-module-udm (9.0.15-5) unstable; urgency=medium
 
   * Bug #50497: use --skip-private

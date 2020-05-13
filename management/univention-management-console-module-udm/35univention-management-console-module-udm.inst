@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=4
+VERSION=5
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -83,6 +83,13 @@ umc_operation_create "udm-nagios" "UDM - Nagios" "nagios/nagios" "udm/*:objectTy
 umc_operation_create "udm-navigation" "UDM - LDAP directory" "navigation" "udm/nav/*"
 
 umc_operation_create "udm-license" "UDM - License Import" "license-import" "udm/license/*"
+
+umc_operation_create "udm-portal" "UDM - Portal settings" "settings/portal_all" \
+	"udm/*:objectType=settings/portal*" "udm/types" "udm/get" "udm/put" \
+
+umc_operation_create "udm-syntax" "UDM - Syntax" "" "udm/syntax/choices/info" "udm/syntax/choices"
+
+umc_operation_create "udm-validate" "UDM - Validate" "" "udm/validate"
 
 umc_policy_append "default-umc-all" "udm-all"
 
