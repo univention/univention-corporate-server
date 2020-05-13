@@ -811,9 +811,6 @@ define([
 			domClass.replace(dom.byId('portal'), 'iframeOpen', 'iframeNotOpen');
 			domClass.remove(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
 
-			if (id !== '$__login__$') {
-				clearInterval(this._pollSessioninfoIntervalId);
-			}
 			this._selectedIframe = id;
 		},
 
@@ -826,7 +823,6 @@ define([
 			domClass.replace(dojo.body(), 'iframeNotOpen', 'iframeOpen');
 			domClass.add(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
 
-			clearInterval(this._pollSessioninfoIntervalId);
 			this._selectedIframe = null;
 		},
 
@@ -947,37 +943,24 @@ define([
 			if (!this._iframeMap.$__login__$) {
 				var target = saml ? '/univention/saml/' : '/univention/login/';
 				var url = target + '?' + ioQuery.objectToQuery({
-					'location': window.location.pathname + window.location.hash,
+					'location': '/univention/portal/loggedin/',
 					username: tools.status('username'),
-					lang: i18nTools.defaultLang(),
-					// iniframe: true
+					lang: i18nTools.defaultLang()
 				});
 
-				// window.addEventListener('message', function(evt) {
-					// // TODO check evt.origin
-					// console.log('portal/main loginIframe - message callback: ', evt);
-					// login.start(null, null, true);
-				// }, false);
 				var d = this.__createIframe(null, null, null, url);
 				d.tab = registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode;
 				this._iframeMap.$__login__$ = d;
 				
 				d.iframe.addEventListener('load', lang.hitch(this, function() {
-					// console.log('iframe loaded');
-					this._pollSessioninfo();
-					// if (saml) {
-						// iframe.contentWindow.postMessage('handShake', 'https://ucs-sso.mydomain.intranet');
-					// } else {
-						// iframe.contentWindow.postMessage('handShake'[>, TODO targetOrigin <]);
-					// }
-					// iframe.contentWindow.onbeforeunload = function(evt) {
-						// console.log('beforeunload: ', evt);
-						// login.start(null, null, true);
-					// };
+					var pathname = lang.getObject('contentWindow.location.pathname', false, d.iframe);
+					if (pathname === '/univention/portal/loggedin/') {
+						login.start(null, null, true);
+						this._selectHome();
+						this._removeIframe('$__login__$');
+					}
 				}));
 				put(dom.byId('iframes'), d.iframeWrapper);
-			} else {
-				this._pollSessioninfo();
 			}
 			this._selectIframe('$__login__$');
 		},
@@ -1003,10 +986,6 @@ define([
 			}
 			delete this._iframeMap[id];
 
-			// not needed as long as this._selectHome() and _selectHome calls clearInterval(this._pollSessioninfoIntervalId)
-			// if (id === '$__login__$') {
-				// clearInterval(this._pollSessioninfoIntervalId);
-			// }
 			if (id === this._selectedIframe) {
 				this._selectHome();
 			}
@@ -1441,20 +1420,6 @@ define([
 			on(window, 'resize', lang.hitch(this, function() {
 				this._handleWindowResize();
 			}));
-		},
-
-		_pollSessioninfoIntervalId: null,
-		_pollSessioninfo: function() {
-			var d = null;
-			var _this = this;
-			_this._pollSessioninfoIntervalId = setInterval(function() {
-				if (!d || (d && d.isFulfilled())) {
-					d = login.sessioninfo().then(function(username) {
-						_this._removeIframe('$__login__$');
-						// console.log('logged in');
-					});
-				}
-			}, 500);
 		},
 
 		_initProperties: function() {
