@@ -10,6 +10,7 @@
 from __future__ import print_function
 import sys
 import subprocess
+import time
 
 from univention.testing.ucr import UCSTestConfigRegistry
 
@@ -38,13 +39,22 @@ with UCSTestConfigRegistry():
 		return app.get_packages()
 
 	def _apt_get_simulate(app):
-		register.call(apps=[app], register_task=['component'], do_it=True)
-		subprocess.call(['/usr/bin/apt-get', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		if not app.without_repository:
+			register.call(apps=[app], register_task=['component'], do_it=True)
+			cmd = ['/usr/bin/apt-get', 'update']
+			for i in range(0, 3):
+				print('Executing the command: %s' % cmd)
+				ret = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				if ret == 0:
+					break
+				print('failed, try again ...')
+				time.sleep(10)
 		packages = _packages_to_install(app)
 		cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
 		print('Executing the command: %s' % cmd)
 		retcode = subprocess.call(cmd, stderr=subprocess.STDOUT)
-		register.call(apps=[app], register_task=['component'])
+		if not app.without_repository:
+			register.call(apps=[app], register_task=['component'])
 		return retcode == 0
 
 	print('Installed apps: %s' % [app for app in Apps().get_all_locally_installed_apps()])
@@ -52,14 +62,14 @@ with UCSTestConfigRegistry():
 	failed = []
 	for app in Apps().get_all_apps():
 		if app.docker:
-			print('Ignoring app %r: Docker App' % app)
+			print('Ignoring app %r: Docker App' % app.id)
 			continue
 		forbidden, warning = app.check('install')
 		if forbidden:
-			print('Ignoring app %r: requirements not met -> %r' % (app, forbidden))
+			print('Ignoring app %r: requirements not met -> %r' % (app.id, forbidden))
 			continue
 
-		print('Checking app: %r' % app)
+		print('Checking app: %r' % app.id)
 		if not _apt_get_simulate(app):
 			failed.append(app)
 
@@ -68,7 +78,7 @@ with UCSTestConfigRegistry():
 	if failed:
 		print('\nTEST FAILED: the following apps cannot be installed due to broken packages...')
 		for app in failed:
-			print('\n[ APP: %s ]' % app.id)
+			print('[ APP: %s ]' % app.id)
 		sys.exit(1)
 
 # cat sources.list for debugging
