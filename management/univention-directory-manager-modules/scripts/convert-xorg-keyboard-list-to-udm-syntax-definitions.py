@@ -37,7 +37,7 @@ f = open(sys.argv[1])
 lines = f.readlines()
 lines_processed = 0
 
-print "\t\t('', ''),"
+print("\t\t('', ''),")
 for i in lines:
 	elem = i.split()
 	lines_processed = lines_processed + 1
@@ -49,4 +49,4 @@ for i in lines:
 	if lines_processed < len(lines):
 		syntax = syntax + ","
 
-	print syntax
+	print(syntax)

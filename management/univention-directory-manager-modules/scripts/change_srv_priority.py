@@ -58,32 +58,26 @@ SRV_RECORDS = [
 
 
 lo, position = univention.admin.uldap.getAdminConnection()
-co = None
 forward_module = univention.admin.modules.get('dns/forward_zone')
-forward_zones = univention.admin.modules.lookup(forward_module, co, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'), filter=None)
+forward_zones = univention.admin.modules.lookup(forward_module, None, lo, scope='sub', superordinate=None, base=configRegistry.get('ldap_base'))
 
 srv_module = univention.admin.modules.get('dns/srv_record')
 for forward_zone in forward_zones:
-	srv_records = univention.admin.modules.lookup(srv_module, co, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'), filter=None)
+	srv_records = univention.admin.modules.lookup(srv_module, None, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'))
 
 	for srv_record in srv_records:
 		name = srv_record.get('name')
 		modify = False
 		if name in SRV_RECORDS:
-			for i in range(len(srv_record['location'])):
-				if len(srv_record['location'][i]) > 0 and srv_record['location'][i][1] == PRIORITY_OLD:
-					srv_record['location'][i][1] = PRIORITY_NEW
+			for location in srv_record['location']:
+				if len(location) > 1 and location[1] == PRIORITY_OLD:
+					location[1] = PRIORITY_NEW
 					modify = True
+
 			if modify:
-
 				# make SRV records uniq
-				location = []
-				for i in range(len(srv_record['location'])):
-					if srv_record['location'][i] not in location:
-						location.append(srv_record['location'][i])
-
-				srv_record['location'] = location
+				srv_record['location'] = list(set(srv_record['location']))
 
 				# Change the objects
-				print 'Modify: %s' % srv_record.dn
+				print('Modify: %s' % srv_record.dn)
 				srv_record.modify()
