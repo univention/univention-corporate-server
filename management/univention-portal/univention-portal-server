@@ -298,7 +298,7 @@ class LDAPCache(object):
 		css_code = ''
 		if background:
 			css_code += '''
-	body.umc.portal {
+	body.umc.portal #contentWrapper {
 		background: %s;
 	}
 	''' % (background, )

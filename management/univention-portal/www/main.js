@@ -797,6 +797,20 @@ define([
 			}));
 		},
 
+		_selectIframe: function(portalEntryDN) {
+			tools.values(this._iframeMap).forEach(function(iframe) {
+				domClass.add(iframe, 'dijitDisplayNone');
+			});
+			domClass.remove(this._iframeMap[portalEntryDN], 'dijitDisplayNone');
+			domClass.remove(dom.byId('iframes'), 'dijitDisplayNone');
+			domClass.add(dojo.body(), 'iframeOpen');
+		},
+
+		_selectHome: function() {
+			domClass.add(dom.byId('iframes'), 'dijitDisplayNone');
+			domClass.remove(dojo.body(), 'iframeOpen');
+		},
+
 		_renderCategory: function(category, renderMode) {
 			var portalCategory = new PortalCategory({
 				heading: category.heading,
@@ -811,6 +825,15 @@ define([
 			this._cleanupList.widgets.push(portalCategory);
 
 			switch (renderMode) {
+				case portalTools.RenderMode.NORMAL:
+					portalCategory.own(on(portalCategory, 'openIframe', lang.hitch(this, function(portalEntryDN, url) {
+						if (!this._iframeMap[portalEntryDN]) {
+							this._iframeMap[portalEntryDN] = put('iframe[src=$]', url);
+							put(dom.byId('iframes'), this._iframeMap[portalEntryDN]);
+						}
+						this._selectIframe(portalEntryDN);
+					})));
+					break;
 				case portalTools.RenderMode.EDIT:
 					portalCategory.own(on(portalCategory, 'addEntry', lang.hitch(this, function() {
 						this.editPortalEntry(portalCategory);
@@ -1238,8 +1261,9 @@ define([
 			}
 
 			this._initProperties();
-			this._registerEventHandlerForSearch();
+			// this._registerEventHandlerForSearch();
 			this._setupEditModeIfAuthorized();
+			this._renderSidebar();
 			this._render(portalTools.RenderMode.NORMAL);
 			this._addLinks();
 			if (tools.status('username')) {
@@ -1255,6 +1279,7 @@ define([
 			this._search = registry.byId('umcLiveSearch');
 			this._categoryIndex = 0;
 			this._portalCategories = [];
+			this._iframeMap = {};
 			this._globalEntryIndex = 0;
 			this._contentNode = dom.byId('content');
 			this._cleanupList = {
@@ -1394,13 +1419,22 @@ define([
 			put(dom.byId('portal'), dndbar.domNode);
 		},
 
+		_renderSidebar: function() {
+			this._sidebar = new Button({
+				'class': 'homeButton umcFlatButton',
+				iconClass: 'homeButton__icon',
+				onClick: lang.hitch(this, '_selectHome')
+			});
+			domConstruct.place(this._sidebar.domNode, dom.byId('sidebar'), 'first');
+		},
+
 		_render: function(renderMode) {
 			this._renderMode = renderMode;
 			this._cleanupPreviousRender();
 			this._updateCssClassForCurrentRenderMode(renderMode);
 			this._renderHeader(renderMode);
 			this._renderContent(renderMode);
-			this._updateSearch(renderMode);
+			// this._updateSearch(renderMode);
 
 			this._rearrangeCategories();
 		},
@@ -1430,8 +1464,6 @@ define([
 		},
 
 		_renderHeader: function(renderMode) {
-			domClass.remove(dom.byId('umcHeaderRight'), 'dijitDisplayNone');
-
 			// font color
 			domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
 
@@ -1484,15 +1516,15 @@ define([
 		_renderCategories: function(renderMode) {
 			var categories = this._getCategories(renderMode);
 
-			domClass.toggle(this._search.domNode, 'dijitDisplayNone', !categories.length);
+			// domClass.toggle(this._search.domNode, 'dijitDisplayNone', !categories.length);
 			if (!categories.length && !tools.status('loggedIn')) {
 				this._renderAnonymousEmptyMessage();
 				return;
 			}
 
-			if (!tools.status('loggedIn')) {
-				registry.byId('umcLoginButton').emphasise();
-			}
+			// if (!tools.status('loggedIn')) {
+				// registry.byId('umcLoginButton').emphasise();
+			// }
 
 			switch (renderMode) {
 				case portalTools.RenderMode.NORMAL:
