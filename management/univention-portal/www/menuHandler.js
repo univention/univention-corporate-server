@@ -29,43 +29,30 @@
 /*global define*/
 
 define([
-	"dojo/_base/declare",
-	"dojo/dom-class",
-	"umc/widgets/Button",
-	"login/main",
-	"umc/i18n!"
-], function(declare, domClass, Button, login, _) {
-	return declare("portal.LoginButton", [ Button ], {
-		iconClass: 'portalLoggedOutIcon',
+	"dojo/topic",
+	"./UserMenu",
+	"./MiscMenu"
+], function(topic, UserMenu, MiscMenu) {
+	topic.subscribe('/portal/menu', function(menuName, action, data) {
+		var menu = null;
+		switch (menuName) {
+			case 'userMenu':
+				menu = UserMenu;
+				break;
+			case 'miscMenu':
+				menu = MiscMenu;
+				break;
+		}
+		if (!menu) {
+			// console.warn
+			return;
+		}
 
-		description: _('Login'),
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			this.callback = function() {
-				login.start();
-			};
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'portalLoginButton portalSidebarButton umcFlatButton');
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			if (this._tooltip) {
-				this._tooltip.position = ['after-centered'];
-				this._tooltip.showDelay = 0;
-				this._tooltip.hideDelay = 0;
-			}
-		},
-
-		emphasise: function(bool) {
-			domClass.toggle(this.domNode, 'umcLoginButton--emphasised', bool);
+		switch (action) {
+			case 'addItem':
+				menu.addItem(data);
+				break;
 		}
 	});
 });
-
-
 

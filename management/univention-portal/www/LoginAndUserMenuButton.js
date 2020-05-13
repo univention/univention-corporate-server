@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Univention GmbH
+ * Copyright 2017-2019 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -30,42 +30,45 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dojo/dom-class",
-	"umc/widgets/Button",
+	"umc/widgets/ContainerWidget",
 	"login/main",
+	"./UserMenuButton",
+	"./LoginButton",
 	"umc/i18n!"
-], function(declare, domClass, Button, login, _) {
-	return declare("portal.LoginButton", [ Button ], {
-		iconClass: 'portalLoggedOutIcon',
-
-		description: _('Login'),
-
-		postMixInProperties: function() {
-			this.inherited(arguments);
-			this.callback = function() {
-				login.start();
-			};
-		},
+], function(declare, lang, domClass, ContainerWidget, login, UserMenuButton, LoginButton, _) {
+	return declare("portal.LoginButton", [ ContainerWidget ], {
+		loggedIn: false,
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			domClass.add(this.domNode, 'portalLoginButton portalSidebarButton umcFlatButton');
+
+			this._loginButton = new LoginButton({});
+			this._userMenuButton = new UserMenuButton({
+				'class': 'dijitDisplayNone'
+			});
+
+			this.addChild(this._loginButton);
+			this.addChild(this._userMenuButton);
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
-			if (this._tooltip) {
-				this._tooltip.position = ['after-centered'];
-				this._tooltip.showDelay = 0;
-				this._tooltip.hideDelay = 0;
-			}
+			login.onLogin(lang.hitch(this, 'set', 'loggedIn', true));
+			login.onLogout(lang.hitch(this, 'set', 'loggedIn', false));
+		},
+
+		_setLoggedInAttr: function(loggedIn) {
+			domClass.toggle(this._loginButton.domNode, 'dijitDisplayNone', loggedIn);
+			domClass.toggle(this._userMenuButton.domNode, 'dijitDisplayNone', !loggedIn);
+			this._set('loggedIn', loggedIn);
 		},
 
 		emphasise: function(bool) {
-			domClass.toggle(this.domNode, 'umcLoginButton--emphasised', bool);
+			this._loginButton.emphasise();
 		}
 	});
 });
-
 
 

@@ -1547,7 +1547,7 @@ define([
 			}
 
 			if (!tools.status('loggedIn')) {
-				registry.byId('sidebar__loginButton').emphasise();
+				registry.byId('sidebar__loginAndUserMenuButton').emphasise();
 			}
 
 			switch (renderMode) {

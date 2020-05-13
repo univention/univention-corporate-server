@@ -93,7 +93,7 @@ material-shadow(level)
 			.umcSearchBox
 				box-shadow: none
 
-	.portalLoginButton
+	.portalSidebarButton
 		margin: 0
 
 		.dijitButtonNode
@@ -104,30 +104,57 @@ material-shadow(level)
 		.dijitArrowButtonInner
 			display: none
 
-		.portalLoggedOutIcon
-			background-image: url(login.png)
+		.dijitIcon
 			background-repeat: no-repeat
 			background-size: contain
 			width: 20px
 			height: 20px
 			margin: 0
 
-		.portalLoggedInIcon
-			background-image: url(avatar.svg)
-			background-repeat: no-repeat
-			background-size: contain
-			width: 20px
-			height: 20px
-			margin: 0
+	.portalMiscMenuIcon
+		background-image: url(misc.svg)
 
-	.portalAvatarMenuContainerPopup
+	.portalLoggedOutIcon
+		background-image: url(login.png)
+
+	.portalLoggedInIcon
+		background-image: url(avatar.svg)
+
+	.portalMenuPopup
 		margin-left: 8px
-		border-radius: 2px
 
-		.portalAvatarMenuContainer
-			border-radius: 2px
-			padding: 8px 0
-			background: #fff
+	.portalUserMenu__userName
+		padding: 8px 16px
+		font-weight: 500
+		border-bottom: 1px solid #c8c8c8
+
+	.materialPopup
+		overflow: hidden
+		border-radius: 2px
+		background: #fff
+
+	.materialMenu
+		padding: 8px 0
+
+		.dijitMenuItem
+			padding: 0
+			height: 32px
+
+		.dijitMenuItemIconCell
+			margin: 0
+			padding: 0
+
+		.dijitMenuItemIcon
+			margin-left: 16px
+
+		.dijitMenuItemLabel
+			padding: 0 0 0 16px
+
+		.dijitMenuArrowCell
+			padding: 0 8px
+
+			.dijitIcon
+				margin: 0
 
 	#sidebar
 		position: fixed
