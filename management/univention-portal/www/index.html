@@ -33,7 +33,13 @@
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
 	<body class="umc portal" id="portal">
-		<div id="contentWrapper">
+		<div id="sidebar">
+			<div class="sidebar__divider"></div>
+			<!-- <div id="umcLoginButton" data-dojo-type="umc/widgets/LoginButton"></div> -->
+			<div data-dojo-type="umc/menu/Button"></div>
+			<div class="univentionLogo"></div>
+		</div>
+		<div id="contentWrapper" class="fixedBackground">
 			<div id="umcHeader" class="umcHeader">
 				<div class="umcHeaderLeft" id="umcHeaderLeft">
 					<div id="portalLogoWrapper">
@@ -42,15 +48,10 @@
 					</div>
 					<h1 id="portalTitle"></h1>
 				</div>
-				<div class="umcHeaderRight dijitDisplayNone" id="umcHeaderRight">
-					<div id="umcLiveSearch" data-dojo-type="umc/widgets/LiveSearch"></div>
-					<div id="umcLoginButton" data-dojo-type="umc/widgets/LoginButton"></div>
-					<div data-dojo-type="umc/menu/Button"></div>
-					<div class="univentionLogo"></div>
-				</div>
 			</div>
 			<div id="content" class="content"></div>
 		</div>
+		<div id="iframes" class="dijitDisplayNone"></div>
 		<div data-dojo-type="umc/dialog/NotificationSnackbar"></div>
 		<footer id="portal-footer"></footer>
 	</body>
