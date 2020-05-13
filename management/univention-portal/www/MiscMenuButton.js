@@ -30,39 +30,16 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-class",
-	"umc/widgets/Button",
-	"login/main",
+	"./_MenuButton",
+	"./MiscMenu",
 	"umc/i18n!"
-], function(declare, domClass, Button, login, _) {
-	return declare("portal.LoginButton", [ Button ], {
-		iconClass: 'portalLoggedOutIcon',
-
-		description: _('Login'),
+], function(declare, PortalMenuButton, MiscMenu, _) {
+	return declare("portal.MiscMenuButton", [ PortalMenuButton ], {
+		iconClass: 'portalMiscMenuIcon',
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.callback = function() {
-				login.start();
-			};
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'portalLoginButton portalSidebarButton umcFlatButton');
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			if (this._tooltip) {
-				this._tooltip.position = ['after-centered'];
-				this._tooltip.showDelay = 0;
-				this._tooltip.hideDelay = 0;
-			}
-		},
-
-		emphasise: function(bool) {
-			domClass.toggle(this.domNode, 'umcLoginButton--emphasised', bool);
+			this.dropDown = new MiscMenu({});
 		}
 	});
 });
