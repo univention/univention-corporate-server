@@ -1642,6 +1642,16 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
 	Die Konfigurationsdatei <filename>/etc/apache2/conf-available/openid-connect-provider.conf</filename> muss unter dem gesetzten DNS Namen in einem Virtual Host verfügbar gemacht werden.
   </para>
   <para>
+	Mit Version 2 der <application>OIDC-Provider App</application> funktioniert die Authentifizierung an <application>OpenID Connect</application> über den SAML Identity Provider der UCS Domäne.
+	Ist der SAML Identity Provider von der Standardkonfiguration abweichend nicht unter <uri>https://ucs-sso.<replaceable>domain.name</replaceable></uri> erreichbar, muss in den App Einstellungen die URL korrekt eingetragen werden, unter der die SAML IdP Metadaten für die UCS Domäne abgerufen werden können.
+	Bei inkorrekter Konfiguration dieser URL startet der <application>OpenID Connect Provider</application> nicht.
+  </para>
+  <para>
+	Mit der Authentifizierung per SAML ist die Autorisierung für die Nutzung des <application>OpenID Connect Providers</application> und damit zu allen per OIDC angebundenen Apps über SAML Berechtigungen steuerbar.
+	Standardmäßig wird bei der Installation der App die Gruppe <systemitem class="groupname">Domänenbenutzer</systemitem> für den Zugriff freigeschaltet.
+	Wenn diese Berechtigung entfernt werden soll, muss zusätzlich in den App Einstellungen die entsprechende Option aktiviert werden, damit die Berechtigung nicht automatisch erneut hinzugefügt wird.
+  </para>
+  <para>
 	Der <application>OpenID Connect Provider</application> protokolliert Aktionen über den Docker Daemon.
 	Die Ausgaben können beispielsweise über das Kommando <command>univention-app logs openid-connect-provider</command> eingesehen werden.
   </para>
