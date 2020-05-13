@@ -1,3 +1,9 @@
+ucs-test (9.0.3-203) unstable; urgency=low
+
+  * Bug #46590: increase timeouts of 10_ldap/42replication_memberof
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 May 2020 10:01:13 +0200
+
 ucs-test (9.0.3-202) unstable; urgency=low
 
   * Bug #46590: add 10_ldap/42replication_memberof
