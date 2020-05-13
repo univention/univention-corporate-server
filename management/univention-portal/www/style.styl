@@ -249,6 +249,7 @@ material-shadow(level)
 			margin: 0
 
 	#iframes
+		background-color: white
 		position: fixed
 		top: 0
 		bottom: 0
@@ -256,12 +257,24 @@ material-shadow(level)
 		right: 0
 		z-index: 27
 
+		.iframeWrapper
+			width: 100%
+			height: 100%
+			z-index: 27
+			display: flex
+			align-items: center
+			justify-content: center
+
+		.iframeStatus
+			position: absolute
+			z-index: 27
+
 		iframe
 			border: none
 			z-index: 27
 			width: 100%
 			height: 100%
-
+	
 	.umcHeader
 		padding: 0 40px
 		display: flex
@@ -899,3 +912,38 @@ material-shadow(level)
 		.cornerPiece
 			width: 100% !important;
 			height: 80px !important;
+
+@keyframes spin {
+	0% {
+		tranform: rotate(0deg)
+	}
+	100% {
+		transform: rotate(360deg)
+	}
+}
+
+.portalLoginButton--loading
+	.dijitIcon
+		display: none
+	.loadingSpinner
+		display: block
+
+.loadingSpinner
+	position: absolute
+	width: 22px
+	height: 22px
+	box-sizing: border-box
+	display: inline-block
+	border-radius: 50%
+	border: 3px solid #282828
+	border-color: #c8c8c8 #c8c8c8 #c8c8c8 #282828
+	transition: opacity 0.2s 0.1s
+	animation-name: spin
+	animation-duration: 1s
+	animation-iteration-count: infinite
+	animation-timing-function: linear
+	opacity: 1
+	display: none
+
+	&.loadingSpinner--visible
+		display: block
