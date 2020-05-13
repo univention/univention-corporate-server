@@ -802,10 +802,10 @@ define([
 		_selectIframe: function(id) {
 			domClass.remove(dom.byId('iframes'), 'dijitDisplayNone');
 			tools.values(this._iframeMap).forEach(function(v) {
-				domClass.add(v.iframe, 'dijitDisplayNone');
+				domClass.add(v.iframeWrapper, 'dijitDisplayNone');
 				domClass.remove(v.tab, 'sidebar__tab--selected');
 			});
-			domClass.remove(this._iframeMap[id].iframe, 'dijitDisplayNone');
+			domClass.remove(this._iframeMap[id].iframeWrapper, 'dijitDisplayNone');
 			domClass.add(this._iframeMap[id].tab, 'sidebar__tab--selected');
 
 			domClass.replace(dom.byId('portal'), 'iframeOpen', 'iframeNotOpen');
@@ -828,7 +828,107 @@ define([
 			clearInterval(this._pollSessioninfoIntervalId);
 		},
 
+		__createIframe: function(logoUrl, url) {
+			var iframeWrapper = put('div.iframeWrapper');
+			var iframeStatus = put('span.iframeStatus.loadingSpinner.loadingSpinner--visible');
+			var iframe = put('iframe[src=$]', url);
+			var tab = put('div.sidebar__tab div.sidebar__tab__icon.$ <', portalTools.getIconClass(logoUrl));
+
+			// you can't open iframes with src http (no 's')
+			// when the origin is https.
+			// This is a 'Mixed Content' error and it can't be catched
+			// (as far as i know).
+			// So we say that an iframe failed when onload does not fire
+			// after 4 seconds.
+			var maybeLoadFailed = setTimeout(function() {
+				iframeStatus.innerHTML = _('Content could not be loaded.');
+				put(iframeStatus, '!dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
+			}, 4000);
+			iframe.addEventListener('load', lang.hitch(this, function() {
+				clearTimeout(maybeLoadFailed);
+				if (iframe.contentDocument) {
+					put(iframeStatus, '.dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
+				} else {
+					iframeStatus.innerHTML = _('Content could not be loaded.');
+					put(iframeStatus, '!dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
+				}
+				if (iframe.contentWindow) {
+					iframe.contentWindow.onbeforeunload = lang.hitch(this, function() {
+						iframeStatus.innerHTML = _('Loading...');
+						put(iframeStatus, '!dijitDisplayNone.loadingSpinner.loadingSpinner--visible');
+					});
+				}
+			}));
+			iframe.addEventListener('error', lang.hitch(this, function() {
+				iframeStatus.innerHTML = _('Content could not be loaded.');
+				put(iframeStatus, '!dijitDisplayNone!loadingSpinner!loadingSpinner--visible');
+			}));
+			put(iframeWrapper, iframeStatus, '+', iframe);
+			return {
+				iframe: iframe,
+				iframeWrapper: iframeWrapper,
+				tab: tab
+			};
+		},
+
+		_createIframe: function(id, logoUrl, url) {
+			var d = this.__createIframe(logoUrl, url);
+			on(d.tab, 'click', lang.hitch(this, function() {
+				this._selectIframe(id);
+			}));
+			this._iframeMap[id] = {
+				iframeWrapper: d.iframeWrapper,
+				iframe: d.iframe,
+				tab: d.tab
+			};
+			put(dom.byId('iframes'), d.iframeWrapper);
+			put(dom.byId('sidebar__tabs'), d.tab);
+		},
+
+		showLoginInIframe: function(saml) {
+			if (!this._iframeMap.$__login__$) {
+				var target = saml ? '/univention/saml/' : '/univention/login/';
+				var url = target + '?' + ioQuery.objectToQuery({
+					'location': window.location.pathname + window.location.hash,
+					username: tools.status('username'),
+					lang: i18nTools.defaultLang(),
+					// iniframe: true
+				});
+
+				// window.addEventListener('message', function(evt) {
+					// // TODO check evt.origin
+					// console.log('portal/main loginIframe - message callback: ', evt);
+					// login.start(null, null, true);
+				// }, false);
+				var d = this.__createIframe(null, url);
+				d.tab = registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode;
+				this._iframeMap.$__login__$ = d;
+				
+				d.iframe.addEventListener('load', lang.hitch(this, function() {
+					// console.log('iframe loaded');
+					this._pollSessioninfo();
+					// if (saml) {
+						// iframe.contentWindow.postMessage('handShake', 'https://ucs-sso.mydomain.intranet');
+					// } else {
+						// iframe.contentWindow.postMessage('handShake'[>, TODO targetOrigin <]);
+					// }
+					// iframe.contentWindow.onbeforeunload = function(evt) {
+						// console.log('beforeunload: ', evt);
+						// login.start(null, null, true);
+					// };
+				}));
+				put(dom.byId('iframes'), d.iframeWrapper);
+			} else {
+				this._pollSessioninfo();
+			}
+			this._selectIframe('$__login__$');
+		},
+
+
 		_removeIframe: function(id) {
+			// TODO research
+			// we are just removing the iframe from the dom.
+			// Do we have to do something else.
 			var o = this._iframeMap[id];
 			if (!o) {
 				return;
@@ -838,9 +938,9 @@ define([
 					o.tab.parentNode.removeChild(o.tab);
 				}
 			}
-			if (o.iframe) {
-				if (o.iframe.parentNode) {
-					o.iframe.parentNode.removeChild(o.iframe);
+			if (o.iframeWrapper) {
+				if (o.iframeWrapper.parentNode) {
+					o.iframeWrapper.parentNode.removeChild(o.iframeWrapper);
 				}
 			}
 			delete this._iframeMap[id];
@@ -868,19 +968,11 @@ define([
 
 			switch (renderMode) {
 				case portalTools.RenderMode.NORMAL:
-					portalCategory.own(on(portalCategory, 'openIframe', lang.hitch(this, function(portalEntryDN, logoUrl, url) {
-						if (!this._iframeMap[portalEntryDN]) {
-							this._iframeMap[portalEntryDN] = {
-								iframe: put('iframe[src=$]', url),
-								tab: put('div.sidebar__tab div.sidebar__tab__icon.$ <', portalTools.getIconClass(logoUrl))
-							};
-							on(this._iframeMap[portalEntryDN].tab, 'click', lang.hitch(this, function() {
-								this._selectIframe(portalEntryDN);
-							}));
-							put(dom.byId('iframes'), this._iframeMap[portalEntryDN].iframe);
-							put(dom.byId('sidebar__tabs'), this._iframeMap[portalEntryDN].tab);
+					portalCategory.own(on(portalCategory, 'openIframe', lang.hitch(this, function(id, logoUrl, url) {
+						if (!this._iframeMap[id]) {
+							this._createIframe(id, logoUrl, url);
 						}
-						this._selectIframe(portalEntryDN);
+						this._selectIframe(id);
 					})));
 					break;
 				case portalTools.RenderMode.EDIT:
@@ -1323,46 +1415,6 @@ define([
 			on(window, 'resize', lang.hitch(this, function() {
 				this._handleWindowResize();
 			}));
-		},
-
-		showLoginInIFrame: function(saml) {
-			if (!this._iframeMap.$__login__$) {
-				var target = saml ? '/univention/saml/' : '/univention/login/';
-				var url = target + '?' + ioQuery.objectToQuery({
-					'location': window.location.pathname + window.location.hash,
-					username: tools.status('username'),
-					lang: i18nTools.defaultLang(),
-					// iniframe: true
-				});
-
-				// window.addEventListener('message', function(evt) {
-					// // TODO check evt.origin
-					// console.log('portal/main loginIframe - message callback: ', evt);
-					// login.start(null, null, true);
-				// }, false);
-				var iframe = put('iframe[src=$]', url);
-				this._iframeMap.$__login__$ = {
-					iframe: iframe,
-					tab: registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode
-				};
-				iframe.onload = lang.hitch(this, function() {
-					// console.log('iframe loaded');
-					this._pollSessioninfo();
-					// if (saml) {
-						// iframe.contentWindow.postMessage('handShake', 'https://ucs-sso.mydomain.intranet');
-					// } else {
-						// iframe.contentWindow.postMessage('handShake'[>, TODO targetOrigin <]);
-					// }
-					// iframe.contentWindow.onbeforeunload = function(evt) {
-						// console.log('beforeunload: ', evt);
-						// login.start(null, null, true);
-					// };
-				});
-				put(dom.byId('iframes'), iframe);
-			} else {
-				this._pollSessioninfo();
-			}
-			this._selectIframe('$__login__$');
 		},
 
 		_pollSessioninfoIntervalId: null,
