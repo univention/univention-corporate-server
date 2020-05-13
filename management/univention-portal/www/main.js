@@ -830,15 +830,43 @@ define([
 			this._selectedIframe = null;
 		},
 
-		__createIframe: function(id, logoUrl, url) {
+		__createIframe: function(id, title, logoUrl, url) {
 			var iframeWrapper = put('div.iframeWrapper');
 			var iframeStatus = put('span.iframeStatus.loadingSpinner.loadingSpinner--visible');
 			var iframe = put('iframe[src=$]', url);
 			var tab = put('div.sidebar__tab');
-			var tabCloseCover = put('div.sidebar__tab__closeCover');
-			var tabClose = put('div.sidebar__tab__close div.umcCrossIconWhite <');
 			var tabSelect = put('div.sidebar__tab__select div.sidebar__tab__select__icon.$ <', portalTools.getIconClass(logoUrl));
-			put(tab, tabClose, '+', tabCloseCover, '+', tabSelect);
+			var tabClose = put('div.sidebar__tab__close div.umcCrossIconWhite <');
+			var titleWrapper = null;
+			if (title) {
+				var titleNode = put('div.sidebar__tab__title $', title);
+				titleWrapper = put('div.sidebar__tab__titleWrapper', titleNode, '+ div.sidebar__tab__titleHover <');
+
+				// resize title
+				put(titleWrapper, '.dijitOffScreen');
+				put(dom.byId('sidebar'), titleWrapper);
+				var maxHeight = domGeometry.getContentBox(titleWrapper).h;
+				var pos = domGeometry.position(titleNode);
+				if (pos.h > maxHeight) {
+					put(titleNode, '.sidebar__tab__title--small');
+					pos = domGeometry.position(titleNode);
+					if (pos.h > maxHeight) {
+						titleWrapper.setAttribute('title', titleNode.textContent);
+						while (titleNode.textContent.length > 3 && pos.h > maxHeight) {
+							titleNode.textContent = titleNode.textContent.slice(0, Math.max(0, titleNode.textContent.length - 6)) + '...';
+							pos = domGeometry.position(titleNode);
+						}
+					}
+				}
+				put(titleWrapper, '!dijitOffScreen');
+			}
+			var hoverWrapper = null;
+			if (titleWrapper) {
+				hoverWrapper = put('div.sidebar__tab__hoverWrapper', tabClose, '+', titleWrapper, '<');
+			} else {
+				hoverWrapper = put('div.sidebar__tab__hoverWrapper', tabClose, '<');
+			}
+			put(tab, tabSelect, '+', hoverWrapper);
 
 			// you can't open iframes with src http (no 's')
 			// when the origin is https.
@@ -882,19 +910,24 @@ define([
 				iframeWrapper: iframeWrapper,
 				tab: tab,
 				tabSelect: tabSelect,
-				tabClose: tabClose
+				tabClose: tabClose,
+				tabTitle: titleWrapper
 			};
 		},
 
-		_createIframe: function(id, logoUrl, url) {
-			var d = this.__createIframe(id, logoUrl, url);
+		_createIframe: function(id, title, logoUrl, url) {
+			var d = this.__createIframe(id, title, logoUrl, url);
 			on(d.tabSelect, 'click', lang.hitch(this, function() {
-				console.log('tab click');
 				this._selectIframe(id);
 			}));
 			on(d.tabClose, 'click', lang.hitch(this, function() {
 				this._removeIframe(id);
 			}));
+			if (d.tabTitle) {
+				on(d.tabTitle, 'click', lang.hitch(this, function() {
+					this._selectIframe(id);
+				}));
+			}
 			this._iframeMap[id] = {
 				iframeWrapper: d.iframeWrapper,
 				tab: d.tab
@@ -903,9 +936,9 @@ define([
 			put(dom.byId('sidebar__tabs'), d.tab);
 		},
 
-		openIframe: function(id, logoUrl, url) {
+		openIframe: function(id, title, logoUrl, url) {
 			if (!this._iframeMap[id]) {
-				this._createIframe(id, logoUrl, url);
+				this._createIframe(id, title, logoUrl, url);
 			}
 			this._selectIframe(id);
 		},
@@ -925,7 +958,7 @@ define([
 					// console.log('portal/main loginIframe - message callback: ', evt);
 					// login.start(null, null, true);
 				// }, false);
-				var d = this.__createIframe(null, null, url);
+				var d = this.__createIframe(null, null, null, url);
 				d.tab = registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode;
 				this._iframeMap.$__login__$ = d;
 				
@@ -994,14 +1027,6 @@ define([
 			this._cleanupList.widgets.push(portalCategory);
 
 			switch (renderMode) {
-				case portalTools.RenderMode.NORMAL:
-					portalCategory.own(on(portalCategory, 'openIframe', lang.hitch(this, function(id, logoUrl, url) {
-						if (!this._iframeMap[id]) {
-							this._createIframe(id, logoUrl, url);
-						}
-						this._selectIframe(id);
-					})));
-					break;
 				case portalTools.RenderMode.EDIT:
 					portalCategory.own(on(portalCategory, 'addEntry', lang.hitch(this, function() {
 						this.editPortalEntry(portalCategory);
