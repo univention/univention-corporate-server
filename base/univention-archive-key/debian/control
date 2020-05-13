@@ -28,7 +28,7 @@ Recommends:
  gpgv-udeb,
 Description: UCS - Archive signature key
  This package contains the archive signing key for Univention
- Corporate Server 4.x, in a minimal form for use in the installer.
+ Corporate Server 5.x, in a minimal form for use in the installer.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
