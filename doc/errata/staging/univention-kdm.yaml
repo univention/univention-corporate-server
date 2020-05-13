@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-kdm
 fix: 5.0.0-4A~4.4.0.202005041351
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Internal change: the UCR templates of univention-kdm are now
    python3-compatible.
 bug: [51218]
