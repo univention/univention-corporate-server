@@ -1,3 +1,9 @@
+univention-archive-key (9.0.0-3) unstable; urgency=low
+
+  * Bug #51250: Install archive keys to /etc/apt/trusted.gpg.d/
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 13 May 2020 09:04:35 +0200
+
 univention-archive-key (9.0.0-2) unstable; urgency=low
 
   * Bug #51250: Add univention-archive-key-ucs-5x.gpg

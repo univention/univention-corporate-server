@@ -29,9 +29,28 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-if [ -x /usr/bin/apt-key ]; then
-    /usr/bin/apt-key add /usr/share/keyrings/univention-archive-key-ucs-4x.gpg
-    /usr/bin/apt-key add /usr/share/keyrings/univention-archive-key-ucs-5x.gpg
+set -e
+
+have () {
+    command -v "$1" >/dev/null 2>&1
+}
+if [ "$1" = 'configure' ] && dpkg --compare-versions "$2" lt-nl '9.0.0-3' && have gpg && have apt-key
+then
+    TRUSTEDFILE='/etc/apt/trusted.gpg'
+    eval "$(apt-config shell TRUSTEDFILE Apt::GPGV::TrustedKeyring)"
+    eval "$(apt-config shell TRUSTEDFILE Dir::Etc::Trusted/f)"
+
+    UCS2='1027 D9E4 1543 386F 3CC2  85DA 0AFF A048 0A55 84A5'
+    UCS3='3550 FB4C C61F DB88 D334  E31A 1DD6 7AFB 2CBD A4B0'
+    UCS4='6B6E 7E32 59A9 F44F 1452  D1BE 3660 2BA8 6B8B FD3C'
+    UCS5='8321 745B B32A 82C7 5BBD  4BC2 D293 E501 A055 F562'
+    if [ -e "$TRUSTEDFILE" ]
+    then
+        for KEY in "$UCS2" "$UCS3" "$UCS4" "$UCS5"
+        do
+            apt-key --keyring "$TRUSTEDFILE" del "$KEY" > /dev/null 2>&1 || :
+        done
+    fi
 fi
 
 #DEBHELPER#
