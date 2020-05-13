@@ -1,3 +1,9 @@
+univention-archive-key (10.0.0-0.1) unstable; urgency=low
+
+  * Bug #51234: Switch to univention-archive-key-ucs-5x
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 31 Jul 2020 15:27:48 +0200
+
 univention-archive-key (9.0.0-4) unstable; urgency=low
 
   * Bug #51603: Re-add univention-archive-key-ucs-3x.gpg
