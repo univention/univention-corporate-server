@@ -30,12 +30,14 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
 	"dojo/dom-class",
 	"umc/widgets/Button",
 	"login/main",
 	"portal",
+	"put-selector/put",
 	"umc/i18n!"
-], function(declare, domClass, Button, login, portal, _) {
+], function(declare, lang, domClass, Button, login, portal, put, _) {
 	return declare("portal.LoginButton", [ Button ], {
 		iconClass: 'portalLoggedOutIcon',
 
@@ -44,15 +46,18 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.callback = function() {
-				login.start(null, null, true, function(saml) {
-					portal.showLoginInIFrame(saml);
-				});
+				domClass.add(this.domNode, 'portalLoginButton--loading');
+				login.start(null, null, true, lang.hitch(this, function(saml) {
+					domClass.remove(this.domNode, 'portalLoginButton--loading');
+					portal.showLoginInIframe(saml);
+				}));
 			};
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			domClass.add(this.domNode, 'portalLoginButton portalSidebarButton umcFlatButton');
+			put(this.domNode.firstChild, 'div.loadingSpinner');
 		},
 
 		postCreate: function() {
