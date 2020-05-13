@@ -995,8 +995,7 @@ class CLI(object):
 
 				if list_policies:
 					utf8_objectdn = _2utf8(univention.admin.objects.dn(object))
-					p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_objectdn], stdout=subprocess.PIPE)
-					policyResults = p1.communicate()[0].decode('utf-8').split(u'\n')
+					policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [utf8_objectdn], close_fds=True).decode('utf-8').split(u'\n')
 
 					out.append("  Policy-based Settings:")
 					policy = ''
@@ -1040,8 +1039,7 @@ class CLI(object):
 							for subnet in univention.admin.modules.lookup(subnet_module, None, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
 								if ip_ in IPv4Network(u"%(subnet)s/%(subnetmask)s" % subnet, strict=False):
 									utf8_subnet_dn = _2utf8(subnet.dn)
-									p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
-									policyResults = p1.communicate()[0].split('\n')
+									policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], close_fds=True).decode('utf-8').split(u'\n')
 									out.append("  Subnet-based Settings:")
 									ddict = {}
 									policy = ''
@@ -1050,7 +1048,7 @@ class CLI(object):
 										if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
 											out.append("    %s" % line.strip())
 											if policies_with_DN:
-												subsplit = line.strip().split(': ')
+												subsplit = line.strip().split(': ', 1)
 												if subsplit[0] == 'Policy':
 													if policy:
 														ddict[attribute] = [policy, value]
@@ -1061,7 +1059,7 @@ class CLI(object):
 												elif subsplit[0] == 'Value':
 													value.append(subsplit[1])
 											else:
-												subsplit = line.strip().split('=')
+												subsplit = line.strip().split('=', 1)
 												if subsplit[0] not in ddict:
 													ddict[subsplit[0]] = []
 												ddict[subsplit[0]].append(subsplit[1])
@@ -1082,19 +1080,19 @@ class CLI(object):
 										for key in client.keys():
 											out.append("    Policy: " + client[key][0])
 											out.append("    Attribute: " + key)
-											for i in range(0, len(client[key][1])):
-												out.append("    Value: " + client[key][1][i])
+											for val in client[key][1]:
+												out.append("    Value: " + val)
 									else:
 										for key in client.keys():
-											for i in range(0, len(client[key])):
-												out.append("    %s=%s" % (key, client[key][i]))
+											for val in client[key]:
+												out.append("    %s=%s" % (key, val))
 									out.append('')
 
 				out.append('')
 		except univention.admin.uexceptions.ldapError as errmsg:
-			raise OperationFailed(out, '%s' % str(errmsg))
+			raise OperationFailed(out, '%s' % (errmsg,))
 		except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-			raise OperationFailed(out, '%s' % str(errmsg.message))
+			raise OperationFailed(out, '%s' % (errmsg.message,))
 
 		return out
 
