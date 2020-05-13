@@ -12,6 +12,14 @@
 		<link rel="stylesheet" href="custom.css">
 		<!-- TODO: should go into univention-web -->
 		<link rel="stylesheet" href="/univention/management/modules/appcenter.css" type="text/css"/>
+		<script>
+			umcConfig = {
+				deps: ['portal', 'portal/menuHandler'],
+				callback: function(portal) {
+					portal.start();
+				}
+			};
+		</script>
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
 			dojoConfig.packages.push({
@@ -24,11 +32,6 @@
 				}
 			};
 			dojoConfig.cacheBust = "v=2.0.2-4";
-			umcConfig.callback =function() {
-				require(["portal", "umc/widgets/LiveSearch"], function(portal) {
-					portal.start();
-				});
-			};
 		</script>
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
@@ -39,8 +42,8 @@
 			<div id="portalLiveSearchWrapper">
 				<div id="portalLiveSearch" class="portalLiveSearch--collapsed" data-dojo-type="portal/LiveSearch"></div>
 			</div>
-			<div id="sidebar__loginButton" data-dojo-type="portal/LoginButton"></div>
-			<div data-dojo-type="umc/menu/Button"></div>
+			<div id="sidebar__loginAndUserMenuButton" data-dojo-type="portal/LoginAndUserMenuButton"></div>
+			<div id="sidebar__miscMenuButton" data-dojo-type="portal/MiscMenuButton"></div>
 			<div class="univentionLogo"></div>
 		</div>
 		<div id="contentWrapper" class="fixedBackground">

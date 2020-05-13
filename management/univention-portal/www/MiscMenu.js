@@ -30,42 +30,36 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/dom-class",
-	"umc/widgets/Button",
-	"login/main",
+	"dojo/Deferred",
+	"umc/widgets/ContainerWidget",
+	"./_Menu",
 	"umc/i18n!"
-], function(declare, domClass, Button, login, _) {
-	return declare("portal.LoginButton", [ Button ], {
-		iconClass: 'portalLoggedOutIcon',
+], function(declare, Deferred, ContainerWidget, PortalMenu, _) {
 
-		description: _('Login'),
+	var miscMenuDeferred = new Deferred();
 
+	var MiscMenu = declare('portal.MiscMenu', [PortalMenu], {
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this.callback = function() {
-				login.start();
-			};
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			domClass.add(this.domNode, 'portalLoginButton portalSidebarButton umcFlatButton');
+			this.$wrapper = new ContainerWidget({});
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
-			if (this._tooltip) {
-				this._tooltip.position = ['after-centered'];
-				this._tooltip.showDelay = 0;
-				this._tooltip.hideDelay = 0;
+			if (miscMenuDeferred.isResolved()) {
+				console.warn('MiscMenu created twice: only the first created MiscMenu gets the subsequently added menu entries (like from univention-web/js/hooks/default_menu_entries.js). The MiscMenu was not intended to exist more than once');
+			} else {
+				miscMenuDeferred.resolve(this);
 			}
-		},
-
-		emphasise: function(bool) {
-			domClass.toggle(this.domNode, 'umcLoginButton--emphasised', bool);
 		}
 	});
+
+	MiscMenu.addItem = function(conf) {
+		miscMenuDeferred.then(function(miscMenu) {
+			miscMenu.addItem(conf);
+		});
+	};
+
+	return MiscMenu;
 });
-
-
 
