@@ -9,3 +9,5 @@ desc: |
  * Internal change: the UCR templates of
    univention-virtual-machine-manager-daemon are now python3-compatible.
 bug: [51215]
+erratum: 598
+announced: 2020-05-13
