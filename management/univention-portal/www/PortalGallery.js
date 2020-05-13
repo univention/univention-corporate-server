@@ -283,19 +283,20 @@ define([
 				case portalTools.RenderMode.NORMAL:
 					domNode = this.inherited(arguments);
 					var link = put('a[href=$]', this._getWebInterfaceUrl(item));
-					var openLinkInNewWindow = false;
-					if (this.defaultLinkTarget && this.defaultLinkTarget === 'newwindow') {
-						openLinkInNewWindow = true;
-					}
-					switch (item.linkTarget) {
+					var linkTarget = item.linkTarget === 'useportaldefault' ? this.defaultLinkTarget : item.linkTarget;
+					switch (linkTarget) {
 						case 'samewindow':
-							openLinkInNewWindow = false; break;
+							break;
 						case 'newwindow':
-							openLinkInNewWindow = true;  break;
-					}
-					if (openLinkInNewWindow) {
-						link.target = '_blank';
-						link.rel = 'noopener';
+							link.target = '_blank';
+							link.rel = 'noopener';
+							break;
+						case 'embedded':
+							link.onclick = lang.hitch(this, function(e) {
+								e.preventDefault();
+								this.onOpenIframe(item.dn, this._getWebInterfaceUrl(item));
+							});
+							break;
 					}
 					put(domNode, link, query('.umcGalleryItem', domNode)[0]);
 					break;
@@ -352,6 +353,10 @@ define([
 		},
 
 		onEntryNotInPortalJSON: function(entry) {
+			// event stub
+		},
+
+		onOpenIframe: function(portalEntryDN, url) {
 			// event stub
 		},
 
