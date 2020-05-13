@@ -38,6 +38,7 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/aspect",
+	"dojo/topic",
 	"dojo/query",
 	"dojo/dom-class",
 	"dojo/dom-construct",
@@ -51,7 +52,7 @@ define([
 	"umc/tools",
 	"umc/widgets/AppGallery",
 	"./tools"
-], function(declare, lang, array, on, aspect, query, domClass, domConstruct, domGeometry, domStyle, Memory, Observable, Source, entities, put, tools, AppGallery, portalTools) {
+], function(declare, lang, array, on, aspect, topic, query, domClass, domConstruct, domGeometry, domStyle, Memory, Observable, Source, entities, put, tools, AppGallery, portalTools) {
 	var _regIPv6Brackets = /^\[.*\]$/;
 
 	var find = function(list, testFunc) {
@@ -323,7 +324,7 @@ define([
 						case 'embedded':
 							link.onclick = lang.hitch(this, function(e) {
 								e.preventDefault();
-								this.onOpenIframe(item.dn, item.logo_name, this._getWebInterfaceUrl(item));
+								topic.publish('/portal/iframes/open', item.dn, item.name, item.logo_name, this._getWebInterfaceUrl(item));
 							});
 							break;
 					}
@@ -378,10 +379,6 @@ define([
 		},
 
 		onEntryNotInPortalJSON: function(entry) {
-			// event stub
-		},
-
-		onOpenIframe: function(portalEntryDN, logoUrl, url) {
 			// event stub
 		},
 
