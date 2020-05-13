@@ -1,3 +1,9 @@
+ucs-test (9.0.3-205) unstable; urgency=medium
+
+  * Bug #50648: add tests/65_udm-dhcp/70_udm_cli_policies_output
+
+ -- Florian Best <best@univention.de>  Wed, 13 May 2020 19:26:21 +0200
+
 ucs-test (9.0.3-204) unstable; urgency=low
 
   * Bug #46590: wait for samba replication in 10_ldap/42replication_memberof
