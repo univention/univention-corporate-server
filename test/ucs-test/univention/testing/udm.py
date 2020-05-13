@@ -281,6 +281,9 @@ class UCSTestUDM(object):
 			for item in value:
 				cmd.extend(['--%s' % arg.replace('_', '-'), item])
 
+		if action == 'list' and 'policies' in args:
+			cmd.extend(['--policies=%s' % (args.pop('policies'),)])
+
 		for option in args.pop('options', ()):
 			cmd.extend(['--option', option])
 
@@ -564,8 +567,9 @@ class UCSTestUDM(object):
 		if ad_ldap_search_args:
 			wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
 
-	def list_objects(self, module):
-		cmd = ['/usr/sbin/udm-test', module, 'list']
+	def list_objects(self, modulename, **kwargs):
+		cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
+		print('Listing %s objects %s' % (modulename, _prettify_cmd(cmd)))
 		child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
 
@@ -578,17 +582,39 @@ class UCSTestUDM(object):
 		objects = []
 		dn = None
 		attrs = {}
+		pattr = None
+		pvalue = None
+		pdn = None
+		current_policy_type = None
 		for line in stdout.splitlines():
 			if line.startswith('DN: '):
-				dn = line[3:].strip()
-			elif not line.strip():
 				if dn:
 					objects.append((dn, attrs))
 					dn = None
 					attrs = {}
+				dn = line[3:].strip()
+			elif not line.strip():
+				continue
+			elif line.startswith('    ') and ':' in line:  # list --policies=1
+				name, value = line.split(':', 1)
+				if name.strip() == 'Policy':
+					pdn = value
+				elif name.strip() == 'Attribute':
+					pattr = value
+				elif name.strip() == 'Value':
+					pvalue = value
+					attrs.setdefault(current_policy_type, {}).setdefault(pdn.strip(), {}).setdefault(pattr.strip(), []).append(pvalue.strip())
+					pvalue = pattr = pdn = None
+			elif line.startswith('    ') and '=' in line:  # list --policies=2
+				name, value = line.split('=', 1)
+				attrs.setdefault(current_policy_type, {}).setdefault(name.strip(), []).append(value.strip().strip('"'))
+			elif any(x in line for x in ('Policy-based Settings', 'Subnet-based Settings', 'Merged Settings')):
+				current_policy_type = line.split(':')[0].strip()
 			elif line.startswith(' ') and ':' in line:
 				name, value = line.split(':', 1)
 				attrs.setdefault(name.strip(), []).append(value.strip())
+		if dn:
+			objects.append((dn, attrs))
 		return objects
 
 	def cleanup(self):
