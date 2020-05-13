@@ -37,6 +37,7 @@ define([
 	"dojo/aspect",
 	"dojo/when",
 	"dojo/on",
+	"dojo/io-query",
 	"dojo/query",
 	"dojo/dom",
 	"dojo/dom-class",
@@ -79,7 +80,7 @@ define([
 	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
-], function(declare, lang, array, win, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
+], function(declare, lang, array, win, Deferred, aspect, when, on, ioQuery, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -797,17 +798,21 @@ define([
 			}));
 		},
 
-		_selectIframe: function(portalEntryDN) {
+		_selectIframe: function(id) {
 			domClass.remove(dom.byId('iframes'), 'dijitDisplayNone');
 			tools.values(this._iframeMap).forEach(function(v) {
 				domClass.add(v.iframe, 'dijitDisplayNone');
 				domClass.remove(v.tab, 'sidebar__tab--selected');
 			});
-			domClass.remove(this._iframeMap[portalEntryDN].iframe, 'dijitDisplayNone');
-			domClass.add(this._iframeMap[portalEntryDN].tab, 'sidebar__tab--selected');
+			domClass.remove(this._iframeMap[id].iframe, 'dijitDisplayNone');
+			domClass.add(this._iframeMap[id].tab, 'sidebar__tab--selected');
 
 			domClass.replace(dom.byId('portal'), 'iframeOpen', 'iframeNotOpen');
 			domClass.remove(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
+
+			if (id !== '$__login__$') {
+				clearInterval(this._pollSessioninfoIntervalId);
+			}
 		},
 
 		_selectHome: function() {
@@ -818,6 +823,33 @@ define([
 
 			domClass.replace(dojo.body(), 'iframeNotOpen', 'iframeOpen');
 			domClass.add(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
+
+			clearInterval(this._pollSessioninfoIntervalId);
+		},
+
+		_removeIframe: function(id) {
+			var o = this._iframeMap[id];
+			if (!o) {
+				return;
+			}
+			if (o.tab && id !== '$__login__$') {
+				if (o.tab.parentNode) {
+					o.tab.parentNode.removeChild(o.tab);
+				}
+			}
+			if (o.iframe) {
+				if (o.iframe.parentNode) {
+					o.iframe.parentNode.removeChild(o.iframe);
+				}
+			}
+			delete this._iframeMap[id];
+
+			// not needed as long as this._selectHome() and _selectHome calls clearInterval(this._pollSessioninfoIntervalId)
+			// if (id === '$__login__$') {
+				// clearInterval(this._pollSessioninfoIntervalId);
+			// }
+			this._selectHome();
+			// TODO do we want to select the home when closing an iframe or rather something like "the iframe below/above"
 		},
 
 		_renderCategory: function(category, renderMode) {
@@ -1289,6 +1321,60 @@ define([
 			on(window, 'resize', lang.hitch(this, function() {
 				this._handleWindowResize();
 			}));
+		},
+
+		showLoginInIFrame: function(saml) {
+			if (!this._iframeMap.$__login__$) {
+				var target = saml ? '/univention/saml/' : '/univention/login/';
+				var url = target + '?' + ioQuery.objectToQuery({
+					'location': window.location.pathname + window.location.hash,
+					username: tools.status('username'),
+					lang: i18nTools.defaultLang(),
+					// iniframe: true
+				});
+
+				// window.addEventListener('message', function(evt) {
+					// // TODO check evt.origin
+					// console.log('portal/main loginIframe - message callback: ', evt);
+					// login.start(null, null, true);
+				// }, false);
+				var iframe = put('iframe[src=$]', url);
+				this._iframeMap.$__login__$ = {
+					iframe: iframe,
+					tab: registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode
+				};
+				iframe.onload = lang.hitch(this, function() {
+					// console.log('iframe loaded');
+					this._pollSessioninfo();
+					// if (saml) {
+						// iframe.contentWindow.postMessage('handShake', 'https://ucs-sso.mydomain.intranet');
+					// } else {
+						// iframe.contentWindow.postMessage('handShake'[>, TODO targetOrigin <]);
+					// }
+					// iframe.contentWindow.onbeforeunload = function(evt) {
+						// console.log('beforeunload: ', evt);
+						// login.start(null, null, true);
+					// };
+				});
+				put(dom.byId('iframes'), iframe);
+			} else {
+				this._pollSessioninfo();
+			}
+			this._selectIframe('$__login__$');
+		},
+
+		_pollSessioninfoIntervalId: null,
+		_pollSessioninfo: function() {
+			var d = null;
+			var _this = this;
+			_this._pollSessioninfoIntervalId = setInterval(function() {
+				if (!d || (d && d.isFulfilled())) {
+					d = login.sessioninfo().then(function(username) {
+						_this._removeIframe('$__login__$');
+						// console.log('logged in');
+					});
+				}
+			}, 500);
 		},
 
 		_initProperties: function() {
