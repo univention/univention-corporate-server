@@ -31,8 +31,9 @@
 define([
 	"dojo/topic",
 	"./UserMenu",
-	"./MiscMenu"
-], function(topic, UserMenu, MiscMenu) {
+	"./MiscMenu",
+	"portal"
+], function(topic, UserMenu, MiscMenu, portal) {
 	topic.subscribe('/portal/menu', function(menuName, action, data) {
 		var menu = null;
 		switch (menuName) {
@@ -53,6 +54,10 @@ define([
 				menu.addItem(data);
 				break;
 		}
+	});
+
+	topic.subscribe('/portal/iframes/open', function(id, logoUrl, url) {
+		portal.openIframe(id, logoUrl, url);
 	});
 });
 

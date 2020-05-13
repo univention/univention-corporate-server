@@ -884,6 +884,13 @@ define([
 			put(dom.byId('sidebar__tabs'), d.tab);
 		},
 
+		openIframe: function(id, logoUrl, url) {
+			if (!this._iframeMap[id]) {
+				this._createIframe(id, logoUrl, url);
+			}
+			this._selectIframe(id);
+		},
+
 		showLoginInIframe: function(saml) {
 			if (!this._iframeMap.$__login__$) {
 				var target = saml ? '/univention/saml/' : '/univention/login/';
