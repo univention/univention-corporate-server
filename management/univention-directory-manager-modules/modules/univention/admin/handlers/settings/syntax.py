@@ -174,7 +174,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if val and u':' in val:
 				self['value'] = val
 			else:
-				self['ldapvalue'] = [x.decode('UTF-8') for x in val]
+				self['ldapvalue'] = val
 
 			self.save()
 
