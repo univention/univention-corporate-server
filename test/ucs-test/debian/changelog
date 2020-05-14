@@ -1,3 +1,9 @@
+ucs-test (9.0.3-208) unstable; urgency=low
+
+  * Bug #46590: 10_ldap/42replication_memberof: skip test in certain scenarios
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 14 May 2020 13:22:50 +0200
+
 ucs-test (9.0.3-207) unstable; urgency=medium
 
   * Bug #40942: remove unnecessary apt update calls

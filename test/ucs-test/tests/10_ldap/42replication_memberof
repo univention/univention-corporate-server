@@ -12,8 +12,25 @@
 ##  - univention-directory-manager-tools
 ##  - ldap-utils
 ## bugs:
-##  - 33495
+##  - 46590
 ## exposure: dangerous
+
+"""
+The test checks, if the memberOf attribute is correctly set in all known test cases.
+On DC Backup + DC Slave systems, there were missing memberOf values at user objects
+if the listener was offline for some time OR there was a racing condition.
+
+The test script runs through several scenarios (a test function for each scenario)
+and tests with with_listener=False to trigger the racing condition (see bug #46590
+for details) and with with_listener=True to make sure, that the usual scenario is
+not affected.
+
+Due to the inability of the S4 connector to handle, to handle group changes in diff mode
+and the ucs-test framework to wait on all systems until all sync steps are done, the
+test will be skipped for now on all system with samba4 installed but deactivated s4-connector.
+Otherwise the test would be flaky.
+"""
+
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -22,6 +39,7 @@ from univention.testing.utils import wait_for_replication, stop_listener, start_
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+import sys
 
 RETRY_COUNT = 20
 DELAY = 10
@@ -32,6 +50,13 @@ class AutoStartStopListener(object):
 	Stops and starts listener automatically
 	"""
 	def __init__(self, dry_run):  # type: (bool) -> None
+		"""
+		The listener is only shut down on __enter__ resp. started on __exit__, if dry_run != True.
+		>>> with AutoStartStopListener(True):
+		>>>     print('Do something with running listener')
+		>>> with AutoStartStopListener(True):
+		>>>     print('Do something with stopped listener')
+		"""
 		self.dry_run = dry_run
 
 	def __enter__(self):
@@ -53,6 +78,10 @@ class TestCases(object):
 		self.dn_domain_users = 'cn=Domain Users,%s' % (self.base_group,)
 
 	def print_attributes(self, dn_list, msg=None):  # type: (List[str], Optional[str]) -> None
+		"""
+		Prints the DN and the values of the attributes memberOf and uniqueMember for all given
+		DNs in dn_list. If msg is specified, a small header line is printed.
+		"""
 		ATTR_LIST = ['memberOf', 'uniqueMember']
 		print()
 		if msg is not None:
@@ -236,6 +265,11 @@ class TestCases(object):
 
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+		if utils.package_installed('univention-samba4') and ucr.is_false('connector/s4/autostart', False):
+			# skip test which would be flaky otherwise
+			print('WARNING: univention-samba4 is installed but no running S4 connector on this machine --> skipping test')
+			sys.exit(138)
+
 		testcases = TestCases(udm, ucr)
 		testcases.run()
 
