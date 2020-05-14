@@ -75,14 +75,14 @@ def handler(dn, new, old):
 			for sp in sp_to_add:
 				if sp not in data:
 					data[sp] = []
-				if sp not in data[sp]:
+				if dn not in data[sp]:
 					data[sp].append(dn)
 		if sp_to_rm:
 			for sp in sp_to_rm:
 				if sp not in data:
 					data[sp] = []
-				if sp in data[sp]:
-					data[sp].pop(sp)
+				if dn in data[sp]:
+					data[sp].pop(dn)
 
 		with open(tmp_path, 'w+') as outfile:
 			json.dump(data, outfile)
