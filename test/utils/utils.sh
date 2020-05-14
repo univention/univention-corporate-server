@@ -1059,6 +1059,13 @@ transfer_docker_image () {
 	local docker_host=docker
 	local transfer_user=automation
 	local transfer_pwfile=/root/automation.secret
+
+	# test if the app is package based and exit in that case
+	if univention-app status "$appid" 2>&1 | grep -q "is not supported"; then
+		echo "package based app, no docker image transer required."
+		exit 0
+	fi
+
 	#while pgrep -a -f "univention-app internal-transfer-images.*$appid.*"
 	while pgrep -a -f "univention-app internal-transfer-images"
 	do
