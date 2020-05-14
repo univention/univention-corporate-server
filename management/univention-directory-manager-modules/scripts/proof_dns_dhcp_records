@@ -37,26 +37,24 @@ import ldap
 from ldap.filter import filter_format
 
 import univention.config_registry
+import univention.uldap
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 baseDN = ucr['ldap/base']
 
-lo = ldap.open('localhost', 7389)
-bindpw = open('/etc/ldap.secret').read()
-lo.simple_bind_s("cn=admin," + baseDN, bindpw.strip('\n\r'))
+lo = univention.uldap.getAdminConnection().lo
 
 # check for dhcp records without matching computer object
-
 computers = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionDhcpHost', ['dhcpHWAddress'])
 
 print("Found no computer objects for these dhcp records:\n")
 
 for comp in computers:
 	mac = comp[1]["dhcpHWAddress"][0]
-	if mac.find(" ") >= 0:
-		mac = mac.split(" ")[1]
+	if mac.find(b" ") >= 0:
+		mac = mac.split(b" ")[1].decode('utf-8')
 
 	match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(macAddress=%s))', [mac]), [])
 
@@ -75,12 +73,12 @@ print("Found no computer objects for these dns records:\n")
 
 for comp in computers:
 	if "aRecord" in comp[1]:
-		relative_domain_name = comp[1]['relativeDomainName'][0]
-		zone_name = comp[1]['zoneName'][0]
-		allRecords[relative_domain_name + "." + zone_name] = comp
-		match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(aRecord=%s))', (comp[1]["aRecord"][0],)), [])
+		relative_domain_name = comp[1]['relativeDomainName'][0].decode('utf-8')
+		zone_name = comp[1]['zoneName'][0].decode('utf-8')
+		allRecords[relative_domain_name + u"." + zone_name] = comp
+		match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(aRecord=%s))', (comp[1]["aRecord"][0].decode('utf-8'),)), [])
 		if len(match_cmp_rec) == 0:
-			deadEndRecords[relative_domain_name + "." + zone_name] = comp
+			deadEndRecords[relative_domain_name + u"." + zone_name] = comp
 			print("\t%s" % comp[0])
 print()
 
@@ -92,9 +90,9 @@ print("Found no computer objects for these dns reverse lookup records:\n")
 
 for comp in computers:
 	if 'pTRRecord' in comp[1]:
-		parts = comp[1]['pTRRecord'][0].split(".")
-		relative_domain_name = parts[0]
-		zone_name = ".".join(parts[1:-1])
+		parts = comp[1]['pTRRecord'][0].split(b".")
+		relative_domain_name = parts[0].decode('utf-8')
+		zone_name = b".".join(parts[1:-1]).decode('utf-8')
 
 		# check if there is a corresponding valid forward entry for this object
 		if relative_domain_name + "." + zone_name in deadEndRecords:

@@ -37,17 +37,14 @@ from __future__ import print_function
 import ldap
 
 import univention.config_registry
+import univention.uldap
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 baseDN = ucr['ldap/base']
 
-lo = ldap.open('localhost', 7389)
-bindpw = open('/etc/ldap.secret').read()
-if bindpw[-1] == '\n':
-	bindpw = bindpw[0:-1]
-lo.simple_bind_s("cn=admin," + baseDN, bindpw)
+lo = univention.uldap.getAdminConnection().lo
 
 count_changes = 0
 warning = 0
@@ -59,14 +56,14 @@ res_pA = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)
 
 print("found %s Hosts which need to be changed:\n" % len(res_pA))
 
-for i in range(0, len(res_pA)):
-	modlist = [(ldap.MOD_ADD, 'objectClass', 'shadowAccount')]
+for posix_account, _ in res_pA:
+	modlist = [(ldap.MOD_ADD, 'objectClass', b'shadowAccount')]
 	try:
-		lo.modify_s(res_pA[i][0], modlist)
+		lo.modify_s(posix_account, modlist)
 		count_changes = count_changes + 1
-		print("Modified %s" % res_pA[i][0])
-	except:
-		print("Warning: failed to modify Host %s" % res_pA[i][0])
+		print("Modified %s" % posix_account)
+	except Exception as exc:
+		print("Warning: failed to modify Host %s: " % posix_account)
 		warning = warning + 1
 
 print("changing of", len(res_pA), "Hosts finished, changed", count_changes, "of them (", warning, " warnings).\n")
