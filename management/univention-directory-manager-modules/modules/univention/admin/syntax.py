@@ -1351,10 +1351,13 @@ class uid_umlauts_lower_except_first_letter(simple):
 class gid(simple):
 	"""
 	Syntax for group account names.
+
+	>>> syntax.gid.parse(u'Groupe d’accès d’autorisation Windows') == 'Groupe d’accès d’autorisation Windows'  # Bug #35521
+	True
 	"""
 	min_length = 1
 	max_length = 32
-	regex = re.compile(r"(?u)^\w([\w -.’]*\w)?$")
+	regex = re.compile(u"(?u)^\w([\w -.’]*\w)?$")
 	error_message = _(
 		"A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
 		"and dots are allowed."
