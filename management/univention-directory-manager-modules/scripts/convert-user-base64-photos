@@ -34,13 +34,15 @@ from __future__ import print_function
 import binascii
 import argparse
 import sys
+import base64
+
 import univention.config_registry as config
 import univention.uldap
 import ldap
 import ldap.modlist
 
 ACTIONS = ('test', 'convert')
-JPEG_HEADER = '\xff\xd8\xff\xe0'
+JPEG_HEADER = b'\xff\xd8\xff\xe0'
 
 ucr = config.ConfigRegistry()
 ucr.load()
@@ -74,8 +76,8 @@ def run(action, verbose=False):
 
 		# try to decode + encode again
 		try:
-			bin = b64.decode('base64')
-			_b64 = bin.encode('base64')
+			bin = base64.decodebytes(b64)
+			_b64 = base64.b64encode(bin)
 		except binascii.Error as e:
 			# no base64 encoded jpeg photo
 			log('jpegPhoto: an error occurred trying to decode the jpegPhoto attribute as base64: %s' % e)
@@ -90,7 +92,7 @@ def run(action, verbose=False):
 			log('jpegPhoto: base64 format -> CAN BE CONVERTED')
 		else:
 			log('jpegPhoto: CONVERTING from base64 to binary format', force=True)
-			ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=b64), dict(jpegPhoto=bin))
+			ldiff = ldap.modlist.modifyModlist(dict(jpegPhoto=[b64]), dict(jpegPhoto=[bin]))
 			lo.modify_s(idn, ldiff)
 
 
