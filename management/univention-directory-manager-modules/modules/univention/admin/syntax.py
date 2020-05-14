@@ -118,6 +118,13 @@ def update_choices():
 	# type: () -> None
 	"""
 	Update choices which are defined in LDAP
+	>>> import univention.admin.modules
+	>>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
+	False
+	>>> univention.admin.modules.update()
+	>>> update_choices()
+	>>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
+	True
 	"""
 	for func in choice_update_functions:
 		func()
@@ -153,6 +160,12 @@ SIZES = ('OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'F
 class ISyntax(object):
 	"""
 	Base class for all syntax classes.
+	>>> ISyntax.name
+	'ISyntax'
+	>>> ISyntax.type
+	'ISyntax'
+	>>> ISyntax.tostring('Hallo')
+	'Hallo'
 	"""
 	size = 'One'
 	"""Widget size. See :py:data:`SIZES`."""
@@ -186,6 +199,14 @@ class ISyntax(object):
 class simple(ISyntax):
 	"""
 	Base class for single value entries.
+	>>> simple.parse('A string')
+	'A string'
+	>>> simple().parse_command_line('A string')
+	'A string'
+	>>> simple.new()
+	''
+	>>> simple.any()
+	'*'
 	"""
 	regex = None  # type: Optional[Pattern]
 	"""Regular expression to validate the value."""
@@ -298,11 +319,11 @@ class MultiSelect(ISyntax):
 		# type: (Any) -> List[str]
 		# required for UDM CLI
 		if isinstance(value, six.string_types):
-			value = map(lambda x: x, shlex.split(value))
+			value = list(map(lambda x: x, shlex.split(value)))
 
 		if not self.empty_value and not value:
 			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
-		key_list = map(lambda x: x[0], self.choices)
+		key_list = list(map(lambda x: x[0], self.choices))
 		for item in value:
 			if item not in key_list:
 				raise univention.admin.uexceptions.valueError(self.error_message)
@@ -442,6 +463,18 @@ class UDM_Objects(ISyntax):
 	Base class to lookup selectable items from |LDAP| entries using their |DN|.
 
 	See :py:class:`UDM_Attribute` for an alternative to use values from one |LDAP| entry..
+	>>> UDM_Objects().type_class
+	<class 'univention.admin.types.DistinguishedNameType'>
+	>>> UDM_Objects.parse("uid=Administrator,cn=users,dc=intranet,dc=example,dc=com")  # doctest: +ALLOW_UNICODE
+	'uid=Administrator,cn=users,dc=intranet,dc=example,dc=com'
+	>>> UDM_Objects.parse("") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
+	>>> UDM_Objects.parse("no dn") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+		...
+	valueError:
 	"""
 	udm_modules = ()  # type: Sequence[str]
 	"""Sequence of |UDM| module names to search for."""
@@ -542,6 +575,12 @@ class string(simple):
 class string64(simple):
 	"""
 	Syntax for a string with up to 64 characters.
+	>>> string64.parse('a' * 64) == 'a' * 64
+	True
+	>>> string64.parse('a' * 65)  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	@classmethod
 	def parse(self, text):
@@ -563,6 +602,12 @@ class OneThirdString(string):
 class string6(OneThirdString):
 	"""
 	Syntax for a string with up to 6 characters.
+	>>> string6.parse('123456')
+	'123456'
+	>>> string6.parse('1234567')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	@classmethod
 	def parse(self, text):
@@ -634,6 +679,20 @@ class TwoEditor(Editor):
 class UCSVersion(string):
 	"""
 	Syntax for an UCS release version `major.minor-patchlevel`.
+	>>> UCSVersion.parse('4.3-2')
+	'4.3-2'
+	>>> UCSVersion.parse('4.3-2 errata200')  # doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> UCSVersion.parse('4.3-2.errata200')  # doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> UCSVersion.parse('4')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	@classmethod
 	def parse(self, value):
@@ -648,6 +707,20 @@ class UCSVersion(string):
 class DebianPackageVersion(string):
 	"""
 	Syntax for a Debian package version.
+	>>> DebianPackageVersion.parse('9.1.1-2A~4.4.0.202005121353')
+	'9.1.1-2A~4.4.0.202005121353'
+	>>> DebianPackageVersion.parse('7.52.1-5+deb9u10')
+	'7.52.1-5+deb9u10'
+	>>> DebianPackageVersion.parse('2:7.52.1-5+deb9u10')
+	'2:7.52.1-5+deb9u10'
+	>>> DebianPackageVersion.parse('wheezy:7.52.1-5+deb9u10')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> DebianPackageVersion.parse('1.0 with spaces...')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	invalid_chars_regex = re.compile('[^-+:.0-9a-zA-Z~]')
 
@@ -666,6 +739,12 @@ class DebianPackageVersion(string):
 class BaseFilename(string):
 	"""
 	Syntax for a file name. Sub- and parent directories are not allowed.
+	>>> BaseFilename.parse('example.txt')
+	'example.txt'
+	>>> BaseFilename.parse('my-folder/example.txt')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	@classmethod
@@ -681,6 +760,8 @@ class BaseFilename(string):
 class Upload(ISyntax):
 	"""
 	Syntax to allow uploading a binary file.
+	>>> Upload.parse("hallo")
+	'hallo'
 	"""
 
 	type_class = univention.admin.types.BinaryType
@@ -693,6 +774,22 @@ class Upload(ISyntax):
 class Base64GzipText(TextArea):
 	"""
 	Syntax for some `gzip`-compressed and `base64`-encoded data.
+	>>> import base64
+	>>> import zlib
+	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> bz2string = zlib.compress(content)
+	>>> b64string = base64.b64encode(bz2string)
+	>>> Base64GzipText.parse(b64string) == b64string
+	True
+	>>> Base64GzipText.parse(content)  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Value must be bzip2 compressed and Base64 encoded:
+	>>> b64string = base64.b64encode(content)
+	>>> Base64GzipText.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: hallo
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -713,6 +810,22 @@ class Base64GzipText(TextArea):
 class Base64Bzip2Text(TextArea):
 	"""
 	Syntax for some `bzip2`-compressed and `base64`-encoded data.
+	>>> import base64
+	>>> import bz2
+	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> bz2string = bz2.compress(content)
+	>>> b64string = base64.b64encode(bz2string)
+	>>> Base64Bzip2Text.parse(b64string) == b64string
+	True
+	>>> Base64Bzip2Text.parse(content)  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Value must be bzip2 compressed and Base64 encoded:
+	>>> b64string = base64.b64encode(content)
+	>>> Base64Bzip2Text.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: hallo
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -733,6 +846,15 @@ class Base64Bzip2Text(TextArea):
 class Base64Upload(Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
+	>>> import base64
+	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> b64string = base64.b64encode(content)
+	>>> Base64Upload.parse(b64string) == b64string
+	True
+	>>> Base64Upload.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: ...
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -750,6 +872,15 @@ class Base64Upload(Upload):
 class Base64BaseUpload(Base64Upload):
 	"""
 	Syntax to allow uploading a `base64` encoded file.
+	>>> import base64
+	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> b64string = base64.b64encode(content)
+	>>> Base64BaseUpload.parse(b64string) == b64string
+	True
+	>>> Base64BaseUpload.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: ...
 	"""
 	@classmethod
 	def parse(self, text):
@@ -764,6 +895,25 @@ class Base64BaseUpload(Base64Upload):
 class jpegPhoto(Upload):
 	"""
 	Syntax to allow uploading a `JPEG` or `PNG` photo.
+
+	>>> jpegPhoto.tostring(None)
+	''
+	>>> import base64
+	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> b64string = base64.b64encode(content)
+	>>> jpegPhoto.parse(b64string) != b64string  # lets believe the conversion worked
+	True
+	>>> jpegPhoto.tostring(b64string) == b64string
+	True
+	>>> import base64
+	>>> import bz2
+	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> bz2string = bz2.compress(content)
+	>>> b64string = base64.b64encode(bz2string)
+	>>> jpegPhoto.parse(b64string)  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Value must be Base64 encoded jpeg.
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -795,6 +945,7 @@ class jpegPhoto(Upload):
 					text = base64.b64encode(raw)
 				except (KeyError, IOError, IndexError):
 					ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
+					raise
 					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
 			# this is what imghdr.py probably does in  the future:
@@ -808,6 +959,29 @@ class jpegPhoto(Upload):
 class Base64Bzip2XML(TextArea):
 	"""
 	Syntax for some `bzip2`-compressed |XML| data.
+	>>> import base64
+	>>> import bz2
+	>>> content = open('/usr/share/univention-management-console/modules/ucr.xml', 'rb').read()
+	>>> bz2string = bz2.compress(content)
+	>>> b64string = base64.b64encode(bz2string)
+	>>> Base64Bzip2XML.parse(b64string) == b64string
+	True
+	>>> Base64Bzip2XML.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: hallo
+	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> b64string = base64.b64encode(content)
+	>>> Base64Bzip2XML.parse(b64string)  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Value must be bzip2 compressed and Base64 encoded: ...
+	>>> bz2string = bz2.compress(content)
+	>>> b64string = base64.b64encode(bz2string)
+	>>> Base64Bzip2XML.parse(b64string)  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not Base64 encoded XML data: ...
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -830,6 +1004,15 @@ class Base64Bzip2XML(TextArea):
 class Base64UMCIcon(TextArea):
 	"""
 	Syntax for a `base64` encoded icon (|SVG|, |PNG|, |JPEG|).
+	>>> import base64
+	>>> content = open('/usr/share/univention-portal/univention-blog.png', 'rb').read()
+	>>> b64string = base64.b64encode(content)
+	>>> Base64UMCIcon.parse(b64string) == b64string
+	True
+	>>> Base64UMCIcon.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: hallo
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -847,6 +1030,19 @@ class Base64UMCIcon(TextArea):
 class GNUMessageCatalog(TextArea):
 	"""
 	Syntax for a `base64` encoded binary message catalog `.mo`.
+	>>> import base64
+	>>> content = open('/usr/share/locale/de/LC_MESSAGES/univention-appcenter.mo', 'rb').read()
+	>>> b64string = base64.b64encode(content)
+	>>> GNUMessageCatalog.parse(b64string) == b64string
+	True
+	>>> GNUMessageCatalog.parse('hallo')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not a valid Base64 string: hallo
+	>>> GNUMessageCatalog.parse('aGFsbG8K')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Not Base64 encoded GNU message catalog (.mo) data: aGFsbG8K
 	"""
 
 	type_class = univention.admin.types.Base64Type
@@ -867,6 +1063,12 @@ class Localesubdirname(string):
 	Syntax for a locale, e.g. `language[_COUNTRY][.encoding][@variant]`.
 
 	Must match a directory in :file:`/usr/share/locale/`.
+	>>> Localesubdirname.parse('de')
+	'de'
+	>>> Localesubdirname.parse('fantasy')  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	@classmethod
@@ -881,6 +1083,19 @@ class Localesubdirname_and_GNUMessageCatalog(complex):
 	Syntax for a message catalog and its language.
 
 	See :py:class:`GNUMessageCatalog` and :py:class:`Localesubdirname`.
+
+	>>> Localesubdirname_and_GNUMessageCatalog.parse(('en', '3hIElQ==')) # first bytes of vim.mo
+	['en', '3hIElQ==']
+	>>> Localesubdirname_and_GNUMessageCatalog.parse(('en', 'qwerty')) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	univention.admin.uexceptions.valueError:
+	>>> Localesubdirname_and_GNUMessageCatalog().new()
+	['', '']
+	>>> Localesubdirname_and_GNUMessageCatalog().any()
+	['*', '*']
+	>>> Localesubdirname_and_GNUMessageCatalog().type_class_multivalue.__name__
+	'ComplexMultiValueKeyValueDictType'
 	"""
 	delimiter = ': '
 	subsyntaxes = [(_('Locale subdir name'), Localesubdirname), (_('GNU message catalog'), GNUMessageCatalog)]
@@ -966,6 +1181,16 @@ class boolean(simple):
 	'1'
 	>>> boolean.parse(False)
 	'0'
+	>>> boolean.sanitize_property_search_value(True)
+	'1'
+	>>> boolean.sanitize_property_search_value(False)
+	'0'
+	>>> boolean.get_object_property_filter('myAttr', '1')
+	'myAttr=1'
+	>>> boolean.get_object_property_filter('myAttr', '0')
+	'(|(myAttr=0)(!(myAttr=*)))'
+	>>> boolean.get_object_property_filter('myAttr', '')
+	''
 	>>> boolean.parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -1080,6 +1305,10 @@ class mail_folder_type(select):
 	"""
 	Syntax for |IMAP| mail folder types.
 
+	>>> mail_folder_type().new()
+	''
+	>>> mail_folder_type().any()
+	'*'
 	>>> mail_folder_type.parse('')
 	''
 	>>> mail_folder_type.parse('mail')
@@ -1208,15 +1437,15 @@ class string_numbers_letters_dots_spaces(simple):
 
 
 class phone(simple):
-	"""
+	r"""
 	Syntax for (international) telephone numbers.
 
 	>>> phone.parse('+49 421 22232-0')
 	'+49 421 22232-0'
 	>>> phone.parse('++49 (0)700 Vanity')
 	'++49 (0)700 Vanity'
-	>>> phone.parse('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
-	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\\/+-'
+	>>> phone.parse(r'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
+	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\/+-'
 	>>> phone.parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -1224,7 +1453,7 @@ class phone(simple):
 	"""
 	min_length = 1
 	max_length = 16
-	regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
+	regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\\/+-]*$')
 	error_message = _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
 
 
@@ -1232,8 +1461,10 @@ class IA5string(string):
 	"""
 	Syntax for string from International Alphabet 5 (printable |ASCII|)
 
-	>>> IA5string.parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
-	u' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+	>>> IA5string.parse(r''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')  # doctest: +ALLOW_UNICODE
+	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+	>>> IA5string.parse(b'abc')  # doctest: +ALLOW_UNICODE
+	'abc'
 	>>> IA5string.parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -1299,8 +1530,8 @@ class uid(simple):
 	>>> uid.parse('Admin')
 	'Admin'
 	"""
-	min_length = 1
-	max_length = 16
+	min_length = 1   # TODO: not enforced here
+	max_length = 16  # TODO: not enforced here
 	regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
 	# FIXME: (?!admin)
 	error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
@@ -1309,11 +1540,31 @@ class uid(simple):
 class uid_umlauts(simple):
 	"""
 	Syntax for user account names supporting umlauts.
+
+	>>> uid_umlauts.parse('üser') == 'üser'
+	True
+	>>> uid_umlauts.parse('user') == 'user'
+	True
+	>>> uid_umlauts.parse(b'admin')  # doctest: +ALLOW_UNICODE
+	'admin'
+	>>> uid_umlauts.parse('üs er') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	univention.admin.uexceptions.valueError:
+	>>> uid_umlauts.parse('ädmin no.2') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> uid_umlauts.parse('admin@2') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	name = 'uid'
-	min_length = 1
-	max_length = 16
-	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
+	min_length = 1   # TODO: not enforced here
+	max_length = 16  # TODO: not enforced here
+	_re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
+	# FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 
 	@classmethod
 	def parse(self, text):
@@ -1324,16 +1575,32 @@ class uid_umlauts(simple):
 		if self._re.match(text) is not None:
 			return text
 		else:
+			# TODO: Dashes are allowed too
 			raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
 
 
 class uid_umlauts_lower_except_first_letter(simple):
 	"""
 	Syntax for user account names supporting umlauts expecpt for the first character.
+	>>> uid_umlauts_lower_except_first_letter.parse('admin')  # doctest: +ALLOW_UNICODE
+	'admin'
+	>>> uid_umlauts_lower_except_first_letter.parse(b'admin')  # doctest: +ALLOW_UNICODE
+	'admin'
+	>>> uid_umlauts_lower_except_first_letter.parse('ädmin') == 'ädmin'
+	True
+	>>> uid_umlauts_lower_except_first_letter.parse('admin@2') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> uid_umlauts_lower_except_first_letter.parse('ADMIN') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
-	min_length = 1
-	max_length = 16
-	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
+	min_length = 1   # TODO: not enforced here
+	max_length = 16  # TODO: not enforced here
+	_re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
+	# FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 
 	@classmethod
 	def parse(self, text):
@@ -1352,12 +1619,13 @@ class gid(simple):
 	"""
 	Syntax for group account names.
 
-	>>> syntax.gid.parse(u'Groupe d’accès d’autorisation Windows') == 'Groupe d’accès d’autorisation Windows'  # Bug #35521
+	>>> gid.parse(u'Groupe d\u2019acc\xe8s d\u2019autorisation Windows') == 'Groupe d’accès d’autorisation Windows'  # Bug #35521
 	True
 	"""
-	min_length = 1
-	max_length = 32
-	regex = re.compile(u"(?u)^\w([\w -.’]*\w)?$")
+	min_length = 1   # TODO: not enforced here
+	max_length = 32  # TODO: not enforced here
+	regex = re.compile(u"(?u)^\\w([\\w -.’]*\\w)?$")
+	# FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 	error_message = _(
 		"A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
 		"and dots are allowed."
@@ -1374,6 +1642,16 @@ class sharePath(simple):
 	* :file:`/root/`
 	* :file:`/sys/`
 	* :file:`/tmp/`
+	>>> sharePath.parse('/home/Administator')
+	'/home/Administator'
+	>>> sharePath.parse('./my-folder') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> sharePath.parse('/root/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	regex = re.compile('^([^"])+$')
 	error_message = _('Value may not contain double quotes (")!')
@@ -1392,6 +1670,12 @@ class sharePath(simple):
 class passwd(simple):
 	"""
 	Syntax for passwords.
+	>>> passwd.parse('now this is a clever password')
+	'now this is a clever password'
+	>>> passwd.parse('secret') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	min_length = 8
 	max_length = 0
@@ -1412,6 +1696,12 @@ class passwd(simple):
 class userPasswd(simple):
 	"""
 	Syntax for user account passwords.
+	>>> userPasswd.parse('now this is a clever password')
+	'now this is a clever password'
+	>>> userPasswd.parse('') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	type_class = univention.admin.types.PasswordType
@@ -1436,19 +1726,19 @@ class hostName(simple):
 	'a'
 	>>> hostName.parse('0')
 	'0'
-	>>> hostName.parse('')
+	>>> hostName.parse('') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: This is not a valid hostname.
-	>>> hostName.parse('a' * 64)
+	>>> hostName.parse('a' * 64) # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: This is not a valid hostname.
-	>>> hostName.parse('!')
+	>>> hostName.parse('!') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: This is not a valid hostname.
-	>>> hostName.parse('-')
+	>>> hostName.parse('-') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: This is not a valid hostname.
@@ -1471,6 +1761,10 @@ class ipv4Address(simple):
 
 	>>> ipv4Address.parse('0.0.0.0')
 	'0.0.0.0'
+	>>> ipv4Address.parse('hi!') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	@classmethod
@@ -1490,6 +1784,10 @@ class ipAddress(simple):
 	'0.0.0.0'
 	>>> ipAddress.parse('::1')
 	'::1'
+	>>> ipAddress.parse('hi!') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	@classmethod
@@ -1513,6 +1811,10 @@ class hostOrIP(simple):
 	'0x7f000001'
 	>>> hostOrIP.parse('example')
 	'example'
+	>>> hostOrIP.parse('hi!') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	min_length = 0
@@ -1554,7 +1856,7 @@ class v4netmask(simple):
 	'0'
 	>>> v4netmask.parse('255.255.255.255')
 	'32'
-	>>> v4netmask.parse('33') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
+	>>> v4netmask.parse('33')  # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Not a valid netmask!
@@ -1648,6 +1950,8 @@ class IP_AddressRange(complex):
 	Traceback (most recent call last):
 	...
 	valueError: Not a valid IP address!
+	>>> IP_AddressRange().type_class.__name__
+	'ComplexMultiValueDictType'
 	"""
 	subsyntaxes = (
 		(_('First address'), ipAddress),
@@ -1678,11 +1982,25 @@ class IPv4_AddressRange(IP_AddressRange):
 	"""
 	Syntax for an IPv4 address range.
 
+	>>> IPv4_AddressRange.todict(('1.2.3.4',)) == {'first': '1.2.3.4', 'last': None}
+	True
+	>>> IPv4_AddressRange.todict(('1.2.3.4', '5.6.7.8')) == {'first': '1.2.3.4', 'last': '5.6.7.8'}
+	True
+	>>> IPv4_AddressRange.fromdict({'first': '1.2.3.4', 'last': '5.6.7.8'})
+	['1.2.3.4', '5.6.7.8']
+	>>> IPv4_AddressRange.fromdict({'first': '1.2.3.4'})  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax: missing argument 'last'
+	>>> IPv4_AddressRange.tostring(['1.2.3.4'])
+	'1.2.3.4'
+	>>> IPv4_AddressRange.tostring(['1.2.3.4', '5.6.7.8'])
+	'1.2.3.4 5.6.7.8'
 	>>> IPv4_AddressRange.parse(('1.2.3.4',))
 	['1.2.3.4']
 	>>> IPv4_AddressRange.parse(('1.2.3.4', '5.6.7.8'))
 	['1.2.3.4', '5.6.7.8']
-	>>> IPv4_AddressRange.parse(('5.6.7.8', '1.2.3.4')) #doctest: +IGNORE_EXCEPTION_DETAIL
+	>>> IPv4_AddressRange.parse(('5.6.7.8', '1.2.3.4'))  # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueInvalidSyntax: Illegal range
@@ -1714,6 +2032,12 @@ class ipProtocolSRV(select):
 class absolutePath(simple):
 	"""
 	Syntax for an absolute file system path.
+	>>> absolutePath.parse('/etc/')
+	'/etc/'
+	>>> absolutePath.parse('../etc/') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	min_length = 1
 	max_length = 0
@@ -1740,6 +2064,12 @@ class emailForwardSetting(select):
 class emailAddress(simple):
 	"""
 	Syntax class for an e-mail address.
+	>>> emailAddress.parse('quite@an.email.address')
+	'quite@an.email.address'
+	>>> emailAddress.parse('not quite an email address') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	min_length = 3
 	max_length = 0
@@ -1766,6 +2096,12 @@ class emailAddressTemplate(emailAddress):
 class emailAddressValidDomain(emailAddress):
 	"""
 	Syntax class for an e-mail address in one of the registered e-mail domains.
+	>>> from univention.admin.uldap import getMachineConnection
+	>>> lo, pos = getMachineConnection()
+	>>> emailAddressValidDomain.checkLdap(lo, 'user@example.com') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	name = 'emailAddressValidDomain'
 	errMsgDomain = _("The domain part of the following mail addresses is not in list of configured mail domains: %s")
@@ -1817,10 +2153,27 @@ class iso8601Date(simple):
 	* yyyy-Www-D (2009-W21-4)
 
 	with the dashes being optional
+	>>> iso8601Date.to_datetime('2020-05')  # doctest: +SKIP
+	datetime.date(2020, 5, 1)
+	>>> iso8601Date.to_datetime('2020-05-13')
+	datetime.date(2020, 5, 13)
+	>>> iso8601Date.to_datetime('2020-W42')  # doctest: +SKIP
+	datetime.date(2020, 5, 1)
+	>>> iso8601Date.to_datetime('2020-W42-0')  # doctest: +SKIP
+	datetime.date(2020, 10, 22)
+	>>> from datetime import date
+	>>> iso8601Date.from_datetime(date(2020, 5, 13))
+	'2020-05-13'
+	>>> iso8601Date.parse('2020-05-13')
+	'2020-05-13'
+	>>> iso8601Date.parse('00.00.01') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
-	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
-	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
+	regex = re.compile(r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
+	error_message = _(r"The given date does not conform to iso8601, example: \"2009-01-01\".")
 
 	type_class = univention.admin.types.DateType
 
@@ -1829,14 +2182,17 @@ class iso8601Date(simple):
 		value = cls.parse(value)
 		if value:
 			try:
-				return dateutil.parser.parse(value).date()
+				return dateutil.parser.parse(value).date()  # FIXME: this gives AttributeError: module 'dateutil' has no attribute 'parser'
 			except Exception:
 				pass
 			if re.match(r"\d+-\d+$", value):
+				# FIXME: broken: the regex does not allow this format
 				return datetime.datetime.strptime(value, "%Y-%j").date()
 			elif re.match(r"\d+-W\d+-\d+$", value):
+				# FIXME: broken: the regex allows 1-7 while the function expects 0-6. 7 gives a traceback
 				return datetime.datetime.strptime(value, "%Y-W%U-%w").date()
 			elif re.match(r"\d+-W\d+$", value):
+				# FIXME: broken: When used with the strptime() method, %U and %W are only used in calculations when the day of the week and the year are specified.
 				return datetime.datetime.strptime(value, "%Y-W%U").date()
 			return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
 
@@ -1854,6 +2210,8 @@ class date(simple):
 		Centuries are *always* stripped!
 		See :py:class:`date2`.
 
+	>>> date.parse(None)
+	''
 	>>> date.parse('21.12.03')
 	'21.12.03'
 	>>> date.parse('1961-01-01')
@@ -1872,6 +2230,11 @@ class date(simple):
 	Traceback (most recent call last):
 	...
 	valueError:
+	>>> from datetime import datetime
+	>>> date.from_datetime(datetime(2020, 1, 1))
+	'2020-01-01T00:00:00'
+	>>> date.to_datetime('31.12.19')
+	datetime.date(2019, 12, 31)
 
 	Bug #20230:
 	>>> date.parse('31.2.1') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
@@ -1883,7 +2246,7 @@ class date(simple):
 	min_length = 5
 	max_length = 0
 	_re_iso = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-	_re_de = re.compile('^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
+	_re_de = re.compile(r'^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
 
 	type_class = univention.admin.types.DateType
 
@@ -1924,8 +2287,14 @@ class date2(date):  # fixes the century
 	'2003-12-21'
 	>>> date2.parse('1961-01-01')
 	'1961-01-01'
+	>>> date2.to_datetime('1961-01-01')
+	datetime.date(1961, 1, 1)
 	>>> date2.parse('2001-02-31')  #doctest: +SKIP
 	'2001-02-31'
+	>>> date2.parse('just a string') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError: Full domain name must be between 1 and 253 characters long!
 	"""
 
 	@classmethod
@@ -1990,25 +2359,25 @@ class dnsName(simple):
 	"""
 	:rfc:`1123`: a '.' separated FQDN
 
-	>>> dnsName.parse('')
+	>>> dnsName.parse('') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Missing value!
 
 	A host name (label) can be up to 63 characters
 
-	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz')
+	>>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Labels must be between 1 and 63 characters long!
-	>>> dnsName.parse('a..')
+	>>> dnsName.parse('a..') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Labels must be between 1 and 63 characters long!
 
 	A full domain name is limited to 253 octets (including the separators).
 
-	>>> dnsName.parse('a.' * 128)
+	>>> dnsName.parse('a.' * 128) # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Full domain name must be between 1 and 253 characters long!
@@ -2051,14 +2420,14 @@ class dnsHostname(dnsName):
 
 	A host name (label) MUST NOT consist of all numeric values
 
-	>>> dnsHostname.parse('0')
+	>>> dnsHostname.parse('0') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: Full name must not be all numeric!
 
 	A host name (label) MUST NOT start or end with a '-' (dash)
 
-	>>> dnsHostname.parse('-')
+	>>> dnsHostname.parse('-') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: A host name or FQDN must start and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
@@ -2083,19 +2452,19 @@ class dnsHostname(dnsName):
 
 class dnsName_umlauts(simple):
 	u"""
-	>>> dnsName_umlauts.parse(u'ä')
-	u'\\xe4'
+	>>> dnsName_umlauts.parse(u'ä') == 'ä'
+	True
 	>>> dnsName_umlauts.parse('a_0-A')
 	'a_0-A'
-	>>> dnsName_umlauts.parse('0')
+	>>> dnsName_umlauts.parse('0') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: A host name or FQDN must start and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
-	>>> dnsName_umlauts.parse('-')
+	>>> dnsName_umlauts.parse('-') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: A host name or FQDN must start and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
-	>>> dnsName_umlauts.parse('_')
+	>>> dnsName_umlauts.parse('_') # doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 	...
 	valueError: A host name or FQDN must start and end with a letter or number. In between additionally dashes, dots and underscores are allowed.
@@ -2114,6 +2483,22 @@ class keyAndValue(complex):
 	"""
 	Syntax for key-value-pairs separated by `=`.
 
+	>>> keyAndValue.tostring(['key', 'value'])
+	'key = value'
+	>>> keyAndValue.tostring(['key'])
+	''
+	>>> keyAndValue.parse(('key',))  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> keyAndValue.parse(('key', 'value', 'and then some'))  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> keyAndValue.parse((None, 'value'))  # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
 	>>> keyAndValue.parse(('key', 'value'))
 	['key', 'value']
 	"""
@@ -2256,6 +2641,8 @@ class UNIX_TimeInterval(complex):
 	['4', 'hours']
 	>>> UNIX_TimeInterval.parse(('5', 'days'))
 	['5', 'days']
+	>>> UNIX_TimeInterval.from_integer(3600)
+	['3600', 'seconds']
 
 	.. seealso::
 		* :py:class:`UNIX_BoundedTimeInterval`
@@ -2314,6 +2701,16 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 class SambaMinPwdAge(UNIX_BoundedTimeInterval):
 	"""
 	Syntax for the minimum password age in Samba: 0..998 days
+	>>> SambaMinPwdAge.parse((None, 'days'))
+	[None, None]
+	>>> SambaMinPwdAge.parse(('0', 'days'))
+	['0', 'days']
+	>>> SambaMinPwdAge.parse(('998', 'days'))
+	['998', 'days']
+	>>> SambaMinPwdAge.parse(('999', 'days')) # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	lower_bound = 0
 	upper_bound = 998 * 24 * 60 * 60  # 998 days in seconds
@@ -2322,6 +2719,16 @@ class SambaMinPwdAge(UNIX_BoundedTimeInterval):
 class SambaMaxPwdAge(UNIX_BoundedTimeInterval):
 	"""
 	Syntax for the maximum password age in Samba: 0..999 days
+	>>> SambaMaxPwdAge.parse((None, 'days'))
+	[None, None]
+	>>> SambaMaxPwdAge.parse(('0', 'days'))
+	['0', 'days']
+	>>> SambaMaxPwdAge.parse(('999', 'days'))
+	['999', 'days']
+	>>> SambaMaxPwdAge.parse(('1000', 'days')) # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	lower_bound = 0
 	upper_bound = 999 * 24 * 60 * 60  # 999 days in seconds
@@ -2347,6 +2754,10 @@ class MAC_Address(simple):
 	'86:f5:d1:f5:6b:3e'
 	>>> MAC_Address.parse('86f5.d1f5.6b3e')
 	'86:f5:d1:f5:6b:3e'
+	>>> MAC_Address.parse('aa:bb:cc:dd:ee:gg') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	regexLinuxFormat = re.compile(r'^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')
 	regexWindowsFormat = re.compile(r'^([0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}$')
@@ -2367,7 +2778,7 @@ class MAC_Address(simple):
 			return ':'.join(temp).lower()
 		elif self.regexCiscoFormat.match(text) is not None:
 			tmpList = []
-			tmpStr = text.translate(None, '.')
+			tmpStr = text.replace('.', '')
 			for i in range(0, len(tmpStr) - 1, 2):
 				tmpList.append(tmpStr[i:i + 2])
 			return ':'.join(tmpList).lower()
@@ -2398,6 +2809,12 @@ class PackagesRemove(Packages):
 	"""
 	Syntax to select a Debian package name from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.packages`.
 	This blacklists some important packages to prevent their removal.
+	>>> PackagesRemove.parse('curl')
+	'curl'
+	>>> PackagesRemove.parse('openssh-client') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	@classmethod
 	def parse(cls, text):
@@ -2415,6 +2832,8 @@ class userAttributeList(string):
 	.. note::
 
 		unused
+	>>> userAttributeList.parse('uid')
+	'uid'
 	"""
 	@classmethod
 	def parse(self, text):
@@ -2499,7 +2918,7 @@ class UserMailAddress(UDM_Objects):
 	udm_filter = '(mailPrimaryAddress=*)'
 	key = '%(mailPrimaryAddress)s'
 	static_values = (('anyone', _('Anyone')), )
-	regex = re.compile('^([^\s]+@[^\s]+|anyone)$')
+	regex = re.compile(r'^([^\s]+@[^\s]+|anyone)$')
 	error_message = _('Not a valid e-mail address')
 
 
@@ -2569,6 +2988,10 @@ class ldapDnOrNone(simple):
 	'dc=foo,dc=bar,dc=test'
 	>>> ldapDnOrNone.parse('None')
 	'None'
+	>>> ldapDnOrNone.parse('dc=foo,,') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 
 	.. deprecated:: 3.1-0
 		Use :py:class:`UDM_Objects`.
@@ -2587,6 +3010,8 @@ class ldapDnOrNone(simple):
 class ldapObjectClass(simple):
 	"""
 	Syntax to enter a |LDAP| objectClass name.
+	>>> ldapObjectClass.parse('univentionObject')
+	'univentionObject'
 	"""
 	@classmethod
 	def parse(self, text):
@@ -2596,6 +3021,8 @@ class ldapObjectClass(simple):
 class ldapAttribute(simple):
 	"""
 	Syntax to enter a |LDAP| attribute name.
+	>>> ldapAttribute.parse('cn')
+	'cn'
 	"""
 	@classmethod
 	def parse(self, text):
@@ -2605,6 +3032,12 @@ class ldapAttribute(simple):
 class ldapFilter(simple):
 	"""
 	Syntax to enter a |LDAP| search filter.
+	>>> ldapFilter.parse('uid=*')
+	'uid=*'
+	>>> ldapFilter.parse('(uid=*') # doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 
 	type_class = univention.admin.types.LDAPFilterType
@@ -3031,6 +3464,10 @@ class UserID(UDM_Objects):
 
 	.. seealso::
 		* :py:class:`UserDN`.
+	>>> UserID.parse('0')  # doctest: +ALLOW_UNICODE
+	'0'
+	>>> UserID.parse(0)  # doctest: +ALLOW_UNICODE
+	'0'
 	"""
 	udm_modules = ('users/user', )
 	key = '%(uidNumber)s'
@@ -3055,6 +3492,10 @@ class GroupID(UDM_Objects):
 	.. seealso::
 		* :py:class:`GroupDN`
 		* :py:class:`GroupDNOrEmpty`
+	>>> GroupID.parse('5000')  # doctest: +ALLOW_UNICODE
+	'5000'
+	>>> GroupID.parse(5000)  # doctest: +ALLOW_UNICODE
+	'5000'
 	"""
 	udm_modules = ('groups/group', )
 	key = '%(gidNumber)s'
@@ -3091,7 +3532,7 @@ class IComputer_FQDN(UDM_Objects):
 	udm_modules = ()
 	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
 	label = '%(name)s.%(domain)s'  # '%(fqdn)s'
-	regex = re.compile('(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	regex = re.compile(r'(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _('Not a valid FQDN')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	simple = True
@@ -3287,6 +3728,8 @@ class dnsEntryReverse(complex):
 class DNS_ForwardZoneList(select):
 	"""
 	Syntax to select |DNS| forward zone for alias entries.
+	>>> DNS_ForwardZoneList.parse('some name')
+	'some name'
 	"""
 	depends = 'dnsEntryZoneForward'
 
@@ -3314,6 +3757,10 @@ class dhcpService(UDM_Objects):
 class dhcpEntry(complex):
 	"""
 	Syntax to configure a |DHCP| host entry.
+	>>> dhcpEntry.parse(["cn=service", "aabbccddeeff"])  # doctest: +ALLOW_UNICODE
+	['cn=service', '', 'aa:bb:cc:dd:ee:ff']
+	>>> dhcpEntry.parse(["cn=service", "127.0.0.1", "aabbccddeeff"])  # doctest: +ALLOW_UNICODE
+	['cn=service', '127.0.0.1', 'aa:bb:cc:dd:ee:ff']
 	"""
 	min_elements = 1
 	all_required = False
@@ -3342,7 +3789,7 @@ class DHCP_Option(complex):
 	Syntax to enter free-form |DHCP| options.
 	"""
 	subsyntaxes = ((_('Name'), string), (_('Value'), string))
-	#subsyntax_names = ('name', 'value')
+	# subsyntax_names = ('name', 'value')
 	subsyntax_key_value = True
 	description = _('DHCP option')
 	size = ('One', 'One')
@@ -3388,7 +3835,7 @@ class IStates(select):
 
 	@ClassProperty
 	def choices(cls):
-		return map(lambda x: (x[1]), cls.values)
+		return list(map(lambda x: (x[1]), cls.values))
 
 	@classmethod
 	def parse(cls, text):
@@ -3432,6 +3879,12 @@ class IStates(select):
 class AllowDeny(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"allow"` and `"deny"`.
+	>>> AllowDeny.choices
+	[('', ''), ('allow', 'allow'), ('deny', 'deny')]
+	>>> AllowDeny.sanitize_property_search_value(True)
+	'allow'
+	>>> AllowDeny.sanitize_property_search_value(False)
+	'deny'
 	"""
 	values = (
 		(None, ('', '')),
@@ -3444,6 +3897,14 @@ class AllowDeny(IStates):
 class booleanNone(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"yes"` and `"no"`.
+	>>> booleanNone.parse("yes")
+	'yes'
+	>>> booleanNone.parse("no")
+	'no'
+	>>> booleanNone.parse("maybe") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
 	"""
 	values = (
 		(None, ('', '')),
@@ -3468,6 +3929,10 @@ class auto_one_zero(select):
 class TrueFalse(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"true"` and `"false"`.
+	>>> TrueFalse.sanitize_property_search_value(True)
+	'true'
+	>>> TrueFalse.sanitize_property_search_value(False)
+	'false'
 	"""
 	values = (
 		(None, ('', '')),
@@ -3480,6 +3945,16 @@ class TrueFalse(IStates):
 class TrueFalseUpper(IStates):
 	"""
 	Syntax class for a tri-state select between `None`, `"TRUE"` and `"FALSE"`.
+	>>> TrueFalseUpper.sanitize_property_search_value(True)
+	'TRUE'
+	>>> TrueFalseUpper.sanitize_property_search_value(False)
+	'FALSE'
+	>>> TrueFalseUpper.get_object_property_filter("myAttr", "wrong...")
+	''
+	>>> TrueFalseUpper.get_object_property_filter("myAttr", "TRUE")
+	'myAttr=TRUE'
+	>>> TrueFalseUpper.get_object_property_filter("myAttr", "")
+	'(!(myAttr=*))'
 	"""
 	values = (
 		(None, ('', '')),
@@ -3492,6 +3967,12 @@ class TrueFalseUpper(IStates):
 class TrueFalseUp(IStates):
 	"""
 	Syntax for bool'ean value matching |LDAP| `boolean` (|OID| 1.3.6.1.4.1.1466.115.121.1.7).
+	>>> TrueFalseUp.sanitize_property_search_value(True)
+	'TRUE'
+	>>> TrueFalseUp.sanitize_property_search_value(False)
+	'FALSE'
+	>>> TrueFalseUp.get_object_property_filter("myAttr", "FALSE")
+	'(|(myAttr=FALSE)(!(myAttr=*)))'
 	"""
 	values = (
 		(True, ('TRUE', _('True'))),
@@ -4055,7 +4536,7 @@ class UNIX_AccessRight(simple):
 
 
 class UNIX_AccessRight_extended(simple):
-	"""
+	r"""
 	Syntax to configure UNIX file permissions including set\ |UID|, set\ |GID| and sticky bits.
 
 	.. seealso::
@@ -4095,6 +4576,12 @@ class adGroupType(select):
 class SambaLogonHours(MultiSelect):
 	"""
 	Syntax to select hour slots per day for Samba login.
+	>>> SambaLogonHours.parse("162 163")
+	[162, 163]
+	>>> SambaLogonHours.parse("5000") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	choices = [(idx * 24 + hour, '%s %d-%d' % (day, hour, hour + 1)) for idx, day in ((0, _('Sun')), (1, _('Mon')), (2, _('Tue')), (3, _('Wed')), (4, _('Thu')), (5, _('Fri')), (6, _('Sat'))) for hour in range(24)]
 
@@ -4104,9 +4591,9 @@ class SambaLogonHours(MultiSelect):
 	def parse(self, value):
 		# required for UDM CLI: in this case the keys MUST be of type int
 		if isinstance(value, six.string_types):
-			value = map(lambda x: int(x), shlex.split(value))
+			value = list(map(lambda x: int(x), shlex.split(value)))
 
-		return MultiSelect.parse.im_func(self, value)
+		return super(SambaLogonHours, self).parse(value)
 
 
 class SambaPrivileges(select):
@@ -4130,6 +4617,10 @@ class SambaPrivileges(select):
 class UCSServerRole(select):
 	"""
 	Syntax to select |UCS| server role.
+	>>> UCSServerRole.parse('Undefined')
+	>>> UCSServerRole.parse('')
+	>>> UCSServerRole.parse('domaincontroller_master')
+	'domaincontroller_master'
 	"""
 	empty_value = True
 	choices = [
@@ -4186,6 +4677,12 @@ class nfssync(select):
 class univentionAdminModules(select):
 	"""
 	Syntax for selecting an |UDM| module.
+	>>> univentionAdminModules.parse('users/user')  # doctest: +ALLOW_UNICODE
+	'users/user'
+	>>> univentionAdminModules.parse('nonexistant') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
 	"""
 	# we need a fallback
 	choices = [
@@ -4319,6 +4816,8 @@ class listAttributes(string):
 	.. deprecated::
 		Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
 		Should be removed after migrating to :py:class:`UDM_PropertySelect`.
+	>>> listAttributes.parse("a value")
+	'a value'
 	"""
 
 	@classmethod
@@ -4393,6 +4892,22 @@ class LDAP_Search(select):
 	or programmatically by directly instantiating
 
 		LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
+	>>> from univention.admin.uldap import getMachineConnection
+	>>> lo, pos = getMachineConnection()
+	>>> syntax = LDAP_Search('mysyntax', '(univentionObjectType=users/user)', ['uid'])
+	>>> syntax._load(lo)
+	>>> syntax._prepare(lo)
+	>>> any(dn.startswith('uid=Administrator') for dn, value, attrs in syntax.values)
+	True
+	>>> syntax = LDAP_Search('mysyntax2', '(univentionObjectType=fantasy)', ['cn'])
+	>>> syntax._prepare(lo)
+	>>> syntax.values
+	[]
+	>>> syntax = LDAP_Search('ManagementServer')  # comes with UVMM
+	>>> syntax._load(lo)
+	>>> syntax._prepare(lo)
+	>>> syntax.values
+	[]
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
@@ -4458,19 +4973,19 @@ class LDAP_Search(select):
 			return
 
 		if dn:
-			self.__dn = dn
-			self.filter = attrs['univentionSyntaxLDAPFilter'][0]
+			self.__dn = dn  # needed?
+			self.filter = attrs['univentionSyntaxLDAPFilter'][0].decode('utf-8')
 			self.attributes = attrs['univentionSyntaxLDAPAttribute']
 			if 'univentionSyntaxLDAPBase' in attrs:
-				self.base = attrs['univentionSyntaxLDAPBase'][0]
+				self.base = attrs['univentionSyntaxLDAPBase'][0].decode('utf-8')
 			else:
-				self.__base = ''
-			self.value = attrs.get('univentionSyntaxLDAPValue', ['dn'])[0]
-			if attrs.get('univentionSyntaxViewOnly', ['FALSE'])[0] == 'TRUE':
+				self.base = self.__base = ''  # unclear what __base is for
+			self.value = attrs.get('univentionSyntaxLDAPValue', [b'dn'])[0].decode('utf-8')
+			if attrs.get('univentionSyntaxViewOnly', [b'FALSE'])[0] == b'TRUE':
 				self.viewonly = True
 				self.value = 'dn'
-			self.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', ['0'])[0].upper() in ['TRUE', '1'])
-			self.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', ['0'])[0].upper() in ['TRUE', '1'])
+			self.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
+			self.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
 
 	def _prepare(self, lo, filter=None):
 		if filter is None:
@@ -4510,6 +5025,18 @@ class nfsMounts(complex):
 class languageCode(string):
 	"""
 	Syntax for a language, e.g. `language_COUNTRY`.
+	>>> languageCode.parse("de_DE")
+	'de_DE'
+	>>> languageCode.parse("en_US")
+	'en_US'
+	>>> languageCode.parse("C") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> languageCode.parse("german") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	min_length = 5
 	max_length = 5
@@ -4564,6 +5091,18 @@ class I18N_GroupName(translationTuple):
 class disabled(boolean):
 	"""
 	Syntax to select account disabled state.
+	>>> disabled.parse("none")
+	'0'
+	>>> disabled.parse("none2")
+	'0'
+	>>> disabled.parse("all")
+	'1'
+	>>> disabled.parse("posix_kerberos")
+	'1'
+	>>> disabled.parse("hallo") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	@classmethod
 	def parse(cls, text):
@@ -4577,6 +5116,22 @@ class disabled(boolean):
 class locked(boolean):
 	"""
 	Syntax to select account locked state.
+	>>> locked.parse("none")
+	'0'
+	>>> locked.parse("posix")
+	'1'
+	>>> locked.parse("windows")
+	'1'
+	>>> locked.parse("all")
+	'1'
+	>>> locked.parse("posix_kerberos") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> locked.parse("none2") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	@classmethod
 	def parse(cls, text):
@@ -4613,6 +5168,8 @@ class PrinterNames(UDM_Objects):
 
 	.. seealso::
 		* :py:class:`Printers`
+	>>> PrinterNames().type_class
+	<class 'univention.admin.types.StringType'>
 	"""
 	udm_modules = ('shares/printer', )
 	depends = 'spoolHost'
@@ -4664,6 +5221,12 @@ class PrintQuotaUser(complex):
 class printerName(simple):
 	"""
 	Syntax to enter a printer name.
+	>>> printerName.parse("drucker1")
+	'drucker1'
+	>>> printerName.parse("drücker1") #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
 	min_length = 1
 	max_length = 16
@@ -4719,6 +5282,20 @@ class PrinterProtocol(UDM_Attribute):
 class PrinterURI(complex):
 	"""
 	Syntax to configure printer.
+	>>> PrinterURI.parse(["uri://", "localhost"])
+	['uri://', 'localhost']
+	>>> PrinterURI.parse(["uri://", None]) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> PrinterURI.parse(["uri://", "localhost", "one more"]) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> PrinterURI.parse(["uri://"]) #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
 	"""
 	subsyntaxes = ((_('Protocol'), PrinterProtocol), (_('Destination'), string))
 	subsyntax_names = ('protocol', 'destination')
@@ -4756,8 +5333,14 @@ class PrinterURI(complex):
 class policyName(string):
 	"""
 	Syntax to enter |UDM| policy name.
+	>>> policyName.parse('A valid name')
+	'A valid name'
+	>>> policyName.parse('An invalid name ') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
 	"""
-	_re = re.compile('^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
+	_re = re.compile(r'^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
 
 	@classmethod
 	def parse(self, text):
@@ -4839,8 +5422,29 @@ class PortalEntrySelection(complex):
 
 
 class PortalCategorySelection(simple):
-	"""
+	r"""
 	Syntax to select a portal category.
+	>>> x = PortalCategorySelection.tostring([["cn=category1", []], ["cn=category2", ["cn=entry1", "cn=entry2"]]])  # doctest: +ALLOW_UNICODE
+	>>> x.replace(' ','').replace('\n','')
+	'[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]'
+	>>> PortalCategorySelection.parse('[["cn=category1",[]],["cn=category2",["cn=entry1","cn=entry2"]]]')  # doctest: +ALLOW_UNICODE
+	[['cn=category1', []], ['cn=category2', ['cn=entry1', 'cn=entry2']]]
+	>>> PortalCategorySelection.parse('[["cn=category1",[]],["",["cn=entry1","cn=entry2"]]]') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> PortalCategorySelection.parse('[["cn=category1"]]') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> PortalCategorySelection.parse('[["cn=category1",[], []]]') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
+	>>> PortalCategorySelection.parse('hallo') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueInvalidSyntax:
 	"""
 	subsyntaxes = [(_('Portal Category'), PortalCategoryV2), (_('Portal Entry'), PortalEntrySelection)]
 	subsyntax_names = ('portal-category', 'portal-entry',)
