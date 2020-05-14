@@ -44,7 +44,7 @@ ucr.load()
 
 baseDN = ucr['ldap/base']
 
-lo = ldap.open('localhost', 7389)
+lo = ldap.open('ldap://localhost:7389')
 bindpw = open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
 	bindpw = bindpw[0:-1]
@@ -60,13 +60,13 @@ res = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionDirectory',
 
 
 for i in range(0, len(res)):
-	if 'cn' in res[i][1] and res[i][0][:13] == "cn=directory,":
+	if b'cn' in res[i][1] and res[i][0][:13] == "cn=directory,":
 		print("  rename %s" % res[i][0])
 		lo.rename_s(res[i][0], "cn=default containers", res[i][0][13:])
 		print('  rename successful, exit.\n')
 		sys.exit(0)
 
-	elif 'cn' in res[i][1] and res[i][0][:22] == "cn=default containers,":
+	elif b'cn' in res[i][1] and res[i][0][:22] == "cn=default containers,":
 		print('  "cn=default containers" already exists, exit.\n')
 		sys.exit(0)
 
