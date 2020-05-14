@@ -455,7 +455,7 @@ property_descriptions = {
 		options=['nfs'],
 	),
 	'appendACL': univention.admin.property(
-		short_description=_('Append NACL for Samba file shares'),
+		short_description=_('Append NTACLs for Samba file shares'),
 		long_description=_('Additional NTACL elements for the base directory of Samba file shares.'),
 		syntax=univention.admin.syntax.string,
 		multivalue=False,
