@@ -458,7 +458,8 @@ property_descriptions = {
 		short_description=_('Append NTACLs for Samba file shares'),
 		long_description=_('Additional NTACL elements for the base directory of Samba file shares.'),
 		syntax=univention.admin.syntax.string,
-		multivalue=False,
+		multivalue=True,
+		options=['samba'],
 	),
 }
 
