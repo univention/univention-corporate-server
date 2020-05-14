@@ -44,7 +44,7 @@ ucr.load()
 
 baseDN = ucr['ldap/base']
 
-lo = ldap.open('localhost', 7389)
+lo = ldap.initialize('ldap://localhost:7389')
 bindpw = open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
 	bindpw = bindpw[0:-1]
@@ -68,7 +68,7 @@ if len(sys.argv) > 1:
 		activate_all = True
 
 for i in range(0, len(res_pA)):
-	modlist = [(ldap.MOD_ADD, 'objectClass', 'univentionMail')]
+	modlist = [(ldap.MOD_ADD, 'objectClass', b'univentionMail')]
 	try:
 		inp = ""
 		print("found user without mail: %s" % res_pA[i][0])
