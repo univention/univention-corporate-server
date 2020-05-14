@@ -1061,7 +1061,8 @@ transfer_docker_image () {
 	local transfer_pwfile=/root/automation.secret
 
 	# test if the app is package based and exit in that case
-	if univention-app status "$appid" 2>&1 | grep -q "is not supported"; then
+	# "$(cut -d ' ' -f 1 <<< $appid)": test first app if appid contains more than one app identifier, e.g. kopano is started with appid='kopano-core z-push-kopano fetchmail kopano-webapp kopano-webmeetings'
+	if univention-app status "$(cut -d ' ' -f 1 <<< $appid)" 2>&1 | grep -q "is not supported"; then
 		echo "package based app, no docker image transer required."
 		exit 0
 	fi
