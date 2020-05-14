@@ -173,10 +173,11 @@ class object(univention.admin.handlers.simpleLdap):
 			val = self.oldattr.get('univentionSyntaxLDAPValue', b'')
 			if isinstance(val, (list, tuple)):
 				val = val[0]
-			if val and b':' in val:
-				self['value'] = [x.decode('UTF-8') for x in val]
+			val = val.decode('utf-8')
+			if val and ':' in val:
+				self['value'] = val
 			else:
-				self['ldapvalue'] = [x.decode('UTF-8') for x in val]
+				self['ldapvalue'] = val
 
 			self.save()
 
