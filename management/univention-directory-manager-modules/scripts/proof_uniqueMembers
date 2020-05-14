@@ -4,7 +4,6 @@
 #
 # Univention Directory Manager Modules
 """Check if users are member of their primary group."""
-from __future__ import print_function
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -33,11 +32,15 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
+import sys
+from argparse import ArgumentParser
+
 import ldap
 from ldap.filter import filter_format
-import sys
 from univention.config_registry import ConfigRegistry
-from optparse import OptionParser
+import univention.uldap
 
 
 def info(msg, *args, **kwargs):
@@ -60,22 +63,6 @@ def fatal(msg, *args, **kwargs):
 	sys.exit(1)
 
 
-def ldapbind(basedn):
-	"""Open local LDAP connection and do bind."""
-	binddn = "cn=admin,%s" % (basedn,)
-	try:
-		bindpw = open('/etc/ldap.secret').read().rstrip('\n')
-	except IOError:
-		fatal('Could not read /etc/ldap.secret')
-	conn = ldap.open('localhost', 7389)
-	try:
-		conn.simple_bind_s(binddn, bindpw)
-	except ldap.LDAPError:
-		fatal("Could not bind to %s", binddn)
-
-	return conn
-
-
 def check_primary(conn, basedn):
 	"""Check if users are member of their primary group."""
 	info("Checking if users are member of their primary group...")
@@ -86,8 +73,8 @@ def check_primary(conn, basedn):
 		fatal("ldap search in %s failed (no such base dn)", basedn)
 	count_changes = 0
 	for user_dn, account in user_result:
-		user_uid = account['uid'][0]
-		user_gid = account.get('gidNumber', [])[0]
+		user_uid = account['uid'][0].decode('utf-8')
+		user_gid = account.get('gidNumber', [])[0].decode('utf-8')
 		if not user_gid:
 			warn("posixAccount without gidNumber: %s", user_dn)
 
@@ -106,13 +93,13 @@ def check_primary(conn, basedn):
 		# we change them all -- the user needs to delete all but one of them
 		for group_dn, group in group_result:
 			# look for the needed entry
-			group_member_dns = [dn.lower() for dn in group.get('uniqueMember', [])]
-			group_member_uids = [uid.lower() for uid in group.get('memberUid', [])]
+			group_member_dns = [dn.decode('utf-8').lower() for dn in group.get('uniqueMember', [])]
+			group_member_uids = [uid.decode('utf-8').lower() for uid in group.get('memberUid', [])]
 			modlist = []
 			if user_dn.lower() not in group_member_dns:
-				modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn))
+				modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn.encode('utf-8')))
 			if user_uid.lower() not in group_member_uids:
-				modlist.append((ldap.MOD_ADD, 'memberUid', user_uid))
+				modlist.append((ldap.MOD_ADD, 'memberUid', user_uid.encode('utf-8')))
 			# no entry found, going to add one
 			if modlist:
 				info("Adding uniqueMember and memberUid entry for '%s' in '%s'", user_dn, group_dn)
@@ -142,7 +129,7 @@ def check_groups(conn, basedn):
 
 def check_groups_by_dn(conn, group_dn, group):
 	"""Check by 'uniqueMember'."""
-	group_member_dns = group.get('uniqueMember', [])
+	group_member_dns = [dn.decode('utf-8') for dn in group.get('uniqueMember', [])]
 	count_changes = 0
 	remmembers = set()
 	for member_dn in group_member_dns:
@@ -165,7 +152,7 @@ def check_groups_by_dn(conn, group_dn, group):
 				remmembers.add(member_dn)
 	for member_dn in remmembers:
 		info("Removing member DN '%s' from '%s'", member_dn, group_dn)
-		modlist = [(ldap.MOD_DELETE, 'uniqueMember', member_dn)]
+		modlist = [(ldap.MOD_DELETE, 'uniqueMember', member_dn.encode('utf-8'))]
 		try:
 			conn.modify_s(group_dn, modlist)
 			count_changes += 1
@@ -176,7 +163,7 @@ def check_groups_by_dn(conn, group_dn, group):
 
 def check_groups_by_uid(conn, basedn, group_dn, group):
 	"""Check by 'memberUid'."""
-	group_member_uids = group.get('memberUid', [])
+	group_member_uids = [uid.decode('utf-8') for uid in group.get('memberUid', [])]
 	count_changes = 0
 	remmembers = set()
 	for member_uid in group_member_uids:
@@ -192,7 +179,7 @@ def check_groups_by_uid(conn, basedn, group_dn, group):
 				remmembers.add(member_uid)
 	for member_uid in remmembers:
 		info("Removing member UID '%s' from '%s'", member_uid, group_dn)
-		modlist = [(ldap.MOD_DELETE, 'memberUid', member_uid)]
+		modlist = [(ldap.MOD_DELETE, 'memberUid', member_uid.encode('utf-8'))]
 		try:
 			conn.modify_s(group_dn, modlist)
 			count_changes += 1
@@ -203,16 +190,16 @@ def check_groups_by_uid(conn, basedn, group_dn, group):
 
 def main():
 	"""Check group membership."""
-	parser = OptionParser()
-	parser.add_option("-b", "--base-dn", dest="basedn", action="store", help="ldap base DN for user search")
-	parser.add_option("-c", "--check", dest="check", action="store_true", help="Only check, do not modify")
-	(options, _args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("-b", "--base-dn", dest="basedn", action="store", help="ldap base DN for user search")
+	parser.add_argument("-c", "--check", dest="check", action="store_true", help="Only check, do not modify")
+	options = parser.parse_args()
 
 	ucr = ConfigRegistry()
 	ucr.load()
 	basedn = ucr['ldap/base']
 
-	conn = ldapbind(basedn)
+	conn = univention.uldap.getAdminConnection().lo
 
 	if options.basedn:
 		basedn = options.basedn

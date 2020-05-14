@@ -38,17 +38,14 @@ import ldap
 import sys
 
 import univention.config_registry
+import univention.uldap
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 baseDN = ucr['ldap/base']
 
-lo = ldap.open('localhost', 7389)
-bindpw = open('/etc/ldap.secret').read()
-if bindpw[-1] == '\n':
-	bindpw = bindpw[0:-1]
-lo.simple_bind_s("cn=admin," + baseDN, bindpw)
+lo = univention.uldap.getAdminConnection().lo
 
 
 def print_usage():
@@ -84,23 +81,18 @@ count_deleted_references = 0
 count_policies = 0
 count_deleted_policies = 0
 
-policy_object = {}
-
-res_uP = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicy')
-for i in range(0, len(res_uP)):
-	policy_object[res_uP[i][0]] = 0  # set all Policies as unused
+policy_object = dict((x[0], 0) for x in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicy'))  # set all Policies as unused
 
 
-res_uPR = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicyReference')
-for i in range(0, len(res_uPR)):
-	if "univentionPolicyReference" in res_uPR[i][1]:
+for policy_reference_dn, policy_reference_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicyReference'):
+	if "univentionPolicyReference" in policy_reference_attr:
 		# to_delete = []
 		modlist = []
-		for el in res_uPR[i][1]["univentionPolicyReference"]:
+		for el in [x.decode('utf-8') for x in policy_reference_attr["univentionPolicyReference"]]:
 			if el in policy_object:
 				policy_object[el] = 1
 			else:
-				print("referenced policy does not exists:", res_uPR[i][0], "->", el)
+				print("referenced policy does not exists:", policy_reference_dn, "->", el)
 				count_references = count_references + 1
 				inp = ""
 				if not delete_all:
@@ -114,12 +106,12 @@ for i in range(0, len(res_uPR)):
 					print("marked for deletion")
 					count_deleted_references = count_deleted_references + 1
 
-		if len(modlist) > 0:
-			lo.modify(res_uPR[i][0], modlist)
-			print("deleted References in", res_uPR[i][0])
+		if modlist:
+			lo.modify(policy_reference_dn, modlist)
+			print("deleted References in", policy_reference_dn)
 
 	else:
-		print("Warning: found univentionPolicyReference without such Attribute", res_uPR[i][0])
+		print("Warning: found univentionPolicyReference without such Attribute", policy_reference_dn)
 
 
 to_delete = []
