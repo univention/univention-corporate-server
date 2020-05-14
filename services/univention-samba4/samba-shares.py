@@ -279,15 +279,18 @@ def handler(dn, new, old, command):
 	if 'univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old:
 		listener.setuid(0)
 		try:
-			proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]],
-			                        stdout=subprocess.PIPE, close_fds=True)
+			proc = subprocess.Popen(
+				['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]],
+				stdout=subprocess.PIPE,
+				close_fds=True,
+			)
 			stdout, stderr = proc.communicate()
 			prev_aces = set()
 			new_aces = set()
 			if 'univentionShareSambaBaseDirAppendACL' in old:
-				prev_aces = set(re.findall(r'\(.+?\)', old['univentionShareSambaBaseDirAppendACL'][0]))
+				prev_aces = set(re.findall(r'\(.+?\)', acl) for acl in old['univentionShareSambaBaseDirAppendACL'])
 			if 'univentionShareSambaBaseDirAppendACL' in new:
-				new_aces = set(re.findall(r'\(.+?\)', new['univentionShareSambaBaseDirAppendACL'][0]))
+				new_aces = set(re.findall(r'\(.+?\)', acl) for acl in new['univentionShareSambaBaseDirAppendACL'])
 
 			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
 				# if old != new -> delete everything from old!
