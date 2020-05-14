@@ -279,7 +279,7 @@ if __name__ == '__main__':
 		'-o', '--option', default=[], action='append', dest='options',
 		help='append an option to the request')
 	parser.add_argument_group(group)
-	parser.add_argument('arguments', nargs='+')
+	parser.add_argument('arguments', nargs='?', default=[])
 
 	arguments = parser.parse_args()
 
@@ -296,7 +296,7 @@ if __name__ == '__main__':
 
 	log_init('/dev/stderr', arguments.debug)
 
-	if not arguments:
+	if not arguments.arguments:
 		parser.error('command is missing')
 	if arguments.authenticate:
 		if not arguments.username:
