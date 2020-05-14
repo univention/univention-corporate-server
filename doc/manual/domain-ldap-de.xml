@@ -1394,7 +1394,7 @@ univention-directory-listener-ctrl resync cups-printers
 		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänen Modul <guimenu>SAML identity provider</guimenu> verwaltet werden.
 		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
 		Service Provider können auch für Gruppen aktiviert werden, sodass sich alle Benutzer in dieser Gruppe für diesen Dienst authentifizieren können.
-		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers, oder des <foreignphrase>Tab</foreignphrase> <guimenu>Allgemein</guimenu> einer Gruppe, muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
+		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers, oder dem <foreignphrase>Tab</foreignphrase> <guimenu>Allgemein</guimenu> einer Gruppe, muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	<para>
 		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des <wordasword>SAML-Zertifikats</wordasword> auf dem Service Provider benötigt.
