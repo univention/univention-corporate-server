@@ -31,24 +31,23 @@ with UCSTestConfigRegistry():
 
 	log_to_stream()
 
-	test_appcenter = get_action('dev-use-test-appcenter')
-	test_appcenter.call(revert=True)
-	register = get_action('register')
-
 	def _packages_to_install(app):
 		return app.get_packages()
+
+	def _apt_get_update():
+		cmd = ['/usr/bin/apt-get', 'update']
+		for i in range(0, 3):
+			print('Executing the command: %s' % cmd)
+			ret = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			if ret == 0:
+				break
+			print('failed, try again ...')
+			time.sleep(10)
 
 	def _apt_get_simulate(app):
 		if not app.without_repository:
 			register.call(apps=[app], register_task=['component'], do_it=True)
-			cmd = ['/usr/bin/apt-get', 'update']
-			for i in range(0, 3):
-				print('Executing the command: %s' % cmd)
-				ret = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-				if ret == 0:
-					break
-				print('failed, try again ...')
-				time.sleep(10)
+			_apt_get_update()
 		packages = _packages_to_install(app)
 		cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
 		print('Executing the command: %s' % cmd)
@@ -57,9 +56,12 @@ with UCSTestConfigRegistry():
 			register.call(apps=[app], register_task=['component'])
 		return retcode == 0
 
-	print('Installed apps: %s' % [app for app in Apps().get_all_locally_installed_apps()])
-
+	test_appcenter = get_action('dev-use-test-appcenter')
+	test_appcenter.call(revert=True)
+	register = get_action('register')
+	print('Installed apps: %s' % [app.id for app in Apps().get_all_locally_installed_apps()])
 	failed = []
+	_apt_get_update()
 	for app in Apps().get_all_apps():
 		if app.docker:
 			print('Ignoring app %r: Docker App' % app.id)
@@ -72,8 +74,8 @@ with UCSTestConfigRegistry():
 		print('Checking app: %r' % app.id)
 		if not _apt_get_simulate(app):
 			failed.append(app)
-
 	test_appcenter.call()
+	_apt_get_update()
 
 	if failed:
 		print('\nTEST FAILED: the following apps cannot be installed due to broken packages...')

@@ -1,3 +1,9 @@
+ucs-test (9.0.3-207) unstable; urgency=medium
+
+  * Bug #40942: remove unnecessary apt update calls
+
+ -- Felix Botner <botner@univention.de>  Thu, 14 May 2020 11:51:55 +0200
+
 ucs-test (9.0.3-206) unstable; urgency=medium
 
   * Bug #40942: remove unnecessary apt update calls
