@@ -42,15 +42,15 @@ from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.debug as ud
+
+from univention.admin._ucr import configRegistry
+
 try:
 	from typing import Any, List, Optional, Type, Union  # noqa F401
 except ImportError:
 	pass
 
 __all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 if six.PY2:
 	# baseconfig legacy

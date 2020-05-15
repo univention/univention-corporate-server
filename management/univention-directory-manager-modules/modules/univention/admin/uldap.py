@@ -37,8 +37,8 @@ import time
 import univention.debug as ud
 import univention.uldap
 from univention.admin import localization
-import univention.config_registry
 import univention.admin.license
+from univention.admin._ucr import configRegistry
 try:
 	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
 except ImportError:
@@ -46,9 +46,6 @@ except ImportError:
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 explodeDn = univention.uldap.explodeDn
 
