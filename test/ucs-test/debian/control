@@ -73,6 +73,7 @@ Depends:
  python-apt,
  python-lxml,
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
