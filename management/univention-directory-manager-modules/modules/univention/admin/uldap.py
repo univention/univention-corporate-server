@@ -139,12 +139,12 @@ def getBaseDN(host='localhost', port=None, uri=None):
 	try:
 		lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
 		result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
-		return result[0][1]['namingContexts'][0]
+		return result[0][1]['namingContexts'][0].decode('utf-8')
 	except ldap.SERVER_DOWN:
 		time.sleep(60)
 	lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
 	result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
-	return result[0][1]['namingContexts'][0]
+	return result[0][1]['namingContexts'][0].decode('utf-8')
 
 
 def getAdminConnection(start_tls=2, decode_ignorelist=[]):
