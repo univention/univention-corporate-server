@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner sh
+## desc: Run doctests for syntax.py
+## exposure: careful
+## tags: [udm]
+## join: true
+
+set -e
+
+cleanup() {
+	unlink syntax.py
+}
+
+trap cleanup INT TERM EXIT
+
+ln -s /usr/lib/python2.7/dist-packages/univention/admin/syntax.py
+py.test syntax.py --doctest-modules
+cleanup
+
+cp /usr/lib/python3/dist-packages/univention/admin/syntax.py .
+py.test-3 syntax.py --doctest-modules # --cov=univention.admin.syntax --cov-report=term-missing
+cleanup
