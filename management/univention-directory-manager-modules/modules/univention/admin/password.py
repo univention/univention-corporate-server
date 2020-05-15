@@ -72,7 +72,7 @@ def crypt(password, method_id=None, salt=None):
 		urandom = open("/dev/urandom", "rb")
 		for i in range(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
 			o = ord(urandom.read(1))
-			while not o < 256 / len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
+			while not o < 256 // len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
 				o = ord(urandom.read(1))
 			salt = salt + valid[(o % len(valid))]
 		urandom.close()
