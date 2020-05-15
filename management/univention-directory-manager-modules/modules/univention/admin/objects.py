@@ -31,7 +31,6 @@
 
 from __future__ import absolute_import
 
-import re
 import ldap
 
 import univention.debug as ud
@@ -50,15 +49,7 @@ def module(object):
 	:param object: |UDM| object instance
 	:returns: |UDM| handler name or `None`.
 	"""
-	if hasattr(object, 'module'):
-		return object.module
-	else:
-		res = re.findall('^<.?univention.admin.handlers.(.+)\.[^\. ]+ .*>$', str(object))
-		if len(res) != 1:
-			return None
-		else:
-			mod = res[0].replace('.', '/')
-			return mod
+	return getattr(object, 'module', None)
 
 
 def get_superordinate(module, co, lo, dn):
@@ -219,10 +210,7 @@ def dn(object):
 	:param object: |UDM| object.
 	:returns: the |DN| or `None`.
 	"""
-	if hasattr(object, 'dn'):
-		return object.dn
-	else:
-		return None
+	return getattr(object, 'dn', None)
 
 
 def ocToType(oc):
@@ -241,7 +229,7 @@ def ocToType(oc):
 def fixedAttribute(object, key):
 	# type: (univention.admin.handlers.simpleLdap, str) -> int
 	"""
-	Check if the named property is a fixed attribute (not overwritten my more specific policies).
+	Check if the named property is a fixed attribute (not overwritten by more specific policies).
 
 	:param object: |UDM| object.
 	:param key: |UDM| property name
@@ -386,4 +374,4 @@ def performCleanup(object):
 	try:
 		object.cleanup()
 	except Exception:
-		pass
+		pass  # TODO: add logging
