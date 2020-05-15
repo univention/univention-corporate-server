@@ -30,7 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from univention.admin import localization
-from univention.admin import configRegistry
+from univention.admin._ucr import configRegistry
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

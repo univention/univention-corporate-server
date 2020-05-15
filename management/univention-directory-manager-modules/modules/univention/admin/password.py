@@ -35,15 +35,14 @@ import re
 import hashlib
 import heimdal
 import smbpasswd
-import univention.config_registry
+
 import univention.debug as ud
+from univention.admin._ucr import configRegistry
+
 try:
 	from typing import List, Optional, Tuple  # noqa F401
 except ImportError:
 	pass
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 RE_PASSWORD_SCHEME = re.compile('^{(\w+)}(!?)(.*)', re.I)
 
@@ -86,8 +85,8 @@ def crypt(password, method_id=None, salt=None):
 			'SHA-512': '6',
 		}.get(hashing_method, '6')
 
-	import crypt
-	return crypt.crypt(password, '$%s$%s$' % (method_id, salt, ))
+	from crypt import crypt as _crypt
+	return _crypt(password, '$%s$%s$' % (method_id, salt, ))
 
 
 def ntlm(password):
@@ -198,7 +197,7 @@ def lock_password(password):
 	"""
 	# cleartext password?
 	if not RE_PASSWORD_SCHEME.match(password):
-		return "{crypt}!%s" % (univention.admin.password.crypt(password))
+		return "{crypt}!%s" % (crypt(password))
 
 	if not is_locked(password):
 		match = RE_PASSWORD_SCHEME.match(password).groups()
@@ -269,7 +268,7 @@ def password_already_used(password, pwhistory):
 	for line in pwhistory.split(" "):
 		linesplit = line.split("$")  # $method_id$salt$password_hash
 		try:
-			password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
+			password_hash = crypt(password, linesplit[1], linesplit[2])
 			ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
 		except IndexError:  # old style password history entry, no method id/salt in there
 			hash_algorithm = hashlib.new("sha1")
