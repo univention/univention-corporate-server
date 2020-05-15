@@ -966,7 +966,7 @@ def intToBinary(val):
 
 def GMTOffset():
 	# returns the difference in hours between local time and GMT (is -1 for CET and CEST)
-	return time.timezone / 3600
+	return time.timezone // 3600
 
 
 def load_certificate(user_certificate):
