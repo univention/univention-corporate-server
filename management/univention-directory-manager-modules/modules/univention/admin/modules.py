@@ -213,9 +213,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 					if default and property_name in module.property_descriptions:
 						if property.multivalue:
 							if module.property_descriptions[property_name].multivalue:
-								module.property_descriptions[property_name].base_default = []
-								for i in range(0, len(default)):
-									module.property_descriptions[property_name].base_default.append(default[i])
+								module.property_descriptions[property_name].base_default = list(default)
 						else:
 							module.property_descriptions[property_name].base_default = default
 						ud.debug(ud.ADMIN, ud.INFO, "modules.init: added template default (%s) to property %s" % (property.base_default, property_name))
@@ -230,9 +228,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 				else:
 					if template_object.descriptions[key].multivalue:
 						if module.property_descriptions[key].multivalue:
-							module.property_descriptions[key].base_default = []
-							for i in range(0, len(template_object[key])):
-								module.property_descriptions[key].base_default.append(template_object[key][i])
+							module.property_descriptions[key].base_default = list(template_object[key])
 						else:
 							ud.debug(ud.ADMIN, ud.INFO, 'modules.init: template and object values not both multivalue !!')
 
@@ -428,11 +424,11 @@ def update_extended_attributes(lo, module, position):
 
 		# check if CA is multivalue property
 		if attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1':
-			multivalue = 1
+			multivalue = True
 			map_method = None
 			unmap_method = None
 		else:
-			multivalue = 0
+			multivalue = False
 			map_method = univention.admin.mapping.ListToString
 			unmap_method = None
 			if propertySyntaxString == 'boolean':
@@ -898,18 +894,18 @@ def childs(module_name):
 	Return whether module may have subordinate modules.
 
 	:param module_name: the name of the |UDM| module, e.g. `users/user`.
-	:returns: `1` if the module has children, `0` otherwise.
+	:returns: `True` if the module has children, `False` otherwise.
 	"""
 	module = get(module_name)
-	return getattr(module, 'childs', 0)
+	return getattr(module, 'childs', False)
 
 
 def virtual(module_name):
 	# type: (str) -> bool
 	"""
-	Return whether module may have subordinate modules.
+	Return whether the module is virtual (alias for other modules).
 
-	:param module_name: the name of the |UDM| module, e.g. `users/user`.
+	:param module_name: the name of the |UDM| module, e.g. `computers/computer`.
 	:returns: `True` if the module is virtual, `False` otherwise.
 	"""
 	module = get(module_name)
@@ -940,10 +936,10 @@ def quickDescription(module_name, dn):
 
 def isSuperordinate(module):
 	"""
-	Check if the module is a |UDM| superoridnate module.
+	Check if the module is a |UDM| superordinate module.
 
 	:param module: A |UDM| handler class.
-	:returns: `True` if the handler is a superoridnate module, `False` otherwise.
+	:returns: `True` if the handler is a superordinate module, `False` otherwise.
 	"""
 	return name(module) in _superordinates
 
@@ -993,7 +989,7 @@ def supports(module_name, operation):
 	Check if module supports operation
 
 	:param module_name: the name of the |UDM| module, e.g. `users/user`.
-	:param operation: the name of the operation, e.g. 'modify'.
+	:param operation: the name of the operation, e.g. 'edit'.
 	:returns: `True` if the operation is supported, `False` otherwise.
 	"""
 	module = get(module_name)
@@ -1009,8 +1005,8 @@ def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
 		attr = lo.get(dn)
 		if not attr:
 			return []
-	if 'univentionObjectType' in attr and attr['univentionObjectType']:
-		return attr['univentionObjectType']
+	if attr.get('univentionObjectType'):
+		return [x.decode('utf-8') for x in attr['univentionObjectType']]
 
 	if not modules:
 		modules = identify(dn, attr, module_base=module_base)
@@ -1155,7 +1151,7 @@ def childModules(module_name):
 	:returns: List of child module names.
 	"""
 	module = get(module_name)
-	return copy.deepcopy(getattr(module, 'childmodules', []))
+	return list(getattr(module, 'childmodules', []))
 
 
 def _get_translation(locale, attrs, name, defaultname, default=u''):
