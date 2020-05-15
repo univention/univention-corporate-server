@@ -39,16 +39,13 @@ import univention.admin.filter
 import univention.admin.uexceptions
 import univention.admin.localization
 import univention.admin.license_data as licenses
-import univention.config_registry
+from univention.admin._ucr import configRegistry
 from univention.lib.misc import custom_username
 
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
 
 _license = None
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 LDAP_FILTER_not_root = '(!(uidNumber=0))'
 LDAP_FILTER_not_machine = '(!(uid=*$))'
