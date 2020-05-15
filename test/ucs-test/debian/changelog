@@ -1,3 +1,9 @@
+ucs-test (9.0.3-209) unstable; urgency=low
+
+  * Bug #46590: also test 10_ldap/42replication_memberof in UCS@school environments
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 15 May 2020 10:57:11 +0200
+
 ucs-test (9.0.3-208) unstable; urgency=low
 
   * Bug #46590: 10_ldap/42replication_memberof: skip test in certain scenarios

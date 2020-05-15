@@ -3,6 +3,7 @@
 ## desc: memberOf replication tests
 ## tags:
 ##  - replication
+##  - apptest
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
