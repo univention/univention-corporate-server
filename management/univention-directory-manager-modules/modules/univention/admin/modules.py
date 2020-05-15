@@ -50,8 +50,8 @@ import univention.admin.syntax
 import univention.admin.hook
 from univention.admin import localization
 from univention.admin.layout import Tab, Group, ILayoutElement
+from univention.admin._ucr import configRegistry
 
-import univention.config_registry
 try:
 	from typing import Any, Dict, List, Optional, Set, Tuple, Union  # noqa F401
 	from typing_extensions import Protocol
@@ -70,9 +70,6 @@ try:
 			pass
 except ImportError:
 	pass
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
