@@ -233,7 +233,7 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 
 	>>> filter='(|(&(!(zone=univention.de))(soa=test))(nameserver=bar))'
 	>>> tree = parse(filter)
-	>>> def trace(e, a): print(a, str(e))
+	>>> def trace(e, a): print(a, e)
 	>>> walk(tree, trace, None, 'e')
 	('e', '(zone=univention.de)')
 	('e', '(soa=test)')
