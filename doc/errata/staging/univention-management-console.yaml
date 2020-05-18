@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-management-console
-fix: 11.0.4-76A~4.4.0.202005141844
+fix: 11.0.4-77A~4.4.0.202005181248
 desc: |
  This update addresses the following issue(s):
  * It is now possible to navigate to an UMC module without the overview
