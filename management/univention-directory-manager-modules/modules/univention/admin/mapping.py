@@ -31,7 +31,6 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 
 from __future__ import absolute_import
 
-from functools import partial
 import inspect
 
 import univention.debug as ud
@@ -52,13 +51,13 @@ except NameError:
 
 def MapToBytes(udm_value, encoding=()):
 	if isinstance(udm_value, (list, tuple)):
-		return list(map(partial(MapToBytes, encoding=encoding), udm_value))
+		return [MapToBytes(udm_val, encoding=encoding) for udm_val in udm_value]
 	return unicode(udm_value).encode(*encoding)
 
 
 def UnmapToUnicode(ldap_value, encoding=()):
 	if isinstance(ldap_value, (list, tuple)):
-		return list(map(partial(UnmapToUnicode, encoding=encoding), ldap_value))
+		return [UnmapToUnicode(ldap_val, encoding=encoding) for ldap_val in ldap_value]
 	return ldap_value.decode(*encoding)
 
 
