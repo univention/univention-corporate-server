@@ -29,9 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import collections
 from ldap.filter import filter_format
-import operator
-
 import univention.license
 import univention.debug as ud
 import univention.admin.modules
@@ -224,7 +223,7 @@ class License(object):
 					for opt, val in opts:
 						if callable(val):
 							val = val(self)
-						if operator.isSequenceType(val):
+						if isinstance(val, collections.Sequence):
 							module.options[opt].disabled, module.options[opt].default = val
 						ud.debug(ud.ADMIN, ud.INFO, 'modifyOption: %s, %d, %d' % (str(opt), module.options[opt].disabled, module.options[opt].default))
 
