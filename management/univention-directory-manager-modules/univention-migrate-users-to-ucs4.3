@@ -120,7 +120,7 @@ class Migration(object):
 		default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
 		user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
 		for dn, user in lo.search(user_filter):
-			ocs = set(user['objectClass'])
+			ocs = set(x.decode('UTF-8') for x in user['objectClass'])
 			has_posix = ocs & {'posixAccount', }
 			has_shadow = ocs & {'shadowAccount', }
 			has_samba = ocs & {'sambaSamAccount', }
@@ -135,27 +135,27 @@ class Migration(object):
 			is_contact_only = has_inet_org_person and has_org_person and not any([has_posix, has_shadow, has_samba, has_kerberos, has_mail, has_ldap, has_pki])
 			remove_ldap = has_ldap and not is_ldap_only
 
-			if user.get('univentionObjectType') and 'users/user' not in user['univentionObjectType']:
+			if user.get('univentionObjectType') and b'users/user' not in user['univentionObjectType']:
 				print('Ignoring non users/user account: %s' % (dn,))
 				continue
 
-			if 'synced' in user.get('univentionObjectFlag', []):
+			if b'synced' in user.get('univentionObjectFlag', []):
 				print('Ignoring user from active directory')
 				continue
 
 			if is_ldap_only:
-				self.modify(dn, [('univentionObjectType', 'users/user', 'users/ldap')])
+				self.modify(dn, [('univentionObjectType', b'users/user', b'users/ldap')])
 				# TODO: are there users without univentionObjectType? then we need error handling here!
 				continue
 
 			if is_contact_only:
 				uid = user.get('uid')[0]
 				cn_list = user.get('cn')
-				firstname = user.get('givenName', [''])[0]
+				firstname = user.get('givenName', [b''])[0]
 				lastname = user.get('sn')[0]
-				default_cn = '%s %s' % (firstname, lastname)
+				default_cn = b'%s %s' % (firstname, lastname)
 				default_cn = default_cn.strip()
-				new_cn = '%s %s (%s)' % (firstname, lastname, uid)
+				new_cn = b'%s %s (%s)' % (firstname, lastname, uid)
 				new_cn = new_cn.strip()
 
 				ldapdn = ldap.dn.str2dn(dn)
@@ -163,8 +163,8 @@ class Migration(object):
 				for attr, val, ava_type in ldapdn[0]:
 					if attr.lower() == 'uid':
 						attr = 'cn'
-						val = new_cn
-					if attr.lower() == 'cn' and val == default_cn:
+						val = new_cn.decode('utf-8')
+					if attr.lower() == 'cn' and val == default_cn.decode('utf-8'):
 						continue
 					newldaprdn.append((attr, val, ava_type))
 				ldapdn[0] = newldaprdn
@@ -176,34 +176,34 @@ class Migration(object):
 					new_cn_list = [cn for cn in cn_list if cn != default_cn]
 					new_cn_list.append(new_cn)
 					ml.append(('cn', cn_list + [new_cn], new_cn_list))
-				ml.append(('univentionObjectType', 'users/user', 'users/contact'))
+				ml.append(('univentionObjectType', b'users/user', b'users/contact'))
 				self.modify(newdn, ml)
 				# TODO: are there users without univentionObjectType? then we need error handling here!
 				continue
 
 			if has_posix:
 				# migrate primary group to samba group
-				for groupdn, group in lo.search(filter_format('(&(objectClass=univentionGroup)(gidNumber=%s)(!(objectClass=sambaGroupMapping)))', [user['gidNumber'][0]])):
+				for groupdn, group in lo.search(filter_format('(&(objectClass=univentionGroup)(gidNumber=%s)(!(objectClass=sambaGroupMapping)))', [user['gidNumber'][0].decode('UTF-8')])):
 					self.modify(groupdn, [
-						('objectClass', [], ['sambaGroupMapping']),
-						('sambaSID', '', self.get_group_sid(int(group['gidNumber'][0]))),
-						('sambaGroupType', '', '2')
+						('objectClass', [], [b'sambaGroupMapping']),
+						('sambaSID', b'', self.get_group_sid(int(group['gidNumber'][0])).encode('utf-8')),
+						('sambaGroupType', b'', b'2')
 					])
 
 			ml = []
 			if remove_ldap:
-				ml.append(('objectClass', ['uidObject', 'simpleSecurityObject'], []))
+				ml.append(('objectClass', [b'uidObject', b'simpleSecurityObject'], []))
 
-			locked = 'L' in user.get('sambaAcctFlags', [''])[0]
-			disabled = 'D' in user.get('sambaAcctFlags', [''])[0]
+			locked = b'L' in user.get('sambaAcctFlags', [b''])[0]
+			disabled = b'D' in user.get('sambaAcctFlags', [b''])[0]
 			if not disabled:
 				try:
-					disabled = int(user.get('shadowExpire', [''])[0]) < int(time.time() / 3600 / 24)
+					disabled = int(user.get('shadowExpire', [b''])[0]) < int(time.time() / 3600 / 24)
 				except (ValueError, TypeError):
 					pass
 
 				if not disabled:
-					disabled = univention.admin.password.is_locked(user.get('userPassword', [''])[0])
+					disabled = univention.admin.password.is_locked(user.get('userPassword', [b''])[0].decode('UTF-8'))
 
 			shadowLastChange = user.get('shadowLastChange', [None])[0]
 			shadowMax = user.get('shadowMax', [None])[0]
@@ -237,12 +237,12 @@ class Migration(object):
 			expiration_date = None
 			if not expiration_date and user.get('krb5ValidEnd', [None])[0]:
 				try:
-					expiration_date = time.strftime("%Y%m%d%H%M%SZ", user['krb5ValidEnd'][0])
+					expiration_date = time.strftime("%Y%m%d%H%M%SZ", user['krb5ValidEnd'][0].decode('ASCII'))
 				except (ValueError, TypeError):
 					pass
-			if not expiration_date and user.get('shadowExpire', [''])[0] not in ('', '0'):
+			if not expiration_date and user.get('shadowExpire', [b''])[0] not in (b'', b'0'):
 				try:
-					expiration_date = time.gmtime(long(user['shadowExpire'][0]) * 3600 * 24)
+					expiration_date = time.gmtime(int(user['shadowExpire'][0]) * 3600 * 24)
 				except (ValueError, TypeError):
 					pass
 
@@ -250,53 +250,53 @@ class Migration(object):
 			sambaNTPassword = user.get('sambaNTPassword', [None])[0]
 
 			serverctrls = None
-			ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
+			ocs_to_add = {u'posixAccount', u'shadowAccount', u'sambaSamAccount', u'krb5Principal', u'krb5KDCEntry', u'univentionMail', u'inetOrgPerson', u'organizationalPerson'} - ocs
 			ocs_to_remove = set()
 			if ocs_to_add:
-				ml.append(('objectClass', list(ocs_to_remove), list(ocs_to_add)))
-			if ocs_to_add & {'inetOrgPerson', 'organizationalPerson'}:
+				ml.append(('objectClass', [x.encode('UTF-8') for x in ocs_to_remove], [x.encode('UTF-8') for x in ocs_to_add]))
+			if ocs_to_add & {u'inetOrgPerson', u'organizationalPerson'}:
 				serverctrls = [ldap.controls.simple.RelaxRulesControl()]
 
 			if not has_kerberos:
-				flags = '254' if disabled else '126'
+				flags = b'254' if disabled else b'126'
 				ml.extend([
-					('krb5PrincipalName', [], ['%s@%s' % (user['uid'][0], realm)]),
-					('krb5KeyVersionNumber', [], ['1']),
+					('krb5PrincipalName', [], [b'%s@%s' % (user['uid'][0], realm.encode('UTF-8'))]),
+					('krb5KeyVersionNumber', [], [b'1']),
 					('krb5KDCFlags', [], [flags]),
-					('krb5MaxLife', [], ['86400']),
-					('krb5MaxRenew', [], ['604800']),
+					('krb5MaxLife', [], [b'86400']),
+					('krb5MaxRenew', [], [b'604800']),
 				])
 
 				if expiration_date:
-					ml.append(('krb5ValidEnd', [], [time.strftime("%Y%m%d000000Z", expiration_date)]))
+					ml.append(('krb5ValidEnd', [], [time.strftime("%Y%m%d000000Z", expiration_date).encode('ASCII')]))
 
 				if sambaNTPassword:
 					ml.append(('krb5Key', [], self.nt_password_to_arcfour_hmac_md5(sambaNTPassword)))
 
 				if password_end_date:
-					ml.append(('krb5PasswordEnd', [], [time.strftime("%Y%m%d000000Z", password_end_date)]))
+					ml.append(('krb5PasswordEnd', [], [time.strftime("%Y%m%d000000Z", password_end_date).encode('ASCII')]))
 
 			if not has_posix:
-				uidNumber = self.allocate('uidNumber')
+				uidNumber = self.allocate('uidNumber').encode('UTF-8')
 				ml.extend([
 					('uidNumber', [], [uidNumber]),
 					('gidNumber', [], [primary_group_gid]),
-					('homeDirectory', [], ['/home/%s' % (user['uid'][0],)]),  # TODO: can this default value be overwritten by UCR?
+					('homeDirectory', [], [b'/home/%s' % (user['uid'][0],)]),  # TODO: can this default value be overwritten by UCR?
 				])
 
 			if not user.get('userPassword'):
 				# Be nice and fix userPassword in the unlikely case that the attribute got lost but other credentials are present
 				if user.get('krb5Key') or sambaNTPassword:
-					ml.append(('userPassword', [], '{K5KEY}'))
+					ml.append(('userPassword', [], b'{K5KEY}'))
 
 			if not has_shadow:
 				if expiration_date:
-					ml.append(('shadowExpire', [], [str(int(calendar.timegm(expiration_date)) / 3600 / 24)]))
+					ml.append(('shadowExpire', [], [str(int(calendar.timegm(expiration_date)) / 3600 / 24).encode('ASCII')]))
 				elif disabled:
-					ml.append(('shadowExpire', [], ['1']))
+					ml.append(('shadowExpire', [], [b'1']))
 
 				if password_set_date:
-					ml.append(('shadowLastChange', [], [str(int(calendar.timegm(password_set_date)) / 3600 / 24)]))
+					ml.append(('shadowLastChange', [], [str(int(calendar.timegm(password_set_date)) / 3600 / 24).encode('ASCII')]))
 
 			if not has_samba:
 				# FIXME: 'sambaNTPassword' if no kerberos user!
@@ -310,11 +310,11 @@ class Migration(object):
 				if disabled:
 					f.set('D')
 				ml.extend([
-					('sambaSID', [], [self.get_user_sid(user['uid'][0], uidNumber)]),
+					('sambaSID', [], [self.get_user_sid(user['uid'][0].decode('utf-8'), uidNumber.decode('UTF-8')).encode('UTF-8')]),
 					('sambaAcctFlags', [], [f.decode()]),
 				])
 				if password_set_date:
-					ml.append(('sambaPwdLastSet', [], [str(int(time.strftime('%s', password_set_date)))]))
+					ml.append(('sambaPwdLastSet', [], [str(int(time.strftime('%s', password_set_date))).encode('ASCII')]))
 
 			if ml:
 				self.modify(dn, ml, serverctrls)
@@ -323,20 +323,23 @@ class Migration(object):
 	def migrate_templates(self):
 		for dn, attr in lo.search('(&(objectClass=univentionUserTemplate)(|(userOptionsPreset=groupware)(userOptionsPreset=kerberos)(userOptionsPreset=posix)(userOptionsPreset=samba)(userOptionsPreset=person)(userOptionsPreset=mail)))'):
 			old = set(attr['userOptionsPreset'])
-			new = old - {'groupware', 'kerberos', 'posix', 'samba', 'person', 'mail'}
+			new = old - {b'groupware', b'kerberos', b'posix', b'samba', b'person', b'mail'}
 			if new != old:
 				self.modify(dn, [('userOptionsPreset', list(old), list(new))])
 
 	def nt_password_to_arcfour_hmac_md5(self, nt_password):
 		# all arcfour-hmac-md5 keys begin this way
-		key = '0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+		key = b'0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
 
 		for i in range(0, 16):
 			o = nt_password[2 * i:2 * i + 2]
-			key += chr(int(o, 16))
+			char = chr(int(o, 16))
+			if not isinstance(char, bytes):  # Python 3
+				char = char.encode('latin-1')
+			key += char
 		return key
 
-	def arcfour_hmac_md5_to_nt_password(self, ucs_krb5key):
+	def arcfour_hmac_md5_to_nt_password(self, ucs_krb5key):  # [bytes] -> bytes
 		for k in ucs_krb5key:
 			(keyblock, salt, kvno) = heimdal.asn1_decode_key(k)
 
@@ -366,7 +369,7 @@ class Migration(object):
 			except ldap.LDAPError as exc:
 				self.exceptions.append((dn, newdn, exc))
 
-	def allocate(self, name, value=None):
+	def allocate(self, name, value=None):  # (str, str?) -> str
 		if name in ('userSid', 'groupSid'):
 			if name == 'userSid':
 				value = univention.admin.allocators.requestUserSid(lo, po, value)
@@ -391,7 +394,7 @@ class Migration(object):
 		realm = domain.getKerberosRealm()
 		if not realm:
 			if self.args.set_kerberos_realm:
-				lo.modify(po.getBase(), [('krb5RealmName', None, self.args.set_kerberos_realm)], ignore_license=True)
+				lo.modify(po.getBase(), [('krb5RealmName', None, self.args.set_kerberos_realm.encode('UTF-8'))], ignore_license=True)
 			else:
 				raise SystemExit('This domain has no kerberos realm defined. Please call this script with e.g. --set-kerberos-realm="%s".' % (ucr['domainname'].upper(),))
 			realm = domain.getKerberosRealm()
@@ -406,9 +409,9 @@ class Migration(object):
 
 	def get_primary_gid_number(self):
 		for dn, attr in lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + po.getDomain(), attr=['univentionDefaultGroup']):
-			primary_group = attr['univentionDefaultGroup'][0]
+			primary_group = attr['univentionDefaultGroup'][0].decode('UTF-8')
 			attr = lo.get(primary_group)
-			if 'posixGroup' in attr.get('objectClass', []) and attr.get('sambaSID'):
+			if b'posixGroup' in attr.get('objectClass', []) and attr.get('sambaSID'):
 				return attr['gidNumber'][0]
 		raise SystemExit('No Samba and POSIX primary group could be found.')
 
@@ -420,7 +423,7 @@ class Migration(object):
 		if self.s4connector_present:
 			# In this case Samba 4 must create the SID, the s4 connector will sync the
 			# new sambaSID back from Samba 4.
-			return 'S-1-4-%s' % uidNumber
+			return u'S-1-4-%s' % uidNumber
 
 		sid = None
 		num = uidNumber
@@ -433,8 +436,8 @@ class Migration(object):
 		return sid
 
 	def __allocate_rid(self, rid):
-		domainsid = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0]
-		sid = domainsid + '-' + rid
+		domainsid = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0].decode('UTF-8')
+		sid = domainsid + u'-' + rid
 		try:
 			userSid = self.allocate('sid', sid)
 			self.alloc.append(('sid', userSid))
@@ -442,11 +445,11 @@ class Migration(object):
 			raise univention.admin.uexceptions.sidAlreadyUsed(rid)
 		return userSid
 
-	def get_group_sid(self, gidNum):
+	def get_group_sid(self, gidNum):  # int -> str
 		if self.s4connector_present:
 			# In this case Samba 4 must create the SID, the s4 connector will sync the
 			# new sambaSID back from Samba 4.
-			return 'S-1-4-%s' % gidNum
+			return u'S-1-4-%s' % gidNum
 
 		sid = None
 		num = gidNum
