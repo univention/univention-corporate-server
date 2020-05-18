@@ -82,7 +82,7 @@ def handler(dn, new, old):
 				if sp not in data:
 					data[sp] = []
 				if dn in data[sp]:
-					data[sp].pop(dn)
+					data[sp].remove(dn)
 
 		with open(tmp_path, 'w+') as outfile:
 			json.dump(data, outfile)

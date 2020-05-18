@@ -1,4 +1,4 @@
-univention-saml (6.0.2-44) unstable; urgency=medium
+univention-saml (6.0.2-45) unstable; urgency=medium
 
   * Bug #47567: Add saml serviceproviders to groups
 
