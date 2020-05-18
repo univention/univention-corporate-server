@@ -115,8 +115,8 @@ class DN(object):
 	@classmethod
 	def values(cls, values):
 		"""
-		>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo']))
-		set(['cn=bar'])
+		>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo'])) == {'cn=bar'}
+		True
 		"""
 		return set(map(str, values))
 
