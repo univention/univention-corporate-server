@@ -233,11 +233,11 @@ class License(object):
 		for mod in univention.admin.modules.modules.keys():
 			# remove module if valid license is missing
 			if self.isValidFor(mod):
-				ud.debug(ud.ADMIN, ud.INFO, 'update: License is valid for module %s!!' % mod)
+				ud.debug(ud.ADMIN, ud.INFO, 'update: License is valid for module %s!!' % (mod,))
 				# check module options according to given license type
 				self.modifyOptions(mod)
 			else:
-				ud.debug(ud.ADMIN, ud.INFO, 'update: License is NOT valid for module %s!!' % mod)
+				ud.debug(ud.ADMIN, ud.INFO, 'update: License is NOT valid for module %s!!' % (mod,))
 				del univention.admin.modules.modules[mod]
 				deleted_mods.append(mod)
 
@@ -388,7 +388,7 @@ class License(object):
 			self.sysAccountsFound = len(searchResult)
 		except univention.admin.uexceptions.noObject:
 			pass
-		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound)
+		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: Univention sysAccountsFound: %d' % (self.sysAccountsFound,))
 
 	def __countObject(self, obj, lo):
 		if self.licenses[self.version][obj] and not self.licenses[self.version][obj] == 'unlimited':
@@ -427,7 +427,7 @@ class License(object):
 						value = value.decode('ASCII')
 				self.new_license = True
 			else:
-				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s' % errormsg)
+				ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s' % (errormsg,))
 				value = default
 
 		ud.debug(ud.ADMIN, ud.INFO, 'LICENSE: %s = %s' % (name, value))
