@@ -469,9 +469,9 @@ class UCSTestUDM(object):
 			wait_for_s4connector = True
 
 		drs_replication = wait_for_drs_replication
+		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
 		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, six.string_types):
 			drs_replication = False
-			ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
 			if ad_ldap_search_args:
 				drs_replication = ad_ldap_search_args
 
