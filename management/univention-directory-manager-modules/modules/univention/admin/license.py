@@ -260,6 +260,16 @@ class License(object):
 					except Exception:
 						pass
 
+	def __cmp(self, x, y):
+		"""
+		Replacement for built-in function cmp that was removed in Python 3
+
+		Compare the two objects x and y and return an integer according to
+		the outcome. The return value is negative if x < y, zero if x == y
+		and strictly positive if x > y.
+		"""
+		return (x > y) - (x < y)
+
 	def __cmp_gt(self, val1, val2):
 		return self.compare(val1, val2) == 1
 
@@ -273,7 +283,7 @@ class License(object):
 			return 1
 		if val2 == 'unlimited':
 			return -1
-		return cmp(int(val1), int(val2))
+		return self.__cmp(int(val1), int(val2))
 
 	def set_values(self, lo, module):
 		self.__readLicense()
