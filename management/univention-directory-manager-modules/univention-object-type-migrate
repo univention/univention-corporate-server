@@ -31,7 +31,7 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import optparse
+import argparse
 import sys
 import univention.uldap
 
@@ -43,19 +43,15 @@ def buildModuleIdentifyMapping():
 
 
 def parseOptions():
-	parser = optparse.OptionParser(usage='Usage: %prog (-n|-a) [options]\nSet the attribute univentionObjectType for each directory object')
-	parser.add_option('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
-	parser.add_option('-a', '--action', dest='action', action='store_true', help='do modify the directory')
-	parser.add_option('--verbose', dest='verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
-	parser.add_option('-v', '--verify', dest='verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
-	parser.add_option('-b', '--base', dest='base', default='', help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
-	(options, args, ) = parser.parse_args()
+	parser = argparse.ArgumentParser(usage='Usage: %(prog)s (-n|-a) [options]\nSet the attribute univentionObjectType for each directory object')
+	parser.add_argument('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
+	parser.add_argument('-a', '--action', dest='action', action='store_true', help='do modify the directory')
+	parser.add_argument('--verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
+	parser.add_argument('-v', '--verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
+	parser.add_argument('-b', '--base', default='', help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
+	options = parser.parse_args()
 	if options.action is None:
 		print('Neither --no-action nor --action given!')
-		parser.print_help()
-		sys.exit(3)
-	if args:
-		print('Unknown arguments %r!' % (args, ), file=sys.stderr)
 		parser.print_help()
 		sys.exit(3)
 	return options
@@ -64,33 +60,33 @@ def parseOptions():
 def warningSupressed(dn, attributes):
 	# cn=admin,$ldap_base cn=backup,$ldap_base
 	if set(attributes.keys()) == set(('objectClass', 'userPassword', 'cn', 'sn', )):
-		if set(attributes['objectClass']) == set(('top', 'person', )):
-			if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in ('admin', 'backup', ):
+		if set(attributes['objectClass']) == set((b'top', b'person', )):
+			if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in (b'admin', b'backup', ):
 				return True
 	# Kerberos principal objects
-	if set(attributes['objectClass']) == set(('top', 'account', 'krb5Principal', 'krb5KDCEntry', )):
+	if set(attributes['objectClass']) == set((b'top', b'account', b'krb5Principal', b'krb5KDCEntry', )):
 		return True
-	if set(attributes['objectClass']) == set(('top', 'person', 'krb5Principal', 'krb5KDCEntry', )):
+	if set(attributes['objectClass']) == set((b'top', b'person', b'krb5Principal', b'krb5KDCEntry', )):
 		return True
 	# samba idmap objects
-	if set(attributes['objectClass']) == set(('sambaIdmapEntry', 'sambaSidEntry', )):
+	if set(attributes['objectClass']) == set((b'sambaIdmapEntry', b'sambaSidEntry', )):
 		return True
 	# old (2.4) Kolab objects
-	if 'kolabSharedFolder' in set(attributes['objectClass']):
+	if b'kolabSharedFolder' in set(attributes['objectClass']):
 		return True
-	if 'univentionKolabGroup' in set(attributes['objectClass']):
+	if b'univentionKolabGroup' in set(attributes['objectClass']):
 		return True
 	# old (2.4) UMC ACLs
-	if 'univentionConsoleACL' in set(attributes['objectClass']):
+	if b'univentionConsoleACL' in set(attributes['objectClass']):
 		return True
-	if 'univentionConsoleOperations' in set(attributes['objectClass']):
+	if b'univentionConsoleOperations' in set(attributes['objectClass']):
 		return True
-	if 'univentionPolicyConsoleAccess' in set(attributes['objectClass']):
+	if b'univentionPolicyConsoleAccess' in set(attributes['objectClass']):
 		return True
 	# old (2.4) UDM visibility settings
-	if 'univentionPolicyAdminSettings' in set(attributes['objectClass']):
+	if b'univentionPolicyAdminSettings' in set(attributes['objectClass']):
 		return True
-	if 'univentionAdminUserSettings' in set(attributes['objectClass']):
+	if b'univentionAdminUserSettings' in set(attributes['objectClass']):
 		return True
 	return warningHidden(dn, attributes)
 
@@ -98,13 +94,13 @@ def warningSupressed(dn, attributes):
 def warningHidden(dn, attributes):
 	if warningHidden.verbose:
 		return False
-	if 'univentionCitrixUserSessionsClass' in set(attributes['objectClass']):
+	if b'univentionCitrixUserSessionsClass' in set(attributes['objectClass']):
 		return True
-	if 'univentionPolicyThinClientUser' in set(attributes['objectClass']):
+	if b'univentionPolicyThinClientUser' in set(attributes['objectClass']):
 		return True
-	if 'univentionThinClientSession' in set(attributes['objectClass']):
+	if b'univentionThinClientSession' in set(attributes['objectClass']):
 		return True
-	if 'univentionThinClientAutostart' in set(attributes['objectClass']):
+	if b'univentionThinClientAutostart' in set(attributes['objectClass']):
 		return True
 	return False
 
@@ -129,11 +125,11 @@ def main(options):
 			# container/dc has priority (ldapbase ou=/cn= has multiple matches)
 			matches = ['container/dc']
 		if len(matches) == 1:
-			if 'univentionObject' not in attributes['objectClass']:
+			if b'univentionObject' not in attributes['objectClass']:
 				try:
 					changes = [
-						('objectClass', attributes['objectClass'], attributes['objectClass'] + ['univentionObject'], ),
-						('univentionObjectType', [], [matches[0], ], ),
+						('objectClass', attributes['objectClass'], attributes['objectClass'] + [b'univentionObject'], ),
+						('univentionObjectType', [], [matches[0].encode('UTF-8'), ], ),
 					]
 					uldap.modify(dn, changes)
 				except univention.uldap.ldap.INVALID_SYNTAX as e:
@@ -141,9 +137,9 @@ def main(options):
 					# LDAP schema extensions are missing (Bug #26304)
 					print('ERROR: Could not set univentionObjectType! (%s)\nIt seems that the corresponding LDAP schema extensions are not installed correctly.' % e, file=sys.stderr)
 					return False
-			elif attributes['univentionObjectType'][0] != matches[0]:
+			elif attributes['univentionObjectType'][0].decode('utf-8') != matches[0]:
 				errorsOccurred = True
-				print('Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'], matches, ), file=sys.stderr)
+				print('Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'][0].decode('utf-8'), matches, ), file=sys.stderr)
 		elif len(matches) > 1:
 			raise ValueError('Multiple matches for %r: %r!' % (dn, matches, ))
 		else:
