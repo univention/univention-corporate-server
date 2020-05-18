@@ -545,10 +545,13 @@ class mapping(object):
 		return value
 
 	def mapValueDecoded(self, map_name, value):
-		try:
-			return self.mapValue(map_name, value).decode(*self.getEncoding(map_name))
-		except AttributeError:
-			raise ValueError([map_name, value])
+		value = self.mapValue(map_name, value)
+		if isinstance(value, (list, tuple)):
+			ud.debug(ud.ADMIN, ud.WARN, 'mapValueDecoded returns a list for %s. This is probably not wanted?' % map_name)
+			value = [val.decode(*self.getEncoding(map_name)) for val in value]
+		else:
+			value = value.decode(*self.getEncoding(map_name))
+		return value
 
 	def unmapValue(self, unmap_name, value):
 		"""
