@@ -1,0 +1,12 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: apt
+fix: 1.4.10A~4.3.5.202005181736
+desc: |
+ This update addresses the following issue:
+ * apt (CVE-2020-3810)
+bug: [51308]
+cve:
+- CVE-2020-3810
