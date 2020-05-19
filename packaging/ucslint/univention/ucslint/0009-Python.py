@@ -28,7 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import univention.ucslint.base as uub
-from univention.ucslint.python import python_files
+from univention.ucslint.python import python_files, Python33 as PythonVer, RE_LENIENT
 import re
 
 
@@ -47,9 +47,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0009-7': (uub.RESULT_STYLE, 'fragile comparison with None'),
 			'0009-8': (uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'),
 			'0009-9': (uub.RESULT_ERROR, 'hashbang contains more than one option'),
+			'0009-10': (uub.RESULT_WARN, 'invalid Python string literal escape sequence'),
 		}
 
 	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
+	RE_STRING = PythonVer.matcher()
 
 	def check(self, path):
 		""" the real check """
@@ -84,3 +86,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.addmsg('0009-4', 'file contains whitespace after python command', filename=fn)
 				if tail:
 					self.addmsg('0009-9', 'hashbang contains more than one option', filename=fn)
+
+			line = 1
+			col = 1
+			pos = 0
+			for m in RE_LENIENT.finditer(tester.raw):
+				txt = m.group("str")
+				if not txt:
+					continue
+				if self.RE_STRING.match(txt):
+					continue
+				start, end = m.span()
+				while pos < start:
+					if tester.raw[pos] == "\n":
+						col = 1
+						line += 1
+					else:
+						col += 1
+					pos += 1
+
+				self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), filename=fn, line=line, pos=col)

@@ -1,6 +1,7 @@
 ucslint (8.0.0-14) unstable; urgency=medium
 
   * Bug #49704: Convert to Python 3
+  * Bug #51105: Check invalid Python string literals
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 20 May 2020 12:55:10 +0200
 
