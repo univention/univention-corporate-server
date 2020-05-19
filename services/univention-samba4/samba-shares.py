@@ -297,18 +297,25 @@ def handler(dn, new, old, command):
 				# if old != new -> delete everything from old!
 				for ace in prev_aces:
 					stdout = stdout.replace(ace, '')
+
 				# Aces might be in there from something else (like explicit setting)
 				# We don't want duplicates.
 				new_aces = [ace for ace in new_aces if ace not in stdout]
 				# Deny must be placed before rest. This is not done implicitly.
 				# Since deny might be present before, add allow.
 				owner, old_aces = stdout.split("D:")
+				res = re.search(r'(.+)D:[^\(]*(.+)', stdout)
+				if res:
+					# dacl-flags are removed implicitly.
+					owner = res.group(1)
+					old_aces = res.group(2)
+
 				old_aces = re.findall(re_ace, old_aces)
 				allow_aces = "".join([ace for ace in old_aces if 'A;' in ace])
 				deny_aces = "".join([ace for ace in old_aces if 'D;' in ace])
 				allow_aces += "".join([ace for ace in new_aces if 'A;' in ace])
 				deny_aces += "".join([ace for ace in new_aces if 'D;' in ace])
-				sddl = "{}D:{}{}".format(owner, deny_aces.strip(), allow_aces.strip())
+				sddl = "{}D:PAI{}{}".format(owner, deny_aces.strip(), allow_aces.strip())
 				univention.debug.debug(
 					univention.debug.LISTENER, univention.debug.PROCESS,
 					"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
