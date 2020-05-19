@@ -315,7 +315,11 @@ def handler(dn, new, old, command):
 				deny_aces = "".join([ace for ace in old_aces if 'D;' in ace])
 				allow_aces += "".join([ace for ace in new_aces if 'A;' in ace])
 				deny_aces += "".join([ace for ace in new_aces if 'D;' in ace])
-				sddl = "{}D:PAI{}{}".format(owner, deny_aces.strip(), allow_aces.strip())
+
+				dacl_flags = ""
+				if new_aces:
+					dacl_flags = "PAI"
+				sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
 				univention.debug.debug(
 					univention.debug.LISTENER, univention.debug.PROCESS,
 					"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
