@@ -31,17 +31,7 @@
 import univention.ucslint.base as uub
 import re
 
-RE_HASHBANG = re.compile(br'#!\s*/bin/(?:ba|da|z|c)?sh')
-
-
-def containsHashBang(path):  # type: (str) -> bool
-	try:
-		with open(path, 'rb') as fp:
-			for line in fp:
-				return bool(RE_HASHBANG.search(line))
-	except EnvironmentError:
-		pass
-	return False
+RE_HASHBANG = re.compile(r'#!\s*/bin/(?:ba|da|z|c)?sh')
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -80,11 +70,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		# search shell scripts and execute test
 		#
-		for fn in uub.FilteredDirWalkGenerator(path):
-			if fn.endswith('.sh') or containsHashBang(fn):
+		for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG):
 				try:
 					self.tester.open(fn)
-					msglist = self.tester.runTests()
-					self.msg.extend(msglist)
 				except EnvironmentError:
 					continue
+				else:
+					msglist = self.tester.runTests()
+					self.msg.extend(msglist)
