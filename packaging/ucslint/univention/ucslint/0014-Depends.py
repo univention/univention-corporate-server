@@ -88,23 +88,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				if pkg:
 					yield pkg
 
-	def _scan_script(self, fn):
+	def _scan_script(self, fn):  # type: (str) -> set
 		"""find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
 		need = set()
 		self.debug('Reading %s' % (fn,))
 		try:
-			f = open(fn, 'r')
+			with open(fn, 'r') as f:
+				for l in f:
+					for (key, (regexp, pkgs)) in UniventionPackageCheck.DEPS.items():
+						if regexp.search(l):
+							self.debug('Found %s in %s' % (key.upper(), fn))
+							need.add(key)
 		except EnvironmentError:
 			self.addmsg('0014-0', 'failed to open and read file', filename=fn)
 			return need
-		try:
-			for l in f:
-				for (key, (regexp, pkgs)) in UniventionPackageCheck.DEPS.items():
-					if regexp.search(l):
-						self.debug('Found %s in %s' % (key.upper(), fn))
-						need.add(key)
-		finally:
-			f.close()
 
 		return need
 
@@ -190,15 +187,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			fn = join(self.path, 'debian', '%s.univention-config-registry' % (pkg,))
 			if exists(fn):
-				f = open(fn, 'r')
-				try:
+				with open(fn, 'r') as f:
 					for l in f:
 						m = UniventionPackageCheck.RE_INIT.match(l)
 						if m:
 							fn = join(self.path, 'conffiles', m.group(1))
 							init_files.add(fn)
-				finally:
-					f.close()
 		except EnvironmentError:
 			self.addmsg('0014-0', 'failed to open and read file', filename=fn)
 

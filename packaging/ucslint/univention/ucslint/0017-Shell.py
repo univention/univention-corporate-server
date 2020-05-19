@@ -31,21 +31,17 @@
 import univention.ucslint.base as uub
 import re
 
-reHashBang = re.compile(b'#!\s*/bin/(?:ba|da|z|c)?sh')
+RE_HASHBANG = re.compile(br'#!\s*/bin/(?:ba|da|z|c)?sh')
 
 
-def containsHashBang(path):
+def containsHashBang(path):  # type: (str) -> bool
 	try:
-		fp = open(path, 'rb')
+		with open(path, 'rb') as fp:
+			for line in fp:
+				return bool(RE_HASHBANG.search(line))
 	except EnvironmentError:
-		return False
-	try:
-		for line in fp:
-			if reHashBang.search(line):
-				return True
-		return False
-	finally:
-		fp.close()
+		pass
+	return False
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
