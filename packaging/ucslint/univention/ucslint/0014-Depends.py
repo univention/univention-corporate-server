@@ -29,8 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-from __future__ import absolute_import
 import univention.ucslint.base as uub
 from os import listdir
 from os.path import join, exists, curdir, splitext

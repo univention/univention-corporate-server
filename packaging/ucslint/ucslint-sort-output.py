@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """Sort ucslint output for stable comparison."""
 #
-from __future__ import print_function
 import sys
 import re
 
