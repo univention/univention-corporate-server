@@ -69,8 +69,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			reHashBang=re.compile('^#![ \t]*/bin/(?:d?a)?sh')
 		):
 			self.debug('Testing file %s' % fn)
-			self.check_bashism(fn)
-			self.check_unquoted_local(fn)
+			try:
+				self.check_bashism(fn)
+				self.check_unquoted_local(fn)
+			except (EnvironmentError, UnicodeDecodeError):
+				self.addmsg('0013-1', 'failed to open file', filename=fn)
 
 	def check_bashism(self, fn):
 			p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)

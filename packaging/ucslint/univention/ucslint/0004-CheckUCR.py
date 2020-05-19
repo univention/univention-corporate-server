@@ -695,39 +695,35 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		"""Parse debian/*.univention-config-registry-variables file."""
 		variables = set()
 		try:
-			f = open(tmpfn, 'r')
+			with open(tmpfn, 'rb') as f:
+				for linecnt, line in enumerate(f, start=1):
+					try:
+						line = line.decode('utf-8')
+						var = line.strip(' \t[]')
+						variables.add(var)
+					except UnicodeError:
+						self.addmsg('0004-30', 'contains invalid characters', tmpfn, linecnt)
 		except EnvironmentError:
 			self.addmsg('0004-27', 'cannot open/read file', tmpfn)
-			return variables
-		try:
-			for linecnt, line in enumerate(f, start=1):
-				var = line.strip(' \t[]')
-				variables.add(var)
-				try:
-					line.decode('utf-8')
-				except UnicodeError:
-					self.addmsg('0004-30', 'contains invalid characters', tmpfn, linecnt)
-		finally:
-			f.close()
 		return variables
 
-	def test_marker(self, fn):
+	def test_marker(self, fn):  # type: (str) -> None
 		"""Bug #24728: count of markers must be even."""
 		count_python = 0
 		count_var = 0
 		try:
-			f = open(fn, 'r')
+			with open(fn, 'r') as f:
+				for l in f:
+					for _ in UniventionPackageCheck.RE_PYTHON.finditer(l):
+						count_python += 1
+					for _ in UniventionPackageCheck.RE_VAR.finditer(l):
+						count_var += 1
 		except EnvironmentError:
 			# self.addmsg('0004-27', 'cannot open/read file', fn)
 			return
-		try:
-			for l in f:
-				for _ in UniventionPackageCheck.RE_PYTHON.finditer(l):
-					count_python += 1
-				for _ in UniventionPackageCheck.RE_VAR.finditer(l):
-					count_var += 1
-		finally:
-			f.close()
+		except UnicodeDecodeError as ex:
+			# self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
+			return
 
 		if count_python % 2:
 			self.addmsg('0004-31', 'odd number of @!@ markers', fn)

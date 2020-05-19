@@ -366,7 +366,10 @@ class UPCFileTester(object):
 		# hold raw file in memory (self.raw) and a unwrapped version (self.lines)
 		# the raw version is required to calculate the correct position.
 		# tests will be done with unwrapped version.
-		self.raw = open(filename, 'r').read(self.maxsize)
+		try:
+			self.raw = open(filename, 'r').read(self.maxsize)
+		except UnicodeDecodeError:
+			self.raw = ''
 		lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
 		self.lines = lines.splitlines()
 
