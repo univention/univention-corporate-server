@@ -829,30 +829,31 @@ def handler(dn, new, listener_old, operation):
 		if not isinstance(l, LDIFObject):
 			old = getOldValues(l, dn)
 
-			# Check if both entries really match
-			match = 1
-			if len(old) != len(listener_old):
-				ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
-				match = 0
-			else:
-				for k in old:
-					if k.lower() in EXCLUDE_ATTRIBUTES:
-						continue
-					if k not in listener_old:
-						ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
-						match = 0
-						break
-					if len(old[k]) != len(listener_old[k]):
-						ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
-						match = 0
-						break
-					for v in old[k]:
-						if v not in listener_old[k]:
-							ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
+			if ud.get_level(ud.LISTENER) >= ud.INFO:
+				# Check if both entries really match
+				match = 1
+				if len(old) != len(listener_old):
+					ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
+					match = 0
+				else:
+					for k in old:
+						if k in EXCLUDE_ATTRIBUTES:
+							continue
+						if k not in listener_old:
+							ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
 							match = 0
 							break
-			if not match:
-				ud.debug(ud.LISTENER, ud.INFO, 'replication: old entries from LDAP server and Listener do not match')
+						if len(old[k]) != len(listener_old[k]):
+							ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
+							match = 0
+							break
+						for v in old[k]:
+							if v not in listener_old[k]:
+								ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
+								match = 0
+								break
+				if not match:
+					ud.debug(ud.LISTENER, ud.INFO, 'replication: old entries from LDAP server and Listener do not match')
 		else:
 			old = listener_old
 
