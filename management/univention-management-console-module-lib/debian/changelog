@@ -1,3 +1,9 @@
+univention-management-console-module-lib (8.0.2-2) unstable; urgency=medium
+
+  * Bug #51325: Make UMC module python 3 compatible
+
+ -- Florian Best <best@univention.de>  Tue, 19 May 2020 14:39:45 +0200
+
 univention-management-console-module-lib (8.0.2-1) unstable; urgency=medium
 
   * Bug #49153: migrate to dh_python

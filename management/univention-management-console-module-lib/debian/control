@@ -12,10 +12,13 @@ Standards-Version: 3.7.2
 
 Package: univention-management-console-module-lib
 Architecture: all
+Provides: ${python:Provides}, ${python3:Provides}
 Depends: ${python:Depends}, ${python3:Depends}, ${misc:Depends},
  shell-univention-lib (>> 3.0.14-1),
  univention-management-console-server (>= 11.0.4-37),
  univention-updater,
+ python-six,
+ python3-six,
 Description: Module lib containing low-lewel commands to control the UMC server
  Module lib containing low-lewel commands to control the UMC server
  .

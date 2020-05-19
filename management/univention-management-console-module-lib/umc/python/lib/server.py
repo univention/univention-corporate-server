@@ -33,10 +33,11 @@
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
-from univention.management.console.protocol.definitions import MODULE_ERR
+from univention.management.console.error import ServerError
 
 from univention.lib.i18n import Translation
 
+import six
 import subprocess
 import locale
 
@@ -51,7 +52,7 @@ class MessageSanitizer(StringSanitizer):
 
 	def _sanitize(self, value, name, further_args):
 		value = super(MessageSanitizer, self)._sanitize(value, name, further_args)
-		if isinstance(value, unicode):
+		if six.PY2 and isinstance(value, six.text_type):
 			# unicodestr -> bytestr (for use in command strings)
 			for encoding in (locale.getpreferredencoding, 'UTF-8', 'ISO8859-1'):
 				try:
@@ -81,7 +82,7 @@ class Server(object):
 		subprocess.call(CMD_DISABLE_EXEC)
 		p = subprocess.Popen(CMD_ENABLE_EXEC_WITH_RESTART, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		out, err = p.communicate()
-		MODULE.info('enabling server restart:\n%s' % out)
+		MODULE.info('enabling server restart:\n%s' % (out.decode('utf-8')))
 
 	@simple_response
 	def ping(self):
@@ -94,8 +95,7 @@ class Server(object):
 			message = '%s (%s)' % (message, request.options['message'])
 
 		if self._shutdown(message, reboot=True) != 0:
-			message = _('System could not reboot')
-			request.status = MODULE_ERR
+			raise ServerError(_('System could not reboot'))
 
 		self.finished(request.id, None, message)
 
@@ -106,8 +106,7 @@ class Server(object):
 			message = '%s (%s)' % (message, request.options['message'])
 
 		if self._shutdown(message, reboot=False) != 0:
-			message = _('System could not shutdown')
-			request.status = MODULE_ERR
+			raise ServerError(_('System could not shutdown'))
 
 		self.finished(request.id, None, message)
 
@@ -118,4 +117,4 @@ class Server(object):
 			subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
 		except (OSError, Exception):
 			pass
-		return subprocess.call(('/sbin/shutdown', action, 'now', message))
+		return subprocess.call(('/sbin/shutdown', action, '+2', message))
