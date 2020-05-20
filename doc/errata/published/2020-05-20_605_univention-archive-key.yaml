@@ -9,3 +9,5 @@ desc: |
  * Add new PGP public key univention-archive-key-ucs-5x.gpg for UCS-5 and
    remove expired key univention-archive-key-ucs-3x.gpg from UCS-3.
 bug: [51250]
+erratum: 605
+announced: 2020-05-20
