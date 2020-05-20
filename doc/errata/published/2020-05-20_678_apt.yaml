@@ -6,7 +6,7 @@ src: apt
 fix: 1.4.10A~4.3.5.202005181736
 desc: |
  This update addresses the following issue:
- * apt (CVE-2020-3810)
+ * Out of bounds read in ar, tar implementations (CVE-2020-3810)
 bug: [51308]
 cve:
 - CVE-2020-3810
