@@ -2,18 +2,19 @@ Source: univention-docker
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.5.2
 
 Package: univention-docker
 Architecture: all
-Depends: ${misc:Depends},
- docker.io (>= 1.12),
+Depends:
  cgroupfs-mount (>= 1.1),
+ docker.io (>= 1.12),
+ shell-univention-lib,
  univention-base-files,
- shell-univention-lib
+ ${misc:Depends},
 Description: UCS settings for Docker
  This integration package contains configuration adjustments
  for running Docker in UCS.
@@ -22,5 +23,3 @@ Description: UCS settings for Docker
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-
-

@@ -3,17 +3,19 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
+Build-Depends:
+ debhelper,
  dh-python,
- univention-config-dev
+ univention-config-dev,
 
 Package: univention-package-template
 Architecture: all
-Depends: python-univention-lib (>>0.0.3-1),
- univention-directory-manager-tools,
+Depends:
+ python-univention-lib (>>0.0.3-1),
  shell-univention-lib,
- ${misc:Depends}, ${python:Depends}
+ univention-directory-manager-tools,
+ ${misc:Depends},
+ ${python:Depends},
 Description: Test package result
  This package was build as result of a univention package temaplate.
  .
@@ -24,8 +26,9 @@ Description: Test package result
 
 Package: univention-package-template-test
 Architecture: all
-Depends: univention-package-template (=${source:Version}),
- ${misc:Depends}
+Depends:
+ univention-package-template (=${source:Version}),
+ ${misc:Depends},
 Description: Test package result
  This package was build as result of a univention package temaplate.
  .

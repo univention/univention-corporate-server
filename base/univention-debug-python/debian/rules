@@ -35,10 +35,6 @@ export LC_ALL=C.UTF-8
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-
 override_dh_auto_install:
 	dh_auto_install
 	find debian/python*-univention-debug/ -name __init__.py -delete

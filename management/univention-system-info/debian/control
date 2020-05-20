@@ -2,21 +2,21 @@ Source: univention-system-info
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
+Build-Depends:
+ debhelper,
  dh-python,
- univention-management-console-dev (>= 11.0.4-37),
  python-all,
  python3-all,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.8.2
 
 Package: univention-system-info
 Architecture: all
 Depends:
- pciutils,
- kmod,
- iproute2,
  dmidecode,
+ iproute2,
+ kmod,
+ pciutils,
 Description: UCS - collect system information
  This package contains a skcript to collect system information
  .
@@ -27,10 +27,12 @@ Description: UCS - collect system information
 
 Package: univention-management-console-module-sysinfo
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
  univention-system-info,
- univention-directory-manager-tools (>> 7.0.147)
+ ${python3:Depends},
+ ${python:Depends},
 Description: UMC module for system info
  This package contains the UMC module for the system info
  .

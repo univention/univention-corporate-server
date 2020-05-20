@@ -3,20 +3,20 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper (>= 9),
- ucslint-univention,
+Build-Depends:
+ debhelper,
  dh-python,
  python-all,
  python3-all,
- univention-config-dev
+ univention-config-dev,
 
 Package: univention-directory-reports
 Architecture: all
 Depends:
- ${misc:Depends},
  python-univention-directory-reports,
- shell-univention-lib,
  python-univention-lib (>= 1.0.25-1),
+ shell-univention-lib,
+ ${misc:Depends},
 Description: Creates reports for UCS Directory Manager objects
  UCS Report Generator creates reports in PDF format using
  template files that contain a special template syntax to
@@ -25,11 +25,13 @@ Description: Creates reports for UCS Directory Manager objects
 Package: python-univention-directory-reports
 Architecture: all
 Depends:
- ${misc:Depends}, ${python:Depends},
+ python-trml2pdf,
  python-univention-directory-manager,
  univention-config,
- python-trml2pdf,
-Provides: ${python:Provides}
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using
  RML template files that contain a special template syntax to
@@ -38,11 +40,13 @@ Description: Creates reports for UCS Directory manager objects
 Package: python3-univention-directory-reports
 Architecture: all
 Depends:
- ${misc:Depends}, ${python3:Depends},
+ python3-trml2pdf,
  python3-univention-directory-manager,
  univention-config,
- python3-trml2pdf,
-Provides: ${python3:Provides}
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using
  RML template files that contain a special template syntax to
@@ -51,12 +55,12 @@ Description: Creates reports for UCS Directory manager objects
 Package: univention-directory-reports-latex
 Architecture: all
 Depends:
- univention-directory-reports,
- univention-config,
  texlive,
- texlive-latex-recommended,
- texlive-latex-extra,
  texlive-lang-german,
+ texlive-latex-extra,
+ texlive-latex-recommended,
+ univention-config,
+ univention-directory-reports,
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using
  LaTeX template files that contain a special template syntax to

@@ -1,0 +1,296 @@
+ucs-tools (1.2.4-1) unstable; urgency=low
+
+  * ucslint: added test for "fuzzy" in .po-files
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 12 Nov 2008 10:20:18 +0100
+
+ucs-tools (1.2.3-1) unstable; urgency=low
+
+  * ucslint: test for copy 'n' paste errors (Bug: #12576)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 07 Nov 2008 16:45:58 +0100
+
+ucs-tools (1.2.2-1) unstable; urgency=low
+
+  * ucslint: prevent tracebacks while reading files (Bug: #12584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 07 Nov 2008 16:41:19 +0100
+
+ucs-tools (1.2.1-2) unstable; urgency=low
+
+  * Added Skript fixxmodmap. Bug #11864
+
+ -- Andre Fenske <fenske@univention.de>  Wed, 29 Oct 2008 13:41:20 +0100
+
+ucs-tools (1.2.1-1) unstable; urgency=low
+
+  * ucslint: (Bug: #12071)
+    - check for univention-directory-manager in debian/{pre,post}{inst,rm}
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Oct 2008 18:29:45 +0200
+
+ucs-tools (1.2.0-1) unstable; urgency=low
+
+  * fixed traceback in ucslint while opening files
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 25 Aug 2008 16:14:55 +0200
+
+ucs-tools (1.1.9-2) unstable; urgency=low
+
+  * Corrected get_orders from aze-query to include services provided by
+    partners. Bug: #11567
+
+ -- Joao Collier de Mendonca <jmendonca@visdalen.knut.univention.de>  Fri, 17 Oct 2008 18:11:02 +0200
+
+ucs-tools (1.1.9-1) unstable; urgency=low
+
+  * ucslint: (Bug #12071)
+    - added ~/.ucslint as optional plugin directory
+    - fixed traceback in plugin 0004
+    - added cmdline arguments to ignore specified IDs or only display
+      specified IDs
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Sep 2008 18:25:00 +0200
+
+ucs-tools (1.1.8-1) unstable; urgency=low
+
+  * ucslint: (Bug: #12071)
+    - improved check for invalid UCR variable names
+    - do not display preinst/postinst scripts as non-registered
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 26 Sep 2008 10:41:26 +0200
+
+ucs-tools (1.1.7-1) unstable; urgency=low
+
+  * update of unisvnmerge
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 25 Sep 2008 18:09:37 +0200
+
+ucs-tools (1.1.6-2) unstable; urgency=low
+
+  * more remote-licenseinstall fixes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Sep 2008 11:24:27 +0200
+
+ucs-tools (1.1.6-1) unstable; urgency=low
+
+  * added some parameters to remote-licenseinstall (Bug #12146):
+     -k for the keydir
+     -t for the license types
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Sep 2008 08:22:09 +0200
+
+ucs-tools (1.1.5-17) unstable; urgency=low
+
+  *  modified query.get_queries to accept queries with start or end dates only. Bug: #11892
+
+ -- Joao Collier de Mendonca <jmendonca@visdalen.knut.univention.de>  Thu,  4 Sep 2008 19:08:18 +0200
+
+ucs-tools (1.1.5-16) unstable; urgency=low
+
+  * modified query.get_queries to include optional parameter with start and
+    end dates. Bug: #11892
+
+ -- Joao Collier de Mendonca <jmendonca@visdalen.knut.univention.de>  Thu, 28 Aug 2008 18:16:39 +0200
+
+ucs-tools (1.1.5-15) unstable; urgency=low
+
+  * fixed: removed unnecessary quotes
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 19 Aug 2008 13:36:38 +0200
+
+ucs-tools (1.1.5-14) unstable; urgency=low
+
+  * don't check the azestatus flag because we are already checking the
+    runtime of the order. Bug #11678
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Aug 2008 08:06:37 +0200
+
+ucs-tools (1.1.5-13) unstable; urgency=low
+
+  * added --help switch to test-pkg
+  * set default host to '' instead of 'root@testing'
+  * fixed a problem with -a switch that caused dpkg-architecture to fail
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  6 Aug 2008 10:12:36 +0200
+
+ucs-tools (1.1.5-12) unstable; urgency=low
+
+  * use right database view
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 23 Jul 2008 11:34:34 +0200
+
+ucs-tools (1.1.5-11) unstable; urgency=low
+
+  * fix output, add kunden_id and some comments
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 17 Jul 2008 11:31:24 +0200
+
+ucs-tools (1.1.5-10) unstable; urgency=low
+
+  * adapt unikontakt to new database view view_kontaktliste4
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 15 Jul 2008 16:10:31 +0200
+
+ucs-tools (1.1.5-9) unstable; urgency=low
+
+  * Added the method get_budgets to query.py
+
+ -- Joao Collier de Mendonca <jmendonca@anton.knut.univention.de>  Wed,  9 Jul 2008 13:31:17 +0200
+
+ucs-tools (1.1.5-8) unstable; urgency=low
+
+  * aze-query/query.py update: 
+    added the parameter for orders_group
+
+ -- Joao Collier de Mendonca <jmendonca@omar.knut.univention.de>  Fri,  4 Jul 2008 15:08:54 +0200
+
+ucs-tools (1.1.5-7) unstable; urgency=low
+
+  * ucslint update
+    added detection of _('foo %s bar' % var)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 30 Jun 2008 18:37:17 +0200
+
+ucs-tools (1.1.5-6) unstable; urgency=low
+
+  * updated the return value of function query.get_orders to include the
+    fields azestd, azemin 
+
+ -- Joao Collier de Mendonca <jmendonca@anton.knut.univention.de>  Thu, 26 Jun 2008 10:01:32 +0200
+
+ucs-tools (1.1.5-5) unstable; urgency=low
+
+  * ucslint update
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 09:06:38 +0200
+
+ucs-tools (1.1.5-4) unstable; urgency=low
+
+  * get_orders function modified to include budget information (two fields
+    added to the sql query: azestd, azemin)
+
+ -- Joao Collier de Mendonca <jmendonca@ivar.knut.univention.de>  Mon, 23 Jun 2008 11:09:02 +0200
+
+ucs-tools (1.1.5-3) unstable; urgency=low
+
+  * added parameter entries_max_age to query.get_orders() to enable the
+    a more flexible retrieval of orders, based on their age in days.
+
+ -- Joao Collier de Mendonca <jmendonca@ivar.knut.univention.de>  Fri, 20 Jun 2008 14:33:10 +0200
+
+ucs-tools (1.1.5-2) unstable; urgency=low
+
+  * new UCR module for ucslint
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 16 Jun 2008 14:13:47 +0200
+
+ucs-tools (1.1.4-3) unstable; urgency=low
+
+  * update of ucslint
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Jun 2008 14:46:08 +0200
+
+ucs-tools (1.1.4-2) unstable; urgency=low
+
+  * update of ucslint
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 05 Jun 2008 17:59:12 +0200
+
+ucs-tools (1.1.4-1) unstable; urgency=low
+
+  * added ucslint
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 04 Jun 2008 18:25:59 +0200
+
+ucs-tools (1.1.3-1) unstable; urgency=low
+
+  * added unisvnmerge
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 20 May 2008 18:04:10 +0200
+
+ucs-tools (1.1.2-1) unstable; urgency=low
+
+  * added architecture option (-a) to test-pkg
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 15 May 2008 17:14:07 +0200
+
+ucs-tools (1.1.1-2) unstable; urgency=low
+
+  * added unikontakt, fixed depends
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu,  8 May 2008 16:51:28 +0200
+
+ucs-tools (1.1.1-1) unstable; urgency=low
+
+  * first version of a new generation of GTK+ AZE query
+  * minor fixes
+  * better support for keyboard control
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 27 Apr 2008 17:36:27 +0200
+
+ucs-tools (1.0-10) unstable; urgency=low
+
+  * added update_mirror.sh script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jan 2008 17:22:45 +0100
+
+ucs-tools (1.0-9) unstable; urgency=low
+
+  * vmware-count-serverwise optimized
+
+ -- Andre Fenske <fenske@univention.de>  Wed, 17 Oct 2007 14:15:24 +0200
+
+ucs-tools (1.0-8) unstable; urgency=low
+
+  * vmware-count-serverwise modified 
+
+ -- Andre Fenske <fenske@univention.de>  Wed, 17 Oct 2007 13:57:43 +0200
+
+ucs-tools (1.0-7) unstable; urgency=low
+
+  * vmware-count-servervise searches now dynamically via ldap 
+
+ -- Andre Fenske <afenske@ivar.knut.univention.de>  Wed, 17 Oct 2007 13:10:47 +0200
+
+ucs-tools (1.0-6) unstable; urgency=low
+
+  * new description
+
+ -- Andre Fenske <afenske@ivar.knut.univention.de>  Wed, 17 Oct 2007 12:51:44 +0200
+
+ucs-tools (1.0-5) unstable; urgency=low
+
+  * add some libs for aze-query
+    moved aze-query and libs in own folder
+    removed some unused files from svn
+
+ -- Andre Fenske <fenske@univention.de>  Wed, 17 Oct 2007 10:38:23 +0200
+
+ucs-tools (1.0-4) unstable; urgency=low
+
+  * change -e to -f in fixvmwares 
+
+ -- Andre Fenske <afenske@billy.knut.univention.de>  Mon, 15 Oct 2007 15:54:17 +0200
+
+ucs-tools (1.0-3) unstable; urgency=low
+
+  * added fixvmware
+
+ -- Andre Fenske <afenske@billy.knut.univention.de>  Mon, 15 Oct 2007 15:28:30 +0200
+
+ucs-tools (1.0-2) unstable; urgency=low
+
+  * sshrm modified for UCS2.0 (debian etch) (hashed hosts in .ssh/known_hosts)
+    count-vmwares-userwis renamed to vmwares-count-userwise
+    cvu renamed to vmwares-count-serverwise 
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 11 Oct 2007 11:38:23 +0200
+
+ucs-tools (1.0-1) unstable; urgency=low
+
+  * add APTdupes, aze-query.py, count-vmwares-userwis, cvu,
+    remote-licenseinstall, sshrm and test-pkg
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 11 Oct 2007 09:36:55 +0200
+

@@ -2,12 +2,20 @@ Source: php-krb5
 Section: web
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7), po-debconf, xsltproc , php7.0-dev, libkrb5-dev
+Build-Depends:
+ debhelper,
+ libkrb5-dev,
+ php7.0-dev,
+ po-debconf,
+ xsltproc,
 Standards-Version: 3.9.1
 
 Package: php-krb5
 Architecture: any
-Depends: ${shlibs:Depends}, ${php:Depends}, ${misc:Depends}
+Depends:
+ ${misc:Depends},
+ ${php:Depends},
+ ${shlibs:Depends},
 Description: krb5 module for PHP
  Features:
  + An interface for maintaining credential caches (KRB5CCache),

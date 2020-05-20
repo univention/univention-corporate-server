@@ -2,12 +2,21 @@ Source: shim
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0), gnu-efi (>= 3.0q), sbsigntool, libnss3-tools, quilt, openssl
+Build-Depends:
+ debhelper,
+ gnu-efi (>= 3.0q),
+ libnss3-tools,
+ openssl,
+ quilt,
+ sbsigntool,
 Standards-Version: 3.7.3
 
 Package: shim
 Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, gnu-efi
+Depends:
+ gnu-efi,
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: boot loader to chain-load signed boot loaders under Secure Boot
  This package provides a minimalist boot loader which allows verifying
  signatures of other UEFI binaries against either the Secure Boot DB/DBX or

@@ -4,11 +4,10 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.7.2
 Build-Depends:
- debhelper (>= 9),
+ debhelper,
  dh-python,
  python-all,
  python3-all,
- ucslint-univention,
  univention-config-dev,
  univention-management-console-dev,
  univention-ucs-translation-template,
@@ -73,12 +72,12 @@ Description: UCS Virtual Machine Manager Daemon - Python 3 bindings
 Package: univention-management-console-module-uvmm
 Architecture: all
 Depends:
+ python-notifier,
  python-univention-virtual-machine-manager (= ${source:Version}),
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
  univention-novnc,
  univention-web-js (>= 3.0.5-21),
- python-notifier,
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},

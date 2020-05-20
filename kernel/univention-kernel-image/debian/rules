@@ -43,9 +43,5 @@ KERNELVERSION := ${${DEB_BUILD_ARCH}_VERSION}
 %:
 	dh $@
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-
 override_dh_gencontrol:
 	dh_gencontrol -- -VF:BinaryVersion="${KERNELVERSION}" -VF:SourceVersion="${SOURCEVERSION}"

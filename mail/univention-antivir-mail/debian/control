@@ -2,19 +2,20 @@ Source: univention-antivir-mail
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-antivir-mail
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  amavisd-new,
+ clamav,
+ clamav-daemon | kav4fileservers | sophie,
  univention-config,
  univention-spamassassin,
- clamav,
- clamav-daemon | kav4fileservers | sophie
+ ${misc:Depends},
 Description: UCS anti virus mail configuration.
  UCS anti virus mail module.
  .

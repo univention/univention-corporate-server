@@ -2,29 +2,25 @@ Source: univention-printserver
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- univention-config-dev,
- univention-management-console-dev (>= 11.0.4-37),
+Build-Depends:
+ debhelper,
+ dh-python,
  python-all,
  python3-all,
- dh-python,
- ucslint-univention,
+ univention-config-dev,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.8.2
 
 Package: univention-printserver
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- univention-config (>= 8.0.2),
- univention-directory-manager-tools,
+Depends:
  cups,
- cups-client,
- cups-bsd,
  cups-browsed,
- printer-driver-gutenprint,
- univention-directory-listener,
- univention-printclient,
- openprinting-ppds,
+ cups-bsd,
+ cups-client,
  hp-ppd,
+ hpijs-ppds,
+ openprinting-ppds,
  printer-driver-all,
  printer-driver-c2050,
  printer-driver-c2esp,
@@ -42,17 +38,23 @@ Depends: ${misc:Depends}, ${python:Depends},
  printer-driver-pxljr,
  printer-driver-sag-gdi,
  printer-driver-splix,
- hpijs-ppds,
- python-pexpect,
- shell-univention-lib,
- openprinting-ppds,
- univention-foomatic-ppds,
- univention-directory-manager-tools (>> 7.0.147),
- python-univention-lib (>= 1.0.25-1),
  python-ldap,
- univention-management-console-module-printers (= ${source:Version})
-Conflicts: univention-management-console (<< 0.9.33-1)
-Recommends: univention-nagios-cups
+ python-pexpect,
+ python-univention-lib (>= 1.0.25-1),
+ shell-univention-lib,
+ univention-config (>= 8.0.2),
+ univention-directory-listener,
+ univention-directory-manager-tools,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-foomatic-ppds,
+ univention-management-console-module-printers (= ${source:Version}),
+ univention-printclient,
+ ${misc:Depends},
+ ${python:Depends},
+Conflicts:
+ univention-management-console (<< 0.9.33-1),
+Recommends:
+ univention-nagios-cups,
 Description: UCS - print server
  This packages provides the printer configuration. Printers
  can be managed with UCS Directory Manager (UDM).
@@ -64,12 +66,14 @@ Description: UCS - print server
 
 Package: univention-printserver-pdf
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
+Depends:
+ printer-driver-cups-pdf,
+ shell-univention-lib,
  univention-directory-manager-tools (>> 7.0.147),
  univention-printserver,
- printer-driver-cups-pdf,
- shell-univention-lib
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: UCS - print server addons for pdf pseudo printer
  This packages provides configs and settings for a PDF printer.
  .
@@ -81,12 +85,14 @@ Description: UCS - print server addons for pdf pseudo printer
 Package: univention-management-console-module-printers
 Architecture: all
 Depends:
- ${misc:Depends},
- ${python:Depends}, ${python3:Depends},
+ python-lxml,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
- python-lxml
-Recommends: univention-printserver (= ${source:Version})
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Recommends:
+ univention-printserver (= ${source:Version}),
 Description: UMC module for printer administration
  This package contains the UMC module for the administration
  of configured printers.

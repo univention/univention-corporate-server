@@ -3,23 +3,24 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
- univention-dojo,
- univention-dojo-dev,
- univention-config-dev,
- univention-management-console-dev,
+Build-Depends:
+ debhelper,
  imagemagick,
- nodejs-legacy,
  librsvg2-bin,
  node-stylus,
+ nodejs-legacy,
+ sed,
+ univention-config-dev,
+ univention-dojo,
+ univention-dojo-dev,
+ univention-management-console-dev,
  unzip,
- sed
 
 Package: univention-web-js
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-apache,
+ ${misc:Depends},
 Description: Univention Javascript Library
  This package contains the uncompressed UMC Javascript source files
  .
@@ -30,7 +31,8 @@ Description: Univention Javascript Library
 
 Package: univention-web-style
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
 Description: Univention Style Library
  This package contains CSS and graphic theme data
  .
@@ -41,7 +43,8 @@ Description: Univention Style Library
 
 Package: univention-web-src
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
 Description: Univention Javascript Library - Source
  This package contains the uncompressed UMC Javascript source files
  .

@@ -1,14 +1,14 @@
-stages:
-    - build
+generate-config:
+  stage: build
+  script:
+    - .gitlab-ci/build-ci
+  artifacts:
+    paths:
+      - generated-config.yml
 
-build:
-    stage: build
-    tags:
-        - ucs-build
-    only:
-        refs:
-            - /^[1-9][0-9]*\.[0-9]+-[0-9]+$/    # Only build packages automatically for the main UCS branches
-        changes:
-            - "*/*/debian/changelog"
-    script:
-        - ./.build_unbuilt_packages
+child-pipeline:
+  stage: test
+  trigger:
+    include:
+      - artifact: generated-config.yml
+        job: generate-config

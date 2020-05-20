@@ -2,19 +2,21 @@ Source: univention-management-console-module-ucr
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
+Build-Depends:
+ debhelper,
  dh-python,
- univention-management-console-dev (>= 11.0.4-37),
  python-all,
  python3-all,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.5.2
 
 Package: univention-management-console-module-ucr
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
- univention-directory-manager-tools (>> 7.0.147)
+ ${python3:Depends},
+ ${python:Depends},
 Description: UMC module for UCR
  This package contains the UMC module for UCS Configuration Registry.
  .

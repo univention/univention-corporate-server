@@ -89,8 +89,8 @@ Type=str
 Categories=service-samba
 
 [samba/share/home]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird das Heimatverzeichnis eines Samba-Benutzers in einer Freigabe mit dem Namen des Benutzers bereitgestellt.
-Description[en]=If this variable is set to 'yes', the home directory of a Samba user is provided on a share with the name of the user.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird das Heimatverzeichnis eines Samba-Benutzers als eine Freigabe mit dem Namen des Benutzers bereitgestellt.
+Description[en]=If this variable is set to 'yes', the home directory of a Samba user is provided as a share with the name of the user.
 Type=bool
 Categories=service-samba
 
@@ -235,12 +235,6 @@ Categories=service-samba
 [samba/profileserver]
 Description[de]=Der Name des Servers, auf dem Windows-Clients ihre servergespeicherten Profile ablegen. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
 Description[en]=The name of the server where Windows clients store their roaming profiles. If 'samba/profileserver' and 'samba/profilepath' are set to 'local', roaming profiles are deactivated.
-Type=str
-Categories=service-samba
-
-[samba/share/home]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird das Heimatverzeichnis eines Samba-Benutzers in einer Freigabe mit dem Namen des Benutzers bereitgestellt.
-Description[en]=If this variable is set to 'yes', the home directory of a Samba user is provided as a share with the name of the user.
 Type=str
 Categories=service-samba
 

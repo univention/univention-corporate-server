@@ -48,9 +48,5 @@ override_dh_fixperms:
 	chmod +x debian/univention-nagios-dansguardian/usr/lib/nagios/plugins/check_univention_dansguardian
 	chmod +x debian/univention-nagios-opsi/usr/lib/nagios/plugins/check_univention_opsi
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@

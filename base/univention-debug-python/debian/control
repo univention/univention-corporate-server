@@ -3,16 +3,16 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 9),
+Build-Depends:
+ debhelper,
  dh-python,
  libunivention-debug-dev (>= 11.0.0-2),
  python-all-dev,
- python3-all-dev,
  python-debian,
- python3-debian,
  python-pytest,
+ python3-all-dev,
+ python3-debian,
  python3-pytest,
- ucslint-univention,
 
 Package: python-univention-debug
 Architecture: any
@@ -21,7 +21,8 @@ Depends:
  ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends},
-Provides: ${python:Provides}
+Provides:
+ ${python:Provides},
 Description: UCS - debugging and logging library (Python2 interface)
  This package includes the Python2 interface to the
  UCS debugging and logging library.
@@ -37,7 +38,8 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: UCS - debugging and logging library (Python3 interface)
  This package includes the Python3 interface to the
  UCS debugging and logging library.

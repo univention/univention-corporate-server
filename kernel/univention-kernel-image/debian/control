@@ -2,18 +2,20 @@ Source: univention-kernel-image
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7), ucslint-univention
+Build-Depends:
+ debhelper,
 Standards-Version: 3.8.2
 
 Package: univention-kernel-image
 Architecture: any
 Depends:
- linux-image-${F:BinaryVersion}-signed [amd64],
- linux-image-${F:BinaryVersion},
- univention-initrd (>= 6.0.0-2),
  libc6-i686 [i386],
+ linux-image-${F:BinaryVersion},
+ linux-image-${F:BinaryVersion}-signed [amd64],
  univention-config,
+ univention-initrd (>= 6.0.0-2),
 Recommends:
+ amd64-microcode,
  firmware-atheros,
  firmware-bnx2,
  firmware-bnx2x,
@@ -28,7 +30,6 @@ Recommends:
  firmware-qlogic,
  firmware-realtek,
  firmware-ti-connectivity,
- amd64-microcode,
  intel-microcode,
  xfsprogs,
 Suggests:
@@ -50,7 +51,8 @@ Description: UCS - Linux kernel (standard)
 
 Package: univention-kernel-headers
 Architecture: any
-Depends: linux-headers-${F:BinaryVersion}
+Depends:
+ linux-headers-${F:BinaryVersion},
 Description: UCS - Linux kernel headers (standard)
  This meta-package depends on the latest UCS kernel headers.
  .
@@ -61,7 +63,8 @@ Description: UCS - Linux kernel headers (standard)
 
 Package: univention-kernel-source
 Architecture: all
-Depends: linux-source-${F:SourceVersion}
+Depends:
+ linux-source-${F:SourceVersion},
 Description: UCS - Linux kernel source (standard)
  This meta-package depends on the latest UCS kernel source.
  .

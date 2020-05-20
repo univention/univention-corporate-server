@@ -2,16 +2,19 @@ Source: univention-passwd-cache
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0),
- ucslint-univention,
- libpam0g-dev
+Build-Depends:
+ debhelper,
+ libpam0g-dev,
 Standards-Version: 3.5.2
 
 Package: libnss-passwdcache
 Architecture: any
-Depends: ${shlibs:Depends}
-Suggests: univention-pam
-Recommends: libpam-passwdcache
+Depends:
+ ${shlibs:Depends},
+Suggests:
+ univention-pam,
+Recommends:
+ libpam-passwdcache,
 Description: UCS - NSS password cache
  The included network nameswitch (NSS) module uses
  entries from the passwd, shadow and group database
@@ -24,10 +27,13 @@ Description: UCS - NSS password cache
 
 Package: libpam-passwdcache
 Architecture: any
-Depends: ${shlibs:Depends},
- libpam-runtime
-Suggests: univention-pam
-Recommends: libnss-passwdcache
+Depends:
+ libpam-runtime,
+ ${shlibs:Depends},
+Suggests:
+ univention-pam,
+Recommends:
+ libnss-passwdcache,
 Description: UCS - PAM password cache
  The included pluggable authentication module (PAM) caches
  entries from the from the passwd, shadow and group

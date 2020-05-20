@@ -2,16 +2,18 @@ Source: univention-skel
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- ucslint-univention,
- univention-config-dev
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.5.2
 
 Package: univention-skel
 Architecture: all
-Conflicts: univention-session (<< 1.4)
-Depends: ${shlib:Depends},
- ${misc:Depends}
+Conflicts:
+ univention-session (<< 1.4),
+Depends:
+ ${misc:Depends},
+ ${shlib:Depends},
 Description: UCS - user default configuration manager
  The univention-skel command installs skeleton files into
  the user's home directory. Different to the conventional

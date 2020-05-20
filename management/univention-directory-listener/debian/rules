@@ -69,7 +69,6 @@ override_dh_fixperms:
 	chmod 750 debian/univention-directory-listener/var/log/univention/listener_modules
 
 override_dh_auto_test:
-	ucslint
 	make -C tests tests
 
 override_dh_strip:

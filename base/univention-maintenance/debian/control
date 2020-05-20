@@ -3,23 +3,24 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper,
- ucslint-univention,
- univention-config-dev
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 
 Package: univention-maintenance
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  bc,
- ldap-utils,
+ cron,
  httpd,
- nmap,
+ ldap-utils,
  mrtg,
  netcat-traditional,
- univention-mail-postfix | mail-transport-agent,
- cron,
+ nmap,
+ python-univention-lib (>= 1.0.25-1),
  univention-config,
- python-univention-lib (>= 1.0.25-1)
+ univention-mail-postfix | mail-transport-agent,
+ ${misc:Depends},
 Description: UCS - maintenance tools
  This package monitors the server root's homedir and
  produces HTML statistics about filesystem usage and

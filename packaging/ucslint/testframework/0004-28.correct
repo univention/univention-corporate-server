@@ -1,2 +1,2 @@
-E:0004-28: debian/univention-lilo.univention-config-registry: file contains line without ":"
+E:0004-28: debian/univention-lilo.univention-config-registry:33: file contains line without ":"
 I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used

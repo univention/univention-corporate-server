@@ -1,0 +1,6 @@
+debian/
+doc/
+.mypy_cache/
+testframework/
+testucslint.sh
+ucslint-sort-output.py

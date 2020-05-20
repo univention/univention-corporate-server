@@ -1,0 +1,11 @@
+ucslint (1) unstable; urgency=low
+
+  * Bug #49620 ucslint: Check debian/changelog is strict-monotonical
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Feb 2019 08:16:59 +0100
+
+ucslint (2) unstable; urgency=low
+
+  * Bug #49620 ucslint: Check debian/changelog is strict-monotonical
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Feb 2019 08:16:59 +0100

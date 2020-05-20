@@ -2,25 +2,29 @@ Source: univention-management-console-module-udm
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper,
  dh-python,
- univention-config-dev,
- univention-management-console-dev (>= 11.0.4-37),
- ucslint-univention,
  python-all,
  python3-all,
+ univention-config-dev,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.5.2
 
 Package: univention-management-console-module-udm
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
- univention-directory-manager-tools (>= 14.0.14-10),
- univention-management-console-server (>= 11.0.4-37),
- univention-directory-reports,
+Depends:
  python-notifier,
-Provides: univention-directory-manager
-Replaces: univention-directory-manager (<< 9.0.0)
+ univention-directory-manager-tools (>= 14.0.14-10),
+ univention-directory-reports,
+ univention-management-console-server (>= 11.0.4-37),
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Provides:
+ univention-directory-manager,
+Replaces:
+ univention-directory-manager (<< 9.0.0),
 Description: UMC module for UCS Directory Manager
  This package contains the UMC module for UCS Directory Manager.
  .
@@ -31,8 +35,9 @@ Description: UMC module for UCS Directory Manager
 
 Package: univention-management-module-udm
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-rest
+Depends:
+ univention-directory-manager-rest,
+ ${misc:Depends},
 Description: Transitional package
  .
  It is part of Univention Corporate Server (UCS), an

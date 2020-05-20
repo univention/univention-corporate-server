@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 override_dh_auto_test:
-	ucslint
 	dh_auto_test
 	python univention/ipcalc.py -v
 

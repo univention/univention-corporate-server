@@ -38,10 +38,6 @@ override_dh_auto_build:
 	msgfmt -o i18n/univention-welcome-screen.mo i18n/de.po
 	dh_auto_build
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 override_dh_systemd_start:
 	dh_systemd_start -punivention-welcome-screen --no-start univention-welcome-screen.service
 

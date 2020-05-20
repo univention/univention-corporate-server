@@ -2,21 +2,24 @@ Source: univention-directory-manager-rest
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper,
  dh-python,
- univention-config-dev,
- ucslint-univention,
  python-all,
  python3-all,
+ univention-config-dev,
 Standards-Version: 3.5.2
 
 Package: univention-directory-manager-rest
-Replaces: univention-management-module-udm (<< 9.0.14-3~)
-Breaks: univention-management-module-udm (<< 9.0.14-3~)
+Replaces:
+ univention-management-module-udm (<< 9.0.14-3~),
+Breaks:
+ univention-management-module-udm (<< 9.0.14-3~),
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  python-univention-directory-manager-rest (= ${binary:Version}),
  systemd,
+ ${misc:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
  .
@@ -27,17 +30,19 @@ Description: REST service for UCS Directory Manager
 
 Package: python-univention-directory-manager-rest
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- univention-management-console-module-udm,
- python-univention-management-console,
- python-univention-directory-manager (>= 14.0.14-15),
- python-tornado,
- python-mimeparse,
+Depends:
  python-concurrent.futures,
- python-pycurl,
  python-genshi,
- python-uritemplate,
+ python-mimeparse,
+ python-pycurl,
  python-six,
+ python-tornado,
+ python-univention-directory-manager (>= 14.0.14-15),
+ python-univention-management-console,
+ python-uritemplate,
+ univention-management-console-module-udm,
+ ${misc:Depends},
+ ${python:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
  .
@@ -48,16 +53,18 @@ Description: REST service for UCS Directory Manager
 
 Package: python3-univention-directory-manager-rest
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends},
- univention-management-console-module-udm,
- python3-univention-management-console,
- python3-univention-directory-manager (>= 14.0.13-14),
- python3-tornado,
+Depends:
+ python3-genshi,
  python3-mimeparse,
  python3-pycurl,
- python3-genshi,
- python3-uritemplate,
  python3-six,
+ python3-tornado,
+ python3-univention-directory-manager (>= 14.0.13-14),
+ python3-univention-management-console,
+ python3-uritemplate,
+ univention-management-console-module-udm,
+ ${misc:Depends},
+ ${python:Depends},
 Description: REST service for UCS Directory Manager
  This package contains the REST service for UCS Directory Manager.
  .

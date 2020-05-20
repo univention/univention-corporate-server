@@ -1,0 +1,41 @@
+#!/bin/sh
+# shellcheck disable=SC2086,SC2166,SC2221,SC2222
+# vim:set backupcopy=auto:
+#DEBHELPER#
+[ $1 = abort-deconfigure ]  # postinst
+[ $1 = abort-install ]  # postrm
+[ $1 = abort-remove ]  # postinst
+[ $1 = abort-upgrade ]  # preinst postinst postrm
+[ $1 = configure ]  # postinst
+[ $1 = deconfigure ]  # prerm
+[ $1 = disappear ]  # postrm
+[ $1 = failed-upgrade ]  # prerm postrm
+[ $1 = install ]  # preinst
+[ $1 = purge ]  # postrm
+[ $1 = remove ]  # prerm postrm
+[ $1 = triggered ]  # postinst
+[ $1 = upgrade ]  # preinst prerm postrm
+[ "$1" = upgrade ]
+[ ${1} = upgrade ]
+[ "$1" = upgrade ]
+[ "${1}" = upgrade ]
+[ "$1" = 'upgrade' ]
+[ "$1" = "upgrade" ]
+[ "$1" = "upgrade" -a -n "$2" ]
+[ "$1" = "upgrade" -a -z "$2" ]
+[ "$1" = "upgrade" -o -n "$2" ]
+[ "$1" = "upgrade" -o -z "$2" ]
+[[ "$1" = "upgrade" ]]
+test "$1" = "upgrade"
+test "$1" = "upgrade" ; :
+test "$1" = "upgrade" && :
+test "$1" = "upgrade" || :
+[ "$1" = upgrade -o "$1" = upgrade ]
+[ "$1" = upgrade ] || [ "$1" = upgrade ]
+case "$1" in upgrade) esac
+case "$1" in upgrade|"upgrade") esac
+case "$1" in
+upgrade) ;;
+'upgrade') ;;
+esac
+exit 0

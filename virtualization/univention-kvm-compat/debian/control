@@ -2,8 +2,8 @@ Source: univention-kvm-compat
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
- ucslint,
+Build-Depends:
+ debhelper,
  etherboot-qemu (= 5.4.4-9.23.201411131122),
  ipxe-qemu (= 1.0.0+git-20120202.f6840ba-3.8.201411131152),
 Standards-Version: 3.8.2

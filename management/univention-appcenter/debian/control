@@ -2,36 +2,38 @@ Source: univention-appcenter
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper,
  dh-python,
- ucslint-univention,
- univention-join,
- univention-ucs-translation-template,
- univention-config-dev,
- univention-management-console-dev (>= 11.0.4-37),
- python-debian,
- python-all,
- python3-all,
- ucslint,
  node-stylus,
+ python-all,
+ python-debian,
+ python3-all,
+ univention-config-dev,
+ univention-join,
+ univention-management-console-dev (>= 11.0.4-37),
+ univention-ucs-translation-template,
 Standards-Version: 3.8.2
 
 Package: univention-management-console-module-appcenter
 Architecture: all
-Depends: univention-management-console-server (>= 11.0.4-37),
- python-univention-lib (>= 8.0.1-29),
- python-univention (>= 12.0.0-5),
- shell-univention-lib (>= 3.0.12-4),
- python-univention-directory-manager (>= 14.0.14-14),
- python-univention-appcenter (= ${source:Version}),
- univention-config,
- univention-updater,
- univention-management-console-module-lib,
+Depends:
  python-notifier,
+ python-univention (>= 12.0.0-5),
+ python-univention-appcenter (= ${source:Version}),
+ python-univention-directory-manager (>= 14.0.14-14),
+ python-univention-lib (>= 8.0.1-29),
+ shell-univention-lib (>= 3.0.12-4),
+ univention-config,
+ univention-management-console-module-lib,
+ univention-management-console-server (>= 11.0.4-37),
+ univention-updater,
  ${misc:Depends},
  ${python:Depends},
-Replaces: univention-management-console-module-packages (<< 2.0.55-1)
-Breaks: univention-management-console-module-packages (<< 2.0.55-1)
+Replaces:
+ univention-management-console-module-packages (<< 2.0.55-1),
+Breaks:
+ univention-management-console-module-packages (<< 2.0.55-1),
 Description: UMC module for software management
  This package contains the UMC module for the package management.
  .
@@ -42,19 +44,24 @@ Description: UMC module for software management
 
 Package: univention-management-console-module-packages
 Architecture: all
-Depends: univention-management-console-module-appcenter (= ${source:Version}),
+Depends:
+ univention-management-console-module-appcenter (= ${source:Version}),
  ${misc:Depends},
 Description: transitional dummy package
  This is a transitional dummy package. It can safely be removed.
 
 Package: univention-appcenter
-Depends: python-univention-appcenter (= ${source:Version}),
+Depends:
+ python-univention-appcenter (= ${source:Version}),
  ${misc:Depends},
- ${python:Depends}
-Recommends: univention-appcenter-docker
-Replaces: python-univention-appcenter (<= 8.0.11-13)
-Breaks: univention-ldap-server (<< 12.1.6-8),
- python-univention-appcenter (<= 8.0.11-13)
+ ${python:Depends},
+Recommends:
+ univention-appcenter-docker,
+Replaces:
+ python-univention-appcenter (<= 8.0.11-13),
+Breaks:
+ python-univention-appcenter (<= 8.0.11-13),
+ univention-ldap-server (<< 12.1.6-8),
 Architecture: all
 Description: Tools for Univention App Center
  .
@@ -65,22 +72,25 @@ Description: Tools for Univention App Center
 
 Package: python-univention-appcenter
 Architecture: all
-Depends: univention-ssh,
- univention-join (>= 10.0.0-12),
- univention-directory-manager-tools (>= 14.0.14-14),
- univention-admin-diary-client (>= 1.0.0-29),
+Depends:
+ gnupg,
+ python-ipaddr,
+ python-mysqldb,
+ python-six,
  python-univention (>= 12.0.0-5),
  python-univention-config-registry,
  python-univention-directory-manager (>= 14.0.14-14),
- python-mysqldb,
- gnupg,
+ univention-admin-diary-client (>= 1.0.0-29),
+ univention-directory-manager-tools (>= 14.0.14-14),
+ univention-join (>= 10.0.0-12),
+ univention-ssh,
  zsync,
- python-ipaddr,
- python-six,
  ${misc:Depends},
  ${python:Depends},
-Recommends: univention-appcenter
-Provides: ${python:Provides}
+Recommends:
+ univention-appcenter,
+Provides:
+ ${python:Provides},
 Description: Library for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
@@ -90,22 +100,25 @@ Description: Library for Univention App Center
 
 Package: python3-univention-appcenter
 Architecture: all
-Depends: univention-ssh,
- univention-join,
- univention-directory-manager-tools,
- univention-admin-diary-client,
+Depends:
+ gnupg,
+ python3-ipaddr,
+ python3-mysqldb,
+ python3-six,
  python3-univention,
  python3-univention-config-registry,
  python3-univention-directory-manager,
- python3-mysqldb,
- gnupg,
+ univention-admin-diary-client,
+ univention-directory-manager-tools,
+ univention-join,
+ univention-ssh,
  zsync,
- python3-ipaddr,
- python3-six,
  ${misc:Depends},
  ${python3:Depends},
-Recommends: univention-appcenter
-Provides: ${python3:Provides}
+Recommends:
+ univention-appcenter,
+Provides:
+ ${python3:Provides},
 Description: Library for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
@@ -115,7 +128,8 @@ Description: Library for Univention App Center
 
 Package: univention-appcenter-dev
 Architecture: all
-Depends: python-univention-appcenter-dev (>= 8.0.11-83)
+Depends:
+ python-univention-appcenter-dev (>= 8.0.11-83)
  ${misc:Depends},
 Description: Development tools for Univention App Center
  .
@@ -126,16 +140,20 @@ Description: Development tools for Univention App Center
 
 Package: python-univention-appcenter-dev
 Architecture: all
-Depends: univention-appcenter (= ${source:Version}),
- python-univention (>= 12.0.0-5),
- dpkg,
+Depends:
  apt-utils,
+ dpkg,
+ python-univention (>= 12.0.0-5),
+ univention-appcenter (= ${source:Version}),
  zsync,
  ${misc:Depends},
  ${python:Depends},
-Replaces: univention-appcenter-dev (<< 8.0.11-83)
-Breaks: univention-appcenter-dev (<< 8.0.11-83)
-Provides: ${python:Provides}
+Replaces:
+ univention-appcenter-dev (<< 8.0.11-83),
+Breaks:
+ univention-appcenter-dev (<< 8.0.11-83),
+Provides:
+ ${python:Provides},
 Description: Development tools for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
@@ -145,14 +163,16 @@ Description: Development tools for Univention App Center
 
 Package: python3-univention-appcenter-dev
 Architecture: all
-Depends: univention-appcenter (= ${source:Version}),
- python3-univention,
- dpkg,
+Depends:
  apt-utils,
+ dpkg,
+ python3-univention,
+ univention-appcenter (= ${source:Version}),
  zsync,
  ${misc:Depends},
  ${python3:Depends},
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: Development tools for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
@@ -162,7 +182,8 @@ Description: Development tools for Univention App Center
 
 Package: univention-appcenter-docker
 Architecture: all
-Depends: python-univention-appcenter-docker (>= 8.0.11-83),
+Depends:
+ python-univention-appcenter-docker (>= 8.0.11-83),
  ${misc:Depends},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
@@ -175,18 +196,22 @@ Description: Docker integration for Univention App Center
 
 Package: python-univention-appcenter-docker
 Architecture: all
-Depends: python-univention-appcenter (= ${source:Version}),
- univention-docker (>= 2.0.0-4),
- python-univention (>= 12.0.0-5),
+Depends:
  docker-compose,
  pass,
  python-ruamel.yaml,
+ python-univention (>= 12.0.0-5),
+ python-univention-appcenter (= ${source:Version}),
  univention-apache,
+ univention-docker (>= 2.0.0-4),
  ${misc:Depends},
  ${python:Depends},
-Replaces: univention-appcenter-docker (<< 8.0.11-83)
-Breaks: univention-appcenter-docker (<< 8.0.11-83)
-Provides: ${python:Provides}
+Replaces:
+ univention-appcenter-docker (<< 8.0.11-83),
+Breaks:
+ univention-appcenter-docker (<< 8.0.11-83),
+Provides:
+ ${python:Provides},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
  of the Univention App Center.
@@ -198,16 +223,18 @@ Description: Docker integration for Univention App Center
 
 Package: python3-univention-appcenter-docker
 Architecture: all
-Depends: python3-univention-appcenter,
- univention-docker,
- python3-univention,
+Depends:
  docker-compose,
  pass,
  python3-ruamel.yaml,
+ python3-univention,
+ python3-univention-appcenter,
  univention-apache,
+ univention-docker,
  ${misc:Depends},
  ${python3:Depends},
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: Docker integration for Univention App Center
  This package contains a Docker integration for certain apps
  of the Univention App Center.
@@ -219,8 +246,9 @@ Description: Docker integration for Univention App Center
 
 Package: univention-management-console-module-apps
 Architecture: all
-Depends: univention-management-console-module-appcenter (= ${source:Version}),
+Depends:
  python-polib,
+ univention-management-console-module-appcenter (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends},
 Description: UMC module for application overview

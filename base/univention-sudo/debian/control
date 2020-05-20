@@ -2,16 +2,17 @@ Source: univention-sudo
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- ucslint-univention,
- univention-config-dev
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.5.2
 
 Package: univention-sudo
 Architecture: all
-Depends: ${shlib:Depends},
+Depends:
+ sudo,
  ${misc:Depends},
- sudo
+ ${shlib:Depends},
 Description: UCS sudo rules
  This package installs default rules for the sudo command.
  .

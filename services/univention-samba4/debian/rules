@@ -54,10 +54,6 @@ override_dh_fixperms-indep:
 override_dh_installinit:
 	dh_installinit -a --no-start -u"defaults 97"
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@
 

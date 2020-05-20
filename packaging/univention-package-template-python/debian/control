@@ -3,16 +3,19 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper,
  dh-python,
  python-all,
  python3-all,
- ucslint-univention
 
 Package: python-univention-package-template
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}
-Provides: ${python:Provides}
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: UCS - python module template
  This package contains an example Python 2 module.
  .
@@ -23,8 +26,11 @@ Description: UCS - python module template
 
 Package: python3-univention-package-template
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}
-Provides: ${python3:Provides}
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: UCS - python module template
  This package contains an example Python 3 module.
  .

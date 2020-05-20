@@ -4,6 +4,12 @@ E:0004-38: debian/test1.univention-config-registry: UCR .info-file contains entr
 E:0004-39: debian/test1.univention-config-registry: UCR .info-file contains entry of "Type: script" with 2 "Script:" lines
 E:0004-58: debian/test1.univention-config-registry: file contains multifile entry with 2 "Preinst:" lines
 E:0004-59: debian/test1.univention-config-registry: file contains multifile entry with 2 "Postinst:" lines
+E:0004-60: debian/test1.univention-config-registry: Duplicate entry: Multifile multi1, Subfile multi1
+E:0004-60: debian/test1.univention-config-registry: Duplicate entry: Multifile multi2, Subfile multi1
+E:0004-60: debian/test1.univention-config-registry: Duplicate entry: Script hook1.py
+E:0004-60: debian/test1.univention-config-registry: Duplicate entry: Script hook2.py
+E:0004-60: debian/test1.univention-config-registry:37: Duplicate entry for Subfile: multi1
+E:0004-60: debian/test2.univention-config-registry: Duplicate entry: Script hook1.py
 E:0004-7: debian/test1.univention-config-registry: file contains subfile entry with 2 "Subfile:" lines
 E:0004-8: debian/test1.univention-config-registry: file contains subfile entry with 2 "Multifile:" lines
 W:0004-10: debian/test1.univention-config-registry: file contains subfile entry without corresponding multifile entry.

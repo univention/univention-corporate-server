@@ -2,26 +2,28 @@ Source: univention-docker-container-mode
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.5.2
 
 Package: univention-docker-container-mode
 Architecture: all
-Depends: ${misc:Depends},
- shell-univention-lib (>= 3.0.1-1),
- python-univention-lib (>= 3.0.1-1),
- univention-network-common,
- univention-appcenter,
- net-tools,
+Depends:
  cron,
  curl,
- jq
-Conflicts: univention-appcenter-docker,
- univention-docker,
+ jq,
+ net-tools,
+ python-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 3.0.1-1),
+ univention-appcenter,
+ univention-network-common,
+ ${misc:Depends},
+Conflicts:
+ cgroupfs-mount,
  docker.io,
- cgroupfs-mount
+ univention-appcenter-docker,
+ univention-docker,
 Description: Settings for running UCS in a Docker container
  This package installs settings for running UCS in a Docker
  container.

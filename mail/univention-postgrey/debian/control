@@ -2,16 +2,17 @@ Source: univention-postgrey
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-postgrey
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ postgrey,
  univention-base-files,
- postgrey
+ ${misc:Depends},
 Description: UCS Postfix gray-listing configuration
  This packages adds specific configuration, espcially client whitelist
  definitions, to the package postgrey.

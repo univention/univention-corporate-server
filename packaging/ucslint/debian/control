@@ -3,47 +3,35 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- debhelper (>> 7),
+ debhelper,
+ devscripts,
  dh-python,
- python-all,
  python3-all,
+ python3-apt,
+ python3-debian,
+ python3-setuptools,
 Standards-Version: 3.6.1
 
 Package: ucslint
 Architecture: all
 Depends:
- python-univention-namespace,
- ${python:Depends},
- ${python3:Depends},
- ${misc:Depends},
  devscripts,
- flake8,
  python-flake8,
- python-apt,
-Conflicts: ucs-tools (<< 1.2.5)
+ python3-apt,
+ python3-debian,
+ python3-flake8,
+ ${misc:Depends},
+ ${python3:Depends},
+Conflicts:
+ ucs-tools (<< 1.2.5),
+Provides:
+ ucslint-univention,
+Recommends:
+ python3-junit.xml,
 Description: Check packaging for UCS
  This package contains the Univention tool ucslint that
  is able to check debian source packages against common
  packaging mistakes.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: ucslint-univention
-Architecture: all
-Depends:
- ${python:Depends},
- ${python3:Depends},
- ${misc:Depends},
- ucslint
-Conflicts: ucs-tools (<< 1.2.5)
-Description: Univention-specific ucslint tests
- This package contains Univention specific tests for ucslint
- (e.g. copyright checks or maintainer information checks).
- This package is not required by ucslint. It is an addon
- for Univention internal development.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

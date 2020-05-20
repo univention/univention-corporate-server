@@ -3,17 +3,18 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-debmirror
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
- univention-apache,
- shell-univention-lib,
+Depends:
  apt-mirror,
+ shell-univention-lib,
+ univention-apache,
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
 Description: UCS - local repository configuration
  This package contains the local repository configuration.
  .

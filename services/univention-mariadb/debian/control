@@ -2,16 +2,17 @@ Source: univention-mariadb
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 8),
- ucslint-univention,
- univention-config-dev
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-mariadb
 Architecture: all
-Depends: ${misc:Depends},
- mariadb-server-10.1,
+Depends:
  makepasswd,
+ mariadb-server-10.1,
+ ${misc:Depends},
 Description: UCS - MariaDB configuration
  This package depends on the MariaDB server package and provides the UCS
  specific configuration.

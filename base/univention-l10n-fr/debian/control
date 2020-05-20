@@ -2,17 +2,18 @@ Source: univention-l10n-fr
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- univention-management-console-dev
+ univention-management-console-dev,
 Standards-Version: 3.8.2
 
 Package: univention-l10n-fr
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ univention-l10n-tools,
  univention-management-console,
- univention-l10n-tools
+ ${misc:Depends},
 Description: UCS Management Console translation files
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

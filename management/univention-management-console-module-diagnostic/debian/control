@@ -2,29 +2,31 @@ Source: univention-management-console-module-diagnostic
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- univention-config-dev,
+Build-Depends:
+ debhelper,
  dh-python,
- univention-management-console-dev (>= 11.0.4-37),
  python-all,
  python3-all,
- ucslint,
+ univention-config-dev,
+ univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.7.2
 
 Package: univention-management-console-module-diagnostic
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
- univention-management-console-server (>= 11.0.4-37),
- python-pycurl,
- python-psutil,
- python-dnspython,
- python-pyasn1,
- python-openssl,
+Depends:
  python-dateutil,
- python-requests,
+ python-dnspython,
+ python-openssl,
+ python-paramiko,
  python-pexpect,
- python-paramiko
+ python-psutil,
+ python-pyasn1,
+ python-pycurl,
+ python-requests,
+ univention-management-console-server (>= 11.0.4-37),
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: System Diagnosis UMC module
  .
  It is part of Univention Corporate Server (UCS), an

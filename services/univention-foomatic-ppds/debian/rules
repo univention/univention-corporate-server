@@ -39,9 +39,5 @@ override_dh_clean:
 override_dh_auto_build:
 	foomatic-compiledb -d $(CURDIR)/foomatic-rip/ -f -t ppd -j 5 $(DRIVERS)
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 %:
 	dh $@

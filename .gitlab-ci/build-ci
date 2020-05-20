@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e -u
+
+exec >generated-config.yml
+cat "${0%/*}/base.yml"
+
+for cl in */*/debian/changelog
+do
+	[ -f "$cl" ] || continue
+	path="${cl%/debian/changelog}"
+	pkg="${path##*/}"
+	echo
+	echo "lint ${pkg}:"
+	echo '  variables:'
+	echo "    base: $path"
+	echo '  extends: .lint'
+	echo '  rules:'
+	echo '    - changes:'
+	echo "      - ${path}/**/*"
+	echo '      - packaging/ucslint/**/*'
+done
+
+# The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
+echo
+echo 'dummy:'
+echo '  stage: .post'
+echo '  script:'
+echo '    - ":"'

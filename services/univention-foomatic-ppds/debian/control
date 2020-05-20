@@ -2,16 +2,17 @@ Source: univention-foomatic-ppds
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
- ucslint-univention,
- foomatic-db-gutenprint,
+Build-Depends:
+ debhelper,
+ foomatic-db,
  foomatic-db-engine,
- foomatic-db
+ foomatic-db-gutenprint,
 Standards-Version: 3.8.2
 
 Package: univention-foomatic-ppds
 Architecture: all
-Depends: ${misc:Depends}
+Depends:
+ ${misc:Depends},
 Description: UCS - foomatic ppds
  This packages provides foomatic printer ppds.
  .

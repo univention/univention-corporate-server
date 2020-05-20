@@ -2,4 +2,3 @@ var/cache/univention-management-console/acls
 var/run/univention-management-console
 usr/share/univention-management-console/modules
 usr/share/univention-management-console/categories
-usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/

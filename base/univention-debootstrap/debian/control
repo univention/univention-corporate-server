@@ -3,16 +3,20 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debootstrap,
+Build-Depends:
  debhelper,
- ucslint-univention
+ debootstrap,
 
 Package: univention-debootstrap
 Architecture: all
-Depends: ${misc:Depends}, ${shlibs:Depends},
- debootstrap
-Replaces: univention-debootstrap-3 (<< 5.0.0-0)
-Breaks: univention-debootstrap-3 (<< 5.0.0-0)
+Depends:
+ debootstrap,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Replaces:
+ univention-debootstrap-3 (<< 5.0.0-0),
+Breaks:
+ univention-debootstrap-3 (<< 5.0.0-0),
 Description: UCS debootstrap scripts for UCS
  This package contains the debootstrap configuration for UCS.
  .
@@ -23,8 +27,10 @@ Description: UCS debootstrap scripts for UCS
 
 Package: univention-debootstrap-3
 Architecture: all
-Depends: ${misc:Depends}, ${shlibs:Depends},
- univention-debootstrap
+Depends:
+ univention-debootstrap,
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: transitional dummy package
  This is a transitional dummy package. It can safely be removed.
  .

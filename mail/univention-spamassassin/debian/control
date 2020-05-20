@@ -2,18 +2,19 @@ Source: univention-spamassassin
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-spamassassin
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
+Depends:
+ python-univention-lib (>= 1.0.25-1),
  spamassassin (>= 3.0.4),
  spamc,
- python-univention-lib (>= 1.0.25-1)
+ univention-config,
+ ${misc:Depends},
 Description: UCS - mail antispam
  This module provides anto-spam protection for mail using SpamAssassin.
  .

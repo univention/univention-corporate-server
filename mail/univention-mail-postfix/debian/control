@@ -2,32 +2,37 @@ Source: univention-mail-postfix
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-mail-postfix
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ libpam-univentionmailcyrus,
+ openssl,
  postfix,
  postfix-ldap,
- shell-univention-lib (>> 1.0.16),
+ python-univention-directory-manager,
+ python-univention-lib (>= 3.0.4-1),
  sasl2-bin,
- libpam-univentionmailcyrus,
+ shell-univention-lib (>> 1.0.16),
  univention-base-files,
  univention-config (>= 7.0.31-1),
- python-univention-lib (>= 3.0.4-1),
- python-univention-directory-manager,
- openssl
-Conflicts: univention-mail,
+ ${misc:Depends},
+Conflicts:
  exim4,
  exim4-base,
  exim4-config,
- univention-mail-postfix-kolab2
-Replaces: univention-mail-postfix-forward (<< 6.0)
-Provides: default-mta
-Breaks: univention-mail-postfix-forward (<< 6.0)
+ univention-mail,
+ univention-mail-postfix-kolab2,
+Replaces:
+ univention-mail-postfix-forward (<< 6.0),
+Provides:
+ default-mta,
+Breaks:
+ univention-mail-postfix-forward (<< 6.0),
 Description: UCS - postfix configuration
  This package contains a basic configuration for the postfix
  mail transport agent.
@@ -39,8 +44,9 @@ Description: UCS - postfix configuration
 
 Package: univention-mail-postfix-forward
 Architecture: all
-Depends: ${misc:Depends},
- univention-mail-postfix
+Depends:
+ univention-mail-postfix,
+ ${misc:Depends},
 Description: Transitional package for univention-mail-postfix-forward
  This is a transitional package for univention-mail-postfix-forward,
  and can be safely removed after the installation is complete.
@@ -52,16 +58,19 @@ Description: Transitional package for univention-mail-postfix-forward
 
 Package: univention-mail-server
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  shell-univention-lib,
  univention-directory-manager-tools (>> 7.0.147),
+ univention-mail-dovecot,
  univention-mail-postfix (= ${binary:Version}),
  univention-sasl,
- univention-mail-dovecot
-Recommends: bsd-mailx,
+ ${misc:Depends},
+Recommends:
+ bsd-mailx,
+ univention-antivir-mail,
  univention-spamassassin,
- univention-antivir-mail
-Conflicts: univention-mail-postfix-kolab2
+Conflicts:
+ univention-mail-postfix-kolab2,
 Description: UCS - postfix configuration
  This package contains the configuration for the postfix
  mail transport agent.

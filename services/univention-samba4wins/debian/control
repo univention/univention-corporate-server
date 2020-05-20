@@ -3,17 +3,18 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-samba4wins
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  samba4wins,
- shell-univention-lib (>= 1.0.6),
  samba4wins-ldbtools,
- univention-samba4wins-schema
+ shell-univention-lib (>= 1.0.6),
+ univention-samba4wins-schema,
+ ${misc:Depends},
 Description: UCS - samba4wins configuration
  This package provides samba4wins configuration for UCS.
  .
@@ -24,9 +25,10 @@ Description: UCS - samba4wins configuration
 
 Package: univention-samba4wins-schema
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ shell-univention-lib (>= 1.0.6),
  univention-directory-manager-tools (>> 7.0.147),
- shell-univention-lib (>= 1.0.6)
+ ${misc:Depends},
 Description: UCS - samba4wins ldap schema file
  This package provides the ldap schema of the samba4wins configuration
  for UCS.

@@ -2,4 +2,3 @@ var/cache/univention-portal
 usr/share/univention-portal/icons/entries
 usr/share/univention-portal/icons/backgrounds
 usr/share/univention-portal/icons/logos
-usr/lib/univention-server/server_password_change.d

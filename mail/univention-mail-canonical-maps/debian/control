@@ -2,18 +2,19 @@ Source: univention-mail-canonical-maps
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-mail-canonical-maps
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  univention-directory-manager-tools (>> 7.0.147),
- univention-mail-server
+ univention-mail-server,
+ ${misc:Depends},
 Description: Canonical maps related extended attributes for UDM
- This package contains extended attributes for UDM  to 
+ This package contains extended attributes for UDM  to
  manage canonical maps for mails.
  .
  It is part of Univention Corporate Server (UCS), an

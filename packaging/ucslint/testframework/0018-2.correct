@@ -1,0 +1,6 @@
+S:0018-2: debian/pkg.dirs:2: Unneeded directory 'bin'
+S:0018-2: debian/pkg.dirs:3: Unneeded directory 'sbin'
+S:0018-2: debian/pkg.dirs:4: Unneeded directory 'usr/sbin'
+S:0018-2: debian/pkg.dirs:5: Unneeded directory 'usr/bin'
+S:0018-2: debian/pkg.dirs:6: Unneeded directory 'usr/share/doc/pkg'
+S:0018-2: debian/pkg.dirs:7: Unneeded directory 'usr/lib/pkg'

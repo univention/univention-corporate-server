@@ -56,12 +56,10 @@ ifneq ($(wildcard debian/*/usr/lib/univention-system-setup/),)
 endif
 
 override_dh_auto_test:
-	ucslint
 	run-parts -a -v tests
 
 %:
 	dh $@ --with 'python2,python3'
-
 
 debian/po/templates.pot: debian/po/POTFILES.in
 	cd debian && debconf-updatepo --msgid-bugs-address='Univention GmbH <packages@univention.de>'

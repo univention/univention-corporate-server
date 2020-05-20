@@ -3,11 +3,13 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper(>> 3.0.0), ucslint-univention
+Build-Depends:
+ debhelper,
 
 Package: univention-newsid
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends:
+ ${shlibs:Depends},
 Description: UCS - generate a new samba sid
  This package contain a tool to generate a new samba sid.
  .

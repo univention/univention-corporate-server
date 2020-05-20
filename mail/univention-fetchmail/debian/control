@@ -2,20 +2,22 @@ Source: univention-fetchmail
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 Standards-Version: 3.8.2
 
 Package: univention-fetchmail
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
+Depends:
  fetchmail,
+ shell-univention-lib (>> 2.0.17-1.125),
+ univention-directory-manager-tools (>> 7.0.147),
  univention-fetchmail-schema,
  univention-join (>> 5.0.20-1.436),
- shell-univention-lib (>> 2.0.17-1.125)
-Breaks: univention-ldap-server (<< 9.0.20-1.580.201303211526)
+ ${misc:Depends},
+Breaks:
+ univention-ldap-server (<< 9.0.20-1.580.201303211526),
 Description: UCS fetchmail integration for UDM
  This package contains UDM extensions for integrating
  remote mail retrieval via fetchmail.
@@ -27,11 +29,13 @@ Description: UCS fetchmail integration for UDM
 
 Package: univention-fetchmail-schema
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ shell-univention-lib (>> 2.0.17-1.125),
  univention-directory-manager-tools (>> 7.0.147),
  univention-join (>> 5.0.20-1.436),
- shell-univention-lib (>> 2.0.17-1.125)
-Breaks: univention-ldap-server (<< 9.0.20-1.580.201303211526)
+ ${misc:Depends},
+Breaks:
+ univention-ldap-server (<< 9.0.20-1.580.201303211526),
 Description: UCS schema package for univention-fetchmail
  This package contains additional LDAP schema
  defining extension for fetchmail management.

@@ -33,8 +33,5 @@
 override_dh_installinit:
 	dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="defaults 8 92"
 
-override_dh_auto_test:
-	ucslint
-
 %:
 	dh $@

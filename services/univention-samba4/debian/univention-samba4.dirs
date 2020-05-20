@@ -1,7 +1,3 @@
-usr/share/univention-samba4/lib
-usr/share/univention-samba4/scripts
 usr/share/univention-samba4/locale
-usr/lib/univention-install
-usr/sbin
 var/cache/univention-directory-listener
 var/univention-backup/samba

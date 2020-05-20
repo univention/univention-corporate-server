@@ -32,10 +32,6 @@
 
 version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
 override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry

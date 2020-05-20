@@ -51,9 +51,5 @@ override_dh_auto_build:
 	make build
 	dh_auto_build
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild

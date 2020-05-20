@@ -1,0 +1,6 @@
+# comment
+bin/pkg
+bin/pkg	usr/lib/pkg/
+bin/pkg	usr/bin/
+bin/pkg	usr/sbin/
+bin/pkg	sbin/

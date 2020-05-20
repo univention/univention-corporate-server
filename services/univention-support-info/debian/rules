@@ -30,8 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint
-
 %:
 	dh $@

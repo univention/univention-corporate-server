@@ -2,23 +2,25 @@ Source: univention-printquota
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.8.2
 
 Package: univention-printquota
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
- univention-printserver,
- pykota,
- univention-printquotadb,
+Depends:
  pkipplib,
  pkpgcounter,
- shell-univention-lib
-Pre-Depends: pykota,
- univention-config (>= 7.0.25)
+ pykota,
+ shell-univention-lib,
+ univention-config,
+ univention-printquotadb,
+ univention-printserver,
+ ${misc:Depends},
+Pre-Depends:
+ pykota,
+ univention-config (>= 7.0.25),
 Description: UCS - quotasupport for printserver
  This packages provides the printquota configuration. Quotas
  can be managed with UCS Directory Manager and UCS Management Console.
@@ -30,13 +32,15 @@ Description: UCS - quotasupport for printserver
 
 Package: univention-printquotadb
 Architecture: all
-Pre-Depends: univention-postgresql,
+Pre-Depends:
  dpkg (>= 1.15.7.2),
+ shell-univention-lib (>= 3.0.1-1),
  univention-config (>= 7.0.25),
- shell-univention-lib (>= 3.0.1-1)
-Depends: ${misc:Depends},
- univention-config (>= 8.0.2),
+ univention-postgresql,
+Depends:
  pykota,
+ univention-config (>= 8.0.2),
+ ${misc:Depends},
 Description: UCS - quotasupport for printserver
  This packages provides the printquota-database configuration. Quota-Database
  can be managed with UCS Directory Manager and UCS Management Console.

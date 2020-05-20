@@ -4,7 +4,11 @@
 #
 declare -i RETVAL=0
 
-usage () { # Printusage
+die () { # Print error and exit
+  echo "$*" >&2
+  exit 1
+}
+usage () { # Print usage
     cat <<__USAGE__
 ${0##*/}"
 Options:
@@ -15,48 +19,57 @@ Options:
   --color    Colorize output
   --         Separate options from following arguments
 __USAGE__
-    exit ${1:-0}
+    exit "${1:-0}"
 }
 
+TEMP=$(getopt -o 'vqch' --long 'update,verbose,clean,quiet,color,help' -n "$0" -- "$@") ||
+    usage 2 >&2
+eval set -- "$TEMP"
 while [ $# -ge 1 ]
 do
     case "$1" in
     --update) update=1 ;;
-    --verbose) verbose=1 ;;
+    --verbose|-v) verbose=1 ;;
     --clean) clean=1 ;;
-    --quiet) quiet=1 ;;
-    --color) red=$(tput setaf 1) green=$(tput setaf 2) norm=$(tput op) ;;
-    --help) usage 0 ;;
+    --quiet|-q) quiet=1 ;;
+    --color|-c) red=$(tput setaf 1) green=$(tput setaf 2) norm=$(tput op) ;;
+    --help|-h) usage 0 ;;
     --) shift ; break ;;
-    -*) echo "Unknown option $1; See ${0##*/} --help" >&2 ; exit 2 ;;
-    *) break ;;
+    *) die "Internel error" ;;
     esac
     shift
 done
 
-tmpdir=$(mktemp -d)
-trap "rm -rf '$tmpdir'" EXIT
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "$tmpdir"' EXIT
 tmpresult="$tmpdir/result"
 tmpdiff="$tmpdir/diff"
 tmperr="$tmpdir/err"
 
-export PYTHONPATH="$PWD:$PYTHONPATH"
-BINPATH="$PWD/bin/ucslint"
-UCSLINTPATH=(
-	-p "$PWD/ucslint"
-	-p "$PWD/ucslint-univention"
-	)
+BINPATH="$PWD/ucslint"
 
-for dir in testframework/$@*
+match () {
+    local arg dirname="$1"
+    shift
+    [ $# -eq 0 ] && return 0
+    for arg in "${@#testframework/}"
+    do
+        [ "${dirname#$arg}" = "$dirname" ] || return 0
+    done
+    return 1
+}
+
+for dir in testframework/*
 do
-    if [ -d "$dir" ]
-    then
+    [ -d "$dir" ] || continue
+    DIRNAME=$(basename "$dir")
+    match "$DIRNAME" "$@" || continue
+
         [ -z "$quiet" ] && echo -n "Testing $dir "
 
-        DIRNAME=$(basename "$dir")
         MODULE="${DIRNAME:0:4}"
 
-        ( cd "$dir" && "$BINPATH" "${UCSLINTPATH[@]}" -m "$MODULE" >"$tmpresult" 2>"$tmperr" )
+        ( cd "./$dir" && "$BINPATH" -m "$MODULE" >"$tmpresult" 2>"$tmperr" )
         ret=$?
         ./ucslint-sort-output.py "$tmpresult" >"${dir}.test"
 
@@ -76,7 +89,6 @@ do
                 cp "${dir}.test" "${dir}.correct"
             fi
         fi
-    fi
 done
 
-exit $RETVAL
+exit "$RETVAL"

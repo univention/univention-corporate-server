@@ -45,7 +45,3 @@ override_dh_auto_install:
 override_dh_auto_clean:
 	dh_auto_clean
 	$(RM) debian/*.conffiles
-
-override_dh_auto_test:
-	ucslint
-	dh_auto_test

@@ -2,15 +2,16 @@ Source: univention-nagios-servicechecks
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.8.2
 
 Package: univention-nagios-cups
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147)
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
 Description: nagios plugin for monitoring cups daemon and webservice
  This package installs a nagios plugin to monitor CUPS
  daemon and checks the availability of CUPS webfrontend.
@@ -22,8 +23,9 @@ Description: nagios plugin for monitoring cups daemon and webservice
 
 Package: univention-nagios-squid
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147)
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
 Description: nagios plugin for monitoring squid daemon and webservice
  This package installs a nagios plugin to monitor squid
  daemon and checks the availability of the proxy service.
@@ -35,8 +37,9 @@ Description: nagios plugin for monitoring squid daemon and webservice
 
 Package: univention-nagios-dansguardian
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147)
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
 Description: nagios plugin for monitoring dansguardian daemon and webservice
  This package installs a nagios plugin to monitor dansguardian
  daemon and checks the availability of the proxy service.
@@ -48,8 +51,9 @@ Description: nagios plugin for monitoring dansguardian daemon and webservice
 
 Package: univention-nagios-opsi
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147)
+Depends:
+ univention-directory-manager-tools (>> 7.0.147),
+ ${misc:Depends},
 Description: nagios plugin for monitoring opsi daemons and webservice
  This package installs a nagios plugin to monitor OPSI
  daemon and checks the availability of OPSI webfrontend.

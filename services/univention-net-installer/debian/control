@@ -2,19 +2,20 @@ Source: univention-net-installer
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.8.2
 
 Package: univention-net-installer
 Architecture: all
-Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
- univention-tftp,
+Depends:
+ shell-univention-lib,
  univention-apache,
  univention-config,
- shell-univention-lib
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-tftp,
+ ${misc:Depends},
 Description: UCS - automatic profile-based installation services
  This package contains the packages for the profile-based installation
  of UCS systems via Preboot Execution Environment (PXE).
@@ -45,12 +46,13 @@ Architecture: all
 Section: debian-installer
 Priority: standard
 XB-Installer-Menu-Item: 7650
-Depends: cdebconf-udeb,
- kernel-installer,
+Depends:
+ bootable-system,
+ cdebconf-udeb,
+ created-fstab,
  di-utils,
  installed-base,
- created-fstab,
- bootable-system,
+ kernel-installer,
  ${misc:Depends},
 Description: UCS - automatic profile-based installation services
  This package contains the integration of profile-based installation

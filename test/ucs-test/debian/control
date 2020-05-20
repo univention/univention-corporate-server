@@ -2,53 +2,56 @@ Source: ucs-test
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 8.0.0),
- ucslint-univention,
+Build-Depends:
+ debhelper,
  dh-python,
  python-all,
- python3-all,
- python-yaml,
  python-apt,
- univention-management-console-dev,
+ python-yaml,
+ python3-all,
  univention-config,
+ univention-management-console-dev,
  univention-ucs-translation-template,
 Standards-Version: 3.6.1
 
 Package: ucs-test
 Architecture: all
-Depends: ucs-test-framework,
+Depends:
+ ucs-test-framework,
  ucs-test-modules-all,
- ${misc:Depends}
+ ${misc:Depends},
 Description: UCS test environment meta package
  This package depends on all other packages of UCS test.
 
 Package: ucs-test-libs
 Architecture: all
-Depends: univention-config,
- ${misc:Depends}
+Depends:
+ univention-config,
+ ${misc:Depends},
 Description: Libraries used by the UCS-test-framework.
  This package includes some common helper scripts used by other ucs-test
  packages.
 
 Package: ucs-test-framework
 Architecture: all
-Depends: univention-config,
+Depends:
+ debhelper,
+ dpkg-dev,
+ fakeroot,
  python,
- python-yaml,
  python-apt (>= 0.8),
  python-argparse,
- python-univention (>= 12.0.0-5),
- ucs-test-modules-all | ucs-test-module,
- dpkg-dev,
- debhelper,
- fakeroot,
  python-six,
- ${python:Depends},
- ${python3:Depends},
+ python-univention (>= 12.0.0-5),
+ python-yaml,
+ ucs-test-modules-all | ucs-test-module,
+ univention-config,
  ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Provides:
- ${python:Provides},
  ${python3:Provides},
+ ${python:Provides},
 Description: UCS test environment
  This package includes some scripts for testing the UCS installation or the UCS
  upgrade.
@@ -57,411 +60,431 @@ Description: UCS test environment
 
 Package: ucs-test-checks
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  python,
  python-apt,
  python-lxml,
  python-pytest,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Basic checks
  This package includes checks that do not modify the system.
 
 Package: ucs-test-end
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  python,
  python-pytest,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Basic end scripts
  This package includes end scripts after the test-run that do not modify the system.
 
 Package: ucs-test-base
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  lsb-release,
- python-pexpect,
- univention-ssh,
- openssl,
  nmap,
+ openssl,
  python,
- ${misc:Depends}
-Provides: ucs-test-module
+ python-pexpect,
+ ucs-test-libs (= ${source:Version}),
+ univention-ssh,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Basic tests
  This package includes some basic tests.
 
 Package: ucs-test-ucr
 Architecture: all
-Recommends: ucs-test-framework
-Depends: lsb-release,
- ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
+ lsb-release,
+ python,
  python-pexpect,
  python-pytest,
+ ucs-test-libs (= ${source:Version}),
  univention-ssh,
- python,
- ${misc:Depends}
-Provides: ucs-test-module
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: UCR tests
  This package includes some scripts to test the ucr.
 
 Package: ucs-test-univention-lib
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  python,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: univention-lib tests
  This package includes some scripts to test the python module univention.lib
  and the univention shell library.
 
-#Package: ucs-test-login
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# univention-ssh,
-# expect,
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Login tests
-# This package includes some scripts to test the login behavior.
-
 Package: ucs-test-quota
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Quota tests
  This package includes some scripts for testing file quota.
 
 Package: ucs-test-join
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
-Provides: ucs-test-module
+Provides:
+ ucs-test-module,
 Description: Test scripts for univention join scripts
  This package includes some scripts for testing the UCS join scripts.
 
 Package: ucs-test-ldap
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Depends:
  imagemagick,
  python-pytest,
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for LDAP and replication
  This package includes some scripts for testing the UCS LDAP and the
  replication.
 
-#Package: ucs-test-dns
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# python,
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for DNS
-# This package includes some scripts for testing DNS.
-
-#Package: ucs-test-dhcp
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# vde2,
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for DHCP
-# This package includes some scripts for testing DHCP.
-
 Package: ucs-test-mail
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- swaks,
+Recommends:
+ ucs-test-framework,
+Depends:
  python,
- python-pexpect,
  python-netifaces,
- ${misc:Depends}
-Provides: ucs-test-module
+ python-pexpect,
+ swaks,
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for mail
  This package includes some scripts for testing mail.
 
-#Package: ucs-test-iptables
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for iptables
-# This package includes some scripts for testing the iptables settings and
-# open/filtered ports.
-
 Package: ucs-test-samba
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ucs-test-samba-common,
- shell-univention-lib,
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pexpect,
- ${misc:Depends}
-Provides: ucs-test-module
+ shell-univention-lib,
+ ucs-test-libs (= ${source:Version}),
+ ucs-test-samba-common,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for samba (and NFS shares)
  This package includes some scripts for testing the functionality of the samba
  domain and NFS shares.
 
 Package: ucs-test-samba4
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ucs-test-samba-common,
- shell-univention-lib,
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pexpect,
+ shell-univention-lib,
  tshark,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ucs-test-samba-common,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for samba4 (and NFS shares)
  This package includes some scripts for testing the functionality of the samba4
  domain and NFS shares.
 
 Package: ucs-test-samba-common
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  shell-univention-lib,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for samba and samba4
  This package includes some scripts for testing the functionality of the samba or samba4
  domain and NFS shares.
 
 Package: ucs-test-s4connector
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- shell-univention-lib,
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pytest,
- ${misc:Depends}
-Provides: ucs-test-module
+ shell-univention-lib,
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the S4 connector
  This package includes some scripts for testing the functionality of the Samba 4
  connector.
 
-#Package: ucs-test-pkgdb
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# python,
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for pkgdb
-# This package includes some scripts for testing the functionality of the
-# univention package database.
-
 Package: ucs-test-nagios
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for Nagios
  This package includes some scripts for testing the functionality of the
  Nagios.
 
-#Package: ucs-test-apache
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for Apache Web Server
-# This packages includes some scripts for testing the functionality of the
-# Apache Web Server.
-
-#Package: ucs-test-udm-general
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for basic functionality of the UDM
-# This package includes some scripts for testing the basic functionality of the
-# UDM.
-
 Package: ucs-test-udm-users
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
+ python-pycountry,
+ ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
- python-pycountry
-Provides: ucs-test-module
+Provides:
+ ucs-test-module,
 Description: Test scripts for the users/user-module of the UDM
  This package includes some scripts for testing the functionality of the
  users/user-module of the UDM.
 
 Package: ucs-test-udm-groups
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the groups/group-module of the UDM
  This package includes some scripts for testing the functionality of the
  groups/group-module of the UDM.
 
 Package: ucs-test-udm-dns
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the dns/* modules of the UDM.
  This package includes some scripts for testing the functionality of the domain
  name services of the UDM.
 
 Package: ucs-test-udm-printers
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the shares/printer* modules of the UDM.
  This package includes some scripts for testing the functionality of the
  printers services of the UDM.
 
 Package: ucs-test-udm-shares
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the shares/share module of the UDM.
  This package includes some scripts for testing the functionality of the
  file share services of the UDM.
 
 Package: ucs-test-udm-dhcp
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the dhcp/* modules of the UDM.
  This package includes some scripts for testing the functionality of the DHCP
  services of the UDM.
 
 Package: ucs-test-udm-computers
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the computers/* modules of UDM.
  This package includes some scripts for testing the functionality of the
  computers of the UDM.
 
 Package: ucs-test-udm-containers
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for UDM containers.
  This package includes some scripts for testing the functionality of the
  default containers (OU/CN) of the UDM.
 
 Package: ucs-test-udm-net
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for udm net.
  This package includes some scripts for testing the functionality of the
  Network module of the UDM.
 
 Package: ucs-test-udm-settings
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for udm settings.
  This package includes some scripts for testing the functionality of the
  settings modules of the UDM.
 
 Package: ucs-test-udm-extensions
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for udm extensions.
  This package includes some scripts for testing the functionality of the
  UDM extension modules for UDM modules, syntaxes and hooks.
 
 Package: ucs-test-updater
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- libwww-perl,
- univention-updater,
+Recommends:
+ ucs-test-framework,
+Depends:
  dpkg-dev,
- ${misc:Depends}
-Provides: ucs-test-module
+ libwww-perl,
+ ucs-test-libs (= ${source:Version}),
+ univention-updater,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the updater.
  This package includes some scripts for testing the system updater.
 
 Package: ucs-test-udm-extendedattribute
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pytest,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the settings/extended_attribute module of UDM.
  This package includes some scripts for testing UDM extended attributes.
 
 Package: ucs-test-udm-syntax
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the UDM syntax classes.
  This package includes some scripts for testing UDM syntax classes.
 
 Package: ucs-test-udm-customattribute
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for the settings/customattribute module of UDM.
  This package includes some scripts for testing UDM custom attributes.
 
 Package: ucs-test-umc
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  curl,
- ucs-test-umc-module,
- python-pytest,
  python-notifier,
- ${misc:Depends}
-Provides: ucs-test-module
+ python-pytest,
+ ucs-test-libs (= ${source:Version}),
+ ucs-test-umc-module,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC
 
 Package: ucs-test-umc-module
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
  univention-management-console-server,
  ${python:Depends},
 Description: Test UMC modules
@@ -469,234 +492,273 @@ Description: Test UMC modules
 
 Package: ucs-test-selenium
 Architecture: all
-Recommends: ucs-test-framework
-Provides: ucs-test-module
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC
 
-#Package: ucs-test-system-setup
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module,
-#Description: Test scripts for univention-system-setup.
-# This package includes the test-cases for univention-system-setup.
-
 Package: ucs-test-adconnector
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pytest,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts for univention-ad-connector.
  This package includes the test-cases for univention-ad-connector.
 
-#Package: ucs-test-ucsschool
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for UCS@school.
-# This package includes the test-cases for UCS@school.
-
 Package: ucs-test-import-performance
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the import performance
  This package includes the test-cases for importing two large
  schools one with 30.000 users and one with 65.000 users.
 
 Package: ucs-test-appcenter
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
- univention-appcenter-dev,
- xvfb,
+Recommends:
+ ucs-test-framework,
+Depends:
  chromium (>= 71.0.3578.80-1~deb9u1),
  chromium-driver (>= 71.0.3578.80-1~deb9u1),
- python3-univention-config-registry,
- python3-pip,
  ffmpeg,
+ python-cssselect,
  python-lxml,
- python-requests,
  python-pytest,
- python-cssselect
-Provides: ucs-test-module
+ python-requests,
+ python3-pip,
+ python3-univention-config-registry,
+ ucs-test-libs (= ${source:Version}),
+ univention-appcenter-dev,
+ xvfb,
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the app center
  This package includes test-cases for the app center.
 
 Package: ucs-test-appcenter-uninstall
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Depends:
+ python-cssselect,
+ ucs-test-apache,
+ ucs-test-base,
+ ucs-test-ldap,
+ ucs-test-libs (= ${source:Version}),
  ucs-test-udm-groups,
  ucs-test-udm-users,
- ucs-test-ldap,
- ucs-test-base,
- ucs-test-apache,
- python-cssselect
-Provides: ucs-test-module
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the app removal
  This package includes test-cases for the app removal.
 
 Package: ucs-test-umc-system
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Transitional package
 
 Package: ucs-test-nfs
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  nfs-common,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the NFS
  This package includes test-cases for the Network File System.
 
 Package: ucs-test-proxy
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pycurl,
- ${misc:Depends}
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts to test basic and NTLM authentications
  This package includes test-cases for the Basic and NTLM proxy authentications.
 
 Package: ucs-test-udm
 Architecture: all
-Recommends: ucs-test-framework
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Depends:
  python-pytest,
  python-support,
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
 Description: Test scripts to test basic Univention Directory Manager
  This package includes test-cases for the Univention Directory Manager.
 
 Package: ucs-test-apache
 Architecture: all
-Depends: apache2-mpm-prefork | apache2,
+Depends:
+ apache2-mpm-prefork | apache2,
  ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the web server Apache
  This package includes test-cases for Apache.
 
 Package: ucs-test-docker
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
+Depends:
+ python-pytest,
+ ucs-test-libs (= ${source:Version}),
+ zsync,
  ${misc:Depends},
  ${python:Depends},
- python-pytest,
- zsync
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the Docker integration
  This package includes test-cases for Docker.
 
 Package: ucs-test-saml
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
+Depends:
+ python-pytest,
  python-requests,
  python-requests-kerberos,
- python-pytest,
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the SAML integration
  This package includes test-cases for SAML.
 
 Package: ucs-test-radius
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
+Depends:
+ eapol,
+ ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
- eapol
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the radius integration
  This package includes test-cases for freeradius.
 
 Package: ucs-test-self-service
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
+Depends:
  ucs-test-appcenter,
- ${misc:Depends}
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the Self Service
  This package includes test-cases for Self Service
 
 Package: ucs-test-admindiary
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the Univention Admin Diary
  This package includes test-cases for the Univention Admin Diary
 
 Package: ucs-test-admember
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to test the AD member mode
  This package includes test-cases for AD member mode.
 
 Package: ucs-test-modules-all
 Architecture: all
-Depends: ${ucs-test:all-packages}
+Depends:
+ ${ucs-test:all-packages},
 Description: UCS test environment meta package
  This package depends on all other tests of UCS test.
 
 Package: ucs-test-smbtorture
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
+Depends:
  samba-testsuite,
  time,
- ${misc:Depends}
-Recommends: ucs-test-framework
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
 Description: Test scripts to run smbtorture
  This package includes test-cases to run smbtorture
  samba selftest tests
 
 Package: ucs-test-crypto
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
+Depends:
  openssl,
- ${misc:Depends}
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test scripts to check cryptography software in UCS
  This package includes test-cases to check software and libraries used for
  cryptography (OpenSSL, GnuTLS, NSS, SSH, python-gnutls, python-ssl etc).
 
 Package: ucs-test-udm-rest
 Architecture: all
-Depends: ucs-test-libs (= ${source:Version}),
- python-pytest,
+Depends:
  python-pip,
+ python-pytest,
+ ucs-test-libs (= ${source:Version}),
  ucs-test-udm-users,
- ${misc:Depends}
-Recommends: ucs-test-framework
-Provides: ucs-test-module
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
 Description: Test the UDM HTTP API
  This package includes test to verify the functionality of utilities
  from the UDM HTTP API.

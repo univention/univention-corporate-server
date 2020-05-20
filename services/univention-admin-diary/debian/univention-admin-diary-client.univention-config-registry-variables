@@ -4,7 +4,6 @@ Description[en]=The list of Admin Diary backend servers to write to, space separ
 Type=str
 Categories=admin-diary
 
-Categories=admin-diary
 [admin/diary/backend/port]
 Description[de]=Der TCP-Port auf dem das Admin Diary Backend per rsyslog relp+TLS Nachrichten entgegen nimmt. Ist die Variable nicht gesetzt, wird 10514 verwendet. Die univention-firewall muss entsprechend konfiguriert sein (UCR Variable: security/packetfilter/package/admin/diary/$port/all=ACCEPT).
 Description[en]=The TCP port where the Admin Diary Backend accepts messages via rsyslog relp+TLS. If the variable is unset, 10514 is used. The univention-firewall must be configured accordingly (UCR variable: security/packetfilter/package/admin/diary/$port/all=ACCEPT).

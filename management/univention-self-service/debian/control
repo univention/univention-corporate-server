@@ -2,27 +2,28 @@ Source: univention-self-service
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- dh-systemd,
- ucslint-univention,
- python2.7-dev,
+Build-Depends:
+ debhelper,
  dh-python,
+ dh-systemd,
+ node-stylus,
  python-all,
- python3-all,
  python-polib,
+ python2.7-dev,
+ python3-all,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
- node-stylus,
 Standards-Version: 3.7.2
 
 Package: univention-self-service
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
+ shell-univention-lib,
  univention-config,
  univention-join,
- shell-univention-lib,
- univention-self-service-passwordreset-umc
+ univention-self-service-passwordreset-umc,
+ ${misc:Depends},
 Description: Univention Self Service
  This package contains the password self service module that
  allows users to reset their password without administrator
@@ -35,11 +36,12 @@ Description: Univention Self Service
 
 Package: univention-self-service-master
 Architecture: all
-Depends: ${misc:Depends},
- univention-self-service-passwordreset-umc,
- univention-self-service-invitation,
- univention-postgresql,
+Depends:
  univention-mail-postfix | mail-transport-agent,
+ univention-postgresql,
+ univention-self-service-invitation,
+ univention-self-service-passwordreset-umc,
+ ${misc:Depends},
 Description: Univention Self Service
  This package contains the required dependencies for the domaincontroller
  master where the self service runs on.
@@ -51,14 +53,16 @@ Description: Univention Self Service
 
 Package: univention-self-service-passwordreset-umc
 Architecture: all
-Depends: ${python:Depends}, ${python3:Depends},
- ${misc:Depends},
+Depends:
+ memcached,
+ python-psycopg2,
+ python-pylibmc,
+ shell-univention-lib,
  univention-config,
  univention-join,
- shell-univention-lib,
- python-psycopg2,
- memcached,
- python-pylibmc,
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
 Description: Password reset module for Univention Self Service.
  This package contains a UMC module that is the backend for the
  univention-self-service-passwordreset-frontend package. It must be
@@ -71,8 +75,9 @@ Description: Password reset module for Univention Self Service.
 
 Package: univention-self-service-invitation
 Architecture: all
-Depends: ${misc:Depends},
- python-six
+Depends:
+ python-six,
+ ${misc:Depends},
 Description: Invitation module for Univention Self Service.
  This package contains a listener and a daemon for the
  invitation functionality of the Univention Self Service.

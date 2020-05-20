@@ -1,12 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """Sort ucslint output for stable comparison."""
 #
-from __future__ import print_function
 import sys
 import re
 
-RE_ID = re.compile('^[UWEIS]:\d\d\d\d-\d+: ')
+RE_ID = re.compile(r'^[UWEIS]:\d\d\d\d-\d+: ')
 
 
 def main():

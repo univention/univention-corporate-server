@@ -3,19 +3,21 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint-univention,
- univention-config-dev,
+Build-Depends:
+ debhelper,
+ dh-python,
  node-stylus,
  python-all,
- dh-python,
+ univention-config-dev,
+ univention-management-console-dev,
  univention-ucs-translation-template,
- univention-management-console-dev
 
 Package: python-univention-app-appliance
 Architecture: all
-Depends: ${python:Depends}
-Provides: ${python:Provides}
+Depends:
+ ${python:Depends},
+Provides:
+ ${python:Provides},
 Description: UCS - python modules for app appliance configuration
  This package provides the python modules for setting up UCS App Appliances.
  .
@@ -26,7 +28,8 @@ Description: UCS - python modules for app appliance configuration
 
 Package: python3-univention-app-appliance
 Architecture: all
-Depends: ${python3:Depends}
+Depends:
+ ${python3:Depends},
 Description: UCS - python 3 modules for app appliance configuration
  This package provides the python modules for setting up UCS App Appliances.
  .
@@ -43,8 +46,8 @@ Depends:
  python-univention-app-appliance (= ${binary:Version}),
  univention-welcome-screen,
  ${misc:Depends},
- ${python:Depends},
  ${python3:Depends},
+ ${python:Depends},
 Description: UCS - app appliance configuration
  This package provides UCS App Appliances with configuration and branding.
  .

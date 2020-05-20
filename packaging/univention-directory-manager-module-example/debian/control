@@ -2,22 +2,24 @@ Source: univention-directory-manager-module-example
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
- univention-config-dev,
- ucslint-univention,
- python-all,
+Build-Depends:
+ debhelper,
  dh-python,
+ python-all,
+ univention-config-dev,
 Standards-Version: 3.7.2
 
 Package: univention-directory-manager-module-example
 Architecture: all
-Depends: univention-config,
- univention-directory-manager-tools,
+Depends:
  shell-univention-lib (>> 1.0.1-1),
+ univention-config,
  univention-directory-manager-module-example-schema (= ${source:Version}),
+ univention-directory-manager-tools,
  ${misc:Depends},
- ${python:Depends}
-Recommends: univention-directory-manager-module-example-schema
+ ${python:Depends},
+Recommends:
+ univention-directory-manager-module-example-schema,
 Description: Univention Directory Manager example module to manage IP phones
  This package contains an Univention Directory Manager module that
  demonstrates how custom LDAP objects can be managed with the
@@ -25,8 +27,9 @@ Description: Univention Directory Manager example module to manage IP phones
 
 Package: univention-directory-manager-module-example-schema
 Architecture: all
-Depends: univention-config,
- ${misc:Depends}
+Depends:
+ univention-config,
+ ${misc:Depends},
 Description: Univention Directory Manager example module to manage IP phones
  This package contains the LDAP-schema for univention-directory-manager-module-example.
  .

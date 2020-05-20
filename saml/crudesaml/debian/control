@@ -2,18 +2,20 @@ Source: crudesaml
 Section: libs
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  dh-autoreconf,
- quilt,
- tar,
+ liblasso3-dev,
  libpam0g-dev,
  libsasl2-dev,
- liblasso3-dev,
+ quilt,
+ tar,
 Standards-Version: 3.7.2
 
 Package: pam-saml
 Architecture: any
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  ${shlibs:Depends},
 Description: PAM module for SAML authentication
  This package contains a PAM module that performs a crude
@@ -28,7 +30,8 @@ Description: PAM module for SAML authentication
 
 Package: cy2-saml
 Architecture: any
-Depends: ${misc:Depends},
+Depends:
+ ${misc:Depends},
  ${shlibs:Depends},
 Description: SASL plugin for SAML authentication
  This package contains a SASL plugin that performs a crude
@@ -45,7 +48,8 @@ Package: pam-saml-dbg
 Architecture: any
 Section: debug
 Priority: extra
-Depends: pam-saml (= ${binary:Version}),
+Depends:
+ pam-saml (= ${binary:Version}),
  ${misc:Depends},
 Description: debugging symbols for pam-saml
  This package contains the debugging symbols for pam-saml.
@@ -54,7 +58,8 @@ Package: cy2-saml-dbg
 Architecture: any
 Section: debug
 Priority: extra
-Depends: cy2-saml (= ${binary:Version}),
+Depends:
+ cy2-saml (= ${binary:Version}),
  ${misc:Depends},
 Description: debugging symbols for cy2-saml
  This package contains the debugging symbols for cy2-saml.

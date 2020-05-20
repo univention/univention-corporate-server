@@ -1,3 +1,18 @@
+ucslint (8.0.0-14) unstable; urgency=medium
+
+  * Bug #49704: Convert to Python 3
+  * Bug #51105: Check invalid Python string literals
+  * Bug #51248: Check debian/compat
+  * Bug #51247: Check debian/*.dirs
+  * Bug #51246: Ignore more DH files
+  * Bug #49683: Check debian/*.ucs files
+  * Bug #49620: Check debian/changelog is strict-monotonical
+  * Bug #48747: Check .uinst files
+  * Bug #43981: Check Debian maintainer script actions
+  * Bug #42294: Run from CI pipeline
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 May 2020 12:55:10 +0200
+
 ucslint (8.0.0-13) unstable; urgency=low
 
   * Bug #42480: Speed-up spelling detection

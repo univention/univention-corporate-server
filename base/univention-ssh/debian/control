@@ -3,18 +3,20 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-ssh
 Architecture: all
-Conflicts: univention-join (<< 0.2)
-Depends: ${misc:Depends},
+Conflicts:
+ univention-join (<< 0.2),
+Depends:
+ openssh-client,
  python2.7,
- univention-config,
  rsync,
- openssh-client
+ univention-config,
+ ${misc:Depends},
 Description: UCS - ssh scripts
  This package contain the UCS ssh script.
  .

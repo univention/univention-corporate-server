@@ -2,25 +2,28 @@ Source: univention-dhcp
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 Standards-Version: 3.8.2
 
 Package: univention-dhcp
 Architecture: all
-Pre-Depends: dpkg (>= 1.15.7.2)
-Depends: ${misc:Depends},
- univention-base-files,
- univention-directory-manager-tools (>> 7.0.147),
- univention-config (>= 7),
+Pre-Depends:
+ dpkg (>= 1.15.7.2),
+Depends:
  isc-dhcp-server-ldap,
- univention-directory-listener,
- univention-runit (>= 0.2),
- univention-join (>= 4.0.13-3),
+ python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 1.0.3-1),
- python-univention-lib (>= 1.0.25-1)
-Breaks: dhcp3-server (<< 4),
+ univention-base-files,
+ univention-config (>= 7),
+ univention-directory-listener,
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-join (>= 4.0.13-3),
+ univention-runit (>= 0.2),
+ ${misc:Depends},
+Breaks:
+ dhcp3-server (<< 4),
  univention-bind (<< 11.0.0-4),
 Description: UCS - DHCP server
  This package installs a DHCP server that uses LDAP for

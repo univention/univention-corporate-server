@@ -33,8 +33,5 @@
 override_dh_auto_install:
 	dh_auto_install
 
-override_dh_auto_test:
-	ucslint
-
 %:
 	dh $@ --with python2,python3

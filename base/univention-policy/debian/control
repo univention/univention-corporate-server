@@ -3,22 +3,24 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper,
- libldap2-dev,
- libsasl2-dev,
+Build-Depends:
  autoconf,
  automake,
+ debhelper,
+ dh-python,
+ libldap2-dev,
+ libsasl2-dev,
  libtool,
- libunivention-debug-dev (>= 5.0.2-1),
  libunivention-config-dev,
+ libunivention-debug-dev (>= 5.0.2-1),
  python-all,
  python3-all,
- dh-python,
- ucslint-univention,
 
 Package: libunivention-policy0
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
 Description: UCS - group policy library
  This library reads group policies from LDAP.
  .
@@ -29,12 +31,16 @@ Description: UCS - group policy library
 
 Package: libunivention-policy-dev
 Architecture: any
-Suggests: libunivention-policy-krb5-dev
-Depends: ${python:Depends}, ${python3:Depends},
- libunivention-policy0 (= ${binary:Version}),
+Suggests:
+ libunivention-policy-krb5-dev,
+Depends:
  libldap2-dev,
- ${misc:Depends}
-Replaces: libunivention-policy0 (<< 5)
+ libunivention-policy0 (= ${binary:Version}),
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+Replaces:
+ libunivention-policy0 (<< 5),
 Description: UCS - group policy library (development files)
  This package contains the header files and static library to read group
  policies from LDAP.
@@ -46,10 +52,16 @@ Description: UCS - group policy library (development files)
 
 Package: univention-policy-tools
 Architecture: any
-Depends: ${python:Depends}, ${python3:Depends},
- ${shlibs:Depends}, ${misc:Depends},
-Provides: ${python:Provides}, ${python3:Provides}
-Replaces: python-univention-lib (<< 1.0.16-1)
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${python:Depends},
+ ${shlibs:Depends},
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
+Replaces:
+ python-univention-lib (<< 1.0.16-1),
 Description: UCS - tool to view group policies
  This package includes the univention_policy_result tool
  that displays all group policies for a given DN.

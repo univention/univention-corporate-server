@@ -3,18 +3,19 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
-Build-Depends: debhelper (>= 7),
-  univention-config-dev,
-  ucslint-univention
+Build-Depends:
+ debhelper,
+ univention-config-dev,
 
 Package: univention-initrd
 Architecture: all
-Depends: ${misc:Depends},
- univention-config,
- univention-bootsplash,
- kmod,
+Depends:
+ e2fsprogs,
  initramfs-tools (>= 0.112~bpo70+1),
- e2fsprogs
+ kmod,
+ univention-bootsplash,
+ univention-config,
+ ${misc:Depends},
 Description: UCS - initrd scripts
  This package contain the scripts for the initial ram-disk.
  .

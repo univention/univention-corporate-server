@@ -6,6 +6,12 @@ E:0004-20: debian/univention-lilo.univention-config-registry: file contains subf
 E:0004-20: debian/univention-lilo.univention-config-registry: file contains subfile entry with 2 "Postinst:" lines
 E:0004-36: Module file "foobar.sh" does not exist
 E:0004-36: Module file "foobar2.sh" does not exist
+E:0004-60: debian/univention-lilo.univention-config-registry: Duplicate entry: Multifile etc/hosts, Subfile etc/hosts.d/99-ucs-test
+E:0004-60: debian/univention-lilo.univention-config-registry: Duplicate entry: Multifile etc/hosts, Subfile etc/hosts.d/99-ucs-test
+E:0004-60: debian/univention-lilo.univention-config-registry: Duplicate entry: Multifile etc/hosts, Subfile etc/hosts.d/99-ucs-test
+E:0004-60: debian/univention-lilo.univention-config-registry: Duplicate entry: Multifile etc/hosts, Subfile etc/hosts.d/99-ucs-test
+E:0004-60: debian/univention-lilo.univention-config-registry:51: Duplicate entry for Preinst: foobar.sh
+E:0004-60: debian/univention-lilo.univention-config-registry:57: Duplicate entry for Postinst: foobar2.sh
 I:0004-56: conffiles/etc/hosts.d/99-ucs-test: No UCR variables used
 W:0004-42: debian/univention-lilo.univention-config-registry: UCR .info-file contains entry with unexpected key "Postinst"
 W:0004-42: debian/univention-lilo.univention-config-registry: UCR .info-file contains entry with unexpected key "Postinst"

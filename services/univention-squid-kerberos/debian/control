@@ -3,18 +3,20 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper,
+Build-Depends:
+ debhelper,
  univention-config-dev,
- ucslint-univention
 
 Package: univention-squid-kerberos
 Architecture: all
-Depends: ${misc:Depends},
+Depends:
  shell-univention-lib (>= 3.0.1-1),
- univention-squid,
  univention-heimdal-common (>> 5.0.24-1),
- univention-join (>= 10.0.0-12A)
-Suggests: univention-firewall
+ univention-join (>= 10.0.0-12A),
+ univention-squid,
+ ${misc:Depends},
+Suggests:
+ univention-firewall,
 Description: Kerberos authentication for UCS Squid web proxy
  This package provides the kerberos (negotiate) authentication
  on the squid web proxy with samba4 as backend.

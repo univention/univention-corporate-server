@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  cython-dbg,
  cython3-dbg,
- debhelper (>= 9),
+ debhelper,
  dh-python,
  libunivention-license-dev (>= 10.0.0-4),
  python-dbg,
@@ -16,7 +16,6 @@ Build-Depends:
  python3-debian,
  python3-dev,
  python3-setuptools,
- ucslint-univention,
 Standards-Version: 3.8.2
 X-Python-Version: 2.7, 3.5
 
@@ -27,7 +26,8 @@ Depends:
  ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends},
-Provides: ${python:Provides}
+Provides:
+ ${python:Provides},
 Description: UCS - licence validation library for Python 2
  This package contains a Python interface to the UCS
  licence validation library.
@@ -40,11 +40,12 @@ Description: UCS - licence validation library for Python 2
 Package: python-univention-license-dbg
 Architecture: any
 Depends:
+ python-univention-license (= ${binary:Version}),
  ${misc:Depends},
  ${python:Depends},
  ${shlibs:Depends},
- python-univention-license (= ${binary:Version}),
-Provides: ${python:Provides}
+Provides:
+ ${python:Provides},
 Description: UCS - licence validation library for Python 2 - Debug version
  This package contains a Python interface to the UCS
  licence validation library.
@@ -60,7 +61,8 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: UCS - licence validation library for Python 3
  This package contains a Python interface to the UCS
  licence validation library.
@@ -73,11 +75,12 @@ Description: UCS - licence validation library for Python 3
 Package: python3-univention-license-dbg
 Architecture: any
 Depends:
+ python3-univention-license (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
- python3-univention-license (= ${binary:Version}),
-Provides: ${python3:Provides}
+Provides:
+ ${python3:Provides},
 Description: UCS - licence validation library for Python 3 - Debug version
  This package contains a Python interface to the UCS
  licence validation library.

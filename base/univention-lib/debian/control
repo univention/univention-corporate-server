@@ -3,32 +3,35 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
-Build-Depends: debhelper (>= 9),
+Build-Depends:
+ debhelper,
+ dh-python,
  python-all,
  python3-all,
- dh-python,
  univention-config-dev,
- ucslint-univention
 
 Package: python-univention-lib
 Architecture: all
-Depends: ${python:Depends},
- ${misc:Depends},
- python-univention (>= 12.0.0-4),
- python-univention-config-registry (>= 10.0.0-1),
- pwgen,
- python-magic,
- python-ipaddr,
+Depends:
  dnsutils,
- python-ldb,
- python-samba,
- python-ldap,
- python-imaging,
- python-six,
+ pwgen,
  python-apt,
  python-dnspython,
-Provides: ${python:Provides}
-Breaks: python-univention-connector-s4 (<< 13.0.2-11),
+ python-imaging,
+ python-ipaddr,
+ python-ldap,
+ python-ldb,
+ python-magic,
+ python-samba,
+ python-six,
+ python-univention (>= 12.0.0-4),
+ python-univention-config-registry (>= 10.0.0-1),
+ ${misc:Depends},
+ ${python:Depends},
+Provides:
+ ${python:Provides},
+Breaks:
+ python-univention-connector-s4 (<< 13.0.2-11),
 Description: UCS - common scripting functions for Python 2 scripts
  This package contains Python functions used by various
  components of UCS.
@@ -40,23 +43,25 @@ Description: UCS - common scripting functions for Python 2 scripts
 
 Package: python3-univention-lib
 Architecture: all
-Depends: ${python3:Depends},
- ${misc:Depends},
- python3-univention,
- python-univention-lib,
- python3-univention-config-registry,
- pwgen,
- python3-magic,
- python3-ipaddr,
+Depends:
  dnsutils,
- python3-ldb,
- python3-samba,
- python3-ldap | python3-pyldap,
- python3-pil,
- python3-six,
+ pwgen,
+ python-univention-lib,
  python3-apt,
  python3-dnspython,
-Provides: ${python3:Provides}
+ python3-ipaddr,
+ python3-ldap | python3-pyldap,
+ python3-ldb,
+ python3-magic,
+ python3-pil,
+ python3-samba,
+ python3-six,
+ python3-univention,
+ python3-univention-config-registry,
+ ${misc:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various
  components of UCS.
@@ -68,10 +73,11 @@ Description: UCS - common scripting functions for Python 3 scripts
 
 Package: shell-univention-lib
 Architecture: all
-Depends: ${misc:Depends},
- univention-config (>= 12),
+Depends:
+ pwgen,
  python-univention-lib (= ${binary:Version}),
- pwgen
+ univention-config (>= 12),
+ ${misc:Depends},
 Description: UCS - common scripting functions for shell scripts
  This package contains shell functions used by various
  components of UCS.
