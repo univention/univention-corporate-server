@@ -12,3 +12,5 @@ desc: |
    https://fqdn/univention/management/?overview=no#module=top
  * Some preparations for future development have been made.
 bug: [51185, 51220]
+erratum: 608
+announced: 2020-05-20
