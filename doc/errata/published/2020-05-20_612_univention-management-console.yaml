@@ -19,3 +19,5 @@ desc: |
    been made.
  * The UMC-Server components are now Python 3 compatible.
 bug: [51185, 51211, 51226, 51235]
+erratum: 612
+announced: 2020-05-20
