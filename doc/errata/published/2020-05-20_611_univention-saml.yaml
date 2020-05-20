@@ -11,3 +11,5 @@ desc: |
  * It is now possible to activate SAML service provider for groups,
    not only for individual users.
 bug: [51211, 47567]
+erratum: 611
+announced: 2020-05-20
