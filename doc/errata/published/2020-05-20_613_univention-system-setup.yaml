@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Some unused code has been removed.
 bug: [51185]
+erratum: 613
+announced: 2020-05-20
