@@ -1,3 +1,9 @@
+ucs-test (9.0.3-211) unstable; urgency=medium
+
+  * Bug #46590: fix 10_ldap/42replication_memberof fails in different languages
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 20 May 2020 15:48:29 +0200
+
 ucs-test (9.0.3-210) unstable; urgency=low
 
   * Bug #46590: fixed bug in udm.py: use of uninitialized variable

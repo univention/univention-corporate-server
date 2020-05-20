@@ -40,6 +40,7 @@ from univention.testing.utils import wait_for_replication, stop_listener, start_
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.lib.misc import custom_groupname
 import sys
 
 RETRY_COUNT = 20
@@ -76,7 +77,7 @@ class TestCases(object):
 		self.ucr = ucr
 		self.base_user = 'cn=users,%s' % (ucr.get('ldap/base'),)
 		self.base_group = 'cn=groups,%s' % (ucr.get('ldap/base'),)
-		self.dn_domain_users = 'cn=Domain Users,%s' % (self.base_group,)
+		self.dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), self.base_group,)
 
 	def print_attributes(self, dn_list, msg=None):  # type: (List[str], Optional[str]) -> None
 		"""
