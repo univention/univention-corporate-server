@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: apt
-fix: 1.4.10A~4.4.4.202005181633
+fix: 1.4.10A~4.4.0.202005191916
 desc: |
  This update addresses the following issue:
  * Out of bounds read in ar, tar implementations (CVE-2020-3810)
