@@ -228,20 +228,27 @@
 		Diese Datei hat folgenden Inhalt aufzuweisen, um die nötigen ACL-Änderungen zu ermöglichen:
 		<screen>
 access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
-	by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
-		by * +0 break
+  by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
+  by * +0 break
 
 access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@univentionObject,@univentionPortalEntry,@univentionPortal
-	by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
-		by * +0 break
+  by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
+  by * +0 break
 		</screen>
 		Danach ist folgender Befehl auszuführen, um ein LDAP-Objekt für die LDAP-ACLs zu erzeugen:
 		<screen>
-			udm settings/ldapacl create --position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" --set name=62my-portal-acl --set filename=62my-portal-acl --set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)"   --set package="62my-portal-acl" --set packageversion=1
+udm settings/ldapacl create \
+	--position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" \
+	--set name=62my-portal-acl \
+	--set filename=62my-portal-acl \
+	--set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
+	--set package="62my-portal-acl" \
+	--set packageversion=1
 		</screen>
-		Wenn eine ACL wieder gelöscht werden soll, kann folgender Befehl verwendet werden:
+		Wenn die ACL wieder gelöscht werden soll, kann folgender Befehl verwendet werden:
 		<screen>
-		udm settings/ldapacl remove --dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
+udm settings/ldapacl remove \
+	--dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
 		</screen>
 		</para>
 		<para>
