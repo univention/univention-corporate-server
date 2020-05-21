@@ -1,0 +1,26 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: ucslint
+fix: 8.0.0-14A~4.4.0.202005210708
+desc: |
+ This update addresses the following issues:
+ * The code base has been converted to Python 3.
+ * Invalid Python string literals are now detected.
+ * `debian/compat` is now checked for consistency with the declared versioned
+   build dependency of `debhelper` in `debian/control`.
+ * `debian/*.dirs` is now checked for un-needed entries which are already
+   created indirectly by other steps.
+ * New `debhelper` related files in `debian/` are recognized.
+ * `debian/*.ucs files are checked more strictly due to the switch to Python
+   3. For example duplicate keys are now errors.
+ * The `debian/changelog` file is checked for strict-monotonic entries. In the
+   past this has lead to surprising update results as the timestamp of the
+   latest entry is used for many things during the package build.
+ * Un-join-script files are now checked for errors, too.
+ * Debian maintainer script `debian/*.{pre,post}{inst,rm}` are now checked for
+   handling wrong actions.
+ * `ucslint` has been removed as a direct dependency from all UCS packages as
+   it now runs directly from our CI pipeline.
+bug: [49704, 51105, 51248, 51247, 51246, 49683, 49620, 48747, 43981, 42294]
