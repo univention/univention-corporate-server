@@ -13,12 +13,11 @@
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import time
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		ns_records = [uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record(), uts.random_dns_record()]
 		forward_zone = udm.create_object('dns/forward_zone', zone='%s.%s' % (uts.random_name(), uts.random_name()), append={'nameserver': ns_records})
-		time.sleep(5)
+
 		udm.modify_object('dns/forward_zone', dn=forward_zone, remove={'nameserver': ns_records[2:]})
 		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s' % ns_record for ns_record in ns_records[:2]]})
