@@ -1,3 +1,9 @@
+ucs-test (9.0.3-212) unstable; urgency=medium
+
+  * Bug #12345: 68_dns_forward_zone_modification_remove_nameserver flaky
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 21 May 2020 11:43:51 +0200
+
 ucs-test (9.0.3-211) unstable; urgency=medium
 
   * Bug #46590: fix 10_ldap/42replication_memberof fails in different languages
