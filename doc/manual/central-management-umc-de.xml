@@ -218,10 +218,10 @@
 	<section id="central-management-umc:Assignment-of-portal-settings-module">
 		<title>Rechte für Portaleinstellungen vergeben</title>
 		<para>
-		Im Folgenden wird beschrieben, wie das UMC-Modul <guimenu>Portaleinstellungen</guimenu> für ausgewählte Gruppen oder Benutzer zugänglich gemacht werden kann. Dies wird anhand eines Beispiels erläutert. Für das Beispiel wird davon ausgegangen, dass eine Gruppe "Portal Admins" erstellt wurde und Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen.
+			Im Folgenden wird beschrieben, wie das UMC-Modul <guimenu>Portaleinstellungen</guimenu> für ausgewählte Gruppen oder Benutzer zugänglich gemacht werden kann. Dies wird anhand eines Beispiels erläutert. Für das Beispiel wird davon ausgegangen, dass eine Gruppe <guimenu>Portal Admins</guimenu> erstellt wurde und Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen.
 		</para>
 		<para>
-			Auf einem Domaincontroller-Master-System ist zunächst eine ACL-Datei im /opt/-Verzeichnis zu erstellen:
+			Auf einem <guimenu>Domaincontroller-Master-System</guimenu> ist zunächst eine ACL-Datei zu erstellen (für das Beispiel wurde das Verzeichnis <guimenu>/opt/</guimenu> verwendet):
 		<screen>
 /opt/62my-portal-acl.acl
 		</screen>
@@ -252,7 +252,7 @@ udm settings/ldapacl remove \
 		</screen>
 		</para>
 		<para>
-Über die UMC kann nun eine passende UMC-Richtlinie angelegt werden. Die folgenden UMC-Operationen müssen dafür innerhalb der Richtlinie erlaubt werden: <guimenu>udm-portal</guimenu>, <guimenu>udm-syntax</guimenu>, <guimenu>udm-validate</guimenu> und <guimenu>udm-license</guimenu>. Wie man eine Richtlinie anlegt, ist unter <xref linkend="central-management-umc:Anlegen_einer_Richtlinie"/> beschrieben. Nun muss die neu erstellte Richtlinie nur noch dem gewünschten Objekt, in diesem Fall der Gruppe "Portal Admins", zugewiesen werden. Dies kann ebenfalls direkt innerhalb der UMC erfolgen. Für dieses Beispiel navigiert man dafür in das Gruppenmodul und editiert dort die gewünschte Gruppe. In den Gruppeneinstellungen können unter <guimenu>Richtlinien</guimenu> für das Gruppenobjekt vorhandene Richtlinien ausgewählt werden. Genauere Informationen über Richtlinienzuweisung sind unter <xref linkend="central:policies:assign"/> beschrieben. 
+			Über die UMC kann nun eine passende UMC-Richtlinie angelegt werden. Die folgenden <guimenu>UMC-Operationen</guimenu> müssen dafür innerhalb der Richtlinie erlaubt werden: <guimenu>udm-portal</guimenu>, <guimenu>udm-syntax</guimenu>, <guimenu>udm-validate</guimenu> und <guimenu>udm-license</guimenu>. Wie man eine Richtlinie anlegt, ist unter <xref linkend="central-management-umc:Anlegen_einer_Richtlinie"/> beschrieben. Nun muss die neu erstellte Richtlinie nur noch dem gewünschten Objekt, in diesem Fall der Gruppe <guimenu>Portal Admins</guimenu>, zugewiesen werden. Dies kann ebenfalls direkt innerhalb der UMC erfolgen. Für dieses Beispiel navigiert man dafür in das Gruppenmodul und editiert dort die gewünschte Gruppe. In den Gruppeneinstellungen können unter <guimenu>Richtlinien</guimenu> für das Gruppenobjekt vorhandene Richtlinien ausgewählt werden. Genauere Informationen über Richtlinienzuweisung sind unter <xref linkend="central:policies:assign"/> beschrieben. 
 		</para>
 	</section>
 </section>
