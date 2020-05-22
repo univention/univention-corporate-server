@@ -5,7 +5,6 @@ default:
 stages:
   - prepare
   - lint
-  - build
 
 variables:
   ucs: 444
@@ -13,7 +12,6 @@ variables:
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"
   DEB: docker-registry.knut.univention.de/phahn/ucs-devbase:$ucs
-  DOC: docker-registry.knut.univention.de/docbook
   LINT: docker-registry.knut.univention.de/ucslint:$ucs
 
 .lint:
@@ -34,8 +32,14 @@ prepare ucslint:
     - docker
   image: docker:stable
   script:
-    - docker build --pull -t $LINT -f .gitlab-ci/Dockerfile.ucslint packaging/ucslint
+    - docker build --pull -t $LINT -f .gitlab-ci/Dockerfile.ucslint --build-arg ucs=$ucs packaging/ucslint
     - docker push $LINT
   rules:
     - changes:
       - packaging/ucslint/**/*
+
+# The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
+dummy:
+  stage: .post
+  script:
+    - ":"

@@ -1,0 +1,43 @@
+default:
+  artifacts:
+    expire_in: 1 day
+
+stages:
+  - build
+  - deploy
+
+variables:
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULE_STRATEGY: none
+  GIT_DEPTH: "3"
+  DOC: docker-registry.knut.univention.de/docbook
+
+.doc:
+  stage: build
+  image: $DOC
+  script:
+    - make -C $base install DESTDIR=$CI_PROJECT_DIR/public
+  artifacts:
+    paths:
+      - public
+
+pages:
+  variables:
+    GIT_STRATEGY: none
+  stage: deploy
+  image: $DOC
+  script:
+    - cp -rTu /DocBook//webframe public
+    - cd public
+    - echo '<html><head><title>Documentation</title></head><body><ul>' >index.html
+    - ls -1 *.html | sed 's,.*,<li><a href="&">&</a></li>,' >>index.html
+    - echo '</ul></body></html>' >>index.html
+  artifacts:
+    paths:
+      - public
+
+# The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
+dummy:
+  stage: .post
+  script:
+    - ":"

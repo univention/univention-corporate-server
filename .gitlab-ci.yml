@@ -4,11 +4,22 @@ generate-config:
     - .gitlab-ci/build-ci
   artifacts:
     paths:
-      - generated-config.yml
+      - generated-config-doc.yml
+      - generated-config-deb.yml
 
-child-pipeline:
+doc-pipeline:
+  stage: test
+  rules:
+    - changes:
+      - doc/*/**/*
+  trigger:
+    include:
+      - artifact: generated-config-doc.yml
+        job: generate-config
+
+deb-pipeline:
   stage: test
   trigger:
     include:
-      - artifact: generated-config.yml
+      - artifact: generated-config-deb.yml
         job: generate-config
