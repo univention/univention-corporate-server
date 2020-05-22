@@ -247,7 +247,7 @@ class object(univention.admin.handlers.simpleLdap):
 				for acl in self[attr]:
 					if acl == '':
 						continue
-					if _sre.match(acl[0]):
+					if acl and _sre.match(acl[0]):
 						new_acls_tmp.append(' '.join(acl))
 			else:
 				for acl in self[attr]:
