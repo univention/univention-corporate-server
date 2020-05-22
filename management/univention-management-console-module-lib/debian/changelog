@@ -1,3 +1,9 @@
+univention-management-console-module-lib (8.0.2-3) unstable; urgency=medium
+
+  * Bug #51325: fix typos
+
+ -- Florian Best <best@univention.de>  Fri, 22 May 2020 12:12:03 +0200
+
 univention-management-console-module-lib (8.0.2-2) unstable; urgency=medium
 
   * Bug #51325: Make UMC module python 3 compatible

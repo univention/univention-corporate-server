@@ -54,7 +54,7 @@ class MessageSanitizer(StringSanitizer):
 		value = super(MessageSanitizer, self)._sanitize(value, name, further_args)
 		if six.PY2 and isinstance(value, six.text_type):
 			# unicodestr -> bytestr (for use in command strings)
-			for encoding in (locale.getpreferredencoding, 'UTF-8', 'ISO8859-1'):
+			for encoding in (locale.getpreferredencoding(), 'UTF-8', 'ISO8859-1'):
 				try:
 					value = value.encode(encoding)
 					break
@@ -117,4 +117,4 @@ class Server(object):
 			subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
 		except (OSError, Exception):
 			pass
-		return subprocess.call(('/sbin/shutdown', action, '+2', message))
+		return subprocess.call(('/sbin/shutdown', action, 'now', message))
