@@ -7,7 +7,7 @@ generate-config:
       - generated-config-doc.yml
       - generated-config-deb.yml
 
-doc-pipeline:
+.doc-pipeline:
   stage: test
   rules:
     - changes:
