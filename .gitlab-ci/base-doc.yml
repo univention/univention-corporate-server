@@ -21,13 +21,21 @@ variables:
     paths:
       - public
 
-pages:
-  variables:
-    GIT_STRATEGY: none
-  stage: deploy
+# The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
+webframe:
+  stage: build
   image: $DOC
   script:
     - cp -rTu /DocBook//webframe public
+  artifacts:
+    paths:
+      - public
+
+pages:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
     - cd public
     - echo '<html><head><title>Documentation</title></head><body><ul>' >index.html
     - ls -1 *.html | sed 's,.*,<li><a href="&">&</a></li>,' >>index.html
@@ -35,9 +43,3 @@ pages:
   artifacts:
     paths:
       - public
-
-# The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
-dummy:
-  stage: .post
-  script:
-    - ":"
