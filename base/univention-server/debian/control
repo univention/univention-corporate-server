@@ -200,7 +200,7 @@ Depends:
 Recommends:
  eject,
  elinks,
- emacs24,
+ emacs-gtk,
  less,
  locate,
  man-db,
