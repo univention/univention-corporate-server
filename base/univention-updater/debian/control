@@ -18,7 +18,6 @@ Build-Depends:
 Package: univention-updater
 Architecture: all
 Depends:
- apt-transport-https,
  at,
  ca-certificates,
  netcat-traditional,
