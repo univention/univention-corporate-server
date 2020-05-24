@@ -124,7 +124,7 @@ import univention.admin.uexceptions as udm_errors
 
 from univention.management.console.protocol.message import Response, MIMETYPE_JSON
 from univention.management.console.protocol.definitions import MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
-from univention.management.console.ldap import get_user_connection, reset_cache as reset_ldap_connection_cache
+from univention.management.console.ldap import get_user_connection, reset_cache as reset_ldap_connection_cache, cleanup_connection
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE, CORE
 from univention.management.console.error import UMC_Error, NotAcceptable, PasswordRequired, LDAP_ServerDown, LDAP_ConnectionFailed, Unauthorized
@@ -161,6 +161,7 @@ class Base(signals.Provider, Translation):
 		self.__acls = None
 		self.__current_language = None
 		self.__requests = {}
+		self.__user_connections = set()
 		Translation.__init__(self, domain)
 
 	def update_language(self, locales):
@@ -400,6 +401,7 @@ class Base(signals.Provider, Translation):
 			return  # local user (probably root)
 		try:
 			lo, po = get_user_connection(bind=self.bind_user_connection, write=False, follow_referral=True)
+			self.__user_connections.add(lo)
 			return lo
 		except (ldap.LDAPError, udm_errors.base) as exc:
 			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
@@ -487,3 +489,7 @@ class Base(signals.Provider, Translation):
 		if response.id in self.__requests:
 			self.signal_emit('success', response)
 			del self.__requests[response.id]
+
+	def __del__(self):
+		for lo in self.__user_connections:
+			cleanup_connection(lo)

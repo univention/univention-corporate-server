@@ -128,6 +128,9 @@ class AuthHandler(signals.Provider):
 		else:
 			AUTH.info('Authentication for %r was successful' % (username,))
 			return (username, password)
+		finally:
+			del self.pam.pam
+			self.pam.pam = None
 
 	def __canonicalize_username(self, username):
 		try:

@@ -67,7 +67,7 @@ from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND
 from ..locales import I18N, I18N_Manager
 from ..base import Base
 from ..error import UMC_Error, Unauthorized, BadRequest, NotFound, Forbidden, ServiceUnavailable
-from ..ldap import get_machine_connection, reset_cache
+from ..ldap import get_machine_connection, reset_cache, cleanup_connection
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, sanitize_args, simple_response, allow_get_request
 
@@ -353,7 +353,9 @@ class ProcessorBase(Base):
 	def _get_user_favorites(self):
 		if not self._user_dn:  # user not authenticated or no LDAP user
 			return set(ucr.get('umc/web/favorites/default', '').split(','))
-		favorites = self._get_user_preferences(self.get_user_ldap_connection()).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+		lo = self.get_user_ldap_connection()
+		favorites = self._get_user_preferences(lo).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+		cleanup_connection(lo)
 		return set(favorites.split(','))
 
 	def handle_request_get_categories(self, request):
