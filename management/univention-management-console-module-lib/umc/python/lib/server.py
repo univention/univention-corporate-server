@@ -37,7 +37,10 @@ from univention.management.console.error import ServerError
 
 from univention.lib.i18n import Translation
 
+import notifier.threads
+
 import six
+import time
 import subprocess
 import locale
 
@@ -117,4 +120,11 @@ class Server(object):
 			subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog', '-t', 'UMC', message))
 		except (OSError, Exception):
 			pass
-		return subprocess.call(('/sbin/shutdown', action, 'now', message))
+
+		def halt():
+			time.sleep(1.5)
+			subprocess.call(('/sbin/shutdown', action, 'now', message))
+
+		thread = notifier.threads.Simple('shutdown', halt, lambda: None)
+		thread.run()
+		return 0

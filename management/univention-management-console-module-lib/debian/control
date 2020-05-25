@@ -18,6 +18,8 @@ Provides:
 Depends:
  python-six,
  python3-six,
+ python-notifier,
+ python3-notifier,
  shell-univention-lib (>> 3.0.14-1),
  univention-management-console-server (>= 11.0.4-37),
  univention-updater,
