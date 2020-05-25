@@ -1,3 +1,9 @@
+ucslint (8.0.0-15) unstable; urgency=low
+
+  * Bug #49704: Convert to Python 3
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 25 May 2020 12:16:20 +0200
+
 ucslint (8.0.0-14) unstable; urgency=medium
 
   * Bug #49704: Convert to Python 3
