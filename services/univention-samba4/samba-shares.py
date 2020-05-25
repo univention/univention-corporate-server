@@ -285,6 +285,7 @@ def handler(dn, new, old, command):
 				close_fds=True,
 			)
 			stdout, stderr = proc.communicate()
+			stdout = str(stdout)
 			prev_aces = set()
 			new_aces = set()
 			re_ace = re.compile(r'\(.+?\)')
@@ -295,6 +296,9 @@ def handler(dn, new, old, command):
 
 			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
 				# if old != new -> delete everything from old!
+				univention.debug.debug(
+					univention.debug.LISTENER, univention.debug.PROCESS,
+					"### stdout {} ".format(stdout))
 				for ace in prev_aces:
 					stdout = stdout.replace(ace, '')
 
@@ -303,8 +307,10 @@ def handler(dn, new, old, command):
 				new_aces = [ace for ace in new_aces if ace not in stdout]
 				# Deny must be placed before rest. This is not done implicitly.
 				# Since deny might be present before, add allow.
-				owner, old_aces = stdout.split("D:")
-				res = re.search(r'(.+)D:[^\(]*(.+)', stdout)
+				# Be as explicit as possible, because aliases like Du (domain users)
+				# are possible.
+				res = re.search(r'(O:.+?G:.+?)D:[^\(]*(.+)', stdout)
+
 				if res:
 					# dacl-flags are removed implicitly.
 					owner = res.group(1)
