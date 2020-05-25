@@ -213,6 +213,46 @@
 		<title>Schema of the portal concept in UCS: Portals can be independently defined and assigned to UCS systems as start site; a link entry can be displayed on multiple portals.</title>
 		<graphic align="center" width="60%" fileref="illustrations44/portal-schema.png"/>
 	</figure>
+	<section id="central-management-umc:Assignment-of-portal-settings-module">
+		<title>Assign rights for portal settings</title>
+		<para>
+			The following describes how to make the UMC module <guimenu>Portal settings</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group is supposed to be given access to the portal settings.
+		</para>
+		<para>
+			On a <guimenu>domain controller master system</guimenu> an ACL file has to be created first:
+		<screen>
+/opt/62my-portal-acl.acl
+		</screen>
+		This file has to have the following content to allow the necessary ACL changes:
+		<screen>
+access to dn="cn=portal,cn=univention,@%@ldap/base@%@" attrs=children
+  by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
+  by * +0 break
+
+access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@univentionObject,@univentionPortalEntry,@univentionPortal,@univentionPortalCategory,children
+  by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
+  by * +0 break
+		</screen>
+		Then execute the following command to create an LDAP object for the LDAP ACLs:
+		<screen>
+udm settings/ldapacl create \
+	--position "cn=ldapacl,cn=univention,$(ucr get ldap/base)" \
+	--set name=62my-portal-acl \
+	--set filename=62my-portal-acl \
+	--set data="$(bzip2 -c /opt/62my-portal-acl.acl | base64)" \
+	--set package="62my-portal-acl" \
+	--set packageversion=1
+		</screen>
+			If the ACL is to be deleted again, the following command can be used:
+		<screen>
+udm settings/ldapacl remove \
+	--dn "cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get ldap/base)"
+		</screen>
+		</para>
+		<para>
+			An appropriate UMC policy can now be created via UMC. The following <guimenu>UMC operations</guimenu> must be allowed within the policy: <guimenu>udm-portal</guimenu>, <guimenu>udm-syntax</guimenu>, <guimenu>udm-validate</guimenu> and <guimenu>udm-license</guimenu>. How to create a policy is described in <xref linkend="central-management-umc:Creating_a_policy"/>. Now the newly created policy only needs to be assigned to the desired object, in this case the group <guimenu>Portal Admins</guimenu>. This can also be done directly within the UMC. For this example, navigate to the group module and edit the desired group there. In the group settings, existing policies for the group object can be selected under <guimenu>Policies</guimenu>. More detailed information about policy assignment is described under <xref linkend="central:policies:assign"/>.
+		</para>
+	</section>
 </section>
 
 <section id="central:user-interface">
