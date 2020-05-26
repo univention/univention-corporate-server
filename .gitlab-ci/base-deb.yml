@@ -19,8 +19,7 @@ stages:
   image: $DEB
   before_script:
     - echo man-db man-db/auto-update boolean false | debconf-set-selections
-    - dpkg-divert --rename --divert /usr/sbin/univention-config-registry.docker --local --add /usr/sbin/univention-config-registry
-    - cp .gitlab-ci/ucr /usr/sbin/univention-config-registry
+    - echo 'path-exclude /etc/univention/templates/info/*.info' > /etc/dpkg/dpkg.cfg.d/no-ucr
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
     - cd $base
