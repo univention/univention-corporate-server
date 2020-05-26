@@ -27,7 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-TAR := crudesaml-1.8.tar.gz
+TAR := crudesaml-1.9.tar.gz
 export DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 export DH_VERBOSE=1
 
@@ -41,10 +41,6 @@ override_dh_auto_clean:
 override_dh_auto_configure:
 	cd src && autoreconf --install --force
 	dh_auto_configure -- --with-pamlibdir=/lib/$(DEB_HOST_MULTIARCH)/security/
-
-override_dh_strip:
-	dh_strip -p pam-saml --dbg-package=pam-saml-dbg
-	dh_strip -p cy2-saml --dbg-package=cy2-saml-dbg
 
 %:
 	dh $@ --sourcedirectory=src

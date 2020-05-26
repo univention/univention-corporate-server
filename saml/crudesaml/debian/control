@@ -43,23 +43,3 @@ Description: SASL plugin for SAML authentication
  checks, this authentication is therefore secure only if the SAML
  authentication assertion remains secret. The assertion has the same role
  as a web cookie used for authentication.
-
-Package: pam-saml-dbg
-Architecture: any
-Section: debug
-Priority: extra
-Depends:
- pam-saml (= ${binary:Version}),
- ${misc:Depends},
-Description: debugging symbols for pam-saml
- This package contains the debugging symbols for pam-saml.
-
-Package: cy2-saml-dbg
-Architecture: any
-Section: debug
-Priority: extra
-Depends:
- cy2-saml (= ${binary:Version}),
- ${misc:Depends},
-Description: debugging symbols for cy2-saml
- This package contains the debugging symbols for cy2-saml.
