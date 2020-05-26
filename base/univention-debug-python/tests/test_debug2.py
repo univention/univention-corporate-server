@@ -5,6 +5,7 @@ from __future__ import print_function
 import sys
 import re
 from datetime import datetime
+from logging import DEBUG
 import pytest
 import univention.debug2 as ud
 try:
@@ -152,7 +153,8 @@ def test_debug_closed():
 
 
 @pytest.mark.parametrize('name', LEVEL)
-def test_level(name, parse, tmplog):
+def test_level(name, parse, tmplog, caplog):
+	caplog.set_level(DEBUG)
 	level = getattr(ud, 'WARN' if name == 'WARNING' else name)
 	ud.set_level(ud.MAIN, level)
 	assert level == ud.get_level(ud.MAIN)
