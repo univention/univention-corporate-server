@@ -15,6 +15,8 @@ stages:
   stage: build
   image: $DEB
   before_script:
+    - dpkg-divert --rename --divert /usr/sbin/univention-config-registry.docker --local --add /usr/sbin/univention-config-registry
+    - cp .gitlab-ci/ucr /usr/sbin/univention-config-registry
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
     - cd $base
@@ -22,7 +24,7 @@ stages:
   script:
     - dpkg-buildpackage -uc -us -b --jobs-try=auto
     - cd $CI_PROJECT_DIR
-    - apt-get -qq --no-install-recommends install curl || ( cat /etc/resolv.conf ; getent hosts updates.software-univention.de ; ping -c 3 updates.software-univention.de ; false )
+    - apt-get -qq --no-install-recommends install curl
     - .gitlab-ci/aptly-upload ${base}_*.changes
 
 prepare ucslint:

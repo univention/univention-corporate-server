@@ -1,0 +1,6 @@
+#!/bin/sh
+case "$1" in
+set|get|unset|dump|search|info|shell|filter) exec /usr/sbin/univention-config-registry.docker "$@" ;;
+commit|update|register|unregister) exit 0 ;;
+*) echo "$0" "$@" >&2 ;;
+esac
