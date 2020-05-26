@@ -388,8 +388,7 @@ class JsonHandler(tornado.web.RequestHandler):
 						else:
 							continue
 				filter_entry_dns.append(entry_dn)
-			if filter_entry_dns or admin_mode:
-				filtered_content.append([category_dn, filter_entry_dns])
+			filtered_content.append([category_dn, filter_entry_dns])
 		portal['content'] = filtered_content
 		return portal
 
