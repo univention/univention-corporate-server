@@ -55,6 +55,9 @@ drop aptly:
 doc-pipeline:
   stage: test
   rules:
+    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"
+      when: never
+    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"
     - changes:
       - "doc/[^e]*/**/*"
       - "doc/e[^r]*/**/*"
@@ -74,6 +77,10 @@ doc-pipeline:
 deb-pipeline:
   stage: test
   rules:
+    - if: "$CI_COMMIT_MESSAGE =~ /skip-build/ || $pipeline =~ /skip-build/"
+      when: never
+    - if: "$CI_COMMIT_MESSAGE =~ /force-ucslint/ || $pipeline =~ /force-ucslint/"
+    - if: "$CI_COMMIT_MESSAGE =~ /force-build/ || $pipeline =~ /force-build/"
     - changes:
       - "[^dt]*/*/**/*"
       - "d[^o]*/*/**/*"
