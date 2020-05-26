@@ -51,7 +51,7 @@ push ucslint:
 
 # The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
 dummy:
-  stage: .post
+  stage: prepare
   variables:
     GIT_STRATEGY: none
   script:
