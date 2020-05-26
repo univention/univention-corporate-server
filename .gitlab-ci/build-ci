@@ -20,8 +20,6 @@ do
 	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
 	echo '      when: never'
 	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"'
-	echo '      when: always'
 	echo '    - changes:'
 	echo "      - ${path}/**/*"
-	echo '      when: always'
 done
