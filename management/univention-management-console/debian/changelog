@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-80) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Bug #51047: reverted changes, version bump
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 May 2020 12:51:47 +0200
+
 univention-management-console (11.0.4-77) unstable; urgency=medium
 
   * Bug #51235: fix broken umc-client
