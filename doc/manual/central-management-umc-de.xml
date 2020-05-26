@@ -246,10 +246,6 @@ udm settings/ldapacl create \
 	--set package="62my-portal-acl" \
 	--set packageversion=1
 		</screen>
-		Danach muss der OpenLDAP Server neu gestartet werden, sodass die ACLs in Kraft treten:
-		<screen>
-/etc/init.d/slapd restart
-		</screen>
 		Wenn die ACL wieder gelöscht werden soll, kann folgender Befehl verwendet werden:
 		<screen>
 udm settings/ldapacl remove \

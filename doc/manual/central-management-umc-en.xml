@@ -216,7 +216,7 @@
 	<section id="central-management-umc:Assignment-of-portal-settings-module">
 		<title>Assign rights for portal settings</title>
 		<para>
-			The following describes how to make the UMC module <guimenu>Portal settings</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group is supposed to be given access to the portal settings.
+			The following describes how to make the UMC module <guimenu>Portal settings</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group are supposed to be given access to the portal settings.
 		</para>
 		<para>
 			On a <guimenu>domain controller master system</guimenu> an ACL file has to be created first:
@@ -233,10 +233,6 @@ access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@uni
 @univentionPortal,@univentionPortalCategory,children
   by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
   by * +0 break
-		</screen>
-		The OpenLDAP server must then be restarted so that the ACL takes effect:
-		<screen>
-/etc/init.d/slapd restart
 		</screen>
 		Then execute the following command to create an LDAP object for the LDAP ACLs:
 		<screen>
