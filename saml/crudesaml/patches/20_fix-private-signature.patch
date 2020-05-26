@@ -1,0 +1,20 @@
+Fix use of private function
+
+saml.c:389:11: warning: implicit declaration of function 'lasso_provider_verify_saml_signature'; did you mean 'lasso_provider_verify_signature'? [-Wimplicit-function-declaration]
+   error = lasso_provider_verify_saml_signature(idp, node, doc);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           lasso_provider_verify_signature
+
+Index: crudesaml/src/saml.c
+===================================================================
+--- src.orig/saml.c
++++ src/saml.c
+@@ -68,6 +68,8 @@ __RCSID("$Id: saml.c,v 1.16 2017/05/24 2
+ #include <lasso/xml/saml-2.0/saml2_attribute.h>
+ #include <lasso/xml/saml-2.0/saml2_attribute_value.h>
+ #include <lasso/xml/misc_text_node.h>
++/* lasso/id-ff/providerprivate.h */
++int lasso_provider_verify_saml_signature(LassoProvider *provider, xmlNode *signed_node, xmlDoc *doc);
+ 
+ #include "saml.h"
+ 
