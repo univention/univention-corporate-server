@@ -233,6 +233,10 @@ access to dn.children="cn=portal,cn=univention,@%@ldap/base@%@" attrs=entry,@uni
   by group/univentionGroup/uniqueMember="cn=Portal Admins,cn=groups,@%@ldap/base@%@" write
   by * +0 break
 		</screen>
+		The OpenLDAP server must then be restarted so that the ACL takes effect:
+		<screen>
+/etc/init.d/slapd restart
+		</screen>
 		Then execute the following command to create an LDAP object for the LDAP ACLs:
 		<screen>
 udm settings/ldapacl create \
