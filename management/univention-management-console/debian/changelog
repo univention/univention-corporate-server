@@ -1,9 +1,3 @@
-univention-management-console (11.0.4-79) unstable; urgency=medium
-
-  * Bug #51047: fix socket leaks
-
- -- Felix Botner <botner@univention.de>  Mon, 25 May 2020 09:44:07 +0200
-
 univention-management-console (11.0.4-78) unstable; urgency=medium
 
   * Bug #51047: fix socket leaks
