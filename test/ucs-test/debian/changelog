@@ -1,3 +1,9 @@
+ucs-test (9.0.3-216) unstable; urgency=medium
+
+  * Bug #51355: fix missing (build-)dependency on python-enum34
+
+ -- Florian Best <best@univention.de>  Tue, 26 May 2020 13:02:39 +0200
+
 ucs-test (9.0.3-215) unstable; urgency=low
 
   * Bug #51248: Fix wrap-and-sort debian/control
