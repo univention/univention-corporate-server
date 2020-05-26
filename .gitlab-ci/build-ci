@@ -16,9 +16,14 @@ do
 	echo "    base: $path"
 	echo '  extends: .lint'
 	echo '  rules:'
+	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-ucslint/ || $pipeline =~ /skip-ucslint/"'
+	echo '      when: never'
+	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-ucslint/ || $pipeline =~ /force-ucslint/"'
+	echo '      when: always'
 	echo '    - changes:'
 	echo "      - ${path}/**/*"
 	echo '      - packaging/ucslint/**/*'
+	echo '      when: always'
 
 	case "${path##*/}" in
 		univention-kernel-image-signed) continue ;;  # EFI
@@ -35,8 +40,13 @@ do
 	echo "    base: $path"
 	echo '  extends: .deb'
 	echo '  rules:'
+	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-build/ || $pipeline =~ /skip-build/"'
+	echo '      when: never'
+	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-build/ || $pipeline =~ /force-build/"'
+	echo '      when: always'
 	echo '    - changes:'
 	echo "      - ${path}/**/*"
+	echo '      when: always'
 	# echo '  needs:'
 	# echo "    - job: ${dep}
 done
@@ -57,6 +67,11 @@ do
 	echo "    base: $path"
 	echo '  extends: .doc'
 	echo '  rules:'
+	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
+	echo '      when: never'
+	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"'
+	echo '      when: always'
 	echo '    - changes:'
 	echo "      - ${path}/**/*"
+	echo '      when: always'
 done
