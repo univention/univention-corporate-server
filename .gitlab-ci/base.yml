@@ -8,7 +8,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"
   DOC: docker-registry.knut.univention.de/docbook
-  DEB: docker-registry.knut.univention.de/phahn/ucs-devbase:$ucs
+  DEB: docker-registry.knut.univention.de/phahn/ucs-debbase:$ucs
   LINT: docker-registry.knut.univention.de/ucslint
   BUILD: docker-registry.knut.univention.de/knut/deb-builder
   LINT_REF: $LINT:$CI_COMMIT_REF_SLUG
