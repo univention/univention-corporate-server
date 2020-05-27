@@ -260,7 +260,10 @@ static void purge_cache(const char *cache_dir) {
 	if ((dir = opendir(dirname)) != NULL) {
 		while ((dirent = readdir(dir))) {
 			char path[PATH_MAX];
-			snprintf(path, PATH_MAX, "%s/%s", dirname, dirent->d_name);
+			int ret;
+			ret = snprintf(path, PATH_MAX, "%s/%s", dirname, dirent->d_name);
+			if (ret < 0 || ret >= PATH_MAX)
+				abort();
 			unlink(path);
 		}
 		closedir(dir);
@@ -272,7 +275,10 @@ static void purge_cache(const char *cache_dir) {
 	if ((dir = opendir(dirname)) != NULL) {
 		while ((dirent = readdir(dir))) {
 			char path[PATH_MAX];
-			snprintf(path, PATH_MAX, "%s/%s", dirname, dirent->d_name);
+			int ret;
+			ret = snprintf(path, PATH_MAX, "%s/%s", dirname, dirent->d_name);
+			if (ret < 0 || ret >= PATH_MAX)
+				abort();
 			unlink(path);
 		}
 		closedir(dir);
