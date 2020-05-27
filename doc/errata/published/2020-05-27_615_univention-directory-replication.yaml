@@ -9,3 +9,5 @@ desc: |
  * To speed up replication of large LDAP objects, performance inhibiting
    code for logging will only be executed at the respective debug level.
 bug: [51236]
+erratum: 615
+announced: 2020-05-27
