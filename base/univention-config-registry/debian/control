@@ -43,8 +43,8 @@ Package: univention-config
 Architecture: all
 Depends:
  ldap-utils,
- python-debian,
- python-univention-config-registry (= ${source:Version}),
+ python3-debian,
+ python3-univention-config-registry (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends},
 Replaces:
@@ -106,27 +106,27 @@ Description: UCS - C interface to configuration manager (development files)
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-config-registry
-Architecture: all
-Depends:
- ifupdown,
- python-ipaddr,
- python-ipaddress,
- python-six,
- python-univention-debhelper,
- python-univention-namespace,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Python 2 interface to configuration registry
- This package includes the Python interface to the
- UCS configuration manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+#Package: python-univention-config-registry
+#Architecture: all
+#Depends:
+# ifupdown,
+# python-ipaddr,
+# python-ipaddress,
+# python-six,
+# python-univention-debhelper,
+# python-univention-namespace,
+# ${misc:Depends},
+# ${python:Depends},
+#Provides:
+# ${python:Provides},
+#Description: UCS - Python 2 interface to configuration registry
+# This package includes the Python interface to the
+# UCS configuration manager.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: https://www.univention.de/
 
 Package: python3-univention-config-registry
 Architecture: all

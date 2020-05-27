@@ -6,47 +6,45 @@ Standards-Version: 3.9.8
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev,
  univention-l10n-tools,
  univention-unittests,
- python-pil,
  python3-pil,
  pwgen,
  at,
 
-Package: python-univention-lib
-Architecture: all
-Depends:
- at,
- dnsutils,
- pwgen,
- python-apt,
- python-dnspython,
- python-ipaddress,
- python-ldap,
- python-ldb,
- python-magic,
- python-pil,
- python-samba,
- python-six,
- python-univention (>= 12.0.0-4),
- python-univention-config-registry (>= 10.0.0-1),
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Breaks:
- python-univention-connector-s4 (<< 13.0.2-11),
-Description: UCS - common scripting functions for Python 2 scripts
- This package contains Python functions used by various
- components of UCS.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+#Package: python-univention-lib
+#Architecture: all
+#Depends:
+# at,
+# dnsutils,
+# pwgen,
+# python-apt,
+# python-dnspython,
+# python-ipaddress,
+# python-ldap,
+# python-ldb,
+# python-magic,
+# python-pil,
+# python-samba,
+# python-six,
+# python-univention (>= 12.0.0-4),
+# python-univention-config-registry (>= 10.0.0-1),
+# ${misc:Depends},
+# ${python:Depends},
+#Provides:
+# ${python:Provides},
+#Breaks:
+# python-univention-connector-s4 (<< 13.0.2-11),
+#Description: UCS - common scripting functions for Python 2 scripts
+# This package contains Python functions used by various
+# components of UCS.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: https://www.univention.de/
 
 Package: python3-univention-lib
 Architecture: all
@@ -54,7 +52,7 @@ Depends:
  at,
  dnsutils,
  pwgen,
- python-univention-lib,
+# python-univention-lib,
  python3-apt,
  python3-dnspython,
  python3-ldap | python3-pyldap,
@@ -82,7 +80,6 @@ Package: shell-univention-lib
 Architecture: all
 Depends:
  pwgen,
- python-univention-lib (= ${binary:Version}),
  python3-univention-lib (= ${binary:Version}),
  univention-config (>= 12),
  ${misc:Depends},
