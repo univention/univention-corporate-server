@@ -7,6 +7,8 @@ for app_id, container_port, host_port in app_ports():
 	if app and app.auto_mod_proxy and app.has_local_web_interface():
 		web_interface = app.web_interface
 		app_web_interface = app.web_interface_app_path or web_interface
+		if not web_interface.endswith('/') and web_interface_app_path.endswith('/'):
+			web_interface_app_path = web_interface_app_path[:-1]
 		scheme = app.web_interface_proxy_scheme
 		if scheme == 'both':
 			scheme = 'http'
