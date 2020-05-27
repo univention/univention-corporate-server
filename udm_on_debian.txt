@@ -1,0 +1,158 @@
+== 1. in VM (10.200.3.111) ==
+
+apt install debootstrap
+mkdir bullseye
+debootstrap --arch=amd64 bullseye bullseye http://ftp.de.debian.org/debian/
+
+chroot bullseye
+lsb_release -a
+
+No LSB modules are available.
+Distributor ID:	Debian
+Description:	Debian GNU/Linux bullseye/sid
+Release:	testing
+Codename:	bullseye
+
+apt install dpkg-dev debhelper nginx locales
+dpkg-reconfigure locales
+
+mkdir -p /sync /var/www/html/repo
+echo "deb [trusted=yes] http://127.0.0.1/repo /" > /etc/apt/sources.list.d/99_local_repo.list
+
+== 2. in notebook ==
+
+git checkout dtroeder/udm_in_bullseye # (branched from python3/5.0-0)
+
+for DIR in \
+	base/univention-lib \
+	base/univention-python \
+	base/univention-config-registry \
+	base/univention-debug \
+	base/univention-debug-python \
+	base/univention-licence \
+	base/univention-licence-python \
+	base/univention-policy \
+	base/univention-python-heimdal \
+	management/univention-directory-manager-modules
+do
+	devsync -1 $DIR 10.200.3.111:/root/bullseye/sync
+done
+
+== 3. in VM (10.200.3.111) ==
+
+mount -t proc proc bullseye/proc
+chroot bollseye
+
+BUILD_CMD="rm -f ../*.deb; apt-get build-dep . -y; dpkg-buildpackage -us -uc -b && rm ../*.{buildinfo,changes} && mv ../*.deb /var/www/html/repo && (cd /var/www/html/repo; dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz) && apt update"
+
+for DIR in \
+	univention-debug \
+	univention-debug-python \
+	univention-config-registry \
+	univention-python \
+	univention-lib \
+	univention-policy \
+	univention-licence \
+	univention-licence-python \
+	univention-python-heimdal \
+	univention-directory-manager-modules
+do
+	cd /sync/$DIR
+	eval $BUILD_CMD || break
+done
+
+apt install univention-directory-manager-tools
+
+-----
+
+apt install python3-passlib
+cat > /usr/lib/python3/dist-packages/smbpasswd.py
+import passlib.hash
+
+def lmhash(s):
+    return passlib.hash.lmhash.encrypt(s).upper()
+
+def nthash(s):
+    return passlib.hash.nthash.encrypt(s).upper()
+^C
+python3 -c 'import smbpasswd; print(smbpasswd.lmhash("univention"))'
+3CC16AE8CE3F6C8A31283C286CD09B63
+
+=======================================================
+
+echo "10.200.3.70   m70.uni.dtr m70" >> /etc/hosts
+curl http://10.200.3.70/ucs-root-ca.crt > /usr/local/share/ca-certificates/ucs-root-ca.crt
+update-ca-certificates
+-> 1 added, 0 removed; done.
+
+python3
+Python 3.8.3 (default, May 14 2020, 11:03:12) 
+>>> import univention.admin.uldap
+>>> import univention.admin.objects
+>>> import univention.admin.modules
+>>> univention.admin.modules.update()
+>>> lo = univention.admin.uldap.access(host="m70.uni.dtr", port=7389, base="dc=uni,dc=dtr", binddn="uid=Administrator,cn=users,dc=uni,dc=dtr", bindpw="univention")
+>>> po = univention.admin.uldap.position(lo.base)
+>>> mod = univention.admin.modules.get("users/user")
+>>> univention.admin.modules.init(lo, po, mod)
+>>> dn = lo.searchDn("uid=test01")[0]
+>>> udm_obj = univention.admin.objects.get(mod, None, lo, po, dn)
+>>> udm_obj.open()
+>>> for k, v in udm_obj.items():
+...   if v:
+...     print(f"{k!r}: {v!r}")
+... 
+'username': 'test01'
+'uidNumber': '4043'
+'gidNumber': '5001'
+'firstname': 'test'
+'lastname': 'user'
+'gecos': 'test user'
+'displayName': 'test user'
+'disabled': '0'
+'locked': '0'
+'lockedTime': '16010101000000Z'
+'unlockTime': 'unlimited'
+'password': '{crypt}$6$gQNhWyxI5ZLGiEZ5$i6/tpVKtNQVYcPN1yX.ZkUruyWw2hlFsFCgB8c7ZWl5u9fjXeQsRQKLWoxLU5COgFMG2iQRsOEJrenfdu8sEK0'
+'unixhome': '/home/test01'
+'shell': '/bin/bash'
+'sambaRID': '9086'
+'groups': ['cn=Domain Users,cn=groups,dc=uni,dc=dtr']
+'primaryGroup': 'cn=Domain Users,cn=groups,dc=uni,dc=dtr'
+'mailHomeServer': 's44central.uni.dtr'
+'mailForwardCopyToSelf': '0'
+'isOxUser': 'Not'
+'oxAccess': 'premium'
+'oxDisplayName': 'test user'
+'oxLanguage': 'de_DE'
+'oxTimeZone': 'Europe/Berlin'
+'oxDrive': '1'
+'oxUserQuota': '-1'
+'mailUserQuota': '0'
+'UniventionOffice365Enabled': '0'
+>>> udm_obj.modify()
+'uid=test01,cn=users,dc=uni,dc=dtr'
+>>> udm_obj["firstname"]
+'test'
+>>> udm_obj["firstname"] = "test neu"
+>>> udm_obj.modify()
+'uid=test01,cn=users,dc=uni,dc=dtr'
+>>> lo.get('uid=test01,cn=users,dc=uni,dc=dtr', attr=["givenName"])
+{'givenName': [b'test neu']}
+>>> udm_obj = univention.admin.objects.get(mod, None, lo, po, dn)
+>>> udm_obj.open()
+>>> udm_obj["displayName"]
+'test neu user'
+
+
+udm users/user list --filter uid=test01 --binddn "uid=Administrator,cn=users,dc=uni,dc=dtr" --bindpwd="univention" 
+uid=test01
+DN: uid=test01,cn=users,dc=uni,dc=dtr
+DN: uid=test01,cn=users,dc=uni,dc=dtr
+  PasswordRecoveryEmail: None
+  PasswordRecoveryMobile: None
+[..]
+  displayName: test neu user
+  firstname: test neu
+[..]
+
