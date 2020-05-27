@@ -855,6 +855,7 @@ class App(object):
 	notification_email = AppAttribute()
 
 	web_interface = AppAttribute()
+	web_interface_app_path = AppAttribute()
 	web_interface_name = AppAttribute(localisable=True)
 	web_interface_port_http = AppIntAttribute(default=80)
 	web_interface_port_https = AppIntAttribute(default=443)

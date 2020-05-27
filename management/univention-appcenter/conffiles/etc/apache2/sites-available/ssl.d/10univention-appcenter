@@ -6,14 +6,15 @@ for app_id, container_port, host_port in app_ports():
 	app = Apps().find(app_id)
 	if app and app.auto_mod_proxy and app.has_local_web_interface():
 		web_interface = app.web_interface
+		app_web_interface = app.web_interface_app_path or web_interface
 		scheme = app.web_interface_proxy_scheme
 		if scheme == 'both':
 			scheme = 'https'
 		if app.web_interface_port_https == container_port:
 			print('''
-	ProxyPass %(web_interface)s %(scheme)s://127.0.0.1:%(web_port)s%(web_interface)s retry=0
-	ProxyPassReverse %(web_interface)s %(scheme)s://127.0.0.1:%(web_port)s%(web_interface)s
-''' % {'id': app.id, 'web_interface': web_interface, 'web_port': host_port, 'scheme': scheme})
+	ProxyPass %(web_interface)s %(scheme)s://127.0.0.1:%(web_port)s%(app_web_interface)s retry=0
+	ProxyPassReverse %(web_interface)s %(scheme)s://127.0.0.1:%(web_port)s%(app_web_interface)s
+''' % {'id': app.id, 'web_interface': web_interface, 'web_port': host_port, 'scheme': scheme, 'app_web_interface': app_web_interface})
 		else:
 			# not relevant for mod_proxy
 			continue

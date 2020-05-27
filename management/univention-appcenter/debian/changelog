@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-133) unstable; urgency=medium
+
+  * Bug #51362: Support WebinterfaceAppPath
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 27 May 2020 10:58:50 +0200
+
 univention-appcenter (8.0.11-132) unstable; urgency=medium
 
   * Bug #51034: 81proxy instead of 80proxy for docker proxy settings.
