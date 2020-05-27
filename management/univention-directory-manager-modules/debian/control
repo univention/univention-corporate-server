@@ -6,70 +6,70 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
- python2.7-dev,
+# python-all,
+# python2.7-dev,
  python3-all,
  univention-config-dev,
  univention-l10n-tools,
 
-Package: python-univention-directory-manager
-Architecture: all
-Depends:
- iso-codes,
- makepasswd,
- python (>= 2.7),
- python-dateutil,
- python-ipaddress,
- python-apt,
- python-lazy-object-proxy,
- python-m2crypto,
- python-pyasn1-modules,
- python-pil,
- python-six,
- python-smbpasswd,
- python-univention (>= 12.0.0-12),
- python-univention-directory-manager-cli (= ${binary:Version}),
- python-univention-heimdal (>= 4.0.1-1),
- python-univention-lib (>= 8.0.0-6),
- python-univention-license,
- shell-univention-lib,
- univention-admin-diary-client (>= 1.0.0-29),
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Breaks:
- python-univention-directory-manager-rest (<< 9.0.16-5),
-Replaces:
- python-univention-directory-manager-rest (<< 9.0.16-5),
- python-univention-lib (<< 1.0.15-1),
-Description: UCS - Modules for administration tools
- This package contains the Python modules that implement the
- features of UCS Directory Manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: python-univention-directory-manager-cli
-Architecture: all
-Depends:
- python-univention (>> 5.0.5),
- python-univention-lib (>= 7.0.0-14),
- shell-univention-lib,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS - Modules for administration tools
- This package contains the Python modules for the command line client that
- implement the features of UCS Directory Manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+#Package: python-univention-directory-manager
+#Architecture: all
+#Depends:
+# iso-codes,
+# makepasswd,
+# python (>= 2.7),
+# python-dateutil,
+# python-ipaddress,
+# python-apt,
+# python-lazy-object-proxy,
+# python-m2crypto,
+# python-pyasn1-modules,
+# python-pil,
+# python-six,
+# python-smbpasswd,
+# python-univention (>= 12.0.0-12),
+# python-univention-directory-manager-cli (= ${binary:Version}),
+# python-univention-heimdal (>= 4.0.1-1),
+# python-univention-lib (>= 8.0.0-6),
+# python-univention-license,
+# shell-univention-lib,
+# univention-admin-diary-client (>= 1.0.0-29),
+# ${misc:Depends},
+# ${python:Depends},
+#Provides:
+# ${python:Provides},
+#Breaks:
+# python-univention-directory-manager-rest (<< 9.0.16-5),
+#Replaces:
+# python-univention-directory-manager-rest (<< 9.0.16-5),
+# python-univention-lib (<< 1.0.15-1),
+#Description: UCS - Modules for administration tools
+# This package contains the Python modules that implement the
+# features of UCS Directory Manager.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: https://www.univention.de/
+#
+#Package: python-univention-directory-manager-cli
+#Architecture: all
+#Depends:
+# python-univention (>> 5.0.5),
+# python-univention-lib (>= 7.0.0-14),
+# shell-univention-lib,
+# ${misc:Depends},
+# ${python:Depends},
+#Provides:
+# ${python:Provides},
+#Description: UCS - Modules for administration tools
+# This package contains the Python modules for the command line client that
+# implement the features of UCS Directory Manager.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: https://www.univention.de/
 
 Package: python3-univention-directory-manager
 Architecture: all
@@ -84,7 +84,8 @@ Depends:
  python3-pil,
  python3-pyasn1-modules,
  python3-six,
- python3-smbpasswd,
+# doesn't exist anymore, but can easily be replaced (https://stackoverflow.com/questions/36503498/python3-and-smbpasswd-package)
+# python3-smbpasswd,
  python3-univention (>= 10.0.4-2),
  python3-univention-directory-manager-cli (= ${binary:Version}),
  python3-univention-heimdal (>= 4.0.1-1),

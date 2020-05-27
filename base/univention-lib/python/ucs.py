@@ -36,6 +36,7 @@ try:
 	from typing import List, Tuple, Union  # noqa: F401
 except ImportError:
 	pass
+import six
 
 
 class UCS_Version(object):

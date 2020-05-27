@@ -13,7 +13,7 @@ Build-Depends:
  libtool,
  libunivention-config-dev,
  libunivention-debug-dev (>= 5.0.2-1),
- python-all,
+# python-all,
  python3-all,
 
 Package: libunivention-policy0
@@ -38,7 +38,7 @@ Depends:
  libunivention-policy0 (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
+# ${python:Depends},
 Replaces:
  libunivention-policy0 (<< 5),
 Description: UCS - group policy library (development files)
@@ -55,7 +55,7 @@ Architecture: any
 Depends:
  ${misc:Depends},
  ${python3:Depends},
- ${python:Depends},
+# ${python:Depends},
  ${shlibs:Depends},
 Provides:
  ${python3:Provides},

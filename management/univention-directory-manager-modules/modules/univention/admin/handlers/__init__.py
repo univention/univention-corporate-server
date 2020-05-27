@@ -60,8 +60,9 @@ from ldap.controls.readentry import PostReadControl
 
 import univention.debug as ud
 
-from univention.admindiary.client import write_event
-from univention.admindiary.events import DiaryEvent
+# total layer fail: includes UMC code in UDM
+# from univention.admindiary.client import write_event
+# from univention.admindiary.events import DiaryEvent
 
 import univention.admin.filter
 import univention.admin.uldap
@@ -578,7 +579,7 @@ class simpleLdap(object):
 
 	def _get_admin_diary_event(self, event_name):
 		name = self.module.replace('/', '_').upper()
-		return DiaryEvent.get('UDM_%s_%s' % (name, event_name)) or DiaryEvent.get('UDM_GENERIC_%s' % event_name)
+		# return DiaryEvent.get('UDM_%s_%s' % (name, event_name)) or DiaryEvent.get('UDM_GENERIC_%s' % event_name)
 
 	def _get_admin_diary_args_names(self, event):
 		ret = []
@@ -617,7 +618,7 @@ class simpleLdap(object):
 				if additional_args:
 					args.update(additional_args)
 				username = self._get_admin_diary_username()
-				write_event(event, args, username=username)
+				# write_event(event, args, username=username)
 		except Exception as exc:
 			ud.debug(ud.ADMIN, ud.WARN, "Failed to write Admin Diary entry: %s" % exc)
 
