@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-portal
 fix: 3.0.2-6A~4.4.0.202005261326
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Users in the portal live edit mode are now able to see
    categories without any entries.
 bug: [50688]
