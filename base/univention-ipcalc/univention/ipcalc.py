@@ -30,7 +30,24 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
-import ipaddr  # noqa: F401
+import six
+if six.PY3:
+	from ipaddress import IPv6Interface, IPv4Interface
+
+	class IPv4Network(IPv4Interface):
+		def __init__(self, address, strict=True):
+			IPv4Interface.__init__(self, address)
+
+	class IPv6Network(IPv6Interface):
+		def __init__(self, address, strict=True):
+			IPv6Interface.__init__(self, address)
+else:
+	from ipaddr import IPv6Network, IPv4Network  # noqa: F401
+
+
+def _prefixlen(interface):  # PY2 VS PY3
+	return interface.network.prefixlen if not hasattr(interface, 'prefixlen') else interface.prefixlen
+
 
 # IPv4: 4.3.                            2.1.                        IN-ADDR.ARPA
 # IPv6: f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.IP6.ARPA
@@ -43,114 +60,114 @@ import ipaddr  # noqa: F401
 
 def calculate_ipv6_reverse(network):
 	"""Return reversed network part of IPv4 network.
-	>>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
+	>>> calculate_ipv6_reverse(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/0', False))
 	'0'
-	>>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/1'))
+	>>> calculate_ipv6_reverse(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/1', False))
 	'0'
-	>>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/4'))
+	>>> calculate_ipv6_reverse(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/4', False))
 	'0'
-	>>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/16'))
+	>>> calculate_ipv6_reverse(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/16', False))
 	'0123'
-	>>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/124'))
+	>>> calculate_ipv6_reverse(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/124', False))
 	'0123:4567:89ab:cdef:0123:4567:89ab:cde'
-	>>> calculate_ipv6_reverse(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
+	>>> calculate_ipv6_reverse(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/128', False))
 	'0123:4567:89ab:cdef:0123:4567:89ab:cde'
 	"""
 	# at least one part must remain for zone entry
-	prefixlen = min(network.prefixlen / 4, network.max_prefixlen / 4 - 1) or 1
+	prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1) or 1
 	prefix = network.ip.exploded.replace(':', '')[:prefixlen]
 	return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4)])
 
 
 def calculate_ipv4_reverse(network):
 	"""Return reversed network part of IPv4 network.
-	>>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/0'))
+	>>> calculate_ipv4_reverse(IPv4Network(u'1.2.3.4/0', False))
 	'1'
-	>>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/8'))
+	>>> calculate_ipv4_reverse(IPv4Network(u'1.2.3.4/8', False))
 	'1'
-	>>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/16'))
+	>>> calculate_ipv4_reverse(IPv4Network(u'1.2.3.4/16', False))
 	'1.2'
-	>>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/24'))
+	>>> calculate_ipv4_reverse(IPv4Network(u'1.2.3.4/24', False))
 	'1.2.3'
-	>>> calculate_ipv4_reverse(ipaddr.IPv4Network('1.2.3.4/32'))
+	>>> calculate_ipv4_reverse(IPv4Network(u'1.2.3.4/32', False))
 	'1.2.3'
 	"""
 	# at least one part must remain for zone entry
-	prefixlen = min(network.prefixlen / 8, network.max_prefixlen / 8 - 1) or 1
+	prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
 	prefix = network.ip.exploded.split('.')[:prefixlen]
 	return '.'.join(prefix)
 
 
 def calculate_ipv6_network(network):
 	"""Return network part of IPv6 network.
-	>>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
+	>>> calculate_ipv6_network(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/0', False))
 	''
-	>>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/1'))
+	>>> calculate_ipv6_network(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/1', False))
 	''
-	>>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/4'))
+	>>> calculate_ipv6_network(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/4', False))
 	'0'
-	>>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/16'))
+	>>> calculate_ipv6_network(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/16', False))
 	'0123'
-	>>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/112'))
+	>>> calculate_ipv6_network(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/112', False))
 	'0123:4567:89ab:cdef:0123:4567:89ab'
-	>>> calculate_ipv6_network(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
+	>>> calculate_ipv6_network(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/128', False))
 	'0123:4567:89ab:cdef:0123:4567:89ab:cdef'
 	"""
-	prefixlen = network.prefixlen / 4
+	prefixlen = _prefixlen(network) // 4
 	prefix = network.ip.exploded.replace(':', '')[:prefixlen]
 	return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4)])
 
 
 def calculate_ipv4_network(network):
 	"""Return network part of IPv4 network.
-	>>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/0'))
+	>>> calculate_ipv4_network(IPv4Network(u'1.2.3.4/0', False))
 	''
-	>>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/1'))
+	>>> calculate_ipv4_network(IPv4Network(u'1.2.3.4/1', False))
 	''
-	>>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/8'))
+	>>> calculate_ipv4_network(IPv4Network(u'1.2.3.4/8', False))
 	'1'
-	>>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/24'))
+	>>> calculate_ipv4_network(IPv4Network(u'1.2.3.4/24', False))
 	'1.2.3'
-	>>> calculate_ipv4_network(ipaddr.IPv4Network('1.2.3.4/32'))
+	>>> calculate_ipv4_network(IPv4Network(u'1.2.3.4/32', False))
 	'1.2.3.4'
 	"""
-	prefixlen = network.prefixlen / 8
+	prefixlen = _prefixlen(network) // 8
 	prefix = network.ip.exploded.split('.')[:prefixlen]
 	return '.'.join(prefix)
 
 
 def calculate_ipv6_pointer(network):
 	"""Return host part of IPv6 network.
-	>>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/0'))
+	>>> calculate_ipv6_pointer(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/0', False))
 	'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
-	>>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/1'))
+	>>> calculate_ipv6_pointer(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/1', False))
 	'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
-	>>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/4'))
+	>>> calculate_ipv6_pointer(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/4', False))
 	'f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.f.e.d.c.b.a.9.8.7.6.5.4.3.2.1'
-	>>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/124'))
+	>>> calculate_ipv6_pointer(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/124', False))
 	'f'
-	>>> calculate_ipv6_pointer(ipaddr.IPv6Network('0123:4567:89ab:cdef:0123:4567:89ab:cdef/128'))
+	>>> calculate_ipv6_pointer(IPv6Network(u'0123:4567:89ab:cdef:0123:4567:89ab:cdef/128', False))
 	'f'
 	"""
-	prefixlen = min(network.prefixlen / 4, network.max_prefixlen / 4 - 1) or 1
+	prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1) or 1
 	suffix = network.ip.exploded.replace(':', '')[prefixlen:]
 	return '.'.join(reversed(suffix))
 
 
 def calculate_ipv4_pointer(network):
 	"""Return host part of IPv4 network.
-	>>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/0'))
+	>>> calculate_ipv4_pointer(IPv4Network(u'1.2.3.4/0', False))
 	'4.3.2'
-	>>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/1'))
+	>>> calculate_ipv4_pointer(IPv4Network(u'1.2.3.4/1', False))
 	'4.3.2'
-	>>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/8'))
+	>>> calculate_ipv4_pointer(IPv4Network(u'1.2.3.4/8', False))
 	'4.3.2'
-	>>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/24'))
+	>>> calculate_ipv4_pointer(IPv4Network(u'1.2.3.4/24', False))
 	'4'
-	>>> calculate_ipv4_pointer(ipaddr.IPv4Network('1.2.3.4/32'))
+	>>> calculate_ipv4_pointer(IPv4Network(u'1.2.3.4/32', False))
 	'4'
 	"""
-	prefixlen = min(network.prefixlen / 8, network.max_prefixlen / 8 - 1) or 1
+	prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
 	suffix = network.ip.exploded.split('.')[prefixlen:]
 	return '.'.join(reversed(suffix))
 

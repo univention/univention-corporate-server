@@ -8,7 +8,10 @@ Build-Depends:
  dh-python,
  python-all,
  python-ipaddr,
+ python-ipaddress,
+ python-six,
  python3-all,
+ python3-six,
 
 Package: univention-ipcalc
 Architecture: all
@@ -26,6 +29,8 @@ Package: python-univention-ipcalc
 Architecture: all
 Depends:
  python-ipaddr,
+ python-ipaddress,
+ python-six,
  ${python:Depends},
 Provides:
  ${python:Provides},
@@ -44,9 +49,9 @@ Description: UCS - ipcalc tool for network
 Package: python3-univention-ipcalc
 Architecture: all
 Depends:
+ python3-six,
  ${python3:Depends},
 Provides:
- python-ipaddr,
  ${python3:Provides},
 Description: UCS - ipcalc tool for network
  This package contain the Python 3 files for the ipcalc tool.
