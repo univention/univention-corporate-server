@@ -40,6 +40,7 @@ from univention.testing.utils import wait_for_replication, stop_listener, start_
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from ldap.dn import escape_dn_chars
 import sys
 
 RETRY_COUNT = 20
@@ -190,9 +191,11 @@ class TestCases(object):
 			dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
 			dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
-			new_dn_grp1 = udm.modify_object('groups/group', dn=dn_grp1, name=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
+			new_name_grp1 = random_name()
+			new_dn_grp1 = 'cn=%s,%s' % (escape_dn_chars(new_name_grp1), self.base_group)
+			udm.modify_object('groups/group', dn=dn_grp1, name=new_name_grp1, wait_for_replication=with_listener, wait_for=with_listener)
 		wait_for_replication()
-		self.print_attributes([dn_user1, dn_user2], 'RESULT')
+		self.print_attributes([new_dn_grp1, dn_user1, dn_user2], 'RESULT')
 		utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
 		utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
 		utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
