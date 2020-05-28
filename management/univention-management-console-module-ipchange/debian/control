@@ -12,6 +12,8 @@ Standards-Version: 3.5.2
 
 Package: univention-management-console-module-ipchange
 Architecture: all
+Depends:
+ python-ipaddress,
 Recommends:
  univention-management-console-server (>= 11.0.4-37),
 Description: UMC module for registration the IP address
