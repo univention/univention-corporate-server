@@ -149,7 +149,7 @@ def handler_set(args, opts=dict(), quiet=False):
 					sep = min(sep_set, sep_def)
 			key = arg[0:sep]
 			value = arg[sep + 1:]
-			key_exists = ucr.has_key(key, write_registry_only=True)
+			key_exists = ucr.has_key(key, write_registry_only=True)  # noqa W601
 			if (not key_exists or sep == sep_set) and validate_key(key):
 				if not quiet:
 					if key_exists:
@@ -180,7 +180,7 @@ def handler_unset(args, opts=dict()):
 	with ucr:
 		changes = {}  # type: Dict[str, Optional[str]]
 		for arg in args:
-			if ucr.has_key(arg, write_registry_only=True):
+			if ucr.has_key(arg, write_registry_only=True):  # noqa W601
 				print('Unsetting %s' % arg)
 				changes[arg] = None
 			else:

@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-16) unstable; urgency=low
+
+  * Bug #51368: Fix Python 3 API
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 May 2020 12:39:20 +0200
+
 univention-config-registry (14.0.0-15) unstable; urgency=medium
 
   * Bug #51156: fix python3 compatibility in interfaces.py and

@@ -37,10 +37,13 @@ from __future__ import absolute_import
 import re
 from sys import maxsize
 from functools import wraps
-
-from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
-
+import six
 from univention.config_registry.backend import ConfigRegistry
+
+if six.PY3:
+	from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
+else:
+	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface
 
 try:
 	from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type  # noqa F401
@@ -159,27 +162,27 @@ class _Iface(dict):
 	def network(self):
 		# type: () -> IPv4Address
 		"""Return network address."""
-		return IPv4Address('%(network)s' % self)
+		return IPv4Address(u'%(network)s' % self)
 
 	@property  # type: ignore
 	@forgiving_addr
 	def broadcast(self):
 		# type: () -> IPv4Address
 		"""Return broadcast address."""
-		return IPv4Address('%(broadcast)s' % self)
+		return IPv4Address(u'%(broadcast)s' % self)
 
 	@forgiving_addr
 	def ipv4_address(self):
-		# type: () -> IPv4Address
+		# type: () -> IPv4Interface
 		"""Return IPv4 address."""
-		return IPv4Network('%(address)s/%(netmask)s' % self, strict=False)
+		return IPv4Interface(u'%(address)s/%(netmask)s' % self)
 
 	@forgiving_addr
 	def ipv6_address(self, name='default'):
-		# type: (str) -> IPv6Address
+		# type: (str) -> IPv6Interface
 		"""Return IPv6 address."""
-		key = '%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
-		return IPv6Network(key % self, strict=False)
+		key = u'%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
+		return IPv6Interface(key % self)
 
 	@property
 	def routes(self):
@@ -369,7 +372,7 @@ class Interfaces(object):
 		return None
 
 	def get_default_ipv4_address(self):
-		# type: () -> Optional[IPv4Address]
+		# type: () -> Optional[IPv4Interface]
 		"""returns the default IPv4 address."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			addr = iface.ipv4_address()
@@ -379,7 +382,7 @@ class Interfaces(object):
 		return None
 
 	def get_default_ipv6_address(self):
-		# type: () -> Optional[IPv6Address]
+		# type: () -> Optional[IPv6Interface]
 		"""returns the default IPv6 address."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			for name in sorted(iface.ipv6_names, key=self._cmp_name):
