@@ -1,4 +1,4 @@
-univention-system-setup (12.0.2-23) unstable; urgency=medium
+univention-system-setup (12.0.2-24) unstable; urgency=medium
 
   * Bug #51195: sha-512 password for root
 
