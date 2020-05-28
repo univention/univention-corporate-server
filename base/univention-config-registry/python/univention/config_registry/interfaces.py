@@ -264,7 +264,9 @@ class Interfaces(object):
 			# As a common notation to specify the scope zone, an
 			# implementation SHOULD support the following format:
 			# <address>%<zone_id>
-			gateway, zone_index = (ucr['ipv6/gateway'].rsplit('%', 1) + [None])[:2]
+			parts = ucr['ipv6/gateway'].rsplit('%', 1)
+			gateway = parts.pop(0)
+			zone_index = parts[0] if parts else None
 			self.ipv6_gateway = IPv6Address(gateway)
 			self.ipv6_gateway_zone_index = zone_index
 		except KeyError:
@@ -319,14 +321,14 @@ class Interfaces(object):
 		)
 
 	def _cmp_name(self, iname):
-		# type: (str) -> Optional[str]
+		# type: (str) -> str
 		"""
 		Compare IPv6 sub-interfaces by name.
 
 		:param name: Interface name.
 		:returns: string used as a key for sorting.
 		"""
-		return None if iname == 'default' else iname
+		return '' if iname == 'default' else iname
 
 	@property
 	def all_interfaces(self):
