@@ -4,7 +4,7 @@
 import unittest
 import os
 import univention.management.console.modules
-from ipaddr import IPNetwork, IPv4Network, IPv6Network
+from ipaddress import ip_network, IPv4Network, IPv6Network
 
 univention.management.console.modules.__path__.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'umc/python'))
 from univention.management.console.modules.setup.netconf.common import convert_udm_subnet_to_network  # noqa: E402
@@ -16,7 +16,7 @@ class TestIpv4Subnet(unittest.TestCase):
 
 	def _test(self, expected, actual):
 		self.assertEqual(
-			IPv4Network(expected),
+			IPv4Network(u'%s' % (expected,), False),
 			convert_udm_subnet_to_ipv4_network(actual))
 
 	def test_class_a(self):
@@ -33,7 +33,7 @@ class TestIpv6Subnet(unittest.TestCase):
 
 	def _test(self, expected, actual):
 		self.assertEqual(
-			IPv6Network(expected),
+			IPv6Network(u'%s' % (expected,), False),
 			convert_udm_subnet_to_ipv6_network(actual))
 
 	def test_prefix_16(self):
@@ -71,7 +71,7 @@ class TestGenericSubnet(TestIpv4Subnet, TestIpv6Subnet):
 
 	def _test(self, expected, actual):
 		self.assertEqual(
-			IPNetwork(expected),
+			ip_network(u'%s' % (expected,), False),
 			convert_udm_subnet_to_network(actual))
 
 

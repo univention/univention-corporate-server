@@ -32,7 +32,7 @@ import os
 from abc import ABCMeta
 from univention.management.console.modules.setup.netconf.conditions import Executable, AddressChange, Ldap
 import univention.admin.uldap as uldap
-from ipaddr import IPv4Network, IPv6Network
+from ipaddress import IPv4Network, IPv6Network
 
 
 class RestartService(Executable):
@@ -158,7 +158,7 @@ def convert_udm_subnet_to_ipv4_network(subnet):
 	prefix_length = 8 * count
 	octets += ["0"] * (4 - count)
 	address = '.'.join(octets)
-	return IPv4Network("%s/%d" % (address, prefix_length))
+	return IPv4Network(u"%s/%d" % (address, prefix_length), False)
 
 
 def convert_udm_subnet_to_ipv6_network(subnet):
@@ -169,4 +169,4 @@ def convert_udm_subnet_to_ipv6_network(subnet):
 	address = subnet
 	if count <= 28:
 		address += "::"
-	return IPv6Network("%s/%d" % (address, prefix_length))
+	return IPv6Network(u"%s/%d" % (address, prefix_length), False)
