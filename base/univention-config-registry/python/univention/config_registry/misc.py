@@ -62,8 +62,8 @@ def replace_umlaut(line):
 	u"""
 	Replace german umlauts.
 
-	>>> replace_umlaut(u'überschrieben')
-	u'ueberschrieben'
+	>>> replace_umlaut(u'überschrieben') == u'ueberschrieben'
+	True
 	"""
 	return replace_dict(line, UMLAUTS)  # pylint: disable-msg=E1101
 
