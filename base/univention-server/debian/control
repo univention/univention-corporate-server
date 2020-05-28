@@ -134,6 +134,7 @@ Depends:
  ntp | ntp-server,
  ntpdate,
  python-dns,
+ python-ipaddress,
  rdate,
  univention-directory-listener,
  univention-directory-manager-tools,
@@ -161,6 +162,7 @@ Description: UCS system server role common dependencies and files
 Package: univention-container-role-server-common
 Architecture: all
 Depends:
+ python-ipaddress,
  univention-container-role-common (= ${source:Version}),
  univention-directory-listener,
  univention-directory-manager-tools,
