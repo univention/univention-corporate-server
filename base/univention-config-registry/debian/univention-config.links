@@ -1,4 +1,2 @@
-usr/sbin/univention-config-registry usr/sbin/univention-baseconfig
 usr/sbin/univention-config-registry usr/sbin/ucr
-usr/share/man/man8/univention-config-registry.8 usr/share/man/man8/univention-baseconfig.8
 usr/share/man/man8/univention-config-registry.8 usr/share/man/man8/ucr.8

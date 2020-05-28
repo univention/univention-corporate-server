@@ -6,7 +6,6 @@
 ##  - apptest
 ## exposure: safe
 
-BASECONFIG=univention-baseconfig
 UCRLINK=ucr
 UCR=univention-config-registry
 
@@ -30,11 +29,10 @@ trap "rm -rf '${TMPDIR}'" EXIT
 
 ##### dump #####
 echo "Checking dump..."
-Dump "${BASECONFIG}"
 Dump "${UCRLINK}"
 Dump "${UCR}"
 
-if ! Diff "${BASECONFIG}" "${UCRLINK}" && Diff "${UCRLINK}" "${UCR}"
+if ! Diff "${UCRLINK}" "${UCR}"
 then
 	echo "Test failed. Output of dump is not equal."
 	exit 110
@@ -42,11 +40,10 @@ fi
 
 ##### --shell dump #####
 echo "Checking dump --shell..."
-Dump "${BASECONFIG}" --shell
 Dump "${UCRLINK}" --shell
 Dump "${UCR}" --shell
 
-if ! Diff "${BASECONFIG}" "${UCRLINK}" && Diff "${UCRLINK}" "${UCR}"
+if ! Diff "${UCRLINK}" "${UCR}"
 then
 	echo "Test failed. Output of --shell dump is not equal."
 	exit 110
