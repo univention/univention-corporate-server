@@ -9,11 +9,12 @@ Build-Depends:
  dh-python,
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
- locales,
  python-all,
  python-ipaddr,
+ python-pytest,
  python-six,
  python3-all,
+ python3-pytest,
  python3-six,
 Standards-Version: 3.5.2
 

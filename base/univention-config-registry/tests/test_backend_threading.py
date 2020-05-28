@@ -1,14 +1,11 @@
 #!/usr/bin/python
 """Unit test for univention.config_registry.backend."""
 # pylint: disable-msg=C0103,E0611,R0904
-import unittest
 import os
 import sys
-from tempfile import mkdtemp
-from shutil import rmtree
 from threading import Thread, Lock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
-from univention.config_registry.backend import ConfigRegistry
+from univention.config_registry.backend import ConfigRegistry  # noqa E402
 
 
 class DummyLock(object):
@@ -20,21 +17,11 @@ class DummyLock(object):
 		pass
 
 
-class TestConfigRegistry(unittest.TestCase):
+class TestConfigRegistry(object):
 
 	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
 
-	def setUp(self):
-		"""Create object."""
-		self.work_dir = mkdtemp()
-		ConfigRegistry.PREFIX = self.work_dir
-
-	def tearDown(self):
-		"""Destroy object."""
-		# os.kill(os.getpid(), 19)  # signal.SIGSTOP
-		rmtree(self.work_dir)
-
-	def test_threading(self):
+	def test_threading(self, tmpdir):
 		"""Multiple threads accessing same registry."""
 		DO_LOCKING = True
 		THREADS = 10
@@ -43,6 +30,7 @@ class TestConfigRegistry(unittest.TestCase):
 		KEY = 'x' * PRIME
 
 		SKEY, SVALUE = 'always', 'there'
+		ConfigRegistry.PREFIX = str(tmpdir)
 		ucr = ConfigRegistry()
 		ucr[SKEY] = SVALUE
 		ucr.save()
@@ -50,14 +38,14 @@ class TestConfigRegistry(unittest.TestCase):
 		lock = Lock() if DO_LOCKING else DummyLock()
 
 		def run(tid):
-			for iteration in xrange(ITERATIONS):
+			for iteration in range(ITERATIONS):
 				i = tid + iteration
 				random = pow(BASE, i, PRIME)
 				key = KEY[:random + 1]
 
 				with lock:
 					ucr.load()
-				self.assertEqual(ucr[SKEY], SVALUE, 'tid=%d iter=%d %r' % (tid, iteration, ucr.items()))
+				assert ucr[SKEY] == SVALUE, 'tid=%d iter=%d %r' % (tid, iteration, ucr.items())
 
 				try:
 					del ucr[key]
@@ -68,14 +56,10 @@ class TestConfigRegistry(unittest.TestCase):
 						ucr.save()
 
 		threads = []
-		for tid in xrange(THREADS):
+		for tid in range(THREADS):
 			thread = Thread(target=run, name='%d' % tid, args=(tid,))
 			threads.append(thread)
 		for thread in threads:
 			thread.start()
 		for thread in threads:
 			thread.join()
-
-
-if __name__ == '__main__':
-	unittest.main()

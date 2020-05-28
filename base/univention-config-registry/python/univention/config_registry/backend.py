@@ -382,7 +382,7 @@ class ConfigRegistry(MM):
 		:param value: text string to directly evaulate instead of looking up the key.
 		:returns: `True` when the value is one of `yes`, `true`, `1`, `enable`, `enabled`, `on`.
 
-		>>> ucr = ConfigRegistry()
+		>>> ucr = ConfigRegistry('/dev/null')
 		>>> ucr['key'] = 'yes'
 		>>> ucr.is_true('key')
 		True
@@ -424,7 +424,7 @@ class ConfigRegistry(MM):
 		:param value: text string to directly evaulate instead of looking up the key.
 		:returns: `True` when the value is one of `no`, `false`, `0`, `disable`, `disabled`, `off`.
 
-		>>> ucr = ConfigRegistry()
+		>>> ucr = ConfigRegistry('/dev/null')
 		>>> ucr['key'] = 'no'
 		>>> ucr.is_false('key')
 		True

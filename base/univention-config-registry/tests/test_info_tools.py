@@ -1,121 +1,117 @@
 #!/usr/bin/python
 """Unit test for univention.into_tools."""
 # pylint: disable-msg=C0103,E0611,R0904
-import unittest
+import pytest
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
-import univention.info_tools as uit
+import univention.info_tools as uit  # noqa E402
 
 
-class TestLocalizedValue(unittest.TestCase):
+@pytest.fixture
+def lval0():
+	obj = uit.LocalizedValue()
+	uit.set_language('fr')
+	return obj
+
+
+class TestLocalizedValue(object):
 
 	"""Unit test for univention.info_tools.LocalizedValue"""
 
-	def setUp(self):
-		"""Create object."""
-		self.obj = uit.LocalizedValue()
-		uit.set_language('fr')
-
-	def tearDown(self):
-		"""Destroy object."""
-		del self.obj
-
-	def test_basic(self):
+	def test_basic(self, lval0):
 		"""set() and get() without locale."""
-		self.obj.set('foo')
-		self.assertEqual('foo', self.obj.get())
+		lval0.set('foo')
+		assert 'foo' == lval0.get()
 
-	def test_explicit_language(self):
+	def test_explicit_language(self, lval0):
 		"""set() and get() with locale."""
-		self.obj.set('foo', locale='fr')
-		self.obj.set('bar', locale='en')
-		self.assertEqual('foo', self.obj.get(locale='fr'))
+		lval0.set('foo', locale='fr')
+		lval0.set('bar', locale='en')
+		assert 'foo' == lval0.get(locale='fr')
 
-	def test_implicit_language_set(self):
+	def test_implicit_language_set(self, lval0):
 		"""set() without and get() with locale."""
-		self.obj.set('foo')
-		self.obj.set('bar', locale='en')
-		self.assertEqual('foo', self.obj.get(locale='fr'))
+		lval0.set('foo')
+		lval0.set('bar', locale='en')
+		assert 'foo' == lval0.get(locale='fr')
 
-	def test_default_language_set(self):
+	def test_default_language_set(self, lval0):
 		"""set_default() and get() with locale."""
-		self.obj.set_default('foo')
-		self.obj.set('bar', locale='en')
-		self.assertEqual('foo', self.obj.get(locale='fr'))
+		lval0.set_default('foo')
+		lval0.set('bar', locale='en')
+		assert 'foo' == lval0.get(locale='fr')
 
-	def test_default_language_get(self):
+	def test_default_language_get(self, lval0):
 		"""set_default() and get_default()."""
-		self.obj.set_default('foo')
-		self.obj.set('bar', locale='en')
-		self.assertEqual('foo', self.obj.get_default())
+		lval0.set_default('foo')
+		lval0.set('bar', locale='en')
+		assert 'foo' == lval0.get_default()
 
-	def test_missing_language(self):
+	def test_missing_language(self, lval0):
 		"""set() and get() with different locale."""
-		self.obj.set('bar', locale='en')
-		self.assertEqual('', self.obj.get(locale='fr'))
+		lval0.set('bar', locale='en')
+		assert '' == lval0.get(locale='fr')
 
 
-class TestLocalizedDictionary(unittest.TestCase):
+@pytest.fixture
+def ldict0():
+	obj = uit.LocalizedDictionary()
+	uit.set_language('fr')
+	return obj
+
+
+class TestLocalizedDictionary(object):
 
 	"""Unit test for univention.info_tools.LocalizedDictionary"""
 
-	def setUp(self):
-		"""Create object."""
-		self.obj = uit.LocalizedDictionary()
-		uit.set_language('fr')
-
-	def tearDown(self):
-		"""Destroy object."""
-		del self.obj
-
-	def test_basic(self):
+	def test_basic(self, ldict0):
 		"""__setitem__() and __getitem__()."""
-		self.obj['foo'] = 'bar'
-		self.assertEqual('bar', self.obj['foo'])
+		ldict0['foo'] = 'bar'
+		assert 'bar' == ldict0['foo']
 
-	def test_setitem_getitem(self):
+	def test_setitem_getitem(self, ldict0):
 		"""__setitem__() and __getitem__()."""
-		self.obj['foO'] = 'bar'
-		self.assertEqual('bar', self.obj['Foo'])
+		ldict0['foO'] = 'bar'
+		assert 'bar' == ldict0['Foo']
 
-	def test_default(self):
+	def test_default(self, ldict0):
 		"""__setitem__() and get(default)."""
-		self.assertEqual('default', self.obj.get('foo', 'default'))
+		assert 'default' == ldict0.get('foo', 'default')
 
-	def test_set_locale(self):
+	def test_set_locale(self, ldict0):
 		"""set() with and get() without locale."""
-		self.obj['foo[fr]'] = 'bar'
-		self.assertEqual('bar', self.obj.get('foo'))
-		self.assertEqual('bar', self.obj['foo'])
+		ldict0['foo[fr]'] = 'bar'
+		assert 'bar' == ldict0.get('foo')
+		assert 'bar' == ldict0['foo']
 
-	def test_get_locale(self):
+	def test_get_locale(self, ldict0):
 		"""set() without and get() with locale."""
-		self.obj['foo'] = 'bar'
-		self.assertEqual('bar', self.obj.get('foo[fr]'))
-		self.assertEqual('bar', self.obj['foo[fr]'])
+		ldict0['foo'] = 'bar'
+		assert 'bar' == ldict0.get('foo[fr]')
+		assert 'bar' == ldict0['foo[fr]']
 
-	def test_in(self):
+	def test_in(self, ldict0):
 		"""in and has_key()."""
-		self.assertFalse('foo' in self.obj)
-		self.assertFalse(self.obj.has_key('foo'))
-		self.obj['foo'] = 'bar'
-		self.assertTrue('foO' in self.obj)
-		self.assertTrue(self.obj.has_key('foO'))
+		assert 'foo' not in ldict0
+		assert not ldict0.has_key('foo')  # noqa W601
+		ldict0['foo'] = 'bar'
+		assert 'foO' in ldict0
+		assert ldict0.has_key('foO')  # noqa W601
 
-	def test_in_locale(self):
+	def test_in_locale(self, ldict0):
 		"""in and has_key() with locale request."""
-		self.obj['foo'] = 'bar'
-		self.assertTrue('foO[fr]' in self.obj)
-		self.assertTrue(self.obj.has_key('foO[fr]'))
+		ldict0['foo'] = 'bar'
+		assert 'foO[fr]' in ldict0
+		assert ldict0.has_key('foO[fr]')  # noqa W601
 
-	def test_in_locale_set(self):
+	def test_in_locale_set(self, ldict0):
 		"""in and has_key() with locale set."""
-		self.obj['foo[fr]'] = 'bar'
-		self.assertTrue('foO' in self.obj)
-		self.assertTrue(self.obj.has_key('foO'))
+		ldict0['foo[fr]'] = 'bar'
+		assert 'foO' in ldict0
+		assert ldict0.has_key('foO')  # noqa W601
 
-	def test_normalize(self):
+	def test_normalize(self, ldict0):
 		"""normalize()."""
 		reference = {
 			'foo[fr]': 'bar',
@@ -123,71 +119,69 @@ class TestLocalizedDictionary(unittest.TestCase):
 			'foo': 'bam',
 		}
 		for key, value in reference.items():
-			self.obj[key] = value
-		norm = self.obj.normalize('foo')
-		self.assertEqual(norm, reference)
+			ldict0[key] = value
+		norm = ldict0.normalize('foo')
+		assert norm == reference
 
-	def test_get_dict(self):
+	def test_get_dict(self, ldict0):
 		"""get_dict()."""
 		reference = {
 			'foo[fr]': 'bar',
 			'foo[en]': 'baz',
 		}
 		for key, value in reference.items():
-			self.obj[key] = value
-		var = self.obj.get_dict('foo')
-		self.assertTrue(isinstance(var, uit.LocalizedValue))
-		self.assertEqual('bar', var['fr'])
-		self.assertEqual('baz', var['en'])
+			ldict0[key] = value
+		var = ldict0.get_dict('foo')
+		assert isinstance(var, uit.LocalizedValue) is True
+		assert 'bar' == var['fr']
+		assert 'baz' == var['en']
 
-	def test_eq(self):
+	def test_eq(self, ldict0):
 		"""__eq__ and __neq__."""
 		obj = uit.LocalizedDictionary()
-		self.assertEqual(self.obj, obj)
-		self.assertEqual(obj, self.obj)
-		self.obj['foo'] = 'bar'
-		self.assertNotEqual(self.obj, obj)
-		self.assertNotEqual(obj, self.obj)
+		assert ldict0 == obj
+		assert obj == ldict0
+		ldict0['foo'] = 'bar'
+		assert ldict0 != obj
+		assert obj != ldict0
 		obj['foo'] = 'bar'
-		self.assertEqual(self.obj, obj)
-		self.assertEqual(obj, self.obj)
+		assert ldict0 == obj
+		assert obj == ldict0
 
 
-class TestSetLanguage(unittest.TestCase):
+@pytest.fixture
+def lval():
+	lval = uit.LocalizedValue()
+	lval['de'] = 'foo'
+	lval['en'] = 'bar'
+	lval.set_default('baz')
+	return lval
+
+
+@pytest.fixture
+def ldict():
+	ldict = uit.LocalizedDictionary()
+	ldict['val[de]'] = 'foo'
+	ldict['val[en]'] = 'bar'
+	ldict['val'] = 'baz'
+	return ldict
+
+
+class TestSetLanguage(object):
 
 	"""Unit test for univention.info_tools.set_language()."""
 
-	def setUp(self):
-		"""Create objects."""
-		self.lval = uit.LocalizedValue()
-		self.lval['de'] = 'foo'
-		self.lval['en'] = 'bar'
-		self.lval.set_default('baz')
-		self.ldict = uit.LocalizedDictionary()
-		self.ldict['val[de]'] = 'foo'
-		self.ldict['val[en]'] = 'bar'
-		self.ldict['val'] = 'baz'
-
-	def tearDown(self):
-		"""Destroy objects."""
-		del self.lval
-		del self.ldict
-
-	def test_global(self):
+	def test_global(self, lval, ldict):
 		"""Test global set_language() setting."""
 		uit.set_language('de')
-		self.assertEqual('foo', self.lval.get())
-		self.assertEqual('foo', self.ldict['val'])
+		assert 'foo' == lval.get()
+		assert 'foo' == ldict['val']
 		uit.set_language('en')
-		self.assertEqual('bar', self.lval.get())
-		self.assertEqual('bar', self.ldict['val'])
+		assert 'bar' == lval.get()
+		assert 'bar' == ldict['val']
 
-	def test_default(self):
+	def test_default(self, lval, ldict):
 		"""Test default set_language() setting."""
 		uit.set_language('fr')
-		self.assertEqual('baz', self.lval.get())
-		self.assertEqual('baz', self.ldict['val'])
-
-
-if __name__ == '__main__':
-	unittest.main()
+		assert 'baz' == lval.get()
+		assert 'baz' == ldict['val']

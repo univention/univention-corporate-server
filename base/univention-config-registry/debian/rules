@@ -49,16 +49,12 @@ override_dh_auto_configure-arch:
 	dh_auto_configure
 
 override_dh_auto_test-indep:
-	python tests/test_info_tools.py
-	python tests/test_backend.py
-	python tests/test_backend_threading.py
-	python python/univention/debhelper.py
-	python python/univention/config_registry/misc.py
-	PYTHONPATH=python UNIVENTION_BASECONF=tests/base.conf python python/univention/config_registry/interfaces.py
+	pytest --doctest-modules
+	pytest-3 --doctest-modules
 	tests/unwrap/test.sh
 
 override_dh_auto_test-arch:
-	make -C tests check
+	$(MAKE) -C tests check
 
 version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
 override_dh_install-indep:
