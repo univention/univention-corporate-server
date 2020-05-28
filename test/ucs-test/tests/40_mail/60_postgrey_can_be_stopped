@@ -12,7 +12,7 @@ import univention.testing.utils as utils
 
 def is_running(process_name):
 	state = False
-	for count in xrange(5):
+	for count in range(5):
 		try:
 			pinfo = [proc.name() for proc in psutil.process_iter() if proc.name() == process_name]
 		except psutil.NoSuchProcess:

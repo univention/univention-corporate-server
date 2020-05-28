@@ -19,7 +19,7 @@ utils.verify_ldap_object = SetTimeout(utils.verify_ldap_object)
 
 
 def get_ssl(name):
-	for i in xrange(10):
+	for i in range(10):
 		cmd = ('univention-certificate', 'list')
 		proc = Popen(cmd, stdout=PIPE)
 		for line in proc.stdout:

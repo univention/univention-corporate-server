@@ -33,7 +33,7 @@ def main():
 					password = 'univention'
 					mails_list = []
 					users_list = []
-					for i in xrange(4):
+					for i in range(4):
 						mail = '%s@%s' % (uts.random_name(), domain)
 						user_dn, username = udm.create_user(
 							set={

@@ -37,7 +37,7 @@ def main():
 				mails = []
 				alts = []
 				users = []
-				for i in xrange(5):
+				for i in range(5):
 					mail = '%s@%s' % (uts.random_name(), domain)
 					alt = '%s@%s' % (uts.random_name(), domain)
 					user_dn, username = udm.create_user(
@@ -69,7 +69,7 @@ def main():
 				)
 
 				print("")
-				for i in xrange(5):
+				for i in range(5):
 					print("user: %r \t email: %r emailAlt: %r" % (users[i].partition(",")[0], mails[i], alts[i]))
 				print("group %r: email: %r users: %r" % (group1_name, group1_mail, mails[0]))
 				print("group %r: email: %r users: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (group2_name, group2_mail, mails[4], mails[2], group1_name))

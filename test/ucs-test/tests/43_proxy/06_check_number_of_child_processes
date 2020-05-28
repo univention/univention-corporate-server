@@ -53,7 +53,7 @@ def main():
 			result['squidGuard'] = 0
 
 		MAX_ATTEMPTS = 6
-		for attempt in xrange(MAX_ATTEMPTS):
+		for attempt in range(MAX_ATTEMPTS):
 			print('Attempt %d of %d:' % (attempt + 1, MAX_ATTEMPTS))
 			time.sleep(2**attempt)  # wait 1, 2, 4, 8, 16, 32 seconds
 			ok = True

@@ -30,7 +30,7 @@ def main():
 	job_number = None
 	job_command = 'echo %s' % (strings.random_name())
 	job_comments = {}
-	for i in xrange(10):
+	for i in range(10):
 		job_comments[strings.random_name()] = strings.random_string(length=30)
 
 	try:

@@ -67,7 +67,7 @@ class LogrotateService(object):
 		self.old_stat = self.stat(self.logfile())
 
 	def post(self):
-		for i in xrange(10):
+		for i in range(10):
 			if i:
 				sleep(1)
 			logfile = self.logfile()

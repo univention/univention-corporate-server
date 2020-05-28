@@ -165,7 +165,7 @@ class Listener(object):
 			return
 
 		self.proc.terminate()
-		for i in xrange(6):
+		for i in range(6):
 			ret = self.proc.poll()
 			print('I: ret=%s %d...' % (ret, i,))
 			if ret is not None:

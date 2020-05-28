@@ -11,7 +11,7 @@ class WaitForNonzeroResultOrTimeout(object):
 		self.timeout = timeout
 
 	def __call__(self, *args, **kwargs):
-		for i in xrange(self.timeout):
+		for i in range(self.timeout):
 			result = self.func(*args, **kwargs)
 			if result:
 				break
@@ -27,7 +27,7 @@ class SetTimeout(object):
 		self.timeout = timeout
 
 	def __call__(self, *args, **kwargs):
-		for i in xrange(self.timeout):
+		for i in range(self.timeout):
 			try:
 				print("** Entering", self.func.__name__)
 				self.func(*args, **kwargs)
@@ -42,7 +42,7 @@ class SetTimeout(object):
 
 def setTimeout(func, timeout=DEFAULT_TIMEOUT):
 	def wrapper(*args, **kwargs):
-		for i in xrange(timeout):
+		for i in range(timeout):
 			try:
 				print("** Entering", func.__name__)
 				func(*args, **kwargs)

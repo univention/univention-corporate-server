@@ -23,7 +23,7 @@ TIMEOUT = 90  # sec
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
 	print("Waiting for an email delivery to a mailsink")
-	for i in xrange(TIMEOUT):
+	for i in range(TIMEOUT):
 		if token in open(mailsink_file).read():
 			delivered = True
 			print('Mail Delivered')
@@ -37,7 +37,7 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 def wait_for_dns(hosts):
 	for host, ip in hosts:
 		found = None
-		for i in xrange(TIMEOUT):
+		for i in range(TIMEOUT):
 			try:
 				found = dns.resolver.query(host, 'A')[0].address
 				break

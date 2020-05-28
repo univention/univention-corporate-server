@@ -31,7 +31,7 @@ def max_duration():
 def doJobs(job, num):
 	children = set()
 	start = time.time()
-	for _ in xrange(num):
+	for _ in range(num):
 		child = os.fork()
 		if child:
 			os.write(1, '<')

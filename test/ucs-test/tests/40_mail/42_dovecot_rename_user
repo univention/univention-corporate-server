@@ -29,7 +29,7 @@ def main():
 			#
 			# create some test users
 			#
-			for i in xrange(4):
+			for i in range(4):
 				user_addr = random_email()
 				user_dn, user_name = udm.create_user(
 					set={

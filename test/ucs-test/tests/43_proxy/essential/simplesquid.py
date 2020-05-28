@@ -52,7 +52,7 @@ class SimpleSquid(object):
 		"""
 		result = False
 		# Give 5 seconds max for squid to be ready
-		for interval in xrange(tolerance):
+		for interval in range(tolerance):
 			if self.is_not_running():
 				result = False
 				time.sleep(1)

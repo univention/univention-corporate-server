@@ -24,7 +24,7 @@ TIMEOUT = 60  # sec
 def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 	delivered = False
 	print("Waiting for an email delivery")
-	for i in xrange(TIMEOUT):
+	for i in range(TIMEOUT):
 		if token in open(mailsink_file).read():
 			delivered = True
 			print('Mail Delivered')
@@ -37,7 +37,7 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 
 def wait_for_dns(hosts):
 	for host, ip in hosts:
-		for i in xrange(TIMEOUT):
+		for i in range(TIMEOUT):
 			try:
 				dns.resolver.query(host, 'A')
 				break
@@ -56,7 +56,7 @@ def main():
 				domain = ucr.get('domainname')
 				basedn = ucr.get('ldap/base')
 			hosts = []
-			for i in xrange(2):
+			for i in range(2):
 				ip = uts.random_ip()
 				host = uts.random_name()
 				hosts.append(('%s.%s' % (host, domain), ip))

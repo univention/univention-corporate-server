@@ -38,7 +38,7 @@ def main():
 			fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 			grplist = []
 			userlist = []
-			for i in xrange(MAX_USER):
+			for i in range(MAX_USER):
 				user_addr = random_email()
 				user_dn, user_name = udm.create_user(set={
 					'mailHomeServer': fqdn,
@@ -48,7 +48,7 @@ def main():
 				if i % 10 == 0:
 					print('Already created %d users' % (i + 1,))
 			utils.wait_for_replication()
-			for i in xrange(MAX_GRP):
+			for i in range(MAX_GRP):
 				dn, grpname = udm.create_group(
 					set={'users': userlist[random.randint(0, MAX_USER - 1)].dn},
 					wait_for_replication=False, check_for_drs_replication=False)
@@ -60,7 +60,7 @@ def main():
 				wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
 			try:
 				start_time = time.time()
-				for i in xrange(MAX_TESTS):
+				for i in range(MAX_TESTS):
 					print('Test %d' % (i, ))
 					M = imaplib.IMAP4_SSL(host='localhost')  # establish connection
 					M.login(userlist[random.randint(0, MAX_USER - 1)].addr, 'univention')  # use random users

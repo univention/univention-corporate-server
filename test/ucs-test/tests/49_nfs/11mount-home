@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
 		print('1st login...')
 		p1 = Popen(('su', '-c', 'cat', '-l', user_name), stdin=PIPE)
-		for _ in xrange(60):
+		for _ in range(60):
 			if ismount(user_home):
 				break
 			sleep(1)

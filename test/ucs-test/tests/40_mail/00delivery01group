@@ -28,7 +28,7 @@ def main():
 		domain = ucr.get('domainname')
 		group_mail = 'g%s@%s' % (uts.random_string(), domain)
 		mails = []
-		for i in xrange(3):
+		for i in range(3):
 			usermail = '%s@%s' % (uts.random_name(), domain)
 			udm.create_user(
 				set={

@@ -15,7 +15,7 @@ import univention.testing.utils as utils
 NET = '192.0.2'
 MAC = '00:00:5e:00:53'
 NAME = uts.random_name()
-UNIQUE = xrange(2, 254).__iter__()
+UNIQUE = range(2, 254).__iter__()
 
 
 def main():

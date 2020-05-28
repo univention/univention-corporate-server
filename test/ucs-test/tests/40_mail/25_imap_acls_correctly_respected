@@ -30,7 +30,7 @@ def main():
 				password = 'univention'
 				mails = []
 				users = []
-				for i in xrange(3):
+				for i in range(3):
 					usermail = '%s@%s' % (uts.random_name(), domain)
 					userdn, username = udm.create_user(
 						set={
@@ -47,7 +47,7 @@ def main():
 					udm, host, mailAddress=True, user_permission=['"%s" "%s"' % ('anyone', 'all')])
 
 				test_cases = itertools.product(mails[0:2], permissions)
-				for i in xrange(len(mails[0:2]) * len(permissions)):
+				for i in range(len(mails[0:2]) * len(permissions)):
 					who, what = next(test_cases)
 					imap = MailClient_SSL(host)
 					imap.log_in(mails[2], password)

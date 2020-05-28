@@ -87,7 +87,7 @@ class TestUMCProcessKilling(UMCBase):
             if self.query_process_exists(pid):  # a UMC request
                 self.make_kill_request(signame, [pid])  # a UMC request
 
-                for i in xrange(self.MAX_PROCESS_TIME):
+                for i in range(self.MAX_PROCESS_TIME):
                     if i:
                         sleep(1)
                     child, exit_status, _res_usage = wait4(pid, WNOHANG)

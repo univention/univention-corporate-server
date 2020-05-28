@@ -60,7 +60,7 @@ class Test(object):
 
 	def start_processes(self):
 		print("Starting parallel authentication...")
-		for index in xrange(self.totalRounds):
+		for index in range(self.totalRounds):
 			print("Round %d..." % (index,))
 			self.smbclient()
 
@@ -83,7 +83,7 @@ class Test(object):
 
 	@staticmethod
 	def checkResult(expectedResult, max_wait=30):
-		for i in xrange(max_wait):
+		for i in range(max_wait):
 			proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			count = len([line for line in proc.stdout if line.startswith('netlogon')])
 			if count == expectedResult:
@@ -104,7 +104,7 @@ class Test(object):
 		"""
 		Return array of <amountPerRound> floats which sum-up to <roundTime>.
 		"""
-		delayArray = [random.randrange(1, 1000, 1) for _ in xrange(amountPerRound)]
+		delayArray = [random.randrange(1, 1000, 1) for _ in range(amountPerRound)]
 		total = sum(delayArray)
 		delayArray = [float(_) / total * roundTime for _ in delayArray]
 		return delayArray

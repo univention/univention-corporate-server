@@ -90,7 +90,7 @@ def main():
 			syslog.syslog(syslog.LOG_INFO, 'Sending with settings {}.'.format(ucr_settings))
 			msgid = uts.random_name()
 			send_mail(recipients=[old_address], messageid=msgid, server=fqdn)
-			for _ in xrange(TIMEOUT_MAIL):
+			for _ in range(TIMEOUT_MAIL):
 				try:
 					found = imap_search_mail(messageid=msgid, server=fqdn, imap_user=user_addr, imap_folder='shared/%s' % (old_address,), use_ssl=True)
 				except AssertionError as exc:
