@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
-import ipaddr
+import ipaddress
 import os
 import tempfile
 import subprocess
@@ -801,7 +801,7 @@ def is_proxy(proxy):
 
 def is_ipaddr(addr):
 	try:
-		ipaddr.IPAddress(addr)
+		ipaddress.ip_address(u'%s' % (addr,))
 	except ValueError:
 		return False
 	return True
@@ -809,7 +809,7 @@ def is_ipaddr(addr):
 
 def is_ipv4addr(addr):
 	try:
-		ipaddr.IPv4Address(addr)
+		ipaddress.IPv4Address(u'%s' % (addr,))
 	except ValueError:
 		return False
 	return True
@@ -817,15 +817,15 @@ def is_ipv4addr(addr):
 
 def is_ipv4netmask(addr_netmask):
 	try:
-		ipaddr.IPv4Network(addr_netmask)
-	except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+		ipaddress.IPv4Network(u'%s' % (addr_netmask,), False)
+	except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
 		return False
 	return True
 
 
 def is_ipv6addr(addr):
 	try:
-		ipaddr.IPv6Address(addr)
+		ipaddress.IPv6Address(u'%s' % (addr,))
 	except ValueError:
 		return False
 	return True
@@ -833,8 +833,8 @@ def is_ipv6addr(addr):
 
 def is_ipv6netmask(addr_netmask):
 	try:
-		ipaddr.IPv6Network(addr_netmask)
-	except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+		ipaddress.IPv6Network(u'%s' % (addr_netmask,), False)
+	except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
 		return False
 	return True
 
