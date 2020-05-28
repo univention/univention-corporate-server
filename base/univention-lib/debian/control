@@ -19,6 +19,7 @@ Depends:
  python-dnspython,
  python-imaging,
  python-ipaddr,
+ python-ipaddress,
  python-ldap,
  python-ldb,
  python-magic,
