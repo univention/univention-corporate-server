@@ -32,7 +32,7 @@
 from __future__ import print_function
 
 import sys
-import ipaddr
+import ipaddress
 import optparse
 from univention import ipcalc
 
@@ -72,15 +72,15 @@ def main():
 	"""Calculate IP address parameters-"""
 	options = parse_options()
 	try:
-		ipaddr.IPAddress(options.address)
-		network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask))
+		ipaddress.ip_address(u'%s' % (options.address,))
+		network = ipaddress.ip_network(u'%s/%s' % (options.address, options.netmask), strict=False)
 	except ValueError as ex:
 		print(ex, file=sys.stderr)
 		sys.exit(1)
 	try:
-		if isinstance(network, ipaddr.IPv6Network):
+		if isinstance(network, ipaddress.IPv6Network):
 			family = 'ipv6'
-		elif isinstance(network, ipaddr.IPv4Network):
+		elif isinstance(network, ipaddress.IPv4Network):
 			family = 'ipv4'
 		func = getattr(ipcalc, 'calculate_%s_%s' % (family, options.output))
 	except (NameError, AttributeError):
