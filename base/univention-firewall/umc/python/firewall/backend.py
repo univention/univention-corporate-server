@@ -33,7 +33,7 @@
 
 import re
 
-import ipaddr
+import ipaddress
 
 import univention.config_registry as ucr
 import univention.management.console as umc
@@ -239,7 +239,7 @@ class Rule(object):
 	def _validate_address(self, address):
 		try:
 			if not REGEX_RULE_ADDRESS.match(address):
-				ipaddr.IPAddress(address)
+				ipaddress.ip_address(u'%s' % (address,))
 		except ValueError:
 			raise Error(_(u"Not a valid IP address"))
 		return address
