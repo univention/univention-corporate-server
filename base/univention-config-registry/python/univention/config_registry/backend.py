@@ -185,6 +185,14 @@ class ConfigRegistry(MM):
 			self.save()
 		self.unlock()
 
+	def clear(self):
+		# type: () -> None
+		"""
+		Clear all registry keys.
+		"""
+		registry = self._registry[self.scope]
+		registry.clear()
+
 	def __delitem__(self, key):
 		# type: (str) -> None
 		"""
