@@ -35,7 +35,7 @@ import struct
 import socket
 import random
 
-import ipaddr
+import ipaddress
 import dns.resolver
 import dns.exception
 from pyasn1.type import tag
@@ -332,7 +332,7 @@ def run(_umc_instance, retest=False):
 			local_included = False
 			for interface in configRegistry.get('samba/interfaces', '').split():
 				try:
-					addr = ipaddr.IPAddress(interface)
+					addr = ipaddress.ip_address(u'%s' % (interface,))
 				except ValueError:
 					local_included |= interface == 'lo'
 				else:
