@@ -15,7 +15,7 @@ Package: univention-firewall
 Architecture: all
 Depends:
  iptables,
- python-ipaddr,
+ python-ipaddress,
  univention-config,
  ${misc:Depends},
  ${python3:Depends},
