@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-config-registry
+fix: 14.0.0-16A~4.4.0.202005281800
+desc: |
+ This update addresses the following issue:
+ * Fix Python 3 interfaces API to use `ipaddress` from the standard library
+   instead of the legacy `ipaddr` module no longer available in Debian 10
+   Buster.
+bug: [51368]
