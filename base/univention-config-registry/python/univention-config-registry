@@ -62,9 +62,7 @@ def convertToUtf8(arguments):
 	return new_arguments
 
 
-if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
-	if os.path.basename(sys.argv[0]) == 'univention-baseconfig':
-		print('WARNING: univention-baseconfig is deprecated by univention-config-registry.', file=sys.stderr)
+if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_config_registry'):
 	try:
 		ub.main(convertToUtf8(sys.argv[1:]))
 	except ub.StrictModeException as e:
