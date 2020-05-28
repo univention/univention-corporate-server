@@ -695,20 +695,6 @@ class ConfigHandlers:
 		except (Exception, pickle.UnpicklingError):
 			self.update()
 
-	def strip_basepath(self, path, basepath):
-		# type: (str, str) -> str
-		"""
-		Strip basepath prefix from path.
-
-		:param path: The path to strip from.
-		:param basepath: The path to strip off.
-		:returns: The stripped path.
-
-		.. deprecated:: 4.4
-			Better use :py:meth:`os.path.relpath`.
-		"""
-		return path.replace(basepath, '')
-
 	def get_handler(self, entry):
 		# type: (_INFO) -> Optional[ConfigHandler]
 		"""
