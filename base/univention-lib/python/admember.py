@@ -43,7 +43,7 @@ import subprocess
 import locale
 import socket
 import tempfile
-import ipaddr
+import ipaddress
 import time
 from datetime import datetime, timedelta
 import pipes
@@ -738,7 +738,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 
 	# get ip addresses
 	try:
-		ipaddr.IPAddress(ad_server)
+		ipaddress.ip_addresses(u'%s' % (ad_server,))
 		ips.append(ad_server)
 	except ValueError:
 		dig_sources = []
