@@ -16,6 +16,7 @@ Architecture: all
 Depends:
  python-dateutil,
  python-dnspython,
+ python-ipaddress,
  python-openssl,
  python-paramiko,
  python-pexpect,
