@@ -15,6 +15,7 @@ Package: univention-management-console-module-adtakeover
 Architecture: all
 Depends:
  fping,
+ python-ipaddress,
  python-univention-lib (>= 3.0.26-37),
  univention-management-console-server (>= 11.0.4-37),
  univention-s4-connector,

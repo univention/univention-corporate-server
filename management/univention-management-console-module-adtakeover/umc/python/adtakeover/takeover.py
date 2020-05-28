@@ -59,7 +59,7 @@ from samba.credentials import Credentials, DONT_USE_KERBEROS
 
 import ldap
 import sqlite3
-import ipaddr
+import ipaddress
 from ldap.filter import filter_format
 from ldap.dn import escape_dn_chars, str2dn, dn2str
 
@@ -1973,7 +1973,7 @@ class Timer(object):
 
 def determine_IP_version(address):
 	try:
-		ip_version = ipaddr.IPAddress(address).version
+		ip_version = ipaddress.ip_address(u'%s' % (address,)).version
 	except ValueError:
 		ip_version = None
 
@@ -2029,7 +2029,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
 	ip_address = None
 	if hostname_or_ip:
 		try:
-			ipaddr.IPAddress(hostname_or_ip)
+			ipaddress.ip_address(u'%s' % (hostname_or_ip,))
 			ip_address = hostname_or_ip
 		except ValueError as ex:
 			pass
