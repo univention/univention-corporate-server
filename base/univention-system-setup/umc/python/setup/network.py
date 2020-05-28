@@ -35,7 +35,7 @@ from __future__ import print_function
 
 import re
 
-import ipaddr
+import ipaddress
 
 from univention.lib.i18n import Translation
 from univention.config_registry import ConfigRegistry
@@ -68,19 +68,19 @@ class DeviceError(ValueError):
 class IP4Set(set):
 
 	def add(self, ip):
-		set.add(self, ipaddr.IPv4Address(ip))
+		set.add(self, ipaddress.IPv4Address(u'%s' % (ip,)))
 
 	def __contains__(self, ip):
-		return set.__contains__(self, ipaddr.IPv4Address(ip))
+		return set.__contains__(self, ipaddress.IPv4Address(u'%s' % (ip,)))
 
 
 class IP6Set(set):
 
 	def add(self, ip):
-		set.add(self, ipaddr.IPv6Address(ip))
+		set.add(self, ipaddress.IPv6Address(u'%s' % (ip,)))
 
 	def __contains__(self, ip):
-		return set.__contains__(self, ipaddr.IPv6Address(ip))
+		return set.__contains__(self, ipaddress.IPv6Address(u'%s' % (ip,)))
 
 
 class Interfaces(dict):
@@ -339,14 +339,14 @@ class Device(object):
 			for address, netmask in self.ip4:
 				# validate IP address
 				try:
-					int(ipaddr.IPv4Address(address))
-				except (ValueError, ipaddr.AddressValueError):
+					int(ipaddress.IPv4Address(u'%s' % (address,)))
+				except (ValueError, ipaddress.AddressValueError):
 					raise DeviceError(_('Invalid IPv4 address: %r') % (address), self.name)
 
 				# validate netmask
 				try:
-					ipaddr.IPv4Network('%s/%s' % (address, netmask))
-				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+					ipaddress.IPv4Network(u'%s/%s' % (address, netmask), False)
+				except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
 					raise DeviceError(_('Invalid IPv4 netmask: %r') % (netmask), self.name)
 
 	def validate_ip6(self):
@@ -355,14 +355,14 @@ class Device(object):
 			for address, prefix, identifier in self.ip6:
 				# validate IP address
 				try:
-					int(ipaddr.IPv6Address(address))
-				except ipaddr.AddressValueError:
+					int(ipaddress.IPv6Address(u'%s' % (address,)))
+				except ipaddress.AddressValueError:
 					raise DeviceError(_('Invalid IPv6 address: %r') % (address), self.name)
 
 				# validate IPv6 netmask
 				try:
-					ipaddr.IPv6Network('%s/%s' % (address, prefix))
-				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
+					ipaddress.IPv6Network(u'%s/%s' % (address, prefix), False)
+				except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
 					raise DeviceError(_('Invalid IPv6 netmask: %r') % (prefix), self.name)
 
 				# validate IPv6 identifier
@@ -473,9 +473,9 @@ class Device(object):
 				vals['interfaces/%s/address' % (name)] = address
 				vals['interfaces/%s/netmask' % (name)] = netmask
 
-				network = ipaddr.IPv4Network('%s/%s' % (address, netmask))
-				vals['interfaces/%s/network' % (name)] = str(network.network)
-				vals['interfaces/%s/broadcast' % (name)] = str(network.broadcast)
+				network = ipaddress.IPv4Network(u'%s/%s' % (address, netmask), False)
+				vals['interfaces/%s/network' % (name)] = str(network.network_address)
+				vals['interfaces/%s/broadcast' % (name)] = str(network.broadcast_address)
 
 			for i, (address, netmask) in enumerate(self.ip4[1:]):
 				vals['interfaces/%s_%s/address' % (name, i)] = address
@@ -652,7 +652,7 @@ class Bond(Device):
 		'balance-tlb': 5,
 		'balance-alb': 6
 	}
-	MODES_R = dict((v, k) for k, v in MODES.iteritems())
+	MODES_R = dict((v, k) for k, v in MODES.items())
 
 	def clear(self):
 		super(Bond, self).clear()
