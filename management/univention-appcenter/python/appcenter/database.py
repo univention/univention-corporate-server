@@ -35,7 +35,7 @@
 import os
 
 import MySQLdb as mysql
-from ipaddr import IPv4Network, AddressValueError
+from ipaddress import IPv4Network, IPv4Address, AddressValueError
 
 from univention.appcenter.utils import generate_password, call_process, call_process_as, container_mode
 from univention.appcenter.packages import packages_are_installed, install_packages, update_packages, mark_packages_as_manually_installed, wait_for_dpkg_lock
@@ -87,11 +87,11 @@ class DatabaseConnector(object):
 	def get_db_host(self):
 		bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16')
 		try:
-			docker0_net = IPv4Network(bip)
+			IPv4Network(u'%s' % (bip,), False)
 		except AddressValueError:
 			raise DatabaseInfoError('Could not find DB host for %r' % bip)
 		else:
-			ip_address = docker0_net.ip
+			ip_address = IPv4Address(u'%s' % (bip.split('/', 1)[0],))
 			return str(ip_address)
 
 	def get_db_name(self):
