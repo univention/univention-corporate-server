@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ipaddr
+import ipaddress
 
 import univention.config_registry
 import univention.admin.modules
@@ -59,8 +59,8 @@ class Instance(Base):
 		status of the system.'''
 
 		# ignore link local addresses (no DHCP address received)
-		network = ipaddr.IPv4Network('%s/%s' % (ip, netmask))
-		if network.IsLinkLocal():
+		network = ipaddress.IPv4Network(u'%s/%s' % (ip, netmask), False)
+		if network.is_link_local:
 			MODULE.error('Ignore link local address change.')
 			return
 
@@ -101,7 +101,7 @@ class Instance(Base):
 
 		# do we have a new reverse zone for this IP address?
 		rmodule = univention.admin.modules.get('dns/reverse_zone')
-		parts = network.network.exploded.split('.')
+		parts = network.network_address.exploded.split('.')
 		while parts[-1] == '0':
 			parts.pop()
 
