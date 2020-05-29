@@ -26,7 +26,6 @@ Depends:
  python-pyasn1-modules,
  python-six,
  python-smbpasswd,
- python-support,
  python-univention (>= 12.0.1-1),
  python-univention-directory-manager-cli (= ${binary:Version}),
  python-univention-heimdal (>= 4.0.1-1),
