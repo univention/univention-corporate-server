@@ -128,6 +128,11 @@ RE_ALNUM = re.compile(r'([0-9]+)|([^0-9]+)')
 class _Iface(dict):
 	"""Single network interface."""
 
+	IPv4Address = IPv4Address
+	IPv6Address = IPv6Address
+	IPv4Interface = IPv4Interface
+	IPv6Interface = IPv6Interface
+
 	def __init__(self, *args, **kwargs):
 		dict.__init__(self, *args, **kwargs)
 		self.ipv6_names = set()
@@ -162,27 +167,27 @@ class _Iface(dict):
 	def network(self):
 		# type: () -> IPv4Address
 		"""Return network address."""
-		return IPv4Address(u'%(network)s' % self)
+		return self.IPv4Address(u'%(network)s' % self)
 
 	@property  # type: ignore
 	@forgiving_addr
 	def broadcast(self):
 		# type: () -> IPv4Address
 		"""Return broadcast address."""
-		return IPv4Address(u'%(broadcast)s' % self)
+		return self.IPv4Address(u'%(broadcast)s' % self)
 
 	@forgiving_addr
 	def ipv4_address(self):
 		# type: () -> IPv4Interface
 		"""Return IPv4 address."""
-		return IPv4Interface(u'%(address)s/%(netmask)s' % self)
+		return self.IPv4Interface(u'%(address)s/%(netmask)s' % self)
 
 	@forgiving_addr
 	def ipv6_address(self, name='default'):
 		# type: (str) -> IPv6Interface
 		"""Return IPv6 address."""
 		key = u'%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
-		return IPv6Interface(key % self)
+		return self.IPv6Interface(key % self)
 
 	@property
 	def routes(self):
@@ -202,6 +207,11 @@ class _Iface(dict):
 			if not k.startswith('options/'):
 				continue
 			yield v
+
+
+class _NewIface(_Iface):
+
+	from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 
 
 class VengefulConfigRegistry(ConfigRegistry):
@@ -244,20 +254,28 @@ class Interfaces(object):
 	Handle network interfaces configured by UCR.
 
 	:param ucr: UCR instance.
+	:param use_python3_api bool: Whether to use the module :py:mod:`ipaddress` from Python 3 or the legacy module :py:mod:`ipaddr` for Python 2 as the interface.
+
+	.. deprecated:: 5.0
+		`use_python3_api` is only relevant for Python 2 code.
 	"""
 
-	def __init__(self, ucr=None):
-		# type: (ConfigRegistry) -> None
+	def __init__(self, ucr=None, use_python3_api=six.PY3):
+		# type: (ConfigRegistry, bool) -> None
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
 		if isinstance(ucr, ConfigRegistry):
 			ucr = VengefulConfigRegistry(ucr)
 
+		IPv4AddressClass = _NewIface.IPv4Address if use_python3_api else IPv4Address
+		IPv6AddressClass = _NewIface.IPv6Address if use_python3_api else IPv6Address
+		IfaceClass = _NewIface if use_python3_api else _Iface
+
 		self.handler = ucr.get('interfaces/handler', 'ifplugd')
 		self.primary = ucr.get('interfaces/primary', 'eth0')
 		try:
-			self.ipv4_gateway = IPv4Address(ucr['gateway'])
+			self.ipv4_gateway = IPv4AddressClass(ucr['gateway'])
 		except KeyError:
 			self.ipv4_gateway = None
 		except ValueError:
@@ -270,7 +288,7 @@ class Interfaces(object):
 			parts = ucr['ipv6/gateway'].rsplit('%', 1)
 			gateway = parts.pop(0)
 			zone_index = parts[0] if parts else None
-			self.ipv6_gateway = IPv6Address(gateway)
+			self.ipv6_gateway = IPv6AddressClass(gateway)
 			self.ipv6_gateway_zone_index = zone_index
 		except KeyError:
 			self.ipv6_gateway = None
@@ -287,7 +305,7 @@ class Interfaces(object):
 			if not match:
 				continue
 			iface, subkey, ipv6_name = match.groups()
-			data = self._all_interfaces.setdefault(iface, _Iface(name=iface))
+			data = self._all_interfaces.setdefault(iface, IfaceClass(name=iface))
 			data[subkey] = value
 			if ipv6_name:
 				data.ipv6_names.add(ipv6_name)
