@@ -5,11 +5,13 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  node-stylus,
- python-support,
+ dh-python,
+ python-all,
+ python3-all,
  sed,
  univention-config-dev,
  univention-dojo-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
  unzip,
 Standards-Version: 3.8.2
@@ -23,6 +25,10 @@ Depends:
  univention-apache,
  ${misc:Depends},
  ${python:Depends},
+ ${python3:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: Univention System Activation
  This package contains the system activation web service which is needed for
  Univention Corporate Server's virtual appliance images

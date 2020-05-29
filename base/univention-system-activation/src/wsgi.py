@@ -1,5 +1,6 @@
 # coding: UTF-8
 
+from __future__ import print_function
 import cgi
 import subprocess
 import traceback
@@ -14,16 +15,12 @@ class LicenseLDIF(LDIFParser):
 	def __init__(self, input, ucr):
 		LDIFParser.__init__(self, input)
 		self.ucr = ucr
-		self.uuid = '00000000-0000-0000-0000-000000000000'
-
-	@property
-	def uuid(self):
-		return self.uuid
+		self.uuid = u'00000000-0000-0000-0000-000000000000'
 
 	def handle(self, dn, entry):
 		if dn == 'cn=admin,cn=license,cn=univention,%s' % self.ucr.get('ldap/base'):
 			if 'univentionLicenseKeyID' in entry and len(entry['univentionLicenseKeyID']) > 0:
-				self.uuid = entry['univentionLicenseKeyID'][0]
+				self.uuid = entry['univentionLicenseKeyID'][0].decode('utf-8')
 
 
 class LdapLicenseFetchError(Exception):
@@ -60,17 +57,17 @@ def clean_license_output(out):
 	# the output might contain the message of the day, as well
 	# ... let's clean up that!
 	ldif = []
-	for line in out.split('\n'):
+	for line in out.split(u'\n'):
 		if ldif and not line:
 			# first empty line after the LDIF -> stop
 			break
-		matchesLdifStart = line.startswith('dn:')
+		matchesLdifStart = line.startswith(u'dn:')
 		if not ldif and not matchesLdifStart:
 			# we have not yet found the beginning of the LDIF -> inspect next line
 			continue
 		# this line is part of the LDIF -> append to LDIF ldifput
 		ldif.append(line)
-	return '\n'.join(ldif)
+	return u'\n'.join(ldif)
 
 
 def application(environ, start_response):
@@ -83,10 +80,10 @@ def application(environ, start_response):
 		}
 
 	def _log(msg):
-		print >> environ['wsgi.errors'], msg
+		print(msg, file=environ['wsgi.errors'])
 
 	def _finish(status='200 OK', data=''):
-		data = json.dumps(data)
+		data = json.dumps(data).encode('UTF-8')
 		headers = [
 			('Content-Type', 'application/json'),
 			('Content-Length', str(len(data))),
@@ -96,13 +93,13 @@ def application(environ, start_response):
 
 	# output the license upon GET request
 	if environ.get('REQUEST_METHOD') == 'GET':
-		cmd = ['usr/bin/sudo', '/usr/bin/univention-ldapsearch', '-LLL', 'objectClass=univentionLicense']
+		cmd = ['/usr/bin/sudo', '/usr/bin/univention-ldapsearch', '-LLL', 'objectClass=univentionLicense']
 		proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		try:
 			out, _err = proc.communicate()
 			if proc.returncode:
 				raise LdapLicenseFetchError('{} exited with {}:\n{}'.format(' '.join(cmd), proc.returncode, out))
-			out = clean_license_output(out)
+			out = clean_license_output(out.decode('UTF-8'))
 			return _finish(data=out)
 		except subprocess.CalledProcessError as exc:
 			_log('Failed to read license data from LDAP:\n%s' % exc)
@@ -137,7 +134,7 @@ def application(environ, start_response):
 
 	# the program logic below is oriented at the import function of the
 	# UMC's UDM module
-	with open(LICENSE_UPLOAD_PATH, 'wb') as license_file:
+	with open(LICENSE_UPLOAD_PATH, 'w') as license_file:
 		# Replace non-breaking space with a normal space
 		# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
 		license_data = formdata.getvalue('license', '').replace(chr(160), ' ')
@@ -150,7 +147,7 @@ def application(environ, start_response):
 		_log('Failed to import the license:\n%s\n%s' % (exc.output, exc))
 		return _finish('400 Bad Request', {
 			'success': False,
-			'message': exc.output
+			'message': exc.output.decode('utf-8', 'replace'),
 		})
 
 	ucr.load()
