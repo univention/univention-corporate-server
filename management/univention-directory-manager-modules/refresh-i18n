@@ -30,9 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-PKG := univention-directory-manager-modules
-VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
-PO_FILES := $(shell find modules/ -name "*.po" | grep -v .svn)
+include /usr/share/dpkg/pkg-info.mk
+PO_FILES := $(shell find modules/ -name "*.po")
 
 .PHONY: build
 build:: l10n
@@ -47,32 +46,20 @@ l10n: $(PO_FILES)
 	xgettext --output=$(@).tmp \
 		--language=Python \
 		--keyword=N_:1 \
-		--package-name=$(PKG) \
-		--package-version=$(VERSION) \
+		--package-name=$(DEB_SOURCE) \
+		--package-version=$(DEB_VERSION) \
 		--msgid-bugs-address="packages@univention.de" \
 		--copyright-holder="Univention GmbH" \
 		$(dir $@)*py
 	if [ -e "$@" ]; then \
-		msgmerge --update --sort-output "$@" "$@".tmp; \
+		msgmerge --update --backup=off --sort-output "$@" "$@".tmp; \
 		touch "$@"; \
 	else \
 		cp "$<" "$@"; \
 	fi
-	rm -f "$@".tmp
-	find -name 'de.po~' -delete
+	$(RM) "$@".tmp
 
-modules/univention/admin/de.po: $(wildcard modules/univention/admin/*.py)
-modules/univention/admin/handlers/policies/de.po: $(wildcard modules/univention/admin/handlers/policies/*.py)
-modules/univention/admin/handlers/users/de.po: $(wildcard modules/univention/admin/handlers/users/*.py)
-modules/univention/admin/handlers/shares/de.po: $(wildcard modules/univention/admin/handlers/shares/*.py)
-modules/univention/admin/handlers/mail/de.po: $(wildcard modules/univention/admin/handlers/mail/*.py)
-modules/univention/admin/handlers/groups/de.po: $(wildcard modules/univention/admin/handlers/groups/*.py)
-modules/univention/admin/handlers/de.po: $(wildcard modules/univention/admin/handlers/*.py)
-modules/univention/admin/handlers/networks/de.po: $(wildcard modules/univention/admin/handlers/networks/*.py)
-modules/univention/admin/handlers/kerberos/de.po: $(wildcard modules/univention/admin/handlers/kerberos/*.py)
-modules/univention/admin/handlers/nagios/de.po: $(wildcard modules/univention/admin/handlers/nagios/*.py)
-modules/univention/admin/handlers/dns/de.po: $(wildcard modules/univention/admin/handlers/dns/*.py)
-modules/univention/admin/handlers/computers/de.po: $(wildcard modules/univention/admin/handlers/computers/*.py)
-modules/univention/admin/handlers/container/de.po: $(wildcard modules/univention/admin/handlers/container/*.py)
-modules/univention/admin/handlers/settings/de.po: $(wildcard modules/univention/admin/handlers/settings/*.py)
-modules/univention/admin/handlers/dhcp/de.po: $(wildcard modules/univention/admin/handlers/dhcp/*.py)
+define PO_tmpl =
+$(1): $$(wildcard $$(dir $(1))/*.py)
+endef
+$(foreach po,$(PO_FILES),$(eval $(call PO_tmpl,$(po))))
