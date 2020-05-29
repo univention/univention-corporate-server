@@ -1,0 +1,41 @@
+Source: univention-unittests
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper (>= 10~),
+ dh-python,
+ python-all,
+ python-setuptools,
+ python3-all,
+ python3-setuptools,
+Standards-Version: 3.8.2
+
+Package: univention-unittests-python
+Architecture: all
+Depends:
+ univention-unittests,
+ python-pytest,
+ python-pytest-mock,
+ python3-pytest,
+ python3-pytest-mock,
+Suggests:
+ python-pytest-cov,
+ python3-pytest-cov,
+Description: Plugins for pytest that go with UCS specific packages.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-unittests
+Architecture: all
+Depends:
+ bash,
+Description: Unittests for UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
