@@ -32,7 +32,6 @@ import univention.ucslint.base as uub
 from univention.ucslint.python import python_files
 import re
 import os
-import io
 import sys
 import subprocess
 from argparse import ArgumentParser
@@ -95,6 +94,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
 
 	def getMsgIds(self):
+
 		ERROR_BUT_WARN = uub.RESULT_WARN if self.GRACEFUL else uub.RESULT_ERROR
 		return {
 			'0020-F401': [ERROR_BUT_WARN, 'module imported but unused'],
@@ -102,6 +102,44 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-F403': [ERROR_BUT_WARN, '‘from module import *’ used; unable to detect undefined names'],
 			'0020-F404': [ERROR_BUT_WARN, 'future import(s) name after other statements'],
 			'0020-F405': [ERROR_BUT_WARN, 'name may be undefined, or defined from star imports: module'],
+			'0020-F406': [uub.RESULT_ERROR, '‘from module import *’ only allowed at module level'],
+			'0020-F407': [uub.RESULT_ERROR, 'an undefined __future__ feature name was imported'],
+
+			'0020-F501': [ERROR_BUT_WARN, 'invalid % format literal'],
+			'0020-F502': [ERROR_BUT_WARN, '% format expected mapping but got sequence'],
+			'0020-F503': [ERROR_BUT_WARN, '% format expected sequence but got mapping'],
+			'0020-F504': [ERROR_BUT_WARN, '% format unused named arguments'],
+			'0020-F505': [ERROR_BUT_WARN, '% format missing named arguments'],
+			'0020-F506': [ERROR_BUT_WARN, '% format mixed positional and named arguments'],
+			'0020-F507': [ERROR_BUT_WARN, '% format mismatch of placeholder and argument count'],
+			'0020-F508': [ERROR_BUT_WARN, '% format with * specifier requires a sequence'],
+			'0020-F509': [ERROR_BUT_WARN, '% format with unsupported format character'],
+			'0020-F521': [ERROR_BUT_WARN, '.format(...) invalid format string'],
+			'0020-F522': [ERROR_BUT_WARN, '.format(...) unused named arguments'],
+			'0020-F523': [ERROR_BUT_WARN, '.format(...) unused positional arguments'],
+			'0020-F524': [ERROR_BUT_WARN, '.format(...) missing argument'],
+			'0020-F525': [ERROR_BUT_WARN, '.format(...) mixing automatic and manual numbering'],
+			'0020-F541': [ERROR_BUT_WARN, 'f-string without any placeholders'],
+
+			'0020-F601': [uub.RESULT_WARN, 'dictionary key name repeated with different values'],
+			'0020-F602': [uub.RESULT_WARN, 'dictionary key variable name repeated with different values'],
+			'0020-F621': [uub.RESULT_ERROR, 'too many expressions in an assignment with star-unpacking'],
+			'0020-F622': [uub.RESULT_ERROR, 'two or more starred expressions in an assignment (a, *b, *c = d)'],
+			'0020-F631': [uub.RESULT_ERROR, 'assertion test is a tuple, which is always True'],
+			'0020-F632': [uub.RESULT_WARN, 'use ==/!= to compare str, bytes, and int literals'],
+			'0020-F633': [uub.RESULT_WARN, 'use of >> is invalid with print function'],
+			'0020-F634': [uub.RESULT_ERROR, 'if test is a tuple, which is always True'],
+
+			'0020-F701': [uub.RESULT_ERROR, 'a break statement outside of a while or for loop'],
+			'0020-F702': [uub.RESULT_ERROR, 'a continue statement outside of a while or for loop'],
+			'0020-F703': [uub.RESULT_ERROR, 'a continue statement in a finally block in a loop'],
+			'0020-F704': [uub.RESULT_ERROR, 'a yield or yield from statement outside of a function'],
+			'0020-F705': [uub.RESULT_ERROR, 'a return statement with arguments inside a generator'],
+			'0020-F706': [uub.RESULT_ERROR, 'a return statement outside of a function/method'],
+			'0020-F707': [uub.RESULT_ERROR, 'an except: block as not the last exception handler'],
+			'0020-F721': [uub.RESULT_ERROR, 'syntax error in doctest'],
+			'0020-F722': [uub.RESULT_ERROR, 'syntax error in forward annotation'],
+			'0020-F723': [uub.RESULT_ERROR, 'syntax error in type comment'],
 
 			'0020-F811': [ERROR_BUT_WARN, 'redefinition of unused name from line N'],
 			'0020-F812': [ERROR_BUT_WARN, 'list comprehension redefines name from line N'],
@@ -111,6 +149,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-F831': [ERROR_BUT_WARN, 'duplicate argument name in function definition'],
 			'0020-F841': [ERROR_BUT_WARN, 'local variable name is assigned to but never used'],
 
+			'0020-F901': [uub.RESULT_WARN, 'raise NotImplemented should be raise NotImplementedError'],
+
 			'0020-E1': [ERROR_BUT_WARN, 'Indentation'],
 			'0020-E101': [ERROR_BUT_WARN, 'indentation contains mixed spaces and tabs'],
 			'0020-E111': [ERROR_BUT_WARN, 'indentation is not a multiple of four'],
@@ -119,6 +159,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-E114': [ERROR_BUT_WARN, 'indentation is not a multiple of four (comment)'],
 			'0020-E115': [ERROR_BUT_WARN, 'expected an indented block (comment)'],
 			'0020-E116': [ERROR_BUT_WARN, 'unexpected indentation (comment)'],
+			'0020-E117': [ERROR_BUT_WARN, 'over-indented'],
 
 			'0020-E121': [uub.RESULT_WARN, 'continuation line under-indented for hanging indent'],
 			'0020-E122': [uub.RESULT_WARN, 'continuation line missing indentation or outdented'],
@@ -164,6 +205,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-E272': [ERROR_BUT_WARN, 'multiple spaces before keyword'],
 			'0020-E273': [ERROR_BUT_WARN, 'tab after keyword'],
 			'0020-E274': [ERROR_BUT_WARN, 'tab before keyword'],
+			'0020-E275': [ERROR_BUT_WARN, 'missing whitespace after keyword'],
 
 			'0020-E3': [ERROR_BUT_WARN, 'Blank line'],
 			'0020-E301': [ERROR_BUT_WARN, 'expected 1 blank line, found 0'],
@@ -191,6 +233,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-E713': [ERROR_BUT_WARN, 'test for membership should be ‘not in’'],
 			'0020-E714': [ERROR_BUT_WARN, 'test for object identity should be ‘is not’'],
 			'0020-E721': [ERROR_BUT_WARN, 'do not compare types, use ‘isinstance()’'],
+			'0020-E722': [uub.RESULT_WARN, "do not use bare 'except'"],
 			'0020-E731': [ERROR_BUT_WARN, 'do not assign a lambda expression, use a def'],
 			'0020-E741': [uub.RESULT_WARN, 'do not use variables named ‘l’, ‘O’, or ‘I’'],
 			'0020-E742': [ERROR_BUT_WARN, 'do not define classes named ‘l’, ‘O’, or ‘I’'],
@@ -214,12 +257,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 
 			'0020-W5': [ERROR_BUT_WARN, 'Line break warning'],
 			'0020-W503': [ERROR_BUT_WARN, 'line break occurred before a binary operator'],
+			'0020-W504': [ERROR_BUT_WARN, 'line break after binary operator'],
+			'0020-W505': [uub.RESULT_STYLE, 'doc line too long (82 > 79 characters)'],
 
 			'0020-W6': [ERROR_BUT_WARN, 'Deprecation warning'],
 			'0020-W601': [uub.RESULT_WARN, '.has_key() is deprecated, use ‘in’'],  # Bug #42787: should be RESULT_ERROR when fixed in UDM
 			'0020-W602': [ERROR_BUT_WARN, 'deprecated form of raising exception'],
 			'0020-W603': [uub.RESULT_ERROR, '‘<>’ is deprecated, use ‘!=’'],
 			'0020-W604': [uub.RESULT_ERROR, 'backticks are deprecated, use ‘repr()’'],
+			'0020-W605': [uub.RESULT_WARN, "invalid escape sequence '\\s'"],
+			'0020-W606': [uub.RESULT_WARN, '‘async’ and ‘await’ are reserved keywords starting with Python 3.7'],
 
 			'0020-N801': [uub.RESULT_STYLE, "class names should use CapWords convention"],
 			'0020-N802': [uub.RESULT_STYLE, "function name should be lowercase"],
