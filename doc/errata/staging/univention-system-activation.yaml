@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-system-activation
 fix: 4.0.0-12A~4.4.0.202005291234
 desc: |
- This update addresses the following issue(s):
- * The package now uses dh_python2 instead of python-support.
+ This update addresses the following issue:
+ * The package now uses `dh_python2` instead of `python-support`.
 bug: [51373]
