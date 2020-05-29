@@ -39,9 +39,9 @@ Depends:
  ${misc:Depends},
  ${python:Depends},
 Breaks:
- python3-univention-config-registry (<< 14.0.0-17),
+ python-univention-config-registry (<< 14.0.0-17),
 Replaces:
- python3-univention-config-registry (<< 14.0.0-17),
+ python-univention-config-registry (<< 14.0.0-17),
 Provides:
  ${python:Provides},
 Description: Univention helper Python 3 library for debian/rules
