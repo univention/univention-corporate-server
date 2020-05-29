@@ -11,6 +11,7 @@ Build-Depends:
  libunivention-debug-dev (>= 5.0.6-1),
  python-all,
  python-ipaddr,
+ python-ipaddress,
  python-mock,
  python-pytest,
  python-pytest-cov,
@@ -116,6 +117,7 @@ Architecture: all
 Depends:
  ifupdown,
  python-ipaddr,
+ python-ipaddress,
  python-six,
  python-univention-debhelper,
  python-univention-namespace,
