@@ -34,10 +34,6 @@
 
 eval "$(univention-config-registry shell)"
 
-if which update-python-modules >/dev/null 2>&1; then
-	update-python-modules python-univention-directory-manager.public
-fi
-
 #DEBHELPER#
 
 if [ "$1" = "configure" ]; then

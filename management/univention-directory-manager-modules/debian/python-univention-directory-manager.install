@@ -33,4 +33,3 @@ modules/univention/admin/handlers/networks/__init__.py usr/share/pyshared/univen
 modules/univention/admin/handlers/settings/__init__.py usr/share/pyshared/univention/admin/handlers/settings/
 modules/univention/admin/handlers/computers/__init__.py usr/share/pyshared/univention/admin/handlers/computers/
 modules/univention/admin/handlers/kerberos/__init__.py usr/share/pyshared/univention/admin/handlers/kerberos/
-python-univention-directory-manager.public usr/share/python-support/
