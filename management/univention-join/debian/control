@@ -17,7 +17,6 @@ Depends:
  python-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.26-28),
  tofrodos,
- univention-admin-diary-client (>= 1.0.0-44),
  univention-config,
  univention-directory-manager-tools (>> 7.0.147),
  univention-ssh (>= 3.0.1-2),
@@ -25,6 +24,8 @@ Depends:
  ${misc:Depends},
 Breaks:
  univention-ldap-server (<< 14.0.2-35),
+Recommends:
+ univention-admin-diary-client (>= 1.0.0-44),
 Description: UCS - join domains
  This packages allows for the joining of UCS computers to a
  UCS domain.

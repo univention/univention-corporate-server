@@ -261,6 +261,7 @@ then
 		RET=$?
 		echo "EXITCODE=$RET"
 		if [ $RET != 0 ]; then
+			[ -x /usr/sbin/univention-admin-diary-entry-create ] &&
 			/usr/sbin/univention-admin-diary-entry-create --event JOIN_SCRIPT_FAILED --arg "joinscript=$(basename "$i")"
 			echo -e "\033[60Gfailed (exitcode: $RET)" >&3
 		else
