@@ -8,7 +8,7 @@ Build-Depends:
  imagemagick,
  librsvg2-bin,
  node-stylus,
- nodejs-legacy,
+ nodejs,
  sed,
  univention-config-dev,
  univention-dojo,
