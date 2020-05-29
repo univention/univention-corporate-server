@@ -17,6 +17,7 @@ Depends:
  univention-unittests,
  python-pytest,
  python-pytest-mock,
+ python-mock,
  python3-pytest,
  python3-pytest-mock,
 Suggests:
