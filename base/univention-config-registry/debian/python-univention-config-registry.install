@@ -1,9 +1,0 @@
-python/univention_baseconfig.py usr/lib/python2.7/dist-packages/
-
-python/univention/config_registry_info.py usr/lib/python2.7/dist-packages/univention/
-python/univention/baseconfig.py usr/lib/python2.7/dist-packages/univention/
-python/univention/info_tools.py usr/lib/python2.7/dist-packages/univention/
-python/univention/service_info.py usr/lib/python2.7/dist-packages/univention/
-python/univention/debhelper.py usr/lib/python2.7/dist-packages/univention/
-
-python/univention/config_registry/ usr/lib/python2.7/dist-packages/univention/

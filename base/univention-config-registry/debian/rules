@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-export PYBUILD_NAME=univention.config_registry
+export PYBUILD_NAME=univention-config-registry
 
 %:
 	dh $@ --with 'python2,python3'
@@ -56,9 +56,6 @@ override_dh_auto_test-indep:
 override_dh_auto_test-arch:
 	$(MAKE) -C tests check
 
-version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-override_dh_install-indep:
-	dh_install -i
-	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python-univention-config-registry/usr/lib/python2.7/dist-packages/univention/config_registry/frontend.py
-
+version := $(shell dpkg-parsechangelog -SVersion)
 override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
+	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python*-univention-config-registry/usr/lib/python*/dist-packages/univention/config_registry/frontend.py

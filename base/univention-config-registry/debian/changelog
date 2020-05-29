@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-17) unstable; urgency=low
+
+  * Bug #51374: Split univention.debhelper into separate package
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 29 May 2020 16:37:58 +0200
+
 univention-config-registry (14.0.0-16) unstable; urgency=low
 
   * Bug #51368: Fix Python 3 API

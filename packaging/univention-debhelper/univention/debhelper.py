@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
 """Debhelper compatible routines."""
 #
 # Copyright 2010-2020 Univention GmbH
@@ -63,14 +62,12 @@ def binary_packages():
 	"""
 	_prefix = 'Package: '
 	packages = []
-	f = open('debian/control', 'r')
-	try:
+	with open('debian/control', 'r') as f:
 		for line in f:
 			if not line.startswith(_prefix):
 				continue
 			packages.append(line[len(_prefix): -1])
-	finally:
-		f.close()
+
 	return packages
 
 
@@ -109,8 +106,10 @@ def parseRfc822(f):
 		elif ent:
 			res.append(ent)
 			ent = {}
+
 	if ent:
 		res.append(ent)
+
 	return res
 
 
