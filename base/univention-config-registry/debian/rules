@@ -57,5 +57,8 @@ override_dh_auto_test-arch:
 	$(MAKE) -C tests check
 
 version := $(shell dpkg-parsechangelog -SVersion)
-override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
+override_dh_installinit-indep:
+	dh_installinit -i
 	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python*-univention-config-registry/usr/lib/python*/dist-packages/univention/config_registry/frontend.py
+
+override_dh_installinit-dep: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
