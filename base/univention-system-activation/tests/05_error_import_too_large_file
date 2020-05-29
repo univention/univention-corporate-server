@@ -33,12 +33,10 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . tools.inc.sh
 
-license_file=$(mktemp)
-random_chars 150000 "${_upperletters}${_lowerletters}${_ciphers}._-" > $license_file
+license_file="$(mktemp)"
+random_chars 150000 "${_upperletters}${_lowerletters}${_ciphers}._-" > "$license_file"
 http --form "license=@${license_file}"
-rm -f $license_file
+rm -f "$license_file"
 
-if ! has_request_failed; then
+has_request_failed ||
 	fail_fast 1 "Large file is not caught"
-fi
-

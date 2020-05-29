@@ -33,4 +33,4 @@ build: www/style.css
 	stylus "$<"
 
 clean:
-	rm -f www/style.css
+	$(RM) www/style.css

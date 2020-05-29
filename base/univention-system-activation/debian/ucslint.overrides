@@ -1,2 +1,8 @@
 0010-2: build/js/dojox/mobile/build/build.sh
 0010-2: build/js/dojox/storage/buildFlashStorage.sh
+# no comment for UCR header in JSON files:
+0004-16: conffiles/usr/share/univention-system-activation/languages.json
+0004-16: conffiles/usr/share/univention-system-activation/entries.json
+# files are installed by debian/univention-system-activation.install:
+0004-14: conffiles/usr/lib/univention-system-setup/appliance-hooks.d/96_enable_system_activation
+0004-14: conffiles/etc/sudoers.d/univention-system-activation

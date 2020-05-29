@@ -29,18 +29,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-UCR_ARRRAY=()
+declare -a UCR_ARRRAY=()
 
 function ucr_build_array(){
 	for service in "gdm" "kdm" "login" "other" "sshd"; do
 		for user in "group/Administrators" "group/Domain Admins" "group/Computers" "group/DC Backup Hosts" "group/DC Slave Hosts" "user/root"; do
-			UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/$service/$user$1")
+			UCR_ARRAY+=("auth/$service/$user$1")
 		done
-		UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/$service/restrict$2")
+		UCR_ARRAY+=("auth/$service/restrict$2")
 	done
-	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/sudo$1")
-	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/su/restrict$2")
-	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/su/user/root$1")
+	UCR_ARRAY+=("auth/sudo$1")
+	UCR_ARRAY+=("auth/su/restrict$2")
+	UCR_ARRAY+=("auth/su/user/root$1")
 }
 
 function allow_root_login() {
@@ -53,7 +53,7 @@ function restrict_root_login() {
 	ucr set --force "${UCR_ARRAY[@]}"
 }
 
-if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
+if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 	echo
 	echo "When called with 'start', deactivates all access to the UCS and enforces"
 	echo "the redirection to a system activation web service. This service will be"
@@ -64,7 +64,7 @@ if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
 	echo "'allow-root' reverts these restrictions. Both will also be called along"
 	echo "with the actions 'start'/'stop', respectively."
 	echo
-	echo "usage: $(basename $0) [start|stop|allow-root|restrict-root]"
+	echo "usage: ${0##*/} [start|stop|allow-root|restrict-root]"
 	echo
 	exit 0
 fi
@@ -73,7 +73,7 @@ ACTION=$1
 
 eval "$(ucr shell)"
 
-if [ "$ACTION" = "start" -a -e "/etc/apache2/sites-enabled/univention-system-activation.conf" ]; then
+if [ "$ACTION" = "start" ] && [ -e "/etc/apache2/sites-enabled/univention-system-activation.conf" ]; then
 	echo
 	echo "ERROR: It seems that the system activation has already been started."
 	echo
@@ -82,7 +82,7 @@ elif [ "$ACTION" = "start" ]; then
 	restrict_root_login
 	a2ensite univention-system-activation
 	/etc/init.d/apache2 reload
-elif [ "$ACTION" = "stop" -a ! -e "/etc/apache2/sites-enabled/univention-system-activation.conf" ]; then
+elif [ "$ACTION" = "stop" ] && [ ! -e "/etc/apache2/sites-enabled/univention-system-activation.conf" ]; then
 	echo
 	echo "ERROR: It seems that the system activation has not been started yet."
 	echo

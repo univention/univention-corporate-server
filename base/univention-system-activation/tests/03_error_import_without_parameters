@@ -33,7 +33,5 @@
 . tools.inc.sh
 
 http --data "bar=foo"
-if ! has_request_failed; then
+has_request_failed ||
 	fail_fast 1 "Missing 'license' parameter has not been caught (response status was $RESPONSE_CODE)"
-fi
-
