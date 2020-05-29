@@ -6,7 +6,7 @@ Build-Depends:
  debhelper,
  node-stylus,
  univention-config-dev,
- univention-join,
+ univention-debhelper,
  univention-ucs-translation-template,
 Standards-Version: 3.9.5
 

@@ -10,7 +10,7 @@ Build-Depends:
  python-debian,
  python3-all,
  univention-config-dev,
- univention-join,
+ univention-debhelper,
  univention-management-console-dev (>= 11.0.4-37),
  univention-ucs-translation-template,
 Standards-Version: 3.8.2

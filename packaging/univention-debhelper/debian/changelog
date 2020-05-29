@@ -1,0 +1,5 @@
+univention-debhelper (1.0.0-1) unstable; urgency=medium
+
+  * Bug #51374: Split univention-install-joinscript into separate package
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 29 May 2020 13:24:55 +0200

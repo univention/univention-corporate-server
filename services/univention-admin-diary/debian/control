@@ -9,7 +9,7 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev,
- univention-join,
+ univention-debhelper,
  univention-management-console-dev (>= 11.0.4-37),
 Standards-Version: 3.7.2
 
