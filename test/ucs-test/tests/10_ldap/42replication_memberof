@@ -42,9 +42,28 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from ldap.dn import escape_dn_chars
 import sys
+import time
+from typing import Callable  # noqa: F401
 
 RETRY_COUNT = 20
-DELAY = 10
+DELAY = 1
+
+
+def try_again(func):  # type: (Callable[[], None]) -> None
+	"""
+	Call the given function several times until the maximum number of attempts has been reached or
+	no exception has been raised by the function.
+	"""
+	i = 0
+	while i < RETRY_COUNT:
+		i += 1
+		try:
+			func()
+		except Exception as exc:
+			print('Attempt %d/%d failed: %s' % (i, RETRY_COUNT, exc))
+			if i == RETRY_COUNT:
+				raise
+			time.sleep(DELAY)
 
 
 class AutoStartStopListener(object):
@@ -61,12 +80,12 @@ class AutoStartStopListener(object):
 		"""
 		self.dry_run = dry_run
 
-	def __enter__(self):
+	def __enter__(self):  # type: () -> AutoStartStopListener
 		if not self.dry_run:
 			stop_listener()
 		return self
 
-	def __exit__(self, exc_type, exc_value, traceback):
+	def __exit__(self, exc_type, exc_value, traceback):  # type: (Any, Any, Any) -> None
 		if not self.dry_run:
 			start_listener()
 
@@ -110,10 +129,12 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener)
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
 		wait_for_replication()
-		self.print_attributes([dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
-		utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
+			utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		try_again(my_check)
 
 	def test_user_group_mixed(self, with_listener):  # type: (bool) -> None
 		"""
@@ -129,10 +150,12 @@ class TestCases(object):
 			dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener)
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
 		wait_for_replication()
-		self.print_attributes([dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
-		utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
+			utils.verify_ldap_object(dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		try_again(my_check)
 
 	def test_move_user(self, with_listener):  # type: (bool) -> None
 		"""
@@ -151,10 +174,12 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
 			new_dn_user1 = udm.move_object('users/user', dn=dn_user1, position=dn_cn, wait_for_replication=with_listener)
 		wait_for_replication()
-		self.print_attributes([new_dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(dn_grp1, {'uniqueMember': [new_dn_user1, dn_user2]}, strict=True)
-		utils.verify_ldap_object(new_dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([new_dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(dn_grp1, {'uniqueMember': [new_dn_user1, dn_user2]}, strict=True)
+			utils.verify_ldap_object(new_dn_user1, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		try_again(my_check)
 
 	def test_move_group(self, with_listener):  # type: (bool) -> None
 		"""
@@ -173,10 +198,12 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener)
 			new_dn_grp1 = udm.move_object('groups/group', dn=dn_grp1, position=dn_cn, wait_for_replication=with_listener)
 		wait_for_replication()
-		self.print_attributes([dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
-		utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
+			utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
+		try_again(my_check)
 
 	def test_rename_group(self, with_listener):  # type: (bool) -> None
 		"""
@@ -195,10 +222,12 @@ class TestCases(object):
 			new_dn_grp1 = 'cn=%s,%s' % (escape_dn_chars(new_name_grp1), self.base_group)
 			udm.modify_object('groups/group', dn=dn_grp1, name=new_name_grp1, wait_for_replication=with_listener, wait_for=with_listener)
 		wait_for_replication()
-		self.print_attributes([new_dn_grp1, dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
-		utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([new_dn_grp1, dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(new_dn_grp1, {'uniqueMember': [dn_user1, dn_user2]}, strict=True)
+			utils.verify_ldap_object(dn_user1, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [new_dn_grp1, self.dn_domain_users]}, strict=True)
+		try_again(my_check)
 
 	def test_remove_group(self, with_listener):  # type: (bool) -> None
 		"""
@@ -220,9 +249,12 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
 			udm.remove_object('groups/group', dn=dn_grp1, wait_for_replication=with_listener)
 		wait_for_replication()
-		self.print_attributes([dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [self.dn_domain_users]}, strict=True)
+		try_again(my_check)
+
 
 	def test_remove_user_from_group(self, with_listener):  # type: (bool) -> None
 		"""
@@ -244,12 +276,14 @@ class TestCases(object):
 			udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
 			udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener)
 		wait_for_replication()
-		self.print_attributes([dn_user1, dn_user2], 'RESULT')
-		utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True)
-		utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True)
-		utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		def my_check():  # type: () -> None
+			self.print_attributes([dn_user1, dn_user2], 'RESULT')
+			utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True)
+			utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True)
+			utils.verify_ldap_object(dn_user2, {'memberOf': [dn_grp1, self.dn_domain_users]}, strict=True)
+		try_again(my_check)
 
-	def run(self):
+	def run(self):  # type: () -> None
 		for func in (
 			self.test_user_then_group,
 			self.test_user_group_mixed,
