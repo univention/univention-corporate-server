@@ -2,6 +2,7 @@
 set -e -u
 
 base="$(dirname "$1")"
+pkg="${base%%_*}"
 RE='^ [0-9a-f]{32} [0-9]+ ((([a-zA-Z0-9_.-]+/)?[a-zA-Z0-9_.-]+|-) ([a-zA-Z]+|-) )?(.*)$'
 args="$(sed -rne "s!${RE}!-F file=@${base}/\\5!p" "$1")"
 curl \
@@ -10,6 +11,24 @@ curl \
 	-X POST \
 	$args \
 	"${APTLY}/files/${CI_JOB_ID}"
+
+pkgs="$(
+curl \
+	--fail \
+	--show-error \
+	--data-urlencode q="\$Source ($pkg)" \
+	--get "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
+)"
+JSON='{
+"PackageRefs":'"$pkgs"'
+}'
+curl \
+	--fail \
+	--show-error \
+	-X DELETE \
+	-H 'Content-Type: application/json' \
+	--data "$JSON" \
+	"${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
 
 JSON='{
 "forceReplace":1
@@ -20,7 +39,7 @@ curl \
 	-X POST \
 	-H 'Content-Type: application/json' \
 	--data "$JSON" \
-	"$APTLY/repos/$CI_COMMIT_REF_SLUG/file/$CI_JOB_ID"
+	"${APTLY}/repos/${CI_COMMIT_REF_SLUG}/file/${CI_JOB_ID}"
 
 JSON='{
 "AcquireByHash":true,
@@ -32,4 +51,4 @@ exec curl \
 	-X PUT \
 	-H 'Content-Type: application/json' \
 	--data "$JSON" \
-	"$APTLY/publish/$CI_COMMIT_REF_SLUG/git"
+	"${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git"
