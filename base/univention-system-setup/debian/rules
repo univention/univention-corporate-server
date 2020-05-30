@@ -42,12 +42,9 @@ override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install
 
-override_dh_install:
-	dh_install -X.svn
-
 override_dh_installinit:
 	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 93"
-	dh_installinit -punivention-system-setup-boot-prepare --no-start -u"defaults 15"
+	dh_installinit --name=univention-system-setup-boot-prepare --no-start -u"defaults 15"
 
 override_dh_fixperms:
 	dh_fixperms
@@ -60,6 +57,3 @@ override_dh_auto_test:
 
 %:
 	dh $@ --with 'python2,python3'
-
-debian/po/templates.pot: debian/po/POTFILES.in
-	cd debian && debconf-updatepo --msgid-bugs-address='Univention GmbH <packages@univention.de>'

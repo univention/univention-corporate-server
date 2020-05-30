@@ -105,7 +105,6 @@ write_slave1_preseed () {
 		#
 		# Univention System Setup profile
 		#
-		univention-system-setup-boot uss/di-univention-system-setup/skip boolean true
 		univention-system-setup-boot uss/components string
 		univention-system-setup-boot uss/packages_install string
 		univention-system-setup-boot uss/packages_remove string

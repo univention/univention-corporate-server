@@ -7,7 +7,6 @@ Build-Depends:
  debhelper,
  dh-python,
  node-stylus,
- po-debconf (>= 0.5.0),
  python-all,
  python-apt,
  python-dnspython,
@@ -93,32 +92,6 @@ Replaces:
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
  boot. This package is only allowed on the server role DC Master.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: di-univention-system-setup
-Package-Type: udeb
-Architecture: any
-Section: debian-installer
-Priority: standard
-XB-Subarchitecture: ${subarch}
-Provides:
- configured-ucs,
-Depends:
- bootable-system,
- cdebconf-udeb,
- created-fstab,
- di-utils,
- installed-base,
- kernel-installer,
- ${misc:Depends},
-XB-Installer-Menu-Item: 7650
-Description: Start Univention System Setup
- This package is used to launch Univention System Setup in boot mode from
- the Debian based UCS installer.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
