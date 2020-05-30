@@ -3,7 +3,6 @@
 0004-16: conffiles/etc/motd.setup
 0004-18: debian/univention-system-setup-boot.univention-config-registry
 0009-2: po2json.py
-0011-16: debian/di-univention-system-setup.isinstallable
 # Tests
 0010-2: tests/test_setup_script_profile
 0009-2: tests/test_setup_script_profile

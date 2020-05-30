@@ -33,10 +33,11 @@
 STYL_FILES := $(shell find usr/share -name '*.styl')
 CSS_FILES := $(STYL_FILES:.styl=.css)
 
-build: get-volume-set-identifier $(CSS_FILES)
+build: $(CSS_FILES)
 
 clean:
-	rm -f $(CSS_FILES)
+	$(RM) -f $(CSS_FILES)
+	$(RM) -f umc/js/*.json
 
 install: build
 	@echo "Nothing to install"
@@ -46,6 +47,3 @@ install: build
 
 %.json: %.po
 	dh-umc-po2json "$<"
-
-get-volume-set-identifier: get-volume-set-identifier.c
-	gcc -std=c11 -O3 -Wall -Wextra -Wconversion $< -o $@
