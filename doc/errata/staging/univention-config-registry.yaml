@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-config-registry
-fix: 14.0.0-17A~4.4.0.202005291830
+fix: 14.0.0-17A~4.4.0.202005300929
 desc: |
  This update addresses the following issues:
  * Fix Python 3 interfaces API to use `ipaddress` from the standard library
