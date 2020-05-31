@@ -105,11 +105,39 @@ class Phase(object):
 		self.changeset = changeset
 		self.logger = logging.getLogger("uss.network.phase.%s" % (self,))
 
-	def __cmp__(self, other):
+	def __lt__(self, other):
 		"""
 		Order phases by priority.
+
+		>>> Phase(None) < Phase(None)
+		False
+		>>> Phase(None) <= Phase(None)
+		True
+		>>> Phase(None) == Phase(None)
+		True
+		>>> Phase(None) != Phase(None)
+		False
+		>>> Phase(None) >= Phase(None)
+		True
+		>>> Phase(None) > Phase(None)
+		False
 		"""
-		return cmp(self.priority, other.priority) or cmp(str(self), str(other)) or cmp(id(self), id(other))
+		return (self.priority, str(self)) < (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+
+	def __le__(self, other):
+		return (self.priority, str(self)) <= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+
+	def __eq__(self, other):
+		return (self.priority, str(self)) == (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+
+	def __ne__(self, other):
+		return (self.priority, str(self)) != (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+
+	def __ge__(self, other):
+		return (self.priority, str(self)) >= (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
+
+	def __gt__(self, other):
+		return (self.priority, str(self)) > (other.priority, str(other)) if isinstance(other, Phase) else NotImplemented
 
 	def __str__(self):
 		name = self.__class__.__name__

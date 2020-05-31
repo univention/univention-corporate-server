@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+import six
 from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
@@ -38,7 +39,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import stripDot
+from univention.admin.handlers.dns import stripDot, ARPA_IP4, ARPA_IP6
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -141,7 +142,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
 		return filter
 
 
@@ -149,8 +150,8 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].endswith('.in-addr.arpa') and not attr['zoneName'][0].endswith('.ip6.arpa') and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
+	return b'dNSZone' in attr.get('objectClass', []) and b'@' not in attr.get('relativeDomainName', []) and \
+		not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6) and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
 
 
 def lookup_alias_filter(lo, filter_s):
@@ -158,8 +159,8 @@ def lookup_alias_filter(lo, filter_s):
 
 	def _replace_alias_filter(match):
 		alias_filter = object.lookup_filter('name=%s' % match.group(1), lo)
-		alias_filter_s = unicode(alias_filter)
-		alias_base = unicode(lo.base)  # standard dns container might be a better choice
+		alias_filter_s = six.text_type(alias_filter)
+		alias_base = six.text_type(lo.base)  # standard dns container might be a better choice
 		unmatchable_filter = '(&(objectClass=top)(!(objectClass=top)))'  # if no computers for aliases found, return an impossible filter!
 		alias_replaced = ''.join(set(filter_format('(cn=%s)', [attrs['cNAMERecord'][0].split('.', 1)[0]]) for dn, attrs in lo.search(base=alias_base, scope='sub', filter=alias_filter_s, attr=['cNAMERecord'])))
 		return '(|%s)' % (alias_replaced,) if alias_replaced else unmatchable_filter

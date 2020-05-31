@@ -8,11 +8,13 @@
 
 from __future__ import print_function
 
+import base64
 import pytest
 import time
 import calendar
 from datetime import datetime, timedelta
 import subprocess
+from M2Crypto import X509
 
 from univention.config_registry import handler_set
 from univention.testing.strings import random_username
@@ -61,9 +63,9 @@ class TestUsers(object):
 		attr = lo.get(user)
 		ml = []
 		if shadowLastChange is not None:
-			ml.append(('shadowLastChange', attr.get('shadowLastChange'), shadowLastChange))
+			ml.append(('shadowLastChange', attr.get('shadowLastChange'), shadowLastChange.encode('ASCII')))
 		if shadowMax is not None:
-			ml.append(('shadowMax', attr.get('shadowMax'), shadowMax))
+			ml.append(('shadowMax', attr.get('shadowMax'), shadowMax.encode('ASCII')))
 		if ml:
 			lo.modify(user, ml)
 		udm.verify_udm_object("users/user", user, {"pwdChangeNextLogin": pwd_change_next_login, 'passwordexpiry': password_expiry})
@@ -79,7 +81,10 @@ class TestUsers(object):
 		udm.verify_ldap_object(user, {'automountInformation': ['-rw %s:%s/%s' % (host, path.rstrip('/'), homeSharePath)]})
 
 	def test_unmap_user_certificate(self, udm, ucr):
-		certificate = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-']).encode('base64').replace('\n', '')
+		certificate_binary = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-'])
+		x509 = X509.load_cert_string(certificate_binary, X509.FORMAT_DER)
+		certificateSerial = x509.get_serial_number()
+		certificate = base64.b64encode(certificate_binary).encode('ASCII')
 		certificate_ldap = {
 			'userCertificate': certificate,
 			'certificateIssuerCommonName': ucr['ssl/common'],
@@ -89,7 +94,7 @@ class TestUsers(object):
 			'certificateIssuerOrganisation': ucr['ssl/organization'],
 			'certificateIssuerOrganisationalUnit': ucr['ssl/organizationalunit'],
 			'certificateIssuerState': ucr['ssl/state'],
-			'certificateSerial': '1',
+			'certificateSerial': str(certificateSerial),
 			'certificateSubjectCommonName': '%(hostname)s.%(domainname)s' % ucr,
 			'certificateSubjectCountry': ucr['ssl/country'],
 			'certificateSubjectLocation': ucr['ssl/locality'],
@@ -104,8 +109,8 @@ class TestUsers(object):
 		except ImportError:
 			pass
 		else:
-			dates = subprocess.check_output('openssl x509 -startdate -enddate < /etc/univention/ssl/%(hostname)s/cert.pem' % ucr, shell=True)
-			dates = dict(x.split('=', 1) for x in dates.splitlines()[:2])
+			dates = subprocess.check_output('openssl x509 -startdate -enddate -noout < /etc/univention/ssl/%(hostname)s/cert.pem' % ucr, shell=True)
+			dates = dict(x.split('=', 1) for x in dates.decode('UTF-8').splitlines())
 			certificate_ldap.update({
 				'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),
 				'certificateDateNotBefore': parser.parse(dates['notBefore']).strftime('%Y-%m-%d'),
@@ -248,7 +253,7 @@ class TestUsers(object):
 	@pytest.mark.parametrize('props,gecos', [
 		({'firstname': 'X', 'lastname': 'Y'}, 'X Y'),
 		({'firstname': ' X ', 'lastname': ' Y '}, 'X   Y'),  # FIXME: current result looks broken!
-		({'firstname': 'H\xc3\xe4\xc3\xe4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'HAaeAaelo Woeoerld'),  # FIXME: current result looks broken!
+		({'firstname': 'H\xc3\xa4\xc3\xa4lo', 'lastname': 'W\xc3\xb6\xc3\xb6rld'}, 'Haeaelo Woeoerld'),  # FIXME: current result looks broken!
 	])
 	def test_modlist_gecos(self, udm, props, gecos):
 		# TODO: test UCR variable overwrite of '<firstname> <lastname><:umlauts,strip>'
@@ -439,7 +444,7 @@ class TestUsers(object):
 		({'locked': 'all'}, ['[UL         ]']),
 		({'disabled': 'all'}, ['[UD         ]']),
 		({'disabled': 'none', 'description': 'asdf'}, ['[U          ]']),
-		({'locked': 'all', 'disabled': 'all'}, ['[UDL        ]']),
+		({'locked': 'all', 'disabled': 'all'}, ['[UD         ]']),
 		({'locked': 'none', 'disabled': 'none', 'description': 'asdf'}, ['[U          ]']),
 	])
 	def test_modlist_sambaAcctFlags(self, udm, props, flags):

@@ -156,7 +156,7 @@ class CLIClient(object):
 			obj.policies.setdefault('policies/policy', []).append(policy_dn)
 
 		for policy_dn in getattr(args, 'policy_dereference', []):
-			for key, values in list(obj.policies.items()):
+			for values in obj.policies.values():
 				if policy_dn in values:
 					values.remove(policy_dn)
 

@@ -41,8 +41,9 @@ connections to remote |UMC| servers
 import ssl
 import json
 import locale
-from Cookie import SimpleCookie
-from httplib import HTTPSConnection, HTTPException
+
+from six.moves.http_cookies import SimpleCookie
+from six.moves.http_client import HTTPSConnection, HTTPException
 
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()

@@ -38,7 +38,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
-import string
 
 from univention.admin.policy import (
 	register_policy_mapping, policy_object_tab,
@@ -130,17 +129,17 @@ layout = [
 ]
 
 
-def unmapQuotaEntries(old):
+def unmapQuotaEntries(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(i.split(' ', 2))
+		new.append(i.decode(*encoding).split(u' ', 2))
 	return new
 
 
-def mapQuotaEntries(old):
+def mapQuotaEntries(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(u' '.join(i).encode(*encoding))
 	return new
 
 

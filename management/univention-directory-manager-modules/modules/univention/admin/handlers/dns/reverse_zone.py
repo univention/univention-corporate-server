@@ -144,7 +144,7 @@ layout = [
 ]
 
 
-def mapSubnet(subnet):
+def mapSubnet(subnet, encoding=()):
 	"""
 	Map subnet to reverse zone.
 	>>> mapSubnet('0123:4567:89ab:cdef')
@@ -154,15 +154,14 @@ def mapSubnet(subnet):
 	>>> mapSubnet('1.2.3')
 	'3.2.1.in-addr.arpa'
 	"""
-	if ':' in subnet:  # IPv6
-		return '%s%s' % ('.'.join(reversed(subnet.replace(':', ''))), ARPA_IP6)
+	if u':' in subnet:  # IPv6
+		subnet = u'%s%s' % (u'.'.join(subnet.replace(u':', u'')[::-1]), ARPA_IP6)
 	else:
-		q = subnet.split('.')
-		q.reverse()
-		return '%s%s' % ('.'.join(q), ARPA_IP4)
+		subnet = u'%s%s' % (u'.'.join(subnet.split(u'.')[::-1]), ARPA_IP4)
+	return subnet.encode(*encoding)
 
 
-def unmapSubnet(zone):
+def unmapSubnet(zone, encoding=()):
 	"""
 	Map reverse zone to subnet.
 	>>> unmapSubnet('f.e.d.c.b.a.9.8.7.6.5.4.3.2.1.0.ip6.arpa')
@@ -174,15 +173,16 @@ def unmapSubnet(zone):
 	"""
 	if isinstance(zone, list):
 		zone = zone[0]
+	zone = zone.decode(*encoding)
 	if zone.endswith(ARPA_IP6):  # IPv6
 		zone = zone[:-len(ARPA_IP6)]
-		zone = list(reversed(zone.split('.')))
-		return ':'.join([''.join(zone[i:i + 4]) for i in xrange(0, len(zone), 4)])
+		zone = zone.split(u'.')[::-1]
+		return u':'.join([u''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
 	elif zone.endswith(ARPA_IP4):  # IPv4
 		zone = zone[:-len(ARPA_IP4)]
-		q = zone.split('.')
+		q = zone.split(u'.')
 		q.reverse()
-		return '.'.join(q)
+		return u'.'.join(q)
 	else:
 		raise ValueError('Neither an IPv4 nor an IPv6 reverse address')
 
@@ -204,10 +204,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		soa = self.oldattr.get('sOARecord', [''])[0].split(' ')
+		soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
 		if len(soa) > 6:
-			self['contact'] = unescapeSOAemail(soa[1])
-			self['serial'] = soa[2]
+			self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
+			self['serial'] = soa[2].decode('UTF-8')
 			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[3])
 			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[4])
 			self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[5])
@@ -230,7 +230,7 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = '%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
+			soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
 		return ml
 
@@ -241,7 +241,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('relativeDomainName', ['@'])
+			('relativeDomainName', [b'@'])
 		]
 
 	# FIXME: there should be general solution; subnet is just a naming
@@ -271,9 +271,9 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr):
-	return 'dNSZone' in attr.get('objectClass', []) and\
-		['@'] == attr.get('relativeDomainName', []) and\
-		(attr['zoneName'][0].endswith(ARPA_IP4) or attr['zoneName'][0].endswith(ARPA_IP6))
+	return b'dNSZone' in attr.get('objectClass', []) and \
+		[b'@'] == attr.get('relativeDomainName', []) and \
+		(attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) or attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6))
 
 
 def quickDescription(rdn):

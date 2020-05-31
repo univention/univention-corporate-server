@@ -34,6 +34,7 @@ import re
 from functools import wraps
 import random
 
+import six
 import ldap
 import ldap.schema
 import ldap.sasl
@@ -240,6 +241,8 @@ class access(object):
 		self.host = host
 		self.base = base
 		self.binddn = binddn
+		if six.PY2 and isinstance(self.binddn, unicode):
+			self.binddn = self.binddn.encode('UTF-8')
 		self.bindpw = bindpw
 		self.start_tls = start_tls
 		self.ca_certfile = ca_certfile
@@ -283,8 +286,10 @@ class access(object):
 		self.__open(ca_certfile)
 
 	def __encode_pwd(self, pwd):
-		if isinstance(pwd, unicode):
-			return str(pwd)
+		if six.PY3:
+			return pwd
+		if isinstance(pwd, unicode):  # noqa: F821
+			return pwd.encode('UTF-8')
 		else:
 			return pwd
 
@@ -336,7 +341,7 @@ class access(object):
 		:rtype: str
 		"""
 		dn = self.lo.whoami_s()
-		return re.sub('^dn:', '', dn)
+		return re.sub(u'^dn:', u'', dn)
 
 	def _reconnect(self):
 		# type: () -> None
@@ -345,14 +350,20 @@ class access(object):
 
 	def __open(self, ca_certfile):
 		# type: (Optional[str]) -> None
-		_d = univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))  # noqa F841
+		_d = univention.debug.function('uldap.__open host=%s port=%s base=%s' % (self.host, self.port, self.base))  # noqa F841
 
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
-			self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
+			try:
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1, bytes_mode=False, bytes_strictness='warn')
+			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-			self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
+			try:
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None, bytes_mode=False, bytes_strictness='warn')
+			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
 		if ca_certfile:
 			self.lo.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_certfile)
@@ -381,9 +392,11 @@ class access(object):
 		self.lo.start_tls_s()
 
 	def __encode(self, value):
+		if six.PY3:
+			return value
 		if value is None:
 			return value
-		elif isinstance(value, unicode):
+		elif six.PY2 and isinstance(value, unicode):  # noqa: F821
 			return str(value)
 		elif isinstance(value, (list, tuple)):
 			return map(self.__encode, value)
@@ -391,11 +404,15 @@ class access(object):
 			return value
 
 	def __recode_attribute(self, attr, val):
+		if six.PY3:
+			return val
 		if attr in self.decode_ignorelist:
 			return val
 		return self.__encode(val)
 
 	def __recode_entry(self, entry):
+		if six.PY3:
+			return entry
 		if isinstance(entry, tuple) and len(entry) == 3:
 			return (entry[0], entry[1], self.__recode_attribute(entry[1], entry[2]))
 		elif isinstance(entry, tuple) and len(entry) == 2:
@@ -436,10 +453,9 @@ class access(object):
 		if dn:
 			try:
 				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
-			except ldap.NO_SUCH_OBJECT:
-				result = []
-			if result:
 				return self.__decode_entry(result[0][1])
+			except (ldap.NO_SUCH_OBJECT, LookupError):
+				pass
 		if required:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return {}
@@ -465,10 +481,9 @@ class access(object):
 		if dn:
 			try:
 				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
-			except ldap.NO_SUCH_OBJECT:
-				result = []
-			if result and attr in result[0][1]:
 				return result[0][1][attr]
+			except (ldap.NO_SUCH_OBJECT, LookupError):
+				pass
 		if required:
 			raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
 		return []
@@ -566,39 +581,40 @@ class access(object):
 			return {}
 
 		# get current dn
-		if attrs and 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
+		if 'objectClass' in attrs and 'univentionPolicyReference' in attrs:
 			oattrs = attrs
 		else:
 			oattrs = self.get(dn, ['univentionPolicyReference', 'objectClass'])
-		if attrs and 'univentionPolicyReference' in attrs:
-			policies = attrs['univentionPolicyReference']
+
+		if 'univentionPolicyReference' in attrs:
+			policies = [x.decode('utf-8') for x in attrs['univentionPolicyReference']]
 		elif not policies and not attrs:
-			policies = oattrs.get('univentionPolicyReference', [])
+			policies = [x.decode('utf-8') for x in oattrs.get('univentionPolicyReference', [])]
 
 		object_classes = set(oc.lower() for oc in oattrs.get('objectClass', []))
 
-		result = {}
+		merged = {}
 		if dn:
 			obj_dn = dn
 			while True:
-				for policy_dn in policies:
-					self._merge_policy(policy_dn, obj_dn, object_classes, result)
-				dn = self.parentDn(dn)
+				for policy_dn in policies or []:
+					self._merge_policy(policy_dn, obj_dn, object_classes, merged)
+				dn = self.parentDn(dn) or ''
 				if not dn:
 					break
 				try:
 					parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
 				except ldap.NO_SUCH_OBJECT:
 					break
-				policies = parent.get('univentionPolicyReference', [])
+				policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
 
 		univention.debug.debug(
 			univention.debug.LDAP, univention.debug.INFO,
-			"getPolicies: result: %s" % result)
-		return result
+			"getPolicies: result: %s" % merged)
+		return merged
 
 	def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
-		# type: (str, str, Set[str], Dict[str, Dict[str, Any]]) -> None
+		# type: (str, str, Set[bytes], Dict[str, Dict[str, Any]]) -> None
 		"""
 		Merge policies into result.
 
@@ -612,14 +628,14 @@ class access(object):
 			return
 
 		try:
-			classes = set(pattrs['objectClass']) - set(('top', 'univentionPolicy', 'univentionObject'))
-			ptype = classes.pop()
+			classes = set(pattrs['objectClass']) - {b'top', b'univentionPolicy', b'univentionObject'}
+			ptype = classes.pop().decode('utf-8')
 		except KeyError:
 			return
 
 		if pattrs.get('ldapFilter'):
 			try:
-				self.search(pattrs['ldapFilter'][0], base=obj_dn, scope='base', unique=True, required=True)
+				self.search(pattrs['ldapFilter'][0].decode('utf-8'), base=obj_dn, scope='base', unique=True, required=True)
 			except ldap.NO_SUCH_OBJECT:
 				return
 
@@ -628,15 +644,14 @@ class access(object):
 		if any(oc.lower() in object_classes for oc in pattrs.get('prohibitedObjectClasses', [])):
 			return
 
-		fixed = set(pattrs.get('fixedAttributes', ()))
-		empty = set(pattrs.get('emptyAttributes', ()))
+		fixed = set(x.decode('utf-8') for x in pattrs.get('fixedAttributes', ()))
+		empty = set(x.decode('utf-8') for x in pattrs.get('emptyAttributes', ()))
 		values = result.setdefault(ptype, {})
-		for key in list(empty) + pattrs.keys() + list(fixed):
-			if key in ('requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'):
-				continue
-
+		SKIP = {'requiredObjectClasses', 'prohibitedObjectClasses', 'fixedAttributes', 'emptyAttributes', 'objectClass', 'cn', 'univentionObjectType', 'ldapFilter'}
+		for key in (empty | set(pattrs) | fixed) - SKIP:
 			if key not in values or key in fixed:
 				value = [] if key in empty else pattrs.get(key, [])
+				value = [x.decode('UTF-8') for x in value]   # TODO: This would be ugly here
 				univention.debug.debug(
 					univention.debug.LDAP, univention.debug.INFO,
 					"getPolicies: %s sets: %s=%s" % (policy_dn, key, value))
@@ -684,10 +699,10 @@ class access(object):
 			key, val = i[0], i[-1]
 			if not val:
 				continue
-			if isinstance(val, basestring):
+			if isinstance(val, (bytes, six.text_type)):
 				val = [val]
-			nal.setdefault(key, set())
-			nal[key] |= set(val)
+			vals = nal.setdefault(key, set())
+			vals |= set(val)
 
 		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
 
@@ -724,7 +739,7 @@ class access(object):
 		ml = []
 		for key, oldvalue, newvalue in changes:
 			if oldvalue and newvalue:
-				if oldvalue == newvalue or (not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue)):
+				if oldvalue == newvalue or (not isinstance(oldvalue, (bytes, six.text_type)) and not isinstance(newvalue, (bytes, six.text_type)) and set(oldvalue) == set(newvalue)):
 					continue  # equal values
 				op = ldap.MOD_REPLACE
 				val = newvalue
@@ -763,15 +778,17 @@ class access(object):
 		>>> get_dn = access._access__get_new_dn
 		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'foo')])[0]
 		'univentionAppID=foo,dc=bar'
-		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'föo')])[0]
-		'univentionAppID=f\\xc3\\xb6o,dc=bar'
+		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'föo')])[0] == u'univentionAppID=föo,dc=bar'
+		True
 		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'bar')])[0]
 		'univentionAppID=bar,dc=bar'
 		"""
 		rdn = ldap.dn.str2dn(dn)[0]
 		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
-		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
-		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]])
+		new_vals = dict((key.lower(), val if isinstance(val, (bytes, six.text_type)) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+		new_rdn_ava = [(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]
+		new_rdn_unicode = [(key, val.decode('UTF-8'), ava_type) if isinstance(val, bytes) else (key, val, ava_type) for key, val, ava_type in new_rdn_ava]
+		new_rdn = ldap.dn.dn2str([new_rdn_unicode])
 		rdn = ldap.dn.dn2str([rdn])
 		if rdn != new_rdn:
 			return ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:]), new_rdn
@@ -839,12 +856,12 @@ class access(object):
 		if not serverctrls:
 			serverctrls = []
 
-		if not newsdn.lower() == oldsdn.lower():
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
-			self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
-		else:
+		if oldsdn and newsdn.lower() == oldsdn.lower():
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
 			self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
+		else:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: move %s to %s in %s' % (dn, newrdn, newsdn))
+			self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
 
 	@_fix_reconnect_handling
 	def rename_ext_s(self, dn, newrdn, newsuperior=None, serverctrls=None, response=None):

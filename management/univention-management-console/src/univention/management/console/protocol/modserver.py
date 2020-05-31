@@ -352,10 +352,10 @@ class ModuleServer(Server):
 			length = len(self.__queue)
 			try:
 				ret = self.__comm.send(self.__queue)
-			except socket.error as e:
-				if e[0] == errno.EWOULDBLOCK:
+			except socket.error as exc:
+				if exc.errno == errno.EWOULDBLOCK:
 					return True
-				if e[0] == errno.EPIPE:
+				if exc.errno == errno.EPIPE:
 					return False
 				raise
 

@@ -43,7 +43,7 @@ from tempfile import NamedTemporaryFile
 from contextlib import contextmanager
 import ssl
 from base64 import encodestring
-from ipaddr import IPv4Network, IPv4Address
+from ipaddress import IPv4Network, IPv4Address
 import time
 
 from six.moves import urllib_request, http_client
@@ -410,13 +410,13 @@ class Docker(object):
 		if network and '/' in network:
 			_logger.debug('Found %s' % network)
 			try:
-				network = IPv4Network(network)
+				network = IPv4Network(u'%s' % (network,), False)
 			except ValueError as exc:
 				_logger.warn('Error using the network %s: %s' % (network, exc))
 				return None
 			else:
 				return network
-		docker0_net = IPv4Network(ucr_get('appcenter/docker/compose/network', '172.16.1.1/16'))
+		docker0_net = IPv4Network(u'%s' % (ucr_get('appcenter/docker/compose/network', '172.16.1.1/16'),), False)
 		gateway, netmask = docker0_net.exploded.split('/', 1)  # '172.16.1.1', '16'
 		used_docker_networks = []
 		for _app in Apps().get_all_apps():  # TODO: find container not managed by the App Center?
@@ -424,7 +424,7 @@ class Docker(object):
 				continue
 			ip = ucr_get(_app.ucr_ip_key)
 			try:
-				app_network = IPv4Network(ip)
+				app_network = IPv4Network(u'%s' % (ip,), False)
 			except ValueError as exc:
 				continue
 			else:
@@ -433,9 +433,9 @@ class Docker(object):
 		if prefixlen_diff <= 0:
 			_logger.warn('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
 			return None
-		for network in docker0_net.iter_subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
+		for network in docker0_net.subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
 			_logger.debug('Testing %s' % network)
-			if IPv4Address(gateway) in network:
+			if IPv4Address(u'%s' % (gateway,)) in network:
 				_logger.debug('Refusing due to "main subnet"')
 				continue
 			if any(app_network.overlaps(network) for app_network in used_docker_networks):
@@ -517,7 +517,7 @@ class MultiDocker(Docker):
 					}
 				}
 				ucr_save({self.app.ucr_ip_key: str(network)})
-				ip_addresses = network.iterhosts()  # iterator!
+				ip_addresses = network.hosts()  # iterator!
 				ip_addresses.next()  # first one for docker gateway
 		for service_name, service in content['services'].iteritems():
 			exposed_ports[service_name] = (int(port) for port in service.get('expose', []))

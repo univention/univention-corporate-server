@@ -79,17 +79,18 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
 	"""
 	_d = ud.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))  # noqa: F841
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
 	now = int(time.time())
 	if timeout > 0:
 		locktime = now + timeout
 	else:
 		locktime = 0
+
 	al = [
-		('objectClass', ['top', 'lock']),
+		('objectClass', [b'top', b'lock']),
 		('cn', [value]),
-		('lockTime', [str(locktime)]),
+		('lockTime', [str(locktime).encode('ascii')]),
 	]
 	if not lo.get(dn, ['lockTime']):
 		try:
@@ -109,7 +110,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 	# lock is old, try again
 	if oldlocktime > 0 and oldlocktime < now:
 		ml = [
-			('lockTime', str(oldlocktime), str(locktime))
+			('lockTime', str(oldlocktime).encode('ascii'), str(locktime).encode('ascii'))
 		]
 		try:
 			lo.modify(dn, ml, exceptions=True)
@@ -135,7 +136,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
 	"""
 	_d = ud.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))  # noqa: F841
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
 	now = int(time.time())
 	if timeout > 0:
@@ -143,7 +144,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 	else:
 		locktime = 0
 	ml = [
-		('lockTime', 1, str(locktime))
+		('lockTime', b'1', str(locktime).encode('ASCII'))
 	]
 	try:
 		lo.modify(dn, ml, exceptions=True)
@@ -166,7 +167,7 @@ def unlock(lo, position, type, value, scope='domain'):
 	:param scope: The scope for the lock, e.g. `domain`.
 	"""
 	_d = ud.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))  # noqa: F841
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 	try:
 		lo.delete(dn, exceptions=True)
 	except ldap.NO_SUCH_OBJECT:
@@ -184,7 +185,7 @@ def getLock(lo, position, type, value, scope='domain'):
 	:param scope: The scope for the lock, e.g. `domain`.
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired or `0`.
 	"""
-	dn = lockDn(lo, position, type, value, scope)
+	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 	try:
 		return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])
 	except ldap.NO_SUCH_OBJECT:

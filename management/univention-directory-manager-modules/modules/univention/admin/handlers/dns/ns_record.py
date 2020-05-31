@@ -30,11 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
+from univention.admin.handlers.dns import ARPA_IP4
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -137,7 +140,7 @@ def lookup_filter(filter_s=None, superordinate=None):
 		])
 
 	if superordinate:
-		parent = superordinate.mapping.mapValue('zone', superordinate['zone'])
+		parent = superordinate.mapping.mapValueDecoded('zone', superordinate['zone'])
 		lookup_filter_obj.expressions.append(
 			univention.admin.filter.expression('zoneName', parent, escape=True)
 		)
@@ -149,18 +152,17 @@ def lookup_filter(filter_s=None, superordinate=None):
 def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 
 	filter = lookup_filter(filter_s, superordinate)
-
 	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
+	for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
 		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
 
 
 def identify(dn, attr, canonical=0):
 	return all([
-		'dNSZone' in attr.get('objectClass', []),
-		'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', ['.in-addr.arpa'])[0].endswith('.in-addr.arpa'),
+		b'dNSZone' in attr.get('objectClass', []),
+		b'@' not in attr.get('relativeDomainName', []),
+		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('UTF-8').endswith(ARPA_IP4),
 		attr.get('nSRecord', []),
 		module in attr.get('univentionObjectType', [module]),
 	])

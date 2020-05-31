@@ -1,0 +1,10 @@
+#!/usr/share/ucs-test/runner sh
+## desc: Run doctests for syntax.py
+## exposure: careful
+## tags: [udm]
+## join: true
+
+set -e
+
+# py.test /usr/lib/python2.7/dist-packages/univention/admin/syntax.py --doctest-modules
+py.test-3 /usr/lib/python3/dist-packages/univention/admin/syntax.py --doctest-modules # --cov=univention.admin.syntax --cov-report=term-missing

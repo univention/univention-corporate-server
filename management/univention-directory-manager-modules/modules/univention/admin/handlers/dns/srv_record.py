@@ -30,13 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import string
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
@@ -91,32 +90,32 @@ layout = [
 ]
 
 
-def unmapName(old):
-	items = old[0].split('.', 2)
+def unmapName(old, encoding=()):
+	items = old[0].decode(*encoding).split(u'.', 2)
 	items[0] = items[0][1:]
 	items[1] = items[1][1:]
 	return items
 
 
-def mapName(old):
+def mapName(old, encoding=()):
 	if len(old) == 1:
-		return old[0]
+		return old[0].encode(*encoding)
 	if len(old) == 3 and old[2]:
-		return '_{0}._{1}.{2}'.format(*old)
-	return '_{0}._{1}'.format(*old[:2])
+		return u'_{0}._{1}.{2}'.format(*old).encode(*encoding)
+	return u'_{0}._{1}'.format(*old[:2]).encode(*encoding)
 
 
-def unmapLocation(old):
+def unmapLocation(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(i.split(' '))
+		new.append(i.decode(*encoding).split(u' '))
 	return new
 
 
-def mapLocation(old):
+def mapLocation(old, encoding=()):
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(u' '.join(i).encode(*encoding))
 	return new
 
 
@@ -165,7 +164,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
 		return filter
 
 
@@ -174,9 +173,9 @@ lookup = object.lookup
 
 def identify(dn, attr, canonical=0):
 	return all([
-		'dNSZone' in attr.get('objectClass', []),
-		'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', ['.in-addr.arpa'])[0].endswith('.in-addr.arpa'),
-		not attr.get('zoneName', ['.ip6.arpa'])[0].endswith('.ip6.arpa'),
+		b'dNSZone' in attr.get('objectClass', []),
+		b'@' not in attr.get('relativeDomainName', []),
+		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('UTF-8').endswith(ARPA_IP4),
+		not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('UTF-8').endswith(ARPA_IP6),
 		attr.get('sRVRecord', [])
 	])

@@ -1,7 +1,9 @@
 from __future__ import print_function
+
 import sys
 import os
-from urlparse import urlparse
+
+from six.moves.urllib_parse import urlparse
 
 
 def get_idps(ucr, log_fd=sys.stderr):

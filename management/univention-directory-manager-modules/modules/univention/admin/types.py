@@ -35,6 +35,7 @@ import inspect
 import time
 import datetime
 
+import six
 import ldap.dn
 
 import univention.admin.uexceptions
@@ -43,6 +44,10 @@ import univention.debug as ud
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
+
+if six.PY3:
+	unicode = str
+	long = int
 
 
 class TypeHint(object):
@@ -391,6 +396,13 @@ class BinaryType(TypeHint):
 
 
 class DateType(StringType):
+	"""
+	>>> x = DateType(univention.admin.property(syntax=univention.admin.syntax.string), 'a_date_time')
+	>>> import datetime
+	>>> now = datetime.date(2020, 1, 1)
+	>>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
+	'2020-01-01'
+	"""
 	_python_types = datetime.date
 	_json_type = unicode
 	_openapi_format = 'date'
@@ -404,7 +416,7 @@ class DateType(StringType):
 		return self.syntax.from_datetime(value)
 
 	def _to_json_type(self, value):  # type: (datetime.date) -> unicode
-		return unicode(value.isoformat(), 'ascii')
+		return unicode(value.isoformat())
 
 	def _from_json_type(self, value):  # type: (unicode) -> datetime.date
 		try:
@@ -415,6 +427,13 @@ class DateType(StringType):
 
 
 class TimeType(StringType):
+	"""
+	>>> x = TimeType(univention.admin.property(syntax=univention.admin.syntax.string), 'a_date_time')
+	>>> import datetime
+	>>> now = datetime.time(10, 30, 0, 500)
+	>>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
+	'10:30:00'
+	"""
 	_python_types = datetime.time
 	_json_type = unicode
 	_openapi_format = 'time'
@@ -428,7 +447,7 @@ class TimeType(StringType):
 		return self.syntax.from_datetime(value)
 
 	def _to_json_type(self, value):  # type: (datetime.time) -> unicode
-		return unicode(value.replace(microsecond=0).isoformat(), 'ascii')
+		return unicode(value.replace(microsecond=0).isoformat())
 
 	def _from_json_type(self, value):  # type: (unicode) -> datetime.time
 		try:
@@ -441,6 +460,12 @@ class TimeType(StringType):
 class DateTimeType(StringType):
 	"""A DateTime
 		syntax classes using this type must support the method from_datetime(), which returns something valid for syntax.parse()
+
+	>>> x = DateTimeType(univention.admin.property(syntax=univention.admin.syntax.string), 'a_date_time')
+	>>> import datetime
+	>>> now = datetime.datetime(2020, 1, 1)
+	>>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
+	'2020-01-01 00:00:00'
 	"""
 	_python_types = datetime.datetime
 	_json_type = unicode
@@ -455,7 +480,7 @@ class DateTimeType(StringType):
 		return self.syntax.from_datetime(value)
 
 	def _to_json_type(self, value):  # type: (datetime.datetime) -> unicode
-		return unicode(' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat())), 'ascii')
+		return u' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
 
 	def _from_json_type(self, value):  # type: (unicode) -> datetime.datetime
 		try:
@@ -599,7 +624,7 @@ class SambaLogonHours(ListType):
 	_weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
 	def decode_value(self, value):
-		return ['{} {}-{}'.format(self._weekdays[v / 24], v % 24, v % 24 + 1) for v in value]
+		return ['{} {}-{}'.format(self._weekdays[v // 24], v % 24, v % 24 + 1) for v in value]
 
 	def encode_value(self, value):
 		try:
@@ -630,3 +655,8 @@ class UnixTimeinterval(IntegerType):
 
 	def encode_value(self, value):
 		return self.syntax.from_integer(value)
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

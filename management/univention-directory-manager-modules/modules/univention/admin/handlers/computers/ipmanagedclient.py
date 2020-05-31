@@ -194,7 +194,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		nagios.Support.__init__(self)
 
 	def open(self):
-
 		univention.admin.handlers.simpleComputer.open(self)
 		self.nagios_open()
 
@@ -208,7 +207,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_pre_create()
 
 	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionHost', 'univentionClient', 'person'])]
+		return [('objectClass', [b'top', b'univentionHost', b'univentionClient', b'person'])]
 
 	def _ldap_post_create(self):
 		univention.admin.handlers.simpleComputer._ldap_post_create(self)
@@ -265,10 +264,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
+	for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
 		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and 'posixAccount' not in attr.get('objectClass', [])
+	return b'univentionHost' in attr.get('objectClass', []) and b'univentionClient' in attr.get('objectClass', []) and b'posixAccount' not in attr.get('objectClass', [])

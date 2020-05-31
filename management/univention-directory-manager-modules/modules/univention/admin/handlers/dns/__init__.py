@@ -31,6 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 # vim: set fileencoding=utf-8 et sw=4 ts=4 :
 
+import six
+
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 ARPA_IP4 = '.in-addr.arpa'
@@ -87,7 +89,7 @@ def escapeSOAemail(email):
 	return local + '.' + domain
 
 
-def stripDot(old):
+def stripDot(old, encoding=()):
 	"""
 	>>> stripDot(['example.com.', 'example.com'])
 	['example.com', 'example.com']
@@ -100,8 +102,8 @@ def stripDot(old):
 	>>> stripDot(None)
 	"""
 	if isinstance(old, list):
-		return [stripDot(_) for _ in old]
-	return old[:-1] if isinstance(old, basestring) and old.endswith('.') else old
+		return [stripDot(_, encoding) for _ in old]
+	return old[:-1].encode(*encoding) if isinstance(old, (bytes, six.text_type)) and old.endswith('.') else old.encode(*encoding)
 
 
 if __name__ == '__main__':

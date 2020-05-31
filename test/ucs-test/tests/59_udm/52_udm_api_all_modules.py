@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
@@ -11,7 +11,7 @@ from __future__ import print_function
 
 import sys
 from collections import defaultdict
-from six import string_types
+from six import string_types, reraise
 from unittest import main, TestCase
 import univention.debug as ud
 from univention.udm import UDM, WrongObjectType, NoSuperordinate
@@ -38,13 +38,13 @@ class TestUdmGenericVariousModules(TestCase):
 		try:
 			return mod.new()
 		except NoSuperordinate as exc:
-			pass
+			exc_thrown = exc
 		print('Module {!r} requires a superordinate, trying to find one...'.format(mod.name))
 		try:
 			sup_modules = mod._orig_udm_module.superordinate
 		except AttributeError:
-			print('Got NoSuperordinate exception ({}), but {!r} has no "superordinate" attribute!'.format(exc, mod.name))
-			raise NoSuperordinate, exc, sys.exc_info()[2]
+			print('Got NoSuperordinate exception ({}), but {!r} has no "superordinate" attribute!'.format(exc_thrown, mod.name))
+			reraise(NoSuperordinate, exc_thrown)
 		if isinstance(sup_modules, string_types):
 			sup_modules = [sup_modules]
 		for sup_module in sup_modules:
@@ -52,7 +52,7 @@ class TestUdmGenericVariousModules(TestCase):
 				print('Using {!r} object at {!r} as superordinate for model of {!r} object.'.format(
 					sup_module, obj.dn, mod.name))
 				return mod.new(obj)
-		raise NoSuperordinate, exc, sys.exc_info()[2]
+		reraise(NoSuperordinate, exc_thrown)
 
 	def test_load_modules(self):
 		print('Loading all modules...')

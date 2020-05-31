@@ -38,7 +38,6 @@ import copy
 import os
 import re
 import random
-import string
 import sys
 import time
 import traceback
@@ -779,8 +778,8 @@ class ucs:
 					try:
 						nvals = []
 						for val in attribs[key]:
-							nvals.append(unicode(val, 'utf8'))
-						nattribs[unicode(key, 'utf8')] = nvals
+							nvals.append(unicode(val))
+						nattribs[unicode(key)] = nvals
 					except UnicodeDecodeError:
 						nattribs[key] = attribs[key]
 
@@ -832,8 +831,8 @@ class ucs:
 				if old_dn and not old_dn == dn:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was moved")
 					# object was moved
-					new_object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
-					old_object = {'dn': unicode(old_dn, 'utf8'), 'modtype': change_type, 'attributes': old}
+					new_object = {'dn': unicode(dn), 'modtype': change_type, 'attributes': new}
+					old_object = {'dn': unicode(old_dn), 'modtype': change_type, 'attributes': old}
 					if self._ignore_object(key, new_object):
 						# moved into ignored subtree, delete:
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
@@ -846,7 +845,7 @@ class ucs:
 						change_type = 'add'
 
 			else:
-				object = {'dn': unicode(dn, 'utf8'), 'modtype': 'modify', 'attributes': new}
+				object = {'dn': unicode(dn), 'modtype': 'modify', 'attributes': new}
 				try:
 					if self._ignore_object(key, object):
 						ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new object is ignored, nothing to do")
@@ -872,14 +871,14 @@ class ucs:
 		if key:
 			if change_type == 'delete':
 				if old_dn:
-					object = {'dn': unicode(old_dn, 'utf8'), 'modtype': change_type, 'attributes': old}
+					object = {'dn': unicode(old_dn), 'modtype': change_type, 'attributes': old}
 				else:
-					object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': old}
+					object = {'dn': unicode(dn), 'modtype': change_type, 'attributes': old}
 			else:
-				object = {'dn': unicode(dn, 'utf8'), 'modtype': change_type, 'attributes': new}
+				object = {'dn': unicode(dn), 'modtype': change_type, 'attributes': new}
 
 			if change_type == 'modify' and old_dn:
-				object['olddn'] = unicode(old_dn, 'utf8')  # needed for correct samaccount-mapping
+				object['olddn'] = unicode(old_dn)  # needed for correct samaccount-mapping
 
 			if not self._ignore_object(key, object) or ignore_subtree_match:
 				pre_mapped_ucs_dn = object['dn']
@@ -888,7 +887,7 @@ class ucs:
 				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, unicode(old_dn, 'utf8'), old, new)) or (not old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new))):
+						if ((old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, unicode(old_dn), old, new)) or (not old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1648,7 +1647,7 @@ class ucs:
 		def attribute_filter(filter, attributes):
 			attributes = dict_lower(attributes)
 
-			pos = string.find(filter, '=')
+			pos = filter.find('=')
 			if pos < 0:
 				raise ValueError('missing "=" in filter: %s' % filter)
 			attribute = filter[:pos].lower()

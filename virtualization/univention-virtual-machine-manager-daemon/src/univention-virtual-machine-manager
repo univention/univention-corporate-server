@@ -84,9 +84,9 @@ def dump(obj):
 	if isinstance(obj, list):
 		return list(map(dump, obj))
 	elif isinstance(obj, dict):
-		return dict([(k_v[0], dump(k_v[1])) for k_v in list(obj.items())])
+		return dict([(k_v[0], dump(k_v[1])) for k_v in obj.items()])
 	elif hasattr(obj, '__dict__'):
-		return dict([(k_v1[0], dump(k_v1[1])) for k_v1 in list(obj.__dict__.items())])
+		return dict([(k_v1[0], dump(k_v1[1])) for k_v1 in obj.__dict__.items()])
 	else:
 		return obj
 

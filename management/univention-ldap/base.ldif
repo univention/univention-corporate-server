@@ -1,5 +1,5 @@
 @!@
-dn=configRegistry['ldap/base'].split('=')[0]
+dn = configRegistry['ldap/base'].split('=')[0]
 print('dn: %s' % configRegistry['ldap/base'])
 print('objectClass: top')
 print('objectClass: krb5Realm')
@@ -42,7 +42,7 @@ print('objectClass: univentionObject')
 print('univentionObjectType: container/cn')
 print('cn: samba')
 print('')
-print('dn: sambaDomainName=@@%%@@sambadomain@@%%@@,cn=samba,%s' % ( configRegistry['ldap/base']))
+print('dn: sambaDomainName=@@%%@@sambadomain@@%%@@,cn=samba,%s' % (configRegistry['ldap/base']))
 print('sambaDomainName: @@%%@@sambadomain@@%%@@')
 print('sambaSID: @@%%@@sid@@%%@@')
 print('objectClass: sambaDomain')

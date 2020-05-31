@@ -206,7 +206,7 @@ if __name__ == "__main__":
 			log(1, "UCS: %s" % dn)
 
 			# use the S4 Connector to lookup the current location of the corresponding object
-			object = {'dn': unicode(dn, 'utf8'), 'modtype': 'modify', 'attributes': attrs}
+			object = {'dn': unicode(dn), 'modtype': 'modify', 'attributes': attrs}
 			object = s4._object_mapping(key, object, 'ucs')
 
 			if not s4._ignore_object(key, object):

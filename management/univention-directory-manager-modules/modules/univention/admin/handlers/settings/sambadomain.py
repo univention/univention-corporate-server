@@ -50,19 +50,18 @@ def logonToChangePWMap(val):
 	"""
 
 	if (val == "1"):
-		return "2"
+		return b"2"
 	else:
-		return "0"
+		return b"0"
 
 # see also container/dc.py
 
 
 def logonToChangePWUnmap(val):
-
-	if (val[0] == "2"):
-		return "1"
+	if (val[0] == b"2"):
+		return u"1"
 	else:
-		return "2"
+		return u"2"
 
 
 module = 'settings/sambadomain'
@@ -294,4 +293,4 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
-	return 'sambaDomain' in attr.get('objectClass', []) and 'univentionDomain' not in attr.get('objectClass', [])
+	return b'sambaDomain' in attr.get('objectClass', []) and b'univentionDomain' not in attr.get('objectClass', [])

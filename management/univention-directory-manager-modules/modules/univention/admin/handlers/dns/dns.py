@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 import univention.admin.filter
 import univention.admin.localization
 from univention.admin.layout import Tab
@@ -83,10 +85,10 @@ def rewrite(filter_s, **args):
 		return filter_s
 	filter_p = univention.admin.filter.parse(filter_s)
 	mapping = univention.admin.mapping.mapping()
-	for key, value in args.iteritems():
+	for key, value in args.items():
 		mapping.register(key, value)
 	univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-	return unicode(filter_p)
+	return six.text_type(filter_p)
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

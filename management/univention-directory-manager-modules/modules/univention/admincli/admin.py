@@ -31,17 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
 from __future__ import print_function
 import getopt
-import re
-import string
 import base64
 import os
 import subprocess
 import traceback
+from ipaddress import IPv4Address, IPv4Network
 
 import ldap
+import six
 
 import univention.debug as ud
 
@@ -52,11 +51,16 @@ import univention.admin.objects
 from univention.admin.layout import Group
 from univention.admin.syntax import ldapFilter
 import univention.config_registry
-import univention.admin.ipaddress
 
 univention.admin.modules.update()
 
-# usage information
+
+class OperationFailed(Exception):
+
+	def __init__(self, out=None, msg=None):
+		self.out = out or []
+		if msg:
+			self.out.append(msg)
 
 
 def usage():
@@ -209,13 +213,13 @@ def module_usage(information, action=''):
 				if isinstance(row, Group):
 					out.append('	%s' % row.label)
 					for row in row.layout:
-						if isinstance(row, basestring):
+						if isinstance(row, six.string_types):
 							_print_property(module, action, row, out)
 							continue
 						for item in row:
 							_print_property(module, action, item, out)
 				else:
-					if isinstance(row, basestring):
+					if isinstance(row, six.string_types):
 						_print_property(module, action, row, out)
 						continue
 					for item in row:
@@ -240,6 +244,8 @@ def module_information(module, identifies_only=0):
 
 
 def _2utf8(text):
+	if six.PY3:
+		return text
 	try:
 		return text.encode('utf-8')
 	except:
@@ -255,27 +261,21 @@ def object_input(module, object, input, append=None, remove=None):
 				if len(opts) == 1:
 					object.options.extend(opts)
 					out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
+
 			if module.property_descriptions[key].syntax.name == 'file':
 				if os.path.exists(value):
-					fh = open(value, 'r')
-					content = ''
-					for line in fh.readlines():
-						content += line
-					object[key] = content
-					fh.close()
+					with open(value, 'r') as fh:
+						object[key] = fh.read()
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
-				for i in range(0, len(value)):
-					test_val = value[i].split('"')
-					if test_val[0] and test_val[0] == value[i]:
-						val = value[i].split(' ')
+				for orgval in value:
+					test_val = orgval.split('"')
+					if test_val[0] and test_val[0] == orgval:
+						val = orgval.split(' ')
 					else:
-						val = []
-						for j in test_val:
-							if j and j.rstrip().lstrip():
-								val.append(j.rstrip().lstrip())
+						val = [j.strip() for j in test_val if j.strip()]
 
 					if not object.has_property(key):
 						object[key] = []
@@ -293,28 +293,21 @@ def object_input(module, object, input, append=None, remove=None):
 						object[key] = [val]
 					else:
 						try:
-							tmp = list(object[key])
-							tmp.append(val)
-							object[key] = list(tmp)
+							object[key] = list(list(object[key]) + [val])
 						except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-							out.append('E: Invalid Syntax: %s' % str(errmsg))
+							out.append('E: Invalid Syntax: %s' % (errmsg,))
+
 	if remove:
 		for key, value in remove.items():
 			if univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if value:
-					for i in range(0, len(value)):
-						test_val = value[i].split('"')
-						if test_val[0] and test_val[0] == value[i]:
-							val = value[i].split(' ')
+					for orgval in value:
+						test_val = orgval.split('"')
+						if test_val[0] and test_val[0] == orgval:
+							val = orgval.split(' ')
 						else:
-							val = []
 							out.append('test_val=%s' % test_val)
-							for j in test_val:
-								if j and j.rstrip().lstrip():
-									val.append(j.rstrip().lstrip())
-
-							for j in range(0, len(val)):
-								val[j] = '"%s"' % val[j]
+							val = ['"%s"' % j.strip() for j in test_val if j.strip()]
 
 						if val and val in object[key]:
 							object[key].remove(val)
@@ -324,11 +317,11 @@ def object_input(module, object, input, append=None, remove=None):
 					object[key] = []
 
 			else:
-				current_values = [object[key]] if isinstance(object[key], basestring) else list(object[key])
+				current_values = [object[key]] if isinstance(object[key], six.string_types) else list(object[key])
 				if value is None:
 					current_values = []
 				else:
-					vallist = [value] if isinstance(value, basestring) else value
+					vallist = [value] if isinstance(value, six.string_types) else value
 
 					for val in vallist:
 						if val in current_values:
@@ -341,6 +334,7 @@ def object_input(module, object, input, append=None, remove=None):
 					except IndexError:
 						current_values = None
 				object[key] = current_values
+
 	if input:
 		for key, value in input.items():
 			if key in object and not object.has_property(key):
@@ -348,35 +342,33 @@ def object_input(module, object, input, append=None, remove=None):
 				if len(opts) == 1:
 					object.options.extend(opts)
 					out.append('WARNING: %s was set without --append-option. Automatically appending %s.' % (key, ', '.join(opts)))
+
 			if module.property_descriptions[key].syntax.name == 'binaryfile':
 				if value == '':
 					object[key] = value
 				elif os.path.exists(value):
-					fh = open(value, 'r')
-					content = fh.read()
-					if "----BEGIN CERTIFICATE-----" in content:
-						content = content.replace('----BEGIN CERTIFICATE-----', '')
-						content = content.replace('----END CERTIFICATE-----', '')
-						object[key] = base64.decodestring(content)
-					else:
-						object[key] = content
-					fh.close()
+					with open(value, 'r') as fh:
+						content = fh.read()
+						if "----BEGIN CERTIFICATE-----" in content:
+							content = content.replace('----BEGIN CERTIFICATE-----', '')
+							content = content.replace('----END CERTIFICATE-----', '')
+							object[key] = base64.decodestring(content)
+						else:
+							object[key] = content
 				else:
 					out.append('WARNING: file not found: %s' % value)
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if isinstance(value, list):
-					for i in range(0, len(value)):
-						test_val = value[i].split('"')
-						if test_val[0] and test_val[0] == value[i]:
-							val = value[i].split(' ')
+					for orgval in value:
+						test_val = orgval.split('"')
+						if test_val[0] and test_val[0] == orgval:
+							val = orgval.split(' ')
 						else:
-							val = []
-							for j in test_val:
-								if j and j.rstrip().lstrip():
-									val.append(j.rstrip().lstrip())
+							val = [j.strip() for j in test_val if j.strip()]
 				else:
 					val = value.split(' ')
+
 				if module.property_descriptions[key].multivalue:
 					object[key] = [val]
 				else:
@@ -384,21 +376,16 @@ def object_input(module, object, input, append=None, remove=None):
 			else:
 				try:
 					object[key] = value
-				except univention.admin.uexceptions.ipOverridesNetwork as e:
-					out.append('WARNING: %s' % e.message)
-				except univention.admin.uexceptions.valueMayNotChange as e:
-					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (e.message, key))
+				except univention.admin.uexceptions.ipOverridesNetwork as exc:
+					out.append('WARNING: %s' % exc.message)
+				except univention.admin.uexceptions.valueMayNotChange as exc:
+					raise univention.admin.uexceptions.valueMayNotChange("%s: %s" % (exc.message, key))
 	return out
 
 
 def list_available_modules(o=[]):
-
 	o.append("Available Modules are:")
-	avail_modules = []
-	for mod in univention.admin.modules.modules.keys():
-		avail_modules.append(mod)
-	avail_modules.sort()
-	for mod in avail_modules:
+	for mod in sorted(univention.admin.modules.modules):
 		o.append("  %s" % mod)
 	return o
 
@@ -407,6 +394,8 @@ def doit(arglist):
 	out = []
 	try:
 		out = _doit(arglist)
+	except OperationFailed as exc:
+		return exc.out + ["OPERATION FAILED"]
 	except ldap.SERVER_DOWN:
 		return out + ["E: The LDAP Server is currently not available.", "OPERATION FAILED"]
 	except univention.admin.uexceptions.base as e:
@@ -421,7 +410,7 @@ def doit(arglist):
 			if not len(msg) or len(e.args) > 1 or e.args[0] != msg[0]:
 				msg.extend(e.args)
 
-		# strip elements and make sure that a ':' is printed iff further information follows
+		# strip elements and make sure that a ':' is printed if further information follows
 		msg = [i.strip() for i in msg]
 		if len(msg) == 1:
 			msg[0] = '%s.' % msg[0].strip(':.')
@@ -435,11 +424,10 @@ def doit(arglist):
 
 
 def _doit(arglist):
-
 	out = []
 	# parse module and action
 	if len(arglist) < 2:
-		return usage() + ["OPERATION FAILED"]
+		raise OperationFailed(usage())
 
 	module_name = arglist[1]
 	if module_name in ['-h', '--help', '-?']:
@@ -458,10 +446,9 @@ def _doit(arglist):
 	try:
 		opts, args = getopt.getopt(arglist[3:], '', longopts)
 	except getopt.error as msg:
-		out.append(str(msg))
-		return out + ["OPERATION FAILED"]
+		raise OperationFailed(out, str(msg))
 
-	if not args == [] and isinstance(args, list):
+	if args and isinstance(args, list):
 		msg = "WARNING: the following arguments are ignored:"
 		for argument in args:
 			msg = '%s "%s"' % (msg, argument)
@@ -507,9 +494,8 @@ def _doit(arglist):
 			try:
 				with open(val) as fp:
 					bindpwd = fp.read().strip()
-			except IOError as e:
-				out.append('E: could not read bindpwd from file (%s)' % str(e))
-				return out + ['OPERATION FAILED']
+			except IOError as exc:
+				raise OperationFailed(out, 'E: could not read bindpwd from file (%s)' % (exc,))
 		elif opt == '--dn':
 			dn = _2utf8(val)
 		elif opt == '--tls':
@@ -535,34 +521,28 @@ def _doit(arglist):
 			policy_dereference.append(val)
 
 	if logfile:
-		ud.init(logfile, 1, 0)
+		ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
 	else:
 		out.append("WARNING: no logfile specified")
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	co = None
 	baseDN = configRegistry['ldap/base']
 
-	if configRegistry.get('directory/manager/cmd/debug/level'):
-		debug_level = configRegistry['directory/manager/cmd/debug/level']
-	else:
-		debug_level = 0
+	debug_level = int(configRegistry.get('directory/manager/cmd/debug/level', 0))
 
-	ud.set_level(ud.LDAP, int(debug_level))
-	ud.set_level(ud.ADMIN, int(debug_level))
+	ud.set_level(ud.LDAP, debug_level)
+	ud.set_level(ud.ADMIN, debug_level)
 
 	if binddn and bindpwd:
 		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
-		except Exception as e:
-			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
-			out.append('authentication error: %s' % str(e))
-			return out + ["OPERATION FAILED"]
+		except Exception as exc:
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+			raise OperationFailed(out, 'authentication error: %s' % (exc,))
 		policyOptions.extend(['-D', binddn, '-w', bindpwd])  # FIXME not so nice
-
 	else:
 		if os.path.exists('/etc/ldap.secret'):
 			ud.debug(ud.ADMIN, ud.INFO, "using cn=admin,%s account" % baseDN)
@@ -576,19 +556,16 @@ def _doit(arglist):
 			policyOptions.extend(['-D', binddn, '-y', secretFileName])
 
 		try:
-			secretFile = open(secretFileName, 'r')
+			with open(secretFileName, 'r') as secretFile:
+				pwd = secretFile.read().strip('\n')
 		except IOError:
-			out.append('E: Permission denied, try --binddn and --bindpwd')
-			return out + ["OPERATION FAILED"]
-		pwdLine = secretFile.readline()
-		pwd = re.sub('\n', '', pwdLine)
+			raise OperationFailed(out, 'E: Permission denied, try --binddn and --bindpwd')
 
 		try:
 			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
-		except Exception as e:
-			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
-			out.append('authentication error: %s' % str(e))
-			return out + ["OPERATION FAILED"]
+		except Exception as exc:
+			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (exc,))
+			raise OperationFailed(out, 'authentication error: %s' % (exc,))
 
 	if not position_dn and superordinate_dn:
 		position_dn = superordinate_dn
@@ -599,20 +576,13 @@ def _doit(arglist):
 		position = univention.admin.uldap.position(baseDN)
 		position.setDn(position_dn)
 	except univention.admin.uexceptions.noObject:
-		out.append('E: Invalid position')
-		return out + ["OPERATION FAILED"]
+		raise OperationFailed(out, 'E: Invalid position')
 
-	try:
-		module = univention.admin.modules.get(module_name)
-	except:
-		out.append("failed to get module %s." % module_name)
-		out.append("")
-		return list_available_modules(out) + ["OPERATION FAILED"]
-
+	module = univention.admin.modules.get(module_name)
 	if not module:
 		out.append("unknown module %s." % module_name)
 		out.append("")
-		return list_available_modules(out) + ["OPERATION FAILED"]
+		raise OperationFailed(list_available_modules(out))
 
 	# initialise modules
 	if module_name == 'settings/usertemplate':
@@ -626,72 +596,53 @@ def _doit(arglist):
 		# the superordinate itself also has a superordinate, get it!
 		superordinate = univention.admin.objects.get_superordinate(module, None, lo, superordinate_dn)
 		if superordinate is None:
-			out.append('E: %s is not a superordinate for %s.' % (superordinate_dn, univention.admin.modules.name(module)))
-			return out + ["OPERATION FAILED"]
+			raise OperationFailed(out, 'E: %s is not a superordinate for %s.' % (superordinate_dn, univention.admin.modules.name(module)))
 
 	if len(arglist) == 2:
 		out = usage() + module_usage(information)
-		return out + ["OPERATION FAILED"]
+		raise OperationFailed(out)
 
 	action = arglist[2]
 
 	if len(arglist) == 3 and action != 'list':
 		out = usage() + module_usage(information, action)
-		return out + ["OPERATION FAILED"]
+		raise OperationFailed(out)
 
 	for opt, val in opts:
 		if opt == '--set':
-			pos = val.find('=')
-			name = val[:pos]
-			value = _2utf8(val[pos + 1:])
+			name, delim, value = val.partition('=')
+			value = _2utf8(value)
 
-			was_set = 0
 			for mod, (properties, options) in information.items():
 				if name in properties:
 					if properties[name].multivalue:
-						if name not in input:
-							input[name] = []
-							was_set = 1
+						input.setdefault(name, [])
 						if value:
 							input[name].append(value)
-							was_set = 1
 					else:
 						input[name] = value
-						was_set = 1
 
-			if not was_set:
+			if name not in input:
 				out.append("WARNING: No attribute with name '%s' in this module, value not set." % name)
 		elif opt == '--append':
-			pos = val.find('=')
-			name = val[:pos]
-			value = _2utf8(val[pos + 1:])
-			was_set = 0
+			name, delim, value = val.partition('=')
+			value = _2utf8(value)
 			for mod, (properties, options) in information.items():
 				if name in properties:
 					if properties[name].multivalue:
-						if name not in append:
-							append[name] = []
+						append.setdefault(name, [])
 						if value:
 							append[name].append(value)
-							was_set = 1
 					else:
 						append[name] = value
-						was_set = 1
-			if not was_set:
+			if name not in append:
 				out.append("WARNING: No attribute with name %s in this module, value not appended." % name)
 
 		elif opt == '--remove':
-			pos = val.find('=')
-			if pos == -1:
-				name = val
-				value = None
-			else:
-				name = val[:pos]
-				value = _2utf8(val[pos + 1:])
-			was_set = False
+			name, delim, value = val.partition('=')
+			value = _2utf8(value) or None
 			for mod, (properties, options) in information.items():
 				if name in properties:
-					was_set = True
 					if properties[name].multivalue:
 						if value is None:
 							remove[name] = value
@@ -701,253 +652,286 @@ def _doit(arglist):
 								remove[name].append(value)
 					else:
 						remove[name] = value
-			if not was_set:
+			if name not in remove:
 				out.append("WARNING: No attribute with name %s in this module, value not removed." % name)
 		elif opt == '--remove_referring':
-			remove_referring = 1
+			remove_referring = True
 		elif opt == '--recursive':
-			recursive = 1
+			recursive = True
 
-	#+++# ACTION CREATE #+++#
+	cli = CLI(module_name, module, dn, lo, position, superordinate)
 	if action == 'create' or action == 'new':
-			if hasattr(module, 'operations') and module.operations:
-				if 'add' not in module.operations:
-					out.append('Create %s not allowed' % module_name)
-					return out + ["OPERATION FAILED"]
+		out.extend(cli.create(input, append, ignore_exists, parsed_options, parsed_append_options, parsed_remove_options, policy_reference))
+	elif action == 'modify' or action == 'edit':
+		out.extend(cli.modify(input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference))
+	elif action == 'move':
+		out.extend(cli.move(position_dn))
+	elif action == 'remove' or action == 'delete':
+		out.extend(cli.remove(remove_referring=remove_referring, recursive=recursive, ignore_not_exists=ignore_not_exists, filter=filter))
+	elif action == 'list' or action == 'lookup':
+		out.extend(cli.list(list_policies, filter, superordinate_dn, policyOptions, policies_with_DN))
+	else:
+		out.append("Unknown or no action defined")
+		out.append('')
+		raise OperationFailed(out)
+
+	return out  # nearly the only successful return
+
+
+class CLI(object):
+
+	def __init__(self, module_name, module, dn, lo, position, superordinate):
+		self.module_name = module_name
+		self.module = module
+		self.dn = dn
+		self.lo = lo
+		self.position = position
+		self.superordinate = superordinate
+
+	def create(self, *args, **kwargs):
+		return self._create(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+	def modify(self, *args, **kwargs):
+		return self._modify(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+	def move(self, *args, **kwargs):
+		return self._move(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+	def remove(self, *args, **kwargs):
+		return self._remove(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+	def list(self, *args, **kwargs):
+		return self._list(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+	def _create(self, module_name, module, dn, lo, position, superordinate, input, append, ignore_exists, parsed_options, parsed_append_options, parsed_remove_options, policy_reference):
+		out = []
+		if not univention.admin.modules.supports(module_name, 'add'):
+			raise OperationFailed(out, 'Create %s not allowed' % module_name)
+
+		try:
+			object = module.object(None, lo, position=position, superordinate=superordinate)
+		except univention.admin.uexceptions.insufficientInformation as exc:
+			raise OperationFailed(out, 'E: Insufficient information: %s' % (exc,))
+
+		if parsed_options:
+			object.options = parsed_options
+		for option in parsed_append_options:
+			object.options.append(option)
+		for option in parsed_remove_options:
 			try:
-				object = module.object(co, lo, position=position, superordinate=superordinate)
-			except univention.admin.uexceptions.insufficientInformation as exc:
-				out.append('E: Insufficient information: %s' % (exc,))
-				return out + ["OPERATION FAILED"]
+				object.option.remove(option)
+			except ValueError:
+				pass
 
-			if parsed_options:
-				object.options = parsed_options
-			for option in parsed_append_options:
-				object.options.append(option)
-			for option in parsed_remove_options:
-				try:
-					object.option.remove(option)
-				except ValueError:
-					pass
+		object.open()
+		try:
+			out.extend(object_input(module, object, input, append=append))
+		except univention.admin.uexceptions.nextFreeIp:
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: No free IP address found')
+		except univention.admin.uexceptions.valueInvalidSyntax as err:
+			raise OperationFailed(out, 'E: Invalid Syntax: %s' % err)
 
-			object.open()
-			exists = 0
-			try:
-				out.extend(object_input(module, object, input, append=append))
-			except univention.admin.uexceptions.nextFreeIp:
-				if not ignore_exists:
-					out.append('E: No free IP address found')
-					return out + ['OPERATION FAILED']
-			except univention.admin.uexceptions.valueInvalidSyntax as err:
-				out.append('E: Invalid Syntax: %s' % err)
-				return out + ["OPERATION FAILED"]
+		default_containers = object.get_default_containers(lo)
+		if default_containers and position.isBase() and not any(lo.compare_dn(default_container, position.getDn()) for default_container in default_containers):
+			out.append('WARNING: The object is not going to be created underneath of its default containers.')
 
-			default_containers = object.get_default_containers(lo)
-			if default_containers and position.isBase() and not any(lo.compare_dn(default_container, position.getDn()) for default_container in default_containers):
-				out.append('WARNING: The object is not going to be created underneath of its default containers.')
+		object.policy_reference(*policy_reference)
 
-			object.policy_reference(*policy_reference)
+		exists = False
+		exists_msg = None
+		created = False
+		try:
+			dn = object.create()
+			created = True
+		except univention.admin.uexceptions.objectExists as exc:
+			exists_msg = '%s' % (exc,)
+			dn = exc.args[0]
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: Object exists: %s' % exists_msg)
+			else:
+				exists = 1
+		except univention.admin.uexceptions.uidAlreadyUsed as user:
+			exists_msg = '(uid) %s' % user
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: Object exists: %s' % exists_msg)
+			else:
+				exists = 1
+		except univention.admin.uexceptions.groupNameAlreadyUsed as group:
+			exists_msg = '(group) %s' % group
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: Object exists: %s' % exists_msg)
+			else:
+				exists = 1
+		except univention.admin.uexceptions.dhcpServerAlreadyUsed as name:
+			exists_msg = '(dhcpserver) %s' % name
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: Object exists: %s' % exists_msg)
+			else:
+				exists = 1
+		except univention.admin.uexceptions.macAlreadyUsed as mac:
+			exists_msg = '(mac) %s' % mac
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: Object exists: %s' % exists_msg)
+			else:
+				exists = 1
+		except univention.admin.uexceptions.noLock as e:
+			exists_msg = '(nolock) %s' % (e,)
+			if not ignore_exists:
+				raise OperationFailed(out, 'E: Object exists: %s' % exists_msg)
+			else:
+				exists = 1
+		except univention.admin.uexceptions.invalidDhcpEntry:
+			raise OperationFailed(out, 'E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
+		except univention.admin.uexceptions.invalidOptions as e:
+			out.append('E: invalid Options: %s' % e)
+			if not ignore_exists:
+				raise OperationFailed(out)
+		except univention.admin.uexceptions.insufficientInformation as exc:
+			raise OperationFailed(out, 'E: Insufficient information: %s' % (exc,))
+		except univention.admin.uexceptions.noObject as e:
+			raise OperationFailed(out, 'E: object not found: %s' % e)
+		except univention.admin.uexceptions.circularGroupDependency as e:
+			raise OperationFailed(out, 'E: circular group dependency detected: %s' % e)
+		except univention.admin.uexceptions.invalidChild as e:
+			raise OperationFailed(out, 'E: %s' % e)
 
-			exists = 0
-			exists_msg = None
-			created = False
-			try:
-				dn = object.create()
-				created = True
-			except univention.admin.uexceptions.objectExists as exc:
-				exists_msg = '%s' % (exc,)
-				dn = exc.args[0]
-				if not ignore_exists:
-					out.append('E: Object exists: %s' % exists_msg)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists = 1
-			except univention.admin.uexceptions.uidAlreadyUsed as user:
-				exists_msg = '(uid) %s' % user
-				if not ignore_exists:
-					out.append('E: Object exists: %s' % exists_msg)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists = 1
-			except univention.admin.uexceptions.groupNameAlreadyUsed as group:
-				exists_msg = '(group) %s' % group
-				if not ignore_exists:
-					out.append('E: Object exists: %s' % exists_msg)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists = 1
-			except univention.admin.uexceptions.dhcpServerAlreadyUsed as name:
-				exists_msg = '(dhcpserver) %s' % name
-				if not ignore_exists:
-					out.append('E: Object exists: %s' % exists_msg)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists = 1
-			except univention.admin.uexceptions.macAlreadyUsed as mac:
-				exists_msg = '(mac) %s' % mac
-				if not ignore_exists:
-					out.append('E: Object exists: %s' % exists_msg)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists = 1
-			except univention.admin.uexceptions.noLock as e:
-				exists_msg = '(nolock) %s' % (e,)
-				if not ignore_exists:
-					out.append('E: Object exists: %s' % exists_msg)
-					return out + ["OPERATION FAILED"]
-				else:
-					exists = 1
-			except univention.admin.uexceptions.invalidDhcpEntry:
-				out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
-				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.invalidOptions as e:
-				out.append('E: invalid Options: %s' % e)
-				if not ignore_exists:
-					return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.insufficientInformation as exc:
-				out.append('E: Insufficient information: %s' % (exc,))
-				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.noObject as e:
-				out.append('E: object not found: %s' % e)
-				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.circularGroupDependency as e:
-				out.append('E: circular group dependency detected: %s' % e)
-				return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.invalidChild as e:
-				out.append('E: %s' % e)
-				return out + ["OPERATION FAILED"]
+		if exists:
+			if exists_msg:
+				out.append('Object exists: %s' % exists_msg)
+			else:
+				out.append('Object exists')
+		elif created:
+			out.append('Object created: %s' % _2utf8(dn))
 
-			if exists == 1:
-				if exists_msg:
-					out.append('Object exists: %s' % exists_msg)
-				else:
-					out.append('Object exists')
-			elif created:
-				out.append('Object created: %s' % _2utf8(dn))
+		return out
 
-	#+++# ACTION MODIFY #+++#
-	elif action == 'modify' or action == 'edit' or action == 'move':
+	def _move(self, module_name, module, dn, lo, position, superordinate, position_dn):
+		out = []
 		if not dn:
-			out.append('E: DN is missing')
-			return out + ["OPERATION FAILED"]
+			raise OperationFailed(out, 'E: DN is missing')
 
 		object_modified = 0
 
-		if hasattr(module, 'operations') and module.operations:
-			if 'edit' not in module.operations:
-				out.append('Modify %s not allowed' % module_name)
-				return out + ["OPERATION FAILED"]
+		if not univention.admin.modules.supports(module_name, 'edit'):
+			raise OperationFailed(out, 'Modify %s not allowed' % module_name)
 
 		try:
-			object = univention.admin.objects.get(module, co, lo, position='', dn=dn)
+			object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
 		except univention.admin.uexceptions.noObject:
-			out.append('E: object not found')
-			return out + ["OPERATION FAILED"]
+			raise OperationFailed(out, 'E: object not found')
 
 		object.open()
 
-		if action == 'move':
-			if hasattr(module, 'operations') and module.operations:
-				if 'move' not in module.operations:
-					out.append('Move %s not allowed' % module_name)
-					return out + ["OPERATION FAILED"]
-			if not position_dn:
-				out.append("need new position for moving object")
-			else:
-				try:  # check if destination exists
-					lo.get(position_dn, required=True)
-				except (univention.admin.uexceptions.noObject, ldap.INVALID_DN_SYNTAX):
-					out.append("position does not exists: %s" % position_dn)
-					return out + ["OPERATION FAILED"]
-				rdn = ldap.dn.dn2str([ldap.dn.str2dn(dn)[0]])
-				newdn = "%s,%s" % (rdn, position_dn)
-				try:
-					object.move(newdn)
-					object_modified += 1
-				except univention.admin.uexceptions.noObject:
-					out.append('E: object not found')
-					return out + ["OPERATION FAILED"]
-				except univention.admin.uexceptions.ldapError as msg:
-					out.append("ldap Error: %s" % msg)
-					return out + ["OPERATION FAILED"]
-				except univention.admin.uexceptions.nextFreeIp:
-					out.append('E: No free IP address found')
-					return out + ['OPERATION FAILED']
-				except univention.admin.uexceptions.valueInvalidSyntax as err:
-					out.append('E: Invalid Syntax: %s' % err)
-					return out + ["OPERATION FAILED"]
-				except univention.admin.uexceptions.invalidOperation as msg:
-					out.append(str(msg))
-					return out + ["OPERATION FAILED"]
+		if not univention.admin.modules.supports(module_name, 'move'):
+			raise OperationFailed(out, 'Move %s not allowed' % module_name)
 
-		else:  # modify
-
-			if (len(input) + len(append) + len(remove) + len(parsed_append_options) + len(parsed_remove_options) + len(parsed_options) + len(policy_reference) + len(policy_dereference)) > 0:
-				if parsed_options:
-					object.options = parsed_options
-				for option in parsed_append_options:
-					object.options.append(option)
-				for option in parsed_remove_options[:]:
-					try:
-						object.options.remove(option)
-					except ValueError:
-						parsed_remove_options.remove(option)
-						out.append('WARNING: option %r is not set. Ignoring.' % (option,))
-
-				try:
-					out.extend(object_input(module, object, input, append, remove))
-				except univention.admin.uexceptions.valueMayNotChange as e:
-					out.append(unicode(e[0]))
-					return out + ["OPERATION FAILED"]
-
-				object.policy_reference(*policy_reference)
-				object.policy_dereference(*policy_dereference)
-
-				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_remove_options or parsed_options or object.policiesChanged():
-					try:
-						dn = object.modify()
-						object_modified += 1
-					except univention.admin.uexceptions.noObject:
-						out.append('E: object not found')
-						return out + ["OPERATION FAILED"]
-					except univention.admin.uexceptions.invalidDhcpEntry:
-						out.append('E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
-						return out + ["OPERATION FAILED"]
-					except univention.admin.uexceptions.circularGroupDependency as e:
-						out.append('E: circular group dependency detected: %s' % e)
-						return out + ["OPERATION FAILED"]
-					except univention.admin.uexceptions.valueInvalidSyntax as e:
-						out.append('E: Invalid Syntax: %s' % e)
-						return out + ["OPERATION FAILED"]
+		if not position_dn:
+			out.append("need new position for moving object")
+		else:
+			try:  # check if destination exists
+				lo.get(position_dn, required=True)
+			except (univention.admin.uexceptions.noObject, ldap.INVALID_DN_SYNTAX):
+				raise OperationFailed(out, "position does not exists: %s" % position_dn)
+			rdn = ldap.dn.dn2str([ldap.dn.str2dn(dn)[0]])
+			newdn = "%s,%s" % (rdn, position_dn)
+			try:
+				object.move(newdn)
+				object_modified += 1
+			except univention.admin.uexceptions.noObject:
+				raise OperationFailed(out, 'E: object not found')
+			except univention.admin.uexceptions.ldapError as msg:
+				raise OperationFailed(out, "ldap Error: %s" % msg)
+			except univention.admin.uexceptions.nextFreeIp:
+				raise OperationFailed(out, 'E: No free IP address found')
+			except univention.admin.uexceptions.valueInvalidSyntax as err:
+				raise OperationFailed(out, 'E: Invalid Syntax: %s' % err)
+			except univention.admin.uexceptions.invalidOperation as msg:
+				raise OperationFailed(out, str(msg))
 
 		if object_modified > 0:
 			out.append('Object modified: %s' % _2utf8(dn))
 		else:
 			out.append('No modification: %s' % _2utf8(dn))
 
-	elif action == 'remove' or action == 'delete':
+		return out
 
-		if hasattr(module, 'operations') and module.operations:
-			if 'remove' not in module.operations:
-				out.append('Remove %s not allowed' % module_name)
-				return out + ["OPERATION FAILED"]
+	def _modify(self, module_name, module, dn, lo, position, superordinate, input, append, remove, parsed_append_options, parsed_remove_options, parsed_options, policy_reference, policy_dereference):
+		out = []
+		if not dn:
+			raise OperationFailed(out, 'E: DN is missing')
+
+		object_modified = 0
+
+		if not univention.admin.modules.supports(module_name, 'edit'):
+			raise OperationFailed(out, 'Modify %s not allowed' % module_name)
+
+		try:
+			object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
+		except univention.admin.uexceptions.noObject:
+			raise OperationFailed(out, 'E: object not found')
+
+		object.open()
+
+		if (len(input) + len(append) + len(remove) + len(parsed_append_options) + len(parsed_remove_options) + len(parsed_options) + len(policy_reference) + len(policy_dereference)) > 0:
+			if parsed_options:
+				object.options = parsed_options
+			for option in parsed_append_options:
+				object.options.append(option)
+			for option in parsed_remove_options[:]:
+				try:
+					object.options.remove(option)
+				except ValueError:
+					parsed_remove_options.remove(option)
+					out.append('WARNING: option %r is not set. Ignoring.' % (option,))
+
+			try:
+				out.extend(object_input(module, object, input, append, remove))
+			except univention.admin.uexceptions.valueMayNotChange as exc:
+				raise OperationFailed(out, str(exc))
+
+			object.policy_reference(*policy_reference)
+			object.policy_dereference(*policy_dereference)
+
+			if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_remove_options or parsed_options or object.policiesChanged():
+				try:
+					dn = object.modify()
+					object_modified += 1
+				except univention.admin.uexceptions.noObject:
+					raise OperationFailed(out, 'E: object not found')
+				except univention.admin.uexceptions.invalidDhcpEntry:
+					raise OperationFailed(out, 'E: The DHCP entry for this host should contain the zone dn, the ip address and the mac address.')
+				except univention.admin.uexceptions.circularGroupDependency as e:
+					raise OperationFailed(out, 'E: circular group dependency detected: %s' % e)
+				except univention.admin.uexceptions.valueInvalidSyntax as e:
+					raise OperationFailed(out, 'E: Invalid Syntax: %s' % e)
+
+		if object_modified > 0:
+			out.append('Object modified: %s' % _2utf8(dn))
+		else:
+			out.append('No modification: %s' % _2utf8(dn))
+
+		return out
+
+	def _remove(self, module_name, module, dn, lo, position, superordinate, recursive, remove_referring, ignore_not_exists, filter):
+		out = []
+		if not univention.admin.modules.supports(module_name, 'remove'):
+			raise OperationFailed(out, 'Remove %s not allowed' % module_name)
 
 		try:
 			if dn and filter:
-				object = univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=dn, filter=filter, required=True, unique=True)[0]
+				object = univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=dn, filter=filter, required=True, unique=True)[0]
 			elif dn:
-				object = univention.admin.modules.lookup(module, co, lo, scope='base', superordinate=superordinate, base=dn, filter=filter, required=True, unique=True)[0]
+				object = univention.admin.modules.lookup(module, None, lo, scope='base', superordinate=superordinate, base=dn, filter=filter, required=True, unique=True)[0]
 			elif filter:
-				object = univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter, required=True, unique=True)[0]
+				object = univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter, required=True, unique=True)[0]
 			else:
-				out.append('E: dn or filter needed')
-				return out + ["OPERATION FAILED"]
+				raise OperationFailed(out, 'E: dn or filter needed')
 		except (univention.admin.uexceptions.noObject, IndexError):
 			if ignore_not_exists:
 				out.append('Object not found: %s' % _2utf8(dn or filter))
 				return out
-			out.append('E: object not found')
-			return out + ["OPERATION FAILED"]
+			raise OperationFailed(out, 'E: object not found')
 
 		object.open()
 
@@ -958,27 +942,26 @@ def _doit(arglist):
 			try:
 				object.remove(recursive)
 			except univention.admin.uexceptions.ldapError as msg:
-				out.append(str(msg))
-				return out + ["OPERATION FAILED"]
+				raise OperationFailed(out, str(msg))
 		else:
 			try:
 				object.remove()
 			except univention.admin.uexceptions.primaryGroupUsed:
-				out.append('E: object in use')
-				return out + ["OPERATION FAILED"]
+				raise OperationFailed(out, 'E: object in use')
 		out.append('Object removed: %s' % _2utf8(dn or object.dn))
 
-	elif action == 'list' or action == 'lookup':
+		return out
 
+	def _list(self, module_name, module, dn, lo, position, superordinate, list_policies, filter, superordinate_dn, policyOptions, policies_with_DN):
+		out = []
 		if hasattr(module, 'operations') and module.operations:
 			if 'search' not in module.operations:
-				out.append('Search %s not allowed' % module_name)
-				return out + ["OPERATION FAILED"]
+				raise OperationFailed(out, 'Search %s not allowed' % module_name)
 
 		out.append(_2utf8(filter))
 
 		try:
-			for object in univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
+			for object in univention.admin.modules.lookup(module, None, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
 				out.append('DN: %s' % _2utf8(univention.admin.objects.dn(object)))
 
 				if (hasattr(module, 'virtual') and not module.virtual) or not hasattr(module, 'virtual'):
@@ -1012,8 +995,7 @@ def _doit(arglist):
 
 				if list_policies:
 					utf8_objectdn = _2utf8(univention.admin.objects.dn(object))
-					p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_objectdn], stdout=subprocess.PIPE)
-					policyResults = p1.communicate()[0].split('\n')
+					policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [utf8_objectdn], close_fds=True).decode('utf-8').split(u'\n')
 
 					out.append("  Policy-based Settings:")
 					policy = ''
@@ -1053,11 +1035,11 @@ def _doit(arglist):
 						# TODO: sharedsubnet_module = univention.admin.modules.get('dhcp/sharedsubnet')
 						ips = object['fixedaddress']
 						for ip in ips:
-							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
-								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], ip):
+							ip_ = IPv4Address(u"%s" % (ip,))
+							for subnet in univention.admin.modules.lookup(subnet_module, None, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
+								if ip_ in IPv4Network(u"%(subnet)s/%(subnetmask)s" % subnet, strict=False):
 									utf8_subnet_dn = _2utf8(subnet.dn)
-									p1 = subprocess.Popen(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], stdout=subprocess.PIPE)
-									policyResults = p1.communicate()[0].split('\n')
+									policyResults = subprocess.check_output(['univention_policy_result'] + policyOptions + [utf8_subnet_dn], close_fds=True).decode('utf-8').split(u'\n')
 									out.append("  Subnet-based Settings:")
 									ddict = {}
 									policy = ''
@@ -1066,7 +1048,7 @@ def _doit(arglist):
 										if not (line.strip() == "" or line.strip()[:4] == "DN: " or line.strip()[:7] == "POLICY "):
 											out.append("    %s" % line.strip())
 											if policies_with_DN:
-												subsplit = string.split(line.strip(), ': ')
+												subsplit = line.strip().split(': ', 1)
 												if subsplit[0] == 'Policy':
 													if policy:
 														ddict[attribute] = [policy, value]
@@ -1077,7 +1059,7 @@ def _doit(arglist):
 												elif subsplit[0] == 'Value':
 													value.append(subsplit[1])
 											else:
-												subsplit = string.split(line.strip(), '=')
+												subsplit = line.strip().split('=', 1)
 												if subsplit[0] not in ddict:
 													ddict[subsplit[0]] = []
 												ddict[subsplit[0]].append(subsplit[1])
@@ -1098,28 +1080,21 @@ def _doit(arglist):
 										for key in client.keys():
 											out.append("    Policy: " + client[key][0])
 											out.append("    Attribute: " + key)
-											for i in range(0, len(client[key][1])):
-												out.append("    Value: " + client[key][1][i])
+											for val in client[key][1]:
+												out.append("    Value: " + val)
 									else:
 										for key in client.keys():
-											for i in range(0, len(client[key])):
-												out.append("    %s=%s" % (key, client[key][i]))
+											for val in client[key]:
+												out.append("    %s=%s" % (key, val))
 									out.append('')
 
 				out.append('')
 		except univention.admin.uexceptions.ldapError as errmsg:
-			out.append('%s' % str(errmsg))
-			return out + ["OPERATION FAILED"]
+			raise OperationFailed(out, '%s' % (errmsg,))
 		except univention.admin.uexceptions.valueInvalidSyntax as errmsg:
-			out.append('%s' % str(errmsg.message))
-			return out + ["OPERATION FAILED"]
-	else:
-		out.append("Unknown or no action defined")
-		out.append('')
-		usage()
-		return out + ["OPERATION FAILED"]
+			raise OperationFailed(out, '%s' % (errmsg.message,))
 
-	return out  # nearly the only successful return
+		return out
 
 
 if __name__ == '__main__':

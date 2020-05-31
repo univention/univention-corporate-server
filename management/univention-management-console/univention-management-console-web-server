@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import division
+
 import os
 import re
 import sys
@@ -47,14 +49,15 @@ import traceback
 import functools
 import threading
 from errno import ESRCH
-from urlparse import urlparse, urlunsplit
 from optparse import OptionParser
-from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
+from six.moves.urllib_parse import urlparse, urlunsplit
+from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
-import Queue
+import six
+from six.moves import queue as Queue
 import notifier
 import cherrypy
-from ipaddr import IPAddress
+from ipaddress import ip_address
 from cherrypy import HTTPError, HTTPRedirect, NotFound
 from cherrypy.lib.httputil import valid_status
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
@@ -72,14 +75,24 @@ from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
 
 from univention.lib.i18n import NullTranslation
+
+try:
+	from html import unescape
+except ImportError:  # Python 2
+	import HTMLParser
+	html_parser = HTMLParser.HTMLParser()
+	unescape = html_parser.unescape
+
 _ = NullTranslation('univention-management-console-frontend').translate
 
 _session_timeout = get_int('umc/http/session/timeout', 300)
 
+REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE = int(REQUEST_ENTITY_TOO_LARGE), int(LENGTH_REQUIRED), int(NOT_FOUND), int(BAD_REQUEST), int(UNAUTHORIZED), int(SERVICE_UNAVAILABLE)
+
 
 def sessionidhash():
-	session = '%s%s%s%s' % (cherrypy.request.headers.get('Authorization', ''), cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)
-	return hashlib.sha256(session).hexdigest()[:36]
+	session = u'%s%s%s%s' % (cherrypy.request.headers.get('Authorization', ''), cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)
+	return hashlib.sha256(session.encode('UTF-8')).hexdigest()[:36]
 	# TODO: the following is more secure (real random) but also much slower
 	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', session, sessionidhash.salt, 100000))[:36]
 
@@ -183,7 +196,7 @@ class SessionClient(object):
 			' * service univention-management-console-web-server restart',
 			'Otherwise please contact an administrator or try again later.'
 		))
-		for id, (queue, request) in self._requestid2response_queue.items():
+		for id, (queue, request) in list(self._requestid2response_queue.items()):
 			self._requestid2response_queue.pop(id)
 			response = Response(request)
 			response.status = SERVICE_UNAVAILABLE
@@ -258,7 +271,7 @@ class UMCP_Dispatcher(object):
 			response.status = UNAUTHORIZED
 			response.message = 'The current session is not valid with your IP address for security reasons. This might happen after switching the network. Please login again.'
 			# very important! We must expire the session cookie, with the same path, otherwise one ends up in a infinite redirection loop after changing the IP address (e.g. because switching from VPN to regular network)
-			for name in queuerequest.request.cookies.keys():
+			for name in queuerequest.request.cookies:
 				if name.startswith('UMCSessionId'):
 					response.cookies[name] = {
 						'expires': datetime.datetime.fromtimestamp(0),
@@ -418,8 +431,8 @@ traceback_pattern = re.compile('(Traceback.*most recent call|File.*line.*in.*\d)
 @log_exceptions
 def default_error_page(status, message, traceback, version, result=None):
 	if not traceback and traceback_pattern.search(message):
-			index = message.find('Traceback') if 'Traceback' in message else message.find('File')
-			message, traceback = message[:index].strip(), message[index:].strip()
+		index = message.find('Traceback') if 'Traceback' in message else message.find('File')
+		message, traceback = message[:index].strip(), message[index:].strip()
 	if traceback:
 		CORE.error('%s' % (traceback,))
 	if ucr.is_false('umc/http/show_tracebacks', False):
@@ -444,7 +457,7 @@ def default_error_page(status, message, traceback, version, result=None):
 def default_error_page_html(status, message, traceback, version, result=None):
 	content = default_error_page_json(status, message, traceback, version, result)
 	try:
-		with open('/usr/share/univention-management-console-frontend/error.html', 'rb') as fd:
+		with open('/usr/share/univention-management-console-frontend/error.html', 'r') as fd:
 			content = fd.read().replace('%ERROR%', json.dumps(cherrypy._cperror._escape(content, True)))
 		cherrypy.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 	except (OSError, IOError):
@@ -463,7 +476,7 @@ def default_error_page_json(status, message, traceback, version, result=None):
 	response = {
 		'status': status,
 		'message': message,
-		'traceback': traceback,
+		'traceback': unescape(traceback) if traceback else traceback,
 		'location': location,
 	}
 	if result:
@@ -490,7 +503,7 @@ class UMC_HTTPError(HTTPError):
 			traceback = traceback.strip()
 		cherrypy.response.status = self.status
 		content = default_error_page(self.status, self._message, traceback, None, self.body)
-		cherrypy.response.body = content
+		cherrypy.response.body = content.encode('utf-8')
 
 		cherrypy.response.headers['Content-Length'] = len(content)
 
@@ -531,7 +544,7 @@ class SamlError(UMC_HTTPError):
 			return self.missing_key(exc)
 		if isinstance(exc, SignatureError):
 			return self.signature_error(exc)
-		raise etype, exc, etraceback
+		six.reraise(etype, exc, etraceback)
 
 	@error
 	def unknown_principal(self, exc):
@@ -714,18 +727,24 @@ class CPgeneric(Ressource):
 
 	def add_request_headers(self, request):
 		request.http_method = cherrypy.request.method
-		request.headers = dict((name.decode('ISO8859-1').title(), value.decode('ISO8859-1')) for name, value in cherrypy.request.headers.iteritems())
+		if six.PY2:
+			request.headers = dict((name.decode('ISO8859-1').title(), value.decode('ISO8859-1')) for name, value in cherrypy.request.headers.items())
+		else:
+			request.headers = dict(cherrypy.request.headers.items())
 		request.headers.pop('Cookie', None)
-		request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
-		for name, value in request.cookies.items():
+		if six.PY2:
+			request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
+		else:
+			request.cookie = dict((x.key, x.value) for x in cherrypy.request.cookie.values())
+		for name, value in list(request.cookies.items()):
 			if name == self.suffixed_cookie_name('UMCSessionId'):
 				request.cookies['UMCSessionId'] = value
 
 	def add_response_headers(self, response):
 		if response.headers:
 			cherrypy.response.headers.update(response.headers)
-		for key, item in response.cookies.iteritems():
-			if isinstance(key, unicode):
+		for key, item in response.cookies.items():
+			if not isinstance(key, bytes):
 				key = key.encode('utf-8')  # bug in python Cookie!
 			if isinstance(item, dict):
 				cherrypy.response.cookie[key] = item.pop('value', '')
@@ -760,7 +779,7 @@ class CPgeneric(Ressource):
 				if not cherrypy.request.headers.get(u"Content-Length"):
 					self._log('warn', 'missing Content-Length header')
 					raise UMC_HTTPError(LENGTH_REQUIRED, 'Missing Content-Length header')
-				body = cherrypy.request.body.read()
+				body = cherrypy.request.body.read().decode('UTF-8')
 
 			args = self.load_json(body)
 		else:
@@ -779,10 +798,10 @@ class CPgeneric(Ressource):
 		if user and (user.password or user.saml) and (not client or not client.authenticated):
 			auth = Request('AUTH')
 			auth.body = {
-					'username': user.username,
-					'password': user.get_umc_password(),
-					'auth_type': user.get_umc_auth_type(),
-					}
+				'username': user.username,
+				'password': user.get_umc_password(),
+				'auth_type': user.get_umc_auth_type(),
+			}
 			try:
 				self.make_queue_request(sessionid, auth)
 				self.set_session(sessionid, user.username, password=user.password)
@@ -793,7 +812,7 @@ class CPgeneric(Ressource):
 		response = self.make_queue_request(sessionid, req)
 		body = response.body
 		if response.mimetype == 'application/json':
-			body = json.dumps(response.body)
+			body = json.dumps(response.body).encode('ASCII')
 
 		return body
 
@@ -865,7 +884,7 @@ class CPGet(CPgeneric):
 		info['auth_type'] = user.saml and 'SAML'
 		info['remaining'] = user.time_remaining
 		info['validity'] = user.session_validity
-		return json.dumps({"status": 200, "result": info, "message": ""})
+		return json.dumps({"status": 200, "result": info, "message": ""}).encode('ASCII')
 
 	@cherrypy.expose
 	def ipaddress(self, *a, **kw):
@@ -874,14 +893,14 @@ class CPGet(CPgeneric):
 		except ValueError:
 			# hacking attempt
 			addresses = [cherrypy.request.remote.ip]
-		return json.dumps(addresses)
+		return json.dumps(addresses).encode('ASCII')
 
 	@property
 	def addresses(self):
 		addresses = cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).split(',') + [cherrypy.request.remote.ip]
-		addresses = set(map(IPAddress, map(str.strip, addresses)))
-		addresses.discard(IPAddress('::1'))
-		addresses.discard(IPAddress('127.0.0.1'))
+		addresses = set(ip_address(x.decode('ASCII', 'ignore').strip()) for x in addresses)
+		addresses.discard(ip_address(u'::1'))
+		addresses.discard(ip_address(u'127.0.0.1'))
 		return tuple(address.exploded for address in addresses)
 
 
@@ -946,7 +965,7 @@ class CPCommand(CPgeneric):
 			self._log('error', 'there is not enough free space to upload files')
 			raise UMC_HTTPError(BAD_REQUEST, 'There is not enough free space on disk')
 
-		for iid, ifield in args.iteritems():
+		for iid, ifield in args.items():
 			if isinstance(ifield, cherrypy._cpreqbody.Part):
 				tmpfile = _upload_manager.add(req.id, ifield)
 				options.append(self._sanitize_file(tmpfile, ifield))
@@ -958,7 +977,7 @@ class CPCommand(CPgeneric):
 						options.append(self._sanitize_file(tmpfile, jfield))
 					else:
 						CORE.warn('Unknown type of multipart/form-data entry: %r=%r' % (iid, jfield))
-			elif isinstance(ifield, basestring):
+			elif isinstance(ifield, six.string_types):
 				# field is a string :)
 				body[iid] = ifield
 			else:
@@ -1034,14 +1053,14 @@ class CPAuth(CPgeneric):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
-		content_length = cherrypy.request.headers.get("Content-Length", 0)
+		content_length = int(cherrypy.request.headers.get("Content-Length", 0))
 		if not content_length and content_length != 0:
 			CORE.process('auth: missing Content-Length header')
 			raise UMC_HTTPError(LENGTH_REQUIRED)
 
 		if cherrypy.request.method in cherrypy.request.methods_with_bodies:
 			max_length = 2000 * 1024
-			if content_length <= max_length:  # prevent some DoS
+			if content_length >= max_length:  # prevent some DoS
 				raise UMC_HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
 
 		data = self.get_arguments(kwargs)
@@ -1068,7 +1087,7 @@ class CPAuth(CPgeneric):
 		body = response.body
 		if response.mimetype == 'application/json':
 			username = body.get('result', {}).get('username', username)
-			body = json.dumps(response.body)
+			body = json.dumps(response.body).encode('UTF-8')
 		self.set_session(sessionid, username, password=password)
 		return body
 
@@ -1205,7 +1224,7 @@ class SAML(Ressource):
 		auth_response = cherrypy.request.app.root.auth._auth_request(req, sessionid)
 		self.set_session(sessionid, saml.username, saml=saml)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return '<html><body><textarea>%s</textarea></body></html>' % (auth_response,)
+		return (u'<html><body><textarea>%s</textarea></body></html>' % (auth_response,)).encode('UTF-8')
 
 	@cherrypy.expose
 	def slo(self, *args, **kwargs):  # single logout service
@@ -1357,10 +1376,10 @@ class SAML(Ressource):
 		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
 			return cherrypy.request.query[self.idp_query_param]
 		if len(idps) == 1:
-			return idps.keys()[0]
+			return list(idps.keys())[0]
 		if not idps:
 			raise SamlError().no_identity_provider()
-		raise SamlError().multiple_identity_provider(idps.keys(), self.idp_query_param)
+		raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param)
 
 	def get_identity_provider_destination(self, entity_id):
 		"""Get the destination (with SAML binding) of the specified entity_id.
@@ -1402,7 +1421,7 @@ class SAML(Ressource):
 			if not body:
 				raise HTTPRedirect(cherrypy.response.headers['Location'], status=cherrypy.response.status)
 
-		return body
+		return body.encode('UTF-8')
 
 
 @log_exceptions
@@ -1498,6 +1517,15 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		self.daemon_context.detach_process = self.options.daemon_mode
 		self.daemon_context.umask = 0o077
 		self.daemon_context.files_preserve = [debug_fd]
+
+	def _open_streams_from_app_stream_paths(self, app):
+		if six.PY3:
+			if not self.options.daemon_mode:
+				self.daemon_context.stdin = open(app.stdin_path, 'r')
+				self.daemon_context.stdout = open(app.stdout_path, 'w')
+				self.daemon_context.stderr = open(app.stderr_path, 'w')
+			return
+		return super(UMC_HTTP_Daemon, self)._open_streams_from_app_stream_paths()
 
 	def _restart(self):
 		"""Handler for the restart action. """

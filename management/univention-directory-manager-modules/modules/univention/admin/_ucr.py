@@ -1,10 +1,8 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-#
-# Script to generate syntax definitions for the XKeyboardLayout in Univention Directory
-# Manager from the definitions shipped by X.org in /usr/share/X11/xkb/rules/xorg.lst
-#
-# Copyright 2011-2020 Univention GmbH
+"""
+Non public UCR instance.
+"""
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -31,22 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
+import univention.config_registry
 
-f = open(sys.argv[1])
-lines = f.readlines()
-lines_processed = 0
-
-print "\t\t('', ''),"
-for i in lines:
-	elem = i.split()
-	lines_processed = lines_processed + 1
-	country = ""
-	for j in elem[1:]:
-		country = country + j + " "
-
-	syntax = "\t\t('" + elem[0] + "', '" + country.strip() + "')"
-	if lines_processed < len(lines):
-		syntax = syntax + ","
-
-	print syntax
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()

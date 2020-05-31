@@ -30,8 +30,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
+import io
 import os
 import traceback
+import six
 
 import univention.debug as ud
 from univention.admin import localization
@@ -52,8 +54,8 @@ def import_hook_files():
 				if fn.startswith('/usr/lib/pymodules/python2.7/'):
 					ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 				try:
-					with open(fn, 'r') as fd:
-						exec(fd, sys.modules[__name__].__dict__)
+					with io.open(fn, 'rb') as fd:
+						exec(fd.read(), sys.modules[__name__].__dict__)
 					ud.debug(ud.ADMIN, ud.INFO, 'admin.hook.import_hook_files: importing %r' % (fn,))
 				except Exception:
 					ud.debug(ud.ADMIN, ud.ERROR, 'admin.hook.import_hook_files: loading %r failed' % (fn,))
@@ -178,7 +180,7 @@ class AttributeHook(simpleHook):
 
 		:param obj: The |UDM| object instance.
 		"""
-		assert isinstance(self.udm_attribute_name, basestring), "udm_attribute_name has to be a str"
+		assert isinstance(self.udm_attribute_name, six.string_types), "udm_attribute_name has to be a str"  # noqa: F821
 		ud.debug(ud.ADMIN, ud.INFO, 'admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)' % (self.ldap_attribute_name, self.udm_attribute_name))
 		old_value = obj[self.udm_attribute_name]
 		new_value = self.map_attribute_value_to_udm(old_value)
@@ -203,7 +205,7 @@ class AttributeHook(simpleHook):
 		:param ml: The modification list to extend.
 		:returns: The extended modification list.
 		"""
-		assert isinstance(self.ldap_attribute_name, basestring), "ldap_attribute_name has to be a str"
+		assert isinstance(self.ldap_attribute_name, six.string_types), "ldap_attribute_name has to be a str"  # noqa: F821
 		new_ml = []
 		for ml_value in ml:
 			if len(ml_value) == 2:

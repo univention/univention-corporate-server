@@ -18,6 +18,7 @@ Depends:
  python-apt,
  python-dnspython,
  python-ipaddr,
+ python-ipaddress,
  python-ldap,
  python-ldb,
  python-magic,

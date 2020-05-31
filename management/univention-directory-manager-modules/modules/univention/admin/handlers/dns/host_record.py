@@ -30,8 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ipaddr
-import string
+import ipaddress
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -113,19 +112,19 @@ layout = [
 ]
 
 
-def unmapMX(old):
+def unmapMX(old, encoding=()):
 	_d = ud.function('admin.handlers.dns.host_record.unmapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
-		new.append(i.split(' '))
+		new.append(i.decode(*encoding).split(u' '))
 	return new
 
 
-def mapMX(old):
+def mapMX(old, encoding=()):
 	_d = ud.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(u' '.join(i).encode(*encoding))
 	return new
 
 
@@ -148,19 +147,13 @@ class object(univention.admin.handlers.simpleLdap):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
-		if dn:  # TODO: document why or remove
-			self.open()
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self.oldinfo['a'] = []
-		self.info['a'] = []
-		if 'aRecord' in self.oldattr:
-			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(self.oldattr['aRecord'])
-		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+	def _post_unmap(self, info, values):
+		info['a'] = []
+		if 'aRecord' in values:
+			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
+		if 'aAAARecord' in values:
+			info['a'].extend([ipaddress.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
+		return info
 
 	def _ldap_addlist(self):
 		return [
@@ -178,19 +171,20 @@ class object(univention.admin.handlers.simpleLdap):
 		if oldAddresses != newAddresses:
 			if oldAddresses:
 				for address in oldAddresses:
-					if ':' in address:  # IPv6
-						oldAaaaRecord.append(address)
+					if u':' in address:  # IPv6
+						oldAaaaRecord.append(address.encode('ASCII'))
 					else:
-						oldARecord.append(address)
+						oldARecord.append(address.encode('ASCII'))
 			if newAddresses:
 				for address in newAddresses:
-					if ':' in address:  # IPv6
-						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
+					if u':' in address:  # IPv6
+						newAaaaRecord.append(address)
 					else:
-						newARecord.append(address)
+						newARecord.append(address.encode('ASCII'))
 
 			# explode all IPv6 addresses and remove duplicates
-			newAaaaRecord = list(set(map(lambda x: ipaddr.IPv6Address(x).exploded, newAaaaRecord)))
+			newAaaaRecord = list(set([ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord]))
+			newAaaaRecord = [x.encode('ASCII') for x in newAaaaRecord]
 
 			ml.append(('aRecord', oldARecord, newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
@@ -225,7 +219,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	@classmethod
 	def lookup_filter_superordinate(cls, filter, superordinate):
-		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone']), escape=True))
+		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
 		return filter
 
 	@classmethod
@@ -244,9 +238,9 @@ lookup = object.lookup
 
 def identify(dn, attr, canonical=0):
 	return all([
-		'dNSZone' in attr.get('objectClass', []),
-		'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', ['.arpa'])[0].endswith('.arpa'),
+		b'dNSZone' in attr.get('objectClass', []),
+		b'@' not in attr.get('relativeDomainName', []),
+		not attr.get('zoneName', [b'.arpa'])[0].decode('UTF-8').endswith('.arpa'),
 		not attr.get('cNAMERecord', []),
 		not attr.get('sRVRecord', []),
 		any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord')) or module in attr.get('univentionObjectType', []),

@@ -101,7 +101,7 @@ if __name__ == '__main__':
 	printers = {}
 	cmds = []
 	os.path.walk('/usr/share/ppd/', __check_dir, printers)
-	for manu, models in list(printers.items()):
+	for manu, models in printers.items():
 		cmds.append(get_udm_command(manu, models))
 	print('\n\n'.join(cmds))
 	check_obsolete()

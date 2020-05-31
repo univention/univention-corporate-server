@@ -13,7 +13,7 @@
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 from essential.dns_helper import resolveDnsEntry
-from ipaddr import IPAddress
+from ipaddress import ip_address
 
 
 if __name__ == '__main__':
@@ -34,7 +34,7 @@ if __name__ == '__main__':
 		}
 		forward_zone = udm.create_object('dns/forward_zone', position=pos, **forward_zone_properties)
 
-		#IPv4
+		# IPv4
 		ip = uts.random_ip()
 		host = uts.random_name()
 		host_record_properties = {
@@ -48,10 +48,10 @@ if __name__ == '__main__':
 
 		qname = '%s.%s' % (host, zone)
 		answers = resolveDnsEntry(qname, 'A')
-		answer = [IPAddress(rdata.address) for rdata in answers]
-		assert answer == [IPAddress(ip)], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
+		answer = [ip_address(u'%s' % (rdata.address,)) for rdata in answers]
+		assert answer == [ip_address(u'%s' % (ip,))], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
 
-		#IPv6
+		# IPv6
 		ip = '2011:06f8:13dc:0002:19b7:d592:09dd:1041'  # create random_ipv6()-method?
 		host = uts.random_name()
 		host_record_properties.update({
@@ -62,5 +62,5 @@ if __name__ == '__main__':
 
 		qname = '%s.%s' % (host, zone)
 		answers = resolveDnsEntry(qname, 'AAAA')
-		answer = [IPAddress(rdata.address) for rdata in answers]
-		assert answer == [IPAddress(ip)], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])
+		answer = [ip_address(u'%s' % (rdata.address,)) for rdata in answers]
+		assert answer == [ip_address(u'%s' % (ip,))], 'resolved name "%s" != created ldap-object "%s"' % (answer, [ip])

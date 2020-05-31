@@ -35,16 +35,14 @@ import re
 import hashlib
 import heimdal
 import smbpasswd
-import string
-import univention.config_registry
+
 import univention.debug as ud
+from univention.admin._ucr import configRegistry
+
 try:
 	from typing import List, Optional, Tuple  # noqa F401
 except ImportError:
 	pass
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 RE_PASSWORD_SCHEME = re.compile('^{(\w+)}(!?)(.*)', re.I)
 
@@ -70,10 +68,10 @@ def crypt(password, method_id=None, salt=None):
 			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
 			'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
 			'6', '7', '8', '9']
-		urandom = open("/dev/urandom", "r")
-		for i in xrange(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
+		urandom = open("/dev/urandom", "rb")
+		for i in range(0, 16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
 			o = ord(urandom.read(1))
-			while not o < 256 / len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
+			while not o < 256 // len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
 				o = ord(urandom.read(1))
 			salt = salt + valid[(o % len(valid))]
 		urandom.close()
@@ -87,8 +85,8 @@ def crypt(password, method_id=None, salt=None):
 			'SHA-512': '6',
 		}.get(hashing_method, '6')
 
-	import crypt
-	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+	from crypt import crypt as _crypt
+	return _crypt(password, '$%s$%s$' % (method_id, salt, ))
 
 
 def ntlm(password):
@@ -120,10 +118,6 @@ def krb5_asn1(principal, password, krb5_context=None):
 	:returns: list of ASN1 encoded Kerberos hashes.
 	"""
 	list = []
-	if isinstance(principal, unicode):
-		principal = principal.encode('utf-8')
-	if isinstance(password, unicode):
-		password = password.encode('utf-8')
 	if not krb5_context:
 		krb5_context = heimdal.context()
 	for krb5_etype in krb5_context.get_permitted_enctypes():
@@ -203,7 +197,7 @@ def lock_password(password):
 	"""
 	# cleartext password?
 	if not RE_PASSWORD_SCHEME.match(password):
-		return "{crypt}!%s" % (univention.admin.password.crypt(password))
+		return "{crypt}!%s" % (crypt(password))
 
 	if not is_locked(password):
 		match = RE_PASSWORD_SCHEME.match(password).groups()
@@ -233,8 +227,8 @@ def get_password_history(newpwhash, pwhistory, pwhlen):
 	:returns: modified password hash history.
 	"""
 	# split the history
-	if len(string.strip(pwhistory)):
-		pwlist = string.split(pwhistory, ' ')
+	if len(pwhistory.strip()):
+		pwlist = pwhistory.split(' ')
 	else:
 		pwlist = []
 
@@ -258,7 +252,7 @@ def get_password_history(newpwhash, pwhistory, pwhlen):
 				else:
 					pwlist.append(newpwhash)
 	# and build the new history
-	res = string.join(pwlist)
+	res = " ".join(pwlist)
 	return res
 
 
@@ -274,7 +268,7 @@ def password_already_used(password, pwhistory):
 	for line in pwhistory.split(" "):
 		linesplit = line.split("$")  # $method_id$salt$password_hash
 		try:
-			password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
+			password_hash = crypt(password, linesplit[1], linesplit[2])
 			ud.debug(ud.ADMIN, ud.ERROR, '\n== [%s]\n== [%s]' % (password_hash, line))
 		except IndexError:  # old style password history entry, no method id/salt in there
 			hash_algorithm = hashlib.new("sha1")

@@ -1,3 +1,9 @@
+univention-lib (8.0.1-33) unstable; urgency=low
+
+  * Bug #32821: Use UCS_Version from univention.lib
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 Mar 2020 17:52:49 +0100
+
 univention-lib (8.0.1-32) unstable; urgency=medium
 
   * Bug #50481: added set/get_handler_message

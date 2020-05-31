@@ -37,23 +37,24 @@ import sys
 import re
 import unicodedata
 
+import six
 from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.debug as ud
+
+from univention.admin._ucr import configRegistry
+
 try:
 	from typing import Any, List, Optional, Type, Union  # noqa F401
 except ImportError:
 	pass
 
-__all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'tab', 'field', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
+__all__ = ('configRegistry', 'ucr_overwrite_properties', 'pattern_replace', 'property', 'option', 'ucr_overwrite_module_layout', 'ucr_overwrite_layout', 'extended_attribute', 'policiesGroup', 'modules', 'objects', 'syntax', 'hook', 'mapping')
 
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
-
-# baseconfig legacy
-baseConfig = configRegistry
+if six.PY2:
+	# baseconfig legacy
+	baseConfig = configRegistry
 
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
@@ -129,16 +130,18 @@ def pattern_replace(pattern, object):
 			elif iCmd == 'upper':
 				text = text.upper()
 			elif iCmd == 'umlauts':
+				if isinstance(text, bytes):
+					text = text.decode('UTF-8')
 				for umlaut, code in property.UMLAUTS.items():
 					text = text.replace(umlaut, code)
 
-				text = unicodedata.normalize('NFKD', unicode(text)).encode('ascii', 'ignore')
+				text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
 			elif iCmd == 'alphanum':
 				whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
-				if not type(whitelist) == unicode:
-					whitelist = unicode(whitelist, 'utf-8')
-				if not type(text) == unicode:
-					text = unicode(text, 'utf-8')
+				if isinstance(whitelist, bytes):  # Python 2
+					whitelist = whitelist.decode('UTF-8')
+				if isinstance(text, bytes):
+					text = text.decode('UTF-8')
 				text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
 			elif iCmd in ('trim', 'strip'):
 				text = text.strip()
@@ -188,68 +191,68 @@ def pattern_replace(pattern, object):
 
 class property:
 	UMLAUTS = {
-		'À': 'A',
-		'Á': 'A',
-		'Â': 'A',
-		'Ã': 'A',
-		'Ä': 'Ae',
-		'Å': 'A',
-		'Æ': 'AE',
-		'Ç': 'C',
-		'È': 'E',
-		'É': 'E',
-		'Ê': 'E',
-		'Ë': 'E',
-		'Ì': 'I',
-		'Í': 'I',
-		'Î': 'I',
-		'Ï': 'I',
-		'Ð': 'D',
-		'Ñ': 'N',
-		'Ò': 'O',
-		'Ó': 'O',
-		'Ô': 'O',
-		'Õ': 'O',
-		'Ö': 'Oe',
-		'Ø': 'O',
-		'Ù': 'U',
-		'Ú': 'U',
-		'Û': 'U',
-		'Ü': 'Ue',
-		'Ý': 'Y',
-		'Þ': 'P',
-		'ß': 'ss',
-		'à': 'a',
-		'á': 'a',
-		'â': 'a',
-		'ã': 'a',
-		'ä': 'ae',
-		'å': 'a',
-		'æ': 'ae',
-		'ç': 'c',
-		'è': 'e',
-		'é': 'e',
-		'ê': 'e',
-		'ë': 'e',
-		'ì': 'i',
-		'í': 'i',
-		'î': 'i',
-		'ï': 'i',
-		'ð': 'o',
-		'ñ': 'n',
-		'ò': 'o',
-		'ó': 'o',
-		'ô': 'o',
-		'õ': 'o',
-		'ö': 'oe',
-		'ø': 'o',
-		'ù': 'u',
-		'ú': 'u',
-		'û': 'u',
-		'ü': 'ue',
-		'ý': 'y',
-		'þ': 'p',
-		'ÿ': 'y'
+		u'À': u'A',
+		u'Á': u'A',
+		u'Â': u'A',
+		u'Ã': u'A',
+		u'Ä': u'Ae',
+		u'Å': u'A',
+		u'Æ': u'AE',
+		u'Ç': u'C',
+		u'È': u'E',
+		u'É': u'E',
+		u'Ê': u'E',
+		u'Ë': u'E',
+		u'Ì': u'I',
+		u'Í': u'I',
+		u'Î': u'I',
+		u'Ï': u'I',
+		u'Ð': u'D',
+		u'Ñ': u'N',
+		u'Ò': u'O',
+		u'Ó': u'O',
+		u'Ô': u'O',
+		u'Õ': u'O',
+		u'Ö': u'Oe',
+		u'Ø': u'O',
+		u'Ù': u'U',
+		u'Ú': u'U',
+		u'Û': u'U',
+		u'Ü': u'Ue',
+		u'Ý': u'Y',
+		u'Þ': u'P',
+		u'ß': u'ss',
+		u'à': u'a',
+		u'á': u'a',
+		u'â': u'a',
+		u'ã': u'a',
+		u'ä': u'ae',
+		u'å': u'a',
+		u'æ': u'ae',
+		u'ç': u'c',
+		u'è': u'e',
+		u'é': u'e',
+		u'ê': u'e',
+		u'ë': u'e',
+		u'ì': u'i',
+		u'í': u'i',
+		u'î': u'i',
+		u'ï': u'i',
+		u'ð': u'o',
+		u'ñ': u'n',
+		u'ò': u'o',
+		u'ó': u'o',
+		u'ô': u'o',
+		u'õ': u'o',
+		u'ö': u'oe',
+		u'ø': u'o',
+		u'ù': u'u',
+		u'ú': u'u',
+		u'û': u'u',
+		u'ü': u'ue',
+		u'ý': u'y',
+		u'þ': u'p',
+		u'ÿ': u'y'
 	}
 
 	def __init__(
@@ -357,7 +360,7 @@ class property:
 		if not base_default:
 			return self.new()
 
-		if isinstance(base_default, basestring):
+		if isinstance(base_default, six.string_types):
 			return self._replace(base_default, object)
 
 		bd0 = base_default[0]
@@ -366,7 +369,7 @@ class property:
 		if getattr(self.syntax, 'subsyntaxes', None) is not None and isinstance(bd0, (list, tuple)) and not self.multivalue:
 			return bd0
 
-		if isinstance(bd0, basestring):
+		if isinstance(bd0, six.string_types):
 			# multivalue defaults will only be a part of templates, so not multivalue is the common way for modules
 			if not self.multivalue:  # default=(template-str, [list-of-required-properties])
 				if all(object[p] for p in base_default[1]):
@@ -375,7 +378,7 @@ class property:
 					return bd0
 				return self.new()
 			else:  # multivalue
-				if all(isinstance(bd, basestring) for bd in base_default):
+				if all(isinstance(bd, six.string_types) for bd in base_default):
 					return [self._replace(bd, object) for bd in base_default]
 				# must be a list of loaded extended attributes then, so we return it if it has content
 				# return the first element, this is only related to empty extended attributes which are loaded wrong, needs to be fixed elsewhere
@@ -564,56 +567,92 @@ class extended_attribute(object):
 		return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
 
 
-class tab:
-	"""
-	|UDM| tab to group related properties together in |UMC|.
-	"""
-	is_app_tab = False
+if six.PY2:  # deprecated, use layout.Tab instead
+	class tab:
+		"""
+		|UDM| tab to group related properties together in |UMC|.
+		"""
+		is_app_tab = False
 
-	def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):
-		self.short_description = short_description
-		self.long_description = long_description
-		self.fields = fields
-		self.advanced = advanced
-		self.help_text = help_text
+		def __init__(self, short_description='', long_description='', fields=[], advanced=False, help_text=None):
+			self.short_description = short_description
+			self.long_description = long_description
+			self.fields = fields
+			self.advanced = advanced
+			self.help_text = help_text
 
-	def set_fields(self, fields):
-		self.fields = fields
+		def set_fields(self, fields):
+			self.fields = fields
 
-	def get_fields(self):
-		return self.fields
+		def get_fields(self):
+			return self.fields
 
-	def __repr__(self):
-		string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
-		for field in self.fields:
-			string = "%s %s," % (string, field)
-		return string + " ] }"
+		def __repr__(self):
+			string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
+			for field in self.fields:
+				string = "%s %s," % (string, field)
+			return string + " ] }"
 
 
-class field:
+if six.PY2:  # deprecated, use layout.Group instead
+	class field:
+		"""
+		>>> field('bar') < field('foo')
+		True
+		>>> field('bar') <= field('foo')
+		True
+		>>> field('bar') == field('foo')
+		False
+		>>> field('bar') != field('foo')
+		True
+		>>> field('bar') >= field('foo')
+		False
+		>>> field('bar') > field('foo')
+		False
+		>>> field('registry') < field('foo')
+		True
+		>>> field('registry') <= field('foo')
+		True
+		>>> field('registry') >= field('foo')
+		False
+		>>> field('registry') > field('foo')
+		False
+		"""
 
-	def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
-		self.property = property
-		self.type = type
-		self.first_only = first_only
-		self.short_description = short_description
-		self.long_description = long_description
-		self.hide_in_resultmode = hide_in_resultmode
-		self.hide_in_normalmode = hide_in_normalmode
-		self.colspan = colspan
-		self.width = width
+		def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
+			self.property = property
+			self.type = type
+			self.first_only = first_only
+			self.short_description = short_description
+			self.long_description = long_description
+			self.hide_in_resultmode = hide_in_resultmode
+			self.hide_in_normalmode = hide_in_normalmode
+			self.colspan = colspan
+			self.width = width
 
-	def __repr__(self):
-		return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
-			self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
+		def __repr__(self):
+			return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
+				self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
 
-	def __cmp__(self, other):
 		# at the moment the sort is only needed for layout of the registry module
-		if other.property == 'registry':
-			return 1
-		if self.property == 'registry':
-			return 0
-		return cmp(self.property, other.property)
+
+		def __lt__(self, other):
+			return (self.property != 'registry', self.property) < (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
+
+		def __le__(self, other):
+			return (self.property != 'registry', self.property) <= (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
+
+		def __eq__(self, other):
+			return self.property == other.property if isinstance(other, field) else NotImplemented
+
+		def __ne__(self, other):
+			return self.property != other.property if isinstance(other, field) else NotImplemented
+
+		def __ge__(self, other):
+			return (self.property != 'registry', self.property) >= (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
+
+		def __gt__(self, other):
+			return (self.property != 'registry', self.property) > (other.property != 'registry', other.property) if isinstance(other, field) else NotImplemented
 
 
 class policiesGroup:

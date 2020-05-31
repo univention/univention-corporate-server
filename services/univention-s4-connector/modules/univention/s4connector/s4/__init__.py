@@ -35,7 +35,6 @@
 from __future__ import print_function
 
 import copy
-import string
 import re
 import sys
 import time
@@ -43,6 +42,7 @@ import calendar
 import types
 import pprint
 import warnings
+import string
 
 import ldap
 from ldap.controls import LDAPControl
@@ -177,7 +177,7 @@ def unicode_to_utf8(attrib):
 def encode_attrib(attrib):
 	if not attrib or isinstance(attrib, type(u'')):  # referral or already unicode
 		return attrib
-	return unicode(attrib, 'utf8')
+	return unicode(attrib)
 
 
 def fix_dn_in_search(result):
@@ -297,7 +297,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			t_dn = object.get('dn')
 			if t_dn:
 				(_rdn_attribute, rdn_value_utf8, _flags) = str2dn(unicode_to_utf8(t_dn))[0][0]
-				rdn_value = unicode(rdn_value_utf8, 'utf8')
+				rdn_value = unicode(rdn_value_utf8)
 				t_samaccount = u''
 				if object.get('attributes'):
 					t_samaccount = object['attributes'].get('sAMAccountName', [u''])[0]
@@ -336,7 +336,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			if ucsobject and object.get('attributes') and object['attributes'].get(ucsattrib):
 				value = object['attributes'][ucsattrib][0]
 			else:
-				value = unicode(fst_rdn_value_utf8, 'utf8')
+				value = unicode(fst_rdn_value_utf8)
 
 			if ucsobject:
 				# lookup the cn as sAMAccountName in S4 to get corresponding DN, if not found create new
@@ -372,16 +372,16 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 
 				if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
 					if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
-						newdn = unicode(result[0][0], 'utf8')
+						newdn = unicode(result[0][0])
 					else:
 						# move
 						# return a kind of frankenstein DN here, sync_from_ucs replaces the UCS LDAP base
 						# with the samba LDAP base at a later stage, see Bug #48440
 						s4_rdn = str2dn(result[0][0])[0]
-						newdn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]), 'utf8')
+						newdn = unicode(ldap.dn.dn2str([s4_rdn] + exploded_dn[1:]))
 				else:
 					newdn_rdn = [('cn', fst_rdn_value_utf8, ldap.AVA_STRING)]
-					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # new object, don't need to change
+					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]))  # new object, don't need to change
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
 			else:
 				# get the object to read the sAMAccountName in S4 and use it as name
@@ -420,7 +420,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 				ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
 				ucsdn_result = s4connector.search_ucs(filter=ucsdn_filter, base=s4connector.lo.base, scope='sub', attr=['objectClass'])
 				if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
-					ucsdn = unicode(ucsdn_result[0][0], 'utf8')
+					ucsdn = unicode(ucsdn_result[0][0])
 
 				if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object)):
 					newdn = ucsdn
@@ -431,7 +431,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					else:
 						newdn_rdn = [(ucsattrib, unicode_to_utf8(samaccountname), ldap.AVA_STRING)]
 
-					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]), 'utf8')  # guess the old dn
+					newdn = unicode(ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:]))  # guess the old dn
 
 			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %r:" % (dn_key,))
 			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %r" % (dn,))
@@ -1243,7 +1243,7 @@ class s4(univention.s4connector.ucs):
 
 			rdn_exploded = str2dn(unicode_to_utf8(rdn))
 			parent_exploded = str2dn(unicode_to_utf8(last_known_parent))
-			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded), 'utf8')
+			return unicode(ldap.dn.dn2str(rdn_exploded + parent_exploded))
 		else:
 			ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
 			return None
@@ -1393,7 +1393,7 @@ class s4(univention.s4connector.ucs):
 		rid = "513"  # FIXME: Fallback: should be configurable
 		if ldap_object_s4_group and 'objectSid' in ldap_object_s4_group:
 			sid = ldap_object_s4_group['objectSid'][0]
-			rid = sid[string.rfind(sid, "-") + 1:]
+			rid = sid[sid.rfind("-") + 1:]
 		else:
 			print("no SID !!!")
 
@@ -1822,7 +1822,7 @@ class s4(univention.s4connector.ucs):
 
 		# search and add members which have this as their primaryGroup
 		group_sid = ldap_object_s4['objectSid'][0]
-		group_rid = group_sid[string.rfind(group_sid, "-") + 1:]
+		group_rid = group_sid[group_sid.rfind("-") + 1:]
 		prim_members_s4_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
 		prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter)
 		for prim_dn, prim_object in prim_members_s4:
@@ -1959,7 +1959,7 @@ class s4(univention.s4connector.ucs):
 			memberUid_del = []
 			for member in add_members['user']:
 				(_rdn_attribute, uid, _flags) = str2dn(unicode_to_utf8(member))[0][0]
-				memberUid_add.append(unicode(uid, 'utf8'))
+				memberUid_add.append(unicode(uid))
 			for member in add_members['unknown']:  # user or group?
 				ucs_object_attr = self.lo.get(member)
 				uid = ucs_object_attr.get('uid')
@@ -1967,7 +1967,7 @@ class s4(univention.s4connector.ucs):
 					memberUid_add.append(uid[0])
 			for member in del_members['user']:
 				(_rdn_attribute, uid, _flags) = str2dn(unicode_to_utf8(member))[0][0]
-				memberUid_del.append(unicode(uid, 'utf8'))
+				memberUid_del.append(unicode(uid))
 			if uniqueMember_del or memberUid_del:
 				ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=1)
 			if uniqueMember_add or memberUid_del:

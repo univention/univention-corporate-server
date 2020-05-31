@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ipaddr
+import ipaddress
 
 from univention.admin.layout import Tab, Group
 from univention.admin import configRegistry
@@ -179,12 +179,12 @@ layout = [
 ]
 
 
-def mapMX(old):
-	return [' '.join(entry) for entry in old]
+def mapMX(old, encoding=()):
+	return [u' '.join(entry).encode(*encoding) for entry in old]
 
 
-def unmapMX(old):
-	return [entry.split(' ', 1) for entry in old]
+def unmapMX(old, encoding=()):
+	return [entry.decode(*encoding).split(u' ', 1) for entry in old]
 
 
 mapping = univention.admin.mapping.mapping()
@@ -203,21 +203,20 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.dn and not self.position:
 			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
+	def _post_unmap(self, info, values):
+		info['a'] = []
+		if 'aRecord' in values:
+			info['a'].extend([x.decode('ASCII') for x in values['aRecord']])
+		if 'aAAARecord' in values:
+			info['a'].extend([ipaddress.IPv6Address(x.decode('ASCII')).exploded for x in values['aAAARecord']])
+		return info
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		self.oldinfo['a'] = []
-		self.info['a'] = []
-		if 'aRecord' in self.oldattr:
-			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(self.oldattr['aRecord'])
-		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-
-		soa = self.oldattr.get('sOARecord', [''])[0].split(' ')
+		soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
 		if len(soa) > 6:
-			self['contact'] = unescapeSOAemail(soa[1])
-			self['serial'] = soa[2]
+			self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
+			self['serial'] = soa[2].decode('UTF-8')
 			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[3])
 			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[4])
 			self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[5])
@@ -227,7 +226,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		return [
-			('relativeDomainName', ['@'])
+			('relativeDomainName', [b'@'])
 		]
 
 	def _ldap_modlist(self):
@@ -245,7 +244,7 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = '%s %s %s %s %s %s %s' % (self['nameserver'][0], escapeSOAemail(self['contact']), self['serial'], refresh, retry, expire, ttl)
+			soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
 
 		oldAddresses = self.oldinfo.get('a')
@@ -258,15 +257,15 @@ class object(univention.admin.handlers.simpleLdap):
 			if oldAddresses:
 				for address in oldAddresses:
 					if ':' in address:  # IPv6
-						oldAaaaRecord.append(address)
+						oldAaaaRecord.append(address.encode('ASCII'))
 					else:
-						oldARecord.append(address)
+						oldARecord.append(address.encode('ASCII'))
 			if newAddresses:
 				for address in newAddresses:
 					if ':' in address:  # IPv6
-						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
+						newAaaaRecord.append(ipaddress.IPv6Address(u'%s' % (address,)).exploded.encode('ASCII'))
 					else:
-						newARecord.append(address)
+						newARecord.append(address.encode('ASCII'))
 			ml.append(('aRecord', oldARecord, newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
@@ -291,4 +290,4 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	return 'dNSZone' in attr.get('objectClass', []) and ['@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].endswith(ARPA_IP4) and not attr['zoneName'][0].endswith(ARPA_IP6)
+	return b'dNSZone' in attr.get('objectClass', []) and [b'@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6)

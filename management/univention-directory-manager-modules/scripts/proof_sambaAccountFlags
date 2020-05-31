@@ -38,17 +38,14 @@ import ldap
 import sys
 
 import univention.config_registry
+import univention.uldap
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 baseDN = ucr['ldap/base']
 
-lo = ldap.open('localhost', 7389)
-bindpw = open('/etc/ldap.secret').read()
-if bindpw[-1] == '\n':
-	bindpw = bindpw[0:-1]
-lo.simple_bind_s("cn=admin," + baseDN, bindpw)
+lo = univention.uldap.getAdminConnection().lo
 
 
 def print_usage():
@@ -79,25 +76,23 @@ if len(sys.argv) > 1:
 count_flags = 0
 count_updated_flags = 0
 
-res_uPR = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionWindows', ['sambaAcctFlags'])
-for i in range(0, len(res_uPR)):
-	flags = res_uPR[i][1]["sambaAcctFlags"][0]
-	for p in range(1, len(flags) - 1):
-		if flags[p:p + 1] == "M":
-			print("found Windows-Account with old (wrong) Flag M (should be W) in %s (%s,%d)" % (res_uPR[i][0], flags, p))
-			count_flags = count_flags + 1
-			inp = ""
-			if not update_all:
-				if query:
-					print("update Flag (y/N)?")
-					inp = sys.stdin.readline()
-			else:
-				inp = "y"
-			if inp[:1] == "y":
-				modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags[:p] + "W" + flags[p + 1:])]
-				lo.modify(res_uPR[i][0], modlist)
-				print("updated")
-				count_updated_flags = count_updated_flags + 1
+for windows_dn, windows_attr in lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionWindows', ['sambaAcctFlags']):
+	flags = windows_attr["sambaAcctFlags"][0].decode('utf-8')
+	if 'M' in flags:
+		print("found Windows-Account with old (wrong) Flag M (should be W) in %s (%s)" % (windows_dn, flags))
+		count_flags = count_flags + 1
+		inp = ""
+		if not update_all:
+			if query:
+				print("update Flag (y/N)?")
+				inp = sys.stdin.readline()
+		else:
+			inp = "y"
+		if inp[:1] == "y":
+			modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags.replace('M', 'W').encode('utf-8'))]
+			lo.modify(windows_dn, modlist)
+			print("updated")
+			count_updated_flags = count_updated_flags + 1
 
 
 print("Found", count_flags, "flags that seemed to be wrong, updated", end=' ')

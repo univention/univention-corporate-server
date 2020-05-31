@@ -31,16 +31,14 @@
 
 from __future__ import absolute_import
 
-import re
 import ldap
-import string
 import time
 
 import univention.debug as ud
 import univention.uldap
 from univention.admin import localization
-import univention.config_registry
 import univention.admin.license
+from univention.admin._ucr import configRegistry
 try:
 	from typing import Any, Dict, List, Optional, Tuple, Union  # noqa F401
 except ImportError:
@@ -48,9 +46,6 @@ except ImportError:
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 explodeDn = univention.uldap.explodeDn
 
@@ -72,7 +67,7 @@ class DN(object):
 		return ldap.dn.dn2str(self._dn)
 
 	def __unicode__(self):
-		return unicode(str(self))
+		return unicode(str(self))  # noqa: F821
 
 	def __repr__(self):
 		return '<%s %r>' % (type(self).__name__, str(self),)
@@ -120,8 +115,8 @@ class DN(object):
 	@classmethod
 	def values(cls, values):
 		"""
-		>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo']))
-		set(['cn=bar'])
+		>>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo'])) == {'cn=bar'}
+		True
 		"""
 		return set(map(str, values))
 
@@ -144,12 +139,12 @@ def getBaseDN(host='localhost', port=None, uri=None):
 	try:
 		lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
 		result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
-		return result[0][1]['namingContexts'][0]
+		return result[0][1]['namingContexts'][0].decode('utf-8')
 	except ldap.SERVER_DOWN:
 		time.sleep(60)
 	lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
 	result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
-	return result[0][1]['namingContexts'][0]
+	return result[0][1]['namingContexts'][0].decode('utf-8')
 
 
 def getAdminConnection(start_tls=2, decode_ignorelist=[]):
@@ -207,7 +202,7 @@ def _err2str(err):
 	return '. '.join(msgs)
 
 
-class domain:
+class domain(object):
 	"""
 	A |UDM| domain name.
 	"""
@@ -230,16 +225,18 @@ class domain:
 		:returns: The name of the Kerberos realm.
 		:rtype: str
 		"""
-		return self.domain.get('krb5RealmName', [None])[0]
+		if 'krb5RealmName' not in self.domain:
+			return
+		return self.domain['krb5RealmName'][0].decode('ASCII')
 
 
-class position:
+class position(object):
 	"""
 	The position of a |LDAP| container.
 	Supports relative distinguished names.
 	"""
 
-	def __init__(self, base, loginDomain=''):
+	def __init__(self, base, loginDomain=u''):
 		# type: (str, str) -> None
 		"""
 		:param str base: The base distinguished name.
@@ -250,7 +247,7 @@ class position:
 
 		self.__loginDomain = loginDomain or base
 		self.__base = base
-		self.__pos = ""
+		self.__pos = u""
 		self.__indomain = False
 
 	def setBase(self, base):
@@ -355,7 +352,7 @@ class position:
 		:returns: The distinguished name.
 		:rtype: str
 		"""
-		return 'cn=univention,' + self.getDomain()
+		return u'cn=univention,' + self.getDomain()
 
 	def isDomain(self):
 		# type: () -> bool
@@ -377,19 +374,6 @@ class position:
 		"""
 		return self.__loginDomain
 
-	def __getPositionInDomain(self):
-		# type: () -> str
-		components = explodeDn(self.__pos, 0)
-		components.reverse()
-		poscomponents = []
-		for i in components:
-			mytype, ign = string.split(i, '=')
-			if mytype != 'dc':
-				poscomponents.append(i)
-		poscomponents.reverse()
-		positionindomain = string.join(poscomponents, ',')
-		return positionindomain
-
 	def switchToParent(self):
 		# type: () -> bool
 		"""
@@ -403,75 +387,8 @@ class position:
 		self.__setPosition(ldap.dn.dn2str(ldap.dn.str2dn(self.__pos)[1:]))
 		return True
 
-	def getPrintable(self, short=1, long=0, trailingslash=1):
-		# type: (int, int, int) -> str
-		"""
-		Return printable path of position.
 
-		:param int short: `0` to prefix path with domain.
-		:param int long: `1` to prefix path with domain.
-		:param int trailingslash: Append trailing slash.
-		:returns: A string.
-		:rtype: str
-
-		.. deprecated:: 4.3
-			Unused.
-		"""
-		domaincomponents = explodeDn(self.getDomain(), 1)
-		domain = string.join(domaincomponents, '.')
-		indomaindn = self.__getPositionInDomain()
-		if indomaindn:
-			components = explodeDn(indomaindn, 1)
-			components.reverse()
-			if not short or long:
-				printable = domain + ':/' + string.join(components, '/')
-				if trailingslash:
-					printable += '/'
-			else:
-				printable = ""
-				for i in range(len(components)):
-					printable += "&nbsp;&nbsp;"
-				printable += components.pop()
-		else:
-			printable = domain
-		return printable
-
-	def getPrintable_depth(self, short=1, long=0, trailingslash=1):
-		# type: (int, int, int) -> Tuple[str, int]
-		"""
-		Return printable path of position.
-		new "version" of :py:meth:`getPrintable`, returns the tree-depth as int instead of html-blanks
-
-		:param int short: `0` to prefix path with domain.
-		:param int long: `1` to prefix path with domain.
-		:param int trailingslash: Append trailing slash.
-		:returns: A 2-tuple (printable, depth)
-		:rtype: tuple[str, int]
-
-		.. deprecated:: 4.3
-			Unused.
-		"""
-		domaincomponents = explodeDn(self.getDomain(), 1)
-		domain = string.join(domaincomponents, '.')
-		indomaindn = self.__getPositionInDomain()
-		depth = 0
-		if indomaindn:
-			components = explodeDn(indomaindn, 1)
-			components.reverse()
-			if not short or long:
-				printable = domain + ':/' + string.join(components, '/')
-				if trailingslash:
-					printable += '/'
-			else:
-				printable = ""
-				depth = len(components) * 2
-				printable += components.pop()
-		else:
-			printable = domain
-		return (printable, depth)
-
-
-class access:
+class access(object):
 	"""
 	A |UDM| class to access a |LDAP| server.
 	"""
@@ -536,7 +453,7 @@ class access:
 		# type: () -> int
 		return self.lo.start_tls
 
-	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None, follow_referral=False):
+	def __init__(self, host='localhost', port=None, base=u'', binddn=u'', bindpw=u'', start_tls=2, lo=None, follow_referral=False):
 		# type: (str, int, str, str, str, int, univention.uldap.access, bool) -> None
 		"""
 		:param str host: The hostname of the |LDAP| server.
@@ -559,8 +476,8 @@ class access:
 				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 			except ldap.UNWILLING_TO_PERFORM:
 				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
-		self.require_license = 0
-		self.allow_modify = 1
+		self.require_license = False
+		self.allow_modify = True
 		self.licensetypes = ['UCS']
 
 	def bind(self, binddn, bindpw):
@@ -601,38 +518,38 @@ class access:
 
 			if res == 1:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseClients
+				raise univention.admin.uexceptions.licenseClients()
 			elif res == 2:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseAccounts
+				raise univention.admin.uexceptions.licenseAccounts()
 			elif res == 3:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseDesktops
+				raise univention.admin.uexceptions.licenseDesktops()
 			elif res == 4:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseGroupware
+				raise univention.admin.uexceptions.licenseGroupware()
 			elif res == 5:
 				# Free for personal use edition
-				raise univention.admin.uexceptions.freeForPersonalUse
+				raise univention.admin.uexceptions.freeForPersonalUse()
 			# License Version 2:
 			elif res == 6:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseUsers
+				raise univention.admin.uexceptions.licenseUsers()
 			elif res == 7:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseServers
+				raise univention.admin.uexceptions.licenseServers()
 			elif res == 8:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseManagedClients
+				raise univention.admin.uexceptions.licenseManagedClients()
 			elif res == 9:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseCorporateClients
+				raise univention.admin.uexceptions.licenseCorporateClients()
 			elif res == 10:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseDVSUsers
+				raise univention.admin.uexceptions.licenseDVSUsers()
 			elif res == 11:
 				self.allow_modify = 0
-				raise univention.admin.uexceptions.licenseDVSClients
+				raise univention.admin.uexceptions.licenseDVSClients()
 
 	def unbind(self):
 		# type: () -> None
@@ -649,15 +566,14 @@ class access:
 		:returns: The distinguished name.
 		:rtype: str
 		"""
-		dn = self.lo.lo.whoami_s()
-		return re.sub('^dn:', '', dn)
+		return self.lo.whoami()
 
-	def requireLicense(self, require=1):
+	def requireLicense(self, require=True):
 		# type: (int) -> None
 		"""
 		Enable or disable the UCS licence check.
 
-		:param int require: `1` to require a valid licence.
+		:param bool require: `True` to require a valid licence.
 		"""
 		self.require_license = require
 
@@ -677,8 +593,6 @@ class access:
 		:returns: The |LDAP| schema.
 		:rtype: ldap.schema.subentry.SubSchema
 		"""
-		if not hasattr(self.lo, 'get_schema'):  # introduced in UCS 4.1-2 erratum. can be removed in the future
-			return ldap.schema.SubSchema(self.lo.lo.read_subschemasubentry_s(self.lo.lo.search_subschemasubentry_s()), 0)
 		return self.lo.get_schema()
 
 	@classmethod
@@ -724,7 +638,7 @@ class access:
 		"""
 		return self.lo.getAttr(dn, attr, required)
 
-	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+	def search(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, List[str], bool, bool, int, int) -> List[Tuple[str, Dict[str, List[str]]]]
 		"""
 		Perform LDAP search and return values.
@@ -768,7 +682,7 @@ class access:
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+	def searchDn(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		# type: (str, str, str, bool, bool, int, int) -> List[str]
 		"""
 		Perform LDAP search and return distinguished names only.
@@ -845,8 +759,7 @@ class access:
 		self._validateLicense()
 		if not self.allow_modify:
 			ud.debug(ud.ADMIN, ud.ERROR, 'add dn: %s' % dn)
-			raise univention.admin.uexceptions.licenseDisableModify
-			return []
+			raise univention.admin.uexceptions.licenseDisableModify()
 		ud.debug(ud.LDAP, ud.ALL, 'add dn=%s al=%s' % (dn, al))
 		if exceptions:
 			return self.lo.add(dn, al, serverctrls=serverctrls, response=response)
@@ -857,7 +770,7 @@ class access:
 			raise univention.admin.uexceptions.objectExists(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			ud.debug(ud.LDAP, ud.ALL, 'add dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.permissionDenied
+			raise univention.admin.uexceptions.permissionDenied()
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
@@ -882,8 +795,7 @@ class access:
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
 			ud.debug(ud.ADMIN, ud.ERROR, 'modify dn: %s' % dn)
-			raise univention.admin.uexceptions.licenseDisableModify
-			return []
+			raise univention.admin.uexceptions.licenseDisableModify()
 		ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s ml=%s' % (dn, changes))
 		if exceptions:
 			return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response)
@@ -894,7 +806,7 @@ class access:
 			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			ud.debug(ud.LDAP, ud.ALL, 'mod dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.permissionDenied
+			raise univention.admin.uexceptions.permissionDenied()
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
@@ -919,8 +831,7 @@ class access:
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
 			ud.debug(ud.ADMIN, ud.WARN, 'move dn: %s' % dn)
-			raise univention.admin.uexceptions.licenseDisableModify
-			return []
+			raise univention.admin.uexceptions.licenseDisableModify()
 		ud.debug(ud.LDAP, ud.ALL, 'ren dn=%s newdn=%s' % (dn, newdn))
 		try:
 			return self.lo.rename(dn, newdn, serverctrls=serverctrls, response=response)
@@ -929,7 +840,7 @@ class access:
 			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			ud.debug(ud.LDAP, ud.ALL, 'ren dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.permissionDenied
+			raise univention.admin.uexceptions.permissionDenied()
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
@@ -953,7 +864,7 @@ class access:
 			try:
 				return self.lo.delete(dn)
 			except ldap.INSUFFICIENT_ACCESS as msg:
-				raise univention.admin.uexceptions.permissionDenied
+				raise univention.admin.uexceptions.permissionDenied()
 		ud.debug(ud.LDAP, ud.ALL, 'del dn=%s' % (dn,))
 		try:
 			return self.lo.delete(dn)
@@ -962,7 +873,7 @@ class access:
 			raise univention.admin.uexceptions.noObject(dn)
 		except ldap.INSUFFICIENT_ACCESS as msg:
 			ud.debug(ud.LDAP, ud.ALL, 'del dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.permissionDenied
+			raise univention.admin.uexceptions.permissionDenied()
 		except ldap.INVALID_DN_SYNTAX as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
 		except ldap.LDAPError as msg:
@@ -980,13 +891,13 @@ class access:
 		"""
 		return self.lo.parentDn(dn)
 
-	def explodeDn(self, dn, notypes=0):
-		# type: (str, int) -> List[str]
+	def explodeDn(self, dn, notypes=False):
+		# type: (str, bool) -> List[str]
 		"""
 		Break up a DN into its component parts.
 
 		:param str dn: The distinguished name.
-		:param int notypes: Return only the component's attribute values if True. Also the attribute types if False.
+		:param bool notypes: Return only the component's attribute values if True. Also the attribute types if False.
 		:return: A list of relative distinguished names.
 		:rtype: list[str]
 		"""

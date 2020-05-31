@@ -33,6 +33,7 @@ Base classes for (simplified) UDM modules and objects.
 from __future__ import absolute_import, unicode_literals
 from collections import namedtuple
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Text, TypeVar, Union
+from six import with_metaclass
 from .plugins import Plugin
 
 
@@ -108,8 +109,7 @@ class ModuleMeta(Plugin):
 		...
 
 
-class BaseModule(object):
-	__metaclass__ = ModuleMeta
+class BaseModule(with_metaclass(ModuleMeta)):
 	_udm_object_class = BaseObject
 	_udm_module_meta_class = BaseModuleMetadata
 

@@ -5,7 +5,6 @@
 
 Update the UIDs in memberUid of all groups to match the uid of the objects
 referenced by uniqueMember."""
-from __future__ import print_function
 #
 # Copyright 2007-2020 Univention GmbH
 #
@@ -34,9 +33,11 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import ldap
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import univention.config_registry
 
@@ -53,25 +54,25 @@ def main():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	parser = OptionParser(usage="usage: %prog [options]")
-	parser.add_option(
+	parser = ArgumentParser()
+	parser.add_argument(
 		'-t', '--test', action='store_true',
 		dest='test', default=False, help='just test the modification')
-	parser.add_option(
-		'-d', action='store', default=2, type='int',
+	parser.add_argument(
+		'-d', action='store', default=2, type=int,
 		dest='debug', help='set debug level')
-	parser.add_option(
+	parser.add_argument(
 		'-c', '--continue', action='store_true',
 		dest='cont', default=False, help='continue on error')
 
-	(options, _arguments) = parser.parse_args()
+	options = parser.parse_args()
 
 	ud.init('/var/log/univention/sync-memberuid.log', ud.FLUSH, ud.NO_FUNCTION)
 	ud.set_level(ud.ADMIN, options.debug)
 
 	base_dn = configRegistry['ldap/base']
 
-	lo = ldap.open('localhost', 7389)
+	lo = ldap.initialize('ldap://localhost:7389')
 	bindpw = open('/etc/ldap.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw = bindpw[:-1]
@@ -95,6 +96,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
 		new = set()
 		member_dns = grp_attrs.get('uniqueMember', ())
 		for uniqueMember in member_dns:
+			uniqueMember = uniqueMember.decode('utf-8')
 			try:
 				result = lo.search_s(uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)')
 			except ldap.NO_SUCH_OBJECT as ex:

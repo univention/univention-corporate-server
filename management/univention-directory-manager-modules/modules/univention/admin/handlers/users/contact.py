@@ -347,7 +347,7 @@ class object(univention.admin.handlers.simpleLdap):
 		dn = self._ldap_dn()
 		if self.exists():
 			rdn = self.lo.explodeDn(dn)[0]
-			dn = '%s,%s' % (rdn, self.lo.parentDn(self.dn))
+			dn = u'%s,%s' % (rdn, self.lo.parentDn(self.dn))
 		return dn
 
 	def unique_dn(self):
@@ -361,11 +361,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def acquire_unique_dn(self):
 		nonce = 1
-		cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
+		cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
 		self['cn'] = cn.strip()
 		while not self.unique_dn():
 			nonce += 1
-			cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
+			cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce,)
 			self['cn'] = cn.strip()
 		return self.get_candidate_dn()
 
@@ -390,17 +390,17 @@ class object(univention.admin.handlers.simpleLdap):
 			if self.oldinfo.get('displayName', '') == old_default_displayName:
 				# yes ==> update displayName automatically
 				new_displayName = prop_displayName._replace(prop_displayName.base_default, self)
-				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], new_displayName))
+				ml.append(('displayName', self.oldattr.get('displayName', [b''])[0], new_displayName.encode('UTF-8')))
 		return ml
 
 	def _modlist_univention_person(self, ml):
 		if self.hasChanged('birthday'):
 			# make sure that univentionPerson is set as objectClass when birthday is set
-			if self['birthday'] and 'univentionPerson' not in self.oldattr.get('objectClass', []):
-				ml.append(('objectClass', '', 'univentionPerson'))
+			if self['birthday'] and b'univentionPerson' not in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', b'', b'univentionPerson'))
 			# remove univentionPerson as objectClass when birthday is unset
-			elif not self['birthday'] and 'univentionPerson' in self.oldattr.get('objectClass', []):
-				ml.append(('objectClass', 'univentionPerson', ''))
+			elif not self['birthday'] and b'univentionPerson' in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', b'univentionPerson', b''))
 		return ml
 
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
@@ -449,10 +449,10 @@ lookup = object.lookup
 
 def identify(dn, attr, canonical=0):
 	# FIXME is this if block needed? copy pasted from users/user
-	if '0' in attr.get('uidNumber', []) or '$' in attr.get('uid', [''])[0] or 'univentionHost' in attr.get('objectClass', []) or 'functional' in attr.get('univentionObjectFlag', []):
+	if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
 		return False
 
-	required_ocs = {'person', 'inetOrgPerson', 'organizationalPerson', }
-	forbidden_ocs = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'simpleSecurityObject', 'uidObject', 'pkiUser', }
+	required_ocs = {b'person', b'inetOrgPerson', b'organizationalPerson', }
+	forbidden_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'krb5Principal', b'krb5KDCEntry', b'univentionMail', b'simpleSecurityObject', b'uidObject', b'pkiUser', }
 	ocs = set(attr.get('objectClass', []))
 	return (ocs & required_ocs == required_ocs) and not (ocs & forbidden_ocs)
