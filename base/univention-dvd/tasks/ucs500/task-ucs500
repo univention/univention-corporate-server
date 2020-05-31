@@ -12,6 +12,8 @@ univention-management-console-module-setup
 univention-management-console-server
 univention-management-console-web-server
 xinit
+dbus-user-session
+dbus-x11
 /* FIXME # kde-window-manager  # FIXME */
 univention-cloud-init
 univention-system-activation
