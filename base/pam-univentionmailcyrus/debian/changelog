@@ -1,0 +1,130 @@
+pam-univentionmailcyrus (10.0.0-2) unstable; urgency=medium
+
+  * Bug #48698: Fix user visible spelling errors
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Aug 2019 05:46:37 +0200
+
+pam-univentionmailcyrus (10.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:27 +0100
+
+pam-univentionmailcyrus (9.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:42 +0100
+
+pam-univentionmailcyrus (8.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:54 +0200
+
+pam-univentionmailcyrus (7.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 21:55:54 +0100
+
+pam-univentionmailcyrus (6.0.0-2) unstable; urgency=medium
+
+  * Update to UCS 4.0 (Bug #35267)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 25 Jul 2014 15:37:46 +0200
+
+pam-univentionmailcyrus (5.0.1-1) unstable; urgency=low
+
+  * Support a comma separated option for ldap_host to support
+    ldap/server/addition (Bug #19753)
+  * Update copyright year
+  * Bump version for UCS 3.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 08:43:50 +0200
+
+pam-univentionmailcyrus (4.0.4-1) unstable; urgency=low
+
+  * mapuser(): (Bug #27727)
+    - Fix memory leak by calling univention_ldap_close()
+    - Fix formatstring for printing filter
+    - Replace deprecated ldap_*() functions with ldap_*_ext()
+  * pam_univentionmailcyrus.c: Reformat for consistency.
+  * Makefile: Add -Werror for fail on warning.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Jun 2012 16:52:07 +0200
+
+pam-univentionmailcyrus (4.0.3-1) unstable; urgency=low
+
+  * close filescriptor after reading machine.secret (Bug #27723)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 22 Jun 2012 14:26:40 +0200
+
+pam-univentionmailcyrus (4.0.2-1) unstable; urgency=low
+
+  * fixed last commit (Bug #23487) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 14:26:27 +0200
+
+pam-univentionmailcyrus (4.0.1-1) unstable; urgency=low
+
+  * ldap bind authentication with univention_ldap_open (Bug #23487) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2011 13:26:39 +0200
+
+pam-univentionmailcyrus (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22433)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 May 2011 09:00:18 +0200
+
+pam-univentionmailcyrus (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:19:40 +0200
+
+pam-univentionmailcyrus (2.0.0-0) unstable; urgency=low
+
+  * build fixes for UCS 2.3 (Bug: #14661)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 02 Jun 2009 13:34:42 +0200
+
+pam-univentionmailcyrus (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 11:21:33 +0200
+
+pam-univentionmailcyrus (1.0.0-1) unstable; urgency=low
+
+  * bumped version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 May 2007 10:51:55 +0200
+
+pam-univentionmailcyrus (0.3) unstable; urgency=low
+
+  * add GPL headers and copyright information
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 23 Nov 2006 14:22:33 +0100
+
+pam-univentionmailcyrus (0.2) unstable; urgency=low
+
+  * close the connection to the LDAP server when an error has occurred
+    after a connection has been established successfully
+
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 26 Oct 2005 13:21:10 +0200
+
+pam-univentionmailcyrus (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 22 Mar 2005 09:36:50 +0100
+
+Local variables:
+mode: debian-changelog
+End:
