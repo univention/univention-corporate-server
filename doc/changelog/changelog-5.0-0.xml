@@ -569,6 +569,12 @@
 				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Several potential buffer overruns have been fixed in <package>pam-univentionmailcyru</package> (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
