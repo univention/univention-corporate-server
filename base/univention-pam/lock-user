@@ -31,20 +31,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh
 eval "$(univention-config-registry shell)"
 
-if [ "$auth_faillog" = "yes" -o "$auth_faillog" = "enabled" -o "$auth_faillog" = "true" -o "$auth_faillog" = "1" ]; then
-
+if is_ucr_true auth/faillog
+then
 	attempts=$(pam_tally --user "$USER" | awk '{print $NF}')
 	max_attempts=5
 	if [ -n "$auth_faillog_limit" ]; then
 		max_attempts="$auth_faillog_limit"
 	fi
-	
+
 	if [ "$attempts" -gt "$max_attempts" ]; then
 		# max attempts reached
 
-		user_dn=$(univention-ldapsearch "(&(uid=$USER)(objectClass=shadowAccount))" -LLL dn | ldapsearch-wrapper | ldapsearch-decode64 |  sed -ne 's|dn: ||p')
+		user_dn=$(univention-ldapsearch -LLLo ldif-wrap=no "(&(uid=$USER)(objectClass=shadowAccount))" 1.1 | ldapsearch-decode64 | sed -ne 's|dn: ||p')
 
 		if [ -z "$user_dn" ]; then
 			echo "E: ldap dn for $USER not found"
@@ -68,4 +70,3 @@ else
 	# pam_tally is disabled
 	exit 0
 fi
-
