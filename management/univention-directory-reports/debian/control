@@ -25,11 +25,12 @@ Description: Creates reports for UCS Directory Manager objects
 Package: python-univention-directory-reports
 Architecture: all
 Depends:
- python-trml2pdf,
  python-univention-directory-manager,
  univention-config,
  ${misc:Depends},
  ${python:Depends},
+Recommends:
+ python-trml2pdf,
 Provides:
  ${python:Provides},
 Description: Creates reports for UCS Directory manager objects
@@ -40,13 +41,12 @@ Description: Creates reports for UCS Directory manager objects
 Package: python3-univention-directory-reports
 Architecture: all
 Depends:
- python3-trml2pdf,
  python3-univention-directory-manager,
  univention-config,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
+Recommends:
+ python3-trml2pdf,
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using
  RML template files that contain a special template syntax to
@@ -61,6 +61,7 @@ Depends:
  texlive-latex-recommended,
  univention-config,
  univention-directory-reports,
+ ${misc:Depends},
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using
  LaTeX template files that contain a special template syntax to
