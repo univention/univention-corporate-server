@@ -12,6 +12,9 @@ univention-management-console-module-setup
 univention-management-console-server
 univention-management-console-web-server
 xinit
+xorg
+xserver-xorg-input-all
+xserver-xorg-video-all
 dbus-user-session
 dbus-x11
 /* FIXME # kde-window-manager  # FIXME */
