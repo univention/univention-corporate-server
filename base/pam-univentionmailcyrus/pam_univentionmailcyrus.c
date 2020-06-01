@@ -91,24 +91,29 @@ static int _pam_parse(int flags, int argc, const char **argv)
    /* step through arguments */
    for (; argc-- > 0; ++argv)
    {
+      int rv = 0;
       if (!strcmp(*argv, "silent"))
           ctrl |= UNIVENTIONMAILCYRUS_QUIET;
       else if (!strncmp(*argv, "ldap_host=", 10))
-          strncpy(ldap_host, *argv + 10, BUFSIZ);
+          rv = snprintf(ldap_host, BUFSIZ, "%s", *argv + 10);
       else if (!strncmp(*argv, "ldap_port=", 10))
-          ldap_port=atoi(*argv + 10);
+          ldap_port = atoi(*argv + 10);
       else if (!strncmp(*argv, "ldap_base=", 10))
-          strncpy(ldap_base, *argv + 10, BUFSIZ);
+          rv = snprintf(ldap_base, BUFSIZ, "%s", *argv + 10);
       else if (!strncmp(*argv, "from_attr=", 10))
-          strncpy(fromattr, *argv + 10, BUFSIZ);
+          rv = snprintf(fromattr, BUFSIZ, "%s", *argv + 10);
       else if (!strncmp(*argv, "to_attr=", 8))
-          strncpy(toattr, *argv + 8, BUFSIZ);
+          rv = snprintf(toattr, BUFSIZ, "%s", *argv + 8);
       else if (!strncmp(*argv, "binddn=", 7))
-          strncpy(binddn, *argv + 7, BUFSIZ);
+          rv = snprintf(binddn, BUFSIZ, "%s", *argv + 7);
       else if (!strncmp(*argv, "pwfile=", 7))
-          strncpy(pwfile, *argv + 7, BUFSIZ);
+          rv = snprintf(pwfile, BUFSIZ, "%s", *argv + 7);
       else
           _log_err(LOG_ERR, "unknown option: %s", *argv);
+
+      if (rv < 0 || rv >= BUFSIZ) {
+         _log_err(LOG_CRIT, "Buffer exceeded");
+      }
    }
 
    /* read password from file */
@@ -141,6 +146,7 @@ static int mapuser(const char *fromuser, char *touser)
    univention_ldap_parameters_t *lp;
    char *host;
    char *saved;
+   int rv;
 
    lp = univention_ldap_new();
    lp->port = ldap_port;
@@ -149,7 +155,11 @@ static int mapuser(const char *fromuser, char *touser)
    lp->bindpw = strdup(bindpw);
    lp->start_tls++;
 
-   snprintf(filter, BUFSIZ, "(&(%s=%s)(%s=*))", fromattr, fromuser, toattr);
+   rv = snprintf(filter, BUFSIZ, "(&(%s=%s)(%s=*))", fromattr, fromuser, toattr);
+   if (rv < 0 || rv >= BUFSIZ) {
+      _log_err(LOG_CRIT, "Buffer exceeded");
+      goto cleanup;
+   }
 
    for(host=strtok_r(ldap_host, ",", &saved); host != NULL; host=strtok_r(NULL, ",", &saved)) {
       lp->host = strdup(host);
@@ -185,7 +195,11 @@ static int mapuser(const char *fromuser, char *touser)
        _log_err(LOG_NOTICE, "No or ambiguous result, found %d values.", ldap_count_values_len(values));
        goto cleanup_values;
    }
-   strncpy(touser, values[0]->bv_val, BUFSIZ);
+   rv = snprintf(touser, BUFSIZ, "%s", values[0]->bv_val);
+   if (rv < 0 || rv >= BUFSIZ) {
+      _log_err(LOG_CRIT, "Buffer exceeded");
+      goto cleanup_values;
+   }
    ret = PAM_SUCCESS;
 
 cleanup_values:
