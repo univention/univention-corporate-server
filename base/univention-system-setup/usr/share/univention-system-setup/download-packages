@@ -30,12 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-check_returnvalue ()
-{
-	rval=$1
-	errormessage=$2
+check_returnvalue () {
+	local rval=$1 errormessage=$2
 	if [ "${rval}" != 0 ]; then
-		echo "${errormessage}"
+		echo "${errormessage}" >&2
 		exit "${rval}"
 	fi
 }
@@ -45,38 +43,55 @@ if [ -n "$1" ]; then
 	exit 2
 fi
 
+declare -a PACKAGES=(
+	univention-server-master # TODO
+	univention-server-backup # TODO
+	univention-server-slave
+	univention-server-member
+	univention-basesystem
+	univention-ad-connector
+	univention-samba
+	univention-management-console-module-adtakeover
+	univention-printserver # TODO
+	# FIXME univention-printquota
+	univention-dhcp
+	univention-fetchmail
+	univention-radius
+	# FIXME univention-virtual-machine-manager-node-kvm
+	univention-mail-server
+	# FIXME univention-nagios-server
+	univention-pkgdb # TODO
+	univention-samba4
+	univention-s4-connector
+	univention-squid
+	# FIXME univention-virtual-machine-manager-daemon
+	univention-welcome-screen
+	univention-self-service
+	univention-self-service-passwordreset-umc
+	univention-self-service-master # TODO
+	firefox-esr
+	firefox-esr-l10n-de
+)
+CACHE='/var/cache/univention-system-setup/packages'
+APT='/etc/apt/sources.list.d/05univention-system-setup.list'
 
-mkdir -p /var/cache/univention-system-setup/packages/
+mkdir -p "$CACHE"
 (
-	cd /var/cache/univention-system-setup/packages/
+	cd "$CACHE" || exit $?
 	install_cmd="$(univention-config-registry get update/commands/install)"
 
-	for package in server-master server-backup server-slave server-member basesystem \
-				ad-connector samba management-console-module-adtakeover printserver printquota \
-				dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server \
-				nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon welcome-screen \
-				self-service self-service-passwordreset-umc self-service-master; do
-		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | 
-		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 univention-${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
-
-		check_returnvalue $? "Failed to download required packages for univention-${package}"
-	done
-
-	for package in firefox-esr firefox-esr-l10n-de; do
-		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
-		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+	for package in "${PACKAGES[@]}"
+	do
+		apt-get download -o Dir::Cache::Archives="$CACHE" $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
 		check_returnvalue $? "Failed to download required packages for ${package}"
 	done
 
 	apt-ftparchive packages . >Packages
 	check_returnvalue $? "Failed to create ftparchive directory"
-	
-	
-	if [ ! -e /etc/apt/sources.list.d/05univention-system-setup.list ]; then
-		echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
-	fi
 
+	[ -e "$APT" ] ||
+		echo "deb [trusted=yes] file://$CACHE ./" >"$APT"
 )
 
 exit 0
