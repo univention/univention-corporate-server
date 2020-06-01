@@ -1,2 +1,0 @@
-modules/univention/directory/*.py usr/lib/python2.7/dist-packages/univention/directory/
-modules/univention/directory/reports/*.py usr/lib/python2.7/dist-packages/univention/directory/reports/

@@ -30,9 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-TEMPLATE_FILES=$(shell find templates -name '*.rml' -o -name '*.csv' | sed 's/^templates\///')
-LATEX_TEMPLATE_FILES=$(shell find templates -name '*.tex' | sed 's/^templates\///')
-
 PO_FILES := $(shell find modules -name '*.po')
 MO_FILES := $(PO_FILES:%.po=%.mo)
 
@@ -46,12 +43,7 @@ override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry
 
-	@for i in $(TEMPLATE_FILES); do\
-		install -m 644 templates/$$i debian/univention-directory-reports/etc/univention/directory/reports/default/$$i;\
-	done
-	@for i in $(LATEX_TEMPLATE_FILES); do\
-		install -m 644 templates/$$i debian/univention-directory-reports-latex/etc/univention/directory/reports/default/$$i;\
-	done
+	# BUG: Translation is only installed for Python 2, but not for Python 3. Would be the same location -> packages would confllict. Move it to -commmon (or univention-directory-reports)?
 	@for i in $(MO_FILES); do\
 		lang=`basename $$i .mo`;\
 		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
