@@ -1,6 +1,6 @@
 Source: univention-base-files
 Section: univention
-Priority: important
+Priority: standard
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
