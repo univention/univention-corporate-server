@@ -4,17 +4,15 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
- foomatic-db,
- foomatic-db-engine,
- foomatic-db-gutenprint,
 Standards-Version: 3.8.2
 
 Package: univention-foomatic-ppds
 Architecture: all
 Depends:
+ foomatic-db-compressed-ppds,
  ${misc:Depends},
-Description: UCS - foomatic ppds
- This packages provides foomatic printer ppds.
+Description: UCS transitional dummy package
+ This packages provides foomatic printer ppds. It can be savely removed.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
