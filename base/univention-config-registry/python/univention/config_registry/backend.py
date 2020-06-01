@@ -605,10 +605,9 @@ class _ConfigRegistry(dict):
 					# function was already moved by a concurrent UCR
 					# operation. Dump the current state to a backup file
 					temp_filename = '%s.concurrent_%s' % (filename, time.time())
-					reg_file = io.open(temp_filename, 'w', encoding='UTF-8')
-					reg_file.write(u'# univention_ base.conf\n\n')
-					reg_file.write(self.__unicode__())
-					reg_file.close()
+					with open(temp_filename, 'w') as reg_file:
+						reg_file.write(u'# univention_ base.conf\n\n')
+						reg_file.write(self.__unicode__())
 		except EnvironmentError as ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:
