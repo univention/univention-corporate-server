@@ -1,3 +1,6 @@
-univention_logo.png usr/share/univention-directory-reports/
-univention-directory-reports usr/bin/
-
+templates/de_DE/*.csv	etc/univention/directory/reports/default/de_DE/
+templates/de_DE/*.rml	etc/univention/directory/reports/default/de_DE/
+templates/en_US/*.csv	etc/univention/directory/reports/default/en_US/
+templates/en_US/*.rml	etc/univention/directory/reports/default/en_US/
+univention-directory-reports	usr/bin/
+univention_logo.png	usr/share/univention-directory-reports/
