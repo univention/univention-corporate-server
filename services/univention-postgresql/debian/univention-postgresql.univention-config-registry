@@ -11,6 +11,3 @@ Variables: pamldap/auth
 User: postgres
 Group: postgres
 Mode: 0640
-
-Type: file
-File: etc/cron.d/postgresql
