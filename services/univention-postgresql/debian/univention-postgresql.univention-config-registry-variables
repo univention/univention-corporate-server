@@ -1,30 +1,18 @@
-[postgres8/maxconnections]
-Description[de]=Diese Variable konfiguriert die maximale Anzahl gleichzeitiger Verbindungen beim Zugriff auf den PostgresSQL-8-Datenbankserver. Ist die Variable nicht gesetzt, ist das Limit 200 Verbindungen.
-Description[en]=This variable configures the maximum number of concurrent connections when accessing the PostgresSQL 8 database server. If the variable is unset, the limit is 200 connections.
-Type=int
-Categories=System
-
-[postgres8/listenaddress]
-Description[de]=Verfügt der Server auf dem PostgreSQL 8 läuft über mehr als ein Netzwerkinterface, kann mit dieser Variable die IP-Adresse(n) beschränkt werden, unter denen auf Anfragen gewartet wird. Ist die Variable nicht gesetzt, bedient PostgreSQL Anfragen auf allen Interfaces. Mehrere IP-Adressen müssen durch Komma getrennt werden.
-Description[en]=If the server running PostgreSQL has more than one network interface this variable allows the restriction of IP addresses on which PostgreSQL is listening for connections. If the variable is unset all interfaces are served. Multiple IP addresses need to be separated by a comma.
-Type=str
-Categories=System
-
-[postgres9/maxconnections]
+[postgres11/maxconnections]
 Description[de]=Diese Variable konfiguriert die maximale Anzahl gleichzeitiger Verbindungen beim Zugriff auf den PostgresSQL-9-Datenbankserver. Ist die Variable nicht gesetzt, ist das Limit 100 Verbindungen.
 Description[en]=This variable configures the maximum number of concurrent connections when accessing the PostgresSQL 9 database server. If the variable is unset, the limit is 100 connections.
 Type=int
 Categories=System
 
-[postgres9/listenaddress]
+[postgres11/listenaddress]
 Description[de]=Verfügt der Server auf dem PostgreSQL 9 läuft über mehr als ein Netzwerkinterface, kann mit dieser Variable die IP-Adresse(n) beschränkt werden, unter denen auf Anfragen gewartet wird. Ist die Variable nicht gesetzt, bedient PostgreSQL Anfragen auf allen Interfaces. Mehrere IP-Adressen müssen durch Komma getrennt werden.
 Description[en]=If the server running PostgreSQL has more than one network interface this variable allows the restriction of IP addresses on which PostgreSQL is listening for connections. If the variable is unset all interfaces are served. Multiple IP addresses need to be separated by a comma.
 Type=str
 Categories=System
 
-[postgres9/pg_hba/config/.*]
-Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/9.6/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/9.6/auth-pg-hba-conf.html` für Details. Die Variable folgt dabei dem Schema postgres9/pg_hba/config/REIHENFOLGE=EINTRAG. Beispiel: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
+[postgres11/pg_hba/config/.*]
+Description[de]=Spezifiziert zusätzliche Konfigurationsoptionen für /etc/postgresql/11/main/pg_hba.conf. Siehe `https://www.postgresql.org/docs/11/auth-pg-hba-conf.html` für Details. Die Variable folgt dabei dem Schema postgres9/pg_hba/config/REIHENFOLGE=EINTRAG. Beispiel: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 
-Description[en]=Specifies additional configuration options for /etc/postgresql/9.6/main/pg_hba.conf. See `https://www.postgresql.org/docs/9.6/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
+Description[en]=Specifies additional configuration options for /etc/postgresql/11/main/pg_hba.conf. See `https://www.postgresql.org/docs/11/auth-pg-hba-conf.html` for details. The variable follows the scheme postgres9/pg_hba/config/ORDER=ENTRY. Example: 'postgres9/pg_hba/config/01="hostssl mydb myuser 127.0.0.2/32 md5"'.
 Type=str
 Categories=System

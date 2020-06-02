@@ -14,7 +14,7 @@ Pre-Depends:
 Depends:
  shell-univention-lib (>= 3.0.4-1),
  univention-config,
- univention-postgresql-9.6 | univention-postgresql-9.4,
+ univention-postgresql-11,
  ${misc:Depends},
 Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
@@ -25,44 +25,16 @@ Description: UCS - PostgreSQL configuration
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-postgresql-9.6
+Package: univention-postgresql-11
 Architecture: all
 Depends:
- postgresql-9.6,
+ postgresql-11,
  shell-univention-lib (>= 3.0.4-1),
  univention-config,
  ${misc:Depends},
-Breaks:
- univention-bacula (<< 7.0.1-2),
- univention-pkgdb (<< 9.0.1-2),
- univention-postgresql (< 8),
-Replaces:
- univention-postgresql (< 8),
-Description: UCS - PostgreSQL 9.6 configuration
+Description: UCS - PostgreSQL 11 configuration
  This package contains the configuration for the
  postgresql-9.6 package.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: univention-postgresql-9.4
-Architecture: all
-Depends:
- postgresql-9.4,
- shell-univention-lib (>= 3.0.4-1),
- univention-config,
- ${misc:Depends},
-Breaks:
- univention-bacula (<< 7.0.1-2),
- univention-pkgdb (<< 9.0.1-2),
- univention-postgresql (< 8),
-Replaces:
- univention-postgresql (< 8),
-Description: UCS - PostgreSQL 9.4 configuration
- This package contains the configuration for the
- postgresql-9.4 package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
