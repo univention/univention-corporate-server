@@ -1,0 +1,11 @@
+product: ucs
+release: "4.3"
+version: [5]
+scope: ucs_4.3-0-errata4.3-5
+src: univention-directory-replication
+fix: 11.0.0-9
+desc: |
+ This update addresses the following issue:
+ * Deactivate extended security maintenance message for the
+   Univention updater.
+bug: [51376]
