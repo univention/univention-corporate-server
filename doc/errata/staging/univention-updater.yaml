@@ -3,7 +3,7 @@ release: "4.3"
 version: [5]
 scope: ucs_4.3-0-errata4.3-5
 src: univention-directory-replication
-fix: 11.0.0-9
+fix: 13.0.1-76A~4.3.0.202006021156
 desc: |
  This update addresses the following issue:
  * Deactivate extended security maintenance message for the
