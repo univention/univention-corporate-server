@@ -1,3 +1,9 @@
+univention-postgresql (12.0.0-0.1) unstable; urgency=low
+
+  * UCS 5: Upgrade to PostgreSQL-11
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Jun 2020 02:22:07 +0200
+
 univention-postgresql (11.0.1-3) unstable; urgency=medium
 
   * Bug #51112: make UCR templates compatible to python3
