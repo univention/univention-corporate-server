@@ -1,3 +1,9 @@
+univention-updater (13.0.1-76) unstable; urgency=medium
+
+  * Bug #51376: Show end of maintenance warning
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 02 Jun 2020 11:52:44 +0200
+
 univention-updater (13.0.1-75) unstable; urgency=medium
 
   * Bug #50334: Disable updater message in errata component
