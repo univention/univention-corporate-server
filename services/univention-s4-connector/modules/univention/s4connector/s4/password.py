@@ -780,6 +780,9 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				new_shadowMax = '1'
 				expiry = int(time.time())
 				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+				# we need to expire the password. Since shadowMax=1 is its minimum value, we need to set shadowLastChange = today-2days
+				two_days_ago = long(time.time()) - 86400*2
+				new_shadowLastChange = str(two_days_ago/ 3600 / 24)
 			else:                # not pwd change on next login
 				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 				userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
