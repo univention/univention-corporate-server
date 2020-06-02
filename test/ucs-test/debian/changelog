@@ -1,3 +1,9 @@
+ucs-test (9.0.3-217) unstable; urgency=medium
+
+  * Bug #51195: added 00_checks/04_check_root_password
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Jun 2020 11:12:24 +0200
+
 ucs-test (9.0.3-216) unstable; urgency=medium
 
   * Bug #51355: fix missing (build-)dependency on python-enum34
