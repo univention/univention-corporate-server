@@ -30,6 +30,8 @@ Due to the inability of the S4 connector to handle, to handle group changes in d
 and the ucs-test framework to wait on all systems until all sync steps are done, the
 test will be skipped for now on all system with samba4 installed but deactivated s4-connector.
 Otherwise the test would be flaky.
+
+If the memberOf overlay is disabled, the test ist also skipped.
 """
 
 
@@ -59,6 +61,7 @@ def try_again(func):  # type: (Callable[[], None]) -> None
 		i += 1
 		try:
 			func()
+			break
 		except Exception as exc:
 			print('Attempt %d/%d failed: %s' % (i, RETRY_COUNT, exc))
 			if i == RETRY_COUNT:
@@ -303,10 +306,14 @@ class TestCases(object):
 
 if __name__ == '__main__':
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
+		if ucr.is_false('ldap/overlay/memberof', True):
+			# skip test if memberOf overlay is not activated
+			print('WARNING: memberOf overlay is not activated on this machine --> SKIPPING TEST')
+			sys.exit(77)
 		if utils.package_installed('univention-samba4') and ucr.is_false('connector/s4/autostart', False):
 			# skip test which would be flaky otherwise
-			print('WARNING: univention-samba4 is installed but no running S4 connector on this machine --> skipping test')
-			sys.exit(138)
+			print('WARNING: univention-samba4 is installed but no running S4 connector on this machine --> SKIPPING TEST')
+			sys.exit(137)
 
 		testcases = TestCases(udm, ucr)
 		testcases.run()
