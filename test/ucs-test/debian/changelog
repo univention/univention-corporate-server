@@ -1,3 +1,9 @@
+ucs-test (9.0.3-218) unstable; urgency=medium
+
+  * Bug #51298: 55_adconnector/503test_password_change_next_logon
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Jun 2020 16:46:55 +0200
+
 ucs-test (9.0.3-217) unstable; urgency=medium
 
   * Bug #51195: added 00_checks/04_check_root_password
