@@ -2,10 +2,10 @@ product: ucs
 release: "4.3"
 version: [5]
 scope: ucs_4.3-0-errata4.3-5
-src: univention-directory-replication
+src: univention-updater
 fix: 13.0.1-76A~4.3.0.202006021156
 desc: |
  This update addresses the following issue:
- * Deactivate extended security maintenance message for the
-   Univention updater.
+ * UCS 4.3 is out of maintenance. With this update a
+   warning is shown on all UCS systems.
 bug: [51376]
