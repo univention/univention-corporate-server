@@ -1,3 +1,21 @@
+univention-lib (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51429: remove obsolete python-ipaddr dependency
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 21:29:29 +0200
+
+univention-lib (9.0.0-2) unstable; urgency=medium
+
+  * Bug #51429: fix missing dependency on python3-univention-lib
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 16:01:33 +0200
+
+univention-lib (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 15:56:07 +0200
+
 univention-lib (8.0.1-38) unstable; urgency=medium
 
   * Bug #51592: use fd.write() instead of print()

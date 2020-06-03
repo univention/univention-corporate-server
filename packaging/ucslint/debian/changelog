@@ -1,3 +1,9 @@
+ucslint (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 03 Jul 2020 18:06:25 +0200
+
 ucslint (8.0.0-18) unstable; urgency=low
 
   * Bug #51107: Always check conffiles with Python 2 and 3

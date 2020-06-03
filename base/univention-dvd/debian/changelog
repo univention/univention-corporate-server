@@ -1,3 +1,9 @@
+univention-dvd (5.0.0-0.3) unstable; urgency=medium
+
+  * Bug #51419: Do and undo UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:11 +0200
+
 univention-dvd (5.0.0-0.2) unstable; urgency=low
 
   * Bug #51234: UCS-5.0-0 DVD

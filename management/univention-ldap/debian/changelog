@@ -1,3 +1,15 @@
+univention-ldap (16.0.0-2) unstable; urgency=medium
+
+  * Bug #51422: Ensure /etc/ldap/slapd.conf is the used ldap config
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 13:46:58 +0200
+
+univention-ldap (16.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 13:46:02 +0200
+
 univention-ldap (15.0.0-39) unstable; urgency=medium
 
   * Bug #51029: make UCR templates python3-compatible
