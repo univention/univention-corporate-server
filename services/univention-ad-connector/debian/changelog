@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:27:58 +0200
+
 univention-ad-connector (13.0.0-49) unstable; urgency=medium
 
   * Bug #51647: fix regression of Bug #18501:

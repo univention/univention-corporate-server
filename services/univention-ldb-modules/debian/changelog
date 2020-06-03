@@ -1,3 +1,9 @@
+univention-ldb-modules (8.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:29 +0200
+
 univention-ldb-modules (7.0.0-6) unstable; urgency=medium
 
   * Bug #51532: Restart univention-directory-listener on package update 

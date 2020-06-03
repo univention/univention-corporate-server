@@ -1,3 +1,9 @@
+univention-licence-python (11.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:13 +0200
+
 univention-licence-python (10.0.0-4) unstable; urgency=low
 
   * Bug #50943: Remove doxgen usage.

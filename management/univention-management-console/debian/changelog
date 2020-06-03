@@ -1,3 +1,9 @@
+univention-management-console (12.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:27:59 +0200
+
 univention-management-console (11.0.4-98) unstable; urgency=medium
 
   * Bug #51753: move outdated browser check to tools and adjust message

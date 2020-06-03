@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:23 +0200
+
 univention-management-console-module-top (8.0.1-3) unstable; urgency=medium
 
   * Bug #49158: migrate to dh_python

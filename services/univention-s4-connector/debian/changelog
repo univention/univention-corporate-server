@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:31 +0200
+
 univention-s4-connector (13.0.2-76) unstable; urgency=medium
 
   * Bug #51298: Add dependency to heimdal-clients and restart the umc-server

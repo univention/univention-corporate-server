@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:19 +0200
+
 univention-appcenter (8.0.11-132) unstable; urgency=medium
 
   * Bug #51034: 81proxy instead of 80proxy for docker proxy settings.

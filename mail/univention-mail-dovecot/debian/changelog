@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:18 +0200
+
 univention-mail-dovecot (5.0.1-13) unstable; urgency=medium
 
   * Bug #51147: make UCR templates compatible to python3
