@@ -9,3 +9,5 @@ desc: |
  * Internal change: The UMC module of univention-management-console-module-lib
    is now python3-compatible.
 bug: [51325]
+erratum: 618
+announced: 2020-06-03
