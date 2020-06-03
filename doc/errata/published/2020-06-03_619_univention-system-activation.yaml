@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The package now uses `dh_python2` instead of `python-support`.
 bug: [51373]
+erratum: 619
+announced: 2020-06-03
