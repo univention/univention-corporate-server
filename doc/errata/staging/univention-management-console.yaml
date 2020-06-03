@@ -3,8 +3,9 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-management-console
-fix: 11.0.4-79A~4.4.0.202005250945
+fix: 
 desc: |
  This update addresses the following issue(s):
  * Fix socket leaks in univention-management-console
-bug: [51047]
+ * The UMC-Webserver is now Python 3 compatible.
+bug: [51047, 51353]

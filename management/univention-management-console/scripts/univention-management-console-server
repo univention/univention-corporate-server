@@ -133,7 +133,7 @@ class UMC_Daemon(DaemonRunner):
 				self.daemon_context.stdout = open(app.stdout_path, 'w')
 				self.daemon_context.stderr = open(app.stderr_path, 'w')
 			return
-		return super(UMC_Daemon, self)._open_streams_from_app_stream_paths()
+		return super(UMC_Daemon, self)._open_streams_from_app_stream_paths(app)
 
 	def _reload(self):
 		"""Handler for the reload action"""
