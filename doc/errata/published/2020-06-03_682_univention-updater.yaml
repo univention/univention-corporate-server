@@ -9,3 +9,5 @@ desc: |
  * UCS 4.3 is out of maintenance. With this update a
    warning is shown on all UCS systems.
 bug: [51376]
+erratum: 682
+announced: 2020-06-03
