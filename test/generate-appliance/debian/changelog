@@ -1,3 +1,9 @@
+generate-appliance (6.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:33 +0200
+
 generate-appliance (5.0.0-2) unstable; urgency=medium
 
   * Bug #50451: Change default description to include RAM requirement

@@ -1,3 +1,9 @@
+univention-radius (7.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:30 +0200
+
 univention-radius (6.0.2-25) unstable; urgency=medium
 
   * Bug #50887: Permissions in radius postinst file

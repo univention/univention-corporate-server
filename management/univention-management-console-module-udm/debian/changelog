@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:23 +0200
+
 univention-management-console-module-udm (9.0.15-7) unstable; urgency=medium
 
   * Bug #50688: Portal settings via umc policy 

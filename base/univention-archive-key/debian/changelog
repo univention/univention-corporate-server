@@ -1,3 +1,15 @@
+univention-archive-key (11.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:28:01 +0200
+
+univention-archive-key (10.0.0-0.2) unstable; urgency=low
+
+  * Bug #51234: Switch to univention-archive-key-ucs-5x
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 31 Jul 2020 15:28:01 +0200
+
 univention-archive-key (10.0.0-0.1) unstable; urgency=low
 
   * Bug #51234: Switch to univention-archive-key-ucs-5x

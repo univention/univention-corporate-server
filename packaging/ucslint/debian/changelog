@@ -1,3 +1,9 @@
+ucslint (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Aug 2020 06:50:55 +0200
+
 ucslint (8.0.0-19) unstable; urgency=low
 
   * Bug #49240: Allow ucslint on multiple packages

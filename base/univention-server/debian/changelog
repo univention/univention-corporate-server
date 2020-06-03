@@ -1,3 +1,15 @@
+univention-server (15.0.0-2) unstable; urgency=medium
+
+  * Bug #51419: Do and undo UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:15 +0200
+
+univention-server (15.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 03 Jun 2020 11:53:47 +0200
+
 univention-server (14.0.0-16) unstable; urgency=medium
 
   * Bug #50708: reverted, because it did not belong here.

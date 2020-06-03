@@ -1,3 +1,9 @@
+univention-self-service (5.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:27:59 +0200
+
 univention-self-service (4.0.3-37) unstable; urgency=medium
 
   * Bug #51260: Add missing JS depencency in pages
