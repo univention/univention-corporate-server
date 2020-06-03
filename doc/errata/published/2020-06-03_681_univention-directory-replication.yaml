@@ -13,3 +13,5 @@ desc: |
    /usr/share/univention-ldap-overlay-memberof/univention-update-memberof
    should be called once on every UCS domaincontroller.
 bug: [51341]
+erratum: 681
+announced: 2020-06-03
