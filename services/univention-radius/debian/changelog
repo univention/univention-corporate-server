@@ -1,3 +1,9 @@
+univention-radius (6.0.2-23) unstable; urgency=medium
+
+  * Bug #50887: explicitly set permissions for ssl dir
+
+ -- Christian Castens <castens@univention.de>  Wed, 03 Jun 2020 12:48:34 +0200
+
 univention-radius (6.0.2-22) unstable; urgency=medium
 
   * Bug #51130: make UCR templates compatible to python3
