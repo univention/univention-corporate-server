@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-49) unstable; urgency=medium
+
+  * Bug #50887: Check radius permissions via diagnostic module
+
+ -- Christian Castens <castens@univention.de>  Thu, 04 Jun 2020 15:56:37 +0200
+
 univention-management-console-module-diagnostic (5.0.1-48) unstable; urgency=medium
 
   * Bug #50889: Finding a not yet registered file is a warning, not critical
