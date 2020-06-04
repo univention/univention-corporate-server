@@ -1,3 +1,9 @@
+univention-bind (14.0.0-2) unstable; urgency=medium
+
+  * Bug #51421: fix bind start
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 11:48:32 +0200
+
 univention-bind (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS 5: Version bump
