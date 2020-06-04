@@ -1,3 +1,9 @@
+univention-lib (9.0.0-2) unstable; urgency=medium
+
+  * Bug #51429: fix missing dependency on python3-univention-lib
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 16:01:33 +0200
+
 univention-lib (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS 5: Version bump
