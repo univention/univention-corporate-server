@@ -1,3 +1,9 @@
+univention-lib (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51429: remove obsolete python-ipaddr dependency
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 21:29:29 +0200
+
 univention-lib (9.0.0-2) unstable; urgency=medium
 
   * Bug #51429: fix missing dependency on python3-univention-lib
