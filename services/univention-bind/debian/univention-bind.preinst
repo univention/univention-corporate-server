@@ -30,32 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 12.0.2-1
-then
-	# Remove diversion with wrong package name
-	dpkg-divert --quiet --rename \
-		--package univention-bind9 \
-		--divert /lib/systemd/system/bind9.service.debian \
-		--remove /lib/systemd/system/bind9.service
-fi
-
-if dpkg --compare-versions "$2" lt 12.0.2-1
-then
-	dpkg-divert --quiet --rename \
-		--package univention-bind \
-		--divert /lib/systemd/system/bind9.service.debian \
-		--add /lib/systemd/system/bind9.service
-fi
-
-# Bug #49440: Switch "insserv" from "SysV" to "systemd" mode to make it use
-# "-f" to ignore wrong runtime-dependency of "univention-bind" on "samba-ad-dc"
-# in non-Samba4-environments, which is called through "update-rc.d" from
-# "bind9.postinst" and breaks the upgrade of old systems installed with
-# "sysv-rc" before UCS-4.2
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 13.0.1-6
-then
-	rm -f /etc/rcS.d/S??mountkernfs.sh
-fi
+dpkg-divert --quiet --rename \
+	--package univention-bind \
+	--divert /lib/systemd/system/bind9.service.debian \
+	--add /lib/systemd/system/bind9.service
 
 #DEBHELPER#
 
