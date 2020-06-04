@@ -32,11 +32,6 @@ Variables: dns/dlz/debug/level
 
 Type: file
 Mode: 755
-File: etc/init.d/bind9
-Variables: dns/backend
-
-Type: file
-Mode: 755
 File: etc/network/if-up.d/bind9
 
 Type: file

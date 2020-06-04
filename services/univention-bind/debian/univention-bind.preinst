@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-dpkg-divert --quiet --rename \
-	--package univention-bind \
-	--divert /lib/systemd/system/bind9.service.debian \
-	--add /lib/systemd/system/bind9.service
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 14.0.0-2; then
+	dpkg-divert --quiet --rename \
+		--package univention-bind \
+		--divert /lib/systemd/system/bind9.service.debian \
+		--remove /lib/systemd/system/bind9.service
+fi
 
 #DEBHELPER#
 
