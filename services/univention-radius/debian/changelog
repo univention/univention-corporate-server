@@ -1,3 +1,9 @@
+univention-radius (6.0.2-24) unstable; urgency=medium
+
+  * Bug 50887: Permissions in radius postinst file
+
+ -- Christian Castens <castens@univention.de>  Thu, 04 Jun 2020 14:56:07 +0200
+
 univention-radius (6.0.2-23) unstable; urgency=medium
 
   * Bug #50887: explicitly set permissions for ssl dir
