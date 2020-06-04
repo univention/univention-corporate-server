@@ -3,9 +3,11 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-radius
-fix: 6.0.2-23A~4.4.0.202006031306
+fix: 6.0.2-24A~4.4.0.202006041501
 desc: |
  This update addresses the following issue(s):
  * Permissions for directory /etc/freeradius/ssl are now set
    during installation by join-script 80univention-radius.
+   Permissions are also set via postinst script univention-
+   radius.postinst
 bug: [50887]
