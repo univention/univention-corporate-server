@@ -220,7 +220,7 @@ print('\turis="%s"' % ' '.join(uris))
 if configRegistry.get('ldap/maxopenfiles'):
 	print('\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles'])
 @!@		start-stop-daemon --start --ppid 1 --quiet \
-			--exec $DAEMON -- -h "${uris}"
+			--exec $DAEMON -- -h "${uris}" -f "${SLAPDCONF}"
 	rvalue=$?
 	fail_msg=""
 	# Bug #33993
@@ -228,7 +228,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 		for i in $(seq 1 3); do
 			[ $rvalue -eq 0 ] && break
 			sleep 1
-			start-stop-daemon --start --ppid 1 --quiet --exec $DAEMON -- -h "${uris}"
+			start-stop-daemon --start --ppid 1 --quiet --exec $DAEMON -- -h "${uris}" -f "${SLAPDCONF}"
 			rvalue=$?
 		done
 		[ $rvalue -ne 0 ] && fail_msg="slapd start failed, check if ldap/database/mdb/maxsize is supported on this architecture"
