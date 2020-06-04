@@ -78,6 +78,7 @@ Architecture: all
 Depends:
  pwgen,
  python-univention-lib (= ${binary:Version}),
+ python3-univention-lib (= ${binary:Version}),
  univention-config (>= 12),
  ${misc:Depends},
 Description: UCS - common scripting functions for shell scripts
