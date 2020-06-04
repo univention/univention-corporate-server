@@ -1,6 +1,7 @@
 univention-bind (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS 5: Version bump
+  * Fix dpkg-divert'ing  the original bind service file
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Jun 2020 10:33:22 +0200
 
