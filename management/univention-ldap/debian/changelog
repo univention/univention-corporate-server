@@ -1,3 +1,9 @@
+univention-ldap (16.0.0-2) unstable; urgency=medium
+
+  * Bug #51422: Ensure /etc/ldap/slapd.conf is the used ldap config
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Sep 2020 14:34:32 +0200
+
 univention-ldap (16.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS 5: Version bump
