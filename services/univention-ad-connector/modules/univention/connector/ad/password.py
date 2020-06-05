@@ -396,21 +396,20 @@ def password_sync_ucs(connector, key, object):
 		pwd_set = True
 		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
 
-	if not pwd_set or nt_hash:
-		newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
-		# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
-		# password expired, must be changed on next login
-		#	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
-		#	newpwdlastset = "0"
-		if sambaPwdLastSet <= 1:
-			newpwdlastset = "0"  # User must change his password
-		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
-			newpwdlastset = "1"
-		if int(newpwdlastset) != 1:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
-			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
-		else:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
+	newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
+	# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
+	# password expired, must be changed on next login
+	#	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
+	#	newpwdlastset = "0"
+	if sambaPwdLastSet <= 1:
+		newpwdlastset = "0"  # User must change his password
+	elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
+		newpwdlastset = "1"
+	if int(newpwdlastset) != 1:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
+		connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
+	else:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
 
 
 def password_sync_kinit(connector, key, ucs_object):
