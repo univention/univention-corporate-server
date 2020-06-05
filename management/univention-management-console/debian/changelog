@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-81) unstable; urgency=medium
+
+  * Bug #51353: Migrate UMC-Webserver to Python 3
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jun 2020 11:39:42 +0200
+
 univention-management-console (11.0.4-80) unstable; urgency=medium
 
   * Non-maintainer upload.
