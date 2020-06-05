@@ -1,3 +1,9 @@
+univention-s4-connector (13.0.2-72) unstable; urgency=medium
+
+  * Bug #51298: Expire user password also in openLDAP
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 05 Jun 2020 20:45:37 +0200
+
 univention-s4-connector (13.0.2-71) unstable; urgency=medium
 
   * Bug #50593: Reverted, due to sideeffects

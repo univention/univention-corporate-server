@@ -396,21 +396,20 @@ def password_sync_ucs(connector, key, object):
 		pwd_set = True
 		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
 
-	if not pwd_set or nt_hash:
-		newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
-		# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
-		# password expired, must be changed on next login
-		#	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
-		#	newpwdlastset = "0"
-		if sambaPwdLastSet <= 1:
-			newpwdlastset = "0"  # User must change his password
-		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
-			newpwdlastset = "1"
-		if int(newpwdlastset) != 1:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
-			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
-		else:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
+	newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
+	# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
+	# password expired, must be changed on next login
+	#	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
+	#	newpwdlastset = "0"
+	if sambaPwdLastSet <= 1:
+		newpwdlastset = "0"  # User must change his password
+	elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
+		newpwdlastset = "1"
+	if int(newpwdlastset) != 1:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
+		connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
+	else:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
 
 
 def password_sync_kinit(connector, key, ucs_object):
@@ -524,8 +523,9 @@ def password_sync(connector, key, ucs_object):
 			# update shadowLastChange
 			old_shadowLastChange = ucs_result[0][1].get('shadowLastChange', [None])[0]
 			new_shadowLastChange = str(int(time.time()) / 3600 / 24)
-			modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
-			ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
+			if pwdLastSet != 0:
+				modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
 
 			# get pw policy
 			new_shadowMax = None
@@ -543,10 +543,10 @@ def password_sync(connector, key, ucs_object):
 
 			# update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
 			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
-			if old_shadowMax or new_shadowMax:
+			if old_shadowMax or new_shadowMax and pwdLastSet != 0:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
 				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
-			if old_krb5end or new_krb5end:
+			if old_krb5end or new_krb5end and pwdLastSet != 0:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
 				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
 
@@ -560,6 +560,29 @@ def password_sync(connector, key, ucs_object):
 				else:
 					modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet))
 					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" % newSambaPwdLastSet)
+				if pwdLastSet == 0:
+					expiry = int(time.time())
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+					if old_krb5end:
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: krb5PasswordEnd in modlist (replace): %s" % new_krb5end)
+						modlist.append(('krb5PasswordEnd',old_krb5end, new_krb5end))
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: krb5PasswordEnd in modlist (set): %s" % new_krb5end)
+						modlist.append(('krb5PasswordEnd','', new_krb5end))
+					if old_shadowMax:
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (replace): 0" )
+						modlist.append(('shadowMax', old_shadowMax, '1'))
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (set): 0" )
+						modlist.append(('shadowMax', '', '1'))
+					two_days_ago = long(time.time()) - (86400*2)
+					new_shadowLastChange = str(two_days_ago / 3600 / 24)
+					if old_shadowLastChange:
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowLastChange in modlist (replace): %s" % new_shadowLastChange )
+						modlist.append(('shadowLastChange', old_shadowLastChange, new_shadowLastChange))
+					else:
+						ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (set): %s" % new_shadowLastChange)
+						modlist.append(('shadowLastChange', '', new_shadowLastChange))
 
 		if len(modlist) > 0:
 			connector.lo.lo.modify(ucs_object['dn'], modlist)
