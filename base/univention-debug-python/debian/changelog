@@ -1,3 +1,9 @@
+univention-debug-python (12.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:11 +0200
+
 univention-debug-python (11.0.0-3) unstable; urgency=low
 
   * Bug #49130: Fix PyFile_FromFd() with Python3

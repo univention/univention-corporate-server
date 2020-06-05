@@ -1,3 +1,9 @@
+univention-mariadb (3.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:29 +0200
+
 univention-mariadb (2.0.0-6) unstable; urgency=medium
 
   * Bug #51137: make UCR templates compatible to python3

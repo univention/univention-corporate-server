@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:21 +0200
+
 univention-management-console-module-adtakeover (6.0.1-11) unstable; urgency=medium
 
   * Bug #49150: fix python-3 compatibility

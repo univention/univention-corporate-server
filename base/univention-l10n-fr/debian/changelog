@@ -1,3 +1,9 @@
+univention-l10n-fr (4.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:12 +0200
+
 univention-l10n-fr (3.0.0-3) unstable; urgency=medium
 
   * Bug #50205: Update links from UCS 4.x-y to UCS 4.4-2

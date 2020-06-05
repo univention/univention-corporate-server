@@ -1,3 +1,9 @@
+univention-quota (14.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:15 +0200
+
 univention-quota (13.0.1-8) unstable; urgency=low
 
   * Bug #51010: make UCR templates compatible to python3

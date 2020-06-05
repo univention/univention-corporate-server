@@ -1,3 +1,9 @@
+univention-samba (14.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:31 +0200
+
 univention-samba (13.0.0-10) unstable; urgency=medium
 
   * Bug #51212: fix typo in UCR conffile

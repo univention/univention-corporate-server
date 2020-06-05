@@ -1,9 +1,13 @@
-univention-portal (3.0.2-6) UNRELEASED; urgency=medium
+univention-portal (4.0.0-1) unstable; urgency=medium
 
+  [ Julia Bremer ]
   * Bug #50688: Make categories without entries visible to non domain admins
     in live-edit mode.
 
- -- Julia Bremer <bremer@univention.de>  Tue, 26 May 2020 13:23:41 +0200
+  [ Dirk Wiesenthal ]
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:23 +0200
 
 univention-portal (3.0.2-5) unstable; urgency=medium
 

@@ -1,3 +1,9 @@
+univention-directory-logger (11.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:19 +0200
+
 univention-directory-logger (10.0.2-2) unstable; urgency=low
 
   * Issue #22459 / Bug #51082: improve UCR variable description and
