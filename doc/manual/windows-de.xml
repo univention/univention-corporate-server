@@ -1533,14 +1533,6 @@ angelegt wurden, hinsichtlich der Position im LDAP das gleiche
 Verhalten gilt wie bei Gruppen.
 </simpara>
 </listitem>
-<listitem><simpara>Die Synchronisation des Passwortablaufdatums und der Benutzer-Option <emphasis>Passwort-Ändern
-beim nächsten Login</emphasis> erfolgt UCS-seitig nur auf Samba-Ebene. Wird die Passwortänderung
-durch &ucsUMC; ausgelöst, dass Passwort dann aber im Active Directory
-geändert, werden die Ablaufdaten bzgl. des Kerberos- und
-POSIX- Kennworts nicht geändert, so dass der User z.B. bei Thin Client-Anmeldung
-sein Passwort erneut ändern muss.
-</simpara>
-</listitem>
 <listitem><simpara>Es kann vorkommen, dass ein unter AD anzulegender Benutzer, dessen
 Passwort zurückgewiesen wurde, nach sofortigem erneuten Anlegen aus AD
 gelöscht wird. Grund dafür ist, das AD diesen Benutzer zunächst anlegt

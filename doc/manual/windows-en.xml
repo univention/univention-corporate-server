@@ -1450,16 +1450,6 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 </para>
 </listitem>
 <listitem>
-<para>The synchronization of the password expiry date and the
-  <emphasis>Change password on next login</emphasis> user option occurs on the
-  UCS side on the Samba level alone. If a password change is initiated
-  by &ucsUDM;, but the password changed in Active Directory, the
-  expiration details for the Kerberos and POSIX passwords are not
-  changed, so that the user must change his password again if he, for
-  example, logs on to a thin client.
-</para>
-</listitem>
-<listitem>
 <para>In some cases, a user to be created under AD, for which the
   password has been rejected, is deleted from AD immediately after
   creation. The reasoning behind this is that AD created this
