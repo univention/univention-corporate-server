@@ -90,7 +90,7 @@ esac
 . /usr/share/univention-lib/base.sh
 call_joinscript 80univention-radius.inst
 
-chmod 2755 /etc/freeradius/ssl
+test -d /etc/freeradius/ssl && chmod -cf 2755 /etc/freeradius/ssl
 
 deb-systemd-helper enable freeradius.service
 systemctl restart freeradius
