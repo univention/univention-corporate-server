@@ -1,3 +1,10 @@
+ucs-test (9.0.3-220) unstable; urgency=medium
+
+  * Bug #51424: added tests/root/pwdfile and tests/root/pwd, there are setups
+    with root password != admin password
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Jun 2020 17:43:58 +0200
+
 ucs-test (9.0.3-219) unstable; urgency=medium
 
   * Bug #51298: Extend 55_adconnector/503test_password_change_next_logon and enable

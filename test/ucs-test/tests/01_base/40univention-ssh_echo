@@ -7,7 +7,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-result="$(univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" echo -n | wc -c ; echo "${PIPESTATUS[0]}")" || exit 110 # ERROR
+result="$(univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo -n | wc -c ; echo "${PIPESTATUS[0]}")" || exit 110 # ERROR
 if [ $'0\n0' = "$result" ]
 then
 	exit 100 # OK

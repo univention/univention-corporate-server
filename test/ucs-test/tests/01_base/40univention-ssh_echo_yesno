@@ -7,7 +7,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-if [ yes/no = "$(univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" echo -n yes/no)" ]
+if [ yes/no = "$(univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo -n yes/no)" ]
 then
 	exit 100 # OK
 else

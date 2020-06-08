@@ -7,7 +7,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-result="$(univention-ssh -timeout 10 "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" echo BEFORE \; sleep 20 \; echo AFTER 2>&1)"
+result="$(univention-ssh -timeout 10 "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo BEFORE \; sleep 20 \; echo AFTER 2>&1)"
 if ! grep -q BEFORE <<<"$result"
 then
 	exit 110 # ERROR

@@ -36,7 +36,9 @@ eval "$(ucr shell ldap/base)"
 
 ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
 		tests/domainadmin/pwd?univention \
-		tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
+		tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile" \
+		tests/root/pwdfile?"/var/lib/ucs-test/root-pwdfile" \
+		tests/root/pwd?univention \
 
 eval "$(ucr shell)"
 
@@ -46,5 +48,12 @@ then
 	echo -n "$tests_domainadmin_pwd" > "$tests_domainadmin_pwdfile"
 fi
 chmod 600 "$tests_domainadmin_pwdfile"
+
+if [ ! -f "$tests_root_pwdfile" ]
+then
+	mkdir -p "${tests_root_pwdfile%/*}"
+	echo -n "$tests_root_pwd" > "$tests_root_pwdfile"
+fi
+chmod 600 "$tests_root_pwdfile"
 
 exit 0

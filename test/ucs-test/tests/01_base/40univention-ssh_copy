@@ -9,8 +9,8 @@ tmpfile="$(mktemp)"
 trap "rm -f '$tmpfile'" EXIT
 
 if \
-	univention-ssh-rsync "$tests_domainadmin_pwdfile" /etc/hostname "root@${hostname}.${domainname}:/tmp/$$" && \
-	univention-scp "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}:/tmp/$$" "$tmpfile" && \
+	univention-ssh-rsync "$tests_root_pwdfile" /etc/hostname "root@${hostname}.${domainname}:/tmp/$$" && \
+	univention-scp "$tests_root_pwdfile" "root@${hostname}.${domainname}:/tmp/$$" "$tmpfile" && \
 	cmp /etc/hostname "$tmpfile"
 then
 	exit 100 # OK

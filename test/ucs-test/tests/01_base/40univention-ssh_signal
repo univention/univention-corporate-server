@@ -7,7 +7,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-result="$(univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" echo BEFORE \; kill '$$' \; echo AFTER)"
+result="$(univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo BEFORE \; kill '$$' \; echo AFTER)"
 if [ $? -eq 0 ]
 then
 	exit 110 # ERROR

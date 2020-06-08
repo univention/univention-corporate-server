@@ -7,7 +7,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" exit 110
+univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" exit 110
 if [ $? -eq 110 ]
 then
 	exit 100 # OK
