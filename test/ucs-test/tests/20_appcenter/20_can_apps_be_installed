@@ -19,7 +19,7 @@ from appcentertest import get_requested_apps
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ucr import ucr_get, ucr_save
 from univention.appcenter.actions import get_action
-from univention.appcenter.log import log_to_stream
+from univention.appcenter.log import log_to_logfile
 
 requested_apps = get_requested_apps()
 if requested_apps and all(app.docker for app in requested_apps):
@@ -29,31 +29,44 @@ if requested_apps and all(app.docker for app in requested_apps):
 
 with UCSTestConfigRegistry():
 
-	log_to_stream()
+	log_to_logfile()
 
 	def _packages_to_install(app):
 		return app.get_packages()
 
 	def _apt_get_update():
 		cmd = ['/usr/bin/apt-get', 'update']
-		for i in range(0, 3):
-			print('Executing the command: %s' % cmd)
-			ret = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			if ret == 0:
-				break
-			print('failed, try again ...')
-			time.sleep(10)
+		print('Executing the command: %s' % cmd)
+		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
+		(stdoutdata, stderrdata) = p.communicate()
+		if p.returncode:
+			print('apt-get update failed: {} {}'.format(stdoutdata, stderrdata))
 
 	def _apt_get_simulate(app):
-		if not app.without_repository:
-			register.call(apps=[app], register_task=['component'], do_it=True)
-			_apt_get_update()
-		packages = _packages_to_install(app)
-		cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
-		print('Executing the command: %s' % cmd)
-		retcode = subprocess.call(cmd, stderr=subprocess.STDOUT)
+		retcode = 0
+		for i in range(0, 3):
+			if not app.without_repository:
+				print('Register app {}'.format(app.id))
+				register.call(apps=[app], register_task=['component'], do_it=True)
+				_apt_get_update()
+			packages = _packages_to_install(app)
+			cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
+			print('Executing the command: %s' % cmd)
+			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
+			(stdoutdata, stderrdata) = p.communicate()
+			retcode = p.returncode
+			if retcode == 0:
+				break
+			for s in ['/etc/apt/sources.list.d/15_ucs-online-version.list', '/etc/apt/sources.list.d/20_ucs-online-component.list']:
+				print(s)
+				with open(s, 'r') as f:
+					print(f.read())
+			print(stdoutdata, stderrdata)
+			print('failed, try again ...')
+			time.sleep(10)
 		if not app.without_repository:
 			register.call(apps=[app], register_task=['component'])
+			_apt_get_update()
 		return retcode == 0
 
 	test_appcenter = get_action('dev-use-test-appcenter')
@@ -64,16 +77,17 @@ with UCSTestConfigRegistry():
 	_apt_get_update()
 	for app in Apps().get_all_apps():
 		if app.docker:
-			print('Ignoring app %r: Docker App' % app.id)
+			print('Ignoring app %s: Docker App' % app.id)
 			continue
 		forbidden, warning = app.check('install')
 		if forbidden:
 			print('Ignoring app %r: requirements not met -> %r' % (app.id, forbidden))
 			continue
 
-		print('Checking app: %r' % app.id)
+		print('Checking app: %s' % app.id)
 		if not _apt_get_simulate(app):
 			failed.append(app)
+			break
 	test_appcenter.call()
 	_apt_get_update()
 
@@ -82,11 +96,5 @@ with UCSTestConfigRegistry():
 		for app in failed:
 			print('[ APP: %s ]' % app.id)
 		sys.exit(1)
-
-# cat sources.list for debugging
-for s in ['/etc/apt/sources.list.d/15_ucs-online-version.list', '/etc/apt/sources.list.d/20_ucs-online-component.list']:
-	print(s)
-	with open(s, 'r') as f:
-		print(f.read())
 
 sys.exit(0)

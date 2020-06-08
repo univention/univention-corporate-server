@@ -1,3 +1,9 @@
+ucs-test (9.0.3-221) unstable; urgency=medium
+
+  * Bug #1234: added "retry" to 20_appcenter/20_can_apps_be_installed
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Jun 2020 23:05:01 +0200
+
 ucs-test (9.0.3-220) unstable; urgency=medium
 
   * Bug #51424: added tests/root/pwdfile and tests/root/pwd, there are setups
