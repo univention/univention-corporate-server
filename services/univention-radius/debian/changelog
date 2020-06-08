@@ -1,4 +1,4 @@
-univention-radius (6.0.2-24) unstable; urgency=medium
+univention-radius (6.0.2-25) unstable; urgency=medium
 
   * Bug 50887: Permissions in radius postinst file
 
