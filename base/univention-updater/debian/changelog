@@ -1,3 +1,9 @@
+univention-updater (15.0.0-2) unstable; urgency=medium
+
+  * Bug #51419: fix python-import in univention-upgrade
+
+ -- Florian Best <best@univention.de>  Mon, 08 Jun 2020 18:30:05 +0200
+
 univention-updater (15.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
