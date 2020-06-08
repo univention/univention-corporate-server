@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-radius
-fix: 6.0.2-24A~4.4.0.202006041501
+fix: 6.0.2-25A~4.4.0.202006081555
 desc: |
  This update addresses the following issue(s):
  * Permissions for directory /etc/freeradius/ssl are now set
