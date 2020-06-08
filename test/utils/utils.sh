@@ -737,10 +737,16 @@ set_administrator_dn_for_ucs_test () {
 
 set_administrator_password_for_ucs_test () {
 	local password="$1"
-
 	ucr set tests/domainadmin/pwd="$password" tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
 	mkdir -p /var/lib/ucs-test/
 	echo -n "$password" >/var/lib/ucs-test/pwdfile
+}
+
+set_root_password_for_ucs_test () {
+	local password="$1"
+	ucr set tests/root/pwd="$password" tests/root/pwdfile?"/var/lib/ucs-test/root-pwdfile"
+	mkdir -p /var/lib/ucs-test/
+	echo -n "$password" >/var/lib/ucs-test/root-pwdfile
 }
 
 set_windows_localadmin_password_for_ucs_test () {
