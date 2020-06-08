@@ -45,10 +45,7 @@ EOF
 call_replicate_one ()
 {
 	containername="$1"
-
-	password_file="$(mktemp)"
-	echo "$(ucr get tests/domainadmin/pwd)" >>"$password_file"
-	univention-ssh "$password_file" root@$(ucr get ldap/master) /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
+	univention-ssh "$(ucr get tests/root/pwdfile?)" root@$(ucr get ldap/master) /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
 
 	wait_for_replication
 }
@@ -82,7 +79,5 @@ check_description "$containername" "test1"
 
 container_remove "cn=$containername,cn=groups,$ldap_base"
 wait_for_replication
-
-rm "$password_file"
 
 exit $RETVAL
