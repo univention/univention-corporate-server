@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-82) unstable; urgency=medium
+
+  * Bug #51366: fix leak of open ldap connections in PAM authentication
+
+ -- Florian Best <best@univention.de>  Tue, 09 Jun 2020 11:49:30 +0200
+
 univention-management-console (11.0.4-81) unstable; urgency=medium
 
   * Bug #51353: Migrate UMC-Webserver to Python 3
