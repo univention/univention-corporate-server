@@ -45,7 +45,7 @@ class LDAP(object):
 		return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs)
 
 	def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-		hash_ = ('connection', bind, host, port, base, tuple(kwargs.items()))
+		hash_ = ('connection', no_cache, bind, host, port, base, tuple(kwargs.items()))
 
 		def connection():
 			lo = _access(host=host, port=port, base=base, **kwargs)
@@ -55,7 +55,7 @@ class LDAP(object):
 		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
 	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-		hash_ = ('machine', bool(write), tuple(kwargs.items()))
+		hash_ = ('machine', no_cache, bool(write), tuple(kwargs.items()))
 		kwargs.update({'ldap_master': write})
 
 		def connection():
@@ -68,7 +68,7 @@ class LDAP(object):
 		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
 	def admin_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-		hash_ = ('admin', tuple(kwargs.items()))
+		hash_ = ('admin', no_cache, tuple(kwargs.items()))
 
 		def connection():
 			try:
@@ -80,7 +80,7 @@ class LDAP(object):
 		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
 	def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-		hash_ = ('backup', tuple(kwargs.items()))
+		hash_ = ('backup', no_cache, tuple(kwargs.items()))
 
 		def connection():
 			lo = _getBackupConnection(**kwargs)
