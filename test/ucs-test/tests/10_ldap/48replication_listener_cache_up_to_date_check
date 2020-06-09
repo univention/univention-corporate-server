@@ -45,8 +45,7 @@ EOF
 call_replicate_one ()
 {
 	containername="$1"
-	univention-ssh "$(ucr get tests/root/pwdfile?)" root@$(ucr get ldap/master) /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
-
+	univention-ssh "$(ucr get tests/root/pwdfile)" root@$(ucr get ldap/master) /usr/sbin/univention-replicate-one --dn "cn=$containername,cn=groups,$ldap_base"
 	wait_for_replication
 }
 
