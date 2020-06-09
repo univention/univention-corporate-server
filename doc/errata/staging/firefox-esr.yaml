@@ -9,7 +9,8 @@ desc: |
  * Timing attack on DSA signature generation (CVE-2020-12399)
  * Use-after-free in SharedWorkerService (CVE-2020-12405)
  * JavaScript Type confusion with NativeTypes (CVE-2020-12406)
- * Memory safety bugs fixed in Firefox 77 and Firefox ESR 68.9  (CVE-2020-12410)
+ * Memory safety bugs fixed in Firefox 77 and
+   Firefox ESR 68.9 (CVE-2020-12410)
 bug: [51453]
 cve:
 - CVE-2020-12399
