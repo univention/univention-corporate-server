@@ -1,4 +1,4 @@
-univention-management-console (11.0.4-83) unstable; urgency=medium
+univention-management-console (11.0.4-84) unstable; urgency=medium
 
   * Bug #51367: fix leak of ldap connection in session shutdown and favorites
   	retrieval

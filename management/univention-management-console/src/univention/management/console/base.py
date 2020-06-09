@@ -491,5 +491,4 @@ class Base(signals.Provider, Translation):
 			del self.__requests[response.id]
 
 	def __del__(self):
-		for lo in self.__user_connections:
-			reset_ldap_connection_cache(lo)
+		reset_ldap_connection_cache(*self.__user_connections)
