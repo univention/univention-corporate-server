@@ -1,4 +1,3 @@
 usr/share/univention-management-console/categories
 usr/share/univention-management-console/modules
 var/cache/univention-management-console/acls
-var/run/univention-management-console

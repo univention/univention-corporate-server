@@ -1,0 +1,1 @@
+rm_conffile /etc/init.d/univention-management-console-server 12.0.12-17~
