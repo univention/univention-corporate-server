@@ -5,8 +5,8 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-directory-replication
 fix: 12.0.0-10A~4.4.0.202005122038
 desc: |
- This update addresses the following issue(s):
- * Due to a racing condition, the memberOf attribute of user objects could
+ This update addresses the following issue:
+ * Due to a race condition, the `memberOf` attribute of user objects could
    have been incomplete on domaincontroller backup and domaincontroller
    slave systems. This problem has now been fixed. To get all user objects
    back in sync, the script
