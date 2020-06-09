@@ -56,6 +56,7 @@ Vahr	UCS 4.1	https://de.wikipedia.org/wiki/Vahr
 Lesum	UCS 4.2	https://de.wikipedia.org/wiki/Burglesum#Lesum
 Neustadt	UCS 4.3	https://de.wikipedia.org/wiki/Neustadt_%28Bremen%29
 Blumenthal	UCS 4.4	https://de.wikipedia.org/wiki/Blumenthal_%28Bremen%29
+TBA-500	UCS 5.0	https://www.univention.de
 __CODENAMES__
 
 if [ "$1" = "configure" ]; then
@@ -97,8 +98,8 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/enabled?yes \
 		update/check/boot/debug?no \
 		update/available?no \
-		version/version?4.4 \
-		version/patchlevel?5 \
+		version/version?5.0 \
+		version/patchlevel?0 \
 		version/erratalevel?0 \
 		version/releasename="$releasename"
 
