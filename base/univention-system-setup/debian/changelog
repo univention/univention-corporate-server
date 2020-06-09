@@ -1,3 +1,9 @@
+univention-system-setup (13.0.0-2) unstable; urgency=medium
+
+  * Bug #51461: Copy packages to the local repository from the dvd
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 10 Jun 2020 01:25:41 +0200
+
 univention-system-setup (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
