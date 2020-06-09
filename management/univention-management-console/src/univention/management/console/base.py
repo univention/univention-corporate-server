@@ -382,7 +382,7 @@ class Base(signals.Provider, Translation):
 			headers['Content-Language'] = self.__current_language
 		return headers
 
-	def get_user_ldap_connection(self):
+	def get_user_ldap_connection(self, no_cache=False):
 		if not self._user_dn:
 			return  # local user (probably root)
 		try:

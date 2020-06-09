@@ -353,7 +353,7 @@ class ProcessorBase(Base):
 	def _get_user_favorites(self):
 		if not self._user_dn:  # user not authenticated or no LDAP user
 			return set(ucr.get('umc/web/favorites/default', '').split(','))
-		favorites = self._get_user_preferences(self.get_user_ldap_connection()).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+		favorites = self._get_user_preferences(self.get_user_ldap_connection(no_cache=True)).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
 		return set(favorites.split(','))
 
 	def handle_request_get_categories(self, request):
