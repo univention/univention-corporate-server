@@ -42,4 +42,4 @@ override_dh_install:
 	dh_install -Xde.po
 
 %:
-	dh $@ --with python2,python3,univention-l10n,ucr
+	dh $@ --with python2,python3,univention-l10n,ucr,systemd

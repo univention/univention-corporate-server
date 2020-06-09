@@ -31,13 +31,9 @@
 # <https://www.gnu.org/licenses/>.
 
 # SIGHUP for UMC-server and UMC-web-server
-for file in "/var/run/umc-server.pid" "/var/run/umc-web-server"*".pid"; do
-	if [ -e "$file" ]; then
-		pkill -1 -F "$file"
-	fi
-done
+systemctl kill -s SIGHUP univention-management-console-server.service univention-management-console-web-server.service
 
 # SIGHUP for all running UMC modules
-pkill -1 -f /usr/sbin/univention-management-console-module
+pkill -SIGHUP -f /usr/sbin/univention-management-console-module
 
 exit 0

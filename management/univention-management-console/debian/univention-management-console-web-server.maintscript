@@ -1,2 +1,3 @@
 mv_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-management-console /etc/univention/templates/files/etc/apache2/sites-available/univention.conf 9.0.0~
 rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-proxy.conf 12.0.0~
+rm_conffile /etc/init.d/univention-management-console-web-server 12.0.12-17~

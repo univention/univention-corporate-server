@@ -73,7 +73,7 @@ def log_init(filename, log_level=2, log_pid=None):
 	:param bool log_pid: Prefix log message with process ID
 	"""
 
-	if filename[0] != '/':
+	if filename[0] != '/' and filename not in ('stdout', 'stderr'):
 		filename = '/var/log/univention/%s.log' % filename
 	fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
 	adm = grp.getgrnam('adm')

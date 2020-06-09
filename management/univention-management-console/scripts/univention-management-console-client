@@ -304,7 +304,7 @@ def main():  # type: () -> None
 	except locale.Error:
 		pass
 
-	log_init('/dev/stderr', arguments.debug)
+	log_init('stderr', arguments.debug)
 
 	if arguments.authenticate:
 		if not arguments.username:

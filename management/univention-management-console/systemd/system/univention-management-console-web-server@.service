@@ -7,7 +7,7 @@ BindsTo=univention-management-console-web-server-multiprocessing.target
 ReloadPropagatedFrom=univention-management-console-web-server-multiprocessing.target
 
 [Service]
-Type=forking
+Type=exec
 PIDFile=/var/run/umc-web-server%i.pid
 ExecStart=/usr/sbin/univention-management-console-web-server start --port=%i
 ExecReload=/bin/kill -HUP $MAINPID

@@ -1,0 +1,16 @@
+[Unit]
+Description=Univention Management Console Web Server
+After=network.target remote-fs.target univention-management-console-server.service
+Before=apache2.service
+
+[Service]
+Type=exec
+PIDFile=/var/run/umc-web-server.pid
+ExecStart=/usr/sbin/univention-management-console-web-server start
+ExecStop=/usr/sbin/univention-management-console-web-server stop
+ExecReload=/usr/sbin/univention-management-console-web-server reload
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
