@@ -184,7 +184,7 @@ class Module(object):
 	def install_deb_scripts(self):
 		# type: () -> None
 		with open(os.path.join('debian', '%s.postinst.debhelper' % (self.module.package,)), 'a') as f_postinst:
-			f_postinst.write('invoke-rc.d univention-management-console-server reload || true\n')
+			f_postinst.write('deb-systemd-invoke reload univention-management-console-server || true\n')
 			f_postinst.write('''
 # generate a new hash for the UMC frontend in order to avoid caching problems
 . /usr/share/univention-lib/umc.sh
@@ -192,7 +192,7 @@ umc_frontend_new_hash
 ''')
 
 		with open(os.path.join('debian', '%s.postrm.debhelper' % (self.module.package,)), 'a') as f_prerm:
-			f_prerm.write('invoke-rc.d univention-management-console-server reload || true\n')
+			f_prerm.write('deb-systemd-invoke reload univention-management-console-server || true\n')
 
 
 def main():

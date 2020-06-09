@@ -33,7 +33,7 @@ def main():
 				test_reset_method_email(user)
 		finally:
 			# force all module processes to close
-			subprocess.call(['invoke-rc.d', 'univention-management-console-server', 'restart'], close_fds=True)
+			subprocess.call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True)
 
 
 def test_contact(user):

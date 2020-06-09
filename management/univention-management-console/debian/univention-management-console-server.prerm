@@ -34,7 +34,7 @@
 
 if [ "$1" = "remove" ]
 then
-	deb-systemd-invoke stop univention-management-console-server
+	deb-systemd-invoke stop univention-management-console-server.service
 fi
 
 exit 0

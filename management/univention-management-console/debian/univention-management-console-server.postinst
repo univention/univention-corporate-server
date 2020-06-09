@@ -85,7 +85,7 @@ if dpkg --compare-versions "10.0.5" gt-nl "$2"; then
 fi
 
 
-invoke-rc.d univention-management-console-server restart
+deb-systemd-invoke restart univention-management-console-server.service
 
 # ucslint needs this
 exit 0

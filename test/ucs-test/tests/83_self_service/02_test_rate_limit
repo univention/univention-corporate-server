@@ -102,8 +102,8 @@ def resetting_limits():
 
 
 def reset_server_limits():
-	assert 0 == call(['invoke-rc.d', 'memcached', 'restart'], close_fds=True)
-	assert 0 == call(['invoke-rc.d', 'univention-management-console-server', 'restart'], close_fds=True)
+	assert 0 == call(['systemctl', 'restart', 'memcached'], close_fds=True)
+	assert 0 == call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True)
 	print('Waiting for umc restart')
 	sleep(3)
 

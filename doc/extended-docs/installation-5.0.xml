@@ -382,8 +382,7 @@ gateway="192.0.2.1"
 		needs to be run once. Then Apache and the UMC server need to be restarted:
 
 		<programlisting language="sh">
-invoke-rc.d apache2 restart
-invoke-rc.d univention-management-console-server restart
+systemctl restart apache2 univention-management-console-server
 		</programlisting>
 	  </para>
 	</section>

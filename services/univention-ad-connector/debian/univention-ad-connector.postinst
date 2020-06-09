@@ -55,7 +55,7 @@ fi
 
 # This ad-connector update depends on a Heimdal update, which needs a restart of the umc-server (Bug 51462)
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.0-41; then
-	service univention-management-console-server restart
+	systemctl restart univention-management-console-server
 fi
 
 univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad \
@@ -96,8 +96,6 @@ call_joinscript 81univention-ad-connector.inst
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/univention-management-console-server ]; then
-	/etc/init.d/univention-management-console-server crestart
-fi
+systemctl try-restart univention-management-console-server
 
 exit 0

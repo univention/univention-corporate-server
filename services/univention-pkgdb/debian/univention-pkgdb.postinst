@@ -90,9 +90,7 @@ case "$1" in
 
 		systemctl try-restart univention-directory-listener
 
-		if [ -x "/etc/init.d/univention-management-console-server" ] ; then
-			/etc/init.d/univention-management-console-server crestart
-		fi
+		systemctl try-restart univention-management-console-server
 
 		# file was moved to univention-pkgdb-tools (Bug #33935)
 		if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.1-4; then

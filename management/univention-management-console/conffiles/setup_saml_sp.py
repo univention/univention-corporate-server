@@ -118,6 +118,6 @@ def rewrite_sasl_configuration():
 
 def reload_webserver():
 	try:
-		call(['/etc/init.d/univention-management-console-web-server', 'reload'])
+		call(['systemctl', 'reload', 'univention-management-console-web-server'])
 	except (IOError, OSError):
 		pass

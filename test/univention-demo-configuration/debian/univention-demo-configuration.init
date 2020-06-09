@@ -42,7 +42,7 @@ case "$1" in
 	start|restart|force-reload)
 		# make sure listener is running before updating as some join scripts
 		# will depend on the listener running ... shut down UMC server during the update
-		/etc/init.d/univention-management-console-server stop
+		systemctl stop univention-management-console-server
 		ucr set --force \
 			listener/autostart=yes \
 			umc/server/autostart=no
@@ -63,7 +63,7 @@ case "$1" in
 		systemctl stop univention-directory-listener
 		ucr set --force listener/autostart=no
 		ucr unset --force umc/server/autostart
-		/etc/init.d/univention-management-console-server start
+		systemctl start univention-management-console-server
 
 		# update list of apps
 		univention-app update

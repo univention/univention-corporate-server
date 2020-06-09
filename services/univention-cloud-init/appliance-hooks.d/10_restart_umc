@@ -29,7 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-test -e /etc/init.d/univention-management-console-server &&
-  invoke-rc.d univention-management-console-server restart
+systemctl try-restart univention-management-console-server
 
 exit 0
