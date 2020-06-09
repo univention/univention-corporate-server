@@ -1,3 +1,11 @@
+univention-management-console (10.0.6-26) unstable; urgency=medium
+
+  * Bug #51803: merge to UCS 4.3 
+    * Bug #51366: fix leak of open ldap connections in PAM authentication
+      befaf1cb0dc07b248f1d054ceaec4646b8ac89a2
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Sep 2020 17:26:38 +0200
+
 univention-management-console (10.0.6-25) unstable; urgency=medium
 
   * Bug #50355: fix "ldapError: Insufficient access" errors

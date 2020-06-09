@@ -94,19 +94,20 @@ class AuthHandler(signals.Provider):
 		args = msg.body.copy()
 		locale = args.pop('locale', None)
 		args.pop('auth_type', None)
+		args.pop('pam', None)
 		args.setdefault('new_password', None)
 		args.setdefault('username', '')
 		args.setdefault('password', '')
 
-		self.pam = PamAuth(locale)
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, **args), notifier.Callback(self.__authentication_result, msg))
+		pam = PamAuth(locale)
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, pam, **args), notifier.Callback(self.__authentication_result, pam, msg))
 		thread.run()
 
-	def __authenticate_thread(self, username, password, new_password, **custom_prompts):
+	def __authenticate_thread(self, pam, username, password, new_password, **custom_prompts):
 		AUTH.info('Trying to authenticate user %r' % (username,))
 		username = self.__canonicalize_username(username)
 		try:
-			self.pam.authenticate(username, password, **custom_prompts)
+			pam.authenticate(username, password, **custom_prompts)
 		except AuthenticationFailed as auth_failed:
 			AUTH.error(str(auth_failed))
 			raise
@@ -116,7 +117,7 @@ class AuthHandler(signals.Provider):
 				raise
 
 			try:
-				self.pam.change_password(username, password, new_password)
+				pam.change_password(username, password, new_password)
 			except PasswordChangeFailed as change_failed:
 				AUTH.error(str(change_failed))
 				raise
@@ -146,7 +147,8 @@ class AuthHandler(signals.Provider):
 		finally:  # ignore all exceptions, even in except blocks
 			return username
 
-	def __authentication_result(self, thread, result, request):
+	def __authentication_result(self, thread, result, pam, request):
+		del pam.pam  # causes pam_end() to be called to free ldap connections
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired)):
 			msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
 			AUTH.error(msg)
