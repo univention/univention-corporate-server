@@ -3,11 +3,13 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-management-console
-fix: 11.0.4-82
+fix: 11.0.4-83
 desc: |
  This update addresses the following issue(s):
  * Fix socket leaks in univention-management-console
  * The UMC-Webserver is now Python 3 compatible.
  * LDAP connections in the PAM handling are now closed after the
    authentication was performed.
-bug: [51047, 51353, 51366]
+ * LDAP connections in the session shutdown handling and during retrieval
+   of user favorite modules.
+bug: [51047, 51353, 51366, 51367]
