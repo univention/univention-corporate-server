@@ -60,6 +60,14 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
+# setup local package repository
+if [ ! -s /var/cache/univention-system-setup/profile ] && [ ! -e /var/cache/univention-system-setup/packages/Packages ]; then
+	/usr/share/univention-system-setup/download-packages
+	if [ -e "/etc/apt/sources.list" ]; then
+		printf "# This file is not maintained via Univention Configuration Registry\n# and can be used to add further package repositories manually\n" >/etc/apt/sources.list
+	fi
+fi
+
 #DEBHELPER#
 
 if [ "$1" = "configure" ]; then

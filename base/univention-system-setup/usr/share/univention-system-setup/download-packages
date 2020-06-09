@@ -74,6 +74,7 @@ CACHE='/var/cache/univention-system-setup/packages'
 APT='/etc/apt/sources.list.d/05univention-system-setup.list'
 
 mkdir -p "$CACHE"
+chown "_apt" "$CACHE"
 (
 	cd "$CACHE" || exit $?
 	install_cmd="$(univention-config-registry get update/commands/install)"
@@ -87,6 +88,9 @@ mkdir -p "$CACHE"
 
 	apt-ftparchive packages . >Packages
 	check_returnvalue $? "Failed to create ftparchive directory"
+	gzip -k Packages
+	xz -k Packages
+	chown _apt Packages InRelease Packages.xz Packages.gz
 
 	[ -e "$APT" ] ||
 		echo "deb [trusted=yes] file://$CACHE ./" >"$APT"
