@@ -161,6 +161,7 @@ class Base(signals.Provider, Translation):
 		self.__acls = None
 		self.__current_language = None
 		self.__requests = {}
+		self.__user_connections = set()
 		Translation.__init__(self, domain)
 
 	def update_language(self, locales):
@@ -395,11 +396,12 @@ class Base(signals.Provider, Translation):
 			headers['Content-Language'] = self.__current_language
 		return headers
 
-	def get_user_ldap_connection(self):
+	def get_user_ldap_connection(self, no_cache=False):
 		if not self._user_dn:
 			return  # local user (probably root)
 		try:
-			lo, po = get_user_connection(bind=self.bind_user_connection, write=False, follow_referral=True)
+			lo, po = get_user_connection(bind=self.bind_user_connection, write=False, follow_referral=True, no_cache=no_cache)
+			self.__user_connections.add(lo)
 			return lo
 		except (ldap.LDAPError, udm_errors.base) as exc:
 			CORE.warn('Failed to open LDAP connection for user %s: %s' % (self._user_dn, exc))
@@ -487,3 +489,7 @@ class Base(signals.Provider, Translation):
 		if response.id in self.__requests:
 			self.signal_emit('success', response)
 			del self.__requests[response.id]
+
+	def __del__(self):
+		for lo in self.__user_connections:
+			reset_ldap_connection_cache(lo)

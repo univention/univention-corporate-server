@@ -353,7 +353,7 @@ class ProcessorBase(Base):
 	def _get_user_favorites(self):
 		if not self._user_dn:  # user not authenticated or no LDAP user
 			return set(ucr.get('umc/web/favorites/default', '').split(','))
-		favorites = self._get_user_preferences(self.get_user_ldap_connection()).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+		favorites = self._get_user_preferences(self.get_user_ldap_connection(no_cache=True)).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
 		return set(favorites.split(','))
 
 	def handle_request_get_categories(self, request):
@@ -717,6 +717,7 @@ class ProcessorBase(Base):
 
 	def __del__(self):
 		CORE.process('Processor: dying')
+		super(ProcessorBase, self).__del__()
 		for process in list(self.__processes.keys()):
 			self.__processes.pop(process).__del__()
 
@@ -943,6 +944,7 @@ class SessionHandler(ProcessorBase):
 
 	def __del__(self):
 		CORE.info('The session is shutting down')
+		super(SessionHandler, self).__del__()
 		if self.processor:
 			self.processor.__del__()
 		self.processor = None

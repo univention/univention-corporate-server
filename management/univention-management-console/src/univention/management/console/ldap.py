@@ -38,13 +38,13 @@ class LDAP(object):
 	def __init__(self):
 		self.__ldap_connections = {}
 
-	def user_connection(self, func=None, bind=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+	def user_connection(self, func=None, bind=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
 		host = _ucr.get('ldap/master' if write else 'ldap/server/name')
 		port = int(_ucr.get('ldap/master/port' if write else 'ldap/server/port', '7389'))
 		base = _ucr.get('ldap/base')
-		return self.connection(func, bind, host, port, base, loarg, poarg, **kwargs)
+		return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs)
 
-	def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+	def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
 		hash_ = ('connection', bind, host, port, base, tuple(kwargs.items()))
 
 		def connection():
@@ -52,9 +52,9 @@ class LDAP(object):
 			if bind is not None:
 				bind(lo)
 			return lo, _position(lo.base)
-		return self._wrapped(func, hash_, connection, loarg, poarg)
+		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
 		hash_ = ('machine', bool(write), tuple(kwargs.items()))
 		kwargs.update({'ldap_master': write})
 
@@ -65,9 +65,9 @@ class LDAP(object):
 				if exc.errno == ENOENT:
 					return  # /etc/machine.secret does not exists
 				raise
-		return self._wrapped(func, hash_, connection, loarg, poarg)
+		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-	def admin_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+	def admin_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
 		hash_ = ('admin', tuple(kwargs.items()))
 
 		def connection():
@@ -77,15 +77,15 @@ class LDAP(object):
 				if exc.errno == ENOENT:
 					return  # /etc/ldap.secret does not exists
 				raise
-		return self._wrapped(func, hash_, connection, loarg, poarg)
+		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-	def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
+	def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
 		hash_ = ('backup', tuple(kwargs.items()))
 
 		def connection():
 			lo = _getBackupConnection(**kwargs)
 			return _access(lo=lo), _position(lo.base)
-		return self._wrapped(func, hash_, connection, loarg, poarg)
+		return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
 	def get_user_connection(self, *args, **kwargs):
 		@self.user_connection(*args, **kwargs)
@@ -111,10 +111,19 @@ class LDAP(object):
 			return ldap_connection, ldap_position
 		return connection()
 
-	def reset_cache(self):
-		self.__ldap_connections.clear()
+	def reset_cache(self, *connections):
+		"""Remove cached LDAP connections.
 
-	def _wrapped(self, func, hash_, connection, loarg, poarg):
+		:param connections: Either remove every connection or only the specified ones.
+		"""
+		if not connections:
+			self.__ldap_connections.clear()
+		else:
+			for key, conn in list(self.__ldap_connections.items()):
+				if conn[0] in connections:
+					self.__ldap_connections.pop(key, None)
+
+	def _wrapped(self, func, hash_, connection, loarg, poarg, no_cache=False):
 		def setter(conn):
 			if conn is None:
 				self.__ldap_connections.pop(hash_, None)
@@ -141,7 +150,8 @@ class LDAP(object):
 
 				try:
 					result = func(*args, **kwargs)
-					setter((lo, po))
+					if not no_cache:
+						setter((lo, po))
 					return result
 				except (ldap.LDAPError, udm_errors.ldapError):
 					setter(None)
