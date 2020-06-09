@@ -1,3 +1,9 @@
+univention-updater (15.0.0-3) unstable; urgency=medium
+
+  * Bug #51460: set (temporary) UCS 5.0 Codename and version
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 09 Jun 2020 14:47:33 +0200
+
 univention-updater (15.0.0-2) unstable; urgency=medium
 
   * Bug #51419: fix python-import in univention-upgrade
