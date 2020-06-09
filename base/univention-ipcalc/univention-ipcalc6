@@ -73,14 +73,15 @@ def main():
 	options = parse_options()
 	try:
 		ipaddress.ip_address(u'%s' % (options.address,))
-		network = ipaddress.ip_network(u'%s/%s' % (options.address, options.netmask), strict=False)
+		# use ip_interface for networks for py2 py3 compatability
+		network = ipaddress.ip_interface(u'%s/%s' % (options.address, options.netmask))
 	except ValueError as ex:
 		print(ex, file=sys.stderr)
 		sys.exit(1)
 	try:
-		if isinstance(network, ipaddress.IPv6Network):
+		if isinstance(network, ipaddress.IPv6Interface):
 			family = 'ipv6'
-		elif isinstance(network, ipaddress.IPv4Network):
+		elif isinstance(network, ipaddress.IPv4Interface):
 			family = 'ipv4'
 		func = getattr(ipcalc, 'calculate_%s_%s' % (family, options.output))
 	except (NameError, AttributeError):
