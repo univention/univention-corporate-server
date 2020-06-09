@@ -41,8 +41,9 @@ if six.PY3:
 	class IPv6Network(IPv6Interface):
 		def __init__(self, address, strict=True):
 			IPv6Interface.__init__(self, address)
+
 else:
-	from ipaddr import IPv6Network, IPv4Network  # noqa: F401
+	from ipaddress import IPv6Network, IPv4Network
 
 
 def _prefixlen(interface):  # PY2 VS PY3
@@ -75,7 +76,7 @@ def calculate_ipv6_reverse(network):
 	"""
 	# at least one part must remain for zone entry
 	prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1) or 1
-	prefix = network.ip.exploded.replace(':', '')[:prefixlen]
+	prefix = network.network_address.exploded.replace(':', '')[:prefixlen]
 	return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4)])
 
 
@@ -94,7 +95,7 @@ def calculate_ipv4_reverse(network):
 	"""
 	# at least one part must remain for zone entry
 	prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
-	prefix = network.ip.exploded.split('.')[:prefixlen]
+	prefix = network.network_address.exploded.split('.')[:prefixlen]
 	return '.'.join(prefix)
 
 
@@ -114,7 +115,7 @@ def calculate_ipv6_network(network):
 	'0123:4567:89ab:cdef:0123:4567:89ab:cdef'
 	"""
 	prefixlen = _prefixlen(network) // 4
-	prefix = network.ip.exploded.replace(':', '')[:prefixlen]
+	prefix = network.network_address.exploded.replace(':', '')[:prefixlen]
 	return ':'.join([prefix[i:i + 4] for i in range(0, len(prefix), 4)])
 
 
@@ -132,7 +133,7 @@ def calculate_ipv4_network(network):
 	'1.2.3.4'
 	"""
 	prefixlen = _prefixlen(network) // 8
-	prefix = network.ip.exploded.split('.')[:prefixlen]
+	prefix = network.network_address.exploded.split('.')[:prefixlen]
 	return '.'.join(prefix)
 
 
@@ -150,7 +151,7 @@ def calculate_ipv6_pointer(network):
 	'f'
 	"""
 	prefixlen = min(_prefixlen(network) // 4, network.max_prefixlen // 4 - 1) or 1
-	suffix = network.ip.exploded.replace(':', '')[prefixlen:]
+	suffix = network.network_address.exploded.replace(':', '')[prefixlen:]
 	return '.'.join(reversed(suffix))
 
 
@@ -168,7 +169,7 @@ def calculate_ipv4_pointer(network):
 	'4'
 	"""
 	prefixlen = min(_prefixlen(network) // 8, network.max_prefixlen // 8 - 1) or 1
-	suffix = network.ip.exploded.split('.')[prefixlen:]
+	suffix = network.network_address.exploded.split('.')[prefixlen:]
 	return '.'.join(reversed(suffix))
 
 
