@@ -32,6 +32,14 @@
 
 . /usr/share/univention-lib/all.sh
 
+# Remove service diversion before any service is restarted through debhelper
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-2; then
+	dpkg-divert --quiet \
+		--package univention-bind \
+		--divert /lib/systemd/system/bind9.service.debian \
+		--rename --remove /lib/systemd/system/bind9.service
+fi
+
 #DEBHELPER#
 
 # configure firewall
