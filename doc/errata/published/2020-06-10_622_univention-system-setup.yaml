@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * During the setup use sha-512 for the root password.
 bug: [51195]
+erratum: 622
+announced: 2020-06-10
