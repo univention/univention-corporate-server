@@ -37,12 +37,6 @@ start_nscd()
 	#   0 if daemon has been started or was already running
 	#   2 if daemon could not be started
 
- 	# check ucr autostart setting
-	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-		. "/usr/share/univention-config-registry/init-autostart.lib"
-		check_autostart nscd nscd/autostart
-	fi
-
 	start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec "$DAEMON" --test > /dev/null || return 0
 	start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec "$DAEMON" || return 2
 }
