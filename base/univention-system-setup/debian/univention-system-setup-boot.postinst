@@ -55,16 +55,13 @@ if [ "$1" = "configure" ]; then
 	# make sure that the App Center cache is up-to-date
 	[ -x /usr/bin/univention-app ] && univention-app update
 
+	# setup local package repository
+	if [ ! -s /var/cache/univention-system-setup/profile ] && [ ! -e /var/cache/univention-system-setup/packages/Packages ]; then
+		/usr/share/univention-system-setup/download-packages
+	fi
+
 	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.4-34; then
 		ucr set system/setup/boot/legacyfrontend?true
-	fi
-fi
-
-# setup local package repository
-if [ ! -s /var/cache/univention-system-setup/profile ] && [ ! -e /var/cache/univention-system-setup/packages/Packages ]; then
-	/usr/share/univention-system-setup/download-packages
-	if [ -e "/etc/apt/sources.list" ]; then
-		printf "# This file is not maintained via Univention Configuration Registry\n# and can be used to add further package repositories manually\n" >/etc/apt/sources.list
 	fi
 fi
 
