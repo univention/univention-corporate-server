@@ -36,11 +36,6 @@ fi
 
 start ()
 {
-    # check ucr autostart setting
-    if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-        . "/usr/share/univention-config-registry/init-autostart.lib"
-        check_autostart rpcbind rpcbind/autostart
-    fi
     if [ ! -d $STATEDIR ] ; then
         mkdir $STATEDIR
     fi
