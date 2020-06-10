@@ -31,10 +31,10 @@
 # <https://www.gnu.org/licenses/>.
 
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 14.0.0-2; then
-	dpkg-divert --quiet --rename \
+	dpkg-divert --quiet \
 		--package univention-bind \
 		--divert /lib/systemd/system/bind9.service.debian \
-		--remove /lib/systemd/system/bind9.service
+		--rename --remove /lib/systemd/system/bind9.service
 fi
 
 #DEBHELPER#
