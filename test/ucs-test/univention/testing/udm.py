@@ -603,7 +603,11 @@ class UCSTestUDM(object):
 					pattr = value
 				elif name.strip() == 'Value':
 					pvalue = value
-					attrs.setdefault(current_policy_type, {}).setdefault(pdn.strip(), {}).setdefault(pattr.strip(), []).append(pvalue.strip())
+					try:
+						attrs.setdefault(current_policy_type, {}).setdefault(pdn.strip(), {}).setdefault(pattr.strip(), []).append(pvalue.strip())
+					except AttributeError:
+						print(stdout.splitlines())
+						raise
 					pvalue = pattr = pdn = None
 			elif line.startswith('    ') and '=' in line:  # list --policies=2
 				name, value = line.split('=', 1)
