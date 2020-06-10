@@ -1,3 +1,9 @@
+univention-system-setup (13.0.0-3) unstable; urgency=medium
+
+  * Bug #51461: Do not remove the debian CD during the debian installer
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 10 Jun 2020 18:25:02 +0200
+
 univention-system-setup (13.0.0-2) unstable; urgency=medium
 
   * Bug #51461: Copy packages to the local repository from the dvd
