@@ -11,3 +11,5 @@ desc: |
    Permissions are also set via postinst script univention-
    radius.postinst
 bug: [50887]
+erratum: 623
+announced: 2020-06-10
