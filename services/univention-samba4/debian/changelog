@@ -1,3 +1,9 @@
+univention-samba4 (9.0.0-2) unstable; urgency=medium
+
+  * Bug #51473: Add dependency on package 'acl'
+
+ -- Arvid <requate@univention.de>  Thu, 11 Jun 2020 21:54:41 +0200
+
 univention-samba4 (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
