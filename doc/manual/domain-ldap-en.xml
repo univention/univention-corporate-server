@@ -1526,8 +1526,10 @@ univention-directory-listener-ctrl resync cups-printers
   <para>
 	The app can be installed on all system roles.
 	When installing on a UCS system with the role &ucsMaster; or &ucsBackup; the <application>OpenID Connect Provider</application> is made available under the DNS entry for the <foreignphrase>Single Sign-On</foreignphrase>, normally this is <uri>ucs-sso.<replaceable>domain.name</replaceable></uri>.
-	It should be ensured that the app is installed on all other servers that are reachable at the <uri>ucs-sso</uri> DNS CNAME.
 	If the app is installed on a different system role, the provider can be reached directly via the hostname instead.
+	It should be ensured that the app is installed on all other servers that are reachable at the <uri>ucs-sso</uri> DNS CNAME.
+	Session synchronization between multiple installed OIDC Providers in a domain is not preconfigured.
+	When experiencing login issues with Apps, we recommend to only install the OIDC Provider on one system, and restrict the <uri>ucs-sso</uri> DNS CNAME to that system, or contact Univention Support.
   </para>
   <para>
 	External Web services can be connected to UCS via <application>OpenID Connect</application> by creating a specific object of type <classname>oidc/rpservice</classname> for this service in the UCS directory service.

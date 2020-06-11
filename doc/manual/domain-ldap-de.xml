@@ -1557,8 +1557,10 @@ univention-directory-listener-ctrl resync cups-printers
   <para>
 	Die App kann grundsätzlich auf allen Systemrollen installiert werden.
 	Bei einer Installation auf einem UCS System der Rolle &ucsMaster; oder &ucsBackup; wird der <application>OpenID Connect Provider</application> unter dem DNS Eintrag für den <foreignphrase>Single Sign-On</foreignphrase> verfügbar gemacht, im Normalfall ist dies <uri>ucs-sso.<replaceable>domain.name</replaceable></uri>.
-	Es sollte sichergestellt werden, dass die App auf allen Servern installiert ist, die unter dem <uri>ucs-sso</uri> DNS CNAME erreichbar sind.
 	Wird die App auf einer anderen Systemrolle installiert, kann der Provider statt dessen direkt über den Hostnamen erreicht werden.
+	Es sollte sichergestellt werden, dass die App auf allen Servern installiert ist, die unter dem <uri>ucs-sso</uri> DNS CNAME erreichbar sind.
+	Die Synchronisation von Session Informationen zwischen mehreren Instanzen des OIDC Providers ist nicht vorkonfiguriert.
+	Wenn Login Probleme bei Apps in dieser Konfiguration auftreten, empfehlen wir den OIDC Provider nur auf einem System zu betreiben, und den <uri>ucs-sso</uri> DNS CNAME auf dieses System zu beschränken, oder den Univention Support zu kontaktieren.
   </para>
   <para>
 	Um externe Web-Dienste per <application>OpenID Connect</application> an UCS anzubinden, muss für diesen Dienst ein bestimmtes Objekt des Typs <classname>oidc/rpservice</classname> im UCS Verzeichnisdienst vorhanden sein.
