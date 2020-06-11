@@ -1,3 +1,9 @@
+univention-saml (7.0.0-2) unstable; urgency=medium
+
+  * Bug #51468: Update dependencies for UCS 5.0
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 11 Jun 2020 12:52:44 +0200
+
 univention-saml (7.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
