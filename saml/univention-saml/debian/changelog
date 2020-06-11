@@ -1,3 +1,9 @@
+univention-saml (7.0.1-0) unstable; urgency=medium
+
+  * Bug #51468: Update dependencies for UCS 5.0
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 08 Sep 2020 17:29:57 +0200
+
 univention-saml (7.0.0-2) unstable; urgency=medium
 
   * Bug #50648 UDM: migrate saml/serviceprovider to Python 3
