@@ -8,6 +8,8 @@ export DH_VERBOSE=1
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
+TAR := krb5-1.1.3.tgz
+
 CFLAGS = -O2 -Wall
 CFLAGS += -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
@@ -21,6 +23,12 @@ PECL_PKG_NAME=krb5
 BIN_PACKAGE_NAME=php-krb5
 EXT_DIR=$(shell /usr/bin/php-config --extension-dir)
 
+override_dh_auto_clean:
+	$(RM) -r src
+	install -d src
+	tar -x -f $(TAR) -C src --strip-components 1
+	dh_auto_clean
+
 override_dh_auto_configure:
 	cd src && phpize
 	dh_auto_configure
@@ -31,7 +39,6 @@ override_dh_auto_install:
 
 override_dh_auto_test:
 	export NO_INTERACTION dh_auto_test
-
 
 %:
 	dh $@ --sourcedirectory=src
