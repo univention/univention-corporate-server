@@ -15,6 +15,7 @@ Conflicts:
  samba (<<2:4.7.3+dfsg-1),
  univention-samba,
 Depends:
+ acl,
  ldb-tools,
  libunivention-ldb-modules,
  pwgen,
