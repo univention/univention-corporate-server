@@ -57,7 +57,7 @@ def _get_members(lo, g, recursion_list, check_member=False):
 				except ldap.NO_SUCH_OBJECT:
 					continue
 			mrdn = ldap.explode_rdn(m)
-			mname = '='.join(mrdn[0].split(, '=')[1:])
+			mname = '='.join(mrdn[0].split('=')[1:])
 			result.append(mname)
 		elif m.startswith('cn='):
 			try:
@@ -139,7 +139,7 @@ def doit(options, lo):
 
 	for group in groups:
 		rdn = ldap.explode_rdn(group[0])
-		groupname = '='.join(rdn[0].split(, '=')[1:])
+		groupname = '='.join(rdn[0].split('=')[1:])
 		members = _get_members(lo, group, [], options.check_member)
 		# The list(set(members)) call removes all duplicates from the group members
 		fd.write('%s:*:%s:%s\n' % (groupname, group[1].get('gidNumber', [''])[0], ','.join(set(members))))
