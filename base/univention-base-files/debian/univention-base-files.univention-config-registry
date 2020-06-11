@@ -306,21 +306,6 @@ Variables: syslog/input/.*
 Mode: 0755
 
 Type: multifile
-Multifile: etc/python2.6/sitecustomize.py
-
-Type: subfile
-Multifile: etc/python2.6/sitecustomize.py
-Subfile: etc/python2.6/sitecustomize.py.d/00header.py
-
-Type: subfile
-Multifile: etc/python2.6/sitecustomize.py
-Subfile: etc/python2.6/sitecustomize.py.d/10apport.py
-
-Type: subfile
-Multifile: etc/python2.6/sitecustomize.py
-Subfile: etc/python2.6/sitecustomize.py.d/20utf8.py
-
-Type: multifile
 Multifile: etc/python2.7/sitecustomize.py
 
 Type: subfile

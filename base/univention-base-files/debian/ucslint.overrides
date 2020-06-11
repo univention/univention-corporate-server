@@ -20,9 +20,6 @@
 0004-56: conffiles/etc/init.d/rdate
 0004-56: conffiles/etc/inputrc
 0004-56: conffiles/etc/networks
-0004-56: conffiles/etc/python2.6/sitecustomize.py.d/00header.py
-0004-56: conffiles/etc/python2.6/sitecustomize.py.d/10apport.py
-0004-56: conffiles/etc/python2.6/sitecustomize.py.d/20utf8.py
 0004-56: conffiles/etc/python2.7/sitecustomize.py.d/00header.py
 0004-56: conffiles/etc/python2.7/sitecustomize.py.d/10apport.py
 0004-56: conffiles/etc/python2.7/sitecustomize.py.d/20utf8.py
