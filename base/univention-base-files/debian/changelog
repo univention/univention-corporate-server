@@ -1,6 +1,13 @@
+univention-base-files (9.0.0-4) unstable; urgency=medium
+
+  * Bug #51465: Remove etc/python2.6/sitecustomize.py* on system
+    during package update.
+
+ -- Arvid <requate@univention.de>  Thu, 11 Jun 2020 13:05:12 +0200
+
 univention-base-files (9.0.0-3) unstable; urgency=medium
 
-  * Bug #51465: Remove referencex to etc/python2.6/sitecustomize.py*
+  * Bug #51465: Remove references to etc/python2.6/sitecustomize.py*
 
  -- Arvid <requate@univention.de>  Thu, 11 Jun 2020 10:36:21 +0200
 
