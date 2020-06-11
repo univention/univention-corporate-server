@@ -8,6 +8,7 @@ Build-Depends:
  php7.3-dev,
  po-debconf,
  xsltproc,
+ tar,
 Standards-Version: 3.9.1
 Homepage: https://pecl.php.net/package/krb5
 
