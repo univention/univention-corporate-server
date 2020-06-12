@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.0-2) unstable; urgency=medium
+
+  * Bug #51484: remove unused dependency on pysqlite2
+
+ -- Florian Best <best@univention.de>  Fri, 12 Jun 2020 16:00:36 +0200
+
 univention-ad-connector (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
