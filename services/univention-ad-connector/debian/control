@@ -14,7 +14,6 @@ Build-Depends:
 Package: python-univention-connector
 Architecture: all
 Depends:
- python-pysqlite2,
  python-univention,
  python-univention-directory-manager (>= 7.0.214),
  ${misc:Depends},
@@ -37,7 +36,6 @@ Description: UCS - Modules for connector sychronisation
 Package: python3-univention-connector
 Architecture: all
 Depends:
- python3-pysqlite2,
  python3-univention,
  python3-univention-directory-manager,
  ${misc:Depends},
@@ -60,7 +58,6 @@ Description: UCS - Modules for connector sychronisation
 Package: python-univention-connector-ad
 Architecture: all
 Depends:
- python-pysqlite2,
  python-univention,
  python-univention-connector (= ${binary:Version}),
  ${misc:Depends},
@@ -81,7 +78,6 @@ Description: UCS - Modules for connector sychronisation
 Package: python3-univention-connector-ad
 Architecture: all
 Depends:
- python3-pysqlite2,
  python3-univention,
  python3-univention-connector (= ${binary:Version}),
  ${misc:Depends},
