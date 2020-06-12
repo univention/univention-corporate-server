@@ -1,4 +1,4 @@
-univention-dvd (5.0.0-0.3) unstable; urgency=medium
+univention-dvd (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: Do and undo UCS-5.0-0 version bump
 
