@@ -10,7 +10,6 @@ Standards-Version: 3.8.2
 Package: univention-celery
 Architecture: all
 Depends:
- celeryd,
  python-celery,
  rabbitmq-server,
  ${misc:Depends},
