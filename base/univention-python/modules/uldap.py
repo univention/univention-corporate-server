@@ -352,16 +352,17 @@ class access(object):
 		# type: (Optional[str]) -> None
 		_d = univention.debug.function('uldap.__open host=%s port=%s base=%s' % (self.host, self.port, self.base))  # noqa F841
 
+		bytes_strictness = {} if six.PY3 else {'bytes_strictness': 'warn'}
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
 			try:
-				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1, bytes_mode=False, bytes_strictness='warn')
+				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1, bytes_mode=False, **bytes_strictness)
 			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
 				self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 			try:
-				self.lo = ldap.initialize(self.uri, trace_stack_limit=None, bytes_mode=False, bytes_strictness='warn')
+				self.lo = ldap.initialize(self.uri, trace_stack_limit=None, bytes_mode=False, **bytes_strictness)
 			except TypeError:  # TODO: remove in the future, backwards compatibility for old python-ldap
 				self.lo = ldap.initialize(self.uri, trace_stack_limit=None)
 
