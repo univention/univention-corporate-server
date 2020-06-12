@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 override_dh_auto_clean:
-	rm -f debian/univention-nagios-dansguardian.conffiles
 	rm -f debian/univention-nagios-opsi.conffiles
 	rm -f debian/univention-nagios-cups.conffiles
 	rm -f debian/univention-nagios-squid.conffiles
@@ -45,7 +44,6 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod +x debian/univention-nagios-cups/usr/lib/nagios/plugins/check_univention_cups
 	chmod +x debian/univention-nagios-squid/usr/lib/nagios/plugins/check_univention_squid
-	chmod +x debian/univention-nagios-dansguardian/usr/lib/nagios/plugins/check_univention_dansguardian
 	chmod +x debian/univention-nagios-opsi/usr/lib/nagios/plugins/check_univention_opsi
 
 %:
