@@ -1,6 +1,0 @@
-univention-printquota-setuser usr/sbin/
-univention-printquota usr/lib/univention-server/server_password_change.d/
-pykota-groups.py usr/lib/univention-directory-listener/system/
-pykota-users.py usr/lib/univention-directory-listener/system/
-80univention-printquota.inst usr/lib/univention-install/
-20univention-printquota.uinst usr/lib/univention-uninstall/
