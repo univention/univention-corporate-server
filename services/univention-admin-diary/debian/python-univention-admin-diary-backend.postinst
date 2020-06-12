@@ -37,7 +37,6 @@ if [ -z "$admin_diary_dbhost" ] \
 
 	SECRET_FILE="/etc/admin-diary.secret"
 	if [ ! -e "$SECRET_FILE" ]; then
-		install -m 0700 "$SECRET_FILE"
 		touch "$SECRET_FILE"
 		chmod 0700 "$SECRET_FILE"
 		PASSWORD="$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c20)"
