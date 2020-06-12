@@ -1,5 +1,0 @@
-[cups/quota/server/access]
-Description[de]=Die Zugriffsmethode auf die Quota-Datenbank: 'local' erlaubt nur den Zugriff von localhost. 'remote' erlaubt den Zugriff auf dem lokalen Netz.
-Description[en]=The access method for the quota database: 'local' only allows access from localhost. 'remote' allows the access from the local network.
-Type=str
-Categories=service-cups
