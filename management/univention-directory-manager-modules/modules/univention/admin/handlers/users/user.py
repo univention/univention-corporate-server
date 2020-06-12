@@ -1299,7 +1299,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _load_groups(self, loadGroups):
 		if self.exists():
 			if loadGroups:  # this is optional because it can take much time on larger installations, default is true
-				self['groups'] = self.lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
+				self['groups'] = [x.decode('UTF-8') if six.PY2 else x for x in self.lo.searchDn(filter=filter_format(u'(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))]
 			else:
 				ud.debug(ud.ADMIN, ud.INFO, 'user: open with loadGroups=false for user %s' % self['username'])
 			self.groupsLoaded = loadGroups
