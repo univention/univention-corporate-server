@@ -509,6 +509,8 @@ class UDM_Objects(ISyntax):
 	def parse(self, text):
 		if not self.empty_value and not text:
 			raise univention.admin.uexceptions.valueError(_('An empty value is not allowed'))
+		if isinstance(text, bytes):
+			text = text.decode('UTF-8')
 		if not text or not self.regex or self.regex.match(text) is not None:
 			return text
 		raise univention.admin.uexceptions.valueError(self.error_message)
