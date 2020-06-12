@@ -35,20 +35,6 @@ Description: nagios plugin for monitoring squid daemon and webservice
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-nagios-dansguardian
-Architecture: all
-Depends:
- univention-directory-manager-tools (>> 7.0.147),
- ${misc:Depends},
-Description: nagios plugin for monitoring dansguardian daemon and webservice
- This package installs a nagios plugin to monitor dansguardian
- daemon and checks the availability of the proxy service.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: univention-nagios-opsi
 Architecture: all
 Depends:
