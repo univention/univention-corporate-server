@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.0-2) unstable; urgency=medium
+
+  * Bug #51419: Remove false line in postinst
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Jun 2020 16:35:18 +0200
+
 univention-admin-diary (2.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
