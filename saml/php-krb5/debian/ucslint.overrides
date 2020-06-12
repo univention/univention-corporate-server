@@ -2,6 +2,3 @@
 0010-2
 # Section
 0011-3: debian/control
-# External script
-0013-2:src/ltmain.sh
-0013-2:src/build/shtool
