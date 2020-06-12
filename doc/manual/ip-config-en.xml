@@ -2181,13 +2181,6 @@ closest to the object always applies.
 	  used to reduce the answering times for the users and the transfer
 	  volume via the Internet access.
 	</para>
-	<para>
-	  The software DansGuardian can be installed as an additional component
-	  with the package <package>univention-dansguardian</package>. This makes it
-	  possible to check and filter the Internet contents prior to delivery
-	  to the user in order to scan files for viruses or prevent access to
-	  undesirable content.
-	</para>
 
 	<para>
 	  Further documentation on proxy services - such as the cascading of
@@ -2225,11 +2218,6 @@ closest to the object always applies.
 		in this document, it is also possible to set additional Squid
 		configuration options in the <filename>/etc/squid/local.conf</filename>.
 	  </para>
-	  <para>
-		<emphasis>DansGuardian</emphasis> can be installed via the
-		package <package>univention-dansguardian</package>,
-		see <xref linkend="proxy:contentfilter"/>.
-	  </para>
 	</section>
 
 	<section id="ip-config:Caching_of_web_content">
@@ -2255,10 +2243,6 @@ closest to the object always applies.
 		All accesses performed via the proxy server are stored in the
 		logfile <filename>/var/log/squid/access.log</filename>.
 		It can be used to follow which websites have been accessed by the users.
-	  </para>
-	  <para>
-		When DansGuardian is used, all accesses are documented in
-		<filename>/var/log/dansguardian/access.log</filename>.
 	  </para>
 	</section>
 
@@ -2394,205 +2378,6 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		several groups. If several groups are specified, they must be separated by a semicolon.
 	  </para>
 	</section>
-
-	<section id="proxy:contentfilter">
-	  <title>Filtering/policy enforcement of web content with DansGuardian</title>
-	  <para>
-		DansGuardian accepts website requests from the network and checks
-		whether access by the sender of the request is permitted. If so, the
-		request is forwarded to the proxy server, Squid. For example,
-		DansGuardian allows the blocking of individual file types and suffixes
-		or access to websites or domains.
-	  </para>
-		<figure id="net-dansguardian">
-		  <title>DansGuardian blocking a web site</title>
-		  <graphic fileref="illustrations44/dansguardian_EN.png" scalefit="1" width="100%"/>
-		</figure>
-	  <para>
-		It is also possible to scan requested files for viruses. In the
-		default setting, the free virus scanner <application>ClamAV</application> is used.
-		The setup is documented in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
-	  </para>
-	  <caution>
-		<para>
-		  Direct access to the proxy server Squid is restricted to access from the
-		  local host. Users working on the system on which Squid
-		  and DansGuardian are installed have the possibility of bypassing the
-		  filter functions by accessing Squid directly. The web proxy and
-		  DansGuardian should thus only be installed on
-		  dedicated systems which users cannot log in to.
-		</para>
-	  </caution>
-	  <para>
-		Following the installation of <package>univention-dansguardian</package>, the
-		virus scanner and the filter for web contents are activated.
-	  </para>
-	  <para>
-		The filtering of web content and the virus scanner can be activated
-		separately. In order to deactivate the content filter, the
-		&ucsUCRV; <envar>squid/contentscan</envar> must be set to <literal>no</literal> and Squid
-		restarted. To disable the virus scanner, the
-		&ucsUCRV; <envar>squid/virusscan</envar> must be set to <literal>no</literal>.
-		If neither of the two variables is set to <literal>yes</literal>,
-		DansGuardian is not used. After changes to the variables Squid and - if available - DansGuardian
-		must be restarted.
-	  </para>
-	</section>
-
-	<section id="proxy:contentfilter-configuration">
-	  <title>Definition of content filters for DansGuardian</title>
-	  <para>
-		Web content can be filtered based on file suffixes, MIME types, websites and individual
-		URLs. It is possible to exempt individual computers or users from the filtering.
-	  </para>
-
-	  <para>
-		The filter function can be configured via the following &ucsUCR; variables. Where several
-		values are to be added, these must each be separated by blank spaces. The filtering is
-		performed on the basis of group memberships, i.e., different rules can be
-		defined per group and as such it is possible to realize different rights when accessing the
-		Internet. Which groups are taken into account by DansGuardian can be defined in the
-		&ucsUCRV; <envar>dansguardian/groups</envar>.
-	  </para>
-
-	  <para>
-		It must be noted that the first group in the list plays a special role. All users which
-		cannot be assigned to one of the specified groups are assigned to this one, i.e., the
-		defined filter rules apply. This group is generally assigned the lowest rights.
-	  </para>
-
-	  <para>
-		For group changes to take effect, DansGuardian needs to be restarted. This can be done
-		either in the UMC module <guimenu>System services</guimenu> or on the
-		command line using the command
-	  </para>
-<programlisting language="sh">
-/etc/init.d/dansguardian restart
-</programlisting>
-
-	  <para>
-		For changes to filter rules, it is sufficient to reload the configuration using the
-		following command:
-	  </para>
-<programlisting language="sh">
-dansguardian -g
-</programlisting>
-
-	  <para>
-		The &ucsUCR; variables for the definition of the filter rules contain the group names
-		replaced in the following list by <emphasis><replaceable>group</replaceable></emphasis>.
-	  </para>
-
-		<table>
-		  <title>UCR variables for filter rules</title>
-		  <tgroup cols="2">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<colspec colnum="2" colname="col2" colwidth="2*"/>
-			<thead>
-			  <row>
-				<entry>UCR variable</entry>
-				<entry>Description</entry>
-			  </row>
-			</thead>
-			<tbody>
-			  <row>
-				<entry>
-				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/extensions</envar>
-				</entry>
-				<entry>
-				  Files with the specified file suffixes may not be downloaded. The suffix point
-				  must always be specified. If this variable is left blank, standard values are
-				  used. To allow all file suffixes, the variable must be set to ' ' (string with a
-				  blank space). Example: <userinput>'.doc .xls .exe'</userinput>.
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/mimetypes</envar>
-				</entry>
-				<entry>
-				  Files with the specified MIME types may not be downloaded. The MIME type is
-				  specified by the delivering web server (or an application running on
-				  it). Normally, the MIME types corresponding to the file suffixes outlined above
-				  are specified. If this variable is left blank, standard values are used. To allow
-				  all MIME types, the variable must be set to ' ' (string with a blank
-				  space). Example: <emphasis>audio/mpeg application/zip</emphasis>
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/sites</envar>
-				</entry>
-				<entry>
-				  This can be used to block complete web sites. Example: <uri>illegal-example-website.com</uri>
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/<replaceable>group</replaceable>/banned/urls</envar>
-				</entry>
-				<entry>
-				  In contrast to the previous parameter, this can be used to block only specific
-				  URLs of websites.
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/<replaceable>group</replaceable>/exception/urls</envar>
-				</entry>
-				<entry>
-				  The access to the URLs specified here is not filtered by DansGuardian.
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/<replaceable>group</replaceable>/exception/sites</envar>
-				</entry>
-				<entry>
-				  The access to the web sites specified here is not filtered by DansGuardian.
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/bannedipaddresses</envar>
-				</entry>
-				<entry>
-				  This variable makes it possible to exclude individual clients (based on the IP
-				  address) from accessing the proxy server
-				</entry>
-			  </row>
-
-			  <row>
-				<entry>
-				  <envar>dansguardian/exceptionipaddresses</envar>
-				</entry>
-				<entry>
-				  This can be used to disable all filter rules for individual computers with the
-				  result that all the files can be downloaded from the proxy server from this
-				  computer. This can be useful if, for example, an administration computer should be
-				  used to download files for other users.
-				</entry>
-			  </row>
-
-			</tbody>
-		  </tgroup>
-		</table>
-
-	  <caution>
-		<para>
-		The definition of an exception rule for content filters using
-		<envar>dansguardian/<replaceable>group</replaceable>/exception/*</envar> also exempts the content from virus scanning!
-		</para>
-	  </caution>
-
-	</section>
-
   </section>
 
   <section id="ip-config:radius">
