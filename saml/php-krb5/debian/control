@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
+ dh-php,
  libkrb5-dev,
  php7.3-dev,
 Standards-Version: 3.9.1
@@ -17,8 +18,8 @@ Depends:
  ${shlibs:Depends},
 Description: krb5 module for PHP
  Features:
- + An interface for maintaining credential caches (KRB5CCache),
+  - An interface for maintaining credential caches (KRB5CCache),
     that can be used for authenticating against a kerberos5 realm
- + Bindings for nearly the complete GSSAPI (RFC2744) + The
- administrative interface (KADM5) + Support for HTTP Negotiate
- authentication via GSSAPI
+  - Bindings for nearly the complete GSSAPI (RFC2744)
+  - The administrative interface (KADM5)
+  - Support for HTTP Negotiate authentication via GSSAPI
