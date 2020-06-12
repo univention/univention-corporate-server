@@ -1,3 +1,9 @@
+univention-postgresql (12.0.1-0) unstable; urgency=medium
+
+  * Bug #51419: Fix call_joinscript
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Jun 2020 15:41:45 +0200
+
 univention-postgresql (12.0.0-2) unstable; urgency=low
 
   * Bug #51419: Upgrade to PostgreSQL 11 templates
