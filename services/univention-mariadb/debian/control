@@ -11,7 +11,7 @@ Package: univention-mariadb
 Architecture: all
 Depends:
  makepasswd,
- mariadb-server-10.1,
+ mariadb-server,
  ${misc:Depends},
 Description: UCS - MariaDB configuration
  This package depends on the MariaDB server package and provides the UCS
