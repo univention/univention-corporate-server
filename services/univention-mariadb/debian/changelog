@@ -1,3 +1,10 @@
+univention-mariadb (3.0.0-2) unstable; urgency=medium
+
+  * Bug #51419: Change dependecy to maridadb-server: Depend on meta package,
+    not version specific package
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Jun 2020 16:08:38 +0200
+
 univention-mariadb (3.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
