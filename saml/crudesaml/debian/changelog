@@ -1,3 +1,9 @@
+crudesaml (1.9.0-2) unstable; urgency=medium
+
+  * Bug #51489: remove 20_fix-private-signature.patch, fixed in bug #51479.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Sun, 14 Jun 2020 00:42:36 +0200
+
 crudesaml (1.9.0-1) unstable; urgency=low
 
   * New upstream version.
