@@ -209,7 +209,7 @@ get_default_netmask () {
 # returns the default network
 #
 get_default_network () {
-	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().network)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().network.network_address)'
 }
 
 
