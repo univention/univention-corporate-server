@@ -152,22 +152,6 @@ Description: UCS Management Console - development files
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-management-console-doc
-Architecture: all
-Depends:
- univention-doc,
- ${misc:Depends},
-Description: UCS Management Console - documentation
- UCS Management Console is a web based program to manage computers. It has
- an extensible architecture, using modules to implement its
- features. This package contains the documentation for the architecture,
- protocols and API
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
 Package: univention-management-console-frontend
 Architecture: all
 Depends:
