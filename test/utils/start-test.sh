@@ -15,7 +15,7 @@ die () {
 
 release='4.4-4'
 old_release='4.3-5'
-kvm_template_version='4.4-4'
+kvm_template_version='4.4-4+e499'
 
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 6 - ami-02f34c72ec4c3d912
 export CURRENT_AMI=ami-02f34c72ec4c3d912
