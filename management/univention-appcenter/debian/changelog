@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51419: Postgresql 11 templates
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Jun 2020 01:59:00 +0200
+
 univention-appcenter (9.0.0-2) unstable; urgency=medium
 
   * Bug #51419: Postgresql 11 templates
