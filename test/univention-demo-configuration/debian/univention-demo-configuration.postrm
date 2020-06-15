@@ -70,9 +70,6 @@ case "$1" in
 		udm users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --remove objectFlag="hidden"
 		udm "computers/$server_role" modify --dn "$ldap_hostdn" --remove objectFlag="hidden"
 
-		# disallow anonymous access to nagios
-		ucr set nagios/server/authenticate=yes
-
 		# reload services
 		deb-systemd-invoke reload apache2.service
 		deb-systemd-invoke restart slapd.service
