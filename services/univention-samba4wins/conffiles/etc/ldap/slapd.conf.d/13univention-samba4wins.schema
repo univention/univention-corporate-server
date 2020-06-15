@@ -1,4 +1,0 @@
-@!@
-if configRegistry['ldap/server/type'] == "master":
-	print('include         /usr/share/univention-ldap/schema/univention-samba4wins.schema')
-@!@
