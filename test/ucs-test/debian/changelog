@@ -1,3 +1,10 @@
+ucs-test (9.0.3-227) unstable; urgency=medium
+
+  * Bug #51424 use tests/root/pwdfile in
+    01_base/47faillog-root
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Jun 2020 13:01:32 +0200
+
 ucs-test (9.0.3-226) unstable; urgency=medium
 
   * Bug #51047: Add test to check for unclosed ldap connections after umc login

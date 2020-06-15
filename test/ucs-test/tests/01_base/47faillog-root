@@ -34,7 +34,7 @@ ssh_login () {
 
 info "Lock reset"
 pam_tally --user "$NAME" --reset
-ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
+ssh_hostname="$(ssh_login "$tests_root_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]
 then
 	fail_test 110 "ssh login wasn't successful"
