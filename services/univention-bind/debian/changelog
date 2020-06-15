@@ -1,4 +1,10 @@
-univention-bind (14.0.0-2) unstable; urgency=medium
+univention-bind (14.0.0-4) unstable; urgency=medium
+
+  * Bug #51421: fix systemd service recursion
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 15 Jun 2020 11:31:49 +0200
+
+univention-bind (14.0.0-3) unstable; urgency=medium
 
   * Bug #51421: fix bind start
 
