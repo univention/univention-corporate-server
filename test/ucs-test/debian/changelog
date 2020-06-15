@@ -1,3 +1,9 @@
+ucs-test (9.0.3-226) unstable; urgency=medium
+
+  * Bug #51047: Add test to check for unclosed ldap connections after umc login
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 15 Jun 2020 12:25:42 +0200
+
 ucs-test (9.0.3-225) unstable; urgency=medium
 
   * Bug #51471
