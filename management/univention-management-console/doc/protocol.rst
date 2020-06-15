@@ -22,7 +22,7 @@ Python API
 
 The following documents the API of all components implementing parts of
 the Univention Management Concole Protocol (UMCP). The figure
-:ref:`figure-core-structure` showns the relations between the classes
+:ref:`figure-core-structure` shows the relations between the classes
 implementing the UMC service.
 
 
