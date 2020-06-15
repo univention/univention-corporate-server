@@ -339,6 +339,16 @@ block_update_if_failed_ldif_exists() {
 }
 block_update_if_failed_ldif_exists
 
+# Bug #51497
+block_update_if_univention_samba4wins_exists() {
+	if dpkg -l univention-samba4wins 2>/dev/null | grep -q '^rc' || univention-ldapsearch -LLL 'objectClass=univentionSamba4WinsHost' | grep -q '^dn:'; then
+		echo "ERROR: The package univention-samba4wins is deprecated and must be purged."
+		echo "Please check https://help.univention.com/t/XXX for further information."
+		exit 1
+	fi
+
+}
+block_update_if_univention_samba4wins_exists
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
