@@ -1,2 +1,0 @@
-listener/samba4wins.py usr/lib/univention-directory-listener/system/
-90univention-samba4wins.inst usr/lib/univention-install/
