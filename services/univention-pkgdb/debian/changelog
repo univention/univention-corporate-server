@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.0-2) unstable; urgency=medium
+
+  * Bug #51419: Add postgres 11 template
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Jun 2020 01:57:04 +0200
+
 univention-pkgdb (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
