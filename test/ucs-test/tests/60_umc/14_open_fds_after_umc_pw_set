@@ -1,0 +1,100 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check unclosed file handles after umc password change
+## packages:
+##  - univention-management-console-module-udm
+##  - univention-management-console-module-passwordchange
+## roles-not:
+##  - memberserver
+##  - basesystem
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+MAX_USERS=4
+username="$(random_chars)"
+
+# we work in parallel and we want to abort all executions with a single CTRL-C:
+function ctrl_c {
+	killall umc-set $0
+}
+trap ctrl_c INT
+
+# returns the number of open connections by the umc-server
+function get_number_of_close_waits() {
+    echo $(lsof -p $(pidof -x univention-management-console-server) | grep CLOSE_WAIT | wc -l)
+}
+
+function get_user_ldap_domain() {
+	echo $(ucr get tests/domainadmin/account | egrep -o 'cn=.*')
+}
+
+# $1 = number of users
+function create_sample_users {
+	DOMAIN=$(get_user_ldap_domain)
+    for i in $(seq 1 $1); do
+        set -x
+        # if the user already exists we want to reset the password
+        udm users/user modify --dn uid="$username""$i",$DOMAIN \
+            --set overridePWHistory=1 \
+            --set password="univention_0" ||\
+        udm users/user create  --superordinate $DOMAIN \
+            --set lastname="nobody" \
+            --set username="$username$i" \
+            --set password="univention_0"
+        set +x
+    done
+}
+
+function remove_sample_users {
+	DOMAIN=$(get_user_ldap_domain)
+    for i in $(seq 1 $1); do
+        set -x
+        # if the user already exists we want to reset the password
+        udm users/user remove --dn uid="$username""$i",$DOMAIN
+        set +x
+    done
+}
+
+function umc_cycle_password {
+	USER=$1
+	umc-set -U "$USER" -P "univention_0" -e -o '{"password": {"password": "univention_0", "new_password": "univention_1"}}';
+	umc-set -U "$USER" -P "univention_1" -e -o '{"password": {"password": "univention_1", "new_password": "univention_2"}}';
+	umc-set -U "$USER" -P "univention_2" -e -o '{"password": {"password": "univention_2", "new_password": "univention_3"}}';
+	umc-set -U "$USER" -P "univention_3" -e -o '{"password": {"password": "univention_3", "new_password": "univention_0"}}';
+}
+
+# $1 = number of users
+function parallel_cycle_passwords {
+    for i in $(seq 1 $1); do
+        set -x
+        umc_cycle_password "$username""$i" &
+        set +x
+    done
+}
+
+set -e
+service univention-management-console-server restart
+
+create_sample_users $MAX_USERS
+parallel_cycle_passwords $MAX_USERS
+sleep 60
+service slapd restart
+sleep 2
+
+close_wait=`get_number_of_close_waits`
+echo "number of close wait connections: $close_wait"
+
+remove_sample_users $MAX_USERS
+if [ $close_wait -gt 2 ]; then
+    fail_fast 110 "number of close wait connections > 2"
+fi
+
+# vim: ft=sh
