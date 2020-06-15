@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue:
  * The flag pwdChangeNextLogin is now synced bidirectionally
    by the adconnector
-bug: [51298]
+bug: [51298,51462]

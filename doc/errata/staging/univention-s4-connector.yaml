@@ -10,4 +10,4 @@ desc: |
    password was only expired at kerberos and samba level.
    The user could still use the expired password with
    openLDAP.
-bug: [51298]
+bug: [51298,51462]
