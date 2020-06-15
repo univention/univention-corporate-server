@@ -591,7 +591,7 @@
 			<title>Bacula and Backup</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						The component package <package>univention-bacula</package> has been removed in favor of the different backup Apps available from &ucsAppC; (<u:bug>46588</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
