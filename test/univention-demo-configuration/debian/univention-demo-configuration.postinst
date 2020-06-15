@@ -57,10 +57,6 @@ case "$1" in
 		udm "users/user" modify --dn "uid=Administrator,cn=users,$ldap_base" --set objectFlag=hidden
 		udm "computers/$server_role" modify --dn "$ldap_hostdn" --set objectFlag=hidden
 
-		# remove obsolete nagios template and allow anonymous access
-		_undivert /etc/univention/templates/files/etc/nagios3/apache2.conf
-		ucr set nagios/server/authenticate=no
-
 		# upgrade to 4.2 - remove obsolete diversion
 		_undivert /usr/share/univention-management-console-frontend/js/umc/hook.js
 
