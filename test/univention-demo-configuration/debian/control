@@ -14,4 +14,3 @@ Architecture: all
 Description: restricted configuration for demo.univention.de
 Depends:
  univention-config | ${misc:Depends},
- univention-nagios-server,
