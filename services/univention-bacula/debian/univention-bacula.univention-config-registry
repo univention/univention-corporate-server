@@ -1,9 +1,0 @@
-Type: subfile
-Multifile: etc/postgresql/9.4/main/pg_hba.conf
-Subfile: etc/postgresql/9.4/main/pg_hba.conf.d/25-univention-bacula
-Variables: bacula/psql/.*
-
-Type: subfile
-Multifile: etc/postgresql/9.6/main/pg_hba.conf
-Subfile: etc/postgresql/9.6/main/pg_hba.conf.d/25-univention-bacula
-Variables: bacula/psql/.*
