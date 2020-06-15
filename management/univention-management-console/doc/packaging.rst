@@ -119,6 +119,9 @@ If such a package has been created a few things need to be adjusted
 		Depends:
 		  univention-management-console-server,
 		  ${python:Depends},
-		  ${python3:Depends}
+		  ${python3:Depends},
+		Provides:
+		  ${python:Provides},
+		  ${python3:Provides},
 		Description: UMC module for UCR
 		 This package contains the UMC module for Univention Configuration Registry
