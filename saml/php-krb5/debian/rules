@@ -13,5 +13,8 @@ override_dh_auto_configure:
 	cd src && phpize
 	dh_auto_configure
 
+override_dh_auto_install:
+	dh_auto_install -- INSTALL_ROOT=$(CURDIR)/debian/php-krb5
+
 %:
 	dh $@ --sourcedirectory=src --with php
