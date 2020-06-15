@@ -1,3 +1,9 @@
+ucs-test (9.0.3-228) unstable; urgency=medium
+
+  * Bug #51047: Add test to check for unclosed ldap connections after password reset
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 15 Jun 2020 19:37:49 +0200
+
 ucs-test (9.0.3-227) unstable; urgency=medium
 
   * Bug #51424 use tests/root/pwdfile in
