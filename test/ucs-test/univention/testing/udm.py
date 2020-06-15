@@ -598,17 +598,13 @@ class UCSTestUDM(object):
 			elif line.startswith('    ') and ':' in line:  # list --policies=1
 				name, value = line.split(':', 1)
 				if name.strip() == 'Policy':
+					pvalue = pattr = None
 					pdn = value
 				elif name.strip() == 'Attribute':
 					pattr = value
 				elif name.strip() == 'Value':
 					pvalue = value
-					try:
-						attrs.setdefault(current_policy_type, {}).setdefault(pdn.strip(), {}).setdefault(pattr.strip(), []).append(pvalue.strip())
-					except AttributeError:
-						print(stdout.splitlines())
-						raise
-					pvalue = pattr = pdn = None
+					attrs.setdefault(current_policy_type, {}).setdefault(pdn.strip(), {}).setdefault(pattr.strip(), []).append(pvalue.strip())
 			elif line.startswith('    ') and '=' in line:  # list --policies=2
 				name, value = line.split('=', 1)
 				attrs.setdefault(current_policy_type, {}).setdefault(name.strip(), []).append(value.strip().strip('"'))
