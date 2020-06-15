@@ -4,4 +4,3 @@ portal/*.svg	usr/share/univention-demo-configuration/portal/
 portal/*.sh		usr/share/univention-demo-configuration/portal/
 portal/*.ldif	usr/share/univention-demo-configuration/portal/
 portal/*.html	var/www/apps/
-apache/univention-nagios.conf etc/apache2/ucs-sites.conf.d/
