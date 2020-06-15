@@ -1,7 +1,3 @@
-.. Univention Management Console documentation master file, created by sphinx-quickstart on Tue Jun 12 14:02:29 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Univention Management Console
 =============================
 
@@ -19,17 +15,7 @@ python API for modules are described.
 .. toctree::
    :maxdepth: 3
 
-   architecture
-   protocol
-   core_api
-   module_api
-   http
-   packaging
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   umc/architecture
+   umc/protocol
+   umc/http
+   umc/packaging
