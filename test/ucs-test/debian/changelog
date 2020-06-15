@@ -1,4 +1,4 @@
-ucs-test (9.0.3-228) unstable; urgency=medium
+ucs-test (9.0.3-229) unstable; urgency=medium
 
   * Bug #51047: Add test to check for unclosed ldap connections after password reset
 

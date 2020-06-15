@@ -15,8 +15,6 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/undo.sh" || exit 137
-. "$TESTLIBPATH/ucr.sh" || exit 137
 
 MAX_USERS=4
 username="$(random_chars)"
