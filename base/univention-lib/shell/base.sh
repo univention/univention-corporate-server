@@ -202,7 +202,7 @@ get_default_ipv6_address () {
 # returns the default netmask
 #
 get_default_netmask () {
-	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; import ipaddress; a = Interfaces().get_default_ip_address(); print(a.netmask if isinstance(a, ipaddress.IPv4Network) else a.network.prefixlen)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; import ipaddress; a = Interfaces().get_default_ip_address(); print(a.netmask if isinstance(a, ipaddress.IPv4Interface) else a.network.prefixlen)'
 }
 
 #
