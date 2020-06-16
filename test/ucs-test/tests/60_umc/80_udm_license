@@ -59,7 +59,7 @@ class TestUMCLicenseManagement(UDMModule):
         UCR variable and removing its ending
         """
         try:
-            test_network_ip = self.ucr['interfaces/eth0/network']
+            test_network_ip = self.ucr['interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0')]
             self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') + 1]
         except KeyError as exc:
             utils.fail("A KeyError exception while selecting an IP address "
