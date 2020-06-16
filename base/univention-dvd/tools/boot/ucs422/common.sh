@@ -1,1 +1,0 @@
-../jessie/common.sh
