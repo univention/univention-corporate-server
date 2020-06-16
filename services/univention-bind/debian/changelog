@@ -1,3 +1,9 @@
+univention-bind (14.0.0-6) unstable; urgency=medium
+
+  * Bug #51421: simplify /etc/bind/rndc.key handling and service installation
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 16 Jun 2020 12:39:26 +0200
+
 univention-bind (14.0.0-5) unstable; urgency=medium
 
   * Bug #51421: Cleanup; fix systemd service recursion (2)
