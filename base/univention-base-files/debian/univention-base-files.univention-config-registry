@@ -103,18 +103,6 @@ File: etc/init.d/networking
 Mode: 0755
 
 Type: file
-File: etc/init.d/rdate
-Mode: 0755
-
-Type: file
-File: etc/init.d/rpcbind
-Mode: 0755
-
-Type: file
-File: etc/init.d/nscd
-Mode: 0755
-
-Type: file
 File: etc/networks
 
 Type: file
@@ -221,6 +209,12 @@ Subfile: etc/hosts.d/90-ipv6defaults
 Type: file
 File: etc/logrotate.conf
 Variables: logrotate/.*
+
+Type: file
+File: etc/logrotate.d/btmp
+
+Type: file
+File: etc/logrotate.d/wtmp
 
 Type: file
 File: etc/resolv.conf

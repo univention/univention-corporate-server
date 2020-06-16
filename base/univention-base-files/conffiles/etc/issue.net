@@ -1,18 +1,13 @@
 @!@
-if configRegistry.get('server/role') == 'fatclient':
-	menutitle = "Univention Managed Client"
-elif configRegistry.get('server/role') == 'mobileclient':
-	menutitle = "Univention Mobile Client"
-elif configRegistry.get('server/role') == 'domaincontroller_master':
-	menutitle = "Univention DC Master"
-elif configRegistry.get('server/role') == 'domaincontroller_backup':
-	menutitle = "Univention DC Backup"
-elif configRegistry.get('server/role') == 'domaincontroller_slave':
-	menutitle = "Univention DC Slave"
-elif configRegistry.get('server/role') == 'memberserver':
-	menutitle = "Univention Memberserver"
-else:
-	menutitle = "Univention Corporate Server"
+ROLES = {
+	"domaincontroller_master": "Univention DC Master",
+	"domaincontroller_slave": "Univention DC Backup",
+	"domaincontroller_backup": "Univention DC Slave",
+	"memberserver": "Univention Memberserver",
+}
+
+role = configRegistry.get('server/role')
+menutitle = ROLES.get(role, "Univention Corporate Server")
 
 if configRegistry.get('version/version'):
 	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
