@@ -46,7 +46,7 @@ for (cat, (paths, settings)) in FILES.items():
 	delaycompress
 	sharedscripts
 	postrotate
-		invoke-rc.d rsyslog rotate > /dev/null
+		/usr/lib/rsyslog/rsyslog-rotate
 	endscript
 }""")
 @!@

@@ -7,7 +7,7 @@
 set input-meta on
 set output-meta on
 
-# To allow the use of 8bit-characters like the german umlauts, comment out
+# To allow the use of 8bit-characters like the german umlauts, uncomment
 # the line below. However this makes the meta key not work as a meta key,
 # which is annoying to those which don't need to type in 8-bit characters.
 
@@ -52,6 +52,7 @@ $if mode=emacs
 "\e\e[D": backward-word
 
 $if term=rxvt
+"\e[7~": beginning-of-line
 "\e[8~": end-of-line
 "\eOc": forward-word
 "\eOd": backward-word
@@ -66,4 +67,3 @@ $endif
 # "\e[F": end-of-line
 
 $endif
-
