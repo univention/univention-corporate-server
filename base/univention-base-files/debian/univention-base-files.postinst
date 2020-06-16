@@ -132,10 +132,6 @@ if [ -n "$locale" ]; then
 fi
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
 
-univention-config-registry set kernel/do_initrd?yes \
-	kernel/do_bootfloppy?no \
-	kernel/silent_loader?yes \
-
 # set UCR value for package python-univention (Bug: #15971)
 univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
 
