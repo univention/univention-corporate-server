@@ -281,10 +281,6 @@ Variables: xorg/keyboard/options/XkbOptions
 
 Type: file
 File: etc/kernel-img.conf
-Variables: kernel/do_initrd
-Variables: kernel/do_bootfloppy
-Variables: kernel/silent_loader
-Variables: kernel/clobber_modules
 Variables: kernel/ramdisk
 Variables: kernel/postinst_hook
 
