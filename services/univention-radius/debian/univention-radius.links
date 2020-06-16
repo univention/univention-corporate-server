@@ -1,6 +1,3 @@
 etc/freeradius/3.0/mods-available/ldap etc/freeradius/3.0/mods-enabled/ldap
 etc/freeradius/3.0/mods-available/eap etc/freeradius/3.0/mods-enabled/eap
 etc/freeradius/3.0/mods-available/mschap etc/freeradius/3.0/mods-enabled/mschap
-
-usr/lib/python2.7/dist-packages/univention/radius/__init__.py usr/share/pyshared/univention/radius/__init__.py
-usr/lib/python2.7/dist-packages/univention/radius/__init__.py usr/lib/pymodules/python2.7/univention/radius/__init__.py
