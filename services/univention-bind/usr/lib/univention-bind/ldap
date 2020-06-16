@@ -38,6 +38,10 @@ case "$1" in
 		debug_level="$(ucr get dns/debug/level)"
 		test -z $debug_level && debug_level=0
 
+		# Give permissions back to bind,
+		# see /usr/lib/univention-bind/samba4
+		chown bind:bind /etc/bind/rndc.key
+
 		port="$(ucr get dns/master/port)"
 
 		OPTS="-c /etc/bind/named.conf -p $port -u bind -f -d $debug_level"
