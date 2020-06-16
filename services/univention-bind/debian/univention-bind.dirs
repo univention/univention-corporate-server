@@ -1,1 +1,2 @@
 var/cache/univention-bind-proxy
+var/lib/univention-bind
