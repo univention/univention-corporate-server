@@ -1,3 +1,9 @@
+univention-management-console (12.0.0-3) unstable; urgency=medium
+
+  * Bug #51506: remove python-support leftovers
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 01:05:37 +0200
+
 univention-management-console (12.0.0-2) unstable; urgency=medium
 
   * Bug #51508: execute everything with Python 3
