@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Management Console
 #  MODULEDESC
