@@ -153,7 +153,7 @@ class object(DHCPBase):
 		subnet = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % self.superordinate.info).network
 		for addresses in self.info['range']:
 			for addr in addresses:
-				if ipaddress.IPv4Address(addr) not in subnet:
+				if ipaddress.IPv4Address(u'%s' % (addr,)) not in subnet:
 					raise univention.admin.uexceptions.rangeNotInNetwork(addr)
 
 	def _ldap_modlist(self):
