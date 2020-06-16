@@ -132,7 +132,6 @@ univention-firewall
 
 /* FIXME # univention-virtual-machine-manager-daemon  # FIXME */
 /* FIXME # univention-nagios-uvmmd  # FIXME */
-/* FIXME # univention-kvm-compat  # FIXME */
 /* FIXME # libvirt-clients  # FIXME */
 /* FIXME # ebtables  # FIXME */
 /* FIXME # netcat-openbsd  # FIXME */

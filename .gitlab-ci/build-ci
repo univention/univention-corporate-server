@@ -31,7 +31,6 @@ do
 		grub-efi-amd64-signed) continue ;;  # EFI
 		shim) continue ;;  # Depends on scope ucs_3.2-0-uefi-secureboot-tools
 		python-notifier) continue ;;  # Depends on git submodule
-		univention-kvm-compat) continue ;;  # Depends on very old ipxe-qemu not in dist/Packages
 		univention-foomatic-ppds)  continue ;;  # build-time >1h
 	esac
 
