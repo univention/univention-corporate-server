@@ -1,3 +1,0 @@
-python-univention-lib.public	usr/share/python-support/
-python/__init__.py usr/share/pyshared/univention/lib/
-python/__init__.py usr/lib/pymodules/python2.7/univention/lib/

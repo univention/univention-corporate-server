@@ -28,10 +28,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-if which update-python-modules >/dev/null 2>&1; then
-	update-python-modules --post-install python-univention-lib.public
-fi
-
 #DEBHELPER#
 
 univention-config-registry set \
