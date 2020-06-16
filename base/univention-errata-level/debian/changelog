@@ -1,3 +1,9 @@
+univention-errata-level (5.0.0-0) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 16 Jun 2020 16:31:46 +0200
+
 univention-errata-level (4.4.0-0) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump
