@@ -4,4 +4,3 @@ etc/bind/db.root.fake etc/bind
 90univention-bind-post.inst usr/lib/univention-install
 usr/lib/univention-server/server_password_change.d/univention-bind usr/lib/univention-server/server_password_change.d/
 usr/lib/univention-bind
-lib/systemd/system
