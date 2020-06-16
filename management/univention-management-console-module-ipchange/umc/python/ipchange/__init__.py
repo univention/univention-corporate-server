@@ -101,7 +101,7 @@ class Instance(Base):
 
 		# do we have a new reverse zone for this IP address?
 		rmodule = univention.admin.modules.get('dns/reverse_zone')
-		parts = network.network_adress.exploded.split('.')
+		parts = network.network_address.exploded.split('.')
 		while parts[-1] == '0':
 			parts.pop()
 
