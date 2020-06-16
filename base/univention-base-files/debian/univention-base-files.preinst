@@ -41,12 +41,4 @@ rm -f /etc/univention/templates/modules/keymap.pyc
 
 #DEBHELPER#
 
-#be sure the /etc/kernel-img.conf exists
-if [ ! -e /etc/kernel-img.conf ]; then
-	echo "do_initrd = yes" >>/etc/kernel-img.conf
-	echo "do_bootfloppy = no" >>/etc/kernel-img.conf
-	echo "silent_loader = yes" >>/etc/kernel-img.conf
-	echo "clobber_modules = yes" >>/etc/kernel-img.conf
-fi
-
 exit 0
