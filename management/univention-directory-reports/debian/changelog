@@ -1,3 +1,9 @@
+univention-directory-reports (12.0.0-3) unstable; urgency=medium
+
+  * 50449: temporary deactivate trml2pdf
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jun 2020 22:16:15 +0200
+
 univention-directory-reports (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
