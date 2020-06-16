@@ -3,4 +3,3 @@ usr/
 80univention-radius.inst usr/lib/univention-install/
 20univention-radius.uinst usr/lib/univention-uninstall
 listener/* usr/lib/univention-directory-listener/system/
-univention-radius.public	usr/share/python-support/
