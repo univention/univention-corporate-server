@@ -1,3 +1,9 @@
+univention-python (13.0.0-2) unstable; urgency=medium
+
+  * Bug #51506: remove python-support
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jun 2020 18:47:15 +0200
+
 univention-python (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
