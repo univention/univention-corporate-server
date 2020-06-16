@@ -31,13 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
-if which update-python-modules >/dev/null 2>&1; then
-	# For backwards compatibility with pysupport (needed for ucs@school radius)
-	update-python-modules --post-install univention-radius.public
-fi
-
-
 #DEBHELPER#
 
 case "$1" in
