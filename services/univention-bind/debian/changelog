@@ -1,3 +1,9 @@
+univention-bind (14.0.0-5) unstable; urgency=medium
+
+  * Bug #51421: Cleanup; fix systemd service recursion (2)
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 16 Jun 2020 07:19:28 +0200
+
 univention-bind (14.0.0-4) unstable; urgency=medium
 
   * Bug #51421: fix systemd service recursion

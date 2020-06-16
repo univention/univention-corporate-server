@@ -30,13 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#clean:
-#	rm -f *~ univention-name-to-unicode
-
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-bind.conffiles
-
 override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry

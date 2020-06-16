@@ -19,7 +19,6 @@ Depends:
  univention-join (>= 9.0.3-11),
  univention-role-server-common (>= 12.0.0-8) | univention-container-role-server-common,
  ${misc:Depends},
- ${python:Depends},
 Description: UCS - DNS server
  This package installs a DNS server that receives its zone
  information from LDAP or from Samba 4.
