@@ -50,6 +50,10 @@ Depends:
  python-six,
  python-univention (>= 12.0.0-5),
  python-yaml,
+ python3-apt,
+ python3-six,
+ python3-univention,
+ python3-yaml,
  ucs-test-modules-all | ucs-test-module,
  univention-config,
  ${misc:Depends},
@@ -73,6 +77,8 @@ Depends:
  python-apt,
  python-lxml,
  python-pytest,
+ python3-apt,
+ python3-lxml,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -88,6 +94,7 @@ Recommends:
 Depends:
  python,
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -105,6 +112,7 @@ Depends:
  openssl,
  python,
  python-pexpect,
+ python3-pexpect,
  ucs-test-libs (= ${source:Version}),
  univention-ssh,
  ${misc:Depends},
@@ -122,6 +130,8 @@ Depends:
  python,
  python-pexpect,
  python-pytest,
+ python3-pexpect,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  univention-ssh,
  ${misc:Depends},
@@ -175,6 +185,7 @@ Recommends:
 Depends:
  imagemagick,
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -191,6 +202,8 @@ Depends:
  python,
  python-netifaces,
  python-pexpect,
+ python3-netifaces,
+ python3-pexpect,
  swaks,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -205,6 +218,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pexpect,
+ python3-pexpect,
  shell-univention-lib,
  ucs-test-libs (= ${source:Version}),
  ucs-test-samba-common,
@@ -221,6 +235,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pexpect,
+ python3-pexpect,
  shell-univention-lib,
  tshark,
  ucs-test-libs (= ${source:Version}),
@@ -252,6 +267,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pytest,
+ python3-pytest,
  shell-univention-lib,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -280,11 +296,16 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pycountry,
- ucs-test-libs (= ${source:Version}),
  python-pytest,
  python-psutil,
  python-ldap,
  python-univention-directory-manager,
+ python3-pycountry,
+ python3-pytest,
+ python3-psutil,
+ python3-ldap,
+ python3-univention-directory-manager,
+ ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -300,6 +321,8 @@ Depends:
  ucs-test-libs (= ${source:Version}),
  python-ldap,
  python-univention-directory-manager,
+ python3-ldap,
+ python3-univention-directory-manager,
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -447,6 +470,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -486,6 +510,8 @@ Depends:
  curl,
  python-notifier,
  python-pytest,
+ python3-notifier,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ucs-test-umc-module,
  ${misc:Depends},
@@ -523,6 +549,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
  ldb-tools,
@@ -556,6 +583,10 @@ Depends:
  python-lxml,
  python-pytest,
  python-requests,
+ python3-cssselect,
+ python3-lxml,
+ python3-pytest,
+ python3-requests,
  python3-pip,
  python3-univention-config-registry,
  ucs-test-libs (= ${source:Version}),
@@ -573,6 +604,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-cssselect,
+ python3-cssselect,
  ucs-test-apache,
  ucs-test-base,
  ucs-test-ldap,
@@ -615,6 +647,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pycurl,
+ python3-pycurl,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -628,6 +661,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
@@ -652,6 +686,7 @@ Package: ucs-test-docker
 Architecture: all
 Depends:
  python-pytest,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  zsync,
  ${misc:Depends},
@@ -669,6 +704,9 @@ Depends:
  python-pytest,
  python-requests,
  python-requests-kerberos,
+ python3-pytest,
+ python3-requests,
+ python3-requests-kerberos,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Recommends:
@@ -767,6 +805,8 @@ Architecture: all
 Depends:
  python-pip,
  python-pytest,
+ python3-pip,
+ python3-pytest,
  ucs-test-libs (= ${source:Version}),
  ucs-test-udm-users,
  ${misc:Depends},
