@@ -1,3 +1,9 @@
+univention-base-files (9.0.0-6) unstable; urgency=low
+
+  * Bug #51505,Bug #32509,Bug 46120: Update template for Debian 10 Buster
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Jun 2020 06:56:58 +0200
+
 univention-base-files (9.0.0-5) unstable; urgency=medium
 
   * Bug #51505: remove wtmp and btmp from logrotate.conf

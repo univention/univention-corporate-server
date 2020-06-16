@@ -17,7 +17,6 @@
 0004-56: conffiles/etc/init.d/nscd
 0004-56: conffiles/etc/init.d/openbsd-inetd
 0004-56: conffiles/etc/init.d/rpcbind
-0004-56: conffiles/etc/init.d/rdate
 0004-56: conffiles/etc/inputrc
 0004-56: conffiles/etc/networks
 0004-56: conffiles/etc/python2.7/sitecustomize.py.d/00header.py
@@ -35,7 +34,6 @@
 0004-16: conffiles/etc/welcome.msg
 # No copyright claim for copied files
 0010-2: conffiles/etc/init.d/nscd
-0010-2: conffiles/etc/init.d/rdate
 0010-2: conffiles/etc/init.d/openbsd-inetd
 0010-2: conffiles/etc/init.d/rpcbind
 0010-2: conffiles/etc/init.d/cron

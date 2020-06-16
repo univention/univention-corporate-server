@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 @%@UCRWARNING=# @%@
 
 ### BEGIN INIT INFO
@@ -11,9 +11,10 @@
 # Description:       Prepare /run/network directory, ifstate file and raise network interfaces, or take them down.
 ### END INIT INFO
 
-PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+PATH="/sbin:/bin"
 RUN_DIR="/run/network"
 IFSTATE="$RUN_DIR/ifstate"
+STATEDIR="$RUN_DIR/state"
 
 [ -x /sbin/ifup ] || exit 0
 [ -x /sbin/ifdown ] || exit 0
@@ -26,6 +27,7 @@ VERBOSE=no
 
 [ -f /etc/default/networking ] && . /etc/default/networking
 
+verbose=""
 [ "$VERBOSE" = yes ] && verbose=-v
 
 process_exclusions() {
@@ -49,6 +51,9 @@ check_ifstate() {
 	    log_failure_msg "can't create $RUN_DIR"
 	    exit 1
 	fi
+	if ! chown root:netdev "$RUN_DIR" ; then
+	    log_warning_msg "can't chown $RUN_DIR"
+	fi
     fi
     if [ ! -r "$IFSTATE" ] ; then
 	if ! :> "$IFSTATE" ; then
@@ -68,7 +73,7 @@ check_network_file_systems() {
 
     while read DEV MTPT FSTYPE REST; do
 	case $DEV in
-	/dev/nbd*|/dev/nd[a-z]*|/dev/etherd/e*)
+	/dev/nbd*|/dev/nd[a-z]*|/dev/etherd/e*|curlftpfs*)
 	    log_warning_msg "not deconfiguring network interfaces: network devices still mounted."
 	    exit 0
 	    ;;
@@ -102,9 +107,9 @@ ifup_hotplug () {
 			    do
 				    link=${iface##:*}
 				    link=${link##.*}
-				    if [ -e "/sys/class/net/$link" ] && [ "$(cat /sys/class/net/$link/operstate)" = up ]
+				    if [ -e "/sys/class/net/$link" ]
 				    then
-					    echo "$iface"
+					echo "$iface"
 				    fi
 			    done)
 	    if [ -n "$ifaces" ]
@@ -115,22 +120,17 @@ ifup_hotplug () {
 }
 
 domac () { # change MAC-address
-    eval "$(univention-config-registry shell)"
-
-    for i in 0 1 2 3; do
-        var=interfaces_eth${i}_mac
-        if [ -n "${!var}" ]; then
-            #iprout: ip link set "eth${i}" address "${!var}"
-            ifconfig "eth${i}" hw ether "${!var}"
-        fi
+    /usr/sbin/ucr search --non-empty --brief '^interfaces/[^/]*/mac$' |
+    while IFS=': ' read -r k v
+    do
+        k="${k#*/}"
+        k="${k%/*}"
+        ip link set "$k" address "$v"
     done
 }
 
 case "$1" in
 start)
-	if init_is_upstart; then
-		exit 1
-	fi
 	process_options
 	check_ifstate
 	domac
@@ -143,6 +143,11 @@ start)
 	set -f
 	exclusions=$(process_exclusions)
 	log_action_begin_msg "Configuring network interfaces"
+	if [ -x /bin/udevadm ]; then
+		if [ -n "$(ifquery --list --exclude=lo)" ] || [ -n "$(ifquery --list --allow=hotplug)" ]; then
+			/bin/udevadm settle || true
+		fi
+	fi
 	if ifup -a $exclusions $verbose && ifup_hotplug $exclusions $verbose
 	then
 	    log_action_end_msg $?
@@ -152,9 +157,6 @@ start)
 	;;
 
 stop)
-	if init_is_upstart; then
-		exit 0
-	fi
 	check_network_file_systems
 	check_network_swap
 
@@ -170,7 +172,7 @@ reload)
 	process_options
 
 	log_action_begin_msg "Reloading network interfaces configuration"
-	state=$(cat /run/network/ifstate)
+	state=$(ifquery --state)
 	ifdown -a --exclude=lo $verbose || true
 	if ifup --exclude=lo $state $verbose ; then
 	    log_action_end_msg $?
@@ -180,9 +182,6 @@ reload)
 	;;
 
 force-reload|restart)
-	if init_is_upstart; then
-		exit 1
-	fi
 	process_options
 
 	log_warning_msg "Running $0 $1 is deprecated because it may not re-enable some interfaces"
