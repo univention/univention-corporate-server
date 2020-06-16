@@ -123,10 +123,6 @@ univention-config-registry set sshd/port?22 \
 	sshd/challengeresponse?yes \
 	sshd/passwordauthentication?no
 
-if [ -e /etc/init.d/rdate ]; then
-	chmod +x /etc/init.d/rdate
-fi
-
 if [ -n "$locale" ]; then
 	locale-gen || true
 fi

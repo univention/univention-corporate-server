@@ -50,7 +50,7 @@
 				<title>Changes to templates and modules</title>
 				<itemizedlist>
 					<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						The updates of configuration files in Debian 10 have been merged into the &ucsUCR; template files (<u:bug>51505</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
