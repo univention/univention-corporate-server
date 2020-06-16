@@ -79,8 +79,8 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('id', 'id', None, univention.admin.mapping.ListToString)
-mapping.register('LdapGetAttributes', 'LdapGetAttributes', None, None)
+mapping.register('id', 'id', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('LdapGetAttributes', 'LdapGetAttributes', None, None, encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
