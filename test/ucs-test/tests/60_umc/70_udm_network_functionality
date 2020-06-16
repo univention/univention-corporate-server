@@ -351,7 +351,7 @@ class TestUMCNetworkFunctionality(UDMModule):
 
         self.test_computer_name = 'umc_test_computer_' + random_username(6)
         self.test_network_name = 'umc_test_network_' + random_username(6)
-        self.test_network = self.ucr.get('interfaces/eth0/network')
+        self.test_network = self.ucr.get('interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0'))
         self.test_network_subnet = self.test_network[:self.test_network.rfind('.')]
         self.test_ip_range = [self.test_network_subnet + '.50',
                               self.test_network_subnet + '.70']
