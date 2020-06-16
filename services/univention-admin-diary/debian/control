@@ -17,7 +17,9 @@ Package: univention-admin-diary-backend
 Architecture: all
 Depends:
  python-pyparsing,
+ python3-pyparsing,
  python-univention-admin-diary-backend (= ${binary:Version}),
+ python3-univention-admin-diary-backend (= ${binary:Version}),
  rsyslog-relp,
  ${misc:Depends},
 Recommends:
@@ -88,6 +90,7 @@ Package: univention-admin-diary-client
 Architecture: all
 Depends:
  python-univention-admin-diary (= ${binary:Version}),
+ python3-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
  ${misc:Depends},
 Provides:

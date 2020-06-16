@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.0-3) unstable; urgency=medium
+
+  * install global dependency everywhere
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 01:17:47 +0200
+
 univention-admin-diary (2.0.0-2) unstable; urgency=medium
 
   * Bug #51419: Remove false line in postinst
