@@ -170,12 +170,12 @@ layout = [
 ]
 
 
-def mapKeyAndValue(old):
-	return [entry[0] + '=' + entry[1] if len(entry)>1 and entry[0] and entry[1] else entry[0] for entry in old]
+def mapKeyAndValue(old, encoding=()):
+	return [entry[0].encode(*encoding) + b'=' + entry[1].encode(*encoding) if len(entry) > 1 and entry[0] and entry[1] else entry[0].encode(*encoding) for entry in old]
 
 
-def unmapKeyAndValue(old):
-	return [entry.split('=', 1) for entry in old]
+def unmapKeyAndValue(old, encoding=()):
+	return [entry.decode(*encoding).split(u'=', 1) for entry in old]
 
 
 mapping = univention.admin.mapping.mapping()

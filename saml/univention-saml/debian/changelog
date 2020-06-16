@@ -1,3 +1,9 @@
+univention-saml (7.0.0-3) unstable; urgency=medium
+
+  * Bug #50648 UDM: migrate saml/serviceprovider to Python 3
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 01:45:52 +0200
+
 univention-saml (7.0.0-2) unstable; urgency=medium
 
   * Bug #51468: Update dependencies for UCS 5.0
