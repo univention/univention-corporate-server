@@ -11,4 +11,4 @@ desc: |
    for a password change, which led to the password being
    overwritten with the old password. This behaviour has
    been fixed.
-bug: [51493]
+bug: [51462]
