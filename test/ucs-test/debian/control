@@ -638,7 +638,6 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-pytest,
- python-support,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:

@@ -1,3 +1,9 @@
+ucs-test (10.0.0-2) unstable; urgency=medium
+
+  * Bug #51506: remove python-support
+
+ -- Florian Best <best@univention.de>  Fri, 18 Sep 2020 12:36:24 +0200
+
 ucs-test (10.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
