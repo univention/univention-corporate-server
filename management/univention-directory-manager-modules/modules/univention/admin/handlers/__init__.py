@@ -3290,7 +3290,7 @@ class simpleComputer(simpleLdap):
 					network_object.open()
 					subnet = IPv4Network(u"%(network)s/%(netmask)s" % network_object, strict=False)
 
-					if not ips or ip_address(ip1) not in subnet:
+					if not ips or ip_address(u'%s' % (ip1,)) not in subnet:
 						if self.ip_freshly_set:
 							raise_after = univention.admin.uexceptions.ipOverridesNetwork
 						else:
