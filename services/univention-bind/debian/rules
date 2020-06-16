@@ -34,5 +34,11 @@ override_dh_auto_install:
 	dh_auto_install
 	univention-install-config-registry
 
+override_dh_systemd_enable:
+	dh_systemd_enable --name=univention-bind-ldap --no-enable
+
+override_dh_systemd_start:
+	dh_systemd_start --no-start --no-restart-on-upgrade
+
 %:
-	dh $@
+	dh $@ --with systemd
