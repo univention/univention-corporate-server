@@ -13,14 +13,14 @@ die () {
 [ -f "$1" ] ||
 	die "Missing test config file!"
 
-release='4.4-4'
-old_release='4.3-5'
-kvm_template_version='4.4-4+e499'
+release='5.0-0'
+old_release='4.4-4'
+kvm_template_version='5.0-0+e0'
 
+# AMI: Univention Corporate Server (UCS) 5.0
+export CURRENT_AMI=TODO
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 6 - ami-02f34c72ec4c3d912
-export CURRENT_AMI=ami-02f34c72ec4c3d912
-# AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 6 - ami-0dd235a67a0eb9bdc
-export OLD_AMI=ami-0dd235a67a0eb9bdc
+export OLD_AMI=ami-02f34c72ec4c3d912
 
 export UCS_MINORRELEASE="${release%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
