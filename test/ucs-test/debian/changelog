@@ -1,3 +1,9 @@
+ucs-test (9.0.3-230) unstable; urgency=medium
+
+  * Bug #51462: Test if user password is still expired after logging in via umc
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Jun 2020 09:54:28 +0200
+
 ucs-test (9.0.3-229) unstable; urgency=medium
 
   * Bug #51047: Add test to check for unclosed ldap connections after password reset
