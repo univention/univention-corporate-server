@@ -7,7 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import smbpasswd
+import passlib.hash
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 				expectedLdap['homeDirectory'] = [properties['unixhome']]
 				expectedLdap['uid'] = ['%s$' % properties['name']]
 				expectedLdap['displayName'] = [properties['name']]
-				expectedLdap['sambaNTPassword'] = [smbpasswd.nthash(properties['password'].lower())]
+				expectedLdap['sambaNTPassword'] = [passlib.hash.nthash.hash(properties['password'].lower()).upper()]
 				expectedLdap['krb5PrincipalName'] = ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 
 			if role not in ('computers/domaincontroller_master', 'computers/domaincontroller_backup',

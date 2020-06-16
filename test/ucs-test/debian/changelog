@@ -1,3 +1,9 @@
+ucs-test (9.0.3-231) unstable; urgency=medium
+
+  * Bug #50575: switch python-smbpasswd to python-passlib
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jun 2020 13:10:09 +0200
+
 ucs-test (9.0.3-230) unstable; urgency=medium
 
   * Bug #51462: Test if user password is still expired after logging in via umc
