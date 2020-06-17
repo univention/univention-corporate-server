@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-self-service
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The Self Service links in the hamburger menu are no longer visible
+   if the corresponding Self Service page was disabled via UCR.
+bug: [51351]
