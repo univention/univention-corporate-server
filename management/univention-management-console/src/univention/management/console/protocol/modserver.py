@@ -208,7 +208,7 @@ class ModuleServer(Server):
 				raise UMC_Error(message, status=status)
 			except (KeyboardInterrupt, SystemExit, GeneratorExit):
 				raise
-			except:
+			except BaseException:
 				self.error_handling(msg, 'init', *sys.exc_info())
 
 		return True
