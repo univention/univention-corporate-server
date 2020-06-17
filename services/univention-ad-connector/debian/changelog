@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-35) unstable; urgency=medium
+
+  * Bug #18501: Backport of Diff-Mode from S4-Connector
+
+ -- Arvid <requate@univention.de>  Wed, 17 Jun 2020 18:41:02 +0200
+
 univention-ad-connector (13.0.0-34) unstable; urgency=medium
 
   * Bug #51298: Sync pwdChangeNextLogin from/to AD
