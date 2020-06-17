@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
-src: linux
-fix: 4.9.210-1+deb9u1
+src: univention-kernel-image-signed
+fix: 5.0.0-11A~4.4.0.202006171143
 desc: |
  This update of the Linux kernel to version 4.9.210 addresses the following
  issues:
@@ -71,7 +71,7 @@ desc: |
    kernel through 5.6.13 relies on kstrdup without considering the possibility
    of an internal '\0' value, which allows attackers to trigger an
    out-of-bounds read, aka CID-15753588bcd4. (CVE-2020-13143)
-note: This is the 1st part of two parts.
+note: This is the 2nd part of two parts.
 bug: [51490]
 cve:
 - CVE-2019-2182
