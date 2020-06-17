@@ -90,6 +90,7 @@ Package: univention-admin-diary-client
 Architecture: all
 Depends:
  python-univention-admin-diary (= ${binary:Version}),
+ python3-univention-admin-diary (= ${binary:Version}),
  rsyslog-relp,
  ${misc:Depends},
 Provides:
