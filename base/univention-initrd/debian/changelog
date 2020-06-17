@@ -1,3 +1,9 @@
+univention-initrd (12.0.0-2) unstable; urgency=low
+
+  * Bug #32509 base: Update UCR template
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Jun 2020 07:47:15 +0200
+
 univention-initrd (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

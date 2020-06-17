@@ -1,6 +1,3 @@
 Type: file
 File: etc/initramfs-tools/initramfs.conf
 Variables: initramfs/.*
-
-Type: file
-File: usr/share/initramfs-tools/init
