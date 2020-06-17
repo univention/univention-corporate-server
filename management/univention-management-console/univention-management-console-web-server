@@ -40,6 +40,7 @@ import time
 import uuid
 import json
 import zlib
+import base64
 import signal
 import hashlib
 import tempfile
@@ -411,7 +412,7 @@ class SAMLUser(object):
 		self.response = response
 		self.message = message
 		self.data = response.ava
-		self.username = ''.join(self.data['uid'])
+		self.username = u''.join(self.data['uid'])
 
 	@property
 	def time_remaining(self):
@@ -515,7 +516,7 @@ class SamlError(UMC_HTTPError):
 	def __init__(self, _=_):
 		self._ = _
 
-	def error(func=None, status=400):
+	def error(func=None, status=400):  # noqa: N805
 		def _decorator(func):
 			def _decorated(self, *args, **kwargs):
 				message = func(self, *args, **kwargs) or ()
@@ -744,7 +745,7 @@ class CPgeneric(Ressource):
 		if response.headers:
 			cherrypy.response.headers.update(response.headers)
 		for key, item in response.cookies.items():
-			if not isinstance(key, bytes):
+			if six.PY2 and not isinstance(key, bytes):
 				key = key.encode('utf-8')  # bug in python Cookie!
 			if isinstance(item, dict):
 				cherrypy.response.cookie[key] = item.pop('value', '')
@@ -774,12 +775,12 @@ class CPgeneric(Ressource):
 	def get_arguments(self, kwargs):
 		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
 			# get body and parse json
-			body = '{}'
+			body = u'{}'
 			if cherrypy.request.method in cherrypy.request.methods_with_bodies:
 				if not cherrypy.request.headers.get(u"Content-Length"):
 					self._log('warn', 'missing Content-Length header')
 					raise UMC_HTTPError(LENGTH_REQUIRED, 'Missing Content-Length header')
-				body = cherrypy.request.body.read().decode('UTF-8')
+				body = cherrypy.request.body.read().decode('UTF-8', 'replace')
 
 			args = self.load_json(body)
 		else:
@@ -898,7 +899,7 @@ class CPGet(CPgeneric):
 	@property
 	def addresses(self):
 		addresses = cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).split(',') + [cherrypy.request.remote.ip]
-		addresses = set(ip_address(x.decode('ASCII', 'ignore').strip()) for x in addresses)
+		addresses = set(ip_address(x.decode('ASCII', 'ignore').strip() if isinstance(x, bytes) else x.strip()) for x in addresses)
 		addresses.discard(ip_address(u'::1'))
 		addresses.discard(ip_address(u'127.0.0.1'))
 		return tuple(address.exploded for address in addresses)
@@ -960,7 +961,7 @@ class CPCommand(CPgeneric):
 		# check if enough free space is available
 		min_size = get_int('umc/server/upload/min_free_space', 51200)  # kilobyte
 		s = os.statvfs(TEMPUPLOADDIR)
-		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
+		free_disk_space = s.f_bavail * s.f_frsize // 1024  # kilobyte
 		if free_disk_space < min_size:
 			self._log('error', 'there is not enough free space to upload files')
 			raise UMC_HTTPError(BAD_REQUEST, 'There is not enough free space on disk')
@@ -1053,7 +1054,10 @@ class CPAuth(CPgeneric):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
-		content_length = int(cherrypy.request.headers.get("Content-Length", 0))
+		try:
+			content_length = int(cherrypy.request.headers.get("Content-Length", 0))
+		except ValueError:
+			content_length = None
 		if not content_length and content_length != 0:
 			CORE.process('auth: missing Content-Length header')
 			raise UMC_HTTPError(LENGTH_REQUIRED)
@@ -1099,13 +1103,13 @@ class CPAuth(CPgeneric):
 		if sessionid in UMCP_Dispatcher.sessions:
 			return
 		try:
-			scheme, credentials = credentials.split(' ', 1)
+			scheme, credentials = credentials.split(u' ', 1)
 		except ValueError:
 			return
-		if scheme.lower() != 'basic':
+		if scheme.lower() != u'basic':
 			return
 		try:
-			username, password = credentials.decode('base64').split(':', 1)
+			username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
 		except ValueError:
 			return
 
@@ -1224,7 +1228,7 @@ class SAML(Ressource):
 		auth_response = cherrypy.request.app.root.auth._auth_request(req, sessionid)
 		self.set_session(sessionid, saml.username, saml=saml)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return (u'<html><body><textarea>%s</textarea></body></html>' % (auth_response,)).encode('UTF-8')
+		return b'<html><body><textarea>%s</textarea></body></html>' % (auth_response,)
 
 	@cherrypy.expose
 	def slo(self, *args, **kwargs):  # single logout service
@@ -1233,7 +1237,7 @@ class SAML(Ressource):
 			raise UMC_HTTPError(400, 'The HTTP request is missing required SAML parameter.')
 
 		try:
-			is_logout_request = 'LogoutRequest' in zlib.decompress(message.decode('base64'), -15).split('>', 1)[0]
+			is_logout_request = b'LogoutRequest' in zlib.decompress(base64.b64decode(message.encode('UTF-8')), -15).split(b'>', 1)[0]
 		except Exception:
 			CORE.error(traceback.format_exc())
 			is_logout_request = False
@@ -1412,7 +1416,7 @@ class SAML(Ressource):
 
 	def http_response(self, binding, http_args):
 		"""Converts the HTTP arguments from pysaml2 into the cherrypy response."""
-		body = ''.join(http_args["data"])
+		body = u''.join(http_args["data"])
 		for key, value in http_args["headers"]:
 			cherrypy.response.headers[key] = value
 
