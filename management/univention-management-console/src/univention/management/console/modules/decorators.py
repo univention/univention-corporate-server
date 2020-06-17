@@ -105,7 +105,7 @@ def sanitize(*args, **kwargs):
 					return []
 				try:
 					return value.split('/')
-				except:
+				except BaseException:
 					self.raise_validation_error('Split failed')
 
 	Before::

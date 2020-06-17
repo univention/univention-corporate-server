@@ -132,7 +132,7 @@ class MultiValidationError(ValidationError):
 
 class Sanitizer(object):
 
-	'''
+	r'''
 	Base class of all sanitizers.
 
 	For reasons of extensibility and for ease of subclassing, the
@@ -212,7 +212,7 @@ class Sanitizer(object):
 		return value
 
 	def raise_validation_error(self, msg, **kwargs):
-		'''Used to more or less uniformly raise a
+		r'''Used to more or less uniformly raise a
 		:class:`~ValidationError`. This will actually raise an
 		:class:`~UnformattedValidationError` for your convenience.
 		If used in :meth:`~Sanitizer._sanitize`, it will be
@@ -224,7 +224,7 @@ class Sanitizer(object):
 		raise UnformattedValidationError(msg, kwargs)
 
 	def raise_formatted_validation_error(self, msg, name, value, **kwargs):
-		'''Used to more or less uniformly raise a
+		r'''Used to more or less uniformly raise a
 		:class:`~ValidationError`. *name* and *value* need to passed
 		because the sanitizer should be thread safe.
 
@@ -347,7 +347,7 @@ class BooleanSanitizer(Sanitizer):
 	def _sanitize(self, value, name, further_arguments):
 		try:
 			return bool(value)
-		except:
+		except BaseException:
 			self.raise_validation_error(_('Cannot be converted to a boolean'))
 
 
@@ -403,7 +403,7 @@ class IntegerSanitizer(Sanitizer):
 
 class SearchSanitizer(Sanitizer):
 
-	''' Baseclass for other Sanitizers that are used for a simple search.
+	r''' Baseclass for other Sanitizers that are used for a simple search.
 	That means that everything is escaped except for asterisks that are
 	considered as wildcards for any number of characters. (If
 	:attr:`~SearchSanitizer.use_asterisks` is True, which is default)
@@ -476,7 +476,7 @@ class SearchSanitizer(Sanitizer):
 
 class LDAPSearchSanitizer(SearchSanitizer):
 
-	'''Sanitizer for LDAP-Searches. Everything that
+	r'''Sanitizer for LDAP-Searches. Everything that
 	could possibly confuse an LDAP-Search is escaped
 	except for \*.
 	'''

@@ -105,7 +105,7 @@ class PamAuth(object):
 			'Unable to reach any changepw server  in realm %s'
 		],
 		'The password is too short.': [
-			re.compile('Password too short, password must be at least (?P<minlen>\d+) characters long.', re.I),
+			re.compile(r'Password too short, password must be at least (?P<minlen>\d+) characters long.', re.I),
 			re.compile('^Password too short$'),
 			'You must choose a longer password'
 			'Password Too Short',
@@ -154,7 +154,7 @@ class PamAuth(object):
 			'Schlechtes Passwort: Es basiert auf einem Wörterbucheintrag',
 		],
 		'The password was already used.': [
-			re.compile('Password is already in password history. New password must not match any of your (?P<history>\d+) previous passwords.', re.I),
+			re.compile(r'Password is already in password history. New password must not match any of your (?P<history>\d+) previous passwords.', re.I),
 			re.compile('^Password is already in password history$'),
 			': Password already used',
 			'Bad: new password must be different than the old one',
@@ -279,7 +279,7 @@ class PamAuth(object):
 	def conversation(self, auth, query_list, data):
 		try:
 			return list(self._conversation(auth, query_list, data))
-		except:
+		except BaseException:
 			AUTH.error('Unexpected error during PAM conversation: %s' % (traceback.format_exc(),))
 			raise
 
