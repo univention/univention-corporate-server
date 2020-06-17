@@ -1037,6 +1037,9 @@ class ad(univention.connector.ucs):
 		self.drs = None
 		self.samr = None
 
+		self.profiling = self.baseConfig.is_true('%s/ad/poll/profiling' % self.CONFIGBASENAME, False)
+
+
 	def open_drs_connection(self):
 		lp = LoadParm()
 		Net(creds=None, lp=lp)
@@ -2378,6 +2381,9 @@ class ad(univention.connector.ucs):
 		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_ad_changes")
 
+		if self.profiling and changes:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Incoming %s" % (len(changes),))
+
 		print("--------------------------------------")
 		print("try to sync %s changes from AD" % len(changes))
 		print("done:", end=' ')
@@ -2489,6 +2495,8 @@ class ad(univention.connector.ucs):
 			print("Changes from AD:  %s (%s saved rejected)" % (change_count, '0'))
 		print("--------------------------------------")
 		sys.stdout.flush()
+                if self.profiling and change_count:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Processed %s" % (change_count,))
 		return change_count
 
 	def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
