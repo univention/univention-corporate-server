@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-36) unstable; urgency=medium
+
+  * Bug #18501: Mark single_value attributes programmatically
+    and log the mapping on startup at INFO debug level.
+
+ -- Arvid <requate@univention.de>  Wed, 17 Jun 2020 18:46:29 +0200
+
 univention-ad-connector (13.0.0-35) unstable; urgency=medium
 
   * Bug #18501: Backport of Diff-Mode from S4-Connector
