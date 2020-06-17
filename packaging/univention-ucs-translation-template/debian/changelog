@@ -1,3 +1,10 @@
+univention-ucs-translation-template (7.0.0-2) unstable; urgency=medium
+
+  * Bug #51513: enhance circular build dependency between univention-ucs-
+    translation-template and univention-management-console-dev
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 15:12:37 +0200
+
 univention-ucs-translation-template (7.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
