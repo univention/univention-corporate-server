@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from univention.admin import property
+from univention.admin import property, option
 from univention.admin.syntax import (string, ipProtocol, integer)
 from univention.admin.layout import Tab, Group
 from univention.admin.filter import (conjunction, expression)
@@ -12,11 +12,17 @@ _ = translation('univention.admin.handlers.tests').translate
 
 module = 'tests/ipservice'
 operations = ['add', 'edit', 'remove', 'search', 'move']
-usewizard = 1
-
-childs = 0
+childs = False
 short_description = _('IP Service')
 long_description = '/etc/services in LDAP'
+
+options = {
+	'default': option(
+		short_description='IP Service',
+		default=True,
+		objectClasses=['ipService'],
+	),
+}
 
 property_descriptions = {
 	'name': property(
@@ -83,11 +89,6 @@ class object(simpleLdap):
 	def description(self):
 		return '%{protocol}s@%{port}s' % self
 
-	def _ldap_addlist(self):
-		ocs = ['ipService']
-		al = [('objectClass', oc) for oc in ocs]
-		return al
-
 
 def lookup_filter(filter_s=None, lo=None):
 	filter_expr = conjunction('&', [expression('objectClass', 'ipService')])
@@ -96,9 +97,9 @@ def lookup_filter(filter_s=None, lo=None):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter_str = unicode(lookup_filter(filter_s))
+	filter_str = str(lookup_filter(filter_s))
 	return [object(co, lo, None, dn, attributes=attrs) for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit)]
 
 
 def identify(dn, attr, canonical=0):
-	return 'ipService' in attr.get('objectClass', [])
+	return b'ipService' in attr.get('objectClass', [])

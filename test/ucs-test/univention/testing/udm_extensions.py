@@ -154,48 +154,40 @@ import univention.admin.handlers
 import univention.admin.allocators
 import univention.admin.localization
 import univention.debug as ud
-translation=univention.admin.localization.translation('univention.admin.handlers.ucstest')
-_=translation.translate
-module='%(module_udmname)s'
-operations=['add','edit','remove','search']
-usewizard=1
-childs=0
-short_description=_('UCS-TEST MODULE %(module_identifier)s')
-long_description=''
-module_search_filter=univention.admin.filter.conjunction('&', [
+translation = univention.admin.localization.translation('univention.admin.handlers.ucstest')
+_ = translation.translate
+module = '%(module_udmname)s'
+operations = ['add','edit','remove','search']
+childs = 0
+short_description = _('UCS-TEST MODULE %(module_identifier)s')
+long_description = ''
+module_search_filter = univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'automountMap'),
 ])
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 }
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		Group( _( 'General' ), layout = [[ "name" ]] ),
 	] )
 ]
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'ou', None, univention.admin.mapping.ListToString)
+
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-		self.alloc=[]
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-		self.open()
-	def _ldap_pre_create(self):
-		self.dn='ou=%%s,%%s' %% (self.info['name'], self.position.getDn())
+	module = module
+
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'automountMap'])]
 
