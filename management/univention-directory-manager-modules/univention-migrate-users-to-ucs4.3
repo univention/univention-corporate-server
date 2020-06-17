@@ -183,7 +183,7 @@ class Migration(object):
 
 			if has_posix:
 				# migrate primary group to samba group
-				for groupdn, group in lo.search(filter_format('(&(objectClass=univentionGroup)(gidNumber=%s)(!(objectClass=sambaGroupMapping)))', [user['gidNumber'][0]])):
+				for groupdn, group in lo.search(filter_format('(&(objectClass=univentionGroup)(gidNumber=%s)(!(objectClass=sambaGroupMapping)))', [user['gidNumber'][0].decode('UTF-8')])):
 					self.modify(groupdn, [
 						('objectClass', [], [b'sambaGroupMapping']),
 						('sambaSID', b'', self.get_group_sid(int(group['gidNumber'][0])).encode('utf-8')),
