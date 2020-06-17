@@ -1,3 +1,9 @@
+univention-portal (3.1.0-28) unstable; urgency=medium
+
+  * Bug #51511: Register UDM modules only on 4.4-1 systems
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Jun 2020 10:49:21 +0200
+
 univention-portal (3.1.0-27) unstable; urgency=medium
 
   * Bug #51157: version bump
