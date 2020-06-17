@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=8
+VERSION=9
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -53,17 +53,21 @@ ucs_registerLDAPExtension "$@" \
 	--udm_syntax /usr/lib/univention-portal/syntax/univention-portal.py || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 4.4-1 \
 	--udm_module /usr/lib/univention-portal/udm/portal.py \
 	--messagecatalog /usr/lib/univention-portal/udm/de.mo \
 	--umcregistration /usr/lib/univention-portal/umc/univention-portal.xml || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 4.4-1 \
 	--udm_module /usr/lib/univention-portal/udm/category.py || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 4.4-1 \
 	--udm_module /usr/lib/univention-portal/udm/entry.py || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart 4.4-1 \
 	--udm_module /usr/lib/univention-portal/udm/all.py || die
 
 ldap_base="$(ucr get ldap/base)"
