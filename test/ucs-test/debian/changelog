@@ -1,3 +1,10 @@
+ucs-test (9.0.3-232) unstable; urgency=medium
+
+  * Bug #51518: ADC test for replicaiton preformance for trivial
+    ignored attribute changes
+
+ -- Arvid <requate@univention.de>  Wed, 17 Jun 2020 18:55:11 +0200
+
 ucs-test (9.0.3-231) unstable; urgency=medium
 
   * Bug #50575: switch python-smbpasswd to python-passlib

@@ -1,0 +1,125 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Create and Remove an AD-Object"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - basic
+##  - apptest
+##  - skip_admember
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+UDM_users_user_username="$(random_chars)"
+DESCRIPTION="$(random_chars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+UDM_USER_DN="uid=$UDM_users_user_username,cn=users,$ldap_base"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+ad_createuser "$UDM_users_user_username" "$DESCRIPTION" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_DN"; fail_bool 0 110
+udm_exists "users/user"; fail_bool 0 110
+
+logrotate -f /etc/logrotate.d/univention-ad-connector
+
+ucr set connector/ad/poll/profiling=yes
+/etc/init.d/univention-ad-connector restart
+
+{ # Generate ignorable replication change in AD
+
+	ad_admin="$(sed 's/,.*//;s/cn=//i' <<<"$connector_ad_ldap_binddn")"
+	ad_bindpw="$(< "$connector_ad_ldap_bindpw")"
+	ad_ldapurl="ldap://$connector_ad_ldap_host"
+
+	ldif=$(ldbsearch -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" \
+		samaccountname="$UDM_users_user_username" ntsecuritydescriptor | ldapsearch-wrapper)
+	dn=$(sed -n 's/^dn: //p' <<<"$ldif")
+	ntsd=$(sed -n 's/^nTSecurityDescriptor: //p' <<<"$ldif")
+	ntsd2=$(sed 's/^O:\([^:]*\)G:/O:LAG:/' <<<"$ntsd")
+	ntsd3=$(sed 's/^O:\([^:]*\)G:/O:DAG:/' <<<"$ntsd")
+
+	ldbmodify -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" <<%EOF
+dn: $dn
+changetype: modify
+replace: nTSecurityDescriptor
+nTSecurityDescriptor: $ntsd2
+%EOF
+
+	ldbmodify -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" <<%EOF
+dn: $dn
+changetype: modify
+replace: nTSecurityDescriptor
+nTSecurityDescriptor: $ntsd3
+%EOF
+}
+
+sleep 10 ## Wait for replication attempt
+
+{ # Extract replication time from log
+	RE_LOGTIMESTAMP="\([0-9]*\.[0-9]*\.[0-9]* [0-9]*:[0-9]*:[0-9]*\.[0-9]*\)"
+	RE_UNIVENTION_DEBUG="$RE_LOGTIMESTAMP LDAP *([^)]*):"
+	RE_START="^$RE_UNIVENTION_DEBUG POLL FROM CON: Incoming .*"
+	RE_END="^$RE_UNIVENTION_DEBUG POLL FROM CON: Processed .*"
+
+	lines_replication_cycle_begin=$(grep "$RE_START" /var/log/univention/connector.log)
+	if [ -z "$lines_replication_cycle_begin" ]; then 
+		grep "$RE_START" /var/log/univention/connector.log
+		exit 1
+	fi
+
+	lines_replication_cycle1=$(head -1 <<<"$lines_replication_cycle_begin")
+	if [ "$(wc -l <<<"$lines_replication_cycle_begin")" -ne 1 ]; then
+		echo -e "ERROR: too many matching lines:\n$lines_replication_cycle_begin"
+		lines_replication_cycle2=$(tail -1 <<<"$lines_replication_cycle_begin")
+	fi
+	grep -i "sync to ucs:   [          user] [    modify] $UDM_USER_DN$" /var/log/univention/connector.log && fail_test 110
+	lines_replication_cycle_end=$(grep "$RE_END" /var/log/univention/connector.log)
+	if [ -z "$lines_replication_cycle_end" ]; then 
+		grep "$RE_END" /var/log/univention/connector.log
+		exit 1
+	fi
+	if [ "$(wc -l <<<"$lines_replication_cycle_end")" -ne 1 ]; then
+		echo -e "ERROR: too many matching lines:\n$lines_replication_cycle_end"
+		lines_replication_cycle_end=$(head -1 <<<"$lines_replication_cycle_end")
+	fi
+	timestamp_change_start=$(sed -n "s/$RE_START/\1/p" <<<"$lines_replication_cycle1")
+	timestamp_change_end=$(sed -n "s/$RE_END/\1/p" <<<"$lines_replication_cycle_end")
+
+	calculate_duration() {
+		STRP_FORMAT='%d.%m.%Y %H:%M:%S.%f'
+		python -c "from datetime import datetime; print (datetime.strptime('$2', '$STRP_FORMAT') - datetime.strptime('$1', '$STRP_FORMAT')).total_seconds()"
+	}
+	DURATION=$(calculate_duration "$timestamp_change_start" "$timestamp_change_end")
+
+	if [ -n "$lines_replication_cycle2" ]; then
+		echo "Initial Replication time: $DURATION"
+
+		timestamp_postchange=$(sed -n "s/$RE_START/\1/p" <<<"$lines_replication_cycle2")
+		DURATION=$(calculate_duration "$timestamp_change_start" "$timestamp_postchange")
+	fi
+	echo "TOTAL   Replication time: $DURATION"
+	MAX_DURATION=1
+	if [ "$(python -c "if ($DURATION > $MAX_DURATION): print 'fail'")" = 'fail' ]; then
+		echo "ERROR: AD-Connector activity took longer than $MAX_DURATION seconds"
+		fail_test 110
+	fi
+}
+
+ucr unset connector/ad/poll/profiling
+/etc/init.d/univention-ad-connector restart
+
+ad_delete "$AD_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+exit "$RETVAL"
+
