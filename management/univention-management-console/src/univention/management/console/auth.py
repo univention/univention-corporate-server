@@ -144,7 +144,7 @@ class AuthHandler(signals.Provider):
 			# /etc/machine.secret missing or LDAP server not reachable
 			AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
 			reset_cache()
-		except:
+		except BaseException:
 			AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
 		finally:  # ignore all exceptions, even in except blocks
 			return username

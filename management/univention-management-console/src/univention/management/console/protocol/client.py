@@ -324,7 +324,7 @@ class Client(signals.Provider, Translation):
 			self.signal_emit('closed')
 			try:
 				sock.close()
-			except:
+			except BaseException:
 				pass
 			notifier.socket_remove(sock)
 			return False

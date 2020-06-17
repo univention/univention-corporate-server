@@ -263,7 +263,7 @@ class Base(signals.Provider, Translation):
 		except (KeyboardInterrupt, SystemExit):
 			self.finished(request.id, None, self._('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
 			raise
-		except:
+		except BaseException:
 			self.__error_handling(request, method, *sys.exc_info())
 
 	def _parse_accept_language(self, request):
@@ -271,7 +271,7 @@ class Base(signals.Provider, Translation):
 		if request.headers.get('X-Requested-With'.title(), '').lower() != 'XMLHTTPRequest'.lower():
 			return  # don't change the language if Accept-Language header contains the value of the browser and not those we set in Javascript
 
-		accepted_locales = re.split('\s*,\s*', request.headers.get('Accept-Language', ''))
+		accepted_locales = re.split(r'\s*,\s*', request.headers.get('Accept-Language', ''))
 		if accepted_locales:
 			self.update_language(l.replace('-', '_') for l in accepted_locales)
 
@@ -290,7 +290,7 @@ class Base(signals.Provider, Translation):
 		content_type = request.headers.get('Content-Type', '')
 		allowed_content_types = ('application/json', 'application/x-www-form-urlencoded', 'multipart/form-data')
 
-		if content_type and not re.match('^(%s)($|\s*;)' % '|'.join(re.escape(x) for x in allowed_content_types), content_type):
+		if content_type and not re.match(r'^(%s)($|\s*;)' % '|'.join(re.escape(x) for x in allowed_content_types), content_type):
 			raise UMC_Error(self._('The requested Content-Type is not acceptable. Please use one of %s.' % (', '.join(allowed_content_types))), status=406)
 
 	def thread_finished_callback(self, thread, result, request):
@@ -353,7 +353,7 @@ class Base(signals.Provider, Translation):
 		try:
 			try:
 				self.error_handling(etype, exc, etraceback)
-			except:
+			except BaseException:
 				raise
 			else:
 				six.reraise(etype, exc, etraceback)
@@ -370,7 +370,7 @@ class Base(signals.Provider, Translation):
 				'command': method,
 				'traceback': exc.traceback,
 			}
-		except:
+		except BaseException:
 			status = MODULE_ERR_COMMAND_FAILED
 			if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
 				tb_str = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))

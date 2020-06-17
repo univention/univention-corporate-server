@@ -146,7 +146,7 @@ class Instance(Base):
 			# Is it possible that we don't have unicode here?
 			try:
 				value.decode('utf-8')
-			except:
+			except BaseException:
 				assert False, 'no unicode'
 		return '%r' % (value,)
 

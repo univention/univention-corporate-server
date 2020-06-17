@@ -386,7 +386,7 @@ class ProcessorBase(Base):
 			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
 			try:
 				proc.request(req)
-			except:
+			except BaseException:
 				CORE.error(traceback.format_exc())
 
 	@allow_get_request
@@ -786,7 +786,7 @@ class Processor(ProcessorBase):
 		meta_data.update([(i, ucr.get(i)) for i in self.META_UCR_VARS])
 		return meta_data
 
-	CHANGELOG_VERSION = re.compile('^[^(]*\(([^)]*)\).*')
+	CHANGELOG_VERSION = re.compile(r'^[^(]*\(([^)]*)\).*')
 
 	def handle_request_get_info(self, request):
 		ucr.load()
