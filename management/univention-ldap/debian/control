@@ -9,8 +9,6 @@ Build-Depends:
 
 Package: univention-ldap-server
 Architecture: all
-Recommends:
- univention-virtual-machine-manager-schema,
 Pre-Depends:
  slapd (>= 2.4.35-1.162.201407020834),
  univention-ldap-client,
