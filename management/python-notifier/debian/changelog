@@ -1,3 +1,10 @@
+python-notifier (0.9.7-8) unstable; urgency=medium
+
+  * Bug #51282: fix python3 compatibility for timers:
+  	RuntimeError: dictionary changed size during iteration
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 10:57:05 +0200
+
 python-notifier (0.9.7-7) unstable; urgency=medium
 
   * Bug #50461: fix some PEP 8 warnings
