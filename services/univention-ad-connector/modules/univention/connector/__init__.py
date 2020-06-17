@@ -937,12 +937,18 @@ class ucs:
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
+		files = os.listdir(self.listener_dir)
+		num_changes = len(files) - 1
+		if self.profiling and num_changes:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM UCS: Incomming %s" % (num_changes,))
+
+
 		print("--------------------------------------")
-		print("try to sync %s changes from UCS" % (len(os.listdir(self.listener_dir)) - 1))
+		print("try to sync %s changes from UCS" % (num_changes,))
 		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
-		files = sorted(os.listdir(self.listener_dir))
+		files = sorted(files)
 
 		# We may dropped the parent object, so don't show the traceback in any case
 		traceback_level = ud.WARN
@@ -993,6 +999,9 @@ class ucs:
 			print("Changes from UCS: %s (%s saved rejected)" % (change_counter, '0'))
 		print("--------------------------------------")
 		sys.stdout.flush()
+
+		if self.profiling and change_counter:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM UCS: Processed %s" % (change_counter,))
 		return change_counter
 
 	def poll(self, show_deleted=True):

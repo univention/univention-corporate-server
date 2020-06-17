@@ -273,3 +273,9 @@ Description[de]=Synchronisiere den UCS Benutzername auf den AD User Principal Na
 Description[en]=Synchronize the UCS user name to the AD User Principal Name (default is True).
 Type=bool
 Categories=service-adcon
+
+[con.*/ad/poll/profiling]
+Description[de]=Aktivierung von "POLL FROM Log-Meldungen zur einfachen Zeitmessung (default ist False).
+Description[en]=Activate some "POLL FROM" log messages for simple timing measurements (default is False).
+Type=bool
+Categories=service-adcon
