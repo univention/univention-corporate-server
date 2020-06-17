@@ -971,6 +971,28 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.PROCESS, 'Using %s as AD Netbios domain name' % self.ad_netbios_domainname)
 
+		# Lookup list of single value attributes from AD DC Schema
+		schema_base = "CN=Schema,CN=Configuration,%s" % self.ad_ldap_base
+		try:
+			result = self.__search_ad(filter='(isSingleValued=TRUE)', base=schema_base, attrlist=['lDAPDisplayName'])
+		except ldap.LDAPError as msg:
+			error_msg = "Failed to lookup attribute Schema from AD: %s" % msg
+			ud.debug(ud.LDAP, ud.ERROR, error_msg)
+			print(error_msg)
+			sys.exit(1)
+
+		self.single_valued_ad_attributes = [record[1]['lDAPDisplayName'][0] for record in result]
+
+		# Flag single value attributes as such in the connector mapping
+		for mapping_key, mapping_property in self.property.items():
+			for attr_type in ('attributes', 'post_attributes'):
+				conn_attributes = getattr(mapping_property, attr_type)
+				if not conn_attributes:
+					continue
+				for attr_key, attr in conn_attributes.items():
+					if attr.ldap_attribute in self.single_valued_ad_attributes:
+						attr.single_value = True
+
 		self.drs = None
 		self.samr = None
 
