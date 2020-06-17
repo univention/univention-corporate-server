@@ -34,6 +34,7 @@ for (cat, (paths, settings)) in list(FILES.items()):
 		del FILES[cat]
 	else:
 		settings.update(custom)
+
 FILES[None] = (other_logfiles, other_settings)
 
 for (cat, (paths, settings)) in FILES.items():
