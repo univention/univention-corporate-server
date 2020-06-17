@@ -1,3 +1,9 @@
+univention-grub (13.0.0-2) unstable; urgency=low
+
+  * Bug #51419: Update UCR template
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 17 Jun 2020 08:32:36 +0200
+
 univention-grub (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

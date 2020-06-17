@@ -3,7 +3,6 @@ File: etc/default/grub
 Postinst: grub-update.py
 Variables: grub/timeout
 Variables: grub/append
-Variables: grub/xenhopt
 Variables: grub/quiet
 Variables: grub/loglevel
 Variables: grub/gfxmode

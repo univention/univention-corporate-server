@@ -29,7 +29,6 @@ print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)
 @!@
 
 GRUB_CMDLINE_LINUX="@%@grub/append@%@"
-GRUB_CMDLINE_XEN="@%@grub/xenhopt@%@"
 
 # Uncomment to enable BadRAM filtering, modify to suit your needs
 # This works with Linux (no patch required) and with any kernel that obtains
