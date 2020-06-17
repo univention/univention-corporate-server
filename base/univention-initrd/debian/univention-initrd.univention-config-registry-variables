@@ -3,9 +3,11 @@ Description[de]=Wird diese Variable auf 'y' gesetzt, wird Busybox (eine kompakte
 Description[en]=If this variable is set to 'y', Busybox (a compact implementation of the standard Unix tools) is added to the initrd. If the variable is unset, Busybox is added.
 Type=str
 Categories=system-base
+Default=y
 
 [initramfs/modules]
-Description[de]=Konfiguriert, welche Kernelmodule in die initrd integriert werden. Wird die Variable auf 'most' gesetzt, so werden die meisten Dateisystem- und alle Festplattentreiber integriert, 'netboot' fügt nur Basis- und Netzwerk-Treiber hinzu und 'dep' führt eine automatische Erkennung der zu integrierenden Module durch. Ist die Variable nicht gesetzt, gilt 'most'.
-Description[en]=Configures which kernel modules should be integrated into the initrd. If the variable is set to 'most', most filesystem and all and hard drive modules are integrated; 'netboot' only adds base modules and network drivers and 'dep' performs automatic detection of the modules which are to be integrated. If the variable is unset, 'most' applies.
+Description[de]=Konfiguriert, welche Kernelmodule in die initrd integriert werden. Wird die Variable auf 'most' gesetzt, so werden die meisten Dateisystem- und alle Festplattentreiber integriert, 'netboot' fügt nur Basis- und Netzwerk-Treiber hinzu, 'dep' führt eine automatische Erkennung der zu integrierenden Module durch und 'list' lädt nur die explizit in `/etc/initramfs-tools/modules{,.d/*}` aufgeführten Module. Ist die Variable nicht gesetzt, gilt 'most'.
+Description[en]=Configures which kernel modules should be integrated into the initrd. If the variable is set to 'most', most filesystem and all and hard drive modules are integrated; 'netboot' only adds base modules and network drivers, 'dep' performs automatic detection of the modules which are to be integrated and 'list' only loads the modules explictly listed in `/etc/initramfs-tools/modules{,.d/*}`. If the variable is unset, 'most' applies.
 Type=str
 Categories=system-base
+Default=most

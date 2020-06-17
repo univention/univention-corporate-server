@@ -10,9 +10,7 @@ Build-Depends:
 Package: univention-initrd
 Architecture: all
 Depends:
- e2fsprogs,
- initramfs-tools (>= 0.112~bpo70+1),
- kmod,
+ initramfs-tools,
  univention-bootsplash,
  univention-config,
  ${misc:Depends},
