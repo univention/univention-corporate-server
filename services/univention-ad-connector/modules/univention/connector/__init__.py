@@ -1220,9 +1220,7 @@ class ucs:
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		if object['attributes'].get('objectGUID'):
-			guid_unicode = object['attributes'].get('objectGUID')[0]
-			# to compensate for __object_from_element
-			objectGUID = guid_unicode.encode('ISO-8859-1')
+			objectGUID = object['attributes'].get('objectGUID')[0]
 		else:
 			objectGUID = None
 		entryUUID = self._get_entryUUID(object['dn'])
@@ -1277,9 +1275,7 @@ class ucs:
 			return True
 
 		try:
-			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
-			# to compensate for __object_from_element
-			guid_blob = guid_unicode.encode('ISO-8859-1')
+			guid_blob = original_object.get('attributes').get('objectGUID')[0]
 			guid = str(ndr_unpack(misc.GUID, guid_blob))
 
 			object['changed_attributes'] = []
