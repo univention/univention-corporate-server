@@ -280,7 +280,7 @@ class Base(signals.Provider, Translation):
 			status = 405 if request.http_method in (u'GET', u'HEAD') else 501
 			raise UMC_Error(self._('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'})
 
-		if getattr(function, 'xsrf_protection', True) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
+		if getattr(function, 'xsrf_protection', True) and 'UMCSessionId' in request.cookies and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
 			raise UMC_Error(self._('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403)
 
 		if getattr(function, 'referer_protection', True) and request.headers.get('Referer') and not urlparse(request.headers['Referer']).path.startswith('/univention/'):
