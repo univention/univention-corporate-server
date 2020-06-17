@@ -1,3 +1,9 @@
+ucs-test (10.0.0-4) unstable; urgency=medium
+
+  * Bug #50631: Fix missing dependency of udm.py on psutil
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 22:42:24 +0200
+
 ucs-test (10.0.0-3) unstable; urgency=medium
 
   * Bug #50631: add python3 dependencies
