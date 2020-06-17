@@ -68,6 +68,7 @@ class kerberosAuthenticationFailed(Exception):
 class netbiosDomainnameNotFound(Exception):
 	pass
 
+LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 
 # page results
 PAGE_SIZE = 1000
@@ -1316,8 +1317,10 @@ class ad(univention.connector.ucs):
 		if not base:
 			base = self.lo_ad.base
 
-		ctrls = []
-		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))
+		ctrls = [
+				SimplePagedResultsControl(True, PAGE_SIZE, ''),  # Must be the first
+				LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0),  # Don't show referrals
+		]
 
 		if show_deleted:
 			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
