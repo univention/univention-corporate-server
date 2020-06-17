@@ -993,6 +993,46 @@ class ad(univention.connector.ucs):
 					if attr.ldap_attribute in self.single_valued_ad_attributes:
 						attr.single_value = True
 
+		# Log the active mapping
+		if ud.get_level(ud.LDAP) >= ud.INFO:
+			mapping_lines = ["Mapping:"]
+			mapping_lines.append("ad_mapping = {")
+			indent = " "*4
+			for mapping_key, mapping_property in self.property.items():
+				mapping_lines.append("%s'%s' = univention.connector.property(" % (indent, mapping_key))
+				indent = " "*8
+				for conn_attribute in sorted(vars(mapping_property)):
+					subobj = getattr(mapping_property, conn_attribute)
+					if not subobj:
+						continue
+					if isinstance(subobj, dict):
+						mapping_lines.append("%s%s = {" % (indent, conn_attribute))
+						indent = " "*12
+						for attr_key, mapping_attr in subobj.items():
+							mapping_lines.append("%s%s = univention.connector.attribute(" % (indent, attr_key))
+							indent = " "*16
+							if isinstance(mapping_attr, univention.connector.attribute):
+								for attribute_member in sorted(vars(mapping_attr)):
+									subsubobj = getattr(mapping_attr, attribute_member)
+									if not subsubobj:
+										continue
+									if isinstance(subsubobj, str):
+										mapping_lines.append("%s'%s' = '%s'" % (indent, attribute_member, subsubobj))
+									else:
+										mapping_lines.append("%s'%s' = %s" % (indent, attribute_member, subsubobj))
+							indent = " "*12
+							mapping_lines.append("%s)" % (indent,))
+						indent = " "*8
+						mapping_lines.append("%s}" % (indent,))
+					elif isinstance(subobj, str):
+						mapping_lines.append("%s%s = '%s'" % (indent, conn_attribute, subobj))
+					else:
+						mapping_lines.append("%s%s = %s" % (indent, conn_attribute, subobj))
+				indent = " "*4
+				mapping_lines.append("%s)" % (indent,))
+			mapping_lines.append("}")
+			ud.debug(ud.LDAP, ud.INFO, '\n'.join(mapping_lines))
+
 		self.drs = None
 		self.samr = None
 
