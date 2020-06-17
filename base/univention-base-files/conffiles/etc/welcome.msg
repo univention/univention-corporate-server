@@ -1,19 +1,18 @@
 @!@
-
 if configRegistry.get('server/role') == 'fatclient':
-	menutitle="Univention Managed Client"
+	menutitle = "Univention Managed Client"
 elif configRegistry.get('server/role') == 'mobileclient':
-	menutitle="Univention Mobile Client"
+	menutitle = "Univention Mobile Client"
 elif configRegistry.get('server/role') == 'domaincontroller_master':
-	menutitle="Univention DC Master"
+	menutitle = "Univention DC Master"
 elif configRegistry.get('server/role') == 'domaincontroller_backup':
-	menutitle="Univention DC Backup"
+	menutitle = "Univention DC Backup"
 elif configRegistry.get('server/role') == 'domaincontroller_slave':
-	menutitle="Univention DC Slave"
+	menutitle = "Univention DC Slave"
 elif configRegistry.get('server/role') == 'memberserver':
-	menutitle="Univention Memberserver"
+	menutitle = "Univention Memberserver"
 else:
-	menutitle="Univention Corporate Server"
+	menutitle = "Univention Corporate Server"
 
 if configRegistry.get('version/version'):
 	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
@@ -47,6 +46,5 @@ if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontr
 	print('You can log into the Univention Management Console - the principal tool to manage ')
 	print('users, groups, etc. - using the "Administrator" account and the password selected ')
 	print('for the root user on the master domain controller.')
-
 @!@
 

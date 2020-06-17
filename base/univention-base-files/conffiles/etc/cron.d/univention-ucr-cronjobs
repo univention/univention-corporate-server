@@ -4,10 +4,14 @@
 import sys
 
 jobs = []
+
+
 def setup_cronjob(key):
 	global jobs
-	if not key.startswith('cron/') or key == 'cron/autostart' or key == 'cron/path' or key == 'cron/ucrdisabled':
+
+	if not key.startswith('cron/') or key in ('cron/autostart', 'cron/path', 'cron/ucrdisabled'):
 		return
+
 	job = ''
 	try:
 		tmp = key.split('/')
@@ -41,6 +45,7 @@ def setup_cronjob(key):
 			mailto = '""'
 		print("MAILTO=%s" % mailto)
 		print("%s %s %s" % (time, user, command))
+
 
 path = configRegistry.get('cron/path', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 print('PATH="%s"' % path)

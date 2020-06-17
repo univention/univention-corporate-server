@@ -3,6 +3,7 @@ from univention.config_registry.interfaces import Interfaces
 from itertools import groupby
 from operator import itemgetter
 
+
 def auto(interface, start):
 	"""Print 'auto iface' statements only once."""
 	print('')
@@ -11,7 +12,10 @@ def auto(interface, start):
 	if interface not in auto.printed_interfaces:
 		print('auto %s' % (interface,))
 		auto.printed_interfaces.add(interface)
+
+
 auto.printed_interfaces = set()
+
 
 def ipv4(ucr, interfaces):
 	"""Setup IPv4."""
@@ -22,8 +26,7 @@ def ipv4(ucr, interfaces):
 	for name, iface in interfaces.all_interfaces:
 		addr = iface.ipv4_address()
 		if iface.type == 'dhcp':
-			if interfaces.handler == 'ifplugd' and \
-					ucr.is_true(value=iface.get('ifplugd', '1')):
+			if interfaces.handler == 'ifplugd' and ucr.is_true(value=iface.get('ifplugd', '1')):
 				auto(iface.name, iface.start)
 				print('iface %s inet dhcp' % (iface.name,))
 			else:
@@ -46,8 +49,7 @@ def ipv4(ucr, interfaces):
 			if 'mtu' in iface:
 				print('\tmtu %(mtu)s' % iface)
 			if gateway:
-				if addr.prefixlen == addr.max_prefixlen and \
-						interfaces.primary in (name, iface.name):
+				if addr.prefixlen == addr.max_prefixlen and interfaces.primary in (name, iface.name):
 					print('\tpointopoint %s' % (gateway,))
 					print('\tgateway %s' % (gateway,))
 					gateway = None
@@ -63,6 +65,7 @@ def ipv4(ucr, interfaces):
 		for value in iface.options:
 			print('\t%s' % (value,))
 
+
 def ipv6(interfaces):
 	"""Setup IPv6."""
 	gateway = interfaces.ipv6_gateway
@@ -76,13 +79,11 @@ def ipv6(interfaces):
 		for name in iface.ipv6_names:
 			addr = iface.ipv6_address(name)
 			if not addr:
-				print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
-					(iface.name, name))
+				print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % (iface.name, name))
 				continue
 			addresses = interface_addresses.setdefault(iface.name, set())
 			if addr.ip in addresses:
-				print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
-					(iface.name, name))
+				print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % (iface.name, name))
 				continue
 			addresses.add(addr.ip)
 
@@ -117,8 +118,7 @@ def ipv6(interfaces):
 			if gateway_zoneindex is None:
 				# check if gateway is local on this interface
 				if gateway:
-					if addr.prefixlen == addr.max_prefixlen and \
-							iface.name == interfaces.primary:
+					if addr.prefixlen == addr.max_prefixlen and iface.name == interfaces.primary:
 						data = (gateway, iface.name)
 						print('\tup   ip -6 route add %s dev %s' % data)
 						print('\tup   ip -6 route add default via %s dev %s' % data)
@@ -133,12 +133,13 @@ def ipv6(interfaces):
 			for value in iface.options:
 				print('\t%s' % (value,))
 
+
 def main():
 	"""Create configured interfaces."""
 	interfaces = Interfaces(configRegistry)
 	ipv4(configRegistry, interfaces)
 	ipv6(interfaces)
 
+
 main()
-# vim:set sw=4 ts=4 noet:
 @!@

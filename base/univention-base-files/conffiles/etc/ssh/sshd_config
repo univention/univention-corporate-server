@@ -13,6 +13,7 @@
 
 @!@
 import sys
+from os.path import exists
 
 print('Port %s' % configRegistry.get('sshd/port', '22'))
 if configRegistry.get('sshd/AddressFamily'):
@@ -26,15 +27,9 @@ else:
 	print('#ListenAddress 0.0.0.0')
 	print('#ListenAddress ::')
 print('')
-from os.path import exists
 for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	if '/' in key:
 		filename = key
-	elif key == 'rsa1':
-		if '1' not in protocols:
-			continue
-		else:
-			filename = '/etc/ssh/ssh_host_key'
 	else:
 		filename = '/etc/ssh/ssh_host_%s_key' % (key,)
 	if exists(filename):
@@ -131,8 +126,7 @@ print('# some PAM modules and threads)')
 if configRegistry.get('sshd/challengeresponse'):
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
-		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
-			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
+		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
 else:
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
 print('')
@@ -195,22 +189,19 @@ else:
 if configRegistry.get('sshd/xforwarding'):
 	print("X11Forwarding %s" % configRegistry.get('sshd/xforwarding'))
 	if configRegistry.get('sshd/X11Forwarding'):
-		sys.stderr.write('WARNING: The value for X11Forwarding is ' \
-			'set twice: via sshd/X11Forwarding and sshd/xforwarding\n')
+		sys.stderr.write('WARNING: The value for X11Forwarding is set twice: via sshd/X11Forwarding and sshd/xforwarding\n')
 else:
 	print("X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no'))
 if configRegistry.get('sshd/xdisplayoffset'):
 	print("X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset'))
 	if configRegistry.get('sshd/X11DisplayOffset'):
-		sys.stderr.write('WARNING: The value for X11DisplayOffset is ' \
-			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset\n')
+		sys.stderr.write('WARNING: The value for X11DisplayOffset is set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset\n')
 elif configRegistry.get('sshd/X11DisplayOffset'):
 	print("X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset'))
 if configRegistry.get('sshd/xuselocalhost'):
 	print("X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost'))
 	if configRegistry.get('sshd/X11UseLocalHost'):
-		sys.stderr.write('WARNING: The value for X11UseLocalHost is ' \
-			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost\n')
+		sys.stderr.write('WARNING: The value for X11UseLocalHost is set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost\n')
 elif configRegistry.get('sshd/X11UseLocalHost'):
 	print("X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost'))
 print('')
@@ -277,8 +268,7 @@ if configRegistry.get('sshd/banner'):
 	print('# no default banner path')
 	print("Banner %s" % configRegistry.get('sshd/banner'))
 	if configRegistry.get('sshd/Banner'):
-		sys.stderr.write('WARNING: The value for Banner is ' \
-			'set twice: via sshd/Banner and sshd/banner\n')
+		sys.stderr.write('WARNING: The value for Banner is set twice: via sshd/Banner and sshd/banner\n')
 elif configRegistry.get('sshd/Banner'):
 	print('')
 	print('# no default banner path')
