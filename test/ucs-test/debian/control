@@ -54,6 +54,7 @@ Depends:
  python-univention (>= 12.0.0-5),
  python-yaml,
  python3-apt,
+ python3-psutil,
  python3-six,
  python3-univention,
  python3-yaml,
