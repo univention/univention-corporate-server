@@ -51,7 +51,7 @@ check ssl2=0 ssl3=0 tls1=1 tls1_1=1 tls1_2=1
 case "$OPENSSL" in
 1.*)
 	ucr set apache2/ssl/tlsv11=true
-	check ssl2=0 ssl3=0 tls1=2 tls1_1=1 tls1_2=1
+	check ssl2=0 ssl3=0 tls1_1=1 tls1_2=1
 
 	ucr set apache2/ssl/tlsv12=true
 	check ssl2=0 ssl3=0 tls1=3 tls1_1=3 tls1_2=1
