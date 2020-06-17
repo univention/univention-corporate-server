@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-29) unstable; urgency=medium
+
+  * Bug #51351: only add enabled self service links to the menu
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 17 Jun 2020 15:34:19 +0200
+
 univention-self-service (4.0.3-28) unstable; urgency=medium
 
   * Bug #51211: fix missing UCRWARNING header
