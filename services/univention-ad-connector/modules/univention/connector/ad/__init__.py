@@ -2586,7 +2586,7 @@ class ad(univention.connector.ucs):
 								if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
 									modify = True
 							# FIXME: use defined compare-function from mapping.py
-							elif not univention.adconnector.compare_lowercase(list(old_values), list(new_values)):
+							elif not univention.connector.compare_lowercase(list(old_values), list(new_values)):
 								modify = True
 
 							if not modify:
@@ -2664,7 +2664,7 @@ class ad(univention.connector.ucs):
 									elif attribute_type[attribute].compare_function:
 										if not attribute_type[attribute].compare_function(list(current_ad_values), list(value)):
 											modify = True
-									elif not univention.adconnector.compare_lowercase(list(current_ad_values), list(value)):
+									elif not univention.connector.compare_lowercase(list(current_ad_values), list(value)):
 										modify = True
 									if modify:
 										if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
