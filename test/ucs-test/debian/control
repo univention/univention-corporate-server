@@ -101,6 +101,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  lsb-release,
+ lsof,
  nmap,
  openssl,
  python,
