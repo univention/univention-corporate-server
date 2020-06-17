@@ -1,2 +1,3 @@
 tests/59_udm	usr/share/ucs-test/
 tests/59_udm/ipservice.py	usr/lib/python2.7/dist-packages/univention/admin/handlers/tests/
+tests/59_udm/ipservice.py	usr/lib/python3/dist-packages/univention/admin/handlers/tests/

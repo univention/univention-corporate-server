@@ -96,7 +96,7 @@ def lookup_filter(filter_s=None, lo=None):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter_str = unicode(lookup_filter(filter_s))
+	filter_str = str(lookup_filter(filter_s))
 	return [object(co, lo, None, dn, attributes=attrs) for dn, attrs in lo.search(filter_str, base, scope, [], unique, required, timeout, sizelimit)]
 
 
