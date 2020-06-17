@@ -31,7 +31,7 @@ for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	if '/' in key:
 		filename = key
 	elif key == 'rsa1':
-		if '1' not in protocols:
+		if '1' not in configRegistry.get('sshd/Protocol', '2').split(','):
 			continue
 		else:
 			filename = '/etc/ssh/ssh_host_key'
