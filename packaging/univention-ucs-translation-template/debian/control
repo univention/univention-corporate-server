@@ -23,10 +23,11 @@ Depends:
  python3-magic,
  python3-polib,
  python3-univention-config-registry,
- univention-management-console-dev,
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
+Recommends:
+ univention-management-console-dev,
 Description: UCS Management Console translation files
  This package contains tools to build localization data.
  .
