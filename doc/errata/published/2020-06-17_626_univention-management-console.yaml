@@ -12,3 +12,5 @@ desc: |
  * LDAP connections in the session shutdown handling and during retrieval
    of user favorite modules are now closed properly.
 bug: [51353, 51366, 51367]
+erratum: 626
+announced: 2020-06-17
