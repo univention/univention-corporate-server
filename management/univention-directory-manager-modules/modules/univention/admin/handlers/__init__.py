@@ -3425,7 +3425,7 @@ class simplePolicy(simpleLdap):
 		else:
 			values = {}
 			for attr_name, value_dict in self.policy_attrs.items():
-				values[attr_name] = value_dict['value'].encode('UTF-8')
+				values[attr_name] = value_dict['value']
 				self.polinfo_more[self.mapping.unmapName(attr_name)] = value_dict
 
 			self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
