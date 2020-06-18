@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-38) UNRELEASED; urgency=medium
+
+  * Bug #51462: Add dependency to heimdal-clients and restart the umc-server
+    after this update
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 18 Jun 2020 13:39:45 +0200
+
 univention-ad-connector (13.0.0-37) unstable; urgency=medium
 
   * Bug #51518: Ignore changes to certain attributes
