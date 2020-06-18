@@ -1,3 +1,9 @@
+ucs-test (10.0.0-7) unstable; urgency=medium
+
+  * Bug #51526: install python-coverage from debian buster
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 16:22:36 +0200
+
 ucs-test (10.0.0-6) unstable; urgency=medium
 
   * Bug #51525: replace pip selenium with python-selenium
