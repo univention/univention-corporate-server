@@ -1,3 +1,9 @@
+univention-updater (15.0.0-4) unstable; urgency=medium
+
+  * Bug #51506: remove pyshared hooks support
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 15:42:36 +0200
+
 univention-updater (15.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
