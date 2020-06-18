@@ -34,7 +34,6 @@ from __future__ import absolute_import
 
 import os
 import bz2
-import traceback
 import subprocess
 
 import apt
@@ -55,7 +54,6 @@ attributes = []
 
 PYSHARED_DIR = '/usr/share/pyshared/'
 PYTHON_DIR = '/usr/lib/python2.7/dist-packages/'
-PYSUPPORT_DIR = '/usr/share/python-support'
 LOCALE_BASEDIR = "/usr/share/locale"  # mo files go to /usr/share/locale/<language-tag>/LC_MESSAGES/
 MODULE_DEFINTION_BASEDIR = "/usr/share/univention-management-console/modules"  # UMC registration xml files go here
 EXTEND_PATH = "__path__ = __import__('pkgutil').extend_path(__path__, __name__)\n"  # do not change ever!
@@ -73,44 +71,6 @@ class moduleRemovalFailed(Exception):
 
 	def __init__(self, message=default_message):
 		Exception.__init__(self, message)
-
-
-def initialize():
-	listener.setuid(0)
-	try:
-		migrate_to_dh_python()
-	finally:
-		listener.unsetuid()
-
-
-def migrate_to_dh_python():
-	ud.debug(ud.LISTENER, ud.WARN, 'Migrating all UDM extensions from python-support to dh-python')
-	lo, po = udm_uldap.getMachineConnection()
-	for dn, attrs in lo.search('(|(objectClass=univentionUDMModule)(objectClass=univentionUDMSyntax)(objectClass=univentionUDMHook))'):
-		ocs = attrs.get('objectClass', [])
-		if b'univentionUDMModule' in ocs:
-			objectclass = 'univentionUDMModule'
-			target_subdir = 'univention/admin/handlers'
-		elif b'univentionUDMHook' in ocs:
-			objectclass = 'univentionUDMHook'
-			target_subdir = 'univention/admin/hooks.d'
-		elif b'univentionUDMSyntax' in ocs:
-			objectclass = 'univentionUDMSyntax'
-			target_subdir = 'univention/admin/syntax.d'
-		else:
-			continue
-		target_filename = attrs.get('%sFilename' % objectclass)[0]
-		if os.path.exists(os.path.join(PYSHARED_DIR, target_subdir, target_filename)) or os.path.exists(os.path.join('/usr/lib/pymodules/python2.7', target_subdir, target_filename)):
-			try:
-				listener.setuid(0)
-				handler(dn, attrs, [])  # create files in new location
-				listener.setuid(0)
-				__remove_pymodules_links(objectclass, target_subdir, target_filename)  # remove obsolete symlinks
-				listener.setuid(0)
-				__remove_pyshared_file(target_subdir, target_filename)  # drop obsolete pyshared files
-				ud.debug(ud.LISTENER, ud.INFO, 'Migrated %s/%s to dh-python.' % (target_subdir, target_filename))
-			except Exception:
-				ud.debug(ud.LISTENER, ud.ERROR, 'ignoring fatal error %s' % (traceback.format_exc(),))
 
 
 def handler(dn, new, old):
@@ -341,54 +301,6 @@ def remove_python_files(python_basedir, target_subdir, target_filename):
 		return False
 
 
-def __remove_pyshared_file(target_subdir, target_filename):
-	"""Remove pyshared parts of public python module file"""
-	return remove_python_files(PYSHARED_DIR, target_subdir, target_filename)
-
-
-def __remove_pymodules_links(objectclass, target_subdir, target_filename):
-	"""Remove pymodules parts: pyc, pyo, and file itself. Clean up directories in target_filename if empty."""
-	# input validation
-	relative_filename = os.path.join(target_subdir, target_filename)
-	if not relative_filename:
-		ud.debug(ud.LISTENER, ud.ERROR, '%s: No python file to remove.' % (name,))
-		return False
-
-	if relative_filename.startswith('/'):
-		ud.debug(ud.LISTENER, ud.ERROR, '%s: Module path must not be absolute: %s.' % (name, relative_filename))
-		return False
-
-	# trivial checks passed, go for it
-	target_filename_parts = os.path.splitext(target_filename)
-	if len(target_filename_parts) > 1 and target_filename_parts[-1] == ".py":
-		pysupport_filename = ".".join(target_filename_parts[:-1])
-	else:
-		pysupport_filename = target_filename
-
-	pysupport_filename = '%s_%s.public' % (objectclass, pysupport_filename.replace('/', '_'))
-	pysupport_filename = os.path.join(PYSUPPORT_DIR, pysupport_filename)
-
-	if os.path.isfile(pysupport_filename):
-		try:
-			os.unlink(pysupport_filename)
-			ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, pysupport_filename))
-		except OSError as exc:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, pysupport_filename, exc))
-
-	try:
-		p = subprocess.Popen(['/usr/sbin/update-python-modules', '-p'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		(stdout, stderr) = p.communicate()
-	except OSError as exc:
-		ud.debug(ud.LISTENER, ud.ERROR, '%s: update-python-modules -p failed: %s.' % (name, exc))
-
-	if p.returncode == 0:
-		ud.debug(ud.LISTENER, ud.INFO, '%s: symlinks to %s removed.' % (name, relative_filename))
-		return True
-
-	ud.debug(ud.LISTENER, ud.ERROR, '%s: update-python-modules -p failed: %s.' % (name, stderr))
-	return False
-
-
 def create_python_moduledir(python_basedir, target_subdir, module_directory):
 	"""create directory and __init__.py (file or link). Recurse for all parent directories in path module_directory"""
 	# input validation
@@ -450,26 +362,26 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 		if os.path.getsize(python_init_filename) != 0:
 			return
 
-		if python_basedir in (PYTHON_DIR, PYSHARED_DIR):
+		if python_basedir == PYTHON_DIR:
 			# Only remove the file if it was not shipped as part of a debian package.
 			p = subprocess.Popen(['dpkg', '-S', python_init_filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			p.wait()
 			if p.returncode == 0:
 				return
-		else:
-			# remove pyc and pyo
-			basename, ext = os.path.splitext(python_init_filename)
-			if ext == '.py':
-				for ext in ('.pyc', '.pyo'):
-					derived_filename = basename + ext
-					if os.path.exists(derived_filename):
-						os.unlink(derived_filename)
 
 		try:
 			os.unlink(python_init_filename)
 			ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, python_init_filename))
 		except OSError as exc:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, python_init_filename, exc))
+
+		# remove pyc and pyo
+		basename, ext = os.path.splitext(python_init_filename)
+		if ext == '.py':
+			for ext in ('.pyc', '.pyo'):
+				derived_filename = basename + ext
+				if os.path.exists(derived_filename):
+					os.unlink(derived_filename)
 
 	try:
 		os.rmdir(target_path)
