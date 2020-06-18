@@ -12,28 +12,15 @@
 test -n "$connector_s4_ldap_host" || exit 137
 connector_running_on_this_host || exit 137
 
-if [ -e /usr/lib/python2.7/dist-packages/univention/s4connector/s4/main.py ]; then
-	echo "Check for a running connector"
-	pgrep -f "/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main" || fail_test 1
+echo "Check for a running connector"
+pgrep -f "/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main" || fail_test 1
 
-	echo "Try to start a second connector instance"
-	/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main && fail_test 110
+echo "Try to start a second connector instance"
+/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main && fail_test 110
 
-	if [ "$RETVAL" = 110 ]; then
-		pkill -f "/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main"
-		/etc/init.d/univention-s4-connector restart
-	fi
-else
-	echo "Check for a running connector (old)"
-	pgrep -f "/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py" || fail_test 1
-
-	echo "Try to start a second connector instance"
-	/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py && fail_test 110
-
-	if [ "$RETVAL" = 110 ]; then
-		pkill -f "/usr/bin/python2.7 -W ignore /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py"
-		/etc/init.d/univention-s4-connector restart
-	fi
+if [ "$RETVAL" = 110 ]; then
+	pkill -f "/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main"
+	/etc/init.d/univention-s4-connector restart
 fi
 
 exit $RETVAL

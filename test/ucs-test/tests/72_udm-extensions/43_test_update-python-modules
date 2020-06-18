@@ -10,7 +10,7 @@ from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
 from univention.testing.utils import verify_ldap_object, wait_for_replication, fail
 from univention.testing.strings import random_name, random_version, random_ucs_version
-from univention.testing.udm_extensions import *
+from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version
 import subprocess
 import bz2
 import base64
@@ -59,13 +59,6 @@ if __name__ == '__main__':
 			'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
 
 		})
-
-		p1 = subprocess.Popen(["update-python-modules", "-p"], stderr=subprocess.PIPE)
-		(so, se) = p1.communicate()
-		if p1.returncode:
-			fail('ERROR: update-python-modules FAILED: %s' % (se,))
-
-		udm.stop_cli_server()
 
 		output, stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
 		if extension_name not in output:
