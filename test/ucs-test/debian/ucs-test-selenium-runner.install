@@ -1,0 +1,2 @@
+bin/selenium usr/share/ucs-test/
+bin/selenium-pytest usr/share/ucs-test/

@@ -1,8 +1,6 @@
 bin/ldiff usr/bin/
 bin/ucs-test usr/sbin/
 bin/runner usr/share/ucs-test/
-bin/selenium usr/share/ucs-test/
-bin/selenium-pytest usr/share/ucs-test/
 bin/udm-test usr/sbin/
 bin/udm-test-rest usr/sbin/
 univention/testing usr/lib/python2.7/dist-packages/univention
