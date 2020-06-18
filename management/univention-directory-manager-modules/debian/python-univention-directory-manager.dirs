@@ -1,4 +1,1 @@
 var/lib/univention-directory-manager-modules
-usr/share/pyshared/univention/admin/handlers
-usr/share/pyshared/univention/admin/hooks.d
-usr/share/pyshared/univention/admin/syntax.d
