@@ -1,3 +1,9 @@
+univention-management-console (12.0.0-5) unstable; urgency=medium
+
+  * Bug #51521: fix cherrypy incompatibility
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 09:05:04 +0200
+
 univention-management-console (12.0.0-4) unstable; urgency=medium
 
   * temporary fix security failure
