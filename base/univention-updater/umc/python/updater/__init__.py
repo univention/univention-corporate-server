@@ -309,14 +309,13 @@ class Instance(Base):
 
 		def _thread(request):
 			result = {}
-			hookmanager_legacy = univention.hooks.HookManager(HOOK_DIRECTORY_LEGACY)  # , raise_exceptions=False
 			hookmanager = univention.hooks.HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
 
 			hooknames = request.options.get('hooks')
 			MODULE.info('requested hooks: %s' % hooknames)
 			for hookname in hooknames:
 				MODULE.info('calling hook %s' % hookname)
-				result[hookname] = hookmanager.call_hook(hookname) + hookmanager_legacy.call_hook(hookname)
+				result[hookname] = hookmanager.call_hook(hookname)
 
 			MODULE.info('result: %r' % (result,))
 			return result
