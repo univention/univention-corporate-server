@@ -57,6 +57,7 @@ Depends:
  ${python:Depends},
 Recommends:
  univention-appcenter-docker,
+ univention-appcenter-dev,
 Replaces:
  python-univention-appcenter (<= 8.0.11-13),
 Breaks:
