@@ -3445,7 +3445,7 @@ class simplePolicy(simpleLdap):
 			elif faked_policy_reference:
 				policies.append(faked_policy_reference)
 
-		self.__load_policies(policies)
+			self.__load_policies(policies)
 
 		if hasattr(self, '_custom_policy_result_map'):
 			self._custom_policy_result_map()

@@ -1,4 +1,4 @@
-univention-directory-manager-modules (15.0.0-6) unstable; urgency=medium
+univention-directory-manager-modules (15.0.0-7) unstable; urgency=medium
 
   * Bug #51506: remove pyshared files
 
