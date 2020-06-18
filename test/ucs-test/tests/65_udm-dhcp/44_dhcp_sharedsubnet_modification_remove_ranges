@@ -18,7 +18,7 @@ if __name__ == '__main__':
 		dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
 		dhcp_shared_network = udm.create_object('dhcp/shared', name=uts.random_name(), superordinate=dhcp_service)
 
-		ranges = ['10.20.30.1 10.20.30.5', '10.20.30.6 10.20.30.10', '10.20.30.15 10.20.30.20', '10.20.30.25 10.20.20.30.30']
+		ranges = ['10.20.30.1 10.20.30.5', '10.20.30.6 10.20.30.10', '10.20.30.15 10.20.30.20', '10.20.30.25 10.20.30.30']
 		dhcp_shared_subnet = udm.create_object('dhcp/sharedsubnet', subnet='10.20.30.0', subnetmask='24', superordinate=dhcp_shared_network, append={'range': ranges})
 
 		udm.modify_object('dhcp/sharedsubnet', dn=dhcp_shared_subnet, superordinate=dhcp_shared_network, remove={'range': ranges[:2]})
