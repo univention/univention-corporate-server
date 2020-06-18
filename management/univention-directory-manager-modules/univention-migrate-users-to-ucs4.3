@@ -203,7 +203,7 @@ class Migration(object):
 					pass
 
 				if not disabled:
-					disabled = univention.admin.password.is_locked(user.get('userPassword', [b''])[0])
+					disabled = univention.admin.password.is_locked(user.get('userPassword', [b''])[0].decode('UTF-8'))
 
 			shadowLastChange = user.get('shadowLastChange', [None])[0]
 			shadowMax = user.get('shadowMax', [None])[0]
