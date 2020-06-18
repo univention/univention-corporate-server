@@ -3448,14 +3448,7 @@ class simplePolicy(simpleLdap):
 			elif faked_policy_reference:
 				policies.append(faked_policy_reference)
 
-			# the referring object does not exist yet
-			if not self.referring_object_dn == self.referring_object_position_dn:
-				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=policies)
-			else:
-				result = self.lo.getPolicies(self.referring_object_position_dn, policies=policies)
-			for policy_oc, attrs in result.items():
-				if univention.admin.objects.ocToType(policy_oc) == self.module:
-					self.policy_attrs = attrs
+			self.__load_policies(policies)
 
 		if hasattr(self, '_custom_policy_result_map'):
 			self._custom_policy_result_map()
@@ -3467,6 +3460,17 @@ class simplePolicy(simpleLdap):
 
 			self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
 			self.polinfo = self._post_unmap(self.polinfo, values)
+
+	def __load_policies(self, policies=None):
+		if not self.policy_attrs:
+			# the referring object does not exist yet
+			if not self.referring_object_dn == self.referring_object_position_dn:
+				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn), policies=policies)
+			else:
+				result = self.lo.getPolicies(self.referring_object_position_dn, policies=policies)
+			for policy_oc, attrs in result.items():
+				if univention.admin.objects.ocToType(policy_oc) == self.module:
+					self.policy_attrs = attrs
 
 	def __getitem__(self, key):
 		if not self.resultmode:
@@ -3502,17 +3506,10 @@ class simplePolicy(simpleLdap):
 			return {}
 
 		fixed_attributes = {}
-		if not self.policy_attrs:
-			if not self.referring_object_dn == self.referring_object_position_dn:
-				result = self.lo.getPolicies(self.lo.parentDn(self.referring_object_dn))
-			else:
-				result = self.lo.getPolicies(self.referring_object_position_dn)
-			for key, value in result.items():
-				if univention.admin.objects.ocToType(key) == self.module:
-					self.policy_attrs = value
+		self.__load_policies(None)
 
 		for attr_name, value_dict in self.policy_attrs.items():
-			fixed_attributes[self.mapping.unmapName(attr_name)] = value_dict.get('fixed', 0)
+			fixed_attributes[self.mapping.unmapName(attr_name)] = value_dict.get('fixed', False)
 
 		return fixed_attributes
 
@@ -3527,7 +3524,7 @@ class simplePolicy(simpleLdap):
 
 		if self.has_property('emptyAttributes'):
 			for attrib in simpleLdap.__getitem__(self, 'emptyAttributes'):
-				empty_attributes[self.mapping.unmapName(attrib)] = 1
+				empty_attributes[self.mapping.unmapName(attrib)] = True
 
 		return empty_attributes
 
