@@ -34,6 +34,8 @@ import univention.uldap
 import univention.config_registry as ucr
 from samba import check_password_quality as samba_check_password_quality
 
+from ldap.filter import filter_format
+
 
 class Check:
 
@@ -94,9 +96,9 @@ class Check:
 		# username or kerberos principal
 		try:
 			if '@' in self.username:
-				dn = self.lo.searchDn('krb5PrincipalName=%s' % username)[0]
+				dn = self.lo.searchDn(filter_format('krb5PrincipalName=%s', [username]))[0]
 			else:
-				dn = self.lo.searchDn('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))' % username)[0]
+				dn = self.lo.searchDn(filter_format('(&(uid=%s)(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson))))', [username]))[0]
 		except IndexError:
 			raise ValueError('User was not found.')
 
@@ -105,9 +107,8 @@ class Check:
 			self.min_length = int(policy_result['univentionPolicyPWHistory']['univentionPWLength']['value'][0])
 			self.history_length = int(policy_result['univentionPolicyPWHistory']['univentionPWHistoryLen']['value'][0])
 			if policy_result['univentionPolicyPWHistory'].get('univentionPWQualityCheck'):
-				univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0]
-				if univentionPasswordQualityCheck.lower() in ['yes', 'true', '1', 'on']:
-					self.enableQualityCheck = True
+				univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0].decode('ASCII', 'replace')
+				self.enableQualityCheck = self.ConfigRegistry.is_true(value=univentionPasswordQualityCheck)
 		self.pwhistory = self.lo.search(base=dn, attr=['pwhistory'])[0][1].get('pwhistory')
 
 	def check(self, password, username=None, displayname=None):

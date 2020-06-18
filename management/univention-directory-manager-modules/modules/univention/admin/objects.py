@@ -245,12 +245,12 @@ def fixedAttribute(object, key):
 
 	:param object: |UDM| object.
 	:param key: |UDM| property name
-	:returns: `1` if the property is fixed, `0` otherwise.
+	:returns: `True` if the property is fixed, `False` otherwise.
 	"""
 	if not hasattr(object, 'fixedAttributes'):
-		return 0
+		return False
 
-	return object.fixedAttributes().get(key, 0)
+	return object.fixedAttributes().get(key, False)
 
 
 def emptyAttribute(object, key):
@@ -260,12 +260,12 @@ def emptyAttribute(object, key):
 
 	:param object: |UDM| object.
 	:param key: |UDM| property name
-	:returns: `1` if the property is empty, `0` otherwise.
+	:returns: `True` if the property is empty, `False` otherwise.
 	"""
 	if not hasattr(object, 'emptyAttributes'):
-		return 0
+		return False
 
-	return object.emptyAttributes().get(key, 0)
+	return object.emptyAttributes().get(key, False)
 
 
 def getPolicyReference(object, policy_type):
