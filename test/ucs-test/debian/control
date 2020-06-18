@@ -53,6 +53,7 @@ Depends:
  python-yaml,
  ucs-test-modules-all | ucs-test-module,
  univention-config,
+ univention-nagios-client,
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
