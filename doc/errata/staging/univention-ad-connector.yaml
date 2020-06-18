@@ -3,12 +3,16 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-ad-connector
-fix: 13.0.0-41A~4.4.0.202006181644
+fix: 13.0.0-42A~4.4.0.202006182351
 desc: |
  This update addresses the following issues:
  * The flag pwdChangeNextLogin is now synced bidirectionally
    by the adconnector
- * Backport of Diff-Mode from S4-Connector
- * Ignore changes to certain attributes
- * Basic profiling support via UCR con*/ad/poll/profiling
+ * The Diff-Mode synchronization technique originally implemented
+   for the S4-Connector has been merged to the AD-Connector
+ * Ignore changes to a list of irrelevant attributes.
+   The list can be extended via a new UCR variable
+   connector/ad/mapping/attributes/irrelevant
+ * Basic profiling support via UCR connector/ad/poll/profiling
+ * Log the active mapping on startup
 bug: [51298,51462,18501,51518]
