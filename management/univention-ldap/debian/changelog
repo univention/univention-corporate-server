@@ -1,4 +1,4 @@
-univention-ldap (16.0.0-3) unstable; urgency=medium
+univention-ldap (16.0.0-4) unstable; urgency=medium
 
   * Bug #51419: Do and undo UCS-5.0-0 version bump
 
