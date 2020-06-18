@@ -1,4 +1,4 @@
-univention-s4-connector (13.0.2-73) UNRELEASED; urgency=medium
+univention-s4-connector (13.0.2-73) unstable; urgency=medium
 
   * Bug #51298: Add dependency to heimdal-clients and restart the umc-server
     after this update
