@@ -14,7 +14,3 @@ var/lib/univention-system-setup/gateway6.post
 var/lib/univention-system-setup/nameserver.post
 var/lib/univention-system-setup/dnsforwarder.post
 var/lib/univention-system-setup/httpproxy.post
-usr/lib/univention-system-setup/scripts/25_defaultlocale
-usr/lib/univention-system-setup/scripts/45_modules
-usr/lib/univention-system-setup/scripts/55_system_settings
-usr/lib/univention-system-setup/scripts/60_join

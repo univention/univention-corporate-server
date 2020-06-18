@@ -84,7 +84,6 @@ echo "no-ldap" > /var/run/univention-system-setup.ldap
 echo "Starting re-configuration of locales"
 run-parts -v /usr/lib/univention-system-setup/scripts/15_keyboard
 run-parts -v /usr/lib/univention-system-setup/scripts/20_language
-run-parts -v /usr/lib/univention-system-setup/scripts/25_defaultlocale
 
 # Do not allow the UMC to be restarted, webserver is OK, but
 # make sure the webserver uses the same certificates during setup.
@@ -154,9 +153,6 @@ else
 fi
 # set root password
 /usr/lib/univention-system-setup/scripts/10_basis/18root_password
-
-# set init-script configuration
-/usr/lib/univention-system-setup/scripts/10_basis/20initscripts
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
@@ -241,8 +237,6 @@ else
 	fi
 	ln -snf "$fqdn" "/etc/univention/ssl/$hostname"
 fi
-
-run-parts -v /usr/lib/univention-system-setup/scripts/45_modules
 
 # Re-create sources.list files
 ucr commit /etc/apt/sources.list.d/*
