@@ -59,6 +59,11 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-3
 	univention-config-registry set connector/s4/mapping/group/ignorelist?"${connector_s4_mapping_group_ignorelist},Console Logon"
 fi
 
+# This S4-connector update depends on a Heimdal update, which needs a restart of the umc-server (Bug 51462)
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" eq 13.0.2-73; then
+	service univention-management-console-server restart
+fi
+
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
 							   connector/s4/poll/sleep?5 \
 							   connector/s4/retryrejected?10 \
