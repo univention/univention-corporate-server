@@ -1091,9 +1091,10 @@ for appcenter_cache in apps_cache.get_appcenter_caches():
             app_name = '{}/{}={}'.format(cache.get_ucs_version(), app.id, app.version)
             print(app_name)
             if app.docker:
-                if app.docker_image and app.docker_image.lower().startswith('docker.software-univention.de/ucs-appbox'):
-                    print('found appbox image {}, do nothing'.format(app.docker_image))
-                    sys.exit(0)
+                if app.docker_image:
+                    if app.docker_image.lower().startswith('docker.software-univention.de/ucs-appbox') or app.docker_image.lower().startswith('docker-test.software-univention.de/ucs-appbox'):
+                        print('found appbox image {}, do nothing'.format(app.docker_image))
+                        sys.exit(0)
                 print('transfer {}'.format(app_name))
                 #transfer = get_action('internal-transfer-images')
                 #print(dir(transfer))
