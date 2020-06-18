@@ -275,7 +275,13 @@ Type=bool
 Categories=service-adcon
 
 [con.*/ad/poll/profiling]
-Description[de]=Aktivierung von "POLL FROM Log-Meldungen zur einfachen Zeitmessung (default ist False).
+Description[de]=Aktivierung von "POLL FROM" Log-Meldungen zur einfachen Zeitmessung (default ist False).
 Description[en]=Activate some "POLL FROM" log messages for simple timing measurements (default is False).
+Type=bool
+Categories=service-adcon
+
+[con.*/ad/mapping/attributes/irrelevant]
+Description[de]=Kommaseparierte Liste von AD-Attibuten die für die Synchronisation irrelevant sind und ignoriert werden sollen.
+Description[en]=Comma separated list of AD attributes that are irrelevant for synchronization and shall be ignored.
 Type=bool
 Categories=service-adcon

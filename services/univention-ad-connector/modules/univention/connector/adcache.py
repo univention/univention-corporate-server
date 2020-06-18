@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import base64
+from base64 import b64decode, b64encode
 import inspect
 import sqlite3
 
@@ -40,14 +40,6 @@ import univention.debug2 as ud
 
 def func_name():
 	return inspect.currentframe().f_back.f_code.co_name
-
-
-def _decode_base64(val):
-	return base64.decodestring(val)
-
-
-def _encode_base64(val):
-	return base64.encodestring(val)
 
 
 class EntryDiff(object):
@@ -73,7 +65,7 @@ class EntryDiff(object):
 		return set(o for o in self.intersect if set(self.old[o]) != set(self.new[o]))
 
 
-class ADCache:
+class ADCache(object):
 
 	"""
 			Local cache for the current AD state of the adconnector.
@@ -140,7 +132,7 @@ class ADCache:
 		for line in rows:
 			if not entry.get(line[0]):
 				entry[str(line[0])] = []
-			entry[line[0]].append(_decode_base64(line[1]))
+			entry[line[0]].append(b64decode(line[1]))
 
 		return entry
 
@@ -277,7 +269,7 @@ class ADCache:
 			for value in entry[attr]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), b64encode(value))
 					)
 				)
 
@@ -307,7 +299,7 @@ class ADCache:
 			for value in entry[attribute]:
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), b64encode(value))
 					)
 				)
 		for attribute in diff['changed']:
@@ -318,13 +310,13 @@ class ADCache:
 						"DELETE FROM data WHERE data.id IN (\
 							SELECT data.id FROM DATA INNER JOIN ATTRIBUTES ON data.attribute_id=attributes.id \
 							where attributes.id=? and guid_id = ? and value = ? \
-						);", (str(attr_id), str(guid_id), _encode_base64(value))
+						);", (str(attr_id), str(guid_id), b64encode(value))
 					)
 				)
 			for value in set(entry.get(attribute)) - set(old_entry.get(attribute)):
 				sql_commands.append(
 					(
-						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), _encode_base64(value))
+						"INSERT INTO DATA(guid_id,attribute_id,value) VALUES(?,?,?);", (str(guid_id), str(attr_id), b64encode(value))
 					)
 				)
 

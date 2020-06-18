@@ -449,6 +449,9 @@ class ucs:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
 
+		irrelevant_attributes = self.baseConfig.get('%s/ad/mapping/attributes/irrelevant' % (self.CONFIGBASENAME,), '')
+		self.irrelevant_attributes = set(irrelevant_attributes.split(','))
+
 		ud.debug(ud.LDAP, ud.INFO, "init finished")
 
 	def __del__(self):
@@ -1246,11 +1249,6 @@ class ucs:
 			guid_blob = original_object.get('attributes').get('objectGUID')[0]
 			guid = str(ndr_unpack(misc.GUID, guid_blob))
 
-			ignore_attributes = set(['uSNChanged', 'whenChanged',
-				'lastLogon', 'logonCount',
-				'badPwdCount', 'badPasswordTime', 'dSCorePropagationData', 'msDS-RevealedDSAs',
-				'msDS-FailedInteractiveLogonCount', 'msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon',
-				'msDS-LastFailedInteractiveLogonTime', 'msDS-LastSuccessfulInteractiveLogonTime'])
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:
 				old_ad_object = self.adcache.get_entry(guid)
@@ -1267,7 +1265,7 @@ class ucs:
 						if old_ad_object.get(attr) != original_attributes.get(attr):
 							if attr not in object['changed_attributes']:
 								object['changed_attributes'].append(attr)
-					if not (set(object['changed_attributes']) - ignore_attributes):
+					if not (set(object['changed_attributes']) - self.irrelevant_attributes):
 						ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
 						ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (object['changed_attributes'],))
 						return True
