@@ -38,6 +38,7 @@ connections to remote |UMC| servers
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
 import ssl
 import json
 import locale
@@ -137,7 +138,10 @@ class HTTPError(Exception):
 		return '<HTTPError %s>' % (self,)
 
 	def __str__(self):
-		return '%s on %s (%s): %s' % (self.status, self.hostname, self.request.path, self.response.body)
+		traceback = ''
+		if self.status >= 500 and isinstance(self.response.body, dict) and isinstance(self.response.body.get('message'), six.string_types) and 'Traceback (most recent call last)' in self.response.body['message']:
+			traceback = '\n%s' % (self.response.body['message'],)
+		return '%s on %s (%s): %s%s' % (self.status, self.hostname, self.request.path, self.response.body, traceback)
 
 
 class HTTPRedirect(HTTPError):
