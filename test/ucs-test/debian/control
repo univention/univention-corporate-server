@@ -513,6 +513,7 @@ Depends:
  python-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
+ ldb-tools,
 Provides:
  ucs-test-module,
 Description: Test scripts for univention-ad-connector.

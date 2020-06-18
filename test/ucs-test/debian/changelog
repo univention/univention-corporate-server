@@ -1,3 +1,9 @@
+ucs-test (9.0.3-233) unstable; urgency=medium
+
+  * Bug #51518: ucs-test-adconnector depends on ldb-tools
+
+ -- Arvid <requate@univention.de>  Thu, 18 Jun 2020 23:50:06 +0200
+
 ucs-test (9.0.3-232) unstable; urgency=medium
 
   * Bug #51518: ADC test for replicaiton preformance for trivial
