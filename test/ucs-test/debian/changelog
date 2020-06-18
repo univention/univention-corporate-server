@@ -1,3 +1,15 @@
+ucs-test (10.0.0-6) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:33:29 +0200
+
+ucs-test (10.0.0-6) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:33:29 +0200
+
 ucs-test (10.0.0-5) unstable; urgency=medium
 
   * Bug #51506: remove python-support legacy
