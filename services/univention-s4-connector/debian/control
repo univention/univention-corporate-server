@@ -8,7 +8,6 @@ Build-Depends:
  dh-python,
  python-all,
  python3-all,
- heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  univention-config-dev,
  univention-ucs-translation-template,
 
@@ -66,6 +65,7 @@ Depends:
  univention-heimdal-common,
  univention-join (>= 10.0.0-12),
  univention-ldap-server (>= 11.0.10-2),
+ heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  univention-samba4 (>= 6.0.10-3),
  ${misc:Depends},
 Recommends:
