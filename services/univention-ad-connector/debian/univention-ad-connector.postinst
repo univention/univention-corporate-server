@@ -74,7 +74,8 @@ univention-config-registry set connector/ad/listener/dir?/var/lib/univention-con
 			connector/ad/mapping/group/ignorelist?"Windows Hosts,DC Slave Hosts,DC Backup Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Computers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self" \
 			connector/ad/mapping/container/ignorelist?"mail,kerberos" \
 			connector/ad/autostart?yes \
-			directory/manager/web/modules/users/user/properties/username/syntax?"uid_umlauts"
+			directory/manager/web/modules/users/user/properties/username/syntax?"uid_umlauts" \
+			connector/ad/mapping/attributes/irrelevant?"uSNChanged,whenChanged,lastLogon,logonCount,badPwdCount,badPasswordTime,dSCorePropagationData,msDS-RevealedDSAs,msDS-FailedInteractiveLogonCount,msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon,msDS-LastFailedInteractiveLogonTime,msDS-LastSuccessfulInteractiveLogonTime"
 
 
 if [ ! -d /var/lib/univention-connector/ad ]; then
