@@ -651,14 +651,13 @@ class access(object):
 		for key in (empty | set(pattrs) | fixed) - SKIP:
 			if key not in values or key in fixed:
 				value = [] if key in empty else pattrs.get(key, [])
-				value = [x.decode('UTF-8') for x in value]   # TODO: This would be ugly here
 				univention.debug.debug(
 					univention.debug.LDAP, univention.debug.INFO,
-					"getPolicies: %s sets: %s=%s" % (policy_dn, key, value))
+					"getPolicies: %s sets: %s=%r" % (policy_dn, key, value))
 				values[key] = {
 					'policy': policy_dn,
 					'value': value,
-					'fixed': 1 if key in fixed else 0,
+					'fixed': key in fixed,
 				}
 
 	@_fix_reconnect_handling

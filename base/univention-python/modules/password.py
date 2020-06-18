@@ -103,7 +103,7 @@ class Check(object):
 			self.min_length = int(policy_result['univentionPolicyPWHistory']['univentionPWLength']['value'][0])
 			self.history_length = int(policy_result['univentionPolicyPWHistory']['univentionPWHistoryLen']['value'][0])
 			if policy_result['univentionPolicyPWHistory'].get('univentionPWQualityCheck'):
-				univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0]
+				univentionPasswordQualityCheck = policy_result['univentionPolicyPWHistory']['univentionPWQualityCheck']['value'][0].decode('ASCII', 'replace')
 				if univentionPasswordQualityCheck.lower() in ['yes', 'true', '1', 'on']:
 					self.enableQualityCheck = True
 		self.pwhistory = self.lo.search(base=dn, attr=['pwhistory'])[0][1].get('pwhistory')

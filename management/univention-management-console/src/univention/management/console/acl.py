@@ -390,18 +390,16 @@ class LDAP_ACLs(ACLs):
 
 		if policy and 'umcPolicyGrantedOperationSet' in policy:
 			for value in policy['umcPolicyGrantedOperationSet']['value']:
-				self._append(LDAP_ACLs.FROM_USER, self.lo.get(value))
+				self._append(LDAP_ACLs.FROM_USER, self.lo.get(value.decode('UTF-8')))
 
 		# TODO: check for nested groups
 		groupDNs = self.lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
 
 		for gDN in groupDNs:
 			policy = self._get_policy_for_dn(gDN)
-			if not policy:
-				continue
-			if 'umcPolicyGrantedOperationSet' in policy:
+			if policy and 'umcPolicyGrantedOperationSet' in policy:
 				for value in policy['umcPolicyGrantedOperationSet']['value']:
-					self._append(LDAP_ACLs.FROM_GROUP, self.lo.get(value))
+					self._append(LDAP_ACLs.FROM_GROUP, self.lo.get(value.decode('UTF-8')))
 
 		# make the ACLs unique
 		getvals = operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')
