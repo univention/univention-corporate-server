@@ -665,32 +665,18 @@ function ad_connector_restart ()
 function connector_mapping_adjust ()
 {
 	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/connector/ad/main.py"
-	if [ -e "$MAIN_FILE" ]; then
-		cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
-		if [ -n "$3" ]; then
-			sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.ad_mapping['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter = ucs_test_filter + '(uid=$2))'\nmapping.ad_mapping['$1'].ignore_filter = ucs_test_filter" "$MAIN_FILE"
-		else
-			sed -i "/^mapping = imp.*/a mapping.ad_mapping['$1'].ignore_subtree = mapping.ad_mapping['$1'].ignore_subtree + ['$2']" "$MAIN_FILE"
-		fi
+	cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+	if [ -n "$3" ]; then
+		sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.ad_mapping['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter = ucs_test_filter + '(uid=$2))'\nmapping.ad_mapping['$1'].ignore_filter = ucs_test_filter" "$MAIN_FILE"
 	else
-		MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
-		cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
-		if [ -n "$3" ]; then
-			sed -i "s/import mapping/import mapping\nucs_test_filter = mapping.ad_mapping ['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter=ucs_test_filter+'(uid=$2))'\nmapping.ad_mapping ['$1'].ignore_filter = ucs_test_filter/" "$MAIN_FILE"
-		else
-			sed -i "s/import mapping/import mapping\nmapping.ad_mapping['$1'].ignore_subtree = mapping.ad_mapping['$1'].ignore_subtree + ['$2']/" "$MAIN_FILE"
-		fi
+		sed -i "/^mapping = imp.*/a mapping.ad_mapping['$1'].ignore_subtree = mapping.ad_mapping['$1'].ignore_subtree + ['$2']" "$MAIN_FILE"
 	fi
-
 }
 
 
 function connector_mapping_restore ()
 {
 	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/connector/ad/main.py"
-	if [ ! -e "$MAIN_FILE" ]; then
-		MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
-	fi
 	mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
 }
 

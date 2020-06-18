@@ -41,8 +41,6 @@ COMMA := ,
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR)
-	mkdir -p debian/ucs-test-udm/usr/share/pyshared/univention/
-	mv debian/ucs-test-udm/usr/lib/python2.7/dist-packages/univention/admin debian/ucs-test-udm/usr/share/pyshared/univention/
 
 override_dh_auto_test:
 	./lint
