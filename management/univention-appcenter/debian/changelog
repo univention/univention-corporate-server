@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-0) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2020 15:13:51 +0200
+
 univention-appcenter (9.0.0-3) unstable; urgency=medium
 
   * Bug #51419: Postgresql 11 templates

@@ -407,8 +407,6 @@ wait_for_repo_server () {
 install_ucs_test () {
 	wait_for_repo_server || return 1
 	install_with_unmaintained ucs-test || return 1
-	install_selenium || install_selenium
-	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
 }
 
 install_ucs_test_from_errata_test () {
@@ -526,12 +524,6 @@ remove_s4connector_tests_and_mark_tests_manual_installed () {
 
 install_ucs_windows_tools () {
 	install_with_unmaintained ucs-windows-tools
-}
-
-install_selenium () {
-	install_with_unmaintained python3-pip python-pip xvfb chromium chromium-driver python-xvfbwrapper
-	pip install selenium==3.6.0
-	pip3 install selenium
 }
 
 run_apptests () {

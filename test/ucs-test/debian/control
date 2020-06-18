@@ -542,6 +542,20 @@ Provides:
 Description: Test UMC modules
  This package includes some test UMC modules
 
+Package: ucs-test-selenium-runner
+Architecture: all
+Depends:
+ chromium,
+ chromium-driver,
+ python-selenium,
+ python-xvfbwrapper,
+ python3-selenium,
+ python3-xvfbwrapper,
+ xvfb,
+ ${misc:Depends},
+Description: Dependency for Selenium Tests
+ This package includes dependencies for selenium tests
+
 Package: ucs-test-selenium
 Architecture: all
 Recommends:
@@ -549,7 +563,9 @@ Recommends:
 Provides:
  ucs-test-module,
 Depends:
+ ucs-test-selenium-runner,
  ucs-test-libs (= ${source:Version}),
+ xvfb,
  ${misc:Depends},
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC
