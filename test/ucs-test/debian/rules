@@ -41,6 +41,8 @@ COMMA := ,
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR)
+	touch debian/ucs-test-udm/usr/lib/python2.7/dist-packages/univention/admin/handlers/tests/__init__.py
+	touch debian/ucs-test-udm/usr/lib/python3/dist-packages/univention/admin/handlers/tests/__init__.py
 
 override_dh_auto_test:
 	./lint
