@@ -1,4 +1,16 @@
-univention-directory-manager-modules (15.0.0-2) unstable; urgency=medium
+univention-directory-manager-modules (15.0.0-7) unstable; urgency=medium
+
+  * Bug #51506: remove pyshared files
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 15:43:40 +0200
+
+univention-directory-manager-modules (15.0.0-5) unstable; urgency=medium
+
+  * Bug #50648 UDM policies: fix handling of decoding policy values
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 13:45:44 +0200
+
+univention-directory-manager-modules (15.0.0-4) unstable; urgency=medium
 
   * TBD: fix type of users/user:groups
 
