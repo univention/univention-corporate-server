@@ -512,11 +512,6 @@ install_ucsschool () {
 	return $rv
 }
 
-install_coverage () {
-	install_with_unmaintained python-pip python-all-dev python-all-dbg python-setuptools python-docutils python-pkg-resources
-	pip install coverage
-}
-
 remove_s4connector_tests_and_mark_tests_manual_installed () {
 	univention-remove --yes ucs-test-s4connector
 	apt-mark manual $(apt-mark showauto | grep ^ucs-test-)
