@@ -1,3 +1,10 @@
+univention-self-service (4.0.3-30) unstable; urgency=medium
+
+  * Bug #51259: added seperate blacklist/whitelist variables for profiledata
+  	and account deregistration
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 18 Jun 2020 09:25:55 +0200
+
 univention-self-service (4.0.3-29) unstable; urgency=medium
 
   * Bug #51351: only add enabled self service links to the menu
