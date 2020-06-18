@@ -52,7 +52,6 @@ import PIL
 import traceback
 import io
 from io import BytesIO
-import locale
 from operator import itemgetter
 
 import six
@@ -90,8 +89,6 @@ def import_syntax_files():
 			syntax_files = (os.path.join(syntax_d, f) for f in os.listdir(syntax_d) if f.endswith('.py'))
 
 			for fn in syntax_files:
-				if fn.startswith('/usr/lib/pymodules/python2.7/'):
-					ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 				try:
 					with io.open(fn, 'rb') as fd:
 						exec(fd.read(), sys.modules[__name__].__dict__)
