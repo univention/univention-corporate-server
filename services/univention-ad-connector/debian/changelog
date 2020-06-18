@@ -1,4 +1,4 @@
-univention-ad-connector (13.0.0-38) unstable; urgency=medium
+univention-ad-connector (13.0.0-39) unstable; urgency=medium
 
   * Bug #51462: Add dependency to heimdal-clients and restart the umc-server
     after this update
