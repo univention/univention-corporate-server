@@ -60,7 +60,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-3
 fi
 
 # This S4-connector update depends on a Heimdal update, which needs a restart of the umc-server (Bug 51462)
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.2-75; then
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.2-76; then
 	service univention-management-console-server restart
 fi
 
