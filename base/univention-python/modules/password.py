@@ -134,7 +134,7 @@ class Check(object):
 				if cracklib.VeryFascistCheck(password) == password:
 					return True
 			except ValueError as exc:
-				raise CheckFailed(str(exc).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))  # FIXME: remove this by decoding properly
+				raise CheckFailed(str(exc))
 
 
 # def test_case1():
