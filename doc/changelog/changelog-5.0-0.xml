@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en" xmlns:u="https://docs.software-univention.de/2015-02-25/">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<itemizedlist>
+			<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:installer">
+		<title>Univention Installer</title>
+		<itemizedlist>
+			<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic">
+		<title>Basic system services</title>
+
+		<section id="changelog:basic:kernel">
+			<title>Linux kernel and firmware packages</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basis:ucr">
+			<title>Univention Configuration Registry</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+
+			<section id="changelog:basis:ucr:template">
+				<title>Changes to templates and modules</title>
+				<itemizedlist>
+					<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+		</section>
+
+		<section id="changelog:basis:boot">
+			<title>Boot Loader</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basis:other">
+			<title>Other system services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:domain">
+		<title>Domain services</title>
+
+		<section id="changelog:domain:openldap">
+			<title>OpenLDAP</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+
+			<section id="changelog:domain:openldap:acl">
+				<title>LDAP ACL changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
+			<section id="changelog:domain:openldap:schema">
+				<title>LDAP schema changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
+			<section id="changelog:domain:openldap:replication">
+				<title>Listener/Notifier domain replication</title>
+				<itemizedlist>
+					<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+		</section>
+
+		<section id="changelog:domain:dnsserver">
+			<title>DNS server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:umc">
+		<title>Univention Management Console</title>
+
+		<section id="changelog:umc:web">
+			<title>Univention Management Console web interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:portal">
+			<title>Univention Portal</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:server">
+			<title>Univention Management Console server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:appcenter">
+			<title>Univention App Center</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:udmcli">
+			<title>&ucsUDM; UMC modules and command line interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:setup">
+			<title>Modules for system settings / setup wizard</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:update">
+			<title>Software update module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:join">
+			<title>Domain join module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:user">
+			<title>Users module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:reports">
+			<title>Univention Directory Reports</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:computers">
+			<title>Computers module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:dns">
+			<title>DNS module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:dhcp">
+			<title>DHCP module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:license">
+			<title>License module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:diagnostic">
+			<title>System diagnostic module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:top">
+			<title>Process overview module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:share">
+			<title>Shares module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:policy">
+			<title>Policies</title>
+			<itemizedlist>
+				<listitem><simpara>
+						Fix error in output of <command>univention_policy_result --help</command> (<u:bug>35182</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:printer">
+			<title>Printers module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:mail">
+			<title>Mail</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:quota">
+			<title>Filesystem quota module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:ucr">
+			<title>Univention Configuration Registry module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:ldap">
+			<title>LDAP directory browser</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:other">
+			<title>Other modules</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:development">
+			<title>Development of modules for &ucsUMC;</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:lib">
+		<title>Univention base libraries</title>
+		<itemizedlist>
+			<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:deployment">
+		<title>Software deployment</title>
+		<itemizedlist>
+			<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+
+		<section id="changelog:deployment:pkgdb">
+			<title>Software monitor</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:deployment:cli">
+			<title>Software deployment command line tools</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:service">
+		<title>System services</title>
+
+		<section id="changelog:service:postgresql">
+			<title>PostgreSQL</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:mysql">
+			<title>MariaDB</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:docker">
+			<title>Docker</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:saml">
+			<title>SAML</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:selfservice">
+			<title>Univention self service</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:mail">
+			<title>Mail services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:dovecot">
+			<title>Dovecot</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:postfix">
+			<title>Postfix</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:virus">
+			<title>Spam/virus detection and countermeasures</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:print">
+			<title>Printing services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:apache">
+			<title>Apache</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:radius">
+			<title>RADIUS</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:proxy">
+			<title>Proxy services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:kerberos">
+			<title>Kerberos</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:ssl">
+			<title>SSL</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:systeminfo">
+			<title>Univention System Info</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:dhcp">
+			<title>DHCP server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:pam">
+			<title>PAM / Local group cache</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:nfs">
+			<title>NFS</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:backup">
+			<title>Bacula and Backup</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:other">
+			<title>Other services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:virt">
+		<title>Virtualization</title>
+
+		<section id="changelog:virt:operation">
+			<title>Operate UCS as virtual machine</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:container">
+		<title>Container Technologies</title>
+		<itemizedlist>
+			<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:win">
+		<title>Services for Windows</title>
+
+		<section id="changelog:win:samba">
+			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:takeover">
+			<title>Univention AD Takeover</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:s4c">
+			<title>Univention S4 Connector</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:adc">
+			<title>Univention Active Directory Connection</title>
+			<itemizedlist>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->
