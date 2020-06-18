@@ -101,8 +101,6 @@ def update():
 				continue
 			package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
 			ud.debug(ud.ADMIN, ud.INFO, 'admin.modules.update: importing "%s"' % (package,))
-			if dir.startswith('/usr/lib/pymodules/python2.7/') and not file.endswith('__init__.py'):
-				ud.debug(ud.ADMIN, ud.INFO, 'Warning: still importing code from /usr/lib/pymodules/python2.7. Migration to dh_python is necessary!')
 			modulepackage = '.'.join(package.split(os.path.sep))
 			m = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))
 			m.initialized = False
