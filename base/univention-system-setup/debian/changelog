@@ -1,3 +1,9 @@
+univention-system-setup (13.0.0-4) unstable; urgency=medium
+
+  * Bug #33029: remove obsolete USS scripts paths
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 15:10:24 +0200
+
 univention-system-setup (13.0.0-3) unstable; urgency=medium
 
   * Bug #51461: Do not remove the debian CD during the debian installer
