@@ -1,9 +1,3 @@
-univention-ldap (16.0.0-4) unstable; urgency=medium
-
-  * Do not recommend univention-virtual-machine-manager-schema
-
- -- Florian Best <best@univention.de>  Wed, 17 Jun 2020 22:54:13 +0200
-
 univention-ldap (16.0.0-3) unstable; urgency=medium
 
   * Bug #51419: Do and undo UCS-5.0-0 version bump
