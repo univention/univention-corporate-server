@@ -89,6 +89,7 @@ chown "_apt" "$CACHE"
 	done
 
 	apt-ftparchive packages . >Packages
+	chown _apt Packages
 	check_returnvalue $? "Failed to create ftparchive directory"
 	gzip -k Packages
 
