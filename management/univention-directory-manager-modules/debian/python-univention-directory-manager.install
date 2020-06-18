@@ -19,17 +19,3 @@ modules/univention/udm usr/lib/python2.7/dist-packages/univention/
 python-lib/*.py usr/lib/python2.7/dist-packages/univention/lib
 listener/*.py usr/lib/univention-directory-listener/system/
 18python-univention-directory-manager.inst usr/lib/univention-install/
-modules/univention/admin/handlers/__init__.py usr/share/pyshared/univention/admin/handlers/
-modules/univention/admin/handlers/dhcp/__init__.py usr/share/pyshared/univention/admin/handlers/dhcp/
-modules/univention/admin/handlers/mail/__init__.py usr/share/pyshared/univention/admin/handlers/mail/
-modules/univention/admin/handlers/nagios/__init__.py usr/share/pyshared/univention/admin/handlers/nagios/
-modules/univention/admin/handlers/container/__init__.py usr/share/pyshared/univention/admin/handlers/container/
-modules/univention/admin/handlers/policies/__init__.py usr/share/pyshared/univention/admin/handlers/policies/
-modules/univention/admin/handlers/shares/__init__.py usr/share/pyshared/univention/admin/handlers/shares/
-modules/univention/admin/handlers/users/__init__.py usr/share/pyshared/univention/admin/handlers/users/
-modules/univention/admin/handlers/groups/__init__.py usr/share/pyshared/univention/admin/handlers/groups/
-modules/univention/admin/handlers/dns/__init__.py usr/share/pyshared/univention/admin/handlers/dns/
-modules/univention/admin/handlers/networks/__init__.py usr/share/pyshared/univention/admin/handlers/networks/
-modules/univention/admin/handlers/settings/__init__.py usr/share/pyshared/univention/admin/handlers/settings/
-modules/univention/admin/handlers/computers/__init__.py usr/share/pyshared/univention/admin/handlers/computers/
-modules/univention/admin/handlers/kerberos/__init__.py usr/share/pyshared/univention/admin/handlers/kerberos/
