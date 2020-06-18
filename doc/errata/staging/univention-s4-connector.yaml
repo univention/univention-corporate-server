@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-s4-connector
-fix: 13.0.2-75A~4.4.0.202006181528
+fix: 13.0.2-76A~4.4.0.202006181642
 desc: |
  This update addresses the following issue:
  * If password change at next login is set, a users
