@@ -1,3 +1,15 @@
+univention-python (13.0.0-4) unstable; urgency=medium
+
+  * Bug #51506: remove python2 namespacing
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 15:41:43 +0200
+
+univention-python (13.0.0-3) unstable; urgency=medium
+
+  * Bug #50648 UDM policies: fix handling of decoding policy values
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 13:45:11 +0200
+
 univention-python (13.0.0-2) unstable; urgency=medium
 
   * Bug #51506: remove python-support
