@@ -57,6 +57,7 @@ def main():
 		print('I am', lo.whoami_s())
 		dn = 'uid=%s,cn=admin-settings,%s' % (ldap.dn.escape_dn_chars(uid), udm.UNIVENTION_CONTAINER)
 
+		uid = uid.encode('UTF-8')
 		valid = [{
 			'objectClass': (b'univentionAdminUserSettings',),
 			'uid': [uid],
@@ -69,20 +70,20 @@ def main():
 			'univentionDnsObject': [dn.encode('UTF-8')],
 		}]
 		invalid = [{
-			'objectClass': ('uidObject', 'person'),
+			'objectClass': (b'uidObject', b'person'),
 			'uid': [uid],
 			'sn': [b'foo'],
 			'cn': [b'bar'],
 		}, {
-			'objectClass': ('uidObject', 'univentionAdminUserSettings'),
+			'objectClass': (b'uidObject', b'univentionAdminUserSettings'),
 			'uid': [uid],
 		}, {
-			'objectClass': ('CourierMailAccount', 'univentionAdminUserSettings'),
+			'objectClass': (b'CourierMailAccount', b'univentionAdminUserSettings'),
 			'uid': [uid],
 			'uidNumber': [b'0'],
 			'gidNumber': [b'0']
 		}, {
-			'objectClass': ('CourierMailAccount', 'univentionAdminUserSettings'),
+			'objectClass': (b'CourierMailAccount', b'univentionAdminUserSettings'),
 			'uid': [uid],
 			'uidNumber': [b'1'],
 			'gidNumber': [b'1']
