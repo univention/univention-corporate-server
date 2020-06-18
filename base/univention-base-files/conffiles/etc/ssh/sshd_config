@@ -31,7 +31,7 @@ for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	if '/' in key:
 		filename = key
 	elif key == 'rsa1':
-		if '1' not in configRegistry.get('sshd/Protocol', '2').split(','):
+		if '1' not in protocols:
 			continue
 		else:
 			filename = '/etc/ssh/ssh_host_key'
@@ -314,8 +314,7 @@ if configRegistry.get('sshd/KexAlgorithms'):
 @!@
 PREFIX = 'sshd/config/'
 DIGITS = '0123456789'
-config =
-[
+config = [
 	'%s %s' % (key[len(PREFIX):], value)
 	for (key, value) in configRegistry.items()
 	if key.startswith(PREFIX)
@@ -323,4 +322,3 @@ config =
 if config:
 	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))
 @!@
-

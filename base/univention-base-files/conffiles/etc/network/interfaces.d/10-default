@@ -3,7 +3,6 @@ from univention.config_registry.interfaces import Interfaces
 from itertools import groupby
 from operator import itemgetter
 
-
 def auto(interface, start):
 	"""Print 'auto iface' statements only once."""
 	print('')
@@ -12,10 +11,7 @@ def auto(interface, start):
 	if interface not in auto.printed_interfaces:
 		print('auto %s' % (interface,))
 		auto.printed_interfaces.add(interface)
-
-
 auto.printed_interfaces = set()
-
 
 def ipv4(ucr, interfaces):
 	"""Setup IPv4."""
@@ -137,16 +133,12 @@ def ipv6(interfaces):
 			for value in iface.options:
 				print('\t%s' % (value,))
 
-
 def main():
 	"""Create configured interfaces."""
 	interfaces = Interfaces(configRegistry)
 	ipv4(configRegistry, interfaces)
 	ipv6(interfaces)
 
-
 main()
-
-
+# vim:set sw=4 ts=4 noet:
 @!@
-
