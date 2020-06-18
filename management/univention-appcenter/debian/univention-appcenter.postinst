@@ -96,4 +96,8 @@ if dpkg --compare-versions "$2" lt-nl 7.0.1-29; then
 	univention-app register --app
 fi
 
+
+# FIXME: remove
+univention-app dev-use-test-appcenter
+
 exit 0
