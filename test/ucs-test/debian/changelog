@@ -1,3 +1,9 @@
+ucs-test (10.0.0-5) unstable; urgency=medium
+
+  * Bug #51506: remove python-support legacy
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jun 2020 15:29:46 +0200
+
 ucs-test (10.0.0-4) unstable; urgency=medium
 
   * Bug #50631: Fix missing dependency of udm.py on psutil
