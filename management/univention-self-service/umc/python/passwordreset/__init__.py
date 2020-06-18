@@ -286,7 +286,7 @@ class Instance(Base):
 			MODULE.error('get_contact(): {}'.format(msg))
 			raise UMC_Error(msg)
 		dn, username = self.auth(username, password)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'passwordreset'):
 			raise ServiceForbidden()
 
 		user = self.get_udm_user(username=username)
@@ -306,7 +306,7 @@ class Instance(Base):
 	@simple_response
 	def get_user_attributes(self, username, password):
 		dn, username = self.auth(username, password)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'profiledata'):
 			raise ServiceForbidden()
 
 		user = self.get_udm_user_by_dn(dn)
@@ -411,7 +411,7 @@ class Instance(Base):
 	@simple_response
 	def validate_user_attributes(self, username, password, attributes):
 		dn, username = self.auth(username, password)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'profiledata'):
 			raise ServiceForbidden()
 		return self._validate_user_attributes(attributes)
 
@@ -465,7 +465,7 @@ class Instance(Base):
 	@simple_response
 	def set_user_attributes(self, username, password, attributes):
 		dn, username = self.auth(username, password)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'profiledata'):
 			raise ServiceForbidden()
 
 		user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
@@ -656,7 +656,7 @@ class Instance(Base):
 			raise UMC_Error(msg)
 		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
 		dn, username = self.auth(username, password)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'passwordreset'):
 			raise ServiceForbidden()
 		try:
 			return self.set_contact_data(dn, email, mobile)
@@ -681,7 +681,7 @@ class Instance(Base):
 			MODULE.error("send_token() method '{}' not in {}.".format(method, self.password_reset_plugins.keys()))
 			raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'passwordreset'):
 			raise MissingContactInformation()
 
 		# check if the user has the required attribute set
@@ -759,7 +759,7 @@ class Instance(Base):
 			MODULE.error('deregister_account(): {}'.format(msg))
 			raise UMC_Error(msg)
 		dn, username = self.auth(username, password)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'account-deregistration'):
 			raise ServiceForbidden()
 		try:
 			return self._deregister_account(username)
@@ -820,7 +820,7 @@ class Instance(Base):
 
 		# token is correct and valid
 		MODULE.info("Receive valid token for '{}'.".format(username))
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'passwordreset'):
 			# this should not happen
 			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
 			self.db.delete_tokens(token=token, username=username)
@@ -867,7 +867,7 @@ class Instance(Base):
 			msg = _('The password reset was disabled via the Univention Configuration Registry.')
 			MODULE.error('get_reset_methods(): {}'.format(msg))
 			raise UMC_Error(msg)
-		if self.is_blacklisted(username):
+		if self.is_blacklisted(username, 'passwordreset'):
 			raise NoMethodsAvailable()
 
 		user = self.get_udm_user(username=username)
@@ -1054,20 +1054,20 @@ class Instance(Base):
 
 	# TODO: decoratorize
 	@machine_connection
-	def is_blacklisted(self, username, ldap_connection=None, ldap_position=None):
+	def is_blacklisted(self, username, feature, ldap_connection=None, ldap_position=None):
 		def listize(li):
 			return [x.lower() for x in map(str.strip, li.split(",")) if x]
 
-		bl_users = listize(ucr.get("umc/self-service/passwordreset/blacklist/users", ""))
-		bl_groups = listize(ucr.get("umc/self-service/passwordreset/blacklist/groups", ""))
-		wh_users = listize(ucr.get("umc/self-service/passwordreset/whitelist/users", ""))
-		wh_groups = listize(ucr.get("umc/self-service/passwordreset/whitelist/groups", ""))
+		bl_users = listize(ucr.get("umc/self-service/{}/blacklist/users".format(feature), ""))
+		bl_groups = listize(ucr.get("umc/self-service/{}/blacklist/groups".format(feature), ""))
+		wh_users = listize(ucr.get("umc/self-service/{}/whitelist/users".format(feature), ""))
+		wh_groups = listize(ucr.get("umc/self-service/{}/whitelist/groups".format(feature), ""))
 
 		username = self.email2username(username)
 
 		# user blacklist
 		if username.lower() in bl_users:
-			MODULE.info("is_blacklisted({}): match in blacklisted users".format(username))
+			MODULE.info("is_blacklisted(username: {}, feature: {}): match in blacklisted users".format(username, feature))
 			return True
 
 		# get groups
@@ -1085,22 +1085,22 @@ class Instance(Base):
 
 		# group blacklist
 		if any(gr in bl_groups for gr in gr_names):
-			MODULE.info("is_blacklisted({}): match in blacklisted groups".format(username))
+			MODULE.info("is_blacklisted(username: {}, feature: {}): match in blacklisted groups".format(username, feature))
 			return True
 
 		# if not on blacklist, check whitelists
 		# user whitelist
 		if username.lower() in wh_users:
-			MODULE.info("is_blacklisted({}): match in whitelisted users".format(username))
+			MODULE.info("is_blacklisted(username: {}, feature: {}): match in whitelisted users".format(username, feature))
 			return False
 
 		# group whitelist
 		if any(gr in wh_groups for gr in gr_names):
-			MODULE.info("is_blacklisted({}): match in whitelisted groups".format(username))
+			MODULE.info("is_blacklisted(username: {}, feature: {}): match in whitelisted groups".format(username, feature))
 			return False
 
 		# not on either black or white list -> not allowed if whitelist exists, else OK
-		MODULE.info("is_blacklisted({}): neither black nor white listed".format(username))
+		MODULE.info("is_blacklisted(username: {}, feature: {}): neither black nor white listed".format(username, feature))
 		return bool(wh_users or wh_groups)
 
 	def get_groups(self, userdn):
