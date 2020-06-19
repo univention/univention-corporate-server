@@ -1451,7 +1451,7 @@ class phone(simple):
 	"""
 	min_length = 1
 	max_length = 16
-	regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\/+-]*$')
+	regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\\/+-]*$')
 	error_message = _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
 
 
@@ -1561,7 +1561,7 @@ class uid_umlauts(simple):
 	name = 'uid'
 	min_length = 1   # TODO: not enforced here
 	max_length = 16  # TODO: not enforced here
-	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
+	_re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
 	# FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 
 	@classmethod
@@ -1597,7 +1597,7 @@ class uid_umlauts_lower_except_first_letter(simple):
 	"""
 	min_length = 1   # TODO: not enforced here
 	max_length = 16  # TODO: not enforced here
-	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
+	_re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
 	# FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 
 	@classmethod
@@ -1622,7 +1622,7 @@ class gid(simple):
 	"""
 	min_length = 1   # TODO: not enforced here
 	max_length = 32  # TODO: not enforced here
-	regex = re.compile(u"(?u)^\w([\w -.’]*\w)?$")
+	regex = re.compile(u"(?u)^\\w([\\w -.’]*\\w)?$")
 	# FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
 	error_message = _(
 		"A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
@@ -2170,8 +2170,8 @@ class iso8601Date(simple):
 	valueError:
 	"""
 	# regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
-	regex = re.compile('^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
-	error_message = _("The given date does not conform to iso8601, example: \"2009-01-01\".")
+	regex = re.compile(r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
+	error_message = _(r"The given date does not conform to iso8601, example: \"2009-01-01\".")
 
 	type_class = univention.admin.types.DateType
 
@@ -2244,7 +2244,7 @@ class date(simple):
 	min_length = 5
 	max_length = 0
 	_re_iso = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-	_re_de = re.compile('^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
+	_re_de = re.compile(r'^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$')
 
 	type_class = univention.admin.types.DateType
 
@@ -2916,7 +2916,7 @@ class UserMailAddress(UDM_Objects):
 	udm_filter = '(mailPrimaryAddress=*)'
 	key = '%(mailPrimaryAddress)s'
 	static_values = (('anyone', _('Anyone')), )
-	regex = re.compile('^([^\s]+@[^\s]+|anyone)$')
+	regex = re.compile(r'^([^\s]+@[^\s]+|anyone)$')
 	error_message = _('Not a valid e-mail address')
 
 
@@ -3530,7 +3530,7 @@ class IComputer_FQDN(UDM_Objects):
 	udm_modules = ()
 	key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
 	label = '%(name)s.%(domain)s'  # '%(fqdn)s'
-	regex = re.compile('(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
+	regex = re.compile(r'(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)')  # '(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _('Not a valid FQDN')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	simple = True
@@ -5338,7 +5338,7 @@ class policyName(string):
 	...
 	valueError:
 	"""
-	_re = re.compile('^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
+	_re = re.compile(r'^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
 
 	@classmethod
 	def parse(self, text):
