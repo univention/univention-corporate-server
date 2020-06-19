@@ -16,10 +16,10 @@ import atexit
 if __name__ == '__main__':
 	hook_name = uts.random_name()
 
-	atexit.register(os.remove, '/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/%s.py' % hook_name)
+	atexit.register(os.remove, '/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name)
 	atexit.register(os.remove, '/tmp/%s_executed' % hook_name)
 
-	with open('/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
+	with open('/usr/lib/python3/dist-packages/univention/admin/hooks.d/%s.py' % hook_name, 'w') as hook_module:
 		hook_module.write("""
 import univention.admin
 import univention.admin.modules
