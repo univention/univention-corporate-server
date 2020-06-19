@@ -161,9 +161,15 @@ operations = ['add','edit','remove','search']
 childs = 0
 short_description = _('UCS-TEST MODULE %(module_identifier)s')
 long_description = ''
-module_search_filter = univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'automountMap'),
-])
+
+options = {
+	'default': univention.admin.option(
+		short_description='test',
+		default=True,
+		objectClasses=['top', 'automountMap'],
+	)
+}
+
 property_descriptions = {
 	'name': univention.admin.property(
 		short_description=_('Name'),
@@ -188,24 +194,8 @@ mapping.register('name', 'ou', None, univention.admin.mapping.ListToString)
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'automountMap'])]
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('ou', '*'),
-		univention.admin.filter.expression('objectClass', 'automountMap')
-		])
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-	res=[]
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
-	return res
-def identify(dn, attr, canonical=0):
-	return 'automountMap' in attr.get('objectClass', [])
+lookup = object.lookup
+identify = object.identify
 ''' % {'module_udmname': name, 'module_identifier': identifier}
 
 
