@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	cli_name = uts.random_string()
 	attr_name = 'univentionFreeAttribute15'
 
-	fn_hook = '/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/{}.py'.format(hook_name)
+	fn_hook = '/usr/lib/python3/dist-packages/univention/admin/hooks.d/{}.py'.format(hook_name)
 	exit_cmd = ['/bin/rm', '-f', fn_hook]
 	with utils.AutoCallCommand(exit_cmd=exit_cmd) as acc:
 		with udm_test.UCSTestUDM() as udm:
