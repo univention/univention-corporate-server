@@ -16,9 +16,8 @@
 
 from __future__ import print_function
 from univention.testing.strings import random_name
-from univention.testing.utils import wait_for_replication, stop_listener, start_listener
+from univention.testing.utils import wait_for_replication
 import univention.testing.udm as udm_test
-import univention.testing.utils as utils
 from univention.config_registry import ConfigRegistry
 import os
 import ldap
@@ -74,7 +73,7 @@ udm = udm_test.UCSTestUDM()
 computer = udm.create_object(UDM_MODULE, name=name, position=ucr.get('ldap/base'), wait_for_replication=True)
 
 rootpw = get_rootpw()
-lo = ldap.open('127.0.0.1', 7389)
+lo = ldap.initialize('127.0.0.1', 7389)
 lo.simple_bind_s('cn=update,' + ucr.get('ldap/base'), rootpw)
 
 # read computer uuid
