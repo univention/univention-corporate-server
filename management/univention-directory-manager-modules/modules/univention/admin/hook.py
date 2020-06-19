@@ -221,7 +221,7 @@ class AttributeHook(simpleHook):
 			new_ml.append((key, old_value, new_value))
 		return new_ml
 
-	def map_attribute_value_to_ldap(self, value):
+	def map_attribute_value_to_ldap(self, value):  # type: bytes -> bytes
 		"""
 		Return value as it shall be saved in |LDAP|.
 
@@ -230,7 +230,7 @@ class AttributeHook(simpleHook):
 		"""
 		return value
 
-	def map_attribute_value_to_udm(self, value):
+	def map_attribute_value_to_udm(self, value):  # type: str -> str
 		"""
 		Return value as it shall be used in |UDM| objects.
 
