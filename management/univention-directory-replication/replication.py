@@ -556,7 +556,7 @@ def connect(ldif=0):
 		local_ip = '127.0.0.1'
 		local_port = listener.baseConfig.get('slapd/port', '7389').split(',')[0]
 
-		connection = ldap.open(local_ip, int(local_port))
+		connection = ldap.initialize(local_ip, int(local_port))
 		connection.simple_bind_s('cn=update,' + listener.baseConfig['ldap/base'], pw)
 	else:
 		connection = LDIFObject(LDIF_FILE)

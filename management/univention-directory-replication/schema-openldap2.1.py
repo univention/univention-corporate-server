@@ -129,7 +129,7 @@ if __name__ == '__main__':
 	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
-	lo = ldap.open(baseConfig['ldap/master'], 7389)
+	lo = ldap.initialize(baseConfig['ldap/master'], 7389)
 
 	res = lo.search_s('cn=Subschema', ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
 	for dn, attr in res:
