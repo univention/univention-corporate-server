@@ -52,31 +52,35 @@ define([
 		}
 	}
 
-	menu.addEntry({
-		parentMenuId: 'umcMenuUserSettings',
-		label: _('Protect your account'),
-		priority: -10,
-		onClick: function() {
-			gotoPage('setcontactinformation');
-		}
-	});
-	var passwordResetEntry = menu.addEntry({
-		parentMenuId: 'umcMenuUserSettings',
-		priority: -5,
-		label: _('Forgot your password?'),
-		onClick: function() {
-			gotoPage('passwordreset');
-		}
-	});
+	if (tools.isTrue(tools.status('umc/self-service/protect-account/frontend/enabled'))) {
+		menu.addEntry({
+			parentMenuId: 'umcMenuUserSettings',
+			label: _('Protect your account'),
+			priority: -10,
+			onClick: function() {
+				gotoPage('setcontactinformation');
+			}
+		});
+	}
 
-	login.onLogin(function() {
-		// user has logged in -> hide menu entry
-		menu.hideEntry(passwordResetEntry);
-	});
-	login.onLogout(function() {
-		// user has logged out -> show menu entry
-		menu.showEntry(passwordResetEntry);
-	});
+	if (tools.isTrue(tools.status('umc/self-service/passwordreset/frontend/enabled'))) {
+		var passwordResetEntry = menu.addEntry({
+			parentMenuId: 'umcMenuUserSettings',
+			priority: -5,
+			label: _('Forgot your password?'),
+			onClick: function() {
+				gotoPage('passwordreset');
+			}
+		});
+		login.onLogin(function() {
+			// user has logged in -> hide menu entry
+			menu.hideEntry(passwordResetEntry);
+		});
+		login.onLogout(function() {
+			// user has logged out -> show menu entry
+			menu.showEntry(passwordResetEntry);
+		});
+	}
 
 	// add "Forgot password?" link to login page
 	dialog.addLinkFromUcr('forgot_your_password', {
