@@ -1,3 +1,9 @@
+univention-printserver (13.0.0-2) unstable; urgency=medium
+
+  * Bug #51530: updated PPD list in join script for UCS 5.0
+
+ -- Florian Best <best@univention.de>  Fri, 19 Jun 2020 15:28:15 +0200
+
 univention-printserver (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
