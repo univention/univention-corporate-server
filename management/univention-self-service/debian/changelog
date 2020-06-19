@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-31) unstable; urgency=medium
+
+  * Bug #51351: fix passwordreset hook
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 19 Jun 2020 12:32:07 +0200
+
 univention-self-service (4.0.3-30) unstable; urgency=medium
 
   * Bug #51259: added seperate blacklist/whitelist variables for profiledata
