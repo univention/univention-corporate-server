@@ -35,11 +35,8 @@ define([
 	'login/dialog',
 	'umc/menu',
 	'umc/tools',
-	'self-service',
-	'self-service/PasswordForgotten',
-	'self-service/ProtectAccountAccess',
 	'umc/i18n!umc/hooks/passwordreset'
-], function(topic, dom, entities, login, dialog, menu, tools, selfservice, PasswordForgotten, ProtectAccountAccess, _) {
+], function(topic, dom, entities, login, dialog, menu, tools, _) {
 	function isSelfServiceURL() {
 		return window.location.pathname.indexOf('/univention/self-service/') === 0;
 	}
@@ -55,35 +52,31 @@ define([
 		}
 	}
 
-	var enabledPages = selfservice.getEnabledPages();
-	if (enabledPages.includes(ProtectAccountAccess)) {
-		menu.addEntry({
-			parentMenuId: 'umcMenuUserSettings',
-			label: _('Protect your account'),
-			priority: -10,
-			onClick: function() {
-				gotoPage(ProtectAccountAccess.hash);
-			}
-		});
-	}
-	if (enabledPages.includes(PasswordForgotten)) {
-		var passwordResetEntry = menu.addEntry({
-			parentMenuId: 'umcMenuUserSettings',
-			priority: -5,
-			label: _('Forgot your password?'),
-			onClick: function() {
-				gotoPage(PasswordForgotten.hash);
-			}
-		});
-		login.onLogin(function() {
-			// user has logged in -> hide menu entry
-			menu.hideEntry(passwordResetEntry);
-		});
-		login.onLogout(function() {
-			// user has logged out -> show menu entry
-			menu.showEntry(passwordResetEntry);
-		});
-	}
+	menu.addEntry({
+		parentMenuId: 'umcMenuUserSettings',
+		label: _('Protect your account'),
+		priority: -10,
+		onClick: function() {
+			gotoPage('setcontactinformation');
+		}
+	});
+	var passwordResetEntry = menu.addEntry({
+		parentMenuId: 'umcMenuUserSettings',
+		priority: -5,
+		label: _('Forgot your password?'),
+		onClick: function() {
+			gotoPage('passwordreset');
+		}
+	});
+
+	login.onLogin(function() {
+		// user has logged in -> hide menu entry
+		menu.hideEntry(passwordResetEntry);
+	});
+	login.onLogout(function() {
+		// user has logged out -> show menu entry
+		menu.showEntry(passwordResetEntry);
+	});
 
 	// add "Forgot password?" link to login page
 	dialog.addLinkFromUcr('forgot_your_password', {

@@ -65,10 +65,10 @@ define([
 		start: function() {
 			this._initContainer();
 			this._subscribeOnHashEvents();
-			this._addSubPages(this.getEnabledPages().concat(PageNotFound));
+			this._addSubPages(this._getEnabledPages().concat(PageNotFound));
 		},
 
-		getEnabledPages: function() {
+		_getEnabledPages: function() {
 			var pages = [PasswordForgotten, ProtectAccountAccess, CreateAccount, VerifyAccount, NewPassword, PasswordChange, UserAttributes];
 			var enabledKeys = pages.filter(function(page) {
 				return page.enabledViaUcr;
@@ -141,7 +141,7 @@ define([
 		_loadSubpage: function(changedHash) {
 			var hash = ioQuery.queryToObject(changedHash).page;
 			if (!hash) {
-				var enabledPages = this.getEnabledPages();
+				var enabledPages = this._getEnabledPages();
 				var fallbackPage = enabledPages.find(function(page) {
 					return page.hash === PasswordForgotten.hash;
 				});
