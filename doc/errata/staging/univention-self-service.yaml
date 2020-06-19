@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-self-service
-fix: 4.0.3-30A~4.4.0.202006181337
+fix: 4.0.3-31A~4.4.0.202006191233
 desc: |
  This update addresses the following issue(s):
  * The Self Service links in the hamburger menu are no longer visible
