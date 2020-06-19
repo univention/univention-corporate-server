@@ -40,9 +40,9 @@ class {hook_name}(univention.admin.hook.AttributeHook):
 
     def map_attribute_value_to_ldap(self, value):
         mydebug('map_attribute_value_to_ldap(%r)' % (value,))
-        if value == b'FALSE':
+        if value in (b'FALSE', b'yes'):
             return b'no'
-        elif value == b'TRUE':
+        elif value in (b'TRUE', b'yes'):
             return b'yes'
         elif value in (b'', None):
             return b''
