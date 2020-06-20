@@ -1,3 +1,9 @@
+ucslint (8.0.0-17) unstable; urgency=low
+
+  * Bug #51375: Check for uldap.searchDn()
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 20 Jun 2020 17:34:21 +0200
+
 ucslint (8.0.0-16) unstable; urgency=low
 
   * Bug #51248: Check debian/compat

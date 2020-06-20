@@ -1,0 +1,5 @@
+ucs-lint (1.0.0-1) unstable; urgency=low
+
+  * Check for uldap.searchDn()
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 20 Jun 2020 17:29:50 +0200

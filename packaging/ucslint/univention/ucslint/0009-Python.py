@@ -48,6 +48,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0009-8': (uub.RESULT_STYLE, 'use ucr.is_true() or .is_false()'),
 			'0009-9': (uub.RESULT_ERROR, 'hashbang contains more than one option'),
 			'0009-10': (uub.RESULT_WARN, 'invalid Python string literal escape sequence'),
+			'0009-11': (uub.RESULT_STYLE, 'Use uldap.searchDN() instead of uldap.search(attr=["dn"])'),
 		}
 
 	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
@@ -67,6 +68,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			(?:\s*(['"])(?:yes|no|1|0|true|false|on|off|enabled?|disabled?)\1\s*,?\s*){3,}
 			[\]\)]''', re.VERBOSE | re.IGNORECASE),
 			'0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
+		tester.addTest(re.compile(
+			r'''\.search\s*\(
+			.*?\b
+			attr
+			\s*=\s*
+			(?:(?P<list>\[)|(?P<tuple>\())
+			\s*
+			(?P<str>["'])
+			dn
+			(?P=str)
+			\s*
+			(?(list)\])(?(tuple)\))
+			''', re.VERBOSE),
+			'0009-11', 'Use uldap.searchDN() instead of uldap.search(attr=["dn"])', cntmax=0)
 
 		for fn in python_files(path):
 			tester.open(fn)
