@@ -9,7 +9,10 @@ stages:
     name: $LINT:$CI_COMMIT_REF_SLUG
     entrypoint: [""]
   script:
-    - ucslint $base
+    - ucslint -j ucslint.xml $base
+  artifacts:
+    reports:
+      junit: ucslint.xml
 
 .deb:
   stage: build
