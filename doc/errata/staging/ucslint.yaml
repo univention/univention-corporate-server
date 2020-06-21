@@ -25,4 +25,5 @@ desc: |
  * `ucslint` has been removed as a direct dependency from all UCS packages as
    it now runs directly from our CI pipeline.
  * Check for usage of `uldap.searchDn()`.
-bug: [49704, 51105, 51107, 51248, 51247, 51246, 49683, 49620, 48747, 43981, 42294, 51375]
+ * Check for packages declaring dependencies on `Essential:yes` packages.
+bug: [49704, 51105, 51107, 51248, 51247, 51246, 49683, 49620, 48747, 43981, 42294, 51375, 51476]

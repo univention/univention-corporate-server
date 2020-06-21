@@ -1,0 +1,31 @@
+Source: src
+Build-Depends: grep,
+Build-Depends-Indep: grep,
+
+Package: essential
+Pre-Depends: coreutils,
+Depends: coreutils,
+Recommends: coreutils,
+Suggests: coreutils,
+Description: You should not depend on Essential: yes packages
+
+Package: required
+Pre-Depends: passwd,
+Depends: passwd,
+Recommends: passwd,
+Suggests: passwd,
+Description: You should not depend on Priority: required packages
+
+Package: important
+Pre-Depends: debian-archive-keyring,
+Depends: debian-archive-keyring,
+Recommends: debian-archive-keyring,
+Suggests: debian-archive-keyring,
+Description: You should not depend on Priority: important packages
+
+Package: standard
+Pre-Depends: perl,
+Depends: perl,
+Recommends: perl,
+Suggests: perl,
+Description: You should not depend on Priority: standard packages
