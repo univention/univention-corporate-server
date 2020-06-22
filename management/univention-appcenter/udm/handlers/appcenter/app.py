@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -353,7 +355,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_addlist(self):
-		ocs = ['top', OC]
+		ocs = [b'top', OC.encode()]
 
 		return [
 			('objectClass', ocs),
@@ -372,10 +374,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 		filter.expressions.append(filter_p)
 
 	res = []
-	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+	for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit):
 		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
 
 def identify(dn, attr, canonical=0):
-	return OC in attr.get('objectClass', [])
+	return OC.encode() in attr.get('objectClass', [])

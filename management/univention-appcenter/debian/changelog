@@ -1,4 +1,4 @@
-univention-appcenter (9.0.0-4) unstable; urgency=medium
+univention-appcenter (9.0.0-5) unstable; urgency=medium
 
   * Bug #51525: replace pip selenium with python-selenium
 
