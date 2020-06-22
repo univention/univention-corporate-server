@@ -786,9 +786,20 @@ class ucs:
 				object = self._object_mapping(key, object, 'ucs')
 				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
+
+					if change_type == 'modify':
+						# to be able to compare mapped values we need to map the old state of the object too
+						if old_dn:
+							object_old = {'dn': object['olddn'], 'modtype': change_type, 'attributes': old}
+						else:
+							object_old = {'dn': object['dn'], 'modtype': change_type, 'attributes': old}
+						object_old = self._object_mapping(key, object_old, 'ucs')
+					else:
+						object_old = None
+
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), old, new))
-							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, old, new))):
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), object_old))
+							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, object_old))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1367,7 +1378,7 @@ class ucs:
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object = None, new_ucs_object = None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
 		# dummy
 		return False
 

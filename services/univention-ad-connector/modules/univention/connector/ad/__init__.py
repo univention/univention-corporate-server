@@ -2499,10 +2499,10 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Processed %s" % (change_count,))
 		return change_count
 
-	def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
-		return not old_ucs_object.get(attribute) == new_ucs_object.get(attribute)
+	def __has_attribute_value_changed(self, attribute, object_old, new_object):
+		return not object_old['attributes'].get(attribute) == new_object['attributes'].get(attribute)
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
 		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -2635,27 +2635,23 @@ class ad(univention.connector.ucs):
 		#
 		elif (object['modtype'] == 'modify' and ad_object) or (object['modtype'] == 'add' and ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s" % object['dn'])
-			ud.debug(ud.LDAP, ud.INFO,
-				"sync_from_ucs: old_object: %s" % old_ucs_object)
-			ud.debug(ud.LDAP, ud.INFO,
-				"sync_from_ucs: new_object: %s" % new_ucs_object)
-			object['old_ucs_object'] = old_ucs_object
-			object['new_ucs_object'] = new_ucs_object
-			attribute_list = set(old_ucs_object.keys() + new_ucs_object.keys())
+
+			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: object: %s" % object)
+			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: object_old: %s" % object_old)
+			attribute_list = set(object_old['attributes'].keys() + object['attributes'].keys())
 
 			# Iterate over attributes and post_attributes
 			for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes),
 					('post_attributes', self.property[property_type].post_attributes)]:
 				if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
 					for attr in attribute_list:
-						value = new_ucs_object.get(attr)
-						if not self.__has_attribute_value_changed(attr, old_ucs_object, new_ucs_object):
+						if not self.__has_attribute_value_changed(attr, object_old, object):
 							continue
 
 						ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The following attribute has been changed: %s" % attr)
 
 						for attribute in attribute_type.keys():
-							if attribute_type[attribute].ldap_attribute != attr:
+							if attribute_type[attribute].con_attribute != attr:
 								continue
 
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
@@ -2669,11 +2665,11 @@ class ad(univention.connector.ucs):
 							modify = False
 
 							# Get the UCS attributes
-							old_values = set(old_ucs_object.get(attr, []))
-							new_values = set(new_ucs_object.get(attr, []))
+							old_values = set(object_old['attributes'].get(attr, []))
+							new_values = set(object['attributes'].get(attr, []))
 
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: old_values: %s" % old_values)
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: new_values: %s" % new_values)
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s old_values: %s" % (attr, old_values))
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s new_values: %s" % (attr, new_values))
 
 							if attribute_type[attribute].compare_function:
 								if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
@@ -2727,7 +2723,7 @@ class ad(univention.connector.ucs):
 
 								new_ad_values = current_ad_values - to_remove
 								if not new_ad_values and to_add:
-									for n_value in new_ucs_object.get(attr, []):
+									for n_value in new_values:
 										if n_value in to_add:
 											to_add = to_add - set([n_value])
 											new_ad_values = [n_value]
@@ -2752,18 +2748,15 @@ class ad(univention.connector.ucs):
 
 								if (to_add or to_remove) and attribute_type[attribute].single_value:
 									modify = False
-									if not current_ad_values or not value:
+									if not current_ad_values or not new_values:
 										modify = True
 									elif attribute_type[attribute].compare_function:
-										if not attribute_type[attribute].compare_function(list(current_ad_values), list(value)):
+										if not attribute_type[attribute].compare_function(list(current_ad_values), list(new_values)):
 											modify = True
-									elif not univention.connector.compare_lowercase(list(current_ad_values), list(value)):
+									elif not univention.connector.compare_lowercase(list(current_ad_values), list(new_values)):
 										modify = True
 									if modify:
-										if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
-											ud.debug(ud.LDAP, ud.PROCESS, "Calling single value mapping function")
-											value = attribute_type[attribute].mapping[0](self, None, object)
-										modlist.append((ldap.MOD_REPLACE, ad_attribute, value))
+										modlist.append((ldap.MOD_REPLACE, ad_attribute, new_values))
 								else:
 									if to_remove:
 										r = current_ad_values & to_remove
