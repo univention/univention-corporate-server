@@ -3297,6 +3297,8 @@ class simpleComputer(simpleLdap):
 							# get next IP
 							network_object.refreshNextIp()
 							self['ip'] = network_object['nextIp']
+							ips = [ip for ip in self['ip'] if ip] if self.has_property('ip') and self['ip'] else []
+							ip1 = self['ip'][0] if len(ips) == 1 else ''
 							try:
 								IpAddr = univention.admin.allocators.request(self.lo, self.position, 'aRecord', value=self['ip'][0])
 								self.ip_alredy_requested = 1
