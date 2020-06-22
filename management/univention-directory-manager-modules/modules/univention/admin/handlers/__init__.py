@@ -2125,9 +2125,6 @@ class simpleComputer(simpleLdap):
 						continue
 					self.lo.modify(dn, [('univentionDhcpFixedAddress', b'', ip.encode('ASCII'))])
 					ud.debug(ud.ADMIN, ud.INFO, 'we added the ip "%s"' % ip)
-				else:
-					self.lo.modify(dn, [('univentionDhcpFixedAddress', ip.encode('ASCII'), b'')])
-					ud.debug(ud.ADMIN, ud.INFO, 'we removed the ip "%s"' % ip)
 
 	def __rename_dns_object(self, position=None, old_name=None, new_name=None):
 		for dns_line in self['dnsEntryZoneForward']:
