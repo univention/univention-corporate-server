@@ -2495,7 +2495,7 @@ class ad(univention.connector.ucs):
 			print("Changes from AD:  %s (%s saved rejected)" % (change_count, '0'))
 		print("--------------------------------------")
 		sys.stdout.flush()
-                if self.profiling and change_count:
+		if self.profiling and change_count:
 			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Processed %s" % (change_count,))
 		return change_count
 
