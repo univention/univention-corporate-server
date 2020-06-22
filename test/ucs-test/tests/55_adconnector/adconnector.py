@@ -1,7 +1,7 @@
 import os
 import sys
 
-TEST_LIB_PATH = os.getenv('TESTLIBPATH')
+TEST_LIB_PATH = os.getenv('TESTLIBPATH', '/usr/share/ucs-test/lib/')
 if TEST_LIB_PATH is not None:
 	sys.path.append(TEST_LIB_PATH)
 
