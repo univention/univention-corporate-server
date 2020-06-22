@@ -794,7 +794,7 @@ class ucs:
 							object_old = {'dn': object['dn'], 'modtype': change_type, 'attributes': old}
 						object_old = self._object_mapping(key, object_old, 'ucs')
 					else:
-						object_old = None
+						object_old = {'dn': object['dn'], 'modtype': change_type, 'attributes': {}}  # Dummy
 
 					try:
 						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), object_old))
