@@ -991,7 +991,7 @@ class ad(univention.connector.ucs):
 				if not conn_attributes:
 					continue
 				for attr_key, attr in conn_attributes.items():
-					if attr.ldap_attribute in self.single_valued_ad_attributes:
+					if not getattr(attr, 'con_other_attribute') and attr.con_attribute in self.single_valued_ad_attributes:
 						attr.single_value = True
 
 		# Log the active mapping
