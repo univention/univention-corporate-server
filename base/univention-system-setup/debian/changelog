@@ -1,3 +1,10 @@
+univention-system-setup (12.0.2-25) unstable; urgency=medium
+
+  * Bug #50613: Configure proxy settings from system setup
+    for UCRv proxy/http and proxy/https.
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 22 Jun 2020 13:27:00 +0200
+
 univention-system-setup (12.0.2-24) unstable; urgency=medium
 
   * Bug #51195: sha-512 password for root

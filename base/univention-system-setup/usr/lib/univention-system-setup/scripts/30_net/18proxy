@@ -43,17 +43,17 @@ if [ $? = 0 ]; then
 	exit 0
 fi
 
-old_proxy=$(univention-config-registry get proxy/http)
-var=`get_profile_var proxy/http`
+old_proxy="$(univention-config-registry get proxy/http)"
+var="$(get_profile_var proxy/http)"
 
 if [ -z "$var" ]; then
-	univention-config-registry unset proxy/http
+	univention-config-registry unset proxy/http proxy/https
 else
-	univention-config-registry set proxy/http="$var"
+	univention-config-registry set proxy/http="$var" proxy/https="$var"
 fi
 
 if [ -d "/var/lib/univention-system-setup/httpproxy.post" ]; then
-	run-parts /var/lib/univention-system-setup/httpproxy.post --arg=$old_proxy --arg=$var
+	run-parts /var/lib/univention-system-setup/httpproxy.post --arg="$old_proxy" --arg="$var"
 fi
 
 
