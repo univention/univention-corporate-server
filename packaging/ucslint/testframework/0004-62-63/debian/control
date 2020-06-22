@@ -1,0 +1,10 @@
+Source: src
+Priority: optional
+Maintainer: Philipp Hahn <hahn@univention.de>
+Build-Depends-Indep: univention-config-dev, debhelper,
+Standards-Version: 3.5.5
+
+Package: bin
+Architecture: all
+Depends: univention-config, ${misc:Depends}
+Description: ucslint test package for Multifile Pre/postinst

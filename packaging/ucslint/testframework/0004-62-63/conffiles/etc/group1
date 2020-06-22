@@ -1,0 +1,5 @@
+@%@UCRWARNING=# @%@
+@!@
+from univention.lib.misc import custom_groupname
+print(custom_groupname('Domain Admins'))
+@!@

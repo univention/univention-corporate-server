@@ -122,6 +122,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0004-59': (uub.RESULT_ERROR, 'UCR .info-file contains entry of "Type: multifile" with multiple "Postinst:" line'),
 			'0004-60': (uub.RESULT_ERROR, 'Duplicate entry'),
 			'0004-61': (uub.RESULT_ERROR, 'Invalid entry'),
+			'0004-62': (uub.RESULT_ERROR, 'UCR template file using `custom_username()` must register for UCRV "users/default/.*"'),
+			'0004-63': (uub.RESULT_ERROR, 'UCR template file using `custom_groupname()` must register for UCRV "groups/default/.*"'),
 		}
 
 	@classmethod
@@ -157,14 +159,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_FUNC_HANDLER = re.compile(r'^def\s+handler\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
 	RE_FUNC_PREINST = re.compile(r'^def\s+preinst\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
 	RE_FUNC_POSTINST = re.compile(r'^def\s+postinst\s*\(\s*\w+\s*,\s*\w+\s*\)\s*:', re.MULTILINE)
+	RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
+	RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
 	def check_conffiles(self, path):
-		"""search UCR templates."""
+		"""Analyze UCR templates below :file:`conffiles/`."""
 		conffiles = {}
 
 		confdir = os.path.join(path, 'conffiles')
 		for fn in uub.FilteredDirWalkGenerator(confdir, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
-			conffiles[fn] = {
+			conffiles[fn] = checks = {
 				'headerfound': False,
 				'variables': [],  # Python code
 				'placeholder': [],  # @%@
@@ -173,13 +177,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				'preinst': False,
 				'postinst': False,
 				'handler': False,
+				'custom_user': False,
+				'custom_group': False,
 			}
-		self.debug('found conffiles: %s' % conffiles.keys())
 
-		#
-		# search UCR variables
-		#
-		for fn, checks in conffiles.items():
 			match = UniventionPackageCheck.RE_PYTHON_FNAME.match(os.path.relpath(fn, confdir))
 			if match:
 				checks['pythonic'] = True
@@ -202,6 +203,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			match = UniventionPackageCheck.RE_FUNC_HANDLER.search(content)
 			if match:
 				checks['handler'] = True
+			match = UniventionPackageCheck.RE_FUNC_CUSTOM_USER.search(content)
+			if match:
+				checks['custom_user'] = True
+			match = UniventionPackageCheck.RE_FUNC_CUSTOM_GROUP.search(content)
+			if match:
+				checks['custom_group'] = True
 
 			warning_pos = 0
 			for regEx in (UniventionPackageCheck.RE_UCR_PLACEHOLDER_VAR1, ):
@@ -259,6 +266,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					fname = fn[fn.find('/conffiles/') + 10:]
 					if match.group(2) != fname:
 						self.addmsg('0004-1', 'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files%s\n      - path in header    = %s' % (fname, match.group(1)), fn)
+
+		self.debug('found conffiles: %s' % conffiles.keys())
 
 		return conffiles
 
@@ -615,7 +624,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				else:
 					raise
 
-		for conffn in conffiles:
+		for conffn, checks in conffiles.items():
 			conffnfound = False
 			shortconffn = conffn[conffn.find('/conffiles/') + 11:]
 			short2conffn[shortconffn] = conffn
@@ -638,9 +647,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				mfn = obj.get('Multifile', [None])[0]
 				if mfn and mfn in all_multifiles:
 					# "Multifile" entry exists ==> obj is a subfile
-					knownvars = set()
-					# add known variables from multifile entry
-					knownvars.update(all_multifiles[mfn][0].get('Variables', []))  # ...otherwise it contains empty list or UCR variable names
+					# add known variables from ALL multifile entry - there may me multiple due to multiple packages
+					knownvars = set(
+						var
+						for mf in all_multifiles[mfn]
+						for var in mf.get('Variables', [])
+					)
 					# iterate over all subfile entries for this multifile
 					for sf in all_subfiles[mfn]:
 						# if subfile matches current subtemplate...
@@ -652,7 +664,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					knownvars = set(obj.get('Variables', []))
 
 				# check only variables against knownvars, @%@-placeholder are auto-detected
-				for var in conffiles[conffn]['variables']:
+				for var in checks['variables']:
 					if var not in knownvars:
 						# if not found check if regex matches
 						for rvar in knownvars:
@@ -679,7 +691,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						# no subfile ==> File, Module, Script
 						self.addmsg('0004-12', 'template file contains variables that are not registered in file entry:\n	- %s' % ('\n	- '.join(notregistered)), conffn)
 
-				for var in conffiles[conffn]['placeholder']:
+				if checks['custom_user'] and not any('users/default/' in v for v in knownvars):
+					self.addmsg('0004-62', 'UCR template file using `custom_username()` must register for UCRV "users/default/.*"', conffn)
+
+				if checks['custom_group'] and not any('groups/default/' in v for v in knownvars):
+					self.addmsg('0004-63', 'UCR template file using `custom_groupname()` must register for UCRV "groups/default/.*"', conffn)
+
+				for var in checks['placeholder']:
 					# check for invalid UCR placeholder variable names
 					if self.check_invalid_variable_name(var):
 						invalidUCRVarNames.add(var)

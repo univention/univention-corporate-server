@@ -1,0 +1,9 @@
+E:0004-62: conffiles/etc/user1: UCR template file using `custom_username()` must register for UCRV "users/default/.*"
+E:0004-62: conffiles/etc/user2: UCR template file using `custom_username()` must register for UCRV "users/default/.*"
+E:0004-63: conffiles/etc/group1: UCR template file using `custom_groupname()` must register for UCRV "groups/default/.*"
+E:0004-63: conffiles/etc/group2: UCR template file using `custom_groupname()` must register for UCRV "groups/default/.*"
+I:0004-56: conffiles/etc/group1: No UCR variables used
+I:0004-56: conffiles/etc/group2: No UCR variables used
+I:0004-56: conffiles/etc/user1: No UCR variables used
+I:0004-56: conffiles/etc/user2: No UCR variables used
+S:0004-24: debian/bin.univention-config-registry-variables: bin.univention-config-registry exists but corresponding ./debian/bin.univention-config-registry-variables is missing

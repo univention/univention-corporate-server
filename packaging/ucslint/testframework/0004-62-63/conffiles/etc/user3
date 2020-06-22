@@ -1,0 +1,5 @@
+@%@UCRWARNING=# @%@
+@!@
+from univention.lib.misc import custom_username
+print(custom_username('Administrator'))
+@!@

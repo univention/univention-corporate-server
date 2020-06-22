@@ -1,0 +1,27 @@
+Type: file
+File: etc/user1
+
+Type: file
+File: etc/user2
+
+Type: file
+File: etc/user3
+Variables: users/default/Administrator
+
+Type: file
+File: etc/user4
+Variables: users/default/.*
+
+Type: file
+File: etc/group1
+
+Type: file
+File: etc/group2
+
+Type: multifile
+Multifile: etc/group3
+Variables: groups/default/Domain Admins
+
+Type: subfile
+Multifile: etc/group3
+Subfile: etc/group3
