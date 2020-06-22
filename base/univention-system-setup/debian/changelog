@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-26) unstable; urgency=medium
+
+  * Bug #50613: Fix repository server check, consider current proxy settings
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 22 Jun 2020 17:29:47 +0200
+
 univention-system-setup (12.0.2-25) unstable; urgency=medium
 
   * Bug #50613: Configure proxy settings from system setup

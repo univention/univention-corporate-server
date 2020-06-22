@@ -1,10 +1,17 @@
 import subprocess
+from os import environ
 
 from univention.management.console.log import MODULE
 import univention.config_registry
 
 UCR = univention.config_registry.ConfigRegistry()
 UCR.load()
+
+PROXY_MAP = dict(
+	http_proxy='proxy/http',
+	https_proxy='proxy/https',
+	no_proxy='proxy/no_proxy',
+)
 
 
 def get_unreachable_repository_servers():
@@ -23,7 +30,16 @@ def get_unreachable_repository_servers():
 
 
 def start_curl_processes(servers):
-	return [subprocess.Popen(['curl', '--max-time', '10', server]) for server in servers]
+	ENV = dict(
+		(envvar, UCR[ucrvar])
+		for (envvar, ucrvar) in PROXY_MAP.items()
+		if ucrvar in UCR
+	)
+	env = dict(environ, **ENV)
+	return [
+		subprocess.Popen(['curl', '--max-time', '10', server], env=env)
+		for server in servers
+	]
 
 
 def wait_for_processes_to_finish(processes):
