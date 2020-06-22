@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: univention-system-setup
+fix: 12.0.2-25A~4.4.0.202006221330
+desc: |
+ This update addresses the following issue:
+ * Proxy settings configured in Univention System Setup are now
+   used for http and https connections. They are applied to the
+   Univention Configuration Registry variables proxy/http and proxy/https.
+   Previously, only proxy/http was used.
+bug: [50613]
