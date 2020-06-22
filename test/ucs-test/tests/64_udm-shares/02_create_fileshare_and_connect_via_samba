@@ -15,19 +15,25 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
-import ldap.dn
-import univention.testing.strings as uts
-import univention.testing.ucr
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
+
 import random
 import time
 import subprocess
 
+import ldap.dn
+
+import univention.testing.strings as uts
+import univention.testing.ucr
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
 	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
 
+
 boolean_to_unmapped = {'0': 'no', '1': 'yes'}
+
 
 ## This is *very* inconsistent:
 # Most boolean syntax properties *must* be set with 0/1 but are returned as no/yes.
@@ -184,7 +190,6 @@ if __name__ == '__main__':
 			p = subprocess.Popen(cmd, close_fds=True)
 			p.wait()
 			if p.returncode:
-				raw_input('foo')
 				share_definition = '/etc/samba/shares.conf.d/%s' % properties['sambaName']
 				with open(share_definition) as f:
 					print('### Samba share file %s :' % share_definition)
