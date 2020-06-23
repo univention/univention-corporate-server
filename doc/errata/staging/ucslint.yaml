@@ -28,4 +28,5 @@ desc: |
  * Check for packages declaring dependencies on `Essential:yes` packages.
  * Check users of `custom_{user,group}name()` registering for required UCR
    variables.
-bug: [49704, 51105, 51107, 51248, 51247, 51246, 49683, 49620, 48747, 43981, 42294, 51375, 51476, 50056]
+ * Check for usage of `debian/*.pyinstall` files to install Python modules.
+bug: [49704, 51105, 51107, 51248, 51247, 51246, 49683, 49620, 48747, 43981, 42294, 51375, 51476, 50056, 51106]

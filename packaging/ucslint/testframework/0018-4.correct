@@ -1,0 +1,4 @@
+W:0018-4: debian/ucslint.install:1: Use debian/*.pyinstall to install Python modules
+W:0018-4: debian/ucslint.install:2: Use debian/*.pyinstall to install Python modules
+W:0018-4: debian/ucslint.install:3: Use debian/*.pyinstall to install Python modules
+W:0018-4: debian/ucslint.install:4: Use debian/*.pyinstall to install Python modules

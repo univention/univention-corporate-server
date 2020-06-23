@@ -1,0 +1,4 @@
+foo.py	/usr/share/pyshared/
+foo.py	/usr/lib/pymodules/python2.7/
+foo.py	/usr/lib/python2.7/dist-packages/
+foo.py	/usr/lib/python3/dist-packages/

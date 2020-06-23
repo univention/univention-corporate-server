@@ -4,6 +4,7 @@ ucslint (8.0.0-17) unstable; urgency=low
   * Bug #51476: Check for Essential:yes and
     Priority:required/important/standard packages
   * Bug #50056: Check for custom_{user,group}name()
+  * Bug #51106: Check for debian/*.pyinstall usage
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 20 Jun 2020 17:34:21 +0200
 

@@ -54,6 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0018-1': (uub.RESULT_STYLE, 'wrong script name in comment'),
 			'0018-2': (uub.RESULT_STYLE, 'Unneeded entry in debian/dirs; the directory is implicitly created by another debhelper'),
 			'0018-3': (uub.RESULT_WARN, 'Invalid action in Debian maintainer script'),
+			'0018-4': (uub.RESULT_WARN, 'Use debian/*.pyinstall to install Python modules'),
 		}
 
 	def check(self, path):
@@ -190,46 +191,38 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def check_dirs(self, path):
 		# type: (str) -> None
-		DIRS = frozenset((
-			'bin',
-			'etc',
-			'etc/cron.d',
-			'etc/cron.hourly',
-			'etc/cron.daily',
-			'etc/cron.weekly',
-			'etc/cron.monthly',
-			'etc/default',
-			'etc/init.d',
-			'lib',
-			'lib/security',
-			'sbin',
-			'usr',
-			'usr/bin',
-			'usr/lib',
-			'usr/sbin',
-			'var',
-			'var/lib',
-			'var/log',
-			'var/www',
-		))
 		dirs = {}  # type: Dict[str, Set[str]]
 		debianpath = join(path, 'debian')
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
 			package, suffix = self.split_pkg(fp)
-			pkg = dirs.setdefault(package, {'usr/share/doc/' + package} | DIRS)
+			pkg = dirs.setdefault(package, Dirs(package))
+			py_install = False
 			# ~/doc/2018-04-11-ApiDoc/pymerge
 			for lnr, line in self.lines(fp):
+				dst = ''
 				for src, dst in self.process_install(line):
 					self.debug('%s:%d Installs %s to %s' % (fp, lnr, src, dst))
-					path = dirname(normpath(dst.strip('/')))
-					while path > '/':
-						pkg.add(path)
-						path = dirname(path)
+					pkg.add(dst)
+
+				if self.RE_PYTHONPATHS.match(dst):
+					self.addmsg(
+						'0018-4',
+						'Use debian/*.pyinstall to install Python modules',
+						filename=fp,
+						line=lnr)
+
+		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['pyinstall']):
+			package, suffix = self.split_pkg(fp)
+			pkg = dirs.setdefault(package, Dirs(package))
+			for lnr, line in self.lines(fp):
+				for src, dst in self.process_pyinstall(line):
+					self.debug('%s:%d Installs %s to %s' % (fp, lnr, src, dst))
+					pkg.add(dst)
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['dirs']):
 			package, suffix = self.split_pkg(fp)
-			pkg = dirs.setdefault(package, {'usr/share/doc/' + package} | DIRS)
+			pkg = dirs.setdefault(package, Dirs(package))
 			for lnr, line in self.lines(fp):
 				line = line.strip('/')
 				if line in pkg:
@@ -268,6 +261,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	def process_install(line, glob=glob):
 		# type: (str, Callable) -> Iterator[Tuple[str, str]]
 		"""
+		Parse :file:`debian/*.install` lines.
+
 		>>> list(UniventionPackageCheck.process_install("usr"))
 		[('usr', 'usr')]
 		>>> list(UniventionPackageCheck.process_install("usr    prefix/"))
@@ -291,6 +286,32 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							yield (src_path, dst_path)
 				else:
 					yield (fn, join(dst, basename(fn)))
+
+	@classmethod
+	def process_pyinstall(cls, line, glob=glob):
+		# type: (str, Callable) -> Iterator[Tuple[str, str]]
+		"""
+		Parse :file:`debian/*.pyinstall` lines.
+
+		>>> list(UniventionPackageCheck.process_pyinstall("foo.py"))
+		[('foo.py', 'foo.py')]
+		>>> list(UniventionPackageCheck.process_pyinstall("foo/bar.py 2.6-"))
+		[('foo/bar.py', 'foo/bar.py')]
+		>>> list(UniventionPackageCheck.process_pyinstall("foo/bar.py spam"))
+		[('foo/bar.py', 'spam/bar.py')]
+		>>> list(UniventionPackageCheck.process_pyinstall("foo/bar.py spam.egg 2.5"))
+		[('foo/bar.py', 'spam/egg/bar.py')]
+		"""
+		args = line.split()
+		src = args.pop(0)
+		if args and cls.RE_VERSION_RANGE.match(args[-1]):
+			args.pop(-1)
+		dst = args.pop(0).replace('.', '/') if args and cls.RE_NAMESPACE.match(args[0]) else dirname(src)
+		assert not args, args
+
+		for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
+			yield (fn, join(dst, basename(fn)))
+
 
 	RE_HASHBANG = re.compile(r'^#!\s*/bin/(?:[bd]?a)?sh\b')
 	RE_TEST = re.compile(
@@ -317,6 +338,64 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		\b
 		''', re.VERBOSE | re.DOTALL)
 	RE_ARG1 = re.compile(r'\$(?:1|\{1[#%:?+=/-[^}]*\})')
+	# /usr/share/dh-python/dhpython/version.py # VERSION_RE
+	RE_VERSION_RANGE = re.compile(
+		r'''^
+		\d+\.\d+
+		(?:- (?:\d+\.\d+)? )?
+		(?:,
+		   \d+\.\d+
+		   (?:- (?:\d+\.\d+)? )?
+		)*
+		$''', re.VERBOSE)
+	# /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
+	RE_NAMESPACE = re.compile(
+		r'''^
+		(?![0-9])\w+
+		(?:\. (?![0-9])\w+ )*
+		$''', re.VERBOSE)
+	RE_PYTHONPATHS = re.compile(
+		r'''^/?
+		(?:usr/lib/pymodules/python[0-9.]+/
+		  |usr/lib/python[0-9.]+/
+		  |usr/share/pyshared/
+		)''', re.VERBOSE)
+
+
+class Dirs(set):
+	"""Set of directories."""
+
+	DIRS = frozenset({
+		'bin',
+		'etc',
+		'etc/cron.d',
+		'etc/cron.hourly',
+		'etc/cron.daily',
+		'etc/cron.weekly',
+		'etc/cron.monthly',
+		'etc/default',
+		'etc/init.d',
+		'lib',
+		'lib/security',
+		'sbin',
+		'usr',
+		'usr/bin',
+		'usr/lib',
+		'usr/sbin',
+		'var',
+		'var/lib',
+		'var/log',
+		'var/www',
+	})
+
+	def __init__(self, package):  # type: (str) -> None
+		set.__init__(self, {'usr/share/doc/' + package} | self.DIRS)
+
+	def add(self, dst):  # type: (str) -> None
+		path = dirname(normpath(dst.strip('/')))
+		while path > '/':
+			set.add(self, path)
+			path = dirname(path)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,5 @@
+ucslint (1.0.0-1) unstable; urgency=low
+
+  * Bug #48747: Check pyinstall files
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Apr 2020 09:56:39 +0200
