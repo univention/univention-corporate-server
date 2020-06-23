@@ -36,7 +36,10 @@ import fcntl
 import re
 import errno
 import time
-from collections import MutableMapping
+try:
+	from collections.abc import MutableMapping  # Python 3.3+
+except ImportError:
+	from collections import MutableMapping
 import six
 try:
 	from typing import overload, Any, Dict, IO, Iterator, List, NoReturn, Optional, Set, Tuple, Type, TypeVar, Union  # noqa F401
