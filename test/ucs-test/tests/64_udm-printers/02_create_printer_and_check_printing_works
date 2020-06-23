@@ -25,12 +25,14 @@ import random
 import time
 import subprocess
 
-PRINTER_PROTOCOLS = [ 'usb://', 'ipp://', 'socket://', 'parallel://', 'http://' ]
+PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
 printquota_installed = utils.package_installed("univention-printquota")
 
+
 def random_fqdn(ucr):  # type: (univention.testing.ucr.UCSTestConfigRegistry) -> str
 	return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
+
 
 if __name__ == '__main__':
 	with univention.testing.ucr.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
@@ -50,7 +52,7 @@ if __name__ == '__main__':
 			'description': uts.random_name(),
 			'spoolHost': spoolhost,
 			'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip(),),
-			'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
+			'model': 'hp-ppd/HP/HP_Business_Inkjet_2500C_Series.ppd',
 			'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
 			'sambaName': uts.random_name(),
 			'setQuota': setquota,
