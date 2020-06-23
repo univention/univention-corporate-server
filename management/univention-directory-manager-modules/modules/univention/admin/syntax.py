@@ -1435,7 +1435,7 @@ class string_numbers_letters_dots_spaces(simple):
 
 
 class phone(simple):
-	"""
+	r"""
 	Syntax for (international) telephone numbers.
 
 	>>> phone.parse('+49 421 22232-0')
@@ -4534,7 +4534,7 @@ class UNIX_AccessRight(simple):
 
 
 class UNIX_AccessRight_extended(simple):
-	"""
+	r"""
 	Syntax to configure UNIX file permissions including set\ |UID|, set\ |GID| and sticky bits.
 
 	.. seealso::
