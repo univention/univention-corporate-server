@@ -182,28 +182,28 @@ def build_kerberos_request(target_realm, user_name):
 	req_body = KdcReqBody()
 	req_body['kdc-options'] = "'01010000100000000000000000000000'B"
 
-	req_body['cname'] = None
+	req_body['cname'] = univ.noValue
 	req_body['cname']['name-type'] = 1  # NT_PRINCIPAL
-	req_body['cname']['name-string'] = None
+	req_body['cname']['name-string'] = univ.noValue
 	req_body['cname']['name-string'][0] = user_name
 
 	req_body['realm'] = target_realm
 
-	req_body['sname'] = None
+	req_body['sname'] = univ.noValue
 	req_body['sname']['name-type'] = 2  # NT_SRV_INST
-	req_body['sname']['name-string'] = None
+	req_body['sname']['name-string'] = univ.noValue
 	req_body['sname']['name-string'][0] = 'krbtgt'
 	req_body['sname']['name-string'][1] = target_realm
 
 	req_body['till'] = '19700101000000Z'
 	req_body['nonce'] = random.SystemRandom().getrandbits(31)
-	req_body['etype'] = None
+	req_body['etype'] = univ.noValue
 	req_body['etype'][0] = 18  # AES256_CTS_HMAC_SHA1_96
 
 	as_req = AsReq()
 	as_req['pvno'] = 5
 	as_req['msg-type'] = 10  # AS-REQ
-	as_req['padata'] = None
+	as_req['padata'] = univ.noValue
 	as_req['req-body'] = req_body
 
 	return pyasn1.codec.der.encoder.encode(as_req)
