@@ -82,6 +82,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/directory-manager-cmd.log'
 		'/var/log/univention/join.log'
 		'/var/log/univention/listener.log'
+		'/var/log/univention/listener_modules/*.log'
 		'/var/log/univention/management*'=
 		'/var/log/univention/setup.log'
 		'/var/log/univention/system-stats.log'
