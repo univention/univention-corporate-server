@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-2) unstable; urgency=medium
+
+  * Bug #51323: use Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 23 Jun 2020 17:43:18 +0200
+
 univention-management-console-module-top (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

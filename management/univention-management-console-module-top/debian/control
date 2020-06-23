@@ -18,6 +18,9 @@ Depends:
  univention-management-console-server (>= 11.0.4-37),
  ${python3:Depends},
  ${python:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: UMC module for process overview
  This package contains the UMC module for the process overview
  .

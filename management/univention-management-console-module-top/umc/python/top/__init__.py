@@ -54,10 +54,7 @@ class Instance(Base):
 	def query(self, pattern, category='all'):
 		processes = []
 		for process in psutil.process_iter():
-			try:
-				username = process.username()
-			except KeyError:  # fixed in psutil 2.2.0
-				username = str(process.uids().real)
+			username = process.username()
 			try:
 				cpu_time = process.cpu_times()
 				proc = {
