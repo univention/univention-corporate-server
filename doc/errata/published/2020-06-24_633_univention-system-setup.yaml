@@ -11,3 +11,5 @@ desc: |
    Univention Configuration Registry variables proxy/http and proxy/https.
    Previously, only proxy/http was used.
 bug: [50613]
+erratum: 633
+announced: 2020-06-24
