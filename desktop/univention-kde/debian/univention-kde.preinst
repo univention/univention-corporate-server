@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention KDE
-#  postinst script for the debian package
+#  preinst script for the debian package
 #
 # Copyright 2018-2020 Univention GmbH
 #

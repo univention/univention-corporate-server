@@ -2,6 +2,8 @@
 0006-5: debian/univention-base-files.postrm
 0006-6: debian/univention-base-files.postrm
 0014-6
+# Priority: important
+0011-4: debian/control
 0011-16: debian/univention-base-files.univention-config-registry-mapping
 # More complex regular expression
 0004-55: debian/univention-base-files.univention-config-registry
