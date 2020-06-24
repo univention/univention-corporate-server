@@ -102,6 +102,8 @@ univention-apache (11.0.1-3) unstable; urgency=medium
       UCRV doc by Dirk Wiesenthal <wiesenthal@univention.de>
       new feature custom vhosts by Jannik Ahlers <ahlers@univention.de>
 
+ -- Felix Botner <botner@univention.de>  Tue, 29 Oct 2019 15:58:45 +0100
+
 univention-apache (11.0.1-1) unstable; urgency=medium
 
   * Bug #46969: bindpwdfile support
