@@ -30,16 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ConfigParser
+from six.moves.configparser import ConfigParser
 import shlex
 import locale
 import os.path
 
 
-class Config(ConfigParser.ConfigParser):
+class Config(ConfigParser):
 
 	def __init__(self, filename='/etc/univention/directory/reports/config.ini'):
-		ConfigParser.ConfigParser.__init__(self)
+		ConfigParser.__init__(self)
 		self._filename = filename
 		self.read(filename)
 		defaults = self.defaults()

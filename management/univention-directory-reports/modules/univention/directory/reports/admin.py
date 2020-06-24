@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
 import cgi
 
 import univention.admin.uldap as ua_ldap
@@ -133,7 +134,7 @@ class AdminConnection(object):
 	def get_object_real(self, module, dn):
 		if dn in self._cached:
 			return self._cached[dn]
-		if isinstance(module, basestring):
+		if isinstance(module, six.string_types):
 			if module in self._modules:
 				module = self._modules[module]
 			else:
