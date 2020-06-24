@@ -1,0 +1,4 @@
+E:0009-12: test.py:3:16: Variable uses reserved Python keyword: 'print'
+E:0009-12: test.py:3:1: Variable uses reserved Python keyword: 'print'
+E:0009-12: test.py:3:9: Variable uses reserved Python keyword: 'print'
+S:0009-13: test.py:4:0: Variable uses internal Python keyword: 'dir'

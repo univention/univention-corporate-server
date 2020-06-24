@@ -585,8 +585,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								self.addmsg('0004-9', 'file contains entry with invalid "Type: %s"' % (typ,), fn)
 								continue
 
-							vars = entry.get('Variables', [])
-							for var in vars:
+							variables = entry.get('Variables', [])
+							for var in variables:
 								if '*' in var and '.*' not in var:
 									self.addmsg('0004-55', 'UCR .info-file may contain globbing pattern instead of regular expression: "%s"' % (var,), fn)
 									break
