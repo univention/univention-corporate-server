@@ -37,9 +37,6 @@ import subprocess
 from argparse import ArgumentParser
 from typing import List  # noqa F401
 
-RE_PY2 = re.compile(r'\s*dh .*--with.*python2')
-RE_PY3 = re.compile(r'\s*dh .*--with.*python3')
-
 EXECUTE_TOKEN = re.compile('@!@(.+?)@!@', re.MULTILINE | re.DOTALL)
 UCR_HEADER = '''\
 # -*- coding: utf-8 -*-
@@ -47,6 +44,7 @@ import univention.config_registry  # noqa
 from fake import configRegistry, baseConfig  # noqa
 
 '''
+PYTHON_VERSIONS = PY2, PY3 = ('python2', 'python3')
 
 RE_PY2 = re.compile(r'\s*dh .*--with.*python2')
 RE_PY3 = re.compile(r'\s*dh .*--with.*python3')
@@ -74,27 +72,26 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		re.compile(r'univention-directory-manager-modules/'): 'W601',  # UDM allows has_key() Bug #W601
 	}
 
-	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'N,B,E501,W191,E265,E266')
+	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'N,B,D,E501,W191,E265,E266')
 	DEFAULT_SELECT = None
 	MAX_LINE_LENGTH = 220
 	GRACEFUL = not os.environ.get('UCSLINT_FLAKE8_STRICT')
 
 	def __init__(self, *args, **kwargs):
 		self.show_statistics = kwargs.pop('show_statistics', False)
-		self.python_versions = ['python2', 'python3']
+		self.python_versions = list(PYTHON_VERSIONS)
 		try:
 			with open('debian/rules', 'r') as fd:
 				content = fd.read()
 			if not RE_PY2.search(content):
-				self.python_versions.remove('python2')
+				self.python_versions.remove(PY2)
 			if not RE_PY3.search(content):
-				self.python_versions.remove('python3')
+				self.python_versions.remove(PY3)
 		except EnvironmentError:
 			pass
 		super(UniventionPackageCheck, self).__init__(*args, **kwargs)
 
 	def getMsgIds(self):
-
 		ERROR_BUT_WARN = uub.RESULT_WARN if self.GRACEFUL else uub.RESULT_ERROR
 		return {
 			'0020-F401': [ERROR_BUT_WARN, 'module imported but unused'],
@@ -387,6 +384,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			for ignore, pathes in self._iter_pathes(path):
 				errors += self.flake8(python, pathes, ignore)
 
+		for python in PYTHON_VERSIONS:
 			errors += self.check_conffiles(python)
 
 		self.format_errors(errors)

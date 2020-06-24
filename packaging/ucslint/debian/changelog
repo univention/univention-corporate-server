@@ -1,3 +1,9 @@
+ucslint (8.0.0-18) unstable; urgency=low
+
+  * Bug #51107: Always check conffiles with Python 2 and 3
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 24 Jun 2020 10:18:47 +0200
+
 ucslint (8.0.0-17) unstable; urgency=low
 
   * Bug #51375: Check for uldap.searchDn()
