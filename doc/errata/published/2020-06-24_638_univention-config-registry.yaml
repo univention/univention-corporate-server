@@ -12,3 +12,5 @@ desc: |
  * Move `univention.debhelper` into a separate package to break a build
    dependency cycle.
 bug: [51368, 51374]
+erratum: 638
+announced: 2020-06-24
