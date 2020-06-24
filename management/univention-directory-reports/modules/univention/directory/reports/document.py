@@ -45,7 +45,7 @@ from univention.directory.reports.output import Output
 from univention.directory.reports.interpreter import Interpreter
 from univention.directory.reports import admin
 
-#import trml2pdf
+import trml2pdf
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-directory-reports').translate
