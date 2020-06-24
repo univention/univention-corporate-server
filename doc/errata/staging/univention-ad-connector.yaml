@@ -9,7 +9,15 @@ desc: |
  * The flag pwdChangeNextLogin is now synced bidirectionally
    by the adconnector
  * The Diff-Mode synchronization technique originally implemented
-   for the S4-Connector has been merged to the AD-Connector
+   for the S4-Connector has been merged to the AD-Connector.
+   This affects the replication of multivalue attribute values
+   such that only added and removed attribute values are modified
+   on the destination system, but values unchanged on the source of
+   replication are also unchanged on the destination. Before
+   this update, all values of an attribute changed in the source LDAP
+   got replaced in the destination LDAP. Please note that there
+   is no change in the replication of group memberships, because
+   they already have been replicated in Diff-Mode before.
  * Ignore changes to a list of irrelevant attributes.
    The list can be extended via a new UCR variable
    connector/ad/mapping/attributes/irrelevant
