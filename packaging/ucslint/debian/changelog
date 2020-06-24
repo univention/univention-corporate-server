@@ -1,3 +1,9 @@
+ucslint (8.0.0-19) unstable; urgency=low
+
+  * Bug #49240: Allow ucslint on multiple packages
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 24 Jun 2020 11:27:38 +0200
+
 ucslint (8.0.0-18) unstable; urgency=low
 
   * Bug #51107: Always check conffiles with Python 2 and 3
