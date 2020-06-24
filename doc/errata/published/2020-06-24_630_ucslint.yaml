@@ -31,3 +31,5 @@ desc: |
  * Check for usage of `debian/*.pyinstall` files to install Python modules.
 bug: [49704, 51105, 51107, 51248, 51247, 51246, 49683, 49620, 48747, 43981, 42294,
  51375, 51476, 50056, 51106]
+erratum: 630
+announced: 2020-06-24
