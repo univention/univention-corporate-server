@@ -9,3 +9,5 @@ desc: |
  * The UCR templates of univention-base-files have been adapted
    to be python2 and python3 compatible.
 bug: [51006]
+erratum: 631
+announced: 2020-06-24
