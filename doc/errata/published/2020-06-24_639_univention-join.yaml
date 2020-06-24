@@ -11,3 +11,5 @@ desc: |
    `univention-join` and `univention-admin-diary`, which leads to undesired
    behaviour.
 bug: [51374]
+erratum: 639
+announced: 2020-06-24
