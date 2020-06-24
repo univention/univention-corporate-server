@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-46) unstable; urgency=medium
+
+  * Bug #51567: Allow snyc_from_ucs synchronization model for
+    otherHomePhone to coexist with that for proxyAddresses
+
+ -- Arvid <requate@univention.de>  Wed, 24 Jun 2020 17:13:40 +0200
+
 univention-ad-connector (13.0.0-45) unstable; urgency=medium
 
   * Bug #51567: Fix synchronization of otherHomePhone

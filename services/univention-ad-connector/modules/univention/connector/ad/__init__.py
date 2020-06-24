@@ -2499,10 +2499,10 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Processed %s" % (change_count,))
 		return change_count
 
-	def __has_attribute_value_changed(self, attribute, ucs_old, ucs_new):
-		return not ucs_old.get(attribute) == ucs_new.get(attribute)
+	def __has_attribute_value_changed(self, attribute, object_old, new_object):
+		return not object_old['attributes'].get(attribute) == new_object['attributes'].get(attribute)
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, ucs_new=None, ucs_old=None, object_old=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
 		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -2638,20 +2638,20 @@ class ad(univention.connector.ucs):
 
 			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: object: %s" % object)
 			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: object_old: %s" % object_old)
-			attribute_list = set(ucs_old.keys() + ucs_new.keys())
+			attribute_list = set(object_old['attributes'].keys() + object['attributes'].keys())
 
 			# Iterate over attributes and post_attributes
 			for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes),
 					('post_attributes', self.property[property_type].post_attributes)]:
 				if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
 					for attr in attribute_list:
-						if not self.__has_attribute_value_changed(attr, ucs_old, ucs_new):
+						if not self.__has_attribute_value_changed(attr, object_old, object):
 							continue
 
 						ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The following attribute has been changed: %s" % attr)
 
 						for attribute in attribute_type.keys():
-							if attribute_type[attribute].ldap_attribute != attr:
+							if attr not in (attribute_type[attribute].con_attribute, attribute_type[attribute].con_other_attribute):
 								continue
 
 							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Found a corresponding mapping defintion: %s" % attribute)
@@ -2664,15 +2664,12 @@ class ad(univention.connector.ucs):
 
 							modify = False
 
-							# Get the mapped attributes
-							old_values = set(object_old['attributes'].get(ad_attribute, []))
-							new_values = set(object['attributes'].get(ad_attribute, []))
-							if ad_other_attribute:
-								old_values |= set(object_old['attributes'].get(ad_other_attribute, []))
-								new_values |= set(object['attributes'].get(ad_other_attribute, []))
+							# Get the UCS attributes
+							old_values = set(object_old['attributes'].get(attr, []))
+							new_values = set(object['attributes'].get(attr, []))
 
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s mapped old_values: %s" % (attr, old_values))
-							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s mapped new_values: %s" % (attr, new_values))
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s old_values: %s" % (attr, old_values))
+							ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: %s new_values: %s" % (attr, new_values))
 
 							if attribute_type[attribute].compare_function:
 								if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):

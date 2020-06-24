@@ -798,8 +798,8 @@ class ucs:
 						object_old = {'dn': object['dn'], 'modtype': change_type, 'attributes': {}}  # Dummy
 
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), new, old, object_old))
-							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, new, old, object_old))):
+						if ((old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, unicode(old_dn, 'utf8'), object_old))
+							or (not old_dn and not self.sync_from_ucs(key, object, premapped_ucs_dn, old_dn, object_old))):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
@@ -1378,7 +1378,7 @@ class ucs:
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
-	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, ucs_new=None, ucs_old=None, object_old=None):
+	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
 		# dummy
 		return False
 
