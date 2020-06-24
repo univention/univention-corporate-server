@@ -1,7 +1,6 @@
 """
 Common functions used by tests.
 """
-from __future__ import print_function
 # Copyright 2013-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -29,9 +28,12 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
 import functools
 import subprocess
+import traceback
 import ldap
 import time
 import socket
@@ -560,6 +562,8 @@ def fail(log_message=None, returncode=1):
 	print('### FAIL ###')
 	if log_message:
 		print('%s\n###      ###' % log_message)
+		if sys.exc_info()[-1]:
+			print(traceback.format_exc(), file=sys.stderr)
 	sys.exit(returncode)
 
 
