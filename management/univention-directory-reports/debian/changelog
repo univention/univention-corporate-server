@@ -1,4 +1,4 @@
-univention-directory-reports (12.0.0-3) unstable; urgency=medium
+univention-directory-reports (12.0.0-4) unstable; urgency=medium
 
   * 50449: temporary deactivate trml2pdf
 
