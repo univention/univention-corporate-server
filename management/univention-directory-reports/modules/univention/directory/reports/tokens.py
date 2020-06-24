@@ -38,8 +38,13 @@ class Token(object):
 		self.attrs = attrs
 		self.data = data
 
-	def __nonzero__(self):
+	def __repr__(self):
+		return '<%s %r %r %d>' % (type(self).__name__, self.name, self.attrs, len(self.data or ''))
+
+	def __bool__(self):
 		return self.name is not None
+
+	__nonzero__ = __bool__
 
 
 class TextToken(Token):
