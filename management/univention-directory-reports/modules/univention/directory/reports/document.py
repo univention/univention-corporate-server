@@ -45,6 +45,7 @@ from univention.directory.reports.output import Output
 from univention.directory.reports.interpreter import Interpreter
 from univention.directory.reports import admin
 
+import six
 import trml2pdf
 
 from univention.lib.i18n import Translation
@@ -118,7 +119,7 @@ class Document(object):
 			self.__append_file(fd, self._header)
 
 		for dn in objects:
-			if isinstance(dn, basestring):
+			if isinstance(dn, six.string_types):
 				obj = admin.get_object(None, dn)
 			else:
 				obj = admin.cache_object(dn)
