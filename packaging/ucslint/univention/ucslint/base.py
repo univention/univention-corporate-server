@@ -436,9 +436,7 @@ class UPCFileTester(object):
 						endline, endpos = self._getpos(linenum, match.end(0))
 						msg = t.msg
 						if t.formatmsg:
-							# format msg
 							msg = msg % {'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename}
-						# append UPCMessage
 						msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos))
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
@@ -447,8 +445,8 @@ class UPCFileTester(object):
 				msg = t.msg
 				if t.formatmsg:
 					msg = msg % {'basename': self.basename, 'filename': self.filename}
-					# append msg
-					msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename))
+				msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename))
+
 		return msglist
 
 
