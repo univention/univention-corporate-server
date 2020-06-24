@@ -19,3 +19,5 @@ desc: |
    umc/self-service/account-deregistration/{...}
    UCR variables respectively.
 bug: [51351, 51259]
+erratum: 632
+announced: 2020-06-24
