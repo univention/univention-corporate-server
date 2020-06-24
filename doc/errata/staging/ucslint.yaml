@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: ucslint
-fix: 8.0.0-17A~4.4.0.202006231043
+fix: 8.0.0-18A~4.4.0.202006241023
 desc: |
  This update addresses the following issues:
  * The code base has been converted to Python 3.
