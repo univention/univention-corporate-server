@@ -23,6 +23,6 @@ desc: |
    connector/ad/mapping/attributes/irrelevant
  * Basic profiling support via UCR connector/ad/poll/profiling
  * Log the active mapping on startup
-bug: [51298,51462,18501,51518]
+bug: [51298,51462,18501,51518,51518]
 erratum: 636
 announced: 2020-06-24
