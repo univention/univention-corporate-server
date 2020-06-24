@@ -38,16 +38,13 @@ def main():
 		except samltest.SamlError as exc:
 			expected_error = "The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log\\n"
 			if expected_error not in exc.message:
-				utils.fail(exc.message)
-	try:
-		SamlSession.logout_at_IdP()
-		SamlSession.login_with_new_session_at_IdP()
-		SamlSession.test_login()
-		SamlSession.logout_at_IdP()
-		SamlSession.test_logout_at_IdP()
-		SamlSession.test_logout()
-	except samltest.SamlError as exc:
-		utils.fail(exc.message)
+				raise Exception({'expected': expected_error, 'got': exc.message})
+	SamlSession.logout_at_IdP()
+	SamlSession.login_with_new_session_at_IdP()
+	SamlSession.test_login()
+	SamlSession.logout_at_IdP()
+	SamlSession.test_logout_at_IdP()
+	SamlSession.test_logout()
 
 
 if __name__ == '__main__':
