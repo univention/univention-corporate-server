@@ -15,6 +15,7 @@ Architecture: all
 Depends:
  python-univention-directory-reports,
  python-univention-lib (>= 1.0.25-1),
+ python3-univention-directory-reports,
  shell-univention-lib,
  ${misc:Depends},
 Description: Creates reports for UCS Directory Manager objects
