@@ -34,5 +34,5 @@ import os
 
 
 def handler(configRegistry, changes):
-		os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')
-		os.system('[ -x /bin/setupcon ] && /bin/setupcon --force --save')
+	os.system('/sbin/udevadm trigger --subsystem-match=input --action=change')
+	os.system('[ -x /bin/setupcon ] && /bin/setupcon --force --save')

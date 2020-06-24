@@ -3,6 +3,7 @@
 @!@
 from univention.lib.ucrLogrotate import getLogrotateConfig
 from re import findall
+
 LOGS = """
 /var/log/syslog
 /var/log/mail.info
@@ -22,7 +23,7 @@ LOGS = """
 /var/log/messages
 """
 FILES = {}
-for (path, cat) in findall('(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
+for (path, cat) in findall(r'(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
 	FILES.setdefault(cat, (set(), {}))[0].add(path)
 
 other_logfiles = set()
@@ -34,6 +35,7 @@ for (cat, (paths, settings)) in list(FILES.items()):
 		del FILES[cat]
 	else:
 		settings.update(custom)
+
 FILES[None] = (other_logfiles, other_settings)
 
 for (cat, (paths, settings)) in FILES.items():

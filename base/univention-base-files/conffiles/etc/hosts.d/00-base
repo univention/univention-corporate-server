@@ -6,6 +6,7 @@
 # Add IPv4 and IPv6 addresses of interfaces
 # May be overridden by .../hosts
 import re
+
 RE_IPV4 = re.compile(r'^interfaces/([^/]+)/address$')
 RE_IPV6 = re.compile(r'^interfaces/([^/]+)/ipv6/([^/]+)/address$')
 primary = configRegistry.get('interfaces/primary')
