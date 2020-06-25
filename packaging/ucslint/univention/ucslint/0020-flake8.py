@@ -28,14 +28,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-from univention.ucslint.python import python_files
-import re
 import os
-import sys
+import re
 import subprocess
+import sys
 from argparse import ArgumentParser
 from typing import List  # noqa F401
+
+import univention.ucslint.base as uub
+from univention.ucslint.python import python_files
 
 EXECUTE_TOKEN = re.compile('@!@(.+?)@!@', re.MULTILINE | re.DOTALL)
 UCR_HEADER = '''\

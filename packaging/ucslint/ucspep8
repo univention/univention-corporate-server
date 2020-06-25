@@ -31,8 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from importlib import import_module
-import univention.ucslint.base as uub
 
+import univention.ucslint.base as uub
 
 if __name__ == '__main__':
 	module = import_module('.0020-flake8', uub.__package__)

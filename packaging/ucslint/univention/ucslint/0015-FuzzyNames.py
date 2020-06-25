@@ -27,10 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-from itertools import chain
 import re
+from itertools import chain
 from typing import Any, Dict, Iterator, List  # noqa F401
+
+import univention.ucslint.base as uub
 
 
 def levenshtein(word, distance=1, subst='.'):

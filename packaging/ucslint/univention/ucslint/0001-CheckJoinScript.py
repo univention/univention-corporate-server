@@ -28,9 +28,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
+
+import univention.ucslint.base as uub
 
 CALLED, COPIED = (1 << bit for bit in range(2))
 

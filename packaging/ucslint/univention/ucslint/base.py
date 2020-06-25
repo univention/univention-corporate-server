@@ -29,7 +29,8 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from typing import Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
+from typing import Dict, Iterable, Iterator, List, Optional, Pattern, Tuple  # noqa F401
+
 try:
 	from junit_xml import TestCase  # type: ignore
 	TestCase('test', file=__file__, line=1)

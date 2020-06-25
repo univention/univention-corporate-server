@@ -27,10 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
+import re
 from itertools import chain
 from os.path import join
-import re
+
+import univention.ucslint.base as uub
 
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*
 # 2) check if strings like "univention.qa" appear in debian/* and conffiles/*

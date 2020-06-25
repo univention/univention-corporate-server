@@ -27,10 +27,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-from univention.ucslint.python import python_files, Python33 as PythonVer, RE_LENIENT
-import re
 import ast
+import re
+
+import univention.ucslint.base as uub
+from univention.ucslint.python import RE_LENIENT
+from univention.ucslint.python import Python33 as PythonVer
+from univention.ucslint.python import python_files
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

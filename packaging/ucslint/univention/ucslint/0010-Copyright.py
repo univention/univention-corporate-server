@@ -27,11 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
 import time
 
+import univention.ucslint.base as uub
 
 RE_SKIP = re.compile(
 	'|'.join((

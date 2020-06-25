@@ -28,13 +28,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
+import re
+from glob import glob
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
-from glob import glob
 from shlex import split
 from typing import Callable, Dict, Iterator, List, Set, Tuple  # noqa F401
-import re
+
+import univention.ucslint.base as uub
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

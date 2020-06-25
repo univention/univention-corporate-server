@@ -29,9 +29,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
+
+import univention.ucslint.base as uub
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

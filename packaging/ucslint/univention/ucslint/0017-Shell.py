@@ -28,8 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
 import re
+
+import univention.ucslint.base as uub
 
 RE_HASHBANG = re.compile(r'#!\s*/bin/(?:ba|da|z|c)?sh')
 

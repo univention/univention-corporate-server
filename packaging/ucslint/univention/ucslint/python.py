@@ -29,6 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 import re
 from typing import Iterator, Pattern
+
 from univention.ucslint.base import FilteredDirWalkGenerator
 
 
