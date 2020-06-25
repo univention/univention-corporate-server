@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper (>= 10~),
  dh-python,
+ python-debian,
  python-all,
  python-setuptools,
  python3-all,
