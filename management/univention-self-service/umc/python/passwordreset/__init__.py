@@ -52,7 +52,7 @@ from univention.lib.umc import Client, HTTPError, ConnectionError, Unauthorized
 import univention.admin.objects
 import univention.admin.syntax
 import univention.admin.uexceptions as udm_errors
-from univention.management.console.base import Base
+from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
@@ -1113,7 +1113,7 @@ class Instance(Base):
 
 	def get_nested_groups(self, groupdn):
 		group = self.get_udm_group(groupdn)
-		res = group["nestedGroup"] or []
+		res = group["memberOf"] or []
 		for ng in list(res):
 			res.extend(self.get_nested_groups(ng))
 		return res
