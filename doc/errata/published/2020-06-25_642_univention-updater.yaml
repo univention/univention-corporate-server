@@ -9,3 +9,5 @@ desc: |
  * Fix regression caused by erratum 605 to validate signatures of `preup.sh`
    and `postup.sh` scripts.
 bug: [51576]
+erratum: 642
+announced: 2020-06-25
