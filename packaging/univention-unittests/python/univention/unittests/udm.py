@@ -2,7 +2,7 @@ import pytest
 
 from univention.unittests import import_module
 from univention.unittests.udm_database import Database
-from univention.unittests.udm_connection import MockedAccess, MockedPosition  # noqa: F401
+from univention.unittests.udm_connection import mock_conn, MockedAccess, MockedPosition  # noqa: F401
 
 
 def pytest_addoption(parser):

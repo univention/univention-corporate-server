@@ -54,31 +54,53 @@ class AttrFilter(object):
 		return False
 
 
+def find_bracket_idx(filter_string):
+	if not filter_string.startswith('('):
+		raise ValueError(filter_string)
+	i = 0
+	for idx, c in enumerate(filter_string):
+		if c == '(':
+			i += 1
+		if c == ')':
+			i -= 1
+		if i == 0:
+			return idx
+
+
 def parse_filter(filter_string):
 	if filter_string.startswith('(&'):
 		if not filter_string.endswith(')'):
 			raise ValueError(filter_string)
-		return [AndFilter(parse_filter(filter_string[2:-1]))]
-	if filter_string.startswith('(|'):
+		idx = find_bracket_idx(filter_string)
+		inside = filter_string[2:idx]
+		filter_obj = [AndFilter(parse_filter(inside))]
+	elif filter_string.startswith('(|'):
 		if not filter_string.endswith(')'):
 			raise ValueError(filter_string)
-		return [OrFilter(parse_filter(filter_string[2:-1]))]
-	if filter_string.startswith('(!'):
+		idx = find_bracket_idx(filter_string)
+		inside = filter_string[2:idx]
+		filter_obj = [OrFilter(parse_filter(inside))]
+	elif filter_string.startswith('(!'):
 		if not filter_string.endswith(')'):
 			raise ValueError(filter_string)
-		return [NotFilter(parse_filter(filter_string[2:-1]))]
-	idx = filter_string.find(')')
-	attr = [AttrFilter(*filter_string[1:idx].split('='))]
+		idx = find_bracket_idx(filter_string)
+		inside = filter_string[2:idx]
+		filter_obj = [NotFilter(parse_filter(inside))]
+	else:
+		idx = filter_string.find(')')
+		filter_obj = [AttrFilter(*filter_string[1:idx].split('=', 1))]
 	tail = filter_string[idx + 1:]
 	if tail:
-		return attr + parse_filter(tail)
+		return filter_obj + parse_filter(tail)
 	else:
-		return attr
+		return filter_obj
 
 
 def make_filter(filter_string):
 	if not filter_string:
 		return AndFilter([])
 	else:
+		if not filter_string.startswith('(') and not filter_string.endswith(')'):
+			filter_string = '(' + filter_string + ')'
 		filter_objs = parse_filter(filter_string)
 		return AndFilter(filter_objs)

@@ -72,7 +72,7 @@ setup(
 	packages=[
 		'univention.unittests',
 	],
-	entry_points={"pytest11": ["univention-unittests-umc = univention.unittests.umc", "univention-unittests-udm = univention.unittests.udm"]},
+	entry_points={"pytest11": ["univention-unittests-ucr = univention.unittests.ucr", "univention-unittests-umc = univention.unittests.umc", "univention-unittests-udm = univention.unittests.udm"]},
 	package_dir={
 		'univention.unittests': 'python/univention/unittests/',
 	},

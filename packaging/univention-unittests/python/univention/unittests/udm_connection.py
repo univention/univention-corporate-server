@@ -3,15 +3,19 @@ from copy import deepcopy
 from univention.unittests.udm_database import default_database
 from univention.unittests.udm_filter import make_filter
 
+from mock import MagicMock
+
+from univention.admin.uldap import access
+
 
 def get_domain():
 	return 'dc=intranet,dc=example,dc=de'
 
 
-class MockedAccess(object):
-	def __init__(self, database=None):
-		self.database = database or default_database()
-
+class MockedAccess(MagicMock):
+#	def __init__(self, database=None):
+#		self.database = database or default_database()
+#
 	def search(self, filter=None, base=None, attr=None):
 		if base is None:
 			base = get_domain()
@@ -45,12 +49,31 @@ class MockedAccess(object):
 	def create(self, obj):
 		self.database.add(obj)
 
+	def get(self, dn, attr=[], required=False, exceptions=False):
+		return self.database[dn]
+
 	def getAttr(self, dn, attr):
 		obj = self.database.objs.get(dn)
 		if obj:
 			return obj.attrs.get(attr)
 
 
+def mock_conn(database):
+	lo = mock_lo(database)
+	pos = MockedPosition()
+	return lo, pos
+
+
+def mock_lo(database):
+	lo = MockedAccess()
+	lo.database = database
+	lo.mock_add_spec(access)
+	return lo
+
+
 class MockedPosition(object):
 	def getDomain(self):
 		return get_domain()
+
+	def getDomainConfigBase(self):
+		return 'cn=univention,%s' % self.getDomain()

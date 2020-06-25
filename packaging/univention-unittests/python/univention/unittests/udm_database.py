@@ -50,6 +50,9 @@ class Database(object):
 	def __repr__(self):
 		return 'Database({!r})'.format(self.objs)
 
+	def __getitem__(self, dn):
+		return self.objs[dn].attrs
+
 	def add(self, obj):
 		self.objs[obj.dn] = obj
 		return obj.dn
