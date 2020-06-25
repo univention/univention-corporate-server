@@ -11,3 +11,5 @@ desc: |
    mobilePhone and pager to the MS AD attributes
    otherTelephone, otherHomePhone, otherMobile and otherPager
 bug: [51567]
+erratum: 641
+announced: 2020-06-25
