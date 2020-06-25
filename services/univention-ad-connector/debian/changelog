@@ -10,6 +10,72 @@ univention-ad-connector (14.0.0-1) unstable; urgency=medium
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:27 +0200
 
+univention-ad-connector (13.0.0-46) unstable; urgency=medium
+
+  * Bug #51567: Allow snyc_from_ucs synchronization model for
+    otherHomePhone to coexist with that for proxyAddresses
+
+ -- Arvid <requate@univention.de>  Wed, 24 Jun 2020 17:13:40 +0200
+
+univention-ad-connector (13.0.0-45) unstable; urgency=medium
+
+  * Bug #51567: Fix synchronization of otherHomePhone
+
+ -- Arvid <requate@univention.de>  Wed, 24 Jun 2020 15:40:32 +0200
+
+univention-ad-connector (13.0.0-44) unstable; urgency=medium
+
+  * Bug #18501: Fix dummy default for object_old
+
+ -- Arvid <requate@univention.de>  Mon, 22 Jun 2020 21:55:53 +0200
+
+univention-ad-connector (13.0.0-43) unstable; urgency=medium
+
+  * Bug #18501: Fix handling of proxyAddresses mapping
+    in combination with the Diff-Mode code.
+
+ -- Arvid <requate@univention.de>  Mon, 22 Jun 2020 19:38:35 +0200
+
+univention-ad-connector (13.0.0-42) unstable; urgency=medium
+
+  * Bug #51518: add UCR connector/ad/mapping/attributes/irrelevant
+
+ -- Arvid <requate@univention.de>  Thu, 18 Jun 2020 23:40:51 +0200
+
+univention-ad-connector (13.0.0-41) unstable; urgency=medium
+
+  * Bug #51462: Add dependency to heimdal-clients and restart the umc-server
+    after this update
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 18 Jun 2020 13:39:45 +0200
+
+univention-ad-connector (13.0.0-37) unstable; urgency=medium
+
+  * Bug #51518: Ignore changes to certain attributes
+  * Bug #51518: Skip the LDAP redirects during AD search
+  * Bug #51518: Basic profiling support via UCR con*/ad/poll/profiling
+
+ -- Arvid <requate@univention.de>  Wed, 17 Jun 2020 18:53:20 +0200
+
+univention-ad-connector (13.0.0-36) unstable; urgency=medium
+
+  * Bug #18501: Mark single_value attributes programmatically
+    and log the mapping on startup at INFO debug level.
+
+ -- Arvid <requate@univention.de>  Wed, 17 Jun 2020 18:46:29 +0200
+
+univention-ad-connector (13.0.0-35) unstable; urgency=medium
+
+  * Bug #18501: Backport of Diff-Mode from S4-Connector
+
+ -- Arvid <requate@univention.de>  Wed, 17 Jun 2020 18:41:02 +0200
+
+univention-ad-connector (13.0.0-34) unstable; urgency=medium
+
+  * Bug #51298: Sync pwdChangeNextLogin from/to AD
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 05 Jun 2020 20:46:40 +0200
+
 univention-ad-connector (13.0.0-33) unstable; urgency=medium
 
   * Bug #51160: make UCR templates compatible to python3
