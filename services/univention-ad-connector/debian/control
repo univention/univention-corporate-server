@@ -9,7 +9,6 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev,
- heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  univention-management-console-dev (>= 11.0.4-37),
 
 Package: python-univention-connector
@@ -114,6 +113,7 @@ Depends:
  ${misc:Depends},
 Recommends:
  sqlite3,
+ heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  univention-nagios-ad-connector,
 Description: UCS - Modules for sync UCS and Active Directory
  This package contains the modules that implement the
