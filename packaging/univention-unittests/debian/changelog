@@ -1,0 +1,5 @@
+univention-unittests (1.0.0-1) unstable; urgency=medium
+
+  * Initial release (Bug #51566)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 May 2020 15:47:07 +0200
