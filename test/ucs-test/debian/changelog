@@ -1,3 +1,10 @@
+ucs-test (9.0.3-234) unstable; urgency=medium
+
+  * Bug #51195: skipp 00_checks/04_check_root_password on updated
+    systems
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Jun 2020 15:20:40 +0200
+
 ucs-test (9.0.3-233) unstable; urgency=medium
 
   * Bug #51518: ucs-test-adconnector depends on ldb-tools
