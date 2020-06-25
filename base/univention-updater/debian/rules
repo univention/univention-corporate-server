@@ -66,6 +66,7 @@ override_dh_auto_test:
 	# unittest
 	PYTHONPATH=modules python2.7 tests/test_updater.py -v
 	PYTHONPATH=modules python2.7 tests/test_mirror.py -v
+	PYTHONPATH=modules python2.7 tests/test_toools.py -v
 
 override_dh_python2:
 	dh_python2 --skip-private

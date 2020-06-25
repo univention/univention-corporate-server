@@ -92,7 +92,8 @@ def verify_script(script, signature):
 
     .. code-block: sh
 
-        gpg -a -u 2CBDA4B0 --passphrase-file /etc/archive-keys/ucs3.0.txt -o script.sh.gpg -b script.sh
+        gpg -a -u 6B6E7E3259A9F44F1452D1BE36602BA86B8BFD3C --passphrase-file /etc/archive-keys/ucs4.0.txt -o script.sh.gpg -b script.sh
+        repo-ng-sign-release-file --debug -k 6B6E7E3259A9F44F1452D1BE36602BA86B8BFD3C -p /etc/archive-keys/ucs4.0.txt  -i script.sh -o script.sh.gpg
 
     .. code-block: python
 
@@ -108,19 +109,8 @@ def verify_script(script, signature):
     os.write(sig_fd, signature)
     os.close(sig_fd)
 
-    # collect trusted keys of apt-key
-    APT = "/etc/apt"
-    keys = [os.path.join(APT, "trusted.gpg")]
-    apt = os.path.join(APT, "trusted.gpg.d")
-    keys += [os.path.join(apt, key) for key in os.listdir(apt) if key.endswith('.gpg')]
-
-    # build command line
-    cmd = ["/usr/bin/gpgv"]
-    for key in keys:
-        cmd += ["--keyring", key]
-    cmd += [sig_name, "-"]
-
     # verify script
+    cmd = ["apt-key", "verify", sig_name, "-"]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, close_fds=True)
     stdout, _stderr = proc.communicate(script)
