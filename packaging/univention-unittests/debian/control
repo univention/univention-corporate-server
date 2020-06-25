@@ -6,6 +6,7 @@ Build-Depends:
  debhelper (>= 10~),
  dh-python,
  python-debian,
+ python3-debian,
  python-all,
  python-setuptools,
  python3-all,
