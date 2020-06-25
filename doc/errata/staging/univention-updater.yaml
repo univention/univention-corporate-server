@@ -6,6 +6,6 @@ src: univention-updater
 fix: 14.0.2-13A~4.4.0.202006251249
 desc: |
  This update addresses the following issue:
- * Fix regression caused by erratum 605 to validation signatures of `preup.sh`
+ * Fix regression caused by erratum 605 to validate signatures of `preup.sh`
    and `postup.sh` scripts.
 bug: [51576]
