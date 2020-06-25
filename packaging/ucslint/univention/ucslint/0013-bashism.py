@@ -77,27 +77,27 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg('0013-1', 'failed to open file', filename=fn)
 
 	def check_bashism(self, fn):
-			p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			stdout, stderr = p.communicate()
-			# 2 = file is no shell script or file is already bash script
-			# 1 = bashism found
-			# 0 = everything is posix compliant
-			if p.returncode == 1:
-				for item in stderr.decode('utf-8', 'replace').split('possible bashism in '):
-					item = item.strip()
-					if not item:
-						continue
+		p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		stdout, stderr = p.communicate()
+		# 2 = file is no shell script or file is already bash script
+		# 1 = bashism found
+		# 0 = everything is posix compliant
+		if p.returncode == 1:
+			for item in stderr.decode('utf-8', 'replace').split('possible bashism in '):
+				item = item.strip()
+				if not item:
+					continue
 
-					match = RE_BASHISM.search(item)
-					if not match:
-						self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), filename=fn)
-						continue
+				match = RE_BASHISM.search(item)
+				if not match:
+					self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), filename=fn)
+					continue
 
-					line = int(match.group(1))
-					msg = match.group(2)
-					code = match.group(3)
+				line = int(match.group(1))
+				msg = match.group(2)
+				code = match.group(3)
 
-					self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=fn, line=line)
+				self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=fn, line=line)
 
 	def check_unquoted_local(self, fn):
 		with open(fn, 'r') as fd:

@@ -180,7 +180,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except EnvironmentError:
 			pass
 
-	EXCEPTION_FILES = set((
+	EXCEPTION_FILES = {
 		'changelog',  # dh_installchangelogs default
 		'clean',  # dh_clean
 		'compat',  # dh
@@ -195,9 +195,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'source.lintian-overrides',  # dh_lintian
 		'ucslint.overrides',
 		'watch',  # uscan
-	))
+	}
 
-	KNOWN_DH_FILES = set((
+	KNOWN_DH_FILES = {
 		'bash-completion',  # dh_bash-completion
 		'bcep',  # dh_python3
 		'bug-control',  # dh_bugfiles
@@ -265,9 +265,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'univention-l10n',  # univention-l10n-build / univention-l10n-install
 		'univention-service',  # univention-install-service-info
 		'wm',  # dh_installwm
-	))
+	}
 
-	NAMED_DH_FILES = set((
+	NAMED_DH_FILES = {
 		'cron.daily',  # dh_installcron
 		'cron.d',  # dh_installcron
 		'cron.hourly',  # dh_installcron
@@ -295,7 +295,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'ppp.ip-up',  # dh_installppp
 		'udev',  # dh_installudev
 		'upstart',  # dh_installinit
-	))
+	}
 
 	def check_debhelper(self, path, parser):
 		"""Check for debhelper package files."""
@@ -311,14 +311,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		regexp = re.compile(
 			r'^(?:%s)[.](?:%s|.+[.](?:%s))$' % (
 				'|'.join(re.escape(pkg) for pkg in pkgs),
-				'|'.join(re.escape(suffix) for suffix in UniventionPackageCheck.KNOWN_DH_FILES | UniventionPackageCheck.NAMED_DH_FILES),
-				'|'.join(re.escape(suffix) for suffix in UniventionPackageCheck.NAMED_DH_FILES),
+				'|'.join(re.escape(suffix) for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES),
+				'|'.join(re.escape(suffix) for suffix in self.NAMED_DH_FILES),
 			))
 
 		for rel_name in files:
 			fn = os.path.join(debianpath, rel_name)
 
-			if rel_name in UniventionPackageCheck.EXCEPTION_FILES:
+			if rel_name in self.EXCEPTION_FILES:
 				continue
 
 			if not os.path.isfile(fn):
@@ -327,7 +327,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if regexp.match(rel_name):
 				continue
 
-			for suffix in UniventionPackageCheck.KNOWN_DH_FILES | UniventionPackageCheck.NAMED_DH_FILES:
+			for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES:
 				if rel_name == suffix:
 					self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), filename=fn)
 					break

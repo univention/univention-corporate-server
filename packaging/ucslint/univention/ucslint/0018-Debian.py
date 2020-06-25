@@ -80,15 +80,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				content = script_file.read()
 
 			for nr, line in enumerate(content.splitlines(), start=1):
-					if not line.startswith('#'):
-						break
-					for script_name in other_scripts:
-						if script_name in line:
-							self.addmsg(
-								'0018-1',
-								'wrong script name: %r' % (line.strip(),),
-								filename=script_path,
-								line=nr)
+				if not line.startswith('#'):
+					break
+				for script_name in other_scripts:
+					if script_name in line:
+						self.addmsg(
+							'0018-1',
+							'wrong script name: %r' % (line.strip(),),
+							filename=script_path,
+							line=nr)
 
 			for nr, line in enumerate(content.splitlines(), start=1):
 				if line.startswith('#'):
@@ -312,7 +312,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
 			yield (fn, join(dst, basename(fn)))
-
 
 	RE_HASHBANG = re.compile(r'^#!\s*/bin/(?:[bd]?a)?sh\b')
 	RE_TEST = re.compile(

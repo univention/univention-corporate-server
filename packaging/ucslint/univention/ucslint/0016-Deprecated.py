@@ -68,7 +68,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			re.compile(r'''@%@BCWARNING=.+?@%@'''),
 			'0016-5', 'Use of deprecated "@%@BCWARNING=@%@"', cntmax=0)
 
-		ignore_suffixes = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt'),
+		ignore_suffixes = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt')
 		ignore_files = ('changelog', 'README')
 		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=ignore_suffixes, ignore_files=ignore_files):
 			tester.open(fn)

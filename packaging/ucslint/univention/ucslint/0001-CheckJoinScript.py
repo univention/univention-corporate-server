@@ -198,7 +198,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except EnvironmentError:
 			self.addmsg('0001-9', 'failed to open and read file', fn_rules)
 		else:
-			if UniventionPackageCheck.RE_DH_JOIN.search(content):
+			if self.RE_DH_JOIN.search(content):
 				self.debug('Detected use of univention-install-joinscript')
 				try:
 					fn_control = os.path.join(path, 'debian', 'control')
@@ -214,7 +214,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								fnlist_joinscripts[js] = 0
 								found[js] = found.get(js, 0) + 1
 
-			if UniventionPackageCheck.RE_DH_UMC.search(content):
+			if self.RE_DH_UMC.search(content):
 				self.debug('Detected use of dh-umc-module-install')
 				for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
 					package = os.path.basename(fn)[:-len('.umc-modules')]
@@ -268,23 +268,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg('0001-9', 'failed to open and read file', fn)
 				continue
 
-			set_e = UniventionPackageCheck.RE_LINE_CONTAINS_SET_E.search(content)
+			set_e = self.RE_LINE_CONTAINS_SET_E.search(content)
 			if set_e:
 				self.debug('found "set -e" in %s' % fn)
 
 			for js in fnlist_joinscripts:
-					name = os.path.basename(js)
-					self.debug('looking for %s in %s' % (name, fn))
-					if name in content:
-						fnlist_joinscripts[js] &= ~bit
-						self.debug('found %s in %s' % (name, fn))
+				name = os.path.basename(js)
+				self.debug('looking for %s in %s' % (name, fn))
+				if name in content:
+					fnlist_joinscripts[js] &= ~bit
+					self.debug('found %s in %s' % (name, fn))
 
-						if set_e:
-							for lnr, line in enumerate(content.splitlines(), start=1):
-								if name in line:
-									match = UniventionPackageCheck.RE_LINE_ENDS_WITH_TRUE.search(line)
-									if not match:
-										self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, lnr)
+					if set_e:
+						for lnr, line in enumerate(content.splitlines(), start=1):
+							if name in line:
+								match = self.RE_LINE_ENDS_WITH_TRUE.search(line)
+								if not match:
+									self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, lnr)
 
 		for js, missing in fnlist_joinscripts.items():
 			if missing & CALLED and js.endswith('.inst'):

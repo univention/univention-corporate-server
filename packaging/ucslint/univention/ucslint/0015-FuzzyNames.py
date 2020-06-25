@@ -174,7 +174,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		/var/lib/univentions-client-boot/
 	""".split()))
 
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
@@ -184,11 +183,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				with open(fn, 'r') as fd:
 					for lnr, line in enumerate(fd, start=1):
 						origline = line
-						if UniventionPackageCheck.RE_WHITELINE.match(line):
+						if self.RE_WHITELINE.match(line):
 							continue
 						for match in RE_UNIVENTION.finditer(line):
 							found = match.group(0)
-							if UniventionPackageCheck.RE_WHITEWORD.match(found):
+							if self.RE_WHITEWORD.match(found):
 								continue
 							self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, found, origline))
 							self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, filename=fn, line=lnr)

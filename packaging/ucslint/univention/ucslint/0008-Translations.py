@@ -75,16 +75,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			except EnvironmentError:
 				self.addmsg('0008-2', 'failed to open and read file', filename=fn)
 				continue
+
 			self.debug('testing %s' % fn)
-			pos = 0
-			while True:
-					match = RE_TRANSLATION.search(content, pos)
-					if not match:
-						break
-					else:
-						line = content.count('\n', 0, match.start()) + 1
-						pos = match.end()
-						self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, line)
+			for match in RE_TRANSLATION.finditer(content):
+				line = content.count('\n', 0, match.start()) + 1
+				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, line)
 
 	def check_po(self, po_files):
 		"""Check Portable Object files."""
@@ -106,13 +101,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				(RE_FUZZY, '0008-3', 'contains "fuzzy"'),
 				(RE_EMPTY, '0008-4', 'contains empty msgstr')
 			]:
-				pos = 0
-				while True:
-					match = regex.search(content, pos)
-					if not match:
-						break
-					else:
-						# match.start() + 1 ==> avoid wrong line numbers because RE_FUZZY starts with \n
-						line = content.count('\n', 0, match.start() + 1) + 1
-						pos = match.end()
-						self.addmsg(errid, errtxt, fn, line)
+				for match in regex.finditer(content):
+					# match.start() + 1 ==> avoid wrong line numbers because RE_FUZZY starts with \n
+					line = content.count('\n', 0, match.start() + 1) + 1
+					self.addmsg(errid, errtxt, fn, line)

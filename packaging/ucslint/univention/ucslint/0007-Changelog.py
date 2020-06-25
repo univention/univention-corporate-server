@@ -35,7 +35,8 @@ from debian.changelog import Changelog, ChangelogParseError
 
 import univention.ucslint.base as uub
 
-REticket = re.compile(r'''
+REticket = re.compile(
+	r'''
 	(Bug:?[ ]\#[0-9]{1,6} # Bugzilla
 	|Issue:?[ ]\#[0-9]{1,6} # Redmine
 	|Ticket(\#:[ ]|:?[ ]\#)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(?:1[0-9]{7}|21[0-9]{6})) # OTRS

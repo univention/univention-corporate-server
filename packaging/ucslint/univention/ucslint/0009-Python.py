@@ -158,7 +158,6 @@ class FindAssign(ast.NodeVisitor):
 			self.visitor.visit(target)
 
 
-
 PYTHON_RESERVED = """
 adef
 and

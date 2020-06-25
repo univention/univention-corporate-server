@@ -99,10 +99,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# search shell scripts and execute test
 		#
 		for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG):
-				try:
-					self.tester.open(fn)
-				except EnvironmentError:
-					continue
-				else:
-					msglist = self.tester.runTests()
-					self.msg.extend(msglist)
+			try:
+				self.tester.open(fn)
+			except EnvironmentError:
+				continue
+			else:
+				msglist = self.tester.runTests()
+				self.msg.extend(msglist)

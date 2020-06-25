@@ -33,6 +33,7 @@ from typing import Dict, Iterable, Iterator, List, Optional, Pattern, Tuple  # n
 
 try:
 	from junit_xml import TestCase  # type: ignore
+
 	TestCase('test', file=__file__, line=1)
 	JUNIT = True
 except (ImportError, TypeError):
@@ -255,9 +256,9 @@ class DebianControlEntry(dict):
 				del lines[i]
 				continue
 			if lines[i].startswith(' ') or lines[i].startswith('\t'):
-					lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
-					del lines[i]
-					continue
+				lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
+				del lines[i]
+				continue
 			i += 1
 
 		# split lines into dictionary
@@ -496,7 +497,7 @@ class FilteredDirWalkGenerator(object):
 		'.jar',  # Java Archive
 		'.jpeg',  # Joint Photographic Experts Group
 		'.jpg',  # Joint Photographic Experts Group
-		'.mo',   # Gnutext Message object
+		'.mo',  # Gnutext Message object
 		'.pdf',  # Portable Document Format
 		'.png',  # Portable Network Graphics
 		'.so',  # shared library
@@ -608,6 +609,7 @@ class FilteredDirWalkGenerator(object):
 def _test():
 	"""Run simple test."""
 	import re
+
 	x = UPCFileTester()
 	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
 	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
