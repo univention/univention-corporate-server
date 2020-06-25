@@ -1,3 +1,9 @@
+univention-samba4 (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51572: fix pam_univentionsambadomain.c
+
+ -- Florian Best <best@univention.de>  Wed, 09 Sep 2020 10:57:29 +0200
+
 univention-samba4 (9.0.0-2) unstable; urgency=medium
 
   * Bug #51473: Add dependency on package 'acl'
