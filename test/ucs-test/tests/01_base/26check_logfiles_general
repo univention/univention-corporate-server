@@ -86,6 +86,7 @@ find /var/log \
 		-o -path "/var/log/dpkg.log.*" \
 		-o -path "/var/log/freeradius/radius.log" \
 		-o -path "/var/log/freeradius/radwtmp" \
+		-o -path "/var/log/lastlog" \
 	\) -print0 >"$tmpfile"
 if [ -s "$tmpfile" ]
 then
