@@ -102,7 +102,7 @@
 			</para>
 			<para>
 				Signatures can be checked manually using the following command:
-				<command>gpgv --keyring /etc/apt/trusted.gpg <replaceable>script</replaceable>.sh.gpg <replaceable>script</replaceable>.sh</command>
+				<command>apt-key verify <replaceable>script</replaceable>.sh.gpg <replaceable>script</replaceable>.sh</command>
 			</para>
 		</section>
 	</section>
