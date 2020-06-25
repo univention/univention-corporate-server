@@ -1,0 +1,98 @@
+dn: cn=selfservice-group2,cn=groups,dc=intranet,dc=example,dc=de
+sambaGroupType: 2
+objectClass: top
+objectClass: univentionGroup
+objectClass: posixGroup
+objectClass: univentionObject
+objectClass: sambaGroupMapping
+univentionObjectType: groups/group
+sambaSID: S-1-5-21-2010667697-2395707666-3228911851-11023
+gidNumber: 5011
+uniqueMember: cn=selfservice-group1,cn=groups,dc=intranet,dc=example,dc=de
+univentionGroupType: -2147483646
+cn: selfservice-group2
+
+dn: cn=selfservice-group1,cn=groups,dc=intranet,dc=example,dc=de
+sambaGroupType: 2
+cn: selfservice-group1
+objectClass: top
+objectClass: univentionGroup
+objectClass: posixGroup
+objectClass: univentionObject
+objectClass: sambaGroupMapping
+memberUid: hinderkampp
+univentionObjectType: groups/group
+sambaSID: S-1-5-21-2010667697-2395707666-3228911851-11021
+gidNumber: 5010
+uniqueMember: uid=hinderkampp,cn=users,dc=intranet,dc=example,dc=de
+univentionGroupType: -2147483646
+
+dn: uid=hinderkampp,cn=users,dc=intranet,dc=example,dc=de
+uid: hinderkampp
+krb5PrincipalName: hinderkampp@INTRANET.WIESENTHAL.DE
+objectClass: krb5KDCEntry
+objectClass: organizationalPerson
+objectClass: automount
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: sambaSamAccount
+objectClass: person
+objectClass: univentionPWHistory
+objectClass: shadowAccount
+objectClass: univentionObject
+objectClass: univentionMail
+objectClass: krb5Principal
+objectClass: posixAccount
+uidNumber: 2008
+sambaAcctFlags: [U          ]
+sambaPasswordHistory: D43BBFE306E429D06C33BEE738F1DDFB5497D92CCD4C3DD395420D141F958B4F
+sambaBadPasswordCount: 0
+krb5MaxLife: 86400
+shadowLastChange: 18431
+cn: Franz Hinderkampp
+userPassword:: e2NyeXB0fSQ2JDN3YXloZGJqMzlMMk9jWWYkTDdLOE5YUHlKc2daMHNIaXdGSDBVSi9maHN2L2l4SXlxM3NoV0RlaUkzZTFnbGM2MDVCUnFrUVlnbmZWTFRSTThlQy9FeVV0OTNVZlFJejZOS0hJYzE=
+krb5Key:: MFuhKzApoAMCARKhIgQgV/pbWcgO17s/Y15T5dcMyKbZoiK0rgUrbeJqxndmet2iLDAqoAMCAQOhIwQhSU5UUkFORVQuV0lFU0VOVEhBTC5ERWhpbmRlcmthbXBw
+krb5Key:: MEuhGzAZoAMCARGhEgQQWp5ZzxAHsnW8THjXmIyPvqIsMCqgAwIBA6EjBCFJTlRSQU5FVC5XSUVTRU5USEFMLkRFaGluZGVya2FtcHA=
+krb5Key:: MEOhEzARoAMCAQOhCgQI2nVoHzf45jKiLDAqoAMCAQOhIwQhSU5UUkFORVQuV0lFU0VOVEhBTC5ERWhpbmRlcmthbXBw
+krb5Key:: MEuhGzAZoAMCARehEgQQyqEjnUTaft+Sa8459cZdD6IsMCqgAwIBA6EjBCFJTlRSQU5FVC5XSUVTRU5USEFMLkRFaGluZGVya2FtcHA=
+krb5Key:: MEOhEzARoAMCAQKhCgQI2nVoHzf45jKiLDAqoAMCAQOhIwQhSU5UUkFORVQuV0lFU0VOVEhBTC5ERWhpbmRlcmthbXBw
+krb5Key:: MEOhEzARoAMCAQGhCgQI2nVoHzf45jKiLDAqoAMCAQOhIwQhSU5UUkFORVQuV0lFU0VOVEhBTC5ERWhpbmRlcmthbXBw
+krb5Key:: MFOhIzAhoAMCARChGgQYlLyMSmH9JmHcDs7+BLObLJHN6ZvNDePEoiwwKqADAgEDoSMEIUlOVFJBTkVULldJRVNFTlRIQUwuREVoaW5kZXJrYW1wcA==
+krb5MaxRenew: 604800
+krb5KeyVersionNumber: 1
+sambaBadPasswordTime: 0
+loginShell: /bin/bash
+univentionObjectType: users/user
+krb5KDCFlags: 126
+gidNumber: 5001
+sambaPwdLastSet: 1592470596
+sambaPrimaryGroupSID: S-1-5-21-2010667697-2395707666-3228911851-513
+sambaNTPassword: CAA1239D44DA7EDF926BCE39F5C65D0F
+displayName: Franz Hinderkampp
+sambaSID: S-1-5-21-2010667697-2395707666-3228911851-5016
+gecos: Franz Hinderkampp
+sn: Hinderkampp
+pwhistory: $6$QHwyvXRiwAtuQjcY$WU6qkvUNvIY1F/TGYqLNsYAr3H/riGHNRDhrQ3CoFbGv6ZpW6/ZBl5moLdQRhpyrnl4g/faeDUgZoPAA3XgaV/
+homeDirectory: /home/hinderkampp
+givenName: Franz
+
+dn: cn=Domain Users,cn=groups,dc=intranet,dc=example,dc=de
+univentionObjectType: groups/group
+univentionGroupType: -2147483646
+cn: Domain Users
+sambaSID: S-1-5-21-2010667697-2395707666-3228911851-513
+sambaGroupType: 2
+gidNumber: 5001
+uniqueMember: uid=Administrator,cn=users,dc=intranet,dc=example,dc=de
+uniqueMember: uid=hinderkampp,cn=users,dc=intranet,dc=example,dc=de
+memberUid: Administrator
+memberUid: ucs-sso
+memberUid: albers
+univentionPolicyReference: cn=default-umc-users,cn=UMC,cn=policies,dc=intranet,dc=example,dc=de
+objectClass: sambaGroupMapping
+objectClass: top
+objectClass: univentionGroup
+objectClass: univentionObject
+objectClass: posixGroup
+objectClass: univentionPolicyReference
+
