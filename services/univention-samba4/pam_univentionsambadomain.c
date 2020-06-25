@@ -47,7 +47,7 @@
 #include <security/pam_appl.h>
 #include <univention/config.h>
 
-#define PAM_SM_AUTH
+#define PAM_SM_SESSION
 
 #include <security/pam_modules.h>
 #include <security/_pam_macros.h>
@@ -115,7 +115,7 @@ inline int mapuser(const char *fromuser, char *touser)
 	return mapped;
 }
 
-inline int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **argv)
+static int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
 	int retval, ctrl;
 	const char* auth_user;
