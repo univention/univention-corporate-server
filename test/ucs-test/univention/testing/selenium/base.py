@@ -121,7 +121,10 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		self.driver.get(self.base_url + 'univention/login/?lang=%s' % (self.language,))
 		# FIXME: Workaround for Bug #44718.
-		self.driver.execute_script('document.cookie = "UMCLang=%s; path=/univention/"' % (self.language,))
+		try:
+			self.driver.execute_script('document.cookie = "UMCLang=%s; path=/univention/"' % (self.language,))
+		except selenium_exceptions.WebDriverException as exc:
+			logger.warn('Setting language cookie failed: %s' % (exc,))
 
 		self.set_viewport_size(1200, 800)
 		return self
