@@ -1,3 +1,9 @@
+univention-web (4.0.0-2) unstable; urgency=medium
+
+  * Bug #44718: fix language cookie setting
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jun 2020 09:21:02 +0200
+
 univention-web (4.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
