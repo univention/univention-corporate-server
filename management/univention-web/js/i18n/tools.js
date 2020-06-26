@@ -97,12 +97,16 @@ define([
 			// reload the page when a different language is selected
 			var query = ioQuery.queryToObject(window.location.search.substring(1));
 			query.lang = locale;
-			cookie('UMCLang', query.lang, { expires: 100, path: '/univention/' });
+			i18nTools.saveLangCookie(query.lang);
 			if (window.location.pathname.indexOf('/univention/management/') === 0) {
 				require('umc/tools').renewSession();
 			}
 			window.location.search = '?' + ioQuery.objectToQuery(query);
 		}
+	};
+
+	i18nTools.saveLangCookie = function(lang) {
+		cookie('UMCLang', lang, { expires: 100, path: '/univention/' });
 	};
 
 	/**
