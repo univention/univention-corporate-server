@@ -930,6 +930,9 @@
 				Kontakt-E-Mail-Adresse gesendet, das dann auf der Webseite vom Benutzer einzugeben ist.
 			</para>
 			<para>
+                Die Funktionalität kann auf bestimmte Benutzer(gruppen) eingeschränkt werden; das geschieht über die vier &ucsUCRV;n <envar>umc/self-service/passwordreset/{blacklist,whitelist}/{users,groups}</envar>. Dabei gilt, dass, falls ein Benutzer auf einer Blacklist und auf einer Whitelist steht, die Blacklist Vorrang hat. Für die Gruppenvariablen gilt, dass Gruppen in Gruppen unterstützt werden. Der Default erlaubt die Nutzung für alle Domänenbenutzer außer den Administratoren.
+			</para>
+			<para>
 				Mit den folgenden &ucsUCRV;n können einzelne Funktionen der Passwort-Verwaltung
 				aktiviert bzw. deaktiviert werden.
 			</para>
@@ -1017,6 +1020,9 @@
 					</simpara></listitem>
 				</varlistentry>
 			</variablelist>
+			<para>
+                Die Funktionalität kann auf bestimmte Benutzer(gruppen) eingeschränkt werden; das geschieht über die vier &ucsUCRV;n <envar>umc/self-service/profiledata/{blacklist,whitelist}/{users,groups}</envar>. Dabei gilt, dass, falls ein Benutzer auf einer Blacklist und auf einer Whitelist steht, die Blacklist Vorrang hat. Für die Gruppenvariablen gilt, dass Gruppen in Gruppen unterstützt werden. Der Default erlaubt die Nutzung für alle Domänenbenutzer außer den Administratoren.
+			</para>
 		</section>
 		<section id="user-management:password-changes-by-users:selfregistration">
 			<title>Selbstregistrierung</title>
@@ -1248,6 +1254,9 @@ ucr set cron/delete_deregistered_accounts/command=\
 	cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00
 				</programlisting>
 				Weitere Informationen über die Einstellung von Cron-Jobs über &ucsUCR; können in <xref linkend="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"/> gefunden werden.
+			</para>
+			<para>
+                Die Funktionalität kann auf bestimmte Benutzer(gruppen) eingeschränkt werden; das geschieht über die vier &ucsUCRV;n <envar>umc/self-service/account-deregistration/{blacklist,whitelist}/{users,groups}</envar>. Dabei gilt, dass, falls ein Benutzer auf einer Blacklist und auf einer Whitelist steht, die Blacklist Vorrang hat. Für die Gruppenvariablen gilt, dass Gruppen in Gruppen unterstützt werden. Der Default erlaubt die Nutzung für alle Domänenbenutzer außer den Administratoren.
 			</para>
 		</section>
     </section>
