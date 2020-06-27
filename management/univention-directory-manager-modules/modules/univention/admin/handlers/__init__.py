@@ -168,7 +168,7 @@ class simpleLdap(object):
 			self.lo = lo  # type: univention.admin.uldap.access
 		elif isinstance(lo, univention.uldap.access):
 			ud.debug(ud.ADMIN, ud.ERROR, 'using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.')
-			self.lo = univention.admin.uldap.access(lo=self.lo)
+			self.lo = univention.admin.uldap.access(lo=lo)
 		else:
 			raise TypeError('lo must be instance of univention.admin.uldap.access.')
 
