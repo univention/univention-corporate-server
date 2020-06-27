@@ -560,11 +560,14 @@ def connect(ldif=0):
 			connection = ldap.initialize(local_ip, int(local_port))
 			connection.simple_bind_s('cn=update,' + listener.baseConfig['ldap/base'], pw)
 		except ldap.LDAPError as exc:
+			listener.setuid(0)
 			try:
 				import univention.uldap
 				connection = univention.uldap.getRootDnConnection().lo
 			except ldap.LDAPError:
 				raise exc
+			finally:
+				listener.unsetuid()
 	else:
 		connection = LDIFObject(LDIF_FILE)
 
