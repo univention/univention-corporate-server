@@ -1,3 +1,10 @@
+ucs-test (9.0.3-2345) unstable; urgency=medium
+
+  * Bug #51585: adapt 55_adconnector/503.. to also test sync of
+    pwdChangeNextLogin if password was not changed
+
+ -- Julia Bremer <bremer@univention.de>  Sat, 27 Jun 2020 13:38:48 +0200
+
 ucs-test (9.0.3-234) unstable; urgency=medium
 
   * Bug #51195: skipp 00_checks/04_check_root_password on updated

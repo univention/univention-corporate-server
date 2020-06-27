@@ -1,3 +1,9 @@
+univention-ad-connector (13.0.0-47) unstable; urgency=medium
+
+  * Bug #51585: Sync pwdChangeNextLogin to UCS if password is not set
+
+ -- Julia Bremer <bremer@univention.de>  Sat, 27 Jun 2020 13:37:58 +0200
+
 univention-ad-connector (13.0.0-46) unstable; urgency=medium
 
   * Bug #51567: Allow snyc_from_ucs synchronization model for
