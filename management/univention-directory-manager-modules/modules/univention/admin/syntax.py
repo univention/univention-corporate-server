@@ -935,6 +935,7 @@ class jpegPhoto(Upload):
 					fp = BytesIO(raw)
 					text = BytesIO()
 					image = PIL.Image.open(fp)
+					image = image.convert('RGB')
 
 					def _fileno(*a, **k):
 						raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
