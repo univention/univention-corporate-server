@@ -3,7 +3,7 @@ release: "4.4"
 version: [4]
 scope: ucs_4.4-0-errata4.4-4
 src: univention-ad-connector
-fix: 13.0.0-47A~4.4.0.202006271346
+fix: 13.0.0-48A~4.4.0.202006281054
 desc: |
  This update addresses the following issue:
  * The synchronisation of the pwdChangeNextLogin flag
