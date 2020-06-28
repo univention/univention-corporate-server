@@ -493,13 +493,13 @@ def password_sync(connector, key, ucs_object):
 	old_krb5end = ucs_result[0][1].get('krb5PasswordEnd', [None])[0]
 	old_shadowMax = ucs_result[0][1].get('shadowMax', [None])[0]
 	old_shadowLastChange = ucs_result[0][1].get('shadowLastChange', [None])[0]
+	modlist = []
 
 	if nt_hash:
 		ntPwd_ucs = ''
 		krb5Principal = ''
 
 		ntPwd = nt_hash
-		modlist = []
 
 		if 'sambaNTPassword' in ucs_result[0][1]:
 			ntPwd_ucs = ucs_result[0][1]['sambaNTPassword'][0]
