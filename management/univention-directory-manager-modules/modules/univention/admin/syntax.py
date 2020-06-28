@@ -116,9 +116,9 @@ def update_choices():
 	"""
 	Update choices which are defined in LDAP
 	>>> import univention.admin.modules
-	>>> univention.admin.modules.update()
 	>>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
 	False
+	>>> univention.admin.modules.update()
 	>>> update_choices()
 	>>> ('settings/portal', 'Portal: Portal') in univentionAdminModules.choices
 	True
