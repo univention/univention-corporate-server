@@ -462,7 +462,7 @@ class UDM_Objects(ISyntax):
 	See :py:class:`UDM_Attribute` for an alternative to use values from one |LDAP| entry..
 	>>> UDM_Objects().type_class
 	<class 'univention.admin.types.DistinguishedNameType'>
-	>>> UDM_Objects.parse("uid=Administrator,cn=users,dc=intranet,dc=example,dc=com")
+	>>> UDM_Objects.parse("uid=Administrator,cn=users,dc=intranet,dc=example,dc=com")  # doctest: +ALLOW_UNICODE
 	'uid=Administrator,cn=users,dc=intranet,dc=example,dc=com'
 	>>> UDM_Objects.parse("") #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -945,6 +945,7 @@ class jpegPhoto(Upload):
 					text = base64.b64encode(raw)
 				except (KeyError, IOError, IndexError):
 					ud.debug(ud.ADMIN, ud.WARN, 'Failed to convert PNG file into JPEG: %s' % (traceback.format_exc(),))
+					raise
 					raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
 			# imghdr.what(None, base64.b64dcode(text)) == 'jpeg'  # See Bug #36304
 			# this is what imghdr.py probably does in  the future:
@@ -1444,7 +1445,7 @@ class phone(simple):
 	>>> phone.parse('++49 (0)700 Vanity')
 	'++49 (0)700 Vanity'
 	>>> phone.parse('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
-	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\\/+-'
+	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\/+-'
 	>>> phone.parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -3463,9 +3464,9 @@ class UserID(UDM_Objects):
 
 	.. seealso::
 		* :py:class:`UserDN`.
-	>>> UserID.parse('0')
+	>>> UserID.parse('0')  # doctest: +ALLOW_UNICODE
 	'0'
-	>>> UserID.parse(0)
+	>>> UserID.parse(0)  # doctest: +ALLOW_UNICODE
 	'0'
 	"""
 	udm_modules = ('users/user', )
@@ -3491,9 +3492,9 @@ class GroupID(UDM_Objects):
 	.. seealso::
 		* :py:class:`GroupDN`
 		* :py:class:`GroupDNOrEmpty`
-	>>> GroupID.parse('5000')
+	>>> GroupID.parse('5000')  # doctest: +ALLOW_UNICODE
 	'5000'
-	>>> GroupID.parse(5000)
+	>>> GroupID.parse(5000)  # doctest: +ALLOW_UNICODE
 	'5000'
 	"""
 	udm_modules = ('groups/group', )
@@ -3756,9 +3757,9 @@ class dhcpService(UDM_Objects):
 class dhcpEntry(complex):
 	"""
 	Syntax to configure a |DHCP| host entry.
-	>>> dhcpEntry.parse(["cn=service", "aabbccddeeff"])
+	>>> dhcpEntry.parse(["cn=service", "aabbccddeeff"])  # doctest: +ALLOW_UNICODE
 	['cn=service', '', 'aa:bb:cc:dd:ee:ff']
-	>>> dhcpEntry.parse(["cn=service", "127.0.0.1", "aabbccddeeff"])
+	>>> dhcpEntry.parse(["cn=service", "127.0.0.1", "aabbccddeeff"])  # doctest: +ALLOW_UNICODE
 	['cn=service', '127.0.0.1', 'aa:bb:cc:dd:ee:ff']
 	"""
 	min_elements = 1
