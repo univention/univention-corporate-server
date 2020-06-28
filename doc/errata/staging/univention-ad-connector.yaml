@@ -7,6 +7,6 @@ fix: 13.0.0-48A~4.4.0.202006281054
 desc: |
  This update addresses the following issue:
  * The synchronisation of the pwdChangeNextLogin flag
-   only worked, if the password was reset at the same
+   only worked if the password was reset at the same
    time. This behavior has been fixed.
 bug: [51585]
