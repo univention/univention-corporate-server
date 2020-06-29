@@ -1207,7 +1207,6 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailForwardAddress', 'mailForwardAddress')
-mapping.register('mailForwardCopyToSelf', 'mailForwardCopyToSelf', None, univention.admin.mapping.ListToString)
 
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
@@ -1259,27 +1258,6 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	use_performant_ldap_search_filter = True
-
-	@property
-	def __forward_copy_to_self(self):
-		return self.get('mailForwardCopyToSelf') == '1'
-
-	def __remove_old_mpa(self, forward_list):  # FIXME FIXME FIXME: check the input type to be unicode
-		old_mailPrimaryAddress = self.oldattr.get('mailPrimaryAddress', [b''])[0].decode('UTF-8')
-		if forward_list and old_mailPrimaryAddress and old_mailPrimaryAddress != self['mailPrimaryAddress']:
-			try:
-				forward_list.remove(old_mailPrimaryAddress)
-			except ValueError:
-				pass
-
-	def __set_mpa_for_forward_copy_to_self(self, forward_list):
-		if self.__forward_copy_to_self and self['mailForwardAddress']:
-			forward_list.append(self['mailPrimaryAddress'])
-		else:
-			try:
-				forward_list.remove(self['mailPrimaryAddress'])
-			except ValueError:
-				pass
 
 	def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
 		self.groupsLoaded = True
@@ -1382,9 +1360,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def _unmap_mail_forward(self):
 		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
 		# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
-		# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
+		# is removed from info for correct display in CLI/UMC and for proper detection of changes.
 		if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
-			self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
 			self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
 			self['mailForwardCopyToSelf'] = '1'
 		else:
@@ -2025,36 +2002,33 @@ class object(univention.admin.handlers.simpleLdap):
 				ml.append(('shadowExpire', old_shadowExpire, shadowExpire))
 		return ml
 
-	def _modlist_mail_forward(self, ml):   # FIXME FIXME FIXME: cleanup
+	def _modlist_mail_forward(self, ml):
 		if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if messages should be forwarded for it.'))
-		if self.__forward_copy_to_self and not self['mailPrimaryAddress']:
+		if self.get('mailForwardCopyToSelf') == '1' and not self['mailPrimaryAddress']:
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
 
-		# remove virtual property mailForwardCopyToSelf from modlist
-		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != u'mailForwardCopyToSelf']
+		try:
+			new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]
+		except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
+			new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 
-		# add mailPrimaryAddress to mailForwardAddress if "mailForwardCopyToSelf" is True
-		for num_, (key_, old_, new_) in enumerate(ml[:]):
-			if key_ == u'mailForwardAddress':
-				# old in ml may be missing the mPA removed in open()
-				if old_:
-					ml[num_][1][:] = self.oldattr.get('mailForwardAddress')
-				if new_:
-					self.__remove_old_mpa(new_)
-					self.__set_mpa_for_forward_copy_to_self(new_)
-				break
-		else:
-			mod_ = (
-				'mailForwardAddress',
-				self.oldattr.get('mailForwardAddress', []),
-				self['mailForwardAddress'][:]  # FIXME: encode to bytes
-			)
-			if self['mailForwardAddress']:
-				self.__remove_old_mpa(mod_[2])
-				self.__set_mpa_for_forward_copy_to_self(mod_[2])
-			if mod_[1] != mod_[2]:
-				ml.append(mod_)
+		if self.hasChanged('mailPrimaryAddress') and self.oldattr.get('mailPrimaryAddress'):
+			try:
+				new.remove(self.oldattr['mailPrimaryAddress'][0])
+			except ValueError:
+				pass
+
+		if self['mailPrimaryAddress']:
+			mail_primary_address = self.mapping.mapValue('mailPrimaryAddress', self['mailPrimaryAddress'])
+			if self.get('mailForwardCopyToSelf') == '1' and self['mailForwardAddress']:
+				new.append(mail_primary_address)
+			elif mail_primary_address in new:
+				new.remove(mail_primary_address)
+
+		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != u'mailForwardAddress']
+		if self.oldattr.get('mailForwardAddress', []) != new:
+			ml.append(('mailForwardAddress', self.oldattr.get('mailForwardAddress'), new))
 		return ml
 
 	def _modlist_univention_person(self, ml):
