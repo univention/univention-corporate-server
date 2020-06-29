@@ -48,6 +48,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 import email.encoders as Encoders
 import poplib
+import six
 
 from univention.config_registry import handler_set
 import univention.testing.utils as utils
@@ -658,12 +659,12 @@ Regards,
 	# use user values if defined
 	if sender:
 		m_sender = sender
-	if recipients and isinstance(recipients, str):
+	if recipients and isinstance(recipients, six.text_type):
 		m_recipients = [recipients]
 	elif recipients and isinstance(recipients, list):
 		m_recipients = recipients
 	else:
-		raise UCSTest_Mail_InvalidRecipientList()
+		raise UCSTest_Mail_InvalidRecipientList(repr(recipients))
 	if subject:
 		m_subject = subject
 	if server:
