@@ -659,7 +659,7 @@ Regards,
 	# use user values if defined
 	if sender:
 		m_sender = sender
-	if recipients and isinstance(recipients, six.text_type):
+	if recipients and isinstance(recipients, six.string_types):
 		m_recipients = [recipients]
 	elif recipients and isinstance(recipients, list):
 		m_recipients = recipients
