@@ -89,7 +89,7 @@ def ldap_attribute_join(old):
 			result_keys[attr[0]] += ", %s" % (attr[1],)
 		elif len(attr) == 1:
 			result_keys[attr[0]] = ''
-	return[[key,value] for key, value in result_keys.items()]
+	return[[key, value] for key, value in result_keys.items()]
 
 
 def php_bool(bool_):
@@ -157,7 +157,7 @@ def write_configuration_file(dn, new, filename):
 	else:
 		fd.write("<?php\n")
 		fd.flush()
-		fd.write('$memberof = "False";\n' )
+		fd.write('$memberof = "False";\n')
 		fd.write("if(file_exists('/etc/simplesamlphp/serviceprovider_enabled_groups.json')){\n")
 		fd.write("	$samlenabledgroups = json_decode(file_get_contents('/etc/simplesamlphp/serviceprovider_enabled_groups.json'), true);\n")
 		fd.write("	if(array_key_exists(%s, $samlenabledgroups) and isset($samlenabledgroups[%s])){\n" % (php_string(dn), php_string(dn)))
@@ -195,7 +195,7 @@ def write_configuration_file(dn, new, filename):
 			if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
 				simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
 			fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
-			simplesamlLDAPattributes = [entry.split('=', 1) for entry in list(new.get('simplesamlLDAPattributes', [])) if entry.split('=')[0] and len(entry.split('='))>1 and entry.split('=')[1] and entry.split('=')[0] != entry.split('=')[1]]
+			simplesamlLDAPattributes = [entry.split('=', 1) for entry in list(new.get('simplesamlLDAPattributes', [])) if entry.split('=')[0] and len(entry.split('=')) > 1 and entry.split('=')[1] and entry.split('=')[0] != entry.split('=')[1]]
 		if new.get('attributesNameFormat'):
 			fd.write("	'attributes.NameFormat'	=> %s,\n" % php_string(new.get('attributesNameFormat')[0]))
 		if new.get('serviceproviderdescription'):
