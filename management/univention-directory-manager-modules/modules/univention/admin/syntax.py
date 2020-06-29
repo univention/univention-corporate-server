@@ -1444,7 +1444,7 @@ class phone(simple):
 	'+49 421 22232-0'
 	>>> phone.parse('++49 (0)700 Vanity')
 	'++49 (0)700 Vanity'
-	>>> phone.parse('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
+	>>> phone.parse(r'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\/+-')
 	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\/+-'
 	>>> phone.parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
@@ -1461,7 +1461,7 @@ class IA5string(string):
 	"""
 	Syntax for string from International Alphabet 5 (printable |ASCII|)
 
-	>>> IA5string.parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')  # doctest: +ALLOW_UNICODE
+	>>> IA5string.parse(r''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')  # doctest: +ALLOW_UNICODE
 	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 	>>> IA5string.parse(b'abc')  # doctest: +ALLOW_UNICODE
 	'abc'
