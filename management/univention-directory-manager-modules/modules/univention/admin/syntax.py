@@ -1619,7 +1619,7 @@ class gid(simple):
 	"""
 	Syntax for group account names.
 
-	>>> gid.parse(u'Groupe d’accès d’autorisation Windows') == 'Groupe d’accès d’autorisation Windows'  # Bug #35521
+	>>> gid.parse(u'Groupe d\u2019acc\xe8s d\u2019autorisation Windows') == 'Groupe d’accès d’autorisation Windows'  # Bug #35521
 	True
 	"""
 	min_length = 1   # TODO: not enforced here
