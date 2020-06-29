@@ -14,6 +14,10 @@ import univention.testing.utils as utils
 import subprocess
 
 
+def restart_umc():
+	subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+
+
 class move_idp_metadata(object):
 
 	metadata_dir = "/usr/share/univention-management-console/saml/idp/"
@@ -22,11 +26,13 @@ class move_idp_metadata(object):
 		for metadata_file in os.listdir(self.metadata_dir):
 			metadata_file_fullpath = self.metadata_dir + metadata_file
 			os.rename(metadata_file_fullpath, metadata_file_fullpath + '.backup')
+		restart_umc()
 
 	def __exit__(self, exc_type, exc_value, traceback):
 		for metadata_file in os.listdir(self.metadata_dir):
 			metadata_file_fullpath = self.metadata_dir + metadata_file
 			os.rename(metadata_file_fullpath, metadata_file_fullpath.replace('.backup', ''))
+		restart_umc()
 
 
 def main():
@@ -52,5 +58,5 @@ if __name__ == '__main__':
 		main()
 	finally:
 		# Make sure everything is in a working state again
-		subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+		restart_umc()
 	print("####Success: UMC server does not stop if the idp metadata is not available.####")
