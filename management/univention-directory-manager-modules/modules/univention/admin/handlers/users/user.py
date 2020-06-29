@@ -1274,7 +1274,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __set_mpa_for_forward_copy_to_self(self, forward_list):
 		if self.__forward_copy_to_self and self['mailForwardAddress']:
-			forward_list.append(self['mailPrimaryAddress'])
+			forward_list.append(self['mailPrimaryAddress'].encode('UTF-8'))
 		else:
 			try:
 				forward_list.remove(self['mailPrimaryAddress'])
@@ -2048,11 +2048,12 @@ class object(univention.admin.handlers.simpleLdap):
 			mod_ = (
 				'mailForwardAddress',
 				self.oldattr.get('mailForwardAddress', []),
-				self['mailForwardAddress'][:]  # FIXME: encode to bytes
+				self['mailForwardAddress'][:]
 			)
 			if self['mailForwardAddress']:
 				self.__remove_old_mpa(mod_[2])
 				self.__set_mpa_for_forward_copy_to_self(mod_[2])
+			mod_ = (mod_[0], mod_[1], [x.encode('UTF-8') for x in mod_[2]])
 			if mod_[1] != mod_[2]:
 				ml.append(mod_)
 		return ml
