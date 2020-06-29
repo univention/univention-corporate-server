@@ -160,6 +160,8 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		if hide_notifications:
 			self.show_notifications(False)
 
+		self.open_traceback()
+
 		timestamp = ''
 		if append_timestamp:
 			timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
@@ -175,6 +177,13 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
 		if hide_notifications:
 			self.show_notifications(True)
+
+	def open_traceback(self):
+		try:
+			self.wait_for_text(_('Show server error message'), timeout=1)
+			self.click_text(_('Show server error message'))
+		except selenium_exceptions.TimeoutException:
+			pass
 
 	def crop_screenshot_to_element(self, image_filename, xpath):
 		elem = self.driver.find_element_by_xpath(xpath)
