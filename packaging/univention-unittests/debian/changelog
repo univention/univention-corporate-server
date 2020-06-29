@@ -1,3 +1,9 @@
+univention-unittests (1.0.0-5) unstable; urgency=medium
+
+  * Bug #51566: Fixed dependency
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Jun 2020 15:05:01 +0200
+
 univention-unittests (1.0.0-4) unstable; urgency=medium
 
   * Bug #51566: Added missing copyright text blocks
