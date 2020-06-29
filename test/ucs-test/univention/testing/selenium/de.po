@@ -236,3 +236,6 @@ msgstr ""
 
 #~ msgid "LDAP directory"
 #~ msgstr "LDAP-Verzeichnis"
+
+msgid "Show server error message"
+msgstr "Fehlernachricht des Servers anzeigen"
