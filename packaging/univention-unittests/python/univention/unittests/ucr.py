@@ -42,6 +42,16 @@ class TestUCR(object):
 	def __setitem__(self, key, value):
 		self.items[key] = value
 
+	def is_false(self, key=None, default=False, value=None):  # noqa F811
+		if value is None:
+			value = self.get(key)  # type: ignore
+			if value is None:
+				return default
+		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
+
+	def load(self):
+		pass
+
 
 @pytest.fixture
 def ucr():

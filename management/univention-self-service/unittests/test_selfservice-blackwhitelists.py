@@ -101,3 +101,29 @@ def test_blacklist_whitelist_precedence(instance, blacklist_ucr, mocked_conn):
 	blacklist_ucr['umc/self-service/{}/whitelist/groups'.format(feature)] = 'selfservice-group1'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'Administrators,Domain Admins,selfservice-group2'
 	assert instance.is_blacklisted('hinderkampp', feature)
+
+
+@pytest.mark.parametrize("ucrs,command,command_options,feature,expected_traceback", [
+	([('umc/self-service/protect-account/backend/enabled', 'true')], 'get_contact', {}, 'passwordreset', selfservice.ServiceForbidden),
+	([('umc/self-service/protect-account/backend/enabled', 'true')], 'set_contact', {}, 'passwordreset', selfservice.ServiceForbidden),
+	([('umc/self-service/passwordreset/backend/enabled', 'true')], 'send_token', {"method": "email"}, 'passwordreset', selfservice.MissingContactInformation),
+	([('umc/self-service/passwordreset/backend/enabled', 'true')], 'get_reset_methods', {}, 'passwordreset', selfservice.NoMethodsAvailable),
+	([], 'set_password', {"token": "xxx"}, 'passwordreset', selfservice.ServiceForbidden),
+	([], 'get_user_attributes', {}, 'profiledata', selfservice.ServiceForbidden),
+	([], 'set_user_attributes', {"attributes": {}}, 'profiledata', selfservice.ServiceForbidden),
+	([], 'validate_user_attributes', {"attributes": {}}, 'profiledata', selfservice.ServiceForbidden),
+	([('umc/self-service/account-deregistration/enabled', 'true')], 'deregister_account', {}, 'account-deregistration', selfservice.ServiceForbidden),
+])
+def test_correct_feature_for_umc_command(instance, blacklist_ucr, mocked_conn, umc_request, mocker, ucrs, command, command_options, feature, expected_traceback):
+	username = 'hinderkampppp'
+	mocker.patch.object(instance, 'auth', return_value=(None, username))
+	mocker.patch.object(instance, '_check_token', return_value=True)
+
+	for (key, value) in ucrs:
+		blacklist_ucr[key] = value
+	is_blacklisted = mocker.patch.object(instance, 'is_blacklisted', return_value=True)
+	umc_request.options = {"username": username, "password": "univention"}
+	umc_request.options.update(command_options)
+	with pytest.raises(expected_traceback):
+		getattr(instance, command)(umc_request)
+	is_blacklisted.assert_called_with(username, feature)
