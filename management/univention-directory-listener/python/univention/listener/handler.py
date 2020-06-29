@@ -30,7 +30,7 @@ from __future__ import absolute_import
 import os
 import inspect
 from contextlib import contextmanager
-from six import reraise
+from six import reraise, with_metaclass
 
 import listener
 from univention.admin.uldap import access, position
@@ -58,7 +58,7 @@ class HandlerMetaClass(type):
 		return kls
 
 
-class ListenerModuleHandler(object):
+class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
 	"""
 	Listener module base class.
 
@@ -69,7 +69,6 @@ class ListenerModuleHandler(object):
 	This class is not intended to be used directly. It should only be
 	instantiated by :py:meth:`ListenerModuleConfiguration.get_listener_module_instance()`.
 	"""
-	__metaclass__ = HandlerMetaClass
 
 	_metadata_attributes = (
 		'createTimestamp', 'creatorsName', 'entryCSN', 'entryDN', 'entryUUID',
