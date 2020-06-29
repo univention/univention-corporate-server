@@ -6,6 +6,7 @@ src: univention-self-service
 fix: 4.0.3-34A~4.4.0.202006252223
 desc: |-
   This update addresses the following issue(s):
-  * The 'Forgot your password' link was not shown by default
+  * The 'Forgot your password?' link on the login page was not shown by
+    default anymore.
   * Nested groups didn't work in Self Service white- and blacklists
 bug: [51533, 51261]
