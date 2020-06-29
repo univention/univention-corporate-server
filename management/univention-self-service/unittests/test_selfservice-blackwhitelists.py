@@ -72,32 +72,31 @@ def test_blacklist_user_match(instance, blacklist_ucr, mocked_conn):
 	assert instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_user_nomatch(instance, blacklist_ucr):
+def test_blacklist_user_nomatch(instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/users'.format(feature)] = 'hinderkampf'
 	assert not instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_group_match(instance, blacklist_ucr):
+def test_blacklist_group_match(instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group1'
 	assert instance.is_blacklisted('hinderkampp', feature)
 
 
-@pytest.fixture
 def test_blacklist_group_nomatch(instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group0'
 	assert not instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_group_match_nested(instance, blacklist_ucr):
+def test_blacklist_group_match_nested(instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group2'
 	assert instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_whitelist_precedence(instance, blacklist_ucr):
+def test_blacklist_whitelist_precedence(instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/whitelist/groups'.format(feature)] = 'selfservice-group1'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'Administrators,Domain Admins,selfservice-group2'
