@@ -16,6 +16,6 @@ ln -s /usr/lib/python2.7/dist-packages/univention/admin/syntax.py
 py.test syntax.py --doctest-modules
 cleanup
 
-ln -s /usr/lib/python3/dist-packages/univention/admin/syntax.py
+cp /usr/lib/python3/dist-packages/univention/admin/syntax.py .
 py.test-3 syntax.py --doctest-modules # --cov=univention.admin.syntax --cov-report=term-missing
 cleanup
