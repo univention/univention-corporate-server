@@ -421,7 +421,7 @@ class Base(signals.Provider, Translation):
 				except ldap.INVALID_CREDENTIALS:  # workaround for Bug #44382: the password might be a SAML message, try to authenticate via SAML
 					etype, exc, etraceback = sys.exc_info()
 					CORE.error('LDAP authentication for %r failed: %s' % (self._user_dn, exc))
-					if self._password < 25:
+					if len(self._password) < 25:
 						raise
 					CORE.warn('Trying to authenticate via SAML.')
 					try:
