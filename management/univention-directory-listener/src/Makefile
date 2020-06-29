@@ -38,7 +38,7 @@ LDAP_LDLIBS := -lldap -llber
 
 CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64
 LDLIBS := -luniventiondebug -luniventionconfig -licuuc
-LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython2.7 $(DB_LDLIBS)
+LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython3.7m $(DB_LDLIBS)
 LISTENER_OBJS := main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
 DUMP_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS)
 DUMP_OBJS := dump.o dump_signals.o utils.o $(DB_OBJS)

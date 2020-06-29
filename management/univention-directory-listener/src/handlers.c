@@ -41,10 +41,11 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <sys/types.h>
-#include <python2.7/Python.h>
-#include <python2.7/compile.h>
-#include <python2.7/marshal.h>
-#include <python2.7/node.h>
+#define PY_SSIZE_T_CLEAN
+#include <python3.7/Python.h>
+#include <python3.7/compile.h>
+#include <python3.7/marshal.h>
+#include <python3.7/node.h>
 #include <univention/debug.h>
 
 #include "cache_lowlevel.h"
@@ -52,6 +53,12 @@
 #include "common.h"
 #include "filter.h"
 #include "handlers.h"
+
+#if PY_MAJOR_VERSION >= 3
+#define PyString_FromString PyUnicode_FromString
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
+#define PyString_AsString PyUnicode_AsUTF8
+#endif
 
 static PyObject *handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old);
 static PyObject *handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command);
