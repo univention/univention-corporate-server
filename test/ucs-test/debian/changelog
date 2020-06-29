@@ -1,3 +1,9 @@
+ucs-test (9.0.4-1) unstable; urgency=medium
+
+  * Bug #50631: add python3 compatibility for mail tests
+
+ -- Florian Best <best@univention.de>  Tue, 30 Jun 2020 13:05:44 +0200
+
 ucs-test (9.0.3-2345) unstable; urgency=medium
 
   * Bug #51585: adapt 55_adconnector/503.. to also test sync of
