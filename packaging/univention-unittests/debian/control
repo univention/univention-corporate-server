@@ -36,6 +36,7 @@ Package: univention-unittests
 Architecture: all
 Depends:
  bash,
+ univention-unittests-python,
 Description: Unittests for UCS.
  .
  It is part of Univention Corporate Server (UCS), an
