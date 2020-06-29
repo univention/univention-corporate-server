@@ -1,4 +1,10 @@
-ucs-test (10.0.0-8) unstable; urgency=medium
+ucs-test (10.0.0-20) unstable; urgency=medium
+
+  * Bug #39355: fix 82_saml/25_broken_idp_metadata
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 29 Jun 2020 14:26:06 +0200
+
+ucs-test (10.0.0-19) unstable; urgency=medium
 
   * Bug #51526: install python-coverage from debian buster
 
