@@ -160,26 +160,28 @@ class UCSInstallation(object):
 		if not self.text_is_visible(self._['configure_network'], timeout=120):
 			return False
 		self.client.waitForText(self._['configure_network'], timeout=self.timeout)
-		# always use first interface
-		self.click(self._['continue'])
-		time.sleep(60)
+		if not self.text_is_visible(self._['ip_address'], timeout=self.timeout):
+			# always use first interface
+			self.click(self._['continue'])
+			time.sleep(60)
 		if self.args.ip:
-			self.client.waitForText(self._['not_using_dhcp'], timeout=self.timeout)
-			self.client.keyPress('enter')
-
-			self.client.waitForText(self._['manual_network_config'], timeout=self.timeout)
-			self.client.mouseClickOnText(self._['manual_network_config'])
-			self.client.keyPress('enter')
+			if self.text_is_visible(self._['not_using_dhcp'], timeout=self.timeout):
+				self.client.waitForText(self._['not_using_dhcp'], timeout=self.timeout)
+				self.client.keyPress('enter')
+				self.client.waitForText(self._['manual_network_config'], timeout=self.timeout)
+				self.client.mouseClickOnText(self._['manual_network_config'])
+				self.client.keyPress('enter')
 			self.client.waitForText(self._['ip_address'], timeout=self.timeout)
 			self.client.enterText(self.args.ip)
 			self.client.keyPress('enter')
-
 			self.client.waitForText(self._['netmask'], timeout=self.timeout)
+			if self.args.netmask:
+				self.client.enterText(self.args.netmask)
 			self.client.keyPress('enter')
-
 			self.client.waitForText(self._['gateway'], timeout=self.timeout)
+			if self.args.gateway:
+				self.client.enterText(self.args.gateway)
 			self.client.keyPress('enter')
-
 			self.client.waitForText(self._['name_server'], timeout=self.timeout)
 			if self.args.dns:
 				self.client.enterText(self.args.dns)
@@ -373,6 +375,8 @@ class UCSInstallation(object):
 
 	def bootmenu(self):
 		if self.text_is_visible('Univention Corporate Server Installer', timeout=120):
+			if self.args.ip:
+				self.client.keyPress('down')
 			self.client.keyPress('enter')
 
 	def installation(self):

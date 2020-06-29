@@ -23,6 +23,8 @@ def main():
 	parser.add_argument('--organisation', default='ucs')
 	parser.add_argument('--screenshot-dir', default='../screenshots')
 	parser.add_argument('--dns')
+	parser.add_argument('--netmask')
+	parser.add_argument('--gateway')
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
 	parser.add_argument('--school-dep', default=[], choices=['central', 'edu', 'adm'])
