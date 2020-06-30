@@ -29,14 +29,14 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import sys
+import os
 from collections import Hashable
 
 import pytest
 
 from univention.unittests import import_module
 
-use_installed = '--installed-lib' in sys.argv
+use_installed = os.environ.get('UNIVENTION_UNITTEST_USE_INSTALLED')
 ucs = import_module('ucs', 'python/', 'univention.lib.ucs', use_installed=use_installed)
 
 
@@ -77,9 +77,12 @@ def test_cmp():
 	assert v < ucs.UCS_Version('2.4-1')
 	assert v < ucs.UCS_Version('3.1-2')
 	assert v == ucs.UCS_Version('2.3-4')
+	assert v <= ucs.UCS_Version('2.3-4')
+	assert v >= ucs.UCS_Version('2.3-4')
 	assert v > ucs.UCS_Version('2.3-3')
 	assert v > ucs.UCS_Version('2.2-5')
 	assert v > ucs.UCS_Version('1.4-5')
+	assert v != ucs.UCS_Version('1.0-0')
 
 
 def test_malformed():
@@ -114,3 +117,8 @@ def test_hash():
 def test_repr():
 	v = ucs.UCS_Version('4.7-0')
 	assert repr(v) == 'UCS_Version((4,7,0))'
+
+
+def test_mm():
+	v = ucs.UCS_Version('4.7-0')
+	assert v.mm == (4, 7)
