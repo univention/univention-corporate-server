@@ -46,7 +46,7 @@ __all__ = ['add', 'list', 'load', 'remove', 'reschedule', 'AtJob']
 
 # internal formatting strings and regexps
 _regWhiteSpace = re.compile(r'\s+')
-_regJobNr = re.compile(r'job\s+(\d+)')
+_regJobNr = re.compile(r'job\s+(\d+)'.encode('ASCII'))
 _dateTimeFormatRead = '%a %b %d %H:%M:%S %Y'
 _dateTimeFormatWrite = '%Y-%m-%d %H:%M'
 _timeFormatWrite = '%H:%M'
@@ -91,20 +91,20 @@ def add(cmd, execTime=None, comments={}):
 				value = value.decode('utf-8')
 			except UnicodeDecodeError:
 				value = value.decode('latin-1')
-		return (u'%s' % (value,)).encode('unicode_escape')
+		return (u'%s' % (value,)).encode('unicode_escape').decode('ASCII')
 
 	# add comments
 	if comments:
-		cmd = '\n'.join(map(lambda c: '%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', ''), _encode_comment(c[1])), comments.items())) + '\n' + SCRIPT_PREFIX + '\n' + cmd
+		cmd = '\n'.join('%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', ''), _encode_comment(c[1])) for c in comments.items()) + '\n' + SCRIPT_PREFIX + '\n' + cmd
 
 	# add job
 	p = subprocess.Popen(atCmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
 
 	# send the job to stdin
-	out = p.communicate(cmd)
+	out = p.communicate(cmd.encode('UTF-8'))
 
 	# parse output and return job
-	matches = _regJobNr.findall('\n'.join(out))
+	matches = _regJobNr.findall(b'\n'.join(out))
 	if matches:
 		return load(int(matches[0]))
 	return None
@@ -143,7 +143,7 @@ def list(extended=False):
 	This can be used to re-schedule a job.
 	"""
 	p = subprocess.Popen('/usr/bin/atq', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	out = p.communicate()[0].splitlines()
+	out = p.communicate()[0].decode('UTF-8', 'replace').splitlines()
 	jobs = []
 	for line in out:
 		ijob = _parseJob(line)
@@ -188,13 +188,13 @@ def remove(nr):
 def _parseScript(job):
 	# type: (AtJob) -> None
 	"""
-	Internal function to load the job details by parding the job of :command:`atq`.
+	Internal function to load the job details by parsing the job of :command:`atq`.
 
 	:param AtJob job: A job.
 	"""
 	# FIXME: This should be a method of the class.
 	p = subprocess.Popen(['/usr/bin/at', '-c', str(job.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	out = p.communicate()[0].splitlines()
+	out = p.communicate()[0].decode('UTF-8', 'replace').splitlines()
 	job.comments = {}
 	script = False
 	job.command = ''
@@ -209,7 +209,7 @@ def _parseScript(job):
 			except ValueError:
 				continue
 			try:
-				key, value = key.decode('unicode_escape'), value.decode('unicode_escape')
+				key, value = key.encode('UTF-8').decode('unicode_escape'), value.encode('UTF-8').decode('unicode_escape')
 			except UnicodeDecodeError:
 				pass  # can only happen if user manipulates/fakes atjob.
 			job.comments[key] = value
@@ -234,7 +234,7 @@ def _parseJob(string):
 
 		# parse string
 		tmp = _regWhiteSpace.split(string)
-		execTime = datetime.datetime.strptime(' '.join(tmp[1: 6]), _dateTimeFormatRead)
+		execTime = datetime.datetime.strptime(' '.join(tmp[1:6]), _dateTimeFormatRead)
 		isRunning = tmp[6] == '='
 		owner = tmp[7]
 		nr = int(tmp[0])
@@ -282,3 +282,4 @@ class AtJob(object):
 		"""
 		p = subprocess.Popen(['/usr/bin/atrm', str(self.nr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		p.communicate()
+		return p.returncode == 0
