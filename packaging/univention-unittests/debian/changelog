@@ -1,3 +1,9 @@
+univention-unittests (2.0.0-1) unstable; urgency=medium
+
+  * UCS 5.0 Bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 30 Jun 2020 16:38:49 +0200
+
 univention-unittests (1.0.0-6) unstable; urgency=medium
 
   * Bug #51259: add functions to ucr fixture
