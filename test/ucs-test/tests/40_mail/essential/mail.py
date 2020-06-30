@@ -29,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import glob
 import smtplib
 import imaplib
@@ -67,17 +69,17 @@ class Mail(object):
 		reply = ''
 		try:
 			buff_size = 1024
-			while(True):
+			while True:
 				part = s.recv(buff_size)
 				reply += part
 				if len(part) < buff_size:
 					break
 			return reply
-		except:
+		except (EnvironmentError, EOFError):
 			return reply
 
 	def send_message(self, s, message):
-		print message,
+		print(message, end=' ')
 		s.send(message)
 
 
@@ -105,7 +107,7 @@ class ImapMail(Mail):
 		m = re.search(regex, response)
 		try:
 			return m.group(1)
-		except:
+		except (AttributeError, Exception):
 			return '-ERR'
 
 	def send_and_receive(self, s, id, message):
@@ -117,7 +119,7 @@ class ImapMail(Mail):
 				response += response2
 			else:
 				break
-		print response
+		print(response)
 		r = self.get_return_code(id, response)
 		return r
 
@@ -130,7 +132,7 @@ class ImapMail(Mail):
 				response += response2
 			else:
 				break
-		print response
+		print(response)
 		r = self.get_return_code(id, response)
 		return (r, response)
 
@@ -139,7 +141,7 @@ class ImapMail(Mail):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.settimeout(self.timeout)
 		s.connect((hostname, 143))
-		print self.get_reply(s)
+		print(self.get_reply(s))
 		retval = self.send_and_receive(s, 'a001', 'login %s %s\r\n' % (username, password))
 		self.send_and_receive(s, 'a002', 'logout\r\n')
 		s.close()
@@ -152,11 +154,11 @@ class ImapMail(Mail):
 		s.connect((hostname, 143))
 		retval = self.send_and_receive_quota(s, 'a001', 'login %s %s\r\n' % (username, password))
 		retval = self.send_and_receive_quota(s, 'a002', 'GETQUOTAROOT INBOX\r\n')  # user/%s\r\n' % username)
-		regex = '\(STORAGE 0 (.*)\)'
+		regex = r'\(STORAGE 0 (.*)\)'
 		m = re.search(regex, retval[1])
 		try:
 			quota = int(m.group(1))
-		except:
+		except (ValueError, AttributeError, Exception):
 			quota = -1
 		self.send_and_receive_quota(s, 'a003', 'logout\r\n')
 		s.close()
@@ -286,7 +288,7 @@ def restart_postfix():
 	try:
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	except EnvironmentError as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 
 
 def reload_postfix():
@@ -294,7 +296,7 @@ def reload_postfix():
 	try:
 		subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 	except EnvironmentError as ex:
-		print >> sys.stderr, ex
+		print(ex, file=sys.stderr)
 
 
 def reload_amavis_postfix():
@@ -306,7 +308,7 @@ def reload_amavis_postfix():
 		try:
 			subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
 		except EnvironmentError as ex:
-			print >> sys.stderr, ex
+			print(ex, file=sys.stderr)
 
 
 def get_spam_folder_name():
@@ -330,7 +332,7 @@ def spam_delivered(token, mail_address):
 		spam_folder = ucr.get('mail/dovecot/folder/spam') or 'Spam'
 	mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder)
 	if not os.path.isdir(mail_dir):
-		print 'Warning: maildir %r does not exist!' % (mail_dir,)
+		print('Warning: maildir %r does not exist!' % (mail_dir,))
 	for _file in get_dir_files(mail_dir, recursive=True, exclude=["tmp"]):
 		with open(_file) as fi:
 			content = fi.read()
@@ -410,7 +412,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 			files = get_maildir_filenames(mail_dir)
 
 			if not os.path.isdir(mail_dir):
-				print 'Warning: maildir %r does not exist!' % (mail_dir,)
+				print('Warning: maildir %r does not exist!' % (mail_dir,))
 
 			for _file in files:
 				with open(_file) as fd:
@@ -422,7 +424,7 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
 						result += 1
 		if not result and timeout:
 			time.sleep(1)
-			print 'file_search_mail(tokenlist=%r, user=%r mail_address=%r, folder=%r): no mail found - %d attempt(s) left' % (tokenlist, user, mail_address, folder, timeout)
+			print('file_search_mail(tokenlist=%r, user=%r mail_address=%r, folder=%r): no mail found - %d attempt(s) left' % (tokenlist, user, mail_address, folder, timeout))
 	return result
 
 
@@ -448,7 +450,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	assert imap_user, "imap_search_mail: imap_user has not been specified"
 	imap_password = imap_password or "univention"
 	imap_folder = imap_folder or ""
-	assert isinstance(imap_folder, str), "imap_search_mail: imap_folder is no string"
+	assert isinstance(imap_folder, six.string_types), "imap_search_mail: imap_folder is no string"
 
 	if use_ssl:
 		conn = imaplib.IMAP4_SSL(host=server)
@@ -464,7 +466,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 		result = result[0]
 		if result:
 			result = result.split()
-			print 'Found %d messages matching msg id %r' % (len(result), messageid)
+			print('Found %d messages matching msg id %r' % (len(result), messageid))
 			foundcnt += len(result)
 
 	if token:
@@ -472,13 +474,13 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 		assert status == 'OK', (status, result)
 		if result:
 			msgids = result.split()
-			print 'Folder contains %d messages' % (len(msgids),)
+			print('Folder contains %d messages' % (len(msgids),))
 			for msgid in msgids:
 				typ, msg_data = conn.fetch(msgid, '(BODY.PEEK[TEXT])')
 				for response_part in msg_data:
 					if isinstance(response_part, tuple):
 						if token in response_part[1]:
-							print 'Found token %r in msg %r' % (token, msgid)
+							print('Found token %r in msg %r' % (token, msgid))
 							foundcnt += 1
 
 	if not token and not messageid:
@@ -487,7 +489,7 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 		if result:
 			msgids = result.split()
 			foundcnt = len(msgids)
-			print 'Found %d messages in folder' % (foundcnt,)
+			print('Found %d messages in folder' % (foundcnt,))
 
 	return foundcnt
 
@@ -585,7 +587,7 @@ def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permiss
 		basedn = ucr.get('ldap/base')
 	name = uts.random_name()
 	folder_mailaddress = ''
-	if isinstance(mailAddress, str):
+	if isinstance(mailAddress, six.string_types):
 		folder_mailaddress = mailAddress
 	elif mailAddress:
 		folder_mailaddress = '%s@%s' % (name, domain)
@@ -679,8 +681,8 @@ Regards,
 	if msg:
 		m_msg = msg
 
-	print '*** Sending mail: recipients=%r sender=%r subject=%r idstring=%r gtube=%r server=%r port=%r tls=%r username=%r password=%r HELO/EHLO=%r' % (
-		m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo)
+	print('*** Sending mail: recipients=%r sender=%r subject=%r idstring=%r gtube=%r server=%r port=%r tls=%r username=%r password=%r HELO/EHLO=%r' % (
+		m_recipients, m_sender, m_subject, idstring, gtube, m_server, m_port, tls, username, password, m_ehlo))
 
 	if len(m_msg.split()) < 2:
 		print('*** Warning: A body with only one word will be rated with BODY_SINGLE_WORD=2.499 and probably lead to the message being identified as spam.')
@@ -707,7 +709,7 @@ Regards,
 	mimemsg.attach(MIMEText(m_msg))
 
 	if virus:
-		mimemsg.attach(MIMEText('X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'))
+		mimemsg.attach(MIMEText(r'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*'))
 
 	for fn in attachments:
 		part = MIMEBase('application', "octet-stream")
@@ -732,7 +734,7 @@ Regards,
 
 
 def check_delivery(token, recipient_email, should_be_delivered, spam=False):
-	print "%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered)
+	print("%s is waiting for an email; should be delivered = %r" % (recipient_email, should_be_delivered))
 	if spam:
 		delivered = spam_delivered(token, mail_address=recipient_email)
 	else:
