@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 """
-Univention Helper functions for creating or rename share directories
+Univention Helper functions for creating or renaming share directories
 """
 # Copyright 2011-2020 Univention GmbH
 #
@@ -35,6 +35,7 @@ import pipes
 import sys
 import fnmatch
 import shutil
+from functools import reduce
 
 if sys.version_info >= (3,):
 	from subprocess import getstatusoutput
@@ -143,20 +144,20 @@ def createOrRename(old, new, cr):
 	# check new path
 	if not new.get("univentionSharePath"):
 		return "univentionSharePath not set"
-	newPath = new['univentionSharePath'][0].rstrip("/")
+	newPath = new['univentionSharePath'][0].decode('UTF-8').rstrip("/")
 	if not newPath.startswith("/"):
 		newPath = "/" + newPath
 	newPath = os.path.realpath(newPath)
 	if newPath == "/":
 		return "/ as new path is not allowed"
-	share_name = new.get('univentionShareSambaName', new.get('cn', ['']))[0]
+	share_name = new.get('univentionShareSambaName', new.get('cn', [b'']))[0].decode('UTF-8')
 
 	# rename it
 	if rename:
 		# old path (source)
 		if not old.get("univentionSharePath"):
 			return "not old univentionSharePath found, renaming not possible"
-		oldPath = old["univentionSharePath"][0].rstrip("/")
+		oldPath = old["univentionSharePath"][0].decode('UTF-8').rstrip("/")
 		if not oldPath.startswith("/"):
 			oldPath = "/" + oldPath
 		if os.path.islink(oldPath):
@@ -212,9 +213,9 @@ def createOrRename(old, new, cr):
 		# create path to destination
 		if not os.access(newPathDir, os.F_OK):
 			try:
-				os.makedirs(newPathDir, int('0755', 0))
-			except Exception as e:
-				return "creation of directory %s failed: %s" % (newPathDir, str(e))
+				os.makedirs(newPathDir, 0o755)
+			except Exception as exc:
+				return "creation of directory %s failed: %s" % (newPathDir, exc)
 
 		# TODO: check size of source and free space in destination
 
@@ -222,31 +223,31 @@ def createOrRename(old, new, cr):
 		try:
 			if oldPath != "/" and newPath != "/":
 				shutil.move(oldPath, newPath)
-		except Exception as e:
-			return "failed to move directory %s to %s: %s" % (oldPath, newPath, str(e))
+		except Exception as exc:
+			return "failed to move directory %s to %s: %s" % (oldPath, newPath, exc)
 
 	# or create directory anyway
 	if not os.access(newPath, os.F_OK):
 		try:
-			os.makedirs(newPath, int('0755', 0))
-		except Exception as e:
-			return "creation of directory %s failed: %s" % (newPath, str(e))
+			os.makedirs(newPath, 0o755)
+		except Exception as exc:
+			return "creation of directory %s failed: %s" % (newPath, exc)
 
 	# set custom permissions for path in new
 	uid = 0
 	gid = 0
-	mode = new.get("univentionShareDirectoryMode", ["0755"])[0]
+	mode = new.get("univentionShareDirectoryMode", [b"0755"])[0]
 
 	if new.get("univentionShareUid"):
 		try:
 			uid = int(new["univentionShareUid"][0])
-		except:
+		except ValueError:
 			pass
 
 	if new.get('univentionShareGid'):
 		try:
 			gid = int(new["univentionShareGid"][0])
-		except:
+		except ValueError:
 			pass
 
 	# only dirs
@@ -259,15 +260,16 @@ def createOrRename(old, new, cr):
 
 	# set permissions, only modify them if a change has occurred
 	try:
+		mode = int(mode, 16 if mode.startswith(b'0x') else (8 if mode.startswith(b'0') else 10))
 		if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0])):
-			os.chmod(newPath, int(mode, 0))
+			os.chmod(newPath, mode)
 
 		if (not old or (new.get("univentionShareUid") and old.get("univentionShareUid") and new["univentionShareUid"][0] != old["univentionShareUid"][0])):
 			os.chown(newPath, uid, -1)
 
 		if (not old or (new.get("univentionShareGid") and old.get("univentionShareGid") and new["univentionShareGid"][0] != old["univentionShareGid"][0])):
 			os.chown(newPath, -1, gid)
-	except:
+	except Exception:
 		return "setting custom permissions for %s failed" % newPath
 
 
