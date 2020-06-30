@@ -29,6 +29,7 @@ Python function to register |UDM| extensions in |LDAP|.
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 from __future__ import print_function
 
@@ -49,6 +50,7 @@ from optparse import OptionParser, OptionGroup, Option, OptionValueError
 from copy import copy
 from abc import ABCMeta, abstractproperty, abstractmethod
 
+import six
 import apt
 import listener
 from ldap.filter import filter_format
@@ -112,7 +114,7 @@ def _get_handler_message_object(lo, position, handler_name, create=False):
 
 def set_handler_message(name, dn, msg):
 	# currently only on master
-	if listener.configRegistry.get('server/role') in ('domaincontroller_master'):
+	if listener.configRegistry.get('server/role') in ('domaincontroller_master',):
 		ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
 		setuid = False if os.geteuid() == 0 else True
 		if setuid:
@@ -130,7 +132,7 @@ def set_handler_message(name, dn, msg):
 			if not data.get(hostname):
 				data[hostname] = dict()
 			data[hostname][dn] = msg
-			json_data = json.dumps(data)
+			json_data = json.dumps(data).encode('ASCII')
 			data_obj['data'] = base64.b64encode(bz2.compress(json_data))
 			data_obj.modify()
 		except Exception as err:
@@ -165,8 +167,7 @@ def get_handler_message(name, binddn, bindpw):
 	return msg
 
 
-class UniventionLDAPExtension(object):
-	__metaclass__ = ABCMeta
+class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 
 	@abstractproperty
 	def udm_module_name(self):
@@ -194,9 +195,7 @@ class UniventionLDAPExtension(object):
 			"--set", "name=%s" % cls.target_container_name,
 			"--position", "cn=univention,%s" % ucr['ldap/base']
 		]
-		p = subprocess.Popen(cmd)
-		p.wait()
-		return p.returncode
+		return subprocess.call(cmd)
 
 	def is_local_active(self):
 		object_dn = None
@@ -206,10 +205,10 @@ class UniventionLDAPExtension(object):
 		(stdout, stderr) = p.communicate()
 		if p.returncode:
 			return (p.returncode, object_dn)
-		regex = re.compile('^dn: (.*)$', re.M)
+		regex = re.compile(b'^dn: (.*)$', re.M)
 		m = regex.search(stdout)
 		if m:
-			object_dn = m.group(1)
+			object_dn = m.group(1).decode('UTF-8')
 		return (p.returncode, object_dn)
 
 	def wait_for_activation(self, timeout=180):
@@ -232,7 +231,7 @@ class UniventionLDAPExtension(object):
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
-		return (p.returncode, stdout)
+		return (p.returncode, stdout.decode('UTF-8', 'replace'))
 
 	def udm_find_object_dn(self):
 		object_dn = None
@@ -259,7 +258,7 @@ class UniventionLDAPExtension(object):
 			self.objectname = self.target_filename
 
 		try:
-			with open(self.filename, 'r') as f:
+			with open(self.filename, 'rb') as f:
 				compressed_data = bz2.compress(f.read())
 		except Exception as e:
 			print("Compression of file %s failed: %s" % (self.filename, e), file=sys.stderr)
@@ -296,32 +295,32 @@ class UniventionLDAPExtension(object):
 			for udm_module_messagecatalog in options.udm_module_messagecatalog:
 				filename_parts = os.path.splitext(os.path.basename(udm_module_messagecatalog))
 				language = filename_parts[0]
-				with open(udm_module_messagecatalog, 'r') as f:
+				with open(udm_module_messagecatalog, 'rb') as f:
 					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),), ])
 			if options.umcregistration:
 				try:
-					with open(options.umcregistration, 'r') as f:
+					with open(options.umcregistration, 'rb') as f:
 						compressed_data = bz2.compress(f.read())
 				except Exception as e:
 					print("Compression of file %s failed: %s" % (options.umcregistration, e), file=sys.stderr)
 					sys.exit(1)
 				common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data),), ])
 			for icon in options.icon:
-				with open(icon, 'r') as f:
+				with open(icon, 'rb') as f:
 					common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()),), ])
 
 		if self.udm_module_name == "settings/udm_syntax":
 			for udm_syntax_messagecatalog in options.udm_syntax_messagecatalog:
 				filename_parts = os.path.splitext(os.path.basename(udm_syntax_messagecatalog))
 				language = filename_parts[0]
-				with open(udm_syntax_messagecatalog, 'r') as f:
+				with open(udm_syntax_messagecatalog, 'rb') as f:
 					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),), ])
 
 		if self.udm_module_name == "settings/udm_hook":
 			for udm_hook_messagecatalog in options.udm_hook_messagecatalog:
 				filename_parts = os.path.splitext(os.path.basename(udm_hook_messagecatalog))
 				language = filename_parts[0]
-				with open(udm_hook_messagecatalog, 'r') as f:
+				with open(udm_hook_messagecatalog, 'rb') as f:
 					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),), ])
 
 		rc, self.object_dn, stdout = self.udm_find_object_dn()
@@ -333,6 +332,7 @@ class UniventionLDAPExtension(object):
 			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
+			stdout = stdout.decode('UTF-8', 'replace')
 			print(stdout)
 			if p.returncode == 0:
 				regex = re.compile('^Object created: (.*)$', re.M)
@@ -350,6 +350,7 @@ class UniventionLDAPExtension(object):
 					]
 					p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 					(stdout, stderr) = p.communicate()
+					stdout = stdout.decode('UTF-8', 'replace')
 					print(stdout)
 			else:  # check again, might be a race
 				rc, self.object_dn, stdout = self.udm_find_object_dn()
@@ -410,6 +411,7 @@ class UniventionLDAPExtension(object):
 			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
+			stdout = stdout.decode('UTF-8', 'replace')
 			print(stdout)
 			if p.returncode != 0:
 				print("ERROR: Modification of %s object failed." % (self.udm_module_name,), file=sys.stderr)
@@ -423,6 +425,7 @@ class UniventionLDAPExtension(object):
 				]
 				p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				(stdout, stderr) = p.communicate()
+				stdout = stdout.decode('UTF-8', 'replace')
 				print(stdout)
 
 		if not self.object_dn:
@@ -448,6 +451,7 @@ class UniventionLDAPExtension(object):
 			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)" % (app_filter,), "cn"]
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
+			stdout = stdout.decode('UTF-8', 'replace')
 			if p.returncode:
 				print("ERROR: LDAP search failed: %s" % (stdout,), file=sys.stderr)
 				sys.exit(1)
@@ -462,6 +466,7 @@ class UniventionLDAPExtension(object):
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
+		stdout = stdout.decode('UTF-8', 'replace')
 		print(stdout)
 
 	def mark_active(self, handler_name=None):
@@ -478,7 +483,7 @@ class UniventionLDAPExtension(object):
 						udm_object.open()
 						udm_object['active'] = True
 						udm_object.modify()
-					except udm_errors.noObject as e:
+					except udm_errors.noObject:
 						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: object not found.' % (object_dn,))
 					except udm_errors.ldapError as e:
 						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
@@ -494,8 +499,7 @@ class UniventionLDAPExtension(object):
 						set_handler_message(handler_name, object_dn, 'Error accessing UDM: {}'.format(e))
 
 
-class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
-	__metaclass__ = ABCMeta
+class UniventionLDAPExtensionWithListenerHandler(six.with_metaclass(ABCMeta, UniventionLDAPExtension)):
 
 	def __init__(self, ucr):
 		super(UniventionLDAPExtensionWithListenerHandler, self).__init__(ucr)
@@ -983,8 +987,7 @@ class UniventionDataExtension(UniventionLDAPExtension):
 		return True
 
 
-class UniventionUDMExtension(UniventionLDAPExtension):
-	__metaclass__ = ABCMeta
+class UniventionUDMExtension(six.with_metaclass(ABCMeta, UniventionLDAPExtension)):
 
 	def wait_for_activation(self, timeout=180):
 		if not UniventionLDAPExtension.wait_for_activation(self, timeout):
