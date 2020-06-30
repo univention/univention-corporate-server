@@ -3,7 +3,6 @@
 """
 Read and write :file:`/etc/fstab`.
 """
-from __future__ import print_function
 # Copyright 2006-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +29,8 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
 
 import os
 import re
@@ -118,12 +119,12 @@ class File(list):
 		"""
 		Parse file system table line.
 
-		1.	`fs_spec`
-		2.	`fs_file`
-		3.	`fs_vfstype`
-		4.	`fs_mntops`
-		5.	`fs_freq`
-		6.	`fs_passno`
+		1. `fs_spec`
+		2. `fs_file`
+		3. `fs_vfstype`
+		4. `fs_mntops`
+		5. `fs_freq`
+		6. `fs_passno`
 
 		:param str line: A line.
 		:returns: The parsed entry.
@@ -155,7 +156,7 @@ class Entry(object):
 	"""
 	Entry of :manpage:`fstab(5)`.
 
-	:param str spec: This field describes the block special device or remote filesystem to be mounted..
+	:param str spec: This field describes the block special device or remote filesystem to be mounted.
 	:param str mount_point: This field describes the mount point (target) for the filesystem.
 	:param str type: The type of the filesystem.
 	:param options: The list of mount options associated with the filesystem.
@@ -189,6 +190,9 @@ class Entry(object):
 			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.uuid, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
 		else:
 			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.spec, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
+
+	def __repr__(self):
+		return '<univention.lib.fstab.Entry %r>' % (self.__dict__,)
 
 
 class InvalidEntry(Exception):
