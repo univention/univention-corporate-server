@@ -13,6 +13,7 @@ Build-Depends:
 Package: python-univention-lib
 Architecture: all
 Depends:
+ at,
  dnsutils,
  pwgen,
  python-apt,
@@ -44,6 +45,7 @@ Description: UCS - common scripting functions for Python 2 scripts
 Package: python3-univention-lib
 Architecture: all
 Depends:
+ at,
  dnsutils,
  pwgen,
  python-univention-lib,
