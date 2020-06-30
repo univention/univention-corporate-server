@@ -33,10 +33,13 @@
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
-from univention.lib.error import *
 from univention.lib.shell import *
 from univention.lib.locking import *
 from univention.lib.i18n import *
+try:
+	from univention.lib.error import *
+except ImportError:
+	pass
 try:
 	from univention.lib.misc import *
 except ImportError:
