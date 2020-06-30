@@ -50,6 +50,8 @@ def createMachinePassword():
 	compl = ucr.get('machine/password/complexity', 'scn')
 	p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	(stdout, stderr) = p.communicate()
+	if not isinstance(stdout, str):  # Python 3
+		stdout = stdout.decode('ASCII', 'replace')
 	return stdout.strip()
 
 
@@ -129,7 +131,7 @@ def custom_username(name, configRegistryInstance=None):
 	:raises ValueError: if no name is given.
 	"""
 	if not name:
-		raise ValueError
+		raise ValueError()
 
 	if configRegistryInstance:
 		ucr = configRegistryInstance
@@ -152,7 +154,7 @@ def custom_groupname(name, configRegistryInstance=None):
 	:raises ValueError: if no name is given.
 	"""
 	if not name:
-		raise ValueError
+		raise ValueError()
 
 	if configRegistryInstance:
 		ucr = configRegistryInstance
