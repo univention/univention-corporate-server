@@ -29,9 +29,11 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from optparse import OptionParser
+
 import sys
 import datetime
+from argparse import ArgumentParser
+
 import univention.uldap
 
 
@@ -61,24 +63,24 @@ def is_CSP_license(lo=None):
 	if not lo:
 		lo = univention.uldap.getMachineConnection()
 
-	result = lo.search(filter='(&(objectClass=univentionLicense)(cn=admin))')
+	result = lo.search(filter='(&(objectClass=univentionLicense)(cn=admin))', attr=['univentionLicenseEndDate', 'univentionLicenseOEMProduct'])
 	if not result:
 		raise LicenseNotFound()
 	attrs = result[0][1]
 
 	now = datetime.date.today()
-	enddate = attrs.get('univentionLicenseEndDate', ['01.01.1970'])[0]
-	if not enddate == 'unlimited':
-		(day, month, year) = enddate.split('.', 2)
+	enddate = attrs.get('univentionLicenseEndDate', [b'01.01.1970'])[0].decode('ASCII', 'replace')
+	if not enddate == u'unlimited':
+		(day, month, year) = enddate.split(u'.', 2)
 		then = datetime.date(int(year), int(month), int(day))
 		if now > then:
 			raise LicenseExpired('endDate = %s' % (enddate,))
 
-	return 'CSP' in attrs.get('univentionLicenseOEMProduct', [])
+	return b'CSP' in attrs.get('univentionLicenseOEMProduct', [])
 
 
 if __name__ == '__main__':
-	usage = '''%prog
+	usage = '''%(prog)s
 
 Checks the installed UCS license and returns an appropriate
 exitcode depending on the license status and license type.
@@ -89,8 +91,8 @@ Possible exitcodes:
 11: UCS license is expired
 12: UCS license is invalid or not found'''
 
-	parser = OptionParser(usage=usage)
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser(usage=usage)
+	parser.parse_args()
 
 	try:
 		result = is_CSP_license()
