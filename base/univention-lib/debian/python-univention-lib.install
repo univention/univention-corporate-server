@@ -1,2 +1,1 @@
-python/*.py usr/lib/python2.7/dist-packages/univention/lib/
 python/univention-lib.mo usr/share/locale/de/LC_MESSAGES
