@@ -29,15 +29,16 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import sys
-from collections import Hashable
+try:
+	from collections.abc import Hashable
+except ImportError:
+	from collections import Hashable
 
 import pytest
 
-from univention.unittests import import_module
+from .conftest import import_lib_module
 
-use_installed = '--installed-lib' in sys.argv
-ucs = import_module('ucs', 'python/', 'univention.lib.ucs', use_installed=use_installed)
+ucs = import_lib_module('ucs')
 
 
 def test_string():
@@ -67,8 +68,6 @@ def test_copy():
 def test_type():
 	with pytest.raises(TypeError):
 		ucs.UCS_Version(445)
-	with pytest.raises(TypeError):
-		ucs.UCS_Version([4, 4, 5, 0])
 
 
 def test_cmp():
@@ -77,9 +76,12 @@ def test_cmp():
 	assert v < ucs.UCS_Version('2.4-1')
 	assert v < ucs.UCS_Version('3.1-2')
 	assert v == ucs.UCS_Version('2.3-4')
+	assert v <= ucs.UCS_Version('2.3-4')
+	assert v >= ucs.UCS_Version('2.3-4')
 	assert v > ucs.UCS_Version('2.3-3')
 	assert v > ucs.UCS_Version('2.2-5')
 	assert v > ucs.UCS_Version('1.4-5')
+	assert v != ucs.UCS_Version('1.0-0')
 
 
 def test_malformed():
@@ -91,6 +93,8 @@ def test_malformed():
 		ucs.UCS_Version('4.0')
 	with pytest.raises(ValueError):
 		ucs.UCS_Version('newest version')
+	with pytest.raises(ValueError):
+		ucs.UCS_Version([4, 4, 5, 0])
 
 
 def test_getter():
@@ -114,3 +118,8 @@ def test_hash():
 def test_repr():
 	v = ucs.UCS_Version('4.7-0')
 	assert repr(v) == 'UCS_Version((4,7,0))'
+
+
+def test_mm():
+	v = ucs.UCS_Version('4.7-0')
+	assert v.mm == (4, 7)
