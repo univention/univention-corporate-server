@@ -48,10 +48,11 @@ import apt
 import apt.progress
 from apt.cache import FetchFailedException, LockFailedException, ProblemResolver
 
-apt_pkg.init()
-
 from univention.lib.locking import get_lock, release_lock
 from univention.lib.i18n import Translation
+
+apt_pkg.init()
+
 _ = Translation('univention-lib').translate
 
 # FIXME: Requires univention-updater (but this requires univention-lib...)
@@ -528,7 +529,7 @@ class PackageManager(object):
 			self.reset_status()
 		try:
 			yield
-		except:
+		except BaseException:
 			self.set_finished()
 			raise
 		finally:
@@ -987,7 +988,7 @@ class PackageManager(object):
 				self.cache = apt.Cache()
 			else:
 				self.cache.open()
-		for i in xrange(10):
+		for i in range(10):
 			try:
 				_open()
 			except SystemError:
@@ -1023,7 +1024,7 @@ class PackageManager(object):
 
 		All strings which must pass this function are in: <https://forge.univention.org/bugzilla/attachment.cgi?id=6898>
 		"""
-		messages = re.sub('\s([WE]:)', r'\n\1', str(exc)).splitlines()
+		messages = re.sub(r'\s([WE]:)', r'\n\1', str(exc)).splitlines()
 		further = set()  # type: Set[str]
 
 		apt_update = False
@@ -1042,7 +1043,7 @@ class PackageManager(object):
 				if 'pkgProblemResolver::Resolve' in msg:
 					hold_package = True
 					continue
-				match = re.search(' - (write|open|rename) \((\d+): .*\)', msg)
+				match = re.search(r' - (write|open|rename) \((\d+): .*\)', msg)
 				if match:
 					type_, errno = match.groups()
 					errno = int(errno)
