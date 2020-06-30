@@ -64,11 +64,6 @@ eval "$(ucr shell server/role)"
 			--command 'updater/*' \
 			--command 'lib/*'
 
-if [ "$server_role" != "basesystem" ]; then
-	# mrtg does not work because univention-maintenance is not installed
-	/usr/sbin/univention-management-console-acls allow --user root --host "*" --command 'join/*' --command 'mrtg/*'
-fi
-
 /usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor "*" \
 			--command 'setup/*'
 
