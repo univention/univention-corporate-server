@@ -30,42 +30,59 @@
 
 from __future__ import print_function
 
+import re
+import gzip
+import sys
+
 
 class Set(set):
 	pass
 
 
-def main(filename):
+def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 	tracebacks = {}
-	with open(filename) as fd:
-		line = True
-		while line:
-			line = fd.readline()
-			if line.endswith('Traceback (most recent call last):\n'):
-				lines = []
-				line = ' '
-				while line.startswith(' '):
-					line = fd.readline()
-					lines.append(line)
-				d = Set()
-				d.occurred = 1
-				tb = tracebacks.setdefault(''.join(lines[:-1]), d)
-				tb.add(lines[-1])
-				tb.occurred += 1
+	for filename in filenames:
+		opener = gzip.open if filename.endswith('.gz') else open
+		with opener(filename) as fd:
+			line = True
+			while line:
+				line = fd.readline()
+				if line.endswith('Traceback (most recent call last):\n'):
+					lines = []
+					line = ' '
+					while line.startswith(' '):
+						line = fd.readline()
+						lines.append(line)
+					d = Set()
+					d.occurred = 1
+					tb = tracebacks.setdefault(''.join(lines[:-1]), d)
+					tb.add(lines[-1])
+					tb.occurred += 1
 
 	print(len(tracebacks))
+	found = False
 	for traceback, exceptions in tracebacks.items():
+		ignored_exc = (ignore for exc in exceptions for ignore in ignore_exceptions if ignore.search(exc))
+		ignored_tracebacks = (ignore for exc in exceptions for ignore in ignore_tracebacks if ignore.search(exc))
+		try:
+			print('\nIgnoring %s\n' % ((next(ignored_exc) or next(ignored_tracebacks)).pattern,))
+			continue
+		except StopIteration:
+			pass
+		found = True
 		print('%d times:' % (exceptions.occurred,))
 		print('Traceback (most recent call last):')
-		print(traceback, end=' ')
+		print(traceback, end='')
 		for exc in exceptions:
 			print(exc, end=' ')
 		print()
+	return not found
 
 
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument('filename')
+	parser.add_argument('--ignore-exception', '-i', default='^$')
+	parser.add_argument('filename', nargs='+')
 	args = parser.parse_args()
-	main(args.filename)
+	sys.exit(int(not main(args.filename, ignore_exceptions=[re.compile(args.ignore_exception)])))

@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner python
+## desc: "Find traceback in /var/log/univention/*.gz logfile"
+## exposure: safe
+
+from __future__ import print_function
+
+from univention.testing.utils import fail
+import grep_traceback
+import glob
+import re
+
+ignore_exceptions = [re.compile(x) for x in [
+	'^univention.admin.uexceptions.objectExists: .*',
+	'^NonThreadedError$',
+	"^IOError: [Errno 2] No such file or directory: '/etc/machine.secret'",
+	'.*moduleCreationFailed: Target directory.*not below.*',
+	"^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*create.*univentionblog.*",
+	'^cherrypy._cperror.NotFound:.*',
+	re.escape('lockfile.LockTimeout: Timeout waiting to acquire lock for /var/run/umc-server.pid'),
+	"^FileExistsError:.*'/var/run/umc-server.pid'"
+	'ConfigurationError: Configuration error: host is unresolvable',
+	'ConfigurationError: Configuration error: port is closed',
+	'ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*',
+	'DownloadError: Error downloading http://localhost/DUMMY/: 403',
+	'MyTestException: .*',
+	'univention.lib.umc.ConnectionError:.*machine.secret.*',
+	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
+	'^OperationalError: (psycopg2.OperationalError) FATAL:.*admindiary.*',  # Bug #51671
+	"OSError: [Errno 2] No such file or directory: '/var/lib/samba/sysvol/,*/Policies/'",  # Bug #51670
+
+]]
+
+ignore_tracebacks = [re.compile(x) for x in [
+	re.escape("userdn = self.lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]"),
+
+]]
+
+if not grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=ignore_exceptions, ignore_tracebacks=ignore_tracebacks):
+	fail('logfiles contain tracebacks')
