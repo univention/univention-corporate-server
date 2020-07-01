@@ -800,7 +800,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				backup_filename = None
 				backup_ucrinfo_filename = None
 				backup_backlink_filename = None
-				if old.decode('UTF-8'):
+				if old:
 					old_filename = safe_path_join(self.ucr_slapd_conf_subfile_dir, old['univentionLDAPACLFilename'][0].decode('UTF-8'))
 					if os.path.exists(old_filename):
 						backup_fd, backup_filename = tempfile.mkstemp()
