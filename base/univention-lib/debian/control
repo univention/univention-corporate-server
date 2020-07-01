@@ -8,6 +8,7 @@ Build-Depends:
  dh-python,
  python-all,
  python3-all,
+ pwgen,
  univention-config-dev,
  univention-ucs-translation-template,
 
