@@ -1,3 +1,9 @@
+univention-lib (8.0.1-33) unstable; urgency=medium
+
+  * Bug #51592: add python 3 compatibility
+
+ -- Florian Best <best@univention.de>  Wed, 01 Jul 2020 18:40:19 +0200
+
 univention-lib (8.0.1-32) unstable; urgency=medium
 
   * Bug #50481: added set/get_handler_message
