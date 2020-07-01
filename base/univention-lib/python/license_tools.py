@@ -32,7 +32,7 @@ from __future__ import print_function
 
 import sys
 import datetime
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 import univention.uldap
 
@@ -80,9 +80,7 @@ def is_CSP_license(lo=None):
 
 
 if __name__ == '__main__':
-	usage = '''%(prog)s
-
-Checks the installed UCS license and returns an appropriate
+	description = '''Checks the installed UCS license and returns an appropriate
 exitcode depending on the license status and license type.
 
 Possible exitcodes:
@@ -91,7 +89,10 @@ Possible exitcodes:
 11: UCS license is expired
 12: UCS license is invalid or not found'''
 
-	parser = ArgumentParser(usage=usage)
+	parser = ArgumentParser(
+		description=description,
+		formatter_class=RawDescriptionHelpFormatter
+	)
 	parser.parse_args()
 
 	try:
