@@ -33,8 +33,6 @@ from collections import Hashable
 
 import pytest
 
-from univentionunittests import import_module
-
 from .conftest import import_lib_module
 
 ucs = import_lib_module('ucs')
@@ -67,8 +65,6 @@ def test_copy():
 def test_type():
 	with pytest.raises(TypeError):
 		ucs.UCS_Version(445)
-	with pytest.raises(TypeError):
-		ucs.UCS_Version([4, 4, 5, 0])
 
 
 def test_cmp():
@@ -94,6 +90,8 @@ def test_malformed():
 		ucs.UCS_Version('4.0')
 	with pytest.raises(ValueError):
 		ucs.UCS_Version('newest version')
+	with pytest.raises(ValueError):
+		ucs.UCS_Version([4, 4, 5, 0])
 
 
 def test_getter():
