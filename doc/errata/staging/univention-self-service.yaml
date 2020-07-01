@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-4
 src: univention-self-service
 fix: 4.0.3-34A~4.4.0.202006252223
 desc: |-
-  This update addresses the following issue(s):
+  This update addresses the following issues:
   * The 'Forgot your password?' link on the login page was not shown by
     default anymore.
   * Nested groups are now correctly evaluated for Self Service
