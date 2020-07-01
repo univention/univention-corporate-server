@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-05-12 13:18+0200\n"
+"POT-Creation-Date: 2020-07-01 18:45+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,78 +12,84 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: python/package_manager.py:751
+#: python/package_manager.py:1104
 msgid "Autoremove failed"
 msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
 
-#: python/package_manager.py:691
+#: python/package_manager.py:1014 python/package_manager.py:1015
 msgid "Could not initialize package manager."
 msgstr "Paketmanager konnte nicht initialisiert werden."
 
-#: python/package_manager.py:745
+#: python/package_manager.py:1098
 #, python-format
 msgid "Deleting unneeded %s"
 msgstr "Deinstalliere unbenutztes Paket %s"
 
-#: python/package_manager.py:715
+#: python/package_manager.py:1061
 msgid "Error: "
 msgstr "Fehler: "
 
-#: python/package_manager.py:645
+#: python/package_manager.py:963
 msgid "Failed to install"
 msgstr "Installation fehlgeschlagen"
 
-#: python/package_manager.py:301 python/package_manager.py:428
+#: python/package_manager.py:488 python/package_manager.py:702
 msgid "Failed to lock"
 msgstr "Sperren des Systems fehlgeschlagen"
 
-#: python/package_manager.py:650
+#: python/package_manager.py:968
 msgid "Failed to uninstall"
 msgstr "Deinstallation fehlgeschlagen"
 
-#: python/package_manager.py:425 python/package_manager.py:633
-#, python-format
+#: python/package_manager.py:697 python/package_manager.py:949
 msgid "Fetching failed"
 msgstr "Herunterladen fehlgeschlagen"
 
-#: python/package_manager.py:733
+#: python/package_manager.py:1085
 msgid "Further information regarding this error:"
 msgstr "Weitere Informationen zu diesem Fehler:"
 
-#: python/package_manager.py:454
+#: python/package_manager.py:738
 msgid "No such package"
 msgstr "Paket existiert nicht"
 
-#: python/package_manager.py:724
+#. i18n: "using it" refers to the "package manager"
+#: python/package_manager.py:1075
 msgid ""
 "Probably another process is currently using it or the package sources are "
 "corrupt. Please try again later."
-msgstr "Er wird möglicherweise zurzeit von einem anderen Prozess verwendet oder die Paketquellen sind korrupt. Bitte später erneut versuchen."
+msgstr ""
+"Er wird möglicherweise zurzeit von einem anderen Prozess verwendet oder die "
+"Paketquellen sind korrupt. Bitte später erneut versuchen."
 
-#: python/package_manager.py:722
+#: python/package_manager.py:1072
 msgid ""
 "Some package conflicts could not be resolved. This was probably caused by "
 "packages with \"hold\" state."
-msgstr "Einige Paketkonflikte konnten nicht gelöst werden. Dies wird möglicherweise von Paketen mit \"hold\"-Status verursacht."
+msgstr ""
+"Einige Paketkonflikte konnten nicht gelöst werden. Dies wird möglicherweise "
+"von Paketen mit \"hold\"-Status verursacht."
 
-#: python/package_manager.py:727
+#: python/package_manager.py:1078
 msgid "The package sources are probably corrupt."
 msgstr "Die Paketquellen sind wahrscheinlich korrupt."
 
-#: python/package_manager.py:730
+#: python/package_manager.py:1081
 msgid ""
 "The sources.list entries could be repaired by executing the following "
 "commands as root on this server:"
-msgstr "Die sources.list Einträge könnten durch ausführen der folgenden Kommandos als root auf diesem Server repariert werden:"
+msgstr ""
+"Die sources.list Einträge könnten durch ausführen der folgenden Kommandos "
+"als root auf diesem Server repariert werden:"
 
-#: python/package_manager.py:720
+#: python/package_manager.py:1070
 msgid "There is no free hard disk space left on the device."
 msgstr "Es ist kein freier Speicherplatz auf dem Gerät verfügbar."
 
-#: python/package_manager.py:561
+#: python/package_manager.py:868
 msgid "Untrusted origin"
 msgstr "Nicht vertrauenswürdige Quelle"
 
-#: python/package_manager.py:714
+#: python/package_manager.py:1060
 msgid "Warning: "
 msgstr "Warnung: "
