@@ -30,28 +30,31 @@
 
 from __future__ import print_function
 
+import sys
+
 
 class Set(set):
 	pass
 
 
-def main(filename):
+def main(*filenames):
 	tracebacks = {}
-	with open(filename) as fd:
-		line = True
-		while line:
-			line = fd.readline()
-			if line.endswith('Traceback (most recent call last):\n'):
-				lines = []
-				line = ' '
-				while line.startswith(' '):
-					line = fd.readline()
-					lines.append(line)
-				d = Set()
-				d.occurred = 1
-				tb = tracebacks.setdefault(''.join(lines[:-1]), d)
-				tb.add(lines[-1])
-				tb.occurred += 1
+	for filename in filenames:
+		with open(filename) as fd:
+			line = True
+			while line:
+				line = fd.readline()
+				if line.endswith('Traceback (most recent call last):\n'):
+					lines = []
+					line = ' '
+					while line.startswith(' '):
+						line = fd.readline()
+						lines.append(line)
+					d = Set()
+					d.occurred = 1
+					tb = tracebacks.setdefault(''.join(lines[:-1]), d)
+					tb.add(lines[-1])
+					tb.occurred += 1
 
 	print(len(tracebacks))
 	for traceback, exceptions in tracebacks.items():
@@ -61,11 +64,12 @@ def main(filename):
 		for exc in exceptions:
 			print(exc, end=' ')
 		print()
+	return not tracebacks
 
 
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description=__doc__)
-	parser.add_argument('filename')
+	parser.add_argument('filename', nargs='+')
 	args = parser.parse_args()
-	main(args.filename)
+	sys.exit(int(main(*args.filename)))

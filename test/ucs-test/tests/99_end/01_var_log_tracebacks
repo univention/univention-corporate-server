@@ -1,0 +1,12 @@
+#!/usr/share/ucs-test/runner python
+## desc: "Find traceback in /var/log/univention/ logfile"
+## exposure: safe
+
+from __future__ import print_function
+
+from univention.testing.utils import fail
+import grep_traceback
+import glob
+
+if not grep_traceback.main(*glob.glob('/var/log/univention/*.log')):
+	fail('logfiles contain tracebacks')
