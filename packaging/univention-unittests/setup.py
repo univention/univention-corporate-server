@@ -70,10 +70,10 @@ def setup(name, **attrs):
 setup(
 	name='univention-unittests',
 	packages=[
-		'univention.unittests',
+		'univentionunittests',
 	],
-	entry_points={"pytest11": ["univention-unittests-ucr = univention.unittests.ucr", "univention-unittests-umc = univention.unittests.umc", "univention-unittests-udm = univention.unittests.udm"]},
+	entry_points={"pytest11": ["univention-unittests-ucr = univentionunittests.ucr", "univention-unittests-umc = univentionunittests.umc", "univention-unittests-udm = univentionunittests.udm"]},
 	package_dir={
-		'univention.unittests': 'python/univention/unittests/',
+		'univentionunittests': 'python/univention/unittests/',
 	},
 )

@@ -29,7 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.unittests import import_module
+from univentionunittests import import_module
 
 import pytest
 
