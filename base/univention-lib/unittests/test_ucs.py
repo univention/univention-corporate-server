@@ -29,15 +29,15 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import os
 from collections import Hashable
 
 import pytest
 
-from univention.unittests import import_module
+from univentionunittests import import_module
 
-use_installed = os.environ.get('UNIVENTION_UNITTEST_USE_INSTALLED')
-ucs = import_module('ucs', 'python/', 'univention.lib.ucs', use_installed=use_installed)
+from .conftest import import_lib_module
+
+ucs = import_lib_module('ucs')
 
 
 def test_string():
