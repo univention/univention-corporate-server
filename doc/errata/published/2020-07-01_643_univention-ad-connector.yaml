@@ -10,3 +10,5 @@ desc: |
    only worked if the password was resetted at the same
    time. This behavior has been fixed.
 bug: [51585]
+erratum: 643
+announced: 2020-07-01
