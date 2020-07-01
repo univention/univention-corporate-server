@@ -43,6 +43,9 @@ def formatTraceback():
 	:rtype: list[str]
 
 	Call this function directly in the `except`-clause.
+
+	.. deprecated:: 4.4
+		use traceback.format_exc() instead
 	"""
 	stackIn = traceback.extract_stack()
 	stackDown = traceback.extract_tb(sys.exc_info()[2])

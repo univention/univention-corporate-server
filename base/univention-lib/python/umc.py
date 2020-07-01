@@ -38,11 +38,14 @@ connections to remote |UMC| servers
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
 import ssl
 import json
 import locale
-from Cookie import SimpleCookie
-from httplib import HTTPSConnection, HTTPException
+import base64
+
+from six.moves.http_cookies import SimpleCookie
+from six.moves.http_client import HTTPSConnection, HTTPException
 
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
@@ -76,7 +79,7 @@ class ConnectionError(Exception):
 		self.reason = reason
 
 
-class HTTPError(Exception):
+class HTTPError(six.with_metaclass(_HTTPType, Exception)):
 	"""
 	Base class for |HTTP| errors.
 	A specialized sub-class if automatically instantiated based on the |HTTP| return code.
@@ -85,7 +88,6 @@ class HTTPError(Exception):
 	:param httplib.HTTPResponse response: The |HTTP| response.
 	:param str hostname: The host name of the failed server.
 	"""
-	__metaclass__ = _HTTPType
 	codes = {}  # type: Dict[int, Type[HTTPError]]
 	"""Specialized sub-classes for individual |HTTP| error codes."""
 
@@ -136,7 +138,12 @@ class HTTPError(Exception):
 		return '<HTTPError %s>' % (self,)
 
 	def __str__(self):
-		return '%s on %s (%s): %s' % (self.status, self.hostname, self.request.path, self.response.body)
+		traceback = ''
+		data = self.response.data
+		if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), six.string_types) and 'Traceback (most recent call last)' in self.response.data['traceback']:
+			data = data.copy()
+			traceback = '\n%s' % (data.pop('traceback'),)
+		return '%s on %s (%s): %s%s' % (self.status, self.hostname, self.request.path, data, traceback)
 
 
 class HTTPRedirect(HTTPError):
@@ -232,15 +239,15 @@ class Request(object):
 		self.headers = headers or {}
 
 	def get_body(self):
-		# type: () -> Union[str, dict, None]
+		# type: () -> Union[bytes, None]
 		"""
 		Return the request data.
 
-		:returns: |JSON| data is returned as a dictionary, all other as raw.
-		:rtype: dict or str
+		:returns: encodes data in JSON if Content-Type wants it
+		:rtype: bytes
 		"""
 		if self.headers.get('Content-Type', '').startswith('application/json'):
-			return json.dumps(self.data)
+			return json.dumps(self.data).encode('ASCII')
 		return self.data
 
 
@@ -309,7 +316,7 @@ class Response(object):
 		data = self.body
 		if self.get_header('Content-Type', '').startswith('application/json'):
 			try:
-				data = json.loads(data)
+				data = json.loads(data.decode('UTF-8'))
 			except ValueError as exc:
 				raise ConnectionError('Malformed response data: %r' % (data,), reason=exc)
 		return data
@@ -377,7 +384,7 @@ class Client(object):
 	def reauthenticate(self):
 		# type: () -> None
 		"""
-		Re-authenticate using the stores username and password.
+		Re-authenticate using the stored username and password.
 		"""
 		return self.authenticate(self.username, self.password)
 
@@ -389,7 +396,7 @@ class Client(object):
 		:param str username: A user name.
 		:param str password: The password of the user.
 		"""
-		self._headers['Authorization'] = 'Basic %s' % ('%s:%s' % (username, password)).encode('base64').rstrip()
+		self._headers['Authorization'] = 'Basic %s' % (base64.b64encode(b'%s:%s' % (username.encode('UTF-8'), password.encode('UTF-8'))).decode('ASCII'),)
 
 	def authenticate_saml(self, username, password):
 		# type: (str, str) -> None
@@ -530,7 +537,7 @@ class Client(object):
 		:raises ConnectionError: if the request cannot be send.
 		:raises HTTPError: if an |UMC| error occurs.
 		"""
-		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+		cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
 		request.headers = dict(self._headers, Cookie=cookie, **request.headers)
 		if 'UMCSessionId' in self.cookies:
 			request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']

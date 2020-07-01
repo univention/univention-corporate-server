@@ -184,7 +184,10 @@ class NullTranslation(object):
 		"""
 		if self._translation is None:
 			return message
-		return self._translation.ugettext(message)
+
+		if six.PY2:
+			return self._translation.ugettext(message)
+		return self._translation.gettext(message)
 
 	_ = translate
 
@@ -214,15 +217,15 @@ class Translation(NullTranslation):
 				else:
 					language = lang[0]
 				Translation.locale.parse(language)
-			except Error as e:
-				raise I18N_Error('The given locale is not valid: %s' % str(e))
+			except Error as exc:
+				raise I18N_Error('The given locale is not valid: %s' % (exc,))
 
 		if not self._domain:
 			return
 
 		try:
 			self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
-		except IOError as e:
+		except IOError:
 			try:
 				self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
 			except IOError:

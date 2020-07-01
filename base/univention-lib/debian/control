@@ -9,19 +9,21 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev,
+ univention-ucs-translation-template,
 
 Package: python-univention-lib
 Architecture: all
 Depends:
+ at,
  dnsutils,
  pwgen,
  python-apt,
  python-dnspython,
- python-imaging,
- python-ipaddr,
+ python-ipaddress,
  python-ldap,
  python-ldb,
  python-magic,
+ python-pil,
  python-samba,
  python-six,
  python-univention (>= 12.0.0-4),
@@ -44,12 +46,12 @@ Description: UCS - common scripting functions for Python 2 scripts
 Package: python3-univention-lib
 Architecture: all
 Depends:
+ at,
  dnsutils,
  pwgen,
  python-univention-lib,
  python3-apt,
  python3-dnspython,
- python3-ipaddr,
  python3-ldap | python3-pyldap,
  python3-ldb,
  python3-magic,
