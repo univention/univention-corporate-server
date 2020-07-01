@@ -1,3 +1,16 @@
+univention-unittests (2.0.0-2) unstable; urgency=medium
+
+  * Bug #51566: Changed namespace in order to not import univention packages
+    during pytest start (messes with coverage)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:34:07 +0200
+
+univention-unittests (2.0.0-2) unstable; urgency=medium
+
+  * UCS 5.0 Bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:34:07 +0200
+
 univention-unittests (2.0.0-1) unstable; urgency=medium
 
   * UCS 5.0 Bump
