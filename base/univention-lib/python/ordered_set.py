@@ -58,7 +58,7 @@ class OrderedSet(collections.MutableSet):
 
 	def __getitem__(self, index):
 		try:
-			return self._data.keys()[index]
+			return list(self._data.keys())[index]
 		except IndexError:
 			raise IndexError("{} index out of range".format(self._name))
 
