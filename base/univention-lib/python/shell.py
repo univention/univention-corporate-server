@@ -63,9 +63,6 @@ def escape_value(value):
 	return '"%s"' % ''.join(escapes.get(c, c) for c in value)
 
 
-if not six.PY2:
-	del escape_value
-
 _RE_AT_JOB = re.compile('^job ([1-9][0-9]*) at .*')
 
 
@@ -85,6 +82,8 @@ def create_at_job(script, time=None, date=None):
 	>>> r = create_at_job(['echo', 'new year'], '24:00', '31.12.2030')
 	>>> (r.returncode, r.job, r.stdout, r.stderr) # doctest:+ELLIPSIS
 	(0, ..., '', '...job ... at Wed Jan  1 00:00:00 2031\\n')
+
+	.. deprecated:: 4.4
 
 	See :py:mod:`univention.atjobs` for an alternative implementation.
 	"""
