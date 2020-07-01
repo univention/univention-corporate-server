@@ -346,7 +346,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 		:param str status: The status message.
 		"""
 		self.progress_state.info(status, logger_name='status')
-		self.progress_state.percentage(percent)
+		self.progress_state.percentage(str(percent))
 
 	# status == pmerror
 	# they are probably not for frontend-users
@@ -422,6 +422,8 @@ class PackageManager(object):
 
 	def __init__(self, lock=True, info_handler=None, step_handler=None, error_handler=None, always_noninteractive=True):
 		# type: (bool, Optional[Callable[[Any], None]], Optional[Callable[[Any], None]], Optional[Callable[[Any], None]], bool) -> None
+		self.lock_fd = None  # type: Optional[IO]
+		self.apt_lock_fd = -1  # type: Optional[int]
 		# parent logger, public. should be extended by adding a handler
 		self.logger = getLogger('packagemanager')
 		self.logger.setLevel(DEBUG)
@@ -436,8 +438,6 @@ class PackageManager(object):
 		self.dpkg_progress = DpkgProgress(self.progress_state)
 		self._always_install = []  # type: List[apt.package.Package]
 		self.always_noninteractive = always_noninteractive
-		self.lock_fd = None  # type: Optional[IO]
-		self.apt_lock_fd = None  # type: Optional[int]
 		if lock:
 			self.lock()
 
@@ -714,7 +714,8 @@ class PackageManager(object):
 		:param pkg_names: A list of binary package names.
 		:returns: A list of |APT| cache entries.
 		"""
-		return filter(None, map(self.get_package, pkg_names))
+		packages = [self.get_package(pkg_name) for pkg_name in pkg_names]
+		return [pkg for pkg in packages if pkg]
 
 	def get_package(self, pkg_name, raise_key_error=False):
 		# type: (str, bool) -> Any
@@ -1104,9 +1105,10 @@ class PackageManager(object):
 		# but in the end we should test
 		if self.cache.broken_count:
 			self.progress_state.error(failed_msg)
+			return False
 		else:
 			if self.cache.get_changes():
-				self.commit(msg_if_failed=failed_msg)
+				return self.commit(msg_if_failed=failed_msg)
 
 	def upgrade(self):
 		# type: () -> bool
