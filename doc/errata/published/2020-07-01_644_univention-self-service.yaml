@@ -11,3 +11,5 @@ desc: |-
   * Nested groups are now correctly evaluated for Self Service
     white- and blacklists.
 bug: [51533, 51261]
+erratum: 644
+announced: 2020-07-01
