@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test removing values from UCR policy
 ## bugs: [43562]
 ## roles:

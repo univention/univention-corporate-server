@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: move the object and modify the standard container flag at the same time
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
