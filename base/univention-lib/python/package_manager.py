@@ -346,7 +346,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 		:param str status: The status message.
 		"""
 		self.progress_state.info(status, logger_name='status')
-		self.progress_state.percentage(str(percent))
+		self.progress_state.percentage(percent)
 
 	# status == pmerror
 	# they are probably not for frontend-users
