@@ -32,23 +32,20 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import sys
 import os
 import os.path
-from glob import glob
 import re
 from copy import copy
 from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
 from weakref import ref
-from json import loads, dumps
 
 from six.moves.urllib_parse import urlsplit
 from six.moves.configparser import RawConfigParser, NoOptionError, NoSectionError
 
 from univention.appcenter.log import get_base_logger
-from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
+from univention.appcenter.packages import get_package_manager, packages_are_installed
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import app_ports, mkdir, get_free_disk_space, get_current_ram_available, get_locale, container_mode, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
@@ -1690,221 +1687,3 @@ class App(with_metaclass(AppMetaClass, object)):
 
 	def __gt__(self, other):
 		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) > (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
-
-
-# LEGACY; deprecated, use univention.appcenter.app_cache.Apps()!
-class AppManager(object):
-	_locale = None
-	_cache = []
-	_cache_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.json')
-	_AppClass = App
-
-	@classmethod
-	def _invalidate_cache_file(cls):
-		if cls._cache_file:
-			cache_pattern = re.sub(r'%\(.*?\).', '*', cls._cache_file)
-			for cache_file in glob(cache_pattern):
-				try:
-					os.unlink(cache_file)
-				except OSError:
-					pass
-
-	@classmethod
-	def _get_cache_file(cls):
-		if cls._cache_file:
-			return cls._cache_file % {'locale': cls._locale}
-
-	@classmethod
-	def _save_cache(cls, cache):
-		cache_file = cls._get_cache_file()
-		if cache_file:
-			try:
-				cache_obj = dumps([app.attrs_dict() for app in cache], indent=2)
-				with open(cache_file, 'wb') as fd:
-					fd.write(cache_obj)
-			except (IOError, TypeError):
-				return False
-			else:
-				return True
-
-	@classmethod
-	def _load_cache(cls):
-		cache_file = cls._get_cache_file()
-		if cache_file:
-			try:
-				cache_modified = os.stat(cache_file).st_mtime
-				for master_file in cls._relevant_master_files():
-					master_file_modified = os.stat(master_file).st_mtime
-					if cache_modified < master_file_modified:
-						return None
-				with open(cache_file, 'rb') as fd:
-					json = fd.read()
-				cache = loads(json)
-			except (OSError, IOError, ValueError):
-				return None
-			else:
-				try:
-					cache_attributes = set(cache[0].keys())
-				except (TypeError, AttributeError, IndexError, KeyError):
-					return None
-				else:
-					code_attributes = set(attr.name for attr in cls._AppClass._attrs)
-					if cache_attributes != code_attributes:
-						return None
-					return [cls._build_app_from_attrs(attrs) for attrs in cache]
-
-	@classmethod
-	def _relevant_master_files(cls):
-		ret = set()
-		ret.add(os.path.join(CACHE_DIR, '.all.tar'))
-		classes_visited = set()
-
-		def add_class(klass):
-			if klass in classes_visited:
-				return
-			classes_visited.add(klass)
-			try:
-				module = sys.modules[klass.__module__]
-				ret.add(module.__file__)
-			except (AttributeError, KeyError):
-				pass
-			if hasattr(klass, '__bases__'):
-				for base in klass.__bases__:
-					add_class(base)
-			if hasattr(klass, '__metaclass__'):
-				add_class(klass.__metaclass__)
-
-		add_class(cls._AppClass)
-		return ret
-
-	@classmethod
-	def _relevant_ini_files(cls):
-		return glob(os.path.join(CACHE_DIR, '*.ini'))
-
-	@classmethod
-	def _build_app_from_attrs(cls, attrs):
-		return cls._AppClass(**attrs)
-
-	@classmethod
-	def _build_app_from_ini(cls, ini):
-		app = cls._AppClass.from_ini(ini, locale=cls._locale)
-		if app:
-			for attr in app._attrs:
-				attr.post_creation(app)
-		return app
-
-	@classmethod
-	def clear_cache(cls):
-		ucr_load()
-		cls._cache[:] = []
-		reload_package_manager()
-		cls._invalidate_cache_file()
-
-	@classmethod
-	def _get_every_single_app(cls):
-		if not cls._cache:
-			cls._locale = get_locale() or 'en'
-			try:
-				cached_apps = cls._load_cache()
-				if cached_apps is not None:
-					cls._cache = cached_apps
-					app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
-				else:
-					for ini in cls._relevant_ini_files():
-						app = cls._build_app_from_ini(ini)
-						if app is not None:
-							cls._cache.append(app)
-					cls._cache.sort()
-					if cls._save_cache(cls._cache):
-						app_logger.debug('Saved %d apps into cache' % len(cls._cache))
-					else:
-						app_logger.warn('Unable to cache apps')
-			finally:
-				cls._locale = None
-		return cls._cache
-
-	@classmethod
-	def get_all_apps(cls):
-		ret = []
-		ids = set()
-		for app in cls._get_every_single_app():
-			ids.add(app.id)
-		for app_id in sorted(ids):
-			ret.append(cls.find(app_id))
-		return ret
-
-	@classmethod
-	def get_all_locally_installed_apps(cls):
-		ret = []
-		for app in cls._get_every_single_app():
-			if app.is_installed():
-				ret.append(app)
-		return ret
-
-	@classmethod
-	def find_by_component_id(cls, component_id):
-		for app in cls._get_every_single_app():
-			if app.component_id == component_id:
-				return app
-
-	@classmethod
-	def get_all_apps_with_id(cls, app_id):
-		ret = []
-		for app in cls._get_every_single_app():
-			if app.id == app_id:
-				ret.append(app)
-		return ret
-
-	@classmethod
-	def find(cls, app_id, app_version=None, latest=False):
-		if isinstance(app_id, cls._AppClass):
-			app_id = app_id.id
-		apps = list(reversed(cls.get_all_apps_with_id(app_id)))
-		if app_version:
-			for app in apps:
-				if app.version == app_version:
-					return app
-			return None
-		elif not latest:
-			for app in apps:
-				if app.is_installed():
-					return app
-		if apps:
-			return apps[0]
-
-	@classmethod
-	def find_candidate(cls, app, prevent_docker=None):
-		if prevent_docker is None:
-			prevent_docker = app._docker_prudence_is_true()
-		if app.docker:
-			prevent_docker = False
-		app_version = LooseVersion(app.version)
-		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
-		for _app in apps:
-			if prevent_docker and _app.docker and not (_app.docker_migration_works or _app.docker_migration_link):
-				continue
-			if _app <= app:
-				break
-			if _app.required_app_version_upgrade:
-				if LooseVersion(_app.required_app_version_upgrade) > app_version:
-					continue
-			return _app
-
-	@classmethod
-	def reload_package_manager(cls):
-		reload_package_manager()
-
-	@classmethod
-	def get_package_manager(cls):
-		return get_package_manager()
-
-	@classmethod
-	def set_package_manager(cls, package_manager):
-		get_package_manager._package_manager = package_manager
-
-	@classmethod
-	def get_server(cls):
-		server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
-		if not server.startswith('http'):
-			server = 'https://%s' % server
-		return server
