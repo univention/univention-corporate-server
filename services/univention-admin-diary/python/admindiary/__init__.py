@@ -28,6 +28,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 from socket import gethostname
 from datetime import datetime
 import logging
@@ -104,27 +106,27 @@ class DiaryEntry(object):
 		self.event_name = event_name
 
 	def assert_types(self):
-		if not isinstance(self.username, basestring):
+		if not isinstance(self.username, six.string_types):
 			raise TypeError('DiaryEntry() argument "username" has to be "string", but is: %s (%s)' % (type(self.username), self.username))
-		if not isinstance(self.hostname, basestring):
+		if not isinstance(self.hostname, six.string_types):
 			raise TypeError('DiaryEntry().hostname has to be "string", but is: %s (%s)' % (type(self.hostname), self.hostname))
-		if not isinstance(self.args, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.args.items()):
+		if not isinstance(self.args, dict) or not all(isinstance(key, six.string_types) and isinstance(value, six.string_types) for key, value in self.args.items()):
 			raise TypeError('DiaryEntry() argument "args" has to be "dict of string/string", but is: %s (%s)' % (type(self.args), self.args))
 		if self.message is not None:
-			if not isinstance(self.message, dict) or not all(isinstance(key, basestring) and isinstance(value, basestring) for key, value in self.message.items()):
+			if not isinstance(self.message, dict) or not all(isinstance(key, six.string_types) and isinstance(value, six.string_types) for key, value in self.message.items()):
 				raise TypeError('DiaryEntry() argument "message" has to be "dict of string/string", but is: %s (%s)' % (type(self.message), self.message))
 			for locale, message in self.message.items():
 				try:
 					message.format(**self.args)
-				except:
+				except Exception:
 					raise TypeError('DiaryEntry() argument "message" (%s, %r) has wrong format for given args (%r).', locale, message, self.args)
 		if not isinstance(self.timestamp, datetime):
 			raise TypeError('DiaryEntry().timestamp has to be "datetime"')
-		if not isinstance(self.tags, list) or not all(isinstance(tag, basestring) for tag in self.tags):
+		if not isinstance(self.tags, list) or not all(isinstance(tag, six.string_types) for tag in self.tags):
 			raise TypeError('DiaryEntry() argument "tags" have to be "list of string", but is: %s (%s)' % (type(self.tags), self.tags))
-		if not isinstance(self.context_id, basestring):
+		if not isinstance(self.context_id, six.string_types):
 			raise TypeError('DiaryEntry() argument "context_id" has to be "string", but is: %s (%s)' % (type(self.context_id), self.context_id))
-		if not isinstance(self.event_name, basestring):
+		if not isinstance(self.event_name, six.string_types):
 			raise TypeError('DiaryEntry() argument "event" name has to be "string", but is: %s (%s)' % (type(self.event_name), self.event_name))
 
 	def to_json(self):
