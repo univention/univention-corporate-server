@@ -30,6 +30,7 @@
 
 from __future__ import print_function
 
+import re
 import sys
 
 
@@ -37,7 +38,7 @@ class Set(set):
 	pass
 
 
-def main(*filenames):
+def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 	tracebacks = {}
 	for filename in filenames:
 		with open(filename) as fd:
@@ -58,9 +59,13 @@ def main(*filenames):
 
 	print(len(tracebacks))
 	for traceback, exceptions in tracebacks.items():
+		if any(ignore.search(exc) for exc in exceptions for ignore in ignore_exceptions):
+			continue
+		if any(ignore.search(exc) for exc in exceptions for ignore in ignore_tracebacks):
+			continue
 		print('%d times:' % (exceptions.occurred,))
 		print('Traceback (most recent call last):')
-		print(traceback, end=' ')
+		print(traceback, end='')
 		for exc in exceptions:
 			print(exc, end=' ')
 		print()
@@ -70,6 +75,7 @@ def main(*filenames):
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description=__doc__)
+	parser.add_argument('--ignore-exception', '-i', default='^$')
 	parser.add_argument('filename', nargs='+')
 	args = parser.parse_args()
-	sys.exit(int(main(*args.filename)))
+	sys.exit(int(main(args.filename, ignore_exceptions=[re.compile(args.ignore_exception)])))
