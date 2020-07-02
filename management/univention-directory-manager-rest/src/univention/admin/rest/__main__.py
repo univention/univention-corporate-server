@@ -68,7 +68,12 @@ class Server(object):
 		# locale must be set before importing UDM!
 		log_init('/dev/stdout', args.debug)
 		language = str(Locale(args.language))
-		locale.setlocale(locale.LC_MESSAGES, language)
+		try:
+			locale.setlocale(locale.LC_MESSAGES, language)
+		except locale.Error:
+			CORE.error('Could not set language %r' % (language,))
+			raise
+
 		os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
 
 		# The UMC-Server and module processes are clearing environment variables
@@ -104,7 +109,7 @@ class Server(object):
 			tornado.ioloop.IOLoop.current().start()
 		except (SystemExit, KeyboardInterrupt):
 			raise
-		except:
+		except BaseException:
 			CORE.error(traceback.format_exc())
 			raise
 
