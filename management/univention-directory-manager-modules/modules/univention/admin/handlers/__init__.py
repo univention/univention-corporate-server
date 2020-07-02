@@ -55,7 +55,7 @@ import six
 from ipaddress import ip_address, IPv4Address, IPv6Address, IPv4Network
 import ldap
 from ldap.filter import filter_format
-from ldap.dn import explode_rdn, explode_dn, escape_dn_chars, str2dn, dn2str
+from ldap.dn import explode_rdn, escape_dn_chars, str2dn, dn2str
 from ldap.controls.readentry import PostReadControl
 
 import univention.debug as ud
@@ -2256,7 +2256,7 @@ class simpleComputer(simpleLdap):
 
 	def __remove_dns_reverse_object(self, name, dnsEntryZoneReverse, ip):  # type: (str, str, str) -> None
 		def modify(rdn, zoneDN):  # type: (Text, str) -> None
-			zone_name = explode_dn(zoneDN, True)[0]
+			zone_name = str2dn(zoneDN)[0][0][1]
 			for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
 				if len(attributes['pTRRecord']) == 1:
 					self.lo.delete('relativeDomainName=%s,%s' % (escape_dn_chars(rdn), zoneDN))
@@ -2315,7 +2315,7 @@ class simpleComputer(simpleLdap):
 			self.lo.add('relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn), [
 				('objectClass', [b'top', b'dNSZone', b'univentionObject']),
 				('univentionObjectType', [b'dns/ptr_record']),
-				('zoneName', [explode_dn(zoneDn, True)[0].encode('UTF-8')]),
+				('zoneName', [str2dn(zoneDn)[0][0][1].encode('UTF-8')]),
 				('relativeDomainName', [ipPart.encode('ASCII')]),
 				('PTRRecord', [x.encode('UTF-8') for x in hostname_list])
 			])
@@ -2720,7 +2720,7 @@ class simpleComputer(simpleLdap):
 					self.__add_dns_forward_object(self['name'], self['dnsEntryZoneForward'][0][0], entry)
 				for dnsEntryZoneReverse in self.get('dnsEntryZoneReverse', []):
 					x, ip = self.__split_dns_line(dnsEntryZoneReverse)
-					zoneIsV6 = explode_dn(x, 1)[0].endswith('.ip6.arpa')
+					zoneIsV6 = str2dn(x)[0][0][1].endswith('.ip6.arpa')
 					entryIsV6 = ':' in entry
 					if zoneIsV6 == entryIsV6:
 						self.__add_dns_reverse_object(self['name'], x, entry)
@@ -2930,7 +2930,7 @@ class simpleComputer(simpleLdap):
 		"""
 		addr = ip_address(u'%s' % (sip,))
 		rev = addr.reverse_pointer
-		subnet = u".%s" % (explode_dn(reverseDN, True)[0],)
+		subnet = u".%s" % (str2dn(reverseDN)[0][0][1],)
 		assert rev.endswith(subnet)
 		return rev[:-len(subnet)]
 
