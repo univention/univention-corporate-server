@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-6) unstable; urgency=medium
+
+  * Bug #51598: Meta classes; removed unneeded code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 Jul 2020 13:50:13 +0200
+
 univention-appcenter (9.0.0-5) unstable; urgency=medium
 
   * Bug #51525: replace pip selenium with python-selenium
