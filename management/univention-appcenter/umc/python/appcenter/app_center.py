@@ -79,6 +79,7 @@ from univention.management.console.modules.appcenter.util import urlopen, get_cu
 from univention.appcenter.app_cache import AppCache, Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_instance, ucr_save
+from six import with_metaclass
 
 CACHE_DIR = AppCache().get_cache_dir()
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -292,8 +293,7 @@ class ApplicationMetaClass(type):
 		return new_cls
 
 
-class Application(object):
-	__metaclass__ = ApplicationMetaClass
+class Application(with_metaclass(ApplicationMetaClass, object)):
 	_reg_comma = re.compile('\s*,\s*')
 	_reg_component_id = re.compile(r'.*/(?P<id>[^/]+)\.ini')
 	_all_applications = None
