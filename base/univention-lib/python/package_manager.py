@@ -140,7 +140,7 @@ class ProgressState(object):
 		"""
 		self._percentage = percentage
 		if percentage is not None:
-			self.get_logger(logger_name).info(str(percentage))
+			self.get_logger(logger_name).info(percentage)
 
 	def error(self, error, logger_name=None):
 		# type: (Any, Optional[str]) -> None
