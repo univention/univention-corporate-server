@@ -3063,7 +3063,7 @@ class simpleComputer(simpleLdap):
 			groups.append(self.oldinfo.get('primaryGroup'))
 		for group in groups:
 			groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-			groupObject.fast_member_remove([self.dn], self.oldattr.get('uid', []), ignore_license=1)
+			groupObject.fast_member_remove([self.dn], [x.decode('UTF-8') for x in self.oldattr.get('uid', [])], ignore_license=True)
 
 	def __update_groups_after_namechange(self):
 		oldname = self.oldinfo.get('name')

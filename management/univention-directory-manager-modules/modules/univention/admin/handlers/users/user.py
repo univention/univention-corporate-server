@@ -2122,7 +2122,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format(u'uniqueMember=%s', [self.dn]))
 		if groupObjects:
-			uid = univention.admin.uldap.explodeDn(self.dn, 1)[0]
+			uid = ldap.dn.str2dn(self.dn)[0][0][1]
 			for groupObject in groupObjects:
 				groupObject.fast_member_remove([self.dn], [uid], ignore_license=True)
 
