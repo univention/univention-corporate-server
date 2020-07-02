@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.0-4) unstable; urgency=medium
+
+  * some python 3 fixes
+
+ -- Florian Best <best@univention.de>  Thu, 02 Jul 2020 12:55:31 +0200
+
 univention-admin-diary (2.0.0-3) unstable; urgency=medium
 
   * install global dependency everywhere
