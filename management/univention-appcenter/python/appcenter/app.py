@@ -54,6 +54,7 @@ from univention.appcenter.utils import app_ports, mkdir, get_free_disk_space, ge
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
 from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
+from six import with_metaclass
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'
@@ -450,7 +451,7 @@ class AppMetaClass(UniventionMetaClass):
 		return new_cls
 
 
-class App(object):
+class App(with_metaclass(AppMetaClass, object)):
 
 	"""
 	This is the main App class. It represents *one version* of the App in
@@ -814,7 +815,6 @@ class App(object):
 		listener_udm_modules: List of UDM modules that a listener
 			integration shall watch.
 	"""
-	__metaclass__ = AppMetaClass
 
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	"""The required ID"""

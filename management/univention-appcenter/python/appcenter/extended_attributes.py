@@ -41,6 +41,7 @@ from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.ucr import ucr_get, ucr_run_filter
 from univention.appcenter.udm import create_object_if_not_exists, create_recursive_container, remove_object_if_exists, modify_object
 from univention.appcenter.utils import underscore, get_md5, read_ini_file
+from six import with_metaclass
 
 
 attribute_logger = get_base_logger().getChild('attributes')
@@ -112,9 +113,7 @@ class SyntaxAttribute(Attribute):
 		return ret
 
 
-class SchemaObject(object):
-	__metaclass__ = UniventionMetaClass
-
+class SchemaObject(with_metaclass(UniventionMetaClass, object)):
 	ldap_type = None
 	ldap_type_oid_suffix = None
 
