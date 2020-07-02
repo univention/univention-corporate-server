@@ -1,7 +1,6 @@
 @%@UCRWARNING=#@%@
 
 @!@
-import sys
 import traceback
 from univention.updater.tools import UniventionUpdater
 
@@ -9,19 +8,21 @@ try:
 	updater = UniventionUpdater()
 
 	if updater.online_repository:
-		print updater.print_version_repositories()
+		version = '{}{}{}'.format(updater.version_major, updater.version_minor, updater.patchlevel)
+		print('deb {server} ucs{version} main'.format(server=updater.server, version=version))
+		print('deb {server} errata{version} main'.format(server=updater.server, version=version))
 	else:
-		print '# The online repository is disabled and can be enabled with:'
-		print '#   univention-config-registry set repository/online=true'
-		print ''
+		print('# The online repository is disabled and can be enabled with:')
+		print('#   univention-config-registry set repository/online=true')
+		print('')
 except Exception:
-	print '# An error occurred during the repository check. The error message:'
+	print('# An error occurred during the repository check. The error message:')
 	for line in traceback.format_exc().splitlines():
-		print '#   %s' % line
-	print '#'
-	print ''
-	print '# After fixing this issue, you should rewrite this file with the following command:'
-	print '#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list'
-	print '#'
-	print ''
+		print('#   %s' % line)
+	print('#')
+	print('')
+	print('# After fixing this issue, you should rewrite this file with the following command:')
+	print('#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list')
+	print('#')
+	print('')
 @!@
