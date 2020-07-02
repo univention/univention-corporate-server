@@ -360,6 +360,7 @@ def object_input(module, object, input, append=None, remove=None):
 
 			elif univention.admin.syntax.is_syntax(module.property_descriptions[key].syntax, univention.admin.syntax.complex):
 				if isinstance(value, list):
+					val = []
 					for orgval in value:
 						test_val = orgval.split('"')
 						if test_val[0] and test_val[0] == orgval:
