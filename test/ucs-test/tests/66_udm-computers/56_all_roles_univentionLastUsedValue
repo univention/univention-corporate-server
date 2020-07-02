@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create minimal object for all computer roles and check univentionLastUsedValue
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]

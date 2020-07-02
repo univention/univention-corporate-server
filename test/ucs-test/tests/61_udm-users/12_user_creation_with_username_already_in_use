@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create users/user with username which is already in use
 ## tags: [udm]
 ## roles: [domaincontroller_master]

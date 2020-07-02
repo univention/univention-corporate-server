@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Collisions between user uidNumbers and group gidNumbers
 ##  Check different scenarios where the user uidNumbers can collide with group

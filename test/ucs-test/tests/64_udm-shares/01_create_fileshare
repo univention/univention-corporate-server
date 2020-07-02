@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create shares/share and verify LDAP object
 ## tags: [udm]
 ## roles:

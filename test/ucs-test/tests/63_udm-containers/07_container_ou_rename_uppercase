@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Rename a container/ou with subobjects from lower to upper case
 ## tags: [udm]
 ## roles: [domaincontroller_master]

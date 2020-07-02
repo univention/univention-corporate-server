@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if modifying the DNS forward zone of a computer only affects PTR records related to him
 ## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]

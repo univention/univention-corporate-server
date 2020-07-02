@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create a usertemplate object and remove it
 ## roles: [domaincontroller_master]
 ## exposure: careful

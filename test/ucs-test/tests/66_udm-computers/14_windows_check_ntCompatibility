@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Validate handling of "ntCompatibility" attribute in computers/windows module
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
