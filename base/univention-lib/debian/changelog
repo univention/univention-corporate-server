@@ -1,3 +1,9 @@
+univention-lib (8.0.1-34) unstable; urgency=medium
+
+  * Bug #51592: fix typo
+
+ -- Florian Best <best@univention.de>  Thu, 02 Jul 2020 09:25:24 +0200
+
 univention-lib (8.0.1-33) unstable; urgency=medium
 
   * Bug #51592: add python 3 compatibility
