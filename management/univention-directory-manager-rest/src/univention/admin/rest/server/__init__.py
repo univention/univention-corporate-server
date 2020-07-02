@@ -53,6 +53,7 @@ import tornado.process
 import pycurl
 
 from univention.management.console.config import ucr
+import univention.lib.i18n
 import univention.debug as ud
 
 
@@ -65,12 +66,6 @@ class Server(tornado.web.RequestHandler):
 	TODO: Implement management of modules
 	"""
 
-	LANGUAGE_SERVICE_MAPPING = {
-		'de': '/var/run/univention-directory-manager-rest-de-de.socket',
-		'de_DE': '/var/run/univention-directory-manager-rest-de-de.socket',
-		'en': '/var/run/univention-directory-manager-rest-en-us.socket',
-		'en_US': '/var/run/univention-directory-manager-rest-en-us.socket',
-	}
 	PROCESSES = {}
 
 	def set_default_headers(self):
@@ -78,8 +73,7 @@ class Server(tornado.web.RequestHandler):
 
 	@tornado.gen.coroutine
 	def get(self):
-		accepted_language = self.get_browser_locale().code
-		socket = self.LANGUAGE_SERVICE_MAPPING.get(accepted_language, self.LANGUAGE_SERVICE_MAPPING['en'])  # TODO: de_AT
+		accepted_language, socket = self.select_language()
 		request = tornado.httpclient.HTTPRequest(
 			self.request.full_url(),
 			method=self.request.method,
@@ -109,7 +103,7 @@ class Server(tornado.web.RequestHandler):
 		self.set_status(response.code, response.reason)
 		self._headers = tornado.httputil.HTTPHeaders()
 
-		self.add_header('Content-Language', accepted_language.replace('_', '-'))
+		self.add_header('Content-Language', accepted_language)
 		for header, v in response.headers.get_all():
 			if header not in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason'):
 				self.add_header(header, v)
@@ -158,11 +152,26 @@ class Server(tornado.web.RequestHandler):
 		ioloop = tornado.ioloop.IOLoop.instance()
 		ioloop.start()
 
+	def select_language(self):
+		accepted_language = self.get_browser_locale().code
+		for locale in (accepted_language, 'en_US', 'de_DE'):
+			socket = self.get_socket_for_locale(locale)
+			if os.path.exists(socket):
+				return locale.replace('_', '-'), socket
+		return 'C', '/dev/null'
+
+	@classmethod
+	def get_socket_for_locale(self, language):
+		locale = univention.lib.i18n.Locale(language)
+		territory = locale.territory or {'de': 'DE', 'en': 'US'}.get(locale.language)
+		return '/var/run/univention-directory-manager-rest-%s-%s.socket' % (locale.language, territory.lower())
+
 	@classmethod
 	def start_processes(cls):
-		for language in ('de_DE', 'en_US'):
-			socket = cls.LANGUAGE_SERVICE_MAPPING[language]
-			cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.admin.rest', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
+		for language in ucr.get('locale', 'de_DE.UTF-8:UTF-8 en_US.UTF-8:UTF-8').split():
+			language = language.split(':', 1)[0]
+			socket = cls.get_socket_for_locale(language)
+			cls.PROCESSES[language] = tornado.process.Subprocess([sys.executable, '-m', 'univention.admin.rest', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
 
 	@classmethod
 	def register_signal_handlers(cls):
