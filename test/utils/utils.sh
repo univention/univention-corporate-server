@@ -892,6 +892,7 @@ run_app_specific_test () {
 	local app=${1:?missing app} password=${2:?missing password} rv=0
 	set_administrator_dn_for_ucs_test
 	set_administrator_password_for_ucs_test "$password"
+	univention-app dev-test-setup || rv=$?
 	univention-app dev-test \
 		--appcenter-server http://appcenter-test.software-univention.de \
 		"$app" \
@@ -1035,6 +1036,21 @@ promote_ad_server () {
 	local forest=${1:=missing forest mode} domain=${1:=missing domain mode} rv=0
 	python shared-utils/ucs-winrm.py promote-ad --forestmode ${forest} --domainmode ${domain} || rv=1
 	sleep 400
+	return $rv
+}
+
+# setup for the ucs-$role kvm template (provisioned but not joined)
+basic_setup_ucs_role () {
+	local username=${1:?missing admin username} password=${2:?missing admin password} masterip=${3:?missing master ip} rv=0
+	# todo, recreate ssh keys ...
+
+	# join non-master systems
+	if [ ! "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		echo -n univention > /tmp/univention.txt
+		ucr set nameserver1=$masterip
+		univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || rv=$?
+	fi
+
 	return $rv
 }
 
