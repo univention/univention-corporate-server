@@ -37,7 +37,6 @@ import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
 from univention.management.console.base import LDAP_ServerDown
 from univention.management.console.modules.sanitizers import Sanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
-from univention.management.console.modules.appcenter.app_center import AppcenterServerContactFailed
 from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
 from univention.appcenter.exceptions import Abort
 from univention.appcenter.app_cache import Apps
@@ -62,7 +61,7 @@ def error_handling(etype, exc, etraceback):
 	if isinstance(exc, (ConnectionFailedServerDown,)):
 		MODULE.error(str(exc))
 		raise LDAP_ServerDown()
-	if isinstance(exc, (Abort, SystemError, AppcenterServerContactFailed)):
+	if isinstance(exc, (Abort, SystemError)):
 		MODULE.error(str(exc))
 		raise umcm.UMC_Error(str(exc), status=500)
 
