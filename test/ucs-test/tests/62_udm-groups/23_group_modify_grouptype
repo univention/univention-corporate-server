@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test the allowed groupType changes
 ## tags: [udm,apptest, SKIP-UCSSCHOOL]
 ## roles: [domaincontroller_master]

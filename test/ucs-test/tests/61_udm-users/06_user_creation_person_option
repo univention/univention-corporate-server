@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create users/user with just the person-option set
 ## tags: [udm]
 ## bugs: [24351]

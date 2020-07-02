@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Move container/ou into another container/ou and the latter one into another container/ou
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

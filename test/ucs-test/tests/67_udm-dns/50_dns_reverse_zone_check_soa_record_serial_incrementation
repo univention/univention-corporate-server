@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check dns/reverse_zone SOA record serial number incrementation
 ## tags: [udm]
 ## roles: [domaincontroller_master]

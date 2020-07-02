@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Set description during container/cn modification special characters
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

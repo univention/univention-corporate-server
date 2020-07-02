@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs LDAP connection initialization feature
 ## exposure: dangerous

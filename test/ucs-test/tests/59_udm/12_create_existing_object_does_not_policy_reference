@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test that --policy-reference is not evaluated when creating a existing object
 ## tags: [udm]
 ## roles: [domaincontroller_master]

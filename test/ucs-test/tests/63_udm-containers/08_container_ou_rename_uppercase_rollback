@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Rename a container/ou with un-moveable subobjects from lower to upper case
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

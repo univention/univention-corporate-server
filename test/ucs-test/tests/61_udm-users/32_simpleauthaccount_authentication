@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check whether a simple-auth-account can authenticate against LDAP and UMC
 ## tags: [udm, apptest]
 ## roles: [domaincontroller_master, domaincontroller_slave]

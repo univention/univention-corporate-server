@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 # -*- coding: utf-8 -*-
 ## desc: Rename a container/cn with subobjects from lower to upper case
 ## tags: [udm]

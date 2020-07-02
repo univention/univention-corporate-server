@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: test UDM-CLI code for --policies={1,2}
 ## tags: [udm]
 ## roles: [domaincontroller_master]
