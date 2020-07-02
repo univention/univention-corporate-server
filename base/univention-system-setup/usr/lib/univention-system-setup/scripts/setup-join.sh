@@ -116,7 +116,7 @@ apt-get update
 sed -i 's|deb cdrom:\[UCS |deb \[trusted=yes\] cdrom:\[UCS |' /etc/apt/sources.list
 
 # Install the server package
-/usr/lib/univention-system-setup/scripts/05_role/10role
+/usr/lib/univention-system-setup/scripts/05_role/10role || exit 1
 
 echo "Starting re-configuration of basic settings"
 
