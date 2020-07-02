@@ -1296,7 +1296,7 @@ class simpleLdap(object):
 		except:
 			# ensure that there is no lock left
 			exc = sys.exc_info()
-			ud.debug(ud.ADMIN, ud.ERROR, "Creating %r failed: %s" % (self.dn, traceback.format_exc(),))
+			ud.debug(ud.ADMIN, ud.PROCESS, "Creating %r failed: %s" % (self.dn, exc[1]))
 			try:
 				self.cancel()
 			except:
