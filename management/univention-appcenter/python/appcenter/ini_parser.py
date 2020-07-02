@@ -40,6 +40,7 @@ from copy import deepcopy
 from univention.appcenter.utils import get_locale
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.log import get_base_logger
+from six import with_metaclass
 
 
 ini_logger = get_base_logger().getChild('ini')
@@ -154,8 +155,7 @@ class IniSectionListAttribute(IniSectionAttribute):
 		return values
 
 
-class IniSectionObject(object):
-	__metaclass__ = UniventionMetaClass
+class IniSectionObject(with_metaclass(UniventionMetaClass, object)):
 	_main_attr_name = 'name'
 
 	def __init__(self, **kwargs):
@@ -215,8 +215,7 @@ class TypedIniSectionObjectMetaClass(UniventionMetaClass):
 		return new_cls
 
 
-class TypedIniSectionObject(IniSectionObject):
-	__metaclass__ = TypedIniSectionObjectMetaClass
+class TypedIniSectionObject(with_metaclass(TypedIniSectionObjectMetaClass, IniSectionObject)):
 	_type_attr = 'type'
 
 	@classmethod
