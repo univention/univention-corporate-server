@@ -33,6 +33,7 @@
 from __future__ import print_function
 import shutil
 import glob
+import sys
 import os
 
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
@@ -80,7 +81,7 @@ class RoleScript(AptScript):
 
 		if current_server_role_package:
 			self.uninstall(current_server_role_package)
-		self.install(wanted_server_role_package)
+		success = self.install(wanted_server_role_package)
 
 		self.finish_task()
 
@@ -103,9 +104,9 @@ class RoleScript(AptScript):
 		# rm -f /etc/apt/sources.list/05univention-system-setup.list
 		# rm -Rf /var/cache/univention-system-setup/packages
 
-		return True
+		return success
 
 
 if __name__ == '__main__':
 	script = RoleScript()
-	main(script)
+	sys.exit(int(not main(script)))
