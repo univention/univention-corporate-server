@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.app import App, AppManager
-from univention.appcenter.actions import get_action, all_actions
+from univention.appcenter.app_cache import Apps
+from univention.appcenter.actions import get_action
 
-__all__ = ('App', 'AppManager', 'get_action', 'all_actions')
+__all__ = ('Apps', 'get_action')
