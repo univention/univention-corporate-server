@@ -738,7 +738,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 
 	# get ip addresses
 	try:
-		ipaddress.ip_addresses(u'%s' % (ad_server,))
+		ipaddress.ip_address(u'%s' % (ad_server,))
 		ips.append(ad_server)
 	except ValueError:
 		dig_sources = []
