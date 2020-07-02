@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and modify shares/printer, check if cupsd still running
 ## tags: [udm]
 ## roles:

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create and move computer, should keep SSL certificate
 ## tags: [udm-computers,apptest]
 ## bugs: [41230]

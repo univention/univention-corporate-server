@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: groups/group recursion due setting self as memberOf in group which already is member of self during modification
 ## tags: [udm]
 ## roles: [domaincontroller_master]

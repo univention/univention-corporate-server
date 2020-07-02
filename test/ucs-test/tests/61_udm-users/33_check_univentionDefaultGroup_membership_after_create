@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check default primary group membership after users/user create
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

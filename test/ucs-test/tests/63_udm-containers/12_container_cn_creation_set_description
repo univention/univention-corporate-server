@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Set description during container/cn creation
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Execute "udm users/user list --filter uid=Administrator" as Administrator
 ## bugs: [37331]
 ## tags: [udm, apptest]

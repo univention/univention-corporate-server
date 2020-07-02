@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check cron job script lock_expired_accounts
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
