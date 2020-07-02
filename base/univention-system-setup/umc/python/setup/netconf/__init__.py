@@ -32,6 +32,7 @@ from abc import ABCMeta
 import logging
 import subprocess
 from univention.config_registry.interfaces import Interfaces
+from six import with_metaclass
 
 
 class ChangeSet(object):
@@ -93,12 +94,11 @@ class SkipPhase(Exception):
 	pass
 
 
-class Phase(object):
+class Phase(with_metaclass(ABCMeta, object)):
 
 	"""
 	Base-class for all phases.
 	"""
-	__metaclass__ = ABCMeta
 	priority = 0
 
 	def __init__(self, changeset):
@@ -152,8 +152,8 @@ class Phase(object):
 				raise SkipPhase('Invalid super-class')
 			if not other.priority:
 				raise SkipPhase('Missing priority')
-			if getattr(other, '__metaclass__') == 'ABCMeta':
-				raise SkipPhase('Abstract class')
+			#if type(other) is ABCMeta:
+			#	raise SkipPhase('Abstract class')
 		except TypeError:
 			raise SkipPhase('Not a class')
 
