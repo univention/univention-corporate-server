@@ -409,22 +409,22 @@ class AptScript(SetupScript):
 		self.reopen_cache()
 
 	def reopen_cache(self):
-		self.package_manager.reopen_cache()
+		return self.package_manager.reopen_cache()
 
 	def mark_auto(self, auto, *pkgs):
-		self.package_manager.mark_auto(auto, *pkgs)
+		return self.package_manager.mark_auto(auto, *pkgs)
 
 	def commit(self, install=None, remove=None, msg_if_failed=''):
 		with self.noninteractive():
-			self.package_manager.commit(install, remove, msg_if_failed=msg_if_failed)
+			return self.package_manager.commit(install, remove, msg_if_failed=msg_if_failed)
 
 	def install(self, *pkg_names):
 		with self.noninteractive():
-			self.package_manager.install(*pkg_names)
+			return self.package_manager.install(*pkg_names)
 
 	def uninstall(self, *pkg_names):
 		with self.noninteractive():
-			self.package_manager.uninstall(*pkg_names)
+			return self.package_manager.uninstall(*pkg_names)
 
 	def get_package_for_role(self, role_name):
 		'''Searches for the meta-package that belongs
@@ -440,7 +440,7 @@ class AptScript(SetupScript):
 
 	def autoremove(self):
 		with self.noninteractive():
-			self.package_manager.autoremove()
+			return self.package_manager.autoremove()
 
 	def down(self):
 		self.package_manager.unlock()
