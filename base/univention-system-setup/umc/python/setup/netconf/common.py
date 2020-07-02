@@ -33,14 +33,14 @@ from abc import ABCMeta
 from univention.management.console.modules.setup.netconf.conditions import Executable, AddressChange, Ldap
 import univention.admin.uldap as uldap
 from ipaddress import IPv4Network, IPv6Network
+from six import with_metaclass
 
 
-class RestartService(Executable):
+class RestartService(with_metaclass(ABCMeta, Executable)):
 
 	"""
 	Helper to restart a single service.
 	"""
-	__metaclass__ = ABCMeta
 	service = None
 	PREFIX = "/etc/init.d"
 
@@ -57,12 +57,11 @@ class RestartService(Executable):
 		self.call(["invoke-rc.d", self.service, "start"])
 
 
-class AddressMap(AddressChange):
+class AddressMap(with_metaclass(ABCMeta, AddressChange)):
 
 	"""
 	Helper to provide a mapping from old addresses to new addresses.
 	"""
-	__metaclass__ = ABCMeta
 
 	def __init__(self, changeset):
 		super(AddressMap, self).__init__(changeset)
@@ -120,12 +119,11 @@ class AddressMap(AddressChange):
 		return mapping
 
 
-class LdapChange(AddressChange, Ldap):
+class LdapChange(with_metaclass(ABCMeta, type('NewBase', (AddressChange, Ldap), {}))):
 
 	"""
 	Helper to provide access to LDAP through UDM.
 	"""
-	__metaclass__ = ABCMeta
 
 	def __init__(self, changeset):
 		super(LdapChange, self).__init__(changeset)
