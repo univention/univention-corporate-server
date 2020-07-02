@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Create groups/group with single letter name
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

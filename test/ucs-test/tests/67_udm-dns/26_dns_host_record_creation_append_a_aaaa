@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Append A and AAAA during dns/host creation
 ## tags: [udm]
 ## roles: [domaincontroller_master]

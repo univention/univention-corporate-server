@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test setting inventoryNumber during modification for all computer rolles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]

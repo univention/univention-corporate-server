@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Set location during dns/srv_record creation
 ## tags: [udm]
 ## roles: [domaincontroller_master]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Add user with single letter name to groups/group during creation
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]

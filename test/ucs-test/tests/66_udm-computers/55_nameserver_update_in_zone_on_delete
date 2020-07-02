@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check if nameservers in forward/reverse DNS zones are updated when deleting the nameserver
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
