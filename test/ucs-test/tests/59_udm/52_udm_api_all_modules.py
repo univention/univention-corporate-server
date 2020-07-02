@@ -9,7 +9,6 @@
 
 from __future__ import print_function
 
-import sys
 from collections import defaultdict
 from six import string_types, reraise
 from unittest import main, TestCase

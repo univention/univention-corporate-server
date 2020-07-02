@@ -117,5 +117,6 @@ class TestUdmAutoOpen(TestCase):
 			UDM.credentials(identity='Administrator', password=password)
 		assert str(cm.exception) == 'Credentials invalid'
 
+
 if __name__ == '__main__':
 	main(verbosity=2)

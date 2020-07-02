@@ -43,7 +43,7 @@ if __name__ == '__main__':
 			udm.modify_object(role, dn=computer, append={'nagiosServices': nagiosServices})
 			# validate that computer has been added to the new nagios services
 			for nagiosService in nagiosServices:
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerName, computerAssociatedDomain)]})
+				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerName.encode('ASCII'), computerAssociatedDomain)]})
 
 			# modify computer again, removing the nagios services which have been set during creation
 			udm.modify_object(role, dn=computer, remove={'nagiosServices': nagiosServices[:2]})
@@ -53,4 +53,4 @@ if __name__ == '__main__':
 
 			# validated that the computers is still set at the not removed nagios services
 			for nagiosService in nagiosServices[2:]:
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerName, computerAssociatedDomain)]})
+				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': [b'%s.%s' % (computerName.encode('ASCII'), computerAssociatedDomain)]})

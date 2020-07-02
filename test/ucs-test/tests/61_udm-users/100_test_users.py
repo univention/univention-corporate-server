@@ -362,7 +362,7 @@ class TestUsers(object):
 		(7),
 	])
 	def test_modlist_shadow_max_and_last_change(self, expiry_interval, udm):
-		today = long(time.time()) / 3600 / 24
+		today = int(time.time()) / 3600 / 24
 		kw = dict(expiryInterval=expiry_interval) if expiry_interval is not None else {}
 		pwhistory = udm.create_object('policies/pwhistory', name='pw-test', **kw)
 		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
@@ -392,17 +392,17 @@ class TestUsers(object):
 	def test_modlist_samba_pwd_last_set(self, udm, lo):
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'sambaPwdLastSet': ['0']})
 		self._test_modlist(udm, {'password': 'univention2', 'pwdChangeNextLogin': '1'}, {'sambaPwdLastSet': ['0']})
-		prior = long(time.time())
+		prior = int(time.time())
 		user = udm.create_user()[0]
-		after = long(time.time())
-		last_set = long(lo.get(user)['sambaPwdLastSet'][0])
+		after = int(time.time())
+		last_set = int(lo.get(user)['sambaPwdLastSet'][0])
 		assert prior <= last_set <= after
 
 	def test_modlist_krb_password_end(self, udm):
 		expiry_interval = 7
 		pwhistory = udm.create_object('policies/pwhistory', name='pw-test', expiryInterval=expiry_interval)
 		cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
-		expiry = long(time.time())
+		expiry = int(time.time())
 		password_end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 		#password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
 		self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'krb5PasswordEnd': [password_end]})

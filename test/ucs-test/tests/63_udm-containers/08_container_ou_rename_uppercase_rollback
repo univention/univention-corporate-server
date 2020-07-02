@@ -45,5 +45,5 @@ if __name__ == '__main__':
 
 		lo = utils.get_ldap_connection()
 		for dn, entry in lo.search(filter=ldap.filter.filter_format('ou=%s', [ou_name])):
-			if entry.get('ou')[0] != ou_name:
+			if entry.get('ou')[0] != ou_name.encode('ASCII'):
 				utils.fail('ou = %s; expected: %s' % (entry.get('ou')[0], ou_name))

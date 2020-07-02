@@ -27,7 +27,7 @@ def _sid_is_global(sid):
 def _get_samba_sid(dn):
 	lo = utils.get_ldap_connection()
 	res = lo.search(base=dn, filter='objectClass=*', attr=['sambaSID'])
-	return res[0][1].get('sambaSID')[0]
+	return res[0][1].get('sambaSID')[0].decode('ASCII')
 
 
 def _test_group_type(group_type, use_create_group_parameter, builtin_sid_expected):

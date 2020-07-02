@@ -25,8 +25,8 @@ if __name__ == '__main__':
 		atexit.register(utils.start_s4connector)
 		utils.stop_s4connector()
 
-	available_ip_nums = range(1, 10)  # will be used for IP endings
-	available_mac_nums = range(11, 99)  # will be used for MAC endings
+	available_ip_nums = list(range(1, 10))  # will be used for IP endings
+	available_mac_nums = list(range(11, 99))  # will be used for MAC endings
 
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		if role == 'computers/macos':

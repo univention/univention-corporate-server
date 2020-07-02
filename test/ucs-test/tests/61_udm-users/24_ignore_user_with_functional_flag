@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 		# add 'functional' flag to user
 		lo = utils.get_ldap_connection()
-		lo.modify(user_dn, (('univentionObjectFlag', '', 'functional'),))
+		lo.modify(user_dn, (('univentionObjectFlag', b'', b'functional'),))
 		utils.wait_for_replication()
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
 		if user_dn.lower() in stdout.lower():
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 			utils.fail('License check detected to "functional" user')
 
 		# remove 'functional' flag to user
-		lo.modify(user_dn, (('univentionObjectFlag', 'functional', ''),))
+		lo.modify(user_dn, (('univentionObjectFlag', b'functional', b''),))
 		utils.wait_for_replication()
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
 		if not user_dn.lower() in stdout.lower():

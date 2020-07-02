@@ -44,5 +44,5 @@ if __name__ == '__main__':
 
 		lo = utils.get_ldap_connection()
 		for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
-			if entry.get('cn')[0] != cn_name:
+			if entry.get('cn')[0] != cn_name.encode('ASCII'):
 				utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name))
