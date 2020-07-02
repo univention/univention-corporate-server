@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issues:
  * Restart univention-directory-listener on package update
 bug: [51532]
+erratum: 648
+announced: 2020-07-02
