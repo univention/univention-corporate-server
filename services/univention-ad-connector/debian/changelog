@@ -1,4 +1,4 @@
-univention-ad-connector (14.0.0-2) unstable; urgency=medium
+univention-ad-connector (14.0.0-3) unstable; urgency=medium
 
   * Bug #51484: remove unused dependency on pysqlite2
 

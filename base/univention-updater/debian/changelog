@@ -1,4 +1,4 @@
-univention-updater (15.0.0-4) unstable; urgency=medium
+univention-updater (15.0.0-5) unstable; urgency=medium
 
   * Bug #51506: remove pyshared hooks support
 

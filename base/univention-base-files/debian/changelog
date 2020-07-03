@@ -1,4 +1,4 @@
-univention-base-files (9.0.0-6) unstable; urgency=low
+univention-base-files (9.0.0-7) unstable; urgency=low
 
   * Bug #51505,Bug #32509,Bug 46120: Update template for Debian 10 Buster
 
