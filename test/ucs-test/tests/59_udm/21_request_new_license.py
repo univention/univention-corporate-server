@@ -14,7 +14,7 @@ import shutil
 import ssl
 from socket import gethostname
 from multiprocessing import Process
-import BaseHTTPServer
+from six.moves import BaseHTTPServer
 from unittest import main, TestCase
 from univention.config_registry import handler_set, handler_unset
 import univention.testing.utils as utils

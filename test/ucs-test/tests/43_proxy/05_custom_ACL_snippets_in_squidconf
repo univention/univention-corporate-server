@@ -6,13 +6,13 @@
 ## packages: [univention-squid]
 
 from __future__ import print_function
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+from six.moves.SimpleHTTPServer import SimpleHTTPRequestHandler
 from essential.simplecurl import SimpleCurl
 from essential.simplesquid import SimpleSquid
 from multiprocessing import Process
 from univention.config_registry import handler_set, handler_unset
 from univention.testing.network import NetworkRedirector
-import BaseHTTPServer
+from six.moves import BaseHTTPServer
 import itertools
 import pycurl
 import time

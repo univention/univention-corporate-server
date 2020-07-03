@@ -42,7 +42,7 @@ if __name__ == '__main__':
 		lo.modify(user_dn, (('univentionObjectFlag', b'', b'functional'),))
 		utils.wait_for_replication()
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-		if user_dn.lower() in stdout.lower():
+		if user_dn.lower().encode('UTF-8') in stdout.lower():
 			utils.fail('"udm users/user list" still finds user object with functional flag')
 
 		# perform a license check
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 		lo.modify(user_dn, (('univentionObjectFlag', b'functional', b''),))
 		utils.wait_for_replication()
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
-		if not user_dn.lower() in stdout.lower():
+		if not user_dn.lower().encode('UTF-8') in stdout.lower():
 			utils.fail('Cannot find user DN %s in output of "udm users/user list" after removing flag:\n%s' % (user_dn, stdout))
 
 		# perform a license check

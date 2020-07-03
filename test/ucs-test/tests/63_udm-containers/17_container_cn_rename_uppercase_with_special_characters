@@ -72,7 +72,7 @@ if __name__ == '__main__':
 				utils.verify_ldap_object(new_user, should_exist=True)
 
 			for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name_new])):
-				if entry.get('cn')[0] != cn_name_new.encode('ASCII'):
+				if entry.get('cn')[0] != cn_name_new.encode('UTF-8'):
 					utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))
 			return new_cn
 

@@ -75,7 +75,7 @@ def verify(computerName, service, mac, ip=None):
 	utils.verify_ldap_object(dn, expected)
 	if ip is None:
 		lo = utils.get_ldap_connection()
-		ip = lo.getAttr(dn, 'univentionDhcpFixedAddress')[0]
+		ip = lo.getAttr(dn, 'univentionDhcpFixedAddress')[0].decode('ASCII')
 		assert ip.startswith('%s.' % (NET,))
 
 

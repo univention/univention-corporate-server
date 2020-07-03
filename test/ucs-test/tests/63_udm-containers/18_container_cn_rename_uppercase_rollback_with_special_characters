@@ -33,10 +33,7 @@ if __name__ == '__main__':
 		user = udm.create_user(position=cn, username=user_name)
 		network = udm.create_object('networks/network', position=cn, name=network_name, network='1.1.1.1', netmask='24')
 
-		try:
-			udm.modify_object('container/cn', dn=cn, name=cn_name_new)
-		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
-			pass
+		udm.modify_object('container/cn', dn=cn, name=cn_name_new)
 
 		new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
 		new_user = 'uid=%s,cn=%s,%s' % (ldap.dn.escape_dn_chars(user_name), ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))

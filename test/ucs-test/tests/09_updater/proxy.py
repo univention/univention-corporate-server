@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Simple HTTP Proxy for ucs-test."""
 # Inpired by http://effbot.org/librarybook/simplehttpserver.htm
-import BaseHTTPServer
+from six.moves import BaseHTTPServer
 import urllib2
 import urlparse
 import httplib
@@ -43,12 +43,12 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 					if options.verbose:
 						self.log_error(msg)
 					raise KeyError(msg)
-			except KeyError, e:
+			except KeyError as exc:
 				self.send_response(httplib.PROXY_AUTHENTICATION_REQUIRED)
 				self.send_header('WWW-Authenticate', 'Basic realm="%s"' % (options.realm,))
 				self.send_header('Content-type', 'text/html')
 				self.end_headers()
-				self.wfile.write('<html><body><h1>Error: Proxy authorization needed</h1>%s</body></html>' % (e,))
+				self.wfile.write('<html><body><h1>Error: Proxy authorization needed</h1>%s</body></html>' % (exc,))
 				return
 		# rewrite url
 		url = urlparse.urlsplit(self.path)
@@ -68,7 +68,7 @@ class Proxy(BaseHTTPServer.BaseHTTPRequestHandler):
 				for k, v in self.headers.items():
 					self.log_message("> %s: %s" % (k, v))
 			fp = urllib2.urlopen(req)
-		except urllib2.HTTPError, fp:
+		except urllib2.HTTPError as fp:
 			if options.verbose:
 				self.log_error("%d %s" % (fp.code, fp.msg))
 
@@ -125,10 +125,10 @@ if __name__ == '__main__':
 					os.close(fd2)
 			httpd.serve_forever()
 		else:
-			print "proxy_pid=%d proxy_port=%d" % (pid, httpd.server_port)
+			print("proxy_pid=%d proxy_port=%d" % (pid, httpd.server_port))
 	else:
 		try:
-			print "proxy_pid=%d proxy_port=%d" % (os.getpid(), httpd.server_port)
+			print("proxy_pid=%d proxy_port=%d" % (os.getpid(), httpd.server_port))
 			httpd.serve_forever()
 		except KeyboardInterrupt:
 			pass
