@@ -178,13 +178,14 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 	def _ldap_post_remove(self):
 		if 'posix' in self.options:
 			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
-		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
-		if groupObjects:
-			for i in range(0, len(groupObjects)):
-				groupObjects[i].open()
-				if self.dn in groupObjects[i]['users']:
-					groupObjects[i]['users'].remove(self.dn)
-					groupObjects[i].modify(ignore_license=1)
+
+		#groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
+		#if groupObjects:
+		#	for i in range(0, len(groupObjects)):
+		#		groupObjects[i].open()
+		#		if self.dn in groupObjects[i]['users']:
+		#			groupObjects[i]['users'].remove(self.dn)
+		#			groupObjects[i].modify(ignore_license=1)
 
 		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove(self)

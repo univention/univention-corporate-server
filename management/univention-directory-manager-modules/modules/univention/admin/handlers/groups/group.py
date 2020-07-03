@@ -355,11 +355,10 @@ class object(univention.admin.handlers.simpleLdap):
 						elif 'univentionHost' in result:
 							self['hosts'].append(i)
 							cache_uniqueMember.set(i, {'type': 'host'})
-						else:
+						elif set(result) & {b'person', b'inetOrgPerson', b'organizationalPerson'}:
 							self['users'].append(i)
-					else:
-						# removing following line breaks deletion of computers from groups
-						self['users'].append(i)
+						else:
+							raise RuntimeError('%s not detected: %r' % (i, result))
 
 			time_end = time.time()
 			ud.debug(ud.ADMIN, ud.INFO, 'groups/group: open(): member check duration: %1.2fs' % (time_end - time_start))
