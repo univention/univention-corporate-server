@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import ipaddress
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -100,7 +98,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
-mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
+mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 add_dhcp_options(__name__)
 

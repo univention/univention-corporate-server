@@ -188,9 +188,9 @@ def unmapSubnet(zone, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet)
+mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet, encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('nameserver', 'nSRecord')
+mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -273,7 +273,7 @@ lookup_filter = object.lookup_filter
 def identify(dn, attr):
 	return b'dNSZone' in attr.get('objectClass', []) and \
 		[b'@'] == attr.get('relativeDomainName', []) and \
-		(attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) or attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6))
+		(attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) or attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6))
 
 
 def quickDescription(rdn):

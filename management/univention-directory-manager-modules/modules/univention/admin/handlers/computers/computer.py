@@ -109,7 +109,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('mac', 'macAddress')
+mapping.register('mac', 'macAddress', encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):

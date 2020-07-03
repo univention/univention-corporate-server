@@ -318,7 +318,7 @@ mapping.register('organisation', 'o', None, univention.admin.mapping.ListToStrin
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
 mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
 mapping.register('secretary', 'secretary')
-mapping.register('e-mail', 'mail')
+mapping.register('e-mail', 'mail', encoding='ASCII')
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString)
 mapping.register('phone', 'telephoneNumber')
