@@ -298,7 +298,7 @@ class object(univention.admin.handlers.simpleLdap):
 				except KeyError:
 					raise univention.admin.uexceptions.valueError(_('The host "%s" is invalid, it has no "cn" attribute.') % (hostdn,), property='assignedHosts')
 
-				domain = host.get('associatedDomain', [configRegistry.get("domainname").encode('UTF-8')])[0]  # type: bytes
+				domain = host.get('associatedDomain', [configRegistry.get("domainname").encode('ASCII')])[0]  # type: bytes
 				hostlist.append(b"%s.%s" % (cn, domain))
 
 			ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', []), hostlist))

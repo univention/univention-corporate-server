@@ -116,7 +116,7 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('spoolHost', 'univentionPrinterSpoolHost')
+mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
 mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
 mapping.register('groupMember', 'univentionPrinterGroupMember')
 mapping.register('setQuota', 'univentionPrinterQuotaSupport', None, univention.admin.mapping.ListToString)
