@@ -1,4 +1,4 @@
-univention-system-setup (13.0.0-5) unstable; urgency=medium
+univention-system-setup (13.0.0-7) unstable; urgency=medium
 
   * try to fix permissions of /var/cache/univention-system-
     setup/packages/Packages
