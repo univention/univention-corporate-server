@@ -43,6 +43,7 @@ import traceback
 import gzip
 import re
 import errno
+import pipes
 
 import six
 import ldap.filter
@@ -100,7 +101,7 @@ class ModuleProcess(Client):
 			self.__locale = None
 		Client.__init__(self, unix=socket, ssl=False)
 		self.signal_connect('response', self._response)
-		CORE.process('running: %s' % args)
+		CORE.process('running: %s' % ' '.join(pipes.quote(x) for x in args))
 		self.__process = popen.RunIt(args, stdout=False)
 		self.__process.signal_connect('killed', self._died)
 		self.__pid = self.__process.start()
