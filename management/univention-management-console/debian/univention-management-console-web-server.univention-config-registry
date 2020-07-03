@@ -20,12 +20,11 @@ Variables: umc/login/content-security-policy/.*
 Variables: ucs/server/sso/fqdn
 
 Type: file
-File: etc/apache2/sites-available/univention-proxy.conf
+File: etc/apache2/sso-vhost.conf.d/01redirect.conf
 Variables: ucs/server/sso/fqdn
 Variables: hostname
 Variables: domainname
 Variables: ucs/server/sso/virtualhost
-Variables: updater/maintenance
 
 Type: module
 Module: setup_saml_sp.py
