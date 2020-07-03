@@ -149,15 +149,15 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('xModule', 'univentionXModuleChoices')
-mapping.register('resolution', 'univentionXResolutionChoices')
+mapping.register('resolution', 'univentionXResolutionChoices', encoding='ASCII')
 mapping.register('colorDepth', 'univentionXColorDepthChoices')
 mapping.register('mouseProtocol', 'univentionXMouseProtocolChoices')
 mapping.register('mouseDevice', 'univentionXMouseDeviceChoices')
 mapping.register('keyboardLayout', 'univentionXKeyboardLayoutChoices')
 mapping.register('keyboardVariant', 'univentionXKeyboardVariantChoices')
-mapping.register('hSync', 'univentionXHSyncChoices')
-mapping.register('vRefresh', 'univentionXVRefreshChoices')
-mapping.register('displaySize', 'univentionXDisplaySizeChoices')
+mapping.register('hSync', 'univentionXHSyncChoices', encoding='ASCII')
+mapping.register('vRefresh', 'univentionXVRefreshChoices', encoding='ASCII')
+mapping.register('displaySize', 'univentionXDisplaySizeChoices', encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):

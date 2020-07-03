@@ -96,8 +96,8 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', stripDot, univention.admin.mapping.ListToString)
-mapping.register('cname', 'cNAMERecord', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'relativeDomainName', stripDot, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('cname', 'cNAMERecord', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
@@ -151,11 +151,11 @@ lookup = object.lookup
 
 def identify(dn, attr, canonical=0):
 	return b'dNSZone' in attr.get('objectClass', []) and b'@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6) and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
+		not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6) and attr.get('cNAMERecord', []) and not attr.get('aRecord', []) and not attr.get('aAAARecord', [])
 
 
 def lookup_alias_filter(lo, filter_s):
-	alias_pattern = re.compile('(?:^|\()dnsAlias=([^)]+)($|\))', flags=re.I)
+	alias_pattern = re.compile(r'(?:^|\()dnsAlias=([^)]+)($|\))', flags=re.I)
 
 	def _replace_alias_filter(match):
 		alias_filter = object.lookup_filter('name=%s' % match.group(1), lo)

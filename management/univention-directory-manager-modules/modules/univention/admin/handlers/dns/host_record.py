@@ -129,9 +129,9 @@ def mapMX(old, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('mx', 'mXRecord', mapMX, unmapMX)
-mapping.register('txt', 'tXTRecord')
+mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
+mapping.register('txt', 'tXTRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
