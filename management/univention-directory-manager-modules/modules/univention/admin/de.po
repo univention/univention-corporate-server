@@ -507,6 +507,12 @@ msgstr "Ungültige Auswahl."
 msgid "Invalid combination of options."
 msgstr "Unzulässige Zusammenstellung von Optionen."
 
+#: modules/univention/admin/mapping.py:553
+#: modules/univention/admin/mapping.py:593
+#, python-format
+msgid "Invalid encoding for %s"
+msgstr "Ungültige Kodierung für %s"
+
 #: modules/univention/admin/types.py:609
 msgid "Invalid format for SambaLogonHours."
 msgstr "Ungültiges Format für SambaLogonHours."
