@@ -366,12 +366,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 		add_uidlist = [uid for uid in uidlist if uid.lower() not in uids]
 		if add_uidlist:
-			ml.append(('memberUid', '', [x.encode('UTF-8') for x in add_uidlist]))
+			ml.append(('memberUid', b'', [x.encode('UTF-8') for x in add_uidlist]))
 
 		add_memberdnlist = [dn for dn in memberdnlist if dn.lower() not in members]
 
 		if add_memberdnlist:
-			ml.append(('uniqueMember', '', [x.encode('UTF-8') for x in add_memberdnlist]))
+			ml.append(('uniqueMember', b'', [x.encode('UTF-8') for x in add_memberdnlist]))
 
 		if ml:
 			try:
@@ -397,11 +397,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 		remove_uidlist = [uid for uid in uidlist if uid.lower() in uids]
 		if remove_uidlist:
-			ml.append(('memberUid', [x.encode('UTF-8') for x in remove_uidlist], ''))
+			ml.append(('memberUid', [x.encode('UTF-8') for x in remove_uidlist], b''))
 
-		remove_memberdnlist = [dn for dn in memberdnlist if dn.lower() not in members]
+		remove_memberdnlist = [dn for dn in memberdnlist if dn.lower() in members]
 		if remove_memberdnlist:
-			ml.append(('uniqueMember', [x.encode('UTF-8') for x in remove_memberdnlist], ''))
+			ml.append(('uniqueMember', [x.encode('UTF-8') for x in remove_memberdnlist], b''))
 
 		if ml:
 			try:
