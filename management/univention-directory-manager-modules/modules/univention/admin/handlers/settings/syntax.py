@@ -138,9 +138,9 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filter', 'univentionSyntaxLDAPFilter', None, univention.admin.mapping.ListToString)
-mapping.register('base', 'univentionSyntaxLDAPBase', None, univention.admin.mapping.ListToString)
-mapping.register('viewonly', 'univentionSyntaxViewOnly', None, univention.admin.mapping.ListToString)
+mapping.register('filter', 'univentionSyntaxLDAPFilter', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('base', 'univentionSyntaxLDAPBase', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('viewonly', 'univentionSyntaxViewOnly', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('description', 'univentionSyntaxDescription', None, univention.admin.mapping.ListToString)
 mapping.register('addEmptyValue', 'univentionSyntaxAddEmptyValue', None, univention.admin.mapping.ListToString)
 
@@ -164,13 +164,13 @@ class object(univention.admin.handlers.simpleLdap):
 			# split ldap attribute value into two parts and add them to separate dir manager widgets
 			for item in self.oldattr.get('univentionSyntaxLDAPAttribute', []):
 				if b':' in item:
-					self['attribute'].append(item.decode('UTF-8'))
+					self['attribute'].append(item.decode('ASCII'))
 				else:
-					self['ldapattribute'].append(item.decode('UTF-8'))
+					self['ldapattribute'].append(item.decode('ASCII'))
 
 			# set attribute name of value that shall be written to LDAP
 			# WARNING: drop down box is only used if string is not set
-			val = self.oldattr.get('univentionSyntaxLDAPValue', [b''])[0].decode('utf-8')
+			val = self.oldattr.get('univentionSyntaxLDAPValue', [b''])[0].decode('ASCII')
 			if val and u':' in val:
 				self['value'] = val
 			else:
@@ -188,12 +188,12 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist(self):
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		attr = [x.encode('UTF-8') for x in self['attribute']]
-		attr.extend([x.encode('UTF-8') for x in self['ldapattribute']])
+		attr = [x.encode('ASCII') for x in self['attribute']]
+		attr.extend([x.encode('ASCII') for x in self['ldapattribute']])
 		ml.append(('univentionSyntaxLDAPAttribute', self.oldattr.get('univentionSyntaxLDAPAttribute', []), attr))
 
 		val = self['ldapvalue'] or self['value']
-		ml.append(('univentionSyntaxLDAPValue', self.oldattr.get('univentionSyntaxLDAPValue', []), [val.encode('UTF-8')]))
+		ml.append(('univentionSyntaxLDAPValue', self.oldattr.get('univentionSyntaxLDAPValue', []), [val.encode('ASCII')]))
 
 		return ml
 

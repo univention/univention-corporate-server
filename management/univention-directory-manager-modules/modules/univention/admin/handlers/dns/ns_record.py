@@ -93,8 +93,8 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('zone', 'relativeDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('nameserver', 'nSRecord')
+mapping.register('zone', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
@@ -163,7 +163,7 @@ def identify(dn, attr, canonical=0):
 	return all([
 		b'dNSZone' in attr.get('objectClass', []),
 		b'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('UTF-8').endswith(ARPA_IP4),
+		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
 		attr.get('nSRecord', []),
 		mod in attr.get('univentionObjectType', [mod]),
 	])

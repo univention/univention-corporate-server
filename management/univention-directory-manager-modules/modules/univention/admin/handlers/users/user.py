@@ -1206,14 +1206,14 @@ mapping.register('initials', 'initials', None, univention.admin.mapping.ListToSt
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
 
-mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString)
-mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
+mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString, encoding='ASCII')
+mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', encoding='ASCII')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailForwardAddress', 'mailForwardAddress')
 
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
-mapping.register('e-mail', 'mail')
+mapping.register('e-mail', 'mail', encoding='ASCII')
 mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
@@ -1231,15 +1231,15 @@ mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress,
 mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
 mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
-mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
+mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.ListToString)
 mapping.register('sambaUserWorkstations', 'sambaUserWorkstations', sambaWorkstationsMap, sambaWorkstationsUnmap)
-mapping.register('sambaLogonHours', 'sambaLogonHours', logonHoursMap, logonHoursUnmap)
-mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
+mapping.register('sambaLogonHours', 'sambaLogonHours', logonHoursMap, logonHoursUnmap, encoding='ASCII')
+mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList', encoding='ASCII')
 mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
-mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)
-mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
+mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
 mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
 mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
@@ -1379,7 +1379,7 @@ class object(univention.admin.handlers.simpleLdap):
 		except ValueError:
 			return
 
-		host, path = host.decode('UTF-8'), path.decode('UTF-8')
+		host, path = host.decode('ASCII'), path.decode('ASCII')
 
 		sharepath = path
 		while len(sharepath) > 1:

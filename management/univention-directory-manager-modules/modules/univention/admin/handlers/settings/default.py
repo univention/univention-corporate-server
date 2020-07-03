@@ -144,7 +144,7 @@ mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainContr
 mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles')
+mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles', encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):

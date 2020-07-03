@@ -92,8 +92,8 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('ptr_record', 'pTRRecord')
+mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('ptr_record', 'pTRRecord', encoding='ASCII')
 
 
 def ipv6(string):
@@ -281,7 +281,7 @@ def identify(dn, attr):
 	return all([
 		b'dNSZone' in attr.get('objectClass', []),
 		b'@' not in attr.get('relativeDomainName', []),
-		(attr.get('zoneName', [b''])[0].decode('UTF-8').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('UTF-8').endswith(ARPA_IP6))
+		(attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP4) or attr.get('zoneName', [b''])[0].decode('ASCII').endswith(ARPA_IP6))
 	])
 
 
