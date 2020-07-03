@@ -71,7 +71,6 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/ldap/ssl?no \
 							   connector/debug/function?0 \
 							   connector/debug/level?2 \
-							   connector/ad/mapping/group/language?de \
 							   connector/s4/mapping/syncmode?sync \
 							   connector/s4/mapping/sid?true \
 							   connector/s4/mapping/gpo?true \
