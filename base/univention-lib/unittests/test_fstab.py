@@ -28,9 +28,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import pytest
+
 from .conftest import import_lib_module
 
 fstab = import_lib_module('fstab')
+
 
 def test_fstab():
 	fs = fstab.File('unittests/fstab')
@@ -51,7 +54,28 @@ def test_fstab():
 	assert repr(f).startswith('<univention.lib.fstab.Entry')
 
 
+def test_fstab_save(mocker):
+	content = open('unittests/fstab').read()
+	fs = fstab.File('unittests/fstab')
+	fd = mocker.Mock()
+	mocker.patch.object(fstab, 'open', mocker.Mock(return_value=fd))
+	fs.save()
+	write_calls = [args[0] for _, args, _ in fd.write.mock_calls]
+	assert content == ''.join(write_calls)
+
+
+def test_fstab_broken(mocker):
+	with pytest.raises(fstab.InvalidEntry):
+		fstab.File('unittests/broken_fstab')
+
+
 def test_fstab_find():
 	fs = fstab.File('unittests/fstab')
 	assert fs.find(options=['sw']).type == 'swap'
 	assert not fs.find(type='cifs')
+
+
+@pytest.mark.xfail
+def test_fstab_find_line_with_comment():
+	fs = fstab.File('unittests/fstab')
+	assert fs.find(mount_point=['/home']).type == 'nfs'
