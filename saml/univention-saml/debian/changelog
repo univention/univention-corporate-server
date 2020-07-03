@@ -1,4 +1,4 @@
-univention-saml (7.0.0-3) unstable; urgency=medium
+univention-saml (7.0.0-5) unstable; urgency=medium
 
   * Bug #50648 UDM: migrate saml/serviceprovider to Python 3
 
