@@ -32,8 +32,9 @@ import sys
 import pytest
 import subprocess
 
-from univention.unittests import import_module
-locking = import_module('locking', 'python/', 'univention.lib.locking')
+from .conftest import import_lib_module
+
+locking = import_lib_module('locking')
 
 
 @pytest.mark.xfail()
