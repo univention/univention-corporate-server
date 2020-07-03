@@ -32,9 +32,16 @@ Functions to map between |UDM| properties and |LDAP| attributes.
 from __future__ import absolute_import
 
 import inspect
+import base64
 
 import univention.debug as ud
-import base64
+import univention.admin.uexceptions
+from univention.admin import localization
+
+translation = localization.translation('univention/admin')
+
+_ = translation.translate
+
 try:
 	from typing import List, Text, Tuple, TypeVar, Union  # noqa F401
 	_E = TypeVar('_E')
@@ -540,7 +547,10 @@ class mapping(object):
 		if 'encoding' in getfullargspec(map_value).args:
 			kwargs['encoding'] = (encoding, strictness)
 
-		value = map_value(value, **kwargs)
+		try:
+			value = map_value(value, **kwargs)
+		except UnicodeEncodeError:
+			raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (map_name,))
 		return value
 
 	def mapValueDecoded(self, map_name, value):
@@ -577,7 +587,10 @@ class mapping(object):
 		if 'encoding' in getfullargspec(unmap_value).args:
 			kwargs['encoding'] = (encoding, strictness)
 
-		return unmap_value(value, **kwargs)
+		try:
+			return unmap_value(value, **kwargs)
+		except UnicodeDecodeError:
+			raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (unmap_name,))
 
 	def unmapValues(self, oldattr):
 		"""
