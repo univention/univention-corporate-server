@@ -110,10 +110,10 @@ def test_run(ucr, test_ucr_value):
 		if not expected_value:
 			# This simulates the update case
 			keyval = "%s=%s" % (ucr_var, "yes")
-			univention.config_registry.handler_set([keyval.encode()])
+			univention.config_registry.handler_set([keyval])
 		else:
 			keyval = "%s=%s" % (ucr_var, "no")
-			univention.config_registry.handler_set([keyval.encode()])
+			univention.config_registry.handler_set([keyval])
 
 		p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"], close_fds=True)
 		p1.wait()
