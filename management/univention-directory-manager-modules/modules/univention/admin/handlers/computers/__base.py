@@ -179,11 +179,11 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		if 'posix' in self.options:
 			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
 
-		for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
-			group.open()
-			if self.dn in group['users']:
-				group['users'].remove(self.dn)
-				group.modify(ignore_license=True)
+		#for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
+		#	group.open()
+		#	if self.dn in group['users']:
+		#		group['users'].remove(self.dn)
+		#		group.modify(ignore_license=True)
 
 		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove(self)
