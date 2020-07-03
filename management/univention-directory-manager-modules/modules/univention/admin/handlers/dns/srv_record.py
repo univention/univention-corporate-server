@@ -120,8 +120,8 @@ def mapLocation(old, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', mapName, unmapName)
-mapping.register('location', 'sRVRecord', mapLocation, unmapLocation)
+mapping.register('name', 'relativeDomainName', mapName, unmapName, encoding='ASCII')
+mapping.register('location', 'sRVRecord', mapLocation, unmapLocation, encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
@@ -175,7 +175,7 @@ def identify(dn, attr, canonical=0):
 	return all([
 		b'dNSZone' in attr.get('objectClass', []),
 		b'@' not in attr.get('relativeDomainName', []),
-		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('UTF-8').endswith(ARPA_IP4),
-		not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('UTF-8').endswith(ARPA_IP6),
+		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
+		not attr.get('zoneName', [b'.ip6.arpa'])[0].decode('ASCII').endswith(ARPA_IP6),
 		attr.get('sRVRecord', [])
 	])

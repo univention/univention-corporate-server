@@ -139,11 +139,11 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('shortDescription', 'univentionUDMOptionShortDescription', None, univention.admin.mapping.ListToString)
 mapping.register('longDescription', 'univentionUDMOptionLongDescription', None, univention.admin.mapping.ListToString)
-mapping.register('default', 'univentionUDMOptionDefault', None, univention.admin.mapping.ListToString)
-mapping.register('editable', 'univentionUDMOptionEditable', None, univention.admin.mapping.ListToString)
+mapping.register('default', 'univentionUDMOptionDefault', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('editable', 'univentionUDMOptionEditable', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('module', 'univentionUDMOptionModule')
 mapping.register('objectClass', 'univentionUDMOptionObjectClass')
-mapping.register('isApp', 'univentionUDMOptionIsApp', None, univention.admin.mapping.ListToString)
+mapping.register('isApp', 'univentionUDMOptionIsApp', None, univention.admin.mapping.ListToString, encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -188,11 +188,11 @@ def unmapMX(old, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('zone', 'zoneName', stripDot, univention.admin.mapping.ListToString)
-mapping.register('nameserver', 'nSRecord')
+mapping.register('zone', 'zoneName', stripDot, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('mx', 'mXRecord', mapMX, unmapMX)
-mapping.register('txt', 'tXTRecord')
+mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
+mapping.register('txt', 'tXTRecord', encoding='ASCII')
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -215,8 +215,8 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 		soa = self.oldattr.get('sOARecord', [b''])[0].split(b' ')
 		if len(soa) > 6:
-			self['contact'] = unescapeSOAemail(soa[1].decode('UTF-8'))
-			self['serial'] = soa[2].decode('UTF-8')
+			self['contact'] = unescapeSOAemail(soa[1].decode('ASCII'))
+			self['serial'] = soa[2].decode('ASCII')
 			self['refresh'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[3])
 			self['retry'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[4])
 			self['expire'] = univention.admin.mapping.unmapUNIX_TimeInterval(soa[5])
@@ -244,7 +244,7 @@ class object(univention.admin.handlers.simpleLdap):
 			retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
 			expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
 			ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-			soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('UTF-8'), escapeSOAemail(self['contact']).encode('UTF-8'), self['serial'].encode('UTF-8'), refresh, retry, expire, ttl)
+			soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('ASCII'), escapeSOAemail(self['contact']).encode('ASCII'), self['serial'].encode('ASCII'), refresh, retry, expire, ttl)
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
 
 		oldAddresses = self.oldinfo.get('a')
@@ -290,4 +290,4 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=0):
-	return b'dNSZone' in attr.get('objectClass', []) and [b'@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('UTF-8').endswith(ARPA_IP6)
+	return b'dNSZone' in attr.get('objectClass', []) and [b'@'] == attr.get('relativeDomainName', []) and not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP4) and not attr['zoneName'][0].decode('ASCII').endswith(ARPA_IP6)

@@ -158,7 +158,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'dc', None, univention.admin.mapping.ListToString)
 mapping.register('sambaDomainName', 'sambaDomainName')
-mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToString)
+mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
 mapping.register('sambaNextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString)
 mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mapping.ListToString)

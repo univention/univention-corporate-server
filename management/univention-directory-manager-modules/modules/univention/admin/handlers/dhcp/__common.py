@@ -73,8 +73,8 @@ _options = {
 	),
 }
 _mappings = (
-	('option', 'dhcpOption', None, None),
-	('statements', 'dhcpStatements', None, None),
+	('option', 'dhcpOption', None, None, 'ASCII'),
+	('statements', 'dhcpStatements', None, None, 'ASCII'),
 )
 
 

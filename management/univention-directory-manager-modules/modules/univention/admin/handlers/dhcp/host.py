@@ -112,7 +112,7 @@ def mapHWAddress(old, encoding=()):
 mapping = univention.admin.mapping.mapping()
 mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress)
-mapping.register('fixedaddress', 'univentionDhcpFixedAddress')
+mapping.register('fixedaddress', 'univentionDhcpFixedAddress', encoding='ASCII')
 
 add_dhcp_options(__name__)
 
