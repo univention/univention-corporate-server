@@ -29,8 +29,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import doctest
-from univention.unittests import import_module
-listenerSharePath = import_module('listenerSharePath', 'python/', 'univention.lib.listenerSharePath')
+
+from .conftest import import_lib_module
+
+listenerSharePath = import_lib_module('listenerSharePath')
 
 
 def test_docstrings():
