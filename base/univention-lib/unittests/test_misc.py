@@ -28,29 +28,66 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import pytest
+
 from .conftest import import_lib_module
 
 misc = import_lib_module('misc')
 
 
+@pytest.fixture
+def lib_ucr(mocker, ucr):
+	mock_config_registry = mocker.Mock(return_value=ucr)
+	mocker.patch.object(misc.univention.config_registry, 'ConfigRegistry', mock_config_registry)
+	return ucr
+
+
 def test_username():
-	assert misc.custom_username('name') == 'name'
-	assert misc.custom_username('domain admin', {'users/default/domainadmin': 'new_name'}) == 'new_name'
+	assert misc.custom_username('domain admin') == 'domain admin'
+
+
+def test_username_empty():
+	with pytest.raises(ValueError):
+		misc.custom_username('')
+
+
+def test_username_custom(lib_ucr):
+	lib_ucr['users/default/domainadmin'] = 'new_name'
+	assert misc.custom_username('domain admin', lib_ucr) == 'new_name'
+	assert misc.custom_username('domain admin') == 'new_name'
 
 
 def test_groupname():
-	assert misc.custom_groupname('name') == 'name'
-	assert misc.custom_groupname('domain admins', {'groups/default/domainadmins': 'new_name'}) == 'new_name'
+	assert misc.custom_groupname('domain admins') == 'domain admins'
 
 
-def test_password():
-	# TODO: mock subprocess?
-	assert len(misc.createMachinePassword()) == 20
+def test_groupname_empty():
+	with pytest.raises(ValueError):
+		misc.custom_groupname('')
 
 
-def test_ldap_uris():
-	pass
+def test_groupname_custom(lib_ucr):
+	lib_ucr['groups/default/domainadmins'] = 'new_name'
+	assert misc.custom_groupname('domain admins', lib_ucr) == 'new_name'
+	assert misc.custom_groupname('domain admins') == 'new_name'
 
 
-def test_ldap_servers():
-	pass
+def test_password(lib_ucr):
+	lib_ucr['machine/password/length'] = '30'
+	assert len(misc.createMachinePassword()) == 30
+
+
+def test_ldap_uris(lib_ucr):
+	lib_ucr['ldap/server/port'] = '6389'
+	lib_ucr['ldap/server/name'] = 'ldap1.intranet.example.de'
+	assert misc.getLDAPURIs(lib_ucr) == 'ldap://ldap1.intranet.example.de:6389'
+	assert misc.getLDAPURIs() == 'ldap://ldap1.intranet.example.de:6389'
+	lib_ucr['ldap/server/addition'] = 'ldap2.intranet.example.de ldap3.intranet.example.de'
+	assert misc.getLDAPURIs() == 'ldap://ldap1.intranet.example.de:6389 ldap://ldap2.intranet.example.de:6389 ldap://ldap3.intranet.example.de:6389'
+
+
+def test_ldap_servers(lib_ucr):
+	lib_ucr['ldap/server/name'] = 'ldap1.intranet.example.de'
+	lib_ucr['ldap/server/addition'] = 'ldap2.intranet.example.de ldap3.intranet.example.de'
+	assert misc.getLDAPServersCommaList(lib_ucr) == 'ldap1.intranet.example.de,ldap2.intranet.example.de,ldap3.intranet.example.de'
+	assert misc.getLDAPServersCommaList() == 'ldap1.intranet.example.de,ldap2.intranet.example.de,ldap3.intranet.example.de'
