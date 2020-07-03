@@ -206,6 +206,8 @@ Depends:
  univention-management-console-server,
  univention-saml-schema,
  ${misc:Depends},
+Breaks:
+ univention-saml (<< 7.0.0-4),
 Description: UCS Management Console - Web server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
