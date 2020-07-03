@@ -1,3 +1,9 @@
+univention-lib (9.0.2-0) unstable; urgency=medium
+
+  * Bug #51593: Remove unneded code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jul 2020 10:44:39 +0200
+
 univention-lib (9.0.1-0) unstable; urgency=medium
 
   * Bug #51506: remove python-support
