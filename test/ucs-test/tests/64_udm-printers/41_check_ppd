@@ -49,11 +49,11 @@ if __name__ == '__main__':
 	# check diff
 	missing_files = set(ldap_printer) - set(printer_files)
 	missing_printers = set(printer_files) - set(ldap_printer)
-	message = None
+	message = ''
 	if missing_files:
 		# ignore missing cups-pdf ppd (univention-cups-pdf is not installed)
-		if not missing_files == set(['CUPS-PDF.ppd']):
-			message = 'No PPD file found for LDAP printers:\n' + '\n\t'.join(missing_files)
+		if missing_files - {'CUPS-PDF.ppd', 'CUPS-PDF_opt.ppd', 'CUPS-PDF_noopt.ppd'}:
+			message += 'No PPD file found for LDAP printers:\n' + '\n\t'.join(missing_files)
 	if missing_printers:
 		message += '\n\n' + 'No LDAP printer found for PPD files:\n' + '\n\t'.join(missing_printers)
 	if message:
