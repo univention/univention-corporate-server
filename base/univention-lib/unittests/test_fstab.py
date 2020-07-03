@@ -28,9 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.unittests import import_module
-fstab = import_module('fstab', 'python/', 'univention.lib.fstab')
+from .conftest import import_lib_module
 
+fstab = import_lib_module('fstab')
 
 def test_fstab():
 	fs = fstab.File('unittests/fstab')
