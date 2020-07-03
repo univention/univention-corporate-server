@@ -204,7 +204,7 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'sambaDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('SID', 'sambaSID', None, univention.admin.mapping.ListToString)
+mapping.register('SID', 'sambaSID', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('NextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
 mapping.register('NextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString)
 mapping.register('NextRid', 'sambaNextRid', None, univention.admin.mapping.ListToString)

@@ -178,9 +178,9 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('mac', 'macAddress')
+mapping.register('mac', 'macAddress', encoding='ASCII')
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
-mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString)
+mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII')
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
