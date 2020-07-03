@@ -28,8 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from univention.unittests import import_module
-misc = import_module('misc', 'python/', 'univention.lib.misc')
+from .conftest import import_lib_module
+
+misc = import_lib_module('misc')
 
 
 def test_username():
