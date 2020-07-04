@@ -210,9 +210,9 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		if [ -f /var/lib/univention-ldap/root.secret ] ; then
 			# mailPrimaryAddress is required on ox systems
 			if [ -n "$ox_primary_maildomain" ] ; then
-				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username="$users_default_administrator" --set sambaRID=500 --set unixhome="/home/$users_default_administrator" --set lastname="$users_default_administrator" --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_default_domainadmins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
+				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set mailPrimaryAddress="administrator@$ox_primary_maildomain" --set firstname="Admin" --set username="$users_default_administrator" --set sambaRID=500 --set unixhome="/home/$users_default_administrator" --set lastname="$users_default_administrator" --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_default_domainadmins,cn=groups,$ldap_base" || die
 			else	
-				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username="$users_default_administrator" --set sambaRID=500 --set unixhome="/home/$users_default_administrator" --set lastname="$users_default_administrator" --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_default_domainadmins,cn=groups,$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,$ldap_base" || die
+				univention-directory-manager users/user create "$@" --position="cn=users,$ldap_base" --set username="$users_default_administrator" --set sambaRID=500 --set unixhome="/home/$users_default_administrator" --set lastname="$users_default_administrator" --set password="$(cat /var/lib/univention-ldap/root.secret)" --set primaryGroup="cn=$groups_default_domainadmins,cn=groups,$ldap_base" || die
 			fi
 		fi
 		univention-directory-manager groups/group modify "$@" --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" --append users="uid=$users_default_administrator,cn=users,$ldap_base" || die

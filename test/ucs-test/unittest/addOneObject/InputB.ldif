@@ -14,8 +14,6 @@ univentionPolicyReference: cn=default-settings,cn=routing,cn=dhcp,cn=policies,
  dc=liam,dc=local
 univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=polici
  es,dc=liam,dc=local
-univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=poli
- cies,dc=liam,dc=local
 structuralObjectClass: domain
 entryUUID: 8951c21a-9fef-1031-9f00-af93def3082f
 creatorsName:
