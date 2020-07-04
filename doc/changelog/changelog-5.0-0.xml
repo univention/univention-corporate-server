@@ -570,7 +570,7 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					Fix LDAP filter syntax in &ucsUDL; module <filename>faillog.py</filename> (<u:bug>28645</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					Several potential buffer overruns have been fixed in <package>pam-univentionmailcyru</package> (<u:bug>00000</u:bug>)

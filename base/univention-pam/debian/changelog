@@ -1,3 +1,9 @@
+univention-pam (13.0.0-4) unstable; urgency=low
+
+  * Bug #28645: Fix LDAP filter syntax
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 08:40:27 +0200
+
 univention-pam (13.0.0-3) unstable; urgency=medium
 
   * Bug #49060: Fix python3 migration related syntax issue
