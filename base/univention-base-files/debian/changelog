@@ -1,3 +1,9 @@
+univention-base-files (9.0.0-8) unstable; urgency=low
+
+  * Bug #33743: Document UCRV interfaces/.*/hosts
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 08:02:16 +0200
+
 univention-base-files (9.0.0-7) unstable; urgency=low
 
   * Bug #51505,Bug #32509,Bug 46120: Update template for Debian 10 Buster
