@@ -33,7 +33,7 @@
 
 name = 'faillog'
 description = 'The listener module resets the faillog count'
-filter = 'objectClass=shadowAccount'
+filter = '(objectClass=shadowAccount)'
 attributes = []
 
 __package__ = ''  # workaround for PEP 366
