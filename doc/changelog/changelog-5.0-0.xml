@@ -680,7 +680,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					All links to <uri>forum.univention.de</uri> have been updated to point to <ulink url="https://help.univention.com/"/> now (<u:bug>43926</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 				The package <package>univention-java</package> has been removed (<u:bug>51983</u:bug>)
