@@ -398,6 +398,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python-passlib,
+ python3-passlib,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:
