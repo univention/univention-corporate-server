@@ -1,6 +1,7 @@
 univention-bind (14.0.0-7) unstable; urgency=low
 
   * Bug #32188: Remove UCRV dns/master/port
+  * Bug #29821: Strip semicolons fron UCRV `dns/forwarder` and `dns/allow/*`.
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 10:35:30 +0200
 

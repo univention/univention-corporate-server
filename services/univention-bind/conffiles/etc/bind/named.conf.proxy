@@ -4,14 +4,14 @@
 controls{
         inet 127.0.0.1
         allow { @%@dns/master/address@%@; };
-};			
+};
 options {
     directory "/var/cache/bind";
 	listen-on { any; };
 @!@
-dns_allow_query = configRegistry.get('dns/allow/query')
-dns_allow_query_cache = configRegistry.get('dns/allow/query/cache')
-dns_allow_transfer = configRegistry.get('dns/allow/transfer')
+dns_allow_query = configRegistry.get('dns/allow/query', '').strip(';')
+dns_allow_query_cache = configRegistry.get('dns/allow/query/cache', '').strip(';')
+dns_allow_transfer = configRegistry.get('dns/allow/transfer', '').strip(';')
 
 if dns_allow_query:
 	print('\tallow-query { %s; };' % dns_allow_query)
@@ -35,19 +35,13 @@ logging {
 	};
 };
 @!@
-if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') or configRegistry.get('dns/forwarder3'):
+forwarders = [v for v in (configRegistry.get('dns/forwarder%d' % (key,), '').rstrip(';') for key in range(1, 4)) if v]
+if forwarders:
 	print('\n# Found a forwarder in ucr variables, using forwarder in zone ".".')
 	print('# Ignoring any setting of dns/fakeroot.')
 	print('zone "." {')
 	print('\ttype forward;')
-	print('\tforwarders {')
-	if configRegistry['dns/forwarder1']:
-		print('\t\t%s;' % configRegistry['dns/forwarder1'])
-	if configRegistry['dns/forwarder2']:
-		print('\t\t%s;' % configRegistry['dns/forwarder2'])
-	if configRegistry['dns/forwarder3']:
-		print('\t\t%s;' % configRegistry['dns/forwarder3'])
-	print('\t};')
+	print('\tforwarders { %s; };' % ('; '.join(forwarders),))
 	print('};')
 elif configRegistry.is_true('dns/fakeroot', True):
 	print('\n# Found no forwarder in ucr variables.')
