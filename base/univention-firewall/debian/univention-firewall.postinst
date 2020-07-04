@@ -33,7 +33,7 @@
 #DEBHELPER#
 
 # during installation set default policy to REJECT, during update to ACCEPT
-if [ "$1" = "configure" -a -n "$2" ] ; then
+if [ "$1" = "configure" ] && [ -n "$2" ] ; then
 	ucr set security/packetfilter/defaultpolicy?ACCEPT
 else
 	ucr set security/packetfilter/defaultpolicy?REJECT
