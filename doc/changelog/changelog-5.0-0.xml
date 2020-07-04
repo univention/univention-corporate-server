@@ -120,6 +120,9 @@
 				<listitem><simpara>
 						&ucsUCRV; <envar>dns/master/port</envar> has been removed (<u:bug>32188</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+						Trailing semicolons from several &ucsUCRV;s <envar>dns/<replaceable>*</replaceable></envar> are now stripped by default to prevent syntax errors (<u:bug>32188</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
@@ -338,7 +341,7 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The unsued module for configuring the firewall has been removed (<u:bug>44700</u:bug>)
+					The unused module for configuring the firewall has been removed (<u:bug>44700</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					The old system statistics based on <application>MRTG</application> has been removed (<u:bug>44475</u:bug>)
