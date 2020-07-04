@@ -121,7 +121,7 @@
 			<title>DNS server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						&ucsUCRV; <envar>dns/master/port</envar> has been removed (<u:bug>32188</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
