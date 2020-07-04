@@ -338,7 +338,7 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The unsued module for configuring the firewall has been removed (<u:bug>44700</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					The old system statistics based on <application>MRTG</application> has been removed (<u:bug>44475</u:bug>)
