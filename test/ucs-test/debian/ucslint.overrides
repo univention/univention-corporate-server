@@ -14,6 +14,7 @@
 0016-2: tests/01_base/check_log_files_definitions.py
 # Violations for testing
 0008-4: umc/de.po
+0008-7
 # Spelling
 0015-2: tests/43_proxy/07_basic_auth_encoding
 # "iptables" in comment does not need --wait

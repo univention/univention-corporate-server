@@ -28,6 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+from typing import Dict, Iterable, Tuple
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING
@@ -50,7 +51,7 @@ RE_TRANSLATION = re.compile(CONTEXT + SEPARATOR + TRANSLATION, re.DOTALL | re.MU
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> Dict[str, Tuple[int, str]]:
 		return {
 			'0008-1': (uub.RESULT_ERROR, 'substitutes before translation'),
 			'0008-2': (uub.RESULT_WARN, 'failed to open file'),
@@ -58,14 +59,19 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0008-4': (uub.RESULT_WARN, 'po-file contains empty msg string'),
 			'0008-5': (uub.RESULT_ERROR, 'po-file contains no character set definition'),
 			'0008-6': (uub.RESULT_ERROR, 'po-file contains invalid character set definition'),
+			'0008-7': (uub.RESULT_WARN, 'found well-known LDAP object but no custom_*name()'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
 		self.check_py(python_files(path))
 		self.check_po(uub.FilteredDirWalkGenerator(path, suffixes=('.po',)))
+		self.check_names(uub.FilteredDirWalkGenerator(
+			path,
+			ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
+		))
 
 	def check_py(self, py_files):
 		"""Check Python files."""
@@ -105,3 +111,25 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					# match.start() + 1 ==> avoid wrong line numbers because RE_FUZZY starts with \n
 					line = content.count('\n', 0, match.start() + 1) + 1
 					self.addmsg(errid, errtxt, fn, line)
+
+	def check_names(self, files: Iterable[str]) -> None:
+		tester = uub.UPCFileTester()
+		tester.addTest(
+			re.compile(
+				r'''
+				(?<!custom_groupname[( ])
+				(?<!custom_username[( ])
+				(['"]) \b
+				(?:Domain\ Users|Domain\ Admins|Administrator|Windows\ Hosts)
+				\b \1
+				''', re.VERBOSE),
+			'0008-7', 'found well-known LDAP object but no custom_*name()', cntmax=0)
+
+		for fn in files:
+			try:
+				tester.open(fn)
+			except EnvironmentError:
+				self.addmsg('0002-1', 'failed to open and read file', fn)
+				continue
+			else:
+				self.msg += tester.runTests()

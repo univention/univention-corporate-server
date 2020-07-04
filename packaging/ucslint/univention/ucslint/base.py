@@ -511,6 +511,26 @@ class FilteredDirWalkGenerator(object):
 		'.xz',
 		'.zip',
 	}
+	DOCUMENTATION_SUFFIXES = {
+		'.1',
+		'.2',
+		'.3',
+		'.4',
+		'.5',
+		'.6',
+		'.7',
+		'.8',
+		'.doc',
+		'.html',
+		'.md',
+		'.po',
+		'.rst',
+		'.txt',
+		'.xml',
+		'changelog',
+		'ChangeLog',
+		'README',
+	}
 
 	def __init__(
 		self,

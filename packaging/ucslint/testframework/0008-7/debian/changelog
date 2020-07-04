@@ -1,0 +1,5 @@
+ucslint (1.0.0-1) unstable; urgency=low
+
+  * Bug #33737: Check for well known SIDs
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Apr 2020 09:56:39 +0200
