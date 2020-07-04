@@ -33,7 +33,7 @@
 . /usr/share/univention-lib/all.sh
 
 # Remove service diversion before any service is restarted through debhelper
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-6; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-7; then
 	dpkg-divert --quiet \
 		--package univention-bind \
 		--divert /lib/systemd/system/bind9.service.debian \
@@ -44,6 +44,7 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 14.0.0-6; then
 		chown root:bind /etc/bind/rndc.key
 		chmod 0640 /etc/bind/rndc.key
 	fi
+	ucr unset dns/master/port
 fi
 
 #DEBHELPER#
