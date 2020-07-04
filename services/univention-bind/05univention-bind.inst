@@ -89,7 +89,7 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 	ERRMSG="Failed adding the DNS ptr record $ptr ($hostname.$domainname) to zone $reversezone."
 	exec_log_failure /usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists --reverse "$reversezone" add ptr "$ptr" "$hostname.$domainname." || die
 
-	univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
+	univention-config-registry set dns/master/address=127.0.0.1
 
 	# Append local server as DNS server to the zones, except if disabled by UCR
 	if ! is_ucr_false dns/nameserver/registration/forward_zone; then

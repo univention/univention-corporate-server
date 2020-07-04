@@ -76,12 +76,6 @@ Description[en]=When using the OpenLDAP backend (see 'dns/backend'), the DNS ser
 Type=str
 Categories=service-bind
 
-[dns/master/port]
-Description[de]=Der DNS-Dienst ist bei Verwendung des OpenLDAP-Backends (siehe 'dns/backend') zweigeteilt: Der Bind-Proxy ist der primäre Nameserver und beantwortet den DNS-Standard-Port 53. Werden Daten der internen Zonen im LDAP bearbeitet, wird die Zonendatei auf Backend-Server basierend auf den LDAP-Informationen aktualisiert und durch einen Zonentransfer an den primären Nameserver übertragen. Diese Variable konfiguriert den Port des Backend-Servers. Standard ist 7777.
-Description[en]=When using the OpenLDAP backend (see 'dns/backend'), the DNS service is two-fold: The Bind proxy is the primary nameserver and serves the DNS standard port 53. If data of the internal zones is edited in LDAP, the zonefile on a backend server is updated based on the LDAP information and transferred to the primary server through a zone transfer. This variable configures the port of the backend server. Default is 7777.
-Type=int
-Categories=service-bind
-
 [dns/max-socks]
 Description[de]=Anzahl Sockets die der DNS-Dienst öffnen darf. Der in den DNS-Dienst eingebaute Standard ist 4096. Der Standard für diese UCR Variable ist nicht gesetzt zu sein.
 Description[en]=Number of sockets the nameserver to allowed to open. The default value built into named is 4096. The default for this UCR variable is to be unset.
