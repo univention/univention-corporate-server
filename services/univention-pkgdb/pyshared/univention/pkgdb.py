@@ -540,10 +540,12 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
 	}
 	if config_registry.is_true('pkgdb/requiressl'):
 		connection_info['sslmode'] = 'require'
-	if pkgdbu:
+
+	SECRET = '/etc/postgresql/pkgdb.secret'
+	if pkgdbu and os.path.isfile(SECRET) and os.access(SECRET, os.R_OK):
 		# 'host' not specified -> localhost over Unix-domain socket (connection type "local")
 		connection_info['user'] = 'pkgdbu'
-		password_file = '/etc/postgresql/pkgdb.secret'
+		password_file = SECRET
 	else:
 		if db_server is None:
 			db_server = get_dbservername(config_registry['domainname'])
@@ -552,6 +554,7 @@ def open_database_connection(config_registry, pkgdbu=False, db_server=None):
 		connection_info['host'] = db_server
 		connection_info['user'] = config_registry.get('pkgdb/user', '%s$' % (config_registry['hostname'], ))
 		password_file = config_registry.get('pkgdb/pwdfile', '/etc/machine.secret')
+
 	connection_info['password'] = open(password_file, 'rb').read().rstrip('\n')
 	connectstring = ' '.join([
 		"%s='%s'" % (key, value.replace('\\', '\\\\').replace("'", "\\'"),)

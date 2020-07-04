@@ -380,7 +380,7 @@
 			<title>Software monitor</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					A package dependency cycle has been fixed (<u:bug>42287</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
