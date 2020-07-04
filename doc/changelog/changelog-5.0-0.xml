@@ -82,7 +82,7 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The container <uri>cn=admin-settings,cn=users,cn=policies</uri> is no longer created (<u:bug>47949</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 

@@ -33,7 +33,6 @@ print('nisDomain: %s' % configRegistry['domainname'])
 print('associatedDomain: %s' % configRegistry['domainname'])
 print('univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,%s' % configRegistry['ldap/base'])
 print('univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % configRegistry['ldap/base'])
-print('univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=policies,%s' % configRegistry['ldap/base'])
 print('')
 print('dn: cn=samba,%s' % configRegistry['ldap/base'])
 print('objectClass: top')
@@ -132,7 +131,6 @@ univentionPolicyObject: cn=mail,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=default-settings,cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
-univentionPolicyObject: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=nfsmounts,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=printservers,cn=policies,@%@ldap/base@%@
 univentionLicenseObject: cn=license,cn=univention,@%@ldap/base@%@
@@ -598,12 +596,6 @@ cn: default-settings
 univentionPWHistoryLen: 3
 univentionPWLength: 8
 
-dn: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
-objectClass: organizationalRole
-objectClass: univentionObject
-univentionObjectType: container/cn
-cn: admin-settings
-
 dn: cn=nfsmounts,cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
 objectClass: univentionObject
@@ -615,28 +607,6 @@ objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: printservers
-
-dn: cn=default-users,cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
-cn: default-users
-objectClass: top
-objectClass: univentionPolicy
-objectClass: univentionPolicyAdminSettings
-objectClass: univentionObject
-univentionObjectType: policies/admin_user
-univentionAdminListWizards: None
-univentionAdminListWebModules: modself
-univentionAdminMayOverrideSettings: 0
-
-dn: cn=default-admins,cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
-objectClass: top
-objectClass: univentionPolicy
-objectClass: univentionPolicyAdminSettings
-objectClass: univentionObject
-univentionObjectType: policies/admin_user
-univentionAdminMayOverrideSettings: 1
-cn: default-admins
-emptyAttributes: univentionAdminListWizards
-emptyAttributes: univentionAdminListWebModules
 
 dn: cn=Domain Admins,cn=groups,@%@ldap/base@%@
 objectClass: top
