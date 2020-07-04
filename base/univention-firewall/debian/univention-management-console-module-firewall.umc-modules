@@ -1,5 +1,0 @@
-Module: firewall
-Python: umc/python
-Definition: umc/firewall.xml
-Javascript: umc/js
-Icons: umc/icons
