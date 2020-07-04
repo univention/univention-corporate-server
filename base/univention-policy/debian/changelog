@@ -1,3 +1,9 @@
+univention-policy (11.0.0-2) unstable; urgency=low
+
+  * Bug #35182: Fix univention_policy_result --help output
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 07:37:35 +0200
+
 univention-policy (11.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

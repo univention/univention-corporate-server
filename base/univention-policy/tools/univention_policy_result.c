@@ -45,7 +45,7 @@
 
 static void usage(void)
 {
-	fprintf(stderr, "Usage: univention_policy_result [-h <hostdn>] [-D <binddn>] [-w <bindpw> | -y <pwfile> | -W] [-p port] [-s | -b] dn\n");
+	fprintf(stderr, "Usage: univention_policy_result [-h <host>] [-D <binddn>] [-w <bindpw> | -y <pwfile> | -W] [-p port] [-s | -b] dn\n");
 	fprintf(stderr, "  -h host    LDAP server\n");
 	fprintf(stderr, "  -D binddn  bind DN\n");
 	fprintf(stderr, "  -W         prompt for password on the command line\n");
