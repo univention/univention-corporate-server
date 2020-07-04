@@ -19,9 +19,6 @@ ALL_TARGETS = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-c
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-setup.mo \
 	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/setup.json \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/setup.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-firewall.mo \
-	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/firewall.json \
-	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/firewall.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-updater.mo \
 	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/updater.json \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/updater.mo \
@@ -137,9 +134,6 @@ $(DESTDIR)/usr/share/univention-management-console/i18n/fr/quota.mo: fr/base/uni
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-setup.mo: fr/base/univention-system-setup/umc/python/setup/fr.po
 $(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/setup.json: fr/base/univention-system-setup/umc/js/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/setup.mo: fr/base/univention-system-setup/umc/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-firewall.mo: fr/base/univention-firewall/umc/python/firewall/fr.po
-$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/firewall.json: fr/base/univention-firewall/umc/js/fr.po
-$(DESTDIR)/usr/share/univention-management-console/i18n/fr/firewall.mo: fr/base/univention-firewall/umc/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-updater.mo: fr/base/univention-updater/umc/python/updater/fr.po
 $(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/updater.json: fr/base/univention-updater/umc/js/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/updater.mo: fr/base/univention-updater/umc/fr.po
