@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-5">
+<book lang="de" id="releasenotes-de-5.0-0">
 	<bookinfo>
-		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-5</subtitle>
+		<title>UCS 5.0 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 5.0-0</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,31 +44,27 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-5 steht das fünfte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 5.0-0 steht das fünfte Major Release für &ucsUCS; (UCS) zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Die Replikation von Gruppen mit vielen Mitgliedern wurde durch Performance Verbesserungen stark beschleunigt.
+					UCS 5 basiert auf Debian 10 <wordasword>Buster.</wordasword>
 			</para></listitem>
 			<listitem><para>
-					Die Berechtigung für die Nutzung von per SAML angebundenen Diensten kann jetzt für Gruppen konfiguriert werden, vorher konnte die Einstellung nur pro Benutzer gesetzt werden.
-					Außerdem kann für per SAML angebundene Dienste nun in der UMC ein Mapping von UCS LDAP Attributnamen auf Attributnamen konfiguriert werden, die von der angebundenen Anwendung erwartet werden.
+					Mehrere Komponenten wurden entfernen: &ucsUVMM;, Nagios, Desktop, …
 			</para></listitem>
 			<listitem><para>
-					Ein Update für den <application>OpenID Connect Provider</application> ermöglicht, dass Anmeldungen am SAML Identity Provider auch für <application>OpenID Connect</application> gültig sind.
-					Das <foreignphrase>Single Sign-On</foreignphrase> in UCS funktioniert damit über zwei Standards hinweg.
+					Systemrollen wurden umbenannt: <foreignphrase>Master</foreignphrase> → <foreignphrase>Primary,</foreignphrase> <foreignphrase>Backup</foreignphrase> → …, <foreignphrase>Slave</foreignphrase> → ...
 			</para></listitem>
 			<listitem><para>
-					Der Benutzer Self-Service verfügt über ein neues aktivierbares Feature, mit dem sich Benutzer selbst ein Konto in UCS erstellen und auch wieder löschen können.
-					Die Benutzeraccounts müssen vor der ersten Benutzung durch den Klick auf einen Aktivierungslink in einer E-Mail bestätigt werden.
-					Administratoren können festlegen, welche Attribute Benutzer bei der Registrierung angeben müssen.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-5 integriert, bspw. für Samba, OpenLDAP, den Linux Kernel und PHP.
-					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
+			</para></listitem>
+			<listitem><para>
+					FIXME
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -83,25 +79,6 @@
 			Je nach Systemgeschwindigkeit, Netzwerkanbindung und installierter Software kann das Update zwischen 20 Minuten und mehreren Stunden dauern.
 		</para>
 
-		<section id="relnotes:signaturevalidation">
-			<title>Update auf UCS 4.4-5 schlägt fehl mit <wordasword>Verification error: Invalid signature: gpgv: keyblock resource ‘/etc/apt/trusted.gpg’: Datei oder Verzeichnis nicht gefunden</wordasword></title>
-			<note>
-				<para>
-					Wenn das Update auf UCS 4.4-5 abbricht, sollte die Datei <filename>/var/log/univention/updater.log</filename> auf folgenden Fehler untersucht werden:
-					<programlisting>
-**** Downloading scripts at Thu Jun 25 11:34:04 2020
-Error: Update aborted due to verification error:
-Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': \
-Datei oder Verzeichnis nicht gefunden
-					</programlisting>
-					Wenn dieser Fehler in der Logdatei auftritt, müssen alle verfügbaren Errata Updates eingespielt werden. Anschließend kann das Update auf UCS 4.4-5 erneut gestartet werden. (<u:bug>51576</u:bug>)
-				</para>
-				<para>
-					<ulink url="http://help.univention.com/t/15594">Weitere Informationen sind in unserer Support Datenbank verfügbar</ulink>.
-				</para>
-			</note>
-		</section>
-
 		<section id="relnotes:order">
 			<title>Empfohlene Update-Reihenfolge</title>
 			<para>
@@ -115,11 +92,10 @@ Datei oder Verzeichnis nicht gefunden
 		</section>
 
 		<section id="relnotes:32bit">
-			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
+			<title>UCS nur noch als 64-Bit-Variante</title>
 			<para>
-				UCS-Installations-DVDs werden ab UCS 4 nur noch für 64-Bit-Architekturen bereitgestellt.
-				Vorhandene 32-Bit UCS 3 Systeme können weiterhin über das Online Repository oder über Update DVDs auf UCS 4 aktualisiert werden.
-				Die 32-Bit-Architektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
+				UCS 5 wird nur noch für 64-Bit-Architekturen bereitgestellt.
+				Vorhandene 32-Bit UCS Systeme können nicht auf UCS 5 aktualisiert werden.
 			</para>
 		</section>
 
@@ -130,8 +106,8 @@ Datei oder Verzeichnis nicht gefunden
 
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
-			Eine Standard-Installation benötigt min. 10 GB Speicherplatz.
-			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 4 GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
+			Eine Standard-Installation benötigt min. FIXME GB Speicherplatz.
+			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr FIXME GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para>
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
@@ -149,11 +125,11 @@ Datei oder Verzeichnis nicht gefunden
 			Dieses Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
 			<screen><![CDATA[
 # download
-curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
+curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0{,.gpg}
 
 # run script
-gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.4.gpg \
-        pre-update-checks-4.4 && bash pre-update-checks-4.4
+gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg pre-update-checks-5.0.gpg \
+        pre-update-checks-5.0 && bash pre-update-checks-5.0
 
 ...
 
@@ -229,25 +205,22 @@ Checking ldap_schema ...                          OK
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome ab Version 71</para>
+					<para>Chrome ab Version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox ab Version 60</para>
+					<para>Firefox ab Version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari und Safari Mobile ab Version 12</para>
+					<para>Safari und Safari Mobile ab Version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Microsoft Edge ab Version 18</para>
+					<para>Microsoft Edge ab Version FIXME</para>
 				</listitem>
 			</itemizedlist>
 
-			<para>
-				Der Internet Explorer wird ab diesem Release nicht mehr von &ucsUMC; unterstützt.
-			</para>
 			<para>
 				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
 			</para>
@@ -259,10 +232,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-4</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-5</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-5.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.4-5">
+<book lang="en" id="releasenotes-en-5.0-0">
 	<bookinfo>
-		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-5</subtitle>
+		<title>UCS 5.0 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 5.0-0</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,31 +44,27 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-5, the fifth point release of &ucsUCS; (UCS) 4.4 is now available.
+			With &ucsUCS; 5.0-0, the fifth major release of &ucsUCS; (UCS) is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					The replication of groups with many members has been greatly accelerated.
+					UCS 5 is based on Debian 10 Buster.
 			</para></listitem>
 			<listitem><para>
-					The permission to use services connected via SAML can now be configured for groups, previously the setting could only be set per user.
-					In addition, a mapping of UCS LDAP attribute names to attribute names expected by the connected application can now be configured in the UMC for services connected via SAML.
+					Several components haven been removed: &ucsUVMM;, Nagios, Desktop, …
 			</para></listitem>
 			<listitem><para>
-					An update for the <application>OpenID Connect Provider</application> allows that logins to the SAML Identity Provider are also valid for <application>OpenID Connect</application>.
-					The Single Sign-On in UCS thus works across standards.
+					System roles have been renamed: Master → Primary, Backup → …, Slave → ...
 			</para></listitem>
 			<listitem><para>
-					The User Self-Service has a new configurable feature that allows users to create and delete their own account in UCS.
-					User accounts must be confirmed by clicking on an activation link in an e-mail before they can be used for the first time.
-					Administrators can define which attributes users must specify during registration.
 			</para></listitem>
 			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-5, e.g. Samba, OpenLDAP, the Linux kernel and PHP.
-					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
+			</para></listitem>
+			<listitem><para>
+					FIXME
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -81,25 +77,6 @@
 			The test environment should be identical to the production environment.
 			Depending on the system performance, network connection and the installed software the update will take between 20 minutes and several hours.
 		</para>
-
-		<section id="relnotes:signaturevalidation">
-			<title>Update to UCS 4.4-5 fails with <wordasword>Verification error: Invalid signature: gpgv: keyblock resource ‘/etc/apt/trusted.gpg’: File or directory not found</wordasword></title>
-			<note>
-				<para>
-					If the update to UCS 4.4-5 aborts, the file <filename>/var/log/univention/updater.log</filename> should be checked for the following error.
-					<programlisting>
-**** Downloading scripts at Thu Jun 25 11:34:04 2020
-Error: Update aborted due to verification error:
-Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': \
-File or directory not found
-					</programlisting>
-					If the error appears in the logfile, all available errata updates should be installed, before starting another release update to UCS 4.4-5 (<u:bug>51576</u:bug>).
-				</para>
-				<para>
-					<ulink url="http://help.univention.com/t/15594">A support article with more information is available</ulink>.
-				</para>
-			</note>
-		</section>
 
 		<section id="relnotes:order">
 			<title>Recommended update order for environments with more than one UCS server</title>
@@ -114,11 +91,10 @@ File or directory not found
 		</section>
 
 		<section id="relnotes:32bit">
-			<title>UCS installation DVD only available for 64 bit</title>
+			<title>UCS only available for 64 bit</title>
 			<para>
-				Starting with UCS 4.0, installation DVD are only provided for the x86 64 bit architecture (amd64).
-				Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the online repository or by using update DVD.
-				The 32 bit architecture will be supported over the entire UCS 4 maintenance period.
+				UCS 5 is only provided for the x86 64 bit architecture (amd64).
+				Existing 32 bit UCS 3 systems cannot be updated to UCS 5.
 			</para>
 		</section>
 	</chapter>
@@ -128,8 +104,8 @@ File or directory not found
 
 		<para>
 			It must be checked whether sufficient disk space is available.
-			A standard installation requires a minimum of 10 GB of disk space.
-			The update requires approximately 4 GB additional disk space to download and install the packages, depending on the size of the existing installation.
+			A standard installation requires a minimum of FIXME GB of disk space.
+			The update requires approximately FIXME GB additional disk space to download and install the packages, depending on the size of the existing installation.
 		</para>
 
 		<para>
@@ -150,11 +126,11 @@ File or directory not found
 			Prior to the update, this script can be downloaded and executed on the UCS system.
 			<screen><![CDATA[
 # download
-curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
+curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0{,.gpg}
 
 # run script
 gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg \
-        pre-update-checks-4.4.gpg pre-update-checks-4.4 && bash pre-update-checks-4.4
+        pre-update-checks-5.0.gpg pre-update-checks-5.0 && bash pre-update-checks-5.0
 
 ...
 
@@ -229,25 +205,22 @@ Checking ldap_schema ...                          OK
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome as of version 71</para>
+					<para>Chrome as of version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox as of version 60</para>
+					<para>Firefox as of version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari and Safari Mobile as of version 12</para>
+					<para>Safari and Safari Mobile as of version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Microsoft Edge as of version 18</para>
+					<para>Microsoft Edge as of version FIXME</para>
 				</listitem>
 			</itemizedlist>
 
-			<para>
-				As of this release Internet Explorer is not supported by &ucsUMC; anymore.
-			</para>
 			<para>
 				Users running older browsers may experience display or performance issues.
 			</para>
@@ -258,10 +231,10 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.4-4</wordasword>:
+			Listed are the changes since UCS <wordasword>4.4-5</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-5.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
