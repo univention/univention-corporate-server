@@ -44,5 +44,5 @@ install: $(ALL_TARGETS)
 
 %.json:
 	dh-umc-po2json "$<"  # creates .json file in the same directory as the .po file
-	install -d $(@D)
-	mv "$(patsubst %.po,%.json,$<)" "$@"
+	install -d "$(@D)"
+	mv "$(<:%.po=%.json)" "$@"
