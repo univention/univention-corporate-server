@@ -2129,13 +2129,6 @@ class object(univention.admin.handlers.simpleLdap):
 			for groupObject in groupObjects:
 				groupObject.fast_member_remove([self.dn], [uid], ignore_license=True)
 
-		admin_settings_dn = u'uid=%s,cn=admin-settings,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
-		# delete admin-settings object of user if it exists
-		try:
-			self.lo.delete(admin_settings_dn)
-		except univention.admin.uexceptions.noObject:
-			pass
-
 	def _move(self, newdn, modify_childs=True, ignore_license=False):
 		olddn = self.dn
 		tmpdn = u'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
