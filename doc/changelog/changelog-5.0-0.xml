@@ -239,7 +239,7 @@
 			<title>DHCP module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					Fix the day of week in leases when fallback to link-local addresses is enabled (<u:bug>44427</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
