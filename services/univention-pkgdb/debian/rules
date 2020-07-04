@@ -30,21 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
+version := $(shell dpkg-parsechangelog -SVersion)
 
-PYVERS=$(shell pyversions -vr)
+PYVERS := $(shell pyversions -vr)
 
 D=${CURDIR}/debian/univention-pkgdb
 
 %.mo:	%.po
 	msgfmt -o $@ $<
-
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-pkgdb-tools.conffiles
-	rm -f debian/univention-pkgdb.conffiles
-	rm -f debian/univention-pkgdb-lib.conffiles
-	rm -f debian/python-univention-pkgdb.conffiles
 
 override_dh_auto_build:
 	dh-umc-module-build

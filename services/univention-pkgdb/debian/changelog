@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.0-3) unstable; urgency=low
+
+  * Bug #42287: Break package dependency cycle
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 15:13:12 +0200
+
 univention-pkgdb (13.0.0-2) unstable; urgency=medium
 
   * Bug #51419: Add postgres 11 template

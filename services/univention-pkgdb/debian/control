@@ -25,7 +25,7 @@ Depends:
  univention-management-console-module-pkgdb,
  univention-pkgdb-tools,
  ${misc:Depends},
-Description: UCS - PkgDB
+Description: UCS - Software monitoring database
  This package contains server-side-components for the UCS package database.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -46,7 +46,7 @@ Provides:
  ${python:Provides},
 Conflicts:
  univention-pkgdb-lib (<< 1.0.4),
-Description: UCS - PkgDB
+Description: UCS - Software monitoring database Python 2 library
  This package contains python libraries needed for all UCS package database components.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -65,7 +65,7 @@ Depends:
  ${python3:Depends},
 Provides:
  ${python3:Provides},
-Description: UCS - PkgDB
+Description: UCS - Software monitoring database Python 3 library
  This package contains python 3 libraries needed for all UCS package database components.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -81,7 +81,7 @@ Depends:
  ${misc:Depends},
 Recommends:
  postgresql-client,
-Description: UCS - PkgDB-Tools
+Description: UCS - Software monitoring database tools
  This package contains client-side-tools for the UCS package database.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -89,26 +89,18 @@ Description: UCS - PkgDB-Tools
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-pkgdb-lib
-Architecture: all
-Depends:
- python-univention-pkgdb,
- ${misc:Depends},
-Description: Transition package
- Package to ease upgrading from old package
- python-univention-pkgdb to the new package.  This package
- can be purged at anytime once the
- python-univention-pkgdb package has been installed.
-
 Package: univention-management-console-module-pkgdb
 Architecture: all
 Depends:
+ python-univention-pkgdb (= ${source:Version}),
+ python3-univention-pkgdb (= ${source:Version}),
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
- univention-pkgdb (= ${source:Version}),
  ${python3:Depends},
  ${python:Depends},
-Description: UMC module for software monitor
+Recommends:
+ univention-pkgdb,
+Description: UMC module for software monitoring database
  This package contains the UMC module for the software monitor.
  .
  It is part of Univention Corporate Server (UCS), an
