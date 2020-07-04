@@ -1,3 +1,9 @@
+univention-bind (14.0.0-7) unstable; urgency=low
+
+  * Bug #32188: Remove UCRV dns/master/port
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 10:35:30 +0200
+
 univention-bind (14.0.0-6) unstable; urgency=medium
 
   * Bug #51421: simplify /etc/bind/rndc.key handling and service installation

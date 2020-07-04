@@ -31,18 +31,9 @@ case "$1" in
 	start)
 		PATH=/sbin:/bin:/usr/sbin:/usr/bin
 		debug_level="$(ucr get dns/debug/level)"
-		test -z $debug_level && debug_level=0
-
-		port="$(ucr get dns/master/port)"
-
-		OPTS="-c /etc/bind/named.conf -p $port -u bind -f -d $debug_level"
-
 		max_socks="$(ucr get dns/max-socks)"
-		if [ -n "$max_socks" ]; then
-			OPTS="$OPTS -S $max_socks"
-		fi
 
-		exec /usr/sbin/named $OPTS
+		exec /usr/sbin/named -c /etc/bind/named.conf -p 7777 -u bind -f -d ${debug_level:-0} ${max_socks:+-S "$max_socks"}
 		;;
 	reload)
 		/usr/sbin/rndc -p 55555 reload
@@ -52,7 +43,7 @@ case "$1" in
 		;;
 	wait-for-startup)
 		timeout="$(ucr get dns/timeout-start)"
-		/usr/bin/timeout ${timeout:-120} /bin/sh -c \
+		/usr/bin/timeout "${timeout:-120}" /bin/sh -c \
 			"until rndc -p 55555 status | grep --quiet 'server is up and running'; do sleep 1; done"
 		;;
 esac
