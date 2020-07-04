@@ -197,7 +197,7 @@
 			<title>Domain join module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The scripts have been improved for robustness and security (<u:bug>21026</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
