@@ -30,25 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-export PATH=$PATH:/sbin:/usr/sbin
+eval "$(/usr/sbin/univention-config-registry shell 'ldap/server/.*')"
 
-eval "$(univention-config-registry shell)"
-
-exit_code=1
-
-if [ -n "$ldap_server_name" ]; then
-	if /bin/netcat -q0 -w4 $ldap_server_name 7389 </dev/null >/dev/null 2>&1; then
-		exit_code=0
-	fi
-fi
-
-if [ -n "$ldap_server_addition" ] && [ $exit_code = 1 ]; then
-	for h in  $ldap_server_addition; do
-		if /bin/netcat -q0 -w4 $h 7389 </dev/null >/dev/null 2>&1; then
-			exit_code=0
-			break
-		fi
-	done
-fi
-
-exit $exit_code
+# shellcheck disable=SC2154
+for h in $ldap_server_name $ldap_server_addition
+do
+	[ -n "$h" ] &&
+		netcat -q0 -w4 "$h" "${ldap_server_port:-7389}" </dev/null >/dev/null 2>&1 &&
+		exit 0
+done
+exit 1
