@@ -20,12 +20,11 @@ description = '\n'.join([
 	'<pre>samba/max_open_files=%s</pre>' % (suggested_max_open_files,),
 	# _('More related information can be found at the "{sdb}".'),
 ])
-# SDB article not published yet, Bug #35868
-# links = [{
-#	'name': 'sdb',
-#	'href': _('http://forum.univention.de/viewtopic.php?f=48&t=2100'),
-#	'label': _('Samba4 max open files - Univention Forum')
-#}]
+links = [{
+	'name': 'sdb',
+	'href': _('https://help.univention.com/t/samba4-max-open-files/1758'),
+	'label': _('Samba4 max open files - Univention Help')
+}]
 buttons = [{
 	'name': 'adjust',
 	'label': _('Adjust to suggested limits'),

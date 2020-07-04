@@ -69,7 +69,7 @@ Dem aufgerufenen Progamm werden Daten in den folgenden Umgebungsvariablen überg
 
 Werden vom angegebenen Programm weitere Programme gestartet, sollten sicherheitshalber die Umgebungsvariablen mit Passwort und Token gelöschen werden, da Umgebungsvariablen an Kindprozesse vererbt werden.
 
-Probleme und Tipps zur Implementierung können gerne hier in Kommentaren oder im <a href="https://forum.univention.de/">Forum</a> diskuttiert werden.
+Probleme und Tipps zur Implementierung können gerne hier in Kommentaren oder im <a href="https://help.univention.com/">Forum</a> diskutiert werden.
 
 === Anders (>>>besserer Titel?<<<) ===
 

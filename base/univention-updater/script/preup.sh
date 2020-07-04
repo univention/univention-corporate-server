@@ -300,8 +300,8 @@ fail_if_role_package_will_be_removed () {
 		# In this case, you have to set the UCR variable after the update back
 		# to the old value which can be get from /var/log/univention/config-registry.replog
 		echo "       Please contact the Univention Support in case you have an Enterprise"
-		echo "       Subscription. Otherwise please try the Univention Forum"
-		echo "       http://forum.univention.de/"
+		echo "       Subscription. Otherwise please try the Univention Help"
+		echo "       https://help.univention.com/"
 		exit 1
 	fi
 }

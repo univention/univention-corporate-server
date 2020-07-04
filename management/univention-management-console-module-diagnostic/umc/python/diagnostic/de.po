@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2020-03-02 15:18+0100\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2020-07-04 15:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -293,6 +293,10 @@ msgstr "Gateway ist nicht erreichbar"
 #: umc/python/diagnostic/plugins/01_ssh_connection.py:67
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:25
+msgid "https://help.univention.com/t/samba4-max-open-files/1758"
+msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
 
 #: umc/python/diagnostic/plugins/11_nameserver.py:17
 msgid ""
@@ -608,6 +612,10 @@ msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 #: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:46
 msgid "Samba 4 KDC running."
 msgstr "Samba 4 KDC läuft."
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:26
+msgid "Samba4 max open files - Univention Help"
+msgstr "Samba4 max open files - Univention Help"
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:14
 msgid "Security limits exceeded"
