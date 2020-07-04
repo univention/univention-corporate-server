@@ -589,6 +589,12 @@ Description[en]=If this option is activated, Stateless Address Autoconfiguration
 Type=bool
 Categories=system-network
 
+[interfaces/.*/hosts]
+Description[de]=Standardmäßig werden statische IP-Adressen mit dem FQHN und Host-Namen in /etc/hosts eingetragen. Diese Option erlaubt es, die Liste der Namen zu überschreiben.
+Description[en]=By default static IP addresses are added to /etc/hosts using the FQHN and host name. The option allows to overwrite this list of names.
+Type=str
+Categories=system-network
+
 [interfaces/restart/auto]
 Description[de]=Diese Option legt fest, ob beim Setzen von Netzwerk-UCR-Variablen (interfaces/*) automatisch die betroffene Netzwerkschnittstelle neu gestartet wird. Ist die Variable nicht gesetzt, erfolgt ein Neustart.
 Description[en]=This option configures, whether network interfaces are automatically restarted if the network-related UCR variables (interfaces/*) are modified. If the variable is unset, a restart occurs.
