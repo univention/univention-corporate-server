@@ -27,12 +27,6 @@ Variables: ldap/acl/user/password/change
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
-Subfile: etc/ldap/slapd.conf.d/64univention-ldap-server_acl-master-admin-settings
-Variables: ldap/server/type
-Variables: ldap/master
-
-Type: subfile
-Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/62univention-ldap-server_acl-portal
 Variables: ldap/base
 

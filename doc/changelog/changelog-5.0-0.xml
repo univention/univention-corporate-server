@@ -90,7 +90,7 @@
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						The container <uri>cn=admin-settings,cn=univention</uri> is no longer created (<u:bug>31048</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
