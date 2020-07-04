@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-6">
+<book lang="de" id="releasenotes-de-5.0-0">
 	<bookinfo>
-		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-6</subtitle>
+		<title>UCS 5.0 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 5.0-0</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,41 +44,27 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-6 steht das sechste Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 5.0-0 steht das fünfte Major Release für &ucsUCS; (UCS) zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Verbesserungen in der Benutzerselbstverwaltung über die Self-Service App.
-					Dem Nutzer werden in der Self-Service App, z.B. beim Zurücksetzen des Passworts, vordefinierte Texte angezeigt.
-					Administratoren können die Inhalte dieser Texte nun anpassen.
-					Neu registrierte Nutzer werden aktiviert, sobald die E-Mailadresse des Nutzers erfolgreich verifiziert worden ist.
-					Das Verhalten ist standardmäßig deaktiviert.
-					Mit der Option ist es möglich, ein UCS mit Self-Service Modul zu betreiben, an dem sich Nutzer selbst registrieren und ihr Benutzerkonto nach erfolgreicher Validierung der E-Mailadresse zu verwenden.
+					UCS 5 basiert auf Debian 10 <wordasword>Buster.</wordasword>
 			</para></listitem>
 			<listitem><para>
-					App Center: Eigene Hook <literal>Scripte</literal> für Administratoren.
-					UCS Systemadministratoren können jetzt auf einem UCS System eigene <literal>Scripte</literal> bei Apps hinterlegen, die vom App Center für eine nach Installation, Update oder Deinstallation ausgeführt werden.
-					Damit können z.B. wiederkehrende manuelle Schritte nach einem App Update automatisiert werden, bei denen eine App z.B. an individuelle Gegebenheiten angepasst wird.
-					Beispiel: Das Nachinstallieren von Schriften in die installierte Office App oder das Kopieren eines eigenen SSL Zertifikats in eine App.
+					Mehrere Komponenten wurden entfernen: &ucsUVMM;, Nagios, Desktop, …
 			</para></listitem>
 			<listitem><para>
-					UCS Portal: Warnung vor veralteten und nicht mehr unterstützten Browsern.
-					Einem Nutzer wird eine Warnung beim Login am UCS Managementsystem angezeigt, falls ein nicht unterstützter Browser, wie z.B. Internet Explorer 11, verwendet wird.
-					Die Warnung kann auch für das Portal aktiviert werden.
+					Systemrollen wurden umbenannt: <foreignphrase>Master</foreignphrase> → <foreignphrase>Primary,</foreignphrase> <foreignphrase>Backup</foreignphrase> → …, <foreignphrase>Slave</foreignphrase> → ...
 			</para></listitem>
 			<listitem><para>
-					Verbesserungen in der Produktstabilität.
-					Speicherleck in UMC Server behoben. Das führte u.a. dazu, dass der Nutzer Self-Service in größeren Umgebungen beim Ändern des eigenen Passworts nicht mehr funktionierte bis der UMC Server neu gestartet wurde.
-					Beobachtete Absturzverhalten des LDAP Servers im Zusammenhang mit dem <systemitem>ppolicy</systemitem> <wordasword>Overlay</wordasword> Modul wurden behoben.
-					Die UDM REST API kann jetzt mit Umlauten in in der URL eines API Aufrufs umgehen.
-					Abgelaufene Benutzerpasswörter können nun im Single Sign On Anmeldefenster direkt neu gesetzt werden.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-6 integriert, bspw. für QEMU, <application>bind9</application>, den Linux Kernel und PHP.
-					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
+			</para></listitem>
+			<listitem><para>
+					FIXME
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -106,11 +92,10 @@
 		</section>
 
 		<section id="relnotes:32bit">
-			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
+			<title>UCS nur noch als 64-Bit-Variante</title>
 			<para>
-				UCS-Installations-DVDs werden ab UCS 4 nur noch für 64-Bit-Architekturen bereitgestellt.
-				Vorhandene 32-Bit UCS 3 Systeme können weiterhin über das Online Repository oder über Update DVDs auf UCS 4 aktualisiert werden.
-				Die 32-Bit-Architektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
+				UCS 5 wird nur noch für 64-Bit-Architekturen bereitgestellt.
+				Vorhandene 32-Bit UCS Systeme können nicht auf UCS 5 aktualisiert werden.
 			</para>
 		</section>
 
@@ -121,8 +106,8 @@
 
 		<para>
 			Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist.
-			Eine Standard-Installation benötigt min. 10 GB Speicherplatz.
-			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr 4 GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
+			Eine Standard-Installation benötigt min. FIXME GB Speicherplatz.
+			Das Update benötigt je nach Umfang der vorhanden Installation ungefähr FIXME GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete.
 		</para>
 		<para>
 			Für das Update sollte eine Anmeldung auf der lokalen Konsole des Systems mit dem Benutzer <systemitem class="username">root</systemitem> durchgeführt und das Update dort gestartet werden.
@@ -140,11 +125,11 @@
 			Dieses Skript kann vor dem Update manuell auf das System geladen und ausgeführt werden:
 			<screen><![CDATA[
 # download
-curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
+curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0{,.gpg}
 
 # run script
-gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.4.gpg \
-        pre-update-checks-4.4 && bash pre-update-checks-4.4
+gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg pre-update-checks-5.0.gpg \
+        pre-update-checks-5.0 && bash pre-update-checks-5.0
 
 ...
 
@@ -220,25 +205,22 @@ Checking ldap_schema ...                          OK
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome ab Version 71</para>
+					<para>Chrome ab Version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox ab Version 60</para>
+					<para>Firefox ab Version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari und Safari Mobile ab Version 12</para>
+					<para>Safari und Safari Mobile ab Version FIXME</para>
 				</listitem>
 
 				<listitem>
-					<para>Microsoft Edge ab Version 18</para>
+					<para>Microsoft Edge ab Version FIXME</para>
 				</listitem>
 			</itemizedlist>
 
-			<para>
-				Der Internet Explorer wird ab diesem Release nicht mehr von &ucsUMC; unterstützt.
-			</para>
 			<para>
 				Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten.
 			</para>
@@ -250,10 +232,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-5</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-6</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-6.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-5.0-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
