@@ -45,7 +45,7 @@
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						Document &ucsUCRV; <envar>interfaces/.*/hosts</envar> (<u:bug>33743</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 
