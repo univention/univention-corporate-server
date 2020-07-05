@@ -1,3 +1,9 @@
+univention-lib (9.0.0-19) unstable; urgency=low
+
+  * Bug #33693: Add info for UCRV {groups,users/default/*
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 05 Jul 2020 17:03:58 +0200
+
 univention-lib (9.0.0-18) unstable; urgency=medium
 
   * Bug #51593: Improve fstab and misc tests

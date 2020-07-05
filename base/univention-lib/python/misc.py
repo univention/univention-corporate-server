@@ -122,7 +122,7 @@ def getLDAPServersCommaList(configRegistryInstance=None):
 def custom_username(name, configRegistryInstance=None):
 	# type: (str, Optional[univention.config_registry.ConfigRegistry]) -> str
 	"""
-	Returns the customized user name configured via |UCR|.
+	Returns the customized user name configured via |UCR| `users/default/*`.
 
 	:param str name: A user name.
 	:param univention.config_registry.ConfigRegistry configRegistryInstance: An optional |UCR| instance.
@@ -145,7 +145,7 @@ def custom_username(name, configRegistryInstance=None):
 def custom_groupname(name, configRegistryInstance=None):
 	# type: (str, Optional[univention.config_registry.ConfigRegistry]) -> str
 	"""
-	Returns the customized group name configured via |UCR|.
+	Returns the customized group name configured via |UCR| `groups/default/*`.
 
 	:param str name: A group name.
 	:param univention.config_registry.ConfigRegistry configRegistryInstance: An optional |UCR| instance.
