@@ -369,7 +369,7 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					Documentation for the &ucsUCRV;s <envar>groups/default/*</envar> and <envar>users/default/*</envar> has been added (<u:bug>33693</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
