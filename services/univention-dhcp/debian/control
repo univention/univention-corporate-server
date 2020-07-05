@@ -23,7 +23,6 @@ Depends:
  univention-runit (>= 0.2),
  ${misc:Depends},
 Breaks:
- dhcp3-server (<< 4),
  univention-bind (<< 11.0.0-4),
 Description: UCS - DHCP server
  This package installs a DHCP server that uses LDAP for

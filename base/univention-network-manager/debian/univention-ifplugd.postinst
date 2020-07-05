@@ -42,23 +42,10 @@ univention-config-registry set \
 for i in $(seq 0 10); do
 	var="interfaces_eth${i}_networkmanager"
 
-	if [ -n "${!var}" -a "${!var}" = "no" ]; then
+	if [ -n "${!var}" ] && [ "${!var}" = "no" ]; then
 		univention-config-registry set "interfaces/eth${i}/ifplugd=no"
 		univention-config-registry unset "${!var}"
 	fi
 done
-
-# Transition from /etc/dhcp3/ to /etc/dhcp/
-dpkg-maintscript-helper mv_conffile \
-    "/etc/dhcp3/dhclient-enter-hooks.d/univention-ifplugd-enter-hook" \
-    "/etc/dhcp/dhclient-enter-hooks.d/univention-ifplugd-enter-hook" \
-    4.0.0-1~ univention-ifplugd -- "$@"
-dpkg-maintscript-helper rm_conffile \
-    "/etc/dhcp3/dhclient-enter-hooks.univention.d/00_fallback.py" \
-    4.0.0-1~ univention-ifplugd -- "$@"
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1~;
-then
-    rmdir -p /etc/dhcp3/dhclient-enter-hooks.d /etc/dhcp3/dhclient-enter-hooks.univention.d 2>/dev/null || true
-fi
 
 exit 0

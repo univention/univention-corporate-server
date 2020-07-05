@@ -31,7 +31,6 @@ apache2	/usr/sbin/apache2
 apache2-mpm-prefork	/usr/sbin/apache2
 nscd	/usr/sbin/nscd
 bind9	/usr/sbin/named
-dhcp3-server	/usr/sbin/dhcpd3
 isc-dhcp-server	/usr/sbin/dhcpd
 univention-management-console	/usr/sbin/univention-management-console-server
 nagios2	/usr/sbin/nagios2

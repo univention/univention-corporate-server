@@ -322,7 +322,6 @@ univention-config-registry commit /etc/pam.d/httpd \
 							 /etc/pam_ldap.conf \
 							 /etc/libnss-ldap.conf \
 							 /etc/samba/smb.conf \
-							 /etc/dhcp3/dhcpd.conf \
 							 /etc/ldap/ldap.conf \
 
 service_stop slapd
