@@ -201,7 +201,4 @@ if configRegistry.is_false('ldap/acl/read/anonymous'):
 			print('   by peername.ip=%s read' % ip)
 else:
 	print('   by * read')
-
-if configRegistry.is_true('ldap/replog', False):
-	print("replogfile /var/lib/univention-ldap/replog/replog")
 @!@

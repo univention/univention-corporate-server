@@ -18,7 +18,4 @@ if configRegistry.is_false('ldap/acl/read/anonymous'):
 else:
 	print('   by * read')
 print('')
-
-if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
-	print("replogfile /var/lib/univention-ldap/replog/replog")
 @!@

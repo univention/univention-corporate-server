@@ -2,6 +2,7 @@ univention-ldap (16.0.0-5) unstable; urgency=low
 
   * Bug #31048: Remove cn=admin-settings,cn=univention
   * Bug #47949: Remove cn=admin-settings,cn=users,cn=policies
+  * Bug #42334: Remove replog code fragments
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 14:16:17 +0200
 
