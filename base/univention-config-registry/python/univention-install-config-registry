@@ -211,8 +211,11 @@ The mapping files debian/*.univention-config-registry-mapping go to /etc/univent
 		print(ex, file=sys.stderr)
 		sys.exit(1)
 
-	doIt("univention-install-config-registry-info")
-	doIt("univention-install-service-info")
+	for prog in ("univention-install-config-registry-info", "univention-install-service-info"):
+		ret = doIt(prog)
+		if ret:
+			print("Error: %s returned %d" % (prog, ret), file=sys.stderr)
+			sys.exit(1)
 
 
 if __name__ == '__main__':
