@@ -1,3 +1,9 @@
+univention-lib (9.0.3-0) unstable; urgency=medium
+
+  * Bug #33693: Add info for UCRV {groups,users}/default/*
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Jul 2020 10:44:40 +0200
+
 univention-lib (9.0.2-0) unstable; urgency=medium
 
   * Bug #51593: Remove unneded code

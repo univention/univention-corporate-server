@@ -28,3 +28,15 @@ Description[en]=Automatic deletion of backup-files in /var/univention-backup/: i
 Description[de]=Automatisches Löschen von Backup-Dateien in /var/univention-backup: wenn backup/clean/max_age gesetzt ist und weniger als backup/clean/min_backups Backup-Dateien existieren, werden keine Dateien gelöscht. Standardwert ist 10.
 Type=int
 Categories=service-misc
+
+[groups/default/.*]
+Description[de]=Übersetzung von bekannten Gruppennamen wie "Administrator" in lokalisierten Gruppennamen.
+Description[en]=Translation of well known group names like "Domain Admins" to localized group names.
+Type=str
+Categories=service-misc
+
+[users/default/.*]
+Description[de]=Übersetzung von bekannten Benutzernamen wie "Administrator" in lokalisierten Benutzernamen.
+Description[en]=Translation of well known user names like "Administrator" to localized user names.
+Type=str
+Categories=service-misc
