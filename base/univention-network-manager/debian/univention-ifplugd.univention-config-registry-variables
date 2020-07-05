@@ -1,5 +1,0 @@
-[networkmanager/action/mount]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, werden beim Start des Netzwerks alle in /etc/fstab definierten Dateisysteme eingebunden.
-Description[en]=If this variable is set to 'yes', all filesystems defined in /etc/fstab are mounted during network activation.
-Type=str
-Categories=system-base

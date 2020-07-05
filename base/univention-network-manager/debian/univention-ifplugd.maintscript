@@ -1,0 +1,4 @@
+rm_conffile /etc/dhcp/dhclient-enter-hooks.d/univention-ifplugd-enter-hook 12.0.0-2~
+rm_conffile /etc/univention/registry.info/variables/univention-ifplugd.cfg 12.0.0-2~
+rm_conffile /etc/univention/templates/files/etc/default/ifplugd 12.0.0-2~
+rm_conffile /etc/univention/templates/info/univention-ifplugd.info 12.0.0-2~

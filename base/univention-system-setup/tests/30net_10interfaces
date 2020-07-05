@@ -129,7 +129,6 @@ interfaces/eth0/type=static
 #interfaces/eth1/ipv6/default/address=2001:4dd0:f8fc::5054:00ff:fec5:0d48
 #interfaces/eth1/ipv6/default/prefix=64
 interfaces/primary=eth0
-interfaces/handler=ifplugd
 ldap/server/ip=192.168.122.11
 kernel/modules=quota_v2
 gateway=192.168.122.1

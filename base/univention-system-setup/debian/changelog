@@ -2,6 +2,7 @@ univention-system-setup (13.0.0-8) unstable; urgency=low
 
   * Bug #32462: Remove references to dhcp3
   * Bug #33008: Remove unused ldap_available.sh and references
+  * Bug #32847: Remove ifplugd support
 
  -- Philipp Hahn <hahn@univention.de>  Sun, 05 Jul 2020 07:05:42 +0200
 

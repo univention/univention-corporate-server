@@ -9,19 +9,10 @@ Standards-Version: 3.5.2
 
 Package: univention-ifplugd
 Architecture: all
-Conflicts:
- network-manager,
- univention-network-manager,
-Pre-Depends:
- dpkg (>= 1.15.7.2),
 Depends:
- ifplugd,
- isc-dhcp-client,
- univention-config (>= 8.0.2),
  univention-network-common (= ${source:Version}),
- ${misc:Depends},
-Description: UCS - Support for ifplugd
- This package installs the configuration for ifplugd.
+Description: UCS - Transitional dummy package
+ This package can be safely removed after upgrade.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -33,22 +24,22 @@ Architecture: all
 Depends:
  python-ipaddress,
  python-netifaces,
+ univention-config (>= 8.0.2),
  ${misc:Depends},
  ${python:Depends},
 Recommends:
  bridge-utils,
  ifenslave,
+ isc-dhcp-client,
  vlan,
 Replaces:
- univention-ifplugd,
  univention-network-manager,
 Suggests:
  univention-management-console-server,
 Breaks:
  univention-bind (<< 9.0.5-2),
-Description: UCS - Network tools for ifplugd and network-manager (common)
- This package installs tools required by univention-ifplugd and
- univention-network-manager.
+Description: UCS - Network tools for network-manager (common)
+ This package installs tools required by univention-network-manager.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
