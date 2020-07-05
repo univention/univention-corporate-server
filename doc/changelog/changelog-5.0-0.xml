@@ -78,6 +78,12 @@
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
+		<itemizedlist>
+			<listitem><simpara>
+				Support for <package>ifplugd</package> has been removed (<u:bug>32847</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
 			<itemizedlist>

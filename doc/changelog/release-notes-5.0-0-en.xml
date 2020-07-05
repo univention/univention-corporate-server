@@ -167,6 +167,13 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:packages">
 		<title>Notes on selected packages</title>
 
+		<section id="relnotes:network">
+			<title>Network configuration</title>
+			<para>
+				Support for <package>ifplugd</package> has been removed.
+			</para>
+		</section>
+
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>

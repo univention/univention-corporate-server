@@ -1,3 +1,0 @@
-Type: file
-File: etc/default/ifplugd
-Variables: interfaces/.*
