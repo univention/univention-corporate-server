@@ -188,7 +188,7 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The unused scipt <filename>ldap_available.sh</filename> has been removed (<u:bug>33008</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
