@@ -244,6 +244,9 @@
 				<listitem><simpara>
 					Fix the day of week in leases when fallback to link-local addresses is enabled (<u:bug>44427</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Remove remaining references to deprecated DHCP version 3 (<u:bug>32462</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
