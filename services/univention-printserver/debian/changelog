@@ -1,3 +1,9 @@
+univention-printserver (13.0.0-3) unstable; urgency=low
+
+  * Bug #32870: Remove support for univentionPrinterUseClientDriver
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 05 Jul 2020 07:40:00 +0200
+
 univention-printserver (13.0.0-2) unstable; urgency=medium
 
   * Bug #51530: updated PPD list in join script for UCS 5.0
