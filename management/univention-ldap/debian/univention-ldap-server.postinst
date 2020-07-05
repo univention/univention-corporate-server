@@ -153,14 +153,6 @@ fi
 
 eval "$(univention-config-registry shell)"
 
-if is_ucr_true "ldap/replog" ; then
-	test -f /var/lib/univention-ldap/replog/replog || \
-		touch /var/lib/univention-ldap/replog/replog
-	chmod 0600 /var/lib/univention-ldap/replog/replog
-	test -f /var/lib/univention-ldap/replog/replog.lock || \
-		touch /var/lib/univention-ldap/replog/replog.lock
-fi
-
 stop_slapd
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
 start_slapd
