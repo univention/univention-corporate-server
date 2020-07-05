@@ -1,6 +1,7 @@
 univention-network-manager (12.0.0-2) unstable; urgency=low
 
   * Bug #44427: Fix day-of-week in lease time
+  * Bug #32847: Remove ifplugd support
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 16:18:15 +0200
 

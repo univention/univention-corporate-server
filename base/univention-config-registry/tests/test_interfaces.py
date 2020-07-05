@@ -104,7 +104,6 @@ class TestInterfaces(object):
 		"""Test no interface."""
 		t = Interfaces(ucr={
 		})
-		assert 'ifplugd' == t.handler
 		assert 'eth0' == t.primary
 		assert t.ipv4_gateway is None
 		assert t.ipv6_gateway is None
@@ -283,10 +282,8 @@ class TestInterfaces(object):
 		t = Interfaces(ucr={
 			'gateway': '1.2.3.4',
 			'ipv6/gateway': '1:2:3:4:5:6:7:8',
-			'interfaces/handler': 'manual',
 			'interfaces/primary': 'br0',
 		})
-		assert 'manual' == t.handler
 		assert 'br0' == t.primary
 		assert IPv4Address(u'1.2.3.4') == t.ipv4_gateway
 		assert IPv6Address(u'1:2:3:4:5:6:7:8') == t.ipv6_gateway

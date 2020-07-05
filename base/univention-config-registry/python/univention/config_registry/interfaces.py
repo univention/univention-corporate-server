@@ -272,7 +272,6 @@ class Interfaces(object):
 		IPv6AddressClass = _NewIface.IPv6Address if use_python3_api else IPv6Address
 		IfaceClass = _NewIface if use_python3_api else _Iface
 
-		self.handler = ucr.get('interfaces/handler', 'ifplugd')
 		self.primary = ucr.get('interfaces/primary', 'eth0')
 		try:
 			self.ipv4_gateway = IPv4AddressClass(ucr['gateway'])

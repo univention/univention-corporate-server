@@ -601,12 +601,6 @@ Description[en]=This option configures, whether network interfaces are automatic
 Type=bool
 Categories=system-network
 
-[interfaces/handler]
-Description[de]=Konfiguriert das Programm zur Verwaltung der Netzwerkverbindungen: 'ifplugd' oder 'networkmanager'.
-Description[en]=Defines the program to manage network connections: 'ifplugd' or 'networkmanager'.
-Type=str
-Categories=system-network
-
 [interfaces/primary]
 Description[de]=Existieren mehrere Netzwerkschnittstellen auf einem System, kann mit dieser Variable die primäre angegeben werden. Ist hier kein Wert gesetzt, wird 'eth0' verwendet.
 Description[en]=If multiple network interfaces exist on a system, this variable allows configuring the primary network interface. If no value is set, 'eth0' is assumed.
