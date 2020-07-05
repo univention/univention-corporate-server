@@ -56,7 +56,7 @@ ldap_base = listener.baseConfig['ldap/base']
 name = 'cups-printers'
 description = 'Manage CUPS printer configuration'
 filter = '(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
-attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterPricePerPage', 'univentionPrinterPricePerJob', 'univentionPrinterQuotaSupport', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype', 'univentionPrinterUseClientDriver', ]
+attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterPricePerPage', 'univentionPrinterPricePerJob', 'univentionPrinterQuotaSupport', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']
 
 EMPTY = ('',)
 reload_samba_in_postrun = None
@@ -417,9 +417,6 @@ def handler(dn, new, old):
 							fp.write('valid users = %s\n' % perm)
 						if new['univentionPrinterACLtype'][0] == 'deny':
 							fp.write('invalid users = %s\n' % perm)
-
-					if new.get('univentionPrinterUseClientDriver', [''])[0] == '1':
-						fp.write('use client driver = yes\n')
 
 				os.chmod(filename, 0o755)
 				os.chown(filename, 0, 0)
