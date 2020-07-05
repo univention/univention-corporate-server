@@ -1,6 +1,7 @@
 univention-server (15.0.0-3) unstable; urgency=low
 
   * Bug #31026: Cleanup scripts
+  * Bug #32847: Remove ifplugd support
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 18:33:45 +0200
 

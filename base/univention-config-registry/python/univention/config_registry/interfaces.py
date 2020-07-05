@@ -254,7 +254,6 @@ class Interfaces(object):
 		if isinstance(ucr, ConfigRegistry):
 			ucr = VengefulConfigRegistry(ucr)
 
-		self.handler = ucr.get('interfaces/handler', 'ifplugd')
 		self.primary = ucr.get('interfaces/primary', 'eth0')
 		try:
 			self.ipv4_gateway = IPv4Address(ucr['gateway'])

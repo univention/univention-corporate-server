@@ -1,6 +1,7 @@
 univention-base-files (9.0.0-8) unstable; urgency=low
 
   * Bug #33743: Document UCRV interfaces/.*/hosts
+  * Bug #32847: Remove ifplugd support
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 08:02:16 +0200
 

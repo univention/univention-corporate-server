@@ -33,10 +33,6 @@
 override_dh_fixperms:
 	dh_fixperms
 	chmod 755 debian/univention-network-common/etc/network/if-pre-up.d/10_dhclientconf
-	chmod 755 debian/univention-ifplugd/etc/dhcp/dhclient-enter-hooks.d/univention-ifplugd-enter-hook
-
-override_dh_installinit:
-	dh_installinit -punivention-network-common --no-start -u"defaults 98"
 
 override_dh_auto_install:
 	dh_auto_install
