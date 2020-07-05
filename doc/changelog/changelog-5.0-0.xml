@@ -44,6 +44,10 @@
 				<listitem><simpara>
 						Document &ucsUCRV; <envar>interfaces/.*/hosts</envar> (<u:bug>33743</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					<command>univention-install-config-registry</command> calls <command>univention-install-config-registry-info</command> and <command>univention-install-service-info</command> during package build time.
+					It now propagates failures and aborts if calling those programs fails (<u:bug>32658</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
