@@ -188,7 +188,7 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The unused scipt <filename>ldap_available.sh</filename> has been removed (<u:bug>33008</u:bug>)
+					The unused script <filename>ldap_available.sh</filename> has been removed (<u:bug>33008</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -308,7 +308,7 @@
 			<title>Printers module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The code for handling <property>univentionPrinterUseClientDriver</property> has been removed from the &ucsUDL; module (<u:bug>32870</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
