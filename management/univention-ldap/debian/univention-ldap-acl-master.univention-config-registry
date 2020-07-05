@@ -5,7 +5,6 @@ Variables: ldap/master
 Variables: ldap/base
 Variables: slapd/port
 Variables: ldap/debug/level
-Variables: ldap/replog
 Variables: ldap/acl/.*
 Variables: users/default/.*
 Variables: groups/default/.*
@@ -15,7 +14,6 @@ Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/60univention-ldap-server_acl-master
 Variables: ldap/server/type
 Variables: ldap/master
-Variables: ldap/replog
 Variables: slapd/port
 
 Type: subfile
@@ -35,5 +33,4 @@ Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/70univention-ldap-server_acl-master-end
 Variables: ldap/server/type
 Variables: ldap/master
-Variables: ldap/replog
 Variables: ldap/acl/.*
