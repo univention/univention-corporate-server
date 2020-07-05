@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.0-2) unstable; urgency=low
+
+  * Bug #42334: Remove replog code fragments
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 05 Jul 2020 19:12:16 +0200
+
 univention-directory-listener (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

@@ -1,4 +1,3 @@
 var/lib/univention-ldap/ldap
 var/lib/univention-ldap/translog
-var/lib/univention-ldap/replog
 var/lib/univention-ldap/fake

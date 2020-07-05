@@ -118,7 +118,7 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						The last remainders for <wordasword>replog</wordasword> replication have been removed (<u:bug>42334</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</section>

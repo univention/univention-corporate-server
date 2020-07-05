@@ -39,7 +39,6 @@ case "$1" in
 	"purge")
 		# Subdirectories belonging directly to package univention-ldap-server
 		rm -rf /var/lib/univention-ldap/fake
-		rm -rf /var/lib/univention-ldap/replog
 		rm -rf /var/lib/univention-ldap/ldap
 
 		# Subdirectories belonging to package univention-directory-notifier

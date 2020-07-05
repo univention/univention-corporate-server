@@ -63,10 +63,6 @@ install -d -o listener -g root -m 0755 /var/lib/univention-ldap/schema/id
 touch /var/lib/univention-ldap/schema/id/id
 chown listener:root /var/lib/univention-ldap/schema/id/id
 
-if [ -e /var/lib/univention-ldap/replog/replog ]; then
-	chmod 600 /var/lib/univention-ldap/replog/replog
-fi
-
 call_joinscript 03univention-directory-listener.inst
 
 if [ "$1" = "configure" ] && [ -n "$2" ]; then

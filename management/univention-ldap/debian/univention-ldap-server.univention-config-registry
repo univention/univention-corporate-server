@@ -5,7 +5,6 @@ Variables: slapd/port
 Variables: slapd/port/ldaps
 Variables: ldap/database/type
 Variables: ldap/schema/export
-Variables: ldap/replog
 Variables: ldap/maxopenfiles
 
 Type: file
@@ -30,7 +29,6 @@ Variables: ldap/index/eq
 Variables: ldap/index/pres
 Variables: ldap/index/sub
 Variables: ldap/index/approx
-Variables: ldap/replog
 Variables: ldap/translogfile
 Variables: ldap/timeout
 Variables: ldap/online/master

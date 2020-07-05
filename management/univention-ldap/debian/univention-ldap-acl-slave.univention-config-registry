@@ -2,7 +2,6 @@ Type: multifile
 Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
 Variables: ldap/master
-Variables: ldap/replog
 Variables: ldap/base
 Variables: ldap/hostdn
 Variables: groups/default/.*
@@ -18,5 +17,4 @@ Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/70univention-ldap-server_acl-slave-end
 Variables: ldap/base
-Variables: ldap/replog
 Variables: ldap/acl/read/.*
