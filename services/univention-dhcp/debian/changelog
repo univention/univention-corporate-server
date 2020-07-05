@@ -1,3 +1,9 @@
+univention-dhcp (14.0.0-2) unstable; urgency=low
+
+  * Bug #32462: Remove references to dhcp3
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 05 Jul 2020 07:01:03 +0200
+
 univention-dhcp (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
