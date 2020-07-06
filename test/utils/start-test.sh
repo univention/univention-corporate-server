@@ -32,12 +32,19 @@ export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$OLD_VERSION}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=lattjo.knut.univention.de}"
 export KVM_MEMORY="${KVM_MEMORY:=2048M}"
 export KVM_CPUS="${KVM_CPUS:=1}"
-export EXACT_MATCH"${EXACT_MATCH:=false}"
+export EXACT_MATCH="${EXACT_MATCH:=false}"
 export SHUTDOWN="${SHUTDOWN:=false}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
 export CFG="$1"
+
+# TODO, find a better way
+# special ip's for net-install tests, we can't use kvm_dhcp as we need
+# our own dhcp server for pxe, so create two ip adresses based on the
+# ucs patch level version
+export NETINSTALL_IP1=$(((${release##*-} + 3) * 2 ))
+export NETINSTALL_IP2=$(($NETINSTALL_IP1 +1))
 
 # Jenkins defaults
 if [ "$USER" = "jenkins" ]; then
