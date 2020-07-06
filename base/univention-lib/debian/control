@@ -10,6 +10,9 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-ucs-translation-template,
+ univention-unittests,
+ python-pil,
+ python3-pil,
 
 Package: python-univention-lib
 Architecture: all
