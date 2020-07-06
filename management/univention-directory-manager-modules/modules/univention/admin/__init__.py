@@ -105,12 +105,13 @@ def ucr_overwrite_properties(module, lo):
 							else:
 								syntax = univention.admin.syntax.string()
 								setattr(prop, attr, syntax())
+					elif prop_val_type is bool:
+						setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val))
 					else:
 						setattr(prop, attr, prop_val_type(new_prop_val))
-					ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s' % old_prop_val)
-					ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute (type): %s' % prop_val_type)
-		except Exception as e:
-			ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % str(e))
+					ud.debug(ud.ADMIN, ud.INFO, 'ucr_overwrite_properties: get property attribute: %s (type %s)' % (old_prop_val, prop_val_type))
+		except Exception as exc:
+			ud.debug(ud.ADMIN, ud.ERROR, 'ucr_overwrite_properties: failed to set property attribute: %s' % (exc,))
 			continue
 
 
