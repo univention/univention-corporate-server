@@ -1,3 +1,9 @@
+univention-config-registry (15.0.0-5) unstable; urgency=medium
+
+  * Bug #30127: fix arguments of UCR register API
+
+ -- Florian Best <best@univention.de>  Sun, 05 Jul 2020 17:16:15 +0200
+
 univention-config-registry (15.0.0-4) unstable; urgency=medium
 
   * Bug #38938: UCR variables may now specify default values
