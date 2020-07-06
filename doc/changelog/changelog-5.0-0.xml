@@ -636,7 +636,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The package <package>cifs-utils</package> is now installed by default(<u:bug>39259</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

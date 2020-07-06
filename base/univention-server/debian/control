@@ -198,6 +198,7 @@ Depends:
  univention-updater,
  ${misc:Depends},
 Recommends:
+ cifs-utils,
  eject,
  elinks,
  emacs-gtk,
