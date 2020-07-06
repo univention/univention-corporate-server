@@ -35,6 +35,7 @@ from .conftest import import_lib_module
 locking = import_lib_module('locking')
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize('nonblocking', [True, False])
 def test_locking(nonblocking):
 	lock = locking.get_lock('foo', nonblocking)
