@@ -49,4 +49,4 @@ def import_module(name, local_src_path, python_module_name, use_installed):
 
 def skipifbuildingpackage(func):
 	import pytest
-	return pytest.mark.skipif(os.environ.get('COWBUILDERBASE'), reason='Skipping in build environment. You need to check this test manually')(func)
+	return pytest.mark.skipif(os.environ.get('DEBBUILDOPTS'), reason='Skipping in build environment. You need to check this test manually')(func)
