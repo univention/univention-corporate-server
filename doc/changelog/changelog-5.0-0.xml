@@ -189,6 +189,9 @@
 					The modules for handling <foreignphrase>Mobile clients</foreignphrase>, <foreignphrase>Fat Clients</foreignphrase>, <foreignphrase>Thin Clients</foreignphrase>, <foreignphrase>Univention Corporate Clients</foreignphrase> and their policies and settings have been removed (<u:bug>51973</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					The unused script <filename>lock_expired_passwords</filename> has been removed (<u:bug>46350</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
