@@ -1,4 +1,4 @@
-ucs-test (10.0.0-31) unstable; urgency=medium
+ucs-test (10.0.0-32) unstable; urgency=medium
 
   * Bug #39355: fix 82_saml/25_broken_idp_metadata
 
