@@ -29,7 +29,10 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from collections import Hashable
+try:
+	from collections.abc import Hashable
+except ImportError:
+	from collections import Hashable
 
 import pytest
 
