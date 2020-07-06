@@ -1,3 +1,9 @@
+univention-lib (9.0.0-21) unstable; urgency=medium
+
+  * Bug #51593: Bake univention-unittest into build process
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jul 2020 17:15:45 +0200
+
 univention-lib (9.0.0-20) unstable; urgency=medium
 
   * Bug #51593: Add ucrLogrotate tests
