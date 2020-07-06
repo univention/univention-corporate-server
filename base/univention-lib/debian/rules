@@ -35,7 +35,7 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_auto_test:
-	python -m doctest python/ucs.py  -v
+	univention-unittest
 
 override_dh_auto_install:
 	univention-install-config-registry
