@@ -15,7 +15,6 @@ scripts/listpwexpiry usr/share/univention-directory-manager-tools/
 scripts/change_srv_priority.py usr/share/univention-directory-manager-tools/
 scripts/convert-user-base64-photos usr/share/univention-directory-manager-tools/
 scripts/lock_expired_accounts usr/share/univention-directory-manager-tools/
-scripts/lock_expired_passwords usr/share/univention-directory-manager-tools/
 univention-cli-client usr/share/univention-directory-manager-tools/
 univention-cli-server usr/share/univention-directory-manager-tools/
 univention-sync-memberuid usr/share/univention-directory-manager-tools/
