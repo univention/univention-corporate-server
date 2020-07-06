@@ -13,6 +13,7 @@ Build-Depends:
  univention-unittests,
  python-pil,
  python3-pil,
+ pwgen,
 
 Package: python-univention-lib
 Architecture: all

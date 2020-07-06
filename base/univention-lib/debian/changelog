@@ -1,4 +1,4 @@
-univention-lib (9.0.0-23) unstable; urgency=medium
+univention-lib (9.0.0-24) unstable; urgency=medium
 
   * Bug #51628: execute shell utilities with Python 3
 
