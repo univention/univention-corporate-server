@@ -1,3 +1,9 @@
+univention-server (15.0.0-4) unstable; urgency=medium
+
+  * Bug #32847: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jul 2020 16:13:04 +0200
+
 univention-server (15.0.0-3) unstable; urgency=low
 
   * Bug #31026: Cleanup scripts
