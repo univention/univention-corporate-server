@@ -189,6 +189,9 @@
 					The unused script <filename>lock_expired_passwords</filename> has been removed (<u:bug>46350</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					No traceback is logged anymore when creating objects with <command>--ignore_exists</command> when the objects already exists (<u:bug>46931</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
