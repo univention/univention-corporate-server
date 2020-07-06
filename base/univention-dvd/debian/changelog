@@ -1,3 +1,9 @@
+univention-dvd (5.0.0-2) unstable; urgency=low
+
+  * Bug #39259: Recommends: cifs-utils
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Jul 2020 11:55:50 +0200
+
 univention-dvd (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: Do and undo UCS-5.0-0 version bump
