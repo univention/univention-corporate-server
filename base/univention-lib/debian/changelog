@@ -1,3 +1,9 @@
+univention-lib (9.0.0-27) unstable; urgency=medium
+
+  * Bug #51593: Skip certain tests if in pbuilder env
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jul 2020 23:41:27 +0200
+
 univention-lib (9.0.0-24) unstable; urgency=medium
 
   * Bug #51628: execute shell utilities with Python 3
