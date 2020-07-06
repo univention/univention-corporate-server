@@ -6,8 +6,8 @@ set -e
 
 export REPLACE=true
 export SHUTDOWN=true
-export KVM_BUILD_SERVER=lattjo
 export KVM_USER="${KVM_USER:=$USER}"
+test "$USER" = "jenkins" && export KVM_USER='build'
 
 
 mssh () {
