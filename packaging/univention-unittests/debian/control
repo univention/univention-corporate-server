@@ -36,7 +36,6 @@ Description: Plugins for pytest that go with UCS specific packages.
 Package: univention-unittests
 Architecture: all
 Depends:
- bash,
  univention-unittests-python,
 Description: Unittests for UCS.
  .
