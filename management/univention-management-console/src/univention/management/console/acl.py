@@ -382,8 +382,9 @@ class LDAP_ACLs(ACLs):
 		try:
 			userdn = self.lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]
 			policy = self._get_policy_for_dn(userdn)
-		except (udm_errors.base, ldap.LDAPError, IndexError):
-			ACL.warn('Error reading credentials from LDAP: %s' % (traceback.format_exc(),))
+		except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
+			if not isinstance(exc, IndexError):
+				ACL.warn('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc(),))
 			# read ACLs from file
 			self._read_from_file(self.username)
 			return
