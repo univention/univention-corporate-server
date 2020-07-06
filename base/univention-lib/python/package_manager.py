@@ -292,8 +292,10 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 		p = os.fork()
 		if p == 0:
 			# child -> redirect stdout/stderr of dpkg to pipe
-			os.dup2(fd_pipe_write, sys.stdout.fileno())
-			os.dup2(fd_pipe_write, sys.stderr.fileno())
+			if sys.stdout is not None:
+				os.dup2(fd_pipe_write, sys.stdout.fileno())
+			if sys.stderr is not None:
+				os.dup2(fd_pipe_write, sys.stderr.fileno())
 
 			# close unneeded pipe handles
 			os.close(fd_pipe_read)
