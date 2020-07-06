@@ -1,3 +1,9 @@
+univention-lib (9.0.0-20) unstable; urgency=medium
+
+  * Bug #51593: Add ucrLogrotate tests
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jul 2020 16:39:30 +0200
+
 univention-lib (9.0.0-19) unstable; urgency=low
 
   * Bug #33693: Add info for UCRV {groups,users/default/*
