@@ -16,12 +16,13 @@ Standards-Version: 3.8.2
 Package: univention-unittests-python
 Architecture: all
 Depends:
- univention-unittests,
  python-pytest,
  python-pytest-mock,
  python-mock,
  python3-pytest,
  python3-pytest-mock,
+Recommends:
+ univention-unittests,
 Suggests:
  python-pytest-cov,
  python3-pytest-cov,
@@ -35,7 +36,6 @@ Description: Plugins for pytest that go with UCS specific packages.
 Package: univention-unittests
 Architecture: all
 Depends:
- bash,
  univention-unittests-python,
 Description: Unittests for UCS.
  .
