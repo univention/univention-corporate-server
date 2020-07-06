@@ -1,3 +1,9 @@
+univention-unittests (2.0.0-5) unstable; urgency=medium
+
+  * Bug #51566: Fixed dependency
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2020 20:01:42 +0200
+
 univention-unittests (2.0.0-4) unstable; urgency=medium
 
   * Bug #51259: add functions to ucr fixture
