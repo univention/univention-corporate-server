@@ -19,6 +19,7 @@ Depends:
  tofrodos,
  univention-config,
  univention-directory-manager-tools (>> 7.0.147),
+ univention-ipcalc,
  univention-ssh (>= 3.0.1-2),
  univention-ssl (>= 13.0.0-5),
  ${misc:Depends},
