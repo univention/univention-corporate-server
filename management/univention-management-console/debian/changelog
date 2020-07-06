@@ -1,3 +1,9 @@
+univention-management-console (12.0.0-13) unstable; urgency=medium
+
+  * Bug #34642: Fix exit status of univention-management-console-client
+
+ -- Arvid <requate@univention.de>  Mon, 06 Jul 2020 17:32:53 +0200
+
 univention-management-console (12.0.0-12) unstable; urgency=medium
 
   * Bug #51604: Fix accessing UDM REST API by defining ProxyPass in

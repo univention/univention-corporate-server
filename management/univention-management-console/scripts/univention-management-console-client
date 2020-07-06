@@ -175,7 +175,7 @@ class CLI_Client(Client):
 			self.__finished = datetime.datetime.now()
 			self.print_timing(msg)
 		if self._options.quiet:
-			raise ClientExit(msg.status - 200)
+			raise ClientExit(msg.status)
 		print('Response: %s' % msg.command)
 		print('  data length   : %4d' % len(str(msg)))
 		print('  message length: %4d' % msg._length)
@@ -207,7 +207,7 @@ class CLI_Client(Client):
 			else:
 				print('  RESULT   : %s' % result)
 			if msg.status is not None:
-				raise ClientExit(msg.status - 200)
+				raise ClientExit(msg.status)
 		else:
 			print('BODY    : %s' % str(msg.body))
 		raise ClientExit()
@@ -316,7 +316,9 @@ if __name__ == '__main__':
 	except ClientExit as exit:
 		if exit.args:
 			exitcode = int(exit.args[0])
-			if exitcode == 200:
+			if 200 <= exitcode < 300:
 				exitcode = 0
+			else:
+				exitcode = 1  # dooh, sys.exit returns a short, mapping 400 to 144
 			sys.exit(exitcode)
 		sys.exit(0)
