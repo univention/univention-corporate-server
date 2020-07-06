@@ -41,7 +41,7 @@ if forwarders:
 	print('# Ignoring any setting of dns/fakeroot.')
 	print('zone "." {')
 	print('\ttype forward;')
-	print('\tforwarders { %s; }' % ('; '.join(forwarders),))
+	print('\tforwarders { %s; };' % ('; '.join(forwarders),))
 	print('};')
 elif configRegistry.is_true('dns/fakeroot', True):
 	print('\n# Found no forwarder in ucr variables.')
