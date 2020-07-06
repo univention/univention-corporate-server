@@ -132,6 +132,7 @@ univention-pkgdb
 
 univention-samba
 univention-samba4
+cifs-utils
 
 univention-s4-connector
 /* FIXME # univention-nagios-s4-connector  # FIXME */

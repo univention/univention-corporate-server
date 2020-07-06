@@ -1,7 +1,8 @@
-univention-server (15.0.0-3) unstable; urgency=low
+univention-server (15.0.1-0) unstable; urgency=low
 
   * Bug #31026: Cleanup scripts
   * Bug #32847: Remove ifplugd support
+  * Bug #39259: Recommends: cifs-utils
 
  -- Philipp Hahn <hahn@univention.de>  Sat, 04 Jul 2020 18:33:45 +0200
 
