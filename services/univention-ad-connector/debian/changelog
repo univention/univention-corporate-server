@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.0-5) unstable; urgency=medium
+
+  * Bug #51336: migrate UMC module to Python 3
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2020 20:41:52 +0200
+
 univention-ad-connector (14.0.0-4) unstable; urgency=medium
 
   * Big #18501: fix python3 syntax errors
