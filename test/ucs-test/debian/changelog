@@ -1,4 +1,10 @@
-ucs-test (10.0.0-32) unstable; urgency=medium
+ucs-test (10.0.0-34) unstable; urgency=medium
+
+  * Bug #50631: Support UCS 5.0 in docker tests
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2020 01:45:13 +0200
+
+ucs-test (10.0.0-33) unstable; urgency=medium
 
   * Bug #39355: fix 82_saml/25_broken_idp_metadata
 
