@@ -165,6 +165,9 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The package <package>univention-doc</package> and <package>univention-management-console-doc</package> has been removed (<u:bug>51487</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
