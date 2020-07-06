@@ -3,7 +3,6 @@ Description=Register current IP addresses in LDAP directory
 After=network-online.target
 Wants=network-online.target
 ConditionPathExists=/var/univention-join/joined
-ConditionFileIsExecutable=/usr/sbin/umc-command
 ConditionFileIsExecutable=/usr/sbin/univention-register-network-address
 ConditionVirtualization=!container
 
