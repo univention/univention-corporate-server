@@ -181,35 +181,35 @@ is_domain_controller () {
 # returns the default IP address
 #
 get_default_ip_address () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().ip)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().ip)'
 }
 
 #
 # returns the default IPv4 address
 #
 get_default_ipv4_address () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv4_address().ip)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv4_address().ip)'
 }
 
 #
 # returns the default IPv6 address
 #
 get_default_ipv6_address () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv6_address().ip)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv6_address().ip)'
 }
 
 #
 # returns the default netmask
 #
 get_default_netmask () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; import ipaddr; a=Interfaces().get_default_ip_address(); print(a.netmask if isinstance(a,ipaddr.IPv4Network) else a.prefixlen)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; import ipaddress; a = Interfaces().get_default_ip_address(); print(a.netmask if isinstance(a, ipaddress.IPv4Interface) else a.network.prefixlen)'
 }
 
 #
 # returns the default network
 #
 get_default_network () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().network)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().network.network_address)'
 }
 
 

@@ -29,7 +29,7 @@ Depends:
  python-samba,
  python-six,
  python-univention (>= 12.0.0-4),
- python-univention-config-registry (>= 10.0.0-1),
+ python-univention-config-registry (>= 15),
  ${misc:Depends},
  ${python:Depends},
 Provides:
@@ -81,7 +81,7 @@ Depends:
  pwgen,
  python-univention-lib (= ${binary:Version}),
  python3-univention-lib (= ${binary:Version}),
- univention-config (>= 12),
+ univention-config (>= 15),
  ${misc:Depends},
 Description: UCS - common scripting functions for shell scripts
  This package contains shell functions used by various
