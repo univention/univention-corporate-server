@@ -1,4 +1,4 @@
-univention-directory-manager-modules (15.0.1-12) unstable; urgency=medium
+univention-directory-manager-modules (15.0.1-13) unstable; urgency=medium
 
   * Bug #46350: remove unused script lock_expired_passwords
 
