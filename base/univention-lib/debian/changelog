@@ -1,3 +1,9 @@
+univention-lib (9.0.0-23) unstable; urgency=medium
+
+  * Bug #51628: execute shell utilities with Python 3
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2020 19:48:14 +0200
+
 univention-lib (9.0.0-21) unstable; urgency=medium
 
   * Bug #51593: Bake univention-unittest into build process
