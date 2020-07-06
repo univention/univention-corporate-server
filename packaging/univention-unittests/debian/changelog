@@ -1,3 +1,9 @@
+univention-unittests (2.0.0-9) unstable; urgency=medium
+
+  * Bug #51593: Remove pytest build dependency and fix it differently
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jul 2020 00:10:38 +0200
+
 univention-unittests (2.0.0-8) unstable; urgency=medium
 
   * Bug #51593: Add pytest build dependency otherwise an import test fails
