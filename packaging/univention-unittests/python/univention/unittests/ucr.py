@@ -43,6 +43,9 @@ class TestUCR(object):
 		# raises KeyError... lets see how this ends
 		return self.items[key]
 
+	def __delitem__(self, key):
+		del self.items[key]
+
 	def __setitem__(self, key, value):
 		self.items[key] = value
 
