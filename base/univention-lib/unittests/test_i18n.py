@@ -28,9 +28,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
 import pytest
 
+from univentionunittests import skipifbuildingpackage
 from .conftest import import_lib_module
 
 i18n = import_lib_module('i18n')
@@ -121,7 +121,7 @@ class TestTranslation(object):
 		translation = i18n.Translation('univention.lib')
 		assert translation._domain == 'univention-lib'
 
-	@pytest.mark.skipif(os.environ.get('COWBUILDERBASE'))
+	@skipifbuildingpackage
 	def test_set_language(self):
 		i18n.Translation.locale = i18n.Locale()
 		translation = i18n.Translation('univention.lib')
