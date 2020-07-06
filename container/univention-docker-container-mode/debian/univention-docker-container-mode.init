@@ -212,7 +212,7 @@ case "$1" in
 		ret=0
 		# System must be joined
 		if [ -e /var/univention-join/joined ]; then
-			if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null && [ -e /usr/sbin/umc-command ]; then
+			if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null; then
 				# Register the IP only if an old IP address was set. The IP and MAC
 				# registration is skipped if a Docker App is installed / configured
 				#   https://forge.univention.org/bugzilla/show_bug.cgi?id=38437
