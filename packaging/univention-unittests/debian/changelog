@@ -1,3 +1,9 @@
+univention-unittests (2.0.0-8) unstable; urgency=medium
+
+  * Bug #51593: Add pytest build dependency otherwise an import test fails
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 Jul 2020 00:02:15 +0200
+
 univention-unittests (2.0.0-7) unstable; urgency=medium
 
   * Bug #51593: Support skipping certain tests if in pbuilder env
