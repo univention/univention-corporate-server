@@ -11,8 +11,6 @@ Build-Depends:
  python-setuptools,
  python3-all,
  python3-setuptools,
- python-pytest,
- python3-pytest,
 Standards-Version: 3.8.2
 
 Package: univention-unittests-python
