@@ -24,9 +24,11 @@ Architecture: all
 Depends:
  python-ipaddress,
  python-netifaces,
+ python3-netifaces,
+ python3-univention-lib,
  univention-config (>= 8.0.2),
  ${misc:Depends},
- ${python:Depends},
+ ${python3:Depends},
 Recommends:
  bridge-utils,
  ifenslave,
@@ -34,8 +36,6 @@ Recommends:
  vlan,
 Replaces:
  univention-network-manager,
-Suggests:
- univention-management-console-server,
 Breaks:
  univention-bind (<< 9.0.5-2),
 Description: UCS - Network tools for network-manager (common)
