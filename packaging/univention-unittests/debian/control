@@ -37,7 +37,6 @@ Package: univention-unittests
 Architecture: all
 Depends:
  bash,
-Recommends:
  univention-unittests-python,
 Description: Unittests for UCS.
  .
