@@ -986,7 +986,13 @@ class ConfigHandlers:
 			for variable in handler.variables:
 				v2h = self._handlers.setdefault(variable, set())
 				v2h.add(handler)
-				values[variable] = ucr[variable]
+				values[variable] = (None, ucr[variable])
+				try:
+					_re = re.compile(variable)
+				except re.error:
+					continue
+
+				values.update((key, (None, val)) for key, val in ucr.items() if _re.match(key))
 
 			handler((ucr, values))
 
