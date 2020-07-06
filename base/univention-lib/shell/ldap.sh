@@ -398,7 +398,7 @@ ucs_registerLDAPExtension () {
 	fi
 
 	local rc
-	python -m univention.lib.ldap_extension ucs_registerLDAPExtension --packagename "$package_name" --packageversion "$package_version" "$@"
+	python3 -m univention.lib.ldap_extension ucs_registerLDAPExtension --packagename "$package_name" --packageversion "$package_version" "$@"
 
 	rc=$?
 	case $rc in
@@ -416,7 +416,7 @@ ucs_registerLDAPExtension () {
 # e.g. ucs_unregisterLDAPExtension --acl <acl object name> --schema <schema object name>
 #
 ucs_unregisterLDAPExtension () {
-	python -m univention.lib.ldap_extension ucs_unregisterLDAPExtension "$@"
+	python3 -m univention.lib.ldap_extension ucs_unregisterLDAPExtension "$@"
 }
 
 
