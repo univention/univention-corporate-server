@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.1-0) unstable; urgency=medium
+
+  * Bug #51336: migrate UMC module to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 08 Sep 2020 15:41:19 +0200
+
 univention-ad-connector (14.0.0-2) unstable; urgency=medium
 
   * Bug #51484: remove unused dependency on pysqlite2
