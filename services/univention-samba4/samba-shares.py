@@ -31,14 +31,16 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import print_function
+
 import listener
 import os
 import re
 import subprocess
 import univention.debug
 import univention.lib.listenerSharePath
-import cPickle
-import urllib
+import pickle
+from six.moves.urllib_parse import quote
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers, ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
@@ -59,7 +61,7 @@ tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'
 def _validate_smb_share_name(name):
 	if not name or len(name) > 80:
 		return False
-	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
+	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, list(range(0x1F + 1)))))
 	if set(str(name)) & illegal_chars:
 		return False
 	return True
@@ -74,11 +76,11 @@ def handler(dn, new, old, command):
 	current_fqdn = "%s.%s" % (configRegistry['hostname'], domainname)
 	current_ip = str(interfaces.get_default_ip_address().ip)
 
-	new_univentionShareHost = new.get('univentionShareHost', [None])[0]
+	new_univentionShareHost = new.get('univentionShareHost', [b''])[0].decode('ASCII')
 	if new and new_univentionShareHost not in (current_fqdn, current_ip):
 		new = {}  # new object is not for this host
 
-	old_univentionShareHost = old.get('univentionShareHost', [None])[0]
+	old_univentionShareHost = old.get('univentionShareHost', [b''])[0].decode('ASCII')
 	if old and old_univentionShareHost not in (current_fqdn, current_ip):
 		old = {}  # old object is not for this host
 
@@ -91,10 +93,10 @@ def handler(dn, new, old, command):
 	try:
 		if not os.path.exists(tmpDir):
 			os.makedirs(tmpDir)
-	except Exception as e:
+	except Exception as exc:
 		univention.debug.debug(
 			univention.debug.LISTENER, univention.debug.ERROR,
-			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, str(e)))
+			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
 		return
 	finally:
 		listener.unsetuid()
@@ -112,11 +114,11 @@ def handler(dn, new, old, command):
 		if command == "r" and old:
 			f = open(tmpFile, "w+")
 			os.chmod(tmpFile, 0o600)
-			cPickle.dump({"dn": dn, "old": old}, f)
+			pickle.dump({"dn": dn, "old": old}, f)
 			f.close()
 		elif command == "a" and not old and os.path.isfile(tmpFile):
 			f = open(tmpFile, "r")
-			p = cPickle.load(f)
+			p = pickle.load(f)
 			f.close()
 			oldObject = p.get("old", {})
 			os.remove(tmpFile)
@@ -130,8 +132,8 @@ def handler(dn, new, old, command):
 		listener.unsetuid()
 
 	if old:
-		share_name = old.get('univentionShareSambaName', [''])[0]
-		share_name_mapped = urllib.quote(share_name, safe='')
+		share_name = old.get('univentionShareSambaName', [b''])[0].decode('UTF-8', 'ignore')
+		share_name_mapped = quote(share_name, safe='')
 		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
 		listener.setuid(0)
 		try:
@@ -152,11 +154,11 @@ def handler(dn, new, old, command):
 		return (_quote(arg) for arg in args)
 
 	if new:
-		share_name = new['univentionShareSambaName'][0]
+		share_name = new['univentionShareSambaName'][0].decode('UTF-8', 'ignore')
 		if not _validate_smb_share_name(share_name):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "invalid samba share name: %r" % (share_name,))
 			return
-		share_name_mapped = urllib.quote(share_name, safe='')
+		share_name_mapped = quote(share_name, safe='')
 		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
 
 		# important!: createOrRename() checks if the share path is allowed. this must be done prior to writing any files.
@@ -178,44 +180,44 @@ def handler(dn, new, old, command):
 		try:
 			fp = open(filename, 'w')
 
-			print >>fp, '[%s]' % (share_name,)
+			print('[%s]' % (share_name,), file=fp)
 			if share_name != 'homes':
-				print >>fp, 'path = %s' % _quote(new['univentionSharePath'][0])
+				print('path = %s' % _quote(new['univentionSharePath'][0].decode('UTF-8', 'ignore')), file=fp)
 			mapping = [
-				('description', 'comment'),
-				('univentionShareSambaMSDFS', 'msdfs root'),
-				('univentionShareSambaWriteable', 'writeable'),
-				('univentionShareSambaBrowseable', 'browseable'),
-				('univentionShareSambaPublic', 'public'),
-				('univentionShareSambaDosFilemode', 'dos filemode'),
-				('univentionShareSambaHideUnreadable', 'hide unreadable'),
-				('univentionShareSambaCreateMode', 'create mode'),
-				('univentionShareSambaDirectoryMode', 'directory mode'),
-				('univentionShareSambaForceCreateMode', 'force create mode'),
-				('univentionShareSambaForceDirectoryMode', 'force directory mode'),
-				('univentionShareSambaLocking', 'locking'),
-				('univentionShareSambaBlockingLocks', 'blocking locks'),
-				('univentionShareSambaStrictLocking', 'strict locking'),
-				('univentionShareSambaOplocks', 'oplocks'),
-				('univentionShareSambaLevel2Oplocks', 'level2 oplocks'),
-				('univentionShareSambaFakeOplocks', 'fake oplocks'),
-				('univentionShareSambaBlockSize', 'block size'),
-				('univentionShareSambaCscPolicy', 'csc policy'),
-				('univentionShareSambaValidUsers', 'valid users'),
-				('univentionShareSambaInvalidUsers', 'invalid users'),
-				('univentionShareSambaForceUser', 'force user'),
-				('univentionShareSambaForceGroup', 'force group'),
-				('univentionShareSambaHideFiles', 'hide files'),
-				('univentionShareSambaNtAclSupport', 'nt acl support'),
-				('univentionShareSambaInheritAcls', 'inherit acls'),
-				('univentionShareSambaPostexec', 'postexec'),
-				('univentionShareSambaPreexec', 'preexec'),
-				('univentionShareSambaWriteList', 'write list'),
-				('univentionShareSambaVFSObjects', 'vfs objects'),
-				('univentionShareSambaInheritOwner', 'inherit owner'),
-				('univentionShareSambaInheritPermissions', 'inherit permissions'),
-				('univentionShareSambaHostsAllow', 'hosts allow'),
-				('univentionShareSambaHostsDeny', 'hosts deny'),
+				('description', 'comment', 'UTF-8'),
+				('univentionShareSambaMSDFS', 'msdfs root', 'ASCII'),
+				('univentionShareSambaWriteable', 'writeable', 'ASCII'),
+				('univentionShareSambaBrowseable', 'browseable', 'ASCII'),
+				('univentionShareSambaPublic', 'public', 'ASCII'),
+				('univentionShareSambaDosFilemode', 'dos filemode', 'ASCII'),
+				('univentionShareSambaHideUnreadable', 'hide unreadable', 'ASCII'),
+				('univentionShareSambaCreateMode', 'create mode', 'ASCII'),
+				('univentionShareSambaDirectoryMode', 'directory mode', 'ASCII'),
+				('univentionShareSambaForceCreateMode', 'force create mode', 'ASCII'),
+				('univentionShareSambaForceDirectoryMode', 'force directory mode', 'ASCII'),
+				('univentionShareSambaLocking', 'locking', 'ASCII'),
+				('univentionShareSambaBlockingLocks', 'blocking locks', 'ASCII'),
+				('univentionShareSambaStrictLocking', 'strict locking', 'ASCII'),
+				('univentionShareSambaOplocks', 'oplocks', 'ASCII'),
+				('univentionShareSambaLevel2Oplocks', 'level2 oplocks', 'ASCII'),
+				('univentionShareSambaFakeOplocks', 'fake oplocks', 'ASCII'),
+				('univentionShareSambaBlockSize', 'block size', 'ASCII'),
+				('univentionShareSambaCscPolicy', 'csc policy', 'UTF-8'),
+				('univentionShareSambaValidUsers', 'valid users', 'UTF-8'),
+				('univentionShareSambaInvalidUsers', 'invalid users', 'UTF-8'),
+				('univentionShareSambaForceUser', 'force user', 'UTF-8'),
+				('univentionShareSambaForceGroup', 'force group', 'UTF-8'),
+				('univentionShareSambaHideFiles', 'hide files', 'UTF-8'),
+				('univentionShareSambaNtAclSupport', 'nt acl support', 'ASCII'),
+				('univentionShareSambaInheritAcls', 'inherit acls', 'ASCII'),
+				('univentionShareSambaPostexec', 'postexec', 'ASCII'),
+				('univentionShareSambaPreexec', 'preexec', 'ASCII'),
+				('univentionShareSambaWriteList', 'write list', 'UTF-8'),
+				('univentionShareSambaVFSObjects', 'vfs objects', 'ASCII'),
+				('univentionShareSambaInheritOwner', 'inherit owner', 'ASCII'),
+				('univentionShareSambaInheritPermissions', 'inherit permissions', 'ASCII'),
+				('univentionShareSambaHostsAllow', 'hosts allow', 'ASCII'),
+				('univentionShareSambaHostsDeny', 'hosts deny', 'ASCII'),
 			]
 
 			vfs_objects = []
@@ -225,35 +227,33 @@ def handler(dn, new, old, command):
 			elif samba4_ntacl_backend == 'tdb':
 				vfs_objects.append('acl_tdb')
 
-			additional_vfs_objects = new.get('univentionShareSambaVFSObjects', [])
-			if additional_vfs_objects:
-				vfs_objects.extend(additional_vfs_objects)
+			vfs_objects.extend(x.decode('ASCII') for x in new.get('univentionShareSambaVFSObjects', []))
 
 			if vfs_objects:
-				print >>fp, 'vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), )
+				print('vfs objects = %s' % (' '.join(_map_quote(vfs_objects)), ), file=fp)
 
-			for attr, var in mapping:
+			for attr, var, encoding in mapping:
 				if not new.get(attr):
 					continue
 				if attr == 'univentionShareSambaVFSObjects':
 					continue
-				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] in ('/tmp', '/tmp/'):
+				if attr == 'univentionShareSambaDirectoryMode' and set(new['univentionSharePath']) & {b'/tmp', b'/tmp/'}:
 					continue
 				if attr in ('univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny'):
-					print >>fp, '%s = %s' % (var, (', '.join(_map_quote(new[attr]))))
+					print('%s = %s' % (var, (', '.join(_map_quote(x.decode(encoding) for x in new[attr])))), file=fp)
 				elif attr in ('univentionShareSambaValidUsers', 'univentionShareSambaInvalidUsers'):
-					print >>fp, '%s = %s' % (var, _simple_quote(new[attr][0]))
+					print('%s = %s' % (var, _simple_quote(new[attr][0].decode(encoding))), file=fp)
 				else:
-					print >>fp, '%s = %s' % (var, _quote(new[attr][0]))
+					print('%s = %s' % (var, _quote(new[attr][0].decode(encoding))), file=fp)
 
 			for setting in new.get('univentionShareSambaCustomSetting', []):  # FIXME: vulnerable to injection of further paths and entries
-				print >>fp, setting.replace('\n', '')
+				print(setting.decode('UTF-8').replace('\n', ''), file=fp)
 
 			# implicit settings
 
 			# acl and inherit -> map acl inherit (Bug #47850)
 			if '1' in new.get('univentionShareSambaNtAclSupport', []) and '1' in new.get('univentionShareSambaInheritAcls', []):
-				print >>fp, 'map acl inherit = yes'
+				print('map acl inherit = yes', file=fp)
 		finally:
 			listener.unsetuid()
 
@@ -265,10 +265,10 @@ def handler(dn, new, old, command):
 			if not os.path.exists('/etc/samba/shares.conf'):
 				run_ucs_commit = True
 			fp = open('/etc/samba/shares.conf.temp', 'w')
-			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
+			print('# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#', file=fp)
 
 			for f in os.listdir('/etc/samba/shares.conf.d'):
-				print >>fp, 'include = %s' % _quote(os.path.join('/etc/samba/shares.conf.d', f))
+				print('include = %s' % _quote(os.path.join('/etc/samba/shares.conf.d', f)), file=fp)
 			fp.close()
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:
