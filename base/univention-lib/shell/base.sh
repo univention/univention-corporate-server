@@ -181,21 +181,21 @@ is_domain_controller () {
 # returns the default IP address
 #
 get_default_ip_address () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().ip)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().ip)'
 }
 
 #
 # returns the default IPv4 address
 #
 get_default_ipv4_address () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv4_address().ip)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv4_address().ip)'
 }
 
 #
 # returns the default IPv6 address
 #
 get_default_ipv6_address () {
-	python2.7 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv6_address().ip)'
+	python3 2>/dev/null -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ipv6_address().ip)'
 }
 
 #
