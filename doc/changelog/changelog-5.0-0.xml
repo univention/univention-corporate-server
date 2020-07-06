@@ -257,6 +257,9 @@
 				<listitem><simpara>
 					Remove remaining references to deprecated DHCP version 3 (<u:bug>32462</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					Registering of IP addresses received via DHCP are now registered in the LDAP via the HTTP interface of &ucsUMC; (<u:bug>42128</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
