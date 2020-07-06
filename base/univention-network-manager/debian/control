@@ -49,6 +49,8 @@ Package: univention-network-common
 Architecture: all
 Depends:
  python-netifaces,
+ python-univention-lib,
+ univention-config (>= 8.0.2),
  ${misc:Depends},
  ${python:Depends},
 Recommends:
@@ -58,8 +60,6 @@ Recommends:
 Replaces:
  univention-ifplugd,
  univention-network-manager,
-Suggests:
- univention-management-console-server,
 Breaks:
  univention-bind (<< 9.0.5-2),
 Description: UCS - Network tools for ifplugd and network-manager (common)

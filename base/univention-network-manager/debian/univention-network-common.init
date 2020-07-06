@@ -50,10 +50,8 @@ running_in_container() {
 do_start () {
 	# System must be joined
 	[ -e /var/univention-join/joined ] || return 0
-	[ -x /usr/sbin/umc-command ] || return 1
 	[ -x /usr/sbin/univention-register-network-address ] || return 1
 	running_in_container && return 0
-	/bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null || return 1
 	/usr/sbin/univention-register-network-address
 }
 

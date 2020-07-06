@@ -30,32 +30,39 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
-import optparse
+import argparse
 import netifaces
-import subprocess
+
 import univention.config_registry
 import univention.uldap
+from univention.lib.umc import Client, HTTPError, ConnectionError
 
 
 def register_iface(configRegistry, iface, verbose):
-	# is fallback different from current address?
-	p1 = subprocess.Popen(['/usr/sbin/umc-command', '-U', '%s$' % configRegistry.get('hostname'), '-y', '/etc/machine.secret', '-s', configRegistry.get('ldap/master'), 'ip/change', '-o', 'ip=%s' % configRegistry.get('interfaces/%s/address' % iface), '-o', 'oldip=%s' % configRegistry.get('interfaces/%s/fallback/address' % iface), '-o', 'netmask=%s' % configRegistry.get('interfaces/%s/netmask' % iface), '-o', 'role=%s' % configRegistry.get('server/role')], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	res = p1.communicate()
-	if p1.returncode != 0:
-		print 'ERROR: IP registration for %s failed with code %s' % (iface, p1.returncode)
+	try:
+		client = Client(configRegistry['ldap/master'])
+		client.authenticate_with_machine_account()
+		client.umc_command('ip/change', {
+			'ip': configRegistry.get('interfaces/%s/address' % iface),
+			'oldip': configRegistry.get('interfaces/%s/fallback/address' % iface),
+			'netmask': configRegistry.get('interfaces/%s/netmask' % iface),
+			'role': configRegistry.get('server/role'),
+		})
+	except (HTTPError, ConnectionError) as exc:
 		if verbose:
-			print 'More information: %s\n%s' % (res[1], res[0])
+			print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
 		return False
 	return True
 
 
 if __name__ == '__main__':
-	parser = optparse.OptionParser()
-	parser.add_option("--interface", dest="interface", default='all', action="store", help="network interface to use")
-	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")
-	parser.add_option("--force", dest="force", default=False, action="store_true", help="register interface even if it is configured static")
-	(options, args) = parser.parse_args()
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--interface", default='all', help="network interface to use")
+	parser.add_argument("--verbose", default=False, action="store_true", help="verbose output")
+	parser.add_argument("--force", default=False, action="store_true", help="register interface even if it is configured static")
+	options = parser.parse_args()
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
@@ -71,7 +78,7 @@ if __name__ == '__main__':
 		if ignore in ifaces:
 			ifaces.remove(ignore)
 	if not ifaces:
-		print 'ERROR: no valid interface was given. Try --interface'
+		print('ERROR: no valid interface was given. Try --interface')
 		sys.exit(1)
 
 	for iface in ifaces:
@@ -79,6 +86,6 @@ if __name__ == '__main__':
 			if not register_iface(configRegistry, iface, options.verbose):
 				retcode += 1
 		elif options.verbose:
-			print 'INFO: %s is not configured as dhcp device.' % iface
+			print('INFO: %s is not configured as dhcp device.' % iface)
 
 	sys.exit(retcode)

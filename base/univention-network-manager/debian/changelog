@@ -1,3 +1,9 @@
+univention-network-manager (11.0.0-3) unstable; urgency=medium
+
+  * Bug #54664: use univention.lib.umc instead of umc-command
+
+ -- Johannes Lohmer <lohmer@univention.de>  Tue, 19 Jul 2022 12:36:53 +0200
+
 univention-network-manager (11.0.0-2) unstable; urgency=medium
 
   * Bug #51021: make UCR templates compatible to python3
