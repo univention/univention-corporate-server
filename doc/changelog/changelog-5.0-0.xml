@@ -48,6 +48,9 @@
 					<command>univention-install-config-registry</command> calls <command>univention-install-config-registry-info</command> and <command>univention-install-service-info</command> during package build time.
 					It now propagates failures and aborts if calling those programs fails (<u:bug>32658</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The API for registration of UCR modules is now unified to match the regular arguments of the handler functions (<u:bug>30127</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
