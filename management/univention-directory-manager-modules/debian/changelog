@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.1-12) unstable; urgency=medium
+
+  * Bug #46350: remove unused script lock_expired_passwords
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2020 12:05:59 +0200
+
 univention-directory-manager-modules (15.0.1-11) unstable; urgency=medium
 
   * Bug #50648 UDM Listener: install python 3 files
