@@ -51,6 +51,9 @@
 				<listitem><simpara>
 					The API for registration of UCR modules is now unified to match the regular arguments of the handler functions (<u:bug>30127</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					&ucsUCR;-Variables may define default values now (<u:bug>38938</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
