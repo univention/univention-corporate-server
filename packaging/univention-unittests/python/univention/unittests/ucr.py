@@ -49,6 +49,13 @@ class TestUCR(object):
 				return default
 		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
+	def is_true(self, key=None, default=False, value=None):  # noqa F811
+		if value is None:
+			value = self.get(key)  # type: ignore
+			if value is None:
+				return default
+		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
+
 	def load(self):
 		pass
 
