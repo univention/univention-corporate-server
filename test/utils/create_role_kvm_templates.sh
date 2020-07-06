@@ -8,6 +8,7 @@ export REPLACE=true
 export SHUTDOWN=true
 export KVM_USER="${KVM_USER:=$USER}"
 test "$USER" = "jenkins" && export KVM_USER='build'
+export HALT=false
 
 
 mssh () {
