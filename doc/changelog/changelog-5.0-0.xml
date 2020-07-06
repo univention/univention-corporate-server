@@ -167,6 +167,9 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The &ucsUDM; has been migrated to Python 3 (<u:bug>50648</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
