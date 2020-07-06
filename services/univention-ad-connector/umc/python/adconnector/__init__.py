@@ -38,19 +38,19 @@ from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import file_upload, sanitize, simple_response
 from univention.management.console.modules.mixins import ProgressMixin
-from univention.management.console.modules.sanitizers import StringSanitizer
-
-import notifier.popen
-from ldap import explode_rdn
+from univention.management.console.modules.sanitizers import StringSanitizer, ChoicesSanitizer
 
 from contextlib import contextmanager
 import fnmatch
-import psutil
 import os.path
 import subprocess
+import traceback
 import time
 import pipes
-import traceback
+
+import psutil
+import notifier.popen
+from ldap import explode_rdn
 import ldb
 import ldap.dn
 import ldap.filter
@@ -78,7 +78,7 @@ def ucr_rollback(ucr, variables):
 		old[variable] = ucr.get(variable)
 	try:
 		yield
-	except:
+	except BaseException:
 		univention.config_registry.frontend.ucr_update(ucr, old)
 		raise
 
@@ -99,6 +99,7 @@ def adsearch(query):
 	cmd = ['/usr/sbin/univention-adsearch', query]
 	p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	stdout, stderr = p1.communicate()
+	stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
 	return p1, stdout, stderr
 
 
@@ -190,7 +191,13 @@ class Instance(Base, ProgressMixin):
 
 		self.finished(request.id, result)
 
-	@sanitize(LDAP_Host=StringSanitizer(required=True))
+	@sanitize(
+		LDAP_Host=StringSanitizer(required=True),
+		Host_IP=StringSanitizer(required=True),
+		LDAP_Base=StringSanitizer(required=True),
+		LDAP_BindDN=StringSanitizer(required=True),
+		KerberosDomain=StringSanitizer(required=True),
+	)
 	def adconnector_save(self, request):
 		"""Saves the Active Directory connection configuration
 
@@ -208,14 +215,11 @@ class Instance(Base, ProgressMixin):
 		return: { 'success' : (True|False), 'message' : <details> }
 		"""
 
-		self.required_options(request, 'Host_IP')
-		self.required_options(request, *[x[0] for x in Instance.OPTION_MAPPING if x[2] == ''])
-
 		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
 			val = request.options.get(umckey, default)
 			if val:
 				if isinstance(val, bool):
-					val = val and 'yes' or 'no'
+					val = 'yes' if val else 'no'
 				MODULE.info('Setting %s=%s' % (ucrkey, val))
 				univention.config_registry.handler_set([u'%s=%s' % (ucrkey, val)])
 
@@ -230,9 +234,8 @@ class Instance(Base, ProgressMixin):
 		if not request.options.get('LDAP_Password') in (None, '', DO_NOT_CHANGE_PWD):
 			fn = ucr.get('connector/ad/ldap/bindpw', FN_BINDPW)
 			try:
-				fd = open(fn, 'w')
-				fd.write(request.options.get('LDAP_Password'))
-				fd.close()
+				with open(fn, 'w') as fd:
+					fd.write(request.options.get('LDAP_Password'))
 				os.chmod(fn, 0o600)
 				os.chown(fn, 0, 0)
 				univention.config_registry.handler_set([u'connector/ad/ldap/bindpw=%s' % fn])
@@ -283,6 +286,7 @@ class Instance(Base, ProgressMixin):
 	@file_upload
 	def upload_certificate(self, request):
 		def _return(pid, status, bufstdout, bufstderr, request, fn):
+			bufstdout, bufstderr = bufstdout.decode('UTF-8', 'replace'), bufstderr.decode('UTF-8', 'replace')
 			success = True
 			if status == 0:
 				message = _('Certificate has been uploaded successfully.')
@@ -310,32 +314,29 @@ class Instance(Base, ProgressMixin):
 		proc.signal_connect('finished', cb)
 		proc.start()
 
+	@sanitize(
+		action=ChoicesSanitizer(['start', 'stop'], required=True),
+	)
 	def service(self, request):
 		MODULE.info('State: options=%s' % request.options)
-		self.required_options(request, 'action')
 
 		self.__update_status()
 		action = request.options['action']
 
 		MODULE.info('State: action=%s  status_running=%s' % (action, self.status_running))
 
-		success = True
 		message = None
 		if self.status_running and action == 'start':
 			message = _('Active Directory Connector is already running. Nothing to do.')
 		elif not self.status_running and action == 'stop':
 			message = _('Active Directory Connector is already stopped. Nothing to do.')
-		elif action not in ('start', 'stop'):
-			MODULE.process('State: unknown command: action=%s' % action)
-			message = _('Unknown command ("%s") Please report error to your local administrator.') % action
-			success = False
 
 		if message is not None:
-			self.finished(request.id, {'success': success, 'message': message})
+			self.finished(request.id, {'success': True, 'message': message})
 			return
 
 		def _run_it(action):
-			return subprocess.call(('invoke-rc.d', 'univention-ad-connector', action))
+			return subprocess.call(('service', 'univention-ad-connector', action))
 
 		def _return(thread, result, request):
 			success = not result
@@ -352,7 +353,7 @@ class Instance(Base, ProgressMixin):
 
 		cb = notifier.Callback(_return, request)
 		func = notifier.Callback(_run_it, action)
-		thread = notifier.threads.Simple('service', func, cb)
+		thread = notifier.threads.Simple('service', func, cb)  # TODO: use async notifier.Popen instead
 		thread.run()
 
 	def __update_status(self):
@@ -412,7 +413,7 @@ class Instance(Base, ProgressMixin):
 
 		# final info dict that is returned... replace spaces in the keys with '_'
 		MODULE.info('Preparing info dict...')
-		info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.iteritems()])
+		info = dict([(key.replace(' ', '_'), value) for key, value in ad_domain_info.items()])
 		info['ssl_supported'] = admember.server_supports_ssl(ad_server_ip)
 		# try to get binddn
 		info['LDAP_BindDN'] = get_ad_binddn_from_name(info['LDAP_Base'], ad_server_ip, username, password)
@@ -584,7 +585,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def enable_ssl(self):
 		self._enable_ssl_and_test_connection()
-		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
+		return subprocess.call(['service', 'univention-ad-connector', 'restart'])
 
 	@simple_response
 	def password_sync_service(self, enable=True):
@@ -592,15 +593,9 @@ class Instance(Base, ProgressMixin):
 		# kinit=false -> sync passwords
 		value = str(not enable).lower()
 		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % value])
-		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
-
-	def _check_dcmaster_srv_rec(self):
-		if admember.get_domaincontroller_srv_record(ucr.get('domainname')):
-			return True
-		else:
-			return False
+		return subprocess.call(['service', 'univention-ad-connector', 'restart'])
 
 	@simple_response
 	def check_dcmaster_srv_rec(self):
-		result = self._check_dcmaster_srv_rec()
+		result = bool(admember.get_domaincontroller_srv_record(ucr.get('domainname')))
 		return {'success': result}

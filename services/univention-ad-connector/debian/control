@@ -145,13 +145,20 @@ Description: UCS - AD-connector Exchange configuration
 Package: univention-management-console-module-adconnector
 Architecture: all
 Depends:
- python-notifier,
- python-samba,
- python-univention-lib (>= 3.0.26-62),
+ python3-ldap,
+ python3-ldb,
+ python3-notifier,
+ python3-psutil,
+ python3-samba,
+ python3-univention-config-registry,
+ python3-univention-lib,
  samba-dsdb-modules,
- univention-management-console-server (>= 11.0.4-37),
+ univention-ad-connector,
+ univention-management-console-server,
  ${misc:Depends},
- ${python:Depends},
+ ${python3:Depends},
+Provides:
+ ${python3:Provides},
 Description: UMC module for Univention AD Connector
  This package contains the Univention AD Connector UMC module.
  .
