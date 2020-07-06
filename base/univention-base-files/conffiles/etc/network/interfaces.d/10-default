@@ -26,8 +26,8 @@ def ipv4(ucr, interfaces):
 	for name, iface in interfaces.all_interfaces:
 		addr = iface.ipv4_address()
 		if iface.type == 'dhcp':
--				auto(iface.name, iface.start)
--				print('iface %s inet dhcp' % (iface.name,))
+				auto(iface.name, iface.start)
+				print('iface %s inet dhcp' % (iface.name,))
 		elif iface.type == 'manual':
 			auto(iface.name, iface.start)
 			print('iface %s inet manual' % (iface.name,))
