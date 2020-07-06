@@ -263,7 +263,8 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The package <package>univention-doc</package> and <package>univention-management-console-doc</package> has been removed (<u:bug>51487</u:bug>)
+						The packages <package>univention-doc</package> and <package>univention-management-console-doc</package> have been removed.
+						The UMC API documentation is now available <ulink url="https://docs.software-univention.de/ucs-python-api/"/> (<u:bug>51487</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					 The &ucsUMC; is now running with Python 3 (<u:bug>51508</u:bug>)
