@@ -144,6 +144,9 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The UMCLang cookie is now correctly saved when accessing UMC with a language in the query string (<u:bug>44718</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
