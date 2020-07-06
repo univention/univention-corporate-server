@@ -248,14 +248,6 @@ override_dh_auto_test:
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term><package>univention.lib.error</package></term>
-					<listitem>
-						<para>
-							This module provides the function <function>formatTraceback</function>, which returns the full stack trace for an exception.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
 					<term><package>univention.lib.fstab</package></term>
 					<listitem>
 						<para>
