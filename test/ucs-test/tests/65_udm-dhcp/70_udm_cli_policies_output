@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
 		host = udm.list_objects('dhcp/host', position=dhcp_host, policies=2)[0][1]
 		pprint.pprint(host)
-		required = {'univentionAdminListWizards', 'univentionAdminMayOverrideSettings', 'univentionPWLength', 'univentionAdminListWebModules', 'univentionPWHistoryLen'}
+		required = {'univentionPWLength', 'univentionPWHistoryLen'}
 		assert set(host['Policy-based Settings']) & required == required
 		assert set(host['Subnet-based Settings']) & required == required
 		assert set(host['Merged Settings']) & required == required
