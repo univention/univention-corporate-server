@@ -177,6 +177,9 @@
 						The package <package>univention-doc</package> and <package>univention-management-console-doc</package> has been removed (<u:bug>51487</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					 The &ucsUMC; is now running with Python 3 (<u:bug>51508</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
