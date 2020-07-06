@@ -13,7 +13,7 @@ from glob import glob
 from ConfigParser import RawConfigParser, Error
 
 import univention.testing.utils as utils
-from univention.management.console.modules.appcenter.app_center import CACHE_DIR
+from univention.appcenter.app_cache import Apps
 
 OPTIONS_TO_CHECK = ('Contact', 'NotificationEmail')
 failures_counter = 0
@@ -58,16 +58,16 @@ def check_file(filename):
                       % (option, filename, option_value))
 
 
-def check_ini_files():
+def check_ini_files(dirname):
     """
     Determines the path to App Center Cache dir with .ini files and checks
     all .inis there one by one.
     """
-    print("\nThe path to Appcenter .ini files is:", CACHE_DIR)
-    if not path.exists(CACHE_DIR):
+    print("\nThe path to Appcenter .ini files is:", dirname)
+    if not path.exists(dirname):
         utils.fail("The path to App center .ini files does not exist.")
 
-    test_path = [fname for fname in glob(path.join(CACHE_DIR, '*.ini')) if not path.basename(fname).startswith('.')]
+    test_path = [fname for fname in glob(path.join(dirname, '*.ini')) if not path.basename(fname).startswith('.')]
     for filename in test_path:
         try:
             check_file(filename)
@@ -75,6 +75,12 @@ def check_ini_files():
             fail_the_test()
             print("\nAn error ocured while trying to check the '%s' .ini "
                   "file. Error: %r" % (filename, exc))
+
+
+def check_ini_files_in_all_directories(dirname):
+    for appcenter_cache in Apps().get_appcenter_caches():
+        for cache in appcenter_cache.get_app_caches():
+            check_ini_file(cache.get_cache_dir())
 
 
 if __name__ == '__main__':
