@@ -14,6 +14,7 @@ Build-Depends:
  python-pil,
  python3-pil,
  pwgen,
+ at,
 
 Package: python-univention-lib
 Architecture: all
