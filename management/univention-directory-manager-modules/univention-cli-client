@@ -40,11 +40,9 @@ import sys
 import json
 
 import six
+from six.moves import input
 
 from univention.config_registry import ConfigRegistry
-
-if six.PY3:
-	raw_input = input
 
 
 default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
@@ -111,8 +109,8 @@ def fork_server(sock, socket_path):
 def get_password():
 	"""Query for interactive password."""
 	while True:
-		pwd1 = raw_input('New password ')
-		pwd2 = raw_input('Re-enter new password ')
+		pwd1 = input('New password ')
+		pwd2 = input('Re-enter new password ')
 		if pwd1 == pwd2:
 			return pwd1
 		print('password mismatch', file=sys.stderr)
@@ -170,7 +168,7 @@ def _create_socket(socket_path=default_socket_path):
 
 def _re_create_socket():
 	try:
-		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(map(ord, os.urandom(12))))
+		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(six.iterbytes(os.urandom(12))))
 		return _create_socket(socket_path)
 	except EnvironmentError:
 		print('E: Can`t connect to daemon. Giving up.', file=sys.stderr)
