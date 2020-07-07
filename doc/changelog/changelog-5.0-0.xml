@@ -198,7 +198,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The &ucsUDM; has been migrated to Python 3 (<u:bug>50648</u:bug>)
+					The &ucsUDM; has been migrated to Python 3 (<u:bug>50648</u:bug>, <u:bug>51631</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					The unused script <filename>lock_expired_passwords</filename> has been removed (<u:bug>46350</u:bug>)
