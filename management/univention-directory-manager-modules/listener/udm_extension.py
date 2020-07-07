@@ -56,7 +56,7 @@ PYTHON_DIR = '/usr/lib/python2.7/dist-packages/'
 PYTHON3_DIR = '/usr/lib/python3/dist-packages/'
 LOCALE_BASEDIR = "/usr/share/locale"  # mo files go to /usr/share/locale/<language-tag>/LC_MESSAGES/
 MODULE_DEFINTION_BASEDIR = "/usr/share/univention-management-console/modules"  # UMC registration xml files go here
-EXTEND_PATH = "__path__ = __import__('pkgutil').extend_path(__path__, __name__)\n"  # do not change ever!
+EXTEND_PATH = b"__path__ = __import__('pkgutil').extend_path(__path__, __name__)\n"  # do not change ever!
 
 
 class moduleCreationFailed(Exception):
@@ -79,27 +79,27 @@ def handler(dn, new, old):
 	if new:
 		ocs = new.get('objectClass', [])
 
-		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
-		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [None])[0]
+		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [b''])[0].decode('UTF-8')
+		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [b''])[0].decode('UTF-8')
 		current_UCS_version = "%s-%s" % (listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel'))
 		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
 			new = None
 		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
 			new = None
 	elif old:
 		ocs = old.get('objectClass', [])
 
-	if 'univentionUDMModule' in ocs:
+	if b'univentionUDMModule' in ocs:
 		objectclass = 'univentionUDMModule'
 		udm_module_name = 'settings/udm_module'
 		target_subdir = 'univention/admin/handlers'
-	elif 'univentionUDMHook' in ocs:
+	elif b'univentionUDMHook' in ocs:
 		objectclass = 'univentionUDMHook'
 		udm_module_name = 'settings/udm_hook'
 		target_subdir = 'univention/admin/hooks.d'
-	elif 'univentionUDMSyntax' in ocs:
+	elif b'univentionUDMSyntax' in ocs:
 		objectclass = 'univentionUDMSyntax'
 		udm_module_name = 'settings/udm_syntax'
 		target_subdir = 'univention/admin/syntax.d'
@@ -108,10 +108,10 @@ def handler(dn, new, old):
 
 	old_relative_filename = None
 	if old:
-		old_relative_filename = old.get('%sFilename' % objectclass)[0]
+		old_relative_filename = old['%sFilename' % objectclass][0].decode('UTF-8')
 
 	if new:
-		new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
+		new_version = new.get('univentionOwnedByPackageVersion', [b''])[0].decode('UTF-8')
 		if not new_version:
 			return
 
@@ -121,15 +121,15 @@ def handler(dn, new, old):
 
 		if old:  # check for trivial changes
 			diff_keys = [key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
-			if diff_keys == ['%sActive' % objectclass] and new.get('%sActive' % objectclass)[0] == 'TRUE':
+			if diff_keys == ['%sActive' % objectclass] and new.get('%sActive' % objectclass)[0] == b'TRUE':
 				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: activation status changed.' % (name, new['cn'][0]))
 				return
 			elif diff_keys == ['univentionAppIdentifier']:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: App identifier changed.' % (name, new['cn'][0]))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: App identifier changed.' % (name, new['cn'][0].decode('UTF-8')))
 				return
 
 			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
-				old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
+				old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
 				if not rc > -1:
 					ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
@@ -142,7 +142,7 @@ def handler(dn, new, old):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 			return
 
-		new_relative_filename = new.get('%sFilename' % objectclass)[0]
+		new_relative_filename = new['%sFilename' % objectclass][0].decode('UTF-8')
 		listener.setuid(0)
 		try:
 			if old_relative_filename and old_relative_filename != new_relative_filename:
@@ -226,7 +226,7 @@ def install_python_file(objectclass, target_subdir, target_filename, data):
 	for python_dir in (PYTHON_DIR, PYTHON3_DIR):
 		filename = os.path.join(python_dir, relative_filename)
 		try:
-			with open(filename, 'w') as f:
+			with open(filename, 'wb') as f:
 				f.write(data)
 			ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
 			subprocess.call(['/usr/bin/pycompile' if python_dir == PYTHON_DIR else '/usr/bin/py3compile', '-q', filename])
@@ -414,14 +414,14 @@ def install_messagecatalog(dn, attrs, objectclass):
 	if not values:
 		return
 
-	module_name = attrs.get('cn')[0]
+	module_name = attrs.get('cn')[0].decode('UTF-8')
 	for language_tag, mo_data_binary in values.items():
 		targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
 		filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-'),))
 		if not os.path.exists(targetdir):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
 			continue
-		with open(filename, 'w') as f:
+		with open(filename, 'wb') as f:
 			f.write(mo_data_binary)
 
 
@@ -443,7 +443,7 @@ def remove_messagecatalog(dn, attrs, objectclass):
 	if not language_tags:
 		return
 
-	module_name = attrs.get('cn')[0]
+	module_name = attrs.get('cn')[0].decode('UTF-8')
 	for language_tag in language_tags:
 		targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
 		filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-'),))
@@ -468,12 +468,12 @@ def install_umcregistration(dn, attrs):
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing univentionUMCRegistrationData of object %s.' % (name, dn))
 		return
 
-	module_name = attrs.get('cn')[0]
+	module_name = attrs.get('cn')[0].decode('UTF-8')
 	filename = os.path.join(MODULE_DEFINTION_BASEDIR, "udm-%s.xml" % (module_name.replace('/', '-'),))
 	if not os.path.exists(MODULE_DEFINTION_BASEDIR):
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
 		return
-	with open(filename, 'w') as f:
+	with open(filename, 'wb') as f:
 		f.write(object_data)
 
 
@@ -481,7 +481,7 @@ def remove_umcregistration(dn, attrs):
 	if not attrs.get('univentionUMCRegistrationData'):
 		return
 
-	module_name = attrs.get('cn')[0]
+	module_name = attrs.get('cn')[0].decode('UTF-8')
 	filename = os.path.join(MODULE_DEFINTION_BASEDIR, "udm-%s.xml" % (module_name.replace('/', '-'),))
 	ud.debug(ud.LISTENER, ud.INFO, '%s: Removing %s.' % (name, filename))
 	if os.path.exists(filename):
@@ -491,8 +491,8 @@ def remove_umcregistration(dn, attrs):
 
 
 def install_umcicons(dn, attrs):
+	module_name = attrs.get('cn')[0].decode('UTF-8')
 	for object_data in attrs.get('univentionUMCIcon', []):
-		module_name = attrs.get('cn')[0]
 		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
 		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
 
@@ -502,13 +502,13 @@ def install_umcicons(dn, attrs):
 		if not os.path.exists(targetdir):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
 			continue
-		with open(filename, 'w') as f:
+		with open(filename, 'wb') as f:
 			f.write(object_data)
 
 
 def remove_umcicons(dn, attrs):
+	module_name = attrs.get('cn')[0].decode('UTF-8')
 	for object_data in attrs.get('univentionUMCIcon', []):
-		module_name = attrs.get('cn')[0]
 		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
 		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
 
