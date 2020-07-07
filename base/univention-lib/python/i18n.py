@@ -53,7 +53,7 @@ class Locale(object):
 	:type locale: str or None
 	"""
 
-	REGEX = re.compile('(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?')
+	REGEX = re.compile('^(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?((\\.(?P<codeset>[a-zA-Z-0-9]+)(:(?P<charmap>[a-zA-Z0-9-]+))?)?(@(?P<modifier>.+))?)?$')
 
 	def __init__(self, locale=None):
 		# type: (Optional[str]) -> None
@@ -73,7 +73,7 @@ class Locale(object):
 		"""
 		Parse locale string.
 
-		:param str locale: The locale string `language[_territory][.codeset][@modifier]`.
+		:param str locale: The locale string `language[_territory][.codeset[:charmap]][@modifier]`.
 		:raises TypeError: if `locale` is not a string.
 		:raises I18N_Error: if `locale` does not match the format.
 		"""
@@ -105,7 +105,7 @@ class Locale(object):
 				text += '.%s' % self.codeset
 			if self.modifier is not None:
 				text += '@%s' % self.modifier
-		return text is None and '' or text
+		return '' if text is None else text
 
 
 class NullTranslation(object):
