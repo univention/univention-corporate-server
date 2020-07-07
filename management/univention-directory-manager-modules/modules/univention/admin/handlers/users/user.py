@@ -2011,7 +2011,7 @@ class object(univention.admin.handlers.simpleLdap):
 		try:
 			new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress'][0]
 		except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
-			new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress'])
+			new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 
 		if self.hasChanged('mailPrimaryAddress') and self.oldattr.get('mailPrimaryAddress'):
 			try:
