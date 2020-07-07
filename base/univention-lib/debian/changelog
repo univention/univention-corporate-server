@@ -1,3 +1,9 @@
+univention-lib (9.0.0-30) unstable; urgency=medium
+
+  * Bug #51633: fix univention.lib.i18n
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2020 10:44:42 +0200
+
 univention-lib (9.0.0-29) unstable; urgency=medium
 
   * Bug #51593: Skip certain tests if in pbuilder env
