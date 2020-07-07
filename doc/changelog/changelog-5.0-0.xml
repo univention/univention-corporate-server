@@ -201,7 +201,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The &ucsUDM; has been migrated to Python 3 (<u:bug>50648</u:bug>)
+					The &ucsUDM; has been migrated to Python 3 (<u:bug>50648</u:bug>, <u:bug>51631</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					The modules for handling <foreignphrase>Mobile clients</foreignphrase>, <foreignphrase>Fat Clients</foreignphrase>, <foreignphrase>Thin Clients</foreignphrase>, <foreignphrase>Univention Corporate Clients</foreignphrase> and their policies and settings have been removed (<u:bug>51973</u:bug>)
