@@ -423,6 +423,9 @@
 			<listitem><simpara>
 				The scripts in <package>univention-lib</package> are now using Python 3 (<u:bug>51628</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The matching of locales in <package>univention.lib.i18n</package> has been corrected (<u:bug>51633</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
