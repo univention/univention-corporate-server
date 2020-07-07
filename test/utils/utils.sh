@@ -212,10 +212,7 @@ run_setup_join () {
 	patch_setup_join # temp. remove me
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
-	for srv in univention-management-console-server univention-management-console-web-server apache2
-	do
-		invoke-rc.d "$srv" restart
-	done
+	systemctl try-reload-or-restart univention-management-console-server univention-management-console-web-server apache2
 	ucr unset --forced update/available
 
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
@@ -555,7 +552,7 @@ run_admember_tests () {
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 	ucr unset directory/manager/rest/authorized-groups/domain-admins
 	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
-	service univention-directory-manager-rest restart
+	systemctl restart univention-directory-manager-rest
 }
 
 run_adconnector_tests () {
@@ -768,7 +765,7 @@ monkeypatch () {
 
 	# Bug #42658: temporary raise the connection timeout which the UMC Server waits the module process to start
 	[ -e /usr/lib/python2.7/dist-packages/univention/management/console/protocol/session.py ] && sed -i 's/if mod._connect_retries > 200:/if mod._connect_retries > 1200:/' /usr/lib/python2.7/dist-packages/univention/management/console/protocol/session.py
-	univention-management-console-server restart
+	systemctl restart univention-management-console-server
 
 	# Bug #40419: UCS@school Slave reject: LDAP sambaSID != S4 objectSID == SID(Master)
 	[ "$(hostname)" = "slave300-s1" ] && /usr/share/univention-s4-connector/remove_ucs_rejected.py "cn=master300,cn=dc,cn=computers,dc=autotest300,dc=local" || true
@@ -942,7 +939,7 @@ postgres91_update () {
 	pg_upgradecluster 9.1 main
 	ucr commit /etc/postgresql/9.4/main/*
 	chown -R postgres:postgres /var/lib/postgresql/9.4
-	service postgresql restart
+	systemctl restart postgresql
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
 	DEBIAN_FRONTEND='noninteractive'  univention-install --yes univention-postgresql-9.4
 	pg_dropcluster 9.1 main --stop
@@ -991,7 +988,7 @@ restart_services_bug_47762 ()
 restart_umc_bug_48157 ()
 {
 	sleep 30
-	service univention-management-console-server restart || true
+	systemctl restart univention-management-console-server || true
 }
 
 run_workarounds_before_starting_the_tests ()
@@ -1003,8 +1000,8 @@ run_workarounds_before_starting_the_tests ()
 sa_bug47030 () {
 	sa-update -v --install /root/1854818.tar.gz || true
 	sa-compile || true
-	service spamassassin restart || true
-	service amavis restart || true
+	systemctl restart spamassassin || true
+	systemctl restart amavis || true
 }
 
 online_fsresize () {
