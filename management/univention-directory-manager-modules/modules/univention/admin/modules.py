@@ -36,7 +36,6 @@ import os
 import sys
 import copy
 import locale
-import imp
 import importlib
 import six
 import ldap
@@ -173,7 +172,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 	# especially because update_extended_attributes
 	# called twice will have side-effects
 	if force_reload:
-		imp.reload(module)
+		importlib.reload(module)
 	# reset property descriptions to defaults if possible
 	if hasattr(module, 'default_property_descriptions'):
 		module.property_descriptions = copy.deepcopy(module.default_property_descriptions)
