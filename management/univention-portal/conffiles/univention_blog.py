@@ -34,7 +34,7 @@ Create a portal entry for the Univention Blog for all Core Edition users.
 """
 
 import base64
-from subprocess import check_call
+import subprocess
 
 
 def handler(config_registry, changes):
@@ -52,7 +52,7 @@ def handler(config_registry, changes):
 			return
 		with open('/usr/share/univention-portal/univention-blog.png', 'rb') as fd:
 			icon = base64.b64encode(fd.read()).decode('ASCII')
-		check_call([
+		cmd = [
 			'univention-directory-manager', 'settings/portal_entry', 'create', '--ignore_exists',
 			'--position', 'cn=portal,cn=univention,%s' % (ldap_base,),
 			'--set', 'name=univentionblog',
@@ -69,6 +69,11 @@ def handler(config_registry, changes):
 			'--set', 'authRestriction=anonymous',
 			'--set', 'linkTarget=newwindow',
 			'--set', 'portal=cn=domain,cn=portal,cn=univention,%s' % (ldap_base,)
-		])
+		]
 	else:
-		check_call(['univention-directory-manager', 'settings/portal_entry', 'remove', '--ignore_not_exists', '--dn', 'cn=univentionblog,cn=portal,cn=univention,%s' % (ldap_base,)])
+		cmd = ['univention-directory-manager', 'settings/portal_entry', 'remove', '--ignore_not_exists', '--dn', 'cn=univentionblog,cn=portal,cn=univention,%s' % (ldap_base,)]
+
+	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+	stdout = process.communicate()[0].decode('UTF-8', 'replace')
+	if process.returncode:
+		raise Exception('Modifying blog entry failed: %d: %s %r' % (process.returncode, stdout, cmd))

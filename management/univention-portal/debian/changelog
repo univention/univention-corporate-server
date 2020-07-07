@@ -1,3 +1,10 @@
+univention-portal (4.0.0-2) unstable; urgency=medium
+
+  * Bug #45787: prevent traceback in UCR handler if system is not yet
+    joined
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2020 21:44:37 +0200
+
 univention-portal (4.0.0-1) unstable; urgency=medium
 
   [ Julia Bremer ]
