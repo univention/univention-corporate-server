@@ -959,7 +959,7 @@ service postfix reload
 			When sending a mail to a group with too many recipients (including 
 			recipients from nested groups), the mail may not be accepted/delivered. 
 			This is caused by Postfix dealing with nested groups.
-			The maximum number of adresses that Postfix’ virtual alias expansion 
+			The maximum number of addresses that Postfix’ virtual alias expansion 
 			produces from each original recipient is 1000 by default which might 
 			be too low if nested groups are in use.
                 </para>
