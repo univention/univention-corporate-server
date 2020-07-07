@@ -60,7 +60,6 @@ class TestLocale(object):
 		with pytest.raises(TypeError):
 			i18n.Locale(0)
 
-	@pytest.mark.xfail
 	def test_malformed2(self):
 		with pytest.raises(i18n.I18N_Error):
 			i18n.Locale('deu_GER')
@@ -81,14 +80,12 @@ class TestLocale(object):
 		locale = i18n.Locale('be_BY.UTF-8@latin')
 		assert str(locale) == 'be_BY.UTF-8@latin'
 
-	@pytest.mark.xfail
 	def test_str_modifier(self):
 		locale = i18n.Locale('ca_ES@valencia')
-		assert str(locale) == 'ca_ES@valencia'
+		assert str(locale) == 'ca_ES.UTF-8@valencia'
 		locale = i18n.Locale('C')
 		assert str(locale) == 'C'
 
-	@pytest.mark.xfail
 	def test_str_empty(self):
 		locale = i18n.Locale()
 		assert str(locale) == ''
