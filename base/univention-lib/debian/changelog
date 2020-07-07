@@ -1,4 +1,4 @@
-univention-lib (9.0.0-30) unstable; urgency=medium
+univention-lib (9.0.0-31) unstable; urgency=medium
 
   * Bug #51633: fix univention.lib.i18n
 
