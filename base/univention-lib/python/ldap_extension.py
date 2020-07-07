@@ -264,7 +264,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 			print("Compression of file %s failed: %s" % (self.filename, e), file=sys.stderr)
 			sys.exit(1)
 
-		new_data = base64.b64encode(compressed_data)
+		new_data = base64.b64encode(compressed_data).decode('ASCII')
 
 		active_change_udm_options = [
 			"--set", "filename=%s" % self.target_filename,
@@ -296,7 +296,7 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 				filename_parts = os.path.splitext(os.path.basename(udm_module_messagecatalog))
 				language = filename_parts[0]
 				with open(udm_module_messagecatalog, 'rb') as f:
-					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),), ])
+					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'),), ])
 			if options.umcregistration:
 				try:
 					with open(options.umcregistration, 'rb') as f:
@@ -304,24 +304,24 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 				except Exception as e:
 					print("Compression of file %s failed: %s" % (options.umcregistration, e), file=sys.stderr)
 					sys.exit(1)
-				common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data),), ])
+				common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data).decode('ASCII'),), ])
 			for icon in options.icon:
 				with open(icon, 'rb') as f:
-					common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()),), ])
+					common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()).decode('ASCII'),), ])
 
 		if self.udm_module_name == "settings/udm_syntax":
 			for udm_syntax_messagecatalog in options.udm_syntax_messagecatalog:
 				filename_parts = os.path.splitext(os.path.basename(udm_syntax_messagecatalog))
 				language = filename_parts[0]
 				with open(udm_syntax_messagecatalog, 'rb') as f:
-					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),), ])
+					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'),), ])
 
 		if self.udm_module_name == "settings/udm_hook":
 			for udm_hook_messagecatalog in options.udm_hook_messagecatalog:
 				filename_parts = os.path.splitext(os.path.basename(udm_hook_messagecatalog))
 				language = filename_parts[0]
 				with open(udm_hook_messagecatalog, 'rb') as f:
-					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),), ])
+					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()).decode('ASCII'),), ])
 
 		rc, self.object_dn, stdout = self.udm_find_object_dn()
 		if not self.object_dn:
