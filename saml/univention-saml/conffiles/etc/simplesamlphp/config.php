@@ -25,7 +25,7 @@ print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
 print("	'debug'		=> %s," % configRegistry.get('saml/idp/log/debug/enabled', 'FALSE'))
-print("	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
+print("	'logging.level'		=> SimpleSAML\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
 print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
 print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
@@ -133,18 +133,18 @@ print("	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('sam
 	 * Logging.
 	 * 
 	 * define the minimum log level to log
-	 *		SimpleSAML_Logger::ERR		No statistics, only errors
-	 *		SimpleSAML_Logger::WARNING	No statistics, only warnings/errors
-	 *		SimpleSAML_Logger::NOTICE	Statistics and errors
-	 *		SimpleSAML_Logger::INFO		Verbose logs
-	 *		SimpleSAML_Logger::DEBUG	Full debug logs - not recommended for production
+	 *		SimpleSAML\Logger::ERR		No statistics, only errors
+	 *		SimpleSAML\Logger::WARNING	No statistics, only warnings/errors
+	 *		SimpleSAML\Logger::NOTICE	Statistics and errors
+	 *		SimpleSAML\Logger::INFO		Verbose logs
+	 *		SimpleSAML\Logger::DEBUG	Full debug logs - not recommended for production
 	 * 
 	 * Choose logging handler.
 	 * 
 	 * Options: [syslog,file,errorlog]
 	 * 
 	 */
-#	'logging.level'         => SimpleSAML_Logger::NOTICE,
+#	'logging.level'         => SimpleSAML\Logger::NOTICE,
 	'logging.handler'       => 'syslog',
 
 	/*
