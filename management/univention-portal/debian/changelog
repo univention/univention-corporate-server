@@ -1,3 +1,20 @@
+univention-portal (4.0.0-3) unstable; urgency=medium
+
+  * Bug #32658: fix missing Categories entry in UCR variable definition
+
+ -- Florian Best <best@univention.de>  Mon, 10 Aug 2020 06:53:40 +0200
+
+univention-portal (4.0.0-3) unstable; urgency=medium
+
+  [ Julia Bremer ]
+  * Bug #50688: Make categories without entries visible to non domain admins
+    in live-edit mode.
+
+  [ Dirk Wiesenthal ]
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Aug 2020 06:53:40 +0200
+
 univention-portal (4.0.0-2) unstable; urgency=medium
 
   * Bug #45787: prevent traceback in UCR handler if system is not yet
