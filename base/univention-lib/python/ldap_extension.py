@@ -39,7 +39,6 @@ import os
 import shutil
 import re
 import sys
-import imp
 import subprocess
 import bz2
 import base64
@@ -1022,10 +1021,20 @@ class UniventionUDMModule(UniventionUDMExtension):
 		saved_value = sys.dont_write_bytecode
 		sys.dont_write_bytecode = True
 		try:
-			module_name = imp.load_source('dummy', filename).module
-		except AttributeError:
-			print("ERROR: python variable 'module' undefined in given file:", filename)
-			sys.exit(1)
+			if six.PY2:
+				import imp
+				mod = imp.load_source('dummy', filename)
+			else:
+				import importlib.util
+				spec = importlib.util.spec_from_file_location(os.path.basename(filename).rsplit('.', 1)[0], filename)
+				mod = importlib.util.module_from_spec(spec)
+				spec.loader.exec_module(mod)
+
+			try:
+				module_name = mod.module
+			except AttributeError:
+				print("ERROR: python variable 'module' undefined in given file:", filename)
+				sys.exit(1)
 		finally:
 			sys.dont_write_bytecode = saved_value
 
