@@ -1,3 +1,10 @@
+univention-directory-manager-modules (15.0.2-1) unstable; urgency=medium
+
+  * Bug #51631: migrate udm_extension.py listener to be Python 3
+    compatible
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2020 09:12:06 +0200
+
 univention-directory-manager-modules (15.0.1-0) unstable; urgency=medium
 
   * Bug #46350: remove unused script lock_expired_passwords
