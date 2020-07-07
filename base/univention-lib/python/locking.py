@@ -2,7 +2,6 @@
 """
 Univention Common Python Library for file locking
 """
-from __future__ import print_function
 # Copyright 2011-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +29,8 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import fcntl
 import os
 
@@ -49,14 +50,14 @@ def get_lock(name, nonblocking=False):
 	be release automatically on file descriptor's destruction.
 
 	>>> fd = get_lock('myapp')
-	>>> ...... do some critical stuff ......
+	>>> # ...... do some critical stuff ......
 	>>> release_lock(fd)
 	>>>
 	>>> fd = get_lock('myapp', nonblocking=True)
 	>>> if not fd:
-	>>>     print 'cannot get lock'
+	>>>     print('cannot get lock')
 	>>> else:
-	>>>     ...... do some critical stuff ......
+	>>>     # ...... do some critical stuff ......
 	>>>     release_lock(fd)
 	"""
 	fn = "/var/run/%s.pid" % name
@@ -70,7 +71,8 @@ def get_lock(name, nonblocking=False):
 		if e.errno == 11:
 			return None
 		raise
-	print('%s\n' % os.getpid(), file=fd)
+	fd.write('%s\n' % os.getpid())
+	fd.flush()
 	return fd
 
 

@@ -1,3 +1,9 @@
+univention-lib (8.0.1-38) unstable; urgency=medium
+
+  * Bug #51592: use fd.write() instead of print()
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2020 17:00:15 +0200
+
 univention-lib (8.0.1-37) unstable; urgency=medium
 
   * Bug #51592: univention.lib.ldap_extension: decode ASCII values
