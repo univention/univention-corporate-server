@@ -1,7 +1,8 @@
 # /etc/fstab: static file system information.
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
-/dev/vda3	/	ext3	acl,errors=remount-ro	0	1	
+/dev/vda3	/	ext3	errors=remount-ro,acl,user_xattr	0	1	
 proc	/proc	proc	defaults	0	0	
-/dev/vda1	/boot	ext3	defaults,acl	0	0	
+UUID=testtest-0cbd-4f72-809e-89c4c9af0c3d	/boot	ext2	defaults,acl,user_xattr	0	2	
+/dev/vda1	/var	ext3	defaults,acl,user_xattr	0	2	
 /dev/vda2	none	swap	sw	0	0	
-192.168.0.81:/home	/home	nfs	defaults,timeo=21,retrans=9,wsize=8192,rsize=8192,nfsvers=3	1	2	# LDAP
+192.168.0.81:/home	/home	nfs	defaults,timeo=21,retrans=9,wsize=8192,rsize=8192,nfsvers=3	1	0	# LDAP
