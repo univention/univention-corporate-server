@@ -1,3 +1,9 @@
+univention-lib (9.0.6-0) unstable; urgency=medium
+
+  * Bug #51633: fix univention.lib.i18n
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2020 10:44:42 +0200
+
 univention-lib (9.0.4-0) unstable; urgency=medium
 
   * Bug #51628: execute shell utilities with Python 3
