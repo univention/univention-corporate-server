@@ -8,8 +8,10 @@ connections to remote |UMC| servers
 >>> umc.authenticate_with_machine_account()
 >>> response = umc.umc_get('session-info')
 >>> response.status
-2000
->>> umc.umc_logout()
+200
+>>> response = umc.umc_logout()
+>>> response.status
+303
 """
 # Copyright 2017-2020 Univention GmbH
 #
