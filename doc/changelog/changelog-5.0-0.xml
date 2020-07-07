@@ -137,7 +137,7 @@
 						&ucsUCRV; <envar>dns/master/port</envar> has been removed (<u:bug>32188</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-						Trailing semicolons from several &ucsUCRV;s <envar>dns/<replaceable>*</replaceable></envar> are now stripped by default to prevent syntax errors(<u:bug>32188</u:bug>)
+						Trailing semicolons from several &ucsUCRV;s <envar>dns/<replaceable>*</replaceable></envar> are now stripped by default to prevent syntax errors (<u:bug>32188</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
