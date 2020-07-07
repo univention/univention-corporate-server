@@ -1,4 +1,5 @@
 [portal/port]
 Description[de]=Der Port, auf der der Univention Portal Server läuft.
 Description[en]=The port used by the Univention Portal server.
+Categories=management-umc
 Type=int
