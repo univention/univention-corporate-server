@@ -92,11 +92,6 @@ __exthostinfo_mapping = {
 		'vrml_image': 'univention/mobileclient.gif',
 		'statusmap_image': 'univention/mobileclient.gd2'
 	},
-	'thinclient': {
-		'icon_image': 'univention/thinclient.gif',
-		'vrml_image': 'univention/thinclient.gif',
-		'statusmap_image': 'univention/thinclient.gd2'
-	},
 	'windows': {
 		'icon_image': 'univention/windows.gif',
 		'vrml_image': 'univention/windows.gif',
@@ -478,8 +473,6 @@ def getUniventionComputerType(new):
 			return 'macos'
 		elif 'univentionMobileClient' in new['objectClass']:
 			return 'mobileclient'
-		elif 'univentionThinClient' in new['objectClass']:
-			return 'thinclient'
 		elif 'univentionWindows' in new['objectClass']:
 			return 'windows'
 		elif 'univentionWindows' in new['objectClass']:

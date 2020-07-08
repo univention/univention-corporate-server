@@ -499,9 +499,6 @@ if [ "$ldap_available" = 1 ]; then
 		done
 	}
 
-	admin_replace_name "policies/thinclient" "univentionFileServer" "fileServer"
-	admin_replace_name "policies/thinclient" "univentionAuthServer" "authServer"
-	admin_replace_name "policies/thinclient" "univentionDesktopServer" "linuxTerminalServer"
 	admin_replace_name "policies/ldapserver" "univentionLDAPServer" "ldapServer"
 	admin_replace_name "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server"
 	admin_replace_name "policies/dhcp_dns" "univentionDhcpDomainNameServers" "domain_name_servers"
