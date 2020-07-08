@@ -16,6 +16,13 @@ univention-self-service (5.0.0-2) unstable; urgency=medium
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Sep 2020 17:55:17 +0200
 
+univention-self-service (4.0.3-44) unstable; urgency=medium
+
+  * Bug #51607: allow use of the self service without reentering
+    credentials
+
+ -- Florian Best <best@univention.de>  Wed, 30 Sep 2020 17:47:45 +0200
+
 univention-self-service (4.0.3-38) unstable; urgency=medium
 
   * Bug #51496: fix error message in case password changing failed

@@ -396,11 +396,11 @@ class Base(signals.Provider, Translation):
 			headers['Content-Language'] = self.__current_language
 		return headers
 
-	def get_user_ldap_connection(self, no_cache=False):
+	def get_user_ldap_connection(self, no_cache=False, **kwargs):
 		if not self._user_dn:
 			return  # local user (probably root)
 		try:
-			lo, po = get_user_connection(bind=self.bind_user_connection, write=False, follow_referral=True, no_cache=no_cache)
+			lo, po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
 			if not no_cache:
 				self._user_connections.add(lo)
 			return lo
