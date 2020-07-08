@@ -95,6 +95,9 @@ define([
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
 					this.addChild(this.grid);
+					this.own(aspect.after(this.grid, 'onFolderClick', lang.hitch(this, function(entry) {
+						this.onFolderClick(entry);
+					}), true));
 					break;
 				case portalTools.RenderMode.EDIT:
 					this.addChild(this.grid);
@@ -161,6 +164,10 @@ define([
 		},
 
 		onCategoryNotInPortalJSON: function() {
+			// event stub
+		},
+
+		onFolderClick: function(entry) {
 			// event stub
 		}
 	});

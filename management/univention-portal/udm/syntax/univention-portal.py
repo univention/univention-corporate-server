@@ -44,6 +44,16 @@ class NewPortalCategories(UDM_Objects):
 	simple = True
 
 
+class NewPortalCategoryEntries(UDM_Objects):
+	"""
+	Syntax to select a portal entries or folders from |LDAP|.
+	"""
+	udm_modules = ('portals/entry', 'portals/folder', )
+	label = '%(name)s'
+	empty_value = True
+	simple = True
+
+
 class NewPortalEntries(UDM_Objects):
 	"""
 	Syntax to select a portal entries from |LDAP| using :py:class:`univention.admin.handlers.portals.entry`.

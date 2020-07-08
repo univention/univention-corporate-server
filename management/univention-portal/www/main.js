@@ -996,7 +996,58 @@ define([
 			// TODO do we want to select the home when closing an iframe or rather something like "the iframe below/above"
 		},
 
-		_renderCategory: function(category, renderMode) {
+		openFolder: function(dn) {
+			var renderMode = portalTools.RenderMode.NORMAL;
+
+			if (this._openFolders.length > 0) {
+				var prevFolder = this._openFolders[this._openFolders.length - 1];
+				domClass.add(prevFolder.domNode, 'dijitDisplayNone');
+			}
+
+			var folder = portalJson.folders[dn];
+			folder = {
+				$notInPortalJSON$: false,
+				heading: folder.name[locale] || folder.name.en_US,
+				entries: this._getEntries(folder.entries, renderMode),
+				dn: dn,
+				renderMode: renderMode
+			};
+			var c = new ContainerWidget({
+				'class': 'folderContainer'
+			});
+			var closeButton = new Button({
+				label: 'close',
+				callback: lang.hitch(this, function() {
+					this.closeFolder();
+				})
+			});
+			var portalCategory = this._renderCategory(folder, renderMode);
+			c.addChild(portalCategory);
+			c.addChild(closeButton);
+			this._openFolders.push(c);
+
+			var folderNode = dom.byId('folders');
+			domClass.remove(folderNode, 'dijitDisplayNone');
+			folderNode.appendChild(c.domNode);
+			c.startup();
+		},
+
+		closeFolder: function() {
+			if (this._openFolders.length === 0) {
+				return;
+			}
+			var folder = this._openFolders.pop();
+			folder.destroyRecursive();
+			if (this._openFolders.length === 0) {
+				var folderNode = dom.byId('folders');
+				domClass.add(folderNode, 'dijitDisplayNone');
+			} else {
+				var prevFolder = this._openFolders[this._openFolders.length - 1];
+				domClass.remove(prevFolder.domNode, 'dijitDisplayNone');
+			}
+		},
+
+		_renderCategory: function(category, renderMode, anonymous) {
 			var portalCategory = new PortalCategory({
 				heading: category.heading,
 				entries: category.entries,
@@ -1010,6 +1061,11 @@ define([
 			this._cleanupList.widgets.push(portalCategory);
 
 			switch (renderMode) {
+				case portalTools.RenderMode.NORMAL:
+					portalCategory.own(on(portalCategory, 'folderClick', lang.hitch(this, function(entry) {
+						console.log('folder clicked: ', entry);
+						this.openFolder(entry.dn);
+					})));
 				case portalTools.RenderMode.EDIT:
 					portalCategory.own(on(portalCategory, 'addEntry', lang.hitch(this, function() {
 						this.editPortalEntry(portalCategory);
@@ -1053,7 +1109,9 @@ define([
 					break;
 			}
 
-			this._portalCategories.push(portalCategory);
+			if (!anonymous) {
+				this._portalCategories.push(portalCategory);
+			}
 			return portalCategory;
 		},
 
@@ -1439,6 +1497,7 @@ define([
 				handlers: [],
 				widgets: []
 			};
+			this._openFolders = [];
 		},
 
 		_registerEventHandlerForSearch: function() {
@@ -1770,7 +1829,7 @@ define([
 		_sanitizeEntries: function(entries) {
 			return entries.map(function(entry) {
 				if (typeof entry === 'string') {
-					entry = portalJson.entries[entry] || {
+					entry = portalJson.entries[entry] || portalJson.folders[entry] || {
 						$notInPortalJSON$: true,
 						dn: entry
 					};
@@ -1801,8 +1860,25 @@ define([
 					};
 				}
 
+				if (entry.dn in portalJson.folders) {
+					return {
+						type: 'folder',
+						name: entry.name[locale] || entry.name.en_US,
+						dn: entry.dn,
+						id: (this._globalEntryIndex++).toString() + '_' + entry.dn,
+						index: localEntryIndex++,
+						description: '',
+						logo_name: _getLogoName(''),
+						web_interface: '',
+						host_name: '',
+						activated: true,
+						linkTarget: 'samewindow',
+					};
+				}
+
 				var linkAndHostname = getBestLinkAndHostname(entry.links);
 				return {
+					type: 'entry',
 					name: entry.name[locale] || entry.name.en_US,
 					dn: entry.dn,
 					// We need globally unique id for portalTools.RenderMode.DND
