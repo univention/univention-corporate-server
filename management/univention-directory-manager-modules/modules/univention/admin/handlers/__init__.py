@@ -226,11 +226,8 @@ class simpleLdap(object):
 
 		if self.oldattr:
 			self._exists = True
-			if not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
-				if self.use_performant_ldap_search_filter:
-					raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
-				else:
-					ud.debug(ud.ADMIN, ud.ERROR, 'object %s is not recognized as %s. Ignoring for now. Please report!' % (self.dn, self.module))
+			if not univention.admin.modules.virtual(self.module) and not univention.admin.modules.recognize(self.module, self.dn, self.oldattr):
+				raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
 			oldinfo = self.mapping.unmapValues(self.oldattr)
 			oldinfo = self._post_unmap(oldinfo, self.oldattr)
 			oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
