@@ -1,3 +1,9 @@
+univention-lib (9.0.11-7) unstable; urgency=medium
+
+  * Bug #51650: fix evaluation of share blacklist
+
+ -- Florian Best <best@univention.de>  Wed, 06 Oct 2021 12:47:46 +0200
+
 univention-lib (9.0.11-6) unstable; urgency=medium
 
   * Bug #53465: touch all HTML/JS/CSS files in postinst via

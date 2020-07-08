@@ -283,24 +283,32 @@ def is_blacklisted(path, ucr):
 
 	>>> is_blacklisted('/home/', {})
 	True
-	>>> is_blacklisted('/home/', {'listener/shares/whitelist/default': '/home/*:/var/*'})
+	>>> is_blacklisted('/home/', {'listener/shares/whitelist/defaults': '/home/*:/var/*'})
 	False
 	>>> is_blacklisted('/home', {})
 	True
-	>>> is_blacklisted('/home', {'listener/shares/whitelist/default': '/home/*:/var/*'})
+	>>> is_blacklisted('/home', {'listener/shares/whitelist/defaults': '/home/*:/var/*'})
 	False
 	>>> is_blacklisted('/home/Administrator', {})
 	True
-	>>> is_blacklisted('/home/Administrator', {'listener/shares/whitelist/default': '/home/*:/var/*'})
+	>>> is_blacklisted('/home/Administrator', {'listener/shares/whitelist/defaults': '/home/*:/var/*'})
 	False
 	>>> is_blacklisted('/home/Administrator/', {'listener/shares/whitelist/admin': '/home/Administrator'})
+	False
+	>>> is_blacklisted('/var/', {'listener/shares/whitelist/univention-printserver-pdf': '/var/spool/cups-pdf/*'})
+	True
+	>>> is_blacklisted('/var', {'listener/shares/whitelist/univention-printserver-pdf': '/var/spool/cups-pdf/*'})
+	True
+	>>> is_blacklisted('/var/spool/', {'listener/shares/whitelist/univention-printserver-pdf': '/var/spool/cups-pdf/*'})
+	True
+	>>> is_blacklisted('/var/spool/cups-pdf/', {'listener/shares/whitelist/univention-printserver-pdf': '/var/spool/cups-pdf/*'})
 	False
 	"""
 	path = '%s/' % (path.rstrip('/'),)
 	whitelist = [set(val.split(':')) for key, val in ucr.items() if key.startswith('listener/shares/whitelist/')]
 	whitelist = reduce(set.union, whitelist) if whitelist else set()
 	for directory in DIR_BLACKLIST:
-		if any(path in allowed or path.rstrip('/') in allowed or fnmatch.fnmatch(path, allowed) for allowed in whitelist):
+		if path in whitelist or path.rstrip('/') in whitelist or any(fnmatch.fnmatch(path, allowed) for allowed in whitelist):
 			continue
 		if path.startswith(directory):
 			return True
