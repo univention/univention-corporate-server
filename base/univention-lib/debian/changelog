@@ -1,4 +1,16 @@
-univention-lib (9.0.0-30) unstable; urgency=medium
+univention-lib (9.0.0-35) unstable; urgency=medium
+
+  * Bug #51592: univention.lib.umc: add unittest for HTTPError
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 08 Jul 2020 12:53:03 +0200
+
+univention-lib (9.0.0-34) unstable; urgency=medium
+
+  * Bug #51648: log combined stdout + stderr in univention.lib.udm_extension
+
+ -- Florian Best <best@univention.de>  Wed, 08 Jul 2020 12:23:05 +0200
+
+univention-lib (9.0.0-33) unstable; urgency=medium
 
   * Bug #51633: fix univention.lib.i18n
 
