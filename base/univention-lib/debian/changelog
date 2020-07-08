@@ -1,3 +1,10 @@
+univention-lib (9.0.0-36) unstable; urgency=medium
+
+  * Bug #51652: Use +nocookie option with dig to avoid FORMERR from
+    Windows 2008 R2.
+
+ -- Arvid <requate@univention.de>  Wed, 08 Jul 2020 15:55:18 +0200
+
 univention-lib (9.0.0-35) unstable; urgency=medium
 
   * Bug #51592: univention.lib.umc: add unittest for HTTPError
