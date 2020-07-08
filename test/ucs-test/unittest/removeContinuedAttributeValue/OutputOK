@@ -1,5 +1,4 @@
  dn: dc=liam,dc=local
- univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,dc=liam,dc=local
  univentionPolicyReference: cn=default-settings,cn=routing,cn=dhcp,cn=policies,dc=liam,dc=local
  univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=liam,dc=local
  univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=liam,dc=local
