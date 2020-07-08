@@ -1,4 +1,4 @@
-univention-directory-manager-modules (15.0.2-5) unstable; urgency=medium
+univention-directory-manager-modules (15.0.2-6) unstable; urgency=medium
 
   * Bug #51631: migrate udm_extension.py listener to be Python 3
     compatible
