@@ -313,7 +313,6 @@ class CheckRoles(Check):
 		'mobileclient',
 		'fatclient',
 		'managedclient',
-		'thinclient',
 	))
 
 	def __init__(self, roles_required=(), roles_prohibited=()):

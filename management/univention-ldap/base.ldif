@@ -31,7 +31,6 @@ print('univentionObjectType: container/dc')
 print('krb5RealmName: %s' % configRegistry['domainname'].upper())
 print('nisDomain: %s' % configRegistry['domainname'])
 print('associatedDomain: %s' % configRegistry['domainname'])
-print('univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,%s' % configRegistry['ldap/base'])
 print('univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % configRegistry['ldap/base'])
 print('')
 print('dn: cn=samba,%s' % configRegistry['ldap/base'])
@@ -123,9 +122,7 @@ univentionPolicyObject: cn=default-settings,cn=routing,cn=dhcp,cn=policies,@%@ld
 univentionPolicyObject: cn=scope,cn=dhcp,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=statements,cn=dhcp,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=sound,cn=policies,@%@ldap/base@%@
-univentionPolicyObject: cn=thinclient,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=config-registry,cn=policies,@%@ldap/base@%@
-univentionPolicyObject: cn=default-settings,cn=thinclient,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=xfree,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=mail,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=users,cn=policies,@%@ldap/base@%@
@@ -510,20 +507,6 @@ objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: config-registry
-
-dn: cn=thinclient,cn=policies,@%@ldap/base@%@
-objectClass: organizationalRole
-objectClass: univentionObject
-univentionObjectType: container/cn
-cn: thinclient
-
-dn: cn=default-settings,cn=thinclient,cn=policies,@%@ldap/base@%@
-objectClass: top
-objectClass: univentionPolicy
-objectClass: univentionPolicyThinClient
-objectClass: univentionObject
-univentionObjectType: policies/thinclient
-cn: default-settings
 
 dn: cn=xfree,cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole

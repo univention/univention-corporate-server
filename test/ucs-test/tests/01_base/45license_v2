@@ -55,17 +55,13 @@ createObject ()
 
 	echo "Create UDM object of type $module"
 
-	if [ "$module" = "computers/thinclient" ]; then
-		udm-test $module create --set name="$name" --position "cn=computers,$ldap_base" --set ip=1.3.4.5 --set mac=00:01:20:03:04:05 || fail_test 110 "Failed to create $module: name: $name with param: $param"
-	else
-		udm-test $module create --set name="$name" --position "cn=computers,$ldap_base" $param || fail_test 110 "Failed to create $module: name: $name with param: $param"
-	fi
+	udm-test "$module" create --set name="$name" --position "cn=computers,$ldap_base" $param || fail_test 110 "Failed to create $module: name: $name with param: $param"
 }
 removeObject ()
 {
 	module="$1"
 	name="$2"
-	udm-test $module remove --dn "cn=$name,cn=computers,$ldap_base" || fail_test 110 "Failed to remove $module: cn=$name,cn=computers,$ldap_base"
+	udm-test "$module" remove --dn "cn=$name,cn=computers,$ldap_base" || fail_test 110 "Failed to remove $module: cn=$name,cn=computers,$ldap_base"
 }
 
 # Ignore connector side effects

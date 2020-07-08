@@ -12,9 +12,6 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 	priority = 42
 	_replace_type = {1: "complete_match"}
 	referers = (
-		("policies/thinclient", "fileServer", 1),
-		("policies/thinclient", "authServer", 1),
-		("policies/thinclient", "linuxTerminalServer", 1),
 		("policies/ldapserver", "ldapServer", 1),
 		("policies/dhcp_boot", "boot_server", 1),
 		("policies/dhcp_dns", "domain_name_servers", 1),

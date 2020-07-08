@@ -4,8 +4,6 @@ univentionObjectType: container/dc
 krb5RealmName: LIAM.LOCAL
 nisDomain: liam.local
 associatedDomain: liam.local
-univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,dc=li
- am,dc=local
 univentionPolicyReference: cn=default-settings,cn=boot,cn=dhcp,cn=policies,dc=
  liam,dc=local
 univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=l
