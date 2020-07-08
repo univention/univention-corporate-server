@@ -19,8 +19,6 @@ domaincontroller_slave)
 	services_to_check="$udl $slapd" ;;
 memberserver)
 	services_to_check="$udl" ;;
-mobileclient)
-	services_to_check="$udl" ;;
 fatclient)
 	services_to_check="$udl" ;;
 basesystem)

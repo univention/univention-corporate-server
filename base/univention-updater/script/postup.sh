@@ -86,7 +86,6 @@ domaincontroller_master) install univention-server-master ;;
 domaincontroller_backup) install univention-server-backup ;;
 domaincontroller_slave) install univention-server-slave ;;
 memberserver) install univention-server-member ;;
-mobileclient) install univention-mobile-client ;;
 fatclient|managedclient) install univention-managed-client ;;
 esac
 

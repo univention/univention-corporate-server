@@ -20,7 +20,6 @@
 ##  - memberserver
 ##  - basesystem
 ##  - managedclient
-##  - mobileclient
 ##  - fatclient
 ## roles-not:
 ## join: true

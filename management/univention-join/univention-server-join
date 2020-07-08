@@ -321,7 +321,7 @@ create_entry () {
 		fi
 		# DHCP
 		case "$module" in
-		computers/managedclient|computers/mobileclient)
+		computers/managedclient)
 			if [ -n "$dhcpEntry" ] && [ -n "$IP" ] && [ -n "$MAC" ]; then
 					if [ "${#MAC[@]}" -gt 1 ]; then
 						log 1 "Multiple MAC addresses; creating DHCP entry for the first one only."
@@ -454,11 +454,6 @@ memberserver)
 	;;
 client)
 	create_entry "Client" "computers/managedclient" \
-		"${POSITION:-cn=computers,$ldap_base}" \
-		"cn=Computers,cn=groups,$ldap_base"
-	;;
-mobileclient)
-	create_entry "Client" "computers/mobileclient" \
 		"${POSITION:-cn=computers,$ldap_base}" \
 		"cn=Computers,cn=groups,$ldap_base"
 	;;
