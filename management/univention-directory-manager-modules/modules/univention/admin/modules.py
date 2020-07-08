@@ -391,9 +391,6 @@ def update_extended_attributes(lo, module, position):
 		propertyHook = None
 		if propertyHookString and hasattr(univention.admin.hook, propertyHookString):
 			propertyHook = getattr(univention.admin.hook, propertyHookString)()
-		register_ldap_connection = getattr(propertyHook, 'hook_ldap_connection', None)
-		if register_ldap_connection:
-			register_ldap_connection(lo, position)
 
 		# get default value
 		propertyDefault = [x.decode('UTF-8') if x is not None else x for x in attrs.get('univentionUDMPropertyDefault', [None])]
