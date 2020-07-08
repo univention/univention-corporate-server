@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-2) unstable; urgency=medium
+
+  * Bug #51607: make connections to DC Master possible
+
+ -- Florian Best <best@univention.de>  Wed, 30 Sep 2020 17:14:12 +0200
+
 univention-management-console (11.0.5-1) unstable; urgency=medium
 
   * Bug #51994: Version bump for 4.4-6
