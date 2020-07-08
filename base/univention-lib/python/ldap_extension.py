@@ -619,12 +619,12 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
 				# validate
 				# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
-				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-				stdout, stderr = p.communicate()
-				stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
+				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+				stdout = p.communicate()[0]
+				stdout = stdout.decode('UTF-8', 'replace')
 				if p.returncode != 0:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s\n%s.' % (name, p.returncode, stdout, stderr))
-					set_handler_message(name, dn, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s.' % (name, p.returncode, stdout))
+					set_handler_message(name, dn, 'slaptest validation failed {} {}'.format(stdout, p.returncode))
 					# Revert changes
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
 					os.unlink(new_filename)
@@ -674,12 +674,12 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 					# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
-					p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-					stdout, stderr = p.communicate()
-					stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
+					p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+					stdout = p.communicate()[0]
+					stdout = stdout.decode('UTF-8', 'replace')
 					if p.returncode != 0:
-						ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s\n%s.' % (name, p.returncode, stdout, stderr))
-						set_handler_message(name, dn, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s.' % (name, p.returncode, stdout))
+						set_handler_message(name, dn, 'slaptest validation failed {} {}'.format(stdout, p.returncode))
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
 						# Revert changes
 						try:
@@ -888,12 +888,12 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 				# validate
-				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-				stdout, stderr = p.communicate()
-				stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
+				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+				stdout = p.communicate()[0]
+				stdout = stdout.decode('UTF-8', 'replace')
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: slapd.conf validation failed:\n%s.' % (name, stdout))
-					set_handler_message(name, dn, 'slaptest validation failed {} {} {}'.format(stdout, stderr, p.returncode))
+					set_handler_message(name, dn, 'slaptest validation failed {} {}'.format(stdout, p.returncode))
 					# Revert changes
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
 					os.unlink(new_filename)
