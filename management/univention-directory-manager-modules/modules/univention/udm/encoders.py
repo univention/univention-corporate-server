@@ -237,7 +237,7 @@ class StringCaseInsensitiveResultLowerBooleanPropertyEncoder(BaseEncoder):
 
 	@classmethod
 	def decode(cls, value=''):
-		return type(value) == str and value.lower() == cls.true_string
+		return isinstance(value, six.string_types) and value.lower() == cls.true_string
 
 	@classmethod
 	def encode(cls, value=None):
