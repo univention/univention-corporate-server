@@ -1,3 +1,9 @@
+univention-ldap (16.0.1-0) unstable; urgency=medium
+
+  * Bug #51640: fix joinscript credentials for univention-ldapsearch
+
+ -- Florian Best <best@univention.de>  Fri, 18 Sep 2020 14:34:34 +0200
+
 univention-ldap (16.0.0-5) unstable; urgency=low
 
   * Bug #31048: Remove cn=admin-settings,cn=univention
