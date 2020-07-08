@@ -329,18 +329,19 @@ class simpleLdap(object):
 
 		return True
 
-	def has_key(self, key):  # type: (str) -> bool
-		"""
-		Checks if the property exists in this module and if it is enabled in the set UDM options.
+	if six.PY2:
+		def has_key(self, key):  # type: (str) -> bool
+			"""
+			Checks if the property exists in this module and if it is enabled in the set UDM options.
 
-		:param str key: The name of a property.
-		:returns: True if the property exists and is enabled, False otherwise.
-		:rtype: bool
+			:param str key: The name of a property.
+			:returns: True if the property exists and is enabled, False otherwise.
+			:rtype: bool
 
-		.. deprecated:: 4.4
-		Use :func:`univention.admin.handlers.simpleLdap.has_property` instead!
-		"""
-		return self.has_property(key)
+			.. deprecated:: 4.4
+			Use :func:`univention.admin.handlers.simpleLdap.has_property` instead!
+			"""
+			return self.has_property(key)
 
 	def has_property(self, key):  # type: (str) -> bool
 		"""
