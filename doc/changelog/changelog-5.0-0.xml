@@ -711,6 +711,9 @@
 			<listitem><simpara>
 					All links to <uri>forum.univention.de</uri> have been updated to point to <ulink url="https://help.univention.com/"/> now (<u:bug>43926</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>ucslint</package> now accepts Python 3 for scripting (<u:bug>51637</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
