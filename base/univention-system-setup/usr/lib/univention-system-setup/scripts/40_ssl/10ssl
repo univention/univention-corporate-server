@@ -152,7 +152,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	progress_next_step 9
 
 	# restart services
-	systemctl restart slapd apache2 postfix || (systemctl status slapd.service; journalctl -xe)
+	systemctl restart slapd apache2 postfix || (systemctl status slapd.service; cat /etc/ldap/slapd.conf; echo '#####'; journalctl -xe)
 
 	progress_next_step 10
 fi
