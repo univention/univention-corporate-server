@@ -60,7 +60,7 @@ for name in dns/forwarder1 dns/forwarder2 dns/forwarder3; do
 	fi
 done
 
-service restart bind9
+systemctl restart bind9
 
 if [ -d "/var/lib/univention-system-setup/dnsforwarder.post" ]; then
 	run-parts /var/lib/univention-system-setup/dnsforwarder.post --arg=$oldvalues --arg=$newvalues

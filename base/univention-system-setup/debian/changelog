@@ -1,3 +1,9 @@
+univention-system-setup (13.0.0-9) unstable; urgency=medium
+
+  * Bug #51643: fix restarting bind9
+
+ -- Florian Best <best@univention.de>  Wed, 08 Jul 2020 10:22:48 +0200
+
 univention-system-setup (13.0.0-8) unstable; urgency=low
 
   * Bug #32462: Remove references to dhcp3
