@@ -1,0 +1,18 @@
+/* Packages that belong on the first CD (but not the netinst or
+ * businesscard), despite not being directly installed by debootstrap,
+ * or d-i, or tasksel.
+ */
+
+/* hysterical raisins, but too small to remove */
+openssh-client
+/* could be used by debconf in certain configurations */
+libterm-readline-gnu-perl
+/* Accessibility stuff that is installed by base-installer
+ * in certain situations, but too large for the netinst. */
+brltty
+speakup
+/* See rationale in #630805 */
+apt-offline
+
+/* #231583: Make life easier for Australian ISP users */
+bpalogin
