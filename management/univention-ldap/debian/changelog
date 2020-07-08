@@ -1,4 +1,4 @@
-univention-ldap (16.0.0-6) unstable; urgency=medium
+univention-ldap (16.0.0-7) unstable; urgency=medium
 
   * Bug #51640: fix joinscript credentials for univention-ldapsearch
 
