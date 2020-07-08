@@ -1,4 +1,4 @@
-univention-ad-connector (14.0.0-5) unstable; urgency=medium
+univention-ad-connector (14.0.0-6) unstable; urgency=medium
 
   * Bug #51336: migrate UMC module to Python 3
 
