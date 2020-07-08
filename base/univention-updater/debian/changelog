@@ -1,3 +1,9 @@
+univention-updater (14.0.2-14) unstable; urgency=medium
+
+  * Bug #51549: Adapt links and components for 4.4-5
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 08 Jul 2020 16:37:44 +0200
+
 univention-updater (14.0.2-13) unstable; urgency=low
 
   * Bug #51576: Fix signature validation
