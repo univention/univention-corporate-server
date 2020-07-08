@@ -110,6 +110,11 @@ define([
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
 					this.inherited(arguments);
+					this.own(on(this.contentNode, '.folderTile:click', lang.hitch(this, function(evt) {
+						evt.stopImmediatePropagation();
+						var entry = this.row(evt).data;
+						this.onFolderClick(entry);
+					})));
 					break;
 				case portalTools.RenderMode.EDIT:
 					this.inherited(arguments);
@@ -311,24 +316,32 @@ define([
 			var domNode;
 			switch (this.renderMode) {
 				case portalTools.RenderMode.NORMAL:
-					domNode = this.inherited(arguments);
-					var link = put('a[href=$]', this._getWebInterfaceUrl(item));
-					var linkTarget = item.linkTarget === 'useportaldefault' ? this.defaultLinkTarget : item.linkTarget;
-					switch (linkTarget) {
-						case 'samewindow':
+					switch (item.type) {
+						case 'folder':
+							domNode = this.inherited(arguments);
+							put(domNode, '.folderTile');
 							break;
-						case 'newwindow':
-							link.target = '_blank';
-							link.rel = 'noopener';
-							break;
-						case 'embedded':
-							link.onclick = lang.hitch(this, function(e) {
-								e.preventDefault();
-								topic.publish('/portal/iframes/open', item.dn, item.name, item.logo_name, this._getWebInterfaceUrl(item));
-							});
+						case 'entry':
+							domNode = this.inherited(arguments);
+							var link = put('a[href=$]', this._getWebInterfaceUrl(item));
+							var linkTarget = item.linkTarget === 'useportaldefault' ? this.defaultLinkTarget : item.linkTarget;
+							switch (linkTarget) {
+								case 'samewindow':
+									break;
+								case 'newwindow':
+									link.target = '_blank';
+									link.rel = 'noopener';
+									break;
+								case 'embedded':
+									link.onclick = lang.hitch(this, function(e) {
+										e.preventDefault();
+										topic.publish('/portal/iframes/open', item.dn, item.name, item.logo_name, this._getWebInterfaceUrl(item));
+									});
+									break;
+							}
+							put(domNode, link, query('.umcGalleryItem', domNode)[0]);
 							break;
 					}
-					put(domNode, link, query('.umcGalleryItem', domNode)[0]);
 					break;
 				case portalTools.RenderMode.EDIT:
 					if (item.id && item.id === '$addEntryTile$') {
@@ -379,6 +392,10 @@ define([
 		},
 
 		onEntryNotInPortalJSON: function(entry) {
+			// event stub
+		},
+
+		onFolderClick: function(entry) {
 			// event stub
 		},
 
@@ -455,7 +472,8 @@ define([
 		_getDefaultValuesForResize: function(cssClass) {
 			var node = this.renderRow({
 				name: '*',
-				description: '*'
+				description: '*',
+				type: 'entry'
 			});
 			domClass.add(node, 'dijitOffScreen');
 			domConstruct.place(node, this.contentNode);

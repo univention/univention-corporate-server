@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-portal\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-12 06:51+0200\n"
+"POT-Creation-Date: 2020-07-02 14:52+0200\n"
 "PO-Revision-Date: 2020-05-01 00:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -32,7 +32,7 @@ msgstr "Hintergrund"
 msgid "Background image of the Portal"
 msgstr "Hintergrundbild des Portals"
 
-#: udm/handlers/all.py:66
+#: udm/handlers/all.py:71
 msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -76,7 +76,8 @@ msgstr ""
 "Beschreibung des Eintrags. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
-#: udm/handlers/all.py:59 udm/handlers/entry.py:62 udm/handlers/entry.py:114
+#: udm/handlers/all.py:64 udm/handlers/entry.py:62 udm/handlers/entry.py:114
+#: udm/handlers/folder.py:64 udm/handlers/folder.py:84
 #: udm/handlers/category.py:64 udm/handlers/portal.py:65
 msgid "Display name"
 msgstr "Anzeigename"
@@ -89,6 +90,10 @@ msgstr ""
 "Anzeigename der Kategorie. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
+#: udm/handlers/folder.py:87
+msgid "Entries"
+msgstr "Einträge"
+
 #: udm/handlers/portal.py:132
 msgid "Entries in the menu"
 msgstr "Einträge im Menü"
@@ -97,11 +102,11 @@ msgstr "Einträge im Menü"
 msgid "Entries in the user menu"
 msgstr "Einträge im Benutzermenü"
 
-#: udm/handlers/category.py:71
+#: udm/handlers/folder.py:71 udm/handlers/category.py:71
 msgid "Entry"
 msgstr "Eintrag"
 
-#: udm/handlers/entry.py:109
+#: udm/handlers/entry.py:109 udm/handlers/folder.py:80
 msgid "Entry options"
 msgstr "Optionen für Eintrag"
 
@@ -109,7 +114,8 @@ msgstr "Optionen für Eintrag"
 msgid "Font color"
 msgstr "Schriftfarbe"
 
-#: udm/handlers/all.py:66 udm/handlers/entry.py:109 udm/handlers/entry.py:110
+#: udm/handlers/all.py:71 udm/handlers/entry.py:109 udm/handlers/entry.py:110
+#: udm/handlers/folder.py:80 udm/handlers/folder.py:81
 #: udm/handlers/category.py:80 udm/handlers/category.py:84
 #: udm/handlers/portal.py:151
 msgid "General"
@@ -121,6 +127,14 @@ msgid ""
 "for en_US"
 msgstr ""
 "Überschrift des Eintrags. Mindestens ein Wert; insbesondere en_US ist "
+"empfohlen"
+
+#: udm/handlers/folder.py:65
+msgid ""
+"Headline of the folder. At least one entry; strongly encouraged to have one "
+"for en_US"
+msgstr ""
+"Überschrift des Ordners. Mindestens ein Wert; insbesondere en_US ist "
 "empfohlen"
 
 #: udm/handlers/portal.py:66
@@ -146,8 +160,8 @@ msgstr ""
 "Gruppen Mitglied sind. Wenn keine Gruppe ausgewählt wird, ist der "
 "Portaleintrag für alle sichtbar."
 
-#: udm/handlers/all.py:51 udm/handlers/entry.py:53 udm/handlers/category.py:55
-#: udm/handlers/portal.py:56
+#: udm/handlers/all.py:56 udm/handlers/entry.py:53 udm/handlers/folder.py:55
+#: udm/handlers/category.py:55 udm/handlers/portal.py:56
 msgid "Internal name"
 msgstr "Interner Name"
 
@@ -160,8 +174,12 @@ msgid "Link behaviour"
 msgstr "Link-Verhalten"
 
 #: udm/handlers/category.py:72
-msgid "List of Portal Entries shown in this category"
-msgstr "Liste der Portaleinträge in dieser Kategorie"
+msgid "List of portal entries and/or portal folders shown in this category"
+msgstr "Liste der Portaleinträge und/oder Portalordner in dieser Kategorie"
+
+#: udm/handlers/folder.py:72
+msgid "List of portal entries and/or portal folders shown in this folder"
+msgstr "Liste der Portaleinträge und/oder Portalordner die in diesem Ordner angezeigt werden"
 
 #: udm/handlers/portal.py:127
 msgid ""
@@ -190,13 +208,13 @@ msgstr "Anonyme Besucher verwalten"
 msgid "Management of portals and their entries"
 msgstr "Verwaltung der Portale und ihrer Einträge"
 
-#: udm/handlers/portal.py:184
-msgid "Message when the portal is empty"
-msgstr "Nachricht, wenn das portal leer ist"
-
 #: udm/handlers/portal.py:166
 msgid "Menu"
 msgstr "Menü"
+
+#: udm/handlers/portal.py:184
+msgid "Message when the portal is empty"
+msgstr "Nachricht, wenn das portal leer ist"
 
 #: udm/handlers/category.py:81 udm/handlers/portal.py:152
 msgid "Name"
@@ -213,6 +231,16 @@ msgid ""
 msgstr ""
 "Objekt, unter dem portals/entry Objekte angezeigt werden können. Gehört zu "
 "einem oder mehreren portals/portal Objekten"
+
+#: udm/handlers/folder.py:46
+msgid ""
+"One folder in https://fqdn/univention/portal which holds one or more "
+"portals/entry objects. Belongs to one or more portals/category objects, "
+"which belong to one or more portals/portal objects"
+msgstr ""
+"Ein Ordner in https://fqdn/univention/portal der ein oder mehr portals/entry"
+" Objekte enthält. Gehört zu einem oder mehreren portal/category Objekten, "
+"die zu einem oder mehreren portals/portal Objekten gehören"
 
 #: udm/handlers/entry.py:44
 msgid ""
@@ -243,6 +271,14 @@ msgstr "Portaleinträge"
 msgid "Portal entry"
 msgstr "Portal-Eintrag"
 
+#: udm/handlers/folder.py:44
+msgid "Portal folder"
+msgstr "Portal-Ordner"
+
+#: udm/handlers/folder.py:45
+msgid "Portal folders"
+msgstr "Portal-Ordner"
+
 #: udm/handlers/portal.py:83
 msgid "Portal logo"
 msgstr "Portal-Logo"
@@ -258,6 +294,10 @@ msgstr "Portal: Kategorie"
 #: udm/handlers/entry.py:41
 msgid "Portal: Entry"
 msgstr "Portal: Eintrag"
+
+#: udm/handlers/folder.py:43
+msgid "Portal: Folder"
+msgstr "Portal: Ordner"
 
 #: udm/handlers/portal.py:44
 msgid "Portal: Portal"
@@ -315,6 +355,9 @@ msgstr "Sichtbarkeit"
 
 #~ msgid "General Content"
 #~ msgstr "Allgemeiner Inhalt"
+
+#~ msgid "List of Portal Entries shown in this category"
+#~ msgstr "Liste der Portaleinträge in dieser Kategorie"
 
 #~ msgid "Shows links to locally installed Apps"
 #~ msgstr "Links zu lokale installierten Apps anzeigen"

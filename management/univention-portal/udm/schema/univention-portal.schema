@@ -5,6 +5,7 @@ objectIdentifier univentionNewPortal univentionNewPortalBase:1
 objectIdentifier univentionNewPortalCategory univentionNewPortalBase:2
 objectIdentifier univentionNewPortalEntry univentionNewPortalBase:3
 objectIdentifier univentionNewPortalComputer univentionNewPortalBase:4
+objectIdentifier univentionNewPortalFolder univentionNewPortalBase:5
 
 objectIdentifier univentionNewPortalAttributeType univentionNewPortal:1
 objectIdentifier univentionNewPortalObjectClass univentionNewPortal:2
@@ -14,6 +15,9 @@ objectIdentifier univentionNewPortalCategoryObjectClass univentionNewPortalCateg
 
 objectIdentifier univentionNewPortalEntryAttributeType univentionNewPortalEntry:1
 objectIdentifier univentionNewPortalEntryObjectClass univentionNewPortalEntry:2
+
+objectIdentifier univentionNewPortalFolderAttributeType univentionNewPortalFolder:1
+objectIdentifier univentionNewPortalFolderObjectClass univentionNewPortalFolder:2
 
 
 # <http://www.openldap.org/doc/admin24/schema.html>
@@ -211,6 +215,31 @@ objectclass ( univentionNewPortalCategoryObjectClass:1 NAME 'univentionNewPortal
 	MAY (
 			  univentionNewPortalCategoryDisplayName
 			$ univentionNewPortalCategoryEntries
+		)
+	)
+
+### Definition for univentionNewPortalFolder
+
+attributetype ( univentionNewPortalFolderAttributeType:1 NAME 'univentionNewPortalFolderDisplayName'
+	DESC 'Portal folder display name'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionNewPortalFolderAttributeType:2 NAME 'univentionNewPortalFolderEntries'
+	DESC 'Portal entries'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	X-ORDERED 'VALUES'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionNewPortalFolderObjectClass:1 NAME 'univentionNewPortalFolder'
+	DESC 'Portal Folder data'
+	SUP top
+	MUST ( cn )
+	MAY (
+			  univentionNewPortalFolderDisplayName
+			$ univentionNewPortalFolderEntries
 		)
 	)
 

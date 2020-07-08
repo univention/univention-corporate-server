@@ -74,7 +74,7 @@ class PortalsCategoryObjectProperties(GenericObjectProperties):
 	"""portals/category UDM properties."""
 
 	_encoders = {
-		'entries': dn_list_property_encoder_for("portals/entry"),
+		'entries': dn_list_property_encoder_for("auto"),
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
 	}
 
@@ -118,3 +118,26 @@ class PortalsPortalEntryModule(GenericModule):
 	class Meta:
 		supported_api_versions = [1, 2, 3]
 		suitable_for = ['portals/entry']
+
+
+class PortalsPortalFolderObjectProperties(GenericObjectProperties):
+	"""portals/folder UDM properties."""
+
+	_encoders = {
+		'displayName': ListOfListOflTextToDictPropertyEncoder,
+		'entries': dn_list_property_encoder_for("auto"),
+	}
+
+
+class PortalsPortalFolderObject(GenericObject):
+	"""Better representation of portals/folder properties."""
+	udm_prop_class = PortalsPortalFolderObjectProperties
+
+
+class PortalsPortalFolderModule(GenericModule):
+	"""PortalsPortalFolderObject factory"""
+	_udm_object_class = PortalsPortalFolderObject
+
+	class Meta:
+		supported_api_versions = [1, 2, 3]
+		suitable_for = ['portals/folder']
