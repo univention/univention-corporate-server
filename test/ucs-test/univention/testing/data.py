@@ -310,7 +310,6 @@ class CheckRoles(Check):
 		'domaincontroller_slave',
 		'memberserver',
 		'basesystem',
-		'managedclient',
 	))
 
 	def __init__(self, roles_required=(), roles_prohibited=()):

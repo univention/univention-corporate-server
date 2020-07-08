@@ -4686,7 +4686,6 @@ class univentionAdminModules(select):
 	"""
 	# we need a fallback
 	choices = [
-		('computers/managedclient', 'Computer: Managed Client'),
 		('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'),
 		('computers/domaincontroller_master', 'Computer: Domain Controller Master'),
 		('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'),
@@ -4732,7 +4731,6 @@ class univentionAdminModules(select):
 		('policies/xfree', 'Policy: Display'),
 		('policies/ldapserver', 'Policy: LDAP Server'),
 		('policies/maintenance', 'Policy: Maintenance'),
-		('policies/managedclientpackages', 'Policy: Packages Managed Client'),
 		('policies/masterpackages', 'Policy: Packages Master'),
 		('policies/memberpackages', 'Policy: Packages Member'),
 		('policies/slavepackages', 'Policy: Packages Slave'),

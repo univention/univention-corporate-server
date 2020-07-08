@@ -121,7 +121,7 @@ if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		done
     fi
 
-    # add joinstatus check only on role "domaincontroler_*, memberserver and managedclients"
+    # add joinstatus check only on role "domaincontroler_* and memberserver"
     if [ "$server_role" = "domaincontroller_master" -o \
          "$server_role" = "domaincontroller_backup" -o \
          "$server_role" = "domaincontroller_slave" -o \
