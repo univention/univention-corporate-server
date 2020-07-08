@@ -65,11 +65,54 @@ wait_named () {
 	fi
 }
 
+parse_credentials () {
+	unset binddn bindpwd bindpwdfile
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+		--binddn)
+			binddn="$2"
+			shift 2 || die "Missing argument to --binddn"
+			;;
+		--bindpwd)
+			bindpwd="$2"
+			shift 2 || die "Missing argument to --bindpwd"
+			;;
+		--bindpwdfile)
+			bindpwdfile="$2"
+			shift 2 || die "Missing argument to --bindpwdfile"
+			[ -f "$bindpwdfile" ] || die "Missing bindpwdfile $bindpwdfile"
+			;;
+		*)
+			echo "Unknown argument: $1" >&2
+			shift
+			;;
+		esac
+	done
+}
+
+get_credentials () {
+	parse_credentials "$@"
+	[ -n "$binddn" ] && [ -n "$bindpwdfile" ] && return 0
+	[ -n "$binddn" ] && [ -n "$bindpwd" ] && return 0
+	case "$server_role" in
+	domaincontroller_master|domaincontroller_backup)
+		binddn="cn=admin,$ldap_base"
+		bindpwdfile="/etc/ldap.secret"
+		;;
+	*)
+		die "Missing LDAP credentials"
+		;;
+	esac
+}
+
+get_credentials "$@"
+
 if [ -x /etc/init.d/slapd ] &&
 	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
 	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionUDMPropertyCopyable &&
-	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionUDMPropertyCopyable'"
+	univention-ldapsearch -D "$binddn" -y "$bindpwdfile" -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionUDMPropertyCopyable'"
 then
 	if pidof slapd >/dev/null 2>/dev/null
 	then
@@ -82,7 +125,7 @@ then
 fi
 
 if ! is_ucr_false dns/register/srv_records/ldap; then
-	S4_DCS="$(univention-ldapsearch "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
+	S4_DCS="$(univention-ldapsearch -D "$binddn" -y "$bindpwdfile" -LLL "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
 	if [ -z "$S4_DCS" ]; then
 		wait_named
 		/usr/share/univention-admin-tools/univention-dnsedit "$@" --ignore-exists \
