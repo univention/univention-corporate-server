@@ -36,18 +36,18 @@ import univention.admin.handlers
 translation = univention.admin.localization.translation('univention.admin.handlers.portals-portal')
 _ = translation.translate
 
-module = 'portals/category'
-default_containers = ['cn=category,cn=portals,cn=univention']
+module = 'portals/folder'
+default_containers = ['cn=folder,cn=portals,cn=univention']
 childs = False
 operations = ['add', 'edit', 'remove', 'search']
-short_description = _('Portal: Category')
-object_name = _('Portal category')
-object_name_plural = _('Portal categories')
-long_description = _('Object under which portals/entry objects can be displayed. Belongs to one or more portals/portal objects')
+short_description = _('Portal: Folder')
+object_name = _('Portal folder')
+object_name_plural = _('Portal folders')
+long_description = _('One folder in https://fqdn/univention/portal which holds one or more portals/entry objects. Belongs to one or more portals/category objects, which belong to one or more portals/portal objects')
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionNewPortalCategory'],
+		objectClasses=['top', 'univentionNewPortalFolder'],
 	),
 }
 property_descriptions = {
@@ -62,14 +62,14 @@ property_descriptions = {
 	),
 	'displayName': univention.admin.property(
 		short_description=_('Display name'),
-		long_description=_('Display name of the category. At least one entry; strongly encouraged to have one for en_US'),
+		long_description=_('Headline of the folder. At least one entry; strongly encouraged to have one for en_US'),
 		syntax=univention.admin.syntax.LocalizedDisplayName,
 		multivalue=True,
 		required=True,
 	),
 	'entries': univention.admin.property(
 		short_description=_('Entry'),
-		long_description=_('List of portal entries and/or portal folders shown in this category'),
+		long_description=_('List of portal entries and/or portal folders shown in this folder'),
 		syntax=univention.admin.syntax.NewPortalCategoryEntries,
 		multivalue=True,
 		required=False,
@@ -77,12 +77,14 @@ property_descriptions = {
 }
 
 layout = [
-	Tab(_('General'), _('Category options'), layout=[
-		Group(_('Name'), layout=[
+	Tab(_('General'), _('Entry options'), layout=[
+		Group(_('General'), layout=[
 			["name"],
 		]),
-		Group(_('General'), layout=[
+		Group(_('Display name'), layout=[
 			["displayName"],
+		]),
+		Group(_('Entries'), layout=[
 			["entries"],
 		]),
 	]),
@@ -110,18 +112,22 @@ def unmapOrdered(udm_values):
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('displayName', 'univentionNewPortalCategoryDisplayName', mapTranslationValue, unmapTranslationValue)
-mapping.register('entries', 'univentionNewPortalCategoryEntries', mapOrdered, unmapOrdered)
+mapping.register('displayName', 'univentionNewPortalFolderDisplayName', mapTranslationValue, unmapTranslationValue)
+mapping.register('entries', 'univentionNewPortalFolderEntries', mapOrdered, unmapOrdered)
 
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_post_remove(self):
-		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter='categories=%s' % self.dn, scope='sub'):
-			portal_obj.open()
-			portal_obj.categories.remove(self.dn)
-			portal_obj.modify()
+		for category_obj in univention.admin.modules.lookup('portals/category', None, self.lo, filter='entries=%s' % self.dn, scope='sub'):
+			category_obj.open()
+			category_obj['entries'].remove(self.dn)
+			category_obj.modify()
+		for folder_obj in univention.admin.modules.lookup('portals/folder', None, self.lo, filter='entries=%s' % self.dn, scope='sub'):
+			folder_obj.open()
+			folder_obj['entries'].remove(self.dn)
+			folder_obj.modify()
 
 
 lookup = object.lookup
