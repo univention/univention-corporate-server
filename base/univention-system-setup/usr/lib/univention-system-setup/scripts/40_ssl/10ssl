@@ -152,9 +152,7 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 	progress_next_step 9
 
 	# restart services
-	for service in slapd apache2 postfix; do
-		invoke-rc.d --quiet "$service" restart
-	done
+	systemctl restart slapd apache2 postfix
 
 	progress_next_step 10
 fi
