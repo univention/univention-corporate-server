@@ -1,6 +1,7 @@
 univention-system-setup (13.0.0-9) unstable; urgency=medium
 
   * Bug #51643: fix restarting bind9
+  * Bug #51645: fix restarting slapd
 
  -- Florian Best <best@univention.de>  Wed, 08 Jul 2020 10:22:48 +0200
 
