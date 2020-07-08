@@ -135,6 +135,9 @@ class LDAPCache(object):
 			except EnvironmentError:
 				get_logger('cache').warn('unable to read group cache file')
 				self._groups = None
+			except ValueError:
+				get_logger('cache').exception('unable to read group cache file')
+				self._groups = None
 			if os.path.exists(self.REFRESH_GROUP_FILE):
 				os.unlink(self.REFRESH_GROUP_FILE)
 		return self._groups
@@ -144,7 +147,7 @@ class LDAPCache(object):
 		try:
 			with open(self.PORTAL_CACHE) as fd:
 				self._cache = json.load(fd)
-		except EnvironmentError:
+		except EnvironmentError:  # TODO: catch ValueError?!
 			if fallback:
 				get_logger('cache').warn('falling back to %s!' % self.FALLBACK_PORTAL_CACHE)
 				with open(self.FALLBACK_PORTAL_CACHE) as fd:
