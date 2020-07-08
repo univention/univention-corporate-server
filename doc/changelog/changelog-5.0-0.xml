@@ -420,6 +420,9 @@
 			<listitem><simpara>
 				The matching of locales in <package>univention.lib.i18n</package> has been corrected (<u:bug>51633</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The logging of error messages from <command>slapdtest</command> in <package>univention.lib.ldap_extension</package> has been improved (<u:bug>51648</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
