@@ -1,3 +1,9 @@
+univention-ucs-translation-template (7.0.0-3) unstable; urgency=medium
+
+  * Bug #51235: fix python 3 compatibility
+
+ -- Florian Best <best@univention.de>  Wed, 08 Jul 2020 23:28:37 +0200
+
 univention-ucs-translation-template (7.0.0-2) unstable; urgency=medium
 
   * Bug #51513: enhance circular build dependency between univention-ucs-

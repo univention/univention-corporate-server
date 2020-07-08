@@ -469,7 +469,7 @@ def create_json_file(po_file):
 			raise Error("There are plural forms in %s, but no rules in the file's header." % (po_file))
 		elif entry.msgstr_plural:
 			entries = entry.msgstr_plural.items()
-			entries.sort(key=lambda x: int(x[0]))
+			entries = sorted(entries, key=lambda x: int(x[0]))
 			data[entry.msgid] = [x[1] for x in entries]
 			if len(data[entry.msgid]) != int(data["$nplurals$"]):
 				raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file))
