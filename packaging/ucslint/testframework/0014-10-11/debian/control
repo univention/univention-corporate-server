@@ -17,10 +17,10 @@ Suggests: passwd,
 Description: You should not depend on Priority: required packages
 
 Package: important
-Pre-Depends: debian-archive-keyring,
-Depends: debian-archive-keyring,
-Recommends: debian-archive-keyring,
-Suggests: debian-archive-keyring,
+Pre-Depends: procps,
+Depends: procps,
+Recommends: procps,
+Suggests: procps,
 Description: You should not depend on Priority: important packages
 
 Package: standard

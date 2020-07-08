@@ -1,4 +1,4 @@
-S:0014-11: debian/control: depends on "Priority:required/important" package debian-archive-keyring
 S:0014-11: debian/control: depends on "Priority:required/important" package passwd
+S:0014-11: debian/control: depends on "Priority:required/important" package procps
 W:0014-10: debian/control: depends on "Essential:yes" package coreutils
 W:0014-10: debian/control: depends on "Essential:yes" package grep
