@@ -95,7 +95,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				version, space, option, tail = match.groups()
 				if not version:
 					self.addmsg('0009-2', 'file does not specify python version in hashbang', filename=fn)
-				elif version != '2.7':
+				elif version not in ('3', '2.7'):
 					self.addmsg('0009-3', 'file specifies wrong python version in hashbang', filename=fn)
 				if space and not option:
 					self.addmsg('0009-4', 'file contains whitespace after python command', filename=fn)

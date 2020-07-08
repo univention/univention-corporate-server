@@ -1,3 +1,9 @@
+ucslint (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51637: allow Python 3 hashbang
+
+ -- Florian Best <best@univention.de>  Wed, 08 Jul 2020 02:56:30 +0200
+
 ucslint (9.0.0-2) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
