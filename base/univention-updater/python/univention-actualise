@@ -220,18 +220,14 @@ def getPackageList(configRegistry, job):
     packages_name = ""
 
     if job == 'remove':
-        if configRegistry['server/role'] == 'fatclient':
-            packages_name = 'univentionClientPackagesRemove='
-        elif configRegistry['server/role'] == 'memberserver':
+        if configRegistry['server/role'] == 'memberserver':
             packages_name = 'univentionMemberPackagesRemove='
         elif configRegistry['server/role'] == 'domaincontroller_slave':
             packages_name = 'univentionSlavePackagesRemove='
         elif configRegistry['server/role'] == 'domaincontroller_master' or configRegistry['server/role'] == 'domaincontroller_backup':
             packages_name = 'univentionMasterPackagesRemove='
     elif job == 'add':
-        if configRegistry['server/role'] == 'fatclient':
-            packages_name = 'univentionClientPackages='
-        elif configRegistry['server/role'] == 'memberserver':
+        if configRegistry['server/role'] == 'memberserver':
             packages_name = 'univentionMemberPackages='
         elif configRegistry['server/role'] == 'domaincontroller_slave':
             packages_name = 'univentionSlavePackages='

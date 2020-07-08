@@ -421,9 +421,6 @@ chmod 600 "$DCPWD"
 if [ -n "$TYPE" ]; then
 	server_role="$TYPE"
 fi
-if [ "$server_role" = "fatclient" ]; then
-	server_role="client"
-fi
 if [ -z "$server_role" ]; then
 	failed_message "No server role defined"
 fi

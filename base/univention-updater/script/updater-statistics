@@ -64,8 +64,6 @@ def encode_role(role):
 		return 'm'
 	if role == 'basesystem':
 		return 'b'
-	if role == 'fatclient':
-		return 'C'
 	raise ValueError('Invalid role %r' % (role, ))
 
 

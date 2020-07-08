@@ -19,8 +19,6 @@ domaincontroller_slave)
 	services_to_check="$udl $slapd" ;;
 memberserver)
 	services_to_check="$udl" ;;
-fatclient)
-	services_to_check="$udl" ;;
 basesystem)
 	echo -e "The are no services which should be running on a basesystem\t OK"
 	exit 0

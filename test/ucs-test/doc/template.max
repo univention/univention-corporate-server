@@ -20,7 +20,6 @@
 ##  - memberserver
 ##  - basesystem
 ##  - managedclient
-##  - fatclient
 ## roles-not:
 ## join: true
 ## components:
