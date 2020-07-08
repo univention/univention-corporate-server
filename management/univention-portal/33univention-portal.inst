@@ -161,6 +161,9 @@ if [ "$role" = "domaincontroller_master" ]; then
 		ucs/web/overview/entries/admin/ucs-local-to-domain/link?/univention/portal/
 	univention-directory-manager "settings/portal_entry" modify "$@" --dn="cn=ucs-local-to-domain,cn=portal,cn=univention,$ldap_base" \
 		--set portal="cn=local,cn=portal,cn=univention,$ldap_base" || die
+
+	# Create univention-blog portal entry (for installation from DVD)
+	univention-config-registry register univention-portal || true
 fi
 
 set_portal="$(univention-directory-manager "computers/$role" list "$@" --filter cn="$hostname" | sed -n -e "s/^  portal: \(.*\)$/\1/p")"

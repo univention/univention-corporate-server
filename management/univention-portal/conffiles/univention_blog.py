@@ -50,6 +50,8 @@ def handler(config_registry, changes):
 	if new_val in ("UCS Core Edition", "Free for personal use edition"):
 		if config_registry.is_false('portal/create-univention-blog-entry', False):
 			return
+		if subprocess.call(['/usr/bin/univention-ldapsearch', '-LLL', '-s', 'base', '-b', 'cn=portal,cn=univention,%s' % (ldap_base,), 'dn']) == 32:  # LDAP no such object
+			return
 		with open('/usr/share/univention-portal/univention-blog.png', 'rb') as fd:
 			icon = base64.b64encode(fd.read()).decode('ASCII')
 		cmd = [
