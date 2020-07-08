@@ -2009,7 +2009,7 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
 
 		try:
-			new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress'][0]
+			new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]
 		except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
 			new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 
