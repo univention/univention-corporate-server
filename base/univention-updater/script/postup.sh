@@ -86,7 +86,6 @@ domaincontroller_master) install univention-server-master ;;
 domaincontroller_backup) install univention-server-backup ;;
 domaincontroller_slave) install univention-server-slave ;;
 memberserver) install univention-server-member ;;
-fatclient|managedclient) install univention-managed-client ;;
 esac
 
 if ! is_ucr_true update44/skip/autoremove; then

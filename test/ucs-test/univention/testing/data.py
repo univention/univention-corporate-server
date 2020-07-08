@@ -310,7 +310,6 @@ class CheckRoles(Check):
 		'domaincontroller_slave',
 		'memberserver',
 		'basesystem',
-		'fatclient',
 		'managedclient',
 	))
 
