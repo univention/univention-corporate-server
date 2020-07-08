@@ -34,10 +34,16 @@
 
 eval "$(univention-config-registry shell)"
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 4.0.3-39; then
+	univention-config-registry set \
+		"umc/self-service/allow-authenticated-use?false"
+fi
+
 a2ensite univention-self-service.conf
 univention-config-registry set \
 	"umc/web/hooks/univention-self-service?passwordreset" \
-	"umc/login/links/forgot_your_password/enabled?true"
+	"umc/login/links/forgot_your_password/enabled?true" \
+	"umc/self-service/allow-authenticated-use?true"
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.9-1; then
 	# Update to UCS 4.2

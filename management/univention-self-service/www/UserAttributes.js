@@ -177,7 +177,7 @@ define([
 		/**
 		 *
 		 * */
-		_getUserAttributes: function() {
+		_getUserAttributes: function(force) {
 			var validCredentials = this._username.isValid() && this._password.isValid();
 			if (validCredentials || this._forceLoginChange) {
 				this.standby(true);
