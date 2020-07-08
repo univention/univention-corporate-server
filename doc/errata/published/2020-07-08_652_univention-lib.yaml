@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The univention.lib Python modules are now Python 3 compatible.
 bug: [51592]
+erratum: 652
+announced: 2020-07-08
