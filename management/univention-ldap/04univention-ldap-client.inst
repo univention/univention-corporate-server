@@ -42,7 +42,7 @@ test -x /etc/init.d/nscd && service nscd restart
 
 eval "$(univention-config-registry shell server/role ldap/master)"
 
-if [ "$server_role" = "memberserver" -o "$server_role" = "fatclient" -o "$server_role" = "mobileclient" ]; then
+if [ "$server_role" = "memberserver" -o "$server_role" = "fatclient" ]; then
 	univention-config-registry set ldap/server/name="$ldap_master"
 fi
 

@@ -1,8 +1,6 @@
 @!@
 if configRegistry.get('server/role') == 'fatclient':
 	menutitle = "Univention Managed Client"
-elif configRegistry.get('server/role') == 'mobileclient':
-	menutitle = "Univention Mobile Client"
 elif configRegistry.get('server/role') == 'domaincontroller_master':
 	menutitle = "Univention DC Master"
 elif configRegistry.get('server/role') == 'domaincontroller_backup':
