@@ -174,8 +174,8 @@ def con2ucs(s4connector, key, object):
 		s4_val = object['attributes'].get('gPLink')
 
 		if ucs_val != s4_val:
-			if 'msGPO' not in attr.get('objectClass', []):
-				ml.append(('objectClass', '', 'msGPO'))
+			if b'msGPO' not in attr.get('objectClass', []):
+				ml.append(('objectClass', b'', b'msGPO'))
 
 			ml.append(('msGPOLink', ucs_val, s4_val))
 
@@ -186,6 +186,4 @@ def con2ucs(s4connector, key, object):
 
 
 def identify(dn, attr, canonical=0):
-	_d = ud.function('dc: identify')  # noqa: F841
-
-	return 'univentionBase' in attr.get('objectClass', []) or 'sambaDomain' in attr.get('objectClass', [])
+	return bool({b'univentionBase', b'sambaDomain'} & set(attr.get('objectClass', [])))

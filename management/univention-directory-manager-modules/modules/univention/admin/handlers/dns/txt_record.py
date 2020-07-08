@@ -148,11 +148,12 @@ lookup = object.lookup
 
 
 def identify(dn, attr, canonical=0):
+	mod = module.encode('ASCII')
 	return all([
 		b'dNSZone' in attr.get('objectClass', []),
 		b'@' not in attr.get('relativeDomainName', []),
 		not attr.get('zoneName', [b'.in-addr.arpa'])[0].decode('ASCII').endswith(ARPA_IP4),
 		attr.get('tXTRecord', []),
 		not any(attr.get(a) for a in ('aRecord', 'aAAARecord', 'mXRecord', 'sRVRecord')),
-		module in attr.get('univentionObjectType', [module]),
+		mod in attr.get('univentionObjectType', [mod]),
 	])

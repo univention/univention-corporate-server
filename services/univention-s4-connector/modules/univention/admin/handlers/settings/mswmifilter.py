@@ -201,7 +201,7 @@ try:
 except AttributeError:  # FIXME: remove module into UDM-core or drop backwards compatibility
 	# UCS < 4.4-0-errata102
 	def identify(dn, attr, canonical=False):
-		return 'msWMISom' in attr.get('objectClass', [])
+		return b'msWMISom' in attr.get('objectClass', [])
 
 
 try:

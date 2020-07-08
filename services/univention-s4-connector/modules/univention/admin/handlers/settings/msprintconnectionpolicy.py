@@ -127,7 +127,7 @@ try:
 except AttributeError:  # FIXME: remove module into UDM-core or drop backwards compatibility
 	# UCS < 4.4-0-errata102
 	def identify(dn, attr, canonical=False):
-		return 'msPrintConnectionPolicy' in attr.get('objectClass', [])
+		return b'msPrintConnectionPolicy' in attr.get('objectClass', [])
 
 try:
 	lookup = object.lookup
