@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python2.7
 # vim:set et sw=4 ts=4:
 " "
 r" "
