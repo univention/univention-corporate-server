@@ -2,7 +2,6 @@
 #
 '''Univention Admin Modules
 migration tool for univentionObjectType'''
-from __future__ import print_function
 #
 # Copyright 2005-2020 Univention GmbH
 #
@@ -31,99 +30,109 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import argparse
 import sys
+
 import univention.uldap
 
 
 def buildModuleIdentifyMapping():
 	import univention.admin.modules
 	univention.admin.modules.update()
-	return dict([(name, module.identify, ) for (name, module, ) in univention.admin.modules.modules.items() if 'identify' in dir(module)])
+	return dict(
+		(name, module.identify)
+		for (name, module) in univention.admin.modules.modules.items()
+		if hasattr(module, 'identify')
+	)
 
 
 def parseOptions():
-	parser = argparse.ArgumentParser(usage='Usage: %(prog)s (-n|-a) [options]\nSet the attribute univentionObjectType for each directory object')
-	parser.add_argument('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
-	parser.add_argument('-a', '--action', dest='action', action='store_true', help='do modify the directory')
+	parser = argparse.ArgumentParser(description='Set the attribute univentionObjectType for each directory object')
 	parser.add_argument('--verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
 	parser.add_argument('-v', '--verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
 	parser.add_argument('-b', '--base', default='', help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
+	group = parser.add_mutually_exclusive_group(required=True)
+	group.add_argument('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
+	group.add_argument('-a', '--action', dest='action', action='store_true', help='do modify the directory')
+
 	options = parser.parse_args()
-	if options.action is None:
-		print('Neither --no-action nor --action given!')
-		parser.print_help()
-		sys.exit(3)
 	return options
 
 
 def warningSupressed(dn, attributes):
 	# cn=admin,$ldap_base cn=backup,$ldap_base
-	if set(attributes.keys()) == set(('objectClass', 'userPassword', 'cn', 'sn', )):
-		if set(attributes['objectClass']) == set((b'top', b'person', )):
+	ocs = set(attributes['objectClass'])
+	if set(attributes.keys()) == {'objectClass', 'userPassword', 'cn', 'sn'}:
+		if ocs == {b'top', b'person'}:
 			if attributes['sn'] == attributes['cn'] and len(attributes['cn']) == 1 and attributes['cn'][0] in (b'admin', b'backup', ):
 				return True
 	# Kerberos principal objects
-	if set(attributes['objectClass']) == set((b'top', b'account', b'krb5Principal', b'krb5KDCEntry', )):
+	if ocs == {b'top', b'account', b'krb5Principal', b'krb5KDCEntry'}:
 		return True
-	if set(attributes['objectClass']) == set((b'top', b'person', b'krb5Principal', b'krb5KDCEntry', )):
+	if ocs == {b'top', b'person', b'krb5Principal', b'krb5KDCEntry'}:
 		return True
 	# samba idmap objects
-	if set(attributes['objectClass']) == set((b'sambaIdmapEntry', b'sambaSidEntry', )):
+	if ocs == {b'sambaIdmapEntry', b'sambaSidEntry'}:
 		return True
 	# old (2.4) Kolab objects
-	if b'kolabSharedFolder' in set(attributes['objectClass']):
+	if b'kolabSharedFolder' in ocs:
 		return True
-	if b'univentionKolabGroup' in set(attributes['objectClass']):
+	if b'univentionKolabGroup' in ocs:
 		return True
 	# old (2.4) UMC ACLs
-	if b'univentionConsoleACL' in set(attributes['objectClass']):
+	if b'univentionConsoleACL' in ocs:
 		return True
-	if b'univentionConsoleOperations' in set(attributes['objectClass']):
+	if b'univentionConsoleOperations' in ocs:
 		return True
-	if b'univentionPolicyConsoleAccess' in set(attributes['objectClass']):
+	if b'univentionPolicyConsoleAccess' in ocs:
 		return True
 	# old (2.4) UDM visibility settings
-	if b'univentionPolicyAdminSettings' in set(attributes['objectClass']):
+	if b'univentionPolicyAdminSettings' in ocs:
 		return True
-	if b'univentionAdminUserSettings' in set(attributes['objectClass']):
+	if b'univentionAdminUserSettings' in ocs:
 		return True
 	return warningHidden(dn, attributes)
 
 
 def warningHidden(dn, attributes):
+	ocs = set(attributes['objectClass'])
 	if warningHidden.verbose:
 		return False
-	if b'univentionCitrixUserSessionsClass' in set(attributes['objectClass']):
+	if b'univentionCitrixUserSessionsClass' in ocs:
 		return True
-	if b'univentionPolicyThinClientUser' in set(attributes['objectClass']):
+	if b'univentionPolicyThinClientUser' in ocs:
 		return True
-	if b'univentionThinClientSession' in set(attributes['objectClass']):
+	if b'univentionThinClientSession' in ocs:
 		return True
-	if b'univentionThinClientAutostart' in set(attributes['objectClass']):
+	if b'univentionThinClientAutostart' in ocs:
 		return True
 	return False
 
 
-warningHidden.verbose = False
+warningHidden.verbose = False  # type: ignore
 
 
 def main(options):
 	errorsOccurred = False
-	if options.verify:
-		searchFilter = '(objectClass=*)'
-	else:
-		searchFilter = '(!(objectClass=univentionObject))'
+	searchFilter = '(objectClass=*)' if options.verify else '(!(objectClass=univentionObject))'
 	moduleIdentify = buildModuleIdentifyMapping()
 	uldap = univention.uldap.getAdminConnection()
 	if options.action is not True:
 		uldap.modify = lambda dn, changes: sys.stdout.write('Would modify %r\n' % (dn, ))
 	warningHidden.verbose = options.verbose
+
 	for (dn, attributes, ) in uldap.search(filter=searchFilter, base=options.base):
-		matches = [module for (module, identify, ) in moduleIdentify.items() if identify(dn, attributes)]
+		matches = [
+			module
+			for (module, identify) in moduleIdentify.items()
+			if identify(dn, attributes)
+		]
 		if 'container/dc' in matches and ('container/ou' in matches or 'container/cn' in matches):
 			# container/dc has priority (ldapbase ou=/cn= has multiple matches)
 			matches = ['container/dc']
+
 		if len(matches) == 1:
 			if b'univentionObject' not in attributes['objectClass']:
 				try:
@@ -145,6 +154,11 @@ def main(options):
 		else:
 			if not warningSupressed(dn, attributes):
 				print('Warning: No match for %r' % (dn, ), file=sys.stderr)
+				if options.verbose:
+					for attr in ('objectClass', 'univentionObjectType'):
+						for value in attributes.get(attr, []):
+							print('\t%s: %s' % (attr, value))
+
 	return not errorsOccurred
 
 
