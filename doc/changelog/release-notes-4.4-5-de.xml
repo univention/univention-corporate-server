@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-4">
+<book lang="de" id="releasenotes-de-4.4-5">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-4</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,33 +44,16 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-4 steht das vierte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 4.4-5 steht das fünfte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					UCS kann jetzt <ulink url="https://docs.software-univention.de/handbuch-4.4.html#users:lastbind-overlay-module">protokollieren, wann die letzte Authentifikation am LDAP Server stattgefunden hat</ulink>, beispielsweise wenn sich Nutzer am SAML Identity Provider angemeldet haben.
-					Ein Anwendungsfall kann zum Beispiel das Erkennen nicht mehr genutzter Accounts sein.
 			</para></listitem>
 			<listitem><para>
-					Der <ulink url="https://help.univention.com/t/14454">AD Connector kann Kerberos Hashes aus AD synchronisieren</ulink> und damit auf NTLM Hashes verzichten.
-			</para></listitem>
-			<listitem><para>
-					Der AD Connector unterstützt jetzt auch offiziell Windows Server 2019.
-					Die Synchronisation von Änderungen an großen Gruppen wurde beschleunigt, in dem nur noch Änderungen (neue / entfernte Mitglieder) übertragen werden und nicht immer die vollständige Liste der aktuellen Gruppenmitglieder.
-					Im Kontext der Gruppen-Synchronisation wurde auch ein Speicherleck beseitigt.
-			</para></listitem>
-			<listitem><para>
-					Im App Center wurde die Nutzerführung verbessert: Die Anzahl der Schritte bei der Installation von Apps wird jetzt angezeigt, die unterschiedlichen Meldungen erscheinen in einem klareren, einheitlichen <wordasword>Look-and-Feel</wordasword> und wurden teilweise zusammen gefasst.
-			</para></listitem>
-			<listitem><para>
-					Der SAML Login zu Portal und Apps hat mehr Konfigurationsoptionen, u.a. können die verschiedenen Links (<quote>Wie melde ich mich an</quote>, <quote>Login ohne SSO</quote>) individualisiert werden.
-					Neu ist ein konfigurierbarer Link zur <quote>Passwort vergessen</quote> Funktion der <wordasword>Self Service-App</wordasword>.
-			</para></listitem>
-			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-4 integriert, bspw. für Samba, den Linux Kernel und PHP.
+					Diverse Security Updates wurden in UCS 4.4-5 integriert, bspw. für Samba, den Linux Kernel und PHP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -243,10 +226,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-3</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-4</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
