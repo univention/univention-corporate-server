@@ -19,7 +19,6 @@
 ##  - domaincontroller_slave
 ##  - memberserver
 ##  - basesystem
-##  - managedclient
 ## roles-not:
 ## join: true
 ## components:

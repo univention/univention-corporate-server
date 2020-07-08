@@ -78,7 +78,7 @@ def get_user_object(user, position, lo):
 		return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(username=%s)', [user]), required=True, unique=True)[0]
 	except Exception:
 		# machine Account
-		for handler in [univention.admin.handlers.computers.windows, univention.admin.handlers.computers.domaincontroller_master, univention.admin.handlers.computers.domaincontroller_slave, univention.admin.handlers.computers.domaincontroller_backup, univention.admin.handlers.computers.managedclient, univention.admin.handlers.computers.memberserver]:
+		for handler in [univention.admin.handlers.computers.windows, univention.admin.handlers.computers.domaincontroller_master, univention.admin.handlers.computers.domaincontroller_slave, univention.admin.handlers.computers.domaincontroller_backup, univention.admin.handlers.computers.memberserver]:
 			try:
 				return univention.admin.modules.lookup(handler, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(uid=%s)', [user]), required=True, unique=True)[0]
 			except Exception:

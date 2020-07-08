@@ -6,7 +6,6 @@
 ##   - domaincontroller_slave
 ##   - domaincontroller_backup
 ##   - memberserver
-##   - managedclient
 ## exposure: careful
 ## packages:
 ##   - univention-config

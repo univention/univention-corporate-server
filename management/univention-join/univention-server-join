@@ -319,17 +319,6 @@ create_entry () {
 				args+=(--set mac="$i")
 			done
 		fi
-		# DHCP
-		case "$module" in
-		computers/managedclient)
-			if [ -n "$dhcpEntry" ] && [ -n "$IP" ] && [ -n "$MAC" ]; then
-					if [ "${#MAC[@]}" -gt 1 ]; then
-						log 1 "Multiple MAC addresses; creating DHCP entry for the first one only."
-					fi
-					args+=(--set dhcpEntryZone="$dhcpEntry $IP ${MAC[0]}")
-			fi
-			;;
-		esac
 
 		cmd=(univention-directory-manager "$module" create \
 			--position "$position" \
@@ -450,11 +439,6 @@ domaincontroller_slave)
 memberserver)
 	create_entry "Member Server" "computers/memberserver" \
 		"${POSITION:-cn=memberserver,cn=computers,$ldap_base}" \
-		"cn=Computers,cn=groups,$ldap_base"
-	;;
-client)
-	create_entry "Client" "computers/managedclient" \
-		"${POSITION:-cn=computers,$ldap_base}" \
 		"cn=Computers,cn=groups,$ldap_base"
 	;;
 ucc)
