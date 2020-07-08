@@ -72,7 +72,6 @@ def moreGroupware(license):
 	return False, (license.compare(license.licenses[license.ACCOUNT], license.licenses[license.GROUPWARE]) != 1)
 
 # Examples:
-#	'computers/managedclient': Attributes( UCS ),
 #	'computers/ipmanagedclient': Attributes( UCS + [ 'OEM1'] ),
 #	'computers/domaincontroller_master': Attributes( UCS + ['OEM2'] ,options =
 #				{

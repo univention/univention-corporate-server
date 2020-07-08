@@ -1382,7 +1382,6 @@ udm settings/ldapacl remove \
 	<screen>
 # univention-directory-manager modules
 Available Modules are:
-  computers/managedclient
   computers/computer
   computers/domaincontroller_backup
   computers/domaincontroller_master
@@ -1487,7 +1486,7 @@ univention-directory-manager users/user remove \
 				angegeben, an welche Stelle ein Objekt verschoben werden soll, z.B:
 			</para>
 			<programlisting language="sh">
-univention-directory-manager computers/managedclient move \
+univention-directory-manager computers/ipmanagedclient move \
     --dn "cn=desk01,cn=management,cn=computers,dc=firma,dc=de" \
     --position "cn=finance,cn=computers,dc=firma,dc=de"
 			</programlisting>
