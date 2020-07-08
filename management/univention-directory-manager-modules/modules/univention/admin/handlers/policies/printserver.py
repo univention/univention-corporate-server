@@ -57,7 +57,7 @@ module = 'policies/printserver'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyPrintServer'
-policy_apply_to = ["computers/memberserver", "computers/managedclient", "computers/domaincontroller_backup", "computers/domaincontroller_master", "computers/domaincontroller_slave"]
+policy_apply_to = ["computers/memberserver", "computers/domaincontroller_backup", "computers/domaincontroller_master", "computers/domaincontroller_slave"]
 policy_position_dn_prefix = "cn=printservers"
 
 childs = 0

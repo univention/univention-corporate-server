@@ -58,7 +58,7 @@ module = 'policies/release'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyUpdate'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/managedclient"]
+policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
 policy_position_dn_prefix = "cn=update"
 
 childs = 0

@@ -51,7 +51,7 @@ LDAP_FILTER_not_machine = '(!(uid=*$))'
 LDAP_FILTER_user_account = '(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount))'
 LDAP_FILTER_normal_user_account = '(&%s)' % ''.join([LDAP_FILTER_user_account, LDAP_FILTER_not_root, LDAP_FILTER_not_machine])
 LDAP_FILTER_account_not_disabled = '(!(&(shadowExpire=1)(krb5KDCFlags=254)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'
-LDAP_FILTER_managedclients = '(|(objectClass=univentionThinClient)(&(objectClass=univentionClient)(objectClass=posixAccount))(objectClass=univentionMobileClient)(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))'
+LDAP_FILTER_managedclients = '(|(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))'
 
 
 def ldap_filter_not_objectflag(flag_string_list):
