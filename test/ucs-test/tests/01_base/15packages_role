@@ -19,8 +19,6 @@ memberserver)
 	requiresoftware univention-server-member ;;
 managedclient)
 	requiresoftware univention-managed-client ;;
-mobileclient)
-	requiresoftware univention-mobile-client ;;
 basesystem)
 	requiresoftware univention-basesystem ;;
 esac
