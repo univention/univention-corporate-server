@@ -164,6 +164,10 @@ class object(univention.admin.handlers.simpleLdap):
 			category_obj.open()
 			category_obj['entries'].remove(self.dn)
 			category_obj.modify()
+		for folder_obj in univention.admin.modules.lookup('portals/folder', None, self.lo, filter='entries=%s' % self.dn, scope='sub'):
+			folder_obj.open()
+			folder_obj['entries'].remove(self.dn)
+			folder_obj.modify()
 
 
 lookup = object.lookup

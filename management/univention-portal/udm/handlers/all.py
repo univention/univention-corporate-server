@@ -41,10 +41,15 @@ _ = translation.translate
 module = 'portals/all'
 short_description = _('Portal: Settings')
 long_description = _('Management of portals and their entries')
-default_containers = ['cn=portal,cn=portals,cn=univention', 'cn=entry,cn=portals,cn=univention', 'cn=category,cn=portals,cn=univention']
+default_containers = [
+	'cn=portal,cn=portals,cn=univention',
+	'cn=entry,cn=portals,cn=univention',
+	'cn=category,cn=portals,cn=univention',
+	'cn=folder,cn=portals,cn=univention',
+]
 
 operations = ['search']
-childmodules = ['portals/portal', 'portals/entry', 'portals/category']
+childmodules = ['portals/portal', 'portals/entry', 'portals/category', 'portals/folder']
 virtual = True
 property_descriptions = {
 	'name': univention.admin.property(
