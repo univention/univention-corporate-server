@@ -1,23 +1,20 @@
 @!@
-if configRegistry.get('server/role') == 'fatclient':
-	menutitle = "Univention Managed Client"
-elif configRegistry.get('server/role') == 'domaincontroller_master':
-	menutitle = "Univention DC Master"
-elif configRegistry.get('server/role') == 'domaincontroller_backup':
-	menutitle = "Univention DC Backup"
-elif configRegistry.get('server/role') == 'domaincontroller_slave':
-	menutitle = "Univention DC Slave"
-elif configRegistry.get('server/role') == 'memberserver':
-	menutitle = "Univention Memberserver"
-else:
-	menutitle = "Univention Corporate Server"
+ROLES = {
+	"domaincontroller_master": "Univention DC Master",
+	"domaincontroller_slave": "Univention DC Backup",
+	"domaincontroller_backup": "Univention DC Slave",
+	"memberserver": "Univention Memberserver",
+}
+
+role = configRegistry.get('server/role')
+menutitle = ROLES.get(role, "Univention Corporate Server")
 
 if configRegistry.get('version/version'):
 	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
 else:
 	print('Univention Thin Client')
 
-if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
+if role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
 	print('')
 	startsite = ""
 	host = configRegistry.get('hostname')
@@ -33,7 +30,7 @@ if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontr
 		if ip:
 			startsite = "%s (%s)" % (startsite, ip)
 
-	if configRegistry.get('server/role') == 'domaincontroller_master':
+	if role == 'domaincontroller_master':
 		print('The UCS management system is available at https://' + startsite)
 	else:
 		print('The UCS management system can be reached by following the link to the domain controller')

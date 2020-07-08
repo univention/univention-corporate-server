@@ -65,13 +65,8 @@ univention-directory-manager nagios/service create "$@" --ignore_exists \
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 
 	# test if nagios is enabled for this host
-	if [ "$server_role" = "fatclient" ] ; then
-		role=managedclient
-	else
-		role=$server_role
-	fi
-	if [ "`univention-directory-manager computers/$role list "$@" --filter=name=$hostname | grep nagiosContactEmail`" ]; then 
-
+	if univention-directory-manager "computers/$server_role" list "$@" --filter=name="$hostname" | grep -q nagiosContactEmail
+	then
 		# test if raid exists
 		if [ -f /proc/mdstat ]; then
 			univention-directory-manager nagios/service modify "$@" --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_RAID,cn=nagios,$ldap_base" || die
