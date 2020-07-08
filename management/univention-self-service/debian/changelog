@@ -1,4 +1,10 @@
-univention-self-service (5.0.0-1) unstable; urgency=medium
+univention-self-service (5.0.0-3) unstable; urgency=medium
+
+  * Bug #51327: conform to UDM API change
+
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2020 17:55:18 +0200
+
+univention-self-service (5.0.0-2) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
 

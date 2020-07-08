@@ -1062,7 +1062,7 @@ class Instance(Base):
 	@machine_connection
 	def is_blacklisted(self, username, feature, ldap_connection=None, ldap_position=None):
 		def listize(li):
-			return [x.lower() for x in map(str.strip, li.split(",")) if x]
+			return [x.strip().lower() for x in li.split(",") if x.strip()]
 
 		bl_users = listize(ucr.get("umc/self-service/{}/blacklist/users".format(feature), ""))
 		bl_groups = listize(ucr.get("umc/self-service/{}/blacklist/groups".format(feature), ""))
@@ -1084,7 +1084,7 @@ class Instance(Base):
 			for group_dn in list(groups_dns):
 				groups_dns.extend(self.get_nested_groups(group_dn))
 			groups_dns = list(set(groups_dns))
-			gr_names = map(str.lower, self.dns_to_groupname(groups_dns))
+			gr_names = [x.lower() for x in self.dns_to_groupname(groups_dns)]
 		except IndexError:
 			# no user or no group found
 			return True
