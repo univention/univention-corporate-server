@@ -749,7 +749,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 				dig_sources_ucr.append(source)
 		for dig_source in dig_sources:
 			try:
-				cmd = ['dig', dig_source, ad_server, '+short']
+				cmd = ['dig', dig_source, ad_server, '+short', '+nocookie']
 				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
 				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				stdout, stderr = p1.communicate()
@@ -783,7 +783,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 				ad_server_ip = ip
 				break
 			try:  # check dns
-				cmd = ['dig', '@%s' % ip]
+				cmd = ['dig', '@%s' % ip, '+nocookie']
 				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
 				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				stdout, stderr = p1.communicate()
