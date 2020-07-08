@@ -2,6 +2,8 @@ E:0009-2: src/irgendwas.py: file does not specify python version in hashbang
 E:0009-3: src/mitWhitespace.py: file specifies wrong python version in hashbang
 E:0009-3: src/nur24.py: file specifies wrong python version in hashbang
 E:0009-3: src/nur25.py: file specifies wrong python version in hashbang
+E:0009-3: src/py35.py: file specifies wrong python version in hashbang
+E:0009-3: src/py37.py: file specifies wrong python version in hashbang
 E:0009-9: src/extra.py: hashbang contains more than one option
 W:0009-4: src/mitWhitespace.py: file contains whitespace after python command
 W:0009-5: src/haskey-without-hashbang.py:6:6: dict.has_key is deprecated in python3 - please use "if key in dict:"

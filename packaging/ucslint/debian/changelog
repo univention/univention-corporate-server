@@ -3,6 +3,7 @@ ucslint (8.0.0-19) unstable; urgency=low
   * Bug #49240: Allow ucslint on multiple packages
   * Bug #51612: Check for common shell issues
   * Bug #33737: Check for well-known SIDs.
+  * Bug #28284: Allow python3
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 24 Jun 2020 11:27:38 +0200
 
