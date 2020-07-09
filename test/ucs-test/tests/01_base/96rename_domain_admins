@@ -21,6 +21,7 @@
 
 eval "$(ucr shell)"
 
+set -x
 GROUPNAME=$(group_randomname)
 
 udm-test groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --set name="$GROUPNAME"
