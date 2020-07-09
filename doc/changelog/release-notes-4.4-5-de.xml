@@ -51,9 +51,23 @@
 
 		<itemizedlist>
 			<listitem><para>
+					Die Replikation von Gruppen mit vielen Mitgliedern wurde durch Performance Verbesserungen stark beschleunigt.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-5 integriert, bspw. für Samba, den Linux Kernel und PHP.
+					Die Berechtigung für die Nutzung von per SAML angebundenen Diensten kann jetzt für Gruppen konfiguriert werden, vorher konnte die Einstellung nur pro Benutzer gesetzt werden.
+					Außerdem kann für per SAML angebundene Dienste nun in der UMC ein Mapping von UCS LDAP Attributnamen auf Attributnamen konfiguriert werden, die von der angebundenen Anwendung erwartet werden.
+			</para></listitem>
+			<listitem><para>
+					Ein Update für den <application>OpenID Connect Provider</application> ermöglicht, dass Anmeldungen am SAML Identity Provider auch für <application>OpenID Connect</application> gültig sind.
+					Das <foreignphrase>Single Sign-On</foreignphrase> in UCS funktioniert damit über zwei Standards hinweg.
+			</para></listitem>
+			<listitem><para>
+					Der Benutzer Self-Service verfügt über ein neues aktivierbares Feature, mit dem sich Benutzer selbst ein Konto in UCS erstellen und auch wieder löschen können.
+					Die Benutzeraccounts müssen vor der ersten Benutzung durch den Klick auf einen Aktivierungslink in einer E-Mail bestätigt werden.
+					Administratoren können festlegen, welche Attribute Benutzer bei der Registrierung angeben müssen.
+			</para></listitem>
+			<listitem><para>
+					Diverse Security Updates wurden in UCS 4.4-5 integriert, bspw. für Samba, OpenLDAP, den Linux Kernel und PHP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
