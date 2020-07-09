@@ -51,7 +51,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('System diagnostic'),
@@ -68,7 +67,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('Software update')
@@ -95,7 +93,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('System diagnostic'),
@@ -111,7 +108,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('Software update')
@@ -125,7 +121,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('System diagnostic'),
@@ -141,7 +136,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('Software update')
@@ -155,7 +149,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('System diagnostic'),
@@ -171,7 +164,6 @@ expected_modules_for_role = {
 			_('Language settings'),
 			_('Network settings'),
 			_('Process overview'),
-			_('Statistics'),
 			_('System services'),
 			_('Univention Configuration Registry'),
 			_('Software update')
