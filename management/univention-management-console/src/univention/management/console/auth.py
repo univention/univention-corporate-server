@@ -102,7 +102,6 @@ class AuthHandler(signals.Provider):
 
 		args = msg.body.copy()
 		locale = args.pop('locale', None)
-		args.pop('auth_type', None)
 		args.pop('pam', None)
 		args.setdefault('new_password', None)
 		args.setdefault('username', '')
@@ -112,8 +111,8 @@ class AuthHandler(signals.Provider):
 		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, pam, **args), notifier.Callback(self.__authentication_result, pam, msg, locale))
 		thread.run()
 
-	def __authenticate_thread(self, pam, username, password, new_password, **custom_prompts):
-		AUTH.info('Trying to authenticate user %r' % (username,))
+	def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
+		AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
 		username = self.__canonicalize_username(username)
 		try:
 			pam.authenticate(username, password, **custom_prompts)
