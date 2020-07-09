@@ -11,215 +11,90 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<itemizedlist>
-			<listitem><simpara>
-				A query limit for the Univention Admin Diary has been added.
-				The  default limit of 1000 entries can be modified with the &ucsUCRV; <envar>admin/diary/query/limit</envar> (<u:bug>50531</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The package now uses <command>dh_python2</command> instead of <package>python-support</package> (<u:bug>49169</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The packages <package>univention-server-master</package> and <package>univention-server-backup</package> now depend on the new package <package>univention-ldap-config-master</package> (<u:bug>49700</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Fixed symbolic link creation for host certificate (<u:bug>49036</u:bug>).
-			</simpara></listitem>
 			<listitem>
 				<para>
 					All security updates issued for UCS <productnumber>4.4-4</productnumber> are included:
 				</para>
 				<itemizedlist id="_security">
 					<listitem><simpara>
-						<package>clamav</package> (<u:cve>2019-15961</u:cve>) (<u:bug>50839</u:bug>)
+						<package>apt</package> (<u:cve>2020-3810</u:cve>) (<u:bug>51305</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>cups</package> (<u:cve>2019-2228</u:cve>) (<u:bug>50838</u:bug>)
+						<package>bind9</package> (<u:cve>2020-8616</u:cve> <u:cve>2020-8617</u:cve>) (<u:bug>51347</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>curl</package> (<u:cve>2019-5436</u:cve> <u:cve>2019-5481</u:cve> <u:cve>2019-5482</u:cve>) (<u:bug>50877</u:bug>)
+						<package>bluez</package> (<u:cve>2020-0556</u:cve>) (<u:bug>51037</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>cyrus-imapd</package> (<u:cve>2019-19783</u:cve>) (<u:bug>50682</u:bug>)
+						<package>exim4</package> (<u:cve>2020-12783</u:cve>) (<u:bug>51304</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>cyrus-sasl2</package> (<u:cve>2019-19906</u:cve>) (<u:bug>50679</u:bug>)
+						<package>firefox-esr</package> (<u:cve>2020-6819</u:cve> <u:cve>2020-6820</u:cve> <u:cve>2020-6821</u:cve> <u:cve>2020-6822</u:cve> <u:cve>2020-6825</u:cve> <u:cve>2020-6831</u:cve> <u:cve>2020-12387</u:cve> <u:cve>2020-12392</u:cve> <u:cve>2020-12395</u:cve> <u:cve>2020-12399</u:cve> <u:cve>2020-12405</u:cve> <u:cve>2020-12406</u:cve> <u:cve>2020-12410</u:cve> <u:cve>2020-12417</u:cve> <u:cve>2020-12418</u:cve> <u:cve>2020-12419</u:cve> <u:cve>2020-12420</u:cve> <u:cve>2020-12421</u:cve>) (<u:bug>51083</u:bug> <u:bug>51265</u:bug> <u:bug>51453</u:bug> <u:bug>51615</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>firefox-esr</package> (<u:cve>2019-13075</u:cve> <u:cve>2019-17005</u:cve> <u:cve>2019-17008</u:cve> <u:cve>2019-17010</u:cve> <u:cve>2019-17011</u:cve> <u:cve>2019-17012</u:cve> <u:cve>2019-17016</u:cve> <u:cve>2019-17017</u:cve> <u:cve>2019-17022</u:cve> <u:cve>2019-17024</u:cve> <u:cve>2019-17026</u:cve> <u:cve>2019-20503</u:cve> <u:cve>2020-6796</u:cve> <u:cve>2020-6798</u:cve> <u:cve>2020-6800</u:cve> <u:cve>2020-6805</u:cve> <u:cve>2020-6806</u:cve> <u:cve>2020-6807</u:cve> <u:cve>2020-6811</u:cve> <u:cve>2020-6812</u:cve> <u:cve>2020-6814</u:cve>) (<u:bug>50621</u:bug> <u:bug>50702</u:bug> <u:bug>50865</u:bug> <u:bug>50940</u:bug>)
+						<package>git</package> (<u:cve>2020-5260</u:cve> <u:cve>2020-11008</u:cve>) (<u:bug>51117</u:bug> <u:bug>51170</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>git</package> (<u:cve>2019-1348</u:cve> <u:cve>2019-1349</u:cve> <u:cve>2019-1352</u:cve> <u:cve>2019-1353</u:cve> <u:cve>2019-1387</u:cve>) (<u:bug>50622</u:bug>)
+						<package>icu</package> (<u:cve>2020-10531</u:cve>) (<u:bug>51038</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>intel-microcode</package> (<u:cve>2019-11135</u:cve> <u:cve>2019-11139</u:cve>) (<u:bug>50656</u:bug>)
+						<package>imagemagick</package> (<u:cve>2019-13300</u:cve> <u:cve>2019-13304</u:cve> <u:cve>2019-13306</u:cve> <u:cve>2019-13307</u:cve> <u:cve>2019-15140</u:cve> <u:cve>2019-19948</u:cve>) (<u:bug>51616</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libexif</package> (<u:cve>2019-9278</u:cve>) (<u:bug>50800</u:bug>)
+						<package>intel-microcode</package> (<u:cve>2020-0543</u:cve> <u:cve>2020-0548</u:cve> <u:cve>2020-0549</u:cve>) (<u:bug>51491</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libidn</package> (<u:cve>2017-14062</u:cve>) (<u:bug>50861</u:bug>)
+						<package>ldb</package> (<u:cve>2020-10700</u:cve>) (<u:bug>51121</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libvncserver</package> (<u:cve>2019-15681</u:cve>) (<u:bug>50868</u:bug>)
+						<package>libpam-krb5</package> (<u:cve>2020-10595</u:cve>) (<u:bug>51051</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libvpx</package> (<u:cve>2019-9232</u:cve> <u:cve>2019-9325</u:cve> <u:cve>2019-9433</u:cve>) (<u:bug>50585</u:bug>)
+						<package>linux</package> (<u:cve>2019-2182</u:cve> <u:cve>2019-5108</u:cve> <u:cve>2019-19319</u:cve> <u:cve>2019-19462</u:cve> <u:cve>2019-19768</u:cve> <u:cve>2019-20806</u:cve> <u:cve>2019-20811</u:cve> <u:cve>2020-0543</u:cve> <u:cve>2020-2732</u:cve> <u:cve>2020-8428</u:cve> <u:cve>2020-8647</u:cve> <u:cve>2020-8648</u:cve> <u:cve>2020-8649</u:cve> <u:cve>2020-9383</u:cve> <u:cve>2020-10711</u:cve> <u:cve>2020-10732</u:cve> <u:cve>2020-10751</u:cve> <u:cve>2020-10757</u:cve> <u:cve>2020-10942</u:cve> <u:cve>2020-11494</u:cve> <u:cve>2020-11565</u:cve> <u:cve>2020-11608</u:cve> <u:cve>2020-11609</u:cve> <u:cve>2020-11668</u:cve> <u:cve>2020-12114</u:cve> <u:cve>2020-12464</u:cve> <u:cve>2020-12652</u:cve> <u:cve>2020-12653</u:cve> <u:cve>2020-12654</u:cve> <u:cve>2020-12770</u:cve> <u:cve>2020-13143</u:cve>) (<u:bug>51490</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>libxslt</package> (<u:cve>2019-18197</u:cve>) (<u:bug>50864</u:bug>)
+						<package>openjdk-8</package> (<u:cve>2020-2754</u:cve> <u:cve>2020-2755</u:cve> <u:cve>2020-2756</u:cve> <u:cve>2020-2757</u:cve> <u:cve>2020-2773</u:cve> <u:cve>2020-2781</u:cve> <u:cve>2020-2800</u:cve> <u:cve>2020-2803</u:cve> <u:cve>2020-2805</u:cve>) (<u:bug>51206</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>univention-kernel-image</package>
-						<package>univention-kernel-image-signed</package>
-						<package>linux</package>
-						(<u:cve>2018-13093</u:cve> <u:cve>2018-13094</u:cve> <u:cve>2018-20976</u:cve> <u:cve>2018-21008</u:cve> <u:cve>2019-0136</u:cve> <u:cve>2019-2215</u:cve> <u:cve>2019-10220</u:cve> <u:cve>2019-12614</u:cve> <u:cve>2019-14615</u:cve> <u:cve>2019-14814</u:cve> <u:cve>2019-14815</u:cve> <u:cve>2019-14816</u:cve> <u:cve>2019-14895</u:cve> <u:cve>2019-14896</u:cve> <u:cve>2019-14897</u:cve> <u:cve>2019-14901</u:cve> <u:cve>2019-15030</u:cve> <u:cve>2019-15098</u:cve> <u:cve>2019-15217</u:cve> <u:cve>2019-15291</u:cve> <u:cve>2019-15505</u:cve> <u:cve>2019-15917</u:cve> <u:cve>2019-16746</u:cve> <u:cve>2019-17052</u:cve> <u:cve>2019-17053</u:cve> <u:cve>2019-17054</u:cve> <u:cve>2019-17055</u:cve> <u:cve>2019-17056</u:cve> <u:cve>2019-17075</u:cve> <u:cve>2019-17133</u:cve> <u:cve>2019-17666</u:cve> <u:cve>2019-18282</u:cve> <u:cve>2019-18660</u:cve> <u:cve>2019-18683</u:cve> <u:cve>2019-18806</u:cve> <u:cve>2019-18809</u:cve> <u:cve>2019-19037</u:cve> <u:cve>2019-19049</u:cve> <u:cve>2019-19051</u:cve> <u:cve>2019-19052</u:cve> <u:cve>2019-19056</u:cve> <u:cve>2019-19057</u:cve> <u:cve>2019-19062</u:cve> <u:cve>2019-19063</u:cve> <u:cve>2019-19066</u:cve> <u:cve>2019-19068</u:cve> <u:cve>2019-19227</u:cve> <u:cve>2019-19332</u:cve> <u:cve>2019-19447</u:cve> <u:cve>2019-19523</u:cve> <u:cve>2019-19524</u:cve> <u:cve>2019-19525</u:cve> <u:cve>2019-19527</u:cve> <u:cve>2019-19530</u:cve> <u:cve>2019-19531</u:cve> <u:cve>2019-19532</u:cve> <u:cve>2019-19533</u:cve> <u:cve>2019-19534</u:cve> <u:cve>2019-19535</u:cve> <u:cve>2019-19536</u:cve> <u:cve>2019-19537</u:cve> <u:cve>2019-19767</u:cve> <u:cve>2019-19947</u:cve> <u:cve>2019-19965</u:cve> <u:cve>2019-20096</u:cve> <u:cve>2020-0030</u:cve>) (<u:bug>50870</u:bug>)
+						<package>openldap</package> (<u:cve>2020-12243</u:cve>) (<u:bug>51183</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>mariadb-10.1</package> (<u:cve>2019-2974</u:cve> <u:cve>2020-2574</u:cve>) (<u:bug>50863</u:bug>)
+						<package>php7.0</package> (<u:cve>2019-11048</u:cve> <u:cve>2020-7062</u:cve> <u:cve>2020-7063</u:cve> <u:cve>2020-7064</u:cve> <u:cve>2020-7066</u:cve> <u:cve>2020-7067</u:cve>) (<u:bug>51617</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>openjdk-8</package> (<u:cve>2020-2583</u:cve> <u:cve>2020-2590</u:cve> <u:cve>2020-2593</u:cve> <u:cve>2020-2601</u:cve> <u:cve>2020-2604</u:cve> <u:cve>2020-2654</u:cve> <u:cve>2020-2659</u:cve>) (<u:bug>50875</u:bug>)
+						<package>python-django</package> (<u:cve>2020-13254</u:cve> <u:cve>2020-13596</u:cve>) (<u:bug>51543</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>openjpeg2</package> (<u:cve>2016-9112</u:cve> <u:cve>2018-20847</u:cve> <u:cve>2018-21010</u:cve>) (<u:bug>50874</u:bug>)
+						<package>python-reportlab</package> (<u:cve>2019-17626</u:cve>) (<u:bug>51171</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>openssl1.0</package> (<u:cve>2019-1551</u:cve>) (<u:bug>50681</u:bug>)
+						<package>samba</package> (<u:cve>2020-10700</u:cve> <u:cve>2020-10704</u:cve> <u:cve>2020-10730</u:cve> <u:cve>2020-10745</u:cve> <u:cve>2020-10760</u:cve> <u:cve>2020-14303</u:cve>) (<u:bug>51121</u:bug> <u:bug>51532</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>php7.0</package> (<u:cve>2019-11045</u:cve> <u:cve>2019-11046</u:cve> <u:cve>2019-11047</u:cve> <u:cve>2019-11050</u:cve> <u:cve>2020-7059</u:cve> <u:cve>2020-7060</u:cve>) (<u:bug>50867</u:bug>)
+						<package>tiff</package> (<u:cve>2018-12900</u:cve> <u:cve>2018-17000</u:cve> <u:cve>2018-17100</u:cve> <u:cve>2018-19210</u:cve> <u:cve>2019-7663</u:cve> <u:cve>2019-14973</u:cve> <u:cve>2019-17546</u:cve>) (<u:bug>51204</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>pillow</package> (<u:cve>2019-19911</u:cve> <u:cve>2020-5312</u:cve> <u:cve>2020-5313</u:cve>) (<u:bug>50866</u:bug>)
+						<package>univention-kernel-image-signed</package> (<u:cve>2019-2182</u:cve> <u:cve>2019-5108</u:cve> <u:cve>2019-19319</u:cve> <u:cve>2019-19462</u:cve> <u:cve>2019-19768</u:cve> <u:cve>2019-20806</u:cve> <u:cve>2019-20811</u:cve> <u:cve>2020-0543</u:cve> <u:cve>2020-2732</u:cve> <u:cve>2020-8428</u:cve> <u:cve>2020-8647</u:cve> <u:cve>2020-8648</u:cve> <u:cve>2020-8649</u:cve> <u:cve>2020-9383</u:cve> <u:cve>2020-10711</u:cve> <u:cve>2020-10732</u:cve> <u:cve>2020-10751</u:cve> <u:cve>2020-10757</u:cve> <u:cve>2020-10942</u:cve> <u:cve>2020-11494</u:cve> <u:cve>2020-11565</u:cve> <u:cve>2020-11608</u:cve> <u:cve>2020-11609</u:cve> <u:cve>2020-11668</u:cve> <u:cve>2020-12114</u:cve> <u:cve>2020-12464</u:cve> <u:cve>2020-12652</u:cve> <u:cve>2020-12653</u:cve> <u:cve>2020-12654</u:cve> <u:cve>2020-12770</u:cve> <u:cve>2020-13143</u:cve>) (<u:bug>51490</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>postgresql-9.6</package> (<u:cve>2020-1720</u:cve>) (<u:bug>50862</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>ppp</package> (<u:cve>2020-8597</u:cve>) (<u:bug>50869</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>proftpd-dfsg</package> (<u:cve>2019-19269</u:cve> <u:cve>2020-9273</u:cve>) (<u:bug>50876</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>python-apt</package> (<u:cve>2019-15795</u:cve> <u:cve>2019-15796</u:cve>) (<u:bug>50736</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>python-django</package> (<u:cve>2019-19844</u:cve> <u:cve>2020-7471</u:cve>) (<u:bug>50693</u:bug> <u:bug>50873</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>python-ecdsa</package> (<u:cve>2019-14853</u:cve> <u:cve>2019-14859</u:cve>) (<u:bug>50653</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>python-pysaml2</package> (<u:cve>2020-5390</u:cve>) (<u:bug>50860</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>python-werkzeug</package> (<u:cve>2019-14806</u:cve>) (<u:bug>50872</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>qemu</package> (<u:bug>50779</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>qtbase-opensource-src</package> (<u:cve>2020-0569</u:cve>) (<u:bug>50782</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>ruby2.3</package> (<u:cve>2017-17742</u:cve> <u:cve>2019-15845</u:cve> <u:cve>2019-16201</u:cve> <u:cve>2019-16254</u:cve> <u:cve>2019-16255</u:cve>) (<u:bug>50652</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>samba</package> (<u:cve>2019-14861</u:cve> <u:cve>2019-14870</u:cve> <u:cve>2019-14902</u:cve> <u:cve>2019-14907</u:cve> <u:cve>2019-19344</u:cve>) (<u:bug>50581</u:bug> <u:bug>50601</u:bug> <u:bug>50715</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>spamassassin</package> (<u:cve>2018-11805</u:cve> <u:cve>2019-12420</u:cve> <u:cve>2020-1930</u:cve> <u:cve>2020-1931</u:cve>) (<u:bug>50650</u:bug> <u:bug>50780</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>sudo</package> (<u:cve>2019-18634</u:cve>) (<u:bug>50781</u:bug>)
-					</simpara></listitem>
-					<listitem><simpara>
-						<package>tightvnc</package> (<u:cve>2014-6053</u:cve> <u:cve>2018-7225</u:cve> <u:cve>2018-20021</u:cve> <u:cve>2018-20022</u:cve> <u:cve>2019-8287</u:cve> <u:cve>2019-15678</u:cve> <u:cve>2019-15679</u:cve> <u:cve>2019-15680</u:cve> <u:cve>2019-15681</u:cve>) (<u:bug>50871</u:bug>)
+						<package>vlc</package> (<u:bug>51205</u:bug> <u:bug>51544</u:bug>)
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
 			<listitem>
 				<para>
-					The following updated packages from Debian Stretch <productnumber>9.12</productnumber> are included (<u:bug>50959</u:bug>):
+					The following updated packages from Debian Stretch <productnumber>9.12</productnumber> are included (<u:bug>51554</u:bug>):
 					<simplelist type="inline" id="_debian">
-						<member><package>base-files</package></member>
-						<member><package>freetype</package></member>
-						<member><package>glib2.0</package></member>
-						<member><package>libdatetime-timezone-perl</package></member>
-						<member><package>libperl4-corelibs-perl</package></member>
-						<member><package>libtimedate-perl</package></member>
-						<member><package>linux-latest</package></member>
-						<member><package>perl</package></member>
-						<member><package>postfix</package></member>
-						<member><package>python-cryptography</package></member>
-						<member><package>tzdata</package></member>
-						<member><package>xml-security-c</package></member>
-						<member><package>cacti</package></member>
-						<member><package>cargo</package></member>
-						<member><package>davical</package></member>
-						<member><package>debian-edu-config</package></member>
-						<member><package>debian-installer</package></member>
-						<member><package>debian-installer-netboot-images</package></member>
-						<member><package>debian-lan-config</package></member>
-						<member><package>debian-security-support</package></member>
-						<member><package>dehydrated</package></member>
-						<member><package>dispmua</package></member>
-						<member><package>dpdk</package></member>
-						<member><package>evince</package></member>
-						<member><package>fence-agents</package></member>
-						<member><package>fig2dev</package></member>
-						<member><package>flightcrew</package></member>
-						<member><package>freeimage</package></member>
-						<member><package>gdb-arm-none-eabi</package></member>
-						<member><package>gnustep-base</package></member>
-						<member><package>graphicsmagick</package></member>
-						<member><package>italc</package></member>
-						<member><package>ldm</package></member>
-						<member><package>libdate-holidays-de-perl</package></member>
-						<member><package>libjaxen-java</package></member>
-						<member><package>libofx</package></member>
-						<member><package>libole-storage-lite-perl</package></member>
-						<member><package>libparse-win32registry-perl</package></member>
-						<member><package>libpst</package></member>
-						<member><package>libsixel</package></member>
-						<member><package>libsolv</package></member>
-						<member><package>libtest-mocktime-perl</package></member>
-						<member><package>libxmlrpc3-java</package></member>
-						<member><package>limnoria</package></member>
-						<member><package>llvm-toolchain-7</package></member>
-						<member><package>mediawiki</package></member>
-						<member><package>monit</package></member>
-						<member><package>netty</package></member>
-						<member><package>network-manager-ssh</package></member>
-						<member><package>node-fstream</package></member>
-						<member><package>node-mixin-deep</package></member>
-						<member><package>nodejs-mozilla</package></member>
-						<member><package>nvidia-graphics-drivers-legacy-340xx</package></member>
-						<member><package>nyancat</package></member>
-						<member><package>openconnect</package></member>
-						<member><package>opensmtpd</package></member>
-						<member><package>php-horde</package></member>
-						<member><package>prosody-modules</package></member>
-						<member><package>python-acme</package></member>
-						<member><package>python-flask-rdf</package></member>
-						<member><package>python-pgmagick</package></member>
-						<member><package>ros-ros-comm</package></member>
-						<member><package>ruby-encryptor</package></member>
-						<member><package>rust-cbindgen</package></member>
-						<member><package>rustc</package></member>
-						<member><package>safe-rm</package></member>
-						<member><package>sorl-thumbnail</package></member>
-						<member><package>sssd</package></member>
+						<member><package>mailman</package></member>
+						<member><package>mutt</package></member>
+						<member><package>mysql-connector-java</package></member>
+						<member><package>netqmail</package></member>
+						<member><package>qbittorrent</package></member>
+						<member><package>roundcube</package></member>
+						<member><package>salt</package></member>
 						<member><package>thunderbird</package></member>
-						<member><package>tigervnc</package></member>
-						<member><package>tmpreaper</package></member>
-						<member><package>tomcat-native</package></member>
 						<member><package>tomcat8</package></member>
-						<member><package>ublock-origin</package></member>
-						<member><package>unhide</package></member>
-						<member><package>x2goclient</package></member>
-						<member><package>xen</package></member>
+						<member><package>wordpress</package></member>
 					</simplelist>
 				</para>
 			</listitem>
@@ -227,14 +102,7 @@
 				<para>
 					The following packages have been moved to the maintained repository of UCS:
 					<simplelist type="inline" id="_maintained">
-						<member><package>authres</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>dns-root-data</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>libopendbx</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>opendkim</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>py3dns</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>pypolicyd-spf</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>pyspf</package> (<u:bug>50777</u:bug>)</member>
-						<member><package>sendmail</package> (<u:bug>50777</u:bug>)</member>
+						<member><package>univention-debhelper</package> (<u:bug>51374</u:bug>)</member>
 					</simplelist>
 				</para>
 			</listitem>
@@ -244,13 +112,31 @@
 	<section id="changelog:basic">
 		<title>Basic system services</title>
 
-		<section id="changelog:basis:other">
-			<title>Other system services</title>
+		<section id="changelog:basis:ucr">
+			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Move Python binding of <package>univention-licence</package> into separate package <package>univention-licence-python</package> and add Python 3 support (<u:bug>50943</u:bug>).
+					Move `univention.debhelper` into a separate package to break a build dependency cycle (<u:bug>51374</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fix Python 3 interfaces API to use `ipaddress` from the standard library instead of the legacy `ipaddr` module no longer available in Debian 10 Buster (<u:bug>51368</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Python 3 compatibility has been improved (<u:bug>51156</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Python absolute imports are now used in univention.config_registy.interfaces for Python 3 compatibility (<u:bug>51021</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
+
+			<section id="changelog:basis:ucr:template">
+				<title>Changes to templates and modules</title>
+				<itemizedlist>
+					<listitem><simpara>
+						The UCR templates of univention-base-files have been adapted to be python2 and python3 compatible (<u:bug>51006</u:bug>).
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
 		</section>
 	</section>
 
@@ -259,22 +145,47 @@
 
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
-			<itemizedlist>
-				<listitem><simpara>
-					The LDAP overlay module <filename>k5pwd</filename> used the default Kerberos salt to check the password during simple-bind.
-					We now use the correct salt, found in the <filename>k5key</filename> itself (<u:bug>50492</u:bug>).
-				</simpara></listitem>
-			</itemizedlist>
-
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The LDAP overlay <filename>slapo-lastbind</filename> can now be activated via the &ucsUCRV; <envar>ldap/overlay/lastbind</envar> which when activated stores the timestamp of an successful bind to an LDAP server.
-						The script <command>/usr/share/univention-ldap/univention_lastbind.py</command> can be used to store the youngest of these timestamps, from all reachable LDAP servers, into the extended attribute <property>lastbind</property> of a specified user (<u:bug>49700</u:bug>).
+						To speed up replication of large LDAP objects, performance inhibiting code for logging will only be executed at the respective debug level (<u:bug>51236</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Due to a race condition, the `memberOf` attribute of user objects could have been incomplete on domaincontroller backup and domaincontroller slave systems. This problem has now been fixed. To get all user objects back in sync, the script /usr/share/univention-ldap-overlay-memberof/univention-update-memberof should be called once on every UCS domaincontroller (<u:bug>46590</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Do incremental updates for attribute `uniqueMember` of groups: Changes trigger the slapd overlay module `memberof`, which then needs to update all users of the group. This is inefficient with MOD_REPLACE as the overlay then has to walk over all users instead of only the added/removed users. During the walk each user object is touched and triggers a sub-transaction in OpenDLAP. With slow disks this even can lead to TIMEOUT errors as the LDAP connection is closed after 5 minutes by default (<u:bug>48545</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Internal change: the UCR templates of are now python3-compatible (<u:bug>51093</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Fix exception logging in corner cases (<u:bug>51061</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Internal change: the UCR templates of univention-directory-notifier are now python3-compatible (<u:bug>51091</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Internal change: the UCR templates of univention-directory-listener are now python3-compatible (<u:bug>51087</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+		</section>
+
+		<section id="changelog:domain:dnsserver">
+			<title>DNS server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Added a warning to the description of the UCR variable "dns/backend" not to use "ldap" on UCS domain controller systems running Samba4 (<u:bug>50501</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-bind are now python3-compatible (<u:bug>51102</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The start of the LDAP server has a timeout value to prevent deadlocks and allow monitoring solutions to log failed start attempts. That value was made configurable, because the necessary time depends on the number of domains. The variable is called dns/timeout-start (<u:bug>50662</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 	</section>
 
@@ -285,12 +196,40 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Fixed a typo in the description of &ucsUCRV; <envar>ucs/server/languages/</envar> (<u:bug>47845</u:bug>).
+					Some preparations for future development have been made (<u:bug>51220</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When accessing <uri>http(s)://<replaceable>FQDN</replaceable>/univention/udm/schema/</uri> or <uri>http(s)://<replaceable>FQDN</replaceable>/univention/udm/openapi.json</uri> authentication is now required by default.
-					<command>ucr set directory/manager/rest/require-auth=no</command> can be used to disable this.
-					After setting this &ucsUCRV; the <systemitem class="service">univention-directory-manager-rest</systemitem> service needs to be restarted (<u:bug>50732</u:bug>).
+					It is now possible to navigate to an UMC module without the overview of all UMC modules and have only that UMC module open. This can be achieved for example with: https://fqdn/univention/management/?overview=no#module=top (<u:bug>51185</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The styling for menu entries has been slightly adjusted (<u:bug>51180</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The error messages in input fields were sometimes not immediately shown. This problem has been addressed (<u:bug>51067</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-directory-manager-rest are now python3-compatible (<u:bug>51090</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					After an automatic password rotation, configurable via UCR variable `server/password/interval`, the UDM REST API refused to deliver an `openapi.json` file and disallows further logins (<u:bug>50708</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:portal">
+			<title>Univention Portal</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-server-overview are now python3-compatible (<u:bug>51100</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Users in the portal live edit mode are now able to see categories without any entries (<u:bug>50688</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Apache template is now correctly updated when changing the UCR variable ucs/server/sso/fqdn (<u:bug>51211</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-portal are now python3-compatible (<u:bug>51099</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -299,15 +238,37 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					&ucsUMC; modules are now installed under Python 2 and/or Python 3 depending on what they provide (<u:bug>50332</u:bug>).
+					LDAP connections in the session shutdown handling and during retrieval of user favorite modules are now closed properly (<u:bug>51367</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <quote>How do I login?</quote> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/how_do_i_login/.*</envar> (<u:bug>50609</u:bug>).
+					LDAP connections in the PAM handling are now closed after the authentication was performed (<u:bug>51366</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					SAML answers do not provide a usable password for UMC.
-					Some UMC actions require specifically this password and so the UMC frontend asks for credentials before executing them.
-					This fix stores the password across different UMC modules so that users need to enter their password only once per session (<u:bug>50670</u:bug>).
+					The UMC-Webserver is now Python 3 compatible (<u:bug>51353</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UMC-Server components are now Python 3 compatible (<u:bug>51235</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some preparations for the upcoming "Univention Portal" app have been made (<u:bug>51226</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Content-Security-Policy for UMC and its login dialog is now configurable via the umc/http/content-security-policy/.* and umc/login/content-security-policy/.* UCR variables. The X-Frame-Options default header has been replaced with the Content-Security-Policy frame-ancestor setting (<u:bug>51211</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					It is now possible to navigate to an UMC module without the overview of all UMC modules and have only that UMC module open. This can be achieved for example with: https://fqdn/univention/management/?overview=no#module=top (<u:bug>51185</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Users can now request the deletion of their account on the "Your profile" page of the Self Service. This feature can be activated via the umc/self-service/account-deregistration/enabled UCR variable (<u:bug>51110</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The meta.json now contains more variables for the self service pages (<u:bug>51001</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-management-console are now python3-compatible (<u:bug>51098</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The self service now has an option that allows anonymous users to create self registered accounts. The feature is disabled by default (<u:bug>51067</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -316,68 +277,13 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Fixed the logic to identify the main service container for multi-container apps (<u:bug>50969</u:bug>).
+					The App Center now mounts /etc/apt/apt.conf.d/80proxy from the UCS host read-only to the container with the name /etc/apt/apt.conf.d/81proxy (<u:bug>51034</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Minor fix that makes it easier to change the timeout between calls for the App Center listener converter (<u:bug>50967</u:bug>).
+					Internal change: the UCR templates of univention-appcenter are now python3-compatible (<u:bug>51101</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fixed an issue where installation of apps on remote UCS systems would not work when using wildcard SSL certificates (<u:bug>50770</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Reinitializing an installed app led to an unnecessary image pull.
-					This fix skips this pull to increase the reinitialization speed (<u:bug>50938</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Added support for <property>app_id=version</property> in the app parameter for the UMC app install functions (<u:bug>50931</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Added <property>DockerInjectEnvFile</property> parameter for <filename>env</filename> file support in docker compose apps (<u:bug>50898</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Installing certain Apps on a non-Master system did not work via UMC (<u:bug>50890</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Added PostgreSQL <filename>pg_hba</filename> configuration for docker compose networks (<u:bug>50858</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The error tracking for failed docker pull requests has been improved (<u:bug>50849</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The warning message indicating a potentially long installation time of container based apps has been removed (<u:bug>50814</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Errors in a cached response in the UMC module could lead to tracebacks.
-					This has been fixed (<u:bug>50775</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					During app installation there was a mix of pop-up dialogs and dedicated pages.
-					These have been unified into an installation wizard (<u:bug>50771</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					In some cases, an unsuccessful app installation was still acknowledged as successful.
-					This fix ensures that the App Center receives a correct status code for those cases (<u:bug>49104</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Empty app settings are no longer set to <literal>None</literal> when using <command>univention-app reinitialize</command> (<u:bug>50718</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Warnings and errors during an app installation, removal or upgrade are now highlighted and grouped together (<u:bug>50667</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A Promise was evaluated as resolved too early due to an missing return which caused standby animations to end too early.
-					This has been addressed (<u:bug>50649</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The startup performance of the UMC module has been improved.
-					Listing all apps first shows the cached result of the previous query while a new query is being performed.
-					When the new query is done the cache is updated and the result is shown in the browser (<u:bug>49675</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The App Center will now check the available disk space before installing an App (<u:bug>31796</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The command <command>univention-app dev-test-setup</command> has been added that installs components needed to run <application>Selenium</application> based app tests (<u:bug>50592</u:bug>).
+					Support for udp ports in docker compose file has been added (<u:bug>51069</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -386,15 +292,19 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					An internal syntax check allowed spaces in mail addresses.
-					This fix ensures that spaces in mail addresses now get rejected (<u:bug>46599</u:bug>).
+					The Simple UDM API did not return an advanced list of DNs if the attribute was not set at all. It merely returned an empty list, which could lead to errors. This has been fixed (<u:bug>51184</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Prevent creating DHCP networks which break the DHCP service configuration (<u:bug>44135</u:bug>).
+					Internal improvement: Remove excessive log trace information from UDM modules method `__getitem__()` (<u:bug>51193</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The listener module <filename>udm_extension</filename> has been migrated to <command>dh_python</command>.
-					All existing UDM extensions are migrated during the package upgrade (<u:bug>50401</u:bug>).
+					SambaBadPasswordTime, the timestamp that is created when a user gets locked, can have a different time format than expected by udm when created by Samba3. This led to tracebacks in udm and rejects in the AD-Connector. Udm can handle this time format now (<u:bug>49697</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-directory-manager-modules are now python3-compatible (<u:bug>51089</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When initializing a module with a template, if the template has no options set, the defaults for the module options are kept instead of setting them all to true (<u:bug>51002</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -403,7 +313,16 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Fixed symbolic link creation for host certificate (<u:bug>49036</u:bug>).
+					Proxy settings configured in Univention System Setup are now used for http and https connections. They are applied to the Univention Configuration Registry variables proxy/http and proxy/https. Previously, only proxy/http was used (<u:bug>50613</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					During the setup use sha-512 for the root password (<u:bug>51195</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some unused code has been removed (<u:bug>51185</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-system-setup are now python3-compatible (<u:bug>51025</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -412,7 +331,28 @@
 			<title>Domain join module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					An issue in the joinscript <filename>20univention-join.inst</filename> to create new host certificates has been fixed, which led to directories getting the wrong file permissions (<u:bug>49036</u:bug>).
+					The dependency on the Admin diary package has been moved to `Recommends` to make it optional. Otherwise there is a circular package dependency between `univention-join` and `univention-admin-diary`, which leads to undesired behaviour (<u:bug>51374</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-join are now python3-compatible (<u:bug>51095</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Restart univention-directory-listener on package update (<u:bug>51532</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Rebuild with new ABI Version 1.5.8 for the samba update (<u:bug>51532</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Rebuild for new ldb library version (<u:bug>51121</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:reports">
+			<title>Univention Directory Reports</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-directory-reports are now python3-compatible (<u:bug>51095</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -421,10 +361,13 @@
 			<title>License module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					In case of an error during license activation in an appliance, refer to an <ulink url="https://help.univention.com/t/14544">article</ulink> in the support database (<u:bug>50951</u:bug>).
+					The previous package update in errata 619 caused the system activation to not work. The apache2 configuration is fixed with this update (<u:bug>51420</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Activating an app appliance now also sends the &ucsUCRV;s <envar>uuid/system</envar> for analytical purposes (<u:bug>49555</u:bug>).
+					The package now uses `dh_python2` instead of `python-support` (<u:bug>51373</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-system-activation are now python3-compatible (<u:bug>51024</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -433,14 +376,16 @@
 			<title>System diagnostic module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Added another diagnosis plugin <filename>60_old_schema_registration.py</filename>:
-					It searches for a defined set of LDAP schema files and offers to register them properly if they were added to the system using an outdated installation mechanism (<u:bug>50889</u:bug>).
+					Permissions for /etc/freeradius/ssl are now also checked by the diagnostics module. Permissions for that path should be 2755 (<u:bug>50887</u:bug>).
 				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:quota">
+			<title>Filesystem quota module</title>
+			<itemizedlist>
 				<listitem><simpara>
-					An UMC diagnostic check has been added, which checks if &ucsUCRV; <envar>ldap/server/name</envar> points to the master domain controller on member servers (<u:bug>50191</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A module to check if the LDAP module <filename>memberOf</filename> is activated has been added (<u:bug>50599</u:bug>).
+					Internal change: the UCR templates of univention-quota are now python3-compatible (<u:bug>51010</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -449,7 +394,16 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package has been migrated to <package>dh-python</package> and Python 3 (<u:bug>50461</u:bug>).
+					It is now possible to assign the Portal Settings module to users and groups via UMC policies (<u:bug>50688</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:development">
+			<title>Development of modules for &ucsUMC;</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: The UMC module of univention-management-console-module-lib is now python3-compatible (<u:bug>51325</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -459,16 +413,16 @@
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The LDAP overlay <filename>slapo-lastbind</filename> can now be activated via the &ucsUCRV; <envar>ldap/overlay/lastbind</envar> which when activated stores the time-stamp of a successful bind to an LDAP server.
-				The script <command>/usr/share/univention-ldap/univention_lastbind.py</command> can be used to store the youngest of these timestamps, from all reachable LDAP servers, into the extended attribute <property>lastbind</property> of a specified user (<u:bug>49700</u:bug>).
+				Internal improvement: Remove excessive log trace information from uldap methods `__getstate__()`, `__setstate__()` and `parentDn()` (<u:bug>51193</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The init script for <systemitem class="service">slapd</systemitem> now looks for running process only below parent PID 1 specifically.
-				This allows running other <systemitem class="service">slapd</systemitem> processes in containers (<u:bug>50616</u:bug>).
+				The randomization mechanism during LDAP connection setup has been further improved so that it now prefers local LDAP servers over external LDAP servers (<u:bug>51182</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The script <filename>ldap-group-to-file</filename> used to run against the &ucsMaster; by default.
-				We randomize the LDAP server selection now to distribute the load (<u:bug>50191</u:bug>).
+				Internal change: the UCR templates of univention-ldap are now python3-compatible (<u:bug>51029</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The univention.lib Python modules are now Python 3 compatible (<u:bug>51592</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -477,7 +431,10 @@
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The wording of the <package>univention-updater</package> help text has been corrected (<u:bug>47834</u:bug>).
+				Internal change: the UCR templates of univention-maintenance are now python3-compatible (<u:bug>51020</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Fix regression caused by erratum 605 to validate signatures of `preup.sh` and `postup.sh` scripts (<u:bug>51576</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 
@@ -485,7 +442,7 @@
 			<title>Software monitor</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package now uses <package>dh_python2</package> instead of <package>python-support</package> (<u:bug>49173</u:bug>).
+					Internal change: the UCR templates of univention-pkgdb are now python3-compatible (<u:bug>51139</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -494,26 +451,53 @@
 	<section id="changelog:service">
 		<title>System services</title>
 
+		<section id="changelog:service:postgresql">
+			<title>PostgreSQL</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-postgresql are now python3-compatible (<u:bug>51112</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:mysql">
+			<title>MySQL and MariaDB</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-mariadb are now python3-compatible (<u:bug>51137</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:docker">
+			<title>Docker</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-docker-container-mode are now python3-compatible (<u:bug>51132</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					In /etc/systemd/system/docker.service.d/http-proxy.conf the ucr var proxy/no_proxy is considered for the docker proxy settings (<u:bug>51031</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates univention-docker of are now python3-compatible (<u:bug>51132</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:saml">
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					An issue in a translation file caused a web link to not appear in case a password was expired or had to be reset (<u:bug>50884</u:bug>).
+					It is now possible to activate SAML service provider for groups, not only for individual users (<u:bug>47567</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A new UDM attribute <property>signLogouts</property> for the UDM module <classname>saml/serviceprovider</classname> has been implemented.
-					Its value determines whether to sign logout messages sent to this service provider.
-					Its default value is <literal>True</literal> (<u:bug>49305</u:bug>).
+					The Content-Security-Policy is now configurable via the saml/apache2/content-security-policy/. UCR variables (<u:bug>51211</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Error messages in the SAML login dialog are now translated to German again (<u:bug>50619</u:bug>).
+					The self service can now be set up to allow users to create their own account (see also Bug #51067). For this new feature the SAML identity provider has been adapted, to be configurable to deny login for unverified, self registered accounts (<u:bug>51068</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The <quote>Login without Single Sign On</quote> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/login_without_sso/.*</envar> (<u:bug>50610</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A link to the password changing functionality has been implemented in the SAML login dialog, which is shown when the user has to change his password or the password expired.
-					The link target can be set with the &ucsUCRV; <envar>saml/idp/password-change-url</envar> (<u:bug>50594</u:bug>).
+					The configuration of SAML identity providers has been extended by the possibility to configure an attribute mapping for the LDAPattributes required by the Service providers (<u:bug>48927</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -522,7 +506,31 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The <quote>Forgot your password?</quote> link on the login page can now be configured via the &ucsUCRV; <envar>umc/login/links/forgot_your_password/.*</envar> (<u:bug>50608</u:bug>).
+					Nested groups are now correctly evaluated for Self Service white- and blacklists (<u:bug>51261</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The 'Forgot your password?' link on the login page was not shown by default anymore (<u:bug>51533</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Blacklists and whitelists for editing a user profile via the "Your profile" page of the Self Service and deleting an account via the "Delete my account" button on the "Your profile" page are no longer configured via the umc/self-service/passwordreset/{blacklist,whitelist}/{users,groups} UCR variables but the umc/self-service/profiledata/{blacklist,whitelist}/{users,groups} and umc/self-service/account-deregistration/{...} UCR variables respectively (<u:bug>51259</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Self Service links in the hamburger menu are no longer visible if the corresponding Self Service page was disabled via UCR (<u:bug>51351</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Content-Security-Policy is now configurable via the umc/self-service/content-security-policy/.* UCR variables (<u:bug>51211</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When requesting a new token, do not disclose the email address of the user (<u:bug>51152</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Users can now request the deletion of their account on the "Your profile" page of the Self Service. This feature can be activated via the umc/self-service/account-deregistration/enabled UCR variable (<u:bug>51110</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Added UCR variables to enable admins to switch off all pages (and backend functions) individually (<u:bug>51001</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The self service now has an option that allows anonymous users to create self registered accounts. The feature is disabled by default (<u:bug>51067</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -531,8 +539,19 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The schema file and the ACL file for Fetchmail are now properly registered using the newer <function>ucs_registerLDAPExtension</function>.
-					This prevents errors when a &ucsBackup; is promoted to be the new &ucsMaster; (<u:bug>50607</u:bug>).
+					Internal change: the UCR templates of univention-fetchmail are now python3-compatible (<u:bug>51148</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-antivir-mail are now python3-compatible (<u:bug>51149</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:dovecot">
+			<title>Dovecot</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-mail-dovecot are now python3-compatible (<u:bug>51147</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -541,8 +560,19 @@
 			<title>Postfix</title>
 			<itemizedlist>
 				<listitem><simpara>
-					In a fresh installation of <package>univention-postgrey</package> the files <filename>/etc/postgrey/whitelist_clients.local</filename> and <filename>/etc/postgrey/whitelist_recipients.local</filename> are not included in the Postgrey configuration, even though the corresponding &ucsUCRV; should force this.
-					The creation of the <filename>.local</filename> files and the update of the Postgrey configuration has been rearranged to fix this problem (<u:bug>50647</u:bug>).
+					Internal change: the UCR templates of univention-postgrey are now python3-compatible (<u:bug>51146</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-mail-postfix are now python3-compatible (<u:bug>51151</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:virus">
+			<title>Spam/virus detection and countermeasures</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-dansguardian are now python3-compatible (<u:bug>51144</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -551,7 +581,25 @@
 			<title>Printing services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package now uses <package>dh_python2</package> instead of <package>python-support</package> (<u:bug>49174</u:bug>).
+					Internal change: the UCR templates of univention-printquota are now python3-compatible (<u:bug>51140</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A shell quoting error in the cups-printer listener module has been corrected which prevented the creation of printers for certain ACLs (<u:bug>51196</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-printserver are now python3-compatible (<u:bug>51129</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:nagios">
+			<title>Nagios</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of are univention-snmpd now python3-compatible (<u:bug>51143</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-nagios are now python3-compatible (<u:bug>51214</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -560,11 +608,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The timeout in <command>univention-add-vhost</command> has been increased (<u:bug>50936</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Make the package <package>univention-apache-vhost</package> a dependency of <package>univention-apache</package> rather than a recommendation.
-					This way it gets installed by default; some Apps rely on it (<u:bug>50901</u:bug>).
+					Internal change: the UCR templates of univention-apache are now python3-compatible (<u:bug>51077</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -573,13 +617,19 @@
 			<title>RADIUS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Various RADIUS-related &ucsUCRV;s have received a description text (<u:bug>48709</u:bug>).
+					Permissions for directory /etc/freeradius/ssl are now set during installation by join-script 80univention-radius. Permissions are also set via postinst script univention- radius.postinst (<u:bug>50887</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					For the logfile <filename>/var/log/univention/radius_ntlm_auth.log</filename> an automatic logrotate functionality has been added to prevent over-sized logfiles on heavy duty RADIUS servers (<u:bug>50545</u:bug>).
+					Internal change: the UCR templates of univention-radius are now python3-compatible (<u:bug>51130</u:bug>).
 				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:proxy">
+			<title>Proxy services</title>
+			<itemizedlist>
 				<listitem><simpara>
-					The package now uses <package>dh_python2</package> instead of <package>python-support</package> (<u:bug>49175</u:bug>).
+					Internal change: the UCR templates of univention-squid are now python3-compatible (<u:bug>51133</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -588,13 +638,7 @@
 			<title>Kerberos</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Improve error messages (<u:bug>38736</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fix many memory leaks, memory corruption and segmentation faults (<u:bug>49383</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Add Python 3 support (<u:bug>50475</u:bug>).
+					Internal change: the UCR templates of univention-heimdal are now python3-compatible (<u:bug>51016</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -603,16 +647,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-					An issue in the &ucsUDL; module <filename>gencertificate.py</filename> to create new host certificates has been fixed, which led to directories getting the wrong file permissions (<u:bug>49036</u:bug>).
-				</simpara></listitem>
-			</itemizedlist>
-		</section>
-
-		<section id="changelog:service:celery">
-			<title>Celery services</title>
-			<itemizedlist>
-				<listitem><simpara>
-					Unused Python code has been removed (<u:bug>49170</u:bug>).
+					Internal change: the UCR templates of univention-ssl are now python3-compatible (<u:bug>51022</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -621,11 +656,7 @@
 			<title>DHCP server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The new &ucsUCRV; <envar>dhcpd/ldap/debug</envar> has been added for debugging the configuration from LDAP.
-					If activated, it creates a log file named <filename>/var/log/dhcp-ldap-startup.log</filename> (<u:bug>49281</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Fixed a spelling mistake in the description of &ucsUCRV; <filename>dhcpd/options/</filename> (<u:bug>46805</u:bug>).
+					Internal change: the UCR templates of univention-dhcp are now python3-compatible (<u:bug>51136</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -634,14 +665,43 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Changed the default of <envar>nss/group/cachefile/check_member</envar> to <literal>false</literal> on new installations for improved performance (<u:bug>50904</u:bug>).
+					Internal change: the UCR templates of univention-sasl are now python3-compatible (<u:bug>51142</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The script <filename>ldap-group-to-file</filename> used to run against the &ucsMaster; by default.
-					We randomize the LDAP server selection now to distribute the load (<u:bug>50191</u:bug>).
+					Internal change: the UCR templates of univention-pam are now python3-compatible (<u:bug>51224</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-pam are now python3-compatible (<u:bug>51027</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+
+		<section id="changelog:service:nfs">
+			<title>NFS</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-nfs are now python3-compatible (<u:bug>51138</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:other">
+			<title>Other services</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-firewall are now python3-compatible (<u:bug>51035</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="changelog:desktop">
+		<title>Desktop</title>
+		<itemizedlist>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-kdm are now python3-compatible (<u:bug>51218</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 
 	<section id="changelog:virt">
@@ -651,7 +711,13 @@
 			<title>UCS Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Handle state <property>VIR_DOMAIN_PMSUSPENDED</property> (<u:bug>50580</u:bug>).
+					Internal change: the UCR templates of univention-virtual-machine-manager-daemon are now python3-compatible (<u:bug>51215</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-virtual-machine-manager-node are now python3-compatible (<u:bug>51215</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-virtual-machine-manager-schema are now python3-compatible (<u:bug>51215</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -660,7 +726,7 @@
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package now uses <package>dh_python2</package> instead of <package>python-support</package> (<u:bug>49171</u:bug>).
+					Internal change: the UCR templates of univention-cloud-init are now python3-compatible (<u:bug>51135</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -669,18 +735,32 @@
 	<section id="changelog:win">
 		<title>Services for Windows</title>
 
+		<section id="changelog:win:samba">
+			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+					A python syntax error has been removed in the UCR configuration file /etc/samba/base.conf (<u:bug>51212</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-samba are now python3-compatible (<u:bug>51131</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-samba4 are now python3-compatible (<u:bug>51131</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Rebuild with new ABI Version 1.5.8 for the samba update (<u:bug>51532</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The &ucsADC; is now able to synchronize Kerberos hashes from the Active Directory to the UCS LDAP server.
-					This update adds compatibility for the new feature to the &ucsS4C; (<u:bug>50492</u:bug>).
+					 (<u:bug>51298</u:bug>, <u:bug>51462</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The group member cache handling has been improved to avoid unbound consumption of process memory (<u:bug>50644</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Microsoft Wireless/Wired Group Policy, IPsec policy and Software installation policy objects can now be synchronized between OpenLDAP and Samba 4 (<u:bug>49838</u:bug>).
+					Internal change: the UCR templates of univention-s4-connector are now python3-compatible (<u:bug>51159</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -689,32 +769,151 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Fix the check <filename>check_univention_ad_connector</filename> by adapting to the new process name introduced in <u:erratum>390</u:erratum> from <u:bug>49168</u:bug> (<u:bug>50676</u:bug>).
+					The synchronisation of the pwdChangeNextLogin flag only worked if the password was resetted at the same time. This behavior has been fixed (<u:bug>51585</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When synchronizing group members, the &ucsADC; now only adds/deletes the edited members instead of replacing the whole list of members in that group (<u:bug>50630</u:bug>).
+					Fix UCS to AD Diff-Mode synchronization from the OpenLDAP attributes telephoneNumber, homePhone, mobilePhone and pager to the MS AD attributes otherTelephone, otherHomePhone, otherMobile and otherPager (<u:bug>51567</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The &ucsADC; is now able to synchronize Kerberos hashes from the Active Directory to the UCS LDAP server.
-					This can be enabled by setting the new &ucsUCRV; <envar>connector/ad/mapping/user/password/kerberos/enabled=true</envar>.
-					If this variable is not set the hashes will not be synchronized (<u:bug>50492</u:bug>).
+					Log the active mapping on startup (<u:bug>51518</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Fix Python library path in <filename>prepare-new-instance</filename>.
-					This fixes the feature to synchronize several Active Directory domains with one UCS directory service (<u:bug>50713</u:bug>).
+					Basic profiling support via UCR connector/ad/poll/profiling (<u:bug>51518</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					It is now possible to filter out users from synchronization by setting the &ucsUCRV; <envar>connector/ad/mapping/user/ignorefilter</envar> to an LDAP filter.
-					Every user matched by this LDAP filter will be ignored by the connector (<u:bug>50674</u:bug>).
+					Ignore changes to a list of irrelevant attributes. The list can be extended via a new UCR variable connector/ad/mapping/attributes/irrelevant (<u:bug>18501</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The group member cache handling has been improved to avoid unbound consumption of process memory (<u:bug>50643</u:bug>).
+					The Diff-Mode synchronization technique originally implemented for the S4-Connector has been merged to the AD-Connector. This affects the replication of multivalue attribute values such that only added and removed attribute values are modified on the destination system, but values unchanged on the source of replication are also unchanged on the destination. Before this update, all values of an attribute changed in the source LDAP got replaced in the destination LDAP. Please note that there is no change in the replication of group memberships, because they already have been replicated in Diff-Mode before (<u:bug>51462</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The package now uses <package>dh_python2</package> instead of <package>python-support</package> (<u:bug>49168</u:bug>).
+					The flag pwdChangeNextLogin is now synced bidirectionally by the adconnector (<u:bug>51298</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal change: the UCR templates of univention-ad-connector are now python3-compatible (<u:bug>51160</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	</section>
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara>
+				When authenticating with an expired password via pam-krb5, heimdal prompted for a password change, which led to the password being overwritten with the old password. This behaviour has been fixed (<u:bug>51462</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				univention-directory-logger is now able to prefix related log lines with the same transaction ID. This new feature is automaticaly enabled on fresh installations of univention-directory-logger but remains disabled during updates. Set ldap/logging/id-prefix=yes to enable this feature manually (<u:bug>51082</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Add new PGP public key univention-archive-key-ucs-5x.gpg for UCS-5 and remove expired key univention-archive-key-ucs-3x.gpg from UCS-3 (<u:bug>51250</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-mozilla-firefox are now python3-compatible (<u:bug>51218</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-initrd are now python3-compatible (<u:bug>51019</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-kde are now python3-compatible (<u:bug>51218</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-spamassassin are now python3-compatible (<u:bug>51145</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of are now python3-compatible (<u:bug>51086</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-directory-policy are now python3-compatible (<u:bug>51092</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates are now python3-compatible (<u:bug>51088</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-sudo are now python3-compatible (<u:bug>51023</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Check for usage of `debian/*.pyinstall` files to install Python modules (<u:bug>51106</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Check users of `custom_{user,group}name()` registering for required UCR variables (<u:bug>50056</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Check for packages declaring dependencies on `Essential:yes` packages (<u:bug>51476</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Check for usage of `uldap.searchDn()` (<u:bug>51375</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				`ucslint` has been removed as a direct dependency from all UCS packages as it now runs directly from our CI pipeline (<u:bug>42294</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Debian maintainer script `debian/*.{pre,post}{inst,rm}` are now checked for handling wrong actions (<u:bug>43981</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Un-join-script files are now checked for errors, too (<u:bug>48747</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The `debian/changelog` file is checked for strict-monotonic entries. In the past this has lead to surprising update results as the timestamp of the latest entry is used for many things during the package build (<u:bug>49620</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				`debian/*.ucs files are checked more strictly due to the switch to Python 3. For example duplicate keys are now errors (<u:bug>49683</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				New `debhelper` related files in `debian/` are recognized (<u:bug>51246</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				`debian/*.dirs` is now checked for un-needed entries which are already created indirectly by other steps (<u:bug>51247</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				`debian/compat` is now checked for consistency with the declared versioned build dependency of `debhelper` in `debian/control` (<u:bug>51248</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				UCS templates are checked for compatibility with Python 2 and 3 (<u:bug>51107</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Invalid Python string literals are now detected (<u:bug>51105</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The code base has been converted to Python 3 (<u:bug>49704</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-passwd-store are now python3-compatible (<u:bug>51008</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-x-core are now python3-compatible (<u:bug>51218</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Python 3 compatibility for the UMC debhelper scripts has been added (<u:bug>51235</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Do not set UCR variables `ldap/overlay/memberof/` before system is joined (<u:bug>47641</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-ldap-overlay-memberof are now python3-compatible (<u:bug>51096</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Modified the 'Change password' menu entry for future feature release compatibility (<u:bug>51181</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-printclient are now python3-compatible (<u:bug>51009</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-grub are now python3-compatible (<u:bug>51018</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-directory-manager-module-example are now python3-compatible (<u:bug>51216</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-admin-diary are now python3-compatible (<u:bug>51134</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-server are now python3-compatible (<u:bug>51011</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Internal change: the UCR templates of univention-network-manager are now python3-compatible (<u:bug>51021</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 </chapter>
 <!-- vim: set ts=4 sw=4 noet: -->
