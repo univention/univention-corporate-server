@@ -15,6 +15,8 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 
+set -x
+
 USERNAME="$(user_randomname)"
 
 # Create Domain Admin
