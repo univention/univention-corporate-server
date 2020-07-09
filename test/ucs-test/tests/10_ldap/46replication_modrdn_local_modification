@@ -38,24 +38,24 @@ UDM_MODULE = 'computers/linux'
 name = random_name()
 dn = 'cn=%s,cn=memberserver,cn=computers,%s' % (name, ucr.get('ldap/base'))
 addlist = [
-	('cn', [name]),
-	('objectClass', ['top', 'organizationalRole', 'univentionObject']),
-	('univentionObjectType', ['container/cn']),
+	('cn', [name.encode('UTF-8')]),
+	('objectClass', [b'top', b'organizationalRole', b'univentionObject']),
+	('univentionObjectType', [b'container/cn']),
 ]
 
 name_subobject = random_name()
 dn_subobject = 'cn=%s,cn=%s,cn=memberserver,cn=computers,%s' % (name_subobject, name, ucr.get('ldap/base'))
 addlist_subobject = [
-	('cn', [name_subobject]),
-	('objectClass', ['top', 'organizationalRole', 'univentionObject']),
-	('univentionObjectType', ['container/cn']),
+	('cn', [name_subobject.encode('UTF-8')]),
+	('objectClass', [b'top', b'organizationalRole', b'univentionObject']),
+	('univentionObjectType', [b'container/cn']),
 ]
 
 
 def get_entryUUID(lo, dn):
-	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['*', '+'])
+	result = lo.search_s(base=dn, scope=ldap.SCOPE_BASE, attrlist=['entryUUID'])
 	print('DN: %s\n%s' % (dn, result))
-	return result[0][1].get('entryUUID')[0]
+	return result[0][1].get('entryUUID')[0].decode('ASCII')
 
 # create computer
 
