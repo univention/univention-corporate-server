@@ -36,7 +36,6 @@ from __future__ import division
 import os
 import re
 import sys
-import cgi
 import time
 import uuid
 import json
@@ -79,11 +78,12 @@ from saml2.sigver import MissingKey, SignatureError
 from univention.lib.i18n import NullTranslation
 
 try:
-	from html import unescape
+	from html import escape, unescape
 except ImportError:  # Python 2
 	import HTMLParser
 	html_parser = HTMLParser.HTMLParser()
 	unescape = html_parser.unescape
+	from cgi import escape
 
 _ = NullTranslation('univention-management-console-frontend').translate
 
@@ -452,7 +452,7 @@ def default_error_page(status, message, traceback, version, result=None):
 	page = default_error_page_json(status, message, traceback, version, result)
 	if 'X-Iframe-Response' in cherrypy.request.headers:
 		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return '<html><body><textarea>%s</textarea></body></html>' % (cgi.escape(page, False),)
+		return '<html><body><textarea>%s</textarea></body></html>' % (escape(page, False),)
 	return page
 
 
@@ -460,7 +460,7 @@ def default_error_page_html(status, message, traceback, version, result=None):
 	content = default_error_page_json(status, message, traceback, version, result)
 	try:
 		with open('/usr/share/univention-management-console-frontend/error.html', 'r') as fd:
-			content = fd.read().replace('%ERROR%', json.dumps(cgi.escape(content, True)))
+			content = fd.read().replace('%ERROR%', json.dumps(escape(content, True)))
 		cherrypy.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 	except (OSError, IOError):
 		pass
