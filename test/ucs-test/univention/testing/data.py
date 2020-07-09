@@ -769,6 +769,8 @@ class TestCase(object):
 				self._run_tee(proc, result, to_stdout, to_stderr)
 
 				result.result = proc.wait()
+				if result.result and os.environ.get('JENKINS_WS'):
+					to_stdout.write(b'JENKINS WS: %s\n' % os.environ['JENKINS_WS'].encode('UTF-8'))
 			except OSError:
 				TestCase.logger.error('Failed to execute %r using %s in %s', cmd, self.exe, dirname)
 				raise
