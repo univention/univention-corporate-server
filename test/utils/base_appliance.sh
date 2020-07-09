@@ -1057,6 +1057,9 @@ setup_ec2 ()
 		grub/terminal="console serial" \
 		grub/serialcommand="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"
 
+	# amazon has an internal timeserver for instances to use:
+	ucr set timeserver=169.254.169.123
+
 	rm -f /boot/grub/menu.lst # This still is evaluated by AWS-EC2 if it exists!
 	update-grub
 
