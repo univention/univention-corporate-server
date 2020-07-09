@@ -295,7 +295,7 @@ class App(object):
 	def add_to_local_appcenter(self):
 		self._dump_ini()
 		if self.package:
-			self._copy_package()
+			copy_package_to_appcenter(self.ucs_version, self.app_directory, self.package.get_binary_name())
 		self._dump_scripts()
 
 	def add_script(self, **kwargs):
@@ -507,19 +507,8 @@ class App(object):
 			print('Create %s' % target)
 			print(self.scripts[script])
 
-			f = open(target, 'w')
-			f.write(self.scripts[script])
-			f.close()
-
-	def _copy_package(self):
-		target = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s/all' % self.app_directory)
-		os.makedirs(target)
-		shutil.copy(self.package.get_binary_name(), target)
-		subprocess.call('''
-			cd /var/www/univention-repository/%(version)s/maintained/component;
-			apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
-			gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
-		''' % {'version': self.ucs_version, 'app': self.app_directory}, shell=True)
+			with open(target, 'w') as f:
+				f.write(self.scripts[script])
 
 	def create_basic_modproxy_settings(self):
 		self.add_script(setup='''#!/bin/bash
@@ -649,31 +638,28 @@ class Appcenter(object):
 		print(repr(self))
 
 	def _write_suggestions_json(self):
-		f = open('/var/www/meta-inf/suggestions.json', 'w')
-		f.write('{"v1": []}')
-		f.close()
+		with open('/var/www/meta-inf/suggestions.json', 'w') as f:
+			f.write('{"v1": []}')
 
 	def _write_ucs_ini(self, content):
-		f = open('/var/www/meta-inf/ucs.ini', 'w')
-		f.write(content)
-		f.close()
+		with open('/var/www/meta-inf/ucs.ini', 'w') as f:
+			f.write(content)
 
 	def add_ucs_version_to_appcenter(self, version):
-
 		if not os.path.exists('/var/www/meta-inf'):
-			os.makedirs('/var/www/meta-inf', 0755)
+			os.makedirs('/var/www/meta-inf', 0o755)
 			self.meta_inf_created = True
 
 		if not os.path.exists('/var/www/univention-repository'):
-			os.makedirs('/var/www/univention-repository', 0755)
+			os.makedirs('/var/www/univention-repository', 0o755)
 			self.univention_repository_created = True
 
 		os.makedirs('/var/www/univention-repository/%s/maintained/component' % version)
 		os.makedirs('/var/www/meta-inf/%s' % version)
 
 		if not os.path.exists('/var/www/meta-inf/categories.ini'):
-			f = open('/var/www/meta-inf/categories.ini', 'w')
-			f.write('''[de]
+			with open('/var/www/meta-inf/categories.ini', 'w') as f:
+				f.write('''[de]
 Administration=Administration
 Business=Business
 Collaboration=Collaboration
