@@ -5,6 +5,12 @@
 	"descr_WRONGUSERPASS": {
 		"de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. \u00dcberpr\u00fcfen Sie die Zugangsdaten und probieren Sie es nochmal"
 	},
+	"title_univention:PW_CHANGE_FAILED": {
+		"de": "Passwort ändern fehlgeschlagen"
+	},
+	"descr_univention:PW_CHANGE_FAILED": {
+		"de": "%s"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"de": "Account deaktiviert"
 	},
@@ -67,5 +73,17 @@
 	},
 	"descr_KRB_ACCLOCKED": {
 		"de": "Der Kerberos Account ist gesperrt, Login verweigert"
+	},
+	"title_univention:RETYPE_MISMATCH": {
+		"de": "Passwort ändern fehlgeschlagen"
+	},
+	"desc_univention:RETYPE_MISMATCH": {
+		"de": "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
+	},
+	"title_univention:PASSWORD_CHANGE_SUCCESS": {
+		"de": "Das Passwort wurde erfolgreich geändert"
+	},
+	"descr_univention:PASSWORD_CHANGE_SUCCESS": {
+		"de": "Bitte melden Sie sich erneut an."
 	}
 }

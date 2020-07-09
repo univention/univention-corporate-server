@@ -2,9 +2,12 @@
 $this->includeAtTemplateBase('includes/header.php');
 
 $this->data['header'] = $this->t('{login:user_pass_header}');
+
+$PW_EXPIRED = $this->data['errorcode'] !== NULL && in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'SAMBA_PWCHANGE', 'univention:RETYPE_MISMATCH'));
+// echo '<pre>'; var_dump($this->data); echo '</pre>';
 ?>
 		<div id="umcLoginWrapper">
-			<h1 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:loginat}')); ?></h1>
+			<h1 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:loginat}', array('%s' => $this->configuration->getValue('domainname', '')))); ?></h1>
 <?php
 if (isset($this->data['SPMetadata']['privacypolicy'])) {
 	printf('<h3 style="text-align: center;"><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy'], ENT_QUOTES), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
@@ -17,29 +20,14 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg"/>
 				</div>
 				<div class="umcLoginFormWrapper">
-					<div id="umcLoginNotices" class="umcLoginNotices" style="display: none;"></div>
-					<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on">
-						<label for="umcLoginUsername">
-							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}'), ENT_QUOTES); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="username"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
-						</label>
-						<label for="umcLoginPassword">
-							<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}'), ENT_QUOTES); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="current-password"/>
-						</label>
-						<div id="umcLoginWarnings" class="umcLoginWarnings">
+					<div id="umcLoginNotices" class="umcLoginNotices" style="display: <?php echo $this->data['errorcode'] !== NULL ? 'block' : 'none'; ?>;">
 <?php
-/*
-if ($this->data['errorcode'] !== NULL) {
-	echo('<span class="logintitle">' . $this->t('{login:help_header}') . '</span>');
-	echo('<span class="logintext">' . $this->t('{login:help_text}') . '</span>');
-}
-*/
-
 if ($this->data['errorcode'] !== NULL) {
 ?>
 	<p class="umcLoginWarning" >
-		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>.</b><br>
+		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>.</b><br />
 <?php
-if (in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'SAMBA_PWCHANGE'))) {
+if ($PW_EXPIRED) {
 	$password_change_url = $this->configuration->getValue('password_change_url', '');
 	$password_change_url = $password_change_url ? $password_change_url : str_replace('/univention/saml/metadata', '/univention/login/', $this->data['SPMetadata']['entityid']);
 	echo '<span style="color: black;">';
@@ -55,7 +43,14 @@ if (in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'S
 <?php
 }
 ?>
-						</div>
+					</div>
+					<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on" <?php if ($PW_EXPIRED) { echo 'style="display: none; "'; } ?>>
+						<label for="umcLoginUsername">
+							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}'), ENT_QUOTES); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="username"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
+						</label>
+						<label for="umcLoginPassword">
+							<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}'), ENT_QUOTES); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="current-password"/>
+						</label>
 <?php
 foreach ($this->data['stateparams'] as $name => $value) {
 	echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '" />';
@@ -90,8 +85,32 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 <?php
 }
 ?>
-						<input id="umcLoginSubmit" type="submit" name="submit" value="Login"/>
+						<input id="umcLoginSubmit" type="submit" name="submit" value="<?php echo htmlspecialchars($this->t('{login:login_button}'), ENT_QUOTES); ?>"/>
 					</form>
+
+<?php
+if ($PW_EXPIRED) {
+?>
+					<form id="umcNewPasswordForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="off" style="display: block;">
+						<input name="username" type="hidden" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" />
+						<input name="password" type="hidden" value="<?php echo htmlspecialchars($_REQUEST['password'], ENT_QUOTES); /* TODO: store instead in the session? */ ?>" />
+						<label for="umcLoginNewPassword">
+							<input id="umcLoginNewPassword" name="new_password" type="password" autocomplete="new-password" placeholder="<?php echo htmlspecialchars($this->t('{pwchange:new_password}'), ENT_QUOTES); ?>" />
+						</label>
+						<label for="umcLoginNewPasswordRetype">
+							<input id="umcLoginNewPasswordRetype" name="new_password_retype" type="password" autocomplete="new-password" placeholder="<?php echo htmlspecialchars($this->t('{pwchange:new_password_retype}'), ENT_QUOTES); ?>" />
+						</label>
+						<input id="umcNewPasswordSubmit" type="submit" name="submit" value="<?php echo htmlspecialchars($this->t('{pwchange:change_password}'), ENT_QUOTES); ?>" />
+<?php
+foreach ($this->data['stateparams'] as $name => $value) {
+	echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '" />';
+}
+?>
+					</form>
+<?php
+}
+?>
+					<div id="umcLoginWarnings" class="umcLoginWarnings"></div>
 				</div>
 			</div>
 			<div id="umcLoginLinks"></div>

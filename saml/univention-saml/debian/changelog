@@ -1,3 +1,9 @@
+univention-saml (6.0.2-52) unstable; urgency=medium
+
+  * Bug #51492: add change password dialog to SAML login
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2020 14:24:52 +0200
+
 univention-saml (6.0.2-51) unstable; urgency=medium
 
   * Bug #51801: fix html syntax errors, rebase to upstream changes

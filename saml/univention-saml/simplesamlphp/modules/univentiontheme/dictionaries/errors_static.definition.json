@@ -5,6 +5,12 @@
 	"descr_WRONGUSERPASS": {
 		"en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
 	},
+	"title_univention:PW_CHANGE_FAILED": {
+		"en": "Changing password failed"
+	},
+	"descr_univention:PW_CHANGE_FAILED": {
+		"en": "%s"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"en": "Account disabled"
 	},
@@ -67,5 +73,17 @@
 	},
 	"descr_KRB_ACCLOCKED": {
 		"en": "The Kerberos account is locked, login is denied"
+	},
+	"title_univention:RETYPE_MISMATCH": {
+		"en": "Changing password failed"
+	},
+	"descr_univention:RETYPE_MISMATCH": {
+		"en": "The passwords do not match, please retype again."
+	},
+	"title_univention:PASSWORD_CHANGE_SUCCESS": {
+		"en": "The password has been changed successfully"
+	},
+	"descr_univention:PASSWORD_CHANGE_SUCCESS": {
+		"en": "Please login again."
 	}
 }

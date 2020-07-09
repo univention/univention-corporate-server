@@ -47,5 +47,5 @@ with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_
 	errors_translation.update(get_selfservice_translations())
 
 
-print(json.dumps(errors_translation))
+print(json.dumps(errors_translation, indent=4))
 @!@

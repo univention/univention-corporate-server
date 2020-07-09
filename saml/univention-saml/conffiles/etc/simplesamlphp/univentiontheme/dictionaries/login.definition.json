@@ -16,6 +16,6 @@ def get_login_definitions():
 	return login_definitions
 
 
-print(json.dumps(get_login_definitions()))
+print(json.dumps(get_login_definitions(), indent=4))
 @!@
 
