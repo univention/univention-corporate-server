@@ -390,9 +390,10 @@ class XML_Definition(ET.ElementTree):
 			if command.get('name') == name:
 				return Command(name, command.get('function'), command.get('allow_anonymous', '0').lower() in ('yes', 'true', '1'))
 
-	def __nonzero__(self):
+	def __bool__(self):
 		module = self.find('module')
 		return module is not None and len(module) != 0
+	__nonzero__ = __bool__
 
 	def __repr__(self):
 		return '<XML_Definition %s (%r)>' % (self.id, self.name)
