@@ -878,7 +878,7 @@ def sambaWorkstationsMap(workstations, encoding=()):
 
 
 def sambaWorkstationsUnmap(workstations, encoding=()):
-	return workstations[0].decode(*encoding).split(b',')
+	return workstations[0].decode(*encoding).split(u',')
 
 
 def logonHoursMap(logontimes):
