@@ -281,7 +281,7 @@ property_descriptions = {
 	),
 	'e-mail': univention.admin.property(
 		short_description=_('E-mail address'),
-		long_description='',
+		long_description=_('This e-mail address serves only as contact information. This address has no effect on the UCS mail stack and is not related to a local mailbox.'),
 		syntax=univention.admin.syntax.emailAddress,
 		multivalue=True,
 	),
@@ -473,14 +473,14 @@ property_descriptions = {
 		copyable=True,
 	),
 	'mailPrimaryAddress': univention.admin.property(
-		short_description=_('Primary e-mail address'),
+		short_description=_('Primary e-mail address (mailbox)'),
 		long_description='',
 		syntax=univention.admin.syntax.primaryEmailAddressValidDomain,
 		include_in_default_search=True,
 		readonly_when_synced=True,
 	),
 	'mailAlternativeAddress': univention.admin.property(
-		short_description=_('Alternative e-mail address'),
+		short_description=_('E-mail alias address'),
 		long_description='',
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		multivalue=True,

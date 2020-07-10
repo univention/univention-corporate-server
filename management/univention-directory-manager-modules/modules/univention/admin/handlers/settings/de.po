@@ -80,7 +80,7 @@ msgid "Advanced"
 msgstr "Erweitert"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:231
-msgid "Alternative e-mail address"
+msgid "E-mail alias address"
 msgstr "Alternative E-Mail-Adresse"
 
 #: modules/univention/admin/handlers/settings/syntax.py:153
@@ -1426,6 +1426,14 @@ msgstr "Postfach"
 msgid "Postal code"
 msgstr "Postleitzahl"
 
+#: modules/univention/admin/handlers/settings/usertemplate.py:110
+msgid ""
+"This e-mail address serves only as contact information. This address has "
+"no effect on the UCS mail stack and is not related to a local mailbox."
+msgstr ""
+"Diese E-Mail Adresse dient nur zur Kontaktinformation. Sie hat keinen "
+"Einfluss auf den UCS Mail Stack und hat nichts mit der Mailbox zu tun."
+
 #: modules/univention/admin/handlers/settings/settings.py:50
 msgid "Preference"
 msgstr "Einstellung"
@@ -1465,8 +1473,8 @@ msgid "Primary Groups"
 msgstr "Primäre Gruppen"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:226
-msgid "Primary e-mail address"
-msgstr "Primäre E-Mail-Adresse"
+msgid "Primary e-mail address (mailbox)"
+msgstr "Primäre E-Mail-Adresse (Mailbox)"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:218
 msgid "Primary group"
