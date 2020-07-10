@@ -934,16 +934,6 @@ class SessionHandler(ProcessorBase):
 		if isinstance(exc, UMC_Error) and exc.status == 403:
 			exc.status = 401
 
-	def shutdown(self):
-		if self.processor is not None:
-			self.processor.shutdown()
-
-	def __del__(self):
-		CORE.info('The session is shutting down')
-		if self.processor:
-			self.processor.__del__()
-		self.processor = None
-
 	def _authentication_finished(self, result, request):
 		# caution! this is not executed in the main loop and any exception will therefore crash the server!
 		self.execute('_authentication_finished2', request, result)
@@ -1007,3 +997,14 @@ class SessionHandler(ProcessorBase):
 	def parse_error(self, request, parse_error):
 		status, message = parse_error.args
 		raise UMC_Error(message, status=status)
+
+	def close_session(self):
+		self.shutdown()
+		if self.processor is not None:
+			self.processor.shutdown()
+			self.processor.__del__()
+		self.processor = None
+
+	def __del__(self):
+		super(SessionHandler, self).__del__()
+		self.close_session()

@@ -221,18 +221,16 @@ class MagicBucket(object):
 			self._cleanup(state.socket)
 
 	def _cleanup(self, socket):
-		if socket not in self.__states:
+		state = self.__states.pop(socket, None)
+		if state is None:
 			return
 
-		self.__states[socket].session.shutdown()
+		state.session.close_session()
 
 		notifier.socket_remove(socket)
-		self.__states[socket].session.__del__()
-		del self.__states[socket]
-
 		try:
 			socket.close()
-		except:
+		except Exception:
 			pass
 
 
