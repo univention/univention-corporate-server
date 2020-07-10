@@ -992,7 +992,10 @@ def load_certificate(user_certificate):
 			(x509.get_subject(), "certificateSubject"),
 		):
 			for key, attr in load_certificate.ATTR.items():
-				value = getattr(entity, key)
+				try:
+					value = getattr(entity, key)
+				except TypeError:  # not expecting type '<class 'NoneType'>'
+					value = None
 				values[prefix + attr] = value
 	except (X509.X509Error, AttributeError):
 		return {}
