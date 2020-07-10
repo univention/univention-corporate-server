@@ -233,6 +233,8 @@ class MagicBucket(object):
 		except Exception:
 			pass
 
+		state.session.signal_disconnect('success', self._response)
+
 
 class Server(signals.Provider):
 
