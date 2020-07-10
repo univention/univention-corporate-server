@@ -102,8 +102,7 @@ class MagicBucket(object):
 		# remove all sockets
 		for sock in self.__states.keys():
 			CORE.info('Shutting down connection %s' % sock)
-			self.__states.pop(sock).session.shutdown()
-			notifier.socket_remove(sock)
+			self._cleanup(sock)
 
 	def _receive(self, socket):
 		"""Signal callback: Handles incoming data. Processes SSL events
