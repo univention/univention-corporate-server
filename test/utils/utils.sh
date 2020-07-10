@@ -158,6 +158,7 @@ set_repository_to_testing () {
 	fi
 }
 
+# This HAS to be executed after basic_setup, in basic_setup the check is done for EC2 env
 check_repository_to_testing () {
 	local testing=${1:?missing testing switch}
 	if [ "$testing" = "testing" ]; then
