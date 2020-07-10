@@ -111,7 +111,7 @@ class ModuleProcess(Client):
 		self._inactivity_timer = None
 		self._inactivity_counter = 0
 
-	def __del__(self):
+	def stop(self):
 		CORE.process('ModuleProcess: dying')
 		if self.__process:
 			self.disconnect()
@@ -534,7 +534,7 @@ class ProcessorBase(Base):
 			mod.signal_disconnect('finished', notifier.Callback(self._mod_died))
 			proc = self.__processes.pop(mod.name, None)
 			if proc:
-				proc.__del__()
+				proc.stop()
 
 		try:
 			mod.connect()
@@ -639,7 +639,7 @@ class ProcessorBase(Base):
 			if self.__processes[module_name]._inactivity_timer is not None:
 				CORE.warn('Remove inactivity timer')
 				notifier.timer_remove(self.__processes[module_name]._inactivity_timer)
-			del self.__processes[module_name]
+			self.__processes.pop(module_name).stop()
 
 	def reset_inactivity_timer(self, module):
 		"""Resets the inactivity timer. This timer watches the
@@ -707,7 +707,7 @@ class ProcessorBase(Base):
 
 	def shutdown(self):
 		"""Instructs the module process to shutdown"""
-		CORE.info('The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len(self.__processes))
+		CORE.info('The session is shutting down. Sending EXIT request to %d modules.' % len(self.__processes))
 		for module_name, process in self.__processes.items():
 			CORE.info('Ask module %s to shutdown gracefully' % (module_name,))
 			req = Request('EXIT', arguments=[module_name, 'internal'])
@@ -715,8 +715,9 @@ class ProcessorBase(Base):
 
 	def __del__(self):
 		CORE.process('Processor: dying')
-		for process in self.__processes.keys():
-			self.__processes.pop(process).__del__()
+		super(ProcessorBase, self).__del__()
+		for process in list(self.__processes.keys()):
+			self.__processes.pop(process).stop()
 
 
 class Processor(ProcessorBase):
