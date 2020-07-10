@@ -17,8 +17,8 @@ release='4.4-5'
 old_release='4.3-5'
 kvm_template_version='4.4-4+e499'
 
-# AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 6 - ami-02f34c72ec4c3d912
-export CURRENT_AMI=ami-02f34c72ec4c3d912
+# AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 7 - ami-0bbba0e6b007e1980
+export CURRENT_AMI=ami-0bbba0e6b007e1980
 # AMI: Univention Corporate Server (UCS) 4.3 (official image) rev. 6 - ami-0dd235a67a0eb9bdc
 export OLD_AMI=ami-0dd235a67a0eb9bdc
 
