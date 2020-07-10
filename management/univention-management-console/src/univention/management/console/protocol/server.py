@@ -339,11 +339,6 @@ class Server(signals.Provider):
 		else:
 			notifier.socket_add(self.__realsocket, self._connection)
 
-	def __del__(self):
-		if self.__bucket:
-			del self.__bucket
-			self.__bucket = None
-
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
 		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
@@ -381,17 +376,25 @@ class Server(signals.Provider):
 	def exit(self):
 		'''Shuts down all open connections.'''
 		CORE.warn('Shutting down all open connections')
+
+		if self.__bucket:
+			self.__bucket.exit()
+
 		if self.__ssl and not self.__unix:
 			notifier.socket_remove(self.connection)
 			self.connection.close()
-		else:
+		elif self.__realsocket:
 			notifier.socket_remove(self.__realsocket)
 			self.__realsocket.close()
+			self.__realsocket = None
 		if self.__unix:
 			os.unlink(self.__unix)
+			self.__unix = None
 
-		if self.__magic:
-			self.__bucket.exit()
+		self.__bucket = None
+
+	def __del__(self):
+		self.exit()
 
 	@staticmethod
 	def reload():
