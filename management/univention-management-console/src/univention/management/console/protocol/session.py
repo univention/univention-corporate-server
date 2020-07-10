@@ -66,7 +66,7 @@ from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND
 from ..locales import I18N, I18N_Manager
 from ..base import Base
 from ..error import UMC_Error, Unauthorized, BadRequest, NotFound, Forbidden, ServiceUnavailable
-from ..ldap import get_machine_connection, reset_cache
+from ..ldap import get_machine_connection, reset_cache as reset_ldap_connection_cache
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, simple_response, allow_get_request
 
@@ -180,7 +180,7 @@ class ProcessorBase(Base):
 		try:
 			self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
 		except (ldap.LDAPError, udm_errors.ldapError):
-			reset_cache()
+			reset_ldap_connection_cache()
 			raise
 
 	def _reload_i18n(self):
@@ -192,7 +192,7 @@ class ProcessorBase(Base):
 			try:
 				ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
 			except (ldap.LDAPError, udm_errors.base):
-				reset_cache()
+				reset_ldap_connection_cache()
 				ldap_dn = None
 				CORE.error('Could not get uid for %r: %s' % (self._username, traceback.format_exc()))
 			if ldap_dn:
@@ -809,7 +809,7 @@ class Processor(ProcessorBase):
 			try:
 				domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
 			except (ldap.LDAPError, udm_errors.base) as exc:
-				reset_cache()
+				reset_ldap_connection_cache()
 				CORE.warn('Could not search for domaincontrollers: %s' % (exc))
 				domaincontrollers = []
 			result = sorted(['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')])
