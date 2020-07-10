@@ -985,6 +985,7 @@ class SessionHandler(ProcessorBase):
 			CORE.info('Renewing session')
 			if self.processor:
 				self.__locale = str(self.processor.locale)
+				self.processor.shutdown()
 			self.processor = None
 			self.finished(request.id, None)
 		else:
