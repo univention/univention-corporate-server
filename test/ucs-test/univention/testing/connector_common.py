@@ -22,7 +22,7 @@ SPECIAL_CHARSET_USERNAME = "".join(set(SPECIAL_CHARSET) - set(FORBIDDEN_SAMACCOU
 
 
 def random_string(length=10, alpha=False, numeric=False, charset=None, encoding='utf-8'):
-	return tstrings.random_string(length, alpha, numeric, charset, encoding)
+	return tstrings.random_string(length, alpha, numeric, charset, (encoding,))
 
 
 def normalize_dn(dn):
@@ -65,22 +65,22 @@ class NormalUser(TestUser):
 	def __init__(self, selection=None):
 		super(NormalUser, self).__init__(
 			user={
-				"username": tstrings.random_username(),
-				"firstname": tstrings.random_name(),
-				"lastname": tstrings.random_name(),
-				"description": random_string(alpha=True, numeric=True),
-				"street": random_string(alpha=True, numeric=True),
-				"city": random_string(alpha=True, numeric=True),
-				"postcode": random_string(numeric=True),
-				"profilepath": random_string(alpha=True, numeric=True),
-				"scriptpath": random_string(alpha=True, numeric=True),
-				"phone": random_string(numeric=True),
-				"homeTelephoneNumber": random_string(numeric=True),
-				"mobileTelephoneNumber": random_string(numeric=True),
-				"pagerTelephoneNumber": random_string(numeric=True),
-				"sambaUserWorkstations": random_string(numeric=True)
+				"username": tstrings.random_username().encode('UTF-8'),
+				"firstname": tstrings.random_name().encode('UTF-8'),
+				"lastname": tstrings.random_name().encode('UTF-8'),
+				"description": random_string(alpha=True, numeric=True).encode('UTF-8'),
+				"street": random_string(alpha=True, numeric=True).encode('UTF-8'),
+				"city": random_string(alpha=True, numeric=True).encode('UTF-8'),
+				"postcode": random_string(numeric=True).encode('UTF-8'),
+				"profilepath": random_string(alpha=True, numeric=True).encode('UTF-8'),
+				"scriptpath": random_string(alpha=True, numeric=True).encode('UTF-8'),
+				"phone": random_string(numeric=True).encode('UTF-8'),
+				"homeTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"mobileTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"pagerTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"sambaUserWorkstations": random_string(numeric=True).encode('UTF-8'),
 			},
-			rename={"username": tstrings.random_username()},
+			rename={"username": tstrings.random_username().encode('UTF-8')},
 			container=tstrings.random_name(),
 			selection=selection,
 		)
@@ -90,22 +90,22 @@ class Utf8User(TestUser):
 	def __init__(self, selection=None):
 		super(Utf8User, self).__init__(
 			user={
-				"username": random_string(charset=UTF8_CHARSET),
-				"firstname": random_string(charset=UTF8_CHARSET),
-				"lastname": random_string(charset=UTF8_CHARSET),
-				"description": random_string(charset=UTF8_CHARSET),
-				"street": random_string(charset=UTF8_CHARSET),
-				"city": random_string(charset=UTF8_CHARSET),
-				"postcode": random_string(numeric=True),
-				"profilepath": random_string(charset=UTF8_CHARSET),
-				"scriptpath": random_string(charset=UTF8_CHARSET),
-				"phone": random_string(numeric=True),
-				"homeTelephoneNumber": random_string(numeric=True),
-				"mobileTelephoneNumber": random_string(numeric=True),
-				"pagerTelephoneNumber": random_string(numeric=True),
-				"sambaUserWorkstations": random_string(numeric=True)
+				"username": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"firstname": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"lastname": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"description": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"street": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"city": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"postcode": random_string(numeric=True).encode('UTF-8'),
+				"profilepath": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"scriptpath": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"phone": random_string(numeric=True).encode('UTF-8'),
+				"homeTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"mobileTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"pagerTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"sambaUserWorkstations": random_string(numeric=True).encode('UTF-8'),
 			},
-			rename={"username": random_string(charset=UTF8_CHARSET)},
+			rename={"username": random_string(charset=UTF8_CHARSET).encode('UTF-8')},
 			container=random_string(charset=UTF8_CHARSET),
 			selection=selection,
 		)
@@ -115,22 +115,22 @@ class SpecialUser(TestUser):
 	def __init__(self, selection=None):
 		super(SpecialUser, self).__init__(
 			user={
-				"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
-				"firstname": tstrings.random_name_special_characters(),
-				"lastname": tstrings.random_name_special_characters(),
-				"description": random_string(charset=SPECIAL_CHARSET),
-				"street": random_string(charset=SPECIAL_CHARSET),
-				"city": random_string(charset=SPECIAL_CHARSET),
-				"postcode": random_string(numeric=True),
-				"profilepath": random_string(charset=SPECIAL_CHARSET),
-				"scriptpath": random_string(charset=SPECIAL_CHARSET),
-				"phone": random_string(numeric=True),
-				"homeTelephoneNumber": random_string(numeric=True),
-				"mobileTelephoneNumber": random_string(numeric=True),
-				"pagerTelephoneNumber": random_string(numeric=True),
-				"sambaUserWorkstations": random_string(numeric=True)
+				"username": random_string(charset=SPECIAL_CHARSET_USERNAME).encode('UTF-8'),
+				"firstname": tstrings.random_name_special_characters().encode('UTF-8'),
+				"lastname": tstrings.random_name_special_characters().encode('UTF-8'),
+				"description": random_string(charset=SPECIAL_CHARSET).encode('UTF-8'),
+				"street": random_string(charset=SPECIAL_CHARSET).encode('UTF-8'),
+				"city": random_string(charset=SPECIAL_CHARSET).encode('UTF-8'),
+				"postcode": random_string(numeric=True).encode('UTF-8'),
+				"profilepath": random_string(charset=SPECIAL_CHARSET).encode('UTF-8'),
+				"scriptpath": random_string(charset=SPECIAL_CHARSET).encode('UTF-8'),
+				"phone": random_string(numeric=True).encode('UTF-8'),
+				"homeTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"mobileTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"pagerTelephoneNumber": random_string(numeric=True).encode('UTF-8'),
+				"sambaUserWorkstations": random_string(numeric=True).encode('UTF-8'),
 			},
-			rename={"username": random_string(charset=SPECIAL_CHARSET_USERNAME)},
+			rename={"username": random_string(charset=SPECIAL_CHARSET_USERNAME).encode('UTF-8')},
 			container=random_string(charset=SPECIAL_CHARSET),
 			selection=selection,
 		)
@@ -152,10 +152,10 @@ class NormalGroup(TestGroup):
 	def __init__(self):
 		super(NormalGroup, self).__init__(
 			group={
-				"name": tstrings.random_groupname(),
-				"description": random_string(alpha=True, numeric=True)
+				"name": tstrings.random_groupname().encode('UTF-8'),
+				"description": random_string(alpha=True, numeric=True).encode('UTF-8'),
 			},
-			rename={"name": tstrings.random_groupname()},
+			rename={"name": tstrings.random_groupname().encode('UTF-8')},
 			container=tstrings.random_name(),
 		)
 
@@ -164,10 +164,10 @@ class Utf8Group(TestGroup):
 	def __init__(self):
 		super(Utf8Group, self).__init__(
 			group={
-				"name": random_string(charset=UTF8_CHARSET),
-				"description": random_string(charset=UTF8_CHARSET)
+				"name": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
+				"description": random_string(charset=UTF8_CHARSET).encode('UTF-8'),
 			},
-			rename={"name": tstrings.random_string(charset=UTF8_CHARSET)},
+			rename={"name": tstrings.random_string(charset=UTF8_CHARSET).encode('UTF-8')},
 			container=random_string(charset=UTF8_CHARSET),
 		)
 
@@ -176,10 +176,10 @@ class SpecialGroup(TestGroup):
 	def __init__(self):
 		super(SpecialGroup, self).__init__(
 			group={
-				"name": random_string(charset=SPECIAL_CHARSET_USERNAME),
-				"description": random_string(charset=SPECIAL_CHARSET)
+				"name": random_string(charset=SPECIAL_CHARSET_USERNAME).encode('UTF-8'),
+				"description": random_string(charset=SPECIAL_CHARSET).encode('UTF-8'),
 			},
-			rename={"name": tstrings.random_string(charset=SPECIAL_CHARSET_USERNAME)},
+			rename={"name": tstrings.random_string(charset=SPECIAL_CHARSET_USERNAME).encode('UTF-8')},
 			container=random_string(charset=SPECIAL_CHARSET),
 		)
 
@@ -206,7 +206,7 @@ def map_udm_user_to_con(user):
 		"mobileTelephoneNumber": "mobile",
 		"pagerTelephoneNumber": "pager",
 		"sambaUserWorkstations": "userWorkstations"}
-	return {mapping.get(key): value for (key, value) in user.iteritems() if key in mapping}
+	return {mapping.get(key): ([value] if not isinstance(value, (dict, list)) else value) for (key, value) in user.items() if key in mapping}
 
 
 def map_udm_group_to_con(group):
@@ -217,7 +217,7 @@ def map_udm_group_to_con(group):
 	OpenLDAP-attributes!.
 	"""
 	mapping = {"name": "sAMAccountName", "description": "description"}
-	return {mapping.get(key): value for (key, value) in group.iteritems() if key in mapping}
+	return {mapping.get(key): ([value] if not isinstance(value, (dict, list)) else value) for (key, value) in group.items() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync):
