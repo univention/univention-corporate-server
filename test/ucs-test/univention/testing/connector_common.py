@@ -25,6 +25,13 @@ def random_string(length=10, alpha=False, numeric=False, charset=None, encoding=
 	return tstrings.random_string(length, alpha, numeric, charset, encoding)
 
 
+def random_bytestring(length=10, alpha=False, numeric=False, charset=None):
+	string = random_string(length, alpha, numeric, charset)
+	if not isinstance(string, bytes):
+		string = string.encode('utf-8')
+	return string
+
+
 def normalize_dn(dn):
 	"""
 	Normalize a given dn. This removes some escaping of special chars in the
@@ -37,9 +44,9 @@ def normalize_dn(dn):
 
 
 def to_unicode(string):
-	if isinstance(string, unicode):
-		return string
-	return unicode(string, 'utf-8')
+	if isinstance(string, bytes):
+		string = string.decode('utf-8')
+	return string
 
 
 def restart_univention_cli_server():
@@ -50,7 +57,7 @@ def restart_univention_cli_server():
 class TestUser(object):
 	def __init__(self, user, rename={}, container=None, selection=None):
 		selection = selection or ("username", "firstname", "lastname")
-		self.basic = {k: v for (k, v) in user.iteritems() if k in selection}
+		self.basic = {k: v for (k, v) in user.items() if k in selection}
 		self.user = user
 		self.rename = dict(self.basic)
 		self.rename.update(rename)
@@ -65,22 +72,22 @@ class NormalUser(TestUser):
 	def __init__(self, selection=None):
 		super(NormalUser, self).__init__(
 			user={
-				"username": tstrings.random_username(),
-				"firstname": tstrings.random_name(),
-				"lastname": tstrings.random_name(),
-				"description": random_string(alpha=True, numeric=True),
-				"street": random_string(alpha=True, numeric=True),
-				"city": random_string(alpha=True, numeric=True),
-				"postcode": random_string(numeric=True),
-				"profilepath": random_string(alpha=True, numeric=True),
-				"scriptpath": random_string(alpha=True, numeric=True),
-				"phone": random_string(numeric=True),
-				"homeTelephoneNumber": random_string(numeric=True),
-				"mobileTelephoneNumber": random_string(numeric=True),
-				"pagerTelephoneNumber": random_string(numeric=True),
-				"sambaUserWorkstations": random_string(numeric=True)
+				"username": tstrings.random_username().encode('UTF-8'),
+				"firstname": tstrings.random_name().encode('UTF-8'),
+				"lastname": tstrings.random_name().encode('UTF-8'),
+				"description": random_bytestring(alpha=True, numeric=True),
+				"street": random_bytestring(alpha=True, numeric=True),
+				"city": random_bytestring(alpha=True, numeric=True),
+				"postcode": random_bytestring(numeric=True),
+				"profilepath": random_bytestring(alpha=True, numeric=True),
+				"scriptpath": random_bytestring(alpha=True, numeric=True),
+				"phone": random_bytestring(numeric=True),
+				"homeTelephoneNumber": random_bytestring(numeric=True),
+				"mobileTelephoneNumber": random_bytestring(numeric=True),
+				"pagerTelephoneNumber": random_bytestring(numeric=True),
+				"sambaUserWorkstations": random_bytestring(numeric=True),
 			},
-			rename={"username": tstrings.random_username()},
+			rename={"username": tstrings.random_username().encode('UTF-8')},
 			container=tstrings.random_name(),
 			selection=selection,
 		)
@@ -90,22 +97,22 @@ class Utf8User(TestUser):
 	def __init__(self, selection=None):
 		super(Utf8User, self).__init__(
 			user={
-				"username": random_string(charset=UTF8_CHARSET),
-				"firstname": random_string(charset=UTF8_CHARSET),
-				"lastname": random_string(charset=UTF8_CHARSET),
-				"description": random_string(charset=UTF8_CHARSET),
-				"street": random_string(charset=UTF8_CHARSET),
-				"city": random_string(charset=UTF8_CHARSET),
-				"postcode": random_string(numeric=True),
-				"profilepath": random_string(charset=UTF8_CHARSET),
-				"scriptpath": random_string(charset=UTF8_CHARSET),
-				"phone": random_string(numeric=True),
-				"homeTelephoneNumber": random_string(numeric=True),
-				"mobileTelephoneNumber": random_string(numeric=True),
-				"pagerTelephoneNumber": random_string(numeric=True),
-				"sambaUserWorkstations": random_string(numeric=True)
+				"username": random_bytestring(charset=UTF8_CHARSET),
+				"firstname": random_bytestring(charset=UTF8_CHARSET),
+				"lastname": random_bytestring(charset=UTF8_CHARSET),
+				"description": random_bytestring(charset=UTF8_CHARSET),
+				"street": random_bytestring(charset=UTF8_CHARSET),
+				"city": random_bytestring(charset=UTF8_CHARSET),
+				"postcode": random_bytestring(numeric=True),
+				"profilepath": random_bytestring(charset=UTF8_CHARSET),
+				"scriptpath": random_bytestring(charset=UTF8_CHARSET),
+				"phone": random_bytestring(numeric=True),
+				"homeTelephoneNumber": random_bytestring(numeric=True),
+				"mobileTelephoneNumber": random_bytestring(numeric=True),
+				"pagerTelephoneNumber": random_bytestring(numeric=True),
+				"sambaUserWorkstations": random_bytestring(numeric=True),
 			},
-			rename={"username": random_string(charset=UTF8_CHARSET)},
+			rename={"username": random_bytestring(charset=UTF8_CHARSET)},
 			container=random_string(charset=UTF8_CHARSET),
 			selection=selection,
 		)
@@ -115,22 +122,22 @@ class SpecialUser(TestUser):
 	def __init__(self, selection=None):
 		super(SpecialUser, self).__init__(
 			user={
-				"username": random_string(charset=SPECIAL_CHARSET_USERNAME),
-				"firstname": tstrings.random_name_special_characters(),
-				"lastname": tstrings.random_name_special_characters(),
-				"description": random_string(charset=SPECIAL_CHARSET),
-				"street": random_string(charset=SPECIAL_CHARSET),
-				"city": random_string(charset=SPECIAL_CHARSET),
-				"postcode": random_string(numeric=True),
-				"profilepath": random_string(charset=SPECIAL_CHARSET),
-				"scriptpath": random_string(charset=SPECIAL_CHARSET),
-				"phone": random_string(numeric=True),
-				"homeTelephoneNumber": random_string(numeric=True),
-				"mobileTelephoneNumber": random_string(numeric=True),
-				"pagerTelephoneNumber": random_string(numeric=True),
-				"sambaUserWorkstations": random_string(numeric=True)
+				"username": random_bytestring(charset=SPECIAL_CHARSET_USERNAME),
+				"firstname": tstrings.random_name_special_characters().encode('UTF-8'),
+				"lastname": tstrings.random_name_special_characters().encode('UTF-8'),
+				"description": random_bytestring(charset=SPECIAL_CHARSET),
+				"street": random_bytestring(charset=SPECIAL_CHARSET),
+				"city": random_bytestring(charset=SPECIAL_CHARSET),
+				"postcode": random_bytestring(numeric=True),
+				"profilepath": random_bytestring(charset=SPECIAL_CHARSET),
+				"scriptpath": random_bytestring(charset=SPECIAL_CHARSET),
+				"phone": random_bytestring(numeric=True),
+				"homeTelephoneNumber": random_bytestring(numeric=True),
+				"mobileTelephoneNumber": random_bytestring(numeric=True),
+				"pagerTelephoneNumber": random_bytestring(numeric=True),
+				"sambaUserWorkstations": random_bytestring(numeric=True),
 			},
-			rename={"username": random_string(charset=SPECIAL_CHARSET_USERNAME)},
+			rename={"username": random_bytestring(charset=SPECIAL_CHARSET_USERNAME)},
 			container=random_string(charset=SPECIAL_CHARSET),
 			selection=selection,
 		)
@@ -152,10 +159,10 @@ class NormalGroup(TestGroup):
 	def __init__(self):
 		super(NormalGroup, self).__init__(
 			group={
-				"name": tstrings.random_groupname(),
-				"description": random_string(alpha=True, numeric=True)
+				"name": tstrings.random_groupname().encode('UTF-8'),
+				"description": random_bytestring(alpha=True, numeric=True),
 			},
-			rename={"name": tstrings.random_groupname()},
+			rename={"name": tstrings.random_groupname().encode('UTF-8')},
 			container=tstrings.random_name(),
 		)
 
@@ -164,10 +171,10 @@ class Utf8Group(TestGroup):
 	def __init__(self):
 		super(Utf8Group, self).__init__(
 			group={
-				"name": random_string(charset=UTF8_CHARSET),
-				"description": random_string(charset=UTF8_CHARSET)
+				"name": random_bytestring(charset=UTF8_CHARSET),
+				"description": random_bytestring(charset=UTF8_CHARSET),
 			},
-			rename={"name": tstrings.random_string(charset=UTF8_CHARSET)},
+			rename={"name": random_bytestring(charset=UTF8_CHARSET)},
 			container=random_string(charset=UTF8_CHARSET),
 		)
 
@@ -176,10 +183,10 @@ class SpecialGroup(TestGroup):
 	def __init__(self):
 		super(SpecialGroup, self).__init__(
 			group={
-				"name": random_string(charset=SPECIAL_CHARSET_USERNAME),
-				"description": random_string(charset=SPECIAL_CHARSET)
+				"name": random_bytestring(charset=SPECIAL_CHARSET_USERNAME),
+				"description": random_bytestring(charset=SPECIAL_CHARSET),
 			},
-			rename={"name": tstrings.random_string(charset=SPECIAL_CHARSET_USERNAME)},
+			rename={"name": random_bytestring(charset=SPECIAL_CHARSET_USERNAME)},
 			container=random_string(charset=SPECIAL_CHARSET),
 		)
 
@@ -206,7 +213,8 @@ def map_udm_user_to_con(user):
 		"mobileTelephoneNumber": "mobile",
 		"pagerTelephoneNumber": "pager",
 		"sambaUserWorkstations": "userWorkstations"}
-	return {mapping.get(key): value for (key, value) in user.iteritems() if key in mapping}
+	# return {mapping[key]: value for (key, value) in user.items() if key in mapping}
+	return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in user.items() if key in mapping}
 
 
 def map_udm_group_to_con(group):
@@ -217,14 +225,15 @@ def map_udm_group_to_con(group):
 	OpenLDAP-attributes!.
 	"""
 	mapping = {"name": "sAMAccountName", "description": "description"}
-	return {mapping.get(key): value for (key, value) in group.iteritems() if key in mapping}
+	# return {mapping[key]: value for (key, value) in group.iteritems() if key in mapping}
+	return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in group.items() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync):
 	print("\nCreating UDM user {}\n".format(user.basic))
 	(udm_user_dn, username) = udm.create_user(**user.basic)
 	con_user_dn = ldap.dn.dn2str([
-		[("CN", username, ldap.AVA_STRING)],
+		[("CN", to_unicode(username), ldap.AVA_STRING)],
 		[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
 	wait_for_sync()
 	con.verify_object(con_user_dn, map_udm_user_to_con(user.basic))
@@ -245,7 +254,7 @@ def create_con_user(con, udm_user, wait_for_sync):
 	username = udm_user.basic.get("username")
 	con_user_dn = con.createuser(username, **basic_con_user)
 	udm_user_dn = ldap.dn.dn2str([
-		[("uid", username, ldap.AVA_STRING)],
+		[("uid", to_unicode(username), ldap.AVA_STRING)],
 		[("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
 	wait_for_sync()
 	verify_udm_object("users/user", udm_user_dn, udm_user.basic)
@@ -263,7 +272,7 @@ def create_udm_group(udm, con, group, wait_for_sync):
 	print("\nCreating UDM group {}\n".format(group))
 	(udm_group_dn, groupname) = udm.create_group(**group.group)
 	con_group_dn = ldap.dn.dn2str([
-		[("CN", groupname, ldap.AVA_STRING)],
+		[("CN", to_unicode(groupname), ldap.AVA_STRING)],
 		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(con.adldapbase))
 	wait_for_sync()
 	con.verify_object(con_group_dn, map_udm_group_to_con(group.group))
@@ -284,7 +293,7 @@ def create_con_group(con, udm_group, wait_for_sync):
 	groupname = udm_group.group.get("name")
 	con_group_dn = con.group_create(groupname, **con_group)
 	udm_group_dn = ldap.dn.dn2str([
-		[("cn", groupname, ldap.AVA_STRING)],
+		[("cn", to_unicode(groupname), ldap.AVA_STRING)],
 		[("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
 	wait_for_sync()
 	verify_udm_object("groups/group", udm_group_dn, udm_group.group)

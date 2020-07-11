@@ -4,7 +4,8 @@ from univention.config_registry import ConfigRegistry
 from ldap.controls import LDAPControl
 import ldap.modlist as modlist
 import univention.s4connector.s4 as s4
-import univention.uldap
+
+from six import text_type as unicode
 
 baseConfig = ConfigRegistry()
 baseConfig.load()
@@ -48,8 +49,8 @@ class LDAPConnection:
 
 		self.serverctrls_for_add_and_modify = []
 		if 'univention_samaccountname_ldap_check' in baseConfig.get('samba4/ldb/sam/module/prepend', '').split():
-			## The S4 connector must bypass this LDB module if it is activated via samba4/ldb/sam/module/prepend
-			## The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
+			# The S4 connector must bypass this LDB module if it is activated via samba4/ldb/sam/module/prepend
+			# The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
 			ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
 			self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
@@ -59,11 +60,8 @@ class LDAPConnection:
 			use_starttls = 0
 
 		if self.pw_file:
-			fp = open(self.pw_file, 'r')
-			login_pw = fp.readline()
-			if login_pw[-1] == '\n':
-				login_pw = login_pw[:-1]
-			fp.close()
+			with open(self.pw_file, 'r') as fp:
+				login_pw = fp.readline().rstrip('\n')
 
 		try:
 			tls_mode = 2
@@ -77,13 +75,15 @@ class LDAPConnection:
 			else:
 				ldapuri = "%s://%s:%d" % (self.protocol, self.adldapbase, int(self.port))
 
-			# lo=univention.uldap.access(host=self.host, port=int(self.port), base=self.adldapbase, binddn=self.login_dn , bindpw=self.pw_file, start_tls=tls_mode, ca_certfile=self.ca_file, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'], uri=ldapuri)
+			# lo = univention.uldap.access(host=self.host, port=int(self.port), base=self.adldapbase, binddn=self.login_dn , bindpw=self.pw_file, start_tls=tls_mode, ca_certfile=self.ca_file, decode_ignorelist=[
+			# 	'objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'
+			# ], uri=ldapuri)
 			self.lo = ldap.initialize(ldapuri)
 			if tls_mode > 0:
 				self.lo.start_tls_s()
 			self.lo.set_option(ldap.OPT_REFERRALS, 0)
 
-		except:
+		except Exception:
 			ex = 'LDAP Connection to "%s:%s" as "%s" with password "%s" failed (TLS: %s)\n' % (self.host, self.port, self.login_dn, login_pw, not no_starttls)
 			import traceback
 			raise Exception(ex + traceback.format_exc())
@@ -117,6 +117,7 @@ class LDAPConnection:
 		return {}
 
 	def create(self, dn, attrs):
+		attrs = dict((name, [attr] if not isinstance(attr, (list, tuple)) else attr) for name, attr in attrs.items())
 		ldif = modlist.addModlist(attrs)
 		self.lo.add_ext_s(s4.compatible_modstring(unicode(dn)), ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
@@ -144,9 +145,11 @@ class LDAPConnection:
 
 	def set_attributes(self, dn, **attributes):
 		old_attributes = self.get(dn, attr=attributes.keys())
+		attributes = dict((name, [attr] if not isinstance(attr, (list, tuple)) else attr) for name, attr in attributes.items())
 		ldif = modlist.modifyModlist(old_attributes, attributes)
 		comp_dn = s4.compatible_modstring(unicode(dn))
-		self.lo.modify_ext_s(comp_dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
+		if ldif:
+			self.lo.modify_ext_s(comp_dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
 	def set_attribute_with_provision_ctrl(self, dn, key, value):
 		LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'

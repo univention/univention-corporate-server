@@ -1,11 +1,11 @@
 import ldap
 import sys
-import copy
 import subprocess
 import contextlib
 import ldap_glue_s4
-import univention.s4connector.s4 as s4
 from time import sleep
+
+import univention.s4connector.s4 as s4
 import univention.testing.utils as utils
 import univention.testing.ucr as testing_ucr
 import univention.admin.uldap
@@ -19,6 +19,12 @@ from univention.config_registry import handler_set as ucr_set
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
+
+def to_bytes(string):
+	if not isinstance(string, bytes):
+		string = string.encode('utf-8')
+	return string
 
 
 class S4Connection(ldap_glue_s4.LDAPConnection):
@@ -38,16 +44,6 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
 		self.connect(no_starttls)
 
-	def _set_module_default_attr(self, attributes, defaults):
-		"""
-		Returns the given attributes, extended by every property given in defaults if not yet set.
-		"defaults" should be a tupel containing tupels like "('username', <default_value>)".
-		"""
-		attr = copy.deepcopy(attributes)
-		for prop, value in defaults:
-			attr.setdefault(prop, value)
-		return attr
-
 	def createuser(self, username, position=None, **attributes):
 		"""
 		Create a S4 user with attributes as given by the keyword-args
@@ -62,12 +58,15 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		new_position = position or 'cn=users,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
 
-		defaults = (('objectclass', ['top', 'user', 'person', 'organizationalPerson']),
-			('cn', cn), ('sn', sn), ('sAMAccountName', username),
-			('userPrincipalName', '%s@%s' % (username, self.addomain)),
-			('displayName', '%s %s' % (username, sn)))
-
-		new_attributes = self._set_module_default_attr(attributes, defaults)
+		defaults = (
+			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
+			('cn', to_bytes(cn)),
+			('sn', to_bytes(sn)),
+			('sAMAccountName', to_bytes(username)),
+			('userPrincipalName', b'%s@%s' % (to_bytes(username), to_bytes(self.addomain))),
+			('displayName', b'%s %s' % (to_bytes(username), to_bytes(sn))))
+		new_attributes = dict(defaults)
+		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
 		return new_dn
 
@@ -90,16 +89,16 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		new_position = position or 'cn=groups,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
 
-		defaults = (('objectclass', ['top', 'group']), ('sAMAccountName', groupname))
-
-		new_attributes = self._set_module_default_attr(attributes, defaults)
+		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', to_bytes(groupname)))
+		new_attributes = dict(defaults)
+		new_attributes.update(attributes)
 		self.create(new_dn, new_attributes)
 		return new_dn
 
 	def getprimarygroup(self, user_dn):
 		try:
 			res = self.lo.search_ext_s(user_dn, ldap.SCOPE_BASE, timeout=10)
-		except:
+		except Exception:
 			return None
 		primaryGroupID = res[0][1]['primaryGroupID'][0]
 		res = self.lo.search_ext_s(
@@ -129,10 +128,10 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			position = self.adldapbase
 
 		attrs = {}
-		attrs['objectClass'] = ['top', 'container']
-		attrs['cn'] = name
+		attrs['objectClass'] = [b'top', b'container']
+		attrs['cn'] = to_bytes(name)
 		if description:
-			attrs['description'] = description
+			attrs['description'] = to_bytes(description)
 
 		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
 		self.create(container_dn, attrs)
@@ -144,10 +143,10 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			position = self.adldapbase
 
 		attrs = {}
-		attrs['objectClass'] = ['top', 'organizationalUnit']
-		attrs['ou'] = name
+		attrs['objectClass'] = [b'top', b'organizationalUnit']
+		attrs['ou'] = to_bytes(name)
 		if description:
-			attrs['description'] = description
+			attrs['description'] = to_bytes(description)
 
 		self.create('ou=%s,%s' % (ldap.dn.escape_dn_chars(name), position), attrs)
 
@@ -166,8 +165,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			s4_object = self.get(dn)
 			for (key, value) in expected_attributes.iteritems():
 				s4_value = set(tcommon.to_unicode(x).lower() for x in s4_object.get(key, []))
-				expected = set((tcommon.to_unicode(value).lower(),)) if isinstance(value, basestring) \
-					else set(tcommon.to_unicode(v).lower() for v in value)
+				expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
 				if not expected.issubset(s4_value):
 					try:
 						s4_value = set(tcommon.normalize_dn(dn) for dn in s4_value)
@@ -184,7 +182,7 @@ def check_object(object_dn, sid=None, old_object_dn=None):
 	object_found = S4.exists(object_dn_modified)
 	if not sid:
 		if object_found:
-			print ("Object synced to Samba")
+			print("Object synced to Samba")
 		else:
 			sys.exit("Object not synced")
 	elif sid:
@@ -192,7 +190,7 @@ def check_object(object_dn, sid=None, old_object_dn=None):
 		old_object_dn_modified = _replace_uid_with_cn(old_object_dn)
 		old_object_gone = not S4.exists(old_object_dn_modified)
 		if old_object_gone and object_found and object_dn_modified_sid == sid:
-			print ("Object synced to Samba")
+			print("Object synced to Samba")
 		else:
 			sys.exit("Object not synced")
 
@@ -220,7 +218,7 @@ def correct_cleanup(group_dn, groupname2, udm_test_instance, return_new_dn=False
 
 
 def verify_users(group_dn, users):
-	print (" Checking Ldap Objects")
+	print(" Checking Ldap Objects")
 	utils.verify_ldap_object(group_dn, {
 		'uniqueMember': [user for user in users],
 		'memberUid': [ldap.dn.str2dn(user)[0][0][1] for user in users]
@@ -240,9 +238,9 @@ def connector_running_on_this_host():
 
 def exit_if_connector_not_running():
 	if not connector_running_on_this_host():
-		print
-		print ("Univention S4 Connector not configured")
-		print
+		print('')
+		print("Univention S4 Connector not configured")
+		print('')
 		sys.exit(77)
 
 
@@ -251,7 +249,7 @@ def wait_for_sync(min_wait_time=0):
 	synctime = ((synctime + 3) * 2)
 	if min_wait_time > synctime:
 		synctime = min_wait_time
-	print ("Waiting {0} seconds for sync...".format(synctime))
+	print("Waiting {0} seconds for sync...".format(synctime))
 	sleep(synctime)
 
 
