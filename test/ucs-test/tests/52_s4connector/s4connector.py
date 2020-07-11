@@ -62,10 +62,11 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		new_position = position or 'cn=users,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
 
-		defaults = (('objectclass', ['top', 'user', 'person', 'organizationalPerson']),
-			('cn', cn), ('sn', sn), ('sAMAccountName', username),
-			('userPrincipalName', '%s@%s' % (username, self.addomain)),
-			('displayName', '%s %s' % (username, sn)))
+		defaults = (
+			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
+			('cn', cn.encode('UTF-8')), ('sn', sn.encode('UTF-8')), ('sAMAccountName', username.encode('UTF-8')),
+			('userPrincipalName', b'%s@%s' % (username.encode('UTF-8'), self.addomain.encode('UTF-8'))),
+			('displayName', b'%s %s' % (username.encode('UTF-8'), sn.encode('UTF-8'))))
 
 		new_attributes = self._set_module_default_attr(attributes, defaults)
 		self.create(new_dn, new_attributes)
