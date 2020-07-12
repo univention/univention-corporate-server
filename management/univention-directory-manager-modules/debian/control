@@ -10,6 +10,7 @@ Build-Depends:
  python2.7-dev,
  python3-all,
  univention-config-dev,
+ univention-l10n-tools,
 
 Package: python-univention-directory-manager
 Architecture: all

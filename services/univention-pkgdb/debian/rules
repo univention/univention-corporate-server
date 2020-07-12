@@ -32,20 +32,15 @@
 
 version := $(shell dpkg-parsechangelog -SVersion)
 
-PYVERS := $(shell pyversions -vr)
-
-D=${CURDIR}/debian/univention-pkgdb
-
-%.mo:	%.po
-	msgfmt -o $@ $<
-
 override_dh_auto_build:
 	dh-umc-module-build
+	univention-l10n-build de
 	dh_auto_build
 
 override_dh_auto_install:
 	dh-umc-module-install
 	dh_auto_install
+	univention-l10n-install de
 	univention-install-config-registry
 	univention-install-config-registry-info
 

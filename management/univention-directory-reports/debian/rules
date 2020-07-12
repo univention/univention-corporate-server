@@ -30,27 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-PO_FILES := $(shell find modules -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
-
-%.mo:	%.po
-	msgfmt --check -o $@ $<
-
-override_dh_auto_build: $(MO_FILES)
+override_dh_auto_build:
 	dh_auto_build
+	univention-l10n-build de
 
 override_dh_auto_install:
 	dh_auto_install
+	univention-l10n-install de
 	univention-install-config-registry
-
-	# BUG: Translation is only installed for Python 2, but not for Python 3. Would be the same location -> packages would confllict. Move it to -commmon (or univention-directory-reports)?
-	@for i in $(MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/python-univention-directory-reports/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
 
 %:
 	dh $@ --with 'python2,python3'

@@ -37,9 +37,6 @@ export DH_VERBOSE=1
 
 export PYBUILD_NAME=univention-appcenter
 
-%.mo:	%.po
-	msgfmt --check -o $@ $<
-
 override_dh_auto_clean:
 	dh_auto_clean --buildsystem=pybuild
 	rm -rf build/
