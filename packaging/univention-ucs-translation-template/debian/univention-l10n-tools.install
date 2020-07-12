@@ -1,1 +1,3 @@
 ucr-l10n	usr/share/univention-l10n/tools/
+univention-l10n-install usr/bin
+univention-l10n-build usr/bin

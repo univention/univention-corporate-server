@@ -1,4 +1,4 @@
-Source: univention-ucs-translation-template
+Source: univention-l10n
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -38,7 +38,10 @@ Description: UCS Management Console translation files
 
 Package: univention-l10n-tools
 Architecture: all
+Replaces: univention-ucs-translation-template (<< 7.0.0-4)
+Breaks: univention-ucs-translation-template (<< 7.0.0-4)
 Depends:
+ univention-ucs-translation-template,
  ${misc:Depends},
 Description: Helper tools for localization of UCS
  This package contains tools to register a new localization of UCS.
