@@ -130,10 +130,10 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			position = self.adldapbase
 
 		attrs = {}
-		attrs['objectClass'] = ['top', 'container']
-		attrs['cn'] = name
+		attrs['objectClass'] = [b'top', b'container']
+		attrs['cn'] = name.encode('UTF-8')
 		if description:
-			attrs['description'] = description
+			attrs['description'] = description.encode('UTF-8')
 
 		container_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), position)
 		self.create(container_dn, attrs)
@@ -145,8 +145,8 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			position = self.adldapbase
 
 		attrs = {}
-		attrs['objectClass'] = ['top', 'organizationalUnit']
-		attrs['ou'] = name
+		attrs['objectClass'] = [b'top', b'organizationalUnit']
+		attrs['ou'] = name.encode('UTF-8')
 		if description:
 			attrs['description'] = description
 
