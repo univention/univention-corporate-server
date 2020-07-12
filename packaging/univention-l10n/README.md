@@ -11,11 +11,11 @@ Package translation
 
 ### New packages
 
-1. Depends on package `univention-ucs-translation-template` for build in `debian/control`:
+1. Depends on package `univention-l10n-tools` for build in `debian/control`:
 
 		Source: ...
 		Build-Depends:
-		 univention-ucs-translation-template,
+		 univention-l10n-tools,
 
 2. Invoke command in `debian/rules`:
 
