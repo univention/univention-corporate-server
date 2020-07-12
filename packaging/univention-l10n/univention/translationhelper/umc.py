@@ -125,7 +125,7 @@ class UMC_Module(dict):
 
 	@property
 	def python_versions(self):
-		# type: () -> list[float]
+		# type: () -> List[float]
 		versions = [2.7]
 		if '${python3:Provides}' in self['provides']:
 			versions.append(3)
@@ -264,15 +264,15 @@ def read_modules(package, core=False):
 		return modules
 
 	provides = []
-	with io.open(file_control, 'r', encoding='utf-8') as fd:
+	with io.open(file_control, 'r', encoding='utf-8') as fd_control:
 		with warnings.catch_warnings():  # debian/deb822.py:982: UserWarning: cannot parse package relationship "${python3:Depends}", returning it raw
-			for pkg in Packages.iter_paragraphs(fd):
+			for pkg in Packages.iter_paragraphs(fd_control):
 				if pkg.get('Package') == package:
 					provides = [p[0]['name'] for p in pkg.relations['provides']]
 					break
 
-	with open(file_umc_module, 'rb') as fd:
-		for item in Deb822.iter_paragraphs(fd):
+	with open(file_umc_module, 'rb') as fd_umc:
+		for item in Deb822.iter_paragraphs(fd_umc):
 			item = dict((k, [v]) for k, v in item.items())  # simulate dh_ucs.parseRfc822 behaviour
 			# required fields
 			if not core:
