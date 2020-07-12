@@ -31,11 +31,11 @@
 		<section id="misc:translation:preparation">
 			<title>Install needed tools</title>
 			<para>
-				The package <package>univention-ucs-translation-template</package> contains all tools required to setup and update a translation package.
+				The package <package>univention-l10n-dev</package> contains all tools required to setup and update a translation package.
 				It requires some additional Debian tools to build the package.
 				Run the following command on your UCS to install all needed packages.
 				<programlisting language="sh">
-sudo univention-install univention-ucs-translation-template dpkg-dev git
+sudo univention-install univention-l10n-dev dpkg-dev git
 				</programlisting>
 			</para>
 		</section>

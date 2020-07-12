@@ -1,4 +1,4 @@
-Source: univention-ucs-translation-template
+Source: univention-l10n
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -10,7 +10,7 @@ Build-Depends:
  univention-config-dev,
 Standards-Version: 3.8.2
 
-Package: univention-ucs-translation-template
+Package: univention-l10n-dev
 Architecture: all
 Depends:
  python-debian,
@@ -28,20 +28,17 @@ Depends:
  ${python:Depends},
 Recommends:
  univention-management-console-dev,
-Description: UCS Management Console translation files
+Conflicts:
+ univention-l10n-tools (<< 7.0.0-4),
+ univention-ucs-translation-template (<< 7.0.0-4),
+Replaces:
+ univention-l10n-tools (<< 7.0.0-4),
+ univention-ucs-translation-template (<< 7.0.0-4),
+Breaks:
+ univention-l10n-tools (<< 7.0.0-4),
+ univention-ucs-translation-template (<< 7.0.0-4),
+Description: Development tools for localization of UCS
  This package contains tools to build localization data.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: univention-l10n-tools
-Architecture: all
-Depends:
- ${misc:Depends},
-Description: Helper tools for localization of UCS
- This package contains tools to register a new localization of UCS.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
