@@ -10,7 +10,7 @@ Build-Depends:
  python-all,
  univention-config-dev,
  univention-management-console-dev,
- univention-ucs-translation-template,
+ univention-l10n-tools,
 
 Package: python-univention-app-appliance
 Architecture: all
