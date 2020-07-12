@@ -12,7 +12,7 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
- univention-ucs-translation-template,
+ univention-l10n-tools,
 Standards-Version: 3.7.2
 
 Package: univention-self-service
