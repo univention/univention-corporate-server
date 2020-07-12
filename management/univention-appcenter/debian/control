@@ -12,7 +12,7 @@ Build-Depends:
  univention-config-dev,
  univention-debhelper,
  univention-management-console-dev (>= 11.0.4-37),
- univention-ucs-translation-template,
+ univention-l10n-dev,
 Standards-Version: 3.8.2
 
 Package: univention-management-console-module-appcenter

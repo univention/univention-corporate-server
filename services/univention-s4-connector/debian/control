@@ -9,7 +9,7 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev,
- univention-ucs-translation-template,
+ univention-l10n-dev,
 
 Package: python-univention-connector-s4
 Architecture: all

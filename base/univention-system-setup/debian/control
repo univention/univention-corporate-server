@@ -21,7 +21,7 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
- univention-ucs-translation-template,
+ univention-l10n-dev,
  unzip,
 
 Package: univention-system-setup

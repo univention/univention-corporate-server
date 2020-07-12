@@ -11,7 +11,7 @@ Build-Depends:
  python3-all,
  pwgen,
  univention-config-dev,
- univention-ucs-translation-template,
+ univention-l10n-dev,
  univention-unittests,
  python-pil,
  python3-pil,

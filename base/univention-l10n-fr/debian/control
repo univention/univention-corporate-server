@@ -11,7 +11,7 @@ Standards-Version: 3.8.2
 Package: univention-l10n-fr
 Architecture: all
 Depends:
- univention-l10n-tools,
+ univention-l10n-dev,
  univention-management-console,
  ${misc:Depends},
 Description: UCS Management Console translation files

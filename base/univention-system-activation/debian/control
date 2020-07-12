@@ -12,7 +12,7 @@ Build-Depends:
  univention-config-dev,
  univention-dojo-dev,
  univention-management-console-dev (>= 11.0.4-37),
- univention-ucs-translation-template,
+ univention-l10n-dev,
  unzip,
 Standards-Version: 3.8.2
 

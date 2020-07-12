@@ -17,7 +17,7 @@ Build-Depends:
  univention-config,
  univention-management-console-dev,
  python-univention-directory-manager,
- univention-ucs-translation-template,
+ univention-l10n-dev,
 Standards-Version: 3.6.1
 
 Package: ucs-test
