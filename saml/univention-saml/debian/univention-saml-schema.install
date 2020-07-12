@@ -1,7 +1,6 @@
 schema/univention-saml.schema usr/share/univention-ldap/schema
 modules/univention/admin usr/lib/python2.7/dist-packages/univention/
 modules/univention/admin usr/lib/python3/dist-packages/univention/
-univention-admin-handlers-saml-serviceprovider.mo usr/share/locale/de/LC_MESSAGES
 umc/icons/50x50/udm-saml-serviceprovider.png usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/50x50/
 umc/icons/16x16/udm-saml-serviceprovider.png usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/
 listener/univention-saml-servers.py usr/lib/univention-directory-listener/system/

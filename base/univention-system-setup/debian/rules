@@ -34,7 +34,6 @@ override_dh_auto_build:
 	dh-umc-module-build
 	univention-l10n-build de
 	dh_auto_build
-	msgfmt -o usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 
 override_dh_auto_install:
 	dh-umc-module-install
