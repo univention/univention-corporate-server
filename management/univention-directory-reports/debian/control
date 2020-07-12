@@ -9,9 +9,12 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev,
+ univention-l10n-dev,
 
 Package: univention-directory-reports
 Architecture: all
+Breaks: python-univention-directory-reports (<< 12.0.1-2)
+Replaces: python-univention-directory-reports (<< 12.0.1-2)
 Depends:
  python-univention-directory-reports,
  python-univention-lib (>= 1.0.25-1),

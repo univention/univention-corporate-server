@@ -30,16 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-PO_FILES := $(shell find modules -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
-
-%.mo:   %.po
-	msgfmt --check -o $@ $<
-
-override_dh_clean:
-	dh_clean
-
-override_dh_auto_build: $(MO_FILES)
+override_dh_auto_build:
 	dh-umc-module-build
 	dh_auto_build
 
@@ -47,17 +38,10 @@ override_dh_auto_install:
 	dh-umc-module-install
 	dh_auto_install
 	univention-install-config-registry
-	@for i in $(MO_FILES); do\
-		lang=`basename $$i .mo`;\
-		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/univention-printserver/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
-		install -d "`dirname $$o`";\
-		install -m 644 $$i $$o;\
-	done
 
 override_dh_fixperms:
-	chmod 755 debian/univention-printserver/etc/univention/templates/scripts/etc/cups/cupsd.conf
 	dh_fixperms
+	chmod 755 debian/univention-printserver/etc/univention/templates/scripts/etc/cups/cupsd.conf
 
 %:
 	dh $@ --with 'python2,python3'

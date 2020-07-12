@@ -128,6 +128,7 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 		'--join-existing',
 		'--omit-header',
 		'--language', language,
+		'--keyword=N_:1',
 		'-o', output_file,
 		*input_files,
 		cwd=cwd)
