@@ -206,7 +206,7 @@ def map_udm_user_to_con(user):
 		"mobileTelephoneNumber": "mobile",
 		"pagerTelephoneNumber": "pager",
 		"sambaUserWorkstations": "userWorkstations"}
-	return {mapping.get(key): value for (key, value) in user.iteritems() if key in mapping}
+	return {mapping.get(key): ([value] if not isinstance(value, (dict, list)) else value) for (key, value) in user.items() if key in mapping}
 
 
 def map_udm_group_to_con(group):
@@ -217,7 +217,7 @@ def map_udm_group_to_con(group):
 	OpenLDAP-attributes!.
 	"""
 	mapping = {"name": "sAMAccountName", "description": "description"}
-	return {mapping.get(key): value for (key, value) in group.iteritems() if key in mapping}
+	return {mapping.get(key): ([value] if not isinstance(value, (dict, list)) else value) for (key, value) in group.items() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync):

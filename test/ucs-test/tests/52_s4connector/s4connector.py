@@ -1,6 +1,5 @@
 import ldap
 import sys
-import copy
 import subprocess
 import contextlib
 import ldap_glue_s4
@@ -38,16 +37,6 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
 		self.connect(no_starttls)
 
-	def _set_module_default_attr(self, attributes, defaults):
-		"""
-		Returns the given attributes, extended by every property given in defaults if not yet set.
-		"defaults" should be a tupel containing tupels like "('username', <default_value>)".
-		"""
-		attr = copy.deepcopy(attributes)
-		for prop, value in defaults:
-			attr.setdefault(prop, value)
-		return attr
-
 	def createuser(self, username, position=None, **attributes):
 		"""
 		Create a S4 user with attributes as given by the keyword-args
@@ -56,19 +45,22 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 
 		Returns the dn of the created user.
 		"""
-		cn = attributes.get('cn', username)
-		sn = attributes.get('sn', 'SomeSurName')
+		cn = attributes.get('cn', [username])[0]
+		sn = attributes.get('sn', ['SomeSurName'])[0]
 
 		new_position = position or 'cn=users,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn), new_position)
 
 		defaults = (
 			('objectclass', [b'top', b'user', b'person', b'organizationalPerson']),
-			('cn', cn.encode('UTF-8')), ('sn', sn.encode('UTF-8')), ('sAMAccountName', username.encode('UTF-8')),
+			('cn', cn.encode('UTF-8')),
+			('sn', sn.encode('UTF-8')),
+			('sAMAccountName', username.encode('UTF-8')),
 			('userPrincipalName', b'%s@%s' % (username.encode('UTF-8'), self.addomain.encode('UTF-8'))),
 			('displayName', b'%s %s' % (username.encode('UTF-8'), sn.encode('UTF-8'))))
-
-		new_attributes = self._set_module_default_attr(attributes, defaults)
+		new_attributes = dict(defaults)
+		new_attributes.update(attributes)
+		new_attributes = dict((name, [attr] if not isinstance(attr, (list, tuple)) else attr) for name, attr in new_attributes.items())
 		self.create(new_dn, new_attributes)
 		return new_dn
 
@@ -91,9 +83,10 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		new_position = position or 'cn=groups,%s' % self.adldapbase
 		new_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(groupname), new_position)
 
-		defaults = (('objectclass', ['top', 'group']), ('sAMAccountName', groupname))
-
-		new_attributes = self._set_module_default_attr(attributes, defaults)
+		defaults = (('objectclass', [b'top', b'group']), ('sAMAccountName', [groupname.encode('UTF-8')]))
+		new_attributes = dict(defaults)
+		new_attributes.update(attributes)
+		new_attributes = dict((name, [attr] if not isinstance(attr, (list, tuple)) else attr) for name, attr in new_attributes.items())
 		self.create(new_dn, new_attributes)
 		return new_dn
 
