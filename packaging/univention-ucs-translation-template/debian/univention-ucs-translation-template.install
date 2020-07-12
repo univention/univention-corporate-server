@@ -5,5 +5,3 @@ univention-ucs-translation-merge usr/bin
 univention-ucs-translation-build-package usr/bin
 univention-ucs-translation-fakemessage usr/bin
 ucr-l10n-generate-po usr/bin
-univention-l10n-install usr/bin
-univention-l10n-build usr/bin
