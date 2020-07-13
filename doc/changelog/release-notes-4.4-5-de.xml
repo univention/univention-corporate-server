@@ -84,6 +84,7 @@
 		</para>
 
 		<section id="relnotes:signaturevalidation">
+			<title>Update auf UCS 4.4-5 schlägt fehl mit <wordasword>Verification error: Invalid signature: gpgv: keyblock resource ‘/etc/apt/trusted.gpg’: Datei oder Verzeichnis nicht gefunden</wordasword></title>
 			<note>
 				<para>
 					Wenn das Update auf UCS 4.4-5 abbricht, sollte die Datei <filename>/var/log/univention/updater.log</filename> auf folgenden Fehler untersucht werden:
