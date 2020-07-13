@@ -356,13 +356,13 @@ def handler_search(args, opts=dict()):
 	search_keys |= search_all
 
 	if not args:
-		regex = [re.compile('')]
-	else:
 		try:
-			regex = [re.compile(_) for _ in args]
+			search = re.compile('|'.join(('(?:%s)' % (_,) for _ in args))).search
 		except re.error as ex:
 			print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
 			sys.exit(1)
+	else:
+		search = lambda x: True  # type: ignore # noqa: E731
 
 	info = _get_config_registry_info()
 
@@ -394,14 +394,12 @@ def handler_search(args, opts=dict()):
 			all_vars[key] = (value, None, scope)
 
 	for key, (value2, vinfo, scope2) in all_vars.items():
-		for reg in regex:
-			if any((
-				search_keys and reg.search(key),
-				search_values and value2 and reg.search(value2),
-				search_all and vinfo and reg.search(vinfo.get('description', ''))
-			)):
-				yield variable_info_string(key, value2, vinfo, details=details)
-				break
+		if any((
+			search_keys and search(key),
+			search_values and value2 and search(value2),
+			search_all and vinfo and search(vinfo.get('description', ''))
+		)):
+			yield variable_info_string(key, value2, vinfo, details=details)
 
 	if _SHOW_EMPTY & details and not OPT_FILTERS['shell'][2]:
 		patterns = {}  # type: Dict
