@@ -1,4 +1,4 @@
-ucs-test (10.0.0-42) unstable; urgency=medium
+ucs-test (10.0.0-43) unstable; urgency=medium
 
   * Bug #50631: Support UCS 5.0 in docker tests
 
