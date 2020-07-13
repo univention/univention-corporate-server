@@ -707,17 +707,18 @@ class ProcessorBase(Base):
 
 	def shutdown(self):
 		"""Instructs the module process to shutdown"""
-		CORE.info('The session is shutting down. Sending EXIT request to %d modules.' % len(self.__processes))
-		for module_name, process in self.__processes.items():
+		if self.__processes:
+			CORE.info('The session is shutting down. Sending EXIT request to %d modules.' % len(self.__processes))
+
+		for module_name in list(self.__processes.keys()):
 			CORE.info('Ask module %s to shutdown gracefully' % (module_name,))
 			req = Request('EXIT', arguments=[module_name, 'internal'])
+			process = self.__processes.pop(module_name)
 			process.request(req)
+			notifier.timer_add(4000, process.stop)
 
-	def __del__(self):
-		CORE.process('Processor: dying')
-		super(ProcessorBase, self).__del__()
-		for process in list(self.__processes.keys()):
-			self.__processes.pop(process).stop()
+		if self._user_connections:
+			reset_ldap_connection_cache(*self._user_connections)
 
 
 class Processor(ProcessorBase):
@@ -1003,9 +1004,4 @@ class SessionHandler(ProcessorBase):
 		self.shutdown()
 		if self.processor is not None:
 			self.processor.shutdown()
-			self.processor.__del__()
 		self.processor = None
-
-	def __del__(self):
-		super(SessionHandler, self).__del__()
-		self.close_session()
