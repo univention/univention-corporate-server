@@ -170,6 +170,7 @@ class ProcessorBase(Base):
 		self.__processes = {}
 		self.__killtimer = {}
 		self.__command_list = None
+		self.acls = None
 		self.i18n = I18N_Manager()
 		self.i18n['umc-core'] = I18N()
 
@@ -187,14 +188,16 @@ class ProcessorBase(Base):
 		self.update_module_passwords()
 
 	def _reload_acls_and_permitted_commands(self):
-		self._reload_acls()
+		if self.acls is None:
+			self.acls = self.get_acls()
+		self.acls.reload()
 		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
 
-	def _reload_acls(self):
+	def get_acls(self):
 		try:
-			self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
+			return LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
 		except (ldap.LDAPError, udm_errors.ldapError):
-			reset_ldap_connection_cache()
+			reset_ldap_connection_cache(self.lo)
 			raise
 
 	def _reload_i18n(self):
@@ -947,9 +950,9 @@ class SessionHandler(ProcessorBase):
 		if self.processor:
 			return self.processor._ProcessorBase__processes
 
-	def _reload_acls(self):
+	def get_acls(self):
 		"""All unauthenticated requests are passed here. We need to set empty ACL's"""
-		self.acls = ACLs()
+		return ACLs()
 
 	def error_handling(self, etype, exc, etraceback):
 		super(SessionHandler, self).error_handling(etype, exc, etraceback)

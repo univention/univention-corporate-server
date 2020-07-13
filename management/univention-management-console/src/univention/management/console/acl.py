@@ -138,11 +138,12 @@ class ACLs(object):
 
 	def __init__(self, ldap_base=None, acls=None):
 		self.__ldap_base = ldap_base
-		# the main acl dict
-		if acls is None:
-			self.acls = []
-		else:
+		self.reload()
+		if acls:
 			self.acls = [Rule(x) for x in acls]
+
+	def reload(self):
+		self.acls = []
 
 	def _expand_hostlist(self, hostlist):
 		hosts = []
@@ -359,9 +360,12 @@ class LDAP_ACLs(ACLs):
 	FROM_GROUP = False
 
 	def __init__(self, lo, username, ldap_base):
-		ACLs.__init__(self, ldap_base)
 		self.lo = lo
 		self.username = username
+		ACLs.__init__(self, ldap_base)
+
+	def reload(self):
+		super(LDAP_ACLs, self).reload()
 
 		if self.lo:
 			self._read_from_ldap()
