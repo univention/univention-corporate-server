@@ -112,16 +112,16 @@ class ModuleProcess(Client):
 		self._inactivity_counter = 0
 
 	def stop(self):
-		CORE.process('ModuleProcess: dying')
+		CORE.process('ModuleProcess: stopping %r' % (self.__pid,))
 		if self.__process:
 			self.disconnect()
 			self.__process.signal_disconnect('killed', self._died)
 			self.__process.stop()
 			self.__process = None
-			CORE.process('ModuleProcess: child stopped')
+			CORE.info('ModuleProcess: child stopped')
 
 	def _died(self, pid, status):
-		CORE.process('ModuleProcess: child died')
+		CORE.process('ModuleProcess: child %d exited with %d' % (pid, status))
 		self.signal_emit('finished', pid, status)
 
 	def _response(self, msg):
@@ -378,13 +378,14 @@ class ProcessorBase(Base):
 		self.update_language([locale])
 
 	def update_module_passwords(self):
-		CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), self.auth_type))
+		if self.__processes:
+			CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), self.auth_type))
 		for module_name, proc in self.__processes.items():
 			CORE.info('Update the users password in the running %r module instance.' % (module_name,))
 			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
 			try:
 				proc.request(req)
-			except:
+			except Exception:
 				CORE.error(traceback.format_exc())
 
 	@allow_get_request
