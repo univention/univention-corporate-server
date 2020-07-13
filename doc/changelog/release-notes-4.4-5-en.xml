@@ -90,9 +90,12 @@
 					<programlisting>
 **** Downloading scripts at Thu Jun 25 11:34:04 2020
 Error: Update aborted due to verification error:
-Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': File or directory not found
+Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': \
+File or directory not found
 					</programlisting>
 					If the error appears in the logfile, all available errata updates should be installed, before starting another release update to UCS 4.4-5 (<u:bug>51576</u:bug>).
+				</para>
+				<para>
 					<ulink url="http://help.univention.com/t/15594">A support article with more information is available</ulink>.
 				</para>
 			</note>
