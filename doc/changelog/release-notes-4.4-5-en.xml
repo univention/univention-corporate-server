@@ -82,6 +82,21 @@
 			Depending on the system performance, network connection and the installed software the update will take between 20 minutes and several hours.
 		</para>
 
+		<section id="relnotes:signaturevalidation">
+			<note>
+				<para>
+					If the update to UCS 4.4-5 aborts, the file <filename>/var/log/univention/updater.log</filename> should be checked for the following error.
+					<programlisting>
+**** Downloading scripts at Thu Jun 25 11:34:04 2020
+Error: Update aborted due to verification error:
+Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': File or directory not found
+					</programlisting>
+					If the error appears in the logfile, all available errata updates should be installed, before starting another release update to UCS 4.4-5 (<u:bug>51576</u:bug>).
+					<ulink url="http://help.univention.com/t/15594">A support article with more information is available</ulink>.
+				</para>
+			</note>
+		</section>
+
 		<section id="relnotes:order">
 			<title>Recommended update order for environments with more than one UCS server</title>
 			<para>
