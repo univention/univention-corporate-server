@@ -721,6 +721,10 @@ class ProcessorBase(Base):
 		if self._user_connections:
 			reset_ldap_connection_cache(*self._user_connections)
 
+		if isinstance(self.acls, LDAP_ACLs):
+			reset_ldap_connection_cache(self.acls.lo)
+			self.acls = None
+
 
 class Processor(ProcessorBase):
 
