@@ -87,7 +87,7 @@ class MagicBucket(object):
 		state.time_remaining -= 1
 
 		if state.time_remaining <= 0 and not state.requests and not state.session.has_active_module_processes():
-			CORE.process('Connection timed out.')
+			CORE.process('Session timed out.')
 			self._cleanup(state.socket)
 		else:
 			# count down the timer second-wise (in order to avoid problems when
