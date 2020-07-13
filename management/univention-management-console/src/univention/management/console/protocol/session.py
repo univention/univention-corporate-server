@@ -1001,6 +1001,7 @@ class SessionHandler(ProcessorBase):
 		raise UMC_Error(message, status=status)
 
 	def close_session(self):
+		self.__auth.signal_disconnect('authenticated', self._authentication_finished)
 		self.shutdown()
 		if self.processor is not None:
 			self.processor.shutdown()
