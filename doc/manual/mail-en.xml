@@ -956,18 +956,16 @@ service postfix reload
 	<section id="mail::serverconfig::aliasexpansionlimit">
                 <title>Configuring the Alias-expansion-limit</title>
                 <para>
-			When sending a mail to a group with too many recipients (including 
-			recipients from nested groups), the mail may not be accepted/delivered. 
-			This is caused by Postfix dealing with nested groups.
-			The maximum number of addresses that Postfix’ virtual alias expansion 
-			produces from each original recipient is 1000 by default which might 
-			be too low if nested groups are in use.
+			When sending a mail to a group including other nested groups, the mail 
+			may not be accepted/delivered. 
+			This is caused by Postfix trying to expand the number of the primary
+			recipients via Virtual Alias Expansion.
+			This number is limited to 1000 users by default which might be too low.
                 </para>
-                <para>
-                        This number can be changed by adding the following line to
-                        <filename>/etc/postfix/main.cf.local</filename>:
+		<para>
+			To adjust the number to (for instance) 5000 users, the following line can 
+			be added or edited in <filename>/etc/postfix/main.cf.local</filename>:
                         <programlisting>virtual_alias_expansion_limit = 5000</programlisting>
-			<envar>5000</envar> can be adjusted to your needs.
 			Afterwards Postfix needs to be restarted:
 			<programlisting>service postfix restart</programlisting>
                 </para>
