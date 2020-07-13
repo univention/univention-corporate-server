@@ -54,6 +54,9 @@
 				<listitem><simpara>
 					&ucsUCR;-Variables may define default values now (<u:bug>38938</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The performance of <command>ucr shell</command> has been improved (<u:bug>31257</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
