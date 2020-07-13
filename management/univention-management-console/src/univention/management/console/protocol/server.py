@@ -68,9 +68,6 @@ class MagicBucket(object):
 	def __init__(self):
 		self.__states = {}
 
-	def __del__(self):
-		self.exit()
-
 	def new(self, client, socket):
 		"""Is called by the Server object to announce a new incoming
 		connection.
@@ -393,7 +390,10 @@ class Server(signals.Provider):
 
 		self.__bucket = None
 
-	def __del__(self):
+	def __enter__(self):
+		return self
+
+	def __exit__(self, etype, exc, etraceback):
 		self.exit()
 
 	@staticmethod

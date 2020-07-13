@@ -204,10 +204,9 @@ class UMC_Daemon(DaemonRunner):
 			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 		notifier.init(notifier.GENERIC)
 
-		self.server = Server(port=self.options.port)
-
-		CORE.process('Server started')
-		notifier.loop()
+		with Server(port=self.options.port) as self.server:
+			CORE.process('Server started')
+			notifier.loop()
 
 	def signal_hang_up(self, signal, frame):
 		if hasattr(self, 'server'):
@@ -247,6 +246,6 @@ if __name__ == "__main__":
 		CORE.process('Failed to start server: %s' % (exc,))
 	except (SystemExit, KeyboardInterrupt):
 		raise
-	except:
+	except BaseException:
 		CORE.error(traceback.format_exc())
 		raise

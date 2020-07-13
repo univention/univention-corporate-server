@@ -95,7 +95,7 @@ if __name__ == '__main__':
 		locale.setlocale(locale.LC_MESSAGES, str(locale_obj))
 		translation = Translation('univention-management-console')
 		translation.set_language(options.language)
-	except:
+	except Exception:
 		MODULE.error('The specified locale %r is not available' % (options.language,))
 
 	# this import must be after the locale is set!
@@ -116,12 +116,11 @@ if __name__ == '__main__':
 		MODULE.warn('Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds')
 
 	try:
-		module = umcp.ModuleServer(options.socket, options.module, check_acls=False, timeout=session_timeout)
-
-		notifier.loop()
+		with umcp.ModuleServer(options.socket, options.module, check_acls=False, timeout=session_timeout):
+			notifier.loop()
 	except (SystemExit, KeyboardInterrupt):
 		raise
-	except:
+	except BaseException:
 		import traceback
 		MODULE.error(traceback.format_exc())
 		raise
