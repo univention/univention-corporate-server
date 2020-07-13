@@ -257,6 +257,11 @@ class PamAuth(object):
 		self.pam.set_item(PAM_USER, username)
 		self.pam.setUserData(data)
 
+	def end(self):
+		# TODO: call pam_end() instead
+		self.pam.set_item(PAM_CONV, lambda a, b, c: None)  # free self.conversation leaking
+		del self.pam  # causes pam_end() to be called to free ldap connections
+
 	def conversation(self, auth, query_list, data):
 		try:
 			return list(self._conversation(auth, query_list, data))

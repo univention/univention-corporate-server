@@ -148,7 +148,7 @@ class AuthHandler(signals.Provider):
 			return username
 
 	def __authentication_result(self, thread, result, pam, request):
-		del pam.pam  # causes pam_end() to be called to free ldap connections
+		pam.end()
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired)):
 			msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
 			AUTH.error(msg)
