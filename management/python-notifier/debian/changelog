@@ -1,3 +1,10 @@
+python-notifier (0.9.7-9) unstable; urgency=medium
+
+  * Bug #51282: fix python 3 compatibility of notifier.Callback
+  * Bug #51282: let signal functions automatically disconnect callbacks
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jul 2020 10:24:35 +0200
+
 python-notifier (0.9.7-8) unstable; urgency=medium
 
   * Bug #51282: fix python3 compatibility for timers:
