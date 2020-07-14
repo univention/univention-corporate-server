@@ -2612,6 +2612,7 @@ class simpleComputer(simpleLdap):
 					pass
 
 	def _ldap_post_modify(self):
+		super(simpleComputer, self)._ldap_post_modify()
 
 		self.__multiip |= len(self['mac']) > 1 or len(self['ip']) > 1
 
@@ -2923,6 +2924,7 @@ class simpleComputer(simpleLdap):
 		self.check_common_name_length()
 
 	def _ldap_pre_modify(self):
+		super(simpleComputer, self)._ldap_pre_modify()
 		self.check_common_name_length()
 
 	def _ldap_post_create(self):
