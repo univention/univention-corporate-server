@@ -1,9 +1,5 @@
-__package__ = ""  # workaround for PEP 366
-name = "refcheck"
-description = "Check referential integrity of uniqueMember relations"
-filter = "(uniqueMember=*)"
-attribute = ["uniqueMember"]
-modrdn = "1"
+from __future__ import absolute_import
+from __future__ import print_function
 
 import os
 import ldap
@@ -11,9 +7,15 @@ import listener
 import univention.debug as ud
 from pwd import getpwnam
 
+name = "refcheck"
+description = "Check referential integrity of uniqueMember relations"
+filter = "(uniqueMember=*)"
+attribute = ["uniqueMember"]
+modrdn = "1"
+
 
 class LocalLdap(object):
-	PORT = 7389
+	PORT = 7636
 
 	def __init__(self):
 		self.data = {}
@@ -24,7 +26,7 @@ class LocalLdap(object):
 
 	def prerun(self):
 		try:
-			self.con = ldap.open(self.data["ldapserver"], port=self.PORT)
+			self.con = ldap.initialize('ldaps://%s:%d' % (self.data["ldapserver"], self.PORT))
 			self.con.simple_bind_s(self.data["binddn"], self.data["bindpw"])
 		except ldap.LDAPError as ex:
 			ud.debug(ud.LISTENER, ud.ERROR, str(ex))
@@ -45,14 +47,15 @@ class LocalFile(object):
 		try:
 			ent = getpwnam(self.USER)
 			with AsRoot():
-				open(self.LOG, "wb")
+				with open(self.LOG, "wb"):
+					pass
 				os.chown(self.LOG, ent.pw_uid, -1)
 		except OSError as ex:
 			ud.debug(ud.LISTENER, ud.ERROR, str(ex))
 
 	def log(self, msg):
 		with open(self.LOG, 'ab') as log:
-			print >> log, msg
+			print(msg, file=log)
 
 	def clean(self):
 		try:
