@@ -1665,6 +1665,7 @@ class simpleLdap(object):
 		try:
 			if name == 'sid+user':
 				value = univention.admin.allocators.requestUserSid(self.lo, self.position, value)
+				name = 'sid'
 			else:
 				value = univention.admin.allocators.request(self.lo, self.position, name, value)
 		except univention.admin.uexceptions.noLock:
