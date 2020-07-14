@@ -16,17 +16,18 @@ install_testing_version () {
 }
 
 install_released_version () {
-	TODO
+	# TODO
+	:
 }
 
-univention_domain_join_cli () {
-	local master=${1:?missing master ip}
+test_univention_domain_join_cli () {
+	local dc_ip=${1:?missing dc ip}
 	local admin=${2:?missing admin account}
 	local password=${3:?missing admin account password}
-	univention-domain-join-cli --username "$admin" --password "$password" --dc-ip "$master" --force-ucs-dns
+	univention-domain-join-cli --username "$admin" --password "$password" --dc-ip "$dc_ip" --force-ucs-dns
 }
 
-check_user () {
+test_user () {
 	local username=${1:?missing username}
 	local password=${2:?missing password}
 	local password_file=$(mktemp)
@@ -36,4 +37,17 @@ check_user () {
 	echo -n $password > $password_file
 	kinit --password-file=$password_file $username
 	ldapsearch uid=$username | grep "^dn: uid=$username"
+	sshpass -p "$password" ssh -o StrictHostKeyChecking=no "$username@$(hostname)" "whoami"
+}
+
+run_tests () {
+	local run_tests=${1:?missing run tests parameter}
+	local dc_ip=${2:?missing dc ip}
+	local admin=${3:?missing admin account}
+	local password=${4:?missing admin account password}
+
+	if $run_tests; then
+		test_univention_domain_join_cli "$dc_ip" "$admin" "$password"
+		test_user "$admin" "$password"
+	fi
 }
