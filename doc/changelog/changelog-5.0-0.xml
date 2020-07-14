@@ -132,6 +132,9 @@
 					<listitem><simpara>
 						The last remainders for <wordasword>replog</wordasword> replication have been removed (<u:bug>42334</u:bug>)
 					</simpara></listitem>
+					<listitem><simpara>
+						Adjustments in the use of <package>python-ldap</package> have been made (<u:bug>51268</u:bug>)
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 		</section>
