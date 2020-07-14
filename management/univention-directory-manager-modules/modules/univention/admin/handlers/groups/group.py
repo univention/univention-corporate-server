@@ -585,11 +585,11 @@ class object(univention.admin.handlers.simpleLdap):
 		gidNum = None
 		groupSid = None
 		if 'posix' in self.old_options:
-			gidNum = self.oldattr['gidNumber'][0]
+			gidNum = self.oldattr['gidNumber'][0].decode('ASCII')
 			if self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [gidNum]), scope='domain'):
 				raise univention.admin.uexceptions.primaryGroupUsed(gidNum)
 		if 'samba' in self.old_options:
-			groupSid = self.oldattr['sambaSID'][0]
+			groupSid = self.oldattr['sambaSID'][0].decode('ASCII')
 			if self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [groupSid]), scope='domain'):
 				raise univention.admin.uexceptions.primaryGroupUsed(groupSid)
 		if gidNum:
