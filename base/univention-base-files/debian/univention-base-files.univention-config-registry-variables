@@ -590,7 +590,7 @@ Type=bool
 Categories=system-network
 
 [interfaces/.*/hosts]
-Description[de]=Standardmäßig werden statische IP-Adressen mit dem FQHN und Host-Namen in /etc/hosts eingetragen. Diese Option erlaubt es, die Lister der Namen zu überschreiben.
+Description[de]=Standardmäßig werden statische IP-Adressen mit dem FQHN und Host-Namen in /etc/hosts eingetragen. Diese Option erlaubt es, die Liste der Namen zu überschreiben.
 Description[en]=By default static IP addresses are added to /etc/hosts using the FQHN and host name. The option allows to overwrite this list of names.
 Type=str
 Categories=system-network
