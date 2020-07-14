@@ -321,7 +321,7 @@
 			<title>Process overview module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The process overview module now uses Python 3 (<u:bug>51323</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
