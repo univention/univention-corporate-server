@@ -23,7 +23,7 @@ univention_domain_join_cli () {
 	local master=${1:?missing master ip}
 	local admin=${2:?missing admin account}
 	local password=${3:?missing admin account password}
-	univention-domain-join-cli --username "$admin" --password "$password" --master-ip "$master"
+	univention-domain-join-cli --username "$admin" --password "$password" --dc-ip "$master" --force-ucs-dns
 }
 
 check_user () {
