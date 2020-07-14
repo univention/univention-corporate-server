@@ -31,9 +31,12 @@
 
 from copy import deepcopy
 
-from univention.unittests.udm_filter import make_filter
+from univentionunittests.udm_filter import make_filter
 
-from mock import MagicMock
+try:
+	from mock import MagicMock
+except ImportError:
+	from unittest.mock import MagicMock
 
 
 def get_domain():
