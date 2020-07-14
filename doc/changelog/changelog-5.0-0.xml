@@ -171,6 +171,9 @@
 			<title>Univention Portal</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The creation of the portal entry for the <ulink url="https://www.univention.com/news/blog-en/">Univention Blog</ulink> has been fixed when installing from DVD (<u:bug>45787</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
