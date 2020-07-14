@@ -94,7 +94,7 @@ Error: Update aborted due to verification error:
 Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': \
 Datei oder Verzeichnis nicht gefunden
 					</programlisting>
-					Wenn dieser Fehler in der Logdatei auftritt, sollten alle verfügbaren Errata Updates eingespielt werden, und das Update auf UCS 4.4-5 anschließend erneut gestartet werden. (<u:bug>51576</u:bug>)
+					Wenn dieser Fehler in der Logdatei auftritt, müssen alle verfügbaren Errata Updates eingespielt werden. Anschließend kann das Update auf UCS 4.4-5 erneut gestartet werden. (<u:bug>51576</u:bug>)
 				</para>
 				<para>
 					<ulink url="http://help.univention.com/t/15594">Weitere Informationen sind in unserer Support Datenbank verfügbar</ulink>.
