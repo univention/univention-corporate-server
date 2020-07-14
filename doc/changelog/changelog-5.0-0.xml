@@ -14,6 +14,9 @@
 			<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The Python module directories of <package>python-support</package> are not supported anymore (<u:bug>51506</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
