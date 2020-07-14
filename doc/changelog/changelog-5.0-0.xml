@@ -213,6 +213,9 @@
 					No traceback is logged anymore when creating objects with <command>--ignore_exists</command> when the objects already exists (<u:bug>46931</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					UDM handlers now raise an exception <classname>univention.admin.uexceptions.wrongObjectType</classname> when an object is opened with a wrong type (<u:bug>45096</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
