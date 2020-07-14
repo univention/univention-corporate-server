@@ -714,7 +714,7 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The &ucsUMC; module now runs with Python 3 (<u:bug>51336</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
