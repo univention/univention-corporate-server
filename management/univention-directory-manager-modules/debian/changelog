@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.2-10) unstable; urgency=medium
+
+  * Bug #51669: fix removal of objects during errors in create
+
+ -- Florian Best <best@univention.de>  Tue, 14 Jul 2020 18:49:46 +0200
+
 univention-directory-manager-modules (15.0.2-1) unstable; urgency=medium
 
   * Bug #51631: migrate udm_extension.py listener to be Python 3
