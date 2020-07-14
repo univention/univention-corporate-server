@@ -1301,7 +1301,9 @@ class simpleLdap(object):
 				ud.debug(ud.ADMIN, ud.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
 			try:
 				if self._exists:  # add succeeded but _ldap_post_create failed!
-					self.remove()
+					obj = univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, self.position, self.dn)
+					obj.open()
+					obj.remove()
 			except:
 				ud.debug(ud.ADMIN, ud.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
 			six.reraise(exc[0], exc[1], exc[2])
