@@ -30,7 +30,6 @@
 #
 
 import sys
-import os
 import importlib
 
 
@@ -44,8 +43,3 @@ def import_module(name, local_src_path, python_module_name, use_installed):
 	module = importlib.import_module(module_name)
 	sys.modules[python_module_name] = module
 	return module
-
-
-def skipifbuildingpackage(func):
-	import pytest
-	return pytest.mark.skipif(bool(os.environ.get('DEBBUILDOPTS')), reason='Skipping in build environment. You need to check this test manually')(func)

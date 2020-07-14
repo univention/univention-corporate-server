@@ -29,9 +29,9 @@
 #
 
 
-pytest   unittests/ -vl -rsx
+pytest   unittests/ -vl
 rc1=$?
-pytest-3 unittests/ -vl -rsx
+pytest-3 unittests/ -vl
 rc2=$?
 
 exit $(( rc1 + rc2 ))

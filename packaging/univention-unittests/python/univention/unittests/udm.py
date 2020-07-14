@@ -31,9 +31,11 @@
 
 import pytest
 
-from univentionunittests import import_module
-from univentionunittests.udm_database import Database
-from univentionunittests.udm_connection import MockedAccess, MockedPosition  # noqa: F401
+from univention.admin.uldap import access
+
+from univention.unittests import import_module
+from univention.unittests.udm_database import Database
+from univention.unittests.udm_connection import MockedAccess, MockedPosition  # noqa: F401
 
 
 def pytest_addoption(parser):
@@ -67,7 +69,6 @@ def empty_ldap_database():
 
 @pytest.fixture
 def lo(ldap_database):
-	from univention.admin.uldap import access
 	lo = MockedAccess()
 	lo.database = ldap_database
 	lo.mock_add_spec(access)
