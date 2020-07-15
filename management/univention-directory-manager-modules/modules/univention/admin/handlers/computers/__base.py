@@ -166,6 +166,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_post_create()
 
 	def _ldap_pre_remove(self):
+		super(ComputerObject, self)._ldap_pre_remove()
 		self.open()
 		if 'posix' in self.old_options and self.oldattr.get('uidNumber'):
 			self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0].decode('ASCII')))
