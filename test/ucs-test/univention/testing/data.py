@@ -525,7 +525,7 @@ class TestCase(object):
 			digest.update(firstline)
 			reader = _TestReader(tc_file, digest)
 			try:
-				header = yaml.load(reader) or {}
+				header = yaml.safe_load(reader) or {}
 			except yaml.scanner.ScannerError as ex:
 				TestCase.logger.critical(
 					'Failed to read "%s": %s',
