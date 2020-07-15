@@ -403,6 +403,34 @@ class Server(signals.Provider):
 		RESOURCES.info('Reloading UCR variables')
 		ucr.load()
 
+	@staticmethod
+	def analyse_memory():
+		"""Print the number of living UMC objects. Helpful when analysing memory leaks."""
+		components = (
+			'protocol.server.State', 'protocol.session.ModuleProcess',
+			'protocol.session.Processor', 'protocol.session.SessionHandler',
+			'protocol.message.Message', 'protocol.message.Request', 'protocol.message.Response',
+			'auth.AuthHandler', 'pam.PamAuth', 'protocol.client.Client',
+			'locales.I18N', 'locales.I18N_Manager', 'module.Command', 'module.Flavor', 'module.Module',
+			'tools.JSON_List',
+			# 'module.Link',
+			# 'auth.AuthenticationResult',
+			# 'base.Base', 'category.XML_Definition', 'error.UMC_Error',
+			# 'module.XML_Definition', 'module.Manager', 'pam.AuthenticationError', 'pam.AuthenticationFailed', 'pam.AuthenticationInformationMissing',
+			# 'pam.AccountExpired', 'pam.PasswordExpired', 'pam.PasswordChangeFailed',
+			# 'protocol.message.ParseError', 'protocol.message.IncompleteMessageError',
+			# 'protocol.modserver.ModuleServer', 'protocol.server.MagicBucket', 'protocol.server.Server',
+			# 'protocol.session.ProcessorBase',
+			# 'tools.JSON_Object', 'tools.JSON_Dict',
+		)
+		try:
+			import objgraph
+		except ImportError:
+			return
+		CORE.warn('')
+		for component in components:
+			CORE.warn('%s: %d' % (component, len(objgraph.by_type('univention.management.console.%s' % (component,)))))
+
 
 class State(object):
 
