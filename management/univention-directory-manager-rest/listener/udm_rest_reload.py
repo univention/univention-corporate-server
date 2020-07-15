@@ -35,7 +35,7 @@ from listener import SetUID, configRegistry
 
 name = 'udm_rest_reload'
 description = 'Handle UDM module reloading in UDM REST API'
-filter = '(|(objectClass=univentionUDMProperty)(objectClass=univentionUDMOption))'
+filter = '(|(objectClass=univentionUDMProperty)(objectClass=univentionUDMOption)(objectClass=univentionUDMSyntax)(objectClass=univentionUDMModule)(objectClass=univentionUDMHook))'
 attributes = []
 priority = 40  # a number between 0 and 100 - 50 is default, the lower the "faster"
 
