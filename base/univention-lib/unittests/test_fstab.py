@@ -37,7 +37,7 @@ fstab = import_lib_module('fstab')
 
 def test_fstab():
 	fs = fstab.File('unittests/fstab')
-	assert len(fs.get()) == 4
+	assert len(fs.get()) == 5
 
 	f = fs.get()[0]
 	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('proc', None, '/proc', 'proc', ['defaults'], 0, 0, '')
@@ -50,25 +50,30 @@ def test_fstab():
 	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda1', None, '/var', 'ext3', ['defaults', 'acl', 'user_xattr'], 0, 2, '')
 
 	f = fs.get()[3]
-	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda2', None, 'none', 'swap', ['sw'], 0, 0, '')
+	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda2', None, 'none', 'swap', ['sw'], None, None, '#0\t1\t# foo bar baz')
+
+	f = fs.get()[4]
+	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('192.168.0.81:/home', None, '/home', 'nfs', ['defaults', 'timeo=21', 'retrans=9', 'wsize=8192', 'rsize=8192', 'nfsvers=3'], 1, 2, '# LDAP bind')
 
 	f = fs.get('ext3', False)[0]
-	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda3', None, '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, '')
-	assert str(f) == '/dev/vda3\t/\text3\terrors=remount-ro,acl,user_xattr\t0\t1\t'
-	assert repr(f).startswith('<univention.lib.fstab.Entry')
+	assert (f.spec, f.uuid, f.mount_point, f.type, f.options, f.dump, f.passno, f.comment) == ('/dev/vda3', None, '/', 'ext3', ['errors=remount-ro', 'acl', 'user_xattr'], 0, 1, None)
+	assert str(f) == '/dev/vda3\t/\text3\terrors=remount-ro,acl,user_xattr\t0\t1'
+	assert repr(f) == "univention.lib.fstab.Entry('/dev/vda3', '/', 'ext3', options='errors=remount-ro,acl,user_xattr', freq=0, passno=1)"
 
 
 def test_fstab_save(mocker):
 	content = open('unittests/fstab').read()
 	fs = fstab.File('unittests/fstab')
 	fd = mocker.Mock()
+	fd.__enter__ = mocker.Mock(return_value=fd)
+	fd.__exit__ = mocker.Mock(return_value=None)
 	mocker.patch.object(fstab, 'open', mocker.Mock(return_value=fd))
 	fs.save()
 	write_calls = [args[0] for _, args, _ in fd.write.mock_calls]
 	assert content == ''.join(write_calls)
 
 
-def test_fstab_broken(mocker):
+def test_fstab_broken():
 	with pytest.raises(fstab.InvalidEntry):
 		fstab.File('unittests/broken_fstab')
 
@@ -79,7 +84,8 @@ def test_fstab_find():
 	assert not fs.find(type='cifs')
 
 
-@pytest.mark.xfail
 def test_fstab_find_line_with_comment():
 	fs = fstab.File('unittests/fstab')
-	assert fs.find(mount_point=['/home']).type == 'nfs'
+	assert fs.find(mount_point='/home').type == 'nfs'
+	assert fs.find(mount_point='/home').comment == '# LDAP bind'
+	assert fs.find(type='swap').comment == '#0\t1\t# foo bar baz'

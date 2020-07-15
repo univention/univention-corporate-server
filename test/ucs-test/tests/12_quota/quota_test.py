@@ -1,7 +1,7 @@
 import subprocess
 import os
 
-from univention.fstab import fstab, mntent
+from univention.lib.fstab import File, Entry
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -260,8 +260,8 @@ class TempFilesystem(object):
 		self.loop_dev = subprocess.check_output(["losetup", "--find"]).strip("\n")
 		subprocess.check_call(["losetup", self.loop_dev, self.filename])
 		print("Mount file")
-		file_mntent = mntent(self.loop_dev, self.mount_point, self.fs_type, opts=self.quota_type)
-		etc_fstab = fstab()
+		file_mntent = Entry(self.loop_dev, self.mount_point, self.fs_type, options=[self.quota_type])
+		etc_fstab = File()
 		etc_fstab.append(file_mntent)
 		etc_fstab.save()
 		subprocess.check_call([
@@ -285,10 +285,8 @@ class TempFilesystem(object):
 			"--detach",
 			self.loop_dev,
 		])
-		etc_fstab = fstab()
-		for entry in list(etc_fstab):
-			if entry.fsname == self.loop_dev:
-				break
+		etc_fstab = File()
+		entry = etc_fstab.find(spec=self.loop_dev)
 		etc_fstab.remove(entry)
 		etc_fstab.save()
 

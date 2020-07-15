@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Read and write :file:`/etc/fstab`.
+Handle parsing and writing :file:`/etc/fstab`.
+
+See <http://linux.die.net/include/mntent.h>.
 """
 # Copyright 2006-2020 Univention GmbH
 #
@@ -36,6 +38,13 @@ import os
 import re
 
 
+class InvalidEntry(Exception):
+	"""
+	Invalid entry in file system table
+	"""
+	pass
+
+
 class File(list):
 	"""
 	Handle lines of :file:`/etc/fstab`.
@@ -56,13 +65,12 @@ class File(list):
 		"""
 		Load entries from file.
 		"""
-		fd = open(self.__file, 'r')
-		for line in fd.readlines():
-			if File._is_comment(line):
-				self.append(line[:-1])
-			elif line.strip():
-				self.append(self.__parse(line))
-		fd.close()
+		with open(self.__file, 'r') as fd:
+			for _line in fd:
+				line = self.__parse(_line)
+				if not isinstance(line, Entry) and _line.strip() and not _line.strip().startswith('#'):
+					raise InvalidEntry('The following is not a valid fstab entry: %r' % (_line,))  # TODO
+				self.append(line)
 
 	def find(self, **kargs):
 		# type: (**str) -> Optional[Entry]
@@ -104,15 +112,14 @@ class File(list):
 				result.append(entry)
 		return result
 
-	def save(self):
-		# type: () -> None
+	def save(self, filename=None):
+		# type: (Optional[str]) -> None
 		"""
 		Save entries to file.
 		"""
-		fd = open(self.__file, 'w')
-		for line in self:
-			fd.write('%s\n' % str(line))
-		fd.close()
+		with open(filename or self.__file, 'w') as fd:
+			for line in self:
+				fd.write('%s\n' % (line,))
 
 	def __parse(self, line):
 		# type: (str) -> Entry
@@ -131,30 +138,21 @@ class File(list):
 		:rtype: Entry
 		:raises InvalidEntry: if the line cannot be parsed.
 		"""
-		fields = line.split(None, 7)
+		line = line.lstrip().rstrip('\n')
+		if line.startswith('#'):
+			return line
+
+		line, has_comment, comment = line.partition('#')
+		fields = line.split(None, 5)
 		if len(fields) < 4:
-			raise InvalidEntry('The following is not a valid fstab entry: %s' % line)  # TODO
-		entry = Entry(*fields[: 4])
-		if len(fields) > 4:
-			dump = fields[4]
-			if not File._is_comment(dump):
-				entry.dump = int(dump)
-			else:
-				entry.comment = dump
-		if len(fields) > 5:
-			passno = fields[5]
-			if not File._is_comment(passno):
-				entry.passno = int(passno)
-			else:
-				entry.comment = passno
-		if len(fields) > 6:
-			entry.comment = ' '.join(fields[6:])
-		return entry
+			return line
+
+		return Entry(*fields, comment=has_comment + comment if has_comment or fields[-1].endswith('\t') else None)
 
 
 class Entry(object):
 	"""
-	Entry of :manpage:`fstab(5)`.
+	Mount table entry of :manpage:`fstab(5)`.
 
 	:param str spec: This field describes the block special device or remote filesystem to be mounted.
 	:param str mount_point: This field describes the mount point (target) for the filesystem.
@@ -168,9 +166,9 @@ class Entry(object):
 	:ivar str uuid: The file system |UUID| if the file system is mounted by it. Otherwise `None`.
 	"""
 
-	def __init__(self, spec, mount_point, type, options, dump=0, passno=0, comment=''):
+	def __init__(self, spec, mount_point, type, options, dump=None, passno=None, comment=None):
 		# type: (str, str, str, str, int, int, str) -> None
-		self.spec = spec.strip()
+		self.spec = self.unquote(spec.strip())
 		if self.spec.startswith('UUID='):
 			self.uuid = self.spec[5:]  # type: Optional[str]
 			uuid_dev = os.path.join('/dev/disk/by-uuid', self.uuid)
@@ -178,30 +176,88 @@ class Entry(object):
 				self.spec = os.path.realpath(uuid_dev)
 		else:
 			self.uuid = None
-		self.mount_point = mount_point.strip()
-		self.type = type.strip()
-		self.options = options.split(',')
-		self.dump = int(dump)
-		self.passno = int(passno)
+		self.mount_point = self.unquote(mount_point.strip())
+		self.type = self.unquote(type.strip())
+		self.options = self.unquote(options).split(',') if not isinstance(options, list) else options
+		self.dump = int(dump) if dump else dump
+		self.passno = int(passno) if passno else passno
 		self.comment = comment
 
-	def __str__(self):
-		if self.uuid:
-			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.uuid, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
-		else:
-			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.spec, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
+	def __str__(self, delim='\t'):
+		"""
+		Return the canonical string representation of the object.
+		>>> str(Entry('proc', '/proc', 'proc', 'defaults', 0, 0))
+		'proc\\t/proc\\tproc\\tdefaults\\t0\\t0'
+		>>> str(Entry('/dev/sda', '/', 'ext2,ext3', 'defaults,rw', 0, 0, '# comment'))
+		'/dev/sda\\t/\\text2,ext3\\tdefaults,rw\\t0\\t0\\t# comment'
+		"""
+		h = [
+			self.quote('UUID=%s' % self.uuid if self.uuid else self.spec),
+			self.quote(self.mount_point),
+			self.quote(self.type),
+			self.quote(','.join(self.options)),
+		]
+		if self.dump is not None:
+			h.append(str(self.dump))
+		if self.passno is not None:
+			h.append(str(self.passno))
+
+		if self.comment is not None:
+			h.append(self.comment)
+		return delim.join(h)
 
 	def __repr__(self):
-		return '<univention.lib.fstab.Entry %r>' % (self.__dict__,)
+		"""
+		>>> Entry('proc', '/proc', 'proc', 'defaults', 0, 0)
+		univention.lib.fstab.Entry('proc', '/proc', 'proc', options='defaults', freq=0, passno=0)
+		"""
+		h = [
+			"%r" % self.spec,
+			"%r" % self.mount_point,
+			"%r" % self.type,
+			"options=%r" % ','.join(self.options),
+			"freq=%r" % self.dump,
+			"passno=%r" % self.passno,
+		]
+		if self.comment is not None:
+			h.append("comment=%r" % self.comment)
+		return "univention.lib.fstab.Entry(%s)" % ', '.join(h)
 
+	@classmethod
+	def quote(cls, s):
+		"""
+		Quote string to octal.
+		>>> Entry.quote('a b')
+		'a\\\\040b'
+		"""
+		try:
+			t = cls.__quote_dict
+		except AttributeError:
+			t = cls.__quote_dict = dict([(c, '\\%s' % oct(ord(c))) for c in ' \t\n\r\\'])
+		return ''.join([t.get(c, c) for c in s])
 
-class InvalidEntry(Exception):
-	"""
-	Invalid entry in file system table
-	"""
-	pass
+	@classmethod
+	def unquote(cls, s):
+		"""
+		Unquote octal to string.
+		>>> Entry.unquote('a\\040b')
+		'a b'
+		"""
+		try:
+			r = cls.__quote_re
+		except AttributeError:
+			r = cls.__quote_re = re.compile('\\\\0([0-7]+)')
+		return r.sub(lambda m: chr(int(m.group(1), 8)), s)
+
+	def hasopt(self, opt):
+		"""
+		Search for an option matching OPT.
+		>>> Entry('/dev/sda', '/', 'ext3', 'default,ro,user_xattr,acl', 0, 0).hasopt('user')
+		['user_xattr']
+		"""
+		return [o for o in self.options if o.startswith(opt)]
 
 
 if __name__ == '__main__':
-	fstab = File('fstab')
-	print(fstab.get(['xfs', 'ext3']))
+	import doctest
+	doctest.testmod()
