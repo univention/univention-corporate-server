@@ -46,12 +46,12 @@ def register_iface(configRegistry, iface, verbose):
 	try:
 		client = Client(configRegistry['ldap/master'])
 		client.authenticate_with_machine_account()
-		return client.umc_command('ip/change', {
+		client.umc_command('ip/change', {
 			'ip': configRegistry.get('interfaces/%s/address' % iface),
 			'oldip': configRegistry.get('interfaces/%s/fallback/address' % iface),
 			'netmask': configRegistry.get('interfaces/%s/netmask' % iface),
 			'role': configRegistry.get('server/role'),
-		}).result.get('success', True)
+		})
 	except (HTTPError, ConnectionError) as exc:
 		if verbose:
 			print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
