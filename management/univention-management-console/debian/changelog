@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-86) unstable; urgency=medium
+
+  * Bug #50583: fix various memory leaks in the UMC-Server process
+
+ -- Florian Best <best@univention.de>  Wed, 15 Jul 2020 14:23:44 +0200
+
 univention-management-console (11.0.4-85) unstable; urgency=medium
 
   * Bug #51367: fix leak of ldap connection in session shutdown and favorites
