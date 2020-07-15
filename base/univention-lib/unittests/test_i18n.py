@@ -43,7 +43,7 @@ class TestLocale(object):
 		assert locale.territory is None
 		assert locale.codeset is None
 		assert locale.modifier is None
-		locale = i18n.Locale('de_DE.UTF-8@euro')
+		locale = i18n.Locale('de_DE.UTF-8:UTF-8@euro')
 		assert locale.language == 'de'
 		assert locale.territory == 'DE'
 		assert locale.codeset == 'UTF-8'
