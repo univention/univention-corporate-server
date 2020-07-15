@@ -8,6 +8,7 @@
 
 from __future__ import print_function
 import subprocess
+import pytest
 
 import univention.testing.utils as utils
 import univention.testing.strings as uts
@@ -34,14 +35,14 @@ def main():
 
 def join_member_with_preexisting_acc(memberserver, udm):
 	print(memberserver)
-	for i in range(0, len(memberserver["mac"])):
+	for mac in memberserver["mac"]:
 		# This removes all but one mac
 		subprocess.check_call([
 			"/usr/share/univention-join/univention-server-join",
 			"-role", "memberserver",
 			"-hostname", memberserver["name"],
 			"-ip", memberserver["ip"],
-			"-mac", memberserver["mac"][i],
+			"-mac", mac,
 		])
 		# Re-add macs
 		udm.modify_object("computers/memberserver", dn=memberserver["dn"], mac=memberserver["mac"])
@@ -50,27 +51,18 @@ def join_member_with_preexisting_acc(memberserver, udm):
 
 def join_member_with_conflicting_mac(memberserver):
 	print(memberserver)
-	for i in range(0, len(memberserver["mac"])):
-		try:
+	for mac in memberserver["mac"]:
+		with pytest.raises(subprocess.CalledProcessError) as exc:
 			# This should fail because the macs conflict between memberserver1 and memberserver2
 			subprocess.check_output([
 				"/usr/share/univention-join/univention-server-join",
 				"-role", "memberserver",
 				"-hostname", memberserver["name"],
 				"-ip", memberserver["ip"],
-				"-mac", memberserver["mac"][i],
+				"-mac", mac,
 			])
-		except subprocess.CalledProcessError as exc:
-			expected_error = "E: failed to create Member Server (1) [E: Object exists: (mac)  {}]".format(
-				memberserver["mac"][i]
-			)
-			if expected_error not in exc.output:
-				utils.fail("Join failed, but for the wrong reason:\n{}".format(exc.output))
-		else:
-			utils.fail(
-				"Calling join for a server that has a mac "
-				"that is already set on another server should not be possible."
-			)
+		expected_error = "E: failed to create Member Server (1) [E: Object exists: (mac) {}]".format(mac)
+		assert expected_error in exc.value.output, "Join failed, but for the wrong reason:\n{}\ninstead of:\n{}".format(exc.value.output, expected_error)
 
 
 if __name__ == "__main__":
