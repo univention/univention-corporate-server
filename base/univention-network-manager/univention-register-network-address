@@ -44,7 +44,7 @@ from univention.lib.umc import Client, HTTPError, ConnectionError
 def register_iface(configRegistry, iface, verbose):
 	# is fallback different from current address?
 	try:
-		client = Client()
+		client = Client(configRegistry['ldap/master'])
 		client.authenticate_with_machine_account()
 		return client.umc_command('ip/change', {
 			'ip': configRegistry.get('interfaces/%s/address' % iface),
@@ -54,7 +54,7 @@ def register_iface(configRegistry, iface, verbose):
 		}).result.get('success', True)
 	except (HTTPError, ConnectionError) as exc:
 		if verbose:
-			print('%s: %s' % (type(exc).__name__, exc))
+			print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
 		return False
 	return True
 
