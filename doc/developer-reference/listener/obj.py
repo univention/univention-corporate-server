@@ -15,7 +15,7 @@ modrdn = "1"
 
 
 class LocalLdap(object):
-	PORT = 7389
+	PORT = 7636
 
 	def __init__(self):
 		self.data = {}
