@@ -25,6 +25,7 @@ ignore_exceptions = [re.compile(x) for x in [
 	'MyTestException: .*',
 	'univention.lib.umc.ConnectionError:.*machine.secret.*',
 	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
+	'^OperationalError: (psycopg2.OperationalError) FATAL:.*admindiary.*',  # Bug #51671
 	#'^ldap.NO_SUCH_OBJECT: .*',
 
 ]]

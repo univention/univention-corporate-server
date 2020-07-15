@@ -64,7 +64,7 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 		ignored_exc = (ignore for exc in exceptions for ignore in ignore_exceptions if ignore.search(exc))
 		ignored_tracebacks = (ignore for exc in exceptions for ignore in ignore_tracebacks if ignore.search(exc))
 		try:
-			print('Ignoring %s\n' % ((next(ignored_exc) or next(ignored_tracebacks)).pattern,))
+			print('\nIgnoring %s\n' % ((next(ignored_exc) or next(ignored_tracebacks)).pattern,))
 			continue
 		except StopIteration:
 			pass

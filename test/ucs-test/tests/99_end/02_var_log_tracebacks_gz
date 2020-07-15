@@ -21,7 +21,11 @@ ignore_exceptions = [re.compile(x) for x in [
 	'ConfigurationError: Configuration error: host is unresolvable',
 	'ConfigurationError: Configuration error: port is closed',
 	'ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*',
+	'DownloadError: Error downloading http://localhost/DUMMY/: 403',
 	'MyTestException: .*',
+	'univention.lib.umc.ConnectionError:.*machine.secret.*',
+	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
+	'^OperationalError: (psycopg2.OperationalError) FATAL:.*admindiary.*',  # Bug #51671
 
 ]]
 
