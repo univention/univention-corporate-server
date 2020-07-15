@@ -301,8 +301,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		self.updateLastUsedValue = True
-
 		try:
 			caching_timeout = int(configRegistry.get('directory/manager/web/modules/groups/group/caching/uniqueMember/timeout', '300'))
 			self.cache_uniqueMember.set_timeout(caching_timeout)
@@ -440,8 +438,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		if self['gidNumber']:
 			self.gidNum = univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
-			self.alloc.append(('gidNumber', self.gidNum))
-			self.updateLastUsedValue = False
+			self.alloc.append(('gidNumber', self.gidNum, False))
 		else:
 			self.gidNum = self.request_lock('gidNumber')
 
@@ -560,9 +557,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_post_create(self):
 		super(object, self)._ldap_post_create()
-		#if 'posix' in self.options:  # TODO/FIXME: consider in the upstream patch
-		#	univention.admin.allocators.confirm(self.lo, self.position, 'gidNumber', self.gidNum, updateLastUsedValue=self.updateLastUsedValue)
-		#	self.updateLastUsedValue = True
 		self.__update_membership()
 
 	def _ldap_post_modify(self):
