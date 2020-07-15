@@ -1,4 +1,5 @@
 22univention-directory-manager-rest.inst	usr/lib/univention-install/
-templates/ usr/share/univention-directory-manager-rest/
+listener/*.py	usr/lib/univention-directory-listener/system/
+templates/	usr/share/univention-directory-manager-rest/
 usr/lib/univention-server/server_password_change.d/univention-directory-manager-rest	usr/lib/univention-server/server_password_change.d/
 var

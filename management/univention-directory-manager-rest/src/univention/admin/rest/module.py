@@ -3150,3 +3150,9 @@ class Application(tornado.web.Application):
     def multi_regex(self, chars):
         # Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
         return ''.join(f'(?:{re.escape(c)}|{re.escape(quote(c).lower())}|{re.escape(quote(c).upper())})' if c in '=,' else re.escape(c) for c in chars)
+
+    @classmethod
+    def reload(cls):
+        ucr.load()
+        udm_modules.update()
+        UDM_Module.reload_extended_attributes(*get_machine_ldap_read_connection())
