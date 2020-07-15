@@ -152,8 +152,8 @@ class Phase(with_metaclass(ABCMeta, object)):
 				raise SkipPhase('Invalid super-class')
 			if not other.priority:
 				raise SkipPhase('Missing priority')
-			if getattr(other, '__metaclass__') == 'ABCMeta':
-				raise SkipPhase('Abstract class')
+			#if type(other) is ABCMeta:
+			#	raise SkipPhase('Abstract class')
 		except TypeError:
 			raise SkipPhase('Not a class')
 
