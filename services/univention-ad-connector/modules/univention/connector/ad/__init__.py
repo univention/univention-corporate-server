@@ -994,6 +994,16 @@ class ad(univention.connector.ucs):
 					if not getattr(attr, 'con_other_attribute') and attr.con_attribute in self.single_valued_ad_attributes:
 						attr.single_value = True
 
+		# Mark mailPrimaryAddress as dependent on changes of AD "mail"
+		for mapping_key, mapping_property in self.property.items():
+			for attr_type in ('attributes', 'post_attributes'):
+				con_attributes = getattr(mapping_property, attr_type)
+				if not con_attributes:
+					continue
+				for attr_key, attr in con_attributes.items():
+					if attr.ldap_attribute == 'mailPrimaryAddress':
+						attr.con_depends = 'mail'
+
 		# Log the active mapping
 		if ud.get_level(ud.LDAP) >= ud.INFO:
 			mapping_lines = ["Mapping:"]

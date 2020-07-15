@@ -326,11 +326,12 @@ class configsaver:
 
 class attribute:
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync'):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', con_value_merge_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends=''):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
 		self.con_other_attribute = con_other_attribute
+		self.con_depends = con_depends
 		self.required = required
 		self.compare_function = compare_function
 		self.con_value_merge_function = con_value_merge_function
@@ -1095,7 +1096,8 @@ class ucs:
 				changed_attributes = object.get('changed_attributes', [])
 				changed = not changed_attributes or \
 					attribute.con_attribute in changed_attributes or \
-					attribute.con_other_attribute in changed_attributes
+					attribute.con_other_attribute in changed_attributes or \
+					attribute.con_depends in changed_attributes
 
 				if changed:
 					ud.debug(ud.LDAP, ud.INFO,
@@ -1115,7 +1117,8 @@ class ucs:
 				changed_attributes = object.get('changed_attributes', [])
 				changed = not changed_attributes or \
 					attribute.con_attribute in changed_attributes or \
-					attribute.con_other_attribute in changed_attributes
+					attribute.con_other_attribute in changed_attributes or \
+					attribute.con_depends in changed_attributes
 
 				if changed:
 					ud.debug(ud.LDAP, ud.INFO,

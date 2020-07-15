@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-49) UNRELEASED; urgency=medium
+
+  * Bug #51647: fix regression of Bug #18501:
+    Synchronize AD:"mail" again to UDM:"mailPrimaryAddress"
+
+ -- Arvid <requate@univention.de>  Wed, 15 Jul 2020 15:18:35 +0200
+
 univention-ad-connector (13.0.0-48) unstable; urgency=medium
 
   * Bug #51585: Sync pwdChangeNextLogin to UCS if password is not set
