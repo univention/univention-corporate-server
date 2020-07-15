@@ -391,6 +391,11 @@ class UDM_Module:
         if force_reload:
             AppAttributes._cache = None
 
+    @staticmethod
+    def reload_extended_attributes(ldap_connection, ldap_position):
+        for name in _module_cache:
+            _module_cache.get(name, force_reload=True, ldap_connection=ldap_connection, ldap_position=ldap_position)
+
     def get_ldap_connection(self, base=None):
         """Get a connection in the name of the authenticated user"""
         if get_bind_function():

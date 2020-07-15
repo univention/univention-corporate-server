@@ -180,6 +180,8 @@ class Server:
                 stream = handler.stream
                 handler.close()
                 handler.stream = stream
+        from univention.admin.rest.module import Application
+        Application.reload()
 
     def safe_kill(self, pid, signo):
         try:
