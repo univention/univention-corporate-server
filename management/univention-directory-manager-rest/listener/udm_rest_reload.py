@@ -37,7 +37,7 @@ from listener import SetUID
 
 name = 'udm_rest_reload'
 description = 'Handle UDM module reloading in UDM REST API'
-filter = '(|(objectClass=univentionUDMProperty)(objectClass=univentionUDMOption))'
+filter = '(|(objectClass=univentionUDMProperty)(objectClass=univentionUDMOption)(objectClass=univentionUDMSyntax)(objectClass=univentionUDMModule)(objectClass=univentionUDMHook))'
 attributes = []
 
 
