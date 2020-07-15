@@ -6,6 +6,10 @@
 ##   - univention-directory-manager-tools
 ##   - univention-management-console-module-appcenter
 ## exposure: dangerous
+## versions:
+##  4.4-5: skip
+
+# skip this, we now install the app via the cfg file
 
 from __future__ import print_function
 import univention.testing.utils as utils

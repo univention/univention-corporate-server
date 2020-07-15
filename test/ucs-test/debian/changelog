@@ -1,3 +1,10 @@
+ucs-test (9.0.4-3) unstable; urgency=medium
+
+  * Bug #51627: skip 21_appcenter-uninstall/99_install_after_uninstall,
+    we now re-install the app via the cfg
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Jul 2020 09:43:42 +0200
+
 ucs-test (9.0.4-2) unstable; urgency=medium
 
   * Bug #51598: Fix cache dir for 11_check_apps_ini_field_values
