@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -113,29 +113,29 @@ class Server(tornado.web.RequestHandler):
 			self.write(response.body)
 		self.finish()
 
-	@tornado.web.asynchronous
+	@tornado.gen.coroutine
 	def post(self):
-		return self.get()
+		yield self.get()
 
-	@tornado.web.asynchronous
+	@tornado.gen.coroutine
 	def put(self):
-		return self.get()
+		yield self.get()
 
-	@tornado.web.asynchronous
+	@tornado.gen.coroutine
 	def delete(self):
-		return self.get()
+		yield self.get()
 
-	@tornado.web.asynchronous
+	@tornado.gen.coroutine
 	def patch(self):
-		return self.get()
+		yield self.get()
 
-	@tornado.web.asynchronous
+	@tornado.gen.coroutine
 	def options(self):
-		return self.get()
+		yield self.get()
 
 	@classmethod
 	def main(cls):
-		parser = argparse.ArgumentParser(prog='python -m univention.admin.rest.server')
+		parser = argparse.ArgumentParser(prog='python3 -m univention.admin.rest.server')
 		parser.add_argument('-d', '--debug', type=int, default=2)
 		args = parser.parse_args()
 		ud.init('stdout', ud.FLUSH, ud.NO_FUNCTION)

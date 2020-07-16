@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -41,6 +41,8 @@ import functools
 import inspect
 import locale
 from json import load
+
+from six import reraise as raise_
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
@@ -360,7 +362,7 @@ class UDM_Error(Exception):
 
 	def reraise(self):
 		if self.exc_info and self.exc_info != (None, None, None):
-			raise self.__class__, self, self.exc_info[2]
+			raise_(self.__class__, self, self.exc_info[2])
 		raise self
 
 	def __str__(self):

@@ -20,8 +20,6 @@ Depends:
  lsb-release,
  lsof,
  psmisc,
- python-ipaddr,
- python-six,
  python3-six,
  rsyslog,
  univention-archive-key,

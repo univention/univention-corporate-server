@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7 -B
+#!/usr/bin/python3 -B
 # -*- coding: utf-8 -*-
 """
 This script reads :file:`debian/*.univention-l10n` files inside the current working

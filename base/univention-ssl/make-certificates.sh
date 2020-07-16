@@ -463,7 +463,7 @@ getcnreq () {
 	# CN=blablabla/bla/OU=youknow/email
 	# Corporate Server/CN=dummy.bla.bla/emailAddress=ssl@w2k12.test
 	# Corporate Server/CN=dummy.bla.bla
-python -c '
+python3 -c '
 try:
 	import sys
 	import M2Crypto
@@ -471,7 +471,7 @@ try:
 	req = M2Crypto.X509.load_request(name)
 	subject = req.get_subject()
 	cn = subject.CN
-	if cn: print cn.replace("/", ".")
+	if cn: print(cn.replace("/", "."))
 except Exception as err:
 	sys.stderr.write("FATAL: could not get CN from request %s (%s)\n" % (name, err))
 	sys.exit(1)

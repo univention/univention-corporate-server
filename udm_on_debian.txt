@@ -3,6 +3,8 @@
 apt install debootstrap
 mkdir bullseye
 debootstrap --arch=amd64 bullseye bullseye http://ftp.de.debian.org/debian/
+mkdir -p /var/www/html/repo bullseye/var/www/html/repo
+mount --bind /var/www/html/repo bullseye/var/www/html/repo
 
 chroot bullseye
 lsb_release -a
@@ -15,8 +17,9 @@ Codename:	bullseye
 
 apt install dpkg-dev debhelper nginx locales
 dpkg-reconfigure locales
+dpkg-reconfigure tzdata
 
-mkdir -p /sync /var/www/html/repo
+mkdir /sync
 echo "deb [trusted=yes] http://127.0.0.1/repo /" > /etc/apt/sources.list.d/99_local_repo.list
 
 == 2. in notebook ==
@@ -33,7 +36,17 @@ for DIR in \
 	base/univention-licence-python \
 	base/univention-policy \
 	base/univention-python-heimdal \
-	management/univention-directory-manager-modules
+	management/univention-directory-manager-modules \
+	packaging/univention-ucs-translation-template \
+	management/univention-management-console \
+	management/univention-directory-manager-rest \
+	management/univention-management-console-module-udm \
+	packaging/univention-debhelper \
+	management/python-notifier \
+	management/univention-directory-reports \
+	management/univention-directory-listener \
+	base/univention-base-files \
+	base/univention-runit
 do
 	devsync -1 $DIR 10.200.3.111:/root/bullseye/sync
 done
@@ -41,7 +54,7 @@ done
 == 3. in VM (10.200.3.111) ==
 
 mount -t proc proc bullseye/proc
-chroot bollseye
+chroot bullseye
 
 BUILD_CMD="rm -f ../*.deb; apt-get build-dep . -y; dpkg-buildpackage -us -uc -b && rm ../*.{buildinfo,changes} && mv ../*.deb /var/www/html/repo && (cd /var/www/html/repo; dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz) && apt update"
 
@@ -55,13 +68,59 @@ for DIR in \
 	univention-licence \
 	univention-licence-python \
 	univention-python-heimdal \
-	univention-directory-manager-modules
+	univention-directory-manager-modules \
+	univention-debhelper \
+	univention-join \
+	univention-ssh \
+	univention-ssl
 do
 	cd /sync/$DIR
 	eval $BUILD_CMD || break
 done
 
 apt install univention-directory-manager-tools
+
+
+apt install python3-lxml
+dpkg -i --ignore-depends=univention-management-console-dev /var/www/html/repo/univention-ucs-translation-template_6.0.*_all.deb
+cd /sync/univention-management-console
+eval $BUILD_CMD
+
+cd /sync/univention-management-console-module-udm/
+eval $BUILD_CMD
+
+cd /sync/python-notifier
+apt install git
+git clone https://github.com/univention/python-notifier.git
+eval $BUILD_CMD
+
+cd /sync/univention-directory-manager-rest/
+eval $BUILD_CMD
+
+cd /sync
+dget --allow-unauthenticated --build http://archive.ubuntu.com/ubuntu/pool/main/p/python-pam/python-pam_0.4.2-13.2ubuntu2.dsc
+cd python-pam-0.4.2
+vi debian/control # remove py2 build deps and package
+vi debian/rules # remove py2 build
+eval $BUILD_CMD
+
+cd /sync
+dget --allow-unauthenticated --build http://192.168.0.10/build2/ucs_5.0-0/source/python-trml2pdf_1.2-3A~5.0.0.202006250030.dsc
+cd python-trml2pdf-1.2
+vi debian/control # remove py2 build deps and package
+vi debian/rules # remove py2 build
+eval $BUILD_CMD
+
+for DIR in \
+	univention-directory-reports \
+	univention-directory-listener \
+	univention-base-files \
+	univention-runit
+do
+	cd /sync/$DIR
+	eval $BUILD_CMD || break
+done
+
 
 -----
 
