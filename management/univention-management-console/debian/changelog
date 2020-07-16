@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-87) unstable; urgency=medium
+
+  * Bug #50583: remove connect_timer when shutting down module process
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jul 2020 10:19:26 +0200
+
 univention-management-console (11.0.4-86) unstable; urgency=medium
 
   * Bug #50583: fix various memory leaks in the UMC-Server process
