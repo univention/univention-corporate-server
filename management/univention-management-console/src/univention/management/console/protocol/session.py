@@ -110,9 +110,11 @@ class ModuleProcess(Client):
 		self._queued_requests = []
 		self._inactivity_timer = None
 		self._inactivity_counter = 0
+		self._connect_timer = None
 
 	def stop(self):
 		CORE.process('ModuleProcess: stopping %r' % (self.__pid,))
+		notifier.timer_remove(self._connect_timer)
 		if self.__process:
 			self.disconnect()
 			self.__process.signal_disconnect('killed', self._died)
@@ -510,7 +512,7 @@ class ProcessorBase(Base):
 				self.__processes[module_name] = mod_proc
 
 				cb = notifier.Callback(self._mod_connect, mod_proc, msg)
-				notifier.timer_add(50, cb)
+				mod_proc._connect_timer = notifier.timer_add(50, cb)
 			else:
 				proc = self.__processes[module_name]
 				if proc.running:
@@ -716,6 +718,7 @@ class ProcessorBase(Base):
 			req = Request('EXIT', arguments=[module_name, 'internal'])
 			process = self.__processes.pop(module_name)
 			process.request(req)
+			notifier.timer_remove(process._connect_timer)
 			notifier.timer_add(4000, process.stop)
 
 		if self._user_connections:
