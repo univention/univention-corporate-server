@@ -125,7 +125,7 @@ if "$docker"; then
 	# TODO add personal ssh key for kvm server access via env
 	# docker command
 	declare -a cmd=("docker" "run")
-	cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/root/ec2:ro "-v" ~/.ssh:/root/.ssh:ro)
+	cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/root/ec2:ro "-v" ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro)
 	cmd+=("--dns" "192.168.0.3" "--dns-search=knut.univention.de")
 	cmd+=(-w /test)
 	cmd+=(--rm)
