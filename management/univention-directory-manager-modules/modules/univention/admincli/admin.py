@@ -400,7 +400,7 @@ def doit(arglist):
 	except ldap.SERVER_DOWN:
 		return out + ["E: The LDAP Server is currently not available.", "OPERATION FAILED"]
 	except univention.admin.uexceptions.base as e:
-		ud.debug(ud.ADMIN, ud.WARN, traceback.format_exc())
+		ud.debug(ud.ADMIN, ud.WARN, str(e))
 
 		# collect error information
 		msg = []
@@ -421,6 +421,9 @@ def doit(arglist):
 		# append to the output
 		out.append(' '.join(msg))
 		return out + ["OPERATION FAILED"]
+	except BaseException:
+		ud.debug(ud.ADMIN, ud.ERROR, traceback.format_exc())
+		raise
 	return out
 
 
