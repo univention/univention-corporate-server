@@ -107,48 +107,58 @@ actions = {
 }
 
 
-def _c(n, t):
-	return t.clone(tagSet=t.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, n))
+def _sequence_component(name, tag_value, type):
+	return namedtype.NamedType(name, type.subtype(
+		explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple,
+							tag_value),))
+
+
+def _sequence_optional_component(name, tag_value, type):
+	return namedtype.OptionalNamedType(name, type.subtype(
+		explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple,
+							tag_value),))
 
 
 class PrincipalName(univ.Sequence):
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('name-type', _c(0, univ.Integer())),
-		namedtype.NamedType('name-string', _c(1, univ.SequenceOf(componentType=char.GeneralString()))))
+		_sequence_component('name-type', 0, univ.Integer()),
+		_sequence_component('name-string', 1, univ.SequenceOf(componentType=char.GeneralString()))
+	)
 
 
 class KdcReqBody(univ.Sequence):
-	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('kdc-options', _c(0, univ.BitString())),
-		namedtype.OptionalNamedType('cname', _c(1, PrincipalName())),
-		namedtype.NamedType('realm', _c(2, char.GeneralString())),
-		namedtype.OptionalNamedType('sname', _c(3, PrincipalName())),
-		namedtype.NamedType('till', _c(5, useful.GeneralizedTime())),
-		namedtype.NamedType('nonce', _c(7, univ.Integer())),
-		namedtype.NamedType('etype', _c(8, univ.SequenceOf(componentType=univ.Integer()))))
+		_sequence_component('kdc-options', 0, univ.BitString()),
+		_sequence_optional_component('cname', 1, PrincipalName()),
+		_sequence_component('realm', 2, char.GeneralString()),
+		_sequence_optional_component('sname', 3, PrincipalName()),
+		_sequence_optional_component('from', 4, useful.GeneralizedTime()),
+		_sequence_component('till', 5, useful.GeneralizedTime()),
+		_sequence_component('nonce', 7, univ.Integer()),
+		_sequence_component('etype', 8, univ.SequenceOf(componentType=univ.Integer())))
 
 
 class PAData(univ.Sequence):
+	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('padata-type', _c(1, univ.Integer())),
-		namedtype.NamedType('padata-value', _c(2, univ.OctetString())))
+		_sequence_component('padata-type', 1, univ.Integer()),
+		_sequence_component('padata-value', 2, univ.OctetString()))
 
 
 class AsReq(univ.Sequence):
 	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 10)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('pvno', _c(1, univ.Integer())),
-		namedtype.NamedType('msg-type', _c(2, univ.Integer())),
-		namedtype.NamedType('padata', _c(3, univ.SequenceOf(componentType=PAData()))),
-		namedtype.NamedType('req-body', KdcReqBody()))
+		_sequence_component('pvno', 1, univ.Integer()),
+		_sequence_component('msg-type', 2, univ.Integer()),
+		_sequence_component('padata', 3, univ.SequenceOf(componentType=PAData())),
+		_sequence_component('req-body', 4, KdcReqBody()))
 
 
 class AsRep(univ.Sequence):
 	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 11)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('pvno', _c(0, univ.Integer())),
-		namedtype.NamedType('msg-type', _c(1, univ.Integer()))
+		_sequence_component('pvno', 0, univ.Integer()),
+		_sequence_component('msg-type', 1, univ.Integer())
 		# some more omitted
 	)
 
@@ -156,8 +166,8 @@ class AsRep(univ.Sequence):
 class KrbError(univ.Sequence):
 	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 30)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('pvno', _c(0, univ.Integer())),
-		namedtype.NamedType('msg-type', _c(1, univ.Integer()))
+		_sequence_component('pvno', 0, univ.Integer()),
+		_sequence_component('msg-type', 1, univ.Integer())
 		# some more omitted
 	)
 
@@ -178,33 +188,48 @@ class EmptyResponse(KerberosException):
 	pass
 
 
+class Principal(object):
+
+	def __init__(self, name, realm, princ_type):
+		self.type = princ_type
+		self.realm = realm
+		self.components = [name, realm]
+
+	def components_to_asn1(self, name):
+		name.setComponentByName('name-type', int(self.type))
+		strings = name.setComponentByName('name-string').getComponentByName('name-string')
+		for i, c in enumerate(self.components):
+			strings.setComponentByPosition(i, c)
+		return name
+
+
+def seq_set(seq, name, builder=None):
+	component = seq.setComponentByName(name).getComponentByName(name)
+	if builder is not None:
+		seq.setComponentByName(name, builder(component))
+	else:
+		seq.setComponentByName(name)
+	return seq.getComponentByName(name)
+
+
 def build_kerberos_request(target_realm, user_name):
-	req_body = KdcReqBody()
-	req_body['kdc-options'] = "'01010000100000000000000000000000'B"
-
-	req_body['cname'] = univ.noValue
-	req_body['cname']['name-type'] = 1  # NT_PRINCIPAL
-	req_body['cname']['name-string'] = univ.noValue
-	req_body['cname']['name-string'][0] = user_name
-
-	req_body['realm'] = target_realm
-
-	req_body['sname'] = univ.noValue
-	req_body['sname']['name-type'] = 2  # NT_SRV_INST
-	req_body['sname']['name-string'] = univ.noValue
-	req_body['sname']['name-string'][0] = 'krbtgt'
-	req_body['sname']['name-string'][1] = target_realm
-
-	req_body['till'] = '19700101000000Z'
-	req_body['nonce'] = random.SystemRandom().getrandbits(31)
-	req_body['etype'] = univ.noValue
-	req_body['etype'][0] = 18  # AES256_CTS_HMAC_SHA1_96
 
 	as_req = AsReq()
 	as_req['pvno'] = 5
 	as_req['msg-type'] = 10  # AS-REQ
 	as_req['padata'] = univ.noValue
-	as_req['req-body'] = req_body
+
+	serverName = Principal('krbtgt', target_realm, 1)
+	clientName = Principal(user_name, target_realm, 1)
+
+	req_body = seq_set(as_req, 'req-body')
+	req_body['kdc-options'] = [0 for i in range(0, 32)]
+	seq_set(req_body, 'sname', serverName.components_to_asn1)
+	seq_set(req_body, 'cname', clientName.components_to_asn1)
+
+	req_body['realm'] = target_realm
+	req_body['till'] = '19700101000000Z'
+	req_body['nonce'] = random.SystemRandom().getrandbits(31)
 
 	return pyasn1.codec.der.encoder.encode(as_req)
 
