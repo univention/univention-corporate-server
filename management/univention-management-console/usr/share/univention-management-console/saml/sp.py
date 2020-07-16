@@ -1,5 +1,6 @@
 # http://pysaml2.readthedocs.org/en/latest/howto/config.html
 import glob
+import os.path
 from tempfile import NamedTemporaryFile
 from cryptography import x509
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
@@ -8,6 +9,7 @@ from cryptography.hazmat.backends import default_backend
 
 from saml2 import BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
 from saml2.saml import NAME_FORMAT_URI
+import saml2.attributemaps
 
 from univention.config_registry.interfaces import Interfaces
 from univention.config_registry import ConfigRegistry
@@ -73,7 +75,7 @@ CONFIG = {
 			"required_attributes": ["uid"],
 		},
 	},
-	"attribute_map_dir": "/usr/lib/python2.7/dist-packages/saml2/attributemaps/",
+	"attribute_map_dir": os.path.dirname(saml2.attributemaps.__file__),
 	"key_file": "/etc/univention/ssl/%s/private.key" % (fqdn,),
 	"cert_file": "/etc/univention/ssl/%s/cert.pem" % (fqdn,),
 	"xmlsec_binary": "/usr/bin/xmlsec1",
