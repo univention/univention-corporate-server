@@ -77,7 +77,7 @@ def check_ini_files(dirname):
                   "file. Error: %r" % (filename, exc))
 
 
-def check_ini_files_in_all_directories(dirname):
+def check_ini_files_in_all_directories():
     for appcenter_cache in Apps().get_appcenter_caches():
         for cache in appcenter_cache.get_app_caches():
             check_ini_file(cache.get_cache_dir())
@@ -85,7 +85,7 @@ def check_ini_files_in_all_directories(dirname):
 
 if __name__ == '__main__':
     # find and check all .ini files:
-    check_ini_files()
+    check_ini_files_in_all_directories()
 
     if failures_counter:
         utils.fail("\nThere were %d problem(s) detected in the .ini files, "
