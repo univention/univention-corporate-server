@@ -1,3 +1,9 @@
+ucs-test (9.0.4-6) unstable; urgency=medium
+
+  * Bug #51647: Test AD user mail attribute changes in ad/member mode
+
+ -- Arvid <requate@univention.de>  Thu, 16 Jul 2020 18:31:14 +0200
+
 ucs-test (9.0.4-5) unstable; urgency=medium
 
   * Bug #50583: fix reverting of temporary module timeout
