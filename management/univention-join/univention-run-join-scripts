@@ -222,6 +222,7 @@ echo
 echo "univention-run-join-scripts started"
 date
 echo
+EXITCODE=0
 joinscript_check_status_file >&3
 if [ -e "/usr/lib/univention-install/" ]
 then
@@ -263,6 +264,7 @@ then
 		if [ $RET != 0 ]; then
 			[ -x /usr/sbin/univention-admin-diary-entry-create ] &&
 			/usr/sbin/univention-admin-diary-entry-create --event JOIN_SCRIPT_FAILED --arg "joinscript=$(basename "$i")"
+			EXITCODE=1
 			echo -e "\033[60Gfailed (exitcode: $RET)" >&3
 		else
 			echo -e "\033[60Gdone" >&3
@@ -281,4 +283,4 @@ date
 echo "univention-run-join-scripts finished"
 echo
 
-exit 0
+exit $EXITCODE
