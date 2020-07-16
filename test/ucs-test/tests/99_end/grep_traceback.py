@@ -60,6 +60,7 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 					tb.occurred += 1
 
 	print(len(tracebacks))
+	found = False
 	for traceback, exceptions in tracebacks.items():
 		ignored_exc = (ignore for exc in exceptions for ignore in ignore_exceptions if ignore.search(exc))
 		ignored_tracebacks = (ignore for exc in exceptions for ignore in ignore_tracebacks if ignore.search(exc))
@@ -68,13 +69,14 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 			continue
 		except StopIteration:
 			pass
+		found = True
 		print('%d times:' % (exceptions.occurred,))
 		print('Traceback (most recent call last):')
 		print(traceback, end='')
 		for exc in exceptions:
 			print(exc, end=' ')
 		print()
-	return not tracebacks
+	return not found
 
 
 if __name__ == '__main__':
@@ -83,4 +85,4 @@ if __name__ == '__main__':
 	parser.add_argument('--ignore-exception', '-i', default='^$')
 	parser.add_argument('filename', nargs='+')
 	args = parser.parse_args()
-	sys.exit(int(main(args.filename, ignore_exceptions=[re.compile(args.ignore_exception)])))
+	sys.exit(int(not main(args.filename, ignore_exceptions=[re.compile(args.ignore_exception)])))
