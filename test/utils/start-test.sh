@@ -3,19 +3,38 @@
 # Execute UCS tests in EC2 or KVM environment
 #
 
-#set -x
-
 die () {
 	echo "$*" >&2
 	exit 1
 }
 
-[ -f "$1" ] ||
-	die "Missing test config file!"
+cleanup () {
+	[ $DEBUG = 0 ] && [ -f "$docker_env_file" ] && rm "$docker_env_file"
+}
+
+trap cleanup EXIT
+
+[ -f "$1" ] || die "Missing test config file!"
+[ -f ~/.boto ] || die "Missing ~/.boto file for ec2 access!"
+[ -f ~/ec2/scripts/activate-errata-test-scope.sh ] || "Missing script ~/ec2/scripts/activate-errata-test-scope.sh to activate test errata repo!"
+[ -f ~/ec2/license/license.secret ] || "Missing secret file ~/ec2/license/license.secret for getting test license!"
+[ -f ~/ec2/keys/tech.pem ] || "Missing key file ~/ec2/keys/tech.pem for access to ec2 instances!"
+[ -d ./utils ] || die "./utils dir is missing!"
+[ -d ./scenarios ] || die "./scenarios dir is missing!"
+[ -d ./product-tests ] || die "./product-tests dir is missing!"
+
 
 release='4.4-5'
 old_release='4.3-5'
 kvm_template_version='4.4-5+e652'
+image=docker-registry.knut.univention.de/ucs-ec2-tools
+
+# a list of important env vars that are passed to the docker container
+env_vars="USER KVM_USER CURRENT_AMI OLD_AMI UCS_MINORRELEASE TARGET_VERSION UCS_VERSION OLD_VERSION KVM_TEMPLATE KVM_UCSVERSION KVM_OLDUCSVERSION KVM_BUILD_SERVER KVM_MEMORY KVM_CPUS EXACT_MATCH SHUTDOWN RELEASE_UPDATE ERRATA_UPDATE UCSSCHOOL_RELEASE CFG UCS_TEST_RUN HALT TERMINATE_ON_SUCCESS REPLACE BUILD_BRANCH BUILD_REPO NETINSTALL_IP1 NETINSTALL_IP2"
+
+docker_env_file="$(mktemp)"
+DEBUG="${DEBUG:=0}"
+DOCKER="${DOCKER:=0}"
 
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 7 - ami-0bbba0e6b007e1980
 export CURRENT_AMI=ami-0bbba0e6b007e1980
@@ -90,47 +109,49 @@ fi
 KVM=false
 grep -q '^\w*kvm_template' "$CFG" && KVM=true # if kvm is configure in cfg, use kvm
 [ "$KVM_BUILD_SERVER" = "EC2" ] && KVM=false
-
-if "$KVM"; then
-	exe='ucs-kvm-create'
-else
-	exe='ucs-ec2-create'
-fi
+exe='ucs-ec2-create'
+"$KVM" && exe='ucs-kvm-create'
 
 # start the test
-declare -a cmd=("$exe" -c "$CFG")
+if [ "$DOCKER" != 0 ]; then
+	# get the image
+	docker pull $image
+	# create env file
+	for env_var in $env_vars; do
+		echo $env_var=${!env_var} >> $docker_env_file
+	done
+	# get aws credentials
+	echo AWS_ACCESS_KEY_ID="$(cat ~/.boto | sed -n 's/^\w*aws_access_key_id *= *\(.*\)/\1/p')" >> $docker_env_file
+	echo AWS_SECRET_ACCESS_KEY="$(cat ~/.boto | sed -n 's/^\w*aws_secret_access_key *= *\(.*\)/\1/p')" >> $docker_env_file
+	# TODO add ~/ec2/keys/tech.pem via env
+	# TODO add personal ssh key for kvm server access via env
+	# docker command
+	declare -a cmd=("docker" "run")
+	cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/root/ec2:ro "-v" ~/.ssh:/root/.ssh:ro)
+	cmd+=("--dns" "192.168.0.3" "--dns-search=knut.univention.de")
+	cmd+=(-w /test)
+	cmd+=(--rm)
+	cmd+=(--env-file "$docker_env_file")
+	cmd+=($image)
+	cmd+=($exe -c $CFG)
+else
+	declare -a cmd=("$exe" -c "$CFG")
+	# shellcheck disable=SC2123
+	PATH="./ucs-ec2-tools${PATH:+:$PATH}"
+fi
+
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
 "$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
 "$EXACT_MATCH" && cmd+=("-e")
 "$SHUTDOWN" && cmd+=("-s")
-# shellcheck disable=SC2123
-PATH="./ucs-ec2-tools${PATH:+:$PATH}"
+
 echo "starting test with ${cmd[*]}"
-echo "	CURRENT_AMI=$CURRENT_AMI"
-echo "	OLD_AMI=$OLD_AMI"
-echo "	UCS_MINORRELEASE=$UCS_MINORRELEASE"
-echo "	TARGET_VERSION=$TARGET_VERSION"
-echo "	UCS_VERSION=$UCS_VERSION"
-echo "	OLD_VERSION=$OLD_VERSION"
-echo "	KVM_TEMPLATE=$KVM_TEMPLATE"
-echo "	KVM_UCSVERSION=$KVM_UCSVERSION"
-echo "	KVM_OLDUCSVERSION=$KVM_OLDUCSVERSION"
-echo "	KVM_BUILD_SERVER=$KVM_BUILD_SERVER"
-echo "	KVM_MEMORY=$KVM_MEMORY"
-echo "	KVM_CPUS=$KVM_CPUS"
-echo "	EXACT_MATCH=$EXACT_MATCH"
-echo "	SHUTDOWN=$SHUTDOWN"
-echo "	RELEASE_UPDATE=$RELEASE_UPDATE"
-echo "	ERRATA_UPDATE=$ERRATA_UPDATE"
-echo "	UCSSCHOOL_RELEASE=$UCSSCHOOL_RELEASE"
-echo "	HALT=$HALT"
-echo "	UCS_TEST_RUN=$UCS_TEST_RUN"
-echo "	KVM_USER=$KVM_USER"
-echo "	TERMINATE_ON_SUCCESS=$TERMINATE_ON_SUCCESS"
-echo "	REPLACE=$REPLACE"
-echo "	UCSSCHOOL_BRANCH=$UCSSCHOOL_BRANCH"
-echo "	UCS_BRANCH=$UCS_BRANCH"
+for env_var in $env_vars; do
+	echo "  $env_var=${!env_var}"
+done
+
+[ "$DEBUG" != 0 ] && exit 0
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
