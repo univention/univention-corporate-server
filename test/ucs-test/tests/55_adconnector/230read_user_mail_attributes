@@ -38,6 +38,29 @@ ucr set connector/ad/mapping/user/primarymail=true
 ad_set_sync_mode "read"
 invoke-rc.d univention-ad-connector start
 
+cleanup() {
+	echo ==========Test done - Cleanup==========
+
+	udm_remove "users/user" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	udm_exists "users/user"; fail_bool 1 110
+	ad_exists "$AD_DN"; fail_bool 1 110
+
+	udm_remove mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
+	invoke-rc.d univention-ad-connector stop
+	ucr set connector/ad/mapping/user/primarymail="$SYNCPRIMARYMAIL"
+	#ucr set connector/ad/mapping/user/exchange="$SYNCEXCHANGE"
+	ad_set_sync_mode "$SYNCMODE"
+	invoke-rc.d univention-ad-connector start
+}
+trap cleanup EXIT
+
+## Boring test:
+## Creating a user in UDM/OpenLDAP in read mode should not sync the user to AD,
+## so all the remaning tests just assure that nothing happens in AD.
+
+section "==========Create user in UDM and set mailPrimaryAddress=========="
 udm_create "users/user" "" "" "" "" \
 	--option=person --option=mail --option=posix --option=samba --option=pki  --option=kerberos|| fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
@@ -65,18 +88,5 @@ udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddres
 #udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
 #udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
-
-udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
-
-udm_exists "users/user"; fail_bool 1 110
-ad_exists "$AD_DN"; fail_bool 1 110
-
-udm_remove mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
-invoke-rc.d univention-ad-connector stop
-ucr set connector/ad/mapping/user/primarymail="$SYNCPRIMARYMAIL"
-#ucr set connector/ad/mapping/user/exchange="$SYNCEXCHANGE"
-ad_set_sync_mode "$SYNCMODE"
-invoke-rc.d univention-ad-connector start
 
 exit "$RETVAL"
