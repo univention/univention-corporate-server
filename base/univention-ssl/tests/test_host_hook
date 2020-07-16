@@ -13,7 +13,7 @@ list_cert_names | grep -F -e "${fqdn}"
 [ 01 = "$(has_valid_cert "${fqdn}")" ]
 univention-certificate dump -name "${fqdn}"
 
-python -c '
+python3 -c '
 from M2Crypto import X509
 from sys import argv, exit
 f = argv[1]
@@ -22,7 +22,7 @@ e = c.get_ext("subjectAltName")
 v = e.get_value()
 a = v.split(", ")
 a = [_[len("DNS:"):] for _ in a if _.startswith("DNS:")]
-print "\n".join(a)
+print("\n".join(a))
 exit(0 if set(a) == set(argv[2:]) else 1)
 ' "${SSLBASE}/${fqdn}/cert.pem" "$name" "$fqdn"
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention SSH
@@ -122,12 +122,12 @@ def display_help(out=sys.stdout):
 		  copy files from/to remote computer systems,
 		  e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
 		'''  # noqa: E101
-	print >>out, trim(text % {'cmd': cmd})
+	print(trim(text % {'cmd': cmd}), file=out)
 
 
 def display_version(out=sys.stdout):
 	'''Display program name and version string.'''
-	print >>out, '%s @@package_version@@' % (cmd,)
+	print('%s @@package_version@@' % (cmd,), file=out)
 
 
 UNIVENTION_SSH_ASKPASS_HELPER = '/usr/lib/univention-ssh/univention-ssh-askpass'
@@ -182,10 +182,10 @@ try:
 				while i < len(sys.argv):
 					arg = sys.argv[i]
 					if arg in ('-e', '--rsh'):
-						print >>sys.stderr, 'Overwriting %s option' % (arg,)
+						print('Overwriting %s option' % (arg,), file=sys.stderr)
 						del sys.argv[i:i + 2]
 					elif arg.startswith('--rsh='):
-						print >>sys.stderr, 'Overwriting --rsh option' % (arg,)
+						print('Overwriting --rsh option' % (arg,), file=sys.stderr)
 						del sys.argv[i]
 					else:
 						i += 1
@@ -193,7 +193,7 @@ try:
 
 			pid = os.fork()
 			if pid < 0:
-				print >>sys.stderr, 'Failed to fork child process'
+				print('Failed to fork child process', file=sys.stderr)
 			elif pid == 0:  # child
 				# the password for the grandchild
 				os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
@@ -208,7 +208,7 @@ try:
 
 				os.execvp(command[0], command)
 
-				print >>sys.stderr, 'Failed to exec %s' % (' '.join(command),)
+				print('Failed to exec %s' % (' '.join(command),), file=sys.stderr)
 			else:  # parent
 				# close all file descriptors
 				max_fd = os.sysconf('SC_OPEN_MAX')
@@ -254,7 +254,7 @@ try:
 						self = os.getpid()
 						os.kill(self, sig)
 				except OSError as e:
-					print >>sys.stderr, 'Signal.'
+					print('Signal.', file=sys.stderr)
 					os.kill(pid, signal.SIGTERM)
 					cpid, status = os.waitpid(pid, os.WNOHANG)
 					if (cpid, status) == (0, 0):
@@ -264,10 +264,10 @@ try:
 			# the buck stops here: fatal error
 			sys.exit(1)
 except KeyError as e:
-	print >>sys.stderr, 'Unknown command %s' % (cmd,)
+	print('Unknown command %s' % (cmd,), file=sys.stderr)
 except IndexError as e:
 	display_help(sys.stderr)
 except IOError as e:
-	print >>sys.stderr, 'Failed to read password from %s' % (pw_filename,)
+	print('Failed to read password from %s' % (pw_filename,), file=sys.stderr)
 
 sys.exit(2)

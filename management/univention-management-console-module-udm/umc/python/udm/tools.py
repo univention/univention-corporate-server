@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -31,7 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import urllib2
+try:
+    from urllib.request import build_opener, install_opener, urlopen, ProxyHandler
+except ImportError:
+    from urllib2 import build_opener, install_opener, urlopen, ProxyHandler
 import ldap
 import ldap.modlist
 import ldif
@@ -179,15 +182,15 @@ def _check_license(ldap_connection):
 def install_opener(ucr):
 	proxy_http = ucr.get('proxy/http')
 	if proxy_http:
-		proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
-		opener = urllib2.build_opener(proxy)
-		urllib2.install_opener(opener)
+		proxy = ProxyHandler({'http': proxy_http, 'https': proxy_http})
+		opener = build_opener(proxy)
+		install_opener(opener)
 
 
 def urlopen(request):
 	# use this in __init__
 	# to have the proxy handler installed globally
-	return urllib2.urlopen(request)
+	return urlopen(request)
 
 
 def dump_license():

@@ -5,8 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-polib,
- python2.7-dev,
  python3-polib,
  python3-dev,
  univention-config-dev,
@@ -16,7 +14,6 @@ Standards-Version: 3.7.2
 Package: univention-management-console
 Architecture: all
 Depends:
- python-univention-management-console (= ${source:Version}),
  python3-univention-management-console (= ${source:Version}),
  univention-management-console-module-appcenter,
  univention-management-console-module-apps,
@@ -50,11 +47,8 @@ Description: UCS Management Console - Web based computer administration tool
 Package: univention-management-console-server
 Architecture: all
 Depends:
- cy2-saml,
- pam-saml,
- python-daemon,
- python-univention-lib (>= 1.0.25-1),
- python-univention-management-console (= ${source:Version}),
+# cy2-saml,  # no idea where the source is for this
+# pam-saml,  # no idea where the source is for this
  python3-daemon,
  python3-univention-lib,
  python3-univention-management-console (= ${source:Version}),
@@ -74,35 +68,35 @@ Description: UCS Management Console - server
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-management-console
-Architecture: all
-Depends:
- python-cryptography,
- python-notifier (>= 0.9.5-1),
- python-openssl,
- python-pam,
- python-polib,
- python-six,
- python-univention,
- python-univention-config-registry,
- python-univention-directory-manager (>=9.0.75-1),
- python-univention-lib (>= 1.0.80),
- univention-join,
- ${misc:Depends},
- ${python:Depends},
-Provides:
- ${python:Provides},
-Description: UCS Management Console - Python 2 Modules
- UCS Management Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the backend-daemon, which
- can be installed on any UCS-system to provide functionalities
- for univention-management-console
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
+#Package: python-univention-management-console
+#Architecture: all
+#Depends:
+# python-cryptography,
+# python-notifier (>= 0.9.5-1),
+# python-openssl,
+# python-pam,
+# python-polib,
+# python-six,
+# python-univention,
+# python-univention-config-registry,
+# python-univention-directory-manager (>=9.0.75-1),
+# python-univention-lib (>= 1.0.80),
+# univention-join,
+# ${misc:Depends},
+# ${python:Depends},
+#Provides:
+# ${python:Provides},
+#Description: UCS Management Console - Python 2 Modules
+# UCS Management Console is a web based program to manage computers.
+# It has an extensible architecture, using modules to implement
+# its features. This package contains the backend-daemon, which
+# can be installed on any UCS-system to provide functionalities
+# for univention-management-console
+# .
+# This package is part of Univention Corporate Server (UCS),
+# an integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: http://www.univention.de/
 
 Package: python3-univention-management-console
 Architecture: all
@@ -141,11 +135,9 @@ Depends:
  devscripts,
  gettext,
  imagemagick | inkscape,
- python-polib,
- python-univention-config-registry,
  python3-polib,
  python3-univention-config-registry,
- univention-l10n-tools (>> 6.0.0-6),
+ univention-l10n-tools (>> 6.0.0
  ${misc:Depends},
  ${python:Depends},
 Description: UCS Management Console - development files
@@ -187,19 +179,15 @@ Architecture: all
 Depends:
  curl,
  openssl,
- python-cherrypy3,
- python-daemon,
- python-defusedxml,
- python-ipaddress,
- python-pysaml2,
- python-six,
- python-univention-management-console (= ${source:Version}),
  python3-cherrypy3,
  python3-daemon,
  python3-defusedxml,
+ python3-ipaddress,
  python3-pysaml2,
  python3-six,
  python3-univention-management-console (= ${source:Version}),
+ python3-defusedxml,
+ python3-six,
  shell-univention-lib,
  univention-base-files,
  univention-management-console-frontend,

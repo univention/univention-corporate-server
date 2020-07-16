@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -38,7 +38,11 @@ import shutil
 import tempfile
 import locale
 import urllib
-import urllib2
+try:
+    from urllib.request import Request
+    from urllib.error import HTTPError, URLError
+except ImportError:
+    from urllib2 import HTTPError, Request, URLError
 import traceback
 import inspect
 
@@ -1260,7 +1264,7 @@ class Instance(Base, ProgressMixin):
 		data['licence'] = license
 		data = urllib.urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
-		request = urllib2.Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
+		request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
 		self._request_license(request)
 		# creating a new ucr variable to prevent duplicated registration (Bug #35711)
 		handler_set(['ucs/web/license/requested=true'])
@@ -1269,7 +1273,7 @@ class Instance(Base, ProgressMixin):
 	def _request_license(self, request):
 		try:
 			urlopen(request)
-		except (urllib2.HTTPError, urllib2.URLError, IOError) as exc:
+		except (HTTPError, URLError, IOError) as exc:
 			strerror = ''
 			if hasattr(exc, 'read'):  # try to parse an html error
 				body = exc.read()

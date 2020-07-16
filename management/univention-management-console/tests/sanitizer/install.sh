@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-install -d /usr/lib/python2.7/dist-packages/univention/management/console/modules/sanitize/
+install -d /usr/lib/python3.8/dist-packages/univention/management/console/modules/sanitize/
 
-install -m755 __init__.py /usr/lib/python2.7/dist-packages/univention/management/console/modules/sanitize/__init__.py
+install -m755 __init__.py /usr/lib/python3.8/dist-packages/univention/management/console/modules/sanitize/__init__.py
 install -m644 sanitize.xml /usr/share/univention-management-console/modules/
 
 . /usr/share/univention-lib/umc.sh

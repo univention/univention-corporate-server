@@ -5,7 +5,6 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  dh-python,
- python-all,
  python3-all,
  univention-config-dev,
 Standards-Version: 3.5.2
@@ -17,7 +16,7 @@ Breaks:
  univention-management-module-udm (<< 9.0.14-3~),
 Architecture: all
 Depends:
- python-univention-directory-manager-rest (= ${binary:Version}),
+ python3-univention-directory-manager-rest (= ${binary:Version}),
  systemd,
  ${misc:Depends},
 Description: REST service for UCS Directory Manager
@@ -28,29 +27,29 @@ Description: REST service for UCS Directory Manager
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: python-univention-directory-manager-rest
-Architecture: all
-Depends:
- python-concurrent.futures,
- python-genshi,
- python-mimeparse,
- python-pycurl,
- python-six,
- python-tornado,
- python-univention-directory-manager (>= 14.0.14-15),
- python-univention-directory-reports,
- python-univention-management-console,
- python-uritemplate,
- univention-management-console-module-udm,
- ${misc:Depends},
- ${python:Depends},
-Description: REST service for UCS Directory Manager
- This package contains the REST service for UCS Directory Manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+#Package: python-univention-directory-manager-rest
+#Architecture: all
+#Depends:
+# python-concurrent.futures,
+# python-genshi,
+# python-mimeparse,
+# python-pycurl,
+# python-six,
+# python-tornado,
+# python-univention-directory-manager (>= 14.0.14-15),
+# python-univention-directory-reports,
+# python-univention-management-console,
+# python-uritemplate,
+# univention-management-console-module-udm,
+# ${misc:Depends},
+# ${python:Depends},
+#Description: REST service for UCS Directory Manager
+# This package contains the REST service for UCS Directory Manager.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: https://www.univention.de/
 
 Package: python3-univention-directory-manager-rest
 Architecture: all

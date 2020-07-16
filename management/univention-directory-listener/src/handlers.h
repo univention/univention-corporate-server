@@ -36,7 +36,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <ldap.h>
-#include <python2.7/Python.h>
+#include <python3.8/Python.h>
 #include <univention/ldap.h>
 
 #include "cache.h"

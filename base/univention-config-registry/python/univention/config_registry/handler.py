@@ -305,7 +305,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 		:param cmd: List of command with arguments.
 		:returns: Process exit code.
 		"""
-		null = open(os.path.devnull, 'rw')
+		null = open(os.path.devnull, 'r+')
 		try:
 			# tell possibly wrapped dpkg-divert to really do the work
 			env = dict(os.environ)

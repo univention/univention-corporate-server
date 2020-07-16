@@ -14,7 +14,7 @@ Architecture: all
 Depends:
  iputils-ping,
  ldap-utils,
- python-univention-lib (>= 1.0.25-1),
+ python3-univention-lib (>= 1.0.25-1),
  shell-univention-lib (>= 3.0.26-28),
  tofrodos,
  univention-config,
@@ -39,8 +39,8 @@ Description: UCS - join domains
 Package: univention-management-console-module-join
 Architecture: all
 Depends:
- python-dnspython,
- python-notifier,
+ python3-dnspython,
+ python3-notifier,
  univention-directory-manager-tools (>> 7.0.147),
  univention-join (= ${source:Version}),
  univention-management-console-module-lib (>= 3.0.0-1),
