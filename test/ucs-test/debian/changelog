@@ -1,3 +1,9 @@
+ucs-test (9.0.4-4) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 Jul 2020 10:36:37 +0200
+
 ucs-test (9.0.4-3) unstable; urgency=medium
 
   * Bug #51627: skip 21_appcenter-uninstall/99_install_after_uninstall,
