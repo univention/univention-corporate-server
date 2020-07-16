@@ -85,6 +85,9 @@
 			<title>Other system services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The return code of <command>univention-run-join-scripts</command> indicates errors now (<u:bug>35561</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
