@@ -171,6 +171,9 @@
 					The exit code of <package>univention-management-console-command</package> has been improved (<u:bug>34642</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					The diagnostic module <package>22_kdc_service</package> has been updated to work with <wordasword>pyasn1</wordasword> version 0.4 (<u:bug>51507</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
