@@ -3,7 +3,13 @@
 # Execute UCS tests in EC2 or KVM environment
 #
 
-debug="${DEBUG:=0}"
+release='4.4-5'
+old_release='4.3-5'
+kvm_template_version='4.4-5+e652'
+image=docker-registry.knut.univention.de/ucs-ec2-tools
+debug="${DEBUG:=false}"
+docker="${DOCKER:=false}"
+docker_env_file="$(mktemp)"
 
 die () {
 	echo "$*" >&2
@@ -11,7 +17,9 @@ die () {
 }
 
 cleanup () {
-	[ $debug = 0 ] && [ -f "$docker_env_file" ] && rm "$docker_env_file"
+	if "$debug"; then
+		[ -f "$docker_env_file" ] && rm "$docker_env_file"
+	fi
 }
 
 trap cleanup EXIT
@@ -23,16 +31,8 @@ trap cleanup EXIT
 [ -f ~/ec2/keys/tech.pem ] || "Missing key file ~/ec2/keys/tech.pem for access to ec2 instances!"
 [ -d ./utils ] || die "./utils dir is missing!"
 
-release='4.4-5'
-old_release='4.3-5'
-kvm_template_version='4.4-5+e652'
-image=docker-registry.knut.univention.de/ucs-ec2-tools
-
 # a list of important env vars that are passed to the docker container
 env_vars="USER KVM_USER CURRENT_AMI OLD_AMI UCS_MINORRELEASE TARGET_VERSION UCS_VERSION OLD_VERSION KVM_TEMPLATE KVM_UCSVERSION KVM_OLDUCSVERSION KVM_BUILD_SERVER KVM_MEMORY KVM_CPUS EXACT_MATCH SHUTDOWN RELEASE_UPDATE ERRATA_UPDATE UCSSCHOOL_RELEASE CFG UCS_TEST_RUN HALT TERMINATE_ON_SUCCESS REPLACE BUILD_BRANCH BUILD_REPO NETINSTALL_IP1 NETINSTALL_IP2"
-
-docker_env_file="$(mktemp)"
-docker="${DOCKER:=0}"
 
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 7 - ami-0bbba0e6b007e1980
 export CURRENT_AMI=ami-0bbba0e6b007e1980
@@ -111,9 +111,9 @@ exe='ucs-ec2-create'
 "$KVM" && exe='ucs-kvm-create'
 
 # start the test
-if [ "$docker" != 0 ]; then
+if "$docker"; then
 	# get the image
-	docker pull $image
+	docker pull $image >/dev/null
 	# create env file
 	for env_var in $env_vars; do
 		echo $env_var=${!env_var} >> $docker_env_file
@@ -149,7 +149,7 @@ for env_var in $env_vars; do
 	echo "  $env_var=${!env_var}"
 done
 
-[ "$debug" != 0 ] && exit 0
+"$debug" && exit 0
 
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
