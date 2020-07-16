@@ -22,7 +22,6 @@ trap cleanup EXIT
 [ -f ~/ec2/license/license.secret ] || "Missing secret file ~/ec2/license/license.secret for getting test license!"
 [ -f ~/ec2/keys/tech.pem ] || "Missing key file ~/ec2/keys/tech.pem for access to ec2 instances!"
 [ -d ./utils ] || die "./utils dir is missing!"
-[ -d ./scenarios ] || die "./scenarios dir is missing!"
 
 release='4.4-5'
 old_release='4.3-5'
