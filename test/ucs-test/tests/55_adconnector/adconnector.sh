@@ -77,6 +77,8 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 # with the normal checks in your testcase.
 #
 
+. /usr/share/univention-lib/ucr.sh
+
 ad_is_connector_running () {
 	/etc/init.d/univention-ad-connector status >/dev/null 2>&1
 }
@@ -203,7 +205,18 @@ function ad_delete () {
 
 	info "Recursively deleting $dn"
 
-	ldapdelete -r -h "$(ucr get ${configbase}/ad/ldap/host)" -x -D "$(ucr get ${configbase}/ad/ldap/binddn)" -w "$(cat "$pwfile")" "$dn"
+	if is_ucr_true "${configbase}/ad/ldap/kerberos"; then
+		eval "$(ucr shell tests/domainadmin/account)"
+		## Note: tests/domainadmin/account is an OpenLDAP DN but
+		##       we only extract the username from it
+		rdn="${tests_domainadmin_account%%,*}"
+		username="${rdn#*=}"
+		kdestroy
+		kinit --password-file="$(ucr get tests/domainadmin/pwdfile)" "$username"
+		ldapdelete -r -h "$(ucr get ${configbase}/ad/ldap/host)" -Y GSSAPI "$dn"
+	else
+		ldapdelete -r -h "$(ucr get ${configbase}/ad/ldap/host)" -x -D "$(ucr get ${configbase}/ad/ldap/binddn)" -w "$(cat "$pwfile")" "$dn"
+	fi
 }
 
 function ad_move () {

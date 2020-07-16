@@ -11,6 +11,8 @@ except ImportError:
 	except ImportError:
 		def compatible_modstring(dn):
 			return dn
+import os
+import subprocess
 
 baseConfig = ConfigRegistry()
 baseConfig.load()
@@ -69,14 +71,38 @@ class LDAPConnection(object):
 				ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, self.ca_file)
 			if use_starttls:
 				self.lo.start_tls_s()
-			self.lo.simple_bind_s(self.login_dn, login_pw)
+		except Exception:
+			ex = 'LDAP Connection to "%s:%s" failed (TLS: %s, Certificate: %s)\n' % (self.host, self.port, not no_starttls, self.ca_file)
+			import traceback
+			raise Exception(ex + traceback.format_exc())
 
-		except:
-			ex = 'LDAP Connection to "%s:%s" as "%s" with password "%s" failed (TLS: %s, Certificate: %s)\n' % (self.host, self.port, self.login_dn, login_pw, not no_starttls, self.ca_file)
+		try:
+			if self.kerberos:
+				os.environ['KRB5CCNAME'] = '/tmp/ucs-test-ldap-glue.cc'
+				self.get_kerberos_ticket()
+				auth = ldap.sasl.gssapi("")
+				self.lo.sasl_interactive_bind_s("", auth)
+			else:
+				self.lo.simple_bind_s(self.login_dn, login_pw)
+		except Exception:
+			if self.kerberos:
+				cred_msg = 'Kerberos'
+			else:
+				cred_msg = 'password "%s"' % (login_pw,)
+			ex = 'LDAP Bind as "%s" with %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (self.login_dn, cred_msg, self.host, self.port, not no_starttls, self.ca_file)
 			import traceback
 			raise Exception(ex + traceback.format_exc())
 
 		self.lo.set_option(ldap.OPT_REFERRALS, 0)
+
+	def get_kerberos_ticket(self):
+		p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
+		p1.wait()
+		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.login_dn]
+		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+		stdout, stderr = p1.communicate()
+		if p1.returncode != 0:
+			raise Exception('The following command failed: "%s" (%s): %s' % (''.join(cmd_block), p1.returncode, stdout.decode('UTF-8')))
 
 	def exists(self, dn):
 		try:

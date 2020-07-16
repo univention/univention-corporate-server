@@ -33,8 +33,15 @@ class ADConnection(ldap_glue.LDAPConnection):
 		self.configbase = configbase
 		self.adldapbase = baseConfig['%s/ad/ldap/base' % configbase]
 		self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-		self.login_dn = baseConfig['%s/ad/ldap/binddn' % configbase]
-		self.pw_file = baseConfig['%s/ad/ldap/bindpw' % configbase]
+		self.kerberos = baseConfig['%s/ad/ldap/kerberos' % configbase]
+		if self.kerberos:  # i.e. if UCR ad/member=true
+			## Note: tests/domainadmin/account is an OpenLDAP DN but
+			##       we only extract the username from it in ldap_glue
+			self.login_dn = baseConfig['tests/domainadmin/account']
+			self.pw_file = baseConfig['tests/domainadmin/pwdfile']
+		else:
+			self.login_dn = baseConfig['%s/ad/ldap/binddn' % configbase]
+			self.pw_file = baseConfig['%s/ad/ldap/bindpw' % configbase]
 		self.host = baseConfig['%s/ad/ldap/host' % configbase]
 		self.port = baseConfig['%s/ad/ldap/port' % configbase]
 		self.ca_file = baseConfig['%s/ad/ldap/certificate' % configbase]
