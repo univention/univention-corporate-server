@@ -1,3 +1,9 @@
+univention-join (12.0.0-3) unstable; urgency=medium
+
+  * Bug #35561: fix exitcode of univention-run-join-scripts
+
+ -- Florian Best <best@univention.de>  Thu, 16 Jul 2020 15:43:53 +0200
+
 univention-join (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
