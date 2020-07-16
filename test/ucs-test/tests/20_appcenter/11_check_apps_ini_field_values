@@ -80,7 +80,7 @@ def check_ini_files(dirname):
 def check_ini_files_in_all_directories():
     for appcenter_cache in Apps().get_appcenter_caches():
         for cache in appcenter_cache.get_app_caches():
-            check_ini_file(cache.get_cache_dir())
+            check_ini_files(cache.get_cache_dir())
 
 
 if __name__ == '__main__':
