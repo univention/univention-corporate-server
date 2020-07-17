@@ -1,3 +1,21 @@
+univention-config-registry (15.0.0-7) unstable; urgency=low
+
+  * Bug #51680: Fix open(..., "rw") error
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 31 Jul 2020 15:40:34 +0200
+
+univention-config-registry (15.0.0-7) unstable; urgency=medium
+
+  * Bug #51419: Do and undo UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:34 +0200
+
+univention-config-registry (15.0.0-7) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:34 +0200
+
 univention-config-registry (15.0.0-6) unstable; urgency=medium
 
   * Bug #31257: improove UCR shell performance
