@@ -1,3 +1,9 @@
+univention-config-registry (14.0.0-18) unstable; urgency=low
+
+  * Bug #51680: Fix open(..., "rw") error
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 17 Jul 2020 14:12:05 +0200
+
 univention-config-registry (14.0.0-17) unstable; urgency=low
 
   * Bug #51374: Split univention.debhelper into separate package

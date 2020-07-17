@@ -302,14 +302,11 @@ class ConfigHandlerDiverting(ConfigHandler):
 		:param cmd: List of command with arguments.
 		:returns: Process exit code.
 		"""
-		null = open(os.path.devnull, 'rw')
-		try:
+		with open(os.path.devnull, 'w') as null:
 			# tell possibly wrapped dpkg-divert to really do the work
 			env = dict(os.environ)
 			env['DPKG_MAINTSCRIPT_PACKAGE'] = 'univention-config'
 			return subprocess.call(cmd, stdin=null, stdout=null, stderr=null, env=env)
-		finally:
-			null.close()
 
 	def need_divert(self):
 		# type: () -> bool
