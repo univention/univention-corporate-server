@@ -11,10 +11,6 @@ Build-Depends:
 Standards-Version: 3.5.2
 
 Package: univention-directory-manager-rest
-Replaces:
- univention-management-module-udm (<< 9.0.14-3~),
-Breaks:
- univention-management-module-udm (<< 9.0.14-3~),
 Architecture: all
 Depends:
  python-univention-directory-manager-rest (= ${binary:Version}),
@@ -41,7 +37,7 @@ Depends:
  python-univention-directory-reports,
  python-univention-management-console,
  python-uritemplate,
- univention-management-console-module-udm,
+ univention-management-console-module-udm (>= 10.0.0-1),
  ${misc:Depends},
  ${python:Depends},
 Description: REST service for UCS Directory Manager

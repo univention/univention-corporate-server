@@ -135,7 +135,7 @@ class Server(tornado.web.RequestHandler):
 
 	@classmethod
 	def main(cls):
-		parser = argparse.ArgumentParser(prog='python -m univention.admin.rest.server')
+		parser = argparse.ArgumentParser(prog='%s -m univention.admin.rest.server' % (sys.executable,))
 		parser.add_argument('-d', '--debug', type=int, default=2)
 		args = parser.parse_args()
 		ud.init('stdout', ud.FLUSH, ud.NO_FUNCTION)

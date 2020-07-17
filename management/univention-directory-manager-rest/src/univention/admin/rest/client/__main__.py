@@ -279,10 +279,9 @@ class CLIClient(object):
 
 
 def Unicode(bytestring):
-	try:
+	if isinstance(bytestring, bytes):
 		return bytestring.decode(sys.getfilesystemencoding())
-	except UnicodeDecodeError:
-		raise
+	return bytestring
 
 
 def parse_known_args(parser, client, known_args=None, subparsers=None):
@@ -388,7 +387,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
 
 def add_object_action_arguments(parser, client):
 	subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
-	parser.set_defaults(subparsers=subparsers)
+	parser.set_defaults(subparsers=subparsers, func=client.get_info)
 
 	def add_subparser(name, *args, **kwargs):
 		kwargs.setdefault('description', '%s: %s' % (name, kwargs.get('help', '')))
