@@ -127,12 +127,12 @@ class UMCTester(object):
 
 	def check_if_allowed_modules_are_visible(self):
 		available_modules = self.get_available_modules()
-		requiered_modules = [
+		required_modules = [
 			_('Univention Configuration Registry'),
 			_('Process overview')
 		]
 		differing_modules = set(
-			[module.lower() for module in requiered_modules]
+			[module.lower() for module in required_modules]
 		).symmetric_difference(set(
 			[module.lower() for module in available_modules]
 		))
