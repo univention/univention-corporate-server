@@ -2,19 +2,20 @@
 """Unit test for univention.config_registry.interfaces."""
 # pylint: disable-msg=C0103,E0611,R0904
 import pytest
-from os.path import devnull, dirname, join, pardir
-import sys
+from os.path import devnull
 import six
 if six.PY3:
 	from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 else:
 	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface
-sys.path.insert(0, join(dirname(__file__), pardir, 'python'))
 from univention.config_registry.interfaces import _Iface, Interfaces, forgiving, cmp_alnum  # noqa E402
 
 
 @pytest.fixture(autouse=True)
 def tmpucr(monkeypatch):
+	"""
+	Setup UCR instance using `dev/null` for all tests.
+	"""
 	monkeypatch.setenv('UNIVENTION_BASECONF', devnull)
 
 

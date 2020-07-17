@@ -2,11 +2,9 @@
 """Unit test for univention.config_registry.backend."""
 # pylint: disable-msg=C0103,E0611,R0904
 import os
-import sys
 import six
 import time
 import pytest
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
 from univention.config_registry.backend import ConfigRegistry  # noqa E402
 
 py2_only = pytest.mark.skipif(six.PY3, reason="Python 2 only")
@@ -15,27 +13,6 @@ TRUE_VALID = ('YES', 'yes', 'Yes', 'true', '1', 'enable', 'enabled', 'on')
 TRUE_INVALID = ('yes ', ' yes', '')
 FALSE_VALID = ('NO', 'no', 'No', 'false', '0', 'disable', 'disabled', 'off')
 FALSE_INVALID = ('no ', ' no', '')
-
-
-@pytest.fixture
-def ucr0(tmpdir):
-	ConfigRegistry.PREFIX = str(tmpdir)
-	ucr = ConfigRegistry()
-	return ucr
-
-
-@pytest.fixture
-def ucrf(ucr0):
-	ucr = ConfigRegistry(write_registry=ConfigRegistry.FORCED)
-	ucr['foo'] = 'FORCED'
-	ucr['bar'] = 'FORCED'
-	ucr.save()
-	ucr = ConfigRegistry()
-	ucr['bar'] = 'NORMAL'
-	ucr['baz'] = 'NORMAL'
-	ucr.save()
-	ucr0.load()
-	return ucr0
 
 
 class TestConfigRegistry(object):

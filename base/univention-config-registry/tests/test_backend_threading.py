@@ -1,10 +1,8 @@
 #!/usr/bin/python
 """Unit test for univention.config_registry.backend."""
 # pylint: disable-msg=C0103,E0611,R0904
-import os
-import sys
 from threading import Thread, Lock
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
+
 from univention.config_registry.backend import ConfigRegistry  # noqa E402
 
 

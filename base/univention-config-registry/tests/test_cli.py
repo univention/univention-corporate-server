@@ -2,11 +2,8 @@
 """
 Run (uninstalled) univention.config_registry to make sure all commands work
 """
-from os.path import dirname, pardir, join
-from sys import path
 import pytest
 
-path.insert(0, join(dirname(__file__), pardir, "python"))
 from univention.config_registry import main  # noqa E402
 
 

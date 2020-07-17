@@ -2,14 +2,14 @@
 """Unit test for univention.into_tools."""
 # pylint: disable-msg=C0103,E0611,R0904
 import pytest
-import os
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
 import univention.info_tools as uit  # noqa E402
 
 
 @pytest.fixture
 def lval0():
+	"""
+	Return an empty localized value instance.
+	"""
 	obj = uit.LocalizedValue()
 	uit.set_language('fr')
 	return obj
@@ -56,6 +56,9 @@ class TestLocalizedValue(object):
 
 @pytest.fixture
 def ldict0():
+	"""
+	Return an empty localized dictionary instance.
+	"""
 	obj = uit.LocalizedDictionary()
 	uit.set_language('fr')
 	return obj
@@ -151,6 +154,9 @@ class TestLocalizedDictionary(object):
 
 @pytest.fixture
 def lval():
+	"""
+	Return a pre-initialized localized value instance.
+	"""
 	lval = uit.LocalizedValue()
 	lval['de'] = 'foo'
 	lval['en'] = 'bar'
@@ -160,6 +166,9 @@ def lval():
 
 @pytest.fixture
 def ldict():
+	"""
+	Return a pre-initialized localized dictionary instance.
+	"""
 	ldict = uit.LocalizedDictionary()
 	ldict['val[de]'] = 'foo'
 	ldict['val[en]'] = 'bar'
