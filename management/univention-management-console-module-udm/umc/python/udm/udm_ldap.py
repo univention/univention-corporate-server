@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -41,6 +41,8 @@ import functools
 import inspect
 import locale
 from json import load
+
+import six
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
@@ -360,13 +362,13 @@ class UDM_Error(Exception):
 
 	def reraise(self):
 		if self.exc_info and self.exc_info != (None, None, None):
-			raise self.__class__, self, self.exc_info[2]
+			six.reraise(self.__class__, self, self.exc_info[2])
 		raise self
 
 	def __str__(self):
 		msg = getattr(self.exc, 'message', '')
 		for arg in self.exc.args:
-			if isinstance(arg, unicode):
+			if six.PY2 and isinstance(arg, unicode):  # noqa: F821
 				arg = arg.encode('utf-8')
 			if str(arg) not in msg:
 				msg = '%s %s' % (msg, arg)
@@ -468,13 +470,13 @@ class UDM_Module(object):
 		# The following code is a workaround to make sure that this is the
 		# case, however, this should be fixed correctly.
 		# This workaround has been documented as Bug #25163.
-		def _tmp_cmp(i, j):
+		def _tmp_cmp(i):
 			if i[0] == 'network':
-				return -1
-			return 0
+				return ("\x00", i[1])
+			return i
 
 		password_properties = self.password_properties
-		for property_name, value in sorted(properties.items(), _tmp_cmp):
+		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
 			if property_name in password_properties:
 				MODULE.info('Setting password property %s' % (property_name,))
 			else:
@@ -671,9 +673,9 @@ class UDM_Module(object):
 					result = []
 				else:
 					if simple_attrs is not None:
-						result = ldap_connection.search(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
+						result = ldap_connection.search(filter=six.text_type(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
 					else:
-						result = ldap_connection.searchDn(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
+						result = ldap_connection.searchDn(filter=six.text_type(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
 			else:
 				if self.module:
 					kwargs = {}
@@ -931,7 +933,7 @@ class UDM_Module(object):
 					_scanLayout(ielement)
 			elif isinstance(_layout, dict) and 'layout' in _layout:
 				_scanLayout(_layout['layout'])
-			elif isinstance(_layout, basestring):
+			elif isinstance(_layout, six.string_types):
 				inLayout.add(_layout)
 		_scanLayout(self.get_layout(ldap_dn))
 
@@ -947,7 +949,7 @@ class UDM_Module(object):
 		"""All properties of the UDM module"""
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
-		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
+		for key, prop in list(getattr(self.module, 'property_descriptions', {}).items()):
 			if key == 'filler':
 				continue  # FIXME: should be removed from all UDM modules
 			if key in AppAttributes.options_for_module(self.name):

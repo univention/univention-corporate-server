@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -37,11 +37,13 @@ import os
 import shutil
 import tempfile
 import locale
-import urllib
-import urllib2
 import traceback
 import inspect
 
+import six
+from six.moves.urllib_request import Request
+from six.moves.urllib_error import HTTPError, URLError
+from six.moves.urllib_parse import quote, urlencode
 import notifier
 import notifier.threads
 
@@ -255,7 +257,7 @@ class Instance(Base, ProgressMixin):
 		license_data = {}
 		try:
 			import univention.admin.license as udm_license
-		except:
+		except ImportError:
 			license_data['licenseVersion'] = 'gpl'
 		else:
 			license_data['licenseVersion'] = udm_license._license.version
@@ -264,10 +266,10 @@ class Instance(Base, ProgressMixin):
 					license_data[item] = {}
 					for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-						if isinstance(count, basestring):
+						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
-							except:
+							except ValueError:
 								count = None
 						license_data[item][lic_type.lower()] = count
 
@@ -278,10 +280,10 @@ class Instance(Base, ProgressMixin):
 					license_data[item] = {}
 					for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
 						count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-						if isinstance(count, basestring):
+						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
-							except:
+							except ValueError:
 								count = None
 						license_data[item][lic_type.lower()] = count
 				license_data['keyID'] = udm_license._license.licenseKeyID
@@ -320,7 +322,7 @@ class Instance(Base, ProgressMixin):
 
 			# Replace non-breaking space with a normal space
 			# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-			lic = lic.replace(unichr(160), " ")
+			lic = lic.replace(u'\xa0', " ")
 
 			lic_file = tempfile.NamedTemporaryFile(delete=False)
 			lic_file.write(lic)
@@ -667,7 +669,7 @@ class Instance(Base, ProgressMixin):
 
 			shutil.move(report_file, path)
 			os.chmod(filename, 0o600)
-			url = '/univention/command/udm/reports/get?report=%s' % (urllib.quote(os.path.basename(report_file)),)
+			url = '/univention/command/udm/reports/get?report=%s' % (quote(os.path.basename(report_file)),)
 			return {'URL': url}
 
 		thread = notifier.threads.Simple('ReportsCreate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
@@ -745,8 +747,7 @@ class Instance(Base, ProgressMixin):
 		return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
 		"""
 		containers = [{'id': x, 'label': ldap_dn2path(x)} for x in module.get_default_containers()]
-		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
-		return containers
+		return sorted(containers, key=lambda x: x['label'].lower())
 
 	@module_from_request
 	@simple_response
@@ -1258,9 +1259,9 @@ class Instance(Base, ProgressMixin):
 		data = {}
 		data['email'] = email
 		data['licence'] = license
-		data = urllib.urlencode(data)
+		data = urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
-		request = urllib2.Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
+		request = Request(url, data=data, headers={'User-agent': 'UMC/AppCenter'})
 		self._request_license(request)
 		# creating a new ucr variable to prevent duplicated registration (Bug #35711)
 		handler_set(['ucs/web/license/requested=true'])
@@ -1269,7 +1270,7 @@ class Instance(Base, ProgressMixin):
 	def _request_license(self, request):
 		try:
 			urlopen(request)
-		except (urllib2.HTTPError, urllib2.URLError, IOError) as exc:
+		except (HTTPError, URLError, IOError) as exc:
 			strerror = ''
 			if hasattr(exc, 'read'):  # try to parse an html error
 				body = exc.read()

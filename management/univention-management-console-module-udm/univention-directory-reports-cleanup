@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # UMC module for UDM
 #  cleanup old Univention directory report files
