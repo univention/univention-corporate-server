@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -31,11 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import urllib2
 import ldap
 import ldap.modlist
 import ldif
 import binascii
+
+from six.moves.urllib_request import build_opener, ProxyHandler
+from six.moves import urllib_request
 
 import univention.admin.uldap
 import univention.admin.uexceptions as udm_errors
@@ -173,21 +175,21 @@ def _check_license(ldap_connection):
 
 
 # TODO: this should probably go into univention-lib
-# and hide urllib/urllib2 completely
+# and hide urllib_request completely
 # i.e. it should be unnecessary to import them directly
 # in a module
 def install_opener(ucr):
 	proxy_http = ucr.get('proxy/http')
 	if proxy_http:
-		proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
-		opener = urllib2.build_opener(proxy)
-		urllib2.install_opener(opener)
+		proxy = ProxyHandler({'http': proxy_http, 'https': proxy_http})
+		opener = build_opener(proxy)
+		urllib_request.install_opener(opener)
 
 
 def urlopen(request):
 	# use this in __init__
 	# to have the proxy handler installed globally
-	return urllib2.urlopen(request)
+	return urllib_request.urlopen(request)
 
 
 def dump_license():
