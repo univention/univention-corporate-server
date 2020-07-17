@@ -88,7 +88,7 @@ class MagicBucket(object):
 
 		if state.time_remaining <= 0 and not state.requests and not state.session.has_active_module_processes():
 			CORE.process('Session timed out.')
-			self._cleanup(state.socket)
+			self._cleanup(state.socket, delay=True)
 		else:
 			# count down the timer second-wise (in order to avoid problems when
 			# changing the system time, e.g. via rdate)
@@ -224,20 +224,25 @@ class MagicBucket(object):
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
 
-	def _cleanup(self, socket):
+	def _cleanup(self, socket, delay=False):
 		state = self.__states.pop(socket, None)
 		if state is None:
 			return
 
 		state.session.close_session()
 
-		notifier.socket_remove(socket)
+		if delay or True:
+			notifier.timer_add(4000, notifier.Callback(self._close, state))
+		else:
+			self._close(socket)
+
+	def _close(self, state):
+		state.session.signal_disconnect('success', self._response)
+		notifier.socket_remove(state.socket)
 		try:
-			socket.close()
+			state.socket.close()
 		except Exception:
 			pass
-
-		state.session.signal_disconnect('success', self._response)
 
 
 class Server(signals.Provider):

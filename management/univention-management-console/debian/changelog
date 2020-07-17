@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-88) unstable; urgency=medium
+
+  * Bug #50583: wait before closing socket
+
+ -- Florian Best <best@univention.de>  Fri, 17 Jul 2020 18:16:39 +0200
+
 univention-management-console (11.0.4-87) unstable; urgency=medium
 
   * Bug #50583: remove connect_timer when shutting down module process
