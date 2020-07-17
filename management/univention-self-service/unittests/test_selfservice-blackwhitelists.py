@@ -29,7 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from univention.unittests.umc import import_umc_module
+from univentionunittests.umc import import_umc_module
 
 import pytest
 
@@ -42,65 +42,55 @@ def ldap_database_file():
 
 
 @pytest.fixture
-def blacklist_ucr(mocker, ucr):
-	ucr['umc/self-service/account-deregistration/blacklist/groups'] = 'Administrators,Domain Admins'
-	ucr['umc/self-service/account-deregistration/blacklist/users'] = ''
-	ucr['umc/self-service/account-deregistration/whitelist/groups'] = 'Domain Users'
-	ucr['umc/self-service/account-deregistration/whitelist/users'] = ''
-	ucr['umc/self-service/passwordreset/blacklist/groups'] = 'Administrators,Domain Admins'
-	ucr['umc/self-service/passwordreset/whitelist/groups'] = 'Domain Users'
-	ucr['umc/self-service/profiledata/blacklist/groups'] = 'Administrators,Domain Admins'
-	ucr['umc/self-service/profiledata/blacklist/users'] = ''
-	ucr['umc/self-service/profiledata/whitelist/groups'] = 'Domain Users'
-	ucr['umc/self-service/profiledata/whitelist/users'] = ''
-	mocker.patch.object(selfservice, 'ucr', ucr)
-	return ucr
+def blacklist_ucr(selfservice_ucr):
+	selfservice_ucr['umc/self-service/account-deregistration/blacklist/groups'] = 'Administrators,Domain Admins'
+	selfservice_ucr['umc/self-service/account-deregistration/blacklist/users'] = ''
+	selfservice_ucr['umc/self-service/account-deregistration/whitelist/groups'] = 'Domain Users'
+	selfservice_ucr['umc/self-service/account-deregistration/whitelist/users'] = ''
+	selfservice_ucr['umc/self-service/passwordreset/blacklist/groups'] = 'Administrators,Domain Admins'
+	selfservice_ucr['umc/self-service/passwordreset/whitelist/groups'] = 'Domain Users'
+	selfservice_ucr['umc/self-service/profiledata/blacklist/groups'] = 'Administrators,Domain Admins'
+	selfservice_ucr['umc/self-service/profiledata/blacklist/users'] = ''
+	selfservice_ucr['umc/self-service/profiledata/whitelist/groups'] = 'Domain Users'
+	selfservice_ucr['umc/self-service/profiledata/whitelist/users'] = ''
+	return selfservice_ucr
 
 
-@pytest.fixture
-def mocked_conn(mocker, lo, pos):
-	mocker.patch.object(selfservice, 'get_admin_connection', return_value=[lo, pos])
-	mocker.patch.object(selfservice, 'get_machine_connection', return_value=[lo, pos])
-	import univention.management.console.ldap as umc_ldap
-	mocker.patch.object(umc_ldap, '_getMachineConnection', return_value=[lo, pos])
-	mocker.patch.object(umc_ldap, '_getAdminConnection', return_value=[lo, pos])
-
-
-def test_blacklist_user_match(instance, blacklist_ucr, mocked_conn):
+def test_blacklist_user_match(selfservice_instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/users'.format(feature)] = 'hinderkampp'
-	assert instance.is_blacklisted('hinderkampp', feature)
+	assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_user_nomatch(instance, blacklist_ucr, mocked_conn):
+def test_blacklist_user_nomatch(selfservice_instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/users'.format(feature)] = 'hinderkampf'
-	assert not instance.is_blacklisted('hinderkampp', feature)
+	assert not selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_group_match(instance, blacklist_ucr, mocked_conn):
+def test_blacklist_group_match(selfservice_instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group1'
-	assert instance.is_blacklisted('hinderkampp', feature)
+	assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_group_nomatch(instance, blacklist_ucr, mocked_conn):
+def test_blacklist_group_nomatch(selfservice_instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group0'
-	assert not instance.is_blacklisted('hinderkampp', feature)
+	assert not selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_group_match_nested(instance, blacklist_ucr, mocked_conn):
+def test_blacklist_group_match_nested(selfservice_instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'selfservice-group2'
-	assert instance.is_blacklisted('hinderkampp', feature)
+	assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
-def test_blacklist_whitelist_precedence(instance, blacklist_ucr, mocked_conn):
+def test_blacklist_whitelist_precedence(selfservice_instance, blacklist_ucr, mocked_conn):
 	feature = 'passwordreset'
 	blacklist_ucr['umc/self-service/{}/whitelist/groups'.format(feature)] = 'selfservice-group1'
 	blacklist_ucr['umc/self-service/{}/blacklist/groups'.format(feature)] = 'Administrators,Domain Admins,selfservice-group2'
-	assert instance.is_blacklisted('hinderkampp', feature)
+	assert selfservice_instance.is_blacklisted('hinderkampp', feature)
 
 
 @pytest.mark.parametrize("ucrs,command,command_options,feature,expected_traceback", [
@@ -114,16 +104,16 @@ def test_blacklist_whitelist_precedence(instance, blacklist_ucr, mocked_conn):
 	([], 'validate_user_attributes', {"attributes": {}}, 'profiledata', selfservice.ServiceForbidden),
 	([('umc/self-service/account-deregistration/enabled', 'true')], 'deregister_account', {}, 'account-deregistration', selfservice.ServiceForbidden),
 ])
-def test_correct_feature_for_umc_command(instance, blacklist_ucr, mocked_conn, umc_request, mocker, ucrs, command, command_options, feature, expected_traceback):
+def test_correct_feature_for_umc_command(blacklist_ucr, selfservice_instance, mocked_conn, umc_request, mocker, ucrs, command, command_options, feature, expected_traceback):
 	username = 'hinderkampppp'
-	mocker.patch.object(instance, 'auth', return_value=(None, username))
-	mocker.patch.object(instance, '_check_token', return_value=True)
+	mocker.patch.object(selfservice_instance, 'auth', return_value=(None, username))
+	mocker.patch.object(selfservice_instance, '_check_token', return_value=True)
 
 	for (key, value) in ucrs:
 		blacklist_ucr[key] = value
-	is_blacklisted = mocker.patch.object(instance, 'is_blacklisted', return_value=True)
+	is_blacklisted = mocker.patch.object(selfservice_instance, 'is_blacklisted', return_value=True)
 	umc_request.options = {"username": username, "password": "univention"}
 	umc_request.options.update(command_options)
 	with pytest.raises(expected_traceback):
-		getattr(instance, command)(umc_request)
+		getattr(selfservice_instance, command)(umc_request)
 	is_blacklisted.assert_called_with(username, feature)
