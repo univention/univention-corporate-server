@@ -1,3 +1,10 @@
+univention-self-service (4.0.3-35) unstable; urgency=medium
+
+  * Bug #51262: When resetting password via email token, this (recovery) email
+    is considered verified
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 Jul 2020 10:53:57 +0200
+
 univention-self-service (4.0.3-34) unstable; urgency=medium
 
   * Bug #51533: Fix "forgot your password" link
