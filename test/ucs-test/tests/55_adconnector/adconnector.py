@@ -33,7 +33,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		self.configbase = configbase
 		self.adldapbase = baseConfig['%s/ad/ldap/base' % configbase]
 		self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-		self.kerberos = baseConfig['%s/ad/ldap/kerberos' % configbase]
+		self.kerberos = baseConfig.is_true('%s/ad/ldap/kerberos' % configbase)
 		if self.kerberos:  # i.e. if UCR ad/member=true
 			## Note: tests/domainadmin/account is an OpenLDAP DN but
 			##       we only extract the username from it in ldap_glue

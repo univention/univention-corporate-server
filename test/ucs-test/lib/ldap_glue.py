@@ -50,6 +50,7 @@ class LDAPConnection(object):
 		self.host = 'localhost'
 		self.port = baseConfig.get('ldap/server/port', 389)
 		self.ca_file = None
+		self.kerberos = False
 		self.connect(no_starttls)
 
 	def connect(self, no_starttls=False):

@@ -1,3 +1,9 @@
+ucs-test (9.0.4-7) unstable; urgency=medium
+
+  * Bug #51647: Fix test
+
+ -- Arvid <requate@univention.de>  Fri, 17 Jul 2020 20:42:39 +0200
+
 ucs-test (9.0.4-6) unstable; urgency=medium
 
   * Bug #51647: Test AD user mail attribute changes in ad/member mode
