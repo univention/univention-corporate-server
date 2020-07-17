@@ -11,15 +11,19 @@ Build-Depends:
  libunivention-debug-dev (>= 5.0.6-1),
  python-all,
  python-ipaddr,
+ python-mock,
  python-pytest,
  python-pytest-cov,
- python-univention-debhelper,
+ python-pytest-mock,
  python-six,
+ python-univention-debhelper,
+ python3 (>= 3.6) | python3-mock,
  python3-all,
  python3-pytest,
  python3-pytest-cov,
- python3-univention-debhelper,
+ python3-pytest-mock,
  python3-six,
+ python3-univention-debhelper,
 Standards-Version: 3.5.2
 
 Package: univention-config-registry

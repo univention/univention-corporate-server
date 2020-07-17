@@ -5,6 +5,7 @@
 # Detect deprecated base config
 0016-3: python/univention-config-registry:62
 0016-3: python/univention-config-registry:63
+0016-5: tests/test_handler.py
 # Internal use of custom has_key
 0009-5: python/univention/config_registry/frontend.py:164
 0009-5: python/univention/config_registry/frontend.py:216
@@ -25,6 +26,10 @@
 0009-2:tests/test_cli.py
 0009-5:tests/test_cli.py
 0010-2:tests/test_cli.py
+0010-2:tests/test_handler.py
+0010-2:tests/test_info.py
+0009-2:tests/test_handler.py
+0009-2:tests/test_info.py
 0009-2:tests/test_interfaces.py
 0009-5:tests/test_interfaces.py
 0010-2:tests/test_interfaces.py

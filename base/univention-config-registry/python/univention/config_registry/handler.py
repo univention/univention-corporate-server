@@ -648,7 +648,8 @@ class ConfigHandlers:
 		# type: () -> None
 		pass
 
-	def _get_cache_version(self, cache_file):
+	@staticmethod
+	def _get_cache_version(cache_file):
 		# type: (IO) -> int
 		"""
 		Read cached `.info` data.
@@ -716,7 +717,7 @@ class ConfigHandlers:
 		try:
 			typ = entry['Type'][0]
 			handler = getattr(self, '_get_handler_%s' % typ)
-		except (LookupError, NameError):
+		except (LookupError, AttributeError):
 			return None
 		else:
 			return handler(entry)
