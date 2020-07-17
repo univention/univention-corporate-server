@@ -1,7 +1,7 @@
 [univention-directory-manager-rest]
 Description[de]=Univention Directory Manager REST service
 Description[en]=Univention Directory Manager REST service
-programs=/usr/bin/python2.7 -m univention.admin.rest.server
+programs=/usr/bin/python3 -m univention.admin.rest.server
 icon=service/udm-server
 start_type=directory/manager/rest/autostart
 systemd=univention-directory-manager-rest.service
