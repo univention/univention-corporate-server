@@ -23,22 +23,12 @@ Depends:
  ${python:Depends},
 Provides:
  univention-directory-manager,
+ ${python3:Provides},
+ ${python:Provides},
 Replaces:
  univention-directory-manager (<< 9.0.0),
 Description: UMC module for UCS Directory Manager
  This package contains the UMC module for UCS Directory Manager.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
-
-Package: univention-management-module-udm
-Architecture: all
-Depends:
- univention-directory-manager-rest,
- ${misc:Depends},
-Description: Transitional package
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

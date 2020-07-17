@@ -1,4 +1,10 @@
-univention-management-console-module-udm (10.0.0-1) unstable; urgency=medium
+univention-management-console-module-udm (10.0.0-3) unstable; urgency=medium
+
+  * Bug #51329: Migrate UMC module to Python 3
+
+ -- Florian Best <best@univention.de>  Fri, 17 Jul 2020 14:30:55 +0200
+
+univention-management-console-module-udm (10.0.0-2) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
 
