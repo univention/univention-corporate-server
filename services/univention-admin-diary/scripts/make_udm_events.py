@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Diary
@@ -34,7 +34,7 @@
 
 # this is just a "one-shot", non-packaged script
 # that generates the DiaryEvent objects on a live UCS Master
-# python $0 2> errors >> /usr/lib/python2.7/dist-packages/univention/admindiary/events.py
+# python $0 2> errors >> /usr/lib/python3/dist-packages/univention/admindiary/events.py
 
 from __future__ import print_function
 import sys

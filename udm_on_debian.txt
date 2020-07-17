@@ -42,6 +42,8 @@ for DIR in \
 	management/univention-directory-manager-rest \
 	management/univention-management-console-module-udm \
 	packaging/univention-debhelper \
+	packaging/univention-l10n \
+	packaging/univention-unittests \
 	management/python-notifier \
 	management/univention-directory-reports \
 	management/univention-directory-listener \
@@ -63,6 +65,8 @@ for DIR in \
 	univention-debug-python \
 	univention-config-registry \
 	univention-python \
+	univention-l10n \
+	univention-unittests \
 	univention-lib \
 	univention-policy \
 	univention-licence \

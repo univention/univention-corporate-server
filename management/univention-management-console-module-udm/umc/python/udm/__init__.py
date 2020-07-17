@@ -324,7 +324,7 @@ class Instance(Base, ProgressMixin):
 
 			# Replace non-breaking space with a normal space
 			# https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-			lic = lic.replace(unichr(160), " ")
+			lic = lic.replace(chr(160), " ")
 
 			lic_file = tempfile.NamedTemporaryFile(delete=False)
 			lic_file.write(lic)

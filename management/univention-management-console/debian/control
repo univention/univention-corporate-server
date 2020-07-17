@@ -137,7 +137,7 @@ Depends:
  imagemagick | inkscape,
  python3-polib,
  python3-univention-config-registry,
- univention-l10n-tools (>> 6.0.0
+ univention-l10n-tools (>> 6.0.0),
  ${misc:Depends},
  ${python:Depends},
 Description: UCS Management Console - development files

@@ -1,4 +1,4 @@
-python/admindiary/client.py usr/lib/python2.7/dist-packages/univention/admindiary/
+python/admindiary/client.py usr/lib/python3/dist-packages/univention/admindiary/
 python/admindiary/client.py usr/lib/python3/dist-packages/univention/admindiary/
 univention-admin-diary-entry-create usr/sbin/
 server_password_change/univention-admin-diary usr/lib/univention-server/server_password_change.d/

@@ -404,7 +404,7 @@ class ResourceBase(object):
 		try:
 			if not authorization.lower().startswith('basic '):
 				raise ValueError()
-			username, password = base64.decodestring(authorization.split(' ', 1)[1]).split(':', 1)
+			username, password = base64.decodestring(authorization.split(' ', 1)[1].encode()).decode().split(':', 1)
 		except (ValueError, IndexError, binascii.Error):
 			raise HTTPError(400)
 
@@ -422,7 +422,7 @@ class ResourceBase(object):
 
 	def _auth_check_allowed_groups(self):
 		allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-		memberof = self.ldap_connection.getAttr(self.request.user_dn, b'memberOf')
+		memberof = self.ldap_connection.getAttr(self.request.user_dn, 'memberOf')
 		if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
 			raise HTTPError(403, 'Not in allowed groups.')
 
@@ -776,7 +776,7 @@ class ResourceBase(object):
 
 		def quote_param(s):
 			for i in range(32):  # remove non printable characters
-				s = s.replace(unichr(i), '')
+				s = s.replace(chr(i), '')
 			return s.replace('\\', '\\\\').replace('"', '\\"')
 		kwargs['rel'] = relation
 		params = []
@@ -1765,7 +1765,7 @@ class Modules(Resource):
 	def get(self):
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('All modules'))
-		for main_type, name in sorted(self.mapping.items(), key=lambda x: 0 if x[0] == 'navigation' else x[0]):
+		for main_type, name in self.mapping.items():  # sorted(self.mapping.items(), key=lambda x: 0 if x[0] == 'navigation' else x[0]):
 			title = _('All %s types') % (name,)
 			if '/' in name:
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
@@ -2353,7 +2353,7 @@ class Objects(FormBase, ReportingBase):
 		if not ldap_filter:
 			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
 			if filters:
-				ldap_filter = unicode(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
+				ldap_filter = univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters])
 
 		# TODO: replace the superordinate concept with container
 		superordinate = self.superordinate_dn_to_object(module, self.request.query_arguments['superordinate'])

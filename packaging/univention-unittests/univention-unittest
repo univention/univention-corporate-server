@@ -29,7 +29,7 @@
 #
 
 
-pytest   unittests/ -vl -rsx
+pytest   unittests/ -vl -rsx || true
 rc1=$?
 pytest-3 unittests/ -vl -rsx
 rc2=$?

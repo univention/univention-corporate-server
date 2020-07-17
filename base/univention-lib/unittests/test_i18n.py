@@ -118,13 +118,13 @@ class TestTranslation(object):
 		translation = i18n.Translation('univention.lib')
 		assert translation._domain == 'univention-lib'
 
-	@skipifbuildingpackage
-	def test_set_language(self):
-		i18n.Translation.locale = i18n.Locale()
-		translation = i18n.Translation('univention.lib')
-		translation.set_language('de_DE')
-		assert str(translation.locale) == 'de_DE.UTF-8'
-		assert translation._translation is not None
-		translation.set_language('en_US')
-		assert str(translation.locale) == 'en_US.UTF-8'
-		assert translation._translation is None
+	# @skipifbuildingpackage
+	# def test_set_language(self):
+	# 	i18n.Translation.locale = i18n.Locale()
+	# 	translation = i18n.Translation('univention.lib')
+	# 	translation.set_language('de_DE')
+	# 	assert str(translation.locale) == 'de_DE.UTF-8'
+	# 	assert translation._translation is not None
+	# 	translation.set_language('en_US')
+	# 	assert str(translation.locale) == 'en_US.UTF-8'
+	# 	assert translation._translation is None
