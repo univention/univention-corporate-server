@@ -87,10 +87,10 @@ class LDAPConnection(object):
 				self.lo.simple_bind_s(self.login_dn, login_pw)
 		except Exception:
 			if self.kerberos:
-				cred_msg = 'Kerberos'
+				cred_msg = '"%s" with Kerberos password "%s"' (self.principal, login_pw)
 			else:
-				cred_msg = 'password "%s"' % (login_pw,)
-			ex = 'LDAP Bind as "%s" with %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (self.login_dn, cred_msg, self.host, self.port, not no_starttls, self.ca_file)
+				cred_msg = '"%s" with simplebind password "%s"' % (self.login_dn, login_pw)
+			ex = 'LDAP Bind as %s failed over connection to "%s:%s" (TLS: %s, Certificate: %s)\n' % (self.login_dn, cred_msg, self.host, self.port, not no_starttls, self.ca_file)
 			import traceback
 			raise Exception(ex + traceback.format_exc())
 
@@ -99,7 +99,7 @@ class LDAPConnection(object):
 	def get_kerberos_ticket(self):
 		p1 = subprocess.Popen(['kdestroy', ], close_fds=True)
 		p1.wait()
-		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.login_dn]
+		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.principal]
 		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:

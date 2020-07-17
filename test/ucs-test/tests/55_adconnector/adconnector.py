@@ -38,6 +38,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 			## Note: tests/domainadmin/account is an OpenLDAP DN but
 			##       we only extract the username from it in ldap_glue
 			self.login_dn = baseConfig['tests/domainadmin/account']
+			self.principal = ldap.dn.str2dn(self.login_dn)[0][0][1]
 			self.pw_file = baseConfig['tests/domainadmin/pwdfile']
 		else:
 			self.login_dn = baseConfig['%s/ad/ldap/binddn' % configbase]
