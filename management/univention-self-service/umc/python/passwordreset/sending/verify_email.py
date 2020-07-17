@@ -37,7 +37,6 @@ from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 import email.charset
 
-from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
 

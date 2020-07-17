@@ -69,6 +69,9 @@ class UniventionSelfServiceTokenEmitter(object):
 	def udm_property(self):
 		return "self-service-????"
 
+	def password_reset_verified_recovery_email(self):
+		return self.message_application() == "password_reset" and self.udm_property == "PasswordRecoveryEmail"
+
 	@property
 	def token_length(self):
 		return 1024

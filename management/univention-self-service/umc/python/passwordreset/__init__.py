@@ -60,8 +60,8 @@ from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import get_user_connection, get_machine_connection, get_admin_connection, machine_connection
 
-from univention.management.console.modules.passwordreset.tokendb import TokenDB, MultipleTokensInDB
-from univention.management.console.modules.passwordreset.sending import get_plugins as get_sending_plugins
+from .tokendb import TokenDB, MultipleTokensInDB
+from .sending import get_plugins as get_sending_plugins
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
@@ -816,7 +816,7 @@ class Instance(Base):
 	def set_password(self, token, username, password):
 		MODULE.info("set_password(): username: '{}'.".format(username))
 		username = self.email2username(username)
-		self._check_token(username, token)
+		token_from_db = self._check_token(username, token)
 
 		# token is correct and valid
 		MODULE.info("Receive valid token for '{}'.".format(username))
@@ -825,7 +825,10 @@ class Instance(Base):
 			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
 			self.db.delete_tokens(token=token, username=username)
 			raise ServiceForbidden()  # TokenNotFound() ?
-		ret = self.udm_set_password(username, password)
+
+		plugin = self._get_send_plugin(token_from_db['method'])
+		email_verified = plugin.password_reset_verified_recovery_email()
+		ret = self.udm_set_password(username, password, email_verified=email_verified)
 		self.db.delete_tokens(token=token, username=username)
 		if ret:
 			raise UMC_Error(_("Successfully changed your password."), status=200)
@@ -857,6 +860,7 @@ class Instance(Base):
 			MODULE.info("Receive correct token for '{}' but it should be used for another application.".format(username))
 			self.db.delete_tokens(token=token, username=username)
 			raise TokenNotFound()
+		return token_from_db
 
 	@forward_to_master
 	@prevent_denial_of_service
@@ -1035,15 +1039,18 @@ class Instance(Base):
 			return False
 		return True
 
-	def udm_set_password(self, username, password):
+	def udm_set_password(self, username, password, email_verified):
 		user = self.get_udm_user(username=username, admin=True)
 		if ucr.is_true('ad/member') and 'synced' in user.get('objectFlag', []):
-			return self.admember_set_password(username, password)
-		try:
+			success = self.admember_set_password(username, password)
+		else:
 			user["password"] = password
 			user["pwdChangeNextLogin"] = 0
+			success = True
+		if email_verified:
+			user["PasswordRecoveryEmailVerified"] = 'TRUE'
+		try:
 			user.modify()
-			return True
 		except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
 			raise UMC_Error(str(exc))
 		except udm_errors.pwalreadyused as exc:
@@ -1051,6 +1058,8 @@ class Instance(Base):
 		except Exception:
 			MODULE.error("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
 			raise
+		else:
+			return success
 
 	# TODO: decoratorize
 	@machine_connection
@@ -1136,10 +1145,9 @@ class Instance(Base):
 
 	def get_udm_user(self, username, admin=False):
 		filter_s = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
-		base = ucr["ldap/base"]
 
 		lo, po = get_machine_connection()
-		dn = lo.searchDn(filter=filter_s, base=base)[0]
+		dn = lo.searchDn(filter=filter_s)[0]
 		return self.get_udm_user_by_dn(dn, admin=admin)
 
 	@machine_connection
