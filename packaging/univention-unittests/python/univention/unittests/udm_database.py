@@ -84,6 +84,11 @@ class Database(object):
 	def __getitem__(self, dn):
 		return self.objs[dn].attrs
 
+	def get(self, dn):
+		obj = self.objs.get(dn)
+		if obj:
+			return obj.attrs
+
 	def add(self, obj):
 		self.objs[obj.dn] = obj
 		return obj.dn
@@ -95,6 +100,8 @@ class Database(object):
 		obj = self.objs[dn]
 		for attr, old, new in ml:
 			if new:
+				if not isinstance(new, (list, tuple)):
+					new = [new]
 				obj.attrs[attr] = new
 			else:
 				obj.attrs.pop(attr, None)

@@ -71,14 +71,14 @@ class MockedAccess(MagicMock):
 			res.append(dn)
 		return res
 
-	def modify(self, dn, ml):
+	def modify(self, dn, ml, ignore_license=0, serverctrls=None, response=None):
 		self.database.modify(dn, ml)
 
 	def create(self, obj):
 		self.database.add(obj)
 
 	def get(self, dn, attr=[], required=False, exceptions=False):
-		return self.database[dn]
+		return self.database.get(dn)
 
 	def getAttr(self, dn, attr):
 		obj = self.database.objs.get(dn)
@@ -87,6 +87,12 @@ class MockedAccess(MagicMock):
 
 
 class MockedPosition(object):
+	def __init__(self):
+		self.dn = get_domain()
+
+	def getDn(self):
+		return self.dn
+
 	def getDomain(self):
 		return get_domain()
 

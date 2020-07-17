@@ -91,11 +91,12 @@ def umc_requests(params):
 	return pytest.mark.parametrize('umc_request', params, indirect=['umc_request'])
 
 
-def import_umc_module(module_id, umc_src_path=None):
+def import_umc_module(module_id, umc_src_path=None, set_umc_module_fixture=True):
 	python_module_name = 'univention.management.console.modules.{}'.format(module_id)
 	if umc_src_path is None:
 		umc_src_path = 'umc/python/'
 	use_installed = pytest.config.getoption('--installed-umc')
 	module = import_module(module_id, umc_src_path, python_module_name, use_installed)
-	umc_module_class.umc_module = module
+	if set_umc_module_fixture:
+		umc_module_class.umc_module = module
 	return module
