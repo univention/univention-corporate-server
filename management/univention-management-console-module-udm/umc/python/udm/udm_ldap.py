@@ -889,28 +889,7 @@ class UDM_Module(object):
 				layout.append(tab)
 
 		layout = AppAttributes.new_layout(self.name, layout)
-
-		if layout and isinstance(layout[0], udm.tab):
-			return self._parse_old_layout(layout)
-
 		return layout
-
-	def _parse_old_layout(self, layout):
-		"""Parses old layout information"""
-		tabs = []
-		for tab in layout:
-			data = {'name': tab.short_description, 'description': tab.long_description, 'advanced': tab.advanced, 'layout': [{'name': 'General', 'description': 'General settings', 'layout': []}]}
-			for item in tab.fields:
-				line = []
-				for field in item:
-					if isinstance(field, (list, tuple)):
-						elem = [x.property for x in field]
-					else:
-						elem = field.property
-					line.append(elem)
-				data['layout'][0]['layout'].append(line)
-			tabs.append(data)
-		return tabs
 
 	@property
 	def password_properties(self):
