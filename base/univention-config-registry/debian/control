@@ -12,10 +12,12 @@ Build-Depends:
  python-all,
  python-ipaddr,
  python-pytest,
+ python-pytest-cov,
  python-univention-debhelper,
  python-six,
  python3-all,
  python3-pytest,
+ python3-pytest-cov,
  python3-univention-debhelper,
  python3-six,
 Standards-Version: 3.5.2

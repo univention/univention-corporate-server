@@ -49,8 +49,8 @@ override_dh_auto_configure-arch:
 	dh_auto_configure
 
 override_dh_auto_test-indep:
-	pytest --doctest-modules
-	pytest-3 --doctest-modules
+	pytest --doctest-modules --cov=python/ --cov-report=term-missing
+	pytest-3 --doctest-modules --cov=python/ --cov-report=term-missing
 	tests/unwrap/test.sh
 
 override_dh_auto_test-arch:
