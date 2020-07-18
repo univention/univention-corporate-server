@@ -417,23 +417,21 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
 		tmp_to_file = self._temp_file_name()
 		try:
-			to_fp = open(tmp_to_file, 'w')
-
 			filter_opts = {}  # type: Dict[str, Any]
 
-			for from_file in sorted(self.from_files, key=os.path.basename):
-				try:
-					from_fp = open(from_file, 'r')
-				except EnvironmentError:
-					continue
-				to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=self.from_files, opts=filter_opts))
+			with open(tmp_to_file, 'w') as to_fp:
+				self._set_perm(stat, tmp_to_file)
 
-			self._set_perm(stat, tmp_to_file)
-			to_fp.close()
+				for from_file in sorted(self.from_files, key=os.path.basename):
+					try:
+						with open(from_file, 'r') as from_fp:
+							to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=self.from_files, opts=filter_opts))
+					except EnvironmentError:
+						continue
 
 			try:
 				os.rename(tmp_to_file, self.to_file)
-			except OSError as ex:
+			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
 					with open(self.to_file, 'w+') as fd:
 						fd.write(open(tmp_to_file, 'r').read())
@@ -509,20 +507,16 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 		tmp_to_file = self._temp_file_name()
 		try:
-			from_fp = open(self.from_file, 'r')
-			to_fp = open(tmp_to_file, 'w')
-
 			filter_opts = {}  # type: Dict[str, Any]
 
-			to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))
+			with open(self.from_file, 'r') as from_fp, open(tmp_to_file, 'w') as to_fp:
+				self._set_perm(stat, tmp_to_file)
 
-			self._set_perm(stat, tmp_to_file)
-			from_fp.close()
-			to_fp.close()
+				to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))
 
 			try:
 				os.rename(tmp_to_file, self.to_file)
-			except OSError as ex:
+			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
 					with open(self.to_file, 'w+') as fd:
 						fd.write(open(tmp_to_file, 'r').read())
@@ -674,8 +668,7 @@ class ConfigHandlers:
 		# type: () -> None
 		"""Load cached `.info` data or force update."""
 		try:
-			cache_file = open(ConfigHandlers.CACHE_FILE, 'rb')
-			try:
+			with open(ConfigHandlers.CACHE_FILE, 'rb') as cache_file:
 				version = self._get_cache_version(cache_file)
 				chv = ConfigHandlers
 				if not chv.VERSION_MIN <= version <= chv.VERSION_MAX:
@@ -690,8 +683,6 @@ class ConfigHandlers:
 					pickler.load()
 				self._subfiles = pickler.load()
 				self._multifiles = pickler.load()
-			finally:
-				cache_file.close()
 		except (Exception, pickle.UnpicklingError):
 			self.update()
 
@@ -863,11 +854,8 @@ class ConfigHandlers:
 		variables = set(entry.get('Variables', set()))
 		name = os.path.join(FILE_DIR, subfile)
 		try:
-			temp_file = open(name, 'r')
-			try:
+			with open(name, 'r') as temp_file:
 				variables |= grep_variables(temp_file.read())
-			finally:
-				temp_file.close()
 		except EnvironmentError:
 			print("Failed to process Subfile %s" % (name,), file=sys.stderr)
 			return None
@@ -919,9 +907,8 @@ class ConfigHandlers:
 		wanted = dict([(h.to_file, h) for h in handlers if isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
 		to_remove = set()  # type: Set[str]
 		# Scan for diversions done by UCR
-		div_file = open('/var/lib/dpkg/diversions', 'r')
-		# from \n to \n package \n
-		try:
+		with open('/var/lib/dpkg/diversions', 'r') as div_file:
+			# from \n to \n package \n
 			try:
 				while True:
 					path_from = next(div_file).rstrip()
@@ -938,8 +925,7 @@ class ConfigHandlers:
 						to_remove.add(path_from)
 			except StopIteration:
 				pass
-		finally:
-			div_file.close()
+
 		# Remove existing diversion not wanted
 		for path in to_remove:
 			tmp_handler = ConfigHandlerDiverting(path)

@@ -92,47 +92,44 @@ def do_package(package):
 	if not os.path.exists(n_ucr):
 		return
 
-	f_ucr = open(n_ucr, 'r')
-
-	for item in univention.config_registry.parseRfc822(f_ucr.read()):
-		typ = item['Type'][0]
-		if typ == 'file':
-			f = item['File'][0]
-			doIt('install', '-d', destDir(f, package))
-			doIt('cp', '-a', srcPath(f), destPath(f, package))
-			for key in ('Preinst', 'Postinst'):
-				if key in item:
-					mod = item[key][0]
-					doIt('install', '-d', destDir(mod, package, 'modules'))
-					doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
-		elif typ == 'subfile':
-			f = item['Subfile'][0]
-			doIt('install', '-d', destDir(f, package))
-			doIt('cp', '-a', srcPath(f), destPath(f, package))
-		elif typ == 'multifile':
-			f = item['Multifile'][0]
-			if os.path.exists(f):
+	with open(n_ucr, 'r') as f_ucr:
+		for item in univention.config_registry.parseRfc822(f_ucr.read()):
+			typ = item['Type'][0]
+			if typ == 'file':
+				f = item['File'][0]
 				doIt('install', '-d', destDir(f, package))
 				doIt('cp', '-a', srcPath(f), destPath(f, package))
-			for key in ('Preinst', 'Postinst'):
-				if key in item:
-					mod = item[key][0]
-					doIt('install', '-d', destDir(mod, package, 'modules'))
-					doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
-		elif typ == 'script':
-			f = item['Script'][0]
-			doIt('install', '-d', destDir(f, package, 'scripts'))
-			doIt('cp', '-a', srcPath(f), destPath(f, package, 'scripts'))
-			doIt('chmod', 'a+x', destPath(f, package, 'scripts'))
-		elif typ == 'module':
-			f = item['Module'][0]
-			doIt('install', '-d', destDir(f, package, 'modules'))
-			doIt('cp', '-a', srcPath(f), destPath(f, package, 'modules'))
-		else:
-			print('Unknown type: %s' % typ, file=sys.stderr)
-			return
-
-	f_ucr.close()
+				for key in ('Preinst', 'Postinst'):
+					if key in item:
+						mod = item[key][0]
+						doIt('install', '-d', destDir(mod, package, 'modules'))
+						doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
+			elif typ == 'subfile':
+				f = item['Subfile'][0]
+				doIt('install', '-d', destDir(f, package))
+				doIt('cp', '-a', srcPath(f), destPath(f, package))
+			elif typ == 'multifile':
+				f = item['Multifile'][0]
+				if os.path.exists(f):
+					doIt('install', '-d', destDir(f, package))
+					doIt('cp', '-a', srcPath(f), destPath(f, package))
+				for key in ('Preinst', 'Postinst'):
+					if key in item:
+						mod = item[key][0]
+						doIt('install', '-d', destDir(mod, package, 'modules'))
+						doIt('cp', '-a', srcPath(mod), destPath(mod, package, 'modules'))
+			elif typ == 'script':
+				f = item['Script'][0]
+				doIt('install', '-d', destDir(f, package, 'scripts'))
+				doIt('cp', '-a', srcPath(f), destPath(f, package, 'scripts'))
+				doIt('chmod', 'a+x', destPath(f, package, 'scripts'))
+			elif typ == 'module':
+				f = item['Module'][0]
+				doIt('install', '-d', destDir(f, package, 'modules'))
+				doIt('cp', '-a', srcPath(f), destPath(f, package, 'modules'))
+			else:
+				print('Unknown type: %s' % typ, file=sys.stderr)
+				return
 
 	doIt('install', '-d', destDir('', package, 'info'))
 	doIt('install', '-m644', '-p', n_ucr, destPath(package + '.info', package, 'info'))
@@ -147,31 +144,28 @@ def do_package(package):
 		'removed': quote("/etc/univention/templates/removed/%s.info" % package),
 	}
 
-	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')
-	f_preinst.write('# Automatically added by univention-install-config-registry\n')
-	f_preinst.write('if [ "$1" = "install" ] ; then\n')
-	f_preinst.write('  [ -e %(removed)s ] && [ ! -e %(info)s ] && mv %(removed)s %(info)s || true\n' % data)
-	f_preinst.write('fi\n')
-	f_preinst.write('# End automatically added section\n')
-	f_preinst.close()
+	with open(extFile(package, 'preinst.debhelper'), 'a') as f_preinst:
+		f_preinst.write('# Automatically added by univention-install-config-registry\n')
+		f_preinst.write('if [ "$1" = "install" ] ; then\n')
+		f_preinst.write('  [ -e %(removed)s ] && [ ! -e %(info)s ] && mv %(removed)s %(info)s || true\n' % data)
+		f_preinst.write('fi\n')
+		f_preinst.write('# End automatically added section\n')
 
-	f_postinst = open(extFile(package, 'postinst.debhelper'), 'a')
-	f_postinst.write('# Automatically added by univention-install-config-registry\n')
-	f_postinst.write('if [ "$1" = "abort-remove" ]; then\n')
-	f_postinst.write('  [ -e %(removed)s ] && mv %(removed)s %(info)s || true\n' % data)
-	f_postinst.write('fi\n')
-	f_postinst.write('[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register %(pkg)s || true\n' % data)
-	f_postinst.write('# End automatically added section\n')
-	f_postinst.close()
+	with open(extFile(package, 'postinst.debhelper'), 'a') as f_postinst:
+		f_postinst.write('# Automatically added by univention-install-config-registry\n')
+		f_postinst.write('if [ "$1" = "abort-remove" ]; then\n')
+		f_postinst.write('  [ -e %(removed)s ] && mv %(removed)s %(info)s || true\n' % data)
+		f_postinst.write('fi\n')
+		f_postinst.write('[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register %(pkg)s || true\n' % data)
+		f_postinst.write('# End automatically added section\n')
 
-	f_prerm = open(extFile(package, 'prerm.debhelper'), 'a')
-	f_prerm.write('# Automatically added by univention-install-config-registry\n')
-	f_prerm.write('if [ "$1" = "remove" ] && [ -e %(info)s ] ; then\n' % data)
-	f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
-	f_prerm.write('  mv %(info)s %(removed)s || true\n' % data)
-	f_prerm.write('fi\n')
-	f_prerm.write('# End automatically added section\n')
-	f_prerm.close()
+	with open(extFile(package, 'prerm.debhelper'), 'a') as f_prerm:
+		f_prerm.write('# Automatically added by univention-install-config-registry\n')
+		f_prerm.write('if [ "$1" = "remove" ] && [ -e %(info)s ] ; then\n' % data)
+		f_prerm.write('  [ -x /usr/sbin/univention-config-registry ] && univention-config-registry unregister %(pkg)s || true\n' % data)
+		f_prerm.write('  mv %(info)s %(removed)s || true\n' % data)
+		f_prerm.write('fi\n')
+		f_prerm.write('# End automatically added section\n')
 
 	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
 

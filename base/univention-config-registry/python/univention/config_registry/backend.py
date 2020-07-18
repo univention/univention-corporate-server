@@ -525,38 +525,35 @@ class _ConfigRegistry(dict):
 	def load(self):
 		# type: () -> None
 		"""Load sub registry from file."""
-		import_failed = False
-		try:
-			reg_file = open(self.file, 'r')
-		except EnvironmentError:
-			import_failed = True
-		else:
-			import_failed = reg_file.readline() == '' and reg_file.readline() == ''
-
-		if import_failed:
+		for fn in (self.file, self.backup_file):
+			new = {}
 			try:
-				reg_file = open(self.backup_file, 'r')
+				with open(fn, 'r') as reg_file:
+					if reg_file.readline() == '' or reg_file.readline() == '':
+						continue
+
+					reg_file.seek(0)
+					for line in reg_file:
+						line = re.sub(r'^[^:]*#.*$', "", line)
+						if line == '':
+							continue
+						if line.find(': ') == -1:
+							continue
+
+						key, value = line.split(': ', 1)
+						new[key] = value.strip()
+
+				break
 			except EnvironmentError:
-				return
-
-		reg_file.seek(0)
-		new = {}
-		for line in reg_file:
-			line = re.sub(r'^[^:]*#.*$', "", line)
-			if line == '':
-				continue
-			if line.find(': ') == -1:
-				continue
-
-			key, value = line.split(': ', 1)
-			new[key] = value.strip()
-		reg_file.close()
+				pass
+		else:
+			return
 
 		self.update(new)
 		for key in set(self.keys()) - set(new.keys()):
 			self.pop(key, None)
 
-		if import_failed:
+		if fn != self.file:
 			self.__save_file(self.file)
 
 	def __create_base_conf(self):
@@ -591,20 +588,19 @@ class _ConfigRegistry(dict):
 				user = 0
 				group = 0
 			# open temporary file for writing
-			reg_file = open(temp_filename, 'w')
-			# write data to file
-			reg_file.write(u'# univention_ base.conf\n\n')
-			reg_file.write(self.__unicode__())
-			# flush (meta)data
-			reg_file.flush()
-			os.fsync(reg_file.fileno())
-			# close fd
-			reg_file.close()
+			with open(temp_filename, 'w') as reg_file:
+				# write data to file
+				reg_file.write('# univention_ base.conf\n\n')
+				reg_file.write(self.__unicode__())
+				# flush (meta)data
+				reg_file.flush()
+				os.fsync(reg_file.fileno())
+
 			try:
 				os.chmod(temp_filename, mode)
 				os.chown(temp_filename, user, group)
 				os.rename(temp_filename, filename)
-			except OSError as ex:
+			except EnvironmentError as ex:
 				if ex.errno == errno.EBUSY:
 					with open(filename, 'w+') as fd:
 						fd.write(open(temp_filename, 'r').read())
@@ -615,7 +611,7 @@ class _ConfigRegistry(dict):
 					# operation. Dump the current state to a backup file
 					temp_filename = '%s.concurrent_%s' % (filename, time.time())
 					with open(temp_filename, 'w') as reg_file:
-						reg_file.write(u'# univention_ base.conf\n\n')
+						reg_file.write('# univention_ base.conf\n\n')
 						reg_file.write(self.__unicode__())
 		except EnvironmentError as ex:
 			# suppress certain errors
