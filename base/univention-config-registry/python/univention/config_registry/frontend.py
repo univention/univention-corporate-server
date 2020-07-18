@@ -113,9 +113,9 @@ def replog(ucr, var, old_value, value=None):
 		try:
 			if not os.path.isfile(REPLOG_FILE):
 				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
-			logfile = open(REPLOG_FILE, "a+")
-			logfile.write(log)
-			logfile.close()
+
+			with open(REPLOG_FILE, "a+") as logfile:
+				logfile.write(log)
 		except EnvironmentError as ex:
 			print(("E: exception occurred while writing to replication log: %s" % (ex,)), file=sys.stderr)
 			exception_occured()
