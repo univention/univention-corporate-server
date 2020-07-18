@@ -226,22 +226,20 @@ class ServiceInfo(object):
 		"""Save service cusomization."""
 		filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
 		try:
-			fd = open(filename, 'w')
+			with open(filename, 'w') as fd:
+				cfg = uit.UnicodeConfig()
+				for name, srv in self.services.items():
+					cfg.add_section(name)
+					for key in srv.keys():
+						items = srv.normalize(key)
+						for item, value in items.items():
+							cfg.set(name, item, value)
+
+				cfg.write(fd)
+
+				return True
 		except EnvironmentError:
 			return False
-
-		cfg = uit.UnicodeConfig()
-		for name, srv in self.services.items():
-			cfg.add_section(name)
-			for key in srv.keys():
-				items = srv.normalize(key)
-				for item, value in items.items():
-					cfg.set(name, item, value)
-
-		cfg.write(fd)
-		fd.close()
-
-		return True
 
 	def read_services(self, filename=None, package=None, override=False):
 		"""

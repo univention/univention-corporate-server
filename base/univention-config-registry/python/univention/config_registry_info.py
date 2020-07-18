@@ -256,24 +256,23 @@ class ConfigRegistryInfo(object):
 			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES, package + ConfigRegistryInfo.FILE_SUFFIX)
 		else:
 			raise AttributeError("neither 'filename' nor 'package' is specified")
+
 		try:
-			fd = open(filename, 'w')
-		except IOError:
+			with open(filename, 'w') as fd:
+				cfg = uit.UnicodeConfig()
+				for name, var in self.variables.items():
+					cfg.add_section(name)
+					for key in var.keys():
+						items = var.normalize(key)
+						for item, value in items.items():
+							value = value
+							cfg.set(name, item, value)
+
+				cfg.write(fd)
+
+				return True
+		except EnvironmentError:
 			return False
-
-		cfg = uit.UnicodeConfig()
-		for name, var in self.variables.items():
-			cfg.add_section(name)
-			for key in var.keys():
-				items = var.normalize(key)
-				for item, value in items.items():
-					value = value
-					cfg.set(name, item, value)
-
-		cfg.write(fd)
-		fd.close()
-
-		return True
 
 	def read_customized(self):
 		# type: () -> None
