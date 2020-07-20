@@ -78,7 +78,7 @@ msgid ""
 "the opportunity to set a new password."
 msgstr ""
 "Jeder vergisst mal das Passwort. Schützen Sie sich und aktivieren Sie die "
-"Möglichkeit, ihr Passwort erneuern zu können."
+"Möglichkeit, Ihr Passwort erneuern zu können."
 
 #: www/lib.js:54
 msgid ""
@@ -90,7 +90,7 @@ msgstr ""
 
 #: www/PasswordForgotten.js:55
 msgid "Forgot your password? Set a new one: "
-msgstr "Haben Sie ihr Passwort vergessen? Setzen Sie ein Neues:"
+msgstr "Haben Sie Ihr Passwort vergessen? Setzen Sie ein Neues:"
 
 #: www/CreateAccount.js:151
 #, javascript-format
@@ -281,11 +281,11 @@ msgstr "Ihre Profildaten sind auf dem neuesten Stand"
 
 #: www/VerifyAccount.js:182
 msgid "your account has already been verified"
-msgstr "ihr Konto wurde bereits verifiziert"
+msgstr "Ihr Konto wurde bereits verifiziert"
 
 #: www/VerifyAccount.js:179
 msgid "your account has been successfully verified"
-msgstr "ihr Konto wurde erfolgreich verifiziert"
+msgstr "Ihr Konto wurde erfolgreich verifiziert"
 
 #~ msgid "</br><a href='/{0}'>Back to the overview.</a>"
 #~ msgstr "</br><a href='/{0}'>Zurück zur Übersicht.</a>"
