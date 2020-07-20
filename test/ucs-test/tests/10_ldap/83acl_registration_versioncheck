@@ -91,7 +91,7 @@ access to dn.base="%(container)s" attrs="description"
 	call_join_script(join_script_name)
 
 	# The ldap server needs a few seconds
-	sleep(5)
+	sleep(20)
 
 	set_container_description(user_dn, container_current)
 
