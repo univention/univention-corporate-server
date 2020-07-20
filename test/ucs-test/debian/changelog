@@ -1,3 +1,9 @@
+ucs-test (9.0.4-11) unstable; urgency=medium
+
+  * Bug #50583: Revert changes of this bug
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 20 Jul 2020 22:57:34 +0200
+
 ucs-test (9.0.4-10) unstable; urgency=medium
 
   * Bug #51598: Typo

@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-89) UNRELEASED; urgency=medium
+
+  * Bug #50583: revert all commits for this bug
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 20 Jul 2020 22:56:38 +0200
+
 univention-management-console (11.0.4-88) unstable; urgency=medium
 
   * Bug #50583: wait before closing socket
