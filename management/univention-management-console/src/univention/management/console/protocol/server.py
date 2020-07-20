@@ -68,6 +68,9 @@ class MagicBucket(object):
 	def __init__(self):
 		self.__states = {}
 
+	def __del__(self):
+		self.exit()
+
 	def new(self, client, socket):
 		"""Is called by the Server object to announce a new incoming
 		connection.
@@ -87,8 +90,8 @@ class MagicBucket(object):
 		state.time_remaining -= 1
 
 		if state.time_remaining <= 0 and not state.requests and not state.session.has_active_module_processes():
-			CORE.process('Session timed out.')
-			self._cleanup(state.socket, delay=True)
+			CORE.process('Connection timed out.')
+			self._cleanup(state.socket)
 		else:
 			# count down the timer second-wise (in order to avoid problems when
 			# changing the system time, e.g. via rdate)
@@ -99,7 +102,8 @@ class MagicBucket(object):
 		# remove all sockets
 		for sock in list(self.__states.keys()):
 			CORE.info('Shutting down connection %s' % sock)
-			self._cleanup(sock)
+			self.__states.pop(sock).session.shutdown()
+			notifier.socket_remove(sock)
 
 	def _receive(self, socket):
 		"""Signal callback: Handles incoming data. Processes SSL events
@@ -224,24 +228,19 @@ class MagicBucket(object):
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
 
-	def _cleanup(self, socket, delay=False):
-		state = self.__states.pop(socket, None)
-		if state is None:
+	def _cleanup(self, socket):
+		if socket not in self.__states:
 			return
 
-		state.session.close_session()
+		self.__states[socket].session.shutdown()
 
-		if delay or True:
-			notifier.timer_add(4000, notifier.Callback(self._close, state))
-		else:
-			self._close(socket)
+		notifier.socket_remove(socket)
+		self.__states[socket].session.__del__()
+		del self.__states[socket]
 
-	def _close(self, state):
-		state.session.signal_disconnect('success', self._response)
-		notifier.socket_remove(state.socket)
 		try:
-			state.socket.close()
-		except Exception:
+			socket.close()
+		except:
 			pass
 
 
@@ -345,6 +344,11 @@ class Server(signals.Provider):
 		else:
 			notifier.socket_add(self.__realsocket, self._connection)
 
+	def __del__(self):
+		if self.__bucket:
+			del self.__bucket
+			self.__bucket = None
+
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
 		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
@@ -382,28 +386,17 @@ class Server(signals.Provider):
 	def exit(self):
 		'''Shuts down all open connections.'''
 		CORE.warn('Shutting down all open connections')
-
-		if self.__bucket:
-			self.__bucket.exit()
-
 		if self.__ssl and not self.__unix:
 			notifier.socket_remove(self.connection)
 			self.connection.close()
-		elif self.__realsocket:
+		else:
 			notifier.socket_remove(self.__realsocket)
 			self.__realsocket.close()
-			self.__realsocket = None
 		if self.__unix:
 			os.unlink(self.__unix)
-			self.__unix = None
 
-		self.__bucket = None
-
-	def __enter__(self):
-		return self
-
-	def __exit__(self, etype, exc, etraceback):
-		self.exit()
+		if self.__magic:
+			self.__bucket.exit()
 
 	@staticmethod
 	def reload():
@@ -413,34 +406,6 @@ class Server(signals.Provider):
 		categoryManager.load()
 		RESOURCES.info('Reloading UCR variables')
 		ucr.load()
-
-	@staticmethod
-	def analyse_memory():
-		"""Print the number of living UMC objects. Helpful when analysing memory leaks."""
-		components = (
-			'protocol.server.State', 'protocol.session.ModuleProcess',
-			'protocol.session.Processor', 'protocol.session.SessionHandler',
-			'protocol.message.Message', 'protocol.message.Request', 'protocol.message.Response',
-			'auth.AuthHandler', 'pam.PamAuth', 'protocol.client.Client',
-			'locales.I18N', 'locales.I18N_Manager', 'module.Command', 'module.Flavor', 'module.Module',
-			'tools.JSON_List',
-			# 'module.Link',
-			# 'auth.AuthenticationResult',
-			# 'base.Base', 'category.XML_Definition', 'error.UMC_Error',
-			# 'module.XML_Definition', 'module.Manager', 'pam.AuthenticationError', 'pam.AuthenticationFailed', 'pam.AuthenticationInformationMissing',
-			# 'pam.AccountExpired', 'pam.PasswordExpired', 'pam.PasswordChangeFailed',
-			# 'protocol.message.ParseError', 'protocol.message.IncompleteMessageError',
-			# 'protocol.modserver.ModuleServer', 'protocol.server.MagicBucket', 'protocol.server.Server',
-			# 'protocol.session.ProcessorBase',
-			# 'tools.JSON_Object', 'tools.JSON_Dict',
-		)
-		try:
-			import objgraph
-		except ImportError:
-			return
-		CORE.warn('')
-		for component in components:
-			CORE.warn('%s: %d' % (component, len(objgraph.by_type('univention.management.console.%s' % (component,)))))
 
 
 class State(object):
