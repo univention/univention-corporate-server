@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-36) unstable; urgency=medium
+
+  * Bug #51260: Make page titles configurable via UCR
+
+ -- Dirk Wiesenthal <dirk@duktig>  Tue, 21 Jul 2020 11:53:18 +0200
+
 univention-self-service (4.0.3-35) unstable; urgency=medium
 
   * Bug #51262: When resetting password via email token, this (recovery) email

@@ -43,8 +43,9 @@ define([
 	"umc/widgets/LabelPane",
 	"./TextBox",
 	"umc/widgets/RadioButton",
+	"umc/i18n/tools",
 	"umc/i18n!."
-], function(hash, lang, array, on, keys, ioQuery, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
+], function(hash, lang, array, on, keys, ioQuery, Button, put, tools, dialog, ContainerWidget, LabelPane, TextBox, RadioButton, i18nTools, _) {
 
 	return {
 		hash: 'passwordreset',
@@ -65,7 +66,10 @@ define([
 		 * Returns the title of the subpage.
 		 * */
 		getTitle: function() {
-			return _(this.title);
+			var locale = i18nTools.defaultLang().slice(0, 2);
+			var ucrTitleKey = "umc/self-service/" + this.hash + "/title/" + locale;
+			var ucrTitleKeyEnglish = "umc/self-service/" + this.hash + "/title/en";
+			return tools.status(ucrTitleKey) || tools.status(ucrTitleKeyEnglish) || this.title;
 		},
 
 		/**

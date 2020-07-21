@@ -58,7 +58,10 @@ define([
 		},
 
 		getTitle: function() {
-			return this.title;
+			var locale = i18nTools.defaultLang().slice(0, 2);
+			var ucrTitleKey = "umc/self-service/" + this.hash + "/title/" + locale;
+			var ucrTitleKeyEnglish = "umc/self-service/" + this.hash + "/title/en";
+			return tools.status(ucrTitleKey) || tools.status(ucrTitleKeyEnglish) || this.title;
 		},
 
 		getContent: function() {
