@@ -31,7 +31,7 @@
 
 eval "$(ucr shell locale)"
 new_locale="fr_FR.UTF-8:UTF-8"
-case "${locale}" in
+case "${locale:-}" in
 	*"${new_locale}"*) echo "Locale ${new_locale} already known" ;;
 	*)	ucr set locale="${locale} ${new_locale}" ;;
 esac

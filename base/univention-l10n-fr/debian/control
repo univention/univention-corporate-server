@@ -12,9 +12,8 @@ Package: univention-l10n-fr
 Architecture: all
 Depends:
  univention-l10n-dev,
- univention-management-console,
  ${misc:Depends},
-Description: UCS Management Console translation files
+Description: UCS translation to French
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
