@@ -1,4 +1,10 @@
-univention-management-console (11.0.4-89) UNRELEASED; urgency=medium
+univention-management-console (11.0.4-90) unstable; urgency=medium
+
+  * Bug #51260: Make page titles in self-service configurable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Jul 2020 11:56:21 +0200
+
+univention-management-console (11.0.4-89) unstable; urgency=medium
 
   * Bug #50583: revert all commits for this bug
 

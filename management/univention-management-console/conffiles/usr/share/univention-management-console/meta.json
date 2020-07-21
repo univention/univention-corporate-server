@@ -3,6 +3,7 @@ import json
 import socket
 import fcntl
 import struct
+import re
 
 import logging
 from univention.config_registry.interfaces import Interfaces
@@ -140,7 +141,13 @@ data = dict(
 def get_ucr_entry(ucrKey, key=None, defaultValue=None):
 	if key is None:
 		key = ucrKey
-	return (key, configRegistry.get(ucrKey, defaultValue))
+	if '*' not in ucrKey:
+		yield (key, configRegistry.get(ucrKey, defaultValue))
+	else:
+		key_regex = re.compile(ucrKey)
+		for key, value in configRegistry.items():
+			if key_regex.match(key):
+				yield key, value
 
 
 # list of all UCR variables + mappings
@@ -153,6 +160,7 @@ ucr_vars = [
 	('umc/web/startupdialog', ),
 	('umc/server/upload/max', ),
 	('umc/web/sso/enabled', ),
+	('umc/self-service/.*/title/.*', ),
 	('umc/self-service/profiledata/enabled', ),
 	('umc/self-service/account-registration/frontend/enabled', None, False, ),
 	('umc/self-service/account-verification/frontend/enabled', None, False, ),
@@ -162,7 +170,9 @@ ucr_vars = [
 	('umc/self-service/account-deregistration/enabled', None, False, ),
 ]
 
-data.update([get_ucr_entry(*i) for i in ucr_vars])
+for i in ucr_vars:
+	for key, value in get_ucr_entry(*i):
+		data[key] = value
 
 print(json.dumps(data, indent=2))
 @!@
