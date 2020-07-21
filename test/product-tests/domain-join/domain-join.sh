@@ -15,9 +15,9 @@ install_testing_version () {
 	DEBIAN_FRONTEND=noninteractive apt-get -y -f install
 }
 
-install_released_version () {
-	# TODO
-	:
+install_released_version_ubuntu () {
+	add-apt-repository -y ppa:univention-dev/ppa
+	DEBIAN_FRONTEND=noninteractive apt-get install univention-domain-join univention-domain-join-cli
 }
 
 test_univention_domain_join_cli () {
