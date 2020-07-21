@@ -142,7 +142,6 @@ def file_and_permission_checks():
 		cf_type('/etc/univention/ssl/{}.{}'.format(host, domain), '{}$'.format(host) if is_primary else 'root', 'DC Backup Hosts' if is_dc else 'root', 0o750, must_exist=True),
 		cf_type('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0o600, False),
 		cf_type('/var/run/univention-saml/memcached.socket', 'samlcgi', 'nogroup', 0o700, False),
-		cf_type('/var/run/uvmm.socket', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-appcenter', 'root', 'root', 0o755, False),
 		cf_type('/var/cache/univention-bind-proxy', 'root', 'root', 0o755, False),

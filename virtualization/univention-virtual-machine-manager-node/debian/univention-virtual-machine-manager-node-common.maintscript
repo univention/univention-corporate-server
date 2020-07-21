@@ -1,6 +1,0 @@
-mv_conffile /etc/univention/templates/files/etc/default/libvirt-bin /etc/univention/templates/files/etc/default/libvirtd 3.0.2-2~
-mv_conffile /etc/univention/templates/files/etc/init.d/libvirt-bin /etc/univention/templates/files/etc/init.d/libvirtd 3.0.2-2~
-rm_conffile /etc/univention/templates/files/etc/cron.d/univention-virtual-machine-manager-node 4.0.1-2~
-rm_conffile /etc/runit/univention-libvirt/down 5.0.0-5~
-rm_conffile /etc/runit/univention-libvirt/run 5.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/init.d/libvirtd 5.0.0-5~

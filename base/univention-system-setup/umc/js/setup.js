@@ -115,15 +115,6 @@ define([
 		},
 
 		_renderTabs: function(values, ucr) {
-
-			// disable network page, See Bug #33006
-			var networkDisabledBy = ucr['umc/modules/setup/network/disabled/by'];
-			if (networkDisabledBy && this.moduleFlavor == 'network') {
-				this._displayNetworkPageWarning(networkDisabledBy);
-				this.closeModule();
-				return;
-			}
-
 			// each page has the same buttons for saving/resetting
 			var buttons = [/* {
 				name: 'close',
@@ -181,18 +172,6 @@ define([
 				this.ready().then(lang.hitch(this, 'updateAllValues'));
 			}));
 			ipage.setValues(values);
-		},
-
-		_displayNetworkPageWarning: function(networkDisabledBy) {
-			var version = tools.status('ucsVersion').split('-')[0];
-			var link = '<a href="' + _('https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:uvmm', version) + '">"' + _('Setup for UCS Virtual Machine Manager') + '"</a>';
-			var uvmmWarning = _('Changing network settings is disabled due to specific UVMM settings. See %s for further information.', link);
-			var warning = {
-				xen: uvmmWarning,
-				kvm: uvmmWarning
-			}[networkDisabledBy] || _('Changing network settings is disabled. It can be re enabled by unsetting the UCR variable "umc/modules/setup/network/disabled/by".');
-
-			this.addWarning(warning);
 		},
 
 		ready: function() {

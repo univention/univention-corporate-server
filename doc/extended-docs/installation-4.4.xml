@@ -101,7 +101,7 @@
 	<para>
 	  The basic installation is performed using the standard UCS installer. Further information on
 	  the individual options can be found in the UCS manual. The installation should be performed in
-	  a virtualization solution. In this example, the installation is performed in UVMM. A qcow2
+	  a virtualization solution. In this example, the installation is performed in Qemu. A qcow2
 	  image should be selected for the hard drive for the virtual machine.  Qcow2 images can be
 	  converted to different virtualization formats such as VirtualBox or VMware using a tool
 	  provided by Univention, see <xref linkend="appliance:create:virt"/>.
@@ -188,7 +188,7 @@ univention-add-app -l APPID
 
 	<para>
 	  The qcow2 image (i.e., the hard drive of the virtual machine) is now copied. If the
-	  <emphasis>default</emphasis> storage pool of UVMM was used, the image is stored in the
+	  <emphasis>default</emphasis> storage pool of libvirtd was used, the image is stored in the
 	  directory <filename class="directory">/var/lib/libvirt/images/</filename>.
 	</para>
 
@@ -414,8 +414,8 @@ invoke-rc.d univention-management-console-server restart
 	  <para>
 		Two example hook scripts are generated which are called after setup is finished:
 		One calls <command>wget</command> for a given URL, which could be used to signal an external service that the
-		provisioning of the instance is done. The other is an example <command>udm</command>
-		call to register an OpenStack connection in UVMM.
+		provisioning of the instance is done.
+	  </para>
 
 		<programlisting language="yaml">
 #cloud-config
@@ -428,7 +428,7 @@ ucs_setup:
   rootpassword: univention
   defaultlocale: de_DE.UTF-8:UTF-8
   components:
-  packages_install: univention-virtual-machine-manager-daemon
+  packages_install:
   packages_remove:
 write_files:
 -   content: |
@@ -471,28 +471,7 @@ write_files:
     owner: root:root
     path: /usr/lib/univention-system-setup/appliance-hooks.d/90_wget_url
     permissions: '0755'
--   content: |
-      #!/bin/sh
-      udm uvmm/cloudconnection create --ignore_exists \
-      --position="cn=CloudConnection,cn=Virtual Machine Manager,dc=ucs,dc=local" \
-      --set name="OpenStack" \
-      --set type="cn=OpenStack,cn=CloudType,cn=Virtual Machine Manager,dc=ucs,dc=local" \
-      --set includeUCSimages=0 \
-      --append parameter="username demouser" \
-      --append parameter="password password" \
-      --append parameter="cloudtype OpenStack" \
-      --append parameter="auth_url http://192.0.2.1:5000" \
-      --append parameter="auth_version 2.0_password" \
-      --append parameter="service_type compute" \
-      --append parameter="service_name nova" \
-      --append parameter="tenant demotenant" \
-      --append parameter="service_region regionOne"
-      invoke-rc.d univention-virtual-machine-manager-daemon restart
-    owner: root:root
-    path: /usr/lib/univention-system-setup/appliance-hooks.d/80_add_uvmm_connection
-    permissions: '0755'
 		</programlisting>
-	  </para>
 
 	  <para>
 		The file with the apps to be installed contains a list of IDs of applications from the

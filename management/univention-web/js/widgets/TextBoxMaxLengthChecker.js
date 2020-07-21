@@ -67,7 +67,7 @@ define([
 			this._listeners.push(aspect.before(this.textBoxWidget, 'destroy', lang.hitch(this, 'dereference')));
 		},
 
-		usernameTooLong: function() {  // do not rename without considering uvmm!
+		usernameTooLong: function() {
 			return this.textBoxWidget.get('value').length > this.maxLength;
 		},
 

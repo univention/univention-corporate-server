@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2017-04-14 00:29+0200\n"
-"PO-Revision-Date: 2016-07-09 17:46+0100\n"
+"PO-Revision-Date: 2020-07-21 11:52+0200\n"
 "Last-Translator: Eric Bischoff <eric@bureau-cornavin.com>\n"
 "Language-Team: French <fr@bureau-cornavin.com>\n"
 "Language: fr\n"
@@ -147,15 +147,6 @@ msgstr ""
 "Changer la configuration des adresses IP peut avoir pour conséquence de "
 "redémarrer ou d'arrêter des services. Cela peut avoir de graves effets "
 "collatéraux lorsque le système est en cours d'utilisation."
-
-#: umc/js/setup.js:189
-#, javascript-format
-msgid ""
-"Changing network settings is disabled due to specific UVMM settings. See %s "
-"for further information."
-msgstr ""
-"Le réglage des paramètres réseau est désactivé du fait de réglages UVMM "
-"particuliers. Veuillez consulter %s pour davantage d'informations."
 
 #: umc/js/setup.js:193
 msgid ""
@@ -581,11 +572,6 @@ msgstr "LAN virtuel"
 #: umc/js/setup/InterfaceWizard.js:631
 msgid "don't set"
 msgstr "ne pas définir"
-
-#: umc/js/setup.js:188
-#, javascript-format
-msgid "https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:uvmm"
-msgstr "https://docs.software-univention.de/manual-%s.html#computers:networkcomplex:uvmm"
 
 #: umc/js/setup/InterfaceWizard.js:630
 msgid "set"

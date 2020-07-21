@@ -2308,10 +2308,6 @@ define([
 					_alert(_('It is not possible to install Samba 3 and Samba 4 on one system. Please select only one of these components.'));
 					return false;
 				}
-				if (packages['univention-virtual-machine-manager-node-kvm'] && packages['univention-virtual-machine-manager-node-xen']) {
-					_alert(_('It is not possible to install KVM and XEN components on one system. Please select only one of these components.'));
-					return false;
-				}
 			}
 
 			var page = this.getPage(pageName);

@@ -1,7 +1,0 @@
-etc/pki/CA
-etc/pki/libvirt
-etc/pki/libvirt/private
-var/backups/univention-virtual-machine-manager-daemon
-var/cache/univention-virtual-machine-manager-daemon
-var/cache/univention-virtual-machine-manager-daemon/novnc.tokens
-var/cache/univention-virtual-machine-manager-daemon/snapshots

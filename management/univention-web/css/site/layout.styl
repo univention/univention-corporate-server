@@ -155,19 +155,6 @@ generic-layout-udm-detailpage-like(nLayersFrom__umcModuleContentChildWrapper__ti
 		.umcPageMain
 			overflow-y: auto
 
-generic-layout-uvmm-detailpage()
-	@media (min-height: 750px) and (min-width: $md-min)
-		flex-page()
-		.umcModuleContentChildWrapper > div,
-		.umcModuleContentChildWrapper > div > div,
-		.umcModuleContentChildWrapper > div > div > div,
-		.umcModuleContentChildWrapper > div > div > div > div
-			height: 100%
-
-		.umcPageMain
-			overflow-y: auto
-
-
 .umcTopContainer--layout-top,
 .umcTopContainer--layout-services,
 .umcTopContainer--layout-ucr,
@@ -186,6 +173,3 @@ generic-layout-uvmm-detailpage()
 
 .umcTopContainer--generic-layout-udm-detailpage
 	generic-layout-udm-detailpage()
-
-.umcTopContainer--generic-layout-uvmm-detailpage
-	generic-layout-uvmm-detailpage()

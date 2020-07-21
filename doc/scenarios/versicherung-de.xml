@@ -118,37 +118,6 @@
 	  </figure>
   </section>
 
-  <section id="insurance:virt">
-	<title>Virtualisierung</title>
-	<para>
-	  Alle Serversysteme in der Umgebung der HMV sind mit &ucsUVMM; (UVMM)
-	  virtualisiert. Zum Einsatz kommt dabei ausschließlich Open-Source-Software.
-	</para>
-
-	  <figure id="uvmm2">
-		<title>Verwaltung virtueller Maschinen mit UVMM</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/uvmm_de.png"/>
-	  </figure>
-
-	<para>
-	  Als Grundlage der Virtualisierung dienen
-	  Virtualisierungsserver auf UCS-Memberservern (Serversysteme
-	  ohne lokalen Verzeichnisdienst). Auf diesen laufen jeweils ein bis mehrere
-	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und
-	  Windows-Systeme werden paravirtualisiert betrieben, d.h. durch einen
-	  Zugriff der virtualisierten Systeme auf die Ressourcen der Wirtsysteme
-	  kann ein höherer Durchsatz erzielt werden.
-	</para>
-
-	<para>
-	  Alle virtuellen Maschinen können über den webbasierten &ucsUVMM;
-	  komfortabel angelegt und verwaltet
-	  werden. Werden Wartungsarbeiten an einem Virtualisierungsserver
-	  nötig, so können die auf diesem System laufenden virtuellen Maschinen im
-	  laufenden Betrieb auf einen anderen Server migriert werden.
-	</para>
-  </section>
-
   <section id="insurance:software">
 	<title>Software-Verteilung der UCS-Systeme</title>
 	<para>
@@ -381,7 +350,6 @@
 	  <itemizedlist>
         <listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-4.4.html"/> (UCS-Handbuch)</simpara></listitem>
         <listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-4.4.html#domain-ldap:directorylogger"/> (Revisionssichere LDAP-Protokollierung mit Univention Directory Logger)</simpara></listitem>
-        <listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-4.4.html#uvmm:chapter"/></simpara></listitem>
 		<listitem><simpara><ulink url="https://docs.software-univention.de/installation-4.4.html"/> (Erweiterte Installations-Dokumentation)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/opsi/"/> (<application>opsi</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>

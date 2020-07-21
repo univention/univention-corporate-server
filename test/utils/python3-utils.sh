@@ -50,7 +50,6 @@ fake_package_install () {
 		python3-univention-directory-manager \
 		python3-univention-directory-manager-cli \
 		python3-univention-directory-manager-rest \
-		python3-univention-directory-manager-uvmm \
 		python3-univention-directory-reports \
 		python3-univention-heimdal \
 		python3-univention-ipcalc \
@@ -60,5 +59,5 @@ fake_package_install () {
 		python3-univention-pkgdb \
 		python3-univention-radius \
 		python3-univention-updater \
-		python3-univention-virtual-machine-manager
+
 }

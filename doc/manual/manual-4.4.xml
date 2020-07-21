@@ -57,7 +57,6 @@ feedback@univention.de
   <xi:include href="print-services-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="mail-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="nagios-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-  <xi:include href="uvmm-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="backup-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
   <xi:include href="../stylesheets/bibliography-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </book>

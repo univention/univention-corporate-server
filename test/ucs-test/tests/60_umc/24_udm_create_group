@@ -27,7 +27,7 @@ class TestUMCGroupsCreation(UMCBase):
         Creates a group with a provided 'groupname' and provided
         'policynames' if any for the test by making a UMC-request 'udm/add'.
         """
-        options = [{"object": {"UVMMGroup": False,
+        options = [{"object": {
                                "sambaGroupType": "2",
                                "name": groupname,
                                "adGroupType": "-2147483646",

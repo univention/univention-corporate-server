@@ -1,5 +1,0 @@
-44univention-virtual-machine-manager-daemon.inst usr/lib/univention-install
-56univention-virtual-machine-manager-daemon.uinst usr/lib/univention-uninstall/
-src/univention-virtual-machine-manager-daemon src/univention-virtual-machine-manager usr/sbin
-uvmmd-check.sh usr/lib/univention-virtual-machine-manager-daemon
-uvmmd-nodes.py uvmmd-ldap.py usr/lib/univention-directory-listener/system

@@ -127,11 +127,6 @@ univention-fetchmail-schema
 
 univention-radius
 
-/* FIXME # univention-virtual-machine-manager-node-kvm  # FIXME */
-/* FIXME # univention-kvm-virtio  # FIXME */
-/* FIXME # univention-nagios-libvirtd-kvm  # FIXME */
-/* FIXME # etherboot-qemu  # FIXME */
-
 univention-mail-server
 bsd-mailx
 univention-antivir-mail
@@ -156,12 +151,6 @@ sqlite3
 univention-squid
 /* FIXME # univention-nagios-squid  # FIXME */
 univention-firewall
-
-/* FIXME # univention-virtual-machine-manager-daemon  # FIXME */
-/* FIXME # univention-nagios-uvmmd  # FIXME */
-/* FIXME # libvirt-clients  # FIXME */
-/* FIXME # ebtables  # FIXME */
-/* FIXME # netcat-openbsd  # FIXME */
 
 univention-self-service
 univention-self-service-passwordreset-umc
