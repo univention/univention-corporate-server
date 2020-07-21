@@ -81,13 +81,6 @@ def handler(dn, new, old):
 
 		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [b''])[0].decode('UTF-8')
 		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [b''])[0].decode('UTF-8')
-		current_UCS_version = "%s-%s" % (listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel'))
-		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
-			new = None
-		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
-			new = None
 	elif old:
 		ocs = old.get('objectClass', [])
 
@@ -105,6 +98,17 @@ def handler(dn, new, old):
 		target_subdir = 'univention/admin/syntax.d'
 	else:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
+
+	if new:
+		current_UCS_version = "%s-%s" % (listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel'))
+		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
+			## Trigger remove on this system
+			new = None
+		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
+			## Trigger remove on this system
+			new = None
 
 	old_relative_filename = None
 	if old:
@@ -169,8 +173,9 @@ def handler(dn, new, old):
 		finally:
 			listener.unsetuid()
 
-	# Kill running univention-cli-server and mark new extension object active
+	# TODO: Kill running univention-cli-server?
 
+	# Mark new extension object active
 	listener.setuid(0)
 	try:
 		if new:
