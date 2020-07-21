@@ -99,15 +99,28 @@ def handler(dn, new, old):
 	else:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
 
+	# Bug #51622 for UCS 5.0 update:
+	if new and not old:
+		if listener.configRegistry.get('server/role') == 'domaincontroller_master':
+			# Remove objects that don't signal Python3 support
+			cmp_start_vs_50 = apt.apt_pkg.version_compare(univentionUCSVersionStart, "5.0")  # -1 if univentionUCSVersionStart is unset
+			# cmp_end_vs_499 = apt.apt_pkg.version_compare(univentionUCSVersionEnd, "4.99")
+			# Keep object if cmp_start_vs_50 >= 0 [i.e. Py3] or (cmp_start_vs_50 < and univentionUCSVersionEnd) [or cmp_end_vs_499 == 0]
+			# Otherwise remove it:
+			if cmp_start_vs_50 < 0 and not univentionUCSVersionEnd:
+				ud.debug(ud.LISTENER, ud.WARN, '%s: Removing incompatible extension %s (univentionUCSVersionStart=%r and univentionUCSVersionEnd not set).' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
+				remove_object(udm_module_name, dn)
+				return
+
 	if new:
 		current_UCS_version = "%s-%s" % (listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel'))
 		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
-			## Trigger remove on this system
+			# Trigger remove on this system
 			new = None
 		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
-			## Trigger remove on this system
+			# Trigger remove on this system
 			new = None
 
 	old_relative_filename = None
@@ -202,6 +215,28 @@ def handler(dn, new, old):
 			except udm_errors.ldapError as exc:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, exc))
 
+	finally:
+		listener.unsetuid()
+
+
+def remove_object(udm_module_name, object_dn):
+	listener.setuid(0)
+	try:
+		try:
+			ldap_connection, ldap_position = udm_uldap.getAdminConnection()
+			udm_modules.update()
+			udm_module = udm_modules.get(udm_module_name)
+			udm_modules.init(ldap_connection, ldap_position, udm_module)
+		except udm_errors.ldapError as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, exc))
+			raise exc
+
+		try:
+			udm_object = udm_module.object(None, ldap_connection, ldap_position, object_dn)
+			udm_object.remove()
+		except (udm_errors.ldapError, udm_errors.noObject) as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error deleting %s: %s.' % (name, object_dn, exc))
+			raise exc
 	finally:
 		listener.unsetuid()
 
