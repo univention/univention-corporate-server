@@ -303,20 +303,6 @@ example.
 Further information can be found in <xref linkend="domain:listenernotifier"/>.
 </para>
 </section>
-
-<section id="introduction:Virtualization_management"><title>Virtualization and cloud management</title>
-<para>
-With the UMC module &ucsUVMM; (UVMM), UCS offers an extensive,
-powerful tool for the administration of hybrid cloud environments
-virtualization servers registered in the UCS domain
-and virtual machines operated on it can be centrally monitored and
-administrated. In addition UVMM offers the possibility to manage virtual machines in OpenStack or
-EC2 environments.
-</para>
-<para>
-Further information can be found in <xref linkend="uvmm:chapter"/>.
-</para>
-</section>
 </section>
 
 

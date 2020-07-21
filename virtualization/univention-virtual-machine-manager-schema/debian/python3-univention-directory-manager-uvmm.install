@@ -1,2 +1,0 @@
-modules/univention/admin/handlers/uvmm/*.py usr/lib/python3/dist-packages/univention/admin/handlers/uvmm/
-modules/univention/admin/syntax.d/*.py usr/lib/python3/dist-packages/univention/admin/syntax.d/

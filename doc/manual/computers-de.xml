@@ -389,20 +389,6 @@
             </tgroup>
         </table>
         <table>
-            <title>Reiter 'UVMM' (erweiterte Einstellungen)</title>
-            <tgroup cols="1">
-                <colspec colnum="1" colname="col1" colwidth="1*"/>
-                <tbody>
-                    <row>
-                        <entry>
-                            In diesem Reiter wird festgelegt, welche Virtualisierungs-Server durch
-                            UVMM verwaltbar sind (siehe <xref linkend="uvmm:chapter"/>).
-                        </entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table>
-        <table>
             <title>Reiter '(Optionen)'</title>
             <tgroup cols="2">
                 <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -794,30 +780,6 @@
 					  Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen.
 					</simpara></listitem>
 				  </itemizedlist>
-
-				<section id="computers:networkcomplex:uvmm">
-					<title>Voraussetzungen bei Verwendung von &ucsUVMM;</title>
-					<para>
-						Bei der Installation der Applikation <emphasis>KVM Virtualisierungsserver</emphasis> wird die Netzwerkkonfiguration verändert:
-						Es wird eine Bridge mit dem Namen <filename class="devicefile">br0</filename> angelegt, in die die Netzwerkkarte mit dem Namen <filename class="devicefile">eth0</filename> eingehängt wird.
-						Zusätzliche Netzwerkkarten werden nicht adaptiert.
-					</para>
-					<para>
-						Bei einem Update von UCS 3.2 verhindert die Konfiguration die Verwendung der fortgeschrittenen Netzwerkkonfiguration.
-						Sie kann durch das Setzen der folgenden <acronym>UCR</acronym>-Variablen deaktiviert werden:
-					</para>
-					<programlisting language="sh">
-# für KVM:
-ucr set uvmm/kvm/bridge/autostart=no
-# Danach die UMC-Basiseinstellungen reaktivieren:
-ucr unset umc/modules/setup/network/disabled/by
-					</programlisting>
-					<para>
-						Danach muss der Server neu gestartet werden.
-						Bei existierenden virtuellen Maschinen müssen danach die Namen der Netzwerkinterfaces angepasst werden, was in <xref linkend="uvmm:networkinterfaces"/> beschrieben ist.
-						Weiterhin wird empfohlen, die <acronym>UVMM</acronym>-Profile für neue virtuelle Maschinen anzupassen, was in  <xref linkend="uvmm::profile::network"/> beschrieben ist.
-					</para>
-				</section>
 
 				  <section id="computers:networkcomplex:bridge">
 					<title>Bridging

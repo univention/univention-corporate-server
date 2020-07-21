@@ -13,5 +13,4 @@ components_with_steps = {
 	'squid': 12,
 	'radius': 12,
 	'pkgdb': 14,
-	'uvmm': 16,
 }

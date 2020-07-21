@@ -68,7 +68,6 @@ strings = {
 	'squid': '',
 	'radius': '',
 	'pkgdb': '',
-	'uvmm': '',
 	'takeover': 'Active Directory Takeover',
 
 	'appliance_modus': '',

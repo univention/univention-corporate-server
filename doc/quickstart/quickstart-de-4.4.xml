@@ -317,7 +317,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Hybride Cloudumgebungen <biblioref linkend="ucs-uvmm"/>
+		Hybride Cloudumgebungen
 	  </simpara></listitem>
 	</itemizedlist>
   </para>
@@ -368,7 +368,6 @@
   <bibliomixed id="ucs-macjoin"/>
   <bibliomixed id="ucc-manual"/>
   <bibliomixed id="ext-doc-inst"/>
-  <bibliomixed id="ucs-uvmm"/>
   <bibliomixed id="ucs-proxy"/>
   <bibliomixed id="ucs-nagios"/>
   <bibliomixed id="ucs-dhcp"/>

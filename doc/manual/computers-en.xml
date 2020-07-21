@@ -379,21 +379,6 @@
 		</tgroup>
 	</table>
 	<table>
-		<title>'UVMM' tab (advanced settings)</title>
-		<tgroup cols="1">
-			<colspec colnum="1" colname="col1" colwidth="1*"/>
-			<tbody>
-				<row>
-					<entry>
-						This tab is used to specify which virtualization servers can be
-						managed by UVMM. Further information can be found in <xref
-						linkend="uvmm:chapter"/>.
-					</entry>
-				</row>
-			</tbody>
-		</tgroup>
-	</table>
-	<table>
 		<title>'(Options)' tab</title>
 		<tgroup cols="2">
 			<colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -806,30 +791,6 @@
 				  more) physical network interface.
 				</simpara></listitem>
 			  </itemizedlist>
-
-				<section id="computers:networkcomplex:uvmm">
-					<title>Prerequisite when using &ucsUVMM;</title>
-					<para>
-						When the application <emphasis>KVM virtualization server</emphasis> is installed, the network configuration is changed:
-						A bridge with the name <filename class="devicefile">br0</filename> is configured, and the network device <filename class="devicefile">eth0</filename> is added.
-						Additional network cards are not adapted accordingly.
-					</para>
-					<para>
-						When updating from UCS 3.2, the configuration prevents using the advanced network settings.
-						It can be disabled by setting the following <acronym>UCR</acronym> variables:
-					</para>
-					<programlisting language="sh">
-# for KVM:
-ucr set uvmm/kvm/bridge/autostart=no
-# After that re-enable the support in the UMC basic settings dialog
-ucr unset umc/modules/setup/network/disabled/by
-					</programlisting>
-					<para>
-						After that the server must be rebooted.
-						Existing virtual machines must be re-configured for the new interfaces names, which is described in <xref linkend="uvmm:networkinterfaces"/>.
-						Updating <acronym>UVMM</acronym> profiles for new virtual machines is recommended and described in <xref linkend="uvmm::profile::network"/>.
-					</para>
-				</section>
 
 			  <section id="computers:networkcomplex:bridge">
 				<title>Bridging

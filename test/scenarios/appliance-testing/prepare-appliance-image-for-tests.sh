@@ -50,7 +50,7 @@ _ssh "guestfish add $kvm_template  : run : mount /dev/mapper/vg_ucs-root / : \
 	write /root/.ssh/authorized_keys 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech'"
 
 
-# fake uvmm template
+# fake Qemu/KVM template
 _ssh touch /mnt/omar/vmwares/kvm/single/Others/appliance_${APP_ID}_amd64.tar.gz
 
 _ssh cp "$appliance_template.md5" "$kvm_template.md5"

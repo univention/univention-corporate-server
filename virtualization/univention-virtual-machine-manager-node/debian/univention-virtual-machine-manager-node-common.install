@@ -1,5 +1,0 @@
-libvirtd-acl.py usr/lib/univention-directory-listener/system/
-univention-virtual-machine-manager-restore.py usr/sbin/univention-virtual-machine-manager-restore
-43univention-virtual-machine-manager-node-common.inst usr/lib/univention-install/
-57univention-virtual-machine-manager-node-common.uinst usr/lib/univention-uninstall/
-conffiles/etc/modprobe.d/loop.conf etc/modprobe.d/

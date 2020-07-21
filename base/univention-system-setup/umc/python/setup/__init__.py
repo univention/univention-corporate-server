@@ -533,8 +533,6 @@ class Instance(Base, ProgressMixin):
 		_check('proxy/http', util.is_proxy, _('The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s') % allValues.get('proxy/http', ''))
 
 		# software checks
-		if 'univention-virtual-machine-manager-node-kvm' in packages and 'univention-virtual-machine-manager-node-xen' in packages:
-			_append('components', _('It is not possible to install KVM and XEN components on one system. Please select only one of these components.'))
 		if 'univention-samba' in packages and 'univention-samba4' in packages:
 			_append('components', _('It is not possible to install Samba 3 and Samba 4 on one system. Please select only one of these components.'))
 

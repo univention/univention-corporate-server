@@ -1,2 +1,0 @@
-ldap/univention-virtual-machine-manager.schema usr/share/univention-ldap/schema/
-40univention-virtual-machine-manager-schema.inst usr/lib/univention-install/
