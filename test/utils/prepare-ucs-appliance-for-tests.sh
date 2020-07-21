@@ -57,7 +57,7 @@ fi
 _ssh mkdir -p "$kvm_template_dir"
 _ssh cp "$xml_template" "$kvm_xml"
 
-# fake uvmm template
+# fake Qemu/KVM template
 _ssh touch /mnt/omar/vmwares/kvm/single/Others/appliance_ucsappliance_amd64.tar.gz
 
 # prepare image

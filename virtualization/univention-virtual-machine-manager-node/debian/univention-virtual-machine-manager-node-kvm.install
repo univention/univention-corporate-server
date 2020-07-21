@@ -1,4 +1,0 @@
-44univention-virtual-machine-manager-node-kvm.inst usr/lib/univention-install/
-56univention-virtual-machine-manager-node-kvm.uinst usr/lib/univention-uninstall/
-ucs-kvm-reconnect-bridge    usr/lib/univention-virtual-machine-manager-node-kvm
-ucs-kvm-setup-bridge	usr/lib/univention-virtual-machine-manager-node-kvm/

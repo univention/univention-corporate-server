@@ -73,7 +73,6 @@ strings = {
 	'squid': 'Proxyserver',
 	'radius': 'RADIUS',
 	'pkgdb': 'Software-Installationsmonitor',
-	'uvmm': 'Manager',
 	'takeover': 'Active Directory Takeover',
 
 	'appliance_modus': 'Appliance-Modus',

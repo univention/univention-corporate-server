@@ -110,40 +110,6 @@
 	</para>
   </section>
 
-  <section id="engineering:virt">
-	<title>Virtualisierung</title>
-	<para>
-	  Alle Serversysteme in der Umgebung von Ganupa Technologies sind mit &ucsUVMM; (UVMM)
-	  virtualisiert. Zum Einsatz kommt dabei ausschliesslich Open-Source-Software.
-	</para>
-
-	<para>
-	  Als Grundlage der Virtualisierung dienen Virtualisierungsserver auf Memberservern
-	  (UCS-Serversysteme ohne lokalen LDAP-Server). Auf diesen laufen jeweils ein bis mehrere
-	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und Windows-Systeme werden
-	  paravirtualisiert betrieben, d. h. durch einen Zugriff der virtualisierten Systeme auf die
-	  Ressourcen der Wirtsysteme kann ein höherer Durchsatz erzielt werden.
-	  Paravirtualisierungstreiber für KVM werden von Univention als signierte
-	  MSI-Installationspakete bereitgestellt und können so einfach installiert werden.
-	</para>
-
-	  <figure id="uvmm">
-		<title>Verwaltung virtueller Maschinen mit UVMM</title>
-		<graphic align="center" scalefit="1" width="100%" fileref="illustrations44/uvmm_de.png"/>
-	  </figure>
-
-	<para>
-	  Alle virtuellen Maschinen können über den webbasierten &ucsUVMM; komfortabel angelegt und
-	  verwaltet werden. Werden Wartungsarbeiten an einem Virtualisierungsserver nötig, so können die
-	  auf diesem System laufenden virtuellen Maschinen im laufenden Betrieb auf einen anderen Server
-	  migriert werden.
-	</para>
-
-	<para>
-	  Snapshots ermöglichen einen einfachen Rollback von Updates im Fehlerfall.
-	</para>
-  </section>
-
   <section id="engineering:print">
 	<title>Druckdienste</title>
 	<para>

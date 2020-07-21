@@ -10,9 +10,6 @@ ALL_TARGETS = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-c
 	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/adconnector.json \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/adconnector.mo \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/udm-saml.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-uvmm.mo \
-	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/uvmm.json \
-	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/uvmm.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-quota.mo \
 	$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/quota.json \
 	$(DESTDIR)/usr/share/univention-management-console/i18n/fr/quota.mo \
@@ -78,8 +75,6 @@ ALL_TARGETS = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-c
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-root-login-notification.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager-schema.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager.mo \
 	$(DESTDIR)/usr/share/univention-system-setup-boot/www/i18n/fr/main.json \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo \
 	$(DESTDIR)/usr/share/univention-system-setup/www/i18n/fr/main.json \
@@ -125,9 +120,6 @@ $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-
 $(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/adconnector.json: fr/services/univention-ad-connector/umc/js/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/adconnector.mo: fr/services/univention-ad-connector/umc/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/udm-saml.mo: fr/saml/univention-saml/umc/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-uvmm.mo: fr/virtualization/univention-virtual-machine-manager-daemon/umc/python/uvmm/fr.po
-$(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/uvmm.json: fr/virtualization/univention-virtual-machine-manager-daemon/umc/js/fr.po
-$(DESTDIR)/usr/share/univention-management-console/i18n/fr/uvmm.mo: fr/virtualization/univention-virtual-machine-manager-daemon/umc/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-module-quota.mo: fr/base/univention-quota/umc/python/quota/fr.po
 $(DESTDIR)/usr/share/univention-management-console-frontend/js/umc/modules/i18n/fr/quota.json: fr/base/univention-quota/umc/js/fr.po
 $(DESTDIR)/usr/share/univention-management-console/i18n/fr/quota.mo: fr/base/univention-quota/umc/fr.po
@@ -192,8 +184,6 @@ $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-container-m
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/mswmifilter/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo: fr/saml/univention-saml/modules/univention/admin/handlers/saml/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager-schema.mo: fr/virtualization/univention-virtual-machine-manager-schema/modules/univention/admin/handlers/uvmm/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-virtual-machine-manager.mo: fr/virtualization/univention-virtual-machine-manager-daemon/src/fr.po
 $(DESTDIR)/usr/share/univention-system-setup-boot/www/i18n/fr/main.json: fr/base/univention-system-setup/usr/share/univention-system-setup-boot/www/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo: fr/base/univention-system-setup/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.po
 $(DESTDIR)/usr/share/univention-system-setup/www/i18n/fr/main.json: fr/base/univention-system-setup/usr/share/univention-system-setup/www/fr.po

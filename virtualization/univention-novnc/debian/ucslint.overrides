@@ -1,4 +1,0 @@
-# handled bash-isms
-0013-2: debian/univention-novnc.postinst
-0013-2: debian/univention-novnc.postrm
-0013-2: websockify

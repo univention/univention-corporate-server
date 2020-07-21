@@ -1,2 +1,0 @@
-mv_conffile /etc/apache2/conf.d/univention-novnc.conf /etc/apache2/conf-available/univention-novnc.conf 1.0.0-1~
-rm_conffile /etc/init.d/univention-novnc 3.0.0-4~

@@ -315,22 +315,6 @@ Weiterführende Informationen finden sich in <xref linkend="domain:listenernotif
 </para>
 </section>
 
-
-<section id="introduction:Virtualisierungsmanagement"><title>Virtualisierungs-
-und Cloudmanagement</title>
-<para>
-Mit dem UMC-Modul &ucsUVMM; (UVMM) verfügt UCS über ein umfangreiches und
-mächtiges Werkzeug zur Verwaltung hybrider Cloud-Umgebungen.
-In der UCS-Domäne registrierte Virtualisierungsserver und
-darauf betriebene virtuelle Maschinen können zentral überwacht und
-administriert werden. Zusätzlich bietet UVMM die Möglichkeit virtuelle
-Maschinen in OpenStack- oder EC2-Umgebungen zu administrieren.
-</para>
-<para>
-Weiterführende Informationen finden sich in <xref linkend="uvmm:chapter"/>.
-</para>
-</section>
-
 </section>
 
 <section id="introduction:Weitere_Dokumentationen"><title>Weitere Dokumentationen</title>

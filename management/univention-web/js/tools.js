@@ -862,7 +862,7 @@ define([
 
 		handleErrorStatus: function(error, handleErrors) {
 			// deprecated function to display errors
-			// only used in uvmm/GridUpdater and adtakeover
+			// only used in adtakeover
 			// TODO: remove
 			var info = this.parseError(error);
 			info.exception = error;
