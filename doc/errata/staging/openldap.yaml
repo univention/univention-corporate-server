@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [4,5]
+scope: ucs_4.4-0-errata4.4-5
+src: openldap
+fix: 2.4.45+dfsg-1~bpo9+1A~4.4.0.202007212220
+desc: |
+ This update addresses the following issue:
+ * Running OpenLDAP with ppolicy overlay could lead to a denial of service
+   due to a slapd segmentation fault. This has been fixed.
+bug: [37915]
