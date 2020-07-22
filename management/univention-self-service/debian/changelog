@@ -1,3 +1,9 @@
+univention-self-service (4.0.3-37) unstable; urgency=medium
+
+  * Bug #51260: Add missing JS depencency in pages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 Jul 2020 14:09:40 +0200
+
 univention-self-service (4.0.3-36) unstable; urgency=medium
 
   * Bug #51260: Make page titles configurable via UCR
