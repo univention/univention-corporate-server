@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-self-service
-fix: 4.0.3-36A~4.4.0.202007211218
+fix: 4.0.3-37A~4.4.0.202007221410
 desc: |
  This update addresses the following issue(s):
  * The page titles are now configurable via the UCR variables
