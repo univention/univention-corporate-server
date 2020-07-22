@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The page titles are now configurable via the UCR variables
    umc/self-service/{page}/title/{lang}.
-bug: [51260]
+ * If a password recovery email is successfully used to recover access to an
+   account, that address will now be considered verified.
+bug: [51260, 51262]
