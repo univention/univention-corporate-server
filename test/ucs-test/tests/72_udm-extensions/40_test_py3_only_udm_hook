@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create UDM syntax extension object and test it via CLI
-## tags: [udm-ldapextensions,apptest]
+## desc: Create Py3-only UDM hook extension object and test it via CLI
+## tags: [udm-ldapextensions]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## exposure: dangerous
 ## packages:
@@ -8,9 +8,9 @@
 
 from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun, fail
+from univention.testing.utils import verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun, wait_for_s4connector_replication
 from univention.testing.strings import random_name, random_version, random_ucs_version
-from univention.testing.udm_extensions import *
+from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version
 import bz2
 import base64
 
@@ -19,7 +19,7 @@ if __name__ == '__main__':
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
-		extension_type = 'syntax'
+		extension_type = 'hook'
 		extension_name = get_extension_name(extension_type)
 		extension_filename = get_extension_filename(extension_type, extension_name)
 		extension_buffer = get_extension_buffer(extension_type, extension_name)
@@ -28,8 +28,8 @@ if __name__ == '__main__':
 		package_name = get_package_name()
 		package_version = get_package_version()
 		app_id = '%s-%s' % (random_name(), random_version())
-		version_start = random_ucs_version(max_major=2)
-		version_end = random_ucs_version(min_major=5)
+		version_start = '5.0-0'
+		version_end = ''
 
 		extension_dn = udm.create_object(
 			'settings/udm_%s' % extension_type,
@@ -52,21 +52,22 @@ if __name__ == '__main__':
 			groupPosition='1',
 			module='users/user',
 			overwriteTab='0',
-			shortDescription='UCS Test Extended Attribute',
+			hook=extension_name,
+			shortDescription='UCS Test Extended Attribute %s' % extension_name,
 			groupName='UCS TEST: test_udm_syntax',
 			valueRequired='0',
 			CLIName='ucstest%s' % extension_name.upper(),
 			longDescription='UCS Test Extended Attribute',
 			doNotSearch='0',
 			tabName='UCS TEST',
-			syntax=extension_name,
+			syntax='string',
 			tabAdvanced='0',
-			name='UCStest-syntax-extension-%s' % extension_name,
+			name='UCStest-hook-extension-%s' % extension_name,
 			mayChange='1',
 			multivalue='0',
 			ldapMapping='univentionFreeAttribute20',
 			notEditable='0',
-			tabPosition='1'
+			tabPosition='2'
 		)
 
 		wait_for_replication_and_postrun()
@@ -80,22 +81,37 @@ if __name__ == '__main__':
 			'univentionOwnedByPackageVersion': [package_version],
 			'univentionUDM%sData' % extension_type.capitalize(): [bz2.compress(extension_buffer)],
 			'univentionUDM%sActive' % extension_type.capitalize(): ['TRUE'],
-
 		})
 
-		# create user and set extended attribute with valid value
-		value = 'ucstest-%s' % random_name()
-		userargs = {'ucstest%s' % extension_name.upper(): value}
-		user_dn, username = udm.create_user(**userargs)
+		# create user
+		user_dn, username = udm.create_user()
+		# We also need to wait for the replication on backup or slave
+		wait_for_replication()
+		wait_for_s4connector_replication()
 
-		# modify user and set extended attribute with invalid value (according to assigned syntax)
-		userargs = {'ucstest%s' % extension_name.upper(): random_name()}
-		try:
-			udm.modify_object('users/user', dn=user_dn, **userargs)
-			fail('Syntax is not in use')
-		except udm_test.UCSTestUDM_ModifyUDMObjectFailed, ex:
-			if 'Wrong value given for ucs-test-syntax' not in str(ex):
-				raise
+		# set lastname of user ==> hook should set description
+		lastname = random_name()
+		udm.modify_object('users/user', dn=user_dn, lastname=lastname)
+		# We also need to wait for the replication on backup or slave
+		wait_for_replication()
+		wait_for_s4connector_replication()
+		verify_ldap_object(user_dn, {
+			'uid': [username],
+			'sn': [lastname],
+			'description': ['USERNAME=%s  LASTNAME=%s' % (username, lastname)],
+		})
+
+		# set lastname of user ==> hook should set description
+		lastname = random_name()
+		udm.modify_object('users/user', dn=user_dn, lastname=lastname)
+		# We also need to wait for the replication on backup or slave
+		wait_for_replication()
+		wait_for_s4connector_replication()
+		verify_ldap_object(user_dn, {
+			'uid': [username],
+			'sn': [lastname],
+			'description': ['USERNAME=%s  LASTNAME=%s' % (username, lastname)],
+		})
 
 	wait_for_replication_and_postrun()
 	udm.stop_cli_server()
