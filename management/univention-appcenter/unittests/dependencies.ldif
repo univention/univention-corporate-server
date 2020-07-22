@@ -1,0 +1,60 @@
+dn: univentionAppID=self-service-backend_4.0,cn=self-service-backend,cn=apps,cn=univention,dc=intranet,dc=example,dc=de
+univentionAppWebsite: [de] http://docs.software-univention.de/handbuch-4.4.html#user-management:password-changes-by-users:self-service
+univentionAppWebsite: [en] http://docs.software-univention.de/manual-4.4.html#user-management:password-changes-by-users:self-service
+objectClass: univentionApp
+objectClass: top
+objectClass: univentionObject
+univentionAppCategory: System services
+univentionAppCategory: Education
+univentionAppCategory: UCS components
+univentionAppDescription: [en] Self Service backend components.
+univentionAppDescription: [de] Self Service Backend-Komponenten
+univentionAppName: [en] Self Service Backend
+univentionAppDefaultPackages: univention-self-service-master
+univentionAppID: self-service-backend_4.0
+univentionAppVersion: 4.0
+univentionAppContact: sales@univention.de
+univentionObjectType: appcenter/app
+univentionAppServerRole: domaincontroller_master
+univentionAppServerRole: domaincontroller_backup
+univentionAppWebsiteVendor: [en] https://univention.com/
+univentionAppWebsiteVendor: [de] https://univention.de/
+univentionAppInstalledOnServer: master.intranet.example.de
+
+dn: univentionAppID=kopano-core_8.7.1.0-1,cn=kopano-core,cn=apps,cn=univention,dc=intranet,dc=example,dc=de
+univentionAppConflictingSystemPackages: univention-mail-dovecot
+univentionAppConflictingSystemPackages: dovecot-core
+univentionAppConflictingSystemPackages: cyrus-imapd-2.2
+univentionAppConflictingSystemPackages: univention-mail-cyrus
+univentionAppConflictingSystemPackages: univention-mail-canonical-maps
+univentionAppConflictingSystemPackages: univention-mail-server
+univentionAppConflictingSystemPackages: cyrus-imapd-2.4
+univentionAppConflictingSystemPackages: tomcat6
+univentionAppConflictingSystemPackages: dovecot-imapd
+univentionAppConflictingApps: kolab-enterprise
+univentionAppConflictingApps: horde
+univentionAppConflictingApps: oxseforucs
+univentionAppConflictingApps: egroupware
+univentionAppConflictingApps: zarafa
+univentionAppWebsite: [en] https://kopano.com/products/kopano-backend/
+objectClass: univentionApp
+objectClass: top
+objectClass: univentionObject
+univentionAppCategory: Collaboration
+univentionAppCategory: Business
+univentionAppDescription: [en] Kopano Sharing & Communication Software for Professionals
+univentionAppDefaultPackagesMaster: kopano4ucs-udm
+univentionAppDefaultPackages: kopano4ucs
+univentionAppName: [en] Kopano Core
+univentionAppID: kopano-core_8.7.1.0-1
+univentionAppVersion: 8.7.1.0-1
+univentionAppContact: sales@kopano.com
+univentionObjectType: appcenter/app
+univentionAppServerRole: domaincontroller_master
+univentionAppServerRole: memberserver
+univentionAppServerRole: domaincontroller_slave
+univentionAppServerRole: domaincontroller_backup
+univentionAppWebsiteVendor: [de] http://www.kopano.com/?lang=de
+univentionAppWebsiteVendor: [en] http://kopano.com
+univentionAppInstalledOnServer: master.intranet.example.de
+

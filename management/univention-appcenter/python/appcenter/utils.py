@@ -519,3 +519,58 @@ def find_hosts_for_master_packages():
 		# not in list
 		pass
 	return hosts
+
+
+def resolve_dependencies(apps):
+	from univention.appcenter.app_cache import Apps
+	from univention.appcenter.udm import get_machine_connection
+	lo, pos = get_machine_connection()
+	utils_logger.info('Resolving dependencies for %s' % ', '.join(app.id for app in apps))
+	apps_with_their_dependencies = []
+	depends = {}
+	checked = []
+	while apps:
+		app = apps.pop()
+		if app in checked:
+			continue
+		checked.insert(0, app)
+		dependencies = depends[app.id] = []
+		for app_id in app.required_apps:
+			required_app = Apps().find(app_id)
+			if required_app is None:
+				utils_logger.warn('Could not find required App %s' % app_id)
+				continue
+			if not required_app.is_installed():
+				utils_logger.info('Adding %s to the list of Apps' % required_app.id)
+				apps.append(required_app)
+				dependencies.append(app_id)
+		for app_id in app.required_apps_in_domain:
+			required_app = Apps().find(app_id)
+			if required_app is None:
+				utils_logger.warn('Could not find required App %s' % app_id)
+				continue
+			if required_app.is_installed():
+				continue
+			if lo.search('(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)(univentionAppID=%s_*))' % required_app.id):
+				continue
+			utils_logger.info('Adding %s to the list of Apps' % required_app.id)
+			apps.append(required_app)
+			dependencies.append(app_id)
+	max_loop = len(checked) ** 2
+	i = 0
+	while checked:
+		app = checked.pop(0)
+		if not depends[app.id]:
+			apps_with_their_dependencies.append(app)
+			for app_id, required_apps in depends.items():
+				try:
+					required_apps.remove(app.id)
+				except ValueError:
+					pass
+		else:
+			checked.append(app)
+		i += 1
+		if i > max_loop:
+			# this should never happen unless we release apps with dependency cycles
+			raise RuntimeError('Cannot resolve dependency cycle!')
+	return apps_with_their_dependencies
