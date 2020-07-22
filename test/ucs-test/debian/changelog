@@ -1,3 +1,9 @@
+ucs-test (9.0.4-12) unstable; urgency=medium
+
+  * Bug #37915: Add test case
+
+ -- Arvid <requate@univention.de>  Wed, 22 Jul 2020 17:20:52 +0200
+
 ucs-test (9.0.4-11) unstable; urgency=medium
 
   * Bug #50583: Revert changes of this bug

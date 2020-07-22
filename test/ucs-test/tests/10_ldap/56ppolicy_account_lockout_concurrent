@@ -1,0 +1,164 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check account lockout on repeated failed login attempts
+## tags:
+##  - replication
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - ldap-utils
+## exposure: dangerous
+## bugs: [46431, 39817]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+if [ "$ldap_database_type" != 'mdb' ]; then
+	fail_fast 138 "Ppolicy with UDM lockout only works with mdb backend"
+fi
+
+restart_slapd_if_it_hangs() {
+	local fail=0
+	local msg
+	univention-ldapsearch -LLLs base -b '' objectClass=OpenLDAProotDSE 1.1 &
+	sleep 5
+	if pgrep -lf objectClass=OpenLDAProotDSE | grep -qe '\<ldapsearch\>'; then
+		msg="slapd hangs"
+		echo="slapd hangs, attempting kill and start"
+		fail=1
+		pkill -9 -f slapd
+		sleep 5
+		systemctl start slapd
+	fi
+	if ! pgrep -f slapd; then
+		msg="slapd died"
+		echo "slapd died, attempting start"
+		fail=1
+		systemctl start slapd
+	fi
+	if [ "$fail" -eq 1 ]; then
+		fail_fast 1 "$msg"
+	fi
+}
+
+#TEST PREPARATION
+
+deactivate_ppolicy() {
+	ucr unset ldap/ppolicy ldap/ppolicy/enabled; /etc/init.d/slapd restart
+}
+
+ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes; /etc/init.d/slapd restart; undo deactivate_ppolicy
+
+default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
+
+old_pwdFailureCountInterval=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdFailureCountInterval: //p')
+pwdMaxFailure=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdMaxFailure: //p')
+new_pwdFailureCountInterval=15
+
+reset_pwdFailureCountInterval() {
+	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR
+	dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
+	changetype: modify
+	replace: pwdFailureCountInterval
+	pwdFailureCountInterval: $old_pwdFailureCountInterval
+	%EOR
+}
+
+ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR && undo reset_pwdFailureCountInterval || fail_fast 140 "cannot modify ppolicy"
+dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
+changetype: modify
+replace: pwdFailureCountInterval
+pwdFailureCountInterval: $new_pwdFailureCountInterval
+%EOR
+
+# create test user
+test_username_list=()
+test_userdn_list=()
+
+num_testusers=5
+for ((i=0;i<num_testusers;i++)); do
+	test_username=$(user_randomname)
+	user_create "$test_username" &&
+		undo user_remove "$test_username" ||
+		fail_fast 140 "cannot create user $test_username"
+
+	test_username_list+=("$test_username")
+	test_userdn_list+=("$(user_dn "$test_username")")
+done
+
+#START TEST
+for ((i=1; i<"$pwdMaxFailure"; i++)); do
+	for test_userdn in "${test_userdn_list[@]}"; do
+		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
+	done
+done
+
+restart_slapd_if_it_hangs
+
+# $(univention-ldapsearch -LLL uid=$test_username pwdFailureTime | sed -n 's/^pwdFailureTime: //p' | wc -l)
+
+echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.."
+sleep "$new_pwdFailureCountInterval"
+
+if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" dn >/dev/null; then
+	fail_fast 1 "Authentication failure prior to lock"
+fi
+
+for ((i=1; i<="$pwdMaxFailure"; i++)); do
+	for test_userdn in "${test_userdn_list[@]}"; do
+		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
+	done
+done
+
+restart_slapd_if_it_hangs
+
+wait_for_replication_and_postrun
+
+for ((i=0;i<num_testusers;i++)); do
+	test_userdn="${test_userdn_list[$i]}"
+	test_username="${test_username_list[$i]}"
+	locked_state=$(udm-test users/user list --filter "username=$test_username" | sed -n 's/^  locked: //p')
+	if [ "$locked_state" != '1' ]; then
+		fail_test 1 "Account '$test_username' not locked: $locked_state"
+		univention-ldapsearch -LLL -b "$test_userdn" -s base +
+
+		echo "DEBUG: attempting to lock account '$test_username' manually"
+		python -m univention.lib.account lock --dn "$test_userdn" --lock-time '20141006192950Z'
+
+		locked_state=$(udm-test users/user list --filter "username=$test_username" | sed -n 's/^  locked: //p')
+		echo "DEBUG: result: $locked_state"
+	fi
+done
+
+remove_ldif () {
+	rm ldif.1 ldif.2
+}
+undo remove_ldif
+
+for ((i=0;i<num_testusers;i++)); do
+	test_userdn="${test_userdn_list[$i]}"
+	univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.1
+	udm-test users/user modify --dn "$test_userdn" --set unlock=1
+	univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.2
+done
+
+wait_for_replication_and_postrun
+
+for ((i=0;i<num_testusers;i++)); do
+	test_userdn="${test_userdn_list[$i]}"
+	test_username="${test_username_list[$i]}"
+	if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" dn >/dev/null; then
+		echo 'DEBUG: diff'
+		ldiff ldif.1 ldif.2
+		echo 'DEBUG: object'
+		cat ldif.2
+		python -c "import crypt, univention.uldap; lo = univention.uldap.getMachineConnection(); password = lo.getAttr('${test_userdn}', 'userPassword')[0].replace('{crypt}', ''); print 'Password valid?:', crypt.crypt('univention', password.rsplit('\$', 1)[0]) == password"
+
+		fail_test 1 "Authentication of account '$test_username' failed after unlock"
+	fi
+done
+
+exit "$RETVAL"
