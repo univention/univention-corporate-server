@@ -40,8 +40,9 @@ define([
 	"./TextBox",
 	"./PasswordBox",
 	"./lib",
+	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, on, keys, Button, put, entities, tools, dialog, TextBox, PasswordBox, lib, _) {
+], function(lang, on, keys, Button, put, entities, tools, dialog, TextBox, PasswordBox, lib, i18nTools, _) {
 
 	return {
 		hash: 'newpassword',

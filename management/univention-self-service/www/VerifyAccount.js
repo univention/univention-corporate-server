@@ -41,8 +41,9 @@ define([
 	"umc/dialog",
 	"dompurify/purify",
 	"./TextBox",
+	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, keys, dojoHash, ioQuery, domConstruct, Button, put, entities, tools, dialog, dompurify, TextBox, _) {
+], function(lang, keys, dojoHash, ioQuery, domConstruct, Button, put, entities, tools, dialog, dompurify, TextBox, i18nTools, _) {
 
 	return {
 		hash: 'verifyaccount',

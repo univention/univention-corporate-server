@@ -45,8 +45,9 @@ define([
 	"./TextBox",
 	"./PasswordBox",
 	"put-selector/put",
+	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, array, keys, Deferred, all, on, entities, login, render, tools, dialog, Form, Button, TextBox, PasswordBox, put, _) {
+], function(lang, array, keys, Deferred, all, on, entities, login, render, tools, dialog, Form, Button, TextBox, PasswordBox, put, i18nTools, _) {
 
 	return {
 		hash: 'profiledata',

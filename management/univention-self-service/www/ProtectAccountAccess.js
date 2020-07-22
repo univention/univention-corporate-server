@@ -41,8 +41,9 @@ define([
 	"./lib",
 	"./PasswordBox",
 	"./TextBox",
+	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, array, on, keys, Button, put, login, tools, dialog, lib, PasswordBox, TextBox, _) {
+], function(lang, array, on, keys, Button, put, login, tools, dialog, lib, PasswordBox, TextBox, i18nTools, _) {
 
 	return {
 		hash: 'setcontactinformation',

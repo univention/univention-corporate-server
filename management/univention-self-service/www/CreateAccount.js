@@ -40,8 +40,9 @@ define([
 	"umc/dialog",
 	"umc/widgets/Form",
 	"put-selector/put",
+	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, array, Deferred, domConstruct, on, entities, render, tools, dialog, Form, put, _) {
+], function(lang, array, Deferred, domConstruct, on, entities, render, tools, dialog, Form, put, i18nTools, _) {
 
 	return {
 		hash: 'createaccount',
