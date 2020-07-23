@@ -52,7 +52,7 @@ def ucr_get(key, default=None):
 def ucr_save(values):
 	changed_values = {}
 	_UCR.load()
-	for k, v in values.iteritems():
+	for k, v in values.items():
 		if _UCR.get(k) != v:
 			changed_values[k] = v
 	if changed_values:
@@ -73,7 +73,7 @@ def ucr_is_false(key):
 
 
 def ucr_keys():
-	return _UCR.iterkeys()
+	return _UCR.keys()
 
 
 def ucr_evaluated_as_true(value):
@@ -88,7 +88,7 @@ def ucr_run_filter(string, additional=None):
 		# memory only ucr. not saved.
 		# if we would... NEVER __setitem__ on ucr!
 		ucr = deepcopy(ucr)
-		for k, v in additional.iteritems():
+		for k, v in additional.items():
 			ucr[k] = v
 	return run_filter(string, ucr)
 

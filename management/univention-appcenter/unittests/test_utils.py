@@ -44,7 +44,7 @@ def test_dependency_selfservice(custom_apps, import_appcenter_module):
 	app = custom_apps.find('self-service')
 	app2 = custom_apps.find('self-service-backend')
 
-	resolved = utils.resolve_dependencies([app])
+	resolved = utils.resolve_dependencies([app], 'install')
 	assert resolved == [app2, app]
 
 
@@ -54,9 +54,9 @@ def test_dependency_selfservices_wrong_order(custom_apps, import_appcenter_modul
 	app = custom_apps.find('self-service')
 	app2 = custom_apps.find('self-service-backend')
 
-	resolved = utils.resolve_dependencies([app2, app])
+	resolved = utils.resolve_dependencies([app2, app], 'install')
 	assert resolved == [app2, app]
-	resolved = utils.resolve_dependencies([app, app2])
+	resolved = utils.resolve_dependencies([app, app2], 'install')
 	assert resolved == [app2, app]
 
 
@@ -65,7 +65,7 @@ def test_dependency_selfservice_backend(custom_apps, import_appcenter_module):
 	custom_apps.load('unittests/inis/dependencies')
 	app = custom_apps.find('self-service-backend')
 
-	resolved = utils.resolve_dependencies([app])
+	resolved = utils.resolve_dependencies([app], 'install')
 	assert resolved == [app]
 
 
@@ -78,7 +78,7 @@ def test_dependency_selfservice_and_webmeetings(custom_apps, import_appcenter_mo
 	app4 = custom_apps.find('kopano-webapp')
 	app5 = custom_apps.find('kopano-core')
 
-	resolved = utils.resolve_dependencies([app1, app3])
+	resolved = utils.resolve_dependencies([app1, app3], 'install')
 	assert resolved == [app2, app1, app5, app4, app3]
 
 
@@ -88,9 +88,9 @@ def test_dependency_selfservice_installed_in_domain(custom_apps, import_appcente
 	app = custom_apps.find('self-service')
 	app2 = custom_apps.find('kopano-webapp')
 
-	resolved = utils.resolve_dependencies([app, app2])
+	resolved = utils.resolve_dependencies([app, app2], 'install')
 	assert resolved == [app, app2]
-	resolved = utils.resolve_dependencies([app2, app])
+	resolved = utils.resolve_dependencies([app2, app], 'install')
 	assert resolved == [app2, app]
 
 
@@ -101,5 +101,5 @@ def test_dependency_selfservice_installed_locally(custom_apps, import_appcenter_
 	app2 = custom_apps.find('kopano-webapp')
 	mocker.patch.object(app2, 'is_installed', return_value=True)
 
-	resolved = utils.resolve_dependencies([app])
+	resolved = utils.resolve_dependencies([app], 'install')
 	assert resolved == [app]
