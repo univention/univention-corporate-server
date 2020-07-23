@@ -79,7 +79,7 @@ class Domain(CredentialsAction):
 		for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
 			objs = search_objects('computers/%s' % role, lo, pos)
 			for obj in objs:
-				if not 'serverRole' in obj.info:
+				if 'serverRole' not in obj.info:
 					continue
 				if 'docker' in obj.info.get('objectFlag', []):
 					continue

@@ -32,6 +32,7 @@
 
 import sys
 from glob import glob
+import logging
 
 from univentionunittests import import_module
 
@@ -41,14 +42,41 @@ import pytest
 @pytest.fixture
 def mocked_connection(mocker, lo, pos):
 	udm_module = _import('udm')
-	mocker.patch.object(udm_module, 'get_machine_connection', return_value=[lo, pos])
-	mocker.patch.object(udm_module, 'get_admin_connection', return_value=[lo, pos])
+	mocker.patch.object(udm_module, 'getMachineConnection', return_value=[lo, pos])
+	mocker.patch.object(udm_module, 'getAdminConnection', return_value=[lo, pos])
+	return lo
 
 
 @pytest.fixture
-def get_action(mocker, lo, pos):
+def get_action():
 	actions_module = _import('actions')
 	return actions_module.get_action
+
+
+@pytest.fixture
+def mocked_ucr(ucr, mocker):
+	ucr_module = _import('ucr')
+	mocker.patch.object(ucr_module, '_UCR', ucr)
+
+	def ucr_save(values):
+		changed_values = {}
+		for k, v in values.items():
+			if ucr.get(k) != v:
+				changed_values[k] = v
+		if changed_values:
+			ucr.items.update(changed_values)
+		return changed_values
+	mocker.patch.object(ucr_module, 'ucr_save', ucr_save)
+
+	ucr['uuid/license'] = '00000000-0000-0000-0000-000000000000'
+	ucr['server/role'] = 'domaincontroller_master'
+	ucr['hostname'] = 'master'
+	ucr['domainname'] = 'intranet.example.de'
+	ucr['version/version'] = '5.0'
+	ucr['version/patchlevel'] = '0'
+	ucr['version/erratalevel'] = '0'
+	ucr['repository/app_center/server'] = 'https://appcenter.software-univention.de'
+	return ucr
 
 
 @pytest.fixture
@@ -82,8 +110,13 @@ def import_appcenter_modules():
 	# for pymod in glob(local_python_path + '*.py'):
 	# 	name = os.path.basename(pymod)[:-3]
 	import_module('listener', None, 'listener', use_installed=True)
-	for name in ['log', 'ucr', 'utils', 'packages', 'meta', 'ini_parser', 'settings', 'app', 'app_cache', 'udm', 'install_checks', 'actions']:
-		import_module(name, local_python_path, 'univention.appcenter.{}'.format(name), use_installed=use_installed)
+	for name in ['log', 'ucr', 'utils', 'packages', 'meta', 'ini_parser', 'settings', 'app', 'app_cache', 'udm', 'actions', 'install_checks']:
+		module = import_module(name, local_python_path, 'univention.appcenter.{}'.format(name), use_installed=use_installed)
+		if name == 'log':
+			module.log_to_stream()
+			logger = module.get_base_logger()
+			handler = logger.handlers[1]
+			handler.filters[0].min_level = logging.DEBUG
 
 
 def _import(name):
