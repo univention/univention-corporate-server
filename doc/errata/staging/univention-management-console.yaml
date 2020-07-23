@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-management-console
-fix: 11.0.4-90A~4.4.0.202007211220
+fix: 11.0.4-92A~4.4.0.202007231346
 desc: |
  This update addresses the following issue:
  * Updated the meta.json file to include UCR variables to configure page
