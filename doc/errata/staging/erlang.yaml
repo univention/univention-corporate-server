@@ -6,9 +6,8 @@ src: erlang
 fix: 1:19.2.1+dfsg-2+deb9u3
 desc: |
  This update addresses the following issue:
- * yaws_config.erl in Yaws through 2.0.2 and/or 2.0.7 loads obsolete TLS
-   ciphers, as demonstrated by ones that allow Sweet32 attacks.
-   (CVE-2020-12872)
+ * yaws_config.erl loads obsolete TLS ciphers, as demonstrated by ones that
+   allow Sweet32 attacks. (CVE-2020-12872)
 bug: [51708]
 cve:
 - CVE-2020-12872
