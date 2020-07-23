@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-91) unstable; urgency=medium
+
+  * Bug #51718: Make the title of the login page configurable via UCR
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 23 Jul 2020 09:34:06 +0200
+
 univention-management-console (11.0.4-90) unstable; urgency=medium
 
   * Bug #51260: Make page titles in self-service configurable
