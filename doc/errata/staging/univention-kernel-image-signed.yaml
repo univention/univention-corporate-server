@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [4, 5]
 scope: ucs_4.4-0-errata4.4-5
-src: univention-kernel-image
-fix: 12.0.0-5A~4.4.0.202007231023
+src: univention-kernel-image-signed
+fix: 5.0.0-12A~4.4.0.202007231029
 desc: |
  This updates the Linux kernel to version 4.9.228, which addresses (among
  others) the following security issues:
@@ -36,7 +36,7 @@ desc: |
    several times in a row, aka CID-b86dab054059. NOTE: Members in the
    community argue that the integer overflow does not lead to a security issue
    in this case. (CVE-2020-13974)
-note: This is the 3rd of three related updates.
+note: This is the 2nd of three related updates.
 bug: [51702]
 cve:
 - CVE-2018-9517
