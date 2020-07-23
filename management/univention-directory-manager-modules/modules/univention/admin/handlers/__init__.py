@@ -1021,7 +1021,7 @@ class simpleLdap(object):
 		:rtype: bool
 		"""
 		while dn:
-			if self.lo.lo.compare_dn(dn, parent):
+			if self.lo.compare_dn(dn, parent):
 				return True
 			dn = self.lo.parentDn(dn)
 		return False
