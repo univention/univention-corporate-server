@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue:
  * Updated the meta.json file to include UCR variables to configure page
    titles of the Univention Self Service.
-bug: [51260]
+ * The title of the login page is now configurable via the
+   umc/login/texts/title/{de,en} UCR variables.
+bug: [51260, 51718]
