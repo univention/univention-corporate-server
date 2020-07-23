@@ -6,7 +6,7 @@ src: univention-updater
 fix: 14.0.2-15A~4.4.0.202007230944
 desc: |
  This update addresses the following issue:
- * Fix remote exploitable root vulnerability when reading maintenance
+ * Fix remotely exploitable root vulnerability when reading maintenance
    information from <https://updates.software-univention.de/>.
 bug: [51672]
 cve:
