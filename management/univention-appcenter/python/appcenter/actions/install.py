@@ -64,23 +64,26 @@ class Install(InstallRemoveUpgrade):
 		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
 
 	def main(self, args):
-		app = args.app
-		apps = Apps().get_all_apps_with_id(app.id)
-		if app._docker_prudence_is_true():
-			apps = [_app for _app in apps if not _app.docker]
-			if apps:
-				app = sorted(apps)[-1]
-				self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
-			else:
-				raise InstallNonDockerVersionError(args.app)
-		if not app.install_permissions_exist():
-			apps = [_app for _app in apps if not _app.install_permissions]
-			if apps:
-				app = sorted(apps)[-1]
-				self.warn('Using %s instead of %s because of lacking install permissions' % (app, args.app))
-			else:
-				raise InstallWithoutPermissionError()
-		args.app = app
+		apps = args.app
+		real_apps = []
+		for app in apps:
+			_apps = Apps().get_all_apps_with_id(app.id)
+			if app._docker_prudence_is_true():
+				_apps = [_app for _app in _apps if not _app.docker]
+				if _apps:
+					app = sorted(_apps)[-1]
+					self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
+				else:
+					raise InstallNonDockerVersionError(args.app)
+			if not app.install_permissions_exist():
+				_apps = [_app for _app in _apps if not _app.install_permissions]
+				if _apps:
+					app = sorted(_apps)[-1]
+					self.warn('Using %s instead of %s because of lacking install permissions' % (app, args.app))
+				else:
+					raise InstallWithoutPermissionError()
+			real_apps.append(app)
+		args.app = real_apps
 		return self.do_it(args)
 
 	def _write_start_event(self, app, args):
@@ -188,7 +191,7 @@ class Install(InstallRemoveUpgrade):
 		try:
 			password = self._get_password(args, ask=False)
 			remove = get_action('remove')
-			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
+			remove.call(app=[app], noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
 		except Exception:
 			pass
 

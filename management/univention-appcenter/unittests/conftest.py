@@ -46,6 +46,12 @@ def mocked_connection(mocker, lo, pos):
 
 
 @pytest.fixture
+def get_action(mocker, lo, pos):
+	actions_module = _import('actions')
+	return actions_module.get_action
+
+
+@pytest.fixture
 def custom_apps(mocker):
 	cache_module = _import('app_cache')
 	app_module = _import('app')
@@ -75,7 +81,8 @@ def import_appcenter_modules():
 	local_python_path = 'python/appcenter/'
 	# for pymod in glob(local_python_path + '*.py'):
 	# 	name = os.path.basename(pymod)[:-3]
-	for name in ['log', 'ucr', 'utils', 'packages', 'meta', 'ini_parser', 'settings', 'app', 'app_cache', 'udm']:
+	import_module('listener', None, 'listener', use_installed=True)
+	for name in ['log', 'ucr', 'utils', 'packages', 'meta', 'ini_parser', 'settings', 'app', 'app_cache', 'udm', 'install_checks', 'actions']:
 		import_module(name, local_python_path, 'univention.appcenter.{}'.format(name), use_installed=use_installed)
 
 
