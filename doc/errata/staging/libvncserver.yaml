@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * HandleCursorShape() integer overflow resulting in heap-based buffer
    overflow (CVE-2019-15690)
- * integer overflow and heap-based buffer overflow in libvncclient/cursor.c in
+ * Integer overflow and heap-based buffer overflow in libvncclient/cursor.c in
    HandleCursorShape function (CVE-2019-20788)
 bug: [51703]
 cve:
