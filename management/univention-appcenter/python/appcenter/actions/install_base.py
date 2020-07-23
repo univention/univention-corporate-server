@@ -44,10 +44,11 @@ from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
-from univention.appcenter.utils import get_locale
+from univention.appcenter.utils import get_locale, resolve_dependencies
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.packages import package_lock, LockError
+from univention.appcenter.install_checks import get_requirement, check
 
 
 class StoreConfigAction(Action):
@@ -77,7 +78,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--do-not-call-join-scripts', action='store_false', dest='call_join_scripts', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
 		parser.add_argument('--dry-run', action='store_true', dest='dry_run', help='Perform only a dry-run. App state is not touched')
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the App')
+		parser.add_argument('app', nargs='+', action=StoreAppAction, help='The ID of the App')
 
 	main = None  # no action by itself
 
@@ -91,62 +92,90 @@ class InstallRemoveUpgrade(Register):
 		pass
 
 	def do_it(self, args):
-		app = args.app
+		i = -1
+		try:
+			try:
+				apps = resolve_dependencies(args.app)
+				action = self.get_action_name()
+				for app in apps:
+					self.log('Going to %s %s (%s)' % (action, app.name, app.version))
+				errors, warnings = check(apps, action)
+				can_continue = self._handle_errors(args, errors, True)
+				can_continue = self._handle_errors(args, warnings, fatal=not can_continue) and can_continue
+				if can_continue and self.needs_credentials(app) and not self.check_user_credentials(args):
+					can_continue = False
+				if not can_continue:
+					self.fatal('Unable to %s. Aborting...' % action)
+					return False
+				for app in apps:
+					try:
+						self._show_license(app, args)
+						self._show_pre_readme(app, args)
+					except Abort:
+						self.warn('Cancelled...')
+						return
+			except Exception as exc:
+				if args.send_info:
+					try:
+						status_details = str(exc)[-5000:]
+						self._send_information(apps[0], 502, status_details)
+					except NetworkError:
+						self.log('Ignoring this error...')
+				raise
+			for i, app in enumerate(apps):
+				args.app = app
+				success = self.do_it_once(app, args)
+				if not success:
+					break
+			else:
+				return True
+			return False
+		finally:
+			not_touched = apps[i + 1:]
+			if not_touched:
+				self.warn('Failure will leave these apps untouched: %s' % (app.id for app in not_touched))
+			for app in apps[:i]:
+				try:
+					self._show_post_readme(app, args)
+				except Abort:
+					pass
+			upgrade_search = get_action('upgrade-search')
+			upgrade_search.call_safe(app=apps, update=False)
+
+	def do_it_once(self, app, args):
 		status = 200
 		status_details = None
 		context_id = self._write_start_event(app, args)
 		try:
-			action = self.get_action_name()
-			self.log('Going to %s %s (%s)' % (action, app.name, app.version))
-			errors, warnings = app.check(action)
-			can_continue = self._handle_errors(app, args, errors, True)
-			can_continue = self._handle_errors(app, args, warnings, fatal=not can_continue) and can_continue
-			if self.needs_credentials(app) and not self.check_user_credentials(args):
-				can_continue = False
-			if not can_continue or not self._call_prescript(app, args):
+			if not self._call_prescript(app, args):
+				self.fatal('Running prescript of %s failed. Aborting...' % app)
 				status = 0
-				self.fatal('Unable to %s %s. Aborting...' % (action, app.id))
 			else:
 				try:
-					self._show_license(app, args)
-					self._show_pre_readme(app, args)
 					try:
-						try:
-							with package_lock():
-								if args.dry_run:
-									self.dry_run(app, args)
-								else:
-									self._do_it(app, args)
-						except LockError:
-							raise ParallelOperationInProgress()
-					except (Abort, KeyboardInterrupt) as exc:
-						msg = str(exc)
-						if msg:
-							self.fatal(msg)
-						self.warn('Aborting...')
-						if exc.__class__ is KeyboardInterrupt:
-							status = 401
-						else:
-							status = exc.code
-							status_details = exc.get_exc_details()
-					except Exception as exc:
-						status = 500
-						status_details = repr(exc)
-						raise
+						with package_lock():
+							if args.dry_run:
+								self.dry_run(app, args)
+							else:
+								self._do_it(app, args)
+					except LockError:
+						raise ParallelOperationInProgress()
+				except (Abort, KeyboardInterrupt) as exc:
+					msg = str(exc)
+					if msg:
+						self.fatal(msg)
+					self.warn('Aborting...')
+					if exc.__class__ is KeyboardInterrupt:
+						status = 401
 					else:
-						try:
-							self._show_post_readme(app, args)
-						except Abort:
-							pass
-				except Abort:
-					self.warn('Cancelled...')
-					status = 0
+						status = exc.code
+						status_details = exc.get_exc_details()
+				except Exception as exc:
+					status = 500
+					status_details = repr(exc)
+					raise
 		except AppCenterError as exc:
 			status = exc.code
-			raise
-		except Exception as e:
-			status = 502
-			status_details = (str(e))
 			raise
 		else:
 			return status == 200
@@ -171,8 +200,6 @@ class InstallRemoveUpgrade(Register):
 					except NetworkError:
 						self.log('Ignoring this error...')
 				self._register_installed_apps_in_ucr()
-				upgrade_search = get_action('upgrade-search')
-				upgrade_search.call_safe(app=[app], update=False)
 
 	def needs_credentials(self, app):
 		if os.path.exists(app.get_cache_file(self.prescript_ext)):
@@ -185,17 +212,17 @@ class InstallRemoveUpgrade(Register):
 			return True
 		return False
 
-	def _handle_errors(self, app, args, errors, fatal):
+	def _handle_errors(self, args, errors, fatal):
 		can_continue = True
 		for error in errors:
 			details = errors[error]
 			try:
-				requirement = [req for req in app._requirements if req.name == error][0]
+				requirement = get_requirement(error)
 				try:
 					message = requirement.func.__doc__ % details
 				except TypeError:
 					message = requirement.func.__doc__
-			except IndexError:
+			except KeyError:
 				message = ''
 			message = '(%s) %s' % (error, message or '')
 			if args.skip_checks is not None and (error in args.skip_checks or args.skip_checks == []):
@@ -256,14 +283,17 @@ class InstallRemoveUpgrade(Register):
 		raise NotImplementedError()
 
 	def _show_license(self, app, args):
+		self.log('Showing License agreement for %s' % app)
 		if self._show_file(app, 'license_agreement', args, agree=True) is False:
 			raise Abort()
 
 	def _show_pre_readme(self, app, args):
+		self.log('Showing README for %s' % app)
 		if self._show_file(app, self.pre_readme, args, confirm=True) is False:
 			raise Abort()
 
 	def _show_post_readme(self, app, args):
+		self.log('Showing README for %s' % app)
 		if self._show_file(app, self.post_readme, args, confirm=True) is False:
 			raise Abort()
 
