@@ -6,8 +6,8 @@ src: cups
 fix: 2.2.1-8+deb9u6A~4.4.5.202007221413
 desc: |
  This update addresses the following issues:
- * cups (CVE-2019-8842)
- * heap based buffer overflow in libcups's ppdFindOption() in ppd-mark.c
+ * The `ippReadIO` function may under-read an extension field (CVE-2019-8842)
+ * Heap based buffer overflow in libcups's ppdFindOption() in ppd-mark.c
    (CVE-2020-3898)
 bug: [51697]
 cve:
