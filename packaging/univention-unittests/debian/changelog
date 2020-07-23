@@ -1,3 +1,10 @@
+univention-unittests (2.0.1-0) unstable; urgency=medium
+
+  * Bug #51566: Improve UCR and UDM mock objects, getting them closer to
+    the actual objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 Sep 2020 22:29:18 +0200
+
 univention-unittests (2.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

@@ -33,7 +33,7 @@ import pytest
 
 from univentionunittests import import_module
 from univentionunittests.udm_database import Database
-from univentionunittests.udm_connection import MockedAccess, MockedPosition  # noqa: F401
+from univentionunittests.udm_connection import MockedAccess, MockedPosition, get_domain  # noqa: F401
 
 
 def pytest_addoption(parser):
@@ -70,6 +70,7 @@ def lo(ldap_database):
 	from univention.admin.uldap import access
 	lo = MockedAccess()
 	lo.database = ldap_database
+	lo.base = get_domain()
 	lo.mock_add_spec(access)
 	return lo
 

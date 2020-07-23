@@ -29,6 +29,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import time
+
 from univentionunittests import import_module
 
 import pytest
@@ -52,6 +54,17 @@ class UMCTestRequest(object):
 			raise RuntimeError('No result for this request.')
 		assert self.result == result
 		del self._requests[self.id]
+
+	def progress(self, func):
+		progress_id = self.result['id']
+		while True:
+			request = UMCTestRequest({'progress_id': progress_id})
+			func(request)
+			result = request.result
+			if result['finished']:
+				self.result = result['result']
+				break
+			time.sleep(1)
 
 	def __repr__(self):
 		return '<UMCTestRequest id={!r} options={!r}>'.format(self.id, self.options)
