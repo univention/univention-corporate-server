@@ -34,7 +34,7 @@ restart_slapd_if_it_hangs() {
 		sleep 5
 		systemctl start slapd
 	fi
-	if ! pgrep -f slapd; then
+	if ! pgrep -F /var/run/slapd/slapd.pid >/dev/null 2>&1; then
 		msg="slapd died"
 		echo "ERROR: slapd died, attempting start" >&2
 		fail=1
@@ -43,6 +43,7 @@ restart_slapd_if_it_hangs() {
 	if [ "$fail" -eq 1 ]; then
 		fail_fast 1 "$msg"
 	fi
+	echo "OK" >&2
 }
 
 #TEST PREPARATION
