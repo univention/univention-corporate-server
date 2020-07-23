@@ -6,8 +6,7 @@ src: univention-ad-connector
 fix: 13.0.0-49A~4.4.0.202007152121
 desc: |
  This update addresses the following issue:
- * In AD connections with "read" configuration (e.g. in AD member mode)
-   changes to the AD attribute "mail" did not get synchronized to the
-   UDM/OpenLDAP attribute "mailPrimaryAddress" any more since Erratum 636.
-   This behavior has been fixed.
+ * In AD connections with `read` configuration (e.g. in AD member mode)
+   changes to the AD attribute `mail` did not get synchronized to the
+   UDM/OpenLDAP attribute `mailPrimaryAddress` any more since Erratum 636.
 bug: [51647]
