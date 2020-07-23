@@ -6,7 +6,7 @@ src: exiv2
 fix: 0.25-3.1+deb9u2
 desc: |
  This update addresses the following issue:
- * heap-based buffer over-read via a crafted image file (CVE-2018-16336)
+ * Heap-based buffer over-read via a crafted image file (CVE-2018-16336)
 bug: [51705]
 cve:
 - CVE-2018-16336
