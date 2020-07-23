@@ -1,3 +1,9 @@
+univention-kernel-image (12.0.0-5) unstable; urgency=low
+
+  * Bug #51702: Update to linux-4.9.0-13
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 Jul 2020 10:18:25 +0200
+
 univention-kernel-image (12.0.0-4) unstable; urgency=low
 
   * Bug #50870: Update to linux-4.9.0-12
