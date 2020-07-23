@@ -461,7 +461,7 @@ def get_server():
 
 
 def container_mode():
-	''' returns True if this system is an container '''
+	'''returns True if this system is a container'''
 	return bool(ucr_get('docker/container/uuid'))
 
 
@@ -521,7 +521,7 @@ def find_hosts_for_master_packages():
 	return hosts
 
 
-def resolve_dependencies(apps):
+def resolve_dependencies(apps, action):
 	from univention.appcenter.app_cache import Apps
 	from univention.appcenter.udm import get_machine_connection
 	lo, pos = get_machine_connection()

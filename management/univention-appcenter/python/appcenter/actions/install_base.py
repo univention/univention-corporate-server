@@ -117,10 +117,11 @@ class InstallRemoveUpgrade(Register):
 
 	def do_it(self, args):
 		i = -1
+		apps = []
 		try:
 			try:
-				apps = resolve_dependencies(args.app)
 				action = self.get_action_name()
+				apps = resolve_dependencies(args.app, action)
 				for app in apps:
 					self.log('Going to %s %s (%s)' % (action, app.name, app.version))
 				errors, warnings = check(apps, action)
@@ -139,12 +140,11 @@ class InstallRemoveUpgrade(Register):
 						self.warn('Cancelled...')
 						return
 			except Exception as exc:
-				if args.send_info:
-					try:
-						status_details = str(exc)[-5000:]
-						self._send_information(apps[0], 502, status_details)
-					except NetworkError:
-						self.log('Ignoring this error...')
+				if apps:
+					for app in apps:
+						self._send_information_on_app(apps, 502, str(exc), args)
+				else:
+					self._send_information_on_app(None, 502, str(exc), args)
 				raise
 			for i, app in enumerate(apps):
 				args.app = app
@@ -157,7 +157,7 @@ class InstallRemoveUpgrade(Register):
 		finally:
 			not_touched = apps[i + 1:]
 			if not_touched:
-				self.warn('Failure will leave these apps untouched: %s' % (app.id for app in not_touched))
+				self.warn('Failure will leave these apps untouched: %s' % ', '.join(app.id for app in not_touched))
 			for app in apps[:i]:
 				try:
 					self._show_post_readme(app, args)
@@ -165,6 +165,16 @@ class InstallRemoveUpgrade(Register):
 					pass
 			upgrade_search = get_action('upgrade-search')
 			upgrade_search.call_safe(app=apps, update=False)
+
+	def _send_information_on_app(self, app, status, status_details, args):
+		if args.send_info:
+			try:
+				# do not send more than 500 char of status_details
+				if isinstance(status_details, basestring):
+					status_details = status_details[-5000:]
+				self._send_information(app, status, status_details)
+			except NetworkError:
+				self.log('Ignoring this error...')
 
 	def do_it_once(self, app, args):
 		status = 200
@@ -224,14 +234,7 @@ class InstallRemoveUpgrade(Register):
 					self._write_fail_event(app, context_id, status, args)
 				if status != 200:
 					self._revert(app, args)
-				if args.send_info:
-					try:
-						# do not send more than 500 char of status_details
-						if isinstance(status_details, basestring):
-							status_details = status_details[-5000:]
-						self._send_information(app, status, status_details)
-					except NetworkError:
-						self.log('Ignoring this error...')
+				self._send_information_on_app(app, status, status_details, args)
 				self._register_installed_apps_in_ucr()
 
 	def needs_credentials(self, app):
@@ -252,9 +255,9 @@ class InstallRemoveUpgrade(Register):
 			try:
 				requirement = get_requirement(error)
 				try:
-					message = requirement.func.__doc__ % details
+					message = requirement.__doc__ % details
 				except TypeError:
-					message = requirement.func.__doc__
+					message = requirement.__doc__
 			except KeyError:
 				message = ''
 			message = '(%s) %s' % (error, message or '')
