@@ -10,4 +10,7 @@ desc: |
    titles of the Univention Self Service.
  * The title of the login page is now configurable via the
    umc/login/texts/title/{de,en} UCR variables.
-bug: [51260, 51718]
+ * The error dialog for an unknown page request (404 error) can now be
+   simplified to not show the "Inform vendor" buttons via the
+   umc/web/simple404Error UCR variable.
+bug: [51260, 51718, 51719]
