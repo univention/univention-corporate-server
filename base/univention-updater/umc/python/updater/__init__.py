@@ -244,7 +244,7 @@ class Instance(Base):
 			response = requests.get(url, timeout=10)
 			if not response.ok:
 				response.raise_for_status()
-			status = yaml.load(response.content)
+			status = yaml.safe_load(response.content)
 			if not isinstance(status, dict):
 				raise yaml.YAMLError(repr(status))
 			# the yaml file contains for maintained either false, true or extended as value.
