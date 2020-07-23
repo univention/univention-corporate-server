@@ -3,7 +3,7 @@ release: "4.4"
 version: [4, 5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-updater
-fix: 14.0.2-15
+fix: 14.0.2-15A~4.4.0.202007230944
 desc: |
  This update addresses the following issue:
  * Fix remote exploitable root vulnerability when reading maintenance
@@ -11,3 +11,5 @@ desc: |
 bug: [51672]
 cve:
 - cve.CVE-TMP51672
+ignore:
+- cve.cve.CVE-TMP51672
