@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-92) unstable; urgency=medium
+
+  * Bug #51719: a simplified 404 error page is now activatable via
+    the umc/web/simple404Error UCR variable
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 23 Jul 2020 11:01:16 +0200
+
 univention-management-console (11.0.4-91) unstable; urgency=medium
 
   * Bug #51718: Make the title of the login page configurable via UCR
