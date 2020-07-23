@@ -21,21 +21,22 @@ if [ "$ldap_database_type" != 'mdb' ]; then
 fi
 
 restart_slapd_if_it_hangs() {
+	echo -n "Check if slapd is still responsive: " >&2
 	local fail=0
 	local msg
-	univention-ldapsearch -LLLs base -b '' objectClass=OpenLDAProotDSE 1.1 &
+	univention-ldapsearch -LLLs base -b '' objectClass=OpenLDAProotDSE 1.1 >/dev/null 2>&1 &
 	sleep 5
 	if pgrep -lf objectClass=OpenLDAProotDSE | grep -qe '\<ldapsearch\>'; then
-		msg="slapd hangs"
-		echo="slapd hangs, attempting kill and start"
+		msg="slapd deadlock"
+		echo "ERROR: slapd hangs, attempting kill and start" >&2
 		fail=1
-		pkill -9 -f slapd
+		pkill -9 -F /var/run/slapd/slapd.pid
 		sleep 5
 		systemctl start slapd
 	fi
 	if ! pgrep -f slapd; then
 		msg="slapd died"
-		echo "slapd died, attempting start"
+		echo "ERROR: slapd died, attempting start" >&2
 		fail=1
 		systemctl start slapd
 	fi
@@ -90,33 +91,42 @@ for ((i=0;i<num_testusers;i++)); do
 done
 
 #START TEST
-for ((i=1; i<"$pwdMaxFailure"; i++)); do
+section "Test 1: Login with invalid password but stay below pwdMaxFailure ($pwdMaxFailure)"
+for ((i=1; i<pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
 done
+
+sleep 5
 
 restart_slapd_if_it_hangs
 
 # $(univention-ldapsearch -LLL uid=$test_username pwdFailureTime | sed -n 's/^pwdFailureTime: //p' | wc -l)
 
-echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.."
+echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.." >&2
 sleep "$new_pwdFailureCountInterval"
 
-if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" dn >/dev/null; then
-	fail_fast 1 "Authentication failure prior to lock"
-fi
+for test_userdn in "${test_userdn_list[@]}"; do
+	if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" 1.1 >/dev/null; then
+		fail_fast 1 "Authentication failure prior to lock"
+	fi
+done
 
-for ((i=1; i<="$pwdMaxFailure"; i++)); do
+section "Test 2: Login with invalid password exceeding pwdMaxFailure ($pwdMaxFailure)"
+for ((i=1; i<=pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
 done
 
+sleep 5
+
 restart_slapd_if_it_hangs
 
 wait_for_replication_and_postrun
 
+section "Test 3: Check that all test accounts are locked now"
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	test_username="${test_username_list[$i]}"
@@ -138,6 +148,7 @@ remove_ldif () {
 }
 undo remove_ldif
 
+section "Test 4: Unlock accounts"
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.1
@@ -147,6 +158,7 @@ done
 
 wait_for_replication_and_postrun
 
+echo "Check that all accounts are unlocked again" >&2
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	test_username="${test_username_list[$i]}"
