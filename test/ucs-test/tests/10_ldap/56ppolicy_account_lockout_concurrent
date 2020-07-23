@@ -29,6 +29,13 @@ restart_slapd_if_it_hangs() {
 	if pgrep -lf objectClass=OpenLDAProotDSE | grep -qe '\<ldapsearch\>'; then
 		msg="slapd deadlock"
 		echo "ERROR: slapd hangs, attempting kill and start" >&2
+		pid=$(lslocks -n -o PID,PATH | sed -n 's| /var/lib/univention-ldap/listener/listener.lock||p')
+		if [ -n "$pid" ]; then
+			echo "INFO: Process locking /var/lib/univention-ldap/listener/listener.lock: " >&2
+			ps -o pid,args -p "$pid" >&2
+		fi
+		# read -p "Continue?"
+		echo "INFO: attempting kill and start slapd again" >&2
 		fail=1
 		pkill -9 -F /var/run/slapd/slapd.pid
 		sleep 5
@@ -57,13 +64,17 @@ ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes; /etc/init.d/slapd restart; un
 default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
 
 old_pwdFailureCountInterval=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdFailureCountInterval: //p')
-pwdMaxFailure=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdMaxFailure: //p')
+old_pwdMaxFailure=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdMaxFailure: //p')
 new_pwdFailureCountInterval=15
+new_pwdMaxFailure=5
 
 reset_pwdFailureCountInterval() {
 	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR
 	dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
 	changetype: modify
+	replace: pwdMaxFailure
+	pwdMaxFailure: $old_pwdMaxFailure
+	-
 	replace: pwdFailureCountInterval
 	pwdFailureCountInterval: $old_pwdFailureCountInterval
 	%EOR
@@ -72,6 +83,9 @@ reset_pwdFailureCountInterval() {
 ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "$tests_domainadmin_account" -w "$tests_domainadmin_pwd" <<-%EOR && undo reset_pwdFailureCountInterval || fail_fast 140 "cannot modify ppolicy"
 dn: cn=default,cn=ppolicy,cn=univention,$ldap_base
 changetype: modify
+replace: pwdMaxFailure
+pwdMaxFailure: $new_pwdMaxFailure
+-
 replace: pwdFailureCountInterval
 pwdFailureCountInterval: $new_pwdFailureCountInterval
 %EOR
@@ -92,8 +106,8 @@ for ((i=0;i<num_testusers;i++)); do
 done
 
 #START TEST
-section "Test 1: Login with invalid password but stay below pwdMaxFailure ($pwdMaxFailure)"
-for ((i=1; i<pwdMaxFailure; i++)); do
+section "Test 1: Login with invalid password but stay below pwdMaxFailure ($new_pwdMaxFailure)"
+for ((i=1; i<new_pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
@@ -105,17 +119,23 @@ restart_slapd_if_it_hangs
 
 # $(univention-ldapsearch -LLL uid=$test_username pwdFailureTime | sed -n 's/^pwdFailureTime: //p' | wc -l)
 
+section "Test 3: Wait for automatic reset of counter"
 echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.." >&2
 sleep "$new_pwdFailureCountInterval"
 
 for test_userdn in "${test_userdn_list[@]}"; do
+	## Do exactly one failed attempt on each user, should not trigger.
+	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" 1.1 >/dev/null; then
 		fail_fast 1 "Authentication failure prior to lock"
 	fi
 done
 
-section "Test 2: Login with invalid password exceeding pwdMaxFailure ($pwdMaxFailure)"
-for ((i=1; i<=pwdMaxFailure; i++)); do
+section "Test 3: Login with invalid password exceeding pwdMaxFailure ($new_pwdMaxFailure)"
+echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.." >&2
+sleep "$new_pwdFailureCountInterval"
+
+for ((i=1; i<=new_pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
@@ -127,7 +147,7 @@ restart_slapd_if_it_hangs
 
 wait_for_replication_and_postrun
 
-section "Test 3: Check that all test accounts are locked now"
+section "Test 4: Check that all test accounts are locked now"
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	test_username="${test_username_list[$i]}"
@@ -149,7 +169,7 @@ remove_ldif () {
 }
 undo remove_ldif
 
-section "Test 4: Unlock accounts"
+section "Test 5: Unlock accounts"
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.1
