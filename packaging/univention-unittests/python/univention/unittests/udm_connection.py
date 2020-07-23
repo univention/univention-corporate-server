@@ -44,7 +44,7 @@ def get_domain():
 
 
 class MockedAccess(MagicMock):
-	def search(self, filter=None, base=None, attr=None):
+	def search(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		if base is None:
 			base = get_domain()
 		res = []
@@ -65,22 +65,27 @@ class MockedAccess(MagicMock):
 			res.append(result)
 		return res
 
-	def searchDn(self, filter=None, base=None, attr=None):
+	def searchDn(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
 		res = []
-		for dn, attrs in self.search(filter, base, attr):
+		for dn, attrs in self.search(filter, base):
 			res.append(dn)
 		return res
 
-	def modify(self, dn, ml, ignore_license=0, serverctrls=None, response=None):
-		self.database.modify(dn, ml)
-
-	def create(self, obj):
-		self.database.add(obj)
+	def modify(self, dn, changes, exceptions=False, ignore_license=0, serverctrls=None, response=None):
+		self.database.modify(dn, changes)
 
 	def get(self, dn, attr=[], required=False, exceptions=False):
 		return self.database.get(dn)
 
-	def getAttr(self, dn, attr):
+	def parentDn(self, dn):
+		idx = dn.find(',')
+		return dn[idx + 1:]
+
+	@classmethod
+	def compare_dn(cls, a, b):
+		return a.lower() == b.lower()
+
+	def getAttr(self, dn, attr, required=False, exceptions=False):
 		obj = self.database.objs.get(dn)
 		if obj:
 			return obj.attrs.get(attr)

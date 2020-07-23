@@ -39,6 +39,9 @@ class TestUCR(object):
 	def get(self, key, default=None):
 		return self.items.get(key, default)
 
+	def __contains__(self, key):
+		return key in self.items
+
 	def __getitem__(self, key):
 		# raises KeyError... lets see how this ends
 		return self.items[key]
@@ -48,6 +51,9 @@ class TestUCR(object):
 
 	def __setitem__(self, key, value):
 		self.items[key] = value
+
+	def keys(self):
+		return self.items.keys()
 
 	def is_false(self, key=None, default=False, value=None):  # noqa F811
 		if value is None:
