@@ -6,7 +6,7 @@ src: dbus
 fix: 1.10.32-0+deb9u1
 desc: |
  This update addresses the following issue:
- * denial of service via file descriptor leak (CVE-2020-12049)
+ * Denial of service via file descriptor leak (CVE-2020-12049)
 bug: [51713]
 cve:
 - CVE-2020-12049
