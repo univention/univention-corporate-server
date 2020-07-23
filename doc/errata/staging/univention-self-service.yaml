@@ -5,9 +5,9 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-self-service
 fix: 4.0.3-37A~4.4.0.202007221410
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The page titles are now configurable via the UCR variables
-   umc/self-service/{page}/title/{lang}.
+   `umc/self-service/{page}/title/{lang}`.
  * If a password recovery email is successfully used to recover access to an
    account, that address will now be considered verified.
 bug: [51260, 51262]
