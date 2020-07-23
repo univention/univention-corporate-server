@@ -155,6 +155,7 @@ ucr_vars = [
 	('domainname', ),
 	('hostname', ),
 	('system/setup/showloginmessage', ),
+	('umc/web/simple404Error', 'simple404Error', False, ),
 	('umc/web/feedback/description', 'feedbackSubject', '[UMC-Feedback] Traceback', ),
 	('umc/web/feedback/mail', 'feedbackAddress', 'feedback@univention.de', ),
 	('umc/web/startupdialog', ),
