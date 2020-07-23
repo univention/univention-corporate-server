@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-management-console
 fix: 11.0.4-90A~4.4.0.202007211220
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Updated the meta.json file to include UCR variables to configure page
    titles of the Univention Self Service.
 bug: [51260]
