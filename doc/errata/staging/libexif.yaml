@@ -11,19 +11,19 @@ desc: |
  * Out-of-bounds heap read in exif_data_save_data_entry function
    (CVE-2017-7544)
  * Input validation issue resulting in a denial of service (CVE-2018-20030)
- * out of bounds read due to a missing bounds check in
+ * Out of bounds read due to a missing bounds check in
    exif_data_save_data_entry function in exif-data.c (CVE-2020-0093)
- * out of bounds read due to a missing bounds check in exif_entry_get_value
+ * Out of bounds read due to a missing bounds check in exif_entry_get_value
    function in exif-entry.c (CVE-2020-0182)
- * integer overflow in exif_data_load_data_content function in exif-data.c
+ * Integer overflow in exif_data_load_data_content function in exif-data.c
    (CVE-2020-0198)
- * divide-by-zero in exif_entry_get_value function in exif-entry.c
+ * Divide-by-zero in exif_entry_get_value function in exif-entry.c
    (CVE-2020-12767)
- * several buffer over-reads in EXIF MakerNote handling can lead to
+ * Several buffer over-reads in EXIF MakerNote handling can lead to
    information disclosure and DoS (CVE-2020-13112)
- * use of uninitialized memory in EXIF Makernote handling can lead to crashes
+ * Use of uninitialized memory in EXIF Makernote handling can lead to crashes
    and use-after-free (CVE-2020-13113)
- * unrestricted size in handling Canon EXIF MakerNote data can lead to
+ * Unrestricted size in handling Canon EXIF MakerNote data can lead to
    consumption of large amounts of compute time for decoding EXIF data
    (CVE-2020-13114)
 bug: [51714]
