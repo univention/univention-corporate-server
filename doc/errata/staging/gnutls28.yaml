@@ -6,7 +6,7 @@ src: gnutls28
 fix: 3.5.8-5+deb9u5
 desc: |
  This update addresses the following issue:
- * use-after-free/double-free in certificate verification (CVE-2019-3829)
+ * Use-after-free/double-free in certificate verification (CVE-2019-3829)
 bug: [51709]
 cve:
 - CVE-2019-3829
