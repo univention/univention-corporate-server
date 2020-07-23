@@ -1,7 +1,7 @@
 product: ucs
 release: "4.4"
-version: [4]
-scope: ucs_4.4-0-errata4.4-4
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
 src: openjpeg2
 fix: 2.1.2-1.1+deb9u5
 desc: |
