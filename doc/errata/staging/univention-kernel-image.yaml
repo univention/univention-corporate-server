@@ -18,8 +18,8 @@ desc: |
    no additional execution privileges needed. User interaction is not needed
    for exploitation. Product: Android Versions: Android kernel Android ID:
    A-142938932 (CVE-2020-0009)
- * some ipv6 protocols not encrypted over ipsec tunnel. (CVE-2020-1749)
- * use-after-free in cdev_put() when a PTP device is removed while it's
+ * Some ipv6 protocols not encrypted over ipsec tunnel. (CVE-2020-1749)
+ * Use-after-free in cdev_put() when a PTP device is removed while it's
    chardev is open (CVE-2020-10690)
  * Rogue cross-process SSBD shutdown. Linux scheduler logical bug allows an
    attacker to turn off the SSBD protection. (CVE-2020-10766)
@@ -29,7 +29,7 @@ desc: |
    the PR_SPEC_FORCE_DISABLE prctl command. (CVE-2020-10768)
  * DoS via concurrent calls to dw_spi_irq and dw_spi_transfer_one functions in
    drivers/spi/spi-dw.c (CVE-2020-12769)
- * possible to send arbitrary signals to a privileged (suidroot) parent
+ * Possible to send arbitrary signals to a privileged (suidroot) parent
    process (CVE-2020-12826)
  * ** DISPUTED ** An issue was discovered in the Linux kernel through 5.7.1.
    drivers/tty/vt/keyboard.c has an integer overflow if k_ascii is called
