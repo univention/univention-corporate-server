@@ -70,15 +70,24 @@ class Upgrade(Install):
 		return False
 
 	def main(self, args):
-		app = args.app
-		self.original_app = self.old_app = Apps().find(app.id)
-		if app == self.old_app:
-			app = Apps().find_candidate(app) or app
-		if not args.only_master_packages:  # always allow only_master_packages
-			if self._app_too_old(self.old_app, app):
-				return
-		args.app = app
+		apps = args.app
+		real_apps = []
+		for app in apps:
+			old_app = Apps().find(app.id)
+			if app == old_app:
+				app = Apps().find_candidate(app) or app
+			if not args.only_master_packages:  # always allow only_master_packages
+				if self._app_too_old(old_app, app):
+					continue
+			real_apps.append(app)
+		if not real_apps:
+			return
+		args.app = real_apps
 		return self.do_it(args)
+
+	def do_it_once(self, app, args):
+		self.old_app = self.original_app = Apps().find(app.id)
+		return super(Upgrade, self).do_it_once(app, args)
 
 	def _write_start_event(self, app, args):
 		return write_event(APP_UPGRADE_START, {'name': app.name, 'version': self.old_app.version}, username=self._get_username(args))
