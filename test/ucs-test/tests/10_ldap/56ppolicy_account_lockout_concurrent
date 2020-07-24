@@ -150,13 +150,6 @@ for ((i=1; i<=new_pwdMaxFailure; i++)); do
 	done
 done
 
-## <workaround : And then do another round of failed attempts>
-# without this extra step I've seen accounts with 6 pwdFailureTime values and no pwdAccountLockedTime.
-sleep 1
-for test_userdn in "${test_userdn_list[@]}"; do
-	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1
-done
-## </workaround>
 systemctl start univention-directory-notifier   ## Restart after Bug #51722 Workaround
 systemctl restart univention-directory-listener ## make it catch up faster
 
