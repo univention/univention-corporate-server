@@ -107,11 +107,14 @@ done
 
 #START TEST
 section "Test 1: Login with invalid password but stay below pwdMaxFailure ($new_pwdMaxFailure)"
+systemctl stop univention-directory-notifier ## Workaround for Bug #51722
 for ((i=1; i<new_pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
 done
+systemctl start univention-directory-notifier   ## Restart after Bug #51722 Workaround
+systemctl restart univention-directory-listener ## make it catch up faster
 
 sleep 5
 
@@ -131,15 +134,26 @@ for test_userdn in "${test_userdn_list[@]}"; do
 	fi
 done
 
-section "Test 3: Login with invalid password exceeding pwdMaxFailure ($new_pwdMaxFailure)"
+section "Test 4: Login with invalid password exceeding pwdMaxFailure ($new_pwdMaxFailure)"
 echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.." >&2
 sleep "$new_pwdFailureCountInterval"
 
+systemctl stop univention-directory-notifier ## Workaround for Bug #51722
 for ((i=1; i<=new_pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
 done
+
+## <workaround : And then do another round of failed attempts>
+# without this extra step I've seen accounts with 6 pwdFailureTime values and no pwdAccountLockedTime.
+sleep 1
+for test_userdn in "${test_userdn_list[@]}"; do
+	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1
+done
+## </workaround>
+systemctl start univention-directory-notifier   ## Restart after Bug #51722 Workaround
+systemctl restart univention-directory-listener ## make it catch up faster
 
 sleep 5
 
@@ -147,7 +161,7 @@ restart_slapd_if_it_hangs
 
 wait_for_replication_and_postrun
 
-section "Test 4: Check that all test accounts are locked now"
+section "Test 5: Check that all test accounts are locked now"
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	test_username="${test_username_list[$i]}"
@@ -169,7 +183,7 @@ remove_ldif () {
 }
 undo remove_ldif
 
-section "Test 5: Unlock accounts"
+section "Test 6: Unlock accounts"
 for ((i=0;i<num_testusers;i++)); do
 	test_userdn="${test_userdn_list[$i]}"
 	univention-ldapsearch -o ldif-wrap=no -LLLb "$test_userdn" > ldif.1
