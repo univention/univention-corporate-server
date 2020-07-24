@@ -1,3 +1,9 @@
+ucs-test (9.0.4-16) unstable; urgency=low
+
+  * Bug #51718: Ignore JOSN file missing UCR header
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 Jul 2020 10:49:45 +0200
+
 ucs-test (9.0.4-15) unstable; urgency=medium
 
   * Bug #37915: Improve test case
