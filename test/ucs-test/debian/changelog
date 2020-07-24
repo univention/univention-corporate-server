@@ -1,3 +1,9 @@
+ucs-test (9.0.4-19) unstable; urgency=medium
+
+  * Bug #37915: Improve test case 50ppolicy_account_lockout too
+
+ -- Arvid <requate@univention.de>  Fri, 24 Jul 2020 14:49:21 +0200
+
 ucs-test (9.0.4-18) unstable; urgency=medium
 
   * Bug #37915: Remove workaround for race condition
