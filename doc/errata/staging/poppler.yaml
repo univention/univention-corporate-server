@@ -8,16 +8,16 @@ desc: |
  This update addresses the following issues:
  * Infinite recursion in fofi/FoFiType1C.cc:FoFiType1C::cvtGlyph() function
    allows denial of service (CVE-2017-18267)
- * infinite recursion in Parser::getObj function in Parser.cc (CVE-2018-16646)
+ * Infinite recursion in Parser::getObj function in Parser.cc (CVE-2018-16646)
  * NULL pointer dereference in the XRef::getEntry in XRef.cc (CVE-2018-20481)
- * integer overflow in Parser::makeStream in Parser.cc (CVE-2018-21009)
- * heap-based buffer overflow in function ImageStream::getLine() in Stream.cc
+ * Integer overflow in Parser::makeStream in Parser.cc (CVE-2018-21009)
+ * Heap-based buffer overflow in function ImageStream::getLine() in Stream.cc
    (CVE-2019-9200)
- * heap-based buffer over-read in function downsample_row_box_filter in
+ * Heap-based buffer over-read in function downsample_row_box_filter in
    CairoRescaleBox.cc (CVE-2019-9631)
- * heap-based buffer over-read in function Splash::blitTransparent in
+ * Heap-based buffer over-read in function Splash::blitTransparent in
    splash/Splash.cc (CVE-2019-10872)
- * heap-based buffer over-read in JPXStream::init in JPEG2000Stream.cc
+ * Heap-based buffer over-read in JPXStream::init in JPEG2000Stream.cc
    (CVE-2019-12293)
 bug: [51725]
 cve:
