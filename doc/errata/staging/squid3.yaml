@@ -3,7 +3,7 @@ release: "4.4"
 version: [4, 5]
 scope: ucs_4.4-0-errata4.4-5
 src: squid3
-fix: 3.5.23-5+deb9u2A~4.4.5.202007221413
+fix: 3.5.23-5+deb9u2A~4.4.5.202007231723
 desc: |
  This update addresses the following issues:
  * Memory leak in SNMP query rejection code (CVE-2018-19132)
