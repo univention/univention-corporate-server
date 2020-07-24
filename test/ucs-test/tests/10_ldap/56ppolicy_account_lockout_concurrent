@@ -128,9 +128,14 @@ sleep "$new_pwdFailureCountInterval"
 
 for test_userdn in "${test_userdn_list[@]}"; do
 	## Do exactly one failed attempt on each user, should not trigger.
-	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
+	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1
 	if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" 1.1 >/dev/null; then
 		fail_fast 1 "Authentication failure prior to lock"
+	fi
+	test_output=$(univention-ldapsearch -LLL -b "$test_userdn" -s base + | sed -n 's/^pwdFailureTime: //p')
+	if [ -n "$test_output" ]; then
+		n=$(wc -l <<<"$test_output")
+		echo "WARNING: $test_userdn still has $n pwdFailureTime entries, should be 0"
 	fi
 done
 
