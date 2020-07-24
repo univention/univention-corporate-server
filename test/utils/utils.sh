@@ -527,8 +527,9 @@ install_ucs_windows_tools () {
 }
 
 install_selenium () {
-	install_with_unmaintained python-pip xvfb chromium chromium-driver python-xvfbwrapper
+	install_with_unmaintained python3-pip python-pip xvfb chromium chromium-driver python-xvfbwrapper
 	pip install selenium==3.6.0
+	pip3 install selenium
 }
 
 run_apptests () {
