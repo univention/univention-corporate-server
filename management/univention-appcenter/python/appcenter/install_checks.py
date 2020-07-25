@@ -384,25 +384,18 @@ class MustNotBeDependedOn(SingleRequirement, HardRequirement):
 				depending_apps.append({'id': _app.id, 'name': _app.name})
 
 		# RequiredAppsInDomain
-		print(app)
 		apps = [_app for _app in apps_cache.get_all_apps() if app.id in _app.required_apps_in_domain]
-		print(apps)
 		if apps:
 			domain = get_action('domain')
 			self_info = domain.to_dict([app])[0]
-			print(len(self_info['installations']))
 			hostname = ucr_get('hostname')
 			if not any(inst['version'] for host, inst in self_info['installations'].iteritems() if host != hostname):
 				# this is the only installation
-				print('here')
 				apps_info = domain.to_dict(apps)
 				for _app in apps_info:
-					print(_app['id'])
-					print(_app['is_installed_anywhere'])
 					if _app['is_installed_anywhere']:
 						depending_apps.append({'id': _app['id'], 'name': _app['name']})
 
-		print(depending_apps)
 		depending_apps = [depending_app for depending_app in depending_apps if depending_app['id'] not in (_app.id for _app in self.other_apps(app))]
 		if depending_apps:
 			return depending_apps
