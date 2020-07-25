@@ -8,7 +8,7 @@ setup_owncloud_with_oidc () {
 }
 
 test_oidc_provider () {
-	if $1; then
+	if [ "$1" == "true" ] ; then
 		python3 product-tests/component/openid_connect_test.py
 	fi
 }
