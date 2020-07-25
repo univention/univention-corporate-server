@@ -1074,6 +1074,10 @@ class App(with_metaclass(AppMetaClass, object)):
 		return 'appcenter/apps/%s/status' % self.id
 
 	@property
+	def ucr_autoinstalled_key(self):
+		return 'appcenter/apps/%s/autoinstalled' % self.id
+
+	@property
 	def ucr_version_key(self):
 		return 'appcenter/apps/%s/version' % self.id
 

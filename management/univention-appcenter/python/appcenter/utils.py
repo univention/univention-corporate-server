@@ -529,6 +529,7 @@ def resolve_dependencies(apps, action):
 	apps_with_their_dependencies = []
 	depends = {}
 	checked = []
+	apps = apps[:]
 	while apps:
 		app = apps.pop()
 		if app in checked:
