@@ -77,6 +77,7 @@ class InstallRemoveUpgrade(Register):
 		parser.add_argument('--do-not-update-certificates', action='store_false', dest='update_certificates', help=SUPPRESS)
 		parser.add_argument('--do-not-call-join-scripts', action='store_false', dest='call_join_scripts', help=SUPPRESS)
 		parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
+		parser.add_argument('--autoinstalled', nargs='+', dest='autoinstalled', help=SUPPRESS)
 		parser.add_argument('--dry-run', action='store_true', dest='dry_run', help='Perform only a dry-run. App state is not touched')
 		parser.add_argument('app', nargs='+', action=StoreAppAction, help='The ID of the App')
 
@@ -100,6 +101,10 @@ class InstallRemoveUpgrade(Register):
 				apps = resolve_dependencies(args.app, action)
 				for app in apps:
 					self.log('Going to %s %s (%s)' % (action, app.name, app.version))
+				if not args.autoinstalled:
+					# save the installed status for those apps that were not explicitely given
+					# but where added by resolving the dependencies
+					args.autoinstalled = [app.id for app in apps if app.id not in [_a.id for _a in args.app]]
 				errors, warnings = check(apps, action)
 				can_continue = self._handle_errors(args, errors, True)
 				can_continue = self._handle_errors(args, warnings, fatal=not can_continue) and can_continue
@@ -118,7 +123,7 @@ class InstallRemoveUpgrade(Register):
 			except Exception as exc:
 				if apps:
 					for app in apps:
-						self._send_information_on_app(apps, 502, str(exc), args)
+						self._send_information_on_app(app, 502, str(exc), args)
 				else:
 					self._send_information_on_app(None, 502, str(exc), args)
 				raise

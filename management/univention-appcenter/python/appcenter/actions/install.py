@@ -195,6 +195,13 @@ class Install(InstallRemoveUpgrade):
 	def _dry_run(self, app, args):
 		return self._install_packages_dry_run(app, args, with_dist_upgrade=False)
 
+	def do_it_once(self, app, args):
+		try:
+			return super(Install, self).do_it_once(app, args)
+		finally:
+			if app.is_installed() and app.id in args.autoinstalled:
+				ucr_save({app.ucr_autoinstalled_key: 'yes'})
+
 	def _install_packages_dry_run(self, app, args, with_dist_upgrade):
 		original_app = Apps().find(app.id)
 		if original_app.is_installed():
