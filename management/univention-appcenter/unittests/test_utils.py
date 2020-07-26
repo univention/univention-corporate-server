@@ -103,3 +103,37 @@ def test_dependency_selfservice_installed_locally(custom_apps, import_appcenter_
 
 	resolved = utils.resolve_dependencies([app], 'install')
 	assert resolved == [app]
+
+
+def test_dependency_remove_selfservice(custom_apps, import_appcenter_module, mocker):
+	utils = import_appcenter_module('utils')
+	custom_apps.load('unittests/inis/dependencies')
+	app = custom_apps.find('self-service')
+	app2 = custom_apps.find('self-service-backend')
+	mocker.patch.object(app2, 'is_installed', return_value=True)
+
+	resolved = utils.resolve_dependencies([app], 'remove')
+	assert resolved == [app]
+
+
+def test_dependency_remove_selfservice_backend(custom_apps, import_appcenter_module, mocker):
+	utils = import_appcenter_module('utils')
+	custom_apps.load('unittests/inis/dependencies')
+	app = custom_apps.find('self-service-backend')
+	app2 = custom_apps.find('self-service')
+	mocker.patch.object(app2, 'is_installed', return_value=True)
+
+	resolved = utils.resolve_dependencies([app], 'remove')
+	assert resolved == [app]
+
+
+def test_dependency_remove_selfservices_order(custom_apps, import_appcenter_module, mocker):
+	utils = import_appcenter_module('utils')
+	custom_apps.load('unittests/inis/dependencies')
+	app = custom_apps.find('self-service-backend')
+	app2 = custom_apps.find('self-service')
+
+	resolved = utils.resolve_dependencies([app, app2], 'remove')
+	assert resolved == [app2, app]
+	resolved = utils.resolve_dependencies([app2, app], 'remove')
+	assert resolved == [app2, app]

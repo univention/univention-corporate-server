@@ -530,6 +530,25 @@ def resolve_dependencies(apps, action):
 	depends = {}
 	checked = []
 	apps = apps[:]
+	if action == 'remove':
+		# special case: do not resolve dependencies as
+		# we are going to uninstall the app
+		# do not removed dependant apps either: the admin may want to keep them
+		# => will get an error afterwards
+		# BUT: reorder the apps if needed
+		original_app_ids = [_app.id for _app in apps]
+		for app in apps:
+			checked.append(app)
+			depends[app.id] = []
+			for app_id in app.required_apps:
+				if app_id not in original_app_ids:
+					continue
+				depends[app.id].append(app_id)
+			for app_id in app.required_apps_in_domain:
+				if app_id not in original_app_ids:
+					continue
+				depends[app.id].append(app_id)
+		apps = []
 	while apps:
 		app = apps.pop()
 		if app in checked:
@@ -574,4 +593,9 @@ def resolve_dependencies(apps, action):
 		if i > max_loop:
 			# this should never happen unless we release apps with dependency cycles
 			raise RuntimeError('Cannot resolve dependency cycle!')
+	if action == 'remove':
+		# another special case:
+		# we need to reverse the order: the app with the dependencies needs to be
+		# removed first
+		apps_with_their_dependencies.reverse()
 	return apps_with_their_dependencies
