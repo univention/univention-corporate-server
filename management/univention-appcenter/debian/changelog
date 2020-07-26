@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-2) unstable; urgency=medium
+
+  * Bug #40225: Allow installation of multiple Apps at once
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Sep 2020 15:13:49 +0200
+
 univention-appcenter (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
