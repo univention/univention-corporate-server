@@ -128,7 +128,7 @@ class InstallRemoveUpgrade(Register):
 				new_apps = [app for app in apps if app.id not in [_a.id for _a in args.app]]
 				new_apps_have_settings = False
 				for app in new_apps:
-					if app.settings:
+					if app.get_settings():
 						new_apps_have_settings = True
 						self.fatal('Automatically added App %s has its own settings. You should explicitely mention this App. This way, you may (or may not) set settings for this App via --set.' % app)
 				if new_apps_have_settings:
@@ -428,7 +428,14 @@ class InstallRemoveUpgrade(Register):
 		if run_script is None:
 			run_script = self.get_action_name()
 		configure = get_action('configure')
-		set_vars = (args.set_vars or {}).copy()
+		set_vars = {}
+		for setting in app.get_settings():
+			# we only take those settings from the args
+			# that are used for our App
+			# => installing two apps at once will sort the
+			# settings correctly
+			if setting.name in args.set_vars:
+				set_vars[setting.name] = args.set_vars[setting.name]
 		set_vars.update(self._get_configure_settings(app))
 		configure.call(app=app, run_script=run_script, set_vars=set_vars)
 
