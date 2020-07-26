@@ -1,3 +1,9 @@
+univention-unittests (2.0.0-12) unstable; urgency=medium
+
+  * Bug #40225: Adding more mocked UDM connection functions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 26 Jul 2020 23:45:54 +0200
+
 univention-unittests (2.0.0-11) unstable; urgency=medium
 
   * Bug #51593: Change pbuilder awareness check
