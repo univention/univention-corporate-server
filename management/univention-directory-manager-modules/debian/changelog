@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.2-12) unstable; urgency=medium
+
+  * Bug #40225: Remove lo.lo indirection in order to make testing easier
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 26 Jul 2020 23:47:18 +0200
+
 univention-directory-manager-modules (15.0.2-11) unstable; urgency=medium
 
   * Bug #51622: Remove objects that don't signal Python3 support
