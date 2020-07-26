@@ -125,10 +125,19 @@ class InstallRemoveUpgrade(Register):
 				apps = resolve_dependencies(args.app, action)
 				for app in apps:
 					self.log('Going to %s %s (%s)' % (action, app.name, app.version))
+				new_apps = [app for app in apps if app.id not in [_a.id for _a in args.app]]
+				new_apps_have_settings = False
+				for app in new_apps:
+					if app.settings:
+						new_apps_have_settings = True
+						self.fatal('Automatically added App %s has its own settings. You should explicitely mention this App. This way, you may (or may not) set settings for this App via --set.' % app)
+				if new_apps_have_settings:
+					self.fatal('Unable to %s. Aborting...' % action)
+					return False
 				if not args.autoinstalled:
 					# save the installed status for those apps that were not explicitely given
 					# but where added by resolving the dependencies
-					args.autoinstalled = [app.id for app in apps if app.id not in [_a.id for _a in args.app]]
+					args.autoinstalled = [app.id for app in new_apps]
 				errors, warnings = check(apps, action)
 				can_continue = self._handle_errors(args, errors, True)
 				can_continue = self._handle_errors(args, warnings, fatal=not can_continue) and can_continue
@@ -163,11 +172,12 @@ class InstallRemoveUpgrade(Register):
 			not_touched = apps[i + 1:]
 			if not_touched:
 				self.warn('Failure will leave these apps untouched: %s' % ', '.join(app.id for app in not_touched))
-			for app in apps[:i]:
-				try:
-					self._show_post_readme(app, args)
-				except Abort:
-					pass
+			if i >= 0:
+				for app in apps[:i]:
+					try:
+						self._show_post_readme(app, args)
+					except Abort:
+						pass
 			upgrade_search = get_action('upgrade-search')
 			upgrade_search.call_safe(app=apps, update=False)
 
