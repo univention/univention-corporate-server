@@ -429,13 +429,14 @@ class InstallRemoveUpgrade(Register):
 			run_script = self.get_action_name()
 		configure = get_action('configure')
 		set_vars = {}
-		for setting in app.get_settings():
-			# we only take those settings from the args
-			# that are used for our App
-			# => installing two apps at once will sort the
-			# settings correctly
-			if setting.name in args.set_vars:
-				set_vars[setting.name] = args.set_vars[setting.name]
+		if args.set_vars:
+			for setting in app.get_settings():
+				# we only take those settings from the args
+				# that are used for our App
+				# => installing two apps at once will sort the
+				# settings correctly
+				if setting.name in args.set_vars:
+					set_vars[setting.name] = args.set_vars[setting.name]
 		set_vars.update(self._get_configure_settings(app))
 		configure.call(app=app, run_script=run_script, set_vars=set_vars)
 
