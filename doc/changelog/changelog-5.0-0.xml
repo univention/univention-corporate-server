@@ -761,6 +761,9 @@
 			<listitem><simpara>
 				The package <package>univention-ftp</package> has been removed (<u:bug>51978</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-debhelper</package> now propagates failures and aborts if calling programs fail (<u:bug>50100</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
