@@ -14,3 +14,4 @@ Categories=management-umc
 Description[de]=Netzwerk, in dem Docker Compose basierte Apps installiert werden (findet gegebenenfalls erst Anwendung bei der nächsten Installation / Aktualisierung). Jede App bekommt ihr eigenes Subnetz, daher ist ein entsprechend großes Netzwerk notwendig. Standard: 172.16.1.1/16
 Description[en]=Network, in which Docker Compose based Apps are installed (will be used on next installation / upgrade). Every App gets its own subnet, so choose a network big enough. Default: 172.16.1.1/16
 Type=str
+Categories=management-umc
