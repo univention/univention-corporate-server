@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-web
+fix: 3.0.5-37A~4.4.0.202007271407
+desc: |
+ This update addresses the following issue(s):
+ * The error handling for static errors (e.g. 404 Not Found) do not display
+   an "Inform vendor" button anymore.
+bug: [51719]
