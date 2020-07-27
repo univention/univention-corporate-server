@@ -1,3 +1,9 @@
+univention-web (3.0.5-37) unstable; urgency=medium
+
+  * Bug #51719: fix displaying of errors in static HTML pages
+
+ -- Florian Best <best@univention.de>  Mon, 27 Jul 2020 14:03:35 +0200
+
 univention-web (3.0.5-36) unstable; urgency=medium
 
   * Bug #51185: replace 'singlemodule' hash with 'overview' query

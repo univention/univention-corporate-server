@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-93) unstable; urgency=medium
+
+  * Bug #51719: fix displaying of errors in static HTML pages
+
+ -- Florian Best <best@univention.de>  Mon, 27 Jul 2020 14:03:32 +0200
+
 univention-management-console (11.0.4-92) unstable; urgency=medium
 
   * Bug #51719: a simplified 404 error page is now activatable via

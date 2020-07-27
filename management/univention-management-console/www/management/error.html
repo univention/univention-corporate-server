@@ -23,12 +23,8 @@
 					setTimeout(function() { /* dependency problem umc/dialog is not yet require()d in umc/tools*/
 						var data = json.parse(entities.decode(%ERROR%));
 						var info = tools.parseError(data);
-						var title = info.title || _('HTTP Error %s', info.status);
-						var traceback = info.traceback || '';
-						var message = info.message;
-
-						var error_message = title + '\n' + message + '\n' + traceback;
-						tools.showTracebackDialog(error_message, message, title).always(function() {
+						info.title = info.title || _('HTTP Error %s', info.status);
+						tools.getErrorHandler({ force401Display: true }).displayError(info).promise.always(function() {
 							setTimeout(function() {
 								window.location.href = data.location || '/univention/management/';
 							}, 1000);

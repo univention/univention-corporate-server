@@ -485,7 +485,7 @@ define([
 			return this._request(lang.mixin({
 				url: '/univention/' + command,
 				data: _body,
-				errorHandler: this.__getErrorHandler(handleErrors),
+				errorHandler: this.getErrorHandler(handleErrors),
 				flavor: flavor,
 				headers: {},
 				withCredentials: false,
@@ -563,7 +563,7 @@ define([
 			}
 		},
 
-		__getErrorHandler: function(handleErrors) {
+		getErrorHandler: function(handleErrors) {
 			var custom = {};
 			if (handleErrors === false) {
 				custom = {
@@ -604,7 +604,7 @@ define([
 						message += '</ul>';
 					};
 					formatter(info.result);
-					dialog.alert(message, tools._statusMessages[info.status]);
+					return dialog.alert(message, tools._statusMessages[info.status]);
 				},
 
 				success: function(data) {
@@ -631,20 +631,21 @@ define([
 				},
 
 				displayError: function(info) {
+					var canceled = new Deferred();
+					canceled.cancel();
 					if (!this.displayErrors) {
-						return;
+						return canceled;
 					}
 					topic.publish('/umc/actions', 'error', info.status || 'unknown');
 					var status = info.status;
 					var message = info.message;
 
 					if (this['display' + status]) {
-						this['display' + status](info);
-						return;
+						return this['display' + status](info);
 					}
 
-					if (status === 401) {
-						return;
+					if (status === 401 && !this.force401Display) {  // force should only be used by error.html
+						return canceled;
 					}
 
 					if (info.result && info.result.display_feedback) {
@@ -653,24 +654,24 @@ define([
 						}
 						info.traceback = info.message;
 						info.message = '';
-						this.displayTraceback(info);
+						return this.displayTraceback(info);
 					} else if (info.traceback) {
-						this.displayTraceback(info);
+						return this.displayTraceback(info);
 					} else if (info.title) {
 						// all other cases
-						dialog.alert('<p>' + entities.encode(info.title) + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + entities.encode(message).replace(/\n/g, '<br/>') + '</p>' : ''), _('An error occurred'));
+						return dialog.alert('<p>' + entities.encode(info.title) + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + entities.encode(message).replace(/\n/g, '<br/>') + '</p>' : ''), _('An error occurred'));
 					} else if (status) {
 						// unknown status code .. should not happen
-						dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
+						return dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
 					} else {
 						// probably server timeout, could also be a different error
-						dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
+						return dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
 					}
 				},
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message, null, custom.hideInformVendor);
+					return tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message, null, custom.hideInformVendor);
 				}
 			}, custom);
 			return errorHandler;
@@ -865,7 +866,7 @@ define([
 			if (401 === info.status) {
 				return; /*already handled*/
 			}
-			this.__getErrorHandler(handleErrors ? handleErrors : {}).error(info);
+			this.getErrorHandler(handleErrors ? handleErrors : {}).error(info);
 		},
 
 		showTracebackDialog: function(message, statusMessage, title, hideInformVendor) {

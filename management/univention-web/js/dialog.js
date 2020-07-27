@@ -129,6 +129,8 @@ define([
 			//		An optional title for the popup window
 			// buttonLabel:
 			//		An alternative label for the button
+			//
+			var deferred = new Deferred();
 
 			// create alert dialog the first time
 			if (!this._alertDialog) {
@@ -140,6 +142,7 @@ define([
 						callback: lang.hitch(this, function() {
 							// hide dialog upon confirmation by click on 'OK'
 							this._alertDialog.hide();
+							deferred.resolve();
 						}),
 						'default': true
 					}]
@@ -150,6 +153,7 @@ define([
 					setTimeout(lang.hitch(this, function() {
 						this._alertDialog.destroyRecursive();
 						this._alertDialog = null;
+						deferred.reject();
 					}), 0);
 				}));
 			}
@@ -160,6 +164,7 @@ define([
 			this._alertDialog.set('title', title || _('Notification'));
 			//this._alertDialog.startup();
 			this._alertDialog.show();
+			return deferred;
 		},
 
 		centerAlertDialog: function() {
