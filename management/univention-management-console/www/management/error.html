@@ -27,16 +27,12 @@
 						var traceback = info.traceback || '';
 						var message = info.message;
 
-						if (info.status === 404 && tools.isTrue(tools.status('simple404Error'))) {
-							dialog.confirm(message, [], title);
-						} else {
-							var error_message = title + '\n' + message + '\n' + traceback;
-							tools.showTracebackDialog(error_message, message, title).always(function() {
-								setTimeout(function() {
-									window.location.href = data.location || '/univention/management/';
-								}, 1000);
-							});
-						}
+						var error_message = title + '\n' + message + '\n' + traceback;
+						tools.showTracebackDialog(error_message, message, title).always(function() {
+							setTimeout(function() {
+								window.location.href = data.location || '/univention/management/';
+							}, 1000);
+						});
 					}, 1000);
 				});
 			};

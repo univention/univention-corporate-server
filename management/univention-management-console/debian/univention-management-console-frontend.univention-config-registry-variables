@@ -10,12 +10,6 @@ Description[en]=If an error leading to a traceback occurs in the Univention Mana
 Type=str
 Categories=management-umc
 
-[umc/web/simple404Error]
-Description[de]=Ist diese Option aktiviert, wird der Dialog auf der 404 Fehler-Seite mit reduzierter Fehlerausgabe und ohne die Option den Fehler zu melden angezeigt.
-Description[en]=If this option is activated, the dialog is displayed on the 404 error page with reduced error output and without the option to report the error.
-Type=bool
-Categories=management-umc
-
 [umc/web/favorites/default]
 Description[de]=Die hier konfigurierten UMC-Module werden in der Grundeinstellung als "Favoriten"-Module in der Univention Management Console angezeigt. Mehrere Einträge müssen durch Komma getrennt werden.
 Description[en]=The UMC modules configured here are shown as "Favorites" modules in the default setting of the Univention Management Console. Multiple entries are separated by blanks.
