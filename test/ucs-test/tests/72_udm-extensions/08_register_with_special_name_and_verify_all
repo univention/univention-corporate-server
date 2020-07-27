@@ -13,23 +13,27 @@ from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication, verify_ldap_object
 from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version
 from univention.testing.udm_extensions import VALID_EXTENSION_TYPES, get_dn_of_extension_by_name, remove_extension_by_name, call_join_script
+from univention.testing.strings import random_name
 import bz2
 
 
 def test_all():
+	objectname = "/".join([random_name(), random_name()])  # slash reqired for 'module'
 	package_name = get_package_name()
 	package_version = get_package_version()
 #	extension_name = get_extension_name(extension_type)
 #	extension_filename = get_extension_filename(extension_type, extension_name)
 	extension_name = {}
+	extension_objectname = {}
 	extension_buffer = {}
 	extension_filename = {}
 	for extension_type in VALID_EXTENSION_TYPES:
 		extension_name[extension_type] = get_extension_name(extension_type)
+		extension_objectname[extension_type] = objectname
 		extension_buffer[extension_type] = get_extension_buffer(extension_type, extension_name[extension_type])
 		extension_filename[extension_type] = get_extension_filename(extension_type, extension_name[extension_type])
 
-	data = {'package': package_name}
+	data = {'package': package_name, 'objectname': objectname}
 	data.update(extension_filename)
 	joinscript_buffer = '''#!/bin/sh
 VERSION=1
@@ -37,7 +41,7 @@ set -e
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
+ucs_registerLDAPExtension "$@" --name "%(objectname)s" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
 joinscript_save_current_version
 exit 0
 ''' % data
@@ -57,11 +61,11 @@ exit 0
 		wait_for_replication()
 
 		for extension_type in VALID_EXTENSION_TYPES:
-			dnlist = get_dn_of_extension_by_name(extension_type, extension_name[extension_type])
+			dnlist = get_dn_of_extension_by_name(extension_type, extension_objectname[extension_type])
 			if not dnlist:
-				fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_name[extension_type]))
+				fail('Cannot find UDM %s extension with name %s in LDAP' % (extension_type, extension_objectname[extension_type]))
 			verify_ldap_object(dnlist[0], {
-				'cn': [extension_name[extension_type]],
+				'cn': [extension_objectname[extension_type]],
 				'univentionUDM%sFilename' % extension_type.capitalize(): [extension_filename[extension_type]],
 				'univentionOwnedByPackage': [package_name],
 				'univentionObjectType': ['settings/udm_%s' % extension_type],
@@ -72,7 +76,7 @@ exit 0
 	finally:
 		print('Removing UDM extension from LDAP')
 		for extension_type in VALID_EXTENSION_TYPES:
-			remove_extension_by_name(extension_type, extension_name[extension_type], fail_on_error=False)
+			remove_extension_by_name(extension_type, extension_objectname[extension_type], fail_on_error=False)
 
 		print('Uninstalling binary package %r' % package_name)
 		package.uninstall()
