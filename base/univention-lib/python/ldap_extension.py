@@ -1242,21 +1242,21 @@ def ucs_registerLDAPExtension():
 		help="UDM module icon", metavar="<Icon file>")
 	parser.add_option_group(udm_module_options)
 
-	udm_module_options = OptionGroup(parser, "UDM syntax specific options")
-	udm_module_options.add_option(
+	udm_syntax_options = OptionGroup(parser, "UDM syntax specific options")
+	udm_syntax_options.add_option(
 		"--udm_syntax_messagecatalog", dest="udm_syntax_messagecatalog",
 		type="existing_filename", default=[],
 		action="callback", callback=option_callback_append_udm_syntax_options,
 		help="Gettext mo file", metavar="<GNU message catalog file>")
-	parser.add_option_group(udm_module_options)
+	parser.add_option_group(udm_syntax_options)
 
-	udm_module_options = OptionGroup(parser, "UDM hook specific options")
-	udm_module_options.add_option(
+	udm_hook_options = OptionGroup(parser, "UDM hook specific options")
+	udm_hook_options.add_option(
 		"--udm_hook_messagecatalog", dest="udm_hook_messagecatalog",
 		type="existing_filename", default=[],
 		action="callback", callback=option_callback_append_udm_hook_options,
 		help="Gettext mo file", metavar="<GNU message catalog file>")
-	parser.add_option_group(udm_module_options)
+	parser.add_option_group(udm_hook_options)
 
 	# parser.add_option("-v", "--verbose", action="count")
 
