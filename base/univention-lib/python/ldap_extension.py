@@ -1201,7 +1201,7 @@ def ucs_registerLDAPExtension():
 
 	parser.add_option(
 		"--ucsversionstart", dest="ucsversionstart",
-		action="store", type="ucs_version", default="5.0",
+		action="store", type="ucs_version",
 		help="Start activation with UCS version", metavar="<UCS Version>")
 	parser.add_option(
 		"--ucsversionend", dest="ucsversionend",
