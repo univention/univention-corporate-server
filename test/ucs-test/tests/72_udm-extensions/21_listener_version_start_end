@@ -11,7 +11,15 @@ from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
 from univention.testing.utils import wait_for_replication, fail
 from univention.testing.strings import random_name, random_version
-from univention.testing.udm_extensions import get_package_name, get_package_version, get_extension_name, get_extension_filename, get_extension_buffer, get_absolute_extension_filename
+from univention.testing.udm_extensions import (
+	VALID_EXTENSION_TYPES,
+	get_package_name,
+	get_package_version,
+	get_extension_name,
+	get_extension_filename,
+	get_extension_buffer,
+	get_absolute_extension_filename,
+)
 import os
 import bz2
 import base64
@@ -23,7 +31,7 @@ if __name__ == '__main__':
 	# wait for replicate before test starts
 	wait_for_replication()
 
-	for extension_type in ('hook', 'syntax', 'module'):
+	for extension_type in VALID_EXTENSION_TYPES:
 		print('========================= TESTING EXTENSION %s =============================' % extension_type)
 		package_name = get_package_name()
 		package_version = get_package_version()
@@ -32,7 +40,7 @@ if __name__ == '__main__':
 		for (version_start, version_end, should_exist) in (
 			('1.0-0', '2.4-4', False),   # range below current version
 			('6.0-0', '9.9-9', False),   # range above current version
-			('1.0-0', '9.9-9', True),    # current version in range
+			('4.0-0', '9.9-9', True),    # current version in range
 			('1.0-0', '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel')), True),  # upper limit of range is current version
 			('%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel')), '9.9-9', True)):  # lower limit of range is current version
 

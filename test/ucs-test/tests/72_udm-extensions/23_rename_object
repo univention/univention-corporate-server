@@ -11,7 +11,17 @@ import univention.testing.udm as udm_test
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import verify_ldap_object, fail, wait_for_replication
 from univention.testing.strings import random_name, random_version, random_ucs_version
-from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version, get_absolute_extension_filename, get_dn_of_extension_by_name, remove_extension_by_name
+from univention.testing.udm_extensions import (
+	VALID_EXTENSION_TYPES,
+	get_extension_name,
+	get_extension_filename,
+	get_extension_buffer,
+	get_package_name,
+	get_package_version,
+	get_absolute_extension_filename,
+	get_dn_of_extension_by_name,
+	remove_extension_by_name
+)
 import os
 import bz2
 import base64
@@ -21,7 +31,7 @@ if __name__ == '__main__':
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
-		for extension_type in ('hook', 'syntax', 'module'):
+		for extension_type in VALID_EXTENSION_TYPES:
 			print('========================= TESTING EXTENSION %s =============================' % extension_type)
 			extension_name = get_extension_name(extension_type)
 			extension_filename = get_extension_filename(extension_type, extension_name)
@@ -42,6 +52,8 @@ if __name__ == '__main__':
 				packageversion=package_version,
 				package=package_name,
 				active='TRUE',
+				ucsversionstart=version_start,
+				ucsversionend=version_end,
 				position='cn=udm_%s,cn=univention,%s' % (extension_type, ucr['ldap/base'])
 			)
 

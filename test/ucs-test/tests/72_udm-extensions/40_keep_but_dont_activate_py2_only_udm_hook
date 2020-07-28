@@ -8,9 +8,15 @@
 
 from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
-from univention.testing.utils import verify_ldap_object, wait_for_replication, wait_for_replication_and_postrun, wait_for_s4connector_replication
+from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun
 from univention.testing.strings import random_name, random_version, random_ucs_version
-from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version
+from univention.testing.udm_extensions import (
+	get_extension_name,
+	get_extension_filename,
+	get_extension_buffer,
+	get_package_name,
+	get_package_version
+)
 import bz2
 import base64
 import os
@@ -84,7 +90,6 @@ if __name__ == '__main__':
 		})
 
 		assert(not os.path.exists('/usr/lib/python2.7/dist-packages/univention/admin/hooks.d/%s' % (extension_filename,)))
-
 
 	wait_for_replication_and_postrun()
 	udm.stop_cli_server()

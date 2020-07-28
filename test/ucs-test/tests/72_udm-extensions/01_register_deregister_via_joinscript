@@ -11,7 +11,21 @@
 from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication
-from univention.testing.udm_extensions import *
+from univention.testing.udm_extensions import (
+	get_package_name,
+	get_package_version,
+	get_extension_name,
+	get_extension_filename,
+	get_extension_buffer,
+	get_absolute_extension_filename,
+	get_join_script_buffer,
+	get_unjoin_script_buffer,
+	get_dn_of_extension_by_name,
+	remove_extension_by_name,
+	VALID_EXTENSION_TYPES,
+	call_join_script,
+	call_unjoin_script
+)
 import stat
 import os
 import grp
@@ -23,7 +37,7 @@ def test_extension(extension_type):
 	package_version = get_package_version()
 	extension_name = get_extension_name(extension_type)
 	extension_filename = get_extension_filename(extension_type, extension_name)
-	joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename))
+	joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename), version_start='5.0-0')
 	unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
 	extension_buffer = get_extension_buffer(extension_type, extension_name)
 
