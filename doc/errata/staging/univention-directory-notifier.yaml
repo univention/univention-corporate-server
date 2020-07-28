@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-directory-notifier
+fix: 13.0.3-1A~4.4.0.202007281948
+desc: |
+ This update addresses the following issue:
+ * A race condition between slapd and univention-directory-notifier
+   could lead to a deadlock under certain conditions. This has been
+   fixed.
+bug: [51722]
