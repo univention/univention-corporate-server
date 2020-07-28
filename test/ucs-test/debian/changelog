@@ -1,4 +1,214 @@
-ucs-test (10.0.0-34) unstable; urgency=medium
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #40225: Add test
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51619,51622: Cleanup tests
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51619 & Bug #51622: Tests
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51622: Tests for Py2/3 UDM extension module handling
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51598: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-50) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:37 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51619,51622: Cleanup tests
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51619 & Bug #51622: Tests
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51622: Tests for Py2/3 UDM extension module handling
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51598: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-49) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:36 +0200
+
+ucs-test (10.0.0-48) unstable; urgency=medium
+
+  * Bug #51619 & Bug #51622: Tests
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:33 +0200
+
+ucs-test (10.0.0-48) unstable; urgency=medium
+
+  * Bug #51622: Tests for Py2/3 UDM extension module handling
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:44:33 +0200
+
+ucs-test (10.0.0-48) unstable; urgency=medium
+
+  * Bug #51598: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:33 +0200
+
+ucs-test (10.0.0-48) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:33 +0200
+
+ucs-test (10.0.0-48) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:44:33 +0200
+
+ucs-test (10.0.0-48) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:44:33 +0200
+
+ucs-test (10.0.0-47) unstable; urgency=medium
+
+  * Bug #51622: Tests for Py2/3 UDM extension module handling
+
+ -- Arvid <requate@univention.de>  Fri, 31 Jul 2020 15:43:06 +0200
+
+ucs-test (10.0.0-47) unstable; urgency=medium
+
+  * Bug #51598: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:43:06 +0200
+
+ucs-test (10.0.0-47) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:43:06 +0200
+
+ucs-test (10.0.0-47) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:43:06 +0200
+
+ucs-test (10.0.0-47) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:43:06 +0200
+
+ucs-test (10.0.0-46) unstable; urgency=medium
+
+  * Bug #51598: Typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:31 +0200
+
+ucs-test (10.0.0-46) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:31 +0200
+
+ucs-test (10.0.0-46) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:40:31 +0200
+
+ucs-test (10.0.0-46) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:31 +0200
+
+ucs-test (10.0.0-45) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:40:28 +0200
+
+ucs-test (10.0.0-45) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:28 +0200
+
+ucs-test (10.0.0-44) unstable; urgency=medium
+
+  * Bug #51598: Fix call in 11_check_apps_ini_field_values
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:26 +0200
+
+ucs-test (10.0.0-44) unstable; urgency=medium
+
+  * Bug #51525: replace pip selenium with python-selenium
+
+ -- Florian Best <best@univention.de>  Fri, 31 Jul 2020 15:40:26 +0200
+
+ucs-test (10.0.0-44) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:40:26 +0200
+
+ucs-test (10.0.0-43) unstable; urgency=medium
 
   * Bug #50631: Support UCS 5.0 in docker tests
 

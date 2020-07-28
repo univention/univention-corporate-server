@@ -18,7 +18,7 @@ if __name__ == '__main__':
 		app2_version = get_app_version()
 
 		app = tiny_app(app_name, app_version)
-		app2 = tiny_app(app_name2, app_version2)
+		app2 = tiny_app(app2_name, app2_version)
 		app.set_ini_parameter(RequiredAppsInDomain=app2_name)
 		try:
 			app.add_to_local_appcenter()
