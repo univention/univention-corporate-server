@@ -11,8 +11,17 @@
 from __future__ import print_function
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail, wait_for_replication, verify_ldap_object
-from univention.testing.udm_extensions import get_extension_name, get_extension_filename, get_extension_buffer, get_package_name, get_package_version
-from univention.testing.udm_extensions import VALID_EXTENSION_TYPES, get_dn_of_extension_by_name, remove_extension_by_name, call_join_script
+from univention.testing.udm_extensions import (
+	get_package_name,
+	get_package_version,
+	get_extension_name,
+	get_extension_filename,
+	get_extension_buffer,
+	VALID_EXTENSION_TYPES,
+	get_dn_of_extension_by_name,
+	remove_extension_by_name,
+	call_join_script
+)
 import bz2
 
 
