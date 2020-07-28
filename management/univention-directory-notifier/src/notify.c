@@ -87,9 +87,24 @@ static FILE* fopen_lock(const char *name, const char *type)
 	return file;
 }
 
-static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_file)
+static FILE* fopen_dotlockfile(const char *name)
 {
 	char buf[MAX_PATH_LEN];
+	FILE *file;
+
+	snprintf( buf, sizeof(buf), "%s.lock", name );
+
+	if ((file = fopen_lock(buf, "a")) == NULL) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open lock file [%s]\n", buf);
+		return NULL;
+	}
+
+	return file;
+}
+
+
+static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_file)
+{
 	FILE *file;
 
 	if ( !(strcmp(name, FILE_NAME_TF)) ) {
@@ -98,10 +113,7 @@ static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_fi
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF_IDX);
 	}
 
-	snprintf( buf, sizeof(buf), "%s.lock", name );
-
-	if ((*l_file = fopen_lock(buf, "a")) == NULL) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open lock file [%s]\n", buf);
+	if ((*l_file = fopen_dotlockfile(name)) == NULL) {
 		return NULL;
 	}
 
