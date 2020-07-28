@@ -35,8 +35,10 @@
 #include <signal.h>
 #include <stdio.h>
 
-/* incoming transaction file, from lsitener */
+/* incoming transaction file, from slapo-translog or UDL running on DC backup with option "-o" */
 #define FILE_NAME_LISTENER "/var/lib/univention-ldap/listener/listener"
+/* private work queue transaction file */
+#define FILE_NAME_NOTIFIER_PRIV "/var/lib/univention-ldap/listener/listener.priv"
 /* transaction file, for notifier action */
 #define FILE_NAME_TF "/var/lib/univention-ldap/notify/transaction"
 #define FILE_NAME_TF_IDX "/var/lib/univention-ldap/notify/transaction.index"

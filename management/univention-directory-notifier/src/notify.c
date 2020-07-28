@@ -137,7 +137,7 @@ static int fclose_lock(FILE **file)
 		rc = lockf(fd, F_ULOCK, 0);
 		if (rc)
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "unlockf(): %d", rc);
-		fclose(*file);
+		rc = fclose(*file);
 		*file  = NULL;
 	}
 	return rc;
@@ -628,6 +628,8 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	NotifyEntry_t *entry = NULL;
 
 	FILE *file, *l_file;
+	int fd;
+	int rc;
 
 	struct stat stat_buf;
 
@@ -642,11 +644,35 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	entry = notify_entry_alloc();
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_listener_change_callback");
-	if ( ( file = fopen_with_lockfile ( FILE_NAME_LISTENER, "r+", &(l_file) ) ) == NULL ) {
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n",FILE_NAME_LISTENER);
+	rc = stat(FILE_NAME_NOTIFIER_PRIV, &stat_buf);
+	if ( (rc == -1) || (stat_buf.st_size == 0) ) {
+		rc = stat(FILE_NAME_LISTENER, &stat_buf);
+		if ( (rc == -1) || (stat_buf.st_size == 0) ) {
+			return;
+		}
+
+		if ( ( l_file = fopen_dotlockfile ( FILE_NAME_LISTENER ) ) == NULL ) {
+			exit(0);
+		}
+
+		rename(FILE_NAME_LISTENER, FILE_NAME_NOTIFIER_PRIV);
+
+		// Some tools expect the file to exist
+		fd = open(FILE_NAME_LISTENER, O_RDWR | O_CREAT, stat_buf.st_mode);
+		if (fd != -1) {
+			fchown(fd, stat_buf.st_uid, stat_buf.st_gid);
+			close(fd);
+		}
+
+		fclose_lock(&l_file);
 	}
 
-	if( (stat(FILE_NAME_LISTENER, &stat_buf)) != 0 ) {
+	if ( ( file = fopen_lock (FILE_NAME_NOTIFIER_PRIV, "r+") ) == NULL ) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n", FILE_NAME_NOTIFIER_PRIV);
+	}
+
+	fd = fileno(file);
+	if( ( fstat (fd, &stat_buf) ) != 0 ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "stat error\n");
 		goto error;
 	}
@@ -666,8 +692,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 		split_transaction_buffer ( entry, buf, nread);
 		notify_dump_to_ldap(entry);
 		notify_dump_to_files(&notify, entry);
-		fseek(file, 0, SEEK_SET);
-		ftruncate(fileno(file), 0);
+		unlink(FILE_NAME_NOTIFIER_PRIV);
 
 		{
 			NotifyEntry_t *tmp;
@@ -694,7 +719,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	free(buf);
 
 error:
-	fclose_with_lockfile(FILE_NAME_LISTENER, &file, &l_file);
+	fclose_lock(&file);
 
 	return;
 }
