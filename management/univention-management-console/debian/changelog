@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-94) unstable; urgency=medium
+
+  * Bug #51718: use existing meta.json
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 28 Jul 2020 16:19:41 +0200
+
 univention-management-console (11.0.4-93) unstable; urgency=medium
 
   * Bug #51719: fix displaying of errors in static HTML pages
