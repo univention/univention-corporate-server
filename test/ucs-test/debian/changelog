@@ -1,3 +1,9 @@
+ucs-test (9.0.4-21) unstable; urgency=medium
+
+  * Bug #1234: 67univention-admingrp-user-passwordreset-protected-domain-admins takes a long time ..
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 28 Jul 2020 20:49:28 +0200
+
 ucs-test (9.0.4-20) unstable; urgency=medium
 
   * Bug #51722: Remove woraround
