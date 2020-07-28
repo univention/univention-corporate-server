@@ -117,7 +117,8 @@ class Upgrade(Install):
 			pass
 
 	def _show_license(self, app, args):
-		if app.license_agreement != self.old_app.license_agreement:
+		old_app = Apps().find(app.id)
+		if app.license_agreement != old_app.license_agreement:
 			return super(Upgrade, self)._show_license(app, args)
 
 	def _call_prescript(self, app, args):

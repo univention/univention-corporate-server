@@ -199,7 +199,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 	def _upgrade_docker(self, app, args):
 		install = get_action('install')()
-		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_configure_settings(self.old_app, filter_action=False), send_info=False, skip_checks=['must_not_be_installed'])
+		action_args = install._build_namespace(_namespace=args, app=[app], set_vars=self._get_configure_settings(self.old_app, filter_action=False), send_info=False, skip_checks=['must_not_be_installed'])
 		if install.call_with_namespace(action_args):
 			app_cache = Apps()
 			for _app in app_cache.get_all_apps():
