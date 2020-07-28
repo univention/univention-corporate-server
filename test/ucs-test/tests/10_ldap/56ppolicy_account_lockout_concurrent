@@ -107,14 +107,11 @@ done
 
 #START TEST
 section "Test 1: Login with invalid password but stay below pwdMaxFailure ($new_pwdMaxFailure)"
-systemctl stop univention-directory-notifier ## Workaround for Bug #51722
 for ((i=1; i<new_pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
 done
-systemctl start univention-directory-notifier   ## Restart after Bug #51722 Workaround
-systemctl restart univention-directory-listener ## make it catch up faster
 
 sleep 5
 
@@ -150,15 +147,11 @@ for test_userdn in "${test_userdn_list[@]}"; do
 done
 
 section "Test 4: Login with invalid password exceeding pwdMaxFailure ($new_pwdMaxFailure)"
-systemctl stop univention-directory-notifier ## Workaround for Bug #51722
 for ((i=1; i<=new_pwdMaxFailure; i++)); do
 	for test_userdn in "${test_userdn_list[@]}"; do
 		ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1 &
 	done
 done
-
-systemctl start univention-directory-notifier   ## Restart after Bug #51722 Workaround
-systemctl restart univention-directory-listener ## make it catch up faster
 
 sleep 5
 
