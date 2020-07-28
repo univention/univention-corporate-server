@@ -59,13 +59,38 @@ extern long long notifier_lock_time;
 
 extern unsigned long SCHEMA_ID;
 
+static FILE* fopen_lock(const char *name, const char *type)
+{
+	FILE *file;
+	int count = 0;
+	int fd;
+
+	if ((file = fopen(name, type)) == NULL) {
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]\n", name);
+		return NULL;
+	}
+
+	fd = fileno(file);
+	for (;;) {
+		int rc = lockf(fd, F_TLOCK, 0);
+		if (!rc)
+			break;
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", name, count);
+		count++;
+		if (count > notifier_lock_count) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", name);
+			exit(0);
+		}
+		usleep(notifier_lock_time);
+	}
+
+	return file;
+}
 
 static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_file)
 {
 	char buf[MAX_PATH_LEN];
 	FILE *file;
-	int count = 0;
-	int l_fd;
 
 	if ( !(strcmp(name, FILE_NAME_TF)) ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK %s", FILE_NAME_TF);
@@ -75,34 +100,35 @@ static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_fi
 
 	snprintf( buf, sizeof(buf), "%s.lock", name );
 
-	if ((*l_file = fopen(buf, "a")) == NULL) {
+	if ((*l_file = fopen_lock(buf, "a")) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open lock file [%s]\n", buf);
 		return NULL;
-	}
-
-	l_fd = fileno(*l_file);
-	for (;;) {
-		int rc = lockf(l_fd, F_TLOCK, 0);
-		if (!rc)
-			break;
-		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", buf, count);
-		count++;
-		if (count > notifier_lock_count) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", buf);
-			exit(0);
-		}
-		usleep(notifier_lock_time);
 	}
 
 	if ((file = fopen(name, type)) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR Could not open file [%s]\n", name);
 
+		int l_fd = fileno(*l_file);
 		lockf(l_fd, F_ULOCK, 0);
 		fclose(*l_file);
 		*l_file = NULL;
 	}
 
 	return file;
+}
+
+static int fclose_lock(FILE **file)
+{
+	int rc = 0;
+	if (*file != NULL) {
+		int fd = fileno(*file);
+		rc = lockf(fd, F_ULOCK, 0);
+		if (rc)
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "unlockf(): %d", rc);
+		fclose(*file);
+		*file  = NULL;
+	}
+	return rc;
 }
 
 static int fclose_with_lockfile(const char *name, FILE **file, FILE **l_file)
@@ -113,14 +139,7 @@ static int fclose_with_lockfile(const char *name, FILE **file, FILE **l_file)
 		*file = NULL;
 	}
 
-	if (*l_file != NULL) {
-		int l_fd = fileno(*l_file);
-		int rc = lockf(l_fd, F_ULOCK, 0);
-		if (rc)
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "unlockf(): %d", rc);
-		fclose(*l_file);
-		*l_file  = NULL;
-	}
+	fclose_lock(l_file);
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "FCLOSE end");
 
