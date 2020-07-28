@@ -60,7 +60,7 @@ extern long long notifier_lock_time;
 extern unsigned long SCHEMA_ID;
 
 
-static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
+static FILE* fopen_with_lockfile(const char *name, const char *type, FILE **l_file)
 {
 	char buf[MAX_PATH_LEN];
 	FILE *file;
@@ -105,7 +105,7 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 	return file;
 }
 
-static int fclose_lock(const char *name, FILE **file, FILE **l_file)
+static int fclose_with_lockfile(const char *name, FILE **file, FILE **l_file)
 {
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "FCLOSE start");
 	if (*file != NULL) {
@@ -208,7 +208,7 @@ void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from dump_to_files");
-	if ((notify->tf = fopen_lock(FILE_NAME_TF, "a", &(notify->l_tf))) == NULL) {
+	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "a", &(notify->l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "ERROR on open tf\n");
 		goto error;
 	}
@@ -246,7 +246,7 @@ void notify_dump_to_files( Notify_t *notify, NotifyEntry_t *entry)
 error:
 	if (index)
 		fclose(index);
-	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
+	fclose_with_lockfile(FILE_NAME_TF, &notify->tf, &notify->l_tf);
 }
 
 /*
@@ -422,7 +422,7 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 	char c;
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transaction_get_last_notify_id");
-	if ((notify->tf = fopen_lock(FILE_NAME_TF, "r", &(notify->l_tf))) == NULL) {
+	if ((notify->tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify->l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock notify_id\n");
 		notify_id->id = 0;
 		return -1;
@@ -448,7 +448,7 @@ int notify_transaction_get_last_notify_id ( Notify_t *notify, NotifyId_t *notify
 		fscanf(notify->tf, "%ld",& (notify_id->id));
 	}
 
-	fclose_lock(FILE_NAME_TF, &notify->tf, &notify->l_tf);
+	fclose_with_lockfile(FILE_NAME_TF, &notify->tf, &notify->l_tf);
 
 	return 0;
 }
@@ -478,7 +478,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_transcation_get_one_dn");
-	if ((notify.tf = fopen_lock(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
+	if ((notify.tf = fopen_with_lockfile(FILE_NAME_TF, "r", &(notify.l_tf))) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "unable to lock tf\n");
 		return NULL;
 	}
@@ -535,7 +535,7 @@ char* notify_transcation_get_one_dn ( unsigned long last_known_id )
 error:
 	if (index)
 		fclose(index);
-	fclose_lock(FILE_NAME_TF, &notify.tf, &notify.l_tf);
+	fclose_with_lockfile(FILE_NAME_TF, &notify.tf, &notify.l_tf);
 
 	if (found && strlen(buffer) > 0) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_INFO, "Return str [%s]", buffer);
@@ -611,7 +611,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	entry = notify_entry_alloc();
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LOCK from notify_listener_change_callback");
-	if ( ( file = fopen_lock ( FILE_NAME_LISTENER, "r+", &(l_file) ) ) == NULL ) {
+	if ( ( file = fopen_with_lockfile ( FILE_NAME_LISTENER, "r+", &(l_file) ) ) == NULL ) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n",FILE_NAME_LISTENER);
 	}
 
@@ -663,7 +663,7 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 	free(buf);
 
 error:
-	fclose_lock(FILE_NAME_LISTENER, &file, &l_file);
+	fclose_with_lockfile(FILE_NAME_LISTENER, &file, &l_file);
 
 	return;
 }
