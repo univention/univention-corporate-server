@@ -1,3 +1,9 @@
+univention-directory-notifier (13.0.3-1) unstable; urgency=medium
+
+  * Bug #51722: Avoid deadlock between slapo-translog and UDN
+
+ -- Arvid <requate@univention.de>  Tue, 28 Jul 2020 19:45:02 +0200
+
 univention-directory-notifier (13.0.2-1) unstable; urgency=medium
 
   * Bug #51091: make UCR templates compatible to python3
