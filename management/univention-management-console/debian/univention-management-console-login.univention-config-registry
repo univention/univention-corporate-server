@@ -1,4 +1,0 @@
-Type: file
-File: usr/share/univention-management-console-login/meta.json
-Variables: umc/login/texts/.*
-

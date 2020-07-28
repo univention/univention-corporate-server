@@ -126,6 +126,10 @@ def get_login_links():
 	base = 'umc/login/links/'
 	return {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
 
+def get_login_texts():
+	base = 'umc/login/texts/'
+	return {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
+
 
 data = dict(
 	serveraddress=get_ec2_address(),
@@ -135,6 +139,7 @@ data = dict(
 	has_certificates=has_certificates(),
 	administrator=custom_username('Administrator'),
 	login_links=get_login_links(),
+	login_texts=get_login_texts(),
 )
 
 
