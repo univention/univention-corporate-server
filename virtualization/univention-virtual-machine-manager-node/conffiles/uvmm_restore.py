@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+import sys
 import errno
 
 README = '/usr/share/doc/univention-virtual-machine-manager-node-common/README.restore'
@@ -43,14 +44,17 @@ def handler(ucr, changes):
 	except (LookupError, ValueError, TypeError):
 		old = None
 		new = changes['uvmm/backup/directory']
+
 	if old and os.path.isdir(old):
 		old_symlink = os.path.join(old, 'README.restore')
 		if os.path.exists(old_symlink):
 			os.unlink(old_symlink)
-	new_symlink = os.path.join(new, 'README.restore')
-	if new and os.path.isdir(new) and not os.path.exists(new_symlink) and os.path.exists(README):
-		try:
-			os.symlink(README, new_symlink)
-		except OSError as e:
-			if e.errno != errno.EEXIST:
-				raise
+
+	if new and os.path.isdir(new) and os.path.exists(README):
+		new_symlink = os.path.join(new, 'README.restore')
+		if not os.path.exists(new_symlink):
+			try:
+				os.symlink(README, new_symlink)
+			except OSError as e:
+				if e.errno != errno.EEXIST:
+					sys.stderr.write('Failed to create symbolic link %s: %s\n' % (new_symlink, ex))
