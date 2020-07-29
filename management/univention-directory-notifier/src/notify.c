@@ -587,9 +587,9 @@ char* notify_entry_to_string(NotifyEntry_t entry )
 		return NULL;
 	}
 
-		len += 4; /* space + space + newline */
-		len += strlen(entry.dn);
-		len += snprintf(buffer,32, "%ld",entry.notify_id.id);
+	len += 4; /* space + space + newline */
+	len += strlen(entry.dn);
+	len += snprintf(buffer,32, "%ld",entry.notify_id.id);
 
 	len+=1;
 	if ( (str = malloc(len*sizeof(char) ) ) == NULL ) {
@@ -599,8 +599,8 @@ char* notify_entry_to_string(NotifyEntry_t entry )
 	memset(str, 0, len);
 	p=str;
 
-			rc = sprintf(p, "%ld %s %c\n", entry.notify_id.id, entry.dn, entry.command);
-			p+=rc;
+	rc = sprintf(p, "%ld %s %c\n", entry.notify_id.id, entry.dn, entry.command);
+	p+=rc;
 
 	return str;
 
@@ -706,7 +706,6 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 				dn_string = notify_entry_to_string( *tmp );
 				if ( dn_string != NULL ) {
 					network_client_all_write(tmp->notify_id.id, dn_string, strlen(dn_string) );
-					;
 				}
 				tmp=tmp->next;
 			}

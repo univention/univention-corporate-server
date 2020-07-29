@@ -138,7 +138,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "line = [%s]",network_line);
 		}
 
-		
+
 		if ( !strncmp(network_line, "MSGID: ", strlen("MSGID: ")) ) {
 			/* read message id  */
 
@@ -166,7 +166,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 				version = PROTOCOL_LAST - 1;
 			}
 			network_client_set_version(fd, version);
-			
+
 			/* reset message id */
 			msg_id = UINT32_MAX;
 
@@ -180,7 +180,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 			if ( version > PROTOCOL_UNKNOWN ) {
 
 				memset(string, 0, sizeof(string));
-				
+
 				snprintf(string, sizeof(string), "Version: %d\nCapabilities: \n\n", version);
 
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "SEND: %s", string);
@@ -188,9 +188,9 @@ int data_on_connection(int fd, callback_remove_handler remove)
 				if (rc < 0)
 					goto failed;
 			} else {
-				
+
 				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "Capabilities recv, but no version line");
-				
+
 			}
 
 			p+=strlen(network_line);
@@ -335,7 +335,7 @@ int data_on_connection(int fd, callback_remove_handler remove)
 	}
 
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "END Package");
-	
+
 
 	network_client_dump ();
 

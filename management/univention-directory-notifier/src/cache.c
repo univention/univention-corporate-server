@@ -61,10 +61,10 @@ int notifier_cache_init ( unsigned long max_id)
 		cache[i].id=0;
 		cache[i].command='n';
 	}
-	
+
 	buffer = notify_transcation_get_one_dn(max_id);
 	free(buffer);
-	
+
 	for ( i=max_id - (notifier_cache_size-1); i <= max_id; i++) {
 		char *p, *pp;
 
@@ -83,7 +83,7 @@ int notifier_cache_init ( unsigned long max_id)
 		cache[count].dn=malloc((size)*sizeof(char));
 		memcpy( cache[count].dn, p+1, pp-p);
 		cache[count].dn[size-1]='\0';
-		
+
 		free(buffer);
 		count+=1;
 

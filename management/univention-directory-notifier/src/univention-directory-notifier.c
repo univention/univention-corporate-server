@@ -136,17 +136,17 @@ void create_callback_listener()
 
 int creating_pidfile(char *file)
 {
-    FILE *fd;
+	FILE *fd;
 
-    if( (fd = fopen(file, "w")) == NULL) {
+	if( (fd = fopen(file, "w")) == NULL) {
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Can't open pidfile \"%s\"",file);
-        return -1;
-    }
+	return -1;
+	}
 
 	fprintf(fd, "%d",getpid());
-    fclose(fd);
+	fclose(fd);
 
-    return 0;
+	return 0;
 }
 
 int main(int argc, char* argv[])
@@ -200,7 +200,7 @@ int main(int argc, char* argv[])
 	}
 
 	if ( foreground == 0 ) {
-    	daemon(1,1);
+		daemon(1,1);
 	}
 
 	univention_debug_init("/var/log/univention/notifier.log",1,1);
@@ -228,14 +228,14 @@ int main(int argc, char* argv[])
 
 	network_client_init( 6669 );
 
-		create_callback_listener ();
+	create_callback_listener ();
 	create_callback_schema ();
 
-		notify_listener_change_callback ( 0, NULL, NULL);
+	notify_listener_change_callback ( 0, NULL, NULL);
 	notify_schema_change_callback ( 0, NULL, NULL);
 
 	network_client_main_loop( );
-	
+
 	univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Normal exit");
 
 	return 0;
