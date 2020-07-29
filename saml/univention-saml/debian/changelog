@@ -1,3 +1,9 @@
+univention-saml (6.0.2-46) unstable; urgency=medium
+
+  * Bug #51719: fix login title ucr for saml
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Jul 2020 14:30:37 +0200
+
 univention-saml (6.0.2-45) unstable; urgency=medium
 
   * Bug #47567: Add saml serviceproviders to groups
