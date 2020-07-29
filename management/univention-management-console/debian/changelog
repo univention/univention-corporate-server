@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-96) unstable; urgency=medium
+
+  * Bug #51718: fix typo and redundant ucr var
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 29 Jul 2020 14:34:05 +0200
+
 univention-management-console (11.0.4-95) unstable; urgency=medium
 
   * Bug #51719: ensure promise is used (apply feedback from QA)
