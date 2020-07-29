@@ -10,3 +10,5 @@ desc: |
    changes to the AD attribute `mail` did not get synchronized to the
    UDM/OpenLDAP attribute `mailPrimaryAddress` any more since Erratum 636.
 bug: [51647]
+erratum: 676
+announced: 2020-07-29
