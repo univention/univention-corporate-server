@@ -10,7 +10,7 @@ Package: univention-archive-key
 Architecture: all
 Description: UCS - Archive signature key
  This package contains the archive signing key for Univention
- Corporate Server 4.x and 5.x.
+ Corporate Server 3.x, 4.x and 5.x.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
