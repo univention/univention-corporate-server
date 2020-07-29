@@ -11,3 +11,5 @@ desc: |
  * If a password recovery email is successfully used to recover access to an
    account, that address will now be considered verified.
 bug: [51260, 51262]
+erratum: 683
+announced: 2020-07-29
