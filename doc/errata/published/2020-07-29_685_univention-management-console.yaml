@@ -13,3 +13,5 @@ desc: |
  * The error handling for static errors (e.g. 404 Not Found) do not display
    an "Inform vendor" button anymore.
 bug: [51260, 51718, 51719]
+erratum: 685
+announced: 2020-07-29
