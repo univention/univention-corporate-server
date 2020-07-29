@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: Test the 'System diagnostic' module
+## desc: Test portal entries
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

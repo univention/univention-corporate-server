@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: Test the 'System diagnostic' module
+## desc: Test portal_administration_inline_appearance_background_image
 ## roles:
 ##  - domaincontroller_master
 ## tags:
