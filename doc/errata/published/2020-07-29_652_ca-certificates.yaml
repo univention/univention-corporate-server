@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The list of public SSL root certificates has been updated.
 bug: [51732]
+erratum: 652
+announced: 2020-07-29
