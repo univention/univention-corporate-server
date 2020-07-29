@@ -1,3 +1,10 @@
+univention-web (3.0.5-38) unstable; urgency=medium
+
+  * Bug #51719: ensure deferred is rejected on next alert() (apply
+    feedback from QA)
+
+ -- Florian Best <best@univention.de>  Wed, 29 Jul 2020 12:41:09 +0200
+
 univention-web (3.0.5-37) unstable; urgency=medium
 
   * Bug #51719: fix displaying of errors in static HTML pages

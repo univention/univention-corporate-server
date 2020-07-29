@@ -118,6 +118,7 @@ define([
 		},
 
 		_alertDialog: null, // internal reference for the alert dialog
+		_alertDialogDeferred: null,
 
 		alert: function(/*String*/ message, /* String? */ title, /* String? */ buttonLabel) {
 			// summary:
@@ -130,7 +131,10 @@ define([
 			// buttonLabel:
 			//		An alternative label for the button
 			//
-			var deferred = new Deferred();
+			if (this._alertDialogDeferred && !this._alertDialogDeferred.isFulfilled()) {
+				this._alertDialogDeferred.reject();
+			}
+			this._alertDialogDeferred = new Deferred();
 
 			// create alert dialog the first time
 			if (!this._alertDialog) {
@@ -142,7 +146,7 @@ define([
 						callback: lang.hitch(this, function() {
 							// hide dialog upon confirmation by click on 'OK'
 							this._alertDialog.hide();
-							deferred.resolve();
+							this._alertDialogDeferred.resolve();
 						}),
 						'default': true
 					}]
@@ -153,7 +157,7 @@ define([
 					setTimeout(lang.hitch(this, function() {
 						this._alertDialog.destroyRecursive();
 						this._alertDialog = null;
-						deferred.reject();
+						this._alertDialogDeferred.reject();
 					}), 0);
 				}));
 			}
@@ -164,7 +168,7 @@ define([
 			this._alertDialog.set('title', title || _('Notification'));
 			//this._alertDialog.startup();
 			this._alertDialog.show();
-			return deferred;
+			return this._alertDialogDeferred;
 		},
 
 		centerAlertDialog: function() {

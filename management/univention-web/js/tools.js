@@ -632,7 +632,7 @@ define([
 
 				displayError: function(info) {
 					var canceled = new Deferred();
-					canceled.cancel();
+					canceled.reject();
 					if (!this.displayErrors) {
 						return canceled;
 					}
