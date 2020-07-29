@@ -13,3 +13,5 @@ cve:
 - cve.CVE-TMP51672
 ignore:
 - cve.cve.CVE-TMP51672
+erratum: 678
+announced: 2020-07-29
