@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
 # -*- coding: utf-8 -*-
-## desc: |
-##  Test favorite modules
+## desc: Test memory leaks in UMC javascript frontend
 ## roles-not:
 ##  - basesystem
 ## tags:
