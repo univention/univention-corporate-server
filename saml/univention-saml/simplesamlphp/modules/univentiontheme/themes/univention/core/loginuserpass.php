@@ -4,7 +4,7 @@ $this->includeAtTemplateBase('includes/header.php');
 $this->data['header'] = $this->t('{login:user_pass_header}');
 ?>
 		<div id="umcLoginWrapper">
-			<h1 style="text-align: center;"><?php echo htmlspecialchars(sprintf($this->t('{univentiontheme:login:loginat}'), $this->configuration->getValue('domainname', ''))); ?></h1>
+			<h1 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:loginat}')); ?></h1>
 <?php
 if (isset($this->data['SPMetadata']['privacypolicy'])) {
 	printf('<h3 style="text-align: center;"><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy'], ENT_QUOTES), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));

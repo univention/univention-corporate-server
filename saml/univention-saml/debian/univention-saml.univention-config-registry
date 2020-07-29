@@ -132,3 +132,13 @@ Variables: saml/idp/selfservice/account-verification/error-title
 Variables: saml/idp/selfservice/account-verification/error-title/.*
 Variables: saml/idp/selfservice/account-verification/error-descr
 Variables: saml/idp/selfservice/account-verification/error-descr/.*
+
+Type: file
+File: etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json
+Variables: umc/login/texts/title
+Variables: umc/login/texts/title/.*
+
+Type: file
+File: etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json
+Variables: umc/login/texts/title
+Variables: umc/login/texts/title/.*
