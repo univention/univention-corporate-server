@@ -40,7 +40,7 @@ README = '/usr/share/doc/univention-virtual-machine-manager-node-common/README.r
 def handler(ucr, changes):
 	try:
 		old, new = changes['uvmm/backup/directory']
-	except (LookupError, ValueError):
+	except (LookupError, ValueError, TypeError):
 		old = None
 		new = changes['uvmm/backup/directory']
 	if old and os.path.isdir(old):

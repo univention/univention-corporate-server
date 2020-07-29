@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-node (7.0.1-7) unstable; urgency=medium
+
+  * Bug #51739: Fix Exception handling in uvmm_restore ucr module. Package
+    will now get installed with all UCR templates written correctly
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 29 Jul 2020 17:14:08 +0200
+
 univention-virtual-machine-manager-node (7.0.1-6) unstable; urgency=medium
 
   * Bug #51215: make UCR templates compatible to python3
