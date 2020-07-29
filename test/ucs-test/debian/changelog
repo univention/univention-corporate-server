@@ -1,3 +1,9 @@
+ucs-test (9.0.4-22) unstable; urgency=medium
+
+  * Bug #51718: Ignore JOSN file missing UCR header
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 29 Jul 2020 15:46:34 +0200
+
 ucs-test (9.0.4-21) unstable; urgency=medium
 
   * Bug #1234: 67univention-admingrp-user-passwordreset-protected-domain-admins takes a long time ..

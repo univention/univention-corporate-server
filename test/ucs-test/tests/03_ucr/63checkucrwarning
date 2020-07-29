@@ -36,7 +36,6 @@ WHITELIST = {
 	'/usr/share/apps/ksmserver/pics/shutdownkonq.png',
 	'/usr/share/univention-management-console/i18n/de/apps.mo',
 	'/usr/share/univention-management-console/meta.json',
-	'/usr/share/univention-management-console-login/meta.json',
 	'/usr/share/univention-portal/apps.json',
 	'/usr/share/univention-web/js/umc/hooks.json',
 	'/var/lib/univention-windows-installer/install/bin/mapznrun.bat',
@@ -50,8 +49,10 @@ WHITELIST = {
 	'/usr/lib/openoffice/basis-link/share/registry/modules/org/openoffice/Office/Common/Common-UseOOoFileDialogs.xcu',
 	'/usr/lib/openoffice/basis-link/share/registry/schema/org/openoffice/Office/Common.xcs',
 	'/etc/docker/daemon.json',
-        '/etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json',
-        '/etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json',
+	'/etc/simplesamlphp/univentiontheme/dictionaries/errors.definition.json',
+	'/etc/simplesamlphp/univentiontheme/dictionaries/errors.translation.json',
+	'/etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json',
+	'/etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json',
 	# Bugs: remove the following lines as soon as the bug is fixed:
 	'/etc/nagios-plugins/config/univention-samba.cfg',  # Bug #50112
 	'/etc/nagios-plugins/config/univention-s4-connector.cfg',  # Bug #50112
