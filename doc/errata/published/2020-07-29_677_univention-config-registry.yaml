@@ -8,3 +8,5 @@ desc: |-
  This update addresses the following issue:
  * Fixed doing `open(..., "rw")`, which is invalid with Python 3.
 bug: [51680]
+erratum: 677
+announced: 2020-07-29
