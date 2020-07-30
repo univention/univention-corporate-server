@@ -141,7 +141,7 @@ def tiny_app_apache(name=None, version=None):
 
 def get_docker_appbox_ucs():
 	# should be in line with get_docker_appbox_image()
-	return '4.3'
+	return '4.4'
 
 
 def get_docker_appbox_image():
