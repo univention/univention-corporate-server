@@ -1958,10 +1958,12 @@ cat $MY_APP.json | jq -r .compose > compose
 				anonymous connections. For every app a user account is
 				created. The account has read access to the LDAP directory.
 				The username is passed as the environment variable
-				<envar>LDAP_HOSTDN</envar>. The password is written in the
-				file <filename>/etc/machine.secret</filename>. The
-				credentials are not changed when an app is upgraded. But they
-				change if an app is reinstalled.
+                <envar>LDAP_HOSTDN</envar>. The password is written to
+                the file <filename>/etc/machine.secret</filename> into
+                the app's main container. The file can be accessed by
+                scripts running in the app's container context. The
+                credentials are not changed when an app is upgraded.
+                But they change if an app is reinstalled.
             </para>
         </section>
 
@@ -2266,13 +2268,15 @@ cat $MY_APP.json | jq -r .compose > compose
 
             <para>
 				By default, the OpenLDAP server in UCS does not allow
-				anonymous authentications. For every app a user account is
+				anonymous connections. For every app a user account is
 				created. The account has read access to the LDAP directory.
 				The username is passed as the environment variable
-				<envar>LDAP_HOSTDN</envar>. The password is written in the
-				file <filename>/etc/machine.secret</filename>. The credentials
-				are not changed when an app is upgraded. But they change if an
-				app is reinstalled.
+                <envar>LDAP_HOSTDN</envar>. The password is written to
+                the file <filename>/etc/machine.secret</filename> into
+                the app's main container. The file can be accessed by
+                scripts running in the app's container context. The
+                credentials are not changed when an app is upgraded.
+                But they change if an app is reinstalled.
             </para>
         </section>
 <!--
