@@ -28,11 +28,24 @@ udm-test users/user create --position "cn=users,$ldap_base" \
 udm-test users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set username="$USERNAME"
 
 # wait a little bit longer since we have to wait for the slapd restart
-trap "udm users/user modify --dn \"uid=$USERNAME,cn=users,$ldap_base\" --set username=\"Administrator\" \
-	--binddn \"uid=$ADMIN,cn=users,$ldap_base\" --bindpwd univention; \
-	udm-test users/user remove --dn "uid=$ADMIN,cn=users,$ldap_base"; \
-	wait_for_replication_and_postrun; wait_for_replication_and_postrun" EXIT
 
+def cleanup() {
+	# Ok, before renaming the user back, we first should be nice to the S4-Connector and
+	# wait for the initial synchronization to be done. The test case here is not interested
+	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
+	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
+	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
+	wait_for_drs_replication "(sAMAccountName=$USERNAME)"
+	udm users/user modify --dn "uid=$USERNAME,cn=users,$ldap_base" --set username="Administrator" \
+		--binddn "uid=$ADMIN,cn=users,$ldap_base" --bindpwd univention
+	udm-test users/user remove --dn "uid=$ADMIN,cn=users,$ldap_base"
+	wait_for_replication_and_postrun
+}
+
+trap cleanup EXIT
+
+# This test is interested in changes to the committed UCR files
+# so we have to wait for OpenLDAP replication and listener module postrun
 wait_for_replication_and_postrun
 
 if [ "$(ucr get users/default/administrator)" != "$USERNAME" ]; then
