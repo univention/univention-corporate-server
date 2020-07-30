@@ -38,11 +38,11 @@ class UMCTester(object):
 			with ucr_test.UCSTestConfigRegistry():
 				self.test_module_process_timeout()
 		finally:
-			subprocess.call(['systemctl', 'restart', 'univention-management-console-server'])
+			self.selenium.restart_umc()
 		self.test_module_visibility_for_regular_user()
 
 	def test_language_switch(self):
-		switch_to_language = 'de' if (self.selenium.language == 'en') else 'en'
+		switch_to_language = 'de' if (self.selenium.language != 'de') else 'en'
 		self.switch_language(switch_to_language)
 		self.switch_language(self.selenium.language)
 
@@ -144,6 +144,7 @@ class UMCTester(object):
 			)
 
 	def kill_all_module_processes(self):
+		return  # not necessary, causes Chromium to hang...
 		for process in psutil.process_iter():
 			if '/usr/sbin/univention-management-console-module' in process.cmdline():
 				process.kill()
