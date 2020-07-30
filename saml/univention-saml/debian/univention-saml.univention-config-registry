@@ -137,8 +137,10 @@ Type: file
 File: etc/simplesamlphp/univentiontheme/dictionaries/login.definition.json
 Variables: umc/login/texts/title
 Variables: umc/login/texts/title/.*
+Variables: domainname
 
 Type: file
 File: etc/simplesamlphp/univentiontheme/dictionaries/login.translation.json
 Variables: umc/login/texts/title
 Variables: umc/login/texts/title/.*
+Variables: domainname
