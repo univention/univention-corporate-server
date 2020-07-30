@@ -89,11 +89,11 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		logging.basicConfig(level=logging.INFO)
 
 	def __enter__(self):
-		subprocess.call(['service', 'univention-management-console-server', 'restart'])
+		self.restart_umc()
 		self._ucr.__enter__()
 		if self.selenium_grid:
 			self.driver = webdriver.Remote(
-				command_executor='http://jenkins.knut.univention.de:4444/wd/hub',  # FIXME: url should be configurable via UCR
+				command_executor=os.environ.get('SELENIUM_HUB', 'http://jenkins.knut.univention.de:4444/wd/hub'),
 				desired_capabilities={
 					'browserName': self.browser
 				})
@@ -134,6 +134,9 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 			self.driver.quit()
 		finally:
 			self._ucr.__exit__(exc_type, exc_value, traceback)
+
+	def restart_umc(self):
+		subprocess.call(['systemctl', 'restart', 'univention-management-console-server'], close_fds=True)
 
 	def set_viewport_size(self, width, height):
 		self.driver.set_window_size(width, height)

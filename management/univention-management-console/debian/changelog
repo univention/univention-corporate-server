@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-97) unstable; urgency=medium
+
+  * Bug #50583: fix various memory leaks in the UMC-Server process
+
+ -- Florian Best <best@univention.de>  Wed, 29 Jul 2020 10:21:22 +0200
+
 univention-management-console (11.0.4-96) unstable; urgency=medium
 
   * Bug #51718: fix typo and redundant ucr var

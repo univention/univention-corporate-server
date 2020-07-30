@@ -67,7 +67,7 @@ from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND
 from ..locales import I18N, I18N_Manager
 from ..base import Base
 from ..error import UMC_Error, Unauthorized, BadRequest, NotFound, Forbidden, ServiceUnavailable
-from ..ldap import get_machine_connection, reset_cache
+from ..ldap import get_machine_connection, reset_cache as reset_ldap_connection_cache
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, sanitize_args, simple_response, allow_get_request
 
@@ -112,18 +112,20 @@ class ModuleProcess(Client):
 		self._queued_requests = []
 		self._inactivity_timer = None
 		self._inactivity_counter = 0
+		self._connect_timer = None
 
-	def __del__(self):
-		CORE.process('ModuleProcess: dying')
+	def stop(self):
+		CORE.process('ModuleProcess: stopping %r' % (self.__pid,))
+		notifier.timer_remove(self._connect_timer)
 		if self.__process:
 			self.disconnect()
 			self.__process.signal_disconnect('killed', self._died)
 			self.__process.stop()
 			self.__process = None
-			CORE.process('ModuleProcess: child stopped')
+			CORE.info('ModuleProcess: child stopped')
 
 	def _died(self, pid, status):
-		CORE.process('ModuleProcess: child died')
+		CORE.process('ModuleProcess: child %d exited with %d' % (pid, status))
 		self.signal_emit('finished', pid, status)
 
 	def _response(self, msg):
@@ -182,7 +184,7 @@ class ProcessorBase(Base):
 		try:
 			self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
 		except (ldap.LDAPError, udm_errors.ldapError):
-			reset_cache()
+			reset_ldap_connection_cache()
 			raise
 
 	def _reload_i18n(self):
@@ -194,7 +196,7 @@ class ProcessorBase(Base):
 			try:
 				ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
 			except (ldap.LDAPError, udm_errors.base):
-				reset_cache()
+				reset_ldap_connection_cache()
 				ldap_dn = None
 				CORE.error('Could not get uid for %r: %s' % (self._username, traceback.format_exc()))
 			if ldap_dn:
@@ -380,13 +382,14 @@ class ProcessorBase(Base):
 		self.update_language([locale])
 
 	def update_module_passwords(self):
-		CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), self.auth_type))
+		if self.__processes:
+			CORE.process('Updating user password in %d running module processes (auth-type: %s).' % (len(self.__processes), self.auth_type))
 		for module_name, proc in self.__processes.items():
 			CORE.info('Update the users password in the running %r module instance.' % (module_name,))
 			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
 			try:
 				proc.request(req)
-			except:
+			except Exception:
 				CORE.error(traceback.format_exc())
 
 	@allow_get_request
@@ -511,7 +514,7 @@ class ProcessorBase(Base):
 				self.__processes[module_name] = mod_proc
 
 				cb = notifier.Callback(self._mod_connect, mod_proc, msg)
-				notifier.timer_add(50, cb)
+				mod_proc._connect_timer = notifier.timer_add(50, cb)
 			else:
 				proc = self.__processes[module_name]
 				if proc.running:
@@ -536,7 +539,7 @@ class ProcessorBase(Base):
 			mod.signal_disconnect('finished', notifier.Callback(self._mod_died))
 			proc = self.__processes.pop(mod.name, None)
 			if proc:
-				proc.__del__()
+				proc.stop()
 
 		try:
 			mod.connect()
@@ -641,7 +644,7 @@ class ProcessorBase(Base):
 			if self.__processes[module_name]._inactivity_timer is not None:
 				CORE.warn('Remove inactivity timer')
 				notifier.timer_remove(self.__processes[module_name]._inactivity_timer)
-			del self.__processes[module_name]
+			self.__processes.pop(module_name).stop()
 
 	def reset_inactivity_timer(self, module):
 		"""Resets the inactivity timer. This timer watches the
@@ -709,17 +712,23 @@ class ProcessorBase(Base):
 
 	def shutdown(self):
 		"""Instructs the module process to shutdown"""
-		CORE.info('The session is shutting down. Sending UMC modules an EXIT request (%d processes)' % len(self.__processes))
-		for module_name, process in self.__processes.items():
+		if self.__processes:
+			CORE.info('The session is shutting down. Sending EXIT request to %d modules.' % len(self.__processes))
+
+		for module_name in list(self.__processes.keys()):
 			CORE.info('Ask module %s to shutdown gracefully' % (module_name,))
 			req = Request('EXIT', arguments=[module_name, 'internal'])
+			process = self.__processes.pop(module_name)
 			process.request(req)
+			notifier.timer_remove(process._connect_timer)
+			notifier.timer_add(4000, process.stop)
 
-	def __del__(self):
-		CORE.process('Processor: dying')
-		super(ProcessorBase, self).__del__()
-		for process in list(self.__processes.keys()):
-			self.__processes.pop(process).__del__()
+		if self._user_connections:
+			reset_ldap_connection_cache(*self._user_connections)
+
+		if isinstance(self.acls, LDAP_ACLs):
+			reset_ldap_connection_cache(self.acls.lo)
+			self.acls = None
 
 
 class Processor(ProcessorBase):
@@ -812,7 +821,7 @@ class Processor(ProcessorBase):
 			try:
 				domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
 			except (ldap.LDAPError, udm_errors.base) as exc:
-				reset_cache()
+				reset_ldap_connection_cache()
 				CORE.warn('Could not search for domaincontrollers: %s' % (exc))
 				domaincontrollers = []
 			result = sorted([(b'%s.%s' % (computer['cn'][0], computer['associatedDomain'][0])).decode('utf-8', 'replace') for dn, computer in domaincontrollers if computer.get('associatedDomain')])
@@ -938,17 +947,6 @@ class SessionHandler(ProcessorBase):
 		if isinstance(exc, UMC_Error) and exc.status == 403:
 			exc.status = 401
 
-	def shutdown(self):
-		if self.processor is not None:
-			self.processor.shutdown()
-
-	def __del__(self):
-		CORE.info('The session is shutting down')
-		super(SessionHandler, self).__del__()
-		if self.processor:
-			self.processor.__del__()
-		self.processor = None
-
 	def _authentication_finished(self, result, request):
 		# caution! this is not executed in the main loop and any exception will therefore crash the server!
 		self.execute('_authentication_finished2', request, result)
@@ -1017,3 +1015,10 @@ class SessionHandler(ProcessorBase):
 	def parse_error(self, request, parse_error):
 		status, message = parse_error.args
 		raise UMC_Error(message, status=status)
+
+	def close_session(self):
+		self.__auth.signal_disconnect('authenticated', self._authentication_finished)
+		self.shutdown()
+		if self.processor is not None:
+			self.processor.shutdown()
+		self.processor = None
