@@ -1025,6 +1025,37 @@ univention-app dev-use-test-appcenter
             </para>
         </section>
 
+        <section id="testing:checklist">
+            <title>Test checklist</title>
+            <para>
+                The following list gives an idea what the app provider should test before the app is approved
+                for release or update. The list cannot cover all possible items, but mentions what is missed
+                repeatedly.
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            Integration with UCS identity management: Does the login with activated users work?
+                            Will the login be blocked for users that are not activated for the app?
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Environment with proxy: How does the app behave when a proxy is configured in the UCS environment?
+                            Does the app take the proxy settings into account? Does the app work as expected? Is the networking
+                            still working properly for the app?
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Description and documentation: Are the texts consistent in content?
+                            Can they be understood easily? Is the description of technical steps complete and correct,
+                            especially path and file names?
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+
         <section id="testing:deactive-test-app-center">
             <title>Deactivate the Test App Center</title>
             <para>
