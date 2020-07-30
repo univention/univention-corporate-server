@@ -38,6 +38,13 @@ if __name__ == '__main__':
 		version_start = random_ucs_version(max_major=2)
 		version_end = random_ucs_version(min_major=5)
 
+		udm.create_object(
+			'container/cn',
+			name='udm_%s' % (extension_type,),
+			position='cn=univention,%s' % (ucr['ldap/base'],),
+			ignore_exists=True
+		)
+
 		dn = udm.create_object(
 			'settings/udm_%s' % extension_type,
 			name=extension_name,
