@@ -1559,7 +1559,7 @@ def _identify_dns_con_object(s4connector, object):
 		dc = object['attributes'].get('dc') or object['attributes'].get('DC')
 		if oc and 'dnsZone' in oc:
 			# forward or reverse zone
-			if dc and dc[0].endswith('in-addr.arpa'):
+			if dc and (dc[0].lower().endswith('.in-addr.arpa') or dc[0].lower().endswith('.ip6.arpa')):
 				return 'reverse_zone'
 			else:
 				return 'forward_zone'
@@ -1569,7 +1569,7 @@ def _identify_dns_con_object(s4connector, object):
 				exploded_dn = str2dn(unicode_to_utf8(object['dn']))
 				for multi_rdn in exploded_dn:
 					(attribute, value, _flags) = multi_rdn[0]
-					if attribute.lower() == 'zonename' and value.lower().endswith('in-addr.arpa'):
+					if attribute.lower() == 'zonename' and (value.lower().endswith('.in-addr.arpa') or value.lower().endswith('.ip6.arpa')):
 						zone_type = 'reverse_zone'
 						break
 				return zone_type
