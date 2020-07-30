@@ -14,6 +14,7 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 USERNAME="$(user_randomname)"
 
@@ -29,7 +30,7 @@ udm-test users/user modify --dn "uid=Administrator,cn=users,$ldap_base" --set us
 
 # wait a little bit longer since we have to wait for the slapd restart
 
-def cleanup() {
+cleanup () {
 	# Ok, before renaming the user back, we first should be nice to the S4-Connector and
 	# wait for the initial synchronization to be done. The test case here is not interested
 	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.

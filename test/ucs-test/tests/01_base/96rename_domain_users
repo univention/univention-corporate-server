@@ -14,13 +14,25 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/group.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 GROUPNAME=$(group_randomname)
 
 udm-test groups/group modify --dn "cn=Domain Users,cn=groups,$ldap_base" --set name="$GROUPNAME"
 
-trap "udm-test groups/group modify --dn \"cn=$GROUPNAME,cn=groups,$ldap_base\" --set name=\"Domain Users\"; wait_for_replication_and_postrun" EXIT
 
+cleanup () {
+	# Ok, before renaming the user back, we first should be nice to the S4-Connector and
+	# wait for the initial synchronization to be done. The test case here is not interested
+	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
+	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
+	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
+	wait_for_drs_replication "(sAMAccountName=$GROUPNAME)"
+	udm-test groups/group modify --dn "cn=$GROUPNAME,cn=groups,$ldap_base" --set name="Domain Users"
+	wait_for_replication_and_postrun
+}
+
+trap cleanup EXIT
 
 wait_for_replication_and_postrun
 
