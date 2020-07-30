@@ -141,11 +141,11 @@ def tiny_app_apache(name=None, version=None):
 
 def get_docker_appbox_ucs():
 	# should be in line with get_docker_appbox_image()
-	return '4.3'
+	return '4.4'
 
 
 def get_docker_appbox_image():
-	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:4.4-3'
+	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:{}-3'.format(get_docker_appbox_ucs())
 	print('Using %s' % image_name)
 	return image_name
 
@@ -213,6 +213,8 @@ def get_app_version():
 def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 	target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
 	print('cp %s %s' % (package_name, target))
+	if not os.path.exists(target):
+		os.makedirs(target)
 	shutil.copy(package_name, target)
 	command = '''
 		set -x -e;
