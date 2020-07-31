@@ -16,7 +16,7 @@ import univention.admin.syntax as udm_syntax
 import pycountry
 
 if __name__ == '__main__':
-	current_countries = sorted([(country.alpha2, country.name) for country in pycountry.countries], key=lambda x: x[0])
+	current_countries = sorted([(country.alpha_2, country.name) for country in pycountry.countries], key=lambda x: x[0])
 	if dict(current_countries) != dict(udm_syntax.Country.choices):
 		set_cc = set(current_countries)
 		set_choices = set(udm_syntax.Country.choices)
