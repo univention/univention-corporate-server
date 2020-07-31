@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-98) unstable; urgency=medium
+
+  * Bug #51753: move outdated browser check to tools and adjust message
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 31 Jul 2020 13:23:40 +0200
+
 univention-management-console (11.0.4-97) unstable; urgency=medium
 
   * Bug #50583: fix various memory leaks in the UMC-Server process
