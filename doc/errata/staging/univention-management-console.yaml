@@ -7,4 +7,5 @@ fix:
 desc: |
  This update addresses the following issues:
  * Various memory leaks in the UMC-Server process have been fixed.
-bug: [50583]
+ * The message for outdated browsers has been adjusted.
+bug: [50583, 51753]
