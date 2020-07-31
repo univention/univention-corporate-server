@@ -1,3 +1,9 @@
+univention-debhelper (2.0.0-2) unstable; urgency=medium
+
+  * Bug #50100: use check_call for error handling in doIt()
+
+ -- Florian Best <best@univention.de>  Sat, 01 Aug 2020 00:39:40 +0200
+
 univention-debhelper (2.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
