@@ -30,12 +30,16 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
+
 import os
 import sys
+import subprocess
+from optparse import OptionParser
+
 import univention.config_registry
 from univention.debhelper import doIt, binary_packages
-from optparse import OptionParser
 try:
 	from shlex import quote
 except ImportError:
@@ -206,9 +210,10 @@ The mapping files debian/*.univention-config-registry-mapping go to /etc/univent
 		sys.exit(1)
 
 	for prog in ("univention-install-config-registry-info", "univention-install-service-info"):
-		ret = doIt(prog)
-		if ret:
-			print("Error: %s returned %d" % (prog, ret), file=sys.stderr)
+		try:
+			doIt(prog)
+		except subprocess.CalledProcessError as exc:
+			print("Error: %s returned %d" % (prog, exc.returncode), file=sys.stderr)
 			sys.exit(1)
 
 
