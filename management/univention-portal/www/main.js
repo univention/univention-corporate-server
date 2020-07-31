@@ -1213,7 +1213,25 @@ define([
 			}));
 		},
 
+		browserWarning: function() {
+			var deferred = new Deferred();
+			if (tools.isTrue(tools.status('portal/showOutdatedBrowserWarning')) && tools.browserIsOutdated()) {
+				dialog.alert(tools.browserIsOutdatedMessage()).then().always(function() {
+					deferred.resolve();
+				});
+			} else {
+				deferred.resolve();
+			}
+			return deferred;
+		},
+
 		start: function() {
+			this.browserWarning().then(lang.hitch(this, function() {
+				this._start();
+			}));
+		},
+
+		_start: function() {
 			if (portalJson.portal.ensureLogin && !tools.status('loggedIn')) {
 				login.start();
 				return;
