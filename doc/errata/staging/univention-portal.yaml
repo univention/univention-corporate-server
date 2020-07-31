@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-portal
-fix: 
+fix: 3.0.2-7A~4.4.0.202007311334
 desc: |
  This update addresses the following issue(s):
  * A message can now be activated for the portal with the
