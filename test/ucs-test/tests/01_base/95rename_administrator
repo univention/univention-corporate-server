@@ -36,7 +36,9 @@ cleanup () {
 	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
 	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
 	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
-	wait_for_drs_replication "(sAMAccountName=$USERNAME)"
+	if [ $(checkpkg 'univention-samba4') ]; then
+		wait_for_drs_replication "(sAMAccountName=$USERNAME)"
+	fi
 	udm users/user modify --dn "uid=$USERNAME,cn=users,$ldap_base" --set username="Administrator" \
 		--binddn "uid=$ADMIN,cn=users,$ldap_base" --bindpwd univention
 	udm-test users/user remove --dn "uid=$ADMIN,cn=users,$ldap_base"
