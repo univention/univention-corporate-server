@@ -744,6 +744,9 @@
 			<listitem><simpara>
 				<package>ucslint</package> now accepts Python 3 for scripting (<u:bug>51637</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>univention-debhelper</package> now propagates failures and aborts if calling programs fail (<u:bug>50100</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
