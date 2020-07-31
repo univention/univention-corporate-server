@@ -157,21 +157,8 @@ define([
 		},
 
 		_warningBrowserOutdated: function() {
-			if (has('ie') || has('trident') || has('edge') < 18.17763 || has('ff') < 60 || has('chrome') < 71 || has('safari') < 12) {
-				// by umc (4.1.0) supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
-				// they should work with UMC. albeit, they are
-				// VERY slow and escpecially IE 8 may take minutes (!)
-				// to load a heavy UDM object (on a slow computer at least).
-				// IE 8 is also known to cause timeouts when under heavy load
-				// (presumably because of many async requests to the server
-				// during UDM-Form loading).
-				// By browser vendor supported versions:
-				// The currently supported Firefox ESR version is 60 (2019-02-26).
-				// Microsoft is ending the support for IE < 11 (2016-01-12).
-				// Chrome has no long term support version. Chromium 71 is supported through
-				// Ubuntu 18.04 LTS.
-				// Apple has no long term support for safari. The latest version is 12 (2019-02-26)
-				return '<p class="umcLoginWarning">' + entities.encode(_('Your browser is outdated! You may experience performance issues and other problems when using Univention Services.')) + '</p>';
+			if (tools.browserIsOutdated()) {
+				return '<p class="umcLoginWarning">' + entities.encode(tools.browserIsOutdatedMessage()) + '</p>';
 			}
 		},
 

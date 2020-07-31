@@ -37,6 +37,7 @@ define([
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/json",
+	"dojo/has",
 	"dojo/string",
 	"dojo/topic",
 	"dojo/cookie",
@@ -51,7 +52,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/colors" // mixin for dojo.Color
-], function(lang, array, _window, xhr, basexhr, Deferred, all, json, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, all, json, has, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitly
@@ -2095,6 +2096,19 @@ define([
 				}
 			});
 			return difference;
+		},
+
+		browserIsOutdated: function() {
+			return has('ie')
+				|| has('trident')
+				|| has('edge') < 18.17763
+				|| has('ff') < 60
+				|| has('chrome') < 71
+				|| has('safari') < 12;
+		},
+
+		browserIsOutdatedMessage: function() {
+			return _('Your browser is outdated! You may experience performance issues and other problems when using this site. The supported Browsers are Firefox (>=60), Chrome (>=71), Edge (>=18), Safari (>=12).');
 		}
 	});
 
