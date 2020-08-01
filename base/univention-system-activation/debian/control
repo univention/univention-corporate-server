@@ -10,7 +10,6 @@ Build-Depends:
  python3-all,
  sed,
  univention-config-dev,
- univention-dojo-dev,
  univention-management-console-dev (>= 11.0.4-37),
  univention-l10n-tools,
  unzip,
