@@ -1,3 +1,9 @@
+univention-dojo (13.0.1-1) unstable; urgency=medium
+
+  * Bug #48963: upgrade dojo to 1.16.3
+
+ -- Florian Best <best@univention.de>  Sat, 01 Aug 2020 03:18:44 +0200
+
 univention-dojo (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
