@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: json-c
+fix: 0.12.1-1.1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * integer overflow and out-of-bounds write via a large JSON file
+   (CVE-2020-12762)
+bug: [51755]
+cve:
+- CVE-2020-12762
