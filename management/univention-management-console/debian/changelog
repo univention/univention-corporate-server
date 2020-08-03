@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-99) unstable; urgency=medium
+
+  * Bug #51729: raise the open file limits of the UMC-Web-Server
+
+ -- Florian Best <best@univention.de>  Mon, 03 Aug 2020 11:43:29 +0200
+
 univention-management-console (11.0.4-98) unstable; urgency=medium
 
   * Bug #51753: move outdated browser check to tools and adjust message
