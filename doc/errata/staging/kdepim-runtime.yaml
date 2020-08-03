@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: kdepim-runtime
+fix: 4:16.04.2-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * KDE KMail 19.12.3 (aka 5.13.3) engages in unencrypted POP3 communication
+   during times when the UI indicates that encryption is in use.
+   (CVE-2020-15954)
+bug: [51758]
+cve:
+- CVE-2020-15954
