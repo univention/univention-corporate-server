@@ -43,6 +43,7 @@ import zlib
 import base64
 import signal
 import hashlib
+import resource
 import tempfile
 import binascii
 import datetime
@@ -1607,6 +1608,11 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		_thread_http = threading.Thread(target=run_cherrypy, args=(self.options,))
 		_thread_http.deamon = True
 		_thread_http.start()
+		try:
+			fd_limit = get_int('umc/max/file_descriptors', 65535)
+			resource.setrlimit(resource.RLIMIT_NOFILE, (fd_limit, fd_limit))
+		except (ValueError, resource.error) as exc:
+			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 
 		try:
 			# start notifier loop

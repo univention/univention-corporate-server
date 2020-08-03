@@ -64,6 +64,12 @@ Description[en]=Defines the redirection path after a successful logout from UMC.
 Type=str
 Categories=management-umc
 
+[umc/max/file_descriptors]
+Description[de]=Definiert die maximale Anzahl an Dateideskriptoren im UMC-Web-Server (Standard: 65535).
+Description[en]=Defines the maximum number of file descriptors for the UMC-Webserver (default: 65535).
+Type=int
+Categories=management-umc
+
 [umc/http/max_request_body_size]
 Description[de]=Definiert die maximale Größe einer HTTP-Anfrage an den UMC-Webserver in bytes (Standard: 104857600).
 Description[en]=Defines the maximum size in bytes of a HTTP request against the UMC-Webserver (default: 104857600).

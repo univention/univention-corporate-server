@@ -1,3 +1,9 @@
+ucs-test (9.0.4-27) unstable; urgency=medium
+
+  * Bug #51729: Test ucr variable umc/max/file_descriptors
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 03 Aug 2020 20:34:27 +0200
+
 ucs-test (9.0.4-26) unstable; urgency=medium
 
   * Bug #1234: wait_for_drs_replication does not work on memberserver. In this case, just sleep

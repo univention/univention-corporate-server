@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-99) unstable; urgency=medium
+
+  * Bug #51729: add ucr variable to modify the limit of file descriptors 
+    for the umc-web-server
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 03 Aug 2020 20:30:02 +0200
+
 univention-management-console (11.0.4-98) unstable; urgency=medium
 
   * Bug #51753: move outdated browser check to tools and adjust message
