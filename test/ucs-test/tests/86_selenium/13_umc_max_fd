@@ -1,8 +1,7 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-## desc: Check for unclosed file handles after log ins and password resets
+## desc: Check if ucr variable umc/max/file_descriptors works
 ## packages:
 ##  - univention-management-console-module-udm
-##  - univention-management-console-module-passwordchange
 ## roles-not:
 ##  - memberserver
 ##  - basesystem
@@ -61,9 +60,9 @@ class UMCTester:
 
 	def umc_logon(self, username, pw):
 		try:
-	
+
 			self.browser.get("http://" + self.fqdn + "/univention/portal/")
-	
+
 			WebDriverWait(self.browser, 30).until(
 				expected_conditions.element_to_be_clickable(
 					(By.XPATH, '//*[@id="umcLoginButton_label"]')
@@ -79,18 +78,18 @@ class UMCTester:
 					(By.XPATH, '//*[@id="umcLoginPassword"]')
 				)
 			).send_keys(pw)
-	
+
 			elem = self.browser.find_elements_by_id("umcLoginSubmit")[0]
 			elem.click()
 		finally:
 			print("UMC Logon with {} done".format(username))
-	
+
 	def test_umc_logon(self, udm, max_fd):
 		umc_pid = int(subprocess.check_output("pidof -x univention-management-console-web-server".split(" ")))
 		print("\n### Increase amount of file_descriptors by logging in ###")
 
 		username = ""
-		login_password="univention"
+		login_password = "univention"
 		for i in range(0, 15):
 
 			_, username = udm.create_user(set={"password": login_password})
