@@ -102,7 +102,7 @@ die () {
 }
 
 cleanup () {
-	if "$debug"; then
+	if ! "$debug"; then
 		[ -f "$docker_env_file" ] && rm "$docker_env_file"
 	fi
 }
