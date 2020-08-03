@@ -3,9 +3,12 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-management-console
-fix: 11.0.4-98A~4.4.0.202007311332
+fix: 11.0.4-99A~4.4.0.202008032042
 desc: |
  This update addresses the following issues:
  * Various memory leaks in the UMC-Server process have been fixed.
  * The message for outdated browsers has been adjusted.
-bug: [50583, 51753]
+ * The UCR variable umc/max/file_descriptors has been added and the default
+   file descriptor limit for the univention-management-console-web-server
+   has been increased to 65535.
+bug: [50583, 51753, 51729]
