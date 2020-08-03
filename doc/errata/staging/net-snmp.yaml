@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: net-snmp
+fix: 5.7.3+dfsg-1.7+deb9u2
+desc: |
+ This update addresses the following issue:
+ * net-snmp (CVE-2020-15862)
+bug: [51757]
+cve:
+- CVE-2020-15862
