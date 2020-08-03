@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-13) unstable; urgency=medium
+
+  * Bug #51763: Add ucsversionstart/end to ucs_registerLDAPExtension
+
+ -- Arvid <requate@univention.de>  Mon, 03 Aug 2020 12:38:45 +0200
+
 univention-appcenter (9.0.0-12) unstable; urgency=medium
 
   * Bug #40225: Call install with a list of one app where necessary
