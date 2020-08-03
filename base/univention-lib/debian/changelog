@@ -1,3 +1,10 @@
+univention-lib (9.0.0-38) UNRELEASED; urgency=medium
+
+  * Bug #51622: Revert --ucsversionstart 5.0-0 default for
+                univention-* packages
+
+ -- Arvid <requate@univention.de>  Mon, 03 Aug 2020 12:41:45 +0200
+
 univention-lib (9.0.0-37) unstable; urgency=medium
 
   * Bug #51619: ucs_registerLDAPExtension --name option

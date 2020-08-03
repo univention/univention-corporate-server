@@ -384,9 +384,6 @@ ucs_registerLDAPExtension () {
 
 		if [ -n "$package_name" ]; then
 			package_version=$(dpkg-query -f '${Version}' -W "$package_name")
-			if ! [ "${package_name#univention*}" = "$package_name" ]; then
-				set -- --ucsversionstart "5.0-0" "$@"
-			fi
 		else
 			eval "$(/usr/sbin/univention-config-registry shell '^tests/ucs_registerLDAP/.*')"
 			if [ -n "$tests_ucs_registerLDAP_packagename" ] && [ -n "$tests_ucs_registerLDAP_packageversion" ]; then
