@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: libssh
+fix: 0.7.3-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * a NULL pointer dereference in sftpserver.c if ssh_buffer_new returns NULL
+   (CVE-2020-16135)
+bug: [51756]
+cve:
+- CVE-2020-16135
