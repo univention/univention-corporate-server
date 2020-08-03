@@ -33,8 +33,11 @@ cleanup() {
 	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
 	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
 	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
-	if [ $(checkpkg 'univention-samba4') ]; then
+	if checkpkg 'univention-samba4'; then
 		wait_for_drs_replication "(sAMAccountName=$GROUPNAME)"
+	elif checkpkg 'univention-samba'; then
+		echo "Waiting for S4-Connector"
+		sleep 10
 	fi
 
 	udm-test groups/group modify --dn "cn=$GROUPNAME,cn=groups,$ldap_base" --set name="Domain Admins"
