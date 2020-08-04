@@ -429,8 +429,15 @@ class UPCFileTester(object):
 					t.cnt += 1
 					if t.cntmax is not None and t.cnt > t.cntmax:
 						# a maximum counter has been defined and maximum has been exceeded
-						startline, startpos = self._getpos(linenum, match.start(0))
-						msglist.append(UPCMessage(t.msgid, t.msg, self.filename, startline, startpos))
+						start, end = match.span()
+						startline, startpos = self._getpos(linenum, start)
+						msg = '%s\n\t%s\n\t%s%s' % (
+							t.msg,
+							line,
+							' ' * len(line[:start].expandtabs()),
+							'^' * len(line[start:end].expandtabs()),
+						)
+						msglist.append(UPCMessage(t.msgid, msg, self.filename, startline, startpos))
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:

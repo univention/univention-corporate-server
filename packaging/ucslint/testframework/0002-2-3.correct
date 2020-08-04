@@ -1,6 +1,18 @@
 E:0002-2: debian/postinst:7:18: contains invalid basedn
+	ldapsearch -x -b dc=univention,dc=qa
+	                 ^^^^^^^^^^^^^^^^^^^
 E:0002-2: debian/postinst:8:18: contains invalid basedn
+	ldapsearch -x -b dc=univention,dc=test
+	                 ^^^^^^^^^^^^^^^^^^^^^
 E:0002-2: debian/postinst:9:18: contains invalid basedn
+	ldapsearch -x -b dc=univention,dc=local
+	                 ^^^^^^^^^^^^^^^^^^^^^^
 E:0002-3: debian/postinst:10:7: contains invalid domainname
+	echo "univention.qa"
+	      ^^^^^^^^^^^^^
 E:0002-3: debian/postinst:11:7: contains invalid domainname
+	echo "univention.test"
+	      ^^^^^^^^^^^^^^^
 E:0002-3: debian/postinst:12:7: contains invalid domainname
+	echo "univention.local"
+	      ^^^^^^^^^^^^^^^^

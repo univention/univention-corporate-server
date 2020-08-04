@@ -1,1 +1,3 @@
 S:0009-11: test.py:4:19: Use uldap.searchDN() instead of uldap.search(attr=["dn"])
+	for dn, attr in lo.search("(cn=admin)", attr=["dn"]):
+	                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
