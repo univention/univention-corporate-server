@@ -72,9 +72,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			with open(fn, 'r') as stream:
 				line = stream.readline().rstrip()
 				if line != DEP5:
-					self.addmsg('0010-6', 'not machine-readable DEP-5', filename=fn)
+					self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
 		except EnvironmentError:
-			self.addmsg('0010-5', 'file is missing', filename=fn)
+			self.addmsg('0010-5', 'file is missing', fn)
 
 		# looking for files below debian/
 		for f in os.listdir(os.path.join(path, 'debian')):
@@ -92,7 +92,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			try:
 				content = open(fn, 'r').read()
 			except (EnvironmentError, UnicodeDecodeError):
-				self.addmsg('0010-1', 'failed to open and read file', filename=fn)
+				self.addmsg('0010-1', 'failed to open and read file', fn)
 				continue
 			self.debug('testing %s' % fn)
 
@@ -111,16 +111,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			for teststr in copyright_strings:
 				if teststr not in content:
 					self.debug('Missing copyright string: %s' % teststr)
-					self.addmsg('0010-2', 'file contains no copyright text block', filename=fn)
+					self.addmsg('0010-2', 'file contains no copyright text block', fn)
 					break
 			else:
 				# copyright text block is present - lets check if it's outdated
 				match = RE_COPYRIGHT_VERSION.search(content)
 				if not match:
-					self.addmsg('0010-4', 'cannot find copyright line containing year', filename=fn)
+					self.addmsg('0010-4', 'cannot find copyright line containing year', fn)
 				else:
 					years = match.group(1)
 					current_year = str(time.localtime()[0])
 					if current_year not in years:
 						self.debug('Current year=%s  years="%s"' % (current_year, years))
-						self.addmsg('0010-3', 'copyright line seems to be outdated', filename=fn)
+						self.addmsg('0010-3', 'copyright line seems to be outdated', fn)

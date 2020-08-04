@@ -79,7 +79,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			with open(script_path, 'r') as script_file:
 				content = script_file.read()
 
-			for nr, line in enumerate(content.splitlines(), start=1):
+			for row, line in enumerate(content.splitlines(), start=1):
 				if not line.startswith('#'):
 					break
 				for script_name in other_scripts:
@@ -87,26 +87,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg(
 							'0018-1',
 							'wrong script name: %r' % (line.strip(),),
-							filename=script_path,
-							line=nr)
+							script_path, row)
 
-			for nr, line in enumerate(content.splitlines(), start=1):
+			for row, line in enumerate(content.splitlines(), start=1):
 				if line.startswith('#'):
 					continue
 				for match in self.RE_TEST.finditer(line):
 					try:
 						actions = self.parse_test(split(match.group('cond'))) & other_actions
 					except ValueError as ex:
-						self.debug('Failed %s:%d: %s in %s' % (script_path, nr, ex, line))
+						self.debug('Failed %s:%d: %s in %s' % (script_path, row, ex, line))
 						continue
 					if actions:
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
-							filename=script_path,
-							line=nr)
+							script_path, row)
 
-			nr = 1
+			row = 1
 			col = 1
 			pos = 0
 			for match in self.RE_CASE.finditer(content):
@@ -119,7 +117,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						while pos < start:
 							if match.string[pos] == "\n":
 								col = 1
-								nr += 1
+								row += 1
 							else:
 								col += 1
 							pos += 1
@@ -127,7 +125,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
-							filename=script_path, line=nr, pos=col)
+							script_path, row, col)
 
 	@classmethod
 	def parse_test(cls, tokens):
@@ -199,50 +197,48 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
 			# ~/doc/2018-04-11-ApiDoc/pymerge
-			for lnr, line in self.lines(fp):
+			for row, line in self.lines(fp):
 				dst = ''
 				for src, dst in self.process_install(line):
-					self.debug('%s:%d Installs %s to %s' % (fp, lnr, src, dst))
+					self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
 					pkg.add(dst)
 
 				if self.RE_PYTHONPATHS.match(dst):
 					self.addmsg(
 						'0018-4',
 						'Use debian/*.pyinstall to install Python modules',
-						filename=fp,
-						line=lnr)
+						fp, row)
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['pyinstall']):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
-			for lnr, line in self.lines(fp):
+			for row, line in self.lines(fp):
 				for src, dst in self.process_pyinstall(line):
-					self.debug('%s:%d Installs %s to %s' % (fp, lnr, src, dst))
+					self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
 					pkg.add(dst)
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['dirs']):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
-			for lnr, line in self.lines(fp):
+			for row, line in self.lines(fp):
 				line = line.strip('/')
 				if line in pkg:
 					self.addmsg(
 						'0018-2',
 						'Unneeded directory %r' % (line,),
-						filename=fp,
-						line=lnr)
+						fp, row)
 
 	@staticmethod
 	def lines(name):
 		# type: (str) -> Iterator[Tuple[int, str]]
 		with open(name, 'r') as stream:
-			for lnr, line in enumerate(stream, start=1):
+			for row, line in enumerate(stream, start=1):
 				line = line.strip()
 				if not line:
 					continue
 				if line.startswith('#'):
 					continue
-				yield (lnr, line)
+				yield (row, line)
 
 	@staticmethod
 	def split_pkg(name):

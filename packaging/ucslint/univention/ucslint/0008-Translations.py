@@ -79,13 +79,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			try:
 				content = open(fn, 'r').read()
 			except EnvironmentError:
-				self.addmsg('0008-2', 'failed to open and read file', filename=fn)
+				self.addmsg('0008-2', 'failed to open and read file', fn)
 				continue
 
 			self.debug('testing %s' % fn)
 			for match in RE_TRANSLATION.finditer(content):
-				line = content.count('\n', 0, match.start()) + 1
-				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, line)
+				row = content.count('\n', 0, match.start()) + 1
+				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, row)
 
 	def check_po(self, po_files):
 		"""Check Portable Object files."""

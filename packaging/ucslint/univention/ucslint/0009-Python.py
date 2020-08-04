@@ -100,15 +100,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if match:
 				version, space, option, tail = match.groups()
 				if not version:
-					self.addmsg('0009-2', 'file does not specify python version in hashbang', filename=fn)
+					self.addmsg('0009-2', 'file does not specify python version in hashbang', fn, 1)
 				elif version not in {'2.7', '3'}:
-					self.addmsg('0009-3', 'file specifies wrong python version in hashbang', filename=fn)
+					self.addmsg('0009-3', 'file specifies wrong python version in hashbang', fn, 1)
 				if space and not option:
-					self.addmsg('0009-4', 'file contains whitespace after python command', filename=fn)
+					self.addmsg('0009-4', 'file contains whitespace after python command', fn, 1)
 				if tail:
-					self.addmsg('0009-9', 'hashbang contains more than one option', filename=fn)
+					self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
 
-			line = 1
+			row = 1
 			col = 1
 			pos = 0
 			for m in RE_LENIENT.finditer(tester.raw):
@@ -121,12 +121,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				while pos < start:
 					if tester.raw[pos] == "\n":
 						col = 1
-						line += 1
+						row += 1
 					else:
 						col += 1
 					pos += 1
 
-				self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), filename=fn, line=line, pos=col)
+				self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), fn, row, col)
 
 			try:
 				tree = ast.parse(tester.raw, fn)

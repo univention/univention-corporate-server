@@ -265,7 +265,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			entry = {}  # type: Dict[str, List[str]]
 			with open(fn, 'r') as stream:
-				for lnr, line in enumerate(stream, start=1):
+				for row, line in enumerate(stream, start=1):
 					line = line.strip()
 					if not line and entry:
 						yield entry
@@ -275,12 +275,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					try:
 						key, val = line.split(': ', 1)
 					except ValueError:
-						self.addmsg('0004-28', 'file contains line without ":"', fn, lnr)
+						self.addmsg('0004-28', 'file contains line without ":"', fn, row)
 						continue
 
 					values = entry.setdefault(key, [])
 					if val in values:
-						self.addmsg('0004-60', 'Duplicate entry for %s: %s' % (key, val), fn, lnr)
+						self.addmsg('0004-60', 'Duplicate entry for %s: %s' % (key, val), fn, row)
 
 					values.append(val)
 

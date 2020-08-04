@@ -106,7 +106,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							self.debug('Found %s in %s' % (key.upper(), fn))
 							need.add(key)
 		except EnvironmentError:
-			self.addmsg('0014-0', 'failed to open and read file', filename=fn)
+			self.addmsg('0014-0', 'failed to open and read file', fn)
 			return need
 
 		return need
@@ -130,10 +130,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		# Assert packages using "univention-install-" build-depens on "univention-config-dev" and depend on "univention-config"
 		if uses_uicr and not src_deps & self.DEPS['uicr'][1]:
-			self.addmsg('0014-2', 'Missing Build-Depends: univention-config-dev', filename=fn_rules)
+			self.addmsg('0014-2', 'Missing Build-Depends: univention-config-dev', fn_rules)
 
 		if uses_umcb and not src_deps & self.DEPS['umcb'][1]:
-			self.addmsg('0014-3', 'Missing Build-Depends: univention-management-console-dev', filename=fn_rules)
+			self.addmsg('0014-3', 'Missing Build-Depends: univention-management-console-dev', fn_rules)
 
 		return src_deps
 
@@ -167,7 +167,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 			need = self._scan_script(fn)
 			if 'ucr' in need and not bin_pre & self.DEPS['ucr'][1]:
-				self.addmsg('0014-4', 'Missing Pre-Depends: univention-config', filename=fn)
+				self.addmsg('0014-4', 'Missing Pre-Depends: univention-config', fn)
 
 		# Assert packages using "ucr" depend on "univention-config"
 		for ms in ('postinst', 'prerm', 'postrm'):
@@ -176,13 +176,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 			need = self._scan_script(fn)
 			if 'ucr' in need and not bin_deps & self.DEPS['ucr'][1]:
-				self.addmsg('0014-5', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
+				self.addmsg('0014-5', 'Missing Depends: univention-config, ${misc:Depends}', fn)
 
 		p = join(self.path, '[0-9][0-9]%s.inst' % (pkg,))
 		for fn in glob(p):
 			need = self._scan_script(fn)
 			if 'ucr' in need and not bin_deps & self.DEPS['ucr'][1]:
-				self.addmsg('0014-4', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
+				self.addmsg('0014-4', 'Missing Depends: univention-config, ${misc:Depends}', fn)
 
 		# FIXME: scan all other files for ucr as well?
 
@@ -200,14 +200,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							fn = join(self.path, 'conffiles', m.group(1))
 							init_files.add(fn)
 		except EnvironmentError:
-			self.addmsg('0014-0', 'failed to open and read file', filename=fn)
+			self.addmsg('0014-0', 'failed to open and read file', fn)
 
 		for fn in init_files:
 			if not exists(fn):
 				continue
 			need = self._scan_script(fn)
 			if 'ial' in need and not bin_deps & self.DEPS['ial'][1]:
-				self.addmsg('0014-6', 'Missing Depends: univention-base-files', filename=fn)
+				self.addmsg('0014-6', 'Missing Depends: univention-base-files', fn)
 
 		return bin_deps | bin_rec | bin_sug
 
@@ -221,10 +221,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			parser = uub.ParserDebianControl(fn_control)
 			self.path = path
 		except uub.FailedToReadFile:
-			self.addmsg('0014-0', 'failed to open and read file', filename=fn_control)
+			self.addmsg('0014-0', 'failed to open and read file', fn_control)
 			return
 		except uub.UCSLintException:
-			self.addmsg('0014-1', 'parsing error', filename=fn_control)
+			self.addmsg('0014-1', 'parsing error', fn_control)
 			return
 
 		deps = self.check_source(parser.source_section)
@@ -254,21 +254,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			for suffix in SUFFIXES
 		)
 		for unowned in exists - known:
-			self.addmsg('0014-8', 'unexpected UCR file', filename=join(path, 'debian', unowned))
+			self.addmsg('0014-8', 'unexpected UCR file', join(path, 'debian', unowned))
 
 	def check_transitional(self, deps):  # type: (Iterable[str]) -> None
 		fn_control = join(self.path, 'debian', 'control')
 		for cand in self._cand(deps):
 			if self.RE_TRANSITIONAL.search(cand.summary):
-				self.addmsg('0014-8', 'depends on transitional package %s' % (cand.package.name,), filename=fn_control)
+				self.addmsg('0014-8', 'depends on transitional package %s' % (cand.package.name,), fn_control)
 
 	def check_essential(self, deps):  # type: (Iterable[str]) -> None
 		fn_control = join(self.path, 'debian', 'control')
 		for cand in self._cand(deps):
 			if cand.package.essential:
-				self.addmsg('0014-10', 'depends on "Essential:yes" package %s' % (cand.package.name,), filename=fn_control)
+				self.addmsg('0014-10', 'depends on "Essential:yes" package %s' % (cand.package.name,), fn_control)
 			elif cand.priority in self.PRIORITIES:
-				self.addmsg('0014-11', 'depends on "Priority:required/important" package %s' % (cand.package.name,), filename=fn_control)
+				self.addmsg('0014-11', 'depends on "Priority:required/important" package %s' % (cand.package.name,), fn_control)
 
 	def _cand(self, deps):  # type: (Iterable[str]) -> Iterator[Version]
 		if not self.apt:

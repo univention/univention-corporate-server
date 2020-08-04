@@ -401,13 +401,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 				match = match.rstrip() + '\n'  # prevent "blank line at end of file" and "blank line contains whitespace" false positives
 				for error in self.flake8(python, ['-'], self.DEFAULT_IGNORE, UCR_HEADER + match):
 					try:
-						errno, filename, lineno, position, descr = error.split(' ', 4)
-						lineno = str(int(lineno) - header_length + leading_lines)
+						errno, filename, row, col, descr = error.split(' ', 4)
+						row = str(int(row) - header_length + leading_lines)
 					except ValueError as ex:
 						# flake8 --show-source provides 2 extra lines
 						self.debug('%s: %s' % (ex, error))
 						continue
-					errors.append(' '.join((errno, conffile, lineno, position, descr)))
+					errors.append(' '.join((errno, conffile, row, col, descr)))
 		return errors
 
 	def flake8(self, python, pathes, ignore='', stdin=''):  # type: (str, List[str], str, str) -> List[str]

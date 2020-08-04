@@ -89,7 +89,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'joinscript_api': False,
 			'joinscript_remove_script_from_status_file': 0,
 		}
-		for lnr, line in enumerate(lines, start=1):
+		for row, line in enumerate(lines, start=1):
 			line = line.strip()
 
 			# check joinscript api
@@ -103,7 +103,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if line.startswith('VERSION='):
 				cnt['version'] += 1
 				if cnt['version'] > 1:
-					self.addmsg('0001-12', 'join script does set VERSION more than once', filename, lnr)
+					self.addmsg('0001-12', 'join script does set VERSION more than once', filename, row)
 			if line.find(' v${VERSION} ') >= 0:
 				cnt['vversion'] += 1
 
@@ -120,13 +120,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			# check udm calls
 			if 'univention-admin ' in line or 'univention-directory-manager ' in line or 'udm ' in line:
 				if 'univention-admin ' in line:
-					self.addmsg('0001-1', 'join script still uses "univention-admin"', filename, lnr)
+					self.addmsg('0001-1', 'join script still uses "univention-admin"', filename, row)
 
 				if ' $@ ' not in line and ' "$@" ' not in line and ' "${@}" ' not in line:
-					self.addmsg('0001-2', 'join script is missing "$@"', filename, lnr)
+					self.addmsg('0001-2', 'join script is missing "$@"', filename, row)
 
 			if ' $@ ' in line or ' ${@} ' in line:
-				self.addmsg('0001-11', 'join script contains unquoted $@', filename, lnr)
+				self.addmsg('0001-11', 'join script contains unquoted $@', filename, row)
 
 		if not cnt['joinscript_api']:
 			self.addmsg('0001-16', 'join script does not use joinscript api (possible clear text passwords)', filename)
@@ -280,11 +280,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.debug('found %s in %s' % (name, fn))
 
 					if set_e:
-						for lnr, line in enumerate(content.splitlines(), start=1):
+						for row, line in enumerate(content.splitlines(), start=1):
 							if name in line:
 								match = self.RE_LINE_ENDS_WITH_TRUE.search(line)
 								if not match:
-									self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, lnr)
+									self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, row)
 
 		for js, missing in fnlist_joinscripts.items():
 			if missing & CALLED and js.endswith('.inst'):

@@ -74,7 +74,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.check_bashism(fn)
 				self.check_unquoted_local(fn)
 			except (EnvironmentError, UnicodeDecodeError):
-				self.addmsg('0013-1', 'failed to open file', filename=fn)
+				self.addmsg('0013-1', 'failed to open file', fn)
 
 	def check_bashism(self, fn):
 		p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -90,21 +90,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 				match = RE_BASHISM.search(item)
 				if not match:
-					self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), filename=fn)
+					self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), fn)
 					continue
 
-				line = int(match.group(1))
+				row = int(match.group(1))
 				msg = match.group(2)
 				code = match.group(3)
 
-				self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=fn, line=line)
+				self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), fn, row)
 
 	def check_unquoted_local(self, fn):
 		with open(fn, 'r') as fd:
-			for nr, line in enumerate(fd, start=1):
+			for row, line in enumerate(fd, start=1):
 				line = line.strip()
 				match = RE_LOCAL.search(line)
 				if not match:
 					continue
 
-				self.addmsg('0013-4', 'unquoted local variable: %s' % (line,), filename=fn, line=nr)
+				self.addmsg('0013-4', 'unquoted local variable: %s' % (line,), fn, row)

@@ -80,17 +80,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			content_changelog = open(fn_changelog, 'r').read(1024)
 		except EnvironmentError:
-			self.addmsg('0011-1', 'failed to open and read file', filename=fn_changelog)
+			self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
 			return
 
 		fn_control = os.path.join(path, 'debian', 'control')
 		try:
 			parser = uub.ParserDebianControl(fn_control)
 		except uub.FailedToReadFile:
-			self.addmsg('0011-1', 'failed to open and read file', filename=fn_control)
+			self.addmsg('0011-1', 'failed to open and read file', fn_control)
 			return
 		except uub.UCSLintException:
-			self.addmsg('0011-11', 'parsing error', filename=fn_control)
+			self.addmsg('0011-11', 'parsing error', fn_control)
 			return
 
 		compat_version = 0
@@ -99,10 +99,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			content_compat = open(fn_compat, 'r').read()
 			compat_version = int(content_compat)
 		except EnvironmentError:
-			# self.addmsg('0011-1', 'failed to open and read file', filename=fn_compat)
+			# self.addmsg('0011-1', 'failed to open and read file', fn_compat)
 			pass
 		except ValueError:
-			self.addmsg('0011-19', 'parsing error', filename=fn_compat)
+			self.addmsg('0011-19', 'parsing error', fn_compat)
 
 		# compare package name
 		match = RE_CHANGELOG_PACKAGE.match(content_changelog)
@@ -110,28 +110,28 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			srcpkgname = match.group(1)
 		else:
 			srcpkgname = None
-			self.addmsg('0011-9', 'cannot determine source package name', filename=fn_changelog)
+			self.addmsg('0011-9', 'cannot determine source package name', fn_changelog)
 
 		controlpkgname = parser.source_section.get('Source')
 		if not controlpkgname:
-			self.addmsg('0011-9', 'cannot determine source package name', filename=fn_control)
+			self.addmsg('0011-9', 'cannot determine source package name', fn_control)
 
 		if srcpkgname and controlpkgname:
 			if srcpkgname != controlpkgname:
-				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', filename=fn_changelog)
+				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', fn_changelog)
 
 		# parse source section of debian/control
 		if not parser.source_section.get('Section', '') in ('univention'):
-			self.addmsg('0011-3', 'wrong Section entry - should be "univention"', filename=fn_control)
+			self.addmsg('0011-3', 'wrong Section entry - should be "univention"', fn_control)
 
 		if not parser.source_section.get('Priority', '') in ('optional'):
-			self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', filename=fn_control)
+			self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', fn_control)
 
 		if not parser.source_section.get('Maintainer', '') in ('Univention GmbH <packages@univention.de>'):
-			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', filename=fn_control)
+			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', fn_control)
 
 		if parser.source_section.get('XS-Python-Version', ''):
-			self.addmsg('0011-11', 'XS-Python-Version is not required any longer', filename=fn_control)
+			self.addmsg('0011-11', 'XS-Python-Version is not required any longer', fn_control)
 
 		build_depends = dict(
 			(m.group(1), m.groupdict()) for m in (
@@ -144,10 +144,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		)
 
 		if 'python-central' in build_depends:
-			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', filename=fn_control)
+			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', fn_control)
 
 		if 'python-support' in build_depends:
-			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', filename=fn_control)
+			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', fn_control)
 
 		try:
 			dep = build_depends['debhelper']
@@ -156,16 +156,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except LookupError:
 			pass
 		except ValueError:
-			self.addmsg('0011-10', 'failed parsing debhelper version', filename=fn_control)
+			self.addmsg('0011-10', 'failed parsing debhelper version', fn_control)
 		else:
 			if not compat_version:
 				pass
 			elif not vint:
 				pass
 			elif compat_version > vint:
-				self.addmsg('0011-20', 'debian/compat=%d > debian/control=%d disagree on the version for debhelper' % (compat_version, vint), filename=fn_control)
+				self.addmsg('0011-20', 'debian/compat=%d > debian/control=%d disagree on the version for debhelper' % (compat_version, vint), fn_control)
 			elif compat_version < vint:
-				self.addmsg('0011-20', 'debian/compat=%d < debian/control=%d disagree on the version for debhelper' % (compat_version, vint), filename=fn_compat)
+				self.addmsg('0011-20', 'debian/compat=%d < debian/control=%d disagree on the version for debhelper' % (compat_version, vint), fn_compat)
 			else:
 				pass
 
@@ -176,7 +176,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			with open(fn_rules, 'r') as fd:
 				rules = fd.read()
 				if re.search('--with[ =]*["\']?python_support', rules):
-					self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', filename=fn_rules)
+					self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', fn_rules)
 		except EnvironmentError:
 			pass
 
@@ -329,10 +329,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES:
 				if rel_name == suffix:
-					self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), filename=fn)
+					self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), fn)
 					break
 				elif rel_name.endswith('.%s' % (suffix,)):
-					self.addmsg('0011-14', 'no matching package in debian/control', filename=fn)
+					self.addmsg('0011-14', 'no matching package in debian/control', fn)
 					break
 			else:
-				self.addmsg('0011-16', 'unknown debhelper file', filename=fn)
+				self.addmsg('0011-16', 'unknown debhelper file', fn)

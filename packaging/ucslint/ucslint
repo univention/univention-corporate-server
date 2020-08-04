@@ -142,7 +142,7 @@ class DebianPackageCheck(object):
 		fn = os.path.join(self.path, 'debian', 'ucslint.overrides')
 		try:
 			with open(fn, 'r') as overrides:
-				for nr, line in enumerate(overrides, start=1):
+				for row, line in enumerate(overrides, start=1):
 					line = line.strip()
 					if not line:
 						continue
@@ -150,7 +150,7 @@ class DebianPackageCheck(object):
 						continue
 					result = RE_OVERRIDE.match(line)
 					if not result:
-						print('IGNORED: debian/ucslint.overrides:%d: %s' % (nr, line), file=sys.stderr)
+						print('IGNORED: debian/ucslint.overrides:%d: %s' % (row, line), file=sys.stderr)
 						continue
 
 					module, pattern, linenumber = result.groups()
@@ -174,7 +174,7 @@ class DebianPackageCheck(object):
 				continue
 			if pattern and not fnmatch(filepath, pattern):
 				continue
-			if linenumber is not None and linenumber != msg.line:
+			if linenumber is not None and linenumber != msg.row:
 				continue
 			return True
 		return False

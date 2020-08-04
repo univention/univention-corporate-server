@@ -181,7 +181,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES):
 			try:
 				with open(fn, 'r') as fd:
-					for lnr, line in enumerate(fd, start=1):
+					for row, line in enumerate(fd, start=1):
 						origline = line
 						if self.RE_WHITELINE.match(line):
 							continue
@@ -189,8 +189,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							found = match.group(0)
 							if self.RE_WHITEWORD.match(found):
 								continue
-							self.debug('%s:%d: found="%s"  origline="%s"' % (fn, lnr, found, origline))
-							self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, filename=fn, line=lnr)
+							self.debug('%s:%d: found="%s"  origline="%s"' % (fn, row, found, origline))
+							self.addmsg('0015-2', 'univention is incorrectly spelled: %s' % found, fn, row)
 			except UnicodeDecodeError:
 				# Silently skip binary files
 				pass

@@ -74,17 +74,17 @@ class UPCMessage(object):
 	:param id: Message identifier.
 	:param msg: Message test.
 	:param filename: Associated file name.
-	:param line: Associated line number.
-	:param pos: Associated column number.
+	:param row: Associated line number.
+	:param col: Associated column number.
 	"""
 
-	def __init__(self, id_, msg=None, filename=None, line=None, pos=None):
+	def __init__(self, id_, msg, filename=None, row=None, col=None):
 		# type: (str, str, str, int, int) -> None
 		self.id = id_
 		self.msg = msg
 		self.filename = filename
-		self.line = line
-		self.pos = pos
+		self.row = row
+		self.col = col
 
 		if self.filename is not None and self.filename.startswith('./'):
 			self.filename = self.filename[2:]
@@ -93,10 +93,10 @@ class UPCMessage(object):
 		# type: () -> str
 		if self.filename:
 			s = '%s' % self.filename
-			if self.line is not None:
-				s += ':%s' % self.line
-				if self.pos is not None:
-					s += ':%s' % self.pos
+			if self.row is not None:
+				s += ':%s' % self.row
+				if self.col is not None:
+					s += ':%s' % self.col
 			return '%s: %s: %s' % (self.id, s, self.msg)
 		return '%s: %s' % (self.id, self.msg)
 
@@ -114,7 +114,7 @@ class UPCMessage(object):
 
 		:returns: test case.
 		"""
-		tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.line)
+		tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.row)
 		return tc
 
 
@@ -129,7 +129,7 @@ class UniventionPackageCheckBase(object):
 		self.msg = []  # type: List[UPCMessage]
 		self.debuglevel = 0  # type: int
 
-	def addmsg(self, msgid, msg=None, filename=None, line=None, pos=None):
+	def addmsg(self, msgid, msg, filename=None, row=None, col=None):
 		# type: (str, str, str, int, int) -> None
 		"""
 		Add :py:class:`UPCMessage` message.
@@ -137,10 +137,10 @@ class UniventionPackageCheckBase(object):
 		:param msgid: Message identifier.
 		:param msg: Message text.
 		:param filename: Associated file name.
-		:param line: Associated line number.
-		:param pos: Associated column number.
+		:param row: Associated line number.
+		:param col: Associated column number.
 		"""
-		message = UPCMessage(msgid, msg=msg, filename=filename, line=line, pos=pos)
+		message = UPCMessage(msgid, msg, filename, row, col)
 		self.msg.append(message)
 
 	def getMsgIds(self):  # pylint: disable-msg=R0201
@@ -422,7 +422,7 @@ class UPCFileTester(object):
 		for t in self.tests:
 			t.cnt = 0
 
-		for linenum, line in enumerate(self.lines):
+		for row, line in enumerate(self.lines):
 			for t in self.tests:
 				match = t.regex.search(line)
 				if match:
@@ -430,7 +430,7 @@ class UPCFileTester(object):
 					if t.cntmax is not None and t.cnt > t.cntmax:
 						# a maximum counter has been defined and maximum has been exceeded
 						start, end = match.span()
-						startline, startpos = self._getpos(linenum, start)
+						startline, startpos = self._getpos(row, start)
 						msg = '%s\n\t%s\n\t%s%s' % (
 							t.msg,
 							line,
