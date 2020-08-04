@@ -302,7 +302,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except DuplicateSectionError as ex:
 			self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
 		except MissingSectionHeaderError as ex:
-			self.addmsg('0004-61', 'Invalid entry', ex.filename, ex.lineno)
+			self.addmsg('0004-61', 'Invalid entry', fn, ex.lineno)
 		except DuplicateOptionError:
 			self.addmsg('0004-61', 'Invalid entry', fn)
 		except ParsingError:
