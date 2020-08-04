@@ -31,6 +31,7 @@ import re
 import subprocess
 
 import univention.ucslint.base as uub
+from univention.ucslint.common import RE_HASHBANG_SHELL
 
 RE_BASHISM = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
 RE_LOCAL = re.compile(
@@ -47,7 +48,6 @@ RE_LOCAL = re.compile(
 	''',
 	re.VERBOSE
 )
-RE_HASH_BANG = re.compile(r'^#![ \t]*/bin/(?:d?a)?sh')
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -67,7 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in uub.FilteredDirWalkGenerator(
 			path,
 			ignore_suffixes=['.po'],
-			reHashBang=RE_HASH_BANG
+			reHashBang=RE_HASHBANG_SHELL
 		):
 			self.debug('Testing file %s' % fn)
 			try:

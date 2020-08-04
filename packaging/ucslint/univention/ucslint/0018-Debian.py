@@ -296,7 +296,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
 			yield (fn, join(dst, basename(fn)))
 
-	RE_HASHBANG = re.compile(r'^#!\s*/bin/(?:[bd]?a)?sh\b')
 	RE_TEST = re.compile(
 		r'''
 		(?:(?P<test>\[{1,2}) | \b test)

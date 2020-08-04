@@ -1,0 +1,10 @@
+W:0013-4: make-certificates.sh:233: unquoted local variable: local OPWD=`pwd`;
+W:0013-4: make-certificates.sh:27: unquoted local variable: local outfile=$1;
+W:0013-4: make-certificates.sh:28: unquoted local variable: local password=$2;
+W:0013-4: make-certificates.sh:293: unquoted local variable: local OPWD=`pwd`;
+W:0013-4: make-certificates.sh:29: unquoted local variable: local days=$3
+W:0013-4: make-certificates.sh:301: unquoted local variable: local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`;
+W:0013-4: make-certificates.sh:30: unquoted local variable: local name=$4
+W:0013-4: make-certificates.sh:325: unquoted local variable: local OPWD=`pwd`;
+W:0013-4: make-certificates.sh:333: unquoted local variable: local NUM=`list_cert_names | grep "$1" | sed -e 's/^\([0-9A-Fa-f]*\).*/\1/1'`;
+W:0013-4: make-certificates.sh:353: unquoted local variable: local OPWD=`pwd`

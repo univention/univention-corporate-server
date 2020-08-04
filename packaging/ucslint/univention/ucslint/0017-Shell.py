@@ -31,8 +31,7 @@
 import re
 
 import univention.ucslint.base as uub
-
-RE_HASHBANG = re.compile(r'#!\s*/bin/(?:ba|da|z|c)?sh')
+from univention.ucslint.common import RE_HASHBANG_SHELL
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -98,7 +97,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		# search shell scripts and execute test
 		#
-		for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG):
+		for fn in uub.FilteredDirWalkGenerator(path, suffixes=['.sh'], reHashBang=RE_HASHBANG_SHELL):
 			try:
 				self.tester.open(fn)
 			except EnvironmentError:
