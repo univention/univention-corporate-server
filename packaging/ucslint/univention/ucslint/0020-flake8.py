@@ -396,7 +396,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			with open(conffile, 'r') as fd:
 				text = fd.read()
 
-			for i, match in enumerate(EXECUTE_TOKEN.findall(text)):
+			for match in EXECUTE_TOKEN.findall(text):
 				leading_lines = len(text[:text.index(match)].splitlines())
 				match = match.rstrip() + '\n'  # prevent "blank line at end of file" and "blank line contains whitespace" false positives
 				for error in self.flake8(python, ['-'], self.DEFAULT_IGNORE, UCR_HEADER + match):
