@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-101) unstable; urgency=medium
+
+  * Bug #51729: rename umc/max/file_descriptors to umc/http/max-open-file-descriptors
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 04 Aug 2020 12:28:11 +0200
+
 univention-management-console (11.0.4-100) unstable; urgency=medium
 
   * Bug #51753: rename portal/showOutdatedBrowserWarning to snake-case

@@ -1609,7 +1609,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		_thread_http.deamon = True
 		_thread_http.start()
 		try:
-			fd_limit = get_int('umc/max/file_descriptors', 65535)
+			fd_limit = get_int('umc/http/max-open-file-descriptors', 65535)
 			resource.setrlimit(resource.RLIMIT_NOFILE, (fd_limit, fd_limit))
 		except (ValueError, resource.error) as exc:
 			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))

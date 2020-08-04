@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-## desc: Check if ucr variable umc/max/file_descriptors works
+## desc: Check if ucr variable umc/http/max-open-file-descriptors works
 ## packages:
 ##  - univention-management-console-module-udm
 ## roles-not:
@@ -41,13 +41,13 @@ class UMCTester:
 		self.browser = self.selenium.driver
 
 	def test_umc(self, ucr, udm, max_fd):
-		handler_set(['umc/max/file_descriptors=%s' % max_fd])
+		handler_set(['umc/http/max-open-file-descriptors=%s' % max_fd])
 		self.systemd_restart("univention-management-console-web-server")
 		time.sleep(3)
 		try:
 			retval, msg = self.test_umc_logon(udm, max_fd)
 		finally:
-			handler_unset(['umc/max/file_descriptors'])
+			handler_unset(['umc/http/max-open-file-descriptors'])
 			self.systemd_restart("univention-management-console-web-server")
 		return retval, msg
 

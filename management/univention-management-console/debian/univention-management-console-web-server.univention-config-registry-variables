@@ -64,9 +64,9 @@ Description[en]=Defines the redirection path after a successful logout from UMC.
 Type=str
 Categories=management-umc
 
-[umc/max/file_descriptors]
-Description[de]=Definiert die maximale Anzahl an Dateideskriptoren im UMC-Web-Server (Standard: 65535).
-Description[en]=Defines the maximum number of file descriptors for the UMC-Webserver (default: 65535).
+[umc/http/max-open-file-descriptors]
+Description[de]=Definiert die maximale Anzahl an offenen Dateideskriptoren im UMC-Web-Server (Standard: 65535).
+Description[en]=Defines the maximum number of open file descriptors for the UMC-Webserver (default: 65535).
 Type=int
 Categories=management-umc
 
