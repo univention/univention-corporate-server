@@ -109,6 +109,9 @@
 				<listitem><simpara>
 					The container <uri>cn=admin-settings,cn=users,cn=policies</uri> is no longer created (<u:bug>47949</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The <package>ppolicy</package> default configuration now allows users to change their own password (<u:bug>51676</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
