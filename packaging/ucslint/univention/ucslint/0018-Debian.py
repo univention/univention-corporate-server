@@ -87,7 +87,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg(
 							'0018-1',
 							'wrong script name: %r' % (line.strip(),),
-							script_path, row)
+							script_path, row, line=line)
 
 			for row, line in enumerate(content.splitlines(), start=1):
 				if line.startswith('#'):
@@ -102,7 +102,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
-							script_path, row)
+							script_path, row, line=line)
 
 			for row, col, match in uub.line_regexp(content, self.RE_CASE):
 				for cases in match.group('cases').split(';;'):
@@ -113,7 +113,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
-							script_path, row, col)
+							script_path, row, col, line=line)
 
 	@classmethod
 	def parse_test(cls, tokens):

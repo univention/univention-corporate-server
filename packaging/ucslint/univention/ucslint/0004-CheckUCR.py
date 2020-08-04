@@ -275,12 +275,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					try:
 						key, val = line.split(': ', 1)
 					except ValueError:
-						self.addmsg('0004-28', 'file contains line without ":"', fn, row)
+						self.addmsg('0004-28', 'file contains line without ":"', fn, row, line=line)
 						continue
 
 					values = entry.setdefault(key, [])
 					if val in values:
-						self.addmsg('0004-60', 'Duplicate entry for %s: %s' % (key, val), fn, row)
+						self.addmsg('0004-60', 'Duplicate entry for %s: %s' % (key, val), fn, row, line=line)
 
 					values.append(val)
 

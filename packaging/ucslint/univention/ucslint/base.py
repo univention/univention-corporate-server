@@ -30,7 +30,7 @@
 
 import os
 import re
-from typing import Dict, Iterable, Iterator, List, Match, Optional, Pattern, Tuple  # noqa F401
+from typing import Callable, Dict, Iterable, Iterator, List, Match, Optional, Pattern, Tuple  # noqa F401
 
 try:
 	from junit_xml import TestCase  # type: ignore
@@ -66,6 +66,36 @@ RESULT_INT2STR = {
 	RESULT_INFO: 'I',
 	RESULT_STYLE: 'S',
 }  # type: Dict[int, str]
+
+RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
+RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
+
+
+def noqa(line: str) -> Callable[[str], bool]:
+	"""
+	Check for lines to be ignored by ` ucslint: 0000-0`.
+
+	>>> noqa('')('0000-0')
+	False
+	>>> noqa('# ucslint')('0000-0')
+	True
+	>>> noqa('# ucslint: 0000-0')('0000-0')
+	True
+	>>> noqa('# ucslint: 0000-1')('0000-0')
+	False
+	>>> noqa('# ucslint: 0000-0, 0000-1')('0000-0')
+	True
+	"""
+	match = RE_IGNORE.search(line)
+	if not match:
+		return lambda issue: False
+
+	ignore = match.group(1)
+	if not ignore:
+		return lambda issue: True
+
+	issues = set(RE_MSGID.findall(ignore))
+	return lambda issue: issue in issues
 
 
 def line_regexp(text: str, regexp: Pattern) -> Iterator[Tuple[int, int, Match]]:
@@ -154,8 +184,8 @@ class UniventionPackageCheckBase(object):
 		self.msg = []  # type: List[UPCMessage]
 		self.debuglevel = 0  # type: int
 
-	def addmsg(self, msgid, msg, filename=None, row=None, col=None):
-		# type: (str, str, str, int, int) -> None
+	def addmsg(self, msgid, msg, filename=None, row=None, col=None, line=''):
+		# type: (str, str, str, int, int, str) -> None
 		"""
 		Add :py:class:`UPCMessage` message.
 
@@ -164,7 +194,10 @@ class UniventionPackageCheckBase(object):
 		:param filename: Associated file name.
 		:param row: Associated line number.
 		:param col: Associated column number.
+		:param line: The line content itself (used for per-line ignores).
 		"""
+		if line and noqa(line)(msgid):
+			return
 		message = UPCMessage(msgid, msg, filename, row, col)
 		self.msg.append(message)
 
@@ -448,21 +481,29 @@ class UPCFileTester(object):
 			t.cnt = 0
 
 		for row, line in enumerate(self.lines):
+			ignore = noqa(line)
 			for t in self.tests:
+				if ignore(t.msgid):
+					continue
+
 				match = t.regex.search(line)
-				if match:
-					t.cnt += 1
-					if t.cntmax is not None and t.cnt > t.cntmax:
-						# a maximum counter has been defined and maximum has been exceeded
-						start, end = match.span()
-						startline, startpos = self._getpos(row, start)
-						msg = '%s\n\t%s\n\t%s%s' % (
-							t.msg,
-							line,
-							' ' * len(line[:start].expandtabs()),
-							'^' * len(line[start:end].expandtabs()),
-						)
-						msglist.append(UPCMessage(t.msgid, msg, self.filename, startline, startpos))
+				if not match:
+					continue
+
+				t.cnt += 1
+				if t.cntmax is None or t.cnt <= t.cntmax:
+					continue
+
+				# a maximum counter has been defined and maximum has been exceeded
+				start, end = match.span()
+				startline, startpos = self._getpos(row, start)
+				msg = '%s\n\t%s\n\t%s%s' % (
+					t.msg,
+					line.expandtabs(),
+					' ' * len(line[:start].expandtabs()),
+					'^' * len(line[start:end].expandtabs()),
+				)
+				msglist.append(UPCMessage(t.msgid, msg, self.filename, startline, startpos))
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:
@@ -645,3 +686,8 @@ class FilteredDirWalkGenerator(object):
 
 				# return complete filename
 				yield fn
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
