@@ -241,6 +241,14 @@ slapadd -l ldif
 	  search.
 	</para>
   </section>
+  <section id="umc:open_file:limit">
+	<title>Adjusting the limit on open file descriptors</title>
+	<para>
+	  The &ucsUCRV; <envar>umc/http/max-open-file-descriptors</envar> is used to impose an upper limit
+	  on open file descriptors of the <package>univention-management-console-web-server</package>.
+	  The default is 65535.
+	</para>
+  </section>
 </chapter>
 
 
