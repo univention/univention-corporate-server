@@ -355,7 +355,7 @@ def handler_search(args, opts=dict()):
 	search_values |= search_all
 	search_keys |= search_all
 
-	if not args:
+	if args:
 		try:
 			search = re.compile('|'.join(('(?:%s)' % (_,) for _ in args))).search
 		except re.error as ex:
