@@ -13,5 +13,5 @@ E:0008-1: src/irgendwas.py:23: substitutes before translation: _('foo %s bar'
 			%
 			x)
 E:0008-1: src/irgendwas.py:9: substitutes before translation: _('Aber %s knallts' % x)
-E:0008-3: src/de.po:59: contains "fuzzy"
-E:0008-3: src/de.po:80: contains "fuzzy"
+E:0008-3: src/de.po:59:1: contains "fuzzy"
+E:0008-3: src/de.po:80:1: contains "fuzzy"

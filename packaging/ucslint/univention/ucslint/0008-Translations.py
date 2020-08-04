@@ -38,7 +38,7 @@ from univention.ucslint.python import _or, python_files
 # 2) check if all translation strings are translated in de.po file
 
 
-RE_FUZZY = re.compile(r'\n#.*?fuzzy')
+RE_FUZZY = re.compile(r'^\#,[ ] .*? \b fuzzy \b', re.MULTILINE | re.VERBOSE)
 RE_EMPTY = re.compile(r'msgstr ""\n\n', re.DOTALL)
 RE_CHARSET = re.compile(r'"Content-Type: text/plain; charset=(.*?)\\n"', re.DOTALL)
 
@@ -108,9 +108,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				(RE_EMPTY, '0008-4', 'contains empty msgstr')
 			]:
 				for match in regex.finditer(content):
-					# match.start() + 1 ==> avoid wrong line numbers because RE_FUZZY starts with \n
-					line = content.count('\n', 0, match.start() + 1) + 1
-					self.addmsg(errid, errtxt, fn, line)
+					row = content.count('\n', 0, match.start()) + 1
+					self.addmsg(errid, errtxt, fn, row, 1)
 
 	def check_names(self, files: Iterable[str]) -> None:
 		tester = uub.UPCFileTester()
