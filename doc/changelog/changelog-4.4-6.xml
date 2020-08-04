@@ -55,6 +55,12 @@
 
 		<section id="changelog:domain:openLDAP">
 			<title>OpenLDAP</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The <package>ppolicy</package> default configuration now allows users to change their own password (<u:bug>51676</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+
 			<section id="changelog:domain:openLDAP:replication">
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
