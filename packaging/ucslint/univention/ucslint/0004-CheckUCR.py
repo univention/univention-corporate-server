@@ -785,7 +785,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except EnvironmentError:
 			# self.addmsg('0004-27', 'cannot open/read file', fn)
 			return
-		except UnicodeDecodeError as ex:
+		except UnicodeDecodeError:
 			# self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
 			return
 
