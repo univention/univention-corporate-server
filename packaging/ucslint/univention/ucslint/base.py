@@ -302,11 +302,11 @@ class RegExTest(object):
 	"""
 	Regular expression test.
 
-	:param regex: Compiled regular expression
+	:param regex: Compiled regular expression.
 	:param msgid: Message identifier.
 	:param msg: Message text.
 	:param cntmin: Required minimum number of matches.
-	:param cntmax: Required maximum number of matches.
+	:param cntmax: Allowed maximum number of matches.
 	"""
 
 	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
@@ -326,17 +326,20 @@ class UPCFileTester(object):
 
 	By default only the first 100k of the file will be read.
 
-	>>>	import re
-	>>>	x = UPCFileTester()
-	>>>	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs gefunden.', cntmax=0)
-	>>>	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs gefunden.', cntmin=1)
-	>>>	x.open('/etc/fstab')
-	>>>	msglist = x.runTests()
-	>>>	for msg in msglist:
-	>>>		print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
-	5432-1: /etc/fstab:4:29: Habe ein extfs gefunden.
-	5432-1: /etc/fstab:7:19: Habe ein extfs gefunden.
-	1234-5: /etc/fstab: Habe kein squashfs gefunden.
+	Example::
+
+	    import re
+	    x = UPCFileTester()
+	    x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs gefunden.', cntmax=0)
+	    x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs gefunden.', cntmin=1)
+	    x.open('/etc/fstab')
+	    msglist = x.runTests()
+	    for msg in msglist:
+	        print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
+
+	    5432-1: /etc/fstab:4:29: Habe ein extfs gefunden.
+	    5432-1: /etc/fstab:7:19: Habe ein extfs gefunden.
+	    1234-5: /etc/fstab: Habe kein squashfs gefunden.
 	"""
 
 	def __init__(self, maxsize=100 * 1024):
@@ -393,11 +396,11 @@ class UPCFileTester(object):
 		"""
 		add a new test
 
-		:param regex: regular expression.
-		:param msgid: msgid for UPCMessage
-		:param msg: message for UPCMessage
-		:param cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
-		:param cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
+		:param regex: Compiled regular expression pattern.
+		:param msgid: msgid for :py:class:`UPCMessage`.
+		:param msg: message for :py:class:`UPCMessage`.
+		:param cntmin: 'regex' has to match at least 'cntmin' times otherwise a :py:class:`UPCMessage` will be added.
+		:param cntmax: 'regex' has to match at most 'cntmax' times otherwise a :py:class:`UPCMessage` will be added.
 
 		:raises ValueError: if neither `cntmin` nor `cntmax` has been set
 		"""
@@ -410,7 +413,7 @@ class UPCFileTester(object):
 		"""
 		Runs all given tests on loaded file.
 
-		:returns: a list of UPCMessage objects
+		:returns: a list of :py:class:`UPCMessage` objects
 		"""
 		if not self.filename:
 			raise Exception('no file has been loaded')
@@ -418,14 +421,11 @@ class UPCFileTester(object):
 		msglist = []
 		for t in self.tests:
 			t.cnt = 0
-		# iterate over all lines
+
 		for linenum, line in enumerate(self.lines):
-			# iterate over all tests
 			for t in self.tests:
-				# test regex with current line
 				match = t.regex.search(line)
 				if match:
-					# found a match ==> increase counter
 					t.cnt += 1
 					if t.cntmax is not None and t.cnt > t.cntmax:
 						# a maximum counter has been defined and maximum has been exceeded
@@ -547,9 +547,10 @@ class FilteredDirWalkGenerator(object):
 		:param reHashBang: if defined, additionally text files are returned whose first characters match specified regular expression.
 		:param readSize: number of bytes that will be read for e.g. reHashBang
 
-		example:
-		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
-		>>>   print(fn)
+		example::
+
+		     for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
+		       print(fn)
 		"""
 		self.path = path
 		self.ignore_dirs = set(ignore_dirs or ()) | self.IGNORE_DIRS

@@ -1,6 +1,6 @@
-= Usage =
+# Usage
 
-== Docker image ==
+## Docker image
 
 A docker image is build by GitLab-CI for every UCS release branch:
 
@@ -8,7 +8,7 @@ A docker image is build by GitLab-CI for every UCS release branch:
 docker run -v $PWD:/work -w /work registry.knut.univention.de/ucslint:444
 ```
 
-== Locally ==
+## Locally
 
 You can run `ucslint` locally if the required Debian packages `python3-apt`, `python3-debian`, `python3-flake8` and `python-flake8` are installed:
 
@@ -16,9 +16,9 @@ You can run `ucslint` locally if the required Debian packages `python3-apt`, `py
 packaging/ucslint/ucslint $PWD
 ```
 
-== Virtualenv ==
+## Virtualenv
 
-If not you can setup a `virtualenv` environemtn to install the required Python packages:
+If not you can setup a `virtualenv` environment to install the required Python packages:
 
 ```
 virtualenv -p /usr/bin/python3 usr
@@ -27,3 +27,25 @@ apt download python3-apt
 dpkg -x python3-apt_*.deb .
 python3 setup.py install
 ```
+
+# Override
+
+You can create a per-package `debian/ucslint.overrides` file to disable certain messages:
+
+	# Disable module for all files:
+	0000-0
+	# Disable module for specific file:
+	0000-0: filename
+	# Disable module for specific line in file:
+	0000-0: filename: 1
+
+The blanks are optional.
+
+# Advanced
+
+You can run `ucslint` over multiple packages and generate a statistic:
+
+	find -maxdepth 3 -name doc -prune -o -name debian -printf '%h\0' |
+		xargs -0 ./packaging/ucslint/ucslint -x 20 -i 0007-5,0007-6 |
+		./packaging/ucslint/ucslint-sort-output.py -g -s |
+		tee ucslint.txt
