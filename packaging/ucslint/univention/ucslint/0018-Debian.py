@@ -198,7 +198,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
-			py_install = False
 			# ~/doc/2018-04-11-ApiDoc/pymerge
 			for lnr, line in self.lines(fp):
 				dst = ''
@@ -347,7 +346,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		   \d+\.\d+
 		   (?:- (?:\d+\.\d+)? )?
 		)*
-		$''', re.VERBOSE)
+		$''', re.VERBOSE)  # noqa E101
 	# /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
 	RE_NAMESPACE = re.compile(
 		r'''^
@@ -359,7 +358,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		(?:usr/lib/pymodules/python[0-9.]+/
 		  |usr/lib/python[0-9.]+/
 		  |usr/share/pyshared/
-		)''', re.VERBOSE)
+		)''', re.VERBOSE)  # noqa E101
 
 
 class Dirs(set):
