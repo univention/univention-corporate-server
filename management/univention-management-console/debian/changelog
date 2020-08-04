@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-100) unstable; urgency=medium
+
+  * Bug #51753: rename portal/showOutdatedBrowserWarning to snake-case
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 Aug 2020 12:04:32 +0200
+
 univention-management-console (11.0.4-99) unstable; urgency=medium
 
   * Bug #51729: add ucr variable to modify the limit of file descriptors 

@@ -1,3 +1,9 @@
+univention-portal (3.0.2-8) unstable; urgency=medium
+
+  * Bug #51753: add missing UCR category and camelCase -> snake-case
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 04 Aug 2020 12:03:51 +0200
+
 univention-portal (3.0.2-7) unstable; urgency=medium
 
   * Bug #51753: add portal/showOutdatedBrowserWarning ucr var
