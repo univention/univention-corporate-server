@@ -296,7 +296,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			'0020-D300': [uub.RESULT_STYLE, 'Use """triple double quotes"""'],
 			'0020-D301': [uub.RESULT_STYLE, 'Use r""" if any backslashes in a docstring'],
 			'0020-D400': [uub.RESULT_STYLE, 'First line should end with a period'],
-			'0020-D401': [uub.RESULT_STYLE, 'First line should be in imperative mood'],
 			'0020-D401': [uub.RESULT_STYLE, 'First line should be in imperative mood; try rephrasing'],
 			'0020-D402': [uub.RESULT_STYLE, 'First line should not be the function\'s "signature"'],
 			'0020-D403': [uub.RESULT_STYLE, 'First word of the first line should be properly capitalized'],
