@@ -317,7 +317,6 @@ class RegExTest(object):
 		self.cntmin = cntmin
 		self.cntmax = cntmax
 		self.cnt = 0
-		self.formatmsg = any(val in msg for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s'])
 
 
 class UPCFileTester(object):
@@ -329,15 +328,15 @@ class UPCFileTester(object):
 
 	>>>	import re
 	>>>	x = UPCFileTester()
+	>>>	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs gefunden.', cntmax=0)
+	>>>	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs gefunden.', cntmin=1)
 	>>>	x.open('/etc/fstab')
-	>>>	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	>>>	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
 	>>>	msglist = x.runTests()
 	>>>	for msg in msglist:
 	>>>		print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
-	5432-1: /etc/fstab:4:29: Habe ein extfs in Zeile 4 und Position 29 in Datei fstab gefunden.
-	5432-1: /etc/fstab:7:19: Habe ein extfs in Zeile 7 und Position 19 in Datei fstab gefunden.
-	1234-5: /etc/fstab: Habe kein squashfs in Datei fstab gefunden.
+	5432-1: /etc/fstab:4:29: Habe ein extfs gefunden.
+	5432-1: /etc/fstab:7:19: Habe ein extfs gefunden.
+	1234-5: /etc/fstab: Habe kein squashfs gefunden.
 	"""
 
 	def __init__(self, maxsize=100 * 1024):
@@ -349,7 +348,6 @@ class UPCFileTester(object):
 		"""
 		self.maxsize = maxsize
 		self.filename = None  # type: Optional[str]
-		self.basename = None  # type: Optional[str]
 		self.raw = ''  # type: str
 		self.lines = []  # type: List[str]
 		self.tests = []  # type: List[RegExTest]
@@ -362,7 +360,6 @@ class UPCFileTester(object):
 		:param filename: File to process.
 		"""
 		self.filename = filename
-		self.basename = os.path.basename(self.filename)
 		# hold raw file in memory (self.raw) and a unwrapped version (self.lines)
 		# the raw version is required to calculate the correct position.
 		# tests will be done with unwrapped version.
@@ -399,8 +396,6 @@ class UPCFileTester(object):
 		:param regex: regular expression.
 		:param msgid: msgid for UPCMessage
 		:param msg: message for UPCMessage
-			if msg contains one or more of the keywords '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s' or '%(basename)s'
-			they will get replaced by their corresponding value.
 		:param cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
 		:param cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
 
@@ -435,19 +430,12 @@ class UPCFileTester(object):
 					if t.cntmax is not None and t.cnt > t.cntmax:
 						# a maximum counter has been defined and maximum has been exceeded
 						startline, startpos = self._getpos(linenum, match.start(0))
-						endline, endpos = self._getpos(linenum, match.end(0))
-						msg = t.msg
-						if t.formatmsg:
-							msg = msg % {'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename}
-						msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos))
+						msglist.append(UPCMessage(t.msgid, t.msg, self.filename, startline, startpos))
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:
 			if t.cntmin is not None and t.cnt < t.cntmin:
-				msg = t.msg
-				if t.formatmsg:
-					msg = msg % {'basename': self.basename, 'filename': self.filename}
-				msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename))
+				msglist.append(UPCMessage(t.msgid, t.msg, self.filename))
 
 		return msglist
 
@@ -624,24 +612,3 @@ class FilteredDirWalkGenerator(object):
 
 				# return complete filename
 				yield fn
-
-
-def _test():
-	"""Run simple test."""
-	import re
-
-	x = UPCFileTester()
-	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
-	x.open('/etc/fstab')
-	msglist = x.runTests()
-	for msg in msglist:
-		print(str(msg))
-	x.open('/etc/passwd')
-	msglist = x.runTests()
-	for msg in msglist:
-		print(str(msg))
-
-
-if __name__ == '__main__':
-	_test()
