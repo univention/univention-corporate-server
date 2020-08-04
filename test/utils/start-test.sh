@@ -216,8 +216,11 @@ exe='ucs-ec2-create'
 
 # start the test
 if "$docker"; then
-	# get the image
-	docker pull $image >/dev/null
+	# create new image with host user/group
+	docker build --pull  -t $USER/$image 1>/dev/null -<<EOF
+FROM $image
+RUN addgroup --gid $(id -g) "dockergroup" && adduser --system --uid $(id -u) --gid $(id -g) $USER
+EOF
 	# create env file
 	for env_var in $env_vars; do
 		echo $env_var=${!env_var} >> $docker_env_file
@@ -229,14 +232,13 @@ if "$docker"; then
 	# TODO add personal ssh key for kvm server access via env
 	# docker command
 	declare -a cmd=("docker" "run")
-	cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/ec2:ro "-v" ~/.ssh/id_rsa:/.ssh/id_rsa:ro)
+	cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/home/$USER/ec2:ro "-v" ~/.ssh/id_rsa:/home/$USER/.ssh/id_rsa:ro)
 	cmd+=("--dns" "192.168.0.3" "--dns-search=knut.univention.de")
 	cmd+=(-w /test)
-	# TODO this does not work, scp in fetch-results fails with "unknown user 109"
 	cmd+=(-u "$(id -u)")
 	cmd+=(--rm)
 	cmd+=(--env-file "$docker_env_file")
-	cmd+=($image)
+	cmd+=($USER/$image)
 	cmd+=($exe -c $CFG)
 else
 	declare -a cmd=("$exe" -c "$CFG")
