@@ -22,7 +22,7 @@ from univention.testing import selenium
 
 from univention.admin import localization
 
-from univention.config_registry import handler_set
+from univention.config_registry import handler_set, handler_unset
 import univention.testing.udm as udm_test
 
 translator = localization.translation("ucs-test-selenium")
@@ -44,7 +44,12 @@ class UMCTester:
 		handler_set(['umc/max/file_descriptors=%s' % max_fd])
 		self.systemd_restart("univention-management-console-web-server")
 		time.sleep(3)
-		return self.test_umc_logon(udm, max_fd)
+		try:
+			retval, msg = self.test_umc_logon(udm, max_fd)
+		finally:
+			handler_unset(['umc/max/file_descriptors'])
+			self.systemd_restart("univention-management-console-web-server")
+		return retval, msg
 
 	def count_file_descriptors(self, umc_pid):
 		return int(subprocess.check_output("ls -l /proc/" + str(umc_pid) + "/fd | wc -l", shell=True))

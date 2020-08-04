@@ -1,4 +1,4 @@
-ucs-test (9.0.4-27) unstable; urgency=medium
+ucs-test (9.0.4-28) unstable; urgency=medium
 
   * Bug #51729: Test ucr variable umc/max/file_descriptors
 
