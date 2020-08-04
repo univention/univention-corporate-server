@@ -5,6 +5,7 @@ ucslint (8.0.0-19) unstable; urgency=low
   * Bug #33737: Check for well-known SIDs.
   * Bug #28284: Allow python3
   * Bug #33736: Allow line specific overrides
+  * Bug #51611: Check for old upgrade code
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 24 Jun 2020 11:27:38 +0200
 

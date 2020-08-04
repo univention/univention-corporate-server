@@ -1,0 +1,5 @@
+ucslint (3.0.0-1) unstable; urgency=low
+
+  * Bug #51611: Check for old upgrade code
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 04 Aug 2020 17:35:04 +0200

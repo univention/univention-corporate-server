@@ -30,12 +30,16 @@
 
 import re
 from glob import glob
+from itertools import cycle
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
 from shlex import split
 from typing import Callable, Dict, Iterator, List, Set, Tuple  # noqa F401
 
+from debian.changelog import Changelog, ChangelogParseError  # Version
+
 import univention.ucslint.base as uub
+from univention.ucslint.common import RE_DEBIAN_PACKAGE_VERSION
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -56,6 +60,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0018-2': (uub.RESULT_STYLE, 'Unneeded entry in debian/dirs; the directory is implicitly created by another debhelper'),
 			'0018-3': (uub.RESULT_WARN, 'Invalid action in Debian maintainer script'),
 			'0018-4': (uub.RESULT_WARN, 'Use debian/*.pyinstall to install Python modules'),
+			'0018-5': (uub.RESULT_INFO, 'Maintainer script contains old upgrade code'),
 		}
 
 	def check(self, path):
@@ -63,9 +68,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.check_scripts(path)
 		self.check_dirs(path)
 
+	def get_debian_version(self, path: str) -> "Version":
+		try:
+			fn_changelog = join(path, 'debian', 'changelog')
+			with open(fn_changelog, 'r') as fd:
+				changelog = Changelog(fd)
+
+			return Version(changelog.version.full_version)
+		except (EnvironmentError, ChangelogParseError) as ex:
+			self.debug('Failed open %r: %s' % (fn_changelog, ex))
+			return Version('0')
+
 	def check_scripts(self, path):
 		# type: (str) -> None
 		debianpath = join(path, 'debian')
+		version = self.get_debian_version(path)
 		for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS):
 			package, suffix = self.split_pkg(script_path)
 
@@ -103,6 +120,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
 							script_path, row, line=line)
+
+				for match in self.RE_COMPARE_VERSIONS.finditer(line):
+					ver_a, op, ver_b = match.groups()
+					for arg in (ver_a, ver_b):
+						if self.RE_ARG2.match(arg):
+							continue
+						if not RE_DEBIAN_PACKAGE_VERSION.match(arg):
+							self.debug("%s:%d: Unknown argument %r" % (script_path, row, arg))
+							continue
+
+						ver = Version(arg)
+						self.debug("%s << %s?" % (ver, version))
+						if ver.numeric and version.numeric and ver.numeric[0] < version.numeric[0] - 1:
+							self.addmsg(
+								'0018-5',
+								'Maintainer script contains old upgrade code for %s << %s' % (ver, version),
+								script_path, row, match.start(0), line)
 
 			for row, col, match in uub.line_regexp(content, self.RE_CASE):
 				for cases in match.group('cases').split(';;'):
@@ -342,6 +376,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		  |usr/lib/python[0-9.]+/
 		  |usr/share/pyshared/
 		)''', re.VERBOSE)  # noqa E101
+	RE_COMPARE_VERSIONS = re.compile(
+		r'''
+		\b dpkg \s+ --compare-versions
+		\s+
+		( (?: '[^']*' | "[^"]*" | \S )+ )
+		\s+
+		([lg][et](?:-nl)?|eq|ne|<[<=]?|=|>[>=]?)
+		\s+
+		( (?: '[^']*' | "[^"]*" | \S )+ )
+		\s*(?: $ | ; | && | \|\| | \))
+		''', re.VERBOSE)  # noqa E101
+	RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 
 class Dirs(set):
@@ -378,6 +424,41 @@ class Dirs(set):
 		while path > '/':
 			set.add(self, path)
 			path = dirname(path)
+
+
+class Version(object):
+	"""
+	Version as a sqeunce of numeric and non-numeric parts.
+
+	>>> str(Version('1'))
+	'1'
+	>>> str(Version('first'))
+	'first'
+	>>> str(Version("1:2.34alpha~5-6.7"))
+	'1:2.34alpha~5-6.7'
+	"""
+
+	__slots__ = ('text', 'numeric')
+
+	RE_VERSION = re.compile(r'([0-9]+)')
+
+	def __init__(self, text: str) -> None:
+		parts = self.RE_VERSION.split(text)
+		self.text = parts[::2]
+		self.numeric = [int(number) for number in parts[1::2]]
+
+	def __iter__(self) -> Iterator:
+		try:
+			for next in cycle(iter(part).__next__ for part in (self.text, self.numeric)):  # type: ignore
+				yield next()
+		except StopIteration:
+			pass
+
+	def __str__(self) -> str:
+		return ''.join(str(part) for part in self)
+
+	def __repr__(self) -> str:
+		return '%s(%r)' % (self.__class__.__name__, self.__str__())
 
 
 if __name__ == '__main__':

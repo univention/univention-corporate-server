@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+if "$1" = configure && dpkg --compare-versions "$2" lt-nl 1
+then
+	echo "Upgrade"
+elif "$1" = configure && dpkg --compare-versions "$2" lt 2
+then
+	echo "Install or upgrade"
+fi
