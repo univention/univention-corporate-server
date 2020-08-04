@@ -104,24 +104,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
 							script_path, row)
 
-			row = 1
-			col = 1
-			pos = 0
-			for match in self.RE_CASE.finditer(content):
+			for row, col, match in uub.line_regexp(content, self.RE_CASE):
 				for cases in match.group('cases').split(';;'):
 					cases = cases.lstrip('\t\n\r (')
 					cases = cases.split(')', 1)[0]
 					actions = set(action for case in cases.split('|') for action in split(case)) & other_actions
 					if actions:
-						start, end = match.span()
-						while pos < start:
-							if match.string[pos] == "\n":
-								col = 1
-								row += 1
-							else:
-								col += 1
-							pos += 1
-
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),

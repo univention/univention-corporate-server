@@ -83,9 +83,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 
 			self.debug('testing %s' % fn)
-			for match in RE_TRANSLATION.finditer(content):
-				row = content.count('\n', 0, match.start()) + 1
-				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, row)
+			for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
+				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, row, col)
 
 	def check_po(self, po_files):
 		"""Check Portable Object files."""
@@ -107,9 +106,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				(RE_FUZZY, '0008-3', 'contains "fuzzy"'),
 				(RE_EMPTY, '0008-4', 'contains empty msgstr')
 			]:
-				for match in regex.finditer(content):
-					row = content.count('\n', 0, match.start()) + 1
-					self.addmsg(errid, errtxt, fn, row, 1)
+				for row, col, match in uub.line_regexp(content, regex):
+					self.addmsg(errid, errtxt, fn, row, col)
 
 	def check_names(self, files: Iterable[str]) -> None:
 		tester = uub.UPCFileTester()

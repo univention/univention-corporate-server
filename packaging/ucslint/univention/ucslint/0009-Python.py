@@ -108,23 +108,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				if tail:
 					self.addmsg('0009-9', 'hashbang contains more than one option', fn, 1)
 
-			row = 1
-			col = 1
-			pos = 0
-			for m in RE_LENIENT.finditer(tester.raw):
+			for row, col, m in uub.line_regexp(tester.raw, RE_LENIENT):
 				txt = m.group("str")
 				if not txt:
 					continue
 				if self.RE_STRING.match(txt):
 					continue
-				start, end = m.span()
-				while pos < start:
-					if tester.raw[pos] == "\n":
-						col = 1
-						row += 1
-					else:
-						col += 1
-					pos += 1
 
 				self.addmsg('0009-10', 'invalid Python string literal: %s' % (txt,), fn, row, col)
 

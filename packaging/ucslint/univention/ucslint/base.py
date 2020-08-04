@@ -29,7 +29,8 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from typing import Dict, Iterable, Iterator, List, Optional, Pattern, Tuple  # noqa F401
+import re
+from typing import Dict, Iterable, Iterator, List, Match, Optional, Pattern, Tuple  # noqa F401
 
 try:
 	from junit_xml import TestCase  # type: ignore
@@ -65,6 +66,30 @@ RESULT_INT2STR = {
 	RESULT_INFO: 'I',
 	RESULT_STYLE: 'S',
 }  # type: Dict[int, str]
+
+
+def line_regexp(text: str, regexp: Pattern) -> Iterator[Tuple[int, int, Match]]:
+	"""
+	Find all matches and return row and colum number.
+
+	:param text: The text to seach in.
+	:param regexp: Compiled regular excpression.
+	:returns: Iterator returning 3-tuples (row, col, match)
+	"""
+	row = 1
+	col = 1
+	pos = 0
+	for match in regexp.finditer(text):
+		start, end = match.span()
+		while pos < start:
+			if text[pos] == "\n":
+				col = 1
+				row += 1
+			else:
+				col += 1
+			pos += 1
+
+		yield (row, col, match)
 
 
 class UPCMessage(object):
