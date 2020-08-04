@@ -79,4 +79,4 @@ Variables: umc/self-service/passwordreset/frontend/enabled
 Variables: umc/self-service/protect-account/frontend/enabled
 Variables: umc/self-service/account-deregistration/enabled
 Variables: umc/self-service/.*/title/.*
-Variables: portal/showOutdatedBrowserWarning
+Variables: portal/show-outdated-browser-warning

@@ -1215,7 +1215,7 @@ define([
 
 		browserWarning: function() {
 			var deferred = new Deferred();
-			if (tools.isTrue(tools.status('portal/showOutdatedBrowserWarning')) && tools.browserIsOutdated()) {
+			if (tools.isTrue(tools.status('portal/show-outdated-browser-warning')) && tools.browserIsOutdated()) {
 				dialog.alert(tools.browserIsOutdatedMessage()).then().always(function() {
 					deferred.resolve();
 				});

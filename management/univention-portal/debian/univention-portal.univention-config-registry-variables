@@ -2,8 +2,11 @@
 Description[de]=Der Port, auf der der Univention Portal Server läuft.
 Description[en]=The port used by the Univention Portal server.
 Type=int
+Categories=portal
 
-[portal/showOutdatedBrowserWarning]
+[portal/show-outdated-browser-warning]
 Description[de]=Wenn aktiviert, wird eine Warnung angezeigt, falls die benutze Browserversion zu alt ist.
 Description[en]=If activated, a warning is displayed if the browser version used is too old.
-Type=int
+Type=str
+Categories=portal
+
