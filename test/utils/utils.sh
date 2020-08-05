@@ -823,6 +823,20 @@ install_apps_via_umc () {
 update_apps_via_umc () {
 	local username=${1:?missing username} password=${2:?missing password} rv=0 app
 	shift 2 || return $?
+	# check if any update is available - if not, fail the test
+	local update_available=false
+	for app in "$@"; do
+		if ! assert_app_is_installed_and_latest "${app}"; then
+			update_available=true
+			break
+		fi
+	done
+
+	if ! $update_available; then
+		echo "Apps should be updated: $@; but no app has any update available"
+		exit 1
+	fi
+
 	for app in "$@"; do
 		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u || rv=$?
 	done
