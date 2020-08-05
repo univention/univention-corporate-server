@@ -1,0 +1,12 @@
+#!/usr/bin/expect
+
+set timeout 5
+set user [lindex $argv 0]
+set password [lindex $argv 1]
+
+spawn login "$user"
+
+expect "Passwor"
+send "$password\r";
+
+expect eof

@@ -1,0 +1,19 @@
+#!/usr/bin/expect
+
+set timeout 20
+set user [lindex $argv 0]
+set password [lindex $argv 1]
+set newpassword [lindex $argv 2]
+
+spawn kpasswd "$user"
+
+expect "$user\@"
+send "$password\r";
+
+expect "New password"
+send "$newpassword\r"
+
+expect "Verify password"
+send "$newpassword\r"
+
+expect eof
