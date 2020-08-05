@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The message for outdated browsers has been adjusted.
 bug: [51753]
+erratum: 702
+announced: 2020-08-05
