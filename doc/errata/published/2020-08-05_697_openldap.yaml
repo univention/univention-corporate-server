@@ -9,3 +9,5 @@ desc: |
  * Running OpenLDAP with overlay `ppolicy` could crash `slapd` and lead to a
    denial of service.
 bug: [37915]
+erratum: 697
+announced: 2020-08-05
