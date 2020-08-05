@@ -10,3 +10,5 @@ desc: |-
    univention-virtual-machine-manager-node-common, which makes
    the KVM node reachable via network again.
 bug: [51739]
+erratum: 700
+announced: 2020-08-05
