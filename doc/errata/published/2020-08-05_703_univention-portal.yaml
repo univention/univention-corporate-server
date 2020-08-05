@@ -10,3 +10,5 @@ desc: |
    portal/show-outdated-browser-warning UCR variable that informs the user
    about the supported browsers, if the used browser is outdated.
 bug: [51753]
+erratum: 703
+announced: 2020-08-05
