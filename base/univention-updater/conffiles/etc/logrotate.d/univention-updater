@@ -3,31 +3,10 @@
 @!@
 import univention.lib.ucrLogrotate
 
-name = "updater"
-settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
-for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
-
-name = "actualise"
-settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
-for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
-
-name = "repository"
-settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
-for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
-
-name = "errata-updates"
-settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
-print "/var/log/univention/%s.log {" % name
-for setting in settings.keys():
-	print "\t%s" % settings[setting]
-print "}"
+for name in ("updater", "actualise", "repository", "errata-updates"):
+	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+	print("/var/log/univention/%s.log {" % name)
+	for value in settings.values():
+		print("\t%s" % value)
+	print("}")
 @!@
