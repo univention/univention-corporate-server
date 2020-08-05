@@ -9,3 +9,5 @@ desc: |
  * Add missing dependency on UCR variables for the
    login.{definition,translation}.json template files.
 bug: [51747]
+erratum: 699
+announced: 2020-08-05
