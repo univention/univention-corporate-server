@@ -620,6 +620,7 @@ fi
 								<sbr/>
 								<arg choice="opt">--packagename <replaceable>packagename</replaceable></arg>
 								<arg choice="opt">--packageversion <replaceable>packageversion</replaceable></arg>
+								<arg choice="opt">--name <replaceable>objectname</replaceable></arg>
 								<arg choice="opt">--ucsversionstart <replaceable>ucsversion</replaceable></arg>
 								<arg choice="opt">--ucsversionend <replaceable>ucsversion</replaceable></arg>
 						</cmdsynopsis></term>
@@ -671,6 +672,37 @@ fi
 								Each of these options expects a filename as an required argument.
 							</para>
 							<para>
+								It is possible to register different extensions to different UCS versions:
+							</para>
+							<variablelist>
+								<varlistentry>
+									<term><option>--name</option> <replaceable>name</replaceable></term>
+									<listitem>
+										<simpara>
+											The option can be used to supply an object name to be used to store the extension. If not set <filename><replaceable>filename</replaceable></filename> will be used.
+												If combined with <option>--udm_module</option> the name must include a forward slash.
+										</simpara>
+									</listitem>
+								</varlistentry>
+								<varlistentry>
+									<term><option>--ucsversionstart</option> <replaceable>ucsversion</replaceable></term>
+									<listitem>
+										<simpara>
+											The option can be used to supply the earliest version of UCS to which the <acronym>UDM</acronym> extension should be deployed.
+										</simpara>
+									</listitem>
+								</varlistentry>
+								<varlistentry>
+									<term><option>--ucsversionend</option> <replaceable>ucsversion</replaceable></term>
+									<listitem>
+										<simpara>
+											The option can be used to supply the last version of UCS to which the <acronym>UDM</acronym> extension should be deployed.
+											Together with <option>--ucsversionstart</option> and <option>--name</option>, it is possible to deploy different versions of a <acronym>UDM</acronym> extension.
+										</simpara>
+									</listitem>
+								</varlistentry>
+							</variablelist>
+							<para>
 								The following options can be given multiple times, but only after the option <option>--udm_module</option>:
 							</para>
 							<variablelist>
@@ -700,6 +732,11 @@ fi
 									</listitem>
 								</varlistentry>
 							</variablelist>
+							<note>
+								<para>
+									<acronym>UDM</acronym> extensions will only be deployed to UCS 5 if either <option>--ucsversionstart</option> or <option>--ucsversionend</option> are set.
+								</para>
+							</note>
 
 							<para>
 								Called from a joinscript, the function automatically determines some required parameters, like the app identifier plus Debian package name and version,
