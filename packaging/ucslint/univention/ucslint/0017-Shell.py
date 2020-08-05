@@ -36,7 +36,7 @@ from univention.ucslint.common import RE_HASHBANG_SHELL
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def __init__(self):
+	def __init__(self) -> None:
 		super(UniventionPackageCheck, self).__init__()
 		self.tester = uub.UPCFileTester()
 		self.tester.addTest(
@@ -76,7 +76,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			re.compile(r'\b echo \s+ (?:-[ne]+ \s+)* (")? \$\( [^<][^)]* \) \1 \s* (?:$|[|&]|\d*[<>])', re.VERBOSE),
 			'0017-10', "Useless use of `echo $(...)` for single argument", cntmax=0)
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0017-1': (uub.RESULT_WARN, 'script contains unquoted calls of eval "$(ucr shell)"'),
 			'0017-2': (uub.RESULT_ERROR, 'script contains unquoted arguments of tr'),
@@ -90,7 +90,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0017-10': (uub.RESULT_STYLE, "Useless use of `echo $(...)` for single argument"),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 

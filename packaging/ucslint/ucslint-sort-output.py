@@ -46,7 +46,7 @@ def main() -> None:
 			print('%-12s %d' % (group, count))
 
 
-def parse_content(content: IO) -> List[str]:
+def parse_content(content: IO[str]) -> List[str]:
 	eventlist = []  # type: List[str]
 
 	tmplines = []  # type: List[str]

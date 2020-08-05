@@ -47,7 +47,7 @@ RECENT_ENTRIES = 5
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0007-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0007-2': (uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'),
@@ -57,7 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0007-6': (uub.RESULT_WARN, 'old debian/changelog entries are not strict-monotonically increasing by version'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 

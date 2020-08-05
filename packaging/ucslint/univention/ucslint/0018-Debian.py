@@ -34,7 +34,7 @@ from itertools import cycle
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
 from shlex import split
-from typing import Callable, Dict, Iterator, List, Set, Tuple  # noqa F401
+from typing import Callable, Dict, Iterable, Iterator, List, Set, Tuple, Union  # noqa F401
 
 from debian.changelog import Changelog, ChangelogParseError  # Version
 
@@ -54,7 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	}
 	SCRIPTS = frozenset(ACTIONS)
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0018-1': (uub.RESULT_STYLE, 'wrong script name in comment'),
 			'0018-2': (uub.RESULT_STYLE, 'Unneeded entry in debian/dirs; the directory is implicitly created by another debhelper'),
@@ -63,8 +63,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0018-5': (uub.RESULT_INFO, 'Maintainer script contains old upgrade code'),
 		}
 
-	def check(self, path):
-		# type: (str) -> None
+	def check(self, path: str) -> None:
 		self.check_scripts(path)
 		self.check_dirs(path)
 
@@ -79,8 +78,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			self.debug('Failed open %r: %s' % (fn_changelog, ex))
 			return Version('0')
 
-	def check_scripts(self, path):
-		# type: (str) -> None
+	def check_scripts(self, path: str) -> None:
 		debianpath = join(path, 'debian')
 		version = self.get_debian_version(path)
 		for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS):
@@ -150,8 +148,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 							script_path, row, col, line=line)
 
 	@classmethod
-	def parse_test(cls, tokens):
-		# type: (List[str]) -> Set[str]
+	def parse_test(cls, tokens: List[str]) -> Set[str]:
 		"""
 		Parse test string and return action names
 
@@ -210,8 +207,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		return result
 
-	def check_dirs(self, path):
-		# type: (str) -> None
+	def check_dirs(self, path: str) -> None:
 		dirs = {}  # type: Dict[str, Set[str]]
 		debianpath = join(path, 'debian')
 
@@ -251,8 +247,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						fp, row)
 
 	@staticmethod
-	def lines(name):
-		# type: (str) -> Iterator[Tuple[int, str]]
+	def lines(name: str) -> Iterator[Tuple[int, str]]:
 		with open(name, 'r') as stream:
 			for row, line in enumerate(stream, start=1):
 				line = line.strip()
@@ -263,8 +258,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				yield (row, line)
 
 	@staticmethod
-	def split_pkg(name):
-		# type: (str) -> Tuple[str, str]
+	def split_pkg(name: str) -> Tuple[str, str]:
 		filename = basename(name)
 		if '.' in filename:
 			package, suffix = splitext(filename)
@@ -276,8 +270,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return (package, suffix)
 
 	@staticmethod
-	def process_install(line, glob=glob):
-		# type: (str, Callable) -> Iterator[Tuple[str, str]]
+	def process_install(line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
 		"""
 		Parse :file:`debian/*.install` lines.
 
@@ -306,8 +299,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					yield (fn, join(dst, basename(fn)))
 
 	@classmethod
-	def process_pyinstall(cls, line, glob=glob):
-		# type: (str, Callable) -> Iterator[Tuple[str, str]]
+	def process_pyinstall(cls, line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
 		"""
 		Parse :file:`debian/*.pyinstall` lines.
 
@@ -390,7 +382,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 
-class Dirs(set):
+class Dirs(Set[str]):
 	"""Set of directories."""
 
 	DIRS = frozenset({
@@ -416,10 +408,10 @@ class Dirs(set):
 		'var/www',
 	})
 
-	def __init__(self, package):  # type: (str) -> None
+	def __init__(self, package: str) -> None:
 		set.__init__(self, {'usr/share/doc/' + package} | self.DIRS)
 
-	def add(self, dst):  # type: (str) -> None
+	def add(self, dst: str) -> None:
 		path = dirname(normpath(dst.strip('/')))
 		while path > '/':
 			set.add(self, path)
@@ -447,7 +439,7 @@ class Version(object):
 		self.text = parts[::2]
 		self.numeric = [int(number) for number in parts[1::2]]
 
-	def __iter__(self) -> Iterator:
+	def __iter__(self) -> Iterator[Union[str, int]]:
 		try:
 			for next in cycle(iter(part).__next__ for part in (self.text, self.numeric)):  # type: ignore
 				yield next()

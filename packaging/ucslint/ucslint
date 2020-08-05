@@ -73,8 +73,7 @@ class DebianPackageCheck(object):
 	:param debuglevel: Vebosity level.
 	"""
 
-	def __init__(self, path, plugindirs, enabled_modules=None, disabled_modules=None, debuglevel=0):
-		# type: (str, Sequence[str], Container[str], Container[str], int) -> None
+	def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] = None, disabled_modules: Container[str] = None, debuglevel: int = 0):
 		self.path = path
 		self.plugindirs = plugindirs
 		self.pluginlist = {}  # type: Dict[str, ModuleType]
@@ -86,8 +85,7 @@ class DebianPackageCheck(object):
 		self.overrides = set()  # type: Set[Tuple[str, Optional[str], Optional[int]]]
 		self.loadplugins()
 
-	def loadplugins(self):
-		# type: () -> None
+	def loadplugins(self) -> None:
 		"""
 		Load modules from plugin directory.
 		"""
@@ -117,8 +115,7 @@ class DebianPackageCheck(object):
 							if self.debuglevel:
 								print('Module %s is not enabled' % f, file=sys.stderr)
 
-	def check(self):
-		# type: () -> None
+	def check(self) -> None:
 		"""
 		Run plugin on files in path.
 		"""
@@ -133,8 +130,7 @@ class DebianPackageCheck(object):
 				print(ex, file=sys.stderr)
 			self.msglist.extend(obj.result())
 
-	def loadOverrides(self):
-		# type: () -> None
+	def loadOverrides(self) -> None:
 		"""
 		Parse :file:`debian/ucslint.overrides` file.
 		"""
@@ -160,8 +156,7 @@ class DebianPackageCheck(object):
 			if ex.errno != ENOENT:
 				print('WARNING: load debian/ucslint.overrides: %s' % (ex,), file=sys.stderr)
 
-	def in_overrides(self, msg):
-		# type: (uub.UPCMessage) -> bool
+	def in_overrides(self, msg: uub.UPCMessage) -> bool:
 		"""
 		Check message against overrides.
 
@@ -179,8 +174,7 @@ class DebianPackageCheck(object):
 			return True
 		return False
 
-	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories, junit=None):
-		# type: (Container[str], Container[str], str, str, IO[str]) -> Tuple[int, int]
+	def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> Tuple[int, int]:
 		"""
 		Print result of checks.
 
@@ -233,8 +227,7 @@ class DebianPackageCheck(object):
 		return incident_cnt, exitcode_cnt
 
 
-def clean_id(idstr):
-	# type: (str) -> str
+def clean_id(idstr: str) -> str:
 	"""
 	Format message ID string.
 
@@ -250,8 +243,7 @@ def clean_id(idstr):
 	return '%s-%s' % (clean_modid(modid), clean_msgid(msgid))
 
 
-def clean_modid(modid):
-	# type: (str) -> str
+def clean_modid(modid: str) -> str:
 	"""
 	Format module ID string.
 
@@ -266,8 +258,7 @@ def clean_modid(modid):
 	return '%04d' % (int(modid))
 
 
-def clean_msgid(msgid):
-	# type: (str) -> str
+def clean_msgid(msgid: str) -> str:
 	"""
 	Format message ID string.
 
@@ -282,8 +273,7 @@ def clean_msgid(msgid):
 	return '%d' % int(msgid)
 
 
-def parse_args():
-	# type: () -> Namespace
+def parse_args() -> Namespace:
 	"""
 	Parse command line arguments.
 
@@ -359,8 +349,7 @@ def parse_args():
 	return args
 
 
-def debian_dir(pkgpath):
-	# type: (str) -> str
+def debian_dir(pkgpath: str) -> str:
 	"""
 	Check if given path is base for a Debian package.
 
@@ -384,8 +373,7 @@ def debian_dir(pkgpath):
 	return pkgpath
 
 
-def main():
-	# type: () -> None
+def main() -> None:
 	"""
 	Run checks.
 	"""

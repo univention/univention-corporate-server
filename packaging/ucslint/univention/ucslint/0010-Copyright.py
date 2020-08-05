@@ -30,6 +30,7 @@
 import os
 import re
 import time
+from typing import List  # noqa F401
 
 import univention.ucslint.base as uub
 
@@ -50,7 +51,7 @@ RE_COPYRIGHT_VERSION = re.compile(r'Copyright(?:\s+\(C\)|:)?\s+([0-9, -]+)\s+(?:
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0010-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0010-2': (uub.RESULT_ERROR, 'file contains no copyright text block'),
@@ -60,11 +61,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0010-6': (uub.RESULT_WARN, 'debian/copyright is not machine-readable DEP-5'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		check_files = []
+		check_files = []  # type: List[str]
 
 		# check if copyright file is missing
 		fn = os.path.join(path, 'debian', 'copyright')

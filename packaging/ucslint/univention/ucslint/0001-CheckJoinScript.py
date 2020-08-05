@@ -29,6 +29,7 @@
 
 import os
 import re
+from typing import Dict  # noqa F401
 
 import univention.ucslint.base as uub
 
@@ -37,7 +38,7 @@ CALLED, COPIED = (1 << bit for bit in range(2))
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0001-1': (uub.RESULT_STYLE, 'the old command "univention-admin" is used'),
 			'0001-2': (uub.RESULT_ERROR, '"$@" for passing credentials to univention-directory-manager is missing'),
@@ -67,7 +68,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')
 	RE_DH_JOIN = re.compile(r'\bunivention-install-joinscript\b')
 
-	def check_join_script(self, filename):
+	def check_join_script(self, filename: str) -> None:
 		"""Check a single join script."""
 		try:
 			content = open(filename, 'r').read()
@@ -153,7 +154,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				if not cnt['joinscript_save_current_version']:
 					self.addmsg('0001-15', 'join script does not use joinscript_save_current_version', filename)
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -183,7 +184,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		# check if join scripts are present in debian/rules || debian/*.install
 		#
-		found = {}
+		found = {}  # type: Dict[str, int]
 		debianpath = os.path.join(path, 'debian')
 		# get all .install files
 		fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
@@ -206,7 +207,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.debug('Errors in debian/control. Skipping here')
 				else:
 					for binary_package in parser.binary_sections:
-						package = binary_package.get('Package')
+						package = binary_package['Package']
 						for js in fnlist_joinscripts:
 							if re.match(r'^\./\d\d%s\.u?inst$' % re.escape(package), js):
 								self.debug('univention-install-joinscript will take care of %s' % js)

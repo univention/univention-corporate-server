@@ -40,7 +40,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	"""Python specific checks."""
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0009-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0009-2': (uub.RESULT_ERROR, 'python file does not specify python version in hashbang'),
@@ -60,7 +60,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_HASHBANG = re.compile(r'''^#!\s*/usr/bin/python(?:([0-9.]+))?(?:(\s+)(?:(\S+)(\s.*)?)?)?$''')
 	RE_STRING = PythonVer.matcher()
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -126,11 +126,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 
 class FindVariables(ast.NodeVisitor):
-	def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str):
+	def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
 		self.check = check
 		self.fn = fn
 
-	def visit_Name(self, node: ast.Name):
+	def visit_Name(self, node: ast.Name) -> None:
 		if node.id in PYTHON_RESERVED:
 			self.check.addmsg('0009-12', 'Variable uses reserved Python keyword: %r' % node.id, self.fn, node.lineno, node.col_offset)
 
@@ -139,10 +139,10 @@ class FindVariables(ast.NodeVisitor):
 
 
 class FindAssign(ast.NodeVisitor):
-	def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str):
+	def __init__(self, check: uub.UniventionPackageCheckDebian, fn: str) -> None:
 		self.visitor = FindVariables(check, fn)
 
-	def visit_Assign(self, node: ast.Assign):
+	def visit_Assign(self, node: ast.Assign) -> None:
 		for target in node.targets:
 			self.visitor.visit(target)
 

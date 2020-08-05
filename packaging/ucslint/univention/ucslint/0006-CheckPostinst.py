@@ -28,13 +28,14 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+from typing import Any, Dict  # noqa F401
 
 import univention.ucslint.base as uub
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0006-1': (uub.RESULT_WARN, 'postinst script does not contain string "#DEBHELPER#"'),
 			'0006-2': (uub.RESULT_ERROR, 'script contains univention-directory-manager or univention-admin at beginning of a line - please use a join script'),
@@ -46,11 +47,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0006-8': (uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fnlist_scripts = {}
+		fnlist_scripts = {}  # type: Dict[str, Dict[str, Any]]
 
 		#
 		# search debian scripts

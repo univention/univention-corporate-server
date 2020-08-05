@@ -40,13 +40,13 @@ except (ImportError, TypeError):
 	JUNIT = False
 
 	class TestCase(object):  # type: ignore
-		def __init__(self, name, stdout=None, file=None, line=None):
+		def __init__(self, name: str, stdout: Optional[str] = None, file: Optional[str] = None, line: Optional[int] = None) -> None:
 			pass
 
-		def add_error_info(self, message=None, output=None, error_type=None):
+		def add_error_info(self, message: Optional[str] = None, output: Optional[str] = None, error_type: Optional[str] = None) -> None:
 			pass
 
-		def add_skipped_info(self, message=None, output=None):
+		def add_skipped_info(self, message: Optional[str] = None, output: Optional[str] = None) -> None:
 			pass
 
 
@@ -65,6 +65,8 @@ RESULT_INT2STR = {
 	RESULT_INFO: 'I',
 	RESULT_STYLE: 'S',
 }  # type: Dict[int, str]
+
+MsgIds = Dict[str, Tuple[int, str]]
 
 RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
 RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
@@ -97,7 +99,7 @@ def noqa(line: str) -> Callable[[str], bool]:
 	return lambda issue: issue in issues
 
 
-def line_regexp(text: str, regexp: Pattern) -> Iterator[Tuple[int, int, Match]]:
+def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[Tuple[int, int, Match[str]]]:
 	"""
 	Find all matches and return row and colum number.
 
@@ -132,8 +134,7 @@ class UPCMessage(object):
 	:param col: Associated column number.
 	"""
 
-	def __init__(self, id_, msg, filename=None, row=None, col=None):
-		# type: (str, str, str, int, int) -> None
+	def __init__(self, id_: str, msg: str, filename: Optional[str] = None, row: Optional[int] = None, col: Optional[int] = None) -> None:
 		self.id = id_
 		self.msg = msg
 		self.filename = filename
@@ -143,8 +144,7 @@ class UPCMessage(object):
 		if self.filename is not None and self.filename.startswith('./'):
 			self.filename = self.filename[2:]
 
-	def __str__(self):
-		# type: () -> str
+	def __str__(self) -> str:
 		if self.filename:
 			s = '%s' % self.filename
 			if self.row is not None:
@@ -154,15 +154,13 @@ class UPCMessage(object):
 			return '%s: %s: %s' % (self.id, s, self.msg)
 		return '%s: %s' % (self.id, self.msg)
 
-	def getId(self):
-		# type: () -> str
+	def getId(self) -> str:
 		"""
 		Return unique message identifier.
 		"""
 		return self.id
 
-	def junit(self):
-		# type: () -> TestCase
+	def junit(self) -> TestCase:
 		"""
 		Return JUnit XML test case.
 
@@ -177,14 +175,12 @@ class UniventionPackageCheckBase(object):
 	Abstract base class for checks.
 	"""
 
-	def __init__(self):
-		# type: () -> None
+	def __init__(self) -> None:
 		self.name = self.__class__.__module__  # type: str
 		self.msg = []  # type: List[UPCMessage]
 		self.debuglevel = 0  # type: int
 
-	def addmsg(self, msgid, msg, filename=None, row=None, col=None, line=''):
-		# type: (str, str, str, int, int, str) -> None
+	def addmsg(self, msgid: str, msg: str, filename: Optional[str] = None, row: Optional[int] = None, col: Optional[int] = None, line: str = '') -> None:
 		"""
 		Add :py:class:`UPCMessage` message.
 
@@ -200,15 +196,13 @@ class UniventionPackageCheckBase(object):
 		message = UPCMessage(msgid, msg, filename, row, col)
 		self.msg.append(message)
 
-	def getMsgIds(self):
-		# type: () -> Dict[str, Tuple[int, str]]
+	def getMsgIds(self) -> MsgIds:
 		"""
 		Return mapping from message-identifiert to 2-tuple (severity, message-text).
 		"""
 		return {}
 
-	def setdebug(self, level):
-		# type: (int) -> None
+	def setdebug(self, level: int) -> None:
 		"""
 		Set debug level.
 
@@ -216,8 +210,7 @@ class UniventionPackageCheckBase(object):
 		"""
 		self.debuglevel = level
 
-	def debug(self, msg):
-		# type: (str) -> None
+	def debug(self, msg: str) -> None:
 		"""
 		Print debug message.
 
@@ -226,24 +219,21 @@ class UniventionPackageCheckBase(object):
 		if self.debuglevel > 0:
 			print('%s: %s' % (self.name, msg))
 
-	def postinit(self, path):
-		# type: (str) -> None
+	def postinit(self, path: str) -> None:
 		"""
 		Checks to be run before real check or to create precalculated data for several runs. Only called once!
 
 		:param path: Directory or file to check.
 		"""
 
-	def check(self, path):
-		# type: (str) -> None
+	def check(self, path: str) -> None:
 		"""
 		The real check.
 
 		:param path: Directory or file to check.
 		"""
 
-	def result(self):
-		# type: () -> List[UPCMessage]
+	def result(self) -> List[UPCMessage]:
 		"""
 		Return result as list of messages.
 
@@ -257,7 +247,7 @@ class UniventionPackageCheckDebian(UniventionPackageCheckBase):
 	Check for :file:`debian/` directory.
 	"""
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		"""
 		the real check.
 		"""
@@ -289,20 +279,19 @@ class FailedToReadFile(UCSLintException):
 	File reading exception.
 	"""
 
-	def __init__(self, fn):
+	def __init__(self, fn: str) -> None:
 		super(FailedToReadFile, self).__init__()
 		self.fn = fn
 
 
-class DebianControlEntry(dict):
+class DebianControlEntry(Dict[str, str]):
 	"""
 	Handle paragraph in Deb822 control file.
 
 	:param content: String content of paragraph.
 	"""
 
-	def __init__(self, content):
-		# type: (str) -> None
+	def __init__(self, content: str) -> None:
 		dict.__init__(self)
 
 		lines = content.splitlines()
@@ -333,10 +322,8 @@ class ParserDebianControl(object):
 	:param filename: Full path.
 	"""
 
-	def __init__(self, filename):
-		# type: (str) -> None
+	def __init__(self, filename: str) -> None:
 		self.filename = filename
-		self.source_section = None  # type: Optional[DebianControlEntry]
 		self.binary_sections = []  # type: List[DebianControlEntry]
 
 		try:
@@ -366,8 +353,7 @@ class RegExTest(object):
 	:param cntmax: Allowed maximum number of matches.
 	"""
 
-	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
-		# type: (Pattern, str, str, int, int) -> None
+	def __init__(self, regex: Pattern[str], msgid: str, msg: str, cntmin: Optional[int] = None, cntmax: Optional[int] = None) -> None:
 		self.regex = regex
 		self.msgid = msgid
 		self.msg = msg
@@ -399,8 +385,7 @@ class UPCFileTester(object):
 	    1234-5: /etc/fstab: Habe kein squashfs gefunden.
 	"""
 
-	def __init__(self, maxsize=100 * 1024):
-		# type: (int) -> None
+	def __init__(self, maxsize: int = 100 * 1024) -> None:
 		"""
 		creates a new :py:class:`UPCFileTester` object
 
@@ -412,8 +397,7 @@ class UPCFileTester(object):
 		self.lines = []  # type: List[str]
 		self.tests = []  # type: List[RegExTest]
 
-	def open(self, filename):
-		# type: (str) -> None
+	def open(self, filename: str) -> None:
 		"""
 		Opens the specified file and reads up to `maxsize` bytes into memory.
 
@@ -430,8 +414,7 @@ class UPCFileTester(object):
 		lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
 		self.lines = lines.splitlines()
 
-	def _getpos(self, linenumber, pos_in_line):
-		# type: (int, int) -> Tuple[int, int]
+	def _getpos(self, linenumber: int, pos_in_line: int) -> Tuple[int, int]:
 		"""
 		Converts 'unwrapped' position values (line and position in line) into
 		position values corresponding to the raw file.
@@ -448,8 +431,7 @@ class UPCFileTester(object):
 		realline = raw.count('\n')
 		return (realline + 1, realpos)
 
-	def addTest(self, regex, msgid, msg, cntmin=None, cntmax=None):
-		# type: (Pattern, str, str, int, int) -> None
+	def addTest(self, regex: Pattern[str], msgid: str, msg: str, cntmin: Optional[int] = None, cntmax: Optional[int] = None) -> None:
 		"""
 		add a new test
 
@@ -465,8 +447,7 @@ class UPCFileTester(object):
 			raise ValueError('cntmin or cntmax has to be set')
 		self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
-	def runTests(self):
-		# type: () -> List[UPCMessage]
+	def runTests(self) -> List[UPCMessage]:
 		"""
 		Runs all given tests on loaded file.
 
@@ -594,17 +575,17 @@ class FilteredDirWalkGenerator(object):
 
 	def __init__(
 		self,
-		path,  # type: str
-		ignore_dirs=None,  # type: Iterable[str]
-		prefixes=None,  # type: Iterable[str]
-		suffixes=None,  # type: Iterable[str]
-		ignore_suffixes=None,  # type: Iterable[str]
-		ignore_files=None,  # type: Iterable[str]
-		ignore_debian_subdirs=True,  # type: bool
-		reHashBang=None,  # type: Pattern
-		readSize=2048,  # type: int
-		dangling_symlinks=False,  # type: bool
-	):  # type: (...) -> None
+		path: str,
+		ignore_dirs: Optional[Iterable[str]] = None,
+		prefixes: Optional[Iterable[str]] = None,
+		suffixes: Optional[Iterable[str]] = None,
+		ignore_suffixes: Optional[Iterable[str]] = None,
+		ignore_files: Optional[Iterable[str]] = None,
+		ignore_debian_subdirs: bool = True,
+		reHashBang: Optional[Pattern[str]] = None,
+		readSize: int = 2048,
+		dangling_symlinks: bool = False,
+	) -> None:
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
 
@@ -635,8 +616,7 @@ class FilteredDirWalkGenerator(object):
 		self.readSize = readSize
 		self.dangling_symlinks = dangling_symlinks
 
-	def __iter__(self):
-		# type: () -> Iterator[str]
+	def __iter__(self) -> Iterator[str]:
 		for dirpath, dirnames, filenames in os.walk(self.path):
 			# remove undesired directories
 			if self.ignore_dirs:

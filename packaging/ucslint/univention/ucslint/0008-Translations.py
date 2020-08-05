@@ -28,7 +28,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
-from typing import Dict, Iterable, Tuple
+from typing import Iterable
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING
@@ -51,7 +51,7 @@ RE_TRANSLATION = re.compile(CONTEXT + SEPARATOR + TRANSLATION, re.DOTALL | re.MU
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self) -> Dict[str, Tuple[int, str]]:
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0008-1': (uub.RESULT_ERROR, 'substitutes before translation'),
 			'0008-2': (uub.RESULT_WARN, 'failed to open file'),
@@ -73,7 +73,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			ignore_suffixes=uub.FilteredDirWalkGenerator.BINARY_SUFFIXES | uub.FilteredDirWalkGenerator.DOCUMENTATION_SUFFIXES,
 		))
 
-	def check_py(self, py_files):
+	def check_py(self, py_files: Iterable[str]) -> None:
 		"""Check Python files."""
 		for fn in py_files:
 			try:
@@ -86,7 +86,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
 				self.addmsg('0008-1', 'substitutes before translation: %s' % match.group(1), fn, row, col)
 
-	def check_po(self, po_files):
+	def check_po(self, po_files: Iterable[str]) -> None:
 		"""Check Portable Object files."""
 		for fn in po_files:
 			try:

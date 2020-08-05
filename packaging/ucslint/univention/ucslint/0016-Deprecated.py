@@ -38,7 +38,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	"""Find use of deprecated functions / programs / scripts."""
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		"""Return severity and description for message identifiers."""
 		return {
 			'0016-1': (uub.RESULT_WARN, 'failed to open file'),
@@ -49,7 +49,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0016-6': (uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 

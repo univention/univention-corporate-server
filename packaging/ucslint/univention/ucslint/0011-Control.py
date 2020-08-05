@@ -48,7 +48,7 @@ RE_DEP = re.compile(
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0011-1': (uub.RESULT_WARN, 'failed to open/read file'),
 			'0011-2': (uub.RESULT_ERROR, 'source package name differs in debian/control and debian/changelog'),
@@ -72,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-20': (uub.RESULT_WARN, 'debian/compat and debian/control disagree on the version for debhelper'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -109,7 +109,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		if match:
 			srcpkgname = match.group(1)
 		else:
-			srcpkgname = None
+			srcpkgname = ''
 			self.addmsg('0011-9', 'cannot determine source package name', fn_changelog)
 
 		controlpkgname = parser.source_section.get('Source')
@@ -297,7 +297,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'upstart',  # dh_installinit
 	}
 
-	def check_debhelper(self, path, parser):
+	def check_debhelper(self, path: str, parser: uub.ParserDebianControl) -> None:
 		"""Check for debhelper package files."""
 		if len(parser.binary_sections) == 1:
 			# If there is only one binary package, accept the non-prefixed files ... for now

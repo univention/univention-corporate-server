@@ -52,7 +52,7 @@ RE_LOCAL = re.compile(
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0013-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0013-2': (uub.RESULT_ERROR, 'possible bashism found'),
@@ -60,7 +60,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0013-4': (uub.RESULT_WARN, 'unquoted local variable'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -76,7 +76,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			except (EnvironmentError, UnicodeDecodeError):
 				self.addmsg('0013-1', 'failed to open file', fn)
 
-	def check_bashism(self, fn):
+	def check_bashism(self, fn: str) -> None:
 		p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = p.communicate()
 		# 2 = file is no shell script or file is already bash script
@@ -99,7 +99,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 				self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), fn, row)
 
-	def check_unquoted_local(self, fn):
+	def check_unquoted_local(self, fn: str) -> None:
 		with open(fn, 'r') as fd:
 			for row, line in enumerate(fd, start=1):
 				line = line.strip()

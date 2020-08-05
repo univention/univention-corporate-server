@@ -27,12 +27,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import re
-from typing import Iterator, Pattern
+from typing import Iterator, Optional, Pattern
 
 from univention.ucslint.base import FilteredDirWalkGenerator
 
 
-def _or(*disjunct: str, name: str = None) -> str:
+def _or(*disjunct: str, name: Optional[str] = None) -> str:
     return r"(?%s%s)" % (":" if name is None else "P<%s>" % (name,), "|".join(disjunct))
 
 
@@ -64,7 +64,7 @@ class Base:
     )
 
     @classmethod
-    def matcher(cls) -> Pattern:
+    def matcher(cls) -> Pattern[str]:
         MATCHED_STRING = _or(
             cls.MATCHED_RAW, cls.MATCHED_BYTES, cls.MATCHED_UNICODE, name="str"
         )

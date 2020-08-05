@@ -34,8 +34,7 @@ from typing import Any, Dict, Iterator, List  # noqa F401
 import univention.ucslint.base as uub
 
 
-def levenshtein(word, distance=1, subst='.'):
-	# type: (str, int, str) -> Iterator[str]
+def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]:
 	"""
 	Return modified list of words with given Levenshtein distance.
 
@@ -67,14 +66,12 @@ class Trie():
 	The corresponding Regex should match much faster than a simple Regex union.
 	"""
 
-	def __init__(self, *args):
-		# type: (*str) -> None
+	def __init__(self, *args: str) -> None:
 		self.data = {}  # type: Dict[str, Any]
 		for word in args:
 			self.add(word)
 
-	def add(self, word):
-		# type: (str) -> None
+	def add(self, word: str) -> None:
 		"""
 		Add new word.
 
@@ -86,8 +83,7 @@ class Trie():
 
 		ref[''] = None
 
-	def _pattern(self, pData):
-		# type: (Dict[str, Any]) -> str
+	def _pattern(self, pData: (Dict[str, Any])) -> str:
 		"""
 		Recursively convert Trie structuture to regular expression.
 
@@ -121,8 +117,7 @@ class Trie():
 			'?' if q else '',
 		)
 
-	def pattern(self):
-		# type: () -> str
+	def pattern(self) -> str:
 		"""
 		Convert Trie structuture to regular expression.
 
@@ -144,7 +139,7 @@ RE_UNIVENTION = re.compile(
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0015-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0015-2': (uub.RESULT_WARN, 'file contains "univention" incorrectly written'),
@@ -174,7 +169,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		/var/lib/univentions-client-boot/
 	""".split()))
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
