@@ -12,3 +12,5 @@ desc: |
  * Minor code cleanup thanks to Github pull request by
    https://github.com/thomasbach-dev
 bug: [51722]
+erratum: 698
+announced: 2020-08-05
