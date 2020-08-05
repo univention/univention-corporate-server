@@ -85,7 +85,7 @@ if [ "$1" = "configure" ]; then
 		update/commands/show?"apt-cache show" \
 		update/commands/install?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 install" \
 		update/commands/install/interactive?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir install" \
-		update/commands/remove?"apt-get --yes remove" \
+		update/commands/remove?"apt-get --assume-yes remove" \
 		update/commands/remove/interactive?"apt-get remove" \
 		update/commands/configure?"dpkg --configure -a" \
 		update/commands/distupgrade/simulate?"apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us dist-upgrade" \
