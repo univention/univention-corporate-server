@@ -3,19 +3,12 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
-disabled = ''
-debug = ''
-if not configRegistry.is_true('update/check/cron/enabled', False):
-        disabled = '# '
-if not configRegistry.get('update/check/cron/debug','no').lower() in ('yes','true','enabled','1','2','3','4'):
-        debug = '2> /dev/null > /dev/null'
-print '%s%s   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 600 /usr/share/univention-updater/univention-updater-check %s' % (disabled, configRegistry.get('update/check/cron/entry', '5 * * * *'), debug)
-
-disabled = ''
-debug = ''
-if not configRegistry.is_true('update/check/boot/enabled', False):
-        disabled = '# '
-if not configRegistry.get('update/check/boot/debug','no').lower() in ('yes','true','enabled','1','2','3','4'):
-        debug = '2> /dev/null > /dev/null'
-print '%s@reboot   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 30 /usr/share/univention-updater/univention-updater-check %s' % (disabled, debug)
+FMT = '{disabled}{when}   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter {jitter} /usr/share/univention-updater/univention-updater-check {debug}'
+for (name, jitter, when) in (
+    ("cron", 600, configRegistry.get('update/check/cron/entry', '5 * * * *')),
+    ("boot", 30, "@reboot"),
+):
+    disabled = '' if configRegistry.is_true('update/check/%s/enabled' % name) else '# '
+    debug = '' if configRegistry.is_true('update/check/%s/debug' % name) else '2>/dev/null >/dev/null'
+    print(FMT.format(**locals()))
 @!@
