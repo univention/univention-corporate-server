@@ -6,7 +6,7 @@ src: univention-management-console
 fix: 11.0.4-101A~4.4.0.202008041231
 desc: |
  This update addresses the following issues:
- * Various memory leaks in the UMC-Server process have been fixed.
+ * Several memory leaks in the UMC-Server process have been fixed.
  * The message for outdated browsers has been adjusted.
  * The UCR variable umc/http/max-open-file-descriptors has been added
    and the default file descriptor limit for the
