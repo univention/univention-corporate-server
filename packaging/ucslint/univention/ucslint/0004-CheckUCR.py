@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable-msg=C0301,C0103,C0324,C0111,R0201,R0912,R0914,R0915
 #
 # Copyright (C) 2008-2020 Univention GmbH
 #

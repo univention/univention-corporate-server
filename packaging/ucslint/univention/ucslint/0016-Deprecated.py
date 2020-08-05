@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable-msg=C0103
 """Find use of deprecated functions / programs / scripts."""
 #
 # Copyright (C) 2008-2020 Univention GmbH
@@ -39,7 +38,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	"""Find use of deprecated functions / programs / scripts."""
 
-	def getMsgIds(self):  # pylint: disable-msg=R0201
+	def getMsgIds(self):
 		"""Return severity and description for message identifiers."""
 		return {
 			'0016-1': (uub.RESULT_WARN, 'failed to open file'),

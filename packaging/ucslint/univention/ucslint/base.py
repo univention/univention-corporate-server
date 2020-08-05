@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable-msg=C0103,C0111,C0301,R0902,R0903,R0912,R0913
 #
 # Copyright (C) 2008-2020 Univention GmbH
 #
@@ -201,7 +200,7 @@ class UniventionPackageCheckBase(object):
 		message = UPCMessage(msgid, msg, filename, row, col)
 		self.msg.append(message)
 
-	def getMsgIds(self):  # pylint: disable-msg=R0201
+	def getMsgIds(self):
 		# type: () -> Dict[str, Tuple[int, str]]
 		"""
 		Return mapping from message-identifiert to 2-tuple (severity, message-text).
