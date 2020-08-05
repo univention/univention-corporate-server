@@ -64,7 +64,7 @@ class Install(InstallRemoveUpgrade):
 		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
 
 	def main(self, args):
-		apps = args.app if isinstance(args.app, list) else [args.app]  # FIXME remove backwards compatibility (Bug #40225)
+		apps = args.app
 		real_apps = []
 		for app in apps:
 			_apps = Apps().get_all_apps_with_id(app.id)
