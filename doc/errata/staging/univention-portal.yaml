@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-portal
 fix: 3.0.2-8A~4.4.0.202008041213
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * A message can now be activated for the portal with the
    portal/show-outdated-browser-warning UCR variable that informs the user
    about the supported browsers, if the used browser is outdated.

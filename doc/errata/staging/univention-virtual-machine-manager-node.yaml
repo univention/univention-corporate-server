@@ -1,6 +1,6 @@
 product: ucs
 release: "4.4"
-version: [4, 5]
+version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-virtual-machine-manager-node
 fix: 7.0.1-7A~4.4.0.202007301220
