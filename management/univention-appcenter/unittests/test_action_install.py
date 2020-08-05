@@ -30,9 +30,6 @@
 #
 
 
-import pytest
-
-
 ANYTHING = object()
 
 
@@ -59,6 +56,8 @@ def test_install_two_apps(get_action, custom_apps, mocked_ucr, mocker):
 	app2 = custom_apps.find('kopano-webapp')
 	app3 = custom_apps.find('self-service-backend')
 	app4 = custom_apps.find('kopano-core')
+	for app in [app1, app2, app3, app4]:
+		mocker.patch.object(app, 'is_installed', return_value=False)
 	install = get_action('install')
 	mock_do_it = mocker.patch.object(install, '_do_it')
 	mock_send_information = mocker.patch.object(install, '_send_information')
