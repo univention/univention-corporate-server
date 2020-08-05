@@ -28,34 +28,34 @@
 import os
 import shutil
 
-FILE_NAME = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+CUR = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+BAK = CUR + '.old'
 
 
-def preinst(baseConfig, changes):
-    if os.path.exists('%s.old' % FILE_NAME):
-        os.remove('%s.old' % FILE_NAME)
-    if os.path.exists(FILE_NAME):
-        shutil.copyfile('%s' % FILE_NAME, '%s.old' % FILE_NAME)
+def preinst(ucr, changes):
+    if os.path.exists(BAK):
+        os.remove(BAK)
+
+    if os.path.exists(CUR):
+        shutil.copy2(CUR, BAK)
 
 
-def postinst(baseConfig, changes):
-    if os.path.exists(FILE_NAME):
-        check = False
-        for key in baseConfig.keys():
-            if key.startswith('repository/online/component/'):
-                component_part = key.split('repository/online/component/')[1]
-                if component_part.find('/') == -1 and baseConfig.is_true(key, False):
-                    check = True
-                    break
+def postinst(ucr, changes):
+    if not os.path.exists(CUR):
+        return
 
-        if check:
-            res = open(FILE_NAME, 'r').readlines()
-            if len(res) <= 1:
-                os.remove(FILE_NAME)
-                if os.path.exists('%s.old' % FILE_NAME):
-                    shutil.copyfile('%s.old' % FILE_NAME, '%s' % FILE_NAME)
-            if os.path.exists('%s.old' % FILE_NAME):
-                os.remove('%s.old' % FILE_NAME)
-        else:
-            if os.path.exists('%s.old' % FILE_NAME):
-                os.remove('%s.old' % FILE_NAME)
+    for key in ucr.keys():
+        if key.startswith('repository/online/component/'):
+            component_part = '/'.join(key.split('/')[:4])
+            if ucr.is_true(key):
+                break
+    else:
+        return
+
+    res = open(CUR, 'r').readlines()
+    if len(res) <= 1:
+        if os.path.exists(BAK):
+            os.rename(BAK, CUR)
+
+    if os.path.exists(BAK):
+        os.remove(BAK)
