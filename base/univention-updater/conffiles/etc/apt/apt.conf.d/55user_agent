@@ -10,13 +10,12 @@ user_agent = '%s - %s-%s errata%s - %s - %s - %s - %s' % (
 	','.join(configRegistry.get('repository/app_center/installed', '').split('-')),
 	configRegistry.get('updater/statistics', ''),
 )
-print '''
+print('''
 Acquire
 {
   http
   {
-	 User-Agent "%s";
+     User-Agent "%s";
   };
-}; ''' % user_agent
-
+};''' % (user_agent,))
 @!@
