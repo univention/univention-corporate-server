@@ -12,3 +12,5 @@ desc: |
    and the default file descriptor limit for the
    univention-management-console-web-server has been increased to 65535.
 bug: [50583, 51753, 51729]
+erratum: 701
+announced: 2020-08-05
