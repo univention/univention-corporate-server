@@ -468,21 +468,14 @@ define([
 			}));
 		},
 
-		_get_errata_link: function(version) {
-			var versionWithoutPatchlevel;
-			try {
-				// 3.1-0 -> 3.1
-				versionWithoutPatchlevel = version.match(/(\d\.\d)-\d+/)[1];
-			} catch(e) {
-				console.warn('Malformed version: ', version);
-			}
-			if (versionWithoutPatchlevel) {
-				var erratalink = lang.replace('<a href="https://errata.software-univention.de/ucs/{version}/" target="_blank">{label}</a>', {
-					version: versionWithoutPatchlevel,
-					label: _('Detailed information about the updates.')
-				});
-				return erratalink;
-			}
+		_get_errata_link: function(values) {
+			var errata = Number.parseInt(values.erratalevel, 10);
+			var next = Number.isNaN(errata) ? 0 : errata + 1;
+			return lang.replace('<a href="https://errata.software-univention.de/#/?version={version}&fromonward={errata}" target="_blank">{label}</a>', {
+				version: values.ucs_version,
+				errata: next,
+				label: _('Detailed information about the updates.')
+			});
 		},
 
 		// Internal function that sets the 'updates available' button and
@@ -539,9 +532,10 @@ define([
 			} else {
 				return tools.umcpCommand('updater/updates/available').then(
 					lang.hitch(this, function(data) {
+						var values = this._form.gatherFormValues();
 						this._set_updates_button(data.result,
 							data.result ?
-								_("Package updates are available. %(link)s", {link: this._get_errata_link(this._form.gatherFormValues().ucs_version)}) :
+								_("Package updates are available. %(link)s", {link: this._get_errata_link(values)}) :
 								_("There are no package updates available."));
 					}),
 					lang.hitch(this, function() {

@@ -254,6 +254,9 @@
 				<listitem><simpara>
 					The <phrase>Easy upgrade mode</phrase> has been removed (<u:bug>40154</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The Updater module now links directly to the pending erratum updates (<u:bug>41646</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
