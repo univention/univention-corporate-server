@@ -1,3 +1,9 @@
+univention-spamassassin (10.0.0-4) unstable; urgency=medium
+
+  * Bug #44489: Make env vars http(s)_proxy usable by spamassassin cron job
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 06 Aug 2020 21:02:18 +0200
+
 univention-spamassassin (10.0.0-2) unstable; urgency=medium
 
   * Bug #51145: make UCR templates compatible to python3
