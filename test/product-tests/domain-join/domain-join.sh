@@ -3,6 +3,7 @@ set -x
 
 install_domain_join() {
 	local branch=${2:?missing branch}
+	wait_for_automatic_update
 	if [ "$1" == "testing" ]; then
 		install_testing_version $branch
 	else
@@ -10,6 +11,20 @@ install_domain_join() {
 	fi
 
 }
+
+
+wait_for_automatic_update() {
+	for i in {0..5};do
+		a=$(ps aux | grep -i apt | wc -l)
+		if [ $a == 1 ];then
+			break
+		fi
+		echo "Background update is running. Waiting 20 seconds"
+		sleep 20
+	done
+}
+
+
 install_testing_version () {
 	local branch=${1:?missing branch}
 	DEBIAN_FRONTEND=noninteractive apt install -y git curl build-essential dpkg-dev debhelper python3 dh-python python3-all python-setuptools expect
@@ -27,7 +42,7 @@ install_testing_version () {
 
 install_released_version() {
 	add-apt-repository -y ppa:univention-dev/ppa
-	DEBIAN_FRONTEND=noninteractive apt-get install univention-domain-join univention-domain-join-cli expect
+	DEBIAN_FRONTEND=noninteractive apt-get -y install univention-domain-join univention-domain-join-cli expect
 }
 
 
@@ -38,10 +53,11 @@ create_user () {
 
 	univention-directory-manager users/user create \
 	--position "cn=users,$(ucr get ldap/base)" \
-    --set username="$user" \
-    --set lastname="$lastname" \
-    --set password="$password"
+	--set username="$user" \
+	--set lastname="$lastname" \
+	--set password="$password"
 }
+
 
 test_univention_domain_join_cli () {
 	local dc_ip=${1:?missing dc ip}
@@ -49,6 +65,7 @@ test_univention_domain_join_cli () {
 	local password=${3:?missing admin account password}
 	univention-domain-join-cli --username "$admin" --password "$password" --dc-ip "$dc_ip" --force-ucs-dns
 }
+
 
 test_user () {
 	local username=${1:?missing username}
@@ -110,6 +127,6 @@ run_tests () {
 		test_home_directory "$user"
 		test_change_password "$user" "$user_password" "$new_user_password"
 		test_login "$user" "$new_user_password"
-	   	test_login_with_old_pw "$user" "$user_password"
+		test_login_with_old_pw "$user" "$user_password"
 	fi
 }
