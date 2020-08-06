@@ -9,21 +9,18 @@ install_domain_join() {
 	else
 		install_released_version
 	fi
-
 }
 
-
 wait_for_automatic_update() {
-	for i in {0..5};do
+	for i in {0..10};do
 		a=$(ps aux | grep -i apt | wc -l)
 		if [ $a == 1 ];then
 			break
 		fi
 		echo "Background update is running. Waiting 20 seconds"
-		sleep 20
+		sleep 60
 	done
 }
-
 
 install_testing_version () {
 	local branch=${1:?missing branch}
@@ -39,12 +36,10 @@ install_testing_version () {
 	DEBIAN_FRONTEND=noninteractive apt-get -y -f install
 }
 
-
 install_released_version() {
 	add-apt-repository -y ppa:univention-dev/ppa
 	DEBIAN_FRONTEND=noninteractive apt-get -y install univention-domain-join univention-domain-join-cli expect
 }
-
 
 create_user () {
 	local user=${1:?missing username}
@@ -58,14 +53,12 @@ create_user () {
 	--set password="$password"
 }
 
-
 test_univention_domain_join_cli () {
 	local dc_ip=${1:?missing dc ip}
 	local admin=${2:?missing admin account}
 	local password=${3:?missing admin account password}
 	univention-domain-join-cli --username "$admin" --password "$password" --dc-ip "$dc_ip" --force-ucs-dns
 }
-
 
 test_user () {
 	local username=${1:?missing username}
