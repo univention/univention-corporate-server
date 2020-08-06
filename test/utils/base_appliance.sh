@@ -445,7 +445,7 @@ if '$dockercompose' and os.path.isfile('$dockercompose'):
 	os.chmod(yml_file, 0600)
 
 install = get_action('install')
-install.call(app=app, noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False, username='\$USER')
+install.call(app=[app], noninteractive=True, skip_checks=['must_have_valid_license'], pwdfile='/tmp/joinpwd', pull_image=False, username='\$USER')
 "
 
 # fix docker app image name

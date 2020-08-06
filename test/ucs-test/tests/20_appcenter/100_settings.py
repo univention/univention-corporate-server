@@ -68,10 +68,10 @@ def docker_shell(app, command):
 def install_app(app):
 	username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
 	install = get_action('install')
-	install.call(app=app, username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
+	install.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
 	yield app
 	remove = get_action('remove')
-	remove.call(app=app, username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
+	remove.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
 
 
 @pytest.yield_fixture(scope='module')

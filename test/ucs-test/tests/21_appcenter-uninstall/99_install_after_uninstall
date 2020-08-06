@@ -25,15 +25,16 @@ ucr.load()
 username = uldap.explodeDn(ucr['tests/domainadmin/account'], 1)[0]
 pwdfile = ucr['tests/domainadmin/pwdfile']
 install = get_action('install')
+info = get_action('info')
 
-failed = []
+apps = []
 for app in get_requested_apps():
 	print('Checking', app)
 	if not app._allowed_on_local_server():
 		print('Not allowed ... skipping')
 		continue
-	if not install.call(app=app, noninteractive=True, pwdfile=pwdfile, username=username):
-		failed.append(app.id)
+	apps.append(app)
 
-if failed:
-	utils.fail('Failed to re-install apps: {}'.format(' '.join(failed)))
+if not install.call(app=apps, noninteractive=True, pwdfile=pwdfile, username=username):
+	info.call()
+	utils.fail('Failed to re-install apps')
