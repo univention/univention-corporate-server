@@ -27,9 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
+
+import univention.ucslint.base as uub
+from univention.ucslint.common import RE_DEBIAN_CHANGELOG
 
 RE_DEP = re.compile(
 	r'''
@@ -42,12 +44,11 @@ RE_DEP = re.compile(
 		)
 	)*''', re.VERBOSE
 )
-RE_CHANGELOG_PACKAGE = re.compile(r'^([a-z0-9.-]+) \((.*?)\) (.*?)\n')
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0011-1': (uub.RESULT_WARN, 'failed to open/read file'),
 			'0011-2': (uub.RESULT_ERROR, 'source package name differs in debian/control and debian/changelog'),
@@ -71,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0011-20': (uub.RESULT_WARN, 'debian/compat and debian/control disagree on the version for debhelper'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -79,17 +80,17 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			content_changelog = open(fn_changelog, 'r').read(1024)
 		except EnvironmentError:
-			self.addmsg('0011-1', 'failed to open and read file', filename=fn_changelog)
+			self.addmsg('0011-1', 'failed to open and read file', fn_changelog)
 			return
 
 		fn_control = os.path.join(path, 'debian', 'control')
 		try:
 			parser = uub.ParserDebianControl(fn_control)
 		except uub.FailedToReadFile:
-			self.addmsg('0011-1', 'failed to open and read file', filename=fn_control)
+			self.addmsg('0011-1', 'failed to open and read file', fn_control)
 			return
 		except uub.UCSLintException:
-			self.addmsg('0011-11', 'parsing error', filename=fn_control)
+			self.addmsg('0011-11', 'parsing error', fn_control)
 			return
 
 		compat_version = 0
@@ -98,39 +99,39 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			content_compat = open(fn_compat, 'r').read()
 			compat_version = int(content_compat)
 		except EnvironmentError:
-			# self.addmsg('0011-1', 'failed to open and read file', filename=fn_compat)
+			# self.addmsg('0011-1', 'failed to open and read file', fn_compat)
 			pass
 		except ValueError:
-			self.addmsg('0011-19', 'parsing error', filename=fn_compat)
+			self.addmsg('0011-19', 'parsing error', fn_compat)
 
 		# compare package name
-		match = RE_CHANGELOG_PACKAGE.match(content_changelog)
+		match = RE_DEBIAN_CHANGELOG.match(content_changelog)
 		if match:
 			srcpkgname = match.group(1)
 		else:
-			srcpkgname = None
-			self.addmsg('0011-9', 'cannot determine source package name', filename=fn_changelog)
+			srcpkgname = ''
+			self.addmsg('0011-9', 'cannot determine source package name', fn_changelog)
 
 		controlpkgname = parser.source_section.get('Source')
 		if not controlpkgname:
-			self.addmsg('0011-9', 'cannot determine source package name', filename=fn_control)
+			self.addmsg('0011-9', 'cannot determine source package name', fn_control)
 
 		if srcpkgname and controlpkgname:
 			if srcpkgname != controlpkgname:
-				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', filename=fn_changelog)
+				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', fn_changelog)
 
 		# parse source section of debian/control
 		if not parser.source_section.get('Section', '') in ('univention'):
-			self.addmsg('0011-3', 'wrong Section entry - should be "univention"', filename=fn_control)
+			self.addmsg('0011-3', 'wrong Section entry - should be "univention"', fn_control)
 
 		if not parser.source_section.get('Priority', '') in ('optional'):
-			self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', filename=fn_control)
+			self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', fn_control)
 
 		if not parser.source_section.get('Maintainer', '') in ('Univention GmbH <packages@univention.de>'):
-			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', filename=fn_control)
+			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', fn_control)
 
 		if parser.source_section.get('XS-Python-Version', ''):
-			self.addmsg('0011-11', 'XS-Python-Version is not required any longer', filename=fn_control)
+			self.addmsg('0011-11', 'XS-Python-Version is not required any longer', fn_control)
 
 		build_depends = dict(
 			(m.group(1), m.groupdict()) for m in (
@@ -143,10 +144,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		)
 
 		if 'python-central' in build_depends:
-			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', filename=fn_control)
+			self.addmsg('0011-12', 'please use python-support instead of python-central in Build-Depends', fn_control)
 
 		if 'python-support' in build_depends:
-			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', filename=fn_control)
+			self.addmsg('0011-17', 'please use dh-python instead of python-support in Build-Depends', fn_control)
 
 		try:
 			dep = build_depends['debhelper']
@@ -155,16 +156,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except LookupError:
 			pass
 		except ValueError:
-			self.addmsg('0011-10', 'failed parsing debhelper version', filename=fn_control)
+			self.addmsg('0011-10', 'failed parsing debhelper version', fn_control)
 		else:
 			if not compat_version:
 				pass
 			elif not vint:
 				pass
 			elif compat_version > vint:
-				self.addmsg('0011-20', 'debian/compat=%d > debian/control=%d disagree on the version for debhelper' % (compat_version, vint), filename=fn_control)
+				self.addmsg('0011-20', 'debian/compat=%d > debian/control=%d disagree on the version for debhelper' % (compat_version, vint), fn_control)
 			elif compat_version < vint:
-				self.addmsg('0011-20', 'debian/compat=%d < debian/control=%d disagree on the version for debhelper' % (compat_version, vint), filename=fn_compat)
+				self.addmsg('0011-20', 'debian/compat=%d < debian/control=%d disagree on the version for debhelper' % (compat_version, vint), fn_compat)
 			else:
 				pass
 
@@ -175,11 +176,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			with open(fn_rules, 'r') as fd:
 				rules = fd.read()
 				if re.search('--with[ =]*["\']?python_support', rules):
-					self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', filename=fn_rules)
+					self.addmsg('0011-18', 'please use --with python2,python3 instead of python_support', fn_rules)
 		except EnvironmentError:
 			pass
 
-	EXCEPTION_FILES = set((
+	EXCEPTION_FILES = {
 		'changelog',  # dh_installchangelogs default
 		'clean',  # dh_clean
 		'compat',  # dh
@@ -193,9 +194,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'rules',
 		'source.lintian-overrides',  # dh_lintian
 		'ucslint.overrides',
-	))
+		'watch',  # uscan
+	}
 
-	KNOWN_DH_FILES = set((
+	KNOWN_DH_FILES = {
 		'bash-completion',  # dh_bash-completion
 		'bcep',  # dh_python3
 		'bug-control',  # dh_bugfiles
@@ -263,9 +265,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'univention-l10n',  # univention-l10n-build / univention-l10n-install
 		'univention-service',  # univention-install-service-info
 		'wm',  # dh_installwm
-	))
+	}
 
-	NAMED_DH_FILES = set((
+	NAMED_DH_FILES = {
 		'cron.daily',  # dh_installcron
 		'cron.d',  # dh_installcron
 		'cron.hourly',  # dh_installcron
@@ -277,6 +279,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'if-pre-up',  # dh_installifupdown
 		'if-up',  # dh_installifupdown
 		'init',  # dh_installinit
+		'init.d',  # dh_installinit
+		'isinstallable',  # Debian Installer
 		'logcheck.cracking',  # dh_installlogcheck
 		'logcheck.ignore.paranoid',  # dh_installlogcheck
 		'logcheck.ignore.server',  # dh_installlogcheck
@@ -291,9 +295,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		'ppp.ip-up',  # dh_installppp
 		'udev',  # dh_installudev
 		'upstart',  # dh_installinit
-	))
+	}
 
-	def check_debhelper(self, path, parser):
+	def check_debhelper(self, path: str, parser: uub.ParserDebianControl) -> None:
 		"""Check for debhelper package files."""
 		if len(parser.binary_sections) == 1:
 			# If there is only one binary package, accept the non-prefixed files ... for now
@@ -307,14 +311,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		regexp = re.compile(
 			r'^(?:%s)[.](?:%s|.+[.](?:%s))$' % (
 				'|'.join(re.escape(pkg) for pkg in pkgs),
-				'|'.join(re.escape(suffix) for suffix in UniventionPackageCheck.KNOWN_DH_FILES | UniventionPackageCheck.NAMED_DH_FILES),
-				'|'.join(re.escape(suffix) for suffix in UniventionPackageCheck.NAMED_DH_FILES),
+				'|'.join(re.escape(suffix) for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES),
+				'|'.join(re.escape(suffix) for suffix in self.NAMED_DH_FILES),
 			))
 
 		for rel_name in files:
 			fn = os.path.join(debianpath, rel_name)
 
-			if rel_name in UniventionPackageCheck.EXCEPTION_FILES:
+			if rel_name in self.EXCEPTION_FILES:
 				continue
 
 			if not os.path.isfile(fn):
@@ -323,12 +327,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if regexp.match(rel_name):
 				continue
 
-			for suffix in UniventionPackageCheck.KNOWN_DH_FILES | UniventionPackageCheck.NAMED_DH_FILES:
+			for suffix in self.KNOWN_DH_FILES | self.NAMED_DH_FILES:
 				if rel_name == suffix:
-					self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), filename=fn)
+					self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), fn)
 					break
 				elif rel_name.endswith('.%s' % (suffix,)):
-					self.addmsg('0011-14', 'no matching package in debian/control', filename=fn)
+					self.addmsg('0011-14', 'no matching package in debian/control', fn)
 					break
 			else:
-				self.addmsg('0011-16', 'unknown debhelper file', filename=fn)
+				self.addmsg('0011-16', 'unknown debhelper file', fn)

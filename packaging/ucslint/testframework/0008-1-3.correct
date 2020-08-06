@@ -1,17 +1,17 @@
-E:0008-1: src/irgendwas.py:11: substitutes before translation: _('foo %s bar' % x)
-E:0008-1: src/irgendwas.py:12: substitutes before translation: _('foo %s \'bar' % x)
-E:0008-1: src/irgendwas.py:13: substitutes before translation: _("foo %s bar" % x)
-E:0008-1: src/irgendwas.py:14: substitutes before translation: _("foo %s \"bar" % x)
-E:0008-1: src/irgendwas.py:15: substitutes before translation: _('''foo %s bar''' % x)
-E:0008-1: src/irgendwas.py:16: substitutes before translation: _("""foo %s bar""" % x)
-E:0008-1: src/irgendwas.py:17: substitutes before translation: _('''foo %s \'''bar''' % x)
-E:0008-1: src/irgendwas.py:18: substitutes before translation: _("""foo %s \"""bar""" % x)
-E:0008-1: src/irgendwas.py:20: substitutes before translation: _(r"foo %s bar" % x)
-E:0008-1: src/irgendwas.py:21: substitutes before translation: _(u'foo %s bar' % x)
-E:0008-1: src/irgendwas.py:22: substitutes before translation: _(ur'foo %s bar' % x)
-E:0008-1: src/irgendwas.py:23: substitutes before translation: _('foo %s bar'
+E:0008-1: src/irgendwas.py:11:6: substitutes before translation: _('foo %s bar' % x)
+E:0008-1: src/irgendwas.py:12:6: substitutes before translation: _('foo %s \'bar' % x)
+E:0008-1: src/irgendwas.py:13:6: substitutes before translation: _("foo %s bar" % x)
+E:0008-1: src/irgendwas.py:14:6: substitutes before translation: _("foo %s \"bar" % x)
+E:0008-1: src/irgendwas.py:15:6: substitutes before translation: _('''foo %s bar''' % x)
+E:0008-1: src/irgendwas.py:16:6: substitutes before translation: _("""foo %s bar""" % x)
+E:0008-1: src/irgendwas.py:17:6: substitutes before translation: _('''foo %s \'''bar''' % x)
+E:0008-1: src/irgendwas.py:18:6: substitutes before translation: _("""foo %s \"""bar""" % x)
+E:0008-1: src/irgendwas.py:20:6: substitutes before translation: _(r"foo %s bar" % x)
+E:0008-1: src/irgendwas.py:21:6: substitutes before translation: _(u'foo %s bar' % x)
+E:0008-1: src/irgendwas.py:22:6: substitutes before translation: _(ur'foo %s bar' % x)
+E:0008-1: src/irgendwas.py:23:6: substitutes before translation: _('foo %s bar'
 			%
 			x)
-E:0008-1: src/irgendwas.py:9: substitutes before translation: _('Aber %s knallts' % x)
-E:0008-3: src/de.po:59: contains "fuzzy"
-E:0008-3: src/de.po:80: contains "fuzzy"
+E:0008-1: src/irgendwas.py:9:6: substitutes before translation: _('Aber %s knallts' % x)
+E:0008-3: src/de.po:59:1: contains "fuzzy"
+E:0008-3: src/de.po:80:1: contains "fuzzy"

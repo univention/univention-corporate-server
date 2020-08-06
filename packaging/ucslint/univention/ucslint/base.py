@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable-msg=C0103,C0111,C0301,R0902,R0903,R0912,R0913
 #
 # Copyright (C) 2008-2020 Univention GmbH
 #
@@ -29,22 +28,25 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from typing import Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
+import re
+from typing import Callable, Dict, Iterable, Iterator, List, Match, Optional, Pattern, Tuple  # noqa F401
+
 try:
 	from junit_xml import TestCase  # type: ignore
+
 	TestCase('test', file=__file__, line=1)
 	JUNIT = True
 except (ImportError, TypeError):
 	JUNIT = False
 
 	class TestCase(object):  # type: ignore
-		def __init__(self, name, stdout=None, file=None, line=None):
+		def __init__(self, name: str, stdout: Optional[str] = None, file: Optional[str] = None, line: Optional[int] = None) -> None:
 			pass
 
-		def add_error_info(self, message=None, output=None, error_type=None):
+		def add_error_info(self, message: Optional[str] = None, output: Optional[str] = None, error_type: Optional[str] = None) -> None:
 			pass
 
-		def add_skipped_info(self, message=None, output=None):
+		def add_skipped_info(self, message: Optional[str] = None, output: Optional[str] = None) -> None:
 			pass
 
 
@@ -64,6 +66,62 @@ RESULT_INT2STR = {
 	RESULT_STYLE: 'S',
 }  # type: Dict[int, str]
 
+MsgIds = Dict[str, Tuple[int, str]]
+
+RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
+RE_IGNORE = re.compile(r'\s+ ucslint :? \s* (?: ({msgid} (?: [, ]+ {msgid})*) \s* )? $'.format(msgid=RE_MSGID.pattern), re.VERBOSE)
+
+
+def noqa(line: str) -> Callable[[str], bool]:
+	"""
+	Check for lines to be ignored by ` ucslint: 0000-0`.
+
+	>>> noqa('')('0000-0')
+	False
+	>>> noqa('# ucslint')('0000-0')
+	True
+	>>> noqa('# ucslint: 0000-0')('0000-0')
+	True
+	>>> noqa('# ucslint: 0000-1')('0000-0')
+	False
+	>>> noqa('# ucslint: 0000-0, 0000-1')('0000-0')
+	True
+	"""
+	match = RE_IGNORE.search(line)
+	if not match:
+		return lambda issue: False
+
+	ignore = match.group(1)
+	if not ignore:
+		return lambda issue: True
+
+	issues = set(RE_MSGID.findall(ignore))
+	return lambda issue: issue in issues
+
+
+def line_regexp(text: str, regexp: Pattern[str]) -> Iterator[Tuple[int, int, Match[str]]]:
+	"""
+	Find all matches and return row and colum number.
+
+	:param text: The text to seach in.
+	:param regexp: Compiled regular excpression.
+	:returns: Iterator returning 3-tuples (row, col, match)
+	"""
+	row = 1
+	col = 1
+	pos = 0
+	for match in regexp.finditer(text):
+		start, end = match.span()
+		while pos < start:
+			if text[pos] == "\n":
+				col = 1
+				row += 1
+			else:
+				col += 1
+			pos += 1
+
+		yield (row, col, match)
+
 
 class UPCMessage(object):
 	"""
@@ -72,47 +130,43 @@ class UPCMessage(object):
 	:param id: Message identifier.
 	:param msg: Message test.
 	:param filename: Associated file name.
-	:param line: Associated line number.
-	:param pos: Associated column number.
+	:param row: Associated line number.
+	:param col: Associated column number.
 	"""
 
-	def __init__(self, id_, msg=None, filename=None, line=None, pos=None):
-		# type: (str, str, str, int, int) -> None
+	def __init__(self, id_: str, msg: str, filename: Optional[str] = None, row: Optional[int] = None, col: Optional[int] = None) -> None:
 		self.id = id_
 		self.msg = msg
 		self.filename = filename
-		self.line = line
-		self.pos = pos
+		self.row = row
+		self.col = col
 
 		if self.filename is not None and self.filename.startswith('./'):
 			self.filename = self.filename[2:]
 
-	def __str__(self):
-		# type: () -> str
+	def __str__(self) -> str:
 		if self.filename:
 			s = '%s' % self.filename
-			if self.line is not None:
-				s += ':%s' % self.line
-				if self.pos is not None:
-					s += ':%s' % self.pos
+			if self.row is not None:
+				s += ':%s' % self.row
+				if self.col is not None:
+					s += ':%s' % self.col
 			return '%s: %s: %s' % (self.id, s, self.msg)
 		return '%s: %s' % (self.id, self.msg)
 
-	def getId(self):
-		# type: () -> str
+	def getId(self) -> str:
 		"""
 		Return unique message identifier.
 		"""
 		return self.id
 
-	def junit(self):
-		# type: () -> TestCase
+	def junit(self) -> TestCase:
 		"""
 		Return JUnit XML test case.
 
 		:returns: test case.
 		"""
-		tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.line)
+		tc = TestCase(self.id, stdout=self.msg, file=self.filename, line=self.row)
 		return tc
 
 
@@ -121,35 +175,34 @@ class UniventionPackageCheckBase(object):
 	Abstract base class for checks.
 	"""
 
-	def __init__(self):
-		# type: () -> None
+	def __init__(self) -> None:
 		self.name = self.__class__.__module__  # type: str
 		self.msg = []  # type: List[UPCMessage]
 		self.debuglevel = 0  # type: int
 
-	def addmsg(self, msgid, msg=None, filename=None, line=None, pos=None):
-		# type: (str, str, str, int, int) -> None
+	def addmsg(self, msgid: str, msg: str, filename: Optional[str] = None, row: Optional[int] = None, col: Optional[int] = None, line: str = '') -> None:
 		"""
 		Add :py:class:`UPCMessage` message.
 
 		:param msgid: Message identifier.
 		:param msg: Message text.
 		:param filename: Associated file name.
-		:param line: Associated line number.
-		:param pos: Associated column number.
+		:param row: Associated line number.
+		:param col: Associated column number.
+		:param line: The line content itself (used for per-line ignores).
 		"""
-		message = UPCMessage(msgid, msg=msg, filename=filename, line=line, pos=pos)
+		if line and noqa(line)(msgid):
+			return
+		message = UPCMessage(msgid, msg, filename, row, col)
 		self.msg.append(message)
 
-	def getMsgIds(self):  # pylint: disable-msg=R0201
-		# type: () -> Dict[str, Tuple[int, str]]
+	def getMsgIds(self) -> MsgIds:
 		"""
 		Return mapping from message-identifiert to 2-tuple (severity, message-text).
 		"""
 		return {}
 
-	def setdebug(self, level):
-		# type: (int) -> None
+	def setdebug(self, level: int) -> None:
 		"""
 		Set debug level.
 
@@ -157,8 +210,7 @@ class UniventionPackageCheckBase(object):
 		"""
 		self.debuglevel = level
 
-	def debug(self, msg):
-		# type: (str) -> None
+	def debug(self, msg: str) -> None:
 		"""
 		Print debug message.
 
@@ -167,24 +219,21 @@ class UniventionPackageCheckBase(object):
 		if self.debuglevel > 0:
 			print('%s: %s' % (self.name, msg))
 
-	def postinit(self, path):
-		# type: (str) -> None
+	def postinit(self, path: str) -> None:
 		"""
 		Checks to be run before real check or to create precalculated data for several runs. Only called once!
 
 		:param path: Directory or file to check.
 		"""
 
-	def check(self, path):
-		# type: (str) -> None
+	def check(self, path: str) -> None:
 		"""
 		The real check.
 
 		:param path: Directory or file to check.
 		"""
 
-	def result(self):
-		# type: () -> List[UPCMessage]
+	def result(self) -> List[UPCMessage]:
 		"""
 		Return result as list of messages.
 
@@ -198,7 +247,7 @@ class UniventionPackageCheckDebian(UniventionPackageCheckBase):
 	Check for :file:`debian/` directory.
 	"""
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		"""
 		the real check.
 		"""
@@ -230,20 +279,19 @@ class FailedToReadFile(UCSLintException):
 	File reading exception.
 	"""
 
-	def __init__(self, fn):
+	def __init__(self, fn: str) -> None:
 		super(FailedToReadFile, self).__init__()
 		self.fn = fn
 
 
-class DebianControlEntry(dict):
+class DebianControlEntry(Dict[str, str]):
 	"""
 	Handle paragraph in Deb822 control file.
 
 	:param content: String content of paragraph.
 	"""
 
-	def __init__(self, content):
-		# type: (str) -> None
+	def __init__(self, content: str) -> None:
 		dict.__init__(self)
 
 		lines = content.splitlines()
@@ -254,9 +302,9 @@ class DebianControlEntry(dict):
 				del lines[i]
 				continue
 			if lines[i].startswith(' ') or lines[i].startswith('\t'):
-					lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
-					del lines[i]
-					continue
+				lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
+				del lines[i]
+				continue
 			i += 1
 
 		# split lines into dictionary
@@ -274,10 +322,8 @@ class ParserDebianControl(object):
 	:param filename: Full path.
 	"""
 
-	def __init__(self, filename):
-		# type: (str) -> None
+	def __init__(self, filename: str) -> None:
 		self.filename = filename
-		self.source_section = None  # type: Optional[DebianControlEntry]
 		self.binary_sections = []  # type: List[DebianControlEntry]
 
 		try:
@@ -300,22 +346,20 @@ class RegExTest(object):
 	"""
 	Regular expression test.
 
-	:param regex: Compiled regular expression
+	:param regex: Compiled regular expression.
 	:param msgid: Message identifier.
 	:param msg: Message text.
 	:param cntmin: Required minimum number of matches.
-	:param cntmax: Required maximum number of matches.
+	:param cntmax: Allowed maximum number of matches.
 	"""
 
-	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
-		# type: (Pattern, str, str, int, int) -> None
+	def __init__(self, regex: Pattern[str], msgid: str, msg: str, cntmin: Optional[int] = None, cntmax: Optional[int] = None) -> None:
 		self.regex = regex
 		self.msgid = msgid
 		self.msg = msg
 		self.cntmin = cntmin
 		self.cntmax = cntmax
 		self.cnt = 0
-		self.formatmsg = any(val in msg for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s'])
 
 
 class UPCFileTester(object):
@@ -325,21 +369,23 @@ class UPCFileTester(object):
 
 	By default only the first 100k of the file will be read.
 
-	>>>	import re
-	>>>	x = UPCFileTester()
-	>>>	x.open('/etc/fstab')
-	>>>	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	>>>	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
-	>>>	msglist = x.runTests()
-	>>>	for msg in msglist:
-	>>>		print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
-	5432-1: /etc/fstab:4:29: Habe ein extfs in Zeile 4 und Position 29 in Datei fstab gefunden.
-	5432-1: /etc/fstab:7:19: Habe ein extfs in Zeile 7 und Position 19 in Datei fstab gefunden.
-	1234-5: /etc/fstab: Habe kein squashfs in Datei fstab gefunden.
+	Example::
+
+	    import re
+	    x = UPCFileTester()
+	    x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs gefunden.', cntmax=0)
+	    x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs gefunden.', cntmin=1)
+	    x.open('/etc/fstab')
+	    msglist = x.runTests()
+	    for msg in msglist:
+	        print('%s ==> %s ==> %s' % (msg.id, msg.filename, msg.msg))
+
+	    5432-1: /etc/fstab:4:29: Habe ein extfs gefunden.
+	    5432-1: /etc/fstab:7:19: Habe ein extfs gefunden.
+	    1234-5: /etc/fstab: Habe kein squashfs gefunden.
 	"""
 
-	def __init__(self, maxsize=100 * 1024):
-		# type: (int) -> None
+	def __init__(self, maxsize: int = 100 * 1024) -> None:
 		"""
 		creates a new :py:class:`UPCFileTester` object
 
@@ -347,20 +393,17 @@ class UPCFileTester(object):
 		"""
 		self.maxsize = maxsize
 		self.filename = None  # type: Optional[str]
-		self.basename = None  # type: Optional[str]
 		self.raw = ''  # type: str
 		self.lines = []  # type: List[str]
 		self.tests = []  # type: List[RegExTest]
 
-	def open(self, filename):
-		# type: (str) -> None
+	def open(self, filename: str) -> None:
 		"""
 		Opens the specified file and reads up to `maxsize` bytes into memory.
 
 		:param filename: File to process.
 		"""
 		self.filename = filename
-		self.basename = os.path.basename(self.filename)
 		# hold raw file in memory (self.raw) and a unwrapped version (self.lines)
 		# the raw version is required to calculate the correct position.
 		# tests will be done with unwrapped version.
@@ -371,8 +414,7 @@ class UPCFileTester(object):
 		lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
 		self.lines = lines.splitlines()
 
-	def _getpos(self, linenumber, pos_in_line):
-		# type: (int, int) -> Tuple[int, int]
+	def _getpos(self, linenumber: int, pos_in_line: int) -> Tuple[int, int]:
 		"""
 		Converts 'unwrapped' position values (line and position in line) into
 		position values corresponding to the raw file.
@@ -389,18 +431,15 @@ class UPCFileTester(object):
 		realline = raw.count('\n')
 		return (realline + 1, realpos)
 
-	def addTest(self, regex, msgid, msg, cntmin=None, cntmax=None):
-		# type: (Pattern, str, str, int, int) -> None
+	def addTest(self, regex: Pattern[str], msgid: str, msg: str, cntmin: Optional[int] = None, cntmax: Optional[int] = None) -> None:
 		"""
 		add a new test
 
-		:param regex: regular expression.
-		:param msgid: msgid for UPCMessage
-		:param msg: message for UPCMessage
-			if msg contains one or more of the keywords '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s' or '%(basename)s'
-			they will get replaced by their corresponding value.
-		:param cntmin: 'regex' has to match at least 'cntmin' times otherwise a UPCMessage will be added
-		:param cntmax: 'regex' has to match at most 'cntmax' times otherwise a UPCMessage will be added
+		:param regex: Compiled regular expression pattern.
+		:param msgid: msgid for :py:class:`UPCMessage`.
+		:param msg: message for :py:class:`UPCMessage`.
+		:param cntmin: 'regex' has to match at least 'cntmin' times otherwise a :py:class:`UPCMessage` will be added.
+		:param cntmax: 'regex' has to match at most 'cntmax' times otherwise a :py:class:`UPCMessage` will be added.
 
 		:raises ValueError: if neither `cntmin` nor `cntmax` has been set
 		"""
@@ -408,12 +447,11 @@ class UPCFileTester(object):
 			raise ValueError('cntmin or cntmax has to be set')
 		self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
-	def runTests(self):
-		# type: () -> List[UPCMessage]
+	def runTests(self) -> List[UPCMessage]:
 		"""
 		Runs all given tests on loaded file.
 
-		:returns: a list of UPCMessage objects
+		:returns: a list of :py:class:`UPCMessage` objects
 		"""
 		if not self.filename:
 			raise Exception('no file has been loaded')
@@ -421,44 +459,49 @@ class UPCFileTester(object):
 		msglist = []
 		for t in self.tests:
 			t.cnt = 0
-		# iterate over all lines
-		for linenum, line in enumerate(self.lines):
-			# iterate over all tests
+
+		for row, line in enumerate(self.lines):
+			ignore = noqa(line)
 			for t in self.tests:
-				# test regex with current line
+				if ignore(t.msgid):
+					continue
+
 				match = t.regex.search(line)
-				if match:
-					# found a match ==> increase counter
-					t.cnt += 1
-					if t.cntmax is not None and t.cnt > t.cntmax:
-						# a maximum counter has been defined and maximum has been exceeded
-						startline, startpos = self._getpos(linenum, match.start(0))
-						endline, endpos = self._getpos(linenum, match.end(0))
-						msg = t.msg
-						if t.formatmsg:
-							# format msg
-							msg = msg % {'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename}
-						# append UPCMessage
-						msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos))
+				if not match:
+					continue
+
+				t.cnt += 1
+				if t.cntmax is None or t.cnt <= t.cntmax:
+					continue
+
+				# a maximum counter has been defined and maximum has been exceeded
+				start, end = match.span()
+				startline, startpos = self._getpos(row, start)
+				msg = '%s\n\t%s\n\t%s%s' % (
+					t.msg,
+					line.expandtabs(),
+					' ' * len(line[:start].expandtabs()),
+					'^' * len(line[start:end].expandtabs()),
+				)
+				msglist.append(UPCMessage(t.msgid, msg, self.filename, startline, startpos))
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:
 			if t.cntmin is not None and t.cnt < t.cntmin:
-				msg = t.msg
-				if t.formatmsg:
-					msg = msg % {'basename': self.basename, 'filename': self.filename}
-					# append msg
-					msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename))
+				msglist.append(UPCMessage(t.msgid, t.msg, self.filename))
+
 		return msglist
 
 
 class FilteredDirWalkGenerator(object):
 
 	IGNORE_DIRS = {
-		'.git',
-		'.pybuild',
-		'.svn',
 		'CVS',
+		'.git',
+		'.mypy_cache',
+		'.pybuild',
+		'__pycache__',
+		'.svn',
 	}
 	IGNORE_SUFFIXES = {
 		'~',
@@ -495,7 +538,7 @@ class FilteredDirWalkGenerator(object):
 		'.jar',  # Java Archive
 		'.jpeg',  # Joint Photographic Experts Group
 		'.jpg',  # Joint Photographic Experts Group
-		'.mo',   # Gnutext Message object
+		'.mo',  # Gnutext Message object
 		'.pdf',  # Portable Document Format
 		'.png',  # Portable Network Graphics
 		'.so',  # shared library
@@ -509,20 +552,40 @@ class FilteredDirWalkGenerator(object):
 		'.xz',
 		'.zip',
 	}
+	DOCUMENTATION_SUFFIXES = {
+		'.1',
+		'.2',
+		'.3',
+		'.4',
+		'.5',
+		'.6',
+		'.7',
+		'.8',
+		'.doc',
+		'.html',
+		'.md',
+		'.po',
+		'.rst',
+		'.txt',
+		'.xml',
+		'changelog',
+		'ChangeLog',
+		'README',
+	}
 
 	def __init__(
 		self,
-		path,  # type: str
-		ignore_dirs=None,  # type: Iterable[str]
-		prefixes=None,  # type: Iterable[str]
-		suffixes=None,  # type: Iterable[str]
-		ignore_suffixes=None,  # type: Iterable[str]
-		ignore_files=None,  # type: Iterable[str]
-		ignore_debian_subdirs=True,  # type: bool
-		reHashBang=None,  # type: Pattern
-		readSize=2048,  # type: int
-		dangling_symlinks=False,  # type: bool
-	):  # type: (...) -> None
+		path: str,
+		ignore_dirs: Optional[Iterable[str]] = None,
+		prefixes: Optional[Iterable[str]] = None,
+		suffixes: Optional[Iterable[str]] = None,
+		ignore_suffixes: Optional[Iterable[str]] = None,
+		ignore_files: Optional[Iterable[str]] = None,
+		ignore_debian_subdirs: bool = True,
+		reHashBang: Optional[Pattern[str]] = None,
+		readSize: int = 2048,
+		dangling_symlinks: bool = False,
+	) -> None:
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
 
@@ -537,9 +600,10 @@ class FilteredDirWalkGenerator(object):
 		:param reHashBang: if defined, additionally text files are returned whose first characters match specified regular expression.
 		:param readSize: number of bytes that will be read for e.g. reHashBang
 
-		example:
-		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
-		>>>   print(fn)
+		example::
+
+		     for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
+		       print(fn)
 		"""
 		self.path = path
 		self.ignore_dirs = set(ignore_dirs or ()) | self.IGNORE_DIRS
@@ -552,8 +616,7 @@ class FilteredDirWalkGenerator(object):
 		self.readSize = readSize
 		self.dangling_symlinks = dangling_symlinks
 
-	def __iter__(self):
-		# type: () -> Iterator[str]
+	def __iter__(self) -> Iterator[str]:
 		for dirpath, dirnames, filenames in os.walk(self.path):
 			# remove undesired directories
 			if self.ignore_dirs:
@@ -604,21 +667,6 @@ class FilteredDirWalkGenerator(object):
 				yield fn
 
 
-def _test():
-	"""Run simple test."""
-	import re
-	x = UPCFileTester()
-	x.addTest(re.compile(r'ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	x.addTest(re.compile(r'squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
-	x.open('/etc/fstab')
-	msglist = x.runTests()
-	for msg in msglist:
-		print(str(msg))
-	x.open('/etc/passwd')
-	msglist = x.runTests()
-	for msg in msglist:
-		print(str(msg))
-
-
 if __name__ == '__main__':
-	_test()
+	import doctest
+	doctest.testmod()

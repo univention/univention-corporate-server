@@ -27,10 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
+import re
 from itertools import chain
 from os.path import join
-import re
+
+import univention.ucslint.base as uub
 
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*
 # 2) check if strings like "univention.qa" appear in debian/* and conffiles/*
@@ -38,14 +39,14 @@ import re
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0002-1': (uub.RESULT_WARN, 'cannot open file'),
 			'0002-2': (uub.RESULT_ERROR, 'found basedn used in QA'),
 			'0002-3': (uub.RESULT_ERROR, 'found domainname used in QA'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 

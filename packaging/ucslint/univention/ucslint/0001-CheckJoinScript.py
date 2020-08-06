@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable-msg=C0301
 #
 # Copyright (C) 2008-2020 Univention GmbH
 #
@@ -28,16 +27,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
+from typing import Dict  # noqa F401
+
+import univention.ucslint.base as uub
 
 CALLED, COPIED = (1 << bit for bit in range(2))
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0001-1': (uub.RESULT_STYLE, 'the old command "univention-admin" is used'),
 			'0001-2': (uub.RESULT_ERROR, '"$@" for passing credentials to univention-directory-manager is missing'),
@@ -67,7 +68,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')
 	RE_DH_JOIN = re.compile(r'\bunivention-install-joinscript\b')
 
-	def check_join_script(self, filename):
+	def check_join_script(self, filename: str) -> None:
 		"""Check a single join script."""
 		try:
 			content = open(filename, 'r').read()
@@ -88,7 +89,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'joinscript_api': False,
 			'joinscript_remove_script_from_status_file': 0,
 		}
-		for lnr, line in enumerate(lines, start=1):
+		for row, line in enumerate(lines, start=1):
 			line = line.strip()
 
 			# check joinscript api
@@ -102,7 +103,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if line.startswith('VERSION='):
 				cnt['version'] += 1
 				if cnt['version'] > 1:
-					self.addmsg('0001-12', 'join script does set VERSION more than once', filename, lnr)
+					self.addmsg('0001-12', 'join script does set VERSION more than once', filename, row, line=line)
 			if line.find(' v${VERSION} ') >= 0:
 				cnt['vversion'] += 1
 
@@ -119,13 +120,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			# check udm calls
 			if 'univention-admin ' in line or 'univention-directory-manager ' in line or 'udm ' in line:
 				if 'univention-admin ' in line:
-					self.addmsg('0001-1', 'join script still uses "univention-admin"', filename, lnr)
+					self.addmsg('0001-1', 'join script still uses "univention-admin"', filename, row, line=line)
 
 				if ' $@ ' not in line and ' "$@" ' not in line and ' "${@}" ' not in line:
-					self.addmsg('0001-2', 'join script is missing "$@"', filename, lnr)
+					self.addmsg('0001-2', 'join script is missing "$@"', filename, row, line=line)
 
 			if ' $@ ' in line or ' ${@} ' in line:
-				self.addmsg('0001-11', 'join script contains unquoted $@', filename, lnr)
+				self.addmsg('0001-11', 'join script contains unquoted $@', filename, row, line=line)
 
 		if not cnt['joinscript_api']:
 			self.addmsg('0001-16', 'join script does not use joinscript api (possible clear text passwords)', filename)
@@ -153,7 +154,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				if not cnt['joinscript_save_current_version']:
 					self.addmsg('0001-15', 'join script does not use joinscript_save_current_version', filename)
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -183,7 +184,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		# check if join scripts are present in debian/rules || debian/*.install
 		#
-		found = {}
+		found = {}  # type: Dict[str, int]
 		debianpath = os.path.join(path, 'debian')
 		# get all .install files
 		fnlist = list(uub.FilteredDirWalkGenerator(debianpath, suffixes=['.install']))
@@ -197,7 +198,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except EnvironmentError:
 			self.addmsg('0001-9', 'failed to open and read file', fn_rules)
 		else:
-			if UniventionPackageCheck.RE_DH_JOIN.search(content):
+			if self.RE_DH_JOIN.search(content):
 				self.debug('Detected use of univention-install-joinscript')
 				try:
 					fn_control = os.path.join(path, 'debian', 'control')
@@ -206,14 +207,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.debug('Errors in debian/control. Skipping here')
 				else:
 					for binary_package in parser.binary_sections:
-						package = binary_package.get('Package')
+						package = binary_package['Package']
 						for js in fnlist_joinscripts:
 							if re.match(r'^\./\d\d%s\.u?inst$' % re.escape(package), js):
 								self.debug('univention-install-joinscript will take care of %s' % js)
 								fnlist_joinscripts[js] = 0
 								found[js] = found.get(js, 0) + 1
 
-			if UniventionPackageCheck.RE_DH_UMC.search(content):
+			if self.RE_DH_UMC.search(content):
 				self.debug('Detected use of dh-umc-module-install')
 				for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
 					package = os.path.basename(fn)[:-len('.umc-modules')]
@@ -267,23 +268,23 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg('0001-9', 'failed to open and read file', fn)
 				continue
 
-			set_e = UniventionPackageCheck.RE_LINE_CONTAINS_SET_E.search(content)
+			set_e = self.RE_LINE_CONTAINS_SET_E.search(content)
 			if set_e:
 				self.debug('found "set -e" in %s' % fn)
 
 			for js in fnlist_joinscripts:
-					name = os.path.basename(js)
-					self.debug('looking for %s in %s' % (name, fn))
-					if name in content:
-						fnlist_joinscripts[js] &= ~bit
-						self.debug('found %s in %s' % (name, fn))
+				name = os.path.basename(js)
+				self.debug('looking for %s in %s' % (name, fn))
+				if name in content:
+					fnlist_joinscripts[js] &= ~bit
+					self.debug('found %s in %s' % (name, fn))
 
-						if set_e:
-							for lnr, line in enumerate(content.splitlines(), start=1):
-								if name in line:
-									match = UniventionPackageCheck.RE_LINE_ENDS_WITH_TRUE.search(line)
-									if not match:
-										self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, lnr)
+					if set_e:
+						for row, line in enumerate(content.splitlines(), start=1):
+							if name in line:
+								match = self.RE_LINE_ENDS_WITH_TRUE.search(line)
+								if not match:
+									self.addmsg('0001-8', 'the join script %s is not called with "|| true" but "set -e" is set' % (name,), fn, row, line=line)
 
 		for js, missing in fnlist_joinscripts.items():
 			if missing & CALLED and js.endswith('.inst'):

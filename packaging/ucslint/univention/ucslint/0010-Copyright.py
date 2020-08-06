@@ -27,11 +27,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
 import time
+from typing import List  # noqa F401
 
+import univention.ucslint.base as uub
 
 RE_SKIP = re.compile(
 	'|'.join((
@@ -50,7 +51,7 @@ RE_COPYRIGHT_VERSION = re.compile(r'Copyright(?:\s+\(C\)|:)?\s+([0-9, -]+)\s+(?:
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0010-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0010-2': (uub.RESULT_ERROR, 'file contains no copyright text block'),
@@ -60,11 +61,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0010-6': (uub.RESULT_WARN, 'debian/copyright is not machine-readable DEP-5'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		check_files = []
+		check_files = []  # type: List[str]
 
 		# check if copyright file is missing
 		fn = os.path.join(path, 'debian', 'copyright')
@@ -72,9 +73,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			with open(fn, 'r') as stream:
 				line = stream.readline().rstrip()
 				if line != DEP5:
-					self.addmsg('0010-6', 'not machine-readable DEP-5', filename=fn)
+					self.addmsg('0010-6', 'not machine-readable DEP-5', fn)
 		except EnvironmentError:
-			self.addmsg('0010-5', 'file is missing', filename=fn)
+			self.addmsg('0010-5', 'file is missing', fn)
 
 		# looking for files below debian/
 		for f in os.listdir(os.path.join(path, 'debian')):
@@ -92,7 +93,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			try:
 				content = open(fn, 'r').read()
 			except (EnvironmentError, UnicodeDecodeError):
-				self.addmsg('0010-1', 'failed to open and read file', filename=fn)
+				self.addmsg('0010-1', 'failed to open and read file', fn)
 				continue
 			self.debug('testing %s' % fn)
 
@@ -111,16 +112,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			for teststr in copyright_strings:
 				if teststr not in content:
 					self.debug('Missing copyright string: %s' % teststr)
-					self.addmsg('0010-2', 'file contains no copyright text block', filename=fn)
+					self.addmsg('0010-2', 'file contains no copyright text block', fn)
 					break
 			else:
 				# copyright text block is present - lets check if it's outdated
 				match = RE_COPYRIGHT_VERSION.search(content)
 				if not match:
-					self.addmsg('0010-4', 'cannot find copyright line containing year', filename=fn)
+					self.addmsg('0010-4', 'cannot find copyright line containing year', fn)
 				else:
 					years = match.group(1)
 					current_year = str(time.localtime()[0])
 					if current_year not in years:
 						self.debug('Current year=%s  years="%s"' % (current_year, years))
-						self.addmsg('0010-3', 'copyright line seems to be outdated', filename=fn)
+						self.addmsg('0010-3', 'copyright line seems to be outdated', fn)

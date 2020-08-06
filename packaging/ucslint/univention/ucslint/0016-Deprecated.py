@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable-msg=C0103
 """Find use of deprecated functions / programs / scripts."""
 #
 # Copyright (C) 2008-2020 Univention GmbH
@@ -29,16 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
+
+import univention.ucslint.base as uub
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	"""Find use of deprecated functions / programs / scripts."""
 
-	def getMsgIds(self):  # pylint: disable-msg=R0201
+	def getMsgIds(self) -> uub.MsgIds:
 		"""Return severity and description for message identifiers."""
 		return {
 			'0016-1': (uub.RESULT_WARN, 'failed to open file'),
@@ -49,7 +49,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0016-6': (uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -67,7 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			re.compile(r'''@%@BCWARNING=.+?@%@'''),
 			'0016-5', 'Use of deprecated "@%@BCWARNING=@%@"', cntmax=0)
 
-		ignore_suffixes = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt'),
+		ignore_suffixes = ('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.txt')
 		ignore_files = ('changelog', 'README')
 		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=ignore_suffixes, ignore_files=ignore_files):
 			tester.open(fn)

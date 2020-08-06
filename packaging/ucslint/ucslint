@@ -34,11 +34,11 @@
 import os
 import re
 import sys
-from argparse import ArgumentParser, FileType, Namespace  # noqa F401
+from argparse import ArgumentParser, ArgumentTypeError, FileType, Namespace  # noqa F401
 from errno import ENOENT
 from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
-from os.path import abspath, dirname, expanduser, join, normpath
+from os.path import abspath, dirname, exists, expanduser, isdir, join, normpath, relpath
 from types import ModuleType  # noqa F401
 from typing import IO, Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
 
@@ -48,6 +48,18 @@ try:
 	from junit_xml import TestSuite  # type: ignore
 except ImportError:
 	pass
+
+
+RE_OVERRIDE = re.compile(
+	r'''^
+	(?P<module> \d+-[BEFNW]?\d+)
+	(?: [:]
+	    (?: \s* (?P<pattern> .+?) \s*
+	        (?: [:] \s* (?P<linenumber> \d+)
+	        )?
+	    )?
+	)?
+	$''', re.VERBOSE)
 
 
 class DebianPackageCheck(object):
@@ -61,8 +73,7 @@ class DebianPackageCheck(object):
 	:param debuglevel: Vebosity level.
 	"""
 
-	def __init__(self, path, plugindirs, enabled_modules=None, disabled_modules=None, debuglevel=0):
-		# type: (str, Sequence[str], Container[str], Container[str], int) -> None
+	def __init__(self, path: str, plugindirs: Sequence[str], enabled_modules: Container[str] = None, disabled_modules: Container[str] = None, debuglevel: int = 0):
 		self.path = path
 		self.plugindirs = plugindirs
 		self.pluginlist = {}  # type: Dict[str, ModuleType]
@@ -74,8 +85,7 @@ class DebianPackageCheck(object):
 		self.overrides = set()  # type: Set[Tuple[str, Optional[str], Optional[int]]]
 		self.loadplugins()
 
-	def loadplugins(self):
-		# type: () -> None
+	def loadplugins(self) -> None:
 		"""
 		Load modules from plugin directory.
 		"""
@@ -105,8 +115,7 @@ class DebianPackageCheck(object):
 							if self.debuglevel:
 								print('Module %s is not enabled' % f, file=sys.stderr)
 
-	def check(self):
-		# type: () -> None
+	def check(self) -> None:
 		"""
 		Run plugin on files in path.
 		"""
@@ -121,8 +130,7 @@ class DebianPackageCheck(object):
 				print(ex, file=sys.stderr)
 			self.msglist.extend(obj.result())
 
-	def loadOverrides(self):
-		# type: () -> None
+	def loadOverrides(self) -> None:
 		"""
 		Parse :file:`debian/ucslint.overrides` file.
 		"""
@@ -130,44 +138,43 @@ class DebianPackageCheck(object):
 		fn = os.path.join(self.path, 'debian', 'ucslint.overrides')
 		try:
 			with open(fn, 'r') as overrides:
-				RE = re.compile(r'^(\d+-\d+)(?::|:\s*(.+?)\s*(?::\s*(\d+))?)?$')
-				for nr, line in enumerate(overrides, start=1):
+				for row, line in enumerate(overrides, start=1):
 					line = line.strip()
+					if not line:
+						continue
 					if line.startswith('#'):
 						continue
-					result = RE.match(line)
+					result = RE_OVERRIDE.match(line)
 					if not result:
-						print('IGNORED: debian/ucslint.overrides:%d: %s' % (nr, line), file=sys.stderr)
+						print('IGNORED: debian/ucslint.overrides:%d: %s' % (row, line), file=sys.stderr)
 						continue
 
-					module, filename, linenumber = result.groups()
-					override = (module, normpath(join(self.path, filename)) if filename else None, int(linenumber) if filename and linenumber else None)
+					module, pattern, linenumber = result.groups()
+					override = (module, pattern, int(linenumber) if pattern and linenumber else None)
 					self.overrides.add(override)
 		except EnvironmentError as ex:
 			if ex.errno != ENOENT:
 				print('WARNING: load debian/ucslint.overrides: %s' % (ex,), file=sys.stderr)
 
-	def in_overrides(self, msg):
-		# type: (uub.UPCMessage) -> bool
+	def in_overrides(self, msg: uub.UPCMessage) -> bool:
 		"""
 		Check message against overrides.
 
 		:param msg: Message to check.
 		:returns: `True` when the check should be ignored, `False` otherwise.
 		"""
-		filepath = normpath(msg.filename) if msg.filename else ''
-		for (modulename, pattern, number, ) in self.overrides:
+		filepath = normpath(relpath(msg.filename, self.path)) if msg.filename else ''
+		for (modulename, pattern, linenumber) in self.overrides:
 			if modulename != msg.getId():
 				continue
 			if pattern and not fnmatch(filepath, pattern):
 				continue
-			if number is not None and number != msg.line:
+			if linenumber is not None and linenumber != msg.row:
 				continue
 			return True
 		return False
 
-	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories, junit=None):
-		# type: (Container[str], Container[str], str, str, IO[str]) -> Tuple[int, int]
+	def printResult(self, ignore_IDs: Container[str], display_only_IDs: Container[str], display_only_categories: str, exitcode_categories: str, junit: IO[str] = None) -> Tuple[int, int]:
 		"""
 		Print result of checks.
 
@@ -220,8 +227,7 @@ class DebianPackageCheck(object):
 		return incident_cnt, exitcode_cnt
 
 
-def clean_id(idstr):
-	# type: (str) -> str
+def clean_id(idstr: str) -> str:
 	"""
 	Format message ID string.
 
@@ -237,8 +243,7 @@ def clean_id(idstr):
 	return '%s-%s' % (clean_modid(modid), clean_msgid(msgid))
 
 
-def clean_modid(modid):
-	# type: (str) -> str
+def clean_modid(modid: str) -> str:
 	"""
 	Format module ID string.
 
@@ -253,8 +258,7 @@ def clean_modid(modid):
 	return '%04d' % (int(modid))
 
 
-def clean_msgid(msgid):
-	# type: (str) -> str
+def clean_msgid(msgid: str) -> str:
 	"""
 	Format message ID string.
 
@@ -269,12 +273,11 @@ def clean_msgid(msgid):
 	return '%d' % int(msgid)
 
 
-def parse_args():
-	# type: () -> Namespace
+def parse_args() -> Namespace:
 	"""
 	Parse command line arguments.
 
-	:returns: 2-tuple (options, package-path)
+	:returns: parsed options.
 	"""
 	parser = ArgumentParser()
 	parser.add_argument(
@@ -329,29 +332,48 @@ def parse_args():
 	)
 	parser.add_argument(
 		'pkgpath',
-		nargs='?', default='.',
+		nargs='*', type=debian_dir,
 		help="Source package directory"
 	)
 	args = parser.parse_args()
 
-	pkgpath = args.pkgpath
-	if not os.path.exists(pkgpath):
-		parser.error("directory %s does not exist!" % pkgpath)
-
-	if not os.path.isdir(pkgpath):
-		parser.error("%s is no directory!" % pkgpath)
-
-	if not os.path.isdir(os.path.join(pkgpath, 'debian')):
-		parser.error("%s/debian does not exist or is not a directory!" % pkgpath)
-
 	if args.junit_xml and not uub.JUNIT:
 		parser.error("Missing Python support for JUNIT_XML")
+
+	try:
+		if not args.pkgpath:
+			args.pkgpath = [debian_dir('.')]
+	except ArgumentTypeError as ex:
+		parser.error(str(ex))
 
 	return args
 
 
-def main():
-	# type: () -> None
+def debian_dir(pkgpath: str) -> str:
+	"""
+	Check if given path is base for a Debian package.
+
+	:param pkgpath: base path.
+	:returns: same path.
+	:raises ArgumentTypeError: when it is no Debian package.
+	"""
+	if not exists(pkgpath):
+		msg = "directory %r does not exist!" % (pkgpath,)
+		raise ArgumentTypeError(msg)
+
+	if not isdir(pkgpath):
+		msg = "%r is no directory!" % (pkgpath,)
+		raise ArgumentTypeError(msg)
+
+	debdir = join(pkgpath, 'debian')
+	if not isdir(debdir):
+		msg = "%r does not exist or is not a directory!" % (debdir,)
+		raise ArgumentTypeError(msg)
+
+	return pkgpath
+
+
+def main() -> None:
 	"""
 	Run checks.
 	"""
@@ -365,16 +387,18 @@ def main():
 	enabled_modules = [clean_modid(x) for mod in options.enabled_modules for x in mod.split(',')]
 	disabled_modules = [clean_modid(x) for mod in options.disabled_modules for x in mod.split(',')]
 
-	os.chdir(options.pkgpath)
-	chk = DebianPackageCheck('.', plugindirs, enabled_modules=enabled_modules, disabled_modules=disabled_modules, debuglevel=options.debug)
-	try:
-		chk.check()
-	except uub.UCSLintException as ex:
-		print(ex, file=sys.stderr)
+	fail = False
+	for pkgpath in options.pkgpath or ['.']:
+		chk = DebianPackageCheck(pkgpath, plugindirs, enabled_modules=enabled_modules, disabled_modules=disabled_modules, debuglevel=options.debug)
+		try:
+			chk.check()
+		except uub.UCSLintException as ex:
+			print(ex, file=sys.stderr)
 
-	incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
+		incident_cnt, exitcode_cnt = chk.printResult(ignore_IDs, display_only_IDs, options.display_only_categories, options.exitcode_categories, options.junit_xml)
+		fail |= bool(exitcode_cnt)
 
-	if exitcode_cnt:
+	if fail:
 		sys.exit(2)
 
 

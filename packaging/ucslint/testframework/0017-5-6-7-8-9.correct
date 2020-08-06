@@ -1,0 +1,27 @@
+S:0017-10: shell.sh:10:1: Useless use of `echo $(...)` for single argument
+	echo "$(date)"
+	^^^^^^^^^^^^^^
+S:0017-5: shell.sh:2:101: Use `sed -n "s/^prefix: //p"`
+	univention-ldapsearch "(&(objectclass=univentionDomainController)(univentionService=Samba 4))" cn | sed -n 's/^cn: \(.*\)/\1/p'
+	                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+S:0017-5: shell.sh:8:1: Use `sed -n "s/^prefix: //p"`
+	sed -rne 's|^dn: (.*)$|\1|p' </dev/null
+	^^^^^^^^^^^^^^^^^^^^^^^^^^
+S:0017-6: shell.sh:3:12: Use `ldapsearch -o ldif-wrap=no`
+	univention-ldapsearch "uid=Administrator" | ldapsearch-wrapper
+	           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+S:0017-7: shell.sh:5:1: Use `array+=(val)`
+	args[${#args[@]}]="-D"
+	^^^^^^^^^^^^^^^^^^
+S:0017-8: shell.sh:13:12: Useless use of `cat`; redirect STDIN instead
+	memtotal=$(more /proc/meminfo | grep ^MemTotal: | awk {'print $2'})
+	           ^^^^^^^^^^^^^^^^^^^^
+S:0017-8: shell.sh:6:1: Useless use of `cat`; redirect STDIN instead
+	cat /etc/fstab | grep '^[^#]'
+	^^^^^^^^^^^^^^^^
+S:0017-9: shell.sh:13:33: Useless use of `grep`; use /PATTERN/s instead
+	memtotal=$(more /proc/meminfo | grep ^MemTotal: | awk {'print $2'})
+	                                ^^^^^^^^^^^^^^^^^^^^^
+S:0017-9: shell.sh:7:67: Useless use of `grep`; use /PATTERN/s instead
+	univention-ldapsearch -o ldif-wrap=no '(uid=Administrator)' 1.1 | grep ^dn | sed -ne 's/^dn: //p'
+	                                                                  ^^^^^^^^^^^^^^

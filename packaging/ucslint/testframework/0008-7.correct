@@ -1,0 +1,24 @@
+W:0008-7: python.py:4:7: found well-known LDAP object but no custom_*name()
+	print("Administrator", custom_username("Administrator"))
+	      ^^^^^^^^^^^^^^^
+W:0008-7: python.py:5:7: found well-known LDAP object but no custom_*name()
+	print("Domain Admins", custom_groupname("Domain Admins"))
+	      ^^^^^^^^^^^^^^^
+W:0008-7: python.py:6:7: found well-known LDAP object but no custom_*name()
+	print("Administrator", custom_groupname("Administrator"))
+	      ^^^^^^^^^^^^^^^
+W:0008-7: python.py:7:7: found well-known LDAP object but no custom_*name()
+	print("Windows Hosts", custom_groupname("Windows Hosts"))
+	      ^^^^^^^^^^^^^^^
+W:0008-7: shell.sh:5:18: found well-known LDAP object but no custom_*name()
+	printf '%s %s\n' "Administrator" "$(custom_username "Administrator")"
+	                 ^^^^^^^^^^^^^^^
+W:0008-7: shell.sh:6:18: found well-known LDAP object but no custom_*name()
+	printf '%s %s\n' "Domain Admins" "$(custom_groupname "Domain Admins")"
+	                 ^^^^^^^^^^^^^^^
+W:0008-7: shell.sh:7:18: found well-known LDAP object but no custom_*name()
+	printf '%s %s\n' "Administrator" "$(custom_groupname "Administrator")"
+	                 ^^^^^^^^^^^^^^^
+W:0008-7: shell.sh:8:18: found well-known LDAP object but no custom_*name()
+	printf '%s %s\n' "Windows Hosts" "$(custom_groupname "Windows Hosts")"
+	                 ^^^^^^^^^^^^^^^

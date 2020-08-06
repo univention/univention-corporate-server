@@ -28,13 +28,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
+import re
+from glob import glob
+from itertools import cycle
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
-from glob import glob
 from shlex import split
-from typing import Callable, Dict, Iterator, List, Set, Tuple  # noqa F401
-import re
+from typing import Callable, Dict, Iterable, Iterator, List, Set, Tuple, Union  # noqa F401
+
+from debian.changelog import Changelog, ChangelogParseError  # Version
+
+import univention.ucslint.base as uub
+from univention.ucslint.common import RE_DEBIAN_PACKAGE_VERSION
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -49,22 +54,33 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	}
 	SCRIPTS = frozenset(ACTIONS)
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0018-1': (uub.RESULT_STYLE, 'wrong script name in comment'),
 			'0018-2': (uub.RESULT_STYLE, 'Unneeded entry in debian/dirs; the directory is implicitly created by another debhelper'),
 			'0018-3': (uub.RESULT_WARN, 'Invalid action in Debian maintainer script'),
 			'0018-4': (uub.RESULT_WARN, 'Use debian/*.pyinstall to install Python modules'),
+			'0018-5': (uub.RESULT_INFO, 'Maintainer script contains old upgrade code'),
 		}
 
-	def check(self, path):
-		# type: (str) -> None
+	def check(self, path: str) -> None:
 		self.check_scripts(path)
 		self.check_dirs(path)
 
-	def check_scripts(self, path):
-		# type: (str) -> None
+	def get_debian_version(self, path: str) -> "Version":
+		try:
+			fn_changelog = join(path, 'debian', 'changelog')
+			with open(fn_changelog, 'r') as fd:
+				changelog = Changelog(fd)
+
+			return Version(changelog.version.full_version)
+		except (EnvironmentError, ChangelogParseError) as ex:
+			self.debug('Failed open %r: %s' % (fn_changelog, ex))
+			return Version('0')
+
+	def check_scripts(self, path: str) -> None:
 		debianpath = join(path, 'debian')
+		version = self.get_debian_version(path)
 		for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=self.SCRIPTS):
 			package, suffix = self.split_pkg(script_path)
 
@@ -78,59 +94,61 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			with open(script_path, 'r') as script_file:
 				content = script_file.read()
 
-			for nr, line in enumerate(content.splitlines(), start=1):
-					if not line.startswith('#'):
-						break
-					for script_name in other_scripts:
-						if script_name in line:
-							self.addmsg(
-								'0018-1',
-								'wrong script name: %r' % (line.strip(),),
-								filename=script_path,
-								line=nr)
+			for row, line in enumerate(content.splitlines(), start=1):
+				if not line.startswith('#'):
+					break
+				for script_name in other_scripts:
+					if script_name in line:
+						self.addmsg(
+							'0018-1',
+							'wrong script name: %r' % (line.strip(),),
+							script_path, row, line=line)
 
-			for nr, line in enumerate(content.splitlines(), start=1):
+			for row, line in enumerate(content.splitlines(), start=1):
 				if line.startswith('#'):
 					continue
 				for match in self.RE_TEST.finditer(line):
 					try:
 						actions = self.parse_test(split(match.group('cond'))) & other_actions
 					except ValueError as ex:
-						self.debug('Failed %s:%d: %s in %s' % (script_path, nr, ex, line))
+						self.debug('Failed %s:%d: %s in %s' % (script_path, row, ex, line))
 						continue
 					if actions:
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
-							filename=script_path,
-							line=nr)
+							script_path, row, line=line)
 
-			nr = 1
-			col = 1
-			pos = 0
-			for match in self.RE_CASE.finditer(content):
+				for match in self.RE_COMPARE_VERSIONS.finditer(line):
+					ver_a, op, ver_b = match.groups()
+					for arg in (ver_a, ver_b):
+						if self.RE_ARG2.match(arg):
+							continue
+						if not RE_DEBIAN_PACKAGE_VERSION.match(arg):
+							self.debug("%s:%d: Unknown argument %r" % (script_path, row, arg))
+							continue
+
+						ver = Version(arg)
+						self.debug("%s << %s?" % (ver, version))
+						if ver.numeric and version.numeric and ver.numeric[0] < version.numeric[0] - 1:
+							self.addmsg(
+								'0018-5',
+								'Maintainer script contains old upgrade code for %s << %s' % (ver, version),
+								script_path, row, match.start(0), line)
+
+			for row, col, match in uub.line_regexp(content, self.RE_CASE):
 				for cases in match.group('cases').split(';;'):
 					cases = cases.lstrip('\t\n\r (')
 					cases = cases.split(')', 1)[0]
 					actions = set(action for case in cases.split('|') for action in split(case)) & other_actions
 					if actions:
-						start, end = match.span()
-						while pos < start:
-							if match.string[pos] == "\n":
-								col = 1
-								nr += 1
-							else:
-								col += 1
-							pos += 1
-
 						self.addmsg(
 							'0018-3',
 							'Invalid actions "%s" in Debian maintainer script' % (','.join(actions),),
-							filename=script_path, line=nr, pos=col)
+							script_path, row, col, line=line)
 
 	@classmethod
-	def parse_test(cls, tokens):
-		# type: (List[str]) -> Set[str]
+	def parse_test(cls, tokens: List[str]) -> Set[str]:
 		"""
 		Parse test string and return action names
 
@@ -189,64 +207,58 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		return result
 
-	def check_dirs(self, path):
-		# type: (str) -> None
+	def check_dirs(self, path: str) -> None:
 		dirs = {}  # type: Dict[str, Set[str]]
 		debianpath = join(path, 'debian')
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['install']):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
-			py_install = False
 			# ~/doc/2018-04-11-ApiDoc/pymerge
-			for lnr, line in self.lines(fp):
+			for row, line in self.lines(fp):
 				dst = ''
 				for src, dst in self.process_install(line):
-					self.debug('%s:%d Installs %s to %s' % (fp, lnr, src, dst))
+					self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
 					pkg.add(dst)
 
 				if self.RE_PYTHONPATHS.match(dst):
 					self.addmsg(
 						'0018-4',
 						'Use debian/*.pyinstall to install Python modules',
-						filename=fp,
-						line=lnr)
+						fp, row)
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['pyinstall']):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
-			for lnr, line in self.lines(fp):
+			for row, line in self.lines(fp):
 				for src, dst in self.process_pyinstall(line):
-					self.debug('%s:%d Installs %s to %s' % (fp, lnr, src, dst))
+					self.debug('%s:%d Installs %s to %s' % (fp, row, src, dst))
 					pkg.add(dst)
 
 		for fp in uub.FilteredDirWalkGenerator(debianpath, suffixes=['dirs']):
 			package, suffix = self.split_pkg(fp)
 			pkg = dirs.setdefault(package, Dirs(package))
-			for lnr, line in self.lines(fp):
+			for row, line in self.lines(fp):
 				line = line.strip('/')
 				if line in pkg:
 					self.addmsg(
 						'0018-2',
 						'Unneeded directory %r' % (line,),
-						filename=fp,
-						line=lnr)
+						fp, row)
 
 	@staticmethod
-	def lines(name):
-		# type: (str) -> Iterator[Tuple[int, str]]
+	def lines(name: str) -> Iterator[Tuple[int, str]]:
 		with open(name, 'r') as stream:
-			for lnr, line in enumerate(stream, start=1):
+			for row, line in enumerate(stream, start=1):
 				line = line.strip()
 				if not line:
 					continue
 				if line.startswith('#'):
 					continue
-				yield (lnr, line)
+				yield (row, line)
 
 	@staticmethod
-	def split_pkg(name):
-		# type: (str) -> Tuple[str, str]
+	def split_pkg(name: str) -> Tuple[str, str]:
 		filename = basename(name)
 		if '.' in filename:
 			package, suffix = splitext(filename)
@@ -258,8 +270,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return (package, suffix)
 
 	@staticmethod
-	def process_install(line, glob=glob):
-		# type: (str, Callable) -> Iterator[Tuple[str, str]]
+	def process_install(line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
 		"""
 		Parse :file:`debian/*.install` lines.
 
@@ -288,8 +299,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					yield (fn, join(dst, basename(fn)))
 
 	@classmethod
-	def process_pyinstall(cls, line, glob=glob):
-		# type: (str, Callable) -> Iterator[Tuple[str, str]]
+	def process_pyinstall(cls, line: str, glob: Callable[[str], Iterable[str]] = glob) -> Iterator[Tuple[str, str]]:
 		"""
 		Parse :file:`debian/*.pyinstall` lines.
 
@@ -312,8 +322,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in glob(src) if ('*' in src or '?' in src or '[' in src) else [src]:
 			yield (fn, join(dst, basename(fn)))
 
-
-	RE_HASHBANG = re.compile(r'^#!\s*/bin/(?:[bd]?a)?sh\b')
 	RE_TEST = re.compile(
 		r'''
 		(?:(?P<test>\[{1,2}) | \b test)
@@ -347,7 +355,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		   \d+\.\d+
 		   (?:- (?:\d+\.\d+)? )?
 		)*
-		$''', re.VERBOSE)
+		$''', re.VERBOSE)  # noqa E101
 	# /usr/share/dh-python/dhpython/tools.py # INSTALL_RE
 	RE_NAMESPACE = re.compile(
 		r'''^
@@ -359,10 +367,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		(?:usr/lib/pymodules/python[0-9.]+/
 		  |usr/lib/python[0-9.]+/
 		  |usr/share/pyshared/
-		)''', re.VERBOSE)
+		)''', re.VERBOSE)  # noqa E101
+	RE_COMPARE_VERSIONS = re.compile(
+		r'''
+		\b dpkg \s+ --compare-versions
+		\s+
+		( (?: '[^']*' | "[^"]*" | \S )+ )
+		\s+
+		([lg][et](?:-nl)?|eq|ne|<[<=]?|=|>[>=]?)
+		\s+
+		( (?: '[^']*' | "[^"]*" | \S )+ )
+		\s*(?: $ | ; | && | \|\| | \))
+		''', re.VERBOSE)  # noqa E101
+	RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 
-class Dirs(set):
+class Dirs(Set[str]):
 	"""Set of directories."""
 
 	DIRS = frozenset({
@@ -388,14 +408,49 @@ class Dirs(set):
 		'var/www',
 	})
 
-	def __init__(self, package):  # type: (str) -> None
+	def __init__(self, package: str) -> None:
 		set.__init__(self, {'usr/share/doc/' + package} | self.DIRS)
 
-	def add(self, dst):  # type: (str) -> None
+	def add(self, dst: str) -> None:
 		path = dirname(normpath(dst.strip('/')))
 		while path > '/':
 			set.add(self, path)
 			path = dirname(path)
+
+
+class Version(object):
+	"""
+	Version as a sqeunce of numeric and non-numeric parts.
+
+	>>> str(Version('1'))
+	'1'
+	>>> str(Version('first'))
+	'first'
+	>>> str(Version("1:2.34alpha~5-6.7"))
+	'1:2.34alpha~5-6.7'
+	"""
+
+	__slots__ = ('text', 'numeric')
+
+	RE_VERSION = re.compile(r'([0-9]+)')
+
+	def __init__(self, text: str) -> None:
+		parts = self.RE_VERSION.split(text)
+		self.text = parts[::2]
+		self.numeric = [int(number) for number in parts[1::2]]
+
+	def __iter__(self) -> Iterator[Union[str, int]]:
+		try:
+			for next in cycle(iter(part).__next__ for part in (self.text, self.numeric)):  # type: ignore
+				yield next()
+		except StopIteration:
+			pass
+
+	def __str__(self) -> str:
+		return ''.join(str(part) for part in self)
+
+	def __repr__(self) -> str:
+		return '%s(%r)' % (self.__class__.__name__, self.__str__())
 
 
 if __name__ == '__main__':

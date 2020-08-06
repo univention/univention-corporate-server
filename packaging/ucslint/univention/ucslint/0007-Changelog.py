@@ -27,13 +27,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
 from email.utils import mktime_tz, parsedate_tz
+
 from debian.changelog import Changelog, ChangelogParseError
 
-REticket = re.compile(r'''
+import univention.ucslint.base as uub
+
+REticket = re.compile(
+	r'''
 	(Bug:?[ ]\#[0-9]{1,6} # Bugzilla
 	|Issue:?[ ]\#[0-9]{1,6} # Redmine
 	|Ticket(\#:[ ]|:?[ ]\#)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(?:1[0-9]{7}|21[0-9]{6})) # OTRS
@@ -44,7 +47,7 @@ RECENT_ENTRIES = 5
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
-	def getMsgIds(self):
+	def getMsgIds(self) -> uub.MsgIds:
 		return {
 			'0007-1': (uub.RESULT_WARN, 'failed to open file'),
 			'0007-2': (uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'),
@@ -54,7 +57,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0007-6': (uub.RESULT_WARN, 'old debian/changelog entries are not strict-monotonically increasing by version'),
 		}
 
-	def check(self, path):
+	def check(self, path: str) -> None:
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
@@ -62,8 +65,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			with open(fn, 'r') as stream:
 				changelog = Changelog(stream, strict=True)
-		except (EnvironmentError, ChangelogParseError):
-			self.addmsg('0007-1', 'failed to open and read file', fn)
+		except EnvironmentError as ex:
+			self.addmsg('0007-1', 'failed to open and read file: %s' % ex, fn)
+			return
+		except ChangelogParseError as ex:
+			self.addmsg('0007-1', ex, fn)
 			return
 
 		for change in changelog[0].changes():
