@@ -183,14 +183,6 @@ define([
 				this._confirm_distupgrade();
 			}));
 
-			// invokes the installer in easy mode
-			this._updates.on('runeasyupgrade', lang.hitch(this, function() {
-				this._call_installer({
-					job: 'easyupgrade',
-					confirm: _("Upgrade system")
-				});
-			}));
-
 			// propagate the status information to other pages
 			this._updates.on('statusloaded', lang.hitch(this, function(vals) {
 				this._progress.updateStatus(vals);

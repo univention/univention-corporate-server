@@ -374,12 +374,6 @@ Description[en]=If this option is activated, only PGP-signed updater scripts are
 Type=bool
 Categories=service-software-management
 
-[update/umc/updateprocess/easy]
-Description[de]=Ist diese Option aktiviert, wird im UMC-Modul 'Online-Update' ein vereinfachtes Update-Verfahren verwendet. Ist die Variable nicht gesetzt, wird das vereinfachte Verfahren nicht verwendet.
-Description[en]=If this option is activated, a simplified update procedure is used in the UMC module 'Online Updates'. If the variable is unset, the simplified procedure isn't used.
-Type=bool
-Categories=service-software-management
-
 [repository/online/timeout]
 Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [30s]
 Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [30s]

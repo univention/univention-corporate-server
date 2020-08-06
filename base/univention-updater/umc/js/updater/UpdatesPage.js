@@ -61,7 +61,6 @@ define([
 	};
 
 	return declare("umc.modules.updater.UpdatesPage", Page, {
-
 		_update_prohibited: false,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -93,7 +92,6 @@ define([
 		},
 
 		buildRendering: function() {
-
 			this.inherited(arguments);
 
 			var widgets = [{ // --------------------- Reboot pane -----------------------------
@@ -118,25 +116,6 @@ define([
 					name: 'update_failed',
 					label: ' ',
 					content: _("The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this.", _("a new UCS version")),
-					size: 'One',
-					labelPosition: 'bottom'
-				}, { // ------------------- Easy upgrade mode -------------------------
-					type: HiddenInput,
-					name: 'easy_mode'
-				}, {
-					type: HiddenInput,
-					name: 'easy_update_available'
-				}, {
-					type: Text,
-					name: 'easy_release_text',
-					label: '',
-					content: 'easy_release_text',			// set in onLoaded event
-					size: 'One'
-				}, {
-					type: Text,
-					name: 'easy_available_text',
-					label: ' ',
-					content: 'easy_available_text',		// changed in onLoaded event
 					size: 'One',
 					labelPosition: 'bottom'
 				}, { // -------------------- Release updates --------------------------
@@ -372,16 +351,6 @@ define([
 				}),
 				style: 'margin:0',
 				size: 'One'
-			}, {
-				name: 'easy_upgrade',
-				label: _("Start Upgrade"), 		// FIXME Label not correct
-				callback: lang.hitch(this, function() {
-					// TODO check updater/installer/running, don't do action if a job is running
-					this.onRunEasyUpgrade();
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
-				}),
-				style: 'margin:0',
-				size: 'One'
 			}];
 
 			var layout = [
@@ -395,12 +364,6 @@ define([
 				label: _("Update failed"),
 				layout: [
 					['update_failed', 'view_log_file'],
-				]
-			}, {
-				label: _("Release information"),
-				layout: [
-					['easy_release_text'],
-					['easy_available_text', 'easy_upgrade']
 				]
 			}, {
 				label: _("Release updates"),
@@ -434,14 +397,9 @@ define([
 			this._titlepanes = {
 				reboot: this._getEnclosingTitlePane('reboot'),
 				update_failed: this._getEnclosingTitlePane('update_failed'),
-				easymode: this._getEnclosingTitlePane('easy_upgrade'),
 				release: this._getEnclosingTitlePane('run_release_update'),
 				packages: this._getEnclosingTitlePane('run_packages_update')
 			};
-
-			// Before we attach the form to our page, just switch off all title panes.
-			// This delays showing the right panes until we know the value of 'easy_mode'.
-			this._show_updater_panes(false);
 
 			this.addChild(this._form);
 			this._form.showWidget('releases', false);
@@ -455,9 +413,6 @@ define([
 					// send event that value have been loaded
 					this.onStatusLoaded(values);
 
-					// before we do anything else: switch visibility of panes dependent of the 'easy mode'
-					this._switch_easy_mode((values.easy_mode === true) || (values.easy_mode === 'true'));
-
 					// set text that shows release updates.
 					// *** NOTE *** Availability of release updates (and visibility of 'Execute' button) can't be
 					//				processed here since we have to wait for the 'onValuesLoaded' event of the
@@ -470,28 +425,7 @@ define([
 					}
 					this._form.getWidget('ucs_version_text').set('content', vtxt);
 
-					// Text (and button visibility) in EASY mode. We reuse the 'vtxt' variable
-					this._form.getWidget('easy_release_text').set('content', vtxt);
-
-					// easy_update_available -> easy_available_text
-					var element = this._form.getWidget('easy_available_text');
-					var ava = ((values.easy_update_available === true) || (values.easy_update_available === 'true'));
-					var appliance_mode = ((values.appliance_mode === true) || (values.appliance_mode === 'true'));
-					var blocking_component = this._form.getWidget('release_update_blocking_components').get('value').split(' ')[0];
-					if (ava) {
-						element.set('content', _("There are updates available."));
-					} else if ((blocking_component) && (!appliance_mode)) {
-						element.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
-					} else {
-						element.set('content', _("There are no updates available."));
-					}
-					var ebu = this._form._buttons.easy_upgrade;
-					domClass.toggle(ebu.domNode, 'dijitDisplayNone', ! ava);
-
 					this._show_reboot_pane(tools.isTrue(values.reboot_required));
-
-
-
 				} catch(error) {
 					console.error("onLoaded: " + error.message);
 				}
@@ -510,7 +444,7 @@ define([
 			//
 			// "updater_prohibit_update" has to return a boolean directly.
 			// If the value "true" is returned by at least one hook, the titlepanes
-			// "easymode", "release", "errata" and "packages" will be hidden and
+			// ""release", "errata" and "packages" will be hidden and
 			// this._update_prohibited will be set to true.
 
 			tools.umcpCommand('updater/hooks/call', { hooks: ['updater_show_message', 'updater_prohibit_update'] }).then(lang.hitch(this, function(result) {
@@ -600,7 +534,6 @@ define([
 		//	- if no package updates are available: check for availability
 		//	- if some are available -> invoke 'onRunDistUpgrade()' callback.
 		_check_dist_upgrade: function() {
-
 			if (this._updates_available) {
 				this.onRunDistUpgrade();
 			} else {
@@ -621,22 +554,9 @@ define([
 		// This function switches the visibilty of all relevant titlepanes used for updates.
 		// Other titlepanes (e.g. reboot) are not affected.
 		_show_updater_panes: function(yes) {
-			array.forEach(['easymode', 'release', 'packages'], function(iname) {
+			array.forEach(['release', 'packages'], function(iname) {
 				domClass.toggle(this._titlepanes[iname].domNode, 'dijitDisplayNone', ! yes);
 			}, this);
-		},
-
-		// Switches easy mode on or off. If the update is prohibited via hook, this
-		// function hides the updater titlepanes. Doesn't touch other panes like the
-		// 'reboot required' pane.
-		_switch_easy_mode: function(yes) {
-			if (this._update_prohibited) {
-				this._show_updater_panes(false);
-			} else {
-				domClass.toggle(this._titlepanes.easymode.domNode, 'dijitDisplayNone', ! yes);
-				domClass.toggle(this._titlepanes.release.domNode, 'dijitDisplayNone', yes);
-				domClass.toggle(this._titlepanes.packages.domNode, 'dijitDisplayNone', yes);
-			}
 		},
 
 		// Switches visibility of the reboot pane on or off
@@ -649,7 +569,6 @@ define([
 				var but = this._form._buttons.reboot;
 				domClass.toggle(but.domNode, 'dijitDisplayNone', false);
 			}
-
 		},
 
 		// Switches visibility of the update_failed pane on or off
@@ -712,16 +631,13 @@ define([
 		// First page refresh doesn't work properly when invoked in 'buildRendering()' so
 		// we defer it until the UI is being shown
 		startup: function() {
-
 			this.inherited(arguments);
 			this._show_reboot_pane(false);
 			this._show_update_failed_pane(false);
-
 		},
 
 		// ensures refresh whenever we're returning from any action.
 		_onShow: function() {
-
 			this.inherited(arguments);
 			// show standby while loading data
 			this.standby(true);
@@ -753,8 +669,6 @@ define([
 		onRunErrataUpdate: function() {
 		},
 		onRunDistUpgrade: function() {
-		},
-		onRunEasyUpgrade: function() {
 		},
 		onViewLog: function() {
 		},
