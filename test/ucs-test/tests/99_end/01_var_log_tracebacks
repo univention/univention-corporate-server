@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: "Find traceback in /var/log/univention/ logfile"
 ## exposure: safe
+## roles-not: [basesystem, memberserver, domaincontroller_slave, domaincontroller_backup]
 
 from __future__ import print_function
 
