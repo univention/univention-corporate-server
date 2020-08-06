@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: ucslint
+fix: 8.0.0-19A~4.4.0.202008060958
+desc: |-
+ This update addresses the following issues:
+ * Check for common shell issues.
+ * Check for well-known SIDs.
+ * Allow using Python 3.
+ * Allow line specific overrides.
+ * Check for old upgrade code.
+bug: [51612, 33737, 28284, 33736, 51611]
