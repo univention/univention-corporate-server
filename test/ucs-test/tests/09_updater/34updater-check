@@ -62,18 +62,10 @@ BUG31733 () { # expected-value cmd...
 	# no update should be available
 	BUG31733 no /usr/share/univention-updater/univention-updater-check
 
-	# We need to test the behavior for normal and easy update process.
-	# In fact, there is only one difference: for the easy process, an update
-	# is also available in case there is any package with a new version.
-	for easy in false true
-	do
-		# set easy ins
-		ucr set update/umc/updateprocess/easy=$easy
-
 		# create new patchlevel release
 		let ++patchlevel
 		let ++pkversion
-		echo "### Create a new patchlevel release (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		echo "### Create a new patchlevel release (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
 		mkpkg "${DIR}"
@@ -89,7 +81,7 @@ BUG31733 () { # expected-value cmd...
 
 		# create new package version in the same release
 		let ++pkversion
-		echo "### Create a new package version (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		echo "### Create a new package version (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
 		mkpkg "${DIR}"
 		apt-get -qq update
@@ -97,16 +89,9 @@ BUG31733 () { # expected-value cmd...
 		# an update should be available
 		BUG31733 yes /usr/share/univention-updater/univention-updater-check
 
-		# call univention-actualise and make sure update/available has been updated 
-		# without easy update process, the variable should not be modified
-		echo "### Updating packages (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
-		if "$easy"
-		then
-			BUG31733 no /usr/share/univention-updater/univention-actualise
-		else
+		# call univention-actualise and make sure update/available has been updated
+		echo "### Updating packages (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 			BUG31733 "" /usr/share/univention-updater/univention-actualise
-		fi
-	done
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3

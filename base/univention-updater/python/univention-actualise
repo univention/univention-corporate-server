@@ -402,7 +402,6 @@ def main():
 
 def update_ucr_updatestatus():
     try:
-        if configRegistry.is_true('update/umc/updateprocess/easy', False):
             devnull = open(os.path.devnull, 'w')
             subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
             devnull.close()

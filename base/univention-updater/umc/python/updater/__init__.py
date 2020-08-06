@@ -86,13 +86,6 @@ INSTALLERS = {
 		'command': "/usr/share/univention-updater/univention-updater-umc-dist-upgrade; /usr/share/univention-updater/univention-updater-check",
 		'logfile': '/var/log/univention/updater.log',
 		'statusfile': '/var/lib/univention-updater/umc-dist-upgrade.status',
-	},
-	# This is the call to be invoked when EASY mode is switched on.
-	'easyupgrade': {
-		'purpose': _("Release update"),
-		'command': '/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
-		'logfile': '/var/log/univention/updater.log',
-		'statusfile': '/var/lib/univention-updater/univention-upgrade.status',
 	}
 }
 
@@ -415,7 +408,6 @@ class Instance(Base):
 			result['erratalevel'] = 0
 
 		result['appliance_mode'] = ucr.is_true('server/appliance')
-		result['easy_mode'] = ucr.is_true('update/umc/updateprocess/easy', False)
 		result['timestamp'] = int(time())
 		result['reboot_required'] = ucr.is_true('update/reboot/required', False)
 
@@ -444,22 +436,6 @@ class Instance(Base):
 				msg += ' ' + _('This is the error message:') + ' ' + str(exc)
 				raise UMC_Error(msg)
 			result['release_update_blocking_components'] = ' '.join(blocking_components or [])
-
-			what = "querying availability for easy mode"
-
-			if result['easy_mode']:
-				# updates/available should reflect the need for an update
-				easy_update_available = ucr.is_true('update/available', False)
-				# but don't rely on ucr! update/available is set during univention-upgrade --check
-				# but when was the last time this was run?
-
-				# release update
-				easy_update_available = easy_update_available or result['release_update_available']
-				# if no update seems necessary perform a real (expensive) check nonetheless
-				easy_update_available = easy_update_available or self.uu.component_update_available()
-				result['easy_update_available'] = bool(easy_update_available)
-			else:
-				result['easy_update_available'] = False
 
 			# Component counts are now part of the general 'status' data.
 			what = "counting components"

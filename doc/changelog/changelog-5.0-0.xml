@@ -252,7 +252,7 @@
 			<title>Software update module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The <phrase>Easy upgrade mode</phrase> has been removed (<u:bug>40154</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
