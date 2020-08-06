@@ -1,8 +1,7 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 ## desc: "Find traceback on the DC Master"
 ## exposure: dangerous
 ## roles-not: [domaincontroller_master]
-## tags: [SKIP]
 
 import univention.testing.utils
 import subprocess
