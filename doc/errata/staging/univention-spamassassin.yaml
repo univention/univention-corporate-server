@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-spamassassin
+fix: 10.0.0-4A~4.4.0.202008062105
+desc: |
+ This update addresses the following issue:
+ * Make http_proxy environment variable accessible by the
+   spamassasin cron job.
+bug: [44489]
