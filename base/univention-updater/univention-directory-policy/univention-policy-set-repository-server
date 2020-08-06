@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Updater
@@ -30,25 +30,15 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-from __future__ import print_function
 import os
 import sys
 import subprocess
+from typing import List, Tuple
+
 from univention.config_registry import ConfigRegistry, handler_set
 
 
-def exit(result, message=None):
-    """
-    Exit with error message.
-    """
-    script = os.path.basename(sys.argv[0])
-    if message:
-        print('%s: %s' % (script, message))
-    sys.exit(result)
-
-
-def query_policy(update, ldap_hostdn):
+def query_policy(update: str, ldap_hostdn: str) -> Tuple[str, str]:
     """
     Retrieve updateServer and version from policy.
     """
@@ -56,27 +46,29 @@ def query_policy(update, ldap_hostdn):
         'univention_policy_result',
         '-D', ldap_hostdn,
         '-y', '/etc/machine.secret',
-        '-s', ldap_hostdn,
+        '-s',
+        ldap_hostdn,
     )
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    result = p1.communicate()[0]
+    assert p1.stdout
 
-    if p1.returncode != 0:
-        exit(result, "FAIL: failed to execute `univention_policy_result'")
+    server = ''
 
-    server = None
-    for line in result.split('\n'):
-        line = line.strip()
-        if line.startswith('univentionRepositoryServer='):
-            server = line.split('=', 1)[1].split('"', 2)[1]
-        elif line.startswith('univentionUpdateVersion='):
-            update = line.split('=', 1)[1].split('"', 2)[1]
-    if server and server.startswith('http://'):
-        server = server.replace('http://', '', 1)
+    for line in p1.stdout:
+        key, value = line.decode('utf-8').split('=', 1)
+        value = value.strip('"')
+        if key == 'univentionRepositoryServer':
+            server = value
+        elif key == 'univentionUpdateVersion':
+            update = value
+
+    if p1.wait():
+        raise SystemExit("failed to execute `univention_policy_result'")
+
     return (server, update)
 
 
-def main():
+def main() -> None:
     """
     Set repository server.
     """
@@ -93,7 +85,7 @@ def main():
     fqdn = '%(hostname)s.%(domainname)s' % ucr
     update = '%(version/version)s-%(version/patchlevel)s' % ucr
 
-    ucr_variables = []
+    ucr_variables = []  # type: List[str]
 
     new_server, update = query_policy(update, hostdn)
     if ucr.is_true('local/repository'):

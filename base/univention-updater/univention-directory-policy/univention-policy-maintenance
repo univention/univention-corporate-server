@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Updater
@@ -30,19 +30,17 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-from __future__ import print_function
 import os
-import sys
-from pipes import quote
 import subprocess
+from shlex import quote
+
 from univention.config_registry import ConfigRegistry
 
 # Name of the cron.d file
 CRON_D = '/etc/cron.d/univention-maintenance'
 
 
-def write_cron_job(configRegistry, cron, updateto, reboot, try_release_update):
+def write_cron_job(configRegistry: ConfigRegistry, cron: str, updateto: str, reboot: str, try_release_update: bool) -> None:
     with open(CRON_D, 'w') as file:
         file.write('# cron job for update\n')
         file.write('PATH=/sbin:/usr/sbin:/usr/bin:/bin\n')
@@ -74,35 +72,38 @@ if os.path.exists(CRON_D):
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
-
-    p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
+    cmd = (
+        'univention_policy_result',
+        '-D', ldap_hostdn,
+        '-y', '/etc/machine.secret',
+        '-s',
+        ldap_hostdn,
+    )
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    assert p1.stdout
 
     updateto = ''
     cron_active = ''
     reboot = ''
-    cron = None
+    cron = ''
     try_release_update = False
 
     for line in p1.stdout:
-        line = line.strip(' ').strip('\n')
-        key, value = line.split('=', 1)
-        if line.startswith('univentionCronActive='):
-            cron_active = line.replace('univentionCronActive=', '').replace('"', '')
-        elif line.startswith('univentionCron='):
-            cron = line.replace('univentionCron=', '').replace('"', '')
-        elif line.startswith('univentionUpdateVersion='):
-            updateto = line.replace('univentionUpdateVersion=', '').replace('"', '')
-        elif line.startswith('univentionInstallationReboot='):
-            reboot = line.replace('univentionInstallationReboot=', '').replace('"', '')
-        elif 'univentionUpdateActivate' == key:
-            try_release_update = value == '"TRUE"'
+        key, value = line.decode('utf-8').split('=', 1)
+        value = value.strip('"')
+        if key == 'univentionCronActive':
+            cron_active = value
+        elif key == 'univentionCron':
+            cron = value
+        elif key == 'univentionUpdateVersion':
+            updateto = value
+        elif key == 'univentionInstallationReboot':
+            reboot = value
+        elif key == 'univentionUpdateActivate':
+            try_release_update = value == 'TRUE'
 
-    if p1.wait() != 0:
-        print('failed to execute univention_policy_result')
-        sys.exit(p1.returncode)
+    if p1.wait():
+        raise SystemExit('failed to execute univention_policy_result')
 
-    if cron_active and cron_active == '1':
-        if cron:
-            write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
-
-sys.exit(0)
+    if cron_active == '1' and cron:
+        write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
