@@ -1,3 +1,9 @@
+ucs-test (9.0.4-32) unstable; urgency=medium
+
+  * Bug #50300: grep for tracebacks in /var/log/univention
+
+ -- Florian Best <best@univention.de>  Thu, 06 Aug 2020 13:14:30 +0200
+
 ucs-test (9.0.4-31) unstable; urgency=medium
 
   * Bug #1234: added "retry" to 20_appcenter/20_can_apps_be_installed
