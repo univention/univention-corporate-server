@@ -82,9 +82,24 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 
 
 COMMON_EXCEPTIONS = [re.compile(x) for x in [
+	# Errors from UCS 4.4-5 Jenkins runs:
+	'^objectExists: .*',
+	'^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"),
+	'^permissionDenied$',
+	'^noObject:.*',
+	r'''^NotFound: \(404, "The path '/portal/.*''',
+	'^IndexError: list index out of range',
+	"^KeyError: 'gidNumber'",
+	'^ldap.NO_SUCH_OBJECT: .*',
+	r"^PAM.error: \('Authentication failure', 7\)",
+	r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*',
+	r'^IOError: \[Errno 32\] Broken pipe',
+	"^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.",
+	'^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax',
+	'^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax',
 	'^univention.admin.uexceptions.objectExists: .*',
 	'^NonThreadedError$',
-	"^IOError: [Errno 2] No such file or directory: '/etc/machine.secret'",
+	re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"),
 	'.*moduleCreationFailed: Target directory.*not below.*',
 	"^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*create.*univentionblog.*",
 	'^cherrypy._cperror.NotFound:.*',
@@ -93,12 +108,14 @@ COMMON_EXCEPTIONS = [re.compile(x) for x in [
 	'ConfigurationError: Configuration error: host is unresolvable',
 	'ConfigurationError: Configuration error: port is closed',
 	'ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*',
+	'ConfigurationError: Configuration error: timeout in network connection',
 	'DownloadError: Error downloading http://localhost/DUMMY/: 403',
+	'ProxyError: Proxy configuration error: credentials not accepted',
 	'MyTestException: .*',
 	'univention.lib.umc.ConnectionError:.*machine.secret.*',
 	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
 	'^OperationalError: (psycopg2.OperationalError) FATAL:.*admindiary.*',  # Bug #51671
-	"OSError: [Errno 2] No such file or directory: '/var/lib/samba/sysvol/,*/Policies/'",  # Bug #51670
+	r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'",  # Bug #51670
 	# '^ldap.NO_SUCH_OBJECT: .*',
 ]]
 
