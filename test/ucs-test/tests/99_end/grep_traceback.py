@@ -81,6 +81,28 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 	return not found
 
 
+COMMON_EXCEPTIONS = [re.compile(x) for x in [
+	'^univention.admin.uexceptions.objectExists: .*',
+	'^NonThreadedError$',
+	"^IOError: [Errno 2] No such file or directory: '/etc/machine.secret'",
+	'.*moduleCreationFailed: Target directory.*not below.*',
+	"^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*create.*univentionblog.*",
+	'^cherrypy._cperror.NotFound:.*',
+	re.escape('lockfile.LockTimeout: Timeout waiting to acquire lock for /var/run/umc-server.pid'),
+	"^FileExistsError:.*'/var/run/umc-server.pid'"
+	'ConfigurationError: Configuration error: host is unresolvable',
+	'ConfigurationError: Configuration error: port is closed',
+	'ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*',
+	'DownloadError: Error downloading http://localhost/DUMMY/: 403',
+	'MyTestException: .*',
+	'univention.lib.umc.ConnectionError:.*machine.secret.*',
+	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
+	'^OperationalError: (psycopg2.OperationalError) FATAL:.*admindiary.*',  # Bug #51671
+	"OSError: [Errno 2] No such file or directory: '/var/lib/samba/sysvol/,*/Policies/'",  # Bug #51670
+	# '^ldap.NO_SUCH_OBJECT: .*',
+]]
+
+
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description=__doc__)
