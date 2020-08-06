@@ -35,4 +35,12 @@ if configRegistry.is_true('mail/antispam/rules/autoupdate', True):
 	print('CRON=1')
 else:
 	print('CRON=0')
+
+if configRegistry.get('proxy/http'):
+	print('export http_proxy="%s"' % configRegistry['proxy/http'])
+	if not configRegistry.get('proxy/https'):
+		print('export https_proxy="%s"' % configRegistry['proxy/http'])
+
+if configRegistry.get('proxy/https'):
+	print('export https_proxy="%s"' % configRegistry['proxy/https'])
 @!@
