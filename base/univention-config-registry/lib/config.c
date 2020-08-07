@@ -47,6 +47,11 @@
 
 #define BASECONFIG_MAX_LINE 1024
 
+#include <sys/types.h>
+#include <fcntl.h>
+
+#define READ 0
+#define WRITE 1
 
 static const char *SCOPES[] = {
 	"forced",
@@ -54,6 +59,7 @@ static const char *SCOPES[] = {
 	"ldap",
 	"normal",
 	"custom",
+	"default",
 	NULL};
 
 static const char *LAYERS[] = {
@@ -61,7 +67,43 @@ static const char *LAYERS[] = {
 			"/etc/univention/base-schedule.conf",
 			"/etc/univention/base-ldap.conf",
 			"/etc/univention/base.conf",
+			"/etc/univention/base-defaults.conf",
 			NULL};
+
+
+pid_t
+_filter(int *fd_stdin, int *fd_stdout)
+{
+	int p_stdin[2], p_stdout[2];
+	pid_t pid;
+
+	if (pipe(p_stdin) != 0 || pipe(p_stdout) != 0)
+		return -1;
+
+	pid = fork();
+	if (pid < 0) {
+		return pid;
+	} else if (pid == 0)
+	{
+		close(p_stdin[WRITE]);
+		dup2(p_stdin[READ], READ);
+		close(p_stdout[READ]);
+		dup2(p_stdout[WRITE], WRITE);
+		execl("/usr/sbin/univention-config-registry", "ucr", "filter", NULL);
+		perror("execl");
+		exit(1);
+	}
+
+	if (fd_stdin == NULL)
+		close(p_stdin[WRITE]);
+	else
+		*fd_stdin = p_stdin[WRITE];
+	if (fd_stdout == NULL)
+		close(p_stdout[READ]);
+	else
+		*fd_stdout = p_stdout[READ];
+	return pid;
+}
 
 char *univention_config_get_string(const char *key)
 {
@@ -103,6 +145,20 @@ char *univention_config_get_string(const char *key)
 				}
 				ret = strndup(value, vlen);
 				fclose(file);
+				if (LAYERS[i] == "/etc/univention/base-defaults.conf" && NULL != strstr(ret, "@%@")) {
+					int fd_stdin, fd_stdout;
+
+					if (_filter(&fd_stdin, &fd_stdout) <= 0)  // FIXME: stderr
+					{
+						univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error executing ucr filter");
+						ret = NULL;
+						goto done;
+					}
+
+					write(fd_stdin, ret, sizeof(ret) + 1);
+					close(fd_stdin);
+					read(fd_stdout, ret, BASECONFIG_MAX_LINE);  /* FIXME!!!: this is wrong... */
+				}
 				goto done;
 			}
 		}
