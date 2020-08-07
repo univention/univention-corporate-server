@@ -453,6 +453,9 @@
 			<listitem><simpara>
 				The function <command>lookup_adds_dc</command> in <package>univention.lib.admember</package> now runs <command>dig</command> with the option <wordasword>+nocookie</wordasword> to avoid <wordasword>FORMERR</wordasword> from Windows DCs (<u:bug>51652</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				 UDM extensions can now be registered in different versions for different UCS versions to prepare for the UCS 5 update (<u:bug>51619</u:bug>, <u:bug>51622</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
