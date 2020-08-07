@@ -44,7 +44,7 @@ from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
-from univention.appcenter.utils import get_locale
+from univention.appcenter.utils import get_locale, call_process2
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.packages import package_lock, LockError
@@ -158,6 +158,13 @@ class InstallRemoveUpgrade(Register):
 			else:
 				if status == 200:
 					self._write_success_event(app, context_id, args)
+					self._call_all_hooks(
+							"/var/lib/univention-appcenter/apps/"
+							"{app_id}/local/hooks/post-{action}.d/".format(
+								app_id=app.id,
+								action=action)
+					)
+
 				else:
 					self._write_fail_event(app, context_id, status, args)
 				if status != 200:
@@ -320,6 +327,54 @@ class InstallRemoveUpgrade(Register):
 					username = self._get_username(args)
 					ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
+
+	def _call_all_hooks(self, directory):
+		"""
+		iterates over all files in a directory ordered by name and executes
+		files marked as executable, similar to run-parts, which can be used by
+		administrators to do this step manually. Even though run-parts is part
+		of debianutils, it is not formally standartizied and could change. This
+		implementation is therefore considered to be more stable.
+		"""
+		from subprocess import call  # `call` with python3.5 should be replaced with `run`
+		from os import listdir, path, access, X_OK
+
+		if not os.path.isdir(directory):
+			self.log('Script hook folder is not used: {folder}'.format(folder=directory))
+			return
+
+		for filename in sorted(listdir(directory)):
+			absolute_path = directory + filename
+
+			# sanity check: is it really a file (symlinks and directories are not allowed)...
+			if not path.isfile(absolute_path):
+				continue
+
+			# Further ensure that the executable bit is set on the file...
+			if access(absolute_path, X_OK):
+
+				# any exception is equally indifferent and should not influence the installation
+				try:
+					(retval, output) = call_process2([absolute_path])
+					self.log("{filename}: {output}".format(filename=filename, output=output))
+				except Exception as e:
+
+					# we still want to let the user know, why the hook script failed, because scripts can
+					# work when directly called and fail here, if the shebang line is invalid.
+					self.log(
+						'Custom hook script failed: {script_name}: {error}'.format(
+							script_name=absolute_path,
+							error=e
+						)
+					)
+			else:
+				self.log(
+					'Skipping {script_name} under {folder},'
+					'because it is not marked as executable.'.format(
+						script_name=filename,
+						folder=directory
+					)
+				)
 
 	def _get_configure_settings(self, app, filter_action=True):
 		set_vars = {}
