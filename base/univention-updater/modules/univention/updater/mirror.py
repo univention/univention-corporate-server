@@ -217,5 +217,4 @@ class UniventionMirror(UniventionUpdater):
 
 if __name__ == '__main__':
     import doctest
-    from sys import exit
     exit(doctest.testmod()[0])
