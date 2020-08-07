@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-133) UNRELEASED; urgency=medium
+
+  * Bug #51790: Execute custom hook scripts after app install/update/remove
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 07 Aug 2020 22:15:25 +0200
+
 univention-appcenter (8.0.11-132) unstable; urgency=medium
 
   * Bug #51034: 81proxy instead of 80proxy for docker proxy settings.
