@@ -7,9 +7,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="/favicon.ico"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="style.css">
-		<link rel="stylesheet" href="portal.css">
-		<link rel="stylesheet" href="custom.css">
+		<link rel="stylesheet" href="/univention/portal/style.css">
+		<link rel="stylesheet" href="/univention/portal/portal.css">
+		<link rel="stylesheet" href="/univention/portal/custom.css">
 		<!-- TODO: should go into univention-web -->
 		<link rel="stylesheet" href="/univention/management/modules/appcenter.css" type="text/css"/>
 		<script>
@@ -22,6 +22,8 @@
 		</script>
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
+			dojoConfig.packages[0].location = '/univention/portal/';
+			dojoConfig.packages[0].name = 'portal';
 			dojoConfig.packages.push({
 				name: 'management',
 				location: '/univention/management'
