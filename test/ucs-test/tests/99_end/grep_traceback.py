@@ -83,11 +83,20 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 
 COMMON_EXCEPTIONS = [re.compile(x) for x in [
 	# Errors from UCS 4.4-5 Jenkins runs:
+	'^SERVER_DOWN: .*',
+	'^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*',
+	'^OTHER: .*cannot rename.*',
+	'^NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*',
+	'^ldapError: No such object',
 	'^objectExists: .*',
 	'^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"),
 	'^permissionDenied$',
 	'^noObject:.*',
-	r'''^NotFound: \(404, "The path '/portal/.*''',
+	'^NoObject: No object found at DN .*',
+	r'^OSError: \[Errno 24\] Too many open files',
+	r'error: \[Errno 24\] Too many open files.*',
+	r'gaierror: \[Errno -5\] No address associated with hostname',
+	r'''^NotFound: \(404, "The path '/(login|portal)/.*''',
 	'^IndexError: list index out of range',
 	"^KeyError: 'gidNumber'",
 	'^ldap.NO_SUCH_OBJECT: .*',
@@ -101,7 +110,7 @@ COMMON_EXCEPTIONS = [re.compile(x) for x in [
 	'^NonThreadedError$',
 	re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"),
 	'.*moduleCreationFailed: Target directory.*not below.*',
-	"^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*create.*univentionblog.*",
+	"^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*",
 	'^cherrypy._cperror.NotFound:.*',
 	re.escape('lockfile.LockTimeout: Timeout waiting to acquire lock for /var/run/umc-server.pid'),
 	"^FileExistsError:.*'/var/run/umc-server.pid'"
@@ -114,8 +123,16 @@ COMMON_EXCEPTIONS = [re.compile(x) for x in [
 	'MyTestException: .*',
 	'univention.lib.umc.ConnectionError:.*machine.secret.*',
 	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
-	'^OperationalError: (psycopg2.OperationalError) FATAL:.*admindiary.*',  # Bug #51671
+	r'^OperationalError: \(psycopg2.OperationalError\) FATAL:.*admindiary.*',  # Bug #51671
 	r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'",  # Bug #51670
+	"AttributeError: 'NoneType' object has no attribute 'lower'",  # Bug #50282
+	"AttributeError: 'NoneType' object has no attribute 'get'",  # Bug #49879
+	'^ImportError: No module named __base',  # Bug #50338
+	'^ImportError: No module named admindiary.client',  # Bug #49866
+	'^ImportError: No module named types',  # Bug #50381
+	'^ImportError: No module named directory',  # Bug #50338
+	'^primaryGroupWithoutSamba: .*',  # Bug #49881
+
 	# '^ldap.NO_SUCH_OBJECT: .*',
 ]]
 
