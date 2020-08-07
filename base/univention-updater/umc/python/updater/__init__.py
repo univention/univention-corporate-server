@@ -38,9 +38,9 @@ from hashlib import md5
 import subprocess
 import psutil
 import pipes
-import yaml
 import requests
 from datetime import datetime
+from urlparse import urljoin
 
 import univention.hooks
 import notifier.threads
@@ -54,6 +54,7 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer, IntegerSanitizer, ListSanitizer
 
 from univention.updater.tools import UniventionUpdater
+from univention.updater.repo_url import UcsRepoUrl
 from univention.updater.errors import RequiredComponentError, UpdaterException
 
 _ = Translation('univention-management-console-module-updater').translate
@@ -199,6 +200,7 @@ class Instance(Base):
 		try:
 			self.uu = UniventionUpdater(False)
 		except Exception as exc:  # FIXME: let it raise
+			self.uu = None
 			MODULE.error("init() ERROR: %s" % (exc,))
 
 	@simple_response
@@ -229,35 +231,47 @@ class Instance(Base):
 
 	def _maintenance_information(self):
 		ucr.load()
-		if ucr.is_true('license/extended_maintenance/disable_warning'):
-			return {'show_warning': False}
-		version = self.uu.get_ucs_version()
+		default = {'show_warning': False}
+		if ucr.is_true('license/extended_maintenance/disable_warning') or not self.uu:
+			return default
+
+		version = self.uu.current_version
 		try:
-			url = 'https://updates.software-univention.de/download/ucs-maintenance/{}.yaml'.format(version)
+			url = urljoin(ucr.get('repository/online/server', UcsRepoUrl.DEFAULT), '/release.json')
 			response = requests.get(url, timeout=10)
 			if not response.ok:
 				response.raise_for_status()
-			status = yaml.safe_load(response.content)
-			if not isinstance(status, dict):
-				raise yaml.YAMLError(repr(status))
-			# the yaml file contains for maintained either false, true or extended as value.
-			# yaml.load converts true and false into booleans but extended into string.
-			_maintained_status = status.get('maintained')
-			maintenance_extended = _maintained_status == 'extended'
-			show_warning = maintenance_extended or not _maintained_status
-		except yaml.YAMLError as exc:
-			MODULE.error('The YAML format is malformed: %s' % (exc,))
-			return {'show_warning': False}
+
+			json = response.json()
+			for majors in json['releases']:
+				if majors['major'] != version.major:
+					continue
+				for minors in majors["minors"]:
+					if minors['minor'] != version.minor:
+						continue
+					for patchlevel in minors["patchlevels"]:
+						if patchlevel['patchlevel'] != version.patchlevel:
+							continue
+
+						# FIXME: Adapt to format implemented by repo-ng
+						_maintained_status = patchlevel.get("status", "maintained")
+						maintenance_extended = _maintained_status == 'extended'
+						show_warning = maintenance_extended or not _maintained_status
+
+						return {
+							'ucs_version': str(version),
+							'show_warning': show_warning,
+							'maintenance_extended': maintenance_extended,
+							'base_dn': ucr.get('license/base')
+						}
+					break
+				break
 		except requests.exceptions.RequestException as exc:
 			MODULE.error("Querying maintenance information failed: %s" % (exc,))
-			return {'show_warning': False}
+		except Exception as exc:
+			MODULE.error('The JSON format is malformed: %s' % (exc,))
 
-		return {
-			'ucs_version': version,
-			'show_warning': show_warning,
-			'maintenance_extended': maintenance_extended,
-			'base_dn': ucr.get('license/base')
-		}
+		return default
 
 	@simple_response
 	def poll(self):
