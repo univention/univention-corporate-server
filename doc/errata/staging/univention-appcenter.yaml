@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-appcenter
+fix: 8.0.11-133A~4.4.0.202008072223
+desc: |
+ This update addresses the following issue(s):
+ * WIP
+bug: [51790]
