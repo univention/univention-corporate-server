@@ -1,3 +1,9 @@
+python-notifier (0.9.7-10) unstable; urgency=medium
+
+  * Bug #51781: unregister closed sockets
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 07 Aug 2020 10:09:09 +0200
+
 python-notifier (0.9.7-9) unstable; urgency=medium
 
   * Bug #51282: fix python 3 compatibility of notifier.Callback
