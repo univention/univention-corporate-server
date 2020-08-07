@@ -17,18 +17,18 @@ kvm_template='generic-unsafe'
 kvm_build_server='lattjo.knut.univention.de'
 kvm_memory='2048M'
 kvm_cpus='1'
-exact_match=false
+exact_match='false'
 ucsschool_release='scope'
-shutdown=false
+shutdown='false'
 
 # some internal stuff
-image=docker-registry.knut.univention.de/ucs-ec2-tools
+image="${DIMAGE:-docker-registry.knut.univention.de/ucs-ec2-tools}"
 debug="${DEBUG:=false}"
 docker="${DOCKER:=false}"
 docker_env_file="$(mktemp)"
 
 usage () {
-	echo "Usage: [ENV_VAR=setting] ... $(basename $0) [options] scenario.cfg"
+	echo "Usage: [ENV_VAR=setting] ... ${0##*/} [options] scenario.cfg"
 	echo ""
 	echo "Start scenario defined in scenario.cfg"
 	echo ""
@@ -102,9 +102,8 @@ die () {
 }
 
 cleanup () {
-	if ! "$debug"; then
-		[ -f "$docker_env_file" ] && rm "$docker_env_file"
-	fi
+	"$debug" ||
+		rm -f "$docker_env_file"
 }
 
 trap cleanup EXIT
@@ -115,9 +114,8 @@ opts=$(getopt \
 	--name "$(basename "$0")" \
 	--options "h" \
 	-- "$@"
-)
-[ $? != 0 ] && die "see -h|--help"
-eval set -- $opts
+) || die "see -h|--help"
+eval set -- "$opts"
 while true; do
 	case "$1" in
 		-h|--help)
@@ -165,7 +163,7 @@ export CFG="$1"
 # our own dhcp server for pxe, so create two ip adresses based on the
 # ucs patch level version
 export NETINSTALL_IP1=$(((${release##*-} + 3) * 2 ))
-export NETINSTALL_IP2=$(($NETINSTALL_IP1 +1))
+export NETINSTALL_IP2=$((NETINSTALL_IP1 +1))
 
 # Jenkins defaults
 if [ "$USER" = "jenkins" ]; then
@@ -215,36 +213,44 @@ exe='ucs-ec2-create'
 "$KVM" && exe='ucs-kvm-create'
 
 # start the test
+declare -a cmd=()
 if "$docker"; then
 	# create new image with host user/group
-	docker build --pull  -t $USER/$image 1>/dev/null -<<EOF
+	docker build --pull -t "$USER/$image" 1>/dev/null -<<EOF
 FROM $image
 RUN addgroup --gid $(id -g) "dockergroup" && adduser --system --uid $(id -u) --gid $(id -g) $USER
 EOF
 	# create env file
-	for env_var in $env_vars; do
-		echo $env_var=${!env_var} >> $docker_env_file
-	done
-	# get aws credentials
-	echo AWS_ACCESS_KEY_ID="$(cat ~/.boto | sed -n 's/^\w*aws_access_key_id *= *\(.*\)/\1/p')" >> $docker_env_file
-	echo AWS_SECRET_ACCESS_KEY="$(cat ~/.boto | sed -n 's/^\w*aws_secret_access_key *= *\(.*\)/\1/p')" >> $docker_env_file
+	{
+		for env_var in $env_vars; do
+			echo "$env_var=${!env_var}"
+		done
+		# get aws credentials
+		echo AWS_ACCESS_KEY_ID="$(sed -n 's/^\w*aws_access_key_id *= *\(.*\)/\1/p' ~/.boto)"
+		echo AWS_SECRET_ACCESS_KEY="$(sed -n 's/^\w*aws_secret_access_key *= *\(.*\)/\1/p' ~/.boto)"
+	} >"$docker_env_file"
 	# TODO add ~/ec2/keys/tech.pem via env
 	# TODO add personal ssh key for kvm server access via env
+
 	# docker command
-	declare -a cmd=("docker" "run")
-	cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/home/$USER/ec2:ro "-v" ~/.ssh/id_rsa:/home/$USER/.ssh/id_rsa:ro)
-	cmd+=("--dns" "192.168.0.3" "--dns-search=knut.univention.de")
-	cmd+=(-w /test)
-	cmd+=(-u "$(id -u)")
-	cmd+=(--rm)
-	cmd+=(--env-file "$docker_env_file")
-	cmd+=($USER/$image)
-	cmd+=($exe -c $CFG)
+	cmd+=(
+		"docker" "run"
+		--rm
+		-w /test
+		-v "$(pwd):/test"
+		-v "$HOME/ec2:/home/$USER/ec2:ro"
+		-v "$HOME/.ssh/id_rsa:/home/$USER/.ssh/id_rsa:ro"
+		--dns '192.168.0.3'
+		--dns-search 'knut.univention.de'
+		-u "$(id -u)"
+		--env-file "$docker_env_file"
+		"$USER/$image"
+	)
 else
-	declare -a cmd=("$exe" -c "$CFG")
 	# shellcheck disable=SC2123
 	PATH="./ucs-ec2-tools${PATH:+:$PATH}"
 fi
+cmd+=("$exe" -c "$CFG")
 
 "$HALT" && cmd+=("-t")
 "$REPLACE" && cmd+=("--replace")
