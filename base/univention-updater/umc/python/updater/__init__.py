@@ -56,6 +56,11 @@ from univention.management.console.modules.sanitizers import ChoicesSanitizer, S
 from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import RequiredComponentError, UpdaterException
 
+try:
+	from typing import Any, Dict, Iterable, List  # noqa F401
+except ImportError:
+	pass
+
 _ = Translation('univention-management-console-module-updater').translate
 
 # the file whose file time is used as the 'serial' value for the 'Components' grid.
@@ -91,15 +96,13 @@ INSTALLERS = {
 
 
 class Watched_File(object):
-
 	"""
 	A class that takes a file name and watches changes to this file.
 	We don't use any advanced technologies (FAM, inotify etc.) but
 	rather basic 'stat' calls, monitoring mtime and size.
 	"""
 
-	def __init__(self, file, count=2):
-
+	def __init__(self, file, count=2):  # type: (str, int) -> None
 		self._file = file
 		self._count = count
 
@@ -111,7 +114,7 @@ class Watched_File(object):
 		self._last_size = 0  # last size we've seen
 		self._last_md5 = ''
 
-	def timestamp(self):
+	def timestamp(self):  # type: () -> int
 		"""
 		Main function. returns the current timestamp whenever size or mtime
 		have changed. Defers returning the new value until changes have
@@ -137,7 +140,7 @@ class Watched_File(object):
 				try:
 					with open(self._file, 'rb') as fd:
 						hash_ = md5(fd.read()).hexdigest()
-				except (IOError, OSError):
+				except EnvironmentError:
 					pass
 				else:
 					if hash_ != self._last_md5:
@@ -157,7 +160,7 @@ class Watched_Files(object):
 	""" Convenience class to monitor more than one file at a time.
 	"""
 
-	def __init__(self, files, count=2):
+	def __init__(self, files, count=2):  # type: (Iterable[str], int) -> None
 		self._count = count
 		self._files = []
 
@@ -170,7 +173,7 @@ class Watched_Files(object):
 		for f in files:
 			self._files.append(Watched_File(f, 0))
 
-	def timestamp(self):
+	def timestamp(self):  # type: () -> int
 		max = 0
 		for f in self._files:
 			stamp = f.timestamp()
@@ -190,7 +193,7 @@ class Watched_Files(object):
 
 class Instance(Base):
 
-	def init(self):
+	def init(self):  # type: () -> None
 		MODULE.info("Initializing 'updater' module (PID = %d)" % (getpid(),))
 		self._current_job = ''
 		self._logfile_start_line = 0
@@ -202,32 +205,36 @@ class Instance(Base):
 			MODULE.error("init() ERROR: %s" % (exc,))
 
 	@simple_response
-	def query_maintenance_information(self):
+	def query_maintenance_information(self):  # type: () -> Dict[str, Any]
 		ret = self._maintenance_information()
 		ret.update(self._last_update())
 		return ret
 
-	def _last_update(self):
+	def _last_update(self):  # type: () -> Dict[str, Any]
 		status_file = '/var/lib/univention-updater/univention-updater.status'
-		ret = {'last_update_failed': False, 'last_update_version': None}
+		ret = {'last_update_failed': False, 'last_update_version': None}  # type: Dict[str, Any]
 		try:
-			mtime = stat(status_file).st_mtime
-			mtime = datetime.fromtimestamp(mtime)
+			fstat = stat(status_file)
+			mtime = datetime.fromtimestamp(fstat.st_mtime)
 			delta = datetime.now() - mtime
 			if delta.days != 0:  # no fresh failure
 				return ret
+
 			with open(status_file) as fd:
-				content = fd.read()
-				info = dict(line.split('=', 1) for line in content.splitlines())
-				ret['last_update_failed'] = info.get('status') == 'FAILED'
-				if ret['last_update_failed']:
-					ret['last_update_version'] = info.get('next_version')
+				info = dict(
+					line.strip().split('=', 1)  # type: ignore
+					for line in fd
+				)  # type: Dict[str, str]
+
+			ret['last_update_failed'] = info.get('status') == 'FAILED'
+			if ret['last_update_failed']:
+				ret['last_update_version'] = info.get('next_version')
 		except (ValueError, EnvironmentError) as exc:
 			MODULE.error(str(exc))
-			pass
+
 		return ret
 
-	def _maintenance_information(self):
+	def _maintenance_information(self):  # type: () -> Dict[str, Any]
 		ucr.load()
 		if ucr.is_true('license/extended_maintenance/disable_warning'):
 			return {'show_warning': False}
@@ -260,11 +267,11 @@ class Instance(Base):
 		}
 
 	@simple_response
-	def poll(self):
+	def poll(self):  # type: () -> bool
 		return True
 
 	@simple_response
-	def query_releases(self):
+	def query_releases(self):  # type: () -> List[Dict[str, str]]
 		"""
 		Returns a list of system releases suitable for the
 		corresponding ComboBox
@@ -512,7 +519,7 @@ class Instance(Base):
 		if count < 0:
 			try:
 				return stat(fname)[9]
-			except (IOError, OSError):
+			except EnvironmentError:
 				return 0
 
 		# don't read complete file if we have an 'ignore' count
@@ -538,7 +545,7 @@ class Instance(Base):
 						lines.append(line.rstrip().decode('utf-8', 'replace'))
 						if (count > 0) and (len(lines) > count):
 							lines.pop(0)
-		except (IOError, OSError):
+		except EnvironmentError:
 			pass
 		return lines
 
@@ -555,7 +562,7 @@ class Instance(Base):
 					fields = line.strip().split('=')
 					if len(fields) == 2:
 						result['_%s_' % fields[0]] = fields[1]
-		except (IOError, OSError):
+		except EnvironmentError:
 			pass
 
 		result['running'] = '' != self.__which_job_is_running()
@@ -586,7 +593,7 @@ class Instance(Base):
 		try:
 			with open(logfile, 'rb') as fd:
 				self._logfile_start_line = sum(1 for line in fd)
-		except (IOError, OSError):
+		except EnvironmentError:
 			pass
 
 		command = INSTALLERS[job]['command']
@@ -607,10 +614,10 @@ class Instance(Base):
 
 		return {'status': 0}
 
-	def __which_job_is_running(self):
+	def __which_job_is_running(self):  # type: () -> str
 		# first check running at jobs
 		for atjob in atjobs.list(True):
-			for job, inst in INSTALLERS.iteritems():
+			for job, inst in INSTALLERS.items():
 				cmd = inst['command'].split('%')[0]
 				if cmd in atjob.command:
 					self._current_job = job
