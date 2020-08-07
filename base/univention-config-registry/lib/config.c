@@ -33,6 +33,7 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <unistd.h>
 #ifndef __USE_GNU
 # define __USE_GNU
@@ -43,41 +44,44 @@
 #include <univention/config.h>
 #include <univention/debug.h>
 
-#include <errno.h>
-
 #define BASECONFIG_MAX_LINE 1024
+#define MAX_RECURSION 10
 
+#define VARIABLE_TOKEN "@%@"
+#define VARIABLE_TOKEN_LEN (strlen(VARIABLE_TOKEN))
 
-static const char *SCOPES[] = {
-	"forced",
-	"schedule",
-	"ldap",
-	"normal",
-	"custom",
-	NULL};
-
+enum SCOPE { CUSTOM, FORCED, SCHEDULE, LDAP, NORMAL, DEFAULT };
 static const char *LAYERS[] = {
-			"/etc/univention/base-forced.conf",
-			"/etc/univention/base-schedule.conf",
-			"/etc/univention/base-ldap.conf",
-			"/etc/univention/base.conf",
-			NULL};
+	[CUSTOM] = NULL,
+	[FORCED] = "/etc/univention/base-forced.conf",
+	[SCHEDULE] = "/etc/univention/base-schedule.conf",
+	[LDAP] = "/etc/univention/base-ldap.conf",
+	[NORMAL] = "/etc/univention/base.conf",
+	[DEFAULT] = "/etc/univention/base-defaults.conf",
+};
+#define ARRAY_SIZE(A) (sizeof (A) / sizeof ((A)[0]))
 
-char *univention_config_get_string(const char *key)
+static char *replace_variable_patterns(char *key, int recursion);
+
+static char *_get_variable(const char *key, int recursion)
 {
 	FILE *file;
 	char line[BASECONFIG_MAX_LINE];
 	char *nvalue;
 	int len;
 	char *ret = NULL;
-	int i;
+	enum SCOPE i;
 
 	len = asprintf(&nvalue, "%s: ", key);
 	if (len < 0)
 		return ret;
 
-	for (i = 0; LAYERS[i] != NULL; i++) {
-		if ((file = fopen(LAYERS[i], "r")) == NULL)
+	for (i = 0; i < ARRAY_SIZE(LAYERS); i++) {
+		const char *name = i ? LAYERS[i] : getenv("UNIVENTION_BASECONF");
+		if (!name)
+			continue;
+
+		if ((file = fopen(name, "re")) == NULL)
 		{
 			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", LAYERS[i]);
 			continue;
@@ -103,6 +107,9 @@ char *univention_config_get_string(const char *key)
 				}
 				ret = strndup(value, vlen);
 				fclose(file);
+				if (recursion > 0 && i == DEFAULT)
+					ret = replace_variable_patterns(ret, recursion);
+
 				goto done;
 			}
 		}
@@ -110,10 +117,42 @@ char *univention_config_get_string(const char *key)
 		fclose(file);
 	}
 
-    univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
+	univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
 done:
 	free(nvalue);
 	return ret;
+}
+
+char *univention_config_get_string(const char *key)
+{
+	return _get_variable(key, MAX_RECURSION);
+}
+
+static char *replace_variable_patterns(char *key, int recursion)
+{
+	char *start, *end, *result = key, *next = key;
+
+	if (!key)
+		return NULL;
+
+	while (recursion > 0 && (start = strstr(next, VARIABLE_TOKEN)) && (end = strstr(start + VARIABLE_TOKEN_LEN, VARIABLE_TOKEN)))
+	{
+		*start = *end = '\0';
+
+		char *content = _get_variable(start + VARIABLE_TOKEN_LEN, recursion - 1);
+		int ret = asprintf(&result, "%s%s%s", key, content ? content : "", end + VARIABLE_TOKEN_LEN);
+		free(content);
+		free(key);
+		if (ret < 0) {
+			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "asprintf() failed");
+			result = NULL;
+			break;
+		}
+		next = result + (start - key) + (content ? strlen(content) : 0);
+		key = result;
+	}
+
+	return result;
 }
 
 int univention_config_get_int(const char *key)
