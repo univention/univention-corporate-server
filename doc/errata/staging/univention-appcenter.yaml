@@ -5,6 +5,10 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-appcenter
 fix: 8.0.11-133A~4.4.0.202008072223
 desc: |
- This update addresses the following issue(s):
- * WIP
+ This update addresses the following issue:
+ * A mechanism has been added which allows Administrators to
+   register hook scripts to be executed after installation, upgrade
+   or removal of an app. To do this, the hook script has to be stored
+   in the directory
+   /var/lib/univention-appcenter/apps/$appid/local/hooks/post-$action.d
 bug: [51790]
