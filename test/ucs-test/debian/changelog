@@ -1,3 +1,9 @@
+ucs-test (9.0.4-35) unstable; urgency=medium
+
+  * Bug #51790: Fix 69_app_install_update_remove_hooks error on upgrade
+
+ -- Julia Bremer <bremer@univention.de>  Sat, 08 Aug 2020 19:03:51 +0200
+
 ucs-test (9.0.4-34) unstable; urgency=medium
 
   * Bug #51790: Test case for new appcenter hooks

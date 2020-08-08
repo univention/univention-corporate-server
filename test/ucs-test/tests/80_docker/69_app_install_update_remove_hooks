@@ -8,15 +8,12 @@
 from __future__ import print_function
 from dockertest import \
 	Appcenter, \
-	get_app_version, \
 	App, \
-	UCSTest_DockerApp_InstallationFailed, \
-	get_docker_appbox_image, \
 	get_app_name
-from univention.testing.utils import is_port_open
 import subprocess
 
 app_name = get_app_name()  # returns an arbitrary app
+store_data = '#!/bin/sh'
 
 # a log file to store the results (line based)...
 file_result = "/tmp/69_app_install_update_remove_hooks.result"
@@ -46,7 +43,7 @@ setup = '#!/bin/sh' \
 	"\n" 'echo "{test_script}" > {hook_path}/post-upgrade.d/01-script.sh' \
 	"\n" \
 	"\n" 'chmod +x {hook_path}/post-remove.d/01-script.sh' \
-	"\n" 'chmod +x {hook_path}/post-install.d/01-script.sh' \
+	"\n" 'chmod +x {hook_path}/post-upgrade.d/01-script.sh' \
 	"\n" 'chmod +x {hook_path}/post-install.d/01-script.sh' \
 	"\n" '# initialize or reset result file...' \
 	"\n" '(echo -n "#" ; date) > {file_result}' \
@@ -88,10 +85,10 @@ if __name__ == '__main__':
 		app.add_script(setup=setup)
 		app.set_ini_parameter(
 			DockerImage='alpine:3.6',  # initial docker image release
-			DockerScriptSetup='/setup',
+			DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 			DockerScriptInit='/sbin/init',
 		)
-
+		app.add_script(store_data=store_data)
 		app.add_to_local_appcenter()
 		appcenter.update()
 		app.install()  # install the app
@@ -101,7 +98,6 @@ if __name__ == '__main__':
 		# which contains only the current date after the setup and check
 		# that this last line contains the word `install`...
 		assert_file_lines(file_result, "install")
-		# appcenter.cleanup()
 		# ==================================================================
 		# second test: update the app...
 		app = App(
@@ -113,10 +109,11 @@ if __name__ == '__main__':
 		app.add_script(setup=setup)
 		app.set_ini_parameter(
 			DockerImage='alpine:3.7',  # next image release
-			DockerScriptSetup='/setup',
+			DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
 			DockerScriptInit='/sbin/init',
 		)
 
+		app.add_script(store_data=store_data)
 		app.add_to_local_appcenter()
 		appcenter.update()
 		app.upgrade()	# now upgrade the app
