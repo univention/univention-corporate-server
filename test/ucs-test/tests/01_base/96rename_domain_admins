@@ -46,6 +46,8 @@ cleanup() {
 trap cleanup EXIT
 
 wait_for_replication_and_postrun
+# wait a little bit longer
+sleep 2
 
 if [ "$(ucr get groups/default/domainadmins)" != "$GROUPNAME" ]; then
 	echo "UCR variable groups/default/domainadmin is set to $(ucr get groups/default/domainadmins) instead of $GROUPNAME"

@@ -54,6 +54,9 @@ trap cleanup EXIT
 # so we have to wait for OpenLDAP replication and listener module postrun
 wait_for_replication_and_postrun
 
+# wait a little bit longer
+sleep 2
+
 if [ "$(ucr get users/default/administrator)" != "$USERNAME" ]; then
 	echo "UCR variable users/default/administrator is set to $(ucr get users/default/administrator) instead of $USERNAME"
 	exit 1
