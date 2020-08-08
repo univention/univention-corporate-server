@@ -1,3 +1,9 @@
+ucs-test (9.0.4-37) unstable; urgency=medium
+
+  * Bug #1234: Wait a litte bit longer for 96rename* tests
+
+ -- Julia Bremer <bremer@univention.de>  Sat, 08 Aug 2020 19:33:14 +0200
+
 ucs-test (9.0.4-35) unstable; urgency=medium
 
   * Bug #51790: Fix 69_app_install_update_remove_hooks error on upgrade
