@@ -1,3 +1,15 @@
+univention-portal (3.1.0-30) unstable; urgency=medium
+
+  * Bug #51798: Make multiple portals configurable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Aug 2020 11:59:48 +0200
+
+univention-portal (3.1.0-29) unstable; urgency=medium
+
+  * Bug #51511: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 07 Aug 2020 23:40:58 +0200
+
 univention-portal (3.1.0-28) unstable; urgency=medium
 
   * Bug #51511: Register UDM modules only on 4.4-1 systems

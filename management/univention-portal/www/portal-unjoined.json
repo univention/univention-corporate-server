@@ -5,14 +5,19 @@
                 "de_DE": "Verwaltung",
                 "en_US": "Administration"
             },
-            "dn": "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%"
+            "dn": "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%",
+            "entries": [
+                    "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
+                    "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%"
+            ]
         },
         "cn=service,cn=category,cn=portals,cn=univention,%@%ldap/base%@%": {
             "display_name": {
                 "de_DE": "Applikationen",
                 "en_US": "Applications"
             },
-            "dn": "cn=service,cn=category,cn=portals,cn=univention,%@%ldap/base%@%"
+            "dn": "cn=service,cn=category,cn=portals,cn=univention,%@%ldap/base%@%",
+            "entries": []
         }
     },
     "entries": {
@@ -25,7 +30,6 @@
                 "fr_FR": "Console de gestion Univention pour admin\u00adis\u00adtrer le domaine UCS et le syst\u00e8me local"
             },
             "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
-            "favorite": false,
             "linkTarget": null,
             "links": [
                 "/univention/management/"
@@ -46,7 +50,6 @@
                 "fr_FR": "Nouvelles, conseils et bonne pratique"
             },
             "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
-            "favorite": false,
             "linkTarget": "newwindow",
             "links": [
                 "https://www.univention.com/news/blog-en/"
@@ -59,18 +62,13 @@
             }
         }
     },
-    "links": {},
+    "folders": {},
+    "menu_links": {},
     "portal": {
         "anonymousEmpty": [],
         "autoLayoutCategories": false,
-        "content": [
-            [
-                "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%",
-                [
-                    "cn=umc-domain,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%",
-                    "cn=univentionblog,cn=entry,cn=portals,cn=univention,%@%ldap/base%@%"
-                ]
-            ]
+        "categories": [
+            "cn=admin,cn=category,cn=portals,cn=univention,%@%ldap/base%@%"
         ],
         "defaultLinkTarget": null,
         "dn": "cn=domain,cn=portal,cn=portals,cn=univention,%@%ldap/base%@%",
@@ -82,10 +80,7 @@
             "en_US": "Univention Portal",
             "fr_FR": "Portail Univention"
         },
-        "showApps": false,
-        "showLogin": true,
-        "showMenu": true,
-        "showSearch": true,
-        "showServers": true
-    }
+        "showApps": false
+    },
+    "user_links": {}
 }

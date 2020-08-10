@@ -104,51 +104,43 @@ def flatten(list_of_lists):
 	return ret
 
 
-class LDAPCache(object):
-	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
-	FALLBACK_PORTAL_CACHE = '/usr/share/univention-portal/portal-unjoined.json'
-	GROUP_CACHE = '/var/cache/univention-portal/groups.json'
-	REFRESH_PORTAL_FILE = '/var/cache/univention-portal/refresh_portal'
-	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_groups'
-
-	def __init__(self):
-		self._cache = None
-		self._groups = None
-		self._udm = None
-
-	@property
-	def udm(self):
-		if self._udm is None:
-			self._udm = UDM.machine().version(2)
-		return self._udm
-
-	def _get_groups(self):
-		if self._groups is None or os.path.exists(self.REFRESH_GROUP_FILE):
-			get_logger('cache').info('loading group cache file')
-			try:
-				with open(self.GROUP_CACHE) as fd:
-					self._groups = json.load(fd)
-			except EnvironmentError:
-				get_logger('cache').warn('unable to read group cache file')
-				self._groups = None
-			if os.path.exists(self.REFRESH_GROUP_FILE):
-				os.unlink(self.REFRESH_GROUP_FILE)
-		return self._groups
+class FileCache(object):
+	def __init__(self, portal, groups, reloader=None):
+		self._fallback_portal = '/usr/share/univention-portal/portal-unjoined.json'
+		self._portal = portal
+		self._groups = groups
+		self._reloader = reloader
+		self._cache = {}
+		self._group_cache = {}
+		self.load(fallback=True)
 
 	def load(self, fallback=False):
+		self.refresh_portal()
+		self.refresh_groups()
 		get_logger('cache').info('loading cache file')
+		self._load_portal(fallback=fallback)
+		self._load_groups()
+
+	def _load_portal(self, fallback):
 		try:
-			with open(self.PORTAL_CACHE) as fd:
+			with open(self._portal) as fd:
 				self._cache = json.load(fd)
 		except EnvironmentError:
-			if fallback:
-				get_logger('cache').warn('falling back to %s!' % self.FALLBACK_PORTAL_CACHE)
-				with open(self.FALLBACK_PORTAL_CACHE) as fd:
-					content = fd.read()
-					content = run_filter(content, ucr)
-					self._cache = json.loads(content)
-			else:
+			if not fallback:
 				raise
+			get_logger('cache').warn('Error loading portal. Falling back to {}'.format(self._fallback_portal))
+			with open(self._fallback_portal) as fd:
+				content = fd.read()
+				content = run_filter(content, ucr)
+				self._cache = json.loads(content)
+
+	def _load_groups(self):
+		try:
+			with open(self._groups) as fd:
+				self._group_cache = json.load(fd)
+		except EnvironmentError:
+			get_logger('cache').warn('Error loading groups. Falling back to empty set')
+			self._group_cache = {}
 
 	def get(self, name):
 		if name == 'groups':
@@ -156,40 +148,73 @@ class LDAPCache(object):
 		else:
 			return self._get_portal(name)
 
+	def _get_groups(self):
+		if self.refresh_groups():
+			get_logger('cache').info('reloading group cache file')
+			self._load_groups()
+		return self._group_cache
+
 	def _get_portal(self, name):
-		if os.path.exists(self.REFRESH_PORTAL_FILE):
-			self.refresh()
-			try:
-				os.unlink(self.REFRESH_PORTAL_FILE)
-			except EnvironmentError:
-				pass
-			self._cache = None
-		if self._cache is None:
-			try:
-				self.load()
-			except EnvironmentError:
-				self.refresh()
-				self.load(fallback=True)
-		get_logger('cache').debug('getting %s from cache' % name)
+		if self.refresh_portal():
+			get_logger('cache').info('reloading portal cache file')
+			self._load_portal()
 		return deepcopy(self._cache[name])
 
-	def refresh(self):
-		ucr.load()
-		get_logger('cache').info('refreshing cache')
-		fd = None
-		try:
+	def refresh_portal(self):
+		if self._reloader:
+			return self._reloader.refresh_portal(self._portal)
+
+	def refresh_groups(self):
+		if self._reloader:
+			return self._reloader.refresh_groups(self._groups)
+
+
+class FileReloaderUDM(object):
+	def __init__(self, refresh_portal, refresh_groups):
+		self._refresh_portal = refresh_portal
+		self._refresh_groups = refresh_groups
+
+	@property
+	def udm(self):
+		if not hasattr(self, '_udm'):
+			self._udm = UDM.machine().version(2)
+		return self._udm
+
+	def refresh_ldap_connection(self):
+		self._udm = None
+
+	def refresh_groups(self, group_cache_file):
+		if os.path.exists(self._refresh_groups):
 			try:
-				fd = self._refresh()
-			except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS):
-				get_logger('server').info('Reconnecting ldap connection')
-				self._udm = None
-				fd = self._refresh()
-		except Exception:
-			get_logger('cache').exception('Error during refresh')
-			# hopefully, we can still work with an older cache?
-		else:
-			if fd:
-				shutil.move(fd.name, self.PORTAL_CACHE)
+				os.unlink(self._refresh_groups)
+			except EnvironmentError:
+				pass
+			return True
+
+	def refresh_portal(self, portal_cache_file):
+		if os.path.exists(self._refresh_portal):
+			ucr.load()
+			get_logger('cache').info('refreshing cache')
+			fd = None
+			try:
+				try:
+					fd = self._refresh()
+				except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS):
+					get_logger('server').info('Reconnecting ldap connection')
+					self._udm = None
+					fd = self._refresh()
+			except Exception:
+				get_logger('cache').exception('Error during refresh')
+				# hopefully, we can still work with an older cache?
+			else:
+				if fd:
+					os.makedirs(os.path.dirname(portal_cache_file))
+					shutil.move(fd.name, portal_cache_file)
+					try:
+						os.unlink(self._refresh_portal)
+					except EnvironmentError:
+						pass
+					return True
 
 	def _refresh(self):
 		ldap_hostdn = ucr.get('ldap/hostdn')
@@ -260,8 +285,8 @@ class LDAPCache(object):
 				# this is supposed to be the (ordered) idx of the unfiltered (no removed links due to allowdGroups etc)
 				# portal.props.menuLinks, so that the frontend can display the menu links in the correct e.g.:
 				# menuLinks = [
-				#	{dn: A, allowdGroups: foo, $priority: 0},
-				#	{dn: B,                    $priority: 1},
+				# 	{dn: A, allowdGroups: foo, $priority: 0},
+				# 	{dn: B,                    $priority: 1},
 				# ]
 				# visiting portal anonymously -> menu link B is rendered
 				# user of group 'foo' logs in -> menu link A is rendered above B
@@ -407,104 +432,8 @@ class LDAPCache(object):
 
 
 class JsonHandler(tornado.web.RequestHandler):
-	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
-		if username in group['usernames']:
-			return True
-		for group_dn in group['groups']:
-			if group_dn in checked_groups:
-				continue
-			group = groups.get(group_dn)
-			if group is None:
-				continue
-			checked_groups.append(group_dn)
-			if self._recursive_search_in_groups(username, group, groups, checked_groups):
-				return True
-		return False
-
-	def _get_portal(self, categories, visible_content):
-		portal = cache.get('portal')
-		portal['categories'] = [category_dn for category_dn in portal['categories'] if category_dn in visible_content['category_dns']]
-		portal['content'] = [
-			[category_dn, categories[category_dn]['entries']]
-			for category_dn in portal['categories']
-		]
-		return portal
-
-	def _get_all_entries_of_folder(self, folder_dn, folders, entries):
-		def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns):
-			for entry_dn in folders[folder_dn]['entries']:
-				if entry_dn in entries:
-					if entry_dn not in ret:
-						ret.append(entry_dn)
-				elif entry_dn in folders:
-					if entry_dn not in already_unpacked_folder_dns:
-						already_unpacked_folder_dns.append(entry_dn)
-						_flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns)
-
-		ret = []
-		_flatten(folder_dn, folders, entries, ret, [])
-		return ret
-
-	def _filter_entry_dns(self, entry_dns, entries, username, admin_mode):
-		groups = cache.get('groups')
-		filtered_dns = []
-		for entry_dn in entry_dns:
-			entry = entries.get(entry_dn)
-			if entry is None:
-				continue
-			if not admin_mode:
-				if not entry['activated']:
-					continue
-				if entry['allowedGroups']:
-					checked_groups = []
-					for group_dn in entry['allowedGroups']:
-						group = groups.get(group_dn)
-						if group is None:
-							continue
-						if self._recursive_search_in_groups(username, group, groups, checked_groups):
-							break
-					else:
-						continue
-			filtered_dns.append(entry_dn)
-		return filtered_dns
-
-	def _get_user_links(self, username, admin_mode):
-		if username is None:
-			return []
-		links = cache.get('user_links')
-		links_dict = dict((link['dn'], link) for link in links)
-		entry_dns = [link['dn'] for link in links]
-		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
-
-	def _get_menu_links(self, username, admin_mode):
-		links = cache.get('menu_links')
-		links_dict = dict((link['dn'], link) for link in links)
-		entry_dns = [link['dn'] for link in links]
-		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
-
-	def _get_categories(self, visible_content):
-		categories = cache.get('categories')
-		categories = {category_dn: categories[category_dn] for category_dn in visible_content['category_dns']}
-		for category in categories.values():
-			category['entries'] = [
-				entry_dn for entry_dn in category['entries']
-				if entry_dn in visible_content['entry_dns'] or entry_dn in visible_content['folder_dns']
-			]
-		return categories
-
-	def _get_folders(self, visible_content):
-		folders = cache.get('folders')
-		folders = {folder_dn: folders[folder_dn] for folder_dn in visible_content['folder_dns']}
-		for folder in folders.values():
-			folder['entries'] = [
-				entry_dn for entry_dn in folder['entries']
-				if entry_dn in visible_content['entry_dns'] or entry_dn in visible_content['folder_dns']
-			]
-		return folders
-
-	def _get_entries(self, visible_content):
-		entries = cache.get('entries')
-		return {entry_dn: entries[entry_dn] for entry_dn in visible_content['entry_dns']}
+	def initialize(self, portals):
+		self.portals = portals
 
 	def _ask_umc(self, session):
 		try:
@@ -540,13 +469,124 @@ class JsonHandler(tornado.web.RequestHandler):
 	def log_exception(self, typ, value, tb):
 		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS)):
 			get_logger('server').info('Reconnecting ldap connection')
-			cache._udm = None
+			for portal in self.portals.values():
+				portal.refresh_ldap_connection()
 		return super(JsonHandler, self).log_exception(typ, value, tb)
 
-	def _get_visible_content(self, username, admin_mode):
-		entries = cache.get('entries')
-		folders = cache.get('folders')
-		categories = cache.get('categories')
+	def get(self):
+		session = self.get_cookie('UMCSessionId')
+		username = self._get_username(session)
+		admin_mode = False
+		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
+			get_logger('admin').info('Admin mode requested')
+			admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
+			admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
+			admin_mode = username in admins
+			if admin_mode:
+				get_logger('admin').info('Admin mode granted')
+			else:
+				get_logger('admin').info('Admin mode rejected')
+		answer = {}
+		portal = self.find_portal()
+		if not portal:
+			raise tornado.web.HTTPError(404)
+
+		visible_content = portal.get_visible_content(username, admin_mode)
+		answer['user_links'] = portal.get_user_links(username, admin_mode)
+		answer['menu_links'] = portal.get_menu_links(username, admin_mode)
+		answer['entries'] = portal.get_entries(visible_content)
+		answer['folders'] = portal.get_folders(visible_content)
+		answer['categories'] = portal.get_categories(visible_content)
+		answer['portal'] = portal.get_meta(visible_content, answer['categories'])
+		answer['filtered'] = not admin_mode
+		self.write(answer)
+
+	def find_portal(self):
+		best_score = 0
+		best_portal = None
+		for name, portal in self.portals.items():
+			score = portal.score(self.request)
+			if score > best_score:
+				best_portal = portal
+		return best_portal
+
+
+class Scorer(object):
+	def score(self, request):
+		return 1
+
+
+class DomainScorer(object):
+	def __init__(self, domain):
+		self.domain = domain
+
+	def score(self, request):
+		if request.host == self.domain:
+			return 10
+		return 0
+
+
+def signal_handler_reload(signo, frame):
+	pass
+	# FIXME
+	# io_loop = tornado.ioloop.IOLoop.instance()
+	# for portal in portals.values():
+	# 	io_loop.add_callback_from_signal(portal.refresh_cache)
+
+
+def get_dynamic_classes(klass_name):
+	klasses = {
+		'Portal': Portal,
+		'FileCache': FileCache,
+		'FileReloaderUDM': FileReloaderUDM,
+		'Scorer': Scorer,
+		'DomainScorer': DomainScorer,
+	}
+	return klasses[klass_name]
+
+
+def make_arg(arg_definition):
+	arg_type = arg_definition['type']
+	if arg_type == 'static':
+		return arg_definition['value']
+	if arg_type == 'class':
+		Klass = get_dynamic_classes(arg_definition['class'])
+		args = []
+		kwargs = {}
+		for _arg_definition in arg_definition.get('args', []):
+			args.append(make_arg(_arg_definition))
+		for name, _arg_definition in arg_definition.get('kwargs', {}).items():
+			kwargs[name] = make_arg(_arg_definition)
+		return Klass(*args, **kwargs)
+	raise TypeError('Unknown arg_definition: {!r}'.format(arg_definition))
+
+
+def get_portals():
+	ret = {}
+	with open('/usr/share/univention-portal/portals.json') as fd:
+		portal_definitions = json.load(fd)
+	for name, portal_definition in portal_definitions.items():
+		get_logger('server').info('Building portal {}'.format(name))
+		ret[name] = make_arg(portal_definition)
+	return ret
+
+
+def make_app():
+	portals = get_portals()
+	return tornado.web.Application([
+		(r'/', JsonHandler, {'portals': portals}),
+	])
+
+
+class Portal(object):
+	def __init__(self, scorer, cache):
+		self.scorer = scorer
+		self.cache = cache
+
+	def get_visible_content(self, username, admin_mode):
+		entries = self.cache.get('entries')
+		folders = self.cache.get('folders')
+		categories = self.cache.get('categories')
 		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, username, admin_mode)
 		visible_folder_dns = [
 			folder_dn for folder_dn in folders.keys()
@@ -572,44 +612,113 @@ class JsonHandler(tornado.web.RequestHandler):
 			'category_dns': visible_category_dns,
 		}
 
-	def get(self):
-		session = self.get_cookie('UMCSessionId')
-		username = self._get_username(session)
-		admin_mode = False
-		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
-			get_logger('admin').info('Admin mode requested')
-			admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
-			admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
-			admin_mode = username in admins
-			if admin_mode:
-				get_logger('admin').info('Admin mode granted')
-			else:
-				get_logger('admin').info('Admin mode rejected')
-		answer = {}
+	def get_user_links(self, username, admin_mode):
+		if username is None:
+			return []
+		links = self.cache.get('user_links')
+		links_dict = dict((link['dn'], link) for link in links)
+		entry_dns = [link['dn'] for link in links]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
-		visible_content = self._get_visible_content(username, admin_mode)
-		answer['user_links'] = self._get_user_links(username, admin_mode)
-		answer['menu_links'] = self._get_menu_links(username, admin_mode)
-		answer['entries'] = self._get_entries(visible_content)
-		answer['folders'] = self._get_folders(visible_content)
-		answer['categories'] = self._get_categories(visible_content)
-		answer['portal'] = self._get_portal(answer['categories'], visible_content)
-		answer['filtered'] = not admin_mode
-		self.write(answer)
+	def get_menu_links(self, username, admin_mode):
+		links = self.cache.get('menu_links')
+		links_dict = dict((link['dn'], link) for link in links)
+		entry_dns = [link['dn'] for link in links]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
+	def get_entries(self, content):
+		entries = self.cache.get('entries')
+		return {entry_dn: entries[entry_dn] for entry_dn in content['entry_dns']}
 
-cache = LDAPCache()
+	def get_folders(self, content):
+		folders = self.cache.get('folders')
+		folders = {folder_dn: folders[folder_dn] for folder_dn in content['folder_dns']}
+		for folder in folders.values():
+			folder['entries'] = [
+				entry_dn for entry_dn in folder['entries']
+				if entry_dn in content['entry_dns'] or entry_dn in content['folder_dns']
+			]
+		return folders
 
+	def get_categories(self, content):
+		categories = self.cache.get('categories')
+		categories = {category_dn: categories[category_dn] for category_dn in content['category_dns']}
+		for category in categories.values():
+			category['entries'] = [
+				entry_dn for entry_dn in category['entries']
+				if entry_dn in content['entry_dns'] or entry_dn in content['folder_dns']
+			]
+		return categories
 
-def signal_handler_reload(signo, frame):
-	io_loop = tornado.ioloop.IOLoop.instance()
-	io_loop.add_callback_from_signal(cache.refresh)
+	def get_meta(self, content, categories):
+		portal = self.cache.get('portal')
+		portal['categories'] = [category_dn for category_dn in portal['categories'] if category_dn in content['category_dns']]
+		portal['content'] = [
+			[category_dn, categories[category_dn]['entries']]
+			for category_dn in portal['categories']
+		]
+		return portal
 
+	def _filter_entry_dns(self, entry_dns, entries, username, admin_mode):
+		groups = self.cache.get('groups')
+		filtered_dns = []
+		for entry_dn in entry_dns:
+			entry = entries.get(entry_dn)
+			if entry is None:
+				continue
+			if not admin_mode:
+				if not entry['activated']:
+					continue
+				if entry['allowedGroups']:
+					checked_groups = []
+					for group_dn in entry['allowedGroups']:
+						group = groups.get(group_dn)
+						if group is None:
+							continue
+						if self._recursive_search_in_groups(username, group, groups, checked_groups):
+							break
+					else:
+						continue
+			filtered_dns.append(entry_dn)
+		return filtered_dns
 
-def make_app():
-	return tornado.web.Application([
-		(r'/', JsonHandler),
-	])
+	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
+		if username in group['usernames']:
+			return True
+		for group_dn in group['groups']:
+			if group_dn in checked_groups:
+				continue
+			group = groups.get(group_dn)
+			if group is None:
+				continue
+			checked_groups.append(group_dn)
+			if self._recursive_search_in_groups(username, group, groups, checked_groups):
+				return True
+		return False
+
+	def _get_all_entries_of_folder(self, folder_dn, folders, entries):
+		def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns):
+			for entry_dn in folders[folder_dn]['entries']:
+				if entry_dn in entries:
+					if entry_dn not in ret:
+						ret.append(entry_dn)
+				elif entry_dn in folders:
+					if entry_dn not in already_unpacked_folder_dns:
+						already_unpacked_folder_dns.append(entry_dn)
+						_flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns)
+
+		ret = []
+		_flatten(folder_dn, folders, entries, ret, [])
+		return ret
+
+	def refresh_cache(self):
+		self.cache.refresh()
+
+	def refresh_ldap_connection(self):
+		self.cache.refresh_ldap_connection()
+
+	def score(self, request):
+		return self.scorer.score(request)
 
 
 if __name__ == "__main__":
