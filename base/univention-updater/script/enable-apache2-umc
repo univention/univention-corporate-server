@@ -32,8 +32,8 @@
 
 NORESTART=""
 
-if [ "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$(basename "$0") [--help] [--no-restart]"
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "${0##*/} [--help] [--no-restart]"
 	exit 1
 fi
 

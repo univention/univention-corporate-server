@@ -69,6 +69,10 @@ readcontinue () {
 	done
 }
 
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+
 ###########################################################################
 # RELEASE NOTES SECTION (Bug #19584)
 # Please update URL to release notes and changelog on every release update
@@ -164,7 +168,7 @@ if [ -n "$hold_packages" ]; then
 fi
 
 ## Bug #44650 begin - check slapd on member
-if [ -e "$(which slapd)" ] && [ "$server_role" = "memberserver" ]; then
+if have slapd && [ "$server_role" = "memberserver" ]; then
 	echo "WARNING: The ldap server is installed on your memberserver. This is not supported"
 	echo "         and may lead to problems during the update. Please deinstall the package"
 	echo "         *slapd* from this system with either the command line tool univention-remove "
@@ -311,7 +315,7 @@ fail_if_role_package_will_be_removed () {
 block_update_if_system_date_is_too_old() {
 	local system_year
 	system_year=$(date +%Y)
-	if [ "$system_year" -lt 2018 ] ; then
+	if [ "$system_year" -lt 2020 ] ; then
 		echo "WARNING: The system date ($(date +%Y-%m-%d)) does not seem to be correct."
 		echo "         Please set a current system time before the update, otherwise the"
 		echo "         update will fail if Spamassassin is installed."
@@ -422,8 +426,8 @@ check_master_version ()
 	esac
 
 	local master_version master_patchlevel
-	master_version="$(univention-ssh /etc/machine.secret "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/version 2>/dev/null)" >&3 2>&3
-	master_patchlevel="$(univention-ssh /etc/machine.secret "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
+	master_version="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/version 2>/dev/null)" >&3 2>&3
+	master_patchlevel="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
 	dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}" || return
 
 				echo "WARNING: Your domain controller master is still on version $master_version-$master_patchlevel."

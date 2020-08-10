@@ -31,10 +31,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-if [ "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$(basename $0) <package> [<package> ...]"
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "${0##*/} <package> [<package> ...]"
 	echo ""
-	echo "$(basename $0) performs a univention-install <package> "
+	echo "${0##*/} performs a univention-install <package> "
 	exit 1
 fi
 
@@ -42,14 +42,14 @@ LOGFILE="/var/log/univention/actualise.log"
 STATUSFILE="/var/lib/univention-updater/umc-univention-install.status"
 
 echo "status=RUNNING" > "$STATUSFILE"
-/usr/sbin/univention-install -y "$@"
-if [ ! $? = 0 ] ; then
+if ! /usr/sbin/univention-install -y "$@"
+then
 	echo "status=FAILED" > "$STATUSFILE"
-	echo >> "$LOGFILE"
-	echo "ERROR: An error occurred during package installation. Please check the logfile $LOGFILE."  >> "$LOGFILE"
-	date >> "$LOGFILE"
+	echo
+	echo "ERROR: An error occurred during package installation. Please check the logfile $LOGFILE."
+	date
 	exit 1
-fi
+fi >> "$LOGFILE"
 
 echo "status=DONE" > "$STATUSFILE"
 echo >> "$LOGFILE"

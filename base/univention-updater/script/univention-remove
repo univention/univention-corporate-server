@@ -33,10 +33,10 @@
 
 LOGFILE="/var/log/univention/actualise.log"
 
-if [ -z "$1" -o "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$(basename $0) <package> [<package> ...]"
+if [ -z "$1" ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "${0##*/} <package> [<package> ...]"
 	echo
-	echo "$(basename $0) uninstalls specified packages from the local system."
+	echo "${0##*/} uninstalls specified packages from the local system."
 	echo "The command of UCR variable update/commands/remove/interactive is"
 	echo "used for uninstallation after package list has been updated."
 	exit 1
@@ -47,4 +47,4 @@ eval "$(ucr shell)"
 echo "***** Starting \"univention-remove $*\" on $(date)" >> "$LOGFILE"
 set -e
 set -o pipefail
-exec $update_commands_remove_interactive "$@" 2>&1 | tee -a "$LOGFILE"
+exec ${update_commands_remove_interactive:-false} "$@" 2>&1 | tee -a "$LOGFILE"
