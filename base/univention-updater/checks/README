@@ -13,13 +13,13 @@ check script is a complete manual process.
 
 Release:
  * copy script to ftp/download/univention-update-checks
-   -> scp checks/pre-update-checks-4.4 omar:@/var/univention/buildsystem2/mirror/ftp/download/univention-update-checks/pre-update-checks-4.4.new
+   -> scp checks/pre-update-checks-5.0 omar:@/var/univention/buildsystem2/mirror/ftp/download/univention-update-checks/pre-update-checks-5.0.new
  * check changes
  * sign the file
  * update the mirror
 
 Execution:
--> curl -OOs http://univention-repository.knut.univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
+-> curl -OOs http://univention-repository.knut.univention.de/download/univention-update-checks/pre-update-checks-5.0{,.gpg}
 OR
--> curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-4.4{,.gpg}
--> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-4.4.gpg pre-update-checks-4.4 && bash pre-update-checks-4.4
+-> curl -OOs https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0{,.gpg}
+-> gpgv --keyring /usr/share/keyrings/univention-archive-key-ucs-4x.gpg pre-update-checks-5.0.gpg pre-update-checks-5.0 && bash pre-update-checks-5.0
