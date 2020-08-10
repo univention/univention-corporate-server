@@ -25,7 +25,7 @@ if __name__ == '__main__':
 			app_docker2.set_ini_parameter(Code='D2')
 			app_docker2.add_to_local_appcenter()
 
-			app_nondocker = App(name=get_app_name(), version=get_app_version(), container_version='4.3', build_package=True)
+			app_nondocker = App(name=get_app_name(), version=get_app_version(), build_package=True)
 			app_nondocker.set_ini_parameter(Code='ND')
 			app_nondocker.add_to_local_appcenter()
 

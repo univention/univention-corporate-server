@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
 		package_name = get_app_name()
-		app1 = App(name=app_name, version='1', package_name=package_name, container_version='4.3')
+		app1 = App(name=app_name, version='1', package_name=package_name, container_version='4.4')
 		app1.set_ini_parameter(DockerImage=get_latest_docker_appbox_image())
 		app1.add_script(inst='''#!/bin/bash
 VERSION=1
@@ -27,7 +27,7 @@ joinscript_save_current_version
 ''')
 		app1.add_to_local_appcenter()
 
-		app2 = App(name=app_name, version='2', package_name=package_name, container_version='4.3')
+		app2 = App(name=app_name, version='2', package_name=package_name, container_version='4.4')
 		app2.set_ini_parameter(DockerImage=get_latest_docker_appbox_image())
 		app2.add_script(inst='''#!/bin/bash
 VERSION=2
