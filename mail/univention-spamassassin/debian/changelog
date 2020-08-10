@@ -1,4 +1,4 @@
-univention-spamassassin (10.0.0-5) unstable; urgency=medium
+univention-spamassassin (10.0.0-6) unstable; urgency=medium
 
   * Bug #44489: Make env vars http(s)_proxy usable by spamassassin cron job
 

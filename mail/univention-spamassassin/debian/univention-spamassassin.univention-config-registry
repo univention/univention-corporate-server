@@ -8,6 +8,7 @@ File: etc/default/spamassassin
 Variables: mail/antispam/rules/autoupdate
 Variables: proxy/http
 Variables: proxy/https
+Variables: proxy/no_proxy
 
 Type: file
 File: usr/sbin/univention-sa-learn
