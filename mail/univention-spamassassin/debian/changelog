@@ -1,3 +1,9 @@
+univention-spamassassin (10.0.0-5) unstable; urgency=medium
+
+  * Bug #44489: Make env vars http(s)_proxy usable by spamassassin cron job
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 10 Aug 2020 11:28:57 +0200
+
 univention-spamassassin (10.0.0-4) unstable; urgency=medium
 
   * Bug #44489: Make env vars http(s)_proxy usable by spamassassin cron job
