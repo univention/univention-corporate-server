@@ -389,7 +389,8 @@ class Server(signals.Provider):
 			self.__realsocket.close()
 			self.__realsocket = None
 		if self.__unix:
-			os.unlink(self.__unix)
+			if os.path.exists(self.__unix):
+				os.unlink(self.__unix)
 			self.__unix = None
 
 		self.__bucket = None
