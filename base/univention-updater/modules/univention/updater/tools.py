@@ -1691,7 +1691,7 @@ class UniventionUpdater(object):
             if version in ('current', ''):  # all from start to end, defaults to same major
                 # Cache releases because it is network expensive
                 if mm_versions is None:
-                    mm_versions = self._releases_in_range(start, end)
+                    mm_versions = self._releases_in_range(start, end, component=component)
                 versions |= set(mm_versions)
             else:
                 if '-' in version:
@@ -1749,13 +1749,14 @@ class UniventionUpdater(object):
 
         return result
 
-    def _releases_in_range(self, start=None, end=None):
-        # type: (Optional[UCS_Version], Optional[UCS_Version]) -> List[UCS_Version]
+    def _releases_in_range(self, start=None, end=None, component=None):
+        # type: (Optional[UCS_Version], Optional[UCS_Version], Optional[str]) -> List[UCS_Version]
         """
         Find all $major.$minor releases between start [$major.0] and end [$major.$minor] including.
 
         :param UCS_Version start: The start UCS release.
         :param UCS_Version end: The last UCS release.
+        :param str component: Optional name of required component.
         :returns: A list of available UCS releases between `start` and `end`.
         :rtype: list[UCS_Version]
         """
@@ -1774,7 +1775,11 @@ class UniventionUpdater(object):
         for version.major in range(start.major, min(99, end.major + 1)):
             while version <= end:
                 try:
-                    assert self.server.access(version)
+                    if component:
+                        server = self._get_component_server(component)
+                    else:
+                        server = self.server
+                    assert server.access(version)
                     foundFirst = True
                     result.append(UCS_Version(version))
                 except DownloadError:
