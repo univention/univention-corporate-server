@@ -56,6 +56,7 @@ server = None
 class UMC_Daemon(DaemonRunner):
 
 	def __init__(self):
+		self.server = None
 		default_debug = SERVER_DEBUG_LEVEL
 		default_locale = ucr.get('locale/default', 'C').split(':', 1)[0]
 		self.parser = ArgumentParser()
@@ -233,7 +234,8 @@ class UMC_Daemon(DaemonRunner):
 				CORE.error('Could not reload server: %s' % (exc,))
 
 	def signal_terminate(self, signal, frame):
-		self.server.exit()
+		if self.server is not None:
+			self.server.exit()
 		raise SystemExit('Shutting down UMC server')
 
 	def signal_segfault(self, signal, frame):
