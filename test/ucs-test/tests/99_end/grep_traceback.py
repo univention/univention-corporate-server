@@ -59,7 +59,7 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 					tb = tracebacks.setdefault(''.join(lines[:-1]), d)
 					tb.add(lines[-1])
 					tb.occurred += 1
-					d.filenames.add(filename)
+					tb.filenames.add(filename)
 
 	print(len(tracebacks))
 	found = False
