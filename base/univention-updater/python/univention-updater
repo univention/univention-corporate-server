@@ -18,7 +18,6 @@ Options:
   --ignore-releasenotes Skip showing release notes
   --noninteractive      Do not ask interactive questions
 """
-from __future__ import print_function
 # Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -50,6 +49,7 @@ from __future__ import print_function
 #  * local
 #  * cdrom
 #  * net
+from __future__ import print_function
 
 import os
 import sys
@@ -64,7 +64,7 @@ from errno import ENOENT
 try:
     import univention.debug as ud
 except ImportError:
-    import univention.debug2 as ud
+    import univention.debug2 as ud  # type: ignore
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
@@ -149,10 +149,9 @@ def update_status(**kwargs):
     # write temporary file
     fn = '%s.new' % FN_STATUS
     try:
-        fd = open(fn, 'w+')
-        for key, val in updater_status.items():
-            fd.write('%s=%s\n' % (key, val))
-        fd.close()
+        with open(fn, 'w+') as fd:
+            for key, val in updater_status.items():
+                fd.write('%s=%s\n' % (key, val))
     except Exception:
         dprint('Warning: cannot update %s' % fn)
     try:
@@ -190,21 +189,21 @@ def deactivateSourcesListMethods(methods=['cdrom']):
     cnt = 0
     lines = []
     deactivated_lines = []
-    f = open('/etc/apt/sources.list', 'r')
-    for line in f.readlines():
-        line = line.strip(' \n\t')
-        for method in methods:
-            if line.startswith('deb %s:' % method) or line.startswith('deb-src %s:' % method):
-                line = '#%s' % line
-                deactivated_lines.append(line)
-                cnt += 1
-        lines.append(line)
-    f.close()
+    with open('/etc/apt/sources.list', 'r') as f:
+        for line in f.readlines():
+            line = line.strip(' \n\t')
+            for method in methods:
+                if line.startswith('deb %s:' % method) or line.startswith('deb-src %s:' % method):
+                    line = '#%s' % line
+                    deactivated_lines.append(line)
+                    cnt += 1
+            lines.append(line)
+
     if cnt:
-        f = open('/etc/apt/sources.list', 'w')
-        f.write('\n'.join(lines))
-        f.write('\n')
-        f.close()
+        with open('/etc/apt/sources.list', 'w') as f:
+            f.write('\n'.join(lines))
+            f.write('\n')
+
         log('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
         log('   %s\n' % '\n   '.join(deactivated_lines))
 
@@ -281,11 +280,8 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
             # Let's check if this Update could be installed, as on the dvd is a textfile for which UCS release this update is
             if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
                 try:
-                    f = open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point, vv, vp))
-                    try:
+                    with open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point, vv, vp)) as f:
                         nextversion = f.readline().strip('\n').lower().replace('nextupdate=', '')
-                    finally:
-                        f.close()
                 except:
                     raise UpdateError("%s does not contain an update for version %s-%s." % (device_name, vv, vp), errorsource='PREPARATION')
             else:
@@ -332,9 +328,8 @@ def update_available(mode, ucr, cdrom_mount_point, iso=None, updater=None):
 
 def update_ucr_updatestatus():
     try:
-        devnull = open(os.path.devnull, 'w')
-        subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
-        devnull.close()
+        with open(os.path.devnull, 'w') as devnull:
+            subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
     except:
         dprint('Warning: calling univention-updater-check failed.')
 

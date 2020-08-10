@@ -3,7 +3,6 @@
 """
 Update a local repository.
 """
-from __future__ import print_function
 # Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +29,7 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+from __future__ import print_function
 
 from optparse import OptionParser
 import os
