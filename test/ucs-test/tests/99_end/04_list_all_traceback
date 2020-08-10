@@ -1,0 +1,10 @@
+#!/usr/share/ucs-test/runner python
+## desc: "List all traceback in /var/log/univention/* logfile without failing"
+## exposure: safe
+
+from __future__ import print_function
+
+import grep_traceback
+import glob
+
+grep_traceback.main(glob.glob('/var/log/univention/*.log*'))
