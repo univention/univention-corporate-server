@@ -11,7 +11,6 @@ usage: {prog} [-? || --help] [--dist-upgrade] [--silent] [--check]
 --silent         Don't show normal output, but error messages only
 --check          Don't do anything, just check if updates are available
 """
-from __future__ import print_function
 # Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -40,6 +39,7 @@ from __future__ import print_function
 # <https://www.gnu.org/licenses/>.
 
 # TODO: use UCR variables for update, upgrade, install and remove commands
+from __future__ import print_function
 
 import os
 import sys
@@ -94,9 +94,8 @@ class Tee(object):
             else:
                 tee = subprocess.Popen(tee_command, stdin=p.stdout)
         else:
-            devnull = open(os.path.devnull, 'a')
-            tee = subprocess.Popen(tee_command, stdin=p.stdout, stdout=devnull)
-            devnull.close()
+            with open(os.path.devnull, 'a') as devnull:
+                tee = subprocess.Popen(tee_command, stdin=p.stdout, stdout=devnull)
 
         # Must wait for exit from back to front, only the exit status of p is relevant
         ret = tee.wait()
@@ -127,9 +126,8 @@ def waitForLock():
 
 def createLock():
     try:
-        fd = open('/var/run/apt-get.lock', 'w')
-        fd.close()
-    except:
+        open('/var/run/apt-get.lock', 'w').close()
+    except EnvironmentError:
         pass
 
 
@@ -139,9 +137,9 @@ def getUpdate(configRegistry):
     print("Running apt-get update")
     waitForLock()
     createLock()
-    logfile = open(LOGNAME, 'a')
-    res = subprocess.call(shlex.split(cmd_update), stdout=logfile, stderr=logfile)
-    logfile.close()
+    with open(LOGNAME, 'a') as logfile:
+        res = subprocess.call(shlex.split(cmd_update), stdout=logfile, stderr=logfile)
+
     if os.path.exists('/var/run/apt-get.lock'):
         os.unlink('/var/run/apt-get.lock')
     if res != 0:
@@ -153,25 +151,24 @@ def deactivateSourcesListMethods(methods=['cdrom']):
     cnt = 0
     lines = []
     deactivated_lines = []
-    f = open('/etc/apt/sources.list', 'r')
-    for line in f.readlines():
-        line = line.strip(' \n\t')
-        for method in methods:
-            if line.startswith('deb %s:' % method) or line.startswith('deb-src %s:' % method):
-                line = '#%s' % line
-                deactivated_lines.append(line)
-                cnt += 1
-        lines.append(line)
-    f.close()
+    with open('/etc/apt/sources.list', 'r') as f:
+        for line in f.readlines():
+            line = line.strip(' \n\t')
+            for method in methods:
+                if line.startswith('deb %s:' % method) or line.startswith('deb-src %s:' % method):
+                    line = '#%s' % line
+                    deactivated_lines.append(line)
+                    cnt += 1
+            lines.append(line)
+
     if cnt:
-        f = open('/etc/apt/sources.list', 'w')
-        f.write('\n'.join(lines))
-        f.write('\n')
-        f.close()
-        debug_file = open(LOGNAME, 'a+')
-        debug_file.write('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
-        debug_file.write('   %s\n' % '\n   '.join(deactivated_lines))
-        debug_file.close()
+        with open('/etc/apt/sources.list', 'w') as f:
+            f.write('\n'.join(lines))
+            f.write('\n')
+
+        with open(LOGNAME, 'a+') as debug_file:
+            debug_file.write('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
+            debug_file.write('   %s\n' % '\n   '.join(deactivated_lines))
 
 
 def check(configRegistry, dist_upgrade=False):
@@ -206,10 +203,7 @@ def check(configRegistry, dist_upgrade=False):
     rem_packages = getPackageList(configRegistry, 'remove')
     add_packages = getPackageList(configRegistry, 'add')
 
-    if rem_packages or add_packages or actualise:
-        return 1
-    else:
-        return 0
+    return 1 if rem_packages or add_packages or actualise else 0
 
 
 def getPackageList(configRegistry, job):
@@ -402,10 +396,9 @@ def main():
 
 def update_ucr_updatestatus():
     try:
-            devnull = open(os.path.devnull, 'w')
+        with open(os.path.devnull, 'w') as devnull:
             subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
-            devnull.close()
-    except:
+    except Exception:
         print('Warning: calling univention-updater-check failed.')
 
 

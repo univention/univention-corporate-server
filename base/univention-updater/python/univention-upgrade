@@ -3,7 +3,6 @@
 """
 Install UCS release and errata updates.
 """
-from __future__ import print_function
 # Copyright (C) 2010-2020 Univention GmbH
 #
 # https://www.univention.de/
@@ -30,6 +29,7 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+from __future__ import print_function
 
 import os
 import sys
@@ -97,10 +97,9 @@ def update_status(**kwargs):
     # write temporary file
     fn = '%s.new' % FN_STATUS
     try:
-        fd = open(fn, 'w+')
-        for key, val in updater_status.items():
-            fd.write('%s=%s\n' % (key, val))
-        fd.close()
+        with open(fn, 'w+') as fd:
+            for key, val in updater_status.items():
+                fd.write('%s=%s\n' % (key, val))
     except:
         dprint(silent, 'Warning: cannot update %s' % fn)
     try:

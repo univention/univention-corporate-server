@@ -3,7 +3,6 @@
 """
 Creates a local repository.
 """
-from __future__ import print_function
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -32,6 +31,7 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 #
+from __future__ import print_function
 
 import os
 import errno
