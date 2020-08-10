@@ -1,0 +1,195 @@
+#!/usr/bin/python3
+#
+# Univention Portal
+#
+# Copyright 2020 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+import os.path
+import json
+
+import click
+
+
+portals_json = '/usr/share/univention-portal/portals.json'
+
+
+def read_portals_json():
+	try:
+		with open(portals_json) as fd:
+			return json.load(fd)
+	except EnvironmentError:
+		return {}
+
+
+@click.group()
+def cli():
+	pass
+
+
+def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, portal_cache_refresh, groups_cache_refresh):
+	cache_dir = '/var/cache/univention-portal/'
+	if name:
+		cache_dir += name + '/'
+	if name:
+		scorer = {
+			'type': 'class',
+			'class': 'DomainScorer',
+			'kwargs': {
+				'domain': {
+					'type': 'static',
+					'value': name,
+				},
+			},
+		}
+	else:
+		scorer = {
+			'type': 'class',
+			'class': 'Scorer',
+		}
+	if with_reloader:
+		reloader = {
+			'type': 'class',
+			'class': 'FileReloaderUDM',
+			'kwargs': {
+				'refresh_portal': {
+					'type': 'static',
+					'value': portal_cache_refresh or os.path.join(cache_dir, 'refresh_portal'),
+				},
+				'refresh_groups': {
+					'type': 'static',
+					'value': groups_cache_refresh or os.path.join(cache_dir, 'refresh_groups'),
+				},
+			},
+		}
+	cache = {
+		'type': 'class',
+		'class': 'FileCache',
+		'kwargs': {
+			'portal': {
+				'type': 'static',
+				'value': portal_cache_file or os.path.join(cache_dir, 'portal.json'),
+			},
+			'groups': {
+				'type': 'static',
+				'value': groups_cache_file or os.path.join(cache_dir, 'groups.json'),
+			},
+		}
+	}
+	if with_reloader:
+		cache['kwargs']['reloader'] = reloader
+	portal = {
+		'type': 'class',
+		'class': 'Portal',
+		'kwargs': {
+			'cache': cache,
+			'scorer': scorer,
+		}
+	}
+	return portal
+
+
+@cli.command()
+@click.argument('name')
+@click.option('--update/--dont-update', default=True)
+@click.option('--portal-cache-file')
+@click.option('--groups-cache-file')
+@click.option('--with-reloader/--without-reloader', default=True)
+@click.option('--refresh-portal-file')
+@click.option('--refresh-groups-file')
+def add(name, update, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file):
+	json_content = read_portals_json()
+	portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file)
+	name = name or '__default__'
+	if name in json_content:
+		if update:
+			click.echo(click.style('Overwriting existing {}'.format(name), fg='yellow'))
+		else:
+			click.echo(click.style('{} already exists'.format(name), fg='red'))
+			return
+	json_content[name] = portal
+	with open(portals_json, 'w') as fd:
+		json.dump(json_content, fd, sort_keys=True, indent=4)
+	click.echo(click.style('{} updated'.format(portals_json), fg='green'))
+
+
+@cli.command()
+@click.argument('name')
+def remove(name):
+	json_content = read_portals_json()
+	if json_content.pop(name, None):
+		with open(portals_json, 'w') as fd:
+			json.dump(json_content, fd, sort_keys=True, indent=4)
+		click.echo(click.style('{} removed'.format(name), fg='green'))
+	else:
+		click.echo(click.style('{} does not exist'.format(name), fg='yellow'))
+
+
+@cli.command()
+def list():
+	json_content = read_portals_json()
+	for name, portal_def in json_content.items():
+		click.echo('{}:'.format(name))
+		portal = make_obj(portal_def)
+		click.echo('  {!r}'.format(portal))
+
+
+class SomeObj(object):
+	def __init__(self, klass_name, args, kwargs):
+		self.klass_name = klass_name
+		self.args = args
+		self.kwargs = kwargs
+
+	def all_args(self):
+		ret = []
+		for arg in self.args:
+			ret.append(repr(arg))
+		for name, arg in self.kwargs.items():
+			ret.append('{}={!r}'.format(name, arg))
+		return ', '.join(ret)
+
+	def __repr__(self):
+		return '{}({})'.format(self.klass_name, self.all_args())
+
+
+def make_obj(obj_def):
+	arg_type = obj_def['type']
+	if arg_type == 'static':
+		return obj_def['value']
+	if arg_type == 'class':
+		args = []
+		kwargs = {}
+		for _arg_definition in obj_def.get('args', []):
+			args.append(make_obj(_arg_definition))
+		for name, _arg_definition in obj_def.get('kwargs', {}).items():
+			kwargs[name] = make_obj(_arg_definition)
+		return SomeObj(obj_def['class'], args, kwargs)
+	raise TypeError('Unknown obj_def: {!r}'.format(obj_def))
+
+
+if __name__ == '__main__':
+	cli()

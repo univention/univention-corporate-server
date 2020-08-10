@@ -48,6 +48,7 @@ if [ "$1" = "configure" ]; then
 	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
+univention-portal add ""
 systemctl restart univention-portal-server
 
 exit 0
