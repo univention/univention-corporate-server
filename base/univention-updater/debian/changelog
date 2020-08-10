@@ -1,3 +1,9 @@
+univention-updater (15.0.0-7) unstable; urgency=medium
+
+  * Bug #51588: Adapt updater for new repository structure
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 10 Aug 2020 18:44:26 +0200
+
 univention-updater (15.0.0-5) unstable; urgency=medium
 
   * Bug #51506: remove pyshared hooks support
