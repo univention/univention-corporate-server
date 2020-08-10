@@ -275,7 +275,7 @@ class MySQL(DatabaseConnector):
 		self._cursor = None
 
 	def _get_software_packages(self):
-		return ['univention-mysql']
+		return ['univention-mariadb']
 
 	def get_db_port(self):
 		try:

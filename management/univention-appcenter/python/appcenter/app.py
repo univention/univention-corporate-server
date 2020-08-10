@@ -1675,19 +1675,19 @@ class App(with_metaclass(AppMetaClass, object)):
 		>>> App({}, cache1, id=1, component_id=1) < App({}, cache1, id=1, component_id=2)
 		True
 		"""
-		return (self.id, LooseVersion(self.get_ucs_version()), self.component_id) < (other.id, LooseVersion(other.get_ucs_version()), other.component_id) if isinstance(other, App) else NotImplemented
+		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) <  (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
 	def __le__(self, other):
-		return (self.id, LooseVersion(self.get_ucs_version()), self.component_id) <= (other.id, LooseVersion(other.get_ucs_version()), other.component_id) if isinstance(other, App) else NotImplemented
+		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) <= (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
 	def __eq__(self, other):
-		return (self.id, LooseVersion(self.get_ucs_version()), self.component_id) == (other.id, LooseVersion(other.get_ucs_version()), other.component_id) if isinstance(other, App) else NotImplemented
+		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) == (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
 	def __ne__(self, other):
-		return (self.id, LooseVersion(self.get_ucs_version()), self.component_id) != (other.id, LooseVersion(other.get_ucs_version()), other.component_id) if isinstance(other, App) else NotImplemented
+		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) != (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
 	def __ge__(self, other):
-		return (self.id, LooseVersion(self.get_ucs_version()), self.component_id) >= (other.id, LooseVersion(other.get_ucs_version()), other.component_id) if isinstance(other, App) else NotImplemented
+		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) >= (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
 
 	def __gt__(self, other):
-		return (self.id, LooseVersion(self.get_ucs_version()), self.component_id) > (other.id, LooseVersion(other.get_ucs_version()), other.component_id) if isinstance(other, App) else NotImplemented
+		return (self.id, LooseVersion(self.get_ucs_version()), LooseVersion(self.version), self.component_id) >  (other.id, LooseVersion(other.get_ucs_version()), LooseVersion(other.version), other.component_id) if isinstance(other, App) else NotImplemented
