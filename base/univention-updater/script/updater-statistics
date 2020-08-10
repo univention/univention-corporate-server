@@ -45,7 +45,7 @@ def encode_number(number, significant_digits=3):
 	significant_digits = int(significant_digits)
 	if significant_digits < 1:
 		raise ValueError('significant_digits must be greater than 0, not %r' % (significant_digits, ))
-	string = ('%d' % (number, ))
+	string = '%d' % (number,)
 	return string[:significant_digits] + ' abcdefghijklmnopqrstuvwxyz'[len(string)]
 
 
@@ -81,6 +81,7 @@ def encode_additional_info(users=None, role=None):
 def getReadonlyAdminConnection():
 	def do_nothing(*a, **kw):
 		raise AssertionError('readonly connection')
+
 	lo, position = univention.admin.uldap.getAdminConnection()
 	lo.add = lo.modify = lo.rename = lo.delete = do_nothing
 	return lo, position
@@ -96,6 +97,7 @@ def main():
 		lo, _ = getReadonlyAdminConnection()
 		filter = univention.admin.license._license.filters['2'][univention.admin.license._license.USERS]
 		return len(lo.searchDn(filter=filter))
+
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
 	univention.config_registry.frontend.ucr_update(

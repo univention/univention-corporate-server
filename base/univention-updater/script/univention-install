@@ -33,10 +33,10 @@
 
 LOGFILE="/var/log/univention/actualise.log"
 
-if [ -z "$1" -o "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$(basename $0) <package> [<package> ...]"
+if [ -z "$1" ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "${0##*/} <package> [<package> ...]"
 	echo
-	echo "$(basename $0) installs specified packages from (online) repository."
+	echo "${0##*/} installs specified packages from (online) repository."
 	echo "The command of UCR variable update/commands/install is used for"
 	echo "installation after package list has been updated."
 	exit 1
@@ -44,8 +44,8 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 eval "$(ucr shell)"
-echo "***** Starting \"univention-install $@\" on $(date)" >> "$LOGFILE"
+echo "***** Starting \"univention-install $*\" on $(date)" >> "$LOGFILE"
 set -e
 set -o pipefail
-$update_commands_update 2>&1 | tee -a "$LOGFILE"
-exec $update_commands_install_interactive "$@" 2>&1 | tee -a "$LOGFILE"
+${update_commands_update:-false} 2>&1 | tee -a "$LOGFILE"
+exec ${update_commands_install_interactive:-false} "$@" 2>&1 | tee -a "$LOGFILE"

@@ -31,10 +31,10 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-if [ "$1" = "-h" -o "$1" = "--help" ] ; then
-	echo "$(basename $0) [<logfile>] [<statusfile>]"
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "${0##*/} [<logfile>] [<statusfile>]"
 	echo ""
-	echo "$(basename $0) performs a dist-upgrade "
+	echo "${0##*/} performs a dist-upgrade "
 	exit 1
 fi
 
@@ -53,14 +53,14 @@ eval "$(ucr shell)"
 echo "Starting dist-upgrade at $(date)" >> "$LOGFILE";
 echo "status=RUNNING" > "$STATUSFILE"
 export DEBIAN_FRONTEND=noninteractive
-$update_commands_distupgrade >> "$LOGFILE" 2>&1
-if [ ! $? = 0 ] ; then
+if ! ${update_commands_distupgrade:-false} >> "$LOGFILE" 2>&1
+then
 	echo "status=FAILED" > "$STATUSFILE"
-	echo >> "$LOGFILE"
-	echo "ERROR: An error occurred during update. Please check the logfiles."  >> "$LOGFILE"
-	date >> "$LOGFILE"
+	echo
+	echo "ERROR: An error occurred during update. Please check the logfiles."
+	date
 	exit 1
-fi
+fi >> "$LOGFILE"
 
 echo "status=DONE" > "$STATUSFILE"
 echo >> "$LOGFILE"
