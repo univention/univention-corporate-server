@@ -128,14 +128,6 @@ if [ -f /var/univention-join/joined ] && [ "$server_role" != basesystem ]; then
 		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
 fi
 
-# Move to mirror mode for previous errata component
-ucr set \
-	repository/online/component/4.4-4-errata=false \
-	repository/online/component/4.4-4-errata/localmirror=true \
-	repository/online/component/${UPDATE_NEXT_VERSION}-errata=enabled \
-	repository/online/component/${UPDATE_NEXT_VERSION}-errata/description="Errata updates for UCS $UPDATE_NEXT_VERSION" \
-	repository/online/component/${UPDATE_NEXT_VERSION}-errata/version="${UPDATE_NEXT_VERSION%%-*}" >>"$UPDATER_LOG" 2>&1
-
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
