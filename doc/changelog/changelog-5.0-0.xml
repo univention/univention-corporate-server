@@ -646,7 +646,7 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Fix LDAP filter syntax in &ucsUDL; module <filename>failllog.py</filename> (<u:bug>28645</u:bug>)
+					Fix LDAP filter syntax in &ucsUDL; module <filename>faillog.py</filename> (<u:bug>28645</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
