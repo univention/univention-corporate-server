@@ -88,7 +88,7 @@ domaincontroller_slave) install univention-server-slave ;;
 memberserver) install univention-server-member ;;
 esac
 
-if ! is_ucr_true update44/skip/autoremove; then
+if ! is_ucr_true update50/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
@@ -98,7 +98,7 @@ if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 fi
 
 # executes custom postup script (always required)
-if [ -n "$update_custom_postup" ]; then
+if [ -n "${update_custom_postup:-}" ]; then
 	if [ -f "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then
 			echo -n "Running custom postupdate script $update_custom_postup"
