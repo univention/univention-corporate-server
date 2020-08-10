@@ -52,7 +52,7 @@ import functools
 import threading
 from errno import ESRCH
 from optparse import OptionParser
-from six.moves.urllib_parse import urlparse, urlunsplit
+from six.moves.urllib_parse import urlparse, urlunsplit, urlencode
 from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
 import six
@@ -588,9 +588,14 @@ class SamlError(UMC_HTTPError):
 	def no_identity_provider(self):
 		return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
 
-	@error  # TODO: multiple choices redirection status
-	def multiple_identity_provider(self, idps, idp_query_param):
-		return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
+	#@error(status=300)
+	def multiple_identity_provider(self, idps, idp_query_param, base_uri):
+		uris = [base_uri + ('&', '?')[urlparse(base_uri).query == ''] + urlencode({
+			idp_query_param: idp
+		}) for idp in idps]
+		cherrypy.response.headers['Location'] = ', '.join(uris)
+		raise HTTPRedirect(uris, 300)
+		return self._('Could not pick an identity provider. Choose from: %s') % ('\n'.join(uris),)
 
 
 class Ressource(object):
@@ -884,6 +889,7 @@ class CPGet(CPgeneric):
 			raise UMC_HTTPError(UNAUTHORIZED)
 		info['username'] = user.username
 		info['auth_type'] = user.saml and 'SAML'
+		info['groups'] = user.saml and user.saml.data.get('memberOf')
 		info['remaining'] = user.time_remaining
 		info['validity'] = user.session_validity
 		return json.dumps({"status": 200, "result": info, "message": ""}).encode('ASCII')
@@ -1043,11 +1049,26 @@ class CPAuth(CPgeneric):
 				)
 			raise
 
+		relay_state = (user and user.data and user.data.get('relay_state')) or {}
+		self.redirect_back(relay_state)
+
+	def redirect_back(self, relay_state):
 		cherrypy.response.status = 303
-		location = '/univention/management/'
-		if user and user.data and user.data.get('relay_state') and user.data['relay_state'].get('referer'):
-			location = user.data['relay_state']['referer']
-		cherrypy.response.headers['Location'] = location
+		cherrypy.response.headers['Location'] = relay_state.get('referer', '/univention/management/') or '/univention/get/session-info'
+
+	@cherrypy.expose
+	def foobar(self, *args, **kwargs):
+		remote = cherrypy.request.remote
+		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
+
+		user = self.get_user()
+		if not user or not user.saml or user.timed_out():
+			# redirect user to login page in case he's not authenticated or his session timed out
+			raise HTTPRedirect('/univention/saml/')
+		self.set_session(user.sessionid, user.username, password=None)
+
+		relay_state = (user and user.data and user.data.get('relay_state')) or {}
+		self.redirect_back(relay_state)
 
 	@cherrypy.config(**{'tools.umcp_auth.on': False})
 	@cherrypy.expose
@@ -1212,6 +1233,8 @@ class SAML(Ressource):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		self.set_session(self.create_sessionid(), saml.username, saml=saml, relay_state=self.relay_state.get(relay_state))
+		if response.issuer() == 'https://ucs-sso.data.port/simplesamlphp/saml2/idp/metadata.php':
+			raise HTTPRedirect('/univention/auth/foobar')
 		raise HTTPRedirect('/univention/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
@@ -1384,7 +1407,7 @@ class SAML(Ressource):
 			return list(idps.keys())[0]
 		if not idps:
 			raise SamlError().no_identity_provider()
-		raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param)
+		raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param, cherrypy.request.uri)
 
 	def get_identity_provider_destination(self, entity_id):
 		"""Get the destination (with SAML binding) of the specified entity_id.

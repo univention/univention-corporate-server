@@ -70,7 +70,7 @@ CONFIG = {
 				"assertion_consumer_service": [('%s/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST,)],
 				"single_logout_service": [('%s/slo/' % (url,), binding) for url in bases for binding in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT)],
 			},
-			"required_attributes": ["uid"],
+			"required_attributes": ["uid", "memberOf"],
 		},
 	},
 	"attribute_map_dir": "/usr/lib/python2.7/dist-packages/saml2/attributemaps/",
