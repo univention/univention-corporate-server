@@ -9,5 +9,5 @@ from univention.testing.utils import fail
 import grep_traceback
 import glob
 
-if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTION):
+if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
 	fail('logfiles contain tracebacks')
