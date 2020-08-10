@@ -212,7 +212,7 @@ update_check_disk_space () {
 			echo -e "\tIf necessary you can skip this check by setting the value of the"
 			echo -e "\tconfig registry variable $var to \"no\"."
 			echo -e "\tBut be aware that this is not recommended!"
-			if [ "$partition" = "/boot" -a "$update44_pruneoldkernel" != "yes" ] ; then
+			if [ "$partition" = "/boot" -a "$update50_pruneoldkernel" != "yes" ] ; then
 				echo
 				echo -e "\tOld kernel versions on /boot can be pruned automatically during"
 				echo -e "\tnext update attempt by setting config registry variable"
