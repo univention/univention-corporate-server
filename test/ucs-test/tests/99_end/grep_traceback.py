@@ -35,11 +35,15 @@ import gzip
 import sys
 
 
-class Set(set):
-	pass
+class Tracebacks(set):
+
+	def __init__(self, *args, **kwargs):
+		super(Tracebacks, self).__init__(*args, **kwargs)
+		self.occurred = 0
+		self.filenames = set()
 
 
-def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
+def main(filenames, ignore_exceptions={}):
 	tracebacks = {}
 	for filename in filenames:
 		opener = gzip.open if filename.endswith('.gz') else open
@@ -53,88 +57,92 @@ def main(filenames, ignore_exceptions=(), ignore_tracebacks=()):
 					while line.startswith(' '):
 						line = fd.readline()
 						lines.append(line)
-					d = Set()
-					d.occurred = 1
-					d.filenames = set()
+					d = Tracebacks()
 					tb = tracebacks.setdefault(''.join(lines[:-1]), d)
 					tb.add(lines[-1])
 					tb.occurred += 1
 					tb.filenames.add(filename)
 
-	print(len(tracebacks))
+	print('Found %d tracebacks:' % (len(tracebacks),))
 	found = False
 	for traceback, exceptions in tracebacks.items():
-		ignored_exc = (ignore for exc in exceptions for ignore in ignore_exceptions if ignore.search(exc))
-		ignored_tracebacks = (ignore for exc in exceptions for ignore in ignore_tracebacks if ignore.search(exc))
-		try:
-			print('\nIgnoring %s\n' % ((next(ignored_exc) or next(ignored_tracebacks)).pattern,))
+		ignore = False
+		for ignore_exc, ignore_traceback in ignore_exceptions.items():
+			ignore = any(ignore_exc.search(exc) for exc in exceptions) and (not ignore_traceback or any(tb_pattern.search(traceback) for tb_pattern in ignore_traceback))
+			if ignore:
+				print('\nIgnoring %s\n' % (ignore_exc.pattern,))
+				break
+		if ignore:
 			continue
-		except StopIteration:
-			pass
 		found = True
 		print('%d times in %s:' % (exceptions.occurred, ', '.join(d.filenames)))
 		print('Traceback (most recent call last):')
 		print(traceback, end='')
 		for exc in exceptions:
-			print(exc, end=' ')
-		print()
+			print(exc.strip())
+		print('')
 	return not found
 
 
-COMMON_EXCEPTIONS = [re.compile(x) for x in [
+COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) else z for z in (y or [])]) for x, y in [
 	# Errors from UCS 4.4-5 Jenkins runs:
-	'^SERVER_DOWN: .*',
-	'^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*',
-	'^OTHER: .*cannot rename.*',
-	'^NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*',
-	'^ldapError: No such object',
-	'^objectExists: .*',
-	'^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"),
-	'^permissionDenied$',
-	'^noObject:.*',
-	'^NoObject: No object found at DN .*',
-	r'^OSError: \[Errno 24\] Too many open files',
-	r'error: \[Errno 24\] Too many open files.*',
-	r'gaierror: \[Errno -5\] No address associated with hostname',
-	r'''^NotFound: \(404, "The path '/(login|portal)/.*''',
-	'^IndexError: list index out of range',
-	"^KeyError: 'gidNumber'",
-	'^ldap.NO_SUCH_OBJECT: .*',
-	r"^PAM.error: \('Authentication failure', 7\)",
-	r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*',
-	r'^IOError: \[Errno 32\] Broken pipe',
-	"^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.",
-	'^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax',
-	'^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax',
-	'^univention.admin.uexceptions.objectExists: .*',
-	'^NonThreadedError$',
-	re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"),
-	'.*moduleCreationFailed: Target directory.*not below.*',
-	"^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*",
-	'^cherrypy._cperror.NotFound:.*',
-	re.escape('lockfile.LockTimeout: Timeout waiting to acquire lock for /var/run/umc-server.pid'),
-	"^FileExistsError:.*'/var/run/umc-server.pid'"
-	'ConfigurationError: Configuration error: host is unresolvable',
-	'ConfigurationError: Configuration error: port is closed',
-	'ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*',
-	'ConfigurationError: Configuration error: timeout in network connection',
-	'DownloadError: Error downloading http://localhost/DUMMY/: 403',
-	'ProxyError: Proxy configuration error: credentials not accepted',
-	'MyTestException: .*',
-	'univention.lib.umc.ConnectionError:.*machine.secret.*',
-	'univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*',
-	r'^OperationalError: \(psycopg2.OperationalError\) FATAL:.*admindiary.*',  # Bug #51671
-	r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'",  # Bug #51670
-	"AttributeError: 'NoneType' object has no attribute 'lower'",  # Bug #50282
-	"AttributeError: 'NoneType' object has no attribute 'get'",  # Bug #49879
-	'^ImportError: No module named __base',  # Bug #50338
-	'^ImportError: No module named admindiary.client',  # Bug #49866
-	'^ImportError: No module named types',  # Bug #50381
-	'^ImportError: No module named directory',  # Bug #50338
-	'^primaryGroupWithoutSamba: .*',  # Bug #49881
+	('^SERVER_DOWN: .*', None),
+	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
+	('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
+	('^permissionDenied$', ['_create']),
+	('^noObject:.*', ['__update_membership']),
+#	('^NoObject: No object found at DN .*', None),
+#	('^ldapError: No such object', None),
+	('^ldap.NO_SUCH_OBJECT: .*', [r'quota\.py']),
+	(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
+	(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
+	('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
+	('^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax', ['_create']),
+	(re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"), ['getMachineConnection', re.escape('<stdin>')]),
+	(r'''^(cherrypy\._cperror\.)?NotFound: \(404, "The path '/(login|portal)/.*''', None),
+	(re.escape('lockfile.LockTimeout: Timeout waiting to acquire lock for /var/run/umc-server.pid'), None),
+	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
 
-	# '^ldap.NO_SUCH_OBJECT: .*',
-]]
+	# updater test cases:
+	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
+	('ConfigurationError: Configuration error: host is unresolvable', None),
+	('ConfigurationError: Configuration error: port is closed', None),
+	('ConfigurationError: Configuration error: non-existing prefix "/DUMMY/.*', None),
+	('ConfigurationError: Configuration error: timeout in network connection', None),
+	('DownloadError: Error downloading http://localhost/DUMMY/: 403', None),
+	('ProxyError: Proxy configuration error: credentials not accepted', None),
+	# 10_ldap/listener_module_testpy
+	('MyTestException: .*', None),
+	# various test cases:
+	('^NonThreadedError$', None),
+	('^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
+	('^OTHER: .*[cC]annot rename.*', ['sync_from_ucs']),
+	('univention.lib.umc.ConnectionError:.*machine.secret.*', None),
+	('univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*', None),
+	(r'^OSError: \[Errno 24\] Too many open files', None),
+	(r'error: \[Errno 24\] Too many open files.*', None),
+	('ImportError: cannot import name saxutils', ['_cperror\.py']),
+	(r'gaierror: \[Errno -5\] No address associated with hostname', None),
+	('.*moduleCreationFailed: Target directory.*not below.*', None),
+	# Tracebacks caused by specific bugs:
+	(r'^OperationalError: \(psycopg2.OperationalError\) FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py']),  # Bug #51671
+	(r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
+	("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4']),  # Bug #50282
+	("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs']),  # Bug #49879
+	('^ImportError: No module named __base', [r'app_attributes\.py']),  # Bug #50338
+	('^ImportError: No module named directory', [r'app_attributes\.py']),  # Bug #50338
+	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm']),  # Bug #49866
+	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
+	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
+	("^OError: \[Errno 2\] No such file or directory: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
+	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
+	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
+	('^IndexError: list index out of range', ['_read_from_ldap']),  # Bug #46932
+	("^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*", [r'license_uuid\.py']),  # 45787
+	("^KeyError: 'gidNumber'", ['_ldap_pre_remove']),  # Bug #51669
+	(r'^IOError: \[Errno 32\] Broken pipe', ['process_output']),  # Bug #32532
+	('^NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete']),  # Bug #43722 Bug #47343
+])
 
 
 if __name__ == '__main__':
@@ -143,4 +151,4 @@ if __name__ == '__main__':
 	parser.add_argument('--ignore-exception', '-i', default='^$')
 	parser.add_argument('filename', nargs='+')
 	args = parser.parse_args()
-	sys.exit(int(not main(args.filename, ignore_exceptions=[re.compile(args.ignore_exception)])))
+	sys.exit(int(not main(args.filename, ignore_exceptions={re.compile(args.ignore_exception): None})))

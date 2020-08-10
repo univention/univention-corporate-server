@@ -8,13 +8,6 @@ from __future__ import print_function
 from univention.testing.utils import fail
 import grep_traceback
 import glob
-import re
 
-ignore_exceptions = list(grep_traceback.COMMON_EXCEPTIONS)
-ignore_tracebacks = [re.compile(x) for x in [
-	re.escape("userdn = self.lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]"),
-
-]]
-
-if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=ignore_exceptions, ignore_tracebacks=ignore_tracebacks):
+if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTION):
 	fail('logfiles contain tracebacks')
