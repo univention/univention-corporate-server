@@ -87,9 +87,10 @@ chown "_apt" "$CACHE"
 	done
 
 	apt-ftparchive packages . >Packages
-	chown _apt Packages
 	check_returnvalue $? "Failed to create ftparchive directory"
 	gzip -k Packages
+	xz -k Packages
+	chown _apt Packages InRelease Packages.xz Packages.gz
 
 	[ -e "$APT" ] ||
 		echo "deb [trusted=yes] file://$CACHE ./" >"$APT"
