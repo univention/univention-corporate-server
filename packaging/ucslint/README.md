@@ -47,7 +47,7 @@ Some messages can also be ignored on a line-by-line basis if the test allows tha
 	echo "ignore specific issue" # ucslint: 0000-0
 	echo "ignore specific issues" # ucslint: 0000-0, 0000-1
 
-There must be at least one black before `ucslint`. It can be followed by a `:`, some blanks, a blank/comma separated list if IDs, and some more blanks before the end of the line:
+There must be at least one blank before `ucslint`. It can be followed by a `:`, some blanks, a blank/comma separated list if IDs, and some more blanks before the end of the line:
 
 	\s ucslint [:] \s* <msg-id>([, ]...) \s*
 
