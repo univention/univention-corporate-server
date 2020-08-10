@@ -17,7 +17,7 @@ import pytest
 def test_fetch_logfiles_on_dc_master(testfile, ucr):
 	password = univention.testing.utils.UCSTestDomainAdminCredentials().bindpw
 	with tempfile.NamedTemporaryFile() as fd:
-		fd.write(password)
+		fd.write(password.encode())
 		fd.flush()
 		try:
 			subprocess.check_output("""univention-ssh %s root@%s 'univention-install -y ucs-test-end'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master'])), shell=True)
