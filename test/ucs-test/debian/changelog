@@ -1,3 +1,9 @@
+ucs-test (10.0.0-54) unstable; urgency=medium
+
+  * Bug #40225: Wrong UCS version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 10 Aug 2020 15:39:05 +0200
+
 ucs-test (10.0.0-53) unstable; urgency=medium
 
   * Bug #40225: fix install call arguments
