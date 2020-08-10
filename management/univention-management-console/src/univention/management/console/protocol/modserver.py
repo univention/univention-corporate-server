@@ -206,9 +206,7 @@ class ModuleServer(Server):
 				status, message = exc.args
 				from ..error import UMC_Error
 				raise UMC_Error(message, status=status)
-			except (KeyboardInterrupt, SystemExit, GeneratorExit):
-				raise
-			except BaseException:
+			except Exception:
 				self.error_handling(msg, 'init', *sys.exc_info())
 
 		return True
@@ -307,7 +305,7 @@ class ModuleServer(Server):
 				MODULE.process('Initializing module.')
 				try:
 					self.__handler.init()
-				except BaseException:
+				except Exception:
 					try:
 						exc_info = sys.exc_info()
 						self.__init_etype, self.__init_exc, self.__init_etraceback = exc_info  # FIXME: do not keep a reference to traceback

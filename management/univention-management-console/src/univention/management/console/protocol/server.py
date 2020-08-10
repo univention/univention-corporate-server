@@ -220,7 +220,7 @@ class MagicBucket(object):
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
 			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
 			self._cleanup(state.socket)
-		except BaseException:  # close the connection to the client. we can't do anything else
+		except Exception:  # close the connection to the client. we can't do anything else
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
 
@@ -274,7 +274,7 @@ class Server(signals.Provider):
 			CORE.info('Using a TCP socket')
 			try:
 				self.__realsocket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-			except BaseException:
+			except Exception:
 				CORE.warn('Cannot open socket with AF_INET6 (Python reports socket.has_ipv6 is %s), trying AF_INET' % socket.has_ipv6)
 				self.__realsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -389,7 +389,8 @@ class Server(signals.Provider):
 			self.__realsocket.close()
 			self.__realsocket = None
 		if self.__unix:
-			os.unlink(self.__unix)
+			if os.path.exists(self.__unix):
+				os.unlink(self.__unix)
 			self.__unix = None
 
 		self.__bucket = None
