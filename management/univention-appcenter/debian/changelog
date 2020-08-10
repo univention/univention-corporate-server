@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-16) unstable; urgency=medium
+
+  * Bug #40225: Fix some UCS 5 issues
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Aug 2020 00:54:48 +0200
+
 univention-appcenter (9.0.0-15) unstable; urgency=medium
 
   * Bug #40225: Fix some UCS 5 issues

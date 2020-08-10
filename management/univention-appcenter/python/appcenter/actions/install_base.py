@@ -211,6 +211,7 @@ class InstallRemoveUpgrade(Register):
 				pass
 			else:
 				if status == 200:
+					action = self.get_action_name()
 					self._write_success_event(app, context_id, args)
 				else:
 					self._write_fail_event(app, context_id, status, args)
