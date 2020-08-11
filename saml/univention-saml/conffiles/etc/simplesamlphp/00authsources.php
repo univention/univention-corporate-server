@@ -46,21 +46,24 @@ $config = array(
 
 
 @!@
+import re
 from univention.lib.misc import getLDAPURIs
 hostname = getLDAPURIs()
 
 expiry_attributes = "'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags', 'univentionRegisteredThroughSelfService', 'univentionPasswordRecoveryEmailVerified'"
 
-config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
+config_attributes = "'%s'" % "', '".join(filter(None, re.split('[ ,\'"]', configRegistry.get('saml/idp/ldap/get_attributes', 'uid'))))
+search_attributes = "'%s'" % "', '".join(filter(None, re.split('[ ,\'"]', configRegistry.get('saml/idp/ldap/search_attributes', 'uid'))))
 
 attributes = "%s, %s" % (config_attributes, expiry_attributes)
+
 
 print("	'hostname'		=> '%s'," % hostname)
 print("	'enable_tls'		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/ldap/enable_tls', True) else 'FALSE')
 print("	'debug' 		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE')
 print("	'attributes'		=> array(%s)," % attributes)
 print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
-print("	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\''))
+print("	'search.attributes' 	=> array(%s)," % (search_attributes,),
 print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/selfservice/check_email_verification', False) else 'FALSE'))
 
 ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
