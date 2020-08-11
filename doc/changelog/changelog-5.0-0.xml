@@ -158,7 +158,7 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The App Center can now install multiple Apps at once. It also resolves dependencies between Apps automatically during install (<u:bug>40225</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
