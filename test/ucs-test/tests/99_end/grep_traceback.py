@@ -75,7 +75,7 @@ def main(filenames, ignore_exceptions={}):
 		if ignore:
 			continue
 		found = True
-		print('%d times in %s:' % (exceptions.occurred, ', '.join(d.filenames)))
+		print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)))
 		print('Traceback (most recent call last):')
 		print(traceback, end='')
 		for exc in exceptions:
