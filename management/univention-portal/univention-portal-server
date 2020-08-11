@@ -157,7 +157,7 @@ class FileCache(object):
 	def _get_portal(self, name):
 		if self.refresh_portal():
 			get_logger('cache').info('reloading portal cache file')
-			self._load_portal()
+			self._load_portal(fallback=False)
 		return deepcopy(self._cache[name])
 
 	def refresh_portal(self):
@@ -208,7 +208,10 @@ class FileReloaderUDM(object):
 				# hopefully, we can still work with an older cache?
 			else:
 				if fd:
-					os.makedirs(os.path.dirname(portal_cache_file))
+					try:
+						os.makedirs(os.path.dirname(portal_cache_file))
+					except EnvironmentError:
+						pass
 					shutil.move(fd.name, portal_cache_file)
 					try:
 						os.unlink(self._refresh_portal)
