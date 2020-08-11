@@ -6,7 +6,8 @@ src: net-snmp
 fix: 5.7.3+dfsg-1.7+deb9u3
 desc: |
  This update addresses the following issue:
- * combination with can lead to elevated permissions to root (CVE-2020-15861)
+ * Prevent a privilege esclation attack due to incorrec
+   symlink handling (CVE-2020-15861)
 bug: [51795]
 cve:
 - CVE-2020-15861
