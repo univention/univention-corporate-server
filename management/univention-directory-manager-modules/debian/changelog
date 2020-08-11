@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.15-5) unstable; urgency=medium
+
+  * Bug #44710: fix removal of dns/ptr_record when no ptr_record would
+    be left over
+
+ -- Florian Best <best@univention.de>  Tue, 11 Aug 2020 18:38:52 +0200
+
 univention-directory-manager-modules (14.0.15-4) unstable; urgency=medium
 
   * Bug #51184: Fix DnListPropertyEncoder to return proper values when the
