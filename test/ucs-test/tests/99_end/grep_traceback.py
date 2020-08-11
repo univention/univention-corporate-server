@@ -90,9 +90,8 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
 	('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
 	('^permissionDenied$', ['_create']),
-	('^noObject:.*', ['__update_membership']),
-#	('^NoObject: No object found at DN .*', None),
-#	('^ldapError: No such object', None),
+	('^noObject:.*', ['__update_membership', 'sync_to_ucs']),
+	('^ldapError: No such object', ['in _create']),
 	('^ldap.NO_SUCH_OBJECT: .*', [r'quota\.py']),
 	(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
 	(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
@@ -100,7 +99,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax', ['_create']),
 	(re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"), ['getMachineConnection', re.escape('<stdin>')]),
 	(r'''^(cherrypy\._cperror\.)?NotFound: \(404, "The path '/(login|portal)/.*''', None),
-	(re.escape('lockfile.LockTimeout: Timeout waiting to acquire lock for /var/run/umc-server.pid'), None),
+	(r'(lockfile\.)?LockTimeout\: Timeout waiting to acquire lock for \/var\/run\/umc-server\.pid', None),
 	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
 
 	# updater test cases:
@@ -129,19 +128,22 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
 	("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4']),  # Bug #50282
 	("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs']),  # Bug #49879
-	('^ImportError: No module named __base', [r'app_attributes\.py']),  # Bug #50338
+	('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules']),  # Bug #50338
 	('^ImportError: No module named directory', [r'app_attributes\.py']),  # Bug #50338
-	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm']),  # Bug #49866
+	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py']),  # Bug #49866
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
 	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
-	("^OError: \[Errno 2\] No such file or directory: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
+	("^(OS|IO)Error: \[Errno 2\] No such file or directory: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
 	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
-	('^IndexError: list index out of range', ['_read_from_ldap']),  # Bug #46932
+	('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups']),  # Bug #46932, Bug #48943
 	("^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*", [r'license_uuid\.py']),  # 45787
 	("^KeyError: 'gidNumber'", ['_ldap_pre_remove']),  # Bug #51669
 	(r'^IOError: \[Errno 32\] Broken pipe', ['process_output']),  # Bug #32532
 	('^NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete']),  # Bug #43722 Bug #47343
+	('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
+	(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket", None),
+	(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None),  # Bug #51808
 ])
 
 
