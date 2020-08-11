@@ -1,3 +1,11 @@
+ucs-test (9.0.4-41) unstable; urgency=medium
+
+  * Bug #44710: add 66_udm-
+    computers/58_removal_of_leftover_ptr_record_with_multiple_ip_address
+    es
+
+ -- Florian Best <best@univention.de>  Tue, 11 Aug 2020 18:51:05 +0200
+
 ucs-test (9.0.4-40) unstable; urgency=medium
 
   * Bug #50300: fix typo
