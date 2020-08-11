@@ -10,6 +10,7 @@ udm/univention-portal.xml usr/lib/univention-portal/umc/
 listener/*.py usr/lib/univention-directory-listener/system
 univention-blog.png usr/share/univention-portal/
 univention-portal-server usr/bin/
+univention-portal usr/sbin/
 univention-portal-server.service /lib/systemd/system
 portal-server-password-rotate usr/lib/univention-server/server_password_change.d/
 univention-system-setup/cleanup-post.d/11_portal_restart usr/lib/univention-system-setup/cleanup-post.d
