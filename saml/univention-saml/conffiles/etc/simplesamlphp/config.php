@@ -76,6 +76,7 @@ print("	'domainname'	=> '%s'," % configRegistry.get('domainname', ''))
 
 @!@
 print("	'showerrors'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-errors') else 'FALSE'))
+print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true('saml/idp/show-error-reporting') else 'FALSE'))
 @!@
 	/**
 	 * Custom error show function called from SimpleSAML_Error_Error::show.

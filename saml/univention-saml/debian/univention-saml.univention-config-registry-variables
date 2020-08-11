@@ -82,6 +82,12 @@ Description[en]=Defines if error information and stack traces allowed to be show
 Type=bool
 Categories=saml
 
+[saml/idp/show-error-reporting]
+Description[de]=Definiert, ob Fehler informationen wie Stack Traces per E-Mail an den Technischen-Kontakt gemeldet werden können.
+Description[en]=Defines if error information and stack traces can be reported via email to the technical contact mail address.
+Type=bool
+Categories=saml
+
 [saml/idp/lookandfeel/theme]
 Description[de]=Das verwendete Theme der Webseiten des Identity Providers. (default: univentiontheme:univention)
 Description[en]=The theme used by the identity Provider webpages. (default: univentiontheme:univention)

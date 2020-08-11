@@ -1,8 +1,9 @@
 univention-saml (6.0.2-48) unstable; urgency=medium
 
   * Bug #45445: display UMC error dialog
+  * Bug #51801: make error reporting configurable
 
- -- Florian Best <best@univention.de>  Wed, 19 Aug 2020 20:43:52 +0200
+ -- Florian Best <best@univention.de>  Wed, 19 Aug 2020 20:46:36 +0200
 
 univention-saml (6.0.2-47) unstable; urgency=medium
 

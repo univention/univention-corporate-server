@@ -28,6 +28,7 @@ Variables: saml/idp/timezone
 Variables: saml/idp/log/debug/enabled
 Variables: saml/idp/log/level
 Variables: saml/idp/show-errors
+Variables: saml/idp/show-error-reporting
 Variables: saml/idp/lookandfeel/theme
 Variables: saml/idp/technicalcontactname
 Variables: saml/idp/technicalcontactemail
