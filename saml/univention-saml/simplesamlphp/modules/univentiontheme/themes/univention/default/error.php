@@ -8,6 +8,41 @@ EOF;
 
 $this->includeAtTemplateBase('includes/header.php');
 ?>
+
+<script type="text/javascript">
+	//<!--
+		var callback = umcConfig.callback;
+		umcConfig.callback = function() {
+			callback.apply(this, arguments);
+		require(["umc/tools", ], function(tools) {
+				var data = <?php
+$title = $this->t($this->data['dictTitle']);
+$message = $this->t($this->data['dictDescr'], $this->data['parameters']);
+$debug_message = "";
+if ($this->data['showerrors']) {
+	$debug_message .= sprintf("\n%s (Tracking-ID: %s):\n%s", $this->t('debuginfo_header'), $this->data['error']['trackId'], $this->t('debuginfo_text'));
+}
+$traceback = $this->data['showerrors'] ? $title . "\n\n" . $message . "\n\n" . $this->data['error']['exceptionMsg'] . "\n\n" . $this->data['error']['exceptionTrace'] : "";
+echo json_encode(array(
+	"status" => 500,
+	"title" => $title,
+	"message" => $message . $debug_message,
+	"traceback" => $traceback,
+));
+				?>;
+<?php
+$hideInformVendorViaMail = !isset($this->data['errorReportAddress']) && $this->configuration->getString('technicalcontact_email');
+if (!$hideInformVendorViaMail) {
+	printf("tools.status('feedbackAddress', %s);\n", json_encode($this->configuration->getString('technicalcontact_email')));
+}
+?>
+			tools.showErrorDialog(data, { hideInformVendor: true, hideInformVendorViaMail: <?php echo $hideInformVendorViaMail ? 'true' : 'false'; ?>, noRedirection: true });
+		});
+	};
+	//-->
+</script>
+
+<noscript>
     <h2><?php echo $this->t($this->data['dictTitle']); ?></h2>
 <?php
 echo htmlspecialchars($this->t($this->data['dictDescr'], $this->data['parameters']));
@@ -21,10 +56,10 @@ if (isset($this->data['includeTemplate'])) {
         <p><?php echo $this->t('report_trackid'); ?></p>
         <div class="input-group" style="width: 1em;">
             <pre id="trackid" class="input-left"><?php echo $this->data['error']['trackId']; ?></pre>
-            <button data-clipboard-target="#trackid" id="btntrackid" class="btnaddonright">
+            <!--<button data-clipboard-target="#trackid" id="btntrackid" class="btnaddonright">
                 <img src="/<?php echo $this->data['baseurlpath'].'resources/icons/clipboard.svg'; ?>"
                      alt="Copy to clipboard" />
-            </button>
+            </button>-->
         </div>
     </div>
 <?php
@@ -67,8 +102,6 @@ if (isset($this->data['errorReportAddress'])) {
 ?>
     <h2 style="clear: both"><?php echo $this->t('howto_header'); ?></h2>
     <p><?php echo $this->t('howto_text'); ?></p>
-    <script type="text/javascript">
-        var clipboard = new Clipboard('#btntrackid');
-    </script>
+</noscript>
 <?php
 $this->includeAtTemplateBase('includes/footer.php');

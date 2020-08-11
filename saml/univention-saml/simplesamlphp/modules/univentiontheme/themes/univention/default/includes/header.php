@@ -77,8 +77,8 @@ if ($json != NULL) {
 		<meta name="robots" content="noindex, nofollow" />
 		<link rel="shortcut icon" href="/favicon.ico" type="image/icon"/>
 		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="/univention/management/style.css">
-		<link rel="stylesheet" href="/univention/login/css/custom.css">
+		<link rel="stylesheet" href="/univention/management/style.css"/>
+		<link rel="stylesheet" href="/univention/login/css/custom.css"/>
 <?php
 if ($this->isLanguageRTL()) {
 	echo '<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'resources/default-rtl.css" />';
@@ -90,6 +90,7 @@ if(array_key_exists('head', $this->data)) {
 		<script type="text/javascript" src="/univention/login/saml-config.js"></script>
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
+			//<!--
 			var availableLocales = <?php echo json_encode($langlinkarray); ?>;
 <?php
 /** don't display language switcher when e.g. forms were sent */
@@ -97,9 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	echo 'umcConfig.allowLanguageSwitch = false;';
 }
 ?>
+			//-->
 		</script>
 		<script type="text/javascript" src="/univention/js/dojo/dojo.js"></script>
 		<script type="text/javascript">
+			//<!--
 			require(['login/dialog'], function(login) {
 				<?php
 					if (isset($this->data['SPMetadata']) && isset($this->data['SPMetadata']['entityid'])) {
@@ -107,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					}
 				?>
 			});
+			//-->
 		</script>
 	</head>
 	<body class="umc umcLoginLoading">
