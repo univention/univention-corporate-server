@@ -2243,13 +2243,17 @@ class simpleComputer(simpleLdap):
 
 	def __remove_dns_reverse_object(self, name, dnsEntryZoneReverse, ip):
 		def modify(rdn, zoneDN):
-			zone_name = zoneDN.split('=')[1].split(',')[0]
+			zone_name = explode_rdn(zoneDN, True)[0]
 			for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
-				if len(attributes['pTRRecord']) == 1:
+				ptr_records = attributes.get('pTRRecord', [])
+				removals = []
+				if len(ptr_records) > 1:
+					removals = [b'%s.%s.' % (name.encode('UTF-8'), attributes2['zoneName'][0]) for dn2, attributes2 in self.lo.search(scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False)]
+
+				if len(ptr_records) <= 1 or set(ptr_records) == set(removals):
 					self.lo.delete('relativeDomainName=%s,%s' % (escape_dn_chars(rdn), zoneDN))
 				else:
-					for dn2, attributes2 in self.lo.search(scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False):
-						self.lo.modify(dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')])
+					self.lo.modify(dn, [('pTRRecord', removals, b'')])
 
 				zone = univention.admin.handlers.dns.reverse_zone.object(self.co, self.lo, self.position, zoneDN)
 				zone.open()
