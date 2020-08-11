@@ -56,8 +56,8 @@ config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\''
 attributes = "%s, %s" % (config_attributes, expiry_attributes)
 
 print("	'hostname'		=> '%s'," % hostname)
-print("	'enable_tls'		=> %s," % configRegistry.get('saml/idp/ldap/enable_tls', 'true'))
-print("	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE'))
+print("	'enable_tls'		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/ldap/enable_tls', True) else 'FALSE')
+print("	'debug' 		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE')
 print("	'attributes'		=> array(%s)," % attributes)
 print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
 print("	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\''))
@@ -71,8 +71,8 @@ print("	'search.username'	=> '%s'," % ldap_user)
 
 password = ''
 try:
-	password = open('/etc/idp-ldap-user.secret','r').read().strip()
-except (IOError, OSError):
+	password = open('/etc/idp-ldap-user.secret', 'r').read().strip()
+except EnvironmentError:
 	import sys
 	print >> sys.stderr, '/etc/idp-ldap-user.secret could not be read!'
 

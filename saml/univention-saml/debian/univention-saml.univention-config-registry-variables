@@ -65,9 +65,9 @@ Type=str
 Categories=saml
 
 [saml/idp/log/debug/enabled]
-Description[de]=Aktivieren ("TRUE") oder deaktivieren ("FALSE") von Debugausgaben. default: FALSE
-Description[en]=Activation ("TRUE") or deactivation ("FALSE") of debug output. default: FALSE
-Type=str
+Description[de]=Aktivieren oder deaktivieren von Debugausgaben. (default: false)
+Description[en]=Activation or deactivation of debug output. (default: false)
+Type=bool
 Categories=saml
 
 [saml/idp/log/level]
@@ -115,13 +115,13 @@ Categories=saml
 [saml/idp/ldap/enable_tls]
 Description[de]=Ist diese Variable auf 'true' gesetzt, wird eine verschlüsselte Verbindung zum LDAP Server aufgebaut. (default: true)
 Description[en]=If this variable is set to 'true', the ldap connection will be encrypted. (default: true)
-Type=str
+Type=bool
 Categories=saml
 
 [saml/idp/ldap/debug]
 Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Debugging für die LDAP Verbindung eingeschaltet. (default: false)
 Description[en]=If this variable is set to 'true', ldap server connection debugging is activated. (default: false)
-Type=str
+Type=bool
 Categories=saml
 
 [saml/idp/ldap/search_attributes]
