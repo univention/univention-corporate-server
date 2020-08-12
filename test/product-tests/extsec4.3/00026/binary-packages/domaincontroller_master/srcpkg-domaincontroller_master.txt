@@ -1,0 +1,1045 @@
+acl (2.2.52-3)
+acpi (1.7-1)
+acpi-support
+acpi-support (0.142-8)
+acpid (1:2.0.28-1)
+adduser
+adns (1.5.0~rc1-1)
+adwaita-icon-theme
+aglfn
+alabaster
+alsa-lib
+amd64-microcode
+apache2
+apparmor
+appconfig
+apr
+apr-util
+apt
+apt-mirror
+at
+at-spi2-atk
+at-spi2-core
+atk1.0
+attr (1:2.4.47-2)
+auctex
+audit
+autogen
+avahi
+babeltrace
+base-files
+base-passwd
+bash
+bash-completion
+bc (1.06.95-9)
+beautifulsoup4
+bind9
+binutils
+blinker
+blt
+bridge-utils
+brlaser (3-5)
+bsd-mailx
+bsd-mailx (8.1.2-0.20071201cvs-3.3.200911270913)
+bsdmainutils
+busybox (1:1.22.0-19)
+bzip2
+c2050
+c2esp (27-3)
+ca-certificates
+cabextract (1.6-1)
+cached-property
+cadaver (0.23.3-2)
+cairo
+cdebconf
+cgmanager
+cgroupfs-mount
+chardet
+cherrypy3
+cifs-utils
+cjet (0.8.9-6)
+cloog (0.18.4-1)
+colord
+console-data
+console-tools
+consolekit
+containerd
+coreutils
+cpio
+cracklib2
+cramfs
+cron
+crudesaml
+cryptsetup
+cups
+cups-filters
+curl
+cyrus-sasl2
+d-conf (0.26.0-2)
+dash
+db
+db-defaults
+db3
+db4.2
+db4.3
+db4.4
+db4.5
+db4.6
+db4.7
+db4.8
+db5.3
+dbus
+dbus-glib
+dbus-python (1.2.4-1)
+debconf
+debian-archive-keyring
+debianutils
+defusedxml
+devmapper
+dh-python
+dhcp3
+dialog
+dictionaries-common
+diffutils
+directfb
+distro-info-data
+djvulibre
+dmapi
+dmidecode
+dnspython
+docker-compose
+docker-pycreds
+docker.io
+dockerpty
+docopt
+dosfstools
+dpkg
+dump
+dymo-cups-drivers (1.4.0-6)
+e2fsprogs
+ed
+egenix-mx-base
+eject
+elfutils
+elinks
+emacs23
+emacs24
+emacsen-common
+enca (1.19-1)
+enum34
+epson-inkjet-printer-escpr
+ethtool (1:4.8-1)
+exempi
+exiv2
+expat
+expect
+fakeroot
+fdutils (5.5-20060227-7)
+fftw3
+file
+findutils
+firmware-free
+firmware-nonfree
+fontconfig
+fontconfig (2.11.0-6.7)
+fonts-android
+fonts-dejavu
+fonts-lato
+fonts-liberation
+fonts-noto
+foo2zjs
+foo2zjs (20160902dfsg0-2)
+foomatic-db
+foomatic-db-engine (4.0.12-2)
+fping
+freeipmi (1.4.11-1.1)
+freetype
+fribidi
+fsc-srv-modules-2.6.18.1-univention.server.82
+fsplib
+fuse
+fxlinuxprint
+gawk
+gcc-2.95 (2.95.4.ds15-27.10.200711021046)
+gcc-3.3 (1:3.3.6ds1-28)
+gcc-4.3
+gcc-4.4
+gcc-4.9
+gcc-6
+gcc-6 (6.3.0-18+deb9u1)
+gcc-defaults (1.168)
+gconf
+gconf (3.2.6-4)
+gdb
+gdbm
+gdk-pixbuf
+genshi
+geoip
+geoip-database
+gettext
+ghostscript
+giflib
+git
+glib-networking
+glib1.2
+glib2.0
+glibc
+gmime
+gmp
+gnome-mime-data
+gnome-vfs
+gnome-vfs (1:2.24.4-6.1)
+gnupg2
+gnuplot
+gnutls13
+gnutls26
+gnutls28
+gobject-introspection (1.50.0-1)
+golang-github-docker-docker-credential-helpers (0.3.0+git20160601.0.5128fa1-1)
+gpgme1.0 (1.8.0-3)
+gpm
+graphite2
+grep
+groff
+grub
+grub2
+gsettings-desktop-schemas
+gsfonts
+gtk+1.2
+gtk+2.0
+gtk+3.0
+gutenprint (5.2.11-1)
+gzip (1.6-5)
+hal
+harfbuzz
+hdparm
+heimdal
+hesiod (3.2.1-3)
+hicolor-icon-theme
+hostname (3.18)
+hplip
+html2text (1.3.2a-18)
+html5lib
+icu
+ifenslave
+ifplugd
+iftop
+ifupdown
+igerman98
+ijs
+ilmbase
+imagemagick
+init-system-helpers
+initramfs-tools
+inotify-tools
+insserv
+intel-microcode
+iproute2
+iptables
+iputils
+irqbalance
+isc-dhcp
+isl
+iso-codes
+iucode-tool
+jansson
+javascript-common
+jbig2dec
+jbigkit (2.1-3.1)
+jimtcl (0.76-2)
+jinja2
+jq
+jquery
+jqueryui
+json-c
+json-glib
+jxrlib (1.1-6)
+kbd (2.0.3-2)
+kerberos-configs
+keyutils
+klibc
+kmod
+krb5
+lapack
+lasso
+lazy-object-proxy
+lcms
+lcms2
+ldb
+lensfun
+less
+libalgorithm-diff-perl
+libalgorithm-merge-perl
+libapache2-mod-authnz-pam
+libarchive
+libart-lgpl
+libassuan
+libauthen-sasl-perl
+libbonobo
+libbonobo (2.32.1-3)
+libbonoboui
+libbsd
+libbytes-random-secure-perl
+libcanberra
+libcap
+libcap-ng (0.7.7-3)
+libcap2
+libclass-accessor-perl
+libclass-isa-perl
+libconfig-tiny-perl
+libcroco
+libcrypt-openssl-bignum-perl
+libcrypt-openssl-dsa-perl
+libcrypt-openssl-random-perl (0.11-1)
+libcrypt-openssl-rsa-perl
+libcrypt-passwdmd5-perl
+libcrypt-random-seed-perl
+libcrypt-ssleay-perl
+libdaemon
+libdata-showtable-perl
+libdata-validate-domain-perl
+libdata-validate-ip-perl
+libdate-manip-perl
+libdatrie (0.2.10-4)
+libdbd-mysql-perl
+libdbi
+libdbi-perl (1.636-1)
+libdigest-bubblebabble-perl
+libdigest-hmac-perl
+libdrm
+libedit
+libencode-locale-perl
+libepoxy
+liberror-perl
+libestr
+libevent
+libexif
+libexpect-perl
+libfastjson
+libffi
+libfile-basedir-perl
+libfile-copy-recursive-perl
+libfile-desktopentry-perl
+libfile-listing-perl
+libfile-mimeinfo-perl
+libfile-remove-perl
+libfont-afm-perl
+libfontenc (1:1.1.3-1)
+libfs (2:1.0.7-1)
+libgcrypt11
+libgcrypt20
+libgd2
+libglade2
+libgnome
+libgnome (2.32.1-5)
+libgnome-keyring
+libgnome-keyring (3.12.0-1)
+libgnomecanvas
+libgnomeui
+libgpg-error
+libgphoto2
+libgssglue
+libgudev
+libgusb (0.2.9-1)
+libhtml-form-perl
+libhtml-format-perl
+libhtml-parser-perl
+libhtml-tagset-perl
+libhtml-tree-perl
+libhttp-cookies-perl
+libhttp-daemon-perl
+libhttp-date-perl
+libhttp-message-perl
+libhttp-negotiate-perl
+libice
+libident
+libidl
+libidn
+libidn2-0
+libieee1284
+libio-html-perl
+libio-pty-perl
+libio-socket-inet6-perl
+libio-socket-ssl-perl
+libio-socket-timeout-perl
+libio-stty-perl
+libiodbc2 (3.52.9-2)
+libipc-run-perl
+libipc-system-simple-perl
+libiptcdata (1.0.4-6)
+libjpeg-turbo
+libjpeg8
+libksba
+liblinear
+liblocale-gettext-perl (1.07-3)
+liblockfile (1.14-1)
+liblogging (1.0.5-2)
+liblognorm (2.0.1-1.1)
+liblouis
+liblouisutdml
+liblouisutdml (2.6.0-3)
+liblqr (0.4.2-2)
+liblwp-mediatypes-perl
+liblwp-protocol-https-perl
+liblwp-useragent-determined-perl
+libmail-imapclient-perl
+libmailtools-perl
+libmath-calc-units-perl
+libmath-random-isaac-perl
+libmath-random-isaac-xs-perl (1.004-2)
+libmcrypt
+libmemcached
+libmime-base32-perl
+libmng (1.0.10+dfsg-3.1)
+libmnl
+libmodule-implementation-perl
+libmodule-runtime-perl
+libmspack
+libnagios-plugin-perl
+libnet
+libnet-cups-perl
+libnet-dbus-perl (1.1.0-4)
+libnet-dns-perl
+libnet-dns-sec-perl
+libnet-domain-tld-perl
+libnet-http-perl
+libnet-ip-perl
+libnet-ipv6addr-perl
+libnet-libidn-perl (0.12.ds-2)
+libnet-netmask-perl
+libnet-smtp-ssl-perl
+libnet-smtp-tls-perl
+libnet-smtpauth-perl
+libnet-snmp-perl
+libnet-ssleay-perl
+libnetaddr-ip-perl (4.079+dfsg-1)
+libnetfilter-conntrack
+libnetwork-ipv4addr-perl
+libnfnetlink
+libnfsidmap
+libnih
+libnl3
+libnss-extrausers
+libnss-ldap
+libogg
+libonig
+libotf (0.9.13-3)
+libpam-krb5
+libpam-ldap
+libpaper
+libparams-classify-perl (0.013-6)
+libparams-validate-perl
+libparse-recdescent-perl
+libpcap
+libpcap0.9
+libpciaccess (0.13.4-1)
+libperlio-via-timeout-perl
+libpipeline
+libpng
+libpng1.6
+libproxy
+libpsl
+libreadonly-perl
+libredis-perl
+librelp
+librest
+librpcsecgss (0.19-7)
+librsvg
+libseccomp
+libsecret
+libselinux (2.6-3)
+libsemanage
+libsepol
+libsigsegv
+libsm (2:1.2.2-1)
+libsnmp-session-perl
+libsocket6-perl (0.27-1)
+libsoup2.4
+libssh2
+libsub-name-perl
+libsvm
+libswitch-perl
+libtasn1-2
+libtasn1-3
+libtasn1-6
+libtext-charwidth-perl
+libtext-iconv-perl
+libtext-wrapi18n-perl
+libthai
+libtie-ixhash-perl
+libtimedate-perl
+libtirpc
+libtool
+libtry-tiny-perl
+libunistring
+libunix-syslog-perl
+liburi-perl
+libusb
+libusb-1.0
+libutempter
+libuuid-perl
+libvorbis
+libwebinject-perl
+libwebp
+libwmf
+libwww-perl
+libwww-robotrules-perl
+libx11
+libx11-protocol-perl
+libx86
+libxau
+libxaw (2:1.0.13-1)
+libxcb
+libxcomposite
+libxcursor
+libxdamage (1:1.1.4-2)
+libxdmcp
+libxext (2:1.3.3-1)
+libxfixes
+libxfont1
+libxi
+libxinerama (2:1.1.3-1)
+libxkbcommon
+libxkbfile
+libxml-namespacesupport-perl
+libxml-parser-perl (2.44-2)
+libxml-sax-base-perl
+libxml-sax-expat-perl
+libxml-sax-perl
+libxml-simple-perl
+libxml-twig-perl
+libxml-xpathengine-perl
+libxml2
+libxmu
+libxp
+libxpm
+libxrandr
+libxrender
+libxshmfence (1.2-1)
+libxslt
+libxss
+libxt
+libxtrap
+libxtst
+libxv
+libxxf86dga (2:1.1.4-1)
+libxxf86misc
+libxxf86vm (1:1.1.4-1)
+libyaml
+libyaml-syck-perl (1.29-1)
+links
+linux
+linux-atm
+linux-base
+llvm-toolchain-3.9
+lm-sensors
+lmdb
+lockfile-progs
+logrotate
+lsb
+lsof
+lua40
+lua5.1 (5.1.5-8.1)
+lua5.2 (5.2.4-1.1)
+lua5.3
+lua50
+lvm2
+lvm2 (2.02.168-2)
+lxml
+lyx
+lz4 (0.0~r131-2)
+lzo
+lzo2 (2.08-1.2)
+m17n-db
+m17n-lib (1.7.0-3)
+m2300w (0.51-12)
+m2crypto
+make-dfsg
+makedev
+makepasswd
+mako
+man-db
+manpages
+mariadb-10.1
+markupsafe
+matplotlib
+mawk
+mbr
+mc
+mcrypt
+memcached
+memtest86+
+memtester (4.3.0-4)
+mesa (13.0.6-1)
+metamail
+mhash
+mime-support
+min12xxw (0.0.9-9)
+mochikit
+monitoring-plugins
+mpclib3 (1.0.3-1)
+mpdecimal
+mpfr
+mpfr4
+mrtg (2.17.4-4)
+mscompress (0.4-3)
+mt-st
+mtools (4.0.18-2)
+mutt
+mysql-defaults (1.0.2)
+mysql-dfsg-5.0
+nagios-nrpe
+nagios-plugins-contrib
+nano
+ncdu (1.12-1)
+ncurses
+neon27
+net-snmp
+net-tools
+netbase
+netbrake
+netcat
+netcat (1.10-41)
+netcat-openbsd
+netifaces (0.10.4-0.1)
+netkit-telnet
+netpbm-free
+nettle (3.3-1)
+newt (0.52.19-1)
+nfs-utils
+nghttp2
+ngrep
+nmap
+nose
+notmuch
+npth
+nspr
+nss
+nss-mdns
+ntdb (1.0-9)
+ntp
+numactl
+nvi
+olb-ldap-acls
+openbsd-inetd
+opencdk8
+openexr (2.2.0-11)
+openft
+openft-cr
+openjpeg2
+openldap
+openldap2
+openldap2.3
+openslp-dfsg
+openssh
+openssh-blacklist
+openssl
+openssl-blacklist
+openssl097
+openssl1.0
+opsi4ucs
+orbit2 (1:2.14.19-2)
+p11-kit
+pam
+pam-runasroot
+pam-univentionmailcyrus
+pango1.0
+pangox-compat (0.0.2-5)
+paramiko
+password-store
+paste
+patch
+pciutils
+pcre3
+perl
+perl-openssl-defaults
+pexpect
+php-defaults (49)
+php-json
+php-krb5
+php-memcache
+php-openid
+php-pear
+php-xml-parser
+php5
+php7.0
+pigz
+pillow
+pinentry
+pixman
+plymouth
+pm-utils
+pnm2ppa
+polib
+policykit-1
+poppler
+poppler-data
+popt (1.16-10)
+portaudio
+portmap
+postfix
+postgresql-8.4
+postgresql-9.1
+postgresql-9.4
+postgresql-9.6
+postgresql-common
+postgresql-common (181+deb9u3A~4.4.0.201911181236)
+potrace
+powermgmt-base
+printing-metas
+procinfo
+procps
+psmisc (22.21-2.1)
+ptouch-driver (1.4.2-2)
+ptyprocess
+publicsuffix
+pwgen (2.07-1.1)
+pxljr (1.4+repack0-4)
+pyasn1
+pycairo
+pycurl
+pygments
+pygobject
+pygobject-2
+pygresql
+pygtk
+pyjwt
+pymongo
+pyopenssl
+pyparsing
+python-apt
+python-babel
+python-backports-abc
+python-central
+python-cffi
+python-click
+python-colorama
+python-concurrent.futures
+python-crypto
+python-cryptography
+python-cycler
+python-daemon
+python-dateutil
+python-debian
+python-decorator
+python-defaults
+python-dns
+python-docker
+python-docutils
+python-formencode
+python-functools32
+python-gevent
+python-greenlet
+python-idna
+python-imagesize
+python-ipaddr
+python-ipaddress
+python-jsonschema
+python-ldap
+python-lockfile
+python-memcache
+python-mimeparse
+python-mysqldb
+python-notifier
+python-numpy
+python-oauthlib
+python-openid
+python-pam
+python-psutil
+python-pyasn1-modules
+python-pysaml2
+python-pysqlite2
+python-reportlab
+python-repoze.lru
+python-repoze.who
+python-roman
+python-ruamel.ordereddict
+python-setuptools
+python-smbpasswd
+python-stdlib-extensions
+python-subprocess32
+python-support
+python-tempita
+python-tornado
+python-trml2pdf
+python-typing
+python-tz
+python-uritemplate
+python-urllib3
+python-webencodings
+python-webob
+python2.4
+python2.5
+python2.6
+python2.7
+python3-defaults
+python3.5
+pyyaml
+qdbm
+qpdf
+qstat
+quota
+radcli
+radeontool (1.6.3-1)
+radiusclient
+radiusclient-ng
+raidutils
+rake
+rastertosag-gdi
+rdate
+readline
+readline5 (5.2+dfsg-3)
+readline6 (6.3-8)
+rename
+requests
+rfkill (0.5-1)
+routes
+rpcbind
+rsync
+rsyslog
+rtmpdump
+rtmpdump (2.4+20151223.gitfa8646d.1-1)
+ruamel.yaml
+ruby-bdb
+ruby-bdb (0.6.6-1)
+ruby-defaults
+ruby-did-you-mean
+ruby-minitest
+ruby-net-telnet
+ruby-power-assert
+ruby-test-unit
+ruby1.8
+ruby1.9.1
+ruby2.1
+ruby2.3
+rubygems-integration
+runc
+runit
+s2tc
+samba
+sane-backends
+scgi
+scowl
+screen
+sed
+sensible-utils
+setserial
+sgml-base
+shadow
+shared-mime-info
+sharutils
+silgraphite2.0
+simplesamlphp
+singledispatch
+six
+slang
+slang2
+smem
+snowball (0+svn585-1)
+sphinx
+splix
+sqlite3
+srvmagt-agents
+srvmagt-eecd
+srvmagt-mods-src
+srvmagt-modules-2.6.18-ucs105-686
+srvmagt-modules-2.6.18-ucs140-686
+srvmagt-modules-2.6.18-ucs85-686
+srvmagt-scs
+ssl-cert
+startpar
+strace
+stunnel4
+sudo
+sysfsutils (2.1.0+repack-4)
+sysklogd
+syslinux
+systemd
+systemd-shim
+sysutils
+sysvinit
+t1lib
+t1utils
+talloc
+tar
+tcl8.6 (8.6.6+dfsg-1)
+tcltk-defaults
+tcp-wrappers
+tcpdump
+tdb
+tevent
+tex-common
+texinfo (6.3.0.dfsg.1-1)
+texlive-base
+texlive-bin
+texttable
+tiff
+tiff3
+tightvnc
+tk8.6 (8.6.6-1)
+tmux
+tofrodos
+tokyocabinet (1.4.48-11)
+traceroute
+tracker
+tre
+tree
+tslib
+ttf-bitstream-vera
+tzdata
+ucf
+udev
+ufraw
+unbound
+underscore
+unidump
+univention-ad-connector
+univention-admin-diary
+univention-apache
+univention-appcenter
+univention-archive-key
+univention-base-files
+univention-bind
+univention-bootsplash
+univention-config-registry
+univention-debhelper
+univention-debmirror
+univention-debug
+univention-debug-python
+univention-directory-listener
+univention-directory-logger
+univention-directory-manager-modules
+univention-directory-manager-rest
+univention-directory-notifier
+univention-directory-policy
+univention-directory-reports
+univention-docker
+univention-dojo
+univention-errata-level
+univention-firewall
+univention-grub
+univention-heimdal
+univention-home-mounter
+univention-initrd
+univention-installer
+univention-ipcalc
+univention-join
+univention-kernel-image
+univention-ldap
+univention-ldap-overlay-memberof
+univention-legacy-kolab-schema
+univention-lib
+univention-licence
+univention-licence-python
+univention-local-users
+univention-mail-postfix
+univention-maintenance
+univention-maintenance-mode
+univention-management-console
+univention-management-console-frontend-theme
+univention-management-console-module-diagnostic
+univention-management-console-module-ipchange
+univention-management-console-module-lib
+univention-management-console-module-mrtg
+univention-management-console-module-passwordchange
+univention-management-console-module-reboot
+univention-management-console-module-services
+univention-management-console-module-top
+univention-management-console-module-ucr
+univention-management-console-module-udm
+univention-nagios
+univention-nagios-ad-connector
+univention-net-installer
+univention-network-manager
+univention-newsid
+univention-nfs
+univention-olb
+univention-olb-custom-attributes
+univention-olb-errata-repositories
+univention-olb-ldap
+univention-olb-luks-password-rotation
+univention-opendvdi-schema
+univention-pam
+univention-passwd-cache
+univention-pkgdb
+univention-policy
+univention-portal
+univention-python
+univention-python-heimdal
+univention-quota
+univention-runit
+univention-saml
+univention-security-update
+univention-server
+univention-server-overview
+univention-showload
+univention-skel
+univention-snmp
+univention-snmpd
+univention-ssh
+univention-ssl
+univention-sudo
+univention-system-info
+univention-system-setup
+univention-updater
+univention-usplash-theme-ucd
+univention-virtual-machine-manager-schema
+univention-web
+univention-xen-domain-sync
+unixodbc
+unzip
+update-inetd
+usb-modeswitch
+usb-modeswitch-data
+ustr
+util-linux
+util-linux (2.29.2-1+deb9u1)
+varnish
+vbetool
+vim
+vlan
+vm
+vnc
+wakeonlan
+wayland
+websocket-client
+wget
+whois
+x11-apps (7.7+6)
+x11-session-utils (7.7+2)
+x11-utils (7.7+3)
+x11-xfs-utils (7.7+2)
+x11-xkb-utils (7.7+3)
+x11-xserver-utils (7.7+7)
+xapian-core
+xauth (1:1.0.9-1)
+xbitmaps
+xcb-util-renderutil
+xclip (0.12+svn84-4)
+xcursor-themes
+xdg-user-dirs (0.15-2)
+xdg-utils
+xfonts-base
+xfonts-encodings
+xfonts-utils
+xfsdump
+xfsprogs
+xft (2.3.2-1)
+xinit (1.3.4-3)
+xkeyboard-config
+xml-core
+xmlsec1
+xorg
+xorg-server
+xorg-x11
+xscreensaver
+xterm
+xutils-dev (1:7.7+5)
+xz-utils
+xz-utils (5.2.2-1.2)
+zd1211-firmware
+zip (3.0-11)
+zlib
+zope.interface
+zsync (0.6.2-2)
+zziplib
