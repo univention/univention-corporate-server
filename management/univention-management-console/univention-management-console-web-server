@@ -588,13 +588,13 @@ class SamlError(UMC_HTTPError):
 	def no_identity_provider(self):
 		return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
 
-	#@error(status=300)
+	@error(status=400)  # 300 is more correct, but firefox uses the first link and redirects
 	def multiple_identity_provider(self, idps, idp_query_param, base_uri):
 		uris = [base_uri + ('&', '?')[urlparse(base_uri).query == ''] + urlencode({
 			idp_query_param: idp
 		}) for idp in idps]
 		cherrypy.response.headers['Location'] = ', '.join(uris)
-		raise HTTPRedirect(uris, 300)
+		raise HTTPRedirect(uris, 300)  # FIXME
 		return self._('Could not pick an identity provider. Choose from: %s') % ('\n'.join(uris),)
 
 
