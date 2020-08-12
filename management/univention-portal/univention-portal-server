@@ -152,7 +152,7 @@ def get_portals():
 def make_app():
 	portals = get_portals()
 	return tornado.web.Application([
-		(r'/', JsonHandler, {'portals': portals}),
+		(r'/.*', JsonHandler, {'portals': portals}),
 	])
 
 
