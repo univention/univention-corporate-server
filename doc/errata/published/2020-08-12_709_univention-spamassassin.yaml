@@ -9,3 +9,5 @@ desc: |
  * Make http_proxy environment variable accessible by the
    spamassasin cron job.
 bug: [44489]
+erratum: 709
+announced: 2020-08-12
