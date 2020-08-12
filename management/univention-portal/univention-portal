@@ -31,6 +31,7 @@
 
 import os.path
 import json
+import datetime
 
 from univention.config_registry import ConfigRegistry
 
@@ -80,43 +81,46 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 		ucr.load()
 		reloader = {
 			'type': 'class',
-			'class': 'FileReloaderUDM',
+			'class': 'PortalReloaderUDM',
 			'kwargs': {
 				'portal_dn': {
 					'type': 'static',
 					'value': portal_dn or 'cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')),
 				},
-				'refresh_portal': {
+				'refresh_file': {
 					'type': 'static',
 					'value': portal_cache_refresh or os.path.join(cache_dir, 'refresh_portal'),
 				},
-				'refresh_groups': {
-					'type': 'static',
-					'value': groups_cache_refresh or os.path.join(cache_dir, 'refresh_groups'),
-				},
 			},
 		}
-	cache = {
+	portal_cache = {
 		'type': 'class',
-		'class': 'FileCache',
+		'class': 'PortalFileCache',
 		'kwargs': {
-			'portal': {
+			'cache_file': {
 				'type': 'static',
 				'value': portal_cache_file or os.path.join(cache_dir, 'portal.json'),
 			},
-			'groups': {
+		}
+	}
+	groups_cache = {
+		'type': 'class',
+		'class': 'GroupFileCache',
+		'kwargs': {
+			'cache_file': {
 				'type': 'static',
 				'value': groups_cache_file or os.path.join(cache_dir, 'groups.json'),
 			},
 		}
 	}
 	if with_reloader:
-		cache['kwargs']['reloader'] = reloader
+		portal_cache['kwargs']['reloader'] = reloader
 	portal = {
 		'type': 'class',
 		'class': 'Portal',
 		'kwargs': {
-			'cache': cache,
+			'portal_cache': portal_cache,
+			'groups_cache': groups_cache,
 			'scorer': scorer,
 		}
 	}
@@ -140,7 +144,7 @@ def add(name, update, portal_cache_file, groups_cache_file, with_reloader, refre
 		if update:
 			click.echo(click.style('Overwriting existing {}'.format(name), fg='yellow'))
 		else:
-			click.echo(click.style('{} already exists'.format(name), fg='red'))
+			click.echo('{} already exists'.format(name))
 			return
 	json_content[name] = portal
 	with open(portals_json, 'w') as fd:
@@ -176,16 +180,25 @@ def update(name):
 	if not name:
 		name = json_content.keys()
 	for _name in name:
+		click.echo('Updating {}'.format(_name))
 		try:
 			portal = json_content[_name]
 		except KeyError:
 			click.echo(click.style('{} does not exist'.format(name), fg='yellow'))
 		else:
 			portal = make_portal(portal)
-			if portal.cache.refresh_portal(force=True):
-				click.echo(click.style('Portal data updated', fg='green'))
-			if portal.cache.refresh_groups(force=True):
-				click.echo(click.style('Group data updated', fg='green'))
+			start = datetime.datetime.now()
+			if portal.portal_cache.refresh(force=True):
+				delta = datetime.datetime.now() - start
+				click.echo(click.style('Portal data updated in {:.2f}s'.format(delta.total_seconds()), fg='green'))
+			else:
+				click.echo('Portal data untouched')
+			start = datetime.datetime.now()
+			if portal.groups_cache.refresh(force=True):
+				delta = datetime.datetime.now() - start
+				click.echo(click.style('Group data updated in {:.2f}s'.format(delta.total_seconds()), fg='green'))
+			else:
+				click.echo('Group data untouched')
 
 
 class SomeObj(object):
