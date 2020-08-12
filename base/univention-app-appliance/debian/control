@@ -9,7 +9,6 @@ Build-Depends:
  node-stylus,
  python-all,
  univention-config-dev,
- univention-management-console-dev,
  univention-ucs-translation-template,
 
 Package: python-univention-app-appliance
