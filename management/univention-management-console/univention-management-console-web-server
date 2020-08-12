@@ -1057,7 +1057,7 @@ class CPAuth(CPgeneric):
 		cherrypy.response.headers['Location'] = relay_state.get('referer', '/univention/management/') or '/univention/get/session-info'
 
 	@cherrypy.expose
-	def foobar(self, *args, **kwargs):
+	def external_idp(self, *args, **kwargs):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
@@ -1227,14 +1227,18 @@ class SAML(Ressource):
 		cherrypy.request.uri = cherrypy.request.uri.replace('/iframe', '')
 		relay_state = rndstr()
 		self._acs_callbacks[relay_state] = self.attribute_consuming_service_iframe
-		return self.do_single_sign_on(is_passive='true', relay_state=relay_state)
+		return self.do_single_sign_on(is_passive='true', relay_state=relay_state, use_ucs_identity_provider=True)
+
+	@cherrypy.expose
+	def external(self, *args, **kwargs):
+		return self.do_single_sign_on(relay_state=rndstr(), use_ucs_identity_provider=False)
 
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		self.set_session(self.create_sessionid(), saml.username, saml=saml, relay_state=self.relay_state.get(relay_state))
 		if response.issuer() != ucr.get('umc/saml/idp-server'):  # external IDP
-			raise HTTPRedirect('/univention/auth/foobar')
+			raise HTTPRedirect('/univention/auth/external-idp')
 		raise HTTPRedirect('/univention/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
@@ -1368,7 +1372,7 @@ class SAML(Ressource):
 
 			Returns (binding, http-arguments)
 		"""
-		identity_provider_entity_id = self.select_identity_provider()
+		identity_provider_entity_id = self.select_identity_provider(use_ucs_identity_provider=kwargs.pop('use_ucs_identity_provider', True))
 		binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
 
 		relay_state = kwargs.pop('relay_state', None)
@@ -1391,7 +1395,7 @@ class SAML(Ressource):
 		self.outstanding_queries[sid] = service_provider_url  # cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
 		return binding, http_args
 
-	def select_identity_provider(self):
+	def select_identity_provider(self, use_ucs_identity_provider=True):
 		"""Select an identity provider based on the available identity providers.
 			If multiple IDP's are set up the client might have specified one in the query string.
 			Otherwise an error is raised where the user can choose one.
@@ -1407,6 +1411,10 @@ class SAML(Ressource):
 			return list(idps.keys())[0]
 		if not idps:
 			raise SamlError().no_identity_provider()
+		if use_ucs_identity_provider:
+			for key in idps:
+				if key == ucr.get('umc/saml/idp-server'):
+					return key
 		raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param, cherrypy.request.uri)
 
 	def get_identity_provider_destination(self, entity_id):
