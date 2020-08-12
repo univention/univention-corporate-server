@@ -65,16 +65,25 @@ class Report(object):
                 raise ReportError(_('The report %r does not exists or is misconfigured.') % (report,))
             raise ReportError(_('No %r report exists for the module %r.') % (report, module))
 
-        suffix = '.rml' if Document.get_type(template) == Document.TYPE_RML else '.tex'
+        suffix = {
+            Document.TYPE_RML: '.rml',
+            Document.TYPE_SCRIPT: '.py',
+            #Document.TYPE_SCRIPT: '.sh',
+
+        }.get(Document.get_type(template), '.tex')
         header = self.config.get_header(module, report, suffix)
         footer = self.config.get_footer(module, report, suffix)
         doc = Document(template, header=header, footer=footer)
 
         tmpfile = doc.create_source(objects)
         pdffile = tmpfile
-        func = {Document.TYPE_RML: doc.create_rml_pdf, Document.TYPE_LATEX: doc.create_pdf}.get(doc._type)
+        func = {
+            Document.TYPE_RML: doc.create_rml_pdf,
+            Document.TYPE_LATEX: doc.create_pdf,
+            Document.TYPE_SCRIPT: doc.create_from_script,
+        }.get(doc._type)
         if func:
-            pdffile = func(tmpfile)
+            pdffile = func(tmpfile, objects)
         if not pdffile or not os.path.exists(pdffile):
             raise ReportError(_('The report could not be created.'))
         return pdffile

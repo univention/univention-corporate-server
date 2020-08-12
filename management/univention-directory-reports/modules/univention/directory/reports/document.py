@@ -57,7 +57,7 @@ _ = Translation('univention-directory-reports').translate
 
 
 class Document(object):
-    (TYPE_LATEX, TYPE_CSV, TYPE_RML, TYPE_UNKNOWN) = range(4)
+    (TYPE_LATEX, TYPE_CSV, TYPE_RML, TYPE_SCRIPT, TYPE_UNKNOWN) = range(5)
 
     @classmethod
     def get_type(cls, template):
@@ -67,6 +67,8 @@ class Document(object):
             return cls.TYPE_CSV
         elif template.endswith('.rml'):
             return cls.TYPE_RML
+        elif template.endswith('.py') or template.endswith('.sh'):
+            return cls.TYPE_SCRIPT
         return cls.TYPE_UNKNOWN
 
     def __init__(self, template, header=None, footer=None):
@@ -94,7 +96,7 @@ class Document(object):
         elif self._type == Document.TYPE_CSV:
             suffix = '.csv'
         else:
-            suffix = self._template.rsplit('.', 1)[1]
+            suffix = '.' + self._template.rsplit('.', 1)[1]
         fd, filename = tempfile.mkstemp(suffix, 'univention-directory-reports-')
         os.chmod(filename, 0o644)
         os.close(fd)
@@ -144,7 +146,7 @@ class Document(object):
 
         return tmpfile
 
-    def create_pdf(self, latex_file):
+    def create_pdf(self, latex_file, objects):
         """Run pdflatex on latex_file and return path to generated file or None on errors."""
         cmd = ['/usr/bin/pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-output-directory=%s' % os.path.dirname(latex_file), latex_file]
         devnull = open(os.path.devnull, 'w')
@@ -162,7 +164,7 @@ class Document(object):
                 except EnvironmentError:
                     pass
 
-    def create_rml_pdf(self, rml_file):
+    def create_rml_pdf(self, rml_file, objects):
         output = '%s.pdf' % (os.path.splitext(rml_file)[0],)
         with open(rml_file, 'rb') as fd:
             outputfile = trml2pdf.parseString(fd.read(), output)
@@ -171,3 +173,9 @@ class Document(object):
         except EnvironmentError:
             pass
         return outputfile
+
+    def create_from_script(self, script_file, objects):
+        output = '%s.csv' % (os.path.splitext(script_file)[0],)
+        with open(output, 'w') as fd:
+            fd.write(subprocess.check_output([sys.executable, script_file] + objects))
+        return output
