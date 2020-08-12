@@ -101,6 +101,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'''^(cherrypy\._cperror\.)?NotFound: \(404, "The path '/(login|portal)/.*''', None),
 	(r'(lockfile\.)?LockTimeout\: Timeout waiting to acquire lock for \/var\/run\/umc-server\.pid', None),
 	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
+	(r'OSError\: \[Errno 3\].*', ['univention-management-console-server.*_terminate_daemon_process']),
 
 	# updater test cases:
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
@@ -115,12 +116,13 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	# various test cases:
 	('^NonThreadedError$', None),
 	('^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
+	('^INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
 	('^OTHER: .*[cC]annot rename.*', ['sync_from_ucs']),
 	('univention.lib.umc.ConnectionError:.*machine.secret.*', None),
 	('univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*', None),
 	(r'^OSError: \[Errno 24\] Too many open files', None),
 	(r'error: \[Errno 24\] Too many open files.*', None),
-	('ImportError: cannot import name saxutils', ['_cperror\.py']),
+	('ImportError: cannot import name saxutils', [r'_cperror\.py']),
 	(r'gaierror: \[Errno -5\] No address associated with hostname', None),
 	('.*moduleCreationFailed: Target directory.*not below.*', None),
 	# Tracebacks caused by specific bugs:
@@ -128,15 +130,18 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
 	("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4']),  # Bug #50282
 	("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs']),  # Bug #49879
-	('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules']),  # Bug #50338
+	('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules', 'univention-management-console-server.*in run']),  # Bug #50338
+	('^ImportError: No module named s4', ['_update_modules']),  # Bug #50338
+	(r"^TypeError\:\ \_\_init\_\_\(\)\ got\ an\ unexpected\ keyword\ argument\ \'help\_text\'", ['_update_modules']),  # Bug #50338
 	('^ImportError: No module named directory', [r'app_attributes\.py']),  # Bug #50338
 	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py']),  # Bug #49866
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
 	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
-	("^(OS|IO)Error: \[Errno 2\] No such file or directory: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
+	(r"^(OS|IO)Error: \[Errno 2\] No such file or directory: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
 	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
 	('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups']),  # Bug #46932, Bug #48943
+	(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups']),  # Bug #48943
 	("^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*", [r'license_uuid\.py']),  # 45787
 	("^KeyError: 'gidNumber'", ['_ldap_pre_remove']),  # Bug #51669
 	(r'^IOError: \[Errno 32\] Broken pipe', ['process_output']),  # Bug #32532
