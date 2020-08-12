@@ -1,9 +1,7 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# Univention Portal
-#  rules file for the debian package
-#
-# Copyright 2016-2020 Univention GmbH
+# Copyright 2004-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -28,9 +26,27 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+import io
+from distutils.core import setup
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
 
-export DH_VERBOSE=1
-export PYBUILD_NAME=univention-portal
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+realname, email_address = parseaddr(dsc['Maintainer'])
 
-%:
-	dh $@ --with python2,univention-l10n,ucr,univention-join --buildsystem=pybuild
+setup(
+	description='Univention Portal',
+	url='https://www.univention.de/',
+	license='GNU Affero General Public License v3',
+
+	packages=['univention.portal'],
+	package_dir={'univention.portal': 'python/portal'},
+
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
+)
