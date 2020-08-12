@@ -44,16 +44,15 @@ import ldap
 
 from univention.udm import UDM
 from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
-from univention.config_registry import ConfigRegistry
-from univention.config_registry.handler import run_filter
 
 from univention.portal.log import get_logger
 
 def get_dynamic_classes(klass_name):
 	klasses = {
 		'Portal': Portal,
-		'FileCache': FileCache,
-		'FileReloaderUDM': FileReloaderUDM,
+		'PortalFileCache': PortalFileCache,
+		'GroupFileCache': GroupFileCache,
+		'PortalReloaderUDM': PortalReloaderUDM,
 		'Scorer': Scorer,
 		'DomainScorer': DomainScorer,
 	}
@@ -61,14 +60,18 @@ def get_dynamic_classes(klass_name):
 
 
 class Portal(object):
-	def __init__(self, scorer, cache):
+	def __init__(self, scorer, portal_cache, groups_cache):
 		self.scorer = scorer
-		self.cache = cache
+		self.portal_cache = portal_cache
+		self.groups_cache = groups_cache
+
+	def get_groups(self):
+		return self.groups_cache.get()
 
 	def get_visible_content(self, username, admin_mode):
-		entries = self.cache.get('entries')
-		folders = self.cache.get('folders')
-		categories = self.cache.get('categories')
+		entries = self.portal_cache.get('entries')
+		folders = self.portal_cache.get('folders')
+		categories = self.portal_cache.get('categories')
 		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, username, admin_mode)
 		visible_folder_dns = [
 			folder_dn for folder_dn in folders.keys()
@@ -97,23 +100,23 @@ class Portal(object):
 	def get_user_links(self, username, admin_mode):
 		if username is None:
 			return []
-		links = self.cache.get('user_links')
+		links = self.portal_cache.get('user_links')
 		links_dict = dict((link['dn'], link) for link in links)
 		entry_dns = [link['dn'] for link in links]
 		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
 	def get_menu_links(self, username, admin_mode):
-		links = self.cache.get('menu_links')
+		links = self.portal_cache.get('menu_links')
 		links_dict = dict((link['dn'], link) for link in links)
 		entry_dns = [link['dn'] for link in links]
 		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
 	def get_entries(self, content):
-		entries = self.cache.get('entries')
+		entries = self.portal_cache.get('entries')
 		return {entry_dn: entries[entry_dn] for entry_dn in content['entry_dns']}
 
 	def get_folders(self, content):
-		folders = self.cache.get('folders')
+		folders = self.portal_cache.get('folders')
 		folders = {folder_dn: folders[folder_dn] for folder_dn in content['folder_dns']}
 		for folder in folders.values():
 			folder['entries'] = [
@@ -123,7 +126,7 @@ class Portal(object):
 		return folders
 
 	def get_categories(self, content):
-		categories = self.cache.get('categories')
+		categories = self.portal_cache.get('categories')
 		categories = {category_dn: categories[category_dn] for category_dn in content['category_dns']}
 		for category in categories.values():
 			category['entries'] = [
@@ -133,7 +136,7 @@ class Portal(object):
 		return categories
 
 	def get_meta(self, content, categories):
-		portal = self.cache.get('portal')
+		portal = self.portal_cache.get('portal')
 		portal['categories'] = [category_dn for category_dn in portal['categories'] if category_dn in content['category_dns']]
 		portal['content'] = [
 			[category_dn, categories[category_dn]['entries']]
@@ -142,7 +145,7 @@ class Portal(object):
 		return portal
 
 	def _filter_entry_dns(self, entry_dns, entries, username, admin_mode):
-		groups = self.cache.get('groups')
+		groups = self.groups_cache.get()
 		filtered_dns = []
 		for entry_dn in entry_dns:
 			entry = entries.get(entry_dn)
@@ -194,10 +197,12 @@ class Portal(object):
 		return ret
 
 	def refresh_cache(self):
-		self.cache.refresh()
+		self.portal_cache.refresh()
+		self.groups_cache.refresh()
 
 	def refresh_ldap_connection(self):
-		self.cache.refresh_ldap_connection()
+		self.portal_cache.refresh_ldap_connection()
+		self.groups_cache.refresh_ldap_connection()
 
 	def score(self, request):
 		return self.scorer.score(request)
@@ -222,78 +227,75 @@ def make_portal(portal_definition):
 	return make_arg(portal_definition)
 
 
-class FileCache(object):
-	def __init__(self, portal, groups, reloader=None):
-		self._fallback_portal = '/usr/share/univention-portal/portal-unjoined.json'
-		self._portal = portal
-		self._groups = groups
+class PortalFileCache(object):
+	def __init__(self, cache_file, reloader=None):
+		self._cache_file = cache_file
 		self._reloader = reloader
 		self._cache = {}
-		self._group_cache = {}
-		self.load(fallback=True)
+		self.load()
 
-	def load(self, fallback=False):
-		self.refresh_portal()
-		self.refresh_groups()
-		get_logger('cache').info('loading cache file')
-		self._load_portal(fallback=fallback)
+	def load(self):
+		self.refresh()
+		get_logger('cache').info('loading portal cache file')
+		self._load_portal()
+
+	def _load_portal(self):
+		with open(self._cache_file) as fd:
+			self._cache = json.load(fd)
+
+	def get(self, name):
+		if self.refresh():
+			get_logger('cache').info('reloading portal cache file')
+			self._load_portal()
+		return deepcopy(self._cache[name])
+
+	def refresh(self, force=False):
+		if self._reloader:
+			return self._reloader.refresh(self._cache_file, force=force)
+
+	def refresh_ldap_connection(self):
+		if self._reloader:
+			self._reloader.refresh_ldap_connection()
+
+class GroupFileCache(object):
+	def __init__(self, cache_file, reloader=None):
+		self._cache_file = cache_file
+		self._reloader = reloader
+		self._cache = {}
+		self.load()
+
+	def load(self):
+		self.refresh()
+		get_logger('cache').info('loading group cache file')
 		self._load_groups()
-
-	def _load_portal(self, fallback):
-		try:
-			with open(self._portal) as fd:
-				self._cache = json.load(fd)
-		except EnvironmentError:
-			if not fallback:
-				raise
-			get_logger('cache').warn('Error loading portal. Falling back to {}'.format(self._fallback_portal))
-			with open(self._fallback_portal) as fd:
-				content = fd.read()
-				ucr = ConfigRegistry()
-				ucr.load()
-				content = run_filter(content, ucr)
-				self._cache = json.loads(content)
 
 	def _load_groups(self):
 		try:
-			with open(self._groups) as fd:
-				self._group_cache = json.load(fd)
+			with open(self._cache_file) as fd:
+				self._cache = json.load(fd)
 		except EnvironmentError:
 			get_logger('cache').warn('Error loading groups. Falling back to empty set')
-			self._group_cache = {}
+			self._cache = {}
 
-	def get(self, name):
-		if name == 'groups':
-			return self._get_groups() or {}
-		else:
-			return self._get_portal(name)
-
-	def _get_groups(self):
-		if self.refresh_groups():
+	def get(self):
+		if self.refresh():
 			get_logger('cache').info('reloading group cache file')
 			self._load_groups()
-		return self._group_cache
+		return self._cache
 
-	def _get_portal(self, name):
-		if self.refresh_portal():
-			get_logger('cache').info('reloading portal cache file')
-			self._load_portal(fallback=False)
-		return deepcopy(self._cache[name])
-
-	def refresh_portal(self, force=False):
+	def refresh(self, force=False):
 		if self._reloader:
-			return self._reloader.refresh_portal(self._portal, force=force)
+			return self._reloader.refresh(self._cache_file, force=force)
 
-	def refresh_groups(self, force=False):
+	def refresh_ldap_connection(self):
 		if self._reloader:
-			return self._reloader.refresh_groups(self._groups, force=force)
+			self._reloader.refresh_ldap_connection()
 
 
-class FileReloaderUDM(object):
-	def __init__(self, portal_dn, refresh_portal, refresh_groups):
+class PortalReloaderUDM(object):
+	def __init__(self, portal_dn, refresh_file):
 		self._portal_dn = portal_dn
-		self._refresh_portal = refresh_portal
-		self._refresh_groups = refresh_groups
+		self._refresh_file = refresh_file
 
 	@property
 	def udm(self):
@@ -304,16 +306,8 @@ class FileReloaderUDM(object):
 	def refresh_ldap_connection(self):
 		self._udm = None
 
-	def refresh_groups(self, group_cache_file, force=False):
-		if force or os.path.exists(self._refresh_groups):
-			try:
-				os.unlink(self._refresh_groups)
-			except EnvironmentError:
-				pass
-			return True
-
-	def refresh_portal(self, portal_cache_file, force=False):
-		if force or os.path.exists(self._refresh_portal):
+	def refresh(self, portal_cache_file, force=False):
+		if force or os.path.exists(self._refresh_file):
 			get_logger('cache').info('refreshing cache')
 			fd = None
 			try:
@@ -334,7 +328,7 @@ class FileReloaderUDM(object):
 						pass
 					shutil.move(fd.name, portal_cache_file)
 					try:
-						os.unlink(self._refresh_portal)
+						os.unlink(self._refresh_file)
 					except EnvironmentError:
 						pass
 					return True

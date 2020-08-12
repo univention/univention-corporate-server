@@ -48,7 +48,8 @@ if [ "$1" = "configure" ]; then
 	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
-univention-portal add ""
+[ ! -e /var/cache/univention-portal/portal.json ] && ucr filter < /usr/share/univention-portal/portal-unjoined.json > /var/cache/univention-portal/portal.json
+univention-portal add "" --dont-update
 systemctl restart univention-portal-server
 
 exit 0
