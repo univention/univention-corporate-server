@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-server-overview\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-05 17:37+0200\n"
+"POT-Creation-Date: 2020-08-18 15:25+0200\n"
 "PO-Revision-Date: 2017-03-22 16:49+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: www/main.js:1039
+#: www/main.js:833
 #, javascript-format
 msgid ""
 "<p>The category with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing the page or calling<br><pre>univention-directory-listener-ctrl resync portal\n"
@@ -20,7 +20,7 @@ msgid ""
 "univention-directory-listener-ctrl resync portal_category</pre></p>"
 msgstr ""
 
-#: www/main.js:1023
+#: www/main.js:817
 #, javascript-format
 msgid ""
 "<p>The entry with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing or calling<br><pre>univention-directory-listener-ctrl resync portal\n"
@@ -32,19 +32,19 @@ msgstr ""
 msgid "A portal entry with the given name already exists."
 msgstr "Es existiert bereits ein Portal-Eintrag mit dem angegebenen Namen."
 
-#: www/main.js:1072
+#: www/main.js:868
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: www/main.js:1071 www/main.js:1100
+#: www/main.js:867 www/main.js:896
 msgid "Add category"
 msgstr "Kategorie hinzufügen"
 
-#: www/main.js:1067
+#: www/main.js:863
 msgid "Add existing category"
 msgstr "Existierende Kategorie hinzufügen"
 
-#: www/main.js:1518
+#: www/main.js:1332
 msgid "Appearance"
 msgstr "Aussehen"
 
@@ -52,32 +52,32 @@ msgstr "Aussehen"
 msgid "Back"
 msgstr "Zurück"
 
-#: www/main.js:753 www/main.js:1543 www/PortalEntryWizard.js:170
-#: www/PortalEntryWizard.js:190 www/PortalEntryWizard.js:447
+#: www/PortalEntryWizard.js:170 www/PortalEntryWizard.js:190
+#: www/PortalEntryWizard.js:447 www/main.js:490 www/main.js:1357
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: www/main.js:1075
+#: www/main.js:871
 msgid "Category"
 msgstr "Kategorie"
 
-#: www/main.js:1502
+#: www/main.js:1316
 msgid "Change order of portal entries via drag and drop"
 msgstr "Ändere die Reihenfolge der Portal-Einträge per Drag and Drop"
 
-#: www/main.js:627 www/main.js:1326 www/main.js:1951
+#: www/main.js:364 www/main.js:1122 www/main.js:1794
 msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
-#: www/main.js:876 www/main.js:885 www/main.js:902
+#: www/main.js:613 www/main.js:635
 msgid "Content could not be loaded."
 msgstr "Inhalt konnte nicht geladen werden."
 
-#: www/main.js:1112
+#: www/main.js:908
 msgid "Create entry"
 msgstr "Eintrag erstellen"
 
-#: www/main.js:1061 www/main.js:1063
+#: www/main.js:857 www/main.js:859
 msgid "Create new category"
 msgstr "Neue Kategorie erstellen"
 
@@ -85,19 +85,27 @@ msgstr "Neue Kategorie erstellen"
 msgid "Do you really want to remove this entry from this category?"
 msgstr "Wollen Sie diesen Eintrag wirklich aus der Kategorie entfernen?"
 
-#: www/main.js:1112 www/main.js:1136
+#: www/Menu.js:58
+msgid "Edit Portal"
+msgstr "Portal bearbeiten"
+
+#: www/main.js:908 www/main.js:932
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
-#: www/main.js:1519
+#: www/Portal.js:254
+msgid "Edit mode"
+msgstr "Editiermodus"
+
+#: www/main.js:1333
 msgid "Edit the font color and background for this portal"
 msgstr "Die Schriftfarbe und den Hintergrund dieses Portal bearbeiten"
 
-#: www/main.js:1512
+#: www/main.js:1326
 msgid "Edit the visibility of this portal"
 msgstr "Die Sichtbarkeit dieses Portals bearbeiten"
 
-#: www/main.js:1485
+#: www/main.js:1299
 msgid "Edit this portal"
 msgstr "Dieses Portal bearbeiten"
 
@@ -109,11 +117,11 @@ msgstr "Fertigstellen"
 msgid "Load entry"
 msgstr "Eintrag laden"
 
-#: www/main.js:1707
+#: www/main.js:1521
 msgid "Local Apps"
 msgstr "Lokale Apps"
 
-#: www/LoginButton.js:44 www/main.js:1689
+#: www/LoginButton.js:44 www/main.js:1503
 msgid "Login"
 msgstr ""
 
@@ -129,27 +137,31 @@ msgstr "Weiter"
 msgid "No display name provided"
 msgstr "Kein Anzeigename definiert"
 
-#: www/main.js:1501
+#: www/NotificationsButton.js:241
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: www/main.js:1315
 msgid "Order"
 msgstr "Reihenfolge"
 
-#: www/main.js:1520
+#: www/main.js:1334
 msgid "Portal appearance"
 msgstr "Portal Aussehen"
 
-#: www/main.js:1249
+#: www/main.js:1045
 msgid "Portal entry was successfully created"
 msgstr "Portal-Eintrag wurde erfolgreich erstellt"
 
-#: www/main.js:1632
+#: www/main.js:1446
 msgid "Portal logo"
 msgstr "Portal Logo"
 
-#: www/main.js:1643
+#: www/main.js:1457
 msgid "Portal title"
 msgstr "Portal Titel"
 
-#: www/main.js:1513
+#: www/main.js:1327
 msgid "Portal visibility"
 msgstr "Portal Sichtbarkeit"
 
@@ -161,19 +173,19 @@ msgstr "Entfernen"
 msgid "Remove from this category"
 msgstr "Aus dieser Kategorie entfernen"
 
-#: www/main.js:768 www/main.js:1024 www/main.js:1040
+#: www/main.js:505 www/main.js:818 www/main.js:834
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
 
-#: www/main.js:759 www/PortalEntryWizard.js:195
+#: www/PortalEntryWizard.js:195 www/main.js:496
 msgid "Save"
 msgstr "Speichern"
 
-#: www/main.js:1550
+#: www/main.js:1364
 msgid "Save entry order"
 msgstr "Reihenfolge der Einträge Speichern"
 
-#: www/main.js:1956
+#: www/main.js:1799
 msgid "Saving entry order failed"
 msgstr "Speichern der Eintragsreihenfolge ist fehlgeschlagen"
 
@@ -181,57 +193,61 @@ msgstr "Speichern der Eintragsreihenfolge ist fehlgeschlagen"
 msgid "Search term"
 msgstr ""
 
-#: www/main.js:1525
+#: www/PortalPropertiesButton.js:72
+msgid "Settings"
+msgstr ""
+
+#: www/main.js:1339
 msgid "Stop editing this portal"
 msgstr "Aufhören dieses Portal zu bearbeiten"
 
-#: www/main.js:651
+#: www/main.js:388
 msgid "The changes could not be saved"
 msgstr "Die Änderungen konnten nicht gespeichert werden"
 
-#: www/main.js:640
+#: www/main.js:377
 msgid "The changes could not be saved: %(details)s"
 msgstr "Die Änderungen konnten nicht gespeichert werden: %(details)s"
 
-#: www/main.js:649
+#: www/main.js:386
 msgid "The creation failed"
 msgstr "Das Anlegen ist fehlgeschlagen"
 
-#: www/main.js:638
+#: www/main.js:375
 msgid "The creation failed: %(details)s"
 msgstr "Das Anlegen ist fehlgeschlagen: %(details)s"
 
-#: www/main.js:1017
+#: www/main.js:811
 msgid "The dn for this entry could not be found"
 msgstr "Die DN für diesen Eintrag konnte nicht gefunden werden"
 
-#: www/main.js:1334
+#: www/main.js:1130
 msgid "The editing of the portal entry object failed."
 msgstr "Das Bearbeiten des Portal-Eintrages ist fehlgeschlagen."
 
-#: www/main.js:1330
+#: www/main.js:1126
 msgid "The editing of the portal entry object failed: %(details)s"
 msgstr "Das Bearbeiten des Portal-Eintrages ist fehlgeschlagen: %(details)s"
 
-#: www/main.js:1257
+#: www/main.js:1053
 msgid "The portal entry object could not be saved."
 msgstr "Die Änderungen am Portal Objekt konnten nicht gespeichert werden."
 
-#: www/main.js:1253
+#: www/main.js:1049
 msgid "The portal entry object could not be saved: %(details)s"
 msgstr ""
 "Die Änderungen am Portal Objekt konnten nicht gespeichert werden: "
 "%(details)s"
 
-#: www/main.js:553 www/PortalEntryWizard.js:296
+#: www/PortalEntryWizard.js:296 www/main.js:290
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"
 
-#: www/main.js:1511
+#: www/main.js:1325
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: www/main.js:1695
+#: www/main.js:1509
 #, javascript-format
 msgid ""
 "Welcome to the portal of %s.<br><br>To be able to use all functions of this "
@@ -242,9 +258,6 @@ msgstr ""
 
 #~ msgid "Administration"
 #~ msgstr "Verwaltung"
-
-#~ msgid "Applications"
-#~ msgstr "Applikationen"
 
 #~ msgid "From existing"
 #~ msgstr "Von existierenden"

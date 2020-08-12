@@ -385,7 +385,8 @@ class FileReloaderUDM(object):
 		css_code = ''
 		if background:
 			css_code += '''
-	body.umc.portal #contentWrapper {
+	.portal__background {
+		display: block;
 		background: %s;
 	}
 	''' % (background, )

@@ -6,17 +6,17 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="/favicon.ico"/>
-		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="/univention/portal/style.css">
-		<link rel="stylesheet" href="/univention/portal/portal.css">
-		<link rel="stylesheet" href="/univention/portal/custom.css">
-		<!-- TODO: should go into univention-web -->
-		<link rel="stylesheet" href="/univention/management/modules/appcenter.css" type="text/css"/>
+		<!-- <link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/> -->
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="portal.css">
+		<link rel="stylesheet" href="custom.css">
 		<script>
 			umcConfig = {
 				deps: ['portal', 'portal/topics'],
 				callback: function(portal) {
-					portal.start();
+					console.log('dojo callback');
+					// TODO remove
+					// portal.start(); 
 				}
 			};
 		</script>
@@ -37,32 +37,10 @@
 		</script>
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc portal iframeNotOpen" id="portal">
-		<div id="sidebar">
-			<div id="sidebar__tabs"></div>
-			<div class="sidebar__divider"></div>
-			<div id="portalLiveSearchWrapper">
-				<div id="portalLiveSearch" class="portalLiveSearch--collapsed" data-dojo-type="portal/LiveSearch"></div>
-			</div>
-			<div id="sidebar__loginAndUserMenuButton" data-dojo-type="portal/LoginAndUserMenuButton"></div>
-			<div id="sidebar__miscMenuButton" data-dojo-type="portal/MiscMenuButton"></div>
-			<div class="univentionLogo"></div>
-		</div>
-		<div id="contentWrapper" class="fixedBackground">
-			<div id="umcHeader" class="umcHeader">
-				<div class="umcHeaderLeft" id="umcHeaderLeft">
-					<div id="portalLogoWrapper">
-						<img id="portalLogo" />
-						<div id="portalLogoEdit"></div>
-					</div>
-					<h1 id="portalTitle"></h1>
-				</div>
-			</div>
-			<div id="content" class="content"></div>
-		</div>
-		<div id="iframes" class="dijitDisplayNone"></div>
-		<div id="folders" class="dijitDisplayNone"></div>
-		<div data-dojo-type="umc/dialog/NotificationSnackbar"></div>
-		<footer id="portal-footer"></footer>
+	<body class="bgc-document">
+		<div data-dojo-type="portal/Portal"></div>
+		<script>
+			console.log('dom loaded (TODO do loading anim here)');
+		</script>
 	</body>
 </html>

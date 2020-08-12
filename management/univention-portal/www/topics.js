@@ -55,9 +55,5 @@ define([
 				break;
 		}
 	});
-
-	topic.subscribe('/portal/iframes/open', function(id, title, logoUrl, url) {
-		portal.openIframe(id, title, logoUrl, url);
-	});
 });
 
