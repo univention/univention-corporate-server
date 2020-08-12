@@ -381,6 +381,10 @@ class User(object):
 		except ValueError:  # no SAML, no client
 			return 0
 
+	@property
+	def is_external_user(self):
+		return self.is_saml_user() and self.saml.response.issuer() != ucr.get('umc/saml/idp-server')
+
 	def is_saml_user(self):
 		# self.saml indicates that it was originally a
 		# saml user. but it may have upgraded and got a
@@ -802,7 +806,7 @@ class CPgeneric(Ressource):
 
 		user = self.get_user()
 		client = UMCP_Dispatcher.sessions.get(sessionid)
-		if user and (user.password or user.saml) and (not client or not client.authenticated):
+		if user and not user.is_external_user and (user.password or user.saml) and (not client or not client.authenticated):
 			auth = Request('AUTH')
 			auth.body = {
 				'username': user.username,
