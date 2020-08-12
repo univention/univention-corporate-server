@@ -40,7 +40,7 @@ from __future__ import print_function
 import os
 import sys
 import subprocess
-from optparse import OptionParser
+from argparse import ArgumentParser
 from xml.sax.saxutils import escape
 
 import univention.debhelper as dh_ucs
@@ -48,6 +48,10 @@ import univention.l10n.umc as dh_umc
 
 
 class Module(object):
+
+	@property
+	def core(self):
+		return self.module.module_name == 'umc-core'
 
 	def __init__(self, module):
 		self.module = module
@@ -70,12 +74,12 @@ class Module(object):
 			print('I: no module definition file', file=sys.stderr)
 			return
 		target = os.path.join(self.destdir, 'usr/share/univention-management-console/modules')
-		dh_ucs.doIt('install', '-d', target)
-		dh_ucs.doIt('install', '-p', '-m', '644', self.module.xml_definition, target)
 		destination = os.path.join(target, os.path.basename(self.module.xml_definition))
-		if os.path.exists(destination):
-			# add paackage version to installed XML file
-			version = subprocess.check_output('dpkg-parsechangelog | sed -ne "s/^Version: //p"', shell=True).strip().decode('ASCII', 'replace')
+		if not self.core:
+			dh_ucs.doIt('install', '-d', target)
+			dh_ucs.doIt('install', '-p', '-m', '644', self.module.xml_definition, target)
+			# add package version to installed XML file
+			version = subprocess.check_output(['dpkg-parsechangelog', '-S', 'Version']).strip().decode('ASCII', 'replace')
 			with open(destination, 'r') as fd:
 				content = fd.read().replace('</module>', '\t<version>%s</version>\n\t</module>' % (escape(version),))
 			with open(destination, 'w') as fd:
@@ -200,12 +204,12 @@ umc_frontend_new_hash
 
 
 def main():
-	parser = OptionParser(usage='usage: %prog [--core]')
-	parser.add_option('-c', '--core', action='store_true', dest='core', help='do not require python, javascript, module-name and XML definition to be set')
+	parser = ArgumentParser()
+	parser.add_argument('-c', '--core', action='store_true', help='do not require python, javascript, module-name and XML definition to be set')
 
-	options, args = parser.parse_args()
+	args = parser.parse_args()
 	for package in dh_ucs.binary_packages():
-		for module in dh_umc.read_modules(package, options.core):
+		for module in dh_umc.read_modules(package, args.core):
 			Module(module).dh_module_install()
 
 
