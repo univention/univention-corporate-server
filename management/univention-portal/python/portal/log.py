@@ -1,9 +1,8 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.7
 #
 # Univention Portal
-#  rules file for the debian package
 #
-# Copyright 2016-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -28,19 +27,39 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
 
-export DH_VERBOSE=1
-export PYBUILD_NAME=univention-portal
+import sys
+import logging
 
-override_dh_auto_build:
-	univention-l10n-build de
-	dh_auto_build
+class ShortNameFormatter(logging.Formatter):
+	shorten = 'univention.portal'
 
-override_dh_auto_install:
-	univention-install-joinscript
-	univention-install-config-registry
-	univention-l10n-install de
-	dh_auto_install
+	def format(self, record):
+		record.short_name = record.name
+		if record.short_name.startswith('%s.' % self.shorten):
+			record.short_name = record.short_name[len(self.shorten) + 1:]
+		return super(ShortNameFormatter, self).format(record)
 
-%:
-	dh $@ --with python2 --buildsystem=pybuild
+
+def setup_logger(logfile=None):
+	if logfile is None:
+		logfile = '/var/log/univention/portal.log'
+	logger = logging.getLogger('univention.portal')
+	log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: ' \
+		'%(message)s'
+	log_format_time = '%y-%m-%d %H:%M:%S'
+	formatter = ShortNameFormatter(log_format, log_format_time)
+	handler = logging.FileHandler(logfile)
+	handler.setFormatter(formatter)
+	logger.addHandler(handler)
+	handler = logging.StreamHandler(sys.stdout)
+	logger.addHandler(handler)
+	logger.setLevel(logging.DEBUG)
+
+
+def get_logger(name):
+	logger = logging.getLogger('univention.portal')
+	logger = logger.getChild(name)
+	return logger

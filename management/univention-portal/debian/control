@@ -4,6 +4,9 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
+ dh-python,
+ python-all,
+ python-debian,
  node-stylus,
  univention-config-dev,
  univention-debhelper,
@@ -14,11 +17,11 @@ Package: univention-portal
 Architecture: all
 Depends:
  netcat-openbsd,
- python3-click,
+ python-univention-portal (= ${source:Version}),
+ python-click,
  python-requests,
  python-tornado,
  python-univention-appcenter,
- python-univention-directory-manager,
  univention-config,
  univention-directory-listener,
  univention-directory-manager-tools,
@@ -34,6 +37,21 @@ Description: Univention Portal - Central portal web page for a UCS domain
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python-univention-portal
+Architecture: all
+Depends:
+ python-univention-config-registry,
+ python-univention-directory-manager,
+ ${python:Depends},
+Provides:
+ ${python:Provides},
+Description: Library for Univention Portal
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 

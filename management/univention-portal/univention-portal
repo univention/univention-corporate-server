@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2.7
 #
 # Univention Portal
 #
@@ -32,6 +32,10 @@
 import os.path
 import json
 
+from univention.config_registry import ConfigRegistry
+
+from univention.portal import make_portal
+
 import click
 
 
@@ -51,7 +55,7 @@ def cli():
 	pass
 
 
-def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, portal_cache_refresh, groups_cache_refresh):
+def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, portal_cache_refresh, groups_cache_refresh, portal_dn):
 	cache_dir = '/var/cache/univention-portal/'
 	if name:
 		cache_dir += name + '/'
@@ -72,10 +76,16 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 			'class': 'Scorer',
 		}
 	if with_reloader:
+		ucr = ConfigRegistry()
+		ucr.load()
 		reloader = {
 			'type': 'class',
 			'class': 'FileReloaderUDM',
 			'kwargs': {
+				'portal_dn': {
+					'type': 'static',
+					'value': portal_dn or 'cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')),
+				},
 				'refresh_portal': {
 					'type': 'static',
 					'value': portal_cache_refresh or os.path.join(cache_dir, 'refresh_portal'),
@@ -121,9 +131,10 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 @click.option('--with-reloader/--without-reloader', default=True)
 @click.option('--refresh-portal-file')
 @click.option('--refresh-groups-file')
-def add(name, update, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file):
+@click.option('--portal-dn')
+def add(name, update, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file, portal_dn):
 	json_content = read_portals_json()
-	portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file)
+	portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file, portal_dn)
 	name = name or '__default__'
 	if name in json_content:
 		if update:
@@ -156,6 +167,25 @@ def list():
 		click.echo('{}:'.format(name))
 		portal = make_obj(portal_def)
 		click.echo('  {!r}'.format(portal))
+
+
+@cli.command()
+@click.argument('name', nargs=-1)
+def update(name):
+	json_content = read_portals_json()
+	if not name:
+		name = json_content.keys()
+	for _name in name:
+		try:
+			portal = json_content[_name]
+		except KeyError:
+			click.echo(click.style('{} does not exist'.format(name), fg='yellow'))
+		else:
+			portal = make_portal(portal)
+			if portal.cache.refresh_portal(force=True):
+				click.echo(click.style('Portal data updated', fg='green'))
+			if portal.cache.refresh_groups(force=True):
+				click.echo(click.style('Group data updated', fg='green'))
 
 
 class SomeObj(object):
