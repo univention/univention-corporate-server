@@ -12,3 +12,5 @@ desc: |-
  * Allow line specific overrides.
  * Check for old upgrade code.
 bug: [51612, 33737, 51637, 33736, 51611]
+erratum: 708
+announced: 2020-08-12
