@@ -20,6 +20,10 @@ def test_fetch_logfiles_on_dc_master(testfile, ucr):
 	with tempfile.NamedTemporaryFile() as fd:
 		fd.write(password)
 		fd.flush()
-		subprocess.check_call("""univention-ssh %s root@%s 'univention-install -y --force-yes ucs-test-end'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master'])), shell=True)
-		assert not subprocess.call("""univention-ssh %s root@%s '/usr/share/ucs-test/99_end/%s -f'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(testfile)))
+		try:
+			subprocess.check_output("""univention-ssh %s root@%s 'univention-install -y ucs-test-end'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master'])), shell=True)
+		except subprocess.CalledProcessError as exc:
+			raise Exception(exc.output)
+
+		assert not subprocess.call("""univention-ssh %s root@%s '/usr/share/ucs-test/99_end/%s -f'""" % (pipes.quote(fd.name), pipes.quote(ucr['ldap/master']), pipes.quote(testfile)), shell=True)
 		# TODO: detect skipped exit code
