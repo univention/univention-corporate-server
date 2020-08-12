@@ -1233,7 +1233,7 @@ class SAML(Ressource):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		self.set_session(self.create_sessionid(), saml.username, saml=saml, relay_state=self.relay_state.get(relay_state))
-		if response.issuer() == 'https://ucs-sso.data.port/simplesamlphp/saml2/idp/metadata.php':
+		if response.issuer() != ucr.get('umc/saml/idp-server'):  # external IDP
 			raise HTTPRedirect('/univention/auth/foobar')
 		raise HTTPRedirect('/univention/auth/sso')
 
