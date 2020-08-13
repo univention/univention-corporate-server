@@ -5,7 +5,7 @@
 import unittest
 from tempfile import NamedTemporaryFile
 from mockups import (
-    U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
+    U, M, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockConfigRegistry, MockUCSHttpServer, MockPopen,
 )
 
@@ -75,7 +75,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_PATCH(self):
         """Test next patch version."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH + 1): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual('%d.%d-%d' % (MAJOR, MINOR, PATCH + 1), ver)
@@ -83,8 +83,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_PATCH99(self):
         """Test next patch version after 99."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, 100): '',
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR, MINOR, 100)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, 99)))
         self.assertEqual('%d.%d-%d' % (MAJOR, MINOR + 1, 0), ver)
@@ -92,7 +91,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MINOR(self):
         """Test next minor version."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual('%d.%d-%d' % (MAJOR, MINOR + 1, 0), ver)
@@ -100,8 +99,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MINOR99(self):
         """Test next minor version after 99."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, 100, MAJOR, 100, 0): '',
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR + 1, 0, MAJOR + 1, 0, 0): '',
+            'releases.json': M.gen_releases([(MAJOR + 1, 0, 0), (MAJOR, 100, 0)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, 99, 0)))
         self.assertEqual('%d.%d-%d' % (MAJOR + 1, 0, 0), ver)
@@ -109,7 +107,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MAJOR(self):
         """Test next major version."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR + 1, 0, MAJOR + 1, 0, 0): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual('%d.%d-%d' % (MAJOR + 1, 0, 0), ver)
@@ -117,7 +115,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MAJOR99(self):
         """Test next major version after 99."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (100, 0, 100, 0, 0): '',
+            'releases.json': M.gen_releases([(99, 0, 0), (100, 0, 0)])
         })
         ver = self.u.get_next_version(version=U.UCS_Version((99, MINOR, PATCH)))
         self.assertEqual(None, ver)
@@ -129,9 +127,10 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a/version': 'current',
         })
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/all/Packages.gz' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR + 1, 0), (MAJOR + 1, 0, 0)])
+        })
+        self._uri({
             '%d.%d/maintained/component/%s/all/Packages.gz' % (MAJOR, MINOR + 1, 'a'): DATA,
-            '%d.%d/maintained/%d.%d-%d/all/Packages.gz' % (MAJOR + 1, 0, MAJOR + 1, 0, 0): DATA,
         })
         versions, components = self.u.get_all_available_release_updates()
         self.assertEqual(['%d.%d-%d' % (MAJOR, MINOR + 1, 0)], versions)
@@ -140,7 +139,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_release_update_available_NO(self):
         """Test no update available."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/all/Packages.gz' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR - 1, 0, 0)])
         })
         next = self.u.release_update_available()
         self.assertEqual(None, next)
@@ -149,7 +148,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test next patch-level update."""
         NEXT = '%d.%d-%d' % (MAJOR, MINOR, PATCH + 1)
         self._uri({
-            '%d.%d/maintained/%s/all/Packages.gz' % (MAJOR, MINOR, NEXT): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR, PATCH + 1)])
         })
         next = self.u.release_update_available()
         self.assertEqual(NEXT, next)
@@ -158,7 +157,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test next minor update."""
         NEXT = '%d.%d-%d' % (MAJOR, MINOR + 1, 0)
         self._uri({
-            '%d.%d/maintained/%s/all/Packages.gz' % (MAJOR, MINOR + 1, NEXT): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         next = self.u.release_update_available()
         self.assertEqual(NEXT, next)
@@ -167,20 +166,19 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test next major update."""
         NEXT = '%d.%d-%d' % (MAJOR + 1, 0, 0)
         self._uri({
-            '%d.%d/maintained/%s/all/Packages.gz' % (MAJOR + 1, 0, NEXT): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR + 1, 0, 0)])
         })
         next = self.u.release_update_available()
         self.assertEqual(NEXT, next)
 
     def test_release_update_available_CURRENT(self):
         """Test next update block because of missing current component."""
-        NEXT = '%d.%d-%d' % (MAJOR, MINOR + 1, 0)
         self._ucr({
             'repository/online/component/a': 'yes',
             'repository/online/component/a/version': 'current',
         })
         self._uri({
-            '%d.%d/maintained/%s/all/Packages.gz' % (MAJOR, MINOR + 1, NEXT): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH), (MAJOR, MINOR + 1, 0)])
         })
         self.assertRaises(U.RequiredComponentError, self.u.release_update_available, errorsto='exception')
 
@@ -191,8 +189,6 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/b': 'no',
         })
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0, 'all'): DATA,
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0, ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'a', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'a', ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR + 1, 'b', 'all'): DATA,
@@ -200,8 +196,7 @@ class TestUniventionUpdater(unittest.TestCase):
         })
         tmp = self.u.release_update_temporary_sources_list('%d.%d-%d' % (MAJOR, MINOR + 1, 0))
         self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0, 'all'),
-            'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0, ARCH),
+            'deb file:///mock/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0, ),
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
             'deb file:///mock/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
         )), set(tmp))
@@ -449,7 +444,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test iterating releases."""
         start = U.UCS_Version((3, 0, 0))
         end = U.UCS_Version((4, 4, 1))
-        ver = U.UCSRepoPool()
+        ver = U.UCSRepoPool5()
         it = self.u._iterate_release(ver, start, end)
         self.assertEqual(next(it).mmp, (3, 0, 0))
         self.assertEqual(it.send(True).mmp, (4, 0, 0))
@@ -461,18 +456,6 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(it.send(False).mmp, (4, 4, 1))
         with self.assertRaises(StopIteration):
             self.assertEqual(it.next(), (4, 4, 1))
-
-    def test_print_version_repositories_SKIP(self):
-        """Test printing current repositories."""
-        self._uri({
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, MINOR, MAJOR, MINOR, 0, 'all'): DATA,
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, MINOR, MAJOR, MINOR, 0, ARCH): DATA,
-        })
-        tmp = self.u.print_version_repositories()
-        self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR, MAJOR, MINOR, 0, 'all'),
-            'deb file:///mock/%d.%d/maintained/ %d.%d-%d/%s/' % (MAJOR, MINOR, MAJOR, MINOR, 0, ARCH),
-        )), set(tmp.splitlines()))
 
     def test__get_component_baseurl_default(self):
         """Test getting default component configuration."""
@@ -719,7 +702,7 @@ class TestUniventionUpdater(unittest.TestCase):
         def structs():
             """Mockups for called scripts."""
             server = MockUCSHttpServer('server')
-            struct_r = U.UCSRepoPool(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
+            struct_r = U.UCSRepoPool5(major=MAJOR, minor=MINOR, patchlevel=PATCH)
             preup_r = struct_r.path('preup.sh')
             postup_r = struct_r.path('postup.sh')
             struct_c = U.UCSRepoPool(major=MAJOR, minor=MINOR, part='%s/component' % (PART,), patch='c', arch=ARCH)
@@ -759,7 +742,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_sh_files(self):
         """Test preup.sh / postup.sh download."""
         server = MockUCSHttpServer('server')
-        struct = U.UCSRepoPool(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
+        struct = U.UCSRepoPool5(major=MAJOR, minor=MINOR, part=PART, patchlevel=PATCH, arch=ARCH)
         preup_path = struct.path('preup.sh')
         server.mock_add(preup_path, '#!preup_content')
         postup_path = struct.path('postup.sh')

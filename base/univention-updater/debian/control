@@ -9,6 +9,7 @@ Build-Depends:
  python-all,
  python-apt,
  python-debian,
+ python-six,
  python-univention-debug,
  python-univention-lib (>= 8.0.1-33),
  python3-all,

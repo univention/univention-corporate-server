@@ -9,10 +9,14 @@ import os.path
 import errno
 import httplib
 import univention
-univention.__path__.insert(0, os.path.abspath('modules/univention'))
+univention.__path__.insert(0, os.path.abspath('modules/univention'))  # type: ignore
 import univention.updater.tools as U  # noqa: E402
 import univention.updater.mirror as M  # noqa: E402
 import univention.config_registry as C  # noqa: E402
+try:
+    from typing import Dict, List, Sequence  # noqa F401
+except ImportError:
+    pass
 
 __all__ = [
     'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'ERRAT', 'PART', 'ARCH',
@@ -37,7 +41,7 @@ class MockConfigRegistry(C.ConfigRegistry):
         'version/patchlevel': '%d' % (PATCH,),
         'version/erratalevel': '%d' % (ERRAT,),
     }
-    _EXTRA = {}
+    _EXTRA = {}  # type: Dict[str, str]
 
     def __init__(self):
         MockConfigRegistry._ORIG.__init__(self, filename=os.path.devnull)
@@ -54,7 +58,7 @@ class MockUCSHttpServer(U.UCSLocalServer):
 
     """Mockup for UCSHttpServer."""
     PREFIX = 'mock'
-    mock_content = {}
+    mock_content = {}  # type: Dict[str, str]
 
     def __init__(self, baseurl, user_agent=None, timeout=None):
         U.UCSLocalServer.__init__(self, MockUCSHttpServer.PREFIX)
@@ -105,7 +109,7 @@ class MockPopen(object):
 
     """Mockup for Popen."""
     _ORIG = U.subprocess.Popen
-    mock_commands = []
+    mock_commands = []  # type: List[Sequence[str]]
     mock_stdout = ''
     mock_stderr = ''
 
@@ -183,6 +187,6 @@ def verbose(verbose_mode=True):
     U.ud.set_level(U.ud.NETWORK, level)
 
 
-sys.modules['univention.updater.tools'].ConfigRegistry = MockConfigRegistry
-sys.modules['univention.updater.tools'].UCSHttpServer = U.UCSHttpServer = MockUCSHttpServer
-sys.modules['subprocess'].Popen = MockPopen
+sys.modules['univention.updater.tools'].ConfigRegistry = MockConfigRegistry  # type: ignore
+sys.modules['univention.updater.tools'].UCSHttpServer = U.UCSHttpServer = MockUCSHttpServer  # type: ignore
+sys.modules['subprocess'].Popen = MockPopen  # type: ignore

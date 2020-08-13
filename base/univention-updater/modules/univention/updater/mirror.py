@@ -48,6 +48,10 @@ try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud
+try:
+    from typing import Iterator, Tuple  # noqa F401
+except ImportError:
+    pass
 
 
 def makedirs(dirname, mode=0o755):

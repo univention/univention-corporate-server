@@ -15,6 +15,7 @@ UM = M.UniventionMirror
 DATA = 'x' * U.MIN_GZIP
 
 
+@unittest.skip("Not yet implemented for the new pool structure")
 class TestUniventionMirror(unittest.TestCase):
 
     """Unit test for univention.updater.tools"""
@@ -102,10 +103,9 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
         })
         uris = {
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, 'all'): DATA,
-            '%d.%d/maintained/%d.%d-%d/%s/preup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): '#!r_pre',
-            '%d.%d/maintained/%d.%d-%d/%s/postup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): '#!r_post',
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, ARCH): DATA,
+            'dists/ucs%d%d%d/preup.sh' % (MAJOR, MINOR, 0, ): '#!r_pre',
+            'dists/ucs%d%d%d/postup.sh' % (MAJOR, MINOR, 0, ): '#!r_post',
+            'dists/ucs%d%d%d/main/binary-%s/Packages.gz' % (MAJOR, MINOR, 0, ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, 0, 'a', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/preup.sh' % (MAJOR, 0, 'a', 'all'): '#!a_pre',
             '%d.%d/maintained/component/%s/%s/postup.sh' % (MAJOR, 0, 'a', 'all'): '#!a_post',
@@ -114,8 +114,10 @@ class TestUniventionMirror(unittest.TestCase):
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): '#!b_pre',
             '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): '#!b_post',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, 0), ])
         }
         self._uri(uris)
+        del uris['releases.json']
         self.m.mirror_update_scripts()
         for key, value in uris.items():
             if not value != DATA:
@@ -130,6 +132,15 @@ class TestUniventionMirror(unittest.TestCase):
             finally:
                 fd_script.close()
             self.assertEqual(script, value)
+
+    def test_write_releases_json(self):
+        self._uri({'releases.json': M.gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])})
+        expected = '{"releases": [{"major": 3, "minors": [{"patchlevels": [{"patchlevel": 0}, {"patchlevel": 1}], "minor": 0}]}]}'
+        self.m.write_releases_json()
+        releases_json_path = os.path.join(self.base_dir, 'mock', self.m.repository_path.lstrip('/'), 'mirror', 'releases.json')
+        with open(releases_json_path, 'r') as releases_json:
+            self.assertEqual(expected, releases_json.read())
+
 
     def test_run(self):
         """Test full mirror run."""
