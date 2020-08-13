@@ -457,6 +457,44 @@ check_overwritten_umc_templates () {
 }
 check_overwritten_umc_templates
 
+
+check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
+	(python - >&3 2>&3 || exit $?) <<- EOF
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+import sys
+import univention.uldap
+import univention.config_registry
+from distutils.version import LooseVersion
+
+lo = univention.uldap.getMachineConnection()
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+
+REQUIRED_VERSION = '4.4-5'
+
+for dn, attr in lo.search('(&(univentionOperatingSystemVersion=*)(univentionOperatingSystem=Univention Corporate Server))', attr=['univentionOperatingSystemVersion']):
+	if lo.compare_dn(dn, ucr['ldap/hostdn']):
+		continue
+	if LooseVersion(attr['univentionOperatingSystemVersion'][0].decode('UTF-8', 'replace')) < LooseVersion(REQUIRED_VERSION):
+		print('XXX', file=sys.stderr)
+		sys.exit(1)
+
+for dn, attr in lo.search('(|(univentionUCSVersionEnd=*)(univentionUCSVersionStart=*))'):
+	ucsversionstart = attr.get('univentionUCSVersionStart', [b'']).decode('UTF-8', 'replace')
+	ucsversionend = attr.get('univentionUCSVersionEnd', [b'']).decode('UTF-8', 'replace')
+	if ucsversionstart and LooseVersion(ucsversionstart) >= LooseVersion('5.0-0'):
+		continue
+	if ucsversionend and LooseVersion(ucsversionend) < LooseVersion('5.0-0'):
+		continue
+	if (not ucsversionstart or LooseVersion(ucsversionstart) < LooseVersion('5.0-0')) and ucsversionend:
+		print('XXX', file=sys.stderr)
+		sys.exit(1)
+
+EOF
+}
+check_minimum_ucs_version_of_all_systems_in_domain
+
 # ensure that en_US is included in list of available locales (Bug #44150)
 case "$locale" in
 	*en_US*) ;;
