@@ -731,35 +731,6 @@ apt-cache search fax
 	  </programlisting>
 	</section>
 
-	<section id="computers:Installation_and_Remove_hooks">
-		<title>Hook scripts for administrators</title>
-		<para>
-		Custom scripts can be called after each app installation, -upgrade
-		or -removal. Such scripts can be used to automate repeating
-		administrative tasks.
-		</para>
-
-		<para>
-		To use this feature custom scripts can be placed in one of the
-		directories listed below (create it if needed):
-		</para>
-
-		<programlisting language="sh">
-/var/lib/univention-appcenter/apps/{appid}/local/hooks/post-install.d/
-/var/lib/univention-appcenter/apps/{appid}/local/hooks/post-upgrade.d/
-/var/lib/univention-appcenter/apps/{appid}/local/hooks/post-remove.d/
-		</programlisting>
-
-		<para>
-		Where {appid} is the name of the app for which the scripts should be executed.
-		</para>
-
-		<para>
-		The <code>/var/log/univention/appcenter.log</code> contains possible
-		scripting error messages and further hints.
-		</para>
-	</section>
-
 	<section id="computers::softwaremanagement::packagelists">
 	  <title>Policy-based installation/uninstallation of individual packages via package lists</title>
 	  <para>
