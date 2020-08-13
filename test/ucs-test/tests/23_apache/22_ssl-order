@@ -3,6 +3,7 @@
 ## bugs: [38632,46065]
 ## packages:
 ##  - openssl
+## tags: [SKIP]
 ## exposure: dangerous
 set -e -u
 
