@@ -321,7 +321,11 @@ class GenericObject(BaseObject):
 		self._orig_udm_object.options = self.options
 		self._orig_udm_object.policies = self.policies
 		self._orig_udm_object.position.setDn(self.position)
-		for k in self._orig_udm_object.keys():
+		keys = list(self._orig_udm_object.keys())
+		if 'ip' in keys and 'network' in keys:
+			keys.remove('ip')  # restore broken behavior of Python 2.7 to make test 59_udm/59_udm_api_computers pass; Bug #25163
+			keys = ['ip'] + keys
+		for k in keys:
 			# workaround Bug #47971: _orig_udm_object.items() changes object
 			v = self._orig_udm_object.get(k)
 			new_val = getattr(self.props, k, None)
@@ -365,10 +369,7 @@ class GenericObject(BaseObject):
 		"""
 		for key in self._orig_udm_object.keys():
 			if key in self._orig_udm_object.info:
-				if (
-					self._orig_udm_object.descriptions[key].multivalue and
-					not isinstance(self._orig_udm_object.info[key], list)
-				):
+				if self._orig_udm_object.descriptions[key].multivalue and not isinstance(self._orig_udm_object.info[key], list):
 					# why isn't this correct in the first place?
 					setattr(self.props, key, [self._orig_udm_object.info[key]])
 					continue
