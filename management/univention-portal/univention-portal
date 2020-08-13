@@ -36,6 +36,7 @@ import datetime
 from univention.config_registry import ConfigRegistry
 
 from univention.portal import make_portal
+from univention.portal.log import setup_logger, get_logger
 
 import click
 
@@ -56,7 +57,7 @@ def cli():
 	pass
 
 
-def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, portal_cache_refresh, groups_cache_refresh, portal_dn):
+def make_new_portal(name, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn):
 	cache_dir = '/var/cache/univention-portal/'
 	if name:
 		cache_dir += name + '/'
@@ -76,10 +77,10 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 			'type': 'class',
 			'class': 'Scorer',
 		}
-	if with_reloader:
+	if with_portal_reloader:
 		ucr = ConfigRegistry()
 		ucr.load()
-		reloader = {
+		portal_reloader = {
 			'type': 'class',
 			'class': 'PortalReloaderUDM',
 			'kwargs': {
@@ -87,9 +88,38 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 					'type': 'static',
 					'value': portal_dn or 'cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')),
 				},
-				'refresh_file': {
+				'cache_file': {
 					'type': 'static',
-					'value': portal_cache_refresh or os.path.join(cache_dir, 'refresh_portal'),
+					'value': portal_cache_file or os.path.join(cache_dir, 'portal.json'),
+				},
+			},
+		}
+	if with_groups_reloader:
+		ucr = ConfigRegistry()
+		ucr.load()
+		groups_reloader = {
+			'type': 'class',
+			'class': 'GroupsReloaderLDAP',
+			'kwargs': {
+				'ldap_uri': {
+					'type': 'static',
+					'value': 'ldap://{}:{}'.format(ucr.get('ldap/server/name'), ucr.get('ldap/server/port')),
+				},
+				'binddn': {
+					'type': 'static',
+					'value': ucr.get('ldap/hostdn'),
+				},
+				'password_file': {
+					'type': 'static',
+					'value': '/etc/machine.secret',
+				},
+				'ldap_base': {
+					'type': 'static',
+					'value': ucr.get('ldap/base'),
+				},
+				'cache_file': {
+					'type': 'static',
+					'value': groups_cache_file or os.path.join(cache_dir, 'groups.json'),
 				},
 			},
 		}
@@ -113,8 +143,10 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 			},
 		}
 	}
-	if with_reloader:
-		portal_cache['kwargs']['reloader'] = reloader
+	if with_portal_reloader:
+		portal_cache['kwargs']['reloader'] = portal_reloader
+	if with_groups_reloader:
+		groups_cache['kwargs']['reloader'] = groups_reloader
 	portal = {
 		'type': 'class',
 		'class': 'Portal',
@@ -132,24 +164,23 @@ def make_new_portal(name, portal_cache_file, groups_cache_file, with_reloader, p
 @click.option('--update/--dont-update', default=True)
 @click.option('--portal-cache-file')
 @click.option('--groups-cache-file')
-@click.option('--with-reloader/--without-reloader', default=True)
-@click.option('--refresh-portal-file')
-@click.option('--refresh-groups-file')
+@click.option('--with-portal-reloader/--without-portal-reloader', default=True)
+@click.option('--with-groups-reloader/--without-groups-reloader', default=True)
 @click.option('--portal-dn')
-def add(name, update, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file, portal_dn):
+def add(name, update, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn):
 	json_content = read_portals_json()
-	portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_reloader, refresh_portal_file, refresh_groups_file, portal_dn)
+	portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn)
 	name = name or '__default__'
 	if name in json_content:
 		if update:
-			click.echo(click.style('Overwriting existing {}'.format(name), fg='yellow'))
+			warn('Overwriting existing {}'.format(name))
 		else:
-			click.echo('{} already exists'.format(name))
+			info('{} already exists'.format(name))
 			return
 	json_content[name] = portal
 	with open(portals_json, 'w') as fd:
 		json.dump(json_content, fd, sort_keys=True, indent=4)
-	click.echo(click.style('{} updated'.format(portals_json), fg='green'))
+	success('{} updated'.format(portals_json))
 
 
 @cli.command()
@@ -159,9 +190,9 @@ def remove(name):
 	if json_content.pop(name, None):
 		with open(portals_json, 'w') as fd:
 			json.dump(json_content, fd, sort_keys=True, indent=4)
-		click.echo(click.style('{} removed'.format(name), fg='green'))
+		success('{} removed'.format(name))
 	else:
-		click.echo(click.style('{} does not exist'.format(name), fg='yellow'))
+		warn('{} does not exist'.format(name))
 
 
 @cli.command()
@@ -175,30 +206,34 @@ def list():
 
 @cli.command()
 @click.argument('name', nargs=-1)
-def update(name):
+@click.option('--portal/--no-portal', default=None)
+@click.option('--groups/--no-groups', default=None)
+def update(name, portal, groups):
 	json_content = read_portals_json()
 	if not name:
 		name = json_content.keys()
 	for _name in name:
-		click.echo('Updating {}'.format(_name))
+		info('Updating {}'.format(_name))
 		try:
-			portal = json_content[_name]
+			portal_def = json_content[_name]
 		except KeyError:
-			click.echo(click.style('{} does not exist'.format(name), fg='yellow'))
+			warn('{} does not exist'.format(name))
 		else:
-			portal = make_portal(portal)
-			start = datetime.datetime.now()
-			if portal.portal_cache.refresh(force=True):
-				delta = datetime.datetime.now() - start
-				click.echo(click.style('Portal data updated in {:.2f}s'.format(delta.total_seconds()), fg='green'))
-			else:
-				click.echo('Portal data untouched')
-			start = datetime.datetime.now()
-			if portal.groups_cache.refresh(force=True):
-				delta = datetime.datetime.now() - start
-				click.echo(click.style('Group data updated in {:.2f}s'.format(delta.total_seconds()), fg='green'))
-			else:
-				click.echo('Group data untouched')
+			portal_obj = make_portal(portal_def)
+			if portal or (portal is None and groups is None):
+				start = datetime.datetime.now()
+				if portal_obj.portal_cache.refresh(force=True):
+					delta = datetime.datetime.now() - start
+					success('Portal data updated in {:.2f}s'.format(delta.total_seconds()))
+				else:
+					info('Portal data untouched')
+			if groups or (portal is None and groups is None):
+				start = datetime.datetime.now()
+				if portal_obj.groups_cache.refresh(force=True):
+					delta = datetime.datetime.now() - start
+					success('Group data updated in {:.2f}s'.format(delta.total_seconds()))
+				else:
+					info('Group data untouched')
 
 
 class SomeObj(object):
@@ -233,6 +268,18 @@ def make_obj(obj_def):
 		return SomeObj(obj_def['class'], args, kwargs)
 	raise TypeError('Unknown obj_def: {!r}'.format(obj_def))
 
+def warn(msg):
+	get_logger('cli').warn(msg)
+	click.echo(click.style(msg, fg='yellow'))
+
+def info(msg):
+	get_logger('cli').info(msg)
+	click.echo(msg)
+
+def success(msg):
+	get_logger('cli').info(msg)
+	click.echo(click.style(msg, fg='green'))
 
 if __name__ == '__main__':
+	setup_logger(stream=False)
 	cli()
