@@ -17,6 +17,9 @@
 			<listitem><simpara>
 				The Python module directories of <package>python-support</package> are not supported anymore (<u:bug>51506</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				Systems can only join into the domain with at least UCS 4.4-6 (<u:bug>51625</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
