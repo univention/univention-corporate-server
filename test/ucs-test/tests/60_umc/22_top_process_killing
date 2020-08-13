@@ -44,7 +44,7 @@ class TestUMCProcessKilling(UMCBase):
         Kills process with SIGKILL signal via psutil if not yet terminated.
         That is a clean-up action.
         """
-        if self.proc.is_running():
+        if self.proc and self.proc.is_running():
             print("Created process with pid '%s' was not terminated, "
                   "forcing kill using psutil" % self.proc.pid)
             self.proc.kill()
