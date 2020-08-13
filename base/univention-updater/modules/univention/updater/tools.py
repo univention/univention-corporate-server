@@ -65,6 +65,8 @@ import httplib
 import socket
 from univention.config_registry import ConfigRegistry
 import urllib2
+from urlparse import urljoin
+import requests
 import subprocess
 import new
 import tempfile
@@ -231,6 +233,64 @@ class _UCSRepo(UCS_Version):
         :rtype: str
         """
         raise NotImplementedError()
+
+
+class UCSRepoPool5(_UCSRepo):
+    """
+    APT repository using the debian pool structure (ucs5 and above).
+    """
+
+    def __init__(self, **kw):
+        # type: (**Any) -> None
+        kw.setdefault('version', UCS_Version.FORMAT)
+        kw.setdefault('patch', UCS_Version.FULLFORMAT)
+        kw.setdefault('errata', False)
+        super(UCSRepoPool5, self).__init__(**kw)
+
+    def deb(self, server, type="deb"):
+        # type: (_UCSServer, str) -> str
+        """
+        Format for :file:`/etc/apt/sources.list`.
+
+        :param str server: The URL of the repository server.
+        :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
+        :returns: The APT repository stanza.
+        :rtype: str
+
+        >>> r=UCSRepoPool5(major=5,minor=1,patchlevel=0)
+        >>> r.deb('https://updates.software-univention.de/')
+        'deb https://updates.software-univention.de/ ucs510 main'
+        >>> r=UCSRepoPool5(major=5,minor=1,patchlevel=0,errata=True)
+        >>> r.deb('https://updates.software-univention.de/')
+        'deb https://updates.software-univention.de/ errata510 main'
+        """
+        if not self.errata:
+            fmt = 'ucs'
+        else:
+            fmt = 'errata'
+        fmt += '%(major)s%(minor)s%(patchlevel)s main'
+        return "%s %s %s" % (type, server, super(UCSRepoPool5, self)._format(fmt))
+
+    def path(self, filename=None):
+        # type: (str) -> str
+        """
+        Format pool for directory/file access.
+
+        :param filename: The name of a file in the repository.
+        :returns: relative path.
+        :rtype: str
+
+        >>> UCSRepoPool5(major=5,minor=1,patchlevel=0).path()
+        'dists/ucs500/InRelease'
+        >>> UCSRepoPool5(major=5,minor=1,patchlevel=0,errata=True).path()
+        'dists/errata500/InRelease'
+        """
+        if not self.errata:
+            fmt = 'dists/ucs'
+        else:
+            fmt = 'dists/errata'
+        fmt += '%(major)s%(minor)s%(patchlevel)s/' + (filename or 'InRelease')
+        return super(UCSRepoPool5, self)._format(fmt)
 
 
 class UCSRepoPool(_UCSRepo):
@@ -900,15 +960,6 @@ class UniventionUpdater(object):
             timeout=self.timeout,
         )
         try:
-            if not self.repourl.path:
-                try:
-                    assert self.server.access(None, '/univention-repository/')
-                    self.server += '/univention-repository/'
-                    self.log.info('Using detected prefix /univention-repository/')
-                except DownloadError as e:
-                    self.log.info('No prefix /univention-repository/ detected, using /')
-                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-                return  # already validated or implicit /
             # Validate server settings
             try:
                 assert self.server.access(None, '')
@@ -921,6 +972,32 @@ class UniventionUpdater(object):
             if self.check_access:
                 self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
+
+    @staticmethod
+    def get_releases(server):
+        # type: (_UCSServer) -> Iterator[UCS_Version]
+        try:
+            url = urljoin(str(server), '/releases.json')
+            response = requests.get(url, timeout=10)
+            if not response.ok:
+                response.raise_for_status()
+            releases = response.json()['releases']
+        except requests.exceptions.RequestException as exc:
+            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
+            raise StopIteration
+        except (KeyError, ValueError) as exc:
+            ud.debug(ud.NETWORK, ud.ERROR, 'Maintenance information malformed: %s' % (exc,))
+            if isinstance(server, UCSHttpServer) and server.proxy_handler.proxies:
+                ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
+            raise StopIteration
+        for major_release in releases:
+            for minor_release in major_release['minors']:
+                for patchlevel_release in minor_release['patchlevels']:
+                    yield UCS_Version((
+                        major_release['major'],
+                        minor_release['minor'],
+                        patchlevel_release['patchlevel']
+                    ))
 
     def get_next_version(self, version, components=[], errorsto='stderr'):
         # type: (UCS_Version, Iterable[str], str) -> Optional[str]
@@ -937,6 +1014,7 @@ class UniventionUpdater(object):
         :raises RequiredComponentError: if a required component is missing
         """
         debug = (errorsto == 'stderr')
+        releases = list(self.get_releases(self.server))
 
         def versions(major, minor, patchlevel):
             # type: (int, int, int) -> Iterator[Dict[str, int]]
@@ -957,30 +1035,28 @@ class UniventionUpdater(object):
                 yield {'major': major + 1, 'minor': 0, 'patchlevel': 0}
 
         for ver in versions(version.major, version.minor, version.patchlevel):
-            repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
-            self.log.info('Checking for version %s', repo)
-            try:
-                assert self.server.access(repo)
-                self.log.info('Found version %s', repo.path())
-                failed = set()
-                for component in components:
-                    self.log.info('Checking for component %s', component)
-                    mm_version = UCS_Version.FORMAT % ver
-                    if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
-                        self.log.error('Missing component %s', component)
-                        failed.add(component)
-                if failed:
-                    ex = RequiredComponentError(mm_version, failed)
-                    if errorsto == 'exception':
-                        raise ex
-                    elif errorsto == 'stderr':
-                        print(ex, file=sys.stderr)
-                    return None
-                else:
-                    self.log.info('Going for version %s', ver)
-                    return UCS_Version.FULLFORMAT % ver
-            except DownloadError as e:
-                ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+            self.log.info('Checking for version %s', ver)
+            if UCS_Version((ver['major'], ver['minor'], ver['patchlevel'])) not in releases:
+                continue
+            self.log.info('Found version %s', ver)
+
+            failed = set()
+            for component in components:
+                self.log.info('Checking for component %s', component)
+                mm_version = UCS_Version.FORMAT % ver
+                if not self.get_component_repositories(component, [mm_version], clean=False, debug=debug):
+                    self.log.error('Missing component %s', component)
+                    failed.add(component)
+            if failed:
+                ex = RequiredComponentError(mm_version, failed)
+                if errorsto == 'exception':
+                    raise ex
+                elif errorsto == 'stderr':
+                    print(ex, file=sys.stderr)
+                return None
+            else:
+                self.log.info('Going for version %s', ver)
+                return UCS_Version.FULLFORMAT % ver
         return None
 
     def get_all_available_release_updates(self, ucs_version=None):
@@ -1050,10 +1126,11 @@ class UniventionUpdater(object):
         mmp_version = UCS_Version(version)
         current_components = self.get_current_components()
 
-        result = [
-            ver.deb(server)
-            for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, self.architectures)
-        ]
+        result = [UCSRepoPool5(
+            major=mmp_version['major'],
+            minor=mmp_version['minor'],
+            patchlevel=mmp_version['patchlevel']
+        ).deb(self.server)]
         for component in components:
             repos = []  # type: List[str]
             try:
@@ -1441,14 +1518,14 @@ class UniventionUpdater(object):
         :returns: A iterator returning 2-tuples (server, ver).
         """
         self.log.info('Searching releases [%s..%s), dists=%s', start, end, dists)
-        server = self.server
-        if dists and 'maintained' in parts:
-            struct_dist = UCSRepoDist(prefix=self.server)
-            for ver in self._iterate_versions(struct_dist, start, end, ['maintained'], archs, server):
-                yield server, ver
-        struct_pool = UCSRepoPool(prefix=self.server)
-        for ver in self._iterate_versions(struct_pool, start, end, parts, ['all'] + archs, server):
-            yield server, ver
+        releases = sorted(r for r in self.get_releases(self.server) if r >= start and r <= end)
+        for release in releases:
+            yield self.server, UCSRepoPool5(
+                major=release['major'],
+                minor=release['minor'],
+                patchlevel=release['patchlevel'],
+                prefix=self.server
+            )
 
     def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False):
         # type: (List[str], UCS_Version, UCS_Version, List[str], bool) -> Iterator[Tuple[_UCSServer, _UCSRepo]]
@@ -1482,59 +1559,17 @@ class UniventionUpdater(object):
 
             self.log.info('Component %s from %s versions %r', component, server, versions)
             for version in versions:
-                    try:
-                        repos = [(UCSRepoPool, archs), (UCSRepoPoolNoArch, [])]  # type: List[Tuple[Type[_UCSRepo], List[str]]]
-                        for (UCSRepoPoolVariant, subarchs) in repos:
-                            struct = UCSRepoPoolVariant(prefix=server, patch=component)
-                            for ver in self._iterate_versions(struct, version, version, parts, ['all'] + subarchs, server):
-                                yield server, ver
-                    except (ConfigurationError, ProxyError):
-                        # if component is marked as required (UCR variable "version" contains "current")
-                        # then raise error, otherwise ignore it
-                        if component in self.get_current_components():
-                            raise
-
-    def print_version_repositories(self, clean=False, dists=False, start=None, end=None):
-        # type: (bool, bool, UCS_Version, UCS_Version) -> str
-        """
-        Return a string of Debian repository statements for all UCS versions
-        between start and end.
-
-        :param bool clean: Add additional `clean` statements for `apt-mirror`.
-        :param bool dists: Also return :py:class:`UCSRepoDist` repositories before :py:class:`UCSRepoPool`
-        :param UCS_Version start: Start UCS release. Defaults to (major, 0, 0).
-        :param UCS_Version end: End UCS release. Defaults to (major, minor, patchlevel).
-        :returns: A string with APT statement lines.
-        :rtype: str
-        """
-        if not self.online_repository:
-            return ''
-
-        if clean:
-            clean = self.configRegistry.is_true('online/repository/clean', False)
-
-        if not start:
-            start = UCS_Version((self.version_major, 0, 0))
-
-        if not end:
-            end = UCS_Version((self.version_major, self.version_minor, self.patchlevel))
-
-        result = []
-        for server, ver in self._iterate_version_repositories(start, end, self.parts, self.architectures, dists):
-            result.append(ver.deb(server))
-            if isinstance(ver, UCSRepoPool) and ver.arch == self.architectures[-1]:  # after architectures but before next patch(level)
-                if clean:
-                    result.append(ver.clean(server))
-                if self.sources:
-                    ver.arch = "source"
-                    try:
-                        code, size, content = server.access(ver, "Sources.gz")
-                        if size >= MIN_GZIP:
-                            result.append(ver.deb(server, "deb-src"))
-                    except DownloadError as e:
-                        ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
-
-        return '\n'.join(result)
+                try:
+                    repos = [(UCSRepoPool, archs), (UCSRepoPoolNoArch, [])]  # type: List[Tuple[Type[_UCSRepo], List[str]]]
+                    for (UCSRepoPoolVariant, subarchs) in repos:
+                        struct = UCSRepoPoolVariant(prefix=server, patch=component)
+                        for ver in self._iterate_versions(struct, version, version, parts, ['all'] + subarchs, server):
+                            yield server, ver
+                except (ConfigurationError, ProxyError):
+                    # if component is marked as required (UCR variable "version" contains "current")
+                    # then raise error, otherwise ignore it
+                    if component in self.get_current_components():
+                        raise
 
     def _get_component_baseurl(self, component, for_mirror_list=False):
         # type: (str, bool) -> UcsRepoUrl
@@ -1853,9 +1888,10 @@ class UniventionUpdater(object):
 
             u = UniventionUpdater()
             ver = u.current_version
-            struct = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
-            struct = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
-            scripts = u.get_sh_files(struct)
+            rel = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
+            com = u._iterate_component_repositories(['ucd'], ver, ver, u.architectures)
+            repos = itertools.chain(rel, com)
+            scripts = u.get_sh_files(repos)
             next_ver = u.get_next_version(u.current_version)
             for phase, order in u.call_sh_files(scripts, '/var/log/univention/updater.log', next_ver):
               if (phase, order) == ('update', 'main'):
@@ -1905,7 +1941,7 @@ class UniventionUpdater(object):
                 os.chmod(name, 0o744)
                 if size == len(script):
                     ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
-                    if struct.part.endswith('/component'):
+                    if hasattr(struct, 'part') and struct.part.endswith('/component'):
                         comp[phase].append((name, str(struct.patch)))
                     else:
                         main[phase].append((name, str(struct.patch)))
