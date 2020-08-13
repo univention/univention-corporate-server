@@ -150,9 +150,6 @@ class DockerActionMixin(object):
 		if not docker:
 			return
 
-		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
-		docker.verify()
-
 		if args.pull_image:
 			docker.pull()
 
