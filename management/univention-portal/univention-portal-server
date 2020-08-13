@@ -31,12 +31,10 @@
 
 import json
 import grp
-import signal
 
 import requests
 import tornado.ioloop
 import tornado.web
-import ldap
 
 from univention.config_registry import ConfigRegistry
 
@@ -86,13 +84,6 @@ class JsonHandler(tornado.web.RequestHandler):
 			get_logger('server').exception('Error during service')
 		return super(JsonHandler, self).write_error(status_code, **kwargs)
 
-	def log_exception(self, typ, value, tb):
-		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS)):
-			get_logger('server').info('Reconnecting ldap connection')
-			for portal in self.portals.values():
-				portal.refresh_ldap_connection()
-		return super(JsonHandler, self).log_exception(typ, value, tb)
-
 	def get(self):
 		session = self.get_cookie('UMCSessionId')
 		username = self._get_username(session)
@@ -131,14 +122,6 @@ class JsonHandler(tornado.web.RequestHandler):
 		return best_portal
 
 
-def signal_handler_reload(signo, frame):
-	pass
-	# FIXME
-	# io_loop = tornado.ioloop.IOLoop.instance()
-	# for portal in portals.values():
-	# 	io_loop.add_callback_from_signal(portal.refresh_cache)
-
-
 def get_portals():
 	ret = {}
 	with open('/usr/share/univention-portal/portals.json') as fd:
@@ -162,5 +145,4 @@ if __name__ == "__main__":
 	port = int(ucr.get('portal/port', 8095))
 	get_logger('server').info('firing up portal server at port %s' % port)
 	app.listen(port)
-	signal.signal(signal.SIGHUP, signal_handler_reload)
 	tornado.ioloop.IOLoop.current().start()

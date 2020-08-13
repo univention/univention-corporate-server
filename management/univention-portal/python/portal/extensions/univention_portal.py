@@ -41,13 +41,10 @@ class Portal(with_metaclass(Plugin)):
 		self.portal_cache = portal_cache
 		self.groups_cache = groups_cache
 
-	def get_groups(self):
-		return self.groups_cache.get()
-
 	def get_visible_content(self, username, admin_mode):
-		entries = self.portal_cache.get('entries')
-		folders = self.portal_cache.get('folders')
-		categories = self.portal_cache.get('categories')
+		entries = self.portal_cache.get_entries()
+		folders = self.portal_cache.get_folders()
+		categories = self.portal_cache.get_categories()
 		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, username, admin_mode)
 		visible_folder_dns = [
 			folder_dn for folder_dn in folders.keys()
@@ -76,23 +73,23 @@ class Portal(with_metaclass(Plugin)):
 	def get_user_links(self, username, admin_mode):
 		if username is None:
 			return []
-		links = self.portal_cache.get('user_links')
+		links = self.portal_cache.get_user_links()
 		links_dict = dict((link['dn'], link) for link in links)
 		entry_dns = [link['dn'] for link in links]
 		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
 	def get_menu_links(self, username, admin_mode):
-		links = self.portal_cache.get('menu_links')
+		links = self.portal_cache.get_menu_links()
 		links_dict = dict((link['dn'], link) for link in links)
 		entry_dns = [link['dn'] for link in links]
 		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
 
 	def get_entries(self, content):
-		entries = self.portal_cache.get('entries')
+		entries = self.portal_cache.get_entries()
 		return {entry_dn: entries[entry_dn] for entry_dn in content['entry_dns']}
 
 	def get_folders(self, content):
-		folders = self.portal_cache.get('folders')
+		folders = self.portal_cache.get_folders()
 		folders = {folder_dn: folders[folder_dn] for folder_dn in content['folder_dns']}
 		for folder in folders.values():
 			folder['entries'] = [
@@ -102,7 +99,7 @@ class Portal(with_metaclass(Plugin)):
 		return folders
 
 	def get_categories(self, content):
-		categories = self.portal_cache.get('categories')
+		categories = self.portal_cache.get_categories()
 		categories = {category_dn: categories[category_dn] for category_dn in content['category_dns']}
 		for category in categories.values():
 			category['entries'] = [
@@ -112,7 +109,7 @@ class Portal(with_metaclass(Plugin)):
 		return categories
 
 	def get_meta(self, content, categories):
-		portal = self.portal_cache.get('portal')
+		portal = self.portal_cache.get_portal()
 		portal['categories'] = [category_dn for category_dn in portal['categories'] if category_dn in content['category_dns']]
 		portal['content'] = [
 			[category_dn, categories[category_dn]['entries']]
@@ -131,31 +128,13 @@ class Portal(with_metaclass(Plugin)):
 				if not entry['activated']:
 					continue
 				if entry['allowedGroups']:
-					checked_groups = []
 					for group_dn in entry['allowedGroups']:
-						group = groups.get(group_dn)
-						if group is None:
-							continue
-						if self._recursive_search_in_groups(username, group, groups, checked_groups):
+						if group_dn in groups.get(username):
 							break
 					else:
 						continue
 			filtered_dns.append(entry_dn)
 		return filtered_dns
-
-	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
-		if username in group['usernames']:
-			return True
-		for group_dn in group['groups']:
-			if group_dn in checked_groups:
-				continue
-			group = groups.get(group_dn)
-			if group is None:
-				continue
-			checked_groups.append(group_dn)
-			if self._recursive_search_in_groups(username, group, groups, checked_groups):
-				return True
-		return False
 
 	def _get_all_entries_of_folder(self, folder_dn, folders, entries):
 		def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns):
@@ -175,10 +154,6 @@ class Portal(with_metaclass(Plugin)):
 	def refresh_cache(self):
 		self.portal_cache.refresh()
 		self.groups_cache.refresh()
-
-	def refresh_ldap_connection(self):
-		self.portal_cache.refresh_ldap_connection()
-		self.groups_cache.refresh_ldap_connection()
 
 	def score(self, request):
 		return self.scorer.score(request)

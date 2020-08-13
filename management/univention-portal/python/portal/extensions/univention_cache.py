@@ -61,19 +61,27 @@ class Cache(with_metaclass(Plugin)):
 
 	def refresh(self, force=False):
 		if self._reloader:
-			return self._reloader.refresh(self._cache_file, force=force)
-
-	def refresh_ldap_connection(self):
-		if self._reloader:
-			self._reloader.refresh_ldap_connection()
+			return self._reloader.refresh(force=force)
 
 
 class PortalFileCache(Cache):
-	def get(self, name):
-		if self.refresh():
-			get_logger('cache').info('reloading cache file {}'.format(self._cache_file))
-			self._load()
-		return deepcopy(self._cache[name])
+	def get_user_links(self):
+		return deepcopy(self.get()['user_links'])
+
+	def get_entries(self):
+		return deepcopy(self.get()['entries'])
+
+	def get_folders(self):
+		return deepcopy(self.get()['folders'])
+
+	def get_portal(self):
+		return deepcopy(self.get()['portal'])
+
+	def get_categories(self):
+		return deepcopy(self.get()['categories'])
+
+	def get_menu_links(self):
+		return deepcopy(self.get()['menu_links'])
 
 
 class GroupFileCache(Cache):

@@ -39,6 +39,7 @@ from StringIO import StringIO
 from urllib import quote
 
 import ldap
+from ldap.dn import explode_dn
 
 from univention.udm import UDM
 from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
@@ -50,57 +51,60 @@ from six import with_metaclass
 
 
 class Reloader(with_metaclass(Plugin)):
-	def refresh(self, cache_file, force=False):
-		pass
-
-	def refresh_ldap_connection(self):
+	def refresh(self, force=False):
 		pass
 
 
-class PortalReloaderUDM(Reloader):
-	def __init__(self, portal_dn, refresh_file):
-		self._portal_dn = portal_dn
-		self._refresh_file = refresh_file
+class MtimeBasedLazyFileReloader(Reloader):
+	def __init__(self, cache_file):
+		self._cache_file = cache_file
+		self._mtime = self._get_mtime()
 
-	@property
-	def udm(self):
-		if not hasattr(self, '_udm'):
-			self._udm = UDM.machine().version(2)
-		return self._udm
+	def _get_mtime(self):
+		try:
+			return os.stat(self._cache_file).st_mtime
+		except (EnvironmentError, AttributeError) as exc:
+			get_logger('cache').warn('Unable to get mtime for {}'.format(exc))
+			return 0
 
-	def refresh_ldap_connection(self):
-		self._udm = None
+	def _file_was_updated(self):
+		mtime = self._get_mtime()
+		if mtime > self._mtime:
+			self._mtime = mtime
+			return True
 
-	def refresh(self, portal_cache_file, force=False):
-		if force or os.path.exists(self._refresh_file):
+	def refresh(self, force=False):
+		if force:
 			get_logger('cache').info('refreshing cache')
 			fd = None
 			try:
-				try:
-					fd = self._refresh()
-				except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS):
-					get_logger('server').info('Reconnecting ldap connection')
-					self._udm = None
-					fd = self._refresh()
-			except Exception:
-				get_logger('cache').exception('Error during refresh')
+				fd = self._refresh()
+			except Exception as exc:
+				get_logger('cache').exception('Error during refresh: {}'.format(exc))
 				# hopefully, we can still work with an older cache?
 			else:
 				if fd:
 					try:
-						os.makedirs(os.path.dirname(portal_cache_file))
+						os.makedirs(os.path.dirname(self._cache_file))
 					except EnvironmentError:
 						pass
-					shutil.move(fd.name, portal_cache_file)
-					try:
-						os.unlink(self._refresh_file)
-					except EnvironmentError:
-						pass
+					shutil.move(fd.name, self._cache_file)
+					self._mtime = self._get_mtime()
 					return True
+		return self._file_was_updated()
 
 	def _refresh(self):
+		raise NotImplementedError()
+
+class PortalReloaderUDM(MtimeBasedLazyFileReloader):
+	def __init__(self, portal_dn, cache_file):
+		super(PortalReloaderUDM, self).__init__(cache_file)
+		self._portal_dn = portal_dn
+
+	def _refresh(self):
+		udm = UDM.machine().version(2)
 		try:
-			portal = self.udm.get('portals/portal').get(self._portal_dn)
+			portal = udm.get('portals/portal').get(self._portal_dn)
 		except UDM.NoObject:
 			raise ValueError('No Portal defined')  # default portal?
 		content = {}
@@ -310,3 +314,53 @@ class PortalReloaderUDM(Reloader):
 			return self._write_image(entry.props.name, img.raw, 'entries')
 
 
+class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
+	def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
+		super(GroupsReloaderLDAP, self).__init__(cache_file)
+		self._ldap_uri = ldap_uri
+		self._bindn = binddn
+		self._password_file = password_file
+		self._ldap_base = ldap_base
+
+	def _refresh(self):
+		with open(self._password_file) as fd:
+			password = fd.read().rstrip('\n')
+		con = ldap.initialize(self._ldap_uri)
+		con.simple_bind_s(self._bindn, password)
+		ldap_content = {}
+		users = {}
+		groups = con.search_s(self._ldap_base, ldap.SCOPE_SUBTREE, u"(objectClass=posixGroup)")
+		for dn, attrs in groups:
+			usernames = []
+			groups = []
+			member_uids = [member.lower() for member in attrs.get('memberUid', [])]
+			unique_members = [member.lower() for member in attrs.get('uniqueMember', [])]
+			for member in member_uids:
+				if not member.endswith('$'):
+					usernames.append(member.lower())
+			for member in unique_members:
+				if member.startswith('cn='):
+					member_uid = explode_dn(member, True)[0].lower()
+					if '{}$'.format(member_uid) not in member_uids:
+						groups.append(member)
+			ldap_content[dn.lower()] = {'usernames': usernames, 'groups': groups}
+		groups_with_nested_groups = {}
+		for group_dn in ldap_content:
+			self._nested_groups(group_dn, ldap_content, groups_with_nested_groups)
+		for group_dn, attrs in ldap_content.items():
+			for user in attrs['usernames']:
+				groups = users.setdefault(user, set())
+				groups.update(groups_with_nested_groups[group_dn])
+		users = dict((user, list(groups)) for user, groups in users.items())
+		with tempfile.NamedTemporaryFile(delete=False) as fd:
+			json.dump(users, fd, sort_keys=True, indent=4)
+		return fd
+
+	def _nested_groups(self, dn, ldap_content, nested_groups_cache):
+		if dn in nested_groups_cache:
+			return nested_groups_cache[dn]
+		ret = set([dn])
+		for group_dn in ldap_content.get(dn, {}).get('groups', []):
+			ret.update(self._nested_groups(group_dn, ldap_content, nested_groups_cache))
+		nested_groups_cache[dn] = ret
+		return ret

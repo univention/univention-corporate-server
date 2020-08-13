@@ -31,9 +31,6 @@
 from __future__ import absolute_import
 
 import subprocess
-import json
-
-from ldap.dn import explode_dn
 
 from univention.listener import ListenerModuleHandler, ListenerModuleConfiguration
 
@@ -43,53 +40,9 @@ GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 
 
 class PortalGroups(ListenerModuleHandler):
-
-	def initialize(self):
-		self._save({})
-
-	def create(self, dn, new):
-		groups = self._load()
-		groups[dn] = {
-			'usernames': [username.lower() for username in new.get('memberUid', []) if not username.endswith('$')],
-			'groups': [member.lower() for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
-		}
-		self._save(groups)
-		self._refresh_cache()
-
-	def modify(self, dn, old, new, old_dn):
-		groups = self._load()
-		groups.pop(old_dn, None)
-		groups[dn] = {
-			'usernames': [username.lower() for username in new.get('memberUid', []) if not username.endswith('$')],
-			'groups': [member.lower() for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
-		}
-		self._save(groups)
-		self._refresh_cache()
-
-	def remove(self, dn, old):
-		groups = self._load()
-		groups.pop(dn, None)
-		self._save(groups)
-		self._refresh_cache()
-
 	def post_run(self):
 		with self.as_root():
-			subprocess.call(['service', 'univention-portal-server', 'reload'])
-
-	def _load(self):
-		with self.as_root():
-			with open(GROUP_CACHE) as fd:
-				return json.load(fd)
-
-	def _save(self, groups):
-		with self.as_root():
-			with open(GROUP_CACHE, 'wb') as fd:
-				json.dump(groups, fd)
-
-	def _refresh_cache(self):
-		with self.as_root():
-			with open('/var/cache/univention-portal/refresh_groups', 'w'):
-				pass
+			subprocess.call(['/usr/sbin/univention-portal', 'update', '--groups'])
 
 	class Configuration(ListenerModuleConfiguration):
 		name = name
