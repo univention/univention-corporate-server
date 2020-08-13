@@ -3,6 +3,7 @@
 ## tags:
 ##  - basic
 ##  - apptest
+##  - SKIP
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137
