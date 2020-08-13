@@ -88,16 +88,6 @@ class AppSanitizer(Sanitizer):
 		return app
 
 
-# TODO: remove this, unused!
-class AnySanitizer(Sanitizer):
-
-	def _sanitize(self, value, name, further_args):
-		any_given = any([value] + further_args.values())
-		if not any_given:
-			self.raise_formatted_validation_error(_('Any of %r must be given') % ([name] + further_args.keys()), name, value)
-		return any_given
-
-
 class NoDoubleNameSanitizer(StringSanitizer):
 
 	def _sanitize(self, value, name, further_arguments):

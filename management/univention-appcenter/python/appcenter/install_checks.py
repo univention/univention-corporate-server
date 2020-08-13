@@ -357,11 +357,11 @@ class MustHaveSupportedArchitecture(SingleRequirement, HardRequirement):
 	test_upgrade = test_install
 
 
-class MustHaveValidLicense(SingleRequirement, HardRequirement):
-	'''For the installation of this application, a UCS license key
+class MustHaveValidLicense(MultiRequirement, HardRequirement):
+	'''For the installation, a UCS license key
 		with a key identification (Key ID) is required'''
-	def test_install(self, app):
-		if app.notify_vendor:
+	def test_install(self, apps):
+		if any(app.notify_vendor for app in apps):
 			license = ucr_get('uuid/license')
 			if license is None:
 				ucr_load()

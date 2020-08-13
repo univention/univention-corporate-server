@@ -39,6 +39,8 @@
 		<command name="appcenter/invoke" function="invoke" />
 		<command name="appcenter/track" function="track" />
 		<command name="appcenter/suggestions" function="suggestions" />
+		<command name="appcenter/resolve" function="resolve" />
+		<command name="appcenter/run" function="run" />
 		<command name="appcenter/docker/enable" function="enable_docker" />
 		<command name="appcenter/docker/invoke" function="invoke_docker" />
 		<command name="appcenter/docker/remote/invoke" function="invoke_remote_docker" />

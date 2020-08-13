@@ -63,7 +63,8 @@ from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
 from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
 from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.udm import _update_modules
-from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
+from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn, resolve_dependencies
+from univention.appcenter.install_checks import check
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 from univention.appcenter.settings import FileSetting, PasswordFileSetting
@@ -232,6 +233,25 @@ class Instance(umcm.Base, ProgressMixin):
 		if not info.is_compatible(response.result.get('version')):
 			raise umcm.UMC_Error(err_msg)
 		return client
+
+	@sanitize(
+		apps=ListSanitizer(AppSanitizer(), required=True),
+		action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True)
+	)
+	@simple_response
+	def resolve(self, apps, action):
+		ret = {}
+		ret['apps'] = resolve_dependencies(apps, action)
+		ret['autoinstalled'] = [app.id for app in ret['apps'] if app.id not in [a.id for a in apps]]
+		apps = ret['apps']
+		ret['errors'], ret['warnings'] = check(apps, action)
+		domain = get_action('domain')
+		ret['apps'] = domain.to_dict(apps)
+		return ret
+
+	@simple_response
+	def run(self):
+		pass
 
 	@simple_response
 	def query(self, quick=False):
