@@ -1070,7 +1070,6 @@ univention-nagios-common
 univention-network-common
 univention-newsid
 univention-nfs-server
-univention-olb-ad-connector
 univention-pam
 univention-pkgdb-tools
 univention-policy-tools
