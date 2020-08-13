@@ -127,7 +127,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('.*moduleCreationFailed: Target directory.*not below.*', None),
 	# Tracebacks caused by specific bugs:
 	(r'^OperationalError: \(psycopg2.OperationalError\) FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py']),  # Bug #51671
-	(r"OSError: \[Errno 2\] No such file or directory: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
+	(r"OSError: \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
 	("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4']),  # Bug #50282
 	("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs']),  # Bug #49879
 	('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules', 'univention-management-console-server.*in run']),  # Bug #50338
@@ -137,7 +137,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py']),  # Bug #49866
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
 	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
-	(r"^(OS|IO)Error: \[Errno 2\] No such file or directory: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
+	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
 	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
 	('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups']),  # Bug #46932, Bug #48943
@@ -149,6 +149,8 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 	(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket", None),
 	(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None),  # Bug #51808
+	(r"noLock\: The attribute 'sid' could not get locked\.", ['getMachineSid'])  # Bug #44294
+	(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py']),  # Bug #51815
 ])
 
 
