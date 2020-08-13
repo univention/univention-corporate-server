@@ -74,11 +74,6 @@ def inspect(name):
 	return loads(out)[0]
 
 
-def verify(app, image):
-	# deprecated and not used anymore. Bug #48670
-	return
-
-
 def login(hub, with_license):
 	if with_license:
 		username = password = ucr_get('uuid/license')
@@ -267,10 +262,6 @@ class Docker(object):
 		# only needed for MultiDocker
 		pass
 
-	def verify(self):
-		# deprecated and not used anymore. Bug #48670
-		return
-
 	@contextmanager
 	def tmp_file(self):
 		path = self.path()
@@ -449,10 +440,6 @@ class Docker(object):
 
 
 class MultiDocker(Docker):
-	def verify(self):
-		# deprecated and not used anymore. Bug #48670
-		return
-
 	def pull(self):
 		self.setup_docker_files()
 		self.logger.info('Downloading app images')
