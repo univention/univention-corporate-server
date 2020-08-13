@@ -620,7 +620,6 @@ ntdb (1.0-9)
 ntp
 numactl
 nvi
-olb-ldap-acls
 openbsd-inetd
 opencdk8
 openexr (2.2.0-11)
@@ -953,11 +952,6 @@ univention-net-installer
 univention-network-manager
 univention-newsid
 univention-nfs
-univention-olb
-univention-olb-custom-attributes
-univention-olb-errata-repositories
-univention-olb-ldap
-univention-olb-luks-password-rotation
 univention-opendvdi-schema
 univention-pam
 univention-passwd-cache

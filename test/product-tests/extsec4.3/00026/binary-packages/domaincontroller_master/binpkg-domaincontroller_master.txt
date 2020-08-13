@@ -1090,7 +1090,6 @@ ntpdate
 nvi
 odbcinst
 odbcinst1debian2:i386
-olb-ldap-acls
 openbsd-inetd
 openft
 openft-cr
@@ -1569,12 +1568,6 @@ univention-net-installer-daemon
 univention-network-common
 univention-newsid
 univention-nfs-server
-univention-olb
-univention-olb-custom-attributes
-univention-olb-errata-repositories
-univention-olb-ldap
-univention-olb-luks-password-rotation-schema
-univention-olb-luks-password-rotation-server
 univention-opendvdi-schema
 univention-pam
 univention-pkgdb
