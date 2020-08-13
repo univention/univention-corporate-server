@@ -5,6 +5,7 @@
 ## exposure: dangerous
 ## packages: [univention-squid]
 ## bugs: [34154]
+## tags: [SKIP]
 
 from __future__ import print_function
 import subprocess
