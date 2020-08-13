@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -54,6 +54,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		echo -n "$backup_join_pwd" >/etc/backup-join.secret
 	fi
 
+	ucs_registerLDAPExtension "$@" --data /usr/share/univention-join/ensure-minmum-ucs-version --data_type="join/pre-join" || die
 
 	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Backup Join"     --set description="Group for joining domain controller backup servers" || die
 	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Slave Join"      --set description="Group for joining domain controller slave servers" || die
