@@ -48,8 +48,8 @@ BUG31733 () { # expected-value cmd...
 	# create first repository
 	echo "### Initiate the repository (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 	mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
-	mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
-	mkpkg "${DIR}"
+	mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
+	mkpkg "${DIR}" "${DIR_POOL}"
 
 	# reset to X.X-0 without errata patches
 	config_repo version/patchlevel=0 version/erratalevel=0
@@ -67,8 +67,8 @@ BUG31733 () { # expected-value cmd...
 		let ++pkversion
 		echo "### Create a new patchlevel release (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
-		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
+		mkpkg "${DIR}" "${DIR_POOL}"
 		apt-get -qq update
 
 		# an update should be available
@@ -82,8 +82,8 @@ BUG31733 () { # expected-value cmd...
 		# create new package version in the same release
 		let ++pkversion
 		echo "### Create a new package version (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
-		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
+		mkpkg "${DIR}" "${DIR_POOL}"
 		apt-get -qq update
 
 		# an update should be available

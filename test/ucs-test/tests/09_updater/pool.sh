@@ -144,7 +144,7 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	${listen}
 	<VirtualHost ${hostname}${port:+:${port}}>
 	DocumentRoot ${BASEDIR}
-	CustomLog ${BASEDIR}/apache2.log combined
+	CustomLog ${BASEDIR}/apache2.log "%>s (%b bytes) %r %u %l"
 	${alias}
 	<Directory ${REPODIR}>
 			   AllowOverride All
@@ -255,34 +255,43 @@ have () { command -v "$1" >/dev/null 2>&1; }
 
 declare -a DIRS
 mkpdir () { # Create pool directory ${dir}
-	declare -a versions parts archs
+	declare -a versions archs release_types
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
-			[1-9]*.[0-9]*-[0-9]*) versions+=("${1}") ;;
-			[1-9]*.[0-9]*--errata[0-9]*) versions+=("${1}") ;;
+			[1-9]*.[0-9]*-[0-9]*) release_types+=("ucs"); versions+=("${1}") ;;
+			[1-9]*.[0-9]*--errata[0-9]*) release_types+=("errata"); versions+=("${1}") ;;
 			[1-9]*.[0-9]*--component/*) versions+=("${1}") ;;
-			maintained|unmaintained) parts+=("${1}") ;;
+			maintained|unmaintained) echo "Deprecated ${1}" >&2 ;;
 			all|i386|amd64) archs+=("${1}") ;;
 			extern|*--sec*) echo "Deprecated ${1}" >&2 ; return 2 ;;
 			*) echo "Unknown ${1}" >&2 ; return 2 ;;
 		esac
 		shift
 	done
-	local version part arch
+	local version arch release_type version_stripped
 	for version in "${versions[@]}"
 	do
-		for part in "${parts[@]}"
-		do
+		version_stripped=$(echo "${version#*--}" | sed 's/[^0-9]//g')
+		for release_type in errata ucs; do
+		#for release_type in "${release_types[@]}"; do
 			for arch in "${archs[@]}"
 			do
-				DIR="${REPODIR}/${version%%-*}/${part}/${version#*--}/${arch}"
+				DIR="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
 				DIRS+=("${DIR}")
 				mkdir -p "${DIR}"
 				touch "${DIR}/Packages"
 			done
 		done
 	done
+
+	DIR_POOL="${REPODIR}/pool/main/"
+	mkdir -p "${DIR_POOL}"
+	local x
+	for x in {a..z}; do
+		mkdir -p "${DIR_POOL}/${x}"
+	done
+
 	return 0
 }
 
@@ -290,7 +299,7 @@ mkdeb () { # Create dummy package [name [version [arch [dir [postinst]]]]]
 	local name="${1:-test}"
 	local version="${2:-1}"
 	local arch="${3:-all}"
-	local dir="${4:-${DIR}}"
+	local dir="${4:-${DIR_POOL}}"
 	mkdir -p "${BASEDIR}/${name}-${version}/DEBIAN"
 	cat <<-EOF >"${BASEDIR}/${name}-${version}/DEBIAN/control"
 	Package: ${name}
@@ -309,8 +318,8 @@ mkdeb () { # Create dummy package [name [version [arch [dir [postinst]]]]]
 	EOF
 	chmod 755 "${BASEDIR}/${name}-${version}/DEBIAN/postinst"
 	DEB="${BASEDIR}/${name}_${version}_${arch}.deb"
-	dpkg-deb -b "${BASEDIR}/${name}-${version}" "${DEB}" >&3 2>&3
-	[ -z "${dir}" ] || cp "${DEB}" "${dir}/"
+	dpkg-deb -b "${BASEDIR}/${name}-${version}" "${DEB}" >&3 2>&3 || return $?
+	[ -z "${dir}" ] || cp "${DEB}" "${dir}/${name:0:1}/"
 }
 
 mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
@@ -352,14 +361,17 @@ mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
 mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpackages.
 	local dir="${1:-${DIR}}"
 	shift
-	cd "${dir}/../.." || return $?
-	local subdir="${dir#${PWD}/}"
+	local dir_pool="${1:-${DIR_POOL}}"
+	shift
+	cd "${dir}/../../../../" || return $?
+	local subdir="${dir_pool#*univention-repository/}"
 	dpkg-scanpackages "${@}" "${subdir}" > "${dir}/Packages" 2>&3
+	xz -k -9 <"${dir}/Packages" >"${dir}/Packages.xz"
 	gzip -n -9 <"${dir}/Packages" >"${dir}/Packages.gz"
 	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
 	cd "${OLDPWD}" || return $?
 
-	mkgpg
+	mkgpg >&3 2>&3
 	cd "${dir}" || return $?
 	rm -f Release Release.tmp Release.gpg
 	apt-ftparchive \
@@ -370,7 +382,21 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 		release . >Release.tmp 2>&3
 	mv Release.tmp Release
 
+	gpgsign InRelease
 	gpgsign Release
+
+	cd "${OLDPWD}" || return $?
+
+	cd "${dir}/../.." || return $?
+
+	apt-ftparchive \
+		-o "APT::FTPArchive::Release::Origin=Univention" \
+		-o "APT::FTPArchive::Release::Label=Univention" \
+		release . >Release.tmp 2>&3
+	mv Release.tmp Release
+	gpgsign InRelease
+	gpgsign Release
+
 	cd "${OLDPWD}" || return $?
 }
 
@@ -378,6 +404,11 @@ gpgsign () { # sign file
 	mkgpg
 	local out sign
 	case "${1:-}" in
+	InRelease)  # FIXME: fails!
+		sign=--clearsign
+		out="${1}"
+		cp "Release" "${GPG_DIR}/in"
+		;;
 	Release|*.sh)
 		sign=--detach-sign
 		out="${1}.gpg"
@@ -492,22 +523,13 @@ mksh () { # Create shell scripts $@ in $1
 }
 
 split_repo_path () { # Split repository path into atoms
-	local oldifs="${IFS}"
-	local IFS=/
-	# shellcheck disable=SC2086
-	set -- ${1#${REPODIR}/}  # IFS
-	IFS="${oldifs}"
-	local version part arch
-	version="${1}"
-	part="${2}"
-	case "${3}" in
-		"${version}-"[0-9]*) version="${3}" ;;
-		errata*) version="${version}--${3}" ;;
-		component) version="${version}--component/${4}" ; shift ;;
-		*) echo "Unknown ${3}" >&2 ; return 2 ;;
-	esac
-	arch="${4}"
-	echo "${version}" "${part}" "${arch}"
+	python - "$REPODIR/" "$@" <<- EOF
+import sys
+script, repodir, args = sys.argv
+args = args.split(repodir, 1)[1].split("/")
+version, part, arch  = args[2:5]
+print(" ".join((version, part, arch)))
+EOF
 }
 
 checkapt () { # Check for apt-source statement ${1}
@@ -520,17 +542,21 @@ checkapt () { # Check for apt-source statement ${1}
 			--mirror) files=/etc/apt/mirror.list && shift ; continue ;;
 			--source|source) prefix=deb-src && shift ; continue ;;
 			http*) pattern="^${prefix} ${1}" ;;
+			ucs[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
+			errata[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
 			[1-9]*.[0-9]*-[0-9]*) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
 			[1-9]*.[0-9]*--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
 			[1-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\? ${1#*--component/}/.*/" ;;
 			maintained|unmaintained) pattern="^${prefix} .*/${1}/\(component/\?\)\? .*/.*/" ;;
 			all|${ARCH}|extern) pattern="^${prefix} .*/\(component/\?\)\? .*/${1}/" ;;
 			i386|amd64) shift ; continue ;;
+			binary-i386|binary-amd64) shift ; continue ;;
+			main) shift ; continue ;;
 			/*) # shellcheck disable=SC2046
 				set -- "$@" $(split_repo_path "${1}") && shift  # IFS
 				continue
 				;;
-			*) echo "Unknown ${1}" >&2 ; return 2 ;;
+			*) echo "Unknown ${1}" >&2 ; cat $files; return 2 ;;
 		esac
 		if ! grep -q "${pattern}" ${files}
 		then

@@ -25,8 +25,8 @@ setup_apache "${repoprefix}"
 htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 cat <<-EOF >"${DIR}/../.htaccess"
 AuthType Basic

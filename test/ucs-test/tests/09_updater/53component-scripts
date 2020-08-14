@@ -22,24 +22,24 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
-mkdeb "${pkgname}c" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}c" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 minor+=1
 mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
-mkdeb "${pkgname}c" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}c" 2 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 cat >"${SH_LOG}" <<__SH__
@@ -53,13 +53,13 @@ __SH__
 
 major+=1
 mkpdir "${major}.0-0" maintained all
-mkdeb "${pkgname}" 3 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 3 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${major}.0--component/${compname}" maintained all
-mkdeb "${pkgname}c" 3 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}c" 3 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 cat >>"${SH_LOG}" <<__SH__

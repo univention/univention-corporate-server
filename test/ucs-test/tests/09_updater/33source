@@ -16,8 +16,8 @@ RETVAL=110 # Test fehlgeschlagen
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 # SDIR="${REPODIR}/${_version_version}/unmaintained/${_version_version}-0/source" # BUG: The current iterator will not find Sources when Packages is missing
 SDIR="${REPODIR}/${_version_version}/maintained/${_version_version}-0/source"

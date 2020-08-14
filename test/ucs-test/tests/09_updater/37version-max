@@ -23,8 +23,8 @@ setup_apache "${repoprefix}"
 
 mkpdir "99.99-0" maintained "${ARCH}"
 DMASTER="${DIR}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 declare -a DOKAY=("${DIR}") DBAD=()
 
 echo -n " patchlevel..."
@@ -36,20 +36,20 @@ do
 		ln -f "${DMASTER:?}/"* "${DIR:?}/"
 		DOKAY+=("${DIR}")
 	else
-		mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
-		mkpkg "${DIR}"
+		mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
+		mkpkg "${DIR}" "${DIR_POOL}"
 		DBAD+=("${DIR}")
 	fi
 done
 echo -n " minor..."
 mkpdir "99.100-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 4 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 4 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 DBAD+=("${DIR}")
 echo -n " major..."
 mkpdir "100.0-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 5 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 5 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 DBAD+=("${DIR}")
 echo " done."
 

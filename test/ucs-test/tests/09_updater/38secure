@@ -12,8 +12,8 @@ RETVAL=110 # Test fehlgeschlagen
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 config_repo version/patchlevel=0 version/erratalevel=0
 

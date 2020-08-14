@@ -18,8 +18,8 @@ repoprefix="univention-repository-$$-${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/prefix=${repoprefix}"

@@ -19,31 +19,31 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 minor+=1
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 minor+=1
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 major+=1
 mkpdir "${major}.0-0" maintained "${ARCH}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.0-0--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 3 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 comp="repository/online/component/${compname}"
 minor+=-1

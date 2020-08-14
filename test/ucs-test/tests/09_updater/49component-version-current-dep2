@@ -19,19 +19,19 @@ compname2="test2${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname1}" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname2}" maintained "${ARCH}"
-mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 minor+=1
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 comp1="repository/online/component/${compname1}"
 comp2="repository/online/component/${compname2}"

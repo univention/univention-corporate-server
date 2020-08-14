@@ -15,8 +15,8 @@ FIXED_12571=false
 setup_apache "${repoprefix}"
 
 mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 eval "$(python proxy.py -f -p 0 3>&-)"
 config_repo proxy/http="http://localhost:${proxy_port}"

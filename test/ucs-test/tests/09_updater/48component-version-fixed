@@ -17,13 +17,13 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 minor+=1
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=${major}.${minor}"
