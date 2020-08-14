@@ -22,7 +22,7 @@
 		</script>
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
-			dojoConfig.packages[0].location = '/univention/portal/';
+			dojoConfig.packages[0].location = window.location.pathname;
 			dojoConfig.packages[0].name = 'portal';
 			dojoConfig.packages.push({
 				name: 'management',
