@@ -255,12 +255,12 @@ have () { command -v "$1" >/dev/null 2>&1; }
 
 declare -a DIRS
 mkpdir () { # Create pool directory ${dir}
-	declare -a versions archs release_types
+	declare -a versions archs
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
-			[1-9]*.[0-9]*-[0-9]*) release_types+=("ucs"); versions+=("${1}") ;;
-			[1-9]*.[0-9]*--errata[0-9]*) release_types+=("errata"); versions+=("${1}") ;;
+			[1-9]*.[0-9]*-[0-9]*) versions+=("${1}") ;;
+			[1-9]*.[0-9]*--errata[0-9]*) versions+=("${1}") ;;
 			[1-9]*.[0-9]*--component/*) versions+=("${1}") ;;
 			maintained|unmaintained) echo "Deprecated ${1}" >&2 ;;
 			all|i386|amd64) archs+=("${1}") ;;
@@ -274,13 +274,13 @@ mkpdir () { # Create pool directory ${dir}
 	do
 		version_stripped=$(echo "${version#*--}" | sed 's/[^0-9]//g')
 		for release_type in errata ucs; do
-		#for release_type in "${release_types[@]}"; do
 			for arch in "${archs[@]}"
 			do
 				DIR="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
 				DIRS+=("${DIR}")
 				mkdir -p "${DIR}"
 				touch "${DIR}/Packages"
+				mkpkg
 			done
 		done
 	done
