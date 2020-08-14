@@ -48,3 +48,13 @@ class DomainScorer(Scorer):
 		if request.host == self.domain:
 			return 10
 		return 0
+
+
+class PathScorer(Scorer):
+	def __init__(self, path):
+		self.path = path
+
+	def score(self, request):
+		if request.path == self.path:
+			return 10
+		return 0

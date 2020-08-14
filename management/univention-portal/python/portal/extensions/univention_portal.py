@@ -157,5 +157,3 @@ class Portal(with_metaclass(Plugin)):
 
 	def score(self, request):
 		return self.scorer.score(request)
-
-
