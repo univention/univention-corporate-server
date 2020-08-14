@@ -129,7 +129,7 @@ class Portal(with_metaclass(Plugin)):
 					continue
 				if entry['allowedGroups']:
 					for group_dn in entry['allowedGroups']:
-						if group_dn in groups.get(username):
+						if group_dn in groups.get(username, []):
 							break
 					else:
 						continue

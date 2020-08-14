@@ -50,6 +50,7 @@ fi
 
 [ ! -e /var/cache/univention-portal/portal.json ] && ucr filter < /usr/share/univention-portal/portal-unjoined.json > /var/cache/univention-portal/portal.json
 univention-portal add "" --dont-update
+univention-portal update
 systemctl restart univention-portal-server
 
 exit 0
