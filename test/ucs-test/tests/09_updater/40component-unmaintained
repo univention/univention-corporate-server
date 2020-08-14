@@ -23,11 +23,11 @@ setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 
 mkpdir "${_version_version}--component/${compname}" unmaintained "${ARCH}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained"

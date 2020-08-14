@@ -33,62 +33,62 @@ REPODIR="${REPODIR}/${srcprefix}"
 mkdir -p "${REPODIR}"
 
 mkpdir "${_version_version}-0" maintained all
-mkdeb "${pkgname}l" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}l" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 BDIR+=("${DIR}")
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 BDIR+=("${DIR}")
 
 mkpdir "${_version_version}--component/${compname}" maintained all
 mkdeb "${pkgname}cl" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 BDIR+=("${DIR}")
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}cy" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 BDIR+=("${DIR}")
 
 minor+=1
 
 mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}l" 2 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 CDIR+=("${DIR}")
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 CDIR+=("${DIR}")
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
 mkdeb "${pkgname}cl" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 CDIR+=("${DIR}")
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}cy" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 CDIR+=("${DIR}")
 
 minor+=1
 
 mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 3 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}l" 3 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 ADIR+=("${DIR}")
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 ADIR+=("${DIR}")
 
 minor+=-1

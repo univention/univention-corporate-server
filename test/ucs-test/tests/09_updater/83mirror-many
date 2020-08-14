@@ -20,9 +20,9 @@ FIXED_26249=false # slow univention-repository-update
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.0-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 DMASTER="${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR_POOL}"
 declare -a DOKAY=("${DIR}") DBAD=()
 
 echo -n "Creating patchlevel..."

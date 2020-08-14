@@ -18,8 +18,8 @@ password="pass${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
 config_repo proxy/http="http://${username}:${password}@localhost:${proxy_port}"

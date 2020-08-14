@@ -21,7 +21,7 @@ htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 
 cat <<-EOF >"${DIR}/../.htaccess"
 AuthType Basic

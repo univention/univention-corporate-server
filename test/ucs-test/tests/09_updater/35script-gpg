@@ -21,13 +21,13 @@ SH_LOG="${BASEDIR}/sh.log"
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained all
-mkdeb "${pkgname}" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${_version_version}-1" maintained all
-mkdeb "${pkgname}" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 cat >"${SH_LOG}" <<__SH__

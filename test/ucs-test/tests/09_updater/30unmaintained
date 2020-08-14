@@ -15,12 +15,12 @@ RETVAL=110 # Test fehlgeschlagen
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${_version_version}-0" unmaintained "${ARCH}"
-mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 config_repo repository/online/unmaintained=no
 

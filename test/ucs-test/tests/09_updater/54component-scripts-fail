@@ -22,24 +22,24 @@ compname="test${RANDOM}"
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
 mkdeb "${pkgname}c" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 
 minor+=1
 mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 2 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
 mkdeb "${pkgname}c" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" --return 1 preup
 mksh "${DIR}" postup
 

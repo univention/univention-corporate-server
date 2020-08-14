@@ -22,8 +22,8 @@ setup_apache "${repoprefix}"
 
 DIR="${REPODIR}/${_version_version}/maintained/${_version_version}-${_version_patchlevel}/dists/univention/main/binary-${ARCH}"
 mkdir -p "${DIR}"
-mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained"

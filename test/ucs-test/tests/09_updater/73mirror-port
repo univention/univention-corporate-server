@@ -15,13 +15,13 @@ port=81
 setup_apache --port "${port}" "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained all
-mkdeb "${pkgname}l" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}l" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIR}"
+mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 config_mirror :${port}
 
