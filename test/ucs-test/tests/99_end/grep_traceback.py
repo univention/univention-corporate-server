@@ -149,7 +149,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 	(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket", None),
 	(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None),  # Bug #51808
-	(r"noLock\: The attribute 'sid' could not get locked\.", ['getMachineSid']),  # Bug #44294
+	(r"noLock\: The attribute \'sid\' could not get locked\.", ['getMachineSid']),  # Bug #44294
 	(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py']),  # Bug #51815
 ])
 
