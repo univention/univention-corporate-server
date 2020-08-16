@@ -405,7 +405,7 @@ wait_for_repo_server () {
 install_ucs_test () {
 	wait_for_repo_server || return 1
 	install_with_unmaintained ucs-test
-	install_selenium || install_selenium
+	install_selenium || install_selenium || true
 	# The AD Member Jenkins tests sometimes have network problems, so executing it twice.
 }
 
