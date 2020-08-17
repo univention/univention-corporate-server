@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: firefox-esr
+fix: 68.11.0esr-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * Use after free in ANGLE (CVE-2020-6463)
+ * Inappropriate implementation in WebRTC (CVE-2020-6514)
+ * Potential leak of redirect targets when loading scripts in a worker
+   (CVE-2020-15652)
+ * Memory safety bugs fixed in Firefox 79 and Firefox ESR 68.11
+   (CVE-2020-15659)
+bug: [51827]
+cve:
+- CVE-2020-6463
+- CVE-2020-6514
+- CVE-2020-15652
+- CVE-2020-15659
