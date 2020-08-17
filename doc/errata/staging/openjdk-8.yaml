@@ -1,0 +1,33 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: openjdk-8
+fix: 8u265-b01-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Incorrect handling of access control context in ForkJoinPool (Libraries,
+   8237117) (CVE-2020-14556)
+ * HostnameChecker does not ensure X.509 certificate names are in normalized
+   form (JSSE, 8237592) (CVE-2020-14577)
+ * Unexpected exception raised by DerInputStream (Libraries, 8237731)
+   (CVE-2020-14578)
+ * Unexpected exception raised by DerValue.equals() (Libraries, 8237736)
+   (CVE-2020-14579)
+ * Information disclosure in color management (2D, 8238002) (CVE-2020-14581)
+ * Bypass of boundary checks in nio.Buffer via concurrent access (Libraries,
+   8238920) (CVE-2020-14583)
+ * Incomplete bounds checks in Affine Transformations (2D, 8240119)
+   (CVE-2020-14593)
+ * XML validation manipulation due to incomplete application of the
+   use-grammar-pool-only feature (JAXP, 8242136) (CVE-2020-14621)
+bug: [51825]
+cve:
+- CVE-2020-14556
+- CVE-2020-14577
+- CVE-2020-14578
+- CVE-2020-14579
+- CVE-2020-14581
+- CVE-2020-14583
+- CVE-2020-14593
+- CVE-2020-14621
