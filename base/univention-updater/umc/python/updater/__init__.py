@@ -244,7 +244,7 @@ class Instance(Base):
 
 		version = self.uu.current_version
 		try:
-			url = urljoin(ucr.get('repository/online/server', UcsRepoUrl.DEFAULT), '/release.json')
+			url = urljoin(UcsRepoUrl(ucr, 'repository/online').private(), '/releases.json')
 			response = requests.get(url, timeout=10)
 			if not response.ok:
 				response.raise_for_status()
@@ -260,8 +260,7 @@ class Instance(Base):
 						if patchlevel['patchlevel'] != version.patchlevel:
 							continue
 
-						# FIXME: Adapt to format implemented by repo-ng
-						_maintained_status = patchlevel.get("status", "maintained")
+						_maintained_status = patchlevel.get('status', 'unmaintained')
 						maintenance_extended = _maintained_status == 'extended'
 						show_warning = maintenance_extended or not _maintained_status
 
