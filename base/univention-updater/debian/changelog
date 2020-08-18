@@ -1,3 +1,9 @@
+univention-updater (14.0.2-16) unstable; urgency=medium
+
+  * Bug #46465: call postup.sh after setting version/version
+
+ -- Florian Best <best@univention.de>  Tue, 18 Aug 2020 12:49:52 +0200
+
 univention-updater (14.0.2-15) unstable; urgency=low
 
   * Bug #51672: Fix remote root exploitable code in UMC.

@@ -495,6 +495,7 @@ def main():
         dprint('System is up to date (UCS %s)' % lastversion)
         fp_debug.close()
         raise UpToDateNoError()
+
     new_version = UCS_Version(nextversion)
     if updateto and new_version > updateto:
         dprint('Update hold at %s, next %s is after %s' % (lastversion, new_version, updateto))
@@ -582,16 +583,16 @@ def main():
                         os.unlink('/var/run/apt-get.lock')
                     if resultCode != 0:
                         raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
-    except:
+            elif (phase, order) == ('postup', 'main'):
+                # Bug #23202: After the update from Python2.4 to Python2.6, ucr.handler_set() does not work any more because it still uses python2.4!
+                (nvv, nvp) = nextversion.split('-')[0:2]
+                subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp), stdout=fp_debug, stderr=fp_debug)
+
+    except BaseException:
         if phase == 'preup' or (phase == 'update' and order == 'pre'):
             remove_temporary_sources_list()
         raise
 
-    # Call the postup.sh
-    (nvv, nvp) = nextversion.split('-')[0:2]
-
-    # Bug #23202: After the update from Python2.4 to Python2.6, ucr.handler_set() does not work any more because it still uses python2.4!
-    subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp), stdout=fp_debug, stderr=fp_debug)
     remove_temporary_sources_list()
 
     if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
