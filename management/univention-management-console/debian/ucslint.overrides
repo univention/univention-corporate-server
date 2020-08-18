@@ -12,5 +12,3 @@
 0010-2: tests/sanitizer/tests.sh
 0010-2: tests/sanitizer/install.sh
 0004-16: conffiles/usr/share/univention-management-console/meta.json
-# Mixed Python 2/3 code
-0009-3
