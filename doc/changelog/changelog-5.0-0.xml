@@ -465,6 +465,9 @@
 			<listitem><simpara>
 				 UDM extensions can now be registered in different versions for different UCS versions to prepare for the UCS 5 update (<u:bug>51619</u:bug>, <u:bug>51622</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				 UDM and LDAP extensions are now correctly removed or created when the UCS version changes (<u:bug>51531</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
