@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.2-13) unstable; urgency=medium
+
+  * Bug #51531: remove UDM extensions when enducsversion is reached
+
+ -- Florian Best <best@univention.de>  Tue, 18 Aug 2020 14:27:11 +0200
+
 univention-directory-manager-modules (15.0.2-10) unstable; urgency=medium
 
   * Bug #51669: fix removal of objects during errors in create

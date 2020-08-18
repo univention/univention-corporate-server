@@ -117,10 +117,12 @@ def handler(dn, new, old):
 		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCS version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionStart))
 			# Trigger remove on this system
+			old = old or new
 			new = None
 		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0].decode('UTF-8'), univentionUCSVersionEnd))
 			# Trigger remove on this system
+			old = old or new
 			new = None
 
 	old_relative_filename = None
@@ -331,11 +333,16 @@ def remove_python_files(python_basedir, target_subdir, target_filename):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, filename))
 			except OSError as exc:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, filename, exc))
-			if filename.endswith('.py') and os.path.exists(filename + 'c'):
-				try:
-					os.unlink(filename + 'c')
-				except OSError as exc:
-					ud.debug(ud.LISTENER, ud.WARN, '%s: Removal of pycompiled %sc failed: %s.' % (name, filename, exc))
+			# remove pyc and pyo
+			basename, ext = os.path.splitext(filename)
+			if ext == '.py':
+				for ext in ('.pyc', '.pyo'):
+					compiled_filename = basename + ext
+					if os.path.exists(compiled_filename):
+						try:
+							os.unlink(compiled_filename)
+						except OSError as exc:
+							ud.debug(ud.LISTENER, ud.WARN, '%s: Removal of pycompiled %s failed: %s.' % (name, compiled_filename, exc))
 
 	try:
 		cleanup_python_moduledir(python_basedir, target_subdir, os.path.dirname(target_filename))
