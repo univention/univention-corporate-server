@@ -136,6 +136,10 @@ fi
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 
+# Bug #51531: re-evaluate extensions startucsversion and enducsversion (always required)
+/usr/sbin/univention-directory-listener-ctrl resync udm_extension
+/usr/sbin/univention-directory-listener-ctrl resync ldap_extension
+
 echo "
 
 
