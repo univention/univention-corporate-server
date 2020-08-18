@@ -136,6 +136,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ImportError: No module named directory', [r'app_attributes\.py']),  # Bug #50338
 	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py']),  # Bug #49866
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
+	('^ImportError: No module named docker_upgrade', ['univention-app']),  # Bug #50381
 	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
 	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
