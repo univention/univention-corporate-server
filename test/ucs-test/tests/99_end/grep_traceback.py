@@ -34,6 +34,13 @@ import re
 import gzip
 import sys
 
+RE_BROKEN = re.compile(r'^File "[^"]+", line \d+, in .*')
+"""Match broken setup.log traceback:
+Traceback (most recent call last):
+File "<stdin>", line 8, in <module>
+IOError: [Errno 2] No such file or directory: '/etc/machine.secret'
+"""  # Bug #51834
+
 
 class Tracebacks(set):
 
@@ -54,7 +61,7 @@ def main(filenames, ignore_exceptions={}):
 				if line.endswith('Traceback (most recent call last):\n'):
 					lines = []
 					line = ' '
-					while line.startswith(' '):
+					while line.startswith(' ') or RE_BROKEN.match(line):
 						line = fd.readline()
 						lines.append(line)
 					d = Tracebacks()
@@ -97,7 +104,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
 	('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
 	('^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax', ['_create']),
-	(re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"), ['getMachineConnection', re.escape('<stdin>')]),
+	(re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"), ['getMachineConnection', re.escape('<stdin>')]),  # Bug #51834
 	(r'''^(cherrypy\._cperror\.)?NotFound: \(404, "The path '/(login|portal)/.*''', None),
 	(r'(lockfile\.)?LockTimeout\: Timeout waiting to acquire lock for \/var\/run\/umc-server\.pid', None),
 	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
