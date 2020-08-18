@@ -1,3 +1,9 @@
+univention-portal (3.1.0-31) unstable; urgency=medium
+
+  * Bug #xxxxx: poc portal ucs5 design
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Aug 2020 15:45:27 +0200
+
 univention-portal (3.1.0-30) unstable; urgency=medium
 
   * Bug #51798: Make multiple portals configurable
