@@ -292,7 +292,7 @@
                         <entry>Konto ist deaktiviert</entry>
                         <entry>
                             <para>
-                                Mir dem Auswahlkästchen <guimenu>Konto is deaktiviert</guimenu> kann das Benutzerkonto
+                                Mir dem Auswahlkästchen <guimenu>Konto ist deaktiviert</guimenu> kann das Benutzerkonto
                                 deaktiviert werden.
 				Wenn es aktiviert ist, kann sich der Benutzer nicht am System anmelden.
 				Das betrifft alle Methoden für die Authentifikation.
