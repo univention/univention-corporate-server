@@ -73,7 +73,7 @@ from univention.admindiary.events import UPDATE_STARTED, UPDATE_FINISHED_SUCCESS
 
 from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
 from univention.updater.ucs_version import UCS_Version
-from univention.updater.tools import UniventionUpdater, LocalUpdater
+from univention.updater.tools import UniventionUpdater, LocalUpdater, UCSRepoPoolUCS500
 from univention.updater.locking import UpdaterLock
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 
@@ -538,8 +538,10 @@ def main():
     add_temporary_sources_list(updater.release_update_temporary_sources_list(nextversion))
     try:
         phase = 'preup'
-
-        rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), [])
+        if new_version.major > 4 and new_version.minor == 0 and new_version.patchlevel == 0:
+            rel = [(updater.server, UCSRepoPoolUCS500(major=new_version.major, minor=new_version.minor, patchlevel=new_version.patchlevel))]
+        else:
+            rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), [])
 
         components = updater.get_components()
         # components = filter(lambda c: 'current' in ucr.get('repository/online/component/%s/version' % c, '').split(','), components)

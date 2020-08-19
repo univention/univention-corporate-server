@@ -71,6 +71,7 @@ import tempfile
 import shutil
 import logging
 import atexit
+import json
 try:
     from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
@@ -293,6 +294,21 @@ class UCSRepoPool(_UCSRepo):
         """
         fmt = "%(version)s/%(part)s/%(patch)s/"  # %(arch)s/
         return "clean %s%s" % (server, super(UCSRepoPool, self)._format(fmt))
+
+
+class UCSRepoPoolUCS500(_UCSRepo):
+    """
+    Minimal ucs500 repo implementation for get_sh_files.
+    """
+
+    def __init__(self, **kw):
+        # type: (**Any) -> None
+        kw.setdefault('version', UCS_Version.FORMAT)
+        kw.setdefault('patch', UCS_Version.FULLFORMAT)
+        super(UCSRepoPoolUCS500, self).__init__(**kw)
+
+    def path(self, filename):
+        return "dists/ucs500/" + filename
 
 
 class UCSRepoPoolNoArch(_UCSRepo):
@@ -956,11 +972,28 @@ class UniventionUpdater(object):
             if major < 99:
                 yield {'major': major + 1, 'minor': 0, 'patchlevel': 0}
 
+        def is_ucs500_released():
+            # type: () -> bool
+            _code, _size, releases = self.server.access(None, 'releases.json', get=True)
+            try:
+                majors = json.loads(releases)['releases']
+                minors = [r for r in majors if r['major'] == 5][0]['minors']
+                patchlevels = [r for r in minors if r['minor'] == 0][0]['patchlevels']
+                if [r for r in patchlevels if r['patchlevel'] == 0]:
+                    return True
+            except (ValueError, KeyError) as exc:
+                ud.debug(ud.NETWORK, ud.ALL, "releases.json malformed: %s" % exc)
+            return False
+
         for ver in versions(version.major, version.minor, version.patchlevel):
             repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
             self.log.info('Checking for version %s', repo)
             try:
-                assert self.server.access(repo)
+                if ver['major'] > 4 and version.major == 4:
+                    if not is_ucs500_released():
+                        return None
+                else:
+                    assert self.server.access(repo)
                 self.log.info('Found version %s', repo.path())
                 failed = set()
                 for component in components:
@@ -1050,10 +1083,13 @@ class UniventionUpdater(object):
         mmp_version = UCS_Version(version)
         current_components = self.get_current_components()
 
-        result = [
-            ver.deb(server)
-            for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, self.architectures)
-        ]
+        if mmp_version.major > 4 and mmp_version.minor == 0 and mmp_version.patchlevel == 0:
+            result = ['deb {server} ucs500 main'.format(server=self.server)]
+        else:
+            result = [
+                ver.deb(server)
+                for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, self.architectures)
+            ]
         for component in components:
             repos = []  # type: List[str]
             try:
@@ -1901,7 +1937,7 @@ class UniventionUpdater(object):
                 os.chmod(name, 0o744)
                 if size == len(script):
                     ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
-                    if struct.part.endswith('/component'):
+                    if hasattr(struct, 'part') and struct.part.endswith('/component'):
                         comp[phase].append((name, str(struct.patch)))
                     else:
                         main[phase].append((name, str(struct.patch)))
