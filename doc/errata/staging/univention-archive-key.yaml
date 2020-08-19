@@ -6,5 +6,6 @@ src: univention-archive-key
 fix: 9.0.0-4A~4.4.0.202007291623
 desc: |-
  This update addresses the following issue:
- * Re-add univention-archive-key-ucs-3x.gpg
+ * Re-add univention-archive-key-ucs-3x.gpg. This fixes an issue
+   that a UCS repository mirror could not download packages.
 bug: [51603]

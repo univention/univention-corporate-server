@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-directory-manager-modules
 fix: 14.0.15-5A~4.4.0.202008111856
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The removal of dns/ptr_record objects when removing IP addresses from
    computers and no pointer record would be left over has been repaired.
 bug: [44710]
