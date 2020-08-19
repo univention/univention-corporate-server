@@ -65,62 +65,17 @@ def possible_network_error(func):
 class StoreAppAction(Action):
 	cache_class = Apps
 
-	@classmethod
-	def parse_app_id_string(cls, app_id):
-		try:
-			app_id, app_version = app_id.split('=', 1)
-		except ValueError:
-			app_id, app_version = app_id, None
-		try:
-			ucs_version, app_id = app_id.split('/', 1)
-		except ValueError:
-			ucs_version, app_id = None, app_id
-		if ucs_version:
-			try:
-				ucs_version, server = ucs_version.split('@', 1)
-			except ValueError:
-				ucs_version, server = ucs_version, None
-		else:
-			server = None
-		ucs_version = ucs_version or None
-		return app_id, app_version, ucs_version, server
-
-	@classmethod
-	def get_app_from_app_id_string(cls, app_id, app_version, ucs_version, server):
-		apps_cache = cls.cache_class()
-		if ucs_version or server:
-			apps = []
-			for appcenter_cache in apps_cache.get_appcenter_caches():
-				for cache in appcenter_cache.get_app_caches():
-					if ucs_version and ucs_version != cache.get_ucs_version():
-						continue
-					if server and server != cache.get_server_netloc():
-						continue
-					app = cache.find(app_id, app_version=app_version)
-					if app:
-						if app.is_installed():
-							return app
-						apps.append(app)
-			if apps:
-				return sorted(apps)[-1]
-		else:
-			return apps_cache.find(app_id, app_version=app_version)
-
 	def __call__(self, parser, namespace, value, option_string=None):
 		apps = []
 		if self.nargs is None:
 			value = [value]
 		for val in value:
-			app_id, app_version, ucs_version, server = self.parse_app_id_string(val)
 			if self.cache_class:
-				app = self.get_app_from_app_id_string(app_id, app_version, ucs_version, server)
+				app = self.cache_class.find_by_string(val)
 			else:
-				app = app_id, app_version, ucs_version, server
+				app = self.cache_class.split_app_string(val)
 			if app is None:
-				if app_version is not None:
-					parser.error('Unable to find version %s of app %s. Maybe "%s update" to get the latest list of applications?' % (app_version, app_id, sys.argv[0]))
-				else:
-					parser.error('Unable to find app %s. Maybe "%s update" to get the latest list of applications?' % (app_id, sys.argv[0]))
+				parser.error('Unable to find app %s. Maybe "%s update" to get the latest list of applications?' % (val, sys.argv[0]))
 			apps.append(app)
 		if self.nargs is None:
 			apps = apps[0]

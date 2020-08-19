@@ -552,6 +552,33 @@ class Apps(_AppCache):
 		for app_cache in self.get_appcenter_caches():
 			app_cache.clear_cache()
 
+	@classmethod
+	def find_by_string(cls, app_string):
+		app_id, app_version, ucs_version, server = cls.split_app_string(app_string)
+		server = server or default_server()
+		ucs_versions = [ucs_version] if ucs_version else None
+		cache = AppCenterCache.build(server=server, ucs_versions=ucs_versions)
+		return cache.find(app_id, app_version=app_version)
+
+	@classmethod
+	def split_app_string(cls, app_string):
+		try:
+			app_id, app_version = app_string.split('=', 1)
+		except ValueError:
+			app_id, app_version = app_string, None
+		try:
+			ucs_version, app_id = app_id.split('/', 1)
+		except ValueError:
+			ucs_version, app_id = None, app_id
+		if ucs_version:
+			try:
+				ucs_version, server = ucs_version.split('@', 1)
+			except ValueError:
+				ucs_version, server = ucs_version, None
+		else:
+			server = None
+		ucs_version = ucs_version or None
+		return app_id, app_version, ucs_version, server
 
 class AllApps(Apps):
 	def include_app(self, app):

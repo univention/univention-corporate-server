@@ -69,20 +69,16 @@ def error_handling(etype, exc, etraceback):
 class AppSanitizer(Sanitizer):
 
 	def _sanitize(self, value, name, further_args):
-		app_id = value
-		app_version = None
-		if '=' in value:
-			app_id, app_version = tuple(value.split('=', 1))
-		app = Apps().find(app_id, app_version=app_version)
+		app = Apps.find_by_string(value)
+		app_version = app.version
 		if not app.is_installed() and not app.install_permissions_exist():
 			apps = Apps().get_all_apps_with_id(app.id)
 			apps = [_app for _app in apps if not _app.install_permissions]
 			if apps:
-				if app_version:
-					for _app in apps:
-						if _app.version == app_version:
-							app = _app
-							break
+				for _app in apps:
+					if _app.version == app_version:
+						app = _app
+						break
 				else:
 					app = sorted(apps)[-1]
 		return app

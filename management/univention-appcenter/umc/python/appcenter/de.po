@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2019-09-05 09:29+0200\n"
-"PO-Revision-Date: 2020-09-05 16:26+0200\n"
+"PO-Revision-Date: 2020-09-15 14:46+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -19,6 +19,11 @@ msgid ""
 msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
 "Server hin. Bitte versuchen Sie es später noch einmal."
+
+#: umc/python/appcenter/__init__.py:33
+#, python-format
+msgid "%s: Connecting to %s"
+msgstr "%s: Verbinde zu %s"
 
 #: umc/python/appcenter/__init__.py:412
 #, python-format

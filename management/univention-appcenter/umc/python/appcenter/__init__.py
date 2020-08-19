@@ -54,8 +54,8 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
-#from univention.updater.tools import UniventionUpdater
-#from univention.updater.errors import ConfigurationError
+from univention.updater.tools import UniventionUpdater
+from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
@@ -247,11 +247,103 @@ class Instance(umcm.Base, ProgressMixin):
 		ret['errors'], ret['warnings'] = check(apps, action)
 		domain = get_action('domain')
 		ret['apps'] = domain.to_dict(apps)
+		ret['settings'] = {}
+		self.ucr.load()
+		for app in apps:
+			ret['settings'][app.id] = self._get_config(app, action.title())
 		return ret
 
-	@simple_response
-	def run(self):
-		pass
+	@require_apps_update
+	@require_password
+	@sanitize(
+		apps=ListSanitizer(AppSanitizer(), required=True),
+		auto_installed=ListSanitizer(required=True),
+		action=ChoicesSanitizer(['install', 'upgrade', 'remove'], required=True),
+		hosts=DictSanitizer({}, required=True),
+		settings=DictSanitizer({}, required=True),
+		dry_run=BooleanSanitizer(),
+	)
+	@simple_response(with_progress=True)
+	def run(self, progress, apps, auto_installed, action, hosts, settings, dry_run):
+		localhost = '{hostname}.{domainname}'.format(**self.ucr)
+		ret = {}
+		for app in apps:
+			host = hosts[app.id]
+			_settings = settings[app.id]
+			_auto_installed = app.id in auto_installed
+			if host == localhost:
+				if dry_run:
+					ret[app.id] = self._run_local_dry_run(app, action, _settings, progress)
+				else:
+					ret[app.id] = self._run_local(app, action, _settings, progress)
+			else:
+				if dry_run:
+					ret[app.id] = self._run_remote_dry_run(host, app, action, _auto_installed, _settings, progress)
+				else:
+					ret[app.id] = self._run_remote(host, app, action, _auto_installed, _settings, progress)
+			if not dry_run:
+				if not ret[app.id]['success']:
+					break
+		return ret
+
+	def _run_local_dry_run(self, app, action, settings, progress):
+		progress.title = _('%s: Running tests') % app.name
+		ret = {}
+		ret['errors'], ret['warnings'] = check([app], action)
+		ret['errors'].pop('must_have_no_unmet_dependencies', None)  # has to be resolved prior to this call!
+		action = get_action(action)()
+		args = action._build_namespace(app=app, dry_run=True, install_master_packages_remotely=False, only_master_packages=False)
+		result = action.dry_run(app, args)
+		if result is not None:
+			ret.update(result)
+		return ret
+
+	def _run_local(self, app, action, settings, progress):
+		kwargs = {
+			'noninteractive': True,
+			'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'],
+			'set_vars': settings,
+		}
+		if action == 'install':
+			progress.title = _('Installing %s') % (app.name,)
+		elif action == 'remove':
+			progress.title = _('Uninstalling %s') % (app.name,)
+		elif action == 'upgrade':
+			progress.title = _('Upgrading %s') % (app.name,)
+		action = get_action(action)
+		handler = UMCProgressHandler(progress)
+		handler.setLevel(logging.INFO)
+		action.logger.addHandler(handler)
+		try:
+			success = action.call(app=[app], username=self.username, password=self.password, **kwargs)
+			return {'success': success}
+		except AppCenterError as exc:
+			raise umcm.UMC_Error(str(exc), result=dict(
+				display_feedback=True,
+				title='%s %s' % (exc.title, exc.info)))
+		finally:
+			action.logger.removeHandler(handler)
+
+	def _run_remote_dry_run(self, host, app, action, auto_installed, settings, progress):
+		return self._run_remote_logic(host, app, action, auto_installed, settings, progress, dry_run=True)
+
+	def _run_remote(self, host, app, action, auto_installed, settings, progress):
+		return self._run_remote_logic(host, app, action, auto_installed, settings, progress, dry_run=False)
+
+	def _run_remote_logic(self, host, app, action, auto_installed, settings, progress, dry_run):
+		progress.title = _('%s: Connecting to %s') % (app.name, host)
+		client = self._remote_appcenter(host, function='appcenter/run')
+		auto_installed = [app.id] if auto_installed else []
+		opts = {'apps': [str(app)], 'auto_installed': auto_installed, 'action': action, 'hosts': {app.id: host}, 'settings': {app.id: settings}, 'dry_run': dry_run}
+		progress_id = client.umc_command('appcenter/run', opts).result['id']
+		while True:
+			result = client.umc_command('appcenter/docker/progress', {'progress_id': progress_id}).result
+			if result['finished']:
+				return result['result'][app.id]
+			progress.title = result['title']
+			progress.intermediate.extend(result['intermediate'])
+			progress.message = result['message']
+			time.sleep(result['retry_after'] / 1000.0)
 
 	@simple_response
 	def query(self, quick=False):
@@ -370,6 +462,9 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def config(self, app, phase):
 		self.ucr.load()
+		return self._get_config(app, phase)
+
+	def _get_config(self, app, phase):
 		autostart = self.ucr.get('%s/autostart' % app.id, 'yes')
 		is_running = app_is_running(app)
 		values = {}
