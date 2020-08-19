@@ -9,3 +9,5 @@ desc: |-
  * Re-add univention-archive-key-ucs-3x.gpg. This fixes an issue
    that a UCS repository mirror could not download packages.
 bug: [51603]
+erratum: 711
+announced: 2020-08-19
