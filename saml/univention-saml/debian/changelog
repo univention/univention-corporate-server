@@ -1,3 +1,9 @@
+univention-saml (6.0.2-49) unstable; urgency=medium
+
+  * Bug #51801: add missing bracket
+
+ -- Florian Best <best@univention.de>  Wed, 19 Aug 2020 21:24:35 +0200
+
 univention-saml (6.0.2-48) unstable; urgency=medium
 
   * Bug #45445: display UMC error dialog

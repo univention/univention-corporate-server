@@ -24,7 +24,7 @@ if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
 print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
-print("	'debug'		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE')
+print("	'debug'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE'))
 print("	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
 print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
