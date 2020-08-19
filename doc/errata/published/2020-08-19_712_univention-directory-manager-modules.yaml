@@ -9,3 +9,5 @@ desc: |
  * The removal of dns/ptr_record objects when removing IP addresses from
    computers and no pointer record would be left over has been repaired.
 bug: [44710]
+erratum: 712
+announced: 2020-08-19
