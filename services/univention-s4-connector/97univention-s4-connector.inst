@@ -163,9 +163,6 @@ ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msprintconnectionpolicy.schema \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
 
-ucs_registerLDAPExtension "$@" \
-	--schema /usr/share/univention-s4-connector/ldap/domainpolicy.schema \
-	--udm_syntax /usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py || die
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpwl.schema || die
@@ -187,6 +184,10 @@ ucs_registerLDAPExtension "$@" \
 for udm_module in gpsi-category-registration.py  gpsi-class-store.py  gpsi-package-registration.py; do
 	ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" --ucsversionstart "4.4-0" || die
 done
+
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/domainpolicy.schema \
+	 --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?

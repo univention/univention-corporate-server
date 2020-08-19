@@ -1702,7 +1702,7 @@ s4_mapping = {
 		con_search_filter='(objectClass=domainPolicy)',
 		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/domainPolicy/ignorelist'),
 		ignore_subtree=global_ignore_subtree,
-		con_create_objectclass=['top', 'leaf', 'DOMAINPolicy'],
+		con_create_objectclass=['top', 'domainPolicy'],
 		attributes={
 			'cn': univention.s4connector.attribute(
 				ucs_attribute='name',
