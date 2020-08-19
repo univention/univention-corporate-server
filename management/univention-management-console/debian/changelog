@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-102) unstable; urgency=medium
+
+  * Bug #45445: use umc.tools.showErrorDialog
+
+ -- Florian Best <best@univention.de>  Wed, 19 Aug 2020 20:40:25 +0200
+
 univention-management-console (11.0.4-101) unstable; urgency=medium
 
   * Bug #51729: rename umc/max/file_descriptors to umc/http/max-open-file-descriptors

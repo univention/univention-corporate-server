@@ -135,8 +135,9 @@ define([
 		},
 
 		_renderLink: function(link) {
-			if (link) {
-				var node = domConstruct.place(domConstruct.toDom(link), dom.byId('umcLoginLinks'));
+			var parentNode = dom.byId('umcLoginLinks');
+			if (link && parentNode) {
+				var node = domConstruct.place(domConstruct.toDom(link), parentNode);
 				if (node.title) {
 					on(node, 'mouseover', lang.hitch(this, '_showTooltip', node, node.title));
 					domAttr.remove(node, 'title');
@@ -164,6 +165,9 @@ define([
 
 		_watchUsernameField: function() {
 			var node = dom.byId('umcLoginUsername');
+			if (!node) {
+				return;  // e.g. error page on SAML
+			}
 			on(node, 'keyup', lang.hitch(this, function() {
 				if (node.value === 'root') {
 					Tooltip.show(_('The default user to manage the domain is %s which has the same initial password as the <i>root</i> account.', this._administratorLink()) + ' ' + _('The <i>root</i> user neither has access to the domain administration nor to the App Center.'), node, ['above']);

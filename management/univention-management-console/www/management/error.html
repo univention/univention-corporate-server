@@ -19,17 +19,9 @@
 				}
 			};
 			umcConfig.callback = function() {
-				require(["umc/dialog", "umc/tools", "dojo/json", "dojox/html/entities", "umc/i18n!management"], function(dialog, tools, json, entities, _) {
-					setTimeout(function() { /* dependency problem umc/dialog is not yet require()d in umc/tools*/
-						var data = json.parse(entities.decode(%ERROR%));
-						var info = tools.parseError(data);
-						info.title = info.title || _('HTTP Error %s', info.status);
-						tools.getErrorHandler({ force401Display: true }).displayError(info).then().always(function() {
-							setTimeout(function() {
-								window.location.href = data.location || '/univention/management/';
-							}, 1000);
-						});
-					}, 1000);
+				require(["umc/tools", "dojo/json", "dojox/html/entities"], function(tools, json, entities) {
+					var data = json.parse(entities.decode(%ERROR%));
+					tools.showErrorDialog(data);
 				});
 			};
 			//-->
