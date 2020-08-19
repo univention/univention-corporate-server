@@ -661,10 +661,8 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 			superordinate_obj = None
 		if not dn and not superordinate_obj:
 			# check if objects of this module require a superordinate
-			superordinate_modules = getattr(udm_module, 'superordinate', None)
-			if superordinate_modules:
-				if isinstance(superordinate_modules, string_types):
-					superordinate_modules = [superordinate_modules]
+			superordinate_modules = univention.admin.modules.superordinate_names(self.name)
+			if superordinate_modules and superordinate_modules != ['settings/cn']:
 				raise NoSuperordinate(dn=dn, module_name=self.name, superordinate_types=superordinate_modules)
 		po = univention.admin.uldap.position(self.connection.base)
 		try:
