@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-directory-manager-modules
-fix: 
+fix: 14.0.15-5A~4.4.0.202008111856
 desc: |
  This update addresses the following issue(s):
  * The removal of dns/ptr_record objects when removing IP addresses from
