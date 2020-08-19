@@ -27,3 +27,19 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+
+
+def test_resolve(custom_apps, appcenter_umc_instance, get_action, umc_request, mocker):
+	custom_apps.load('unittests/inis/umc/')
+	umc_request.options = {'apps': ['riot'], 'action': 'install'}
+	appcenter_umc_instance.resolve(umc_request)
+	assert 'apps' in umc_request.result
+	assert len(umc_request.result['apps']) == 1
+	assert umc_request.result['apps'][0]['id'] == 'riot'
+	assert 'autoinstalled' in umc_request.result
+	assert [] == umc_request.result['autoinstalled']
+	assert 'errors' in umc_request.result
+	assert isinstance(umc_request.result['errors'], dict)
+	assert 'warnings' in umc_request.result
+	assert isinstance(umc_request.result['warnings'], dict)

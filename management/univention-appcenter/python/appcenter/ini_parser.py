@@ -36,6 +36,7 @@
 from six.moves.configparser import RawConfigParser, ParsingError, NoSectionError, NoOptionError
 import re
 from copy import deepcopy
+import codecs
 
 from univention.appcenter.utils import get_locale
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
@@ -68,7 +69,7 @@ class ParseError(Exception):
 def read_ini_file(filename, parser_class=RawConfigParser):
 	parser = parser_class()
 	try:
-		with open(filename, 'rb') as f:
+		with codecs.open(filename, 'r', 'utf-8') as f:
 			parser.readfp(f)
 	except TypeError:
 		pass

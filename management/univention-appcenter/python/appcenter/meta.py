@@ -71,7 +71,7 @@ class UniventionMetaClass(type):
 
 	def __new__(mcs, name, bases, attrs):
 		meta_infos = []
-		for key, value in attrs.items():
+		for key, value in list(attrs.items()):
 			if hasattr(value, 'contribute_to_class'):
 				if value.pop:
 					attrs.pop(key)

@@ -35,6 +35,8 @@ from glob import glob
 import logging
 
 from univentionunittests import import_module
+from univentionunittests.umc import import_umc_module, save_result_on_request
+
 
 import pytest
 
@@ -115,8 +117,33 @@ def import_appcenter_modules():
 		if name == 'log':
 			module.log_to_stream()
 			logger = module.get_base_logger()
-			handler = logger.handlers[1]
-			handler.filters[0].min_level = logging.DEBUG
+			for handler in logger.handlers:
+				for filter in handler.filters:
+					if hasattr(filter, 'min_level'):
+						filter.min_level = logging.DEBUG
+		if name == 'actions':
+			if not use_installed:
+				import os.path
+				for pymodule in glob('python/appcenter/actions/*.py'):
+					name = os.path.basename(pymodule)[:-3]  # without .py
+					local_python_path = os.path.dirname(pymodule)
+					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+				for pymodule in glob('python/appcenter-docker/actions/service.py'):
+					name = os.path.basename(pymodule)[:-3]  # without .py
+					local_python_path = os.path.dirname(pymodule)
+					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+				for pymodule in glob('python/appcenter-docker/actions/docker_base.py'):
+					name = os.path.basename(pymodule)[:-3]  # without .py
+					local_python_path = os.path.dirname(pymodule)
+					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+				for pymodule in glob('python/appcenter-docker/actions/docker_*.py'):
+					name = os.path.basename(pymodule)[:-3]  # without .py
+					local_python_path = os.path.dirname(pymodule)
+					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
+				for pymodule in glob('python/appcenter-docker/actions/*.py'):
+					name = os.path.basename(pymodule)[:-3]  # without .py
+					local_python_path = os.path.dirname(pymodule)
+					import_module(name, local_python_path, 'univention.appcenter.actions.{}'.format(name), use_installed=use_installed)
 
 
 def _import(name):
@@ -125,5 +152,19 @@ def _import(name):
 
 
 @pytest.fixture
+def imported_appcenter_modules():
+	import_appcenter_modules()
+
+
+@pytest.fixture
 def import_appcenter_module():
 	return _import
+
+
+@pytest.fixture
+def appcenter_umc_instance(imported_appcenter_modules, mocker):
+	appcenter = import_umc_module('appcenter')
+	mocker.patch.object(appcenter.Instance, 'finished', side_effect=save_result_on_request)
+	instance = appcenter.Instance()
+	instance.init()
+	return instance

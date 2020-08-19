@@ -54,8 +54,8 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
-from univention.updater.tools import UniventionUpdater
-from univention.updater.errors import ConfigurationError
+#from univention.updater.tools import UniventionUpdater
+#from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter.actions import get_action
@@ -70,9 +70,9 @@ from univention.appcenter.ucr import ucr_instance, ucr_save
 from univention.appcenter.settings import FileSetting, PasswordFileSetting
 
 # local application
-from univention.management.console.modules.appcenter.sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
-from univention.management.console.modules.appcenter import constants
-from univention.management.console.modules.appcenter import util
+from .sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
+from .util import install_opener, ComponentManager, set_save_commit_load
+from .constants import ONLINE_BASE, PUT_WRITE_ERROR, PUT_UPDATER_ERROR, PUT_SUCCESS, PUT_UPDATER_NOREPOS
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
@@ -135,7 +135,7 @@ class Instance(umcm.Base, ProgressMixin):
 		self.ucr = ucr_instance()
 
 		self.update_applications_done = False
-		util.install_opener(self.ucr)
+		install_opener(self.ucr)
 		self._is_working = False
 		self._remote_progress = {}
 
@@ -186,7 +186,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	def get_component_manager(self):
 		if self._cm is None:
-			self._cm = util.ComponentManager(self.ucr, self.get_updater())
+			self._cm = ComponentManager(self.ucr, self.get_updater())
 		return self._cm
 
 	def error_handling(self, etype, exc, etraceback):
@@ -1151,7 +1151,7 @@ class Instance(umcm.Base, ProgressMixin):
 		#		},
 		#		... more such entries ...
 		#	]
-		with util.set_save_commit_load(self.ucr) as super_ucr:
+		with set_save_commit_load(self.ucr) as super_ucr:
 			for object, in iterator:
 				yield self.get_component_manager().put(object, super_ucr)
 		self.package_manager.update()
@@ -1193,15 +1193,15 @@ class Instance(umcm.Base, ProgressMixin):
 		changed = False
 		# Set values into our UCR copy.
 		try:
-			with util.set_save_commit_load(self.ucr) as super_ucr:
+			with set_save_commit_load(self.ucr) as super_ucr:
 				for object, in iterator:
 					for key, value in object.iteritems():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
-						super_ucr.set_registry_var('%s/%s' % (constants.ONLINE_BASE, key), value)
+						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
 				changed = super_ucr.changed()
 		except Exception as e:
 			MODULE.warn("   !! Writing UCR failed: %s" % str(e))
-			return [{'message': str(e), 'status': constants.PUT_WRITE_ERROR}]
+			return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
 		self.package_manager.update()
 
@@ -1216,13 +1216,13 @@ class Instance(umcm.Base, ProgressMixin):
 		except ConfigurationError:
 			msg = _("There is no repository at this server (or at least none for the current UCS version)")
 			MODULE.warn("   !! Updater error: %s" % msg)
-			response = {'message': msg, 'status': constants.PUT_UPDATER_ERROR}
+			response = {'message': msg, 'status': PUT_UPDATER_ERROR}
 			# if nothing was committed, we want a different type of error code,
 			# just to appropriately inform the user
 			if changed:
-				response['status'] = constants.PUT_UPDATER_NOREPOS
+				response['status'] = PUT_UPDATER_NOREPOS
 			return [response]
 		except BaseException as ex:
 			MODULE.warn("   !! Updater error: %s" % (ex,))
-			return [{'message': str(ex), 'status': constants.PUT_UPDATER_ERROR}]
-		return [{'status': constants.PUT_SUCCESS}]
+			return [{'message': str(ex), 'status': PUT_UPDATER_ERROR}]
+		return [{'status': PUT_SUCCESS}]

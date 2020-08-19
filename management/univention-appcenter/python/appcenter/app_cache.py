@@ -136,7 +136,7 @@ class _AppCache(object):
 						apps[app.id] = (app, True)
 			else:
 				apps[app.id] = (app, app.is_installed())
-		return sorted(app for (app, is_installed) in apps.itervalues())
+		return sorted(app for (app, is_installed) in apps.values())
 
 	def find_by_component_id(self, component_id):
 		for app in self.get_every_single_app():

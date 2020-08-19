@@ -51,7 +51,7 @@ from univention.appcenter.utils import app_ports, mkdir, get_free_disk_space, ge
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load, ucr_run_filter
 from univention.appcenter.settings import Setting
 from univention.appcenter.ini_parser import read_ini_file
-from six import with_metaclass
+from six import with_metaclass, string_types, PY3
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'
@@ -132,7 +132,7 @@ class AppAttribute(UniventionMetaInfo):
 	def test_type(self, value, instance_type):
 		if value is not None:
 			if instance_type is None:
-				instance_type = basestring
+				instance_type = string_types
 			if not isinstance(value, instance_type):
 				raise ValueError('Wrong type')
 
@@ -140,7 +140,7 @@ class AppAttribute(UniventionMetaInfo):
 		try:
 			if self.required:
 				self.test_required(value)
-			self.test_type(value, basestring)
+			self.test_type(value, string_types)
 			if self.choices:
 				self.test_choices(value)
 			if self.regex:
@@ -211,7 +211,10 @@ class AppBooleanAttribute(AppAttribute):
 		if value in [True, False]:
 			return value
 		if value is not None:
-			value = RawConfigParser._boolean_states.get(str(value).lower())
+			if PY3:
+				value = RawConfigParser.BOOLEAN_STATES.get(str(value).lower())
+			else:
+				value = RawConfigParser._boolean_states.get(str(value).lower())
 			if value is None:
 				raise ValueError('Invalid value')
 		return value
@@ -232,8 +235,8 @@ class AppListAttribute(AppAttribute):
 	def parse(self, value):
 		if value == '':
 			value = None
-		if isinstance(value, basestring):
-			value = re.split('\s*,\s*', value)
+		if isinstance(value, string_types):
+			value = re.split(r'\s*,\s*', value)
 		if value is None:
 			value = []
 		return value
@@ -354,7 +357,7 @@ class AppAttributeOrFalseOrNone(AppBooleanAttribute):
 
 	def test_type(self, value, instance_type):
 		if value is not False and value is not None:
-			super(AppBooleanAttribute, self).test_type(value, basestring)
+			super(AppBooleanAttribute, self).test_type(value, string_types)
 
 
 class AppAttributeOrTrueOrNone(AppBooleanAttribute):
@@ -367,7 +370,7 @@ class AppAttributeOrTrueOrNone(AppBooleanAttribute):
 
 	def test_type(self, value, instance_type):
 		if value is not True and value is not None:
-			super(AppBooleanAttribute, self).test_type(value, basestring)
+			super(AppBooleanAttribute, self).test_type(value, string_types)
 
 
 class AppFileAttribute(AppAttribute):
@@ -902,9 +905,9 @@ class App(with_metaclass(AppMetaClass, object)):
 	automatic_schema_creation = AppBooleanAttribute(default=True)
 	docker_env_ldap_user = AppAttribute()
 
-	ports_exclusive = AppListAttribute(regex='^\d+$')
-	ports_redirection = AppListAttribute(regex='^\d+:\d+$')
-	ports_redirection_udp = AppListAttribute(regex='^\d+:\d+$')
+	ports_exclusive = AppListAttribute(regex=r'^\d+$')
+	ports_redirection = AppListAttribute(regex=r'^\d+:\d+$')
+	ports_redirection_udp = AppListAttribute(regex=r'^\d+:\d+$')
 
 	server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
