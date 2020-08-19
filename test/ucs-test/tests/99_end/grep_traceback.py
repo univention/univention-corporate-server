@@ -97,7 +97,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
 	('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
 	('^permissionDenied$', ['_create']),
-	('^noObject:.*', ['__update_membership', 'sync_to_ucs']),
+	('^noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
 	('^ldapError: No such object', ['in _create']),
 	('^ldap.NO_SUCH_OBJECT: .*', [r'quota\.py']),
 	(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
@@ -109,6 +109,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'(lockfile\.)?LockTimeout\: Timeout waiting to acquire lock for \/var\/run\/umc-server\.pid', None),
 	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
 	(r'OSError\: \[Errno 3\].*', ['univention-management-console-server.*_terminate_daemon_process']),
+	('univention.lib.umc.ServiceUnavailable: .*', ['univention-self-service-invitation']),
 
 	# updater test cases:
 	("^apt.cache.FetchFailedException: E:The repository 'http://localhost/univention-repository/.* Release' is not signed.", None),
@@ -144,6 +145,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py']),  # Bug #49866
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
 	('^ImportError: No module named docker_upgrade', ['univention-app']),  # Bug #50381
+	('^ImportError: No module named service', ['univention-app']),  # Bug #50381
 	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
 	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
@@ -157,8 +159,11 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 	(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket", None),
 	(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None),  # Bug #51808
-	(r"noLock\: The attribute \'sid\' could not get locked\.", ['getMachineSid']),  # Bug #44294
+	(r"noLock\: The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid']),  # Bug #44294
 	(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py']),  # Bug #51815
+	(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs']),  # Bug #50279
+	(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), []),  # Bug #45787
+	(r'pg.InternalError: FATAL:\s*PAM-Authentifizierung für Benutzer ».*$« fehlgeschlagen', ['univention-pkgdb-scan']),  # Bug #50937
 ])
 
 
