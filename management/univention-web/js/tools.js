@@ -70,6 +70,7 @@ define([
 		alert: function() {},
 		centerAlertDialog: function() {}
 	};
+	var dialogLoaded = new Deferred();
 
 	tools.loadLicenseDataDeferred = new Deferred();
 	tools.browserSupportsIntlCollator = typeof(Intl) === 'object' && Intl.hasOwnProperty('Collator') && typeof(Intl.Collator) === 'function';
@@ -80,6 +81,7 @@ define([
 		login = _login;
 		TextArea = _TextArea;
 		TextBox = _TextBox;
+		dialogLoaded.resolve(_dialog);
 
 		// automatically read in license information and re-read meta data upon first login
 		login.onInitialLogin(function() {
@@ -633,6 +635,7 @@ define([
 
 				displayError: function(info) {
 					var canceled = new Deferred();
+					canceled.then(function(){}, function() {});  /* prevent traceback about unhandled deferred */
 					canceled.reject();
 					if (!this.displayErrors) {
 						return canceled;
@@ -645,7 +648,7 @@ define([
 						return this['display' + status](info);
 					}
 
-					if (status === 401 && !this.force401Display) {  // force should only be used by error.html
+					if (status === 401 && !this.force401Display) {  // force should only be used by showErrorDialog
 						return canceled;
 					}
 
@@ -672,7 +675,7 @@ define([
 
 				displayTraceback: function(info) {
 					topic.publish('/umc/actions', 'error', 'traceback');
-					return tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message, null, custom.hideInformVendor);
+					return tools.showTracebackDialog(info.traceback, info.title + '\n\n' + info.message, null, custom.hideInformVendor, custom.hideInformVendorViaMail);
 				}
 			}, custom);
 			return errorHandler;
@@ -870,7 +873,22 @@ define([
 			this.getErrorHandler(handleErrors ? handleErrors : {}).error(info);
 		},
 
-		showTracebackDialog: function(message, statusMessage, title, hideInformVendor) {
+		showErrorDialog: function(data, handleErrors) {
+			dialogLoaded.then(lang.hitch(this, function() {  /* dependency problem umc/dialog is not yet require()d in umc/tools*/
+				var info = this.parseError(data);
+				info.title = info.title || _('HTTP Error %s', info.status);
+				this.getErrorHandler(lang.mixin({ force401Display: true }, (handleErrors || {}))).displayError(info).then().always(function() {
+					if (handleErrors.noRedirection) {
+						return;
+					}
+					setTimeout(function() {
+						window.location.href = data.location || '/univention/management/';
+					}, 1000);
+				});
+			}));
+		},
+
+		showTracebackDialog: function(message, statusMessage, title, hideInformVendor, hideInformVendorViaMail) {
 			var readableMessage = message.split('\n');
 			// reverse it. web or mail client could truncate long tracebacks. last calls are important.
 			// See Bug #33798
@@ -916,20 +934,23 @@ define([
 			var options = [{
 				name: 'close',
 				label: _('Close'),
+				'default': hideInformVendor && hideInformVendorViaMail,
 				callback: function() {
 					deferred.cancel();
 				}
-			}, {
-				name: 'as_email',
-				label: feedbackLabel,
-				'default': true,
-				callback: function() {
-					deferred.resolve();
-					window.open(feedbackMailto, '_blank');
-				}
 			}];
+			if (!hideInformVendorViaMail) {
+				options.push({
+					name: 'as_email',
+					label: feedbackLabel,
+					'default': !!hideInformVendor,
+					callback: function() {
+						deferred.resolve();
+						window.open(feedbackMailto, '_blank');
+					}
+				});
+			}
 			if (! hideInformVendor) {
-				options[1]['default'] = false;
 				options.push({
 					name: 'send',
 					'default': true,
