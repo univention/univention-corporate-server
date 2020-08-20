@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-appcenter
-fix: 8.0.11-132A~4.4.4.202008201249
+fix: 8.0.11-134A~4.4.5.202008201511
 desc: |
  This update addresses the following issue(s):
  * Allow the execution of custom hooks after install, upgrade and

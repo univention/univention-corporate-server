@@ -1,4 +1,4 @@
-univention-appcenter (8.0.11-134) unstable; urgency=medium
+univention-appcenter (8.0.11-135) unstable; urgency=medium
 
   * Bug #51790: Allow the execution of custom hooks after install, upgrade and
     remove.
