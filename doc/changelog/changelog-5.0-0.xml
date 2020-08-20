@@ -288,7 +288,7 @@
 			<title>Univention Directory Reports</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						<package>univention-directory-reports</package> is now using Python 3 (<u:bug>51569</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
