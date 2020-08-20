@@ -44,7 +44,7 @@ from univention.appcenter.app import App
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
-from univention.appcenter.utils import get_locale
+from univention.appcenter.utils import get_locale, call_process2
 from univention.appcenter.ucr import ucr_get
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.packages import package_lock, LockError
@@ -89,6 +89,30 @@ class InstallRemoveUpgrade(Register):
 
 	def _write_fail_event(self, app, context_id, status, args):
 		pass
+
+	def _call_action_hooks(self, directory):
+		"""
+		abstract method is empty, because there is no default hook for any
+		action. The implementation has to be done in each derived class if
+		needed.
+		"""
+		pass;
+
+	def _run_parts(self, directory):
+		"""
+		in order to call hooks we use run-parts, so that administrators can
+		better comprehend what is done behind the scenes and test their script
+		folders manually using that tool.
+		"""
+		from os import path
+		if os.path.isdir(directory):
+			(retval, output) = call_process2(["run-parts", directory])
+			# self.log(output) is unnecessary, because call_process2 logs its
+			# output, but if you are replacing call_process2 with something
+			# different, please remember to to inform the user about the output
+			# of the scripts!
+		else:
+			self.log('Potential script hook folder is unused: {folder}'.format(folder=directory))
 
 	def do_it(self, args):
 		app = args.app
@@ -158,6 +182,14 @@ class InstallRemoveUpgrade(Register):
 			else:
 				if status == 200:
 					self._write_success_event(app, context_id, args)
+					self._call_action_hooks(
+						"/var/lib/univention-appcenter/apps/"
+						"{app_id}/local/hooks/{when}-{action}.d".format(
+							app_id=app.id,
+							action=self.get_action_name(),
+							when="post"
+						)
+					)
 				else:
 					self._write_fail_event(app, context_id, status, args)
 				if status != 200:

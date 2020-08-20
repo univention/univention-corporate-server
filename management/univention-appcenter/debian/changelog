@@ -1,8 +1,9 @@
-univention-appcenter (8.0.11-133) UNRELEASED; urgency=medium
+univention-appcenter (8.0.11-134) unstable; urgency=medium
 
-  * Bug #51790: Execute custom hook scripts after app install/update/remove
+  * Bug #51790: Allow the execution of custom hooks after install, upgrade and
+    remove.
 
- -- Julia Bremer <bremer@univention.de>  Fri, 07 Aug 2020 22:15:25 +0200
+ -- Max Christian Pohle <pohle@univention.de>  Mon, 13 Aug 2020 10:23:23 +0200
 
 univention-appcenter (8.0.11-132) unstable; urgency=medium
 
