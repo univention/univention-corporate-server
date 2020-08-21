@@ -452,7 +452,7 @@ block_update_if_postup_failed() {
 	if grep -q "status=FAILED" "/var/lib/univention-updater/univention-updater.status"; then
 		local errorsource="$(sed -nre 's/^errorsource=(.*)/\1/p' /var/lib/univention-updater/univention-updater.status)"
 		if [ "$errorsource" = "POSTUP" ]; then
-			echo "WARNING: The postup.sh of the last update was not executed sucessfully."
+			echo "WARNING: The postup.sh of the last update was not executed successfully."
 			echo "Please check https://help.univention.com/t/what-to-do-if-postup-failed/15885 for further information."
 			echo "The update can be started after the postup.sh has been successfully re-executed and "
 			echo "/var/lib/univention-updater/univention-updater.status has been removed."
