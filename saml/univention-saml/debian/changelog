@@ -1,3 +1,9 @@
+univention-saml (6.0.2-51) unstable; urgency=medium
+
+  * Bug #51801: fix html syntax errors, rebase to upstream changes
+
+ -- Florian Best <best@univention.de>  Fri, 21 Aug 2020 11:00:51 +0200
+
 univention-saml (6.0.2-50) unstable; urgency=medium
 
   * Bug #51801: add missing bracket

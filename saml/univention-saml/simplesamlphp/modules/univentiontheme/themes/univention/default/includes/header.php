@@ -83,8 +83,12 @@ if ($json != NULL) {
 if ($this->isLanguageRTL()) {
 	echo '<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'resources/default-rtl.css" />';
 }
-if(array_key_exists('head', $this->data)) {
-	echo '<!-- head -->' . $this->data['head'] . '<!-- /head -->';
+if (!empty($this->data['htmlinject']['htmlContentHead'])) {
+	echo '<!-- head -->';
+	foreach ($this->data['htmlinject']['htmlContentHead'] as $c) {
+		echo $c;
+	}
+	echo '<!-- /head -->';
 }
 ?>
 		<script type="text/javascript" src="/univention/login/saml-config.js"></script>
@@ -120,3 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<div class="univentionLogo"></div>
 			</div>
 		</div>
+<?php
+if (!empty($this->data['htmlinject']['htmlContentPre'])) {
+    foreach ($this->data['htmlinject']['htmlContentPre'] as $c) {
+        echo $c;
+    }
+}
+?>

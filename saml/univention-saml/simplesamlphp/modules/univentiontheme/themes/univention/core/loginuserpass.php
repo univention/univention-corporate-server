@@ -96,7 +96,7 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 			</div>
 			<div id="umcLoginLinks"></div>
 			<!-- preload the image! -->
-			<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;">
+			<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;"/>
 <?php
 
 if (!empty($this->data['links'])) {
@@ -109,6 +109,7 @@ if (!empty($this->data['links'])) {
 ?>
 		</div>
 		<script type="text/javascript">
+			//<!--
 			require(['dojo/domReady!'], function() {
 				<?php
 					printf("var node = document.getElementById('%s');\n", strlen($this->data['username']) > 0 ? 'umcLoginPassword' : 'umcLoginUsername');
@@ -128,6 +129,7 @@ if (!empty($this->data['links'])) {
 					node.innerHTML = error_description_text;
 				}
 			});
+			//-->
 		</script>
 <?php
 $this->includeAtTemplateBase('includes/footer.php');
