@@ -116,7 +116,7 @@ class SamlTest(object):
 		if self.page.status_code != status_code:
 			raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (self.position, self.page.status_code, status_code, self.page.text))
 
-	def _request(self, method, url, status_code, data=None):
+	def _request(self, method, url, status_code, data=None, expected_format='html'):
 		"""does POST or GET requests and raises SamlError which encodes the login step
 		through position parameter."""
 		headers = {'Accept-Language': 'en-US;q=0.6,en;q=0.4', 'Referer': ''}
@@ -134,11 +134,14 @@ class SamlTest(object):
 			raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
 		except requests.ConnectionError as E:
 			raise SamlError("Problem while %s\nNo connection to server: %s" % (self.position, E.message))
-		try:
-			self.parsed_page = ET.fromstring(bytes(self.page.text))
-		except xml.etree.ElementTree.ParseError as exc:
-			print('WARN: could not parse XML/HTML: %s' % (exc,))
-			self.parsed_page = xml.etree.ElementTree.Element('html')
+		if expected_format == 'html':
+			try:
+				self.parsed_page = ET.fromstring(bytes(self.page.text))
+			except xml.etree.ElementTree.ParseError as exc:
+				print('WARN: could not parse XML/HTML: %s' % (exc,))
+				self.parsed_page = xml.etree.ElementTree.Element('html')
+		elif expected_format == 'json':
+			self.parsed_page = json.loads(bytes(self.page.text))
 		self._check_status_code(status_code)
 
 	def _login_at_idp_with_credentials(self):
@@ -206,8 +209,8 @@ class SamlTest(object):
 		url = "https://%s/univention/get/session-info" % self.target_sp_hostname
 		print("Test login @ %s" % url)
 		self.position = "testing login"
-		self._request('GET', url, 200)
-		auth_type = json.loads(self.page.text)['result']['auth_type']
+		self._request('GET', url, 200, expected_format='json')
+		auth_type = self.parsed_page['result']['auth_type']
 		if auth_type != 'SAML':
 			utils.fail("SAML wasn't used for login?")
 		print("Login success")
@@ -225,7 +228,7 @@ class SamlTest(object):
 		url = "https://%s/univention/get/session-info" % self.target_sp_hostname
 		print("Test logout @ %s" % url)
 		self.position = "testing logout"
-		self._request('GET', url, 401)
+		self._request('GET', url, 401, expected_format='json')
 		print("Logout success at SP")
 
 	def test_logout_at_IdP(self):
