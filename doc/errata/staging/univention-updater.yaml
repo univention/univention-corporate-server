@@ -3,9 +3,11 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-updater
-fix: 14.0.2-16A~4.4.0.202008181254
+fix: 14.0.2-17A~4.4.0.202008211330
 desc: |
  This update addresses the following issue(s):
  * The UCR variable version/version and version/patchlevel are now set before
    the postup.sh is called.
-bug: [46465]
+ * The update to the next UCS version is now blocked if the previous postup.sh
+   execution has failed.
+bug: [46465, 51880]
