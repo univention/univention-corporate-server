@@ -59,11 +59,11 @@ attributes = "%s, %s" % (config_attributes, expiry_attributes)
 
 
 print("	'hostname'		=> '%s'," % hostname)
-print("	'enable_tls'		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/ldap/enable_tls', True) else 'FALSE')
-print("	'debug' 		=> %s," % 'TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE')
+print("	'enable_tls'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/enable_tls', True) else 'FALSE'))
+print("	'debug' 		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE'))
 print("	'attributes'		=> array(%s)," % attributes)
 print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
-print("	'search.attributes' 	=> array(%s)," % (search_attributes,),
+print("	'search.attributes' 	=> array(%s)," % (search_attributes,)),
 print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/selfservice/check_email_verification', False) else 'FALSE'))
 
 ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
