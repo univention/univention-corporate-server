@@ -266,7 +266,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def open(self):
 		super(object, self).open()
-		self['portalComputers'] = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPortalComputer)(univentionComputerPortal=%s))', [self.dn]))
+		if self.exists():
+			self['portalComputers'] = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPortalComputer)(univentionComputerPortal=%s))', [self.dn]))
 		self.save()
 
 	def _ldap_pre_create(self):
