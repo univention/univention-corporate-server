@@ -12,21 +12,21 @@ desc: |
    databases (Magellan) (CVE-2018-20346)
  * Multiple flaws in sqlite which can be triggered via corrupted internal
    databases (Magellan) (CVE-2018-20506)
- * out-of-bounds access in SQLite (CVE-2019-5827)
- * heap-based buffer over-read in function fts5HashEntrySort in sqlite3.c
+ * Out-of-bounds access in SQLite (CVE-2019-5827)
+ * Heap-based buffer over-read in function fts5HashEntrySort in sqlite3.c
    (CVE-2019-9936)
- * null-pointer dereference in function fts5ChunkIterate in sqlite3.c
+ * NULL pointer dereference in function fts5ChunkIterate in sqlite3.c
    (CVE-2019-9937)
- * division by zero in whereLoopAddBtreeIndex in sqlite3.c (CVE-2019-16168)
+ * Division by zero in whereLoopAddBtreeIndex in sqlite3.c (CVE-2019-16168)
  * selectExpander in select.c proceeds with WITH stack unwinding even after a
    parsing error (CVE-2019-20218)
- * malformed window-function query leads to DoS (CVE-2020-11655)
- * integer overflow in sqlite3_str_vappendf function in printf.c
+ * Malformed window-function query leads to DoS (CVE-2020-11655)
+ * Integer overflow in sqlite3_str_vappendf function in printf.c
    (CVE-2020-13434)
- * use-after-free in fts3EvalNextRow in ext/fts3/fts3.c (CVE-2020-13630)
+ * Use-after-free in fts3EvalNextRow in ext/fts3/fts3.c (CVE-2020-13630)
  * NULL pointer dereference in ext/fts3/fts3_snippet.c via a crafted
    matchinfo() query (CVE-2020-13632)
- * use-after-free in resetAccumulator in select.c (CVE-2020-13871)
+ * Use-after-free in resetAccumulator in select.c (CVE-2020-13871)
 bug: [51900]
 cve:
 - CVE-2018-8740
