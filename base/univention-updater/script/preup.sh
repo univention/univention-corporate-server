@@ -449,8 +449,9 @@ check_overwritten_umc_templates
 
 # Bug #51880: if last postup.sh failed
 block_update_if_postup_failed() {
-	if grep -q "status=FAILED" "/var/lib/univention-updater/univention-updater.status"; then
-		local errorsource="$(sed -nre 's/^errorsource=(.*)/\1/p' /var/lib/univention-updater/univention-updater.status)"
+	local statusfile="/var/lib/univention-updater/univention-updater.status"
+	if [ -e "$statusfile" ] && grep -q "status=FAILED" "$statusfile"; then
+		local errorsource="$(sed -nre 's/^errorsource=(.*)/\1/p' "$statusfile")"
 		if [ "$errorsource" = "POSTUP" ]; then
 			echo "WARNING: The postup.sh of the last update was not executed successfully."
 			echo "Please check https://help.univention.com/t/what-to-do-if-postup-failed/15885 for further information."
