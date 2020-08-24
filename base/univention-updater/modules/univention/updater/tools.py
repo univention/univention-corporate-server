@@ -960,6 +960,15 @@ class UniventionUpdater(object):
             timeout=self.timeout,
         )
         try:
+            if not self.repourl.path:
+                try:
+                    assert self.server.access(None, '/univention-repository/')
+                    self.server += '/univention-repository/'
+                    self.log.info('Using detected prefix /univention-repository/')
+                except DownloadError as e:
+                    self.log.info('No prefix /univention-repository/ detected, using /')
+                    ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
+                return  # already validated or implicit /
             # Validate server settings
             try:
                 assert self.server.access(None, '')
