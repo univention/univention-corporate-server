@@ -1,0 +1,80 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u9
+desc: |
+ This update addresses the following issues:
+ * memory exhaustion in function ReadTIFFImage causing denial of service
+   (CVE-2017-12805)
+ * Infinite loop in ReadPSDChannelZip function in coders/psd.c
+   (CVE-2017-17681)
+ * assertion failure in MogrifyImageList function in MagickWand/mogrify.c
+   (CVE-2017-18252)
+ * Memory allocation failure in ReadTIFFImage function in memory.c
+   (CVE-2018-7443)
+ * double free in WriteEPTImage function in coders/ept.c (CVE-2018-8804)
+ * heap-buffer-overflow in ReadTIFFImage function in coders/tiff.c
+   (CVE-2018-8960)
+ * excessive iteration in the DecodeLabImage and EncodeLabImage functions in
+   coders/tiff.c (CVE-2018-9133)
+ * Infinite loop in coders/png.c:ReadOneMNGImage() allows attackers to cause a
+   denial of service via crafted MNG file (CVE-2018-10177)
+ * Uninitialized variable in coders/mat.c:ReadMATImageV4() allows for memory
+   corruption (CVE-2018-14551)
+ * infinite loop in the ReadBMPImage function of the coders/bmp.c
+   (CVE-2018-18024)
+ * infinite loop in coders/bmp.c (CVE-2018-20467)
+ * off-by-one read in formatIPTCfromBuffer function in coders/meta.c
+   (CVE-2019-10131)
+ * denial of service in cineon parsing component (CVE-2019-11470)
+ * denial of service in ReadXWDImage in coders/xwd.c in the XWD image parsing
+   component (CVE-2019-11472)
+ * heap-based buffer over-read in the function WriteTIFFImage of coders/tiff.c
+   leading to DoS or information disclosure (CVE-2019-11597)
+ * null-pointer dereference in function ReadPANGOImage in coders/pango.c and
+   ReadVIDImage in coders/vid.c causing denial of service (CVE-2019-12974)
+ * use of uninitialised value in function WriteJP2Image in coders/jp2.c
+   (CVE-2019-12977)
+ * use of uninitialized value in function ReadPANGOImage in coders/pango.c
+   (CVE-2019-12978)
+ * use of uninitialized value in functionSyncImageSettings in
+   MagickCore/image.c (CVE-2019-12979)
+ * heap-based buffer over-read at MagickCore/threshold.c in
+   AdaptiveThresholdImage because a width of zero is mishandled
+   (CVE-2019-13295)
+ * heap-based buffer over-read at MagickCore/threshold.c in
+   AdaptiveThresholdImage because a height of zero is mishandled
+   (CVE-2019-13297)
+ * division by zero in RemoveDuplicateLayers in MagickCore/layer.c
+   (CVE-2019-13454)
+ * division by zero in MeanShiftImage in MagickCore/feature.c (CVE-2019-14981)
+ * heap-based buffer over-read in WritePNGImage in coders/png.c
+   (CVE-2019-19949)
+bug: [51898]
+cve:
+- CVE-2017-12805
+- CVE-2017-17681
+- CVE-2017-18252
+- CVE-2018-7443
+- CVE-2018-8804
+- CVE-2018-8960
+- CVE-2018-9133
+- CVE-2018-10177
+- CVE-2018-14551
+- CVE-2018-18024
+- CVE-2018-20467
+- CVE-2019-10131
+- CVE-2019-11470
+- CVE-2019-11472
+- CVE-2019-11597
+- CVE-2019-12974
+- CVE-2019-12977
+- CVE-2019-12978
+- CVE-2019-12979
+- CVE-2019-13295
+- CVE-2019-13297
+- CVE-2019-13454
+- CVE-2019-14981
+- CVE-2019-19949
