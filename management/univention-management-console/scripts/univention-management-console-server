@@ -128,11 +128,13 @@ class UMC_Daemon(DaemonRunner):
 			CORE.process('Specified locale is not available (%s)' % self.options.language)
 
 	def _open_streams_from_app_stream_paths(self, app):
+		# Workaround for Python 3 Problem:
+		# python-daemon does `open('/dev/null', 'w+t', buffering=0)`
+		# which causes `ValueError: can't have unbuffered text I/O`
 		if six.PY3:
-			if not self.options.daemon_mode:
-				self.daemon_context.stdin = open(app.stdin_path, 'r')
-				self.daemon_context.stdout = open(app.stdout_path, 'w')
-				self.daemon_context.stderr = open(app.stderr_path, 'w')
+			self.daemon_context.stdin = open(app.stdin_path, 'r') if app.stdin_path != '/dev/stdin' else sys.stdin
+			self.daemon_context.stdout = open(app.stdout_path, 'w') if app.stdout_path != '/dev/stdout' else sys.stdout
+			self.daemon_context.stderr = open(app.stderr_path, 'w') if app.stderr_path != '/dev/stderr' else sys.stderr
 			return
 		return super(UMC_Daemon, self)._open_streams_from_app_stream_paths(app)
 
