@@ -147,6 +147,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
 	('^ImportError: No module named docker_upgrade', ['univention-app']),  # Bug #50381
 	('^ImportError: No module named service', ['univention-app']),  # Bug #50381
+	('^ImportError: No module named ldap_extension', ['get_action']),  # Bug #50381
 	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
 	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
