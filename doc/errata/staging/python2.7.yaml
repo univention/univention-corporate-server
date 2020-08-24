@@ -11,12 +11,12 @@ desc: |
    (CVE-2019-5010)
  * Information Disclosure due to urlsplit improper NFKC normalization
    (CVE-2019-9636)
- * improper neutralization of CRLF sequences in urllib module (CVE-2019-9740)
- * improper neutralization of CRLF sequences in urllib module (CVE-2019-9947)
- * undocumented local_file protocol allows remote attackers to bypass
+ * Improper neutralization of CRLF sequences in urllib module (CVE-2019-9740)
+ * Improper neutralization of CRLF sequences in urllib module (CVE-2019-9947)
+ * Undocumented local_file protocol allows remote attackers to bypass
    protection mechanisms (CVE-2019-9948)
  * email.utils.parseaddr wrongly parses email addresses (CVE-2019-16056)
- * infinite loop in the tarfile module via crafted TAR archive
+ * Infinite loop in the tarfile module via crafted TAR archive
    (CVE-2019-20907)
 bug: [51899]
 cve:
