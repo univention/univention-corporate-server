@@ -6,61 +6,61 @@ src: ghostscript
 fix: 9.26a~dfsg-0+deb9u7
 desc: |
  This update addresses the following issues:
- * buffer overflow in lprn_is_black() in contrib/lips4/gdevlprn.c could result
+ * Buffer overflow in lprn_is_black() in contrib/lips4/gdevlprn.c could result
    in a DoS via a crafted PDF file (CVE-2020-16287)
- * buffer overflow in pj_common_print_page() in devices/gdevpjet.c could
+ * Buffer overflow in pj_common_print_page() in devices/gdevpjet.c could
    result in a DoS via a crafted PDF file (CVE-2020-16288)
- * buffer overflow in cif_print_page() in devices/gdevcif.c could result in a
+ * Buffer overflow in cif_print_page() in devices/gdevcif.c could result in a
    DoS via a crafted PDF file (CVE-2020-16289)
- * buffer overflow in jetp3852_print_page() in devices/gdev3852.c could result
+ * Buffer overflow in jetp3852_print_page() in devices/gdev3852.c could result
    in a DoS via a crafted PDF file (CVE-2020-16290)
- * buffer overflow in contrib/gdevdj9.c could result in a DoS via a crafted
+ * Buffer overflow in contrib/gdevdj9.c could result in a DoS via a crafted
    PDF file (CVE-2020-16291)
- * buffer overflow in mj_raster_cmd() in contrib/japanese/gdevmjc.c could
+ * Buffer overflow in mj_raster_cmd() in contrib/japanese/gdevmjc.c could
    result in a DoS via a crafted PDF file (CVE-2020-16292)
  * A null pointer dereference vulnerability in
    compose_group_nonknockout_nonblend_isolated_allmask_common() in
    base/gxblend.c could result in a DoS via a crafted PDF file
    (CVE-2020-16293)
- * buffer overflow in epsc_print_page() in devices/gdevepsc.c could result in
+ * Buffer overflow in epsc_print_page() in devices/gdevepsc.c could result in
    a DoS via a crafted PDF file (CVE-2020-16294)
  * A null pointer dereference vulnerability in clj_media_size() in
    devices/gdevclj.c could result in a DoS via a crafted PDF file
    (CVE-2020-16295)
- * buffer overflow in GetNumWrongData() in contrib/lips4/gdevlips.c could
+ * Buffer overflow in GetNumWrongData() in contrib/lips4/gdevlips.c could
    result in a DoS via a crafted PDF file (CVE-2020-16296)
- * buffer overflow in FloydSteinbergDitheringC() in contrib/gdevbjca.c could
+ * Buffer overflow in FloydSteinbergDitheringC() in contrib/gdevbjca.c could
    result in a DoS via a crafted PDF file (CVE-2020-16297)
- * buffer overflow in mj_color_correct() in contrib/japanese/gdevmjc.c could
+ * Buffer overflow in mj_color_correct() in contrib/japanese/gdevmjc.c could
    result in a DoS via a crafted PDF file (CVE-2020-16298)
- * division by zero vulnerability in bj10v_print_page() in
+ * Division by zero vulnerability in bj10v_print_page() in
    contrib/japanese/gdev10v.c could result in a DoS via a crafted PDF file
    (CVE-2020-16299)
- * buffer overflow in tiff12_print_page() in devices/gdevtfnx.c could result
+ * Buffer overflow in tiff12_print_page() in devices/gdevtfnx.c could result
    in a DoS via a crafted PDF file (CVE-2020-16300)
- * buffer overflow in okiibm_print_page1() in devices/gdevokii.c could result
+ * Buffer overflow in okiibm_print_page1() in devices/gdevokii.c could result
    in a DoS via a crafted PDF file (CVE-2020-16301)
- * buffer overflow in jetp3852_print_page() in devices/gdev3852.c could result
+ * Buffer overflow in jetp3852_print_page() in devices/gdev3852.c could result
    in a privilege escalation via a crafted PDF file (CVE-2020-16302)
- * use-after-free vulnerability in xps_finish_image_path() in
+ * Use-after-free vulnerability in xps_finish_image_path() in
    devices/vector/gdevxps.c could result in a privilege escalation via a
    crafted PDF file (CVE-2020-16303)
- * buffer overflow in image_render_color_thresh() in base/gxicolor.c could
+ * Buffer overflow in image_render_color_thresh() in base/gxicolor.c could
    result in a DoS via a crafted PDF file (CVE-2020-16304)
- * buffer overflow in pcx_write_rle() in contrib/japanese/gdev10v.c could
+ * Buffer overflow in pcx_write_rle() in contrib/japanese/gdev10v.c could
    result in a DoS via a crafted PDF file (CVE-2020-16305)
  * A null pointer dereference vulnerability in devices/gdevtsep.c could result
    in a DoS via a crafted postscript file (CVE-2020-16306)
  * A null pointer dereference vulnerability in devices/vector/gdevtxtw.c and
    psi/zbfont.c could result in a DoS via a crafted postscript file
    (CVE-2020-16307)
- * buffer overflow in p_print_image() in devices/gdevcdj.c could result in a
+ * Buffer overflow in p_print_image() in devices/gdevcdj.c could result in a
    DoS via a crafted PDF file (CVE-2020-16308)
- * buffer overflow in lxm5700m_print_page() in devices/gdevlxm.c could result
+ * Buffer overflow in lxm5700m_print_page() in devices/gdevlxm.c could result
    in a DoS via a crafted PDF file (CVE-2020-16309)
- * division by zero vulnerability in dot24_print_page() in devices/gdevdm24.c
+ * Division by zero vulnerability in dot24_print_page() in devices/gdevdm24.c
    could result in a DoS via a crafted PDF file (CVE-2020-16310)
- * buffer overflow in GetNumSameData() in contrib/lips4/gdevlips.c could
+ * Buffer overflow in GetNumSameData() in contrib/lips4/gdevlips.c could
    result in a DoS via a crafted PDF file (CVE-2020-17538)
 bug: [51897]
 cve:
