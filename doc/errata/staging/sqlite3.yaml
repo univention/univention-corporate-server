@@ -1,0 +1,44 @@
+product: ucs
+release: "4.4"
+version: [4, 5]
+scope: ucs_4.4-0-errata4.4-5
+src: sqlite3
+fix: 3.16.2-5+deb9u2
+desc: |
+ This update addresses the following issues:
+ * NULL pointer dereference with databases with schema corrupted with CREATE
+   TABLE AS allows for denial of service (CVE-2018-8740)
+ * Multiple flaws in sqlite which can be triggered via corrupted internal
+   databases (Magellan) (CVE-2018-20346)
+ * Multiple flaws in sqlite which can be triggered via corrupted internal
+   databases (Magellan) (CVE-2018-20506)
+ * out-of-bounds access in SQLite (CVE-2019-5827)
+ * heap-based buffer over-read in function fts5HashEntrySort in sqlite3.c
+   (CVE-2019-9936)
+ * null-pointer dereference in function fts5ChunkIterate in sqlite3.c
+   (CVE-2019-9937)
+ * division by zero in whereLoopAddBtreeIndex in sqlite3.c (CVE-2019-16168)
+ * selectExpander in select.c proceeds with WITH stack unwinding even after a
+   parsing error (CVE-2019-20218)
+ * malformed window-function query leads to DoS (CVE-2020-11655)
+ * integer overflow in sqlite3_str_vappendf function in printf.c
+   (CVE-2020-13434)
+ * use-after-free in fts3EvalNextRow in ext/fts3/fts3.c (CVE-2020-13630)
+ * NULL pointer dereference in ext/fts3/fts3_snippet.c via a crafted
+   matchinfo() query (CVE-2020-13632)
+ * use-after-free in resetAccumulator in select.c (CVE-2020-13871)
+bug: [51900]
+cve:
+- CVE-2018-8740
+- CVE-2018-20346
+- CVE-2018-20506
+- CVE-2019-5827
+- CVE-2019-9936
+- CVE-2019-9937
+- CVE-2019-16168
+- CVE-2019-20218
+- CVE-2020-11655
+- CVE-2020-13434
+- CVE-2020-13630
+- CVE-2020-13632
+- CVE-2020-13871
