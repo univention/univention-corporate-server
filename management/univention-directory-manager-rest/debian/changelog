@@ -1,3 +1,10 @@
+univention-directory-manager-rest (9.0.16-10) unstable; urgency=medium
+
+  * Bug #51685: fix references to objects with umlauts in the DN
+  * Bug #51685: add some more Python 3 compatibility
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2020 18:37:08 +0200
+
 univention-directory-manager-rest (9.0.16-9) unstable; urgency=medium
 
   * Bug #51090: make UCR templates compatible to python3
