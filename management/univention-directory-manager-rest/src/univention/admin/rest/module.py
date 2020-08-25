@@ -34,7 +34,6 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 import re
@@ -417,7 +416,7 @@ class ResourceBase(object):
 
 	def _auth_check_allowed_groups(self):
 		allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-		memberof = self.ldap_connection.getAttr(self.request.user_dn, b'memberOf')
+		memberof = self.ldap_connection.getAttr(self.request.user_dn, 'memberOf')
 		if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
 			raise HTTPError(403, 'Not in allowed groups.')
 
@@ -2676,7 +2675,7 @@ class Object(FormBase, Resource):
 		return props
 
 	def set_metadata(self, obj):  # FIXME: move into UDM core!
-		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=[b'+']))
+		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=['+']))
 
 	def set_entity_tags(self, obj):
 		self.set_header('Etag', self.get_etag(obj))
@@ -3004,7 +3003,7 @@ class Object(FormBase, Resource):
 		safe_request = self.request.method in ('GET', 'HEAD', 'OPTIONS')
 
 		def wheak(x):
-			return x[2:] if x.startswith(b'W/') else x
+			return x[2:] if x.startswith('W/') else x
 		etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
 
 		def check_conditional_request_if_none_match():
@@ -3052,7 +3051,7 @@ class UserPhoto(Resource):
 			raise NotFound(object_type, dn)
 
 		data = obj.info.get('jpegPhoto', '').decode('base64')
-		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, b'modifyTimestamp')[0].decode('utf-8'))
+		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))
 		if modified:
 			self.add_header('Last-Modified', last_modified(modified))
 		self.set_header('Content-Type', 'image/jpeg')
