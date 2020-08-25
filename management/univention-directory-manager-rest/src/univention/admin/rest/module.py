@@ -232,10 +232,10 @@ class PropertiesSanitizer(DictSanitizer):
 		# The following code is a workaround to make sure that this is the
 		# case, however, this should be fixed correctly.
 		# This workaround has been documented as Bug #25163.
-		def _tmp_cmp(i, j):
+		def _tmp_cmp(i):
 			if i[0] == 'network':
-				return -1
-			return 0
+				return ("\x00", i[1])
+			return i
 		properties = resource.request.body_arguments['properties']
 		# TODO: add sanitizer for e.g. required properties (respect options!)
 
@@ -250,7 +250,7 @@ class PropertiesSanitizer(DictSanitizer):
 			self.default_sanitizer._obj = None
 
 		password_properties = module.password_properties
-		for property_name, value in sorted(properties.items(), _tmp_cmp):
+		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
 			if property_name in password_properties:
 				MODULE.info('Setting password property %s' % (property_name,))
 			else:
@@ -398,7 +398,7 @@ class ResourceBase(object):
 		try:
 			if not authorization.lower().startswith('basic '):
 				raise ValueError()
-			username, password = base64.decodestring(authorization.split(' ', 1)[1]).split(':', 1)
+			username, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('ISO8859-1').split(':', 1)
 		except (ValueError, IndexError, binascii.Error):
 			raise HTTPError(400)
 
@@ -769,8 +769,8 @@ class ResourceBase(object):
 			return
 
 		def quote_param(s):
-			for i in range(32):  # remove non printable characters
-				s = s.replace(unichr(i), '')
+			for char in u'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f':  # remove non printable characters
+				s = s.replace(char, '')
 			return s.replace('\\', '\\\\').replace('"', '\\"')
 		kwargs['rel'] = relation
 		params = []
@@ -1759,7 +1759,7 @@ class Modules(Resource):
 	def get(self):
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('All modules'))
-		for main_type, name in sorted(self.mapping.items(), key=lambda x: 0 if x[0] == 'navigation' else x[0]):
+		for main_type, name in sorted(self.mapping.items(), key=lambda x: "\x00" if x[0] == 'navigation' else x[0]):
 			title = _('All %s types') % (name,)
 			if '/' in name:
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
@@ -2876,23 +2876,29 @@ class Object(FormBase, Resource):
 	def handle_udm_errors(self, action):
 		try:
 			exists_msg = None
-			exc = None
+			error = None
 			try:
 				return action()
 			except udm_errors.objectExists as exc:
 				exists_msg = 'dn: %s' % (exc.args[0],)
+				error = exc
 			except udm_errors.uidAlreadyUsed as exc:
 				exists_msg = '(uid)'
+				error = exc
 			except udm_errors.groupNameAlreadyUsed as exc:
 				exists_msg = '(group)'
+				error = exc
 			except udm_errors.dhcpServerAlreadyUsed as exc:
 				exists_msg = '(dhcpserver)'
+				error = exc
 			except udm_errors.macAlreadyUsed as exc:
 				exists_msg = '(mac)'
+				error = exc
 			except udm_errors.noLock as exc:
 				exists_msg = '(nolock)'
-			if exists_msg and exc:
-				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(exc))))
+				error = exc
+			if exists_msg and error:
+				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(error))))
 		except (udm_errors.pwQuality, udm_errors.pwToShort, udm_errors.pwalreadyused) as exc:
 			self.raise_sanitization_error('password', str(UDM_Error(exc)))
 		except udm_errors.invalidOptions as exc:
@@ -3050,7 +3056,7 @@ class UserPhoto(Resource):
 		if not obj.has_property('jpegPhoto'):
 			raise NotFound(object_type, dn)
 
-		data = obj.info.get('jpegPhoto', '').decode('base64')
+		data = base64.b64decode(obj.info.get('jpegPhoto', u'').encode('ASCII'))
 		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))
 		if modified:
 			self.add_header('Last-Modified', last_modified(modified))
@@ -3075,7 +3081,7 @@ class UserPhoto(Resource):
 		photo = self.request.files['jpegPhoto'][0]['body']
 		if len(photo) > 262144:
 			raise HTTPError(413, 'too large: maximum: 262144 bytes')
-		obj['jpegPhoto'] = photo.encode('base64')
+		obj['jpegPhoto'] = base64.b64encode(photo).decode('ASCII')
 
 		yield self.pool.submit(obj.modify)
 
@@ -3495,7 +3501,7 @@ class LicenseRequest(Resource):
 			raise HTTPError(500, _('Cannot parse License from LDAP'))
 
 		# TODO: we should also send a link (self.request.full_url()) to the license server, so that the email can link to a url which automatically inserts the license:
-		# self.request.urljoin('import', license=quote(zlib.compress(''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith('univentionLicense')), 6)[2:-4].encode('base64').rstrip()))
+		# self.request.urljoin('import', license=quote(base64.b64encode(zlib.compress(b''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith(b'univentionLicense')), 6)[2:-4])))
 
 		data = urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
@@ -3600,6 +3606,9 @@ class License(Resource):
 
 class LicenseImport(Resource):
 
+	@sanitize_query_string(
+		license=StringSanitizer(required=True),
+	)
 	def get(self):
 		text = '''dn: cn=admin,cn=license,cn=univention,%(ldap/base)s
 cn: admin
@@ -3608,10 +3617,10 @@ objectClass: univentionLicense
 objectClass: univentionObject
 univentionObjectType: settings/license
 ''' % ucr
-		for line in zlib.decompress(unquote(text).decode('base64'), -15).splitlines():
+		for line in zlib.decompress(base64.b64decode(self.request.query_arguments['license'].encode('ASCII')), -15).decode('UTF-8').splitlines():
 			text += 'univentionLicense%s\n' % (line.strip(),)
 
-		self.import_license(io.BytesIO(text))
+		self.import_license(io.BytesIO(text.encode('UTF-8')))
 
 	def post(self):
 		return self.import_license(io.BytesIO(self.request.files['license'][0]['body']))
