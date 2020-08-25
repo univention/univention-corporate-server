@@ -14,7 +14,7 @@ import subprocess
 import time
 
 from univention.admin.rest.client import UDM as UDMClient, Forbidden, Unauthorized, PreconditionFailed
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry, handler_set
 from univention.testing.utils import UCSTestDomainAdminCredentials
 from univention.testing.udm import UDM
 from univention.lib.misc import custom_groupname
@@ -84,13 +84,19 @@ def test_etag_last_modified(udm):
 	# assert 'If-Unmodified-Since' in str(exc)
 
 
-def test_create_modify_move_remove(random_string):
+@pytest.mark.parametrize('suffix', ['', u'ä'])
+def test_create_modify_move_remove(random_string, suffix, ucr):
+	if suffix:
+		handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
+		subprocess.call(['service', 'univention-directory-manager-rest', 'restart'])
+
 	with UDM() as udm:
-		userdn, user = udm.create_user()
+		username = random_string() + suffix
+		userdn, user = udm.create_user(username=username)
 		udm.verify_ldap_object(userdn)
 		org_dn = userdn
 
-		username = random_string()
+		username = random_string() + suffix
 
 		description = random_string()
 		userdn = udm.modify_object('users/user', dn=userdn, description=description)
@@ -113,6 +119,7 @@ def test_create_modify_move_remove(random_string):
 @pytest.mark.parametrize('name', [
 	'''a !"#$%&'"()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~z''',
 	'foo//bar',
+	u'foobär',
 ])
 def test_special_characters_in_dn(name):
 	with UDM() as udm:
