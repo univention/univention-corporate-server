@@ -153,12 +153,27 @@ def update_status(**kwargs):
         for key, val in updater_status.items():
             fd.write('%s=%s\n' % (key, val))
         fd.close()
-    except:
+    except Exception:
         dprint('Warning: cannot update %s' % fn)
     try:
         os.rename(fn, FN_STATUS)
-    except:
+    except Exception:
         dprint('Warning: cannot update %s' % FN_STATUS)
+
+
+def get_status():
+    status = {}
+    try:
+        with open(FN_STATUS, 'r') as fd:
+            for line in fd.readlines():
+                try:
+                    key, value = line.rstrip().split('=', 1)
+                except ValueError:
+                    continue
+                status[key] = value
+    except EnvironmentError:
+        pass
+    return status
 
 
 def usage(fd=sys.stdout):
@@ -426,7 +441,7 @@ def main():
             except UpdateError as msg:
                 dprint("Error: %s" % msg)
                 print('Error: Please check "%s" for details.' % LOGNAME, file=sys.stderr)
-                # Errors are handles as "update currently no available"
+                # Errors are handled as "update currently no available"
             except RequiredComponentError as ex:
                 dprint("%s" % ex)
             else:
@@ -457,6 +472,15 @@ def main():
 
     lastversion = '%s-%s' % (vv, vp)
     nextversion = None
+
+    # Bug #51880: if last postup.sh failed
+    last_status = get_status()
+    if last_status.get('status') == 'FAILED' and last_status.get('errorsource') == 'POSTUP':
+        dprint("ERROR: The postup.sh of the last update was not executed successfully.")
+        dprint("       Please check https://help.univention.com/t/what-to-do-if-postup-failed/15885 for further information.")
+        dprint("       The update can be started after the postup.sh has been successfully re-executed and ")
+        dprint("       /var/lib/univention-updater/univention-updater.status has been removed.")
+        sys.exit(1)
 
     update_status(current_version=lastversion, type=command.upper(), status='RUNNING')
 

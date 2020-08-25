@@ -1,3 +1,9 @@
+univention-updater (14.0.2-19) unstable; urgency=medium
+
+  * Bug #51880: move logic to univention-updater
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2020 10:16:36 +0200
+
 univention-updater (14.0.2-18) unstable; urgency=medium
 
   * Bug #51880: ignore not existing status file
