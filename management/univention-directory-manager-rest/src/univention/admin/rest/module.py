@@ -2580,7 +2580,7 @@ class ObjectsMove(Resource):
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
 			raise
 		else:
-			status['uri'] = self.urljoin(dn)
+			status['uri'] = self.urljoin(quote_dn(dn))
 		finally:
 			status['finished'] = True
 
@@ -2953,7 +2953,7 @@ class Object(FormBase, Resource):
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
 			raise
 		else:
-			status['uri'] = self.urljoin(dn)
+			status['uri'] = self.urljoin(quote_dn(dn))
 		finally:
 			status['finished'] = True
 
