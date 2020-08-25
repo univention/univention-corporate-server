@@ -44,19 +44,17 @@ import time
 import copy
 import uuid
 import zlib
-import urllib
 import base64
-import httplib
 import hashlib
 import binascii
 import datetime
 import traceback
 import functools
 from email.utils import parsedate
-from urlparse import urljoin, urlparse, urlunparse, parse_qs
-from urllib import quote, unquote
 
 import six
+from six.moves.urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
+from six.moves.http_client import responses
 
 import tornado.web
 import tornado.gen
@@ -379,7 +377,7 @@ class ResourceBase(object):
 
 	def prepare(self):
 		self.request.content_negotiation_lang = 'html'
-		self.request.path_decoded = urllib.unquote(self.request.path)
+		self.request.path_decoded = unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
 			if self.requires_authentication:
@@ -751,7 +749,7 @@ class ResourceBase(object):
 		if query:
 			qs = parse_qs(base.query)
 			qs.update(dict((key, val if isinstance(val, (list, tuple)) else [val]) for key, val in query.items()))
-			query_string = '?%s' % (urllib.urlencode(qs, True),)
+			query_string = '?%s' % (urlencode(qs, True),)
 		scheme = base.scheme
 		for _scheme in self.request.headers.get_list('X-Forwarded-Proto'):
 			if _scheme == 'https':
@@ -853,7 +851,7 @@ class ResourceBase(object):
 			if status_code == 503:
 				self.add_header('Retry-After', '15')
 			if title == message:
-				title = httplib.responses.get(status_code)
+				title = responses.get(status_code)
 			if isinstance(exc.result, dict):
 				result = exc.result
 		if isinstance(exc, UnprocessableEntity):
@@ -1105,7 +1103,7 @@ class Relations(Resource):
 
 class OpenAPI(Resource):
 
-	requires_authentication =  ucr.is_true('directory/manager/rest/require-auth', True)
+	requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
 
 	def prepare(self):
 		super(OpenAPI, self).prepare()
@@ -2350,7 +2348,7 @@ class Objects(FormBase, ReportingBase):
 		if not ldap_filter:
 			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
 			if filters:
-				ldap_filter = unicode(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
+				ldap_filter = six.text_type(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
 		# TODO: replace the superordinate concept with container
 		superordinate = self.superordinate_dn_to_object(module, self.request.query_arguments['superordinate'])
@@ -2578,7 +2576,7 @@ class ObjectsMove(Resource):
 				status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
 				status['max'] = len(dns)
 				status['value'] = i
-		except:
+		except Exception:
 			status['errors'] = True
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
 			raise
@@ -2945,7 +2943,7 @@ class Object(FormBase, Resource):
 		self.content_negotiation(status)
 		try:
 			dn = yield self.pool.submit(module.move, dn, position)
-		except:
+		except Exception:
 			status['errors'] = True
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
 			raise
@@ -3498,9 +3496,9 @@ class LicenseRequest(Resource):
 			raise HTTPError(500, _('Cannot parse License from LDAP'))
 
 		# TODO: we should also send a link (self.request.full_url()) to the license server, so that the email can link to a url which automatically inserts the license:
-		# self.request.urljoin('import', license=urllib.quote(zlib.compress(''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith('univentionLicense')), 6)[2:-4].encode('base64').rstrip()))
+		# self.request.urljoin('import', license=quote(zlib.compress(''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith('univentionLicense')), 6)[2:-4].encode('base64').rstrip()))
 
-		data = urllib.urlencode(data)
+		data = urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
 		http_client = tornado.httpclient.HTTPClient()
 		try:
@@ -3551,7 +3549,7 @@ class License(Resource):
 
 		try:
 			import univention.admin.license as udm_license
-		except:
+		except ImportError:
 			license_data['licenseVersion'] = 'gpl'
 		else:
 			license_data['licenseVersion'] = udm_license._license.version
@@ -3563,7 +3561,7 @@ class License(Resource):
 						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
-							except:
+							except ValueError:
 								count = None
 						license_data[item][lic_type.lower()] = count
 
@@ -3577,7 +3575,7 @@ class License(Resource):
 						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
-							except:
+							except ValueError:
 								count = None
 						license_data[item][lic_type.lower()] = count
 				license_data['keyID'] = udm_license._license.licenseKeyID
@@ -3746,4 +3744,4 @@ class Application(tornado.web.Application):
 
 	def multi_regex(self, chars):
 		# Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
-		return ''.join('(?:%s|%s|%s)' % (re.escape(c), re.escape(urllib.quote(c).lower()), re.escape(urllib.quote(c).upper())) if c in '=,' else re.escape(c) for c in chars)
+		return ''.join('(?:%s|%s|%s)' % (re.escape(c), re.escape(quote(c).lower()), re.escape(quote(c).upper())) if c in '=,' else re.escape(c) for c in chars)
