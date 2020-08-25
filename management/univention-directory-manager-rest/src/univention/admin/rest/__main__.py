@@ -102,14 +102,13 @@ class Server(object):
 
 		try:
 			tornado.ioloop.IOLoop.current().start()
-		except (SystemExit, KeyboardInterrupt):
-			raise
-		except:
+		except Exception:
 			CORE.error(traceback.format_exc())
 			raise
 
 	def signal_handler_stop(self, server, sig, frame):
 		io_loop = tornado.ioloop.IOLoop.instance()
+		io_loop = getattr(io_loop, 'asyncio_loop', io_loop)  # Support Python2+3 Tornado version
 
 		def stop_loop(deadline):
 			now = time.time()

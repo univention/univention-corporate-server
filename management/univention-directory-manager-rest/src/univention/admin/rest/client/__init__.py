@@ -500,17 +500,17 @@ class Object(Client):
 
 		response = self.client.make_request('PUT', self.uri, data=self.representation, **headers)
 		response = self._follow_redirection(response)  # move() causes multiple redirections!
-		self._reload_from_response(response)
+		self._reload_from_response(response, reload)
 		return response
 
 	def _create(self, reload=True):
 		uri = self.client.get_relation(self.hal, 'create')
 		response = self.client.make_request('POST', uri['href'], data=self.representation)
 		response = self._follow_redirection(response)
-		self._reload_from_response(response)
+		self._reload_from_response(response, reload)
 		return response
 
-	def _reload_from_response(self, response):
+	def _reload_from_response(self, response, reload):
 		if 200 <= response.response.status_code <= 299 and 'Location' in response.response.headers:
 			uri = response.response.headers['Location']
 			obj = ShallowObject(self.udm, None, uri)
