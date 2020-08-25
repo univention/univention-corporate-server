@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-updater
-fix: 14.0.2-17A~4.4.0.202008211330
+fix: 14.0.2-19A~4.4.0.202008251045
 desc: |
  This update addresses the following issue(s):
  * The UCR variable version/version and version/patchlevel are now set before
