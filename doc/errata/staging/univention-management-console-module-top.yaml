@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-management-console-module-top
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * An error during querying of currently running processes, that occurred
+   when any process had already stopped, has been corrected.
+bug: [49972]

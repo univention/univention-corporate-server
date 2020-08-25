@@ -1,3 +1,10 @@
+univention-management-console-module-top (8.0.1-4) unstable; urgency=medium
+
+  * Bug #49972: prevent race condition during querying of currently running
+    processes that leads to a crash when any process has already been stopped
+
+ -- Christian Castens <castens@univention.de>  Fri, 28 Aug 2020 09:53:14 +0200
+
 univention-management-console-module-top (8.0.1-3) unstable; urgency=medium
 
   * Bug #49158: migrate to dh_python

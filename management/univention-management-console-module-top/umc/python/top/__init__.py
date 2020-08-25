@@ -55,15 +55,11 @@ class Instance(Base):
 		processes = []
 		for process in psutil.process_iter():
 			try:
-				username = process.username()
-			except KeyError:  # fixed in psutil 2.2.0
-				username = str(process.uids().real)
-			try:
 				cpu_time = process.cpu_times()
 				proc = {
 					'timestamp': time.time(),
 					'cpu_time': cpu_time.user + cpu_time.system,
-					'user': username,
+					'user': process.username(),
 					'pid': process.pid,
 					'cpu': 0.0,
 					'mem': process.memory_percent(),
