@@ -35,8 +35,6 @@ import tempfile
 import os.path
 import json
 from imghdr import what
-from StringIO import StringIO
-from urllib import quote
 
 import ldap
 from ldap.dn import explode_dn
@@ -47,7 +45,8 @@ from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPorta
 from univention.portal.log import get_logger
 from univention.portal import Plugin
 
-from six import with_metaclass
+from six import with_metaclass, StringIO
+from six.moves.urllib.parse import quote
 
 
 class Reloader(with_metaclass(Plugin)):
