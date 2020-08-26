@@ -11,3 +11,5 @@ desc: |
  * The update to the next UCS version is now blocked if the previous postup.sh
    execution has failed.
 bug: [46465, 51880]
+erratum: 722
+announced: 2020-08-26
