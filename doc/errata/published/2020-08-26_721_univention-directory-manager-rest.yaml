@@ -9,3 +9,5 @@ desc: |
  * References to objects containing umlauts (or non ASCII characters) in the
    DN have been fixed.
 bug: [50529]
+erratum: 721
+announced: 2020-08-26
