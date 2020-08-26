@@ -41,297 +41,297 @@ from univention.portal.log import setup_logger, get_logger
 import click
 
 
-portals_json = '/usr/share/univention-portal/portals.json'
+portals_json = "/usr/share/univention-portal/portals.json"
 
 
 def read_portals_json():
-	try:
-		with open(portals_json) as fd:
-			return json.load(fd)
-	except EnvironmentError:
-		return {}
+    try:
+        with open(portals_json) as fd:
+            return json.load(fd)
+    except EnvironmentError:
+        return {}
 
 
 @click.group()
 def cli():
-	pass
+    pass
 
 
 def make_new_portal(name, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn):
-	cache_dir = '/var/cache/univention-portal/'
-	if name:
-		cache_dir += name + '/'
-	if name:
-		scorer = {
-			'type': 'class',
-			'class': 'DomainScorer',
-			'kwargs': {
-				'domain': {
-					'type': 'static',
-					'value': name,
-				},
-			},
-		}
-	else:
-		scorer = {
-			'type': 'class',
-			'class': 'Scorer',
-		}
-	if with_portal_reloader:
-		ucr = ConfigRegistry()
-		ucr.load()
-		portal_reloader = {
-			'type': 'class',
-			'class': 'PortalReloaderUDM',
-			'kwargs': {
-				'portal_dn': {
-					'type': 'static',
-					'value': portal_dn or 'cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')),
-				},
-				'cache_file': {
-					'type': 'static',
-					'value': portal_cache_file or os.path.join(cache_dir, 'portal.json'),
-				},
-			},
-		}
-	if with_groups_reloader:
-		ucr = ConfigRegistry()
-		ucr.load()
-		groups_reloader = {
-			'type': 'class',
-			'class': 'GroupsReloaderLDAP',
-			'kwargs': {
-				'ldap_uri': {
-					'type': 'static',
-					'value': 'ldap://{}:{}'.format(ucr.get('ldap/server/name'), ucr.get('ldap/server/port')),
-				},
-				'binddn': {
-					'type': 'static',
-					'value': ucr.get('ldap/hostdn'),
-				},
-				'password_file': {
-					'type': 'static',
-					'value': '/etc/machine.secret',
-				},
-				'ldap_base': {
-					'type': 'static',
-					'value': ucr.get('ldap/base'),
-				},
-				'cache_file': {
-					'type': 'static',
-					'value': groups_cache_file or os.path.join(cache_dir, 'groups.json'),
-				},
-			},
-		}
-	portal_cache = {
-		'type': 'class',
-		'class': 'PortalFileCache',
-		'kwargs': {
-			'cache_file': {
-				'type': 'static',
-				'value': portal_cache_file or os.path.join(cache_dir, 'portal.json'),
-			},
-		}
-	}
-	groups_cache = {
-		'type': 'class',
-		'class': 'GroupFileCache',
-		'kwargs': {
-			'cache_file': {
-				'type': 'static',
-				'value': groups_cache_file or os.path.join(cache_dir, 'groups.json'),
-			},
-		}
-	}
-	if with_portal_reloader:
-		portal_cache['kwargs']['reloader'] = portal_reloader
-	if with_groups_reloader:
-		groups_cache['kwargs']['reloader'] = groups_reloader
-	portal = {
-		'type': 'class',
-		'class': 'Portal',
-		'kwargs': {
-			'portal_cache': portal_cache,
-			'groups_cache': groups_cache,
-			'scorer': scorer,
-		}
-	}
-	return portal
+    cache_dir = "/var/cache/univention-portal/"
+    if name:
+        cache_dir += name + "/"
+    if name:
+        scorer = {
+            "type": "class",
+            "class": "DomainScorer",
+            "kwargs": {
+                "domain": {
+                    "type": "static",
+                    "value": name,
+                },
+            },
+        }
+    else:
+        scorer = {
+            "type": "class",
+            "class": "Scorer",
+        }
+    if with_portal_reloader:
+        ucr = ConfigRegistry()
+        ucr.load()
+        portal_reloader = {
+            "type": "class",
+            "class": "PortalReloaderUDM",
+            "kwargs": {
+                "portal_dn": {
+                    "type": "static",
+                    "value": portal_dn or "cn=domain,cn=portal,cn=portals,cn=univention,{}".format(ucr.get("ldap/base")),
+                },
+                "cache_file": {
+                    "type": "static",
+                    "value": portal_cache_file or os.path.join(cache_dir, "portal.json"),
+                },
+            },
+        }
+    if with_groups_reloader:
+        ucr = ConfigRegistry()
+        ucr.load()
+        groups_reloader = {
+            "type": "class",
+            "class": "GroupsReloaderLDAP",
+            "kwargs": {
+                "ldap_uri": {
+                    "type": "static",
+                    "value": "ldap://{}:{}".format(ucr.get("ldap/server/name"), ucr.get("ldap/server/port")),
+                },
+                "binddn": {
+                    "type": "static",
+                    "value": ucr.get("ldap/hostdn"),
+                },
+                "password_file": {
+                    "type": "static",
+                    "value": "/etc/machine.secret",
+                },
+                "ldap_base": {
+                    "type": "static",
+                    "value": ucr.get("ldap/base"),
+                },
+                "cache_file": {
+                    "type": "static",
+                    "value": groups_cache_file or os.path.join(cache_dir, "groups.json"),
+                },
+            },
+        }
+    portal_cache = {
+        "type": "class",
+        "class": "PortalFileCache",
+        "kwargs": {
+            "cache_file": {
+                "type": "static",
+                "value": portal_cache_file or os.path.join(cache_dir, "portal.json"),
+            },
+        }
+    }
+    groups_cache = {
+        "type": "class",
+        "class": "GroupFileCache",
+        "kwargs": {
+            "cache_file": {
+                "type": "static",
+                "value": groups_cache_file or os.path.join(cache_dir, "groups.json"),
+            },
+        }
+    }
+    if with_portal_reloader:
+        portal_cache["kwargs"]["reloader"] = portal_reloader
+    if with_groups_reloader:
+        groups_cache["kwargs"]["reloader"] = groups_reloader
+    portal = {
+        "type": "class",
+        "class": "Portal",
+        "kwargs": {
+            "portal_cache": portal_cache,
+            "groups_cache": groups_cache,
+            "scorer": scorer,
+        }
+    }
+    return portal
 
 
 @cli.command()
-@click.argument('name')
-@click.option('--update/--dont-update', default=True)
-@click.option('--portal-cache-file')
-@click.option('--groups-cache-file')
-@click.option('--with-portal-reloader/--without-portal-reloader', default=True)
-@click.option('--with-groups-reloader/--without-groups-reloader', default=True)
-@click.option('--portal-dn')
+@click.argument("name")
+@click.option("--update/--dont-update", default=True)
+@click.option("--portal-cache-file")
+@click.option("--groups-cache-file")
+@click.option("--with-portal-reloader/--without-portal-reloader", default=True)
+@click.option("--with-groups-reloader/--without-groups-reloader", default=True)
+@click.option("--portal-dn")
 def add(name, update, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn):
-	json_content = read_portals_json()
-	portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn)
-	name = name or '__default__'
-	if name in json_content:
-		if update:
-			warn('Overwriting existing {}'.format(name))
-		else:
-			info('{} already exists'.format(name))
-			return
-	json_content[name] = portal
-	with open(portals_json, 'w') as fd:
-		json.dump(json_content, fd, sort_keys=True, indent=4)
-	success('{} updated'.format(portals_json))
+    json_content = read_portals_json()
+    portal = make_new_portal(name or None, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn)
+    name = name or "default"
+    if name in json_content:
+        if update:
+            warn("Overwriting existing {}".format(name))
+        else:
+            info("{} already exists".format(name))
+            return
+    json_content[name] = portal
+    with open(portals_json, "w") as fd:
+        json.dump(json_content, fd, sort_keys=True, indent=4)
+    success("{} updated".format(portals_json))
 
 
 @cli.command()
-@click.argument('name')
+@click.argument("name")
 def remove(name):
-	json_content = read_portals_json()
-	if json_content.pop(name, None):
-		with open(portals_json, 'w') as fd:
-			json.dump(json_content, fd, sort_keys=True, indent=4)
-		success('{} removed'.format(name))
-	else:
-		warn('{} does not exist'.format(name))
+    json_content = read_portals_json()
+    if json_content.pop(name, None):
+        with open(portals_json, "w") as fd:
+            json.dump(json_content, fd, sort_keys=True, indent=4)
+        success("{} removed".format(name))
+    else:
+        warn("{} does not exist".format(name))
 
 
 @cli.command()
 def list():
-	json_content = read_portals_json()
-	for name, portal_def in json_content.items():
-		click.echo('{}:'.format(name))
-		portal = make_obj(portal_def)
-		click.echo('  {!r}'.format(portal))
+    json_content = read_portals_json()
+    for name, portal_def in json_content.items():
+        click.echo("{}:".format(name))
+        portal = make_obj(portal_def)
+        click.echo("  {!r}".format(portal))
 
 
 @cli.command()
-@click.argument('name')
+@click.argument("name")
 def push(name):
-	from univention.udm import UDM, NoObject
-	from univention.udm.encoders import Base64Bzip2BinaryProperty
-	json_content = read_portals_json()
-	if name not in json_content:
-		warn('{} does not exist'.format(name))
-		return
-	portal_def = json_content[name]
-	udm = UDM.machine().version(1)
-	data = udm.get('settings/data')
-	ucr = ConfigRegistry()
-	ucr.load()
-	base = 'cn=config,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base'))
-	try:
-		obj = data.get('cn={},{}'.format(name, base))
-	except NoObject:
-		obj = data.new(superordinate='cn=univention,{}'.format(ucr.get('ldap/base')))
-		obj.position = base
-		obj.props.name = name
-		obj.props.data_type = 'portals/config'
-		info('Creating a new settings/data object')
-	json_data = json.dumps(portal_def)
-	obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=json_data)
-	obj.save()
-	success('Saved {} in {}'.format(name, obj.dn))
+    from univention.udm import UDM, NoObject
+    from univention.udm.encoders import Base64Bzip2BinaryProperty
+    json_content = read_portals_json()
+    if name not in json_content:
+        warn("{} does not exist".format(name))
+        return
+    portal_def = json_content[name]
+    udm = UDM.machine().version(1)
+    data = udm.get("settings/data")
+    ucr = ConfigRegistry()
+    ucr.load()
+    base = "cn=config,cn=portals,cn=univention,{}".format(ucr.get("ldap/base"))
+    try:
+        obj = data.get("cn={},{}".format(name, base))
+    except NoObject:
+        obj = data.new(superordinate="cn=univention,{}".format(ucr.get("ldap/base")))
+        obj.position = base
+        obj.props.name = name
+        obj.props.data_type = "portals/config"
+        info("Creating a new settings/data object")
+    json_data = json.dumps(portal_def)
+    obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=json_data)
+    obj.save()
+    success("Saved {} in {}".format(name, obj.dn))
 
 
 @cli.command()
-@click.argument('name')
+@click.argument("name")
 def pull(name):
-	from univention.udm import UDM, NoObject
-	udm = UDM.machine().version(1)
-	data = udm.get('settings/data')
-	ucr = ConfigRegistry()
-	ucr.load()
-	base = 'cn=config,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base'))
-	dn = 'cn={},{}'.format(name, base)
-	try:
-		obj = data.get(dn)
-	except NoObject:
-		warn('{} does not exist'.format(dn))
-		return
-	json_data = json.loads(obj.props.data.raw)
-	json_content = read_portals_json()
-	json_content[name] = json_data
-	with open(portals_json, 'w') as fd:
-		json.dump(json_content, fd, sort_keys=True, indent=4)
-	success('{} updated'.format(portals_json))
+    from univention.udm import UDM, NoObject
+    udm = UDM.machine().version(1)
+    data = udm.get("settings/data")
+    ucr = ConfigRegistry()
+    ucr.load()
+    base = "cn=config,cn=portals,cn=univention,{}".format(ucr.get("ldap/base"))
+    dn = "cn={},{}".format(name, base)
+    try:
+        obj = data.get(dn)
+    except NoObject:
+        warn("{} does not exist".format(dn))
+        return
+    json_data = json.loads(obj.props.data.raw)
+    json_content = read_portals_json()
+    json_content[name] = json_data
+    with open(portals_json, "w") as fd:
+        json.dump(json_content, fd, sort_keys=True, indent=4)
+    success("{} updated".format(portals_json))
 
 
 @cli.command()
-@click.argument('name', nargs=-1)
-@click.option('--portal/--no-portal', default=None)
-@click.option('--groups/--no-groups', default=None)
+@click.argument("name", nargs=-1)
+@click.option("--portal/--no-portal", default=None)
+@click.option("--groups/--no-groups", default=None)
 def update(name, portal, groups):
-	json_content = read_portals_json()
-	if not name:
-		name = json_content.keys()
-	for _name in name:
-		info('Updating {}'.format(_name))
-		try:
-			portal_def = json_content[_name]
-		except KeyError:
-			warn('{} does not exist'.format(name))
-		else:
-			portal_obj = make_portal(portal_def)
-			if portal or (portal is None and groups is None):
-				start = datetime.datetime.now()
-				if portal_obj.portal_cache.refresh(force=True):
-					delta = datetime.datetime.now() - start
-					success('Portal data updated in {:.2f}s'.format(delta.total_seconds()))
-				else:
-					info('Portal data untouched')
-			if groups or (portal is None and groups is None):
-				start = datetime.datetime.now()
-				if portal_obj.groups_cache.refresh(force=True):
-					delta = datetime.datetime.now() - start
-					success('Group data updated in {:.2f}s'.format(delta.total_seconds()))
-				else:
-					info('Group data untouched')
+    json_content = read_portals_json()
+    if not name:
+        name = json_content.keys()
+    for _name in name:
+        info("Updating {}".format(_name))
+        try:
+            portal_def = json_content[_name]
+        except KeyError:
+            warn("{} does not exist".format(name))
+        else:
+            portal_obj = make_portal(portal_def)
+            if portal or (portal is None and groups is None):
+                start = datetime.datetime.now()
+                if portal_obj.portal_cache.refresh(force=True):
+                    delta = datetime.datetime.now() - start
+                    success("Portal data updated in {:.2f}s".format(delta.total_seconds()))
+                else:
+                    info("Portal data untouched")
+            if groups or (portal is None and groups is None):
+                start = datetime.datetime.now()
+                if portal_obj.groups_cache.refresh(force=True):
+                    delta = datetime.datetime.now() - start
+                    success("Group data updated in {:.2f}s".format(delta.total_seconds()))
+                else:
+                    info("Group data untouched")
 
 
 class SomeObj(object):
-	def __init__(self, klass_name, args, kwargs):
-		self.klass_name = klass_name
-		self.args = args
-		self.kwargs = kwargs
+    def __init__(self, klass_name, args, kwargs):
+        self.klass_name = klass_name
+        self.args = args
+        self.kwargs = kwargs
 
-	def all_args(self):
-		ret = []
-		for arg in self.args:
-			ret.append(repr(arg))
-		for name, arg in self.kwargs.items():
-			ret.append('{}={!r}'.format(name, arg))
-		return ', '.join(ret)
+    def all_args(self):
+        ret = []
+        for arg in self.args:
+            ret.append(repr(arg))
+        for name, arg in self.kwargs.items():
+            ret.append("{}={!r}".format(name, arg))
+        return ", ".join(ret)
 
-	def __repr__(self):
-		return '{}({})'.format(self.klass_name, self.all_args())
+    def __repr__(self):
+        return "{}({})".format(self.klass_name, self.all_args())
 
 
 def make_obj(obj_def):
-	arg_type = obj_def['type']
-	if arg_type == 'static':
-		return obj_def['value']
-	if arg_type == 'class':
-		args = []
-		kwargs = {}
-		for _arg_definition in obj_def.get('args', []):
-			args.append(make_obj(_arg_definition))
-		for name, _arg_definition in obj_def.get('kwargs', {}).items():
-			kwargs[name] = make_obj(_arg_definition)
-		return SomeObj(obj_def['class'], args, kwargs)
-	raise TypeError('Unknown obj_def: {!r}'.format(obj_def))
+    arg_type = obj_def["type"]
+    if arg_type == "static":
+        return obj_def["value"]
+    if arg_type == "class":
+        args = []
+        kwargs = {}
+        for _arg_definition in obj_def.get("args", []):
+            args.append(make_obj(_arg_definition))
+        for name, _arg_definition in obj_def.get("kwargs", {}).items():
+            kwargs[name] = make_obj(_arg_definition)
+        return SomeObj(obj_def["class"], args, kwargs)
+    raise TypeError("Unknown obj_def: {!r}".format(obj_def))
 
 def warn(msg):
-	get_logger('cli').warn(msg)
-	click.echo(click.style(msg, fg='yellow'))
+    get_logger("cli").warn(msg)
+    click.echo(click.style(msg, fg="yellow"))
 
 def info(msg):
-	get_logger('cli').info(msg)
-	click.echo(msg)
+    get_logger("cli").info(msg)
+    click.echo(msg)
 
 def success(msg):
-	get_logger('cli').info(msg)
-	click.echo(click.style(msg, fg='green'))
+    get_logger("cli").info(msg)
+    click.echo(click.style(msg, fg="green"))
 
-if __name__ == '__main__':
-	setup_logger(stream=False)
-	cli()
+if __name__ == "__main__":
+    setup_logger(stream=False)
+    cli()
