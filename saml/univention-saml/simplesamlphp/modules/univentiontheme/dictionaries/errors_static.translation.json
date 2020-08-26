@@ -5,6 +5,12 @@
 	"descr_WRONGUSERPASS": {
 		"de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. \u00dcberpr\u00fcfen Sie die Zugangsdaten und probieren Sie es nochmal"
 	},
+	"title_univention:PW_CHANGE_FAILED": {
+		"de": "Passwort ändern fehlgeschlagen"
+	},
+	"descr_univention:PW_CHANGE_FAILED": {
+		"de": "%s"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"de": "Account deaktiviert"
 	},
@@ -30,31 +36,22 @@
 		"de": "Der Samba Account ist abgelaufen, Login verweigert"
 	},
 	"title_LDAP_PWCHANGE": {
-		"de": "Ihr Passwort ist abgelaufen"
+		"de": "Das Passwort ist abgelaufen und muss erneuert werden"
 	},
 	"descr_LDAP_PWCHANGE": {
-		"de": "Bitte %s und melden sich erneut an."
-	},
-	"linktitle_LDAP_PWCHANGE": {
-		"de": "ändern Sie Ihr Passwort"
+		"de": ""
 	},
 	"title_KRB_PWCHANGE": {
-		"de": "Ihr Passwort ist abgelaufen"
+		"de": "Das Passwort ist abgelaufen und muss erneuert werden"
 	},
 	"descr_KRB_PWCHANGE": {
-		"de": "Bitte %s und melden sich erneut an."
-	},
-	"linktitle_KRB_PWCHANGE": {
-		"de": "ändern Sie Ihr Passwort"
+		"de": ""
 	},
 	"title_SAMBA_PWCHANGE": {
-		"de": "Ihr Passwort ist abgelaufen"
+		"de": "Das Passwort ist abgelaufen und muss erneuert werden"
 	},
 	"descr_SAMBA_PWCHANGE": {
-		"de": "Bitte %s und melden sich erneut an."
-	},
-	"linktitle_SAMBA_PWCHANGE": {
-		"de": "ändern Sie Ihr Passwort"
+		"de": ""
 	},
 	"title_SAMBA_ACCLOCKED": {
 		"de": "Account gesperrt"
@@ -67,5 +64,17 @@
 	},
 	"descr_KRB_ACCLOCKED": {
 		"de": "Der Kerberos Account ist gesperrt, Login verweigert"
+	},
+	"title_univention:RETYPE_MISMATCH": {
+		"de": "Passwort ändern fehlgeschlagen"
+	},
+	"desc_univention:RETYPE_MISMATCH": {
+		"de": "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
+	},
+	"title_univention:PASSWORD_CHANGE_SUCCESS": {
+		"de": "Das Passwort wurde erfolgreich geändert"
+	},
+	"descr_univention:PASSWORD_CHANGE_SUCCESS": {
+		"de": "Bitte melden Sie sich erneut an."
 	}
 }

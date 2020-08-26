@@ -25,6 +25,5 @@ def get_login_translations():
 	return login_translations
 
 
-print(json.dumps(get_login_translations()))
+print(json.dumps(get_login_translations(), indent=4))
 @!@
-

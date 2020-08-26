@@ -30,5 +30,5 @@ with open('/usr/share/simplesamlphp/modules/univentiontheme/dictionaries/errors_
 	errors_definition.update(get_selfservice_definitions())
 
 
-print(json.dumps(errors_definition))
+print(json.dumps(errors_definition, indent=4))
 @!@

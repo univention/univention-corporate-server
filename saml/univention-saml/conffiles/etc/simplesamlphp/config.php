@@ -25,7 +25,7 @@ print("	'enable.saml20-idp'	=> %s," % saml20_enabled)
 
 print("	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin'))
 print("	'debug'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/log/debug/enabled', False) else 'FALSE'))
-print("	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
+print("	'logging.level'		=> SimpleSAML\Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR'))
 print("	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2])
 print("	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default'))
 print("	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator'))
@@ -134,18 +134,18 @@ print("	'errorreporting'            =>	%s," % ('TRUE' if configRegistry.is_true(
 	 * Logging.
 	 * 
 	 * define the minimum log level to log
-	 *		SimpleSAML_Logger::ERR		No statistics, only errors
-	 *		SimpleSAML_Logger::WARNING	No statistics, only warnings/errors
-	 *		SimpleSAML_Logger::NOTICE	Statistics and errors
-	 *		SimpleSAML_Logger::INFO		Verbose logs
-	 *		SimpleSAML_Logger::DEBUG	Full debug logs - not recommended for production
+	 *		SimpleSAML\Logger::ERR		No statistics, only errors
+	 *		SimpleSAML\Logger::WARNING	No statistics, only warnings/errors
+	 *		SimpleSAML\Logger::NOTICE	Statistics and errors
+	 *		SimpleSAML\Logger::INFO		Verbose logs
+	 *		SimpleSAML\Logger::DEBUG	Full debug logs - not recommended for production
 	 * 
 	 * Choose logging handler.
 	 * 
 	 * Options: [syslog,file,errorlog]
 	 * 
 	 */
-#	'logging.level'         => SimpleSAML_Logger::NOTICE,
+#	'logging.level'         => SimpleSAML\Logger::NOTICE,
 	'logging.handler'       => 'syslog',
 
 	/*
@@ -723,11 +723,6 @@ for key, server in configRegistry.items():
 	 *   'redirect.trustedsites' => array('sp.example.com', 'othersite.org'),
 	 */
 	'redirect.trustedsites' => NULL,
-
-@!@
-print("\t'password_change_url' => '%s'," % (configRegistry.get('saml/idp/password-change-url', '').replace('\\', '\\\\').replace("'", "\\'"),))
-@!@
-
 );
 
 require_once('/var/lib/simplesamlphp/secrets.inc.php');

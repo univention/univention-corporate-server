@@ -5,6 +5,12 @@
 	"descr_WRONGUSERPASS": {
 		"en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
 	},
+	"title_univention:PW_CHANGE_FAILED": {
+		"en": "Changing password failed"
+	},
+	"descr_univention:PW_CHANGE_FAILED": {
+		"en": "%s"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"en": "Account disabled"
 	},
@@ -30,31 +36,22 @@
 		"en": "The Samba account is expired, login is denied"
 	},
 	"title_LDAP_PWCHANGE": {
-		"en": "Your password is expired"
+		"en": "The password has expired and must be renewed"
 	},
 	"descr_LDAP_PWCHANGE": {
-		"en": "Please %s and log in again."
-	},
-	"linktitle_LDAP_PWCHANGE": {
-		"en": "change your password"
+		"en": ""
 	},
 	"title_KRB_PWCHANGE": {
-		"en": "Your password is expired"
+		"en": "The password has expired and must be renewed"
 	},
 	"descr_KRB_PWCHANGE": {
-		"en": "Please %s and log in again."
-	},
-	"linktitle_KRB_PWCHANGE": {
-		"en": "change your password"
+		"en": ""
 	},
 	"title_SAMBA_PWCHANGE": {
-		"en": "Your password is expired"
+		"en": "The password has expired and must be renewed"
 	},
 	"descr_SAMBA_PWCHANGE": {
-		"en": "Please %s and log in again."
-	},
-	"linktitle_SAMBA_PWCHANGE": {
-		"en": "change your password"
+		"en": ""
 	},
 	"title_SAMBA_ACCLOCKED": {
 		"en": "Account locked"
@@ -67,5 +64,17 @@
 	},
 	"descr_KRB_ACCLOCKED": {
 		"en": "The Kerberos account is locked, login is denied"
+	},
+	"title_univention:RETYPE_MISMATCH": {
+		"en": "Changing password failed"
+	},
+	"descr_univention:RETYPE_MISMATCH": {
+		"en": "The passwords do not match, please retype again."
+	},
+	"title_univention:PASSWORD_CHANGE_SUCCESS": {
+		"en": "The password has been changed successfully"
+	},
+	"descr_univention:PASSWORD_CHANGE_SUCCESS": {
+		"en": "Please login again."
 	}
 }
