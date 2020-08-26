@@ -877,7 +877,8 @@ define([
 			dialogLoaded.then(lang.hitch(this, function() {  /* dependency problem umc/dialog is not yet require()d in umc/tools*/
 				var info = this.parseError(data);
 				info.title = info.title || _('HTTP Error %s', info.status);
-				this.getErrorHandler(lang.mixin({ force401Display: true }, (handleErrors || {}))).displayError(info).then().always(function() {
+				handleErrors = handleErrors || {};
+				this.getErrorHandler(lang.mixin({ force401Display: true }, handleErrors)).displayError(info).then().always(function() {
 					if (handleErrors.noRedirection) {
 						return;
 					}

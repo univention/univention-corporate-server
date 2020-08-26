@@ -1,3 +1,9 @@
+univention-web (3.0.5-42) unstable; urgency=medium
+
+  * Bug #45445: fix "Cannot read property noRedirection of undefined"
+
+ -- Florian Best <best@univention.de>  Wed, 26 Aug 2020 10:40:05 +0200
+
 univention-web (3.0.5-41) unstable; urgency=medium
 
   * Bug #45445: version bump (3.0.5-40 was already imported to
