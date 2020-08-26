@@ -14,6 +14,8 @@ RETVAL=110 # Test fehlgeschlagen
 
 setup_apache "${repoprefix}"
 
+UPDATE_AVAILABLE=$(ucr get update/available)
+
 FIXED_31733=false
 BUG31733 () { # expected-value cmd...
 	local expected value
@@ -32,7 +34,7 @@ BUG31733 () { # expected-value cmd...
 		echo "update/available: $value" >&2
 	fi
 
-	ucr set update/available= # reset the UCR variable
+	ucr set update/available="$UPDATE_AVAILABLE"
 	[ "$expected" = "$value" ]
 }
 
@@ -49,7 +51,7 @@ BUG31733 () { # expected-value cmd...
 	echo "### Initiate the repository (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 	mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 	mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
-	mkpkg "${DIR}" "${DIR_POOL}"
+	mkpkg "${DIRS[0]}" "${DIR_POOL}"
 
 	# reset to X.X-0 without errata patches
 	config_repo version/patchlevel=0 version/erratalevel=0
@@ -68,8 +70,8 @@ BUG31733 () { # expected-value cmd...
 		echo "### Create a new patchlevel release (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
-		mkpkg "${DIR}" "${DIR_POOL}"
-		apt-get -qq update
+		mkpkg "${DIRS[2]}" "${DIR_POOL}"
+		python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-${patchlevel}"
 
 		# an update should be available
 		BUG31733 yes /usr/share/univention-updater/univention-updater-check
@@ -83,7 +85,7 @@ BUG31733 () { # expected-value cmd...
 		let ++pkversion
 		echo "### Create a new package version (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
-		mkpkg "${DIR}" "${DIR_POOL}"
+		mkpkg "${DIR[2]}" "${DIR_POOL}"
 		apt-get -qq update
 
 		# an update should be available
@@ -91,7 +93,7 @@ BUG31733 () { # expected-value cmd...
 
 		# call univention-actualise and make sure update/available has been updated
 		echo "### Updating packages (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
-			BUG31733 "" /usr/share/univention-updater/univention-actualise
+		BUG31733 no /usr/share/univention-updater/univention-actualise
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3

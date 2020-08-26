@@ -24,6 +24,7 @@ tests () {
 	for cmd in _aptget _pyapt _apt _aptitude  # _dselect
 	do
 		have "$cmd" || continue
+		rm -f /var/lib/apt/lists/*_InRelease*
 		rm -f /var/lib/apt/lists/*_Release*
 		echo "=== $1 $cmd ==="
 		"$cmd" "$1"
@@ -54,7 +55,8 @@ have dselect && _dselect () { "$1" dselect update; }
 
 	echo "=== sec=no  key=no ==="
 	apt-key del "${GPGPUB}"
-	rm "${DIR}/Release.gpg"
+	rm "${DIR//\/main\/binary-*/}/Release.gpg"
+	rm "${DIR//\/main\/binary-*/}/InRelease"
 	tests pos
 
 	echo "=== sec=yes  key=no ==="

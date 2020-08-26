@@ -1,4 +1,4 @@
-# vim:set ft=sh:
+# vim:set ft=bash:
 #
 # Common library function for updater test
 # 1. All modifications done though "ucr" are automatically undone on exit
@@ -83,6 +83,9 @@ cleanup () { # Undo all changes
 
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
 	find -P /etc/apache2 -lname "${BASEDIR}/*" -exec rm -f {} +
+	if [[ $APACHE_MOD_GROUPFILE_ENABLED -ne 0 ]]; then
+		a2dismode authz_groupfile
+	fi
 	apache2ctl restart >&3 2>&3
 	sleep 3
 
@@ -129,6 +132,7 @@ failure () { # Report failed command
 trap 'failure ${LINENO}' ERR
 set -E # functions inherit ERR
 
+declare -a APACHE_MOD_GROUPFILE_ENABLED
 setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	local hostname=localhost
 	if [ "${1}" = "--port" ]
@@ -161,6 +165,11 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 		a2dissite univention-repository >&3 2>&3
 	fi
 	truncate -s 0 "${BASEDIR}/apache2.log"
+
+	apache2ctl -M | grep -q authz_groupfile
+	APACHE_MOD_GROUPFILE_ENABLED=$?
+
+	a2enmod authz_groupfile
 	apache2ctl restart >&3 2>&3
 }
 
@@ -255,7 +264,7 @@ have () { command -v "$1" >/dev/null 2>&1; }
 
 declare -a DIRS
 mkpdir () { # Create pool directory ${dir}
-	declare -a versions component_versions parts archs
+	declare -a versions component_versions parts archs dir
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
@@ -290,16 +299,18 @@ mkpdir () { # Create pool directory ${dir}
 	do
 		echo "Creating for $version"
 		for release_type in "${release_types[@]}"; do
-			version_stripped=$(echo "${version%--*}" | sed 's/[^0-9]//g')
+			version_stripped="${version%--*}"
+			version_stripped="${version_stripped//[^0-9]/}"
 			for arch in "${archs[@]}"
 			do
-				DIR="${REPODIR}/${version%%-*}/${part}/${version#*--}/${arch}"
-				mkdir -p "${DIR}"
-				DIR="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
-				DIRS+=("${DIR}")
-				mkdir -p "${DIR}"
-				touch "${DIR}/Packages"
-				mkpkg "${DIR}" "${DIR}"
+				dir="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
+				if [[ ! " ${DIRS[@]} " =~ " $dir " ]]; then
+					DIR="${dir}"
+					DIRS+=("${DIR}")
+					mkdir -p "${DIR}"
+					touch "${DIR}/Packages"
+					mkpkg "${DIR}" "${DIR_POOL}"
+				fi
 			done
 		done
 	done
@@ -392,57 +403,45 @@ mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
 	then
 		gpgsign "${DSC}"
 	fi
-	[ -z "${dir}" ] || mv "${DSC}" "${TGZ}" "${dir}/"
+	if [ -n "${dir}" ]; then
+		if [ -e "${dir}/${name:0:1}/" ]; then
+			cp "${DSC}" "${TGZ}" "${dir}/${name:0:1}/"
+		else
+			cp "${DSC}" "${TGZ}" "${dir}/"
+		fi
+	fi
 }
 
-mkpkg () { # Create Package files for ${1} in ${2}. Optional arguments go to dpkg-scanpackages.
+mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional arguments go to dpkg-scanpackages.
 	local dir="${1:-${DIR}}"
 	shift
 	local dir_pool="${1:-${DIR_POOL}}"
 	shift
-	if [ "$dir" = "$dir_pool" ]; then
-		cd "${dir}/../.." || return $?
-		local subdir="${dir#${PWD}/}"
-	else
-		cd "${dir}/../../../.." || return $?
-		#local parentdir="${dir_pool%/${repoprefix}*}/${repoprefix}"
-		local subdir="${dir_pool#*${repoprefix}/}"
-	fi
-	dpkg-scanpackages "${@}" "${subdir}" > "${dir}/Packages" 2>&3 # || return $?
+	local rel_pool_dir="${dir_pool//${REPODIR}\/}"
+	rel_pool_dir="${rel_pool_dir//*\/component\//}"
+	cd "${dir_pool//${rel_pool_dir}/}" || return $?
+	dpkg-scanpackages "${@}" "${rel_pool_dir}" > "${dir}/Packages" 2>&3 # || return $?
 	xz -k -9 <"${dir}/Packages" >"${dir}/Packages.xz"
 	gzip -n -9 <"${dir}/Packages" >"${dir}/Packages.gz"
 	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
 	cd "${OLDPWD}" || return $?
 
 	mkgpg
-	cd "${dir}" || return $?
+	cd "${dir//\/main\/binary-*/}" || return $?
 	rm -f Release Release.tmp Release.gpg
+	local codename=${dir//${REPODIR}/}
+	codename="${codename//\/main\/binary-*/}"
 	apt-ftparchive \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
 		-o "APT::FTPArchive::Release::Label=Univention" \
-		-o "APT::FTPArchive::Release::Version=${subdir%%/*}" \
-		-o "APT::FTPArchive::Release::Codename=${subdir}" \
+		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
+		-o "APT::FTPArchive::Release::Codename=${codename}" \
 		release . >Release.tmp 2>&3
 	mv Release.tmp Release
 
 	gpgsign InRelease
 	gpgsign Release
-
 	cd "${OLDPWD}" || return $?
-
-	if [ "$dir" != "$dir_pool" ]; then
-		cd "${dir}/../.." || return $?
-
-		apt-ftparchive \
-			-o "APT::FTPArchive::Release::Origin=Univention" \
-			-o "APT::FTPArchive::Release::Label=Univention" \
-			release . >Release.tmp 2>&3
-		mv Release.tmp Release
-		gpgsign InRelease
-		gpgsign Release
-
-		cd "${OLDPWD}" || return $?
-	fi
 
 	find "${REPODIR}" >&3 2>&3
 }
@@ -484,31 +483,38 @@ gpgsign () { # sign file
 		--armor \
 		--default-key "${GPGID}" \
 		"${sign}" \
-		--output out in 2>&1 | grep -v 'as default secret key for signing'
+		--output out in 2>&1
 	cp "${GPG_DIR}/out" "${out}"
 }
 
-mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scansources.
+mksrc () { # Create Sources files in ${1} for packages in ${2}. Optional arguments go to dpkg-scansources.
 	local dir="${1:-${DIR}}"
 	shift
-	cd "${dir}/../.." || return $?
-	local subdir="${dir#${PWD}/}"
-	dpkg-scansources "${@}" "${subdir}" > "${dir}/Sources" 2>&3
+	local dir_pool="${1:-${DIR_POOL}}"
+	shift
+	local rel_pool_dir="${dir_pool//${REPODIR}\/}"
+	rel_pool_dir="${rel_pool_dir//*\/component\//}"
+	cd "${dir_pool//${rel_pool_dir}/}" || return $?
+	dpkg-scansources "${@}" "${rel_pool_dir}" > "${dir}/Sources" 2>&3 # || return $?
+	xz -k -9 <"${dir}/Sources" >"${dir}/Sources.xz"
 	gzip -n -9 <"${dir}/Sources" >"${dir}/Sources.gz"
 	bzip2 -9 <"${dir}/Sources" >"${dir}/Sources.bz2"
 	cd "${OLDPWD}" || return $?
 
 	mkgpg
-	cd "${dir}" || return $?
+	cd "${dir//\/main\/source/}" || return $?
 	rm -f Release Release.tmp Release.gpg
+	local codename=${dir//${REPODIR}/}
+	codename="${codename//\/main\/source/}"
 	apt-ftparchive \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
 		-o "APT::FTPArchive::Release::Label=Univention" \
-		-o "APT::FTPArchive::Release::Version=${subdir%%/*}" \
-		-o "APT::FTPArchive::Release::Codename=${subdir}" \
+		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
+		-o "APT::FTPArchive::Release::Codename=${codename}" \
 		release . >Release.tmp 2>&3
 	mv Release.tmp Release
 
+	gpgsign InRelease
 	gpgsign Release
 	cd "${OLDPWD}" || return $?
 }

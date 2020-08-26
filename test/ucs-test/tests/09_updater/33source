@@ -19,14 +19,12 @@ mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
-# SDIR="${REPODIR}/${_version_version}/unmaintained/${_version_version}-0/source" # BUG: The current iterator will not find Sources when Packages is missing
-SDIR="${REPODIR}/${_version_version}/maintained/${_version_version}-0/source"
-mkdir -p "${SDIR}"
-mkdsc "${pkgname}" 1 "${ARCH}" "${SDIR}"
-mksrc "${SDIR}"
+SDIR="${DIRS[0]//binary-*/source}"
+mkdir -p "$SDIR"
+mkdsc "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
+mksrc "${SDIR}" "${DIR_POOL}"
 
-# config_repo repository/online/maintained=yes repository/online/unmaintained=yes repository/online/sources=yes # BUG: see above
-config_repo repository/online/maintained=yes repository/online/sources=yes
+config_repo repository/online/sources=yes
 
 (
 	set -e

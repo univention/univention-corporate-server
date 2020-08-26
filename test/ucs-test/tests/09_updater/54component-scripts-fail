@@ -21,21 +21,23 @@ compname="test${RANDOM}"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}" 1 all "${DIR_POOL}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mksh "${DIRS[0]//\/main\/binary-*/}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
 mkdeb "${pkgname}c" 1 all "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 
+version1="${major}.${minor}-0"
+
 minor+=1
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}" 2 all "${DIR_POOL}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mksh "${DIRS[5]//\/main\/binary-*/}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
 mkdeb "${pkgname}c" 2 all "${DIR}"
@@ -43,9 +45,13 @@ mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" --return 1 preup
 mksh "${DIR}" postup
 
+version2="${major}.${minor}-0"
+
 cat >"${SH_LOG}" <<__SH__
-${DIRS[3]}/preup.sh [0-9]\+ pre ${major}.${minor}-0
+${DIRS[9]}/preup.sh [0-9]\+ pre ${major}.${minor}-0
 __SH__
+
+python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"
 
 comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"

@@ -39,7 +39,7 @@ run_test () {
 		"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
 		checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
 		# Validate URL by using lwp-request
-		read ncode scode < <(HEAD -p "${http_proxy}" "$(sed -ne 's/ //g;s/^deb//p' /etc/apt/sources.list.d/15_ucs-online-version.list)" | head -n 1)
+		read ncode scode < <(HEAD -p "${http_proxy}" "http://localhost/${repoprefix}/" | head -n 1)
 		test 200 -eq "${ncode}"
 		apt-get -qq update
 		if "${CHECK_INSTALL}"
@@ -69,6 +69,9 @@ do
 	echo "Checking ${c}	${u}	${p}"
 	test -n "${u}" && run_test "u${u}u" "password"
 	test -n "${p}" && run_test "user" "p${p}p"
+	if [[ $RETVAL -gt 100 ]]; then
+		exit $RETVAL
+	fi
 done
 
 exit ${RETVAL:=100} # Test bestanden (Keine Fehler)
