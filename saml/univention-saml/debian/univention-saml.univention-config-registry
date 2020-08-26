@@ -35,7 +35,6 @@ Variables: saml/idp/technicalcontactemail
 Variables: saml/idp/session-type
 Variables: saml/idp/session-duration
 Variables: saml/idp/entityID/supplement/.*
-Variables: saml/idp/password-change-url
 Variables: locale/default
 Variables: hostname
 Variables: domainname

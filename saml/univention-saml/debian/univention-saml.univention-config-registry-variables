@@ -106,12 +106,6 @@ Description[en]=Contact email address to report problems to. (default: root@[dom
 Type=str
 Categories=saml
 
-[saml/idp/password-change-url]
-Description[de]=Spezifiziert den Link, der bei einem abgelaufenem Passwort angezeigt wird.
-Description[en]=Specifies the link, which will be shown when the password is expired.
-Type=str
-Categories=saml
-
 [saml/idp/ldap/enable_tls]
 Description[de]=Ist diese Variable auf 'true' gesetzt, wird eine verschlüsselte Verbindung zum LDAP Server aufgebaut. (default: true)
 Description[en]=If this variable is set to 'true', the ldap connection will be encrypted. (default: true)

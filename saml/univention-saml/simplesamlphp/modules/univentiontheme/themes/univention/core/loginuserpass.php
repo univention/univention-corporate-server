@@ -20,30 +20,19 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg"/>
 				</div>
 				<div class="umcLoginFormWrapper">
-					<div id="umcLoginNotices" class="umcLoginNotices" style="display: <?php echo $this->data['errorcode'] !== NULL ? 'block' : 'none'; ?>;">
-<?php
+					<p id="umcLoginNotices" class="umcLoginNotices<?php /*umcLoginWarning*/ ?>" style="display: <?php echo $this->data['errorcode'] !== NULL ? 'block' : 'none'; ?>;">
+						<?php
 if ($this->data['errorcode'] !== NULL) {
-?>
-	<p class="umcLoginWarning" >
-		<b><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?>.</b><br />
-<?php
-if ($PW_EXPIRED) {
-	$password_change_url = $this->configuration->getValue('password_change_url', '');
-	$password_change_url = $password_change_url ? $password_change_url : str_replace('/univention/saml/metadata', '/univention/login/', $this->data['SPMetadata']['entityid']);
-	echo '<span style="color: black;">';
-	printf(htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])),
-		'<a href="' . htmlspecialchars($password_change_url, ENT_QUOTES) . '">' . htmlspecialchars($this->t('{univentiontheme:errors:linktitle_' . $this->data['errorcode'] . '}', $this->data['errorparams'])) . '</a>'
-	);
-	echo '</span>';
-} else {
-	echo '<span id="error_decription"></span>';
+	echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])) . '. <br />';
+
+	if ($this->data['errorcode'] === 'univention:SELFSERVICE_ACCUNVERIFIED') {
+		echo '<span id="error_decription"></span>';  # FIXME: remove this hack, don't store HTML in UCR variables...
+	} else {
+		echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams']));
+	}
 }
 ?>
-	</p>
-<?php
-}
-?>
-					</div>
+					</p>
 					<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on" <?php if ($PW_EXPIRED) { echo 'style="display: none; "'; } ?>>
 						<label for="umcLoginUsername">
 							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}'), ENT_QUOTES); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="username"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
@@ -139,6 +128,7 @@ if (!empty($this->data['links'])) {
 					}, 0);
 				}
 			});
+<?php if ($this->data['errorcode'] === 'univention:SELFSERVICE_ACCUNVERIFIED') { ?>
 			require(['dojo/dom', 'dompurify/purify', 'dojo/domReady!'], function(dom, purify) {
 				var node = dom.byId("error_decription");
 				<?php
@@ -148,6 +138,7 @@ if (!empty($this->data['links'])) {
 					node.innerHTML = error_description_text;
 				}
 			});
+<?php } ?>
 			//-->
 		</script>
 <?php

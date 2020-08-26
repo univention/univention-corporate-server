@@ -723,11 +723,6 @@ for key, server in configRegistry.items():
 	 *   'redirect.trustedsites' => array('sp.example.com', 'othersite.org'),
 	 */
 	'redirect.trustedsites' => NULL,
-
-@!@
-print("\t'password_change_url' => '%s'," % (configRegistry.get('saml/idp/password-change-url', '').replace('\\', '\\\\').replace("'", "\\'"),))
-@!@
-
 );
 
 require_once('/var/lib/simplesamlphp/secrets.inc.php');
