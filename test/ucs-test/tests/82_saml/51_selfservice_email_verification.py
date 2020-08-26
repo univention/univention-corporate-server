@@ -34,9 +34,8 @@ def test_check_disabled_email_verified():
 def test_check_enabled_email_unverified():
 	with ucr_test.UCSTestConfigRegistry():
 		handler_set(['saml/idp/selfservice/check_email_verification=True'])
-		with pytest.raises(samltest.SamlLoginError) as excinfo:
+		with pytest.raises(samltest.SamlAccountNotVerified):
 			check_login(activated_email=False)
-		assert excinfo.value.message == 'Got unverified email notice'
 
 
 def test_check_enabled_email_verified():

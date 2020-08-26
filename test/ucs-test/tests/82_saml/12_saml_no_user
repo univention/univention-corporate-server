@@ -11,27 +11,16 @@
 ##  - skip_admember
 
 from __future__ import print_function
-from datetime import date, timedelta
 
-import univention.testing.udm as udm_test
-import univention.testing.utils as utils
-
+import pytest
 import samltest
 
 
 def main():
 	SamlSession = samltest.SamlTest('NonExistent3.14', 'univention')
 
-	try:
+	with pytest.raises(samltest.SamlAuthenticationFailed):
 		SamlSession.login_with_new_session_at_IdP()
-	except samltest.SamlLoginError as exc:
-		expected_error = 'Got incorrect username or password notice'
-		if exc.message == expected_error:
-			return
-		else:
-			error_message = "Expected message: %s\nReceived message: %s" % (expected_error, exc.message)
-			utils.fail(error_message)
-	utils.fail("Could login with non existing account")
 
 
 if __name__ == '__main__':

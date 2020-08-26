@@ -20,30 +20,41 @@ html = HTMLParser()
 
 class SamlError(Exception):
 	"""Custom error for everything SAML related"""
-	def __init__(self, msg):
-		self.message = msg
-
-	def __str__(self):
-		return repr(self.message)
 
 
 class SamlLoginError(SamlError):
-	def __init__(self, page):
-		self.page = page
-		self.message = ''
-		self._error_evaluation()
 
-	def _error_evaluation(self):
-		if re.search('<b>Your password is expired.</b>', bytes(self.page.text)):
-			self.message = "Got password expired notice"
-		elif re.search('<b>Account expired.</b>', bytes(self.page.text)):
-			self.message = "Got account expired notice"
-		elif re.search('<b>Incorrect username or password.</b>', bytes(self.page.text)):
-			self.message = "Got incorrect username or password notice"
-		elif re.search('<b>Account not verified.</b>', bytes(self.page.text)):
-			self.message = "Got unverified email notice"
+	def __init__(self, page, message=''):
+		self.page = page
+		super(SamlLoginError, self).__init__(message)
+
+	def __new__(cls, page):
+		if re.search('<b>Your password is expired.</b>', bytes(page.text)):
+			return Exception.__new__(SamlPasswordExpired, page)
+		elif re.search('<b>Account expired.</b>', bytes(page.text)):
+			return Exception.__new__(SamlAccountExpired, page)
+		elif re.search('<b>Incorrect username or password.</b>', bytes(page.text)):
+			return Exception.__new__(SamlAuthenticationFailed, page)
+		elif re.search('<b>Account not verified.</b>', bytes(page.text)):
+			return Exception.__new__(SamlAccountNotVerified, page)
 		else:
-			self.message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
+			return Exception.__new__(cls, page, "Unknown error in SAML response.\nSAML response:\n%s" % page.text)
+
+
+class SamlPasswordExpired(SamlLoginError):
+	pass
+
+
+class SamlAccountExpired(SamlLoginError):
+	pass
+
+
+class SamlAuthenticationFailed(SamlLoginError):
+	pass
+
+
+class SamlAccountNotVerified(SamlLoginError):
+	pass
 
 
 class GuaranteedIdP(object):
@@ -128,7 +139,7 @@ class SamlTest(object):
 			'POST': self.session.post}
 		try:
 			self.page = _requests[method](url, data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem', headers=headers)
-		except requests.exceptions.SSLError as E:
+		except requests.exceptions.SSLError:
 			# Bug: https://github.com/shazow/urllib3/issues/556
 			# raise SamlError("Problem while %s\nSSL error: %s" % (self.position, E.message))
 			raise SamlError("Problem while %s\nSSL error: %s" % (self.position, 'Some ssl error'))
