@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 ## joinscript api: bindpwdfile
 
-VERSION=10
+VERSION=11
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -96,6 +96,10 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position "cn=portals,cn=univention,$ldap_base" \
 	--set name=folder || die
+
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=portals,cn=univention,$ldap_base" \
+	--set name=config || die
 
 if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"

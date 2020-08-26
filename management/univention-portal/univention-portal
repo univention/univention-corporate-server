@@ -205,6 +205,58 @@ def list():
 
 
 @cli.command()
+@click.argument('name')
+def push(name):
+	from univention.udm import UDM, NoObject
+	from univention.udm.encoders import Base64Bzip2BinaryProperty
+	json_content = read_portals_json()
+	if name not in json_content:
+		warn('{} does not exist'.format(name))
+		return
+	portal_def = json_content[name]
+	udm = UDM.machine().version(1)
+	data = udm.get('settings/data')
+	ucr = ConfigRegistry()
+	ucr.load()
+	base = 'cn=config,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base'))
+	try:
+		obj = data.get('cn={},{}'.format(name, base))
+	except NoObject:
+		obj = data.new(superordinate='cn=univention,{}'.format(ucr.get('ldap/base')))
+		obj.position = base
+		obj.props.name = name
+		obj.props.data_type = 'portals/config'
+		info('Creating a new settings/data object')
+	json_data = json.dumps(portal_def)
+	obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=json_data)
+	obj.save()
+	success('Saved {} in {}'.format(name, obj.dn))
+
+
+@cli.command()
+@click.argument('name')
+def pull(name):
+	from univention.udm import UDM, NoObject
+	udm = UDM.machine().version(1)
+	data = udm.get('settings/data')
+	ucr = ConfigRegistry()
+	ucr.load()
+	base = 'cn=config,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base'))
+	dn = 'cn={},{}'.format(name, base)
+	try:
+		obj = data.get(dn)
+	except NoObject:
+		warn('{} does not exist'.format(dn))
+		return
+	json_data = json.loads(obj.props.data.raw)
+	json_content = read_portals_json()
+	json_content[name] = json_data
+	with open(portals_json, 'w') as fd:
+		json.dump(json_content, fd, sort_keys=True, indent=4)
+	success('{} updated'.format(portals_json))
+
+
+@cli.command()
 @click.argument('name', nargs=-1)
 @click.option('--portal/--no-portal', default=None)
 @click.option('--groups/--no-groups', default=None)
