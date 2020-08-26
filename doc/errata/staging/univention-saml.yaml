@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-saml
-fix: 
+fix: 6.0.2-51A~4.4.0.202008211103
 desc: |
  This update addresses the following issue(s):
  * The styling of the simplesamlphp error page has been enhanced.
