@@ -7,6 +7,7 @@ import socket
 import json
 import shutil
 import os
+import time
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
@@ -26,6 +27,8 @@ class SamlLoginError(SamlError):
 
 	def __init__(self, page, message=''):
 		self.page = page
+		if not message and type(self) is SamlLoginError:
+			message = "Unknown error in SAML response.\nSAML response:\n%s" % page.text
 		super(SamlLoginError, self).__init__(message)
 
 	def __new__(cls, page):
@@ -37,8 +40,12 @@ class SamlLoginError(SamlError):
 			return Exception.__new__(SamlAuthenticationFailed, page)
 		elif re.search('<b>Account not verified.</b>', bytes(page.text)):
 			return Exception.__new__(SamlAccountNotVerified, page)
+		elif re.search('<b>Changing password failed.</b>', bytes(page.text)):
+			return Exception.__new__(SamlPasswordChangeFailed, page)
+		elif re.search('<b>The password has been changed successfully.</b>', bytes(page.text)):
+			return Exception.__new__(SamlPasswordChangeSuccess, page)
 		else:
-			return Exception.__new__(cls, page, "Unknown error in SAML response.\nSAML response:\n%s" % page.text)
+			return Exception.__new__(cls, page)
 
 
 class SamlPasswordExpired(SamlLoginError):
@@ -54,6 +61,14 @@ class SamlAuthenticationFailed(SamlLoginError):
 
 
 class SamlAccountNotVerified(SamlLoginError):
+	pass
+
+
+class SamlPasswordChangeFailed(SamlLoginError):
+	pass
+
+
+class SamlPasswordChangeSuccess(SamlLoginError):
 	pass
 
 
@@ -164,14 +179,16 @@ class SamlTest(object):
 		self._request('POST', self.page.url, 200, data=data)
 
 	def xpath(self, xpath):
-		elem = self.parsed_page.find(xpath)
+		elem = self.parsed_page.find('.//{http://www.w3.org/1999/xhtml}%s' % (xpath,))
+		if elem is None:
+			elem = self.parsed_page.find('.//%s' % (xpath,))
 		if elem is None:
 			elem = {}
 		return elem
 
 	def _extract_relay_state(self):
 		print("Extract relay state from SAML response")
-		relay_state = self.xpath('.//{http://www.w3.org/1999/xhtml}input[@name="RelayState"]').get('value', '')
+		relay_state = self.xpath('input[@name="RelayState"]').get('value', '')
 		if relay_state is None:
 			print("No relay state found")
 			raise SamlLoginError(self.page)
@@ -180,7 +197,7 @@ class SamlTest(object):
 
 	def _extract_saml_msg(self):
 		print("Extract SAML message from SAML response")
-		saml_message = self.xpath('.//{http://www.w3.org/1999/xhtml}input[@name="SAMLResponse"]').get('value')
+		saml_message = self.xpath('input[@name="SAMLResponse"]').get('value')
 		if saml_message is None:
 			raise SamlLoginError(self.page)
 		print("The SAML message is:\n%s" % saml_message)
@@ -188,7 +205,7 @@ class SamlTest(object):
 
 	def _extract_sp_url(self):
 		print("Extract url to post SAML message to")
-		url = self.xpath('.//{http://www.w3.org/1999/xhtml}form[@method="post"]').get('action')
+		url = self.xpath('form[@method="post"]').get('action')
 		if url is None:
 			print("No url to post SAML message to found")
 			raise SamlLoginError(self.page)
@@ -197,9 +214,10 @@ class SamlTest(object):
 
 	def _extract_auth_state(self):
 		print("Extract AuthState")
-		auth_state = self.xpath('.//{http://www.w3.org/1999/xhtml}input[@name="AuthState"]').get('value')
+		auth_state = self.xpath('input[@name="AuthState"]').get('value')
 		if auth_state is None:
 			try:
+				print('WARNING: invalid HTML!!!!')
 				auth_state = re.search('name="AuthState" value="([^"]+)"', bytes(self.page.text)).group(1)
 				auth_state = html.unescape(auth_state)
 			except AttributeError:
@@ -289,9 +307,9 @@ class SamlTest(object):
 				self._request('GET', login_link, 200)
 			self._login_at_idp_with_credentials()
 
-		print('SAML message received from %s' % self.page.url)
 		url = self._extract_sp_url()
 		saml_msg = self._extract_saml_msg()
+		print('SAML message received from %s' % self.page.url)
 		relay_state = self._extract_relay_state()
 		self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
@@ -301,3 +319,24 @@ class SamlTest(object):
 		print("Logging out at url: %s" % url)
 		self.position = "trying to logout"
 		self._request('GET', url, 200)
+
+	def change_expired_password(self, new_password):
+		auth_state = self._extract_auth_state()
+		self.position = "posting change password form"
+		print("Post SAML change password form to: %s" % self.page.url)
+		data = {'username': self.username, 'password': self.password, 'AuthState': auth_state, 'new_password': new_password, 'new_password_retype': new_password}
+		self._request('POST', self.page.url, 200, data=data)
+		self.password = new_password
+
+		url = self._extract_sp_url()
+		try:
+			saml_msg = self._extract_saml_msg()
+		except SamlPasswordChangeSuccess:  # Samba 4 installed, S4 connector too slow to change the password
+			time.sleep(5)
+			self._login_at_idp_with_credentials()
+			url = self._extract_sp_url()
+			saml_msg = self._extract_saml_msg()
+
+		print('SAML message received from %s' % self.page.url)
+		relay_state = self._extract_relay_state()
+		self._send_saml_response_to_sp(url, saml_msg, relay_state)
