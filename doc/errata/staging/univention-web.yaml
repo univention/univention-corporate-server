@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-web
 fix: 3.0.5-42A~4.4.0.202008261041
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The styling of the simplesamlphp error page has been enhanced.
 bug: [45445]

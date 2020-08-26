@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-saml
 fix: 6.0.2-51A~4.4.0.202008211103
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The styling of the simplesamlphp error page has been enhanced.
  * The possibility to report SAML errors can now be deactivated via the UCR
    variable saml/idp/show-error-reporting.
