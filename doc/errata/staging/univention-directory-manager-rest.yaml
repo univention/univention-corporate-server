@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-directory-manager-rest
 fix: 9.0.16-10A~4.4.0.202008251839
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * References to objects containing umlauts (or non ASCII characters) in the
    DN have been fixed.
 bug: [50529]
