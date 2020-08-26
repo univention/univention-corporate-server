@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The styling of the simplesamlphp error page has been enhanced.
 bug: [45445]
+erratum: 723
+announced: 2020-08-26
