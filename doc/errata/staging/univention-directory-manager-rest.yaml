@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * References to objects containing umlauts (or non ASCII characters) in the
    DN have been fixed.
-bug: [51685]
+bug: [50529]
