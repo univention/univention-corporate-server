@@ -54,7 +54,7 @@ class UMCAuthenticator(Authenticator):
 
 	def get_user(self, request):
 		session = request.get_cookie(self.portal_cookie_name)
-		username = request._get_username(session)
+		username = self._get_username(session)
 		groups = self.group_cache.get().get(username, [])
 		return User(username, groups=groups)
 
