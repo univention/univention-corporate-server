@@ -37,7 +37,7 @@ class SamlLoginError(SamlError):
 			message = message.text.strip()
 		errors = {
 			'The password has expired and must be renewed.': SamlPasswordExpired,
-			'Account expired.': SamlPasswordExpired,
+			'Account expired.': SamlAccountExpired,
 			'Incorrect username or password.': SamlAuthenticationFailed,
 			'Account not verified.': SamlAccountNotVerified,
 			'Changing password failed.': SamlPasswordChangeFailed,
