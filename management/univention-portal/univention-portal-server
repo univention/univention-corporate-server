@@ -32,7 +32,6 @@
 import json
 import grp
 
-import requests
 import tornado.ioloop
 import tornado.web
 
@@ -44,40 +43,9 @@ from univention.portal.log import setup_logger, get_logger
 ucr = ConfigRegistry()
 ucr.load()
 
-_umc_interface = ucr.get("umc/http/interface", "127.0.0.1")
-_umc_port = int(ucr.get("umc/http/port", 8090))
-UMC_SESSION_URL = "http://%s:%s/get/session-info" % (_umc_interface, _umc_port)
-
-
 class JsonHandler(tornado.web.RequestHandler):
     def initialize(self, portals):
         self.portals = portals
-
-    def _ask_umc(self, session):
-        try:
-            response = requests.get(UMC_SESSION_URL, cookies={"UMCSessionId": session})
-            data = response.json()
-            username = data["result"]["username"]
-        except requests.ConnectionError as exc:
-            get_logger("user").error("connection failed: %s" % exc)
-        except ValueError:
-            get_logger("user").error("malformed answer!")
-        except KeyError:
-            get_logger("user").warn("session unknown!")
-        else:
-            return username
-
-    def _get_username(self, session):
-        if session is None:
-            get_logger("user").debug("no user given")
-            return None
-        get_logger("user").debug("searching user for %s" % session)
-        username = self._ask_umc(session)
-        if username is None:
-            get_logger("user").debug("no user found")
-        else:
-            get_logger("user").debug("found %s" % username)
-            return username.lower()
 
     def write_error(self, status_code, **kwargs):
         if "exc_info" in kwargs:
@@ -85,26 +53,25 @@ class JsonHandler(tornado.web.RequestHandler):
         return super(JsonHandler, self).write_error(status_code, **kwargs)
 
     def get(self):
-        session = self.get_cookie("UMCSessionId")
-        username = self._get_username(session)
+        portal = self.find_portal()
+        if not portal:
+            raise tornado.web.HTTPError(404)
+        user = portal.get_user(self)
         admin_mode = False
         if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
             get_logger("admin").info("Admin mode requested")
             admin_group_name = ucr.get("groups/default/domainadmins", "Domain Admins")
             admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
-            admin_mode = username in admins
+            admin_mode = user and user.username in admins
             if admin_mode:
                 get_logger("admin").info("Admin mode granted")
             else:
                 get_logger("admin").info("Admin mode rejected")
         answer = {}
-        portal = self.find_portal()
-        if not portal:
-            raise tornado.web.HTTPError(404)
 
-        visible_content = portal.get_visible_content(username, admin_mode)
-        answer["user_links"] = portal.get_user_links(username, admin_mode)
-        answer["menu_links"] = portal.get_menu_links(username, admin_mode)
+        visible_content = portal.get_visible_content(user, admin_mode)
+        answer["user_links"] = portal.get_user_links(user, admin_mode)
+        answer["menu_links"] = portal.get_menu_links(user, admin_mode)
         answer["entries"] = portal.get_entries(visible_content)
         answer["folders"] = portal.get_folders(visible_content)
         answer["categories"] = portal.get_categories(visible_content)
