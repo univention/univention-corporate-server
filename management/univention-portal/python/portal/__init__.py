@@ -95,8 +95,13 @@ class Plugins(object):
 		self._imported[self.python_path] = True
 
 
-def get_dynamic_classes(klass_name):
+def get_all_dynamic_classes():
 	for extension in Plugins('univention.portal.extensions'):
+		yield extension
+
+
+def get_dynamic_classes(klass_name):
+	for extension in get_all_dynamic_classes():
 		if klass_name == extension.__name__:
 			return extension
 	raise KeyError(klass_name)
