@@ -76,27 +76,37 @@ def add_default(update):
                 "class": "UMCAuthenticator", 
                 "kwargs": {
                     "group_cache": {
-                        "class": "GroupsReloaderLDAP", 
+                        "class": "GroupFileCache", 
                         "kwargs": {
-                            "binddn": {
-                                "type": "config", 
-                                "key": "hostdn"
-                            }, 
                             "cache_file": {
                                 "type": "static", 
                                 "value": "/var/cache/univention-portal/groups.json"
                             }, 
-                            "ldap_base": {
-                                "type": "config", 
-                                "key": "ldap_base"
+                            "reloader": {
+                            "class": "GroupsReloaderLDAP", 
+                            "kwargs": {
+                                "binddn": {
+                                    "key": "hostdn", 
+                                    "type": "config"
+                                }, 
+                                "cache_file": {
+                                    "type": "static", 
+                                    "value": "/var/cache/univention-portal/groups.json"
+                                }, 
+                                "ldap_base": {
+                                    "key": "ldap_base", 
+                                    "type": "config"
+                                }, 
+                                "ldap_uri": {
+                                    "key": "ldap_uri", 
+                                    "type": "config"
+                                }, 
+                                "password_file": {
+                                    "type": "static", 
+                                    "value": "/etc/machine.secret"
+                                }
                             }, 
-                            "ldap_uri": {
-                                "type": "config", 
-                                "key": "ldap_uri"
-                            }, 
-                            "password_file": {
-                                "type": "static", 
-                                "value": "/etc/machine.secret"
+                            "type": "class"
                             }
                         }, 
                         "type": "class"
@@ -110,8 +120,8 @@ def add_default(update):
                         "value": "UMCSessionId"
                     }, 
                     "umc_session_url": {
-                        "type": "config", 
-                        "key": "umc_session_url"
+                        "key": "umc_session_url", 
+                        "type": "config"
                     }
                 }, 
                 "type": "class"
@@ -131,8 +141,8 @@ def add_default(update):
                                 "value": "/var/cache/univention-portal/portal.json"
                             }, 
                             "portal_dn": {
-                                "type": "config", 
-                                "key": "default_domain_dn"
+                                "key": "default_domain_dn", 
+                                "type": "config"
                             }
                         }, 
                         "type": "class"
