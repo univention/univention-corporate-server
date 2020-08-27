@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-ad-connector
+fix: 13.0.0-50A~4.4.0.202008271111
+desc: |
+ This update addresses the following issue:
+ * Fix error handling regression of Bug #51518
+bug: [51915]
