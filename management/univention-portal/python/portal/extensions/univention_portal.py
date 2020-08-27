@@ -36,16 +36,19 @@ from six import with_metaclass
 
 
 class Portal(with_metaclass(Plugin)):
-	def __init__(self, scorer, portal_cache, groups_cache):
+	def __init__(self, scorer, portal_cache, authenticator):
 		self.scorer = scorer
 		self.portal_cache = portal_cache
-		self.groups_cache = groups_cache
+		self.authenticator = authenticator
 
-	def get_visible_content(self, username, admin_mode):
+	def get_user(self, request):
+		return self.authenticator.get_user(request)
+
+	def get_visible_content(self, user, admin_mode):
 		entries = self.portal_cache.get_entries()
 		folders = self.portal_cache.get_folders()
 		categories = self.portal_cache.get_categories()
-		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, username, admin_mode)
+		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, user, admin_mode)
 		visible_folder_dns = [
 			folder_dn for folder_dn in folders.keys()
 			if len(
@@ -70,19 +73,19 @@ class Portal(with_metaclass(Plugin)):
 			'category_dns': visible_category_dns,
 		}
 
-	def get_user_links(self, username, admin_mode):
-		if username is None:
+	def get_user_links(self, user, admin_mode):
+		if user is None:
 			return []
 		links = self.portal_cache.get_user_links()
 		links_dict = dict((link['dn'], link) for link in links)
 		entry_dns = [link['dn'] for link in links]
-		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)]
 
-	def get_menu_links(self, username, admin_mode):
+	def get_menu_links(self, user, admin_mode):
 		links = self.portal_cache.get_menu_links()
 		links_dict = dict((link['dn'], link) for link in links)
 		entry_dns = [link['dn'] for link in links]
-		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, user, admin_mode)]
 
 	def get_entries(self, content):
 		entries = self.portal_cache.get_entries()
@@ -117,8 +120,7 @@ class Portal(with_metaclass(Plugin)):
 		]
 		return portal
 
-	def _filter_entry_dns(self, entry_dns, entries, username, admin_mode):
-		groups = self.groups_cache.get()
+	def _filter_entry_dns(self, entry_dns, entries, user, admin_mode):
 		filtered_dns = []
 		for entry_dn in entry_dns:
 			entry = entries.get(entry_dn)
@@ -129,7 +131,7 @@ class Portal(with_metaclass(Plugin)):
 					continue
 				if entry['allowedGroups']:
 					for group_dn in entry['allowedGroups']:
-						if group_dn in groups.get(username, []):
+						if group_dn in user.groups:
 							break
 					else:
 						continue
@@ -151,9 +153,10 @@ class Portal(with_metaclass(Plugin)):
 		_flatten(folder_dn, folders, entries, ret, [])
 		return ret
 
-	def refresh_cache(self):
-		self.portal_cache.refresh()
-		self.groups_cache.refresh()
+	def refresh(self):
+		touched = self.portal_cache.refresh(force=True)
+		touched = self.authenticator.refresh(force=True) or touched
+		return touched
 
 	def score(self, request):
 		return self.scorer.score(request)
