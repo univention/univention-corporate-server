@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test
+#!/usr/share/ucs-test/runner /usr/bin/py.test -s
 ## desc: SSO Login at UMC as Service Provider
 ## tags: [saml]
 ## join: true

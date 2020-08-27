@@ -26,26 +26,24 @@ class SamlError(Exception):
 class SamlLoginError(SamlError):
 
 	def __init__(self, page, message=''):
-		self.page = page
+		self.page = page.page
 		if not message and type(self) is SamlLoginError:
-			message = "Unknown error in SAML response.\nSAML response:\n%s" % page.text
+			message = "Unknown error in SAML response.\nSAML response:\n%s" % self.page.text
 		super(SamlLoginError, self).__init__(message)
 
-	def __new__(cls, page):
-		if re.search('<b>Your password is expired.</b>', bytes(page.text)):
-			return Exception.__new__(SamlPasswordExpired, page)
-		elif re.search('<b>Account expired.</b>', bytes(page.text)):
-			return Exception.__new__(SamlAccountExpired, page)
-		elif re.search('<b>Incorrect username or password.</b>', bytes(page.text)):
-			return Exception.__new__(SamlAuthenticationFailed, page)
-		elif re.search('<b>Account not verified.</b>', bytes(page.text)):
-			return Exception.__new__(SamlAccountNotVerified, page)
-		elif re.search('<b>Changing password failed.</b>', bytes(page.text)):
-			return Exception.__new__(SamlPasswordChangeFailed, page)
-		elif re.search('<b>The password has been changed successfully.</b>', bytes(page.text)):
-			return Exception.__new__(SamlPasswordChangeSuccess, page)
-		else:
-			return Exception.__new__(cls, page)
+	def __new__(cls, saml):
+		message = saml.xpath('p[@id="umcLoginNotices"]')
+		if message is not None:
+			message = message.text.strip()
+		errors = {
+			'The password has expired and must be renewed.': SamlPasswordExpired,
+			'Account expired.': SamlPasswordExpired,
+			'Incorrect username or password.': SamlAuthenticationFailed,
+			'Account not verified.': SamlAccountNotVerified,
+			'Changing password failed.': SamlPasswordChangeFailed,
+			'The password has been changed successfully.': SamlPasswordChangeSuccess,
+		}
+		return Exception.__new__(errors.get(message, cls), saml)
 
 
 class SamlPasswordExpired(SamlLoginError):
@@ -191,7 +189,7 @@ class SamlTest(object):
 		relay_state = self.xpath('input[@name="RelayState"]').get('value', '')
 		if relay_state is None:
 			print("No relay state found")
-			raise SamlLoginError(self.page)
+			raise SamlLoginError(self)
 		print("The relay state is:\n%s" % relay_state)
 		return relay_state
 
@@ -199,7 +197,7 @@ class SamlTest(object):
 		print("Extract SAML message from SAML response")
 		saml_message = self.xpath('input[@name="SAMLResponse"]').get('value')
 		if saml_message is None:
-			raise SamlLoginError(self.page)
+			raise SamlLoginError(self)
 		print("The SAML message is:\n%s" % saml_message)
 		return saml_message
 
@@ -208,7 +206,7 @@ class SamlTest(object):
 		url = self.xpath('form[@method="post"]').get('action')
 		if url is None:
 			print("No url to post SAML message to found")
-			raise SamlLoginError(self.page)
+			raise SamlLoginError(self)
 		print("The url to post SAML message to is: %s" % url)
 		return url
 
