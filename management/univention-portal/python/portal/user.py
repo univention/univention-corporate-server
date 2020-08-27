@@ -1,8 +1,6 @@
-#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# Univention Portal
-#
-# Copyright 2020 Univention GmbH
+# Copyright 2018-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -16,10 +14,9 @@
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
+# you and Univention.
 #
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
+# This program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
@@ -28,36 +25,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-#
-
-from univention.portal import Plugin
-
-from six import with_metaclass
 
 
-class Scorer(with_metaclass(Plugin)):
-	def __init__(self):
-		pass
-
-	def score(self, request):
-		return 1
-
-
-class DomainScorer(Scorer):
-	def __init__(self, domain):
-		self.domain = domain
-
-	def score(self, request):
-		if request.host == self.domain:
-			return 10
-		return 0
-
-
-class PathScorer(Scorer):
-	def __init__(self, path):
-		self.path = path
-
-	def score(self, request):
-		if request.path == self.path:
-			return 10
-		return 0
+class User(object):
+	def __init__(self, username, groups):
+		self.username = username
+		self.groups = groups
