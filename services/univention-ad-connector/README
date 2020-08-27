@@ -1,0 +1,26 @@
+Check list for DEV and QA:
+==========================
+* scripts/prepare-new-instance must work (Regression Bug #50713)
+* Instances created with scripts/prepare-new-instance before the
+  update must continue to work (see also Bug #51918)
+
+Caveats:
+========
+* object['attributes'] may contain a mix of OL and AD attributes.
+  This can be nasty for attributes like "mail", which exist
+  in both object types.
+
+* Warning: mapping of mail related attributes is especially nasty:
+** git log --grep "Bug #51647: fix regression of Bug #18501"
+** git log --grep "Bug #18501: Fix handling of proxyAddresses mapping"
+** git log --grep "Bug #43216: Revised mapping for MS-Exchange related 'proxyAddresses'"
+
+Improvement Suggestions:
+========================
+* Rename "object" and seprate object["attributes"] into "ldap_obj_ol" and "ldap_obj_ad"
+  and pass them around to all functions (e.g. ucs_create_functions),
+  so they have all required info, can pick the correct attribute values (OL vs AD) in searches
+  and don't need to search stuff over and over again.
+* Maybe replace "object" by a "obj_replication_state", which holds "ldap_obj_ol" and "ldap_obj_ad"
+* Differenciate between "ldap_obj_ol_from_listener" and "ldap_obj_ol_current"
+
