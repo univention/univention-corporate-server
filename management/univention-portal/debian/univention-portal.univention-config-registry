@@ -28,3 +28,7 @@ Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: umc/http/interface
 Variables: umc/http/port
+Variables: groups/default/domainadmins
+Variables: portal/port
+Variables: hostname
+Variables: domainname

@@ -1,9 +1,8 @@
-#! /bin/sh
+#!/usr/bin/python2.7
 #
 # Univention Portal
-#  postinst script for the univention-portal debian package
 #
-# Copyright 2017-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,29 +28,30 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
-#DEBHELPER#
-
-ucr set portal/port?8095
-ucr set groups/default/domainadmins?"Domain Admins"
-a2ensite univention-portal.conf
-
-. /usr/share/univention-lib/all.sh
-create_logfile /var/log/univention/portal.log "root:adm" 640
+#
 
 
-if [ "$1" = "configure" ]; then
-	chmod 700 /var/cache/univention-portal
-	systemctl daemon-reload
-	systemctl reload apache2
-	systemctl enable univention-portal-server.service
-	systemctl restart univention-directory-listener
-	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
-fi
+from univention.portal import get_dynamic_classes
+import univention.portal.config as config
 
-[ ! -e /var/cache/univention-portal/portal.json ] && ucr filter < /usr/share/univention-portal/portal-unjoined.json > /var/cache/univention-portal/portal.json
-univention-portal add-default
-univention-portal update
-systemctl restart univention-portal-server
 
-exit 0
+def make_arg(arg_definition):
+	arg_type = arg_definition['type']
+	if arg_type == 'static':
+		return arg_definition['value']
+	elif arg_type == 'config':
+		return config.fetch(arg_definition['key'])
+	elif arg_type == 'class':
+		Klass = get_dynamic_classes(arg_definition['class'])
+		args = []
+		kwargs = {}
+		for _arg_definition in arg_definition.get('args', []):
+			args.append(make_arg(_arg_definition))
+		for name, _arg_definition in arg_definition.get('kwargs', {}).items():
+			kwargs[name] = make_arg(_arg_definition)
+		return Klass(*args, **kwargs)
+	raise TypeError('Unknown arg_definition: {!r}'.format(arg_definition))
+
+
+def make_portal(portal_definition):
+	return make_arg(portal_definition)

@@ -35,13 +35,9 @@ import grp
 import tornado.ioloop
 import tornado.web
 
-from univention.config_registry import ConfigRegistry
-
+import univention.portal.config as config
 from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
-
-ucr = ConfigRegistry()
-ucr.load()
 
 class JsonHandler(tornado.web.RequestHandler):
     def initialize(self, portals):
@@ -60,7 +56,7 @@ class JsonHandler(tornado.web.RequestHandler):
         admin_mode = False
         if self.request.headers.get("X-Univention-Portal-Admin-Mode", "no") == "yes":
             get_logger("admin").info("Admin mode requested")
-            admin_group_name = ucr.get("groups/default/domainadmins", "Domain Admins")
+            admin_group_name = config.fetch("admin_group")
             admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
             admin_mode = user and user.username in admins
             if admin_mode:
@@ -109,7 +105,7 @@ def make_app():
 if __name__ == "__main__":
     setup_logger()
     app = make_app()
-    port = int(ucr.get("portal/port", 8095))
+    port = config.fetch("port")
     get_logger("server").info("firing up portal server at port %s" % port)
     app.listen(port)
     tornado.ioloop.IOLoop.current().start()
