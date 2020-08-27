@@ -37,7 +37,7 @@ import tornado.web
 
 from univention.config_registry import ConfigRegistry
 
-from univention.portal import make_portal
+from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
 
 ucr = ConfigRegistry()

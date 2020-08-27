@@ -89,7 +89,7 @@ class Plugins(object):
 		base_module = importlib.import_module(self.python_path)
 		base_module_dir = os.path.dirname(base_module.__file__)
 		path = os.path.join(base_module_dir, '*.py')
-		for pymodule in glob(path):
+		for pymodule in sorted(glob(path)):
 			pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
 			importlib.import_module('{}.{}'.format(self.python_path, pymodule_name))
 		self._imported[self.python_path] = True
@@ -105,23 +105,3 @@ def get_dynamic_classes(klass_name):
 		if klass_name == extension.__name__:
 			return extension
 	raise KeyError(klass_name)
-
-
-def make_arg(arg_definition):
-	arg_type = arg_definition['type']
-	if arg_type == 'static':
-		return arg_definition['value']
-	if arg_type == 'class':
-		Klass = get_dynamic_classes(arg_definition['class'])
-		args = []
-		kwargs = {}
-		for _arg_definition in arg_definition.get('args', []):
-			args.append(make_arg(_arg_definition))
-		for name, _arg_definition in arg_definition.get('kwargs', {}).items():
-			kwargs[name] = make_arg(_arg_definition)
-		return Klass(*args, **kwargs)
-	raise TypeError('Unknown arg_definition: {!r}'.format(arg_definition))
-
-
-def make_portal(portal_definition):
-	return make_arg(portal_definition)
