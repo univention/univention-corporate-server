@@ -1561,7 +1561,7 @@ class ad(univention.connector.ucs):
 		search_filter = format_escaped('(samaccountname={0!e})', compatible_modstring(object_ucs['username']))
 		ad_group_rid_resultlist = self.__search_ad(filter=search_filter, attrlist=['dn', 'primaryGroupID'])
 
-		if not ad_group_rid_resultlist[0][0] in ['None', '', None]:
+		if ad_group_rid_resultlist and not ad_group_rid_resultlist[0][0] in ['None', '', None]:
 
 			ad_group_rid = ad_group_rid_resultlist[0][1]['primaryGroupID'][0]
 
