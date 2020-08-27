@@ -19,3 +19,12 @@ Variables: license/base
 Type: file
 File: etc/logrotate.d/univention-portal
 Variables: logrotate/.*
+
+Type: file
+File: usr/share/univention-portal/config/config.json
+Variables: ldap/hostdn
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: ldap/server/port
+Variables: umc/http/interface
+Variables: umc/http/port

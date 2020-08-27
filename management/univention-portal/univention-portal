@@ -29,13 +29,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os.path
 import json
 import datetime
+import ast
+import inspect
 
 from univention.config_registry import ConfigRegistry
 
-from univention.portal import make_portal
+from univention.portal import get_all_dynamic_classes, get_dynamic_classes
+from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
 
 import click
@@ -57,114 +59,105 @@ def cli():
     pass
 
 
-def make_new_portal(name, portal_cache_file, groups_cache_file, with_portal_reloader, with_groups_reloader, portal_dn):
-    cache_dir = "/var/cache/univention-portal/"
-    if name:
-        cache_dir += name + "/"
-    if name:
-        scorer = {
-            "type": "class",
-            "class": "DomainScorer",
-            "kwargs": {
-                "domain": {
-                    "type": "static",
-                    "value": name,
-                },
-            },
-        }
-    else:
-        scorer = {
-            "type": "class",
-            "class": "Scorer",
-        }
-    if with_portal_reloader:
-        ucr = ConfigRegistry()
-        ucr.load()
-        portal_reloader = {
-            "type": "class",
-            "class": "PortalReloaderUDM",
-            "kwargs": {
-                "portal_dn": {
-                    "type": "static",
-                    "value": portal_dn or "cn=domain,cn=portal,cn=portals,cn=univention,{}".format(ucr.get("ldap/base")),
-                },
-                "cache_file": {
-                    "type": "static",
-                    "value": portal_cache_file or os.path.join(cache_dir, "portal.json"),
-                },
-            },
-        }
-    if with_groups_reloader:
-        ucr = ConfigRegistry()
-        ucr.load()
-        groups_reloader = {
-            "type": "class",
-            "class": "GroupsReloaderLDAP",
-            "kwargs": {
-                "ldap_uri": {
-                    "type": "static",
-                    "value": "ldap://{}:{}".format(ucr.get("ldap/server/name"), ucr.get("ldap/server/port")),
-                },
-                "binddn": {
-                    "type": "static",
-                    "value": ucr.get("ldap/hostdn"),
-                },
-                "password_file": {
-                    "type": "static",
-                    "value": "/etc/machine.secret",
-                },
-                "ldap_base": {
-                    "type": "static",
-                    "value": ucr.get("ldap/base"),
-                },
-                "cache_file": {
-                    "type": "static",
-                    "value": groups_cache_file or os.path.join(cache_dir, "groups.json"),
-                },
-            },
-        }
-    portal_cache = {
-        "type": "class",
-        "class": "PortalFileCache",
+@cli.command("add-default")
+@click.option("--update/--dont-update", default=False)
+def add_default(update):
+    name = "default"
+    json_content = read_portals_json()
+    if name in json_content:
+        if update:
+            warn("Overwriting existing {}".format(name))
+        else:
+            info("{} already exists".format(name))
+            return
+    portal_def = {
+        "class": "Portal", 
         "kwargs": {
-            "cache_file": {
-                "type": "static",
-                "value": portal_cache_file or os.path.join(cache_dir, "portal.json"),
-            },
-        }
+            "authenticator": {
+                "class": "UMCAuthenticator", 
+                "kwargs": {
+                    "group_cache": {
+                        "class": "GroupsReloaderLDAP", 
+                        "kwargs": {
+                            "binddn": {
+                                "type": "config", 
+                                "key": "hostdn"
+                            }, 
+                            "cache_file": {
+                                "type": "static", 
+                                "value": "/var/cache/univention-portal/groups.json"
+                            }, 
+                            "ldap_base": {
+                                "type": "config", 
+                                "key": "ldap_base"
+                            }, 
+                            "ldap_uri": {
+                                "type": "config", 
+                                "key": "ldap_uri"
+                            }, 
+                            "password_file": {
+                                "type": "static", 
+                                "value": "/etc/machine.secret"
+                            }
+                        }, 
+                        "type": "class"
+                    }, 
+                    "portal_cookie_name": {
+                        "type": "static", 
+                        "value": "UMCSessionId"
+                    }, 
+                    "umc_cookie_name": {
+                        "type": "static", 
+                        "value": "UMCSessionId"
+                    }, 
+                    "umc_session_url": {
+                        "type": "config", 
+                        "key": "umc_session_url"
+                    }
+                }, 
+                "type": "class"
+            }, 
+            "portal_cache": {
+                "class": "PortalFileCache", 
+                "kwargs": {
+                    "cache_file": {
+                        "type": "static", 
+                        "value": "/var/cache/univention-portal/portal.json"
+                    }, 
+                    "reloader": {
+                        "class": "PortalReloaderUDM", 
+                        "kwargs": {
+                            "cache_file": {
+                                "type": "static", 
+                                "value": "/var/cache/univention-portal/portal.json"
+                            }, 
+                            "portal_dn": {
+                                "type": "config", 
+                                "key": "default_domain_dn"
+                            }
+                        }, 
+                        "type": "class"
+                    }
+                }, 
+                "type": "class"
+            }, 
+            "scorer": {
+                "class": "Scorer", 
+                "type": "class"
+            }
+        }, 
+        "type": "class"
     }
-    groups_cache = {
-        "type": "class",
-        "class": "GroupFileCache",
-        "kwargs": {
-            "cache_file": {
-                "type": "static",
-                "value": groups_cache_file or os.path.join(cache_dir, "groups.json"),
-            },
-        }
-    }
-    if with_portal_reloader:
-        portal_cache["kwargs"]["reloader"] = portal_reloader
-    if with_groups_reloader:
-        groups_cache["kwargs"]["reloader"] = groups_reloader
-    portal = {
-        "type": "class",
-        "class": "Portal",
-        "kwargs": {
-            "portal_cache": portal_cache,
-            "groups_cache": groups_cache,
-            "scorer": scorer,
-        }
-    }
-    return portal
-
+    json_content[name] = portal_def
+    with open(portals_json, "w") as fd:
+        json.dump(json_content, fd, sort_keys=True, indent=4)
+    success("{} written".format(portals_json))
 
 @cli.command()
 @click.argument("name")
 @click.option("--update/--dont-update", default=True)
 def add(name, update):
     json_content = read_portals_json()
-    name = name or "default"
     if name in json_content:
         if update:
             warn("Overwriting existing {}".format(name))
@@ -173,48 +166,67 @@ def add(name, update):
             return
     click.echo("We will now create a new portal object together")
     click.echo("Which class do you want it to be? Possible answers are:")
-    from univention.portal import get_all_dynamic_classes
     possible_classes = [klass.__name__ for klass in get_all_dynamic_classes()]
     for klass in possible_classes:
         click.echo("  {}()".format(klass))
     click.echo("  value")
+    click.echo("  config")
     klass_default = None
     if "Portal" in possible_classes:
         klass_default = "Portal()"
-    portal = ask_value(name, klass_default=klass_default)
-    click.echo(portal)
+    portal_def = ask_value(name, klass_default=klass_default)
+    json_content[name] = portal_def
+    with open(portals_json, "w") as fd:
+        json.dump(json_content, fd, sort_keys=True, indent=4)
+    success("{} written".format(portals_json))
+    info("You may want to 'push {}' now".format(name))
 
 def ask_value(name, klass_default=None, value_default=None):
-    from univention.portal import get_all_dynamic_classes, get_dynamic_classes
     possible_classes = [klass.__name__ for klass in get_all_dynamic_classes()]
     choice = click.prompt("Choose the value of {}".format(name), default=klass_default,
-            type=click.Choice([klass + "()" for klass in possible_classes] + ["value"]))
+            type=click.Choice([klass + "()" for klass in possible_classes] + ["value", "config"]))
     if choice == "value":
-        pass
+        while True:
+            value = click.prompt('Choose a native value (e.g, None, True, 10, "name")', default=value_default)
+            print(value_default)
+            print(value)
+            try:
+                return {"type": "static", "value": ast.literal_eval(value)}
+            except SyntaxError:
+                click.echo(click.style("Cannot parse {}".format(value), fg="yellow"))
+    elif choice == "config":
+        value = click.prompt('Choose a config key from /usr/share/univention-portal/config.json')
+        return {"type": "config", "key": value}
     else:
-        import inspect
         klass_name = choice[:-2]
         klass = get_dynamic_classes(klass_name)
         click.echo("Okay, got class {}".format(klass_name))
-        spec = inspect.getargspec(klass.__init__)
-        click.echo("A {} takes {} arguments ({})".format(klass_name, len(spec.args) - 1, ', '.join(repr(arg) for arg in spec.args[1:])))
         kwargs = {}
-        if spec.defaults:
-            defaults = dict(zip(reversed(spec.args[1:], spec.defaults)))
+        try:
+            spec = inspect.getargspec(klass.__init__)
+        except TypeError:
+            # __init__ not defined
+            pass
         else:
-            defaults = {}
-        for arg in spec.args[1:]:
-            klass_default = value_default = None
-            default = defaults.get(arg)
-            if default is not None:
-                klass_default = "value"
-                value_default = default
+            click.echo("A {} takes {} arguments ({})".format(klass_name, len(spec.args) - 1, ', '.join(repr(arg) for arg in spec.args[1:])))
+            if spec.defaults:
+                defaults = dict(zip(spec.args[len(spec.args) - len(spec.defaults):], spec.defaults))
             else:
-                if camelcase(arg) in possible_classes:
-                    klass_default = camelcase(arg) + "()"
-            kwargs[arg] = ask_value(arg, klass_default=klass_default, value_default=value_default)
-        click.echo("Okay, {} initialized".format(klass_name))
-        return klass(**kwargs)
+                defaults = {}
+            for arg in spec.args[1:]:
+                klass_default = value_default = None
+                if arg in defaults:
+                    klass_default = "value"
+                    value_default = repr(defaults[arg])
+                else:
+                    if camelcase(arg) in possible_classes:
+                        klass_default = camelcase(arg) + "()"
+                kwargs[arg] = ask_value(arg, klass_default=klass_default, value_default=value_default)
+        click.echo(click.style("Okay, {} initialized".format(klass_name), fg="green"))
+        ret = {"type": "class", "class": klass.__name__}
+        if kwargs:
+            ret["kwargs"] = kwargs
+        return ret
 
 
 def capfirst(value):
@@ -233,18 +245,18 @@ def camelcase(value):
 def remove(name, purge):
     json_content = read_portals_json()
     if not json_content.pop(name, None):
-        warn("{} does not exist".format(name))
+        warn("{} does not exist in config file".format(name))
         return
     ucr = ConfigRegistry()
     ucr.load()
     obj = get_obj(name, ucr)
     if not obj:
-        warn("{} does not exist".format(name))
+        warn("{} does not exist in database".format(name))
     else:
         rm_localhost(obj, ucr)
         if purge and not any(meta.startswith("server:") for meta in obj.props.meta):
             obj.delete()
-            success("Removed unused {} from LDAP")
+            success("Removed unused {} from database")
         else:
             obj.save()
     with open(portals_json, "w") as fd:
@@ -268,7 +280,7 @@ def push(name):
     from univention.udm.encoders import Base64Bzip2BinaryProperty
     json_content = read_portals_json()
     if name not in json_content:
-        warn("{} does not exist".format(name))
+        warn("{} does not exist in config file".format(name))
         return
     portal_def = json_content[name]
     udm = UDM.machine().version(1)
@@ -298,7 +310,7 @@ def pull(name):
     ucr.load()
     obj = get_obj(name, ucr)
     if not obj:
-        warn("{} does not exist".format(name))
+        warn("{} does not exist in database".format(name))
         return
     json_data = json.loads(obj.props.data.raw)
     json_content = read_portals_json()
@@ -337,7 +349,7 @@ def rm_localhost(obj, ucr):
 
 @cli.command()
 @click.argument("name", nargs=-1)
-def update(name, portal, groups):
+def update(name):
     json_content = read_portals_json()
     if not name:
         name = json_content.keys()
@@ -346,7 +358,7 @@ def update(name, portal, groups):
         try:
             portal_def = json_content[_name]
         except KeyError:
-            warn("{} does not exist".format(name))
+            warn("{} does not exist in config file".format(name))
         else:
             portal_obj = make_portal(portal_def)
             start = datetime.datetime.now()
