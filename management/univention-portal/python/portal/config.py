@@ -1,9 +1,8 @@
-#! /bin/sh
+#!/usr/bin/python2.7
 #
 # Univention Portal
-#  postinst script for the univention-portal debian package
 #
-# Copyright 2017-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -30,28 +29,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
 
-ucr set portal/port?8095
-ucr set groups/default/domainadmins?"Domain Admins"
-a2ensite univention-portal.conf
+import json
+from glob import glob
 
-. /usr/share/univention-lib/all.sh
-create_logfile /var/log/univention/portal.log "root:adm" 640
+_DB = {}
 
+def load():
+	_DB.clear()
+	try:
+		for fname in sorted(glob("/usr/share/univention-portal/config/*.json")):
+			with open(fname) as fd:
+				_DB.update(json.load(fd))
+	except EnvironmentError:
+		pass
+	else:
+		load.never_loaded = False
+load.never_loaded = True
 
-if [ "$1" = "configure" ]; then
-	chmod 700 /var/cache/univention-portal
-	systemctl daemon-reload
-	systemctl reload apache2
-	systemctl enable univention-portal-server.service
-	systemctl restart univention-directory-listener
-	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
-fi
-
-[ ! -e /var/cache/univention-portal/portal.json ] && ucr filter < /usr/share/univention-portal/portal-unjoined.json > /var/cache/univention-portal/portal.json
-univention-portal add-default
-univention-portal update
-systemctl restart univention-portal-server
-
-exit 0
+def fetch(key):
+	if load.never_loaded:
+		load()
+	return _DB[key]

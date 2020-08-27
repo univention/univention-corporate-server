@@ -35,13 +35,6 @@ import requests
 from univention.portal import Plugin
 from univention.portal.log import get_logger
 
-#ucr = ConfigRegistry()
-#ucr.load()
-#
-#_umc_interface = ucr.get("umc/http/interface", "127.0.0.1")
-#_umc_port = int(ucr.get("umc/http/port", 8090))
-#UMC_SESSION_URL = "http://%s:%s/get/session-info" % (_umc_interface, _umc_port)
-
 from univention.portal.user import User
 
 class Authenticator(with_metaclass(Plugin)):

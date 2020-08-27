@@ -34,11 +34,10 @@ import datetime
 import ast
 import inspect
 
-from univention.config_registry import ConfigRegistry
-
 from univention.portal import get_all_dynamic_classes, get_dynamic_classes
 from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
+import univention.portal.config as config
 
 import click
 
@@ -247,13 +246,11 @@ def remove(name, purge):
     if not json_content.pop(name, None):
         warn("{} does not exist in config file".format(name))
         return
-    ucr = ConfigRegistry()
-    ucr.load()
-    obj = get_obj(name, ucr)
+    obj = get_obj(name)
     if not obj:
         warn("{} does not exist in database".format(name))
     else:
-        rm_localhost(obj, ucr)
+        rm_localhost(obj)
         if purge and not any(meta.startswith("server:") for meta in obj.props.meta):
             obj.delete()
             success("Removed unused {} from database")
@@ -285,20 +282,18 @@ def push(name):
     portal_def = json_content[name]
     udm = UDM.machine().version(1)
     data = udm.get("settings/data")
-    ucr = ConfigRegistry()
-    ucr.load()
-    base = "cn=config,cn=portals,cn=univention,{}".format(ucr.get("ldap/base"))
+    base = "cn=config,cn=portals,cn=univention,{}".format(config.fetch("ldap_base"))
     try:
         obj = data.get("cn={},{}".format(name, base))
     except NoObject:
-        obj = data.new(superordinate="cn=univention,{}".format(ucr.get("ldap/base")))
+        obj = data.new(superordinate="cn=univention,{}".format(config.fetch("ldap_base")))
         obj.position = base
         obj.props.name = name
         obj.props.data_type = "portals/config"
         info("Creating a new settings/data object")
     json_data = json.dumps(portal_def)
     obj.props.data = Base64Bzip2BinaryProperty("data", raw_value=json_data)
-    add_localhost(obj, ucr)
+    add_localhost(obj)
     obj.save()
     success("Saved {} in {}".format(name, obj.dn))
 
@@ -306,9 +301,7 @@ def push(name):
 @cli.command()
 @click.argument("name")
 def pull(name):
-    ucr = ConfigRegistry()
-    ucr.load()
-    obj = get_obj(name, ucr)
+    obj = get_obj(name)
     if not obj:
         warn("{} does not exist in database".format(name))
         return
@@ -318,30 +311,30 @@ def pull(name):
     with open(portals_json, "w") as fd:
         json.dump(json_content, fd, sort_keys=True, indent=4)
     success("{} updated".format(portals_json))
-    if add_localhost(obj, ucr):
+    if add_localhost(obj):
         obj.save()
         success("{} updated".format(obj.dn))
 
-def get_obj(name, ucr):
+def get_obj(name):
     from univention.udm import UDM, NoObject
     udm = UDM.machine().version(1)
     data = udm.get("settings/data")
-    base = "cn=config,cn=portals,cn=univention,{}".format(ucr.get("ldap/base"))
+    base = "cn=config,cn=portals,cn=univention,{}".format(config.fetch("ldap_base"))
     dn = "cn={},{}".format(name, base)
     try:
         return data.get(dn)
     except NoObject:
         return None
 
-def add_localhost(obj, ucr):
-    localhost = "{}.{}".format(ucr.get("hostname"), ucr.get("domainname"))
+def add_localhost(obj):
+    localhost = config.fetch("fqdn")
     server_key = "server:{}".format(localhost)
     if server_key not in obj.props.meta:
         obj.props.meta.append(server_key)
         return True
 
-def rm_localhost(obj, ucr):
-    localhost = "{}.{}".format(ucr.get("hostname"), ucr.get("domainname"))
+def rm_localhost(obj):
+    localhost = config.fetch("fqdn")
     server_key = "server:{}".format(localhost)
     if server_key in obj.props.meta:
         obj.props.meta.remove(server_key)
