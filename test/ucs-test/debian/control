@@ -491,6 +491,10 @@ Depends:
  ucs-test-libs (= ${source:Version}),
  univention-management-console-server,
  ${python:Depends},
+ ${python3:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: Test UMC modules
  This package includes some test UMC modules
 

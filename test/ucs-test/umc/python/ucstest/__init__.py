@@ -97,7 +97,7 @@ class Instance(Base):
 		result = None
 		try:
 			raise ThreadedError()
-		except ThreadedError as result:
+		except ThreadedError:
 			etype, value, _ = sys.exc_info()
 			thread = FakeThread()
 			thread.exc_info = (etype, value, None)
@@ -108,7 +108,7 @@ class Instance(Base):
 		result = None
 		try:
 			raise UMC_Error("This is an UMC Error")
-		except UMC_Error as result:
+		except UMC_Error:
 			etype, value, _ = sys.exc_info()
 			thread = FakeThread()
 			thread.exc_info = (etype, value, None)
