@@ -735,11 +735,11 @@ apt-cache search fax
 	</section>
 
 	<section id="computers:Installation_and_Remove_hooks">
-		<title>Hook scripts für Administratoren</title>
+		<title>Hook Skripte für Administratoren</title>
 		<para>
-		Benutzerdefinierte Skripte können nach jeder App-installation, -upgrade
-		oder -deinstallation ausgeführt werden. Solche Skripte erlauben die
-		automatisierung wiederkehrender administrativer Aufgaben.
+		Benutzerdefinierte Skripte können nach jeder Installation, Aktualisierung
+		oder Deinstallation von Apps ausgeführt werden. Solche Skripte erlauben die
+		Automatisierung wiederkehrender administrativer Aufgaben.
 		</para>
 
 		<para>
@@ -755,12 +755,12 @@ apt-cache search fax
 		</programlisting>
 
 		<para>
-		Wobei {appid} der Name einer App ist, für welche die Skripte ausgeführt werden sollen.
+		Wobei <replaceable>{appid}</replaceable> der Name einer App ist, für welche die Skripte ausgeführt werden sollen.
 		</para>
 
 		<para>
-		Die <code>/var/log/univention/appcenter.log</code> enthält mögliche
-		Fehler bei der Skriptausführung und weitere Hinweise.
+		Die <filename>/var/log/univention/appcenter.log</filename> enthält mögliche
+		Fehler bei der Ausführung der Skripte und weitere Hinweise.
 		</para>
 	</section>
 

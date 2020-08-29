@@ -752,11 +752,11 @@ apt-cache search fax
 		</programlisting>
 
 		<para>
-		Where {appid} is the name of the app for which the scripts should be executed.
+		Where <replaceable>{appid}</replaceable> is the name of the app for which the scripts should be executed.
 		</para>
 
 		<para>
-		The <code>/var/log/univention/appcenter.log</code> contains possible
+		The <filename>/var/log/univention/appcenter.log</filename> contains possible
 		scripting error messages and further hints.
 		</para>
 	</section>
