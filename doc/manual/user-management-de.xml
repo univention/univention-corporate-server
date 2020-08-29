@@ -1525,7 +1525,7 @@ univention-directory-manager users/user
     	</caution>
 
         <para>
-			Das optionale <ulink url=""><literal>lastbind</literal> Overlay-Modul</ulink> für OpenLDAP ermöglicht
+			Das optionale <ulink url="http://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html"><literal>lastbind</literal> Overlay-Modul</ulink> für OpenLDAP ermöglicht
 			die Aufzeichnung des Zeitstempels der letzten erfolgreichen LDAP-Anmeldung im <property>authTimestamp</property>
 			Attribut und kann z.B. zur Erkennung nicht genutzter Konten verwendet werden.
         </para>
