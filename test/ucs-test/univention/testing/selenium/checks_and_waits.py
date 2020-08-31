@@ -70,14 +70,14 @@ class ChecksAndWaits(object):
 		logger.info("Waiting for all dialogues to close.")
 		xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " dijitDialogUnderlay ")]'
 		webdriver.support.ui.WebDriverWait(xpath, timeout=60).until(
-			self.elements_invisible
+			self.elements_invisible, 'wait_until_all_dialogues_closed() timeout=60'
 		)
 
 	def wait_until_all_standby_animations_disappeared(self, timeout=60):
 		logger.info("Waiting for all standby animations to disappear.")
 		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
 		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-			self.elements_invisible
+			self.elements_invisible, 'wait_until_all_standby_animations_disappeared(timeout=%r)' % (timeout,)
 		)
 
 	def wait_until_standby_animation_appears(self, timeout=5):
@@ -85,7 +85,7 @@ class ChecksAndWaits(object):
 		xpath = '//*[starts-with(@id, "dojox_widget_Standby_")]/img'
 		try:
 			webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-				self.elements_visible
+				self.elements_visible, 'wait_until_standby_animation_appears(timeout=%r)' % (timeout,)
 			)
 		except selenium_exceptions.TimeoutException:
 			logger.info("No standby animation appeared during timeout. Ignoring")
@@ -114,7 +114,7 @@ class ChecksAndWaits(object):
 
 	def wait_until(self, check_function, timeout=60):
 		webdriver.support.ui.WebDriverWait(self.driver, timeout).until(
-			check_function
+			check_function, 'wait_until(%r, timeout=%r)' % (check_function, timeout)
 		)
 
 	def get_gallery_items(self):

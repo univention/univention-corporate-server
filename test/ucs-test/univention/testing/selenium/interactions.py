@@ -158,7 +158,7 @@ class Interactions(object):
 		Waits for the element to be clickable before attempting to click.
 		"""
 		elems = webdriver.support.ui.WebDriverWait(xpath, timeout).until(
-			self.get_all_enabled_elements
+			self.get_all_enabled_elements, 'click_element(%r, scroll_into_view=%r, timeout=%r)' % (xpath, scroll_into_view, timeout)
 		)
 
 		if len(elems) != 1:
