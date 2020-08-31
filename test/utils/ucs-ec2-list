@@ -1,20 +1,29 @@
 #!/bin/bash
+set -e
 
-trap "rm -f '$docker_env_file'" EXIT
+IMAGE='docker-registry.knut.univention.de/ucs-ec2-tools'
+
 docker_env_file="$(mktemp)"
-echo AWS_ACCESS_KEY_ID="$(cat ~/.boto | sed -n 's/^\w*aws_access_key_id *= *\(.*\)/\1/p')" >> $docker_env_file
-echo AWS_SECRET_ACCESS_KEY="$(cat ~/.boto | sed -n 's/^\w*aws_secret_access_key *= *\(.*\)/\1/p')" >> $docker_env_file
-echo USER=$USER >> $docker_env_file
-image=docker-registry.knut.univention.de/ucs-ec2-tools
-docker pull $image >/dev/null
-exe="${0##*/}"
-declare -a cmd=("docker" "run")
-cmd+=("-v" "$(pwd):/test" "-v" ~/ec2:/root/ec2:ro)
-cmd+=("--dns" "192.168.0.3" "--dns-search=knut.univention.de")
-cmd+=(--rm)
-cmd+=(--env-file "$docker_env_file")
-cmd+=($image)
-cmd+=($exe)
-cmd+=("$@")
-[ "${DEBUG:=0}" != 0 ] && echo "starting ucs-ec2-list with ${cmd[*]}"
-"${cmd[@]}"
+trap 'rm -f "$docker_env_file"' EXIT
+{
+	sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
+	echo "USER=$USER"
+} >"$docker_env_file"
+
+docker pull "$IMAGE" >/dev/null
+
+declare -a cmd=(
+	docker run
+	--rm
+	-v "$(pwd):/test"
+	-v ~/ec2:/root/ec2:ro
+	--dns '192.168.0.124'
+	--dns '192.168.0.97'
+	--dns-search 'knut.univention.de'
+	--env-file "$docker_env_file"
+	"$IMAGE"
+	"${0##*/}"
+	"$@"
+)
+[ -n "${DEBUG:-}" ] && echo "starting ucs-ec2-list with ${cmd[*]}"
+exec "${cmd[@]}"

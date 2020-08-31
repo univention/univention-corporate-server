@@ -238,7 +238,8 @@ EOF
 		-w /test
 		-v "$(pwd):/test"
 		-v "$HOME/ec2:/home/$USER/ec2:ro"
-		--dns '192.168.0.3'
+		--dns '192.168.0.124'
+		--dns '192.168.0.97'
 		--dns-search 'knut.univention.de'
 		-u "$(id -u)"
 		--env-file "$docker_env_file"
