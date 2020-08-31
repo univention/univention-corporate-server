@@ -6,8 +6,8 @@ src: bind9
 fix: 1:9.10.3.dfsg.P4-12.3+deb9u7A~4.4.5.202008301702
 desc: |
  This update addresses the following issues:
- * truncated TSIG response can lead to an assertion failure (CVE-2020-8622)
- * remotely triggerable assertion failure in pk11.c (CVE-2020-8623)
+ * Truncated TSIG response can lead to an assertion failure (CVE-2020-8622)
+ * Remotely triggerable assertion failure in pk11.c (CVE-2020-8623)
 bug: [51926]
 cve:
 - CVE-2020-8622
