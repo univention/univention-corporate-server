@@ -226,8 +226,7 @@ EOF
 			echo "$env_var=${!env_var}"
 		done
 		# get aws credentials
-		echo AWS_ACCESS_KEY_ID="$(sed -n 's/^\w*aws_access_key_id *= *\(.*\)/\1/p' ~/.boto)"
-		echo AWS_SECRET_ACCESS_KEY="$(sed -n 's/^\w*aws_secret_access_key *= *\(.*\)/\1/p' ~/.boto)"
+		sed -rne '/^\[Credentials\]/,${/^\[Credentials\]/d;s/^ *(aws_(secret_)?access_key(_id)?) *= *(.*)/\U\1\E=\4/p;/^\[/q}' ~/.boto
 	} >"$docker_env_file"
 	# TODO add ~/ec2/keys/tech.pem via env
 	# TODO add personal ssh key for kvm server access via env
