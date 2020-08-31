@@ -1,0 +1,57 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: openexr
+fix: 2.2.0-11+deb9u1
+desc: |
+ This update addresses the following issues:
+ * Out-of-bounds read in the hufDecode function (CVE-2017-9110)
+ * Out-of-bounds write in the storeSSE function (CVE-2017-9111)
+ * Out-of-bounds read in the getBits function (CVE-2017-9112)
+ * Out-of-bounds write in the bufferedReadPixels function (CVE-2017-9113)
+ * Out-of-bounds read in the refill function (CVE-2017-9114)
+ * Out-of-bounds write in the = operator function (CVE-2017-9115)
+ * Out-of-bounds read in the uncompress function (CVE-2017-9116)
+ * heap-based buffer over-read in hufDecode function (CVE-2017-12596)
+ * out-of-bounds read in ImfOptimizedPixelReading.h (CVE-2020-11758)
+ * out-of-bounds write due to integer overflows in
+   CompositeDeepScanLine::Data::handleDeepFrameBuffer and
+   readSampleCountForLineBlock (CVE-2020-11759)
+ * out-of-bounds read during RLE uncompression in rleUncompress function in
+   ImfRle.cpp (CVE-2020-11760)
+ * out-of-bounds read during Huffman uncompression (CVE-2020-11761)
+ * out-of-bounds read and write in DwaCompressor::uncompress in
+   ImfDwaCompressor.cpp (CVE-2020-11762)
+ * std::vector out-of-bounds read and write in ImfTileOffsets.cpp
+   (CVE-2020-11763)
+ * out-of-bounds write in copyIntoFrameBuffer function in ImfMisc.cpp
+   (CVE-2020-11764)
+ * off-by-one error in ImfXdr.h read function by
+   DwaCompressor::Classifier::Classifier leading to an out-of-bounds read
+   (CVE-2020-11765)
+ * Invalid input could cause a use-after-free in
+   DeepScanLineInputFile::DeepScanLineInputFile() in
+   IlmImf/ImfDeepScanLineInputFile.cpp (CVE-2020-15305)
+ * Invalid chunkCount attributes could cause a heap buffer overflow in
+   getChunkOffsetTableSize() in IlmImf/ImfMisc.cpp (CVE-2020-15306)
+bug: [51931]
+cve:
+- CVE-2017-9110
+- CVE-2017-9111
+- CVE-2017-9112
+- CVE-2017-9113
+- CVE-2017-9114
+- CVE-2017-9115
+- CVE-2017-9116
+- CVE-2017-12596
+- CVE-2020-11758
+- CVE-2020-11759
+- CVE-2020-11760
+- CVE-2020-11761
+- CVE-2020-11762
+- CVE-2020-11763
+- CVE-2020-11764
+- CVE-2020-11765
+- CVE-2020-15305
+- CVE-2020-15306
