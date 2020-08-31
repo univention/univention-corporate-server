@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: xorg-server
+fix: 2:1.19.2-1+deb9u6
+desc: |
+ This update addresses the following issues:
+ * Out-Of-Bounds access in XkbSetNames function (CVE-2020-14345)
+ * Integer underflow in the X input extension protocol (CVE-2020-14346)
+ * leak of uninitialized heap memory from the X server to clients in
+   AllocatePixmap of dix/pixmap.c (CVE-2020-14347)
+ * XkbSelectEvents Integer Underflow Privilege Escalation Vulnerability
+   (CVE-2020-14361)
+ * XRecordRegisterClients Integer Underflow Privilege Escalation Vulnerability
+   (CVE-2020-14362)
+bug: [51930]
+cve:
+- CVE-2020-14345
+- CVE-2020-14346
+- CVE-2020-14347
+- CVE-2020-14361
+- CVE-2020-14362
