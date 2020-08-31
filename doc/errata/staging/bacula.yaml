@@ -3,7 +3,7 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: bacula
-fix: 7.4.4+dfsg-6+deb9u2A~4.4.5.202008301702
+fix: 7.4.4+dfsg-6+deb9u2A~4.4.0.202008310852
 desc: |
  This update addresses the following issue:
  * In Bareos a heap overflow allows a malicious client to corrupt the
