@@ -38,7 +38,7 @@ _DB = {}
 def load():
 	_DB.clear()
 	try:
-		for fname in sorted(glob("/usr/share/univention-portal/config/*.json")):
+		for fname in sorted(glob("/usr/lib/univention-portal/config/*.json")):
 			with open(fname) as fd:
 				_DB.update(json.load(fd))
 	except EnvironmentError:

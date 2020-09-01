@@ -21,7 +21,7 @@ File: etc/logrotate.d/univention-portal
 Variables: logrotate/.*
 
 Type: file
-File: usr/share/univention-portal/config/config.json
+File: usr/lib/univention-portal/config/config.json
 Variables: ldap/hostdn
 Variables: ldap/base
 Variables: ldap/server/name
