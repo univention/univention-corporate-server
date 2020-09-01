@@ -296,9 +296,6 @@ def handler(dn, new, old, command):
 
 			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
 				# if old != new -> delete everything from old!
-				univention.debug.debug(
-					univention.debug.LISTENER, univention.debug.PROCESS,
-					"### stdout {} ".format(stdout))
 				for ace in prev_aces:
 					stdout = stdout.replace(ace, '')
 
