@@ -80,7 +80,7 @@ def add_default(update):
                         "kwargs": {
                             "cache_file": {
                                 "type": "static", 
-                                "value": "/var/cache/univention-portal/groups.json"
+                                "value": "/usr/lib/univention-portal/caches/groups.json"
                             }, 
                             "reloader": {
                             "class": "GroupsReloaderLDAP", 
@@ -91,7 +91,7 @@ def add_default(update):
                                 }, 
                                 "cache_file": {
                                     "type": "static", 
-                                    "value": "/var/cache/univention-portal/groups.json"
+                                    "value": "/usr/lib/univention-portal/caches/groups.json"
                                 }, 
                                 "ldap_base": {
                                     "key": "ldap_base", 
@@ -131,14 +131,14 @@ def add_default(update):
                 "kwargs": {
                     "cache_file": {
                         "type": "static", 
-                        "value": "/var/cache/univention-portal/portal.json"
+                        "value": "/usr/lib/univention-portal/caches/portal.json"
                     }, 
                     "reloader": {
                         "class": "PortalReloaderUDM", 
                         "kwargs": {
                             "cache_file": {
                                 "type": "static", 
-                                "value": "/var/cache/univention-portal/portal.json"
+                                "value": "/usr/lib/univention-portal/caches/portal.json"
                             }, 
                             "portal_dn": {
                                 "key": "default_domain_dn", 
@@ -395,6 +395,8 @@ def make_obj(obj_def):
     arg_type = obj_def["type"]
     if arg_type == "static":
         return obj_def["value"]
+    elif arg_type == "config":
+        return config.fetch(obj_def["key"])
     if arg_type == "class":
         args = []
         kwargs = {}
