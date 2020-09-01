@@ -39,9 +39,6 @@ from imghdr import what
 import ldap
 from ldap.dn import explode_dn
 
-from univention.udm import UDM
-from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
-
 from univention.portal.log import get_logger
 from univention.portal import Plugin
 
@@ -50,7 +47,7 @@ from six.moves.urllib.parse import quote
 
 
 class Reloader(with_metaclass(Plugin)):
-	def refresh(self, force=False):
+	def refresh(self, reason=None):
 		pass
 
 
@@ -72,8 +69,14 @@ class MtimeBasedLazyFileReloader(Reloader):
 			self._mtime = mtime
 			return True
 
-	def refresh(self, force=False):
-		if force:
+	def _check_reason(self, reason):
+		if reason is None:
+			return False
+		if reason == 'force':
+			return True
+
+	def refresh(self, reason=None):
+		if self._check_reason(reason):
 			get_logger('cache').info('refreshing cache')
 			fd = None
 			try:
@@ -100,7 +103,39 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		super(PortalReloaderUDM, self).__init__(cache_file)
 		self._portal_dn = portal_dn
 
+	def _check_reason(self, reason, content):
+		if super(PortalReloaderUDM, self)._check_reason(reason):
+			return True
+		reason_args = reason.split(':', 2)
+		if len(reason_args) < 2:
+			return False
+		if reason_args[0] != 'ldap':
+			return False
+		if reason_args[0] not in ['portal', 'category', 'entry', 'folder']:
+			return False
+		if len(reason_args) == 2:
+			return True
+		module = reason_args[1]
+		dn = reason_args[2]
+		if module == 'portal':
+			return content['portal']['dn'] == dn
+		elif module == 'category':
+			return dn in content['categories']
+		elif module == 'entry':
+			for link in content['menu_links']:
+				if link['dn'] == dn:
+					return True
+			for link in content['user_links']:
+				if link['dn'] == dn:
+					return True
+			return dn in content['entries']
+		elif module == 'folder':
+			return dn in content['folders']
+		return False
+
 	def _refresh(self):
+		from univention.udm import UDM
+
 		udm = UDM.machine().version(2)
 		try:
 			portal = udm.get('portals/portal').get(self._portal_dn)
@@ -186,6 +221,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_entries(self, portal):
+		from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
 		def _add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
@@ -218,6 +254,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_folders(self, portal):
+		from univention.udm.modules.portal import PortalsPortalFolderObject
 		def _add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
@@ -320,6 +357,12 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 		self._bindn = binddn
 		self._password_file = password_file
 		self._ldap_base = ldap_base
+
+	def _check_reason(self, reason):
+		if super(GroupsReloaderLDAP, self)._check_reason(reason):
+			return True
+		if reason == 'ldap:group':
+			return True
 
 	def _refresh(self):
 		with open(self._password_file) as fd:

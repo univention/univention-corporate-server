@@ -34,6 +34,14 @@
 import pytest
 
 @pytest.fixture
+def hindenkampp(mocker):
+	user = mocker.Mock()
+	user.username = 'hindenkampp'
+	user.groups = []
+	return user
+
+
+@pytest.fixture
 def standard_portal(dynamic_class, mocker):
 	Portal = dynamic_class('Portal')
 	Scorer = dynamic_class('Scorer')
@@ -47,12 +55,14 @@ def mocked_portal(dynamic_class, mocker):
 	Portal = dynamic_class('Portal')
 	scorer = mocker.Mock()
 	portal_cache = mocker.Mock()
-	groups_cache = mocker.Mock()
-	return Portal(scorer, portal_cache, groups_cache)
+	portal_cache.refresh = mocker.Mock(return_value=None)
+	authenticator = mocker.Mock()
+	authenticator.refresh = mocker.Mock(return_value=None)
+	return Portal(scorer, portal_cache, authenticator)
 
 
-def test_portal_content(standard_portal):
-	content = standard_portal.get_visible_content('hindenkampp', False)
+def test_portal_content(hindenkampp, standard_portal):
+	content = standard_portal.get_visible_content(hindenkampp, False)
 	expected_content = {
 		'category_dns': ['cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
 		'entry_dns': [
@@ -63,20 +73,20 @@ def test_portal_content(standard_portal):
 	assert content == expected_content
 
 
-def test_portal_user_links(standard_portal):
-	content = standard_portal.get_user_links('hindenkampp', False)
+def test_portal_user_links(hindenkampp, standard_portal):
+	content = standard_portal.get_user_links(hindenkampp, False)
 	expected_content = []
 	assert content == expected_content
 
 
-def test_portal_menu_links(standard_portal):
-	content = standard_portal.get_menu_links('hindenkampp', False)
+def test_portal_menu_links(hindenkampp, standard_portal):
+	content = standard_portal.get_menu_links(hindenkampp, False)
 	expected_content = []
 	assert content == expected_content
 
 
-def test_portal_entries(standard_portal):
-	content = standard_portal.get_visible_content('hindenkampp', False)
+def test_portal_entries(hindenkampp, standard_portal):
+	content = standard_portal.get_visible_content(hindenkampp, False)
 	content = standard_portal.get_entries(content)
 	expected_content = {
 		'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
@@ -112,15 +122,15 @@ def test_portal_entries(standard_portal):
 	assert content == expected_content
 
 
-def test_portal_folders(standard_portal):
-	content = standard_portal.get_visible_content('hindenkampp', False)
+def test_portal_folders(hindenkampp, standard_portal):
+	content = standard_portal.get_visible_content(hindenkampp, False)
 	content = standard_portal.get_folders(content)
 	expected_content = {}
 	assert content == expected_content
 
 
-def test_portal_categories(standard_portal):
-	content = standard_portal.get_visible_content('hindenkampp', False)
+def test_portal_categories(hindenkampp, standard_portal):
+	content = standard_portal.get_visible_content(hindenkampp, False)
 	content = standard_portal.get_categories(content)
 	expected_content = {
 		u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
@@ -134,8 +144,8 @@ def test_portal_categories(standard_portal):
 	assert content == expected_content
 
 
-def test_portal_meta(standard_portal):
-	content = standard_portal.get_visible_content('hindenkampp', False)
+def test_portal_meta(hindenkampp, standard_portal):
+	content = standard_portal.get_visible_content(hindenkampp, False)
 	categories = standard_portal.get_categories(content)
 	content = standard_portal.get_meta(content, categories)
 	expected_content = {
@@ -159,9 +169,9 @@ def test_portal_meta(standard_portal):
 
 
 def test_portal_refresh(mocked_portal):
-	assert mocked_portal.refresh_cache() is None
+	assert mocked_portal.refresh() is None
 	mocked_portal.portal_cache.refresh.assert_called_once()
-	mocked_portal.groups_cache.refresh.assert_called_once()
+	mocked_portal.authenticator.refresh.assert_called_once()
 
 
 def test_portal_score(mocked_portal, mocker):

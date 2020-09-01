@@ -153,9 +153,9 @@ class Portal(with_metaclass(Plugin)):
 		_flatten(folder_dn, folders, entries, ret, [])
 		return ret
 
-	def refresh(self):
-		touched = self.portal_cache.refresh(force=True)
-		touched = self.authenticator.refresh(force=True) or touched
+	def refresh(self, reason=None):
+		touched = self.portal_cache.refresh(reason=reason)
+		touched = self.authenticator.refresh(reason=reason) or touched
 		return touched
 
 	def score(self, request):

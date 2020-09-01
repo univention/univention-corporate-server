@@ -40,6 +40,13 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture
+def portal_factory():
+	use_installed = pytest.config.getoption('--installed-portal')
+	module = import_module('factory', 'python/', 'univention.portal.factory', use_installed=use_installed)
+	return module
+
+
+@pytest.fixture
 def portal_lib():
 	use_installed = pytest.config.getoption('--installed-portal')
 	module = import_module('portal', 'python/', 'univention.portal', use_installed=use_installed)

@@ -42,7 +42,7 @@ GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 class PortalGroups(ListenerModuleHandler):
 	def post_run(self):
 		with self.as_root():
-			subprocess.call(['/usr/sbin/univention-portal', 'update', '--groups'])
+			subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', 'ldap:group'])
 
 	class Configuration(ListenerModuleConfiguration):
 		name = name

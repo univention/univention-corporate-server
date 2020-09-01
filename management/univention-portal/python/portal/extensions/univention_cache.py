@@ -59,9 +59,9 @@ class Cache(with_metaclass(Plugin)):
 			self._load()
 		return self._cache
 
-	def refresh(self, force=False):
+	def refresh(self, reason=None):
 		if self._reloader:
-			return self._reloader.refresh(force=force)
+			return self._reloader.refresh(reason=reason)
 
 
 class PortalFileCache(Cache):
