@@ -5,7 +5,23 @@ $this->data['header'] = $this->t('{login:user_pass_header}');
 
 $PW_EXPIRED = $this->data['errorcode'] !== NULL && in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'SAMBA_PWCHANGE', 'univention:RETYPE_MISMATCH'));
 // echo '<pre>'; var_dump($this->data); echo '</pre>';
+
+if ($this->data['errorcode'] === 'univention:ERROR') {
 ?>
+		<script type="text/javascript">
+			//<!--
+			require(["umc/tools", ], function(tools) {
+				var data = <?php echo json_encode(array(
+	"status" => $this->data['errorparams']['status'],
+	"title" => $this->data['errorparams']['title'],
+	"message" => $this->data['errorparams']['message'],
+	"traceback" => $this->data['errorparams']['traceback'],
+)); ?>;
+				tools.showErrorDialog(data, { hideInformVendor: true, hideInformVendorViaMail: true, noRedirection: true });
+			});
+			//-->
+		</script>
+<?php } ?>
 		<div id="umcLoginWrapper">
 			<h1 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:loginat}', array('%s' => $this->configuration->getValue('domainname', '')))); ?></h1>
 <?php
@@ -22,7 +38,7 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 				<div class="umcLoginFormWrapper">
 					<p id="umcLoginNotices" class="umcLoginNotices<?php /*umcLoginWarning*/ ?>" style="display: <?php echo $this->data['errorcode'] !== NULL ? 'block' : 'none'; ?>;">
 						<?php
-if ($this->data['errorcode'] !== NULL) {
+if ($this->data['errorcode'] !== NULL && $this->data['errorcode'] !== 'univention:ERROR') {
 	echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])) . '. <br />';
 
 	if ($this->data['errorcode'] === 'univention:SELFSERVICE_ACCUNVERIFIED') {

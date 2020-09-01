@@ -61,7 +61,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			if ($password !== $new_password) {  // The password was changed, but the S4-Connector did not yet sync it back to OpenLDAP
 				throw new SimpleSAML_Error_Error('univention:PASSWORD_CHANGE_SUCCESS');
 			}
-			if ($e->getMessage() == 'WRONGUSERPASS') {
+			if ($e->getMessage() === 'WRONGUSERPASS') {
 				$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
 				$attributes = $this->ldap->getAttributes($user_dn);
 				$this->throw_common_login_errors($attributes);
@@ -109,6 +109,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			$response = array('message' => $response);
 		}
 		if ($httpcode !== 200) {
+			if ($httpcode >= 500) {
+				throw new SimpleSAML_Error_Error(array('univention:ERROR',
+					'status' => $httpcode,
+					'title' => $response['title'],
+					'message' => $response['message'],
+					'traceback' => $response['traceback'],
+				));
+			}
 			throw new SimpleSAML_Error_Error(array('univention:PW_CHANGE_FAILED', '%s' => $response['message']));
 		}
 		curl_close($ch);
