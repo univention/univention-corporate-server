@@ -49,8 +49,8 @@ class UMCAuthenticator(Authenticator):
 		self.portal_cookie_name = portal_cookie_name
 		self.umc_cookie_name = umc_cookie_name or portal_cookie_name
 
-	def refresh(self, force=False):
-		return self.group_cache.refresh(force=force)
+	def refresh(self, reason=None):
+		return self.group_cache.refresh(reason=reason)
 
 	def get_user(self, request):
 		session = request.get_cookie(self.portal_cookie_name)

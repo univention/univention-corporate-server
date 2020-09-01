@@ -67,9 +67,10 @@ def test_cache_reload(dynamic_class, mocker):
 	Cache = dynamic_class('PortalFileCache')
 	mock = mocker.Mock()
 	cache = Cache('unittests/caches/portal.json', reloader=mock)
-	mock.refresh.assert_called_with(force=False)
-	cache.refresh(force=True)
-	mock.refresh.assert_called_with(force=True)
+	content = cache.get()
+	mock.refresh.assert_called_with(reason=None, content=content)
+	cache.refresh(reason='force')
+	mock.refresh.assert_called_with(reason='force', content=content)
 
 
 def test_cache_reload_on_get(dynamic_class, mocker):
