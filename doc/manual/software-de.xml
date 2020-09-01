@@ -759,6 +759,12 @@ apt-cache search fax
 		</para>
 
 		<para>
+		Dateinamen dürfen nur aus Kleinbuchstaben und Zahlen bestehen (^[a-z0-9]+$).
+		<code>run-parts --test [Verzeichnis]</code> kann verwendet werden, um zu
+		überprüfen welche Dateien ausgeführt werden wüden.
+		</para>
+
+		<para>
 		Die <filename>/var/log/univention/appcenter.log</filename> enthält mögliche
 		Fehler bei der Ausführung der Skripte und weitere Hinweise.
 		</para>

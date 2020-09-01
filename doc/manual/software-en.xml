@@ -754,6 +754,11 @@ apt-cache search fax
 		<para>
 		Where <replaceable>{appid}</replaceable> is the name of the app for which the scripts should be executed.
 		</para>
+			
+		<para>
+    Script file names are only allowed to consist of lower case letters and numbers (^[a-z0-9]+$).
+		<code>run-parts --test [directory]</code> can be used to verify which files would be executed.
+		</para>
 
 		<para>
 		The <filename>/var/log/univention/appcenter.log</filename> contains possible
