@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
-src: univention-saml
-fix: 6.0.2-52A~4.4.0.202008261900
+src: univention-management-console
+fix: 11.0.4-103A~4.4.0.202009011239
 desc: |
  This update addresses the following issue(s):
  * Expired passwords can now be changed in the SAML login dialog.
