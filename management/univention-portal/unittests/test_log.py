@@ -38,7 +38,7 @@ import pytest
 
 def test_setup_logger(portal_lib):
 	use_installed = pytest.config.getoption('--installed-portal')
-	module = import_module('log', 'python/', 'univention.portal.log', use_installed=use_installed)
+	module = import_module('univention.portal.log', 'python/', 'univention.portal.log', use_installed=use_installed)
 	module.setup_logger()
 	unittest_logger = module.get_logger('unittest')
 	unittest_logger.info('test_setup_logger works')

@@ -42,8 +42,8 @@ setup(
 	url='https://www.univention.de/',
 	license='GNU Affero General Public License v3',
 
-	packages=['univention.portal'],
-	package_dir={'univention.portal': 'python/portal'},
+	packages=['univention.portal', 'univention.portal.extensions'],
+	package_dir={'univention.portal': 'python/univention/portal'},
 
 	name=dch.package,
 	version=dch.version.full_version,

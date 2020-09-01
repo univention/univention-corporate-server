@@ -69,14 +69,14 @@ class MtimeBasedLazyFileReloader(Reloader):
 			self._mtime = mtime
 			return True
 
-	def _check_reason(self, reason):
+	def _check_reason(self, reason, content):
 		if reason is None:
 			return False
 		if reason == 'force':
 			return True
 
-	def refresh(self, reason=None):
-		if self._check_reason(reason):
+	def refresh(self, reason=None, content=None):
+		if self._check_reason(reason, content):
 			get_logger('cache').info('refreshing cache')
 			fd = None
 			try:
@@ -104,7 +104,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		self._portal_dn = portal_dn
 
 	def _check_reason(self, reason, content):
-		if super(PortalReloaderUDM, self)._check_reason(reason):
+		if super(PortalReloaderUDM, self)._check_reason(reason, content):
 			return True
 		reason_args = reason.split(':', 2)
 		if len(reason_args) < 2:
@@ -114,6 +114,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		if reason_args[0] not in ['portal', 'category', 'entry', 'folder']:
 			return False
 		if len(reason_args) == 2:
+			return True
+		if not content:
 			return True
 		module = reason_args[1]
 		dn = reason_args[2]
@@ -358,10 +360,10 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 		self._password_file = password_file
 		self._ldap_base = ldap_base
 
-	def _check_reason(self, reason):
-		if super(GroupsReloaderLDAP, self)._check_reason(reason):
+	def _check_reason(self, reason, content):
+		if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
 			return True
-		if reason == 'ldap:group':
+		if reason.starswith('ldap:group'):
 			return True
 
 	def _refresh(self):
