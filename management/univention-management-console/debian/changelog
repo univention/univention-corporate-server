@@ -1,3 +1,11 @@
+univention-management-console (11.0.4-103) unstable; urgency=medium
+
+  * Bug #51492: fix javascript `TypeError: Cannot read property
+  	'how_do_i_login/enabled' of undefined` when UMC-Server is down
+  * Bug #51492: fix various HTML syntax errors
+
+ -- Florian Best <best@univention.de>  Tue, 01 Sep 2020 12:33:30 +0200
+
 univention-management-console (11.0.4-102) unstable; urgency=medium
 
   * Bug #45445: use umc.tools.showErrorDialog

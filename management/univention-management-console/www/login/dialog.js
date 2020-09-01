@@ -65,7 +65,7 @@ define([
 
 		_addLinkFromUcr: function(name, defaults) {
 			defaults = defaults || {};
-			var loginLinks = tools.status('login_links');
+			var loginLinks = tools.status('login_links') || {};
 			var enabled = loginLinks[name + '/enabled'] !== undefined ? tools.isTrue(loginLinks[name + '/enabled']) : defaults.enabled;
 			if (!enabled) {
 				return;
