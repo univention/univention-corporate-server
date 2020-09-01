@@ -760,8 +760,11 @@ apt-cache search fax
 
 		<para>
 		Dateinamen dürfen nur aus Kleinbuchstaben und Zahlen bestehen (<command>^[a-z0-9]+$</command>).
-		<command>run-parts --test [Verzeichnis]</command> kann verwendet werden, um zu
-		überprüfen welche Dateien ausgeführt werden würden.
+		Außerdem müssen die Dateien als ausführbar markiert sein (<command>chmod +x [Dateiname]</command>)
+		denn sie werden intern von <command>run-parts</command> aufgerufen.
+		Daher kann mit <command>run-parts --test [Verzeichnis]</command> getestet werden,
+		ob und welche Dateien ausgeführt werden würden.
+		Weitere Informationen können der Handbuchseite entnommen werden mit <command>man run-parts</command>.
 		</para>
 
 		<para>
