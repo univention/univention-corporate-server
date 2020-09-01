@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: 
+fix: 9.0.4-50A~4.4.5.202009011049
+desc: |
+ This update addresses the following issue(s):
+ * 
+bug: [51678]
