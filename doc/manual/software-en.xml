@@ -756,8 +756,8 @@ apt-cache search fax
 		</para>
 			
 		<para>
-    Script file names are only allowed to consist of lower case letters and numbers (^[a-z0-9]+$).
-		<code>run-parts --test [directory]</code> can be used to verify which files would be executed.
+ 		Script file names are only allowed to consist of lower case letters and numbers (<command>^[a-z0-9]+$</command>).
+		<command>run-parts --test [directory]</command> can be used to verify which files would be executed.
 		</para>
 
 		<para>
