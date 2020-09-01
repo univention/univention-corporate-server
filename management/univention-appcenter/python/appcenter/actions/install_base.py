@@ -40,7 +40,7 @@ import subprocess
 from argparse import SUPPRESS, Action
 from tempfile import NamedTemporaryFile
 
-from univention.appcenter.app import App
+from univention.appcenter.app import App, DATA_DIR
 from univention.appcenter.actions import StoreAppAction, get_action
 from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError, ParallelOperationInProgress
 from univention.appcenter.actions.register import Register
@@ -183,8 +183,9 @@ class InstallRemoveUpgrade(Register):
 				if status == 200:
 					self._write_success_event(app, context_id, args)
 					self._call_action_hooks(
-						"/var/lib/univention-appcenter/apps/"
-						"{app_id}/local/hooks/{when}-{action}.d".format(
+						"{data_dir}/{app_id}/local/hooks/"
+						"{when}-{action}.d".format(
+							data_dir=DATA_DIR,
 							app_id=app.id,
 							action=self.get_action_name(),
 							when="post"

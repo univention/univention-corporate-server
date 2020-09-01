@@ -1,3 +1,9 @@
+univention-appcenter (8.0.11-136) unstable; urgency=low
+
+  * Bug #51790: Refactored hook logic a bit
+
+ -- Max Christian Pohle <pohle@univention.de>  Tue, 01 Sep 2020 15:13:47 +0200
+
 univention-appcenter (8.0.11-135) unstable; urgency=medium
 
   * Bug #51790: Allow the execution of custom hooks after install, upgrade and

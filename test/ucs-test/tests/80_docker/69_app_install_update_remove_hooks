@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test update-certificates
+## desc: Test appcenter hooks
 ## tags: [docker]
 ## exposure: dangerous
 ## packages:
