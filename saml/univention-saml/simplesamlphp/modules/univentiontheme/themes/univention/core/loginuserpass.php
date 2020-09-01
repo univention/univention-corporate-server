@@ -6,6 +6,8 @@ $this->data['header'] = $this->t('{login:user_pass_header}');
 $PW_EXPIRED = $this->data['errorcode'] !== NULL && in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'SAMBA_PWCHANGE', 'univention:RETYPE_MISMATCH'));
 // echo '<pre>'; var_dump($this->data); echo '</pre>';
 
+$error_is_notice = !in_array($this->data['errorcode'], array('univention:PW_CHANGE_FAILED', 'univention:RETYPE_MISMATCH'));
+
 if ($this->data['errorcode'] === 'univention:ERROR') {
 ?>
 		<script type="text/javascript">
@@ -36,15 +38,21 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg"/>
 				</div>
 				<div class="umcLoginFormWrapper">
-					<p id="umcLoginNotices" class="umcLoginNotices<?php /*umcLoginWarning*/ ?>" style="display: <?php echo $this->data['errorcode'] !== NULL ? 'block' : 'none'; ?>;">
+					<p id="umcLoginNotices" class="umcLoginNotices" style="display: <?php echo $this->data['errorcode'] !== NULL && $error_is_notice ? 'block' : 'none'; ?>;">
 						<?php
+$error_message = '';
+
 if ($this->data['errorcode'] !== NULL && $this->data['errorcode'] !== 'univention:ERROR') {
-	echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])) . '. <br />';
+	$error_message .= htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])) . '. <br />';
 
 	if ($this->data['errorcode'] === 'univention:SELFSERVICE_ACCUNVERIFIED') {
-		echo '<span id="error_decription"></span>';  # FIXME: remove this hack, don't store HTML in UCR variables...
+		$error_message .= '<span id="error_decription"></span>';  # FIXME: remove this hack, don't store HTML in UCR variables...
 	} else {
-		echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams']));
+		$error_message .= htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams']));
+	}
+
+	if ($error_is_notice) {
+		echo $error_message;
 	}
 }
 ?>
@@ -115,7 +123,17 @@ foreach ($this->data['stateparams'] as $name => $value) {
 <?php
 }
 ?>
-					<div id="umcLoginWarnings" class="umcLoginWarnings"></div>
+<?php
+if (!$error_is_notice && $error_message) {
+?>
+					<div id="umcLoginWarnings" class="umcLoginWarnings">
+						<p class="umcLoginWarning">
+							<?php echo $error_message; ?>
+						</p>
+					</div>
+<?php
+}
+?>
 				</div>
 			</div>
 			<div id="umcLoginLinks"></div>
