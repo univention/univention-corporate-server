@@ -44,6 +44,15 @@ def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 	listener.setuid(0)
 	try:
-		subprocess.call(['/usr/sbin/univention-portal', 'update', '--portal'])
+		if new is None:
+			attrs = old
+		else:
+			attrs = new
+		object_type = attrs.get('univentionObjectType', [])
+		if object_type:
+			module = object_type[0].split('/')[-1]
+		else:
+			module = 'unknown'
+		subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', 'ldap:{}:{}'.format(module, dn)])
 	finally:
 		listener.unsetuid()

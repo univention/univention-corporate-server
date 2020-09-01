@@ -352,7 +352,8 @@ def rm_localhost(obj):
 
 @cli.command()
 @click.argument("name", nargs=-1)
-def update(name):
+@click.option("--reason", default='force')
+def update(name, reason):
     json_content = read_portals_json()
     if not name:
         name = json_content.keys()
@@ -365,7 +366,7 @@ def update(name):
         else:
             portal_obj = make_portal(portal_def)
             start = datetime.datetime.now()
-            if portal_obj.refresh():
+            if portal_obj.refresh(reason=reason):
                 delta = datetime.datetime.now() - start
                 success("Portal data updated in {:.2f}s".format(delta.total_seconds()))
             else:
