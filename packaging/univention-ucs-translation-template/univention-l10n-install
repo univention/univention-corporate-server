@@ -73,10 +73,9 @@ def main():
 			'perl',
 			'-MDebian::Debhelper::Dh_Lib',
 			'-e',
-			'$0="{added_by}"; autotrigger("{package}", "activate", "univention-customize-texts")'.format(
-				package=scase.binary_package_name,
-				added_by=os.path.basename(sys.argv[0]),
-			),
+			'$0=@ARGV[0]; autotrigger(@ARGV[1], "activate", "univention-customize-texts")',
+			os.path.basename(sys.argv[0]),
+			scase.binary_package_name,
 		])
 
 
