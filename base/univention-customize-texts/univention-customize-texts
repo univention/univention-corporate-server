@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Copyright 2020 Univention GmbH
@@ -32,6 +32,8 @@ import click
 import os
 import json
 import polib
+
+import univention.customize_texts.check as customize_texts_check
 
 L10_FOLDER = "/usr/share/univention-customize-texts/l10n-files"
 OVERWRITE_FOLDER = "/usr/share/univention-customize-texts/overwrites"
@@ -97,6 +99,11 @@ def search(text):  # type: (str) -> None
 				for key, value in matches:
 					if text == value:
 						click.echo('\t"{}" "{}"'.format(key, value))
+
+
+@cli.command(help="Check if all custom texts are still applicable")
+def check():
+	customize_texts_check.check()
 
 
 if __name__ == '__main__':

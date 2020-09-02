@@ -26,6 +26,7 @@ Package: python3-univention-customize-texts
 Architecture: all
 Depends:
  python3-polib,
+ python3-click,
  ${misc:Depends},
  ${python3:Depends},
 Provides:
