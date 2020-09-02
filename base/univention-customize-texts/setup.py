@@ -1,9 +1,10 @@
-#!/usr/bin/make -f
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# PACKAGES
-#  rules file for the debian package
+# Univention App Center
+#  Setup file for packaging
 #
-# Copyright 2020 Univention GmbH
+# Copyright 2019-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,9 +30,28 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+#
 
-export DH_VERBOSE=1
-export PYBUILD_NAME=univention-customize-texts
+import io
+from distutils.core import setup
+from email.utils import parseaddr
+from debian.changelog import Changelog
+from debian.deb822 import Deb822
 
-%:
-	dh $@ --with python3 --buildsystem=pybuild
+dch = Changelog(io.open('debian/changelog', 'r', encoding='utf-8'))
+dsc = Deb822(io.open('debian/control', 'r', encoding='utf-8'))
+realname, email_address = parseaddr(dsc['Maintainer'])
+
+setup(
+	description='Univention Customize Texts',
+	url='https://www.univention.de/',
+	license='GNU Affero General Public License v3',
+
+	packages=['univention.customize_texts'],
+	package_dir={'univention.customize_texts': 'python/univention/customize_texts'},
+
+	name=dch.package,
+	version=dch.version.full_version,
+	maintainer=realname,
+	maintainer_email=email_address,
+)
