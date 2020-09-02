@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Allow the execution of custom hooks after install, upgrade and remove.
 bug: [51790]
+erratum: 735
+announced: 2020-09-02
