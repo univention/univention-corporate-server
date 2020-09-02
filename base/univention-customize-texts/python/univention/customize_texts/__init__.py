@@ -33,10 +33,13 @@
 #
 
 
+import re
 import json
 from pathlib import Path
+from glob import glob
 
 from univention.customize_texts.merger import find_merger
+from univention.customize_texts.reader import find_reader
 
 L10N_FOLDER = Path("/usr/share/univention-customize-texts/l10n-files")
 OVERWRITES_FOLDER = Path("/usr/share/univention-customize-texts/overwrites")
@@ -79,6 +82,9 @@ class L10NInfo:
 	def get_merger(self):
 		return find_merger(self.target_type)
 
+	def get_reader(self):
+		return find_reader(self.target_type)
+
 	def orig_fname(self, locale):
 		return '{}.orig'.format(self.get_dest_fname(locale))
 
@@ -91,6 +97,18 @@ class L10NInfo:
 
 	def get_dest_fname(self, locale):
 		return self.destination.format(lang=locale)
+
+	def get_all_current_files(self):
+		for fname in glob(self.destination.format(lang='*')):
+			pattern = re.compile(self.destination.replace("{lang}", "(.+)"))
+			locale = pattern.match(fname).groups()[0]
+			yield locale, fname
+
+	def __str__(self):
+		if self.suffix:
+			return "{}:{}".format(self.pkg, self.suffix)
+		else:
+			return "{}".format(self.pkg)
 
 
 def get_l10n_infos():

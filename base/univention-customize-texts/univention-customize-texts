@@ -29,37 +29,20 @@
 # <http://www.gnu.org/licenses/>.
 
 import click
-import os
 import json
-import polib
+import re
 
-from univention.customize_texts import get_l10n_infos
+from univention.customize_texts import get_l10n_infos, get_customized_texts
 import univention.customize_texts.check as customize_texts_check
 import univention.customize_texts.rebuild as customize_texts_rebuild
 import univention.customize_texts.overwrite as customize_texts_overwrite
 
-L10_FOLDER = "/usr/share/univention-customize-texts/l10n-files"
-OVERWRITE_FOLDER = "/usr/share/univention-customize-texts/overwrites"
-
-
-def load_json(file):
-	assert os.path.isfile(file)
-	with open(file) as fp:
-		data = json.load(fp)
-	return data
-
-
-def l10_file_destinations(file):  # type: (str) -> str
-	for entry in load_json(file):
-		yield "/{}".format(entry["destination"])
-
-
 @click.group(help="Tool to customize texts in UMC Frontend.")
 def cli():
-	pass
+    pass
 
 
-@cli.command(help="Lists all possible packages", name='list')
+@cli.command(help="Lists all possible packages", name="list")
 def list_command():
     """Lists all possible packages. Packages may have suffixes if they provide multiple
     sections of texts.
@@ -67,56 +50,54 @@ def list_command():
     The values in this list can be used as arguments to other subcommands
     """
     for l10n_info in get_l10n_infos():
-        if l10n_info.suffix:
-            print("{}:{}".format(l10n_info.pkg, l10n_info.suffix))
-        else:
-            print(l10n_info.pkg)
+        print(str(l10n_info))
 
 
-@cli.command(help="Lists all overwrites")
+@cli.command(help="Lists all overwrites", name="list-overwrites")
 def list_overwrites():
-	for sub in os.listdir(OVERWRITE_FOLDER):
-		if os.path.isdir(os.path.join(OVERWRITE_FOLDER, sub)):
-			result = [os.path.join(dp, f) for dp, dn, filenames in os.walk(OVERWRITE_FOLDER) for f in filenames if
-					os.path.basename(f) == 'diff.json']
-			for file in result:
-				locale = os.path.basename(os.path.dirname(file))
-				click.echo("{} {}".format(sub, locale))
-				data = load_json(file)
-				for key in data:
-					click.echo("\t'{}' '{}'".format(key, data[key]))
+    for l10n_info in get_l10n_infos():
+        for texts in get_customized_texts(l10n_info):
+            locale = texts.locale
+            diff_fname = l10n_info.diff_fname(locale)
+            try:
+                with open(diff_fname) as fd:
+                    diff = json.load(fd)
+            except EnvironmentError:
+                continue
+            print("{} {}".format(l10n_info, locale))
+            for key in sorted(diff):
+                print("  {}".format(key))
+                print("    {}".format(diff[key]))
 
 
 @cli.command(help="Search for text in all supported files")
-@click.option("--text", "-t", is_flag=False)
-def search(text):  # type: (str) -> None
-	assert os.path.isdir(L10_FOLDER)
-	for file in os.listdir(L10_FOLDER):
-		package = os.path.splitext((os.path.basename(file)))[0]
-		for destination in l10_file_destinations(os.path.join(L10_FOLDER, file)):
-			destination = destination.format(lang='de')
-			matches = []
-			if os.path.splitext(destination)[1] == '.json':
-				data = load_json(destination)
-				matches = [(key, value) for key, value in data.items() if text == value]
-			elif os.path.splitext(destination)[1] == '.mo':
-				mo = polib.mofile(destination)
-				matches = [(entry.msgid, entry.msgstr) for entry in mo if text == entry.msgstr]
-			if matches:
-				click.echo(package)
-				for key, value in matches:
-					if text == value:
-						click.echo('\t"{}" "{}"'.format(key, value))
+@click.argument("pattern")
+def search(pattern):  # type: (str) -> None
+    pattern = re.compile(pattern)
+    for l10n_info in get_l10n_infos():
+        for locale, fname in l10n_info.get_all_current_files():
+            seen = False
+            Reader = l10n_info.get_reader()
+            reader = Reader(fname)
+            content = reader.read()
+            for key in sorted(content):
+                value = content[key]
+                if pattern.match(key) or pattern.match(value):
+                    if not seen:
+                        seen = True
+                        print("{} {}".format(l10n_info, locale))
+                    print("  {}".format(key))
+                    print("    {}".format(value))
 
 
 @cli.command(help="Check if all custom texts are still applicable")
 def check():
-	customize_texts_check.check()
+    customize_texts_check.check()
 
 
 @cli.command(help="Reapply all changes to the original files")
 def rebuild():
-	customize_texts_rebuild.rebuild()
+    customize_texts_rebuild.rebuild()
 
 
 @cli.command()
@@ -134,5 +115,5 @@ def overwrite(pkg, locale, key, text):
     customize_texts_overwrite.overwrite(pkg, locale, key, text)
 
 
-if __name__ == '__main__':
-	cli()
+if __name__ == "__main__":
+    cli()

@@ -33,19 +33,34 @@
 #
 
 
-from subprocess import run, PIPE
 import json
 
-from univention.customize_texts import get_l10n_info
+import polib
 
-def overwrite(l10n_key, locale, english_text, custom_text):
-	l10n_info = get_l10n_info(l10n_key)
-	diff_fname = l10n_info.diff_fname(locale)
-	with open(diff_fname) as fd:
-		diff = json.load(fd)
-	diff[english_text] = custom_text
-	with open(diff_fname, 'w') as fd:
-		diff = json.dump(diff, fd)
-	orig_fname = l10n_info.orig_fname(locale)
-	dest_fname = l10n_info.get_dest_fname(locale)
-	run(['dpkg-divert', '--local', '--rename', '--divert', orig_fname, '--add', dest_fname], stdout=PIPE)
+class Reader:
+	def __init__(self, fname):
+		self.fname = fname
+
+	def read(self):
+		raise NotImplementedError()
+
+
+class JsonReader(Reader):
+	def read(self):
+		return json.load(self.fname)
+
+
+
+class MoReader(Reader):
+	def read(self):
+		mo = polib.mofile(self.fname)
+		return {entry.msgid: entry.msgstr for entry in mo}
+
+
+
+def find_reader(target_type):
+	if target_type == 'json':
+		return JsonReader
+	elif target_type == 'mo':
+		return MoReader
+	raise TypeError("{} not supported".format(target_type))
