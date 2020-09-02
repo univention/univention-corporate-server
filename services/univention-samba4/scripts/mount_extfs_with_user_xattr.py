@@ -1,5 +1,4 @@
 #!/usr/bin/python2.7
-
 #
 # Copyright 2011-2020 Univention GmbH
 #
@@ -47,8 +46,15 @@
 
 """Set user_xattr option on ext2/ext3/ext4 filesystems, remount if necessary"""
 
-from univention.lib import fstab
+from __future__ import print_function
+
+import gettext
 import subprocess
+
+from univention.lib import fstab
+
+
+_ = gettext.translation('univention-samba4', fallback=True).ugettext
 
 
 def _do_modify_extfs_option(fstab_partition, options=[], activate=True):
@@ -79,7 +85,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 			if fstab_partition and fstab_partition.type in ('ext3', 'ext4'):
 				target_partitions.append(fstab_partition)
 			else:
-				print 'Device could not be found: %s' % device
+				print(_('Device could not be found: %s') % device)
 	else:
 		for fstype in ('ext2', 'ext3', 'ext4'):
 			for fstab_partition in fs.get(fstype, ignore_root=False):
@@ -89,7 +95,7 @@ def _modify_extfs_option(options=[], activate=True, devices=[]):
 		if _do_modify_extfs_option(fstab_partition, options, activate):
 			fs.save()
 			if subprocess.call(('mount', '-o', 'remount', fstab_partition.spec)):
-				print 'Remounting partition failed: %s' % fstab_partition.spec
+				print(_('Remounting partition failed: %s') % fstab_partition.spec)
 
 
 if __name__ == '__main__':
