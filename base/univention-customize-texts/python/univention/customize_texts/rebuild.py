@@ -32,25 +32,26 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from distutils.core import setup
-from email.utils import parseaddr
-from debian.changelog import Changelog
-from debian.deb822 import Deb822
 
-dch = Changelog(open('debian/changelog', 'r', encoding='utf-8'))
-dsc = Deb822(open('debian/control', 'r', encoding='utf-8'))
-realname, email_address = parseaddr(dsc['Maintainer'])
+from univention.customize_texts import get_l10n_infos, get_customized_texts
 
-setup(
-	description='Univention Customize Texts',
-	url='https://www.univention.de/',
-	license='GNU Affero General Public License v3',
 
-	packages=['univention.customize_texts'],
-	package_dir={'univention.customize_texts': 'python/univention/customize_texts'},
+def rebuild():
+	for l10n_info in get_l10n_infos():
+		Merger = l10n_info.get_merger()
+		print("found {}".format(l10n_info.pkg))
+		for customized_texts in get_customized_texts(l10n_info):
+			print("  -> {}".format(customized_texts.locale))
+			if customized_texts.orig_fname:
+				original_data = customized_texts.orig_fname.open().read()
+			else:
+				print("orig data does not exist")
+				continue
+			if customized_texts.diff_fname:
+				diff = customized_texts.diff_fname.open().read()
+			else:
+				print("diff does not exist")
+				continue
+			merger = Merger(original_data, diff)
+			print(merger.merge)
 
-	name=dch.package,
-	version=dch.version.full_version,
-	maintainer=realname,
-	maintainer_email=email_address,
-)
