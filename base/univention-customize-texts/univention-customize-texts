@@ -29,17 +29,15 @@
 # <http://www.gnu.org/licenses/>.
 
 import click
-import sys
 import os
 import json
-import logging
 
 L10_FOLDER = "/usr/share/univention-customize-texts/l10n-files"
 OVERWRITE_FOLDER = "/usr/share/univention-customize-texts/overwrites"
-logger = logging.getLogger("unvention-customize-texts")
 
 
-def parse_l10_file(file):
+def parse_l10_file(file):  # type: (str) -> str
+	assert os.path.isfile(file)
 	with open(file) as fp:
 		data = json.load(fp)
 		for entry in data:
@@ -51,8 +49,8 @@ def cli():
 	pass
 
 
-@cli.command(help="Lists all possible packages")
-def list_packages():
+@cli.command(help="Lists all possible packages", name='list')
+def list_command():
 	assert os.path.isdir(L10_FOLDER)
 	for file in os.listdir(L10_FOLDER):
 		package = os.path.splitext((os.path.basename(file)))[0]
