@@ -40,25 +40,13 @@
 #define PAM_SM_AUTH
 
 #include <security/pam_modules.h>
-#include <security/_pam_macros.h>
+#include <security/pam_ext.h>
 
 static char *windows_domain;
 
 #define UNIVENTIONSAMBADOMAIN_QUIET 020
 
-/* some syslogging */
-static void _log_err(int err, const char *format, ...)
-{
-	va_list args;
-
-	va_start(args, format);
-	openlog("PAM-univentionsambadomain", LOG_CONS|LOG_PID, LOG_AUTH);
-	vsyslog(err, format, args);
-	va_end(args);
-	closelog();
-}
-
-static int _pam_parse(int flags, int argc, const char **argv)
+static int _pam_parse(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
 	int ctrl = 0;
 
@@ -76,7 +64,7 @@ static int _pam_parse(int flags, int argc, const char **argv)
 		} else if (!strncmp(*argv,"windows_domain=",15))
 			strncpy(windows_domain,*argv+15,BUFSIZ);
 		else {
-			_log_err(LOG_ERR, "unknown option; %s", *argv);
+			pam_syslog(pamh, LOG_ERR, "unknown option; %s", *argv);
 		}
 	}
 
@@ -112,11 +100,12 @@ static int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **ar
 	char user[BUFSIZ];
 
 	/* Parse the flag values */
-	ctrl = _pam_parse(flags, argc, argv);
+	ctrl = _pam_parse(pamh, flags, argc, argv);
 
 	retval = pam_get_item(pamh, PAM_USER, (const void **) &auth_user);
 	if (retval != PAM_SUCCESS || auth_user == NULL || *auth_user == '\0') {
-		_log_err(LOG_NOTICE, "user unknown");
+		if (!(ctrl & UNIVENTIONSAMBADOMAIN_QUIET))
+			pam_syslog(pamh, LOG_NOTICE, "user unknown");
 		return PAM_USER_UNKNOWN;
 	}
 
@@ -124,10 +113,12 @@ static int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **ar
 		retval = pam_set_item(pamh, PAM_USER, user);
 
 		if (retval != PAM_SUCCESS) {
-			_log_err(LOG_NOTICE, "could not set new username");
+			if (!(ctrl & UNIVENTIONSAMBADOMAIN_QUIET))
+				pam_syslog(pamh, LOG_NOTICE, "could not set new username");
 			return PAM_USER_UNKNOWN;
 		}
-		_log_err(LOG_INFO, "continuing as user %s", user);
+		if (!(ctrl & UNIVENTIONSAMBADOMAIN_QUIET))
+			pam_syslog(pamh, LOG_INFO, "continuing as user %s", user);
 	}
 
 	return PAM_SUCCESS;
