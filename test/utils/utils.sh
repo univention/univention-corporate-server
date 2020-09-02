@@ -1143,4 +1143,25 @@ EOF
 	return $?
 }
 
+LOGGER=${LOGGER:-logger}
+LOG_CONTEXT="[NULL]"
+
+function log_reset_timer {
+    START=$(date +%s%N)
+}
+
+function log_save_context() {
+    read LINE FUNCTION FILE < <(caller 0)
+    CALL=$(cat $FILE | awk "NR == $LINE")
+    LOG_CONTEXT="$FILE:$LINE [$FUNCTION]: '$CALL'"
+}
+
+function log_execution_time {
+    $LOGGER "$LOG_CONTEXT needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
+}
+
+# trap "echo $BASH_COMMAND && A='$BASH_COMMAND' && log_execution_time $A ${BASH_SOURCE[1]}:${BASH_LINENO[0]}" RETURN
+trap log_save_context RETURN
+trap log_execution_time EXIT
+
 # vim:set filetype=sh ts=4:
