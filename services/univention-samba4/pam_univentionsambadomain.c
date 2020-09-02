@@ -31,20 +31,10 @@
  */
 
 #include <syslog.h>
-#include <stdarg.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <unistd.h>
-#include <pwd.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <stdio.h>
 #include <string.h>
-#include <dirent.h>
-#include <signal.h>
-#include <wait.h>
-#include <security/pam_appl.h>
 #include <univention/config.h>
 
 #define PAM_SM_AUTH
