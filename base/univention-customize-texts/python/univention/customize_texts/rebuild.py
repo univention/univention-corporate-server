@@ -39,19 +39,17 @@ from univention.customize_texts import get_l10n_infos, get_customized_texts
 def rebuild():
 	for l10n_info in get_l10n_infos():
 		Merger = l10n_info.get_merger()
-		print("found {}".format(l10n_info.pkg))
 		for customized_texts in get_customized_texts(l10n_info):
-			print("  -> {}".format(customized_texts.locale))
-			if customized_texts.orig_fname:
-				original_data = customized_texts.orig_fname.open().read()
-			else:
-				print("orig data does not exist")
+			destination = l10n_info.get_dest_fname(customized_texts.locale)
+			print('Customizing {}'.format(destination))
+			destination = l10n_info.get_dest_fname(customized_texts.locale)
+			if not customized_texts.orig_fname:
+				print("Missing {}. Skipping...".format(customized_texts.orig_fname))
 				continue
-			if customized_texts.diff_fname:
-				diff = customized_texts.diff_fname.open().read()
-			else:
-				print("diff does not exist")
+			if not customized_texts.diff_fname:
+				print("No customized texts for {}. Skipping...".format(customized_texts.orig_fname))
 				continue
-			merger = Merger(original_data, diff)
-			print(merger.merge)
+			merger = Merger(customized_texts.orig_fname, customized_texts.diff_fname)
+			merger.merge(destination)
+			print('Successfully rewritten {}'.format(destination))
 

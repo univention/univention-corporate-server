@@ -36,6 +36,8 @@
 import json
 from pathlib import Path
 
+import polib
+
 L10N_FOLDER = Path("/usr/share/univention-customize-texts/l10n-files")
 OVERWRITES_FOLDER = Path("/usr/share/univention-customize-texts/overwrites")
 
@@ -47,7 +49,6 @@ class Texts(object):
 		self.orig_fname = orig_fname
 		self.diff_fname = diff_fname
 
-
 def get_customized_texts(l10n_info):
 	base_dir = OVERWRITES_FOLDER
 	if l10n_info.suffix:
@@ -55,16 +56,13 @@ def get_customized_texts(l10n_info):
 	else:
 		base_dir = base_dir / l10n_info.pkg
 
-	orig_path = base_dir / l10n_info.orig_fname()
-	diff_path = base_dir / 'diff.json'
-
 	for localedir in base_dir.glob('*'):
 		if not localedir.is_dir():
 			continue
 		locale = localedir.name
-		orig_path = localedir / 'orig.json'
+		orig_path = Path(l10n_info.orig_fname(locale))
 		if orig_path.exists():
-			orig_fname = orig_path
+			orig_fname = str(orig_path)
 		else:
 			orig_fname = None
 		diff_path = localedir / 'diff.json'
@@ -76,24 +74,44 @@ def get_customized_texts(l10n_info):
 
 
 class Merger:
-	def __init__(self, original_data, diff):
-		self.original_data
-		self.diff
+	def __init__(self, original_fname, diff_fname):
+		self.original_fname = original_fname
+		self.diff_fname = diff_fname
 
-	def merge(self):
+	def get_diff(self):
+		with open(str(self.diff_fname)) as fd:
+			return json.load(fd)
+
+	def merge(self, destination):
 		raise NotImplementedError()
 
 
 class JsonMerger(Merger):
-	def merge(self):
-		original = json.loads(self.original_data)
-		original.update(self.diff)
-		return json.dumps(original)
+	def merge(self, destination):
+		with open(self.original_fname) as fd:
+			original = json.load(fd)
+		diff = self.get_diff()
+		original.update(diff)
+		with open(destination, 'w') as fd:
+			json.dump(original, fd)
+
+
+class MoMerger(Merger):
+	def merge(self, destination):
+		mo = polib.mofile(self.original_fname)
+		diff = self.get_diff()
+		for entry in mo:
+			key = entry.msgid
+			if key in diff:
+				entry.msgstr = diff.pop(key)
+		mo.save(destination)
 
 
 def find_merger(target_type):
 	if target_type == 'json':
 		return JsonMerger
+	elif target_type == 'mo':
+		return MoMerger
 	raise TypeError("{} not supported".format(target_type))
 
 
@@ -107,8 +125,11 @@ class L10NInfo:
 	def get_merger(self):
 		return find_merger(self.target_type)
 
-	def orig_fname(self):
-		return 'orig.{}'.format(self.target_type)
+	def orig_fname(self, locale):
+		return '{}.orig'.format(self.get_dest_fname(locale))
+
+	def get_dest_fname(self, locale):
+		return self.destination.format(lang=locale)
 
 
 def get_l10n_infos():
@@ -119,5 +140,5 @@ def get_l10n_infos():
 				pkg = l10n_file.stem
 				suffix = entry.get('key')
 				target_type = entry['target_type']
-				destination = entry['destination']
+				destination = '/' + entry['destination']
 				yield L10NInfo(pkg, suffix, target_type, destination)

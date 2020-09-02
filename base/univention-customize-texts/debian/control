@@ -25,6 +25,7 @@ Description: Tool to customize all texts in UCS (that are supported)
 Package: python3-univention-customize-texts
 Architecture: all
 Depends:
+ python3-polib,
  ${misc:Depends},
  ${python3:Depends},
 Provides:
