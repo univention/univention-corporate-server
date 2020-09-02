@@ -33,8 +33,10 @@ import os
 import json
 import polib
 
+from univention.customize_texts import get_l10n_infos
 import univention.customize_texts.check as customize_texts_check
 import univention.customize_texts.rebuild as customize_texts_rebuild
+import univention.customize_texts.overwrite as customize_texts_overwrite
 
 L10_FOLDER = "/usr/share/univention-customize-texts/l10n-files"
 OVERWRITE_FOLDER = "/usr/share/univention-customize-texts/overwrites"
@@ -59,11 +61,16 @@ def cli():
 
 @cli.command(help="Lists all possible packages", name='list')
 def list_command():
-	assert os.path.isdir(L10_FOLDER)
-	for file in os.listdir(L10_FOLDER):
-		package = os.path.splitext((os.path.basename(file)))[0]
-		for destination in l10_file_destinations(os.path.join(L10_FOLDER, file)):
-			click.echo("{}:{}".format(package, destination))
+    """Lists all possible packages. Packages may have suffixes if they provide multiple
+    sections of texts.
+
+    The values in this list can be used as arguments to other subcommands
+    """
+    for l10n_info in get_l10n_infos():
+        if l10n_info.suffix:
+            print("{}:{}".format(l10n_info.pkg, l10n_info.suffix))
+        else:
+            print(l10n_info.pkg)
 
 
 @cli.command(help="Lists all overwrites")
@@ -110,6 +117,21 @@ def check():
 @cli.command(help="Reapply all changes to the original files")
 def rebuild():
 	customize_texts_rebuild.rebuild()
+
+
+@cli.command()
+@click.argument("pkg")
+@click.argument("locale")
+@click.argument("key")
+@click.argument("text")
+def overwrite(pkg, locale, key, text):
+    """
+    Overwrites a given KEY with your custom TEXT in the PKG and LOCALE
+
+    PKG can the be the package name, e.g. univention-self-service. It may be suffixed if needed: univention-self-service:hooks
+    See subcommand "list" for possible values
+    """
+    customize_texts_overwrite.overwrite(pkg, locale, key, text)
 
 
 if __name__ == '__main__':

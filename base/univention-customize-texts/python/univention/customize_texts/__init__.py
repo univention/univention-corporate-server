@@ -103,3 +103,13 @@ def get_l10n_infos():
 				target_type = entry['target_type']
 				destination = '/' + entry['destination']
 				yield L10NInfo(pkg, suffix, target_type, destination)
+
+
+def get_l10n_info(l10n_key):
+	try:
+		pkg, suffix = l10n_key.split(':', 1)
+	except ValueError:
+		pkg, suffix = l10n_key, None
+	for l10n_info in get_l10n_infos():
+		if l10n_info.pkg == pkg and l10n_info.suffix == suffix:
+			return l10n_info
