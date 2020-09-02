@@ -32,6 +32,7 @@ Depends:
  univention-samba4-sysvol-sync (= ${binary:Version}),
  winbind,
  ${misc:Depends},
+ ${shlibs:Depends},
 Recommends:
  univention-nagios-samba,
 Description: UCS - Samba4 integration package
