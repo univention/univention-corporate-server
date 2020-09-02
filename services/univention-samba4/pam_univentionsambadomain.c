@@ -83,7 +83,7 @@ static int _pam_parse(int flags, int argc, const char **argv)
 	return ctrl;
 }
 
-inline int mapuser(const char *fromuser, char *touser)
+static int mapuser(const char *fromuser, char *touser)
 {
 	int mapped = 0;
 	int len_windows_domain = strlen(windows_domain);
@@ -105,7 +105,7 @@ inline int mapuser(const char *fromuser, char *touser)
 	return mapped;
 }
 
-inline int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **argv)
+static int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **argv)
 {
 	int retval, ctrl;
 	const char* auth_user;
