@@ -1143,21 +1143,33 @@ EOF
 	return $?
 }
 
-LOGGER=${LOGGER:-logger}
-LOG_CONTEXT="[NULL]"
+export LOGGER=${LOGGER:-logger}
+export LOG_CONTEXT="[NULL]"
+export START=$(date +%s%N)
 
 function log_reset_timer {
-    START=$(date +%s%N)
+	START=$(date +%s%N)
 }
 
+function log_call_stack {
+	for i in {0..10}
+	do
+		caller=$(caller $i) && echo $i: $caller || break
+	done
+}
+
+
 function log_save_context() {
-    read LINE FUNCTION FILE < <(caller 0)
-    CALL=$(cat $FILE | awk "NR == $LINE")
-    LOG_CONTEXT="$FILE:$LINE [$FUNCTION]: '$CALL'"
+	echo "FOOOOOOOO $(caller) $BASH_COMMAND"
+	read LINE FILE < <(caller)
+	export CALL=$(cat $FILE | awk "NR == $LINE")
+	export LOG_CONTEXT="$FILE:$LINE [$FUNCTION]: '$CALL'"
 }
 
 function log_execution_time {
-    $LOGGER "$LOG_CONTEXT needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
+	echo "JETZE?"
+	log_call_stack
+	$LOGGER "$LOG_CONTEXT needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
 }
 
 # trap "echo $BASH_COMMAND && A='$BASH_COMMAND' && log_execution_time $A ${BASH_SOURCE[1]}:${BASH_LINENO[0]}" RETURN
