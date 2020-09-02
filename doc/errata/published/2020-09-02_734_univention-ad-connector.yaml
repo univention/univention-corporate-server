@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix error handling regression of Bug #51518
 bug: [51915]
+erratum: 734
+announced: 2020-09-02
