@@ -50,7 +50,9 @@ static int _pam_parse(pam_handle_t *pamh, int flags, int argc, const char **argv
 {
 	int ctrl = 0;
 
-	windows_domain = univention_config_get_string("windows/domain");
+	free(windows_domain);
+	windows_domain = NULL;
+
 	/* does the application require quiet? */
 	if ((flags & PAM_SILENT) == PAM_SILENT)
 		ctrl |= UNIVENTIONSAMBADOMAIN_QUIET;
@@ -61,12 +63,15 @@ static int _pam_parse(pam_handle_t *pamh, int flags, int argc, const char **argv
 	{
 		if (!strcmp(*argv, "silent")) {
 			ctrl |= UNIVENTIONSAMBADOMAIN_QUIET;
-		} else if (!strncmp(*argv,"windows_domain=",15))
-			strncpy(windows_domain,*argv+15,BUFSIZ);
-		else {
+		} else if (!strncmp(*argv,"windows_domain=",15)) {
+			windows_domain = strdup(*argv+15);
+		} else {
 			pam_syslog(pamh, LOG_ERR, "unknown option; %s", *argv);
 		}
 	}
+
+	if (!windows_domain)
+		windows_domain = univention_config_get_string("windows/domain");
 
 	return ctrl;
 }
