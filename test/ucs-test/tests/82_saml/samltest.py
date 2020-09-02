@@ -7,7 +7,6 @@ import socket
 import json
 import shutil
 import os
-import time
 
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
@@ -330,7 +329,8 @@ class SamlTest(object):
 		try:
 			saml_msg = self._extract_saml_msg()
 		except SamlPasswordChangeSuccess:  # Samba 4 installed, S4 connector too slow to change the password
-			time.sleep(5)
+			utils.wait_for_replication()
+			utils.wait_for_s4connector_replication()
 			self._login_at_idp_with_credentials()
 			url = self._extract_sp_url()
 			saml_msg = self._extract_saml_msg()
