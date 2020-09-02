@@ -44,7 +44,9 @@ Example file:`debian/rules` override::
 # <https://www.gnu.org/licenses/>.
 import argparse
 import os
+import sys
 import shutil
+import subprocess
 
 from univention import translationhelper as tlh
 
@@ -67,6 +69,15 @@ def main():
 		target_l10n_path = os.path.join(os.getcwd(), 'debian', scase.binary_package_name, 'usr/share/univention-l10n/l10n-definitions', os.path.basename(scase.path_to_definition))
 		tlh.make_parent_dir(target_l10n_path)
 		shutil.copy2(scase.path_to_definition, target_l10n_path)
+		subprocess.check_call([
+			'perl',
+			'-MDebian::Debhelper::Dh_Lib',
+			'-e',
+			'$0="{added_by}"; autotrigger("{package}", "activate", "univention-customize-texts")'.format(
+				package=scase.binary_package_name,
+				added_by=os.path.basename(sys.argv[0]),
+			),
+		])
 
 
 if __name__ == '__main__':
