@@ -1,0 +1,20 @@
+Source: univention-customize-texts
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper,
+Standards-Version: 3.8.2
+
+Package: univention-customize-texts
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+Description: Tool to customize all texts in UCS (that are supported)
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
