@@ -78,24 +78,25 @@ static int _pam_parse(pam_handle_t *pamh, int flags, int argc, const char **argv
 
 static int mapuser(const char *fromuser, char *touser)
 {
-	int mapped = 0;
-	int len_windows_domain = strlen(windows_domain);
+	int i, len_windows_domain;
 
-	if ( strlen(fromuser) > len_windows_domain ) {
+	if (!windows_domain)
+		return 0;
 
-		int i;
-		for (i=0; i<len_windows_domain; i++) {
-			if ( toupper(windows_domain[i]) != toupper(fromuser[i]) ) {
-				break;
-			}
-		}
-		if (i == len_windows_domain && ( fromuser[i] == '+' || fromuser[i] == '\\' ) ) {
-			strncpy(touser, fromuser + len_windows_domain + 1, strlen(fromuser) - len_windows_domain );
-			mapped = 1;
-		}
+	len_windows_domain = strlen(windows_domain);
+	if (strlen(fromuser) <= len_windows_domain)
+		return 0;
+
+	for (i=0; i<len_windows_domain; i++) {
+		if (toupper(windows_domain[i]) != toupper(fromuser[i]))
+			return 0;
 	}
 
-	return mapped;
+	if (fromuser[i] != '+' && fromuser[i] != '\\')
+		return 0;
+
+	strncpy(touser, fromuser + len_windows_domain + 1, BUFSIZ);
+	return 1;
 }
 
 static int pam_map_user(pam_handle_t *pamh, int flags, int argc, const char **argv)
