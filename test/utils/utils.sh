@@ -1094,6 +1094,9 @@ EOF
 }
 
 transfer_docker_image () {
+	# add 4.4 to SupportedUCSVersions for [4.3] on docker.knut.univention.de in
+	# /var/cache/univention-appcenter/appcenter-test.software-univention.de/.ucs.ini
+	# as long as docker.knut.univention.de is UCS 4.3
 	local appid=${1:=missing appid}
 	local docker_host=docker
 	local transfer_user=automation
