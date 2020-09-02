@@ -66,7 +66,13 @@ def main():
 	for scase in tlh.get_special_cases_from_srcpkg(os.getcwd(), args.language_code):
 		for source_file_set in scase.get_source_file_sets():
 			source_file_set.process_target(scase.new_po_path, scase.destination)
-		target_l10n_path = os.path.join(os.getcwd(), 'debian', scase.binary_package_name, 'usr/share/univention-l10n/l10n-definitions', os.path.basename(scase.path_to_definition))
+		target_l10n_path = os.path.join(
+			os.getcwd(),
+			'debian',
+			scase.binary_package_name,
+			'usr/share/univention-customize-texts/l10n-files',
+			os.path.basename(scase.path_to_definition),
+		)
 		tlh.make_parent_dir(target_l10n_path)
 		shutil.copy2(scase.path_to_definition, target_l10n_path)
 		subprocess.check_call([
