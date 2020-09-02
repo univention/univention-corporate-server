@@ -34,6 +34,7 @@ import json
 import polib
 
 import univention.customize_texts.check as customize_texts_check
+import univention.customize_texts.rebuild as customize_texts_rebuild
 
 L10_FOLDER = "/usr/share/univention-customize-texts/l10n-files"
 OVERWRITE_FOLDER = "/usr/share/univention-customize-texts/overwrites"
@@ -104,6 +105,11 @@ def search(text):  # type: (str) -> None
 @cli.command(help="Check if all custom texts are still applicable")
 def check():
 	customize_texts_check.check()
+
+
+@cli.command(help="Reapply all changes to the original files")
+def rebuild():
+	customize_texts_rebuild.rebuild()
 
 
 if __name__ == '__main__':

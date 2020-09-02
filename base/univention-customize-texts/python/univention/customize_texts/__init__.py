@@ -36,7 +36,7 @@
 import json
 from pathlib import Path
 
-import polib
+from univention.customize_texts.merger import find_merger
 
 L10N_FOLDER = Path("/usr/share/univention-customize-texts/l10n-files")
 OVERWRITES_FOLDER = Path("/usr/share/univention-customize-texts/overwrites")
@@ -64,51 +64,9 @@ def get_customized_texts(l10n_info):
 
 	for localedir in base_dir.glob('*'):
 		locale = localedir.name
-		texts = get_customized_texts_for_locale(locale)
+		texts = get_customized_texts_for_locale(l10n_info, locale)
 		if texts:
 			yield texts
-
-
-class Merger:
-	def __init__(self, original_fname, diff_fname):
-		self.original_fname = original_fname
-		self.diff_fname = diff_fname
-
-	def get_diff(self):
-		with open(str(self.diff_fname)) as fd:
-			return json.load(fd)
-
-	def merge(self, destination):
-		raise NotImplementedError()
-
-
-class JsonMerger(Merger):
-	def merge(self, destination):
-		with open(self.original_fname) as fd:
-			original = json.load(fd)
-		diff = self.get_diff()
-		original.update(diff)
-		with open(destination, 'w') as fd:
-			json.dump(original, fd)
-
-
-class MoMerger(Merger):
-	def merge(self, destination):
-		mo = polib.mofile(self.original_fname)
-		diff = self.get_diff()
-		for entry in mo:
-			key = entry.msgid
-			if key in diff:
-				entry.msgstr = diff.pop(key)
-		mo.save(destination)
-
-
-def find_merger(target_type):
-	if target_type == 'json':
-		return JsonMerger
-	elif target_type == 'mo':
-		return MoMerger
-	raise TypeError("{} not supported".format(target_type))
 
 
 class L10NInfo:
