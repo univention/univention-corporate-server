@@ -49,6 +49,12 @@ class Texts(object):
 		self.orig_fname = orig_fname
 		self.diff_fname = diff_fname
 
+def get_customized_texts_for_locale(l10n_info, locale):
+	orig_fname = l10n_info.orig_fname(locale)
+	diff_fname = l10n_info.diff_fname(locale)
+	return Texts(l10n_info.pkg, locale, orig_fname, diff_fname)
+
+
 def get_customized_texts(l10n_info):
 	base_dir = OVERWRITES_FOLDER
 	if l10n_info.suffix:
@@ -57,20 +63,10 @@ def get_customized_texts(l10n_info):
 		base_dir = base_dir / l10n_info.pkg
 
 	for localedir in base_dir.glob('*'):
-		if not localedir.is_dir():
-			continue
 		locale = localedir.name
-		orig_path = Path(l10n_info.orig_fname(locale))
-		if orig_path.exists():
-			orig_fname = str(orig_path)
-		else:
-			orig_fname = None
-		diff_path = localedir / 'diff.json'
-		if diff_path.exists():
-			diff_fname = diff_path
-		else:
-			diff_fname = None
-		yield Texts(l10n_info.pkg, locale, orig_fname, diff_fname)
+		texts = get_customized_texts_for_locale(locale)
+		if texts:
+			yield texts
 
 
 class Merger:
@@ -127,6 +123,13 @@ class L10NInfo:
 
 	def orig_fname(self, locale):
 		return '{}.orig'.format(self.get_dest_fname(locale))
+
+	def diff_fname(self, locale):
+		if self.suffix:
+			base_dir = OVERWRITES_FOLDER / '{}:{}'.format(self.pkg, self.suffix)
+		else:
+			base_dir = OVERWRITES_FOLDER / self.pkg
+		return str(base_dir / locale / 'diff.json')
 
 	def get_dest_fname(self, locale):
 		return self.destination.format(lang=locale)
