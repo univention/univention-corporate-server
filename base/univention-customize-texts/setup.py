@@ -33,24 +33,21 @@
 #
 
 from distutils.core import setup
-from email.utils import parseaddr
-from debian.changelog import Changelog
-from debian.deb822 import Deb822
 
-dch = Changelog(open('debian/changelog', 'r', encoding='utf-8'))
-dsc = Deb822(open('debian/control', 'r', encoding='utf-8'))
-realname, email_address = parseaddr(dsc['Maintainer'])
+version = open("debian/changelog", "r").readline().split()[1][1:-1]
+realname = "Univention GmbH"
+email_address = "packages@univention.de"
 
 setup(
-	description='Univention Customize Texts',
-	url='https://www.univention.de/',
-	license='GNU Affero General Public License v3',
+	description="Univention Customize Texts",
+	url="https://www.univention.de/",
+	license="GNU Affero General Public License v3",
 
-	packages=['univention.customize_texts'],
-	package_dir={'univention.customize_texts': 'python/univention/customize_texts'},
+	packages=["univention.customize_texts"],
+	package_dir={"univention.customize_texts": "python/univention/customize_texts"},
 
-	name=dch.package,
-	version=dch.version.full_version,
+	name="univention-customize-texts",
+	version=version,
 	maintainer=realname,
 	maintainer_email=email_address,
 )
