@@ -1,14 +1,11 @@
-lib/*.sh usr/share/univention-samba4/lib
-scripts/*.sh usr/share/univention-samba4/scripts
-scripts/*.py usr/share/univention-samba4/scripts
-96univention-samba4.inst usr/lib/univention-install
-98univention-samba4-dns.inst usr/lib/univention-install
-04univention-samba4.uinst usr/lib/univention-uninstall
-98univention-samba4-saml-kerberos.inst usr/lib/univention-install
-univention-s4search usr/sbin/
-s4search-decode usr/sbin/
-samba-shares.py usr/lib/univention-directory-listener/system
-samba4-idmap.py usr/lib/univention-directory-listener/system
-debian/tmp/lib/security/*.so lib/security/
-server_password_change.d/univention-samba4 usr/lib/univention-server/server_password_change.d/
-sbin/* usr/sbin
+lib/*.sh	usr/share/univention-samba4/lib/
+scripts/*	usr/share/univention-samba4/scripts/
+*.inst	usr/lib/univention-install/
+*.uinst	usr/lib/univention-uninstall/
+univention-s4search	usr/sbin/
+s4search-decode	usr/sbin/
+samba-shares.py	usr/lib/univention-directory-listener/system/
+samba4-idmap.py	usr/lib/univention-directory-listener/system/
+lib/security
+server_password_change.d/univention-samba4	usr/lib/univention-server/server_password_change.d/
+sbin/*	usr/sbin/
