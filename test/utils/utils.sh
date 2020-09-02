@@ -1158,22 +1158,22 @@ function log_call_stack {
 	done
 }
 
-
-function log_save_context() {
-	echo "FOOOOOOOO $(caller) $BASH_COMMAND"
-	read LINE FILE < <(caller)
-	export CALL=$(cat $FILE | awk "NR == $LINE")
-	export LOG_CONTEXT="$FILE:$LINE [$FUNCTION]: '$CALL'"
-}
-
 function log_execution_time {
-	echo "JETZE?"
-	log_call_stack
-	$LOGGER "$LOG_CONTEXT needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
+	$LOGGER "$BASH_EXECUTION_STRING needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
 }
 
 # trap "echo $BASH_COMMAND && A='$BASH_COMMAND' && log_execution_time $A ${BASH_SOURCE[1]}:${BASH_LINENO[0]}" RETURN
-trap log_save_context RETURN
 trap log_execution_time EXIT
+
+env | $LOGGER
+
+# function log_save_context() {
+# 	echo "FOOOOOOOO $(caller) $BASH_COMMAND"
+# 	read LINE FILE < <(caller)
+# 	export CALL=$(cat $FILE | awk "NR == $LINE")
+# 	export LOG_CONTEXT="$FILE:$LINE [$FUNCTION]: '$CALL'"
+# }
+#
+# trap log_save_context RETURN
 
 # vim:set filetype=sh ts=4:
