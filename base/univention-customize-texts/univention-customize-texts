@@ -33,6 +33,8 @@ import re
 import os
 from subprocess import run, PIPE
 
+#from univention.admindiary.client import write
+
 from univention.customize_texts import get_l10n_infos, get_customized_texts, get_l10n_info
 import univention.customize_texts.check as customize_texts_check
 import univention.customize_texts.rebuild as customize_texts_rebuild
@@ -128,12 +130,26 @@ def undo(pkg, locale, key):
             pass
         run(["dpkg-divert", "--local", "--rename", "--remove", dest_fname], stdout=PIPE)
         print("No more overwrites for {} {}. Restored original".format(pkg, locale))
+    #if existed:
+    #    write(
+    #        {
+    #                "en": "In {pkg}, the text \"{key}\" is no longer customized for {locale}",
+    #                "de": "In {pkg} wurde der Text \"{key}\" für die Sprache {locale} zurückgesetzt",
+    #        },
+    #        {"pkg": pkg, "key": key, "locale": locale},
+    #        tags=["univention-customize-texts"],
+    #        context_id=get_admin_diary_context(pkg),
+    #        event_name="CUSTOMIZE_TEXTS_REMOVED",
+    #    )
 
 
 @cli.command()
 @click.argument("pkg")
 @click.argument("locale")
 def show(pkg, locale):
+    """
+    Shows all current texts in PKG for LOCALE
+    """
     l10n_info = get_l10n_info(pkg)
     fname = l10n_info.get_dest_fname(locale)
     Reader = l10n_info.get_reader()

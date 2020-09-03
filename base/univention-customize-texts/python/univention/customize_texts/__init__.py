@@ -131,3 +131,17 @@ def get_l10n_info(l10n_key):
 	for l10n_info in get_l10n_infos():
 		if l10n_info.pkg == pkg and l10n_info.suffix == suffix:
 			return l10n_info
+
+
+def get_admin_diary_context(pkg):
+	from univention.config_registry import ConfigRegistry
+	from univention.config_registry.frontend import ucr_update
+	import uuid
+	ucr = ConfigRegistry()
+	ucr.load()
+	ucr_key = "customize_texts/admindiary/{}".format(pkg)
+	context = ucr.get(ucr_key)
+	if context is None:
+		context = uuid.uuid4()
+		ucr_update(ucr, {ucr_key: context})
+	return context

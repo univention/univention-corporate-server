@@ -33,6 +33,8 @@
 #
 
 
+import os
+import os.path
 import json
 
 import polib
@@ -52,10 +54,15 @@ class Merger:
 
 class JsonMerger(Merger):
 	def merge(self, destination):
-		with open(self.original_fname) as fd:
-			original = json.load(fd)
+		try:
+			with open(self.original_fname) as fd:
+				original = json.load(fd)
+		except EnvironmentError:
+			original = {}
 		diff = self.get_diff()
 		original.update(diff)
+		if not os.path.exists(os.path.dirname(destination)):
+			os.makedirs(os.path.dirname(destination))
 		with open(destination, 'w') as fd:
 			json.dump(original, fd)
 

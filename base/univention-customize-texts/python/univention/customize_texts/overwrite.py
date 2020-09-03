@@ -37,6 +37,8 @@ import os.path
 from subprocess import run, PIPE
 import json
 
+#from univention.admindiary.client import write
+
 from univention.customize_texts import get_l10n_info
 from univention.customize_texts.rebuild import rebuild
 
@@ -50,10 +52,20 @@ def overwrite(l10n_key, locale, english_text, custom_text):
 		diff = {}
 	diff[english_text] = custom_text
 	if not os.path.exists(os.path.dirname(diff_fname)):
-		os.mkdirs(os.path.dirname(diff_fname))
+		os.makedirs(os.path.dirname(diff_fname))
 	with open(diff_fname, 'w') as fd:
 		json.dump(diff, fd)
 	orig_fname = l10n_info.orig_fname(locale)
 	dest_fname = l10n_info.get_dest_fname(locale)
 	run(['dpkg-divert', '--local', '--rename', '--divert', orig_fname, '--add', dest_fname], stdout=PIPE)
 	rebuild([l10n_info])
+	#write(
+	#	{
+	#			"en": "In {pkg}, the text \"{key}\" was customized for {locale}",
+	#			"de": "In {pkg} wurde der Text \"{key}\" für die Sprache {locale} angepasst",
+	#	},
+	#	{"pkg": l10n_key, "key": english_text, "locale": locale},
+	#	tags=["univention-customize-texts"],
+	#	context_id=get_admin_diary_context(l10n_key),
+	#	event_name="CUSTOMIZE_TEXTS_ADDED",
+	#)
