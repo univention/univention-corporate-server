@@ -47,7 +47,8 @@ class Reader:
 
 class JsonReader(Reader):
 	def read(self):
-		return json.load(self.fname)
+		with open(self.fname) as fd:
+			return json.load(fd)
 
 
 

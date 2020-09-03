@@ -28,14 +28,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import click
 import json
 import re
+import os
+from subprocess import run, PIPE
 
-from univention.customize_texts import get_l10n_infos, get_customized_texts
+from univention.customize_texts import get_l10n_infos, get_customized_texts, get_l10n_info
 import univention.customize_texts.check as customize_texts_check
 import univention.customize_texts.rebuild as customize_texts_rebuild
 import univention.customize_texts.overwrite as customize_texts_overwrite
+
+import click
 
 @click.group(help="Tool to customize texts in UMC Frontend.")
 def cli():
@@ -88,6 +91,59 @@ def search(pattern):  # type: (str) -> None
                         print("{} {}".format(l10n_info, locale))
                     print("  {}".format(key))
                     print("    {}".format(value))
+
+
+@cli.command()
+@click.argument("pkg")
+@click.argument("locale")
+@click.argument("key")
+def undo(pkg, locale, key):
+    """
+    Undo an existing overwrite for a given KEY in the PKG and LOCALE
+
+    PKG can the be the package name, e.g. univention-self-service. It may be suffixed if needed: univention-self-service:hooks
+    See subcommand "list" for possible values
+    """
+    l10n_info = get_l10n_info(pkg)
+    diff_fname = l10n_info.diff_fname(locale)
+    try:
+        with open(diff_fname) as fd:
+            diff = json.load(fd)
+    except EnvironmentError:
+        diff = {}
+    diff.pop(key, None)
+    if diff:
+        with open(diff_fname, "w") as fd:
+            json.dump(diff, fd)
+        customize_texts_rebuild.rebuild([l10n_info])
+    else:
+        try:
+            os.unlink(diff_fname)
+        except EnvironmentError:
+            pass
+        dest_fname = l10n_info.get_dest_fname(locale)
+        try:
+            os.unlink(dest_fname)
+        except EnvironmentError:
+            pass
+        run(["dpkg-divert", "--local", "--rename", "--remove", dest_fname], stdout=PIPE)
+        print("No more overwrites for {} {}. Restored original".format(pkg, locale))
+
+
+@cli.command()
+@click.argument("pkg")
+@click.argument("locale")
+def show(pkg, locale):
+    l10n_info = get_l10n_info(pkg)
+    fname = l10n_info.get_dest_fname(locale)
+    Reader = l10n_info.get_reader()
+    reader = Reader(fname)
+    content = reader.read()
+    print("{} {}".format(l10n_info, locale))
+    for key in sorted(content):
+        value = content[key]
+        print("  {}".format(key))
+        print("    {}".format(value))
 
 
 @cli.command(help="Check if all custom texts are still applicable")

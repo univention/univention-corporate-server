@@ -37,8 +37,10 @@ from pathlib import Path
 from univention.customize_texts import get_l10n_infos, get_customized_texts
 
 
-def rebuild():
-	for l10n_info in get_l10n_infos():
+def rebuild(l10n_infos=None):
+	if l10n_infos is None:
+		l10n_infos = get_l10n_infos()
+	for l10n_info in l10n_infos:
 		Merger = l10n_info.get_merger()
 		for customized_texts in get_customized_texts(l10n_info):
 			destination = l10n_info.get_dest_fname(customized_texts.locale)

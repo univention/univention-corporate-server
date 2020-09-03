@@ -13,6 +13,7 @@ Package: univention-customize-texts
 Architecture: all
 Depends:
  ${python:Depends},
+ python3-click,
  python3-univention-customize-texts,
 Description: Tool to customize all texts in UCS (that are supported)
  .
@@ -25,7 +26,6 @@ Package: python3-univention-customize-texts
 Architecture: all
 Depends:
  python3-polib,
- python3-click,
  ${misc:Depends},
  ${python3:Depends},
 Provides:

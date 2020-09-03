@@ -33,19 +33,27 @@
 #
 
 
+import os.path
 from subprocess import run, PIPE
 import json
 
 from univention.customize_texts import get_l10n_info
+from univention.customize_texts.rebuild import rebuild
 
 def overwrite(l10n_key, locale, english_text, custom_text):
 	l10n_info = get_l10n_info(l10n_key)
 	diff_fname = l10n_info.diff_fname(locale)
-	with open(diff_fname) as fd:
-		diff = json.load(fd)
+	try:
+		with open(diff_fname) as fd:
+			diff = json.load(fd)
+	except EnvironmentError:
+		diff = {}
 	diff[english_text] = custom_text
+	if not os.path.exists(os.path.dirname(diff_fname)):
+		os.mkdirs(os.path.dirname(diff_fname))
 	with open(diff_fname, 'w') as fd:
-		diff = json.dump(diff, fd)
+		json.dump(diff, fd)
 	orig_fname = l10n_info.orig_fname(locale)
 	dest_fname = l10n_info.get_dest_fname(locale)
 	run(['dpkg-divert', '--local', '--rename', '--divert', orig_fname, '--add', dest_fname], stdout=PIPE)
+	rebuild([l10n_info])
