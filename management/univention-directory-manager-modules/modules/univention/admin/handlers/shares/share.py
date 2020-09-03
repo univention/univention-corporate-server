@@ -619,7 +619,7 @@ mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolTo
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
 mapping.register('sambaCustomSettings', 'univentionShareSambaCustomSetting', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('nfsCustomSettings', 'univentionShareNFSCustomSetting')
-mapping.register('appendACL', 'univentionShareSambaBaseDirAppendACL', None, univention.admin.mapping.ListToString)
+mapping.register('appendACL', 'univentionShareSambaBaseDirAppendACL')
 
 
 class object(univention.admin.handlers.simpleLdap):
