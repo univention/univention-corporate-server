@@ -10,6 +10,7 @@
 from __future__ import print_function
 import datetime
 import time
+import subprocess
 
 from univention.config_registry import handler_set, handler_unset
 import univention.testing.strings as uts
@@ -29,6 +30,29 @@ def ucr_cron(name, time_s, command, description=None, mailto=None, user=None):
 
 
 def main():
+
+	# sometimes this test fails with
+	#   [2020-09-03 00:19:09.488622] ### FAIL ###
+	#   [2020-09-03 00:19:09.490058] Token '1599085118.08' not found in /var/mail/root at 2020-09-03 00:19:09.488447,
+	#                                UCRs: ['cron/knfs4av2lt/command=echo 1599085118.08', 'cron/knfs4av2lt/time=19 0 * * *',
+	#                               'cron/knfs4av2lt/description=knfs4av2lt', 'cron/knfs4av2lt/mailto=root'].
+	#   [2020-09-03 00:19:09.490227] ###      ###
+	# mail.log says
+	#   00:19:01 master091 postfix/cleanup[2143]: warning: dict_ldap_connect: Unable to bind to server ldap://master091.AutoTest091.local:7389
+	#     with dn cn=master091,cn=dc,cn=computers,dc=AutoTest091,dc=local: 49 (Invalid credentials)
+	#   00:19:01 master091 postfix/cleanup[2143]: warning: ldap:/etc/postfix/ldap.groups lookup error for "root@master091.AutoTest091.local"
+	#   00:19:01 master091 postfix/cleanup[2143]: warning: C83DF343006: virtual_alias_maps map lookup problem for root@master091.AutoTest091.local -- message not accepted, try again later
+	#   00:19:37 master091 postfix/pickup[1895]: D2EC8342CD8: uid=0 from=<root>
+	#   00:19:37 master091 postfix/cleanup[2143]: warning: dict_ldap_connect: Unable to bind to server ldap://master091.AutoTest091.local:7389
+	#     with dn cn=master091,cn=dc,cn=computers,dc=AutoTest091,dc=local: 49 (Invalid credentials)
+	#   00:19:37 master091 postfix/cleanup[2143]: warning: ldap:/etc/postfix/ldap.groups lookup error for "root@master091.AutoTest091.local"
+	#   00:19:37 master091 postfix/cleanup[2143]: warning: D2EC8342CD8: virtual_alias_maps map lookup problem for root@master091.AutoTest091.local -- message not accepted, try again later
+	#   00:19:38 master091 postfix/anvil[2239]: statistics: max connection rate 1/60s for (smtp:10.207.187.45) at Sep  3 00:16:18
+	# the idea is that postfix missed a server pw change, so restart the goddamn thing before the test
+	print('restart postfix')
+	subprocess.call(('systemctl', 'restart', 'postfix'))
+
+
 	# find next minute at least 30s from now
 	now = datetime.datetime.now()
 	for somemore in range(30, 80, 10):

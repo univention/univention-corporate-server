@@ -1,3 +1,9 @@
+ucs-test (9.0.4-55) unstable; urgency=medium
+
+  * Bug #45115: restart postfix before running test in 01_base/110_ucr_cronjobs
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Sep 2020 14:38:24 +0200
+
 ucs-test (9.0.4-54) unstable; urgency=medium
 
   * Bug #45115: added retry to 23_apache/30_vhosts
