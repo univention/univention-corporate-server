@@ -1057,16 +1057,32 @@ promote_ad_server () {
 
 # setup for the ucs-$role kvm template (provisioned but not joined)
 basic_setup_ucs_role () {
-	local username=${1:?missing admin username} password=${2:?missing admin password} masterip=${3:?missing master ip} rv=0
-	# todo, recreate ssh keys ...
-
+	local masterip="${1:?missing master ip}"
+	local admin_password="${2:-univention}"
+	local rv=0
+	# TODO
+	#   ... recreate ssh keys ...
 	# join non-master systems
 	if [ ! "$(ucr get server/role)" = "domaincontroller_master" ]; then
-		echo -n univention > /tmp/univention.txt
+		echo -n "$admin_password" > /tmp/univention.txt
 		ucr set nameserver1=$masterip
 		univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || rv=$?
 	fi
+	return $rv
+}
 
+basic_setup_ucs_joined () {
+	local masterip="${1:?missing master ip}"
+	local admin_password="${2:-univention}"
+	local rv=0
+	# TODO
+	#  ... recreate ssh keys ...
+	# fix ip on non-master systems
+	if [ ! "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
+		service univention-directory-listener restart || rv=1
+		/usr/sbin/univention-register-network-address || rv=1
+	fi
 	return $rv
 }
 
