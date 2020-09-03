@@ -6,6 +6,6 @@ src: univention-management-console-module-top
 fix: 8.0.1-4A~4.4.0.202008281325
 desc: |
  This update addresses the following issue(s):
- * An error during querying of currently running processes, that occurred
-   when any process had already stopped, has been corrected.
+ * An error during querying of currently running processes has
+   been corrected.
 bug: [49972]
