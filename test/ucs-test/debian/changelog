@@ -1,3 +1,9 @@
+ucs-test (9.0.4-54) unstable; urgency=medium
+
+  * Bug #45115: added retry to 23_apache/30_vhosts
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Sep 2020 13:58:46 +0200
+
 ucs-test (9.0.4-53) unstable; urgency=medium
 
   * Bug #51492: fix waiting in S4 connector environments

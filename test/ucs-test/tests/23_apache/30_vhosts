@@ -24,13 +24,20 @@ univention-add-vhost "$HOST" 80 --conffile "$DIR/apache.conf" --binddn="$(ucr ge
 host "$HOST" || exit 1
 
 # and this is the actual test
-ANSWER="$(curl http://"$HOST"/)"
+for i in $(seq 1 3); do
+	ANSWER="$(curl http://"$HOST"/)"
+	[ "$ANSWER" = "OK" ] && break
+	sleep 3
+done
 [ "$ANSWER" = "OK" ] || exit 1
 
 # now with HTTPS...
 univention-add-vhost "$HOST" 443 --conffile "$DIR/apache.conf" --binddn="$(ucr get tests/domainadmin/account)" --bindpwdfile="$(ucr get tests/domainadmin/pwdfile)"
-
-ANSWER="$(curl https://"$HOST"/)"
+for i in $(seq 1 3); do
+	ANSWER="$(curl https://"$HOST"/)"
+	[ "$ANSWER" = "OK" ] && break
+	sleep 3
+done
 [ "$ANSWER" = "OK" ] || exit 1
 
 # ... check certificate
@@ -42,8 +49,11 @@ ls /etc/univention/ssl/\*."$LOCAL_FQDN"/ || exit 1
 
 # now with HTTPS, but custom port and without a DNS
 univention-add-vhost "*" 20550 --ssl --conffile "$DIR/apache.conf" --binddn="$(ucr get tests/domainadmin/account)" --bindpwdfile="$(ucr get tests/domainadmin/pwdfile)"
-
-ANSWER="$(curl https://"$LOCAL_FQDN":20550/)"
+for i in $(seq 1 3); do
+	ANSWER="$(curl https://"$LOCAL_FQDN":20550/)"
+	[ "$ANSWER" = "OK" ] && break
+	sleep 3
+done
 [ "$ANSWER" = "OK" ] || exit 1
 
 # this would be part of the app UNinstallation
