@@ -92,6 +92,7 @@ then
 		echo "Update will wait here for 60 seconds..."
 		echo "Press CTRL-c to abort or press ENTER to continue"
 		# BUG: 'read -t' is the only bash'ism in this file, therefore she-bang has to be /bin/bash not /bin/sh!
+		# shellcheck disable=SC2034
 		read -r -t 60 somevar
 	else
 		readcontinue || exit 1
@@ -506,6 +507,13 @@ esac
 if ! is_ucr_true update50/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >&3 2>&3
 fi
+
+[ -f /etc/apt/preferences.d/99ucs500.pref ] ||
+cat >/etc/apt/preferences.d/99ucs500.pref <<__PREF__
+Package: *
+Pin: release l=Univention Corporate Server, v=5.0.0
+Pin-Priority: 1001
+__PREF__
 
 # Pre-upgrade
 preups=""

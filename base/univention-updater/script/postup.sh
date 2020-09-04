@@ -140,6 +140,8 @@ service univention-firewall restart >>"$UPDATER_LOG" 2>&1
 /usr/sbin/univention-directory-listener-ctrl resync udm_extension
 /usr/sbin/univention-directory-listener-ctrl resync ldap_extension
 
+rm -f /etc/apt/preferences.d/99ucs500.pref
+
 echo "
 
 
