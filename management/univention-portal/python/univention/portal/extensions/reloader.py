@@ -106,6 +106,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 	def _check_reason(self, reason, content):
 		if super(PortalReloaderUDM, self)._check_reason(reason, content):
 			return True
+		if reason is None:
+			return False
 		reason_args = reason.split(':', 2)
 		if len(reason_args) < 2:
 			return False
@@ -363,7 +365,9 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 	def _check_reason(self, reason, content):
 		if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
 			return True
-		if reason.starswith('ldap:group'):
+		if reason is None:
+			return False
+		if reason.startswith('ldap:group'):
 			return True
 
 	def _refresh(self):

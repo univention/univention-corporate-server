@@ -29,6 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import uuid
+
 from six import with_metaclass
 import requests
 
@@ -37,9 +39,46 @@ from univention.portal.log import get_logger
 
 from univention.portal.user import User
 
+import tornado
+
+class Session(object):
+	pass
+
+
 class Authenticator(with_metaclass(Plugin)):
 	def get_user(self, request):
 		return None
+
+	def refresh(self, reason=None):
+		pass
+
+
+class OpenIDAuthenticator(Authenticator):
+	def __init__(self, authorization_endpoint, client_id, portal_cookie_name="UniventionPortalSessionId"):
+		self.authorization_endpoint = authorization_endpoint
+		self.client_id = client_id
+		self.portal_cookie_name = portal_cookie_name
+		self.sessions = {}
+
+	def get_user(self, request):
+		session = request.get_cookie(self.portal_cookie_name)
+		if not session:
+			if request.request.path.endswith("/loggedin"):
+				session_id = uuid.uuid4()
+				self.sessions[session_id] = Session()
+				redirect_uri = request.request.full_url()
+				url = "{}?client_id={}&redirect_uri={}&scope=openid&response_type=code&state={}".format(self.authorization_endpoint, self.client_id, redirect_uri, session_id)
+				request.set_status(302)
+				request.set_header("Location", url)
+				raise tornado.web.Finish()
+			else:
+				return None
+		session = self.sessions.get(session)
+		if session:
+			if session.is_valid():
+				return session.user
+		else:
+			return None  # TODO
 
 
 class UMCAuthenticator(Authenticator):
