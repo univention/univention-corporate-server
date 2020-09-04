@@ -30,10 +30,11 @@
 export DEBIAN_FRONTEND=noninteractive
 
 UPDATER_LOG="/var/log/univention/updater.log"
+exec 3>>"$UPDATER_LOG"
 UPDATE_NEXT_VERSION="$1"
 
 install () {
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install "$@" >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install "$@" >&3 2>&3
 }
 reinstall () {
 	install --reinstall "$@"
@@ -64,10 +65,10 @@ is_deinstalled() {
 }
 
 echo -n "Running postup.sh script:"
-echo >> "$UPDATER_LOG"
-date >>"$UPDATER_LOG" 2>&1
+echo >&3
+date >&3 2>&3
 
-eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
+eval "$(univention-config-registry shell)" >&3 2>&3
 . /usr/share/univention-lib/ucr.sh || exit $?
 
 case "${server_role:-}" in
@@ -79,7 +80,7 @@ memberserver) install univention-server-member ;;
 esac
 
 if ! is_ucr_true update50/skip/autoremove; then
-	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
+	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >&3 2>&3
 fi
 
 # removes temporary sources list (always required)
@@ -92,18 +93,18 @@ if [ -n "${update_custom_postup:-}" ]; then
 	if [ -f "$update_custom_postup" ]; then
 		if [ -x "$update_custom_postup" ]; then
 			echo -n "Running custom postupdate script $update_custom_postup"
-			"$update_custom_postup" "$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
-			echo "Custom postupdate script $update_custom_postup exited with exitcode: $?" >>"$UPDATER_LOG"
+			"$update_custom_postup" "$UPDATE_NEXT_VERSION" >&3 2>&3
+			echo "Custom postupdate script $update_custom_postup exited with exitcode: $?" >&3
 		else
-			echo "Custom postupdate script $update_custom_postup is not executable" >>"$UPDATER_LOG"
+			echo "Custom postupdate script $update_custom_postup is not executable" >&3
 		fi
 	else
-		echo "Custom postupdate script $update_custom_postup not found" >>"$UPDATER_LOG"
+		echo "Custom postupdate script $update_custom_postup not found" >&3
 	fi
 fi
 
 if [ -x /usr/sbin/univention-check-templates ]; then
-	if ! /usr/sbin/univention-check-templates >>"$UPDATER_LOG" 2>&1
+	if ! /usr/sbin/univention-check-templates >&3 2>&3
 	then
 		echo "Warning: UCR templates were not updated. Please check $UPDATER_LOG or execute univention-check-templates as root."
 	fi
@@ -115,16 +116,16 @@ if [ -f /var/univention-join/joined ] && [ "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >&3 2>&3
 fi
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-run-join-scripts >>"$UPDATER_LOG" 2>&1
+	univention-run-join-scripts >&3 2>&3
 fi
 
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
-service univention-firewall restart >>"$UPDATER_LOG" 2>&1
+service univention-firewall restart >&3 2>&3
 
 # Bug #51531: re-evaluate extensions startucsversion and enducsversion (always required)
 /usr/sbin/univention-directory-listener-ctrl resync udm_extension
@@ -141,27 +142,28 @@ echo "
 ****************************************************
 
 
-" >>"$UPDATER_LOG" 2>&1
+" >&3 2>&3
 
 echo "done."
-date >>"$UPDATER_LOG"
+date >&3
 
 # make sure that UMC server is restarted (Bug #43520, Bug #33426)
-at now >>"$UPDATER_LOG" 2>&1 <<EOF
+at now >&3 2>&3 <<EOF
 sleep 30
+exec 3>>"$UPDATER_LOG"
 # Bug #47436: Only re-enable apache2 and umc if system-setup 
 # is not running. System-setup will re-enable apache2 and umc.
 if ! pgrep -l -f /usr/lib/univention-system-setup/scripts/setup-join.sh; then
-  /usr/share/univention-updater/enable-apache2-umc --no-restart >>"$UPDATER_LOG" 2>&1
+  /usr/share/univention-updater/enable-apache2-umc --no-restart >&3 2>&3
 fi
-service univention-management-console-server restart >>"$UPDATER_LOG" 2>&1
-service univention-management-console-web-server restart >>"$UPDATER_LOG" 2>&1
+service univention-management-console-server restart >&3 2>&3
+service univention-management-console-web-server restart >&3 2>&3
 # the file path moved. during update via UMC the apache is not restarted. The new init script therefore checks the wrong pidfile which fails restarting.
 cp /var/run/apache2.pid /var/run/apache2/apache2.pid
-service apache2 restart >>"$UPDATER_LOG" 2>&1
+service apache2 restart >&3 2>&3
 # Bug #48808
-univention-app update >>"$UPDATER_LOG" 2>&1 || true
-univention-app register --app >>"$UPDATER_LOG" 2>&1 || true
+univention-app update >&3 2>&3 || true
+univention-app register --app >&3 2>&3 || true
 EOF
 
 exit 0
