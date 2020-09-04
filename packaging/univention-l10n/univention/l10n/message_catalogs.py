@@ -153,10 +153,16 @@ def _call_gettext(*args, **kwargs):
 
 def univention_location_lines(pot_path, abs_path_source_pkg):
 	# type: (str, str) -> None
+	"""
+	Convert absolute paths to relative paths.
+
+	:param pot_path: Path to :file:`.pot` file.
+	:param abs_path_source_pkg: Source package base path.
+	"""
 	po_file = polib.pofile(pot_path)
 	for entry in po_file:
-		modified_occ = []
-		for path, linenum in entry.occurrences:
-			modified_occ.append((os.path.relpath(path, start=abs_path_source_pkg), linenum))
-		entry.occurrences = modified_occ
+		entry.occurrences = [
+			((os.path.relpath(path, start=abs_path_source_pkg), linenum))
+			for path, linenum in entry.occurrences
+		]
 	po_file.save(pot_path)

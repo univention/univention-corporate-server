@@ -80,6 +80,10 @@ class NoSpecialCaseDefintionsFound(Exception):
 	pass
 
 
+class NoMatchingFiles(Exception):
+	pass
+
+
 class UMCModuleTranslation(umc.UMC_Module):
 
 	def __init__(self, attrs, target_language):
@@ -222,7 +226,6 @@ class SpecialCase():
 		except AttributeError:
 			src_pkg_path = os.path.join(os.getcwd())
 
-		matched = []  # type: List[str]
 		regexs = []  # type: List[Pattern[str]]
 		for pattern in [os.path.join(src_pkg_path, pattern) for pattern in self.input_files]:
 			try:
@@ -230,10 +233,14 @@ class SpecialCase():
 			except re.error:
 				sys.exit("Invalid input_files statement in: {}. Value must be valid regular expression.".format(self.path_to_definition))
 
-		for parent, dirnames, fnames in os.walk(src_pkg_path):
-			paths = [os.path.join(parent, fn) for fn in fnames]
-			for rex in regexs:
-				matched.extend([path for path in paths if rex.match(path)])
+		matched = [
+			path
+			for parent, dirnames, fnames in os.walk(src_pkg_path)
+			for path in (os.path.join(parent, fn) for fn in fnames)
+			if any(rex.match(path) for rex in regexs)
+		]
+		if not matched:
+			raise NoMatchingFiles()
 
 		return matched
 
@@ -403,11 +410,11 @@ def read_special_case_definition(definition_path, source_tree_path, target_langu
 def get_special_cases_from_srcpkg(source_tree_path, target_language):
 	# type: (str, str) -> List[SpecialCase]
 	special_case_files = glob('debian/*.univention-l10n')
-	special_cases = []  # type: List[SpecialCase]
-	for sc_definitions in special_case_files:
-		for sc in read_special_case_definition(sc_definitions, os.getcwd(), target_language):
-			special_cases.append(sc)
-	return special_cases
+	return [
+		sc
+		for sc_definitions in special_case_files
+		for sc in read_special_case_definition(sc_definitions, os.getcwd(), target_language)
+	]
 
 
 def get_special_cases_from_checkout(source_tree_path, target_language):
@@ -416,14 +423,14 @@ def get_special_cases_from_checkout(source_tree_path, target_language):
 	Process *.univention-l10n files in the whole branch. Currently they
 	lay 3 (UCS@school) or 4(UCS) directory levels deep in the repository.
 	"""
-	special_cases = []  # type: List[SpecialCase]
 	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n')) or glob(os.path.join(source_tree_path, '*/debian/*.univention-l10n'))
 	if not sc_files:
 		raise NoSpecialCaseDefintionsFound()
-	for definition_path in sc_files:
-		special_cases.extend([sc for sc in read_special_case_definition(definition_path, source_tree_path, target_language)])
-
-	return special_cases
+	return [
+		sc
+		for definition_path in sc_files
+		for sc in read_special_case_definition(definition_path, source_tree_path, target_language)
+	]
 
 
 def find_base_translation_modules(startdir, source_dir, module_basefile_name):
