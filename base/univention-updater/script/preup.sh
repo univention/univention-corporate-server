@@ -37,6 +37,7 @@ echo "Running preup.sh script" >&3
 date >&3
 
 eval "$(univention-config-registry shell)" >&3 2>&3
+. /usr/share/univention-lib/ucr.sh || exit $?
 
 conffile_is_unmodified () {
 	# conffile_is_unmodified <conffile>
@@ -117,17 +118,6 @@ if [ "$TERM" = "xterm" ]; then
 		exit 1
 	fi
 fi
-
-# shell-univention-lib is probably not installed, so use a local function
-is_ucr_true () {
-	local value
-	value="$(/usr/sbin/univention-config-registry get "$1")"
-	case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
-		1|yes|on|true|enable|enabled) return 0 ;;
-		0|no|off|false|disable|disabled) return 1 ;;
-		*) return 2 ;;
-	esac
-}
 
 # save ucr settings
 updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
