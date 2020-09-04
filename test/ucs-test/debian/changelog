@@ -1,3 +1,9 @@
+ucs-test (9.0.4-57) unstable; urgency=medium
+
+  * Bug #1234: added "retry" to 20_appcenter/20_can_apps_be_installed
+
+ -- Felix Botner <botner@univention.de>  Fri, 04 Sep 2020 12:11:55 +0200
+
 ucs-test (9.0.4-56) unstable; urgency=medium
 
   * Bug #51492: sleep 20 seconds

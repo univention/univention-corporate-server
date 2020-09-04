@@ -63,7 +63,7 @@ with UCSTestConfigRegistry():
 					print(f.read())
 			print(stdoutdata, stderrdata)
 			print('failed, try again ...')
-			time.sleep(45)
+			time.sleep(180)
 		if not app.without_repository:
 			register.call(apps=[app], register_task=['component'])
 			_apt_get_update()
