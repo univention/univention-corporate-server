@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-104) unstable; urgency=medium
+
+  * Bug #51496: add flag that password changing failed
+
+ -- Florian Best <best@univention.de>  Fri, 04 Sep 2020 10:03:03 +0200
+
 univention-management-console (11.0.4-103) unstable; urgency=medium
 
   * Bug #51492: fix javascript `TypeError: Cannot read property

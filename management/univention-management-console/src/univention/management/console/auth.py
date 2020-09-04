@@ -71,6 +71,8 @@ class AuthenticationResult(object):
 				self.result['account_expired'] = True
 			elif isinstance(result, AuthenticationInformationMissing):
 				self.result['missing_prompts'] = result.missing_prompts
+			elif isinstance(result, PasswordChangeFailed):
+				self.result['password_change_failed'] = True
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
