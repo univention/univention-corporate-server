@@ -827,6 +827,7 @@ define([
 			domClass.add(dom.byId('sidebar__homeTab'), 'sidebar__tab--selected');
 
 			this._selectedIframe = null;
+			this._updateSessionState();
 		},
 
 		__createIframe: function(id, title, logoUrl, url) {
@@ -954,12 +955,7 @@ define([
 				d.iframe.addEventListener('load', lang.hitch(this, function() {
 					var pathname = lang.getObject('contentWindow.location.pathname', false, d.iframe);
 					if (pathname === '/univention/portal/loggedin/') {
-						login.start(null, null, true).then(lang.hitch(this, function() {
-							this._setupEditModeIfAuthorized();
-							this._refresh(portalTools.RenderMode.NORMAL).then(lang.hitch(this, function() {
-								this._addLinks();
-							}));
-						}));
+						login.start(null, null, true);
 						this._selectHome();
 						this._removeIframe('$__login__$');
 					}
@@ -1472,7 +1468,6 @@ define([
 
 			this._initProperties();
 			this._registerEventHandlerForSearch();
-			this._setupEditModeIfAuthorized();
 			this._renderSidebar();
 			this._render(portalTools.RenderMode.NORMAL);
 			this._addLinks();
@@ -1482,6 +1477,18 @@ define([
 
 			on(window, 'resize', lang.hitch(this, function() {
 				this._handleWindowResize();
+			}));
+			on(document, 'visibilitychange', lang.hitch(this, function() {
+				this._handleVisibilityChange();
+			}));
+
+			login.onLogin(lang.hitch(this, function() {
+				this._setupEditModeIfAuthorized();
+				this._refresh(portalTools.RenderMode.NORMAL).then(lang.hitch(this, function() {
+					this._addLinks();
+				}));
+				// Do not force a relogin on the portal
+				tools.checkSession(false);
 			}));
 		},
 
@@ -2226,6 +2233,18 @@ define([
 			}));
 		},
 
+		_updateSessionState: function() {
+			var isHomeTab = this._selectedIframe === null;
+			if (!isHomeTab || tools.status('loggedIn')) {
+				return;
+			}
+			login.sessioninfo().otherwise(lang.hitch(this, function() {
+				login.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, function() {
+					login.sessioninfo();
+				}));
+			}));
+		},
+
 		_resizeDeferred: null,
 		_handleWindowResize: function() {
 			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
@@ -2237,6 +2256,12 @@ define([
 			}), 200);
 
 			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
+		},
+
+		_handleVisibilityChange: function() {
+			if (!document.hidden) {
+				this._updateSessionState();
+			}
 		},
 
 		// these functions are used in management/univention-portal/test/test.js
