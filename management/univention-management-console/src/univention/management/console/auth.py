@@ -43,15 +43,17 @@ import notifier.signals as signals
 import notifier.threads as threads
 
 import univention.admin.uexceptions as udm_errors
+from univention.lib.i18n import Locale
 
 from univention.management.console.log import AUTH
+from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
 
 class AuthenticationResult(object):
 
-	def __init__(self, result):
+	def __init__(self, result, locale):
 		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_UNAUTH
 		self.credentials = None
 		self.status = SUCCESS
@@ -73,6 +75,9 @@ class AuthenticationResult(object):
 				self.result['missing_prompts'] = result.missing_prompts
 			elif isinstance(result, PasswordChangeFailed):
 				self.result['password_change_failed'] = True
+			if isinstance(result, (PasswordExpired, PasswordChangeFailed)):
+				locale = Locale(locale)
+				self.message += (' %s' % (ucr.get('umc/login/password-complexity-message/%s-%s' % (locale.language, locale.territory), ucr.get('umc/login/password-complexity-message/en-US', '')),)).rstrip()
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
@@ -104,7 +109,7 @@ class AuthHandler(signals.Provider):
 		args.setdefault('password', '')
 
 		pam = PamAuth(locale)
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, pam, **args), notifier.Callback(self.__authentication_result, pam, msg))
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, pam, **args), notifier.Callback(self.__authentication_result, pam, msg, locale))
 		thread.run()
 
 	def __authenticate_thread(self, pam, username, password, new_password, **custom_prompts):
@@ -146,12 +151,11 @@ class AuthHandler(signals.Provider):
 			# /etc/machine.secret missing or LDAP server not reachable
 			AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
 			reset_cache()
-		except:
+		except Exception:
 			AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
-		finally:  # ignore all exceptions, even in except blocks
-			return username
+		return username
 
-	def __authentication_result(self, thread, result, pam, request):
+	def __authentication_result(self, thread, result, pam, request, locale):
 		pam.end()
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired)):
 			msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
@@ -159,5 +163,5 @@ class AuthHandler(signals.Provider):
 		if isinstance(result, tuple):
 			username, password = result
 			result = {'username': username, 'password': password, 'auth_type': request.body.get('auth_type')}
-		auth_result = AuthenticationResult(result)
+		auth_result = AuthenticationResult(result, locale)
 		self.signal_emit('authenticated', auth_result, request)

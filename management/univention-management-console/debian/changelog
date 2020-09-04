@@ -1,3 +1,9 @@
+univention-management-console (11.0.4-105) unstable; urgency=medium
+
+  * Bug #51401: add possibility to specify notes for password changes
+
+ -- Florian Best <best@univention.de>  Fri, 04 Sep 2020 12:42:57 +0200
+
 univention-management-console (11.0.4-104) unstable; urgency=medium
 
   * Bug #51496: add flag that password changing failed
