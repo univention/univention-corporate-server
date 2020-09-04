@@ -17,7 +17,10 @@ setup_00026 () {
 }
 
 sec_updates_00026 () {
+	# Backported packages are built in the extsec4.3 scope
 	echo -e "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.3-0-extsec4.3/all/\ndeb [trusted=yes] http://192.168.0.10/build2/ ucs_4.3-0-extsec4.3/\$(ARCH)/\n" > /etc/apt/sources.list.d/extsec43.list
+	# upstream security fixes are directly announced to the update mirror
+	/root/activate-extsec4.3-scope.sh
 	apt-get -y update
 	apt-get -y update | grep extsec4.3
 	. utils.sh && upgrade_to_latest_errata
