@@ -59,6 +59,7 @@ import sys
 import warnings
 import copy
 import json
+import subprocess
 from email.utils import formatdate
 
 import six
@@ -406,14 +407,28 @@ def create_po_file(po_file, package, files, language='python'):
 		helper.call('mv', message_po, po_file)
 
 
-def create_mo_file(po_file):
-	# type: (str) -> None
+def create_mo_file(po_file, mo_file=''):
+	# type: (str, str) -> None
 	"""
 	Compile textual message catalog (`.po`) to binary message catalog (`.mo`).
 
 	:param po_file: File name of the textual message catalog.
+	:param mo_file: File name of compiled message catalog.
 	"""
-	if helper.call('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file):
+	if not mo_file:
+		head, tail = os.path.splitext(po_file)
+		assert tail == '.po'
+		mo_file = head + '.mo'
+
+	cmd = ('msgattrib', '--only-fuzzy', '--no-wrap', po_file)
+	proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	out, err = proc.communicate()
+	if out:
+		raise Error(u"Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace')))
+
+	helper.make_parent_dir(mo_file)
+
+	if helper.call('msgfmt', '--check', '--output-file', mo_file, po_file):
 		raise Error('Failed to compile translation file from %s.' % (po_file,))
 
 

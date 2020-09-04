@@ -83,7 +83,7 @@ class SourceFilesXgettext(SourceFileSet):
 
 	def _compile(self, po_path, mo_output_path):
 		# type: (str, str) -> None
-		message_catalogs.compile_mo(po_path, mo_output_path)
+		umc.create_mo_file(po_path, mo_output_path)
 
 
 class SourceFilesShell(SourceFilesXgettext):

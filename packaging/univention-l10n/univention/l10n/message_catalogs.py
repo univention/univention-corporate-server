@@ -94,12 +94,6 @@ def create_empty_po(binary_pkg_name, new_po_path):
 	_clean_header(new_po_path)
 
 
-def compile_mo(path_to_po, mo_output_path):
-	# type: (str, str) -> None
-	make_parent_dir(mo_output_path)
-	_call_gettext('msgfmt', '--check', '--output={}'.format(mo_output_path), path_to_po)
-
-
 def merge_po(source_po_path, dest_po_path):
 	# type: (str, str) -> None
 	_call_gettext(
