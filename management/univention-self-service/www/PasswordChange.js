@@ -276,14 +276,12 @@ define([
 
 			var _handleError = lang.hitch(this, function(err) {
 				var info = tools.parseError(err);
-				if (info.status === 401) {
+				if (info.status === 401 && (!info.result || !info.result.password_change_failed)) {
 					// wrong credentials -> display custom error message
-					dialog.alert(_('Invalid credentials. Password change failed.'));
-
-				} else {
-					// display received error message
-					dialog.alert(info.message);
+					// mask "The authentication has failed, please login again."
+					info.message = _('Changing password failed. The username and/or the old password is not correct.');
 				}
+				dialog.alert(entities.encode(info.message));
 
 				// return 'false' to indicate failure
 				return false;
