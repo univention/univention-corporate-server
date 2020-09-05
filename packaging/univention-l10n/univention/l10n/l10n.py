@@ -316,8 +316,8 @@ class MIMEChecker():
 		return mime
 
 
-def update_package_translation_files(module, output_dir):
-	# type: (UMCModuleTranslation, str) -> None
+def update_package_translation_files(module, output_dir, template=False):
+	# type: (UMCModuleTranslation, str, bool) -> None
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
 	try:
@@ -330,7 +330,7 @@ def update_package_translation_files(module, output_dir):
 					po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 					make_parent_dir(po_path)
 					try:
-						umc.create_po_file(po_path, module['module_name'], src_files, language)
+						umc.create_po_file(po_path, module['module_name'], src_files, language, template)
 					except umc.Error as exc:
 						print(exc)
 
@@ -343,7 +343,7 @@ def update_package_translation_files(module, output_dir):
 			po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 			make_parent_dir(po_path)
 			try:
-				umc.module_xml2po(module, po_path, lang)
+				umc.module_xml2po(module, po_path, lang, template)
 			except umc.Error as exc:
 				print(exc)
 

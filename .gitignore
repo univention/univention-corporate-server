@@ -16,4 +16,5 @@ build/
 .*.sw?
 *.mo
 !*/*/conffiles/**/*.mo
+*.pot
 *.py[co]

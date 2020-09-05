@@ -52,6 +52,7 @@ from univention import l10n as tlh
 def parse_args():
 	# type: () -> argparse.Namespace
 	parser = argparse.ArgumentParser(description="Generate GNU gettext Portable Objects (PO files) from debian/*.univention-l10n files")
+	parser.add_argument("--pot", "-t", action="store_true", help="Keep template file")
 	parser.add_argument('language_code', help="ISO language code.")
 	args = parser.parse_args()
 	return args
@@ -60,19 +61,23 @@ def parse_args():
 def main():
 	# type: () -> None
 	args = parse_args()
+	cwd = os.getcwd()
 
-	for scase in tlh.get_special_cases_from_srcpkg(os.getcwd(), args.language_code):
+	for scase in tlh.get_special_cases_from_srcpkg(cwd, args.language_code):
 		pot_path = scase.create_po_template()
 		if os.path.isfile(scase.new_po_path):
 			tlh.message_catalogs.merge_po(pot_path, scase.new_po_path)
-			os.unlink(pot_path)
 		else:
-			os.rename(pot_path, scase.new_po_path)
+			os.link(pot_path, scase.new_po_path)
+
+		if not args.pot:
+			os.unlink(pot_path)
+
 		tlh.message_catalogs.univention_location_lines(scase.new_po_path, scase.package_dir)
-	for module_attrs in tlh.find_base_translation_modules(os.getcwd(), os.getcwd(), ".umc-modules"):
+
+	for module_attrs in tlh.find_base_translation_modules(cwd, cwd, ".umc-modules"):
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, args.language_code)
-		output_dir = os.getcwd()
-		tlh.update_package_translation_files(module, output_dir)
+		tlh.update_package_translation_files(module, cwd, args.pot)
 
 
 if __name__ == '__main__':

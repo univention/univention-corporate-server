@@ -292,16 +292,17 @@ def read_modules(package, core=False):
 	return modules
 
 
-def module_xml2po(module, po_file, language):
-	# type: (UMC_Module, str, str) -> None
+def module_xml2po(module, po_file, language, template=False):
+	# type: (UMC_Module, str, str, bool) -> None
 	"""
 	Create a PO file the |XML| definition of an |UMC| module.
 
 	:param module: |UMC| module.
 	:param po_file: File name of the textual message catalog.
 	:param language: 2-letter language code.
+	:param template: Keep PO template file.
 	"""
-	message_po = '%s/messages.po' % (os.path.dirname(po_file) or '.')
+	pot_file = '%s/messages.pot' % (os.path.dirname(po_file) or '.')
 
 	po = polib.POFile(check_for_duplicates=True)
 	po.metadata = copy.copy(PO_METADATA)
@@ -337,23 +338,14 @@ def module_xml2po(module, po_file, language):
 		for cat in tree.findall('categories/category'):
 			_append_po_entry(cat.find('name'))
 
-	po.save(message_po)
-	if os.path.isfile(po_file):
-		try:
-			if helper.call('msgmerge', '--update', '--sort-output', po_file, message_po):
-				raise Error('Failed to merge module translations into %s.' % (po_file,))
-			backup_file = '{}~'.format(po_file)
-			if os.path.isfile(backup_file):
-				os.unlink(backup_file)
-		finally:
-			if os.path.isfile(message_po):
-				os.unlink(message_po)
-	else:
-		helper.call('mv', message_po, po_file)
+	po.save(pot_file)
+	merge_po_file(po_file, pot_file)
+	if not template:
+		os.unlink(pot_file)
 
 
-def create_po_file(po_file, package, files, language='python'):
-	# type: (str, str, Union[str, Iterable[str]], str) -> None
+def create_po_file(po_file, package, files, language='python', template=False):
+	# type: (str, str, Union[str, Iterable[str]], str, bool) -> None
 	"""
 	Create a PO file for a defined set of files.
 
@@ -361,11 +353,12 @@ def create_po_file(po_file, package, files, language='python'):
 	:param package: Name of the package.
 	:param files: A single file name or a list of file names.
 	:param language: Programming language name.
+	:param template: Keep PO template file.
 	"""
-	message_po = '%s/messages.pot' % (os.path.dirname(po_file) or '.')
+	pot_file = '%s/messages.pot' % (os.path.dirname(po_file) or '.')
 
-	if os.path.isfile(message_po):
-		os.unlink(message_po)
+	if os.path.isfile(pot_file):
+		os.unlink(pot_file)
 	if isinstance(files, six.string_types):
 		files = [files]
 	xgettext = helper.call(
@@ -378,33 +371,39 @@ def create_po_file(po_file, package, files, language='python'):
 		'--msgid-bugs-address=packages@univention.de',
 		'--copyright-holder=Univention GmbH',
 		'--language', language,
-		'-o', message_po,
+		'--output', pot_file,
 		*files
 	)
 	if xgettext:
 		raise Error('xgettext failed for the files: %r' % (list(files),))
 
-	po = polib.pofile(message_po)
+	po = polib.pofile(pot_file)
 	po.metadata['Content-Type'] = 'text/plain; charset=UTF-8'
 	if po.metadata_is_fuzzy:  # xgettext always creates fuzzy metadata
 		try:
 			po.metadata_is_fuzzy.remove('fuzzy')
 		except ValueError:
 			pass
-	po.save()
 
+	po.save()
+	merge_po_file(po_file, pot_file)
+	if not template:
+		os.unlink(pot_file)
+
+
+def merge_po_file(po_file, pot_file):
+	# type: (str, str) -> None
+	"""
+	Merge :file:`.po` file with new :file:`.pot` file.
+
+	:param po_file: PO file containing translation.
+	:param pot_file: PO template file.
+	"""
 	if os.path.isfile(po_file):
-		try:
-			if helper.call('msgmerge', '--update', '--sort-output', po_file, message_po):
-				raise Error('Failed to merge translations into %s.' % (po_file,))
-			backup_file = '{}~'.format(po_file)
-			if os.path.isfile(backup_file):
-				os.unlink(backup_file)
-		finally:
-			if os.path.isfile(message_po):
-				os.unlink(message_po)
+		if helper.call('msgmerge', '--update', '--sort-output', '--backup=off', po_file, pot_file):
+			raise Error('Failed to merge translations into %s.' % (po_file,))
 	else:
-		helper.call('mv', message_po, po_file)
+		helper.call('cp', pot_file, po_file)
 
 
 def create_mo_file(po_file, mo_file=''):
