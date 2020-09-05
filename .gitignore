@@ -14,4 +14,6 @@ build/
 !*/*/debian/source/
 !*/*/debian/po/
 .*.sw?
+*.mo
+!*/*/conffiles/**/*.mo
 *.py[co]
