@@ -3,7 +3,6 @@
 #
 # Univention Management Console
 """Tool creates .json files for translation using gettext."""
-from __future__ import print_function
 #
 # Copyright 2011-2020 Univention GmbH
 #
@@ -32,6 +31,8 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os
 import sys
 from argparse import ArgumentParser
@@ -41,9 +42,10 @@ import univention.l10n.umc as dh_umc
 
 def main():
 	# parse all options
-	parser = ArgumentParser(usage='usage: %(prog)s --package <packageName> --outdir <outDir> [options] <jsFile> ...')
+	parser = ArgumentParser()
 	parser.add_argument(
 		'-p', '--package',
+		required=True,
 		help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
 	)
 	parser.add_argument(
@@ -54,25 +56,18 @@ def main():
 	)
 	parser.add_argument(
 		'-o', '--outdir',
+		required=True,
 		help='Specifies the output directory where translations from all js files are saved to. (Mandatory)')
 	parser.add_argument(
 		'-l', '--lang', action='append',
 		help='Specifies the languages that are processed (default: de)')
-	parser.add_argument('args', nargs='*')
+	parser.add_argument('args', metavar='jsFile', nargs='*')
 
 	options = parser.parse_args()
 
 	# update the list of languages
 	if options.lang and len(options.lang):
 		dh_umc.LANGUAGES = options.lang
-
-	# make sure we have enough parameters
-	if not options.package:
-		parser.error('You need to specify a package-name (--package) as well as a list of JavaScript files to process!')
-
-	# make sure that we have an output file specified
-	if not options.outdir:
-		parser.error('You need to specify an output directory (--outdir)!')
 
 	# set the po/mo/json file names and the correct function for generating the
 	# final output

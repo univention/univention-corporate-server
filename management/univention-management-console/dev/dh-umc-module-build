@@ -7,7 +7,6 @@ Install UMC modules. It parses a RFC 822 file called
 $(package).umc-modules and installs the specified components of a module
 into the correct directories.
 """
-from __future__ import print_function
 #
 # Copyright 2011-2020 Univention GmbH
 #
@@ -36,9 +35,11 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
 import os.path
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import univention.debhelper as dh_ucs
 import univention.l10n.umc as dh_umc
@@ -73,10 +74,10 @@ def do_package(package, core):
 
 def main():
 	# parse all options
-	parser = OptionParser(usage='usage: %prog [--core]')
-	parser.add_option('-c', '--core', action='store_true', dest='core', help='If specified only XML files are evaluated')
+	parser = ArgumentParser()
+	parser.add_argument('-c', '--core', action='store_true', dest='core', help='If specified only XML files are evaluated')
 
-	options, args = parser.parse_args()
+	options = parser.parse_args()
 	for package in dh_ucs.binary_packages():
 		do_package(package, options.core)
 

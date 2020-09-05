@@ -32,16 +32,18 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import univention.l10n.umc as dh_umc
+
+from argparse import ArgumentParser
 import sys
 
-if 1 == len(sys.argv) or '-h' in sys.argv or '--help' in sys.argv:
-	print('')
-	print('usage: dh-umc-po2json <poFile1> ...')
-	print('')
-	sys.exit(0)
+import univention.l10n.umc as dh_umc
 
-for ifile in sys.argv[1:]:
+
+parser = ArgumentParser()
+parser.add_argument("files", nargs="+", help="PO files")
+args = parser.parse_args()
+
+for ifile in args.files:
 	try:
 		dh_umc.create_json_file(ifile)
 	except dh_umc.Error as exc:

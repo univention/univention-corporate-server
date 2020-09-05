@@ -7,7 +7,6 @@ Install UMC modules. It parses a RFC 822 file called
 $(package).umc-modules and installs the specified components of a module
 into the correct directories.
 """
-from __future__ import print_function
 #
 # Copyright 2011-2020 Univention GmbH
 #
@@ -35,6 +34,8 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
 
 import os
 import sys
