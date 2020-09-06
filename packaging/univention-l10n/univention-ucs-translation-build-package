@@ -31,13 +31,13 @@ Build UCS package containing translations for a new language.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 from __future__ import print_function
-from optparse import OptionParser
+
+from argparse import ArgumentParser, Namespace  # noqa F401
 import os
 import univention.l10n.umc as dh_umc
 import univention.l10n as tlh
 try:
-	from typing import List, Set, Tuple  # noqa F401
-	from optparse import Values  # noqa F401
+	from typing import List  # noqa F401
 except ImportError:
 	pass
 
@@ -49,28 +49,18 @@ The translation will be incomplete.'''
 
 
 def parse_args():
-	# type: () -> Values
-	usage = '''%prog [options] -s source_dir -c language_code -l locale -n language_name
-e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
-	parser = OptionParser(usage=usage, description=__doc__)
-	parser.add_option('-s', '--source', dest='source_dir', help='UCS source dir from which translation files are gathered, e.g. an UCS svn base dir')
-	parser.add_option('-c', '--languagecode', dest='target_language', help='Target language code (e.g. de)')
-	parser.add_option('-b', '--basefiles', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
-	parser.add_option('-l', '--locale', dest='target_locale', help='Target locale (e.g. de_DE.UTF-8:UTF-8)')
-	parser.add_option('-n', '--language-name', dest='target_name', help='Language name that is shown in the UMC (e.g. Deutsch)')
-	parser.add_option('-o', '--package-name', dest='src_pkg_name', help='Determines the name of the generated source package. Default: univention-l10n-{language code}')
+	# type: () -> Namespace
+	epilog = '''Example: %(prog) -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
+	parser = ArgumentParser(epilog=epilog, description=__doc__)
+	parser.add_argument('-s', '--source', dest='source_dir', required=True, help='UCS source dir from which translation files are gathered, e.g. an UCS git base dir')
+	parser.add_argument('-c', '--languagecode', dest='target_language', required=True, help='Target language code (e.g. de)')
+	parser.add_argument('-b', '--basefiles', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
+	parser.add_argument('-l', '--locale', dest='target_locale', required=True, help='Target locale (e.g. de_DE.UTF-8:UTF-8)')
+	parser.add_argument('-n', '--language-name', dest='target_name', required=True, help='Language name that is shown in the UMC (e.g. Deutsch)')
+	parser.add_argument('-o', '--package-name', dest='src_pkg_name', help='Determines the name of the generated source package. Default: univention-l10n-{language code}')
 
-	(options, args) = parser.parse_args()
-	help_message = 'Use --help to show additional help.'
+	options = parser.parse_args()
 
-	if not options.source_dir:
-		parser.error('Missing argument -s. %s' % help_message)
-	if not options.target_language:
-		parser.error('Missing argument -c. %s' % help_message)
-	if not options.target_locale:
-		parser.error('Missing argument -l. %s' % help_message)
-	if not options.target_name:
-		parser.error('Missing argument -n. %s' % help_message)
 	if not options.src_pkg_name:
 		options.src_pkg_name = "univention-l10n-{}".format(options.target_language)
 
