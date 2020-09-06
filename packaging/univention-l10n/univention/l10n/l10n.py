@@ -498,10 +498,6 @@ def write_debian_rules(debian_dir_path):
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_test:
-	ucslint -m 0008
-	dh_auto_test
-
 %:
 	dh $@""".format(year=date.today().year))
 
@@ -513,9 +509,15 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 		print("creating directory: %s" % new_package_dir_debian)
 		os.makedirs(new_package_dir_debian)
 
-	translation_package_name = os.path.basename(new_package_dir)
-	translation_creator = getpass.getuser()
-	translation_host = socket.getfqdn()
+	translation = dict(
+		name=language_name,
+		package_name=os.path.basename(new_package_dir),
+		creator=getpass.getuser(),
+		host=socket.getfqdn(),
+		date=formatdate(),
+		years=date.today().year,
+	)
+
 	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
 		f.write("""\
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
@@ -546,40 +548,44 @@ License: AGPL-3.0-only
  You should have received a copy of the GNU Affero General Public
  License with the Debian GNU/Linux or Univention distribution in file
  /usr/share/common-licenses/AGPL-3; if not, see
- <https://www.gnu.org/licenses/>.""".format(years=date.today().year))  # noqa: E101
+ <https://www.gnu.org/licenses/>.""".format(**translation))  # noqa: E101
 
 	with open(os.path.join(new_package_dir_debian, 'changelog'), 'w') as f:  # noqa: E101
-		f.write("""%s (1.0.0-1) unstable; urgency=low
+		f.write("""%(package_name)s (1.0.0-1) unstable; urgency=low
 
   * Initial release
 
- -- %s <%s@%s>  %s""" % (translation_package_name, translation_creator, translation_creator, translation_host, formatdate()))  # noqa: E101
+ -- %(creator)s <%(creator)s@%(host)s>  %(date)s""" % translation)  # noqa: E101
 
 	write_debian_rules(new_package_dir_debian)  # noqa: E101
 
 	with open(os.path.join(new_package_dir_debian, 'control'), 'w') as f:
-		f.write("""Source: %s
+		f.write("""Source: %(package_name)s
 Section: univention
 Priority: optional
-Maintainer: %s <%s@%s>
-Build-Depends: debhelper (>= 7.0.50~),
- ucslint,
+Maintainer: %(creator)s <%(creator)s@%(host)s>
+Build-Depends: debhelper (>= 9),
  univention-config-dev,
- univention-management-console-dev
+ univention-management-console-dev,
 Standards-Version: 3.8.2
 
-Package: %s
+Package: %(package_name)s
 Architecture: all
 Depends: ${misc:Depends},
  univention-management-console
-Description: UCS Management Console translation files
+Description: %(name)s localization files for UCS
+ This package contains the %(name)s translations for Management
+ Console and other parts of UCS.
+ .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
- refer to: https://www.univention.de/""" % (translation_package_name, translation_creator, translation_creator, socket.getfqdn(), translation_package_name))  # noqa: E101
+ refer to: https://www.univention.de/""" % translation)  # noqa: E101
+
 	with open(os.path.join(new_package_dir_debian, 'compat'), 'w') as f:  # noqa: E101
-		f.write("7")
-	with open(os.path.join(new_package_dir_debian, '%s.postinst' % translation_package_name), 'w') as f:
+		f.write("9")
+
+	with open(os.path.join(new_package_dir_debian, '%(package_name)s.postinst' % translation), 'w') as f:
 		f.write("""#!/bin/sh
 #DEBHELPER#
 
@@ -593,15 +599,6 @@ esac
 ucr set ucs/server/languages/%s?"%s"
 
 exit 0""" % (target_locale, target_locale.split('.')[0], language_name))
-
-	language_dict = {"lang": target_language}
-	with open(os.path.join(new_package_dir_debian, '%s.dirs' % translation_package_name), 'w') as f:
-		f.write("""usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s
-usr/share/univention-management-console-frontend/js/umc/i18n/%(lang)s
-usr/share/univention-management-console-frontend/js/umc/help
-usr/share/univention-management-console/i18n/%(lang)s
-usr/share/locale/%(lang)s/LC_MESSAGES
-""" % language_dict)
 
 	shutil.copyfile('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(new_package_dir, 'Makefile'))
 	# Move source files and installed .mo files to new package dir

@@ -2,12 +2,11 @@ Source: PACKAGENAME
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends: debhelper (>= 9),
  dh-python,
  univention-management-console-dev (>= 11.0.4-37),
  python-all,
  python3-all,
- ucslint,
 Standards-Version: 3.7.2
 
 Package: PACKAGENAME
