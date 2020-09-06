@@ -54,7 +54,6 @@ def parse_args():
 	parser = ArgumentParser(epilog=epilog, description=__doc__)
 	parser.add_argument('-s', '--source', dest='source_dir', required=True, help='UCS source dir from which translation files are gathered, e.g. an UCS git base dir')
 	parser.add_argument('-c', '--languagecode', dest='target_language', required=True, help='Target language code (e.g. de)')
-	parser.add_argument('-b', '--basefiles', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
 	parser.add_argument('-l', '--locale', dest='target_locale', required=True, help='Target locale (e.g. de_DE.UTF-8:UTF-8)')
 	parser.add_argument('-n', '--language-name', dest='target_name', required=True, help='Language name that is shown in the UMC (e.g. Deutsch)')
 	parser.add_argument('-o', '--package-name', dest='src_pkg_name', help='Determines the name of the generated source package. Default: univention-l10n-{language code}')
@@ -74,8 +73,7 @@ def main():
 	options = parse_args()
 
 	# find all module files and move them to a language specific directory
-	startdir = os.getcwd()
-	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)
+	base_translation_modules = tlh.find_base_translation_modules(options.source_dir)
 	dh_umc.LANGUAGES = (options.target_language, )
 	all_modules = []  # type: List[tlh.UMCModuleTranslation]
 	output_dir = os.path.join(os.getcwd(), options.target_language)
@@ -94,7 +92,7 @@ def main():
 		tlh.translate_special_case(s_case, options.source_dir, output_dir)
 
 	# create new package
-	tlh.create_new_package(options.src_pkg_name, options.target_language, options.target_locale, options.target_name, startdir)
+	tlh.create_new_package(options.src_pkg_name, options.target_language, options.target_locale, options.target_name, '.')
 	tlh.write_makefile(all_modules, special_cases, options.src_pkg_name, options.target_language)
 
 

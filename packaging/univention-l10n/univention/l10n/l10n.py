@@ -64,16 +64,18 @@ except ImportError:
 
 
 REFERENCE_LANG = 'de'
+UMC_MODULES = '.umc-modules'
 # Use this set to ignore whole sub trees of a given source tree
-DIR_BLACKLIST = set([
-	'./doc',
-	'./test',
-])
+DIR_BLACKLIST = {
+	'doc',
+	'umc-module-templates',
+	'test',
+	'testframework',
+}
 # do not translate modules with these names, as they are examples and thus not worth the effort
-MODULE_BLACKLIST = [
+MODULE_BLACKLIST = {
 	'PACKAGENAME',
-	'0001-6-7'
-]
+}
 
 
 class NoSpecialCaseDefintionsFound(Exception):
@@ -151,7 +153,7 @@ class UMCModuleTranslation(umc.UMC_Module):
 	@staticmethod
 	def _read_module_attributes_from_source_package(module):
 		# type: (BaseModule) -> umc.UMC_Module
-		umc_module_definition_file = os.path.join(module['abs_path_to_src_pkg'], 'debian/', '{}.umc-modules'.format(module['module_name']))
+		umc_module_definition_file = os.path.join(module['abs_path_to_src_pkg'], 'debian', '{}{}'.format(module['module_name'], UMC_MODULES))
 		with open(umc_module_definition_file, 'r') as fd:
 			def_file = fd.read()
 
@@ -320,6 +322,7 @@ def update_package_translation_files(module, output_dir, template=False):
 	# type: (UMCModuleTranslation, str, bool) -> None
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
+	output_dir = os.path.abspath(output_dir)
 	try:
 		os.chdir(module['abs_path_to_src_pkg'])
 		if not module.get('core'):
@@ -433,43 +436,33 @@ def get_special_cases_from_checkout(source_tree_path, target_language):
 	]
 
 
-def find_base_translation_modules(startdir, source_dir, module_basefile_name):
-	# type: (str, str, str) -> List[BaseModule]
-	print('looking in %s' % source_dir)
-	print('looking for files matching %s' % module_basefile_name)
-	os.chdir(source_dir)
-	matches = []  # type: List[str]
-	for root, dirnames, filenames in os.walk('.'):
-		dirnames[:] = [d for d in dirnames if os.path.join(root, d) not in DIR_BLACKLIST]
-		matches.extend(os.path.abspath(os.path.join(root, fn)) for fn in filenames if fn.endswith(module_basefile_name))
-
+def find_base_translation_modules(source_dir):
+	# type: (str) -> List[BaseModule]
 	base_translation_modules = []  # type: List[BaseModule]
 
-	regex = re.compile(r".*/(.*)/debian/.*%s$" % re.escape(module_basefile_name))
-	for match in matches:
-		print(match)
-		packagenameresult = regex.search(match)
-		if packagenameresult:
-			packagename = packagenameresult.group(1)
-
-			modulename = os.path.basename(match.replace(module_basefile_name, ''))
+	print('looking in %s' % source_dir)
+	for root, dirnames, filenames in os.walk(os.path.abspath(source_dir)):
+		dirnames[:] = [d for d in dirnames if d not in DIR_BLACKLIST]
+		(package_dir, tail) = os.path.split(root)
+		if tail != "debian":
+			continue
+		for fn in filenames:
+			(modulename, tail) = os.path.splitext(fn)
+			if tail != UMC_MODULES:
+				continue
 			if modulename in MODULE_BLACKLIST:
 				print("Ignoring module %s: Module is blacklisted\n" % modulename)
 				continue
 
-			package_dir = os.path.dirname(os.path.dirname(match))
 			print("Found package: %s" % package_dir)
 			module = {
 				'module_name': modulename,
-				'binary_package_name': packagename,
-				'abs_path_to_src_pkg': os.path.abspath(package_dir),
-				'relative_path_src_pkg': os.path.relpath(package_dir),
+				'binary_package_name': os.path.dirname(package_dir),
+				'abs_path_to_src_pkg': package_dir,
+				'relative_path_src_pkg': os.path.relpath(package_dir, source_dir),
 			}  # type: BaseModule
 			base_translation_modules.append(module)
-		else:
-			print("could not obtain packagename from directory %s" % match)
 
-	os.chdir(startdir)
 	return base_translation_modules
 
 

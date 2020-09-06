@@ -75,7 +75,7 @@ def main():
 
 		tlh.message_catalogs.univention_location_lines(scase.new_po_path, scase.package_dir)
 
-	for module_attrs in tlh.find_base_translation_modules(cwd, cwd, ".umc-modules"):
+	for module_attrs in tlh.find_base_translation_modules(cwd):
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, args.language_code)
 		tlh.update_package_translation_files(module, cwd, args.pot)
 

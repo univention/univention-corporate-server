@@ -134,7 +134,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 
 	# generate {lang}_tomerge
 	dh_umc.LANGUAGES = (lang_code, )
-	modules_upstream = tlh.find_base_translation_modules(os.getcwd(), args.upstream, '.umc-modules')
+	modules_upstream = tlh.find_base_translation_modules(args.upstream)
 	output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
 	modules = list()
 	for module_attrs in modules_upstream:
