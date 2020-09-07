@@ -1080,6 +1080,9 @@ basic_setup_ucs_joined () {
 	# fix ip on non-master systems
 	if [ ! "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
+		if [  "$(ucr get server/role)" = "memberserver" ]; then
+			ucr set nameserver1="$masterip"
+		fi
 		service univention-directory-listener restart || rv=1
 		/usr/sbin/univention-register-network-address || rv=1
 	fi
