@@ -1,3 +1,15 @@
+univention-portal (3.1.0-32) unstable; urgency=medium
+
+  * Bug #51856: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de> <wiesenthal@univention.de>  Mon, 07 Sep 2020 13:40:23 +0200
+
+univention-portal (3.1.0-30) unstable; urgency=medium
+
+  * Bug #51856: Remove ucslint
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de> <wiesenthal@univention.de>  Mon, 07 Sep 2020 13:24:47 +0200
+
 univention-portal (3.1.0-29) unstable; urgency=medium
 
   * Bug #51856: Update login status if logged in from another browser tab
