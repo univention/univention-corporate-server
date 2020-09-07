@@ -1,3 +1,9 @@
+ucs-test (9.0.4-60) unstable; urgency=medium
+
+  * Bug #51492: fix replication problems
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 07 Sep 2020 22:22:17 +0200
+
 ucs-test (9.0.4-59) unstable; urgency=medium
 
   * Bug #1234: Rewrite 96rename* in python to use wait_for_replication_and_postrun,
