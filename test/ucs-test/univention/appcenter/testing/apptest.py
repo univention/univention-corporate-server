@@ -105,15 +105,20 @@ class Session(object):
 			ffmpg_stop(pid)
 			self.save_screenshot(name)
 
+	def wait_until_clickable_and_click(self, css):
+		from selenium.webdriver.common.by import By
+		from selenium.webdriver.support.ui import WebDriverWait
+		from selenium.webdriver.support import expected_conditions as EC
+		WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, css)))
+		self.click_element(css)
+
 	def goto_portal(self):
 		self.get('/univention/portal')
-		time.sleep(2)
+		time.sleep(3)
 		if self.find_first('span.umcApplianceReadmeCloseButton'):
 			self.click_element('span.umcApplianceReadmeCloseButton')
-		self.click_element('#umc_menu_Button_0')
-		time.sleep(1)
-		self.click_element('#umcMenuLanguage')
-		time.sleep(1)
+		self.wait_until_clickable_and_click('#umc_menu_Button_0')
+		self.wait_until_clickable_and_click('#umcMenuLanguage')
 		for element in self.find_all('#umcMenuLanguage__slide .menuItem'):
 			if element.text == 'English':
 				element.click()
