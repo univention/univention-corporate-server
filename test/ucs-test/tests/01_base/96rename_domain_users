@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash
+#!/usr/share/ucs-test/runner python
 ## desc: Rename Domain Users
 ## tags:
 ##  - basic
@@ -11,64 +11,94 @@
 ##  - memberserver
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/group.sh" || exit 137
-. "$TESTLIBPATH/samba.sh" || exit 137
 
-GROUPNAME=$(group_randomname)
+import subprocess
+from univention.testing.ucr import UCSTestConfigRegistry
+import univention.testing.utils as utils
+from univention.testing.ucs_samba import wait_for_drs_replication
+import univention.testing.strings as uts
+import re
+import os
+import glob
+import time
 
-udm-test groups/group modify --dn "cn=Domain Users,cn=groups,$ldap_base" --set name="$GROUPNAME"
+
+def search_templates(old_group_name, new_group_name):
+	templates = glob.glob('/etc/univention/templates/info/*.info')
+	file_content = []
+	match_filter = '^(Multifile: |File: )'
+	# find all template files by iterating over all referenced templates in the ucr *.info files
+	for template in templates:
+		with open(template, 'r') as content_file:
+			# find all lines that start with File or Multifile and strip it to get the paths of the template files
+			file_content += ['/' + re.sub(match_filter, '', l).strip() for l in content_file.readlines() if re.match(match_filter, l)]
+
+	file_content = list(dict.fromkeys(file_content))
+	for file in file_content:
+		if os.path.isfile(file):
+			print('Checking template %s' % (file,))
+			with open(file, 'r') as content_file:
+				# /etc/security/limits.conf contains a comment about Domain Users which we will ignore.
+				# But it must contain the new name of the default domainusers group
+				if file == "/etc/security/limits.conf":
+					if new_group_name not in content_file.read():
+						print(content_file.read())
+						utils.fail('FAIL: New group name %s not in security conffiles' % (new_group_name,))
+				else:
+					if old_group_name in content_file.read():
+						utils.fail('FAIL: Domain Users still in template files')
+		else:
+			print('template not found %s' % (file,))
 
 
-cleanup () {
-	# Ok, before renaming the user back, we first should be nice to the S4-Connector and
-	# wait for the initial synchronization to be done. The test case here is not interested
-	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
-	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
-	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
-	if checkpkg 'univention-samba4'; then
-		wait_for_drs_replication "(sAMAccountName=$GROUPNAME)"
-	elif checkpkg 'univention-samba'; then
-		echo "Waiting for S4-Connector"
-		sleep 10
-	fi
-	udm-test groups/group modify --dn "cn=$GROUPNAME,cn=groups,$ldap_base" --set name="Domain Users"
-	wait_for_replication_and_postrun
-}
+def test_rename_domain_users():
+	with UCSTestConfigRegistry() as ucr_test:
+		ucr_test.load()
 
-trap cleanup EXIT
+		ldap_base = ucr_test.get('ldap/base')
+		old_group_name = ucr_test.get('groups/default/domainusers', 'Domain Users')
+		old_group_dn = "cn=%s,cn=groups,%s" % (old_group_name, ldap_base)
 
-wait_for_replication_and_postrun
-# wait a little bit longer
-sleep 2
+		new_group_name = uts.random_name()
+		new_group_dn = "cn=%s,cn=groups,%s" % (new_group_name, ldap_base)
+		try:
+			print('\n##################################################################')
+			print('Renaming default domainusers group %s to %s' % (old_group_name, new_group_name))
+			print('##################################################################\n')
+			cmd = (['udm', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
+			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			utils.wait_for_replication_and_postrun()
 
-if [ "$(ucr get groups/default/domainusers)" != "$GROUPNAME" ]; then
-	echo "UCR variable groups/default/domainusers is set to $(ucr get groups/default/domainusers) instead of $GROUPNAME"
-	exit 1
-fi
+			# Check UCR Variable
+			print('\n##################################################################')
+			print('Checking if UCR Variable groups/default/domainusers is set to %s' % (new_group_name,))
+			print('##################################################################\n')
+			ucr_test.load()
+			ucr_domainusers = ucr_test.get('groups/default/domainusers', 'Domain Users')
+			if new_group_name not in ucr_domainusers:
+				utils.fail('UCR variable groups/default/domainusers was not set to %s' % (ucr_domainusers,))
+				print(ucr_test.get('groups/default/domainusers', 'Domain Users'))
+			else:
+				print('UCR variable groups/default/domainusers is set correctly to %s' % (ucr_domainusers,))
 
-# Search templates
-cat /etc/univention/templates/info/*.info | sed -ne 's|^File: ||p;s|^Multifile: ||p' | sort -u  | while read template; do
-	[ "$template" = etc/security/limits.conf ] && continue #ignore comment
+			# Search templates
+			print('\n##################################################################')
+			print('Search templates for old and new name of default domainusers group')
+			print('##################################################################\n')
+			search_templates(old_group_name, new_group_name)
+		finally:
+			try:
+				wait_for_drs_replication('(sAMAccountName=%s)' % (new_group_name,))
+			except Exception:
+				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
+				time.sleep(10)
+				pass
+			print('\n##################################################################')
+			print('Cleanup')
+			print('##################################################################\n')
+			cmd = (['udm', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
+			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 
-	echo -n "Checking $template: "
-	grep -i "Domain Users" "/$template" && exit 1
-	echo "done"
-done
 
-for file in /etc/security/limits.conf; do
-	echo -n "Checking if new users group name is set to $file: "
-	if grep -q "$GROUPNAME" $file; then
-		echo "done"
-	else
-		echo "failed"
-		echo "************** $file ***************"
-		cat $file
-		echo "****************************************"
-		exit 1
-	fi
-done
-
-exit "$RETVAL"
-
+if __name__ == '__main__':
+	test_rename_domain_users()

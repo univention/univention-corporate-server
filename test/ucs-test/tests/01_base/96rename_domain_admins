@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash
+#!/usr/share/ucs-test/runner python
 ## desc: Rename Domain Admins
 ## tags:
 ##  - basic
@@ -10,92 +10,103 @@
 ##  - domaincontroller_slave
 ##  - memberserver
 ## exposure: dangerous
-## bugs:
-##  - 37509
 
-. "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/group.sh" || exit 137
-. "$TESTLIBPATH/samba.sh" || exit 137
-. /usr/share/univention-lib/base.sh || exit 137
 
-eval "$(ucr shell)"
+import subprocess
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.ucs_samba import wait_for_drs_replication
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+import re
+import os
+import glob
+import time
 
-GROUPNAME=$(group_randomname)
 
-udm-test groups/group modify --dn "cn=Domain Admins,cn=groups,$ldap_base" --set name="$GROUPNAME"
+def search_templates(old_group_name, new_group_name, server_role):
+	templates = glob.glob('/etc/univention/templates/info/*.info')
+	file_content = []
+	match_filter = '^(Multifile: |File: )'
+	# find all template files by iterating over all referenced templates in the ucr *.info files
+	for template in templates:
+		with open(template, 'r') as content_file:
+			# find all lines that start with File or Multifile and strip it to get the paths of the template files
+			file_content += ['/' + re.sub(match_filter, '', l).strip() for l in content_file.readlines() if re.match(match_filter, l)]
 
-# wait a little bit longer since we have to wait for the slapd restart
+	# A list of templates which are referencing the defaultdomainadmins group. The new name must be found in them
+	should_contain_admin = ['/etc/security/access-rlogin.conf', '/etc/security/access-ftp.conf', '/etc/security/access-screen.conf', '/etc/security/access-gdm.conf', '/etc/security/access-login.conf',
+		'/etc/security/access-other.conf', '/etc/security/access-kdm.conf', '/etc/security/access-ppp.conf', '/etc/security/access-sshd.conf']
+	if server_role == 'memberserver':
+		should_contain_admin.append('/etc/ldap/slapd.conf')
+	# Check if the name was correctly updated in the templates
+	file_content = list(dict.fromkeys(file_content))
+	for file in file_content:
+		if os.path.isfile(file):
+			print('Checking template %s' % (file,))
+			with open(file, 'r') as content_file:
+				# /etc/sudoers.d/univention contains a comment about Domain Admins which we will ignore.
+				# But it must contain the new name of the default domainadmins group
+				content = content_file.read()
+				if file == "/etc/sudoers.d/univention":
+					if new_group_name not in content:
+						print(content_file.read())
+						utils.fail('FAIL: New group name %s not in file %s' % (new_group_name, file))
+				elif file in should_contain_admin:
+					if new_group_name not in content:
+						utils.fail('FAIL: New group name %s not in %s' % (new_group_name, file))
+				else:
+					if old_group_name in content:
+						utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 
-cleanup() {
-	# Ok, before renaming the user back, we first should be nice to the S4-Connector and
-	# wait for the initial synchronization to be done. The test case here is not interested
-	# in the Samba side of things, so it doesn't wait itself, but just tests stuff locally.
-	# Now, we can't really tell, from the Slave, when the S4C is done. So we do it indirectly
-	# and wait for the $USERNAME account to appear in the local Samba (via S4C + DRS replication).
-	if checkpkg 'univention-samba4'; then
-		wait_for_drs_replication "(sAMAccountName=$GROUPNAME)"
-	elif checkpkg 'univention-samba'; then
-		echo "Waiting for S4-Connector"
-		sleep 10
-	fi
 
-	udm-test groups/group modify --dn "cn=$GROUPNAME,cn=groups,$ldap_base" --set name="Domain Admins"
-	wait_for_replication_and_postrun
-}
-trap cleanup EXIT
+def test_rename_domain_users():
+	with UCSTestConfigRegistry() as ucr_test:
+		ucr_test.load()
 
-wait_for_replication_and_postrun
-# wait a little bit longer
-sleep 2
+		server_role = ucr_test.get('server/role')
+		ldap_base = ucr_test.get('ldap/base')
+		old_group_name = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+		old_group_dn = "cn=%s,cn=groups,%s" % (old_group_name, ldap_base)
 
-if [ "$(ucr get groups/default/domainadmins)" != "$GROUPNAME" ]; then
-	echo "UCR variable groups/default/domainadmin is set to $(ucr get groups/default/domainadmins) instead of $GROUPNAME"
-	exit 1
-fi
+		new_group_name = uts.random_name()
+		new_group_dn = "cn=%s,cn=groups,%s" % (new_group_name, ldap_base)
+		try:
+			print('\n##################################################################')
+			print('Renaming default domainadmins group %s to %s' % (old_group_name, new_group_name))
+			print('##################################################################\n')
+			cmd = (['udm', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
+			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			utils.wait_for_replication_and_postrun()
+			# Check UCR Variable
+			print('\n##################################################################')
+			print('Checking if UCR Variable groups/default/domainadmins is set to %s' % (new_group_name,))
+			print('##################################################################\n')
+			ucr_test.load()
+			ucr_domainadmins = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+			if new_group_name not in ucr_domainadmins:
+				utils.fail('UCR variable groups/default/domainadmins was not set to %s' % (ucr_domainadmins,))
+				print(ucr_test.get('groups/default/domainadmins', 'Domain Admins'))
+			else:
+				print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_domainadmins,))
 
-# Search templates
-cat /etc/univention/templates/info/*.info | sed -ne 's|^File: ||p;s|^Multifile: ||p' | sort -u  | while read template; do
-	echo -n "Checking $template: "
-	grep -i "Domain Admins" "/$template" && exit 1
-	echo "done"
-done
+			# Search templates
+			print('\n##################################################################')
+			print('Search templates for old and new name of default domainadmins group')
+			print('##################################################################\n')
+			search_templates(old_group_name, new_group_name, server_role)
+		finally:
+			try:
+				wait_for_drs_replication('(sAMAccountName=%s)' % (new_group_name,))
+			except Exception:
+				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
+				time.sleep(10)
+				pass
+			print('\n##################################################################')
+			print('Cleanup')
+			print('##################################################################\n')
+			cmd = (['udm', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
+			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 
-# Search for new admin name
-for file in /etc/security/access-*.conf; do
-	case "${file##*/}" in  # ignore some files
-	access-chfn.conf) continue ;;
-	access-chsh.conf) continue ;;
-	access-cron.conf) continue ;;
-	access-kcheckpass.conf) continue ;;
-	access-kde.conf) continue ;;
-	access-kscreensaver.conf) continue ;;
-	access-passwd.conf) continue ;;
-	access-rsh.conf) continue ;;
-	access-su.conf) continue ;;
-	access-sudo.conf) continue ;;
-	access-sshd.conf) is_domain_controller || continue ;;  # Bug #37509
-	esac
 
-	echo -n "Checking whether new admin group name ($GROUPNAME) is set to $file: "
-	if egrep -q "($GROUPNAME,|,$GROUPNAME)" "$file"; then
-		echo "done"
-	else
-		fail_test 1 "failed $file"
-		grep '^[^#]|/' "$file"
-	fi
-done
-
-if [ "$server_role" != "memberserver" ]; then
-	for file in /etc/ldap/slapd.conf; do
-		echo -n "Checking if new admin group name is set to $file: "
-		if grep -q "$GROUPNAME" "$file"; then
-			echo "done"
-		else
-			fail_test 1 "failed $file"
-			grep '^[^#]|/' "$file"
-		fi
-	done
-fi
-
-exit "$RETVAL"
+if __name__ == '__main__':
+	test_rename_domain_users()

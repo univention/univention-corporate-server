@@ -1,3 +1,10 @@
+ucs-test (9.0.4-59) unstable; urgency=medium
+
+  * Bug #1234: Rewrite 96rename* in python to use wait_for_replication_and_postrun,
+    because the shell version just uses sleep 17
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 07 Sep 2020 19:41:36 +0200
+
 ucs-test (9.0.4-58) unstable; urgency=medium
 
   * Bug #1234: wait until clickable in apptest::goto_portal
