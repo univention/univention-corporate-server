@@ -1,3 +1,9 @@
+univention-portal (3.1.0-29) unstable; urgency=medium
+
+  * Bug #51856: Update login status if logged in from another browser tab
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de> <wiesenthal@univention.de>  Mon, 07 Sep 2020 12:37:21 +0200
+
 univention-portal (3.1.0-28) unstable; urgency=medium
 
   * Bug #51511: Register UDM modules only on 4.4-1 systems
