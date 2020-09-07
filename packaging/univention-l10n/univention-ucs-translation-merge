@@ -60,7 +60,7 @@ def _get_po_files_from_dir(directory, return_relative_path=False):
 def _msgmerge(source, destination):
 	# type: (str, str) -> None
 	try:
-		subprocess.check_call(['msgmerge', '--update', '--sort-output', destination, source])
+		subprocess.check_call(['msgmerge', '--update', '--sort-output', '--backup=off', destination, source])
 	except TypeError:
 		print('Error: arguments must be names of existing files. Exiting.')
 		sys.exit(1)

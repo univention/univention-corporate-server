@@ -66,12 +66,10 @@ def concatenate_po(src_po_path, dest_po_path):
 	_call_gettext(
 		'msgcat',
 		'--unique',
+		'--output', dest_po_path,
 		src_po_path,
 		dest_po_path,
-		'-o', dest_po_path)
-	backup_file = '{}~'.format(dest_po_path)
-	if os.path.isfile(backup_file):
-		os.unlink(backup_file)
+	)
 	_clean_header(dest_po_path)
 
 
@@ -100,11 +98,9 @@ def merge_po(source_po_path, dest_po_path):
 		'msgmerge',
 		'--update',
 		'--sort-output',
+		'--backup=off',
 		dest_po_path,
 		source_po_path)
-	backup_file = '{}~'.format(dest_po_path)
-	if os.path.isfile(backup_file):
-		os.unlink(backup_file)
 
 
 def join_existing(language, output_file, input_files, cwd=os.getcwd()):
