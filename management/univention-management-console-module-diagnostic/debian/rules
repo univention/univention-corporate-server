@@ -31,13 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with python2,python3
-
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
+	dh $@ --with python2,python3,umc
 
 override_dh_auto_install:
 	univention-install-config-registry
-	dh-umc-module-install
 	dh_auto_install

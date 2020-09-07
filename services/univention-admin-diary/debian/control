@@ -10,7 +10,7 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-debhelper,
- univention-management-console-dev (>= 11.0.4-37),
+ univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.7.2
 
 Package: univention-admin-diary-backend

@@ -11,7 +11,7 @@ Build-Depends:
  python3-all,
  python3-all-dev,
  univention-config-dev,
- univention-management-console-dev (>= 11.0.4-37),
+ univention-management-console-dev (>= 12.0.2),
 
 Package: univention-quota
 Architecture: all

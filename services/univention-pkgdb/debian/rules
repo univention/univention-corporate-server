@@ -32,12 +32,7 @@
 
 version := $(shell dpkg-parsechangelog -SVersion)
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
 override_dh_auto_install:
-	dh-umc-module-install
 	dh_auto_install
 	univention-install-config-registry
 	univention-install-config-registry-info
@@ -52,4 +47,4 @@ override_dh_fixperms:
 	chmod +x debian/univention-pkgdb/usr/lib/univention-directory-listener/system/pkgdb.py
 
 %:
-	dh $@ --with python2,python3,univention-l10n
+	dh $@ --with python2,python3,univention-l10n,umc

@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
+#!/usr/bin/perl
 #
-# 
-#  rules file for the debian package
-#
-# Copyright 2015-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,10 +26,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+use warnings;
+use strict;
+use Debian::Debhelper::Dh_Lib;
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
+insert_before("dh_auto_build", "dh-umc-module-build");
+insert_before("dh_auto_install", "dh-umc-module-install");
 
-%:
-	dh $@ --with python2,python3,systemd,univention-l10n,umc
+1;

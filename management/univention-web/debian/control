@@ -13,7 +13,7 @@ Build-Depends:
  univention-config-dev,
  univention-dojo,
  univention-dojo-dev,
- univention-management-console-dev,
+ univention-management-console-dev (>= 12.0.2),
  unzip,
 
 Package: univention-web-js

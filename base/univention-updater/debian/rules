@@ -32,12 +32,7 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
 override_dh_auto_install:
-	dh-umc-module-install
 	univention-install-config-registry
 	dh_auto_install
 
@@ -74,4 +69,4 @@ override_dh_python3:
 	dh_python3 --skip-private
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,umc

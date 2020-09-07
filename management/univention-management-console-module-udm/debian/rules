@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,umc
 
 override_dh_python2:
 	dh_python2 --skip-private
@@ -39,12 +39,7 @@ override_dh_python2:
 override_dh_python3:
 	dh_python3 --skip-private
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
 override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-config-registry-info
-	dh-umc-module-install
 	dh_auto_install

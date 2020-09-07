@@ -65,7 +65,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	RE_LINE_ENDS_WITH_TRUE = re.compile(r'\|\|[ \t]+true[ \t]*$')
 	RE_LINE_CONTAINS_SET_E = re.compile(r'\n[\t ]*set -e', re.M)
-	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')
+	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b|\bdh\b.*--with\b.*\bumc\b')
 	RE_DH_JOIN = re.compile(r'\bunivention-install-joinscript\b')
 
 	def check_join_script(self, filename: str) -> None:

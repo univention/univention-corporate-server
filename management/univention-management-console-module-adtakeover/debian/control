@@ -8,7 +8,7 @@ Build-Depends:
  dh-python,
  python2.7,
  univention-config-dev,
- univention-management-console-dev (>= 11.0.4-37),
+ univention-management-console-dev (>= 12.0.2),
 
 Package: univention-management-console-module-adtakeover
 Architecture: all

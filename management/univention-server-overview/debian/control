@@ -10,7 +10,7 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-l10n-dev (>= 7.0.1),
- univention-management-console-dev (>= 11.0.4-37),
+ univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.9.5
 
 Package: univention-server-overview

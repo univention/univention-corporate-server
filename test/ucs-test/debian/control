@@ -16,7 +16,7 @@ Build-Depends:
  python3-psutil,
  univention-config,
  univention-l10n-dev (>= 7.0.1),
- univention-management-console-dev,
+ univention-management-console-dev (>= 12.0.2),
  python-univention-directory-manager,
 Standards-Version: 3.6.1
 

@@ -206,6 +206,10 @@ umc_frontend_new_hash
 def main():
 	parser = ArgumentParser()
 	parser.add_argument('-c', '--core', action='store_true', help='do not require python, javascript, module-name and XML definition to be set')
+	group = parser.add_argument_group("debhelper", "Common debhelper options")
+	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
 
 	args = parser.parse_args()
 	for package in dh_ucs.binary_packages():

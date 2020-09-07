@@ -87,15 +87,7 @@ If such a package has been created a few things need to be adjusted
 	.. code-block:: make
 
 		%:
-			dh $@
-
-		override_dh_auto_build:
-			dh-umc-module-build
-			dh_auto_build
-
-		override_dh_auto_install:
-			dh-umc-module-install
-			dh_auto_install
+			dh $@ --with umc
 
 * debian/control
 
@@ -108,7 +100,7 @@ If such a package has been created a few things need to be adjusted
 		Build-Depends:
 		  debhelper (>= 9),
 		  dh-python,
-		  univention-management-console-dev,
+		  univention-management-console-dev (>= 12.0.2),
 		  python-all,
 		  python3-all,
 		Standards-Version: 3.5.2
