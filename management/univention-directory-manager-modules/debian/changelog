@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.3-3) unstable; urgency=medium
+
+  * Bug #49823: updated selection of copyable user properties
+
+ -- Christian Castens <castens@univention.de>  Mon, 28 Sep 2020 12:07:16 +0200
+
 univention-directory-manager-modules (15.0.3-2) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica
