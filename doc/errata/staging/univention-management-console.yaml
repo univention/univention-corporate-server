@@ -3,9 +3,11 @@ release: "4.4"
 version: [5]
 scope: ucs_4.4-0-errata4.4-5
 src: univention-management-console
-fix: 11.0.4-104A~4.4.0.202009041042
+fix: 
 desc: |
  This update addresses the following issue(s):
  * Expired passwords can now be changed in the SAML login dialog.
  * The error message when changing the password failed has been improoved.
-bug: [51492, 51496]
+ * It is now possible to configure an additional password changing prompt
+   via the UCR Variables umc/login/password-complexity-message/.*.
+bug: [51492, 51496, 51401]
