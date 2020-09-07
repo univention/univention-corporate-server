@@ -19,7 +19,7 @@ Build-Depends:
  python-univention-lib,
  python-univention-management-console,
  python3-all,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 12.0.2),
  unzip,

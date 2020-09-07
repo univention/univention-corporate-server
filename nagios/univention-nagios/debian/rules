@@ -44,11 +44,5 @@ override_dh_fixperms:
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_nscd_suidwrapper
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper
 
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
-	dh_auto_install
-
 %:
-	dh $@
+	dh $@ --with ucr

@@ -8,7 +8,7 @@ Build-Depends-Indep:
  openssl,
  python-m2crypto,
  shell-univention-lib,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
 Standards-Version: 3.5.5
 
 Package: univention-ssl

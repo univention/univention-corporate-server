@@ -9,7 +9,7 @@ Build-Depends:
  python2.7,
  python3-polib,
  python3,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.7.2
 

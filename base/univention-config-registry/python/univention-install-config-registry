@@ -36,7 +36,7 @@ from __future__ import print_function
 import os
 import sys
 import subprocess
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import univention.config_registry
 from univention.debhelper import doIt, binary_packages
@@ -176,7 +176,6 @@ def do_package(package):
 
 def main():
 	"""Install config registry script."""
-	usage = "%prog"
 	epilog = '''univention-install-config-registry is a debhelper like program
 to install Univention Config Registry (UCR) related templates, scripts, and
 modules into the package build directories.
@@ -191,16 +190,18 @@ The modules from conffiles/* go to /etc/univention/templates/modules/.
 
 The mapping files debian/*.univention-config-registry-mapping go to /etc/univention/templates/mapping/.
 	'''
-	parser = OptionParser(usage=usage, epilog=epilog)
-	parser.add_option(
-		'-v', '--verbose',
-		dest='verbose', action='store_true',
+	parser = ArgumentParser(epilog=epilog)
+	parser.add_argument(
+		'--verbose', '-v',
+		action='store_true',
 		help='Verbose mode: show all commands that modify the package build directory.')
-	options, args = parser.parse_args()
+	group = parser.add_argument_group("debhelper", "Common debhelper options")
+	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+	options = parser.parse_args()
 	if options.verbose:
 		os.environ['DH_VERBOSE'] = '1'
-	if args:
-		parser.error('No argument expected')
 
 	try:
 		for package in binary_packages():

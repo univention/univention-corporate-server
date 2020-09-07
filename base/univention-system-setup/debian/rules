@@ -30,10 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
-
 override_dh_installinit:
 	dh_installinit -punivention-system-setup-boot --no-start -u"defaults 93"
 	dh_installinit --name=univention-system-setup-boot-prepare --no-start -u"defaults 15"
@@ -48,4 +44,4 @@ override_dh_auto_test:
 	run-parts -a -v tests
 
 %:
-	dh $@ --with python2,python3,univention-l10n,umc
+	dh $@ --with python2,python3,univention-l10n,umc,ucr

@@ -30,10 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-	dh_auto_install --exclude .svn
-
 %:
-	dh $@
+	dh $@ --with ucr

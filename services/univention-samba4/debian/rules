@@ -30,25 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install 
-
 override_dh_fixperms-arch:
+	dh_fixperms
 	chmod 755 debian/univention-samba4/usr/lib/univention-install/96univention-samba4.inst
 	chmod 755 debian/univention-samba4/usr/lib/univention-install/98univention-samba4-dns.inst
 	chmod 755 debian/univention-samba4/usr/lib/univention-directory-listener/system/samba-shares.py
 	chmod 755 debian/univention-samba4/usr/lib/univention-directory-listener/system/samba4-idmap.py
 	chmod 755 debian/univention-samba4/usr/share/univention-samba4/scripts/purge_s4_computer.py
-	dh_fixperms 
 
 override_dh_fixperms-indep:
+	dh_fixperms
 	chmod 755 debian/univention-samba4-sysvol-sync/usr/share/univention-samba4/scripts/sysvol-sync.sh
 	chmod 755 debian/univention-samba4-sysvol-sync/usr/share/univention-samba4/scripts/sysvol-cleanup.py
-	dh_fixperms
 
 override_dh_installinit:
 	dh_installinit -a --no-start -u"defaults 97"
 
 %:
-	dh $@ --with univention-l10n
+	dh $@ --with univention-l10n,ucr

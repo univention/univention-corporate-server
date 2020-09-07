@@ -30,14 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-demo-configuration.conffiles
-
 override_dh_install:
 	dh_install -X*.po
 
@@ -45,4 +37,4 @@ override_dh_installinit:
 	dh_installinit --no-start
 
 %:
-	dh $@ --with univention-l10n
+	dh $@ --with univention-l10n,ucr

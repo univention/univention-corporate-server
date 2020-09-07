@@ -21,7 +21,7 @@ Build-Depends:
  python3-all-dev,
  python3-debian,
  python3-six,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
 
 Package: univention-directory-listener
 Architecture: any

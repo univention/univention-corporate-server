@@ -6,7 +6,7 @@ Standards-Version: 3.8.2
 Build-Depends:
  debhelper,
  gettext,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 
 Package: univention-bootsplash

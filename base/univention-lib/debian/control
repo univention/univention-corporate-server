@@ -10,7 +10,7 @@ Build-Depends:
  python-all,
  python3-all,
  pwgen,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
  univention-unittests,
  python-pil,

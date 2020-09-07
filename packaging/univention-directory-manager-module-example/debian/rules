@@ -36,10 +36,8 @@ D  := debian/${PACKAGE_NAME}
 
 override_dh_auto_install:
 	dh_auto_install
-	univention-install-config-registry
 
 	# Install Univention Directory Manager Images
-
 	@set -e;\
 	for i in `find modules/univention/admin/handlers/ -name "*.png" -o -name "*.gif"`; do\
 		o=${D}/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
@@ -48,4 +46,4 @@ override_dh_auto_install:
 	done
 
 %:
-	dh $@ --with python2,univention-l10n
+	dh $@ --with python2,univention-l10n,ucr

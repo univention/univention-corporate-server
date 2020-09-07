@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  python-all,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
 Standards-Version: 3.8.2
 
 Package: univention-nagios-server

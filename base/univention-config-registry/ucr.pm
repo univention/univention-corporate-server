@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
+#!/usr/bin/perl
 #
-# Univention Directory Logger
-#  rules file for the debian package
-#
-# Copyright 2004-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,6 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+use warnings;
+use strict;
+use Debian::Debhelper::Dh_Lib;
 
-%:
-	dh $@ --with ucr
+insert_before("dh_auto_install", "univention-install-config-registry");
+
+1;

@@ -36,7 +36,6 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	./dev/dh-umc-module-install --core
-	univention-install-config-registry
 	dh_auto_install -- --install-scripts=$(destdir)/usr/sbin
 
 override_dh_install:
@@ -44,4 +43,4 @@ override_dh_install:
 	install -p -m755 scripts/postrotate debian/univention-management-console-server/usr/share/univention-management-console/postrotate
 
 %:
-	dh $@ --with python2,python3,univention-l10n
+	dh $@ --with python2,python3,univention-l10n,ucr

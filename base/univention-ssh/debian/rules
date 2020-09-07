@@ -33,7 +33,7 @@
 version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
 
 %:
-	dh $@
+	dh $@ --with ucr
 
 override_dh_auto_clean:
 	$(RM) univention-ssh
@@ -41,6 +41,3 @@ override_dh_auto_clean:
 
 override_dh_auto_build:
 	sed -e "s/@@package_version@@/${version}/" <univention-ssh.in >univention-ssh
-
-override_dh_auto_install:
-	univention-install-config-registry

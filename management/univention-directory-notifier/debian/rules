@@ -35,7 +35,6 @@ override_dh_auto_clean:
 	dh_auto_clean
 
 override_dh_auto_install:
-	univention-install-config-registry
 	dh_auto_install
 	touch debian/univention-directory-notifier/etc/runit/univention-directory-notifier/down
 
@@ -51,4 +50,4 @@ override_dh_auto_build:
 	dh_auto_build
 
 %:
-	dh $@
+	dh $@ --with ucr

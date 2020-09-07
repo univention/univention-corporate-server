@@ -30,10 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
-
 override_dh_installinit:
 	dh_installinit --no-start -u"defaults 97"
 
@@ -42,11 +38,11 @@ override_dh_install:
 	mv debian/univention-s4-connector/etc/univention/connector/s4/mapping.py debian/univention-s4-connector/etc/univention/connector/s4/mapping
 
 override_dh_fixperms:
+	dh_fixperms
 	chmod 755 debian/univention-s4-connector/usr/lib/univention-install/97univention-s4-connector.inst
 	chmod 755 debian/univention-s4-connector/usr/sbin/univention-password_sync_ucs_to_s4
 	chmod 755 debian/univention-s4-connector/usr/share/univention-s4-connector/msgpo.py
 	chmod 755 debian/univention-s4-connector/etc/network/if-post-down.d/univention-s4-connector
-	dh_fixperms
 
 %:
-	dh $@ --with python2,python3,univention-l10n
+	dh $@ --with python2,python3,univention-l10n,ucr

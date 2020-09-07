@@ -43,7 +43,6 @@ override_dh_auto_build:
 	dh_auto_build
 
 override_dh_auto_install:
-	univention-install-config-registry
 	dh_auto_install --destdir=debian/univention-directory-listener
 	touch debian/univention-directory-listener/etc/runit/univention-directory-listener/down
 
@@ -78,4 +77,4 @@ override_dh_installdocs:
 	dh_installdocs --link-doc=univention-directory-listener
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python2,python3,ucr --buildsystem=pybuild

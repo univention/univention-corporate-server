@@ -28,12 +28,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-
 override_dh_installinit:
 	dh_installinit --restart-after-upgrade
 
 %:
-	dh $@ --with python2,python3,systemd,univention-l10n,umc
+	dh $@ --with python2,python3,systemd,univention-l10n,umc,ucr

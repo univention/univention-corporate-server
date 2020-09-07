@@ -29,13 +29,12 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-# Univention LDAP Listener replication module
+
+copyrightyear := $(shell date +%Y)
 
 override_dh_install:
-	univention-install-config-registry
 	dh_install
-	copyrightyear=`date +%Y`
 	sed -i "s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/univention-directory-replication/usr/sbin/univention-directory-replication-resync
 
 %:
-	dh $@
+	dh $@ --with ucr

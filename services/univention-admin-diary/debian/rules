@@ -31,9 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 override_dh_auto_install:
-	univention-install-config-registry
 	univention-install-joinscript
 	dh_auto_install
 
 %:
-	dh $@ --with python2,python3,umc
+	dh $@ --with python2,python3,umc,ucr

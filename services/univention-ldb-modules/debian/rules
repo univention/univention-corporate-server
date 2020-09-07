@@ -47,7 +47,7 @@ export PYTHON=$(shell which `pyversions -r`)
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	dh $@
+	dh $@ --with ucr
 
 override_dh_auto_configure:
 	dh_testdir
@@ -72,7 +72,6 @@ override_dh_install:
 	## put the following to files into dh_install sourcedir
 	install ucs-school-create_windows_computer $(DESTDIR)
 	dh_install --fail-missing --list-missing --sourcedir=$(DESTDIR)
-	univention-install-config-registry
 
 override_dh_strip:
 	dh_strip -a --dbg-package=libunivention-ldb-modules-dbg

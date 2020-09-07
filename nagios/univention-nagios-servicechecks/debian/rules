@@ -30,16 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_clean:
-	rm -f debian/univention-nagios-opsi.conffiles
-	rm -f debian/univention-nagios-cups.conffiles
-	rm -f debian/univention-nagios-squid.conffiles
-
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-	univention-install-config-registry-info
-
 override_dh_fixperms:
 	dh_fixperms
 	chmod +x debian/univention-nagios-cups/usr/lib/nagios/plugins/check_univention_cups
@@ -47,4 +37,4 @@ override_dh_fixperms:
 	chmod +x debian/univention-nagios-opsi/usr/lib/nagios/plugins/check_univention_opsi
 
 %:
-	dh $@
+	dh $@ --with ucr

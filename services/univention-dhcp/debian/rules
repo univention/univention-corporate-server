@@ -34,14 +34,9 @@ D=$(CURDIR)/debian/univention-dhcp
 override_dh_auto_install:
 	dh_auto_install
 	touch ${D}/etc/runit/univention-dhcp/down
-	univention-install-config-registry
-
-override_dh_clean:
-	dh_clean
-	$(RM) debian/univention-dhcp.conffiles
 
 override_dh_installinit:
 	dh_installinit --error-handler=true
 
 %:
-	dh $@
+	dh $@ --with ucr

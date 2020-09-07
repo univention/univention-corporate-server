@@ -30,10 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
-
 override_dh_fixperms:
 	dh_fixperms
 	chmod 2750 debian/univention-mail-dovecot/var/lib/dovecot
@@ -42,4 +38,4 @@ override_dh_fixperms:
 	chmod 2750 debian/univention-mail-dovecot/var/spool/dovecot/*
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,ucr
