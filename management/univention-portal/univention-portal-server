@@ -48,6 +48,9 @@ class JsonHandler(tornado.web.RequestHandler):
             get_logger("server").exception("Error during service")
         return super(JsonHandler, self).write_error(status_code, **kwargs)
 
+    def post(self):
+        return self.get()
+
     def get(self):
         portal = self.find_portal()
         if not portal:
