@@ -176,17 +176,17 @@ class SamlTest(object):
 		data = {'username': self.username, 'password': self.password, 'AuthState': auth_state}
 		self._request('POST', self.page.url, 200, data=data)
 
-	def xpath(self, xpath):
+	def xpath(self, xpath, default=None):
 		elem = self.parsed_page.find('.//{http://www.w3.org/1999/xhtml}%s' % (xpath,))
 		if elem is None:
 			elem = self.parsed_page.find('.//%s' % (xpath,))
 		if elem is None:
-			elem = {}
+			elem = default
 		return elem
 
 	def _extract_relay_state(self):
 		print("Extract relay state from SAML response")
-		relay_state = self.xpath('input[@name="RelayState"]').get('value', '')
+		relay_state = self.xpath('input[@name="RelayState"]', {}).get('value', '')
 		if relay_state is None:
 			print("No relay state found")
 			raise SamlLoginError(self)
@@ -195,7 +195,7 @@ class SamlTest(object):
 
 	def _extract_saml_msg(self):
 		print("Extract SAML message from SAML response")
-		saml_message = self.xpath('input[@name="SAMLResponse"]').get('value')
+		saml_message = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
 		if saml_message is None:
 			raise SamlLoginError(self)
 		print("The SAML message is:\n%s" % saml_message)
@@ -203,7 +203,7 @@ class SamlTest(object):
 
 	def _extract_sp_url(self):
 		print("Extract url to post SAML message to")
-		url = self.xpath('form[@method="post"]').get('action')
+		url = self.xpath('form[@method="post"]', {}).get('action')
 		if url is None:
 			print("No url to post SAML message to found")
 			raise SamlLoginError(self)
@@ -212,7 +212,7 @@ class SamlTest(object):
 
 	def _extract_auth_state(self):
 		print("Extract AuthState")
-		auth_state = self.xpath('input[@name="AuthState"]').get('value')
+		auth_state = self.xpath('input[@name="AuthState"]', {}).get('value')
 		if auth_state is None:
 			try:
 				print('WARNING: invalid HTML!!!!')
