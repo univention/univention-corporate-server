@@ -98,8 +98,9 @@ def main():
 		sys.exit(1)
 
 	ca_file = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
+	protocol = 'ldaps' if configRegistry.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldap'
 
-	if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True):
+	if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) or protocol == 'ldaps':
 
 		if ca_file:
 			# create a new CAcert file, which contains the UCS CA and the AD CA,

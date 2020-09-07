@@ -122,7 +122,7 @@ if login_pw[-1] == '\n':
 
 certificate_chain_filename = '/var/cache/univention-ad-connector/CAcert-%s.pem' % CONFIGBASENAME
 start_tls = 2 if configRegistry.is_true('%s/ad/ldap/ssl' % CONFIGBASENAME, True) else 0
-if start_tls > 0:
+if start_tls > 0 or protocol == 'ldaps':
 	ad_cert_filename = configRegistry.get('%s/ad/ldap/certificate' % CONFIGBASENAME)
 	if ad_cert_filename:
 		if not os.path.exists(certificate_chain_filename):
