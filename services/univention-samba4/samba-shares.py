@@ -306,36 +306,36 @@ def handler(dn, new, old, command):
 				# Since deny might be present before, add allow.
 				# Be as explicit as possible, because aliases like Du (domain users)
 				# are possible.
-				res = re.search(r'(O:.+?G:.+?)D:[^\(]*(.+)', stdout)
 
+				res = re.search(r'(O:.+?G:.+?)D:[^\(]*(.+)', stdout)
 				if res:
 					# dacl-flags are removed implicitly.
 					owner = res.group(1)
 					old_aces = res.group(2)
 
-				old_aces = re.findall(re_ace, old_aces)
-				allow_aces = "".join([ace for ace in old_aces if 'A;' in ace])
-				deny_aces = "".join([ace for ace in old_aces if 'D;' in ace])
-				allow_aces += "".join([ace for ace in new_aces if 'A;' in ace])
-				deny_aces += "".join([ace for ace in new_aces if 'D;' in ace])
+					old_aces = re.findall(re_ace, old_aces)
+					allow_aces = "".join([ace for ace in old_aces if 'A;' in ace])
+					deny_aces = "".join([ace for ace in old_aces if 'D;' in ace])
+					allow_aces += "".join([ace for ace in new_aces if 'A;' in ace])
+					deny_aces += "".join([ace for ace in new_aces if 'D;' in ace])
 
-				dacl_flags = ""
-				if new_aces:
-					dacl_flags = "PAI"
-				sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
-				univention.debug.debug(
-					univention.debug.LISTENER, univention.debug.PROCESS,
-					"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
-				proc = subprocess.Popen(
-					['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]],
-					stdout=subprocess.PIPE,
-					close_fds=True
-				)
-				_, stderr = proc.communicate()
-				if stderr:
+					dacl_flags = ""
+					if new_aces:
+						dacl_flags = "PAI"
+					sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
 					univention.debug.debug(
-						univention.debug.LISTENER, univention.debug.ERROR,
-						"could not set nt acl for dir %s (%s)" % (new['univentionSharePath'][0], stderr))
+						univention.debug.LISTENER, univention.debug.PROCESS,
+						"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
+					proc = subprocess.Popen(
+						['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]],
+						stdout=subprocess.PIPE,
+						close_fds=True
+					)
+					_, stderr = proc.communicate()
+					if stderr:
+						univention.debug.debug(
+							univention.debug.LISTENER, univention.debug.ERROR,
+							"could not set nt acl for dir %s (%s)" % (new['univentionSharePath'][0], stderr))
 		finally:
 			listener.unsetuid()
 
