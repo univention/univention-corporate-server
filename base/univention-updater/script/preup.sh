@@ -335,6 +335,60 @@ block_update_if_failed_ldif_exists() {
 block_update_if_failed_ldif_exists
 
 
+# Bug #51955
+check_old_packages () {
+	local pkg status
+	declare -a found=() old=(
+		univention-kvm-compat
+		univention-kvm-virtio
+		univention-novnc
+		univention-virtual-machine-manager-daemon
+		python-univention-virtual-machine-manager
+		python3-univention-virtual-machine-manager
+		univention-management-console-module-uvmm
+		univention-virtual-machine-manager-node-common
+		univention-virtual-machine-manager-node-kvm
+		univention-virtual-machine-manager-schema='See https://help.univention.com/t/remove-ldap-schema-extensions/6443'
+		python-univention-directory-manager-uvmm
+		python3-univention-directory-manager-uvmm
+		univention-nagios-libvirtd
+		univention-nagios-libvirtd-xen
+		univention-nagios-uvmmd
+		univention-pkgdb-lib
+		univention-bacula
+		univention-doc
+		univention-mysql
+		univention-ftp
+		univention-management-console-module-mrtg
+		univention-kernel-image='Use linux-...'
+		univention-kernel-headers='Use linux-...'
+		univention-kernel-source='Use linux-...'
+		univention-kde
+		univention-kde-setdirs
+		univention-kdm
+		univention-mozilla-firefox
+		univention-x-core
+		univention-java
+		univention-samba4wins
+	)
+	for pkg in "${old[@]}"
+	do
+		status=$(dpkg-query -W -f '${Status}' "${pkg%%=*}" 2>/dev/null) || continue
+		[ "${status%% *}" = 'deinstall' ] && continue
+		found+=("$pkg")
+	done
+	# shellcheck disable=SC2128
+	[ -n "$found" ] || return 0
+	echo "ERROR: The following packages from UCS-4 are still installed, which are no longer supported with UCS-5:"
+	for pkg in "${found[@]}"
+	do
+		printf '\t%s\t%s\n' "${pkg%%=*}" "${pkg#${pkg%%=*}}"
+	done
+	echo "They must be removed before the update can be done."
+	exit 1
+}
+check_old_packages
+
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d "$initrd_backup" ]; then
