@@ -52,6 +52,12 @@ class Session(object):
 
 
 class Authenticator(with_metaclass(Plugin)):
+	def login_request(self, request):
+		pass
+
+	def login_user(self, request):
+		pass
+
 	def get_user(self, request):
 		return None
 
@@ -67,11 +73,9 @@ class OpenIDAuthenticator(Authenticator):
 		self.sessions = {}
 
 	def _redirect_to_authorization_endpoint(self, request, session_id, nonce):
-		redirect_uri = request.request.full_url()
-		redirect_uri = redirect_uri.replace("http://", "https://")
-		redirect_uri = redirect_uri.replace("/portal-login", "/portal-loggedin")
+		redirect_uri = "https://{}/univention/portal/portal/login/".format(request.request.host)  # FIXME
 		get_logger("auth").info("Nonce used: {}".format(nonce))
-		url = "{}?client_id={}&redirect_uri={}&scope=openid&response_mode=form_post&response_type=id_token&state={}&nonce={}".format(self.authorization_endpoint, self.client_id, redirect_uri, session_id, nonce)
+		url = "{}?client_id={}&redirect_uri={}&scope=openid&kc_idp_hint=ucsoidc&response_mode=form_post&response_type=id_token&state={}&nonce={}".format(self.authorization_endpoint, self.client_id, redirect_uri, session_id, nonce)
 		request.set_status(302)
 		request.set_header("Location", url)
 		raise tornado.web.Finish()
@@ -86,30 +90,32 @@ class OpenIDAuthenticator(Authenticator):
 		assert token["nonce"] == session.nonce
 		return token
 
+	def login_user(self, request):
+		state = request.get_argument("state")
+		session = self.sessions[state]
+		token = request.get_argument("id_token")
+		token = self._verify_token(token, session)
+		session.user = User(token["preferred_username"], [])
+		get_logger("auth").info("Successfully logged in...")
+		request.set_cookie(self.portal_cookie_name, state)
+		url = "https://{}/univention/portal/".format(request.request.host)  # FIXME
+		request.set_status(302)
+		request.set_header("Location", url)
+		raise tornado.web.Finish()
+
+	def login_request(self, request):
+		session_id = uuid.uuid4()
+		nonce = uuid.uuid4()
+		self.sessions[session_id] = Session(nonce)
+		get_logger("auth").info("Requested login! Created session_id {}".format(session_id))
+		self._redirect_to_authorization_endpoint(request, session_id, nonce)
+
 	def get_user(self, request):
 		get_logger("auth").info("Checking for {}".format(self.portal_cookie_name))
 		session_id = request.get_cookie(self.portal_cookie_name)
-		if not session_id:
-			get_logger("auth").info("... none found")
-			get_logger("auth").info(request.request.arguments)
-			if request.request.path.endswith("/portal-loggedin"):
-				state = request.get_argument("state")
-				session = self.sessions[state]
-				token = request.get_argument("id_token")
-				token = self._verify_token(token, session)
-				session.user = User(token["preferred_username"], [])
-				get_logger("auth").info("Successfully logged in...")
-				request.set_cookie(self.portal_cookie_name, state)
-				return session.user
-			elif request.request.path.endswith("/portal-login"):
-				session_id = uuid.uuid4()
-				nonce = uuid.uuid4()
-				self.sessions[session_id] = Session(nonce)
-				get_logger("auth").info("Requested login! Created session_id {}".format(session_id))
-				self._redirect_to_authorization_endpoint(request, session_id, nonce)
-			else:
-				get_logger("auth").info("Apparently, not logged in")
-				return None
+		if session_id is None:
+			get_logger("auth").info("No cookie set")
+			return None
 		session = self.sessions.get(session_id)
 		if session:
 			get_logger("auth").info("Found session {}".format(session_id))
@@ -118,10 +124,12 @@ class OpenIDAuthenticator(Authenticator):
 			else:
 				get_logger("auth").info("Session no longer valid. Removing...")
 				self.sessions.pop(session_id, None)
+				request.clear_cookie(self.portal_cookie_name)
 				return None
 		else:
 			get_logger("auth").info("Unknown session {}".format(session_id))
-			return None  # TODO
+			request.clear_cookie(self.portal_cookie_name)
+			return None
 
 
 class UMCAuthenticator(Authenticator):
