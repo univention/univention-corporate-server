@@ -42,7 +42,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The new command <command>univention-prune-kernels</command> can be used to more easily remove Linux kernel packages, which are no longer used and required (<u:bug>51769</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
