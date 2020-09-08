@@ -1,3 +1,9 @@
+univention-updater (14.0.3-3) unstable; urgency=low
+
+  * Bug #51769: Add univention-prune-kernels
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Oct 2020 15:23:11 +0200
+
 univention-updater (14.0.3-2) unstable; urgency=medium
 
   * Bug #52021: Adapt links and components for 4.4-6

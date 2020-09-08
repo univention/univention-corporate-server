@@ -20,6 +20,7 @@ script/updater-statistics usr/share/univention-updater/
 script/univention-updater-umc-dist-upgrade usr/share/univention-updater/
 script/univention-updater-umc-univention-install usr/share/univention-updater/
 script/univention-add-app usr/sbin/
+script/univention-prune-kernels usr/sbin/
 
 license_uuid.py usr/lib/univention-directory-listener/system/
 
