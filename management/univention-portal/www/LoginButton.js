@@ -46,11 +46,7 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this.callback = function() {
-				domClass.add(this.domNode, 'portalLoginButton--loading');
-				login.start(null, null, true, lang.hitch(this, function(saml) {
-					domClass.remove(this.domNode, 'portalLoginButton--loading');
-					portal.showLoginInIframe(saml);
-				}));
+				portal.showLoginInIframe();
 			};
 		},
 

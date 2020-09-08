@@ -39,7 +39,7 @@ import univention.portal.config as config
 from univention.portal.factory import make_portal
 from univention.portal.log import setup_logger, get_logger
 
-class JsonHandler(tornado.web.RequestHandler):
+class PortalHandler(tornado.web.RequestHandler):
     def initialize(self, portals):
         self.portals = portals
 
@@ -48,9 +48,27 @@ class JsonHandler(tornado.web.RequestHandler):
             get_logger("server").exception("Error during service")
         return super(JsonHandler, self).write_error(status_code, **kwargs)
 
-    def post(self):
-        return self.get()
+    def find_portal(self):
+        best_score = 0
+        best_portal = None
+        for name, portal in self.portals.items():
+            score = portal.score(self.request)
+            if score > best_score:
+                best_portal = portal
+        return best_portal
 
+
+class LoginHandler(PortalHandler):
+    def post(self):
+        portal = self.find_portal()
+        portal.login_user(self)
+
+    def get(self):
+        portal = self.find_portal()
+        portal.login_request(self)
+
+
+class JsonHandler(PortalHandler):
     def get(self):
         portal = self.find_portal()
         if not portal:
@@ -76,16 +94,8 @@ class JsonHandler(tornado.web.RequestHandler):
         answer["categories"] = portal.get_categories(visible_content)
         answer["portal"] = portal.get_meta(visible_content, answer["categories"])
         answer["filtered"] = not admin_mode
+        answer["login_url"] = "https://{}/univention/portal/portal/login/".format(self.request.host)  # FIXME
         self.write(answer)
-
-    def find_portal(self):
-        best_score = 0
-        best_portal = None
-        for name, portal in self.portals.items():
-            score = portal.score(self.request)
-            if score > best_score:
-                best_portal = portal
-        return best_portal
 
 
 def get_portals():
@@ -101,7 +111,8 @@ def get_portals():
 def make_app():
     portals = get_portals()
     return tornado.web.Application([
-        (r"/.*", JsonHandler, {"portals": portals}),
+        (r"/.+/login/", LoginHandler, {"portals": portals}),
+        (r"/.+/portal.json", JsonHandler, {"portals": portals}),
     ])
 
 

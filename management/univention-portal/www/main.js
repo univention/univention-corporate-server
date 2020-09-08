@@ -78,7 +78,7 @@ define([
 	"./PortalEntryWizardPreviewTile",
 	"./tools",
 	"umc/i18n/tools",
-	"umc/json!./portal.json", // -> contains entries of this portal as specified in the LDAP directory
+	"umc/json!./portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!./apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
 ], function(declare, lang, array, win, Deferred, aspect, when, on, topic, ioQuery, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
@@ -945,6 +945,7 @@ define([
 					username: tools.status('username'),
 					lang: i18nTools.defaultLang()
 				});
+				url = portalJson.login_url;
 
 				var d = this.__createIframe(null, null, null, url);
 				d.tab = registry.byId('sidebar__loginAndUserMenuButton')._loginButton.domNode;
