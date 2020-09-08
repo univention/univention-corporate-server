@@ -6,7 +6,7 @@ src: libx11
 fix: 2:1.6.4-3+deb9u3
 desc: |
  This update addresses the following issue:
- * integer overflow leads to double free in locale handling (CVE-2020-14363)
+ * Integer overflow leads to double free in locale handling (CVE-2020-14363)
 bug: [51948]
 cve:
 - CVE-2020-14363
