@@ -1,3 +1,10 @@
+ucs-test (9.0.4-61) unstable; urgency=medium
+
+  * Bug #1234: Just wait until the ucr variable is set, maximum 60 seconds.
+    wait_for_replication_and_postrun is not enough
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 08 Sep 2020 11:45:08 +0200
+
 ucs-test (9.0.4-60) unstable; urgency=medium
 
   * Bug #51492: fix replication problems

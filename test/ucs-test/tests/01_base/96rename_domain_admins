@@ -56,6 +56,7 @@ def search_templates(old_group_name, new_group_name, server_role):
 						utils.fail('FAIL: New group name %s not in %s' % (new_group_name, file))
 				else:
 					if old_group_name in content:
+						print('\n'.join([l for l in content.splitlines() if old_group_name in l]))
 						utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 
 
@@ -81,13 +82,17 @@ def test_rename_domain_users():
 			print('\n##################################################################')
 			print('Checking if UCR Variable groups/default/domainadmins is set to %s' % (new_group_name,))
 			print('##################################################################\n')
-			ucr_test.load()
-			ucr_domainadmins = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
-			if new_group_name not in ucr_domainadmins:
-				utils.fail('UCR variable groups/default/domainadmins was not set to %s' % (ucr_domainadmins,))
-				print(ucr_test.get('groups/default/domainadmins', 'Domain Admins'))
-			else:
-				print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_domainadmins,))
+			for i in range(7):
+				ucr_test.load()
+				ucr_domainadmins = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+				if new_group_name not in ucr_domainadmins:
+					if i == 6:
+						utils.fail('UCR variable groups/default/domainadmins was not set to %s' % (ucr_domainadmins,))
+						break
+					time.sleep(10)
+				else:
+					print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_domainadmins,))
+					break
 
 			# Search templates
 			print('\n##################################################################')
