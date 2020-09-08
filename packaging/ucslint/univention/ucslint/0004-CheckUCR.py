@@ -149,10 +149,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		return cls.RE_VALID_UCR.match(var) is None
 
 	RE_UCR_VARLIST = [
-		re.compile(r"""(?:baseConfig|configRegistry)\s*\[\s*['"]([^'"]+)['"]\s*\]"""),
-		re.compile(r"""(?:baseConfig|configRegistry).has_key\s*\(\s*['"]([^'"]+)['"]\s*\)"""),
-		re.compile(r"""(?:baseConfig|configRegistry).get\s*\(\s*['"]([^'"]+)['"]"""),
-		re.compile(r"""(?:baseConfig|configRegistry).is_(?:true|false)\s*\(\s*['"]([^'"]+)['"]\s*"""),
+		re.compile(r"""(?:baseConfig|configRegistry) \s* \[ \s* ['"] ([^'"]+) ['"] \s* \]""", re.VERBOSE),
+		re.compile(r"""(?:baseConfig|configRegistry)\.has_key \s* \( \s* ['"] ([^'"]+) ['"] \s* \)""", re.VERBOSE),
+		re.compile(r"""(?:baseConfig|configRegistry)\.get \s* \( \s* ['"] ([^'"]+) ['"] \s* [,)]""", re.VERBOSE),
+		re.compile(r"""(?:baseConfig|configRegistry)\.is_(?:true|false) \s* \( \s* ['"] ([^'"]+) ['"] \s* [,)]""", re.VERBOSE),
+		re.compile(r"""['"] ([^'"]+) ['"] \s+ in \s+ (?:baseConfig|configRegistry) (?!\.)""", re.VERBOSE),
 	]
 	RE_UCR_PLACEHOLDER_VAR1 = re.compile(r'@%@([^@]+)@%@')
 	RE_IDENTIFIER = re.compile(r"""<!DOCTYPE|<\?xml|<\?php|#!\s*/\S+""", re.MULTILINE)
@@ -301,11 +302,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except DuplicateSectionError as ex:
 			self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
 		except MissingSectionHeaderError as ex:
-			self.addmsg('0004-61', 'Invalid entry', fn, ex.lineno)
-		except DuplicateOptionError:
-			self.addmsg('0004-61', 'Invalid entry', fn)
-		except ParsingError:
-			self.addmsg('0004-61', 'Invalid entry', fn)
+			self.addmsg('0004-61', 'Invalid entry: %s' % (ex,), fn, ex.lineno)
+		except DuplicateOptionError as ex:
+			self.addmsg('0004-61', 'Invalid entry: %s' % (ex,), fn)
+		except ParsingError as ex:
+			self.addmsg('0004-61', 'Invalid entry: %s' % (ex,), fn)
 		except UnicodeDecodeError as ex:
 			self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
 
