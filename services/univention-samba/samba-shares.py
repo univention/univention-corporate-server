@@ -32,6 +32,10 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
+
+import re
+import subprocess
+
 import listener
 import os
 import univention.debug
@@ -274,6 +278,69 @@ def handler(dn, new, old, command):
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:
 				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+		finally:
+			listener.unsetuid()
+
+	if 'univentionShareSambaBaseDirAppendACL' in new or 'univentionShareSambaBaseDirAppendACL' in old:
+		listener.setuid(0)
+		try:
+			proc = subprocess.Popen(
+				['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]],
+				stdout=subprocess.PIPE,
+				close_fds=True,
+			)
+			stdout, stderr = proc.communicate()
+			stdout = str(stdout)
+			prev_aces = set()
+			new_aces = set()
+			re_ace = re.compile(r'\(.+?\)')
+			if 'univentionShareSambaBaseDirAppendACL' in old:
+				prev_aces = set(sum([re.findall(re_ace, acl) for acl in old['univentionShareSambaBaseDirAppendACL']], []))
+			if 'univentionShareSambaBaseDirAppendACL' in new:
+				new_aces = set(sum([re.findall(re_ace, acl) for acl in new['univentionShareSambaBaseDirAppendACL']], []))
+
+			if (new_aces and new_aces != prev_aces) or (prev_aces and not new_aces):
+				# if old != new -> delete everything from old!
+				for ace in prev_aces:
+					stdout = stdout.replace(ace, '')
+
+				# Aces might be in there from something else (like explicit setting)
+				# We don't want duplicates.
+				new_aces = [ace for ace in new_aces if ace not in stdout]
+				# Deny must be placed before rest. This is not done implicitly.
+				# Since deny might be present before, add allow.
+				# Be as explicit as possible, because aliases like Du (domain users)
+				# are possible.
+
+				res = re.search(r'(O:.+?G:.+?)D:[^\(]*(.+)', stdout)
+				if res:
+					# dacl-flags are removed implicitly.
+					owner = res.group(1)
+					old_aces = res.group(2)
+
+					old_aces = re.findall(re_ace, old_aces)
+					allow_aces = "".join([ace for ace in old_aces if 'A;' in ace])
+					deny_aces = "".join([ace for ace in old_aces if 'D;' in ace])
+					allow_aces += "".join([ace for ace in new_aces if 'A;' in ace])
+					deny_aces += "".join([ace for ace in new_aces if 'D;' in ace])
+
+					dacl_flags = ""
+					if new_aces:
+						dacl_flags = "PAI"
+					sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
+					univention.debug.debug(
+						univention.debug.LISTENER, univention.debug.PROCESS,
+						"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
+					proc = subprocess.Popen(
+						['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]],
+						stdout=subprocess.PIPE,
+						close_fds=True
+					)
+					_, stderr = proc.communicate()
+					if stderr:
+						univention.debug.debug(
+							univention.debug.LISTENER, univention.debug.ERROR,
+							"could not set nt acl for dir %s (%s)" % (new['univentionSharePath'][0], stderr))
 		finally:
 			listener.unsetuid()
 
