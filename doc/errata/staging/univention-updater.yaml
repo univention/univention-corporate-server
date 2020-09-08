@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-updater
+fix: 14.0.3-3
+desc: |
+ This update addresses the following issue:
+ * Add command `univention-prune-kernels` to remove no longer needed kernel
+   packages.
+bug: [51769]
