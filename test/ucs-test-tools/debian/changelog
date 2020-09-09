@@ -1,3 +1,9 @@
+ucs-test-tools (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:33 +0200
+
 ucs-test-tools (8.0.0-3) unstable; urgency=low
 
   * Bug #51103: Fix traceback in create-32k-users

@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 30 Aug 2020 08:31:53 +0200
+
 univention-management-console-module-top (8.0.1-4) unstable; urgency=medium
 
   * Bug #49972: prevent race condition during querying of currently running

@@ -1,3 +1,9 @@
+univention-apache (12.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:27 +0200
+
 univention-apache (11.0.1-19) unstable; urgency=medium
 
   * Bug #51077: make UCR templates python3-compatible

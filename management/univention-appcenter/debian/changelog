@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Sep 2020 15:13:48 +0200
+
 univention-appcenter (8.0.11-136) unstable; urgency=low
 
   * Bug #51790: Refactored hook logic a bit

@@ -1,3 +1,9 @@
+univention-web (4.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2020 17:57:14 +0200
+
 univention-web (3.0.5-43) unstable; urgency=medium
 
   * Bug #51401: fix size of login notices

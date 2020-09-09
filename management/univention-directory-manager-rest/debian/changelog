@@ -1,3 +1,9 @@
+univention-directory-manager-rest (10.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Florian Best <best@univention.de>  Tue, 25 Aug 2020 18:37:09 +0200
+
 univention-directory-manager-rest (9.0.16-10) unstable; urgency=medium
 
   * Bug #51685: fix references to objects with umlauts in the DN

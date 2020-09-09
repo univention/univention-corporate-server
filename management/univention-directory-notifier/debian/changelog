@@ -1,3 +1,9 @@
+univention-directory-notifier (14.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:28:00 +0200
+
 univention-directory-notifier (13.0.3-2) unstable; urgency=medium
 
   * Bug #51722: Code cleanup inspired by Github pull request #18

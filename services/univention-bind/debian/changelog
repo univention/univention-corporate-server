@@ -1,3 +1,9 @@
+univention-bind (14.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Jun 2020 10:33:22 +0200
+
 univention-bind (13.0.1-11) unstable; urgency=medium
 
   * Bug #50501: Correct ucv description.

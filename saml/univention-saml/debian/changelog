@@ -1,3 +1,9 @@
+univention-saml (7.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Sep 2020 17:29:54 +0200
+
 univention-saml (6.0.2-53) unstable; urgency=medium
 
   * Bug #51492: adjust styling of error messages

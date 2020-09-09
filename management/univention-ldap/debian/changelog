@@ -1,3 +1,9 @@
+univention-ldap (16.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Sep 2020 14:34:31 +0200
+
 univention-ldap (15.0.1-1) unstable; urgency=medium
 
   * Bug #51676: start slapd after ldap_setup_index so joinscript is executed

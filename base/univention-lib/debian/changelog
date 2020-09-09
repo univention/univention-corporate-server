@@ -1,3 +1,9 @@
+univention-lib (9.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS 5: Version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 04 Jun 2020 15:56:07 +0200
+
 univention-lib (8.0.1-38) unstable; urgency=medium
 
   * Bug #51592: use fd.write() instead of print()

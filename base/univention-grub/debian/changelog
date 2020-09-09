@@ -1,3 +1,9 @@
+univention-grub (13.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:12 +0200
+
 univention-grub (12.0.0-3) unstable; urgency=medium
 
   * Bug #51018: make UCR templates compatible to python3

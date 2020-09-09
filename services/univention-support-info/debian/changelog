@@ -1,3 +1,9 @@
+univention-support-info (6.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:32 +0200
+
 univention-support-info (5.0.0-1) unstable; urgency=medium
 
   * Bug #48326: UCS-4.4-0 version bump

@@ -1,3 +1,9 @@
+univention-python-heimdal (10.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:15 +0200
+
 univention-python-heimdal (9.0.0-4) unstable; urgency=low
 
   * Bug #50475: Fix Python 3 support

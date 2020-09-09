@@ -1,3 +1,9 @@
+univention-unittests (2.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Jul 2020 15:34:06 +0200
+
 univention-unittests (1.0.0-8) unstable; urgency=medium
 
   * Bug #51262: Enable mocked LDAP modifications
