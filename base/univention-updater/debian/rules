@@ -32,7 +32,7 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-override_dh_auto_build: $(MO_FILES)
+override_dh_auto_build:
 	dh-umc-module-build
 	dh_auto_build
 

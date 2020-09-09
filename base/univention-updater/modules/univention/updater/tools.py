@@ -125,11 +125,13 @@ class _UCSRepo(UCS_Version):
     Super class to build URLs for APT repositories.
     """
 
-    def __init__(self, **kw):
-        # type: (**Any) -> None
-        kw.setdefault('patchlevel_reset', 0)
-        kw.setdefault('patchlevel_max', 99)
-        for (k, v) in kw.items():
+    def __init__(self, release=None, **kwargs):
+        # type: (Optional[UCS_Version], **Any) -> None
+        if release:
+            super(_UCSRepo, self).__init__(release)
+        kwargs.setdefault('patchlevel_reset', 0)
+        kwargs.setdefault('patchlevel_max', 99)
+        for (k, v) in kwargs.items():
             if isinstance(v, str) and '%(' in v:
                 self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__)
             else:
@@ -229,12 +231,27 @@ class UCSRepoPool5(_UCSRepo):
     APT repository using the debian pool structure (ucs5 and above).
     """
 
-    def __init__(self, **kw):
-        # type: (**Any) -> None
-        kw.setdefault('version', UCS_Version.FORMAT)
-        kw.setdefault('patch', UCS_Version.FULLFORMAT)
-        kw.setdefault('errata', False)
-        super(UCSRepoPool5, self).__init__(**kw)
+    def __init__(self, release=None, **kwargs):
+        # type: (UCS_Version, **Any) -> None
+        kwargs.setdefault('version', UCS_Version.FORMAT)
+        kwargs.setdefault('patch', UCS_Version.FULLFORMAT)
+        kwargs.setdefault('errata', False)
+        super(UCSRepoPool5, self).__init__(release, **kwargs)
+
+    @property
+    def _suite(self):  # type: () -> str
+        """
+        Format suite.
+
+        :returns: UCS suite name.
+        :rtype: str
+
+        >>> UCSRepoPool5(major=5, minor=1, patchlevel=0)._suite
+        'ucs510'
+        >>> UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True)._suite
+        'errata510'
+        """
+        return "{1}{0.major}{0.minor}{0.patchlevel}".format(self, "errata" if self.errata else "ucs")
 
     def deb(self, server, type="deb"):
         # type: (_UCSServer, str) -> str
@@ -253,12 +270,11 @@ class UCSRepoPool5(_UCSRepo):
         >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/ errata510 main'
         """
-        if not self.errata:
-            fmt = 'ucs'
-        else:
-            fmt = 'errata'
-        fmt += '%(major)s%(minor)s%(patchlevel)s main'
-        return "%s %s %s" % (type, server, super(UCSRepoPool5, self)._format(fmt))
+        return "%s %s %s main" % (
+            type,
+            server,
+            self._suite,
+        )
 
     def path(self, filename=None):
         # type: (str) -> str
@@ -274,12 +290,7 @@ class UCSRepoPool5(_UCSRepo):
         >>> UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True).path()
         'dists/errata510/InRelease'
         """
-        if not self.errata:
-            fmt = 'dists/ucs'
-        else:
-            fmt = 'dists/errata'
-        fmt += '%(major)s%(minor)s%(patchlevel)s/' + (filename or 'InRelease')
-        return super(UCSRepoPool5, self)._format(fmt)
+        return "dists/{}/{}".format(self._suite, filename or 'InRelease')
 
 
 class UCSRepoPool(_UCSRepo):

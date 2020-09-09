@@ -6,23 +6,11 @@ from univention.updater.tools import UniventionUpdater, UCSRepoPool5
 
 try:
 	updater = UniventionUpdater()
-	pool_release = UCSRepoPool5(
-		major=updater.version_major,
-		minor=updater.version_minor,
-		patchlevel=updater.patchlevel,
-	)
-	pool_errata = UCSRepoPool5(
-		major=updater.version_major,
-		minor=updater.version_minor,
-		patchlevel=updater.patchlevel,
-		errata=True,
-	)
 	if updater.online_repository:
-		print(pool_release.deb(updater.server))
-		print(pool_errata.deb(updater.server))
-		if updater.sources:
-			print(pool_release.deb(updater.server, 'deb-src'))
-			print(pool_errata.deb(updater.server, 'deb-src'))
+		pool = UCSRepoPool5(updater.current_version)
+		for pool.errata in (False, True):
+			for typ in ["deb"] + ["deb-src"][:updater.sources]:
+				print(pool.deb(updater.server, typ))
 	else:
 		print('# The online repository is disabled and can be enabled with:')
 		print('#   univention-config-registry set repository/online=true')
