@@ -10,7 +10,7 @@ univention-portal (3.0.2-7) unstable; urgency=medium
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 31 Jul 2020 12:57:29 +0200
 
-univention-portal (3.0.2-6) UNRELEASED; urgency=medium
+univention-portal (3.0.2-6) unstable; urgency=medium
 
   * Bug #50688: Make categories without entries visible to non domain admins
     in live-edit mode.
