@@ -33,8 +33,8 @@ import os
 import re
 import sys
 import shutil
-import univention.translationhelper as tlh
-import univention.translationhelper.umc as dh_umc
+import univention.l10n as tlh
+import univention.l10n.umc as dh_umc
 import subprocess
 try:
 	from typing import List, Set, Tuple  # noqa F401

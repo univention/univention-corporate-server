@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import univention.translationhelper.umc as dh_umc
+import univention.l10n.umc as dh_umc
 import sys
 
 if 1 == len(sys.argv) or '-h' in sys.argv or '--help' in sys.argv:

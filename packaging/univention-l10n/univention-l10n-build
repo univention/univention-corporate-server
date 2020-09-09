@@ -46,7 +46,7 @@ Example :file:`debian/rules` override::
 import argparse
 import os
 
-from univention import translationhelper as tlh
+from univention import l10n as tlh
 
 
 def parse_args():

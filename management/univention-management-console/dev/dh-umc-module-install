@@ -43,7 +43,7 @@ from optparse import OptionParser
 from xml.sax.saxutils import escape
 
 import univention.debhelper as dh_ucs
-import univention.translationhelper.umc as dh_umc
+import univention.l10n.umc as dh_umc
 
 
 class Module(object):

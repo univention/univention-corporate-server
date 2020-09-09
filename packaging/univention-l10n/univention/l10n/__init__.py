@@ -27,4 +27,5 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-from . translationhelper import *  # noqa
+
+from . l10n import *  # noqa

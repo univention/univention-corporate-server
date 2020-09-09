@@ -33,8 +33,8 @@ Build UCS package containing translations for a new language.
 from __future__ import print_function
 from optparse import OptionParser
 import os
-import univention.translationhelper.umc as dh_umc
-import univention.translationhelper as tlh
+import univention.l10n.umc as dh_umc
+import univention.l10n as tlh
 try:
 	from typing import List, Set, Tuple  # noqa F401
 	from optparse import Values  # noqa F401

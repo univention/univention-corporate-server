@@ -41,7 +41,7 @@ import os.path
 from optparse import OptionParser
 
 import univention.debhelper as dh_ucs
-import univention.translationhelper.umc as dh_umc
+import univention.l10n.umc as dh_umc
 
 
 def do_package(package, core):
