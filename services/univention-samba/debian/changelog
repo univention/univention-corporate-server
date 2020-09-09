@@ -2,7 +2,7 @@ univention-samba4 (13.0.0-11) unstable; urgency=medium
 
   * Bug #42182: apply additional aces from appendACL on share folders
 
- -- Tobias Wenzel <wenzel@univention.de>  Tue, 9 Sept 2020 8:44:01 +0200
+ -- Tobias Wenzel <wenzel@univention.de>  Tue, 9 Sep 2020 08:44:01 +0200
 
 univention-samba (13.0.0-10) unstable; urgency=medium
 

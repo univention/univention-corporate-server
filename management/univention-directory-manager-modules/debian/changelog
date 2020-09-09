@@ -2,7 +2,7 @@ univention-directory-manager-modules (14.0.15-6) unstable; urgency=medium
 
   * Bug #42182: add mapping univentionShareSambaBaseDirAppendACL - appendACL
 
- -- Tobias Wenzel <wenzel@univention.de>  Tue, 9 Sept 2020 08:41:01 +0200
+ -- Tobias Wenzel <wenzel@univention.de>  Tue, 9 Sep 2020 08:41:01 +0200
 
 univention-directory-manager-modules (14.0.15-5) unstable; urgency=medium
 
