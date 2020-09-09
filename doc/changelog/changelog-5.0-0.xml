@@ -602,6 +602,11 @@
 
 	<section id="changelog:virt">
 		<title>Virtualization</title>
+		<itemizedlist>
+			<listitem><simpara>
+				All packages related to running virtual machines on UCS have been removed (<u:bug>51982</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
 
 		<section id="changelog:virt:operation">
 			<title>Operate UCS as virtual machine</title>
