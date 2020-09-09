@@ -605,8 +605,9 @@ class TestUniventionUpdater(unittest.TestCase):
         self._ucr({'repository/online/component/a/version': 'current'})
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH)]),
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
+        ver = U.UCS_Version((MAJOR, MINOR, PATCH))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
         self.assertEqual(set((ver,)), comp_ver)
 
@@ -615,8 +616,9 @@ class TestUniventionUpdater(unittest.TestCase):
         self._ucr({'repository/online/component/a/version': ''})
         self._uri({
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, PATCH): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH)]),
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))  # component.erratalevel!
+        ver = U.UCS_Version((MAJOR, MINOR, PATCH))  # component.erratalevel!
         comp_ver = self.u._get_component_versions('a', start=ver, end=ver)
         self.assertEqual(set((ver,)), comp_ver)
 
@@ -653,17 +655,16 @@ class TestUniventionUpdater(unittest.TestCase):
     def test__releases_in_range_current(self):
         """Test getting releases in range."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, 0): '',
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH)]),
         })
-        ver = U.UCS_Version((MAJOR, MINOR, 0))
+        ver = U.UCS_Version((MAJOR, MINOR, PATCH))
         versions = self.u._releases_in_range()
         self.assertEqual([ver], versions)
 
     def test__releases_in_range_multi(self):
         """Test getting multiple releases in range."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, 0, MAJOR, 0, 0): '',
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, 1, MAJOR, 1, 0): '',
+            'releases.json': M.gen_releases([(MAJOR, 0, 0), (MAJOR, 1, 0)]),
         })
         start = U.UCS_Version((MAJOR, 0, 0))
         end = U.UCS_Version((MAJOR, 1, 0))
@@ -673,7 +674,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test__releases_in_range_first(self):
         """Test getting first releases in range."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, 1, MAJOR, 1, 0): '',
+            'releases.json': M.gen_releases([(MAJOR, 1, 0)]),
         })
         start = U.UCS_Version((MAJOR, 0, 0))
         end = U.UCS_Version((MAJOR, 1, 0))
@@ -686,10 +687,9 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a': 'yes',
         })
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, MINOR, MAJOR, MINOR, 0, 'all'): DATA,
-            '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, MINOR, MAJOR, MINOR, 0, ARCH): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', 'all'): DATA,
             '%d.%d/maintained/component/%s/%s/Packages.gz' % (MAJOR, MINOR, 'a', ARCH): DATA,
+            'releases.json': M.gen_releases([(MAJOR, MINOR, PATCH)]),
         })
         tmp = self.u.print_component_repositories()
         self.assertEqual(set((

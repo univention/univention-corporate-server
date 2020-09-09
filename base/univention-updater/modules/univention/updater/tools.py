@@ -1559,10 +1559,7 @@ class UniventionUpdater(object):
                 parts_unique.add("unmaintained")
             parts = ['%s/component' % (part,) for part in parts_unique]
             # versions
-            if start == end:
-                versions = set((start,))
-            else:
-                versions = self._get_component_versions(component, start, end)
+            versions = {start} if start == end else self._get_component_versions(component, start, end)
 
             self.log.info('Component %s from %s versions %r', component, server, versions)
             for version in versions:
@@ -1736,11 +1733,13 @@ class UniventionUpdater(object):
                     mm_versions = self._releases_in_range(start, end, component=component)
                 versions |= set(mm_versions)
             else:
-                if '-' in version:
-                    version = UCS_Version(version)
-                else:
-                    version = UCS_Version('%s-0' % version)
+                version = UCS_Version(version if '-' in version else '%s-0' % version)
+                if start and version < start:
+                    continue
+                if end and version > end:
+                    continue
                 versions.add(version)
+
         return versions
 
     def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False):
@@ -1763,10 +1762,7 @@ class UniventionUpdater(object):
         versions_mmp = set()  # type: Set[UCS_Version]
         for version in versions:
             if isinstance(version, basestring):
-                if '-' in version:
-                    version = UCS_Version(version)
-                else:
-                    version = UCS_Version('%s-0' % version)
+                version = UCS_Version(version if '-' in version else '%s-0' % version)
             elif isinstance(version, UCS_Version):
                 version = copy.copy(version)
             else:
