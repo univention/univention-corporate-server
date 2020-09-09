@@ -64,6 +64,19 @@ print('masquerade_exceptions = %s' % configRegistry.get('mail/postfix/masquerade
 
 print('')
 
+maximal_lifetime = configRegistry.get('mail/postfix/maximal_queue_lifetime', '5d')
+if maximal_lifetime:
+	print('maximal_queue_lifetime = %s' % maximal_lifetime)
+
+bounce_lifetime = configRegistry.get('mail/postfix/bounce_queue_lifetime', '5d')
+if bounce_lifetime:
+	print('bounce_queue_lifetime = %s' % bounce_lifetime)
+
+delay = configRegistry.get('mail/postfix/delay_warning_time', '0h')
+if delay:
+	print('delay_warning_time = %s' % delay)
+print('')
+
 transport_maps = re.split(',\s*', configRegistry.get('mail/postfix/maps/transport', 'hash:/etc/postfix/transport' ))
 if configRegistry.is_true('mail/postfix/transport/ldap/enabled',False):
 	transport_maps.append('ldap:/etc/postfix/ldap.transport')
