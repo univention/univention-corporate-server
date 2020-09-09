@@ -1,3 +1,9 @@
+univention-appcenter (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51419: Postgresql 11 templates
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Sep 2020 15:13:50 +0200
+
 univention-appcenter (9.0.0-2) unstable; urgency=medium
 
   * Bug #40225: Allow installation of multiple Apps at once
