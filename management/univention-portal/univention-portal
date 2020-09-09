@@ -33,6 +33,7 @@ import json
 import datetime
 import ast
 import inspect
+from textwrap import dedent
 
 from univention.portal import get_all_dynamic_classes, get_dynamic_classes
 from univention.portal.factory import make_portal
@@ -371,6 +372,19 @@ def update(name, reason):
                 success("Portal data updated in {:.2f}s".format(delta.total_seconds()))
             else:
                 info("Portal data untouched")
+
+
+@cli.command("list-extensions")
+def list_extensions():
+    for extension in get_all_dynamic_classes():
+        print(extension.__name__)
+        if extension.__doc__:
+            if extension.__doc__[0] == "\n":
+                doc = extension.__doc__[1:]
+            else:
+                doc = extension.__doc__
+            print("  " + "\n  ".join(dedent(doc).splitlines()))
+            print("")
 
 
 class SomeObj(object):
