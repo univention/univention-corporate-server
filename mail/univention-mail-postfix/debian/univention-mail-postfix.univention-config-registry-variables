@@ -95,6 +95,24 @@ Description[en]=This variable can be used to exempt users from e-mail address ma
 Type=str
 Categories=service-mail
 
+[mail/postfix/maximal_queue_lifetime]
+Description[de]=Diese Variable bestimmt die Zeit, die eine Mail nach einer gescheiterten Maileinlieferung in der Queue verweilt, bis die Mail als unzustellbar betrachtet wird. Ist die Variable nicht gesetzt, beträgt diese Zeit 5 Tage (siehe auch <http://www.postfix.org/postconf.5.html#maximal_queue_lifetime>). 
+Description[en]=This variable determines the time, a mail must remain in the queue after a failed delivery, to be considered undeliverable. If the variable is unset, this time defaults to 5 days (see also <http://www.postfix.org/postconf.5.html#maximal_queue_lifetime>).
+Type=str
+Categories=service-mail
+
+[mail/postfix/bounce_queue_lifetime]
+Description[de]=Diese Variable bestimmt die Zeit, die nach einer gescheiterten Maileinlieferung verstreichen muss, damit die Bounce Message (siehe 'mail/postfix/softbounce') als unzustellbar betrachtet wird. Ist die Variable nicht gesetzt, beträgt diese Zeit 5 Tage (siehe auch <http://www.postfix.org/postconf.5.html#bounce_queue_lifetime>).
+Description[en]=This variable determines the time, a bounce message (see 'mail/postfix/softbounce') must remain in the queue after a failed delivery, to be considered undeliverable. If the variable is unset, this time defaults to 5 days (see also <http://www.postfix.org/postconf.5.html#bounce_queue_lifetime>).
+Type=str
+Categories=service-mail
+
+[mail/postfix/delay_warning_time]
+Description[de]=Bei gescheiterter Maileinlieferung wird die Mail in der Queue vorgehalten. Diese Variable bestimmt die Zeit, die für eine Mail in der Queue verstreichen muss, damit der Sender eine Kopie des Nachrichten-Headers empfängt. Ist die Variable nicht gesetzt, beträgt diese Zeit 0 Stunden (siehe auch <http://www.postfix.org/postconf.5.html#delay_warning_time>)
+Description[en]=After a failed delivery, the mail gets queued. This variable determines the time a mail must be queued, before the sender receives a copy of the message-headers. If this variable is unset, if defaults to 0 hours (see also <http://www.postfix.org/postconf.5.html#delay_warning_time>).
+Type=str
+Categories=service-mail
+
 [mail/postfix/softbounce]
 Description[de]=Bei einer Reihe von Fehlersituationen (z.B. bei nicht vorhandenen Benutzern) kann es zu einem Bounce der betroffenen Mail kommen, d.h. die Mail wird an den Absender zurückgesendet. Ist diese Option aktiviert werden E-Mails nie mit einem Bounce zurückgesendet, sondern immer weiterhin in der Queue vorgehalten. Diese Einstellung ist insbesondere für Konfigurationsarbeiten am Mailserver nützlich. Ist die Variable nicht gesetzt, werden Bounces verwendet.
 Description[en]=In a number of error situations (e.g., for non-existent users) the result may be a mail bounce, i.e., the mail cannot be delivered and is returned to the sender. If this option is enabled e-mails are never returned as bounces, but instead are held in the queue. This setting is particularly useful during configuration work on the mail server. If the variable is unset, bounces are made.
