@@ -135,17 +135,6 @@ class _UCSRepo(UCS_Version):
             else:
                 self.__dict__[k] = v
 
-    def __getattr__(self, key):
-        # type: (str) -> Any
-        try:
-            return self.__dict__[key]
-        except KeyError:
-            raise AttributeError(key)
-
-    def __setattr__(self, key, value):
-        # type: (str, Any) -> None
-        self.__dict__[key] = value
-
     def __repr__(self):
         # type: () -> str
         return '%s(**%r)' % (self.__class__.__name__, self.__dict__)
