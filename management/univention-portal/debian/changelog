@@ -1,3 +1,9 @@
+univention-portal (3.1.0-33) unstable; urgency=medium
+
+  * Bug #51856: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de> <wiesenthal@univention.de>  Wed, 09 Sep 2020 23:34:37 +0200
+
 univention-portal (3.1.0-32) unstable; urgency=medium
 
   * Bug #51856: Version bump
