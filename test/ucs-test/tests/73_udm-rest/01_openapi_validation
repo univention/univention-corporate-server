@@ -11,11 +11,11 @@
 
 set -x
 
-pip install openapi-spec-validator
+pip3 install openapi-spec-validator
 
 cleanup() {
-	pip uninstall -y openapi-spec-validator
+	pip3 uninstall -y openapi-spec-validator
 }
 trap cleanup INT TERM EXIT
 
-curl -u "$(ucs_convertDN2UID ${tests_domainadmin_account})":"${tests_domainadmin_pwd}" http://localhost/univention/udm/openapi.json | python -m openapi_spec_validator - || fail_fast 1
+curl -u "$(ucs_convertDN2UID ${tests_domainadmin_account})":"${tests_domainadmin_pwd}" http://localhost/univention/udm/openapi.json | python3 -m openapi_spec_validator - || fail_fast 1

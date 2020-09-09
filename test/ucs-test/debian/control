@@ -772,7 +772,7 @@ Description: Test scripts to check cryptography software in UCS
 Package: ucs-test-udm-rest
 Architecture: all
 Depends:
- python-pip,
+ python3-pip,
  python-pytest,
  ucs-test-libs (= ${source:Version}),
  ucs-test-udm-users,
