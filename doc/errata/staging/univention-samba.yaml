@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-samba
+fix: 13.0.0-11A~4.4.0.202009090907
+desc: |
+ This update addresses the following issue(s):
+ * The Samba share listener will now apply all modified NT ACEs given in the UDM attribute appendACL to the share folder. This functionality was copied of univention-samba4 to keep the listeners consistent.
+bug: [42182]

@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: univention-directory-manager-modules
+fix: 14.0.15-6A~4.4.0.202009090853
+desc: |
+ This update addresses the following issue(s):
+ * The new UDM attribute appendACL of Samba shares can be used to define custom NT ACEs for share folders. The Samba share listener will apply these, after a new value is set.
+bug: [42182]
