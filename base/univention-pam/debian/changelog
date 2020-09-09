@@ -1,3 +1,9 @@
+univention-pam (13.0.0-5) unstable; urgency=low
+
+  * Bug #43211: Remove univention-skel
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Sep 2020 14:33:05 +0200
+
 univention-pam (13.0.0-4) unstable; urgency=low
 
   * Bug #28645: Fix LDAP filter syntax

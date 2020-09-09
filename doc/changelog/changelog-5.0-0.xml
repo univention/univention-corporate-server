@@ -667,7 +667,7 @@
 					Several potential buffer overruns have been fixed in <package>pam-univentionmailcyru</package> (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The package <package>univention-skel</package> has been removed (<u:bug>43211</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
