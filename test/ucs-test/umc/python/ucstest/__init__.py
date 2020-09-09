@@ -98,9 +98,9 @@ class Instance(Base):
 		try:
 			raise ThreadedError()
 		except ThreadedError:
-			etype, value, _ = sys.exc_info()
+			etype, result, _ = sys.exc_info()
 			thread = FakeThread()
-			thread.exc_info = (etype, value, None)
+			thread.exc_info = (etype, result, None)
 		self.thread_finished_callback(thread, result, request)
 
 	def umc_error_as_thread_result(self, request):
@@ -109,7 +109,7 @@ class Instance(Base):
 		try:
 			raise UMC_Error("This is an UMC Error")
 		except UMC_Error:
-			etype, value, _ = sys.exc_info()
+			etype, result, _ = sys.exc_info()
 			thread = FakeThread()
-			thread.exc_info = (etype, value, None)
+			thread.exc_info = (etype, result, None)
 		self.thread_finished_callback(thread, result, request)
