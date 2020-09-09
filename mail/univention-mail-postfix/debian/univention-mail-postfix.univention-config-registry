@@ -24,6 +24,9 @@ Variables: mail/postfix/softbounce
 Variables: mail/postfix/mynetworks
 Variables: mail/postfix/masquerade/domains
 Variables: mail/postfix/masquerade/exceptions
+Variables: mail/postfix/maximal_queue_lifetime
+Variables: mail/postfix/bounce_queue_lifetime
+Variables: mail/postfix/delay_warning_time
 Variables: mail/relayhost
 Variables: mail/relayauth
 Variables: mail/postfix/mynetworks_style
