@@ -6,5 +6,6 @@ src: univention-ldap
 fix: 15.0.0-40A~4.4.0.202009090850
 desc: |
  This update addresses the following issue(s):
- * The new attribute univentionShareSambaBaseDirAppendACL of Samba shares can be used to define custom NT ACEs for share folders. The Samba share listener will apply these, after a new value is set.
+ * A new attribute "univentionShareSambaBaseDirAppendACL" was added to
+   the LDAP schema of Samba shares.
 bug: [42182]

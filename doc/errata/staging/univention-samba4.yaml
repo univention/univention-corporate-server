@@ -6,5 +6,6 @@ src: univention-samba4
 fix: 8.0.0-32A~4.4.0.202009090856
 desc: |
  This update addresses the following issue(s):
- * The Samba share listener will now apply all modified NT ACEs given in the UDM attribute appendACL to the share folder.
+ * The Samba share listener will now apply all modified NT ACEs given
+   in the UDM attribute "appendACL" to share folders.
 bug: [42182]
