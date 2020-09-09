@@ -39,6 +39,19 @@ from univention.portal import Plugin
 from six import with_metaclass
 
 class Cache(with_metaclass(Plugin)):
+	"""
+	Base class for Caching in general
+
+	`get`: Gets the complete cache content.
+	`refresh`: Refreshes the cache. Gets a "reason" to decide if this is
+	really needed. The value "force" should be handled as if it is really
+	needed.
+
+	cache_file:
+		Filename where the content is stored
+	reloader:
+		Class that handles the actual refresh
+	"""
 	def __init__(self, cache_file, reloader=None):
 		self._cache_file = cache_file
 		self._reloader = reloader
@@ -64,6 +77,18 @@ class Cache(with_metaclass(Plugin)):
 
 
 class PortalFileCache(Cache):
+	"""
+	Specialized cache for portal data. The implementation does not differ
+	from that of a base cache, but it provides more specialized cache
+	access methods that it needs in order to work with the Portal class.
+
+	`get_user_links`
+	`get_entries`
+	`get_folders`
+	`get_portal`
+	`get_categories`
+	`get_menu_links`
+	"""
 	def get_user_links(self):
 		return deepcopy(self.get()['user_links'])
 
@@ -84,4 +109,8 @@ class PortalFileCache(Cache):
 
 
 class GroupFileCache(Cache):
-	pass
+	"""
+	Caching class for groups.
+	In fact it is just the same as the normal Cache and just here in case
+	we want to get smarter at some point.
+	"""

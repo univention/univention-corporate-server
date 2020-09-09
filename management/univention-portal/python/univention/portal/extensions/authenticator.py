@@ -52,6 +52,21 @@ class Session(object):
 
 
 class Authenticator(with_metaclass(Plugin)):
+	"""
+	Our base class for authentication
+	May hold all the sessions, set cookies, etc.
+
+	The idea is that this class handles the following
+	methods from the Portal:
+	`login_request`: A user GETs to the login action
+	`login_user`: Credentials are POSTed to this action
+
+	`get_user`: While gathering the portal data, the caller wants
+	to get a `User` object
+
+	This base class does nothing...
+	"""
+
 	def login_request(self, request):
 		pass
 
@@ -66,6 +81,16 @@ class Authenticator(with_metaclass(Plugin)):
 
 
 class OpenIDAuthenticator(Authenticator):
+	"""
+	Specialized Authenticator that implements the OpenID Connect login flow.
+
+	authorization_endpoint:
+		URI for the endpoint of your OpenID Connect provider (e.g. "https://keycloak.mydomain.com/auth/realms/test/protocol/openid-connect/auth")
+	client_id:
+		Name of the client of the Portal as configured at your endpoint
+	portal_cookie_name:
+		Name of the Cookie the Authenticator sets and retrieves for the logged in user, default: "UniventionPortalSessionId"
+	"""
 	def __init__(self, authorization_endpoint, client_id, portal_cookie_name="UniventionPortalSessionId"):
 		self.authorization_endpoint = authorization_endpoint
 		self.client_id = client_id
@@ -133,6 +158,19 @@ class OpenIDAuthenticator(Authenticator):
 
 
 class UMCAuthenticator(Authenticator):
+	"""
+	Specialized Authenticator that relies on a UMC that actually holds any session.
+	Asks UMC for every request if this session is known.
+
+	umc_session_url:
+		The URL where to go to with the cookie. Expects a json answer with the username.
+	group_cache:
+		As UMC does not return groups, we need a cache object that gets us the groups for the username.
+	portal_cookie_name:
+		Name of the Cookie the Authenticator retrieves for the logged in user, default: "UMCSessionId"
+	umc_cookie_name:
+		Name of the Cookie in UMC. Defaults to the `portal_cookie_name`.
+	"""
 	def __init__(self, umc_session_url, group_cache, portal_cookie_name="UMCSessionId", umc_cookie_name=None):
 		self.umc_session_url = umc_session_url
 		self.group_cache = group_cache

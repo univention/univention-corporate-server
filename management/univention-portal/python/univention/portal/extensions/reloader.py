@@ -47,11 +47,34 @@ from six.moves.urllib.parse import quote
 
 
 class Reloader(with_metaclass(Plugin)):
+	"""
+	Our base class for reloading
+
+	The idea is that this class handles the reloading
+	for caches.
+
+	`refresh`: In fact the only method. Gets a "reason" so that it can
+		decide that a refresh is not necessary. If it was necessary, it
+		should return True
+
+	A reason "force" should be treated as very important.
+	If the reloader refreshed the content, the overlying cache will reload
+	itself.
+	"""
 	def refresh(self, reason=None):
 		pass
 
 
 class MtimeBasedLazyFileReloader(Reloader):
+	"""
+	Specialized class that reloads if a certain (cache) file was updated.
+	So if a seconds process updated the file and this class is asked to
+	reload, it just returns True. If the reason fits, it actually refreshes
+	the content and writes it into the file.
+
+	cache_file:
+		Filename this object is responsible for
+	"""
 	def __init__(self, cache_file):
 		self._cache_file = cache_file
 		self._mtime = self._get_mtime()
@@ -99,6 +122,15 @@ class MtimeBasedLazyFileReloader(Reloader):
 		raise NotImplementedError()
 
 class PortalReloaderUDM(MtimeBasedLazyFileReloader):
+	"""
+	Specialized class that reloads a cache file with the content of a certain
+	portal object using UDM. Reacts on reasons like "ldap:portal:<correct_dn>".
+
+	portal_dn:
+		DN of the portals/portal object
+	cache_file:
+		Filename this object is responsible for
+	"""
 	def __init__(self, portal_dn, cache_file):
 		super(PortalReloaderUDM, self).__init__(cache_file)
 		self._portal_dn = portal_dn
@@ -355,10 +387,25 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 
 
 class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
+	"""
+	Specialized class that reloads a cache file with the content of group object
+	in LDAP. Reacts on the reason "ldap:group"
+
+	ldap_uri:
+		URI for the LDAP connection, e.g. "ldap://ucs:7369"
+	binddn:
+		The bind dn for the connection, e.g. "cn=ucs,cn=computers,..."
+	password_file:
+		Filename that holds the password for the binddn, e.g. "/etc/machine.secret"
+	ldap_base:
+		Base in which the groups are searched in. E.g., "dc=base,dc=com" or "cn=groups,ou=OU1,dc=base,dc=com"
+	cache_file:
+		Filename this object is responsible for
+	"""
 	def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
 		super(GroupsReloaderLDAP, self).__init__(cache_file)
 		self._ldap_uri = ldap_uri
-		self._bindn = binddn
+		self._bind_dn = binddn
 		self._password_file = password_file
 		self._ldap_base = ldap_base
 
@@ -374,7 +421,7 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 		with open(self._password_file) as fd:
 			password = fd.read().rstrip('\n')
 		con = ldap.initialize(self._ldap_uri)
-		con.simple_bind_s(self._bindn, password)
+		con.simple_bind_s(self._bind_dn, password)
 		ldap_content = {}
 		users = {}
 		groups = con.search_s(self._ldap_base, ldap.SCOPE_SUBTREE, u"(objectClass=posixGroup)")

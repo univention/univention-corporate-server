@@ -36,6 +36,14 @@ from six import with_metaclass
 
 
 class Scorer(with_metaclass(Plugin)):
+	"""
+	Base class for portal scoring
+
+	The idea is that when multiple portals are configured, their scorers
+	decide which portal is to be used for a request.
+
+	`score`: Gets a Tornado request and returns a number. The highest score wins.
+	"""
 	def __init__(self):
 		pass
 
@@ -44,6 +52,13 @@ class Scorer(with_metaclass(Plugin)):
 
 
 class DomainScorer(Scorer):
+	"""
+	Specialized Scorer that reponds if the request went against the configured domain.
+	For this to work you have to make your portal system available under different domains.
+
+	domain:
+		Name of the domain, e.g. "myportal2.fqdn.com"
+	"""
 	def __init__(self, domain):
 		self.domain = domain
 
@@ -54,6 +69,15 @@ class DomainScorer(Scorer):
 
 
 class PathScorer(Scorer):
+	"""
+	Specialized Scorer that reponds if the request went against the configured path.
+	For this to work you have to make your portal available under different paths, e.g.
+	"/univention/portal" and "/univention/portal2".
+
+	path:
+		The path. Does not have to match exactly, but the request's path needs to start
+		with this value, e.g. "/portal2".
+	"""
 	def __init__(self, path):
 		self.path = path
 
