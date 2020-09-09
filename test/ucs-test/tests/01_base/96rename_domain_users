@@ -68,7 +68,7 @@ def test_rename_domain_users():
 			print('\n##################################################################')
 			print('Renaming default domainusers group %s to %s' % (old_group_name, new_group_name))
 			print('##################################################################\n')
-			cmd = (['udm', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
+			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
 			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 			utils.wait_for_replication_and_postrun()
 
@@ -104,7 +104,7 @@ def test_rename_domain_users():
 			print('\n##################################################################')
 			print('Cleanup')
 			print('##################################################################\n')
-			cmd = (['udm', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
+			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
 			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 
 
