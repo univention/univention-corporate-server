@@ -1453,8 +1453,11 @@ class ucs:
 		# this function gets an object from the s4 class, which should be converted into a ucs module
 
 		# if sync is write (sync to S4) or none, there is nothing to do
-		if self.property[property_type].sync_mode in ['write', 'none']:
-			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+		if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
+			if property_type:
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+			else:
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, no mapping defined")
 			return True
 
 		ucs_object_dn = object.get('olddn', object['dn'])
