@@ -50,7 +50,7 @@ if sys.version_info >= (3,):
 	class HTMLParseError(Exception):
 		"""
 		Backwards compatability as exception removed in python 3.5
-        """
+		"""
 else:
 	from urllib import urlencode
 	from httplib import HTTPSConnection
@@ -82,8 +82,10 @@ class TestLicenseClient(HTMLParser):
 		self.Connection = None
 		self.server_username = 'ucs-test'
 		self.server_password = ''
+		self.secret_file = '/etc/license.secret'
 		self.cookie = ''
 		self.link_to_license = None
+		self.license_shop = 'testing'
 
 		self.license_params = {
 			"kundeUnternehmen": "Univention",
@@ -167,7 +169,7 @@ class TestLicenseClient(HTMLParser):
 			"Accept": "text/plain",
 		}
 
-		response = self.make_post_request('/shop/testing/', urlencode(body), headers)
+		response = self.make_post_request('/shop/%s/' % (self.license_shop,), urlencode(body), headers)
 		self.log.debug("The response status is '%s', reason is '%s', headers are '%s'" % (response.status, response.reason, response.getheaders()))
 
 		self.cookie = response.getheader('set-cookie')
@@ -250,7 +252,7 @@ class TestLicenseClient(HTMLParser):
 			"Content-type": "application/x-www-form-urlencoded",
 		}
 
-		response = self.make_post_request('/shop/testing/order', urlencode(body), headers)
+		response = self.make_post_request('/shop/%s/order' % (self.license_shop,), urlencode(body), headers)
 		self.log.debug("The response status is '%s', reason is '%s', headers are '%s'" % (response.status, response.reason, response.getheaders()))
 		return response.read()
 
@@ -264,7 +266,7 @@ class TestLicenseClient(HTMLParser):
 			"Cookie": self.cookie,
 			"Accept": "text/plain",
 		}
-		response = self.make_get_request('/shop/testing/' + self.link_to_license, headers)
+		response = self.make_get_request('/shop/%s/%s' % (self.license_shop, self.link_to_license), headers)
 		self.log.debug("The response status is '%s', reason is '%s', headers are '%s'" % (response.status, response.reason, response.getheaders()))
 		try:
 			with open(self.license_filename, 'w') as license_file:
@@ -279,7 +281,8 @@ class TestLicenseClient(HTMLParser):
 		Checks if the 'EndDate' format is correct.
 		"""
 		try:
-			datetime.strptime(self.license_params['EndDate'], '%d.%m.%Y')
+			if self.license_params['EndDate'] != 'unlimited':
+				datetime.strptime(self.license_params['EndDate'], '%d.%m.%Y')
 		except ValueError as exc:
 			self.log.exception("The 'EndDate' for the license has a wrong format, supported format is 'dd.mm.yyyy': %r" % exc)
 			exit(1)
@@ -290,23 +293,24 @@ class TestLicenseClient(HTMLParser):
 		among the parsed arguments. Merges parsed data with default
 		license parameters.
 		"""
-		log_level = args.get('LogLevel')
+		log_level = args.pop('LogLevel')
 		if log_level:
 			numeric_level = getattr(logging, log_level.upper(), None)
 			if isinstance(numeric_level, int):
 				self.log.setLevel(numeric_level)
 			else:
 				self.log.info("The LogLevel was not changed, unknown '%s' log level given" % log_level)
-		del args['LogLevel']  # should not be in self.license_params
 
-		license_file = args.get('FileName')
+		self.license_shop = args.pop('shop')
+		self.server_username = args.pop('username')
+		self.secret_file = args.pop('secret_file')
+		license_file = args.pop('FileName')
 		if license_file:
 			self.license_filename = license_file
-		del args['FileName']  # should not be in self.license_params
 		self.log.debug("The filename for the license will be '%s'" % self.license_filename)
 
 		# merging parsed args with the default values:
-		self.license_params.update((key, val) for key, val in args.iteritems() if val is not None)
+		self.license_params.update((key, val) for key, val in args.items() if val is not None)
 		self.log.info("Requested license parameters are: '%s'" % self.license_params)
 
 	def process_cmd_arguments(self):
@@ -324,6 +328,9 @@ class TestLicenseClient(HTMLParser):
 		self.Parser.add_argument("-mc", "--ManagedClients", type=int, help="Max amount of managed clients allowed with the license (default=50)")
 		self.Parser.add_argument("-cc", "--CorporateClients", type=int, help="Max amount of corporate clients allowed with the license (default=50)")
 		self.Parser.add_argument("-ll", "--LogLevel", help="Logging level: INFO|DEBUG|ERROR|CRITICAL (default=INFO)")
+		self.Parser.add_argument("--shop", help="The shop (default: %(default)s)", default=self.license_shop)
+		self.Parser.add_argument("--username", help="username (default: %(default)s)", default=self.server_username)
+		self.Parser.add_argument("--secret-file", help="password file (default: %(default)s)", default=self.secret_file)
 
 		args = self.Parser.parse_args()
 		args = vars(args)  # converting Namespace to a dictionary
@@ -354,7 +361,7 @@ class TestLicenseClient(HTMLParser):
 			self.license_server_url = server_url
 		if license_file:
 			self.license_filename = license_file
-		self.get_server_password()
+		self.get_server_password(self.secret_file)
 		try:
 			self.create_connection()
 			self.get_cookie()
