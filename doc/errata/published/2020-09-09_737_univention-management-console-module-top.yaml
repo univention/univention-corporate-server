@@ -9,3 +9,5 @@ desc: |
  * An error while querying of currently running processes has
    been corrected.
 bug: [49972]
+erratum: 737
+announced: 2020-09-09
