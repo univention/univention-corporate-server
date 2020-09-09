@@ -1,3 +1,9 @@
+univention-ldap (15.0.0-40) unstable; urgency=medium
+
+  * Bug #42182: add univentionShareSambaBaseDirAppendACL to share
+
+ -- Tobias Wenzel <wenzel@univention.de>  Tue, 9 Sept 2020 08:42:01 +0200
+
 univention-ldap (15.0.0-39) unstable; urgency=medium
 
   * Bug #51029: make UCR templates python3-compatible
