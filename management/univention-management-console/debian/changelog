@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-106) unstable; urgency=medium
+
+  * Bug #51401: don't use locale territory in UCR variable as simplesamlphp
+  	doesn't have the territory info stored
+
+ -- Florian Best <best@univention.de>  Wed, 09 Sep 2020 13:33:03 +0200
+
 univention-management-console (11.0.4-105) unstable; urgency=medium
 
   * Bug #51401: add possibility to specify notes for password changes

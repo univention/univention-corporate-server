@@ -119,7 +119,7 @@ Type=str
 Categories=management-umc
 
 [umc/login/password-complexity-message/.*]
-Description[de]=Gibt einen lokalisierten Text für Passwort-Komplexitätshinweise beim Passwortwechsel an (z.B: umc/login/password-complexity-message/de-DE='Das Passwort muss mindestens 3 Sonderzeichen enthalten, 20 Zeichen lang sein und aus 5 unterschiedlichen Zeichen bestehen.')
-Description[en]=Specifies a localized text for password complexity notes used on changing the password (e.g: umc/login/password-complexity-message/en-US='The password must contain at least 3 special chars, at least 20 characters long and consists of at least 5 different characters.')
+Description[de]=Gibt einen lokalisierten Text für Passwort-Komplexitätshinweise beim Passwortwechsel an (z.B: umc/login/password-complexity-message/de='Das Passwort muss mindestens 3 Sonderzeichen enthalten, 20 Zeichen lang sein und aus 5 unterschiedlichen Zeichen bestehen.')
+Description[en]=Specifies a localized text for password complexity notes used on changing the password (e.g: umc/login/password-complexity-message/en='The password must contain at least 3 special chars, at least 20 characters long and consists of at least 5 different characters.')
 Type=str
 Categories=management-umc

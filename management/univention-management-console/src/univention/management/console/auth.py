@@ -77,7 +77,7 @@ class AuthenticationResult(object):
 				self.result['password_change_failed'] = True
 			if isinstance(result, (PasswordExpired, PasswordChangeFailed)):
 				locale = Locale(locale)
-				self.message += (' %s' % (ucr.get('umc/login/password-complexity-message/%s-%s' % (locale.language, locale.territory), ucr.get('umc/login/password-complexity-message/en-US', '')),)).rstrip()
+				self.message += (' %s' % (ucr.get('umc/login/password-complexity-message/%s' % (locale.language,), ucr.get('umc/login/password-complexity-message/en', '')),)).rstrip()
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
