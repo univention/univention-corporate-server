@@ -1143,8 +1143,16 @@ EOF
 	return $?
 }
 
+################################################################################
+# performance measurement to syslog
+#
+# this code is meant to use log program from the environment variable `LOGGER`
+# and defaults to the `logger` utility without any parameters. Since the system
+# log can already be distributed across several hosts, it is relatively simple
+# and stable compared to a database logging mechanism. Because the risk to
+# avoid is, that remote logging could eventually break our tests.
+
 export LOGGER=${LOGGER:-logger}
-export LOG_CONTEXT="[NULL]"
 export START=$(date +%s%N)
 
 function log_reset_timer {
@@ -1162,18 +1170,6 @@ function log_execution_time {
 	$LOGGER "$BASH_EXECUTION_STRING needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
 }
 
-# trap "echo $BASH_COMMAND && A='$BASH_COMMAND' && log_execution_time $A ${BASH_SOURCE[1]}:${BASH_LINENO[0]}" RETURN
 trap log_execution_time EXIT
-
-env | $LOGGER
-
-# function log_save_context() {
-# 	echo "FOOOOOOOO $(caller) $BASH_COMMAND"
-# 	read LINE FILE < <(caller)
-# 	export CALL=$(cat $FILE | awk "NR == $LINE")
-# 	export LOG_CONTEXT="$FILE:$LINE [$FUNCTION]: '$CALL'"
-# }
-#
-# trap log_save_context RETURN
 
 # vim:set filetype=sh ts=4:
