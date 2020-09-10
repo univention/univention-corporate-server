@@ -53,7 +53,6 @@ config_mirror \
 	repository/mirror/version/end="102.102-102" \
 	version/version="${major}.0" \
 	repository/online/unmaintained=no \
-	repository/mirror/recreate_packages=no # for speed, otherwise 1308 gzip's
 
 (
 	set -e
