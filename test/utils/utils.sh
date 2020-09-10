@@ -1165,4 +1165,42 @@ EOF
 	return $?
 }
 
+################################################################################
+# performance measurement to syslog
+#
+# this code is meant to use log program from the environment variable `LOGGER`
+# and defaults to the `logger` utility without any parameters. Since the system
+# log can already be distributed across several hosts, it is relatively simple
+# and stable compared to a database logging mechanism. Because the risk to
+# avoid is, that remote logging could eventually break our tests.
+#
+# In its default configuration all messages can be extracted from the log with:
+#     journalctl -t root
+# where `root` is called 'the identifier', the enitity to place the message
+# in syslog. This can be renamed, e.g. to foo as in
+#     export LOGGER='logger -t foo'
+# before running utils.sh.
+#
+################################################################################
+
+export LOGGER=${LOGGER:-logger}
+export START=$(date +%s%N)
+
+function log_reset_timer {
+	START=$(date +%s%N)
+}
+
+function log_call_stack {
+	for i in {0..10}
+	do
+		caller=$(caller $i) && echo $i: $caller || break
+	done
+}
+
+function log_execution_time {
+	$LOGGER "$BASH_EXECUTION_STRING needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
+}
+
+trap log_execution_time EXIT
+
 # vim:set filetype=sh ts=4:
