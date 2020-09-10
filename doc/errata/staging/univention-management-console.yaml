@@ -7,7 +7,7 @@ fix: 11.0.4-106A~4.4.0.202009091334
 desc: |
  This update addresses the following issue(s):
  * Expired passwords can now be changed in the SAML login dialog.
- * The error message when changing the password failed has been improoved.
+ * The error message when changing the password failed has been improved.
  * It is now possible to configure an additional password changing prompt
    via the UCR Variables umc/login/password-complexity-message/.*.
 bug: [51492, 51496, 51401]
