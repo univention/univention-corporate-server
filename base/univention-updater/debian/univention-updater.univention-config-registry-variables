@@ -208,12 +208,6 @@ Description[en]=This directory contains the local repository. If the variable is
 Type=str
 Categories=service-software-management
 
-[repository/mirror/recreate_packages]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Paketliste des lokalen Repositorys bei jeder Aktualisierung des Repositorys neu generiert. Ist sie auf 'no' gesetzt, wird sie unverändert vom Quellserver kopiert.
-Description[en]=If this variable is set to 'yes', the packages list of the local repository is regenerated with every update of the repository. If set to 'no', it is copied unmodified from the source server.
-Type=str
-Categories=service-software-management
-
 [repository/mirror/threads]
 Description[de]=Die maximale Anzahl der gleichzeitigen Downloads während der Repository-Spiegelung (siehe 'repository/mirror').
 Description[en]=The maximum amount of parallel downloads during repository mirroring (see 'repository/mirror').
