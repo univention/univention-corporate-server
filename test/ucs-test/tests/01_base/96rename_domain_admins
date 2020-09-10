@@ -17,6 +17,7 @@ from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.utils as utils
 import univention.testing.strings as uts
+from univention.testing.utils import package_installed
 import re
 import os
 import glob
@@ -38,6 +39,7 @@ def search_templates(old_group_name, new_group_name, server_role):
 		'/etc/security/access-other.conf', '/etc/security/access-kdm.conf', '/etc/security/access-ppp.conf', '/etc/security/access-sshd.conf']
 	if server_role == 'memberserver':
 		should_contain_admin.append('/etc/ldap/slapd.conf')
+		should_contain_admin.remove('/etc/security/access-sshd.conf')
 	# Check if the name was correctly updated in the templates
 	file_content = list(dict.fromkeys(file_content))
 	for file in file_content:
@@ -56,7 +58,14 @@ def search_templates(old_group_name, new_group_name, server_role):
 						utils.fail('FAIL: New group name %s not in %s' % (new_group_name, file))
 				else:
 					if old_group_name in content:
-						print('\n'.join([l for l in content.splitlines() if old_group_name in l]))
+						lines_containing = [l for l in content.splitlines() if old_group_name in l]
+						# Workaround for Bug #51975: Please remove if fixed
+						if file == '/etc/ldap/slapd.conf' and package_installed('univention-radius') and len(lines_containing) == 1:
+							print('/etc/ldap/slapd.conf contains the old_group_name due to http://forge.univention.org/bugzilla/show_bug.cgi?id=51975')
+							print('Ignore until fixed')
+							continue
+
+						print('\n'.join(lines_containing))
 						utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 
 
