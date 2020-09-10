@@ -48,7 +48,10 @@ class UCSSetup(UCSInstallation):
 		if self.text_is_visible('Notification', timeout=self.timeout):
 			self.screenshot('notification.png')
 			self.mouseClickOnText('OK')
-		self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
+		try:
+			self.client.waitForText('English', timeout=self.timeout, prevent_screen_saver=True)
+		except VNCDoException:
+			self.connect()
 		self.screenshot('language-setup.png')
 		self.next()
 		self.client.waitForText('Default system locale', timeout=self.timeout)
