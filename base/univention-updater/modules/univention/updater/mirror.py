@@ -37,6 +37,8 @@ import re
 import subprocess
 import itertools
 import logging
+import json
+from itertools import groupby
 from operator import itemgetter
 
 from .tools import UniventionUpdater
@@ -60,6 +62,29 @@ def makedirs(dirname, mode=0o755):
     except OSError as ex:
         if ex.errno != errno.EEXIST:
             raise
+
+
+def gen_releases(releases):  # type: (Iterator[Tuple[int, int, int]]) -> str
+    """Generate a releases.json string from a list of given releases"""
+    data = dict(
+        releases=[
+            dict(
+                major=major,
+                minors=[
+                    dict(
+                        minor=minor,
+                        patchlevels=[
+                            dict(
+                                patchlevel=patchlevel,
+                                status="maintained",  # FIXME: development | end-of-live
+                            ) for major, minor, patchlevel in patchelevels
+                        ]
+                    ) for minor, patchelevels in groupby(minors, key=itemgetter(1))
+                ]
+            ) for major, minors in groupby(releases, key=itemgetter(0))
+        ]
+    )
+    return json.dumps(data)
 
 
 class UniventionMirror(UniventionUpdater):
@@ -207,12 +232,22 @@ class UniventionMirror(UniventionUpdater):
 
         return result
 
+    def write_releases_json(self):
+        start = self.version_start
+        end = self.version_end
+        releases_json_path = os.path.join(self.repository_path, 'mirror', 'releases.json')
+        makedirs(os.path.dirname(releases_json_path))
+        releases = sorted(r for r in self.get_releases(self.server) if r >= start and r <= end)
+        with open(releases_json_path, 'w') as releases_json:
+            releases_json.write(gen_releases((r['major'], r['minor'], r['patchlevel']) for r in releases))
+
     def run(self):
         """
         starts the mirror process.
         """
         self.mirror_repositories()
         self.mirror_update_scripts()
+        self.write_releases_json()
 
 
 if __name__ == '__main__':
