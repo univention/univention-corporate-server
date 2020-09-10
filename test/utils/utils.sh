@@ -1151,6 +1151,15 @@ EOF
 # log can already be distributed across several hosts, it is relatively simple
 # and stable compared to a database logging mechanism. Because the risk to
 # avoid is, that remote logging could eventually break our tests.
+#
+# In its default configuration all messages can be extracted from the log with:
+#     journalctl -t root
+# where `root` is called 'the identifier', the enitity to place the message
+# in syslog. This can be renamed, e.g. to foo as in
+#     export LOGGER='logger -t foo'
+# before running utils.sh.
+#
+################################################################################
 
 export LOGGER=${LOGGER:-logger}
 export START=$(date +%s%N)
