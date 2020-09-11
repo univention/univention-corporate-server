@@ -897,8 +897,8 @@ run_app_appliance_tests () {
 			echo $add >>/var/cache/appcenter-installed.txt
 		done
 	done
-	# install ucs-test from errata test
-	/root/activate-errata-test-scope.sh
+	## install ucs-test from errata test
+	#/root/activate-errata-test-scope.sh
 	install_with_unmaintained ucs-test-appcenter ucs-test-checks || rv=$?
 	run_minimal_apptests || rv=$?
 	return $rv
