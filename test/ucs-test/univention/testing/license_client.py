@@ -68,18 +68,18 @@ class CredentialsMissing(Exception):
 
 class TestLicenseClient(HTMLParser):
 
-	def __init__(self, ArgParser=None):
+	def __init__(self, parser=None):
 		"""
 		Class constructor for the test license client and HTMLParser
 		"""
 		self.reset()  # to reset the HTML Parser
 		self.setup_logging()
 
-		self.Parser = ArgParser
+		self.parser = parser
 		self.license_server_url = 'license.univention.de'
 		self.license_filename = 'ValidTest.license'
 
-		self.Connection = None
+		self.connection = None
 		self.server_username = 'ucs-test'
 		self.server_password = ''
 		self.secret_file = '/etc/license.secret'
@@ -116,11 +116,11 @@ class TestLicenseClient(HTMLParser):
 
 	def create_connection(self):
 		"""
-		Creates a HTTPS Connection instance on a default port (443)
+		Creates a HTTPS connection instance on a default port (443)
 		to the 'self.license_server_url'
 		"""
 		self.log.debug("In 'create_connection'")
-		self.Connection = HTTPSConnection(self.license_server_url)
+		self.connection = HTTPSConnection(self.license_server_url)
 
 	def close_connection(self):
 		"""
@@ -128,9 +128,9 @@ class TestLicenseClient(HTMLParser):
 		was created
 		"""
 		self.log.debug("In 'close_connection'")
-		if self.Connection:
+		if self.connection:
 			try:
-				self.Connection.close()
+				self.connection.close()
 			except HTTPException as exc:
 				self.log.exception("An HTTP Exception occurred while closing the connection: '%s'" % exc)
 
@@ -189,8 +189,8 @@ class TestLicenseClient(HTMLParser):
 		"""
 		self.log.debug("In 'make_post_request' method: url='%s', body='%s', headers='%s'" % (url, body, headers))
 		try:
-			self.Connection.request("POST", url, body, headers)
-			response = self.Connection.getresponse()
+			self.connection.request("POST", url, body, headers)
+			response = self.connection.getresponse()
 		except HTTPException as exc:
 			self.log.exception("An HTTP Exception occurred while making '%s' POST request: '%s'" % (url, exc))
 			exit(1)
@@ -203,8 +203,8 @@ class TestLicenseClient(HTMLParser):
 		"""
 		self.log.debug("In 'make_get_request' method: url='%s', headers='%s'" % (url, headers))
 		try:
-			self.Connection.request("GET", url, headers=headers)
-			response = self.Connection.getresponse()
+			self.connection.request("GET", url, headers=headers)
+			response = self.connection.getresponse()
 		except HTTPException as exc:
 			self.log.exception("An HTTP Exception occurred while making '%s' GET request: '%s'" % (url, exc))
 			exit(1)
@@ -315,24 +315,24 @@ class TestLicenseClient(HTMLParser):
 
 	def process_cmd_arguments(self):
 		"""
-		Populates self.Parser class with positional and optional arguments and
+		Populates self.parser class with positional and optional arguments and
 		processes the user input, checks the date format and than merges it
 		with the default values in the 'self.license_params' dictionary
 		"""
 		self.log.debug("In 'process_cmd_arguments' method")
-		self.Parser.add_argument("BaseDN", help="A base DN for the license")
-		self.Parser.add_argument("EndDate", help="The date till which the license will be valid (max 1 year from now)")
-		self.Parser.add_argument("-f", "--FileName", help="The filename to be used for the issued license (default=ValidTest.license)")
-		self.Parser.add_argument("-s", "--Servers", type=int, help="Max amount of servers allowed with the license (default=50)")
-		self.Parser.add_argument("-u", "--Users", type=int, help="Max amount of users allowed with the license (default=50)")
-		self.Parser.add_argument("-mc", "--ManagedClients", type=int, help="Max amount of managed clients allowed with the license (default=50)")
-		self.Parser.add_argument("-cc", "--CorporateClients", type=int, help="Max amount of corporate clients allowed with the license (default=50)")
-		self.Parser.add_argument("-ll", "--LogLevel", help="Logging level: INFO|DEBUG|ERROR|CRITICAL (default=INFO)")
-		self.Parser.add_argument("--shop", help="The shop (default: %(default)s)", default=self.license_shop)
-		self.Parser.add_argument("--username", help="username (default: %(default)s)", default=self.server_username)
-		self.Parser.add_argument("--secret-file", help="password file (default: %(default)s)", default=self.secret_file)
+		self.parser.add_argument("BaseDN", help="A base DN for the license")
+		self.parser.add_argument("EndDate", help="The date till which the license will be valid (max 1 year from now)")
+		self.parser.add_argument("-f", "--FileName", help="The filename to be used for the issued license (default=ValidTest.license)")
+		self.parser.add_argument("-s", "--Servers", type=int, help="Max amount of servers allowed with the license (default=50)")
+		self.parser.add_argument("-u", "--Users", type=int, help="Max amount of users allowed with the license (default=50)")
+		self.parser.add_argument("-mc", "--ManagedClients", type=int, help="Max amount of managed clients allowed with the license (default=50)")
+		self.parser.add_argument("-cc", "--CorporateClients", type=int, help="Max amount of corporate clients allowed with the license (default=50)")
+		self.parser.add_argument("-ll", "--LogLevel", help="Logging level: INFO|DEBUG|ERROR|CRITICAL (default=INFO)")
+		self.parser.add_argument("--shop", help="The shop (default: %(default)s)", default=self.license_shop)
+		self.parser.add_argument("--username", help="username (default: %(default)s)", default=self.server_username)
+		self.parser.add_argument("--secret-file", help="password file (default: %(default)s)", default=self.secret_file)
 
-		args = self.Parser.parse_args()
+		args = self.parser.parse_args()
 		args = vars(args)  # converting Namespace to a dictionary
 		self.log.debug("Parsed arguments are: '%s'" % args)
 		self.update_with_parsed_args(args)
@@ -346,7 +346,7 @@ class TestLicenseClient(HTMLParser):
 		'license_file' is an optional argument for the license filename.
 		"""
 		self.log.debug("In 'main' method: server_url='%s', license_file='%s', base_dn='%s', end_date='%s'" % (server_url, license_file, base_dn, end_date))
-		if self.Parser:
+		if self.parser:
 			self.process_cmd_arguments()
 		elif (base_dn and end_date):
 			self.license_params['BaseDN'] = base_dn
