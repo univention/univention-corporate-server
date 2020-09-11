@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=7
+VERSION=8
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -164,10 +164,6 @@ ucs_registerLDAPExtension "$@" \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
 
 ucs_registerLDAPExtension "$@" \
-	--schema /usr/share/univention-s4-connector/ldap/domainpolicy.schema \
-	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" || die
-
-ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpwl.schema || die
 
 for udm_module in gpwl-wireless.py gpwl-wired.py gpwl-wireless-blob.py; do
@@ -187,6 +183,10 @@ ucs_registerLDAPExtension "$@" \
 for udm_module in gpsi-category-registration.py  gpsi-class-store.py  gpsi-package-registration.py; do
 	ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" --ucsversionstart "4.4-0" || die
 done
+
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/n_domainpolicy.schema \
+	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?
@@ -303,6 +303,11 @@ if [ -z "$s4connector_dc" ] \
 		if [ $JS_LAST_EXECUTED_VERSION -lt 7 ] && is_ucr_true connector/s4/mapping/msgpsi; then
 			# resync msgpsi objects from samba to ucs
 			/usr/share/univention-s4-connector/resync_object_from_s4.py --filter '(|(objectClass=classStore)(objectClass=categoryRegistration)(objectClass=packageRegistration))'
+		fi
+
+		if [ $JS_LAST_EXECUTED_VERSION -lt 8 ] ; then
+			# resync domainpolicy objects from samba to ucs
+			/usr/share/univention-s4-connector/resync_object_from_s4.py --filter '(objectClass=domainPolicy)'
 		fi
 	fi
 
