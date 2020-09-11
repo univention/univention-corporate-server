@@ -1927,6 +1927,8 @@ if not configRegistry.is_true('connector/s4/mapping/msgpsi', False):
 	s4_mapping.pop('ms/gpsi-category-registration')
 	s4_mapping.pop('ms/gpsi-class-store')
 	s4_mapping.pop('ms/gpsi-package-registration')
+if not configRegistry.is_true('connector/s4/mapping/domainpolicy', False):
+	s4_mapping.pop('ms/domainpolicy')
 
 #print 'global_ignore_subtree = %r' % (global_ignore_subtree,)
 #print 's4_mapping = %s' % (pprint.pformat(s4_mapping, indent=4, width=250),)
