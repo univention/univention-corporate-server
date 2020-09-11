@@ -1,3 +1,10 @@
+ucs-test (9.0.4-70) unstable; urgency=medium
+
+  * Bug #40656: de-register before register app in
+    20_appcenter/20_can_apps_be_installed
+
+ -- Felix Botner <botner@univention.de>  Fri, 11 Sep 2020 09:34:57 +0200
+
 ucs-test (9.0.4-69) unstable; urgency=low
 
   * Bug #51991: utils.sh benchmark to syslog
