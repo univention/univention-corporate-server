@@ -1,0 +1,59 @@
+.dijitDialogUnderlay
+	background: var(--color-grey8)
+	opacity: 0.8
+
+.dijitDialog
+	background: var(--color-grey0)
+	border-radius: 8px
+	max-width: 650px
+	box-shadow: var(--box-shadow)
+
+.dijitDialogTitleBar
+	font-weight: bold
+	padding: 2em 2em 1em 2em
+	display: flex
+	align-items: center
+
+.dijitDialogTitle
+	flex: 1 0 auto
+
+.dijitDialogCloseIcon
+	margin-left: 1em
+
+.dijitDialogPaneContent
+	padding: 0 2em 1em 2em
+
+.umcDialogActionBar
+	border-top: 1px solid var(--color-grey8)
+	padding: 0.5em 2em
+	display: flex
+	justify-content: flex-end
+	flex-wrap: wrap
+
+	&Left
+		flex: 1 1 auto
+
+	&Right
+		display: flex
+		justify-content: flex-end
+		flex-wrap: wrap
+		margin-left: 16px
+
+	.dijitButton
+		font-size: var(--font-size-small)
+		margin-right: 1em
+		&:last-child
+			margin-right: 0
+
+	.umcPageFooter
+		flex: 1 0 auto
+
+
+.umcDialog--empty
+	display: flex
+	flex-direction: column
+	width: 400px
+	height: 300px
+
+	.dijitDialogPaneContent
+		flex: 1 1 auto

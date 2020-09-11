@@ -10,23 +10,30 @@
    width="24"
    height="24"
    viewBox="0 0 24 24"
-   id="svg2"
+   fill="none"
+   stroke="currentColor"
+   stroke-width="2"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   class="feather feather-menu"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="portal-add-entry-plus.svg">
+   id="svg873"
+   sodipodi:docname="menu_checked.svg"
+   inkscape:version="0.92.4 (unknown)">
   <metadata
-     id="metadata10">
+     id="metadata879">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs8" />
+     id="defs877" />
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -36,19 +43,36 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1015"
-     id="namedview6"
+     inkscape:window-width="1916"
+     inkscape:window-height="1023"
+     id="namedview875"
      showgrid="false"
-     inkscape:zoom="9.8333333"
-     inkscape:cx="-3.9152548"
-     inkscape:cy="12"
+     inkscape:zoom="17.5625"
+     inkscape:cx="-1.883005"
+     inkscape:cy="17.679343"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
-  <path
-     d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
-     id="path4"
-     style="fill:#282828;fill-opacity:1" />
+     inkscape:window-y="55"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg873" />
+  <line
+     x1="3"
+     y1="12"
+     x2="21"
+     y2="12"
+     id="line867"
+     style="stroke:#7ab51d;stroke-opacity:1" />
+  <line
+     x1="3"
+     y1="6"
+     x2="21"
+     y2="6"
+     id="line869"
+     style="stroke:#7ab51d;stroke-opacity:1" />
+  <line
+     x1="3"
+     y1="18"
+     x2="21"
+     y2="18"
+     id="line871"
+     style="stroke:#7ab51d;stroke-opacity:1" />
 </svg>

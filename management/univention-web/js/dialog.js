@@ -49,7 +49,7 @@ define([
 	var dialog = {};
 	lang.mixin(dialog, {
 
-		contextNotify: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+		contextNotify: function(/*innerHTML*/ message, options) {
 			// summary:
 			//		Show a snackbar notification on the bottom of the screen.
 			//		(Snackbar notification from Google Material Design)
@@ -63,11 +63,11 @@ define([
 			// 		The label that is shown in the action button.
 			// 		(Only needed is action is specified)
 			NotificationSnackbar.getInstance().then(function(snackbar) {
-				snackbar.notify(message, action, actionLabel);
+				snackbar.notify(message, options);
 			});
 		},
 
-		contextWarn: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+		contextWarn: function(/*innerHTML*/ message, options) {
 			// summary:
 			//		Show a snackbar warning notification on the bottom of the screen.
 			//		(Snackbar notification from Google Material Design)
@@ -81,7 +81,7 @@ define([
 			// 		The label that is shown in the action button.
 			// 		(Only needed is action is specified)
 			NotificationSnackbar.getInstance().then(function(snackbar) {
-				snackbar.warn(message, action, actionLabel);
+				snackbar.warn(message, options);
 			});
 		},
 
@@ -136,6 +136,10 @@ define([
 			}
 			this._alertDialogDeferred = new Deferred();
 
+			// unhandled rejects (this._alertDialogDeferred.reject)
+			// throw an error so we just respond to errors once with an empty callback
+			this._alertDialogDeferred.then(function() {}, function() {});
+
 			// create alert dialog the first time
 			if (!this._alertDialog) {
 				this._alertDialog = new ConfirmDialog({
@@ -145,8 +149,8 @@ define([
 						label: buttonLabel || _('Ok'),
 						callback: lang.hitch(this, function() {
 							// hide dialog upon confirmation by click on 'OK'
-							this._alertDialog.hide();
 							this._alertDialogDeferred.resolve();
+							this._alertDialog.hide();
 						}),
 						'default': true
 					}]

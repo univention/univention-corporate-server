@@ -48,24 +48,28 @@ define([
 	var DetailDialog = declare(null, {});
 	require([
 		"dijit/Dialog",
+		"dijit/_WidgetsInTemplateMixin",
 		"umc/widgets/StandbyMixin",
 		"umc/widgets/SearchForm"
-	], function(Dialog, StandbyMixin, SearchForm) {
-		DetailDialog = declare([ Dialog, StandbyMixin ], {
-			widgets: [],
+	], function(Dialog, _WidgetsInTemplateMixin, StandbyMixin, SearchForm) {
+		DetailDialog = declare([ Dialog, _WidgetsInTemplateMixin, StandbyMixin ], {
+			//// overwrites
+			// dijit/_DialogMixin.js
+			actionBarTemplate: '' +
+				'<div class="umcDialogActionBar">' +
+					'<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBarLeft"  class="umcDialogActionBarLeft"></div>' +
+					'<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBarRight" class="umcDialogActionBarRight"></div>' +
+				'</div>',
 
+			//// new
+			widgets: null,
 			queryCommand: '',
-
-			queryOptions: {},
-
+			queryOptions: null,
 			autoSearch: true,
 
 			_form: null,
-
 			_multiSelect: null,
-
 			_container: null,
-
 			_ignoreIds: null,
 
 			uninitialize: function() {
@@ -73,11 +77,57 @@ define([
 				this._container.destroyRecursive();
 			},
 
-			postMixInProperties: function() {
-				this.inherited(arguments);
-				if (!this.title) {
-					this.title = _('Add objects');
-				}
+			constructor: function() {
+				this.widgets = [];
+				this.queryOptions = {};
+				this.actions = [{
+					$align: 'left',
+					label: _('Cancel'),
+					iconClass: 'iconX',
+					'class': 'ucsTextButton',
+					onClick: lang.hitch(this, function() {
+						// hide the dialog
+						this.hide();
+
+						// deselect all elements
+						this._multiSelect.selection.clear();
+
+					})
+				}, {
+					label: _('Add'),
+					iconClass: 'iconCheck',
+					'class': 'ucsTextButton',
+					onClick: lang.hitch(this, function() {
+						// get all elements an trigger onAdd event
+						var ids = this._multiSelect.get('value');
+						if (ids.length) {
+							// only trigger event if there are more then 0 entries
+							this.onAdd(ids);
+						}
+
+						// hide the dialog
+						this.hide();
+
+						// deselect all elements
+						this._multiSelect.selection.clear();
+					})
+				}];
+			},
+
+			_setActionsAttr: function(actions) {
+				this.actionBarLeft.destroyDescendants();
+				this.actionBarRight.destroyDescendants();
+				array.forEach(actions, lang.hitch(this, function(action) {
+					var align = action.$align || 'right';
+					delete action.$align; // FIXME this._set('actions') is now missing $align
+					var button = new Button(action);
+					if (align === 'left') {
+						this.actionBarLeft.addChild(button);
+					} else {
+						this.actionBarRight.addChild(button);
+					}
+				}));
+				this._set('actions', actions);
 			},
 
 			buildRendering: function() {
@@ -85,7 +135,7 @@ define([
 
 				// create a container for all widgets
 				this._container = new ContainerWidget({});
-				this._container.placeAt(this.containerNode);
+				this.addChild(this._container);
 
 				// for the layout, all Elements should be below each other
 				var layout = array.map(this.widgets, function(iwidget) {
@@ -115,40 +165,6 @@ define([
 					content: this._multiSelect,
 					style: 'display: block;' // do not allow for floating
 				}));
-
-				// add the final buttons to close the dialog
-				var btnContainer = new ContainerWidget({
-					'class': 'umcButtonRow'
-				});
-				btnContainer.addChild(new Button({
-					label: _('Cancel'),
-					onClick: lang.hitch(this, function() {
-						// hide the dialog
-						this.hide();
-
-						// deselect all elements
-						this._multiSelect.selection.clear();
-
-					})
-				}));
-				btnContainer.addChild(new Button({
-					label: _('Add'),
-					onClick: lang.hitch(this, function() {
-						// get all elements an trigger onAdd event
-						var ids = this._multiSelect.get('value');
-						if (ids.length) {
-							// only trigger event if there are more then 0 entries
-							this.onAdd(ids);
-						}
-
-						// hide the dialog
-						this.hide();
-
-						// deselect all elements
-						this._multiSelect.selection.clear();
-					})
-				}));
-				this._container.addChild(btnContainer);
 
 				// put focus to last widget in the SearchForm
 				this.on('focus', lang.hitch(this, function() {
@@ -235,7 +251,7 @@ define([
 
 		// dialogTitle: String
 		//	  Specifies the title of the dialog to add new entries.
-		dialogTitle: null,
+		dialogTitle: _('Add objects'),
 
 		name: '',
 
@@ -301,6 +317,8 @@ define([
 			container = new ContainerWidget({});
 			this._addButton = new Button({
 				label: _('Add'),
+				iconClass: 'iconPlus',
+				'class': 'ucsTextButton',
 				onClick: lang.hitch(this, function() {
 					if (!this._detailDialog) {
 						// dialog does not exist, create a new one
@@ -324,8 +342,9 @@ define([
 			container.addChild(this._addButton);
 			this._removeButton = new Button({
 				label: _('Remove'),
-				onClick: lang.hitch(this, '_removeSelectedElements'),
-				style: 'float: right;'
+				'class': 'ucsTextButton',
+				iconClass: 'iconTrash',
+				onClick: lang.hitch(this, '_removeSelectedElements')
 			});
 			container.addChild(this._removeButton);
 			this.addChild(container);

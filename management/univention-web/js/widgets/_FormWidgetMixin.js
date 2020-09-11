@@ -60,6 +60,13 @@ define([
 		postCreate: function() {
 			this.inherited( arguments );
 			domClass.add( this.domNode, 'umcFormWidget' );
+
+			this.watch('state', function(_name, _oldVal, newVal) {
+				var refLabel = this.$refLabel$;
+				if (refLabel) {
+					domClass.toggle(refLabel.domNode, refLabel.baseClass + 'Error', !!newVal);
+				}
+			});
 		},
 
 		//

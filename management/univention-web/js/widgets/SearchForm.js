@@ -83,8 +83,9 @@ define([
 				this.buttons.push({
 					name: 'submit',
 					showLabel: false,
-					label: _('Search'),
-					iconClass: 'umcSearchIcon'
+					// label: _('Search'),
+					'class': 'ucsIconButton',
+					iconClass: 'iconSearch'
 				});
 			}
 

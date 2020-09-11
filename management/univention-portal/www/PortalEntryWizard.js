@@ -85,8 +85,8 @@ define([
 					headerText: ' ' // FIXME hacky workaround to get 'nav' to show so that Page.js adds the mainBootstrapClasses to 'main'
 				}, {
 					name: 'icon',
-					widgets: this._getWidgets(['icon']),
-					layout: ['icon'],
+					widgets: this._getWidgets(['icon', 'backgroundColor']),
+					layout: ['icon', 'backgroundColor'],
 					headerText: ' '
 				}, {
 					name: 'displayName',
@@ -157,48 +157,61 @@ define([
 			var scrollY = window.scrollY;
 			this.inherited(arguments);
 			window.scrollTo(0, scrollY);
+			this.onSwitchPage();
 		},
+		onSwitchPage: function() {},
 
 		getFooterButtons: function(pageName) {
 			var footerbuttons = [{
 				name: 'remove',
-				label: _('Remove from this portal'),
+				label: _('Remove'),
 				align: 'right',
 				callback: lang.hitch(this, function() {
-					dialog.confirm(_('Do you really want to remove this entry from this portal'), [{
+					dialog.confirm(_('Do you really want to remove this entry?'), [{
 						name: 'cancel',
-						label: _('Cancel')
+						label: _('Cancel'),
+						iconClass: 'iconX',
 					}, {
 						name: 'remove',
 						label: _('Remove'),
 						'default': true,
-						callback: lang.hitch(this, 'onRemove')
+						callback: lang.hitch(this, 'onRemove'),
+						iconClass: 'iconTrash',
 					}]);
-				})
+				}),
+				class: 'ucsTextButton',
+				iconClass: 'iconTrash',
 			}, {
 				name: 'previous',
 				label: _('Back'),
 				align: 'right',
-				callback: lang.hitch(this, '_previous', pageName)
+				callback: lang.hitch(this, '_previous', pageName),
+				class: 'ucsTextButton',
 			}, {
 				name: 'next',
 				align: 'right',
 				label: _('Next'),
-				callback: lang.hitch(this, '_next', pageName)
+				callback: lang.hitch(this, '_next', pageName),
+				class: 'ucsTextButton',
 			}, {
 				name: 'cancel',
 				label: _('Cancel'),
-				callback: lang.hitch(this, 'onCancel')
+				callback: lang.hitch(this, 'onCancel'),
+				class: 'ucsTextButton',
+				iconClass: 'iconX',
 			}, {
 				name: 'save',
 				defaultButton: true,
 				label: _('Save'),
-				callback: lang.hitch(this, '_finish', pageName)
+				callback: lang.hitch(this, '_finish', pageName),
+				class: 'ucsTextButton',
+				iconClass: 'iconSave',
 			}, {
 				name: 'finish',
 				defaultButton: true,
 				label: _('Finish'),
-				callback: lang.hitch(this, '_finish', pageName)
+				callback: lang.hitch(this, '_finish', pageName),
+				class: 'ucsTextButton',
 			}];
 
 			return footerbuttons;
@@ -310,7 +323,7 @@ define([
 
 			// validate the form values
 			tools.umcpCommand('udm/validate', {
-				objectType: 'settings/portal_entry',
+				objectType: 'portals/entry',
 				properties: alteredValuesNonEmpty
 			}).then(lang.hitch(this, function(response) {
 				// parse response and mark widgets with invalid values

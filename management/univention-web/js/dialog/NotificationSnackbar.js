@@ -39,10 +39,13 @@ define([
 	"dojo/Deferred",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
-	"umc/i18n!"
-], function(declare, lang, baseFx, domClass, domGeometry, domStyle, on, Deferred, _WidgetBase, _TemplatedMixin, _) {
+	"dijit/_WidgetsInTemplateMixin",
+	"umc/tools",
+	"umc/i18n!",
+	"umc/widgets/Button"
+], function(declare, lang, baseFx, domClass, domGeometry, domStyle, on, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, tools, _) {
 	var notificationSnackbarDeferred = new Deferred({});
-	var NotificationSnackbar = declare('umc.widgets.NotificationSnackbar', [_WidgetBase, _TemplatedMixin], {
+	var NotificationSnackbar = declare('umc.widgets.NotificationSnackbar', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		// summary:
 		// 		A Snackbar defined by Google Material Design to show notifications on the bottom of the screen.
 		// 		There should only be one instance of this Widget.
@@ -66,11 +69,36 @@ define([
 			'<div class="umcNotificationSnackbar" data-dojo-attach-point="domNode">' +
 				'<div class="umcSnackbarNotification dijitOffScreen" data-dojo-attach-point="notificationNode">' +
 					'<div class="umcNotificationMessageContainer">' +
+						'<div class="umcNotificationMessageIconContainer dijitDisplayNone" data-dojo-attach-point="iconContainerNode">' +
+							'<div class="umcNotificationMessageIcon" data-dojo-attach-point="iconNode"></div>' +
+						'</div>' +
 						'<span class="umcNotificationMessage" data-dojo-attach-point="messageNode"></span>' +
+						'<div class="umcNotificationMessageClose">' +
+							'<button data-dojo-type="umc/widgets/Button" data-dojo-attach-event="click: onClose" data-dojo-props="iconClass: \'iconX\', class: \'ucsIconButton ucsIconButtonCompact\'"></button>' +
+						'</div>' +
 						'<button type="button" class="umcNotificationActionButton dijitDisplayNone" data-dojo-attach-point="actionButtonNode" data-dojo-attach-event="onclick: onNotificationActionClick"></button>' +
 					'</div>' +
 				'</div>' +
 			'</div>',
+
+		notificationType: '',
+		_setNotificationTypeAttr: function(type) {
+			domClass.remove(this.notificationNode, 'umcSnackbarNotificationWarning umcSnackbarNotificationSuccess');
+			if (type === 'warning') {
+				domClass.add(this.notificationNode, 'umcSnackbarNotificationWarning');
+			} else if (type === 'success') {
+				domClass.add(this.notificationNode, 'umcSnackbarNotificationSuccess');
+			}
+
+			tools.toggleVisibility(this.iconContainerNode, !!type);
+			domClass.remove(this.iconNode, 'iconWarningTriangle iconCheckCircle');
+			if (type === 'warning') {
+				domClass.add(this.iconNode, 'iconWarningTriangle');
+			} else if (type === 'success') {
+				domClass.add(this.iconNode, 'iconCheckCircle');
+			}
+			this._set('notificationType', type);
+		},
 
 		// notificationMessage: innerHTML
 		// 		The message that is shown in the notification.
@@ -81,12 +109,17 @@ define([
 		// 		A notification can have a single action
 		// 		that is performed when the action button is pressed.
 		notificationAction: null,
+		_setNotificationActionAttr: function(action) {
+			tools.toggleVisibility(this.actionButtonNode, !!action);
+			this._set('notificationAction', action);
+		},
 
 		// notificationActionLabel: String
 		// 		The label for the action button.
 		notificationActionLabel: null,
 		_setNotificationActionLabelAttr: { node: 'actionButtonNode', type: 'innerHTML' },
 
+		// //TODO adjust doc
 		// _queue: Object[{ message: innerHTML, action: function, actionLabel: String, isWarning: boolean }]
 		// 		Array containing all the messages that need to be shown.
 		// 		The first item is the currently shown notification.
@@ -96,7 +129,7 @@ define([
 		// 		The height of a notification where the message fits on one line.
 		// 		When setting a message and the height of the notification is higher than
 		// 		this value, special css classes are set.
-		_oneLineHeight: null,
+		// _oneLineHeight: null,
 
 		// _notificationHeight: Integer
 		// 		The current height of the notification.
@@ -187,7 +220,7 @@ define([
 					this._minVisibleTimeReached.resolve();
 				}), this._minVisibleTime);
 
-				if (!this.isWarningShown) {
+				if (this.notificationType !== 'warning') {
 					this._maxVisibleTimeTimeout = setTimeout(lang.hitch(this, function() {
 						this._maxVisibleTimeReached.resolve();
 					}), this._maxVisibleTime);
@@ -197,7 +230,6 @@ define([
 			this.own(on(this._wipeOut, 'End', lang.hitch(this, function() {
 				this._refreshMinVisibleTimeReached();
 				this._refreshMaxVisibleTimeReached();
-				this.isWarningShown = false;
 
 				this._queue.shift(); // remove first (current) notification from _queue
 				if (this._queue.length) {
@@ -235,21 +267,27 @@ define([
 			}));
 		},
 
-		warn: function(message, action, actionLabel) {
-			this._notify(message, action, actionLabel, true);
-		},
-
-		notify: function(message, action, actionLabel) {
-			this._notify(message, action, actionLabel, false);
-		},
-
-		_notify: function(message, action, actionLabel, isWarning) {
-			this._queue.push({
+		warn: function(message, options) {
+			this._notify(lang.mixin({}, options, {
 				message: message,
-				action: action,
-				actionLabel: actionLabel,
-				isWarning: isWarning || false
-			});
+				type: 'warning'
+			}));
+		},
+
+		notify: function(message, options) {
+			this._notify(lang.mixin({}, options, {
+				message: message
+			}));
+		},
+
+		_notify: function(notification) {
+			window.foo = this;
+			this._queue.push(lang.mixin({
+				message: '',
+				action: null,
+				actionLabel: null,
+				type: ''
+			}, notification))
 
 			if (this._minVisibleTimeReached.isResolved()) {
 				this._maxVisibleTimeReached.resolve();
@@ -270,9 +308,9 @@ define([
 		},
 
 		_prepareNotification: function(notification) {
-			if (!this._oneLineHeight) {
-				this._oneLineHeight = domGeometry.getMarginBox(this.notificationNode).h;
-			}
+			// if (!this._oneLineHeight) {
+				// this._oneLineHeight = domGeometry.getContentBox(this.notificationNode).h;
+			// }
 
 			// hide notification offscreen (new message text could make notification higher
 			// then before and the set 'bottom' style would not be enough)
@@ -285,41 +323,37 @@ define([
 			domClass.remove(this.notificationNode, 'multiLineWithActionButton');
 
 			// set notification data
-			this.set('isWarningShown', notification.isWarning);
+			this.set('notificationType', notification.type);
 			this.set('notificationMessage', notification.message);
 			this.set('notificationAction', notification.action);
-			this.set('notificationActionLabel', (this.isWarningShown && !notification.action) ? _('OK') : notification.actionLabel);
+			this.set('notificationActionLabel', notification.actionLabel);
 			
 			// update _maxVisibleTime based on amount of text in message
 			var textContent = notification.message.textContent ? notification.message.textContent : notification.message;
 			var wordCount = textContent.split(' ').length;
 			this._maxVisibleTime = Math.max(this._baseMaxVisibleTime, wordCount * 0.5 /*2 words per second*/ * 1000 /*in milliseconds*/);
 
-			// set warning css class
-			domClass.toggle(this.notificationNode, 'umcSnackbarNotificationWarning', this.isWarningShown);
-
-			// show or hide action button
-			var showActionButton = this.isWarningShown || !!this.notificationAction;
-			domClass.toggle(this.actionButtonNode, 'dijitDisplayNone', !showActionButton);
-
 			// set styling class for notification with action button if higher than one line
 			this._notificationHeight = domGeometry.getMarginBox(this.notificationNode).h;
-			if (showActionButton && this._notificationHeight > this._oneLineHeight) {
-				domClass.add(this.notificationNode, 'multiLineWithActionButton');
-				this._notificationHeight = domGeometry.getMarginBox(this.notificationNode).h;
-			}
+			// if (this._notificationHeight > this._oneLineHeight) {
+				// domClass.add(this.notificationNode, 'multiLineWithActionButton');
+				// this._notificationHeight = domGeometry.getContentBox(this.notificationNode).h;
+			// }
 
 			// put notification just under bottom of screen
 			domStyle.set(this.notificationNode, 'bottom', -this._notificationHeight + 'px');
 			domClass.remove(this.notificationNode, 'dijitOffScreen');
 		},
 
+		onClose: function() {
+			this._maxVisibleTimeReached.resolve();
+		},
+
 		onNotificationActionClick: function() {
 			if (this.notificationAction) {
 				this.notificationAction();
 			}
-
-			this._maxVisibleTimeReached.resolve();
+			this.onClose();
 		}
 	});
 

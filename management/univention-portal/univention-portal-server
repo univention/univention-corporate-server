@@ -214,7 +214,7 @@ class LDAPCache(object):
 		return fd
 
 	def _extract_portal(self, portal):
-		self._write_css(portal)
+		#  self._write_css(portal)
 		ret = {}
 		ret['dn'] = portal.dn
 		ret['showApps'] = portal.props.showApps
@@ -223,6 +223,11 @@ class LDAPCache(object):
 			ret['logo'] = self._write_image(portal.props.name, portal.props.logo.raw, 'logos')
 		else:
 			ret['logo'] = None
+		ret['background'] = (
+			self._write_image(portal.props.name, portal.props.background.raw, 'backgrounds')
+			if portal.props.background
+			else None
+		)
 		ret['name'] = portal.props.displayName
 		ret['ensureLogin'] = portal.props.ensureLogin
 		ret['anonymousEmpty'] = portal.props.anonymousEmpty
@@ -293,6 +298,7 @@ class LDAPCache(object):
 					'allowedGroups': entry.props.allowedGroups,
 					'links': entry.props.link,
 					'linkTarget': entry.props.linkTarget,
+					'backgroundColor': entry.props.backgroundColor,
 				}
 
 		def _add_entry(entry, ret, already_unpacked_folder_dns):
@@ -553,7 +559,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, username, admin_mode)
 		visible_folder_dns = [
 			folder_dn for folder_dn in folders.keys()
-			if len(
+			if admin_mode or len(
 				[
 					entry_dn for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
 					if entry_dn in visible_entry_dns
@@ -562,7 +568,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		]
 		visible_category_dns = [
 			category_dn for category_dn in categories.keys()
-			if len(
+			if admin_mode or len(
 				[
 					entry_dn for entry_dn in categories[category_dn]['entries']
 					if entry_dn in visible_entry_dns or entry_dn in visible_folder_dns

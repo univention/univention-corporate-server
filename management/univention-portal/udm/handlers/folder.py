@@ -70,7 +70,7 @@ property_descriptions = {
 	'entries': univention.admin.property(
 		short_description=_('Entry'),
 		long_description=_('List of portal entries and/or portal folders shown in this folder'),
-		syntax=univention.admin.syntax.NewPortalCategoryEntries,
+		syntax=univention.admin.syntax.NewPortalEntries,
 		multivalue=True,
 		required=False,
 	),

@@ -37,6 +37,9 @@ define([
 	"dojo/topic",
 	"dojox/gesture/tap",
 	"dojo/dom-class",
+	"dijit/_WidgetBase",
+	"dijit/_TemplatedMixin",
+	"dijit/_WidgetsInTemplateMixin",
 	"dijit/MenuItem",
 	"dijit/PopupMenuItem",
 	"dijit/MenuSeparator",
@@ -46,8 +49,9 @@ define([
 	"umc/menu/_Button",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
+	"umc/widgets/Button",
 	"umc/i18n!"
-], function(declare, lang, array, on, Deferred, topic, tap, domClass, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, _) {
+], function(declare, lang, array, on, Deferred, topic, tap, domClass, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, DijitMenuItem, PopupMenuItem, MenuSeparator, tools, MenuItem, SubMenuItem, _Button, ContainerWidget, Text, umcButton, _) {
 
 	// require umc/menu here in order to avoid circular dependencies
 	var menuDeferred = new Deferred();
@@ -57,23 +61,89 @@ define([
 
 	var mobileMenuDeferred = new Deferred();
 
-	require(['login'], function(login) {
+	var loginDeferred = new Deferred();
+	require(["login"], function(_login) {
+		loginDeferred.resolve(_login);
+	});
+
+	loginDeferred.then(function(login) {
 		// react to login/logout events
 		login.onLogin(function() {
 			// user has logged in -> set username and host in menu header
 			mobileMenuDeferred.then(function(menu) {
-				menu.informationHeader.username.set('content', tools.status('username'));
-				menu.informationHeader.host.set('content', lang.replace('@{0}', [tools.status('hostname')]));
+				menu.loginHeader.set('loggedIn', true);
+				menu.loginHeader.set('username', tools.status('username'));
 			});
 		});
 
 		login.onLogout(function() {
 			// user has logged out -> unset username and host in menu header
 			mobileMenuDeferred.then(function(menu) {
-				menu.informationHeader.username.set('content', '');
-				menu.informationHeader.host.set('content', '');
+				menu.loginHeader.set('loggedIn', false);
 			});
 		});
+	});
+
+	var LoginHeader = declare('LoginHeader', [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+		widgetsInTemplate: true,
+		templateString: '' +
+			'<div class="menuLoginHeader">' +
+				'<div class="menuLoginHeader--loggedout" data-dojo-attach-point="loginWrapper">' +
+					'<button class="menuLoginHeader__loginButton ucsMenuButton" data-dojo-type="umc/widgets/Button" data-dojo-attach-point="loginButon"></button>' +
+				'</div>' +
+				'<div class="menuLoginHeader--loggedin dijitDisplayNone" data-dojo-attach-point="loggedinWrapper">' +
+					'<div class="menuLoginHeader__logo"></div>' +
+					'<div class="menuLoginHeader__innerWrapper">' +
+						'<div class="menuLoginHeader__username" data-dojo-attach-point="usernameNode"></div>' +
+						'<button class="menuLoginHeader__logoutButton ucsLinkButton" data-dojo-type="umc/widgets/Button" data-dojo-attach-point="logoutButon"></button>' +
+					'</div>' +
+				'</div>' +
+			'</div>',
+
+		loggedIn: false,
+		_setLoggedInAttr: function(loggedIn) {
+			tools.toggleVisibility(this.loginWrapper, !loggedIn);
+			tools.toggleVisibility(this.loggedinWrapper, loggedIn);
+			this._set('loggedIn', loggedIn);
+		},
+
+		username: '',
+		_setUsernameAttr: { node: 'usernameNode', type: 'innerHTML' },
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.loginButon.set('label', _('Login'));
+			this.logoutButon.set('label', _('Logout'));
+		},
+
+		postCreate: function() {
+			this.loginButon.on('click', lang.hitch(this, function() {
+				if (this.loginCallbacks && this.loginCallbacks.login) {
+					this.loginCallbacks.login();
+				} else {
+					loginDeferred.then(function(login) {
+						topic.publish('/umc/actions', 'menu', 'login');
+						login.start();
+					});
+				}
+				menuDeferred.then(function(menu) {
+					menu.close();
+				});
+			}));
+			this.logoutButon.on('click', lang.hitch(this, function() {
+				if (this.loginCallbacks && this.loginCallbacks.logout) {
+					this.loginCallbacks.logout();
+				} else {
+					loginDeferred.then(function(login) {
+						topic.publish('/umc/actions', 'menu', 'logout');
+						login.logout();
+					});
+				}
+				menuDeferred.then(function(menu) {
+					menu.close();
+				});
+			}));
+		}
 	});
 
 	var MobileMenu = declare('umc.menu.Menu', [ContainerWidget], {
@@ -82,6 +152,9 @@ define([
 		menuSlides: null,
 		permaHeader: null,
 		popupHistory: null,
+
+		showLoginHeader: false,
+		loginCallbacks: null,
 
 		// save entries which have no parent yet
 		_orphanedEntries: null,
@@ -96,8 +169,7 @@ define([
 			this.inherited(arguments);
 			this._menuMap = {};
 
-			this.addButton();
-			this.addInformationHeader();
+			this.addLoginHeader();
 			this.addMenuSlides();
 			this.addUserMenu();
 			this.addPermaHeader();
@@ -110,21 +182,12 @@ define([
 			mobileMenuDeferred.resolve(this);
 		},
 
-		addInformationHeader: function() {
-			var username = new Text({
-				'class': 'menuInformationHeaderUsername'
+		addLoginHeader: function() {
+			this.loginHeader = new LoginHeader({
+				loginCallbacks: this.loginCallbacks
 			});
-			var host = new Text({
-				'class': 'menuInformationHeaderHostname'
-			});
-			this.informationHeader = new ContainerWidget({
-				'class': 'menuInformationHeader',
-				username: username,
-				host: host
-			});
-			this.informationHeader.addChild(username);
-			this.informationHeader.addChild(host);
-			this.addChild(this.informationHeader);
+			tools.toggleVisibility(this.loginHeader, this.showLoginHeader);
+			this.addChild(this.loginHeader);
 		},
 
 		addMenuSlides: function() {
@@ -163,10 +226,6 @@ define([
 				this._updateMobileMenuPermaHeaderForClosing(lastClickedSubMenuItem);
 				lastClickedSubMenuItem.close();
 			}));
-		},
-
-		addButton: function() {
-			this.addChild(new _Button());
 		},
 
 		_updateMobileMenuPermaHeaderForClosing: function(subMenuItem) {

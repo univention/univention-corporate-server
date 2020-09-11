@@ -103,6 +103,11 @@ property_descriptions = {
 		default='useportaldefault',
 		dontsearch=True,
 	),
+	'backgroundColor': univention.admin.property(
+		short_description=_('Background color'),
+		syntax=univention.admin.syntax.string,
+		dontsearch=True,
+	)
 }
 
 layout = [
@@ -110,6 +115,7 @@ layout = [
 		Group(_('General'), layout=[
 			["name"],
 			["icon"],
+			["backgroundColor"],
 		]),
 		Group(_('Display name'), layout=[
 			["displayName"],
@@ -146,6 +152,7 @@ mapping.register('linkTarget', 'univentionNewPortalEntryLinkTarget', None, unive
 mapping.register('activated', 'univentionNewPortalEntryActivate', None, univention.admin.mapping.ListToString)
 mapping.register('allowedGroups', 'univentionNewPortalEntryAllowedUserGroup')
 mapping.register('icon', 'univentionNewPortalEntryIcon', None, univention.admin.mapping.ListToString)
+mapping.register('backgroundColor', 'univentionNewPortalEntryBackgroundColor', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

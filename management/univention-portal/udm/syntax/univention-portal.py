@@ -64,6 +64,16 @@ class NewPortalEntries(UDM_Objects):
 	simple = True
 
 
+class NewPortalFolders(UDM_Objects):
+	"""
+	Syntax to select a portal entries from |LDAP| using :py:class:`univention.admin.handlers.portals.entry`.
+	"""
+	udm_modules = ('portals/folder', )
+	label = '%(name)s'
+	empty_value = True
+	simple = True
+
+
 class NewPortalComputer(UDM_Objects):
 	"""
 	Syntax to select a |UCS| host from |LDAP| by |FQDN| running the portal service.
