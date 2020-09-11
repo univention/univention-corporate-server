@@ -1,3 +1,9 @@
+ucs-test (9.0.4-71) unstable; urgency=medium
+
+  * Bug #50631: cherry-pick test changes from UCS 5.0
+
+ -- Florian Best <best@univention.de>  Fri, 11 Sep 2020 15:21:57 +0200
+
 ucs-test (9.0.4-70) unstable; urgency=medium
 
   * Bug #40656: de-register before register app in
