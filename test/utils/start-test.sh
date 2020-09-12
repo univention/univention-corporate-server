@@ -137,7 +137,37 @@ done
 [ -d ./utils ] || die "./utils dir is missing!"
 
 # a list of important env vars that are passed to the docker container
-env_vars="USER KVM_USER CURRENT_AMI OLD_AMI UCS_MINORRELEASE TARGET_VERSION UCS_VERSION OLD_VERSION KVM_TEMPLATE KVM_UCSVERSION KVM_OLDUCSVERSION KVM_BUILD_SERVER KVM_MEMORY KVM_CPUS EXACT_MATCH SHUTDOWN RELEASE_UPDATE ERRATA_UPDATE UCSSCHOOL_RELEASE CFG UCS_TEST_RUN HALT TERMINATE_ON_SUCCESS REPLACE BUILD_BRANCH BUILD_REPO NETINSTALL_IP1 NETINSTALL_IP2"
+declare -a env_vars=(
+	BUILD_BRANCH
+	BUILD_REPO
+	CFG
+	CURRENT_AMI
+	ERRATA_UPDATE
+	EXACT_MATCH
+	HOME
+	HALT
+	KVM_BUILD_SERVER
+	KVM_CPUS
+	KVM_MEMORY
+	KVM_OLDUCSVERSION
+	KVM_TEMPLATE
+	KVM_UCSVERSION
+	KVM_USER
+	NETINSTALL_IP1
+	NETINSTALL_IP2
+	OLD_AMI
+	OLD_VERSION
+	RELEASE_UPDATE
+	REPLACE
+	SHUTDOWN
+	TARGET_VERSION
+	TERMINATE_ON_SUCCESS
+	UCS_MINORRELEASE
+	UCSSCHOOL_RELEASE
+	UCS_TEST_RUN
+	UCS_VERSION
+	USER
+)
 
 export CURRENT_AMI=${CURRENT_AMI:=$current_ami}
 export OLD_AMI=${OLD_AMI:=$old_ami}
@@ -218,11 +248,12 @@ if "$docker"; then
 	# create new image with host user/group
 	docker build --pull -t "$USER/$image" 1>/dev/null -<<EOF
 FROM $image
-RUN addgroup --gid $(id -g) "dockergroup" && adduser --system --uid $(id -u) --gid $(id -g) $USER
+RUN addgroup --gid $(id -g) dockergroup && adduser --system --home "$HOME" --no-create-home --uid $(id -u) --gid $(id -g) "$USER"
 EOF
 	# create env file
 	{
-		for env_var in $env_vars; do
+		for env_var in "${env_vars[@]}"
+		do
 			echo "$env_var=${!env_var}"
 		done
 		# get aws credentials
@@ -237,7 +268,7 @@ EOF
 		--rm
 		-w /test
 		-v "$(pwd):/test"
-		-v "$HOME/ec2:/home/$USER/ec2:ro"
+		-v "$HOME/ec2:$HOME/ec2:ro"
 		--dns '192.168.0.124'
 		--dns '192.168.0.97'
 		--dns-search 'knut.univention.de'
@@ -255,7 +286,7 @@ EOF
 		)
 	else
 		cmd+=(
-			-v "$HOME/.ssh:/home/$USER/.ssh:ro"
+			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
 	fi
 	cmd+=(
@@ -274,7 +305,8 @@ cmd+=("$exe" -c "$CFG")
 "$SHUTDOWN" && cmd+=("-s")
 
 echo "starting test with ${cmd[*]}"
-for env_var in $env_vars; do
+for env_var in "${env_vars[@]}"
+do
 	echo "  $env_var=${!env_var}"
 done
 
