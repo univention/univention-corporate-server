@@ -245,11 +245,6 @@ exe='ucs-ec2-create'
 # start the test
 declare -a cmd=()
 if "$docker"; then
-	# create new image with host user/group
-	docker build --pull -t "$USER/$image" 1>/dev/null -<<EOF
-FROM $image
-RUN addgroup --gid $(id -g) dockergroup && adduser --system --home "$HOME" --no-create-home --uid $(id -u) --gid $(id -g) "$USER"
-EOF
 	# create env file
 	{
 		for env_var in "${env_vars[@]}"
@@ -265,6 +260,7 @@ EOF
 	# docker command
 	cmd+=(
 		"docker" "run"
+		# --cap-add SYS_PTRACE
 		--rm
 		-w /test
 		-v "$(pwd):/test"
@@ -290,7 +286,7 @@ EOF
 		)
 	fi
 	cmd+=(
-		"$USER/$image"
+		"$image"
 	)
 else
 	# shellcheck disable=SC2123
