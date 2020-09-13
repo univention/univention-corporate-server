@@ -3,52 +3,70 @@ set -e -u
 
 base="$(dirname "$1")"
 pkg="${base%%_*}"
-RE='^ [0-9a-f]{32} [0-9]+ ((([a-zA-Z0-9_.-]+/)?[a-zA-Z0-9_.-]+|-) ([a-zA-Z]+|-) )?(.*)$'
-args="$(sed -rne "s!${RE}!-F file=@${base}/\\5!p" "$1")"
-curl \
-	--fail \
-	--show-error \
-	-X POST \
-	$args \
-	"${APTLY}/files/${CI_JOB_ID}"
 
-pkgs="$(
-curl \
-	--fail \
-	--show-error \
-	--data-urlencode q="\$Source ($pkg)" \
-	--get "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
-)"
-JSON='{
-"PackageRefs":'"$pkgs"'
-}'
-curl \
-	--fail \
-	--show-error \
-	-X DELETE \
-	-H 'Content-Type: application/json' \
-	--data "$JSON" \
-	"${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
+aptly () {
+    local msg="$1" url
+    shift
+    for url in "$@"
+    do
+        case "$url" in
+        *://*) break
+        esac
+    done
+    printf '\n=== %s === %s ===\n' "$msg" "$url" >&2
+    curl \
+        --fail \
+        --show-error \
+        "$@"
+}
 
-JSON='{
-"forceReplace":1
-}'
-curl \
-	--fail \
-	--show-error \
-	-X POST \
-	-H 'Content-Type: application/json' \
-	--data "$JSON" \
-	"${APTLY}/repos/${CI_COMMIT_REF_SLUG}/file/${CI_JOB_ID}"
+upload () {
+    RE='^ [0-9a-f]{32} [0-9]+ ((([a-zA-Z0-9_.-]+/)?[a-zA-Z0-9_.-]+|-) ([a-zA-Z]+|-) )?(.*)$'
+    args="$(sed -rne "s!${RE}!-F file=@${base}/\\5!p" "$1")"
+    # shellcheck disable=SC2086
+    aptly upload \
+        -X POST \
+        $args \
+        "${APTLY}/files/${CI_JOB_ID}"
+}
 
-JSON='{
-"AcquireByHash":true,
-"ForceOverwrite":true
-}'
-exec curl \
-	--silent \
-	--show-error \
-	-X PUT \
-	-H 'Content-Type: application/json' \
-	--data "$JSON" \
-	"${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git"
+list () {
+    pkgs="$(
+    aptly list \
+        --data-urlencode q="\$Source ($pkg)" \
+        --get "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
+    )"
+}
+
+delete () {
+    JSON='{"PackageRefs":'"$pkgs"'}'
+    aptly delete \
+        -X DELETE \
+        -H 'Content-Type: application/json' \
+        --data "$JSON" \
+        "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages"
+}
+
+replace () {
+    JSON='{"forceReplace":1}'
+    aptly replace \
+        -X POST \
+        -H 'Content-Type: application/json' \
+        --data "$JSON" \
+        "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/file/${CI_JOB_ID}"
+}
+
+publish () {
+    JSON='{"AcquireByHash":true,"ForceOverwrite":true}'
+    aptly publish \
+        -X PUT \
+        -H 'Content-Type: application/json' \
+        --data "$JSON" \
+        "${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git"
+}
+
+upload "$1"
+list
+delete
+replace
+publish
