@@ -67,7 +67,7 @@ import polib
 import xml.etree.ElementTree as ET
 
 from debian.deb822 import Deb822, Packages
-from . import helper
+from .helper import Error, call, make_parent_dir
 try:
 	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
 except ImportError:
@@ -94,10 +94,6 @@ PO_METADATA = {
 	'Content-Type': 'text/plain; charset=UTF-8',
 	'Content-Transfer-Encoding': '8bit'
 }
-
-
-class Error(SystemExit):
-	pass
 
 
 class UMC_Module(dict):
@@ -361,7 +357,7 @@ def create_po_file(po_file, package, files, language='python', template=False):
 		os.unlink(pot_file)
 	if isinstance(files, six.string_types):
 		files = [files]
-	xgettext = helper.call(
+	call(
 		'xgettext',
 		'--force-po',
 		'--add-comments=i18n',
@@ -372,10 +368,9 @@ def create_po_file(po_file, package, files, language='python', template=False):
 		'--copyright-holder=Univention GmbH',
 		'--language', language,
 		'--output', pot_file,
-		*files
+		*files,
+		errmsg='xgettext failed for the files: %r' % (list(files),)
 	)
-	if xgettext:
-		raise Error('xgettext failed for the files: %r' % (list(files),))
 
 	po = polib.pofile(pot_file)
 	po.metadata['Content-Type'] = 'text/plain; charset=UTF-8'
@@ -400,10 +395,12 @@ def merge_po_file(po_file, pot_file):
 	:param pot_file: PO template file.
 	"""
 	if os.path.isfile(po_file):
-		if helper.call('msgmerge', '--update', '--sort-output', '--backup=off', po_file, pot_file):
-			raise Error('Failed to merge translations into %s.' % (po_file,))
+		call(
+			'msgmerge', '--update', '--sort-output', '--backup=off', po_file, pot_file,
+			errmsg='Failed to merge translations into %s.' % (po_file,)
+		)
 	else:
-		helper.call('cp', pot_file, po_file)
+		call('cp', pot_file, po_file)
 
 
 def create_mo_file(po_file, mo_file=''):
@@ -425,10 +422,12 @@ def create_mo_file(po_file, mo_file=''):
 	if out:
 		raise Error(u"Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace')))
 
-	helper.make_parent_dir(mo_file)
+	make_parent_dir(mo_file)
 
-	if helper.call('msgfmt', '--check', '--output-file', mo_file, po_file):
-		raise Error('Failed to compile translation file from %s.' % (po_file,))
+	call(
+		'msgfmt', '--check', '--output-file', mo_file, po_file,
+		errmsg='Failed to compile translation file from %s.' % (po_file,)
+	)
 
 
 def create_json_file(po_file):

@@ -29,6 +29,14 @@
 # <https://www.gnu.org/licenses/>.
 import os
 import subprocess
+try:
+	from typing import Any  # noqa F401
+except ImportError:
+	pass
+
+
+class Error(SystemExit):
+	pass
 
 
 def make_parent_dir(path):
@@ -46,16 +54,25 @@ def make_parent_dir(path):
 			raise
 
 
-def call(*argv):
-	# type: (*str) -> int
+def call(*argv, **kwargs):
+	# type: (*str, **Any) -> int
 	"""
 	Execute argv and wait.
 
 	:param args: List of command and arguments.
+	:param kwargs: Optiona key-word argument for :py:func:`subprocess.check_call`.
 
 	>>> call('true')
 	0
 	"""
-	if os.environ.get('DH_VERBOSE', False):
+	errmsg = kwargs.pop('errmsg', 'Gettext failed {0.cmd}')
+
+	verbose = os.environ.get('DH_VERBOSE', False)
+	if verbose:
 		print('\t%s' % ' '.join(argv))
-	return subprocess.call(argv)
+	try:
+		return subprocess.check_call(argv, **kwargs)
+	except subprocess.CalledProcessError as ex:
+		if verbose:
+			print(ex)
+		raise Error(errmsg.format(ex))
