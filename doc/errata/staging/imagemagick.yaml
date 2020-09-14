@@ -1,0 +1,133 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u10
+desc: |
+ This update addresses the following issues:
+ * integer signedness error in ReadDCMImage function (CVE-2017-12140)
+ * Memory exhaustion in ReadMIFFImage in coders/miff.c (CVE-2017-12429)
+ * Memory exhaustion in ReadMPCImage in coders/mpc.c (CVE-2017-12430)
+ * Memory exhaustion in ReadSUNImage function in coders/sun.c$
+   (CVE-2017-12435)
+ * Memory exhaustion in the function ReadPSDImage (CVE-2017-12563)
+ * Memory exhaustion in ReadOneJNGImage function in coders\png.c
+   (CVE-2017-12643)
+ * Resource exhaustion in the function ReadPDBImage (CVE-2017-12674)
+ * Memory exhaustion in ReadOneLayer function in coders/xcf.c (CVE-2017-12691)
+ * Memory exhaustion in ReadVIFFImage function in coders/viff.c
+   (CVE-2017-12692)
+ * Memory exhaustion in ReadBMPImage function in coders/bmp.c in ImageMagick
+   (CVE-2017-12693)
+ * memory exhaustion in function format8BIM causing denial of service
+   (CVE-2017-12806)
+ * Resource exhaustion in WritePixelCachePixels function in coders/xcf.c
+   (CVE-2017-12875)
+ * Length-validation vulnerability was found in the function
+   ReadPSDLayersInternal function (CVE-2017-13061)
+ * Improper input validadion in load_level function in coders/xcf.c
+   (CVE-2017-13133)
+ * Missing NULL check in the ReadMATImage function (CVE-2017-13658)
+ * NULL pointer dereference in IdentifyImage function in MagickCore/identify.c
+   (CVE-2017-13768)
+ * NULL pointer dereference in ReadCUTImage function (CVE-2017-14060)
+ * Lack of an EOF check in ReadPSImage() function (CVE-2017-14172)
+ * Integer overflow in the function ReadTXTImage() (CVE-2017-14173)
+ * Lack of EOF check in the ReadPSDLayersInternal() function (CVE-2017-14174)
+ * Lack of EOF check in the ReadXBMImage() function (CVE-2017-14175)
+ * Division by zero in the GetPixelCacheTileSize function (CVE-2017-14249)
+ * Infinite loop in the ReadWPGImage function (CVE-2017-14341)
+ * NULL pointer dereference in the GetVirtualPixels function (CVE-2017-14400)
+ * Null pointer dereference in DrawGetStrokeDashArray function in
+   wand/drawing-wand.c (CVE-2017-14505)
+ * NULL pointer dereference in the TIFFIgnoreTags function (CVE-2017-14532)
+ * NULL pointer dereference in the PostscriptDelegateMessage function
+   (CVE-2017-14624)
+ * NULL pointer dereference in the sixel_output_create function
+   (CVE-2017-14625)
+ * NULL pointer dereference in the sixel_decode function (CVE-2017-14626)
+ * NULL pointer dereference in the AcquireResampleFilterThreadSet function
+   (CVE-2017-14739)
+ * Infinite loop in the ReadCAPTIONImage function (CVE-2017-14741)
+ * NULL pointer dereference in PDFDelegateMessage (CVE-2017-15015)
+ * NULL pointer dereference in ReadOneMNGImage (CVE-2017-15017)
+ * Conditional statement depends on unitialized value (CVE-2017-15281)
+ * Resource exhaustion in ExtractPostscript function in coders/wpg.c
+   (CVE-2017-17682)
+ * denial of service in the function ReadOnePNGImage in coders/png.c
+   (CVE-2017-17914)
+ * NULL pointer dereference in GetOpenCLCachedFilesDirectory function in
+   magick/opencl.c (CVE-2017-18209)
+ * NULL pointer dereference in saveBinaryCLProgram in magick/opencl.c
+   (CVE-2017-18211)
+ * infinite loop in ReadMIFFImage function in coders/miff.c (CVE-2017-18271)
+ * infinite loop ReadTXTImage in function in coders/txt.c (CVE-2017-18273)
+ * NULL pointer dereference in MagickCore component can lead to a denial of
+   service (CVE-2017-1000445)
+ * CPU exhaustion vulnerability in function ReadDDSInfo in coders/dds.c
+   (CVE-2017-1000476)
+ * missing check for fputc function in multiple files (CVE-2018-16643)
+ * Missing NULL check in ReadOneJNGImage in coders/png.c (CVE-2018-16749)
+ * heap-based buffer over-read in the EncodeImage function of coders/pict.c
+   (CVE-2018-18025)
+ * heap-based buffer over-read in the function WritePNMImage of coders/pnm.c
+   leading to DoS or information disclosure (CVE-2019-11598)
+ * a "use of uninitialized value" vulnerability in the function ReadCUTImage
+   leading to a crash and DoS (CVE-2019-13135)
+ * heap-based buffer overflow in MagickCore/fourier.c in ComplexImage
+   (CVE-2019-13308)
+ * heap-based buffer over-read in MagickCore/fourier.c (CVE-2019-13391)
+ * out-of-bounds read in ReadXWDImage in coders/xwd.c (CVE-2019-15139)
+bug: [52003]
+cve:
+- CVE-2017-12140
+- CVE-2017-12429
+- CVE-2017-12430
+- CVE-2017-12435
+- CVE-2017-12563
+- CVE-2017-12643
+- CVE-2017-12674
+- CVE-2017-12691
+- CVE-2017-12692
+- CVE-2017-12693
+- CVE-2017-12806
+- CVE-2017-12875
+- CVE-2017-13061
+- CVE-2017-13133
+- CVE-2017-13658
+- CVE-2017-13768
+- CVE-2017-14060
+- CVE-2017-14172
+- CVE-2017-14173
+- CVE-2017-14174
+- CVE-2017-14175
+- CVE-2017-14249
+- CVE-2017-14341
+- CVE-2017-14400
+- CVE-2017-14505
+- CVE-2017-14532
+- CVE-2017-14624
+- CVE-2017-14625
+- CVE-2017-14626
+- CVE-2017-14739
+- CVE-2017-14741
+- CVE-2017-15015
+- CVE-2017-15017
+- CVE-2017-15281
+- CVE-2017-17682
+- CVE-2017-17914
+- CVE-2017-18209
+- CVE-2017-18211
+- CVE-2017-18271
+- CVE-2017-18273
+- CVE-2017-1000445
+- CVE-2017-1000476
+- CVE-2018-16643
+- CVE-2018-16749
+- CVE-2018-18025
+- CVE-2019-11598
+- CVE-2019-13135
+- CVE-2019-13308
+- CVE-2019-13391
+- CVE-2019-15139
