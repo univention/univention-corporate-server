@@ -1,4 +1,4 @@
-ucs-test (9.0.4-73) unstable; urgency=medium
+ucs-test (9.0.4-74) unstable; urgency=medium
 
   * Bug #52005: Hopefully fix 96rename* again.
 

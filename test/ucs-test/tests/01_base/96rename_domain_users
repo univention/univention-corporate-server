@@ -95,7 +95,7 @@ def test_rename_domain_users():
 			print('Checking if UCR Variable groups/default/domainusers is set to %s' % (new_group_name,))
 			print('##################################################################\n')
 
-			success, ucr_group = wait_for_ucr(ucr_test, 7, new_group_name)
+			success, ucr_group = wait_for_ucr(ucr_test, 10, new_group_name)
 			if not success:
 				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (ucr_group, new_group_name))
 
