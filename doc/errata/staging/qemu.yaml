@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u11A~4.4.5.202009140857
+desc: |
+ This update addresses the following issues:
+ * block: iscsi: OOB heap access via an unexpected response of iSCSI Server
+   (CVE-2020-1711)
+ * sd: OOB access could crash the guest resulting in DoS (CVE-2020-13253)
+ * usb: out-of-bounds r/w access issue while processing usb packets
+   (CVE-2020-14364)
+ * reachable assertion failure in net_tx_pkt_add_raw_fragment() in
+   hw/net/net_tx_pkt.c (CVE-2020-16092)
+bug: [52001]
+cve:
+- CVE-2020-1711
+- CVE-2020-13253
+- CVE-2020-14364
+- CVE-2020-16092
