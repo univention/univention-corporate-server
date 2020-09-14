@@ -135,12 +135,12 @@ layout = [
 ]
 
 
-def mapTranslationValue(vals):
-	return [' '.join(val) for val in vals]
+def mapTranslationValue(vals, encoding=()):
+	return [u' '.join(val).encode(*encoding) for val in vals]
 
 
-def unmapTranslationValue(vals):
-	return [val.split(' ', 1) for val in vals]
+def unmapTranslationValue(vals, encoding=()):
+	return [val.decode(*encoding).split(u' ', 1) for val in vals]
 
 
 mapping = univention.admin.mapping.mapping()

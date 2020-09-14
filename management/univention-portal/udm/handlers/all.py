@@ -85,5 +85,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 	return res
 
 
-def identify(dn, attr, canonical=0):
+def identify(dn, attr, canonical=False):
 	pass
