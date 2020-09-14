@@ -213,6 +213,10 @@ def get_app_version():
 def copy_package_to_appcenter(ucs_version, app_directory, package_name):
 	target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
 	print('cp %s %s' % (package_name, target))
+	try:
+		os.makedirs(target)
+	except OSError:
+		pass  # [Errno 17] File exists
 	shutil.copy(package_name, target)
 	command = '''
 		set -x -e;
