@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [5]
+scope: ucs_4.4-0-errata4.4-5
+src: libproxy
+fix: 0.4.14-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * url::recvline in url.cpp in libproxy 0.4.x through 0.4.15 allows a remote
+   HTTP server to trigger uncontrolled recursion via a response composed of an
+   infinite stream that lacks a newline character. This leads to stack
+   exhaustion. (CVE-2020-25219)
+bug: [52002]
+cve:
+- CVE-2020-25219
