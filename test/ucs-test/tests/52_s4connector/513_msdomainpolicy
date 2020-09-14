@@ -1,0 +1,138 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check synchronization of domainpolicy"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+##  - 49838
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+eval "$(ucr shell)"
+
+ucr set connector/s4/mapping/msgpsi=yes
+ucr set connector/s4/mapping/msgpipsec=yes
+ucr set connector/s4/mapping/msgpwl=yes
+ucr set connector/s4/mapping/domainpolicy=yes
+
+service univention-s4-connector restart
+
+/usr/share/univention-s4-connector/resync_object_from_s4.py "CN=Default Domain Policy,CN=System,$ldap_base"
+/usr/share/univention-s4-connector/resync_object_from_s4.py "CN=AppCategories,CN=Default Domain Policy,CN=System,$ldap_base"
+
+service univention-s4-connector restart
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+rejected=$(univention-s4connector-list-rejected)
+
+echo $rejected | grep "CN=Default Domain Policy," && fail_fast "Default Domain Policy rejected"
+echo $rejected | grep "CN=AppCategories" && fail_fast "AppCategories rejected"
+
+udm ms/domainpolicy create --set name="TestPolicy" --set qualityOfService=1 --set pwdProperties=2 --set pwdHistoryLength=1 --set proxyLifetime=1 --set minTicketAge=1 --set minPwdLength=1 --set minPwdAge=1 --set maxTicketAge=5 --set maxRenewAge=3 --set maxPwdAge=50 --set lockoutThreshold=50 --set lockoutDuration=3 --set lockOutObservationWindow=1 --set forceLogoff=1 --set authenticationOptions=1 --set eFSPolicy="YWJjZGVkZAo=" --set domainWidePolicy="YWJjZGVkZAo=" || true
+
+
+cleanup () {
+	ucr unset connector/s4/mapping/msgpsi
+	ucr unset connector/s4/mapping/msgpipsec
+	ucr unset connector/s4/mapping/msgpwl
+	ucr unset connector/s4/mapping/domainpolicy
+	udm ms/domainpolicy remove --dn "cn=TestPolicy,$ldap_base"
+	ldbdel -H /var/lib/samba/private/sam.ldb  "CN=TestAdPolicy,$(ad_get_base)"
+	ad_wait_for_synchronization; fail_bool 0 110
+	service univention-s4-connector restart
+
+}
+trap cleanup EXIT
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm ms/domainpolicy list --filter name=TestPolicy
+AD_DN="CN=TestPolicy,$ldap_base"
+
+ad_verify_attribute "$AD_DN" "qualityOfService" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "pwdProperties" "2" || fail_fast
+ad_verify_attribute "$AD_DN" "pwdHistoryLength" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "proxyLifetime" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "minTicketAge" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "minPwdLength" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "minPwdAge" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "maxTicketAge" "5" || fail_fast
+ad_verify_attribute "$AD_DN" "maxRenewAge" "3" || fail_fast
+ad_verify_attribute "$AD_DN" "maxPwdAge" "50" || fail_fast
+ad_verify_attribute "$AD_DN" "lockoutThreshold" "50" || fail_fast
+ad_verify_attribute "$AD_DN" "lockoutDuration" "3" || fail_fast
+ad_verify_attribute "$AD_DN" "lockOutObservationWindow" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "forceLogoff" "1" || fail_fast
+ad_verify_attribute "$AD_DN" "maxRenewAge" "3" || fail_fast
+ad_verify_attribute "$AD_DN" "eFSPolicy" "abcdedd" || fail_fast
+ad_verify_attribute "$AD_DN" "domainWidePolicy" "abcdedd" || fail_fast
+
+echo -e "
+dn: CN=TestADPolicy,$(ad_get_base)
+objectClass: top
+objectClass: leaf
+objectClass: domainPolicy
+cn: TestADPolicy
+instanceType: 4
+showInAdvancedViewOnly: TRUE
+name: TestPolicy
+authenticationOptions: 1
+forceLogoff: 1
+lockoutDuration: 3
+lockOutObservationWindow: 1
+lockoutThreshold: 50
+maxPwdAge: 50
+maxRenewAge: 3
+maxTicketAge: 5
+minPwdAge: 1
+minPwdLength: 1
+minTicketAge: 1
+pwdProperties: 2
+pwdHistoryLength: 1
+proxyLifetime: 1
+eFSPolicy:: YWJjZGVkZAo=
+domainWidePolicy:: YWJjZGVkZAo=
+qualityOfService: 1
+objectCategory: CN=Domain-Policy,CN=Schema,CN=Configuration,$(ad_get_base)
+distinguishedName: CN=TestADPolicy,$(ad_get_base)
+" | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || true
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_verify_udm_attribute "qualityOfService" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "pwdProperties" "2" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "pwdHistoryLength" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "proxyLifetime" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "minTicketAge" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "minPwdLength" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "minPwdAge" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "maxTicketAge" "5" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "maxRenewAge" "3" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "maxPwdAge" "50" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "lockoutThreshold" "50" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "lockoutDuration" "3" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "lockOutObservationWindow" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "forceLogoff" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "maxRenewAge" "3" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "eFSPolicy" "YWJjZGVkZAo=" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+udm_verify_udm_attribute "domainWidePolicy" "YWJjZGVkZAo=" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
+
+
+ad_set_sync_mode "$SYNCMODE"
+
+service univention-s4-connector restart
+exit "$RETVAL"
