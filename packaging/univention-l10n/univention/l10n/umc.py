@@ -68,6 +68,7 @@ import xml.etree.ElementTree as ET
 
 from debian.deb822 import Deb822, Packages
 from .helper import Error, call, make_parent_dir
+from .message_catalogs import merge_po
 try:
 	from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa F401
 except ImportError:
@@ -395,10 +396,7 @@ def merge_po_file(po_file, pot_file):
 	:param pot_file: PO template file.
 	"""
 	if os.path.isfile(po_file):
-		call(
-			'msgmerge', '--update', '--sort-output', '--backup=off', po_file, pot_file,
-			errmsg='Failed to merge translations into %s.' % (po_file,)
-		)
+		merge_po(pot_file, po_file)
 	else:
 		call('cp', pot_file, po_file)
 
