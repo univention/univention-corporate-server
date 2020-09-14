@@ -53,6 +53,12 @@ def _clean_header(po_path):
 
 def concatenate_po(src_po_path, dest_po_path):
 	# type: (str, str) -> None
+	"""
+	Append first to second `.po` file.
+
+	:param src_po_path: File to merge.
+	:param dest_po_path: File to merge into.
+	"""
 	call(
 		'msgcat',
 		'--unique',
@@ -65,6 +71,12 @@ def concatenate_po(src_po_path, dest_po_path):
 
 def create_empty_po(binary_pkg_name, new_po_path):
 	# type: (str, str) -> None
+	"""
+	Create a new empty `.po` file.
+
+	:param binary_pkg_name: Package name.
+	:param new_po_path: File name for new file.
+	"""
 	make_parent_dir(new_po_path)
 	call(
 		'xgettext',
@@ -82,19 +94,33 @@ def create_empty_po(binary_pkg_name, new_po_path):
 	_clean_header(new_po_path)
 
 
-def merge_po(source_po_path, dest_po_path):
+def merge_po(template, translation):
 	# type: (str, str) -> None
+	"""
+	Merge old translation with new template file.
+
+	:param template: New template `.pot` file.
+	:param translation: Old translation `.po` file.
+	"""
 	call(
 		'msgmerge',
 		'--update',
 		'--sort-output',
 		'--backup=off',
-		dest_po_path,
-		source_po_path)
+		translation,
+		template)
 
 
 def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 	# type: (str, str, Union[str, List[str]], str) -> None
+	"""
+	Extract strings from source code and merge into existing translation file.
+
+	:param language: Source code language, e.g. `JavaScript`, `Python`, `Shell`.
+	:param output_file: Template file name.
+	:param input_files: Sequence of input files.
+	:param cwd: Base directory used as new woring directory.
+	"""
 	if not os.path.isfile(output_file):
 		raise Error("Can't join input files into {}. File does not exist.".format(output_file))
 	if not isinstance(input_files, list):
