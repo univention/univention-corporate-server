@@ -14,6 +14,7 @@
 
 import subprocess
 from univention.testing.ucr import UCSTestConfigRegistry
+import univention.config_registry
 from univention.testing.ucs_samba import wait_for_drs_replication
 import univention.testing.utils as utils
 import univention.testing.strings as uts
@@ -69,6 +70,22 @@ def search_templates(old_group_name, new_group_name, server_role):
 						utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 
 
+def wait_for_ucr(ucr_test, iterations, group_name):
+	success = False
+	for i in range(iterations):
+		ucr_test.load()
+		ucr_group = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+		if group_name != ucr_group:
+			if i == iterations - 1:
+				break
+			time.sleep(10)
+		else:
+			print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_group,))
+			success = True
+			break
+	return success, ucr_group
+
+
 def test_rename_domain_users():
 	with UCSTestConfigRegistry() as ucr_test:
 		ucr_test.load()
@@ -85,23 +102,16 @@ def test_rename_domain_users():
 			print('Renaming default domainadmins group %s to %s' % (old_group_name, new_group_name))
 			print('##################################################################\n')
 			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (old_group_dn), '--set', 'name=%s' % (new_group_name)])
-			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, close_fds=True)
 			utils.wait_for_replication_and_postrun()
 			# Check UCR Variable
 			print('\n##################################################################')
 			print('Checking if UCR Variable groups/default/domainadmins is set to %s' % (new_group_name,))
 			print('##################################################################\n')
-			for i in range(7):
-				ucr_test.load()
-				ucr_domainadmins = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
-				if new_group_name not in ucr_domainadmins:
-					if i == 6:
-						utils.fail('UCR variable groups/default/domainadmins was not set to %s' % (ucr_domainadmins,))
-						break
-					time.sleep(10)
-				else:
-					print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_domainadmins,))
-					break
+
+			success, ucr_group = wait_for_ucr(ucr_test, 7, new_group_name)
+			if not success:
+				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (old_group_name, new_group_name))
 
 			# Search templates
 			print('\n##################################################################')
@@ -115,11 +125,19 @@ def test_rename_domain_users():
 				# clean up even if the wait_for method fails and wait a bit if it terminated at the beginning
 				time.sleep(10)
 				pass
+
+			if not package_installed('univention-samba4'):
+				time.sleep(20)
 			print('\n##################################################################')
 			print('Cleanup')
 			print('##################################################################\n')
 			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
-			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, close_fds=True)
+			# wait until renaming and UCR Variable is set back again
+			success, ucr_group = wait_for_ucr(ucr_test, 7, old_group_name)
+			if not success:
+				univention.config_registry.handler_set(['groups/default/domainadmins=Domain Admins'])
+				utils.fail('UCR variable groups/default/domainadmins was set to %s instead of %s' % (ucr_group, new_group_name))
 
 
 if __name__ == '__main__':
