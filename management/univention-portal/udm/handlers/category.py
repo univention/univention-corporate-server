@@ -29,6 +29,8 @@
 
 import re
 
+from ldap.filter import filter_format
+
 from univention.admin.layout import Tab, Group
 import univention.admin.localization
 import univention.admin.handlers
@@ -118,7 +120,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module = module
 
 	def _ldap_post_remove(self):
-		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter='categories=%s' % self.dn, scope='sub'):
+		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter=filter_format('categories=%s', [self.dn]), scope='sub'):
 			portal_obj.open()
 			portal_obj['categories'].remove(self.dn)
 			portal_obj.modify()
