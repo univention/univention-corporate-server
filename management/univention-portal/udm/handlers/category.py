@@ -120,7 +120,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		for portal_obj in univention.admin.modules.lookup('portals/portal', None, self.lo, filter='categories=%s' % self.dn, scope='sub'):
 			portal_obj.open()
-			portal_obj.categories.remove(self.dn)
+			portal_obj['categories'].remove(self.dn)
 			portal_obj.modify()
 
 
