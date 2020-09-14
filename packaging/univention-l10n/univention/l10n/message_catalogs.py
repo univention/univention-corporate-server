@@ -2,10 +2,6 @@
 # -*- coding: utf-8 -*-
 """This module collects utilities for installing and building message catalogs
 while applying Univention specific options.
-
-Currently this is mostly a wrapper for gettext. In the future it might be
-useful to merge parts of dh_umc into it as the UMC uses a custom JSON based
-catalog format.
 """
 #
 # Copyright 2016-2020 Univention GmbH
@@ -37,7 +33,6 @@ catalog format.
 import polib
 import os
 
-from . import umc
 from .helper import Error, call, make_parent_dir
 try:
 	from typing import Any, List, Union  # noqa F401
@@ -117,13 +112,6 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 		'-o', output_file,
 		*input_files,
 		cwd=cwd)
-
-
-def po_to_json(po_path, json_output_path):
-	# type: (str, str) -> None
-	umc.create_json_file(po_path)
-	make_parent_dir(json_output_path)
-	os.rename(po_path.replace('.po', '.json'), json_output_path)
 
 
 def univention_location_lines(pot_path, abs_path_source_pkg):

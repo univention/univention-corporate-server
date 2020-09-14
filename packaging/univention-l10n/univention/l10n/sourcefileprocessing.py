@@ -110,7 +110,7 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 		# type: (str, str) -> None
 		"""With UMC and univention-web based applications a custom, JSON-based
 		message format is used."""
-		message_catalogs.po_to_json(po_path, json_output_path)
+		umc.po_to_json(po_path, json_output_path)
 
 
 class SourceFilesHTML(SourceFileSet):
@@ -146,7 +146,7 @@ class SourceFilesHTML(SourceFileSet):
 
 	def _compile(self, po_path, json_output_path):
 		# type: (str, str) -> None
-		message_catalogs.po_to_json(po_path, json_output_path)
+		umc.po_to_json(po_path, json_output_path)
 
 
 class SourceFileSetCreator(object):

@@ -486,3 +486,16 @@ def create_json_file(po_file):
 
 	with open(json_file, 'w') as fd:
 		json.dump(data, fd)
+
+
+def po_to_json(po_path, json_output_path):
+	# type: (str, str) -> None
+	"""
+	Convert translation file to `JSON` file.
+
+	:param po_path: Translation file name.
+	:param json_output_path: Output file name.
+	"""
+	create_json_file(po_path)
+	make_parent_dir(json_output_path)
+	os.rename(po_path.replace('.po', '.json'), json_output_path)
