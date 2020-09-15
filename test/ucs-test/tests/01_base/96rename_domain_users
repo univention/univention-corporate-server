@@ -121,7 +121,7 @@ def test_rename_domain_users():
 
 			# wait until renaming is complete
 			utils.wait_for_replication_and_postrun()
-			success, ucr_group = wait_for_ucr(ucr_test, 7, old_group_name)
+			success, ucr_group = wait_for_ucr(ucr_test, 10, old_group_name)
 			if not success:
 				univention.config_registry.handler_set(['groups/default/domainusers=Domain Users'])
 				utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (ucr_group, old_group_name))
