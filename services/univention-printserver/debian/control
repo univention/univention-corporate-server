@@ -25,7 +25,7 @@ Depends:
  python-pexpect,
  python-univention-lib (>= 1.0.25-1),
  shell-univention-lib,
- univention-config (>= 8.0.2),
+ univention-config (>= 15),
  univention-directory-listener,
  univention-directory-manager-tools,
  univention-directory-manager-tools (>> 7.0.147),
