@@ -1,3 +1,9 @@
+univention-squid (13.0.1-1) unstable; urgency=medium
+
+  * Bug #52017: ipaddr → ipaddress
+
+ -- Florian Best <best@univention.de>  Tue, 15 Sep 2020 16:58:02 +0200
+
 univention-squid (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

@@ -15,7 +15,7 @@ Depends:
  python-pexpect,
  python-univention-lib,
  squid (>> 3.5.23),
- univention-config (>= 8.0.2),
+ univention-config (>= 15),
  univention-directory-manager-tools (>> 7.0.147),
  univention-heimdal-common (>>5.0.24-1),
  winbind,
