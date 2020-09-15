@@ -22,6 +22,7 @@ mkpkg "${DIRS[1]}" "${DIR_POOL}"   # "${DIRS[1]}" ==> errataXYZ
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+find "${REPODIR}" -ls >&2
 
 config_mirror repository/mirror=no
 
@@ -29,8 +30,12 @@ config_mirror repository/mirror=no
 	set -e
 	grep -v '^#\|^[[:space:]]*$\|^set ' /etc/apt/mirror.list && false
 	ucr set repository/mirror=yes
+	cat /etc/apt/mirror.list >&2
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	echo "MARKER START for 09_updater/70mirror" >> /var/log/univention/repository.log
 	univention-repository-update net
+	echo "MARKER END for 09_updater/70mirror" >> /var/log/univention/repository.log
+	find "${BASEDIR}" -ls >&2
 	checkmirror
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
