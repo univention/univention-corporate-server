@@ -720,14 +720,14 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 		for section in $sections ; do
 			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}"  # explicit test for easier debugging with "set -e"
 			for optional_di in "" "debian-installer/" ; do  # with and without d-i
-				if [ ! -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64" ] ; then
+				if [ ! -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}" ] ; then
 					test -n "$optional_di" && continue
 				fi
-#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/by-hash/MD5Sum"  # does not exist yet
-#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/by-hash/SHA256"  # does not exist yet
+#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/by-hash/MD5Sum"  # does not exist yet
+#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/by-hash/SHA256"  # does not exist yet
 				for filename in Packages Packages.xz Release ; do
-#					test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/${filename}"  # does not exist yet / is no symlink
-					test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/${filename}"
+#					test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/${filename}"  # does not exist yet / is no symlink
+					test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/${filename}"
 				done
 			done
 			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source" || continue  # FIXME: fail if the source directory does not exist?
