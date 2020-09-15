@@ -49,7 +49,10 @@ BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 
 .PHONY: build install clean tmp-build tmp-umc-icons build-dev build-live i18n
 
-build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js
+build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js $(BUILD_THEME_DIR)/globalCSSVariables.css
+
+%/globalCSSVariables.css: css/globalCSSVariables.styl
+	stylus "$<" --out "$@"
 
 $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp-build
 	# main dojo build process
