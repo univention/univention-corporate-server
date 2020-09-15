@@ -12,21 +12,26 @@ RETVAL=110 # Test fehlgeschlagen
 
 setup_apache "${repoprefix}"
 
-mkpdir "${_version_version}-0" maintained all
-mkdeb "${pkgname}l" 1 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
-
 mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"   # "${DIRS[0]}" ==> ucsXYZ
+mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
+mkpkg "${DIRS[1]}" "${DIR_POOL}"   # "${DIRS[1]}" ==> errataXYZ
+mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[1]}" "${DIR_POOL}"
+mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+find "${REPODIR}" -ls >&2
 
 config_mirror /
 
 (
 	set -e
+	cat /etc/apt/mirror.list >&2
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
 	univention-repository-update net
+	find "${BASEDIR}" -ls >&2
 	checkmirror
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)

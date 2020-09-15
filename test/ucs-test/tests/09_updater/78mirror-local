@@ -32,64 +32,68 @@ setup_apache "" # setup server to / for ${repoprefix} and ${srcprefix}
 REPODIR="${REPODIR}/${srcprefix}"
 mkdir -p "${REPODIR}"
 
-mkpdir "${_version_version}-0" maintained all
-mkdeb "${pkgname}l" 1 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # DIRS 0 + 1
+mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-
-mkpdir "${_version_version}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
+mkpkg "${DIRS[1]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[1]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
+mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
-mkpdir "${_version_version}--component/${compname}" maintained all
-mkdeb "${pkgname}cl" 1 all "${DIR}"
+mkpdir "${major}.${minor}--component/${compname}" maintained all  # DIRS 2 + 3
+mkdeb "${pkgname}ca" 1 all "${DIR}"  # ==> X.Y/maintained/component/${compname}/all
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 BDIR+=("${DIR}")
-
-mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}cy" 1 "${ARCH}" "${DIR}"
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"  # DIRS 4 + 5
+mkdeb "${pkgname}cb" 1 "${ARCH}" "${DIR}"  # ==> X.Y/maintained/component/${compname}/${ARCH}
 mkpkg "${DIR}" "${DIR}"
 BDIR+=("${DIR}")
 
 minor+=1
 
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 2 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # DIRS 6 + 7
+mkdeb "${pkgname}ua" 2 all "${DIR_POOL}"
+mkpkg "${DIRS[6]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[6]}" "${DIR_POOL}"
+CDIR+=("${DIR}")
+mkdeb "${pkgname}ea" 2 all "${DIR_POOL}"
+mkpkg "${DIRS[7]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 2 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[7]}" "${DIR_POOL}"
+CDIR+=("${DIR}")
+mksh "${DIRS[6]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+
+mkpdir "${major}.${minor}--component/${compname}" maintained all  # DIRS 8 + 9
+mkdeb "${pkgname}ca" 2 all "${DIR}"
+mkpkg "${DIR}" "${DIR}"  # ==> X.Y/maintained/component/${compname}/all
 mksh "${DIR}" preup postup
 CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}--component/${compname}" maintained all
-mkdeb "${pkgname}cl" 2 all "${DIR}"
-mkpkg "${DIR}" "${DIR}"
-mksh "${DIR}" preup postup
-CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
-mkdeb "${pkgname}cy" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}" "${DIR}"
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"  # DIRS 10 + 11
+mkdeb "${pkgname}cb" 2 "${ARCH}" "${DIR}"
+mkpkg "${DIR}" "${DIR}"  # ==> X.Y/maintained/component/${compname}/${ARCH}
 CDIR+=("${DIR}")
 
 minor+=1
 
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 3 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # DIRS 12 + 13
+mkdeb "${pkgname}ua" 3 all "${DIR_POOL}"
+mkpkg "${DIRS[12]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[12]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkdeb "${pkgname}ea" 3 all "${DIR_POOL}"
+mkpkg "${DIRS[13]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[13]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
+mksh "${DIRS[12]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
 minor+=-1
 
@@ -115,25 +119,32 @@ fi
 	univention-repository-update net
 	ucr commit /etc/apt/sources.list.d/*.list
 	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${BDIR[@]}"
+
 	apt-get -qq update
-	apt-get -qq install "${pkgname}"{,c}{l,y}
-	dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	1"
-	dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	1"
-	dpkg-query -W "${pkgname}cl" | grep -Fqx "${pkgname}cl	1"
-	dpkg-query -W "${pkgname}cy" | grep -Fqx "${pkgname}cy	1"
-	/usr/share/univention-updater/univention-updater net
+	apt-get -qq install "${pkgname}"{u,e,c}{a,b}
+	dpkg-query -W "${pkgname}ua" | grep -Fqx "${pkgname}ua	1"
+	dpkg-query -W "${pkgname}ub" | grep -Fqx "${pkgname}ub	1"
+	dpkg-query -W "${pkgname}ea" | grep -Fqx "${pkgname}ea	1"
+	dpkg-query -W "${pkgname}eb" | grep -Fqx "${pkgname}eb	1"
+	dpkg-query -W "${pkgname}ca" | grep -Fqx "${pkgname}ca	1"
+	dpkg-query -W "${pkgname}cb" | grep -Fqx "${pkgname}cb	1"
+	univention-upgrade --ignoressh --noninteractive --disable-app-updates --ignoreterm
 	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
 	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${BDIR[@]}" "${CDIR[@]}"
-	dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	2"
-	dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	2"
-	dpkg-query -W "${pkgname}cl" | grep -Fqx "${pkgname}cl	2"
-	dpkg-query -W "${pkgname}cy" | grep -Fqx "${pkgname}cy	2"
+	dpkg-query -W "${pkgname}ua" | grep -Fqx "${pkgname}ua	2"
+	dpkg-query -W "${pkgname}ub" | grep -Fqx "${pkgname}ub	2"
+	dpkg-query -W "${pkgname}ea" | grep -Fqx "${pkgname}ea	2"
+	dpkg-query -W "${pkgname}eb" | grep -Fqx "${pkgname}eb	2"
+	dpkg-query -W "${pkgname}ca" | grep -Fqx "${pkgname}ca	2"
+	dpkg-query -W "${pkgname}cb" | grep -Fqx "${pkgname}cb	2"
 	test "${major}.${minor}" = "$(ucr get version/version)"
 	test 0 = "$(ucr get version/patchlevel)"
-	checkdeb "${pkgname}l" 1 2
-	checkdeb "${pkgname}y" 1 2
-	checkdeb "${pkgname}cl" 1 2
-	checkdeb "${pkgname}cy" 1 2
+	checkdeb "${pkgname}ua" 1 2
+	checkdeb "${pkgname}ub" 1 2
+	checkdeb "${pkgname}ea" 1 2
+	checkdeb "${pkgname}eb" 1 2
+	checkdeb "${pkgname}ca" 1 2
+	checkdeb "${pkgname}cb" 1 2
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}"{,c}{l,y} >&3 2>&3
