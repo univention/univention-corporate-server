@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 
-import sys
+import argparse
 import json
 import os
 from itertools import groupby
@@ -32,12 +32,31 @@ def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> 
         json.dump(data, releases_json)
 
 
-def main():
+def main():  # type: () -> None
+    parser = argparse.ArgumentParser(
+        description='Generates a valid releases.json.'
+    )
+    parser.add_argument('repodir', metavar='REPODIR', type=str, help='path to repository, where releases.json is created/updated.')
+    parser.add_argument('versions', metavar='VERSION', type=str, nargs='*', help='a UCS version to be added to the releases.json. If omitted, the  automatic UCS version detection is activated!')
+    args = parser.parse_args()
     releases = []
-    for version in sys.argv[2:]:
-        mmp = UCS_Version(version)
-        releases.append((mmp.major, mmp.minor, mmp.patchlevel))
-    gen_releases(sys.argv[1], releases)
+    if args.versions:
+        for version in args.versions:
+            mmp = UCS_Version(version)
+            releases.append((mmp.major, mmp.minor, mmp.patchlevel))
+    else:
+        distdir = os.path.join(args.repodir, 'dists')
+        for dirname in os.listdir(distdir):
+            if not os.path.isdir(os.path.join(distdir, dirname)):
+                continue
+            if not dirname.startswith('ucs'):
+                continue
+            if len(dirname) != 6:
+                raise Exception('unexpected dirname length: {}'.format(dirname))
+            major, minor, patchlevel = [int(x) for x in dirname[3:]]
+            releases.append((major, minor, patchlevel))
+
+    gen_releases(args.repodir, releases)
 
 
 if __name__ == '__main__':
