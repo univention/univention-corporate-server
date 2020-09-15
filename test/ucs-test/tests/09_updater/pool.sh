@@ -738,23 +738,26 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 #				test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/${filename}"  # does not exist yet / is no symlink
 				test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/${filename}"
 			done
+
+			# check files in pool directory
+			test -d "${dstdir}/mirror/${prefix}/pool/main"
+
+			local oldifs="${IFS}"
+			local IFS=$'\n'
+			# check all deb files referred within the Packages files
+			# shellcheck disable=SC2046
+			set -- $(cd "${dstdir}/mirror/${prefix}" && sed -nre 's/^Filename: //p' "dists/${dist}/${section}/binary-${ARCH}/Packages" | sort -u)  # IFS
+			IFS="${oldifs}"
+			while [ $# -ge 1 ]
+			do
+				echo "Checking ${srcdir}/${1}"
+				cmp "${srcdir}/${1}" "${dstdir}/mirror/${prefix}/${1}" || return 1
+				shift
+			done
 		done
 
 		# check releases file
 		test -s "${dstdir}/mirror/${prefix}/releases.json"
 
-		# check pool directory
-		test -d "${dstdir}/mirror/${prefix}/pool/main"
-
-		local oldifs="${IFS}"
-		local IFS=$'\n'
-		# shellcheck disable=SC2046
-		set -- $(cd "${srcdir}/${prefix}" && find "pool/" -name \*.deb -o -name \*.sh)  # IFS
-		IFS="${oldifs}"
-		while [ $# -ge 1 ]
-		do
-			cmp "${srcdir}/${1}" "${dstdir}/mirror/${prefix}/${1}" || return 1
-			shift
-		done
 	done </etc/apt/mirror.list
 }
