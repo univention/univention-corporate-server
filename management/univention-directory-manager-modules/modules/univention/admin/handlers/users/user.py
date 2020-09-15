@@ -218,7 +218,7 @@ property_descriptions = {
 	),
 	'preferredLanguage': univention.admin.property(
 		short_description=_('Preferred language'),
-		long_description=_(''),
+		long_description=_('Preferred written or spoken language for the person.'),
 		syntax=univention.admin.syntax.string,
 		copyable=True,
 	),

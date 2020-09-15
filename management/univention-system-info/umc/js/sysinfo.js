@@ -162,7 +162,7 @@ define([
 			}, {
 				name: 'transfer',
 				headerText: _('Transfer the information'),
-				helpText: _(''),
+				helpText: '',
 				widgets: [{
 					type: Text,
 					name: 'firstText',

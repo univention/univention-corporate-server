@@ -51,7 +51,7 @@ define([
 
 		title: _("Set new password"),
 		desc: _("Set a new password: "),
-		altDesc: _(""),
+		altDesc: "",
 		contentContainer: null,
 		steps: null,
 		selectedRenewOption: null,

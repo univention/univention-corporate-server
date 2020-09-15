@@ -546,6 +546,10 @@ msgstr "Bevorzugte Liefermethode"
 msgid "Preferred language"
 msgstr "Bevorzugte Sprache"
 
+#: modules/univention/admin/handlers/users/user.py:221
+msgid "Preferred written or spoken language for the person."
+msgstr "Bevorzugte geschriebene oder gesprochene Sprache der Person."
+
 #: modules/univention/admin/handlers/users/user.py:476
 msgid "Primary e-mail address"
 msgstr "Primäre E-Mail-Adresse"
