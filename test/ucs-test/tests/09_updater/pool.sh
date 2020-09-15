@@ -445,6 +445,22 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	gpgsign Release
 	cd "${OLDPWD}" || return $?
 
+	for destname in "main" "non-free" "contrib" ; do
+		targetdir="${dir//\/main\/binary-*/}/$destname/binary-${ARCH}"
+		[ ! -e "$targetdir" ] && continue
+		cd "$targetdir" || return $?
+		codename="$destname/binary-${ARCH}"
+		apt-ftparchive \
+			-o "APT::FTPArchive::Release::Origin=Univention" \
+			-o "APT::FTPArchive::Release::Label=Univention" \
+			-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
+			-o "APT::FTPArchive::Release::Codename=${codename}" \
+			release . >Release.tmp 2>&3
+		mv Release.tmp Release
+		gpgsign Release
+		cd "${OLDPWD}" || return $?
+	done
+
 	find "${REPODIR}" >&3 2>&3
 }
 
