@@ -136,7 +136,7 @@ failure () { # Report failed command
 	echo "ERROR ${0}:${BASH_LINENO[*]}" >&2
 	echo "ERROR ${BASH_COMMAND}" >&2
 	[ -s "${BASEDIR}/apache2.log" ] && cat "${BASEDIR}/apache2.log"
-	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list || :
+	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/mirror.list || :
 	sleep "${UT_DELAY:-0}"
 	exit "${RETVAL:-140}" # internal error
 }
