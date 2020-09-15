@@ -985,7 +985,7 @@ fi
 
 if [ -n "$samba4_join_site" ] && [ "$samba4_role" != "MEMBER" ]; then
 	## create subnet locally
-	subnet=$(python -c 'from univention.config_registry.interfaces import Interfaces;print Interfaces().get_default_ip_address().masked()' 2>/dev/null)
+	subnet=$(python3 -c 'from univention.config_registry.interfaces import Interfaces; print(Interfaces().get_default_ip_address().network)' 2>/dev/null)
 	/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
 			-H "/var/lib/samba/private/sam.ldb" \
 			--subnet "$subnet" --createsubnet \
