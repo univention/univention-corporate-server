@@ -129,9 +129,13 @@ config_mirror \
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${MDIR[@]}"
 	wait_for_updater_lock
 	univention-repository-update net --updateto "${major}.${minor}-2"
+	cat /etc/apt/mirror.list >&2
+	find "${BASEDIR}" -ls >&2
 	checkmirror "${CDIR[@]}" -- "${BDIR[@]}" "${ADIR[@]}"
 	wait_for_updater_lock
 	univention-repository-update net
+	cat /etc/apt/mirror.list >&2
+	find "${BASEDIR}" -ls >&2
 	checkmirror "${CDIR[@]}" "${ADIR[@]}" -- "${BDIR[@]}"
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
