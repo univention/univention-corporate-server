@@ -8,7 +8,6 @@ Build-Depends:
  node-stylus,
  python-all,
  python-polib,
- python2.7-dev,
  python3-all,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),

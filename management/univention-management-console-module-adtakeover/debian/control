@@ -6,7 +6,7 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- python2.7-dev,
+ python2.7,
  univention-config-dev,
  univention-management-console-dev (>= 11.0.4-37),
 
