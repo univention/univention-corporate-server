@@ -20,7 +20,7 @@ Depends:
  lsb-release,
  lsof,
  psmisc,
- python-ipaddr,
+ python-ipaddress,
  python-six,
  python3-six,
  rsyslog,
@@ -56,7 +56,7 @@ Package: univention-base-files
 Architecture: all
 Depends:
  shell-univention-lib (>= 6.0.9-8),
- univention-config (>= 10.0.2-3),
+ univention-config (>= 15),
  ${misc:Depends},
 Provides:
  univention-config-registry,

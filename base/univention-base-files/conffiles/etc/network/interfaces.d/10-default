@@ -46,11 +46,11 @@ def ipv4(ucr, interfaces):
 			if 'mtu' in iface:
 				print('\tmtu %(mtu)s' % iface)
 			if gateway:
-				if addr.prefixlen == addr.max_prefixlen and interfaces.primary in (name, iface.name):
+				if addr.network.prefixlen == addr.max_prefixlen and interfaces.primary in (name, iface.name):
 					print('\tpointopoint %s' % (gateway,))
 					print('\tgateway %s' % (gateway,))
 					gateway = None
-				elif gateway in addr:
+				elif gateway in addr.network:
 					print('\tgateway %s' % (gateway,))
 					gateway = None
 		else:
@@ -115,14 +115,14 @@ def ipv6(interfaces):
 			if gateway_zoneindex is None:
 				# check if gateway is local on this interface
 				if gateway:
-					if addr.prefixlen == addr.max_prefixlen and iface.name == interfaces.primary:
+					if addr.network.prefixlen == addr.max_prefixlen and iface.name == interfaces.primary:
 						data = (gateway, iface.name)
 						print('\tup   ip -6 route add %s dev %s' % data)
 						print('\tup   ip -6 route add default via %s dev %s' % data)
 						print('\tdown ip -6 route del default via %s dev %s' % data)
 						print('\tdown ip -6 route del %s dev %s' % data)
 						gateway = None
-					elif gateway in addr:
+					elif gateway in addr.network:
 						print('\tgateway %s' % (gateway,))
 						gateway = None
 

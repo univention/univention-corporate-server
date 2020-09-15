@@ -1,3 +1,9 @@
+univention-base-files (9.0.1-1) unstable; urgency=medium
+
+  * Bug #52017: ipaddr → ipaddress
+
+ -- Florian Best <best@univention.de>  Tue, 15 Sep 2020 16:50:13 +0200
+
 univention-base-files (9.0.0-8) unstable; urgency=low
 
   * Bug #33743: Document UCRV interfaces/.*/hosts
