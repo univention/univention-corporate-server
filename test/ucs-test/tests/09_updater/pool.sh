@@ -661,6 +661,9 @@ checkdeb () { # Check is package was installed in versions $@
 }
 
 checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-dirs...
+	# Have a look at https://git.knut.univention.de/univention/internal/repo-ng/-/blob/master/doc/struct.rst
+	# for the current repository layout.
+
 	local srcdir="${REPODIR}"
 	local dstdir="${BASEDIR}/mirror"
 	local skeldir="${dstdir}/skel/${REPOPREFIX}"
@@ -684,24 +687,62 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 
 	# Mirrored files
 	local cmd uri dist
-	while read -r cmd uri dist
+	while read -r cmd uri dist sections  # sections may contain more than one section!
 	do
 		[ "${cmd}" = deb ] || continue
 		[[ "${uri}" =~ 'http://localhost'(":${port}")?"/${REPOPREFIX}/"(.*) ]] || continue
 		local prefix="${BASH_REMATCH[2]}"
-		cmp "${srcdir}/${prefix}/${dist}/Packages" "${skeldir}/${prefix}/${dist}/Packages"
-		cmp "${srcdir}/${prefix}/${dist}/Packages.gz" "${skeldir}/${prefix}/${dist}/Packages.gz"
-		test -s "${dstdir}/mirror/${prefix}/${dist}/Packages" || return 1
-		test -s "${dstdir}/mirror/${prefix}/${dist}/Packages.gz" || return 1
+
+		# check dists directory
+		test -d "${srcdir}/${prefix}/dists/${dist}"
+		for filename in Release Release.gpg InRelease ; do
+			cmp "${srcdir}/${prefix}/dists/${dist}/${filename}" "${skeldir}/${prefix}/dists/${dist}/${filename}"
+			cmp "${srcdir}/${prefix}/dists/${dist}/${filename}" "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}"
+			test -s "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}" || return 1
+		done
+		for filename in preup.sh preup.sh.gpg postup.sh postup.sh.gpg ; do
+			if [ -f "${srcdir}/${prefix}/dists/${dist}/${filename}" ] ; then  # only test if mirrored correctly ==> does not check if src repo is complete!
+				cmp "${srcdir}/${prefix}/dists/${dist}/${filename}" "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}"
+				test -s "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}" || return 1
+			fi
+		done
+		for section in $sections ; do
+			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}"  # explicit test for easier debugging with "set -e"
+			for optional_di in "" "debian-installer/" ; do  # with and without d-i
+				if [ ! -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64" ] ; then
+					test -n "$optional_di" && continue
+				fi
+#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/by-hash/MD5Sum"  # does not exist yet
+#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/by-hash/SHA256"  # does not exist yet
+				for filename in Packages Packages.xz Release ; do
+#					test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/${filename}"  # does not exist yet / is no symlink
+					test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-amd64/${filename}"
+				done
+			done
+			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source" || continue  # FIXME: fail if the source directory does not exist?
+#			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/by-hash/MD5Sum"  # does not exist yet
+#			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/by-hash/SHA256"  # does not exist yet
+			for filename in Sources Sources.xz Release ; do
+				# is a symlink and the linked file exists
+#				test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/${filename}"  # does not exist yet / is no symlink
+				test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/${filename}"
+			done
+		done
+
+		# check releases file
+		test -s "${dstdir}/mirror/${prefix}/releases.json"
+
+		# check pool directory
+		test -d "${dstdir}/mirror/${prefix}/pool/main"
 
 		local oldifs="${IFS}"
 		local IFS=$'\n'
 		# shellcheck disable=SC2046
-		set -- $(cd "${srcdir}" && find "${prefix}/${dist}" -name \*.deb -o -name \*.sh)  # IFS
+		set -- $(cd "${srcdir}/${prefix}" && find "pool/" -name \*.deb -o -name \*.sh)  # IFS
 		IFS="${oldifs}"
 		while [ $# -ge 1 ]
 		do
-			cmp "${srcdir}/${1}" "${dstdir}/mirror/${1}" || return 1
+			cmp "${srcdir}/${1}" "${dstdir}/mirror/${prefix}/${1}" || return 1
 			shift
 		done
 	done </etc/apt/mirror.list
