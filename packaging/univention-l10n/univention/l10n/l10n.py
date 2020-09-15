@@ -27,12 +27,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
-from datetime import date
-from glob import glob
+
 import getpass
 import json
-import magic
 import mimetypes
 import os
 import re
@@ -40,20 +39,16 @@ import shutil
 import socket
 import sys
 import traceback
-
-from debian.deb822 import Deb822
+from datetime import date
 from email.utils import formatdate
+from glob import glob
 
+import magic
+from debian.deb822 import Deb822
 
-if sys.version_info >= (3,):
-	from email.utils import formatdate
-else:
-	from email.Utils import formatdate
-
-from . import umc
-from . import sourcefileprocessing
-from . import message_catalogs
+from . import message_catalogs, sourcefileprocessing, umc
 from .helper import make_parent_dir
+
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
 	from types import TracebackType  # noqa
