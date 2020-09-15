@@ -7,7 +7,7 @@ Build-Depends:
  node-stylus,
  univention-config-dev,
  univention-debhelper,
- univention-l10n-dev,
+ univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.9.5
 
 Package: univention-portal

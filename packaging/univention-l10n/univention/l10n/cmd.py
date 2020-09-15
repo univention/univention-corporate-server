@@ -104,6 +104,11 @@ def build(args):  # type: (argparse.Namespace) -> None
 
     Example :file:`debian/rules` override::
 
+        %:
+            dh --with univention-l10n
+
+    or alternatively::
+
         override_dh_auto_build:
             univention-l10n-build fr
             dh_auto_build
@@ -139,6 +144,11 @@ def install(args):  # type: (argparse.Namespace) -> None
     automate in-package translations.
 
     Example file:`debian/rules` override::
+
+        %:
+            dh --with univention-l10n
+
+    or alternatively::
 
         override_dh_auto_install:
             univention-l10n-install fr

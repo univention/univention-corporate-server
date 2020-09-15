@@ -1,3 +1,9 @@
+univention-l10n (7.0.1-1) unstable; urgency=low
+
+  * Bug #51656: Add l10n sequence for DebHelper
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Sep 2020 06:52:29 +0200
+
 univention-l10n (7.0.0-4) unstable; urgency=medium
 
   * Bug #51656: rename package into univention-l10n-tools

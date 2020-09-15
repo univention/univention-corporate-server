@@ -4,8 +4,8 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
+ univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev,
- univention-l10n-dev,
 Standards-Version: 3.7.2
 
 Package: univention-management-console-module-passwordchange

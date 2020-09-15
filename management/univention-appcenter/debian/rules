@@ -33,7 +33,7 @@
 export DH_VERBOSE=1
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python2,python3,univention-l10n --buildsystem=pybuild
 
 export PYBUILD_NAME=univention-appcenter
 
@@ -45,7 +45,6 @@ override_dh_auto_clean:
 
 override_dh_auto_build:
 	dh-umc-module-build
-	univention-l10n-build de
 	dh_auto_build
 	make
 	dh_auto_build --buildsystem=pybuild
@@ -53,7 +52,6 @@ override_dh_auto_build:
 override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-joinscript
-	univention-l10n-install de
 	dh-umc-module-install
 	dh_auto_install --buildsystem=pybuild
 	python setup_dev.py build --force -b build/python-univention-appcenter-dev install --force --root=debian/python-univention-appcenter-dev --install-layout=deb

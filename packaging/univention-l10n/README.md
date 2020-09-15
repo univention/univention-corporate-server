@@ -15,17 +15,12 @@ Package translation
 
 		Source: ...
 		Build-Depends:
-		 univention-l10n-tools,
+		 univention-l10n-dev (>= 7.0.1),
 
 2. Invoke command in `debian/rules`:
 
-		override_dh_auto_build:
-			univention-l10n-build de
-			dh_auto_build
-
-		override_dh_auto_install:
-			univention-l10n-install de
-			dh_auto_install
+		%:
+			dh --with univention-l10n
 
 3. Add JSON files `debian/$pkg.univention-l10n`:
 

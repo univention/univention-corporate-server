@@ -7,7 +7,7 @@ Build-Depends:
  dh-python,
  python-all,
  univention-config-dev,
- univention-l10n-dev,
+ univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.7.2
 
 Package: univention-directory-manager-module-example

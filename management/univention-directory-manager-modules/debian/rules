@@ -37,13 +37,8 @@ override_dh_auto_clean:
 	dh_auto_clean
 	find modules -name 'de.mo' -delete
 
-override_dh_auto_build:
-	univention-l10n-build de
-	dh_auto_build
-
 override_dh_auto_install:
 	dh_auto_install
-	univention-l10n-install de
 	univention-install-config-registry
 
 override_dh_install:
@@ -52,4 +47,4 @@ override_dh_install:
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python3-univention-directory-manager-cli/usr/lib/python3/dist-packages/univention/admincli/admin.py
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,univention-l10n

@@ -1,9 +1,6 @@
-#!/usr/bin/make -f
+#!/usr/bin/perl
 #
-# Univention S4 Connector
-#  rules file for the s4 connector debian package
-#
-# Copyright 2004-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,24 +26,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+use warnings;
+use strict;
+use Debian::Debhelper::Dh_Lib;
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
+insert_before("dh_auto_build", "univention-l10n-build");
+insert_before("dh_auto_install", "univention-l10n-install");
 
-override_dh_installinit:
-	dh_installinit --no-start -u"defaults 97"
-
-override_dh_install:
-	dh_install
-	mv debian/univention-s4-connector/etc/univention/connector/s4/mapping.py debian/univention-s4-connector/etc/univention/connector/s4/mapping
-
-override_dh_fixperms:
-	chmod 755 debian/univention-s4-connector/usr/lib/univention-install/97univention-s4-connector.inst
-	chmod 755 debian/univention-s4-connector/usr/sbin/univention-password_sync_ucs_to_s4
-	chmod 755 debian/univention-s4-connector/usr/share/univention-s4-connector/msgpo.py
-	chmod 755 debian/univention-s4-connector/etc/network/if-post-down.d/univention-s4-connector
-	dh_fixperms
-
-%:
-	dh $@ --with python2,python3,univention-l10n
+1;

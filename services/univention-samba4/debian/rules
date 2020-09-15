@@ -30,13 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	univention-l10n-build de
-	dh_auto_build
-
 override_dh_auto_install:
 	univention-install-config-registry
-	univention-l10n-install de
 	dh_auto_install 
 
 override_dh_fixperms-arch:
@@ -56,5 +51,4 @@ override_dh_installinit:
 	dh_installinit -a --no-start -u"defaults 97"
 
 %:
-	dh $@
-
+	dh $@ --with univention-l10n

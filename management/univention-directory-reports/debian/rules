@@ -30,14 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh_auto_build
-	univention-l10n-build de
-
 override_dh_auto_install:
 	dh_auto_install
-	univention-l10n-install de
 	univention-install-config-registry
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,univention-l10n

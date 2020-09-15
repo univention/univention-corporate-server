@@ -11,7 +11,7 @@ Standards-Version: 3.8.2
 Package: univention-l10n-fr
 Architecture: all
 Depends:
- univention-l10n-dev,
+ univention-l10n-dev (>= 7.0.1),
  ${misc:Depends},
 Description: UCS translation to French
  This package is part of Univention Corporate Server (UCS),

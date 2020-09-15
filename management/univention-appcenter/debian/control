@@ -11,8 +11,8 @@ Build-Depends:
  python3-all,
  univention-config-dev,
  univention-debhelper,
+ univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 11.0.4-37),
- univention-l10n-dev,
 Standards-Version: 3.8.2
 
 Package: univention-management-console-module-appcenter

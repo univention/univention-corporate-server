@@ -25,6 +25,7 @@ Depends:
  python3-polib,
  python3-univention-config-registry,
  ${misc:Depends},
+ ${perl:Depends},
  ${python3:Depends},
  ${python:Depends},
 Recommends:

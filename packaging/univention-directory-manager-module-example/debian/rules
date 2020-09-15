@@ -34,13 +34,8 @@
 PACKAGE_NAME = univention-directory-manager-module-example
 D  := debian/${PACKAGE_NAME}
 
-override_dh_auto_build:
-	univention-l10n-build de
-	dh_auto_build
-
 override_dh_auto_install:
 	dh_auto_install
-	univention-l10n-install de
 	univention-install-config-registry
 
 	# Install Univention Directory Manager Images
@@ -53,4 +48,4 @@ override_dh_auto_install:
 	done
 
 %:
-	dh $@ --with python2
+	dh $@ --with python2,univention-l10n
