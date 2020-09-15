@@ -332,6 +332,8 @@ mkpdir () { # Create pool directory ${dir}
 
 	# find "${REPODIR}" >&3 2>&3
 
+	python2.7 ./create_releases_json.py "$REPODIR"
+
 	return 0
 }
 
