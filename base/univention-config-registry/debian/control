@@ -10,7 +10,7 @@ Build-Depends:
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
  python-all,
- python-ipaddr,
+ python-ipaddress,
  python-mock,
  python-pytest,
  python-pytest-cov,
@@ -50,6 +50,7 @@ Depends:
  ldap-utils,
  python-debian,
  python-univention-config-registry (= ${source:Version}),
+ python3-univention-config-registry (= ${source:Version}),
  ${misc:Depends},
  ${python:Depends},
 Replaces:
@@ -115,7 +116,7 @@ Package: python-univention-config-registry
 Architecture: all
 Depends:
  ifupdown,
- python-ipaddr,
+ python-ipaddress,
  python-six,
  python-univention-debhelper,
  python-univention-namespace,

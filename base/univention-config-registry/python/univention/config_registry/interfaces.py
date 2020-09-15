@@ -37,17 +37,13 @@ from __future__ import absolute_import
 import re
 from sys import maxsize
 from functools import wraps
-import six
 from univention.config_registry.backend import ConfigRegistry
 
-if six.PY3:
-	from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
-else:
-	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface
+from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 
 try:
-	from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Type  # noqa F401
-	from ipaddr import IPAddress  # noqa F401
+	from typing import Any, Callable, Dict, Iterator, Optional, Union, Tuple, Type  # noqa F401
+	from ipaddress import _IPAddressBase  # noqa F401
 except ImportError:
 	pass
 
@@ -256,7 +252,7 @@ class Interfaces(object):
 
 		self.primary = ucr.get('interfaces/primary', 'eth0')
 		try:
-			self.ipv4_gateway = IPv4Address(ucr['gateway'])
+			self.ipv4_gateway = IPv4Address(u"%(gateway)s" % ucr)  # type: Union[IPv4Address, None, bool]
 		except KeyError:
 			self.ipv4_gateway = None
 		except ValueError:
@@ -269,7 +265,7 @@ class Interfaces(object):
 			parts = ucr['ipv6/gateway'].rsplit('%', 1)
 			gateway = parts.pop(0)
 			zone_index = parts[0] if parts else None
-			self.ipv6_gateway = IPv6Address(gateway)
+			self.ipv6_gateway = IPv6Address(u"%s" % (gateway,))  # type: Union[IPv6Address, None, bool]
 			self.ipv6_gateway_zone_index = zone_index
 		except KeyError:
 			self.ipv6_gateway = None
@@ -357,7 +353,7 @@ class Interfaces(object):
 					yield (iface, name)
 
 	def get_default_ip_address(self):
-		# type: () -> Optional[IPAddress]
+		# type: () -> Optional[_IPAddressBase]
 		"""returns the default IP address."""
 		for iface in sorted(self._all_interfaces.values(), key=self._cmp_primary):
 			addr = iface.ipv4_address()

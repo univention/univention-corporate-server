@@ -3,11 +3,7 @@
 # pylint: disable-msg=C0103,E0611,R0904
 import pytest
 from os.path import devnull
-import six
-if six.PY3:
-	from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
-else:
-	from ipaddr import IPv4Address, IPv6Address, IPv4Network as IPv4Interface, IPv6Network as IPv6Interface
+from ipaddress import IPv4Address, IPv6Address, IPv4Interface, IPv6Interface
 from univention.config_registry.interfaces import _Iface, Interfaces, forgiving, cmp_alnum  # noqa E402
 
 
@@ -294,7 +290,7 @@ class TestInterfaces(object):
 		t = Interfaces(ucr={
 			'ipv6/gateway': 'fe80::1%eth0',
 		})
-		assert IPv6Address('fe80::1') == t.ipv6_gateway
+		assert IPv6Address(u'fe80::1') == t.ipv6_gateway
 		assert 'eth0' == t.ipv6_gateway_zone_index
 
 	def test_non_vengeful(self):
