@@ -47,8 +47,7 @@ import magic
 from debian.deb822 import Deb822
 
 from . import message_catalogs, sourcefileprocessing, umc
-from .helper import make_parent_dir
-
+from .helper import Error, make_parent_dir
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
 	from types import TracebackType  # noqa
@@ -73,11 +72,11 @@ MODULE_BLACKLIST = {
 }
 
 
-class NoSpecialCaseDefintionsFound(Exception):
+class NoSpecialCaseDefintionsFound(Error):
 	pass
 
 
-class NoMatchingFiles(Exception):
+class NoMatchingFiles(Error):
 	pass
 
 
@@ -322,10 +321,7 @@ def update_package_translation_files(module, output_dir, template=False):
 				for po_file in po_files:
 					po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 					make_parent_dir(po_path)
-					try:
-						umc.create_po_file(po_path, module['module_name'], src_files, language, template)
-					except umc.Error as exc:
-						print(exc)
+					umc.create_po_file(po_path, module['module_name'], src_files, language, template)
 
 			# build python po files
 			_create_po_files(module.python_po_files, module.python_files, 'Python')
@@ -335,14 +331,12 @@ def update_package_translation_files(module, output_dir, template=False):
 		for lang, po_file in module.xml_po_files:
 			po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 			make_parent_dir(po_path)
-			try:
-				umc.module_xml2po(module, po_path, lang, template)
-			except umc.Error as exc:
-				print(exc)
+			umc.module_xml2po(module, po_path, lang, template)
 
 	except OSError as exc:
 		print(traceback.format_exc())
 		print("error in update_package_translation_files: %s" % (exc,))
+		raise Error("update_package_translation_files() failed")
 	finally:
 		os.chdir(start_dir)
 
