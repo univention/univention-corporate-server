@@ -113,9 +113,10 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 	# Handle old translation package format
 	if not os.path.isfile(os.path.join(args.translation, 'all_targets.mk')):
 		try:
-			os.remove(os.path.join(args.translation, 'debian', 'univention-ucs-translation-{}.install'.format(lang_code)))
-			tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
-			shutil.copy('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(args.translation, 'Makefile'))
+			deb_dir = os.path.join(args.translation, 'debian')
+			os.remove(os.path.join(deb_dir, 'univention-ucs-translation-{}.install'.format(lang_code)))
+			tlh.template_file(deb_dir, "rules")
+			tlh.template_file(args.translation, "Makefile")
 		except Exception:
 			sys.exit("Error during handling of legacy translation package. Exiting.")
 

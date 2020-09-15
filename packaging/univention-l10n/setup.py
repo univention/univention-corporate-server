@@ -1,6 +1,7 @@
-#!/usr/bin/make -f
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
-# Copyright 2013-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -26,8 +27,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-export LC_ALL=C.UTF-8
-#export PYBUILD_NAME=univention-l10n-dev
+from setuptools import setup
 
-%:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+VER = open('debian/changelog', 'r').readline().split()[1][1:-1]
+
+setup(
+	package_dir={'': '.'},
+	version=VER,
+)

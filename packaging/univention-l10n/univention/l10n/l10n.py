@@ -450,40 +450,20 @@ def find_base_translation_modules(source_dir):
 	return base_translation_modules
 
 
-def write_debian_rules(debian_dir_path):
-	# type: (str) -> None
-	with open(os.path.join(debian_dir_path, 'rules'), 'w') as f:
-		f.write("""#!/usr/bin/make -f
-#
-# Copyright 2016-{year} Univention GmbH
-#
-# https://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <https://www.gnu.org/licenses/>.
+def template_file(dst, fn, values):
+	# type: (str, str, Dict[str, str]) -> None
+	"""
+	Render file from template file by filling in values.
 
-%:
-	dh $@""".format(year=date.today().year))
+	:param dst: Destination path.
+	:param fn: File name for destination file and source template with `.tmpl` suffix.
+	:param values: A dictionary with the values.
+	"""
+	with open(os.path.join(os.path.dirname(__file__), fn + ".tmpl"), "r") as f:
+		tmpl = f.read()
+
+	with open(os.path.join(dst, fn), 'w') as f:
+		f.write(tmpl.format(**values))
 
 
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
@@ -502,72 +482,9 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 		years=date.today().year,
 	)
 
-	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
-		f.write("""\
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Univention GmbH
-Upstream-Contact: <package@univention.de>
-Source: https://updates.software-univention.de/
-
-Files: *
-Copyright: {years} Univention GmbH
-License: AGPL-3.0-only
- The source code of the software contained in this package
- as well as the source package itself are made available
- under the terms of the GNU Affero General Public License version 3
- (GNU AGPL V3) as published by the Free Software Foundation.
- .
- Binary versions of this program provided by Univention to you as
- well as other copyrighted, protected or trademarked materials like
- Logos, graphics, fonts, specific documentations and configurations,
- cryptographic keys etc. are subject to a license agreement between
- you and Univention and not subject to the GNU AGPL V3.
- .
- In the case you use this program under the terms of the GNU AGPL V3,
- the program is provided in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU Affero General Public License for more details.
- .
- You should have received a copy of the GNU Affero General Public
- License with the Debian GNU/Linux or Univention distribution in file
- /usr/share/common-licenses/AGPL-3; if not, see
- <https://www.gnu.org/licenses/>.""".format(**translation))  # noqa: E101
-
-	with open(os.path.join(new_package_dir_debian, 'changelog'), 'w') as f:  # noqa: E101
-		f.write("""%(package_name)s (1.0.0-1) unstable; urgency=low
-
-  * Initial release
-
- -- %(creator)s <%(creator)s@%(host)s>  %(date)s""" % translation)  # noqa: E101
-
-	write_debian_rules(new_package_dir_debian)  # noqa: E101
-
-	with open(os.path.join(new_package_dir_debian, 'control'), 'w') as f:
-		f.write("""Source: %(package_name)s
-Section: univention
-Priority: optional
-Maintainer: %(creator)s <%(creator)s@%(host)s>
-Build-Depends: debhelper (>= 9),
- univention-config-dev,
- univention-management-console-dev,
-Standards-Version: 3.8.2
-
-Package: %(package_name)s
-Architecture: all
-Depends: ${misc:Depends},
- univention-management-console
-Description: %(name)s localization files for UCS
- This package contains the %(name)s translations for Management
- Console and other parts of UCS.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/""" % translation)  # noqa: E101
-
-	with open(os.path.join(new_package_dir_debian, 'compat'), 'w') as f:  # noqa: E101
-		f.write("9")
+	template_file(new_package_dir, "Makefile", translation)
+	for fn in ("copyright", "changelog", "control", "compat", "rules"):
+		template_file(new_package_dir_debian, fn, translation)
 
 	with open(os.path.join(new_package_dir_debian, '%(package_name)s.postinst' % translation), 'w') as f:
 		f.write("""#!/bin/sh
@@ -584,7 +501,6 @@ ucr set ucs/server/languages/%s?"%s"
 
 exit 0""" % (target_locale, target_locale.split('.')[0], language_name))
 
-	shutil.copyfile('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(new_package_dir, 'Makefile'))
 	# Move source files and installed .mo files to new package dir
 	if os.path.exists(os.path.join(new_package_dir, 'usr')):
 		shutil.rmtree(os.path.join(new_package_dir, 'usr'))
