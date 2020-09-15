@@ -133,7 +133,9 @@ def test_rename_domain_users():
 			print('##################################################################\n')
 			cmd = (['udm-test', 'groups/group', 'modify', '--dn=%s' % (new_group_dn), '--set', 'name=%s' % (old_group_name)])
 			subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, close_fds=True)
+
 			# wait until renaming and UCR Variable is set back again
+			utils.wait_for_replication_and_postrun()
 			success, ucr_group = wait_for_ucr(ucr_test, 7, old_group_name)
 			if not success:
 				univention.config_registry.handler_set(['groups/default/domainadmins=Domain Admins'])
