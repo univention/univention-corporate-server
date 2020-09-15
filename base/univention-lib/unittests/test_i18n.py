@@ -28,9 +28,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from os.path import dirname
+
 import pytest
 
-from univentionunittests import skipifbuildingpackage
 from .conftest import import_lib_module
 
 i18n = import_lib_module('i18n')
@@ -118,13 +119,14 @@ class TestTranslation(object):
 		translation = i18n.Translation('univention.lib')
 		assert translation._domain == 'univention-lib'
 
-	@skipifbuildingpackage
 	def test_set_language(self):
 		i18n.Translation.locale = i18n.Locale()
-		translation = i18n.Translation('univention.lib')
+		translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__))
+
 		translation.set_language('de_DE')
 		assert str(translation.locale) == 'de_DE.UTF-8'
 		assert translation._translation is not None
+
 		translation.set_language('en_US')
 		assert str(translation.locale) == 'en_US.UTF-8'
 		assert translation._translation is None
