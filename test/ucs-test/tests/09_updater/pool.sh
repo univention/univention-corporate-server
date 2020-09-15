@@ -13,6 +13,17 @@ pkgname="test-$$-${RANDOM}"
 repoprefix="univention-repository"
 ARCH=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 
+wait_for_updater_lock () {
+	# wait up to 60 seconds
+	let i=60
+	while [ $i -gt 0 ] && [ -f /var/lock/univention-updater ] ; do
+		let i=$i-1
+		sleep 1
+	done
+	[ $i -lt 1 ] && echo "ERROR: wait_for_updater_lock ran into a timeout!" && ps axfwww && grep -Hr . /var/lock/univention-updater || :
+}
+
+
 bug43914 () {
 	local name="$1"
 	[[ "$name" = [78]* ]] || return 0

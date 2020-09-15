@@ -30,6 +30,7 @@ config_mirror /
 	set -e
 	cat /etc/apt/mirror.list >&2
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	wait_for_updater_lock
 	univention-repository-update net
 	find "${BASEDIR}" -ls >&2
 	checkmirror

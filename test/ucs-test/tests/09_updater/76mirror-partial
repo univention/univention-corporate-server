@@ -127,8 +127,10 @@ config_mirror \
 (
 	set -e
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${MDIR[@]}"
+	wait_for_updater_lock
 	univention-repository-update net --updateto "${major}.${minor}-2"
 	checkmirror "${CDIR[@]}" -- "${BDIR[@]}" "${ADIR[@]}"
+	wait_for_updater_lock
 	univention-repository-update net
 	checkmirror "${CDIR[@]}" "${ADIR[@]}" -- "${BDIR[@]}"
 )

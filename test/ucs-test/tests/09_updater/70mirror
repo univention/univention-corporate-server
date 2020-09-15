@@ -33,6 +33,7 @@ config_mirror repository/mirror=no
 	cat /etc/apt/mirror.list >&2
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
 	echo "MARKER START for 09_updater/70mirror" >> /var/log/univention/repository.log
+	wait_for_updater_lock
 	univention-repository-update net
 	echo "MARKER END for 09_updater/70mirror" >> /var/log/univention/repository.log
 	find "${BASEDIR}" -ls >&2

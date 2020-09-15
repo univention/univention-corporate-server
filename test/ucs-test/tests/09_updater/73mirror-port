@@ -31,6 +31,7 @@ config_mirror :${port}
 (
 	set -e
 	checkapt --mirror "http://localhost:${port}/${repoprefix}/" "${DIRS[@]}"
+	wait_for_updater_lock
 	univention-repository-update net
 	find "${BASEDIR}" -ls >&2
 	checkmirror
