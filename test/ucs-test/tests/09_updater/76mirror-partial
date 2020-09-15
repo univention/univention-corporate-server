@@ -18,100 +18,116 @@ declare -a BDIR CDIR ADIR # before current after
 setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 1 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
+mkpkg "${DIRS[1]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[1]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
+mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
 mkpdir "${major}.${minor}-1" maintained "${ARCH}"
-mkdeb "${pkgname}y" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkdeb "${pkgname}ua" 3 all "${DIR_POOL}"
+mkpkg "${DIRS[2]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[2]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-1" maintained all
-mkdeb "${pkgname}l" 3 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mkdeb "${pkgname}ea" 3 all "${DIR_POOL}"
+mkpkg "${DIRS[3]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 3 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[3]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-
-minor+=1
-
-mkpdir "${major}.${minor}-0" maintained "${ARCH}" # CURRENT < START
-mkdeb "${pkgname}y" 4 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-BDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 4 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
-BDIR+=("${DIR}")
-
-# START
-
-mkpdir "${major}.${minor}-1" maintained "${ARCH}"
-mkdeb "${pkgname}y" 6 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-1" maintained all
-mkdeb "${pkgname}l" 6 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
-CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-2" maintained "${ARCH}"
-mkdeb "${pkgname}y" 7 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-CDIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-2" maintained all
-mkdeb "${pkgname}l" 7 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
-CDIR+=("${DIR}")
-
-# END
-
-mkpdir "${major}.${minor}-3" maintained "${ARCH}"
-mkdeb "${pkgname}y" 8 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-ADIR+=("${DIR}")
-
-mkpdir "${major}.${minor}-3" maintained all
-mkdeb "${pkgname}l" 8 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
-ADIR+=("${DIR}")
+mksh "${DIRS[2]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
 minor+=1
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
-mkdeb "${pkgname}y" 9 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-ADIR+=("${DIR}")
+mkdeb "${pkgname}ua" 4 all "${DIR_POOL}"
+mkpkg "${DIRS[4]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 4 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[4]}" "${DIR_POOL}"
+BDIR+=("${DIR}")
+mkdeb "${pkgname}ea" 4 all "${DIR_POOL}"
+mkpkg "${DIRS[5]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 4 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[5]}" "${DIR_POOL}"
+BDIR+=("${DIR}")
+mksh "${DIRS[4]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
-mkpdir "${major}.${minor}-0" maintained all
-mkdeb "${pkgname}l" 9 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
-ADIR+=("${DIR}")
+# START
 
 mkpdir "${major}.${minor}-1" maintained "${ARCH}"
-mkdeb "${pkgname}y" 11 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-ADIR+=("${DIR}")
+mkdeb "${pkgname}ua" 6 all "${DIR_POOL}"
+mkpkg "${DIRS[6]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 6 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[6]}" "${DIR_POOL}"
+CDIR+=("${DIR}")
+mkdeb "${pkgname}ea" 6 all "${DIR_POOL}"
+mkpkg "${DIRS[7]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 6 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[7]}" "${DIR_POOL}"
+CDIR+=("${DIR}")
+mksh "${DIRS[6]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
-mkpdir "${major}.${minor}-1" maintained all
-mkdeb "${pkgname}l" 11 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mksh "${DIR}" preup postup
+mkpdir "${major}.${minor}-2" maintained "${ARCH}"
+mkdeb "${pkgname}ua" 7 all "${DIR_POOL}"
+mkpkg "${DIRS[8]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 7 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[8]}" "${DIR_POOL}"
+CDIR+=("${DIR}")
+mkdeb "${pkgname}ea" 7 all "${DIR_POOL}"
+mkpkg "${DIRS[9]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 7 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[9]}" "${DIR_POOL}"
+CDIR+=("${DIR}")
+mksh "${DIRS[8]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+
+# END
+
+mkpdir "${major}.${minor}-3" maintained "${ARCH}"
+mkdeb "${pkgname}ua" 8 all "${DIR_POOL}"
+mkpkg "${DIRS[10]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 8 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[10]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
+mkdeb "${pkgname}ea" 8 all "${DIR_POOL}"
+mkpkg "${DIRS[11]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 8 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[11]}" "${DIR_POOL}"
+ADIR+=("${DIR}")
+mksh "${DIRS[10]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+
+minor+=1
+
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+mkdeb "${pkgname}ua" 9 all "${DIR_POOL}"
+mkpkg "${DIRS[12]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 9 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[12]}" "${DIR_POOL}"
+ADIR+=("${DIR}")
+mkdeb "${pkgname}ea" 9 all "${DIR_POOL}"
+mkpkg "${DIRS[13]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 9 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[13]}" "${DIR_POOL}"
+ADIR+=("${DIR}")
+mksh "${DIRS[12]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+
+mkpdir "${major}.${minor}-1" maintained "${ARCH}"
+mkdeb "${pkgname}ua" 11 all "${DIR_POOL}"
+mkpkg "${DIRS[14]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkdeb "${pkgname}ub" 11 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[14]}" "${DIR_POOL}"
+ADIR+=("${DIR}")
+mkdeb "${pkgname}ea" 11 all "${DIR_POOL}"
+mkpkg "${DIRS[15]}" "${DIR_POOL}"   # ==> errataXYZ
+mkdeb "${pkgname}eb" 11 "${ARCH}" "${DIR_POOL}"
+mkpkg "${DIRS[15]}" "${DIR_POOL}"
+ADIR+=("${DIR}")
+mksh "${DIRS[14]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
 
 minor+=-1
 
