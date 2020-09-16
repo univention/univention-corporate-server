@@ -684,7 +684,7 @@
 			password hash used by Samba.</simpara></listitem>
 		  </itemizedlist>
         <para>
-		  Password changes are always initiated via Kerberos in the UCS PAM configuration.
+		  Password changes are always initiated via Kerberos, either in the UCS PAM configuration or via Samba.
 		</para>
 
             <figure id="password-policy">
