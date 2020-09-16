@@ -194,12 +194,14 @@ class SpecialCase():
 	:param target_language: 2-letter language code.
 	"""
 
+	RE_L10N = re.compile(r'(.+/)?debian/([^/]+).univention-l10n$')
+
 	def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
 		# type: (Dict[str, str], str, str, str) -> None
 		# FIXME: this would circumvent custom getters and setter?
 		self.__dict__.update(special_case_definition)
 		def_relative = os.path.relpath(path_to_definition, start=source_dir)
-		matches = re.match(r'(.+/)?debian/([^/]+).univention-l10n$', def_relative)
+		matches = self.RE_L10N.match(def_relative)
 		if not matches:
 			raise ValueError(def_relative)
 
