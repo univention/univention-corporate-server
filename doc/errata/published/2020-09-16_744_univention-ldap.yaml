@@ -9,3 +9,5 @@ desc: |
  * A new attribute "univentionShareSambaBaseDirAppendACL" was added to
    the LDAP schema of Samba shares.
 bug: [52013]
+erratum: 744
+announced: 2020-09-16
