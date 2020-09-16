@@ -3,7 +3,7 @@ default:
     expire_in: 1 day
 
 variables:
-  ucs: ucs446
+  ucs: 446
   GIT_STRATEGY: fetch
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"
