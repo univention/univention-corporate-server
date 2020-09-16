@@ -719,9 +719,10 @@
 				  check</guimenu> checkbox is not ticked. This means it even applies if the
 				  <emphasis>default-settings</emphasis> password policy has been deleted. If no
 				  password length check should be performed, the value must be set to 0.
-				  A per server default can be configured via UCR variable
+				  A per server default can be configured via &ucsUCRV;
 				  <envar>password/quality/length/min</envar>, which applies to users that are
-				  not subject to a UDM policy. See the UCR variable description for details.
+				  not subject to a <emphasis>UDM</emphasis> password policy.
+				  See the &ucsUCRV; description for details.
 				</simpara>
 			  </listitem>
 
@@ -786,7 +787,7 @@
                             <listitem>
 								<simpara>
                                 Standard Microsoft password complexity criteria can be applied
-                                (<envar>password/quality/mspolicy</envar>). This can be done in addition to the <filename>python-cracklib</filename> checks (value <literal>yes</literal>) or instead of them (<literal>sufficient</literal>). See UCR variable description for details.
+                                (<envar>password/quality/mspolicy</envar>). This can be done in addition to the <filename>python-cracklib</filename> checks (value <literal>yes</literal>) or instead of them (<literal>sufficient</literal>). See &ucsUCRV; description for details.
 								</simpara>
                             </listitem>
                         </itemizedlist>

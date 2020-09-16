@@ -749,9 +749,9 @@
                     ignorieren</guimenu> nicht markiert ist, also auch, wenn die
                     Passwort-Richtlinie <emphasis>default-settings</emphasis> gelöscht wurde.
 					Wenn keine Prüfung der Passwortlänge erfolgen soll, muss der Wert auf 0 gesetzt werden.
-					Pro Server kann über die UCR variable <envar>password/quality/length/min</envar>
+					Pro Server kann über die &ucsUCRV; <envar>password/quality/length/min</envar>
 					ein Defaultwert konfiguriert werden, der auf Benutzerkonten angewendet wird,
-					denen keine Passwort-Richtinie zugewiesen ist. Die UCR-Variablenbeschreibung
+					denen keine <emphasis>UDM</emphasis> Passwort-Richtinie zugewiesen ist. Die &ucsUCRV;nbeschreibung
 					enthält weitere Details.
 					</simpara>
                 </listitem>
@@ -817,7 +817,7 @@
                             <listitem>
 								<simpara>
                                 Standard-Microsoft-Passwortkomplexitätskriterien können angewendet werden
-                                (<envar>password/quality/mspolicy</envar>). Dies kann entweder zusätzlich zu den <filename>python-cracklib</filename> Checks geschehen (Wert <literal>yes</literal>) oder statt dessen (<literal>sufficient</literal>). Die UCR-Variablenbeschreibung enthält weitere Details.
+                                (<envar>password/quality/mspolicy</envar>). Dies kann entweder zusätzlich zu den <filename>python-cracklib</filename> Checks geschehen (Wert <literal>yes</literal>) oder statt dessen (<literal>sufficient</literal>). Die &ucsUCRV;nbeschreibung enthält weitere Details.
 								</simpara>
                             </listitem>
                         </itemizedlist>
