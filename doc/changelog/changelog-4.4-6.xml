@@ -92,6 +92,10 @@
 		<section id="changelog:umc:setup">
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
+				<listitem><simpara>
+					Proxy settings are now exported as environment variables during the setup (<u:bug>51799</u:bug>).
+				</simpara></listitem>
+
 			</itemizedlist>
 		</section>
 
