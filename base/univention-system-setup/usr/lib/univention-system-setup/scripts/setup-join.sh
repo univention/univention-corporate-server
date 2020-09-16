@@ -205,6 +205,10 @@ fi
 # Do network stuff
 echo "Starting re-configuration of network"
 run-parts -v -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net
+eval "$(ucr shell proxy/http proxy/https proxy/no_proxy)"
+[ -n "$proxy_http" ] && export http_proxy="$proxy_http"
+[ -n "$proxy_https" ] && export https_proxy="$proxy_https"
+[ -n "$proxy_no_proxy" ] && export no_proxy="$proxy_no_proxy"
 
 run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 

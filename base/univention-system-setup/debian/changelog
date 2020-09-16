@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-27) unstable; urgency=medium
+
+  * Bug #51799: export proxy variables during setup
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Sep 2020 14:37:29 +0200
+
 univention-system-setup (12.0.2-26) unstable; urgency=medium
 
   * Bug #50613: Fix repository server check, consider current proxy settings
