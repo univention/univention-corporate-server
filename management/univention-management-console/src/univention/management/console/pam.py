@@ -66,6 +66,9 @@ _('The password has expired and must be renewed.')
 _('The minimum password age is not reached yet.')
 _('Make sure the kerberos service is functioning or inform an Administrator.')
 _('The password is too similar to the old one.')
+_('The password does not meet the password complexity requirements.')
+_('Password contains user account name.')
+_('Password contains parts of the full user name.')
 
 
 class AuthenticationError(Exception):  # abstract base class

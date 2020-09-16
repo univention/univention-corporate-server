@@ -421,6 +421,10 @@ msgstr "Das neue Passwort konnte nicht gesetzt werden."
 msgid "The password does not contain enough different characters."
 msgstr "Das Passwort enthält nicht genügend unterschiedliche Zeichen."
 
+#: src/univention/management/console/pam.py:64
+msgid "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."
+msgstr "Der Wert, der als neues Kennwort angegeben wurde, entspricht nicht den Kennwortrichtlinien der Domäne. Überprüfen Sie die Kennwortlänge, die Komplexität des Kennworts und die Anforderungen bezüglich früherer Kennwörter."
+
 #: src/univention/management/console/pam.py:65
 #: src/univention/management/console/pam.py:318
 msgid "The password has expired and must be renewed."
@@ -445,6 +449,18 @@ msgstr "Das Passwort ist zu kurz."
 #: src/univention/management/console/pam.py:68
 msgid "The password is too similar to the old one."
 msgstr "Das Passwort ist dem aktuellen zu ähnlich."
+
+#: src/univention/management/console/pam.py:69
+msgid "The password does not meet the password complexity requirements."
+msgstr "Das Passwort entspricht nicht den Komplexitätsanforderungen."
+
+#: src/univention/management/console/pam.py:70
+msgid "Password contains user account name."
+msgstr "Das Passwort enthält den Benutzerkontonamen."
+
+#: src/univention/management/console/pam.py:71
+msgid "Password contains parts of the full user name."
+msgstr "Das Passwort enthält Teile des vollen Benutzer*innennamens."
 
 #: src/univention/management/console/pam.py:60
 msgid "The password is too simple."

@@ -780,6 +780,12 @@
                                 (<envar>password/quality/required/chars</envar>).
 								</simpara>
                             </listitem>
+                            <listitem>
+								<simpara>
+                                Standard Microsoft password complexity criteria can be applied
+                                (<envar>password/quality/mspolicy</envar>). This can be done in addition to the <filename>python-cracklib</filename> checks (value <literal>yes</literal>) or instead of them (<literal>sufficient</literal>). See UCR variable description for details.
+								</simpara>
+                            </listitem>
                         </itemizedlist>
                 </listitem>
             </itemizedlist>

@@ -810,6 +810,12 @@
                                 (<envar>password/quality/required/chars</envar>).
 								</simpara>
                             </listitem>
+                            <listitem>
+								<simpara>
+                                Standard-Microsoft-Passwortkomplexitätskriterien können angewendet werden
+                                (<envar>password/quality/mspolicy</envar>). Dies kann entweder zusätzlich zu den <filename>python-cracklib</filename> Checks geschehen (Wert <literal>yes</literal>) oder statt dessen (<literal>sufficient</literal>). Die UCR-Variablenbeschreibung enthält weitere Details.
+								</simpara>
+                            </listitem>
                         </itemizedlist>
                 </listitem>
             </itemizedlist>
