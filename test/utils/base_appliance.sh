@@ -256,7 +256,7 @@ prepare_package_app ()
 	local ucsversion="$(app_get_ini $app | awk -F / '{print $(NF-1)}')"
 	local install_cmd="$(univention-config-registry get update/commands/install)"
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
-	for i in oxseforucs egroupware horde tine20 fortnox kolab-enterprise kix2016; do
+	for i in oxseforucs horde tine20 fortnox kolab-enterprise kix2016; do
 		test "$i" = "$app" && close_fds=TRUE
 	done
 	cat >/usr/lib/univention-system-setup/scripts/90_postjoin/12_${counter}_setup_${app} <<__EOF__
@@ -312,14 +312,6 @@ prepare_docker_app () {
 	local counter=$2
 	local php7_required=false
 	local extra_packages=""
-	for i in "owncloud82" "egroupware"; do
-		if [ "$i" == "$app" ]; then
-			php7_required=true
-		fi
-	done
-	if [ "$app" == "egroupware" ]; then
-		extra_packages="univention-apache libapache2-mod-php7.0 php-tidy php-gd php-imap php-ldap php-xsl php-mysql php-common php-mbstring php-json php-fpm php-bz2"
-	fi
 	local dockercompose="$(app_get_compose_file $app)"
 	local dockerimage="$(get_app_attr $app DockerImage)"
 	local local_app_component_id=$(app_get_component $app)""
@@ -373,12 +365,6 @@ prepare_docker_app () {
 			#if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
 			#	ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 			#fi
-			# php 7 is maintained in 4.3
-			#"$php7_required" && docker exec "$container_id" ucr set \
-			#	repository/online/component/php7=enabled \
-			#	repository/online/component/php7/version=current \
-			#	repository/online/component/php7/server=https://updates.software-univention.de \
-			#	repository/online/component/php7/description="PHP 7 for UCS"
 			# provide required packages inside container
 			docker exec "$container_id" apt-get update
 			docker exec "$container_id" univention-install --yes apt-utils
