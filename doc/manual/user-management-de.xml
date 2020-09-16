@@ -713,7 +713,7 @@
 			</listitem>
 		  </itemizedlist>
 		<para>
-		  Passwortänderungen werden in der UCS-PAM-Konfiguration immer über Kerberos initiiert.
+		  Passwortänderungen werden immer über Kerberos initiiert, entweder über die UCS-PAM-Konfiguration oder über Samba.
 		</para>
             <figure id="password-policy">
                 <title>Konfiguration einer Passwort-Richtlinie</title>
