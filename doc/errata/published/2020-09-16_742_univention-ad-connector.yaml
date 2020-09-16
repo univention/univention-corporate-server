@@ -9,3 +9,5 @@ desc: |
  * Support ldaps configuration in univention-ad-search and
    univention-connector-list-rejected
 bug: [51673]
+erratum: 742
+announced: 2020-09-16
