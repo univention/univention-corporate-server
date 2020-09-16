@@ -202,6 +202,8 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 			krb5_des_crc = key_data
 			if not krb_ctr3_salt:
 				krb_ctr3_salt = saltstring
+		if not krb_ctr3_salt:
+			krb_ctr3_salt = saltstring
 
 	# build new drsblobs.supplementalCredentialsBlob
 
@@ -233,6 +235,15 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 			next_key.keytype = 3
 			next_key.value = krb5_des_md5
 			next_key.value_len = len(krb5_des_md5)
+			kerberosKey4list.append(next_key)
+		if not krb5_des_md5:
+			next_key = drsblobs.package_PrimaryKerberosKey4()
+			next_key.keytype = 4294967156
+			next_key.value = nt_hash
+			if nt_hash:
+				next_key.value_len = len(nt_hash)
+			else:
+				next_key.value_len = 0
 			kerberosKey4list.append(next_key)
 		if krb5_des_crc:
 			assert len(krb5_des_crc) == 8
@@ -339,12 +350,21 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 	ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: building Primary:Kerberos blob")
 	kerberosKey3list = []
 
-	if krb5_des_md5 or krb5_des_crc:
+	if krb5_aes256 or krb5_aes128 or krb5_des_md5 or krb5_des_crc:
 		if krb5_des_md5:
 			next_key = drsblobs.package_PrimaryKerberosKey3()
 			next_key.keytype = 3
 			next_key.value = krb5_des_md5
 			next_key.value_len = len(krb5_des_md5)
+			kerberosKey3list.append(next_key)
+		if not krb5_des_md5:
+			next_key = drsblobs.package_PrimaryKerberosKey3()
+			next_key.keytype = 4294967156
+			next_key.value = nt_hash
+			if nt_hash:
+				next_key.value_len = len(nt_hash)
+			else:
+				next_key.value_len = 0
 			kerberosKey3list.append(next_key)
 		if krb5_des_crc:
 			next_key = drsblobs.package_PrimaryKerberosKey3()
