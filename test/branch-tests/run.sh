@@ -85,7 +85,7 @@ ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "jenkins@${BUILD
 # replace non deb lines
 sed -i '/^deb /!d' utils/apt-get-branch-repo.list
 
-release='4.4-5'
+release='4.4-6'
 
 sections=''
 parse_sections () {
