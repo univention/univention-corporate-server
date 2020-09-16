@@ -46,6 +46,7 @@ from univention.appcenter.app_cache import Apps
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import underscore, call_process, verbose_http_error, send_information
 from univention.appcenter.exceptions import Abort, NetworkError
+from six import with_metaclass
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
@@ -137,9 +138,7 @@ class UniventionAppActionMeta(type):
 		return new_cls
 
 
-class UniventionAppAction(object):
-	__metaclass__ = UniventionAppActionMeta
-
+class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 	parent_logger = get_base_logger().getChild('actions')
 
 	def __init__(self):

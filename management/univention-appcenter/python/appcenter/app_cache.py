@@ -291,8 +291,8 @@ class AppCache(_AppCache):
 			if hasattr(klass, '__bases__'):
 				for base in klass.__bases__:
 					add_class(base)
-			if hasattr(klass, '__metaclass__'):
-				add_class(klass.__metaclass__)
+			# metaclass
+			add_class(type(klass))
 
 		add_class(self.get_app_class())
 		return ret
