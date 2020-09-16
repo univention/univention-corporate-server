@@ -35,6 +35,19 @@
 				</itemizedlist>
 			</section>
 		</section>
+		<section id="changelog:basis:univention-python">
+			<title>Univention Python</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The &ucsUCRV; <envar>password/quality/mspolicy</envar> has been added to allow
+					configuration of standard MS password criteria. It is not active by default.
+					When set to <literal>yes</literal> or <literal>true</literal>, this check is applied
+					in addition to the <filename>python-cracklib</filename> checks.  If set to
+					<literal>sufficient</literal>, then it is done instead of the <filename>python-cracklib</filename>
+					checks. See &ucsUCRV; description for details (<u:bug>51994</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 	</section>
 
 	<section id="changelog:domain">
