@@ -9,3 +9,5 @@ desc: |
  * The new UDM attribute "appendACL" of Samba shares can be used to
    define custom NT ACEs for share folders.
 bug: [52013]
+erratum: 746
+announced: 2020-09-16
