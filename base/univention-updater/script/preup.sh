@@ -389,6 +389,34 @@ check_old_packages () {
 }
 check_old_packages
 
+
+
+# Bug #51497 Bug #51973 Bug #31048 Bug #51655
+check_legacy_objects () {
+	local filter found obj
+	declare -a filters=(
+		'objectClass=univentionSamba4WinsHost'
+		'objectClass=univentionPolicyAutoStart'
+		'objectClass=univentionAdminUserSettings'
+	)
+	for filter in "${filters[@]}"
+	do
+		obj="$(univention-ldapsearch -LLL "$filter" dn | grep '^dn:')"
+		[ -n "$obj" ] && found+=("$obj")
+	done
+	# shellcheck disable=SC2128
+	[ -n "$found" ] || return 0
+	echo "ERROR: The following objects are no longer supported with UCS-5:"
+	for obj in "${found[@]}"
+	do
+		printf '\t%s\n' "${obj}"
+	done
+	echo "They must be removed before the update can be done."
+	exit 1
+}
+check_legacy_objects
+
+
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
 if [ ! -d "$initrd_backup" ]; then
