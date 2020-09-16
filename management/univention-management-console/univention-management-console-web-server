@@ -737,7 +737,7 @@ class CPgeneric(Ressource):
 		if six.PY2:
 			request.cookies = dict((x.key.decode('ISO8859-1'), x.value.decode('ISO8859-1')) for x in cherrypy.request.cookie.values())
 		else:
-			request.cookie = dict((x.key, x.value) for x in cherrypy.request.cookie.values())
+			request.cookies = dict((x.key, x.value) for x in cherrypy.request.cookie.values())
 		for name, value in list(request.cookies.items()):
 			if name == self.suffixed_cookie_name('UMCSessionId'):
 				request.cookies['UMCSessionId'] = value
