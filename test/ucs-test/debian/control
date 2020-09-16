@@ -136,8 +136,10 @@ Recommends:
 Depends:
  lsb-release,
  python,
+ python-coverage,
  python-pexpect,
  python-pytest,
+ python3-coverage,
  python3-pexpect,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),

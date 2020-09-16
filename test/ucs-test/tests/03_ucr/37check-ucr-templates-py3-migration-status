@@ -1,127 +1,116 @@
-#!/usr/share/ucs-test/runner bash
-## desc: Checking for modified UCR templates
-## tags:
-##  - basic
-##  - apptest
-##  - python3
-## exposure: dangerous
+#!/usr/share/ucs-test/runner py.test -s
+# -*- coding: utf-8 -*-
+from __future__ import print_function
 
-# hard coded lowest number of successful tests below which this test fails
-export SUCCESS_MIN=100
+import os
+import sys
+import pipes
+import tempfile
+import subprocess
+import json
 
+import pytest
 
-# Start markdown generation
-echo "= Template migration status ="
-echo "date $(date)"
-echo ""
+from univention.config_registry.handler import run_filter, EXECUTE_TOKEN
+from univention.config_registry import ConfigRegistry
 
-# Install dependencies: We decided to do this within this script, because we
-# can than simply delete it after the python3 migration has finished.
-echo "== $0: Dependencies =="
-which pip2 && pip2 -q install coverage || exit 1
-which pip3 && pip3 -q install coverage || exit 1
+ucr = ConfigRegistry()
+ucr.load()
 
-# safe the following awk script to disk:
-cat <<"AWK" > /tmp/check-between.awk 
-#!/usr/bin/env -S awk -f between.awk test.conf
-BEGIN {
-    # in order to behave as univention/config_registry/handler.py we have to
-    # prepend each code section with a header, initialized as a string
-    # variable:
-    preamble = "# -*- coding: utf-8 -*-"                                    \
-        "\n" "import univention.config_registry"                            \
-        "\n" "configRegistry = univention.config_registry.ConfigRegistry()" \
-        "\n" "configRegistry.load()"                                        \
-        "\n" "# for compatibility"                                          \
-        "\n" "baseConfig = configRegistry"
-    exit_code = 127
-}
-END { exit exit_code }
-# if start is 0 and we found a @!@-line: set start
-!start && /@!@/ { start = 1 ; next }
-# skip disclaimer message in UCR templates (only matters if @%@UCRWARNING@%@ is
-# used within a python code block, enclosed by @!@)
-/@%@UCRWARNING=# @%@/ { next }
-# if start is set (and we still are within a code section) and there comes a @!@
-start && /@!@/ {
-    section++
-    # write header and code into a file
-    print preamble "\n" code > "/tmp/cover.py" ; close("/tmp/cover.py")
-    # execute code coverage for python2. NOTE: debian has symlinked sh->dash,
-    # awk uses sh to call any script, but we want bash
-    system("rm -f .coverage")
-    system("bash -c \"python2 -m coverage run /tmp/cover.py" \
-           "  &>/tmp/py2.out && printf '|%-8s' '✅' || printf '|%-8s' '❎' ;\"")
-    system("printf '|%-9s' $(python2 -m coverage report | grep cover.py | egrep -o [0-9]+%\$ || echo 0%)")
-    # same thing (coverage) for python3. NOTE: egrep finds within the
-    # coverage report the only line ending with a percent value
-    system("rm -f .coverage")
-    system("bash -c \"python3 -m coverage run /tmp/cover.py" \
-           "  &>/tmp/py3.out && printf '|%-8s' '✅' || printf '|%-8s' '❎' ;\"")
-    system("printf '|%-9s' $(python3 -m coverage report | grep cover.py | egrep -o [0-9]+%\$ || echo 0%)")
-    # compare what output both runs produced and if diff returns with an exit
-    # code unequal to zero it means that there were differences in both files
-    if (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") == 0) {
-        printf "|%-13s", "✅"
-        exit_code=0
-    } else {
-        printf "|%-13s", "❎"
-		exit_code = 127
-    }
+SCRIPT = r'''#!/bin/bash
+cat < /dev/stdin > /tmp/py{0}.in
+python{0} -m coverage run /tmp/py{0}.in &>/tmp/py{0}.out
+echo $? >> /tmp/py{0}.out
+'''
 
-    # number of lines contained
-    printf "|%-12d", lines
-    # the package that installed the file
-    printf "|%s", package
-    # the code section
-    printf "|% 6d", section
-    # filename
-    FILE=ARGV[1]
-    gsub("/etc/univention/templates/", "", FILE)
-	printf "|%s", FILE
-    # separate table rows with a blank line
-    print ""
-
-    # reinit for next run...
-    code = ""
-    lines = 0
-    start = 0
-    fflush("/dev/stdout")
-    next
-}
-# if start is set and we have not yet found its end: append line to the code
-# variable and increment the code line counter
-start { code = code "\n" $0 ; lines++ }
-AWK
-
-# find all templates and create a markdown table. first prints the markdown
-# table header. NOTE: the markdown dialect is asciidoctor, because that allows
-# table column definitions to span multiple lines
+ALLOWED_DIFFERENCES = (
+	'/etc/univention/templates/files/usr/share/univention-management-console/meta.json',
+	'/etc/univention/templates/files/etc/aliases',
+	'/etc/univention/templates/files/etc/security/access-other.conf',
+	'/etc/univention/templates/files/etc/security/access-login.conf',
+	'/etc/univention/templates/files/etc/security/access-screen.conf',
+	'/etc/univention/templates/files/etc/security/access-rlogin.conf',
+	'/etc/univention/templates/files/etc/security/access-sshd.conf',
+	'/etc/univention/templates/files/etc/security/limits.conf',
+	'/etc/univention/templates/files/etc/security/access-ppp.conf',
+	'/etc/univention/templates/files/etc/simplesamlphp/00authsources.php',
+	'/etc/univention/templates/files/etc/univention/directory/reports/config.ini',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-join',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-reports',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-management-console',
+	'/etc/univention/templates/files/etc/logrotate.d/rsyslog',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-manager',
+	'/etc/univention/templates/files/etc/logrotate.d/heimdal-kdc',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-portal',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-ssl',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-listener',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-maintenance',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-config-registry-replog',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-appcenter',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-notifier',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-admindiary',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-server-password-change',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-system-setup',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-policy',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-updater',
+)
 
 
-export SUCCESS=0
-export TOTAL=0
+@pytest.fixture(scope="module")
+def python_versions():
+	try:
+		with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as fd1, tempfile.NamedTemporaryFile(delete=False, suffix='.py') as fd2:
+			for pyversion, fd in (('2', fd1), ('3', fd2)):
+				fd.write(SCRIPT.format(pyversion, os.path.basename(fd.name)))
+				fd.close()
+				os.chmod(fd.name, 0o755)
+			yield (('2', fd1), ('3', fd2))
+	finally:
+		for fd in (fd1, fd2):
+			os.unlink(fd.name)
 
-echo ""
-echo ".Migration status"
-echo "|==="
-echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|section|path"
-(
-  let total=0
-  let success=0
-  for F in $(find /etc/univention/templates/ -type f); do
-     let total=$(expr $total + 1)
-     PACKAGE=$(dpkg -S "$F" 2>/dev/null | cut -d: -f1)
-     if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
-	   let success=$(expr $success + 1)
-     fi
-  done
-  echo "|==="
-  echo ""
-  echo "== Summary =="
-  echo $success/$total successful. limit: $SUCCESS_MIN.
-  exit $(test $success -ge $SUCCESS_MIN)
-) | tee /var/log/univention/$0.md
-exit ${PIPESTATUS[0]}
 
-# vim:set ft=sh:awk:
+def pytest_generate_tests(metafunc):
+	tempfiles = [os.path.join(path, filename) for path, dirs, files in os.walk('/etc/univention/templates/files/') for filename in files]
+	tempfiles = [pytest.param(path, marks=pytest.mark.xfail) if path in ALLOWED_DIFFERENCES else path for path in tempfiles if EXECUTE_TOKEN.search(open(path).read())]
+	metafunc.parametrize('ucr_config_file', tempfiles)
+
+
+def test_configfile_python_compatibility(ucr_config_file, python_versions):
+	with open(ucr_config_file) as fd:
+		template = fd.read()
+
+	result = {}
+	for pyversion, fd in python_versions:
+		sys.executable = fd.name
+		run_filter(template, ucr)
+
+		with open('/tmp/py{0}.out'.format(pyversion)) as x:
+			compiled, _, rc = x.read().rstrip('\n').rpartition('\n')
+			result[pyversion] = {
+				'success': rc == '0',
+				'compiled': compiled,
+				'coverage': subprocess.check_output(r'python{0} -m coverage report | grep /tmp/py{0}.in | egrep -o [0-9]+%\$ || echo 0%'.format(pyversion), shell=True)
+			}
+			if ucr_config_file.endswith('.json'):
+				try:
+					result[pyversion]['compiled'] = json.dumps(json.loads(result[pyversion]['compiled']), sort_keys=True)
+				except ValueError:
+					result[pyversion]['json_failed'] = True
+			if os.path.exists('.coverage'):
+				os.unlink('.coverage')
+
+	print('', ucr_config_file, end=':\n', sep='\n')
+	for key, res in result.items():
+		print('Python%s: ' % (key,), end='')
+		print('|%s' % ('✅' if res['success'] else '❎'), end='')
+		print('|%s' % (res['coverage'],), end='')
+
+	result = {
+		'python': result,
+		'package': subprocess.check_output('dpkg -S %s 2>/dev/null | cut -d: -f1' % (pipes.quote(ucr_config_file),), shell=True),
+		'diff': subprocess.check_output('diff -u /tmp/py[23].out || true', shell=True),
+	}
+
+	assert all(res['success'] for res in result['python'].values()), result
+	assert result['python']['2']['compiled'] == result['python']['3']['compiled'], result
