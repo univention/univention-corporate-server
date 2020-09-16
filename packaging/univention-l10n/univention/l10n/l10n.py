@@ -53,7 +53,7 @@ try:
 	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
 	from types import TracebackType  # noqa
 	from mypy_extensions import TypedDict
-	BaseModule = TypedDict('BaseModule', {'module_name': str, 'binary_package_name': str, 'abs_path_to_src_pkg': str, 'relative_path_src_pkg': str})
+	BaseModule = TypedDict('BaseModule', {'module_name': str, 'package': str, 'abs_path_to_src_pkg': str, 'relative_path_src_pkg': str})
 except ImportError:
 	pass
 
@@ -154,16 +154,13 @@ class UMCModuleTranslation(umc.UMC_Module):
 
 		attributes = Deb822(def_file)
 		attributes = dict((k, [v]) for k, v in attributes.items())  # simulate dh_ucs.parseRfc822 behaviour
+		attributes.update(module)
 		return attributes
 
 	@classmethod
 	def _get_core_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = cls._read_module_attributes_from_source_package(module)
-		attrs['package'] = module['binary_package_name']
-		attrs['module_name'] = module['module_name']
-		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
-		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
 		umc_module = cls(attrs, target_language)
 		if umc_module.module_name != 'umc-core' or not umc_module.xml_categories:
 			raise ValueError('Module definition does not match core module')
@@ -176,10 +173,6 @@ class UMCModuleTranslation(umc.UMC_Module):
 		for required in (umc.MODULE, umc.PYTHON, umc.DEFINITION, umc.JAVASCRIPT):
 			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} is missing a value.'.format(required))
-		attrs['package'] = module['binary_package_name']
-		attrs['module_name'] = module['module_name']
-		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
-		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
 		return cls(attrs, target_language)
 
 
@@ -454,7 +447,7 @@ def find_base_translation_modules(source_dir):
 			print("Found package: %s" % package_dir)
 			module = {
 				'module_name': modulename,
-				'binary_package_name': os.path.dirname(package_dir),
+				'package': modulename,
 				'abs_path_to_src_pkg': package_dir,
 				'relative_path_src_pkg': os.path.relpath(package_dir, source_dir),
 			}  # type: BaseModule
