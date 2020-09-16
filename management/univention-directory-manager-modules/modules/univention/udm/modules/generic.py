@@ -53,6 +53,7 @@ from ..exceptions import (
 )
 from ..utils import UDebug as ud
 
+getfullargspec = getattr(inspect, 'getfullargspec', inspect.getargspec)
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -399,7 +400,7 @@ class GenericObject(BaseObject):
 			return encoder_class
 		else:
 			# initialize with required arguments
-			for arg in inspect.getargspec(encoder_class.__init__).args:
+			for arg in getfullargspec(encoder_class.__init__).args:
 				if arg == 'self':
 					continue
 				elif arg in kwargs:
