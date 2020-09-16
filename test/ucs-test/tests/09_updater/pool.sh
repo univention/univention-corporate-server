@@ -445,6 +445,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	local codename=${dir//${REPODIR}/}
 	codename="${codename//\/main\/binary-*/}"
 	apt-ftparchive \
+		-o "APT::FTPArchive::Release::Architectures=amd64" \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
 		-o "APT::FTPArchive::Release::Label=Univention" \
 		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
@@ -462,6 +463,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 		cd "$targetdir" || return $?
 		codename="$destname/binary-${ARCH}"
 		apt-ftparchive \
+			-o "APT::FTPArchive::Release::Architectures=amd64" \
 			-o "APT::FTPArchive::Release::Origin=Univention" \
 			-o "APT::FTPArchive::Release::Label=Univention" \
 			-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
