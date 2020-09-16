@@ -31,7 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import os
 import time
@@ -148,7 +149,8 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 			msg["objectSid"] = ldb.MessageElement([new_objectSid], ldb.FLAG_MOD_REPLACE, "objectSid")
 			idmap.modify(msg)
 
-	except ldb.LdbError as (enum, estr):
+	except ldb.LdbError as exc:
+		(enum, estr) = exc.args
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, estr)
 		# ok, there is an entry for the target sambaSID, let's remove the old sambaSID and modify the target
 		remove_idmap_entry(old_sambaSID, xidNumber, type_string, idmap)
@@ -180,7 +182,8 @@ def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 		idmap.modify(msg)
 
-	except ldb.LdbError as (enum, estr):
+	except ldb.LdbError as exc:
+		(enum, estr) = exc.args
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
 
@@ -205,7 +208,9 @@ def add_or_modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "%s: added entry for %s" % (name, sambaSID))
 
-	except ldb.LdbError as (enum, estr):
+	except ldb.LdbError as exc:
+		# ok, there is an entry for this sambaSID, let's replace it
+		(enum, estr) = exc.args
 		# ok, there is an entry for this sambaSID, let's replace it
 		modify_idmap_entry(sambaSID, xidNumber, type_string, idmap)
 
@@ -231,7 +236,8 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 			if record["type"][0] != type_string:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
 
-	except ldb.LdbError as (enum, estr):
+	except ldb.LdbError as exc:
+		(enum, estr) = exc.args
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
 
@@ -282,7 +288,8 @@ def handler(dn, new, old, operation):
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
 						return
 					add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type, idmap)
-		except ldb.LdbError as (enum, estr):
+		except ldb.LdbError as exc:
+			(enum, estr) = exc.args
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: entry for %s could not be updated" % (name, new['sambaSID'][0]))
 	elif old:
 		if operation == 'r':  # modrdn
@@ -307,7 +314,8 @@ def handler(dn, new, old, operation):
 				if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
 					xid_type = 'ID_TYPE_BOTH'
 				remove_idmap_entry(old_sambaSID, old_xid, xid_type, idmap)
-		except ldb.LdbError as (enum, estr):
+		except ldb.LdbError as exc:
+			(enum, estr) = exc.args
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: entry for %s could not be updated" % (name, old[sidAttribute][0]))
 
 
@@ -317,7 +325,7 @@ if __name__ == '__main__':
 	from univention.config_registry import ConfigRegistry
 	import subprocess
 	from ldif import LDIFParser
-	import StringIO
+	import io
 
 	parser = OptionParser(usage="%prog [-h|--help] [--direct-resync]")
 	parser.add_option(
@@ -348,7 +356,7 @@ if __name__ == '__main__':
 		def handle(self, dn, entry):
 			handler(dn, entry, {}, 'a')
 
-	parser = ListenerHandler(StringIO.StringIO(stdout))
+	parser = ListenerHandler(io.StringIO(stdout))
 	parser.parse()
 
 	subprocess.call(['net', 'cache', 'flush'])

@@ -31,6 +31,7 @@
 Univention Samba 4
 This tool overwrites the sambaSID attribute with the attribute univentionSamba4SID
 '''
+from __future__ import print_function
 
 import sys
 import optparse
@@ -55,11 +56,11 @@ parser.add_option(
 (options, args, ) = parser.parse_args()
 
 if options.action is None:
-	print 'Neither --no-action nor --action given!'
+	print('Neither --no-action nor --action given!')
 	parser.print_help()
 	sys.exit(3)
 if args:
-	print >> sys.stderr, 'Unknown arguments %r!' % (args, )
+	print('Unknown arguments %r!' % (args, ), file=sys.stderr)
 	parser.print_help()
 	sys.exit(3)
 
@@ -79,10 +80,10 @@ for user in res:
 
 	modify = True
 	if not options.action:
-		print 'Would set sambaSID to %s for %s' % (univentionSamba4SID, user[0])
+		print('Would set sambaSID to %s for %s' % (univentionSamba4SID, user[0]))
 		continue
-	print 'Set sambaSID to %s for %s' % (univentionSamba4SID, user[0])
+	print('Set sambaSID to %s for %s' % (univentionSamba4SID, user[0]))
 	lo.modify(user[0], [('sambaSID', sambaSID, univentionSamba4SID)])
 
 if not modify:
-	print 'No object was found.'
+	print('No object was found.')

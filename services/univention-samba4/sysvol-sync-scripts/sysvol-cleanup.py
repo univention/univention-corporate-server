@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 from univention import config_registry
 from optparse import OptionParser
 
@@ -52,8 +54,8 @@ def getLDAPGPOs(options):
 	res = p1.communicate()
 	if p1.returncode != 0:
 		if options.verbose:
-			print 'Failed to search via univention-s4search.'
-			print res[1]
+			print('Failed to search via univention-s4search.')
+			print(res[1])
 		return None
 
 	stdout = res[0]
@@ -86,7 +88,7 @@ def getLDAPGPOs(options):
 
 		if bracketOpen < 0 or bracketClose < 0:
 			if options.verbose:
-				print 'Unknown GPO format: "%s"' % gpo
+				print('Unknown GPO format: "%s"' % gpo)
 			continue
 
 		ldapGPOs.append(gpo[bracketOpen:bracketClose + 1])
@@ -95,7 +97,7 @@ def getLDAPGPOs(options):
 
 
 def getFileSystemGPOs(sysvolDirectory):
-	return filter(lambda x: x.startswith('{'), os.listdir(sysvolDirectory))
+	return [x for x in os.listdir(sysvolDirectory) if x.startswith('{')]
 
 
 if __name__ == '__main__':
@@ -116,21 +118,21 @@ if __name__ == '__main__':
 	ldapGPOs = getLDAPGPOs(options)
 
 	if not ldapGPOs:
-		print 'No LDAP GPOs found. Abort!'
+		print('No LDAP GPOs found. Abort!')
 		sys.exit(1)
 
 	fileSystemGPOs = getFileSystemGPOs(sysvolDirectory)
 
 	if options.verbose:
-		print 'The following LDAP GPOs were found:'
+		print('The following LDAP GPOs were found:')
 		for ldapGPO in ldapGPOs:
-			print ' - %s' % ldapGPO
-		print
+			print(' - %s' % ldapGPO)
+		print()
 
-		print 'The following file system GPOs were found:'
+		print('The following file system GPOs were found:')
 		for fileSystemGPO in fileSystemGPOs:
-			print ' - %s' % fileSystemGPO
-		print
+			print(' - %s' % fileSystemGPO)
+		print()
 
 	for fileSystemGPO in fileSystemGPOs:
 
@@ -140,14 +142,14 @@ if __name__ == '__main__':
 
 		if not options.target_directory:
 			# In this case we print only
-			print 'Found unused GPO: %s' % fileSystemGPO
+			print('Found unused GPO: %s' % fileSystemGPO)
 			continue
 
 		# Move GPO
 		src = os.path.join(sysvolDirectory, fileSystemGPO)
 		dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime())))
 		if options.verbose:
-			print 'Move unused GPO %s to %s' % (fileSystemGPO, dest)
+			print('Move unused GPO %s to %s' % (fileSystemGPO, dest))
 		shutil.move(src, dest)
 
 	sys.exit(0)
