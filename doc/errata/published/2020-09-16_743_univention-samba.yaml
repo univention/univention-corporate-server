@@ -9,3 +9,5 @@ desc: |
  * The Samba share listener will now apply all modified NT ACEs given
    in the UDM attribute "appendACL" to share folders.
 bug: [52013]
+erratum: 743
+announced: 2020-09-16
