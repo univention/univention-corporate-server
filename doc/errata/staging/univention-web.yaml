@@ -5,6 +5,6 @@ scope: ucs_4.4-0-errata4.4-5
 src: univention-web
 fix: 3.0.5-43A~4.4.0.202009071516
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The styling of the login dialog has been adjusted to allow long texts.
 bug: [51401]
