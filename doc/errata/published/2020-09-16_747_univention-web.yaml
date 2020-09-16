@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The styling of the login dialog has been adjusted to allow long texts.
 bug: [51401]
+erratum: 747
+announced: 2020-09-16
