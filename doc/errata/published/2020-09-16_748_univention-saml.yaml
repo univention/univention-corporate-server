@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Expired passwords can now be changed in the SAML login dialog.
 bug: [51492]
+erratum: 748
+announced: 2020-09-16
