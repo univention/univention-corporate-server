@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.4-5">
+<book lang="en" id="releasenotes-en-4.4-6">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-5</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-6</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,30 +44,16 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-5, the fifth point release of &ucsUCS; (UCS) 4.4 is now available.
+			With &ucsUCS; 4.4-6, the sixth point release of &ucsUCS; (UCS) 4.4 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					The replication of groups with many members has been greatly accelerated.
 			</para></listitem>
 			<listitem><para>
-					The permission to use services connected via SAML can now be configured for groups, previously the setting could only be set per user.
-					In addition, a mapping of UCS LDAP attribute names to attribute names expected by the connected application can now be configured in the UMC for services connected via SAML.
-			</para></listitem>
-			<listitem><para>
-					An update for the <application>OpenID Connect Provider</application> allows that logins to the SAML Identity Provider are also valid for <application>OpenID Connect</application>.
-					The Single Sign-On in UCS thus works across standards.
-			</para></listitem>
-			<listitem><para>
-					The User Self-Service has a new configurable feature that allows users to create and delete their own account in UCS.
-					User accounts must be confirmed by clicking on an activation link in an e-mail before they can be used for the first time.
-					Administrators can define which attributes users must specify during registration.
-			</para></listitem>
-			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-5, e.g. Samba, OpenLDAP, the Linux kernel and PHP.
+					Various security updates have been integrated into UCS 4.4-6, e.g. QEMU, Bind9, den Linux Kernel und PHP.
 					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
@@ -81,25 +67,6 @@
 			The test environment should be identical to the production environment.
 			Depending on the system performance, network connection and the installed software the update will take between 20 minutes and several hours.
 		</para>
-
-		<section id="relnotes:signaturevalidation">
-			<title>Update to UCS 4.4-5 fails with <wordasword>Verification error: Invalid signature: gpgv: keyblock resource ‘/etc/apt/trusted.gpg’: File or directory not found</wordasword></title>
-			<note>
-				<para>
-					If the update to UCS 4.4-5 aborts, the file <filename>/var/log/univention/updater.log</filename> should be checked for the following error.
-					<programlisting>
-**** Downloading scripts at Thu Jun 25 11:34:04 2020
-Error: Update aborted due to verification error:
-Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': \
-File or directory not found
-					</programlisting>
-					If the error appears in the logfile, all available errata updates should be installed, before starting another release update to UCS 4.4-5 (<u:bug>51576</u:bug>).
-				</para>
-				<para>
-					<ulink url="http://help.univention.com/t/15594">A support article with more information is available</ulink>.
-				</para>
-			</note>
-		</section>
 
 		<section id="relnotes:order">
 			<title>Recommended update order for environments with more than one UCS server</title>
@@ -258,10 +225,10 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.4-4</wordasword>:
+			Listed are the changes since UCS <wordasword>4.4-5</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-5.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-6.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

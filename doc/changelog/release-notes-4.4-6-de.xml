@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-5">
+<book lang="de" id="releasenotes-de-4.4-6">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-5</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-6</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,30 +44,16 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-5 steht das fünfte Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 4.4-6 steht das sechste Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Die Replikation von Gruppen mit vielen Mitgliedern wurde durch Performance Verbesserungen stark beschleunigt.
 			</para></listitem>
 			<listitem><para>
-					Die Berechtigung für die Nutzung von per SAML angebundenen Diensten kann jetzt für Gruppen konfiguriert werden, vorher konnte die Einstellung nur pro Benutzer gesetzt werden.
-					Außerdem kann für per SAML angebundene Dienste nun in der UMC ein Mapping von UCS LDAP Attributnamen auf Attributnamen konfiguriert werden, die von der angebundenen Anwendung erwartet werden.
-			</para></listitem>
-			<listitem><para>
-					Ein Update für den <application>OpenID Connect Provider</application> ermöglicht, dass Anmeldungen am SAML Identity Provider auch für <application>OpenID Connect</application> gültig sind.
-					Das <foreignphrase>Single Sign-On</foreignphrase> in UCS funktioniert damit über zwei Standards hinweg.
-			</para></listitem>
-			<listitem><para>
-					Der Benutzer Self-Service verfügt über ein neues aktivierbares Feature, mit dem sich Benutzer selbst ein Konto in UCS erstellen und auch wieder löschen können.
-					Die Benutzeraccounts müssen vor der ersten Benutzung durch den Klick auf einen Aktivierungslink in einer E-Mail bestätigt werden.
-					Administratoren können festlegen, welche Attribute Benutzer bei der Registrierung angeben müssen.
-			</para></listitem>
-			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-5 integriert, bspw. für Samba, OpenLDAP, den Linux Kernel und PHP.
+					Diverse Security Updates wurden in UCS 4.4-6 integriert, bspw. für QEMU, Bind9, den Linux Kernel und PHP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -82,25 +68,6 @@
 			Die Testumgebung sollte dabei identisch zur Produktivumgebung sein.
 			Je nach Systemgeschwindigkeit, Netzwerkanbindung und installierter Software kann das Update zwischen 20 Minuten und mehreren Stunden dauern.
 		</para>
-
-		<section id="relnotes:signaturevalidation">
-			<title>Update auf UCS 4.4-5 schlägt fehl mit <wordasword>Verification error: Invalid signature: gpgv: keyblock resource ‘/etc/apt/trusted.gpg’: Datei oder Verzeichnis nicht gefunden</wordasword></title>
-			<note>
-				<para>
-					Wenn das Update auf UCS 4.4-5 abbricht, sollte die Datei <filename>/var/log/univention/updater.log</filename> auf folgenden Fehler untersucht werden:
-					<programlisting>
-**** Downloading scripts at Thu Jun 25 11:34:04 2020
-Error: Update aborted due to verification error:
-Verification error: Invalid signature: gpgv: keyblock resource '/etc/apt/trusted.gpg': \
-Datei oder Verzeichnis nicht gefunden
-					</programlisting>
-					Wenn dieser Fehler in der Logdatei auftritt, müssen alle verfügbaren Errata Updates eingespielt werden. Anschließend kann das Update auf UCS 4.4-5 erneut gestartet werden. (<u:bug>51576</u:bug>)
-				</para>
-				<para>
-					<ulink url="http://help.univention.com/t/15594">Weitere Informationen sind in unserer Support Datenbank verfügbar</ulink>.
-				</para>
-			</note>
-		</section>
 
 		<section id="relnotes:order">
 			<title>Empfohlene Update-Reihenfolge</title>
@@ -259,10 +226,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-4</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-5</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-5.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-6.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
