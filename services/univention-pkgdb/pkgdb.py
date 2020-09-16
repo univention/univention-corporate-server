@@ -38,7 +38,7 @@ import univention.debug
 
 name = 'pkgdb'
 description = 'Package-Database'
-filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer)(objectClass=univentionMobileClient))'
+filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer))'
 attributes = ['uid']
 
 hostname = listener.baseConfig['hostname']

@@ -177,7 +177,7 @@ class License(object):
 				# Version 2 since UCS 3.1
 				License.USERS: '(&%s)' % ''.join([LDAP_FILTER_normal_user_account, ldap_filter_not_objectflag(user_exclude_objectflags), LDAP_FILTER_account_not_disabled]),
 				License.SERVERS: '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))',
-				# Thin Clients, Managed Clients, Mobile Clients, Windows Clients, Ubuntu Clients, Linux Clients, UCC Clients, MaxOS X Clients
+				# Managed Clients, Windows Clients, Ubuntu Clients, Linux Clients, MaxOS X Clients
 				License.MANAGEDCLIENTS: '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
 				License.CORPORATECLIENTS: '(&(objectclass=univentionCorporateClient))',
 			},

@@ -97,8 +97,8 @@ Type=str
 Categories=system-ssl
 
 [ssl/host/objectclass]
-Description[de]=Eine Komma-separierte Liste von LDAP-Objektklassen, für die automatisch SSL-Zertifikate erzeugt werden. [univentionDomainController,univentionMemberServer,univentionClient,univentionMobileClient,univentionCorporateClient]
-Description[en]=A comma separated list of LDAP object classes, for which SSL certificates are created automatically. [univentionDomainController,univentionMemberServer,univentionClient,univentionMobileClient,univentionCorporateClient]
+Description[de]=Eine Komma-separierte Liste von LDAP-Objektklassen, für die automatisch SSL-Zertifikate erzeugt werden. [univentionDomainController,univentionMemberServer,univentionClient]
+Description[en]=A comma separated list of LDAP object classes, for which SSL certificates are created automatically. [univentionDomainController,univentionMemberServer,univentionClient]
 Type=str
 Categories=system-ssl
 

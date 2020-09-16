@@ -15,9 +15,6 @@ class PhaseRewriteUcr(AddressMap):
 		'dns/forwarder2',
 		'dns/forwarder3',
 		'ldap/server/ip',
-		'ucc/pxe/append',
-		'ucc/pxe/nameserver',
-		'ucc/pxe/nfsroot',
 	)
 	priority = 95
 

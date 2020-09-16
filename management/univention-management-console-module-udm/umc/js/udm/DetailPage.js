@@ -1538,8 +1538,6 @@ define([
 						// we got probably a UCR-Policy, this is a special case:
 						// -> a list of values where each value might have been inherited
 						//    by different policies
-						// FIXME: THIS IS NOT TRUE!
-						//   UCC desktop policy also goes this way. Did not search further
 						iwidget.set('value', array.map(iinfo, function(ival) {
 							return ival.value;
 						}));

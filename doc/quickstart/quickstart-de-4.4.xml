@@ -270,12 +270,6 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Für den Einsatz von zentral administrierten Linux-basierten Desktops kann Univention
-		Corporate Client aus dem Univention App Center installiert werden. Weitere Informationen
-		finden sich im UCC-Handbuch <biblioref linkend="ucc-manual"/>.
-	  </simpara></listitem>
-
-	  <listitem><simpara>
 		Ubuntu-Systeme <biblioref linkend="ubuntu-join"/> und andere Linux-Distributionen wie
 		Debian, SUSE oder Red Hat können ebenfalls in die Domäne integriert werden <biblioref
 		linkend="integrate-other-linux"/>.
@@ -355,6 +349,7 @@
 		Fragen zu UCS können auch im Univention Forum <ulink url="https://help.univention.com/"/>
 		gestellt werden.
 	  </simpara></listitem>
+
 	</itemizedlist>
   </para>
 
@@ -366,7 +361,6 @@
   <bibliomixed id="ad-takeover"/>
   <bibliomixed id="ucs-winjoin"/>
   <bibliomixed id="ucs-macjoin"/>
-  <bibliomixed id="ucc-manual"/>
   <bibliomixed id="ext-doc-inst"/>
   <bibliomixed id="ucs-uvmm"/>
   <bibliomixed id="ucs-proxy"/>

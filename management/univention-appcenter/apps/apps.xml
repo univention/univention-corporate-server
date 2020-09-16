@@ -10,9 +10,9 @@
 		<!-- WARNING!!! This is just a dummy file.
 		     Flavors are added/removed automatically via ucr commit.
 		Example:
-		<flavor icon="ucc" priority="-100" id="ucc">
-			<name>UCC</name>
-			<description>Introduction to UCC</description>
+		<flavor icon="NAME" priority="-100" id="NAME">
+			<name>NAME</name>
+			<description>Introduction to NAME</description>
 		</flavor>
 		-->
 

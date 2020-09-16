@@ -1003,7 +1003,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def working(self):
 		# TODO: PackageManager needs is_idle() or something
 		#   preferably the package_manager can tell what is currently executed:
-		#   package_manager.is_working() => False or _('Installing UCC')
+		#   package_manager.is_working() => False or _('Installing PKG')
 		return self._working()
 
 	@simple_response

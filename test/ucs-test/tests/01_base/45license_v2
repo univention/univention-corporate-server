@@ -112,9 +112,6 @@ for m in "computers/linux" "computers/macos" \
 	echo "Test managed client count"; test "$((oldValueManaged+1))" = "$newValueManaged"; fail_bool 0 110
 	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
 	echo "Test server count"; test "$oldValueServers" = "$newValueServers"; fail_bool 0 110
-	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
-	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
-	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
 
 	removeObject "$m" "$name"
 
@@ -163,9 +160,6 @@ for m in "computers/ipmanagedclient"; do
 	echo "Test managed client count"; test "$oldValueManaged" = "$newValueManaged"; fail_bool 0 110
 	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
 	echo "Test server count"; test "$oldValueServers" = "$newValueServers"; fail_bool 0 110
-	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
-	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
-	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
 
 	removeObject "$m" "$name"
 
@@ -217,9 +211,6 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 	echo "Test managed client count"; test "$oldValueManaged" = "$newValueManaged"; fail_bool 0 110
 	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
 	echo "Test server count"; test "$((oldValueServers+1))" = "$newValueServers"; fail_bool 0 110
-	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
-	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
-	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
 
 	removeObject "$m" "$name"
 

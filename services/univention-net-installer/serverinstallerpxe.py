@@ -33,7 +33,7 @@ __package__ = ''  # workaround for PEP 366
 
 name = 'serverinstallerpxe'
 description = 'PXE configuration for the Server installer'
-filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient)(objectClass=univentionMobileClient))'
+filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionClient))'
 attributes = [
 	'univentionServerReinstall',
 	'aRecord',

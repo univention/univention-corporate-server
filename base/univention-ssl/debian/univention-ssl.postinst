@@ -49,7 +49,7 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 	ssl/validity/warning?30 \
 	ssl/validity/check?yes \
 	ssl/update/expired?yes \
-	ssl/host/objectclass?univentionDomainController,univentionMemberServer,univentionClient,univentionMobileClient,univentionCorporateClient \
+	ssl/host/objectclass?univentionDomainController,univentionMemberServer,univentionClient \
 	ssl/crl/interval?7 \
 	ssl/crl/validity?10 \
 	ssl/ca/cipher?aes256 \

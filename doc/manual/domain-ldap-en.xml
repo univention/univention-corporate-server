@@ -543,14 +543,6 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		</para>
 	</section>
 
-	<section id="domain-ldap:ucc">
-		<title>Univention Corporate Client</title>
-		<para>
-		  A Univention Corporate Client is a desktop or thin client system based on Univention
-		  Corporate Client.
-		</para>
-	</section>
-
 	<section id="domain-ldap:macos">
 	  <title>Mac OS X</title>
 	  <para>

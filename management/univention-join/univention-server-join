@@ -441,11 +441,6 @@ memberserver)
 		"${POSITION:-cn=memberserver,cn=computers,$ldap_base}" \
 		"cn=Computers,cn=groups,$ldap_base"
 	;;
-ucc)
-	create_entry "Client" "computers/ucc" \
-		"${POSITION:-cn=computers,$ldap_base}" \
-		"cn=Computers,cn=groups,$ldap_base"
-	;;
 *)
 	log 1 "E: 	-role $ROLE is unknown"
 	exit 1

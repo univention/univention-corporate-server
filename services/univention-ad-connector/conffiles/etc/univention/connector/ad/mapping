@@ -339,7 +339,7 @@ ad_mapping = {
 		ucs_default_dn='cn=computers,@%@ldap/base@%@',
 		con_default_dn='cn=computers,@%@connector/ad/ldap/base@%@',
 		ucs_module='computers/windows',
-		ucs_module_others=['computers/memberserver', 'computers/ucc', 'computers/linux', 'computers/ubuntu', 'computers/macos'],
+		ucs_module_others=['computers/memberserver', 'computers/linux', 'computers/ubuntu', 'computers/macos'],
 		sync_mode=configRegistry.get('connector/ad/mapping/computer/syncmode', configRegistry.get('connector/ad/mapping/syncmode')),
 		post_ucs_modify_functions=[
 			univention.connector.ad.set_univentionObjectFlag_to_synced,
@@ -348,7 +348,7 @@ ad_mapping = {
 		dn_mapping_function=[univention.connector.ad.windowscomputer_dn_mapping],
 		con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
 		# ignore_filter='userAccountControl=4096',
-		match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient)(objectClass=univentionCorporateClient))',
+		match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient))',
 		ignore_subtree=global_ignore_subtree,
 		ignore_filter=ignore_filter_from_attr('cn', 'connector/ad/mapping/windowscomputer/ignorelist') or None,
 		con_create_objectclass=['top', 'computer'],
