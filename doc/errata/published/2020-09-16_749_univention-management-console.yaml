@@ -11,3 +11,5 @@ desc: |
  * It is now possible to configure an additional password changing prompt
    via the UCR Variables umc/login/password-complexity-message/.*.
 bug: [51492, 51496, 51401]
+erratum: 749
+announced: 2020-09-16
