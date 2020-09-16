@@ -749,6 +749,10 @@
                     ignorieren</guimenu> nicht markiert ist, also auch, wenn die
                     Passwort-Richtlinie <emphasis>default-settings</emphasis> gelöscht wurde.
 					Wenn keine Prüfung der Passwortlänge erfolgen soll, muss der Wert auf 0 gesetzt werden.
+					Pro Server kann über die UCR variable <envar>password/quality/length/min</envar>
+					ein Defaultwert konfiguriert werden, der auf Benutzerkonten angewendet wird,
+					denen keine Passwort-Richtinie zugewiesen ist. Die UCR-Variablenbeschreibung
+					enthält weitere Details.
 					</simpara>
                 </listitem>
                 <listitem>
