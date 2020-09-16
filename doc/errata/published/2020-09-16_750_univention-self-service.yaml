@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The error message when changing the password failed has been improved.
 bug: [51496]
+erratum: 750
+announced: 2020-09-16
