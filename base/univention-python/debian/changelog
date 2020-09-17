@@ -1,9 +1,3 @@
-univention-python (12.0.0-21) unstable; urgency=medium
-
-  * Bug #51994: support configuration of standard MS password criteria
-
- -- Arvid <requate@univention.de>  Wed, 16 Sep 2020 15:06:10 +0200
-
 univention-python (12.0.0-20) unstable; urgency=low
 
   * Bug #51193: remove excessive log trace information from

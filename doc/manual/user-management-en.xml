@@ -684,7 +684,7 @@
 			password hash used by Samba.</simpara></listitem>
 		  </itemizedlist>
         <para>
-		  Password changes are always initiated via Kerberos, either in the UCS PAM configuration or via Samba.
+		  Password changes are always initiated via Kerberos in the UCS PAM configuration.
 		</para>
 
             <figure id="password-policy">
@@ -719,9 +719,6 @@
 				  check</guimenu> checkbox is not ticked. This means it even applies if the
 				  <emphasis>default-settings</emphasis> password policy has been deleted. If no
 				  password length check should be performed, the value must be set to 0.
-				  A per server default can be configured via UCR variable
-				  <envar>password/quality/length/min</envar>, which applies to users that are
-				  not subject to a UDM policy. See the UCR variable description for details.
 				</simpara>
 			  </listitem>
 
@@ -781,12 +778,6 @@
 								<simpara>
                                 Individual characters/figures can be made compulsory
                                 (<envar>password/quality/required/chars</envar>).
-								</simpara>
-                            </listitem>
-                            <listitem>
-								<simpara>
-                                Standard Microsoft password complexity criteria can be applied
-                                (<envar>password/quality/mspolicy</envar>). This can be done in addition to the <filename>python-cracklib</filename> checks (value <literal>yes</literal>) or instead of them (<literal>sufficient</literal>). See UCR variable description for details.
 								</simpara>
                             </listitem>
                         </itemizedlist>
