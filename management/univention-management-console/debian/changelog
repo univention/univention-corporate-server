@@ -1,3 +1,10 @@
+univention-management-console (11.0.4-108) unstable; urgency=medium
+
+  * Bug #51994: Don't use the pam_cracklib PAM module if
+    password/quality/mspolicy is set to 'sufficient'.
+
+ -- Arvid <requate@univention.de>  Thu, 17 Sep 2020 12:28:22 +0200
+
 univention-management-console (11.0.4-107) unstable; urgency=medium
 
   * Bug #51994: Add translation for standard MS password criteria
