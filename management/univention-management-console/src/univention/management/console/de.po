@@ -455,11 +455,11 @@ msgid "The password does not meet the password complexity requirements."
 msgstr "Das Passwort entspricht nicht den Komplexitätsanforderungen."
 
 #: src/univention/management/console/pam.py:70
-msgid "Password contains user account name."
+msgid "The password contains user account name."
 msgstr "Das Passwort enthält den Benutzerkontonamen."
 
 #: src/univention/management/console/pam.py:71
-msgid "Password contains parts of the full user name."
+msgid "The password contains parts of the full user name."
 msgstr "Das Passwort enthält Teile des vollen Benutzer*innennamens."
 
 #: src/univention/management/console/pam.py:60

@@ -67,8 +67,8 @@ _('The minimum password age is not reached yet.')
 _('Make sure the kerberos service is functioning or inform an Administrator.')
 _('The password is too similar to the old one.')
 _('The password does not meet the password complexity requirements.')
-_('Password contains user account name.')
-_('Password contains parts of the full user name.')
+_('The password contains user account name.')
+_('The password contains parts of the full user name.')
 
 
 class AuthenticationError(Exception):  # abstract base class
@@ -186,6 +186,15 @@ class PamAuth(object):
 			'You must wait longer to change your password',
 			'Password Too Young',
 			'Password change rejected, password changes may not be permitted on this account, or the minimum password age may not have elapsed.',
+		],
+		': The password does not meet the password complexity requirements.': [
+			'Password does not meet the password complexity requirements.',
+		],
+		': The password contains user account name.': [
+			'Password contains user account name.',
+		],
+		': The password contains parts of the full user name.': [
+			'Password contains parts of the full user name.',
 		]
 	}
 	known_errors = dict(
