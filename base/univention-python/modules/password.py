@@ -124,7 +124,7 @@ class Check:
 				# See https://docs.microsoft.com/de-de/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
 				if not samba_check_password_quality(password):
 					raise ValueError('The password does not meet the password complexity requirements.')
-				if self.username and len(self.username) > 3 and self.username in password:
+				if self.username and len(self.username) > 3 and self.username.lower() in password.lower():
 					raise ValueError('Password contains user account name.')
 				if displayname:
 					for namepart in re.split('[-,._# \t]+', displayname):
