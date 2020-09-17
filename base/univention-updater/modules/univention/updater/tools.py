@@ -61,22 +61,26 @@ import sys
 import re
 import os
 import copy
-import httplib
+from six.moves import http_client as httplib
 import socket
 from univention.config_registry import ConfigRegistry
-import urllib2
-from urlparse import urljoin
+from six.moves import urllib_request as urllib2, urllib_error
+from six.moves.urllib_parse import urljoin
 import json
 import subprocess
-import new
 import tempfile
 import shutil
 import logging
 import atexit
+import functools
+import six
 try:
     from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
     pass
+
+if six.PY2:
+	from new import instancemethod
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -595,7 +599,7 @@ class UCSHttpServer(_UCSServer):
                 cfg = groups.setdefault(realm, {})
                 cfg[key] = value
 
-        for realm, cfg in groups.iteritems():
+        for realm, cfg in groups.items():
             try:
                 uris = cfg.pop('uris').split()
             except KeyError:
@@ -674,8 +678,10 @@ class UCSHttpServer(_UCSServer):
         if self.baseurl.username:
             UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib2.Request(uri)
-        if req.get_host() in self.failed_hosts:
-            self.log.error('Already failed %s', req.get_host())
+        def get_host():
+            return req.host if six.PY3 else req.get_host()
+        if get_host() in self.failed_hosts:
+            self.log.error('Already failed %s', get_host())
             raise DownloadError(uri, -1)
         if not get and UCSHttpServer.http_method != 'GET':
             # Overwrite get_method() to return "HEAD"
@@ -685,7 +691,7 @@ class UCSHttpServer(_UCSServer):
                     return UCSHttpServer.http_method
                 else:
                     return method
-            req.get_method = new.instancemethod(get_method, req, urllib2.Request)  # type: ignore
+            req.get_method = functools.partial(get_method, req) if six.PY3 else instancemethod(get_method, req, urllib2.Request)  # type: ignore
 
         self.log.info('Requesting %s', req.get_full_url())
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s %s" % (req.get_method(), req.get_full_url()))
@@ -725,7 +731,7 @@ class UCSHttpServer(_UCSServer):
         # URL:110  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port filtered
         # GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
         # HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
-        except urllib2.HTTPError as res:
+        except urllib_error.HTTPError as res:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
             if res.code == httplib.UNAUTHORIZED:  # 401
                 raise ConfigurationError(uri, 'credentials not accepted')
@@ -735,7 +741,7 @@ class UCSHttpServer(_UCSServer):
                 self.failed_hosts.add(req.get_host())
                 raise ConfigurationError(uri, 'host is unresolvable')
             raise DownloadError(uri, res.code)
-        except urllib2.URLError as e:
+        except urllib_error.URLError as e:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
             if isinstance(e.reason, basestring):
                 reason = e.reason
