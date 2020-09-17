@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.15-7) unstable; urgency=medium
+
+  * Bug #51994: Pass displayName to univention.password.Check() too
+
+ -- Arvid <requate@univention.de>  Thu, 17 Sep 2020 12:41:43 +0200
+
 univention-directory-manager-modules (14.0.15-6) unstable; urgency=medium
 
   * Bug #42182: add mapping univentionShareSambaBaseDirAppendACL - appendACL

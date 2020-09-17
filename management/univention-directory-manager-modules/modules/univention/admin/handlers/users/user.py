@@ -1817,7 +1817,7 @@ class object(univention.admin.handlers.simpleLdap):
 			pwdCheck = univention.password.Check(self.lo)
 			pwdCheck.enableQualityCheck = True
 			try:
-				pwdCheck.check(self['password'])
+				pwdCheck.check(self['password'], displayname=self['displayName'])
 			except ValueError as e:
 				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
 
