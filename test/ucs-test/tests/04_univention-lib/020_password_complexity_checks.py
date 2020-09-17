@@ -10,6 +10,9 @@ from __future__ import print_function
 from univention.password import Check
 import univention.config_registry
 import pytest
+from univention.testing import udm as _udm
+from univention.testing import ucr as _ucr
+
 
 class Password(object):
 	'''Just a namespace for password providers'''
@@ -135,7 +138,6 @@ class PasswordType(object):
 
 
 ## I want the udm user to live on module scope here
-from univention.testing import udm as _udm
 @pytest.fixture(scope="module")
 def udm():
 	with _udm.UCSTestUDM() as udm:
@@ -150,7 +152,6 @@ def existing_username(udm):
 
 
 ## I want the ucr to live on class scope here
-from univention.testing import ucr as _ucr
 @pytest.fixture(scope="class")
 def ucr():
 	with _ucr.UCSTestConfigRegistry() as ucr:
@@ -259,23 +260,25 @@ def pytest_generate_tests(metafunc):
 
 class Test_PasswordPolicyCheck_default(object):
 	def test_not_conforming_to_cracklib(self, pwc_default, password_not_conforming_to_cracklib, existing_username):
-		with pytest.raises(ValueError) as exc:
+		with pytest.raises(ValueError):
 			pwc_default.check(password_not_conforming_to_cracklib)
 
 	def test_conforming_to_cracklib(self, pwc_default, password_conforming_to_cracklib, existing_username):
 		pwc_default.check(password_conforming_to_cracklib)
 
+
 class Test_PasswordPolicyCheck_with_mspolicy_only(object):
 	def test_not_conforming_to_mspolicy_only(self, pwc_with_mspolicy_only, password_not_conforming_to_mspolicy_with_username, existing_username):
-		with pytest.raises(ValueError) as exc:
+		with pytest.raises(ValueError):
 			pwc_with_mspolicy_only.check(password_not_conforming_to_mspolicy_with_username)
 
 	def test_conforming_to_mspolicy_only(self, pwc_with_mspolicy_only, password_conforming_to_mspolicy, existing_username):
 		pwc_with_mspolicy_only.check(password_conforming_to_mspolicy)
 
+
 class Test_PasswordPolicyCheck_with_mspolicy_plus_cracklib(object):
 	def test_not_conforming_to_mspolicy_plus_cracklib(self, pwc_with_mspolicy, password_not_conforming_to_mspolicy_plus_cracklib, existing_username):
-		with pytest.raises(ValueError) as exc:
+		with pytest.raises(ValueError):
 			pwc_with_mspolicy.check(password_not_conforming_to_mspolicy_plus_cracklib)
 
 	def test_conforming_to_mspolicy_plus_cracklib(self, pwc_with_mspolicy, password_conforming_to_mspolicy_plus_cracklib, existing_username):
@@ -284,6 +287,5 @@ class Test_PasswordPolicyCheck_with_mspolicy_plus_cracklib(object):
 
 class Test_PasswordPolicyCheck_with_mandatory_classes(object):
 	def test_not_conforming_to_cracklib_with_mandatory_classes(self, pwc_with_cracklib_mandatory_character_classes, password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther, existing_username):
-		with pytest.raises(ValueError) as exc:
+		with pytest.raises(ValueError):
 			pwc_with_cracklib_mandatory_character_classes.check(password_not_conforming_to_cracklib_with_mandatory_UpperLowerDigitOther)
-
