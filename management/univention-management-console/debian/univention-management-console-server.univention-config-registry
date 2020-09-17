@@ -46,6 +46,7 @@ Subfile: etc/pam.d/univention-management-console.d/70_session
 Type: subfile
 Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/80_password
+Variables: password/quality/mspolicy
 
 Type: file
 File: etc/logrotate.d/univention-management-console
