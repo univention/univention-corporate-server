@@ -123,7 +123,7 @@ class Check:
 			if self.mspolicy in (True, 'sufficient'):
 				# See https://docs.microsoft.com/de-de/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
 				if not samba_check_password_quality(password):
-					raise ValueError('The password does not meet the password complexity requirements.')
+					raise ValueError('Password does not meet the password complexity requirements.')
 				if self.username and len(self.username) > 3 and self.username.lower() in password.lower():
 					raise ValueError('Password contains user account name.')
 				if displayname:
