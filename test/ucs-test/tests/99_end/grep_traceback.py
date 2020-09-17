@@ -123,7 +123,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	# 10_ldap/listener_module_testpy
 	('MyTestException: .*', None),
 	# various test cases:
-	('^NonThreadedError$', None),
+	('^(univention.management.console.modules.ucstest.)?NonThreadedError$', None),
 	('^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
 	('^INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
 	('^OTHER: .*[cC]annot rename.*', ['sync_from_ucs']),
