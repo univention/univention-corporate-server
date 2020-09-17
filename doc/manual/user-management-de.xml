@@ -751,8 +751,8 @@
 					Wenn keine Prüfung der Passwortlänge erfolgen soll, muss der Wert auf 0 gesetzt werden.
 					Pro Server kann über die &ucsUCRV; <envar>password/quality/length/min</envar>
 					ein Defaultwert konfiguriert werden, der auf Benutzerkonten angewendet wird,
-					denen keine <emphasis>UDM</emphasis> Passwort-Richtinie zugewiesen ist. Die &ucsUCRV;nbeschreibung
-					enthält weitere Details.
+					denen keine <emphasis>UDM</emphasis> Passwort-Richtlinie zugewiesen ist. Die Beschreibung der
+					&ucsUCRV; enthält weitere Details.
 					</simpara>
                 </listitem>
                 <listitem>
@@ -817,7 +817,7 @@
                             <listitem>
 								<simpara>
                                 Standard-Microsoft-Passwortkomplexitätskriterien können angewendet werden
-                                (<envar>password/quality/mspolicy</envar>). Dies kann entweder zusätzlich zu den <filename>python-cracklib</filename> Checks geschehen (Wert <literal>yes</literal>) oder statt dessen (<literal>sufficient</literal>). Die &ucsUCRV;nbeschreibung enthält weitere Details.
+                                (<envar>password/quality/mspolicy</envar>). Dies kann entweder zusätzlich zu den <filename>python-cracklib</filename> Checks geschehen (Wert <literal>yes</literal>) oder statt dessen (<literal>sufficient</literal>). Die Beschreibung der &ucsUCRV; enthält weitere Details.
 								</simpara>
                             </listitem>
                         </itemizedlist>
