@@ -110,12 +110,18 @@ class Check:
 					self.enableQualityCheck = True
 		self.pwhistory = self.lo.search(base=dn, attr=['pwhistory'])[0][1].get('pwhistory')
 
-	def check(self, password, displayname=None):
+	def check(self, password, username=None, displayname=None):
 		if self.min_length > 0:
 			if len(password) < self.min_length:
 				raise ValueError('Password is too short')
 		else:
 			cracklib.MIN_LENGTH = 4  # this seems to be the lowest valid value
+
+		# Workaround for users/user, which instanciates Check() without a username:
+		# We need the username here, but if we would pass it to Check() then
+		# _userPolicy would be run, changing the behavior in users/user.
+		if not username:
+			username = self.username
 
 		# Todo: check history
 
