@@ -1,3 +1,10 @@
+ucs-test (9.0.4-77) unstable; urgency=medium
+
+  * Bug #51994: Avoid leaking test UCR settings
+    from 04_univention-lib/020_password_complexity_checks
+
+ -- Arvid <requate@univention.de>  Fri, 18 Sep 2020 11:05:40 +0200
+
 ucs-test (9.0.4-76) unstable; urgency=medium
 
   * Bug #51994: Test case for univention.password.Check

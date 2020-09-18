@@ -140,6 +140,7 @@ Recommends:
  ucs-test-framework,
 Depends:
  python,
+ python-pytest,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Provides:

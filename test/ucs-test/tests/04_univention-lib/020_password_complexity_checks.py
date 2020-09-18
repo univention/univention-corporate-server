@@ -159,14 +159,14 @@ def ucr():
 
 
 @pytest.fixture(scope="class")
-def pwc_default(existing_username):
+def pwc_default(ucr, existing_username):
 	pwc = Check(None, username=existing_username)
 	pwc.enableQualityCheck = True  # may have been overridden by univentionPolicyPWHistory
 	yield pwc
 
 
 @pytest.fixture(scope="class")
-def pwc_with_mspolicy(existing_username):
+def pwc_with_mspolicy(ucr, existing_username):
 	univention.config_registry.handler_set(["password/quality/mspolicy=yes"])
 	univention.config_registry.handler_set(["password/quality/length/min=8"])
 	## Set the UCS defaults, just to be safe
@@ -181,7 +181,7 @@ def pwc_with_mspolicy(existing_username):
 
 
 @pytest.fixture(scope="class")
-def pwc_with_mspolicy_only(existing_username):
+def pwc_with_mspolicy_only(ucr, existing_username):
 	univention.config_registry.handler_set(["password/quality/mspolicy=sufficient"])
 	univention.config_registry.handler_set(["password/quality/length/min=8"])
 	## Set these variables, but they must get ingored
