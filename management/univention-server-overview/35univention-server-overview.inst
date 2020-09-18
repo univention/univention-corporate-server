@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -50,8 +50,8 @@ role="$(ucr get server/role)"
 if [ "$role" != "domaincontroller_master" ]; then
 	# make sure that entry for server overview does not exist on a single server domain
 	# (i.e., which only contains a DC master instance)
-	univention-directory-manager settings/portal_entry create "$@" --ignore_exists \
-		--position "cn=portal,cn=univention,$ldap_base" \
+	univention-directory-manager portals/entry create "$@" --ignore_exists \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--set name=server-overview \
 		--append displayName='"en_US" "Server overview"' \
 		--append displayName='"de_DE" "Serverübersicht"' \
@@ -60,10 +60,11 @@ if [ "$role" != "domaincontroller_master" ]; then
 		--append description='"de_DE" "Zeigt eine Übersicht aller UCS Server in der Domäne"' \
 		--append description='"fr_FR" "Vue d'"'"'ensemble de tous les serveurs UCS du domaine"' \
 		--append link=/univention/server-overview/ \
-		--set category=admin \
-		--set authRestriction=authenticated \
-		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" \
-		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" || die
+		--set icon="$(base64 /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable/serveroverview.svg)" || die
+
+	univention-directory-manager portals/category modify "$@" \
+		--dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append entries="cn=server-overview,cn=entry,cn=portals,cn=univention,$ldap_base" || die
 fi
 
 joinscript_save_current_version
