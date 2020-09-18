@@ -1,3 +1,9 @@
+ucs-test (9.0.1-1) unstable; urgency=medium
+
+  * Bug #51994: Version bump for 4.4-6
+
+ -- Arvid <requate@univention.de>  Fri, 18 Sep 2020 12:36:22 +0200
+
 ucs-test (9.0.4-77) unstable; urgency=medium
 
   * Bug #51994: Avoid leaking test UCR settings

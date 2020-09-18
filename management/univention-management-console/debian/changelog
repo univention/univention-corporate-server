@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-1) unstable; urgency=medium
+
+  * Bug #51994: Version bump for 4.4-6
+
+ -- Arvid <requate@univention.de>  Fri, 18 Sep 2020 12:23:26 +0200
+
 univention-management-console (11.0.4-110) unstable; urgency=medium
 
   * Bug #51994: Revert changes to UMC PAM stack, it didn't help.

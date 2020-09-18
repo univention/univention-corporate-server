@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.16-1) unstable; urgency=medium
+
+  * Bug #51994: Update versioned dependency on python-univention
+
+ -- Arvid <requate@univention.de>  Fri, 18 Sep 2020 12:22:44 +0200
+
 univention-directory-manager-modules (14.0.15-8) unstable; urgency=medium
 
   * Bug #51994: Pass username to univention.password.Check() too
