@@ -763,14 +763,13 @@ class Processor(ProcessorBase):
 		'uuid/system',
 		'version/erratalevel',
 		'version/patchlevel',
-		'version/releasename',
 		'version/version',
 	]
 
 	def handle_request_get_meta(self, request):
 		def _get_ucs_version():
 			try:
-				return '{version/version}-{version/patchlevel} errata{version/erratalevel} ({version/releasename})'.format(**ucr)
+				return '{version/version}-{version/patchlevel} errata{version/erratalevel}'.format(**ucr)
 			except KeyError:
 				pass
 
@@ -808,7 +807,7 @@ class Processor(ProcessorBase):
 			if not match:
 				raise IOError
 			result['umc_version'] = match.groups()[0]
-			result['ucs_version'] = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
+			result['ucs_version'] = '%(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr
 			result['server'] = '{0}.{1}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
 			result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
 			result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000

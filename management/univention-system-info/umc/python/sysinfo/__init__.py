@@ -172,7 +172,7 @@ class Instance(umcm.Base):
 	@simple_response
 	def upload_traceback(self, traceback, remark, email):
 		ucr.load()
-		ucs_version = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
+		ucs_version = '%(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s' % ucr
 		if ucr.get('appcenter/apps/ucsschool/version'):
 			ucs_version = '%s - UCS@school %s' % (ucs_version, ucr['appcenter/apps/ucsschool/version'])
 		# anonymised id of localhost

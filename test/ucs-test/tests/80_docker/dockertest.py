@@ -748,7 +748,6 @@ BLACKLIST_UCR_VARIABLES = [
 	'version/version',
 	'version/erratalevel',
 	'version/patchlevel',
-	'version/releasename',
 ]
 
 

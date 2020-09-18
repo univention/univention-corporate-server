@@ -871,13 +871,6 @@ Type=str
 Categories=system-base
 ReadOnly=yes
 
-[version/releasename]
-Description[de]=Diese Variable enthält den Codenamen des UCS-Releases.
-Description[en]=This variable contains the codename of the UCS release.
-Type=str
-Categories=system-base
-ReadOnly=yes
-
 [cron/*/time]
 Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Diese Variable setzt die Ausführungszeit in Cron-Syntax, siehe 'man 5 crontab'
 Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each Cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable specifies the execution time in Cron syntax, see 'man 5 crontab'.

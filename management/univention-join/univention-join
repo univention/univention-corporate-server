@@ -490,9 +490,6 @@ for i in $versions; do
 		"version/patchlevel")
 			master_patchlevel="$value"
 			;;
-		"version/releasename")
-			master_releasename="$value"
-			;;
 	esac
 done
 IFS=$OLDIFS

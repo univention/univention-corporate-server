@@ -43,22 +43,6 @@ create_logfile /var/log/univention/actualise.log "root:adm" 640
 
 [ -d /etc/apt/sources.list.d ] || mkdir -p /etc/apt/sources.list.d
 
-while IFS='	' read r v u; do releasename=$r; done <<__CODENAMES__
-mountain beech	UCS 2.1	https://en.wikipedia.org/wiki/Nothofagus_solandri
-copper beech	UCS 2.2	https://en.wikipedia.org/wiki/European_Beech
-hornbeam	UCS 2.3	https://en.wikipedia.org/wiki/Hornbeam
-golden beech	UCS 2.4	https://en.wikipedia.org/wiki/Fagus_sylvatica
-Horn-Lehe	UCS 3.0	https://de.wikipedia.org/wiki/Horn-Lehe
-Findorff	UCS 3.1	https://de.wikipedia.org/wiki/Findorff_%28Bremen%29
-Borgfeld	UCS 3.2	https://de.wikipedia.org/wiki/Borgfeld
-Walle	UCS 4.0	https://de.wikipedia.org/wiki/Walle_%28Bremen%29
-Vahr	UCS 4.1	https://de.wikipedia.org/wiki/Vahr
-Lesum	UCS 4.2	https://de.wikipedia.org/wiki/Burglesum#Lesum
-Neustadt	UCS 4.3	https://de.wikipedia.org/wiki/Neustadt_%28Bremen%29
-Blumenthal	UCS 4.4	https://de.wikipedia.org/wiki/Blumenthal_%28Bremen%29
-TBA-500	UCS 5.0	https://www.univention.de
-__CODENAMES__
-
 if [ "$1" = "configure" ]; then
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
@@ -100,8 +84,7 @@ if [ "$1" = "configure" ]; then
 		update/available?no \
 		version/version?5.0 \
 		version/patchlevel?0 \
-		version/erratalevel?0 \
-		version/releasename="$releasename"
+		version/erratalevel?0
 
 	if [ -z "$2" ]; then
 		# enable current errata component

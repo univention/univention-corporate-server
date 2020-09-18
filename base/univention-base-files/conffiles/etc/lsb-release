@@ -2,11 +2,4 @@
 
 DISTRIB_ID=Univention
 DISTRIB_RELEASE="@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@"
-@!@
-release = configRegistry.get("version/releasename").strip()
-if len(release.split()) > 1:
-	print('DISTRIB_CODENAME="%s"' % release)
-else:
-	print('DISTRIB_CODENAME=%s' % release)
-@!@
-DISTRIB_DESCRIPTION="Univention Corporate Server @%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@ (@%@version/releasename@%@)"
+DISTRIB_DESCRIPTION="Univention Corporate Server @%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@"
