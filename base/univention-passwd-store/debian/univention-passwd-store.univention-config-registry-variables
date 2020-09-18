@@ -1,5 +1,0 @@
-[auth/passwdstore]
-Description[de]=Wird diese Option aktiviert, wird das Klartext-Passwort des sich anmeldenden Benutzers (mit Ausnahme von root) im Rahmen der Anmeldung permanent in der Datei ~/.univention-passwd-store/session_passwd gespeichert.
-Description[en]=If this option is activated, the clear text password of the user logging in (with the exception of root) is stored in the file ~/.univention-passwd-store/session_passwd permanently.
-Type=bool
-Categories=system-base
