@@ -116,7 +116,7 @@
 						<package>libopenmpt</package> (<u:cve>2019-17113</u:cve>) (<u:bug>51761</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
-						<package>lib<package>pam-krb5</package></package> (<u:cve>2020-10595</u:cve>) (<u:bug>51051</u:bug>)
+						<package>libpam-krb5</package> (<u:cve>2020-10595</u:cve>) (<u:bug>51051</u:bug>)
 					</simpara></listitem>
 					<listitem><simpara>
 						<package>libphp-phpmailer</package> (<u:cve>2020-13625</u:cve>) (<u:bug>51760</u:bug>)
@@ -752,7 +752,7 @@
 			<title>Development of modules for &ucsUMC;</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Internal change: The UMC module of <package><package>univention-management-console</package>-module-lib</package> is now <application>python3</application> compatible (<u:bug>51325</u:bug>).
+					Internal change: The UMC module of <package>univention-management-console-module-lib</package> is now <application>python3</application> compatible (<u:bug>51325</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
