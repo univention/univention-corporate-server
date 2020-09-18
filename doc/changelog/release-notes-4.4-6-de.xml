@@ -51,9 +51,33 @@
 
 		<itemizedlist>
 			<listitem><para>
+					Verbesserungen in der Benutzerselbstverwaltung über die Self-Service App.
+					Dem Nutzer werden in der Self-Service App, z.B. beim Zurücksetzen des Passworts, vordefinierte Texte angezeigt.
+					Administratoren können die Inhalte dieser Texte nun anpassen.
+					Neu registrierte Nutzer werden aktiviert, sobald die E-Mailadresse des Nutzers erfolgreich verifiziert worden ist.
+					Das Verhalten ist standardmäßig deaktiviert.
+					Mit der Option ist es möglich, ein UCS mit Self-Service Modul zu betreiben, an dem sich Nutzer selbst registrieren und ihr Benutzerkonto nach erfolgreicher Validierung der E-Mailadresse zu verwenden.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-6 integriert, bspw. für QEMU, Bind9, den Linux Kernel und PHP.
+					App Center: Eigene Hook <literal>Scripte</literal> für Administratoren.
+					UCS Systemadministratoren können jetzt auf einem UCS System eigene <literal>Scripte</literal> bei Apps hinterlegen, die vom App Center für eine nach Installation, Update oder Deinstallation ausgeführt werden.
+					Damit können z.B. wiederkehrende manuelle Schritte nach einem App Update automatisiert werden, bei denen eine App z.B. an individuelle Gegebenheiten angepasst wird.
+					Beispiel: Das Nachinstallieren von Schriften in die installierte Office App oder das Kopieren eines eigenen SSL Zertifikats in eine App.
+			</para></listitem>
+			<listitem><para>
+					UCS Portal: Warnung vor veralteten und nicht mehr unterstützten Browsern.
+					Einem Nutzer wird eine Warnung beim Login am UCS Managementsystem angezeigt, falls ein nicht unterstützter Browser, wie z.B. Internet Explorer 11, verwendet wird.
+					Die Warnung kann auch für das Portal aktiviert werden.
+			</para></listitem>
+			<listitem><para>
+					Verbesserungen in der Produktstabilität.
+					Speicherleck in UMC Server behoben. Das führte u.a. dazu, dass der Nutzer Self-Service in größeren Umgebungen beim Ändern des eigenen Passworts nicht mehr funktionierte bis der UMC Server neu gestartet wurde.
+					Beobachtete Absturzverhalten des LDAP Servers im Zusammenhang mit dem <systemitem>ppolicy</systemitem> <wordasword>Overlay</wordasword> Modul wurden behoben.
+					Die UDM REST API kann jetzt mit Umlauten in in der URL eines API Aufrufs umgehen.
+					Abgelaufene Benutzerpasswörter können nun im Single Sign On Anmeldefenster direkt neu gesetzt werden.
+			</para></listitem>
+			<listitem><para>
+					Diverse Security Updates wurden in UCS 4.4-6 integriert, bspw. für QEMU, <application>bind9</application>, den Linux Kernel und PHP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
