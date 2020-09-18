@@ -38,10 +38,9 @@ import subprocess
 import itertools
 import logging
 import json
-from itertools import groupby
 from operator import itemgetter
 
-from .tools import UniventionUpdater
+from .tools import UniventionUpdater, UCSHttpServer
 from .repo_url import UcsRepoUrl
 from univention.lib.ucs import UCS_Version
 try:
@@ -68,27 +67,52 @@ def makedirs(dirname, mode=0o755):
             raise
 
 
-def gen_releases(releases):  # type: (Iterator[Tuple[int, int, int]]) -> str
-    """Generate a releases.json string from a list of given releases"""
-    data = dict(
-        releases=[
-            dict(
-                major=major,
-                minors=[
-                    dict(
-                        minor=minor,
-                        patchlevels=[
-                            dict(
-                                patchlevel=patchlevel,
-                                status="maintained",  # FIXME: development | end-of-live
-                            ) for major, minor, patchlevel in patchelevels
-                        ]
-                    ) for minor, patchelevels in groupby(minors, key=itemgetter(1))
+def filter_releases_json(releases, start=None, end=None):
+    # type: (str, Optional[UCS_Version], Optional[UCS_Version]) -> None
+    """
+    Filter releases that are not mirrored from the upstream repository
+    Filtering is done inplace!
+
+    :param str releases: The upstream releases object from releases.json.
+    :param UCS_Version start: First UCS version that is being mirrored.
+    :param UCS_Version end: Last UCS version that is being mirrored.
+    """
+
+    max_minor = 99
+    max_patchlevel = 99
+
+    def _include_version(major, minor=None, patchlevel=None):
+        bigger_as_start = start is None or start <= UCS_Version((
+            major,
+            max_minor if minor is None else minor,
+            max_patchlevel if patchlevel is None else patchlevel
+        ))
+        smaller_as_end = end is None or end >= UCS_Version((
+            major,
+            0 if minor is None else minor,
+            0 if patchlevel is None else patchlevel
+        ))
+        return bigger_as_start and smaller_as_end
+
+    def _filter_majors():
+        releases['releases'] = [major for major in releases['releases'] if _include_version(major['major'])]
+
+    def _filter_minors():
+        for major in releases['releases']:
+            major['minors'] = [minor for minor in major['minors'] if _include_version(major['major'], minor['minor'])]
+
+    def _filter_patchlevels():
+        for major in releases['releases']:
+            for minor in major['minors']:
+                minor['patchlevels'] = [
+                    patchlevel for patchlevel in minor['patchlevels']
+                    if _include_version(major['major'], minor['minor'], patchlevel['patchlevel'])
                 ]
-            ) for major, minors in groupby(releases, key=itemgetter(0))
-        ]
-    )
-    return json.dumps(data)
+
+    _filter_majors()
+    _filter_minors()
+    _filter_patchlevels()
+    return None
 
 
 class UniventionMirror(UniventionUpdater):
@@ -237,13 +261,24 @@ class UniventionMirror(UniventionUpdater):
         return result
 
     def write_releases_json(self):
+        """
+        Write a releases.json including only the mirrored releases.
+        """
         start = self.version_start
         end = self.version_end
+        _code, _size, data = self.server.access(None, 'releases.json', get=True)
+        try:
+            releases = json.loads(data)
+        except ValueError as exc:
+            ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
+            if isinstance(self.server, UCSHttpServer) and self.server.proxy_handler.proxies:
+                ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
+            raise
+        filter_releases_json(releases, start=start, end=end)
         releases_json_path = os.path.join(self.repository_path, 'mirror', 'releases.json')
         makedirs(os.path.dirname(releases_json_path))
-        releases = sorted(r for r in self.get_releases(self.server) if r >= start and r <= end)
         with open(releases_json_path, 'w') as releases_json:
-            releases_json.write(gen_releases((r['major'], r['minor'], r['patchlevel']) for r in releases))
+            json.dump(releases, releases_json)
 
     def run(self):
         """

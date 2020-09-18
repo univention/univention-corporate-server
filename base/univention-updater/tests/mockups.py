@@ -8,6 +8,9 @@ import sys
 import os.path
 import errno
 import httplib
+import json
+from itertools import groupby
+from operator import itemgetter
 import univention
 univention.__path__.insert(0, os.path.abspath('modules/univention'))  # type: ignore
 import univention.updater.tools as U  # noqa: E402
@@ -175,6 +178,29 @@ class MockFile(object):
             M.makedirs(dirname)
             filename = os.path.join(dirname, tail)
             return MockFile._ORIG(filename, mode, *args, **kwargs)
+
+
+def gen_releases(releases):  # type: (Iterator[Tuple[int, int, int]]) -> str
+    """Generate a releases.json string from a list of given releases"""
+    data = dict(
+        releases=[
+            dict(
+                major=major,
+                minors=[
+                    dict(
+                        minor=minor,
+                        patchlevels=[
+                            dict(
+                                patchlevel=patchlevel,
+                                status="maintained",
+                            ) for major, minor, patchlevel in patchelevels
+                        ]
+                    ) for minor, patchelevels in groupby(minors, key=itemgetter(1))
+                ]
+            ) for major, minors in groupby(releases, key=itemgetter(0))
+        ]
+    )
+    return json.dumps(data)
 
 
 def verbose(verbose_mode=True):

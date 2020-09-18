@@ -6,16 +6,19 @@ import os
 import unittest
 from tempfile import mkdtemp
 from shutil import rmtree
+import json
+from copy import deepcopy
+from univention.lib.ucs import UCS_Version
 from mockups import (
     U, M, MAJOR, MINOR, PATCH, ARCH,
     MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
+    gen_releases,
 )
 
 UM = M.UniventionMirror
 DATA = 'x' * U.MIN_GZIP
 
 
-@unittest.skip("Not yet implemented for the new pool structure")
 class TestUniventionMirror(unittest.TestCase):
 
     """Unit test for univention.updater.tools"""
@@ -114,7 +117,7 @@ class TestUniventionMirror(unittest.TestCase):
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): '#!b_pre',
             '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): '#!b_post',
-            'releases.json': M.gen_releases([(MAJOR, MINOR, 0), ])
+            'releases.json': gen_releases([(MAJOR, MINOR, 0), ])
         }
         self._uri(uris)
         del uris['releases.json']
@@ -134,12 +137,22 @@ class TestUniventionMirror(unittest.TestCase):
             self.assertEqual(script, value)
 
     def test_write_releases_json(self):
-        self._uri({'releases.json': M.gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])})
-        expected = '{"releases": [{"major": 3, "minors": [{"patchlevels": [{"patchlevel": 0}, {"patchlevel": 1}], "minor": 0}]}]}'
+        self._uri({'releases.json': gen_releases([(MAJOR, MINOR, 0), (MAJOR, MINOR, 1)])})
+        expected = '{"releases": [{"major": 3, "minors": [{"patchlevels": [{"status": "maintained", "patchlevel": 0}, {"status": "maintained", "patchlevel": 1}], "minor": 0}]}]}'
         self.m.write_releases_json()
         releases_json_path = os.path.join(self.base_dir, 'mock', self.m.repository_path.lstrip('/'), 'mirror', 'releases.json')
         with open(releases_json_path, 'r') as releases_json:
             self.assertEqual(expected, releases_json.read())
+
+    def test_filter_releases_json(self):
+        self.maxDiff = None
+        with open(os.path.join(os.path.dirname(__file__), 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
+            upstream_releases = json.load(upstream_releases_fp)
+        with open(os.path.join(os.path.dirname(__file__), 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
+            expected_mirror_releases = json.load(mirror_releases_fp)
+        mirrored_releases = deepcopy(upstream_releases)
+        M.filter_releases_json(mirrored_releases, start=UCS_Version((3, 1, 1)), end=UCS_Version((4, 1, 0)))
+        self.assertEqual(mirrored_releases, expected_mirror_releases)
 
 
     def test_run(self):
