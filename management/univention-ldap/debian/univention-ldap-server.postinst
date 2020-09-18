@@ -38,6 +38,13 @@ if [ -n "$(pidof slapd)" ]; then
 fi
 
 # { # function definitions
+start_slapd()
+{
+	if test -x /etc/init.d/slapd; then
+		/etc/init.d/slapd start
+		sleep 1
+	fi
+}
 stop_slapd ()
 {
 	if test -x /etc/init.d/slapd; then
@@ -156,6 +163,7 @@ fi
 
 stop_slapd
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
+start_slapd
 
 for cfg in /var/lib/univention-ldap/ldap/DB_CONFIG /var/lib/univention-ldap/translog/DB_CONFIG
 do

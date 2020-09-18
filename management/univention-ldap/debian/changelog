@@ -1,3 +1,10 @@
+univention-ldap (15.0.1-1) unstable; urgency=medium
+
+  * Bug #51676: start slapd after ldap_setup_index so joinscript is executed
+  	with started ldap server
+
+ -- Florian Best <best@univention.de>  Fri, 18 Sep 2020 14:34:30 +0200
+
 univention-ldap (15.0.0-41) unstable; urgency=medium
 
   * Bug #51676: make ppolicy allow users to change their own password
