@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  baseconfig module: Modifies udm settings/portal_entries on UCR changes
+#  baseconfig module: Modifies udm portals/entry and portals/category on UCR changes
 #
 # Copyright 2017-2020 Univention GmbH
 #
@@ -42,8 +42,7 @@ from univention.config_registry.interfaces import Interfaces
 import univention.admin.uexceptions as udm_errors
 
 from univention.appcenter.log import log_to_logfile, get_base_logger
-from univention.appcenter.ucr import ucr_get
-from univention.appcenter.udm import create_object_if_not_exists, remove_object_if_exists, get_machine_connection, modify_object, init_object
+from univention.appcenter.udm import create_object_if_not_exists, remove_object_if_exists, get_machine_connection, modify_object, init_object, position
 
 
 log_to_logfile()
@@ -86,7 +85,7 @@ def _handler(ucr, changes):
 	if not changed_entries:
 		return
 	lo, pos = get_machine_connection()
-	pos.setDn('cn=portal,cn=univention,%s' % ucr.get('ldap/base'))
+	pos.setDn('cn=entry,cn=portals,cn=univention,%s' % ucr.get('ldap/base'))
 	hostname = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 
 	# iterate over all ipv4 and ipv6 addresses and append them to the link
@@ -116,7 +115,6 @@ def _handler(ucr, changes):
 		if cn in attr_entries:
 			portal_logger.debug('Matched %r -> %r' % (ucr_key, value))
 			entry = attr_entries[cn]
-			entry['category'] = category
 			entry['name'] = cn
 			if '_links' not in entry:
 				links = []
@@ -199,18 +197,28 @@ def _handler(ucr, changes):
 		portal_logger.debug('Attrs: %r' % attrs)
 		portal_logger.debug('Links: %r' % my_links)
 		try:
-			obj = init_object('settings/portal_entry', lo, pos, dn)
+			obj = init_object('portals/entry', lo, pos, dn)
 		except udm_errors.noObject:
 			portal_logger.debug('DN not found...')
 			if my_links:
 				portal_logger.debug('... creating')
 				attrs['link'] = my_links
-				attrs['portal'] = ['cn=domain,cn=portal,cn=univention,%s' % ucr_get('ldap/base')]
 				attrs['activated'] = True
 				try:
-					create_object_if_not_exists('settings/portal_entry', lo, pos, **attrs)
+					create_object_if_not_exists('portals/entry', lo, pos, **attrs)
 				except udm_errors.insufficientInformation as exc:
 					portal_logger.info('Cannot create: %s' % exc)
+				try:
+					category_pos = position(ucr.get('ldap/base'))
+					category_pos.setDn('cn=category,cn=portals,cn=univention')
+					category_dn = 'cn=domain-%s,%s' % (category, category_pos.getDn(),)
+					portal_logger.debug('Adding entry to %s' % (category_dn,))
+					obj = init_object('portals/category', lo, category_pos, category_dn)
+					entries = obj['entries']
+					entries.append(dn)
+					modify_object('portals/category', lo, category_pos, category_dn, entries=entries)
+				except udm_errors.noObject:
+					portal_logger.debug('DN not found...')
 			continue
 		links = obj['link']
 		portal_logger.debug('Existing links: %r' % links)
@@ -219,11 +227,11 @@ def _handler(ucr, changes):
 		portal_logger.debug('New links: %r' % links)
 		if not links:
 			portal_logger.debug('Removing DN')
-			remove_object_if_exists('settings/portal_entry', lo, pos, dn)
+			remove_object_if_exists('portals/entry', lo, pos, dn)
 		else:
 			portal_logger.debug('Modifying DN')
 			attrs['link'] = links
-			modify_object('settings/portal_entry', lo, pos, dn, **attrs)
+			modify_object('portals/entry', lo, pos, dn, **attrs)
 
 
 def handler(ucr, changes):

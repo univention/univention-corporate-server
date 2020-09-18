@@ -83,8 +83,8 @@ case "$1" in
 					ucr_keys="$ucr_keys ucs/web/overview/entries/admin/$ikey/$jkey"
 				done
 				ucr unset $ucr_keys
-				dn="cn=$ikey,cn=portal,cn=univention,$ldap_base"
-				udm settings/portal_entry remove --dn "$dn"
+				dn="cn=$ikey,cn=entry,cn=portals,cn=univention,$ldap_base"
+				udm portals/entry remove --dn "$dn"
 			done
 		fi
 

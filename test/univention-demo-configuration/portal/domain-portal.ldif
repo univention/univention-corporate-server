@@ -1,6 +1,6 @@
-dn: cn=domain,cn=portal,cn=univention,@%@ldap/base@%@
+dn: cn=domain,cn=portal,cn=portals,cn=univention,@%@ldap/base@%@
 changetype: modify
-add: univentionPortalBackground
+add: univentionNewPortalBackground
 univentionPortalBackground: /9j/4AAQSkZJRgABAQEBLAEsAAD/4Qu2RXhpZgAATU0AKgAAAA
  gACQEOAAIAAAARAAAAegESAAMAAAABAAEAAAEaAAUAAAABAAAAjAEbAAUAAAABAAAAlAEoAAMAAAA
  BAAIAAAExAAIAAAAMAAAAnAEyAAIAAAAUAAAAqAE7AAIAAAAJAAAAvIdpAAQAAAABAAAAxgAAAQhF
