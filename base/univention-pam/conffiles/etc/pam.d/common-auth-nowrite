@@ -19,8 +19,6 @@ if configRegistry.is_true('auth/faillog', False):
 auth     sufficient                         pam_unix.so
 
 # remote authentication; if a service
-# - fails, we'll fall back to cache authentication
-# - is successful, cache the password
 # - isn't aware of the user, proceed with the next service
 @!@
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
@@ -30,60 +28,15 @@ pam_ldap='''
 auth 	sufficient 			pam_ldap.so use_first_pass'''
 pam_winbind=''' 
 auth 	sufficient 			pam_winbind.so use_first_pass'''
-pam_cache='''
-auth     required                         pam_passwdcache.so try_first_pass'''
 
-
-def pam_section(template, index, last):
-	if index <= 0:
-		succ = 'done'
-		unavail = 'die'
-		fail = 'die'
-	else:
-		succ = str(index - 1)
-		if succ == '0':
-			succ = 'ok'
-		fail = str(index)
-		unavail = str(index + 1)
-	if index == 1:
-		unknown = str(index)
-	elif last == 1:
-		unknown = 'die'
-	else:
-		unknown = 'ignore'
-		
-	return template.replace('<succ>', succ).replace('<unavail>', unavail).replace('<fail>', fail).replace('<unknown>', unknown)
-
-methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']]
-if 'cache' in methods:
-	methods.remove('cache')
-	index = len(methods)
-else:
-	index = -1
+methods = set(configRegistry['auth/methods'].split(' ')) & {'krb5', 'ldap', 'winbind'}
 
 if 'krb5' in methods:
-	last = 0
-	if 'ldap' not in methods and 'winbind' not in methods:
-		last = 1
-	print(pam_section(pam_krb5, index, last))
-	index -= 1
+	print(pam_krb5)
 if 'ldap' in methods:
-	last = 0
-	if 'winbind' not in methods:
-		last = 1
-	print(pam_section(pam_ldap, index, last))
-	index -= 1
+	print(pam_ldap)
 if 'winbind' in methods:
-	print(pam_section(pam_winbind, index, 1))
-	index -= 1
-
-# cache is activated
-if index == 0:
-	print(pam_cache)
-
-# cache_store=['success', 'new_authtok_reqd']
-# cache_delete=['auth_err', 'perm_denied', 'cred_err', 'acct_expired', 'authtok_expired']
-# cache_auth=['service_err', 'system_err', 'authinfo_unavail']
+	print(pam_winbind)
 @!@
 
 auth     required                           pam_env.so

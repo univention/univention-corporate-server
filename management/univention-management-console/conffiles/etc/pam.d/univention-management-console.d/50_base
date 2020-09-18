@@ -1,31 +1,14 @@
 @!@
 # search for UMC auth addons
-auth_umc_addons = False
-for k in configRegistry.keys():
-	if k.startswith('auth/umc/addon/') and \
-				k.count('/') == 3 and \
-				configRegistry.is_true(k, True):
-		auth_umc_addons = True
+auth_umc_addons = any(
+	configRegistry.is_true(k, True)
+	for k in configRegistry.keys()
+	if k.startswith('auth/umc/addon/') and k.count('/') == 3
+)
 
 methods = configRegistry.get('auth/methods', '').split(' ')
 
-if configRegistry.is_true('auth/passwdcache', False):
-	print('auth     sufficient                         pam_unix.so try_first_pass')
-	if 'krb5' in methods:
-		print('auth     [success=1 new_authtok_reqd=ok user_unknown=ignore service_err=ignore authinfo_unavail=ignore auth_err=die default=ignore]                         pam_krb5.so use_first_pass defer_pwchange')
-	print('auth     [success=ok new_authtok_reqd=ok          user_unknown=die          service_err=1 authinfo_unavail=1          default=die]                         pam_ldap.so use_first_pass')
-
-	user = configRegistry.get('auth/passwdcache/max_user', '3').strip('"')
-
-	print('''
-# cache password (on successful authentication)
-auth     [success=done new_authtok_reqd=ok          ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%(user)s
-# remove password from cache (on failed authentication)
-# auth     required                           pam_passwdcache.so try_first_pass delete max_user=%(user)s
-# authenticate against cache (if a service fails)
-auth     sufficient                         pam_passwdcache.so try_first_pass
-''' % {'user': user})
-elif auth_umc_addons:
+if auth_umc_addons:
 	if 'krb5' in methods:
 		print('auth     [success=2 new_authtok_reqd=2 default=ignore]                         pam_unix.so try_first_pass')
 		print('auth     [success=1 new_authtok_reqd=1 default=ignore]                         pam_krb5.so use_first_pass defer_pwchange')

@@ -16,89 +16,35 @@ auth     [success=<succ> new_authtok_reqd=ok \
          service_err=<unavail> authinfo_unavail=<unavail> \
          default=<unknown>]                         pam_winbind.so use_first_pass'''
 
-value = configRegistry.get('auth/passwdcache/max_user', '3')
 
-pam_cache = '''
-# cache password (on successful authentication)
-auth     [success=done new_authtok_reqd=ok \
-	ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%s
-# remove password from cache (on failed authentication)
-# auth     required                           pam_passwdcache.so try_first_pass delete max_user=%s
-# authenticate against cache (if a service fails)
-auth     required                         pam_passwdcache.so try_first_pass'''%(value, value)
+def pam_section(template, last):
+	succ='done'
+	unavail='die'
+	fail='die'
+	unknown = 'die' if last else 'ignore'
 
-pam_cache_only = '''
-# authenticate against cache
-auth     required                         pam_passwdcache.so try_first_pass'''
-
-
-def pam_section(template, index, last):
-	if index <= 0:
-		succ='done'
-		unavail='die'
-		fail='die'
-	else:
-		succ = str(index - 1)
-		if succ == '0':
-			succ = 'ok'
-		fail = str(index)
-		unavail = str(index)
-	if index == 1:
-		unknown = 'die'
-	elif last == 1:
-		unknown = 'die'
-	else:
-		unknown = 'ignore'
-		
 	return template.replace('<succ>', succ).replace('<unavail>', unavail).replace('<fail>', fail).replace('<unknown>', unknown)
 
-methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']]
-if 'cache' in methods:
-	methods.remove('cache')
-	index = len(methods)
-else:
-	index = -1
+methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind']]
 
 # if no other authentication mechanism but unix is active it is required
-if not methods and index == -1:
-	print('''# local unix authentication; do not cache passwords
+if not methods:
+	print('''# local unix authentication
 auth     required                         pam_unix.so''')
 else:
-	print('''# local unix authentication; do not cache passwords
+	print('''# local unix authentication
 auth     sufficient                           pam_unix.so''')
 
 print('''
 # remote authentication; if a service
-# - fails, we will fall back to cache authentication
-# - is successful, cache the password
 # - is not aware of the user, proceed with the next service''')
 
 if 'krb5' in methods:
-	last = 0
-	if not 'ldap' in methods and not 'winbind' in methods:
-		last = 1
-	print(pam_section(pam_krb5, index, last))
-	index -= 1
+	last = 'ldap' not in methods and 'winbind' not in methods
+	print(pam_section(pam_krb5, last))
 if 'ldap' in methods:
-	last = 0
-	if 'winbind' not in methods:
-		last = 1
-	print(pam_section(pam_ldap, index, last))
-	index -= 1
+	last = 'winbind' not in methods
+	print(pam_section(pam_ldap, last))
 if 'winbind' in methods:
-	print(pam_section(pam_winbind, index, 1))
-	index -= 1
-
-# cache is activated
-if index == 0:
-	if len(methods) == 0:
-		# cache was removed before, if no other pam-module was set
-		# pam must not use pam_passwdcache with insert
-		print(pam_cache_only)
-	else:
-		print(pam_cache)
-
-# cache_store = ['success', 'new_authtok_reqd']
-# cache_delete = ['auth_err', 'perm_denied', 'cred_err', 'acct_expired', 'authtok_expired']
-# cache_auth = ['service_err', 'system_err', 'authinfo_unavail']
+	print(pam_section(pam_winbind, true))
 @!@

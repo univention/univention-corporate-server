@@ -5,12 +5,10 @@ if configRegistry.is_true('auth/faillog', False):
 	print('account	required	pam_tally.so')
 @!@
 
-# local unix authentication; don't cache passwords, deny access if account is expired
+# local unix authentication; deny access if account is expired
 account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    pam_unix.so
 
 # remote authentication; if a service
-# - fails, we'll fall back to cache authentication
-# - is successful, cache the password
 # - isn't aware of the user, proceed with the next service
 @!@
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
@@ -20,17 +18,12 @@ pam_ldap='''
 account  <action>                         pam_ldap.so'''
 pam_winbind='''
 account  <action>                         pam_winbind.so'''
-pam_cache='''
-account  <action>                         pam_passwdcache.so'''
 
 def pam_section(template, index):
-	if index <= 1:
-		action = 'required  '
-	else:
-		action = 'sufficient'
+	action = 'required  ' if index <= 1 else 'sufficient'
 	return template.replace('<action>', action)
 
-methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']]
+methods = set(configRegistry['auth/methods'].split(' ')) & {'krb5', 'ldap', 'winbind'}
 index = len(methods)
 
 if 'krb5' in methods:
@@ -41,8 +34,4 @@ if 'ldap' in methods:
 	index -= 1
 if 'winbind' in methods:
 	print(pam_section(pam_winbind, index))
-	index -= 1
-if 'cache' in methods:
-	print(pam_section(pam_cache, index))
-	index -= 1
 @!@

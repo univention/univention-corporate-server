@@ -9,8 +9,6 @@ Type: subfile
 Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/50_base
 Variables: auth/methods
-Variables: auth/passwdcache/max_user
-Variables: auth/passwdcache
 Variables: auth/umc/addon/.*
 
 Type: subfile
