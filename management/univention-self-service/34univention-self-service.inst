@@ -33,7 +33,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
@@ -69,12 +69,9 @@ univention-config-registry set \
 
 IP="$(get_default_ip_address)"
 
-udm settings/portal_entry create --ignore_exists "$@" \
-    --position "cn=portal,cn=univention,$ldap_base" \
+udm portals/entry create --ignore_exists "$@" \
+    --position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 	--set name="self-service" \
-	--set category="service" \
-	--set portal="cn=domain,cn=portal,cn=univention,$ldap_base" \
-	--set authRestriction="anonymous" \
 	--set activated="TRUE" \
 	--append displayName="\"fr_FR\" \"Changer le mot de passe\"" \
 	--append displayName="\"en_US\" \"Change password\"" \
@@ -84,6 +81,10 @@ udm settings/portal_entry create --ignore_exists "$@" \
 	--append description="\"de_DE\" \"Self-Service-Module (Passwort ändern und zurücksetzen)\"" \
 	--append description="\"en_US\" \"Self Service modules (change and recover passwords)\"" \
 	--append description="\"fr_FR\" \"Module de libre-service (changer et réinitialiser des mots de passe)\"" || die
+
+udm portals/category modify "$@" \
+	--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+	--append entries="cn=self-service,cn=entry,cn=portals,cn=univention,$ldap_base"
 
 joinscript_save_current_version
 
