@@ -108,7 +108,11 @@
 				<listitem><simpara>
 					Proxy settings are now exported as environment variables during the setup (<u:bug>51799</u:bug>).
 				</simpara></listitem>
-
+				<listitem><simpara>
+					From now on the local unix password for the root account in the UCS appliance images is disabled
+					until a proper password is set during the setup (<u:bug>51954</u:bug>). If a ssh login is
+					required before the setup, the image has to be modified (e.g. add a ssh key for the root user).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
