@@ -36,7 +36,6 @@ import getopt
 from ldap.filter import filter_format
 
 import univention.debug as ud
-import univention.misc
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.modules
