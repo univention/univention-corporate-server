@@ -471,6 +471,9 @@
 			<listitem><simpara>
 				The <package>univention.fstab</package> library has been merged into <package>univention.lib.fstab</package> (<u:bug>27825</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The <package>univention-python</package> library has been migrated to Python 3. Various modules have been removed (<u:bug>52063</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
