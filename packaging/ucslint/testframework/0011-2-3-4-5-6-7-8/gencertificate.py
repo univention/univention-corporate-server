@@ -5,7 +5,6 @@
 from listener import *
 
 import univention.debug
-import univention.misc
 
 name='gencertificate'
 description='Generate new Certificates'
