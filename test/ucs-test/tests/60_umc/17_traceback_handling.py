@@ -10,6 +10,7 @@
 
 
 from __future__ import print_function
+import re
 import json
 
 import pytest
@@ -20,9 +21,9 @@ from univention.management.console.modules.ucstest import joinscript, unjoinscri
 
 
 @pytest.mark.parametrize('path,expected_trace', [
-	("ucstest/non_threaded_traceback", "raise NonThreadedError()\nNonThreadedError"),
-	("ucstest/threaded_traceback", "raise ThreadedError()\nThreadedError"),
-	("ucstest/traceback_as_thread_result", "Request: ucstest/traceback_as_thread_result\n\nThreadedError"),
+	("ucstest/non_threaded_traceback", re.compile("raise NonThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?NonThreadedError", re.M)),
+	("ucstest/threaded_traceback", re.compile("raise ThreadedError\\(\\)\n(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
+	("ucstest/traceback_as_thread_result", re.compile("Request: ucstest/traceback_as_thread_result\n\n(univention.management.console.modules.ucstest.)?ThreadedError", re.M)),
 ])
 def test_umc_tracebacks(Client, path, expected_trace):
 	joinscript()
@@ -32,7 +33,7 @@ def test_umc_tracebacks(Client, path, expected_trace):
 		with pytest.raises(HTTPError) as exc:
 			umc_client.umc_command(path)
 		assert exc.value.status == 591, 'Wrong http return code'
-		assert json.loads(exc.value.response.body)["traceback"].endswith(expected_trace), (json.loads(exc.value.response.body)["traceback"], expected_trace)
+		assert expected_trace.search(json.loads(exc.value.response.body)["traceback"]), (json.loads(exc.value.response.body)["traceback"], expected_trace)
 	finally:
 		unjoinscript()
 
