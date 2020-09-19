@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.3-3) unstable; urgency=low
+
+  * Bug #52956: remove use of univention.misc
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 May 2021 12:04:28 +0200
+
 univention-directory-listener (13.0.3-2) unstable; urgency=medium
 
   * Bug #39167: Setting the default mdb maxsize to 4GB
