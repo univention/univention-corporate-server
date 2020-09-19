@@ -24,6 +24,7 @@ function ctrl_c {
 	killall umc-set $0
 }
 trap ctrl_c INT
+trap "service univention-management-console-server restart" EXIT
 
 # returns the number of open connections by the umc-server
 function get_number_of_close_waits() {
