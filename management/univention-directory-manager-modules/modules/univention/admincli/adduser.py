@@ -38,7 +38,6 @@ import six
 from ldap.filter import filter_format
 
 import univention.debug as ud
-import univention.misc
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.config
@@ -61,12 +60,52 @@ def status(msg):
 	return out
 
 
+def close_fd_spawn(file, args):
+	"""
+	Close all open file descriptors before doing execv().
+
+	>>> close_fd_spawn("/bin/bash", ["bash", "-c", "exit `find /proc/$$/fd -mindepth 1 -lname /dev/null | wc -l`"])
+	3
+	"""
+	pid = os.fork()
+	if pid == 0:  # child
+		close_fds()
+		os.execv(file, args)
+		os._exit(127)
+	elif pid > 0:  # parent
+		pid, status = os.waitpid(pid, 0)
+		if os.WIFEXITED(status):
+			return os.WEXITSTATUS(status)
+		elif os.WIFSIGNALED(status):
+			return -os.WTERMSIG(status)
+		else:
+			raise OSError('Child %d terminated by unknown cause: %04x' % (pid, status))
+	else:
+		raise OSError('Failed to fork child process.')
+
+
+def close_fds():
+	"""
+	Close all open file descriptors and open /dev/null as stdin, stdout, and stderr.
+
+	>>> close_fds()
+	"""
+	for i in map(int, os.listdir('/proc/%d/fd' % os.getpid())):
+		try:
+			os.close(i)
+		except OSError:
+			pass
+	assert 0 == os.open(os.path.devnull, os.O_RDONLY)
+	assert 1 == os.open(os.path.devnull, os.O_WRONLY)
+	assert 2 == os.open(os.path.devnull, os.O_WRONLY)
+
+
 def nscd_invalidate(table):
 	if table:
 		ud.debug(ud.ADMIN, ud.INFO, 'NSCD: --invalidate %s' % table)
 		try:
-			univention.misc.close_fd_spawn('/usr/sbin/nscd', ['nscd', '--invalidate', table])
-		except:
+			close_fd_spawn('/usr/sbin/nscd', ['nscd', '--invalidate', table])
+		except EnvironmentError:
 			ud.debug(ud.ADMIN, ud.INFO, 'NSCD: failed')
 		else:
 			ud.debug(ud.ADMIN, ud.INFO, 'NSCD: ok')
