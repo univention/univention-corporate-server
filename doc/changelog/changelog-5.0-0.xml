@@ -468,6 +468,9 @@
 			<listitem><simpara>
 				 UDM and LDAP extensions are now correctly removed or created when the UCS version changes (<u:bug>51531</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The <package>univention.fstab</package> library has been merged into <package>univention.lib.fstab</package> (<u:bug>27825</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
