@@ -36,7 +36,6 @@ import listener
 import univention.config_registry
 
 import univention.debug as ud
-import univention.misc
 
 name = 'ldap_server'
 description = 'Update ldap server master list'
