@@ -43,7 +43,6 @@ import subprocess
 import os
 
 import univention.debug
-import univention.misc
 
 name = 'directory_logger'
 description = 'Log directory transactions'
