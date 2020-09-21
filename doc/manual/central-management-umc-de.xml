@@ -178,9 +178,9 @@
 		Da sich die Anforderung von kleinen bis hin zu großen Umgebungen in Organisationen, Behörden oder auch im Schulbetrieb stark voneinander unterscheiden, bringt UCS ein sehr flexibles und individuell anpassbares Konzept für Portalseiten mit.
 	</para>
 	<para>
-		Wie in <xref linkend="portal-schema"/> dargestellt, können Portaleinträge (also Verweise auf Applikationen/Apps/Dienste; UDM-Objekttyp <classname>settings/portal_entry</classname>) keinem, einem oder mehreren Portalen zugeordnet sein.
-		Ein Portal selbst (UDM-Objekttyp <classname>settings/portal</classname>) stellt alle Einträge dar, die mit ihm verknüpft sind.
-		Ein Portal kann keinem, einem oder mehreren Rechnerobjekten zugewiesen sein (dies geschieht direkt am Rechnerobjekt selber).
+		Wie in <xref linkend="portal-schema"/> dargestellt, können Portaleinträge (also Verweise auf Applikationen/Apps/Dienste; UDM-Objekttyp <classname>portals/entry</classname>) keinem, einem oder mehreren Portal-Kategorien zugeordnet werden.
+		Eine Portal-Kategorie (UDM-Objekttyp <classname>portals/category</classname>) kann keinem, einem oder mehreren Portal zugeordnet werden.
+		Ein Portal selbst (UDM-Objekttyp <classname>portals/portal</classname>) stellt alle Portal-Kategorien dar, die mit ihm verknüpft sind.
 	</para>
 	<para>
 		Standardmäßig ist UCS so voreingestellt, dass es zwei Portale gibt.

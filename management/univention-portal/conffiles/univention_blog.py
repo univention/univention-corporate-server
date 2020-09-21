@@ -50,13 +50,13 @@ def handler(config_registry, changes):
 	if new_val in ("UCS Core Edition", "Free for personal use edition"):
 		if config_registry.is_false('portal/create-univention-blog-entry', False):
 			return
-		if subprocess.call(['/usr/bin/univention-ldapsearch', '-LLL', '-s', 'base', '-b', 'cn=portal,cn=univention,%s' % (ldap_base,), 'dn']) == 32:  # LDAP no such object
+		if subprocess.call(['/usr/bin/univention-ldapsearch', '-LLL', '-s', 'base', '-b', 'cn=entry,cn=portals,cn=univention,%s' % (ldap_base,), 'dn']) == 32:  # LDAP no such object
 			return
 		with open('/usr/share/univention-portal/univention-blog.png', 'rb') as fd:
 			icon = base64.b64encode(fd.read()).decode('ASCII')
 		cmd = [
-			'univention-directory-manager', 'settings/portal_entry', 'create', '--ignore_exists',
-			'--position', 'cn=portal,cn=univention,%s' % (ldap_base,),
+			'univention-directory-manager', 'portals/entry', 'create', '--ignore_exists',
+			'--position', 'cn=entry,cn=portals,cn=univention,%s' % (ldap_base,),
 			'--set', 'name=univentionblog',
 			'--set', 'activated=TRUE',
 			'--set', 'icon=%s' % (icon,),
@@ -67,15 +67,22 @@ def handler(config_registry, changes):
 			'--append', 'displayName="en_US" "Univention Blog"',
 			'--append', 'displayName="de_DE" "Univention Blog"',
 			'--append', 'displayName="fr_FR" "Univention Blog"',
-			'--set', 'category=admin',
-			'--set', 'authRestriction=anonymous',
-			'--set', 'linkTarget=newwindow',
-			'--set', 'portal=cn=domain,cn=portal,cn=univention,%s' % (ldap_base,)
+			'--set', 'linkTarget=newwindow'
 		]
+		process('Creating blog entry failed', cmd)
+		cmd = [
+			'univention-directory-manager', 'portals/category', 'modify',
+			'--dn', 'cn=domain-admin,cn=category,cn=portals,cn=univention,%s' % (ldap_base,),
+			'--append', 'entries=cn=univentionblog,cn=entry,cn=portals,cn=univention,%s' % (ldap_base,)
+		]
+		process('Adding blog entry to admin category failed', cmd)
 	else:
-		cmd = ['univention-directory-manager', 'settings/portal_entry', 'remove', '--ignore_not_exists', '--dn', 'cn=univentionblog,cn=portal,cn=univention,%s' % (ldap_base,)]
+		cmd = ['univention-directory-manager', 'portals/entry', 'remove', '--ignore_not_exists', '--dn', 'cn=univentionblog,cn=entry,cn=portals,cn=univention,%s' % (ldap_base,)]
+		process('Deleting blog entry failed', cmd)
 
+
+def process(msg, cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout = process.communicate()[0].decode('UTF-8', 'replace')
 	if process.returncode:
-		raise Exception('Modifying blog entry failed: %d: %s %r' % (process.returncode, stdout, cmd))
+		raise Exception('%s: %d: %s %r' % (msg, process.returncode, stdout, cmd))

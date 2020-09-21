@@ -37,14 +37,8 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dijit/_WidgetBase",
-	"dojox/widget/Standby"
+	"umc/widgets/Standby"
 ], function(declare, lang, array, baseWindow, has, Deferred, construct, _WidgetBase, Standby) {
-	var animImage = Standby.prototype.image;
-	if (!has('ie')) {
-		// for browser != Internet Explorer, we can use an SVG animation
-		animImage = require.toUrl("dijit/themes/umc/images/standbyAnimation.svg").toString();
-	}
-
 	return declare("umc.widgets.StandbyMixin", _WidgetBase, {
 		// summary:
 		//		Mixin class to make a widget "standby-able"
@@ -53,9 +47,9 @@ define([
 
 		_standbyWidget: null,
 
-		standbyOpacity: 0.75,
+		standbyOpacity: 0.8,
 
-		standbyColor: '#f2f2f2',
+		standbyColor: 'var(--color-grey8)',
 
 		_lastContent: null,
 
@@ -74,11 +68,11 @@ define([
 
 			// create a standby widget targeted at this module
 			this._standbyWidget = this.own(new Standby({
+				centerIndicator: 'svg',
 				target: this.domNode,
 				duration: 200,
 				opacity: this.standbyOpacity,
-				color: this.standbyColor,
-				image: animImage
+				color: this.standbyColor
 			}))[0];
 			this.domNode.appendChild(this._standbyWidget.domNode);
 			this._standbyWidget.startup();
@@ -129,7 +123,7 @@ define([
 			else {
 				// set default image
 				this._cleanUp();
-				this._standbyWidget.set('centerIndicator', 'image');
+				this._standbyWidget.set('centerIndicator', 'svg');
 				this._standbyWidget.set('opacity', options.standbyOpacity || this.standbyOpacity);
 			}
 

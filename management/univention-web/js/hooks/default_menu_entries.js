@@ -54,7 +54,7 @@ define([
 		setupLanguageMenu();
 		setupHelpMenu();
 		setupStartSiteLink();
-		setupLoginAndLogoutButton();
+		// setupLoginAndLogoutButton();
 		setupSupportNotification();
 	}
 

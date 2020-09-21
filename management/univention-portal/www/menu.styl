@@ -1,0 +1,231 @@
+headerHeight = 60px
+.mobileMenu
+	overflow: hidden
+	position: fixed
+	top: var(--portal-header-height)
+	bottom: 0
+	right: 0
+	width: 80%
+	max-width: 360px
+	border: 0px solid var(--color-grey8)
+	border-top-width: var(--layout-spacing-unit-small)
+	background-color: var(--color-grey0)
+	transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.15s
+	z-index: 30
+	transform: translate3d(110%, 0, 0)
+	display: flex
+	flex-direction: column
+
+	.fullWidthTile
+		position: relative
+		display: flex
+		align-items: center
+		padding: 1em 0
+
+	.menuLoginHeader
+		padding: 8px 0
+		border-bottom: 4px solid var(--color-grey8)
+
+		&--loggedout
+			height: 100%
+			display: flex
+			align-items: center
+			justify-content: center
+
+		&--loggedin
+			padding: 8px 0
+			height: 100%
+			display: flex
+			align-items: center
+
+			.menuLoginHeader__logo
+				width: 60px
+				height: 60px
+				background: var(--color-grey25)
+				border-radius: 100%
+				margin-left: 20px
+				margin-right: 20px
+				background-image: url(/univention/portal/icons/avatar_white.svg)
+				background-size: 30px
+				background-repeat: no-repeat
+				background-position: center
+
+			.menuLoginHeader__username
+				margin-left: 16px
+				font-weight: bold
+
+			.menuLoginHeader__logoutButton
+				margin-left: 16px
+				font-size: var(--font-size-small)
+
+	.menuSlideHeader
+		cursor: default
+		padding-left: 40px
+		margin-bottom: 8px
+		font-weight: 500
+		text-transform: uppercase
+
+		&.subMenu
+			cursor: pointer
+
+			&:before
+				content: ''
+				width: 20px
+				height: 20px
+				background-image: url(icons/arrow_left_white.svg)
+				position: absolute
+				left: 0
+				margin-left: 12px
+
+		&:hover
+			background-color: #272726
+
+		&.permaHeader
+			display: none
+
+	.menuSlides,
+	.menuSlide
+		position: absolute
+		z-index: 0
+		background: inherit
+
+	.menuSlides
+		position: relative
+		flex: 1 0 auto
+		// margin-top: 8px
+		overflow: hidden
+
+		.menuSlide
+			top: 0
+			bottom: 0
+			left: 0
+			right: 0
+
+			overflow: auto
+
+			transition: transform cubic-bezier(0.4, 0.0, 0.6, 1) 0.15s
+
+			&.mainSlide
+				.menuSlideHeader
+					display: none
+
+			.menuSlideItemsContainer
+				.menuItem
+					cursor: pointer
+					padding-left: 20px
+
+					&:hover
+						background-color: #272726
+
+					&.menuItemActive
+						background-color: var(--color-grey8)
+
+					&.menuItemActiveTransition
+						$transitionDur = 0.3s
+						transition: background-color $transitionDur
+
+				.popupMenuItem
+					.childItemsCounter
+						position: absolute
+						right: 0
+						margin-right: 40px
+						display: inline
+
+					.popupMenuItemArrow
+						content: ''
+						position: absolute
+						right: 0
+						margin-right: 12px
+						display: inline
+
+					.popupMenuItemArrow
+						width: 20px
+						height: 20px
+						background-image: url(icons/arrow_right_white.svg)
+
+				.separator
+					padding: 0
+					height: 4px
+					// margin: 8px 0
+					cursor: default
+					background-color: var(--color-grey8)
+
+					&:hover
+						background-color: @background-color
+
+		&.popupSlideNormalTransition .menuSlide
+			transform: translate3d(100%, 0, 0)
+
+		&.overlappedSlidePushTransition .menuSlide.overlappedSlide
+			transform: translate3d(-30%, 0, 0)
+			-webkit-transform: translate3d(-30%, 0, 0)
+
+		.hiddenSlide
+			display: none !important
+
+		.topLevelSlide
+			z-index: 1
+
+		.menuSlide.visibleSlide
+			transform: translate3d(0, 0, 0) scale(1, 1)
+			transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.15s
+
+.mobileMenuCloseOverlay
+	position: fixed
+	top: var(--portal-header-height)
+	bottom: 0
+	left: 0
+	right: 0
+	z-index: 29
+	visibility: hidden
+	transition: background 500ms, backdrop-filter 500ms, visibility 700ms
+	background: transparent
+
+.mobileMenuActive
+	&.hasScrollbar
+		// position: fixed
+		// top: 0
+		// bottom: 0
+		// left: 0
+		// right: 0
+		// overflow-y: scroll
+
+	.mobileMenuCloseOverlay
+		visibility: visible
+		transition: background 500ms, backdrop-filter 500ms, visibility 0s
+
+	.mobileMenu
+		transform: translate3d(0, 0, 0) !important
+		transition: transform cubic-bezier(0.0, 0.0, 0.2, 1) 0.15s
+
+
+.ucsMenuButton
+	width: 100%
+	--bgc: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc: #272726
+
+	.dijitButtonNode
+		height: auto
+		padding: 1em 0 1em 20px
+		justify-content: left
+	.dijitButtonContents
+		outline: 0
+		display: flex
+		flex-direction: row-reverse
+		align-items: center
+		width: 100%
+	.dijitButtonText
+		flex: 1 0 auto
+		text-align: left
+	.dijitIcon
+		margin-right: 12px
+		font-size: var(--font-size-button-icon, inherit)
+		height: 1em
+		width: @height
+
+
+.umcMenuFooter
+	border-top: 4px solid var(--color-grey8)

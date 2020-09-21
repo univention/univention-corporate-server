@@ -47,10 +47,10 @@ import requests
 import tornado.ioloop
 import tornado.web
 import ldap
-from ldap.filter import filter_format
 
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
+from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
 from univention.config_registry.handler import run_filter
 
 ucr = ConfigRegistry()
@@ -102,10 +102,6 @@ def flatten(list_of_lists):
 		else:
 			ret.append(sublist)
 	return ret
-
-
-class ReloadExtendedAttributes(Exception):
-	pass
 
 
 class LDAPCache(object):
@@ -191,13 +187,6 @@ class LDAPCache(object):
 				get_logger('server').info('Reconnecting ldap connection')
 				self._udm = None
 				fd = self._refresh()
-			except ReloadExtendedAttributes:
-				get_logger('server').info('Portal extended attribute not found. Trying to reload.')
-				self._udm = None
-				try:
-					fd = self._refresh()
-				except ReloadExtendedAttributes:
-					get_logger('server').warn('Portal extended attribute does not exist.')
 		except Exception:
 			get_logger('cache').exception('Error during refresh')
 			# hopefully, we can still work with an older cache?
@@ -207,75 +196,151 @@ class LDAPCache(object):
 
 	def _refresh(self):
 		ldap_hostdn = ucr.get('ldap/hostdn')
-		localhost = self.udm.obj_by_dn(ldap_hostdn)
-		try:
-			portal_dn = localhost.props.portal
-		except AttributeError:
-			localhost._udm_module._udm_module_cache.clear()
-			raise ReloadExtendedAttributes()
-		portal = self.udm.get('settings/portal').get(portal_dn)
+		for portal in self.udm.get('portals/portal').search():
+			if ldap_hostdn in portal.props.portalComputers:
+				break
+		else:
+			raise ValueError('No Portal defined')  # default portal?
+			portal = self.udm.get('portals/portal').get('')
 		content = {}
 		content['portal'] = self._extract_portal(portal)
-		content['links'] = self._extract_links(portal)
-		content['categories'] = self._extract_categories()
+		content['user_links'] = self._extract_user_links(portal)
+		content['menu_links'] = self._extract_menu_links(portal)
+		content['categories'] = self._extract_categories(portal)
 		content['entries'] = self._extract_entries(portal)
+		content['folders'] = self._extract_folders(portal)
 		with tempfile.NamedTemporaryFile(delete=False) as fd:
 			json.dump(content, fd, sort_keys=True, indent=4)
 		return fd
 
 	def _extract_portal(self, portal):
-		self._write_css(portal)
+		#  self._write_css(portal)
 		ret = {}
 		ret['dn'] = portal.dn
-		ret['showMenu'] = portal.props.showMenu
-		ret['showLogin'] = portal.props.showLogin
-		ret['showSearch'] = portal.props.showSearch
 		ret['showApps'] = portal.props.showApps
-		ret['showServers'] = portal.props.showServers
 		ret['fontColor'] = portal.props.fontColor
 		if portal.props.logo:
 			ret['logo'] = self._write_image(portal.props.name, portal.props.logo.raw, 'logos')
 		else:
 			ret['logo'] = None
+		ret['background'] = (
+			self._write_image(portal.props.name, portal.props.background.raw, 'backgrounds')
+			if portal.props.background
+			else None
+		)
 		ret['name'] = portal.props.displayName
-		ret['content'] = portal.props.content
 		ret['ensureLogin'] = portal.props.ensureLogin
 		ret['anonymousEmpty'] = portal.props.anonymousEmpty
 		ret['autoLayoutCategories'] = portal.props.autoLayoutCategories
 		ret['defaultLinkTarget'] = portal.props.defaultLinkTarget
+		ret['categories'] = portal.props.categories
 		return ret
 
-	def _extract_links(self, portal):
-		ret = {}
-		for link in portal.props.links:
-			location, href, locale, name = link
-			location_list = ret.setdefault(location, [])
-			location_list.append({'name': name, 'locale': locale, 'href': href})
-		return ret
-
-	def _extract_categories(self):
-		ret = {}
-		for category in self.udm.get('settings/portal_category').search():
-			ret[category.dn] = {
-				'dn': category.dn,
-				'display_name': category.props.displayName,  # TODO: UDM encoder
-			}
-		return ret
-
-	def _extract_entries(self, portal):
-		ret = {}
-		for entry in self.udm.get('settings/portal_entry').search(filter_format('portal=%s', [portal.dn])):
-			ret[entry.dn] = {
+	def _extract_user_links(self, portal):
+		ret = []
+		for (idx, entry) in enumerate(portal.props.userLinks.objs):
+			ret.append({
 				'dn': entry.dn,
 				'name': entry.props.displayName,
 				'description': entry.props.description,
 				'logo_name': self._save_image(portal, entry),
-				'favorite': bool(entry.props.favorite),
 				'activated': entry.props.activated,
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
+				'$priority': idx,
+			})
+		return ret
+
+	def _extract_menu_links(self, portal):
+		ret = []
+		for (idx, entry) in enumerate(portal.props.menuLinks.objs):
+			ret.append({
+				'dn': entry.dn,
+				'name': entry.props.displayName,
+				'description': entry.props.description,
+				'logo_name': self._save_image(portal, entry),
+				'activated': entry.props.activated,
+				'allowedGroups': entry.props.allowedGroups,
+				'links': entry.props.link,
+				'linkTarget': entry.props.linkTarget,
+				'$priority': idx,
+				# this is supposed to be the (ordered) idx of the unfiltered (no removed links due to allowdGroups etc)
+				# portal.props.menuLinks, so that the frontend can display the menu links in the correct e.g.:
+				# menuLinks = [
+				#	{dn: A, allowdGroups: foo, $priority: 0},
+				#	{dn: B,                    $priority: 1},
+				# ]
+				# visiting portal anonymously -> menu link B is rendered
+				# user of group 'foo' logs in -> menu link A is rendered above B
+			})
+		return ret
+
+	def _extract_categories(self, portal):
+		ret = {}
+		for category in portal.props.categories.objs:
+			ret[category.dn] = {
+				'dn': category.dn,
+				'display_name': category.props.displayName,
+				'entries': category.props.entries,
 			}
+		return ret
+
+	def _extract_entries(self, portal):
+		def _add(entry, ret):
+			if entry.dn not in ret:
+				ret[entry.dn] = {
+					'dn': entry.dn,
+					'name': entry.props.displayName,
+					'description': entry.props.description,
+					'logo_name': self._save_image(portal, entry),
+					'activated': entry.props.activated,
+					'allowedGroups': entry.props.allowedGroups,
+					'links': entry.props.link,
+					'linkTarget': entry.props.linkTarget,
+					'backgroundColor': entry.props.backgroundColor,
+				}
+
+		def _add_entry(entry, ret, already_unpacked_folder_dns):
+			if isinstance(entry, PortalsPortalFolderObject):
+				if entry.dn not in already_unpacked_folder_dns:
+					already_unpacked_folder_dns.append(entry.dn)
+					for entry in entry.props.entries.objs:
+						_add_entry(entry, ret, already_unpacked_folder_dns)
+			elif isinstance(entry, PortalsPortalEntryObject):
+				_add(entry, ret)
+			else:
+				pass  # TODO raise error?
+
+		ret = {}
+		already_unpacked_folder_dns = []
+		for category in portal.props.categories.objs:
+			for entry in category.props.entries.objs:
+				_add_entry(entry, ret, already_unpacked_folder_dns)
+		return ret
+
+	def _extract_folders(self, portal):
+		def _add(entry, ret):
+			if entry.dn not in ret:
+				ret[entry.dn] = {
+					'dn': entry.dn,
+					'name': entry.props.displayName,
+					'entries': entry.props.entries,
+				}
+
+		def _add_entry(entry, ret, already_unpacked_folder_dns):
+			if isinstance(entry, PortalsPortalFolderObject):
+				if entry.dn not in already_unpacked_folder_dns:
+					already_unpacked_folder_dns.append(entry.dn)
+					_add(entry, ret)
+					for entry in entry.props.entries.objs:
+						_add_entry(entry, ret, already_unpacked_folder_dns)
+
+		ret = {}
+		already_unpacked_folder_dns = []
+		for category in portal.props.categories.objs:
+			for entry in category.props.entries.objs:
+				_add_entry(entry, ret, already_unpacked_folder_dns)
 		return ret
 
 	def _write_css(self, portal):
@@ -365,54 +430,90 @@ class JsonHandler(tornado.web.RequestHandler):
 				return True
 		return False
 
-	def _get_portal(self, username, admin_mode):
+	def _get_portal(self, categories, visible_content):
 		portal = cache.get('portal')
-		entries = cache.get('entries')
-		groups = cache.get('groups')
-		actual_content = portal.pop('content') or []
-		filtered_content = []
-		for category_dn, entry_dns in actual_content:
-			filter_entry_dns = []
-			for entry_dn in entry_dns:
-				entry = entries.get(entry_dn)
-				if entry is None:
-					continue
-				if not admin_mode:
-					if not entry['activated']:
-						continue
-					if entry['allowedGroups']:
-						checked_groups = []
-						for group_dn in entry['allowedGroups']:
-							group = groups.get(group_dn)
-							if group is None:
-								continue
-							if self._recursive_search_in_groups(username, group, groups, checked_groups):
-								break
-						else:
-							continue
-				filter_entry_dns.append(entry_dn)
-			filtered_content.append([category_dn, filter_entry_dns])
-		portal['content'] = filtered_content
+		portal['categories'] = [category_dn for category_dn in portal['categories'] if category_dn in visible_content['category_dns']]
+		portal['content'] = [
+			[category_dn, categories[category_dn]['entries']]
+			for category_dn in portal['categories']
+		]
 		return portal
 
-	def _get_links(self):
-		return cache.get('links')
+	def _get_all_entries_of_folder(self, folder_dn, folders, entries):
+		def _flatten(folder_dn, folders, entries, ret, already_unpacked_folder_dns):
+			for entry_dn in folders[folder_dn]['entries']:
+				if entry_dn in entries:
+					if entry_dn not in ret:
+						ret.append(entry_dn)
+				elif entry_dn in folders:
+					if entry_dn not in already_unpacked_folder_dns:
+						already_unpacked_folder_dns.append(entry_dn)
+						_flatten(entry_dn, folders, entries, ret, already_unpacked_folder_dns)
 
-	def _get_categories(self, content):
-		allowed_categories = [x[0] for x in content]
-		ret = cache.get('categories')
-		for dn in ret.keys():
-			if dn not in allowed_categories:
-				ret.pop(dn)
+		ret = []
+		_flatten(folder_dn, folders, entries, ret, [])
 		return ret
 
-	def _get_entries(self, content):
-		allowed_entries = flatten([x[1] for x in content])
-		ret = cache.get('entries')
-		for dn in ret.keys():
-			if dn not in allowed_entries:
-				ret.pop(dn)
-		return ret
+	def _filter_entry_dns(self, entry_dns, entries, username, admin_mode):
+		groups = cache.get('groups')
+		filtered_dns = []
+		for entry_dn in entry_dns:
+			entry = entries.get(entry_dn)
+			if entry is None:
+				continue
+			if not admin_mode:
+				if not entry['activated']:
+					continue
+				if entry['allowedGroups']:
+					checked_groups = []
+					for group_dn in entry['allowedGroups']:
+						group = groups.get(group_dn)
+						if group is None:
+							continue
+						if self._recursive_search_in_groups(username, group, groups, checked_groups):
+							break
+					else:
+						continue
+			filtered_dns.append(entry_dn)
+		return filtered_dns
+
+	def _get_user_links(self, username, admin_mode):
+		if username is None:
+			return []
+		links = cache.get('user_links')
+		links_dict = dict((link['dn'], link) for link in links)
+		entry_dns = [link['dn'] for link in links]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
+
+	def _get_menu_links(self, username, admin_mode):
+		links = cache.get('menu_links')
+		links_dict = dict((link['dn'], link) for link in links)
+		entry_dns = [link['dn'] for link in links]
+		return [links_dict[dn] for dn in self._filter_entry_dns(entry_dns, links_dict, username, admin_mode)]
+
+	def _get_categories(self, visible_content):
+		categories = cache.get('categories')
+		categories = {category_dn: categories[category_dn] for category_dn in visible_content['category_dns']}
+		for category in categories.values():
+			category['entries'] = [
+				entry_dn for entry_dn in category['entries']
+				if entry_dn in visible_content['entry_dns'] or entry_dn in visible_content['folder_dns']
+			]
+		return categories
+
+	def _get_folders(self, visible_content):
+		folders = cache.get('folders')
+		folders = {folder_dn: folders[folder_dn] for folder_dn in visible_content['folder_dns']}
+		for folder in folders.values():
+			folder['entries'] = [
+				entry_dn for entry_dn in folder['entries']
+				if entry_dn in visible_content['entry_dns'] or entry_dn in visible_content['folder_dns']
+			]
+		return folders
+
+	def _get_entries(self, visible_content):
+		entries = cache.get('entries')
+		return {entry_dn: entries[entry_dn] for entry_dn in visible_content['entry_dns']}
 
 	def _ask_umc(self, session):
 		try:
@@ -451,6 +552,35 @@ class JsonHandler(tornado.web.RequestHandler):
 			cache._udm = None
 		return super(JsonHandler, self).log_exception(typ, value, tb)
 
+	def _get_visible_content(self, username, admin_mode):
+		entries = cache.get('entries')
+		folders = cache.get('folders')
+		categories = cache.get('categories')
+		visible_entry_dns = self._filter_entry_dns(entries.keys(), entries, username, admin_mode)
+		visible_folder_dns = [
+			folder_dn for folder_dn in folders.keys()
+			if admin_mode or len(
+				[
+					entry_dn for entry_dn in self._get_all_entries_of_folder(folder_dn, folders, entries)
+					if entry_dn in visible_entry_dns
+				]
+			) > 0
+		]
+		visible_category_dns = [
+			category_dn for category_dn in categories.keys()
+			if admin_mode or len(
+				[
+					entry_dn for entry_dn in categories[category_dn]['entries']
+					if entry_dn in visible_entry_dns or entry_dn in visible_folder_dns
+				]
+			) > 0
+		]
+		return {
+			'entry_dns': visible_entry_dns,
+			'folder_dns': visible_folder_dns,
+			'category_dns': visible_category_dns,
+		}
+
 	def get(self):
 		session = self.get_cookie('UMCSessionId')
 		username = self._get_username(session)
@@ -465,10 +595,14 @@ class JsonHandler(tornado.web.RequestHandler):
 			else:
 				get_logger('admin').info('Admin mode rejected')
 		answer = {}
-		portal_content = answer['portal'] = self._get_portal(username, admin_mode)
-		answer['links'] = self._get_links()
-		answer['categories'] = self._get_categories(portal_content['content'])
-		answer['entries'] = self._get_entries(portal_content['content'])
+
+		visible_content = self._get_visible_content(username, admin_mode)
+		answer['user_links'] = self._get_user_links(username, admin_mode)
+		answer['menu_links'] = self._get_menu_links(username, admin_mode)
+		answer['entries'] = self._get_entries(visible_content)
+		answer['folders'] = self._get_folders(visible_content)
+		answer['categories'] = self._get_categories(visible_content)
+		answer['portal'] = self._get_portal(answer['categories'], visible_content)
 		answer['filtered'] = not admin_mode
 		self.write(answer)
 

@@ -178,9 +178,9 @@
 		Therefore, UCS implemented a very flexible and individually customizable concept for portal pages.
 	</para>
 	<para>
-		As illustrated in <xref linkend="portal-schema"/>, portal entries (i.e., links to applications/Apps/services; UDM object type <classname>settings/portal_entry</classname>) can be assigned to none, one or multiple portals.
-		A portal itself (UDM object type <classname>settings/portal</classname>) renders all entries which are assigned to it.
-		A portal can then be assigned to none, one or multiple computer objects (this is done at the computer object itself).
+		As illustrated in <xref linkend="portal-schema"/>, portal entries (i.e., links to applications/Apps/services; UDM object type <classname>portals/entry</classname>) can be assigned to none, one or multiple portal categories.
+		A portal category (UDM object type <classname>portals/category</classname>) can be assigned to none, one or multiple portals.
+		A portal itself (UDM object type <classname>portals/portal</classname>) renders all portal categories which are assigned to it.
 	</para>
 	<para>
 		By default, UCS is configured to have two portals.

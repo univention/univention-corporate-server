@@ -41,6 +41,7 @@ define([
 	"dojo/string",
 	"dojo/topic",
 	"dojo/cookie",
+	"dojo/dom-class",
 	"dijit/Dialog",
 	"dijit/TitlePane",
 	"dojox/timing/_base",
@@ -49,10 +50,11 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
+	"umc/widgets/Standby",
 	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/colors" // mixin for dojo.Color
-], function(lang, array, _window, xhr, basexhr, Deferred, all, json, has, string, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, i18nTools, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, all, json, has, string, topic, cookie, domClass, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, Standby, i18nTools, _) {
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
 	// require it explicitly
@@ -2131,6 +2133,32 @@ define([
 
 		browserIsOutdatedMessage: function() {
 			return _('Your browser is outdated! You may experience performance issues and other problems when using this site. The supported Browsers are Firefox (>=60), Chrome (>=71), Edge (>=18), Safari (>=12).');
+		},
+
+		toggleVisibility: function(elem, visible) {
+			var node = elem;
+			if (Object.prototype.hasOwnProperty.call(elem, 'domNode')) {
+				node = elem.domNode;
+			}
+			domClass.toggle(node, 'dijitDisplayNone', !visible);
+		},
+
+		standby: function(elem, options) {
+			var node = elem;
+			if (Object.prototype.hasOwnProperty.call(elem, 'domNode')) {
+				node = elem.domNode;
+			}
+			options = lang.mixin({
+				target: node
+			}, options || {});
+			var standby = new Standby(options);
+			standby.on('hide', function() {
+				standby.destroyRecursive();
+			});
+			document.body.appendChild(standby.domNode);
+			standby.startup();
+			standby.show();
+			return lang.hitch(standby, standby.hide);
 		}
 	});
 

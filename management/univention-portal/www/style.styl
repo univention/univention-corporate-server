@@ -27,652 +27,794 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-// copy pasted from variables.styl (univention-web package)
-$material-shadow-transition-value = box-shadow 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
-material-shadow(level)
-	if level == 1
-		box-shadow: 0 1px 6px rgba(1,0,0,0.117647), 0 1px 4px rgba(0,1,0,0.117647)
-	else if level == 2
-		box-shadow: 0 3px 10px rgba(1,0,0,0.156863), 0 3px 10px rgba(0,1,0,0.227451)
-	else if level == 3
-		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
-	else if level == 4
-		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
-	else if level == 5
-		box-shadow: 0px 14px 45px rgba(0, 0, 0, 0.25), 0px 10px 18px rgba(0, 0, 0, 0.22)
-	else
-		box-shadow: none
+@import "bootstrap-reboot.css"
+@import "../js/dijit/themes/dijit.css"
+@import "../js/dojox/grid/resources/Grid.css"
+@import "../js/dojox/grid/enhanced/resources/Common.css"
+@require "dijit.styl"
+@require "reboot.styl"
+@require "fonts.styl"
+@require "icons.styl"
+@require "buttons.styl"
+@require "widgets.styl"
+@require "Dialog.styl"
+@require "render.styl"
+@require "menu.styl"
+@require "tooltips.styl"
+@require "dnd.styl"
+@require "notifications.styl"
+@require "AddCategoryButton.styl"
+@require "_PortalIframe.styl"
 
-.umc .umcHeader .umcLiveSearch .umcSearchBox
-	border-color: #282828
 
-	&:after
-		border-width: 1px
 
-.umc.portal
-	// general styling
-	min-height: 100%
-	/* Chrome,Safari4+ */
-	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)))
-	/* Chrome10+,Safari5.1+ */
-	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, -webkit-linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)
-	/* W3C */
-	background: url(/univention/js/dijit/themes/umc/images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)")
+//// textbox
+.dijitTextBox
+	--font-color-disabled: rgba(255, 255, 255, 0.4)
+	position: relative
+	height: calc(15 * var(--layout-spacing-unit-small))
+	width: 100%
+	color: var(--font-color-contrast-high)
+	font-size: var(--font-size-normal)
+	background-color: var(--color-grey8)
+	border: 1px solid transparent
+	border-radius: 2px // TODO
+	transition: background-color, color, border
+	transition-duration: 250ms
 
-	.umcHeader
-		padding: 0 40px
-		display: flex
-		flex-wrap: wrap-reverse
-		justify-content: flex-end
-		overflow: visible
+	&Disabled
+		color: var(--font-color-disabled)
+	&Error
+		border-color: var(--color-error)
 
-		.umcHeaderLeft
-			flex: 1 1 auto
-			display: flex
-			position: relative
+.dijitTextBox
+	display: flex
+	flex-direction: row-reverse
+	align-items: center
 
-			#portalLogo
-				width: auto
-				height: auto
-				max-width: 100px
-				max-height: 50px
-				margin: 15px 16px 0 0
-				float: left
+	> *
+		flex: 0 0 auto
 
-			h1
-				margin: 15px 0 0 0
+	.dijitInputContainer
+		flex: 1 1 auto
+		height: 100%
 
-		.umcHeaderRight
-			float: right
-			flex: 0 0 auto
-			align-self: flex-end
-			position: relative
-			margin: 0
-
-			.univentionLogo
-				background-image: url(../js/dijit/themes/umc/images/univention_u.svg)
-				margin-left: 0
-				width: 48px
-
-			@media (max-width: 549px)
-				#umcLiveSearch
-					display: none
-
-		&.umcWhiteIcons
-			.umcHeaderRight
-				.univentionLogo
-					background-image: url(../js/dijit/themes/umc/images/univention_u-white.svg)
-			
-	.content
-		padding: 0 40px
-
-	.portalCategory
-		padding: 16px 0
-		border: none
-		cursor: default
-
-		h2
-			display: inline-block
-
-			&.noDisplayNameProvided
-				font-style: italic
-				opacity: 0.8
-
-		.umcPortalGallery .dgrid-scroller
-			margin: 0
-
-	.portalCategory
-		.umcPortalGallery
-			margin-left: -20px
-			margin-right: -20px
-		.umcGalleryWrapperItem
-			margin: 12px 20px
-
-	footer
-		a
-			margin-right: 20px
-			margin-top: 10px
-			display: inline-block
-
-	.anonymousEmpty
-		max-width: 500px
-		min-height: 250px
-		margin: 50px auto 0
-		background-color: #fff
-		material-shadow(1)
-		display: flex
-		flex-direction: column
-
-	.anonymousEmpty__Text
-		padding: 24px
-		flex: 1 0 auto
-
-	.anonymousEmpty__ButtonRow
-		display: flex
-		justify-content: flex-end
-
-	// Styling for the inline editing toolbar, floating button and dialogs
-	.portalEditBar,
-	.portalEntryOrderBar
-		position: fixed
-		bottom: 0
-		left: 0
-		right: 0
-		text-align: right
-		material-shadow(2)
-		transition: transform 0.2s
-		height: 100px
-		background-color: rgb(250, 200, 0)
-		transform: translateY(100%)
-
-		.dijitButton
-			margin: 0
+		.dijitInputInner,
+		.umcInlineLabel,
+		.dijitPlaceHolder
 			height: 100%
+			text-overflow: ellipsis
+			padding: calc(5 * var(--layout-spacing-unit-small)) !important
+			font-size: var(--font-size-normal)
+			line-height: var(--font-lineheight-normal)
 
-			.dijitButtonNode
-				box-shadow: none
-				background-color: rgb(250, 200, 0)
-				height: 100%
-				width: 100%
-				padding: 16px
-
-				.dijitIcon
-					margin-left: 0
-
-				.dijitButtonText
-					text-align: left
-					color: white
-
-			&.dijitButtonActive,
-			&.dijitButtonFocused,
-			&.dijitButtonHover
-				.dijitButtonNode
-					background-color: rgba(0, 0, 0, 0.078)
-
-	@media (min-width: 550px)
-		.portalEditBar
-			.portalEditBarEntryOrderButton,
-			.portalEditBarVisibilityButton,
-			.portalEditBarAppearanceButton
-				.dijitButtonContents
-					display: flex
-					flex-flow: column
-
-					.dijitIcon
-						margin: 0 16px 4px 0
-
-	@media (min-width: 350px) and (max-width: 550px)
-		.portalEditBar
-			height: auto
-
-			.portalEditBarEntryOrderButton,
-			.portalEditBarVisibilityButton,
-			.portalEditBarAppearanceButton
-				width: 100%
-
-				.dijitButtonNode
-					justify-content: flex-start
-
-			.portalEditBarCloseButton
-				position: absolute
-				right: 0
-				top: 0
-				height: 100%
-
-	@media (max-width: 350px)
-		.portalEntryOrderBar,
-		.portalEditBar
-			height: auto
-
-			.dijitButton
-				width: 100% !important
-
-	.portalEditBar
-		.portalEditBarEntryOrderButton,
-		.portalEditBarVisibilityButton,
-		.portalEditBarAppearanceButton
-			.dijitIcon
-				height: 24px
-				background-size: contain
-				background-repeat: no-repeat
-				background-position: center
-
-		.portalEditBarEntryOrderButton
-			.dijitIcon
-				background-image: url(editBar_entryOrder_white.svg)
-				width: 60px
-
-		.portalEditBarVisibilityButton
-			.dijitIcon
-				background-image: url(editBar_visibility_white.svg)
-				width: 40px
-
-		.portalEditBarAppearanceButton
-			.dijitIcon
-				background-image: url(editBar_appearance_white.svg)
-				width: 60px
-	
-		.portalEditBarCloseButton
-			width: 100px
-			.dijitIcon
-				transform: scale(1.7)
-			.dijitButtonText
-				display: none
-
-	.portalEditBar
-		z-index: 26
-	.portalEntryOrderBar
-		z-index: 27
-	.umcNotificationSnackbar
-		z-index: 28
-
-	.dijitDialog .umcSize-One
-		width: 50%
-
-	.portalEditFloatingButton
-		position: fixed
-		z-index: 29
-		right: 25px
-		bottom: @right
-		width: 56px
-		height: @width
-		border-radius: 50%
-		material-shadow(3)
-		opacity: 1
-		visibility: visible
-		transition: $material-shadow-transition-value, opacity 0.2s, visibility 0s 0s
-		background-color: rgb(250, 200, 0)
-
-		&:hover
-			material-shadow(4)
-
-		&:active
-			material-shadow(5)
-
-		.icon
-			background: url(/univention/js/dijit/themes/umc/images/icons-white.svg) -200px -40px no-repeat
-			background-size: 320px 260px
-			width: 20px
-			height: 20px
-			margin: 18px;
-			transform: scale(1.4)
-	
-	.portalEntryWizard
-		.umcPageNav
-			display: none
-
-	.portalPropertiesDialog
-		min-width: 350px
-
-		.umcLabelPane-umcUploader
-			width: 100%
-
-			.umcImage
-				min-height: 100px
-
-		.umcMultiObjectSelect
-			min-width: 300px
-
-	.umcMultiSelect
-		min-width: 300px
-
-	.portalEntryDialog .previewTile
-		.umcGalleryWrapperItem
-			&:active .boxShadow
-				material-shadow(1)
-
-			.appInnerWrapper
-				cursor: initial
-
-			.appIcon
-				text-align: center
-
-				img
-					max-height: 100%
-					max-width: 100%
-
-				&.iconLoaded
-					background: none
-					display: flex
-					align-items: center
-					justify-content: center
-
-				&:not(.iconLoaded) img
-					display: none
-	.portalEntryDialog,
-	.portalPropertiesDialog
-		.umcMultiInput.noRemoveButton
-			.umcMultiInputLastRowEntry
-				padding-right: 0.5em
-			.umcMultiInputRemoveButton
-				display: none
-
-	.portalEntryDialog
-		width: 650px
-
-		.previewTile:not(.editMode)
-			.cornerPiece
-				transition: background-color 0.2s
-			.umcGalleryName
-				transition: background-color 0.1s ease-in, opacity 0.2s
-			.umcGallerySubName
-				width: 92%
-				margin-left: 1px
-				height: 20px
-				transition: background-color 0.1s ease-in
-			.appHover div
-				transition: background-color 0.1s 0s ease-in
-				height: 40px
-
-			.umcGalleryName,
-			.umcGallerySubName,
-			.appHover div
-				opacity: 0
-
-			&.name
-				.appIcon
-					opacity: 0
-					transition: opacity 0.15s
-				.cornerPiece
-					background-color: #d3d3d3
-			&.icon
-				.appIcon
-					opacity: 1
-					transition: opacity 0.15s
-
-			&.displayName
-				.appIcon,
-				.umcGalleryName
-					opacity: 1
-
-				.umcGalleryName:not(.hasName)
-						background-color: #d3d3d3
-
-			&.link
-				.appIcon,
-				.umcGalleryName,
-				.umcGallerySubName
-					opacity: 1
-
-				.umcGallerySubName:not(.hasLink)
-					background-color: #d3d3d3
-
-			&.description
-				.umcGalleryName,
-				.umcGallerySubName,
-				.appHover div
-					opacity: 1
-
-				.appHover div:not(.hasDescription)
-					transition: background-color 0.1s 0.2s ease-in
-					background-color: #e8e8e8
-	
-	.umcLabelPane-umcMultiObjectSelect,
-	.umcLabelPane-umcMultiSelect
-		width: 100% !important
-
-	// styling for the edit mode
-	&.edit
-		#portalLogo,
-		#portalTitle
-			cursor: pointer
-
-		#portalLogoWrapper
-			display: inline
-			position: relative
-
-			#portalLogoEdit
-				cursor: pointer
-				top: -3px
-				right: -3px
-
-		#portalTitle
-			position: relative
-
-			&:after
-				display: block
-				content: ''
-				top: -18px
-				right: -40px
-
-		#portalTitle:after,
-		#portalLogoEdit
+		.umcInlineLabel,
+		.dijitPlaceHolder
+			display: flex
+			align-items: center
 			position: absolute
-			transform: scale(0.7)
-			background-image: url(editIcon.svg)
-			border-radius: 50%
-			box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
-			height: 40px
-			width: 40px
+			top: 0
+			left: 0
+			height: 100%
+			width: 100%
+			white-space: nowrap
+			overflow: hidden
+			pointer-events: none // we want the cursor for the inputfield not these placeholder elements
+			color: var(--font-color-contrast-middle)
 
-		#content
-			padding-bottom: 150px
 
-		.portalEditBar
-			transform: translateY(0)
-
-		.portalCategory h2
-			position: relative
-			cursor: pointer
-
-			&::after
-				display: block
-				content: ''
-				position: absolute
-				background-image: url(editIcon.svg)
-				background-size: contain
-				border-radius: 50%
-				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
-				height: 30px
-				width: 30px
-				top: -10px
-				right: -40px
-
-		.newCategory
-			margin: 15px 0 0 0
-
-		.addEntryTile
-			.cornerPiece
-				background-color: #d3d3d3
-			.dummyIcon
-				position: relative
-				width: 100%
-				height: 100%
-				background: url(portal-add-entry-plus.svg) no-repeat center
-				background-size: 39px
-
-		.umcGalleryWrapperItem
-			.appStatusIcon
-				background-image: url(editIcon.svg)
-				border-radius: 50%
-				box-shadow: 0 2px 4px rgba(1,0,0,0.157), 0 2px 7px rgba(0,1,0,0.227)
-
-				&.editIcon
-					background-position: 0 0
-
-			.appStatusHoverIcon
-				display: none
-
-	// styling for dnd mode
-	&.dnd
-		#content
-			padding-bottom: 150px
-
-		.portalEntryOrderBar
-			transform: translateY(0)
-
-		.portalCategory
-			.dojoDndItem_dndCoverWrapper
-				position: relative
-
-			.dojoDndItem_dndCover
-				position: absolute
-				top: 0
-				bottom: 0
-				left: 0
-				right: 0
-				z-index: 2
-				margin-left: -20px
-				margin-right: -20px
-
-			.dojoDndHandle
-				cursor: move
-				display: flex
-				align-items: center
-
-				&::before
-					display: block
-					content: ''
-					height: 40px
-					width: 30px
-					margin-right: 10px
-					background: url(portalContentSelectionDndArrow.svg) no-repeat
-					background-position: center
-					background-color: #d3d3d3
-					border-radius: 2px
-					material-shadow(1)
-
-		&.dojoDndMove
-			cursor: move
-
-			.portalCategory
-				cursor: move
-
-		.dojoDndSource_PortalEntries
-			min-height: 189px
-			&:after
-				content: ''
-				display: block
-				clear: both
-
-		.portalCategory.dojoDndItemSelected,
-		.portalCategory.dojoDndItemAnchor,
-		.portalCategory.dojoDndItemOver
-			background-color: transparent
-			color: inherit
-
-		.portalCategory.dojoDndItemBefore
-			border-top: 2px solid grey
-
-		.portalCategory.dojoDndItemAfter
-			border-bottom: 2px solid grey
-
-		.dojoDndSource_PortalEntries
-			.dojoDndItem
-				float: left
-				padding: 0
-				border: none
-				cursor: move
-				.umcGalleryWrapperItem,
-				.appInnerWrapper
-					cursor: move
-
-			.umcGalleryWrapperItem
-				transition: transform 0.3s
-
-			.dojoDndItemSelected,
-			.dojoDndItemOver,
-			.dojoDndItemAnchor,
-			.dndPlaceholder
-				background-color: transparent
-				border: none
-				.umcGalleryWrapperItem
-					.boxShadow
-						material-shadow(2)
-
-			.dndPlaceholder .cornerPiece
-				background-color: #d3d3d3
-
-			.dojoDndItemSelected,
-			.dojoDndItemAnchor
-				.umcGalleryWrapperItem
-					.cornerPiece
-						background-color: #fbfbfb
-		
-		.dojoDndSource_PortalEntries.dojoDndSourceMoved
-			.dojoDndItemAnchor,
-			.dojoDndItemSelected
-				.umcGalleryWrapperItem
-					transform: scale(0.8)
-
-			&.dojoDndContainerOver
-				.dojoDndItemAnchor,
-				.dojoDndItemSelected
-					display: none
-
-			.dndPlaceholder
-				width: 195px
-				height: 189px
-				float: left
-
-		table.dojoDndAvatar
-			border: none
-			box-shadow: none
-			background-color: transparent
-			pointer-events: none
-
-			.dojoDndAvatarHeader
-				display: none
-
-			.dojoDndAvatarItem
-				display: inline
-				opacity: 1 !important
-
-			.dojoDndItem
-				padding: 0
-
-		.dndPlaceholderHideout .dndPlaceholder
-			display: none
-
-	// styling for both modes
-	&.edit,
-	&.dnd
-		.umcGalleryWrapperItem.deactivated
-			.appIcon,
-			.appInnerWrapper
-				opacity: 0.4
-
-		.portalEditFloatingButton
-			opacity: 0
+		.umcInlineLabel
 			visibility: hidden
-			transition: opacity 0.2s, visibility 0s 0.25s
+			&.umcEmptyValue
+				visibility: visible
 
-		.notInPortalJSONTile
-			.dummyIcon
-				position: relative
-				width: 100%
-				height: 100%
-				background: url(questionMark.svg) no-repeat center
-				background-size: 60px
+.dijitValidationTextBox
+	.dijitValidationContainer,
+	.dijitValidationIcon
+		display: none
 
-	@media (max-width: 549px)
-		.umcHeader
-			padding: 0 24px
+.umcLabelPane .umcLabelPaneLabelNode
+	transition: color 250ms
+.umcLabelPaneError .umcLabelPaneLabelNode
+	color: var(--color-error)
+//// textbox end
 
-		.content
-			padding: 0 24px
 
-		.portalCategory
+body
+	background-color: var(--bgc-content-body)
+	overflow-x: hidden
+
+
+.bgc-content-header {
+	background-color: var(--bgc-content-header)
+}
+
+.bgc-content-body {
+	background-color: var(--bgc-content-body)
+}
+
+
+
+
+////// portal style (style.styl)
+:root
+	--portal-header-height: calc(14 * var(--layout-spacing-unit-small))
+
+.portal
+	--portal-header-to-content-seperator-height: var(--layout-spacing-unit-small)
+	min-height: 100vh
+
+$blur()
+	filter: blur(8px)
+
+body.scrollLess
+	overflow: hidden
+
+@css {
+	.overlaybg {
+		background: rgba(var(--color-grey8-rgb), 0.8);
+		backdrop-filter: blur(8px)
+	}
+}
+
+
+//// portal header
+.portal__header
+	position: fixed
+	top: 0
+	left: 0
+	right: 0
+	z-index: 1
+	background-color: var(--bgc-content-header)
+	color: var(--font-color-contrast-high)
+	height: var(--portal-header-height)
+	display: flex
+	// padding: 0 var(--layout-margin)
+	padding: 0 calc(2 * var(--layout-spacing-unit))
+
+.portal__header__left
+	flex: 0 0 auto
+	display: flex
+	align-items: center
+	cursor: pointer
+
+	img
+		width: calc(6 * var(--layout-spacing-unit-small))
+		margin-right: calc(3 * var(--layout-spacing-unit-small))
+
+	h2 // TODO have margin 0 as general style?
+		margin: 0
+
+.portal__header__stretch
+	flex: 1 1 auto
+
+.portal__header__right
+	display: flex
+	align-items: center
+
+.portal__header__right .dijitToggleButton
+	margin: 0 var(--layout-spacing-unit-small)
+
+.portal__header__right,
+.portal__header__editMode
+	.ucsIconButton
+		--font-size-button-icon: var(--font-size-big)
+
+//// portal header end
+
+
+// .portal__body
+	// background-color: var(--bgc--content-body)
+	// padding: 0 calc(2 * var(--layout-spacing-unit))
+
+.portal__categories
+	position: relative
+	top: var(--portal-header-height)
+	padding: calc(7 * var(--layout-spacing-unit)) calc(4 * var(--layout-spacing-unit))
+
+.portal__category
+	cursor: default // this is for the dnd in edit mode
+	margin-bottom: calc(10 * var(--layout-spacing-unit))
+
+	&:last-child
+		margin-bottom: 0
+
+$tileWidth = calc(20 * var(--layout-spacing-unit))
+.portal__category__tiles
+	display: grid
+	grid-template-columns: repeat(auto-fill, $tileWidth)
+	grid-gap: calc(7 * var(--layout-spacing-unit))
+
+
+.portal__category__title
+	margin-bottom: calc(6 * var(--layout-spacing-unit))
+
+	&--edit
+		cursor: pointer
+		display: inline-flex
+		align-items: center
+
+.editMark
+	width: 2em
+	height: 2em
+	background-color: var(--color-grey0)
+	background-size: 1em
+	background-repeat: no-repeat
+	background-position: center
+	border-radius: 50%
+	box-shadow: var(--box-shadow)
+
+.portal__category__title__editMark
+	margin-right: 1em
+
+.tileLink,
+.tileLink:hover
+	color: var(--font-color-contrast-high)
+	text-decoration: none
+
+.tileLink
+	position: relative
+	outline: 0 
+
+.tile
+	position: relative
+	width: $tileWidth
+	display: flex
+	flex-direction: column
+	align-items: center
+	cursor: pointer
+
+$tile__box
+	border-radius: 15%
+	display: flex
+	align-items: center
+	justify-content: center
+	box-shadow: var(--box-shadow)
+	background: var(--color-grey40)
+
+.tile__box,
+.tile__box--thumbnail,
+.tile__box--thumbnail--folder
+	@extends $tile__box
+
+.tile__box
+	width: calc(20 * var(--layout-spacing-unit))
+	height: @width
+	margin-bottom: calc(2 * var(--layout-spacing-unit))
+
+.tile__dotted
+	width: calc(20 * var(--layout-spacing-unit))
+	height: @width
+	border-radius: 15%
+	border: 3px dashed var(--color-grey40) !important
+	// opacity: 0.4
+
+.tile__add
+	margin: 0
+	width: calc(20 * var(--layout-spacing-unit))
+	height: @width
+	border-radius: 15%
+	border: 3px solid var(--color-grey40)
+	background-color: transparent
+	background-image: url(icons/plus_grey.svg)
+	background-position: center
+	background-size: 3em
+	background-repeat: no-repeat
+	// opacity: 0.4
+	cursor: pointer
+
+	.dijitButtonNode
+		width: 100%
+		height: 100%
+	.dijitButtonContents
+		outline: 0
+
+.tile__logo
+	width: 80%
+
+.tile__name
+	text-align: center
+	width: 100%
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap // TODO not sure
+
+.tile__editMark
+	position: absolute
+	top: -0.75em
+	right: @top
+
+.tile__thumbnails
+	width: 80%
+	height: @width
+	display: grid
+	grid-template-columns: repeat(3, 1fr)
+	grid-template-rows: repeat(3, 1fr)
+	grid-gap: 8px
+
+.tile__box--thumbnail--folder
+	background: var(--color-grey62)
+
+.tile__box--folder
+	background: s('rgba(var(--color-grey0-rgb), 0.7)')
+
+$appDescriptionPadding = calc(2 * var(--layout-spacing-unit))
+.appDescription
+	font-size: var(--font-size-small)
+	position: fixed
+	bottom: $appDescriptionPadding
+	right: @bottom
+	background-color: var(--color-grey0)
+	border-radius: 16px
+	max-width: calc(40 * var(--layout-spacing-unit))
+	padding: $appDescriptionPadding
+	box-shadow: var(--box-shadow)
+	pointer-events: none
+
+.appDescription__header
+	display: flex
+	align-items: center
+	margin-bottom: $appDescriptionPadding
+
+	.tile__box--thumbnail
+		width: calc(3 * var(--layout-spacing-unit))
+		height: @width
+		margin-right: calc(3 * var(--layout-spacing-unit-small))
+
+
+// folder
+.portal__folder
+	position: fixed
+	top: var(--portal-header-height)
+	right: 0
+	bottom: 0
+	left: 0
+
+.portal__folder__overlay
+	width: 100%
+	height: 100%
+
+.portal__folder__wrapper
+	display: flex
+	flex-direction: column
+	align-items: center
+	margin: auto
+	width: 85%
+	max-width: 720px
+	height: 100%
+	position: relative
+
+	.ucsIconButton
+		position: absolute
+		top: calc(10 * var(--layout-spacing-unit))
+		right: -32px
+
+.box
+	width: 720px
+	height: @width
+	border-radius: 10%
+	margin: calc(10 * var(--layout-spacing-unit)) 0 calc(3 * var(--layout-spacing-unit))
+	overflow: hidden
+	position: relative
+
+@css {
+	.box {
+		background: rgba(var(--color-grey0-rgb), 0.7);
+	}
+}
+
+.carrousell
+	display: flex
+	position: relative
+	transition: left 0.3s
+	left: 0
+
+.slide
+	width: 720px // TODO duplicated
+	height: @width
+	display: grid
+	grid-template-columns: repeat(3, 1fr)
+	grid-template-rows: repeat(3, 1fr)
+	align-items: center
+	justify-items: center
+	padding: calc(4 * var(--layout-spacing-unit))
+	flex: 0 0 auto
+
+.nav
+	position: absolute
+	bottom: 0
+	width: 100%
+	display: flex
+	align-items: center
+	justify-content: center
+
+	.bubble
+		cursor: pointer
+		width: 16px
+		height: 16px
+		margin: 8px
+		border-radius: 100%
+		background: grey
+
+		&--active
+			background: white
+
+// iframe tabs
+.portal__iframeTabs
+	display: flex
+	flex: 1 1 auto
+	margin-left: calc(5 * var(--layout-spacing-unit))
+
+	.iframeTab
+		--tabColor: transparent
+		outline: 0
+		cursor: pointer
+		display: flex
+		align-items: center
+		min-width: calc(30 * var(--layout-spacing-unit))
+		position: relative
+
+		&:after
+			content: ''
 			display: block
-			margin: 0
-			.umcPortalGallery
-				margin-left: 0px
-				margin-right: 0px
-			.umcGalleryWrapperItem
-				margin: 8px 0
+			// height: var(--font-size-big)
+			height: calc(3 * var(--layout-spacing-unit))
+			width: 2px
+			background: var(--color-grey8)
+			position: relative
+			right: -1px
+			margin-left: var(--layout-spacing-unit-small)
+			z-index: -2
 
-		&.dnd
-			.dojoDndSource_PortalEntries
-				.dojoDndItem
-					width: 100%
+	.iframeTabHover,
+	.iframeTabFocused
+		--tabColor: #272726
+		z-index: 1
+	.iframeTabSelected
+		--tabColor: var(--color-grey8)
+		z-index: 2
 
-			.dojoDndSource_PortalEntries.dojoDndSourceMoved
-				.dndPlaceholder
-					width: 100%
-					height: auto
-					float: left
+	$iframeTabColorTransitionTime = 250ms
+	.iframeTab__background
+		transition: background-color $iframeTabColorTransitionTime
+		position: absolute
+		top: 10px
+		right: -1px
+		bottom: 0
+		left: -1px
+		border-radius: 8px 8px 0 0
+		background-color: var(--tabColor)
+		z-index: -1
 
-			table.dojoDndAvatar .dojoDndItem .umcGalleryWrapperItem
-				width: 300px
-			.dijitOffScreen .umcGalleryWrapperItem
-				width: 300px !important
+		&:before,
+		&:after
+			content: ''
+			display: block
+			position: absolute
+			bottom: 0
+			height: 8px
+			width: 16px
+			transition: box-shadow $iframeTabColorTransitionTime
+		&:before
+			left: -16px
+			border-radius: 0 0 8px 0
+		&:after
+			right: -16px
+			border-radius: 0 0 0 8px
+		&:before
+			box-shadow: 8px 0 0 0 var(--tabColor)
+		&:after
+			box-shadow: -8px 0 0 0 var(--tabColor)
+
+	.iframeTab__logo
+		width: 1em
+		margin: 0 0.5em
+
+	.iframeTab__title
+		flex: 1 1 auto
+		width: 20ch
+		overflow: hidden
+		text-overflow: ellipsis
+		white-space: nowrap
+
+	.iframeTab__closeButton
+		--button-icon-length: 1.3em
+		margin-left: 0.5em
+
+.portal__mobileIframeTabs
+	overflow: auto
+	position: fixed
+	top: var(--portal-header-height)
+	right: 0
+	bottom: 0
+	left: 0
+	display: flex
+	flex-direction: column
+	align-items: center
+	flex: 1 1 auto
+	padding-top: calc(5 * var(--layout-spacing-unit))
+
+	.iframeTab
+		flex: 0 0 auto
+		outline: 0
+		cursor: pointer
+		display: flex
+		align-items: center
+		height: calc(7 * var(--layout-spacing-unit))
+		width: 90%
+		max-width: calc(50 * var(--layout-spacing-unit))
+		border-radius: 16px
+		background: var(--color-grey0)
+		margin-bottom: calc(3 * var(--layout-spacing-unit))
+
+	.iframeTab__background
+		display: none
+
+	.iframeTab__logo
+		width: calc(3 * var(--layout-spacing-unit))
+		margin-right: calc(3 * var(--layout-spacing-unit-small))
+		margin-left: calc(3 * var(--layout-spacing-unit))
+
+	.iframeTab__title
+		flex: 1 1 auto
+
+	.iframeTab__closeButton
+		font-size: var(--font-size-small)
+		margin-left: calc(3 * var(--layout-spacing-unit-small))
+		margin-right: calc(2 * var(--layout-spacing-unit))
+
+.portal__mobileIframeTabsButton
+	position: relative
+
+	.portal__mobileIframeTabsButton__counter
+		pointer-events: none
+		display: block
+		font-size: 12px
+		position: absolute
+		top: 15px
+		left: 19px
+
+	&.dijitChecked .portal__mobileIframeTabsButton__counter
+		color: var(--color-primary)
+
+// iframe tabs end
+
+
+// iframes
+.portal__iframes
+	position: fixed
+	top: var(--portal-header-height)
+	border: 0px solid var(--color-grey8) // TODO var for selected tab color
+	border-top-width: var(--portal-header-to-content-seperator-height)
+	right: 0
+	bottom: 0
+	left: 0
+	background-color: white
+	// z-index: 27 // TODO
+// iframes end
+
+
+// search
+.portal__search
+	width: 95%
+	max-width: calc(40 * var(--layout-spacing-unit))
+	position: fixed
+	top: "calc(%s + %s)" % (var(--portal-header-height) var(--portal-header-to-content-seperator-height))
+	transition: right 250ms
+	right: -@width
+
+	&--open
+		right: 0
+
+.portalSearchBox
+	background-color: var(--color-grey0)
+// search end
+
+
+// background
+.portal__background
+	position: fixed
+	top: var(--portal-header-height)
+	left: 0
+	right: 0
+	bottom: 0
+	background-position: top center
+	background-size: cover
+	background-repeat: no-repeat
+// background end
+
+
+// login iframe
+.portal__loginIframeWrapper
+	position: fixed
+	top: var(--portal-header-height)
+	left: 0
+	right: 0
+	bottom: 0
+// login iframe end
+
+
+// notifications
+.ucsNotifications
+	overflow: auto
+	position: fixed
+	top: var(--portal-header-height)
+	bottom: 0
+	right: 0
+	width: 80%
+	max-width: 360px
+	border: 0px solid var(--color-grey8)
+	border-top-width: var(--layout-spacing-unit-small)
+	background-color: var(--color-grey0)
+	transition: transform cubic-bezier(0.4, 0, 0.6, 1) 0.15s
+	z-index: 30
+	transform: translate3d(110%, 0, 0)
+	padding: 0 calc(2 * var(--layout-spacing-unit))
+	display: flex
+	flex-direction: column
+
+	&--open
+		transform: translate3d(0, 0, 0)
+
+.ucsNotifications__title
+	margin: calc(2 * var(--layout-spacing-unit)) 0
+
+$ucsNotificationBorderRadius = 12px
+$ucsNotificationBgc = #121211 // TODO FIXME where is this color coming from
+.ucsNotification
+	background: $ucsNotificationBgc
+	border-radius: $ucsNotificationBorderRadius
+	padding: 16px
+	font-size: var(--font-size-small)
+	margin-bottom: 16px
+
+.ucsNotification__header
+	display: flex
+	align-items: center
+	margin-bottom: 8px
+
+.ucsNotification__logoWrapper
+	flex: 0 0 auto
+	width: 16px
+	height: 16px
+	border-radius: 2px
+	background: var(--color-grey25)
+	margin-right: 8px
+
+.ucsNotification__title
+	flex: 1 1 auto
+
+.ucsNotification__closeButton
+	flex: 0 0 auto
+	font-size: var(--font-size-small)
+
+.ucsNotificationPreview
+	position: fixed
+	top: calc(var(--portal-header-height) + 16px)
+	right: var(--layout-spacing-unit)
+	width: 90vw
+	max-width: 300px
+	opacity: 0
+	transition: opacity 0ms
+
+	.ucsNotification
+		position: relative
+		background: transparent
+		margin: 0
+
+	&--open
+		opacity: 1
+
+.ucsNotificationPreview__background--drained
+	position: absolute
+	top: 0
+	left: 0
+	bottom: 0
+	right: 0
+	overflow: hidden
+	border-radius: $ucsNotificationBorderRadius
+	background: var(--color-grey25)
+
+.ucsNotificationPreview__background--full
+	height: 100%
+	width: 100%
+	border-radius: $ucsNotificationBorderRadius 0 0 $ucsNotificationBorderRadius
+	background: $ucsNotificationBgc
+	transition: width 0ms linear
+
+	&.drained
+		// width: 0 // no drain styling for now
+		width: 100%
+
+.ucsNotificationPreview__triangle
+	position: absolute
+	top: -12px
+	right: 72px
+	width: 0
+	height: 0
+	border-left: 8px solid transparent
+	border-right: 8px solid transparent
+	border-bottom: 12px solid $ucsNotificationBgc
+// notifications end
+
+
+// edit mode
+.portal__header__editMode
+	display: flex
+	align-items: center
+
+.editMode
+	.portal__iframeTabs,
+	.portal__header__right,
+	.portal__search,
+	.portal__iframes,
+	.portal__loginIframeWrapper,
+	.portal__mobileIframeTabs,
+	.ucsNotificationPreview,
+	.ucsNotifications,
+	.mobileMenuCloseOverlay,
+	.mobileMenu
+		display: none
+
+body:not(.editMode)
+	.portal__header__editMode,
+	.portalProperties
+		display: none
+
+
+.portal__header__editMode__text
+	margin-right: 16px
+
+.portalProperties__title
+	margin-top: calc(2 * var(--layout-spacing-unit))
+
+.portalProperties
+	overflow: auto
+	position: fixed
+	top: var(--portal-header-height)
+	bottom: 0
+	right: 0
+	width: 80%
+	max-width: 360px
+	border: 0px solid var(--color-grey8)
+	border-top-width: var(--layout-spacing-unit-small)
+	background-color: var(--color-grey0)
+	transition: transform cubic-bezier(0.4, 0, 0.6, 1) 0.15s
+	z-index: 30
+	transform: translate3d(110%, 0, 0)
+
+	&--open
+		transform: translate3d(0, 0, 0)
+
+.portalProperties__saveButtonWrapper
+	position: sticky
+	bottom: 0
+	width: 100%
+	background-color: var(--color-grey0)
+	padding: 1em
+
+.portalProperties__title,
+.portalProperties__form
+	padding: 0 1em
+// edit mode end
+
+.umcMultiInput--staticSize
+	.umcMultiInputAddButton,
+	.umcMultiInputRemoveButton
+		display: none
+
+
+.umcLabelPane-umcMultiInput
+	width: 100%
+
+// .umcMultiInputContainer
+	// display: flex
+
+.umcMultiInputRemoveButton
+	padding: 0.5em
+
+
+#portalLoading
+	position: fixed
+	top: 50%
+	left: 50%

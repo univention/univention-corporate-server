@@ -1,0 +1,169 @@
+#!/usr/bin/python2.7
+#
+# Copyright 2020 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+
+from univention.config_registry import ConfigRegistry
+from univention.udm import UDM, NoObject
+
+import click
+
+
+def clear_objects(udm, module):
+	click.echo("Removing all %s objects..." % module)
+	i = 0
+	for obj in udm.get(module).search():
+		click.echo("The object %s will be removed." % obj.dn)
+		obj.delete()
+		i += 1
+	click.echo(click.style("%d objects were removed." % i, fg="green"))
+
+
+def migrate_entry(udm, old_obj):
+	click.echo("The obj %s will be migrated." % old_obj.dn)
+	try:
+		existing_obj = udm.get("portals/entry").get_by_id(old_obj.props.name)
+	except NoObject:
+		pass
+	else:
+		click.echo(click.style("Already found: %s" % existing_obj.dn, fg="yellow"))
+		return
+	new_obj = udm.get("portals/entry").new()
+	new_obj.props.name = old_obj.props.name
+	new_obj.props.displayName = old_obj.props.displayName
+	new_obj.props.description = old_obj.props.description
+	new_obj.props.link = old_obj.props.link
+	new_obj.props.linkTarget = old_obj.props.linkTarget
+	new_obj.props.activated = old_obj.props.activated
+	new_obj.props.allowedGroups = old_obj.props.allowedGroups
+	new_obj.props.icon = old_obj.props.icon
+	new_obj.save()
+	click.echo(click.style("We created: %s" % new_obj.dn, fg="green"))
+
+
+def migrate_portal(udm, old_obj):
+	click.echo("The obj %s will be migrated." % old_obj.dn)
+	try:
+		existing_obj = udm.get("portals/portal").get_by_id(old_obj.props.name)
+	except NoObject:
+		pass
+	else:
+		click.echo(click.style("Already found: %s" % existing_obj.dn, fg="yellow"))
+		return
+	new_obj = udm.get("portals/portal").new()
+	new_obj.props.name = old_obj.props.name
+	new_obj.props.displayName = old_obj.props.displayName
+	new_obj.props.showApps = old_obj.props.showApps
+	new_obj.props.portalComputers = old_obj.props.portalComputers
+	new_obj.props.ensureLogin = old_obj.props.ensureLogin
+	new_obj.props.anonymousEmpty = old_obj.props.anonymousEmpty
+	new_obj.props.autoLayoutCategories = old_obj.props.autoLayoutCategories
+	new_obj.props.background = old_obj.props.background
+	new_obj.props.cssBackground = old_obj.props.cssBackground
+	new_obj.props.fontColor = old_obj.props.fontColor
+	new_obj.props.logo = old_obj.props.logo
+	new_obj.props.defaultLinkTarget = "embedded"  # old_obj.props.defaultLinkTarget
+	new_obj.save()
+	click.echo(click.style("We created: %s" % new_obj.dn, fg="green"))
+	if old_obj.props.links:
+		click.echo(click.style("ATTENTION: We did not migrate the footer links. They were mere values on the portal object, but are now references to portals/entry objects. Please migrate them manually. Here they are:", fg="red"), err=True)
+		for link in old_obj.props.links:
+			click.echo(link)
+		click.echo("You do it like this:")
+		click.echo(" udm portals/entry create --position \"cn=entry,cn=portals,cn=univention\" --set name=... --append displayName=\"\\\"en_US\\\" \\\"...\\\"\" --append displayName=\"\\\"de_DE\\\" \\\"...\\\"\" ...")
+		click.echo(" udm portals/portal modify --dn \"%s\" --append menuLinks=\"$DN_OF_THE_NEWLY_CREATED_OBJECT\"" % new_obj.dn)
+	migrate_content(udm, old_obj, new_obj)
+
+
+def migrate_content(udm, old_obj, new_obj):
+	click.echo("Okay. Now migrating the content...")
+	for category_dn, entry_dns in old_obj.props.content:
+		click.echo("Creating our very own version of %s" % category_dn)
+		old_category = udm.get("settings/portal_category").get(category_dn)
+		new_category_name = "{}-{}".format(new_obj.props.name, old_category.props.name)
+		try:
+			existing_obj = udm.get("portals/category").get_by_id(new_category_name)
+		except NoObject:
+			pass
+		else:
+			click.echo(click.style("Already found: %s" % existing_obj.dn, fg="yellow"))
+			continue
+		new_category = udm.get("portals/category").new()
+		new_category.props.name = new_category_name
+		new_category.props.displayName = old_category.props.displayName
+		new_entry_dns = []
+		for entry_dn in entry_dns:
+			old_entry = udm.get("settings/portal_entry").get(entry_dn)
+			new_entry = udm.get("portals/entry").get_by_id(old_entry.props.name)
+			new_entry_dns.append(new_entry.dn)
+		new_category.props.entries = new_entry_dns
+		new_category.save()
+		click.echo(click.style("We created: %s" % new_category.dn, fg="green"))
+		click.echo(click.style("... with %d entries" % len(entry_dns), fg="green"))
+		new_obj.props.categories.append(new_category.dn)
+	new_obj.save()
+
+
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.option('--binddn', help="DN of account to use to write to LDAP (e.g. uid=Administrator,cn=users,..).")
+@click.option('--bindpwdfile', help="File containing password of user provided by --binddn.")
+def main(binddn, bindpwdfile):
+	"""
+	Migrates UDM objects from the (now) outdated settings/portal, settings/portal_category
+	and settings/portal_entry modules to their new portals/* equivalents.
+
+	The names of the old objects will be the names of the new objects. If those objects are
+	found, no migration will happen.
+	"""
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	if ucr["server/role"] in ("domaincontroller_master", "domaincontroller_backup"):
+		binddn = password = None
+
+	if not binddn:
+		udm = UDM.admin().version(2)
+	else:
+		server = ucr["ldap/master"]
+		server_port = ucr["ldap/master/port"]
+		udm = UDM.credentials(binddn, password, server=server, port=server_port).version(2)
+
+	# clear_objects(udm, "portals/portal")
+	# clear_objects(udm, "portals/category")
+	# clear_objects(udm, "portals/entry")
+
+	click.echo("Alright, we will now migrate old portal data...")
+	click.echo("First things first, let's start with settings/portal_entry")
+	for obj in udm.get("settings/portal_entry").search():
+		migrate_entry(udm, obj)
+
+	click.echo("Great, now all settings/portal")
+	for obj in udm.get("settings/portal").search():
+		migrate_portal(udm, obj)
+
+
+if __name__ == '__main__':
+	main()

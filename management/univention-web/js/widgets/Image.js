@@ -31,9 +31,11 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
 	"dijit/layout/ContentPane",
-	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, ContentPane, _FormWidgetMixin) {
+	"umc/widgets/_FormWidgetMixin",
+	"put-selector/put"
+], function(declare, lang, domClass, ContentPane, _FormWidgetMixin, put) {
 	return declare("umc.widgets.Image", [ ContentPane, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
 		baseClass: 'umcImage',
@@ -41,6 +43,8 @@ define([
 		// imageType: String
 		//		Image type: '*', 'jpeg', 'png', 'svg+xml'
 		imageType: '*',
+
+		noImageMessage: '',
 
 		// value: String
 		//		base64 encoded string that contains image data.
@@ -54,24 +58,30 @@ define([
 			this.sizeClass = null;
 		},
 
+		buildRendering: function() {
+			this.inherited(arguments);
+			domClass.add(this.domNode, this.baseClass + 'Empty');
+		},
+
 		// expects value to be base64 encoded image
-		_getImageType: function() {
+		_getImageType: function(base64String) {
+			base64String = base64String || this.value;
 			// check the signature of the first bytes...
 			// for jpeg it is (in hex): hex pattern: FF D8 FF
-			if (this.value.indexOf('/9j/4') === 0) {
+			if (base64String.indexOf('/9j/4') === 0) {
 				return 'jpeg';
 			}
 			// the first 8 bytes (in hex) should be matched: 89 50 4E 47 0D 0A 1A 0A
 			// note that base64 encodes 6 bits per character...
-			if (this.value.indexOf('iVBORw0KGg') === 0) {
+			if (base64String.indexOf('iVBORw0KGg') === 0) {
 				return 'png';
 			}
-			if (this.value.indexOf('R0lGODdh') === 0 || this.value.indexOf('R0lGODlh') === 0) {
+			if (base64String.indexOf('R0lGODdh') === 0 || base64String.indexOf('R0lGODlh') === 0) {
 				return 'gif';
 			}
 			// check whether file starts with '<svg', '<SVG', '<xml', or '<XML'...
 			// as simple check that should work for most cases
-			if (this.value.indexOf('PHN2Z') === 0 || this.value.indexOf('PFNWR') === 0 || this.value.indexOf('PFhNT') || this.value.indexOf('PHhtb')) {
+			if (base64String.indexOf('PHN2Z') === 0 || base64String.indexOf('PFNWR') === 0 || base64String.indexOf('PFhNT') || base64String.indexOf('PHhtb')) {
 				return 'svg+xml';
 			}
 			return 'unknown';
@@ -79,6 +89,7 @@ define([
 
 		_setValueAttr: function(newVal) {
 			this._set('value', (typeof newVal == "string") ? newVal : "");
+			domClass.toggle(this.domNode, this.baseClass + 'Empty', !this.value);
 			this._updateContent();
 		},
 
@@ -89,9 +100,12 @@ define([
 
 		_updateContent: function() {
 			if (!this.value) {
-				this.set('content', '');
-			}
-			else {
+				var content = '';
+				if (this.noImageMessage) {
+					content = put('div.umcImageEmpty__message', this.noImageMessage);
+				}
+				this.set('content', content);
+			} else {
 				var imageType = this.imageType;
 				if (imageType == '*') {
 					imageType = this._getImageType();
@@ -101,6 +115,12 @@ define([
 					value: this.value
 				}));
 			}
+		},
+
+		getDataUri: function(base64String) {
+			base64String = base64String || this.value;
+			var imageType = this._getImageType(base64String);
+			return lang.replace('data:image/{0};base64,{1}', [imageType, base64String]);
 		}
 	});
 });

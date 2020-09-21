@@ -38,4 +38,4 @@ build-dev: build
 	stylus "$<"
 
 clean:
-	rm -f www/style.css www/icons www/portal.json www/apps.json www/portal.css
+	rm -f www/style.css www/portal.json www/apps.json www/portal.css

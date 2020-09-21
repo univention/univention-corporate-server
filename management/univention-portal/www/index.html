@@ -6,12 +6,17 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="/favicon.ico"/>
-		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
-		<link rel="stylesheet" href="style.css">
-		<link rel="stylesheet" href="portal.css">
-		<link rel="stylesheet" href="custom.css">
-		<!-- TODO: should go into univention-web -->
-		<link rel="stylesheet" href="/univention/management/modules/appcenter.css" type="text/css"/>
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/globalCSSVariables.css"/>
+		<link rel="stylesheet" href="style.css"/>
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/globalCustom.css"/>
+		<link rel="stylesheet" href="custom.css"/>
+		<script>
+			umcConfig = {
+				callback: function() {
+					document.getElementById('portalLoading').remove();
+				}
+			};
+		</script>
 		<script type="text/javascript" src="/univention/js/config.js"></script>
 		<script type="text/javascript">
 			dojoConfig.packages.push({
@@ -24,34 +29,15 @@
 				}
 			};
 			dojoConfig.cacheBust = "v=2.0.2-4";
-			umcConfig.callback =function() {
-				require(["portal", "umc/widgets/LiveSearch"], function(portal) {
-					portal.start();
-				});
-			};
 		</script>
 		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
 	</head>
-	<body class="umc portal" id="portal">
-		<div id="contentWrapper">
-			<div id="umcHeader" class="umcHeader">
-				<div class="umcHeaderLeft" id="umcHeaderLeft">
-					<div id="portalLogoWrapper">
-						<img id="portalLogo" />
-						<div id="portalLogoEdit"></div>
-					</div>
-					<h1 id="portalTitle"></h1>
-				</div>
-				<div class="umcHeaderRight dijitDisplayNone" id="umcHeaderRight">
-					<div id="umcLiveSearch" data-dojo-type="umc/widgets/LiveSearch"></div>
-					<div id="umcLoginButton" data-dojo-type="umc/widgets/LoginButton"></div>
-					<div data-dojo-type="umc/menu/Button"></div>
-					<div class="univentionLogo"></div>
-				</div>
-			</div>
-			<div id="content" class="content"></div>
+	<body class="bgc-document">
+		<div data-dojo-type="portal/Portal"></div>
+		<div class="umcStandbySvgWrapper" id="portalLoading">
+			<svg class="umcStandbySvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				<circle class="umcStandbySvg__circle" cx="50" cy="50" r="45"></circle>
+			</svg>
 		</div>
-		<div data-dojo-type="umc/dialog/NotificationSnackbar"></div>
-		<footer id="portal-footer"></footer>
 	</body>
 </html>

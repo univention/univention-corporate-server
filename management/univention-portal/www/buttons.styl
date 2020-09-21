@@ -1,0 +1,114 @@
+.dijitButton
+	margin: 0
+	font-size: var(--font-size-normal)
+
+.dijitButtonNode
+	border: none
+	height: 2em
+	display: flex
+	align-items: center
+	justify-content: center
+	transition: var(--button-icon-bgc-transition)
+	background-color: var(--bgc)
+
+ucsTextButton()
+	--bgc: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc: var(--button-icon-bgc-hover)
+		&Active
+			--bgc: var(--button-icon-bgc-active)
+
+
+	.dijitButtonNode
+		padding: 0 1em
+		border-radius: 2px
+
+	.dijitIcon
+		font-size: var(--font-size-button-icon, inherit)
+		width: 1em
+		height: @width
+		margin-right: calc(1 * var(--layout-spacing-unit))
+
+	.dijitButtonText
+		color: var(--font-color-contrast-high)
+		font-weight: 600
+		text-transform: uppercase
+		letter-spacing: 1.25px
+
+	.dijitButtonContents
+		outline: 0
+		display: flex
+		align-items: center
+
+.ucsTextButton
+	ucsTextButton()
+
+.ucsIconButton
+	--bgc: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc: var(--button-icon-bgc-hover)
+		&Active
+			--bgc: var(--button-icon-bgc-active)
+	--button-icon-length: 2em
+	&Compact
+		--button-icon-length: 1em
+
+	.dijitButtonNode
+		border-radius: 100%
+		width: var(--button-icon-length)
+		height: @width
+
+	.dijitIcon
+		font-size: var(--font-size-button-icon, inherit)
+		height: 1em
+		width: @height
+
+	.dijitButtonContents
+		outline: 0 // TODO do this generally or case by case?
+		display: flex
+		align-items: center
+
+.ucsPrimaryButton
+	--bgc: var(--color-primary)
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc: var(--button-primary-bgc-hover)
+		&Active
+			--bgc: var(--button-primary-bgc-active)
+		&Disabled
+			--bgc: var(--button-primary-bgc-disabled)
+			opacity: 0.4
+
+	.dijitButtonNode
+		padding: 0 1em
+		border-radius: 2px
+
+	.dijitButtonText
+		color: var(--font-color-contrast-high)
+		font-weight: 600
+		text-transform: uppercase
+		letter-spacing: 1.25px
+
+	.dijitButtonContents
+		outline: 0
+		display: flex
+		align-items: center
+
+
+
+.ucsLinkButton
+	.dijitButtonNode
+		height: auto
+
+	&.dijitHover
+		.dijitButtonText
+			color: var(--color-primary)
+			text-decoration: underline
+
+.dijitUploader input
+	cursor: pointer

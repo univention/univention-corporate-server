@@ -22,7 +22,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 		("shares/share", "host", 1),
 		("shares/printer", "spoolHost", 1),
 		("dns/forward_zone", "a", 1),
-		("settings/portal_entry", "link", "//%s/"),
+		("portals/entry", "link", "//%s/"),
 	)
 
 	def __init__(self, changeset):

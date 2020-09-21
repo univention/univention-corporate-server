@@ -35,10 +35,11 @@ define([
 	"dojo/window",
 	"dojo/dom-class",
 	"dojo/Evented",
+	"dojo/topic",
 	"umc/tools",
 	"umc/menu/Menu",
 	"umc/menu/Button"
-], function(declare, lang, baseWin, win, domClass, Evented, tools, Menu, Button) {
+], function(declare, lang, baseWin, win, domClass, Evented, topic, tools, Menu, Button) {
 	var menu = new declare([Evented], {
 		addSubMenu: function(/*Object*/ item) {
 			return this.getMenuInstance().then(function(menu) {
@@ -64,12 +65,13 @@ define([
 		},
 
 		open: function() {
-			domClass.toggle(baseWin.body(), 'mobileMenuActive');
+			if (domClass.contains(baseWin.body(), 'mobileMenuActive')) {
+				return;
+			}
+			domClass.add(baseWin.body(), 'mobileMenuActive');
 			var hasScrollbar = baseWin.body().scrollHeight > win.getBox().h;
 			domClass.toggle(baseWin.body(), 'hasScrollbar', hasScrollbar);
-			tools.defer(function() {
-				domClass.toggle(baseWin.body(), 'mobileMenuToggleButtonActive');
-			}, 510);
+			topic.publish('/umc/menu', 'open');
 		},
 
 		close: function() {
@@ -79,12 +81,11 @@ define([
 			domClass.remove(baseWin.body(), 'mobileMenuActive');
 			domClass.remove(baseWin.body(), 'hasScrollbar');
 			tools.defer(lang.hitch(this, function() {
-				domClass.toggle(baseWin.body(), 'mobileMenuToggleButtonActive');
-
 				this.getMenuInstance().then(function(menuInstance) {
 					menuInstance.closeOpenedSubMenus();
 				});
 			}), 510);
+			topic.publish('/umc/menu', 'close');
 		},
 
 		getButtonInstance: function() {

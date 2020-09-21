@@ -604,12 +604,12 @@ define([
 			var button = new Button({
 				disabled: this.disabled,
 				visible: !this.disabled,
-				iconClass: 'umcTrashIcon',
+				iconClass: 'iconTrash',
 				showLabel: false,
 				onClick: lang.hitch(this, function() {
 					this._removeElement(rowContainer.irow);
 				}),
-				'class': 'umcMultiInputRemoveButton umcOutlinedButton',
+				'class': 'umcMultiInputRemoveButton umcOutlinedButton ucsIconButton',
 				description: _('Remove entry')
 			});
 			rowContainer.addChild(button);

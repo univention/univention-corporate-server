@@ -36,10 +36,13 @@ define([
 	"dojo/dom-class",
 	"dijit/Dialog",
 	"dijit/TitlePane",
+	"dijit/_WidgetsInTemplateMixin",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
-	"umc/widgets/Text"
-], function(declare, lang, array, query, domClass, Dialog, TitlePane, ContainerWidget, Button, Text) {
+	"umc/widgets/StandbyMixin",
+	"umc/widgets/Text",
+	"put-selector/put"
+], function(declare, lang, array, query, domClass, Dialog, TitlePane, _WidgetsInTemplateMixin, ContainerWidget, Button, StandbyMixin, Text, put) {
 	// in order to break circular dependencies
 	// we define dijit/registry as empty object and
 	// require it explicitly
@@ -50,7 +53,7 @@ define([
 		registry = _registry;
 	});
 
-	return declare("umc.widgets.ConfirmDialog", [ Dialog ], {
+	return declare("umc.widgets.ConfirmDialog", [ Dialog, StandbyMixin, _WidgetsInTemplateMixin ], {
 		// summary:
 		//		Class that provides a customizable confirmation dialog.
 		//		(For easier access see dialog.confirm().)
@@ -105,9 +108,11 @@ define([
 		//		button in the style of a submit button. The callback will receive as parameter
 		//		the option chosen, i.e., an integer or - if specified - the corresponding
 		//		'name' property of the button.
-		options: [],
+		options: null,
 
-		closable: false,
+		actionBarTemplate: '<div data-dojo-type="umc/widgets/ContainerWidget" data-dojo-attach-point="actionBar" class="umcDialogActionBar"></div>',
+
+		closable: true,
 
 		_container: null,
 
@@ -153,22 +158,17 @@ define([
 			}
 		},
 
-		postMixInProperties: function() {
-			this.inherited(arguments);
+		constructor: function() {
+			this.options = [];
 			this.baseClass += ' umcConfirmDialog';
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// put buttons into separate container
-			var buttons = new ContainerWidget({
-				'class': 'umcButtonRow'
-			});
-			var defaultButton = null;
+		_setOptionsAttr: function() {
+			this.actionBar.destroyDescendants();
 			array.forEach(this.options, lang.hitch(this, function(ichoice, idx) {
 				var props = lang.mixin({}, ichoice, {
-					defaultButton: true === ichoice['default'],
+					'class': 'ucsTextButton',
+					defaultButton: !!ichoice['default'],
 					onClick: lang.hitch(this, function() {
 						// the response is either a custom response or the choice (button) index
 						var response = ichoice.name || idx;
@@ -185,33 +185,32 @@ define([
 				delete props.callback;
 				delete props['default'];
 
-				var button = new Button(props);
-				buttons.addChild(button);
-
-				// remember default button
-				if (ichoice['default']) {
-					defaultButton = button;
-				}
+				this.actionBar.addChild(new Button(props));
 			}));
 
 			// make sure that the default button is focused
-			defaultButton = defaultButton || buttons.getChildren()[0];
-			if (defaultButton) {
-				this.own(this.on('focus', function() {
-					defaultButton.focus();
-				}));
-			}
+			// var defaultButton = array.filter(this.actionBar.getChildren(), function(button) {
+				// return button.defaultButton;
+			// })[0];
+			// if (defaultButton) {
+				// this.own(this.on('focus', function() {
+					// defaultButton.focus();
+				// }));
+			// }
+		},
 
-			// put the layout together
+		buildRendering: function() {
+			this.inherited(arguments);
+			var closeButton = new Button({
+				iconClass: 'iconX',
+				'class': 'ucsIconButton',
+				tabindex: -1
+			});
+			this.closeButtonNode.appendChild(closeButton.domNode);
+			closeButton.startup();
+
 			this._container = new ContainerWidget({});
-			this._container.addChild(buttons);
-			this._container.startup();
-
-			// explicitly set 'closable' here, otherwise it does not have any effect
-			this.set('closable', this.closable);
-
-			// attach layout to dialog
-			this.set('content', this._container);
+			this.addChild(this._container);
 		},
 
 		close: function() {
@@ -228,11 +227,6 @@ define([
 			//		either with true or false.
 			// choice:
 			//		The key of option that has been chosen.
-		},
-
-		destroy: function() {
-			this.inherited(arguments);
-			this._container.destroyRecursive();
 		}
 	});
 });

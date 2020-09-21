@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="udm" icon="udm/module" version="1.0" translationId="univention-portal">
+    <!-- Translation currently broken due to Bug #35061 -->
+    <name></name>
+    <description></description>
+    <flavor id="settings/portal_all" deactivated="yes">
+    </flavor>
+    <flavor id="portals/all">
+      <name>Portal</name>
+      <description>Managing the Univention Portal</description>
+    </flavor>
+    <categories>
+      <category name="domain"/>
+    </categories>
+  </module>
+</umc>
+

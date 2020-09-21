@@ -36,7 +36,7 @@ define([
 	"login/main",
 	"umc/i18n!"
 ], function(declare, lang, domClass, Button, login, _) {
-	return declare("umc.widgets.Button", [ Button ], {
+	return declare("umc.widgets.LoginButton", [ Button ], {
 		type: 'button',
 		label: _('Login'),
 

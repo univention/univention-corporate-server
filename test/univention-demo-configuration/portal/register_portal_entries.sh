@@ -38,17 +38,17 @@ create_app_entry () {
 	description_de="$5"
 	link="/apps/?cn=$cn&catalogID=$catalogID&label=$label"
 	icon="$DIR/app-logo-$1.svg"
-	position="cn=portal,cn=univention,$ldap_base"
+	position="cn=entry,cn=portals,cn=univention,$ldap_base"
 	dn="cn=$cn,$position"
 
 	# remove previous entry
 	search_result="$(univention-ldapsearch -LLL -b "$position" "cn=$cn" dn)"
 	if [ -n "$search_result" ]; then
-		udm settings/portal_entry remove --dn "$dn"
+		udm portals/entry remove --dn "$dn"
 	fi
 
 	# add new entry
-	udm settings/portal_entry create --ignore_exists \
+	udm portals/entry create --ignore_exists \
 		--position="$position" \
 		--set name="$cn" \
 		--append displayName="\"en_US\" \"$label\"" \
@@ -56,9 +56,11 @@ create_app_entry () {
 		--append displayName="\"de_DE\" \"$label\"" \
 		--append description="\"de_DE\" \"$description_de\"" \
 		--append link="$link" \
-		--set category=service \
-		--set icon="$(base64 "$icon")" \
-		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base"
+		--set icon="$(base64 "$icon")"
+
+	udm portals/category modify \
+		--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append entries="$dn"
 }
 
 create_app_entry \
@@ -98,17 +100,17 @@ create_admin_entry () {
 	description_de="$4"
 	link="$5"
 	icon="$DIR/admin-entry-logo-$1.svg"
-	position="cn=portal,cn=univention,$ldap_base"
+	position="cn=entry,cn=portals,cn=univention,$ldap_base"
 	dn="cn=$cn,$position"
 
 	# remove previous entry
 	search_result="$(univention-ldapsearch -LLL -b "$position" "cn=$cn" dn)"
 	if [ -n "$search_result" ]; then
-		udm settings/portal_entry remove --dn "$dn"
+		udm portals/entry remove --dn "$dn"
 	fi
 
 	# add new entry
-	udm settings/portal_entry create --ignore_exists \
+	udm portals/entry create --ignore_exists \
 		--position="$position" \
 		--set name="$cn" \
 		--append displayName="\"en_US\" \"$label\"" \
@@ -116,9 +118,11 @@ create_admin_entry () {
 		--append displayName="\"de_DE\" \"$label\"" \
 		--append description="\"de_DE\" \"$description_de\"" \
 		--append link="$link" \
-		--set category=admin \
-		--set icon="$(base64 "$icon")" \
-		--set portal="cn=domain,cn=portal,cn=univention,$ldap_base"
+		--set icon="$(base64 "$icon")"
+
+	udm portals/category modify \
+		--dn "cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
+		--append entries="$dn"
 }
 
 create_admin_entry \
@@ -135,9 +139,17 @@ create_admin_entry \
 	"Die Univention-Support-Datenbank" \
 	"http://sdb.univention.de"
 
+udm portals/portal modify \
+	--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
+	--set categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base"
+udm portals/portal modify \
+	--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
+	--append categories="cn=domain-admin,cn=category,cn=portals,cn=univention,$ldap_base"
+
 function has_portal_background {
-	univention-ldapsearch -LLL -b "cn=portal,cn=univention,$ldap_base" cn=domain | grep -q univentionPortalBackground:
+	univention-ldapsearch -LLL -b "cn=portal,cn=portals,cn=univention,$ldap_base" cn=domain | grep -q univentionNewPortalBackground:
 }
+
 
 if ! has_portal_background; then
 	cat "$DIR/domain-portal.ldif" | univention-config-registry filter | ldapmodify -D "$ldap_hostdn" -y /etc/machine.secret 

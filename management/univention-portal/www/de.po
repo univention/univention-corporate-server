@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-server-overview\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-01-25 17:35+0100\n"
+"POT-Creation-Date: 2020-09-11 12:00+0200\n"
 "PO-Revision-Date: 2017-03-22 16:49+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: www/main.js:835
+#: www/main.js:833
 #, javascript-format
 msgid ""
 "<p>The category with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing the page or calling<br><pre>univention-directory-listener-ctrl resync portal\n"
@@ -20,7 +20,7 @@ msgid ""
 "univention-directory-listener-ctrl resync portal_category</pre></p>"
 msgstr ""
 
-#: www/main.js:819
+#: www/main.js:817
 #, javascript-format
 msgid ""
 "<p>The entry with the dn '%s' should be shown at this position but it could not be found.</p><p>Try refreshing or calling<br><pre>univention-directory-listener-ctrl resync portal\n"
@@ -28,7 +28,7 @@ msgid ""
 "univention-directory-listener-ctrl resync portal_category</pre></p>"
 msgstr ""
 
-#: www/PortalEntryWizard.js:444
+#: www/PortalEntryWizard.js:453
 msgid "A portal entry with the given name already exists."
 msgstr "Es existiert bereits ein Portal-Eintrag mit dem angegebenen Namen."
 
@@ -36,187 +36,384 @@ msgstr "Es existiert bereits ein Portal-Eintrag mit dem angegebenen Namen."
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: www/main.js:867 www/main.js:896
+#: www/AddEntryButton.js:132
+msgid "Add Folder"
+msgstr "Ordner hinzufügen"
+
+#: www/AddCategoryButton.js:52 www/AddCategoryButton.js:151 www/main.js:867
+#: www/main.js:896
 msgid "Add category"
 msgstr "Kategorie hinzufügen"
 
-#: www/main.js:863
+#: www/AddEntryButton.js:55 www/AddEntryButton.js:255
+msgid "Add entry"
+msgstr "Eintrag hinzufügen"
+
+#: www/AddCategoryButton.js:137 www/main.js:863
 msgid "Add existing category"
 msgstr "Existierende Kategorie hinzufügen"
 
-#: www/main.js:1346
+#: www/AddEntryButton.js:224
+msgid "Add existing entry"
+msgstr "Existierenden Eintrag hinzufügen"
+
+#: www/AddEntryButton.js:244
+msgid "Add existing folder"
+msgstr "Existierenden Ordner hinzufügen"
+
+#: www/AddEntryButton.js:259
+msgid "Add folder"
+msgstr "Ordner hinzufügen"
+
+#: www/main.js:1332
 msgid "Appearance"
 msgstr "Aussehen"
 
-#: www/PortalEntryWizard.js:180
+#: www/PortalEntryWizard.js:183
 msgid "Back"
 msgstr "Zurück"
 
-#: www/main.js:743 www/main.js:1371 www/PortalEntryWizard.js:170
-#: www/PortalEntryWizard.js:190 www/PortalEntryWizard.js:446
+#: www/PortalEntryWizard.js:172 www/PortalEntryWizard.js:195
+#: www/PortalEntryWizard.js:455 www/AddCategoryButton.js:110
+#: www/FolderPropertiesDialog.js:275 www/CategoryPropertiesDialog.js:264
+#: www/main.js:490 www/main.js:1357 www/AddEntryButton.js:115
+#: www/AddEntryButton.js:192
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: www/main.js:871
+#: www/AddCategoryButton.js:61 www/main.js:871
 msgid "Category"
 msgstr "Kategorie"
 
-#: www/main.js:1330
+#: www/portalContent.js:185
+msgid "Category added to portal"
+msgstr "Kategorie wurde zum Portal hinzugefügt"
+
+#: www/portalContent.js:285
+msgid "Category could no be created"
+msgstr "Die Kategorie konnte nicht angelegt werden"
+
+#: www/portalContent.js:279
+msgid "Category could no be created: %s"
+msgstr "Die Kategorie konnte nicht angelegt werden: %s"
+
+#: www/portalContent.js:207
+msgid "Category removed from portal"
+msgstr "Kategorie wurde vom Portal entfernt"
+
+#: www/main.js:1316
 msgid "Change order of portal entries via drag and drop"
 msgstr "Ändere die Reihenfolge der Portal-Einträge per Drag and Drop"
 
-#: www/main.js:619 www/main.js:1174 www/main.js:1731
+#: www/PortalPropertiesButton.js:256 www/main.js:364 www/main.js:1122
+#: www/main.js:1794
 msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
-#: www/main.js:935
+#: www/portalContent.js:292
+msgid "Changes to category could no be saved"
+msgstr "Änderungen an der Kategorie konnten nicht gespeichert werden"
+
+#: www/portalContent.js:270
+msgid "Changes to category saved"
+msgstr "Änderungen an der Kategorie wurden gespeichert"
+
+#: www/portalContent.js:294
+msgid "Changes to entry could not be saved"
+msgstr "Änderungen am Eintrag konnten nicht gespeichert werden"
+
+#: www/Portal.js:1362 www/portalContent.js:272
+msgid "Changes to entry saved"
+msgstr "Änderungen am Eintrag wurden gespeichert"
+
+#: www/portalContent.js:293
+msgid "Changes to folder could not be saved"
+msgstr "Änderungen am Ordner konnten nicht gespeichert werden"
+
+#: www/portalContent.js:271
+msgid "Changes to folder saved"
+msgstr "Änderungen am Ordner wurden gespeichert"
+
+#: www/main.js:613 www/main.js:635 www/_PortalIframe.js:81
+msgid "Content could not be loaded."
+msgstr "Inhalt konnte nicht geladen werden."
+
+#: www/portalContent.js:192
+msgid "Could not add category to portal"
+msgstr "Kategorie konnte nicht zum Portal hinzugefügt werden"
+
+#: www/portalContent.js:188
+msgid "Could not add category to portal: %(details)s"
+msgstr "Kategorie konnte nicht zum Portal hinzugefügt werden: %(details)s"
+
+#: www/portalContent.js:359
+msgid "Could not add entry to category"
+msgstr "Eintrag konnte nicht zur Kateegorie hinzugefügt werden"
+
+#: www/portalContent.js:352
+msgid "Could not add entry to category: %(details)s"
+msgstr "Eintrag konnte nicht zur Kateegorie hinzugefügt werden"
+
+#: www/portalContent.js:360
+msgid "Could not add entry to folder"
+msgstr "Eintrag konnte nicht zum Ordner hinzugefügt werden"
+
+#: www/portalContent.js:353
+msgid "Could not add entry to folder: %(details)s"
+msgstr "Eintrag konnte nicht zum Ordner hinzugefügt werden: %(details)s"
+
+#: www/portalContent.js:214
+msgid "Could not remove category from portal"
+msgstr "Kategorie konnte nicht vom Portal entfernt werden"
+
+#: www/portalContent.js:210
+msgid "Could not remove category from portal: %(details)s"
+msgstr "Kategorie konnte nicht vom Portal entfernt werden: %(details)s"
+
+#: www/portalContent.js:324
+msgid "Could not remove entry from category"
+msgstr "Eintrag konnte nicht von der Kategorie entfernt werden"
+
+#: www/portalContent.js:317
+msgid "Could not remove entry from category: %(details)s"
+msgstr "Eintrag konnte nicht von der Kategorie entfernt werden: %(details)s"
+
+#: www/portalContent.js:325
+msgid "Could not remove entry from folder"
+msgstr "Eintrag konnte nicht vom Ordner entfernt werden"
+
+#: www/portalContent.js:318
+msgid "Could not remove entry from folder: %(details)s"
+msgstr "Eintrag konnte nicht vom Ordner entfernt werden: %(details)s"
+
+#: www/Portal.js:1161 www/main.js:908
 msgid "Create entry"
 msgstr "Eintrag erstellen"
 
-#: www/main.js:857 www/main.js:859
+#: www/AddCategoryButton.js:130 www/main.js:857 www/main.js:859
 msgid "Create new category"
 msgstr "Neue Kategorie erstellen"
 
-#: www/PortalEntryWizard.js:168
-msgid "Do you really want to remove this entry from this portal"
-msgstr "Wollen Sie diesen Eintrag wirklich aus dem Portal entfernen"
+#: www/AddEntryButton.js:218
+msgid "Create new entry"
+msgstr "Neuen Eintrag erstellen"
 
-#: www/main.js:935 www/main.js:959
+#: www/AddEntryButton.js:235
+msgid "Create new folder"
+msgstr "Neuen Ordner erstellen"
+
+#: www/portalContent.js:264
+msgid "Created new category"
+msgstr "Neue Kategorie wurde erstellt"
+
+#: www/portalContent.js:266
+msgid "Created new entry"
+msgstr "Neuer Eintrag wurde erstellt"
+
+#: www/portalContent.js:265
+msgid "Created new folder"
+msgstr "Neuer Ordner wurde erstellt"
+
+#: www/PortalEntryWizard.js:170
+msgid "Do you really want to remove this entry?"
+msgstr "Wollen Sie diesen Eintrag wirklich entfernen?"
+
+#: www/Menu.js:59
+msgid "Edit Portal"
+msgstr "Portal bearbeiten"
+
+#: www/CategoryPropertiesDialog.js:217
+msgid "Edit category"
+msgstr "Kategorie bearbeiten"
+
+#: www/Portal.js:1161 www/Portal.js:1187 www/main.js:908 www/main.js:932
 msgid "Edit entry"
 msgstr "Eintrag bearbeiten"
 
-#: www/main.js:1347
+#: www/FolderPropertiesDialog.js:221
+msgid "Edit folder"
+msgstr "Ordner bearbeiten"
+
+#: www/Portal.js:306
+msgid "Edit mode"
+msgstr "Editiermodus"
+
+#: www/main.js:1333
 msgid "Edit the font color and background for this portal"
 msgstr "Die Schriftfarbe und den Hintergrund dieses Portal bearbeiten"
 
-#: www/main.js:1340
+#: www/main.js:1326
 msgid "Edit the visibility of this portal"
 msgstr "Die Sichtbarkeit dieses Portals bearbeiten"
 
-#: www/main.js:1313
+#: www/main.js:1299
 msgid "Edit this portal"
 msgstr "Dieses Portal bearbeiten"
 
-#: www/PortalEntryWizard.js:200
+#: www/portalContent.js:346
+msgid "Entry added to category"
+msgstr "Eintrag wurde zur Kategorie hinzugefügt"
+
+#: www/portalContent.js:347
+msgid "Entry added to folder"
+msgstr ""
+
+#: www/portalContent.js:287
+msgid "Entry could not be created"
+msgstr "Eintrag konnte nicht angelegt werden"
+
+#: www/portalContent.js:281
+msgid "Entry could not be created: %s"
+msgstr "Eintrag konnte nicht angelegt werden: %s"
+
+#: www/portalContent.js:311
+msgid "Entry removed from category"
+msgstr "Eintrag wurde aus der Kategorie entfernt"
+
+#: www/portalContent.js:312
+msgid "Entry removed from folder"
+msgstr "Eintrag wurde vom Ordner entfernt"
+
+#: www/PortalEntryWizard.js:207
 msgid "Finish"
 msgstr "Fertigstellen"
 
-#: www/PortalEntryWizard.js:450
+#: www/AddEntryButton.js:66 www/AddEntryButton.js:143
+msgid "Folder"
+msgstr "Ordner"
+
+#: www/portalContent.js:286
+msgid "Folder could not be created"
+msgstr "Ordner konnte nicht angelegt werden"
+
+#: www/portalContent.js:280
+msgid "Folder could not be created: %s"
+msgstr "Ordner konnte nicht angelegt werden: %s"
+
+#: www/PortalEntryWizard.js:459
 msgid "Load entry"
 msgstr "Eintrag laden"
 
-#: www/main.js:1530
+#: www/main.js:1521
 msgid "Local Apps"
 msgstr "Lokale Apps"
 
-#: www/main.js:1511
+#: www/Portal.js:1083 www/main.js:1503
 msgid "Login"
 msgstr ""
 
-#: www/PortalEntryWizard.js:186
+#: www/PortalEntryWizard.js:190
 msgid "Next"
 msgstr "Weiter"
 
-#: www/PortalCategory.js:69
-msgid "No display name provided"
-msgstr "Kein Anzeigename definiert"
+#: www/NotificationsButton.js:248
+msgid "Notifications"
+msgstr "Benachrichtigungen"
 
-#: www/main.js:1329
+#: www/main.js:1315
 msgid "Order"
 msgstr "Reihenfolge"
 
-#: www/main.js:1348
+#: www/Portal.js:1476
+msgid "Order saved"
+msgstr "Reihenfolge gespeichert"
+
+#: www/main.js:1334
 msgid "Portal appearance"
 msgstr "Portal Aussehen"
 
-#: www/main.js:1097
+#: www/main.js:1045
 msgid "Portal entry was successfully created"
 msgstr "Portal-Eintrag wurde erfolgreich erstellt"
 
-#: www/main.js:1454
+#: www/main.js:1446
 msgid "Portal logo"
 msgstr "Portal Logo"
 
-#: www/main.js:1465
+#: www/main.js:1457
 msgid "Portal title"
 msgstr "Portal Titel"
 
-#: www/main.js:1341
+#: www/main.js:1327
 msgid "Portal visibility"
 msgstr "Portal Sichtbarkeit"
 
-#: www/PortalEntryWizard.js:173
+#: www/PortalEntryWizard.js:167 www/PortalEntryWizard.js:175
 msgid "Remove"
 msgstr "Entfernen"
 
-#: www/main.js:758 www/main.js:820 www/main.js:836
-#: www/PortalEntryWizard.js:165
+#: www/FolderPropertiesDialog.js:296 www/CategoryPropertiesDialog.js:285
+#: www/main.js:505 www/main.js:818 www/main.js:834
 msgid "Remove from this portal"
 msgstr "Aus diesem Portal entfernen"
 
-#: www/main.js:749 www/PortalEntryWizard.js:195
+#: www/PortalEntryWizard.js:201 www/AddCategoryButton.js:117
+#: www/FolderPropertiesDialog.js:282 www/CategoryPropertiesDialog.js:271
+#: www/main.js:496 www/AddEntryButton.js:122 www/AddEntryButton.js:199
 msgid "Save"
 msgstr "Speichern"
 
-#: www/main.js:1378
+#: www/main.js:1364
 msgid "Save entry order"
 msgstr "Reihenfolge der Einträge Speichern"
 
-#: www/main.js:1736
+#: www/Portal.js:1478 www/main.js:1799
 msgid "Saving entry order failed"
 msgstr "Speichern der Eintragsreihenfolge ist fehlgeschlagen"
 
-#: www/main.js:1353
+#: www/main.js:1339
 msgid "Stop editing this portal"
 msgstr "Aufhören dieses Portal zu bearbeiten"
 
-#: www/main.js:643
+#: www/PortalPropertiesButton.js:262 www/main.js:388
 msgid "The changes could not be saved"
 msgstr "Die Änderungen konnten nicht gespeichert werden"
 
-#: www/main.js:632
+#: www/PortalPropertiesButton.js:258 www/main.js:377
 msgid "The changes could not be saved: %(details)s"
 msgstr "Die Änderungen konnten nicht gespeichert werden: %(details)s"
 
-#: www/main.js:641
+#: www/main.js:386
 msgid "The creation failed"
 msgstr "Das Anlegen ist fehlgeschlagen"
 
-#: www/main.js:630
+#: www/main.js:375
 msgid "The creation failed: %(details)s"
 msgstr "Das Anlegen ist fehlgeschlagen: %(details)s"
 
-#: www/main.js:813
+#: www/main.js:811
 msgid "The dn for this entry could not be found"
 msgstr "Die DN für diesen Eintrag konnte nicht gefunden werden"
 
-#: www/main.js:1182
+#: www/Portal.js:1370 www/main.js:1130
 msgid "The editing of the portal entry object failed."
 msgstr "Das Bearbeiten des Portal-Eintrages ist fehlgeschlagen."
 
-#: www/main.js:1178
+#: www/Portal.js:1365 www/main.js:1126
 msgid "The editing of the portal entry object failed: %(details)s"
 msgstr "Das Bearbeiten des Portal-Eintrages ist fehlgeschlagen: %(details)s"
 
-#: www/main.js:1105
+#: www/main.js:1053
 msgid "The portal entry object could not be saved."
 msgstr "Die Änderungen am Portal Objekt konnten nicht gespeichert werden."
 
-#: www/main.js:1101
+#: www/main.js:1049
 msgid "The portal entry object could not be saved: %(details)s"
 msgstr ""
 "Die Änderungen am Portal Objekt konnten nicht gespeichert werden: "
 "%(details)s"
 
-#: www/main.js:545 www/PortalEntryWizard.js:296
+#: www/PortalPropertiesButton.js:186 www/PortalEntryWizard.js:304
+#: www/FolderPropertiesDialog.js:121 www/CategoryPropertiesDialog.js:119
+#: www/main.js:290
 msgid "This value is required"
 msgstr "Dieser Wert ist erforderlich"
 
-#: www/main.js:1339
+#: www/main.js:1325
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: www/main.js:1517
+#: www/main.js:1509
 #, javascript-format
 msgid ""
 "Welcome to the portal of %s.<br><br>To be able to use all functions of this "
@@ -228,14 +425,17 @@ msgstr ""
 #~ msgid "Administration"
 #~ msgstr "Verwaltung"
 
-#~ msgid "Applications"
-#~ msgstr "Applikationen"
-
 #~ msgid "From existing"
 #~ msgstr "Von existierenden"
 
 #~ msgid "Local apps can not be edited"
 #~ msgstr "Lokale Apps können nicht bearbeitet werden"
+
+#~ msgid "No display name provided"
+#~ msgstr "Kein Anzeigename definiert"
+
+#~ msgid "The category could no be created: %(details)s"
+#~ msgstr "Die Kategorie konnte nicht angelegt werden: %(details)s"
 
 #~ msgid "The changes to the portal object could not be saved: %(details)s"
 #~ msgstr ""

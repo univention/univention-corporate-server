@@ -61,11 +61,11 @@ define([
 
 		// buttonLabel: String
 		//		The label that is displayed on the upload button.
-		buttonLabel: 'Upload',
+		buttonLabel: _('Upload'),
 
 		// buttonIconClass: String
 		// 		The class for the icon of the upload button.
-		buttonIconClass: 'dijitNoIcon',
+		buttonIconClass: 'iconUpload',
 
 		// showClearButton: Boolean
 		//		The clear button is shown only if this attribute is set to true.
@@ -73,11 +73,11 @@ define([
 
 		// clearButtonLabel: String
 		//		The label that is displayed on the clear button.
-		clearButtonLabel: 'Clear data',
+		clearButtonLabel: _('Remove'),
 
 		// clearButtonIconClass: String
 		// 		The class for the icon of the clear button.
-		clearButtonIconClass: 'dijitNoIcon',
+		clearButtonIconClass: 'iconTrash',
 
 		// displayErrorMessage: Boolean
 		//		Show message if error occurred when uploading file.
@@ -124,9 +124,6 @@ define([
 		handlesTooltips: true,
 
 		constructor: function() {
-			this.buttonLabel = _('Upload');
-			this.clearButtonLabel = _('Clear data');
-
 			// default to value given by UCR variable
 			var maxSize = parseInt(tools.status('umc/server/upload/max'), 10);
 			if (!isNaN(maxSize)) {
@@ -152,6 +149,7 @@ define([
 
 			// until Dojo2.0 "dojox.form.Uploader" must be used!
 			this._uploader = new dojox.form.Uploader({
+				'class': 'ucsTextButton',
 				url: '/univention/upload' + (this.command ? '/' + this.command : ''),
 				label: this.buttonLabel,
 				multiple: this.multiFile,
@@ -162,12 +160,12 @@ define([
 					return null;
 				}
 			});
-			domClass.add(this._uploader.domNode, 'umcButton');
 			style.set(this._uploader.domNode, 'display', 'inline-block');
 			this.addChild(this._uploader);
 
 			if (this.showClearButton) {
 				this._clearButton = new Button({
+					'class': 'ucsTextButton',
 					label: this.clearButtonLabel,
 					iconClass: this.clearButtonIconClass,
 					callback: lang.hitch(this, function() {
@@ -306,6 +304,7 @@ define([
 				}
 				domClass.toggle(this._clearButton.domNode, 'dijitDisplayNone', !isVisible);
 			}
+			domClass.toggle(this._image)
 
 			// send events
 			this._set('value', newVal);

@@ -1,0 +1,21 @@
+.umcImageUploader
+	.umcImage
+		display: flex
+		align-items: center
+		justify-content: center
+		position: relative
+		&Empty
+			background: var(--color-grey8)
+
+		img,
+		&Empty__message
+			position: absolute
+			padding-bottom: 50%
+			pointer-events: none
+
+	.dijitButton
+		font-size: 14px // TODO smaller than any of the 3 main font-sizes
+		margin-top: 1em
+
+		&:first-of-type
+			margin-right: var(--layout-spacing-unit)
