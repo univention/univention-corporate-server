@@ -706,7 +706,7 @@
 			<title>Other services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						The packages <package>univention-snmp</package> and <package>univention-snmpd</package> have been removed (<u:bug>52121</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
