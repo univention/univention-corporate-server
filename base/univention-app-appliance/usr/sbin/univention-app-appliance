@@ -117,7 +117,7 @@ def cache_portal(app):
 def configure_portal(app):
 	lo, po = udm_uldap.getMachineConnection()
 	udm_modules.update()
-	module = udm_modules.get('settings/portal')
+	module = udm_modules.get('portals/portal')
 	result = module.lookup(None, lo, 'cn=domain', base=UCR['ldap/base'], scope='sub')
 	if not result:
 		raise RuntimeError('Could not find UDM portal object!')
