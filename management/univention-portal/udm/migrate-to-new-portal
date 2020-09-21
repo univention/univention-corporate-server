@@ -149,6 +149,7 @@ def main(binddn, bindpwdfile):
 	else:
 		server = ucr["ldap/master"]
 		server_port = ucr["ldap/master/port"]
+		password = open(bindpwdfile).read().strip()
 		udm = UDM.credentials(binddn, password, server=server, port=server_port).version(2)
 
 	# clear_objects(udm, "portals/portal")
