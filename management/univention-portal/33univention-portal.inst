@@ -108,6 +108,8 @@ if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 	/usr/lib/univention-portal/migrate-to-new-portal "$@"
 fi
 
+systemctl restart univention-portal-server
+
 ldap_hostdn="$(ucr get ldap/hostdn)"
 role="$(ucr get server/role)"
 
