@@ -595,7 +595,7 @@
 			<title>Printing services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+						The package <package>univention-check-printers</package> for checking USB printers has been removed (<u:bug>52123</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
