@@ -257,8 +257,8 @@ class UCSRepoPool5(_UCSRepo):
         """
         return "{1}{0.major}{0.minor}{0.patchlevel}".format(self, "errata" if self.errata else "ucs")
 
-    def deb(self, server, type="deb"):
-        # type: (_UCSServer, str) -> str
+    def deb(self, server, type="deb", mirror=False):
+        # type: (_UCSServer, str, bool) -> str
         """
         Format for :file:`/etc/apt/sources.list`.
 
@@ -270,14 +270,17 @@ class UCSRepoPool5(_UCSRepo):
         >>> r=UCSRepoPool5(major=5, minor=1, patchlevel=0)
         >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/ ucs510 main'
+        >>> r.deb('https://updates.software-univention.de/', mirror=True)
+        'deb https://updates.software-univention.de/ ucs510 main main/debian-installer'
         >>> r=UCSRepoPool5(major=5, minor=1, patchlevel=0, errata=True)
         >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/ errata510 main'
         """
-        return "%s %s %s main" % (
+        return "%s %s %s %s" % (
             type,
             server,
             self._suite,
+            "main main/debian-installer" if mirror else "main",
         )
 
     def path(self, filename=None):

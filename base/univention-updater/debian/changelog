@@ -1,3 +1,9 @@
+univention-updater (15.0.0-9) unstable; urgency=low
+
+  * Bug #51588: Also mirror files for PXE network installation
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 21 Sep 2020 17:08:03 +0200
+
 univention-updater (15.0.0-8) unstable; urgency=medium
 
   * Bug #51531: re-evaluate startucsversion and enducsversion in
