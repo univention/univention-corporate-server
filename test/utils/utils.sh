@@ -611,8 +611,7 @@ run_tests () {
 	fi
 	if [ "$COVERAGE_REPORT" = "true" ]; then
 		GENERATE_COVERAGE_REPORT="--with-coverage --coverage-show-missing --coverage-output-directory=/var/log/univention/coverage"
-		install_with_unmaintained python-pip
-		pip install coverage
+		install_coverage
 	fi
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 
