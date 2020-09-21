@@ -47,7 +47,7 @@ define([
 
 		postMixInProperties: function() {
 			lang.mixin(this,{
-				helpText: _("You see the details of this printer and its print jobs. You can activate/deactivate the printer, edit its quota definitions if quota is enabled, and cancel print jobs."),
+				helpText: _("You see the details of this printer and its print jobs. You can activate/deactivate the printer, and cancel print jobs."),
 				headerText: _("Printer details")
 			});
 
@@ -66,7 +66,7 @@ define([
 
 			var f_layout = [
 				[ 'message' ],
-				[ 'activate', 'deactivate', 'editquota' ]
+				[ 'activate', 'deactivate' ]
 			];
 
 			var f_buttons = [{
@@ -90,13 +90,6 @@ define([
 							this._manage_callback(success,message);
 						})
 					);
-				})
-			}, {
-				name: 'editquota',
-				label: _("Edit quota"),
-				title: _("Edit quota related to this printer"),
-				onClick: lang.hitch(this, function() {
-					this.editQuota(this._printer_id);
 				})
 			}];
 
@@ -215,10 +208,6 @@ define([
 				txt += "<table>\n";
 				txt += "<tr><td style='" + st_l + "'>" + _("Server")		+ ":</td><td style='" + st_r + "'>" + res['server']			+ "</td></tr>\n";
 				txt += "<tr><td style='" + st_l + "'>" + _("Status")		+ ":</td><td style='" + st_r + "'>" + status				+ "</td></tr>\n";
-				// show this only if quota is enabled
-				if (res['quota']) {
-					txt += "<tr><td style='" + st_l + "'>" + _("Quota")		+ ":</td><td style='" + st_r + "'>" + _("active")		+ "</td></tr>\n";
-				}
 				txt += "<tr><td style='" + st_l + "'>" + _("Location")		+ ":</td><td style='" + st_r + "'>" + res['location']		+ "</td></tr>\n";
 				txt += "<tr><td style='" + st_l + "'>" + _("Description")	+ ":</td><td style='" + st_r + "'>" + res['description']	+ "</td></tr>\n";
 				txt += "</table>\n";
@@ -229,7 +218,6 @@ define([
 
 				this._show_button('activate',res['status'] == 'disabled');
 				this._show_button('deactivate',res['status'] == 'enabled');
-				this._show_button('editquota',res['quota']);
 			}), lang.hitch(this, function(data) {
 				this._grid.filter();		// clears stale grid data
 			}));
@@ -266,9 +254,5 @@ define([
 			this._head.getWidget('message').set('content','<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;');		// six empty lines
 			this._grid.filter();
 		},
-
-		// main module listens here to open the quota page.
-		editQuota: function(args) {
-		}
 	});
 });

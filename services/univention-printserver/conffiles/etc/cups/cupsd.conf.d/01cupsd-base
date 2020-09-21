@@ -167,7 +167,7 @@ LogLevel @%@cups/debug/level@%@
 #PreserveJobFiles No
 
 #
-# AutoPurgeJobs: automatically purge jobs when not needed for quotas.
+# AutoPurgeJobs: automatically purge jobs.
 # Default is No.
 #
 

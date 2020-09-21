@@ -109,16 +109,6 @@ define([
 					return _("unknown");
 				})
 			}, {
-				name: 'quota',
-				label: _("Quota"),
-				formatter: lang.hitch(this,function(value) {
-					if (value)		// only true or false?
-					{
-						return _("active");
-					}
-					return _("inactive");
-				})
-			}, {
 				name: 'location',
 				label: _("Location")
 			}, {
@@ -169,16 +159,6 @@ define([
 				}),
 				canExecute: lang.hitch(this, function(values) {
 					return (values.status == 'enabled');
-				})
-			}, {
-				name: 'editquota',
-				label: _("Edit quota"),
-				isStandardAction: false,
-				callback: lang.hitch(this,function(ids) {
-					this.editQuota(ids[0]);
-				}),
-				canExecute: lang.hitch(this,function(values) {
-					return (values.quota);	// true or false
 				})
 			}, {
 				name: 'refresh',
@@ -242,9 +222,5 @@ define([
 		// args can propagate the id of the printer to show
 		openDetail: function(args) {
 		},
-
-		// main module listens here to open the quota page.
-		editQuota: function(args) {
-		}
 	});
 });

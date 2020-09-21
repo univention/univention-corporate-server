@@ -13,12 +13,6 @@
 		<command name="printers/enable" function="enable_printer" />
 		<command name="printers/jobs/query" function="list_jobs" />
 		<command name="printers/jobs/cancel" function="cancel_jobs" />
-		<command name="printers/quota/query" function="list_quota" />
 		<command name="printers/users/query" function="list_users"/>
-		<!-- equally used to add or to edit an entry -->
-		<command name="printers/quota/set" function="set_quota" />
-		<!-- how about deleting an entry? -->
-		<!-- separate call: reset 'used' counter -->
-		<command name="printers/quota/reset" function="reset_quota" />
 	</module>
 </umc>

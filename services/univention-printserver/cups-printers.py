@@ -56,7 +56,7 @@ ldap_base = listener.baseConfig['ldap/base']
 name = 'cups-printers'
 description = 'Manage CUPS printer configuration'
 filter = '(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
-attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterPricePerPage', 'univentionPrinterPricePerJob', 'univentionPrinterQuotaSupport', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']
+attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterPricePerPage', 'univentionPrinterPricePerJob', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']
 
 EMPTY = ('',)
 reload_samba_in_postrun = None
@@ -111,22 +111,6 @@ def lpadmin(args):
 			fd.write('/usr/sbin/univention-lpadmin %s\n' % (' '.join(quoted_args),))
 
 
-def pkprinters(args):
-	args = [pipes.quote(x) for x in args]
-	listener.setuid(0)
-	try:
-		if os.path.exists("/usr/sbin/pkprinters"):
-			ud.debug(ud.LISTENER, ud.INFO, "cups-printers: pkprinters args=%s" % args)
-			os.system("/usr/sbin/pkprinters %s" % ' '.join(args))
-		elif os.path.exists("/usr/bin/pkprinters"):
-			ud.debug(ud.LISTENER, ud.INFO, "cups-printers: pkprinters args=%s" % args)
-			os.system("/usr/bin/pkprinters %s" % ' '.join(args))
-		else:
-			ud.debug(ud.LISTENER, ud.INFO, "cups-printers: pkprinters binary not found")
-	finally:
-		listener.unsetuid()
-
-
 def filter_match(object):
 	fqdn = ('%s.%s' % (hostname, domainname)).lower()
 	for host in object.get('univentionPrinterSpoolHost', ()):
@@ -155,7 +139,6 @@ def handler(dn, new, old):
 	need_to_reload_samba = False
 	need_to_reload_cups = False
 	printer_is_group = False
-	quota_support = False
 	samba_force_printername = listener.baseConfig.is_true('samba/force_printername', True)
 	global reload_samba_in_postrun
 	reload_samba_in_postrun = True
@@ -173,33 +156,21 @@ def handler(dn, new, old):
 
 		if 'univentionPrinterGroup' in old.get('objectClass', ()):
 			printer_is_group = True
-		if old.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
-			quota_support = True
 
 	if new:
 		if 'univentionPrinterGroup' in new.get('objectClass', ()):
 			printer_is_group = True
-		if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
-			quota_support = True
-		else:
-			quota_support = False
 
 	modified_uri = ''
 	for n in new.keys():
 		if new.get(n, []) != old.get(n, []):
 			changes.append(n)
 		if n == 'univentionPrinterURI':
-			if quota_support:
-				modified_uri = "cupspykota:%s" % new['univentionPrinterURI'][0]
-			else:
 				modified_uri = new['univentionPrinterURI'][0]
 	for o in old.keys():
 		if o not in changes and new.get(o, []) != old.get(o, []):
 			changes.append(o)
 		if o == 'univentionPrinterURI' and not modified_uri:
-			if quota_support:
-				modified_uri = "cupspykota:%s" % old['univentionPrinterURI'][0]
-			else:
 				modified_uri = old['univentionPrinterURI'][0]
 
 	options = {
@@ -231,11 +202,6 @@ def handler(dn, new, old):
 
 			# Deletions done via lpadmin
 			lpadmin(['-x', old['cn'][0]])
-			if old.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
-				if printer_is_group:
-					for member in old['univentionPrinterGroupMember']:
-						pkprinters(['--groups', old['cn'][0], '--remove', member])
-				pkprinters(['--delete', old['cn'][0]])
 			need_to_reload_samba = True
 
 		# Deletions done via editing the Samba config
@@ -323,36 +289,12 @@ def handler(dn, new, old):
 			else:  # Create new group
 				add = new['univentionPrinterGroupMember']
 
-			if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
-				pkprinters(["--add", "-D", description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
-				for member in new['univentionPrinterGroupMember']:
-					pkprinters(["--groups", new['cn'][0], member])
-			elif new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "0" and old:
-				for member in old['univentionPrinterGroupMember']:
-					pkprinters(['--groups', old['cn'][0], '--remove', member])
-
-			for add_member in add:  # Add Members
-				args += ['-p', add_member, '-c', new['cn'][0]]
-				if new.get('univentionPrinterQuotaSupport', EMPTY)[0] == "1":
-					pkprinters(["--groups", new['cn'][0], add_member])
-			if old:  # Remove Members
-				for rem_member in rem:
-					args += ['-p', rem_member, '-r', new['cn'][0]]
-					pkprinters(["--groups", new['cn'][0], "--remove", rem_member])
-
 			lpadmin(args)
 		# Add/Modify Printer
 		else:
 			args.append('-p')
 			args.append(new['cn'][0])
 			for a in changes:
-				if a == 'univentionPrinterQuotaSupport':
-					if new.get('univentionPrinterQuotaSupport'):
-						if new['univentionPrinterQuotaSupport'][0] == '1':
-							pkprinters(["--add", "-D", description, "--charge", "%s,%s" % (page_price, job_price), new['cn'][0]])
-						else:
-							pkprinters(['--delete', new['cn'][0]])
-
 				if a == 'univentionPrinterURI':
 					continue
 

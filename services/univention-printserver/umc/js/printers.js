@@ -36,13 +36,10 @@ define([
 	"umc/widgets/Module",
 	"umc/modules/printers/OverviewPage",
 	"umc/modules/printers/DetailPage",
-	"umc/modules/printers/QuotaPage",
 	"umc/i18n!umc/modules/printers"
-], function(declare, lang, aspect, tools, Module, OverviewPage, DetailPage, QuotaPage, _) {
+], function(declare, lang, aspect, tools, Module, OverviewPage, DetailPage, _) {
 
 	return declare("umc.modules.printers",  [ Module ], {
-
-		_quota_from_page:	'',			// remembers the page from which the 'editQuota' was called
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -50,7 +47,6 @@ define([
 			this._pages = {
 				'overview':		new OverviewPage(),
 				'detail':		new DetailPage(),
-				'quota':		new QuotaPage()
 			};
 
 			// forIn behaves like forEach just for dicts :) ... important it checks for hasOwnProperty!
@@ -64,22 +60,8 @@ define([
 				this._switch_page('detail',args);
 			}),true));
 
-			this.own(aspect.after(this._pages.overview,'editQuota',lang.hitch(this, function(args) {
-				this._quota_from_page = 'overview';
-				this._switch_page('quota',args);
-			}),true));
-
-			this.own(aspect.after(this._pages.detail,'editQuota',lang.hitch(this, function(args) {
-				this._quota_from_page = 'detail';
-				this._switch_page('quota',args);
-			}),true));
-
 			this.own(aspect.after(this._pages.detail,'closeDetail',lang.hitch(this, function(args) {
 				this._switch_page('overview',args);
-			}),true));
-
-			this.own(aspect.after(this._pages.quota,'closeQuota',lang.hitch(this, function(args) {
-				this._switch_page(this._quota_from_page,args);
 			}),true));
 
 			// ------------- work events: printer management ---------------
