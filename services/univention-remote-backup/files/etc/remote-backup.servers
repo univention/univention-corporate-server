@@ -1,6 +1,0 @@
-# hosts file for univention-remote-backup
-# <user>@<hostname>:<dir>,<dir2>,<dir3> [...]
-# <hostname>:<dir>,<dir2>,<dir3> [...]
-
-#ucs-slave:/etc,/home,/var/foo/bar
-

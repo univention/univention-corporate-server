@@ -696,6 +696,9 @@
 				<listitem><simpara>
 						The component package <package>univention-bacula</package> has been removed in favor of the different backup Apps available from &ucsAppC; (<u:bug>46588</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+						The package <package>univention-remote-backup</package> has been removed (<u:bug>52120</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
