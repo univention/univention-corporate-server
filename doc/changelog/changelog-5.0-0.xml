@@ -800,6 +800,9 @@
 			<listitem><simpara>
 				The package <package>dansguardian</package> has been removed (<u:bug>51483</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-debootstrap</package> has been removed(<u:bug>52124</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
