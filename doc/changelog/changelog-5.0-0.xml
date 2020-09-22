@@ -180,6 +180,9 @@
 					The diagnostic module <package>22_kdc_service</package> has been updated to work with <wordasword>pyasn1</wordasword> version 0.4 (<u:bug>51507</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					<package>Dojo</package> has been upgraded to Version 1.16.3 (<u:bug>48963</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
