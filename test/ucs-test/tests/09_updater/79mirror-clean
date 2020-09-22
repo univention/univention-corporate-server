@@ -26,15 +26,15 @@ setup_apache "" # setup server to / for ${repoprefix} and ${srcprefix}
 REPODIR="${REPODIR}/${srcprefix}"
 mkdir -p "${REPODIR}"
 
-mkpdir "${_version_version}-0" maintained all
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 BDIR+=("${DIR}")
-mkdeb "${pkgname}l" 2 all "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
-mkdeb "${pkgname}l" 1 all "${DIR_POOL}"
+mkdeb "${pkgname}ua" 2 all "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
 DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
 mksh "${DIR}" preup postup
 
-mkpdir "${_version_version}-0" maintained "${ARCH}"
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 BDIR+=("${DIR}")
 mkdeb "${pkgname}y" 2 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
@@ -43,11 +43,11 @@ DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
 
 minor+=1
 
-mkpdir "${major}.${minor}-0" maintained all
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 CDIR+=("${DIR}")
-mkdeb "${pkgname}l" 4 all "${DIR_POOL}"
+mkdeb "${pkgname}l" 4 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
-mkdeb "${pkgname}l" 3 all "${DIR_POOL}"
+mkdeb "${pkgname}l" 3 "${ARCH}" "${DIR_POOL}"
 DEBS+=("${DIR#${REPODIR}}${DEB#${BASEDIR}}")
 mksh "${DIR}" preup postup
 
@@ -63,7 +63,8 @@ config_mirror "/${srcprefix}" \
 	repository/online/server=localhost \
 	repository/online/port=80 \
 	repository/online/prefix="${repoprefix}" \
-	online/repository/clean=yes
+	online/repository/clean=yes \
+	repository/mirror/version/end="${major}.${minor}-0"
 if ! "${FIXED_18225}"
 then
 	mkdir -p "${BASEDIR}/mirror/mirror"
@@ -71,13 +72,13 @@ then
 	ln -s . "${BASEDIR}/mirror/mirror/${srcprefix}"
 fi
 
-REPO="${_version_version}/maintained/${_version_version}-0/all"
+REPO="pool/main"
 CLEAN="${BASEDIR}/mirror/var/clean.sh"
 
 (
 	set -e
 	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}"
-	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${_version_version}/maintained/${_version_version}-0/" /etc/apt/mirror.list
+	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/" /etc/apt/mirror.list
 	univention-repository-update net
 	ucr commit /etc/apt/sources.list.d/*.list
 	if "${CHECK_INSTALL}"
@@ -87,22 +88,28 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 		dpkg-query -W "${pkgname}l" | grep -Fqx "${pkgname}l	2"
 		dpkg-query -W "${pkgname}y" | grep -Fqx "${pkgname}y	2"
 	fi
-	touch "${BASEDIR}/mirror/mirror/${REPO}/obsolete_1.0-all.deb"
+	mkdir -p "${BASEDIR}/mirror/mirror/${REPO}/o"
+	touch "${BASEDIR}/mirror/mirror/${REPO}/o/obsolete_1.0-all.deb"
 	touch "${BASEDIR}/mirror/mirror/${REPO}/obsolete.txt"
 
+	# apt-mirror doesn't follow symlinks for cleaning
+	rm "${BASEDIR}/mirror/mirror/${srcprefix}"
+	mkdir "${BASEDIR}/mirror/mirror/${srcprefix}"
+	cp -r "${BASEDIR}/mirror/mirror/pool" "${BASEDIR}/mirror/mirror/${srcprefix}/"
+	cp -r "${BASEDIR}/mirror/mirror/dists" "${BASEDIR}/mirror/mirror/${srcprefix}/"
+	cp -r "${BASEDIR}/mirror/mirror/releases.json" "${BASEDIR}/mirror/mirror/${srcprefix}/"
 	# Since UCS-3.0 the local repo is no longer updater automatically
 	univention-repository-update net
 	/usr/share/univention-updater/univention-updater local
 	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
-	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${_version_version}/maintained/${_version_version}-0/" /etc/apt/mirror.list
-	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/${major}.${minor}/maintained/${major}.${minor}-0/" /etc/apt/mirror.list
+	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/" /etc/apt/mirror.list
 
 	# preup and postup scripts must not be cleaned
 	grep -Eq "/(pre|post)up.sh['\"]" "${CLEAN}" && false
 	"$FIXED_39582" &&
 		grep -Eq "/(pre|post)up.sh\.gpg['\"]" "${CLEAN}" && false
 	# other unreferenced files should be cleaned
-	grep -Fq "${REPO}/obsolete_1.0-all.deb" "${CLEAN}" || false
+	grep -Fq "${REPO}/o/obsolete_1.0-all.deb" "${CLEAN}" || false
 	grep -Fq "${REPO}/obsolete.txt" "${CLEAN}" || false
 	# unreferenced packages must not be mirrored
 	for deb in "${DEBS[@]}"
