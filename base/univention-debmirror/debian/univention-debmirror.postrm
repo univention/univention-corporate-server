@@ -29,7 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
 if [ "$1" = "remove" ]; then
     /etc/init.d/apache2 reload || true
 fi

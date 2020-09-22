@@ -37,7 +37,7 @@ eval "$(univention-config-registry shell)"
 #DEBHELPER#
 
 # activate local repository on installation only
-if [ "$1" = "configure" -a -z "$2" ]; then
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	univention-config-registry set local/repository?yes
 fi
 
