@@ -4,6 +4,7 @@
 ## roles:
 ##  - domaincontroller_master
 ## tags:
+##  - SKIP
 ##  - skip_admember
 ## join: true
 ## exposure: dangerous

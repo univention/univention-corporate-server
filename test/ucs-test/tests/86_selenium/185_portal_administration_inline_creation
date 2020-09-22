@@ -43,17 +43,17 @@ class UMCTester(object):
 		logger.info('Creating dummy portal')
 		self.dummy_portal_title = uts.random_string()
 		self.dummy_portal_dn = self.udm_test.create_object(
-			'settings/portal',
+			'portals/portal',
 			name=uts.random_string(),
-			displayName=['en_US ' + self.dummy_portal_title]
+			displayName=['en_US ' + self.dummy_portal_title],
+			portalComputers=[ucr.get('ldap/hostdn')],
 		)
-		logger.info('Saving previous set portal of host')
+		logger.info('Saving previously set portalComputers of main portal')
 		udm = UDM.admin().version(1)
-		machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
-		self.previous_portal = machine.props.portal
-		logger.info('Setting dummy portal as portal for host')
-		machine.props.portal = self.dummy_portal_dn
-		machine.save()
+		portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
+		self.prev_comps = portal.props.portalComputers
+		portal.props.portalComputers = []
+		portal.save()
 
 	def do_test(self):
 		self.selenium.do_login()
@@ -62,11 +62,9 @@ class UMCTester(object):
 		self.selenium.driver.get(self.selenium.base_url)
 		self.selenium.wait_for_text(self.dummy_portal_title)
 
-		logger.info('Check if inline edit is active')
-		self.selenium.wait_until_element_visible('//div[@class="portalEditFloatingButton"]')
 		logger.info('Enter edit mode')
-		self.selenium.click_element('//div[@class="portalEditFloatingButton"]')
-		time.sleep(2)  # css transition
+		self.selenium.click_element(expand_path('//*[@containsClass="iconMenu"]'))
+		self.selenium.click_button(_('Edit Portal'))
 
 		udm = UDM.admin().version(1)
 		logger.info('Create category')
@@ -81,13 +79,14 @@ class UMCTester(object):
 		self.selenium.click_button('Save')
 		self.selenium.wait_until_all_dialogues_closed()
 		self.selenium.wait_until_all_standby_animations_disappeared()
+
 		logger.info('Check if the category was created')
 		try:
-			self.selenium.driver.find_element_by_xpath('//h2[text()="%s"]' % (cat_dname))
-			udm.obj_by_dn('cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
+			self.selenium.wait_until_element_visible('//h2[text()="%s"]' % (cat_dname), timeout=10)
+			udm.obj_by_dn('cn=%s,cn=category,cn=portals,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
 		except NoSuchElementException:
 			try:
-				udm.obj_by_dn('cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
+				udm.obj_by_dn('cn=%s,cn=category,cn=portals,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base']))
 			except NoObject:
 				raise CreationError('Creation of the settings/portal_category UDM object failed')
 			raise CreationError('A settings/portal_category UDM object was created but the category was not immediately visible in the portal')
@@ -95,7 +94,11 @@ class UMCTester(object):
 			raise CreationError('Creation of the settings/portal_category UDM object failed')
 
 		logger.info('Create entry')
-		self.selenium.click_element(expand_path('//h2[text()="%s"]/following-sibling::*[1]//*[@containsClass="addEntryTile"]' % (cat_dname)))
+		self.selenium.click_element(expand_path('//h2[text()="%s"]/following-sibling::*[1]//*[@containsClass="portalAddEntryButton"]' % (cat_dname)))
+		self.selenium.wait_for_text('Add entry')
+		self.selenium.click_text('Add entry')
+		self.selenium.wait_for_text('Create new entry')
+		self.selenium.click_text('Create new entry')
 		self.selenium.wait_for_text('Internal name *')
 		self.entry_name = uts.random_string()
 		entry_dname = uts.random_string()
@@ -112,11 +115,11 @@ class UMCTester(object):
 		self.selenium.wait_until_all_standby_animations_disappeared()
 		logger.info('Check if the entry was created')
 		try:
-			self.selenium.driver.find_element_by_xpath(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="umcGalleryNameContent"][text()="%s"]' % (cat_dname, entry_dname)))
-			udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
+			self.selenium.wait_until_element_visible(expand_path('//h2[text()="%s"]/following-sibling::*//*[@containsClass="tile__name"][text()="%s"]' % (cat_dname, entry_dname)), timeout=10)
+			udm.obj_by_dn('cn=%s,cn=entry,cn=portals,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
 		except NoSuchElementException:
 			try:
-				udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
+				udm.obj_by_dn('cn=%s,cn=entry,cn=portals,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base']))
 			except NoObject:
 				raise CreationError('Creation of the settings/portal_entry UDM object failed')
 			raise CreationError('A settings/portal_entry UDM object was created but the entry was not immediately visible in the portal')
@@ -129,20 +132,20 @@ class UMCTester(object):
 		udm = UDM.admin().version(1)
 		if hasattr(self, 'cat_name'):
 			try:
-				udm.obj_by_dn('cn=%s,cn=categories,cn=portal,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base'])).delete()
+				udm.obj_by_dn('cn=%s,cn=category,cn=portals,cn=univention,%s' % (self.cat_name, self.ucr['ldap/base'])).delete()
 			except Exception:
 				pass
 		if hasattr(self, 'entry_name'):
 			try:
-				udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base'])).delete()
+				udm.obj_by_dn('cn=%s,cn=entry,cn=portals,cn=univention,%s' % (self.entry_name, self.ucr['ldap/base'])).delete()
 			except Exception:
 				pass
-		if hasattr(self, 'previous_portal'):
-			logger.info('Restore previously set portal on host')
+		if hasattr(self, 'prev_comps'):
+			logger.info('Restore previously set portalComputers on main portal')
 			udm = UDM.admin().version(1)
-			machine = udm.obj_by_dn(self.ucr['ldap/hostdn'])
-			machine.props.portal = self.previous_portal
-			machine.save()
+			portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
+			portal.props.portalComputers = self.prev_comps
+			portal.save()
 
 
 if __name__ == '__main__':

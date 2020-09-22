@@ -38,19 +38,21 @@ class UMCTester(object):
 			self.cleanup()
 
 	def init(self):
-		logger.info('Saving previous set portal of host')
+		logger.info('Saving previously set portalComputers of main portal')
 		self.udm = UDM.admin().version(1)
-		host = self.udm.obj_by_dn(self.ucr['ldap/hostdn'])
-		self.previous_portal = host.props.portal
-	
+		portal = self.udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
+		self.prev_comps = portal.props.portalComputers
+		portal.props.portalComputers = []
+		portal.save()
+
 	def do_test(self):
 		self.selenium.do_login()
 
 		logger.info('Create portal via UMC and set this host as server')
 		self.portals = selenium_udm.Portals(self.selenium)
-		self.selenium.open_module('Portal settings')
+		self.selenium.open_module('Portal')
 		self.portal_name = self.portals.add(hostname=self.ucr.get('hostname'))
-		portal_dname = list(self.udm.get('settings/portal').search('name={}'.format(self.portal_name)))[0].props.displayName['en_US']
+		portal_dname = list(self.udm.get('portals/portal').search('name={}'.format(self.portal_name)))[0].props.displayName[0][1]  # FIXME displayName is not converted to dict
 		logger.info('Visiting portal')
 		self.selenium.driver.get(self.selenium.base_url)
 		try:
@@ -58,20 +60,20 @@ class UMCTester(object):
 		except TimeoutException:
 			raise PortalNotSetException('The portal added via UMC is not visible')
 
-
 	def cleanup(self):
 		logger.info('Cleanup')
 		if hasattr(self, 'portal_name'):
 			logger.info('Delete portal created via UMC')
 			try:
-				self.udm.obj_by_dn('cn=%s,cn=portal,cn=univention,%s' % (self.portal_name, self.ucr.get('ldap/base'))).delete()
+				self.udm.obj_by_dn('cn=%s,cn=portal,cn=portals,cn=univention,%s' % (self.portal_name, self.ucr.get('ldap/base'))).delete()
 			except Exception:
 				pass
-		if hasattr(self, 'previous_portal'):
-			logger.info('Restore previously set portal on host')
-			host = self.udm.obj_by_dn(self.ucr['ldap/hostdn'])
-			host.props.portal = self.previous_portal
-			host.save()
+		if hasattr(self, 'prev_comps'):
+			logger.info('Restore previously set portalComputers on main portal')
+			udm = UDM.admin().version(1)
+			portal = udm.obj_by_dn('cn=domain,cn=portal,cn=portals,cn=univention,{}'.format(ucr.get('ldap/base')))
+			portal.props.portalComputers = self.prev_comps
+			portal.save()
 
 
 if __name__ == '__main__':

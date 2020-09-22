@@ -24,6 +24,7 @@ class UMCTester(object):
 		expected_entries_map = {
 			'domaincontroller_master_single': [
 				(_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
+				(_('Administration'), _('Univention Blog'), _(''),),
 			],
 			'domaincontroller_master_multi': [
 				(_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
@@ -48,9 +49,7 @@ class UMCTester(object):
 		for entry in expected_entries:
 			self.selenium.wait_for_text(entry[1])
 			print("Looking under category '%s' for entry with name '%s'" % (entry[0], entry[1]))
-			self.selenium.driver.find_element_by_xpath('//*[@class = "portalCategory"]/h2[text() = "%s"]/..//*[@class = "umcGalleryNameContent"][text() = "%s"]' % (entry[0], entry[1]))
-			print("Looking under category '%s' for entry with description '%s'" % (entry[0], entry[2]))
-			self.selenium.driver.find_element_by_xpath('//*[@class = "portalCategory"]/h2[text() = "%s"]/..//*[@class = "appHover"]//*[text() = "%s"]' % (entry[0], entry[2]))
+			self.selenium.driver.find_element_by_xpath('//*[@class = "portal__category"]/h2[text() = "%s"]/..//*[@class = "tile__name"][text() = "%s"]' % (entry[0], entry[1]))
 
 	def go_to_portal(self, url):
 		print("Going to portal of: %s" % (url))
