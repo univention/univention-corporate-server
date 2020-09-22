@@ -5,8 +5,8 @@ Type=str
 Categories=service-bind,system-services
 
 [dns/backend]
-Description[de]=Bind kann verschiedene Backends für seine Konfigurationsdateien verwenden: 'ldap' konfiguriert die Verwendung des UCS-OpenLDAP-Verzeichnis. 'samba4' verwendet die Samba-interne LDB-Datenbank. Bei Verwendung des Samba-Backends wird für jede DNS-Anfrage eine Suche im LDAP durchgeführt. Bei Verwendung des OpenLDAP-Backends wird nur bei Änderungen der DNS-Daten im Verzeichnisdienst gesucht. Auf Domänencontrollern, auf denen samba4 läuft, darf der Wert nicht auf 'ldap' gesetzt werden.
-Description[en]=Bind can use different backends for its configuration: 'ldap' configures the use of the UCS OpenLDAP directory. 'samba4' uses the Samba 4 LDB database. When using the Samba backend, a search is performed in the LDAP for every DNS request. With the OpenLDAP backend, a search is only performed in the directory service if the DNS data has changed. On domain controllers running 'samba4', the backend must not be changed to 'ldap'.
+Description[de]=Bind kann verschiedene Backends für seine Konfigurationsdateien verwenden: 'ldap' konfiguriert die Verwendung des UCS-OpenLDAP-Verzeichnis. 'samba4' verwendet die Samba-interne LDB-Datenbank. Bei Verwendung des Samba-Backends wird für jede DNS-Anfrage eine Suche im LDAP durchgeführt. Bei Verwendung des OpenLDAP-Backends wird nur bei Änderungen der DNS-Daten im Verzeichnisdienst gesucht. Auf Directory Nodes, auf denen samba4 läuft, darf der Wert nicht auf 'ldap' gesetzt werden.
+Description[en]=Bind can use different backends for its configuration: 'ldap' configures the use of the UCS OpenLDAP directory. 'samba4' uses the Samba 4 LDB database. When using the Samba backend, a search is performed in the LDAP for every DNS request. With the OpenLDAP backend, a search is only performed in the directory service if the DNS data has changed. On Directory Nodes running 'samba4', the backend must not be changed to 'ldap'.
 Type=str
 Categories=Network
 

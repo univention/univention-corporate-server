@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-24 14:15+0100\n"
+"POT-Creation-Date: 2020-09-22 22:18+0200\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -43,7 +43,7 @@ msgstr "Suchbegriff"
 msgid "Search"
 msgstr "Suchen"
 
-#: umc/js/pkgdb.js:46
+#: umc/js/pkgdb.js:48
 msgid "Search UCS systems"
 msgstr "Suche nach UCS-Systemen"
 
@@ -51,7 +51,7 @@ msgstr "Suche nach UCS-Systemen"
 msgid "Search for:"
 msgstr "Suche nach:"
 
-#: umc/js/pkgdb.js:52
+#: umc/js/pkgdb.js:55
 msgid "Search software packages"
 msgstr "Suche nach Software-Paketen"
 

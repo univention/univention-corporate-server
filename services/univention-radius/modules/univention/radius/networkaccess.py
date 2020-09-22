@@ -81,7 +81,7 @@ def get_ldapConnection():
 		# try ldap/server/name, then each of ldap/server/addition
 		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
 	except SERVER_DOWN:
-		# then master dc
+		# then primary directory node
 		ldapConnection = univention.uldap.getMachineConnection()
 	return ldapConnection
 

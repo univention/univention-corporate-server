@@ -1,3 +1,9 @@
+univention-samba (14.0.0-2) unstable; urgency=medium
+
+  * Bug #42374: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Sep 2020 22:45:20 +0200
+
 univention-samba (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

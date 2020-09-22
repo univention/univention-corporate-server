@@ -1,3 +1,9 @@
+univention-bind (14.0.0-8) unstable; urgency=medium
+
+  * Bug #42374: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Sep 2020 23:25:19 +0200
+
 univention-bind (14.0.0-7) unstable; urgency=low
 
   * Bug #32188: Remove UCRV dns/master/port

@@ -694,7 +694,7 @@ exit_on_slave_if_no_s4_connector_on_master_or_backup()
 		"(&(univentionService=S4 Connector)(|(univentionServerRole=master)(univentionServerRole=backup)))" cn \
 		| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
 	if [ -z "$s4connectorservicedcs" ]; then
-		echo "ERROR: No S4 Connector installed yet on DC Master or DC Backup."
+		echo "ERROR: No S4 Connector installed yet on Primary or Backup Directory Node."
 		exit 1
 	fi
 }

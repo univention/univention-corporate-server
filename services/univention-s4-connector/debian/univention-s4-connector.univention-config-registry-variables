@@ -257,8 +257,8 @@ Type=str
 Categories=service-s4con
 
 [connector/ldap/server]
-Description[de]=Der vollständige Rechnername (FQDN) des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'connector/s4/mapping/syncmode' auf 'write' gesetzt ist.
-Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the master domain controller will be used. This value should only by changed if 'connector/s4/mapping/syncmode' is set to 'write'.
+Description[de]=Der vollständige Rechnername (FQDN) des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Primary Directory Node verwendet. Der Wert sollte nur angepasst werden, wenn 'connector/s4/mapping/syncmode' auf 'write' gesetzt ist.
+Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the Primary Directory Node will be used. This value should only by changed if 'connector/s4/mapping/syncmode' is set to 'write'.
 Type=str
 Categories=service-s4con
 

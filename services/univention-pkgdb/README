@@ -12,7 +12,7 @@ Installationsstatus ist Install/Removed/Purged/... was (dpkg -l so sagt).
 Die Paket-Status-DB wird in zwei Debian-Pakete aufgeteilt.
 
 1. DB+Webinferface
-Auf den Master wird eine DB installiert, die folgende Daten enthalten soll:
+Auf dem Primary wird eine DB installiert, die folgende Daten enthalten soll:
 
 a) Liste der zu betrachtenen Rechner und deren Info.
 b) Liste der möglichen Pakete und deren Info.
@@ -40,5 +40,5 @@ Optimal werden diese Scripte in dpkg (oder APT) eingebunden.
 Die Scripte schreiben mit dem Rechneraccount in die Datenbank.
 
 
-Die Datenbank kann erstmal nur auf DC Master/DC Backup oder
-Memberserver mit ldap/server/name auf DC Master oder DC Backup installiert werden.
+Die Datenbank kann erstmal nur auf Primary / Backup Directory Node oder
+Managed Node mit ldap/server/name auf Primary / Backup Directory Node installiert werden.

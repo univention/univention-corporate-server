@@ -33,7 +33,7 @@
 #
 
 # this is just a "one-shot", non-packaged script
-# that generates the DiaryEvent objects on a live UCS Master
+# that generates the DiaryEvent objects on a live UCS Primary
 # python $0 2> errors >> /usr/lib/python2.7/dist-packages/univention/admindiary/events.py
 
 from __future__ import print_function

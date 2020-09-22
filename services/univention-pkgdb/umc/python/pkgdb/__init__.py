@@ -170,14 +170,14 @@ LABELS = {
 	'sysversion_lower': _("UCS Version is lower than"),
 	'all_properties': _("All properties"),
 	# ----------- server roles --------------------
-	'domaincontroller_master': _("Domain controller Master"),
-	'domaincontroller_backup': _("Domain controller Backup"),
-	'domaincontroller_slave': _("Domain controller Slave"),
-	'memberserver': _("Member Server"),
+	'domaincontroller_master': _("Primary Directory Node"),
+	'domaincontroller_backup': _("Backup Directory Node"),
+	'domaincontroller_slave': _("Replica Directory Node"),
+	'memberserver': _("Managed Node"),
 	# ------------------ selection states --------------
 	'install': _("Install"),
 	'hold': _("Hold"),
-	'deinstall': _("Deinstall"),
+	'deinstall': _("Uninstall"),
 	'purge': _("Purge"),
 	'unknown': _("Not installed"),
 	# ----------------- installation states ------------

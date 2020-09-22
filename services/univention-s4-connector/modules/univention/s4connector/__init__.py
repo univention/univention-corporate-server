@@ -1374,7 +1374,7 @@ class ucs:
 		if property_type == 'windowscomputer':
 			# Special handling for windows computer:
 			#  In AD the computer is a windows computer in UCS the computer is a DC.
-			#  If Samba 4 will be installed on the Slave, Samba 4 deletes the object
+			#  If Samba 4 will be installed on the Replica, Samba 4 deletes the object
 			#  and this deletion must not be synced to OpenLDAP.
 			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=35563
 			try:
@@ -1384,7 +1384,7 @@ class ucs:
 				return True
 
 			if 'univentionDomainController' in result[0][1].get('objectClass'):
-				ud.debug(ud.LDAP, ud.PROCESS, "The windows computer %s is a Domain Controller in OpenLDAP. The deletion will be skipped." % object['dn'])
+				ud.debug(ud.LDAP, ud.PROCESS, "The windows computer %s is a Directory Node in OpenLDAP. The deletion will be skipped." % object['dn'])
 				return True
 
 		try:

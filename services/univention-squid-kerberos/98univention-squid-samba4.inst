@@ -180,7 +180,7 @@ if [ "$cn" = "$hostname" -a "$samba4_role" != "RODC" ]; then
 	chown proxy "$keytab_path"
 
 else
-	### in this case we are not a Samba4-DC, i.e. we are a samba3 UCS memberserver in a Samba 4 domain
+	### in this case we are not a Samba4-DC, i.e. we are a samba3 UCS Managed Node in a Samba 4 domain
 
 	## using ldap-tools here
 	## ldbmodify might be an option, depends on package ldb-tools

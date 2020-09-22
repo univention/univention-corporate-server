@@ -126,13 +126,13 @@ def run_postchange():
 				process.wait()
 		else:
 			# don't touch anything, just issue a warning
-			sys.stdout.write("WARNING: samba/user is expected to be set to the ldap/hostdn on UCS DC Slaves and UCS Memberservers.\n")
+			sys.stdout.write("WARNING: samba/user is expected to be set to the ldap/hostdn on UCS Replica Directory Nodes and UCS Managed Nodes.\n")
 			sys.stdout.write("WARNING: samba/user is '%s' instead, skipping update of idmap secrets.\n" % samba_user)
 	else:
 		# don't touch anything, just check that things are sane:
 		default_samba_user = "cn=admin,%s" % ldap_base
 		if samba_user != default_samba_user:
-			special_dc_roles = {'domaincontroller_master': 'UCS DC Master', 'domaincontroller_backup': 'UCS DC Backup'}
+			special_dc_roles = {'domaincontroller_master': 'UCS Primary Directory Node', 'domaincontroller_backup': 'UCS Backup Directory Node'}
 			if server_role in special_dc_roles:
 				sys.stdout.write("WARNING: samba/user is expected to be set to the %s on a %s.\n" % (default_samba_user, special_dc_roles[server_role]))
 				sys.stdout.write("WARNING: samba/user is '%s' instead. Anyway, this is just a warning.\n" % samba_user)

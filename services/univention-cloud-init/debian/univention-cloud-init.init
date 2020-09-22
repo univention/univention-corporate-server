@@ -53,7 +53,7 @@ case "$1" in
 					/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount $(</var/cache/univention-system-setup/dcaccount) --password_file /var/cache/univention-system-setup/dcpw >>/var/log/univention/setup.log 2>&1
 					rm /var/cache/univention-system-setup/dcaccount /var/cache/univention-system-setup/dcpw
 				else
-					log_action_msg "$(date --rfc-3339=seconds) Found profile: Starting UCS master join"
+					log_action_msg "$(date --rfc-3339=seconds) Found profile: Starting UCS Primary join"
 					/usr/lib/univention-system-setup/scripts/setup-join.sh >>/var/log/univention/setup.log 2>&1
 				fi
 

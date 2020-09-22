@@ -239,8 +239,8 @@ Type=bool
 Categories=service-adcon
 
 [con.*/ldap/server]
-Description[de]=Der Fully Qualified Domain Name des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'con*/ad/mapping/syncmode' auf 'write' gesetzt ist.
-Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the master domain controller will be used. This value should only by changed if 'con*/ad/mapping/syncmode' is set to 'write'.
+Description[de]=Der Fully Qualified Domain Name des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Primary Directory Node verwendet. Der Wert sollte nur angepasst werden, wenn 'con*/ad/mapping/syncmode' auf 'write' gesetzt ist.
+Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the Primary Directory Node will be used. This value should only by changed if 'con*/ad/mapping/syncmode' is set to 'write'.
 Type=str
 Categories=service-adcon
 

@@ -397,7 +397,7 @@ class Instance(Base, ProgressMixin):
 			admember.check_ad_account(ad_domain_info, username, password)
 		except admember.invalidUCSServerRole as exc:  # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_Error(_('The AD member mode can only be configured on a DC master server.'))
+			raise UMC_Error(_('The AD member mode can only be configured on a Primary Directory Node.'))
 		except admember.failedADConnect as exc:  # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, 'check_domain: %s' % (exc,)))

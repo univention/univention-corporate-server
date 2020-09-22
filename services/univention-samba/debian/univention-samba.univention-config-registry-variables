@@ -89,8 +89,8 @@ Type=str
 Categories=service-samba
 
 [samba/ldap/replication/sleep]
-Description[de]=Versucht Samba einen Schreibzugriff auf einen UCS-Domänencontroller mit einer Readonly-Kopie des LDAP-Verzeichnisses (also DC Backup und DC Slave), wird der Zugriff an den Domänencontroller Master weitergereicht. Die Änderung erreicht den lokalen Server dann im Rahmen der UCS-Listener-Notifer-Replikation. Im Rahmen von Domänenbeitritten kann es zu Problemen kommen, da der Client eine Erfolgsmeldung des Schreibzugriffs erhalten hat, die Änderung aber noch nicht im lokalen LDAP vorhanden ist. Diese Variable konfiguriert eine Zeitdauer in Millisekunden, die gewartet wird, bis die replizierten Daten übertragen wurden.
-Description[en]=If Samba attempts a write change to a UCS domain controller with a readonly copy of the LDAP directory (i.e. backup DC or slave DC) the change is redirected to the master domain controller. The change is transferred to the local server through the UCS listener / notifier replication. This may cause problems during domain joins since the client gets the success message on the LDAP write, but the data may not be present in the local LDAP yet. This variable configures a time frame in milliseconds, which is waited until the data is replicated.
+Description[de]=Versucht Samba einen Schreibzugriff auf einen UCS-Directory Node mit einer Readonly-Kopie des LDAP-Verzeichnisses (also Backup und Replica Directory Node), wird der Zugriff an den Primary Directory Node weitergereicht. Die Änderung erreicht den lokalen Server dann im Rahmen der UCS-Listener-Notifer-Replikation. Im Rahmen von Domänenbeitritten kann es zu Problemen kommen, da der Client eine Erfolgsmeldung des Schreibzugriffs erhalten hat, die Änderung aber noch nicht im lokalen LDAP vorhanden ist. Diese Variable konfiguriert eine Zeitdauer in Millisekunden, die gewartet wird, bis die replizierten Daten übertragen wurden.
+Description[en]=If Samba attempts a write change to a UCS Directory Node with a readonly copy of the LDAP directory (i.e. Backup or Replica Directory Node) the change is redirected to the Primary Directory Node. The change is transferred to the local server through the UCS listener / notifier replication. This may cause problems during domain joins since the client gets the success message on the LDAP write, but the data may not be present in the local LDAP yet. This variable configures a time frame in milliseconds, which is waited until the data is replicated.
 Type=int
 Categories=service-samba
 
@@ -251,14 +251,14 @@ Type=str
 Categories=service-samba
 
 [samba/netlogon/sync]
-Description[de]=Mit dieser Variable wird konfiguriert, wie das Netlogon-Verzeichnis des DC Master auf DC Backup/Slave-Systeme synchronisiert wird. Die folgenden Werte sind möglich: 'sync' synchronisiert die Dateien vom Master und löscht Skripte, die auf dem Master nicht mehr vorhanden sind. 'download' synchronisiert die Dateien vom Master, entfernt aber keine obsoleten Dateien. 'none' deaktiviert die Synchronisation. Ist die Variable nicht gesetzt, gilt 'sync'.
-Description[en]=This variable configures the synchronisation of the netlogon share from the DC master to DC backup/slave systems. The following values are possible: 'sync' synchronises the files from the master and removes scripts which are no longer present on the master. 'download' synchronises the files, but doesn't remove obsolete files. 'none' disables the synchronisation. If the variable is unset, 'sync' applies.
+Description[de]=Mit dieser Variable wird konfiguriert, wie das Netlogon-Verzeichnis des Primary Directory Node auf Backup/Replica Directory Nodes synchronisiert wird. Die folgenden Werte sind möglich: 'sync' synchronisiert die Dateien vom Primary und löscht Skripte, die auf dem Primary nicht mehr vorhanden sind. 'download' synchronisiert die Dateien vom Primary, entfernt aber keine obsoleten Dateien. 'none' deaktiviert die Synchronisation. Ist die Variable nicht gesetzt, gilt 'sync'.
+Description[en]=This variable configures the synchronisation of the netlogon share from the Primary Directory Noder to Backup/Replica Directory Nodes. The following values are possible: 'sync' synchronises the files from the Primary and removes scripts which are no longer present on the Primary. 'download' synchronises the files, but doesn't remove obsolete files. 'none' disables the synchronisation. If the variable is unset, 'sync' applies.
 Type=str
 Categories=service-samba
 
 [samba/domain/logons]
-Description[de]=Wird die Variable auf 'no' gesetzt, stellt ein UCS-Domänencontroller keine Anmeldedienste bereit. Dies kann sinnvoll sein, wenn ein solches System nur als Fileserver eingesetzt wird.
-Description[en]=If the variable is set to 'no', a UCS domain controller provides no authentication services. This can be useful for systems, which should only operate as file servers.
+Description[de]=Wird die Variable auf 'no' gesetzt, stellt ein UCS-Directory Node keine Anmeldedienste bereit. Dies kann sinnvoll sein, wenn ein solches System nur als Fileserver eingesetzt wird.
+Description[en]=If the variable is set to 'no', a UCS Directory Node provides no authentication services. This can be useful for systems, which should only operate as file servers.
 Type=str
 Categories=service-samba
 
@@ -281,8 +281,8 @@ Type=str
 Categories=service-samba
 
 [samba/memberserver/passdb/ldap]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, verwendet Samba auf UCS-Memberservern nicht Winbind als Datenbackend, sondern direkt das UCS-LDAP. Ist die Variable nicht gesetzt, wird Winbind verwendet.
-Description[en]=If this variable is set to 'yes', Samba directly uses the UCS LDAP instead of Winbind as the data backend on UCS member servers. If the variable is unset, Winbind is used.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, verwendet Samba auf UCS-Managed Nodes nicht Winbind als Datenbackend, sondern direkt das UCS-LDAP. Ist die Variable nicht gesetzt, wird Winbind verwendet.
+Description[en]=If this variable is set to 'yes', Samba directly uses the UCS LDAP instead of Winbind as the data backend on UCS Managed Nodes. If the variable is unset, Winbind is used.
 Type=str
 Categories=service-samba
 
@@ -293,14 +293,14 @@ Type=str
 Categories=service-samba
 
 [samba/auth/methods]
-Description[de]=Diese Variable konfiguriert die Authentifizierungsmethoden auf einem Memberserver während der Benutzeranmeldung. Mögliche Werte sind in 'man smb.conf' unter 'auth methods' dokumentiert. Ist die Variable nicht gesetzt, gilt 'guest sam winbind'.
-Description[en]=This variable configures what authentication methods Samba will use when authenticating a user on a member server. Possible values are documented in 'man smb.conf' under 'auth methods'. If the variable is unset, 'guest sam winbind' applies.
+Description[de]=Diese Variable konfiguriert die Authentifizierungsmethoden auf einem Managed Node während der Benutzeranmeldung. Mögliche Werte sind in 'man smb.conf' unter 'auth methods' dokumentiert. Ist die Variable nicht gesetzt, gilt 'guest sam winbind'.
+Description[en]=This variable configures what authentication methods Samba will use when authenticating a user on a Managed Node. Possible values are documented in 'man smb.conf' under 'auth methods'. If the variable is unset, 'guest sam winbind' applies.
 Type=str
 Categories=service-samba
 
 [samba/domain/security]
-Description[de]=Diese Variable konfiguriert den Security-Modus auf einem UCS-Memberserver. In einer Samba 3-Domäne sollte 'domain' und in einer Samba 4-Domäne 'ads' verwendet werden.
-Description[en]=This variable configures the security mode on a UCS member server. In a Samba 3 domain 'domain' should be used and in a Samba 4 domain 'ads' should be used.
+Description[de]=Diese Variable konfiguriert den Security-Modus auf einem UCS-Managed Node. In einer Samba 3-Domäne sollte 'domain' und in einer Samba 4-Domäne 'ads' verwendet werden.
+Description[en]=This variable configures the security mode on a UCS Managed Node. In a Samba 3 domain 'domain' should be used and in a Samba 4 domain 'ads' should be used.
 Type=str
 Categories=service-samba
 

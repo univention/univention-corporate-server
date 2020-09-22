@@ -189,7 +189,7 @@ if [ "$samba_role" = "domaincontroller" ]; then
 fi
 
 # Join as ADS member if the S4 connector is installed
-#                    or if the UCS Master claims to be a AD Memberserver
+#                    or if the UCS Primary claims to be a AD Memberserver
 # To overwrite this setting:
 #  ucr set --force samba/domain/security=ads
 #  ucr set --force samba/domain/security=domain
@@ -204,7 +204,7 @@ if [ -n "$s4setup" ] || is_ucr_true ad/member; then
 		fi
 	fi
 
-	## set samba/share/home=yes on a memberserver, if it is a join into a samba4 domain and if it is the first join
+	## set samba/share/home=yes on a managed node, if it is a join into a samba4 domain and if it is the first join
 	if [ "$JS_LAST_EXECUTED_VERSION" = 0 -a "$samba_role" = "memberserver" ]; then
 		univention-config-registry set samba/share/home=yes
 	fi
@@ -300,7 +300,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	else
 		# Join against the global workgroup
 		if $JOIN_CMD -U"$samba_account"%"$samba_pwd" machinepass="$machine_secret"; then
-			## Fine, the automatic DC locator succeeded and we are joined
+			## Fine, the automatic directory node locator succeeded and we are joined
 			if [ "${server_role}" = "domaincontroller_master" ]; then
 				if [ "${samba_role}" = "domaincontroller" ]; then
 					configure_localhost_as_winsserver
@@ -314,7 +314,7 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 		elif is_ucr_true ad/member; then
 			echo "ERROR: Failed to join to AD DC via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
 			exit 1
-		# try to join directly against the DC master
+		# try to join directly against the Primary
 		elif $JOIN_CMD -U"$samba_account"%"$samba_pwd" -S"$ldap_master" machinepass="$machine_secret"; then
 			if [ "${ldap_master}" = "${hostname}.${domainname}" ]; then
 				configure_localhost_as_winsserver

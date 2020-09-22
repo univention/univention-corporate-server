@@ -13,7 +13,7 @@ if configRegistry.get('samba/role') not in ['memberserver', None]:
 
 if configRegistry.get('server/role') == 'memberserver' and configRegistry.get('samba/memberserver/passdb/ldap', '').lower() in ('yes', 'true'):
 	import sys
-	sys.stderr.write("INFO: Running UCS Memberserver with passdb ldap.\n")  # Info comment
+	sys.stderr.write("INFO: Running UCS Managed Node with passdb ldap.\n")  # Info comment
 	ldapserver = configRegistry['ldap/server/name'].split(' ')
 	if configRegistry.get('ldap/server/addition', ''):
 		ldapserver.extend(configRegistry.get('ldap/server/addition').split(' '))

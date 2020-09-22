@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-24 14:15+0100\n"
+"POT-Creation-Date: 2020-09-22 22:18+0200\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -14,6 +14,10 @@ msgstr ""
 #: umc/python/pkgdb/__init__.py:171
 msgid "All properties"
 msgstr "Alle Eigenschaften"
+
+#: umc/python/pkgdb/__init__.py:174
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: umc/python/pkgdb/__init__.py:194
 msgid "Config files only"
@@ -40,22 +44,6 @@ msgstr ""
 "Es konnte keine Verbindung zu der Datenbank hergestellt werden.\n"
 "\n"
 "%s"
-
-#: umc/python/pkgdb/__init__.py:180
-msgid "Deinstall"
-msgstr "Deinstall"
-
-#: umc/python/pkgdb/__init__.py:174
-msgid "Domain controller Backup"
-msgstr "Domaincontroller Backup"
-
-#: umc/python/pkgdb/__init__.py:173
-msgid "Domain controller Master"
-msgstr "Domaincontroller Master"
-
-#: umc/python/pkgdb/__init__.py:175
-msgid "Domain controller Slave"
-msgstr "Domaincontroller Slave"
 
 #: umc/python/pkgdb/__init__.py:191
 msgid "Half-configured"
@@ -97,6 +85,10 @@ msgstr "Installiert"
 msgid "Inventory date"
 msgstr "Erfassungsdatum"
 
+#: umc/python/pkgdb/__init__.py:176
+msgid "Managed Node"
+msgstr "Managed Node"
+
 #: umc/python/pkgdb/__init__.py:205
 msgid ""
 "Maybe the PostgreSQL server is not running.\n"
@@ -104,10 +96,6 @@ msgid ""
 msgstr ""
 "Vielleicht läuft der PostgreSQL Server nicht.\n"
 "Er kann mithilfe des UMC-Moduls \"Systemdienste\" gestartet werden."
-
-#: umc/python/pkgdb/__init__.py:176
-msgid "Member Server"
-msgstr "Memberserver"
 
 #: umc/python/pkgdb/__init__.py:182 umc/python/pkgdb/__init__.py:189
 msgid "Not installed"
@@ -125,6 +113,10 @@ msgstr "Paketname"
 msgid "Package state"
 msgstr "Paketstatus"
 
+#: umc/python/pkgdb/__init__.py:173
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
+
 #: umc/python/pkgdb/__init__.py:181
 msgid "Purge"
 msgstr "Purge"
@@ -132,6 +124,10 @@ msgstr "Purge"
 #: umc/python/pkgdb/__init__.py:185
 msgid "Reinstall required"
 msgstr "Neuinstallation erforderlich"
+
+#: umc/python/pkgdb/__init__.py:175
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: umc/python/pkgdb/__init__.py:165
 msgid "Selection state"
@@ -161,6 +157,10 @@ msgstr "UCS-Version ist größer als"
 msgid "UCS Version is lower than"
 msgstr "UCS-Version ist kleiner als"
 
+#: umc/python/pkgdb/__init__.py:180
+msgid "Uninstall"
+msgstr "Deinstallieren"
+
 #: umc/python/pkgdb/__init__.py:192
 msgid "Uninstalled"
 msgstr "Deinstalliert"
@@ -168,3 +168,18 @@ msgstr "Deinstalliert"
 #: umc/python/pkgdb/__init__.py:190
 msgid "Unpacked"
 msgstr "Ausgepackt"
+
+#~ msgid "Deinstall"
+#~ msgstr "Deinstall"
+
+#~ msgid "Domain controller Backup"
+#~ msgstr "Domaincontroller Backup"
+
+#~ msgid "Domain controller Master"
+#~ msgstr "Domaincontroller Master"
+
+#~ msgid "Domain controller Slave"
+#~ msgstr "Domaincontroller Slave"
+
+#~ msgid "Member Server"
+#~ msgstr "Memberserver"

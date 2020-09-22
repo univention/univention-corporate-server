@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Mon, 10 Oct 2011 14:22:46 +0200\n"
+"POT-Creation-Date: Tue, 22 Sep 2020 22:18:16 +0200\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,8 +12,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Manage installed software versions of UCS systems in the domain"
-msgstr "Verwalten der installierten Software-Versionen von UCS-Systemen in der Domäne"
-
+msgstr ""
+"Verwalten der installierten Software-Versionen von UCS-Systemen in der Domäne"
 
 msgid "Software monitor"
 msgstr "Software-Monitor"
+
+msgid "pkgdb"
+msgstr ""

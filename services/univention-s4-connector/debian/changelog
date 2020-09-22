@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.2-1) unstable; urgency=medium
+
+  * Bug #42374: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Sep 2020 23:47:39 +0200
+
 univention-s4-connector (14.0.2-0) unstable; urgency=medium
 
   * Bug #51763: Add ucsversionstart/end to ucs_registerLDAPExtension

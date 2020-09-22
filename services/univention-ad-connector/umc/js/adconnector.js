@@ -43,7 +43,7 @@ define([
 	app.registerOnStartup(function() {
 		tools.umcpCommand('adconnector/admember/check_dcmaster_srv_rec').then(function(response) {
 			if (!response.result.success) {
-				dialog.notify(_('<p><b>Caution!</b> The DNS service record for the UCS Master was not found in the DNS server.</p>') + ' ' +  _('<p>Details are explained in the <a href="http://sdb.univention.de/1299">Support Database</a>.</p>'), _('DNS Check'));
+				dialog.notify(_('<p><b>Caution!</b> The DNS service record for the UCS Primary was not found in the DNS server.</p>') + ' ' +  _('<p>Details are explained in the <a href="http://sdb.univention.de/1299">Support Database</a>.</p>'), _('DNS Check'));
 			}
 		});
 	});

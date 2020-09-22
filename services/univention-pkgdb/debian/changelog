@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.0-4) unstable; urgency=medium
+
+  * Bug #42374: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Sep 2020 22:21:59 +0200
+
 univention-pkgdb (13.0.0-3) unstable; urgency=low
 
   * Bug #42287: Break package dependency cycle

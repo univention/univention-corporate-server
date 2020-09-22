@@ -219,7 +219,7 @@ if [ -z "$s4connector_dc" ] \
 	##
 	## Note that connector/s4/allow/secondary is set in these cases:
 	## 1. automatically on UCS@school Samba/AD Slave PDCs
-	## 2. manually on Multischool Master where S4-Connector was installed
+	## 2. manually on Multischool Primary where S4-Connector was installed
 	##    later, after UCS@school Samba/AD Slave PDCs have been joined.
 	##
 
@@ -266,7 +266,7 @@ if [ -z "$s4connector_dc" ] \
 		/etc/init.d/univention-s4-connector stop
 
 		# If OpenLDAP msgpo link is empty, it can be overwritten by the Samba 4 value. This
-		# is important in case the S4 connector is installed on a School DC. Anyway, before
+		# is important in case the S4 connector is installed on a School Directory Node. Anyway, before
 		# changing it, read the following issues:
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=45439
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=43478
@@ -367,7 +367,7 @@ else
 
 	if this_is_initial_or_rejoin \
 		&& this_host_is_not_registered_as_s4_connector; then
-		## Don't autostart S4 Connector on DC Backups.
+		## Don't autostart S4 Connector on Backup Directory Nodes.
 		/etc/init.d/univention-s4-connector stop
 		univention-config-registry set	connector/s4/autostart?no \
 						connector/s4/listener/disabled=true
