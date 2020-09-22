@@ -355,7 +355,7 @@ idp_ldap_get_attributes="$saml_idp_ldap_get_attributes"
 udm saml/idpconfig create "$@" \
 	--ignore_exists \
 	--position="cn=univention,$ldap_base" \
-	--set id=default-saml-idp || die "Error creating object. Make sure the univention-saml package is up to date on the DC Master" # Remove when fixing Bug #47402
+	--set id=default-saml-idp || die "Error creating object. Make sure the univention-saml package is up to date on the Primary Directory Node" # Remove when fixing Bug #47402
 
 # If the package gets installed on a DC master, configure default values
 if ! joinscript_check_any_version_executed && [ "$server_role" == "domaincontroller_master" ]; then

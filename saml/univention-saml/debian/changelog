@@ -1,3 +1,9 @@
+univention-saml (7.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Sep 2020 22:07:04 +0200
+
 univention-saml (7.0.1-0) unstable; urgency=medium
 
   * Bug #51468: Update dependencies for UCS 5.0
