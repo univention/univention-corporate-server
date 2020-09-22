@@ -34,6 +34,6 @@ Depends:
 Description: Univention Directory Manager example module to manage IP phones
  This package contains the LDAP-schema for univention-directory-manager-module-example.
  .
- It needs to be installed on the DC Master to be available for LDAP operations,
- and is strongly recommended to be installed in the DC Backup to be available
- in case the DC Backup has to replace the DC Master (univention-backup2master).
+ It needs to be installed on the Primary Directory Node to be available for LDAP operations,
+ and is strongly recommended to be installed in the Backup Directory Node to be available
+ in case the Backup Directory Node has to replace the Primary Directory Node (univention-backup2master).
