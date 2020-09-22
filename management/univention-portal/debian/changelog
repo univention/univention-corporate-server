@@ -1,3 +1,9 @@
+univention-portal (4.0.1-0) unstable; urgency=medium
+
+  * Bug #52125: integrate UCS 5 Portal Design and new UDM portals/* modules
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2020 09:22:35 +0200
+
 univention-portal (4.0.0-2) unstable; urgency=medium
 
   * Bug #45787: prevent traceback in UCR handler if system is not yet
