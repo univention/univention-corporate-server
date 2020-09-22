@@ -1167,24 +1167,25 @@ EOF
 #
 ################################################################################
 
-export LOGGER=${LOGGER:-logger}
-export START=$(date +%s%N)
+START="$(date +%s%N)"
 
-function log_reset_timer {
+log_reset_timer () {
 	START=$(date +%s%N)
 }
 
-function log_call_stack {
-	for i in {0..10}
+log_call_stack () {
+	local i caller
+	for ((i=0; i<10; i++))
 	do
-		caller=$(caller $i) && echo $i: $caller || break
+		caller="$(caller "$i")" || break
+		echo "$i: $caller"
 	done
 }
 
-function log_execution_time {
-	$LOGGER "$BASH_EXECUTION_STRING needed " $(expr $(expr $(date +%s%N) - $START) / 1000000) "ms"
+log_execution_time () {
+	${LOGGER:-logger} "$BASH_EXECUTION_STRING needed $(( ($(date +%s%N) - START) / 1000000)) ms"
 }
 
-trap log_execution_time EXIT
+# trap log_execution_time EXIT
 
 # vim:set filetype=sh ts=4:
