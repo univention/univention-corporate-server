@@ -62,9 +62,19 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 				throw new SimpleSAML_Error_Error('univention:PASSWORD_CHANGE_SUCCESS');
 			}
 			if ($e->getMessage() === 'WRONGUSERPASS') {
-				$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
-				$attributes = $this->ldap->getAttributes($user_dn);
-				$this->throw_common_login_errors($attributes);
+				/* Our ldap overlays return INVALID_CREDENTIALS if the password has expired
+				 * plus an extended error.
+				 * So in case of WRONGUSERPASS and the LDAP extened_error indicates password is expired
+				 * we check for pwchange dialog.
+				 * In case of only WRONGUSERPASS, the password is really wrong and the logon denied.
+				 */
+				$expired_messages = array("password expired", "The password has expired.", "account expired");
+				if (in_array($this->ldapConfig->extended_error, $expired_messages)) {
+					SimpleSAML\Logger::debug('password is expired, checking for password change');
+					$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
+					$attributes = $this->ldap->getAttributes($user_dn);
+					$this->throw_common_login_errors($attributes);
+				}
 			}
 			throw $e;
 		}
