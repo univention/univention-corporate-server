@@ -48,7 +48,7 @@ try:
 except ImportError:
     import univention.debug2 as ud
 try:
-    from typing import Iterator, Tuple  # noqa F401
+    from typing import Iterator, Optional, Tuple  # noqa F401
 except ImportError:
     pass
 
