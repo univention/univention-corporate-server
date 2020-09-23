@@ -75,6 +75,7 @@ from saml2.metadata import create_metadata_string
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
+from saml2.validate import ResponseLifetimeExceed
 
 from univention.lib.i18n import NullTranslation
 
@@ -533,6 +534,8 @@ class SamlError(UMC_HTTPError):
 		return _decorator(func)
 
 	def from_exception(self, etype, exc, etraceback):
+		if isinstance(exc, ResponseLifetimeExceed):
+			return self.response_lifetime_exceed(exc)
 		if isinstance(exc, UnknownPrincipal):
 			return self.unknown_principal(exc)
 		if isinstance(exc, UnsupportedBinding):
@@ -548,6 +551,10 @@ class SamlError(UMC_HTTPError):
 		if isinstance(exc, SignatureError):
 			return self.signature_error(exc)
 		six.reraise(etype, exc, etraceback)
+
+	@error
+	def response_lifetime_exceed(self, exc):
+		return self._('The response lifetime is exceeded:: %s. Please make sure the server times are in sync.') % (exc,)
 
 	@error
 	def unknown_principal(self, exc):
@@ -1331,7 +1338,7 @@ class SAML(Ressource):
 	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
-		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
+		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError, ResponseLifetimeExceed):
 			raise SamlError().from_exception(*sys.exc_info())
 		if response is None:
 			raise SamlError().unparsed_saml_response()
