@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
-##  Mirror localhost minimum
+##  Mirror localhost with many upstream releases
+##    The current naming scheme doesn't work with patchlevel or minor release numbers > 9
+##    That means this test is currently not testing the abort at 99
 ##  1. Create minimum mirror with 101 minor updates, using hard-links
 ##  2. Check if updater aborts on 99 and 999
 ## roles-not: [basesystem]
@@ -26,21 +28,21 @@ mkpkg "${DIR}" "${DIR_POOL}"
 declare -a DOKAY=("${DIR}") DBAD=()
 
 echo -n "Creating patchlevel..."
-for ((pat=1;pat<=102;pat+=1)) # 0 created by minor
+for ((pat=1;pat<=9;pat+=1)) # 0 created by minor
 do
 	mkpdir "${major}.${minor}-${pat}" maintained "${ARCH}"
 	ln -f "${DMASTER:?}/"* "${DIR:?}/"
 	[ "$pat" -le 99 ] && DOKAY+=("${DIR}") || DBAD+=("${DIR}")
 done
 echo -n " minor..."
-for ((min=1;min<=102;min+=1)) # 0 is master
+for ((min=1;min<=9;min+=1)) # 0 is master
 do
 	mkpdir "${major}.${min}-0" maintained "${ARCH}"
 	ln -f "${DMASTER:?}/"* "${DIR:?}/"
 	[ "$min" -le 99 ] && DOKAY+=("${DIR}") || DBAD+=("${DIR}")
 done
 echo -n " major..."
-for ((maj=major+1;maj<=102;maj+=1))
+for ((maj=1;maj<=9;maj+=1))
 do
 	mkpdir "${maj}.0-0" maintained "${ARCH}"
 	ln -f "${DMASTER:?}/"* "${DIR:?}/"
