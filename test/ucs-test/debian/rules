@@ -37,7 +37,7 @@ SPACE := $(BLANK) $(BLANK)
 COMMA := ,
 
 %:
-	dh $@ --with python2,python3
+	dh $@ --with python2,python3,univention-l10n,umc
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR)
@@ -57,16 +57,6 @@ override_dh_auto_test:
 	python -m univention.testing.ldif --test-internal -v
 	python -m univention.testing.udm -v
 	python -m univention.testing.utils -v
-
-override_dh_auto_build:
-	dh-umc-module-build
-	univention-l10n-build de
-	dh_auto_build
-
-override_dh_auto_install:
-	dh-umc-module-install
-	univention-l10n-install de
-	dh_auto_install
 
 override_dh_gencontrol:
 	dh_gencontrol -- -Vucs-test:all-packages=$(subst $(SPACE),$(COMMA),$(PACKAGES))

@@ -38,7 +38,7 @@ import polib
 
 from . import umc
 try:
-	from typing import Iterable  # noqa F401
+	from typing import Iterable, List  # noqa F401
 except ImportError:
 	pass
 
@@ -110,7 +110,7 @@ class SourceFilesJavaScript(SourceFilesXgettext):
 		# type: (str, str) -> None
 		"""With UMC and univention-web based applications a custom, JSON-based
 		message format is used."""
-		message_catalogs.po_to_json(po_path, json_output_path)
+		umc.po_to_json(po_path, json_output_path)
 
 
 class SourceFilesHTML(SourceFileSet):
@@ -119,26 +119,34 @@ class SourceFilesHTML(SourceFileSet):
 		# type: (str) -> None
 		po_template = polib.POFile()
 		html_parser = etree.HTMLParser()
+		js_paths = []  # type: List[str]
 		for html_path in self.files:
 			with open(html_path, 'rb') as html_file:
 				tree = etree.parse(html_file, html_parser)
-				for element in tree.iter():
-					if 'data-i18n' in element.keys():
-						new_entry = polib.POEntry(
-							msgid=element.get('data-i18n'),
-							occurrences=[(os.path.basename(html_path), element.sourceline)])
-						if new_entry not in po_template:
-							po_template.append(new_entry)
-				po_template.save(pot_path)
-		po_template.save(pot_path)
-		for html_path in self.files:
-			# Inline JavaScript may use underscorce function, e.g. univention/management/index.html
+
+			for element in tree.xpath('//*[@data-i18n]'):
+				msgid = element.get('data-i18n')
+				loc = (os.path.basename(html_path), element.sourceline)
+				entry = po_template.find(msgid)
+				if entry:
+					if loc not in entry.occurrences:
+						entry.occurrences.append(loc)
+				else:
+					new_entry = polib.POEntry(msgid=msgid, occurrences=[loc])
+					po_template.append(new_entry)
+
 			if tree.xpath('//script'):
-				message_catalogs.join_existing('JavaScript', pot_path, html_path)
+				js_paths.append(html_path)
+
+		po_template.save(pot_path)
+
+		# Inline JavaScript may use underscorce function, e.g. univention/management/index.html
+		if js_paths:
+			message_catalogs.join_existing('JavaScript', pot_path, js_paths)
 
 	def _compile(self, po_path, json_output_path):
 		# type: (str, str) -> None
-		message_catalogs.po_to_json(po_path, json_output_path)
+		umc.po_to_json(po_path, json_output_path)
 
 
 class SourceFileSetCreator(object):

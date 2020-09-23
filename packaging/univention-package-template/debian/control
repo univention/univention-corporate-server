@@ -6,7 +6,7 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  dh-python,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
 
 Package: univention-package-template
 Architecture: all

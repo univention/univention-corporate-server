@@ -76,6 +76,10 @@ def main():
 	# parse all options
 	parser = ArgumentParser()
 	parser.add_argument('-c', '--core', action='store_true', dest='core', help='If specified only XML files are evaluated')
+	group = parser.add_argument_group("debhelper", "Common debhelper options")
+	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
 
 	options = parser.parse_args()
 	for package in dh_ucs.binary_packages():

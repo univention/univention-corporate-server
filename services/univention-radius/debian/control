@@ -10,7 +10,7 @@ Build-Depends:
  python-debian,
  python3-all,
  python3-debian,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
 
 Package: univention-radius
 Architecture: any

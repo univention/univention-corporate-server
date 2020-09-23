@@ -2,10 +2,6 @@
 # -*- coding: utf-8 -*-
 """This module collects utilities for installing and building message catalogs
 while applying Univention specific options.
-
-Currently this is mostly a wrapper for gettext. In the future it might be
-useful to merge parts of dh_umc into it as the UMC uses a custom JSON based
-catalog format.
 """
 #
 # Copyright 2016-2020 Univention GmbH
@@ -36,17 +32,11 @@ catalog format.
 # <https://www.gnu.org/licenses/>.
 import polib
 import os
-import subprocess
 
-from . import umc
-from .helper import make_parent_dir
+from .helper import Error, call, make_parent_dir
 try:
 	from typing import Any, List, Union  # noqa F401
 except ImportError:
-	pass
-
-
-class GettextError(Exception):
 	pass
 
 
@@ -63,7 +53,13 @@ def _clean_header(po_path):
 
 def concatenate_po(src_po_path, dest_po_path):
 	# type: (str, str) -> None
-	_call_gettext(
+	"""
+	Append first to second `.po` file.
+
+	:param src_po_path: File to merge.
+	:param dest_po_path: File to merge into.
+	"""
+	call(
 		'msgcat',
 		'--unique',
 		'--output', dest_po_path,
@@ -75,8 +71,14 @@ def concatenate_po(src_po_path, dest_po_path):
 
 def create_empty_po(binary_pkg_name, new_po_path):
 	# type: (str, str) -> None
+	"""
+	Create a new empty `.po` file.
+
+	:param binary_pkg_name: Package name.
+	:param new_po_path: File name for new file.
+	"""
 	make_parent_dir(new_po_path)
-	_call_gettext(
+	call(
 		'xgettext',
 		'--force-po',
 		'--add-comments=i18n',
@@ -92,27 +94,41 @@ def create_empty_po(binary_pkg_name, new_po_path):
 	_clean_header(new_po_path)
 
 
-def merge_po(source_po_path, dest_po_path):
+def merge_po(template, translation):
 	# type: (str, str) -> None
-	_call_gettext(
+	"""
+	Merge old translation with new template file.
+
+	:param template: New template `.pot` file.
+	:param translation: Old translation `.po` file.
+	"""
+	call(
 		'msgmerge',
 		'--update',
 		'--sort-output',
 		'--backup=off',
-		dest_po_path,
-		source_po_path)
+		translation,
+		template)
 
 
 def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 	# type: (str, str, Union[str, List[str]], str) -> None
+	"""
+	Extract strings from source code and merge into existing translation file.
+
+	:param language: Source code language, e.g. `JavaScript`, `Python`, `Shell`.
+	:param output_file: Template file name.
+	:param input_files: Sequence of input files.
+	:param cwd: Base directory used as new woring directory.
+	"""
 	if not os.path.isfile(output_file):
-		raise GettextError("Can't join input files into {}. File does not exist.".format(output_file))
+		raise Error("Can't join input files into {}. File does not exist.".format(output_file))
 	if not isinstance(input_files, list):
 		input_files = [input_files]
 	# make input_files relative so the location lines in the resulting po
 	# will be relative to cwd
 	input_files = [os.path.relpath(p, start=cwd) for p in input_files]
-	_call_gettext(
+	call(
 		'xgettext',
 		'--from-code=UTF-8',
 		'--join-existing',
@@ -122,23 +138,6 @@ def join_existing(language, output_file, input_files, cwd=os.getcwd()):
 		'-o', output_file,
 		*input_files,
 		cwd=cwd)
-
-
-def po_to_json(po_path, json_output_path):
-	# type: (str, str) -> None
-	umc.create_json_file(po_path)
-	make_parent_dir(json_output_path)
-	os.rename(po_path.replace('.po', '.json'), json_output_path)
-
-
-def _call_gettext(*args, **kwargs):
-	# type: (*str, **Any) -> None
-	try:
-		subprocess.check_call(args, **kwargs)
-	except subprocess.CalledProcessError as exc:
-		raise GettextError("Error: A gettext tool exited unsuccessfully. Attempted command:\n{}".format(exc.cmd))
-	except AttributeError as exc:
-		raise GettextError("Operating System error during call to a gettext tool:\n{}".format(exc))
 
 
 def univention_location_lines(pot_path, abs_path_source_pkg):

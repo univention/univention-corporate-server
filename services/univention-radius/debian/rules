@@ -33,10 +33,6 @@
 
 export PYBUILD_NAME=univention-radius
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
-
 override_dh_fixperms:
 	dh_fixperms
 	chmod u+s debian/univention-radius/usr/bin/univention-radius-ntlm-auth-suidwrapper
@@ -52,4 +48,4 @@ override_dh_auto_build:
 	dh_auto_build
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python2,python3,ucr --buildsystem=pybuild

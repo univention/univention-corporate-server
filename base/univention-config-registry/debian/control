@@ -72,6 +72,7 @@ Architecture: all
 Depends:
  univention-config (= ${binary:Version}),
  ${misc:Depends},
+ ${perl:Depends},
  ${python:Depends},
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages

@@ -30,19 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-
 AD_TOOLS_DEST=$(CURDIR)/debian/univention-ad-connector
-
-override_dh_auto_build:
-	dh-umc-module-build
-	univention-l10n-build de
-	dh_auto_build
-
-override_dh_auto_install:
-	dh-umc-module-install
-	univention-install-config-registry
-	univention-l10n-install de
-	dh_auto_install
 
 override_dh_installinit:
 	dh_installinit --no-start -u"defaults 97"
@@ -55,4 +43,4 @@ override_dh_fixperms:
 	chmod 600 $(AD_TOOLS_DEST)/etc/univention/connector/ad/mapping
 
 %:
-	dh $@ --with python2,python3
+	dh $@ --with python2,python3,univention-l10n,umc,ucr

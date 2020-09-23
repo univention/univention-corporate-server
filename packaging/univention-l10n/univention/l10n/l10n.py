@@ -47,13 +47,12 @@ import magic
 from debian.deb822 import Deb822
 
 from . import message_catalogs, sourcefileprocessing, umc
-from .helper import make_parent_dir
-
+from .helper import Error, make_parent_dir
 try:
 	from typing import Any, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Type  # noqa F401
 	from types import TracebackType  # noqa
 	from mypy_extensions import TypedDict
-	BaseModule = TypedDict('BaseModule', {'module_name': str, 'binary_package_name': str, 'abs_path_to_src_pkg': str, 'relative_path_src_pkg': str})
+	BaseModule = TypedDict('BaseModule', {'module_name': str, 'package': str, 'abs_path_to_src_pkg': str, 'relative_path_src_pkg': str})
 except ImportError:
 	pass
 
@@ -73,11 +72,11 @@ MODULE_BLACKLIST = {
 }
 
 
-class NoSpecialCaseDefintionsFound(Exception):
+class NoSpecialCaseDefintionsFound(Error):
 	pass
 
 
-class NoMatchingFiles(Exception):
+class NoMatchingFiles(Error):
 	pass
 
 
@@ -154,16 +153,13 @@ class UMCModuleTranslation(umc.UMC_Module):
 
 		attributes = Deb822(def_file)
 		attributes = dict((k, [v]) for k, v in attributes.items())  # simulate dh_ucs.parseRfc822 behaviour
+		attributes.update(module)
 		return attributes
 
 	@classmethod
 	def _get_core_module_from_source_package(cls, module, target_language):
 		# type: (BaseModule, str) -> UMCModuleTranslation
 		attrs = cls._read_module_attributes_from_source_package(module)
-		attrs['package'] = module['binary_package_name']
-		attrs['module_name'] = module['module_name']
-		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
-		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
 		umc_module = cls(attrs, target_language)
 		if umc_module.module_name != 'umc-core' or not umc_module.xml_categories:
 			raise ValueError('Module definition does not match core module')
@@ -176,10 +172,6 @@ class UMCModuleTranslation(umc.UMC_Module):
 		for required in (umc.MODULE, umc.PYTHON, umc.DEFINITION, umc.JAVASCRIPT):
 			if required not in attrs:
 				raise AttributeError('UMC module definition incomplete. key {} is missing a value.'.format(required))
-		attrs['package'] = module['binary_package_name']
-		attrs['module_name'] = module['module_name']
-		attrs['abs_path_to_src_pkg'] = module['abs_path_to_src_pkg']
-		attrs['relative_path_src_pkg'] = module['relative_path_src_pkg']
 		return cls(attrs, target_language)
 
 
@@ -194,12 +186,14 @@ class SpecialCase():
 	:param target_language: 2-letter language code.
 	"""
 
+	RE_L10N = re.compile(r'(.+/)?debian/([^/]+).univention-l10n$')
+
 	def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
 		# type: (Dict[str, str], str, str, str) -> None
 		# FIXME: this would circumvent custom getters and setter?
 		self.__dict__.update(special_case_definition)
 		def_relative = os.path.relpath(path_to_definition, start=source_dir)
-		matches = re.match(r'(.+/)?debian/([^/]+).univention-l10n$', def_relative)
+		matches = self.RE_L10N.match(def_relative)
 		if not matches:
 			raise ValueError(def_relative)
 
@@ -327,10 +321,7 @@ def update_package_translation_files(module, output_dir, template=False):
 				for po_file in po_files:
 					po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 					make_parent_dir(po_path)
-					try:
-						umc.create_po_file(po_path, module['module_name'], src_files, language, template)
-					except umc.Error as exc:
-						print(exc)
+					umc.create_po_file(po_path, module['module_name'], src_files, language, template)
 
 			# build python po files
 			_create_po_files(module.python_po_files, module.python_files, 'Python')
@@ -340,14 +331,12 @@ def update_package_translation_files(module, output_dir, template=False):
 		for lang, po_file in module.xml_po_files:
 			po_path = os.path.join(output_dir, module['relative_path_src_pkg'], po_file)
 			make_parent_dir(po_path)
-			try:
-				umc.module_xml2po(module, po_path, lang, template)
-			except umc.Error as exc:
-				print(exc)
+			umc.module_xml2po(module, po_path, lang, template)
 
 	except OSError as exc:
 		print(traceback.format_exc())
 		print("error in update_package_translation_files: %s" % (exc,))
+		raise Error("update_package_translation_files() failed")
 	finally:
 		os.chdir(start_dir)
 
@@ -452,7 +441,7 @@ def find_base_translation_modules(source_dir):
 			print("Found package: %s" % package_dir)
 			module = {
 				'module_name': modulename,
-				'binary_package_name': os.path.dirname(package_dir),
+				'package': modulename,
 				'abs_path_to_src_pkg': package_dir,
 				'relative_path_src_pkg': os.path.relpath(package_dir, source_dir),
 			}  # type: BaseModule
@@ -461,40 +450,20 @@ def find_base_translation_modules(source_dir):
 	return base_translation_modules
 
 
-def write_debian_rules(debian_dir_path):
-	# type: (str) -> None
-	with open(os.path.join(debian_dir_path, 'rules'), 'w') as f:
-		f.write("""#!/usr/bin/make -f
-#
-# Copyright 2016-{year} Univention GmbH
-#
-# https://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <https://www.gnu.org/licenses/>.
+def template_file(dst, fn, values):
+	# type: (str, str, Dict[str, str]) -> None
+	"""
+	Render file from template file by filling in values.
 
-%:
-	dh $@""".format(year=date.today().year))
+	:param dst: Destination path.
+	:param fn: File name for destination file and source template with `.tmpl` suffix.
+	:param values: A dictionary with the values.
+	"""
+	with open(os.path.join(os.path.dirname(__file__), fn + ".tmpl"), "r") as f:
+		tmpl = f.read()
+
+	with open(os.path.join(dst, fn), 'w') as f:
+		f.write(tmpl.format(**values))
 
 
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
@@ -513,72 +482,9 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 		years=date.today().year,
 	)
 
-	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
-		f.write("""\
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Univention GmbH
-Upstream-Contact: <package@univention.de>
-Source: https://updates.software-univention.de/
-
-Files: *
-Copyright: {years} Univention GmbH
-License: AGPL-3.0-only
- The source code of the software contained in this package
- as well as the source package itself are made available
- under the terms of the GNU Affero General Public License version 3
- (GNU AGPL V3) as published by the Free Software Foundation.
- .
- Binary versions of this program provided by Univention to you as
- well as other copyrighted, protected or trademarked materials like
- Logos, graphics, fonts, specific documentations and configurations,
- cryptographic keys etc. are subject to a license agreement between
- you and Univention and not subject to the GNU AGPL V3.
- .
- In the case you use this program under the terms of the GNU AGPL V3,
- the program is provided in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU Affero General Public License for more details.
- .
- You should have received a copy of the GNU Affero General Public
- License with the Debian GNU/Linux or Univention distribution in file
- /usr/share/common-licenses/AGPL-3; if not, see
- <https://www.gnu.org/licenses/>.""".format(**translation))  # noqa: E101
-
-	with open(os.path.join(new_package_dir_debian, 'changelog'), 'w') as f:  # noqa: E101
-		f.write("""%(package_name)s (1.0.0-1) unstable; urgency=low
-
-  * Initial release
-
- -- %(creator)s <%(creator)s@%(host)s>  %(date)s""" % translation)  # noqa: E101
-
-	write_debian_rules(new_package_dir_debian)  # noqa: E101
-
-	with open(os.path.join(new_package_dir_debian, 'control'), 'w') as f:
-		f.write("""Source: %(package_name)s
-Section: univention
-Priority: optional
-Maintainer: %(creator)s <%(creator)s@%(host)s>
-Build-Depends: debhelper (>= 9),
- univention-config-dev,
- univention-management-console-dev,
-Standards-Version: 3.8.2
-
-Package: %(package_name)s
-Architecture: all
-Depends: ${misc:Depends},
- univention-management-console
-Description: %(name)s localization files for UCS
- This package contains the %(name)s translations for Management
- Console and other parts of UCS.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/""" % translation)  # noqa: E101
-
-	with open(os.path.join(new_package_dir_debian, 'compat'), 'w') as f:  # noqa: E101
-		f.write("9")
+	template_file(new_package_dir, "Makefile", translation)
+	for fn in ("copyright", "changelog", "control", "compat", "rules"):
+		template_file(new_package_dir_debian, fn, translation)
 
 	with open(os.path.join(new_package_dir_debian, '%(package_name)s.postinst' % translation), 'w') as f:
 		f.write("""#!/bin/sh
@@ -595,7 +501,6 @@ ucr set ucs/server/languages/%s?"%s"
 
 exit 0""" % (target_locale, target_locale.split('.')[0], language_name))
 
-	shutil.copyfile('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(new_package_dir, 'Makefile'))
 	# Move source files and installed .mo files to new package dir
 	if os.path.exists(os.path.join(new_package_dir, 'usr')):
 		shutil.rmtree(os.path.join(new_package_dir, 'usr'))

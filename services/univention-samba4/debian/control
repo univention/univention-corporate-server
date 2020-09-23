@@ -6,9 +6,9 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  libpam0g-dev,
- libunivention-config-dev,
- univention-config-dev,
- univention-l10n-dev,
+ libunivention-config-dev (>= 15.0.3),
+ univention-config-dev (>= 15.0.3),
+ univention-l10n-dev (>= 7.0.1),
 
 Package: univention-samba4
 Architecture: any

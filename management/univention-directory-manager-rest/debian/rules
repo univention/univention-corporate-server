@@ -31,9 +31,4 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@ --with 'python2,python3' --with systemd
-
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-	dh_auto_install
+	dh $@ --with python2,python3,ucr --with systemd

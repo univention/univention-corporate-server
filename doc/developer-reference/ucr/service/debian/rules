@@ -1,8 +1,3 @@
 #!/usr/bin/make -f
-
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-
 %:
-	dh $@
+	dh $@ --with ucr

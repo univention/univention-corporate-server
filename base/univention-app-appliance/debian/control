@@ -8,8 +8,8 @@ Build-Depends:
  dh-python,
  node-stylus,
  python-all,
- univention-config-dev,
- univention-l10n-dev,
+ univention-config-dev (>= 15.0.3),
+ univention-l10n-dev (>= 7.0.1),
 
 Package: python-univention-app-appliance
 Architecture: all

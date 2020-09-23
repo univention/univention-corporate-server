@@ -30,12 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_clean:
-	rm -f debian/univention-nagios-raid.conffiles
-
-override_dh_auto_install:
-	univention-install-config-registry
-	univention-install-config-registry-info
-
 %:
-	dh $@
+	dh $@ --with ucr

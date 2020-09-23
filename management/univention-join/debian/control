@@ -6,8 +6,8 @@ Standards-Version: 3.5.2
 Build-Depends:
  debhelper,
  dh-python,
- univention-config-dev,
- univention-management-console-dev,
+ univention-config-dev (>= 15.0.3),
+ univention-management-console-dev (>= 12.0.2),
 
 Package: univention-join
 Architecture: all

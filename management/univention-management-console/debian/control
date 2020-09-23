@@ -9,8 +9,8 @@ Build-Depends:
  python2.7,
  python3-polib,
  python3,
- univention-config-dev,
- univention-l10n-dev,
+ univention-config-dev (>= 15.0.3),
+ univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.7.2
 
 Package: univention-management-console
@@ -145,7 +145,7 @@ Depends:
  python-univention-config-registry,
  python3-polib,
  python3-univention-config-registry,
- univention-l10n-dev (>= 7),
+ univention-l10n-dev (>= 7.0.1),
  ${misc:Depends},
  ${python:Depends},
 Description: UCS Management Console - development files

@@ -31,10 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 %:
-	dh $@
-
-override_dh_auto_install:
-	univention-install-config-registry
+	dh $@ --with ucr
 
 override_dh_install:
 	dh_install

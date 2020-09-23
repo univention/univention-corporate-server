@@ -30,18 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh-umc-module-build
-	dh_auto_build
-
-override_dh_auto_install:
-	dh-umc-module-install
-	dh_auto_install
-	univention-install-config-registry
-
 override_dh_fixperms:
 	dh_fixperms
 	chmod 755 debian/univention-printserver/etc/univention/templates/scripts/etc/cups/cupsd.conf
 
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,umc,ucr

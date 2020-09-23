@@ -366,7 +366,7 @@ POST http://192.0.2.31/univention/command/udm/query HTTP/1.1
 			</title>
 
 			<para>
-				<command>dh-umc-module-build</command> builds translation files.
+				<command>univention-l10n-build</command> builds translation files.
 				<command>dh-umc-module-install</command> installs files.
 				Configured through <filename>debian/<replaceable>package</replaceable>.umc-modules</filename>.
 			</para>

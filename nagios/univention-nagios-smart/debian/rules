@@ -30,19 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-nagios-smart.conffiles
-
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-	univention-install-config-registry-info
-
 override_dh_fixperms:
 	dh_fixperms
 	chmod 0755 debian/univention-nagios-smart/usr/lib/nagios/plugins/check_smart.pl
 	chmod 4755 debian/univention-nagios-smart/usr/lib/nagios/plugins/check_smart_suidwrapper
 
 %:
-	dh $@
+	dh $@ --with ucr

@@ -6,11 +6,11 @@ Standards-Version: 3.8.2
 Build-Depends:
  debhelper,
  node-stylus,
- univention-config-dev,
- univention-l10n-dev,
+ univention-config-dev (>= 15.0.3),
+ univention-l10n-dev (>= 7.0.1),
 
 Package: univention-demo-configuration
 Architecture: all
-Description: restricted configuration for demo.univention.de
 Depends:
  univention-config | ${misc:Depends},
+Description: restricted configuration for demo.univention.de

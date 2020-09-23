@@ -926,12 +926,11 @@ init_scipt=<init.name>]]></programlisting>
 		<title>Build integration</title>
 		<para>
 			During package build time <command>univention-install-config-registry</command> needs to be called.
-			This should be done by overriding the <literal>dh_auto_install_target</literal> in <filename>debian/rules</filename>:
+			This should be done using the sequence <literal>ucr</literal> in <filename>debian/rules</filename>:
 		</para>
 		<programlisting language="make"><![CDATA[
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
+%:
+	dh $@ --with ucr
 		]]></programlisting>
 		<para>
 			This invocation copies the referenced files to the right location in the binary package staging area <filename>debian/<replaceable>package</replaceable>/etc/univention/</filename>.

@@ -30,15 +30,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f debian/univention-apache.conffiles
-
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
-	univention-install-config-registry-info
-	univention-install-service-info
-
 %:
-	dh $@
+	dh $@ --with ucr

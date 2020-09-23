@@ -8,7 +8,7 @@ Build-Depends:
  dh-python,
  python-all,
  python3-all,
- univention-config-dev,
+ univention-config-dev (>= 15.0.3),
 
 Package: ucs-test-tools
 Architecture: all

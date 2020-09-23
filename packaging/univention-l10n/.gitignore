@@ -1,0 +1,11 @@
+*.pyc
+*.egg-info/
+.mypy_cache/
+.tox/
+build/
+dist/
+debian/*.log
+debian/*.substvars
+debian/*-stamp
+debian/files
+debian/univention-*/

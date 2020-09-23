@@ -1,3 +1,4 @@
 dev/dh-umc-* usr/bin
 dev/umc-create-module usr/bin
 umc-module-templates usr/share/univention-management-console-dev
+dev/umc.pm	usr/share/perl5/Debian/Debhelper/Sequence/

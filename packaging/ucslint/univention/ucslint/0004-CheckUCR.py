@@ -58,7 +58,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	RE_VAR = re.compile(r'@%@')
 	RE_VALID_UCR = re.compile(r'^(?:[-/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz]|%[sd])+$')
 	RE_UCR_HEADER_FILE = re.compile(r'#[\t ]+(/etc/univention/templates/files(/[^ \n\t\r]*?))[ \n\t\r]')
-	RE_UICR = re.compile(r'[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]')
+	RE_UICR = re.compile(r'[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]|\tdh\b.*--with\b.*\bucr\b')
 
 	def getMsgIds(self) -> uub.MsgIds:
 		return {

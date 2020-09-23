@@ -28,16 +28,5 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 
-override_dh_auto_build:
-	dh-umc-module-build
-	univention-l10n-build de
-	dh_auto_build
-
-override_dh_auto_install:
-	univention-install-config-registry
-	dh-umc-module-install
-	univention-l10n-install de
-	dh_auto_install
-
 %:
-	dh $@ --with 'python2,python3'
+	dh $@ --with python2,python3,univention-l10n,umc,ucr

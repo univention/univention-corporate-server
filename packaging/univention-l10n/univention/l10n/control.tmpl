@@ -1,0 +1,22 @@
+Source: {package_name}
+Section: univention
+Priority: optional
+Maintainer: {creator} <{creator}@{host}>
+Build-Depends:
+ debhelper (>= 9),
+ univention-config-dev (>= 15.0.3),
+ univention-management-console-dev (>= 12.0.2),
+Standards-Version: 3.8.2
+
+Package: {package_name}
+Architecture: all
+Depends: ${misc:Depends},
+ univention-management-console
+Description: {name} localization files for UCS
+ This package contains the {name} translations for Management
+ Console and other parts of UCS.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
