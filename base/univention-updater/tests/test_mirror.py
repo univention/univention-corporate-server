@@ -21,7 +21,7 @@ DATA = 'x' * U.MIN_GZIP
 
 class TestUniventionMirror(unittest.TestCase):
 
-    """Unit test for univention.updater.tools"""
+    """Unit test for univention.updater.mirror"""
 
     def setUp(self):
         """Create Mirror mockup."""
@@ -144,20 +144,55 @@ class TestUniventionMirror(unittest.TestCase):
         with open(releases_json_path, 'r') as releases_json:
             self.assertEqual(expected, releases_json.read())
 
-    def test_filter_releases_json(self):
+    def test_run(self):
+        """Test full mirror run."""
+        pass  # TODO
+
+
+class TestFilter(unittest.TestCase):
+
+    """Unit test for univention.updater.mirror.filter_releases_json"""
+
+    RELEASES = json.loads(gen_releases([(5, 0, 0), (5, 0, 1), (5, 0, 2)]))
+    VER4, VER5, VER6 = (UCS_Version((major, 0, 0)) for major in [4, 5, 6])
+
+    def setUp(self):
         self.maxDiff = None
-        with open(os.path.join(os.path.dirname(__file__), 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
+
+    def test_filter_releases_json(self):
+        base = os.path.dirname(__file__)
+        with open(os.path.join(base, 'mockup_upstream_releases.json'), 'r') as upstream_releases_fp:
             upstream_releases = json.load(upstream_releases_fp)
-        with open(os.path.join(os.path.dirname(__file__), 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
+        with open(os.path.join(base, 'mockup_mirror_releases.json'), 'r') as mirror_releases_fp:
             expected_mirror_releases = json.load(mirror_releases_fp)
         mirrored_releases = deepcopy(upstream_releases)
         M.filter_releases_json(mirrored_releases, start=UCS_Version((3, 1, 1)), end=UCS_Version((4, 1, 0)))
         self.assertEqual(mirrored_releases, expected_mirror_releases)
 
+    def test_unchanged(self):
+        data = deepcopy(self.RELEASES)
+        M.filter_releases_json(data, start=self.VER4, end=self.VER6)
+        self.assertEqual(data, self.RELEASES)
 
-    def test_run(self):
-        """Test full mirror run."""
-        pass  # TODO
+    def test_same(self):
+        data = deepcopy(self.RELEASES)
+        M.filter_releases_json(data, start=self.VER5, end=UCS_Version((5, 0, 2)))
+        self.assertEqual(data, self.RELEASES)
+
+    def test_before(self):
+        data = deepcopy(self.RELEASES)
+        M.filter_releases_json(data, start=self.VER4, end=self.VER4)
+        self.assertEqual(data, {"releases": []})
+
+    def test_after(self):
+        data = deepcopy(self.RELEASES)
+        M.filter_releases_json(data, start=self.VER6, end=self.VER6)
+        self.assertEqual(data, {"releases": []})
+
+    def test_empty(self):
+        data = deepcopy(self.RELEASES)
+        M.filter_releases_json(data, start=UCS_Version((5, 0, 3)), end=self.VER6)
+        self.assertEqual(data, {"releases": []})
 
 
 class TestUniventionMirrorList(unittest.TestCase):

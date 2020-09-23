@@ -48,7 +48,7 @@ try:
 except ImportError:
     import univention.debug2 as ud
 try:
-    from typing import Iterator, Optional, Tuple  # noqa F401
+    from typing import Any, Iterator, Optional, Tuple  # noqa F401
 except ImportError:
     pass
 
@@ -67,52 +67,33 @@ def makedirs(dirname, mode=0o755):
             raise
 
 
-def filter_releases_json(releases, start=None, end=None):
-    # type: (str, Optional[UCS_Version], Optional[UCS_Version]) -> None
+def filter_releases_json(releases, start, end):
+    # type: (Any, UCS_Version, UCS_Version) -> None
     """
     Filter releases that are not mirrored from the upstream repository
     Filtering is done inplace!
 
-    :param str releases: The upstream releases object from releases.json.
+    :param releases: The upstream releases object from releases.json.
     :param UCS_Version start: First UCS version that is being mirrored.
     :param UCS_Version end: Last UCS version that is being mirrored.
     """
-
-    max_minor = 99
-    max_patchlevel = 99
-
-    def _include_version(major, minor=None, patchlevel=None):
-        bigger_as_start = start is None or start <= UCS_Version((
-            major,
-            max_minor if minor is None else minor,
-            max_patchlevel if patchlevel is None else patchlevel
-        ))
-        smaller_as_end = end is None or end >= UCS_Version((
-            major,
-            0 if minor is None else minor,
-            0 if patchlevel is None else patchlevel
-        ))
-        return bigger_as_start and smaller_as_end
-
-    def _filter_majors():
-        releases['releases'] = [major for major in releases['releases'] if _include_version(major['major'])]
-
-    def _filter_minors():
-        for major in releases['releases']:
-            major['minors'] = [minor for minor in major['minors'] if _include_version(major['major'], minor['minor'])]
-
-    def _filter_patchlevels():
-        for major in releases['releases']:
-            for minor in major['minors']:
-                minor['patchlevels'] = [
-                    patchlevel for patchlevel in minor['patchlevels']
-                    if _include_version(major['major'], minor['minor'], patchlevel['patchlevel'])
-                ]
-
-    _filter_majors()
-    _filter_minors()
-    _filter_patchlevels()
-    return None
+    majors = releases["releases"]
+    for major in list(majors):
+        if start.major <= major["major"] <= end.major:
+            minors = major["minors"]
+            for minor in list(minors):
+                if start.mm <= (major["major"], minor["minor"]) <= end.mm:
+                    patchlevels = minor["patchlevels"]
+                    for patch in list(patchlevels):
+                        if start.mmp <= (major["major"], minor["minor"], patch["patchlevel"]) <= end.mmp:
+                            continue
+                        patchlevels.remove(patch)
+                    if patchlevels:
+                        continue
+                minors.remove(minor)
+            if minors:
+                continue
+        majors.remove(major)
 
 
 class UniventionMirror(UniventionUpdater):
@@ -264,8 +245,6 @@ class UniventionMirror(UniventionUpdater):
         """
         Write a releases.json including only the mirrored releases.
         """
-        start = self.version_start
-        end = self.version_end
         _code, _size, data = self.server.access(None, 'releases.json', get=True)
         try:
             releases = json.loads(data)
@@ -273,8 +252,10 @@ class UniventionMirror(UniventionUpdater):
             ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
             if isinstance(self.server, UCSHttpServer) and self.server.proxy_handler.proxies:
                 ud.debug(ud.NETWORK, ud.WARN, 'Maintenance information malformed, blocked by proxy?')
+
             raise
-        filter_releases_json(releases, start=start, end=end)
+
+        filter_releases_json(releases, start=self.version_start, end=self.version_end)
         releases_json_path = os.path.join(self.repository_path, 'mirror', 'releases.json')
         makedirs(os.path.dirname(releases_json_path))
         with open(releases_json_path, 'w') as releases_json:
