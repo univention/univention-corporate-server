@@ -30,13 +30,19 @@ univention-saml (7.0.2-1) unstable; urgency=medium
 
  -- Erik Damrose <damrose@univention.de>  Wed, 07 Oct 2020 09:41:06 +0200
 
-univention-saml (7.0.1-2) unstable; urgency=medium
+univention-saml (7.0.1-3) unstable; urgency=medium
 
   * Bug #51903: in case of WRONGUSERPASS check for password
     change only if LDAP extended error indicates password
     expiry
 
  -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2020 16:18:26 +0200
+
+univention-saml (7.0.1-2) unstable; urgency=medium
+
+  * Bug #51903: fixed simplesamlphp dependency
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Sep 2020 14:01:49 +0200
 
 univention-saml (7.0.1-1) unstable; urgency=medium
 

@@ -28,7 +28,7 @@ Depends:
  php-xml,
  python-univention-lib,
  shell-univention-lib,
- simplesamlphp (>= 1.11.0-1),
+ simplesamlphp (>= 1.16.3-1+deb10u1A~4.4.0.202009231219),
  stunnel4 (>=3:5.18-1),
  univention-apache,
  univention-directory-manager-tools,
