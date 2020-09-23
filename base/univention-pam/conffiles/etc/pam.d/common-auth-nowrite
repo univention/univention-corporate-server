@@ -26,7 +26,7 @@ pam_krb5='''
 auth	sufficient			pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
 pam_ldap='''
 auth 	sufficient 			pam_ldap.so use_first_pass'''
-pam_winbind=''' 
+pam_winbind='''
 auth 	sufficient 			pam_winbind.so use_first_pass'''
 
 methods = set(configRegistry['auth/methods'].split(' ')) & {'krb5', 'ldap', 'winbind'}

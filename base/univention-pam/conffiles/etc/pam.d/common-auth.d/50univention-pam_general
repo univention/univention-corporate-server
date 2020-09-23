@@ -46,5 +46,5 @@ if 'ldap' in methods:
 	last = 'winbind' not in methods
 	print(pam_section(pam_ldap, last))
 if 'winbind' in methods:
-	print(pam_section(pam_winbind, true))
+	print(pam_section(pam_winbind, True))
 @!@
