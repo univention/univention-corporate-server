@@ -31,7 +31,6 @@ from __future__ import print_function
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import socket
 from select import select
 import os
 import sys
@@ -71,21 +70,9 @@ class MyRequestHandler(socketserver.BaseRequestHandler):
 		doit(sarglist, self.request)
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] connection closed [%s]' % (os.getppid(), os.getpid()))
 
-	def finish(self):
-		pass
 
-
-class ForkingTCPServer(socketserver.ForkingTCPServer):
-
+class ForkingServer(socketserver.ForkingMixIn, socketserver.UnixStreamServer):
 	"""UDM server listening on UNIX socket."""
-	address_family = socket.AF_UNIX
-	allow_reuse_address = 1
-
-	def server_bind(self):
-		socketserver.TCPServer.server_bind(self)
-		_host, port = self.socket.getsockname()[:2]
-		self.server_name = 'localhost'  # socket.getfqdn(host)
-		self.server_port = port
 
 
 def server_main(args):
@@ -137,29 +124,29 @@ def server_main(args):
 		ud.debug(ud.ADMIN, ud.WARN, 'daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)' % (os.getpid(), timeout))
 
 	try:
-		sock = ForkingTCPServer(socket_path, MyRequestHandler)
+		sock = ForkingServer(socket_path, MyRequestHandler)
 		os.chmod(socket_path, 0o600)
-	except:
+	except EnvironmentError:
 		print('E: Failed creating socket (%s). Daemon stopped.' % socket_path, file=sys.stderr)
 		ud.debug(ud.ADMIN, ud.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' % (os.getpid(), socket_path))
 		sys.exit(1)
 
-	# sock.listen(2)
 	try:
-		runfile = open(runfilename, 'w')
-		runfile.write(str(os.getpid()))
-		runfile.close()
+		with open(runfilename, 'w') as runfile:
+			runfile.write(str(os.getpid()))
 	except IOError:
 		print('E: Can`t write runfile', file=sys.stderr)
 
 	try:
-		while True:
-			rlist, _wlist, _xlist = select([sock], [], [], float(timeout))
-			for handler in rlist:
-				handler.handle_request()
-			if not rlist:
-				ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] stopped after %s seconds idle' % (os.getpid(), timeout))
-				sys.exit(0)
+		with sock as sock:
+			while True:
+				rlist, _wlist, _xlist = select([sock], [], [], float(timeout))
+				for handler in rlist:
+					handler.handle_request()
+					sock.service_actions()
+				if not rlist:
+					ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] stopped after %s seconds idle' % (os.getpid(), timeout))
+					sys.exit(0)
 
 	finally:
 		os.unlink(socket_path)
@@ -233,10 +220,8 @@ def doit(sarglist, conn):
 			ud.debug(ud.ADMIN, ud.PROCESS, 'daemon [%s] [%s] Calling univention-adduser' % (os.getppid(), os.getpid()))
 			ud.debug(ud.ADMIN, ud.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
 			output = univention.admincli.adduser.doit(arglist)
-	except:
-		ext, exv, extb = sys.exc_info()
-		output = traceback.format_exception(ext, exv, extb)
-		output = [line[:-1] for line in output]
+	except Exception:
+		output = traceback.format_exc().splitlines()
 		output.append("OPERATION FAILED")
 
 	send_message(output)

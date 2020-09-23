@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.3-1) unstable; urgency=medium
+
+  * Bug #34836: replaced TCP references in univention-cli-server
+
+ -- Florian Best <best@univention.de>  Thu, 24 Sep 2020 13:12:32 +0200
+
 univention-directory-manager-modules (15.0.2-13) unstable; urgency=medium
 
   * Bug #51531: remove UDM extensions when enducsversion is reached
