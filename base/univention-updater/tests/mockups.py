@@ -17,7 +17,7 @@ import univention.updater.tools as U  # noqa: E402
 import univention.updater.mirror as M  # noqa: E402
 import univention.config_registry as C  # noqa: E402
 try:
-    from typing import Dict, List, Sequence  # noqa F401
+    from typing import Dict, Iterable, List, Sequence, Tuple  # noqa F401
 except ImportError:
     pass
 
@@ -180,7 +180,7 @@ class MockFile(object):
             return MockFile._ORIG(filename, mode, *args, **kwargs)
 
 
-def gen_releases(releases):  # type: (Iterator[Tuple[int, int, int]]) -> str
+def gen_releases(releases):  # type: (Iterable[Tuple[int, int, int]]) -> str
     """Generate a releases.json string from a list of given releases"""
     data = dict(
         releases=[
