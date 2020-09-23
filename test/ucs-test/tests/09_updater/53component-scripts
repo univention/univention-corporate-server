@@ -23,7 +23,7 @@ setup_apache "${repoprefix}"
 
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mksh "${DIRS[0]//\/main\/binary-*/}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
@@ -36,7 +36,7 @@ version1="${major}.${minor}-0"
 minor+=1
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkpkg "${DIRS[5]}" "${DIR_POOL}"
 mksh "${DIRS[5]//\/main\/binary-*/}" preup postup
 
 mkpdir "${major}.${minor}--component/${compname}" maintained all
@@ -58,7 +58,7 @@ __SH__
 major+=1
 mkpdir "${major}.0-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIR}" "${DIR_POOL}"
+mkpkg "${DIRS[10]}" "${DIR_POOL}"
 mksh "${DIRS[10]//\/main\/binary-*/}" preup postup
 
 mkpdir "${major}.0--component/${compname}" maintained all
