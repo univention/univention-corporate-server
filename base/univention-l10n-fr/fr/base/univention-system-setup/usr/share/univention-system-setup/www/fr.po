@@ -409,17 +409,9 @@ msgstr ""
 msgid "Create a new UCS domain"
 msgstr "Créer un nouveau domaine UCS"
 
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1715
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
-
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1721
 msgid "Primary Directory Node"
 msgstr "Primary Directory Node"
-
-#: usr/share/univention-system-setup/www/ApplianceWizard.js:1716
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:642
 msgid ""
@@ -457,10 +449,12 @@ msgid "Domain and network configuration"
 msgstr "Configuration du réseau et du domaine"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:625
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1715
 msgid "Backup Directory Node"
 msgstr "Backup Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:637
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1716
 msgid "Replica Directory Node"
 msgstr "Replica Directory Node"
 

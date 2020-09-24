@@ -1,3 +1,9 @@
+univention-l10n-fr (4.0.1-2) unstable; urgency=medium
+
+  * Bug #42374: Merge duplicate translations
+
+ -- Arvid <requate@univention.de>  Thu, 24 Sep 2020 15:04:46 +0200
+
 univention-l10n-fr (4.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by

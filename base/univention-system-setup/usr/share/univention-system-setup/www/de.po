@@ -337,10 +337,6 @@ msgstr "Systemrolle"
 msgid "Specify the type of this system."
 msgstr "Eingabe des Typs dieses Systems."
 
-#: ApplianceWizard.js:645
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
-
 #: ApplianceWizard.js:651
 msgid ""
 "A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over "
@@ -350,10 +346,6 @@ msgstr ""
 "Ein Backup Directory Node fungiert als Ersatzsystem für den Primary Directory Node und kann die Rolle "
 "des Primary Directory Nodes langfristig übernehmen. Es ist empfohlen, mindestens einen DC "
 "Backup in der Domäne zu verwenden."
-
-#: ApplianceWizard.js:657
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
 
 #: ApplianceWizard.js:662
 msgid ""
@@ -819,10 +811,12 @@ msgstr ""
 "Dieses System wird ein Basissystem ohne jegliche Domänenintegration und ohne "
 "Möglichkeit, später einer Domäne beizutreten."
 
+#: ApplianceWizard.js:645
 #: ApplianceWizard.js:1844
 msgid "Backup Directory Node"
 msgstr "Backup Directory Node"
 
+#: ApplianceWizard.js:657
 #: ApplianceWizard.js:1845
 msgid "Replica Directory Node"
 msgstr "Replica Directory Node"

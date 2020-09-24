@@ -954,12 +954,6 @@ msgstr "setzen"
 #~ msgid "Domain and network configuration"
 #~ msgstr "Domänen- und Netzwerkeinstellung"
 
-#~ msgid "Backup Directory Node"
-#~ msgstr "Backup Directory Node"
-
-#~ msgid "Replica Directory Node"
-#~ msgstr "Replica Directory Node"
-
 #~ msgid "Domain join information"
 #~ msgstr "Informationen zum Domänenbeitritt"
 

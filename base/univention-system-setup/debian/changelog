@@ -1,3 +1,9 @@
+univention-system-setup (13.0.1-2) unstable; urgency=medium
+
+  * Bug #42374: Merge duplicate translations
+
+ -- Arvid <requate@univention.de>  Thu, 24 Sep 2020 15:05:41 +0200
+
 univention-system-setup (13.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by
