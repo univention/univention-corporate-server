@@ -2287,14 +2287,6 @@ univention-config-registry set squid/allowfrom=&quot;192.0.2.0/24 192.0.2.0/24&q
 		  &ucsUCRV; <envar>squid/httpport</envar>. If Univention Firewall is used, the
 		  packet filter configuration must also be adjusted.
 		</para>
-		<para>
-		  When using the content and virus scanner
-		  (see <xref linkend="proxy:contentfilter"/>)
-		  DansGuardian is accessible at the configured port instead of
-		  Squid. Squid then occupies the next-highest port. This must be borne
-		  in mind if there are other applications which are supposed to offer
-		  services via this port.
-		</para>
 	  </section>
 
 	  <section id="ip-config:Permitted_ports">

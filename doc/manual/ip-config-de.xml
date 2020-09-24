@@ -1965,13 +1965,6 @@ univention-config-registry set squid/allowfrom="192.0.2.0/24 192.0.2.0/24"
 		  werden. Bei Verwendung von Univention Firewall muss zusätzlich die
 		  Paketfilterkonfiguration angepasst werden.
 		</para>
-		<para>
-		  Beim Einsatz des Inhalts- und Virenscanners (siehe
-		  <xref linkend="proxy:contentfilter"/>) ist dieser an Stelle von Squid unter dem
-		  konfigurierten Port erreichbar. Squid belegt dann den nächsthöheren
-		  Port. Dies sollte beachtet werden, wenn es weitere Anwendungen gibt,
-		  die auf diesem Port Dienste anbieten sollen.
-		</para>
 	  </section>
 
 	  <section id="ip-config:Erlaubte_Ports">
