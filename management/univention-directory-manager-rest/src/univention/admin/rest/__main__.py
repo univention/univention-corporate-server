@@ -108,14 +108,14 @@ class Server(object):
 
 	def signal_handler_stop(self, server, sig, frame):
 		io_loop = tornado.ioloop.IOLoop.instance()
-		io_loop = getattr(io_loop, 'asyncio_loop', io_loop)  # Support Python2+3 Tornado version
+		loop = getattr(io_loop, 'asyncio_loop', io_loop)  # Support Python2+3 Tornado version
 
 		def stop_loop(deadline):
 			now = time.time()
-			if now < deadline and (io_loop._callbacks or io_loop._timeouts):
+			if now < deadline:  # and (io_loop.callbacks or io_loop.timeouts):  # FIXME: neither _UnixSelectorEventLoop nor AsyncIOMainLoop have callbacks
 				io_loop.add_timeout(now + 1, stop_loop, deadline)
 			else:
-				io_loop.stop()
+				loop.stop()
 
 		def shutdown():
 			# wait one second to shutdown
