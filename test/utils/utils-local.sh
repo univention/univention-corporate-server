@@ -109,51 +109,6 @@ fetch-coverage () {
 	fetch-files "root@${ADDR}" "htmlcov/" "$TARGETDIR"
 }
 
-ec2-start-job-async () {
-	# Start a job asynchronously
-	# <EXAMPLE>: update all servers at once instead of waiting for each one
-	# in command N on all affected servers:
-	# commandN:
-	#   LOCAL utils/utils-local.sh ec2-start-job-async job-upgrade [hostX_IP] hostX ". utils.sh; upgrade_to_latest --updateto 3.2-99"
-	# Now all async jobs are running. Wait for them in command N+1 on one server:
-	# commandN+1:
-	#   LOCAL utils/utils-local.sh ec2-wait-for-async-job job-upgrade
-	# </Example>
-	# Warning: this will make your logfile mostly useless for the timespan a job is run on multiple hosts
-	#   as the logs will get mixed. Use only for predictable jobs (update, serverjoin, ...)
-	# Write a server-local file to indicate job is finished
-	# Write a local file to keep track of all servers which started this job
-	local JOBNAME="$1"
-	local ADDR="$2"
-	local THISSERVER="$3"
-	local COMMAND="$4"
-	ssh -f -i "$SSH_KEY" -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${ADDR} nohup "bash -c '($COMMAND; touch $THISSERVER-$JOBNAME-finished) &'"
-	echo "$THISSERVER $ADDR" >> "$JOBNAME-local"
-}
-
-ec2-wait-for-async-job () {
-	local JOBNAME="$1"
-	echo "Waiting for job $JOBNAME to finish on all hosts"
-	while true
-	do
-		local FINISHED=true SERVER ADDR
-		while IFS=' ' read SERVER ADDR; do
-			local fname="${SERVER}-${JOBNAME}-finished"
-			[ -e "$fname" ] || continue
-			# check and copy
-			if fetch-files "[${ADDR}]" "$fname" . >/dev/null 2>&1 && [ -e "$fname" ]
-			then
-				echo -n " $SERVER"
-			else
-				FINISHED=false
-			fi
-		done < "$JOBNAME-local"
-		"$FINISHED" && break
-		sleep 10
-	done
-	echo
-}
-
 # === MAIN ===
 
 ACTION="$1"
@@ -168,12 +123,6 @@ case "$ACTION" in
 		;;
 	fetch-coverage)
 		fetch-coverage "$@"
-		;;
-	ec2-start-job-async)
-		ec2-start-job-async "$@"
-		;;
-	ec2-wait-for-async-job)
-		ec2-wait-for-async-job "$@"
 		;;
 	*)
 		echo "Unknown action: $ACTION"
