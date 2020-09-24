@@ -812,6 +812,10 @@
 			<listitem><simpara>
 				The package <package>univention-debootstrap</package> has been removed(<u:bug>52124</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The package <package>univention-ucs-translation-template</package> has been renamed to <package>univention-l10n</package>.
+				To simplify software development it now provides the sequence <command>univention-l10n</command> to be used with <command>dh --with univention-l10n</command> in <filename>debian/rules</filename> instead of calling <command>univention-l10n-*</command> directly (<u:bug>51656</u:bug>)
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
