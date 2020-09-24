@@ -6,6 +6,5 @@ src: univention-directory-manager-modules
 fix: 14.0.16-2A~4.4.0.202009241414
 desc: |
  This update addresses the following issue(s):
- * Copying users now has an updated selection of user properties that are
-   being copied.
+ * The list of copyable user attributes has been updated.
 bug: [49823]
