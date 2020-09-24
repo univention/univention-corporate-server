@@ -81,11 +81,10 @@ msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
 #: umc/python/diagnostic/plugins/00_check_server_password.py:161
-#, fuzzy
 msgid ""
 "Authentication against the Primary LDAP failed with the machine password."
 msgstr ""
-"Authentifizierung gegen das Master LDAP mit dem Password für das "
+"Authentifizierung gegen das Primary LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
 #: umc/python/diagnostic/plugins/00_check_server_password.py:157
@@ -791,7 +790,7 @@ msgstr ""
 "Situationen wie backup2master weniger fehleranfällig."
 
 #: umc/python/diagnostic/plugins/59_ldap_server_name.py:61
-#, fuzzy, python-format, python-brace-format
+#, python-format, python-brace-format
 msgid ""
 "The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
 "Primary Directory Node of this UCS domain (%s).\n"
@@ -800,9 +799,9 @@ msgid ""
 "Please see {sdb} for further information."
 msgstr ""
 "Der primäre LDAP-Server dieses Systems (UCR ldap/server/name) ist in der "
-"Standardkonfiguration auf den DC Master der UCS Umgebung konfiguriert (%s).\n"
+"Standardkonfiguration auf den Primary Directory Node der UCS Umgebung konfiguriert (%s).\n"
 "In dieser Umgebung sind weitere LDAP-Server verfügbar, daher empfehlen wir "
-"zur Entlastung des DC Masters eine andere Konfiguration.\n"
+"zur Entlastung des Primary Directory Node eine andere Konfiguration.\n"
 "Siehe {sdb} für weiter Hinweise zur Konfiguration."
 
 #: umc/python/diagnostic/plugins/12_proxy.py:69
@@ -965,12 +964,11 @@ msgstr ""
 "Verteilung der Server Last"
 
 #: umc/python/diagnostic/plugins/23_check_update_sites.py:47
-#, fuzzy
 msgid ""
 "Univention Support Database - DNS Server on Directory Node does not resolve "
 "external names"
 msgstr ""
-"Univention Support Database - DNS-Server auf dem DC löst externe Namen nicht "
+"Univention Support Database - DNS-Server auf dem Directory Node löst externe Namen nicht "
 "auf"
 
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:49
@@ -1021,13 +1019,12 @@ msgstr ""
 "migriert werden."
 
 #: umc/python/diagnostic/plugins/55_user_migration.py:13
-#, fuzzy
 msgid ""
 "With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
 "Primary Directory Node all user objects are migrated into the new format."
 msgstr ""
 "Mit UCS 4.3 hat sich das LDAP format von Nutzer Objekten geändert. Nach "
-"Upgrade des Domänencontroller Master werden all Nutzer Objekte in das neue "
+"Upgrade des Primary Directory Node werden all Nutzer Objekte in das neue "
 "Format migriert."
 
 #: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:84

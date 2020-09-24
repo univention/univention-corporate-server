@@ -55,20 +55,18 @@ msgid "Initializing"
 msgstr "Initialisiere"
 
 #: umc/python/join/__init__.py:403
-#, fuzzy
 msgid "Invalid server role! A Primary Directory Node cannot be joined."
 msgstr ""
-"Ungültige Serverrolle. Ein Master-Domänencontroller kann nicht gejoined "
+"Ungültige Serverrolle. Ein Primary Directory Node kann nicht gejoined "
 "werden."
 
 #: umc/python/join/__init__.py:75
-#, fuzzy
 msgid ""
 "No DNS record for the Primary Directory Node was found. This might be a "
 "problem with the configured DNS server. Please make sure the DNS settings "
 "are correct."
 msgstr ""
-"Es wurde kein DNS Eintrag für den Domänencontroller Master gefunden. Es "
+"Es wurde kein DNS Eintrag für den Primary Directory Node gefunden. Es "
 "könnte ein Problem mit den konfigurierten DNS-Servern vorliegen. Bitte "
 "stellen Sie sicher, dass die DNS-Einstellungen korrekt sind."
 
@@ -89,13 +87,12 @@ msgstr "Die eingegebene FQDN ist kein gültiger Wert."
 
 #
 #: umc/python/join/__init__.py:78
-#, fuzzy
 msgid ""
 "The lookup of the Primary Directory Node record timed out. There might be a "
 "problem with the configured DNS server. Make sure the DNS server is up and "
 "running or check the DNS settings."
 msgstr ""
-"Eine Zeitüberschreitung beim Suchen des Domänencontroller Master DNS-"
+"Eine Zeitüberschreitung beim Suchen des Primary Directory Node DNS-"
 "Eintrages ist aufgetreten. Es könnte ein Problem mit den konfigurierten DNS-"
 "Servern vorliegen. Bitte stellen Sie sicher, dass die DNS-Server erreichbar "
 "sind oder überprüfen Sie die DNS-Einstellungen."

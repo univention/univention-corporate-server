@@ -213,12 +213,11 @@ msgid "Activate UCS now"
 msgstr "UCS jetzt aktivieren"
 
 #: umc/js/appcenter.js:59
-#, fuzzy
 msgid ""
 "Activation is not possible. Please login as Administrator on the Primary "
 "Directory Node."
 msgstr ""
-"Aktivierung is nicht möglich. Bitte als Administrator auf dem DC Master "
+"Aktivierung is nicht möglich. Bitte als Administrator auf dem Primary Directory Node "
 "einloggen."
 
 #: umc/js/appcenter/AppDetailsPage.js:1018
@@ -338,7 +337,6 @@ msgid "Basic settings"
 msgstr "Allgemeine Einstellungen"
 
 #: umc/js/appcenter/AppDetailsContainer.js:195
-#, fuzzy
 msgid ""
 "Be sure to execute the following command as root on all of these Backup "
 "servers <em>after</em> installing the application."
@@ -543,13 +541,13 @@ msgid "Host for installation of application"
 msgstr "Rechner für die Installation der Applikation"
 
 #: umc/js/appcenter/AppDetailsPage.js:1070
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "If everything else went correct and this is just a temporary network "
 "problem, you should execute %s as root on that Backup system."
 msgstr ""
 "Wenn keine weiteren Fehler auftraten und dies nur ein temporäres "
-"Netzwerkproblem ist, sollten Sie %s als root auf dem Backup System ausführen."
+"Netzwerkproblem ist, sollten Sie %s als root auf dem Backup-System ausführen."
 
 #: umc/js/appcenter/AppChooseHostWizard.js:103
 #, javascript-format
