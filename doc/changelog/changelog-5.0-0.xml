@@ -444,7 +444,7 @@
 			<title>Development of modules for &ucsUMC;</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					To simplify software development &ucsUMC; now provides the sequence <command>umc</command> to be used with <command>dh --with umc</command> in <filename>debian/rules</filename> instead of calling <command>dh-umc-modulel-*</command> directly (<u:bug>51949</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
