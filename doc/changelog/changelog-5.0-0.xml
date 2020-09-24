@@ -66,6 +66,9 @@
 				<listitem><simpara>
 					The performance of <command>ucr shell</command> has been improved (<u:bug>31257</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					To simplify software development &ucsUCR; now provides the sequence <command>ucr</command> to be used with <command>dh --with ucr</command> in <filename>debian/rules</filename> instead of calling <command>univention-install-*</command> directly (<u:bug>51950</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
