@@ -149,7 +149,7 @@ _do_rest_fetch_domain_info() {
 	if value=$(rest_get_domain_info_key "$target_keystore_url"
 		"$ucr_key"); then
 		ucrsettings+=("$ucr_key=$value")
-		ldap_master="$value"	## save here for memberserver below
+		ldap_master="$value"	## save here for managed node below
 	fi
 
 	ucr_key="ldap/backup"
@@ -158,7 +158,7 @@ _do_rest_fetch_domain_info() {
 		## This is a single string with space delimited values
 		## No funky etcd sorted multivalue POST stuff yet, sorry.
 		ucrsettings+=("$ucr_key=$value")
-		ldap_backup="$value"	## save here for memberserver below
+		ldap_backup="$value"	## save here for managed node below
 	fi
 
 	if [ "$server_role" = "memberserver" ]; then
@@ -177,7 +177,7 @@ _do_rest_fetch_domain_info() {
 }
 
 rest_fetch_domain_info() {
-	## Only do this on non-master
+	## Only do this on non-primary
 	eval "$(univention-config-registry shell server/role)"
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		return 2

@@ -34,7 +34,7 @@
 
 RELEASE=$(getarg "--release")
 
-# ignore warning if master has older version
+# ignore warning if primary has older version
 MAJOR=${RELEASE%%-*}
 MAJOR_WITHOUT_DOT=${MAJOR//./}
 if [ -n "$MAJOR_WITHOUT_DOT" ]; then
