@@ -63,7 +63,8 @@ attributetype ( univentionNewPortalAttributeType:6 NAME 'univentionNewPortalAuto
 attributetype ( univentionNewPortalAttributeType:7 NAME 'univentionNewPortalBackground'
 	DESC 'Portal background'
 	SINGLE-VALUE
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
 
 attributetype ( univentionNewPortalAttributeType:8 NAME 'univentionNewPortalCSSBackground'
 	DESC 'Portal CSS style background'
@@ -82,7 +83,8 @@ attributetype ( univentionNewPortalAttributeType:9 NAME 'univentionNewPortalFont
 attributetype ( univentionNewPortalAttributeType:10 NAME 'univentionNewPortalLogo'
 	DESC 'Portal logo'
 	SINGLE-VALUE
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
 
 attributetype ( univentionNewPortalAttributeType:11 NAME 'univentionNewPortalUserLinks'
 	DESC 'User links'
@@ -176,7 +178,8 @@ attributetype ( univentionNewPortalEntryAttributeType:6 NAME 'univentionNewPorta
 attributetype ( univentionNewPortalEntryAttributeType:7 NAME 'univentionNewPortalEntryIcon'
 	DESC 'Portal entry icon'
 	SINGLE-VALUE
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
 
 attributetype ( univentionNewPortalEntryAttributeType:8 NAME 'univentionNewPortalEntryBackgroundColor'
 	DESC 'Portal entry background color'
