@@ -103,7 +103,7 @@ property_descriptions = {
 		multivalue=True,
 	),
 	'domaincontroller': univention.admin.property(
-		short_description=_('Domaincontroller Computer Link'),
+		short_description=_('Directory Node Computer Link'),
 		long_description='',
 		syntax=univention.admin.syntax.ldapDn,
 		multivalue=True,
@@ -154,7 +154,7 @@ layout = [
 		Group(_('Computer Links'), layout=[
 			"computers",
 		]),
-		Group(_('Domaincontroller Computer Links'), layout=[
+		Group(_('Directory Node Computer Links'), layout=[
 			"domaincontroller",
 		]),
 		Group(_('Policy Links'), layout=[

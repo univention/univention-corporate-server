@@ -56,8 +56,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 
 	ucs_registerLDAPExtension "$@" --data /usr/share/univention-join/ensure-minmum-ucs-version --data_type="join/pre-join" || die
 
-	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Backup Join"     --set description="Group for joining domain controller backup servers" || die
-	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Slave Join"      --set description="Group for joining domain controller slave servers" || die
+	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Backup Join"     --set description="Group for joining Backup Directory Node servers" || die
+	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Slave Join"      --set description="Group for joining Replica Directory Node servers" || die
 	if [ ${#backup_join_pwd} -gt 7 ]; then
 		univention-directory-manager users/user create "$@" --ignore_exists \
 					--position "cn=users,$ldap_base" \

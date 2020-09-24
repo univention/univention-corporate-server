@@ -57,7 +57,7 @@ def main():
 	parser = argparse.ArgumentParser(description="Run join-hooks")
 	parser.add_argument("--server-role", choices=server_roles, help="Server Role")
 	parser.add_argument("--hooktype", choices=("join/pre-join", "join/pre-joinscripts", "join/post-joinscripts"), help="Type of hook")
-	parser.add_argument("--master", help="UCS Master")
+	parser.add_argument("--master", help="UCS Primary")
 	parser.add_argument("--binddn", help="Bind-DN")
 	parser.add_argument("--bindpwdfile", help="Password file")
 	parser.add_argument("-v", "--verbose", action='count', help="Verbose")

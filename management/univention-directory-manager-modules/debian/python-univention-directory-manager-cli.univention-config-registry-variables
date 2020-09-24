@@ -17,7 +17,7 @@ Type=int
 Categories=management-udm
 
 [ldap/replication/preferredpassword]
-Description[de]=Ist diese Variable auf "true" oder "yes" gesetzt, so ändert das Programm /usr/share/univention-directory-manager-tools/univention-passwd das Passwort im LDAP-Verzeichnis des Masters und im lokalen LDAP-Server ohne auf die LDAP-Replikation zu warten. Dies ist nur für Samba 3-Installationen relevant, bei denen ein DC Slave als PDC betrieben wird. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
-Description[en]=If this variable is set to "true" or "yes" the tool /usr/share/univention-directory-manager-tools/univention-passwd will change the password in the LDAP directory on the master DC and on the local LDAP server without waiting for the LDAP replication. This is only relevant for Samba 3 installations using a slave DC as PDC. If the variable is unset, the option is deactivated.
+Description[de]=Ist diese Variable auf "true" oder "yes" gesetzt, so ändert das Programm /usr/share/univention-directory-manager-tools/univention-passwd das Passwort im LDAP-Verzeichnis des Primary und im lokalen LDAP-Server ohne auf die LDAP-Replikation zu warten. Dies ist nur für Samba 3-Installationen relevant, bei denen ein Replica Directory Node als PDC betrieben wird. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this variable is set to "true" or "yes" the tool /usr/share/univention-directory-manager-tools/univention-passwd will change the password in the LDAP directory on the Primary Directory Node and on the local LDAP server without waiting for the LDAP replication. This is only relevant for Samba 3 installations using a Replica Directory Node as PDC. If the variable is unset, the option is deactivated.
 Type=str
 Categories=management-udm

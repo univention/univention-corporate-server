@@ -133,8 +133,8 @@ Type=bool
 Categories=service-ldap
 
 [ldap/online/master]
-Description[de]=In der Grundeinstellung werden LDAP-Schreibzugriffe auf DC Backup und DC Slave an den DC Master weitergeleitet. Wird diese Option deaktiviert, werden die Daten in den lokalen LDAP-Server geschrieben. Diese Variable ist nur für Spezialfälle relevant.
-Description[en]=In the default setting LDAP write changes made on backup and slave domain controllers are redirected to the master domain controller. If this option is deactivated, the data is written to the local LDAP server. This variable is only relevant for special setups.
+Description[de]=In der Grundeinstellung werden LDAP-Schreibzugriffe auf Backup Directory Node und Replica Directory Node an den Primary Directory Node weitergeleitet. Wird diese Option deaktiviert, werden die Daten in den lokalen LDAP-Server geschrieben. Diese Variable ist nur für Spezialfälle relevant.
+Description[en]=In the default setting LDAP write changes made on Backup Directory Node and Replica Directory Node are redirected to the Primary Directory Node. If this option is deactivated, the data is written to the local LDAP server. This variable is only relevant for special setups.
 Type=bool
 Categories=service-ldap
 

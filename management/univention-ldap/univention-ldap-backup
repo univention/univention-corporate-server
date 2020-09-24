@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention LDAP Server
-#  creates an LDIF backup on UCS master and UCS backup
+#  creates an LDIF backup on UCS Primary and UCS Backup
 #
 # Copyright 2001-2020 Univention GmbH
 #

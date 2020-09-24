@@ -225,7 +225,7 @@ static void usage(void) {
 	fprintf(stderr, "   -U   SASL username\n");
 	fprintf(stderr, "   -R   SASL realm\n");
 	fprintf(stderr, "   -m   Listener module path (may be specified multiple times)\n");
-	fprintf(stderr, "   -B   Only use dc backup notifier\n");
+	fprintf(stderr, "   -B   Only use Backup Directory Node notifier\n");
 	fprintf(stderr, "   -c   Listener cache path\n");
 	fprintf(stderr, "   -l   LDAP schema and transaction path\n");
 	fprintf(stderr, "   -g   start from scratch (remove cache)\n");
@@ -540,7 +540,7 @@ int main(int argc, char *argv[]) {
 	/* connect to local LDAP server */
 	server_role = univention_config_get_string("server/role");
 	if (server_role != NULL) {
-		if (!strcmp(server_role, "domaincontroller_backup") || !strcmp(server_role, "domaincontroller_slave")) {  // if not master
+		if (!strcmp(server_role, "domaincontroller_backup") || !strcmp(server_role, "domaincontroller_slave")) {  // if not Primary
 			lp_local->host = strdup("localhost");                                                             // or fqdn e.g. from univention_config_get_string("ldap/server/name");
 			lp_local->base = strdup(lp->base);
 			lp_local->binddn = strdup(lp->binddn);

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin policy for the DC Master/DC Backup packages
+#  admin policy for the Primary or Backup Directory Node packages
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -63,10 +63,10 @@ policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontrol
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Master packages')
-object_name = _('Master packages policy')
-object_name_plural = _('Master packages policies')
-policy_short_description = _('Master packages')
+short_description = _('Policy: Primary packages')
+object_name = _('Primary packages policy')
+object_name_plural = _('Primary packages policies')
+policy_short_description = _('Primary packages')
 long_description = ''
 options = {
 	'default': univention.admin.option(
@@ -108,7 +108,7 @@ property_descriptions.update(dict([
 
 layout = [
 	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General master packages settings'), layout=[
+		Group(_('General Primary packages settings'), layout=[
 			'name',
 			'masterPackages',
 			'masterPackagesRemove'

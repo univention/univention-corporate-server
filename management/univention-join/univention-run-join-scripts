@@ -43,9 +43,9 @@ display_help() {
 	  univention-run-join-scripts [options] [script, ...]
 
 	Options:
-	  -dcaccount <account>:    name of DC master account
-	  -dcpwd <password file>:  file with DC master password
-	  --ask-pass            :  ask for DC master account and password
+	  -dcaccount <account>:    name of Primary Directory Node account
+	  -dcpwd <password file>:  file with Primary Directory Node password
+	  --ask-pass            :  ask for Primary Directory Node account and password
 	  --run-scripts         :  run only the scripts given as parameters
 	  --force               :  force execution of joinscripts which are already executed
 
@@ -127,7 +127,7 @@ if [ ! -e /var/univention-join/joined ]; then
 	exit 1
 fi
 
-# don't ask for join credentials until UMC supports this for master systems 
+# don't ask for join credentials until UMC supports this for Primary systems 
 #if [ "$samba_role" = "memberserver" ]; then
 #	if [ -z "$DCACCOUNT" ] || [ -z "$DCPWD" ]; then
 #		ASK_PASS=1
@@ -136,11 +136,11 @@ fi
 
 if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	if [ -z "$DCACCOUNT" ]; then
-		echo -n "Enter DC Master Account : "
+		echo -n "Enter Primary Directory Node Account : "
 		read DCACCOUNT
 	fi
 	if [ -z "$DCPWD" ]; then
-		echo -n "Enter DC Master Password: "
+		echo -n "Enter Primary Directory Node Password: "
 		read -s password
 		DCPWD=$(mktemp)
 		trap "rm -f '$DCPWD' /var/run/univention-join/binddn /var/run/univention-join/bindpwd" EXIT

@@ -119,12 +119,12 @@ define([
 		};
 
 		if (tools.status('has_certificates')) {
-			// we are on a DC master or backup system
+			// we are on a Primary or Backup Directory Node system
 			_addEntries('');
 		}
 		else {
 			login.onInitialLogin(function() {
-				// refer to the DC master
+				// refer to the Primary Directory Node
 				_addEntries('//' + tools.status('ldap/master'));
 			});
 		}

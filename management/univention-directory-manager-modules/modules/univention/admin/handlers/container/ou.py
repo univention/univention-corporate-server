@@ -103,7 +103,7 @@ property_descriptions = {
 		size='One',
 	),
 	'domaincontrollerPath': univention.admin.property(
-		short_description=_('Add to standard domain controller computer containers'),
+		short_description=_('Add to standard Directory Node computer containers'),
 		long_description='',
 		syntax=univention.admin.syntax.boolean,
 		size='One',

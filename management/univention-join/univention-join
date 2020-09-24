@@ -71,9 +71,9 @@ display_help() {
 	  univention-join [options]
 
 	Options:
-	  -dcname <fqdn>:                DC master fqdn
-	  -dcaccount <account>:          Name of DC master account
-	  -dcpwd <password file>:        File with DC master password
+	  -dcname <fqdn>:                Primary Directory Node fqdn
+	  -dcaccount <account>:          Name of Primary Directory Node account
+	  -dcpwd <password file>:        File with Primary Directory Node password
 	  -type <type>:                  Type of computer, e.g. "client"
 	  -ldapbase <ldap base>:         LDAP Base DN, e.g. dc=test,dc=local
 	  -realm <kerberos realm>:       Kerberos realm, e.g. TEST.LOCAL
@@ -229,13 +229,13 @@ run_join_scripts () {
 						failed_message "FAILED: failed.ldif exists."
 					fi
 
-					# backup
+					# Backup
 					if [ "$server_role" = "domaincontroller_backup" ]; then
 						univention-scp "$DCPWD" -r \
 							"${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" \
 							"$USERTMP/tlog" >/dev/null 2>&1
 						if [ ! -e "$USERTMP/tlog" ]; then
-							failed_message " FAILED: failed to copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
+							failed_message " FAILED: failed to copy /var/lib/univention-ldap/notify/transaction from the Primary Directory Node. Please try again."
 						fi
 
 						id="$(</var/lib/univention-directory-listener/notifier_id)"
@@ -250,7 +250,7 @@ run_join_scripts () {
 							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
 					fi
 
-					# slave 
+					# Replica
 					if [ "$server_role" = "domaincontroller_slave" ]; then
 						if [ -n "$listener_supply_notifier" -a "$listener_supply_notifier" = "yes" ]; then
 							univention-scp "$DCPWD" -q \
@@ -313,11 +313,11 @@ while [ $# -gt 0 ]
 do
 	case "$1" in
 		"-dcname")
-			DCNAME="${2:?missing DC master FQDN}"
+			DCNAME="${2:?missing Primary Directory Node FQDN}"
 			shift 2 || exit 2
 			;;
 		"-dcaccount")
-			DCACCOUNT="${2:?missing DC master account}"
+			DCACCOUNT="${2:?missing Primary Directory Node account}"
 			shift 2 || exit 2
 			;;
 		"-dcpwd")
@@ -401,16 +401,16 @@ fi
 display_header
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	echo "Join on DC Master impossible"
+	echo "Join on Primary Directory Node impossible"
 	exit 1
 fi
 
 if [ -z "$DCACCOUNT" ]; then
-	echo -n "Enter DC Master Account : "
+	echo -n "Enter Primary Directory Node Account : "
 	read DCACCOUNT
 fi
 if [ ! -f "$DCPWD" ]; then
-	echo -n "Enter DC Master Password: "
+	echo -n "Enter Primary Directory Node Password: "
 	read -s password
 	echo -n "$password" >>"$DCPWD"
 	echo ""
@@ -427,7 +427,7 @@ fi
 
 
 if [ -z "$DCNAME" ]; then
-	echo -n "Search DC Master: "
+	echo -n "Search Primary Directory Node: "
 	DCNAME="$(host -t SRV "_domaincontroller_master._tcp.$domainname" | sed -ne '$s/.* \([^ ]\+\)\.$/\1/p')"
 	if [ -n "$DCNAME" ]; then
 		echo -e "\033[60Gdone"
@@ -451,13 +451,13 @@ if [ -z "$DCNAME" ]; then
 fi
 
 
-echo -n "Check DC Master: "
+echo -n "Check Primary Directory Node: "
 
 nslookup_out="$(nslookup "$DCNAME" 2>&1)"
 if [ $? -ne 0 ]; then
 	nslookup_out=$(echo "$nslookup_out" | tr '\n' ' ' | tr  '\r' ' ')
 	nameservers="$(cat /etc/resolv.conf | sed -ne 's/nameserver //p'| tr -d '\n')"
-	failed_message "The UCS master server's name \"$DCNAME\" is unknown to the DNS servers (dns servers: $nameservers, nslookup: $nslookup_out)."
+	failed_message "The UCS Primary server's name \"$DCNAME\" is unknown to the DNS servers (dns servers: $nameservers, nslookup: $nslookup_out)."
 fi
 
 ping_out="$(ping -q -c 3 "$DCNAME" 2>&1)"
@@ -466,7 +466,7 @@ if [ $? -ne 0 ]; then
 	if [ $? -ne 0 ]; then
 		ping_out=$(echo "$ping_out" | tr '\n' ' ' | tr  '\r' ' ')
 		ping6_out=$(echo "$ping6_out" | tr '\n' ' ' | tr  '\r' ' ')
-		failed_message "The UCS master server \"$DCNAME\" is not reachable, ping failed (ping ipv4: $ping_out, ping ipv6: $ping6_out)."
+		failed_message "The UCS Primary server \"$DCNAME\" is not reachable, ping failed (ping ipv4: $ping_out, ping ipv6: $ping6_out)."
 	fi
 fi 
 
@@ -476,7 +476,7 @@ if [ $? -ne 0 ]; then
 	failed_message "The ssh-login to ${DCACCOUNT}@${DCNAME} failed with \"${ssh_out}\". Please make sure the account ${DCACCOUNT} exists and is a member of the Domain Admins group!"
 fi
 
-# get master versions
+# get Primary versions
 versions="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr search --brief ^version/)"
 OLDIFS=$IFS
 IFS=$'\n'
@@ -524,7 +524,7 @@ if [ "$CHECK_RUN" = "false" ] && [ "$server_role" = "domaincontroller_backup" -o
 	ucr set tmp/join/test/master/memberof="$master_member_of" >/dev/null 2>&1
 	if is_ucr_true tmp/join/test/master/memberof; then
 		ucr unset tmp/join/test/master/memberof >/dev/null 2>&1
-		msg="The OpenLDAP extension memberOf is activated on the UCS master (UCR variable ldap/overlay/memberof is true). In order to join this system successfully"
+		msg="The OpenLDAP extension memberOf is activated on the UCS Primary (UCR variable ldap/overlay/memberof is true). In order to join this system successfully"
 		if ! dpkg-query -W -f '${status}' "univention-ldap-overlay-memberof" | grep -q 'install ok installed'; then
 			failed_message "$msg the package \"univention-ldap-overlay-memberof\" has to be installed."
 		fi
@@ -801,7 +801,7 @@ set_mdb_ldap_listener_size () {
 	fi
 }
 
-# get forwarder from master
+# get forwarder from Primary
 set_dns_forwarder () {
 
 	local dcpwd="$1"

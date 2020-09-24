@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention LDAP Server
-#  converts a UCS backup into a UCS master
+#  converts a UCS Backup into a UCS Primary
 #
 # Copyright 2001-2020 Univention GmbH
 #
@@ -44,14 +44,14 @@ Usage() {
   printf "Usage:\n  %s: [-f] [-h] [-v] [-w 0]\n\n" $( basename $0 )
   printf "Example:\n"
   printf "  %s -h\n\n" $( basename $0 )
-  printf "  This script converts a UCS backup into a UCS master.\n"
+  printf "  This script converts a UCS Backup into a UCS Primary.\n"
   printf "  When using it, you need root privileges.\n"
   printf "  If you invoke it without any options, it allows cancelling before it proceeds.\n"
   printf "  Choose among the options as needed. Default values are listed in parentheses.\n"
   printf "\n"
   printf "Options:\n"
   printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
-  printf "  -h             do not convert UCS backup, but print this helpful text\n"
+  printf "  -h             do not convert UCS Backup, but print this helpful text\n"
   printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
@@ -64,7 +64,7 @@ Usage() {
 # A function to detect references to host names in LDAP and allow
 # to resolve these references interactively.
 # This function uses udm and will work correctly only if an LDAP
-# master is reachable.
+# Primary is reachable.
 # It looks for all occurrences of the attribute in the module.
 # For each such occurrence an interactive change is offered.
 # Notice that (while searching) the names are matched instead
@@ -205,13 +205,13 @@ consider_termination() {
 
   while true ; do
     echo ""
-    read -p "Do you want to continue with converting this server into a DC master [Y|n]? " answer 2>&1
+    read -p "Do you want to continue with converting this server into a Primary Directory Node [Y|n]? " answer 2>&1
     case $answer in
       [yY] )
         echo "Ok, continue" | tee -a "$LOGFILE"
         return ;;
       [nN] )
-        echo "Ok, terminating as requested, leaving new DC master incomplete." | tee -a "$LOGFILE"
+        echo "Ok, terminating as requested, leaving new Primary Directory Node incomplete." | tee -a "$LOGFILE"
         STILL_RUNNING=
         exit ;;
      * )     ;;
@@ -261,10 +261,10 @@ fi
 # Read all Univention variables into shell variables.
 eval "$(univention-config-registry shell)"
 
-# Check if the current host has been configured to become DC master
+# Check if the current host has been configured to become Primary Directory Node
 if [ "$server_role" != "domaincontroller_backup" ]; then
-  printf "ERROR: univention-backup2master can only be started on a domain controller backup. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
-  # Does it make sense to allow enforcement on a master ?
+  printf "ERROR: univention-backup2master can only be started on a Backup Directory Node. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  # Does it make sense to allow enforcement on a Primary ?
   # Yes, immediately after conversion, we use this script to report remainders.
   if [ $opt_force -eq 0 ] ; then
     exit 1
@@ -279,9 +279,9 @@ if [ ! -e /var/univention-join/joined ]; then
   fi 
 fi
 
-# check master dns
+# check Primary dns
 if ! host $ldap_master >>"$LOGFILE"; then
-  printf "ERROR: LDAP master dns name is not resolvable. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  printf "ERROR: LDAP Primary dns name is not resolvable. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -297,9 +297,9 @@ if [ -z "$(ls /var/cache/apt/archives/univention-server-master_*.deb)" ]; then
   fi
 fi
 
-# Try to connect to DC master, check if connection is possible
+# Try to connect to Primary Directory Node, check if connection is possible
 if nc -z $ldap_master $ldap_master_port >>"$LOGFILE"; then
-  printf "ERROR: The LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  printf "ERROR: The LDAP Primary Directory Node host ($ldap_master:$ldap_master_port) is still running. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -308,9 +308,9 @@ fi
 # turn on verbose logging
 set -x
 
-# The environment seems proper, now start the actual conversion to master.
+# The environment seems proper, now start the actual conversion to Primary.
 echo
-echo "univention-backup2master allows the domain controller backup to take over the domain controller master role."
+echo "univention-backup2master allows the Backup Directory Node to take over the Primary Directory Node role."
 echo
 echo "This tool will wait here for $opt_wait seconds..."
 echo "Press CTRL-c to abort or press ENTER to continue"
@@ -356,7 +356,7 @@ test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-dire
 /usr/share/univention-directory-manager-tools/univention-dnsedit --ignore-exists "$domainname" add srv kerberos-adm tcp 0 100 88 "$hostname.$domainname."
 /usr/share/univention-directory-manager-tools/univention-dnsedit --ignore-exists "$domainname" remove srv kerberos-adm tcp 0 100 88 "$old_ldap_master."
 
-# Remove the S4 Connector service entry from the old DC master
+# Remove the S4 Connector service entry from the old Primary Directory Node
 master_dn="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret '(&(univentionServerRole=master)(univentionService=Samba 4)(univentionService=S4 Connector))' dn | sed -ne 's|dn: ||p')"
 if [ -n "$master_dn" ]; then
 	univention-directory-manager computers/domaincontroller_master modify --dn "$master_dn" --remove service="S4 Connector"
@@ -367,7 +367,7 @@ if [ -n "$master_dn" ]; then
 		mv /var/univention-join/status.temp /var/univention-join/status
 	else
 		echo
-		echo "WARNING: The S4 Connector is not installed on this system but the S4 Connector was installed and configured on the old domain controller master."
+		echo "WARNING: The S4 Connector is not installed on this system but the S4 Connector was installed and configured on the old Primary Directory Node."
 		echo
 	fi
 fi
@@ -489,7 +489,7 @@ if [ -n "$res" ]; then
 	 /usr/share/univention-directory-manager-tools/univention-dnsedit --stoptls --overwrite "$domainname" add cname univention-repository "$hostname"
 fi
 
-# Now that there is a new LDAP master, we can safely use resolve_reference.
+# Now that there is a new LDAP Primary, we can safely use resolve_reference.
 # Change DNS nameserver
 resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$hostname.$domainname." ""
 
@@ -499,26 +499,26 @@ resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$hostname.$do
 # Run join scripts
 univention-run-join-scripts 2>&1 | tee -a "$LOGFILE"
 
-# Resolve any LDAP references to the old master
+# Resolve any LDAP references to the old Primary
 resolve_reference shares/share   host     $old_ldap_master_hostname $hostname ""
 resolve_reference dns/srv_record location $old_ldap_master_hostname $hostname "--superordinate zoneName=$domainname,cn=dns,$ldap_base"
 
-# Is the new DC master a IMAP server?
+# Is the new Primary Directory Node a IMAP server?
 res="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(&(cn=$hostname)(objectClass=univentionDomainController)(univentionService=IMAP))")"
-# Do we have any users who use the old DC master as IMAP server?
+# Do we have any users who use the old Primary Directory Node as IMAP server?
 res_users="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(univentionMailHomeServer=$old_ldap_master)")"
 if [ -n "$res" -a -n "$res_users" ]; then
 	resolve_reference users/user     mailHomeServer  "$old_ldap_master_hostname"    "$hostname"      ""
 elif [ -n "$res_users" ]; then
 	echo
-	echo "WARNING: The old domain controller master was a IMAP server. This server is not a registered IMAP server."
+	echo "WARNING: The old Primary Directory Node was a IMAP server. This server is not a registered IMAP server."
 	echo
 fi
 
-# Remove the reference to old master from krb5PrincipalName for LDAP access
+# Remove the reference to old Primary from krb5PrincipalName for LDAP access
 ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
 
-# Install the package of the master at the same time when removing the package of the backup.
+# Install the package of the Primary at the same time when removing the package of the Backup.
 # This way no dependent packages get removed.
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
 apt-get -y install univention-server-master univention-server-backup-

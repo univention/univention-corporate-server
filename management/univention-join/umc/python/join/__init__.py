@@ -59,7 +59,7 @@ RE_HOSTNAME = re.compile('^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z
 
 
 def get_master_dns_lookup():
-	# DNS lookup for the DC master entry
+	# DNS lookup for the Primary Directory Node entry
 	msg = None
 	fqdn = None
 	try:
@@ -72,15 +72,15 @@ def get_master_dns_lookup():
 			fqdn = result[0].target.canonicalize().split(1)[0].to_text()
 	except dns.resolver.NXDOMAIN as exc:
 		MODULE.error('No record found for %s.' % (query,))
-		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct.')
+		msg = _('No DNS record for the Primary Directory Node was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct.')
 	except dns.resolver.Timeout as exc:
 		MODULE.error('Timeout when looking up %s.' % (query,))
-		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings.')
+		msg = _('The lookup of the Primary Directory Node record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings.')
 	except dns.resolver.NoAnswer as exc:
 		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,))
 	except dns.exception.DNSException as exc:
-		MODULE.error('Error during DC master lookup: %s' % (traceback.format_exc(),))
-		msg = 'Error during DC master lookup: %s.' % (exc,)
+		MODULE.error('Error during Primary Directory Node lookup: %s' % (traceback.format_exc(),))
+		msg = 'Error during Primary Directory Node lookup: %s.' % (exc,)
 	return {'master': fqdn, 'error_message': msg}
 
 
@@ -351,7 +351,7 @@ class Instance(Base):
 
 	@simple_response
 	def master(self):
-		""" returns the hostname of the domaincontroller master as fqdn """
+		""" returns the hostname of the Primary Directory Node as fqdn """
 		return get_master_dns_lookup()
 
 	@property
@@ -400,7 +400,7 @@ class Instance(Base):
 
 		# check for valid server role
 		if ucr.get('server/role') == 'domaincontroller_master':
-			raise UMC_Error(_('Invalid server role! A master domain controller can not be joined.'))
+			raise UMC_Error(_('Invalid server role! A Primary Directory Node cannot be joined.'))
 
 		# check for dpkg lock
 		if self._dpkg_locked():

@@ -86,7 +86,7 @@ restart_listener()
 }
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	# Wait for the listener initialization on DC master
+	# Wait for the listener initialization on Primary Directory Node
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=35723
 
 	stop_listener

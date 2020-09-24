@@ -133,7 +133,7 @@ else
 	getdns "${faileddns}"
 	echo ""
 	echo "You can find the failed modifications in ${faileddns}"
-	echo "Check them for being sync with the master-LDAP, then delete $1 and start the listener again typing:"
+	echo "Check them for being sync with the Primary LDAP, then delete $1 and start the listener again typing:"
 	echo "/etc/init.d/univention-directory-listener start"
 	exit 1
 fi

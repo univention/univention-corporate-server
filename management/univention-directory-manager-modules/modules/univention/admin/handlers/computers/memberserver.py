@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the memberserver hosts
+#  admin module for the Managed Nodes
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -44,13 +44,13 @@ module = 'computers/memberserver'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
-short_description = _('Computer: Member Server')
-object_name = _('Member Server')
-object_name_plural = _('Member Servers')
+short_description = _('Computer: Managed Node')
+object_name = _('Managed Node')
+object_name_plural = _('Managed Nodes')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Member Server'),
+		short_description=_('Computer: Managed Node'),
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionMemberServer'),
 	),
@@ -73,7 +73,7 @@ options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Member server name'),
+		short_description=_('Managed Node name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,

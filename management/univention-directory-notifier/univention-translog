@@ -668,7 +668,7 @@ def check(opt):
     :param opt: Command line options.
     """
     if opt.role not in SERVICES:
-        print('This command is only for UCS Master and Backups.')
+        print('This command is only for UCS Primary and Backups.')
         exit(0)
 
     with stopped(opt, SERVICES[opt.role]):
@@ -960,7 +960,7 @@ class CheckGeneric(object):
 
             if self.needs_sort:
                 print('- still contains duplicate transactions after unique sorting!')
-                print('UCS Master must be reset and all other UCS systems must be re-joined!')
+                print('UCS Primary must be reset and all other UCS systems must be re-joined!')
                 print()
                 print(HELP_RESET)
                 exit(1)
@@ -1170,7 +1170,7 @@ def prune(opt):
     :param opt: Command line options.
     """
     if opt.role not in SERVICES:
-        print('This command is only for UCS Master and Backups.')
+        print('This command is only for UCS Primary and Backups.')
         exit(0)
 
     opt.skip_services = opt.dry_run

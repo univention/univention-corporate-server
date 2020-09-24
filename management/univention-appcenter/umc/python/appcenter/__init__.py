@@ -808,9 +808,9 @@ class Instance(umcm.Base, ProgressMixin):
 			except Exception as e:
 				MODULE.error('%s: %s' % (host, e))
 				if host_is_master:
-					role = 'DC Master'
+					role = 'Primary Directory Node'
 				else:
-					role = 'DC Backup'
+					role = 'Backup Directory Node'
 				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
 				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (app.component_id, role, host))
 				if host_is_master:
@@ -838,7 +838,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 		master_packages = app.default_packages_master
 
-		# connect to master/backups
+		# connect to Primary/Backups
 		unreachable = []
 		hosts_info = {}
 		remote_info = {

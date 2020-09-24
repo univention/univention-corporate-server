@@ -3,7 +3,7 @@
 
 === Packages ===
 * univention-management-console-module-passwordreset: UMC module for the
-    password reset plugin (to be installed on DC master or backup)
+    password reset plugin (to be installed on Primary or Backup Directory Node)
 * univention-self-service: frontent base package, requirement for all plugins
     (can be installed on all UCS roles)
 * univention-self-service-passwordreset: password reset plugin frontend (can

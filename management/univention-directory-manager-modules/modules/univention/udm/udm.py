@@ -121,7 +121,7 @@ class UDM(object):
 
 		:return: a :py:class:`univention.udm.udm.UDM` instance
 		:rtype: univention.udm.udm.UDM
-		:raises univention.udm.exceptions.ConnectionError: Non-master systems, server down, etc.
+		:raises univention.udm.exceptions.ConnectionError: Non-Primary systems, server down, etc.
 		"""
 		from .connections import LDAP_connection
 		connection = LDAP_connection.get_admin_connection()

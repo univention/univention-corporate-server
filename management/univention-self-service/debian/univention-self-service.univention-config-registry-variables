@@ -1,12 +1,12 @@
 [self-service/backend-server]
-Description[de]=Master oder Backup Domain Controller auf dem das UMC backend läuft (es muss dort das Paket 'univention-management-console-module-passwordreset' installert sein. Standard ist der DC master.
-Description[en]=Master or backup domain controller on which the UMC backend is running (package 'univention-management-console-module-passwordreset' must be installed there). Defaults to the domains master DC.
+Description[de]=Primary oder Backup Directory Node, auf dem das UMC-Backend läuft (es muss dort das Paket 'univention-management-console-module-passwordreset' installert sein. Standard ist der Primary Directory Node.
+Description[en]=Primary or Backup Directory Node on which the UMC backend is running (package 'univention-management-console-module-passwordreset' must be installed there). Defaults to the domains Primary Directory Node.
 Type=str
 Categories=self-service
 
 [self-service/ldap_attributes]
-Description[de]=Eine durch Komma getrennte Liste von LDAP Attributen, die ein Benutzer bei der Nutzung des Self-Service Moduls verändern dürfen muss. Diese Variable muss nur auf einem DC Master konfiguriert werden. Auf einem DC Master wird durch ein UCR Modul eine ACL Datei generiert und aktiviert.
-Description[en]=A comma separated list of LDAP attributes that a user must be able to modify when using the self-service. This variable only has to be configured on the DC Master. On a DC master, a UCR module will generate and activate an ACL definition file.
+Description[de]=Eine durch Komma getrennte Liste von LDAP Attributen, die ein Benutzer bei der Nutzung des Self-Service Moduls verändern dürfen muss. Diese Variable muss nur auf einem Primary Directory Node konfiguriert werden. Auf einem Primary Directory Node wird durch ein UCR Modul eine ACL Datei generiert und aktiviert.
+Description[en]=A comma separated list of LDAP attributes that a user must be able to modify when using the self-service. This variable only has to be configured on the Primary Directory Node. On a Primary Directory Node, a UCR module will generate and activate an ACL definition file.
 Type=str
 Categories=self-service
 

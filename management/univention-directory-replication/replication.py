@@ -33,8 +33,8 @@
 
 # Possible initialization scenarios:
 # 1. New slave
-#    pull complete database from master
-# 2. Master is degraded to slave
+#    pull complete database from Primary
+# 2. Primary is degraded to Replica
 #    use existing database
 
 from __future__ import print_function, absolute_import
@@ -56,7 +56,7 @@ from errno import ENOENT
 
 
 name = 'replication'
-description = 'LDAP slave replication'
+description = 'LDAP Replica replication'
 filter = '(objectClass=*)'  # default filter - may be overwritten later
 attributes = []
 modrdn = '1'
@@ -1048,7 +1048,7 @@ def clean():
 def initialize():
 	ud.debug(ud.LISTENER, ud.INFO, 'replication: initialize')
 	if not slave:
-		ud.debug(ud.LISTENER, ud.INFO, 'replication: not slave')
+		ud.debug(ud.LISTENER, ud.INFO, 'replication: not Replica')
 		return 1
 	clean()
 	ud.debug(ud.LISTENER, ud.INFO, 'replication: initializing cache')

@@ -188,7 +188,7 @@ class Module(object):
 		with open(os.path.join('debian', '%s.postinst.debhelper' % (self.module.package,)), 'a') as f_postinst:
 			if join_script:
 				f_postinst.write('''
-# run join script on DC master and DC backup
+# run join script on Primary Directory Node and Backup Directory Node
 . /usr/share/univention-lib/base.sh
 call_joinscript %s || true
 ''' % join_script)

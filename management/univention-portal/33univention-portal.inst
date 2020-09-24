@@ -44,7 +44,7 @@ ldap_master="$(ucr get ldap/master)"
 ldap_master_port="$(ucr get ldap/master/port)"
 
 if ! nc -z "$ldap_master" "${ldap_master_port:-7389}"; then
-	false || die "LDAP master is not available. Please try again later."
+	false || die "Primary Directory Node is not available. Please try again later."
 fi
 
 ucs_registerLDAPExtension "$@" \
@@ -143,7 +143,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append displayName='"en_US" "Administration"' \
 		--append displayName='"de_DE" "Verwaltung"' || die
 
-	# create domain-wide portal object for DC master/backup systems
+	# create domain-wide portal object for Primary/Backup Directory Node systems
 	univention-directory-manager portals/portal create "$@" --ignore_exists \
 		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain \
@@ -183,7 +183,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append displayName='"en_US" "Administration"' \
 		--append displayName='"de_DE" "Verwaltung"' || die
 
-	# create portal object which acts as local start site on systems which are no DC master or backup
+	# create portal object which acts as local start site on systems which are no Primary or Backup Directory Node
 	univention-directory-manager portals/portal create "$@" --ignore_exists \
 		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name="local" \

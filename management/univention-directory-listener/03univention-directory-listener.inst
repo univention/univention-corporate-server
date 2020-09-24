@@ -116,9 +116,9 @@ fake_replication () {
 			die "Failed slapadd from 'listener_init_fake_replication_ldif'"
 	else
 		# ldap search and slapadd
-		echo -n "searching ldap on master and slapadd ... "
+		echo -n "searching ldap on Primary and slapadd ... "
 		/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -l -o - | slapadd -q ||
-			die "Failed slapadd with master LDIF"
+			die "Failed slapadd with Primary LDIF"
 	fi
 	time_end="$(date +%s)"
 	minutes="$(((time_end - time_start) / 60))"
@@ -221,8 +221,8 @@ fi
 # The samba join script needs a running listener. Bug #19128
 /etc/init.d/univention-directory-listener restart
 
-# 3: fake listener initialization on non master systems
-# wait until local notifier id is equal to notifier id of the master
+# 3: fake listener initialization on non Primary systems
+# wait until local notifier id is equal to notifier id of the Primary
 # otherwise if we could miss something (password change of computer
 # during join) if listener_init_fake_notifierid is used
 if [ "${notifierid_master:-0}" -gt 0 ]
@@ -231,7 +231,7 @@ then
 	while now="$(date +%s)" ; [ "$now" -le "$max" ]
 	do
 		lid="$(cat /var/lib/univention-directory-listener/notifier_id)"
-		printf '\r%5d: waiting for replication (Notifier-ID self:%d <= master:%d)' "$((max - now))" "$lid" "$notifierid_master"
+		printf '\r%5d: waiting for replication (Notifier-ID self:%d <= Primary:%d)' "$((max - now))" "$lid" "$notifierid_master"
 		[ "$notifierid_master" -le "${lid:-0}" ] && break
 		sleep 3
 	done

@@ -59,7 +59,7 @@ define([
 					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'login\').relogin(\'Administrator\')">Administrator</a>';
 					if (_ucr['server/role'] == 'domaincontroller_slave') {
 						dialog.notify(_('As %(root)s you do not have access to the App Center. For this you need to log in as %(administrator)s.', {root: '<strong>root</strong>', administrator: login_as_admin_tag}));
-					} else { // master, backup
+					} else { // Primary, Backup
 						dialog.notify(_('As %(root)s you have neither access to the domain administration nor to the App Center. For this you need to log in as %(administrator)s.', {root: '<strong>root</strong>', administrator: login_as_admin_tag}));
 					}
 				}
@@ -244,7 +244,7 @@ define([
 			this._statuspage._grid.on('runScripts', lang.hitch(this, function(scripts, force) {
 				var txtscripts = '<ul style="max-height: 200px; overflow: auto;"><li>' + scripts.join('</li><li>') + '</ul>';
 				if (this._serverRole == 'domaincontroller_master') {
-					// we do not need credentials on DC master
+					// we do not need credentials on Primary Directory Node
 					dialog.confirm(_('The following join scripts will be executed: ') + txtscripts, [{
 						name: 'cancel',
 						label: 'Cancel',
@@ -305,7 +305,7 @@ define([
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
 						// i18n: %s is the "XXX module".
-						dialog.alert(_('A DC master should be joined by the %s.', tools.linkToModule({module: 'setup', flavor: 'wizard'}) || _('Basic settings module')));
+						dialog.alert(_('A Primary Directory Node should be joined by the %s.', tools.linkToModule({module: 'setup', flavor: 'wizard'}) || _('Basic settings module')));
 						return;
 					}
 					this._switchView('join_form');

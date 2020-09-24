@@ -239,7 +239,7 @@ property_descriptions = {
 		identifies=False
 	),
 	'defaultPackagesMaster': univention.admin.property(
-		short_description=_('Default Master Packages'),
+		short_description=_('Default Primary Packages'),
 		long_description='',
 		syntax=univention.admin.syntax.string,
 		multivalue=True,

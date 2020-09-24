@@ -1000,7 +1000,7 @@ define([
 				topic.publish('/umc/license/activation');
 			} else {
 				// UDM is not present. Either because this is
-				// not the DC Master or because the user is no
+				// not the Primary Directory Node or because the user is no
 				// Administrator
 				var msg;
 				if (this.app.isMaster) {
@@ -1057,7 +1057,7 @@ define([
 		},
 
 		markupErrors: function(action) {
-			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (DC Master|DC Backup) (.+)/);
+			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (Primary Directory Node|Backup Directory Node) (.+)/);
 			var logHintGiven = false;
 			var errors = array.map(this._progressBar._errors, lang.hitch(this, function(error) {
 				var match = installMasterPackagesOnHostFailedRegex.exec(error);
@@ -1067,7 +1067,7 @@ define([
 					var host = match[3];
 					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + entities.encode(host) + '</strong>') + '</p>';
 					if (role === 'DC Backup') {
-						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that backup system.', '<pre>univention-app install ' + entities.encode(this.app.id) + ' --only-master-packages</pre>') + '</p>';
+						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that Backup system.', '<pre>univention-app install ' + entities.encode(this.app.id) + ' --only-master-packages</pre>') + '</p>';
 					}
 					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
 				} else {

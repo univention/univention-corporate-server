@@ -58,7 +58,7 @@
 #	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 #
 attributetype ( 1.3.6.1.4.1.10176.61 NAME 'univentionServerRole'
-	DESC 'server role of this machine [ldap master,ldap slave,...]'
+	DESC 'server role of this machine [ldap Primary,ldap Replica,...]'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
@@ -168,13 +168,13 @@ objectclass ( 1.3.6.1.4.1.10176.73 NAME 'univentionWindows'
 
 objectclass ( 1.3.6.1.4.1.10176.74 NAME 'univentionMemberServer'
 	SUP 'univentionHost' AUXILIARY
-	DESC 'Univention member server'
+	DESC 'Univention Managed Node server'
 	MUST ( cn )
 	MAY ( univentionServerRole $ univentionService $ univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath $ univentionServerInstallationOption) )
 
 objectclass ( 1.3.6.1.4.1.10176.75 NAME 'univentionDomainController'
 	SUP 'univentionHost' AUXILIARY
-	DESC 'Univention domain controller'
+	DESC 'Univention Directory Node'
 	MUST ( cn )
 	MAY ( univentionServerRole $ univentionService $ univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath $ univentionServerInstallationOption) )
 

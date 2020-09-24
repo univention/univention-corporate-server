@@ -38,7 +38,7 @@ import univention.config_registry
 import univention.debug as ud
 
 name = 'ldap_server'
-description = 'Update ldap server master list'
+description = 'Update ldap server Primary list'
 filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))'
 attributes = []
 

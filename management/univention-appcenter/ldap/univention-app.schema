@@ -131,7 +131,7 @@ attributetype ( univentionAppAttributeType:19 NAME 'univentionAppDefaultPackages
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionAppAttributeType:20 NAME 'univentionAppDefaultPackagesMaster'
-	DESC 'Default packages of the App for the master'
+	DESC 'Default packages of the App for the Primary'
 	EQUALITY caseExactMatch
 	SUBSTR caseExactSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )

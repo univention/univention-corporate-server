@@ -421,23 +421,23 @@ computerPassword="$(create_machine_password)"
 
 case "$ROLE" in
 domaincontroller_master)
-	create_entry "DC Master" "computers/domaincontroller_master" \
+	create_entry "Primary Directory Node" "computers/domaincontroller_master" \
 		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
 		"cn=DC Backup Hosts,cn=groups,$ldap_base"
 	;;
 domaincontroller_backup)
-	create_entry "DC Backup" "computers/domaincontroller_backup" \
+	create_entry "Backup Directory Node" "computers/domaincontroller_backup" \
 		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
 		"cn=DC Backup Hosts,cn=groups,$ldap_base" \
 		"cn=DC Slave Hosts,cn=groups,$ldap_base"
 	;;
 domaincontroller_slave)
-	create_entry "DC Slave" "computers/domaincontroller_slave" \
+	create_entry "Replica Directory Node" "computers/domaincontroller_slave" \
 		"${POSITION:-cn=dc,cn=computers,$ldap_base}" \
 		"cn=DC Slave Hosts,cn=groups,$ldap_base"
 	;;
 memberserver)
-	create_entry "Member Server" "computers/memberserver" \
+	create_entry "Managed Node" "computers/memberserver" \
 		"${POSITION:-cn=memberserver,cn=computers,$ldap_base}" \
 		"cn=Computers,cn=groups,$ldap_base"
 	;;

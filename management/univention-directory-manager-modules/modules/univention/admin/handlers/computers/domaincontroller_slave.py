@@ -44,13 +44,13 @@ module = 'computers/domaincontroller_slave'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
-short_description = _('Computer: Domain Controller Slave')
-object_name = _('DC Slave')
-object_name_plural = _('DC Slaves')
+short_description = _('Computer: Replica Directory Node')
+object_name = _('Replica Directory Node')
+object_name_plural = _('Replica Directory Nodes')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Domain Controller Slave'),
+		short_description=_('Computer: Replica Directory Node'),
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
 	),
@@ -73,7 +73,7 @@ options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Domain controller name'),
+		short_description=_('Directory Node name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,

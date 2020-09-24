@@ -103,12 +103,12 @@ def get_hosts(module, lo, ucr=None):
 
 
 def get_master(lo):
-	MODULE.process('Searching DC Master')
+	MODULE.process('Searching Primary Directory Node')
 	return get_hosts(domaincontroller_master, lo)[0].info['fqdn']
 
 
 def get_all_backups(lo, ucr=None):
-	MODULE.process('Searching DC Backup')
+	MODULE.process('Searching Backup Directory Node')
 	return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr)]
 
 

@@ -41,8 +41,8 @@ Depends:
  univention-self-service-passwordreset-umc,
  ${misc:Depends},
 Description: Univention Self Service
- This package contains the required dependencies for the domaincontroller
- master where the self service runs on.
+ This package contains the required dependencies for the Primary Directory Node
+ where the self service runs on.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
@@ -64,7 +64,7 @@ Depends:
 Description: Password reset module for Univention Self Service.
  This package contains a UMC module that is the backend for the
  univention-self-service-passwordreset-frontend package. It must be
- installed on a DC master or DC backup.
+ installed on a Primary Directory Node or Backup Directory Node.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

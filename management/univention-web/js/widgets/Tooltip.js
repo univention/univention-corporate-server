@@ -47,7 +47,7 @@ define([
 		}
 	});*/
 
-	// connect to the master tooltip's domNode onlick event in order to
+	// connect to the primary tooltip's domNode onlick event in order to
 	// trigger the fade out animation.
 	var hdl = aspect.after(Tooltip, 'show', function() {
 		on(Tooltip._masterTT.domNode, 'click', lang.hitch(Tooltip._masterTT.fadeOut, 'play'));

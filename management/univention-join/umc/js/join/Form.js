@@ -62,8 +62,8 @@ define([
 				type:			TextBox,
 				name:			'hostname',
 				value:			'',
-				label:			_('Hostname of domain controller master'),
-				description:	_('The hostname of the domain controller master of the domain')
+				label:			_('Hostname of Primary Directory Node'),
+				description:	_('The hostname of the Primary Directory Node of the domain')
 			}, {
 				type:			Text,
 				name:			'warning',

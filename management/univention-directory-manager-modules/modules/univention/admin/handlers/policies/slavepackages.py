@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin policy for the DC Slave packages
+#  admin policy for the Replica Directory Node packages
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -63,10 +63,10 @@ policy_apply_to = ["computers/domaincontroller_slave"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Slave packages')
-object_name = _('Slave packages policy')
-object_name_plural = _('Slave packages policies')
-policy_short_description = _('Slave packages')
+short_description = _('Policy: Replica packages')
+object_name = _('Replica packages policy')
+object_name_plural = _('Replica packages policies')
+policy_short_description = _('Replica packages')
 long_description = ''
 options = {
 	'default': univention.admin.option(
@@ -108,7 +108,7 @@ property_descriptions.update(dict([
 
 layout = [
 	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General slave packages settings'), layout=[
+		Group(_('General Replica packages settings'), layout=[
 			'name',
 			'slavePackages',
 			'slavePackagesRemove'

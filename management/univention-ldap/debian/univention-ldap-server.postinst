@@ -69,7 +69,7 @@ restart_slapd ()
 }
 # } # end of function definitions
 
-# Replication: password for rootdn/updatedn and schema from master
+# Replication: password for rootdn/updatedn and schema from Primary
 case "$ldap_server_type" in
 master) ;;
 slave|*) touch /etc/ldap/rootpw.conf /var/lib/univention-ldap/schema.conf ;;
@@ -167,7 +167,7 @@ upgrade_license () {
 	domaincontroller_master)
 		;;
 	*)
-		echo "Not the DC master: skipping upgrade."
+		echo "Not the Primary Directory Node: skipping upgrade."
 		return 0
 		;;
 	esac
@@ -215,7 +215,7 @@ fi
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then	## package update
 		if test -x /etc/init.d/slapd; then
-			# always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
+			# always start on Primary, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
 			if [ "$server_role" = "domaincontroller_master" ]; then
 				restart_slapd
 			else
@@ -234,7 +234,7 @@ if [ "$1" = "configure" ]; then
 	## load the listener module
 	/etc/init.d/univention-directory-listener crestart
 
-	# Bug #48530: resync listener module ldap_extension on dc backup/slave when updating from older version
+	# Bug #48530: resync listener module ldap_extension on Backup Directory Node/Replica Directory Node updating from older version
 	# to fix replication/activation issue in older versions of the listener module.
 	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.2-35; then
 		if [ -e /var/univention-join/joined ] ; then

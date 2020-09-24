@@ -36,14 +36,14 @@ usage()
 {
 	echo "Usage: $0 <file name>"
 	echo
-	echo "The DNs in the given file will be re-replicated by the Univention Directory Notifier to all UCS systems in this UCS domain. This tool must be run on the domain controller master."
+	echo "The DNs in the given file will be re-replicated by the Univention Directory Notifier to all UCS systems in this UCS domain. This tool must be run on the Primary Directory Node."
 	echo
 	echo "Warning: This tool will stop the OpenLDAP and the Notifier daemon."
 	echo
 }
 
 if [ "$server_role" != "domaincontroller_master" ]; then
-	echo "Abort: This tool must be run on the domain controller Master!" >&2
+	echo "Abort: This tool must be run on the Primary Directory Node!" >&2
 	exit 1
 fi
 

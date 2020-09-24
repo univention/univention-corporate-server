@@ -48,7 +48,7 @@ extern int backup_notifier;
 
 /* Select LDAP server and notifier daemon.
  * 1. notifier/server : notifier/server/port
- * 2. @Master|Backup: ldap/master : ldap/master/port
+ * 2. @Primary|Backup: ldap/master : ldap/master/port
  * 2. @*: ldap/backup[?] : ldap/backup/port, fallback: ldap/master : ldap/master/port
  * @param lp LDAP configuration object.
  *
@@ -90,7 +90,7 @@ void select_server(univention_ldap_parameters_t *lp) {
 	}
 	ldap_master_port = univention_config_get_int("ldap/master/port");
 
-	/* if this is a master or backup return ldap/master */
+	/* if this is a Primary or Backup return ldap/master */
 	if (!strcmp(server_role, "domaincontroller_master") || !strcmp(server_role, "domaincontroller_backup")) {
 		lp->host = strdup(ldap_master);
 		if (ldap_master_port > 0)
@@ -99,7 +99,7 @@ void select_server(univention_ldap_parameters_t *lp) {
 	} else {
 		char *ldap_backups = univention_config_get_string("ldap/backup");
 
-		/* list of backups and master still up-to-date? */
+		/* list of Backups and Primary still up-to-date? */
 		if (current_server_list && ldap_backups && (strcmp(ldap_backups, current_server_list) != 0)) {
 			free(current_server_list);
 			current_server_list = NULL;
@@ -123,7 +123,7 @@ void select_server(univention_ldap_parameters_t *lp) {
 			}
 			if (server_list_entries >= ARRAY_SIZE(server_list))
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Too many (more than %zd) backup-servers found", ARRAY_SIZE(server_list));
-			/* Append notifier on DC Master unless explicitly disabled */
+			/* Append notifier on Primary Directory Node unless explicitly disabled */
 			if (server_list_entries < ARRAY_SIZE(server_list) && !backup_notifier)
 				server_list[server_list_entries++].server_name = strdup(ldap_master);
 		}

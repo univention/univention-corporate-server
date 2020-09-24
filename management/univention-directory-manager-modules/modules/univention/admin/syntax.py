@@ -3540,7 +3540,7 @@ class IComputer_FQDN(UDM_Objects):
 
 class DomainController(IComputer_FQDN):
 	"""
-	Syntax to select a |UCS| domain controller from |LDAP| by |FQDN|.
+	Syntax to select a |UCS| Directory Node from |LDAP| by |FQDN|.
 	"""
 	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
 	use_objects = False
@@ -4624,10 +4624,10 @@ class UCSServerRole(select):
 	"""
 	empty_value = True
 	choices = [
-		('domaincontroller_master', _('Domaincontroller Master')),
-		('domaincontroller_backup', _('Domaincontroller Backup')),
-		('domaincontroller_slave', _('Domaincontroller Slave')),
-		('memberserver', _('Memberserver')),
+		('domaincontroller_master', _('Primary Directory Node')),
+		('domaincontroller_backup', _('Backup Directory Node')),
+		('domaincontroller_slave', _('Replica Directory Node')),
+		('memberserver', _('Managed Node')),
 	]
 
 
@@ -4686,13 +4686,13 @@ class univentionAdminModules(select):
 	"""
 	# we need a fallback
 	choices = [
-		('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'),
-		('computers/domaincontroller_master', 'Computer: Domain Controller Master'),
-		('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'),
+		('computers/domaincontroller_backup', 'Computer: Backup Directory Node'),
+		('computers/domaincontroller_master', 'Computer: Primay Directory Node'),
+		('computers/domaincontroller_slave', 'Computer: Replica Directory Node'),
 		('computers/trustaccount', 'Computer: Domain Trust Account'),
 		('computers/ipmanagedclient', 'Computer: IP Managed Client'),
 		('computers/macos', 'Computer: Mac OS X Client'),
-		('computers/memberserver', 'Computer: Member Server'),
+		('computers/memberserver', 'Computer: Managed Node'),
 		('computers/windows', 'Computer: Windows'),
 		('container/cn', 'Container: Container'),
 		('container/dc', 'Container: Domain'),
@@ -4731,9 +4731,9 @@ class univentionAdminModules(select):
 		('policies/xfree', 'Policy: Display'),
 		('policies/ldapserver', 'Policy: LDAP Server'),
 		('policies/maintenance', 'Policy: Maintenance'),
-		('policies/masterpackages', 'Policy: Packages Master'),
-		('policies/memberpackages', 'Policy: Packages Member'),
-		('policies/slavepackages', 'Policy: Packages Slave'),
+		('policies/masterpackages', 'Policy: Packages Primary'),
+		('policies/memberpackages', 'Policy: Packages Managed Node'),
+		('policies/slavepackages', 'Policy: Packages Replica'),
 		('policies/pwhistory', 'Policy: Password Policy'),
 		('policies/print_quota', 'Policy: Print Quota'),
 		('policies/printserver', 'Policy: Print Server'),

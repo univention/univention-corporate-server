@@ -171,7 +171,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
 	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
 	:type decode_ignorelist: list[str]
-	:param bool ldap_master: Open a connection to the Master if True, to the preferred LDAP server otherwise.
+	:param bool ldap_master: Open a connection to the Primary if True, to the preferred LDAP server otherwise.
 	:return: A 2-tuple (LDAP-access, LDAP-position)
 	:rtype: tuple[univention.admin.uldap.access, univention.admin.uldap.position]
 	"""

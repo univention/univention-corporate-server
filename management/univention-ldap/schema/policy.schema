@@ -666,17 +666,17 @@ attributetype ( 1.3.6.1.4.1.10176.1000.13.1.10 NAME 'univentionMobileClientPacka
 
 objectclass ( 1.3.6.1.4.1.10176.1000.13.2.1 NAME 'univentionPolicyPackagesMaster'
 	SUP 'univentionPolicy' STRUCTURAL
-	DESC 'Packages List Master'
+	DESC 'Packages List Primary'
 	MAY ( univentionMasterPackages $ univentionMasterPackagesRemove ))
 
 objectclass ( 1.3.6.1.4.1.10176.1000.13.2.2 NAME 'univentionPolicyPackagesSlave'
 	SUP 'univentionPolicy' STRUCTURAL
-	DESC 'Packages List Slave'
+	DESC 'Packages List Replica'
 	MAY ( univentionSlavePackages $ univentionSlavePackagesRemove ))
 
 objectclass ( 1.3.6.1.4.1.10176.1000.13.2.3 NAME 'univentionPolicyPackagesMember'
 	SUP 'univentionPolicy' STRUCTURAL
-	DESC 'Packages List Member'
+	DESC 'Packages List Managed Node'
 	MAY ( univentionMemberPackages $ univentionMemberPackagesRemove ))
 
 objectclass ( 1.3.6.1.4.1.10176.1000.13.2.4 NAME 'univentionPolicyPackagesClient'

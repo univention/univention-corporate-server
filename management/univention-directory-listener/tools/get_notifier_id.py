@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read the notifier id from the DC master"""
+"""Read the notifier id from the Primary Directory Node"""
 from __future__ import print_function
 #
 # Copyright 2004-2020 Univention GmbH

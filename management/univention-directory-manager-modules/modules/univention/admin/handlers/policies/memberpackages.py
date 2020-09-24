@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin policy for the memberserver packages
+#  admin policy for the Managed Node packages
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -63,10 +63,10 @@ policy_apply_to = ["computers/memberserver"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Member Server packages')
-object_name = _('Member Server packages policy')
-object_name_plural = _('Member Server packages policies')
-policy_short_description = _('Member Server packages')
+short_description = _('Policy: Managed Node packages')
+object_name = _('Managed Node packages policy')
+object_name_plural = _('Managed Node packages policies')
+policy_short_description = _('Managed Node packages')
 long_description = ''
 options = {
 	'default': univention.admin.option(
@@ -108,7 +108,7 @@ property_descriptions.update(dict([
 
 layout = [
 	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General member server packages settings'), layout=[
+		Group(_('General Managed Node packages settings'), layout=[
 			'name',
 			'memberPackages',
 			'memberPackagesRemove'

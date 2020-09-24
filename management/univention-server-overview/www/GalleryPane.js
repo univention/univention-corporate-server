@@ -39,10 +39,10 @@ define([
 	"umc/i18n!server-overview"
 ], function(declare, lang, array, domConstruct, entities, tools, GalleryPane, _) {
 	var roleLabels = {
-		'master': _('DC master'),
-		'backup': _('DC backup'),
-		'slave': _('DC slave'),
-		'member': _('Member server')
+		'master': _('Primary Directory Node'),
+		'backup': _('Backup Directory Node'),
+		'slave': _('Replica Directory Node'),
+		'member': _('Managed Node')
 	};
 
 	function getServerLabel(item) {

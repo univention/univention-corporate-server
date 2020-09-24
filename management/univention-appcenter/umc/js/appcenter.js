@@ -56,7 +56,7 @@ define([
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
-			dialog.alert(_('Activation is not possible. Please login as Administrator on the DC master.'));
+			dialog.alert(_('Activation is not possible. Please login as Administrator on the Primary Directory Node.'));
 			return;
 		}
 	});

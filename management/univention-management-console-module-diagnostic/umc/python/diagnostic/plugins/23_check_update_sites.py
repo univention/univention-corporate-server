@@ -44,7 +44,7 @@ description = _('No problems were found while resolving update repositories.')
 links = [{
 	'name': 'sdb',
 	'href': _('http://sdb.univention.de/1298'),
-	'label': _('Univention Support Database - DNS Server on DC does not resolve external names')
+	'label': _('Univention Support Database - DNS Server on Directory Node does not resolve external names')
 }]
 run_descr = ['Checks resolving repository servers']
 

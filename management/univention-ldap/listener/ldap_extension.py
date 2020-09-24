@@ -47,7 +47,7 @@ acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
 
 
 def handler(dn, new, old):
-	"""Handle LDAP schema extensions on Master and Backup"""
+	"""Handle LDAP schema extensions on Primary and Backup"""
 	global schema_handler, acl_handler
 
 	if new:
@@ -64,15 +64,15 @@ def handler(dn, new, old):
 
 
 def postrun():
-	"""Restart LDAP server Master and mark new extension objects active"""
+	"""Restart LDAP server Primary and mark new extension objects active"""
 	global schema_handler, acl_handler
 
 	server_role = listener.configRegistry.get('server/role')
 	if not server_role == 'domaincontroller_master':
 		if not acl_handler._todo_list:
-			# In case of schema changes only restart slapd on Master
+			# In case of schema changes only restart slapd on Primary
 			return
-		# Only set active flags on Master
+		# Only set active flags on Primary
 		schema_handler._todo_list = []
 		acl_handler._todo_list = []
 
@@ -96,7 +96,7 @@ def postrun():
 								ldap_extension.set_handler_message(name, object_dn, 'LDAP server restart returned {} {} ({}).'.format(stderr, stdout, p.returncode))
 					return
 
-			# Only set active flags on Master
+			# Only set active flags on Primary
 			if server_role == 'domaincontroller_master':
 				for handler_object in (schema_handler, acl_handler,):
 					handler_object.mark_active(handler_name=name)

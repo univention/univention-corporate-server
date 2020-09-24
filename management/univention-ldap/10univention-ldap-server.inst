@@ -311,8 +311,8 @@ fi
 udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_base" --set name="ldap/${hostname}.${domainname}" --set generateRandomPassword=1 || die
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] && ! is_ucr_false "ldap/create-ldap-server-policy"; then
-	# Create a LDAP server policy so member server use the LDAP servers of
-	# dc master and all dc backups.
+	# Create a LDAP server policy so Managed Node server use the LDAP servers of
+	# Primary Directory Node and all Backup Directory Nodes.
 	if ! univention-directory-manager policies/ldapserver list "$@" --filter cn=default-settings | egrep -q '^DN'; then
 		univention-directory-manager policies/ldapserver create "$@" \
 			--position="cn=ldap,cn=policies,$ldap_base" \

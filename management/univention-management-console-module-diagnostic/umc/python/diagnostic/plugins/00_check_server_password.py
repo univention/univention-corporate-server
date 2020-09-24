@@ -158,7 +158,7 @@ def run(_umc_instance, retest=False):
 		error_descriptions.append(error)
 
 	if not check_machine_password(master=True):
-		error = _('Authentication against the master LDAP failed with the machine password.')
+		error = _('Authentication against the Primary LDAP failed with the machine password.')
 		error_descriptions.append(error)
 
 	password_change = configRegistry.is_true('server/password/change', True)

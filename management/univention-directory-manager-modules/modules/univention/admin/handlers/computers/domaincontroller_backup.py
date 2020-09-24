@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the DC Backup hosts
+#  admin module for the Backup Directory Node hosts
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -44,13 +44,13 @@ module = 'computers/domaincontroller_backup'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
-short_description = _('Computer: Domain Controller Backup')
-object_name = _('DC Backup')
-object_name_plural = _('DC Backups')
+short_description = _('Computer: Backup Directory Node')
+object_name = _('Backup Directory Node')
+object_name_plural = _('Backup Directory Nodes')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Domain Controller Backup'),
+		short_description=_('Computer: Backup Directory Node'),
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
 	),
@@ -73,7 +73,7 @@ options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('Domain controller name'),
+		short_description=_('Directory Node name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,

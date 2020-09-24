@@ -103,7 +103,7 @@ define([
 			tools.ucr('server/role').then(lang.hitch(this, function(values) {
 				this._serverRole = values['server/role'];
 				if (this._serverRole == 'domaincontroller_master') {
-					// remove the rejoin action on DC master
+					// remove the rejoin action on Primary Directory Node
 					this.set('actions', array.filter(this.actions, function(action) { return action.name != 'rejoin'; }));
 				}
 			}));

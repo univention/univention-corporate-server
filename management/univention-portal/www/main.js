@@ -1023,7 +1023,7 @@ define([
 
 		_setupEditMode: function() {
 			// require cache only here and not at the beginning of the file
-			// because member servers and slaves do not have
+			// because Replica Directory Nodes and Managed Nodes do not have
 			// the univention-management-console-module-udm package installed.
 			// This method is only called when it is available
 			require(['umc/modules/udm/cache'], lang.hitch(this, function(cache) {
