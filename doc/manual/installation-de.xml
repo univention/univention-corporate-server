@@ -364,7 +364,7 @@
   <title>Domäneneinstellungen</title>
   <para>
 	Die abschließende Konfiguration des UCS-Systems beginnt mit der Auswahl eines Domänenmodus.
-	Es stehen vier Modi zur Verfügung, die Einfluss auf die nächsten Konfigurationsschritte haben:
+	Es stehen drei Modi zur Verfügung, die Einfluss auf die nächsten Konfigurationsschritte haben:
 	<itemizedlist>
 	  <listitem>
 		<simpara>
@@ -392,16 +392,6 @@
 		  das zu konfigurierende UCS-System einer bereits existierenden UCS-Domäne beitreten. Die
 		  UCS-Systemrolle, die es in der Domäne einnehmen soll, wird in einem nachgelagerten Schritt
 		  abgefragt.
-		</simpara>
-	  </listitem>
-	  <listitem>
-		<simpara>
-		  Wird der Modus <guimenu>Keine Domäne benutzen</guimenu> ausgewählt, stehen auf dem
-		  UCS-System keinerlei webbasierte Verwaltungsfunktionen und keinerlei Domänenfunktionalität zur
-		  Verfügung. Das UCS-System kann auch nicht nachträglich Teil einer bestehenden UCS- oder Active Directory-Domäne
-		  werden bzw. nachträglich eine neue UCS-Domäne gründen. Weiterhin steht in diesem Modus das
-		  Univention App Center nicht zur Verfügung. Dieser Modus wird daher nur selten und in speziellen
-		  Szenarien (z.B. als Firewall-System) verwendet.
 		</simpara>
 	  </listitem>
 	</itemizedlist>
@@ -545,15 +535,6 @@
 	  Szenarien (z.B. ein öffentlicher Mailserver) kann es notwendig sein, einen bestimmten vollständigen
 	  Rechnernamen zu verwenden. Der eingerichtete Domänenname kann nach Abschluss der Konfiguration
 	  <emphasis>nicht</emphasis> mehr verändert werden.
-	</para>
-  </section>
-  <section id="installation:Domäneneinstellungen:KeineDomäne">
-	<title>Modus "Keine Domäne benutzen"</title>
-	<para>
-	  Die Konfiguration des Modus <guimenu>Keine Domäne benutzen</guimenu> erfordert die Angabe
-	  eines Rechnernamens für das zu konfigurierende UCS-System. Dabei kann der vorgeschlagene Rechnername
-	  übernommen oder ein eigener Rechnername eingetragen werden.  Der Domänenname des Rechners wird
-	  automatisch aus dem Domänen-DNS-Server abgeleitet.
 	</para>
   </section>
 </section>
