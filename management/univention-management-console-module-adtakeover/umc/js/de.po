@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:14+0100\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,8 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/adtakeover.js:107
-#, python-brace-format
+#: umc/js/adtakeover.js:103
 msgid ""
 "<p>A <i>{ad_os}</i> Active Directory domain with the domainname "
 "<i>{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</i> "
@@ -28,7 +27,7 @@ msgstr ""
 "<ul><li>{users} Benutzer</li><li>{groups} Gruppen</li><li>{computers} "
 "Rechner</li></ul>Klicken Sie auf \"Weiter\", um die Übernahme zu starten.</p>"
 
-#: umc/js/adtakeover.js:75
+#: umc/js/adtakeover.js:71
 msgid ""
 "<p>A previous Active Directory takeover was detected.</p><p>In order to "
 "start another takeover process, click \"Next\".</p>"
@@ -36,7 +35,7 @@ msgstr ""
 "<p>Ein bereits durchgeführter Active Directory Takeover wurde erkannt. Um "
 "eine neue Übernahme zu starten, klicken Sie auf \"Weiter\".</p>"
 
-#: umc/js/adtakeover.js:118
+#: umc/js/adtakeover.js:114
 msgid ""
 "<p>All Windows domain accounts have been successfully transferred.</p><p>As "
 "next step, group policies must be copied from the Active Directory SYSVOL "
@@ -49,7 +48,7 @@ msgstr ""
 "empfehlen dafür robocopy von einem Windows Client oder einem Windows Server "
 "aus zu nutzen, der der Domäne beigetreten ist:</p>"
 
-#: umc/js/adtakeover.js:136
+#: umc/js/adtakeover.js:132
 msgid ""
 "<p>Congratulations, the Active Directory Takeover wizard has been "
 "successfully completed and all Windows domain accounts have been transferred "
@@ -61,7 +60,7 @@ msgstr ""
 "Univention Corporate Server übernommen.</p><p>Die Domäne kann nun ohne "
 "weitere Änderung in Gebrauch genommen werden.</p>"
 
-#: umc/js/adtakeover.js:127
+#: umc/js/adtakeover.js:123
 msgid ""
 "<p>The group policies have been transferred successfully.</p><p>In order to "
 "complete the takeover process, all previous Active Directory Domain "
@@ -73,35 +72,35 @@ msgstr ""
 "Domänencontroller ausgeschaltet werden. Klicken Sie auf \"Weiter\", sobald "
 "alle Domänencontroller komplett herunter gefahren sind.</p>"
 
-#: umc/js/adtakeover.js:91
+#: umc/js/adtakeover.js:87
 msgid "Active Directory Administrator account"
 msgstr "Active Directory Administratorkonto"
 
-#: umc/js/adtakeover.js:97
+#: umc/js/adtakeover.js:93
 msgid "Active Directory Administrator password"
 msgstr "Active Directory Administratorpasswort"
 
-#: umc/js/adtakeover.js:132
+#: umc/js/adtakeover.js:128
 msgid "Completion of the Active Directory Takeover"
 msgstr "Ende des Active Directory Takeover"
 
-#: umc/js/adtakeover.js:102
+#: umc/js/adtakeover.js:98
 msgid "Import statistics"
 msgstr "Importstatistiken"
 
-#: umc/js/adtakeover.js:86
+#: umc/js/adtakeover.js:82
 msgid "Name or address of the Domain Controller"
 msgstr "Name oder Adresse des Domänencontrollers"
 
-#: umc/js/adtakeover.js:71
+#: umc/js/adtakeover.js:67
 msgid "Previous takeover detected"
 msgstr "Vorherige Übernahme erkannt"
 
-#: umc/js/adtakeover.js:123
+#: umc/js/adtakeover.js:119
 msgid "Takeover of the Windows domain"
 msgstr "Übernahme der Windows-Domäne"
 
-#: umc/js/adtakeover.js:81
+#: umc/js/adtakeover.js:77
 msgid ""
 "This module guides through the migration from a Windows Active Directory "
 "domain to Univention Corporate Server. All user, group and computer accounts "
@@ -115,10 +114,10 @@ msgstr ""
 "Nach der Migration werden die Windows-Clients direkt funktionsfähig sein, "
 "ohne der Domäne noch einmal beitreten zu müssen."
 
-#: umc/js/adtakeover.js:113
+#: umc/js/adtakeover.js:109
 msgid "Transfer of group policies"
 msgstr "Übernahme der Gruppenrichtlinien"
 
-#: umc/js/adtakeover.js:80
+#: umc/js/adtakeover.js:76
 msgid "Windows domain authentication"
 msgstr "Windows-Domänen-Authentifizierung"

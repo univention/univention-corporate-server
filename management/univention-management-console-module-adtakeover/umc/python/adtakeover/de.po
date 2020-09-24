@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:15+0100\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,90 +11,90 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/adtakeover/takeover.py:1917
+#. i18n: The program "fping" failed.
+#: umc/python/adtakeover/takeover.py:2005
 msgid " failed"
 msgstr " schlug fehl"
 
-#: umc/python/adtakeover/takeover.py:811
+#: umc/python/adtakeover/takeover.py:838
 #, python-format
 msgid "AD Server did not return proper time string: %s."
 msgstr ""
 "Der Active Directory-Server lieferte eine unerwartete Zeitangabe zurück: %s."
 
-#: umc/python/adtakeover/takeover.py:619
+#: umc/python/adtakeover/takeover.py:640
 #, python-format
 msgid "Active Directory services not detected at %s."
 msgstr "Active Directory-Dienste sind nicht erreichbar über %s."
 
-#: umc/python/adtakeover/takeover.py:1442
+#: umc/python/adtakeover/takeover.py:1513
 msgid "Active Directory takeover finished already."
 msgstr "Active Directory Takeover ist schon abgeschlossen."
 
-#: umc/python/adtakeover/takeover.py:327
+#: umc/python/adtakeover/takeover.py:350
 msgid "Adjusting settings in Samba directory service"
 msgstr "Anpassung von Einstellungen im Samba-Verzeichnisdienst"
 
-#: umc/python/adtakeover/takeover.py:203
+#: umc/python/adtakeover/takeover.py:219
 msgid ""
 "At least one GPO in SYSVOL is newer than the Group Policy Container version."
 msgstr ""
 "Mindestens eine GPO im SYSVOL ist neuer als die Group Policy Container "
 "Version."
 
-#: umc/python/adtakeover/takeover.py:200
-#: umc/python/adtakeover/takeover.py:1844
+#: umc/python/adtakeover/takeover.py:215 umc/python/adtakeover/takeover.py:1926
 msgid "At least one GPO in SYSVOL is not up to date yet."
 msgstr "Mindestens eine GPO im SYSVOL ist noch nicht aktuell."
 
-#: umc/python/adtakeover/takeover.py:197
+#: umc/python/adtakeover/takeover.py:211
 msgid "At least one GPO is still missing in SYSVOL."
 msgstr "Mindestens eine GPO fehlt noch im SYSVOL."
 
-#: umc/python/adtakeover/takeover.py:243 umc/python/adtakeover/takeover.py:270
+#: umc/python/adtakeover/takeover.py:264 umc/python/adtakeover/takeover.py:292
 msgid "Authenticating"
 msgstr "Authentifizierung"
 
-#: umc/python/adtakeover/takeover.py:191
+#: umc/python/adtakeover/takeover.py:203
 msgid "Authentication failed."
 msgstr "Authentifizierung fehlgeschlagen."
 
-#: umc/python/adtakeover/takeover.py:382
+#: umc/python/adtakeover/takeover.py:405
 msgid "Checking GPOs in SYSVOL"
 msgstr "Prüfung der GPO-Daten im SYSVOL"
 
-#: umc/python/adtakeover/takeover.py:291
+#: umc/python/adtakeover/takeover.py:313
 msgid "Checking group policies"
 msgstr "Prüfung der Gruppenrichtlinien"
 
-#: umc/python/adtakeover/takeover.py:331
+#: umc/python/adtakeover/takeover.py:354
 msgid "Claiming FSMO roles"
 msgstr "Übernahme der FSMO-Rollen"
 
-#: umc/python/adtakeover/takeover.py:240 umc/python/adtakeover/takeover.py:266
+#: umc/python/adtakeover/takeover.py:261 umc/python/adtakeover/takeover.py:288
 #, python-format
 msgid "Connecting to %s"
 msgstr "Verbindung zu %s"
 
-#: umc/python/adtakeover/takeover.py:1953
+#: umc/python/adtakeover/takeover.py:2041
 #, python-format
 msgid "Connection to Active Directory server %s failed."
 msgstr "Die Verbindung zum Active Directory-Server %s schlug fehl."
 
-#: umc/python/adtakeover/takeover.py:926 umc/python/adtakeover/takeover.py:936
+#: umc/python/adtakeover/takeover.py:955 umc/python/adtakeover/takeover.py:965
 #, python-format
 msgid "Copying %s"
 msgstr "Kopiere %s"
 
-#: umc/python/adtakeover/takeover.py:908
+#: umc/python/adtakeover/takeover.py:937
 #, python-format
 msgid "Could not read local machine password: %s"
 msgstr "Interner Fehler beim Lesen des Maschinenpassworts: %s"
 
-#: umc/python/adtakeover/takeover.py:194
+#: umc/python/adtakeover/takeover.py:207
 msgid "Domain join failed."
 msgstr "Der Domänenbeitritt schlug fehl."
 
-#: umc/python/adtakeover/__init__.py:69
+#: umc/python/adtakeover/__init__.py:70
 #, python-format
 msgid ""
 "Execution of command '%(command)s' has failed:\n"
@@ -105,89 +105,89 @@ msgstr ""
 "\n"
 "%(text)s"
 
-#: umc/python/adtakeover/takeover.py:1986
+#: umc/python/adtakeover/takeover.py:2072
 msgid "Failed to detect the Active Directory site of the server."
 msgstr ""
 "Die Erkennung des Active Directory-Standorts (site) des Servers schlug fehl."
 
-#: umc/python/adtakeover/takeover.py:671
+#: umc/python/adtakeover/takeover.py:693
 msgid "Failed to determine AD domain SID."
 msgstr "Die SID der AD-Domäne konnte nicht festgestellt werden."
 
-#: umc/python/adtakeover/takeover.py:1015
+#: umc/python/adtakeover/takeover.py:1044
 msgid "Failed to determine new domain SID."
 msgstr "Die neue Domänen-SID konnte nicht festgestellt werden."
 
-#: umc/python/adtakeover/takeover.py:353
+#: umc/python/adtakeover/takeover.py:376
 msgid "Finalizing"
 msgstr "Abschluss"
 
-#: umc/python/adtakeover/takeover.py:293
+#: umc/python/adtakeover/takeover.py:315
 msgid "Initializing the S4 Connector listener"
 msgstr "Initialisierung des S4 Connector Listeners"
 
-#: umc/python/adtakeover/takeover.py:218
+#: umc/python/adtakeover/takeover.py:239
 msgid "Insufficient License."
 msgstr "Die Lizenz reicht nicht aus."
 
-#: umc/python/adtakeover/takeover.py:566
+#: umc/python/adtakeover/takeover.py:586
 msgid "Internal Error: License check failed."
 msgstr "Interner Fehler bei der Prüfung der Lizenz."
 
-#: umc/python/adtakeover/takeover.py:832
+#: umc/python/adtakeover/takeover.py:858
 #, python-format
 msgid "Internal Error: rdate -s -p failed (%d)."
 msgstr "Internal Error: rdate -s -p schlug fehl (%d)."
 
-#: umc/python/adtakeover/takeover.py:426
+#: umc/python/adtakeover/takeover.py:450
 #, python-format
 msgid ""
 "Internal module error: Cannot go from state '%(current)s' to state '%(new)s'."
 msgstr ""
-"Interner Modulfehler: Übergang von Status '%(current)s' zu Status '%(new)s' ist nicht "
-"möglich."
+"Interner Modulfehler: Übergang von Status '%(current)s' zu Status '%(new)s' "
+"ist nicht möglich."
 
-#: umc/python/adtakeover/takeover.py:431
+#: umc/python/adtakeover/takeover.py:455
 #, python-format
 msgid ""
 "Internal module error: Expected to be in state 'sysvol', but found '%s'."
 msgstr "Interner Modulfehler: Zustand 'sysvol' erwartet, aber '%s' gefunden."
 
-#: umc/python/adtakeover/takeover.py:436
+#: umc/python/adtakeover/takeover.py:460
 #, python-format
 msgid ""
 "Internal module error: Expected to be in state 'takeover', but found '%s'."
 msgstr "Interner Modulfehler: Zustand 'takeover' erwartet, aber '%s' gefunden."
 
-#: umc/python/adtakeover/takeover.py:409
+#: umc/python/adtakeover/takeover.py:433
 #, python-format
 msgid "Internal module error: Refusing to set invalid state '%s'."
 msgstr "Interner Modulfehler: Setzen des ungültigen Status '%s' abgelehnt."
 
-#: umc/python/adtakeover/takeover.py:441
+#: umc/python/adtakeover/takeover.py:465
 msgid "Internal module error: Takeover running, aborting attempt to restart."
 msgstr "Interner Modulfehler: Takeover läuft, Neustartversuch abgebrochen."
 
-#: umc/python/adtakeover/takeover.py:2429
+#: umc/python/adtakeover/takeover.py:2519
 #, python-format
 msgid "Invalid UNC string: %s"
 msgstr "Ungültiger UNC-Pfad: %s"
 
-#: umc/python/adtakeover/takeover.py:468
+#: umc/python/adtakeover/takeover.py:492
 #, python-format
 msgid "Invalid state in file %s"
 msgstr "Ungültige Zustands-Datei %s"
 
-#: umc/python/adtakeover/takeover.py:279
+#: umc/python/adtakeover/takeover.py:301
 msgid "Joining the domain"
 msgstr "Domänenbeitritt"
 
-#: umc/python/adtakeover/takeover.py:1920
+#: umc/python/adtakeover/takeover.py:2008
 #, python-format
 msgid "Network connection to %s failed."
 msgstr "Netzwerkverbindung zu %s schlug fehl."
 
-#: umc/python/adtakeover/takeover.py:590
+#: umc/python/adtakeover/takeover.py:610
 #, python-format
 msgid ""
 "Number of %(object_name)s after takeover would be %(sum)s. This would exceed "
@@ -196,19 +196,19 @@ msgstr ""
 "Anzahl der %(object_name)s nach dem Takeover wäre %(sum)s. Das übersteigt "
 "die Anzahl an lizenzierten Objekten (%(max)s)."
 
-#: umc/python/adtakeover/takeover.py:301
+#: umc/python/adtakeover/takeover.py:323
 msgid "Rebuilding IDMAP"
 msgstr "Erstellung der IDMAP-Tabelle"
 
-#: umc/python/adtakeover/takeover.py:350
+#: umc/python/adtakeover/takeover.py:373
 msgid "Reconfiguring nameserver"
 msgstr "Rekonfigurierung des Nameservers"
 
-#: umc/python/adtakeover/takeover.py:347
+#: umc/python/adtakeover/takeover.py:370
 msgid "Registering IP in DNS"
 msgstr "Registrierung der IP im DNS"
 
-#: umc/python/adtakeover/takeover.py:821
+#: umc/python/adtakeover/takeover.py:848
 #, python-format
 msgid ""
 "Remote clock is behind local clock by more than %s seconds, refusing to turn "
@@ -218,60 +218,60 @@ msgstr ""
 "als %s Sekunden zurück. Die lokale Zeit kann nicht zurückgestellt werden. "
 "Bitte stellen Sie die Zeit am Active Directory-DC vor."
 
-#: umc/python/adtakeover/takeover.py:334
+#: umc/python/adtakeover/takeover.py:357
 msgid "Removing the previous AD server account"
 msgstr "Entfernen des alten AD Server-Kontos"
 
-#: umc/python/adtakeover/takeover.py:304
+#: umc/python/adtakeover/takeover.py:326
 msgid "Reset SYSVOL ACLs"
 msgstr "Initialisierung der SYSVOL-ACLs"
 
-#: umc/python/adtakeover/takeover.py:246
+#: umc/python/adtakeover/takeover.py:267
 msgid "Retrieving information from AD DC"
 msgstr "Abfrage von Informationen vom AD-DC"
 
-#: umc/python/adtakeover/takeover.py:288
+#: umc/python/adtakeover/takeover.py:310
 msgid "Rewriting SIDs in the UCS directory service"
 msgstr "Umschreibung der SIDs im UCS Verzeichnisdienst"
 
-#: umc/python/adtakeover/takeover.py:321
+#: umc/python/adtakeover/takeover.py:344
 #, python-format
 msgid "Search for %s in network"
 msgstr "Netzwerksuche nach %s"
 
-#: umc/python/adtakeover/takeover.py:206
+#: umc/python/adtakeover/takeover.py:223
 msgid "Something is wrong with the SYSVOL."
 msgstr "Etwas stimmt nicht mit dem SYSVOL."
 
-#: umc/python/adtakeover/takeover.py:285
+#: umc/python/adtakeover/takeover.py:307
 msgid "Starting Samba"
 msgstr "Start von Samba"
 
-#: umc/python/adtakeover/takeover.py:297
+#: umc/python/adtakeover/takeover.py:319
 msgid "Starting the S4 Connector"
 msgstr "Start des S4 Connectors"
 
-#: umc/python/adtakeover/takeover.py:274
+#: umc/python/adtakeover/takeover.py:296
 msgid "Synchronizing system clock"
 msgstr "Synchronisation der Systemzeit"
 
-#: umc/python/adtakeover/takeover.py:326
+#: umc/python/adtakeover/takeover.py:349
 msgid "Taking over Active Directory domain controller roles"
 msgstr "Übernahme der Active Directory Domänencontroller-Rollen"
 
-#: umc/python/adtakeover/takeover.py:338
+#: umc/python/adtakeover/takeover.py:361
 msgid "Taking over DNS address"
 msgstr "Übernahme der DNS-Adresse"
 
-#: umc/python/adtakeover/takeover.py:344
+#: umc/python/adtakeover/takeover.py:367
 msgid "Taking over IP address"
 msgstr "Übernahme der IP-Adresse"
 
-#: umc/python/adtakeover/takeover.py:341
+#: umc/python/adtakeover/takeover.py:364
 msgid "Taking over NETBIOS address"
 msgstr "Übernahme der NETBIOS-Adresse"
 
-#: umc/python/adtakeover/takeover.py:667
+#: umc/python/adtakeover/takeover.py:689
 #, python-format
 msgid ""
 "The Active Directory domain has a function level of Windows Server 2012 or "
@@ -280,20 +280,20 @@ msgstr ""
 "Die Active Directory Domäne hat einen Funktionslevel von Windows Server 2012 "
 "oder neuer, Samba unterstützt momentan nur bis Windows 2008R2: %s"
 
-#: umc/python/adtakeover/takeover.py:1415
-#: umc/python/adtakeover/takeover.py:1423
+#: umc/python/adtakeover/takeover.py:1485
+#: umc/python/adtakeover/takeover.py:1493
 msgid "The Active Directory domain join was not completed successfully yet."
 msgstr ""
 "Der Beitritt zur Active Directory Domäne wurde noch nicht erfolgreich "
 "abgeschlossen."
 
-#: umc/python/adtakeover/takeover.py:209
+#: umc/python/adtakeover/takeover.py:227
 msgid "The Active Directory server seems to be running. It must be shut off."
 msgstr ""
 "Es scheint, als ob der Active Directory Server noch liefe. Er muss "
 "ausgeschaltet werden."
 
-#: umc/python/adtakeover/takeover.py:652
+#: umc/python/adtakeover/takeover.py:672
 msgid ""
 "The LDAP base of this UCS domain differs from the LDAP base of the selected "
 "Active Directory domain."
@@ -301,13 +301,13 @@ msgstr ""
 "Die LDAP-Basis dieser UCS Domäne unterscheidet sich von der LDAP-Basis der "
 "ausgewählten Active Directory-Domäne."
 
-#: umc/python/adtakeover/takeover.py:1467
+#: umc/python/adtakeover/takeover.py:1539
 #, python-format
 msgid "The Server IP %s is still online, please shut down the machine."
 msgstr ""
 "Die Server IP %s ist noch online, die Maschine sollte ausgeschaltet werden."
 
-#: umc/python/adtakeover/takeover.py:1962
+#: umc/python/adtakeover/takeover.py:2049
 #, python-format
 msgid ""
 "The automatic search for an Active Directory server for realm %s did not "
@@ -316,18 +316,18 @@ msgstr ""
 "Die automatische Suche eines Active Directory Servers für den Kerberos-Realm "
 "%s lieferte keine Ergebnisse."
 
-#: umc/python/adtakeover/takeover.py:188
+#: umc/python/adtakeover/takeover.py:199
 msgid "The computer is not reachable."
 msgstr "Der Rechner ist nicht erreichbar."
 
-#: umc/python/adtakeover/takeover.py:857 umc/python/adtakeover/takeover.py:947
-#: umc/python/adtakeover/takeover.py:995
+#: umc/python/adtakeover/takeover.py:881 umc/python/adtakeover/takeover.py:976
+#: umc/python/adtakeover/takeover.py:1023
 #, python-format
 msgid "The domain join failed. See %s for details."
 msgstr ""
 "Der Domänenbeitritt schlug fehl, die Logdatei %s enthält genauere Details."
 
-#: umc/python/adtakeover/takeover.py:647
+#: umc/python/adtakeover/takeover.py:668
 msgid ""
 "The selected Active Directory server has the same NTDS GUID as this UCS "
 "server."
@@ -335,21 +335,21 @@ msgstr ""
 "Der angegebene Active Directory-Server hat die gleiche NTDS GUID wie dieser "
 "UCS Server."
 
-#: umc/python/adtakeover/takeover.py:215
+#: umc/python/adtakeover/takeover.py:235
 msgid "Time difference critical for Kerberos but synchronization aborted."
 msgstr ""
 "Die Zeitdifferenz ist zu groß für Kerberos, aber die Synchronisierung schlug "
 "fehl."
 
-#: umc/python/adtakeover/takeover.py:212
+#: umc/python/adtakeover/takeover.py:231
 msgid "Time synchronization failed."
 msgstr "Die Zeitsynchronisierung schlug fehl."
 
-#: umc/python/adtakeover/takeover.py:2422
+#: umc/python/adtakeover/takeover.py:2512
 msgid "UNC doesn't start with \\\\ or //"
 msgstr "UNC-Pfad startet nicht mit \\\\ oder //"
 
-#: umc/python/adtakeover/takeover.py:251
+#: umc/python/adtakeover/takeover.py:272
 msgid ""
 "You may proceed with the takeover, but the domain management may be limited "
 "afterwards until a new license is installed."
@@ -357,6 +357,6 @@ msgstr ""
 "Der Takeover kann fortgeführt werden, aber die Domäne kann danach womöglich "
 "nur eingeschränkt verwaltet werden, bis eine neue Lizenz installiert wird."
 
-#: umc/python/adtakeover/takeover.py:577
+#: umc/python/adtakeover/takeover.py:597
 msgid "users"
 msgstr "Benutzer"

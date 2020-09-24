@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-services\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-07-03 14:14+0200\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,26 +11,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/services/__init__.py:141
+#: umc/python/services/__init__.py:138
 msgid "Could not change start type of the following services:"
 msgstr "Die Startart der folgenden Dienste konnte nicht geändert werden:"
 
-#: umc/python/services/__init__.py:113
+#: umc/python/services/__init__.py:109
 #, python-format
 msgid "Restarting the service %s failed:"
 msgstr "Der Dienst %s konnte nicht neugestartet werden:"
 
-#: umc/python/services/__init__.py:111
+#: umc/python/services/__init__.py:107
 #, python-format
 msgid "Starting the service %s failed:"
 msgstr "Der Dienst %s konnte nicht gestartet werden:"
 
-#: umc/python/services/__init__.py:112
+#: umc/python/services/__init__.py:108
 #, python-format
 msgid "Stopping the service %s failed:"
 msgstr "Der Dienst %s konnte nicht gestoppt werden:"
 
-#: umc/python/services/__init__.py:122 umc/python/services/__init__.py:127
-#: umc/python/services/__init__.py:132
+#: umc/python/services/__init__.py:119 umc/python/services/__init__.py:124
+#: umc/python/services/__init__.py:129
 msgid "Successfully changed start type"
 msgstr "Die Startart wurde erfolgreich geändert"

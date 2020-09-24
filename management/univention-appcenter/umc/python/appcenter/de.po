@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-09-05 09:29+0200\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2020-09-15 14:46+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/util.py:171
+#: umc/python/appcenter/util.py:170
 #, python-format
 msgid ""
 "%s could not be downloaded. This seems to be a problem with the App Center "
@@ -20,17 +20,17 @@ msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
 "Server hin. Bitte versuchen Sie es später noch einmal."
 
-#: umc/python/appcenter/__init__.py:33
+#: umc/python/appcenter/__init__.py:334
 #, python-format
 msgid "%s: Connecting to %s"
 msgstr "%s: Verbinde zu %s"
 
-#: umc/python/appcenter/__init__.py:412
+#: umc/python/appcenter/__init__.py:290 umc/python/appcenter/__init__.py:558
 #, python-format
 msgid "%s: Running tests"
 msgstr "%s: Starte Tests"
 
-#: umc/python/appcenter/__init__.py:242
+#: umc/python/appcenter/__init__.py:385
 msgid ""
 "A conflict between the system network settings and the docker bridge default "
 "network has been detected."
@@ -38,46 +38,36 @@ msgstr ""
 "Es wurde ein Konflikt zwischen den Netzwerkeinstellungen des Systems und der "
 "Docker Bridge entdeckt."
 
-#: umc/python/appcenter/__init__.py:469 umc/python/appcenter/__init__.py:944
+#: umc/python/appcenter/__init__.py:616 umc/python/appcenter/__init__.py:1106
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
-#: umc/python/appcenter/sanitizers.py:88
-#, python-format
-msgid "Any of %r must be given"
-msgstr "Ein Wert aus %r muss gegeben sein"
-
-#: umc/python/appcenter/sanitizers.py:52 umc/python/appcenter/sanitizers.py:56
-#: umc/python/appcenter/sanitizers.py:60
+#: umc/python/appcenter/sanitizers.py:51 umc/python/appcenter/sanitizers.py:55
+#: umc/python/appcenter/sanitizers.py:59
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: umc/python/appcenter/__init__.py:294 umc/python/appcenter/__init__.py:315
-#: umc/python/appcenter/__init__.py:503
+#: umc/python/appcenter/__init__.py:437 umc/python/appcenter/__init__.py:458
+#: umc/python/appcenter/__init__.py:653
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
 
-#: umc/python/appcenter/__init__.py:261
+#: umc/python/appcenter/__init__.py:404
 msgid "Could not load suggestions."
 msgstr "Konnte App-Vorschläge nicht laden."
 
-#: umc/python/appcenter/app_center.py:130
-#, python-format
-msgid "Error while contacting the App Center server. %s"
-msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
-
-#: umc/python/appcenter/__init__.py:442
+#: umc/python/appcenter/__init__.py:308 umc/python/appcenter/__init__.py:589
 #, python-format
 msgid "Installing %s"
 msgstr "Installiere %s"
 
-#: umc/python/appcenter/__init__.py:641 umc/python/appcenter/app_center.py:1676
+#: umc/python/appcenter/__init__.py:803
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/__init__.py:213 umc/python/appcenter/__init__.py:273
+#: umc/python/appcenter/__init__.py:366 umc/python/appcenter/__init__.py:416
 msgid ""
 "Make sure docker.io is installed, try starting the service with \"service "
 "docker start\"."
@@ -85,24 +75,24 @@ msgstr ""
 "Stellen Sie sicher, dass docker.io installiert ist. Starten Sie den Dienst "
 "mit \"service docker start\"."
 
-#: umc/python/appcenter/sanitizers.py:60
+#: umc/python/appcenter/sanitizers.py:59
 msgid "Maybe the machine password changed during the session."
 msgstr ""
 "Möglicherweise hat sich das Maschinenpasswort während der Sitzung geändert."
 
-#: umc/python/appcenter/sanitizers.py:56
+#: umc/python/appcenter/sanitizers.py:55
 msgid "Maybe your password changed during the session."
 msgstr "Möglicherweise hat sich Ihr Passwort während der Sitzung geändert."
 
-#: umc/python/appcenter/__init__.py:83
+#: umc/python/appcenter/__init__.py:85
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/sanitizers.py:52
+#: umc/python/appcenter/sanitizers.py:51
 msgid "Please check the join state of the machine."
 msgstr "Bitte überprüfen Sie den Status des Domänenbeitritts."
 
-#: umc/python/appcenter/__init__.py:243
+#: umc/python/appcenter/__init__.py:386
 msgid ""
 "Please either configure a different network for the docker bridge by setting "
 "the UCR variable docker/daemon/default/opts/bip to a different network and "
@@ -111,43 +101,41 @@ msgstr ""
 "Bitte konfigurieren Sie ein anderes Netzwerk für die Docker Bridge durch die "
 "UCR Variable docker/daemon/default/opts/bip und ein Neustart des Systems,"
 
-#: umc/python/appcenter/app_center.py:1591
-msgid ""
-"Registration of the application in LDAP failed. It will be retried every "
-"time the App Center module is opened."
+#: umc/python/appcenter/__init__.py:222
+#, python-brace-format
+msgid "Problems connecting to {0} ({1}). Please update {0}!"
 msgstr ""
-"Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird bei "
-"jedem Öffnen des App Center Moduls wiederholt werden."
 
-#: umc/python/appcenter/app_center.py:1094
-#, python-format
-msgid ""
-"The application needs a %(needs)s-bit operating system. This server is "
-"running a %(has)s-bit operating system."
+#: umc/python/appcenter/__init__.py:224
+msgid "Problems connecting to {} ({})."
 msgstr ""
-"Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
-"läuft mit einem %(has)s-Bit-Betriebssystem."
 
-#: umc/python/appcenter/sanitizers.py:56 umc/python/appcenter/sanitizers.py:60
+#: umc/python/appcenter/__init__.py:225
+msgid ""
+"The App Center version of the this host ({}) is not compatible with the "
+"version of {} ({})"
+msgstr ""
+
+#: umc/python/appcenter/sanitizers.py:55 umc/python/appcenter/sanitizers.py:59
 msgid "The credentials provided were not accepted."
 msgstr "Die Zugangsdaten wurden nicht akzeptiert."
 
-#: umc/python/appcenter/__init__.py:213
+#: umc/python/appcenter/__init__.py:366
 msgid ""
 "The docker service is not running! The App Center will not work properly."
 msgstr ""
 "Der Docker-Dienst läuft nicht! Das App Center wird nicht richtig "
 "funktionieren."
 
-#: umc/python/appcenter/sanitizers.py:52
+#: umc/python/appcenter/sanitizers.py:51
 msgid "The server seems to be lacking a proper password file."
 msgstr "Dem Rechner scheint eine korrekte Passwortdatei zu fehlen."
 
-#: umc/python/appcenter/sanitizers.py:99
+#: umc/python/appcenter/sanitizers.py:94
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:1150
+#: umc/python/appcenter/__init__.py:1312
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -155,13 +143,13 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/util.py:173
+#: umc/python/appcenter/util.py:172
 msgid "This is a problem with the App Center server. Please try again later."
 msgstr ""
 "Das ist ein Problem auf dem App Center-Server. Bitte versuchen Sie es später "
 "noch einmal."
 
-#: umc/python/appcenter/util.py:187
+#: umc/python/appcenter/util.py:186
 #, python-format
 msgid ""
 "This is probably due to the DNS settings of your server. You may find help "
@@ -170,7 +158,7 @@ msgstr ""
 "Grund sind wahrscheinlich die DNS-Einstellungen Ihres Servers. Sie finden "
 "Hilfe unter %s."
 
-#: umc/python/appcenter/util.py:184
+#: umc/python/appcenter/util.py:183
 #, python-format
 msgid ""
 "This may be a problem with the firewall or proxy of your system. You may "
@@ -179,31 +167,31 @@ msgstr ""
 "Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall "
 "oder Proxy hindeuten. Sie finden Hilfe unter %s."
 
-#: umc/python/appcenter/sanitizers.py:56 umc/python/appcenter/sanitizers.py:60
+#: umc/python/appcenter/sanitizers.py:55 umc/python/appcenter/sanitizers.py:59
 msgid "This may be solved by simply logging out and in again."
 msgstr ""
 "Das Problem kann vielleicht bereits durch ein Aus- und erneutes Einloggen "
 "gelöst werden."
 
-#: umc/python/appcenter/__init__.py:273
+#: umc/python/appcenter/__init__.py:416
 msgid "Unable to start the docker service!"
 msgstr "Der Docker-Dienst konnte nicht gestartet werden!"
 
-#: umc/python/appcenter/__init__.py:266
+#: umc/python/appcenter/__init__.py:409
 msgid "Unexpected suggestions data."
 msgstr "Unerwartete Daten für App-Vorschläge."
 
-#: umc/python/appcenter/__init__.py:444
+#: umc/python/appcenter/__init__.py:310 umc/python/appcenter/__init__.py:591
 #, python-format
 msgid "Uninstalling %s"
 msgstr "Deinstalliere %s"
 
-#: umc/python/appcenter/__init__.py:446
+#: umc/python/appcenter/__init__.py:312 umc/python/appcenter/__init__.py:593
 #, python-format
 msgid "Upgrading %s"
 msgstr "Aktualisiere %s"
 
-#: umc/python/appcenter/util.py:183
+#: umc/python/appcenter/util.py:182
 #, python-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#ip-config:"
@@ -212,20 +200,20 @@ msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#ip-config:Web-"
 "Proxy_fuer_Caching_und_Policy_Management_Virenscan"
 
-#: umc/python/appcenter/util.py:186
+#: umc/python/appcenter/util.py:185
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
 
-#: umc/python/appcenter/__init__.py:996
+#: umc/python/appcenter/__init__.py:1158
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:998
+#: umc/python/appcenter/__init__.py:1160
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:244
+#: umc/python/appcenter/__init__.py:387
 msgid ""
 "or disable the docker support in the AppCenter by setting appcenter/docker "
 "to false."
@@ -233,6 +221,26 @@ msgstr ""
 "oder deaktivieren Sie die Unterstützung für Docker im AppCenter indem die "
 "UCR Variable appcenter/docker auf false gesetzt wird."
 
-#: umc/python/appcenter/__init__.py:994
+#: umc/python/appcenter/__init__.py:1156
 msgid "upgradable"
 msgstr "aktualisierbar"
+
+#~ msgid "Any of %r must be given"
+#~ msgstr "Ein Wert aus %r muss gegeben sein"
+
+#~ msgid "Error while contacting the App Center server. %s"
+#~ msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
+
+#~ msgid ""
+#~ "Registration of the application in LDAP failed. It will be retried every "
+#~ "time the App Center module is opened."
+#~ msgstr ""
+#~ "Die Registrierung der Applikation im LDAP ist fehlgeschlagen. Sie wird "
+#~ "bei jedem Öffnen des App Center Moduls wiederholt werden."
+
+#~ msgid ""
+#~ "The application needs a %(needs)s-bit operating system. This server is "
+#~ "running a %(has)s-bit operating system."
+#~ msgstr ""
+#~ "Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
+#~ "läuft mit einem %(has)s-Bit-Betriebssystem."

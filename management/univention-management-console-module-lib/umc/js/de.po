@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-23 15:12+0200\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,24 +11,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/lib/server.js:104 umc/js/lib/server.js:160
+#: umc/js/lib/server.js:105 umc/js/lib/server.js:163
 msgid ""
 "<b>Note:</b> After the restart you will be redirected to the login page."
 msgstr ""
 "<b>Hinweis:</b> Nach dem Neustart werden Sie zur Login-Seite weitergeleitet "
 "werden."
 
-#: umc/js/lib/server.js:107 umc/js/lib/server.js:163 umc/js/lib/server.js:224
+#: umc/js/lib/server.js:108 umc/js/lib/server.js:166 umc/js/lib/server.js:229
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/lib/server.js:159
+#: umc/js/lib/server.js:162
 msgid "Please confirm to reboot this server. This may take a few minutes."
 msgstr ""
 "Bitte bestätigen Sie den Neustart dieses Servers. Dies kann einige Minuten "
 "dauern."
 
-#: umc/js/lib/server.js:103
+#: umc/js/lib/server.js:104
 msgid ""
 "Please confirm to restart UMC server components and the HTTP web server. "
 "This will take approximately 10 seconds."
@@ -36,13 +36,13 @@ msgstr ""
 "Bitte bestätigen Sie den Neustart der UMC-Server-Komponenten und des HTTP-"
 "Web-Servers. Dies wird ungefähr 10 Sekunden dauern."
 
-#: umc/js/lib/server.js:221
+#: umc/js/lib/server.js:226
 msgid "Please confirm to shutdown this server. This may take a few minutes."
 msgstr ""
 "Bitte bestätigen Sie das Herunterfahren dieses Servers. Dies kann einige "
 "Minuten dauern."
 
-#: umc/js/lib/server.js:135
+#: umc/js/lib/server.js:137
 msgid ""
 "Please wait while UMC server components and HTTP web server are being "
 "restarted."
@@ -50,34 +50,34 @@ msgstr ""
 "Bitte warten Sie während die UMC-Server-Komponenten und der HTTP-Web-Server "
 "neu gestartet werden."
 
-#: umc/js/lib/server.js:167
+#: umc/js/lib/server.js:170
 msgid "Reboot"
 msgstr "Neustart"
 
-#: umc/js/lib/server.js:183
+#: umc/js/lib/server.js:187
 msgid "Rebooting server"
 msgstr "Server-Neustart"
 
-#: umc/js/lib/server.js:111
+#: umc/js/lib/server.js:112
 msgid "Restart"
 msgstr "Neustart"
 
-#: umc/js/lib/server.js:132
+#: umc/js/lib/server.js:134
 msgid "Restarting server"
 msgstr "Server-Neustart"
 
-#: umc/js/lib/server.js:228
+#: umc/js/lib/server.js:233
 msgid "Shutdown"
 msgstr "Herunterfahren"
 
-#: umc/js/lib/server.js:242
+#: umc/js/lib/server.js:252
 msgid "Shutting down server"
 msgstr "Fahre Server herunter"
 
-#: umc/js/lib/server.js:186
+#: umc/js/lib/server.js:190
 msgid "The server is being rebooted."
 msgstr "Der Server wird neugestartet."
 
-#: umc/js/lib/server.js:245
+#: umc/js/lib/server.js:255
 msgid "The server is shutting down."
 msgstr "Der Server wird heruntergefahren."

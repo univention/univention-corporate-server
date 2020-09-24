@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-passwordreset\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-04-21 17:45+0200\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2015-09-22 09:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -32,11 +32,11 @@ msgstr ""
 "Berechtigung diesen Dienst zu nutzen."
 
 #: umc/python/passwordreset/__init__.py:380
-#: umc/python/passwordreset/sending/send_email.py:74
+#: umc/python/passwordreset/sending/send_email.py:75
 msgid "Email"
 msgstr "E-Mail"
 
-#: umc/python/passwordreset/__init__.py:949
+#: umc/python/passwordreset/__init__.py:950
 msgid "Error sending token: {}"
 msgstr "Fehler beim Versenden des Tokens: {}"
 
@@ -44,7 +44,7 @@ msgstr "Fehler beim Versenden des Tokens: {}"
 msgid "External"
 msgstr "Extern"
 
-#: umc/python/passwordreset/__init__.py:832
+#: umc/python/passwordreset/__init__.py:835
 msgid "Failed to change password."
 msgstr "Passwortänderung fehlgeschlagen."
 
@@ -68,7 +68,7 @@ msgstr ""
 "Für diesen Benutzer wurden keine Kontaktinformationen hinterlegt. Das "
 "Zurücksetzen des Passworts ist daher nicht möglich."
 
-#: umc/python/passwordreset/__init__.py:831
+#: umc/python/passwordreset/__init__.py:834
 msgid "Successfully changed your password."
 msgstr "Ihr Passwort wurde erfolgreich geändert."
 
@@ -76,7 +76,7 @@ msgstr "Ihr Passwort wurde erfolgreich geändert."
 msgid "Successfully changed your profile data."
 msgstr "Ihre Profildaten wurden erfolgreich geändert."
 
-#: umc/python/passwordreset/__init__.py:923
+#: umc/python/passwordreset/__init__.py:924
 msgid "Successfully send token."
 msgstr "Der Token wurde erfolgreich versendet."
 
@@ -149,7 +149,7 @@ msgstr ""
 msgid "The attributes could not be saved: %s"
 msgstr "Die Attribute konnten nicht gespeichert werden: %s"
 
-#: umc/python/passwordreset/__init__.py:1026
+#: umc/python/passwordreset/__init__.py:1027
 msgid ""
 "The configuration of the password reset service is not complete. The UCR "
 "variables \"ad/reset/username\" and \"ad/reset/password\" need to be set "
@@ -183,7 +183,7 @@ msgstr ""
 "deaktiviert."
 
 #: umc/python/passwordreset/__init__.py:674
-#: umc/python/passwordreset/__init__.py:867
+#: umc/python/passwordreset/__init__.py:871
 msgid ""
 "The password reset was disabled via the Univention Configuration Registry."
 msgstr ""

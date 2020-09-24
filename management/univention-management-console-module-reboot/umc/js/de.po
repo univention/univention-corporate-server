@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-reboot\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-29 11:01+0100\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,19 +11,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/reboot.js:55
+#: umc/js/reboot.js:59
 msgid "Reboot server"
 msgstr "Server neustarten"
 
-#: umc/js/reboot.js:62
+#: umc/js/reboot.js:44
 msgid "Server"
 msgstr "Server"
 
-#: umc/js/reboot.js:47
+#: umc/js/reboot.js:50
 msgid "Shutdown server"
 msgstr "Server herunterfahren"
 
-#: umc/js/reboot.js:71 umc/js/reboot.js:72
+#: umc/js/reboot.js:70
 msgid ""
 "This system has been updated recently. Please reboot this system to finish "
 "the update."

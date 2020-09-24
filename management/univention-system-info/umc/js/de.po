@@ -1,9 +1,8 @@
-#: umc/js/sysinfo.js:165
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-sysinfo\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-12-18 16:16+0100\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -64,10 +63,10 @@ msgstr ""
 "<p>Die folgenden Informationen wurden ermittelt und werden mit Ihrer "
 "Zustimmung an Univention übertragen:</p>"
 
-#: umc/js/sysinfo.js:265
+#: umc/js/sysinfo.js:264
 msgid ""
-"<p>The information could not be transferred to Univention.</p><p>You can send "
-"them as email!</p>"
+"<p>The information could not be transferred to Univention.</p><p>You can "
+"send them as email!</p>"
 msgstr ""
 "<p>Die Informationen konnten nicht an Univention übertragen werden.</"
 "p><p>Sie können die Information per E-Mail senden!</p>"
@@ -97,7 +96,7 @@ msgstr ""
 "genau informiert.</p><p>Es werden keine Informationen ohne Ihre Einwilligung "
 "an Univention übermittelt</p>"
 
-#: umc/js/sysinfo.js:148 umc/js/sysinfo.js:203 umc/js/sysinfo.js:322
+#: umc/js/sysinfo.js:148 umc/js/sysinfo.js:203 umc/js/sysinfo.js:321
 msgid "Archive with system information"
 msgstr "Archiv mit den Systeminformationen"
 
@@ -163,7 +162,7 @@ msgstr "Netzwerkkarte"
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: umc/js/sysinfo.js:177 umc/js/sysinfo.js:339
+#: umc/js/sysinfo.js:177 umc/js/sysinfo.js:338
 msgid "Send mail"
 msgstr "Mail senden"
 
@@ -212,6 +211,6 @@ msgstr "Übertragung erfolgreich"
 msgid "Upload"
 msgstr "Hochladen"
 
-#: umc/js/sysinfo.js:264
+#: umc/js/sysinfo.js:263
 msgid "Uploading failed"
 msgstr "Hochladen fehlgeschlagen"

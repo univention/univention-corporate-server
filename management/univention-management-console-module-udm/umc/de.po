@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Mon, 11 Feb 2019 10:52:36 +0100\n"
+"POT-Creation-Date: Fri, 25 Sep 2020 01:15:08 +0200\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -98,11 +98,17 @@ msgstr "Portaleinstellungen"
 msgid "Printers"
 msgstr "Drucker"
 
+msgid "Request new license"
+msgstr "Neue Lizenz anfordern"
+
 msgid "Shares"
 msgstr "Freigaben"
 
 msgid "UCS license import"
 msgstr "UCS-Lizenz-Import"
+
+msgid "UCS license request"
+msgstr "UCS-Lizenz-Anfrage"
 
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
@@ -157,9 +163,3 @@ msgstr "Benutzer,Passwort"
 
 msgid "users"
 msgstr "Benutzer"
-
-msgid "UCS license request"
-msgstr "UCS-Lizenz-Anfrage"
-
-msgid "Request new license"
-msgstr "Neue Lizenz anfordern"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-sysinfo\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Fri, 30 Jun 2017 15:11:50 +0200\n"
+"POT-Creation-Date: Fri, 25 Sep 2020 01:15:08 +0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Overview of local systems hardware information"
-msgstr "Überblick der Hardwareinformationen des lokalen Systems"
-
 msgid "Hardware information"
 msgstr "Hardwareinformationen"
+
+msgid "Overview of local systems hardware information"
+msgstr "Überblick der Hardwareinformationen des lokalen Systems"
 
 msgid "system,information"
 msgstr "System,Informationen"

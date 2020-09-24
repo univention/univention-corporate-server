@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-03-08 13:24+0100\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -19,7 +19,7 @@ msgstr "Alle"
 msgid "CPU (%)"
 msgstr "CPU (%)"
 
-#: umc/js/top.js:76
+#: umc/js/top.js:68
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -39,7 +39,7 @@ msgstr "Beenden erzwingen"
 msgid "Memory (%)"
 msgstr "Speicher (%)"
 
-#: umc/js/top.js:67
+#: umc/js/top.js:70
 msgid "OK"
 msgstr "OK"
 
@@ -59,15 +59,11 @@ msgstr ""
 msgid "Please confirm sending %s to the selected process!"
 msgstr "Bitte bestätigen Sie %s an den ausgewählten Prozess zu senden!"
 
-#: umc/js/top.js:88
-msgid "Process overview"
-msgstr "Prozessübersicht"
-
 #: umc/js/top.js:162
 msgid "Search..."
 msgstr "Suche..."
 
-#: umc/js/top.js:70
+#: umc/js/top.js:73
 #, javascript-format
 msgid "Signal (%s) sent successfully"
 msgstr "Signal (%s) wurde erfolgreich gesendet"
@@ -76,7 +72,7 @@ msgstr "Signal (%s) wurde erfolgreich gesendet"
 msgid "Terminate"
 msgstr "Beenden"
 
-#: umc/js/top.js:89
+#: umc/js/top.js:88
 msgid ""
 "This module generates an overview of all running processes. The search "
 "function can reduce the number of results. Specified processes can be "
@@ -101,6 +97,9 @@ msgstr "Benutzer"
 
 #~ msgid "Kill"
 #~ msgstr "Beenden"
+
+#~ msgid "Process overview"
+#~ msgstr "Prozessübersicht"
 
 #~ msgid "Processes killed successfully"
 #~ msgstr "Prozesse würden erfolgreich beendet"

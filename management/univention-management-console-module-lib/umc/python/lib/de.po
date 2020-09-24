@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-23 14:59+0200\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2013-08-14 14:09+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,45 +11,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/lib/server.py:111
+#: umc/python/lib/server.py:101
 msgid "System could not reboot"
 msgstr "System konnte nicht neustarten"
 
-#: umc/python/lib/server.py:123
+#: umc/python/lib/server.py:112
 msgid "System could not shutdown"
 msgstr "System konnte nicht herunterfahren"
 
-#: umc/python/lib/server.py:106
+#: umc/python/lib/server.py:96
 msgid "The system will now be restarted"
 msgstr "Das System wird nun neu gestartet"
 
-#: umc/python/lib/server.py:118
+#: umc/python/lib/server.py:107
 msgid "The system will now be shut down"
 msgstr "Das System wird nun heruntergefahren"
 
-#: umc/python/lib/server.py:192
-#, python-format
-msgid "certificate error when connecting to %r: %s"
-msgstr "Zertifikatsfehler während des Verbindungsaufbaus mit %r: %s"
+#~ msgid "certificate error when connecting to %r: %s"
+#~ msgstr "Zertifikatsfehler während des Verbindungsaufbaus mit %r: %s"
 
-#: umc/python/lib/server.py:206
-#, python-format
-msgid "failed to get login token for host %r"
-msgstr "Login-Token für Rechner %r konnte nicht bezogen werden."
+#~ msgid "failed to get login token for host %r"
+#~ msgstr "Login-Token für Rechner %r konnte nicht bezogen werden."
 
-#: umc/python/lib/server.py:155
-msgid "given hostname seems to contain invalid characters"
-msgstr "Der angegebene Rechnername enthält ungültige Zeichen."
+#~ msgid "given hostname seems to contain invalid characters"
+#~ msgstr "Der angegebene Rechnername enthält ungültige Zeichen."
 
-#: umc/python/lib/server.py:160
-msgid "no credentials available"
-msgstr "Benutzeranmeldedaten sind nicht verfügbar"
+#~ msgid "no credentials available"
+#~ msgstr "Benutzeranmeldedaten sind nicht verfügbar"
 
-#: umc/python/lib/server.py:148
-msgid "option \"host\" has not been specified"
-msgstr "Die Option \"host\" wurde nicht angegeben."
+#~ msgid "option \"host\" has not been specified"
+#~ msgstr "Die Option \"host\" wurde nicht angegeben."
 
-#: umc/python/lib/server.py:188 umc/python/lib/server.py:196
-#, python-format
-msgid "unable to connect to %r: %s"
-msgstr "Verbindung zu %r fehlgeschlagen: %s"
+#~ msgid "unable to connect to %r: %s"
+#~ msgstr "Verbindung zu %r fehlgeschlagen: %s"

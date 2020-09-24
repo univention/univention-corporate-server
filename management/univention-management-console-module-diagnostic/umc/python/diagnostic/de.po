@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-03-02 15:18+0100\n"
+"POT-Creation-Date: 2020-09-25 01:15+0200\n"
 "PO-Revision-Date: 2020-07-04 15:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -55,11 +55,11 @@ msgstr ""
 msgid "Activate the memberOf LDAP overlay"
 msgstr "Aktivierung des LDAP-Moduls memberOf"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:347
+#: umc/python/diagnostic/plugins/22_kdc_service.py:372
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:31
+#: umc/python/diagnostic/plugins/32_security_limits.py:30
 msgid "Adjust to suggested limits"
 msgstr "An vorgeschlagene Limits anpassen"
 
@@ -80,17 +80,18 @@ msgstr "Alle Dateien in Ordnung."
 msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
+#: umc/python/diagnostic/plugins/00_check_server_password.py:161
+#, fuzzy
+msgid ""
+"Authentication against the Primary LDAP failed with the machine password."
+msgstr ""
+"Authentifizierung gegen das Master LDAP mit dem Password für das "
+"Rechnerkonto ist fehlgeschlagen."
+
 #: umc/python/diagnostic/plugins/00_check_server_password.py:157
 msgid "Authentication against the local LDAP failed with the machine password."
 msgstr ""
 "Authentifizierung gegen das lokale LDAP mit dem Password für das "
-"Rechnerkonto ist fehlgeschlagen."
-
-#: umc/python/diagnostic/plugins/00_check_server_password.py:161
-msgid ""
-"Authentication against the master LDAP failed with the machine password."
-msgstr ""
-"Authentifizierung gegen das Master LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
 #: umc/python/diagnostic/plugins/00_check_server_password.py:53
@@ -293,10 +294,6 @@ msgstr "Gateway ist nicht erreichbar"
 msgid "Host key for server does not match"
 msgstr "SSH Host-Key des Servers stimmt nicht überein"
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:25
-msgid "https://help.univention.com/t/samba4-max-open-files/1758"
-msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
-
 #: umc/python/diagnostic/plugins/11_nameserver.py:17
 msgid ""
 "If the problem persists make sure the nameserver is connected to the network "
@@ -381,8 +378,8 @@ msgstr ""
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:60
 #: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:102
+#: umc/python/diagnostic/plugins/56_univention_types.py:60
 #, python-format
 msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
@@ -435,7 +432,7 @@ msgstr "Keine Probleme mit modifizierten UCR Vorlagen gefunden."
 msgid "No problems were found while resolving update repositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:354
+#: umc/python/diagnostic/plugins/22_kdc_service.py:379
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
@@ -579,7 +576,7 @@ msgstr "Source-Listen neu generieren"
 msgid "Register Schema files"
 msgstr "Schemadateien registrieren"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:350
+#: umc/python/diagnostic/plugins/22_kdc_service.py:375
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
@@ -718,7 +715,7 @@ msgstr "Die Dateien sollten auf Unterschiede geprüft werden."
 msgid "The following FQDNs were not resolvable:"
 msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:324
+#: umc/python/diagnostic/plugins/22_kdc_service.py:349
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
@@ -765,7 +762,7 @@ msgstr ""
 "Der Rechnername des Proxies konnte nicht aufgelöst werden. Bitte DNS-"
 "Konfiguration überprüfen."
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:63
+#: umc/python/diagnostic/plugins/32_security_limits.py:62
 msgid "The limits have been adjusted to the suggested value."
 msgstr "Die Limits wurden auf die empfohlenen Werte erhöht."
 
@@ -794,12 +791,12 @@ msgstr ""
 "Situationen wie backup2master weniger fehleranfällig."
 
 #: umc/python/diagnostic/plugins/59_ldap_server_name.py:61
-#, python-format, python-brace-format
+#, fuzzy, python-format, python-brace-format
 msgid ""
 "The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
-"DC Master of this UCS domain (%s).\n"
+"Primary Directory Node of this UCS domain (%s).\n"
 "Since this environment provides further LDAP Servers, we recommend a "
-"different configuration to reduce the load of the DC Master.\n"
+"different configuration to reduce the load of the Primary Directory Node.\n"
 "Please see {sdb} for further information."
 msgstr ""
 "Der primäre LDAP-Server dieses Systems (UCR ldap/server/name) ist in der "
@@ -874,8 +871,8 @@ msgstr ""
 "Es gab einen Fehler beim Benutzen des Proxy-Servers. Das {setup:network} "
 "kann zur Veränderung der Proxy-Konfiguration genutzt werden.\n"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:50
 #: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:85
+#: umc/python/diagnostic/plugins/56_univention_types.py:50
 msgid "These objects were found:"
 msgstr "Diese Objekte wurden gefunden:"
 
@@ -968,9 +965,10 @@ msgstr ""
 "Verteilung der Server Last"
 
 #: umc/python/diagnostic/plugins/23_check_update_sites.py:47
+#, fuzzy
 msgid ""
-"Univention Support Database - DNS Server on DC does not resolve external "
-"names"
+"Univention Support Database - DNS Server on Directory Node does not resolve "
+"external names"
 msgstr ""
 "Univention Support Database - DNS-Server auf dem DC löst externe Namen nicht "
 "auf"
@@ -1023,9 +1021,10 @@ msgstr ""
 "migriert werden."
 
 #: umc/python/diagnostic/plugins/55_user_migration.py:13
+#, fuzzy
 msgid ""
 "With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
-"domaincontroller master all user objects are migrated into the new format."
+"Primary Directory Node all user objects are migrated into the new format."
 msgstr ""
 "Mit UCS 4.3 hat sich das LDAP format von Nutzer Objekten geändert. Nach "
 "Upgrade des Domänencontroller Master werden all Nutzer Objekte in das neue "
@@ -1134,6 +1133,10 @@ msgstr ""
 "https://help.univention.com/t/memberof-attribute-group-memberships-of-user-"
 "and-computer-objects/6439"
 
+#: umc/python/diagnostic/plugins/32_security_limits.py:25
+msgid "https://help.univention.com/t/samba4-max-open-files/1758"
+msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
+
 #: umc/python/diagnostic/plugins/51_hostname_check.py:46
 msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr "https://tools.ietf.org/html/rfc1123#section-2"
@@ -1147,7 +1150,7 @@ msgstr "nicht gefunden"
 msgid "ph "
 msgstr "ph "
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:341
+#: umc/python/diagnostic/plugins/22_kdc_service.py:366
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 
