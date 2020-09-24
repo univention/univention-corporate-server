@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2014-2017 Univention GmbH
+# Copyright 2014-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -27,7 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-: ${SSH_KEY:=$HOME/ec2/keys/tech.pem}
+: "${SSH_KEY:=$HOME/ec2/keys/tech.pem}"
 
 fetch-files () { # [<USER>@]<IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARGS...]
 	local ADDR="${1#*@}"
@@ -45,17 +45,16 @@ fetch-files () { # [<USER>@]<IP-ADDRESS> <REMOTE-FILE(S)> <DESTINATION> [SCP-ARG
 }
 
 fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
-
 	# check env
-	if [ -n "$UCS_TEST_RUN" -a "$UCS_TEST_RUN" = "false" ]; then
+	if [ "${UCS_TEST_RUN:-}" = "false" ]; then
 		echo "ucs-test disabled by env UCS_TEST_RUN=$UCS_TEST_RUN, so no results i guess"
 		return 0
 	fi
 
 	local ADDR="$1"
 	local TARGETDIR="${2:-.}"
-	mkdir -p "$TARGETDIR"
 	mkdir -p "$TARGETDIR/selenium"
+	# shellcheck disable=SC2191
 	declare -a FILES=(
 		'artifacts'
 		'packages-under-test.log'
@@ -99,7 +98,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 	for FILE in "${FILES[@]}"; do
 		fetch-files "root@${ADDR}" "${FILE%=*}" "${TARGETDIR}/${FILE##*[/=]}" || rc=$?
 	done
-	return 0  # $rc
+	return $rc
 }
 
 fetch-coverage () {
@@ -115,11 +114,8 @@ ACTION="$1"
 shift || exit 1
 
 case "$ACTION" in
-	fetch-results)
-		fetch-results "$@"
-		;;
-	ucsschool-fetch-results)
-		fetch-results "$@"
+	fetch-results|ucsschool-fetch-results)
+		fetch-results "$@" || :
 		;;
 	fetch-coverage)
 		fetch-coverage "$@"
