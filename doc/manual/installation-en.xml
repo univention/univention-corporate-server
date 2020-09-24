@@ -287,7 +287,7 @@ the size of the respective hard drive.
   <title>Domain settings</title>
   <para>
 	The final configuration of the UCS system is started by selecting a domain mode.
-	There are four modes available, which influence the following configuration steps:
+	There are three modes available, which influence the following configuration steps:
 	<itemizedlist>
 	  <listitem>
 		<simpara>
@@ -302,11 +302,6 @@ the size of the respective hard drive.
 	  <listitem>
 		<simpara>
 		  Selecting the <guimenu>Join into an existing UCS domain</guimenu> mode allows the UCS system to be configured to join an existing UCS domain. What UCS system role it is to take on in the domain is queried at a later stage.
-		</simpara>
-	  </listitem>
-	  <listitem>
-		<simpara>
-		  If the <guimenu>Do not use any domain</guimenu> mode is selected, there are no web-based administration functions and no domain functions at all available on the system. The UCS system can also not subsequently become a member of an existing UCS or Active Directory domain or found a new UCS domain at a later point in time. In addition, the Univention App Center is not available in this mode. For this reason, this mode is only used rarely and in special scenarios (e.g, as a firewall system).
 		</simpara>
 	  </listitem>
 	</itemizedlist>
@@ -403,13 +398,6 @@ option can be disabled and the fully qualified domain name of the preferred &ucs
 	</figure>
 	<para>
 	  In addition, a host name must be entered for the UCS system to be configured in the next step. The suggested host name can be adopted or a new host name entered. The domain name of the computer is derived automatically from the domain DNS server. In some scenarios (e.g., a public mail server) it can prove necessary to use a certain fully qualified domain name. Once set up, the domain name <emphasis>cannot</emphasis> be changed again once the configuration is completed.
-	</para>
-  </section>
-  <section id="installation:Domäneneinstellungen:KeineDomäne">
-	<title>"Do not use any domain" mode</title>
-	<para>
-	  The configuration of the <guimenu>Do not use any domain</guimenu> mode requires the specification of a host name for the UCS system to be configured. The suggested host name can be adopted
-or a new host name entered. The domain name of the computer is derived automatically from the domain DNS server.
 	</para>
   </section>
 </section>
