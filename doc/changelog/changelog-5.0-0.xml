@@ -246,7 +246,7 @@
 					UDM handlers now raise an exception <classname>univention.admin.uexceptions.wrongObjectType</classname> when an object is opened with a wrong type (<u:bug>45096</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					Old references to <property>TCP</property> in the <filename>univention-cli-server</filename> have been removed (<u:bug>34836</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
