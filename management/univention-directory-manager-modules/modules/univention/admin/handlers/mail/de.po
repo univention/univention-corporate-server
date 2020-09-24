@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"POT-Creation-Date: 2020-09-25 01:35+0200\n"
 "PO-Revision-Date: 2008-07-09 14:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -55,10 +55,10 @@ msgstr "Autorisierte Gruppen"
 msgid "Authorized users"
 msgstr "Autorisierte Benutzer"
 
-#: modules/univention/admin/handlers/mail/lists.py:103
-#: modules/univention/admin/handlers/mail/domain.py:75
 #: modules/univention/admin/handlers/mail/folder.py:123
 #: modules/univention/admin/handlers/mail/mail.py:68
+#: modules/univention/admin/handlers/mail/lists.py:103
+#: modules/univention/admin/handlers/mail/domain.py:74
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
@@ -70,10 +70,10 @@ msgstr "Beschreibung"
 msgid "E-Mail address"
 msgstr "E-Mail-Adresse"
 
-#: modules/univention/admin/handlers/mail/lists.py:103
-#: modules/univention/admin/handlers/mail/domain.py:75
 #: modules/univention/admin/handlers/mail/folder.py:123
 #: modules/univention/admin/handlers/mail/mail.py:68
+#: modules/univention/admin/handlers/mail/lists.py:103
+#: modules/univention/admin/handlers/mail/domain.py:74
 msgid "General"
 msgstr "Allgemein"
 
@@ -118,21 +118,21 @@ msgstr "Mail"
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
-#: modules/univention/admin/handlers/mail/domain.py:48
-#: modules/univention/admin/handlers/mail/domain.py:49
 #: modules/univention/admin/handlers/mail/folder.py:82
+#: modules/univention/admin/handlers/mail/domain.py:47
+#: modules/univention/admin/handlers/mail/domain.py:48
 msgid "Mail domain"
 msgstr "Mail-Domäne"
 
-#: modules/univention/admin/handlers/mail/domain.py:76
+#: modules/univention/admin/handlers/mail/domain.py:75
 msgid "Mail domain description"
 msgstr "Bezeichnung - Mail-Domäne"
 
-#: modules/univention/admin/handlers/mail/domain.py:65
+#: modules/univention/admin/handlers/mail/domain.py:64
 msgid "Mail domain name"
 msgstr "Name der Mail-Domäne"
 
-#: modules/univention/admin/handlers/mail/domain.py:50
+#: modules/univention/admin/handlers/mail/domain.py:49
 msgid "Mail domains"
 msgstr "Mail-Domänen"
 
@@ -165,9 +165,9 @@ msgstr "Mailinglisten"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: modules/univention/admin/handlers/mail/lists.py:60
 #: modules/univention/admin/handlers/mail/folder.py:73
 #: modules/univention/admin/handlers/mail/mail.py:60
+#: modules/univention/admin/handlers/mail/lists.py:60
 msgid "Name"
 msgstr "Name"
 

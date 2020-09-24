@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"POT-Creation-Date: 2020-09-25 01:35+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,8 +38,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:170
-#: modules/univention/admin/handlers/policies/print_quota.py:176
+#: modules/univention/admin/handlers/policies/print_quota.py:169
+#: modules/univention/admin/handlers/policies/print_quota.py:175
 #, python-format
 msgid "%s is not valid. "
 msgstr "%s ist nicht erlaubt. "
@@ -117,24 +117,6 @@ msgstr "Automatische Updates-Richtlinien"
 msgid "Automatic updates policy"
 msgstr "Automatische Updates-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/autostart.py:67
-#: modules/univention/admin/handlers/policies/autostart.py:100
-msgid "Autostart"
-msgstr "Autostart"
-
-#: modules/univention/admin/handlers/policies/autostart.py:66
-msgid "Autostart policies"
-msgstr "Autostart-Richtlinien"
-
-#: modules/univention/admin/handlers/policies/autostart.py:65
-msgid "Autostart policy"
-msgstr "Autostart-Richtlinie"
-
-#: modules/univention/admin/handlers/policies/autostart.py:52
-#: modules/univention/admin/handlers/policies/autostart.py:86
-msgid "Autostart session"
-msgstr "Autostart Sitzung"
-
 #: modules/univention/admin/handlers/policies/admin_container.py:86
 msgid "Available Univention Directory Manager modules"
 msgstr "Verfügbare Univention Directory Manager Module"
@@ -149,9 +131,9 @@ msgid "Basic DNS settings"
 msgstr "Allgemeine DNS-Einstellungen"
 
 #: modules/univention/admin/handlers/policies/policy.py:69
-#: modules/univention/admin/handlers/policies/ldapserver.py:103
 #: modules/univention/admin/handlers/policies/nfsmounts.py:103
 #: modules/univention/admin/handlers/policies/printserver.py:102
+#: modules/univention/admin/handlers/policies/ldapserver.py:103
 #: modules/univention/admin/handlers/policies/umc.py:103
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
@@ -193,7 +175,7 @@ msgstr "Booten"
 msgid "Client updates"
 msgstr "Client Aktualisierungen"
 
-#: modules/univention/admin/handlers/policies/registry.py:87
+#: modules/univention/admin/handlers/policies/registry.py:89
 msgid "Configuration Registry"
 msgstr "Configuration Registry"
 
@@ -404,7 +386,7 @@ msgstr ""
 "Domänenname, der für den PTR-Record an den Rechnernamen des Clients "
 "angehängt wird"
 
-#: modules/univention/admin/handlers/policies/registry.py:137
+#: modules/univention/admin/handlers/policies/registry.py:139
 #, python-format
 msgid "Duplicated variables not allowed: %s"
 msgstr "Doppelte Variablen sind nicht erlaubt: %s"
@@ -455,27 +437,26 @@ msgstr ""
 " dynamischen Adresse. Sollte nur bei Problemen seitens des Clients mit der "
 "Verzögerung von einer Sekunde deaktiviert werden."
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:103
+#: modules/univention/admin/handlers/policies/pwhistory.py:118
 #: modules/univention/admin/handlers/policies/policy.py:69
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
-#: modules/univention/admin/handlers/policies/autostart.py:100
+#: modules/univention/admin/handlers/policies/nfsmounts.py:103
+#: modules/univention/admin/handlers/policies/release.py:107
+#: modules/univention/admin/handlers/policies/printserver.py:102
 #: modules/univention/admin/handlers/policies/ldapserver.py:103
 #: modules/univention/admin/handlers/policies/slavepackages.py:110
-#: modules/univention/admin/handlers/policies/nfsmounts.py:103
-#: modules/univention/admin/handlers/policies/printserver.py:102
-#: modules/univention/admin/handlers/policies/maintenance.py:150
-#: modules/univention/admin/handlers/policies/memberpackages.py:110
-#: modules/univention/admin/handlers/policies/pwhistory.py:118
-#: modules/univention/admin/handlers/policies/umc.py:103
-#: modules/univention/admin/handlers/policies/share_userquota.py:127
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:109
-#: modules/univention/admin/handlers/policies/print_quota.py:123
-#: modules/univention/admin/handlers/policies/release.py:107
-#: modules/univention/admin/handlers/policies/registry.py:103
 #: modules/univention/admin/handlers/policies/admin_container.py:101
-#: modules/univention/admin/handlers/policies/repositorysync.py:130
-#: modules/univention/admin/handlers/policies/desktop.py:121
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:102
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:109
+#: modules/univention/admin/handlers/policies/print_quota.py:122
+#: modules/univention/admin/handlers/policies/memberpackages.py:110
+#: modules/univention/admin/handlers/policies/maintenance.py:150
+#: modules/univention/admin/handlers/policies/umc.py:103
 #: modules/univention/admin/handlers/policies/masterpackages.py:110
+#: modules/univention/admin/handlers/policies/registry.py:105
+#: modules/univention/admin/handlers/policies/repositorysync.py:130
+#: modules/univention/admin/handlers/policies/share_userquota.py:127
+#: modules/univention/admin/handlers/policies/desktop.py:121
+#: modules/univention/admin/handlers/policies/repositoryserver.py:103
 msgid "General"
 msgstr "Allgemein"
 
@@ -515,15 +496,30 @@ msgstr "Grundeinstellungen - DHCP Verschiedenes"
 msgid "General LDAP server settings"
 msgstr "Grundeinstellungen - LDAP-Server"
 
+#: modules/univention/admin/handlers/policies/memberpackages.py:111
+#, fuzzy
+msgid "General Managed Node packages settings"
+msgstr "Grundeinstellungen - Slave Pakete"
+
 #: modules/univention/admin/handlers/policies/nfsmounts.py:104
 msgid "General NFS mounts settings"
 msgstr "Grundeinstellungen - NFS-Freigaben"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:111
+#, fuzzy
+msgid "General Primary packages settings"
+msgstr "Grundeinstellungen - Master Pakete"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:111
+#, fuzzy
+msgid "General Replica packages settings"
+msgstr "Grundeinstellungen - Slave Pakete"
 
 #: modules/univention/admin/handlers/policies/umc.py:104
 msgid "General UMC settings"
 msgstr "Grundeinstellungen - UMC"
 
-#: modules/univention/admin/handlers/policies/registry.py:104
+#: modules/univention/admin/handlers/policies/registry.py:106
 msgid "General Univention Configuration Registry settings"
 msgstr "Grundeinstellungen - Univention Configuration Registry"
 
@@ -536,10 +532,6 @@ msgstr ""
 msgid "General automatic updates settings"
 msgstr "Grundeinstellungen - Automatische Updates"
 
-#: modules/univention/admin/handlers/policies/autostart.py:101
-msgid "General autostart settings"
-msgstr "Grundeinstellungen - Autostart"
-
 #: modules/univention/admin/handlers/policies/desktop.py:122
 msgid "General desktop settings"
 msgstr "Grundeinstellungen - Desktop"
@@ -548,19 +540,11 @@ msgstr "Grundeinstellungen - Desktop"
 msgid "General maintenance settings"
 msgstr "Grundeinstellungen - Paketpflege"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:111
-msgid "General master packages settings"
-msgstr "Grundeinstellungen - Master Pakete"
-
-#: modules/univention/admin/handlers/policies/memberpackages.py:111
-msgid "General member server packages settings"
-msgstr "Grundeinstellungen - Memberserver Pakete"
-
 #: modules/univention/admin/handlers/policies/pwhistory.py:119
 msgid "General passwords settings"
 msgstr "Grundeinstellungen - Passwort"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:124
+#: modules/univention/admin/handlers/policies/print_quota.py:123
 msgid "General print quota settings"
 msgstr "Grundeinstellungen - Druck-Quota"
 
@@ -575,10 +559,6 @@ msgstr "Grundeinstellungen - Repository-Server"
 #: modules/univention/admin/handlers/policies/repositorysync.py:131
 msgid "General repository synchronisation settings"
 msgstr "Grundeinstellungen - Repository-Synchronisation"
-
-#: modules/univention/admin/handlers/policies/slavepackages.py:111
-msgid "General slave packages settings"
-msgstr "Grundeinstellungen - Slave Pakete"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:128
 msgid "General user quota settings"
@@ -727,16 +707,19 @@ msgstr "Paketpflege-Richtlinie"
 msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:69
-msgid "Master packages"
+#: modules/univention/admin/handlers/policies/memberpackages.py:69
+#, fuzzy
+msgid "Managed Node packages"
 msgstr "Master Pakete"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:68
-msgid "Master packages policies"
+#: modules/univention/admin/handlers/policies/memberpackages.py:68
+#, fuzzy
+msgid "Managed Node packages policies"
 msgstr "Master Pakete-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:67
-msgid "Master packages policy"
+#: modules/univention/admin/handlers/policies/memberpackages.py:67
+#, fuzzy
+msgid "Managed Node packages policy"
 msgstr "Master Pakete-Richtlinie"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:54
@@ -748,18 +731,6 @@ msgstr "Maximale Lease-Zeit"
 msgid "Maximum lease time that the server will accept if asked for"
 msgstr ""
 "Maximale Lease-Zeit, die der Server akzeptiert, wenn er dannach gefragt wird"
-
-#: modules/univention/admin/handlers/policies/memberpackages.py:69
-msgid "Member Server packages"
-msgstr "Memberserver Pakete"
-
-#: modules/univention/admin/handlers/policies/memberpackages.py:68
-msgid "Member Server packages policies"
-msgstr "Memberserver Pakete-Richtlinien"
-
-#: modules/univention/admin/handlers/policies/memberpackages.py:67
-msgid "Member Server packages policy"
-msgstr "Memberserver Pakete-Richtlinie"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:99
 msgid "Minimal amount of characters"
@@ -808,33 +779,32 @@ msgstr "NFS-Freigaben-Richtlinie"
 msgid "NFS shares to mount"
 msgstr "NFS-Freigaben einbinden"
 
-#: modules/univention/admin/handlers/policies/repositoryserver.py:78
+#: modules/univention/admin/handlers/policies/pwhistory.py:79
 #: modules/univention/admin/handlers/policies/policy.py:61
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:85
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:78
-#: modules/univention/admin/handlers/policies/autostart.py:77
-#: modules/univention/admin/handlers/policies/ldapserver.py:78
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:79
-#: modules/univention/admin/handlers/policies/slavepackages.py:79
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:80
 #: modules/univention/admin/handlers/policies/nfsmounts.py:78
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:83
+#: modules/univention/admin/handlers/policies/release.py:78
 #: modules/univention/admin/handlers/policies/printserver.py:77
+#: modules/univention/admin/handlers/policies/ldapserver.py:78
+#: modules/univention/admin/handlers/policies/slavepackages.py:79
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:85
+#: modules/univention/admin/handlers/policies/admin_container.py:77
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:78
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:79
+#: modules/univention/admin/handlers/policies/print_quota.py:85
+#: modules/univention/admin/handlers/policies/memberpackages.py:79
 #: modules/univention/admin/handlers/policies/maintenance.py:81
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:82
-#: modules/univention/admin/handlers/policies/memberpackages.py:79
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:80
-#: modules/univention/admin/handlers/policies/pwhistory.py:79
 #: modules/univention/admin/handlers/policies/umc.py:79
-#: modules/univention/admin/handlers/policies/share_userquota.py:82
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:79
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:83
-#: modules/univention/admin/handlers/policies/print_quota.py:86
-#: modules/univention/admin/handlers/policies/release.py:78
-#: modules/univention/admin/handlers/policies/registry.py:78
-#: modules/univention/admin/handlers/policies/admin_container.py:77
-#: modules/univention/admin/handlers/policies/repositorysync.py:81
-#: modules/univention/admin/handlers/policies/desktop.py:78
 #: modules/univention/admin/handlers/policies/masterpackages.py:79
+#: modules/univention/admin/handlers/policies/registry.py:80
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:80
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:80
+#: modules/univention/admin/handlers/policies/repositorysync.py:81
+#: modules/univention/admin/handlers/policies/share_userquota.py:82
+#: modules/univention/admin/handlers/policies/desktop.py:78
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:79
+#: modules/univention/admin/handlers/policies/repositoryserver.py:78
 msgid "Name"
 msgstr "Name"
 
@@ -947,10 +917,6 @@ msgstr "Richtlinie"
 msgid "Policy: Automatic updates"
 msgstr "Richtlinie: Automatische Updates"
 
-#: modules/univention/admin/handlers/policies/autostart.py:64
-msgid "Policy: Autostart"
-msgstr "Richtlinie: Autostart"
-
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:69
 msgid "Policy: DHCP Allow/Deny"
 msgstr "Richtlinie: DHCP Erlauben/Verbieten"
@@ -995,13 +961,10 @@ msgstr "Richtlinie: LDAP-Server"
 msgid "Policy: Maintenance"
 msgstr "Richtlinie: Paketpflege"
 
-#: modules/univention/admin/handlers/policies/masterpackages.py:66
-msgid "Policy: Master packages"
-msgstr "Richtlinie: Master Pakete"
-
 #: modules/univention/admin/handlers/policies/memberpackages.py:66
-msgid "Policy: Member Server packages"
-msgstr "Richtlinie: Memberserver Pakete"
+#, fuzzy
+msgid "Policy: Managed Node packages"
+msgstr "Richtlinie: Master Pakete"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:65
 msgid "Policy: NFS mounts"
@@ -1011,13 +974,23 @@ msgstr "Richtlinie: NFS-Freigaben"
 msgid "Policy: Passwords"
 msgstr "Richtlinie: Passwort"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:71
+#: modules/univention/admin/handlers/policies/masterpackages.py:66
+#, fuzzy
+msgid "Policy: Primary packages"
+msgstr "Richtlinie: Master Pakete"
+
+#: modules/univention/admin/handlers/policies/print_quota.py:70
 msgid "Policy: Print quota"
 msgstr "Richtlinie: Druck-Quota"
 
 #: modules/univention/admin/handlers/policies/printserver.py:64
 msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:66
+#, fuzzy
+msgid "Policy: Replica packages"
+msgstr "Richtlinie: Slave Pakete"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:65
 msgid "Policy: Repository server"
@@ -1027,15 +1000,11 @@ msgstr "Richtlinie: Repository-Server"
 msgid "Policy: Repository synchronisation"
 msgstr "Richtlinie: Repository-Synchronisation"
 
-#: modules/univention/admin/handlers/policies/slavepackages.py:66
-msgid "Policy: Slave packages"
-msgstr "Richtlinie: Slave Pakete"
-
 #: modules/univention/admin/handlers/policies/umc.py:65
 msgid "Policy: UMC"
 msgstr "Richtlinie: UMC"
 
-#: modules/univention/admin/handlers/policies/registry.py:65
+#: modules/univention/admin/handlers/policies/registry.py:67
 msgid "Policy: Univention Configuration Registry"
 msgstr "Richtlinie: Univention Configuration Registry"
 
@@ -1047,41 +1016,56 @@ msgstr "Richtlinie: Univention Directory Manager Container Konfiguration"
 msgid "Policy: User quota"
 msgstr "Richtlinie: Benutzer-Quota"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:74
+#: modules/univention/admin/handlers/policies/masterpackages.py:69
+#, fuzzy
+msgid "Primary packages"
+msgstr "Master Pakete"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:68
+#, fuzzy
+msgid "Primary packages policies"
+msgstr "Master Pakete-Richtlinien"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:67
+#, fuzzy
+msgid "Primary packages policy"
+msgstr "Master Pakete-Richtlinie"
+
+#: modules/univention/admin/handlers/policies/print_quota.py:73
 msgid "Print Quota"
 msgstr "Druck-Quota"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:75
+#: modules/univention/admin/handlers/policies/print_quota.py:74
 msgid "Print Quota for users/groups per printer"
 msgstr "Druck-Quota pro Benutzer/Gruppe für einen Drucker"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:123
+#: modules/univention/admin/handlers/policies/print_quota.py:122
 msgid "Print quota"
 msgstr "Druck-Quota"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:57
-#: modules/univention/admin/handlers/policies/print_quota.py:95
-#: modules/univention/admin/handlers/policies/print_quota.py:127
+#: modules/univention/admin/handlers/policies/print_quota.py:56
+#: modules/univention/admin/handlers/policies/print_quota.py:94
+#: modules/univention/admin/handlers/policies/print_quota.py:126
 msgid "Print quota for groups"
 msgstr "Druck-Quota für Gruppen"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:59
-#: modules/univention/admin/handlers/policies/print_quota.py:101
-#: modules/univention/admin/handlers/policies/print_quota.py:126
+#: modules/univention/admin/handlers/policies/print_quota.py:58
+#: modules/univention/admin/handlers/policies/print_quota.py:100
+#: modules/univention/admin/handlers/policies/print_quota.py:125
 msgid "Print quota for groups per user"
 msgstr "Druck-Quota für Gruppen pro Benutzer"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:58
-#: modules/univention/admin/handlers/policies/print_quota.py:107
-#: modules/univention/admin/handlers/policies/print_quota.py:125
+#: modules/univention/admin/handlers/policies/print_quota.py:57
+#: modules/univention/admin/handlers/policies/print_quota.py:106
+#: modules/univention/admin/handlers/policies/print_quota.py:124
 msgid "Print quota for users"
 msgstr "Druck-Quota für Benutzer"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:73
+#: modules/univention/admin/handlers/policies/print_quota.py:72
 msgid "Print quota policies"
 msgstr "Druck-Quota für Benutzer-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:72
+#: modules/univention/admin/handlers/policies/print_quota.py:71
 msgid "Print quota policy"
 msgstr "Druck-Quota-Richtlinie"
 
@@ -1124,6 +1108,21 @@ msgstr "Nach Paketpflege neu starten"
 #: modules/univention/admin/handlers/policies/release.py:53
 msgid "Release Version"
 msgstr "Release Version"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:69
+#, fuzzy
+msgid "Replica packages"
+msgstr "Slave Pakete"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:68
+#, fuzzy
+msgid "Replica packages policies"
+msgstr "Slave Pakete-Richtlinien"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:67
+#, fuzzy
+msgid "Replica packages policy"
+msgstr "Slave Pakete-Richtlinie"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:53
 #: modules/univention/admin/handlers/policies/repositoryserver.py:68
@@ -1197,31 +1196,15 @@ msgstr "Serverkennung"
 msgid "Server name"
 msgstr "Servername"
 
-#: modules/univention/admin/handlers/policies/autostart.py:87
-msgid "Session script to be launched by autostart"
-msgstr "Sitzungsskript, das von Autostart ausgeführt werden soll"
-
-#: modules/univention/admin/handlers/policies/slavepackages.py:69
-msgid "Slave packages"
-msgstr "Slave Pakete"
-
-#: modules/univention/admin/handlers/policies/slavepackages.py:68
-msgid "Slave packages policies"
-msgstr "Slave Pakete-Richtlinien"
-
-#: modules/univention/admin/handlers/policies/slavepackages.py:67
-msgid "Slave packages policy"
-msgstr "Slave Pakete-Richtlinie"
-
-#: modules/univention/admin/handlers/policies/print_quota.py:96
+#: modules/univention/admin/handlers/policies/print_quota.py:95
 msgid "Soft and hard limits for each allowed group"
 msgstr "Soft- und Hard-Limit für jede berechtigte Gruppe"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:108
+#: modules/univention/admin/handlers/policies/print_quota.py:107
 msgid "Soft and hard limits for each allowed user"
 msgstr "Soft- und Hard-Limit für jeden berechtigten Benutzer"
 
-#: modules/univention/admin/handlers/policies/print_quota.py:102
+#: modules/univention/admin/handlers/policies/print_quota.py:101
 msgid "Soft and hard limits for each member of allowed group"
 msgstr "Soft- und Hard-Limit für jedes Mitglied der berechtigten Gruppe"
 
@@ -1267,7 +1250,7 @@ msgstr ""
 msgid "The node type of clients for NetBIOS over TCP/IP"
 msgstr "Der Node Typ der Clients für NetBIOS over TCP/IP"
 
-#: modules/univention/admin/handlers/policies/registry.py:103
+#: modules/univention/admin/handlers/policies/registry.py:105
 msgid "These configuration settings will be set on the local UCS system."
 msgstr ""
 "Diese Konfigurationseinstellungen werden auf dem lokalen UCS-System gesetzt."
@@ -1280,7 +1263,7 @@ msgstr ""
 "Diese Zahl gibt an, nach wie vielen Passwortwechseln der Benutzer ein altes "
 "Passwort wiederverwenden darf"
 
-#: modules/univention/admin/handlers/policies/registry.py:54
+#: modules/univention/admin/handlers/policies/registry.py:56
 msgid "UCR Variables"
 msgstr "UCR-Variablen"
 
@@ -1292,15 +1275,15 @@ msgstr "UMC-Richtlinien"
 msgid "UMC policy"
 msgstr "UMC-Richtlinie"
 
-#: modules/univention/admin/handlers/policies/registry.py:68
+#: modules/univention/admin/handlers/policies/registry.py:70
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 
-#: modules/univention/admin/handlers/policies/registry.py:67
+#: modules/univention/admin/handlers/policies/registry.py:69
 msgid "Univention Configuration Registry policies"
 msgstr "Univention Configuration Registry-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/registry.py:66
+#: modules/univention/admin/handlers/policies/registry.py:68
 msgid "Univention Configuration Registry policy"
 msgstr "Univention Configuration Registry-Richtlinie"
 
@@ -1362,3 +1345,39 @@ msgstr "Ohne Angabe wird die aktuellste Version verwendet"
 msgid "https://docs.software-univention.de/manual-4.4.html#central:policies"
 msgstr ""
 "https://docs.software-univention.de/handbuch-4.4.html#central:policies"
+
+#~ msgid "Autostart"
+#~ msgstr "Autostart"
+
+#~ msgid "Autostart policies"
+#~ msgstr "Autostart-Richtlinien"
+
+#~ msgid "Autostart policy"
+#~ msgstr "Autostart-Richtlinie"
+
+#~ msgid "Autostart session"
+#~ msgstr "Autostart Sitzung"
+
+#~ msgid "General autostart settings"
+#~ msgstr "Grundeinstellungen - Autostart"
+
+#~ msgid "General member server packages settings"
+#~ msgstr "Grundeinstellungen - Memberserver Pakete"
+
+#~ msgid "Member Server packages"
+#~ msgstr "Memberserver Pakete"
+
+#~ msgid "Member Server packages policies"
+#~ msgstr "Memberserver Pakete-Richtlinien"
+
+#~ msgid "Member Server packages policy"
+#~ msgstr "Memberserver Pakete-Richtlinie"
+
+#~ msgid "Policy: Autostart"
+#~ msgstr "Richtlinie: Autostart"
+
+#~ msgid "Policy: Member Server packages"
+#~ msgstr "Richtlinie: Memberserver Pakete"
+
+#~ msgid "Session script to be launched by autostart"
+#~ msgstr "Sitzungsskript, das von Autostart ausgeführt werden soll"

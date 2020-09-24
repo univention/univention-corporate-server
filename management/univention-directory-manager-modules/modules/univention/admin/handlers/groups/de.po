@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"POT-Creation-Date: 2020-09-25 01:35+0200\n"
 "PO-Revision-Date: 2011-10-09 19:21+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -97,7 +97,7 @@ msgstr "enthaltene Rechner"
 msgid "ID of this group"
 msgstr "ID dieser Gruppe"
 
-#: modules/univention/admin/handlers/groups/group.py:656
+#: modules/univention/admin/handlers/groups/group.py:577
 #, python-format
 msgid "It is used as %s."
 msgstr "Sie wird als %s genutzt."

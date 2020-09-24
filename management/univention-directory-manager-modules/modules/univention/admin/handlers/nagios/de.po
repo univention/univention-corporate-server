@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"POT-Creation-Date: 2020-09-25 01:35+0200\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -170,9 +170,9 @@ msgstr "Nagios-Zeitraum"
 msgid "Nagios time periods"
 msgstr "Nagios-Zeiträume"
 
-#: modules/univention/admin/handlers/nagios/nagios.py:61
 #: modules/univention/admin/handlers/nagios/timeperiod.py:90
 #: modules/univention/admin/handlers/nagios/timeperiod.py:91
+#: modules/univention/admin/handlers/nagios/nagios.py:61
 #: modules/univention/admin/handlers/nagios/service.py:75
 msgid "Name"
 msgstr "Name"
@@ -248,12 +248,12 @@ msgstr "Name des Dienstes"
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: modules/univention/admin/handlers/nagios/service.py:296
+#: modules/univention/admin/handlers/nagios/service.py:297
 #, python-format
 msgid "The host \"%s\" does not exists."
 msgstr "Der Rechner \"%s\" existiert nicht."
 
-#: modules/univention/admin/handlers/nagios/service.py:298
+#: modules/univention/admin/handlers/nagios/service.py:299
 #, python-format
 msgid "The host \"%s\" is invalid, it has no \"cn\" attribute."
 msgstr "Der Rechner \"%s\" ist ungültig, der er kein \"cn\"-Attribut besitzt."
@@ -297,5 +297,5 @@ msgid ""
 "https://docs.software-"
 "univention.de/manual-4.4.html#nagios:Configuration_of_the_Nagios_monitoring"
 msgstr ""
-"https://docs.software-univention.de/handbuch-4.4.html#nagios"
-":Konfiguration_der_Nagios-Überwachung"
+"https://docs.software-"
+"univention.de/handbuch-4.4.html#nagios:Konfiguration_der_Nagios-Überwachung"
