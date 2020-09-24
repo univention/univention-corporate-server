@@ -93,6 +93,26 @@
 		</para>
 	</section>
 
+	<section id="central:globalcustom-design">
+		<title>Adjusting the design of UCS</title>
+		<para>
+			All subpages use the same set of
+			<ulink url="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties">CSS custom properties</ulink>
+			that define the general style of UCS.
+			These properties are defined in the file <filename>/usr/share/univention-web/js/dijit/themes/umc/globalCSSVariables.css</filename>
+			which is directly or indirectly imported by every UCS subpage.
+			Every subpage also imports the file <filename>/usr/share/univention-web/js/dijit/themes/umc/globalCustom.css</filename>
+			which is not altered or deleted during updates. This file can be used to adjust the design of all subpages
+			by overwriting defined CSS custom properties and overwriting or adding CSS statements.
+		</para>
+		<para>
+			Every subpage also imports its own local <filename>custom.css</filename> file which can be used to only adjust
+			the design of that page. These are <filename>/usr/share/univention-management-console-login/css/custom.css</filename>
+			(<xref linkend="domain:saml:ssologin"/>), <filename>/usr/share/univention-portal/custom.css</filename> (<xref linkend="central:portal"/>)
+			and <filename>/usr/share/univention-self-service/www/css/custom.css</filename> (<xref linkend="user-management:password-changes-by-users:self-service"/>).
+		</para>
+	</section>
+
 	<section id="central-management-umc:feedback">
 		<title>Feedback on UMC and UCS</title>
 		<para>
