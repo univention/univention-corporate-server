@@ -90,7 +90,7 @@ Replaces:
  univention-system-setup-appliance,
 Description: Starting univention-system-setup on next boot
  This package configures the computer to launch UCS System Setup on its next
- boot. This package is only allowed on the server role DC Master.
+ boot. This package is only allowed on the server role Primary Directory Node.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

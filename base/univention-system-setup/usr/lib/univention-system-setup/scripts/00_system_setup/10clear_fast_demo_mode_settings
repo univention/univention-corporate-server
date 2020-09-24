@@ -30,10 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# Fast demo mode is a joined UCS master
+# Fast demo mode is a joined UCS Primary Directory Node
 # In order to allow a complete second run of setup-join.sh, all settings
 # which are only conditionally set by join scripts, have to be unset here
-# The fast demo mode has the FQDN master.ucs.example
+# The fast demo mode has the FQDN primary.ucs.example
 
 DEMO_MODE=$(echo "$@" | grep -q "\-\-demo-mode" && echo 1)
 
@@ -42,10 +42,10 @@ if [ "$DEMO_MODE" != 1 ]; then
 		saml/idp/certificate/certificate \
 		saml/idp/certificate/privatekey \
 		saml/idp/entityID \
-		ucs/server/saml-idp-server/master.ucs.example \
+		ucs/server/saml-idp-server/primary.ucs.example \
 		ucs/server/sso/fqdn \
 		umc/saml/idp-server \
-		umc/saml/trusted/sp/master.ucs.example \
+		umc/saml/trusted/sp/primary.ucs.example \
 		ucs/web/overview/entries/admin/ucs-local-to-domain/link
 fi
 

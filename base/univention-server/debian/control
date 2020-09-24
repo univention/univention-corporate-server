@@ -34,8 +34,8 @@ Depends:
  univention-management-console-module-udm,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  ${misc:Depends},
-Description: UCS - master domain controller
- This package installs a UCS master domain controller.
+Description: UCS - Primary Directory Node
+ This package installs a UCS Primary Directory Node.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -71,10 +71,10 @@ Depends:
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  univention-ssl,
  ${misc:Depends},
-Description: UCS - backup domain controller
- This package installs a UCS backup domain controller.
- Unlike slave domain controllers, backup domain controllers
- can be promoted to master domain controllers.
+Description: UCS - Backup Directory Node
+ This package installs a UCS Backup Directory Node.
+ Unlike Replica Directory Nodes, Backup Directory Nodes
+ can be promoted to Primary Directory Nodes.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -98,10 +98,10 @@ Depends:
  univention-ldap-server,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  ${misc:Depends},
-Description: UCS - slave domain controller
- This package installs a UCS slave domain controller.
- Unlike backup domain controllers, slave domain controllers
- cannot be promoted to master domain controllers.
+Description: UCS - Replica Directory Node
+ This package installs a UCS Replica Directory Node.
+ Unlike Backup Directory Nodes, Replica Directory Nodes
+ cannot be promoted to Primary Directory Nodes.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -120,8 +120,8 @@ Depends:
  univention-heimdal-member,
  univention-role-server-common (= ${source:Version}) | univention-container-role-server-common (= ${source:Version}),
  ${misc:Depends},
-Description: UCS - member server
- This package installs a UCS member server.
+Description: UCS - Managed Node
+ This package installs a UCS Managed Node.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

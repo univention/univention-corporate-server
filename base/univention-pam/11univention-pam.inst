@@ -40,8 +40,8 @@ VERSION=1
 joinscript_init
 
 # restrict ssh and local login to admins on domaincontroller hosts
-# allow access to members of groups Computers, DC Slave Hosts and DC
-# Backup Hosts (host objects) for joining
+# allow access to members of groups Computers, "DC Slave Hosts" and
+# "DC Backup Hosts" (host objects) for joining
 . /usr/share/univention-lib/base.sh
 if is_domain_controller; then
 	univention-config-registry set \

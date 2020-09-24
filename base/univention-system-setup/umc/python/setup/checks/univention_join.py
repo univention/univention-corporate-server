@@ -58,10 +58,10 @@ def check_credentials_nonmaster(dns, nameserver, address, username, password):
 		domain = '.'.join(address.split('.')[1:])
 	if not domain:
 		# Not checked... no UCS domain!
-		raise UMC_Error(_('No UCS DC Master could be found at the address.'))
+		raise UMC_Error(_('No UCS Primary Directory Node could be found at the address.'))
 	with _temporary_password_file(password) as password_file:
 		if subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), '/bin/true']):
-			raise UMC_Error(_('The connection to the UCS DC Master was refused. Please recheck the password.'))
+			raise UMC_Error(_('The connection to the UCS Primary Directory Node was refused. Please recheck the password.'))
 		return domain
 
 
@@ -91,7 +91,7 @@ def check_domain_has_activated_license(address, username, password):
 
 	if not valid_license:
 		raise UMC_Error(
-			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller.').format(appliance_name=appliance_name) + ' ' +
+			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the Primary Directory Node.').format(appliance_name=appliance_name) + ' ' +
 			_('During the check of the license status the following error occurred:\n{error}''').format(error=error)
 		)
 
@@ -120,7 +120,7 @@ def check_memberof_overlay_is_installed(address, username, password):
 				'ldap/overlay/memberof'
 			]).strip())
 		except subprocess.CalledProcessError as exc:
-			MODULE.error('Could not query DC Master for memberof overlay: %s' % (exc,))
+			MODULE.error('Could not query Primary Directory Node for memberof overlay: %s' % (exc,))
 	return False
 
 
@@ -175,7 +175,7 @@ def check_is_school_multiserver_domain(address, username, password):
 				remote_cmd,
 			]).strip().splitlines()
 		except subprocess.CalledProcessError as exc:
-			MODULE.error('univention-join:school: Could not query DC Master if the domain is a multiserver school domain: %s' % (exc,))
+			MODULE.error('univention-join:school: Could not query Primary Directory Node if the domain is a multiserver school domain: %s' % (exc,))
 	MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r' % (is_school_multiserver_domain, ))
 	return is_school_multiserver_domain
 
@@ -212,6 +212,6 @@ def get_server_school_roles(hostname, address, username, password):
 			]).strip().splitlines()[1:]
 			school_roles = [role.split()[-1] for role in school_roles]
 		except (subprocess.CalledProcessError, IndexError) as exc:
-			MODULE.error('univention-join:school: Could not query DC Master for ucsschoolRole: %s' % (exc,))
+			MODULE.error('univention-join:school: Could not query Primary Directory Node for ucsschoolRole: %s' % (exc,))
 	MODULE.process('univention-join:school: get_server_school_roles = %r' % (school_roles, ))
 	return school_roles

@@ -158,9 +158,9 @@ if [ -n "$hold_packages" ]; then
 	fi
 fi
 
-## Bug #44650 begin - check slapd on member
+## Bug #44650 begin - check slapd on Managed Node
 if have slapd && [ "$server_role" = "memberserver" ]; then
-	echo "WARNING: The ldap server is installed on your memberserver. This is not supported"
+	echo "WARNING: The ldap server is installed on your Managed Node. This is not supported"
 	echo "         and may lead to problems during the update. Please deinstall the package"
 	echo "         *slapd* from this system with either the command line tool univention-remove "
 	echo "           -> univention-remove slapd"
@@ -479,7 +479,7 @@ then
 	fi
 fi
 
-# check for DC Master UCS version
+# check for Primary Directory Node UCS version
 check_master_version ()
 {
 	[ -f /var/univention-join/joined ] || return
@@ -493,8 +493,8 @@ check_master_version ()
 	master_patchlevel="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
 	dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}" || return
 
-				echo "WARNING: Your domain controller master is still on version $master_version-$master_patchlevel."
-				echo "         It is strongly recommended that the domain controller master is"
+				echo "WARNING: Your Primary Directory Node is still on version $master_version-$master_patchlevel."
+				echo "         It is strongly recommended that the Primary Directory Node is"
 				echo "         always the first system to be updated during a release update."
 
 				if is_ucr_true update50/ignore_version; then

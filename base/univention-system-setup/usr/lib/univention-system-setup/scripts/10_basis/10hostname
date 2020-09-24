@@ -162,7 +162,7 @@ echo `date` : "Configure  Kerberos admin server in baseconfig : " $kerberos_admi
 set_baseconfig_variable "kerberos/adminserver" "$kerberos_adminserver"
 echo `date` : "Configure  CUPS print server in baseconfig : " $cups_server  >> /var/log/univention/setup.log
 set_baseconfig_variable "cups/server" "$cups_server"
-echo `date` : "Configure LDAP master in baseconfig : " $ldap_master  >> /var/log/univention/setup.log
+echo `date` : "Configure LDAP Primary Directory Node in baseconfig : " $ldap_master  >> /var/log/univention/setup.log
 set_baseconfig_variable "ldap/master" "$ldap_master"
 echo `date` : "Configure LDAP name  in baseconfig : " $ldap_name  >> /var/log/univention/setup.log
 set_baseconfig_variable "ldap/name" "$ldap_name"
@@ -217,7 +217,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certif
 	if [ ! -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
 		univention-certificate new -name "$new_hostname.$domainname"
 	fi
-elif [ "$server_role" != "basesystem" ]; then # download certificate from master
+elif [ "$server_role" != "basesystem" ]; then # download certificate from Primary Directory Node
 	if [ -x "/usr/sbin/univention-scp" ]; then
 		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
 		HOSTPWD="/etc/machine.secret"
@@ -261,7 +261,7 @@ if [ "$server_role" != "basesystem" ]; then
 	service_start slapd nscd heimdal-kdc
 
 
-	#TODO: get keytab from dc master
+	#TODO: get keytab from dc Primary Directory Node
 	echo `date` : "Setting new hostname into effect for Kerberos"  >> /var/log/univention/setup.log
 	rm -f /etc/krb5.keytab
 	kadmin -l ext "host/$new_hostname.$domainname@`echo "$kerberos_realm" | tr '[:lower:]' '[:upper:]'`"

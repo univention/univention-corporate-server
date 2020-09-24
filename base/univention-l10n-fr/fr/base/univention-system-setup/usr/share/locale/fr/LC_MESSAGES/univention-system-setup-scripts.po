@@ -137,10 +137,9 @@ msgid "Starting Active Directory connection service..."
 msgstr "Démarrage du service de connexion Active Directory..."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:137
-msgid "The AD member mode can only be configured on a DC master server."
+msgid "The AD member mode can only be configured on a Primary Directory Node server."
 msgstr ""
-"Le mode membre AD ne peut être configuré que sur un serveur DC (contrôleur "
-"de domaine) maître."
+"Le mode membre AD ne peut être configuré que sur un Primary Directory Node."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:141
 #, python-format

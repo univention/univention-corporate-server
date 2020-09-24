@@ -17,11 +17,11 @@ msgstr ""
 #: umc/python/setup/__init__.py:262
 #, python-format
 msgid ""
-"%s Appliance could not be joined because the license on the DC Master is not "
+"%s Appliance could not be joined because the license on the Primary Directory Node is not "
 "activated."
 msgstr ""
-"L'appareil %s n'a pas pu rejoindre le domaine, car la licence du contrôleur de "
-"domaine maître n'est pas activée."
+"L'appareil %s n'a pas pu rejoindre le domaine, car la licence du Primary Directory Node "
+"n'est pas activée."
 
 #: umc/python/setup/__init__.py:491
 msgid "A domain name server needs to be specified."

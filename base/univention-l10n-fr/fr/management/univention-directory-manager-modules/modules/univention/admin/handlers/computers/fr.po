@@ -117,16 +117,16 @@ msgid "Computer account"
 msgstr "Compte d'ordinateur"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:56
-msgid "Computer: Domain Controller Backup"
-msgstr "Ordinateur : contrôleur de domaine de secours"
+msgid "Computer: Backup Directory Node"
+msgstr "Ordinateur : Backup Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:56
-msgid "Computer: Domain Controller Master"
-msgstr "Ordinateur : contrôleur de domaine maître"
+msgid "Computer: Primary Directory Node"
+msgstr "Ordinateur : Primary Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:56
-msgid "Computer: Domain Controller Slave"
-msgstr "Ordinateur : contrôleur de domaine esclave"
+msgid "Computer: Replica Directory Node"
+msgstr "Ordinateur : Replica Directory Node"
 
 #: modules/univention/admin/handlers/computers/trustaccount.py:50
 msgid "Computer: Domain trust account"
@@ -145,7 +145,7 @@ msgid "Computer: Mac OS X Client"
 msgstr "Ordinateur : client Mac OS X"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:56
-msgid "Computer: Member Server"
+msgid "Computer: Managed Node"
 msgstr "Ordinateur : serveur membre"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:56
@@ -411,7 +411,7 @@ msgid "Machine Password"
 msgstr "Mot de passe de la machine"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:78
-msgid "Member server name"
+msgid "Managed Node name"
 msgstr "Nom du serveur membre"
 
 #: modules/univention/admin/handlers/computers/computer.py:56

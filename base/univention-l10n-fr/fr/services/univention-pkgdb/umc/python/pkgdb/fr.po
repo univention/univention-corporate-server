@@ -1,4 +1,4 @@
-# Nicolas Ternisien <nicolas.ternisien@gmail.com>, 2016.
+# Nicolas Ternisien <nicolas.ternisien@gmail.com>2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
@@ -50,16 +50,16 @@ msgid "Deinstall"
 msgstr "Désinstaller"
 
 #: umc/python/pkgdb/__init__.py:174
-msgid "Domain controller Backup"
-msgstr "Contrôleur de domaine de secours"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: umc/python/pkgdb/__init__.py:173
-msgid "Domain controller Master"
-msgstr "Contrôleur de domaine maître"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: umc/python/pkgdb/__init__.py:175
-msgid "Domain controller Slave"
-msgstr "Contrôleur de domaine esclave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: umc/python/pkgdb/__init__.py:191
 msgid "Half-configured"
@@ -110,7 +110,7 @@ msgstr ""
 "Il peut être lancé avec le module UMC « Services du système »."
 
 #: umc/python/pkgdb/__init__.py:176
-msgid "Member Server"
+msgid "Managed Node"
 msgstr "Serveur membre"
 
 #: umc/python/pkgdb/__init__.py:182 umc/python/pkgdb/__init__.py:189

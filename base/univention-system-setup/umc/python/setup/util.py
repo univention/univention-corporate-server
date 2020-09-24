@@ -209,7 +209,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 	if isAdMember and newValues['server/role'] == 'domaincontroller_master':
 		selectedComponents.add('univention-ad-connector')
 
-	# make sure to install the memberof overlay if it is installed on the DC Master
+	# make sure to install the memberof overlay if it is installed on the Primary Directory Node
 	if newValues['server/role'] not in ('domaincontroller_master', 'basesystem', 'memberserver'):
 		if newValues.pop('install_memberof_overlay', None):
 			selectedComponents.add('univention-ldap-overlay-memberof')
@@ -961,7 +961,7 @@ def get_ucs_domaincontroller_master_query(nameserver, domain):
 	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	except dns.exception.Timeout as exc:
-		MODULE.warn('Lookup for DC master record at nameserver %s timed out: %s' % (nameserver, exc))
+		MODULE.warn('Lookup for Primary Directory Node record at nameserver %s timed out: %s' % (nameserver, exc))
 	except dns.exception.DNSException as exc:
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 

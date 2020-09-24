@@ -338,43 +338,43 @@ msgid "Specify the type of this system."
 msgstr "Eingabe des Typs dieses Systems."
 
 #: ApplianceWizard.js:645
-msgid "Domain controller backup"
-msgstr "Domänencontroller Backup"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: ApplianceWizard.js:651
 msgid ""
-"A DC backup is the fallback system for the UCS DC master and can take over "
-"the role of the DC master permanently. It is recommended to use at least one "
-"DC backup in the domain."
+"A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over "
+"the role of the Primary Directory Node permanently. It is recommended to use at least one "
+"Backup Directory Node in the domain."
 msgstr ""
-"Ein DC Backup fungiert als Ersatzsystem für den DC Master und kann die Rolle "
-"des DC Masters langfristig übernehmen. Es ist empfohlen, mindestens einen DC "
+"Ein Backup Directory Node fungiert als Ersatzsystem für den Primary Directory Node und kann die Rolle "
+"des Primary Directory Nodes langfristig übernehmen. Es ist empfohlen, mindestens einen DC "
 "Backup in der Domäne zu verwenden."
 
 #: ApplianceWizard.js:657
-msgid "Domain controller slave"
-msgstr "Domänencontroller Slave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: ApplianceWizard.js:662
 msgid ""
-"DC slave systems are ideal for site servers, they provide authentication "
-"services for the domain. Local services running on a DC slave can access the "
+"Replica Directory Node systems are ideal for site servers, they provide authentication "
+"services for the domain. Local services running on a Replica Directory Node can access the "
 "local LDAP database."
 msgstr ""
-"DC Slave-Systeme bieten sich für Standortserver an, sie stellen "
-"Authentifizierungsdienste bereit. Lokale Dienste auf einem DC Slave haben "
+"Replica Directory Node-Systeme bieten sich für Standortserver an, sie stellen "
+"Authentifizierungsdienste bereit. Lokale Dienste auf einem Replica Directory Node haben "
 "Zugriff auf die lokale LDAP-Datenbank."
 
 #: ApplianceWizard.js:668 ApplianceWizard.js:1846
-msgid "Member server"
-msgstr "Member-Server"
+msgid "Managed Node"
+msgstr "Managed Node"
 
 #: ApplianceWizard.js:673
 msgid ""
-"Member servers should be used for services which do not need a local "
+"Managed Nodes should be used for services which do not need a local "
 "authentication database, for example for file or print servers."
 msgstr ""
-"Member-Server sollten für Dienste genutzt werden, die keine lokale Datenbank "
+"Managed Node sollten für Dienste genutzt werden, die keine lokale Datenbank "
 "für die Authentifizierung benötigen, beispielsweise Datei- oder Druckserver."
 
 #: ApplianceWizard.js:678 ApplianceWizard.js:1873
@@ -430,12 +430,12 @@ msgid "Start join at the end of the installation"
 msgstr "Domänenbeitritt am Ende der Installation starten"
 
 #: ApplianceWizard.js:752
-msgid "Search Domain controller master in DNS"
-msgstr "Domänencontroller Master im DNS suchen"
+msgid "Search Primary Directory Node in DNS"
+msgstr "Primary Directory Node im DNS suchen"
 
 #: ApplianceWizard.js:760
-msgid "Hostname of the domain controller master"
-msgstr "Rechnername des Domänencontroller Masters"
+msgid "Hostname of the Primary Directory Node"
+msgstr "Rechnername des Primary Directory Nodes"
 
 #: ApplianceWizard.js:779
 msgid "No domain warning"
@@ -652,11 +652,11 @@ msgstr ""
 
 #: ApplianceWizard.js:1207
 msgid ""
-"Update system to the UCS release version of the master domain controller and "
+"Update system to the UCS release version of the Primary Directory Node and "
 "install all available errata and app updates after the setup."
 msgstr ""
-"System nach der Einrichtung auf die Release Version des Domänencontroller "
-"Master aktualisieren und alle verfügbaren Errata und App Updates "
+"System nach der Einrichtung auf die Release Version des Primary "
+"Directory Node aktualisieren und alle verfügbaren Errata und App Updates "
 "installieren."
 
 #: ApplianceWizard.js:1224
@@ -820,16 +820,16 @@ msgstr ""
 "Möglichkeit, später einer Domäne beizutreten."
 
 #: ApplianceWizard.js:1844
-msgid "DC Backup"
-msgstr "DC Backup"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: ApplianceWizard.js:1845
-msgid "DC Slave"
-msgstr "DC Slave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: ApplianceWizard.js:1850
-msgid "DC Master"
-msgstr "DC Master"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: ApplianceWizard.js:1852
 #, javascript-format
@@ -1202,11 +1202,11 @@ msgstr ""
 
 #: ApplianceWizard.js:2949
 msgid ""
-"It seems that a UCS DC master system has already joined into the Windows AD "
+"It seems that a UCS Primary Directory Node system has already joined into the Windows AD "
 "domain. Please choose a different option as other system roles for joining "
 "an AD domain are not available."
 msgstr ""
-"Es scheint, dass ein UCS DC Master-System bereis der Windows AD-Domäne "
+"Es scheint, dass ein UCS Primary Directory Node-System bereis der Windows AD-Domäne "
 "beigetreten ist. Bitte wählen Sie eine andere Option, da weitere "
 "Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
 
@@ -1286,11 +1286,11 @@ msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 #~ "bitte den Netzschalter des Servers um das System herunterzufahren."
 
 #~ msgid ""
-#~ "%s Appliance could not be joined because the license on the DC Master is "
+#~ "%s Appliance could not be joined because the license on the Primary Directory Node is "
 #~ "not activated."
 #~ msgstr ""
 #~ "%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
-#~ "auf dem DC Master vor."
+#~ "auf dem Primary Directory Node vor."
 
 #~ msgid ""
 #~ "<i>Bond</i> interfaces allows two or more physical network interfaces to "

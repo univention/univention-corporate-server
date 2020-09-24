@@ -1,3 +1,10 @@
+univention-system-activation (5.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: Replace legacy Master/Slave wording by
+    Primary/Backup/Replica/Managed Node
+
+ -- Arvid <requate@univention.de>  Thu, 24 Sep 2020 13:48:37 +0200
+
 univention-system-activation (5.0.0-3) unstable; urgency=medium
 
   * Bug #48963: remove unnecessary build dependency

@@ -17,10 +17,10 @@ msgstr ""
 
 #: umc/js/adconnector.js:46
 msgid ""
-"<p><b>Caution!</b> The DNS service record for the UCS Master was not found "
+"<p><b>Caution!</b> The DNS service record for the UCS Primary Directory Node was not found "
 "in the DNS server.</p>"
 msgstr ""
-"<p><b>Attention !</b> L'enregistrement de service DNS de l'UCS maître n'a "
+"<p><b>Attention !</b> L'enregistrement de service DNS de l'UCS Primary Directory Node n'a "
 "pas été trouvé sur le serveur DNS.</p> "
 
 #: umc/js/adconnector/SetupWizard.js:351

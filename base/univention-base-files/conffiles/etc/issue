@@ -1,9 +1,9 @@
 @!@
 ROLES = {
-	"domaincontroller_master": "Univention DC Master",
-	"domaincontroller_slave": "Univention DC Backup",
-	"domaincontroller_backup": "Univention DC Slave",
-	"memberserver": "Univention Memberserver",
+	"domaincontroller_master": "Univention Primary Directory Node",
+	"domaincontroller_slave": "Univention Backup Directory Node",
+	"domaincontroller_backup": "Univention Replica Directory Node",
+	"memberserver": "Univention Managed Node",
 }
 
 role = configRegistry.get('server/role')
@@ -33,14 +33,14 @@ if role in ROLES:
 	if role == 'domaincontroller_master':
 		print('The UCS management system is available at https://' + startsite)
 	else:
-		print('The UCS management system can be reached by following the link to the domain controller')
-		print('master at https://' + startsite + ' and selecting the')
+		print('The UCS management system can be reached by following the link to the Primary Directory')
+		print('Node at https://' + startsite + ' and selecting the')
 		print('Univention Management Console.')
 
 	print('')
 	print('You can log into the Univention Management Console - the principal tool to manage ')
 	print('users, groups, etc. - using the "Administrator" account and the password selected ')
-	print('for the root user on the master domain controller.')
+	print('for the root user on the Primary Directory Node.')
 
 @!@
 

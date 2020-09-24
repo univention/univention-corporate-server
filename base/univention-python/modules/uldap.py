@@ -106,7 +106,7 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	# type: (int, List[str], bool) -> access
 	"""
-	Open a LDAP connection to the Master LDAP server using the admin credentials.
+	Open a LDAP connection to the Primary Directory Node LDAP server using the admin credentials.
 
 	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
@@ -125,7 +125,7 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	# type: (int, List[str], bool) -> access
 	"""
-	Open a LDAP connection to a Backup LDAP server using the admin credentials.
+	Open a LDAP connection to a Backup Directory Node LDAP server using the admin credentials.
 
 	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
@@ -168,7 +168,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 	bindpw = open(secret_file).read().rstrip('\n')
 
 	if ldap_master:
-		# Connect to DC Master
+		# Connect to Primary Directory Node
 		port = int(ucr.get('ldap/master/port', '7389'))
 		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	else:
@@ -178,7 +178,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 		additional_servers = ucr.get('ldap/server/addition', '').split()
 		if random_server:
 			if ucr.get('server/role') in ('memberserver',) and random_server:
-				# shuffle all servers on memberservers if random_server==True
+				# shuffle all servers on Managed Nodes if random_server==True
 				servers += additional_servers
 				random.shuffle(servers)
 			else:

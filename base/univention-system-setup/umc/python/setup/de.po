@@ -195,8 +195,8 @@ msgid "Multiple IPv4 addresses are not supported on this device."
 msgstr "Mehrere IPv4 Adressen sind an diesem Gerät nicht unterstützt."
 
 #: umc/python/setup/checks/univention_join.py:61
-msgid "No UCS DC Master could be found at the address."
-msgstr "Es wurde kein UCS DC Master unter der angegebenen Adresse gefunden."
+msgid "No UCS Primary Directory Node could be found at the address."
+msgstr "Es wurde kein UCS Primary Directory Node unter der angegebenen Adresse gefunden."
 
 #: umc/python/setup/__init__.py:420
 msgid "No fully qualified domain name has been specified for the system."
@@ -267,9 +267,9 @@ msgstr ""
 
 #: umc/python/setup/checks/univention_join.py:64
 msgid ""
-"The connection to the UCS DC Master was refused. Please recheck the password."
+"The connection to the UCS Primary Directory Node was refused. Please recheck the password."
 msgstr ""
-"Die Verbindung zum UCS DC Master wurde abgelehnt. Bitte überprüfen Sie das "
+"Die Verbindung zum UCS Primary Directory Node wurde abgelehnt. Bitte überprüfen Sie das "
 "Passwort."
 
 #: umc/python/setup/__init__.py:450
@@ -402,10 +402,10 @@ msgstr ""
 #, python-brace-format
 msgid ""
 "To install the {appliance_name} appliance it is necessary to have an "
-"activated UCS license on the master domain controller."
+"activated UCS license on the Primary Directory Node."
 msgstr ""
 "Um die {appliance_name} Appliance zu installieren, wird eine aktivierte UCS "
-"Lizenz auf dem Domänencontroller Master benötigt."
+"Lizenz auf dem Primary Directory Node benötigt."
 
 #: umc/python/setup/__init__.py:508
 msgid "UCS"
@@ -430,11 +430,11 @@ msgstr ""
 "\n"
 
 #~ msgid ""
-#~ "%s Appliance could not be joined because the license on the DC Master is "
+#~ "%s Appliance could not be joined because the license on the Primary Directory Node is "
 #~ "not activated."
 #~ msgstr ""
 #~ "%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
-#~ "auf dem DC Master vor."
+#~ "auf dem Primary Directory Node vor."
 
 #~ msgid "Already joined systems cannot be joined."
 #~ msgstr ""

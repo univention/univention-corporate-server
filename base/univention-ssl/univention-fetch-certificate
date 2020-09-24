@@ -1,6 +1,6 @@
 #!/bin/sh
 # Univention SSL
-#  fetch certificate from DC master
+#  fetch certificate from Primary Directory Node
 #
 # Copyright 2019-2020 Univention GmbH
 #

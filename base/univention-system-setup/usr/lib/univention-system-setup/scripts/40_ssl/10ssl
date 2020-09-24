@@ -49,7 +49,7 @@ done
 
 eval "$(univention-config-registry shell)"
 
-# SSL certificate can only be created on a DC master
+# SSL certificate can only be created on a Primary Directory Node
 if [ "$server_role" != "domaincontroller_master" ]; then
 	exit 0
 fi

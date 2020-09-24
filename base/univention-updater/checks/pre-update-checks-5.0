@@ -99,7 +99,7 @@ update_check_hold_packages () {
 	return 1
 }
 
-# Bug #44650 begin - check slapd on member
+# Bug #44650 begin - check slapd on Managed Node
 update_check_slapd_on_member () {
 	local var="update$VERSION/ignore_slapd_on_member"
 	ignore_check "$var" && return 100
@@ -108,7 +108,7 @@ update_check_slapd_on_member () {
 	[ "$server_role" = "memberserver" ] ||
 		return 0
 
-	echo "	The ldap server is installed on your memberserver. This is not supported"
+	echo "	The ldap server is installed on your Managed Node. This is not supported"
 	echo "	and may lead to problems during the update. Please deinstall the package"
 	echo "	*slapd* from this system with either the command line tool univention-remove "
 	echo "	  -> univention-remove slapd"
@@ -201,7 +201,7 @@ update_check_package_status () {
 	return 1
 }
 
-# check for DC Master UCS version
+# check for Primary Directory Node UCS version
 update_check_master_version () {
 	local var="update$VERSION/ignore_version"
 	ignore_check "$var" && return 100
@@ -216,8 +216,8 @@ update_check_master_version () {
 	master_patchlevel="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" 1>&2
 	dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}" || return 0
 
-	echo "	Your domain controller master is still on version $master_version-$master_patchlevel."
-	echo "	It is strongly recommended that the domain controller master is"
+	echo "	Your Primary Directory Node is still on version $master_version-$master_patchlevel."
+	echo "	It is strongly recommended that the Primary Directory Node is"
 	echo "	always the first system to be updated during a release update."
 	echo "	This check can be skipped by setting the UCR"
 	echo "	variable $var to yes."
@@ -273,7 +273,7 @@ update_check_md5_signature_is_used () {
 	echo "	$cert_path"
 	echo "	is using md5 as the signature algorithm. This is not supported in"
 	echo "	UCS ${VERSION_NAME} and later versions. The signature algorithm can be set"
-	echo "	on the domain controller master with:"
+	echo "	on the Primary Directory Node with:"
 	echo "	ucr set ssl/default/hashfunction=sha256"
 	echo "	The certificate needs to be renewed afterwards. Doing that is"
 	echo "	described at:"

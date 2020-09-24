@@ -216,7 +216,7 @@ define([
 			// set all physical interfaces for the grid here, the info does not exists on grid creation
 			this._form._widgets.interfaces.moduleStore.set('physical_interfaces', this.physical_interfaces);
 
-			// only show forwarder for master, backup, and slave
+			// only show forwarder for Primary, Backup and Replica Directory Nodes
 			this._currentRole = _vals['server/role'];
 			var showForwarder = this._currentRole == 'domaincontroller_master' || this._currentRole == 'domaincontroller_backup' || this._currentRole == 'domaincontroller_slave';
 			this._form.getWidget('dns/forwarder').set('visible', showForwarder);

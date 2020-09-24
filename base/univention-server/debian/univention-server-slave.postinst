@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Server Slave
+# Univention Server Role "Replica Directory Node"
 #  postinst script for the debian package
 #
 # Copyright 2003-2020 Univention GmbH

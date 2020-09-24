@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Heimdal
-#  listener script for generating memberserver keytab entry
+#  listener script for generating keytab for Managed Nodes
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -40,7 +40,7 @@ server_role = listener.configRegistry['server/role']
 
 
 name = 'keytab-member'
-description = 'Kerberos 5 keytab maintenance for memberserver'
+description = 'Kerberos 5 keytab maintenance for Managed Nodes'
 filter = (
 	'(&'
 	'(objectClass=krb5Principal)'

@@ -22,11 +22,11 @@ msgstr "Appareil %s"
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2678
 #, python-format
 msgid ""
-"%s Appliance could not be joined because the license on the DC Master is not "
+"%s Appliance could not be joined because the license on the Primary Directory Node is not "
 "activated."
 msgstr ""
-"L'appareil %s n'a pas pu rejoindre le domaine, car la licence du contrôleur de "
-"domaine maître n'est pas activée."
+"L'appareil %s n'a pas pu rejoindre le domaine, car la licence du Primary Directory Node "
+"n'est pas activée."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1963
 #, python-format
@@ -191,14 +191,14 @@ msgstr "<tr><td>Fuseau horaire :</td><td>%s</td></tr>"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:631
 msgid ""
-"A DC backup is the fallback system for the UCS DC master and can take over "
-"the role of the DC master permanently. It is recommended to use at least one "
-"DC backup in the domain."
+"A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over "
+"the role of the Primary Directory Node permanently. It is recommended to use at least one "
+"Backup Directory Node in the domain."
 msgstr ""
-"Un contrôleur de domaine de secours est le système palliatif pour le "
-"contrôleur de domaine UCS maître, capable de prendre en charge le rôle de "
-"contrôleur maître de façon permanente. Il est recommandé d'utiliser au moins "
-"un contrôleur de secours dans le domaine."
+"Un Backup Directory Node est le système palliatif pour le "
+"UCS Primary Directory Node, capable de prendre en charge le rôle de "
+"Primary Directory Node de façon permanente. Il est recommandé d'utiliser au moins "
+"un Backup Directory Node dans le domaine."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:319
 msgid "A few questions are needed to complete the configuration process."
@@ -410,26 +410,26 @@ msgid "Create a new UCS domain"
 msgstr "Créer un nouveau domaine UCS"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1715
-msgid "DC Backup"
-msgstr "Contrôleur de domaine de secours"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1721
-msgid "DC Master"
-msgstr "Contrôleur de domaine maître"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1716
-msgid "DC Slave"
-msgstr "Contrôleur de domaine esclave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:642
 msgid ""
-"DC slave systems are ideal for site servers, they provide authentication "
-"services for the domain. Local services running on a DC slave can access the "
+"Replica Directory Node systems are ideal for site servers, they provide authentication "
+"services for the domain. Local services running on a Replica Directory Node can access the "
 "local LDAP database."
 msgstr ""
-"Les contrôleurs de domaine esclaves sont idéaux pour des serveurs de sites, "
+"Les Replica Directory Nodes sont idéaux pour des serveurs de sites, "
 "ils fournissent des services d'authentification pour le domaine. Les "
-"services locaux tournant sur un contrôleur de domaine esclave peuvent "
+"services locaux tournant sur un Replica Directory Node peuvent "
 "accéder à la base de données LDAP locale."
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1095
@@ -457,12 +457,12 @@ msgid "Domain and network configuration"
 msgstr "Configuration du réseau et du domaine"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:625
-msgid "Domain controller backup"
-msgstr "Contrôleur de domaine de secours"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:637
-msgid "Domain controller slave"
-msgstr "Contrôleur de domaine esclave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:715
 msgid "Domain join information"
@@ -590,8 +590,8 @@ msgstr ""
 "conteneur)"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:740
-msgid "Hostname of the domain controller master"
-msgstr "Nom d'hôte du contrôleur de domaine maître"
+msgid "Hostname of the Primary Directory Node"
+msgstr "Nom d'hôte du Primary Directory Node"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:815
 msgid "Hostname or fully qualified domain name"
@@ -716,11 +716,11 @@ msgstr ""
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:2629
 msgid ""
-"It seems that a UCS DC master system has already joined into the Windows AD "
+"It seems that a UCS Primary Directory Node system has already joined into the Windows AD "
 "domain. Please choose a different option as other system roles for joining "
 "an AD domain are not available."
 msgstr ""
-"Il semble qu'un système contrôleur de domaine maître UCS a déjà rejoint le "
+"Il semble qu'un système UCS Primary Directory Node a déjà rejoint le "
 "domaine Windows AD. Veuillez choisir une autre option, car les autres rôles "
 "système permettant de rejoindre un domaine AD ne sont pas disponibles."
 
@@ -761,12 +761,12 @@ msgstr "Gérer les utilisateurs et les droits directement sur ce système"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:648
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1717
-msgid "Member server"
+msgid "Managed Node"
 msgstr "Serveur membre"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:653
 msgid ""
-"Member servers should be used for services which do not need a local "
+"Managed Nodes should be used for services which do not need a local "
 "authentication database, for example for file or print servers."
 msgstr ""
 "Les serveurs membres devraient être utilisés pour des services qui ne "
@@ -883,8 +883,8 @@ msgid "Root password empty. Continue?"
 msgstr "Le mot de passe root est vide. Continuer ?"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:732
-msgid "Search Domain controller master in DNS"
-msgstr "Rechercher le contrôleur de domaine maître dans le DNS"
+msgid "Search Primary Directory Node in DNS"
+msgstr "Rechercher le Primary Directory Node dans le DNS"
 
 #: usr/share/univention-system-setup/www/ApplianceWizard.js:1910
 msgid "Send feedback"

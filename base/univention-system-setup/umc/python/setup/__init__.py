@@ -276,7 +276,7 @@ class Instance(Base, ProgressMixin):
 				# write the profile file and run setup scripts
 				util.auto_complete_values_for_join(values)
 
-				# on unjoined DC master the nameserver must be set to the external nameserver
+				# on unjoined Primary Directory Node the nameserver must be set to the external nameserver
 				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
 					for i in range(1, 4):
 						# overwrite these values only if they are set, because the UMC module
@@ -287,7 +287,7 @@ class Instance(Base, ProgressMixin):
 				MODULE.info('saving profile values')
 				util.write_profile(values)
 
-				# unjoined DC master (that is not being converted to a basesystem) -> run the join script
+				# unjoined Primary Directory Node (that is not being converted to a basesystem) -> run the join script
 				MODULE.info('runnning system setup join script')
 				util.run_joinscript(self._progressParser, values, username, password, dcname, lang=str(self.locale))
 
@@ -791,10 +791,10 @@ class Instance(Base, ProgressMixin):
 		if domain_check_role == 'ad':
 			domain = util.check_credentials_ad(nameserver, address, username, password)
 			result['domain'] = domain
-			if dns:  # "dns" means we don't want to replace the existing DC Master
+			if dns:  # "dns" means we don't want to replace the existing Primary Directory Node
 				ucs_master_fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
 				if ucs_master_fqdn:
-					# if we found a _domaincontroller_master._tcp SRV record the system will be a DC Backup/Slave/Member.
+					# if we found a _domaincontroller_master._tcp SRV record the system will be a Backup/Replica Directory Node or a  Managed Node.
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
 					result.update(receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
@@ -802,7 +802,7 @@ class Instance(Base, ProgressMixin):
 		elif domain_check_role == 'nonmaster':
 			result.update(receive_domaincontroller_master_information(dns, nameserver, address, username, password))
 			set_role_and_check_if_join_will_work(role, address, username, password)
-		# master? basesystem? no domain check necessary
+		# Primary Directory Node? basesystem? no domain check necessary
 		return result
 
 	@simple_response

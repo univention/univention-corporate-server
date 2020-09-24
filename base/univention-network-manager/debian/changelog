@@ -1,3 +1,10 @@
+univention-network-manager (12.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: Replace legacy Master/Slave wording by
+    Primary/Backup/Replica/Managed Node
+
+ -- Arvid <requate@univention.de>  Thu, 24 Sep 2020 13:48:37 +0200
+
 univention-network-manager (12.0.0-3) unstable; urgency=medium
 
   * Bug #42128: use univention.lib.umc instead of umc-command

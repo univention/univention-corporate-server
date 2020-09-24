@@ -466,12 +466,12 @@ msgid "General maintenance settings"
 msgstr "Réglages généraux de maintenance"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:117
-msgid "General master packages settings"
-msgstr "Réglages généraux des paquetages maîtres"
+msgid "General Primary Directory Node packages settings"
+msgstr "Réglages généraux des paquetages de Primary Directory Node"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:117
-msgid "General member server packages settings"
-msgstr "Réglages généraux des paquetages de serveurs membres"
+msgid "General Managed Node packages settings"
+msgstr "Réglages généraux des paquetages des Managed Nodes"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:137
 msgid "General passwords settings"
@@ -494,8 +494,8 @@ msgid "General repository synchronisation settings"
 msgstr "Réglages généraux de synchronisation des dépôts"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:117
-msgid "General slave packages settings"
-msgstr "Réglages généraux des paquetages des esclaves"
+msgid "General Replica Directory Node packages settings"
+msgstr "Réglages généraux des paquetages des Replica Directory Nodes"
 
 #: modules/univention/admin/handlers/policies/share_userquota.py:151
 msgid "General user quota settings"
@@ -633,8 +633,8 @@ msgid "Maintenance settings"
 msgstr "Réglages de maintenance"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:69
-msgid "Master packages"
-msgstr "Paquetages maîtres"
+msgid "Primary Directory Node packages"
+msgstr "Paquetages pour Primary Directory Node"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:54
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:95
@@ -648,8 +648,8 @@ msgstr ""
 "demande"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:69
-msgid "Member Server packages"
-msgstr "Paquetages pour serveurs membres"
+msgid "Managed Node packages"
+msgstr "Paquetages pour Managed Node"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:107
 msgid "Minimal amount of characters"
@@ -866,12 +866,12 @@ msgid "Policy: Maintenance"
 msgstr "Stratégie : maintenance"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:68
-msgid "Policy: Master packages"
-msgstr "Stratégie : paquetages des maîtres"
+msgid "Policy: Primary Directory Node packages"
+msgstr "Stratégie : paquetages de Primary Directory Node"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:68
-msgid "Policy: Member Server packages"
-msgstr "Stratégie : paquetages pour serveurs membres"
+msgid "Policy: Managed Node packages"
+msgstr "Stratégie : paquetages des Managed Node"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:67
 msgid "Policy: NFS mounts"
@@ -898,8 +898,8 @@ msgid "Policy: Repository synchronisation"
 msgstr "Stratégie : synchronisation des dépôts"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:68
-msgid "Policy: Slave packages"
-msgstr "Stratégie : paquetages des esclaves"
+msgid "Policy: Replica Directory Node packages"
+msgstr "Stratégie : paquetages des Replica Directory Node"
 
 #: modules/univention/admin/handlers/policies/umc.py:67
 msgid "Policy: UMC"
@@ -1037,8 +1037,8 @@ msgid "Session script to be launched by autostart"
 msgstr "Script de session devant être exécuté par autostart"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:69
-msgid "Slave packages"
-msgstr "Paquetages esclaves"
+msgid "Replica Directory Node packages"
+msgstr "Paquetages Replica Directory Node"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:92
 msgid "Soft and hard limits for each allowed group"

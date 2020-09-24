@@ -208,14 +208,14 @@ eval "$(ucr shell proxy/http proxy/https proxy/no_proxy)"
 
 run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 
-# Re-create SSL certificates on DC Master even if the admin didn't change all variables
+# Re-create SSL certificates on Primary Directory Node even if the admin didn't change all variables
 # otherwise a lot of appliances will have the same SSL certificate secret
 if [ "$server_role" = "domaincontroller_master" ]; then
 	echo "Starting re-configuration of SSL"
 	# Recreate SSL CA
 	/usr/lib/univention-system-setup/scripts/40_ssl/10ssl --force-recreate
 
-	# Create initial certificate for master
+	# Create initial certificate for Primary Directory Node
 	univention-certificate new -name "$hostname.$domainname"
 	ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	
@@ -279,7 +279,7 @@ if [ $? -ne 1 ]; then
 		else
 			if [ -n "$dcaccount" -a -n "$password_file" ]; then
 				# Copy to a temporary password file, because univention-join
-				# will copy the file to the same directory on the master
+				# will copy the file to the same directory on the Primary Directory Node
 				# with the given user credentials. This will not work.
 				pwd_file="$(mktemp)"
 				cp "$password_file" "$pwd_file"

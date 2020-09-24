@@ -4,7 +4,7 @@
 servers = []
 timeserver = configRegistry.get('timeserver')
 if timeserver != 'local':
-	# Expect on the master, add master and all other backup DCs as timeserver
+	# Expect on the Primary Directory Node, add Primary Directory Node and all other Backup Directory Nodes as timeserver
 	role = configRegistry.get('server/role')
 	dcs = [_f for _f in [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' ') if _f]
 	if role != "domaincontroller_master":

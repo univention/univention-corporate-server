@@ -920,7 +920,7 @@ def check_server_role(ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 	if ucr.get("server/role") != "domaincontroller_master":
-		raise invalidUCSServerRole("The function become_ad_member can only be run on an UCS DC Master")
+		raise invalidUCSServerRole("The function become_ad_member can only be run on an UCS Primary Directory Node")
 
 
 def check_domain(ad_domain_info, ucr=None):
@@ -1376,7 +1376,7 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 	except dns.resolver.NoNameservers:
 		ud.debug(ud.MODULE, ud.WARN, 'No name servers in domain (%s) available to answer the query.' % (domain,))
 	except dns.exception.Timeout as exc:
-		ud.debug(ud.MODULE, ud.WARN, 'Lookup for DC master record timed out: %s' % (exc,))
+		ud.debug(ud.MODULE, ud.WARN, 'Lookup for Primary Directory Node record timed out: %s' % (exc,))
 	return None
 
 
@@ -1396,7 +1396,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, username, password, ucr=None):
 		return True
 
 	if current_record:
-		# remove the existing SRV record. Important when replacing an existing DC Master system!
+		# remove the existing SRV record. Important when replacing an existing Primary Directory Node system!
 		# we need Administrator permissions to do this.
 		ud.debug(ud.MODULE, ud.PROCESS, "Removing previous SRV record %s" % (current_record,))
 		with tempfile.NamedTemporaryFile('w+') as fd, tempfile.NamedTemporaryFile('w+') as fd2:

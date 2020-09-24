@@ -20,19 +20,19 @@ msgid "%s - Server overview"
 msgstr "%s - Vue d'ensemble des serveurs"
 
 #: www/GalleryPane.js:43
-msgid "DC backup"
-msgstr "Contrôleur de domaine de secours"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: www/GalleryPane.js:42
-msgid "DC master"
-msgstr "Contrôleur de domaine maître"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: www/GalleryPane.js:44
-msgid "DC slave"
-msgstr "Contrôleur de domaine esclave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: www/GalleryPane.js:45
-msgid "Member server"
+msgid "Managed Node"
 msgstr "Serveur membre"
 
 #: www/main.js:71

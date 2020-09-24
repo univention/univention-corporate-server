@@ -67,7 +67,7 @@ K5TAB = '/etc/krb5.keytab'
 
 
 def clean():
-	# don't do anything here if this system is joined as a Samba 4 DC
+	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
 
@@ -80,7 +80,7 @@ def clean():
 
 
 def handler(dn, new, old):
-	# don't do anything here if this system is joined as a Samba 4 DC
+	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
 
@@ -98,9 +98,9 @@ def handler(dn, new, old):
 				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), K5TAB])
 				if not os.path.exists(K5TAB):
 					if count > 30:
-						ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for memberserver')
+						ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for Managed Node')
 						return -1
-					ud.debug(ud.LISTENER, ud.WARN, 'W: failed to download keytab for memberserver, retry')
+					ud.debug(ud.LISTENER, ud.WARN, 'W: failed to download keytab for Managed Node, retry')
 					count += 1
 					time.sleep(2)
 			os.chown(K5TAB, 0, 0)

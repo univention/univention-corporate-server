@@ -1,12 +1,12 @@
 [kerberos/adminserver]
-Description[de]=Auf dem Domänencontroller Master läuft der Kerberos-Adminserver, auf dem administrative Einstellungen der Domäne vorgenommen werden können. Diese Variable konfiguriert, welches System als Kerberos-Adminserver verwendet werden soll.
-Description[en]=The Kerberos admin server, on which the administrative settings of the domain can be changed, runs on the master domain controller. This variable configures which system should be used as the Kerberos admin server.
+Description[de]=Auf dem Primary Directory Node läuft der Kerberos-Adminserver, auf dem administrative Einstellungen der Domäne vorgenommen werden können. Diese Variable konfiguriert, welches System als Kerberos-Adminserver verwendet werden soll.
+Description[en]=The Kerberos admin server, on which the administrative settings of the domain can be changed, runs on the Primary Directory Node. This variable configures which system should be used as the Kerberos admin server.
 Type=str
 Categories=service-heimdal
 
 [kerberos/kpasswdserver]
-Description[de]=Diese Variable konfiguriert den Server, der Passwortänderungen über Kerberos entgegennimmt: Wird Samba 4 eingesetzt, kann ein beliebiger Samba 4-Domänencontroller gesetzt werden. Wird nur OpenLDAP eingesetzt, muss der Domänencontroller Master konfiguriert werden.
-Description[en]=This variable configures the server which accepts Kerberos-based password changes: If Samba 4 is used, any Samba 4 domain controller can be specified. If only OpenLDAP is used the master domain controller must be used.
+Description[de]=Diese Variable konfiguriert den Server, der Passwortänderungen über Kerberos entgegennimmt: Wird Samba/AD eingesetzt, kann ein beliebiger Samba/AD-Domänencontroller gesetzt werden. Wird nur OpenLDAP eingesetzt, muss der Primary Directory Node konfiguriert werden.
+Description[en]=This variable configures the server which accepts Kerberos-based password changes: If Samba/AD is used, any Samba/AD domain controller can be specified. If only OpenLDAP is used the Primary Directory Node must be used.
 Type=str
 Categories=service-heimdal
 
@@ -17,8 +17,8 @@ Type=str
 Categories=service-heimdal
 
 [kerberos/realm]
-Description[de]=Die gemeinsame Kerberos-Vertrauensbasis einer Domäne wird als Kerberos-Realm bezeichnet. Diese Variable enthält den Namen der Kerberos-Realm. Der Name der Kerberos-Realm wird bei der Installation des Domänencontroller Master festgelegt und kann nachträglich nicht geändert werden.
-Description[en]=The common Kerberos trust context of a domain is called a Kerberos realm. This variable contains the name of the Kerberos realm. The name of the Kerberos realm is set during the installation of the master domain controller and cannot be changed subsequently.
+Description[de]=Die gemeinsame Kerberos-Vertrauensbasis einer Domäne wird als Kerberos-Realm bezeichnet. Diese Variable enthält den Namen der Kerberos-Realm. Der Name der Kerberos-Realm wird bei der Installation des Primary Directory Node festgelegt und kann nachträglich nicht geändert werden.
+Description[en]=The common Kerberos trust context of a domain is called a Kerberos realm. This variable contains the name of the Kerberos realm. The name of the Kerberos realm is set during the installation of the Primary Directory Node and cannot be changed subsequently.
 Type=str
 Categories=service-heimdal
 ReadOnly=yes

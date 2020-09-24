@@ -650,14 +650,14 @@ Type=int
 Categories=system-kernel
 
 [ldap/backup]
-Description[de]=Der/die Domänencontroller Backup-Systeme der Domäne. Mehrfache Einträge müssen mit Leerzeichen getrennt werden.
-Description[en]=The backup domain controller system(s) in the domain. Multiple entries need to be separated by blanks.
+Description[de]=Der/die Backup Directory Node-Systeme der Domäne. Mehrfache Einträge müssen mit Leerzeichen getrennt werden.
+Description[en]=The Backup Directory Node system(s) in the domain. Multiple entries need to be separated by blanks.
 Type=str
 Categories=service-ldap
 
 [ldap/master]
-Description[de]=Das Domänencontroller Master System der Domäne.
-Description[en]=The master domain controller of the domain.
+Description[de]=Das Primary Directory Node System der Domäne.
+Description[en]=The Primary Directory Node of the domain.
 Type=str
 Categories=service-ldap
 
@@ -680,8 +680,8 @@ Type=str
 Categories=service-ldap
 
 [ldap/base]
-Description[de]=Die Basis DN des LDAP-Verzeichnis. Diese Einstellung kann nach der Installation des Domänencontroller Master nicht mehr verändert werden.
-Description[en]=The base DN of the LDAP directory. This setting cannot be changed after the installation of the master domain controller.
+Description[de]=Die Basis DN des LDAP-Verzeichnis. Diese Einstellung kann nach der Installation des Primary Directory Node nicht mehr verändert werden.
+Description[en]=The base DN of the LDAP directory. This setting cannot be changed after the installation of the Primary Directory Node.
 Type=str
 Categories=service-ldap
 ReadOnly=yes
@@ -809,20 +809,20 @@ Type=bool
 Categories=system-base
 
 [timeserver]
-Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
-Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
+Description[de]=In einer UCS-Domäne dient standardmäßig der Primary Directory Node als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the Primary Directory Node functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [timeserver2]
-Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
-Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
+Description[de]=In einer UCS-Domäne dient standardmäßig der Primary Directory Node als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the Primary Directory Node functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [timeserver3]
-Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
-Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
+Description[de]=In einer UCS-Domäne dient standardmäßig der Primary Directory Node als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the Primary Directory Node functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
@@ -1064,8 +1064,8 @@ Type=bool
 Categories=system-base
 
 [syslog/remote]
-Description[de]=Mit Leerzeichen getrennte Adresse(n) eines oder mehrerer Logserver, an die Logmeldungen per Netzwerk weitergeleitet werden. Beispiele: '@master.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
-Description[en]=Space-separated address(es) of one or multiple logging servers, to which log messages are forwarded over the network. Examples: '@master.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
+Description[de]=Mit Leerzeichen getrennte Adresse(n) eines oder mehrerer Logserver, an die Logmeldungen per Netzwerk weitergeleitet werden. Beispiele: '@primary.domain:514' für UDP, '@@[2001::1]:10514' für TCP über IPv6, ':omrelp:1.2.3.4:2514' für RELP über IPv4
+Description[en]=Space-separated address(es) of one or multiple logging servers, to which log messages are forwarded over the network. Examples: '@primary.domain:514' for UDP, '@@[2001::1]:10514' for TCP over IPv6, ':omrelp:1.2.3.4:2514' for RELP over IPv4
 Type=str
 Categories=system-base
 

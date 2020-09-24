@@ -278,7 +278,7 @@ ucs_isServiceUnused () { # <servicename>
 
 	ucs_parseCredentials "$@"
 
-	# search always on the master
+	# search always on the Primary Directory Node
 	set -- -H "ldap://$master:$port"
 
 	# set credentials

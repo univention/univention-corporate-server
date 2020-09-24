@@ -38,10 +38,10 @@ ucs_ignore_interface
 
 eval "$(ucr shell server/role ldap/master)"
 
-# Is master available?
+# Is Primary Directory Node available?
 if /bin/netcat -q0 -w1 "$ldap_master" 6670 </dev/null; then
 
-	# If we are the master a restart of UMC is required
+	# If we are the Primary Directory Node a restart of UMC is required
 	# PMH: why?
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		[ -d /run/systemd/system ] ||

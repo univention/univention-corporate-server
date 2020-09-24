@@ -275,7 +275,7 @@ define([
 			var target = '/univention/management/?username=Administrator';
 			if (this._orgValues.system_activation_installed && this.wizard._isRoleMaster()) {
 				// redirect to '/' as the system activation service is enabled
-				// (Note: For roles other than DC master, the system activation service
+				// (Note: For roles other than Primary Directory Node, the system activation service
 				// will not be enabled as they may only join into a domain with an
 				// already activated license.)
 				// Add a random digit at the end to avoid caching effects

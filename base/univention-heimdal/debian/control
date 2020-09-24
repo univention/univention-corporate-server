@@ -49,9 +49,9 @@ Depends:
  ${misc:Depends},
 Conflicts:
  univention-heimdal-kdc,
-Description: UCS - Kerberos member server
- This package configures the computer as a Kerberos member
- server.
+Description: UCS - Kerberos Managed Node
+ This package configures the computer as a Kerberos Managed
+ Node.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

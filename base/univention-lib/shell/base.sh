@@ -132,7 +132,7 @@ call_unjoinscript () {
 }
 
 #
-# calls the given joinscript ONLY on DC master
+# calls the given joinscript ONLY on Primary Directory Node
 # call_joinscript_on_dcmaster <joinscript>
 # e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst
 # e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst --binddn ... --bindpwd ...

@@ -281,16 +281,16 @@ msgid "Domain local (Type: Security)"
 msgstr "Domaine local (type : sécurité)"
 
 #: modules/univention/admin/syntax.py:2927
-msgid "Domaincontroller Backup"
-msgstr "Contrôleur de domaine de secours"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: modules/univention/admin/syntax.py:2926
-msgid "Domaincontroller Master"
-msgstr "Contrôleur de domaine maître"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: modules/univention/admin/syntax.py:2928
-msgid "Domaincontroller Slave"
-msgstr "Contrôleur de domaine esclave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: modules/univention/admin/syntax.py:3309
 msgid "Driver"

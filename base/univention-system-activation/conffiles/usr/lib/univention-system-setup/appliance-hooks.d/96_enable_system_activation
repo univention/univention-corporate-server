@@ -37,10 +37,10 @@ role="$(ucr get server/role)"
 if [ "$role" == "domaincontroller_master" ]; then
 	/usr/sbin/univention-system-activation start
 elif has_activated_license; then
-	# Installing an App Appliance as non DC Master without activated license in the domain
+	# Installing an App Appliance as Non-Primary Directory Node without activated license in the domain
 	# is restricted by system-setup and not handled here
 
-	# lift root restrictions set by univention-system-activation.postinst on non DC Master
+	# lift root restrictions set by univention-system-activation.postinst on Non-Primary Directory Node
 	# roles because system-activation is not started there
 	/usr/sbin/univention-system-activation allow-root
 fi

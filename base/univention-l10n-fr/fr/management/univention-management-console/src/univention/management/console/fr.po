@@ -64,10 +64,10 @@ msgstr "Échec du changement du mot de passe."
 #: src/univention/management/console/error.py:126
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server and "
-"on the domain controller master or free some resources"
+"on the Primary Directory Node or free some resources"
 msgstr ""
 "Veuillez vous assurer que suffisamment d'espace disque et de mémoire vive  "
-"sont disponibles sur ce serveur et sur le contrôleur de domaine maître, ou "
+"sont disponibles sur ce serveur et sur le Primary Directory Node, ou "
 "libérez des ressources."
 
 #: src/univention/management/console/error.py:123
@@ -175,9 +175,9 @@ msgstr "Id. de l'avancement invalide"
 
 #: src/univention/management/console/error.py:125
 #, python-format
-msgid "Make sure the domain controller master is running and reachable from %s"
+msgid "Make sure the Primary Directory Node is running and reachable from %s"
 msgstr ""
-"Veuillez vous assurer que le contrôleur de domaine maître est lancé et "
+"Veuillez vous assurer que le Primary Directory Node est lancé et "
 "accessible depuis %s"
 
 #: src/univention/management/console/pam.py:66
@@ -261,11 +261,11 @@ msgstr "Veuillez patienter le temps que l'opération se termine"
 
 #: src/univention/management/console/error.py:127
 msgid ""
-"Restart the LDAP service on the domain controller master either via "
+"Restart the LDAP service on the Primary Directory Node either via "
 "\"service slapd restart\" on command line or with the UMC module \"System "
 "services\""
 msgstr ""
-"Redémarrer le serveur LDAP sur le contrôleur de domaine maître par le biais "
+"Redémarrer le serveur LDAP sur le Primary Directory Node par le biais "
 "de la ligne de commande « service slapd restart » ou avec le module UMC "
 "« Services du système »"
 

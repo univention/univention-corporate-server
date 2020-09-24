@@ -137,12 +137,12 @@ msgid "../ucsCA.crl"
 msgstr "../ucsCA.crl"
 
 #: ucs/web/overview/entries/admin/ldap-master/label
-msgid "Domain controller master"
-msgstr "Contrôleur de domaine maître"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: ucs/web/overview/entries/admin/ldap-master/description
-msgid "Domain controller master of UCS domain $domainname"
-msgstr "Contrôleur de domaine maître pour le domaine UCS $domainname"
+msgid "Primary Directory Node of UCS domain $domainname"
+msgstr "Primary Directory Node pour le domaine UCS $domainname"
 
 #: ucs/web/overview/entries/admin/ldap-master/link
 msgid "https://$ldap_master/ucs-overview/?lang=en"

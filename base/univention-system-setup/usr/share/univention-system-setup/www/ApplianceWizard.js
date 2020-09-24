@@ -642,35 +642,35 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleBackup',
-					label: _('Domain controller backup'),
+					label: _('Backup Directory Node'),
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpBackup',
-					content: _('A DC backup is the fallback system for the UCS DC master and can take over the role of the DC master permanently. It is recommended to use at least one DC backup in the domain.'),
+					content: _('A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over the role of the Primary Directory Node permanently. It is recommended to use at least one Backup Directory Node in the domain.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleSlave',
-					label: _('Domain controller slave'),
+					label: _('Replica Directory Node'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpSlave',
-					content: _('DC slave systems are ideal for site servers, they provide authentication services for the domain. Local services running on a DC slave can access the local LDAP database.'),
+					content: _('Replica Directory Node systems are ideal for site servers, they provide authentication services for the domain. Local services running on a Replica Directory Node can access the local LDAP database.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_roleMember',
-					label: _('Member server'),
+					label: _('Managed Node'),
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'helpMember',
-					content: _('Member servers should be used for services which do not need a local authentication database, for example for file or print servers.'),
+					content: _('Managed Nodes should be used for services which do not need a local authentication database, for example for file or print servers.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -749,7 +749,7 @@ define([
 				}, {
 					type: CheckBox,
 					name: '_ucs_autosearch_master',
-					label: _('Search Domain controller master in DNS'),
+					label: _('Search Primary Directory Node in DNS'),
 					value: true,
 					onChange: lang.hitch(this, function(value) {
 						this.getWidget('credentials-nonmaster', '_ucs_address').set('disabled', value);
@@ -757,7 +757,7 @@ define([
 				}, {
 					type: TextBox,
 					name: '_ucs_address',
-					label: _('Hostname of the domain controller master'),
+					label: _('Hostname of the Primary Directory Node'),
 					required: true,
 					disabled: true,
 					validator: _validateFQDN,
@@ -1204,7 +1204,7 @@ define([
 				if (this._isRoleMaster()) {
 					msg = _('Install the latest patch level, errata and app updates after the setup.');
 				} else if (this._isRoleNonMaster()) {
-					msg = _('Update system to the UCS release version of the master domain controller and install all available errata and app updates after the setup.');
+					msg = _('Update system to the UCS release version of the Primary Directory Node and install all available errata and app updates after the setup.');
 				}
 			}
 			if (msg) {
@@ -1282,7 +1282,7 @@ define([
 			};
 
 			if (serverRole != 'domaincontroller_master') {
-				// hide entries that need to install packages on the DC master
+				// hide entries that need to install packages on the Primary Directory Node
 				query.default_packages_master = {
 					test: function(val) {
 						return !val.length;
@@ -1841,13 +1841,13 @@ define([
 				msg += _('This system will be a base system without domain integration and without the capabilities to join one in the future.');
 			} else {
 				var roleLabel = {
-					'domaincontroller_backup': _('DC Backup'),
-					'domaincontroller_slave': _('DC Slave'),
-					'memberserver': _('Member server')
+					'domaincontroller_backup': _('Backup Directory Node'),
+					'domaincontroller_slave': _('Replica Directory Node'),
+					'memberserver': _('Managed Node')
 				}[role];
 				if (this._isAdMember()) {
 					if (!this._domainHasMaster) {
-						roleLabel = _('DC Master');
+						roleLabel = _('Primary Directory Node');
 					}
 					msg += _('This system will join an existing AD domain with the role <i>%s</i>.', roleLabel);
 				} else {
@@ -2942,7 +2942,7 @@ define([
 				});
 
 				var _adJoinWithNonMasterNotPossibleWarning = lang.hitch(this, function() {
-					dialog.alert(_('It seems that a UCS DC master system has already joined into the Windows AD domain. Please choose a different option as other system roles for joining an AD domain are not available.'));
+					dialog.alert(_('It seems that a UCS Primary Directory Node system has already joined into the Windows AD domain. Please choose a different option as other system roles for joining an AD domain are not available.'));
 					return pageName;
 				});
 
@@ -2955,13 +2955,13 @@ define([
 							}
 							this.getWidget('credentials-ad', 'ad/address').set('value', info.dc_name);
 							if (info.ucs_master) {
-								// UCS DC master already has joined into the AD domain
+								// UCS Primary Directory Node already has joined into the AD domain
 								if (!info.ucs_master_reachable) {
-									// The DC Master is not reachable via SSH.
+									// The Primary Directory Node is not reachable via SSH.
 									// This might be the case if the system was thrown away.
 									// Let the user choose:
 									// - Either retry the connection or
-									// - configure this system as DC Master and replace the old DC Master entry in the DNS of the AD server
+									// - configure this system as Primary Directory Node and replace the old Primary Directory Node entry in the DNS of the AD server
 									return _adJoinWithUnreachableMaster(info);
 								}
 								// let the user choose a system role
@@ -3351,7 +3351,7 @@ define([
 			}
 			if (this._isUsingPreconfiguredSetup()) {
 				// explicitly register specified nameserver as forwarder in pre-configured setup
-				// (usually this is done by the join scripts when setting up a DC master)
+				// (usually this is done by the join scripts when setting up a Primary Directory Node)
 				vals.nameserver1 = _vals._ip0;
 				delete vals.nameserver2;
 				vals['dns/forwarder1'] = _vals.nameserver1;

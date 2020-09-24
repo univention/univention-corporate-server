@@ -106,7 +106,7 @@ def main():
 
 	if not options.binddn:
 		if not ucr['server/role'] in ('domaincontroller_master', 'domaincontroller_backup'):
-			print "salt_krb5Keys: Without explicit credentials this only works on a Master or Backup server."
+			print "salt_krb5Keys: Without explicit credentials this only works on a Primary or Backup Directory Node."
 			return 1
 		else:
 			options.binddn = "cn=admin,%s" % ldap_base

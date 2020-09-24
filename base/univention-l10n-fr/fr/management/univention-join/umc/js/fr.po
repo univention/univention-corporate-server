@@ -44,8 +44,8 @@ msgstr ""
 #. i18n: %s is the "XXX module".
 #: umc/js/join.js:302
 #, javascript-format
-msgid "A DC master should be joined by the %s."
-msgstr "Un contrôleur de domaine maître doit rejoint par le %s."
+msgid "A Primary Directory Node should be joined by the %s."
+msgstr "Un Primary Directory Node doit rejoint par le %s."
 
 #: umc/js/join.js:297
 msgid "A join process is already running..."
@@ -121,8 +121,8 @@ msgid "Forces execution of selected join scripts"
 msgstr "Force l'exécution des scripts de jonction sélectionnés"
 
 #: umc/js/join/Form.js:65
-msgid "Hostname of domain controller master"
-msgstr "Nom d'hôte du contrôleur de domaine maître"
+msgid "Hostname of Primary Directory Node"
+msgstr "Nom d'hôte du Primary Directory Node"
 
 #: umc/js/join.js:362 umc/js/join.js:365
 msgid "Join error"
@@ -243,8 +243,8 @@ msgid "The following join scripts will be executed: "
 msgstr "Les scripts de jonction suivants vont être exécutés :"
 
 #: umc/js/join/Form.js:66
-msgid "The hostname of the domain controller master of the domain"
-msgstr "Le nom d'hôte du contrôleur maître du domaine"
+msgid "The hostname of the Primary Directory Node of the domain"
+msgstr "Le nom d'hôte du Primary Directory Node du domaine"
 
 #: umc/js/join.js:370
 msgid "The join process was successful."

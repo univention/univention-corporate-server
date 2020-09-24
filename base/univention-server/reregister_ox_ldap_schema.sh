@@ -54,7 +54,7 @@ fix_backup () {
 
 		# install new version of UCR template
 		update_ucr_template
-		# disable schema inclusion / will be fixed on DC master
+		# disable schema inclusion / will be fixed on Primary Directory Node
 		ucr set ox/master/42/registered_ldap_acls=yes
 		# commit changes
 		ucr commit /etc/ldap/slapd.conf

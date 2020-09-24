@@ -49,17 +49,17 @@ eval "$(ucr shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	# Update to latest patchlevel
-	echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
+	echo "Running upgrade on Primary Directory Node: univention-upgrade --noninteractive --updateto $version_version-99"
 	/usr/sbin/univention-upgrade --noninteractive --updateto "$version_version-99"
 else
-	# Try to update to the same version as DC master
+	# Try to update to the same version as Primary Directory Node
 	if [ -e /var/univention-join/joined ]; then
 		version=$(/usr/sbin/univention-ssh /etc/machine.secret $hostname\$@$ldap_master "echo \$(/usr/sbin/ucr get version/version)-\$(/usr/sbin/ucr get version/patchlevel)" 2>>/var/log/univention/setup.log)
 		if [ $? = 0 ]; then
-			echo "Running upgrade to DC Master version: univention-upgrade --noninteractive --updateto $version"
+			echo "Running upgrade to Primary Directory Node version: univention-upgrade --noninteractive --updateto $version"
 			/usr/sbin/univention-upgrade --noninteractive --updateto "$version"
 		else
-			echo "WARNING: Getting version from DC Master failed! Running normal upgrade: univention-upgrade --noninteractive --updateto $version_version-0"
+			echo "WARNING: Getting version from Primary Directory Node failed! Running normal upgrade: univention-upgrade --noninteractive --updateto $version_version-0"
 			/usr/sbin/univention-upgrade --noninteractive --updateto "$version_version-0"
 		fi
 	else

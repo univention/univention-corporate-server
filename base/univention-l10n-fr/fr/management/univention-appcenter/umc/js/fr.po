@@ -205,10 +205,10 @@ msgstr "Activer UCS maintenant"
 
 #: umc/js/appcenter.js:59
 msgid ""
-"Activation is not possible. Please login as Administrator on the DC master."
+"Activation is not possible. Please login as Administrator on the Primary Directory Node."
 msgstr ""
 "L'activation n'est pas possible. Veuillez vous connecter en tant "
-"qu'administrateur sur le contrôleur de domaine maître."
+"qu'administrateur sur le Primary Directory Node."
 
 #: umc/js/appcenter/AppDetailsPage.js:1063
 msgid "Activation of UCS"

@@ -201,7 +201,7 @@ def validate_servers(nameservers, forwarders, domain):
 			if query_master_src_record(domain, server):
 				log.info('Validated UCS domain server: %s', server)
 			else:
-				log.warn('UCS master SRV record is unknown at %s, converting into forwarder', server)
+				log.warn('UCS Primary Directory Node SRV record is unknown at %s, converting into forwarder', server)
 				need_fixing = True
 				del nameservers[server]
 				forwarders[server] = None
@@ -288,10 +288,10 @@ def add_nameservers(nameservers, domain):
 def add_master(nameservers, master):
 	log = getLogger(__name__).getChild('ldap')
 	if not options.add_master:
-		log.info('Skip adding master')
+		log.info('Skip adding Primary Directory Node')
 		return
 
-	log.debug('Querying %s for address of master %s', LOCAL, master)
+	log.debug('Querying %s for address of Primary Directory Node %s', LOCAL, master)
 	r = DnsRequest(master, qtype='ANY', server=[LOCAL], aa=1, rd=0).req()
 	log.debug('header=%r', r.header)
 
@@ -303,7 +303,7 @@ def add_master(nameservers, master):
 				if is_self(ip):
 					log.info('Skipping local interface address %s found for ldap/master %s', ip, master)
 					continue
-				log.info('Adding master %s', ip)
+				log.info('Adding Primary Directory Node %s', ip)
 				nameservers[ip] = None
 				break
 	else:

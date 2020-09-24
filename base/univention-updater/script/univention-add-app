@@ -64,10 +64,10 @@ if __name__ == '__main__':
 		help="Lists all available apps. If <component> is given, lists all versions of the app with that ID.")
 	parser.add_option(
 		"-a", "--all", action="store_true", dest="install_all", default=False,
-		help="Installs all DefaultPackages of the app. If DC master or backup, also installs DefaultPackagesMaster. Performs dist-upgrade when upgrading an existing app!")
+		help="Installs all DefaultPackages of the app. If Primary or Backup Directory Node, also installs DefaultPackagesMaster. Performs dist-upgrade when upgrading an existing app!")
 	parser.add_option(
 		"-m", "--master", action="store_true", dest="install_master", default=False,
-		help="If DC master or backup, installs DefaultPackagesMaster. Performs dist-upgrade when upgrading an existing app! Has no meaning when used together with --all")
+		help="If Primary or Backup Directory Node, installs DefaultPackagesMaster. Performs dist-upgrade when upgrading an existing app! Has no meaning when used together with --all")
 	parser.add_option(
 		"-l", "--latest", action="store_true", dest="install_latest", default=False,
 		help="<component> is not the component's name but the ID of the application. And always the latest available gets added.")

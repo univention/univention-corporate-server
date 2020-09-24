@@ -289,20 +289,20 @@ msgid "Default Computer Group"
 msgstr "Groupe par défaut des ordinateurs"
 
 #: modules/univention/admin/handlers/settings/default.py:101
-msgid "Default DC Master & Backup Server Group"
-msgstr "Groupe par défaut des contrôleurs de domaine maître et de secours"
+msgid "Default Group for Primary & Backup Directory Nodes"
+msgstr "Groupe par défaut des Primary & Backup Directory Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:90
-msgid "Default DC Slave Computer Group"
-msgstr "Groupe par défaut des contrôleurs de domaine esclaves"
+msgid "Default Group for Replica Directory Nodes"
+msgstr "Groupe par défaut des Replica Directory Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:134
 msgid "Default KDE Profiles"
 msgstr "Profils KDE par défaut"
 
 #: modules/univention/admin/handlers/settings/default.py:112
-msgid "Default Member Server Group"
-msgstr "Groupe par défaut des serveurs membres"
+msgid "Default Group for Managed Nodes"
+msgstr "Groupe par défaut des Managed Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:68
 msgid "Default Primary Group"

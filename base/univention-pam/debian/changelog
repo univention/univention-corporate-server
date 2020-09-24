@@ -1,3 +1,10 @@
+univention-pam (13.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: Replace legacy Master/Slave wording by
+    Primary/Backup/Replica/Managed Node
+
+ -- Arvid <requate@univention.de>  Thu, 24 Sep 2020 13:48:37 +0200
+
 univention-pam (13.0.0-5) unstable; urgency=low
 
   * Bug #43211: Remove univention-skel
