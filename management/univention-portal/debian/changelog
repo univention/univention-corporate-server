@@ -1,3 +1,9 @@
+univention-portal (4.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: Wording - Master -> Primary; Slave -> Replica
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2020 01:31:02 +0200
+
 univention-portal (4.0.1-0) unstable; urgency=medium
 
   * Bug #52125: integrate UCS 5 Portal Design and new UDM portals/* modules

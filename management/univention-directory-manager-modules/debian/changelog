@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.3-2) unstable; urgency=medium
+
+  * Bug #42374: Wording - Master -> Primary; Slave -> Replica
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2020 01:32:18 +0200
+
 univention-directory-manager-modules (15.0.3-1) unstable; urgency=medium
 
   * Bug #34836: replaced TCP references in univention-cli-server
