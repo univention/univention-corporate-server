@@ -147,19 +147,18 @@ msgstr "Rechner: Mac OS X Client"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:47
 #: modules/univention/admin/handlers/computers/memberserver.py:53
-#, fuzzy
 msgid "Computer: Managed Node"
-msgstr "Rechner: IP-Managed-Client"
+msgstr "Rechner: Managed Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:47
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:53
 msgid "Computer: Primary Directory Node"
-msgstr ""
+msgstr "Rechner: Primary Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:47
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:53
 msgid "Computer: Replica Directory Node"
-msgstr ""
+msgstr "Rechner: Replica Directory Node"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:47
 #: modules/univention/admin/handlers/computers/ubuntu.py:53
@@ -467,13 +466,12 @@ msgid "Managed Node"
 msgstr ""
 
 #: modules/univention/admin/handlers/computers/memberserver.py:76
-#, fuzzy
 msgid "Managed Node name"
-msgstr "Name des IP-Managed-Client"
+msgstr "Name des Managed Node"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:49
 msgid "Managed Nodes"
-msgstr ""
+msgstr "Managed Nodes"
 
 #: modules/univention/admin/handlers/computers/computer.py:58
 #: modules/univention/admin/handlers/computers/trustaccount.py:60
@@ -599,11 +597,11 @@ msgstr "Relative ID"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:48
 msgid "Replica Directory Node"
-msgstr ""
+msgstr "Replica Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:49
 msgid "Replica Directory Nodes"
-msgstr ""
+msgstr "Replica Directory Nodes"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:133
 #: modules/univention/admin/handlers/computers/windows.py:137

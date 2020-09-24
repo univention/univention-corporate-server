@@ -497,23 +497,20 @@ msgid "General LDAP server settings"
 msgstr "Grundeinstellungen - LDAP-Server"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:111
-#, fuzzy
 msgid "General Managed Node packages settings"
-msgstr "Grundeinstellungen - Slave Pakete"
+msgstr "Grundeinstellungen - Managed Node-Pakete"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:104
 msgid "General NFS mounts settings"
 msgstr "Grundeinstellungen - NFS-Freigaben"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:111
-#, fuzzy
 msgid "General Primary packages settings"
-msgstr "Grundeinstellungen - Master Pakete"
+msgstr "Grundeinstellungen - Primary-Pakete"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:111
-#, fuzzy
 msgid "General Replica packages settings"
-msgstr "Grundeinstellungen - Slave Pakete"
+msgstr "Grundeinstellungen - Replica-Pakete"
 
 #: modules/univention/admin/handlers/policies/umc.py:104
 msgid "General UMC settings"
@@ -708,19 +705,16 @@ msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:69
-#, fuzzy
 msgid "Managed Node packages"
-msgstr "Master Pakete"
+msgstr "Managed Node-Pakete"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:68
-#, fuzzy
 msgid "Managed Node packages policies"
-msgstr "Master Pakete-Richtlinien"
+msgstr "Managed Node-Paketerichtlinien"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:67
-#, fuzzy
 msgid "Managed Node packages policy"
-msgstr "Master Pakete-Richtlinie"
+msgstr "Managed Node-Paketerichtlinie"
 
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:54
 #: modules/univention/admin/handlers/policies/dhcp_leasetime.py:94
@@ -962,9 +956,8 @@ msgid "Policy: Maintenance"
 msgstr "Richtlinie: Paketpflege"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:66
-#, fuzzy
 msgid "Policy: Managed Node packages"
-msgstr "Richtlinie: Master Pakete"
+msgstr "Richtlinie: Managed Node-Pakete"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:65
 msgid "Policy: NFS mounts"
@@ -975,9 +968,8 @@ msgid "Policy: Passwords"
 msgstr "Richtlinie: Passwort"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:66
-#, fuzzy
 msgid "Policy: Primary packages"
-msgstr "Richtlinie: Master Pakete"
+msgstr "Richtlinie: Primary-Pakete"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:70
 msgid "Policy: Print quota"
@@ -988,9 +980,8 @@ msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:66
-#, fuzzy
 msgid "Policy: Replica packages"
-msgstr "Richtlinie: Slave Pakete"
+msgstr "Richtlinie: Replica-Pakete"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:65
 msgid "Policy: Repository server"
@@ -1017,19 +1008,16 @@ msgid "Policy: User quota"
 msgstr "Richtlinie: Benutzer-Quota"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:69
-#, fuzzy
 msgid "Primary packages"
-msgstr "Master Pakete"
+msgstr "Primary-Pakete"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:68
-#, fuzzy
 msgid "Primary packages policies"
-msgstr "Master Pakete-Richtlinien"
+msgstr "Primary-Paketerichtlinien"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:67
-#, fuzzy
 msgid "Primary packages policy"
-msgstr "Master Pakete-Richtlinie"
+msgstr "Primary-Paketerichtlinie"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:73
 msgid "Print Quota"
@@ -1110,19 +1098,16 @@ msgid "Release Version"
 msgstr "Release Version"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:69
-#, fuzzy
 msgid "Replica packages"
-msgstr "Slave Pakete"
+msgstr "Replica-Pakete"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:68
-#, fuzzy
 msgid "Replica packages policies"
-msgstr "Slave Pakete-Richtlinien"
+msgstr "Replica-Paketerichtlinien"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:67
-#, fuzzy
 msgid "Replica packages policy"
-msgstr "Slave Pakete-Richtlinie"
+msgstr "Replica-Paketerichtlinie"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:53
 #: modules/univention/admin/handlers/policies/repositoryserver.py:68

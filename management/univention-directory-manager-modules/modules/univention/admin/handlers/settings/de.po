@@ -298,23 +298,20 @@ msgid "Default KDE Profiles"
 msgstr "Standard KDE-Profile"
 
 #: modules/univention/admin/handlers/settings/default.py:95
-#, fuzzy
 msgid "Default Managed Node Group"
-msgstr "Standardgruppe für Member-Server"
+msgstr "Standardgruppe für Managed Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:67
 msgid "Default Primary Group"
 msgstr "Standard Primärgruppe"
 
 #: modules/univention/admin/handlers/settings/default.py:88
-#, fuzzy
 msgid "Default Primary and Backup Directory Node Server Group"
-msgstr "Standardgruppe für DC Master- und DC Backup-Rechner"
+msgstr "Standardgruppe für Primary and Backup Directory Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:81
-#, fuzzy
 msgid "Default Replica Directory Node Computer Group"
-msgstr "Standardgruppe für Clients"
+msgstr "Standardgruppe für Replica Directory Nodes"
 
 #: modules/univention/admin/handlers/settings/portal.py:172
 msgid "Default browser tab for portal entries"
@@ -420,14 +417,12 @@ msgstr ""
 "empfohlen"
 
 #: modules/univention/admin/handlers/settings/directory.py:106
-#, fuzzy
 msgid "Directory Node Computer Link"
-msgstr "Domänencontroller-Rechnerverweis"
+msgstr "Directory Node-Rechnerverweis"
 
 #: modules/univention/admin/handlers/settings/directory.py:157
-#, fuzzy
 msgid "Directory Node Computer Links"
-msgstr "Domänencontroller-Rechnerverweise"
+msgstr "Directory Node-Rechnerverweise"
 
 #: modules/univention/admin/handlers/settings/sambaconfig.py:127
 msgid "Disconnect Time"

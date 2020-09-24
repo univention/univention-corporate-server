@@ -50,9 +50,8 @@ msgstr "Zu Standard-DNS-Container hinzufügen"
 
 #: modules/univention/admin/handlers/container/cn.py:105
 #: modules/univention/admin/handlers/container/ou.py:106
-#, fuzzy
 msgid "Add to standard Directory Node computer containers"
-msgstr "Zu Standard-Rechner-Containern hinzufügen"
+msgstr "Zu Directory Node-Standard-Containern hinzufügen"
 
 #: modules/univention/admin/handlers/container/cn.py:99
 #: modules/univention/admin/handlers/container/ou.py:100

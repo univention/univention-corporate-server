@@ -168,9 +168,8 @@ msgid "Back up files and directories"
 msgstr "Dateien und Verzeichnisse sichern"
 
 #: modules/univention/admin/syntax.py:4628
-#, fuzzy
 msgid "Backup Directory Node"
-msgstr "Dateien und Verzeichnisse sichern"
+msgstr "Backup Directory Node"
 
 #: modules/univention/admin/syntax.py:3167
 msgid "Below primary display"
@@ -630,9 +629,8 @@ msgid "Manage printers"
 msgstr "Drucker verwalten"
 
 #: modules/univention/admin/syntax.py:4630
-#, fuzzy
 msgid "Managed Node"
-msgstr "Freigaben verwalten"
+msgstr "Managed Node"
 
 #: modules/univention/admin/syntax.py:4350
 msgid "March"
