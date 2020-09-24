@@ -18,3 +18,5 @@ build/
 !*/*/conffiles/**/*.mo
 *.pot
 *.py[co]
+doc/*/*.xml.err.d
+doc/*/*.xml.err
