@@ -70,7 +70,6 @@ ALL_TARGETS := $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-container-msgpo.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-root-login-notification.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo \
 	$(DESTDIR)/usr/share/univention-system-setup-boot/www/i18n/fr/main.json \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo \
