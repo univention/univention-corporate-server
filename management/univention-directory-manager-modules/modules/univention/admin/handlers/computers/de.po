@@ -77,11 +77,11 @@ msgstr "Mindestens Posix oder Kerberos wird benötigt."
 
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:48
 msgid "Backup Directory Node"
-msgstr ""
+msgstr "Backup Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:49
 msgid "Backup Directory Nodes"
-msgstr ""
+msgstr "Backup Directory Nodes"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:213
 #: modules/univention/admin/handlers/computers/windows.py:225
@@ -125,7 +125,7 @@ msgstr "Rechnerkonto"
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:47
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:53
 msgid "Computer: Backup Directory Node"
-msgstr ""
+msgstr "Rechner: Backup Directory Node"
 
 #: modules/univention/admin/handlers/computers/trustaccount.py:52
 msgid "Computer: Domain trust account"
@@ -268,7 +268,7 @@ msgstr "Beschreibung"
 #: modules/univention/admin/handlers/computers/domaincontroller_backup.py:76
 #: modules/univention/admin/handlers/computers/domaincontroller_slave.py:76
 msgid "Directory Node name"
-msgstr ""
+msgstr "Name des Directory Node"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:101
 #: modules/univention/admin/handlers/computers/windows.py:105
@@ -463,7 +463,7 @@ msgstr "Rechner Passwort"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:48
 msgid "Managed Node"
-msgstr ""
+msgstr "Managed Node"
 
 #: modules/univention/admin/handlers/computers/memberserver.py:76
 msgid "Managed Node name"
@@ -565,11 +565,11 @@ msgstr "Posix-Konto"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:48
 msgid "Primary Directory Node"
-msgstr ""
+msgstr "Primary Directory Node"
 
 #: modules/univention/admin/handlers/computers/domaincontroller_master.py:49
 msgid "Primary Directory Nodes"
-msgstr ""
+msgstr "Primary Directory Nodes"
 
 #: modules/univention/admin/handlers/computers/ubuntu.py:182
 #: modules/univention/admin/handlers/computers/windows.py:193

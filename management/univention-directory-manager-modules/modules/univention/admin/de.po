@@ -296,7 +296,7 @@ msgstr "Ziel"
 
 #: modules/univention/admin/syntax.py:5516
 msgid "Display Name"
-msgstr ""
+msgstr "Anzeigename"
 
 #: modules/univention/admin/syntax.py:4554
 msgid "Domain Group"
@@ -961,7 +961,7 @@ msgstr "Postleitzahl"
 
 #: modules/univention/admin/syntax.py:4627
 msgid "Primary Directory Node"
-msgstr ""
+msgstr "Primary Directory Node"
 
 #: modules/univention/admin/syntax.py:3603
 #: modules/univention/admin/syntax.py:3614
@@ -1007,7 +1007,7 @@ msgstr "Alle E-Mails an Weiterleitungsadresse umleiten"
 
 #: modules/univention/admin/syntax.py:4629
 msgid "Replica Directory Node"
-msgstr ""
+msgstr "Replica Directory Node"
 
 #: modules/univention/admin/policy.py:59
 msgid "Required object class"
