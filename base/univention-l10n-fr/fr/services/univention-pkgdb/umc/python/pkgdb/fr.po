@@ -1,4 +1,4 @@
-# Nicolas Ternisien <nicolas.ternisien@gmail.com>2016.
+# Nicolas Ternisien <nicolas.ternisien@gmail.com>, 2016.
 # Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
 msgid ""
 msgstr ""
