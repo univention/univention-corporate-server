@@ -1,3 +1,9 @@
+ucs-test (9.0.5-5) unstable; urgency=medium
+
+  * Bug 49823: Added selenium pytest 153_udm_check_properties_of_copied_users2.py
+
+ -- Christian Castens <castens@univention.de>  Fri, 25 Sep 2020 14:18:50 +0200
+
 ucs-test (9.0.5-4) unstable; urgency=medium
 
   * Bug #51782: Add synchronization of domainpolicy
