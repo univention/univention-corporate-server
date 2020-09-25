@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="installation-4.4">
+<book lang="en" id="installation-5.0">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Extended installation documentation</subtitle>
@@ -795,7 +795,7 @@ d-i ucr/system/setup/boot/start string false
 univention-system-setup-boot uss/components string
 univention-system-setup-boot uss/packages_install string
 univention-system-setup-boot uss/packages_remove string
-# Choices: domaincontroller_master domaincontroller_backup domaincontroller_slave memberserver base
+# Choices: domaincontroller_master domaincontroller_backup domaincontroller_slave memberserver
 univention-system-setup-boot uss/server/role string memberserver
 #univention-system-setup-boot uss/ldap/base string dc=example,dc=com
 </programlisting>
@@ -892,7 +892,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry><varname>server/role</varname></entry>
 							<entry>
 								The system role.
-								You may choose from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backup</literal>, <literal>domaincontroller_slave</literal>, <literal>memberserver</literal> and <literal>base</literal>.
+								You may choose from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backup</literal>, <literal>domaincontroller_slave</literal> and <literal>memberserver</literal>.
 								The properties of the system roles are described in the domain services chapter of the <biblioref linkend="ucs-manual"/>.
 							</entry>
 						</row>
@@ -979,7 +979,7 @@ univention-system-setup-boot uss/server/role string memberserver
 						<row>
 							<entry><varname>start/join</varname></entry>
 							<entry>
-								As standard, all computers apart from the base system and &ucsMaster; attempt to join the UCS domain in the course of the installation.
+								As standard, all computers apart from the &ucsMaster; attempt to join the UCS domain in the course of the installation.
 								If this parameter is set to <literal>false</literal>, the automatic domain join is deactivated.
 							</entry>
 						</row>
