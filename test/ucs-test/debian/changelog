@@ -1,3 +1,9 @@
+ucs-test (9.0.5-4) unstable; urgency=medium
+
+  * Bug #51782: Add synchronization of domainpolicy
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 25 Sep 2020 09:55:59 +0200
+
 ucs-test (9.0.5-3) unstable; urgency=medium
 
   * Bug #45115: fixed retry to 23_apache/30_vhosts
