@@ -293,9 +293,9 @@ class Interactions(object):
 		"""
 		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop
 		"""
-		if isinstance(source, six.string_types):  # py3 python3 python 3
+		if isinstance(source, six.string_types):
 			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
-		if isinstance(target, six.string_types):  # py3 python3 python 3
+		if isinstance(target, six.string_types):
 			target = getattr(self.driver, 'find_element_by_%s' % find_by)(target)
 		ActionChains(self.driver).drag_and_drop(source, target).perform()
 
@@ -303,6 +303,6 @@ class Interactions(object):
 		"""
 		Wrapper for selenium.webdriver.common.action_chains.drag_and_drop_by_offset
 		"""
-		if isinstance(source, six.string_types):  # py3 python3 python 3
+		if isinstance(source, six.string_types):
 			source = getattr(self.driver, 'find_element_by_%s' % find_by)(source)
 		ActionChains(self.driver).drag_and_drop_by_offset(source, xoffset, yoffset).perform()
