@@ -99,7 +99,7 @@ define([
 					'mail/mail'           : _('Add a new mail object.'),
 					'nagios/nagios'       : _('Add a new Nagios object.'),
 					'policies/policy'     : _('Add a new policy.'),
-					'settings/portal_all' : _('Add a new portal object.')
+					'portals/all' : _('Add a new portal object.')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Add a new LDAP object.');

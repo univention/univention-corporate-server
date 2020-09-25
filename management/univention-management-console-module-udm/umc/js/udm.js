@@ -580,7 +580,7 @@ define([
 					'mail/mail'           : _('Add a new mail object.'),
 					'nagios/nagios'       : _('Add a new Nagios object.'),
 					'policies/policy'     : _('Add a new policy.'),
-					'settings/portal_all' : _('Add a new portal object.') 
+					'portals/all' : _('Add a new portal object.') 
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Add a new LDAP object.');
@@ -600,7 +600,7 @@ define([
 					'mail/mail'           : _('Edit the mail object.'),
 					'nagios/nagios'       : _('Edit the Nagios object.'),
 					'policies/policy'     : _('Edit the policy.'),
-					'settings/portal_all' : _('Edit the portal object.') 
+					'portals/all' : _('Edit the portal object.') 
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Edit the LDAP object.');
@@ -620,7 +620,7 @@ define([
 					'mail/mail'           : _('Delete the selected mail objects.'),
 					'nagios/nagios'       : _('Delete the selected Nagios objects.'),
 					'policies/policy'     : _('Delete the selected policies.'),
-					'settings/portal_all' : _('Delete the selected portal object.') 
+					'portals/all' : _('Delete the selected portal object.') 
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Delete the selected LDAP objects.');
@@ -643,7 +643,7 @@ define([
 						'mail/mail'           : _('No mail objects could be found.'),
 						'nagios/nagios'       : _('No Nagios objects could be found.'),
 						'policies/policy'     : _('No policies could be found.'),
-						'settings/portal_all' : _('No portal object could be found.') 
+						'portals/all' : _('No portal object could be found.') 
 					}[this.moduleFlavor];
 					if (!text) {
 						text = _('No LDAP objects could be found.');
@@ -661,7 +661,7 @@ define([
 						'mail/mail'           : _.ngettext('One mail object of %d selected.', '%d mail objects of %d selected.', nItems, nItemsTotal),
 						'nagios/nagios'       : _.ngettext('One Nagios object of %d selected.', '%d Nagios objects of %d selected.', nItems, nItemsTotal),
 						'policies/policy'     : _.ngettext('One policy of %d selected.', '%d policies of %d selected.', nItems, nItemsTotal),
-						'settings/portal_all' : _.ngettext('One portal object of %d selected.', '%d portal objects of %d selected.', nItems, nItemsTotal)
+						'portals/all' : _.ngettext('One portal object of %d selected.', '%d portal objects of %d selected.', nItems, nItemsTotal)
 					}[this.moduleFlavor];
 					if (!text) {
 						text = _.ngettext('One LDAP object of %d selected.', '%d LDAP objects of %d selected.', nItems, nItemsTotal);
@@ -861,7 +861,7 @@ define([
 					'mail/mail'           : _('Search mail objects...'),
 					'nagios/nagios'       : _('Search Nagios objects...'),
 					'policies/policy'     : _('Search policies...'),
-					'settings/portal_all' : _('Search portal objects...')
+					'portals/all' : _('Search portal objects...')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Search LDAP objects...');
@@ -895,7 +895,7 @@ define([
 				// add the types 'None'  and '$containers$' to objTypes
 				objTypes.push({ id: 'None', label: _('All types') });
 				objTypes.push({ id: '$containers$', label: _('All containers') });
-			} else if ('settings/portal_all' === this.moduleFlavor) {
+			} else if ('portals/all' === this.moduleFlavor) {
 				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
 			} else if (hasSuperordinates) {
 				// superordinates...
@@ -1386,7 +1386,7 @@ define([
 					                                    'Please select an LDAP destination for the %d selected Nagios objects:', n),
 					'policies/policy'     : _.ngettext('Please select an LDAP destination for the policy:',
 					                                    'Please select an LDAP destination for the %d selected policies:', n),
-					'settings/portal_all' : _.ngettext('Please select an LDAP destination for the portal object:',
+					'portals/all' : _.ngettext('Please select an LDAP destination for the portal object:',
 					                                    'Please select an LDAP destination for the %d selected portal objects:', n)
 				}[this.moduleFlavor];
 				if (!text) {
@@ -1408,7 +1408,7 @@ define([
 					'mail/mail'           : _.ngettext('Move mail object', 'Move mail objects', n),
 					'nagios/nagios'       : _.ngettext('Move Nagios object', 'Move Nagios objects', n),
 					'policies/policy'     : _.ngettext('Move policy', 'Move policies', n),
-					'settings/portal_all' : _.ngettext('Move portal object', 'Move portal objects', n)
+					'portals/all' : _.ngettext('Move portal object', 'Move portal objects', n)
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _.ngettext('Move LDAP object', 'Move LDAP objects', n);
@@ -1726,7 +1726,7 @@ define([
 					                                    'Please confirm the removal of the %d selected Nagios objects', n),
 					'policies/policy'     : _.ngettext('Please confirm the removal of the policy:',
 					                                    'Please confirm the removal of the %d selected ploicies', n),
-					'settings/portal_all' : _.ngettext('Please confirm the removal of the portal object:',
+					'portals/all' : _.ngettext('Please confirm the removal of the portal object:',
 					                                    'Please confirm the removal of the %d selected portal objects', n)
 				}[this.moduleFlavor];
 				if (!text) {

@@ -818,7 +818,7 @@ define([
 					                                    'The Nagios objects are part of the Active Directory domain.', n, value),
 					'policies/policy'     : _.ngettext('The policy "%s" is part of the Active Directory domain.',
 					                                    'The policies are part of the Active Directory domain.', n, value),
-					'settings/portal_all' : _.ngettext('The portal object "%s" is part of the Active Directory domain.',
+					'portals/all' : _.ngettext('The portal object "%s" is part of the Active Directory domain.',
 					                                    'The portal objects are part of the Active Directory domain.', n, value)
 				}[this.moduleFlavor];
 				if (!text) {
@@ -1353,11 +1353,11 @@ define([
 					'nagios/nagios'     : _('Create Nagios object'),
 					'policies/policy'   : _('Create policy')
 				}[this.moduleFlavor];
-				if (!text && this.moduleFlavor === 'settings/portal_all') {
+				if (!text && this.moduleFlavor === 'portals/all') {
 					text = {
-						'settings/portal'          : _('Create portal'),
-						'settings/portal_entry'    : _('Create portal entry'),
-						'settings/portal_category' : _('Create portal category')
+						'portals/portal'          : _('Create portal'),
+						'portals/entry'    : _('Create portal entry'),
+						'portals/category' : _('Create portal category')
 					}[this.objectType];
 				}
 				if (!text) {
@@ -2047,7 +2047,7 @@ define([
 					'mail/mail'           : _('Failed to retrieve the mail object from the server.'),
 					'nagios/nagios'       : _('Failed to retrieve the Nagios object from the server.'),
 					'policies/policy'     : _('Failed to retrieve the policy from the server.'),
-					'settings/portal_all' : _('Failed to retrieve the portal object from the server.')
+					'portals/all' : _('Failed to retrieve the portal object from the server.')
 				}[this.moduleFlavor];
 				if (!text) {
 					text = _('Failed to retrieve the LDAP object from the server.');
