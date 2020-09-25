@@ -1,3 +1,9 @@
+ucs-test (10.0.1-3) unstable; urgency=medium
+
+  * Bug #52125: adjust portal selenium tests
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Sep 2020 10:45:41 +0200
+
 ucs-test (10.0.1-2) unstable; urgency=medium
 
   * Bug #45115: fixed retry to 23_apache/30_vhosts
