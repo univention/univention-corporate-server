@@ -119,6 +119,11 @@
 					Join scripts are only executed if the host is already joined (<u:bug>48730</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					The new package <package>univention-join-dev</package> provides the <application>Debhelper</application> sequence <literal>univention-join</literal>.
+					It can be used in <filename>debian/rules</filename> files with <command>dh --with univention-join</command> to simplify the installation, registration and calling of join scripts.
+					It replaces <command>univention-install-joinscript</command> from the package <package>univention-debhelper</package>, which will be removed with UCS 5.1  (<u:bug>52211</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>

@@ -28,11 +28,15 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+
 from __future__ import print_function
+
+from argparse import ArgumentParser, Namespace  # noqa F401
 import os
 import subprocess
+
 try:
-	from typing import Dict, List  # noqa F401
+	from typing import Dict, List, Optional, Sequence, Text  # noqa F401
 except ImportError:
 	pass
 
@@ -111,6 +115,36 @@ def parseRfc822(f):
 		res.append(ent)
 
 	return res
+
+
+def parser_dh_sequence(parser, argv=None):
+	# type: (ArgumentParser, Optional[Sequence[Text]]) -> Namespace
+	"""
+	Add common argument for Debian helper sequence.
+
+	:param parser: argument parser
+	:returns: parsed arguments
+
+	>>> parser = ArgumentParser()
+	>>> args = parser_dh_sequence(parser, ["-v"])
+	>>> args.verbose
+	True
+	"""
+	parser.add_argument(
+		'--verbose', '-v',
+		action='store_true',
+		help='Verbose mode: show all commands that modify the package build directory.')
+	group = parser.add_argument_group("debhelper", "Common debhelper options")
+	group.add_argument("--arch", "-a", action="store_true", help="Act on all architecture dependent packages.")
+	group.add_argument("--indep", "-i", action="store_true", help="Act on all architecture independent packages.")
+	group.add_argument("--option", "-O", action="append", help="Additional debhelper options.")
+
+	args = parser.parse_args(argv)
+
+	if args.verbose:
+		os.environ['DH_VERBOSE'] = '1'
+
+	return args
 
 
 if __name__ == '__main__':
