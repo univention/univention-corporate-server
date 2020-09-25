@@ -523,20 +523,6 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		</para>
 	</section>
 
-	<section id="domain-ldap:Basissystem">
-		<title>Basissystem</title>
-		<para>
-			Ein Basissystem ist ein eigenständiges System, das aber nicht Mitglied der Domäne ist.
-			Es ist mit keinem LDAP-Server verbunden.
-			Der UCS Update-Mechanismus und &ucsUCR; als Möglichkeit der Konfiguration sind Bestandteil, aber die grafische Oberfläche &ucsUMC; zur Administration ist es nicht.
-		</para>
-		<para>
-			Ein Basissystem bietet sich somit für Dienste an, die außerhalb des
-			Vertrauenskontextes der Domäne betrieben werden, etwa als Web-Server oder
-			Firewall.
-		</para>
-	</section>
-
 	<section id="domain-ldap:Ubuntu">
 		<title>Ubuntu</title>
 		<para>
