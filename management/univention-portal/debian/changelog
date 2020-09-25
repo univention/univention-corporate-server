@@ -1,3 +1,9 @@
+univention-portal (4.0.1-2) unstable; urgency=medium
+
+  * Bug #52125: adjust univention-portal.schema for images
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Sep 2020 08:33:46 +0200
+
 univention-portal (4.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica
