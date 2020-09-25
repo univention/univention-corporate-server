@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="quickstart-de-4.4">
+<book lang="de" id="quickstart-de-5.0">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quickstart Guide für Univention Corporate Server</subtitle>
@@ -97,12 +97,6 @@
         <listitem><simpara>
                 Alle weiteren Systeme treten bei Ihrer Installation der
                 UCS-Domäne bei.
-        </simpara></listitem>
-        <listitem><simpara>
-                Eine Ausnahme stellt das Basissystem dar, dieses System tritt
-                keiner Domäne bei und bietet auch kein Managementsystem. Es
-                kommt daher nur in wenigen Szenarien zum Einsatz, bspw. als
-                Firewall-System.
         </simpara></listitem>
     </itemizedlist>
 
