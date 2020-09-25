@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-s4-connector
+fix: 13.0.2-77A~4.4.0.202009251048
+desc: |
+ This update addresses the following issue:
+ * The synchronization of the "CN=Default Domain Policy,CN=System"
+   container can now be enabled with the UCR variable
+   connector/s4/mapping/domainpolicy=yes
+bug: [51782]
