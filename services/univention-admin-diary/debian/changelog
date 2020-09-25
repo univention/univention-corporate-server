@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.1-0) unstable; urgency=medium
+
+  * Bug #51334: add python 3 compatibility
+
+ -- Florian Best <best@univention.de>  Fri, 02 Oct 2020 09:58:27 +0200
+
 univention-admin-diary (2.0.0-5) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica

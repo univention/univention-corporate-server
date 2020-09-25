@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-admindiary\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2019-02-25 22:33+0100\n"
+"POT-Creation-Date: 2020-09-21 15:50+0200\n"
 "PO-Revision-Date: 2020-09-05 16:27+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/admindiary/__init__.py:97
+#: umc/python/admindiary/__init__.py:102
 #, python-format
 msgid ""
 "Check the password in /etc/admin-diary.secret. Is it the same on %s and on "
@@ -20,27 +20,21 @@ msgstr ""
 "Überprüfen Sie das Passwort in /etc/admin-diary.secret. Ist es das gleiche "
 "auf %s wie auf %s?"
 
-#: umc/python/admindiary/__init__.py:99
-msgid ""
-"Did the system set up the database? If not, run /usr/share/univention-admin-"
-"diary/create-database"
-msgstr "Hat das System die Datenbank aufgesetzt? Falls nicht, führen Sie /usr/share/univention-admin-diary/create-database aus."
-
-#: umc/python/admindiary/__init__.py:93
+#: umc/python/admindiary/__init__.py:98
 msgid "Error connecting to the Admin Diary Backend."
 msgstr "Die Verbindung zum Admin Diary Backend ist fehlgeschlagen."
 
-#: umc/python/admindiary/__init__.py:98
+#: umc/python/admindiary/__init__.py:103
 #, python-format
 msgid "Is %s allowed to connect to the database service on %s?"
 msgstr "Darf sich %s mit dem Datenbank-Dienst auf %s verbinden?"
 
-#: umc/python/admindiary/__init__.py:96
+#: umc/python/admindiary/__init__.py:101
 #, python-format
 msgid "Make sure your firewall allows connections to %s."
 msgstr "Stellen Sie sicher, dass Ihre Firewall Verbindungen zu %s erlaubt."
 
-#: umc/python/admindiary/__init__.py:94
+#: umc/python/admindiary/__init__.py:99
 #, python-format
 msgid ""
 "The database management system is \"%s\". Is the service running and does it "
@@ -48,3 +42,10 @@ msgid ""
 msgstr ""
 "Das Datenbank-Managementsystem ist \"%s\". Läuft der Dienst und reagiert er "
 "auf TCP/IP-Verbindungen?"
+
+#~ msgid ""
+#~ "Did the system set up the database? If not, run /usr/share/univention-"
+#~ "admin-diary/create-database"
+#~ msgstr ""
+#~ "Hat das System die Datenbank aufgesetzt? Falls nicht, führen Sie /usr/"
+#~ "share/univention-admin-diary/create-database aus."

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Diary
@@ -68,7 +68,7 @@ def print_events(m):
 		icon = 'devices'
 	#if name.startswith('appcenter/'):
 	#	icon = 'software'
-	translation.domain = m._.im_self._domain
+	translation.domain = m._.__self__._domain
 	translation.set_language('en_US.UTF-8')
 	try:
 		object_name = m.object_name

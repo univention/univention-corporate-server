@@ -76,6 +76,9 @@ Depends:
  univention-management-console-server (>= 11.0.4-37),
  ${python3:Depends},
  ${python:Depends},
+Provides:
+ ${python3:Provides},
+ ${python:Provides},
 Suggests:
  univention-admin-diary-backend,
 Description: UMC module for the Admin Diary
