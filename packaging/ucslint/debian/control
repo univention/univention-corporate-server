@@ -26,12 +26,6 @@ Depends:
  ${python3:Depends},
 Conflicts:
  ucs-tools (<< 1.2.5),
-Breaks:
- ucslint-univention (<< 8.0.0-15),
-Provides:
- ucslint-univention,
-Replaces:
- ucslint-univention (<< 8.0.0-15),
 Recommends:
  python3-junit.xml,
 Description: Check packaging for UCS
@@ -43,15 +37,3 @@ Description: Check packaging for UCS
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-
-Package: ucslint-univention
-Architecture: all
-Depends:
- ucslint (= ${binary:Version}),
-Description: transitional dummy package to ucslint
- This is a transitional dummy package. It can safely be removed.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de
