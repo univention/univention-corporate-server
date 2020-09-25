@@ -2,7 +2,9 @@ Source: join-template
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7)
+Build-Depends:
+ debhelper (>= 9),
+ univention-join-dev (>= 12),
 Standards-Version: 3.7.2
 
 Package: join-template

@@ -1,9 +1,0 @@
-#!/bin/sh
-
-#DEBHELPER#
-
-. /usr/share/univention-lib/base.sh
-
-call_joinscript 50extended-attribute.inst
-
-exit 0
