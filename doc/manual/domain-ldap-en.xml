@@ -513,19 +513,6 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		</para>
 	</section>
 
-	<section id="domain-ldap:Base_system">
-		<title>Base system</title>
-		<para>
-			A base system is an autonomous system which is not a member of the domain.
-			It is not connected to any LDAP server.
-			It still provides the UCS update mechanism and &ucsUCR; for configuration, but not the graphical administration interface &ucsUMC;.
-		</para>
-		<para>
-			A basic system is thus suitable for services which are operated outside of the
-			trust context of the domain, such as a web server or a firewall.
-		</para>
-	</section>
-
 	<section id="domain-ldap:Ubuntu">
 		<title>Ubuntu</title>
 		<para>
