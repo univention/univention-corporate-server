@@ -2,7 +2,7 @@ univention-mail-postfix (13.0.2-2) unstable; urgency=medium
 
   * Bug #51124: added postfix UCRVs
 
- -- Toni Röhmeyer <troehmey@lack.knut.univention.de>  Fri, 25 Sep 2020 10:40:05 +0200
+ -- Toni Röhmeyer <roehmeyer@univention.de>  Fri, 25 Sep 2020 10:40:05 +0200
 
 univention-mail-postfix (13.0.2-1) unstable; urgency=low
 
