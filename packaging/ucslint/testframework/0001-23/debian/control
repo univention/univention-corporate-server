@@ -1,0 +1,14 @@
+Source: src
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends:
+ debhelper,
+ univention-join-dev,
+Standards-Version: 3.7.2
+
+Package: bin
+Architecture: all
+Depends:
+ ${misc:Depends},
+Description: desc

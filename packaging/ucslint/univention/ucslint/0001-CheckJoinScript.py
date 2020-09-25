@@ -29,7 +29,7 @@
 
 import os
 import re
-from typing import Dict  # noqa F401
+from typing import Dict, Optional  # noqa F401
 
 import univention.ucslint.base as uub
 
@@ -61,12 +61,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-19': (uub.RESULT_ERROR, 'unjoin script must not call "joinscript_save_current_version"'),
 			'0001-20': (uub.RESULT_ERROR, 'unjoin script does not call "joinscript_remove_script_from_status_file"'),
 			'0001-21': (uub.RESULT_WARN, 'unjoin script does not call "joinscript_init"'),
+			'0001-22': (uub.RESULT_ERROR, '"dh --with univention-join" is used in "debian/rules" without "Build-Depends: univention-join-dev" in "debian/rules"'),
+			'0001-23': (uub.RESULT_STYLE, 'Consider switchting to "univention-join" debhelper sequence'),
 		}
 
 	RE_LINE_ENDS_WITH_TRUE = re.compile(r'\|\|[ \t]+true[ \t]*$')
 	RE_LINE_CONTAINS_SET_E = re.compile(r'\n[\t ]*set -e', re.M)
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b|\bdh\b.*--with\b.*\bumc\b')
-	RE_DH_JOIN = re.compile(r'\bunivention-install-joinscript\b')
+	RE_DH_JOIN = re.compile(r'(?P<old>\bunivention-install-joinscript\b)|\bdh\b.*--with\b.*\bunivention-join\b')
 
 	def check_join_script(self, filename: str) -> None:
 		"""Check a single join script."""
@@ -194,19 +196,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		# Look for dh-umc-modules-install
 		try:
-			content = open(fn_rules, 'r').read()
+			fn_control = os.path.join(path, 'debian', 'control')
+			ctrl = uub.ParserDebianControl(fn_control)  # type: Optional[uub.ParserDebianControl]
+		except uub.UCSLintException:
+			self.debug('Errors in debian/control. Skipping here')
+			ctrl = None
+
+		try:
+			c_rules = open(fn_rules, 'r').read()
 		except EnvironmentError:
 			self.addmsg('0001-9', 'failed to open and read file', fn_rules)
 		else:
-			if self.RE_DH_JOIN.search(content):
-				self.debug('Detected use of univention-install-joinscript')
-				try:
-					fn_control = os.path.join(path, 'debian', 'control')
-					parser = uub.ParserDebianControl(fn_control)
-				except uub.UCSLintException:
-					self.debug('Errors in debian/control. Skipping here')
-				else:
-					for binary_package in parser.binary_sections:
+			match = self.RE_DH_JOIN.search(c_rules)
+			if match:
+				self.debug('Detected use of %s' % (match.group(0),))
+				if match.group(1):
+						self.addmsg('0001-23', 'Consider switchting to "univention-join" debhelper sequence', fn_rules)
+				if ctrl:
+					for binary_package in ctrl.binary_sections:
 						package = binary_package['Package']
 						for js in fnlist_joinscripts:
 							if re.match(r'^\./\d\d%s\.u?inst$' % re.escape(package), js):
@@ -214,7 +221,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								fnlist_joinscripts[js] = 0
 								found[js] = found.get(js, 0) + 1
 
-			if self.RE_DH_UMC.search(content):
+					if 'univention-join-dev' not in ctrl.source_section.dep:
+						self.addmsg('0001-22', '"dh --with univention-join" is used in "debian/rules" without "Build-Depends: univention-join-dev" in "debian/rules"', fn_control)
+
+			if self.RE_DH_UMC.search(c_rules):
 				self.debug('Detected use of dh-umc-module-install')
 				for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
 					package = os.path.basename(fn)[:-len('.umc-modules')]
