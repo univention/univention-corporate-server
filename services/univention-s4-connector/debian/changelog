@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.2-2) unstable; urgency=medium
+
+  * Bug #51782: Add synchronization of domainpolicy
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 01 Oct 2020 09:27:41 +0200
+
 univention-s4-connector (14.0.2-1) unstable; urgency=medium
 
   * Bug #42374: Wording
