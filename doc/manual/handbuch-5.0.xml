@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="ucs-de-4.4">
+<book lang="de" id="ucs-de-5.0">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -16,8 +16,8 @@
     </subtitle>
     <legalnotice>
       <literallayout>
-Version 4.4-6
-Stand: 22. September 2020
+Version 5.0-0
+Stand: 25. September 2020
       </literallayout>
 
       <literallayout lang="">

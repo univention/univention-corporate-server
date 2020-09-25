@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id='app-provider-4.4'>
+<book lang="en" id='app-provider-5.0'>
 <bookinfo>
   <title>Univention App Center for App Providers</title>
 </bookinfo>
@@ -342,11 +342,11 @@
             </para>
             <para>
                 Example: The app has been created for <option>UCS
-                    Version</option> <userinput>4.3</userinput>. Two
+                    Version</option> <userinput>4.4</userinput>. Two
                 entries for <guimenu>Supported UCS versions for App</guimenu>
-                could be made: <userinput>4.3-4</userinput> and
-                <userinput>4.4-0</userinput>. This means that for the
-                installation of the app UCS 4.3-4 or UCS 4.4-0 are required.
+                could be made: <userinput>4.4-6</userinput> and
+                <userinput>5.0-0</userinput>. This means that for the
+                installation of the app UCS 4.4-6 or UCS 5.0-0 are required.
             </para>
         </section>
 
@@ -511,7 +511,7 @@
                 them in the UCS firewall. If additional firewall rules for
                 ports are needed, they can be defined in the app join script.
                 Please refer to the <ulink
-                    url="https://docs.software-univention.de/developer-reference-4.4.html#misc:nacl">Network
+                    url="https://docs.software-univention.de/developer-reference-5.0.html#misc:nacl">Network
                     Packet Filter section in the UCS Development
                     Reference</ulink>.
             </para>
@@ -602,7 +602,7 @@ HOME=/var/lib/univention-appcenter/apps/myapp/data/myapp_home
                 Univention Configuration Registry, UCR for short, is the
                 central tool for managing the local system configuration of UCS
                 (see <ulink
-                    url="https://docs.software-univention.de/manual-4.4.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry">Manual
+                    url="https://docs.software-univention.de/manual-5.0.html#computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry">Manual
                     for users and administrators</ulink>). Settings from UCR can
                 be used in the Docker compose file to parameterize the Docker
                 setup. This comes in very handy when settings like for example
@@ -762,7 +762,7 @@ services:
 							As stated above, the <filename>docker-compose.yml</filename> is a
 							UCR template. This means that you are able to match the file to
 							the environment of the Docker host. The <ulink
-                url="https://docs.software-univention.de/developer-reference-4.4.html">Univention
+                url="https://docs.software-univention.de/developer-reference-5.0.html">Univention
                 Developer Reference</ulink> knows
 							more about UCR templates, but the core mechanics are:
             </para>
@@ -864,7 +864,7 @@ environment:
                 of the UCS virtual machine images and use VirtualBox or VMware
                 (see <xref linkend="testing:download" />). After the
                 installation, <ulink
-                    url="https://docs.software-univention.de/manual-4.4.html#central:license">activate
+                    url="https://docs.software-univention.de/manual-5.0.html#central:license">activate
                     the system</ulink> and copy your SSH key to the UCS system
                 to save typing the password on each remote console login.
                 Finally, activate the Test App Center (see <xref
@@ -924,7 +924,7 @@ environment:
             <title>Initial UCS setup</title>
             <para>
                 Please refer to the <ulink
-                    url="https://docs.software-univention.de/quickstart-en-4.4.html">UCS
+                    url="https://docs.software-univention.de/quickstart-en-5.0.html">UCS
                     Quickstart Guide</ulink> for the first steps about
                 installation and initial setup.
             </para>
@@ -1314,32 +1314,32 @@ docker-compose -p $appid logs
             The following examples show how the script can be used.
             <programlisting language="sh">
 # creates a new version based on the latest version of myapp
-./univention-appcenter-control new-version 4.4/myapp
+./univention-appcenter-control new-version 5.0/myapp
 
 # finds out on which UCS versions this Docker App may be installed
 # Note: jq is an external tool: apt-get install jq
 # you may parse JSON without it, of course
-./univention-appcenter-control get --json 4.4/myapp |
+./univention-appcenter-control get --json 5.0/myapp |
 	jq '._ini_vars.SupportedUCSVersions'
 
 # creates version 2.0 of myapp based on the (formerly) latest version
-./univention-appcenter-control new-version 4.4/myapp 4.4/myapp=2.0
+./univention-appcenter-control new-version 5.0/myapp 5.0/myapp=2.0
 
 # sets the DockerImage of the new app
-./univention-appcenter-control set 4.4/myapp=2.0 \
+./univention-appcenter-control set 5.0/myapp=2.0 \
 	--json '{"DockerImage": "mycompany/myimage:2.0"}'
 
-# copies myapp Version 1.0 from UCS 4.2 to UCS 4.4.
-./univention-appcenter-control new-version 4.2/myapp=1.0 4.4/myapp=1.0
+# copies myapp Version 1.0 from UCS 4.4 to UCS 5.0.
+./univention-appcenter-control new-version 4.4/myapp=1.0 5.0/myapp=1.0
 
 # uploads all README files in the current folder to the latest version
 # myapp in UCS 4.2
-./univention-appcenter-control upload 4.4/myapp README*
+./univention-appcenter-control upload 5.0/myapp README*
 
 # uploads an image. Will be rejected if this image is not specified
 # somewhere in the ini file. Note: This may overwrite the logo for other
 # version using the same logo name, too.
-./univention-appcenter-control upload 4.4/myapp=1.0 myapp.svg
+./univention-appcenter-control upload 5.0/myapp=1.0 myapp.svg
             </programlisting>
         </para>
     </section>
@@ -2226,7 +2226,7 @@ docker-compose -p $appid logs
             attributes during the setup process. This should be done in the
             join script.  Further information on extended attributes can be
             found in the <ulink
-                url="https://docs.software-univention.de/developer-reference-4.4.html">Univention
+                url="https://docs.software-univention.de/developer-reference-5.0.html">Univention
                 Developer Reference</ulink>.
         </para>
     </section>
@@ -2386,7 +2386,7 @@ docker-compose -p $appid logs
                 The joinscript <filename>inst</filename> is executed on the UCS
                 host system after the Docker container is configured. Please
                 refer to the <ulink
-                    url="https://docs.software-univention.de/developer-reference-4.4.html#chap:join">Developer
+                    url="https://docs.software-univention.de/developer-reference-5.0.html#chap:join">Developer
                     Reference</ulink> about how to write a join script. In
                 principle a join script is a script that runs after the
                 installation of an app and it has write access to the LDAP
@@ -2626,7 +2626,7 @@ exit 0
                 The unjoin script <filename>uinst</filename> is executed on the
                 UCS host system after the Docker container is removed. See the
                 <ulink
-                    url="https://docs.software-univention.de/developer-reference-4.4.html">Developer
+                    url="https://docs.software-univention.de/developer-reference-5.0.html">Developer
                     Reference</ulink> for how to write an unjoin script. It
                 should revert most (if not all) changes done in the join
                 script. With the notable exception of schema registration. An
@@ -3056,7 +3056,7 @@ Group[de] = Lizenz und Liste
         <para>
             UCS provides a certificate infrastructure for secure communication
             protocols. See <ulink
-                url="https://docs.software-univention.de/manual-4.4.html#domain:ssl">SSL
+                url="https://docs.software-univention.de/manual-5.0.html#domain:ssl">SSL
                 certificate management</ulink> in the UCS manual.
         </para>
         <para>
@@ -3123,7 +3123,7 @@ service my-app-daemon restart
                 linkend="upload-interface" />). The script should be written
             locally and then uploaded with the following command:
 <programlisting>
-./univention-appcenter-control upload --username $your-username 4.4/myapp=1.0 update_certificates
+./univention-appcenter-control upload --username $your-username 5.0/myapp=1.0 update_certificates
 </programlisting>
         </para>
 

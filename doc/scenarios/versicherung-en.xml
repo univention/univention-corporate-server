@@ -337,9 +337,9 @@
   <section id="insurance:rev">
 	<title>References</title>
 	  <itemizedlist>
-        <listitem><simpara><ulink url="https://docs.software-univention.de/manual-4.4.html"/> (UCS manual)</simpara></listitem>
-        <listitem><simpara><ulink url="https://docs.software-univention.de/manual-4.4.html#domain-ldap:directorylogger"/> (Audit-proof logging of LDAP changes with Univention Directory Logger)</simpara></listitem>
-		<listitem><simpara><ulink url="https://docs.software-univention.de/installation-4.4.html"/> (Extended installation documentation)</simpara></listitem>
+        <listitem><simpara><ulink url="https://docs.software-univention.de/manual-5.0.html"/> (UCS manual)</simpara></listitem>
+        <listitem><simpara><ulink url="https://docs.software-univention.de/manual-5.0.html#domain-ldap:directorylogger"/> (Audit-proof logging of LDAP changes with Univention Directory Logger)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/installation-5.0.html"/> (Extended installation documentation)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.com/appid/opsi/"/> (<application>opsi</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.com/appid/sep-sesam/"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.com/appid/digitec-suitecrm/"/> (SuiteCRM)</simpara></listitem>

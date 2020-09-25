@@ -107,7 +107,7 @@
 
 	<para>
 	  Errata-Updates beziehen sich immer auf bestimmte Minor-Releases, also
-	  beispielsweise für UCS 4.4. Errata-Updates können in der Regel für alle
+	  beispielsweise für UCS 5.0. Errata-Updates können in der Regel für alle
 	  Patchlevelversionen eines Minor Releases installiert werden.
 	</para>
 
@@ -405,7 +405,7 @@
 	  <para>
 		Das Eingabefeld <guimenu>Bis zu dieser UCS-Version aktualisieren</guimenu> enthält die
 		Versionsnummer, bis zu der das System aktualisiert werden soll,
-		z.B. <emphasis>4.4-0</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
+		z.B. <emphasis>5.0-0</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
 		System bis zur höchsten verfügbaren Versionsnummer.
 	  </para>
 

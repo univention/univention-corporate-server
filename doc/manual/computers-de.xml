@@ -459,7 +459,7 @@
     <section id="computers:Konfiguration_von_Hardware_und_Treibern"><title>Konfiguration von Hardware und Treibern</title>
         <section id="computers:Verfuegbare_Kernel-Varianten"><title>Verfügbare Kernel-Varianten</title>
 			<para>
-				Der Standard-Kernel in UCS 4.4 basiert auf dem Linux-Kernel 4.9.
+				Der Standard-Kernel in UCS 5.0 basiert auf dem Linux-Kernel 4.9.
 				Prinzipiell sind drei verschiedene Arten von Kernel-Paketen zu unterscheiden:
 			</para>
             <itemizedlist>

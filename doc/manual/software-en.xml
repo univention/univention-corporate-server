@@ -107,7 +107,7 @@
 
 	<para>
 	  Errata updates always refer to certain minor releases, e.g., for UCS
-	  4.4. Errata updates can generally be installed for all patch level versions of
+	  5.0. Errata updates can generally be installed for all patch level versions of
 	  a minor release.
 	</para>
 
@@ -396,7 +396,7 @@ univention-app shell demo-docker-app
 
 	  <para>
 		The <guimenu>Update to this UCS version</guimenu> input field includes the version number
-		up to which the system should be updated, e.g., <emphasis>4.4-0</emphasis>. If
+		up to which the system should be updated, e.g., <emphasis>5.0-0</emphasis>. If
 		no entry is made, the system continues updating to the highest available
 		version number.
 	  </para>

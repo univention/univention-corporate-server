@@ -182,13 +182,13 @@
   <section id="lawyer:ref">
 	<title>References</title>
 	<itemizedlist>
-      <listitem><simpara><ulink url="https://docs.software-univention.de/manual-4.4.html"/> (UCS manual)</simpara></listitem>
+      <listitem><simpara><ulink url="https://docs.software-univention.de/manual-5.0.html"/> (UCS manual)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/kopano-core"/> (<application>Kopano Core</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/kopano-webapp"/> (<application>Kopano WebApp</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/sep-sesam"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
       <listitem><simpara><ulink url="https://www.univention.com/appid/bareos"/> (<application>Bareos Backup Server</application>)</simpara></listitem>
-	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual-4.4.html#windows:adtakeover"/></simpara></listitem>
+	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual-5.0.html#windows:adtakeover"/></simpara></listitem>
 	</itemizedlist>
   </section>
 </chapter>

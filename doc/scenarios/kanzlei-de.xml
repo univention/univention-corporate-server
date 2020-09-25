@@ -191,14 +191,14 @@
   <section id="lawyer:ref">
 	<title>Referenzen</title>
 	  <itemizedlist>
-		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-4.4.html"/> (UCS-Handbuch)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-5.0.html"/> (UCS-Handbuch)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-core"/> (<application>Kopano Core</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/kopano-webapp"/> (<application>Kopano WebApp</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/bareos"/> (<application>Bareos Backup Server</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/squid/"/> (<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/self-service/"/> (<application>Self Service</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/sep-sesam"/> (<application>SEP sesam Backup Server</application>)</simpara></listitem>
-		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-4.4.html#windows:adtakeover"/></simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-5.0.html#windows:adtakeover"/></simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

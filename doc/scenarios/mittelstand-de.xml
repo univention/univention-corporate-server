@@ -210,7 +210,7 @@
   <section id="engineering:ref">
 	<title>Referenzen</title>
 	  <itemizedlist>
-		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-4.4.html"/> (UCS-Handbuch)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch-5.0.html"/> (UCS-Handbuch)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
         <listitem><simpara><ulink url="https://www.univention.de/appid/squid/"/>(<application>Proxyserver / Webcache (Squid)</application>)</simpara></listitem>
 	  </itemizedlist>

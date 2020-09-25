@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="networks-4.4">
+<book lang="en" id="networks-5.0">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended IP and network management documentation</subtitle>

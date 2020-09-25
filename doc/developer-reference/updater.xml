@@ -39,7 +39,7 @@
 			Only at the end of a successful update are the &ucsUCRV;s updated.
 		</para>
 		<para>
-			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <olink targetdoc="ucs-4.4" targetptr="computers::softwaremanagement::repoadd"/> manual.
+			Additional components can be added as separate repositories using &ucsUCRV;s <envar>repository/online/component/…</envar>, which are described in <olink targetdoc="ucs-5.0" targetptr="computers::softwaremanagement::repoadd"/> manual.
 			Setting the variable <envar>…/version=current</envar> can be used to mark a component as required, which blocks an upgrade until the component is available for the new release.
 		</para>
 	</section>
@@ -83,7 +83,7 @@
 		</variablelist>
 		<para>
 			The scripts are located in the <filename class="directory">all/</filename> component of each release and component.
-			For UCS-4.4 this would be <filename>4.4/maintained/4.4-0/all/preup.sh</filename> and <filename>4.4/maintained/components/<replaceable>some-component</replaceable>/all/preup.sh</filename> for the <filename>preup.sh</filename> script.
+			For UCS-4.4 this would be <filename>4.4/maintained/4.4-0/all/preup.sh</filename> and <filename>4.4/maintained/components/<replaceable>some-component</replaceable>/all/preup.sh</filename> for the <filename>preup.sh</filename> script. <!-- FIXME: UCS 5.0 path -->
 			The same applies to the <filename>postup.sh</filename> script.
 			The full process is shown in <xref linkend="updater:scripts:example"/>.
 		</para>
