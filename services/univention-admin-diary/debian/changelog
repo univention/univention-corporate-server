@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.0-5) unstable; urgency=medium
+
+  * Bug #42374: Wording - Master -> Primary; Slave -> Replica
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Sep 2020 10:14:07 +0200
+
 univention-admin-diary (2.0.0-4) unstable; urgency=medium
 
   * some python 3 fixes
