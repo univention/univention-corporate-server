@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-mail-postfix
+fix: 13.0.2-2A~4.4.0.202009251042
+desc: |
+  This update addresses the following issue(s):
+  * More postfix variables can be controlled via UCR.
+bug: [51124]
