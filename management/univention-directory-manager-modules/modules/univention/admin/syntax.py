@@ -4897,11 +4897,6 @@ class LDAP_Search(select):
 	>>> syntax._prepare(lo)
 	>>> syntax.values
 	[]
-	>>> syntax = LDAP_Search('ManagementServer')  # comes with UVMM
-	>>> syntax._load(lo)
-	>>> syntax._prepare(lo)
-	>>> syntax.values
-	[]
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
