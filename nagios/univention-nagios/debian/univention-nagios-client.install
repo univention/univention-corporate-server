@@ -19,4 +19,3 @@ usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize usr/lib/nagios/plugins
 usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper usr/lib/nagios/plugins/
 usr/share/nagios-plugins/templates-univention/univention.cfg usr/share/nagios-plugins/templates-univention/
 nagios-client.py usr/lib/univention-directory-listener/system/
-30univention-nagios-client.inst usr/lib/univention-install/

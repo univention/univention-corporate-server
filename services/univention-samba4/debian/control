@@ -8,6 +8,7 @@ Build-Depends:
  libpam0g-dev,
  libunivention-config-dev (>= 15.0.3),
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
  univention-l10n-dev (>= 7.0.1),
 
 Package: univention-samba4

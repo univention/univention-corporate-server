@@ -1,7 +1,5 @@
 dovecot.py usr/lib/univention-directory-listener/system/
 dovecot-shared-folder.py usr/lib/univention-directory-listener/system/
-82univention-mail-dovecot.inst usr/lib/univention-install/
-18univention-mail-dovecot-uninstall.uinst usr/lib/univention-uninstall/
 dovecot-postlogin.py usr/lib/dovecot
 quota-warning.sh usr/lib/dovecot
 modules/univention/mail/*.py usr/lib/python2.7/dist-packages/univention/mail

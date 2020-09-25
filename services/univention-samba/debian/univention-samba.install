@@ -1,7 +1,5 @@
 samba-shares.py usr/lib/univention-directory-listener/system
 samba-privileges.py usr/lib/univention-directory-listener/system
-26univention-samba.inst usr/lib/univention-install/
-74univention-samba.uinst usr/lib/univention-uninstall/
 scripts/kerberize_user usr/share/univention-samba/
 scripts/addmachine.sh usr/share/univention-samba/
 scripts/mount_extfs_with_user_xattr.py usr/share/univention-samba/

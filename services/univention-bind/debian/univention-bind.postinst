@@ -127,7 +127,6 @@ fi
 
 deb-systemd-helper enable bind9.service
 
-call_joinscript 05univention-bind.inst
 call_joinscript 90univention-bind-post.inst
 
 exit 0

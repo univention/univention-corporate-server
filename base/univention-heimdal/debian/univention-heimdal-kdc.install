@@ -1,6 +1,5 @@
 kerberos_now usr/share/univention-heimdal
 salt_krb5Keys usr/share/univention-heimdal
 11univention-heimdal-init.inst usr/lib/univention-install
-15univention-heimdal-kdc.inst usr/lib/univention-install
 keytab.py usr/lib/univention-directory-listener/system
 keytab-member.py usr/lib/univention-directory-listener/system

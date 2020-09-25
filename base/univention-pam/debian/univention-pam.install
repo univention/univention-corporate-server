@@ -7,4 +7,3 @@ univention-libnss-ldap usr/lib/univention-server/server_password_change.d/
 nss.py usr/lib/univention-directory-listener/system/
 ldap-group-to-file.py usr/lib/univention-pam/
 well-known-sid-name-mapping.py usr/lib/univention-directory-listener/system/
-11univention-pam.inst usr/lib/univention-install/

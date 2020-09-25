@@ -43,4 +43,4 @@ override_dh_fixperms:
 	chmod 600 $(AD_TOOLS_DEST)/etc/univention/connector/ad/mapping
 
 %:
-	dh $@ --with python2,python3,univention-l10n,umc,ucr
+	dh $@ --with python2,python3,univention-l10n,umc,ucr,univention-join

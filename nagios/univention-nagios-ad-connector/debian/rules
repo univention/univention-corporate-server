@@ -39,4 +39,4 @@ override_dh_fixperms:
 	chmod 4775 debian/univention-nagios-ad-connector/usr/lib/nagios/plugins/check_univention_ad_connector_suidwrapper
 
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-join

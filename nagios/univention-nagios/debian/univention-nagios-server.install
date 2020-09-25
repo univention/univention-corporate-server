@@ -1,6 +1,4 @@
 nagios-server.py usr/lib/univention-directory-listener/system/
-28univention-nagios-server.inst usr/lib/univention-install/
-28univention-nagios-server.uinst usr/lib/univention-uninstall/
 icon/nagios.png /var/www/icon/
 icon/50x50/nagios.png /var/www/icon/50x50/
 usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool usr/share/univention-nagios-server/tools/

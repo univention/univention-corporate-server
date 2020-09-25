@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 . /usr/share/univention-lib/all.sh
 
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
@@ -70,11 +68,6 @@ ucr set security/packetfilter/package/univention-squid/tcp/3128/all="ACCEPT" \
 		security/packetfilter/package/univention-squid/tcp/3128/all/en="HTTP proxy"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/60univention-squid.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 79univention-squid.inst
+#DEBHELPER#
 
 exit 0

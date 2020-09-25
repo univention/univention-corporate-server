@@ -53,9 +53,6 @@ if dpkg --compare-versions "$2" le-nl 7.0.0-2; then
 	ucr unset "${ucrToRemove[@]}"
 fi
 
-
-call_joinscript 92univention-fetchmail.inst
-
 /etc/init.d/univention-directory-listener crestart
 
 exit 0

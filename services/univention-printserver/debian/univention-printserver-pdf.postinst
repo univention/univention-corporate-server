@@ -39,8 +39,7 @@ anon_dir='/var/spool/cups-pdf/%U'
 univention-config-registry set "cups/cups-pdf/directory?$dir"
 univention-config-registry set "cups/cups-pdf/anonymous?$anon_dir"
 
-# run join script
-call_joinscript 79univention-printserver-pdf.inst
+#DEBHELPER#
 
 # cups backend
 if dpkg-statoverride --list /usr/lib/cups/backend/cups-pdf >/dev/null
@@ -60,7 +59,5 @@ if [ "$1" = "configure" ]; then
 		cups/cups-pdf/cleanup/interval"?* * 1 * *" \
 		cups/cups-pdf/cleanup/keep?30
 fi
-
-#DEBHELPER#
 
 exit 0

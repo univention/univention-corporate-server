@@ -37,8 +37,6 @@
 create_logfile /var/log/univention/check_join_status.log "root:adm" 640
 create_logfile /var/log/univention/join.log "root:adm" 640
 
-call_joinscript 20univention-join.inst
-
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.7; then
 	res=`find /etc/univention/ssl/ -group root`
 	if [ -n "$res" ]; then

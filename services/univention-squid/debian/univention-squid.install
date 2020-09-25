@@ -1,7 +1,5 @@
-79univention-squid.inst usr/lib/univention-install/
 squid-pw-rotate usr/lib/univention-server/server_password_change.d/
 squid_ldap_ntlm_auth usr/lib/squid/
 basic_ldap_auth_encoding_wrapper usr/lib/squid/
-60univention-squid.uinst usr/lib/univention-uninstall/
 local_rules.conf etc/squid/
 local_bottom.conf etc/squid/

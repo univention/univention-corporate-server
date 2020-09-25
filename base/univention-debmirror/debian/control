@@ -6,6 +6,7 @@ Standards-Version: 3.5.5
 Build-Depends:
  debhelper,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
 
 Package: univention-debmirror
 Architecture: all

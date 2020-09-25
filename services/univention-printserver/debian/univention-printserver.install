@@ -2,8 +2,6 @@ cupsd.conf etc/univention/templates/scripts/etc/cups/
 univention-lpadmin usr/sbin/
 univention-cupsadmin usr/sbin/
 cups-printers.py usr/lib/univention-directory-listener/system/
-79univention-printserver.inst usr/lib/univention-install/
-21univention-printserver.uinst usr/lib/univention-uninstall/
 ppds.py usr/lib/univention-printserver/univention-ppds/
 mark_models_as_deprecated.py usr/lib/univention-printserver/univention-ppds/
 univention-cups-init usr/lib/univention-printserver/

@@ -45,4 +45,4 @@ override_dh_fixperms:
 	chmod u+s ${DC}/usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize_suidwrapper
 
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-join

@@ -10,6 +10,7 @@ Build-Depends:
  libunivention-config-dev,
  libunivention-debug-dev,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
 
 Package: univention-directory-notifier
 Architecture: any

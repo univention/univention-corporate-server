@@ -35,8 +35,6 @@
 case "$1" in
 	remove)
 		a2dissite univention-self-service
-		cp /usr/lib/univention-uninstall/66univention-self-service.uinst \
-			/usr/lib/univention-install/
 		univention-config-registry unset "umc/web/hooks/univention-self-service"
 	;;
 esac

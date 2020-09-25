@@ -45,8 +45,6 @@ fi
 ucr set umc/self-service/profiledata/enabled?true \
         self-service/ldap_attributes?"jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,homePhone,mobile,homePostalAddress"
 
-call_joinscript 35univention-self-service-master.inst
-
 invoke-rc.d univention-directory-listener crestart
 
 exit 0

@@ -49,16 +49,8 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 2.0.9-1; then
 	fi
 fi
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/65univention-self-service.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
 if [ ! -e "/usr/share/univention-self-service/www/css/custom.css" ]; then
 	cp /usr/share/univention-self-service/www/css/custom.css.example /usr/share/univention-self-service/www/css/custom.css
 fi
-
-. /usr/share/univention-lib/base.sh
-call_joinscript 34univention-self-service.inst
 
 exit 0

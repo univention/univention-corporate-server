@@ -5,6 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
 Standards-Version: 3.7.2
 
 Package: univention-nagios-s4-connector

@@ -81,12 +81,4 @@ univention-config-registry set \
 	umc/http/content-security-policy/frame-ancestors?"'self'" \
 	umc/login/content-security-policy/frame-ancestors?"'self'"
 
-if [ "$1" = "configure" ]
-then
-	uinst=/usr/lib/univention-install/09univention-management-console-web-server.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 92univention-management-console-web-server.inst
-
 exit 0

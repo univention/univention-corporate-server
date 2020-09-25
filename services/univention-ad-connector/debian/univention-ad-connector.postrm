@@ -35,9 +35,6 @@
 dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector/apache2.conf" 11.0.6-4~ -- "$@"
 
 if [ "$1" = "remove" ]; then
-	. /usr/share/univention-lib/all.sh
-	call_unjoinscript 19univention-ad-connector.uinst
-
 	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
 
 	handler_file=/var/lib/univention-directory-listener/handlers/ad-connector

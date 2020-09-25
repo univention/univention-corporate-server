@@ -35,4 +35,4 @@ override_dh_fixperms:
 	chmod 0700 debian/univention-fetchmail/var/spool/univention-fetchmail
 
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-join

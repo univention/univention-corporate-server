@@ -135,8 +135,6 @@ then
 	univention-config-registry set auth/sudo?yes
 fi
 
-call_joinscript 11univention-pam.inst
-
 #DEBHELPER#
 
 exit 0

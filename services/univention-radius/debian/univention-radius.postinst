@@ -35,8 +35,6 @@
 
 case "$1" in
     configure)
-		uinst=/usr/lib/univention-install/20univention-radius.uinst
-		[ -e "$uinst" ] && rm "$uinst"
 
 		univention-config-registry set \
 			security/packetfilter/package/univention-radius/udp/1812/all=ACCEPT \
@@ -79,9 +77,6 @@ case "$1" in
         exit 0
 		;;
 esac
-
-. /usr/share/univention-lib/base.sh
-call_joinscript 80univention-radius.inst
 
 test -d /etc/freeradius/ssl && chmod -cf 2755 /etc/freeradius/ssl
 

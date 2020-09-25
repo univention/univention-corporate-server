@@ -40,7 +40,6 @@ univention-config-registry set kerberos/autostart?yes \
 	kerberos/password/quality/check?yes
 
 call_joinscript 11univention-heimdal-init.inst
-call_joinscript 15univention-heimdal-kdc.inst
 
 # configure firewall
 univention-config-registry set security/packetfilter/package/univention-heimdal-kdc/tcp/88/all="ACCEPT" \

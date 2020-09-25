@@ -1,5 +1,4 @@
 dhcp.py usr/lib/univention-directory-listener/system
-25univention-dhcp.inst usr/lib/univention-install
 etc/dhcp/univention.conf etc/dhcp
 etc/dhcp/local.conf etc/dhcp
 etc/runit/univention-dhcp/run etc/runit/univention-dhcp

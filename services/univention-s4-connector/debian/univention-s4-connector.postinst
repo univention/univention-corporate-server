@@ -36,8 +36,6 @@
 create_logfile /var/log/univention/connector-s4.log "root:adm" 640
 create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
 
-#DEBHELPER#
-
 eval "$(ucr shell)"
 
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
@@ -64,12 +62,7 @@ fi
 
 /etc/init.d/univention-directory-listener crestart || true
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/03univention-s4-connector.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 97univention-s4-connector.inst
+#DEBHELPER#
 
 stop_udm_cli_server
 

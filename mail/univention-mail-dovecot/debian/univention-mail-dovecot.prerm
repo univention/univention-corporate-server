@@ -33,9 +33,6 @@
 
 if [ "$1" = "remove" ]
 then
-	cp /usr/lib/univention-uninstall/18univention-mail-dovecot-uninstall.uinst \
-		/usr/lib/univention-install/
-
 	QUOTASTATUSIP=$(ucr get mail/dovecot/quota-status/ip)
 	if [ -z $QUOTASTATUSIP ]; then QUOTASTATUSIP="127.0.0.1"; fi
 	QUOTASTATUSPORT=$(ucr get mail/dovecot/quota-status/port)

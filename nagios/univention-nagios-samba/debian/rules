@@ -39,4 +39,4 @@ override_dh_fixperms:
 	chmod 4775 debian/univention-nagios-samba/usr/lib/nagios/plugins/check_univention_samba_drs_failures_suidwrapper
 
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-join

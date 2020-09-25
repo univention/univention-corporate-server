@@ -32,7 +32,4 @@ univention-config-registry set 'nagios/common/defaultservices/autocreate?yes'
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/base.sh
-call_joinscript 26univention-nagios-common.inst
-
 exit 0

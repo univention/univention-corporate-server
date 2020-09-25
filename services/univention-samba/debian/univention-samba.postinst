@@ -156,11 +156,6 @@ univention-config-registry set \
 	samba/acl/allow/execute/always?yes \
 	samba/register/exclude/interfaces?'docker0'
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/74univention-samba.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
 call_joinscript_on_dcmaster 26univention-samba.inst
 
 if [ "$1" = "configure" ]; then

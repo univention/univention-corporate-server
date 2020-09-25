@@ -30,15 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
 if [ "$1" = "remove" ]
 then
-	. /usr/share/univention-lib/all.sh
+	. /usr/share/univention-lib/base.sh
 	# always call 65 after 50 (to remove service)
 	# packages are always removed in unison because of cross-dependencies
-	call_unjoinscript 50univention-pkgdb-uninstall.uinst
-	call_unjoinscript 65univention-management-console-module-pkgdb-uninstall.uinst
+	call_unjoinscript 50univention-pkgdb.uinst
 fi
+#DEBHELPER#
 
 exit 0

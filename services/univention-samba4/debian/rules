@@ -47,4 +47,4 @@ override_dh_installinit:
 	dh_installinit -a --no-start -u"defaults 97"
 
 %:
-	dh $@ --with univention-l10n,ucr
+	dh $@ --with univention-l10n,ucr,univention-join

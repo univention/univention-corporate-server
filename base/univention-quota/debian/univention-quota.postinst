@@ -42,8 +42,6 @@ if [ ! `echo $kernel_modules | grep quota_v2` ]; then
 	univention-config-registry set kernel/modules="$kernel_modules;quota_v2"
 fi
 
-call_joinscript 71univention-quota.inst
-
 test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
 
 

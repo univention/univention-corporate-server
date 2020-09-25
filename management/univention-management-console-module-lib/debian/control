@@ -7,6 +7,7 @@ Build-Depends:
  dh-python,
  python-all,
  python3-all,
+ univention-join-dev (>= 12),
  univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.7.2
 
@@ -16,10 +17,10 @@ Provides:
  ${python3:Provides},
  ${python:Provides},
 Depends:
- python-six,
- python3-six,
  python-notifier,
+ python-six,
  python3-notifier,
+ python3-six,
  shell-univention-lib (>> 3.0.14-1),
  univention-management-console-server (>= 11.0.4-37),
  univention-updater,

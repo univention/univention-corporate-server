@@ -34,13 +34,8 @@
 
 eval "$(univention-config-registry shell)"
 
-. /usr/share/univention-lib/all.sh
-
 case "$1" in
 	configure)
-
-		# call the join script
-		call_joinscript 76univention-package-template.inst
 
 		# if [ -z "$2" ]; then    # installation
 		# fi

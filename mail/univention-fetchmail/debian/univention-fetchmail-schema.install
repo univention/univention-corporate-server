@@ -1,3 +1,2 @@
 univention-fetchmail.schema usr/share/univention-fetchmail-schema
 58univention-fetchmail-schema.acl usr/share/univention-fetchmail-schema
-92univention-fetchmail-schema.inst usr/lib/univention-install

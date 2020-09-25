@@ -9,6 +9,7 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
  univention-l10n-dev (>= 7.0.1),
 
 Package: python-univention-directory-manager
@@ -17,13 +18,13 @@ Depends:
  iso-codes,
  makepasswd,
  python (>= 2.7),
+ python-apt,
  python-dateutil,
  python-ipaddress,
- python-apt,
  python-lazy-object-proxy,
  python-m2crypto,
- python-pyasn1-modules,
  python-pil,
+ python-pyasn1-modules,
  python-six,
  python-smbpasswd,
  python-univention (>= 12.0.1-1),

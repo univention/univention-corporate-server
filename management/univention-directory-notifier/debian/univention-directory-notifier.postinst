@@ -68,8 +68,6 @@ ucr set security/packetfilter/package/univention-directory-notifier/tcp/6669/all
 		security/packetfilter/package/univention-directory-notifier/tcp/6669/all/en="Univention Directory Notifier"
 [ -x "/etc/init.d/univention-firewall" ] && service univention-firewall restart
 
-call_joinscript 02univention-directory-notifier.inst
-
 if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
 	ln -snf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
     rm /etc/runit/univention/univention-ldap-notifier

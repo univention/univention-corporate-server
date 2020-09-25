@@ -39,4 +39,4 @@ override_dh_installinit:
 	dh_installinit --error-handler=true
 
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-join

@@ -1,9 +1,7 @@
 lib/*.sh usr/share/univention-samba4/lib
 scripts/*.sh usr/share/univention-samba4/scripts
 scripts/*.py usr/share/univention-samba4/scripts
-96univention-samba4.inst usr/lib/univention-install
 98univention-samba4-dns.inst usr/lib/univention-install
-04univention-samba4.uinst usr/lib/univention-uninstall
 98univention-samba4-saml-kerberos.inst usr/lib/univention-install
 univention-s4search usr/sbin/
 s4search-decode usr/sbin/

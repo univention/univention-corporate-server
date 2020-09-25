@@ -8,6 +8,7 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
  univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.8.2
 
@@ -18,6 +19,7 @@ Depends:
  cups-browsed,
  cups-bsd,
  cups-client,
+ foomatic-db-compressed-ppds,
  hp-ppd,
  hpijs-ppds,
  openprinting-ppds,
@@ -29,7 +31,6 @@ Depends:
  univention-directory-listener,
  univention-directory-manager-tools,
  univention-directory-manager-tools (>> 7.0.147),
- foomatic-db-compressed-ppds,
  univention-management-console-module-printers (= ${source:Version}),
  univention-printclient,
  ${misc:Depends},

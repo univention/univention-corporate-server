@@ -63,8 +63,6 @@ install -d -o listener -g root -m 0755 /var/lib/univention-ldap/schema/id
 touch /var/lib/univention-ldap/schema/id/id
 chown listener:root /var/lib/univention-ldap/schema/id/id
 
-call_joinscript 03univention-directory-listener.inst
-
 if [ "$1" = "configure" ] && [ -n "$2" ]; then
 		/etc/init.d/univention-directory-listener crestart
 fi

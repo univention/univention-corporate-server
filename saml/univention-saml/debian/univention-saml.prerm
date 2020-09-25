@@ -33,8 +33,6 @@
 
 case "$1" in
 	remove)
-		cp /usr/lib/univention-uninstall/24univention-saml-uninstall.uinst /usr/lib/univention-install/
-
 		for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
 		do
 			if dpkg-statoverride --list $i >/dev/null 2>&1; then

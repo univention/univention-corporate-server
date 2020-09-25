@@ -45,9 +45,6 @@ for file in transport virtual canonical access relocated; do
   postmap /etc/postfix/$file
 done
 
-. /usr/share/univention-lib/all.sh
-call_joinscript 67univention-mail-server.inst
-
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
 	/etc/init.d/postfix restart
 fi
@@ -60,11 +57,5 @@ ucr set security/packetfilter/package/univention-mail-postfix/tcp/25/all="ACCEPT
 		security/packetfilter/package/univention-mail-postfix/tcp/587/all="ACCEPT" \
 		security/packetfilter/package/univention-mail-postfix/tcp/587/all/en="SMTP/submission"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/67univention-mail-server.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
 
 exit 0

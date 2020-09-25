@@ -34,10 +34,6 @@
 case "$1" in
 configure)
 
-	if [ -e /usr/lib/univention-install/24univention-saml-uninstall.uinst ]; then
-		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
-	fi
-
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
@@ -68,8 +64,6 @@ configure)
 	if ! dpkg-statoverride --list /var/lib/simplesamlphp/secrets.inc.php >/dev/null 2>&1; then
 		dpkg-statoverride --update --add samlcgi samlcgi 640 /var/lib/simplesamlphp/secrets.inc.php
 	fi
-
-	call_joinscript 91univention-saml.inst
 
 	for file in /etc/simplesamlphp/metadata/metadata_include.php /usr/share/simplesamlphp/modules/negotiate/enable; do
 		if [ ! -e "$file" ]; then

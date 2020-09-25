@@ -11,8 +11,5 @@ scripts/remove_ad_rejected.py usr/share/univention-ad-connector/
 
 conffiles/etc/univention/connector/ad/mapping etc/univention/connector/ad/
 
-19univention-ad-connector.uinst usr/lib/univention-uninstall/
-81univention-ad-connector.inst usr/lib/univention-install/
-
 # AD Connector Listener Module
 ad-connector.py usr/lib/univention-directory-listener/system

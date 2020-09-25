@@ -36,4 +36,4 @@ override_dh_fixperms:
 	chmod 4755 debian/univention-nagios-smart/usr/lib/nagios/plugins/check_smart_suidwrapper
 
 %:
-	dh $@ --with ucr
+	dh $@ --with ucr,univention-join

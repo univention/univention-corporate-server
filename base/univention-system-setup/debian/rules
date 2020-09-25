@@ -44,4 +44,4 @@ override_dh_auto_test:
 	run-parts -a -v tests
 
 %:
-	dh $@ --with python2,python3,univention-l10n,umc,ucr
+	dh $@ --with python2,python3,univention-l10n,umc,ucr,univention-join

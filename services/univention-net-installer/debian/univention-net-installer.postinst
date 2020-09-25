@@ -42,7 +42,7 @@ main () {
 		fi
 		configure_http "$2"
 		install_template
-		call_joinscript 81univention-net-installer.inst
+		call_joinscript 81univention-net-installer.inst  # order important?
 		restart_listener
 	fi
 }

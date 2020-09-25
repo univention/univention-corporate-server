@@ -79,9 +79,6 @@ fi
 
 /etc/init.d/nagios-nrpe-server restart
 
-. /usr/share/univention-lib/base.sh
-call_joinscript 30univention-nagios-client.inst
-
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.1-9; then
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		NAGIOSCONTAINER="cn=nagios,$ldap_base"

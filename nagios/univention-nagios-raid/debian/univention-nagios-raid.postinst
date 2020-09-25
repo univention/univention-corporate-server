@@ -31,9 +31,6 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/base.sh
-call_joinscript 31univention-nagios-raid.inst
-
 if [ "$1" = "configure" ] && [ -n "$2" ]; then
 
 	# Bug 47319

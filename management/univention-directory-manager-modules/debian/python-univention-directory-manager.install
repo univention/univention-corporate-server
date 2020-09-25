@@ -18,4 +18,3 @@ modules/univention/admin/hooks.d/*.py usr/lib/python2.7/dist-packages/univention
 modules/univention/udm usr/lib/python2.7/dist-packages/univention/
 python-lib/*.py usr/lib/python2.7/dist-packages/univention/lib
 listener/*.py usr/lib/univention-directory-listener/system/
-18python-univention-directory-manager.inst usr/lib/univention-install/

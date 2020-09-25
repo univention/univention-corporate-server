@@ -41,8 +41,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	fi
 fi
 
-#DEBHELPER#
-
 eval "$(univention-config-registry shell)"
 
 dpkg-statoverride --update --add root root 0750 /var/log/samba || true
@@ -465,12 +463,8 @@ secret: $machine_secret
 	fi
 fi
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/04univention-samba4.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
+#DEBHELPER#
 
-call_joinscript 96univention-samba4.inst
 call_joinscript 98univention-samba4-saml-kerberos.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
 

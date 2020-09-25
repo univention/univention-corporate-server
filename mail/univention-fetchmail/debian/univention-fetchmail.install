@@ -1,4 +1,2 @@
-92univention-fetchmail.inst usr/lib/univention-install
-93univention-fetchmail-uninstall.uinst usr/lib/univention-uninstall
 fetchmailrc.py usr/lib/univention-directory-listener/system
 fetchmailrc etc

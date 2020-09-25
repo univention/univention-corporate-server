@@ -4,6 +4,5 @@ src/verify usr/sbin/
 src/listener-ctrl usr/sbin/
 tools/*	usr/share/univention-directory-listener/
 listener/*	usr/lib/univention-directory-listener/system/
-03univention-directory-listener.inst usr/lib/univention-install/
 etc/network/if-post-down.d/univention-directory-listener etc/network/if-post-down.d/
 examples usr/share/doc/univention-directory-listener/

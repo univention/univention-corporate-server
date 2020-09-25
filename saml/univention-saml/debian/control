@@ -8,6 +8,7 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
  univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 12.0.2),
 Standards-Version: 3.8.4
@@ -26,7 +27,9 @@ Depends:
  php-ldap,
  php-memcache,
  php-xml,
+ python-six,
  python-univention-lib,
+ python3-six,
  shell-univention-lib,
  simplesamlphp (>= 1.11.0-1),
  stunnel4 (>=3:5.18-1),
@@ -34,8 +37,6 @@ Depends:
  univention-directory-manager-tools,
  univention-heimdal-common,
  univention-saml-schema (= ${source:Version}),
- python-six,
- python3-six,
  ${misc:Depends},
 Breaks:
  univention-saml-schema (<< 3.0.16-1),

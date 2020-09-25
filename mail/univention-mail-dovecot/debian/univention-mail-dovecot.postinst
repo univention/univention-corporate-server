@@ -156,12 +156,4 @@ if [ -x /etc/init.d/univention-directory-listener ]; then
 	deb-systemd-invoke restart univention-directory-listener
 fi
 
-if [ "$1" = "configure" ]
-then
-	uinst=/usr/lib/univention-install/18univention-mail-dovecot-uninstall.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 82univention-mail-dovecot.inst
-
 exit 0

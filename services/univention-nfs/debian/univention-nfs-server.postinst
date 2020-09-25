@@ -78,8 +78,6 @@ case "$1" in
 		then
 			/etc/init.d/univention-directory-listener crestart
 		fi
-
-		call_joinscript 81univention-nfs-server.inst
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

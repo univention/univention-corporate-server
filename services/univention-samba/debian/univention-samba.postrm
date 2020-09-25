@@ -33,8 +33,6 @@
 #DEBHELPER#
 
 if [ "$1" = "remove" ]; then
-	. /usr/share/univention-lib/all.sh
-	call_unjoinscript 74univention-samba.uinst
 
 	ucr unset security/packetfilter/package/univention-samba/tcp/137:139/all \
 			security/packetfilter/package/univention-samba/tcp/137:139/all/en \

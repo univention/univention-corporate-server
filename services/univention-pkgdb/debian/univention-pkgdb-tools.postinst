@@ -38,14 +38,6 @@ univention-config-registry set 'pkgdb/requiressl?true'
 
 #DEBHELPER#
 
-if [ "$1" = "configure" ]
-then
-	uinst=/usr/lib/univention-install/02univention-pkgdb-tools-uninstall.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 98univention-pkgdb-tools.inst || true
-
 # before 9.0.1-4 pkgdb-scans did not run on any system except the pkgdb-server
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.1-4; then
 	univention-pkgdb-scan

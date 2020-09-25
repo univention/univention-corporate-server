@@ -38,6 +38,4 @@ univention-config-registry set ldap/policy/cron?"5 * * * *"
 
 create_logfile /var/log/univention/ldap-policy.log "root:adm" 640
 
-call_joinscript 20univention-directory-policy.inst
-
 exit 0

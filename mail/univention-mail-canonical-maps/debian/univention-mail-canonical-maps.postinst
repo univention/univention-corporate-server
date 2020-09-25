@@ -39,8 +39,6 @@ univention-config-registry set \
   mail/maps/canonical/recipient/enable=ldap \
   mail/postfix/local/header/rewrite/clients="static:all"
 
-call_joinscript 92univention-mail-canonical-maps.inst
-
 stop_udm_cli_server
 
 exit 0

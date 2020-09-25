@@ -83,11 +83,6 @@ case "$1" in
 			chown postgres:www-data /etc/postgresql/pkgdb.secret
 		fi
 
-		uinst=/usr/lib/univention-install/50univention-pkgdb-uninstall.uinst
-		[ -e "$uinst" ] && rm "$uinst"
-
-		call_joinscript 50univention-pkgdb.inst || true
-
 		if [ -x "/etc/init.d/univention-directory-listener" ]; then
 			/etc/init.d/univention-directory-listener crestart
 		fi

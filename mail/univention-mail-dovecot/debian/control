@@ -7,6 +7,7 @@ Build-Depends:
  dh-python,
  python-all,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
 Standards-Version: 3.8.2
 
 Package: univention-mail-dovecot

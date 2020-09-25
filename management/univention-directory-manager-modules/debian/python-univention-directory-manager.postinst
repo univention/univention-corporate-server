@@ -60,10 +60,7 @@ if [ "$1" = "configure" ]; then
 			univention-directory-listener-ctrl resync udm_extension
 		fi
 	fi
+	stop_udm_cli_server
 fi
-
-stop_udm_cli_server
-
-call_joinscript 18python-univention-directory-manager.inst
 
 exit 0

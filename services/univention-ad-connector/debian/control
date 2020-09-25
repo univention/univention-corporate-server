@@ -9,6 +9,7 @@ Build-Depends:
  python-all,
  python3-all,
  univention-config-dev (>= 15.0.3),
+ univention-join-dev (>= 12),
  univention-l10n-dev (>= 7.0.1),
  univention-management-console-dev (>= 12.0.2),
 
@@ -99,6 +100,8 @@ Description: UCS - Modules for connector sychronisation
 Package: univention-ad-connector
 Architecture: all
 Depends:
+ heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
+ libkrb5-26-heimdal (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  python-ldb,
  python-samba,
  python-univention-connector-ad (= ${binary:Version}),
@@ -110,8 +113,6 @@ Depends:
  univention-config,
  univention-directory-manager-tools (>= 13.0.21-21),
  univention-join (>= 10.0.0-12),
- heimdal-clients (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
- libkrb5-26-heimdal (>= 7.1.0+dfsg-13+deb9u3A~4.4.0.202006161052),
  univention-management-console-module-adconnector (= ${binary:Version}),
  ${misc:Depends},
 Recommends:

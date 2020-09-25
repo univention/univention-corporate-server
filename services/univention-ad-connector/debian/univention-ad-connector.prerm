@@ -37,9 +37,4 @@ fi
 
 #DEBHELPER#
 
-if [ "$1" = "remove" ]; then
-	cp /usr/lib/univention-uninstall/19univention-ad-connector.uinst /usr/lib/univention-install/
-fi
-
-
 exit 0

@@ -86,7 +86,6 @@ create_logfile /var/log/nagios/nagios.log "nagios:nagios" 640
 #DEBHELPER#
 
 . /usr/share/univention-lib/base.sh
-call_joinscript 28univention-nagios-server.inst
 call_joinscript 30univention-nagios-client.inst
 
 
@@ -97,9 +96,6 @@ if [ "$1" = "configure" ]; then
 		apache2_invoke enconf nagios
 	fi
 	test -f /etc/init.d/nagios && service nagios restart
-	# remove unjoin script
-	uinst=/usr/lib/univention-install/28univention-nagios-server.uinst
-	[ -e "$uinst" ] && rm "$uinst"
 fi
 
 exit 0

@@ -36,7 +36,7 @@
 . /usr/share/univention-join/joinscripthelper.lib
 
 if [ "$1" = "remove" ]; then
-	call_unjoinscript 93univention-fetchmail-uninstall.uinst
+	call_unjoinscript 93univention-fetchmail.uinst
 	joinscript_remove_script_from_status_file univention-fetchmail
 fi
 
