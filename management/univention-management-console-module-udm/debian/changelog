@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.0-4) unstable; urgency=medium
+
+  * Bug #52125: adjust wording for new portal
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 25 Sep 2020 08:36:07 +0200
+
 univention-management-console-module-udm (10.0.0-3) unstable; urgency=medium
 
   * Bug #51329: Migrate UMC module to Python 3
