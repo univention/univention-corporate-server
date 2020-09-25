@@ -6,7 +6,7 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="quickstart-en-4.4">
+<book lang="en" id="quickstart-en-5.0">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quick start guide for Univention Corporate Server</subtitle>
@@ -91,12 +91,6 @@
 		</simpara></listitem>
         <listitem><simpara>
                 All other systems are joining the UCS domain when they are installed.
-        </simpara></listitem>
-        <listitem><simpara>
-                The base system is the exception here; this system does not
-                join any domain and also does not offer a management system. As
-                such, it is only used in a few scenarios – as a firewall
-                system, for example.
         </simpara></listitem>
     </itemizedlist>
 
