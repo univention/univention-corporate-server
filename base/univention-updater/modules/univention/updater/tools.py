@@ -264,6 +264,7 @@ class UCSRepoPool5(_UCSRepo):
 
         :param str server: The URL of the repository server.
         :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
+        :param bool mirror: Also mirror files for Debian installer.
         :returns: The APT repository stanza.
         :rtype: str
 
@@ -276,12 +277,8 @@ class UCSRepoPool5(_UCSRepo):
         >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/ errata510 main'
         """
-        return "%s %s %s %s" % (
-            type,
-            server,
-            self._suite,
-            "main main/debian-installer" if mirror else "main",
-        )
+        components = "main main/debian-installer" if mirror and not self.errata and type != "deb-src" else "main"
+        return "%s %s %s %s" % (type, server, self._suite, components)
 
     def path(self, filename=None):
         # type: (str) -> str
