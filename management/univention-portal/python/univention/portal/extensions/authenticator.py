@@ -29,18 +29,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import uuid
 import base64
+import uuid
 
-from six import with_metaclass
 import requests
-
+import tornado
+from six import with_metaclass
 from univention.portal import Plugin
 from univention.portal.log import get_logger
-
 from univention.portal.user import User
 
-import tornado
 
 class Session(object):
 	def __init__(self, nonce):
@@ -60,24 +58,19 @@ class Authenticator(with_metaclass(Plugin)):
 	methods from the Portal:
 	`login_request`: A user GETs to the login action
 	`login_user`: Credentials are POSTed to this action
-
 	`get_user`: While gathering the portal data, the caller wants
 	to get a `User` object
 
 	This base class does nothing...
 	"""
 
-	def login_request(self, request):
-		pass
+	def login_request(self, request): pass
 
-	def login_user(self, request):
-		pass
+	def login_user(self, request): pass
 
-	def get_user(self, request):
-		return None
+	def get_user(self, request): pass
 
-	def refresh(self, reason=None):
-		pass
+	def refresh(self, reason=None):	pass
 
 
 class OpenIDAuthenticator(Authenticator):
