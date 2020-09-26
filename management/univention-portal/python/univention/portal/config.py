@@ -33,12 +33,13 @@
 import json
 from glob import glob
 
+_CONF = "/usr/lib/univention-portal/config/*.json"
 _DB = {}
 
 def load():
 	_DB.clear()
 	try:
-		for fname in sorted(glob("/usr/lib/univention-portal/config/*.json")):
+		for fname in sorted(glob(_CONF)):
 			with open(fname) as fd:
 				_DB.update(json.load(fd))
 	except EnvironmentError:
