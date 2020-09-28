@@ -411,8 +411,15 @@ check_legacy_objects () {
 	do
 		printf '\t%s\n' "${obj}"
 	done
-	echo "They must be removed before the update can be done."
-	exit 1
+	echo "       They must be removed before the update can be done."
+	echo "       "
+	echo "       This check can be disabled by setting the UCR variable"
+	echo "       update50/ignore_legacy_objects to yes."
+	if is_ucr_true update50/ignore_legacy_objects; then
+		echo "WARNING: update50/ignore_legacy_objects is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
 }
 check_legacy_objects
 
