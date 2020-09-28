@@ -400,9 +400,18 @@ check_legacy_objects () {
 		'objectClass=univentionAdminUserSettings'
 		'objectClass=univentionPolicyThinClient'
 		'objectClass=univentionThinClient'
-		'objectClass=univentionCorporateClient'
 		'objectClass=univentionMobileClient'
 		'objectClass=univentionFatClient'
+		# UCC:
+		'objectClass=univentionCorporateClient'
+		'objectClass=univentionPolicyCorporateClientUser'
+		'objectClass=univentionCorporateClientSession'
+		'objectClass=univentionCorporateClientAutostart'
+		'objectClass=univentionCorporateClientImage'
+		'objectClass=univentionPolicyCorporateClientComputer'
+		'objectClass=univentionPolicyCorporateClientDesktop'
+		'objectClass=univentionPolicySoftwareupdates'
+		'objectClass=univentionPolicyCorporateClient'
 	)
 	for filter in "${filters[@]}"
 	do
