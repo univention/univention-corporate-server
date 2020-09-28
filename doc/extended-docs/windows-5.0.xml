@@ -15,7 +15,7 @@
     <chapter id="samba">
         <title>Advanced Samba documentation</title>
         <section id="samba:doc">
-            <title>Operating Samba 4 as a read-only domain controller</title>
+		<title>Operating Samba/AD as a read-only domain controller</title>
 			<para>
 			  Active Directory offers an operating mode called <emphasis>read-only domain
 			  controller</emphasis> (RODC) with the following properties:
@@ -35,7 +35,7 @@
 			</para>
 
 			<para>
-			  A Samba 4 domain controller can be operated in RODC mode (on a &ucsSlave; for
+			  A Samba/AD domain controller can be operated in RODC mode (on a &ucsReplicaDN; for
 			  example). Prior to the installation of <package>univention-samba4</package>, the
 			  &ucsUCRV; <envar>samba4/role</envar> must be set to <literal>RODC</literal>:
 			</para>
@@ -48,47 +48,47 @@ univention-run-join-scripts
         </section>
 
         <section id="ext-win-s4-uninstall">
-		  <title>Uninstallation of a Samba 4 domain controller</title>
+		<title>Uninstallation of a Samba/AD domain controller</title>
 		  <para>
-			The removal of an Samba 4 domain controller (Active Directory-compatible domain
+			  The removal of an Samba/AD domain controller (Active Directory compatible domain
 			controller) is a far-reaching configuration step and should be prepared thoroughly.
 		  </para>
 
 		  <para>
 			If the domain should continue to be provide Active Directory-compatible services, the
-			<package>univention-samba4</package> package must remain installed on the &ucsMaster;
-			or a &ucsBackup; system.
+			<package>univention-samba4</package> package must remain installed on the &ucsPrimaryDN;
+			or a &ucsBackupDN; system.
 		  </para>
 
 		  <para>
 			Before uninstalling the packages, the domain controller registration must be removed
-			from the Samba 4 database. This can be done with the helper script
-			<command>purge_s4_computer.py</command>. It must be run on the &ucsMaster; or a
-			&ucsBackup; system. The query <guimenu>Really remove master from Samba 4?</guimenu> must
-			be answered with <emphasis>Yes</emphasis> and the question <guimenu>Really remove master
+			  from the Samba/AD database. This can be done with the helper script
+			<command>purge_s4_computer.py</command>. It must be run on the &ucsPrimaryDN; or a
+				&ucsBackupDN; system. The query <guimenu>Really remove Primary Directory Node from Samba/AD?</guimenu> must
+			be answered with <emphasis>Yes</emphasis> and the question <guimenu>Really remove Primary Directory Node
 			from UDM as well?</guimenu> must be answered with <emphasis>No</emphasis>.
 			e.g:
 		  </para>
 
 <screen>
-root@backup:~# /usr/share/univention-samba4/scripts/purge_s4_computer.py --computername=master
-Really remove master from Samba 4? [y/N]: Yes
+root@backup:~# /usr/share/univention-samba4/scripts/purge_s4_computer.py --computername=primary
+	Really remove primary from Samba 4? [y/N]: Yes
 If you are really sure type YES and hit enter: YES
 Ok, continuing as requested.
 
 [...]
-Removing CN=MASTER,CN=Computers,$ldap_BASE from SAM database.
-Really remove master from UDM as well? [y/N]: No
+Removing CN=PRIMARY,CN=Computers,$ldap_BASE from SAM database.
+Really remove primary from UDM as well? [y/N]: No
 Ok, stopping as requested.
 
 root@backup:~#
 </screen>
 
 			<para>
-			  The Univention S4 connector must be run on the &ucsMaster; or a &ucsBackup; in the
-			  domain. After Samba 4 was uninstalled, the join script of the S4 connector
-			  (97univention-s4-connector) script should be re-executed on the &ucsMaster; or a
-			  another &ucsBackup;. This can be done via the &ucsUMC; module <guimenu>Domain
+			  The Univention S4 connector must be run on the &ucsPrimaryDN; or a &ucsBackupDN; in the
+				domain. After Samba/AD was uninstalled, the join script of the S4 connector
+			  (97univention-s4-connector) script should be re-executed on the &ucsPrimaryDN; or a
+			  another &ucsBackupDN;. This can be done via the &ucsUMC; module <guimenu>Domain
 			  join</guimenu>:
 			</para>
 
@@ -103,11 +103,11 @@ root@backup:~#
 			</para>
 <screen>
 root@backup:~# samba-tool fsmo show
-InfrastructureMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
-RidAllocationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
-PdcEmulationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
-DomainNamingMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
-SchemaMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+InfrastructureMasterRole owner: CN=NTDS Settings,CN=PRIMARY,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+RidAllocationMasterRole owner: CN=NTDS Settings,CN=PRIMARY,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+PdcEmulationMasterRole owner: CN=NTDS Settings,CN=PRIMARY,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+DomainNamingMasterRole owner: CN=NTDS Settings,CN=PRIMARY,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
+SchemaMasterRole owner: CN=NTDS Settings,CN=PRIMARY,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
 
 root@backup:~# samba-tool fsmo seize --role=all --force
 Will not attempt transfer, seizing...

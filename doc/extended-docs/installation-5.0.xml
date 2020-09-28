@@ -394,7 +394,7 @@ invoke-rc.d univention-management-console-server restart
 		Cloud-Init works on a configuration file in the cloud configuration format.
 		The configuration file is provided by the respective cloud service; the type of provision
 		differs from cloud solution to cloud solution. It is currently only possible to provide a
-		&ucsMaster;.
+		&ucsPrimaryDN;.
 	  </para>
 
 	  <para>
@@ -404,7 +404,7 @@ invoke-rc.d univention-management-console-server restart
 	  </para>
 
 	  <para>
-		The following includes an example file with which a &ucsMaster; can be provided. In
+		The following includes an example file with which a &ucsPrimaryDN; can be provided. In
 		addition, several files are generated on the system: the UCS license to be installed and a file
 		with the apps to be installed from the Univention App Center.
 		The license in this example is the default <emphasis>core edition license</emphasis>.
@@ -421,7 +421,7 @@ invoke-rc.d univention-management-console-server restart
 #cloud-config
 #
 ucs_setup:
-  hostname: myucsmaster
+  hostname: myucsprimary
   domainname: ucs.local
   windowsdomain: UCS
   ldap_base: dc=ucs,dc=local
@@ -476,7 +476,7 @@ write_files:
 	  <para>
 		The file with the apps to be installed contains a list of IDs of applications from the
 		Univention App Center, see <xref linkend="appliance:installbase"/>. The list in the example
-		above installs the Univention AD Connector and the SAML	integration on the provided &ucsMaster;
+		above installs the Univention AD Connector and the SAML	integration on the provided &ucsPrimaryDN;
 	  </para>
 	</section>
 
@@ -656,7 +656,7 @@ https://license.univention.de/shop/example/orders/465.ldif
 					The file may be stored compressed with the <filename class="extension">.gz</filename> extension.
 					Use <command>gunzip</command> to uncompress a copy of that file.
 			</simpara></footnote>.
-			It contains the minimum required settings to perform a fully automatic installation of a &ucsMember; with no additional software.
+			It contains the minimum required settings to perform a fully automatic installation of a &ucsManagedNode; with no additional software.
 			It will use the German keyboard layout and language settings.
 			It will re-partition the hard-disk without asking any questions and will use LVM to manage the disk space.
 			No additional software will be installed.
@@ -915,7 +915,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry><varname>windows/domain</varname></entry>
 							<entry>
 								The name of the NetBIOS domain used by Samba.
-								This variable should only by defined for the system role &ucsMaster;.
+								This variable should only by defined for the system role &ucsPrimaryDN;.
 							</entry>
 						</row>
 						<row>
@@ -950,7 +950,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry><varname>root_password</varname></entry>
 							<entry>
 								The password for the <emphasis>root</emphasis> user for this computer.
-								On a &ucsMaster;, this password is also used for the <emphasis>Administrator</emphasis>'s password.
+								On a &ucsPrimaryDN;, this password is also used for the <emphasis>Administrator</emphasis>'s password.
 							</entry>
 						</row>
 					</tbody>
@@ -979,7 +979,7 @@ univention-system-setup-boot uss/server/role string memberserver
 						<row>
 							<entry><varname>start/join</varname></entry>
 							<entry>
-								As standard, all computers apart from the &ucsMaster; attempt to join the UCS domain in the course of the installation.
+								As standard, all computers apart from the &ucsPrimaryDN; attempt to join the UCS domain in the course of the installation.
 								If this parameter is set to <literal>false</literal>, the automatic domain join is deactivated.
 							</entry>
 						</row>
@@ -988,7 +988,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry>
 								The base DN of the LDAP domain.
 								In general, the base DN <uri>dc=example,dc=com</uri> is used in a domain <systemitem class="domainname">example.com</systemitem>.
-								This variable is only evaluated on the system role &ucsMaster;.
+								This variable is only evaluated on the system role &ucsPrimaryDN;.
 							</entry>
 						</row>
 					</tbody>
@@ -1151,7 +1151,7 @@ univention-system-setup-boot uss/server/role string memberserver
 		<section id="profile:variables:ssl">
 			<title>Profile variables - SSL</title>
 			<para>
-				A SSL certification infrastructure is set up during installation of a &ucsMaster;.
+				A SSL certification infrastructure is set up during installation of a &ucsPrimaryDN;.
 				If no settings are configured, automatic names are given for the certificate.
 			</para>
 

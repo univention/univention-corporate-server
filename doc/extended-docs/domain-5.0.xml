@@ -37,23 +37,23 @@
             <title>Integration into the LDAP directory and the SSL certificate authority</title>
             <para>
 			  After Ubuntu has been installed, some of it's configuration files need to be
-			  modified. To simplify the setup, the default configuration of the UCS master domain
-			  controller should be copied to the Ubuntu system, for example:
+			  modified. To simplify the setup, the default configuration of the UCS Primary Directory Node
+			  should be copied to the Ubuntu system, for example:
 			</para>
 			<programlisting language="sh"><![CDATA[
 # Become root
 sudo bash <<"EOF"
 
-# Set the IP address of the UCS DC Master, 192.0.2.3 in this example
-export MASTER_IP=192.0.2.3
+# Set the IP address of the UCS Primary Directory Node, 192.0.2.3 in this example
+export PRIMARY_DIRECTORY_NODE_IP=192.0.2.3
 
 mkdir /etc/univention
-ssh -n root@${MASTER_IP} 'ucr shell | grep -v ^hostname=' >/etc/univention/ucr_master
-echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
-chmod 660 /etc/univention/ucr_master
-. /etc/univention/ucr_master
+ssh -n root@${PRIMARY_DIRECTORY_NODE_IP} 'ucr shell | grep -v ^hostname=' >/etc/univention/ucr_primary_directory_node
+echo "primary_directory_node_ip=${PRIMARY_DIRECTORY_NODE_IP}" >>/etc/univention/ucr_primary_directory_node
+chmod 660 /etc/univention/ucr_primary_directory_node
+. /etc/univention/ucr_primary_directory_node
 
-echo "${MASTER_IP} ${ldap_master}" >>/etc/hosts
+echo "${PRIMARY_DIRECTORY_NODE_IP} ${ldap_master}" >>/etc/hosts
 
 EOF
 ]]></programlisting>
@@ -67,7 +67,7 @@ EOF
 # Become root
 sudo bash <<"EOF"
 
-. /etc/univention/ucr_master
+. /etc/univention/ucr_primary_directory_node
 
 # Download the SSL certificate
 mkdir -p /etc/univention/ssl/ucsCA/
@@ -105,7 +105,7 @@ EOF
 # Become root
 sudo bash <<"EOF"
 
-. /etc/univention/ucr_master
+. /etc/univention/ucr_primary_directory_node
 
 # Install SSSD based configuration
 DEBIAN_FRONTEND=noninteractive apt-get -y install sssd libnss-sss libpam-sss libsss-sudo
@@ -127,7 +127,7 @@ reconnection_retries = 3
 
 [domain/$kerberos_realm]
 auth_provider = krb5
-krb5_kdcip = ${master_ip}
+krb5_kdcip = ${primary_directory_node_ip}
 krb5_realm = ${kerberos_realm}
 krb5_server = ${ldap_master}
 krb5_kpasswd = ${ldap_master}
@@ -286,7 +286,7 @@ EOF
 # Become root
 sudo bash <<"EOF"
 
-. /etc/univention/ucr_master
+. /etc/univention/ucr_primary_directory_node
 
 # Install required packages
 DEBIAN_FRONTEND=noninteractive apt-get install -y heimdal-clients ntpdate
@@ -305,16 +305,16 @@ cat >/etc/krb5.conf <<__EOF__
 
 [realms]
 $kerberos_realm = {
-   kdc = $master_ip $ldap_master
-   admin_server = $master_ip $ldap_master
-   kpasswd_server = $master_ip $ldap_master
+   kdc = $primary_directory_node_ip $ldap_master
+   admin_server = $primary_directory_node_ip $ldap_master
+   kpasswd_server = $primary_directory_node_ip $ldap_master
 }
 __EOF__
 
 # Synchronize the time with the UCS system
 ntpdate -bu $ldap_master
 
-# Test Kerberos: kinit will ask you for a ticket and the SSH login to the master should work with ticket authentication:
+# Test Kerberos: kinit will ask you for a ticket and the SSH login to the Primary Directory Node should work with ticket authentication:
 kinit Administrator
 ssh -n Administrator@$ldap_master ls /etc/univention
 
@@ -389,7 +389,7 @@ EOF
 		  <title>Configuration of the name resolution</title>
 		  <para>
 			The Unix system should use a name server from the UCS domain: All UCS domain controllers
-			(i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a DNS server. One or more of
+			(i.e., &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN;) operate a DNS server. One or more of
 			these UCS system should be entered in the <filename>/etc/resolv.conf</filename>, e.g.:
 		  </para>
 <programlisting>
@@ -402,7 +402,7 @@ nameserver  192.0.2.9
         <section id="unix:time">
 		  <title>Configuration of the time server</title>
 		  <para>
-			All UCS domain controllers (i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a NTP
+			All UCS domain controllers (i.e., &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN;) operate a NTP
 			server.
 		  </para>
 
@@ -411,7 +411,7 @@ nameserver  192.0.2.9
 			<filename>/etc/ntp.conf</filename> on most Linux systems, e.g.:
 		  </para>
 <programlisting>
-server master.example.com
+server primary.example.com
 server backup.example.com
 </programlisting>
 		</section>
@@ -454,7 +454,7 @@ server backup.example.com
 			  <listitem><para>
 				In the standard setting, only TLS-secured access is possible on UCS-LDAP
 				servers. The accessing Unix system must therefore use the root certificate of the
-				UCS-CA. The certificate can be found on the &ucsMaster; in the file
+				UCS-CA. The certificate can be found on the &ucsPrimaryDN; in the file
 				<filename>/etc/univention/ssl/ucsCA/CAcert.pem</filename> and can be copied into any
 				directory, e.g., <filename>/etc/ucs-ssl/</filename>. The UCS root certificate must
 				then be configured in the LDAP configuration files. If the Unix system uses OpenLDAP
@@ -501,11 +501,11 @@ getent group
 			  </simpara></listitem>
 
 			  <listitem><simpara>
-					  <replaceable>MASTERIP</replaceable> must be replaced by the IP address of the &ucsMaster;.
+					  <replaceable>PRIMARYIP</replaceable> must be replaced by the IP address of the &ucsPrimaryDN;.
 			  </simpara></listitem>
 
 			  <listitem><simpara>
-					  <replaceable>MASTERFQDN</replaceable> must be replaced by the fully qualified domain name of the &ucsMaster;.
+					  <replaceable>PRIMARYFQDN</replaceable> must be replaced by the fully qualified domain name of the &ucsPrimaryDN;.
 			  </simpara></listitem>
 			</itemizedlist>
 
@@ -526,9 +526,9 @@ getent group
 
 [realms]
 KERBEROSREALM = {
-   kdc = MASTERIP MASTERFQDN
-   admin_server = MASTERIP MASTERFQDN
-   kpasswd_server = MASTERIP MASTERFQDN
+   kdc = PRIMARYIP PRIMARYFQDN
+   admin_server = PRIMARYIP PRIMARYFQDN
+   kpasswd_server = PRIMARYIP PRIMARYFQDN
 }
 </programlisting>
 		  </para>
@@ -572,21 +572,21 @@ ServerName printserver.example.com
 		<title>Managing additional certificates with <command>univention-certificate</command></title>
         <para>
 		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created
-		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join
+		  automatically for all UCS systems during the installation (&ucsPrimaryDN;) or during the domain join
 		  (all other system roles).
 		</para>
 
         <para>
 		  The command <command>univention-certificate</command> can be used to manage these
 		  certificates, e.g., if it proves necessary to create a certificate for the integration of
-		  an external system. The command is executed as <systemitem class="username">root</systemitem> on the &ucsMaster;.
+		  an external system. The command is executed as <systemitem class="username">root</systemitem> on the &ucsPrimaryDN;.
 		</para>
 
         <section id="extdom:ssl:storage">
             <title>Storage of the certificates</title>
 			<para>
 			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename>
-			  on the &ucsMaster; and synchronized on all &ucsBackup; systems. A subdirectory with
+			  on the &ucsPrimaryDN; and synchronized on all &ucsBackupDN; systems. A subdirectory with
 			  the name of the certificate is kept in the directory <filename class="directory">/etc/univention/ssl/</filename>
 			  for every certificate, which contains the following files:
 			</para>
@@ -740,7 +740,7 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 
 	  	<para>
 		  The external OpenLDAP server is described as <systemitem class="fqdomainname">extldap.univention.test</systemitem>
-		  below and synchronizes with the &ucsMaster;, which uses the LDAP base
+		  below and synchronizes with the &ucsPrimaryDN;, which uses the LDAP base
 		  <uri>dc=univention,dc=test</uri>.
 	  	</para>
 
@@ -760,25 +760,25 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 
 	  </section>
 
-	  <section id="syncrepl:master">
-		<title>Activation of syncrepl on the master domain controller</title>
+	  <section id="syncrepl:primary">
+		<title>Activation of syncrepl on the Primary Directory Node</title>
 		<!-- Can be trimmed drastically once 33709 is fixed -->
 		<para>
-		  Now a syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration
+		  Now a syncrepl proxy needs to be set up on the &ucsPrimaryDN;. The required configuration
 		  files are downloaded from
-		  <ulink url="https://updates.software-univention.de/download/syncrepl/ucs4-syncrepl-proxy-setup.tar.bz2"/> as
+		  <ulink url="https://updates.software-univention.de/download/syncrepl/ucs5-syncrepl-proxy-setup.tar.bz2"/> as
 		  a Tar archive.
 		</para>
 
 		<para>
-		  The downloaded archive must firstly be extracted on the &ucsMaster;:
+		  The downloaded archive must firstly be extracted on the &ucsPrimaryDN;:
 		  <programlisting language="sh">
 tar -xvf ucs4-syncrepl-proxy-setup.tar.bz2
 		  </programlisting>
 		</para>
 
 		<para>
-		  The <filename>UCS_dc_master</filename> subdirectory contains two &ucsUCR; subfile
+		  The <filename>UCS_Primary_Directory_Node</filename> subdirectory contains two &ucsUCR; subfile
 		  templates for the LDAP server configuration file
 		  (<filename>/etc/ldap/slapd.conf</filename>). Subfiles are a mechanism in &ucsUCR; which
 		  can be used to generate a configuration file from several individual templates. More
@@ -786,8 +786,8 @@ tar -xvf ucs4-syncrepl-proxy-setup.tar.bz2
 		  the template directory:
 
 		  <programlisting language="sh">
-mv UCS_dc_master/8*.conf /etc/univention/templates/files/etc/ldap/slapd.conf.d/
-mv UCS_dc_master/syncrepl-proxy.conf /etc/univention/templates/files/etc/ldap/
+mv UCS_Primary_Directory_Node/8*.conf /etc/univention/templates/files/etc/ldap/slapd.conf.d/
+mv UCS_Primary_Directory_Node/syncrepl-proxy.conf /etc/univention/templates/files/etc/ldap/
 		  </programlisting>
 		</para>
 
@@ -796,7 +796,7 @@ mv UCS_dc_master/syncrepl-proxy.conf /etc/univention/templates/files/etc/ldap/
 		  variables used:
 
 		  <programlisting language="sh">
-mv UCS_dc_master/syncrepl-proxy.info /etc/univention/templates/info/
+mv UCS_Primary_Directory_Node/syncrepl-proxy.info /etc/univention/templates/info/
 		  </programlisting>
 
 		  Then the <filename>slapd.conf</filename> is regenerated from the template:
@@ -825,7 +825,7 @@ rm data.ldif
 		</para>
 
 		<para>
-		  The LDAP schema data and the SSL certificates from the UCS master are now passed to the
+		  The LDAP schema data and the SSL certificates from the UCS &ucsPrimaryDN; are now passed to the
 		  external LDAP server:
 
 		  <programlisting language="sh">
@@ -895,7 +895,7 @@ chgrp -R openldap /etc/univention/ssl
 
 		<para>
 		  The configuration of the external LDAP server is now complete. The following command
-		  (performed on the &ucsMaster;) can be used to check whether the external LDAP server can
+		  (performed on the &ucsPrimaryDN;) can be used to check whether the external LDAP server can
 		  be reached via the <systemitem class="protocol">LDAPS</systemitem> protocol:
 
 		  <programlisting language="sh">
@@ -904,7 +904,7 @@ ldapsearch -x -H ldaps://extldap.univention.test -b cn=Subschema -s base
 		</para>
 
 		<para>
-		  Whenever schema files are added on the UCS Master, the following steps
+		  Whenever schema files are added on the UCS &ucsPrimaryDN;, the following steps
 		  have to be repeated.
 		  First an updated <filename>slapd.conf</filename> needs to be generated for the remote LDAP server
 		  which includes all UCS schema files. Then all required files need to be copied to the
@@ -937,7 +937,7 @@ chgrp openldap /etc/ldap/slapd.conf
 		<title>Activation of the syncrepl proxy</title>
 		<para>
 		  If the LDAP connection works, the configuration of the syncrepl proxy can be
-		  activated on the &ucsMaster;. This is done by saving the '<replaceable>REMOTE_UPDATE_PASSWORD</replaceable>' password
+		  activated on the &ucsPrimaryDN;. This is done by saving the '<replaceable>REMOTE_UPDATE_PASSWORD</replaceable>' password
 		  configured above in the <filename>/etc/replica-001.secret</filename> file and entering the
 		  address of the external LDAP server in the form of a LDAP-URI in the &ucsUCRV;
 		  <envar>ldap/replica/target/uri</envar>:
@@ -958,7 +958,7 @@ ucr commit /etc/ldap/syncrepl-proxy.conf
 		</para>
 
 		<para>
-			The replication originates from the &ucsMaster; and is performed via <systemitem class="protocol">LDAPS</systemitem> to the host
+			The replication originates from the &ucsPrimaryDN; and is performed via <systemitem class="protocol">LDAPS</systemitem> to the host
 		  name of the external LDAP server system. This requires working name resolution (typically via
 		  DNS). The host name must be specified as a fully qualified domain name to allow checking
 		  of the SSL certificate.
