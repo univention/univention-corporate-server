@@ -398,6 +398,11 @@ check_legacy_objects () {
 		'objectClass=univentionSamba4WinsHost'
 		'objectClass=univentionPolicyAutoStart'
 		'objectClass=univentionAdminUserSettings'
+		'objectClass=univentionPolicyThinClient'
+		'objectClass=univentionThinClient'
+		'objectClass=univentionCorporateClient'
+		'objectClass=univentionMobileClient'
+		'objectClass=univentionFatClient'
 	)
 	for filter in "${filters[@]}"
 	do
