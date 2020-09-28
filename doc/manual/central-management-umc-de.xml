@@ -124,7 +124,7 @@
 				(<xref linkend="user-management:password-changes-by-users:self-service"/>).
 				Die Dateien sind bei der Installation von UCS leer und werden bei einem Upgrade von UCS nicht verändert. 
 				Beachten Sie jedoch, dass ein gegebener
-				<ulink url="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors">CSS Selektor</ulink>
+				<ulink url="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors" lang="">CSS Selector</ulink>
 				bei der Installation eines beliebigen UCS-Updates kaputt gehen kann.
 			</para>
 		</section>

@@ -381,7 +381,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Aktiverungsdatum</entry>
+                        <entry>Aktivierungsdatum</entry>
                         <entry>
                             Wenn ein Benutzerkonto erst an einem bestimmten, zukünftigen Datum aktiviert werden soll
                             Dann kann man hier das Datum einstellen. Ein Cron-Job prüft periodisch, ob Benutzerkonten

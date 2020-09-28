@@ -153,12 +153,12 @@
 		<section id="idmcloud:o365:Teams">
 			<title>Teams</title>
 			<para>
-				Für die Nutzung von Teams muss die Synchronisation von Gruppen per &ucsUCRV; <envar>office365/groups/sync=yes</envar> aktiviert werden, anschließend muss der Dienst &ucsUDL; neugestartet werden. 
+				Für die Nutzung von Teams muss die Synchronisation von Gruppen per &ucsUCRV; <envar>office365/groups/sync=yes</envar> aktiviert werden, anschließend muss der Dienst &ucsUDL; neu gestartet werden.
 				Sollen UCS-Gruppen als Teams in Microsoft 365 angelegt werden, so müssen die Gruppen auf dem Reiter <guimenu>Microsoft 365</guimenu> über die Checkbox <guimenu>Microsoft 365 Team</guimenu> als Team konfiguriert werden.
 				Des Weiteren ist es notwendig, auf demselben Reiter einen Besitzer des Teams zu definieren.
 				Weitere Einstellungen am Team können von den Team-Besitzern direkt im Teams Interface vorgenommen werden.
 				Nach der Aktivierung einer Gruppe als Team werden die Gruppenmitglieder dem neuen Team hinzugefügt.
-				Die Provisionierung eines neuen Teams in Microsoft 365 kann einige Minuten in Anspruch nehmen.
+				Das Einrichten eines neuen Teams in Microsoft 365 kann einige Minuten in Anspruch nehmen.
 			</para>
 
 			<para>
