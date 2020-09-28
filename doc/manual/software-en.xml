@@ -183,10 +183,10 @@
 	</para>
 
 	<para>
-	  Some components integrate packages that need to be installed on the &ucsMaster; (usually LDAP
+	  Some components integrate packages that need to be installed on the &ucsPrimaryDN; (usually LDAP
 	  schema extensions or new modules for the UCS management system). These packages are
-	  automatically installed on the &ucsMaster;. If this is not possible, the installation is
-	  aborted. In addition, the packages are set up on all accessible &ucsBackup; systems.
+	  automatically installed on the &ucsPrimaryDN;. If this is not possible, the installation is
+	  aborted. In addition, the packages are set up on all accessible &ucsBackupDN; systems.
 	  If several UCS systems are available in the domain, it can be selected on which system the
 	  application is to be installed.
 	</para>
@@ -197,7 +197,7 @@
 	</para>
 
 	<para> From a technical perspective, the app is started as Docker container and joined into the
-		UCS domain as &ucsMember;. A corresponding computer object is created for the &ucsMember; in the
+		UCS domain as &ucsManagedNode;. A corresponding computer object is created for the &ucsManagedNode; in the
 		LDAP directory.
 	</para>
 
@@ -279,16 +279,16 @@ univention-app shell demo-docker-app
 
 	  <para>
 		The authoritative version of the LDAP directory service is maintained on the
-		&ucsMaster; and replicated on all the remaining LDAP servers of the UCS
+		&ucsPrimaryDN; and replicated on all the remaining LDAP servers of the UCS
 		domain. As changes to the LDAP schemes (see <xref linkend="domain:ldap:schemata"/>) can occur during release updates, the
-		&ucsMaster; must always be the first system to be updated during a release
+		&ucsPrimaryDN; must always be the first system to be updated during a release
 		update.
 	  </para>
 
 	  <para>
 		It is generally advisable to update all UCS systems in one maintenance window
 		whenever possible. If this is not possible, all not-updated UCS systems should
-		only be one release version older compared with the &ucsMaster;.
+		only be one release version older compared with the &ucsPrimaryDN;.
 	  </para>
 
 	</section>

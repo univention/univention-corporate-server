@@ -202,7 +202,7 @@
                         <entry>
                             Der Anzeigename wird automatisch aus Vor- und Nachname gebildet. In der Regel
                             muss er nicht angepasst werden. Der Anzeigename wird u.a. in der
-                            Synchronisation mit Active Directory und Samba 4 verwendet.
+                            Synchronisation mit Active Directory und Samba/AD verwendet.
                         </entry>
                     </row>
                     <row>
@@ -925,8 +925,8 @@
 			<title>Passwort-Verwaltung über <foreignphrase>Self Service-App</foreignphrase></title>
 			<para>
                 Durch die Installation der <wordasword>UCS-Komponenten</wordasword>
-                <guimenu>Self Service Backend</guimenu> auf dem UCS Master und 
-                <guimenu>Self Service</guimenu> in der Domäne über das 
+                <guimenu>Self Service Backend</guimenu> auf dem UCS &ucsPrimaryDN; und
+                <guimenu>Self Service</guimenu> in der Domäne über das
                 <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
 				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
@@ -1012,7 +1012,7 @@
 					<listitem><simpara>
 						Über diese Variable werden die <emphasis>LDAP</emphasis> Attribute konfiguriert, die ein Benutzer selber an seinem Benutzerkonto modifizieren kann.
 						Die Namen der Attribute sind durch Komma zu trennen.
-						Diese Variable ist auf dem &ucsMaster; (und &ucsBackup;s) zu setzen.
+						Diese Variable ist auf dem &ucsPrimaryDN; (und &ucsBackupDN;s) zu setzen.
 					</simpara></listitem>
 				</varlistentry>
 				<varlistentry>
@@ -1182,7 +1182,7 @@
 					Der SSO Login kann konfiguriert werden den Login für unverifizierte, selbst registrierte Konten zu
 					verbieten.
 					Dies wird über die &ucsUCRV; <envar>saml/idp/selfservice/check_email_verification</envar> konfiguriert.
-					Diese Einstellung muss auf dem Domänencontroller Master und allen Domänencontroller Backups
+					Diese Einstellung muss auf dem &ucsPrimaryDN; und allen &ucsBackupDN;s
 					vorgenommen werden. Für Konten, die durch einen Administrator angelegt wurden hat diese
 					Einstellung keine Auswirkung.
 				</para>
@@ -1345,7 +1345,7 @@ ucr set cron/delete_deregistered_accounts/command=\
 				Benutzer also auf einem System zu oft sein Passwort falsch eingegeben hat, kann er sich auf
 				einem anderen System weiterhin anmelden. Durch Setzen der &ucsUCRV; <envar>auth/faillog/lock_global</envar>
 				kann die Sperre auch global erfolgen und wird im LDAP registriert. Die globale Sperrung kann nur auf
-				&ucsMaster;/Backup-Systemen eingesetzt werden, da andere Systemrollen nicht über die nötigen
+				&ucsPrimaryDN;/Backup-Systemen eingesetzt werden, da andere Systemrollen nicht über die nötigen
 				Berechtigungen im LDAP-Verzeichnis verfügen.
 				Auf allen Servern der genannten Systemrollen wird die Aussperrung aber automatisch auch lokal umgesetzt
 				bzw. über das verwendete Listener-Modul auch wieder zurückgenommen, abhängig vom aktuellen Aussperrungs-Zustands
@@ -1375,13 +1375,13 @@ ucr set cron/delete_deregistered_accounts/command=\
 		<section id="users:faillog-openldap">
 			<title>OpenLDAP</title>
 			<para>
-				Bei Domänencontrollern kann die automatische Kontosperre für den Fall eines wiederholten
+				Bei UCS Directory Nodes kann die automatische Kontosperre für den Fall eines wiederholten
 				LDAP-Authentifizierungsfehlers aktiviert werden. Voraussetzung ist, dass das MDB LDAP-Backend
 				verwendet wird. Dies ist seit UCS 4 das Standard Backend, vorherige Systeme müssen
 				auf das MDB LDAP-Backend migriert werden, siehe <biblioref linkend="ucs-performance-guide"/>.
 			</para>
 			<para>
-				Die Aktivierung der automatischen Kontosperrung muss pro Domänencontroller aktiviert werden.
+				Die Aktivierung der automatischen Kontosperrung muss pro UCS Directory Node aktiviert werden.
 				Dazu müssen die &ucsUCRV;n <envar>ldap/ppolicy</envar> und <envar>ldap/ppolicy/enabled</envar>
 				auf <envar>yes</envar> gesetzt werden und der OpenLDAP Server muss neu gestartet werden:
 				<programlisting language="sh">

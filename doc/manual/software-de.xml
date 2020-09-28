@@ -187,11 +187,11 @@
 	</para>
 
 	<para>
-	  Einige Komponenten integrieren Pakete, die auf dem &ucsMaster; installiert werden müssen (in der
+	  Einige Komponenten integrieren Pakete, die auf dem &ucsPrimaryDN; installiert werden müssen (in der
 	  Regel LDAP-Schema-Erweiterungen oder Erweiterungen für das UCS-Managementsystem). Diese
-	  Pakete werden automatisch auf dem &ucsMaster; installiert. Ist dieser nicht erreichbar,
+	  Pakete werden automatisch auf dem &ucsPrimaryDN; installiert. Ist dieser nicht erreichbar,
 	  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
-	  &ucsBackup;-Systemen eingerichtet.
+	  &ucsBackupDN;-Systemen eingerichtet.
 	  Sofern mehrere UCS Systeme in der Domäne vorhanden sind, kann ausgewählt werden, auf welchem
 	  der Systeme die Applikation installiert werden soll.
 	</para>
@@ -202,8 +202,8 @@
 	</para>
 
 	<para>
-		Technisch wird die App als Docker Container gestartet und als &ucsMember; in die UCS Domäne
-		gejoint.  Für den &ucsMember; wird im LDAP ein zugehöriges Rechner-Objekt angelegt.
+		Technisch wird die App als Docker Container gestartet und als &ucsManagedNode; in die UCS Domäne
+		gejoint.  Für den &ucsManagedNode; wird im LDAP ein zugehöriges Rechner-Objekt angelegt.
 	</para>
 
 	<para>
@@ -284,17 +284,17 @@
 	  </para>
 
 	  <para>
-		Auf dem &ucsMaster; wird die authoritative Version des
+		Auf dem &ucsPrimaryDN; wird die authoritative Version des
 		LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server
 		der UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen
-		an den LDAP-Schemata auftreten können (siehe <xref linkend="domain:ldap:schemata"/>) muss der &ucsMaster;
+		an den LDAP-Schemata auftreten können (siehe <xref linkend="domain:ldap:schemata"/>) muss der &ucsPrimaryDN;
 		bei einem Release-Update immer als erstes System aktualisiert werden.
 	  </para>
 
 	  <para>
 		Generell ist es empfehlenswert, alle UCS-Systeme möglichst in einem
 		Wartungsfenster zu aktualisieren. Wo dies nicht möglich ist, sollten
-		die nicht-aktualisierten UCS-Systeme gegenüber dem &ucsMaster; nur
+		die nicht-aktualisierten UCS-Systeme gegenüber dem &ucsPrimaryDN; nur
 		eine Release-Version älter sein.
 	  </para>
 

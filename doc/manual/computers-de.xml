@@ -242,8 +242,8 @@
                             In diesem Auswahlfeld kann die primäre Gruppe des Rechners selektiert
                             werden. Das ist nur notwendig, wenn von den automatisch eingestellten
                             Vorgabewerten abgewichen werden soll. Der Vorgabewert für einen
-                            DC Master oder DC Backup lautet <systemitem class="groupname">DC Backup Hosts</systemitem>, für einen
-                            DC Slave <systemitem class="groupname">DC Slave Hosts</systemitem> und für &ucsMember; <systemitem class="groupname">Computers</systemitem>.
+                            &ucsPrimaryDN; oder &ucsBackupDN; lautet <systemitem class="groupname">DC Backup Hosts</systemitem>, für einen
+                            &ucsReplicaDN; <systemitem class="groupname">DC Slave Hosts</systemitem> und für &ucsManagedNode;s <systemitem class="groupname">Computers</systemitem>.
                         </entry>
                     </row>
                 </tbody>
@@ -739,14 +739,14 @@
 						</listitem>
                     </itemizedlist>
                     <para>
-                        Bei der Installation eines &ucsMaster; wird nur ein <guimenu>externer
+                        Bei der Installation eines &ucsPrimaryDN; wird nur ein <guimenu>externer
                         DNS-Server</guimenu> abgefragt, da im Rahmen der Installation immer ein
                         Domänen-DNS-Server eingerichtet wird. Dieser kann dann von den anderen
                         Systemen der Domäne verwendet wird. Über die Schaltfläche <mousebutton>Mehr</mousebutton>
                         können weitere Nameserver aufgenommen werden.
                     </para>
                     <para>
-                        Auf den Systemrollen &ucsMaster;, &ucsBackup; und &ucsSlave; läuft ein
+                        Auf den Systemrollen &ucsPrimaryDN;, &ucsBackupDN; und &ucsReplicaDN; läuft ein
                         lokaler DNS-Server. Hier kann durch Angabe von
                         <guimenu>Domänen-DNS-Server</guimenu> konfiguriert werden, welcher Server primär
                         für die Namensauflösung verwendet wird.
@@ -1384,10 +1384,10 @@ univention-config-registry search nscd
                 <para>
                     Es kann alternativ auch nach gesetzten Variablen-Werten gesucht
                     werden. Dieser Aufruf sucht nach allen Variablen, die auf
-                    <literal>master.example.com</literal> gesetzt sind:
+                    <literal>primary.example.com</literal> gesetzt sind:
                 </para>
                     <programlisting language="sh">
-univention-config-registry search --value master.example.com
+univention-config-registry search --value primary.example.com
                     </programlisting>
                 <para>
                     Bei der Suche können auch Suchmuster in Form von regulären Ausdrücken
@@ -1451,7 +1451,7 @@ univention-config-registry shell ldap/server/name
                     <programlisting language="sh">
 # eval "$(univention-config-registry shell ldap/server/name)"
 # echo "$ldap_server_name"
-master.firma.de
+primary.firma.de
                     </programlisting>
             </section><!-- Übernahme von Variablen in Shell-Skripte -->
         </section><!-- Verwendung des Kommandozeilenfrontends -->
@@ -2277,7 +2277,7 @@ nscd -i hosts
                 korrekte Auswertung von Passwortablaufintervallen stören.
             </para>
             <para>
-                In einer Domäne dient standardmäßig der Domänencontroller Master als
+                In einer Domäne dient standardmäßig der &ucsReplicaDN; als
                 Zeitserver. Über die &ucsUCR;-Variablen <envar>timeserver</envar>,
                 <envar>timeserver2</envar> und <envar>timeserver3</envar> können externe NTP-Server
                 als Zeitquelle eingebunden werden.
@@ -2287,10 +2287,10 @@ nscd -i hosts
                 gestartet werden.
             </para>
             <para>
-                Windows-Clients, die in eine Samba 4-Domäne gejoint wurden,
+                Windows-Clients, die in eine Samba/AD-Domäne gejoint wurden,
                 akzeptieren nur signierte NTP-Zeitanfragen. Wird die
                 &ucsUCRV; <envar>ntp/signed</envar> auf <literal>yes</literal> gesetzt, werden die NTP-Pakete
-                durch Samba 4 signiert.
+                durch Samba/AD signiert.
             </para>
         </section>
     </section>

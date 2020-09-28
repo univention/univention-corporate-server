@@ -105,7 +105,7 @@
 	  <package>univention-mail-server</package> can be installed. Additional information can be found in
 	  <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	  A mail server can be installed on all server system roles. The use of a
-	  domain controller is recommended because of frequent LDAP accesses.
+	  UCS Directory Node is recommended because of frequent LDAP accesses.
 	</para>
 
 	<para>

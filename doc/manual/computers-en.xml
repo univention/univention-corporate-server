@@ -233,9 +233,9 @@
 					<entry>
 						The primary group of the host can be selected in this selection
 						field. This is only necessary when they deviate from the automatically created
-						default values. The default value for a DC master or DC backup is <systemitem class="groupname">DC
-						Backup Hosts</systemitem>, for a DC slave <systemitem class="groupname">DC Slave Hosts</systemitem> and
-						for member servers <systemitem class="groupname">Computers</systemitem>.
+						default values. The default value for a &ucsPrimaryDN; or &ucsBackupDN; is <systemitem class="groupname">DC
+						Backup Hosts</systemitem>, for a &ucsReplicaDN; <systemitem class="groupname">DC Slave Hosts</systemitem> and
+						for &ucsManagedNode;s; <systemitem class="groupname">Computers</systemitem>.
 					</entry>
 				</row>
 			</tbody>
@@ -755,8 +755,8 @@
 					</listitem>
 				</itemizedlist>
 				<para>
-					A local DNS server is set up on the &ucsMaster;, &ucsBackup; and
-					&ucsSlave; system roles. Here, you can configure which server should be
+					A local DNS server is set up on the &ucsPrimaryDN;, &ucsBackupDN; and
+					&ucsReplicaDN; system roles. Here, you can configure which server should be
 					primarily used for the name resolution by entering the <guimenu>Domain DNS
 					Server</guimenu>.
 				</para>
@@ -1395,10 +1395,10 @@ univention-config-registry search nscd
 				<para>
 					Alternatively, searches can also be performed for set variable values. This
 					request searches for all variables set to
-					<literal>master.example.com</literal>:
+					<literal>primary.example.com</literal>:
 				</para>
 				<programlisting language="sh">
-univention-config-registry search --value master.example.com
+univention-config-registry search --value primary.example.com
 				</programlisting>
 				<para>
 					Search templates in the form of regular expressions can also be used in the
@@ -1464,7 +1464,7 @@ univention-config-registry shell ldap/server/name
 				<programlisting language="sh">
 # eval "$(univention-config-registry shell ldap/server/name)"
 # echo "$ldap_server_name"
-master.firma.de
+primary.firma.de
 				</programlisting>
 			</section>
 		</section>
@@ -2320,7 +2320,7 @@ nscd -i hosts
 			of passwords can be disturbed; etc.
 		</para>
 		<para>
-			Usually the &ucsMaster; functions as the time server of a
+			Usually the &ucsPrimaryDN; functions as the time server of a
 			domain. With the &ucsUCR; variables <envar>timeserver</envar>,
 			<envar>timeserver2</envar> and <envar>timeserver3</envar> external NTP servers
 			can be included as time sources.
@@ -2330,9 +2330,9 @@ nscd -i hosts
 			<command>ntpdate</command>.
 		</para>
 		<para>
-			Windows clients joined in a Samba 4 domain only accept signed NTP time
+			Windows clients joined in a Samba/AD domain only accept signed NTP time
 			requests. If the &ucsUCRV; <envar>ntp/signed</envar> is set to
-			<literal>yes</literal>, the NTP replies are signed by Samba 4.
+			<literal>yes</literal>, the NTP replies are signed by Samba/AD.
 		</para>
 	</section>
 </section>

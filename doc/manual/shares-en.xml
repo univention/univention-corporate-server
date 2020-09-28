@@ -143,7 +143,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>Host</entry>
 		<entry>
 		  The server where the share is located.
-		  All of the domain controller master/backup/slave computers and &ucsMember;s
+		  All of the Primary/Backup/&ucsReplicaDN; computers and &ucsManagedNode;s
 		  entered in the LDAP directory for the domain are available for selection which
 		  are entered in a DNS forward lookup zone in the LDAP directory.
 		</entry>

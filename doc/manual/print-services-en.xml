@@ -164,7 +164,7 @@
 							become available.
 						</para>
 						<para>
-							Only domain controllers and &ucsMember;s on which
+							Only UCS Directory Node and &ucsManagedNode;s on which
 							the <package>univention-printserver</package> package is installed are
 							displayed in the list.
 						</para>

@@ -224,9 +224,9 @@
 	  <listitem>
 		<simpara>
 		  Bei der Installation jedes weiteren UCS-Systems muss als DNS-Server die IP-Adresse eines
-		  UCS-Domänencontroller-Systems angegeben werden. Dies ist notwendig, damit die automatische Erkennung
-		  des Domänencontroller Masters funktioniert. Im Zweifelsfall sollte hier die IP-Adresse des
-		  UCS-Domänencontroller Master-Systems angegeben werden.
+		  UCS Directory Nodes angegeben werden. Dies ist notwendig, damit die automatische Erkennung
+		  des &ucsPrimaryDN; funktioniert. Im Zweifelsfall sollte hier die IP-Adresse des
+		  UCS &ucsPrimaryDN; angegeben werden.
 		</simpara>
 	  </listitem>
 	  <listitem>
@@ -243,7 +243,7 @@
   <title>Einrichtung des root-Passworts</title>
   <para>
 	Für die Anmeldung am installierten System ist die Angabe eines Passworts für den Benutzer <systemitem class="username">root</systemitem> notwendig.
-	Wird ein &ucsMaster; installiert, wird dieses Passwort auch für den
+	Wird ein &ucsPrimaryDN; installiert, wird dieses Passwort auch für den
 	Benutzer <systemitem class="username">Administrator</systemitem> eingetragen.
 	Im späteren Betrieb können die Passworte der Benutzer <systemitem class="username">root</systemitem> und <systemitem class="username">Administrator</systemitem>
 	unabhängig voneinander verwaltet werden. Das Passwort muss im zweiten Feld
@@ -369,7 +369,7 @@
 	  <listitem>
 		<simpara>
 		  Im ersten Modus, <guimenu>Erstellen einer neuen UCS-Domäne</guimenu>, wird das erste
-		  System einer neuen UCS-Domäne konfiguriert: ein UCS-System mit der Systemrolle <emphasis>&ucsMaster;</emphasis>. In den
+		  System einer neuen UCS-Domäne konfiguriert: ein UCS-System mit der Systemrolle <emphasis>&ucsPrimaryDN;</emphasis>. In den
 		  folgenden Konfigurationsschritten werden die notwendigen Informationen zur Einrichtung eines neuen
 		  Verzeichnisdienstes, Authentifikationsdienstes sowie DNS-Servers abgefragt. Eine UCS-Domäne kann aus
 		  einem einzelnen oder mehreren UCS-Systemen bestehen. Zusätzliche UCS-Systeme können über den Modus
@@ -469,7 +469,7 @@
 	<para>
 	  In einer UCS-Domäne können Systeme in unterschiedlichen <emphasis>Systemrollen</emphasis>
 	  installiert werden. Das erste UCS-System, das einer Active Directory-Domäne beitritt, wird
-	  automatisch mit der Systemrolle &ucsMaster; konfiguriert. Wird dieser Modus während der Installation
+	  automatisch mit der Systemrolle &ucsPrimaryDN; konfiguriert. Wird dieser Modus während der Installation
 	  eines weiteren UCS-Systems ausgewählt, wird der Dialog zur Auswahl einer Systemrolle angezeigt.
 	  Die einzelnen Systemrollen werden im folgenden Abschnitt genauer beschrieben.
 	</para>
@@ -482,39 +482,39 @@
 	<title>Modus "Einer bestehenden UCS-Domäne beitreten"</title>
 	<para>
 	  In einer UCS-Domäne können Systeme in unterschiedlichen <emphasis>Systemrollen</emphasis>
-	  installiert werden. Das erste System einer UCS-Domäne wird immer mit der Systemrolle &ucsMaster;
+	  installiert werden. Das erste System einer UCS-Domäne wird immer mit der Systemrolle &ucsPrimaryDN;
 	  installiert. Zusätzliche UCS-Systeme können der Domäne später beitreten und mit einer der folgenden
 	  Systemrollen konfiguriert werden:
 	  <itemizedlist>
 		<listitem>
 		  <simpara>
-			<guimenu>&ucsBackup;</guimenu>
+			<guimenu>&ucsBackupDN;</guimenu>
 		  </simpara>
 		  <simpara>
-			Der &ucsBackup; dient als Fallback-System des DC Master. Sollte dieser
-			ausfallen, kann ein DC Backup die Rolle des DC Master dauerhaft übernehmen.
-			Auf Servern mit der Rolle &ucsBackup; werden alle
+			Der &ucsBackupDN; dient als Fallback-System des &ucsPrimaryDN;. Sollte dieser
+			ausfallen, kann ein &ucsBackupDN; die Rolle des &ucsPrimaryDN; dauerhaft übernehmen.
+			Auf Servern mit der Rolle &ucsBackupDN; werden alle
 			Domänendaten und SSL-Sicherheitszertifikate als Nur-Lese-Kopie gespeichert.
 		  </simpara>
 		</listitem>
 		<listitem>
 		  <simpara>
-			<guimenu>&ucsSlave;</guimenu>
+			<guimenu>&ucsReplicaDN;</guimenu>
 		  </simpara>
 		  <simpara>
-			Auf Servern mit der Rolle &ucsSlave; werden die Domänendaten als Nur-Lese-Kopie
-			gespeichert. Im Gegensatz zum &ucsBackup; werden jedoch nicht alle SSL-Sicherheitszertifikate
-			gespeichert. Da die Zugriffe der auf einem &ucsSlave; laufenden Dienste gegen den lokalen
-			LDAP-Verzeichnisdienst erfolgen, bieten sich DC Slave-System für Standortserver und für die Verteilung
+			Auf Servern mit der Rolle &ucsReplicaDN; werden die Domänendaten als Nur-Lese-Kopie
+			gespeichert. Im Gegensatz zum &ucsBackupDN; werden jedoch nicht alle SSL-Sicherheitszertifikate
+			gespeichert. Da die Zugriffe der auf einem &ucsReplicaDN; laufenden Dienste gegen den lokalen
+			LDAP-Verzeichnisdienst erfolgen, bieten sich &ucsReplicaDN;s für Standortserver und für die Verteilung
 			lastintensiver Dienste an.
 		  </simpara>
 		</listitem>
 		<listitem>
 		  <simpara>
-			<guimenu>&ucsMember;</guimenu>
+			<guimenu>&ucsManagedNode;</guimenu>
 		  </simpara>
 		  <simpara>
-			&ucsMember; sind Server-Systeme ohne lokalen LDAP-Verzeichnisdienst. Der Zugriff auf
+			&ucsManagedNode; sind Server-Systeme ohne lokalen LDAP-Verzeichnisdienst. Der Zugriff auf
 			Domänendaten erfolgt hierbei über andere Server der Domäne. Sie eignen sich daher für Dienste, die
 			keine lokale Datenbank für z.B. die Authentifizierung benötigen, beispielsweise Druck- und
 			Dateiserver.
@@ -527,9 +527,9 @@
 	  abgefragt.  Soll der Domänenbeitritt nicht automatisch während der Installation stattfinden, kann
 	  die Option <guimenu>Domänenbeitritt am Ende der Installation starten</guimenu> deaktiviert werden.
 	  Wurde während der Netzwerkkonfiguration der richtige DNS-Server ausgewählt, kann Univention
-	  Installer den Namen des &ucsMaster;-Systems automatisch bestimmen.  Falls doch in eine andere
-	  UCS-Domäne gejoined werden soll, kann die Option <guimenu>&ucsMaster; im DNS suchen</guimenu>
-	  deaktiviert und der vollständige Rechnername des gewünschten &ucsMaster; im Eingabefeld darunter
+	  Installer den Namen des &ucsPrimaryDN;-Systems automatisch bestimmen.  Falls doch in eine andere
+	  UCS-Domäne gejoined werden soll, kann die Option <guimenu>&ucsPrimaryDN; im DNS suchen</guimenu>
+	  deaktiviert und der vollständige Rechnername des gewünschten &ucsPrimaryDN; im Eingabefeld darunter
 	  eingetragen werden. Die für den Domänenbeitritt notwendigen Zugangsinformationen müssen in die
 	  beiden Eingabefelder <guimenu>Administrator-Kontoinformationen</guimenu> und
 	  <guimenu>Administrator-Passwort</guimenu>
@@ -583,10 +583,10 @@
   <para>
 	Mit der Option <guimenu>System nach der Installation aktualisieren</guimenu>
 	werden verfügbare Errata-Updates automatisch installiert. Zusätzlich werden auf
-	einem &ucsMaster; alle verfügbaren Patch-Level-Updates und Errata-Updates
+	einem &ucsPrimaryDN; alle verfügbaren Patch-Level-Updates und Errata-Updates
 	installiert. Auf allen übrigen Systemrollen werden alle Patch-Level-Updates
-	bis zum Installationsstand des &ucsMaster; eingerichtet. (Um den
-	Installationsstand zu prüfen, muss ein Login auf dem &ucsMaster;
+	bis zum Installationsstand des &ucsPrimaryDN; eingerichtet. (Um den
+	Installationsstand zu prüfen, muss ein Login auf dem &ucsPrimaryDN;
 	erfolgen. Dazu werden die in den Join-Optionen angegebenen Anmeldedaten
 	verwendet).
   </para>
@@ -623,7 +623,7 @@
 	IP-Adresse bzw. unter dem Rechnernamen erreichbar ist.
   </para>
   <para>
-	Wenn der Rechner als erstes System der UCS-Domäne (&ucsMaster;) installiert wurde, kann nun die Lizenz
+	Wenn der Rechner als erstes System der UCS-Domäne (&ucsPrimaryDN;) installiert wurde, kann nun die Lizenz
 	eingespielt werden (siehe <xref linkend="central:license"/>).
   </para>
 </section>

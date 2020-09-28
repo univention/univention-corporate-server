@@ -27,9 +27,9 @@
 	</para>
 	<para>
 		Central starting point for users and administrators for all following actions is the UCS portal page (cf. <xref linkend="fig-ucs-portal"/>).
-		By default, the portal page is available on the &ucsMaster;.
+		By default, the portal page is available on the &ucsPrimaryDN;.
 		It allows an overview of all Apps and further services which are installed in the UCS domain.
-		All other system roles show by default links to locally installed Apps as well as a link back to the portal page of the &ucsMaster;.
+		All other system roles show by default links to locally installed Apps as well as a link back to the portal page of the &ucsPrimaryDN;.
 		All aspects of the portal page can be customized to match one's needs (<xref linkend="central:portal"/>).
 	</para>
 	<para>
@@ -153,12 +153,12 @@
 		<listitem>
 			<simpara>
 			When logging in with the <systemitem class="username">Administrator</systemitem> account on
-			a &ucsMaster; or &ucsBackup;, UMC modules for the administration
+			a &ucsPrimaryDN; or &ucsBackupDN;, UMC modules for the administration
 			and configuration of the local system as well as UMC modules for the administration of data
 			in the LDAP directory are displayed.
 			The initial password of this account has been specified in the setup wizard during the installation.
 			It corresponds to the initial password of the local <systemitem class="username">root</systemitem> account.
-			<systemitem class="username">Administrator</systemitem> is also the account which should be used for the initial login at a newly installed &ucsMaster; system.
+			<systemitem class="username">Administrator</systemitem> is also the account which should be used for the initial login at a newly installed &ucsPrimaryDN; system.
 			</simpara>
 		</listitem>
 		<listitem>
@@ -204,16 +204,16 @@
 	</para>
 	<para>
 		By default, UCS is configured to have two portals.
-		The portal <emphasis>domain</emphasis> is assigned to the master and backup domain controllers of the domain.
+		The portal <emphasis>domain</emphasis> is assigned to the Primary and &ucsBackupDN;s of the domain.
 		In addition to all installed applications of the domain, links to &ucsUMC; as well as the server overview are shown on this portal page.
 		The portal <emphasis>local</emphasis> is assigned to all other server roles in the domain.
-		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsMaster; are shown.
+		Herein, links to locally installed Apps, to the local &ucsUMC; instance, as well as a link back to the &ucsPrimaryDN; are shown.
 	</para>
 	<para>
 		Custom portals and portal entries can be defined and managed either via the UMC module <guimenu>Portal settings</guimenu> or directly on the portal site.
 	</para>
 	<para>
-		After logging in to the portal on the DC Master or DC Backup, members of the <systemitem class="groupname">Domain Admins</systemitem> group can create new
+		After logging in to the portal on the &ucsPrimaryDN; or &ucsBackupDN;, members of the <systemitem class="groupname">Domain Admins</systemitem> group can create new
 		entries on the portal, modify existing entries, modify the order or the design after clicking on the yellow edit icon.
 	</para>
 	<para>
@@ -239,7 +239,7 @@
 			The following describes how to make the UMC module <guimenu>Portal settings</guimenu> accessible to selected groups or users. This example assumes that a group <guimenu>Portal Admins</guimenu> has been created and members of this group are supposed to be given access to the portal settings.
 		</para>
 		<para>
-			On a <guimenu>domain controller master system</guimenu> an ACL file has to be created first:
+			On a <guimenu>&ucsPrimaryDN;</guimenu> an ACL file has to be created first:
 		<screen>
 /opt/62my-portal-acl.acl
 		</screen>
@@ -290,7 +290,7 @@ udm settings/ldapacl remove \
 		<para>
 			UMC modules for the administration of all the data included in the LDAP
 			directory (such as users, groups and computer accounts) are only
-			provided on &ucsMaster; and &ucsBackup;. Changes made in these
+			provided on &ucsPrimaryDN; and &ucsBackupDN;. Changes made in these
 			modules are applied to the whole domain.
 		</para>
 		<para>
@@ -309,7 +309,7 @@ udm settings/ldapacl remove \
 	<section id="central:license">
 		<title>Activation of UCS license / license overview</title>
 		<para>
-			The current license status can be shown on a &ucsMaster; of a
+			The current license status can be shown on a &ucsPrimaryDN; of a
 			domain by clicking on the user menu in the top right line of the
 			screen. Below the menu item <guimenu>License</guimenu> the entry
 			<guimenu>License information</guimenu> can be selected to open a
@@ -1340,7 +1340,7 @@ udm settings/ldapacl remove \
 	<para>
 		&ucsUDM; can be started with the
 		<command>univention-directory-manager</command> command (short form
-		<command>udm</command>) as the <systemitem class="username">root</systemitem> user on the &ucsMaster;.
+		<command>udm</command>) as the <systemitem class="username">root</systemitem> user on the &ucsPrimaryDN;.
 	</para>
 	<para>
 		&ucsUMC; and &ucsUDM; use the same domain management modules, i.e.,

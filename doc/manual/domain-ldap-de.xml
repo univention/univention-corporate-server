@@ -34,7 +34,7 @@
 		sind.
 	</para>
 	<para>
-		Auf dem &ucsMaster; wird die Certificate Authority (CA) der UCS-Domäne
+		Auf dem &ucsPrimaryDN; wird die Certificate Authority (CA) der UCS-Domäne
 		betrieben. Dort wird für jedes der Domäne beigetretene System ein
 		SSL-Zertifikat generiert. Weitere Informationen finden sich in <xref
 		linkend="domain:ssl"/>.
@@ -82,9 +82,9 @@
 			Befehl <command>univention-join</command> bzw. mit &ucsUMC;.
 		</para>
 		<para>
-			Der &ucsMaster; sollte immer auf dem aktuellsten Release-Stand der Domäne
+			Der &ucsPrimaryDN; sollte immer auf dem aktuellsten Release-Stand der Domäne
 			installiert sein, da beim Join eines Systems in aktuellerer Version gegen einen
-			älteren DC Master Probleme auftreten können.
+			älteren &ucsPrimaryDN; können.
 		</para>
 		<para>
 			Beim Beitritt eines Rechners wird für diesen ein Rechnerkonto angelegt,
@@ -97,13 +97,13 @@
 		<para>
 		  Der Domänenbeitritt wird auf Client-Seite in der Logdatei
 		  <filename>/var/log/univention/join.log</filename> aufgezeichnet, die zur Fehleranalyse
-		  herangezogen werden kann. Auf dem &ucsMaster; ausgeführte Aktionen werden in der Logdatei
+		  herangezogen werden kann. Auf dem &ucsPrimaryDN; ausgeführte Aktionen werden in der Logdatei
 		  <filename>/home/<replaceable>Join-Account</replaceable>/.univention-server-join.log</filename> abgelegt.
 		</para>
 		<para>
 			Der Join-Vorgang kann jederzeit wiederholt werden. Nach bestimmten
 			administrativen Schritten (etwa nach Änderungen wichtiger Systemeigenschaften
-			auf dem &ucsMaster;) kann ein erneuter Beitritt der Systeme sogar zwingend
+			auf dem &ucsPrimaryDN;) kann ein erneuter Beitritt der Systeme sogar zwingend
 			erforderlich sein.
 		</para>
 
@@ -116,12 +116,12 @@
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					Der &ucsMaster; wird im Regelfall durch eine DNS-Abfrage
+					Der &ucsPrimaryDN; wird im Regelfall durch eine DNS-Abfrage
 					ermittelt. Wenn das nicht möglich sein sollte (z.B. weil ein Standortserver mit
 					einer abweichenden DNS-Domäne beitreten soll), lässt sich der Rechnername des
-					DC Master auch durch den Parameter <option>-dcname <replaceable>HOSTNAME</replaceable></option> direkt
+					&ucsPrimaryDN; den Parameter <option>-dcname <replaceable>HOSTNAME</replaceable></option> direkt
 					angegeben werden. Der Rechnername muss dabei als vollqualifizierter Name
-					angeben werden, also beispielsweise <systemitem class="fqdomainname">master.firma.de</systemitem>.
+					angeben werden, also beispielsweise <systemitem class="fqdomainname">primary.firma.de</systemitem>.
 					</simpara>
 				</listitem>
 				<listitem>
@@ -161,7 +161,7 @@
 				Wie bei der Durchführung über die Kommandozeile sind für Domänenbeitritt
 				Benutzername und Passwort eines Benutzers notwendig, der berechtigt ist,
 				Rechner der Domäne hinzuzufügen.
-				Ebenfalls wird der &ucsMaster; über eine DNS-Abfrage automatisch ermittelt,
+				Ebenfalls wird der &ucsPrimaryDN; über eine DNS-Abfrage automatisch ermittelt,
 				kann aber auch explizit im angezeigten Dialogfeld eingetragen werden.
 			</para>
 			<para>
@@ -222,8 +222,8 @@
 
 			<para>
 			  Wird <command>univention-run-join-scripts</command> auf einer anderen Systemrolle als
-			  &ucsMaster; ausgeführt, so wird der Benutzer nach einem Benutzernamen
-			  und einem Passwort gefragt. Auf dem &ucsMaster; kann dies durch die Option
+			  &ucsPrimaryDN; ausgeführt, so wird der Benutzer nach einem Benutzernamen
+			  und einem Passwort gefragt. Auf dem &ucsPrimaryDN; kann dies durch die Option
 			  <option>--ask-pass</option> erreicht werden.
 			</para>
 		  </section>
@@ -275,7 +275,7 @@
 		</para>
 		<para>
 			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
-			Samba 4 muss die DNS-Konfiguration des Clients so eingerichtet sein, dass
+			Samba/AD muss die DNS-Konfiguration des Clients so eingerichtet sein, dass
 			DNS-Einträge aus der DNS-Zone der UCS-Domäne aufgelöst werden können. Außerdem
 			muss die Zeit auf dem Client-System mit der Zeit auf dem Domänencontroller
 			synchronisiert sein.
@@ -475,50 +475,50 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		verschiedenen Systemrollen kurz charakterisiert:
 	</para>
 
-	<section id="domain-ldap:Domaenencontroller_Master">
-		<title>Domänencontroller Master</title>
+	<section id="domain-ldap:Primary_Directory_Node">
+		<title>&ucsPrimaryDN;</title>
 		<para>
-			Ein System mit der Rolle &ucsMaster; (kurz DC Master) ist der primäre
-			Domänencontroller einer UCS-Domäne und wird immer als erstes System
-			installiert. Auf dem DC Master werden die Domänendaten (wie z.B. Benutzer,
+			Ein System mit der Rolle &ucsPrimaryDN; ist das führende System
+			einer UCS-Domäne und wird immer als erstes System
+			installiert. Auf dem &ucsPrimaryDN; werden die Domänendaten (wie z.B. Benutzer,
 			Gruppen, Drucker) und die SSL-Sicherheitszertifikate gespeichert. Kopien
-			dieser Daten werden automatisch auf Server mit der Rolle &ucsBackup;
+			dieser Daten werden automatisch auf Server mit der Rolle &ucsBackupDN;
 			übertragen.
 		</para>
 	</section>
 
-	<section id="domain-ldap:Domaenencontroller_Backup">
-		<title>Domänencontroller Backup</title>
+	<section id="domain-ldap:Backup_Directory_Node">
+		<title>&ucsBackupDN;</title>
 		<para>
-			Auf Servern mit der Rolle &ucsBackup; (kurz DC Backup) werden alle
+			Auf Servern mit der Rolle &ucsBackupDN; werden alle
 			Domänendaten und SSL-Sicherheitszertifikate als Nur-Lese-Kopie gespeichert.
 		</para>
 		<para>
-			Der &ucsBackup; dient als Fallback-System des &ucsMaster;. Sollte dieser
-			ausfallen, kann ein &ucsBackup; die Rolle des &ucsMaster; dauerhaft übernehmen
+			Der &ucsBackupDN; dient als Fallback-System des &ucsPrimaryDN;. Sollte dieser
+			ausfallen, kann ein &ucsBackupDN; die Rolle des &ucsPrimaryDN; dauerhaft übernehmen
 			(siehe <xref linkend="domain:backup2master"/>).
 		</para>
 	</section>
 
-	<section id="domain-ldap:Domaenencontroller_Slave">
-		<title>Domänencontroller Slave</title>
+	<section id="domain-ldap:Replica_Directory_Node">
+		<title>&ucsReplicaDN;</title>
 		<para>
-			Auf Servern mit der Rolle &ucsSlave; (kurz DC Slave) werden die
-			Domänendaten als Nur-Lese-Kopie gespeichert. Im Gegensatz zum &ucsBackup; werden
+			Auf Servern mit der Rolle &ucsReplicaDN; werden die
+			Domänendaten als Nur-Lese-Kopie gespeichert. Im Gegensatz zum &ucsBackupDN; werden
 			jedoch nicht alle SSL-Sicherheitszertifikate gespeichert. Da die Zugriffe der
-			auf einem &ucsSlave; laufenden Dienste gegen den lokalen LDAP-Datenbestand
-			erfolgen, bieten sich DC Slave-System für Standortserver und für die Verteilung
+			auf einem &ucsReplicaDN; laufenden Dienste gegen den lokalen LDAP-Datenbestand
+			erfolgen, bieten sich &ucsReplicaDN;s für Standortserver und für die Verteilung
 			lastintensiver Dienste an.
 		</para>
 		<para>
-			Ein DC Slave-System kann nicht zum DC Master hochgestuft werden.
+			Ein &ucsReplicaDN; kann nicht zum &ucsPrimaryDN; hochgestuft werden.
 		</para>
 	</section>
 
-	<section id="domain-ldap:Memberserver">
-		<title>&ucsMember;</title>
+	<section id="domain-ldap:Managed_Node">
+		<title>&ucsManagedNode;</title>
 		<para>
-			&ucsMember; sind Server-Systeme ohne lokalen LDAP-Server. Der Zugriff auf
+			&ucsManagedNode; sind Server-Systeme ohne lokalen LDAP-Server. Der Zugriff auf
 			Domänendaten erfolgt hierbei über andere Server der Domäne.
 		</para>
 	</section>
@@ -543,7 +543,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 	<section id="domain-ldap:macos">
 	  <title>Mac OS X</title>
 	  <para>
-		Mac OS X-Systeme können einer UCS-Domäne mit Samba 4 beitreten. Weitere Hinweise finden sich
+		Mac OS X-Systeme können einer UCS-Domäne mit Samba/AD beitreten. Weitere Hinweise finden sich
 		in <xref linkend="joining-macos"/>.
 	  </para>
 	</section>
@@ -567,7 +567,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 	<section id="domain-ldap:Windows_Domaenencontroller">
 		<title>Windows Domänencontroller</title>
 		<para>
-			Windows-Domänencontroller in einer Samba 4-Umgebung werden mit dieser
+			Windows-Domänencontroller in einer Samba/AD-Umgebung werden mit dieser
 			Systemrolle betrieben.
 		</para>
 	</section>
@@ -625,7 +625,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 			<para>
 			  Wenn LDAP-Schema-Erweiterungen als Teil von Softwarepaketen ausgeliefert werden sollen,
 			  besteht auch die Möglichkeit diese zu paketieren und durch ein Univention Directory
-			  Listener-Modul an alle &ucsBackup;-Server der Domäne zu verteilen. Weitere Hinweise finden sich
+			  Listener-Modul an alle &ucsBackupDN;-Server der Domäne zu verteilen. Weitere Hinweise finden sich
 			  in <xref linkend="packaging-schema-extensions"/>.
 			</para>
 
@@ -643,7 +643,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 				Objektklassen oder Attribute scheitert.
 			</para>
 			<para>
-				Auf dem &ucsMaster; wird beim Start des OpenLDAP-Servers über alle
+				Auf dem &ucsPrimaryDN; wird beim Start des OpenLDAP-Servers über alle
 				Verzeichnisse mit Schema-Definitionen eine Prüfsumme erzeugt. Diese Prüfsumme
 				wird mit der letzten in der Datei
 				<filename>/var/lib/univention-ldap/schema/md5</filename> gespeicherten
@@ -865,8 +865,8 @@ slapcat &gt; ldapdaten.txt
 			</para>
 			<caution>
 				<para>
-					Das Paket ist auf dem Domaincontroller Master- sowie den
-					Domaincontroller Backup-Systemen zu installieren. Während der Installation wird
+					Das Paket ist auf dem &ucsPrimaryDN; sowie den
+					&ucsBackupDN;s zu installieren. Während der Installation wird
 					der LDAP-Server neu gestartet und ist kurzzeitig nicht erreichbar.
 				</para>
 			</caution>
@@ -936,14 +936,14 @@ slapcat &gt; ldapdaten.txt
 	</section>
 
 	<section id="domain-ldap:Konfiguration_des_Verzeichnis-Dienstes_bei_Verwendung_von_Samba_4">
-		<title>Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba 4</title>
+		<title>Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba/AD</title>
 		<para>
 			Standardmäßig ist der OpenLDAP-Server so konfiguriert, dass er
 			zusätzlich zu den Standard-Ports 389 und 636 auch auf den Ports 7389 und 7636
 			Anfragen entgegennimmt.
 		</para>
 		<para>
-			Wird Samba 4 eingesetzt, belegt der Samba-Domänencontroller-Dienst die
+			Wird Samba/AD eingesetzt, belegt der Samba/AD-Domänencontroller-Dienst die
 			Ports 389 und 636. In diesem Fall wird OpenLDAP automatisch umkonfiguriert, so
 			dass nur noch die Ports 7389 und 7636 eingesetzt werden. Dies ist insbesondere
 			bei der Konfiguration von syncrepl zu beachten (siehe <xref
@@ -955,7 +955,7 @@ slapcat &gt; ldapdaten.txt
 	<section id="domain-ldap:nightlybackup">
 	  <title>Tägliche Sicherung der LDAP-Daten</title>
 	  <para>
-		Auf dem &ucsMaster; und allen &ucsBackup;-Systemen wird der Inhalt des LDAP-Verzeichnisses
+		Auf dem &ucsPrimaryDN; und allen &ucsBackupDN;-Systemen wird der Inhalt des LDAP-Verzeichnisses
 		durch einen Cron-Job täglich gesichert.
 	  </para>
 
@@ -983,7 +983,7 @@ slapcat &gt; ldapdaten.txt
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Auf dem &ucsMaster; (und eventuell vorhandenen &ucsBackup;-Systemen) überwacht der
+			Auf dem &ucsPrimaryDN; (und eventuell vorhandenen &ucsBackupDN;-Systemen) überwacht der
 			<emphasis>&ucsUDN;</emphasis>-Dienst Änderungen im LDAP-Verzeichnis und stellt die
 			aufgezeichneten Änderungen transaktionsbasiert den &ucsUDL;-Diensten auf den
 			weiteren UCS-Systemen zur Verfügung.
@@ -998,7 +998,7 @@ slapcat &gt; ldapdaten.txt
 
 	  <para>
 		Die aktiven &ucsUDL;-Instanzen der Domäne verbinden sich zu einem &ucsUDN;-Dienst.
-		Wird auf dem &ucsMaster; eine LDAP-Änderung durchgeführt (alle
+		Wird auf dem &ucsPrimaryDN; eine LDAP-Änderung durchgeführt (alle
 		anderen LDAP-Server der Domäne sind nur lesend), wird diese durch den &ucsUDN;
 		registriert und an die Listener-Instanzen gemeldet.
 	  </para>
@@ -1035,10 +1035,10 @@ slapcat &gt; ldapdaten.txt
 
 	  <para>
 		Der Listener/Notifier-Mechanismus arbeitet transaktionsbasiert. Für jede Änderung im
-		LDAP-Verzeichnis des &ucsMaster; wird eine Transaktions-ID erhöht. Eine &ucsUDL;-Instanz,
+		LDAP-Verzeichnis des &ucsPrimaryDN; wird eine Transaktions-ID erhöht. Eine &ucsUDL;-Instanz,
 		die mehrere Transaktionen verpasst hat - weil zum Beispiel der Rechner
 		ausgeschaltet war - fragt bei erneuter Verfügbarkeit der Verbindung automatisch alle
-		fehlenden Transaktionen ab, bis seine lokale Transaktions-ID der des &ucsMaster; entspricht.
+		fehlenden Transaktionen ab, bis seine lokale Transaktions-ID der des &ucsPrimaryDN; entspricht.
 	  </para>
 	</section>
 
@@ -1071,27 +1071,27 @@ slapcat &gt; ldapdaten.txt
 		<para>
 		  Im Regelbetrieb der Domänenreplikation (keine hohe Last auf den Systemen, keine Störungen
 		  im Netzwerk) ist die Verzögerung zwischen der Änderung in &ucsUMC; bis zur
-		  Replikation auf z.B. eines &ucsSlave; kaum merkbar. Eine möglicherweise unvollständige
+		  Replikation auf z.B. eines &ucsReplicaDN; kaum merkbar. Eine möglicherweise unvollständige
 		  Replikation kann durch einen Vergleich der Transaktions-IDs von Listener- und
 		  Notifier-Dienst identifiziert werden.
 		</para>
 
 		<para>
-		  Auf dem &ucsMaster; werden die vom Notifier-Dienst registrierten Transaktionen in
+		  Auf dem &ucsPrimaryDN; werden die vom Notifier-Dienst registrierten Transaktionen in
 		  aufsteigender Reihenfolge in die Datei
 		  <filename>/var/lib/univention-ldap/notify/transaction</filename> geschrieben. Ein
 		  Beispiel:
 
 		  <screen>
-root@dcmaster:~# tail -1 /var/lib/univention-ldap/notify/transaction
-836 cn=dcslave3,cn=dc,cn=computers,dc=firma,dc=de m
+root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction
+836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m
 		  </screen>
 
 		  Auf dem Listener-System wird die zuletzt vom Listener empfangene Transaktion in der Datei
 		  <filename>/var/lib/univention-directory-listener/notifier_id</filename> gespeichert:
 
 		  <screen>
-root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
+root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id
 836
 		  </screen>
 
@@ -1151,7 +1151,7 @@ univention-directory-listener-ctrl resync cups-printers
 		(Certification Authority, CA) herausgegeben und signiert wird.
 	</para>
 	<para>
-		UCS bringt seine eigene CA mit, die bei der Installation des &ucsMaster;
+		UCS bringt seine eigene CA mit, die bei der Installation des &ucsPrimaryDN;
 		automatisch eingerichtet wird und von der jedes UCS-System im Rahmen des
 		Domänenbeitritts automatisch ein Zertifikat für sich selbst und das öffentliche
 		Zertifikat der CA bezieht. Diese CA tritt als Root-CA auf, signiert ihr eigenes
@@ -1160,7 +1160,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<para>
 	  Die Eigenschaften der CA werden bei der Installation basierend auf Systemeinstellungen wie der Locale
-	  automatisch festgelegt. Diese Einstellungen können auf dem &ucsMaster; im UMC-Modul
+	  automatisch festgelegt. Diese Einstellungen können auf dem &ucsPrimaryDN; im UMC-Modul
 	  <guimenu>Zertifikats-Einstellungen</guimenu> nachträglich angepasst werden.
 	</para>
 
@@ -1177,21 +1177,21 @@ univention-directory-listener-ctrl resync cups-printers
 	<!-- werden kann, ist in WIKIREF-23879 dokumentiert. -->
 
 	<para>
-		Die UCS-CA befindet sich immer auf dem &ucsMaster;. Auf jedem &ucsBackup;
+		Die UCS-CA befindet sich immer auf dem &ucsPrimaryDN;. Auf jedem &ucsBackupDN;
 		wird eine Kopie der CA vorgehalten, die über einen Cronjob standardmäßig alle
-		20 Minuten mit der CA auf dem Domänencontroller Master synchronisiert wird.
+		20 Minuten mit der CA auf dem &ucsPrimaryDN; synchronisiert wird.
 	</para>
 	<caution>
 		<para>
-			Die CA wird nur vom &ucsMaster; zum &ucsBackup; synchronisiert und nicht
-			umgekehrt. Es sollte also ausschließlich die CA auf dem &ucsMaster; verwendet
+			Die CA wird nur vom &ucsPrimaryDN; zum &ucsBackupDN; synchronisiert und nicht
+			umgekehrt. Es sollte also ausschließlich die CA auf dem &ucsPrimaryDN; verwendet
 			werden.
 		</para>
 	</caution>
 	<para>
-		Wird ein &ucsBackup; zum &ucsMaster; hochgestuft (siehe <xref
+		Wird ein &ucsBackupDN; zum &ucsPrimaryDN; hochgestuft (siehe <xref
 		linkend="domain:backup2master"/>), so kann die CA auf dem dann neuen
-		&ucsMaster; direkt verwendet werden.
+		&ucsPrimaryDN; direkt verwendet werden.
 	</para>
 	<para>
 		Das UCS-Root-Zertifikat hat - ebenso wie die damit erstellten
@@ -1240,7 +1240,7 @@ univention-directory-listener-ctrl resync cups-printers
 		diesem KDC und erhält ein Authentizierungs-Token, das sogenannte Ticket, das
 		zur Authentizierung innerhalb einer Kerberos-Umgebung (der sogenannten Kerberos
 		Realm) verwendet werden kann. Der Name der Kerberos Realm wird im Rahmen der Installation
-		des &ucsMaster; konfiguriert und in der	&ucsUCRV; <envar>kerberos/realm</envar>
+		des &ucsPrimaryDN; konfiguriert und in der	&ucsUCRV; <envar>kerberos/realm</envar>
 		gespeichert. Der Name der Kerberos-Realm kann nachträglich nicht angepasst werden.
 	</para>
 	<para>
@@ -1251,24 +1251,24 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<para>
 	  In &ucsUCS; wird die Kerberos-Implementierung Heimdal verwendet. Auf
-	  UCS-Domänencontroller-Systemen ohne Samba 4 wird ein eigenständiger Heimdal-Dienst gestartet,
-	  während auf Samba 4-DCs Kerberos durch eine in Samba integrierte Heimdal-Version
-	  bereitgestellt wird. Verwendet man eine gemischte Umgebung aus UCS-Domänencontrollern mit
-	  Samba 4 und UCS-Domänencontrollern ohne Samba 4, so basieren beide Kerberos-Umgebungen auf
-	  identischen Daten (diese werden zwischen Samba 4 und OpenLDAP durch den Univention S4
+	  UCS Directory Nodes ohne Samba/AD wird ein eigenständiger Heimdal-Dienst gestartet,
+	  während auf Samba/AD-DCs Kerberos durch eine in Samba integrierte Heimdal-Version
+	  bereitgestellt wird. Verwendet man eine gemischte Umgebung aus UCSD Directory Nodes mit
+	  Samba/AD und UCS Directory Nodes ohne Samba/AD, so basieren beide Kerberos-Umgebungen auf
+	  identischen Daten (diese werden zwischen Samba/AD und OpenLDAP durch den Univention S4
 	  Connector synchronisiert (siehe <xref linkend="windows:s4connector"/>)).
 	</para>
 
 	<para>
 	  Standardmäßig wird der KDC über einen DNS-Servicerecord ausgewählt. Der von einem System
 	  verwendete KDC kann durch die &ucsUCRV; <envar>kerberos/kdc</envar> umkonfiguriert werden.
-	  Wird Samba 4 auf einem System der Domäne installiert, wird der Servicerecord umkonfiguriert,
-	  so dass nur noch die KDCs auf Samba 4-Basis angeboten werden. In einer gemischten Umgebung ist
-	  es empfehlenswert nur noch die Samba 4-KDCs zu verwenden.
+	  Wird Samba/AD auf einem System der Domäne installiert, wird der Servicerecord umkonfiguriert,
+	  so dass nur noch die KDCs auf Samba/AD-Basis angeboten werden. In einer gemischten Umgebung ist
+	  es empfehlenswert nur noch die Samba/AD-KDCs zu verwenden.
 	</para>
 
 	<para>
-		Auf dem &ucsMaster; läuft der Kerberos-Adminserver, auf dem administrative
+		Auf dem &ucsPrimaryDN; läuft der Kerberos-Adminserver, auf dem administrative
 		Einstellungen der Domäne vorgenommen werden können. Die meisten Einstellungen
 		werden in Univention Corporate Server aus dem LDAP-Verzeichnis bezogen, so dass
 		die wichtigste verbleibende Funktion das Ändern von Passwörtern
@@ -1283,7 +1283,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>SAML Identity Provider</title>
 	<para>
 	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von Authentifizierungsinformationen, der <foreignphrase>Single Sign-On</foreignphrase> über Domänengrenzen hinweg erlaubt.
-	  UCS stellt auf dem &ucsMaster; und den &ucsBackup; einen ausfallsicheren SAML Identity Provider bereit.
+	  UCS stellt auf dem &ucsPrimaryDN; und den &ucsBackupDN; einen ausfallsicheren SAML Identity Provider bereit.
 	  Über ein kryptografisches Zertifikat wird der SAML Identity Provider bei einem externen Dienst fest registriert und vertraut diesem.
 	  Der Benutzer authentifiziert sich dann einmalig gegenüber UCS und kann den Dienst ohne erneute Authentifizierung nutzen.
 	</para>
@@ -1300,8 +1300,8 @@ univention-directory-listener-ctrl resync cups-printers
 		Die DNS-Server der Domäne sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, im Normalfall <uri>ucs-sso.<replaceable>domainname</replaceable></uri>, auflösen zu können.
 	</para>
 	<para>
-		Der UCS Identity Provider wird auf dem &ucsMaster; und &ucsBackup; mit der Installation automatisch eingerichtet.
-		Um die Ausfallsicherheit innerhalb der Domäne zu erhöhen, können weitere Systeme der Rolle &ucsBackup; verfügbar gemacht werden.
+		Der UCS Identity Provider wird auf dem &ucsPrimaryDN; und &ucsBackupDN; mit der Installation automatisch eingerichtet.
+		Um die Ausfallsicherheit innerhalb der Domäne zu erhöhen, können weitere Systeme der Rolle &ucsBackupDN; verfügbar gemacht werden.
 		Für den ausfallsicheren Zugriff auf den UCS Identity Provider wird standardmäßig der DNS-Eintrag <uri>ucs-sso.<replaceable>domainname</replaceable></uri> registriert.
 		Das für diesen Eintrag vorgesehene TLS Zertifikat wird auf allen beteiligten Systemen der Domäne vorgehalten.
 		Es wird empfohlen, das Wurzelzertifikat der UCS Domäne auf allen Rechnern, die <foreignphrase>Single Sign-On</foreignphrase> nutzen, zu installieren.
@@ -1518,7 +1518,7 @@ univention-directory-listener-ctrl resync cups-printers
 		Der standardmäßig eingerichtete Endpunkt ist <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri>.
 		Weitere Einträge können durch das Setzen von &ucsUCRV;n in der Form <envar>saml/idp/entityID/supplement/<replaceable>identifier</replaceable>=true</envar> erzeugt werden.
 		Diese müssen auf allen Servern, die den UCS Identity Provider zur Verfügung stellen, gesetzt werden.
-		Typischerweise sind dies der DC Master und alle DC Backup Server.
+		Typischerweise sind dies der &ucsPrimaryDN; und alle Server der Rolle &ucsBackupDN;.
 		Anschließend muss der <systemitem class="service">apache2</systemitem> Dienst neu geladen werden.
 		Um beispielsweise einen weiteren Eintrag unter der URI <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/<replaceable>secondIDP</replaceable>/saml2/idp/metadata.php</uri> einzurichten, muss die &ucsUCRV; <envar>saml/idp/entityID/supplement/secondIDP=true</envar> gesetzt werden.
 	</para>
@@ -1534,7 +1534,7 @@ univention-directory-listener-ctrl resync cups-printers
   </para>
   <para>
 	Die App kann grundsätzlich auf allen Systemrollen installiert werden.
-	Bei einer Installation auf einem UCS System der Rolle &ucsMaster; oder &ucsBackup; wird der <application>OpenID Connect Provider</application> unter dem DNS Eintrag für den <foreignphrase>Single Sign-On</foreignphrase> verfügbar gemacht, im Normalfall ist dies <uri>ucs-sso.<replaceable>domain.name</replaceable></uri>.
+	Bei einer Installation auf einem UCS System der Rolle &ucsPrimaryDN; oder &ucsBackupDN; wird der <application>OpenID Connect Provider</application> unter dem DNS Eintrag für den <foreignphrase>Single Sign-On</foreignphrase> verfügbar gemacht, im Normalfall ist dies <uri>ucs-sso.<replaceable>domain.name</replaceable></uri>.
 	Wird die App auf einer anderen Systemrolle installiert, kann der Provider statt dessen direkt über den Hostnamen erreicht werden.
 	Es sollte sichergestellt werden, dass die App auf allen Servern installiert ist, die unter dem <uri>ucs-sso</uri> DNS CNAME erreichbar sind.
 	Die Synchronisation von Session Informationen zwischen mehreren Instanzen des OIDC Providers ist nicht vorkonfiguriert.
@@ -1609,7 +1609,7 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
   <para>
 	Der angebundene Web-Dienst braucht für seine Konfiguration noch Informationen über die <application>OpenID Connect</application> Endpunkte der Provider-App.
 	Diese sind bei installierter Provider-App unter der URL <uri>https://ucs-sso.<replaceable>domain.name</replaceable>/.well-known/openid-configuration</uri> einsehbar.
-	Wurde die Provider-App auf einem anderen System als &ucsMaster; oder &ucsBackup; installiert, ist wie oben beschrieben statt <uri>ucs-sso.domain.name</uri> der FQDN des jeweiligen Servers zu verwenden.
+	Wurde die Provider-App auf einem anderen System als &ucsPrimaryDN; oder &ucsBackupDN; installiert, ist wie oben beschrieben statt <uri>ucs-sso.domain.name</uri> der FQDN des jeweiligen Servers zu verwenden.
   </para>
   <para>
 	Bei der Verwendung von <application>OpenID Connect</application> ist auf korrekte, auflösbare DNS Namen und verifizierbare Zertifikate zu achten.
@@ -1639,43 +1639,43 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
 </section>
 
 <section id="domain:backup2master">
-	<title>Umwandlung eines &ucsBackup; zum neuen &ucsMaster;</title>
+	<title>Umwandlung eines &ucsBackupDN; zum neuen &ucsPrimaryDN;</title>
 	<para>
-		Eine UCS Domäne hat immer genau einen &ucsMaster;, kann aber beliebig viele
-		&ucsBackup; beinhalten. Ein &ucsBackup; speichert alle Domänendaten und alle
-		SSL-Sicherheitszertifikate als Kopie, im Gegensatz zum &ucsMaster;
+		Eine UCS Domäne hat immer genau einen &ucsPrimaryDN;, kann aber beliebig viele
+		&ucsBackupDN; beinhalten. Ein &ucsBackupDN; speichert alle Domänendaten und alle
+		SSL-Sicherheitszertifikate als Kopie, im Gegensatz zum &ucsPrimaryDN;
 		können jedoch keine schreibenden Änderungen vorgenommen werden.
 	</para>
 	<para>
-		Jeder &ucsBackup; kann zu einem &ucsMaster; umgewandelt werden. Hierfür
+		Jeder &ucsBackupDN; kann zu einem &ucsPrimaryDN; umgewandelt werden. Hierfür
 		gibt es zwei typische Anwendungsfälle:
 	</para>
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			Im Notfall nach einem Hardwareausfall des &ucsMaster;
+			Im Notfall nach einem Hardwareausfall des &ucsPrimaryDN;
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			Zum geplanten Ersetzen des &ucsMaster; durch neue Hardware oder Wechsel der Architektur von i386 auf amd64
+			Zum geplanten Ersetzen des &ucsPrimaryDN; durch neue Hardware oder Wechsel der Architektur von i386 auf amd64
 			</simpara>
 		</listitem>
 	</itemizedlist>
 	<caution>
 		<para>
-		Die Umwandlung eines &ucsBackup; in einen &ucsMaster; ist ein tiefgreifender
+		Die Umwandlung eines &ucsBackupDN; in einen &ucsPrimaryDN; ist ein tiefgreifender
 		Konfigurationsschritt und sollte gründlich vorbereitet werden! Die Umwandlung kann nicht rückgängig
 		gemacht werden.
 		</para>
 		<para>
-		Der zu ersetzende &ucsMaster; muss vor Beginn der Umwandlung abgeschaltet werden und darf weder während
+		Der zu ersetzende &ucsPrimaryDN; muss vor Beginn der Umwandlung abgeschaltet werden und darf weder während
 		der Umwandlung noch im Anschluss daran wieder in Betrieb genommen werden!
 		</para>
 		<para>
-		Im Vorfeld muss die installierte Software sowie die aktuelle Konfiguration zwischen &ucsMaster; und &ucsBackup; abgeglichen werden.
-		Wenn der &ucsMaster; wegen eines Ausfalls nicht mehr verfügbar ist, muss eine Sicherung herangezogen werden.
-		Im Nachgang an die Umwandlung müssen alle evtl. verbliebenen Referenzen auf den alten &ucsMaster; entfernt bzw. korrigiert werden.
+		Im Vorfeld muss die installierte Software sowie die aktuelle Konfiguration zwischen &ucsPrimaryDN; und &ucsBackupDN; abgeglichen werden.
+		Wenn der &ucsPrimaryDN; wegen eines Ausfalls nicht mehr verfügbar ist, muss eine Sicherung herangezogen werden.
+		Im Nachgang an die Umwandlung müssen alle evtl. verbliebenen Referenzen auf den alten &ucsPrimaryDN; entfernt bzw. korrigiert werden.
 		</para>
 	</caution>
 	<para>
@@ -1683,16 +1683,16 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
 		relevanten Dienste wie LDAP, DNS, Kerberos und Samba. Der Abgleich der
 		installierten Software muss manuell erfolgen (über die UMC-Module
 		<guimenu>App Center</guimenu> und <guimenu>Paket-Verwaltung</guimenu>).
-		Wenn also z.B. auf dem vorherigen DC Master die
+		Wenn also z.B. auf dem vorherigen &ucsPrimaryDN; die
 		Mailkomponente installiert war, ist diese nach der Umwandlung nicht automatisch
-		auf dem neuen DC Master verfügbar.
+		auf dem neuen &ucsPrimaryDN; verfügbar.
 		Um den Umfang der Nachbereitung möglichst gering zu halten, sollte im Vorfeld <xref
 		linkend="domain:fault-tolerant"/> beachtet werden.
 	</para>
 	<para>
-		  Wurden auf dem &ucsMaster; zusätzliche LDAP-Schema-Pakete installiert, so
-		müssen diese vor der Umwandlung auch auf dem &ucsBackup; installiert werden.
-		Die Paketliste des alten &ucsMaster; sollte vor der Umstellung gesichert werden, um einen
+		  Wurden auf dem &ucsPrimaryDN; zusätzliche LDAP-Schema-Pakete installiert, so
+		müssen diese vor der Umwandlung auch auf dem &ucsBackupDN; installiert werden.
+		Die Paketliste des alten &ucsPrimaryDN; sollte vor der Umstellung gesichert werden, um einen
 		Abgleich der installierten Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl
 		erstellt werden:
 	</para>
@@ -1700,8 +1700,8 @@ udm oidc/rpservice create --set name=&lt;UCS_interner_Bezeichner&gt; \
 dpkg --get-selections \* > dpkg.selection
 		</programlisting>
 	<para>
-		Die so auf dem &ucsMaster; erstellte Datei sollte mit einer ebenso erstellten Datei des &ucsBackup;
-		verglichen und benötigte Pakete auf dem &ucsBackup; nachinstalliert werden. Insbesondere alle Pakete,
+		Die so auf dem &ucsPrimaryDN; erstellte Datei sollte mit einer ebenso erstellten Datei des &ucsBackupDN;
+		verglichen und benötigte Pakete auf dem &ucsBackupDN; nachinstalliert werden. Insbesondere alle Pakete,
 		die ein LDAP-Schema installieren sind zwingend erforderlich. Eine Auflistung dieser LDAP-Schema-Pakete
 		lässt sich wie folgt erstellen:
 	</para>
@@ -1709,8 +1709,8 @@ dpkg --get-selections \* > dpkg.selection
 ls -1 /etc/ldap/schema/*.schema /usr/share/univention-ldap/schema/*.schema | xargs dpkg -S
 		</programlisting>
 	<para>
-		Um einfach alle installierten Pakete des &ucsMaster; auch auf dem &ucsBackup; zu installieren,
-		kann die zuvor auf dem &ucsMaster; erstellte Datei <filename>dpkg.selection</filename> mit
+		Um einfach alle installierten Pakete des &ucsPrimaryDN; auch auf dem &ucsBackupDN; zu installieren,
+		kann die zuvor auf dem &ucsPrimaryDN; erstellte Datei <filename>dpkg.selection</filename> mit
 		folgenden Befehlen verwendet werden:
 	</para>
 		<programlisting language="sh">
@@ -1719,8 +1719,8 @@ apt-get dselect-upgrade
 		</programlisting>
 	<para>
 		Darüber hinaus sollte der &ucsUCR;-Datenbestand gesichert werden, um
-		Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Folgende Dateien
-		des &ucsMaster; sind dazu mit denen auf dem &ucsBackup; zu vergleichen:
+		Konfigurationsanpassungen auch auf dem neuen &ucsPrimaryDN; abgleichen zu können. Folgende Dateien
+		des &ucsPrimaryDN; sind dazu mit denen auf dem &ucsBackupDN; zu vergleichen:
 	</para>
 		<programlisting language="sh">
 /etc/univention/base.conf
@@ -1730,8 +1730,8 @@ apt-get dselect-upgrade
 		Eine nächtliche Sicherung dieser Dateien findet sich auch in <filename>/var/univention-backup/ucr-backup_%Y%m%d.tgz</filename>
 	</para>
 	<para>
-		Die Umwandlung eines &ucsBackup; zum neuen &ucsMaster; erfolgt dann durch Aufruf des
-		Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command> auf dem &ucsBackup;.
+		Die Umwandlung eines &ucsBackupDN; zum neuen &ucsPrimaryDN; erfolgt dann durch Aufruf des
+		Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command> auf dem &ucsBackupDN;.
 		Das System muss anschließend neu gestartet werden. Die Umstellung wird in der Logdatei
 		<filename>/var/log/univention/backup2master.log</filename> protokolliert.
 	</para>
@@ -1741,49 +1741,49 @@ apt-get dselect-upgrade
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			Prüfung der Umgebung: Bei dem System muss es sich um einen &ucsBackup; handeln, der der Domäne bereits beigetreten ist.
-			Zudem wird sichergestellt, dass der &ucsMaster; über DNS auflösbar sowie dass eine Verbindung zum Repository-Server möglich ist.
-			Außerdem darf der &ucsMaster; nicht mehr im Netzwerk erreichbar sein.
+			Prüfung der Umgebung: Bei dem System muss es sich um einen &ucsBackupDN; handeln, der der Domäne bereits beigetreten ist.
+			Zudem wird sichergestellt, dass der &ucsPrimaryDN; über DNS auflösbar sowie dass eine Verbindung zum Repository-Server möglich ist.
+			Außerdem darf der &ucsPrimaryDN; nicht mehr im Netzwerk erreichbar sein.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
 			Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie Univention Directory Notifier und Listener gestoppt,
 			elementare &ucsUCRV; wie <envar>ldap/master</envar> und <envar>server/role</envar> umgestellt, das UCS Root-Zertifikat
-			vom Webserver des &ucsBackup; abrufbar gemacht und die oben genannten Dienste wieder gestartet.
+			vom Webserver des &ucsBackupDN; abrufbar gemacht und die oben genannten Dienste wieder gestartet.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			Der DNS SRV Eintrag <literal>kerberos-adm</literal> wird vom alten auf den neuen &ucsMaster; geändert
+			Der DNS SRV Eintrag <literal>kerberos-adm</literal> wird vom alten auf den neuen &ucsPrimaryDN; geändert
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
 			Sofern vorhanden, wird der Univention S4 Connector (siehe <xref linkend="windows:s4connector"/>) vom Rechnerobjekt des
-			alten &ucsMaster; entfernt und auf dem neuen &ucsMaster; zur erneuten Konfiguration vorgemerkt.
+			alten &ucsPrimaryDN; entfernt und auf dem neuen &ucsPrimaryDN; zur erneuten Konfiguration vorgemerkt.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			Im OpenLDAP wird die Serverrolle des neuen &ucsMaster; auf <classname>domaincontroller_master</classname> geändert.
+			Im OpenLDAP wird die Serverrolle des neuen &ucsPrimaryDN; auf <classname>domaincontroller_master</classname> geändert.
 			Ebenfalls wird der DNS SRV Eintrag <literal>_domaincontroller_master._tcp</literal> korrigiert.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			Sofern vorhanden werden die Einträge des alten &ucsMaster; aus der lokalen Samba-Datenbank des neuen &ucsMaster; entfernt.
-			Zudem werden die FSMO-Rollen auf den neuen &ucsMaster; übertragen.
+			Sofern vorhanden werden die Einträge des alten &ucsPrimaryDN; aus der lokalen Samba-Datenbank des neuen &ucsPrimaryDN; entfernt.
+			Zudem werden die FSMO-Rollen auf den neuen &ucsPrimaryDN; übertragen.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			Anschließend wird das Rechnerobjekt des alten &ucsMaster; im OpenLDAP gelöscht.
+			Anschließend wird das Rechnerobjekt des alten &ucsPrimaryDN; im OpenLDAP gelöscht.
 			</simpara>
 		</listitem>
 		<listitem>
 			<simpara>
-			Nun wird das LDAP nach Referenzen auf den alten &ucsMaster; durchsucht. Alle gefundenen Referenzen werden angezeigt
+			Nun wird das LDAP nach Referenzen auf den alten &ucsPrimaryDN; durchsucht. Alle gefundenen Referenzen werden angezeigt
 			und es wird eine Korrektur vorgeschlagen, welche einzeln geprüft und bestätigt werden muss, bspw. weitere DNS-Einträge.
 			</simpara>
 		</listitem>
@@ -1794,8 +1794,8 @@ apt-get dselect-upgrade
 		</listitem>
 	</itemizedlist>
 	<para>
-		Im Anschluss sollte sowohl &ucsUCR; auf allen UCS-Systemen der Domäne als auch das LDAP auf dem jetzt neuen &ucsMaster;
-		hinsichtlich Verweisen auf den Namen und die IP-Adresse des alten &ucsMaster; überprüft und diese ggf. angepasst werden.
+		Im Anschluss sollte sowohl &ucsUCR; auf allen UCS-Systemen der Domäne als auch das LDAP auf dem jetzt neuen &ucsPrimaryDN;
+		hinsichtlich Verweisen auf den Namen und die IP-Adresse des alten &ucsPrimaryDN; überprüft und diese ggf. angepasst werden.
 	</para>
 </section>
 

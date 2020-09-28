@@ -169,7 +169,7 @@
 								Objekten vorbehalten.
 							</para>
 							<para>
-								Bei Verwendung von Samba 4 wird die die RID durch Samba generiert und
+								Bei Verwendung von Samba/AD wird die die RID durch Samba generiert und
 								kann nicht vorgegeben werden.
 							</para>
 						</entry>
@@ -211,7 +211,7 @@
 					  <entry>Windows &ar; AD Gruppentyp</entry>
 					  <entry>
 						Dieser Gruppentyp wird nur ausgewertet, wenn der Benutzer sich an einer Domäne
-						auf Basis von Samba 4 anmeldet (das Active Directory-Domänendienste
+						auf Basis von Samba/AD anmeldet (das Active Directory-Domänendienste
 						bereitstellt).  Diese Gruppen sind in <xref linkend="groups:adgroups"/> beschrieben.
 					  </entry>
 					</row>
@@ -338,9 +338,9 @@
 	</section>
 
 	<section id="groups:adgroups">
-	  <title>Synchronisation von Active Directory-Gruppen bei Verwendung von Samba 4</title>
+	  <title>Synchronisation von Active Directory-Gruppen bei Verwendung von Samba/AD</title>
 	  <para>
-		Wird Samba 4 eingesetzt, werden die Gruppenmitgliedschaften zwischen dem Samba
+		Wird Samba/AD eingesetzt, werden die Gruppenmitgliedschaften zwischen dem Samba
 		4-Verzeichnisdienst und dem OpenLDAP-Verzeichnisdienst durch den Univention S4-Connector
 		synchronisiert, d.h. jede Gruppe auf UCS-Seite ist einer Gruppe im Active Directory assoziiert. Allgemeine
 		Hinweise zum Univention S4 Connector finden sich in <xref linkend="windows:s4connector"/>.
@@ -348,7 +348,7 @@
 
 	  <para>
 		Einzige Ausnahme sind die <emphasis>Pseudo-Gruppen</emphasis> (manchmal auch als
-		Systemgruppen bezeichnet). Diese werden nur intern von Active Directory/Samba 4 verwaltet,
+		Systemgruppen bezeichnet). Diese werden nur intern von Active Directory/Samba verwaltet,
 		z.B. enthält die Gruppe <systemitem class="groupname" lang="en">Authenticated Users</systemitem> eine Liste aller aktuell an
 		einem System angemeldeten Benutzer. Pseudo-Gruppen sind im UCS-Verzeichnisdienst vorhanden;
 		sie werden aber nicht durch den Univention S4 Connector synchronisiert und müssen
@@ -367,7 +367,7 @@
 	  </para>
 
 	  <para>
-		Man unterscheidet in Samba 4/Active Directory zwischen den folgenden vier
+		Man unterscheidet in Active Directory/Samba zwischen den folgenden vier
 		AD-Gruppentypen. Diese Gruppentypen können auf zwei Arten von Gruppen angewendet werden;
 		<emphasis>Sicherheitsgruppen</emphasis> konfigurieren Berechtigungen (entsprechend den
 		UCS-Gruppen), während <emphasis>Verteilungsgruppen</emphasis> für Mailverteiler genutzt
@@ -376,7 +376,7 @@
 		<itemizedlist>
 		  <listitem><simpara>
 			<emphasis>Lokale Gruppen</emphasis> existieren immer nur lokal auf einem Rechner. Eine
-			lokale Gruppe, die in Samba 4 angelegt wurde, wird durch den Univention S4 Connector
+			lokale Gruppe, die in Samba/AD angelegt wurde, wird durch den Univention S4 Connector
 			synchronisiert und erscheint daher auch in der UMC. Es besteht aber keine Notwendigkeit
 			lokale Gruppen in der UMC anzulegen.
 		  </simpara></listitem>
@@ -402,7 +402,7 @@
 			<emphasis>Universelle Gruppen</emphasis> können Mitglieder aus allen Domänen aufnehmen
 			und diese Mitglieder werden auch in allen Domänen eines Forests angezeigt. Diese Gruppen
 			werden in einem separaten Segment des Verzeichnisdienstes gespeichert, dem sogenannten
-			Global Catalog. Domänen-Forests werden aktuell von Samba 4 nicht unterstützt.
+			Global Catalog. Domänen-Forests werden aktuell von Samba/AD nicht unterstützt.
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>

@@ -70,7 +70,7 @@
 			<para>
 				Die App <emphasis>UCS Dashboard</emphasis> kann aus dem Univention App Center auf einem Server in der
 				Domäne installiert werden. Derzeit ist die Installation nur auf den Systemrollen
-				Domaincontroller Master, Backup oder Slave erlaubt.
+				Primary, Backup oder &ucsReplicaDN; erlaubt.
 				Die Apps <emphasis>UCS Dashboard Database</emphasis> und <emphasis>UCS Dashboard Client</emphasis>
 				werden automatisch auf dem System mitinstalliert.
 			</para>
@@ -262,12 +262,12 @@
 		  <command>univention-run-join-scripts</command> aufgerufen werden). Weitere Informationen
 		  finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 		  Der Nagios-Server kann auf beliebigen Systemrollen installiert werden, wobei die Verwendung
-		  eines Domänencontroller-Systems empfohlen wird.
+		  eines Directory Node-Systems empfohlen wird.
 		  Der Nagios-Client ist auf allen Systemrollen standardmäßig installiert.
 		</para>
 
 		<para>
-			Sofern der Nagios-Server auf einem anderen System als dem Domänencontroller Master
+			Sofern der Nagios-Server auf einem anderen System als dem &ucsPrimaryDN;
 			installiert wird, so muss auf allen Systemen, auf denen der Nagios-Client installiert
 			ist, die &ucsUCRV; <envar>nagios/client/allowedhosts</envar> mit dem FQDN des Nagios-Servers
 			gesetzt werden. Am einfachsten kann dies über eine &ucsUCR; Richtlinie umgesetzt werden, weitere
@@ -359,7 +359,7 @@
 								Ist für die UCS-Domäne kein DNS-Forwarder definiert,
 								schlägt diese Abfrage fehl.
 								In diesem Fall kann <systemitem class="fqdomainname">www.univention.de</systemitem> z.B. gegen den FQDN
-								des Domaincontroller Master ersetzt werden, um die Funktion
+								des &ucsPrimaryDN; ersetzt werden, um die Funktion
 								des Namensauflösung zu testen.
 							</entry>
 						</row>
@@ -372,7 +372,7 @@
 						<row>
 							<entry><systemitem class="service">UNIVENTION_LDAP</systemitem></entry>
 							<entry>
-								Überwacht den auf Domänencontrollern laufenden LDAP-Server.
+								Überwacht den auf Directory Nodes laufenden LDAP-Server.
 							</entry>
 						</row>
 						<row>
@@ -393,7 +393,7 @@
 							<entry><systemitem class="service">UNIVENTION_SSL</systemitem></entry>
 							<entry>
 								Testet die verbleibende Gültigkeitsdauer der UCS-SSL-Zertifikate.
-								Dieses Plugin ist nur für &ucsMaster;- und &ucsBackup;-Systeme geeignet.
+								Dieses Plugin ist nur für &ucsPrimaryDN;- und &ucsBackupDN;-Systeme geeignet.
 							</entry>
 						</row>
 						<row>
@@ -455,7 +455,7 @@
 							<entry><systemitem class="service">UNIVENTION_KPASSWD</systemitem></entry>
 							<entry>
 								Prüft die Verfügbarkeit des Kerberos-Passwort-Dienstes
-								(nur verfügbar auf Domänencontroller Master/Backup).
+								(nur verfügbar auf Primary/&ucsBackupDN;).
 								Läuft weniger oder mehr als ein Prozess, wird ein CRITICAL-Event ausgelöst.
 							</entry>
 						</row>

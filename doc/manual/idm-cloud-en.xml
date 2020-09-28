@@ -167,7 +167,7 @@
 			To use Single Sign-On with multiple Azure AD connections, a new logical SAML Identity Provider is needed for each connection.
 			This is described in <xref linkend="domain:saml:extendedconfiguration"/>.
 			The Identity Provider should get the same name as the alias. If another name was chosen, the PowerShell script to configure Single Sign-On needs to be adjusted manually.
-			For example the &ucsUCRV; <envar>saml/idp/entityID/supplement/<replaceable>Aliasname</replaceable>=true</envar> needs to be set on all domain controllers responsible for Single Sign-On.
+			For example the &ucsUCRV; <envar>saml/idp/entityID/supplement/<replaceable>Aliasname</replaceable>=true</envar> needs to be set on all UCS Directory Node responsible for Single Sign-On.
 			</para>
 			<para>
 			A UCS user can only use one Office365 account in one browser session at a time.

@@ -176,7 +176,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
 	  </listitem>
 	  <listitem>
 		<simpara>
-		  When installing every additional UCS system, the IP address of a UCS domain controller system must be specified as the DNS server. This is essential for the automatic detection of the domain controller master to function. In case of doubt, the IP address of the UCS domain controller master system should be entered.
+		  When installing every additional UCS system, the IP address of a UCS Directory Node system must be specified as the DNS server. This is essential for the automatic detection of the &ucsPrimaryDN; to function. In case of doubt, the IP address of the UCS &ucsPrimaryDN; system should be entered.
 		</simpara>
 	  </listitem>
 	  <listitem>
@@ -191,7 +191,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
   <title>Setting up the root password</title>
   <para>
 	Setting of a password for the <systemitem class="username">root</systemitem> user is required for logging on to the installed system.
-If a &ucsMaster; is installed, this password is also employed for the
+If a &ucsPrimaryDN; is installed, this password is also employed for the
 <systemitem class="username">administrator</systemitem> user.
 In later operation, the passwords for the <systemitem class="username">root</systemitem> and <systemitem class="username">administrator</systemitem>
 users can be managed independently of each other. The password must be re-entered in the second entry field.
@@ -291,7 +291,7 @@ the size of the respective hard drive.
 	<itemizedlist>
 	  <listitem>
 		<simpara>
-		  In the first mode, <guimenu>Create a new UCS domain</guimenu>, the first system in a new UCS domain is configured: a UCS system with the <emphasis>&ucsMaster;</emphasis> system role. In the following configuration steps, the information required for setting up a new directory service, authentication service and DNS server are requested. A UCS domain can comprise one single or several UCS systems. Additional UCS systems can be added at a later point in time using the <guimenu>Join an existing UCS domain</guimenu> mode.
+		  In the first mode, <guimenu>Create a new UCS domain</guimenu>, the first system in a new UCS domain is configured: a UCS system with the <emphasis>&ucsPrimaryDN;</emphasis> system role. In the following configuration steps, the information required for setting up a new directory service, authentication service and DNS server are requested. A UCS domain can comprise one single or several UCS systems. Additional UCS systems can be added at a later point in time using the <guimenu>Join an existing UCS domain</guimenu> mode.
 		</simpara>
 	  </listitem>
 	  <listitem>
@@ -352,7 +352,7 @@ the size of the respective hard drive.
 	<para>
 	  In a UCS domain, systems can be installed in different <emphasis>system roles</emphasis>.
 	  The first UCS system, that joins an Active Directory domain, is automatically installed with the
-	  &ucsMaster; system role. If this mode is selected during installation of additional UCS systems, the
+	  &ucsPrimaryDN; system role. If this mode is selected during installation of additional UCS systems, the
 	  system role selection dialogue is shown. The system roles are described within the following section.
 	</para>
 
@@ -364,38 +364,38 @@ the size of the respective hard drive.
   <section id="installation:Domäneneinstellungen:EinerUCSDomäneBeitreten">
 	<title>"Join an existing UCS domain domain" mode</title>
 	<para>
-	  In a UCS domain, systems can be installed in different <emphasis>system roles</emphasis>. The first system in a UCS domain is always installed with the &ucsMaster; system role. Additional UCS systems can join the domain at a later point in time and can be configured with one of the following system roles.
+	  In a UCS domain, systems can be installed in different <emphasis>system roles</emphasis>. The first system in a UCS domain is always installed with the &ucsPrimaryDN; system role. Additional UCS systems can join the domain at a later point in time and can be configured with one of the following system roles.
 	  <itemizedlist>
 		<listitem>
 		  <simpara>
-			<guimenu>&ucsBackup;</guimenu>
+			<guimenu>&ucsBackupDN;</guimenu>
 		  </simpara>
 		  <simpara>
-			The &ucsBackup; is the fallback system for the DC master. If the latter should fail, a DC backup can adopt the role of the DC master permanently. All the domain data and SSL security certificates are saved as read-only copies on servers with the &ucsBackup; role.
-		  </simpara>
-		</listitem>
-		<listitem>
-		  <simpara>
-			<guimenu>&ucsSlave;</guimenu>
-		  </simpara>
-		  <simpara>
-			All the domain data are saved as read-only copies on servers with the &ucsSlave; role. In contrast to the &ucsBackup;, however, not all security certificates are saved. As accesses to the services running on a &ucsSlave; are performed against the local LDAP directory service, DC slave systems are ideal for site servers and the distribution of high-load services.
+			The &ucsBackupDN; is the fallback system for the &ucsPrimaryDN;. If the latter should fail, a &ucsBackupDN; can adopt the role of the &ucsPrimaryDN; permanently. All the domain data and SSL security certificates are saved as read-only copies on servers with the &ucsBackupDN; role.
 		  </simpara>
 		</listitem>
 		<listitem>
 		  <simpara>
-			<guimenu>&ucsMember;</guimenu>
+			<guimenu>&ucsReplicaDN;</guimenu>
 		  </simpara>
 		  <simpara>
-			&ucsMember; are server systems without a local LDAP directory service. Access to domain data here is performed via other servers in the domain. They are therefore suitable for services which do not require a local database for authentication, for example, such as print and file servers.
+			All the domain data are saved as read-only copies on servers with the &ucsReplicaDN; role. In contrast to the &ucsBackupDN;, however, not all security certificates are saved. As accesses to the services running on a &ucsReplicaDN; are performed against the local LDAP directory service, &ucsReplicaDN; systems are ideal for site servers and the distribution of high-load services.
+		  </simpara>
+		</listitem>
+		<listitem>
+		  <simpara>
+			<guimenu>&ucsManagedNode;</guimenu>
+		  </simpara>
+		  <simpara>
+			&ucsManagedNode; are server systems without a local LDAP directory service. Access to domain data here is performed via other servers in the domain. They are therefore suitable for services which do not require a local database for authentication, for example, such as print and file servers.
 		  </simpara>
 		</listitem>
 	  </itemizedlist>
 	</para>
 	<para>
 	  Once the UCS system role has been selected, further information on the domain join is requested. If the domain join is not intended to occur automatically during the installation, the <guimenu>Start join at the end of the installation</guimenu> option can be disabled.
-	  If the correct DNS server was selected during the network configuration, Univention Installer can determine the name of the &ucsMaster; system automatically. If the decision is taken to join another UCS domain, the <guimenu>Search Domain controller master in DNS</guimenu>
-option can be disabled and the fully qualified domain name of the preferred &ucsMaster; entered in the input field below. The access information required for the domain join must be entered in the <guimenu>Administrator account</guimenu> and  <guimenu>Administrator password</guimenu> input fields.
+	  If the correct DNS server was selected during the network configuration, Univention Installer can determine the name of the &ucsPrimaryDN; system automatically. If the decision is taken to join another UCS domain, the <guimenu>Search &ucsPrimaryDN; in DNS</guimenu>
+option can be disabled and the fully qualified domain name of the preferred &ucsPrimaryDN; entered in the input field below. The access information required for the domain join must be entered in the <guimenu>Administrator account</guimenu> and  <guimenu>Administrator password</guimenu> input fields.
 	</para>
 	<figure id="installation-join">
 	  <title>Information on the domain join</title>
@@ -433,7 +433,7 @@ or a new host name entered. The domain name of the computer is derived automatic
 see <xref linkend="installation-overview"/>.
   </para>
   <para>
-	The <guimenu>Update system after installation</guimenu> option allows the automatic installation of available Errata updates. In addition, all patch level updates and Errata updates available are installed on a &ucsMaster;. On all other system roles, all the patch level updates are set up to the installation status of the &ucsMaster;. (You need to log on to the &ucsMaster; to check the installation status. This is done using the login data specified in the join options).
+	The <guimenu>Update system after installation</guimenu> option allows the automatic installation of available Errata updates. In addition, all patch level updates and Errata updates available are installed on a &ucsPrimaryDN;. On all other system roles, all the patch level updates are set up to the installation status of the &ucsPrimaryDN;. (You need to log on to the &ucsPrimaryDN; to check the installation status. This is done using the login data specified in the join options).
   </para>
   <figure id="installation-overview">
 	<title>Installation overview</title>
@@ -465,7 +465,7 @@ see <xref linkend="installation-overview"/>.
 	The system will then boot from the hard drive. Following the boot procedure, the <systemitem class="username">root</systemitem> and <systemitem class="username">administrator</systemitem> users can log on via the web frontend &ucsUMC; (see <xref linkend="central:general"/>), which can be reached under the IP address set during the installation or the host name.
 </para>
   <para>
-	If the computer was installed as the first system in the UCS domain (&ucsMaster;), the license can now be imported (see <xref linkend="central:license"/>).
+	If the computer was installed as the first system in the UCS domain (&ucsPrimaryDN;), the license can now be imported (see <xref linkend="central:license"/>).
   </para>
 </section>
 

@@ -127,7 +127,7 @@ Further information can be found in <xref linkend="installation:chapter"/>.
 <para>
 In an IT infrastructure managed with UCS, all servers, clients and users are contained in a common
 security and trust context, referred to as the UCS domain. Every UCS system is assigned a so-called server role
-during the installation. Possible system roles are domain controller, &ucsMember; and client.
+during the installation. Possible system roles are Directory Node, &ucsManagedNode; and client.
 </para>
 <figure id="introduction:domain"><title>UCS domain concept</title>
  <graphic scalefit="1" width="90%" align="center" fileref="illustrations44/domainconcept_en.png"/>
@@ -198,10 +198,10 @@ can log in there with their domain passport.
 </para>
 <para>
 UCS utilizes OpenLDAP as a directory service server. The directory is
-provided by the &ucsMaster; and replicated on all domain controllers
-(DCs) in the domain. The complete LDAP directory is also replicated on
-a DC backup as this can replace the DC master in an emergency. In
-contrast, the replication on DC slaves can be restricted to certain
+provided by the &ucsPrimaryDN; and replicated on all UCS Directory Nodes
+in the domain. The complete LDAP directory is also replicated on
+a &ucsBackupDN; as this can replace the &ucsPrimaryDN; in an emergency. In
+contrast, the replication on &ucsReplicaDN; can be restricted to certain
 areas of the LDAP directory using ACLs (access control lists) in order to realize
 a selective replication. For example, this may be desirable if
 data should only be stored on as few servers as possible for security

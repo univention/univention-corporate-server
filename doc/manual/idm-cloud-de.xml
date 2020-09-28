@@ -168,7 +168,7 @@ Office 365 Benutzer kann mit der &ucsUCRV; <envar>office365/groups/sync</envar> 
 		<para>
 		Um Single-Sign-On mit mehreren Azure AD Verbindungen zu ermöglichen, muss für jede weitere Verbindung ein neuer logischer SAML Identity Provider erstellt werden. Dies ist in <xref linkend="domain:saml:extendedconfiguration"/> beschrieben.
 		-er Identity Provider sollte dabei denselben Namen wie der Verbindungsalias erhalten. Wurde ein anderer Name gewählt, muss das PowerShell Skript zur Einrichtung der Single-Sign-On Verbindung manuell angepasst werden.
-		Auf allen für das Single-Sign-On der Domäne zuständigen Domaincontrollern muss also beispielsweise die &ucsUCRV; in der Form <envar>saml/idp/entityID/supplement/<replaceable>Aliasname</replaceable>=true</envar> gesetzt werden.
+		Auf allen für das Single-Sign-On der Domäne zuständigen UCS Directory Nodes muss also beispielsweise die &ucsUCRV; in der Form <envar>saml/idp/entityID/supplement/<replaceable>Aliasname</replaceable>=true</envar> gesetzt werden.
 		</para>
 		<para>
 		Ein UCS Benutzer kann in einer Browser-Sitzung nur zu einem Azure AD gleichzeitig verbunden sein.

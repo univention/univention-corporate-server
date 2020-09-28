@@ -193,7 +193,7 @@
                         <entry>
                             The display name is automatically composed of the first and
                             surnames. It generally does not need to be changed. The screen name is
-                            used for the synchronization with Active Directory and Samba 4 among
+                            used for the synchronization with Active Directory and Samba/AD among
                             other things.
                         </entry>
                     </row>
@@ -971,7 +971,7 @@
 					<listitem><simpara>
 						This variable configured the <emphasis>LDAP</emphasis> attributes a user can modify at its own user account.
 						The names of the attributes must be separated by comma.
-						This variable must be set on &ucsMaster; (and &ucsBackup;s).
+						This variable must be set on &ucsPrimaryDN; (and &ucsBackupDN;s).
 					</simpara></listitem>
 				</varlistentry>
 				<varlistentry>
@@ -1134,7 +1134,7 @@
 				<para>
 					The SSO login can be configured to deny login from unverified, self registered accounts. This is configured through
 					the &ucsUCRV; <envar>saml/idp/selfservice/check_email_verification</envar>. This needs to be set
-					on the domain controller master and all domain controller backups. The setting has no effect on
+					on the &ucsPrimaryDN; and all &ucsBackupDN;s. The setting has no effect on
 					accounts created by an administrator.
 				</para>
 				<para>
@@ -1286,7 +1286,7 @@ ucr set cron/delete_deregistered_accounts/command=\
 				user enters her password incorrectly too many times on one system, she can
 				still login on another system. Setting the &ucsUCRV; <envar>auth/faillog/lock_global</envar>
 				will make the lock effective globally and register it in the LDAP directory. The global
-				lock can only be set on &ucsMaster;/Backup systems as other
+				lock can only be set on &ucsPrimaryDN;/Backup systems as other
 				system roles do not have the necessary permissions in the LDAP
 				directory. On all systems with any of these system roles, the lockout gets automatically activated locally or
 				deactivated again via the listener module, depending on the current lock state in the LDAP directory.
@@ -1312,12 +1312,12 @@ ucr set cron/delete_deregistered_accounts/command=\
 		<section id="users:faillog-openldap">
 			<title>OpenLDAP</title>
 			<para>
-				On domain controllers, automatic account locking can be enabled for too many failed LDAP server logon attempts.
+				On UCS Directory Nodes, automatic account locking can be enabled for too many failed LDAP server logon attempts.
 				The MDB LDAP backend must be used. This is the default backend since UCS 4, previous systems must be
 				migrated to the MDB LDAP backend, see <biblioref linkend="ucs-performance-guide"/>.
 			</para>
 			<para>
-				Automatic account locking must be enabled for each domain controller. To do this,
+				Automatic account locking must be enabled for each UCS Directory Node. To do this,
 				the &ucsUCRV;s <envar>ldap/ppolicy</envar> and <envar>ldap/ppolicy/enabled</envar> must be set to
 				<envar>yes</envar> and the OpenLDAP server must be restarted:
 				<programlisting language="sh">

@@ -192,7 +192,7 @@
 	  for a public name server in principle.
 	</para>
 	<para>
-	  BIND is always available on all domain controller system roles;
+	  BIND is always available on all UCS Directory Node roles;
 	  installation on other system roles is not supported.
 	</para>
 	<para>
@@ -247,7 +247,7 @@
 		  A <emphasis>SRV record</emphasis> (called a service record in UCS) can be
 		  used to save information about available system services in the
 		  DNS. In UCS, service records are used among other things to make
-		  LDAP servers or the &ucsMaster; known domain-wide.
+		  LDAP servers or the &ucsPrimaryDN; known domain-wide.
 		</para>
 	  </listitem>
 	  <listitem>
@@ -308,10 +308,10 @@
 			</listitem>
 			<listitem>
 			  <para>
-				Samba 4 provides an Active Directory domain. Active Directory is
+				Samba/AD provides an Active Directory domain. Active Directory is
 				closely connected with DNS, for DNS updates of Windows clients or
-				the localization of NETLOGON shares among other things. If Samba 4
-				is used, the domain controller in question is switched over to the
+				the localization of NETLOGON shares among other things. If Samba/AD
+				is used, the UCS Directory Node in question is switched over to the
 				use of the <emphasis>Samba backend</emphasis>.
 				The DNS database is maintained in
 				Samba's internal <acronym>LDB</acronym> database, which Samba updates directly. BIND
@@ -324,7 +324,7 @@
 		  When using the Samba backend, a search is performed in the LDAP for every DNS request.
 		  With the OpenLDAP backend, a search is only performed in the directory service if the DNS
 		  data has changed. The use of the LDAP backend can thus result in a reduction of the system
-		  load on Samba 4 systems.
+		  load on Samba/AD systems.
 		</para>
 		<para>
 		  The backend is configured via the &ucsUCRV; <envar>dns/backend</envar>. The DNS
@@ -475,9 +475,9 @@
 				  <entry>
 					<para>
 					  Other DNS servers use the serial number to recognize whether zone data
-					  have changed. The slave name server compares the serial number of its
-					  copy with that on the master name server. If the serial number of the
-					  slave is lower than that on the master, the slave copies the changed
+					  have changed. The secondary name server compares the serial number of its
+					  copy with that on the primary name server. If the serial number of the
+					  secondary is lower than that on the primary, the secondary copies the changed
 					  data.
 					</para>
 					<para>
@@ -509,7 +509,7 @@
 				  </entry>
 				  <entry>
 					<para>
-					  The time span in seconds after which the slave name server checks that
+					  The time span in seconds after which the secondary name server checks that
 					  its copy of the zone data is up-to-date.
 					</para>
 				  </entry>
@@ -520,7 +520,7 @@
 				  </entry>
 				  <entry>
 					<para>
-					  The time span in seconds after which the slave name server tries again to check
+					  The time span in seconds after which the secondary name server tries again to check
 					  that its copy of the zone data is up-to-date after a failed attempt to
 					  update. This time span is usually set to be less than the update
 					  interval, but can also be equal.
@@ -533,14 +533,14 @@
 				  </entry>
 				  <entry>
 					<para>
-					  The time span in seconds after which the copy of the zone data on the slave
+					  The time span in seconds after which the copy of the zone data on the secondary
 					  becomes invalid if it could not be checked to be up-to-date.
 					</para>
 					<para>
 					  For example, an expiry interval of one week means that the copy of the
 					  zone data becomes invalid when all requests to update in one week
 					  fail. In this case, it is assumed that the files are too outdated
-					  after the expiry interval date to be used further. The slave name
+					  after the expiry interval date to be used further. The secondary name
 					  server can then no longer answer name resolution requests for this
 					  zone.
 					</para>
@@ -1020,7 +1020,7 @@
 				  <entry>
 					<para>
 					  The fully qualified domain name with a full stop at the end or the
-					  relative domain name of the primary master name server.
+					  relative domain name of the primary name server.
 					</para>
 				  </entry>
 				</row>
@@ -1356,7 +1356,7 @@ closest to the object always applies.
 				  <entry>
 					<para>
 					  The computer name that the DHCP service should offer is entered in
-					  this input field, e.g., <systemitem class="systemname">ucs-master</systemitem>.
+					  this input field, e.g., <systemitem class="systemname">ucs-primary</systemitem>.
 					</para>
 					<para>
 					  A server can only ever provide a single DHCP service and therefore cannot be entered in more than one DHCP service at the same
@@ -2345,7 +2345,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 
 	  	  <listitem><simpara>
 			Authentication is performed via Kerberos. Users logged in on a Windows client which is a
-			member of a Samba 4 domain authenticate themselves on the proxy with the ticket that
+			member of a Samba/AD domain authenticate themselves on the proxy with the ticket that
 			they received when they logged in to the domain. The
 			<package>univention-squid-kerberos</package> package must be installed on every proxy
 			server for it to be possible to enable Kerberos authentication. Then the &ucsUCRV;
@@ -2502,7 +2502,7 @@ client AP01 {
 			access policy for a given user and/or station ID (MAC address). It can be
 			executed as root on the server where <package>univention-radius</package> its installed:
 <programlisting language="sh">
-root@master211:~# univention-radius-check-access --username=stefan
+root@primary211:~# univention-radius-check-access --username=stefan
 DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
 'uid=stefan,cn=users,dc=ucs,dc=local'
 -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
@@ -2512,7 +2512,7 @@ DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
 Thus access is DENIED.
 </programlisting>
 <programlisting language="sh">
-root@master211:~# univention-radius-check-access --username=janek
+root@primary211:~# univention-radius-check-access --username=janek
 DENY 'uid=janek,cn=users,dc=ucs,dc=local'
 'uid=janek,cn=users,dc=ucs,dc=local'
 -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
@@ -2522,7 +2522,7 @@ DENY 'uid=janek,cn=users,dc=ucs,dc=local'
 -> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
 -> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
 Thus access is ALLOWED.
-root@master211:~#
+root@primary211:~#
 </programlisting>
 			It prints a detailed explanation and sets the exit code depending on the result of the access check
 			(0 for <emphasis>access granted</emphasis>, 1 for <emphasis>access denied</emphasis>).

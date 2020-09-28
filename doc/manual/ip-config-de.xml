@@ -176,7 +176,7 @@
 	  prinzipiell auch für einen öffentlichen Nameserver eingesetzt werden.
 	</para>
 	<para>
-	  Auf allen Domänencontroller-Systemrollen ist BIND immer
+	  Auf allen UCS Directory Node Systemrollen ist BIND immer
 	  verfügbar, eine Installation auf anderen Systemrollen wird nicht
 	  unterstützt.
 	</para>
@@ -235,7 +235,7 @@
 		  Mit einem <emphasis>SRV-Record</emphasis> (in UCS als <emphasis>Service Record</emphasis>
 		  bezeichnet) kann im DNS Informationen über verfügbare Systemdienste
 		  hinterlegt werden. In UCS werden Service Records u.a. verwendet, um
-		  LDAP-Server oder den &ucsMaster; domänenweit bekannt zu
+		  LDAP-Server oder den &ucsPrimaryDN; domänenweit bekannt zu
 		  machen.
 			</simpara>
 		</listitem>
@@ -299,10 +299,10 @@
 			</listitem>
 			<listitem>
 				<simpara>
-			  Samba 4 stellt eine Active Directory-Domäne bereit. Active
+			  Samba/AD stellt eine Active Directory-Domäne bereit. Active
 			  Directory ist eng mit DNS verknüpft, u.a. für DNS-Updates von
 			  Windows-Clients oder für die Lokalisierung des Netlogon-Shares. Wird
-			  Samba 4 eingesetzt, wird der betreffende Domänencontroller auf die
+			  Samba/AD eingesetzt, wird der betreffende UCS Directory Node auf die
 			  Verwendung des <emphasis>Samba-Backend</emphasis>s umgestellt. Die DNS-Datenbank
 			  wird dabei in der Samba-internen <acronym>LDB</acronym>-Datenbank vorgehalten, die
 			  direkt von Samba aktualisiert wird. BIND greift dann über die
@@ -315,7 +315,7 @@
 		  Bei Verwendung des Samba-Backends wird für jede DNS-Anfrage eine Suche im LDAP
 		  durchgeführt. Bei Verwendung des OpenLDAP-Backends wird nur bei Änderungen der DNS-Daten im
 		  Verzeichnisdienst gesucht. Die Verwendung des LDAP-Backends kann daher zu einer
-		  Reduzierung der Systemlast auf Samba 4-Systemen führen.
+		  Reduzierung der Systemlast auf Samba/AD-Systemen führen.
 		</para>
 
 		<para>
@@ -442,9 +442,9 @@
 				  <entry>
 					<para>
 					  Anhand der Seriennummer erkennen andere DNS-Server, ob sich
-					  Zonendaten geändert haben. Der Slave-Nameserver vergleicht die Seriennummer
-					  seiner Kopie mit der auf dem Master-Nameserver. Ist die Seriennummer
-					  auf dem Slave niedriger als auf dem Master, so kopiert der Slave die
+					  Zonendaten geändert haben. Der sekundäre Nameserver vergleicht die Seriennummer
+					  seiner Kopie mit der auf dem primären Nameserver. Ist die Seriennummer
+					  auf dem sekundären Nameserver niedriger als auf dem primären Nameserver, so kopiert der sekundäre Nameserver die
 					  geänderten Daten.
 					</para>
 					<para>
@@ -473,14 +473,14 @@
 				<row>
 				  <entry>Aktualisierungsintervall</entry>
 				  <entry>
-					Die Zeitspanne in Sekunden, nach der der Slave-Nameserver überprüft,
+					Die Zeitspanne in Sekunden, nach der der sekundäre Nameserver überprüft,
 					ob seine Kopie der Zonendaten noch aktuell ist.
 				  </entry>
 				</row>
 				<row>
 				  <entry>Intervall für erneute Versuche</entry>
 				  <entry>
-					Die Zeitspanne in Sekunden, nach der der Slave-Nameserver nach einer fehlgeschlagenen
+					Die Zeitspanne in Sekunden, nach der der sekundäre Nameserver nach einer fehlgeschlagenen
 					Aktualisierungs-Anfrage erneut versucht, die Aktualität seiner
 					Zonendaten-Kopie zu überprüfen. Üblicherweise wird diese Zeitspanne
 					kürzer gewählt als das Aktualisierungsintervall, darf aber auch gleich
@@ -491,7 +491,7 @@
 				  <entry>Ablaufintervall</entry>
 				  <entry>
 					<para>
-					  Die Zeitspanne in Sekunden, nach der die Zonendaten-Kopie auf dem Slave ungültig wird,
+					  Die Zeitspanne in Sekunden, nach der die Zonendaten-Kopie auf dem sekundären Nameserver ungültig wird,
 					  wenn ihre Aktualität nicht überprüft werden konnte.
 					</para>
 					<para>
@@ -499,7 +499,7 @@
 					  dass die Zonendaten-Kopie ungültig wird, wenn eine Woche lang alle
 					  Aktualisierungs-Anfragen fehlgeschlagen sind. In dem Fall wird davon ausgegangen,
 					  dass die Daten nach der Ablaufzeit zu veraltet sind, um weiter
-					  verwendet zu werden. Der Slave-Nameserver kann dann keine
+					  verwendet zu werden. Der sekundäre Nameserver kann dann keine
 					  Namensauflösungs-Anfragen für diese Zone mehr beantworten.
 					</para>
 				  </entry>
@@ -1146,7 +1146,7 @@
 				<entry>
 				  <para>
 					In diesem Eingabefeld ist der Rechnername, der den DHCP-Dienst anbieten soll,
-					einzutragen, z.B. <systemitem class="systemname">ucs-master</systemitem>.
+					einzutragen, z.B. <systemitem class="systemname">ucs-primary</systemitem>.
 				  </para>
 				  <para>
 					Ein Server kann immer nur einen einzigen DHCP-Dienst anbieten und kann deshalb nicht gleichzeitig in mehreren DHCP-Services eingetragen sein.
@@ -2025,7 +2025,7 @@ univention-config-registry set squid/webports="80 443"
 
 		  <listitem><simpara>
 			Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem Windows-Client
-			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifizieren sich am Proxy mit
+			angemeldet sind, der Mitglied einer Samba/AD-Domäne ist, authentifizieren sich am Proxy mit
 			dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um
 			Kerberos-Authentifizierung zu aktivieren muss das Paket
 			<package>univention-squid-kerberos</package> auf jedem Proxyserver installiert
@@ -2189,7 +2189,7 @@ client AP01 {
 				ausgeführt werden, wo das Paket <package>univention-radius</package>
 				installiert ist.
 <programlisting language="sh">
-root@master211:~# univention-radius-check-access --username=stefan
+root@primary211:~# univention-radius-check-access --username=stefan
 DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
 'uid=stefan,cn=users,dc=ucs,dc=local'
 -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
@@ -2199,7 +2199,7 @@ DENY 'uid=stefan,cn=users,dc=ucs,dc=local'
 Thus access is DENIED.
 </programlisting>
 <programlisting language="sh">
-root@master211:~# univention-radius-check-access --username=janek
+root@primary211:~# univention-radius-check-access --username=janek
 DENY 'uid=janek,cn=users,dc=ucs,dc=local'
 'uid=janek,cn=users,dc=ucs,dc=local'
 -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=local'
@@ -2209,7 +2209,7 @@ DENY 'uid=janek,cn=users,dc=ucs,dc=local'
 -> -> 'cn=Users,cn=Builtin,dc=ucs,dc=local'
 -> 'cn=Network Access,cn=groups,dc=ucs,dc=local'
 Thus access is ALLOWED.
-root@master211:~#
+root@primary211:~#
 </programlisting>
 				Das Werkzeug gibt eine detaillierte Erläuterung und setzt den Rückgabewert
 				abhängig vom Ergebnis der Zugangsprüfung (0 für <emphasis>Zugang gestattet</emphasis>, 1 für <emphasis>Zugang

@@ -165,7 +165,7 @@
 							erreichbar ist.
 						</para>
 						<para>
-							Nur Domänencontroller und &ucsMember;, auf denen das
+							Nur UCS Directory Nodes und &ucsManagedNode;, auf denen das
 							Paket <package>univention-printserver</package> installiert wurde, werden in
 							der Liste angezeigt.
 						</para>

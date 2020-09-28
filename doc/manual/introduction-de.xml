@@ -128,7 +128,7 @@ In einer mit UCS verwalteten IT-Infrastruktur können sich alle Server,
 Clients und Benutzer in einem einheitlichen Sicherheits- und
 Vertrauenskontext, der UCS-Domäne, befinden. Jedem UCS-System wird dazu bei
 seiner Installation eine so genannte Systemrolle zugewiesen.  Mögliche
-Systemrollen sind Domänencontroller, &ucsMember; und Client.
+Systemrollen sind Directory Node, &ucsManagedNode; und Client.
 </para>
 
 <figure id="introduction:domain"><title>UCS-Domänenkonzept</title>
@@ -204,10 +204,10 @@ dort mit ihrem Domänenpasswort anmelden können.
 </para>
 <para>
 UCS setzt als Verzeichnisdienstserver OpenLDAP ein. Das Verzeichnis wird vom
-&ucsMaster; bereitgestellt und auf alle anderen Domänencontroller
-(DCs) in der Domäne repliziert. Weil ein DC Backup im Notfall den DC Master
+&ucsPrimaryDN; bereitgestellt und auf alle anderen UCS Directory Nodes
+in der Domäne repliziert. Weil ein &ucsBackupDN; im Notfall den &ucsPrimaryDN;
 ersetzen können soll, wird auf diesen immer das komplette LDAP-Verzeichnis repliziert.
-Die Replikation auf DC Slaves kann dagegen mithilfe von ACLs (Access Control
+Die Replikation auf &ucsReplicaDN;s kann dagegen mithilfe von ACLs (Access Control
 Lists) auf beliebige Bereiche des LDAP-Verzeichnisses beschränkt werden,
 um eine selektive Replikation zu ermöglichen. Dies kann z.B. dann gewünscht
 sein, wenn Daten aus Sicherheitsgründen auf möglichst wenigen Servern

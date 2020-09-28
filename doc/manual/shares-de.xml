@@ -151,7 +151,7 @@ eingetragen/modifiziert oder entfernt.
 		<entry>
 		  Der Server, auf dem die Freigabe liegt. Zur Wahl stehen alle im
 		  LDAP-Verzeichnis für die Domäne eingetragenen Rechner vom Typ
-		  Domänencontroller Master/Backup/Slave und &ucsMember;, die in einer DNS
+		  Primary/Backup/&ucsReplicaDN; und &ucsManagedNode;, die in einer DNS
 		  Forward Lookup Zone im LDAP-Verzeichnis eingetragen sind.
 		</entry>
 	  </row>

@@ -27,8 +27,8 @@
 	</para>
 	<para>
 		Zentraler Ausgangspunkt für Benutzer sowie Administratoren für alle weiteren Operationen ist die UCS-Portalseite (siehe <xref linkend="fig-ucs-portal"/>).
-		Die Portalseite ist standardmäßig auf dem &ucsMaster; verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
-		Alle anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsMaster; an.
+		Die Portalseite ist standardmäßig auf dem &ucsPrimaryDN; verfügbar und erlaubt einen Überblick über alle in der UCS-Domäne installierten Apps und weiteren Dienste.
+		Alle anderen Systemrollen zeigen standardmäßig zum einen die jeweils lokal auf dem System verfügbaren Apps und zum anderen einen Verweis zurück auf die Portalseite des &ucsPrimaryDN; an.
 		Alle Aspekte der Portalseite können umfangreich an die eigenen Bedürfnisse angepasst werden (<xref linkend="central:portal"/>).
 	</para>
 	<para>
@@ -161,10 +161,10 @@
 	</para>
 	<itemizedlist>
 	  <listitem><simpara>
-		Bei der Anmeldung mit dem <systemitem class="username">Administrator</systemitem>-Konto auf &ucsMaster;
-		oder &ucsBackup; werden UMC-Module zur Verwaltung und Konfiguration des lokalen Systems sowie UMC-Module zur Verwaltung der Daten des LDAP-Verzeichnisses bereitgestellt.
+		Bei der Anmeldung mit dem <systemitem class="username">Administrator</systemitem>-Konto auf &ucsPrimaryDN;
+		oder &ucsBackupDN; werden UMC-Module zur Verwaltung und Konfiguration des lokalen Systems sowie UMC-Module zur Verwaltung der Daten des LDAP-Verzeichnisses bereitgestellt.
 		Das initiale Passwort dieses Kontos wurde im Einrichtungsassistent bei der Installation angegeben und stimmt mit dem initialen Passwort des lokalen <systemitem class="username">root</systemitem>-Kontos überein.
-		<systemitem class="username">Administrator</systemitem> ist auch das Konto, mit dem die erste Anmeldung an einem neu installierten &ucsMaster;-System durchgeführt werden sollte.
+		<systemitem class="username">Administrator</systemitem> ist auch das Konto, mit dem die erste Anmeldung an einem neu installierten &ucsPrimaryDN;-System durchgeführt werden sollte.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -204,17 +204,17 @@
 	</para>
 	<para>
 		Standardmäßig ist UCS so voreingestellt, dass es zwei Portale gibt.
-		Das Portal <foreignphrase>domain</foreignphrase> ist mit den Domänencontroller Master und Backup Systemen der Domäne verknüpft.
+		Das Portal <foreignphrase>domain</foreignphrase> ist mit den &ucsPrimaryDN; und &ucsBackupDN;s der Domäne verknüpft.
 		Neben allen installierten Applikationen in der Domäne werden hier auch Verweise zu &ucsUMC; sowie zur Serverübersicht angezeigt.
 		Das Portal <foreignphrase>local</foreignphrase> ist allen anderen Rechnerrollen in der Domäne zugewiesen.
-		Hier wird neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsMaster; der Domäne dargestellt.
+		Hier wird neben den lokal installierten Apps ein Verweis auf die lokal verfügbare &ucsUMC; Instanz sowie ein Verweis zurück auf den &ucsPrimaryDN; der Domäne dargestellt.
 	</para>
 	<para>
 		Eigene Portale und Portaleinträge können entweder über das UMC-Modul <guimenu>Portaleinstellungen</guimenu> oder
 		direkt auf der Portalseite angelegt und verwaltet werden.
 	</para>
 	<para>
-		Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> können nach der Anmeldung am Portal auf dem DC Master oder DC Backup nach einem Klick auf das gelbe Bearbeitungs-Icon neue
+		Mitglieder der Gruppe <systemitem class="groupname">Domain Admins</systemitem> können nach der Anmeldung am Portal auf dem &ucsPrimaryDN; oder &ucsBackupDN; nach einem Klick auf das gelbe Bearbeitungs-Icon neue
 		Einträge auf dem Portal erstellen, vorhandene Einträge modifizieren, sowie die Reihenfolge oder das Design modifizieren. Es ist darüber hinaus möglich, diese Rechte auf ausgewählte Gruppen oder Benutzer zu übertragen. Hierzu gibt es eine Anleitung unter <xref linkend="central-management-umc:Assignment-of-portal-settings-module"/>
 	</para>
 	<para>
@@ -241,7 +241,7 @@
 			Im Folgenden wird beschrieben, wie das UMC-Modul <guimenu>Portaleinstellungen</guimenu> für ausgewählte Gruppen oder Benutzer zugänglich gemacht werden kann. Dies wird anhand eines Beispiels erläutert. Für das Beispiel wird davon ausgegangen, dass eine Gruppe <guimenu>Portal Admins</guimenu> erstellt wurde und Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen.
 		</para>
 		<para>
-			Auf einem <guimenu>Domaincontroller-Master-System</guimenu> ist zunächst eine ACL-Datei zu erstellen (für das Beispiel wurde das Verzeichnis <guimenu>/opt/</guimenu> verwendet):
+			Auf einem <guimenu>&ucsPrimaryDN;</guimenu> ist zunächst eine ACL-Datei zu erstellen (für das Beispiel wurde das Verzeichnis <guimenu>/opt/</guimenu> verwendet):
 		<screen>
 /opt/62my-portal-acl.acl
 		</screen>
@@ -296,7 +296,7 @@ udm settings/ldapacl remove \
 	<para>
 		UMC-Module zur Verwaltung aller im LDAP-Verzeichnis vorgehaltenen Daten
 		(wie z.B. Benutzer, Gruppen oder Rechnerkonten) werden lediglich auf
-		&ucsMaster; und &ucsBackup; bereitgestellt.
+		&ucsPrimaryDN; und &ucsBackupDN; bereitgestellt.
 		Änderungen, die in diesen Modulen vorgenommen werden, gelten für die
 		gesamte Domäne.
 	</para>
@@ -316,7 +316,7 @@ udm settings/ldapacl remove \
 <section id="central:license">
 	<title>Aktivierung der UCS-Lizenz / Lizenz-Übersicht</title>
 	<para>
-		Der momentane Lizenzierungszustand kann auf dem &ucsMaster; einer
+		Der momentane Lizenzierungszustand kann auf dem &ucsPrimaryDN; einer
 		Domäne über das Benutzermenü in der oberen, rechten Bildschirmzeile
 		eingesehen werden. Unterhalb des Menüpunktes
 		<guimenu>Lizenz</guimenu> kann der Punkt
@@ -1383,7 +1383,7 @@ udm settings/ldapacl remove \
 		Skripten und zur Integration in andere Programme.
 	</para>
 	<para>
-		&ucsUDM; wird als Benutzer <systemitem class="username">root</systemitem> auf dem &ucsMaster; mit dem
+		&ucsUDM; wird als Benutzer <systemitem class="username">root</systemitem> auf dem &ucsPrimaryDN; mit dem
 		Befehl <command>univention-directory-manager</command> (Kurzform <command>udm</command>)
 		aufgerufen
 	</para>

@@ -107,7 +107,7 @@
 	  werden. Alternativ kann das Softwarepaket <package>univention-mail-server</package> installiert
 	  werden. Weitere Informationen finden sich in <xref linkend="computers::softwaremanagement::installsoftware"/>.
 	  Mailserver können auf allen Server-Systemrollen installiert werden. Die
-	  Verwendung eines Domänencontrollers wird wg. häufiger LDAP-Zugriffe empfohlen.
+	  Verwendung eines UCS Directory Nodes wird wg. häufiger LDAP-Zugriffe empfohlen.
 	</para>
 
 	<para>

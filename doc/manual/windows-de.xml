@@ -78,11 +78,11 @@
 	  <title>Installation</title>
 
 	  <para>
-		Samba als AD-Domänencontroller kann auf allen UCS-Domänencontrollern mit der Applikation
+		Samba als AD-Domänencontroller kann auf allen UCS Directory Nodes mit der Applikation
 		<emphasis>Active Directory-kompatibler Domänencontroller</emphasis> aus dem Univention App
 		Center installiert werden. Alternativ kann das Softwarepaket
-		<package>univention-samba4</package> installiert werden. Auf den Systemrollen &ucsMaster;
-		und &ucsBackup; muss zusätzlich <package>univention-s4-connector</package> installiert
+		<package>univention-samba4</package> installiert werden. Auf den Systemrollen &ucsPrimaryDN;
+		und &ucsBackupDN; muss zusätzlich <package>univention-s4-connector</package> installiert
 		werden (anschließend muss der Befehl <command>univention-run-join-scripts</command>
 		aufgerufen werden). Weitere Informationen finden sich in <xref
 		linkend="computers::softwaremanagement::installsoftware"/>.
@@ -216,7 +216,7 @@
 		<para>
 		  Samba stellt einen separaten LDAP-Verzeichnisdienst bereit. Die Synchronisation zwischen
 		  dem UCS-LDAP und dem Samba-LDAP erfolgt durch einen internen Systemdienst, den Univention
-		  S4 Connector. Der Connector ist standardmäßig auf dem &ucsMaster; aktiviert und benötigt
+		  S4 Connector. Der Connector ist standardmäßig auf dem &ucsPrimaryDN; aktiviert und benötigt
 		  normalerweise keine weitere Konfiguration.
 		</para>
 
@@ -232,7 +232,7 @@
 		  werden automatisch die nötigen Credentials des Maschinenkontos verwendet:
 
 		  <programlisting>
-root@master:~# univention-s4search sAMAccountName=Administrator
+root@primary:~# univention-s4search sAMAccountName=Administrator
 # record 1
 dn: CN=Administrator,CN=Users,DC=example,DC=com
 objectClass: top
@@ -251,17 +251,17 @@ instanceType: 4
 		<title>DRS-Replikation der Verzeichnisdaten</title>
 
 		<para>
-		  Samba-AD-Domänen verwenden das Directory Replication System (DRS) zur Replikation der
+		  Samba/AD-Domänen verwenden das Directory Replication System (DRS) zur Replikation der
 		  Verzeichnisdaten. DRS erlaubt Multimasterreplikation, d.h. die schreibenden Änderungen
-		  mehrerer Domänencontroller werden auf Protokollebene synchronisiert. Die Verwendung von
-		  Snapshots in Virtualisierungslösungen sollte daher beim Einsatz von Samba 4 vermieden und
-		  Samba 4 auf einem Server betrieben werden, der durchgehend eingeschaltet bleibt.
+		  mehrerer Samba/AD-Domänencontroller werden auf Protokollebene synchronisiert. Die Verwendung von
+		  Snapshots in Virtualisierungslösungen sollte daher beim Einsatz von Samba/AD vermieden und
+		  Samba/AD auf einem Server betrieben werden, der durchgehend eingeschaltet bleibt.
 		</para>
 
 		<para>
-		  Mit jedem weiteren Samba-AD-Domänencontroller steigt die Komplexität der
+		  Mit jedem weiteren Samba/AD-Domänencontroller steigt die Komplexität der
 		  Multimasterreplikation. Es sollte daher geprüft werden, ob weitere
-		  Samba-AD-Domänencontroller nötig sind oder für neue Server nicht ein Memberserver die
+		  Samba/AD-Domänencontroller nötig sind oder für neue Server nicht ein Memberserver die
 		  bessere Wahl ist.
 		</para>
 
@@ -283,7 +283,7 @@ instanceType: 4
 		  In Microsoft Active Directory wird die SYSVOL-Freigabe durch den File Replication Service
 		  (eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab <systemitem class="osname">Windows 2008 R2</systemitem>)
 		  synchronisiert. Diese Replikationsmethoden sind in Samba noch nicht vollständig
-		  implementiert. Die Synchronisation zwischen den Samba-Domänencontrollern erfolgt in UCS
+		  implementiert. Die Synchronisation zwischen den Samba/AD-Domänencontrollern erfolgt in UCS
 		  durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar durch die &ucsUCRV;
 		  <envar>samba4/sysvol/sync/cron</envar>.
 		</para>
@@ -303,7 +303,7 @@ instanceType: 4
 		  <para>
 			Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
 			Vorgaben für Rechner und Benutzer erlaubt. Gruppenrichtlinien werden auch von
-			Samba-AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder
+			Samba/AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder
 			Mac OS-Systeme werten die Richtlinien nicht aus.
 		  </para>
 
@@ -313,7 +313,7 @@ instanceType: 4
 			Gruppenrichtlinienobjekt eine Reihe von Richtlinien beinhalten. Trotz ihres Namens
 			lassen sich Gruppenrichtlinienobjekte nicht direkt bestimmten Benutzergruppen zuweisen,
 			sondern sie werden vielmehr mit bestimmten AD-Verwaltungseinheiten (Domänen, Sites oder
-			Organisationseinheiten) im Samba-Verzeichnisdienst (Samba DS/AD) verknüpft und beziehen
+			Organisationseinheiten) im Samba-Verzeichnisdienst (Samba AD/DS) verknüpft und beziehen
 			sich dadurch auf untergeordnete Objekte. Eine gruppen- oder benutzerspezifische
 			Auswertung ist nur indirekt über die <emphasis>Sicherheitseinstellungen</emphasis> eines
 			Gruppenrichtlinienobjekts möglich, in denen sich das Recht <emphasis>Gruppenrichtlinie
@@ -591,7 +591,7 @@ instanceType: 4
 			Richtlinien-Dateien enthält, die auf dem Windows-System umgesetzt werden sollen
 			(gespeichert in der SYSVOL-Freigabe (siehe <xref linkend="windows:sysvolshare"/>)).
 			Zum anderen gibt es ein gleichnamiges Objekt im LDAP-Baum des Samba-Verzeichnisdienstes
-			(Samba DS/AD), das üblicherweise unter einem LDAP-Container namens <emphasis>Group
+			(Samba AD/DS), das üblicherweise unter einem LDAP-Container namens <emphasis>Group
 			Policy Objects</emphasis> abgelegt ist.
 		  </para>
 
@@ -782,7 +782,7 @@ END CATEGORY
 
 	<para>
 	  &ucsUCS; kann auf zwei unterschiedliche Arten mit einer bestehenden Active Directory-Domäne (AD-Domäne) zusammen
-	  betrieben werden. Beide Varianten lassen sich durch die Applikation <emphasis>Active Directory-Verbindung</emphasis> aus dem Univention App Center einrichten (siehe <xref linkend="computers::softwaremanagement::installsoftware"/>). Diese steht auf einem &ucsMaster; und &ucsBackup; zur Verfügung.
+	  betrieben werden. Beide Varianten lassen sich durch die Applikation <emphasis>Active Directory-Verbindung</emphasis> aus dem Univention App Center einrichten (siehe <xref linkend="computers::softwaremanagement::installsoftware"/>). Diese steht auf einem &ucsPrimaryDN; und &ucsBackupDN; zur Verfügung.
 	</para>
 
 	<para>
@@ -854,7 +854,7 @@ END CATEGORY
 
   <note>
 		<itemizedlist>
-			<listitem><simpara>Der <emphasis>AD member</emphasis>-Modus kann nur auf einem &ucsMaster; konfiguriert werden.</simpara></listitem>
+			<listitem><simpara>Der <emphasis>AD member</emphasis>-Modus kann nur auf einem &ucsPrimaryDN; konfiguriert werden.</simpara></listitem>
 			<listitem><simpara>Der Name der DNS-Domäne des UCS-Systems muss mit dem der AD-Domäne übereinstimmen. Die Hostnamen selbst müssen natürlich unterschiedlich sein.</simpara></listitem>
 			<listitem><simpara>Alle AD- und UCS-Server in einer Connector-Umgebung sollten dieselbe Zeitzone verwenden.</simpara></listitem>
 		</itemizedlist>
@@ -905,7 +905,7 @@ END CATEGORY
 
   <warning>
     <para>
-    	Falls zuvor neben dem &ucsMaster; weitere UCS-Systeme schon Teil der UCS-Domäne waren, dann müssen diese der Domäne neu beitreten. Dabei erkennen sie, dass der &ucsMaster; sich im <emphasis>AD member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der AD-Domäne bei und können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
+      Falls zuvor neben dem &ucsPrimaryDN; weitere UCS-Systeme schon Teil der UCS-Domäne waren, dann müssen diese der Domäne neu beitreten. Dabei erkennen sie, dass der &ucsPrimaryDN; sich im <emphasis>AD member</emphasis>-Modus befindet und treten ebenfalls der Authentifikationsstruktur der AD-Domäne bei und können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen.
     </para>
   </warning>
 
@@ -922,7 +922,7 @@ END CATEGORY
   </para>
 
   <para>
-    Um eine verschlüsselte Verbindung zwischen Active Directory und &ucsMaster; nicht nur für die Authentifikation, sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem AD-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
+    Um eine verschlüsselte Verbindung zwischen Active Directory und &ucsPrimaryDN; nicht nur für die Authentifikation, sondern auch für den Datenaustausch an sich zu verwenden, kann auf dem AD-Domänencontroller das Root-Zertifikat der Zertifizierungsstelle exportiert und über das UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert <xref linkend="ad-connector:ad-zertifikat"/>.
   </para>
 
   <para>
@@ -930,10 +930,10 @@ END CATEGORY
   </para>
 
   <para>
-	  Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsMaster;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend.
+	  Im <emphasis>AD member</emphasis>-Modus liest der UCS AD-Connector Objektdaten per Voreinstellung mit den Berechtigungen des Maschinenkontos des &ucsPrimaryDN;s aus dem AD. Für das Auslesen von verschlüsselten Passwortdaten sind dessen Berechtigungen nicht ausreichend.
 	  Daher muss in diesem Fall zusätzlich manuell die LDAP-DN eines privilegierten Replikationsbenutzers in die &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> eingetragen werden.
 	  Dieser muss im AD Mitglied der Gruppe <systemitem class="groupname">Domänen-Admins</systemitem> sein.
-	  Das entsprechende Kennwort muss auf dem &ucsMaster; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden.
+	  Das entsprechende Kennwort muss auf dem &ucsPrimaryDN; in eine Datei gespeichert werden und ihr Dateiname muss in die &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar> eingetragen werden.
 	  Falls zu einem späteren Zeitpunkt das Zugriffspasswort geändert wurde, muss das neue Passwort in diese Datei eingetragen werden.
 	  Die Zugriffsrechte für die Datei sollten so eingeschränkt werden, dass nur der Besitzer <systemitem class="username">root</systemitem> Zugriff hat.
   </para>
@@ -951,7 +951,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </programlisting>
 
   <para>
-    Falls gewünscht, kann zu einem späteren Zeitpunkt der AD-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
+    Falls gewünscht, kann zu einem späteren Zeitpunkt der AD-Domänencontroller auch durch den &ucsPrimaryDN; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
   </para>
   </section>
 
@@ -1578,7 +1578,7 @@ immer in dieser Gruppe Mitglied.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Abschalten des AD-Servers und Zuweisung der FSMO-Rollen auf den UCS-Domänencontroller
+		  Abschalten des AD-Servers und Zuweisung der FSMO-Rollen auf den UCS Directory Node
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
@@ -1588,18 +1588,18 @@ immer in dieser Gruppe Mitglied.
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Der UCS-Domänencontroller (&ucsMaster;) muss mit einem
+		  Der UCS Directory Node (&ucsPrimaryDN;) muss mit einem
 		  eindeutigen Rechnernamen installiert werden, der nicht in der AD-Domäne vorhanden ist.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Der UCS-Domänencontroller muss mit demselben DNS-Domänennamen, NetBIOS-Domänennamen und
+		  Der UCS Directory Node muss mit demselben DNS-Domänennamen, NetBIOS-Domänennamen und
 		  Kerberos-Domänennamen installiert werden wie die AD-Domäne. Es wird empfohlen auch
 		  die selbe LDAP-Basis-DN zu verwenden.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Der UCS-Domänencontroller muss eine IPv4-Adresse im selben Subnetz wie der zu
+		  Der UCS Directory Node muss eine IPv4-Adresse im selben Subnetz wie der zu
 		  übernehmende Active Directory-Domänencontroller verwenden.
 		</simpara></listitem>
 	  </itemizedlist>
@@ -1618,7 +1618,7 @@ immer in dieser Gruppe Mitglied.
 	  Für die Migration muss die Applikation <emphasis>Active Directory Takeover</emphasis> aus dem
 	  Univention App Center installiert werden. Sie muss auf dem System installiert werden, auf dem
 	  der Univention S4 Connector läuft (siehe <xref linkend="windows:s4connector"/>, normalerweise
-	  der &ucsMaster;).
+	  der &ucsPrimaryDN;).
 	</para>
 
   </section>
@@ -1671,14 +1671,14 @@ net user administrator PASSWORT
   <section id="windows:adtakeover:migrate">
 	<title>Domänenmigration</title>
 	<para>
-	  Die Übernahme muss auf dem UCS-Domänencontroller gestartet werden, auf dem der Univention S4
-	  Connector läuft (normalerweise der &ucsMaster;). Während der Übernahme sollte Samba nur auf
-	  diesem UCS-System laufen. Gibt es weitere Samba-Domänencontroller müssen diese angehalten
+	  Die Übernahme muss auf dem UCS Directory Node gestartet werden, auf dem der Univention S4
+	  Connector läuft (normalerweise der &ucsPrimaryDN;). Während der Übernahme sollte Samba nur auf
+	  diesem UCS-System laufen. Gibt es weitere UCS Samba/AD Nodes muss Samba auf diesen angehalten
 	  werden. Dies ist wichtig um replikationsbedingte Dateninkonsistenzen zu vermeiden.
 	</para>
 
 	<para>
-	  Andere Samba-Systeme können gestoppt werden, indem auf jedem UCS-Domänencontroller als
+	  Andere UCS Samba/AD-Systeme können gestoppt werden, indem auf jedem UCS Directory Node als
 	  Benutzer <systemitem class="username">root</systemitem> folgender Befehl ausgeführt wird:
 
 	  <programlisting language="sh">
@@ -1687,7 +1687,7 @@ net user administrator PASSWORT
 	</para>
 
 	<para>
-	  Nachdem sichergestellt wurde, dass keine anderen Samba-Domänencontroller laufen, kann die
+	  Nachdem sichergestellt wurde, dass keine anderen Samba/AD-Domänencontroller laufen, kann die
 	  Übernahme beginnen. Wurde die UCS-Domäne mit einer UCS-Version vor 3.2 installiert muss zuerst
 	  die folgende &ucsUCRV; gesetzt werden:
 
@@ -1735,7 +1735,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Beitritt des UCS-Domänencontrollers in die Active Directory-Domäne
+		  Beitritt des UCS Directory Nodes in die Active Directory-Domäne
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1758,7 +1758,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  Nun enthält der UCS-Domänencontroller  alle Benutzer, Gruppen und
+	  Nun enthält der UCS Directory Node alle Benutzer, Gruppen und
 	  Rechner aus der Active Directory-Domäne. Im nächsten Schritt wird die SYSVOL-Freigabe kopiert,
 	  in der u.a. die Gruppenrichtlinien gespeichert werden.
 	</para>
@@ -1804,7 +1804,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Übertragung der FSMO-Rollen auf den UCS-Domänencontroller. Diese kennzeichnen verschiedene
+		  Übertragung der FSMO-Rollen auf den UCS Directory Node. Diese kennzeichnen verschiedene
 		  Aufgaben, die ein Server in einer AD-Domäne übernehmen kann.
 		</simpara></listitem>
 
@@ -1942,8 +1942,8 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	  Für das folgende Beispiel sei angenommen, dass der UCS Samba/AD DC Master
-	  <systemitem class="fqdomainname">master.ucsdom.example</systemitem> die IP-Adresse
+	  Für das folgende Beispiel sei angenommen, dass der UCS Samba/AD DC &ucsPrimaryDN;
+	  <systemitem class="fqdomainname">primary.ucsdom.example</systemitem> die IP-Adresse
 	  <systemitem class="ipaddress">192.0.2.10</systemitem> hat und dass der
 	  Active Directory Domänencontroller
 	  <systemitem class="fqdomainname">dc1.addom.example</systemitem> der entfernten Domäne

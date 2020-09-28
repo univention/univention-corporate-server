@@ -75,11 +75,11 @@
 	  <title>Installation</title>
 
 	  <para>
-		Samba as an AD domain controller can be installed on all UCS domain controllers from the
+		Samba as an AD domain controller can be installed on all UCS Directory Nodes from the
 		Univention App Center with the application <emphasis>Active Directory-compatible domain
 		controller</emphasis>. Alternatively, the software package
-		<package>univention-samba4</package> can be installed. On the system roles &ucsMaster; and
-		&ucsBackup; the <package>univention-s4-connector</package> package must also be installed
+		<package>univention-samba4</package> can be installed. On the system roles &ucsPrimaryDN; and
+		&ucsBackupDN; the <package>univention-s4-connector</package> package must also be installed
 		(<command>univention-run-join-scripts</command> command must be run after
 		installation). Additional information can be found in <xref
 		linkend="computers::softwaremanagement::installsoftware"/>.
@@ -212,7 +212,7 @@
 		  When using Samba as an Active Directory domain controller, Samba provides a separate LDAP
 		  directory service. The synchronization between the UCS LDAP and the Samba LDAP occurs via
 		  an internal system service, the Univention S4 connector. The connector is enabled on the
-		  &ucsMaster; by default and typically requires no further configuration.
+		  &ucsPrimaryDN; by default and typically requires no further configuration.
 		</para>
 
 		<para>
@@ -227,7 +227,7 @@
 		  required credentials of the machine account are used automatically:
 
 		  <programlisting>
-root@master:~# univention-s4search sAMAccountName=Administrator
+root@primary:~# univention-s4search sAMAccountName=Administrator
 # record 1
 dn: CN=Administrator,CN=Users,DC=example,DC=com
 objectClass: top
@@ -246,16 +246,16 @@ instanceType: 4
 		<title>Replication of directory data</title>
 
 		<para>
-		  Samba AD domains use the Directory Replication System (DRS) to replicate the directory
+		  Samba/AD domains use the Directory Replication System (DRS) to replicate the directory
 		  data. DRS allows multi-master replication, i.e., the write changes from multiple domain
 		  controllers are synchronized at protocol level. Consequently, the use of snapshots in
-		  virtualization solutions should be avoided when using Samba 4 and Samba 4 should be
+		  virtualization solutions should be avoided when using Samba/AD and Samba/AD should be
 		  operated on a server which is never switched off.
 		</para>
 
 		<para>
-		  The complexity of the multi-master replication increases with each additional Samba AD
-		  domain controller. Consequently, it must be checked whether additional Samba AD domain
+		  The complexity of the multi-master replication increases with each additional Samba/AD
+		  domain controller. Consequently, it must be checked whether additional Samba/AD domain
 		  controllers are necessary or if a member server would not be a better choice for new
 		  servers.
 		</para>
@@ -270,15 +270,15 @@ instanceType: 4
 		<title>Synchronization of the SYSVOL share</title>
 		<para>
 		  The SYSVOL share is a share which provides group policies and logon scripts in Active
-		  Directory / Samba 4. It is synchronized among all domain controllers and stored in the
+		  Directory/Samba. It is synchronized among all domain controllers and stored in the
 		  <filename class="directory">/var/lib/samba/sysvol/</filename> directory.
 		</para>
 
 		<para>
 		  In Microsoft Active Directory, the SYSVOL share is synchronized by the File Replication
 		  Service (introduced with Windows 2000) or the Distributed File System (as of <systemitem class="osname">Windows 2008
-		  R2</systemitem>). These replication methods are not yet fully implemented in Samba 4. The
-		  synchronization between the Samba 4 domain controllers is performed in UCS via a Cron job
+		  R2</systemitem>). These replication methods are not yet fully implemented in Samba/AD. The
+		  synchronization between the Samba/AD domain controllers is performed in UCS via a Cron job
 		  (every five minutes as standard - can be configured using the &ucsUCRV;
 		  <envar>samba4/sysvol/sync/cron</envar>).
 		</para>
@@ -296,7 +296,7 @@ instanceType: 4
 
 		  <para>
 			Group policies are an Active Directory feature which allows the central configuration of
-			settings for computers and users. Group policies are also supported by Samba AD
+			settings for computers and users. Group policies are also supported by Samba/AD
 			domains. The policies only apply to Windows clients; Linux or Mac OS systems cannot
 			evaluate the policies.
 		  </para>
@@ -306,7 +306,7 @@ instanceType: 4
 			objects</emphasis>). Put more precisely, a GPO can contain a series of policies. Despite
 			their name, group policy objects cannot be assigned directly to certain user groups, but
 			instead are linked with certain AD administration units (domains,
-			sites or organizational units) in the Samba directory service (Samba DS/AD) and thus
+			sites or organizational units) in the Samba directory service (Samba AD/DS) and thus
 			refer to subordinate objects. A group-specific or user-specific evaluation is only
 			indirectly possible via the <emphasis>Security Filtering</emphasis> of a group policy
 			object, in which the <emphasis>Apply group policy Allow/Deny</emphasis> privilege can be directly
@@ -572,7 +572,7 @@ instanceType: 4
 			directory in the domain controllers' file system which contains the actual policy files
 			which are to be implemented on the Window system (saved in the SYSVOL share (see <xref
 			linkend="windows:sysvolshare"/>)). On the other hand there is an object with the same
-			name in the LDAP tree of the Samba directory service (Samba DS/AD), which is usually
+			name in the LDAP tree of the Samba directory service (Samba AD/DS), which is usually
 			saved below an LDAP container named <emphasis>Group Policy Objects</emphasis>.
 		  </para>
 
@@ -718,7 +718,7 @@ END CATEGORY
 		</para>
 
 		<para>
-		  No roaming profiles are used in the default setting in Samba 4.
+		  No roaming profiles are used in the default setting in Samba/AD.
 		</para>
 
 		<para>
@@ -745,7 +745,7 @@ END CATEGORY
   <section id="ad-connector:einfuehrung">
 	<title>Introduction</title>
 	<para>
-	  &ucsUCS; can be operated together with an existing Active Directory domain (AD domain) in two different ways. Both modes can be set up using the <emphasis>Active Directory Connection</emphasis> application from the Univention App Center (see <xref linkend="computers::softwaremanagement::installsoftware"/>). This is available on a &ucsMaster; and &ucsBackup;.
+	  &ucsUCS; can be operated together with an existing Active Directory domain (AD domain) in two different ways. Both modes can be set up using the <emphasis>Active Directory Connection</emphasis> application from the Univention App Center (see <xref linkend="computers::softwaremanagement::installsoftware"/>). This is available on a &ucsPrimaryDN; and &ucsBackupDN;.
 	</para>
 
 	<para>
@@ -795,7 +795,7 @@ END CATEGORY
 
   <note>
 		<itemizedlist>
-			<listitem><simpara>The <emphasis>AD member</emphasis> mode can only be configured on a &ucsMaster;.</simpara></listitem>
+			<listitem><simpara>The <emphasis>AD member</emphasis> mode can only be configured on a &ucsPrimaryDN;.</simpara></listitem>
 			<listitem><simpara>The name of the DNS domain of the UCS systems must match that of the AD domain. The host name must of course be different.</simpara></listitem>
 			<listitem><simpara>All the AD and UCS servers in a connector environment must use the same time zone.</simpara></listitem>
 		</itemizedlist>
@@ -840,7 +840,7 @@ END CATEGORY
 
   <warning>
     <para>
-      If additional UCS systems were already part of the UCS domain in addition to the &ucsMaster;, they must also join the domain anew. At the same time they recognize that the &ucsMaster; is in <emphasis>AD member</emphasis> mode and also join the authentication structure of the AD domain and can then also provide Samba file shares, for example.
+      If additional UCS systems were already part of the UCS domain in addition to the &ucsPrimaryDN;, they must also join the domain anew. At the same time they recognize that the &ucsPrimaryDN; is in <emphasis>AD member</emphasis> mode and also join the authentication structure of the AD domain and can then also provide Samba file shares, for example.
     </para>
   </warning>
 
@@ -857,7 +857,7 @@ END CATEGORY
   </para>
 
   <para>
-    To use an encrypted connection between Active Directory and the &ucsMaster; not only for the authentication, but also for data exchange itself, the root certificate of the certification authority can be exported from the AD domain controller and uploaded via the UMC module. Further information on this topic is available in <xref linkend="ad-connector:ad-zertifikat"/>.
+    To use an encrypted connection between Active Directory and the &ucsPrimaryDN; not only for the authentication, but also for data exchange itself, the root certificate of the certification authority can be exported from the AD domain controller and uploaded via the UMC module. Further information on this topic is available in <xref linkend="ad-connector:ad-zertifikat"/>.
   </para>
 
   <para>
@@ -865,11 +865,11 @@ END CATEGORY
   </para>
 
   <para>
-	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorizations of the &ucsMaster;'s machine account.
+	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorizations of the &ucsPrimaryDN;'s machine account.
 	  These authorizations are not sufficient for exporting encrypted password data.
 	  In this case, the LDAP DN of a privileged replication user can be adjusted manually in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>.
 	  This must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
-	  The corresponding password must be saved in a file on the &ucsMaster; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>.
+	  The corresponding password must be saved in a file on the &ucsPrimaryDN; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>.
 	  If the access password is changed at a later point in time, the new password must be entered in this file.
 	  The access rights for the file should be restricted so that only the <systemitem class="username">root</systemitem> owner has access.
   </para>
@@ -887,7 +887,7 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </programlisting>
 
   <para>
-    If desired, the AD domain controller can also be replaced by the &ucsMaster; at a later point in time. This is possible via the <emphasis>Active Directory Takeover</emphasis> application (see <xref linkend="windows:adtakeover"/>).
+    If desired, the AD domain controller can also be replaced by the &ucsPrimaryDN; at a later point in time. This is possible via the <emphasis>Active Directory Takeover</emphasis> application (see <xref linkend="windows:adtakeover"/>).
   </para>
 
   </section>
@@ -924,8 +924,8 @@ ucr set connector/ad/mapping/user/password/kinit=false
   </para>
 
   <para>
-	The UCS AD connector can only be installed on a &ucsMaster; or
-	&ucsBackup; system.
+	The UCS AD connector can only be installed on a &ucsPrimaryDN; or
+	&ucsBackupDN; system.
   </para>
 
 <section id="ad-connector:basicsetup">
@@ -1505,18 +1505,18 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  The UCS domain controller (&ucsMaster;) needs to be installed
+		  The UCS Directory Node (&ucsPrimaryDN;) needs to be installed
 		  with a unique hostname, not used in the AD domain.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The UCS domain controller needs to be installed with the same DNS domain name, NetBIOS
+		  The UCS Directory Node needs to be installed with the same DNS domain name, NetBIOS
 		  (pre Windows 2000) domain name and Kerberos realm as the AD domain. It is also recommended
 		  to configure the same LDAP base DN.
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The UCS domain controller needs to be installed with a unique IPv4 address in the same IP
+		  The UCS Directory Node needs to be installed with a unique IPv4 address in the same IP
 		  subnet as the Active Directory domain controller that is used for the takeover.
 		</simpara></listitem>
 	  </itemizedlist>
@@ -1535,7 +1535,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 	  The <emphasis>Active Directory Takeover</emphasis> application must be installed from the
 	  Univention App Center for the migration. It must be installed on the system where the
 	  Univention S4 Connector is running (see <xref linkend="windows:s4connector"/>, usually the
-	  &ucsMaster;).
+	  &ucsPrimaryDN;).
 	</para>
 
   </section>
@@ -1589,15 +1589,15 @@ net user administrator PASSWORD
   <section id="windows:adtakeover:migrate">
 	<title>Domain migration</title>
 	<para>
-	  The takeover must be initiated on the UCS domain controller that runs the Univention S4 Connector
-	  (by default the &ucsMaster;). During the takeover process Samba must only run on this UCS
-	  system. If other Samba domain controllers have been added to the UCS domain, they need to be
-	  stopped! This is important to avoid data corruption by mixing directory data taken over from
-	  Active Directory with Samba 4 directory data replicated from other UCS domain controllers.
+	  The takeover must be initiated on the UCS Directory Node that runs the Univention S4 Connector
+	  (by default the &ucsPrimaryDN;). During the takeover process Samba must only run on this UCS
+	  system. If other UCS Samba/AD Nodes are present in the UCS domain, Samba needs to be stopped
+	  on those systems. This is important to avoid data corruption by mixing directory data taken over from
+	  Active Directory with Samba/AD directory data replicated from other UCS Samba/AD Nodes.
 	</para>
 
 	<para>
-	  Other Samba systems can be stopped by logging into each of the other UCS domain controllers as the
+	  Other UCS Samba/AD systems can be stopped by logging into each of the other UCS Directory Nodes as the
 	  <systemitem class="username">root</systemitem>user and running
 
 	  <programlisting language="sh">
@@ -1606,7 +1606,7 @@ net user administrator PASSWORD
 	</para>
 
 	<para>
-	  After ensuring that only the Univention S4 Connector host runs Samba 4, the takeover process
+	  After ensuring that only the Univention S4 Connector host runs Samba/AD, the takeover process
 	  can be started. If the UCS domain was installed initially with a UCS version before UCS 3.2,
 	  the following &ucsUCRV; needs to be set first:
 
@@ -1652,7 +1652,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Join the UCS domain controller into the Active Directory domain
+		  Join the UCS Directory Node into the Active Directory domain
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1675,7 +1675,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 	</para>
 
 	<para>
-	  The UCS domain controller now contains all users, groups and computers of the Active Directory
+	  The UCS Directory Node now contains all users, groups and computers of the Active Directory
 	  domain. In the next step, the SYSVOL share is copied, in which among other things the group
 	  policies are stored.
 	</para>
@@ -1723,7 +1723,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 	  <itemizedlist>
 		<listitem><simpara>
-		  Claiming all FSMO roles for the UCS domain controller. These describe different tasks that
+		  Claiming all FSMO roles for the UCS Directory Node. These describe different tasks that
 		  a server can take on in an AD domain.
 		</simpara></listitem>
 
@@ -1785,7 +1785,7 @@ samba-tool dbcheck --fix --yes
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  If more than one UCS domain controller with Samba domain controller has been installed,
+		  If more than one UCS Directory Node with Samba/AD has been installed,
 		  these servers need to be re-joined.
 		</simpara></listitem>
 
@@ -1863,8 +1863,8 @@ samba-tool dbcheck --fix --yes
   </para>
 
   <para>
-	  The following example assumes, that the UCS Samba/AD DC Master
-	  <systemitem class="fqdomainname">master.ucsdom.example</systemitem> has the IP address
+	  The following example assumes, that the UCS Samba/AD DC &ucsPrimaryDN;
+	  <systemitem class="fqdomainname">primary.ucsdom.example</systemitem> has the IP address
 	  <systemitem class="ipaddress">192.0.2.10</systemitem> and that the
 	  Active Directory domain controller
 	  <systemitem class="fqdomainname">dc1.addom.example</systemitem> of the remote domain has the IP address
