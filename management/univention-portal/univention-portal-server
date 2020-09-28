@@ -48,7 +48,7 @@ import tornado.ioloop
 import tornado.web
 import ldap
 
-from univention.udm import UDM
+from univention.udm import UDM, UnknownModuleType
 from univention.config_registry import ConfigRegistry
 from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
 from univention.config_registry.handler import run_filter
@@ -187,6 +187,12 @@ class LDAPCache(object):
 				get_logger('server').info('Reconnecting ldap connection')
 				self._udm = None
 				fd = self._refresh()
+		except UnknownModuleType:
+			# this may happen during system-setup when portals/portal et al are
+			# not yet registered via ucs_registerLDAPExtension but someone said
+			# service univention-portal-server reload (i.e. our listener modules)
+			get_logger('cache').warn('It seems the portals/* UDM modules are not yet ready. Check the join status. You may need to restart this service.')
+			# hopefully, we can still work with an older cache?
 		except Exception:
 			get_logger('cache').exception('Error during refresh')
 			# hopefully, we can still work with an older cache?
