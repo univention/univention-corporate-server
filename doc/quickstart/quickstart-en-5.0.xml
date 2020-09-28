@@ -66,8 +66,8 @@
 	result in unnecessary timeouts. In these cases, it makes more sense not to specify a gateway.
 	The network configuration can be employed using DHCP.
 	If there is already a name server available in the local network, it should be used. If
-	additional UCS systems are installed in the domain at a later point in time, the &ucsMaster; and
-	any &ucsBackup; systems should be entered as name servers.
+	additional UCS systems are installed in the domain at a later point in time, the &ucsPrimaryDN; and
+	any &ucsBackupDN; systems should be entered as name servers.
   </para>
 
   <figure id="quick-systemrole">
@@ -82,7 +82,7 @@
 	<itemizedlist>
         <listitem><simpara>
                 The system is to be the first system in a new UCS domain
-                and it is implicitly configured with the system role &ucsMaster;
+                and it is implicitly configured with the system role &ucsPrimaryDN;
         </simpara></listitem>
         <listitem><simpara>
                 The system can be joined into an existing Active Directory
@@ -107,7 +107,7 @@
 
   <para>
 	In the subsequent course of the installation, the fully qualified host name, under which the
-	computer should be accessible in the network, is entered for a &ucsMaster;. A local
+	computer should be accessible in the network, is entered for a &ucsPrimaryDN;. A local
 	name should also be used as the domain name in this case, e.g.,
 	<systemitem class="domainname">company.intranet</systemitem>. (If the system is used as a mail server, for example,
 	the mail domains can be used independently of the domain names).
@@ -118,7 +118,7 @@
 	The <guimenu>LDAP base</guimenu> is suggested based on the fully qualified host name and
 	only needs to be adjusted in exceptional cases. The root password must be at least eight
 	characters long and is also set as the password for the user <emphasis>Administrator</emphasis>
-	during the installation of the first UCS system (&ucsMaster;).
+	during the installation of the first UCS system (&ucsPrimaryDN;).
   </para>
 
   <para>
@@ -144,13 +144,13 @@
   <para>
 	The web interface of an installed UCS system is directly available via its IP address
 	(<uri>https://<replaceable>server_ip</replaceable></uri> or <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS is recommended).
-	By default, a portal page is configured on the &ucsMaster; where all applications are listed that are installed in the domain.
+	By default, a portal page is configured on the &ucsPrimaryDN; where all applications are listed that are installed in the domain.
 	For all other system roles, the start site consists of an overview of all locally installed applications.
 	(View as well as the partitioning of entries can be customized in a very flexible manner, see also <biblioref linkend="ucs-portal"/>.)
   </para>
 
   <figure id="quick-ucs-portal">
-	<title>Illustration of the portal page on the &ucsMaster; with all domain wide available applications</title>
+	<title>Illustration of the portal page on the &ucsPrimaryDN; with all domain wide available applications</title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/ucs-portal-en.png"/>
   </figure>
 
@@ -165,8 +165,8 @@
   <para>
 	For administrating UCS, the LDAP directory is the central component of a UCS domain.
 	In the LDAP, domain wide information such as the users, groups and computer accounts is saved.
-	Depending on the settings, this information is replicated to the other domain controllers in the domain either completely or selectively.
-	The UMC modules which edit the LDAP directory directly can be accessed only on the &ucsMaster; via &ucsUMC;.
+	Depending on the settings, this information is replicated to the other Directory Nodes in the domain either completely or selectively.
+	The UMC modules which edit the LDAP directory directly can be accessed only on the &ucsPrimaryDN; via &ucsUMC;.
 	Furthermore, they can also be controlled using the command line interface &ucsUDM;
 	<biblioref linkend="ucs-udm"/>.
   </para>

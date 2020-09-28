@@ -68,8 +68,8 @@
 	erreichbar ist, so kann es zu unnötigen Timeouts kommen. In solchen Fällen ist es sinnvoller,
 	kein Gateway anzugeben. Die Netzkonfiguration kann auch über DHCP erfolgen.
 	Sofern bereits ein Nameserver im lokalen Netzwerk vorhanden ist, sollte dieser verwendet
-	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsMaster; und
-	ggf. vorhandene &ucsBackup;-Systeme als Nameserver eingetragen werden.
+	werden. Werden später weitere UCS-Systeme in der Domäne installiert, sollte der &ucsPrimaryDN; und
+	ggf. vorhandene &ucsBackupDN;-Systeme als Nameserver eingetragen werden.
   </para>
 
   <figure id="quick-systemrole">
@@ -85,7 +85,7 @@
 	<itemizedlist>
         <listitem><simpara>
                 Das System soll das erste System für eine eigene UCS-Domäne
-                werden und es wird implizit als Systemrolle &ucsMaster;
+                werden und es wird implizit als Systemrolle &ucsPrimaryDN;
                 aufgesetzt.
         </simpara></listitem>
         <listitem><simpara>
@@ -112,7 +112,7 @@
   </para>
 
   <para>
-	Im weiteren Verlauf der Installation wird bei einem &ucsMaster; der vollqualifizierte
+	Im weiteren Verlauf der Installation wird bei einem &ucsPrimaryDN; der vollqualifizierte
 	Rechnername eingetragen, unter dem der Rechner im Netzwerk erreichbar sein soll. Hier kann als
 	Domänenname auch ein lokaler Name verwendet werden, z.B. <systemitem class="domainname">firma.intranet</systemitem>.  (Wenn
 	das System etwa als Mailserver verwendet werden soll, können die Maildomänen unabhängig vom
@@ -122,8 +122,8 @@
 	<systemitem class="fqdomainname">mailserver.firma.intranet</systemitem> einzutragen. Die <guimenu>LDAP-Basis</guimenu> wird auf
 	Basis des vollständigen Rechnernamens vorgeschlagen und muss nur in Ausnahmefällen angepasst
 	werden.  Bei allen anderen Systemrollen reicht es in der Regel nur den Rechnernamen anzugeben. Der
-	Domänenname wird während des Domänenbeitritt vom &ucsMaster; bezogen.  Das Passwort muss mindestens acht
-	Zeichen umfassen und wird bei der Installation des ersten UCS-Systems (&ucsMaster;) auch als
+	Domänenname wird während des Domänenbeitritt vom &ucsPrimaryDN; bezogen.  Das Passwort muss mindestens acht
+	Zeichen umfassen und wird bei der Installation des ersten UCS-Systems (&ucsPrimaryDN;) auch als
 	Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
   </para>
 
@@ -150,13 +150,13 @@
   <para>
 	Die Weboberfläche eines installierten UCS-Systems ist direkt unter seiner IP-Adresse erreichbar
 	(<uri>https://<replaceable>server_ip</replaceable></uri> oder <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS wird empfohlen).
-	Standardmäßig ist auf einem &ucsMaster; als Startseite eine Portalseite eingerichtet, die alle in der Domäne installierten Applikationen und Dienste auflistet.
+	Standardmäßig ist auf einem &ucsPrimaryDN; als Startseite eine Portalseite eingerichtet, die alle in der Domäne installierten Applikationen und Dienste auflistet.
 	Auf allen anderen Systemrollen beinhaltet die Startseite einen Überblick über die lokal installierten Applikationen.
 	(Darstellung und genaue Aufteilung der Einträge können nachträglich sehr flexibel angepasst werden, siehe auch <biblioref linkend="ucs-portal"/>.)
   </para>
 
   <figure id="quick-ucs-portal">
-	<title>Ansicht der Portalseite des &ucsMaster; mit den in der Domäne verfügbaren Applikationen</title>
+	<title>Ansicht der Portalseite des &ucsPrimaryDN; mit den in der Domäne verfügbaren Applikationen</title>
 	<graphic scalefit="1" width="80%" align="center" fileref="illustrations44/ucs-portal-de.png"/>
   </figure>
 
@@ -171,8 +171,8 @@
   <para>
 	Für die Verwaltung von UCS ist das LDAP-Verzeichnis der zentrale Bestandteil einer UCS-Domäne.
 	Im LDAP werden alle domänenweiten Informationen gespeichert, z.B. Benutzer, Gruppen oder Rechnerkonten.
-	Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die anderen Domänencontroller in der Domäne repliziert.
-	Die UMC-Module, die direkt das LDAP-Verzeichnis bearbeiten, können nur auf dem &ucsMaster; über &ucsUMC; aufgerufen werden.
+	Diese Informationen werden, je nach Einstellung, komplett oder selektiv auf die anderen Directory Nodes in der Domäne repliziert.
+	Die UMC-Module, die direkt das LDAP-Verzeichnis bearbeiten, können nur auf dem &ucsPrimaryDN; über &ucsUMC; aufgerufen werden.
 	Sie lassen sich darüber hinaus auch mit dem Kommandozeilen-Interface &ucsUDM; bedienen <biblioref linkend="ucs-udm"/>.
   </para>
 
