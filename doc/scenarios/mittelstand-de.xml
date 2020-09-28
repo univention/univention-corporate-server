@@ -77,36 +77,37 @@
   </section>
 
   <section id="engineering:dc">
-	<title>Domänencontroller / LDAP-Verzeichnis</title>
+	<title>Directory Nodes / LDAP-Verzeichnis</title>
 	<para>
-	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS Domänencontroller
-	  Master (DC Master), einem UCS Domänencontroller Backup (DC Backup), mehreren UCS
-      Domänencontroller Slave (DC Slave) und Arbeitsplatzsystemen für
+	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem
+	  UCS &ucsPrimaryDN; (Primärer Domaincontroller/DC), einem UCS &ucsBackupDN;
+	  (Backup Domaincontroller/DC), mehreren UCS &ucsReplicaDN;
+	  (Replica Domaincontroller/DC) und Arbeitsplatzsystemen für
       Mitarbeiter bestehend aus Desktop-Computern und Notebooks. Zum Einsatz
       kommen Microsoft Windows und Ubuntu Linux.
 	</para>
 
 	<para>
-	  Der DC Master ist das Kernstück der UCS-Domäne. Auf diesem System wird die zentrale
+	  Der &ucsPrimaryDN; ist das Kernstück der UCS-Domäne. Auf diesem System wird die zentrale
 	  schreibbare Kopie des LDAP-Verzeichnisdienstes vorgehalten.
 	</para>
 
 	<para>
-	  Der DC Backup stellt weitgehend eine Kopie des DC Master dar. Dadurch sind alle wichtigen
+	  Der &ucsBackupDN; stellt weitgehend eine Kopie des &ucsPrimaryDN; dar. Dadurch sind alle wichtigen
 	  Dienste doppelt im Netzwerk vorhanden, die Verfügbarkeit der Dienste wird also weiter erhöht
-	  und die Last zwischen den UCS Domänencontrollern verteilt.
+	  und die Last zwischen den UCS Directory Nodes verteilt.
 	</para>
 
 	<para>
-	  Sollte der DC Master durch einen Hardwaredefekt ausfallen, kann der DC Backup innerhalb
-	  kürzester Zeit zu einem DC Master umgewandelt werden.
+	  Sollte der &ucsPrimaryDN; durch einen Hardwaredefekt ausfallen, kann der &ucsBackupDN; innerhalb
+	  kürzester Zeit zu einem &ucsPrimaryDN; umgewandelt werden.
 	</para>
 
 	<para>
-	  Der DC Master und der DC Backup stehen in der Firmenzentrale. Die beiden UCS-Systeme betreiben
+	  Der &ucsPrimaryDN; und der &ucsBackupDN; stehen in der Firmenzentrale. Die beiden UCS-Systeme betreiben
 	  einen LDAP-Server und bieten Anmeldedienste für die Domäne an. Für ein zentrales IP-Management
 	  läuft auf beiden Systemen ein mit Daten aus dem LDAP-Verzeichnis gepflegter und somit
-	  redundanter DNS- und DHCP-Server. Auf dem DC Backup ist ein Druckserver eingerichtet.
+	  redundanter DNS- und DHCP-Server. Auf dem &ucsBackupDN; ist ein Druckserver eingerichtet.
 	</para>
   </section>
 
@@ -168,7 +169,7 @@
 	</para>
 
 	<para>
-	  Der Groupware-Server wird als &ucsSlave;-System in der Amazon EC2-Cloud betrieben. Dies erlaubt
+	  Der Groupware-Server wird als &ucsReplicaDN;-System in der Amazon EC2-Cloud betrieben. Dies erlaubt
 	  eine flexible Skalierung des Groupwaresystems auf wachsende Leistungs- und
 	  Speicherplatzanforderungen. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
 	</para>

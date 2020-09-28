@@ -79,12 +79,12 @@
 	<title>Umsetzung</title>
 	<para>
 	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem
-	  &ucsMaster; (DC Master), einem &ucsBackup; (DC Backup),
-	  mehreren &ucsSlave; (DC Slave) mit Univention Corporate Server (UCS) und 150 Thin Clients.
+	  &ucsPrimaryDN; (Primärer Domaincontroller/DC), einem &ucsBackupDN; (Backup Domaincontroller/DC),
+	  mehreren &ucsReplicaDN; (Replica Domaincontroller/DC) mit Univention Corporate Server (UCS) und 150 Thin Clients.
 	</para>
 
 	<para>
-	  Der DC Master ist das Kernstück der UCS-Domäne. Auf diesem System wird
+	  Der &ucsPrimaryDN; ist das Kernstück der UCS-Domäne. Auf diesem System wird
 	  der zentrale, schreibbare LDAP-Verzeichnisdienst vorgehalten.
 	</para>
 
@@ -94,20 +94,20 @@
 	  </figure>
 
 	<para>
-	  Der DC Backup stellt weitgehend eine Kopie des DC Master dar. Dadurch
+	  Der &ucsBackupDN; stellt weitgehend eine Kopie des &ucsPrimaryDN; dar. Dadurch
 	  sind alle wichtigen Dienste doppelt im Netzwerk vorhanden, die
 	  Verfügbarkeit der Dienste wird also weiter erhöht und die Last zwischen den
-	  Domänencontrollern verteilt.
+	  Directory Nodes verteilt.
 	</para>
 
 	<para>
-	  Sollte der DC Master durch einen Hardware-Defekt ausfallen, kann der
-	  DC Backup innerhalb kürzester Zeit zum DC Master umgewandelt werden.
+	  Sollte der &ucsPrimaryDN; durch einen Hardware-Defekt ausfallen, kann der
+	  &ucsBackupDN; innerhalb kürzester Zeit zum &ucsPrimaryDN; umgewandelt werden.
 	</para>
 
 	<para>
-	  Der DC Master und der DC Backup stehen in der Firmenzentrale.
-	  An den Standorten finden sich weitere &ucsSlave;-Systeme,
+	  Der &ucsPrimaryDN; und der &ucsBackupDN; stehen in der Firmenzentrale.
+	  An den Standorten finden sich weitere &ucsReplicaDN;-Systeme,
 	  die Windows-Domänendienste, Druckdienste und eine Softwareverteilung
 	  bereitstellen.
 	</para>
@@ -121,7 +121,7 @@
   <section id="insurance:software">
 	<title>Software-Verteilung der UCS-Systeme</title>
 	<para>
-	  Für die UCS-Domänencontroller wurden Installationsprofile
+	  Für die UCS Directory Nodes wurden Installationsprofile
 	  erstellt. Mit diesen Profilen können mit dem Univention Net Installer PXE-basiert
 	  neue Systeme ausgerollt werden oder ggf. Systeme nach einem
 	  Hardwareausfall wieder hergestellt werden. Die Installation läuft
@@ -154,8 +154,8 @@
   <section id="insurance:windows">
 	<title>Anbindung von Windows-Clients und Software-Verteilung</title>
 	<para>
-	  In der HMV wird Samba 4 für die Anbindung der Windows-Clients
-	  eingesetzt. Samba 4 bietet Domänen-, Verzeichnis- und
+	  In der HMV wird Samba/AD für die Anbindung der Windows-Clients
+	  eingesetzt. Samba/AD bietet Domänen-, Verzeichnis- und
 	  Authentifizierungsdienste, die kompatibel zu Microsoft Active
 	  Directory sind. Diese ermöglichen auch die Verwendung der von
 	  Microsoft bereitgestellten Werkzeuge für die Verwaltung von
@@ -208,7 +208,7 @@
 	<para>
 	  Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur
 	  in eine Domäne eingebunden sein können. Alle Windows-Clients sind in die
-	  UCS-Samba-4-Domäne gejoint.
+	  UCS-Samba/AD-Domäne gejoint.
 	</para>
   </section>
 
@@ -310,7 +310,7 @@
 	<para>
 	  In der Zentrale arbeiten 150 Benutzer mit Terminaldiensten auf Basis
 	  von Citrix XenApp. Der XenApp-Terminalserver läuft auf einem
-	  Microsoft Windows Memberserver, der in die Samba 4-Domäne gejoint ist.
+	  Microsoft Windows Memberserver, der in die Samba/AD-Domäne gejoint ist.
 	</para>
   </section>
 
@@ -338,7 +338,7 @@
 	</para>
 
 	<para>
-	  Die Installation wird als &ucsSlave;-System in der Amazon EC2-Cloud
+	  Die Installation wird als &ucsReplicaDN;-System in der Amazon EC2-Cloud
 	  betrieben. Dies stellt eine hohe Erreichbarkeit sicher und
 	  erlaubt eine flexible Skalierung auf wachsende Leistungs- und
 	  Speicherplatzanforderungen.
