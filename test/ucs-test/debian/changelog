@@ -1,3 +1,10 @@
+ucs-test (9.0.5-6) unstable; urgency=medium
+
+  * Bug #52005: Destroy ucr_test periodically, see if this was what blocked the postrun,
+    Bug #52145: Sleep or 15 seconds if wait_for_drs_replication is run on memberserver with univention-samba installed (workaround for now)
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 28 Sep 2020 21:37:27 +0200
+
 ucs-test (9.0.5-5) unstable; urgency=medium
 
   * Bug 49823: Added selenium pytest 153_udm_check_properties_of_copied_users2.py
