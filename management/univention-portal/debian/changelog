@@ -1,3 +1,9 @@
+univention-portal (4.0.1-3) unstable; urgency=medium
+
+  * Bug #52125: Fix 'Bad search filter' in portal listener
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 28 Sep 2020 11:08:24 +0200
+
 univention-portal (4.0.1-2) unstable; urgency=medium
 
   * Bug #52125: adjust univention-portal.schema for images
