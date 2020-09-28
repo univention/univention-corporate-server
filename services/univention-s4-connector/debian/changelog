@@ -1,4 +1,4 @@
-univention-s4-connector (13.0.2-77) unstable; urgency=medium
+univention-s4-connector (13.0.2-78) unstable; urgency=medium
 
   * Bug #51782: Add synchronization of domainpolicy
 

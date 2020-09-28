@@ -186,7 +186,7 @@ done
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/n_domainpolicy.schema \
-	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" || die
+	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" --ucsversionstart "4.4-0" || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?
