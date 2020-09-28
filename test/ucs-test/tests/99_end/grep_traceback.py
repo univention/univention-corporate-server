@@ -31,6 +31,7 @@
 
 from __future__ import print_function
 
+import os
 import re
 import gzip
 import sys
@@ -84,6 +85,9 @@ def main(filenames, ignore_exceptions={}):
 			continue
 		found = True
 		print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)))
+		if os.environ.get('JENKINS_WS'):
+			for fn in exceptions.filenames:
+				print('%sws/test/' % (os.environ['JENKINS_WS'], os.path.basename(fn)))
 		print('Traceback (most recent call last):')
 		print(traceback, end='')
 		for exc in exceptions:
