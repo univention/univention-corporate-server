@@ -96,7 +96,7 @@
 
 	<para>
 	  If the &ucsPrimaryDN; fails as a result of a hardware defect, the &ucsBackupDN;
-	  can be converted to the DC Master in a very short time.
+	  can be converted to the &ucsPrimaryDN; in a very short time.
 	</para>
 
 	<para>
