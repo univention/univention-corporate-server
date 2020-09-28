@@ -1983,7 +1983,7 @@ nscd -i hosts
                 korrekte Auswertung von Passwortablaufintervallen stören.
             </para>
             <para>
-                In einer Domäne dient standardmäßig der &ucsReplicaDN; als
+                In einer Domäne dient standardmäßig der &ucsPrimaryDN; als
                 Zeitserver. Über die &ucsUCR;-Variablen <envar>timeserver</envar>,
                 <envar>timeserver2</envar> und <envar>timeserver3</envar> können externe NTP-Server
                 als Zeitquelle eingebunden werden.
