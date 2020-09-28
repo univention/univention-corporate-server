@@ -49,6 +49,7 @@ import tornado.web
 import ldap
 
 from univention.udm import UDM, UnknownModuleType
+import univention.admin.uexceptions as uexceptions
 from univention.config_registry import ConfigRegistry
 from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
 from univention.config_registry.handler import run_filter
@@ -183,7 +184,7 @@ class LDAPCache(object):
 		try:
 			try:
 				fd = self._refresh()
-			except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS):
+			except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS, uexceptions.ldapError):
 				get_logger('server').info('Reconnecting ldap connection')
 				self._udm = None
 				fd = self._refresh()
@@ -553,7 +554,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		return super(JsonHandler, self).write_error(status_code, **kwargs)
 
 	def log_exception(self, typ, value, tb):
-		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS)):
+		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS, uexceptions.ldapError)):
 			get_logger('server').info('Reconnecting ldap connection')
 			cache._udm = None
 		return super(JsonHandler, self).log_exception(typ, value, tb)
