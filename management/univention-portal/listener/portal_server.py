@@ -41,7 +41,7 @@ ucr.load()
 
 name = 'portal_server'
 description = 'Tell portal server to refresh when something important changed'
-filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/category)(univentionObjectType=porals/entry))'
+filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/category)(univentionObjectType=portals/entry)(univentionObjectType=portals/folder))'
 attributes = []
 
 
