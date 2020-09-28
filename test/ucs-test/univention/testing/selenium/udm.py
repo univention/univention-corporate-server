@@ -40,7 +40,6 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 
 from univention.admin import localization
-from univention.testing.selenium.utils import expand_path
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 

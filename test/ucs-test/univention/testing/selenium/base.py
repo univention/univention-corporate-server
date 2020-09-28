@@ -176,7 +176,10 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 		screenshot.save(filename)
 
 		if hide_notifications:
-			self.show_notifications(True)
+			try:
+				self.show_notifications(True)
+			except selenium_exceptions.TimeoutException:
+				pass
 
 	def open_traceback(self):
 		try:
