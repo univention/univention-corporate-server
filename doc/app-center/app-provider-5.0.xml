@@ -1089,7 +1089,7 @@ curl http://localhost/myapp/login ...
                 <option>binddn</option> and <option>bindpwd</option>. In many
                 cases the user <systemitem class="username">Administrator</systemitem> is used. The
                 Administrator credentials are only important for UDM calls on
-                UCS systems that are not the DC Master.
+                UCS systems that are not the &ucsPrimaryDN;.
             </para>
             <para>
                 The test script can be manually tested.
@@ -3317,7 +3317,7 @@ ucr set mail/postfix/mydestination="\$myhostname, localhost.\$mydomain, localhos
         </para>
         <para>
 					To avoid naming collisions, the App's FQDN should reference the Docker Host's FQDN,
-					e.g, <literal>myapp.ucs-master.domain.tld</literal>.
+					e.g, <literal>myapp.ucs-primary.domain.tld</literal>.
 					UCS can do the following to allow this scenario to work as smooth as possible:
             <itemizedlist>
                 <listitem>
@@ -3350,10 +3350,10 @@ service bind9 reload  # same here
         <para>
 					This will create the following entry in <filename>/etc/apache2/sites-available/univention-vhosts.conf</filename>
                 <programlisting language="sh"><![CDATA[
-# Virtual Host for myapp.ucs-master.domain.tld/443
+# Virtual Host for myapp.ucs-primary.domain.tld/443
 <IfModule mod_ssl.c>
 <VirtualHost *:443>
-	ServerName myapp.ucs-master.domain.tld
+	ServerName myapp.ucs-primary.domain.tld
 	IncludeOptional /var/lib/univention-appcenter/apps/myapp/data/apache.con[f]
 	SSLEngine on
 	SSLProxyEngine on
@@ -3361,8 +3361,8 @@ service bind9 reload  # same here
 	SSLProxyCheckPeerName off
 	SSLProxyCheckPeerExpire off
 
-	SSLCertificateFile /etc/univention/ssl/*.ucs-master.domain.tld/cert.pem
-	SSLCertificateKeyFile /etc/univention/ssl/*.ucs-master.domain.tld/private.key
+	SSLCertificateFile /etc/univention/ssl/*.ucs-primary.domain.tld/cert.pem
+	SSLCertificateKeyFile /etc/univention/ssl/*.ucs-primary.domain.tld/private.key
 	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
 </VirtualHost>
 </IfModule>
