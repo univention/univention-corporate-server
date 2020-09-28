@@ -1,81 +1,67 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: |
 ##  Mirror localhost with many upstream releases
-##    The current naming scheme doesn't work with patchlevel or minor release numbers > 9
-##    That means this test is currently not testing the abort at 99
-##  1. Create minimum mirror with 101 minor updates, using hard-links
-##  2. Check if updater aborts on 99 and 999
+##    Note: The current naming scheme doesn't work with patchlevel or minor release numbers > 9
+##  1. Create  mirror with 28 updates, using hard-links
 ## roles-not: [basesystem]
 ## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - apt-mirror
-## bugs: [25619]
+## bugs: [51588]
 ## versions:
-##  3.0-1: fixed
+##  5.0-0: fixed
 ## exposure: dangerous
 
 RETVAL=121 # Bug vorhanden, wie vermutet
 . pool.sh || exit 137
-FIXED_26249=false # slow univention-repository-update
 
 setup_apache "${repoprefix}"
 
-mkpdir "${major}.0-0" maintained "${ARCH}"
+# Create a package that will be used for all subsequent releases
+mkpdir "1.0-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-DMASTER="${DIR}"
-mkpkg "${DIR}" "${DIR_POOL}"
-declare -a DOKAY=("${DIR}") DBAD=()
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mksh "${DIRS[0]}"/../.. preup postup
+declare -a DOKAY=()
 
 echo -n "Creating patchlevel..."
 for ((pat=1;pat<=9;pat+=1)) # 0 created by minor
 do
 	mkpdir "${major}.${minor}-${pat}" maintained "${ARCH}"
-	ln -f "${DMASTER:?}/"* "${DIR:?}/"
-	[ "$pat" -le 99 ] && DOKAY+=("${DIR}") || DBAD+=("${DIR}")
+	mksh "${DIRS[*]: -2:1}"/../.. preup postup
+	DOKAY+=(${DIRS[@]: -1:2})
 done
 echo -n " minor..."
 for ((min=1;min<=9;min+=1)) # 0 is master
 do
 	mkpdir "${major}.${min}-0" maintained "${ARCH}"
-	ln -f "${DMASTER:?}/"* "${DIR:?}/"
-	[ "$min" -le 99 ] && DOKAY+=("${DIR}") || DBAD+=("${DIR}")
+	mksh "${DIRS[*]: -2:1}"/../.. preup postup
+	DOKAY+=("${DIRS[@]: -1:2}")
 done
 echo -n " major..."
-for ((maj=1;maj<=9;maj+=1))
+for ((maj=5;maj<=9;maj+=1)) # major < 5 was using a different repo structure
 do
 	mkpdir "${maj}.0-0" maintained "${ARCH}"
-	ln -f "${DMASTER:?}/"* "${DIR:?}/"
-	[ "$maj" -le 99 ] && DOKAY+=("${DIR}") || DBAD+=("${DIR}")
+	mksh "${DIRS[*]: -2:1}"/../.. preup postup
+	DOKAY+=("${DIRS[@]: -1:2}")
 done
 echo " done."
 
 config_mirror \
-	repository/mirror/version/start="${major}.0-0" \
-	repository/mirror/version/end="102.102-102" \
-	version/version="${major}.0" \
+	repository/mirror/version/start="5.0-0" \
+	repository/mirror/version/end="9.9-9" \
 	repository/online/unmaintained=no \
-
+	repository/mirorr=yes
 (
 	set -e
 	echo "Checking /etc/apt/mirror.list for ${#DOKAY[@]} required entries..."
 	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DOKAY[@]}"
-	echo "Checking /etc/apt/mirror.list for ${#DBAD[@]} forbidden entries..."
-	for dir in "${DBAD[@]}"
-	do
-		checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${dir}" 2>/dev/null && echo "Failed: $dir" >&2
-		test 1 -eq $?
-	done
-	"${FIXED_26249}" || exit 0
-	# every of the 300 patchlevel+minor+major releases are
-	# included.  univention-repository-update _interates_ over those 300
-	# releases and generates multiple HTTP-HEAD queries for all _previous_
-	# releases.  Also for all 300 releases apt-mirror is called which _forks_
-	# shells,wgets,g(un)zips for all _previous_ releases.
 	echo "Doing mirror..."
+	wait_for_updater_lock
 	univention-repository-update net
 	echo "Checking mirror..."
-	checkmirror "${DOKAY[@]}" -- "${DBAD[@]}"
+	checkmirror "${DOKAY[@]}"
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
