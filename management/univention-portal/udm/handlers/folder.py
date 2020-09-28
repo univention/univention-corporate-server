@@ -109,7 +109,7 @@ def mapOrdered(ldap_values, encoding=()):
 
 
 def unmapOrdered(udm_values, encoding=()):
-	return [re.sub(u'^{\\d+}', u'', value.decode(*encoding)) for value in udm_values]
+	return [_[1] for _ in sorted((re.match(u'^{(\\d+)}(.*)', value.decode(*encoding)).groups() for value in udm_values), key=lambda n: int(n[0]))]
 
 
 mapping = univention.admin.mapping.mapping()
