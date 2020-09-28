@@ -117,7 +117,7 @@
 		</variablelist>
 		<para>
 			When packages are installed, it depends on the server role, if join scripts are invoked automatically from the <literal>postinst</literal> Debian maintainer script or not.
-			This only happens on master and &ucsBackup; system roles, where the local <literal>root</literal> user has access to the file containing the <acronym>LDAP</acronym> credentials.
+			This only happens on &ucsPrimaryDN; and &ucsBackupDN; system roles, where the local <literal>root</literal> user has access to the file containing the <acronym>LDAP</acronym> credentials.
 			On all other system roles the join scripts need to be run manually by invoking <command>univention-run-join-scripts</command> or doing so through <acronym>UMC</acronym>.
 		</para>
 
@@ -212,7 +212,7 @@
 					<term><filename>debian/join-template.postinst</filename></term>
 					<listitem>
 						<para>
-							The join script should be invoked automatically on master and &ucsBackup; systems.
+							The join script should be invoked automatically on &ucsPrimaryDN; and &ucsBackupDN; systems.
 							On all other system roles an administrator must run the join script manually through <command>univention-run-join-scripts</command>.
 						</para>
 						<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postinst" parse="text"/></programlisting>
@@ -473,7 +473,7 @@ VERSION="3"
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Similar to <command>call_joinscript</command>, but also checks the system role and only executes the script on the &ucsMaster;.
+								Similar to <command>call_joinscript</command>, but also checks the system role and only executes the script on the &ucsPrimaryDN;.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -498,7 +498,7 @@ VERSION="3"
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Calls the given unjoin script <option>unjoin-script</option> on master and &ucsBackup; systems.
+								Calls the given unjoin script <option>unjoin-script</option> on &ucsPrimaryDN; and &ucsBackupDN; systems.
 								The file name must be relative to the directory <filename class="directory">/usr/lib/univention-install/</filename>.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> respective <option>filename</option> are passed on as-is.
 								Afterwards the unjoin script is automatically deleted.
@@ -741,10 +741,10 @@ fi
 							<para>
 								Called from a joinscript, the function automatically determines some required parameters, like the app identifier plus Debian package name and version,
 								required for the creation of the corresponding object. After creation of the object the function waits
-								up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
+								up to 3 minutes for the &ucsPrimaryDN; to signal availability of the new extension and reports success or failure.
 								For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
 								Failure conditions may occur e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
-								The &ucsMaster; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
+								The &ucsPrimaryDN; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
 							</para>
 							<note>
 								<para>
@@ -898,7 +898,7 @@ ucs_unregisterLDAPExtension "$@" --schema appschemaextension
 				<term><filename>debian/join-template.postrm</filename></term>
 				<listitem>
 					<para>
-						The unjoin script should be invoked automatically on master and &ucsBackup; systems after the package is removed.
+						The unjoin script should be invoked automatically on &ucsPrimaryDN; and &ucsBackupDN; systems after the package is removed.
 						On all other system roles an administrator must run the join script manually through <command>univention-run-join-scripts</command>.
 					</para>
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postrm" parse="text"/></programlisting>

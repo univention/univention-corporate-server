@@ -154,8 +154,8 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			These properties can be mapped to any already defined <acronym>LDAP</acronym> attribute, but objects can also be extended by adding additional auxiliary object classes, which can provide new attributes.
 		</para>
 		<para>
-			For packing purpose any additional LDAP schema needs to be registered on the &ucsMaster;, which is replicated from there to all other Domaincontrollers via the Listener/Notifier mechanism (see <xref linkend="chap:listener"/>).
-			This is best done trough a separate schema package, which should be installed on the &ucsMaster; and &ucsBackup;.
+			For packing purpose any additional LDAP schema needs to be registered on the &ucsPrimaryDN;, which is replicated from there to all other Domaincontrollers via the Listener/Notifier mechanism (see <xref linkend="chap:listener"/>).
+			This is best done trough a separate schema package, which should be installed on the &ucsPrimaryDN; and &ucsBackupDN;.
 			Since Extended Attributes are declared in <acronym>LDAP</acronym>, the commands to create them can be put into any join script (see <xref linkend="chap:join"/>).
 			To be convenient, the declaration should be also included with the schema package, since installing it there does not require the Administrator to provide additional <acronym>LDAP</acronym> credentials.
 		</para>
@@ -1494,7 +1494,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>active</literal> (internal)</term>
 				<listitem>
 					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the new UDM hook on the &ucsMaster; (default: <literal>FALSE</literal>).
+						A boolean flag used internally by the &ucsPrimaryDN; to signal availability of the new UDM hook on the &ucsPrimaryDN; (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1601,7 +1601,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>active</literal> (internal)</term>
 				<listitem>
 					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the new UDM module on the &ucsMaster; (default: <literal>FALSE</literal>).
+						A boolean flag used internally by the &ucsPrimaryDN; to signal availability of the new UDM module on the &ucsPrimaryDN; (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1687,7 +1687,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>active</literal> (internal)</term>
 				<listitem>
 					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the new UDM syntax on the &ucsMaster; (default: <literal>FALSE</literal>).
+						A boolean flag used internally by the &ucsPrimaryDN; to signal availability of the new UDM syntax on the &ucsPrimaryDN; (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>

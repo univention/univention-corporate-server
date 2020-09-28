@@ -25,7 +25,7 @@
 			</simpara></listitem>
 
 			<listitem><simpara>
-				On the &ucsMaster; (and possibly existing &ucsBackup; systems) the <emphasis>&ucsUDN;</emphasis> service monitors
+				On the &ucsPrimaryDN; (and possibly existing &ucsBackupDN; systems) the <emphasis>&ucsUDN;</emphasis> service monitors
 				changes in the LDAP directory and makes the selected changes available to the &ucsUDL;
 				services on all UCS systems joined into the domain.
 			</simpara></listitem>
@@ -34,7 +34,7 @@
 
 	<para>
 		The active &ucsUDL; instances in the domain connect to a &ucsUDN;
-		service. If an LDAP change is performed on the &ucsMaster; (all other LDAP
+		service. If an LDAP change is performed on the &ucsPrimaryDN; (all other LDAP
 		servers in the domain are read-only), this is registered by the &ucsUDN;
 		and reported to the listener instances.
 	</para>
@@ -171,7 +171,7 @@ def setdata(key, value): pass
 						Depending on the type of modification, <varname>old</varname> and <varname>new</varname> may each independently either be <literal>None</literal> or reference a Python dictionary of lists.
 						Each list represents one of the multi-valued attributes of the object.
 						The &ucsUDL; uses a local cache to store the values of each object as it has seen most recently.
-						This cache is used to supply the values for <varname>old</varname>, while the values in <varname>new</varname> are those retrieved from that LDAP directory service which is running on the same server as the &ucsUDN; (&ucsMaster; or &ucsBackup; servers in the domain).
+						This cache is used to supply the values for <varname>old</varname>, while the values in <varname>new</varname> are those retrieved from that LDAP directory service which is running on the same server as the &ucsUDN; (&ucsPrimaryDN; or &ucsBackupDN; servers in the domain).
 					</para>
 					<para>
 						If and only if the global <varname>modrdn</varname> setting is enabled, <varname>command</varname> is passed as a fourth argument.
@@ -478,7 +478,7 @@ def setdata(key, value): pass
 						</para>
 						<para>
 							On domain controllers the cache could be replaced by doing a query to the local LDAP server, before the new values are written into it.
-							But &ucsMember; do not have a local LDAP server, so there the cache is needed.
+							But &ucsManagedNode; do not have a local LDAP server, so there the cache is needed.
 							Also note that the cache keeps track of the associated listener modules, which is not available from the LDAP.
 						</para>
 					</listitem>
@@ -598,12 +598,12 @@ univention-directory-listener-verify \
 				</listitem>
 				<listitem>
 					<simpara>
-						Otherwise on the &ucsMaster; and on all &ucsBackup;s, only the host named in <envar>ldap/master</envar> is used.
+						Otherwise on the &ucsPrimaryDN; and on all &ucsBackupDN;s, only the host named in <envar>ldap/master</envar> is used.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-						Otherwise on all other system roles a host is chosen randomly from the combined list of names in <envar>ldap/master</envar> and <envar>ldap/backup</envar><footnote><simpara>This list of &ucsBackup;s stored in the &ucsUCRV; <envar>ldap/backup</envar> is automatically updated by the listener module <filename>ldap_server.py</filename>.</simpara></footnote>.
+						Otherwise on all other system roles a host is chosen randomly from the combined list of names in <envar>ldap/master</envar> and <envar>ldap/backup</envar><footnote><simpara>This list of &ucsBackupDN;s stored in the &ucsUCRV; <envar>ldap/backup</envar> is automatically updated by the listener module <filename>ldap_server.py</filename>.</simpara></footnote>.
 					</simpara>
 				</listitem>
 			</itemizedlist>
@@ -614,8 +614,8 @@ univention-directory-listener-verify \
 				<title>Listener/Notifier procedure</title>
 				<step>
 					<para>
-						An <abbrev>LDAP</abbrev> object is modified on the &ucsMaster;.
-						Changes initiated on all other system roles are re-directed to the master.
+						An <abbrev>LDAP</abbrev> object is modified on the &ucsPrimaryDN;.
+						Changes initiated on all other system roles are re-directed to the &ucsPrimaryDN;.
 					</para>
 				</step>
 				<step>
@@ -678,7 +678,7 @@ univention-directory-listener-verify \
 				</step>
 				<step>
 					<para>
-						On a &ucsBackup; the &ucsUDL; writes the transaction data to the file <filename>/var/lib/univention-ldap/listener/listener</filename><footnote><simpara>Referred to as <varname>FILE_NAME_LISTENER</varname>, <varname>TRANSACTION_FILE</varname> in the source code</simpara></footnote> to allow the &ucsUDN; to be cascaded.
+						On a &ucsBackupDN; the &ucsUDL; writes the transaction data to the file <filename>/var/lib/univention-ldap/listener/listener</filename><footnote><simpara>Referred to as <varname>FILE_NAME_LISTENER</varname>, <varname>TRANSACTION_FILE</varname> in the source code</simpara></footnote> to allow the &ucsUDN; to be cascaded.
 						This is configured internally with the option <option>-o</option> of <command>univention-directory-listener</command> and is done for load balancing and failover reasons.
 					</para>
 				</step>

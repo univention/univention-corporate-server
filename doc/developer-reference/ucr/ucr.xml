@@ -82,7 +82,7 @@ ucr set print/papersize?a4 \
 							<programlisting><![CDATA[
 case "$(ucr get system/role)" in
 	domaincontroller_*)
-		echo "Running on a UCS Domain Controller"
+		echo "Running on a UCS Directory Node"
 		;;
 esac
 								]]></programlisting>

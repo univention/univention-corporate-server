@@ -15,7 +15,7 @@
 	</title>
 	<para>
 		UCS provides <foreignphrase>Single Sign-On</foreignphrase> functionality with a SAML 2.0 compatible identity provider based on <package>simplesamlphp</package>.
-		The identity provider is by default installed on the DC Master and all DC Backup servers.
+		The identity provider is by default installed on the &ucsPrimaryDN; and all &ucsBackupDN; servers.
 		A DNS Record for all systems providing <foreignphrase>Single Sign-On</foreignphrase> services is registered for failover, usually <uri>ucs-sso.domainname</uri>.
 		Clients are required to be able to resolve the <foreignphrase>Single Sign-On</foreignphrase> DNS name.
 	</para>

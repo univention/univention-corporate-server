@@ -38,9 +38,9 @@
 			or in the backend data. This makes it critically important to install schemata on all systems. To simplify this task UCS features a builtin
 			mechanism for automatic schema replication to all UCS hosted <acronym>LDAP</acronym> servers in the UCS domain
 			(see <xref linkend="chap:listener"/>).
-			The schema replication mechanism is triggered by installation of a new schema extension package on the UCS master.
+			The schema replication mechanism is triggered by installation of a new schema extension package on the &ucsPrimaryDN;.
 			For redundancy it is strongly recommended to install schema extension packages also on the UCS backup systems. This way, a UCS backup
-			can replace a UCS master in case the master needs to be replaced for some reason. To simplify these tasks even further, UCS offers methods
+			can replace a &ucsPrimaryDN; in case the &ucsPrimaryDN; needs to be replaced for some reason. To simplify these tasks even further, UCS offers methods
 			to register new <acronym>LDAP</acronym> schemata and associated <acronym>LDAP</acronym> ACLs from any UCS system.
 		</para>
 	</section>
@@ -51,9 +51,9 @@
 			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> schema extension
 			from any system in the UCS domain. For this purpose, the schema extension can be stored as a special type of UDM object. The module
 			responsible for this type of objects is called <classname>settings/ldapschema</classname>. As these objects are replicated throughout the
-			UCS domain, the &ucsMaster; and &ucsBackup; systems listen for modifications of these objects and integrate them into the local
-			<acronym>LDAP</acronym> schema directory. As noted above, this simplifies the task of keeping the schema on the &ucsBackup; systems
-			up to date with that on the &ucsMaster;.
+			UCS domain, the &ucsPrimaryDN; and &ucsBackupDN; systems listen for modifications of these objects and integrate them into the local
+			<acronym>LDAP</acronym> schema directory. As noted above, this simplifies the task of keeping the schema on the &ucsBackupDN; systems
+			up to date with that on the &ucsPrimaryDN;.
 		</para>
 		<para>
 			The commands to create the <acronym>LDAP</acronym> schema extension objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -82,7 +82,7 @@
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the schema should be written to on &ucsMaster; and &ucsBackup;. The file name must not contain any path elements.
+						The file name the schema should be written to on &ucsPrimaryDN; and &ucsBackupDN;. The file name must not contain any path elements.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -111,7 +111,7 @@
 			<varlistentry><term><literal>active</literal> (internal)</term>
 				<listitem>
 					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the schema extension (default: <literal>FALSE</literal>).
+						A boolean flag used internally by the &ucsPrimaryDN; to signal availability of the schema extension (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -137,9 +137,9 @@ ucs_registerLDAPExtension "$@" \
 			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> ACL extension
 			from any system in the UCS domain. For this purpose, the UCR template for an ACL extension can be stored as a special type of UDM object.
 			The module responsible for this type of objects is called <classname>settings/ldapacl</classname>. As these objects are replicated throughout the
-			UCS domain, the &ucsMaster;, &ucsBackup; and &ucsSlave; systems listen for modifications on these objects and integrate them into the local
-			<acronym>LDAP</acronym> ACL UCR template directory. This simplifies the task of keeping the <acronym>LDAP</acronym> ACLs on the &ucsBackup; systems
-			up to date with those on the &ucsMaster;.
+			UCS domain, the &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN; systems listen for modifications on these objects and integrate them into the local
+			<acronym>LDAP</acronym> ACL UCR template directory. This simplifies the task of keeping the <acronym>LDAP</acronym> ACLs on the &ucsBackupDN; systems
+			up to date with those on the &ucsPrimaryDN;.
 		</para>
 		<para>
 			The commands to create the <acronym>LDAP</acronym> ACL extension objects in UDM may be put into any join script (see <xref linkend="chap:join"/>).
@@ -168,7 +168,7 @@ ucs_registerLDAPExtension "$@" \
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the ACL UCR template data should be written to on &ucsMaster;, &ucsBackup; and  &ucsSlave;. The file name must not contain any path elements.
+						The file name the ACL UCR template data should be written to on &ucsPrimaryDN;, &ucsBackupDN; and  &ucsReplicaDN;. The file name must not contain any path elements.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -211,7 +211,7 @@ ucs_registerLDAPExtension "$@" \
 			<varlistentry><term><literal>active</literal> (internal)</term>
 				<listitem>
 					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the ACL extension on the &ucsMaster; (default: <literal>FALSE</literal>).
+						A boolean flag used internally by the &ucsPrimaryDN; to signal availability of the ACL extension on the &ucsPrimaryDN; (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -246,7 +246,7 @@ ucs_registerLDAPExtension "$@" \
 				<listitem>
 					<simpara>
 						This account has full write access to all LDAP entries.
-						The file is only available on master and &ucsBackup; systems and is owned by the group <literal>DC Backup Hosts</literal>.
+						The file is only available on &ucsPrimaryDN; and &ucsBackupDN; systems and is owned by the group <literal>DC Backup Hosts</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -256,7 +256,7 @@ ucs_registerLDAPExtension "$@" \
 				<listitem>
 					<remark>PMH: Is this still required? Bug #31252</remark>
 					<simpara>
-						The file is only available on &ucsMaster; and &ucsBackup; systems and is owned by the group <literal>DC Backup Hosts</literal>.
+						The file is only available on &ucsPrimaryDN; and &ucsBackupDN; systems and is owned by the group <literal>DC Backup Hosts</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -266,7 +266,7 @@ ucs_registerLDAPExtension "$@" \
 				<listitem>
 					<simpara>
 						Each host uses its account to get at least read-access to LDAP.
-						Domain controllers in the container <uri>cn=dc,cn=computers,<replaceable>$ldap_base</replaceable></uri> get additional rights to access LDAP attributes.
+						Directory Nodes (i.e. Domain controllers) in the container <uri>cn=dc,cn=computers,<replaceable>$ldap_base</replaceable></uri> get additional rights to access LDAP attributes.
 						The file is available on all joined system roles and is readable only by the local <literal>root</literal> user and group.
 					</simpara>
 				</listitem>
@@ -277,7 +277,7 @@ ucs_registerLDAPExtension "$@" \
 				<listitem>
 					<remark>PMH: Is this still required? Bug #31252</remark>
 					<simpara>
-						The file is available on all Domaincontroller systems and is owned by the group <literal>Backup Join</literal>.
+						The file is available on all Directory Nodes (i.e. Domaincontroller systems) and is owned by the group <literal>Backup Join</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -286,14 +286,14 @@ ucs_registerLDAPExtension "$@" \
 				<listitem>
 					<remark>PMH: Is this still required? Bug #31252</remark>
 					<simpara>
-						The file is available on all Domaincontroller systems and is owned by the group <literal>Slave Join</literal>.
+						The file is available on all Directory Nodes (i.e. Domaincontroller systems) and is owned by the group <literal>Slave Join</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			-->
 		</variablelist>
 		<para>
-			During package installation, only the maintainer scripts (see <xref linkend="deb:scripts"/>) on master and &ucsBackup; can use their <literal>root</literal> permission to directly read <filename>/etc/ldap.secret</filename>.
+			During package installation, only the maintainer scripts (see <xref linkend="deb:scripts"/>) on &ucsPrimaryDN; and &ucsBackupDN; can use their <literal>root</literal> permission to directly read <filename>/etc/ldap.secret</filename>.
 			Thus only on those roles the join scripts get automatically executed when the package is installed.
 			On all other system roles, the join scripts need to be executed manually.
 			This can either be done through the <emphasis>UMC Join module</emphasis> or through the command line tool <command>univention-run-join-scripts</command>.

@@ -45,7 +45,7 @@
 			<data key="d3">
 				<x:List>
 					<y:Label>
-						<y:Label.Text>Master</y:Label.Text>
+						<y:Label.Text>Primary Directory Node</y:Label.Text>
 						<y:Label.LayoutParameter>
 							<y:InteriorStretchLabelModelParameter>
 								<y:InteriorStretchLabelModelParameter.Model>
@@ -387,7 +387,7 @@
 			<data key="d3">
 				<x:List>
 					<y:Label>
-						<y:Label.Text>Backup/Slave(/Member)</y:Label.Text>
+						<y:Label.Text>Backup/Replica Directory Node/Managed Node)</y:Label.Text>
 						<y:Label.LayoutParameter>
 							<y:InteriorStretchLabelModelParameter>
 								<y:InteriorStretchLabelModelParameter.Model>
