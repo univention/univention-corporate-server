@@ -76,6 +76,9 @@
 				<listitem><simpara>
 					To simplify software development &ucsUCR; now provides the sequence <command>ucr</command> to be used with <command>dh --with ucr</command> in <filename>debian/rules</filename> instead of calling <command>univention-install-*</command> directly (<u:bug>51950</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The scripts of <package>univention-config-registry</package> have been migrated to Python 3 (<u:bug>52018</u:bug>, <u:bug>52157</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
