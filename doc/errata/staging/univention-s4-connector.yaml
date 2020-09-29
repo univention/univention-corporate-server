@@ -8,5 +8,7 @@ desc: |
  This update addresses the following issue:
  * The synchronization of the "CN=Default Domain Policy,CN=System"
    container can now be enabled with the UCR variable
-   connector/s4/mapping/domainpolicy=yes
+   connector/s4/mapping/domainpolicy=yes.
+   The schema file n_domainpolicy.schema has to be activated beforehand.See 
+   https://docs.software-univention.de/developer-reference-4.4.html#join:libraries:shell
 bug: [51782]
