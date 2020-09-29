@@ -79,6 +79,9 @@
 				<listitem><simpara>
 					The scripts of <package>univention-config-registry</package> have been migrated to Python 3 (<u:bug>52018</u:bug>, <u:bug>52157</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The API of <command>univention.config_registry.interfaces</command> is now using the <package>ipaddress</package> module instead of the <package>ipaddr</package> module (<u:bug>52017</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
