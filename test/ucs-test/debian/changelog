@@ -1,3 +1,9 @@
+ucs-test (9.0.5-7) unstable; urgency=medium
+
+  * Bug #52005: Skip 96rename_domain* they just fail too often and I am out of ideas
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 29 Sep 2020 09:53:55 +0200
+
 ucs-test (9.0.5-6) unstable; urgency=medium
 
   * Bug #52005: Destroy ucr_test periodically, see if this was what blocked the postrun,

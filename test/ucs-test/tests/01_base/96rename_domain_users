@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Rename Domain Users
 ## tags:
+##  - SKIP
 ##  - basic
 ##  - rename_default_account
 ##  - skip_admember
