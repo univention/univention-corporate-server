@@ -3459,8 +3459,7 @@ fi
                 The appliance allows customization of the UCS setup wizard and
                 controls which setup pages and setup fields should be hidden. For
                 simplicity towards the user, it is recommended to hide the
-                <userinput>software</userinput> page and the
-                <userinput>basesystem</userinput> setup field.
+                <userinput>software</userinput> page.
             </para>
         </section>
 
