@@ -64,6 +64,7 @@ global_ignore_subtree = [
 	'CN=Server,CN=System,@%@connector/s4/ldap/base@%@',
 	'CN=ComPartitionSets,CN=System,@%@connector/s4/ldap/base@%@',
 	'CN=ComPartitions,CN=System,@%@connector/s4/ldap/base@%@',
+	'CN=IP Security,CN=System,@%@connector/s4/ldap/base@%@',
 	'CN=DFSR-GlobalSettings,CN=System,@%@connector/s4/ldap/base@%@',
 	'CN=DomainUpdates,CN=System,@%@connector/s4/ldap/base@%@',
 	'CN=Password Settings Container,CN=System,@%@connector/s4/ldap/base@%@',
