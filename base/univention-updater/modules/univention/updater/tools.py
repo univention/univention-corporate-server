@@ -277,7 +277,7 @@ class UCSRepoPool5(_UCSRepo):
         >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/ errata510 main'
         """
-        components = "main main/debian-installer" if mirror and not self.errata and type != "deb-src" else "main"
+        components = "main main/debian-installer" if mirror and not self.errata and type == "deb" else "main"
         return "%s %s %s %s" % (type, server, self._suite, components)
 
     def path(self, filename=None):

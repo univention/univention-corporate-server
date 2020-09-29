@@ -35,8 +35,10 @@ try:
 			if mirror.version_start <= rel <= mirror.version_end:
 				pool = UCSRepoPool5(rel)
 				for pool.errata in (False, True):
-					for typ in ["deb", "clean"] + ["deb-src"][:mirror.sources]:
+					for typ in ["deb"] + ["deb-src"][:mirror.sources]:
 						print(pool.deb(mirror.server, typ, mirror=True))
+
+		print("clean %s" % (mirror.server.baseurl.public(),))
 
 		print(mirror.print_component_repositories(clean=True, start=mirror.version_start, end=mirror.version_end, for_mirror_list=True))
 except Exception:
