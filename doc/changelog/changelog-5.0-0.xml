@@ -467,7 +467,7 @@
 					The implementations of <classname>UCS_Version</classname> in <package>univention-updater</package> has been merged into the implementation in <package>univention-lib</package> (<u:bug>32821</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-				The scripts in <package>univention-lib</package> are now using Python 3 (<u:bug>51628</u:bug>, <u:bug>51429</u:bug>)
+				The scripts in <package>univention-lib</package> are now using Python 3 (<u:bug>51628</u:bug>, <u:bug>51429</u:bug>, <u:bug>52155</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 				The matching of locales in <package>univention.lib.i18n</package> has been corrected (<u:bug>51633</u:bug>)

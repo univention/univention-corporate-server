@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import codecs
 from subprocess import Popen, PIPE
 
 
@@ -38,9 +39,9 @@ def policy_result(dn, binddn="", bindpw=""):
 	Return a tuple of hash-lists, mapping attributes to a list of values and
 	mapping attributes to the matching Policy-DN.
 
-	>>> (results, policies) = policy_result('dc=opendvdi,dc=local', [binddn=BINDDN, bindpw=BINDPW])
+	>>> (results, policies) = policy_result('dc=univention,dc=local')
 	>>> policies['univentionDhcpDomainNameServers']
-	'cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=opendvdi,dc=local'
+	'cn=default-settings,cn=dns,cn=dhcp,cn=policies,dc=univention,dc=local'
 	results['univentionDhcpDomainNameServers']
 	['192.168.0.111']
 	"""
@@ -55,16 +56,18 @@ def policy_result(dn, binddn="", bindpw=""):
 	p = Popen(['univention-policy-result', '-D', binddn, '-y', bindpw, dn], stdout=PIPE, stderr=PIPE)
 	stdout, stderr = p.communicate()
 	if p.returncode != 0:
-		raise Exception("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr})
+		raise Exception("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')})
+
 	results = {}  # Attribute -> [Values...]
 	policies = {}  # Attribute -> Policy-DN
 	current_attribute = None
 	policy = None
-	for line in stdout.splitlines():
+	# TODO: in theory UTF-8 is incorrect here, as every value depends on the schema defined in LDAP. but who cares in the real world ;-)
+	for line in stdout.decode('utf-8', 'replace').splitlines():
 		if line.startswith('Attribute: '):
 			current_attribute = line[len('Attribute: '):]
 			if current_attribute.startswith('univentionRegistry;entry-hex-'):
-				current_attribute = current_attribute.replace('univentionRegistry;entry-hex-', '').decode('hex')
+				current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex')
 			policies[current_attribute] = policy
 			current_values = results.setdefault(current_attribute, [])
 		elif line.startswith('Value: '):
@@ -79,8 +82,3 @@ def policy_result(dn, binddn="", bindpw=""):
 		else:
 			pass  # empty line
 	return (results, policies)
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
