@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Configuration Registry
 """
@@ -35,7 +35,7 @@ from __future__ import print_function
 import os
 import sys
 from hashlib import md5
-from optparse import OptionParser
+from argparse import ArgumentParser
 from textwrap import dedent
 
 from debian.deb822 import Deb822
@@ -64,23 +64,21 @@ def main():
 
 
 def parse_cmdline():
-	usage = "%prog [options]"
 	description = sys.modules[__name__].__doc__
-	parser = OptionParser(usage=usage, description=description)
-	parser.add_option(
+	parser = ArgumentParser(description=description)
+	parser.add_argument(
 		'--md5',
 		action='store_false', default=True,
 		help='Disable checking MD5 sums.')
-	parser.add_option(
+	parser.add_argument(
 		'--dpkg',
 		action='store_false', default=True,
 		help='Disable checking for renamed files.')
-	parser.add_option(
+	parser.add_argument(
 		'--verbose', '-v',
 		action='store_true',
 		help='Enable verbose output.')
-	opt, _args = parser.parse_args()
-	return opt
+	return parser.parse_args()
 
 
 def check_find(verbose=False):

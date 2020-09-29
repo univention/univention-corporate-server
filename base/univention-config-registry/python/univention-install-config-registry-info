@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -35,7 +35,7 @@ import os
 import sys
 import univention.config_registry_info as ucr_info
 from univention.debhelper import doIt, binary_packages
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 
 def install_categories(info, package):
@@ -92,7 +92,6 @@ def install_variables(info, package):
 
 def main():
 	"""Install configuration registry information files."""
-	usage = "%prog"
 	epilog = '''univention-install-config-registry-info is a debhelper like
 program to install Univention Config Registry (UCR) related description files
 into the package build directories.
@@ -102,16 +101,13 @@ The variable descriptions debian/*.univention-config-registry-info go to
 The category descriptions debian/*.univention-config-registry-categories got to
 /etc/univention/registry.info/categories/*.cfg.
 	'''
-	parser = OptionParser(usage=usage, epilog=epilog)
-	parser.add_option(
-		'-v', '--verbose',
-		dest='verbose', action='store_true',
+	parser = ArgumentParser(epilog=epilog)
+	parser.add_argument(
+		'-v', '--verbose', action='store_true',
 		help='Verbose mode: show all commands that modify the package build directory.')
-	options, args = parser.parse_args()
+	options = parser.parse_args()
 	if options.verbose:
 		os.environ['DH_VERBOSE'] = '1'
-	if args:
-		parser.error('No argument expected')
 
 	info = ucr_info.ConfigRegistryInfo(install_mode=True)
 	try:

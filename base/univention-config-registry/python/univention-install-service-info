@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -35,7 +35,7 @@ import os
 import sys
 import univention.service_info as us_info
 from univention.debhelper import doIt, binary_packages
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 
 def install_services(info, package):
@@ -66,23 +66,19 @@ def install_services(info, package):
 
 def main():
 	"""Install service files."""
-	usage = "%prog"
 	epilog = '''univention-install-service-info is a debhelper like program
 to install service related description files into the package build directories.
 
 The service descriptions debian/*.univention-service go to
 /etc/univention/service.info/*.cfg.
 	'''
-	parser = OptionParser(usage=usage, epilog=epilog)
-	parser.add_option(
-		'-v', '--verbose',
-		dest='verbose', action='store_true',
+	parser = ArgumentParser(epilog=epilog)
+	parser.add_argument(
+		'-v', '--verbose', action='store_true',
 		help='Verbose mode: show all commands that modify the package build directory.')
-	options, args = parser.parse_args()
+	options = parser.parse_args()
 	if options.verbose:
 		os.environ['DH_VERBOSE'] = '1'
-	if args:
-		parser.error('No argument expected')
 
 	info = us_info.ServiceInfo(install_mode=True)
 	try:
