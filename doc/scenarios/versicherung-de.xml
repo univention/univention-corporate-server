@@ -310,7 +310,7 @@
 	<para>
 	  In der Zentrale arbeiten 150 Benutzer mit Terminaldiensten auf Basis
 	  von Citrix XenApp. Der XenApp-Terminalserver läuft auf einem
-	  Microsoft Windows Memberserver, der in die Samba/AD-Domäne gejoint ist.
+	  Microsoft Windows-Memberserver, der in die Samba/AD-Domäne gejoint ist.
 	</para>
   </section>
 

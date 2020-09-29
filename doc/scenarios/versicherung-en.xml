@@ -179,7 +179,7 @@
 	<para>
 	  The Univention Active Directory connector (AD connector for short)
 	  makes it possible to synchronize directory service objects between a
-      Microsoft Windows 2012/2016/2019 server with Microsoft Active
+	  Microsoft Windows 2012/2016/2019 server with Microsoft Active
 	  Directory (AD) and an Open Source LDAP directory service in &ucsUCS;.
 	</para>
 
