@@ -58,6 +58,12 @@ class ChecksAndWaits(object):
 			self.get_all_visible_elements, 'waited %s seconds for texts %r' % (timeout, texts)
 		)
 
+	def wait_for_text_to_disappear(self, text, timeout=60):
+		xpath = '//*[contains(text(), "%s")]' % (text,)
+		webdriver.support.ui.WebDriverWait(xpath, timeout).until(
+			self.elements_invisible, 'waited %s seconds for text %r to disappear' % (timeout, text)
+		)
+
 	def wait_for_button(self, button_text, **kwargs):
 		logger.info("Waiting for the button %r", button_text)
 		self.click_element(

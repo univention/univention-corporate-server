@@ -197,7 +197,7 @@ class Portals(UDMBase):
 		if hostname is not None:
 			self.selenium.enter_input_combobox('__portalComputers-0-0', hostname)
 
-		self.selenium.click_button(_("Create LDAP object"))
+		self.selenium.click_button(_("Create portal"))
 		self.wait_for_main_grid_load()
 
 		return portalname

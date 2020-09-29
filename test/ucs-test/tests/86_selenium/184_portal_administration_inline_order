@@ -123,6 +123,7 @@ class UMCTester(object):
 			expand_path('//*[@containsClass="dojoDndHandle"][text()="%s"]' % (self.cat_a_dname))
 		)
 		self.selenium.wait_for_text('Order saved')
+		self.selenium.wait_for_text_to_disappear('Order saved')
 
 		logger.info('Check order after category dnd')
 		# Category_A is after Category_B
@@ -140,6 +141,7 @@ class UMCTester(object):
 			expand_path('//*[@containsClass="dojoDndItem"]//*[@containsClass="tile__name"][text()="%s"]' % (self.entry_a_2_dname))
 		)
 		self.selenium.wait_for_text('Order saved')
+		self.selenium.wait_for_text_to_disappear('Order saved')
 
 		logger.info('Check order after entry dnd')
 		# Category_A is after Category_B
@@ -176,7 +178,7 @@ class UMCTester(object):
 
 
 if __name__ == '__main__':
-	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest() as s:
+	with ucr_test.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm_test, selenium.UMCSeleniumTest(suppress_notifications=False) as s:
 		umc_tester = UMCTester()
 		umc_tester.ucr = ucr
 		umc_tester.udm_test = udm_test

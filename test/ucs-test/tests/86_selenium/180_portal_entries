@@ -24,7 +24,6 @@ class UMCTester(object):
 		expected_entries_map = {
 			'domaincontroller_master_single': [
 				(_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),
-				(_('Administration'), _('Univention Blog'), _(''),),
 			],
 			'domaincontroller_master_multi': [
 				(_('Administration'), _('System and domain settings'), _('Univention Management Console for admin­is­tra­ting the UCS domain and the local system'),),

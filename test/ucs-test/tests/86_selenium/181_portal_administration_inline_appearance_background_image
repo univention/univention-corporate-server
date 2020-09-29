@@ -10,7 +10,7 @@
 
 import time
 import logging
-import base64
+#  import base64
 
 from univention.testing import selenium
 import univention.testing.ucr as ucr_test
@@ -69,13 +69,14 @@ class UMCTester(object):
 
 		logger.info('Open portal properties')
 		self.selenium.click_element(expand_path('//*[@containsClass="iconGear"]'))
+		time.sleep(1)
 
 		logger.info('Uploading new background image')
 		logger.info("making screenshot")
 		img_path = '/tmp/background.png'
 		self.selenium.driver.save_screenshot(img_path)
-		with open(img_path, 'rb') as fd:
-			img_base64 = base64.b64encode(fd.read())
+		#  with open(img_path, 'rb') as fd:
+			#  img_base64 = base64.b64encode(fd.read())
 
 		uploader = self.selenium.driver.find_element_by_xpath('//*[text() = "Background"]/../..//input[@type="file"]')
 		uploader.send_keys(img_path)
@@ -104,6 +105,7 @@ class UMCTester(object):
 
 		logger.info('Open portal properties')
 		self.selenium.click_element(expand_path('//*[@containsClass="iconGear"]'))
+		time.sleep(1)
 
 		logger.info('Clearing background image')
 		self.selenium.click_element('//*[text() = "Background"]/../..//*[text() = "Remove"]', scroll_into_view=True)
@@ -120,7 +122,7 @@ class UMCTester(object):
 		self.selenium.wait_until_standby_animation_appears_and_disappears()
 
 		logger.info('Checking whether clearing the background image worked')
-		body_background = self.selenium.driver.find_element_by_tag_name('body').value_of_css_property('background')
+		body_background = self.selenium.driver.find_element_by_tag_name('body').value_of_css_property('background-image')
 		if body_background != 'none':
 			raise ChangeBackgroundImageError('Clearing the background was not saved')
 
