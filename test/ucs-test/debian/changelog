@@ -1,3 +1,10 @@
+ucs-test (10.0.1-6) unstable; urgency=medium
+
+  * Bug #51903: extended 10_saml_password_expire and
+    11_saml_user_expire
+
+ -- Felix Botner <botner@univention.de>  Tue, 29 Sep 2020 16:21:13 +0200
+
 ucs-test (10.0.1-5) unstable; urgency=medium
 
   * Bug #49823: selenium pytest 153_udm_check_properties_of_copied_users.py added

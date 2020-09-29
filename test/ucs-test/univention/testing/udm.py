@@ -467,7 +467,6 @@ class UCSTestUDM(object):
 		if everything:
 			wait_for_drs_replication = True
 			wait_for_s4connector = True
-
 		drs_replication = wait_for_drs_replication
 		ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
 		if wait_for_drs_replication and not isinstance(wait_for_drs_replication, six.string_types):
@@ -483,7 +482,7 @@ class UCSTestUDM(object):
 			if not wait_for_replication:
 				conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
 
-			if self._ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+			if self._ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave', 'memberserver'):
 				conditions.append((utils.ReplicationType.DRS, drs_replication))
 
 		return utils.wait_for(conditions, verbose=False)

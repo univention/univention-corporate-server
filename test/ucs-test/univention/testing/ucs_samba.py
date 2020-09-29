@@ -46,7 +46,10 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
 	if not package_installed('univention-samba4'):
-		if verbose:
+		if package_installed('univention-samba'):
+			time.sleep(15)
+			print('Sleeping 15 seconds as a workaround for http://forge.univention.org/bugzilla/show_bug.cgi?id=52145')
+		elif verbose:
 			print('wait_for_drs_replication(): skip, univention-samba4 not installed.')
 		return
 	if not lp:
