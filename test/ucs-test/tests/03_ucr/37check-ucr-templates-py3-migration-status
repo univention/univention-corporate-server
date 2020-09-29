@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
@@ -53,6 +53,13 @@ ALLOWED_DIFFERENCES = (
 	'/etc/univention/templates/files/etc/logrotate.d/univention-system-setup',
 	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-policy',
 	'/etc/univention/templates/files/etc/logrotate.d/univention-updater',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-spamassassin',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-s4-connector',
+	'/etc/univention/templates/files/etc/logrotate.d/samba',
+	'/etc/univention/templates/files/etc/logrotate.d/winbind',
+	'/etc/univention/templates/files/etc/logrotate.d/univention-samba4',
+	'/etc/univention/templates/files/etc/listfilter.secret',
+	'/etc/univention/templates/files/etc/security/packetfilter.d/10_univention-firewall_start.sh',
 )
 
 
@@ -61,7 +68,7 @@ def python_versions():
 	try:
 		with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as fd1, tempfile.NamedTemporaryFile(delete=False, suffix='.py') as fd2:
 			for pyversion, fd in (('2', fd1), ('3', fd2)):
-				fd.write(SCRIPT.format(pyversion, os.path.basename(fd.name)))
+				fd.write(SCRIPT.format(pyversion, os.path.basename(fd.name)).encode('utf-8'))
 				fd.close()
 				os.chmod(fd.name, 0o755)
 			yield (('2', fd1), ('3', fd2))
@@ -90,7 +97,7 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions):
 			result[pyversion] = {
 				'success': rc == '0',
 				'compiled': compiled,
-				'coverage': subprocess.check_output(r'python{0} -m coverage report | grep /tmp/py{0}.in | egrep -o [0-9]+%\$ || echo 0%'.format(pyversion), shell=True)
+				'coverage': subprocess.check_output(r'python{0} -m coverage report | grep /tmp/py{0}.in | egrep -o [0-9]+%\$ || echo 0%'.format(pyversion), shell=True).decode('UTF-8', 'replace')
 			}
 			if ucr_config_file.endswith('.json'):
 				try:
@@ -108,8 +115,8 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions):
 
 	result = {
 		'python': result,
-		'package': subprocess.check_output('dpkg -S %s 2>/dev/null | cut -d: -f1' % (pipes.quote(ucr_config_file),), shell=True),
-		'diff': subprocess.check_output('diff -u /tmp/py[23].out || true', shell=True),
+		'package': subprocess.check_output('dpkg -S %s 2>/dev/null | cut -d: -f1' % (pipes.quote(ucr_config_file),), shell=True).decode('UTF-8', 'replace'),
+		'diff': subprocess.check_output('diff -u /tmp/py[23].out || true', shell=True).decode('UTF-8', 'replace').replace('/tmp/py', ucr_config_file),
 	}
 
 	assert all(res['success'] for res in result['python'].values()), result
