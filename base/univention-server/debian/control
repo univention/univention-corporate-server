@@ -241,24 +241,3 @@ Description: UCS system role common dependencies and files
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-
-Package: univention-basesystem
-Architecture: all
-Recommends:
- openssh-server,
-Depends:
- ntpdate,
- rdate,
- univention-archive-key,
- univention-firewall,
- univention-grub,
- univention-network-common,
- univention-updater,
- ${misc:Depends},
-Description: UCS - Basesystem
- This is a Meta-package, that sets up a UCS Basesystem
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
