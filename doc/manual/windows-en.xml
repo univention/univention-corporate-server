@@ -86,7 +86,7 @@
 	  </para>
 
 	  <para>
-		A Samba member server can be installed on UCS member servers from the Univention App Center
+		A Samba member server can be installed on UCS Managed Nodes from the Univention App Center
 		with the application <application>Windows-compatible Fileserver</application>. Alternatively, the
 		software package <package>univention-samba</package> can be
 		installed (<command>univention-run-join-scripts</command> command must be run after
@@ -152,18 +152,18 @@
 		</para>
 
 		<para>
-		  Samba Active Directory domain controllers can also provide file services. As a general
-		  rule, it is recommended to separate domain controllers and file/print services in Samba
-		  environments - the same as the Microsoft recommendations for Active Directory - that means using
-		  domain controllers for logins/authentication and member services for file/print
+		  Samba Active Directory domain controllers, i.e. UCS Directory Nodes, can also provide file services.
+		  As a general rule, it is recommended to separate domain controllers and file/print services in Samba
+		  environments - following the Microsoft recommendations for Active Directory - that means using
+		  UCS Directory Nodes for logins/authentication and UCS Managed Nodes for file/print
 		  services. This ensures that a high system load on a file server does not result in
 		  disruptions to the authentication service. For smaller environments in which it is not
-		  possible to run two servers, file and print services can also be run on a domain controller.
+		  possible to run two servers, file and print services can also be run on a UCS Directory Node.
 		</para>
 
 		<para>
-			Samba supports the <systemitem class="protocol">CIFS</systemitem> protocol and the successor <systemitem class="protocol">SMB2</systemitem> to provide file services. Using a client
-			which supports <systemitem class="protocol">SMB2</systemitem> (as of <systemitem class="osname">Windows Vista</systemitem>, i.e., <systemitem class="osname">Windows 7/8</systemitem> too) improves the performance
+		  Samba supports the <systemitem class="protocol">CIFS</systemitem> protocol and the successor <systemitem class="protocol">SMB2</systemitem> to provide file services. Using a client
+		  which supports <systemitem class="protocol">SMB2</systemitem> (as of <systemitem class="osname">Windows Vista</systemitem>, i.e., <systemitem class="osname">Windows 7/8</systemitem> too) improves the performance
 		  and scalability.
 		</para>
 
@@ -256,8 +256,8 @@ instanceType: 4
 		<para>
 		  The complexity of the multi-master replication increases with each additional Samba/AD
 		  domain controller. Consequently, it must be checked whether additional Samba/AD domain
-		  controllers are necessary or if a member server would not be a better choice for new
-		  servers.
+		  controllers provided by UCS Directory Nodes are necessary or if a UCS Managed Node would
+		  not be a better choice for new servers.
 		</para>
 
 		<para>

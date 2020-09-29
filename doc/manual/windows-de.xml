@@ -89,7 +89,7 @@
 	  </para>
 
 	  <para>
-		Ein Samba-Memberserver kann auf UCS-Memberservern mit der Applikation
+		Ein Samba-File- und Printserver kann auf UCS Managed Nodes mit der Applikation
 		<emphasis>Windows-kompatibler Fileserver</emphasis> aus dem Univention App Center
 		installiert werden. Alternativ kann das Softwarepakete <package>univention-samba</package>
 		installiert werden (anschließend muss der Befehl
@@ -157,10 +157,10 @@
 		</para>
 
 		<para>
-		  Dateidienste können auch mit Samba Active Directory-Domänencontrollern bereitgestellt
+		  Dateidienste können auch von Samba Active Directory-Domänencontrollern, d.h. auf UCS Directory Nodes bereitgestellt
 		  werden. Generell wird in Samba-Umgebungen - analog zu den Microsoft-Empfehlungen für Active
 		  Directory - empfohlen Domänencontroller- und Datei/Druckdienste zu trennen,
-		  d.h. Domänencontroller für die Anmeldung und Memberserver für Datei-/Druckdienste zu
+		  d.h. UCS Directory Nodes für die Anmeldung und Managed Nodes für Datei-/Druckdienste zu
 		  verwenden. Dies stellt sicher, dass hohe Last auf einem Fileserver nicht zu Störungen im
 		  Anmeldedienst führen. Für kleine Umgebungen, in denen keine Möglichkeit für den Betrieb
 		  zweier Server gegeben ist, können Datei- und Druckdienste auch mit auf einem
@@ -261,8 +261,8 @@ instanceType: 4
 		<para>
 		  Mit jedem weiteren Samba/AD-Domänencontroller steigt die Komplexität der
 		  Multimasterreplikation. Es sollte daher geprüft werden, ob weitere
-		  Samba/AD-Domänencontroller nötig sind oder für neue Server nicht ein Memberserver die
-		  bessere Wahl ist.
+		  Samba/AD-Domänencontroller auf Basis von UCS Directory Nodes nötig sind
+		  oder für neue Server nicht ein UCS Managed Node die bessere Wahl ist.
 		</para>
 
 		<para>
