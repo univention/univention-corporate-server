@@ -86,8 +86,8 @@
 			</para>
 
 			<para>
-				Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert wird.
-				Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
+				Auf dem &ucsPrimaryDN; (frühere Bezeichnung: &ucsMaster;) wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert wird.
+				Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, muss der &ucsPrimaryDN; bei einem Release-Update immer als erstes System aktualisiert werden.
 			</para>
 		</section>
 

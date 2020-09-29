@@ -23,6 +23,13 @@
 			<listitem><simpara>
 				The upgrade to UCS 5.0 is blocked if there are systems in the domain which don't have at least UCS 4.4-6 (<u:bug>51621</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The legacy terms for the UCS server roles &ucsMaster;, &ucsBackup;, &ucsSlave; and &ucsMember;
+				have been replaced by the new terms &ucsPrimaryDN; , &ucsBackupDN; &ucsReplicaDN; and &ucsManagedNode;,
+				which more clearly convey their inherent purpose as providing directory services or not.
+				The Microsoft terms <emphasis>domain controller</emphasis>, <emphasis>DC</emphasis> and <emphasis>memberserver</emphasis>
+				are still applicable in case Microsoft compatible servcies are provided by Samba on the repective Node (<u:bug>42374</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 

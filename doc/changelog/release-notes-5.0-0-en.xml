@@ -89,8 +89,8 @@
 			</para>
 
 			<para>
-				The authoritative version of the LDAP directory service is maintained on the &ucsMaster; and replicated to all the remaining LDAP servers of the UCS domain.
-				As changes to the LDAP schema can occur during release updates, the &ucsMaster; must always be the first system to be updated during a release update.
+				The authoritative version of the LDAP directory service is maintained on the &ucsPrimaryDN; (formerly referred to as &ucsMaster;) and replicated to all the remaining LDAP servers of the UCS domain.
+				As changes to the LDAP schema can occur during release updates, the &ucsPrimaryDN; must always be the first system to be updated during a release update.
 			</para>
 		</section>
 
