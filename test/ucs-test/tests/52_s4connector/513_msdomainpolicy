@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Check synchronization of domainpolicy"
 ## exposure: dangerous
+## tags: [SKIP]
 ## packages:
 ## - univention-s4-connector
 ## roles:
