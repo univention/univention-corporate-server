@@ -1,8 +1,8 @@
 @!@
 ROLES = {
 	"domaincontroller_master": "Univention Primary Directory Node",
-	"domaincontroller_slave": "Univention Backup Directory Node",
-	"domaincontroller_backup": "Univention Replica Directory Node",
+	"domaincontroller_slave": "Univention Replica Directory Node",
+	"domaincontroller_backup": "Univention Backup Directory Node",
 	"memberserver": "Univention Managed Node",
 }
 
