@@ -200,6 +200,12 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	_d = ud.function('ldap.ad.set_password_in_ad')  # noqa: F841
 
 	# print "Static Session Key: %s" % (samr.session_key,)
+
+	if reconnect:
+		if connector.dom_handle:
+			connector.samr.Close(connector.dom_handle)
+		connector.samr = None
+
 	if not connector.samr:
 		connector.open_samr()
 
@@ -394,7 +400,12 @@ def password_sync_ucs(connector, key, object):
 	if not pwd == nt_hash:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD and Hash UCS differ")
 		pwd_set = True
-		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
+
+		try:
+			res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
+		except Exception as e:
+			ud.debug(ud.LDAP, ud.PROCESS, "password_sync: set_password_in_ad failed with %s, retry with reconnect" % str(e))
+			res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd, reconnect=True)
 
 	newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
 	# if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
