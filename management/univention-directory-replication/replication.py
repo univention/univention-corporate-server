@@ -32,7 +32,7 @@
 # Univention Directory Listener replication module
 
 # Possible initialization scenarios:
-# 1. New slave
+# 1. New Replica
 #    pull complete database from Primary
 # 2. Primary is degraded to Replica
 #    use existing database

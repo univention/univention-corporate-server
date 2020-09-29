@@ -13,20 +13,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: www/GalleryPane.js:42
-msgid "DC master"
-msgstr "DC Master"
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
 
 #: www/GalleryPane.js:43
-msgid "DC backup"
-msgstr "DC Backup"
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
 
 #: www/GalleryPane.js:44
-msgid "DC slave"
-msgstr "DC Slave"
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
 
 #: www/GalleryPane.js:45
-msgid "Member server"
-msgstr "Memberserver"
+msgid "Managed Node"
+msgstr "Managed Node"
 
 #: www/GalleryPane.js:52
 msgid "Unknown"

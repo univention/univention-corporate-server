@@ -354,7 +354,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	# Slaves currently do not support LDAP server policies, let's create a
+	# Replica Directory Nodes currently do not support LDAP server policies, let's create a
 	# UCR policy from the LDAP server policy.
 	# Do no use it automatically, UCS admins can use it if they wish to.
 	univention-directory-manager policies/registry create "$@" \

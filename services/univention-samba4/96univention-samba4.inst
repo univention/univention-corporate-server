@@ -781,7 +781,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 
 	# samba4/provision/secondary in this context means
-	# ucs@school slave
+	# ucs@school Replica Directory Node
 
 	is_ucr_true samba4/provision/primary
 	if [ $? -eq 0 ] \

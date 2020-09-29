@@ -1,3 +1,9 @@
+univention-ldap (16.0.1-2) unstable; urgency=medium
+
+  * Bug #42374: Some additional fixes
+
+ -- Arvid <requate@univention.de>  Tue, 29 Sep 2020 14:19:27 +0200
+
 univention-ldap (16.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica

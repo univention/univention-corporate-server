@@ -66,9 +66,9 @@ Depends:
  univention-directory-manager-tools (>> 7.0.147),
  univention-join (>= 5.0.20-1),
  ${misc:Depends},
-Description: UCS - LDAP configuration for master and backup servers
+Description: UCS - LDAP configuration for Primary and Backup Directory Nodes
  This package contains configurations related to the OpenLDAP server
- for master and backup domain controllers.
+ for Primary and Backup Directory Nodes.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -103,9 +103,9 @@ Depends:
  ${misc:Depends},
 Conflicts:
  univention-ldap-acl-slave,
-Description: UCS - LDAP server ACLs for master servers
- This package contains the OpenLDAP server ACLs for master
- and backup domain controllers.
+Description: UCS - LDAP server ACLs for Primary and Backup Directory Nodes
+ This package contains the OpenLDAP server ACLs for Primary
+ and Backup Directory Nodes.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -119,9 +119,8 @@ Depends:
  ${misc:Depends},
 Conflicts:
  univention-ldap-acl-master,
-Description: UCS - LDAP server ACLs for slave servers
- This package contains the OpenLDAP server ACLs for slave
- domain controllers.
+Description: UCS - LDAP server ACLs for Replica Directory Nodes.
+ This package contains the OpenLDAP server ACLs for Replica Directory Nodes.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

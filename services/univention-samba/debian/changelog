@@ -1,3 +1,9 @@
+univention-samba (14.0.0-3) unstable; urgency=medium
+
+  * Bug #42374: Update package descriptions
+
+ -- Arvid <requate@univention.de>  Tue, 29 Sep 2020 14:39:35 +0200
+
 univention-samba (14.0.0-2) unstable; urgency=medium
 
   * Bug #42374: Wording

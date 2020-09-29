@@ -226,12 +226,12 @@ school_ou() {
 	#
 	# example:
 	# $ ucr get ldap/hostdn
-	# cn=myslave,cn=dc,cn=server,cn=computers,ou=gymmitte,dc=example,dc=com
+	# cn=myreplica,cn=dc,cn=server,cn=computers,ou=gymmitte,dc=example,dc=com
 	# $ school_ou
 	# gymmitte
-	# $ school_ou cn=myslave,cn=dc,cn=server,cn=computers,ou=foobar,dc=example,dc=com
+	# $ school_ou cn=myreplica,cn=dc,cn=server,cn=computers,ou=foobar,dc=example,dc=com
 	# foobar
-	# $ school_ou cn=myslave,cn=dc,cn=server,cn=computers,ou=foo,ou=bar,dc=example,dc=com
+	# $ school_ou cn=myreplica,cn=dc,cn=server,cn=computers,ou=foo,ou=bar,dc=example,dc=com
 	# foo
 
 	local ldap_hostdn
@@ -257,12 +257,12 @@ school_dn() {
 	#
 	# example:
 	# $ ucr get ldap/hostdn
-	# cn=myslave,cn=dc,cn=server,cn=computers,ou=gymmitte,dc=example,dc=com
+	# cn=myreplica,cn=dc,cn=server,cn=computers,ou=gymmitte,dc=example,dc=com
 	# $ school_dn
 	# ou=gymmitte,dc=example,dc=com
-	# $ school_dn cn=myslave,cn=dc,cn=server,cn=computers,ou=foobar,dc=example,dc=com
+	# $ school_dn cn=myreplica,cn=dc,cn=server,cn=computers,ou=foobar,dc=example,dc=com
 	# ou=foobar,dc=example,dc=com
-	# $ school_dn cn=myslave,cn=dc,cn=server,cn=computers,ou=foo,ou=bar,dc=example,dc=com
+	# $ school_dn cn=myreplica,cn=dc,cn=server,cn=computers,ou=foo,ou=bar,dc=example,dc=com
 	# ou=foo,ou=bar,dc=example,dc=com
 
 	local ldap_hostdn
@@ -304,7 +304,7 @@ get_available_s4connector_dc() {
 			elif is_localhost_administration; then
 				s4cldapfilter="(&(univentionService=S4 SlavePDC)(univentionService=S4 Connector)(objectClass=univentionDomainController)(univentionService=UCS@school Administration))"
 			else
-				## unsupported, a school slave with UCS@school Administration or UCS@school Education service
+				## unsupported, a school directory replica node with UCS@school Administration or UCS@school Education service
 				echo "ERROR: This seems to be a UCS@school school department server," 1>&2
 				echo "ERROR: but is neither a administrative nor a educative server." 1>&2
 				echo "ERROR: This is not supported, make sure that UCS@school metapackages are installed properly" 1>&2
@@ -323,13 +323,13 @@ get_available_s4connector_dc() {
 		s4connector_dc_array=( $s4connector_dc )
 		if [ "${#s4connector_dc_array[@]}" -gt 1 ]; then
 			echo "ERROR: More than one S4 Connector hosts available: ${s4connector_dc_array[*]}" 1>&2
-			# check for slaves without "S4 SlavePDC"
-			broken_school_slaves="$(univention-ldapsearch -LLL "(&$s4cldapfilter(univentionServerRole=slave))" cn | sed -n -e 's|^cn: ||p' | tr '\n' ' ')"
-			if [ -n "$broken_school_slaves" -a -z "$OU" ]; then
+			# check for replica directory nodes without "S4 SlavePDC"
+			broken_school_replica_nodes="$(univention-ldapsearch -LLL "(&$s4cldapfilter(univentionServerRole=slave))" cn | sed -n -e 's|^cn: ||p' | tr '\n' ' ')"
+			if [ -n "$broken_school_replica_nodes" -a -z "$OU" ]; then
 				echo "ERROR:"
-				echo "ERROR: If this is a central (non-school) slave, make sure every school slave" 1>&2
-				echo "ERROR: has the 'univentionService=S4 SlavePDC' service set!" 1>&2
-				echo "ERROR: Possible broken school slaves: $broken_school_slaves" 1>&2
+				echo "ERROR: If this is a central (non-school) Replica Directory Node, make sure every" 1>&2
+				echo "ERROR: school Replica Directory Node has the 'univentionService=S4 SlavePDC' set!" 1>&2
+				echo "ERROR: Possible broken school Replica Directory Nodes: $broken_school_replica_nodes" 1>&2
 			fi
 			return 1	## this is fatal
 		fi

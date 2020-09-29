@@ -32,10 +32,9 @@ Depends:
 Conflicts:
  samba (<<2:4.7.3+dfsg-1),
  samba-ad-dc,
-Description: UCS - Samba domain controller
- This package contains the configuration for the Samba
- domain controller. It provides authentication, file and
- print services for Windows computers.
+Description: UCS - Samba Member Server
+ This package contains the configuration for a Samba member server.
+ It provides authentication, file and print services for Windows computers.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -47,9 +46,9 @@ Architecture: all
 Depends:
  univention-samba,
  ${misc:Depends},
-Description: UCS - Samba domain controller (as slave)
- With this package, the Samba domain controller is
- configured as a slave to another master domain controller.
+Description: UCS - Samba/NT domain controller (on Replica Directory Node)
+ With this package, the Samba/NT domain controller is
+ configured as a Replica Directory Node to the Primary Directory Node.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

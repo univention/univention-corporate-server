@@ -36,14 +36,14 @@ cat << End
 Possible Tests:
 
  1  backup listener test
- 2  master notifier test
+ 2  primary notifier test
  3  direct ldap modification on backup
  4  listener-kill test
  5  notifier-kill test
- 6  slave ldap/backup test
+ 6  replica ldap/backup test
  7  univention-directory-replication-resync test
  8  ldapmodrdn-test
- 9  slave listener backup slapd restart test
+ 9  replica listener backup slapd restart test
 
 End
 
@@ -62,11 +62,11 @@ then
 	LIMIT=1
 fi
 
-echo -e "\vname or ip of domain controller backup:"
+echo -e "\vname or ip of Backup Directory Node:"
 read backup
 
-echo -e "\vname or ip of domain controller slave:"
-read slave
+echo -e "\vname or ip of Replica Directory Node:"
+read replica
 
 echo -e "\vroot password:"
 stty -echo
@@ -92,7 +92,7 @@ echo "Starting ..."
 eval "$(univention-config-registry shell)"
 echo $dc_pw > pw.tmp
 cat /dev/null > result.txt
-master=$hostname
+primary=$hostname
 pw="pw.tmp"
 pre=`date -u +%s`
 suf=0
@@ -206,25 +206,25 @@ do
 done
 }
 
-create_ldif () # creates a ldif-file and the same objects on master
+create_ldif () # creates a ldif-file and the same objects on primary
 {
 touch backup.ldif
-touch master.tmp
+touch primary.tmp
 echo -e "\v===> create ldif-file for backup-manipulation"
 for dn in $(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "cn=users,$ldap_base" -s one | sed -ne '/Object/s/^dn: //p')
 do
 	echo -e "dn: $dn\nchangetype: modify\nreplace: homeDirectory\nhomeDirectory: /dev/null\n" >> backup.ldif
-	echo -e "$dn" >> master.tmp
+	echo -e "$dn" >> primary.tmp
 done
 }
 
 compare () # compares two ldap_dump-files using diff
 {
 echo -e "\v===> comparing $rmhost and $rmhost2"
-if [ "$rmhost" == "$slave" ]
+if [ "$rmhost" == "$replica" ]
 then
 	univention-scp -timeout 60 "$pw" /etc/ldap.secret "root@$rmhost:/etc/"
-elif [ "$rmhost2" == "$slave" ]
+elif [ "$rmhost2" == "$replica" ]
 then
 	univention-scp -timeout 60 "$pw" /etc/ldap.secret "root@$rmhost2:/etc/"
 fi
@@ -246,10 +246,10 @@ echo -e "\v===> deleting temp-files"
 univention-ssh -timeout 60 "$pw" "root@$rmhost" $cmd &> /dev/null
 univention-ssh -timeout 60 "$pw" "root@$rmhost2" $cmd &> /dev/null
 
-if [ "$rmhost" == "$slave" ]
+if [ "$rmhost" == "$replica" ]
 then
 	univention-ssh -timeout 60 "$pw" "root@$rmhost" "rm /etc/ldap.secret"
-elif [ "$rmhost2" == "$slave" ]
+elif [ "$rmhost2" == "$replica" ]
 then
 	univention-ssh -timeout 60 "$pw" "root@$rmhost2" "rm /etc/ldap.secret"
 fi
@@ -287,26 +287,26 @@ reset ()
 echo -e "\v ------ resetting all needed daemon  ------"
 
 cmd="/etc/init.d/univention-directory-listener start"
-echo -e "\v===>master:"
-univention-ssh -timeout 60 "$pw" "root@$master" $cmd
+echo -e "\v===>primary:"
+univention-ssh -timeout 60 "$pw" "root@$primary" $cmd
 echo -e "\v===>backup:"
 univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
-echo -e "\v===>slave:"
-univention-ssh -timeout 60 "$pw" "root@$slave" $cmd
+echo -e "\v===>replica:"
+univention-ssh -timeout 60 "$pw" "root@$replica" $cmd
 
 cmd="/etc/init.d/univention-directory-notifier start"
-echo -e "\v===>master:"
-univention-ssh -timeout 60 "$pw" "root@$master" $cmd
+echo -e "\v===>primary:"
+univention-ssh -timeout 60 "$pw" "root@$primary" $cmd
 echo -e "\v===>backup:"
 univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 
 cmd="/etc/init.d/slapd start"
-echo -e "\v===>master"
-univention-ssh -timeout 60 "$pw" "root@$master" $cmd
+echo -e "\v===>primary"
+univention-ssh -timeout 60 "$pw" "root@$primary" $cmd
 echo -e "\v===>backup"
 univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
-echo -e "\v===>slave"
-univention-ssh -timeout 60 "$pw" "root@$slave" $cmd
+echo -e "\v===>replica"
+univention-ssh -timeout 60 "$pw" "root@$replica" $cmd
 }
 
 check_failed () # check for replication failed.ldif
@@ -343,23 +343,23 @@ compare_ids ()
 	fi
 }
 
-config_slavelistener () # config listener to connect first on $con_to
+config_replicalistener () # config listener to connect first on $con_to
 {
 	eval "$(univention-config-registry shell)"
 
-	slave="$where"
-	slave_hostdn=$(univention-admin computers/domaincontroller_slave list --filter cn="$slave" | sed -ne 's/^DN: //p')
+	replica="$where"
+	replica_hostdn=$(univention-admin computers/domaincontroller_slave list --filter cn="$replica" | sed -ne 's/^DN: //p')
 
 	backup="$con_to.$domainname"
 	echo '#!/bin/sh -e' > /tmp/listener-run0
 	echo "" >> /tmp/listener-run0
-	echo "exec /usr/sbin/univention-directory-listener -h '$backup' -F -b '$ldap_base' -m '/usr/lib/univention-directory-listener/system' -c '/var/lib/univention-directory-listener' -o -x -ZZ -D '$slave_hostdn' -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1" >> /tmp/listener-run0
+	echo "exec /usr/sbin/univention-directory-listener -h '$backup' -F -b '$ldap_base' -m '/usr/lib/univention-directory-listener/system' -c '/var/lib/univention-directory-listener' -o -x -ZZ -D '$replica_hostdn' -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1" >> /tmp/listener-run0
 
 	univention-scp -timeout 60 "$pw" /tmp/listener-run0 "root@$where:/etc/runit/univention-directory-listener/run"
 	rm /tmp/listener-run0
 }
 
-defconfig_slavelistener ()
+defconfig_replicalistener ()
 {
 	cmd="univention-config-registry commit /etc/runit/univention-directory-listener/run"
 	univention-ssh -timeout 60 "$pw" "root@$where" $cmd
@@ -371,14 +371,14 @@ defconfig_slavelistener ()
 
 reset
 
-#test="compare master and backup before starting test "
+#test="compare primary and backup before starting test "
 #rmhost=$backup
-#rmhost2=$master
+#rmhost2=$primary
 #compare
 
-#test="compare master and backup before starting test "
-#rmhost=$slave
-#rmhost2=$master
+#test="compare primary and backup before starting test "
+#rmhost=$replica
+#rmhost2=$primary
 #compare
 
 run=`echo $choice |grep 1`
@@ -393,7 +393,7 @@ echo -e "\v$test"
 #
 ###################################################################
 	rmhost=$backup
-	rmhost2=$master
+	rmhost2=$primary
 
 	what="univention-directory-listener"
 	where=$backup
@@ -414,19 +414,19 @@ fi
 run=`echo $choice |grep 2`
 if [ -n "$run" ]
 then
-test="**********  master notifier test **********"
+test="**********  primary notifier test **********"
 	echo -e "\v$test"
 ###################################################################
 #
-# stop master-notifier / create objects / start master-notifier /
+# stop primary-notifier / create objects / start primary-notifier /
 # compare ldap_dump
 #
 ###################################################################
 	rmhost=$backup
-	rmhost2=$master
+	rmhost2=$primary
 
 	what="univention-directory-notifier"
-	where=$master
+	where=$primary
 	stop
 
 	create_objects
@@ -448,11 +448,11 @@ echo -e "\v$test"
 ###################################################################
 #
 # stop backup-listener / change objects using ldapadd on backup /
-# change same on master / start backup-listener / compare ldap_dump
+# change same on primary / start backup-listener / compare ldap_dump
 #
 ###################################################################
 	rmhost=$backup
-	rmhost2=$master
+	rmhost2=$primary
 
 	create_objects
 
@@ -475,8 +475,8 @@ echo -e "\v$test"
 	cmd="ldapmodify -x -D 'cn=update,$ldap_base' -w '$rootpw' -f backup.ldif"
 	univention-ssh -timeout 60 "$pw" "root@$rmhost" $cmd
 
-	echo -e "\v===> using ldif on master"
-	for dn in `cat master.tmp`
+	echo -e "\v===> using ldif on primary"
+	for dn in `cat primary.tmp`
 	do
 		univention-admin users/user modify --dn "$dn" --set unixhome=/home/groups
 	done
@@ -502,7 +502,7 @@ echo -e "\v$test"
 #
 ###################################################################
 	rmhost=$backup
-	rmhost2=$master
+	rmhost2=$primary
 
 	echo -e "\v===> killing backup listener"
 	cmd="killall -9 univention-directory-listener"
@@ -516,7 +516,7 @@ echo -e "\v$test"
 		for ((a=1; a <= LIMIT; a++))
 		do
 			random_name
-			echo -e "\v\v===> killing master listener"
+			echo -e "\v\v===> killing primary listener"
 			cmd="killall -9 univention-directory-listener"
 			univention-ssh -timeout 60 "$pw" "root@$backup" $cmd 2> /dev/null
 			case "$module" in
@@ -545,12 +545,12 @@ test="**********  notifier-kill test **********"
 echo -e "\v$test"
 ###################################################################
 #
-# kill master-notifier / create objects / start killing/create-loop /
+# kill primary-notifier / create objects / start killing/create-loop /
 # compare ldap_dump
 #
 ###################################################################
 	rmhost=$backup
-	rmhost2=$master
+	rmhost2=$primary
 
 	echo -e "\v===> killing backup listener"
 	cmd="killall -9 univention-directory-listener"
@@ -564,9 +564,9 @@ echo -e "\v$test"
 		for ((a=1; a <= LIMIT; a++))
 		do
 			random_name
-			echo -e "\v\v===> killing master notifier"
+			echo -e "\v\v===> killing primary notifier"
 			cmd="killall -9 univention-directory-notifier"
-			univention-ssh -timeout 60 "$pw" "root@$master" $cmd 2> /dev/null
+			univention-ssh -timeout 60 "$pw" "root@$primary" $cmd 2> /dev/null
 			case "$module" in
 				users/user)user;;
 				groups/group)group;;
@@ -587,40 +587,40 @@ fi
 run=`echo $choice |grep 6`
 if [ -n "$run" ]
 then
-test="**********  slave ldap/backup test **********"
+test="**********  replica ldap/backup test **********"
 echo -e "\v$test"
 ###################################################################
 #
-# stop slave-listener / create objects / stop master-notifier /
-# start slave-listener / compare ldap_dump / stop slave-listener /
-# start master-notifier / create objects / stop backup-notifier /
-# start slave-listener / compare ldap_dump / start backup-notifier
+# stop replica-listener / create objects / stop primary-notifier /
+# start replica-listener / compare ldap_dump / stop replica-listener /
+# start primary-notifier / create objects / stop backup-notifier /
+# start replica-listener / compare ldap_dump / start backup-notifier
 #
 ###################################################################
 	what=univention-directory-listener
-	where=$slave
+	where=$replica
 	stop
 
 	create_objects
 
 	what=univention-directory-notifier
-	where=$master
+	where=$primary
 	stop
 
 	what=univention-directory-listener
-	where=$slave
+	where=$replica
 	start
 
 	wait_for
 
-	rmhost=$slave
-	rmhost2=$master
+	rmhost=$replica
+	rmhost2=$primary
 	compare
 
 	stop
 
 	what=univention-directory-notifier
-	where=$master
+	where=$primary
 	start
 
 	create_objects
@@ -630,13 +630,13 @@ echo -e "\v$test"
 	stop
 
 	what=univention-directory-listener
-	where=$slave
+	where=$replica
 	start
 
 	wait_for
 
-	rmhost=$slave
-	rmhost2=$master
+	rmhost=$replica
+	rmhost2=$primary
 	compare
 
 	what=univention-directory-notifier
@@ -676,13 +676,13 @@ echo -e "\v$test"
 
 	echo -e "\v===> execute univention-directory-replication-resync on backup"
 	cmd="univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif"
-	univention-ssh -timeout 360 "$pw" "root@$slave" $cmd
+	univention-ssh -timeout 360 "$pw" "root@$replica" $cmd
 
 	pause=`expr 30 + $sync_time`
 	wait_for
 
 	rmhost=$backup
-	rmhost2=$master
+	rmhost2=$primary
 	compare
 
 	# reset
@@ -714,7 +714,7 @@ echo -e "\v$test"
         wait_for
 
         rmhost=$backup
-        rmhost2=$master
+        rmhost2=$primary
         compare
 
         # reset
@@ -723,20 +723,20 @@ fi
 run=`echo $choice |grep 9`
 if [ -n "$run" ]
 then
-test="********** slave listener backup slapd restart test  **********"
+test="********** replica listener backup slapd restart test  **********"
 echo -e "\v$test"
 echo -e "\v ###### $test " >> result.txt
 ###################################################################
 #
-# stop slave listener / create objects / start slave listener/
+# stop replica listener / create objects / start replica listener/
 # restart backup slapd / check for failed.ldiff
 #
 ###################################################################
 		what=univention-directory-listener
-		where=$slave
+		where=$replica
 		stop
 		con_to=$backup
-		config_slavelistener
+		config_replicalistener
 		create_objects
 		start
 
@@ -745,12 +745,12 @@ echo -e "\v ###### $test " >> result.txt
 		stop
 		start
 
-		where=$slave
+		where=$replica
 		compare_ids
 		what=univention-directory-listener
-		where=$slave
+		where=$replica
 		stop
-		defconfig_slavelistener
+		defconfig_replicalistener
 		start
 fi
 
@@ -762,7 +762,7 @@ echo -e "\v**********  removing temp-files **********"
 cmd="if [ -e backup.ldif ] ; then rm backup.ldif ; fi"
 univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 if [ -e "backup.ldif" ] ; then rm backup.ldif ; fi
-if [ -e "master.tmp" ] ; then rm master.tmp ; fi
+if [ -e "primary.tmp" ] ; then rm primary.tmp ; fi
 if [ -e "pw.tmp" ] ; then rm pw.tmp ; fi
 #if [ -e "modrdn.tmp" ] ; then rm modrdn.tmp ; fi
 
