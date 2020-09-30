@@ -201,6 +201,7 @@ echo 'user_pref("browser.shell.checkDefaultBrowser", false);' >> "$profilePath"/
 # allow JavaScript to close a windoe
 echo 'user_pref("dom.allow_scripts_to_close_windows", true);' >> "$profilePath"/prefs.js
 # hide nav bar and menu bar
+echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);' >> "$profilePath"/prefs.js
 mkdir "$profilePath"/chrome
 userChrome="$(cat << EOF
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");

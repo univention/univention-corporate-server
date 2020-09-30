@@ -1,3 +1,9 @@
+univention-system-setup (13.0.1-3) unstable; urgency=medium
+
+  * Bug #52160: Add userpref option to make new firefox esr versions load userChrome.css
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 30 Sep 2020 17:37:11 +0200
+
 univention-system-setup (13.0.1-2) unstable; urgency=medium
 
   * Bug #42374: Merge duplicate translations
