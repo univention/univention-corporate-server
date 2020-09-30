@@ -6,5 +6,6 @@ src: univention-directory-manager-modules
 fix: 14.0.16-2A~4.4.0.202009241414
 desc: |
  This update addresses the following issue:
- * The list of copyable user attributes has been updated.
+ * The list of copyable user attributes has been updated. Several odd
+   attributes have been removed, e.g. firstname, lastname, jpegphoto.
 bug: [49823]
