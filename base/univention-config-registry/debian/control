@@ -19,6 +19,7 @@ Build-Depends:
  python-univention-debhelper,
  python3 (>= 3.6) | python3-mock,
  python3-all,
+ python3-mock,
  python3-pytest,
  python3-pytest-cov,
  python3-pytest-mock,
@@ -49,6 +50,7 @@ Architecture: all
 Depends:
  ldap-utils,
  python-debian,
+ python3-debian,
  python-univention-config-registry (= ${source:Version}),
  python3-univention-config-registry (= ${source:Version}),
  ${misc:Depends},
