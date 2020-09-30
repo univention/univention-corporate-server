@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * Malformed PPM image causing division by zero and crash in qppmhandler.cpp
    (CVE-2018-19872)
- * buffer over-read in read_xbm_body in gui/image/qxbmhandler.cpp
+ * Buffer over-read in read_xbm_body in gui/image/qxbmhandler.cpp
    (CVE-2020-17507)
 bug: [52162]
 cve:
