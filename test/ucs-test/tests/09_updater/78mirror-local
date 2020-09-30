@@ -18,6 +18,7 @@ RETVAL=110 # Test fehlgeschlagen
 FIXED_18225=false
 
 # Installing a local package conflicts with secure_apt; skip the test Bug #26668
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 is_ucr_true update/secure_apt && exit 77
 
@@ -114,11 +115,11 @@ fi
 
 (
 	set -e
-	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}"
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}"
 	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/*.list && false
 	univention-repository-update net
 	ucr commit /etc/apt/sources.list.d/*.list
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${BDIR[@]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"{u,e,c}{a,b}
@@ -129,8 +130,8 @@ fi
 	dpkg-query -W "${pkgname}ca" | grep -Fqx "${pkgname}ca	1"
 	dpkg-query -W "${pkgname}cb" | grep -Fqx "${pkgname}cb	1"
 	univention-upgrade --ignoressh --noninteractive --disable-app-updates --ignoreterm
-	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}" "${CDIR[@]}"
 	dpkg-query -W "${pkgname}ua" | grep -Fqx "${pkgname}ua	2"
 	dpkg-query -W "${pkgname}ub" | grep -Fqx "${pkgname}ub	2"
 	dpkg-query -W "${pkgname}ea" | grep -Fqx "${pkgname}ea	2"
@@ -146,6 +147,7 @@ fi
 	checkdeb "${pkgname}ca" 1 2
 	checkdeb "${pkgname}cb" 1 2
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}"{,c}{l,y} >&3 2>&3
 

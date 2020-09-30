@@ -1,9 +1,50 @@
 # vim:set ft=bash:
+# shellcheck shell=bash
 #
-# Common library function for updater test
-# 1. All modifications done though "ucr" are automatically undone on exit
+# Common library function for updater test, which mostly follow this sequence:
+# 1. `setup_apache`: Setup the local web server to export a directory as a repository
+# 2. Setup repositories for testing:
+#    1. `mkpdir`: Create the empty directories for an UCS release
+#    2. Create dummy packages for testing with given name and version:
+#       1. `mkdeb`: Create a dummy binary package
+#       2. `mkdsc`: Create a dummy source package
+#    3. Create the [signed] index files:
+#       1. `mkpkg`: Generate the Packages* files
+#       2. `mksrc`: Generate th Sources* files
+#       A dummy GPG test key is created by `mkgpg` and used by `gpgsign`
+#    4. `mksh`: Create updater {pre|post}up.sh[.gpg] files
+#    5. `create_releases_json.py`: Create `releass.json` for UCS-5+
+# 3. `config_repo`: Reconfigure the local system to use the dummy web server
+# 4. `checkapt`: Check that sources.list contains the right entries
+# 5. Perform an update and upgrade:
+#    1. `apt-get ...`
+#    2. `univention-upgrade ...`
+# 6. Check the result:
+#    1. `checkdeb`: Check that the expected package version is installed
+#    2. `checkmirror`: Check the local mirror for completeness
+#    3. ...: whatever
+#
+# Additional notes:
+# 1. All modifications done though this "ucr" wrapper are automatically undone on exit
 # 2. Extra files for apache should be symlinked from ${BASEDIR}, which are removed on exit
 #
+# Internales / variables:
+# - $UT_VERBOSE: Enable verbose debugging to the given file including a trace
+# - $UT_DELAY: Delay exiting for given amount of time - usefull for debugging the failing state
+# - $UT_PERF: Run test under `perf` to gather performance petrics
+# - $BASEDIR: Temporary base directory
+# - $REPOPREFIX: Directory name of repository - usually `univention-repository`
+# - $REPODIR: Base directory path of exported repository - `$BASEDIR/$REPOPREFIX"
+# - $DIR_POOL: Base directory path of pool/main/
+# - $DIRS: Array of all directory paths created by `mkpdir` - useful to reference previous directories
+# - $DIR: Directory path last created by `mkpdir` - used implicitly if not explicitlly overridden
+# - $DEB: File path of last `.deb` created by `mkdeb`
+# - $TGZ: File path of last `.tar.gz` created by `mkdsc`
+# - $DSC: File path of last `.dsc` created by `mkdsc`
+# - $GPPID: ID of test GPG key
+# - $GPPPUB: File path to public test GPG key
+# - $COMPRESS: Array of compression algorithms
+
 eval "$(univention-config-registry shell | sed -e 's/^/declare -r _/')"
 # shellcheck disable=SC2154,SC2034
 declare -i major="${_version_version%.*}"
@@ -12,17 +53,22 @@ pkgname="test-$$-${RANDOM}"
 # shellcheck disable=SC2034
 repoprefix="univention-repository"
 ARCH=$(dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
+declare -a COMPRESS=('xz=.xz' 'gzip=.gz')  # 'bzip2=.bz2'
+# BUG: univention.updater.tools.UCSRepoPool et al. still has hard-coded `.gz`!
 
 wait_for_updater_lock () {
 	# wait up to 60 seconds
-	let i=60
-	while [ $i -gt 0 ] && [ -f /var/lock/univention-updater ] ; do
-		let i=$i-1
+	declare -i i
+	for ((i=0; i<60; i++))
+	do
+		[ -f /var/lock/univention-updater ] ||
+			return 0
 		sleep 1
 	done
-	[ $i -lt 1 ] && echo "ERROR: wait_for_updater_lock ran into a timeout!" && ps axfwww && grep -Hr . /var/lock/univention-updater || :
+	echo "ERROR: wait_for_updater_lock ran into a timeout!"
+	ps axfwww
+	grep -Hr . /var/lock/univention-updater || :
 }
-
 
 bug43914 () {
 	local name="$1"
@@ -93,10 +139,9 @@ cleanup () { # Undo all changes
 	trap - EXIT
 
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
-	find -P /etc/apache2 -lname "${BASEDIR}/*" -exec rm -f {} +
-	if [[ $APACHE_MOD_GROUPFILE_ENABLED -ne 0 ]]; then
+	find -P /etc/apache2 -lname "${BASEDIR}/*" -delete
+	[ "$apache_mod_groupfile_enabled" -eq 0 ] ||
 		a2dismode authz_groupfile
-	fi
 	apache2ctl restart >&3 2>&3
 	sleep 3
 
@@ -107,7 +152,7 @@ cleanup () { # Undo all changes
 		local sname="_${name//\//_}"
 		if [ -n "${!sname}" ]
 		then
-			reset+=("${name}"="${!sname}")
+			reset+=("${name}=${!sname}")
 		else
 			remove+=("${name}")
 		fi
@@ -143,8 +188,8 @@ failure () { # Report failed command
 trap 'failure ${LINENO}' ERR
 set -E # functions inherit ERR
 
-declare -a APACHE_MOD_GROUPFILE_ENABLED
-setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
+apache_mod_groupfile_enabled=1
+setup_apache () { # Setup apache for repository: [--port ${port}] [${prefix}]
 	local hostname=localhost
 	if [ "${1}" = "--port" ]
 	then
@@ -168,9 +213,9 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	</Directory>
 	</VirtualHost>
 	EOF
-	ln -s "${BASEDIR}/apache2.conf" /etc/apache2/sites-enabled/univention-repository.$$.conf
+	ln -s "${BASEDIR}/apache2.conf" "/etc/apache2/sites-enabled/univention-repository.$$.conf"
 	mkdir -p "${REPODIR}"
-	if test -f /etc/apache2/sites-enabled/univention-repository.conf
+	if [ -f /etc/apache2/sites-enabled/univention-repository.conf ]
 	then
 		touch "${BASEDIR}/reenable_mirror"
 		a2dissite univention-repository >&3 2>&3
@@ -178,13 +223,13 @@ setup_apache () { # Setup apache for repository [--port ${port}] [${prefix}]
 	truncate -s 0 "${BASEDIR}/apache2.log"
 
 	apache2ctl -M | grep -q authz_groupfile
-	APACHE_MOD_GROUPFILE_ENABLED=$?
+	apache_mod_groupfile_enabled="$?"
 
 	a2enmod authz_groupfile
 	apache2ctl restart >&3 2>&3
 }
 
-config_repo () { # Configure use of repository from local apache
+config_repo () { # Configure use of repository from local apache: [[server]:port] [/prefix] [urcv=value]...
 	local server=localhost
 	local port=80
 	local prefix="${REPOPREFIX}"
@@ -216,7 +261,7 @@ config_repo () { # Configure use of repository from local apache
 		"${extra[@]}" >&3 2>&3
 }
 
-config_mirror () { # Configure mirror to use repository from local apache
+config_mirror () { # Configure mirror to use repository from local apache: [[server]:port] [/prefix] [ucrv=value]...
 	local server=localhost
 	local port=80
 	local prefix="${REPOPREFIX}"
@@ -275,22 +320,21 @@ have () { command -v "$1" >/dev/null 2>&1; }
 
 declare -a DIRS
 mkpdir () { # Create pool directory ${dir}
-	declare -a versions component_versions parts archs dir
+	declare -a versions release_types component_versions parts archs
+	local dir
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
 			[1-9]*.[0-9]*-[0-9]*|[1-9]*.[0-9]*--errata[0-9]*)
 				versions+=("${1%--*}")
-				release_types+=("ucs");
-				release_types+=("errata");
+				release_types+=(ucs errata)
 				;;
 			[1-9]*.[0-9]*--component/*)
 				versions+=("${1%--*}-0")
 				component_versions+=("${1}")
-				release_types+=("ucs");
-				release_types+=("errata");
+				release_types+=(ucs errata)
 			;;
-			maintained|unmaintained) parts+=("${1}"); ;;
+			maintained|unmaintained) parts+=("${1}") ;;
 			all|i386|amd64) archs+=("${1}") ;;
 			extern|*--sec*) echo "Deprecated ${1}" >&2 ; return 2 ;;
 			*) echo "Unknown ${1}" >&2 ; return 2 ;;
@@ -300,22 +344,21 @@ mkpdir () { # Create pool directory ${dir}
 
 	DIR_POOL="${REPODIR}/pool/main/"
 	mkdir -p "${DIR_POOL}"
-	local x
-	for x in {a..z}; do
-		mkdir -p "${DIR_POOL}/${x}"
-	done
 
 	local version arch release_type version_stripped
 	for version in "${versions[@]}"
 	do
 		echo "Creating for $version"
-		for release_type in "${release_types[@]}"; do
+		for release_type in "${release_types[@]}"
+		do
 			version_stripped="${version%--*}"
 			version_stripped="${version_stripped//[^0-9]/}"
 			for arch in "${archs[@]}"
 			do
 				dir="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
-				if [[ ! " ${DIRS[@]} " =~ " $dir " ]]; then
+				# shellcheck disable=SC2076
+				if [[ ! " ${DIRS[*]} " =~ " $dir " ]]
+				then
 					DIR="${dir}"
 					DIRS+=("${DIR}")
 					mkdir -p "${DIR}"
@@ -337,7 +380,6 @@ mkpdir () { # Create pool directory ${dir}
 				mkdir -p "${DIR}"
 				touch "${DIR}/Packages"
 			done
-
 		done
 	done
 
@@ -348,7 +390,7 @@ mkpdir () { # Create pool directory ${dir}
 	return 0
 }
 
-mkdeb () { # Create dummy package [name [version [arch [dir [postinst]]]]]
+mkdeb () { # Create dummy package: [name [version [arch [dir [postinst]]]]]
 	local name="${1:-test}"
 	local version="${2:-1}"
 	local arch="${3:-all}"
@@ -372,18 +414,17 @@ mkdeb () { # Create dummy package [name [version [arch [dir [postinst]]]]]
 	chmod 755 "${BASEDIR}/${name}-${version}/DEBIAN/postinst"
 	DEB="${BASEDIR}/${name}_${version}_${arch}.deb"
 	dpkg-deb -b "${BASEDIR}/${name}-${version}" "${DEB}" >&3 2>&3 || return $?
-	if [ -n "${dir}" ]; then
-		if [ -e "${dir}/${name:0:1}/" ]; then
-			cp "${DEB}" "${dir}/${name:0:1}/"
-		else
-			cp "${DEB}" "${dir}/"
-		fi
-	fi
+
+	case "$dir" in
+	'') ;;
+	*/pool/*) install -m 644 -t "${dir}/${name:0:1}/" -D "${DEB}" ;;
+	*) install -m 644 -t "${dir}/" -D "${DEB}" ;;
+	esac
 
 	find "${REPODIR}" >&3 2>&3
 }
 
-mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
+mkdsc () { # Create dummy source package: [name [version [arch [dir]]]]
 	local name="${1:-test}"
 	local version="${2:-1}"
 	local arch="${3:-all}"
@@ -416,13 +457,12 @@ mkdsc () { # Create dummy source package [name [version [arch [dir]]]]
 	then
 		gpgsign "${DSC}"
 	fi
-	if [ -n "${dir}" ]; then
-		if [ -e "${dir}/${name:0:1}/" ]; then
-			cp "${DSC}" "${TGZ}" "${dir}/${name:0:1}/"
-		else
-			cp "${DSC}" "${TGZ}" "${dir}/"
-		fi
-	fi
+
+	case "$dir" in
+	'') ;;
+	*/pool/*) install -m 644 -t "${dir}/${name:0:1}/" -D "${DSC}" "${TGZ}" ;;
+	*) install -m 644 -t "${dir}/" -D "${DSC}" "${TGZ}" ;;
+	esac
 }
 
 mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional arguments go to dpkg-scanpackages.
@@ -434,9 +474,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	rel_pool_dir="${rel_pool_dir//*\/component\//}"
 	cd "${dir_pool//${rel_pool_dir}/}" || return $?
 	dpkg-scanpackages "${@}" "${rel_pool_dir}" > "${dir}/Packages" 2>&3 # || return $?
-	xz -k -9 <"${dir}/Packages" >"${dir}/Packages.xz"
-	gzip -n -9 <"${dir}/Packages" >"${dir}/Packages.gz"
-	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
+	compress "${dir}/Packages"
 	cd "${OLDPWD}" || return $?
 
 	mkgpg
@@ -445,7 +483,7 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	local codename=${dir//${REPODIR}/}
 	codename="${codename//\/main\/binary-*/}"
 	apt-ftparchive \
-		-o "APT::FTPArchive::Release::Architectures=amd64" \
+		-o "APT::FTPArchive::Release::Architectures=${ARCH}" \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
 		-o "APT::FTPArchive::Release::Label=Univention" \
 		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
@@ -457,13 +495,14 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	gpgsign Release
 	cd "${OLDPWD}" || return $?
 
-	for destname in "main" "non-free" "contrib" ; do
-		targetdir="${dir//\/main\/binary-*/}/$destname/binary-${ARCH}"
+	for destname in "main" "non-free" "contrib"
+	do
+		local targetdir="${dir//\/main\/binary-*/}/$destname/binary-${ARCH}"
 		[ ! -e "$targetdir" ] && continue
 		cd "$targetdir" || return $?
 		codename="$destname/binary-${ARCH}"
 		apt-ftparchive \
-			-o "APT::FTPArchive::Release::Architectures=amd64" \
+			-o "APT::FTPArchive::Release::Architectures=${ARCH}" \
 			-o "APT::FTPArchive::Release::Origin=Univention" \
 			-o "APT::FTPArchive::Release::Label=Univention" \
 			-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
@@ -477,11 +516,19 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	find "${REPODIR}" >&3 2>&3
 }
 
-gpgsign () { # sign file
+compress () { # compress file: <Packages|Sources>
+	local comp
+	for comp in "${COMPRESS[@]}"
+	do
+		"${comp%=*}" --keep --force "$1"
+	done
+}
+
+gpgsign () { # sign file: [InRelease|Release|*.sh|-|*.dsc]
 	mkgpg
 	local out sign
 	case "${1:-}" in
-	InRelease)  # FIXME: fails!
+	InRelease)
 		sign=--clearsign
 		out="${1}"
 		cp "Release" "${GPG_DIR}/in"
@@ -515,7 +562,7 @@ gpgsign () { # sign file
 		--default-key "${GPGID}" \
 		"${sign}" \
 		--output out in 2>&1
-	cp "${GPG_DIR}/out" "${out}"
+	install -m 644 "${GPG_DIR}/out" "${out}"
 }
 
 mksrc () { # Create Sources files in ${1} for packages in ${2}. Optional arguments go to dpkg-scansources.
@@ -527,9 +574,7 @@ mksrc () { # Create Sources files in ${1} for packages in ${2}. Optional argumen
 	rel_pool_dir="${rel_pool_dir//*\/component\//}"
 	cd "${dir_pool//${rel_pool_dir}/}" || return $?
 	dpkg-scansources "${@}" "${rel_pool_dir}" > "${dir}/Sources" 2>&3 # || return $?
-	xz -k -9 <"${dir}/Sources" >"${dir}/Sources.xz"
-	gzip -n -9 <"${dir}/Sources" >"${dir}/Sources.gz"
-	bzip2 -9 <"${dir}/Sources" >"${dir}/Sources.bz2"
+	compress "${dir}/Sources"
 	cd "${OLDPWD}" || return $?
 
 	mkgpg
@@ -581,7 +626,7 @@ mkgpg () { # Create GPG-key for secure APT
 	return 0
 }
 
-mksh () { # Create shell scripts $@ in $1
+mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup> )...
 	local dir="${1}" ret='$?'
 	shift
 	while [ $# -ge 1 ]
@@ -606,23 +651,24 @@ mksh () { # Create shell scripts $@ in $1
 	done
 }
 
-split_repo_path () { # Split repository path into atoms
-	python - "$REPODIR/" "$@" <<- EOF
+split_repo_path () { # Split repository path `$mm/$part/($mmp|component/$comp)/$arch` into atoms `($mmp|$mm--$comp,$part,$arch)`
+	python -c '
 from __future__ import print_function
-import sys
-#print(sys.argv, file=sys.stderr)
-script, repodir, args = sys.argv
-args = args.split(repodir, 1)[1].split("/")
-if args[2] == 'component':
-    version, part, arch = ('%s--%s/%s' % (args[0], args[2], args[3]), args[1], args[4])
-else:
+from os.path import relpath
+from sys import argv
+repodir, path = argv[1:]
+args = relpath(path, repodir).split("/")
+if args[0] == "dists":  # dists/$suite/$section
+    exit(0)
+if args[2] == "component":  # $mm/$part/component/$comp/$arch
+    version, part, arch = ("%s--%s/%s" % (args[0], args[2], args[3]), args[1], args[4])
+else:  # $mm/$part/$mmp/$arch
     version, part, arch  = args[2:5]
 print(" ".join((version, part, arch)))
-#print((version, part, arch), file=sys.stderr)
-EOF
+' "$REPODIR" "$1"
 }
 
-checkapt () { # Check for apt-source statement ${1}
+checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/path] [http*] [(ucs|errata)XXX] [[un]maintained] [X.Y-(Z|--errataZ|--component/Z]
 	local files='/etc/apt/sources.list.d/*.list'
 	local prefix=deb
 	local pattern
@@ -636,9 +682,9 @@ checkapt () { # Check for apt-source statement ${1}
 			errata[1-9][0-9][0-9]) pattern="^${prefix} .* $1 main$" ;;
 			[1-9]*.[0-9]*-[0-9]*) pattern="^${prefix} .*/${1%-*}/.* ${1}/.*/$" ;;
 			[1-9]*.[0-9]*--errata[0-9]*) pattern="^${prefix} .*/${1%%-*}/.* ${1#*--}/.*/" ;;
-			[1-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\? ${1#*--component/}/.*/" ;;
-			maintained|unmaintained) pattern="^${prefix} .*/${1}/\(component/\?\)\? .*/.*/" ;;
-			all|${ARCH}|extern) pattern="^${prefix} .*/\(component/\?\)\? .*/${1}/" ;;
+			[1-9]*.[0-9]*--component/*) pattern="^${prefix} .*/${1%%-*}/.*/component/\\? ${1#*--component/}/.*/" ;;
+			maintained|unmaintained) pattern="^${prefix} .*/${1}/\\(component/\\?\\)\\? .*/.*/" ;;
+			all|${ARCH}|extern) pattern="^${prefix} .*/\\(component/\\?\\)\\? .*/${1}/" ;;
 			i386|amd64) shift ; continue ;;
 			binary-i386|binary-amd64) shift ; continue ;;
 			main) shift ; continue ;;
@@ -677,89 +723,98 @@ checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-
 	# Have a look at https://git.knut.univention.de/univention/internal/repo-ng/-/blob/master/doc/struct.rst
 	# for the current repository layout.
 
-	local srcdir="${REPODIR}"
-	local dstdir="${BASEDIR}/mirror"
-	local skeldir="${dstdir}/skel/${REPOPREFIX}"
+	local mirror="${BASEDIR}/mirror/mirror"
 	local port=80
 
 	# Symlink
-	test "$(readlink "${dstdir}/mirror/univention-repository")" = .
+	[ "$(readlink "${mirror}/univention-repository")" = . ]
 
 	# Directories
-	local invert
+	local invert=
 	while [ $# -ge 1 ]
 	do
 		if [ "${1}" = -- ]
 		then
 			invert=!
 		else
-			test ${invert} -d "${dstdir}/mirror/${1#${srcdir}/}" || return 1
+			test ${invert} -d "${mirror}/${1#${REPODIR}/}" || return 1
 		fi
 		shift
 	done
 
 	# Mirrored files
-	local cmd uri dist
+	local cmd uri dist dir check
+	declare -a expected=()
 	while read -r cmd uri dist sections  # sections may contain more than one section!
 	do
-		[ "${cmd}" = deb ] || continue
+		case "$cmd" in
+		deb) dir="binary-$ARCH" expected=("${COMPRESS[@]/*=/Packages}" Release) check=checkpkg ;;
+		deb-src) dir="source" expected=("${COMPRESS[@]/*=/Sources}" Release) check=checksrc ;;
+		deb-*) echo "$cmd $uri $dist $section" >&2 ; return 1 ;;
+		set|clean|*) continue ;;
+		esac
 		[[ "${uri}" =~ 'http://localhost'(":${port}")?"/${REPOPREFIX}/"(.*) ]] || continue
 		local prefix="${BASH_REMATCH[2]}"
 
 		# check dists directory
-		test -d "${srcdir}/${prefix}/dists/${dist}"
-		for filename in Release Release.gpg InRelease ; do
-			cmp "${srcdir}/${prefix}/dists/${dist}/${filename}" "${skeldir}/${prefix}/dists/${dist}/${filename}"
-			cmp "${srcdir}/${prefix}/dists/${dist}/${filename}" "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}"
-			test -s "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}" || return 1
+		[ -d "${REPODIR}/${prefix}/dists/${dist}" ]
+		for filename in Release Release.gpg InRelease
+		do
+			cmp "${REPODIR}/${prefix}/dists/${dist}/${filename}" "${mirror}/${prefix}/dists/${dist}/${filename}"
+			[ -s "${mirror}/${prefix}/dists/${dist}/${filename}" ] || return 1
 		done
-		for filename in preup.sh preup.sh.gpg postup.sh postup.sh.gpg ; do
-			if [ -f "${srcdir}/${prefix}/dists/${dist}/${filename}" ] ; then  # only test if mirrored correctly ==> does not check if src repo is complete!
-				cmp "${srcdir}/${prefix}/dists/${dist}/${filename}" "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}"
-				test -s "${dstdir}/mirror/${prefix}/dists/${dist}/${filename}" || return 1
-			fi
+		for filename in preup.sh preup.sh.gpg postup.sh postup.sh.gpg
+		do
+			[ -f "${REPODIR}/${prefix}/dists/${dist}/${filename}" ] || continue  # only test if mirrored correctly ==> does not check if src repo is complete!
+			cmp "${REPODIR}/${prefix}/dists/${dist}/${filename}" "${mirror}/${prefix}/dists/${dist}/${filename}"
+			[ -s "${mirror}/${prefix}/dists/${dist}/${filename}" ] || return 1
 		done
-		for section in $sections ; do
-			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}"  # explicit test for easier debugging with "set -e"
-			for optional_di in "" "debian-installer/" ; do  # with and without d-i
-				if [ ! -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}" ] ; then
-					test -n "$optional_di" && continue
-				fi
-#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/by-hash/MD5Sum"  # does not exist yet
-#				test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/by-hash/SHA256"  # does not exist yet
-				for filename in Packages Packages.xz Release ; do
-#					test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/${filename}"  # does not exist yet / is no symlink
-					test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/${optional_di}binary-${ARCH}/${filename}"
-				done
-			done
-			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source" || continue  # FIXME: fail if the source directory does not exist?
-#			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/by-hash/MD5Sum"  # does not exist yet
-#			test -d "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/by-hash/SHA256"  # does not exist yet
-			for filename in Sources Sources.xz Release ; do
-				# is a symlink and the linked file exists
-#				test -L "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/${filename}"  # does not exist yet / is no symlink
-				test -f "${dstdir}/mirror/${prefix}/dists/${dist}/${section}/source/${filename}"
-			done
+		for section in $sections
+		do
+			[ -d "${REPODIR}/${prefix}/dists/${section}" ] || continue
 
-			# check files in pool directory
-			test -d "${dstdir}/mirror/${prefix}/pool/main"
-
-			local oldifs="${IFS}"
-			local IFS=$'\n'
-			# check all deb files referred within the Packages files
-			# shellcheck disable=SC2046
-			set -- $(cd "${dstdir}/mirror/${prefix}" && sed -nre 's/^Filename: //p' "dists/${dist}/${section}/binary-${ARCH}/Packages" | sort -u)  # IFS
-			IFS="${oldifs}"
-			while [ $# -ge 1 ]
+			[ -d "${mirror}/${prefix}/dists/${dist}/${section}" ]  # explicit test for easier debugging with "set -e"
+			[ -d "${mirror}/${prefix}/dists/${dist}/${section}/${dir}" ]
+#			[ -d "${mirror}/${prefix}/dists/${dist}/${section}/${dir}/by-hash" ]  # does not exist yet
+#			[ -d "${mirror}/${prefix}/dists/${dist}/${section}/${dir}/by-hash/MD5Sum" ]
+#			[ -d "${mirror}/${prefix}/dists/${dist}/${section}/${dir}/by-hash/SHA256" ]
+			for filename in "${expected[@]}"
 			do
-				echo "Checking ${srcdir}/${1}"
-				cmp "${srcdir}/${1}" "${dstdir}/mirror/${prefix}/${1}" || return 1
-				shift
+#				[ -L "${mirror}/${prefix}/dists/${dist}/${section}/${dir}/${filename}" ]
+				[ -f "${mirror}/${prefix}/dists/${dist}/${section}/${dir}/${filename}" ]
 			done
+
+			[ -d "${mirror}/${prefix}/pool/${section%%/*}" ]
+			"$check" "${section}" "${dir}" "${mirror}/${prefix}" "${REPODIR}/${prefix}"
 		done
 
 		# check releases file
-		test -s "${dstdir}/mirror/${prefix}/releases.json"
-
+		[ -s "${mirror}/${prefix}/releases.json" ]
 	done </etc/apt/mirror.list
+}
+
+checkpkg () {  # check Packages.xz: <dist> <section> <mirror> [upstream]
+	local dist="$1" section="$2" dst="$3" src="${4:-}"
+	# shellcheck disable=SC2046
+	"${COMPRESS[0]%=*}" -dc <"${dst}/dists/${dist}/${section}/${COMPRESS[0]/*=/Packages}" |
+		sed -nre 's/^Filename: //p' |
+		while IFS=$'\n' read -r fn
+		do
+			[ -f "${dst}/${fn}" ] || return $?
+			[ -n "$src" ] &&
+				cmp "${src}/${fn}" "${dst}/${fn}" || return $?
+		done
+}
+
+checksrc () {  # check Sources.xz: <dist> <section> <mirror> [upstream]
+	local dist="$1" section="$2" dst="$3" src="${4:-}"
+	# shellcheck disable=SC2046
+	"${COMPRESS[0]%=*}" -dc <"${dst}/dists/${dist}/${section}/${COMPRESS[0]/*=/Sources}" |
+		sed -nrf ./dsc2files.sed |
+		while IFS=$'\n' read -r fn
+		do
+			[ -f "${dst}/${fn}" ] || return $?
+			[ -n "$src" ] &&
+				cmp "${src}/${fn}" "${dst}/${fn}" || return $?
+		done
 }

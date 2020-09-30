@@ -31,7 +31,7 @@ config_mirror repository/mirror=no
 	grep -v '^#\|^[[:space:]]*$\|^set ' /etc/apt/mirror.list && false
 	ucr set repository/mirror=yes
 	cat /etc/apt/mirror.list >&2
-	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
 	echo "MARKER START for 09_updater/70mirror" >> /var/log/univention/repository.log
 	wait_for_updater_lock
 	univention-repository-update net
@@ -39,6 +39,7 @@ config_mirror repository/mirror=no
 	find "${BASEDIR}" -ls >&2
 	checkmirror
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}

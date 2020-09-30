@@ -7,6 +7,7 @@
 ##  - univention-directory-manager-tools
 ## exposure: dangerous
 
+# shellcheck disable=SC2154
 eval "$(univention-config-registry shell)"
 dpkg --compare-versions "$version_version" lt "3.0" || exit 133 # too new
 
@@ -42,7 +43,7 @@ else
 	sources="/etc/apt/sources.list.d/20_ucs-online-component.list"
 fi
 
-for component in "deb http://apt.univention.de\(:80\)\?/2.1/maintained/component/\? xen/all/" "deb http://apt.univention.de\(:80\)\?/2.1/maintained/component/\? xen/$arch/"
+for component in "deb http://apt.univention.de\\(:80\\)\\?/2.1/maintained/component/\\? xen/all/" "deb http://apt.univention.de\\(:80\\)\\?/2.1/maintained/component/\\? xen/$arch/"
 do
 	if ! grep "$component" "$sources"
 	then

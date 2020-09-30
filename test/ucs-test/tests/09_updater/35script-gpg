@@ -14,6 +14,7 @@
 
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 
 SH_LOG="${BASEDIR}/sh.log"
@@ -31,15 +32,15 @@ mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 cat >"${SH_LOG}" <<__SH__
-${DIRS[1]}/preup.sh [0-9]\+ ${major}.${minor}-1
-${DIRS[1]}/postup.sh [0-9]\+ ${major}.${minor}-1
+${DIRS[1]}/preup.sh [0-9]\\+ ${major}.${minor}-1
+${DIRS[1]}/postup.sh [0-9]\\+ ${major}.${minor}-1
 __SH__
 
 config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=yes
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
@@ -73,12 +74,13 @@ config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=
 	info "rightly prpared"
 	/usr/share/univention-updater/univention-updater net
 	grep -qxf "${SH_LOG}" "${BASEDIR}/install.log"
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
 	test "${_version_version}" = "$(ucr get version/version)"
 	test 1 = "$(ucr get version/patchlevel)"
 	checkdeb "${pkgname}" 1 2
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

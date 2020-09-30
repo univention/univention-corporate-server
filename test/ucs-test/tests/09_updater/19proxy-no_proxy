@@ -18,7 +18,8 @@ FIXED_12571=false
 
 setup_apache "${repoprefix}"
 
-mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
+# shellcheck disable=SC2046
+mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel:?}") maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
@@ -28,7 +29,7 @@ config_repo proxy/http="http://localhost:${proxy_port}" proxy/no_proxy=localhost
 (
 	set -e
 	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIR}"
 	# no_proxy can not be directly specified via /etc/apt/apt.conf.d/80proxy, only in environment.
 	# univention-updater will export no_proxy for its forked children as well, simulate that here.
 	eval "$(grep "^export no_proxy=" /etc/profile)"
@@ -37,6 +38,7 @@ config_repo proxy/http="http://localhost:${proxy_port}" proxy/no_proxy=localhost
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

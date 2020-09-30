@@ -142,7 +142,7 @@ config_mirror \
 
 (
 	set -e
-	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${MDIR[@]}"
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${CDIR[@]}"
 	wait_for_updater_lock
 	univention-repository-update net --updateto "${major}.${minor}-2"
 	cat /etc/apt/mirror.list >&2
@@ -154,6 +154,7 @@ config_mirror \
 	find "${BASEDIR}" -ls >&2
 	checkmirror "${CDIR[@]}" "${ADIR[@]}" -- "${BDIR[@]}"
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}

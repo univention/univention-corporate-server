@@ -14,20 +14,23 @@ RETVAL=110 # Test fehlgeschlagen
 
 setup_apache "${repoprefix}"
 
-mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
+# shellcheck disable=SC2046
+mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel:?}") maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
+# shellcheck disable=SC2119
 config_repo
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIR}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

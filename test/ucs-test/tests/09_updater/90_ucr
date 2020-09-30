@@ -8,10 +8,11 @@
 ## tags: [basic]
 ## exposure: dangerous
 
+# shellcheck source=/dev/null
 . "$TESTLIBPATH/base.sh" || exit 137
 
 tmp="$(mktemp)"
-trap "rm -f '$tmp'" EXIT
+trap 'rm -f "$tmp"' EXIT
 UNIVENTION_BASECONF="$tmp" dpkg-reconfigure univention-updater || :
 dpkg-reconfigure univention-updater
 

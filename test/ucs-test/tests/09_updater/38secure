@@ -43,7 +43,7 @@ have dselect && _dselect () { "$1" dselect update; }
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 
 	echo "=== sec=yes key=yes ==="
 	ucr set update/secure_apt=yes
@@ -63,6 +63,7 @@ have dselect && _dselect () { "$1" dselect update; }
 	ucr set update/secure_apt=yes
 	tests neg
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}

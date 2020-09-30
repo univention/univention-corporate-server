@@ -135,7 +135,7 @@ run_tests () { # execute all updater programs
 	# univention-upgrade would call univention-errata-update, which would update to v2
 	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
 
-	ucr set proxy/http="http://DUMMY:DUMMY@localhost:${proxy_port}"
+	ucr set proxy/http="http://DUMMY:DUMMY@localhost:${proxy_port:?}"
 	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
 	run_tests "Proxy configuration error: credentials not accepted"
 	ucr unset proxy/http
@@ -165,10 +165,11 @@ run_tests () { # execute all updater programs
 
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
-kill ${proxy_pid} 2>&3
+kill "${proxy_pid:?}" 2>&3
 invoke-rc.d univention-firewall start
 
 exit ${RETVAL}

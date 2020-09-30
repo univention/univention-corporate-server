@@ -30,12 +30,13 @@ config_repo "${comp}=yes" "${comp}/parts=maintained"
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

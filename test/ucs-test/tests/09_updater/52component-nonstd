@@ -23,8 +23,7 @@ mkdeb "${pkgname}" 1 "${ARCH}" "${DIR}"
 PDIR="${DIR%/$ARCH}" # only one level
 cd "${PDIR}"
 dpkg-scanpackages "${DIR#${PWD}/}" >"${PDIR}/Packages" 2>&3
-gzip -n -9 <"${PDIR}/Packages" >"${PDIR}/Packages.gz"
-bzip2 -9 <"${PDIR}/Packages" >"${PDIR}/Packages.bz2"
+compress "${PDIR}/Packages"
 apt-ftparchive \
 	-o "APT::FTPArchive::Release::Origin=Univention" \
 	-o "APT::FTPArchive::Release::Label=Univention" \
@@ -40,12 +39,13 @@ config_repo "${comp}=yes" "${comp}/parts=maintained"
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/${PDIR#$REPODIR/}/ \./"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/${PDIR#$REPODIR/}/ \\./"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	checkdeb "${pkgname}" 1
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

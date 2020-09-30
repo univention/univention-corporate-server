@@ -18,7 +18,8 @@ FIXED_12571=false
 
 setup_apache "${repoprefix}"
 
-mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel}") maintained "${ARCH}"
+# shellcheck disable=SC2046
+mkpdir $(allpatchlevels "${_version_version}-${_version_patchlevel:?}") maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
@@ -32,14 +33,16 @@ run_test () {
 	local username="$1"
 	local password="$2"
 	eval "$(python proxy.py -f -p 0 -a -u "${username}" -w "${password}" 3>&-)"
-	local http_proxy="http://$(quote "${username}"):$(quote "${password}")@localhost:${proxy_port}"
+	local http_proxy
+	http_proxy="http://$(quote "${username}"):$(quote "${password}")@localhost:${proxy_port:?}"
 	ucr set proxy/http="${http_proxy}"
 	(
 		set -e
 		"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
-		checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
+		checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIR}"
 		# Validate URL by using lwp-request
-		read ncode scode < <(HEAD -p "${http_proxy}" "http://localhost/${repoprefix}/" | head -n 1)
+		# shellcheck disable=SC2034
+		read -r ncode scode < <(HEAD -p "${http_proxy}" "http://localhost/${repoprefix}/" | head -n 1)
 		test 200 -eq "${ncode}"
 		apt-get -qq update
 		if "${CHECK_INSTALL}"
@@ -49,12 +52,13 @@ run_test () {
 			checkdeb "${pkgname}" 1
 		fi
 	)
+	# shellcheck disable=SC2181
 	[ $? -ne 0 ] && RETVAL=121 # Bug vorhanden, wie vermutet
 	if "${CHECK_INSTALL}"
 	then
 		dpkg -P --force-all "${pkgname}" >&3 2>&3
 	fi
-	kill ${proxy_pid} 2>&3
+	kill "${proxy_pid:?}" 2>&3
 }
 
 # There is a maximum length for userinfo. Apache simply returns error 400 if the string is too long

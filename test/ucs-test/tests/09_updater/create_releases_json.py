@@ -6,6 +6,10 @@ import os
 from itertools import groupby
 from operator import itemgetter
 from univention.updater.tools import UCS_Version
+try:
+    from typing import List, Tuple  # noqa F401
+except ImportError:
+    pass
 
 
 def gen_releases(path, releases):  # type: (str, List[Tuple[int, int, int]]) -> None

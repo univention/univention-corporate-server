@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """Simple HTTP Proxy for ucs-test."""
-# Inpired by http://effbot.org/librarybook/simplehttpserver.htm
+# Inspired by <http://effbot.org/librarybook/simplehttpserver.htm>
 from six.moves import BaseHTTPServer
 import urllib2
 import urlparse

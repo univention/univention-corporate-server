@@ -77,8 +77,8 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 
 (
 	set -e
-	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}"
-	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/" /etc/apt/mirror.list
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}"
+	grep -q "^clean http://localhost\\(:80\\)\\?/${srcprefix}/" /etc/apt/mirror.list
 	univention-repository-update net
 	ucr commit /etc/apt/sources.list.d/*.list
 	if "${CHECK_INSTALL}"
@@ -101,13 +101,13 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 	# Since UCS-3.0 the local repo is no longer updater automatically
 	univention-repository-update net
 	/usr/share/univention-updater/univention-updater local
-	checkapt --mirror "http://localhost\(:80\)\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
-	grep -q "^clean http://localhost\(:80\)\?/${srcprefix}/" /etc/apt/mirror.list
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}" "${CDIR[@]}"
+	grep -q "^clean http://localhost\\(:80\\)\\?/${srcprefix}/" /etc/apt/mirror.list
 
 	# preup and postup scripts must not be cleaned
 	grep -Eq "/(pre|post)up.sh['\"]" "${CLEAN}" && false
 	"$FIXED_39582" &&
-		grep -Eq "/(pre|post)up.sh\.gpg['\"]" "${CLEAN}" && false
+		grep -Eq "/(pre|post)up.sh\\.gpg['\"]" "${CLEAN}" && false
 	# other unreferenced files should be cleaned
 	grep -Fq "${REPO}/o/obsolete_1.0-all.deb" "${CLEAN}" || false
 	grep -Fq "${REPO}/obsolete.txt" "${CLEAN}" || false
@@ -127,6 +127,7 @@ CLEAN="${BASEDIR}/mirror/var/clean.sh"
 		checkdeb "${pkgname}y" 2 4
 	fi
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 if "${CHECK_INSTALL}"
 then

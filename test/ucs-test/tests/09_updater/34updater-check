@@ -43,9 +43,7 @@ BUG31733 () { # expected-value cmd...
 	set -e
 
 	# initial version numbers
-	patchlevel=0
-	erratalevel=0
-	pkversion=1
+	declare -i patchlevel=0 erratalevel=0 pkversion=1
 
 	# create first repository
 	echo "### Initiate the repository (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
@@ -65,8 +63,8 @@ BUG31733 () { # expected-value cmd...
 	BUG31733 no /usr/share/univention-updater/univention-updater-check
 
 		# create new patchlevel release
-		let ++patchlevel
-		let ++pkversion
+		patchlevel+=1
+		pkversion+=1
 		echo "### Create a new patchlevel release (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
@@ -82,7 +80,7 @@ BUG31733 () { # expected-value cmd...
 
 
 		# create new package version in the same release
-		let ++pkversion
+		pkversion+=1
 		echo "### Create a new package version (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
 		mkpkg "${DIR[2]}" "${DIR_POOL}"
@@ -95,6 +93,7 @@ BUG31733 () { # expected-value cmd...
 		echo "### Updating packages (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		BUG31733 no /usr/share/univention-updater/univention-actualise
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

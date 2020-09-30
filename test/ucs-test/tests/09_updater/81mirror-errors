@@ -94,7 +94,7 @@ run_tests () { # execute all updater programs
 	univention-repository-update net 2>&1
 	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
 
-	ucr set proxy/http="http://${username}:${password}@DUMMY:${proxy_port}"
+	ucr set proxy/http="http://${username}:${password}@DUMMY:${proxy_port:?}"
 	"${FIXED_12571}" || ucr commit /etc/apt/mirror.list >&3
 	run_tests "Proxy configuration error: host is unresolvable"
 
@@ -120,9 +120,10 @@ run_tests () { # execute all updater programs
 
 	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
-kill ${proxy_pid} 2>&3
+kill "${proxy_pid:?}" 2>&3
 invoke-rc.d univention-firewall start
 
 exit ${RETVAL}

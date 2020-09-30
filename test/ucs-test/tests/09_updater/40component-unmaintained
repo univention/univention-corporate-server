@@ -13,10 +13,7 @@
 ## exposure: dangerous
 
 RETVAL=110 # Test fehlgeschlagen
-UT_VERBOSE=true
 . pool.sh || exit 137
-
-set -x
 
 compname="test${RANDOM}"
 
@@ -35,24 +32,20 @@ config_repo "${comp}=yes" "repository/online/unmaintained=no" "${comp}/unmaintai
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	ucr set ${comp}/unmaintained=yes
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[@]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
 	checkdeb "${pkgname}" 1 2
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
-
-case "$RETVAL" in
-0|100) ;;
-*) python2.7 -c 'import logging;import sys;logging.basicConfig(level=logging.DEBUG, stream=sys.stderr);from univention.updater.tools import UniventionUpdater;u = UniventionUpdater();print u.print_component_repositories()' || : ;;
-esac
 
 exit ${RETVAL}
 # vim:set ft=sh:

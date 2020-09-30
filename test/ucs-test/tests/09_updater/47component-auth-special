@@ -46,8 +46,9 @@ run_test () {
 	local password="$2"
 	if "${CHECK_QUOTED}"
 	then
-		local quoted_u="$(quote "${username}")"
-		local quoted_p="$(quote "${password}")"
+		local quoted_u quoted_p
+		quoted_u="$(quote "${username}")"
+		quoted_p="$(quote "${password}")"
 	fi
 	htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}" >&3
 	ucr set "${comp}/username=${username}" "${comp}/password=${password}"
@@ -55,12 +56,13 @@ run_test () {
 		set -e
 		if "${CHECK_QUOTED}"
 		then
-			checkapt "http://${quoted_u}:${quoted_p}@localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+			checkapt "http://${quoted_u}:${quoted_p}@localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 		else
-			checkapt "http://u[^:]\+:p[^@]\+@localhost\(:80\)\?/${repoprefix}/" "${DIRS[0]}"
+			checkapt "http://u[^:]\\+:p[^@]\\+@localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 		fi
 		# Validate URL by using lwp-request
-		read ncode scode < <(HEAD -d "$(sed -ne "/$compname/s|^deb ||;T;s| ||g;p;q" /etc/apt/sources.list.d/20_ucs-online-component.list)")
+		# shellcheck disable=SC2034
+		read -r ncode scode < <(HEAD -d "$(sed -ne "/$compname/s|^deb ||;T;s| ||g;p;q" /etc/apt/sources.list.d/20_ucs-online-component.list)")
 		test 200 -eq "${ncode}"
 		apt-get -qq update
 		if "${CHECK_INSTALL}"
@@ -70,6 +72,7 @@ run_test () {
 			checkdeb "${pkgname}" 1
 		fi
 	)
+	# shellcheck disable=SC2181
 	[ $? -ne 0 ] && RETVAL=121 # Bug vorhanden, wie vermutet
 	if "${CHECK_INSTALL}"
 	then

@@ -29,22 +29,22 @@ echo -n "Creating patchlevel..."
 for ((pat=1;pat<=9;pat+=1)) # 0 created by minor
 do
 	mkpdir "${major}.${minor}-${pat}" maintained "${ARCH}"
-	mksh "${DIRS[*]: -2:1}"/../.. preup postup
-	DOKAY+=(${DIRS[@]: -1:2})
+	mksh "${DIRS[-2]}"/../.. preup postup
+	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo -n " minor..."
-for ((min=1;min<=9;min+=1)) # 0 is master
+for ((min=1;min<=9;min+=1)) # 0 is major
 do
 	mkpdir "${major}.${min}-0" maintained "${ARCH}"
-	mksh "${DIRS[*]: -2:1}"/../.. preup postup
-	DOKAY+=("${DIRS[@]: -1:2}")
+	mksh "${DIRS[-2]}"/../.. preup postup
+	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo -n " major..."
 for ((maj=5;maj<=9;maj+=1)) # major < 5 was using a different repo structure
 do
 	mkpdir "${maj}.0-0" maintained "${ARCH}"
-	mksh "${DIRS[*]: -2:1}"/../.. preup postup
-	DOKAY+=("${DIRS[@]: -1:2}")
+	mksh "${DIRS[-2]}"/../.. preup postup
+	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo " done."
 
@@ -56,13 +56,14 @@ config_mirror \
 (
 	set -e
 	echo "Checking /etc/apt/mirror.list for ${#DOKAY[@]} required entries..."
-	checkapt --mirror "http://localhost\(:80\)\?/${repoprefix}/" "${DOKAY[@]}"
+	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DOKAY[@]}"
 	echo "Doing mirror..."
 	wait_for_updater_lock
 	univention-repository-update net
 	echo "Checking mirror..."
 	checkmirror "${DOKAY[@]}"
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}

@@ -62,18 +62,19 @@ config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
 
 (
 	set -e
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[1]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[1]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 	/usr/share/univention-updater/univention-updater net
-	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIRS[1]}" "${DIRS[3]}"
+	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[1]}" "${DIRS[3]}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	2"
 	test "${major}.${minor}" = "$(ucr get version/version)"
 	test 0 = "$(ucr get version/patchlevel)"
 	test -n "$(ucr get update/available)"  # make sure update/available has been updated
 	checkdeb "${pkgname}" 1 2
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 dpkg -P --force-all "${pkgname}" >&3 2>&3
 

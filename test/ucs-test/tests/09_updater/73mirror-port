@@ -36,6 +36,7 @@ config_mirror :${port}
 	find "${BASEDIR}" -ls >&2
 	checkmirror
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}

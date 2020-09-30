@@ -33,7 +33,7 @@ install -m 755 -d "$dvd/dists/ucs430/main/binary-amd64"
 ln -s ucs430 "$dvd/dists/stable"
 ( cd "$dvd" && apt-ftparchive packages all /dev/null / ) >"$dvd/dists/ucs430/main/binary-amd64/Packages"
 gzip -9 -n "$dvd/dists/ucs430/main/binary-amd64/Packages"
-cat >$dvd/dists/ucs430/main/binary-amd64/Release <<__APT__
+cat >"$dvd/dists/ucs430/main/binary-amd64/Release" <<__APT__
 Archive: stable
 Origin: Univention
 Label: Univention Corporate Server
@@ -77,6 +77,7 @@ trap 'cleanup2' EXIT
 
 	:
 )
+# shellcheck disable=SC2181
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
 
 exit ${RETVAL}
