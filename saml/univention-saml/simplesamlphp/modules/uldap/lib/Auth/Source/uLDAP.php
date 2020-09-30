@@ -121,7 +121,12 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (FALSE !== $response && strpos(curl_getinfo($ch, CURLINFO_CONTENT_TYPE), 'application/json') >= 0) {
 			$response = json_decode($response, TRUE);
 		} else {
-			$response = array('message' => $response);
+			$message = $response;
+			if ($httpcode === 0) {
+				$httpcode = 500;
+				$message = curl_error($ch);
+			}
+			$response = array('message' => $message, 'traceback' => '', 'title' => '');
 		}
 		if ($httpcode !== 200) {
 			if ($httpcode >= 500) {
