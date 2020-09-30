@@ -9,3 +9,5 @@ desc: |
  * The list of copyable user attributes has been updated. Several odd
    attributes have been removed, e.g. firstname, lastname, jpegphoto.
 bug: [49823]
+erratum: 757
+announced: 2020-09-30
