@@ -1,3 +1,9 @@
+ucs-test (10.0.1-7) unstable; urgency=medium
+
+  * Bug #52125: adjust portal selenium tests
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 30 Sep 2020 11:21:59 +0200
+
 ucs-test (10.0.1-6) unstable; urgency=medium
 
   * Bug #51903: extended 10_saml_password_expire and
