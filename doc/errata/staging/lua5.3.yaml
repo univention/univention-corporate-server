@@ -6,10 +6,8 @@ src: lua5.3
 fix: 5.3.3-1+deb9u1
 desc: |
  This update addresses the following issue:
-
- * 5.3.3-1+deb9u1 (Fri, 25 Sep 2020 22:19:48 -0400) * Non-maintainer upload by
-   the LTS Team. * Fix CVE-2020-24370: a negation overflow and segmentation
-   fault in getlocal and setlocal.
+ * Fix a negation overflow and segmentation fault in getlocal and setlocal
+   (CVE-2020-24370)
 bug: [52140]
 cve:
 - CVE-2020-24370
