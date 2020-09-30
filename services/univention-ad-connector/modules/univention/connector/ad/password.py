@@ -196,7 +196,7 @@ def calculate_krb5keys(supplementalCredentialsblob):
 	return keys
 
 
-def set_password_in_ad(connector, samaccountname, pwd):
+def set_password_in_ad(connector, samaccountname, pwd, reconnect=False):
 	_d = ud.function('ldap.ad.set_password_in_ad')  # noqa: F841
 
 	# print "Static Session Key: %s" % (samr.session_key,)
