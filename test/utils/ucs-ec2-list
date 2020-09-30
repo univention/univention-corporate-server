@@ -15,6 +15,7 @@ docker pull "$IMAGE" >/dev/null
 declare -a cmd=(
 	docker run
 	--rm
+	-it
 	-v "$(pwd):/test"
 	-v ~/ec2:/root/ec2:ro
 	--dns '192.168.0.124'
