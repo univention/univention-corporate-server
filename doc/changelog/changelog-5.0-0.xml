@@ -30,6 +30,11 @@
 				The Microsoft terms <emphasis>domain controller</emphasis>, <emphasis>DC</emphasis> and <emphasis>memberserver</emphasis>
 				are still applicable in case Microsoft compatible servcies are provided by Samba on the repective Node (<u:bug>42374</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The "base system" is no longer a valid system role,
+				so the corresponding meta package "univention-basesystem" has
+				been removed. (<u:bug>52137</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
