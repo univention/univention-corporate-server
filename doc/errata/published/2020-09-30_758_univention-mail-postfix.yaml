@@ -10,3 +10,5 @@ desc: |
    mail/postfix/{maximal_queue_lifetime,bounce_queue_lifetime,
    delay_warning_time}
 bug: [51124]
+erratum: 758
+announced: 2020-09-30
