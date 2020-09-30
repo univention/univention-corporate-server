@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svv
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
@@ -8,6 +8,7 @@ import pipes
 import tempfile
 import subprocess
 import json
+import glob
 
 import pytest
 
@@ -23,7 +24,7 @@ python{0} -m coverage run /tmp/py{0}.in &>/tmp/py{0}.out
 echo $? >> /tmp/py{0}.out
 '''
 
-ALLOWED_DIFFERENCES = (
+ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/usr/share/univention-management-console/meta.json',
 	'/etc/univention/templates/files/etc/aliases',
 	'/etc/univention/templates/files/etc/security/access-other.conf',
@@ -35,32 +36,9 @@ ALLOWED_DIFFERENCES = (
 	'/etc/univention/templates/files/etc/security/access-ppp.conf',
 	'/etc/univention/templates/files/etc/simplesamlphp/00authsources.php',
 	'/etc/univention/templates/files/etc/univention/directory/reports/config.ini',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-join',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-reports',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-management-console',
-	'/etc/univention/templates/files/etc/logrotate.d/rsyslog',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-manager',
-	'/etc/univention/templates/files/etc/logrotate.d/heimdal-kdc',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-portal',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-ssl',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-listener',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-maintenance',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-config-registry-replog',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-appcenter',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-notifier',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-admindiary',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-server-password-change',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-system-setup',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-directory-policy',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-updater',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-spamassassin',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-s4-connector',
-	'/etc/univention/templates/files/etc/logrotate.d/samba',
-	'/etc/univention/templates/files/etc/logrotate.d/winbind',
-	'/etc/univention/templates/files/etc/logrotate.d/univention-samba4',
 	'/etc/univention/templates/files/etc/listfilter.secret',
 	'/etc/univention/templates/files/etc/security/packetfilter.d/10_univention-firewall_start.sh',
-)
+] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*')
 
 
 @pytest.fixture(scope="module")
