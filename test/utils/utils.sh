@@ -1069,6 +1069,7 @@ basic_setup_ucs_joined () {
 		fi
 		service univention-directory-listener restart || rv=1
 		/usr/sbin/univention-register-network-address || rv=1
+		service nscd restart || rv=1
 	fi
 	return $rv
 }
