@@ -161,11 +161,6 @@ def test_group_mail_in_mailing_list():
 			wait_for_drs_replication=True
 		)
 		token = make_token()
-		# #todo check
-		#  Assumption: no mail is delivered to the group members,
-		# at least because groups and distlists are different lookup tables.
-		# Not correct -> All receive a mail.
-		# This fails if ox is installed, though.
 		send_mail(recipients=list_mail, msg=token, debuglevel=0)
 		for mail in group_mails:
 			check_delivery(token, mail, True)
