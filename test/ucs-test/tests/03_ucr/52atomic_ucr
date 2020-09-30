@@ -39,14 +39,14 @@ try:
 	stat = os.stat(filename)
 	size = stat.st_size
 	if 0 < size < (2 << 20):
-		print "FAILED: 0x%x" % (size,)
+		print("FAILED: 0x%x" % (size,))
 	else:
-		print "OKAY: 0x%x" % (size,)
+		print("OKAY: 0x%x" % (size,))
 except OSError as ex:
 	if errno.ENOENT == ex.errno:
-		print "OKAY: %s" % (filename,)
+		print("OKAY: %s" % (filename,))
 	else:
-		print "FAILED: %s" % (ex,)
+		print("FAILED: %s" % (ex,))
 @!@
 __UCR__
 	cat >"/etc/univention/templates/files/tmp/${ID}-atomic.d/${ID}-99footer" <<__UCR__
