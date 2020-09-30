@@ -6,8 +6,7 @@ src: firefox-esr
 fix: 78.3.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
- * Memory safety bugs fixed in Firefox 81 and Firefox ESR 78.3
-   (CVE-2020-15673)
+ * Memory safety bugs fixed (CVE-2020-15673)
  * XSS when pasting attacker-controlled data into a contenteditable element
    (CVE-2020-15676)
  * Download origin spoofing via redirect (CVE-2020-15677)
