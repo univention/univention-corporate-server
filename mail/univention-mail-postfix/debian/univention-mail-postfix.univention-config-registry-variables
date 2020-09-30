@@ -311,6 +311,12 @@ Description[en]=If this option is activated virtual mail domains are supported. 
 Type=bool
 Categories=service-mail
 
+[mail/postfix/virtual/alias/maps]
+Description[de]=Diese Option erlaubt die Einträge von virtual_alias_maps als Komma-separierte Liste anzugeben. Mit UCS: 4.4-6 errata751 wird diese Liste als Vereinigung der einzelnen Abfragen ausgewertet.
+Description[en]=This option allows to define the entries of virtual_alias_maps as a comma-separated list. With UCS: 4.4-6 errata751 this list will be evaluated as a union all defined queries.
+Type=str
+Categories=service-mail
+
 [mail/postfix/smtpd/debug]
 Description[de]=Ist diese Option aktiviert, wird der smtpd im Debug-Modus gestartet. Ist die Variable nicht gesetzt, wird der Dienst normal gestartet.
 Description[en]=If this option is enabled, the smtpd is started in debug mode. If the variable is unset, the service is started normally.
