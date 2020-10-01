@@ -66,6 +66,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
+	"umc/widgets/CookieBanner",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/MultiInput",
 	"put-selector/put",
@@ -78,9 +79,7 @@ define([
 	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
-], function(declare, lang, array, win, Deferred, aspect, when, on, topic, ioQuery, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, Portal, PortalEntryWizard, portalTools, i18nTools, portalJson, installedApps, _) {
-
-
+], function(declare, lang, array, win, Deferred, aspect, when, on, topic, ioQuery, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, CookieBanner, StandbyMixin, MultiInput, put, purify, login, Portal, PortalEntryWizard, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	var _getLogoName = function(logo) {
 		if (logo && !hasImageSuffix(logo)) {
@@ -971,6 +970,7 @@ define([
 				login.start();
 				return;
 			}
+			(new CookieBanner()).show();
 
 			this._initProperties();
 			this._registerEventHandlerForSearch();
