@@ -47,9 +47,10 @@ define([
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
+	"umc/widgets/CookieBanner",
 	"umc/i18n/tools",
 	"umc/i18n!login"
-], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, json, Deferred, Tooltip, entities, dialog, tools, i18nTools, _) {
+], function(login, lang, array, on, query, dom, domConstruct, domAttr, has, dojoEvent, cookie, json, Deferred, Tooltip, entities, dialog, tools, CookieBanner, i18nTools, _) {
 
 	return {
 		_loginDialogRenderedDeferred: new Deferred(),
@@ -105,6 +106,7 @@ define([
 		},
 
 		renderLoginDialog: function() {
+			(new CookieBanner()).show();
 			this._addDefaultLinks();
 			this._checkCookiesEnabled();
 			this._watchUsernameField();
