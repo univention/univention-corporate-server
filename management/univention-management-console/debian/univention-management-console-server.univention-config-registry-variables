@@ -123,3 +123,15 @@ Description[de]=Gibt einen lokalisierten Text für Passwort-Komplexitätshinweis
 Description[en]=Specifies a localized text for password complexity notes used on changing the password (e.g: umc/login/password-complexity-message/en='The password must contain at least 3 special chars, at least 20 characters long and consists of at least 5 different characters.')
 Type=str
 Categories=management-umc
+
+[umc/cookie-banner/show]
+Description[de]=Definiert, ob ein Cookie-Banner im Portal und während des Logins angezeigt wird.
+Description[en]=Defines, whether a cookie banner is shown in the Portal and during the login.
+Type=bool
+Categories=management-umc
+
+[umc/cookie-banner/.*]
+Description[de]=Definiert, den lokalisierten Text für den Cookie-Banner (z.B.: umc/cookie-banner/de).
+Description[en]=Defines, the localized text for the cookie banner (e.g.: umc/cookie-banner/en).
+Type=str
+Categories=management-umc
