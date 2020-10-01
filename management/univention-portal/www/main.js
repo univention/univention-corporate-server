@@ -66,6 +66,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
+	"umc/widgets/CookieBanner",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/MultiInput",
 	"put-selector/put",
@@ -79,7 +80,7 @@ define([
 	"umc/json!/univention/portal/portal.json", // -> contains entries of this portal as specified in the LDAP directory
 	"umc/json!/univention/portal/apps.json", // -> contains all locally installed apps
 	"umc/i18n!portal"
-], function(declare, lang, array, win, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
+], function(declare, lang, array, win, Deferred, aspect, when, on, dojoQuery, dom, domClass, domAttr, domGeometry, domStyle, domConstruct, mouse, Source, all, sprintf, Standby, dijitFocus, a11y, registry, Dialog, Tooltip, DropDownMenu, MenuItem, DropDownButton, tools, render, store, json, dialog, Button, Form, ContainerWidget, ConfirmDialog, CookieBanner, StandbyMixin, MultiInput, put, purify, login, PortalCategory, PortalEntryWizard, PortalEntryWizardPreviewTile, portalTools, i18nTools, portalJson, installedApps, _) {
 
 	// convert IPv6 addresses to their canonical form:
 	//   ::1:2 -> 0000:0000:0000:0000:0000:0000:0001:0002
@@ -1236,6 +1237,7 @@ define([
 				login.start();
 				return;
 			}
+			(new CookieBanner()).show();
 
 			this._initProperties();
 			this._registerEventHandlerForSearch();
