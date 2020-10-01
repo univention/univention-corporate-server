@@ -6,5 +6,7 @@ src: univention-ad-connector
 fix: 13.0.0-53A~4.4.0.202009301026
 desc: |
  This update addresses the following issue:
- * A rare case of AD Connector synchronization rejects has been corrected.
+ * If the transport connection is unexpectedly interrupted during a
+   password synchronization, the AD connector will now reopen the
+   connection and retry the sync.
 bug: [51501]
