@@ -39,7 +39,7 @@
 			mechanism for automatic schema replication to all UCS hosted <acronym>LDAP</acronym> servers in the UCS domain
 			(see <xref linkend="chap:listener"/>).
 			The schema replication mechanism is triggered by installation of a new schema extension package on the &ucsPrimaryDN;.
-			For redundancy it is strongly recommended to install schema extension packages also on the UCS backup systems. This way, a UCS backup
+			For redundancy it is strongly recommended to install schema extension packages also on each &ucsBackupDN;. This way, a &ucsBackupDN;
 			can replace a &ucsPrimaryDN; in case the &ucsPrimaryDN; needs to be replaced for some reason. To simplify these tasks even further, UCS offers methods
 			to register new <acronym>LDAP</acronym> schemata and associated <acronym>LDAP</acronym> ACLs from any UCS system.
 		</para>
