@@ -414,7 +414,7 @@ define([
 			// |	dialog.cookieBanner(title, msg, function() {
 			// |		// do something...
 			// |	});
-			// |	
+			// |
 			// example:
 			//		We may also refer the callback to a method of an object, i.e.:
 			// |	var mySessionHandler = {
@@ -433,7 +433,7 @@ define([
 			var defaultCallback = function(){
 				console.log("setting cookies after confirmation")
 			}
-			
+
 			var deferred = new Deferred();
 			// create cookie banner
 			var cookieBanner = new CookieBanner({

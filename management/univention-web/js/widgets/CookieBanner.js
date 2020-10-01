@@ -55,7 +55,7 @@ define([
 		//		Class that provides a customizable cookie banner dialog.
 		//		(For easier access see dialog.cookieBanner().)
 		// description:
-		//		The cookie banner expects a title, the main message and a handler 
+		//		The cookie banner expects a title, the main message and a handler
 		//		which is called when clicking the confirmation button.
 		// example:
 		// 		This is a simple basic example that demonstrates all provided features.
@@ -100,7 +100,6 @@ define([
 				'class': 'umcConfirmDialogText'
 			});
 			this._container.addChild(widget, 0);
-			
 		},
 
 		postMixInProperties: function() {
