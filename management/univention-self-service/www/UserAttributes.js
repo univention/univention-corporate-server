@@ -62,9 +62,14 @@ define([
 		desc: _('Customize your profile'),
 		contentContainer: null,
 		steps: null,
+		_autoLoaded: false,
 
 		startup: function() {
 			login.onInitialLogin(lang.hitch(this, function(username) {
+				if (this._autoLoaded) {
+					return;
+				}
+				this._autoLoaded = true;
 				this._username.set('value', tools.status('username'));
 				this._username.set('disabled', true);
 				if (this.allowAuthenticated()) {

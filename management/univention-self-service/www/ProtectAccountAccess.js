@@ -58,9 +58,14 @@ define([
 		desc: _('Everyone forgets his password now and then. Protect yourself and activate the opportunity to set a new password.'),
 		contentContainer: null,
 		steps: null,
+		_autoLoaded: false,
 
 		startup: function() {
 			login.onInitialLogin(lang.hitch(this, function(username) {
+				if (this._autoLoaded) {
+					return;
+				}
+				this._autoLoaded = true;
 				this._username.set('value', tools.status('username'));
 				this._username.set('disabled', true);
 				if (this.allowAuthenticated()) {
