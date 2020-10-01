@@ -130,6 +130,12 @@ def get_login_texts():
 	base = 'umc/login/texts/'
 	return {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
 
+def get_cookie_banner():
+	base = 'umc/cookie-banner/'
+	banner = {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
+	banner['show'] = configRegistry.is_true('%sshow' %( base,))
+	return banner
+
 
 data = dict(
 	serveraddress=get_ec2_address(),
@@ -140,6 +146,7 @@ data = dict(
 	administrator=custom_username('Administrator'),
 	login_links=get_login_links(),
 	login_texts=get_login_texts(),
+	cookieBanner=get_cookie_banner(),
 )
 
 

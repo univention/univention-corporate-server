@@ -117,3 +117,15 @@ Description[de]=Gibt einen lokalisierten Text für den Titel der Anmeldeseite an
 Description[en]=Specifies a localized text for the title of the login page. E.g. 'umc/login/texts/title/en="This is the login page"'.
 Type=str
 Categories=management-umc
+
+[umc/cookie-banner/show]
+Description[de]=Definiert, ob ein Cookie-Banner angezeigt wird.
+Description[en]=Defined, if a cookie banner is shown.
+Type=bool
+Categories=management-umc
+
+[umc/cookie-banner/.*]
+Description[de]=Definiert, den Cookie-Banner Text (z.B.: umc/cookie-banner/de)
+Description[en]=Defined, the cookie banner text (e.g.: umc/cookie-banner/en)
+Type=str
+Categories=management-umc

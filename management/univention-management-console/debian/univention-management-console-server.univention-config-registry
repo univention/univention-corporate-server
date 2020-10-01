@@ -80,3 +80,4 @@ Variables: umc/self-service/protect-account/frontend/enabled
 Variables: umc/self-service/account-deregistration/enabled
 Variables: umc/self-service/.*/title/.*
 Variables: portal/show-outdated-browser-warning
+Variables: umc/cookie-banner/.*

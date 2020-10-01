@@ -34,18 +34,20 @@ define([
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/ConfirmDialog",
+	"umc/i18n/tools",
 	"umc/i18n!"
-], function(declare, cookie, tools, dialog, ConfirmDialog, _) {
+], function(declare, cookie, tools, dialog, ConfirmDialog, i18nTools, _) {
 	return declare("umc.widgets.CookieBanner", [ ConfirmDialog ], {
 		// summary:
 		//		Display cookie banner
 		'class': 'umcCookieBanner',
 		closable: false,
 
-		postMixInProperties: function(props) {
+		postMixInProperties: function() {
 			this.inherited(arguments);
+			var locale = i18nTools.defaultLang().slice(0, 2);
 			this.title = _('Cookie settings');
-			this.message = tools.status('cookieMessage');
+			this.message = tools.status('cookieBanner')[locale] || tools.status('cookieBannerDefault');
 			this.options = [{
 				name: 'accept',
 				label: _('Accept'),
@@ -53,11 +55,14 @@ define([
 			}];
 		},
 
-
 		show: function() {
-			if (!cookie('univentionCookieSettingsAccepted')) {
-				this.inherited(arguments);
+			if (!tools.status('cookieBanner')['show']) {
+				return;
 			}
+			if (cookie('univentionCookieSettingsAccepted')) {
+				return;
+			}
+			this.inherited(arguments);
 		},
 
 		buildRendering: function() {
@@ -68,8 +73,6 @@ define([
 					cookie('univentionCookieSettingsAccepted', 'true');
 				};
 			});
-			this.set('title', _('Cookie settings'));
-			this.set('message', tools.status('cookieMessage'));
 		}
 	});
 });
