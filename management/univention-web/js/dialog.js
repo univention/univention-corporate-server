@@ -40,12 +40,13 @@ define([
 	"umc/dialog/NotificationDropDownButton",
 	"umc/dialog/NotificationSnackbar",
 	"umc/widgets/ConfirmDialog",
+	"umc/widgets/CookieBanner",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationDropDownButton, NotificationSnackbar, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, NotificationDropDownButton, NotificationSnackbar, ConfirmDialog, CookieBanner, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 
@@ -273,7 +274,7 @@ define([
 			return deferred;
 		},
 
-		confirmForm: function(/*Object*/options) {
+		confirmForm: function(/*Object*/ options) {
 			// summary:
 			// 		Popup a confirmation dialog containing a `umc.widgets.Form' build from the given widgets
 			// options:
@@ -381,6 +382,71 @@ define([
 			}
 
 			return deferred;
+		},
+
+		cookieBanner: function(/* String */ title, /*String*/ message, /*Function*/ confirmCallback) {
+			// summary:
+			//		Popup cookie banner with a given text message string and a list of
+			//		options to choose from.
+			// description:
+			//		This function provides a shortcut for CookieBanner.
+			//		The user needs to confirm the banner by clicking the accept button.
+			//		When this button is pressed, the dialog is automatically closed
+			//		an the registered callback method is called. The function returns
+			//		a Deferred object.
+			// title:
+			//		The title for the cookie banner.
+			// message:
+			//		The text message that is displayed in the dialog.
+			// confirmCallback:
+			//		Array of objects describing the possible choices. Array is passed to
+			//		ConfirmDialog as 'options' parameter. The property 'label' needs
+			//		to be specified. The properties 'callback', 'name', 'auto', and 'default' are
+			//		optional.
+			//		The property 'default' renders the button for the default choice in the style
+			//		of a submit button.
+			//		If one single (!) item is specified with the property 'auto=true' and
+			//		confirmations are switched off in the user preferences, the dialog is not shown
+			//		and the callback function for this default option is executed directly.
+			//
+			// example:
+			//		A simple example to show how this function can be used.
+			// |	dialog.cookieBanner(title, msg, function() {
+			// |		// do something...
+			// |	});
+			// |	
+			// example:
+			//		We may also refer the callback to a method of an object, i.e.:
+			// |	var mySessionHandler = {
+			// |		foo: function() {
+			// |			console.log('Cookies will be set!');
+			// |		}
+			// |	};
+			// |	dialog.cookieBanner(
+			// |		'Cookie setting',
+			// |	    'Do you agree in our terms and conditions?',
+			// |		lang.hitch(mySessionHandler, 'foo')
+			// |	);
+	
+			// create cookie banner
+			var cookieBanner = new CookieBanner({
+				title: title || _('Cookie Banner'),
+				message: message || _('Cookie Message'),
+				confirmCallback: confirmCallback
+			});
+
+			// connect to 'confirm' event to close the banner
+			var deferred = new Deferred();
+			cookieBanner.on('confirm', function(response) {
+				cookieBanner.close();
+				deferred.resolve(response);
+			});
+
+			// show the cookie banner dialog
+			cookieBanner.show();
+
+			deferred.dialog = cookieBanner;
+			return deferred;			
 		},
 
 		templateDialog: function( /*String*/ templateModule, /*String*/ templateFile, /*String*/ keys, /* String? */ title, /* String|Object[]? */ button ) {
