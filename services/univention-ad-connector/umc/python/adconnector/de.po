@@ -207,12 +207,8 @@ msgstr "Active Directory-Verbindungsdienst wird gestartet..."
 msgid "Switching running state of Active Directory Connector failed."
 msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 
-#: umc/python/adconnector/__init__.py:530
-msgid "The AD member mode can only be configured on a DC master server."
-msgstr ""
-"Der AD-Member-Modus kann nur auf einem DC-Master-System konfiguriert werden."
-
 #: umc/python/adconnector/__init__.py:400
+#: umc/python/adconnector/__init__.py:530
 msgid "The AD member mode can only be configured on a Primary Directory Node."
 msgstr ""
 "Der AD-Member-Modus kann nur auf einem Primary Directory Node konfiguriert werden."

@@ -527,7 +527,7 @@ class Instance(Base, ProgressMixin):
 
 		# error handling...
 		except admember.invalidUCSServerRole as exc:
-			_err(exc, _('The AD member mode can only be configured on a DC master server.'))
+			_err(exc, _('The AD member mode can only be configured on a Primary Directory Node.'))
 		except admember.failedADConnect as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_domain_info.get('DC DNS Name'), 'admember_join: %s' % (exc,)))
 		except admember.domainnameMismatch as exc:

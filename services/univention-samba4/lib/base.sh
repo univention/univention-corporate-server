@@ -57,7 +57,7 @@ extract_binddn_bindpwd_bindpwdfile_dcaccount_from_args() {
 				;;
 		esac
 	done
-	# dc account is empty on master and backup, unless --ask-pass is used
+	# dc account is empty on primary and backup, unless --ask-pass is used
 	test -n "$binddn" && dcaccount=$(ucs_convertDN2UID "$binddn" "$@")
 	test -z "$binddn" && binddn="cn=admin,$ldap_base"
 	test -z "$bindpwdfile" && bindpwdfile="/etc/ldap.secret"
