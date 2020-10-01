@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2020 Univention GmbH
+ * Copyright 2020 Univention GmbH
  *
  * https://www.univention.de/
  *
@@ -26,139 +26,50 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define,require*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
-	"dojo/query",
-	"dojo/dom-class",
-	"dijit/Dialog",
-	"dijit/TitlePane",
-	"umc/widgets/ContainerWidget",
-	"umc/widgets/Button",
-	"umc/widgets/Text"
-], function(declare, lang, array, query, domClass, Dialog, TitlePane, ContainerWidget, Button, Text) {
-	// in order to break circular dependencies
-	// we define dijit/registry as empty object and
-	// require it explicitly
-	var registry = {
-		byNode: function() {}
-	};
-	require(["dijit/registry"], function(_registry) {
-		registry = _registry;
-	});
-
-	return declare("umc.widgets.CookieBanner", [ Dialog ], {
+	"dojo/cookie",
+	"umc/tools",
+	"umc/dialog",
+	"umc/widgets/ConfirmDialog",
+	"umc/i18n!"
+], function(declare, cookie, tools, dialog, ConfirmDialog, _) {
+	return declare("umc.widgets.CookieBanner", [ ConfirmDialog ], {
 		// summary:
-		//		Class that provides a customizable cookie banner dialog.
-		//		(For easier access see dialog.cookieBanner().)
-		// description:
-		//		The cookie banner expects a title, the main message and a handler
-		//		which is called when clicking the confirmation button.
-		// example:
-		// 		This is a simple basic example that demonstrates all provided features.
-		// |	var myBanner = new CookieBanner({
-		// |		title: 'Cookie-Settings',
-		// |		message: 'We are using Cookies on our website. Click on the accept button to use this portal',
-		// |		confirmCallback:  function() {
-		// |			// do something after cookie confirmation
-		// |			// e.g. set default cookies
-		// |		}
-		// |	});
+		//		Display cookie banner
+		'class': 'umcCookieBanner',
+		closable: false,
 
-		// title: String
-		//		The title of the cookie banner window.
-		title: 'Cookie-Banner',
-
-		// message: String
-		//		The cookie text message to be displayed
-		message: 'We are using Cookies on our website. Click the button to use this portal',
-
-		// confirmCallback: Function
-		//		A user specified function without parameters that is called when the cookie
-		//		accept button was clicked and the cookie banner closes.
-		confirmCallback: function() {
-			console.log("cookies confirmed")
-		},
-
-		_container: null,
-
-		_setMessageAttr: function(message) {
-			this.message = message;
-			var childs = this._container.getChildren();
-			if (childs.length > 1) {
-				// a message/widget has been added previously... remove it
-				this._container.removeChild(childs[0]);
-				childs[0].destroyRecursive();
-			}
-
-			// add the new message
-			var widget = new Text({
-				content: message + " [set]",
-				'class': 'umcConfirmDialogText'
-			});
-			this._container.addChild(widget, 0);
-		},
-
-		postMixInProperties: function() {
+		postMixInProperties: function(props) {
 			this.inherited(arguments);
-			this.baseClass += ' umcCookieBanner';
+			this.title = _('Cookie settings');
+			this.message = tools.status('cookieMessage');
+			this.options = [{
+				name: 'accept',
+				label: _('Accept'),
+				'default': true
+			}];
+		},
+
+
+		show: function() {
+			if (!cookie('univentionCookieSettingsAccepted')) {
+				this.inherited(arguments);
+			}
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
-
-			// put the accept button into separate container
-			var buttons = new ContainerWidget({
-				'class': 'umcButtonRow'
+			this.on('confirm', function(response) {
+				this.close();
+				if (response === 'accept') {
+					cookie('univentionCookieSettingsAccepted', 'true');
+				};
 			});
-			var acceptButton = new Button({
-				defaultButton: true,
-				label: "Accept",
-				onClick: lang.hitch(this, function() {
-					// send 'confirm' event
-					this.onConfirm();
-				})
-			});
-
-			buttons.addChild(acceptButton);
-
-			// make sure that the accept button is focused
-			this.own(this.on('focus', function() {
-				acceptButton.focus();
-			}));
-
-			// put the layout together
-			this._container = new ContainerWidget({});
-			this._container.addChild(buttons);
-			this._container.startup();
-
-			// explicitly set 'closable' here, otherwise it does not have any effect
-			// this.set('closable', this.closable);
-
-			// attach layout to dialog
-			this.set('content', this._container);
-		},
-
-		close: function() {
-			// summary:
-			//		Hides the dialog and destroys it after the fade-out animation.
-			this.hide().then(lang.hitch(this, function() {
-				this.destroyRecursive();
-			}));
-		},
-
-		onConfirm: function(/*String*/ choice) {
-			// summary:
-			//		Event that is fired when the user confirms the cookie banner
-			this.confirmCallback()
-		},
-
-		destroy: function() {
-			this.inherited(arguments);
-			this._container.destroyRecursive();
+			this.set('title', _('Cookie settings'));
+			this.set('message', tools.status('cookieMessage'));
 		}
 	});
 });
