@@ -193,7 +193,7 @@ def main():
 			else:
 				utils.fail('Missing operation(s). Expected: {!r}.'.format(operations))
 		if not line.startswith(exp):
-			if operation == 'remove' and line.startswith('{} post_run'.format(test_id)):
+			if line.startswith('{} post_run'.format(test_id)):
 				# probably waited so long for s4c to catch up, that post_run happened,
 				# next line should be "pre_run" and then "remove"
 				line2 = lines.next()
