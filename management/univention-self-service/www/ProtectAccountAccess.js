@@ -186,6 +186,7 @@ define([
 		 * */
 		_getContactInformation: function(force) {
 			this._username.set('disabled', true);
+			this._password.set('disabled', true);
 			this._showContactInformationButton.set('disabled', true);
 
 			var validCredentials = this._username.isValid() && this._password.isValid();
@@ -206,6 +207,7 @@ define([
 			} else {
 				this._showContactInformationButton.set('disabled', false);
 				this._username.set('disabled', false);
+				this._password.set('disabled', false);
 				if (!this._username.isValid()) {
 					this._username._hasBeenBlurred = true;
 					this._username.focus();

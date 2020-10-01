@@ -179,6 +179,8 @@ define([
 					.then(lang.hitch(this, function(data) {
 						var layout = array.map(data.result, function(item) { return item.id; });
 						return tools.umcpCommand('passwordreset/get_user_attributes_values', lang.mixin(this.getCredentials(force), {attributes: layout})).then(lang.hitch(this, function(data2) {
+							this._username.set('disabled', true);
+							this._password.set('disabled', true);
 							this._getUserAttributesButton.hide();
 							this._createUserAttributesStep({ widget_descriptions: data.result, layout: layout, values: data2.result });
 						}));
