@@ -31,10 +31,15 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojo/query",
+	"dojo/dom-class",
+	"dijit/Dialog",
+	"dijit/TitlePane",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/Text"
-], function(declare, lang, Dialog, ContainerWidget, Button, Text) {
+], function(declare, lang, array, query, domClass, Dialog, TitlePane, ContainerWidget, Button, Text) {
 	// in order to break circular dependencies
 	// we define dijit/registry as empty object and
 	// require it explicitly
@@ -65,16 +70,18 @@ define([
 
 		// title: String
 		//		The title of the cookie banner window.
-		title: 'Cookies',
+		title: 'Cookie-Banner',
 
 		// message: String
 		//		The cookie text message to be displayed
-		message: 'We are using Cookies on our website. Click on the accept button to use this portal',
+		message: 'We are using Cookies on our website. Click the button to use this portal',
 
 		// confirmCallback: Function
 		//		A user specified function without parameters that is called when the cookie
 		//		accept button was clicked and the cookie banner closes.
-		confirmCallback: function() {},
+		confirmCallback: function() {
+			console.log("cookies confirmed")
+		},
 
 		_container: null,
 
@@ -88,13 +95,12 @@ define([
 			}
 
 			// add the new message
-			if (typeof this.message == "string") {
-				var widget = new Text({
-					content: message + " (message set)",
-					'class': 'umcConfirmDialogText'
-				});
-				this._container.addChild(widget, 0);
-			}
+			var widget = new Text({
+				content: message + " [set]",
+				'class': 'umcConfirmDialogText'
+			});
+			this._container.addChild(widget, 0);
+			
 		},
 
 		postMixInProperties: function() {
@@ -110,28 +116,20 @@ define([
 				'class': 'umcButtonRow'
 			});
 			var acceptButton = new Button({
-				defaultButton: true
+				defaultButton: true,
+				label: "Accept",
+				onClick: lang.hitch(this, function() {
+					// send 'confirm' event
+					this.onConfirm();
+				})
 			});
 
 			buttons.addChild(acceptButton);
 
-			// onClick: lang.hitch(this, function() {
-			// 	// the response is either a custom response or the choice (button) index
-			// 	var response = ichoice.name || idx;
-
-			// 	// send 'confirm' event
-			// 	this.onConfirm(response);
-
-			// 	// call custom callback if specified
-			// 	if (ichoice.callback) {
-			// 		ichoice.callback(response);
-			// 	}
-			// })
-
 			// make sure that the accept button is focused
-			// this.own(this.on('focus', function() {
-			// 	acceptButton.focus();
-			// }));
+			this.own(this.on('focus', function() {
+				acceptButton.focus();
+			}));
 
 			// put the layout together
 			this._container = new ContainerWidget({});
@@ -155,11 +153,7 @@ define([
 
 		onConfirm: function(/*String*/ choice) {
 			// summary:
-			//		Event that is fired when the user confirms the dialog
-			//		either with true or false.
-			// choice:
-			//		The key of option that has been chosen.
-			console.log(choice);
+			//		Event that is fired when the user confirms the cookie banner
 			this.confirmCallback()
 		},
 
