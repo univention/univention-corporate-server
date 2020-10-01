@@ -71,6 +71,7 @@ Variables: umc/server/upload/max
 Variables: license/base
 Variables: uuid/system
 Variables: server/role
+Variables: umc/cookie-banner/.*
 Variables: umc/self-service/profiledata/enabled
 Variables: umc/self-service/allow-authenticated-use
 Variables: umc/self-service/account-registration/frontend/enabled

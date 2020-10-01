@@ -118,7 +118,11 @@ define([
 			sessionLastRequest: new Date(0),
 			autoStartModule: null,
 			autoStartFlavor: null,
-			numOfTabs: 0
+			numOfTabs: 0,
+			cookieBanner: {
+				show: false,
+			},
+			cookieBannerDefault: _('We use cookies in order to provide you with certain functions and to be able to guarantee an unrestricted service. By clicking on "Accept", you consent to the collection of information on this portal.')
 		},
 
 		loadMetaData: function() {
