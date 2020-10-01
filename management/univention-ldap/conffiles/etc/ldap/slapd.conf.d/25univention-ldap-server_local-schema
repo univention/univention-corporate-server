@@ -1,51 +1,57 @@
 @!@
-
-import os
+import os.path
 import re
-import subprocess
+from univention.config_registry.handler import run_filter
 
 
-def getRegisteredFiles():
+def get_registered_files():
 	files = []
-	registeredDirectory = '/etc/univention/templates/info/'
-	for f in os.listdir(registeredDirectory):
-		for line in open(os.path.join(registeredDirectory, f), 'r').readlines():
+	registered_directory = '/etc/univention/templates/info/'
+	for f in os.listdir(registered_directory):
+		for line in open(os.path.join(registered_directory, f), 'r').readlines():
 			if line.startswith('File: '):
-				files.append(line.replace('File: ', '').strip())
+				fn = line.replace('File: ', '').strip()
+				if fn.startswith('etc/ldap/slapd.conf.d'):
+					files.append(fn)
 			elif line.startswith('Subfile: '):
-				files.append(line.replace('Subfile: ', '').strip())
+				fn = line.replace('Subfile: ', '').strip()
+				if fn.startswith('etc/ldap/slapd.conf.d'):
+					files.append(fn)
 
 	return files
 
 
-def isSchemaFileIncluded(schemaFile):
-	directoryPath = '/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
-
-	registeredFiles = getRegisteredFiles()
-
-	for f in os.listdir(directoryPath):
+def ucr_filter_files(registered_files):
+	directory_path = '/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
+	checklist = []
+	for f in os.listdir(directory_path):
 		if f == '25univention-ldap-server_local-schema' or f.startswith('.'):
 			continue
 
 		# check if file is registered?
-		if not 'etc/ldap/slapd.conf.d/%s' % f in registeredFiles:
+		if 'etc/ldap/slapd.conf.d/%s' % (f,) not in registered_files:
 			continue
 
-		p1 = subprocess.Popen(["cat", "/etc/univention/templates/files/etc/ldap/slapd.conf.d/%s" % f], stdout=subprocess.PIPE)
-		p2 = subprocess.Popen(["ucr", "filter"], stdin=p1.stdout, stdout=subprocess.PIPE)
-		p1.stdout.close()
-		output = p2.communicate()[0].decode('utf-8', 'replace')
-		pattern = re.compile('include.*%s' % schemaFile)
-		for line in output.split('\n'):
-			if line and pattern.match(line):
-				return True
+		checklist.append(f)
 
-	return False
+	output = ""
+	if checklist:
+		for fn in checklist:
+			with open('/etc/univention/templates/files/etc/ldap/slapd.conf.d/%s' % (fn,), 'r') as f:
+				output += run_filter(f.read(), configRegistry).decode('UTF-8')
+	return output
+
+
+def is_schema_file_included(schema_file, ucr_filtered_output):
+	return re.search(r'\ninclude.*%s\n' % (schema_file,), ucr_filtered_output) is not None
 
 
 if configRegistry.get('ldap/server/type', 'slave') == 'master':
 	if os.path.exists('/var/lib/univention-ldap/local-schema'):
-		for schemaFile in sorted(os.listdir('/var/lib/univention-ldap/local-schema')):
-			if not isSchemaFileIncluded(schemaFile):
-				print('include         /var/lib/univention-ldap/local-schema/%s' % schemaFile)
+		registered_files = get_registered_files()
+		ucr_filtered_output = ucr_filter_files(registered_files)
+
+		for schema_file in sorted(os.listdir('/var/lib/univention-ldap/local-schema')):
+			if not is_schema_file_included(schema_file, ucr_filtered_output):
+				print('include         /var/lib/univention-ldap/local-schema/%s' % (schema_file,))
 @!@

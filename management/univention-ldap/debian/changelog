@@ -1,3 +1,9 @@
+univention-ldap (16.0.6-1) unstable; urgency=medium
+
+  * Bug #34003: fix performance of 25univention-ldap-server_local-schema
+
+ -- Florian Best <best@univention.de>  Thu, 11 Feb 2021 10:41:09 +0100
+
 univention-ldap (16.0.5-1) unstable; urgency=medium
 
   * Bug #52693: added ldap/pw-bcrypt for bcrypt module
