@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-self-service
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The Self-Service modules "Your Password" and partly "Protect account"
+   can now be used while logged in (e.g via SAML) without re-entering
+   credentials. The behavior is only activated on new installations and
+   can be enabled by setting the UCR variable
+   "umc/self-service/allow-authenticated-use" to true.
+   When enabling the behavior all UCR variables for the Self-Service as well
+   as plugins and adjusted E-Mail/SMS Texts which are set on the DC Master
+   must be set identically on the Self-Service System.
+bug: [51607]
