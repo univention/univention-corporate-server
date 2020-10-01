@@ -46,6 +46,8 @@ define([
 
 		widgetPages: null,
 
+		ucr: null,
+
 		_getPageWidgets: function(layout) {
 			var widgets = [];
 			array.forEach(layout, function(row) {
