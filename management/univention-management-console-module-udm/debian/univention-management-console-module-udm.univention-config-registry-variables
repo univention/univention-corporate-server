@@ -63,3 +63,9 @@ Description[de]=Definiert, ob automatisch nach Teilstrings gesucht wird.
 Description[en]=Defines if it is searched automatically for substrings.
 Type=bool
 Categories=management-umc
+
+[directory/manager/web/modules/users/user/wizard/property/invite/default]
+Description[de]=Definiert, ob die CheckBox "Benutzer per E-Mail einladen" standardmäßig aktiviert ist.
+Description[en]=Defines if the check box "Invite user via e-mail" is activated by default.
+Type=bool
+Categories=management-umc

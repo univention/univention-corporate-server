@@ -81,6 +81,8 @@ define([
 
 		autofocus: false, // interferes with Wizard.autoFocus
 
+		ucr: null,
+
 		_notificationText: null,
 
 		postMixInProperties: function() {
@@ -218,7 +220,8 @@ define([
 							template: detailsValues.template,
 							preWizardAvailable: this.canContinue.isRejected(),
 							properties: detailsValues.properties,
-							autoHeight: true
+							autoHeight: true,
+							ucr: this.ucr
 						});
 						if (this.moduleFlavor === 'users/user') {
 							new UsernameMaxLengthChecker({textBoxWidget: createWizard.getWidget('username')});

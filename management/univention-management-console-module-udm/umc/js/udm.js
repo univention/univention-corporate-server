@@ -1895,7 +1895,8 @@ define([
 				moduleCache: cache.get(this.moduleFlavor),
 				selectedContainer: selectedContainer,
 				selectedSuperordinate: superordinate,
-				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null
+				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
+				ucr: this._ucr
 			}, args.args));
 			this._newObjectDialog.on('FirstPageFinished', args.callback);
 			this._newObjectDialog.on('Done', lang.hitch(this, function() {

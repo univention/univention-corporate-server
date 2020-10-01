@@ -32,9 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"umc/tools",
 	"umc/modules/udm/wizards/CreateWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, CreateWizard, _) {
+], function(declare, lang, array, tools, CreateWizard, _) {
 
 	return declare("umc.modules.udm.wizards.users.user", [ CreateWizard ], {
 		widgetPages: [
@@ -63,6 +64,11 @@ define([
 				node = widget.domNode.parentNode.parentNode.parentNode;
 				node.classList.add('wizardInvitationBox');
 			}
+			var inviteWidget = this.getWidget('page1', '_invite');
+			if (inviteWidget) {
+				// FIXME: the initial value setting does not trigger onChange(), therefore we set it here
+				inviteWidget.set('value', tools.isTrue(this.ucr['directory/manager/web/modules/users/user/wizard/property/invite/default'] || 'false'));
+			}
 
 			widget = this.getWidget('page1', 'password');
 			node = widget.domNode.parentNode.parentNode.parentNode;
@@ -86,12 +92,13 @@ define([
 					required: false,
 					type: 'CheckBox'
 				};
-			} else  if (widgetName === '_invite') {
+			} else if (widgetName === '_invite') {
 				return {
 					name: widgetName,
 					size: 'Two',
 					label: _('Invite user via e-mail. Password will be set by the user'),
 					required: false,
+					// FIXME: value: tools.isTrue(this.ucr['directory/manager/web/modules/users/user/wizard/property/invite/default'] || 'false'),
 					onChange: lang.hitch(this, function(value) {
 						var pwdChange = this.getWidget('page1', 'pwdChangeNextLogin');
 						pwdChange.set('value', value);
