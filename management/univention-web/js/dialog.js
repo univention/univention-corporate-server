@@ -391,9 +391,9 @@ define([
 			// description:
 			//		This function provides a shortcut for CookieBanner.
 			//		The user needs to confirm the banner by clicking the accept button.
-			//		When this button is pressed, the dialog is automatically closed
-			//		an the registered callback method is called. The function returns
-			//		a Deferred object.
+			//		When this button is pressed, the dialog will be closed automatically
+			//		and the registered callback method is called. The function returns a
+			//		Deferred object. There can only be one banner instance at a time.
 			// title:
 			//		The title for the cookie banner.
 			// message:
@@ -427,16 +427,22 @@ define([
 			// |	    'Do you agree in our terms and conditions?',
 			// |		lang.hitch(mySessionHandler, 'foo')
 			// |	);
-	
+
+			var defaultTitle = "Cookie-Einstellungen";
+			var defaultMessage = 'Wir verwenden Cookies, um Ihnen bestimmte Funktionen bereitzustellen und einen uneingeschränkten Service gewährleisten zu können. Mit einem Klick auf "Akzeptieren" willigen Sie in die Erhebung von Informationen auf diesem Portal ein. Sie können der Verwendung von Cookies jederzeit widersprechen.';
+			var defaultCallback = function(){
+				console.log("setting cookies after confirmation")
+			}
+			
+			var deferred = new Deferred();
 			// create cookie banner
 			var cookieBanner = new CookieBanner({
-				title: title || _('Cookie Banner'),
-				message: message || _('Cookie Message'),
-				confirmCallback: confirmCallback
+				title: title || defaultTitle,
+				message: message || defaultMessage,
+				confirmCallback: confirmCallback || defaultCallback
 			});
 
 			// connect to 'confirm' event to close the banner
-			var deferred = new Deferred();
 			cookieBanner.on('confirm', function(response) {
 				cookieBanner.close();
 				deferred.resolve(response);
@@ -446,7 +452,7 @@ define([
 			cookieBanner.show();
 
 			deferred.dialog = cookieBanner;
-			return deferred;			
+			return deferred;
 		},
 
 		templateDialog: function( /*String*/ templateModule, /*String*/ templateFile, /*String*/ keys, /* String? */ title, /* String|Object[]? */ button ) {
