@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The users/user wizard can now be configured to enable the checkbox
+   "Invite user via e-mail" by default via the UCR variable
+   directory/manager/web/modules/users/user/wizard/property/invite/default.
+bug: [52046]
