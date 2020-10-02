@@ -70,8 +70,8 @@ def test_configfile_python_compatibility(ucr_config_file, python_versions):
 		sys.executable = fd.name
 		run_filter(template, ucr)
 
-		with open('/tmp/py{0}.out'.format(pyversion)) as x:
-			compiled, _, rc = x.read().rstrip('\n').rpartition('\n')
+		with open('/tmp/py{0}.out'.format(pyversion), 'rb') as x:
+			compiled, _, rc = x.read().decode('ISO8859-1').rstrip('\n').rpartition('\n')
 			result[pyversion] = {
 				'success': rc == '0',
 				'compiled': compiled,
