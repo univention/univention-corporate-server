@@ -65,7 +65,6 @@ from six.moves import http_client as httplib
 import socket
 from univention.config_registry import ConfigRegistry
 from six.moves import urllib_request as urllib2, urllib_error
-from six.moves.urllib_parse import urljoin
 import json
 import subprocess
 import tempfile
@@ -74,13 +73,14 @@ import logging
 import atexit
 import functools
 import six
+import base64
 try:
     from typing import Any, AnyStr, Dict, Generator, Iterable, Iterator, List, Optional, Sequence, Set, Tuple, Type, Union  # noqa F401
 except ImportError:
     pass
 
 if six.PY2:
-	from new import instancemethod
+    from new import instancemethod
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -678,6 +678,7 @@ class UCSHttpServer(_UCSServer):
         if self.baseurl.username:
             UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib2.Request(uri)
+
         def get_host():
             return req.host if six.PY3 else req.get_host()
         if get_host() in self.failed_hosts:
@@ -703,11 +704,11 @@ class UCSHttpServer(_UCSServer):
                 try:
                     auth = req.unredirected_hdrs['Authorization']
                     scheme, credentials = auth.split(' ', 1)
-                    if scheme != 'Basic':
+                    if scheme.lower() != 'basic':
                         raise ValueError('Only "Basic" authorization is supported')
                     try:
-                        basic = credentials.decode('base64')
-                    except Exception as ex:
+                        basic = base64.b64decode(credentials).decode('ISO8859-1')
+                    except Exception:
                         raise ValueError('Invalid base64')
                     self.baseurl.username, self.baseurl.password = basic.split(':', 1)
                 except KeyError:
@@ -743,7 +744,7 @@ class UCSHttpServer(_UCSServer):
             raise DownloadError(uri, res.code)
         except urllib_error.URLError as e:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
-            if isinstance(e.reason, basestring):
+            if isinstance(e.reason, six.string_types):
                 reason = e.reason
             elif isinstance(e.reason, socket.timeout):
                 raise ConfigurationError(uri, 'timeout in network connection')
@@ -1453,7 +1454,7 @@ class UniventionUpdater(object):
         MAX_MINOR = 99
         for ver.major in range(start.major, end.major + 1):
             for ver.minor in range(start.minor if ver.major == start.major else 0, (end.minor if ver.major == end.major else MAX_MINOR) + 1):
-                if isinstance(ver.patch, basestring):  # patchlevel not used
+                if isinstance(ver.patch, six.string_types):  # patchlevel not used
                     failed = (yield ver)
                 else:
                     for ver.patchlevel in range(start.patchlevel if ver.mm == start.mm else ver.patchlevel_reset, (end.patchlevel if ver.mm == end.mm else ver.patchlevel_max) + 1):
@@ -1767,7 +1768,7 @@ class UniventionUpdater(object):
         # Sanitize versions: UCS_Version() and Major.Minor
         versions_mmp = set()  # type: Set[UCS_Version]
         for version in versions:
-            if isinstance(version, basestring):
+            if isinstance(version, six.string_types):
                 version = UCS_Version(version if '-' in version else '%s-0' % version)
             elif isinstance(version, UCS_Version):
                 version = copy.copy(version)

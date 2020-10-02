@@ -4,6 +4,7 @@
 # pylint: disable-msg=C0301,W0212,C0103,R0904
 import unittest
 from tempfile import NamedTemporaryFile
+import six
 from mockups import (
     U, MAJOR, MINOR, PATCH, ARCH, ERRAT, PART,
     MockConfigRegistry, MockUCSHttpServer, MockPopen,
@@ -211,7 +212,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_ucs_version(self):
         """Test current version string."""
         ver = self.u.get_ucs_version()
-        self.assertTrue(isinstance(ver, basestring))
+        self.assertTrue(isinstance(ver, six.string_types))
         self.assertEqual('3.0-1', ver)
 
     def test_get_components(self):

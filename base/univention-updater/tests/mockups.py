@@ -11,6 +11,7 @@ import httplib
 import json
 from itertools import groupby
 from operator import itemgetter
+import six
 import univention
 univention.__path__.insert(0, os.path.abspath('modules/univention'))  # type: ignore
 import univention.updater.tools as U  # noqa: E402
@@ -124,7 +125,7 @@ class MockPopen(object):
         if shell:
             MockPopen.mock_commands.append(cmd)
         else:
-            if isinstance(cmd, basestring):
+            if isinstance(cmd, six.string_types):
                 cmd = (cmd,)
             try:
                 fd_script = open(cmd[0], 'r')
