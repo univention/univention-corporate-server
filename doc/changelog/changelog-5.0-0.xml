@@ -32,7 +32,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The "base system" is no longer a valid system role,
-				so the corresponding meta package "univention-basesystem" has
+				so the corresponding meta package <package>univention-basesystem</package> has
 				been removed. (<u:bug>52137</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
