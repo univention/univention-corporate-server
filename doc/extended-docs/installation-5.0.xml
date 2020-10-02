@@ -892,7 +892,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							<entry><varname>server/role</varname></entry>
 							<entry>
 								The system role.
-								You may choose from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backup</literal>, <literal>domaincontroller_slave</literal> and <literal>memberserver</literal>.
+								You may choose from <literal>domaincontroller_master</literal> (for &ucsPrimaryDN;), <literal>domaincontroller_backup</literal> (for &ucsBackupDN;), <literal>domaincontroller_slave</literal> (for &ucsReplicaDN;) and <literal>memberserver</literal> (for &ucsManagedNode;).
 								The properties of the system roles are described in the domain services chapter of the <biblioref linkend="ucs-manual"/>.
 							</entry>
 						</row>
