@@ -169,7 +169,7 @@
 	</para>
 
 	<para>
-	  Der Groupware-Server wird als &ucsReplicaDN;-System in der Amazon EC2-Cloud betrieben. Dies erlaubt
+	  Der Groupware-Server wird als &ucsReplicaDN; in der Amazon EC2-Cloud betrieben. Dies erlaubt
 	  eine flexible Skalierung des Groupwaresystems auf wachsende Leistungs- und
 	  Speicherplatzanforderungen. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
 	</para>

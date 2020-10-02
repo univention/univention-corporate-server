@@ -107,7 +107,7 @@
 
 	<para>
 	  Der &ucsPrimaryDN; und der &ucsBackupDN; stehen in der Firmenzentrale.
-	  An den Standorten finden sich weitere &ucsReplicaDN;-Systeme,
+	  An den Standorten finden sich weitere &ucsReplicaDN;s,
 	  die Windows-Domänendienste, Druckdienste und eine Softwareverteilung
 	  bereitstellen.
 	</para>
@@ -338,7 +338,7 @@
 	</para>
 
 	<para>
-	  Die Installation wird als &ucsReplicaDN;-System in der Amazon EC2-Cloud
+	  Die Installation wird als &ucsReplicaDN; in der Amazon EC2-Cloud
 	  betrieben. Dies stellt eine hohe Erreichbarkeit sicher und
 	  erlaubt eine flexible Skalierung auf wachsende Leistungs- und
 	  Speicherplatzanforderungen.
