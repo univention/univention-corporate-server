@@ -29,6 +29,12 @@ univention-ad-connector (14.0.0-1) unstable; urgency=medium
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Sep 2020 15:41:17 +0200
 
+univention-ad-connector (13.0.0-53) unstable; urgency=medium
+
+  * Bug #51501: reconnect if transport connection is disconnected
+
+ -- Christian Castens <castens@univention.de>  Tue, 29 Sep 2020 18:17:08 +0200
+
 univention-ad-connector (13.0.0-51) unstable; urgency=medium
 
   * Bug #51673: support ldaps in univention-adsearch/list-rejected
