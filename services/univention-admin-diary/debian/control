@@ -73,6 +73,7 @@ Package: univention-management-console-module-admindiary
 Architecture: all
 Depends:
  python-univention-admin-diary-backend (= ${binary:Version}),
+ python3-univention-admin-diary-backend (= ${binary:Version}),
  univention-management-console-server (>= 11.0.4-37),
  ${python3:Depends},
  ${python:Depends},
