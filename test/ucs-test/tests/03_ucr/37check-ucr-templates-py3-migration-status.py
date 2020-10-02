@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svv
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svv --tb=native
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
