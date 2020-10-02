@@ -41,7 +41,7 @@ name = 'univention-admin-diary-backend'
 description = 'Manage admin/diary/backend variable'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']
-service_name = "Admin Diary Backend"
+service_name = b"Admin Diary Backend"
 
 
 def handler(dn, new, old):
@@ -52,31 +52,31 @@ def handler(dn, new, old):
 		old_has_service = service_name in old.get('univentionService', [])
 		if new_has_service and not old_has_service:
 			try:
-				fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
+				fqdn = b'%s.%s' % (new['cn'][0], new['associatedDomain'][0])
 			except (KeyError, IndexError):
 				return
 
 			ucr = ConfigRegistry()
 			ucr.load()
-			old_ucr_value = ucr.get('admin/diary/backend', '')
+			old_ucr_value = ucr.get('admin/diary/backend', u'')
 			fqdn_set = set(old_ucr_value.split())
-			fqdn_set.add(fqdn)
-			new_ucr_value = ' '.join(fqdn_set)
-			handler_set(['admin/diary/backend=%s' % (new_ucr_value,)])
+			fqdn_set.add(fqdn.decode('utf-8'))
+			new_ucr_value = u' '.join(fqdn_set)
+			handler_set([u'admin/diary/backend=%s' % (new_ucr_value,)])
 			change = True
 		elif old_has_service:
 			try:
-				fqdn = '%s.%s' % (old['cn'][0], old['associatedDomain'][0])
+				fqdn = b'%s.%s' % (old['cn'][0], old['associatedDomain'][0])
 			except (KeyError, IndexError):
 				return
 
 			ucr = ConfigRegistry()
 			ucr.load()
-			old_ucr_value = ucr.get('admin/diary/backend', '')
+			old_ucr_value = ucr.get('admin/diary/backend', u'')
 			fqdn_set = set(old_ucr_value.split())
-			fqdn_set.discard(fqdn)
-			new_ucr_value = ' '.join(fqdn_set)
-			handler_set(['admin/diary/backend=%s' % (new_ucr_value,)])
+			fqdn_set.discard(fqdn.decode('UTF-8'))
+			new_ucr_value = u' '.join(fqdn_set)
+			handler_set([u'admin/diary/backend=%s' % (new_ucr_value,)])
 			change = True
 
 		if change:
