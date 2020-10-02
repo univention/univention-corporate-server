@@ -1,3 +1,9 @@
+univention-portal (4.0.1-7) unstable; urgency=medium
+
+  * Bug #52125: add portals/* encoder for python3
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 02 Oct 2020 15:10:52 +0200
+
 univention-portal (4.0.1-6) unstable; urgency=medium
 
   * Bug #52125: Catch uexceptions.ldapError when refreshing cache (could be
