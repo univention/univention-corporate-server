@@ -82,7 +82,7 @@
 	<itemizedlist>
         <listitem><simpara>
                 The system is to be the first system in a new UCS domain
-                and it is implicitly configured with the system role &ucsPrimaryDN;
+                and it is implicitly configured with the system role &ucsPrimaryDN;.
         </simpara></listitem>
         <listitem><simpara>
                 The system can be joined into an existing Active Directory
