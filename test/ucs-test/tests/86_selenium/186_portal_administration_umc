@@ -52,7 +52,7 @@ class UMCTester(object):
 		self.portals = selenium_udm.Portals(self.selenium)
 		self.selenium.open_module('Portal')
 		self.portal_name = self.portals.add(hostname=self.ucr.get('hostname'))
-		portal_dname = list(self.udm.get('portals/portal').search('name={}'.format(self.portal_name)))[0].props.displayName[0][1]  # FIXME displayName is not converted to dict
+		portal_dname = list(self.udm.get('portals/portal').search('name={}'.format(self.portal_name)))[0].props.displayName['en_US']
 		logger.info('Visiting portal')
 		self.selenium.driver.get(self.selenium.base_url)
 		try:
