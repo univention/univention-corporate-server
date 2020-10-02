@@ -279,7 +279,7 @@ EOF
             <title>Kerberos integration</title>
             <para>
 			  Every UCS domain provides a Kerberos domain. Since Kerberos relies on DNS, the
-			  Ubuntu client should use a UCS domain controller as its DNS server. The following
+			  Ubuntu client should use a UCS Directory Node (&ucsPrimaryDN;, &ucsBackupDN; or &ucsReplicaDN;) as its DNS server. The following
 			  steps provide an example configuration for Kerberos:
             </para>
             <programlisting language="sh"><![CDATA[
@@ -388,7 +388,7 @@ EOF
         <section id="ext-dom-time">
 		  <title>Configuration of the name resolution</title>
 		  <para>
-			The Unix system should use a name server from the UCS domain: All UCS domain controllers
+			The Unix system should use a name server from the UCS domain: All UCS Directory Nodes
 			(i.e., &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN;) operate a DNS server. One or more of
 			these UCS system should be entered in the <filename>/etc/resolv.conf</filename>, e.g.:
 		  </para>
@@ -402,7 +402,7 @@ nameserver  192.0.2.9
         <section id="unix:time">
 		  <title>Configuration of the time server</title>
 		  <para>
-			All UCS domain controllers (i.e., &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN;) operate a NTP
+			All UCS Directory Nodes (i.e., &ucsPrimaryDN;, &ucsBackupDN; and &ucsReplicaDN;) operate a NTP
 			server.
 		  </para>
 
@@ -447,7 +447,7 @@ server backup.example.com
 
 			  <listitem><simpara>
 				The LDAP server, ports and authentication credentials to be used. The fully
-				qualified domain names of one or more UCS domain controllers should be entered
+				qualified domain names of one or more UCS Directory Nodes should be entered
 				here. In the default setting, UCS LDAP servers only allow authenticated LDAP access.
 			  </simpara></listitem>
 
@@ -778,7 +778,7 @@ tar -xvf ucs4-syncrepl-proxy-setup.tar.bz2
 		</para>
 
 		<para>
-		  The <filename>UCS_Primary_Directory_Node</filename> subdirectory contains two &ucsUCR; subfile
+		  The subdirectory <filename>UCS_Primary_Directory_Node</filename> contains two &ucsUCR; subfile
 		  templates for the LDAP server configuration file
 		  (<filename>/etc/ldap/slapd.conf</filename>). Subfiles are a mechanism in &ucsUCR; which
 		  can be used to generate a configuration file from several individual templates. More
