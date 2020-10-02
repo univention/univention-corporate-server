@@ -27,8 +27,8 @@
 				The legacy terms for the UCS server roles &ucsMaster;, &ucsBackup;, &ucsSlave; and &ucsMember;
 				have been replaced by the new terms &ucsPrimaryDN; , &ucsBackupDN; &ucsReplicaDN; and &ucsManagedNode;,
 				which more clearly convey their inherent purpose as providing directory services or not.
-				The Microsoft terms <emphasis>domain controller</emphasis>, <emphasis>DC</emphasis> and <emphasis>memberserver</emphasis>
-				are still applicable in case Microsoft compatible servcies are provided by Samba on the repective Node (<u:bug>42374</u:bug>).
+				The Microsoft terms <emphasis>domain controller</emphasis>, <emphasis>DC</emphasis> and <emphasis>member server</emphasis>
+				are still applicable in case Microsoft compatible services are provided by Samba on the respective Node (<u:bug>42374</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The "base system" is no longer a valid system role,
