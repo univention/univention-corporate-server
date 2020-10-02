@@ -384,6 +384,11 @@ install_with_unmaintained () {
 	local rv=0
 	wait_for_repo_server || rv=$?
 	ucr set repository/online=true repository/online/unmaintained=yes
+	# rebuild sources list on network error
+	if grep -q "An error occurred during the repository check" /etc/apt/sources.list.d/15_ucs-online-version.list; then
+		sleep 60
+		ucr set repository/online=true repository/online/unmaintained=yes
+	fi
 	cat /etc/apt/sources.list.d/15_ucs-online-version.list
 	univention-install --yes "$@" || rv=$?
 	ucr set repository/online/unmaintained=no
