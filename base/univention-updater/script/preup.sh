@@ -74,6 +74,11 @@ have () {
 	command -v "$1" >/dev/null 2>&1
 }
 
+die () {
+	echo "$*" >&2
+	exit 1
+}
+
 ###########################################################################
 # RELEASE NOTES SECTION (Bug #19584)
 # Please update URL to release notes and changelog on every release update
@@ -101,6 +106,16 @@ then
 fi
 
 echo ""
+
+case "${server_role:=}" in
+	domaincontroller_master) ;;
+	domaincontroller_backup) ;;
+	domaincontroller_slave) ;;
+	memberserver) ;;
+	'') ;;  # unconfigured
+	basesystem) die "The server role '$server_role' is not supported anymore with UCS-5!" ;;
+	*) die "The server role '$server_role' is not supported!" ;;
+esac
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
@@ -277,10 +292,8 @@ fail_if_role_package_will_be_removed () {
 		domaincontroller_backup) role_package="univention-server-backup" ;;
 		domaincontroller_slave) role_package="univention-server-slave" ;;
 		memberserver) role_package="univention-server-member" ;;
-		basesystem) role_package="univention-basesystem" ;;
+		*) return ;;
 	esac
-
-	test -z "$role_package" && return
 
 	#echo "Executing: LC_ALL=C $update_commands_distupgrade_simulate | grep -q "^Remv $role_package""  >&3 2>&3
 	if LC_ALL=C ${update_commands_distupgrade_simulate:-false} 2>&1 | grep -q "^Remv $role_package"
@@ -491,9 +504,9 @@ then
 	exit 1
 fi
 
-if [ -n "$server_role" ] && [ "$server_role" != "basesystem" ] && [ -n "$ldap_base" ] && [ -n "$ldap_hostdn" ]
+if [ -f /var/univention-join/joined ]
 then
-	ldapsearch -x -D "$ldap_hostdn" -w "$(< /etc/machine.secret)" -b "$ldap_base" -s base &>/dev/null
+	ldapsearch -x -D "${ldap_hostdn:?}" -y /etc/machine.secret -b "${ldap_base:?}" -s base &>/dev/null
 	if [ $? -eq 49 ]
 	then
 		echo "ERROR: A LDAP connection to the configured LDAP servers with the machine"
@@ -513,7 +526,6 @@ check_master_version ()
 	[ -f /var/univention-join/joined ] || return
 	case "$server_role" in
 	domaincontroller_master) return ;;
-	basesystem) return ;;
 	esac
 
 	local master_version master_patchlevel
