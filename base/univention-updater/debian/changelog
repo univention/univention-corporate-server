@@ -1,3 +1,9 @@
+univention-updater (15.0.1-4) unstable; urgency=low
+
+  * Bug #40027: Get Primary version from LDAP
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 03 Oct 2020 10:35:33 +0200
+
 univention-updater (15.0.1-3) unstable; urgency=low
 
   * Bug #51588: Fix apt-mirror clean

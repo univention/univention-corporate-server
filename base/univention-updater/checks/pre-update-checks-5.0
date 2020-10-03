@@ -203,7 +203,7 @@ update_check_package_status () {
 
 # check for Primary Directory Node UCS version
 update_check_master_version () {
-	local var="update$VERSION/ignore_version"
+	local master_version ATTR=univentionOperatingSystemVersion var="update$VERSION/ignore_version"
 	ignore_check "$var" && return 100
 	[ -f /var/univention-join/joined ] || return 0
 
@@ -212,15 +212,14 @@ update_check_master_version () {
 	basesystem) return 0 ;;
 	esac
 
-	master_version="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/version 2>/dev/null)" 1>&2
-	master_patchlevel="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" 1>&2
-	dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}" || return 0
+	master_version="$(univention-ldapsearch -LLL '(univentionServerRole=master)' "$ATTR" | sed -ne "s/$ATTR: //p;T;q")"
+	dpkg --compare-versions "$master_version" le "${version_version}-${version_patchlevel}" || return 0
 
-	echo "	Your Primary Directory Node is still on version $master_version-$master_patchlevel."
+	echo "	Your Primary Directory Node is still on version $master_version."
 	echo "	It is strongly recommended that the Primary Directory Node is"
 	echo "	always the first system to be updated during a release update."
 	echo "	This check can be skipped by setting the UCR"
-	echo "	variable $var to yes."
+	echo "	variable '$var' to 'yes'."
 	return 1
 }
 

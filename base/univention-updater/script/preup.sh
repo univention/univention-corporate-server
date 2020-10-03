@@ -521,29 +521,35 @@ then
 fi
 
 # check for Primary Directory Node UCS version
-check_master_version ()
-{
+check_master_version () {
+	local master_version ATTR=univentionOperatingSystemVersion UCRV=update50/ignore_version
+
 	[ -f /var/univention-join/joined ] || return
 	case "$server_role" in
 	domaincontroller_master) return ;;
 	esac
 
-	local master_version master_patchlevel
-	master_version="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/version 2>/dev/null)" >&3 2>&3
-	master_patchlevel="$(univention-ssh /etc/machine.secret --no-split "${hostname}\$@$ldap_master" /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
-	dpkg --compare-versions "${master_version}-${master_patchlevel}" le "${version_version}-${version_patchlevel}" || return
+	master_version="$(univention-ldapsearch -LLL '(univentionServerRole=master)' "$ATTR" | sed -ne "s/$ATTR: //p;T;q")"
 
-				echo "WARNING: Your Primary Directory Node is still on version $master_version-$master_patchlevel."
-				echo "         It is strongly recommended that the Primary Directory Node is"
-				echo "         always the first system to be updated during a release update."
+	if [ -n "$master_version" ]
+	then
+		dpkg --compare-versions "$master_version" le "${version_version:?}-${version_patchlevel:?}" || return
 
-				if is_ucr_true update50/ignore_version; then
-					echo "WARNING: update50/ignore_version is set to true. Skipped as requested."
-				else
-					echo "This check can be skipped by setting the UCR"
-					echo "variable update50/ignore_version to yes."
-					exit 1
-				fi
+		echo "WARNING: Your Primary Directory Node is still on version ${master_version}."
+		echo "         It is strongly recommended that the Primary Directory Node is"
+		echo "         always the first system to be updated during a release update."
+	else
+		echo "ERROR: Failed to determine UCS version of Primary Directory Node."
+	fi
+
+	is_ucr_true "$UCRV" && {
+		echo "WARNING: '$UCRV' is set to true. Skipped as requested."
+		return
+	}
+
+	echo "This check can be skipped by setting the UCR"
+	echo "variable '$UCRV' to 'yes'."
+	exit 1
 }
 check_master_version
 

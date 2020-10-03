@@ -290,6 +290,9 @@
 				<listitem><simpara>
 					The Updater module now links directly to the pending erratum updates (<u:bug>41646</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The <filename>preup.sh</filename> script executed before a system upgrade now fetches the version of the &ucsPrimaryDN; from LDAP instead of using <command>ssh</command> (<u:bug>40027</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
