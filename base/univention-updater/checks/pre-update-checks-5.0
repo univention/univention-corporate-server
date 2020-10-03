@@ -160,7 +160,6 @@ update_check_valid_machine_credentials () {
 update_check_ldap_connection () {
 	case "$server_role" in
 	'') return 0 ;;
-	basesystem) return 0 ;;
 	esac
 	[ -n "$ldap_base" ] || return 0
 	[ -n "$ldap_hostdn" ] || return 0
@@ -209,7 +208,6 @@ update_check_master_version () {
 
 	case "$server_role" in
 	domaincontroller_master) return 0 ;;
-	basesystem) return 0 ;;
 	esac
 
 	master_version="$(univention-ldapsearch -LLL '(univentionServerRole=master)' "$ATTR" | sed -ne "s/$ATTR: //p;T;q")"

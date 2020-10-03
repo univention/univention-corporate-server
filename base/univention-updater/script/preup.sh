@@ -37,6 +37,7 @@ echo "Running preup.sh script" >&3
 date >&3
 
 eval "$(univention-config-registry shell)" >&3 2>&3
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh || exit $?
 
 conffile_is_unmodified () {
@@ -48,7 +49,7 @@ conffile_is_unmodified () {
 	local chksum fnregex
 	chksum="$(md5sum "$1" | awk '{ print $1 }')"
 	fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
-	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\1,p") ; do
+	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\\1,p") ; do
 		if [ "$testchksum" = "$chksum" ] ; then
 			return 0
 		fi
@@ -158,14 +159,12 @@ if [ -n "${update_custom_preup:-}" ]; then
 fi
 
 ## check for hold packages
-hold_packages="$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')"
+hold_packages="$(dpkg-query -W -f '${db:Status-Want} ${Package}\n' | awk '$1=="hold"{print " - " $2}')"
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR variable update50/ignore_hold to yes"
-	for hp in $hold_packages; do
-		echo " - $hp"
-	done
+	echo "Please check the following packages and unmark them or set the UCR 'variable update50/ignore'_hold to 'yes'"
+	echo "$hold_packages"
 	if is_ucr_true update50/ignore_hold; then
 		echo "WARNING: update50/ignore_hold is set to true. Skipped as requested."
 	else
@@ -350,7 +349,7 @@ block_update_if_failed_ldif_exists
 
 # Bug #51955
 check_old_packages () {
-	local pkg status
+	local pkg status IFS=$'\n'
 	declare -a found=() old=(
 		univention-kvm-compat
 		univention-kvm-virtio
@@ -386,19 +385,18 @@ check_old_packages () {
 	)
 	for pkg in "${old[@]}"
 	do
-		status=$(dpkg-query -W -f '${Status}' "${pkg%%=*}" 2>/dev/null) || continue
-		[ "${status%% *}" = 'deinstall' ] && continue
-		found+=("$pkg")
+		status=$(dpkg-query -W -f '${db:Status-Status}' "${pkg%%=*}" 2>/dev/null) || continue
+		[ "$status" = 'not-installed' ] && continue
+		case "$pkg" in
+		*=*) found+=("	${pkg%%=*}	${pkg#*=}") ;;
+		*) found+=("	$pkg") ;;
+		esac
 	done
 	# shellcheck disable=SC2128
 	[ -n "$found" ] || return 0
-	echo "ERROR: The following packages from UCS-4 are still installed, which are no longer supported with UCS-5:"
-	for pkg in "${found[@]}"
-	do
-		printf '\t%s\t%s\n' "${pkg%%=*}" "${pkg#${pkg%%=*}}"
-	done
-	echo "They must be removed before the update can be done."
-	exit 1
+	echo "WARNING: The following packages from UCS-4 are still installed, which are no longer supported with UCS-5:"
+	echo "${found[*]}"
+	echo
 }
 check_old_packages
 
@@ -615,9 +613,9 @@ if blocking_computers or blocking_objects:
 check_minimum_ucs_version_of_all_systems_in_domain || die "ERROR: The upgrade to UCS 5.0 is blocked"
 
 # ensure that en_US is included in list of available locales (Bug #44150)
-case "$locale" in
+case "${locale:-}" in
 	*en_US*) ;;
-	*) /usr/sbin/univention-config-registry set locale="$locale en_US.UTF-8:UTF-8" ;;
+	*) /usr/sbin/univention-config-registry set locale="${locale:+$locale }en_US.UTF-8:UTF-8" ;;
 esac
 
 # autoremove before the update

@@ -33,6 +33,10 @@ UPDATER_LOG="/var/log/univention/updater.log"
 exec 3>>"$UPDATER_LOG"
 UPDATE_NEXT_VERSION="$1"
 
+die () {
+	echo "$*" >&2
+	exit 1
+}
 install () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir -y --force-yes install "$@" >&3 2>&3
 }
@@ -69,14 +73,17 @@ echo >&3
 date >&3 2>&3
 
 eval "$(univention-config-registry shell)" >&3 2>&3
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh || exit $?
 
 case "${server_role:-}" in
-''|basesystem|basissystem) install univention-basesystem ;;
 domaincontroller_master) install univention-server-master ;;
 domaincontroller_backup) install univention-server-backup ;;
 domaincontroller_slave) install univention-server-slave ;;
 memberserver) install univention-server-member ;;
+'') ;;  # unconfigured
+basesystem) die "The server role '$server_role' is not supported anymore with UCS-5!" ;;
+*) die "The server role '$server_role' is not supported!" ;;
 esac
 
 if ! is_ucr_true update50/skip/autoremove; then
@@ -110,11 +117,12 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-if [ -f /var/univention-join/joined ] && [ "$server_role" != basesystem ]; then
+if [ -f /var/univention-join/joined ]
+then
 	udm "computers/$server_role" modify \
-		--binddn "$ldap_hostdn" \
+		--binddn "${ldap_hostdn:?}" \
 		--bindpwdfile "/etc/machine.secret" \
-		--dn "$ldap_hostdn" \
+		--dn "${ldap_hostdn:?}" \
 		--set operatingSystem="Univention Corporate Server" \
 		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >&3 2>&3
 fi
@@ -128,8 +136,7 @@ fi
 service univention-firewall restart >&3 2>&3
 
 # Bug #51531: re-evaluate extensions startucsversion and enducsversion (always required)
-/usr/sbin/univention-directory-listener-ctrl resync udm_extension
-/usr/sbin/univention-directory-listener-ctrl resync ldap_extension
+/usr/sbin/univention-directory-listener-ctrl resync udm_extension ldap_extension
 
 rm -f /etc/apt/preferences.d/99ucs500.pref
 
