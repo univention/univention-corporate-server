@@ -236,7 +236,7 @@ then
 	echo "         As such the content of /usr/ must be moved to the root file system before"
 	echo "         the system can be upgraded to UCS-4.2. This procedure should be performed"
 	echo "         manually and might require resizing the file systems. It is described at"
-	echo "         <http://sdb.univention.de/1386>."
+	echo "         <https://help.univention.com/t/6382>."
 	echo ""
 	exit 1
 fi
@@ -296,7 +296,7 @@ fail_if_role_package_will_be_removed () {
 		# to the old value which can be get from /var/log/univention/config-registry.replog
 		echo "       Please contact the Univention Support in case you have an Enterprise"
 		echo "       Subscription. Otherwise please try the Univention Help"
-		echo "       https://help.univention.com/"
+		echo "       <https://help.univention.com/>"
 		exit 1
 	fi
 }
@@ -327,7 +327,7 @@ block_update_if_system_date_is_too_old
 block_update_if_failed_ldif_exists() {
 	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
 		echo "WARNING: A failed.ldif exists."
-		echo "Please check https://help.univention.com/t/what-to-do-if-a-failed-ldif-is-found/6432 for further information."
+		echo "Please check <https://help.univention.com/t/6432> for further information."
 		echo "The update can be started after the failed.ldif has been removed."
 		exit 1
 	fi
@@ -348,7 +348,7 @@ check_old_packages () {
 		univention-management-console-module-uvmm
 		univention-virtual-machine-manager-node-common
 		univention-virtual-machine-manager-node-kvm
-		univention-virtual-machine-manager-schema='See https://help.univention.com/t/remove-ldap-schema-extensions/6443'
+		univention-virtual-machine-manager-schema'=See <https://help.univention.com/t/6443>'
 		python-univention-directory-manager-uvmm
 		python3-univention-directory-manager-uvmm
 		univention-nagios-libvirtd
@@ -356,19 +356,19 @@ check_old_packages () {
 		univention-nagios-uvmmd
 		univention-pkgdb-lib
 		univention-bacula
-		univention-doc
-		univention-mysql
+		univention-doc'=Now online at <https://docs.software-univention.de/ucs-python-api/>'
+		univention-mysql'=Switch to univention-mariadb'
 		univention-ftp
 		univention-management-console-module-mrtg
-		univention-kernel-image='Use linux-...'
-		univention-kernel-headers='Use linux-...'
-		univention-kernel-source='Use linux-...'
+		univention-kernel-image'=Use linux-image-amd64'
+		univention-kernel-headers'=Use linux-headers-amd64'
+		univention-kernel-source'=Use linux-source'
 		univention-kde
 		univention-kde-setdirs
 		univention-kdm
 		univention-mozilla-firefox
 		univention-x-core
-		univention-java
+		univention-java'=Use default-jre or default-jdk'
 		univention-samba4wins
 	)
 	for pkg in "${old[@]}"
@@ -391,42 +391,49 @@ check_old_packages
 
 
 
-# Bug #51497 Bug #51973 Bug #31048 Bug #51655
+# Bug #51497 #51973 #31048 #51655 #51955 #51982
 check_legacy_objects () {
-	local filter found obj
 	declare -a filters=(
-		'objectClass=univentionSamba4WinsHost'
-		'objectClass=univentionPolicyAutoStart'
-		'objectClass=univentionAdminUserSettings'
-		'objectClass=univentionPolicyThinClient'
-		'objectClass=univentionThinClient'
-		'objectClass=univentionMobileClient'
-		'objectClass=univentionFatClient'
+		'(objectClass=univentionSamba4WinsHost)'  # EA
+		'(objectClass=univentionAdminUserSettings)'
+		# UCS TCS:
+		'(objectClass=univentionPolicyAutoStart)'
+		'(objectClass=univentionPolicyThinClient)'
+		'(objectClass=univentionThinClient)'
+		'(objectClass=univentionMobileClient)'
+		'(objectClass=univentionFatClient)'
 		# UCC:
-		'objectClass=univentionCorporateClient'
-		'objectClass=univentionPolicyCorporateClientUser'
-		'objectClass=univentionCorporateClientSession'
-		'objectClass=univentionCorporateClientAutostart'
-		'objectClass=univentionCorporateClientImage'
-		'objectClass=univentionPolicyCorporateClientComputer'
-		'objectClass=univentionPolicyCorporateClientDesktop'
-		'objectClass=univentionPolicySoftwareupdates'
-		'objectClass=univentionPolicyCorporateClient'
-	)
-	for filter in "${filters[@]}"
-	do
-		obj="$(univention-ldapsearch -LLL "$filter" dn | grep '^dn:')"
-		[ -n "$obj" ] && found+=("$obj")
-	done
+		'(objectClass=univentionCorporateClient)'
+		'(objectClass=univentionPolicyCorporateClientUser)'
+		'(objectClass=univentionCorporateClientSession)'
+		'(objectClass=univentionCorporateClientAutostart)'
+		'(objectClass=univentionCorporateClientImage)'
+		'(objectClass=univentionPolicyCorporateClientComputer)'
+		'(objectClass=univentionPolicyCorporateClientDesktop)'
+		'(objectClass=univentionPolicySoftwareupdates)'
+		'(objectClass=univentionPolicyCorporateClient)'
+		# UVMM:
+		'(objectClass=univentionVirtualMachineCloudConnection)'
+		'(objectClass=univentionVirtualMachineCloudType)'
+		'(objectClass=univentionVirtualMachine)'
+		'(objectClass=univentionVirtualMachineProfile)'
+		'(objectClass=univentionVirtualMachineGroupOC)'  # EA
+		'(objectClass=univentionVirtualMachineHostOC)'  # EA
+		) found=()
+	local IFS=''
+	local filter="(|${filters[*]})"
+	IFS=$'\n' read -r -a found <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
 	# shellcheck disable=SC2128
 	[ -n "$found" ] || return 0
 	echo "ERROR: The following objects are no longer supported with UCS-5:"
+	local obj
 	for obj in "${found[@]}"
 	do
 		printf '\t%s\n' "${obj}"
 	done
 	echo "       They must be removed before the update can be done."
-	echo "       "
+	echo "       See <https://help.univention.com/t/16227> for details."
+	echo
 	echo "       This check can be disabled by setting the UCR variable"
 	echo "       update50/ignore_legacy_objects to yes."
 	if is_ucr_true update50/ignore_legacy_objects; then
