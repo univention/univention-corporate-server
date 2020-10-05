@@ -70,6 +70,7 @@ define([
 					return;
 				}
 				this._autoLoaded = true;
+				this._forceLoginChange = true;
 				this._username.set('value', tools.status('username'));
 				this._username.set('disabled', true);
 				if (this.allowAuthenticated()) {
@@ -176,14 +177,14 @@ define([
 		/**
 		 *
 		 * */
-		_getUserAttributes: function(force) {
+		_getUserAttributes: function() {
 			var validCredentials = this._username.isValid() && this._password.isValid();
-			if (validCredentials || force) {
+			if (validCredentials || this._forceLoginChange) {
 				this.standby(true);
-				tools.umcpCommand('passwordreset/get_user_attributes_descriptions', this.getCredentials(force))
+				tools.umcpCommand('passwordreset/get_user_attributes_descriptions', this.getCredentials())
 					.then(lang.hitch(this, function(data) {
 						var layout = array.map(data.result, function(item) { return item.id; });
-						return tools.umcpCommand('passwordreset/get_user_attributes_values', lang.mixin(this.getCredentials(force), {attributes: layout})).then(lang.hitch(this, function(data2) {
+						return tools.umcpCommand('passwordreset/get_user_attributes_values', lang.mixin(this.getCredentials(), {attributes: layout})).then(lang.hitch(this, function(data2) {
 							this._username.set('disabled', true);
 							this._password.set('disabled', true);
 							this._getUserAttributesButton.hide();
@@ -204,8 +205,8 @@ define([
 			}
 		},
 
-		getCredentials: function(force) {
-			if (force && this.allowAuthenticated()) {
+		getCredentials: function() {
+			if (this._forceLoginChange && this.allowAuthenticated()) {
 				return {};
 			}
 			return {
