@@ -127,7 +127,7 @@ if [ ! -e /var/univention-join/joined ]; then
 	exit 1
 fi
 
-# don't ask for join credentials until UMC supports this for Primary systems 
+# don't ask for join credentials until UMC supports this for Primary Nodes
 #if [ "$samba_role" = "memberserver" ]; then
 #	if [ -z "$DCACCOUNT" ] || [ -z "$DCPWD" ]; then
 #		ASK_PASS=1

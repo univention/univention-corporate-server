@@ -88,7 +88,7 @@ def packages_are_installed(pkgs, strict=True):
 		# apt_pkg.CURSTATE. Not desired when called during
 		# installation of umc-module-appcenter together with
 		# several other (app relevant) packages; for example
-		# in postinst or joinscript (on Primary).
+		# in postinst or joinscript (on Primary Node).
 		# see Bug #33535 and Bug #31261
 		for pkg_name in pkgs:
 			try:

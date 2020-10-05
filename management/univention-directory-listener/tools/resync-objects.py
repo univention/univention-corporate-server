@@ -54,10 +54,10 @@ def main():
 	base = ucr.get("ldap/base")
 	server_role = ucr.get("server/role", "")
 	if server_role == 'domaincontroller_master':
-		print('local ldap is Primary server, nothing to do')
+		print('local LDAP is Primary server, nothing to do')
 		return
 	if server_role not in ['domaincontroller_backup', 'domaincontroller_slave']:
-		print('server role ("{}") has no ldap, nothing to do'.format(server_role))
+		print('server role ("{}") has no LDAP, nothing to do'.format(server_role))
 		return
 
 	if not opts.filter:

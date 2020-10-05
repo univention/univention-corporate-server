@@ -63,10 +63,10 @@ policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontrol
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Primary packages')
-object_name = _('Primary packages policy')
-object_name_plural = _('Primary packages policies')
-policy_short_description = _('Primary packages')
+short_description = _('Policy: Packages for Primary/Backup Nodes')
+object_name = _('Primary/Backup Node packages policy')
+object_name_plural = _('Primary/Backup Node packages policies')
+policy_short_description = _('Packages for Primary/Backup Nodes')
 long_description = ''
 options = {
 	'default': univention.admin.option(
@@ -108,7 +108,7 @@ property_descriptions.update(dict([
 
 layout = [
 	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General Primary packages settings'), layout=[
+		Group(_('General Primary/Backup Node packages settings'), layout=[
 			'name',
 			'masterPackages',
 			'masterPackagesRemove'

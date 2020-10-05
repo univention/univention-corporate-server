@@ -58,7 +58,7 @@
 #	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 #
 attributetype ( 1.3.6.1.4.1.10176.61 NAME 'univentionServerRole'
-	DESC 'server role of this machine [ldap Primary,ldap Replica,...]'
+	DESC 'server role of this machine [Primary Directory Node, Replica Directory Node,...]'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
@@ -329,7 +329,7 @@ attributetype ( 1.3.6.1.4.1.10176.1000.305.1.2 NAME 'univentionConsoleACLHost'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1000.305.1.3 NAME 'univentionConsoleACLBase'
-	DESC 'Univention Console ldap base to find the hosts'
+	DESC 'Univention Console LDAP base to find the hosts'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 

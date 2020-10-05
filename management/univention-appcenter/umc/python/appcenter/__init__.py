@@ -656,7 +656,7 @@ class Instance(umcm.Base, ProgressMixin):
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
 		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, app_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
+		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only Primary/Backup Node packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, app_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
 
 		# REMOTE invocation!
 		if host and host != self.ucr.get('hostname') and host != '%s.%s' % (self.ucr.get('hostname'), self.ucr.get('domainname')):
@@ -838,7 +838,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 		master_packages = app.default_packages_master
 
-		# connect to Primary/Backups
+		# connect to Primary/Backup Nodes
 		unreachable = []
 		hosts_info = {}
 		remote_info = {

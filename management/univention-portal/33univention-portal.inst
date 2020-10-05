@@ -44,7 +44,7 @@ ldap_master="$(ucr get ldap/master)"
 ldap_master_port="$(ucr get ldap/master/port)"
 
 if ! nc -z "$ldap_master" "${ldap_master_port:-7389}"; then
-	false || die "Primary Directory Node is not available. Please try again later."
+	false || die "LDAP Primary Directory Node is not available. Please try again later."
 fi
 
 ucs_registerLDAPExtension "$@" \

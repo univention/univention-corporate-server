@@ -4687,7 +4687,7 @@ class univentionAdminModules(select):
 	# we need a fallback
 	choices = [
 		('computers/domaincontroller_backup', 'Computer: Backup Directory Node'),
-		('computers/domaincontroller_master', 'Computer: Primay Directory Node'),
+		('computers/domaincontroller_master', 'Computer: Primary Directory Node'),
 		('computers/domaincontroller_slave', 'Computer: Replica Directory Node'),
 		('computers/ipmanagedclient', 'Computer: IP Managed Client'),
 		('computers/linux', 'Computer: Linux'),
@@ -4736,8 +4736,8 @@ class univentionAdminModules(select):
 		('policies/dhcp_statements', 'Policy: DHCP Statements'),
 		('policies/ldapserver', 'Policy: LDAP Server'),
 		('policies/maintenance', 'Policy: Maintenance'),
-		('policies/masterpackages', 'Policy: Packages Primary'),
-		('policies/memberpackages', 'Policy: Packages Managed Node'),
+		('policies/masterpackages', 'Policy: Packages for Primary/Backup Nodes'),
+		('policies/memberpackages', 'Policy: Packages for Managed Nodes'),
 		('policies/nfsmounts', 'Policy: NFS mounts'),
 		('policies/print_quota', 'Policy: Print Quota'),
 		('policies/printserver', 'Policy: Print Server'),
@@ -4747,7 +4747,7 @@ class univentionAdminModules(select):
 		('policies/repositoryserver', 'Policy: Repository Server'),
 		('policies/repositorysync', 'Policy: Repository Sync'),
 		('policies/share_userquota', 'Policy: Userquota-Policy'),
-		('policies/slavepackages', 'Policy: Packages Replica'),
+		('policies/slavepackages', 'Policy: Packages for Replica Nodes'),
 		('policies/umc', 'Policy: UMC'),
 		('settings/cn', 'Univention Settings'),
 		('settings/data', 'Data'),

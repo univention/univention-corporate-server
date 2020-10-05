@@ -668,7 +668,7 @@ def check(opt):
     :param opt: Command line options.
     """
     if opt.role not in SERVICES:
-        print('This command is only for UCS Primary and Backups.')
+        print('This command is only for UCS Primary and Backup Nodes.')
         exit(0)
 
     with stopped(opt, SERVICES[opt.role]):
@@ -1170,7 +1170,7 @@ def prune(opt):
     :param opt: Command line options.
     """
     if opt.role not in SERVICES:
-        print('This command is only for UCS Primary and Backups.')
+        print('This command is only for UCS Primary and Backup Nodes.')
         exit(0)
 
     opt.skip_services = opt.dry_run

@@ -1,3 +1,9 @@
+univention-appcenter (9.0.1-2) unstable; urgency=medium
+
+  * Bug #42374: Wording fixes
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 16:19:47 +0200
+
 univention-appcenter (9.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica

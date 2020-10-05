@@ -1,3 +1,9 @@
+univention-l10n-fr (4.0.1-4) unstable; urgency=medium
+
+  * Bug #42374: Wording fixes
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 16:19:02 +0200
+
 univention-l10n-fr (4.0.1-3) unstable; urgency=medium
 
   * Bug #42374: Fix typo

@@ -339,9 +339,9 @@ msgstr "Allgemeine Einstellungen"
 #: umc/js/appcenter/AppDetailsContainer.js:195
 msgid ""
 "Be sure to execute the following command as root on all of these Backup "
-"servers <em>after</em> installing the application."
+"Nodes <em>after</em> installing the application."
 msgstr ""
-"Führen Sie den folgenden Befehl als root auf den diesen Backup-Servern aus, "
+"Führen Sie den folgenden Befehl als root auf den diesen Backup Nodes aus, "
 "<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
 
 #: umc/js/appcenter/AppDetailsPage.js:208 umc/js/appcenter/requirements.js:106
@@ -544,10 +544,10 @@ msgstr "Rechner für die Installation der Applikation"
 #, javascript-format
 msgid ""
 "If everything else went correct and this is just a temporary network "
-"problem, you should execute %s as root on that Backup system."
+"problem, you should execute %s as root on that Backup Node."
 msgstr ""
 "Wenn keine weiteren Fehler auftraten und dies nur ein temporäres "
-"Netzwerkproblem ist, sollten Sie %s als root auf dem Backup-System ausführen."
+"Netzwerkproblem ist, sollten Sie %s als root auf dem Backup Node ausführen."
 
 #: umc/js/appcenter/AppChooseHostWizard.js:103
 #, javascript-format

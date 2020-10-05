@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.3-4) unstable; urgency=medium
+
+  * Bug #42374: Wording fixes
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 16:20:21 +0200
+
 univention-directory-manager-modules (15.0.3-3) unstable; urgency=medium
 
   * Bug #49823: updated selection of copyable user properties

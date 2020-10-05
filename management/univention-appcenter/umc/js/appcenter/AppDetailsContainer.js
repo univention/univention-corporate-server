@@ -192,7 +192,7 @@ define([
 			}));
 			if (!masterUnreachable) {
 				var cmdLine = lang.replace('univention-app install {app_id} --only-master-packages', {app_id: entities.encode(this.app.id)});
-				var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these Backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
+				var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these Backup Nodes <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
 				content.push(new Text({
 					content: commandHint
 				}));

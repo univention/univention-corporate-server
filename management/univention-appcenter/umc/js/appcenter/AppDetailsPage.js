@@ -1067,7 +1067,7 @@ define([
 					var host = match[3];
 					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + entities.encode(host) + '</strong>') + '</p>';
 					if (role === 'DC Backup') {
-						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that Backup system.', '<pre>univention-app install ' + entities.encode(this.app.id) + ' --only-master-packages</pre>') + '</p>';
+						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that Backup Node.', '<pre>univention-app install ' + entities.encode(this.app.id) + ' --only-master-packages</pre>') + '</p>';
 					}
 					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
 				} else {

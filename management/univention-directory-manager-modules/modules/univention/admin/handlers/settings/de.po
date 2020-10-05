@@ -286,7 +286,7 @@ msgid "Default"
 msgstr "Vorgabewert"
 
 #: modules/univention/admin/handlers/settings/default.py:102
-msgid "Default Client Computer Group"
+msgid "Default Group for Client Computers"
 msgstr "Standardgruppe für Clients"
 
 #: modules/univention/admin/handlers/settings/default.py:74
@@ -298,7 +298,7 @@ msgid "Default KDE Profiles"
 msgstr "Standard KDE-Profile"
 
 #: modules/univention/admin/handlers/settings/default.py:95
-msgid "Default Managed Node Group"
+msgid "Default Group for Managed Nodes"
 msgstr "Standardgruppe für Managed Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:67
@@ -306,11 +306,11 @@ msgid "Default Primary Group"
 msgstr "Standard Primärgruppe"
 
 #: modules/univention/admin/handlers/settings/default.py:88
-msgid "Default Primary and Backup Directory Node Server Group"
+msgid "Default Group for Primary and Backup Directory Nodes"
 msgstr "Standardgruppe für Primary and Backup Directory Nodes"
 
 #: modules/univention/admin/handlers/settings/default.py:81
-msgid "Default Replica Directory Node Computer Group"
+msgid "Default Group for Replica Directory Nodes"
 msgstr "Standardgruppe für Replica Directory Nodes"
 
 #: modules/univention/admin/handlers/settings/portal.py:172

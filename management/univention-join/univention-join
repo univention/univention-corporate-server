@@ -229,7 +229,7 @@ run_join_scripts () {
 						failed_message "FAILED: failed.ldif exists."
 					fi
 
-					# Backup
+					# Backup Node
 					if [ "$server_role" = "domaincontroller_backup" ]; then
 						univention-scp "$DCPWD" -r \
 							"${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" \
@@ -250,7 +250,7 @@ run_join_scripts () {
 							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
 					fi
 
-					# Replica
+					# Replica Node
 					if [ "$server_role" = "domaincontroller_slave" ]; then
 						if [ -n "$listener_supply_notifier" -a "$listener_supply_notifier" = "yes" ]; then
 							univention-scp "$DCPWD" -q \
@@ -321,7 +321,7 @@ do
 			shift 2 || exit 2
 			;;
 		"-dcpwd")
-			dcpwd="${2:?missing DC password file}"
+			dcpwd="${2:?missing Primary Directory Node password file}"
 			shift 2 || exit 2
 			cp "$dcpwd" "$DCPWD" || exit 2
 			;;
@@ -457,7 +457,7 @@ nslookup_out="$(nslookup "$DCNAME" 2>&1)"
 if [ $? -ne 0 ]; then
 	nslookup_out=$(echo "$nslookup_out" | tr '\n' ' ' | tr  '\r' ' ')
 	nameservers="$(cat /etc/resolv.conf | sed -ne 's/nameserver //p'| tr -d '\n')"
-	failed_message "The UCS Primary server's name \"$DCNAME\" is unknown to the DNS servers (dns servers: $nameservers, nslookup: $nslookup_out)."
+	failed_message "The UCS Primary Node name \"$DCNAME\" is unknown to the DNS servers (dns servers: $nameservers, nslookup: $nslookup_out)."
 fi
 
 ping_out="$(ping -q -c 3 "$DCNAME" 2>&1)"
@@ -466,7 +466,7 @@ if [ $? -ne 0 ]; then
 	if [ $? -ne 0 ]; then
 		ping_out=$(echo "$ping_out" | tr '\n' ' ' | tr  '\r' ' ')
 		ping6_out=$(echo "$ping6_out" | tr '\n' ' ' | tr  '\r' ' ')
-		failed_message "The UCS Primary server \"$DCNAME\" is not reachable, ping failed (ping ipv4: $ping_out, ping ipv6: $ping6_out)."
+		failed_message "The UCS Primary Node \"$DCNAME\" is not reachable, ping failed (ping ipv4: $ping_out, ping ipv6: $ping6_out)."
 	fi
 fi 
 
@@ -476,7 +476,7 @@ if [ $? -ne 0 ]; then
 	failed_message "The ssh-login to ${DCACCOUNT}@${DCNAME} failed with \"${ssh_out}\". Please make sure the account ${DCACCOUNT} exists and is a member of the Domain Admins group!"
 fi
 
-# get Primary versions
+# get Primary Node versions
 versions="$(univention-ssh "$DCPWD" "${DCACCOUNT}@${DCNAME}" /usr/sbin/ucr search --brief ^version/)"
 OLDIFS=$IFS
 IFS=$'\n'

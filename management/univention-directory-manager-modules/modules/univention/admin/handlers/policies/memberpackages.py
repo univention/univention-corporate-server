@@ -63,10 +63,10 @@ policy_apply_to = ["computers/memberserver"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Managed Node packages')
+short_description = _('Policy: Packages for Managed Nodes')
 object_name = _('Managed Node packages policy')
 object_name_plural = _('Managed Node packages policies')
-policy_short_description = _('Managed Node packages')
+policy_short_description = _('Packages for Managed Nodes')
 long_description = ''
 options = {
 	'default': univention.admin.option(

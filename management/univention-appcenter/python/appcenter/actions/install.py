@@ -60,8 +60,8 @@ class Install(InstallRemoveUpgrade):
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
 		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help='Do not revert the installation when it fails. May leave the system in an undesired state')
-		parser.add_argument('--only-master-packages', action='store_true', help='Install only Primary packages')
-		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install Primary packages on Primary or Backup Directory Node systems')
+		parser.add_argument('--only-master-packages', action='store_true', help='Install only Primary Node packages')
+		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install Primary Node packages on Primary or Backup Directory Node systems')
 
 	def main(self, args):
 		apps = args.app
@@ -161,7 +161,7 @@ class Install(InstallRemoveUpgrade):
 				# TODO: fallback if univention-app is not installed
 				process = self._subprocess(['/usr/sbin/univention-ssh', password_file, username, 'univention-app', 'install', '%s=%s' % (app.id, app.version), '--only-master-packages', '--noninteractive', '--do-not-send-info'])
 				if process.returncode != 0:
-					self.warn('Installing Primary packages for %s on %s failed!' % (app.id, host))
+					self.warn('Installing Primary Node packages for %s on %s failed!' % (app.id, host))
 		except Abort:
 			if is_master:
 				self.fatal('This is the Primary Directory Node. Cannot continue!')

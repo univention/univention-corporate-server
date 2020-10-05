@@ -133,8 +133,8 @@ Type=bool
 Categories=service-ldap
 
 [ldap/online/master]
-Description[de]=In der Grundeinstellung werden LDAP-Schreibzugriffe auf Backup Directory Node und Replica Directory Node an den Primary Directory Node weitergeleitet. Wird diese Option deaktiviert, werden die Daten in den lokalen LDAP-Server geschrieben. Diese Variable ist nur für Spezialfälle relevant.
-Description[en]=In the default setting LDAP write changes made on Backup Directory Node and Replica Directory Node are redirected to the Primary Directory Node. If this option is deactivated, the data is written to the local LDAP server. This variable is only relevant for special setups.
+Description[de]=In der Grundeinstellung werden LDAP-Schreibzugriffe auf Backup Directory Nodes und Replica Directory Nodes an den Primary Directory Node weitergeleitet. Wird diese Option deaktiviert, werden die Daten in den lokalen LDAP-Server geschrieben. Diese Variable ist nur für Spezialfälle relevant.
+Description[en]=In the default setting LDAP write changes made on Backup Directory Nodes and Replica Directory Nodes are redirected to the Primary Directory Node. If this option is deactivated, the data is written to the local LDAP server. This variable is only relevant for special setups.
 Type=bool
 Categories=service-ldap
 

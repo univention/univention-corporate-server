@@ -130,16 +130,16 @@ runs.
 Preferred host name of the notifier server.
 .TP
 .B ldap/backup
-Space separated list of LDAP server host names used by all roles expect domaincontroller_masters and backups.
+Space separated list of LDAP server host names used by all Replica Directory Nodes and Managed Nodes.
 .TP
 .B ldap/master
-Host name of the LDAP server for domaincontroller_masters, backups and all other roles.
+Host name of the Primary LDAP server for all UCS systems.
 .TP
 .BR notifier/server/port
 TCP port number of the notifier service. Default: \fB6669\fP.
 .TP
 .BR ldap/master/port ,\  ldap/backup/port
-TCP port number of the LDAP servers on domaincontroller_masters and backups.
+TCP port number of the LDAP servers on Primary and Backup Directory Nodes.
 
 .SH SEE ALSO
 .BR univention\-directory\-notifier (8),

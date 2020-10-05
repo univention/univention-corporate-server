@@ -1,3 +1,9 @@
+univention-portal (4.0.1-9) unstable; urgency=medium
+
+  * Bug #42374: Wording fixes
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 16:21:41 +0200
+
 univention-portal (4.0.1-8) unstable; urgency=medium
 
   * Bug #52125: Prevent a reload during the early stages of the package setup

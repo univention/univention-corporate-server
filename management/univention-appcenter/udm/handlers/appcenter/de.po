@@ -76,8 +76,8 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #: udm/handlers/appcenter/app.py:240
-msgid "Default Master Packages"
-msgstr "Standard Master-Pakete"
+msgid "Default Primary Node Packages"
+msgstr "Standard Primary Node-Pakete"
 
 #: udm/handlers/appcenter/app.py:230
 msgid "Default Packages"

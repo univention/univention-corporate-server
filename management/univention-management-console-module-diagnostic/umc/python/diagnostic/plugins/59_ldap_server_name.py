@@ -58,7 +58,7 @@ def run(_umc_instance):
 				'action': 'deactivate_test',
 				'label': _('Deactivate test'),
 			}]
-			warn = (_('The primary LDAP Server of this System (UCR ldap/server/name) is set to the Primary Directory Node of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load of the Primary Directory Node.\nPlease see {sdb} for further information.') % (master_fqdn,))
+			warn = (_('The primary LDAP Server of this System (UCR ldap/server/name) is set to the Primary Directory Node of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load on the Primary Directory Node.\nPlease see {sdb} for further information.') % (master_fqdn,))
 			raise Warning(warn, buttons=button)
 
 

@@ -70,7 +70,7 @@ disabled."""
 	ucr.load()
 
 	if ucr.get('server/role') != 'domaincontroller_master':
-		print_msg('ERROR: this script may only be called on a domaincontroller_master')
+		print_msg('ERROR: this script may only be called on a Primary Directory Node')
 		sys.exit(1)
 
 	print_msg('Initializing... (%s)' % (time.ctime()))

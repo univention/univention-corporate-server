@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention LDAP Server
-#  converts a UCS Backup into a UCS Primary
+#  converts a UCS Backup Directory Node into a UCS Primary Directory Node
 #
 # Copyright 2001-2020 Univention GmbH
 #
@@ -44,14 +44,14 @@ Usage() {
   printf "Usage:\n  %s: [-f] [-h] [-v] [-w 0]\n\n" $( basename $0 )
   printf "Example:\n"
   printf "  %s -h\n\n" $( basename $0 )
-  printf "  This script converts a UCS Backup into a UCS Primary.\n"
+  printf "  This script converts a UCS Backup Directory Node into a UCS Primary Directory Node.\n"
   printf "  When using it, you need root privileges.\n"
   printf "  If you invoke it without any options, it allows cancelling before it proceeds.\n"
   printf "  Choose among the options as needed. Default values are listed in parentheses.\n"
   printf "\n"
   printf "Options:\n"
   printf "  -f             force execution of script, even if checks fail ($opt_force).\n"
-  printf "  -h             do not convert UCS Backup, but print this helpful text\n"
+  printf "  -h             do not convert UCS Backup Node, but print this helpful text\n"
   printf "  -v             enable verbose log output ($opt_verbose).\n"
   printf "  -w seconds     set time to wait before starting conversion ($opt_wait).\n"
   printf "\n"
@@ -279,9 +279,9 @@ if [ ! -e /var/univention-join/joined ]; then
   fi 
 fi
 
-# check Primary dns
+# check Primary DNS
 if ! host $ldap_master >>"$LOGFILE"; then
-  printf "ERROR: LDAP Primary dns name is not resolvable. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  printf "ERROR: LDAP Primary DNS name is not resolvable. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -518,7 +518,7 @@ fi
 # Remove the reference to old Primary from krb5PrincipalName for LDAP access
 ldapdelete -x -D "cn=admin,$ldap_base" -w "$(cat /etc/ldap.secret)" "krb5PrincipalName=ldap/${old_ldap_master}@${kerberos_realm},cn=kerberos,${ldap_base}"
 
-# Install the package of the Primary at the same time when removing the package of the Backup.
+# Install the package of the Primary at the same time when removing the package of the Backup Node.
 # This way no dependent packages get removed.
 printf "\nReplacing package univention-server-backup with univention-server-master.\n"
 apt-get -y install univention-server-master univention-server-backup-

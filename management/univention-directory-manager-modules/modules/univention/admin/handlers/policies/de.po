@@ -1,4 +1,4 @@
-# Copyright 2010-2020 Univention GmbH
+# # Copyright 2010-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -505,12 +505,12 @@ msgid "General NFS mounts settings"
 msgstr "Grundeinstellungen - NFS-Freigaben"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:111
-msgid "General Primary packages settings"
-msgstr "Grundeinstellungen - Primary-Pakete"
+msgid "General Primary/Backup Node packages settings"
+msgstr "Grundeinstellungen - Primary/Backup Node-Pakete"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:111
-msgid "General Replica packages settings"
-msgstr "Grundeinstellungen - Replica-Pakete"
+msgid "General Replica Node packages settings"
+msgstr "Grundeinstellungen - Replica Node-Pakete"
 
 #: modules/univention/admin/handlers/policies/umc.py:104
 msgid "General UMC settings"
@@ -705,8 +705,8 @@ msgid "Maintenance settings"
 msgstr "Paketpflege Einstellungen"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:69
-msgid "Managed Node packages"
-msgstr "Managed Node-Pakete"
+msgid "Packages for Managed Nodes"
+msgstr "Pakete für Managed Nodes"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:68
 msgid "Managed Node packages policies"
@@ -956,8 +956,8 @@ msgid "Policy: Maintenance"
 msgstr "Richtlinie: Paketpflege"
 
 #: modules/univention/admin/handlers/policies/memberpackages.py:66
-msgid "Policy: Managed Node packages"
-msgstr "Richtlinie: Managed Node-Pakete"
+msgid "Policy: Packages for Managed Nodes"
+msgstr "Richtlinie: Pakete für Managed Nodes"
 
 #: modules/univention/admin/handlers/policies/nfsmounts.py:65
 msgid "Policy: NFS mounts"
@@ -968,8 +968,8 @@ msgid "Policy: Passwords"
 msgstr "Richtlinie: Passwort"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:66
-msgid "Policy: Primary packages"
-msgstr "Richtlinie: Primary-Pakete"
+msgid "Policy: Packages for Primary/Backup Nodes"
+msgstr "Richtlinie: Pakete für Primary/Backup Nodes"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:70
 msgid "Policy: Print quota"
@@ -980,8 +980,8 @@ msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:66
-msgid "Policy: Replica packages"
-msgstr "Richtlinie: Replica-Pakete"
+msgid "Policy: Packages for Replica Nodes"
+msgstr "Richtlinie: Pakete für Replica Nodes"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:65
 msgid "Policy: Repository server"
@@ -1008,16 +1008,16 @@ msgid "Policy: User quota"
 msgstr "Richtlinie: Benutzer-Quota"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:69
-msgid "Primary packages"
-msgstr "Primary-Pakete"
+msgid "Packages for Primary/Backup Nodes"
+msgstr "Pakete für Primary/Backup Nodes"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:68
-msgid "Primary packages policies"
-msgstr "Primary-Paketerichtlinien"
+msgid "Primary/Backup Node packages policies"
+msgstr "Primary/Backup Node-Paketerichtlinien"
 
 #: modules/univention/admin/handlers/policies/masterpackages.py:67
-msgid "Primary packages policy"
-msgstr "Primary-Paketerichtlinie"
+msgid "Primary/Backup Node packages policy"
+msgstr "Primary/Backup Node-Paketerichtlinie"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:73
 msgid "Print Quota"
@@ -1098,16 +1098,16 @@ msgid "Release Version"
 msgstr "Release Version"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:69
-msgid "Replica packages"
-msgstr "Replica-Pakete"
+msgid "Packages for Replica Nodes"
+msgstr "Pakete für Replica Nodes"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:68
-msgid "Replica packages policies"
-msgstr "Replica-Paketerichtlinien"
+msgid "Replica Node packages policies"
+msgstr "Replica Node-Paketerichtlinien"
 
 #: modules/univention/admin/handlers/policies/slavepackages.py:67
-msgid "Replica packages policy"
-msgstr "Replica-Paketerichtlinie"
+msgid "Replica Node packages policy"
+msgstr "Replica Node-Paketerichtlinie"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:53
 #: modules/univention/admin/handlers/policies/repositoryserver.py:68
