@@ -1,4 +1,4 @@
-univention-self-service (4.0.3-43) unstable; urgency=medium
+univention-self-service (4.0.3-44) unstable; urgency=medium
 
   * Bug #51607: allow use of the self service without reentering
     credentials
