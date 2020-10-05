@@ -8,7 +8,7 @@ settings = univention.lib.ucrLogrotate.getLogrotateConfig(daemon, configRegistry
 
 print("%s {" % (' '.join("/var/log/samba/log.%s" % filename for filename in ('winbindd', 'winbindd-idmap', 'winbindd-dc-connect', 'wb-BUILTIN', 'wb-%s' % configRegistry['windows/domain'], 'wb-%s' % configRegistry['hostname'].upper())),))
 
-for setting in settings.keys():
+for setting in sorted(settings):
 	print("\t%s" % settings[setting])
 print("\tpostrotate")
 print("\t\t[ ! -f /var/run/samba/%s.pid ] || kill -HUP `cat /var/run/samba/%s.pid`" % (daemon, daemon))

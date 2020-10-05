@@ -8,7 +8,7 @@ name = "ucr-replog"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
 print("/var/log/univention/config-registry.replog {")
-for setting in settings.values():
+for setting in sorted(settings.values()):
 	print("\t%s" % setting)
 print("}")
 
@@ -17,7 +17,7 @@ name = "dpkg-divert"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
 print("/var/log/univention/%s.log {" % name)
-for setting in settings.values():
+for setting in sorted(settings.values()):
 	print("\t%s" % setting)
 print("}")
 @!@

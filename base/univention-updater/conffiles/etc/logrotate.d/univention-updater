@@ -6,7 +6,7 @@ import univention.lib.ucrLogrotate
 for name in ("updater", "actualise", "repository", "errata-updates"):
 	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 	print("/var/log/univention/%s.log {" % name)
-	for value in settings.values():
+	for value in sorted(settings.values()):
 		print("\t%s" % value)
 	print("}")
 @!@

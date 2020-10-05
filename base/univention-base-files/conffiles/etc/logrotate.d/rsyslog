@@ -42,7 +42,7 @@ for (cat, (paths, settings)) in FILES.items():
 	for path in sorted(paths):
 		print(path)
 	print('{')
-	for setting in settings.values():
+	for setting in sorted(settings.values()):
 		print('\t%s' % (setting, ))
 	print("""\
 	delaycompress

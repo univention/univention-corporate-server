@@ -7,7 +7,7 @@ daemon = 'winbindd'
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(daemon, configRegistry)
 
 print("%s {" % (' '.join("/var/log/samba/log.%s" % name for name in ('winbindd', 'winbindd-idmap', 'winbindd-dc-connect', 'wb-BUILTIN', 'wb-%s' % configRegistry['windows/domain'], 'wb-%s' % configRegistry['hostname'].upper())),))
-for setting in settings.keys():
+for setting in sorted(settings):
     print("\t%s" % settings[setting])
 print("\tpostrotate")
 print("\t\t/usr/bin/killall -HUP /usr/sbin/samba")

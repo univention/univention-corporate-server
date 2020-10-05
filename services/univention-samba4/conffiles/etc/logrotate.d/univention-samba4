@@ -6,21 +6,21 @@ import univention.lib.ucrLogrotate
 name = "sysvol-sync"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/univention/%s.log {" % name)
-for setting in settings.keys():
+for setting in sorted(settings):
 	print("\t%s" % settings[setting])
 print("}")
 
 name = "samba4-provision"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/univention/%s.log {" % name)
-for setting in settings.keys():
+for setting in sorted(settings):
 	print("\t%s" % settings[setting])
 print("}")
 
 name = "samba"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 print("/var/log/samba/log.%s {" % name)
-for setting in settings.keys():
+for setting in sorted(settings):
 	print("\t%s" % settings[setting])
 print("\tpostrotate")
 print("\t\t/usr/bin/killall -HUP /usr/sbin/%s" % name)

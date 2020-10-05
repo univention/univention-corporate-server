@@ -6,7 +6,7 @@ import univention.lib.ucrLogrotate
 for name in ('smbd', 'nmbd'):
 	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 	print("/var/log/samba/log.%s {" % name)
-	for setting in settings.keys():
+	for setting in sorted(settings):
 		print("\t%s" % settings[setting])
 	print("\tpostrotate")
 	print("\t\t/usr/bin/killall -HUP /usr/sbin/%s" % name)

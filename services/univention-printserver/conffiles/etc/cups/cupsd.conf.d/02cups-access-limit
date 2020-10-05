@@ -49,7 +49,7 @@ if configRegistry.is_true('cups/access/limit', True):
 		all = False
 		print('<Policy %s>' % policy)
 		if 'settings' in policies[policy]:
-			for setting in policies[policy]['settings']:
+			for setting in sorted(policies[policy]['settings']):
 				print('\t%s %s' % (setting, policies[policy]['settings'][setting]))
 		if 'limits' in policies[policy]:
 			for counter in sorted(policies[policy]['limits'].keys()):
@@ -59,7 +59,7 @@ if configRegistry.is_true('cups/access/limit', True):
 						all = True
 					print('\t<Limit %s>' % policies[policy]['limits'][counter]['ops'])
 					del policies[policy]['limits'][counter]['ops']
-					for mode in policies[policy]['limits'][counter]:
+					for mode in sorted(policies[policy]['limits'][counter]):
 						for value in policies[policy]['limits'][counter][mode].split(';'):
 							print('\t\t%s %s' % (mode, value))
 					if configRegistry.get('cups/printmode/hosts/none', None):
