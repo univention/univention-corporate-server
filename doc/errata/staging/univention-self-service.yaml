@@ -6,7 +6,7 @@ src: univention-self-service
 fix: 
 desc: |
  This update addresses the following issue(s):
- * The Self-Service module "Your Password" can now be used while logged in
+ * The Self-Service module "Your Profile" can now be used while logged in
    (e.g via SAML) without re-entering credentials. The behavior will only be
    activated on new installations with UCS 4.4-7 and can be enabled manually
    by setting the UCR variable "umc/self-service/allow-authenticated-use" to
