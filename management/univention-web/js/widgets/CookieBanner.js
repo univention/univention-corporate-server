@@ -42,6 +42,7 @@ define([
 		//		Display cookie banner
 		'class': 'umcCookieBanner',
 		closable: false,
+		draggable: false,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
