@@ -17,7 +17,7 @@ Type=str
 Categories=self-service
 
 [umc/self-service/allow-authenticated-use]
-Description[de]=Aktiviert, dass keine erneute Passworteingabe notwendig ist, um die Self-Service "Profil" und teilweise "Kontozugang schützen" Module benutzen zu können (Standardwert: true).
-Description[en]=Activates that no new password submission is required, to use the self service "Your profile" and parts of the "Protect account" module (default value: true).
+Description[de]=Aktiviert, dass keine erneute Passworteingabe notwendig ist, um das Self-Service "Profil" Modul benutzen zu können (Standardwert: true).
+Description[en]=Activates that no new password submission is required, to use the self service "Your profile" module (default value: true).
 Type=bool
 Categories=self-service

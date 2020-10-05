@@ -274,10 +274,10 @@ class Instance(Base):
 				univention.admin.modules.init(lo, po, self._usersmod)
 		return self._usersmod
 
-	@forward_to_master_if_authentication_disabled
+	@forward_to_master
 	@sanitize(
-		username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
-		password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
 	@simple_response
 	def get_contact(self, username, password):
 		"""
@@ -290,7 +290,7 @@ class Instance(Base):
 			MODULE.error('get_contact(): {}'.format(msg))
 			raise UMC_Error(msg)
 
-		dn, username = self.authenticate_user(username, password)
+		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username, 'passwordreset'):  # FIXME: should be 'protect-account'
 			raise ServiceForbidden()
 
