@@ -231,8 +231,8 @@ def test_owncloud_with_portal_login(chrome, users):
 		owncloud_close_welcome_screen(chrome)
 		owncloud_logout(chrome)
 
-		assert "https://backup.autotest.local/univention/portal/" \
-			== chrome.driver.current_url
+		assert chrome.driver.current_url.startswith(
+			"https://backup.autotest.local/univention/portal/")
 
 		# assert "LOGOUT" \ # it is logout for some reason :/
 		assert "LOGOUT" \
@@ -272,8 +272,8 @@ def test_owncloud_with_openid_login(chrome, users):
 
 		owncloud_logout(chrome)
 
-		assert "https://backup.autotest.local/univention/portal/" \
-			== chrome.driver.current_url
+		assert chrome.driver.current_url.startswith(
+			"https://backup.autotest.local/univention/portal/")
 
 
 def test_owncloud_with_owncloud_login(chrome, users):
