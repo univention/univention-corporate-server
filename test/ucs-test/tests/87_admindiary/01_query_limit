@@ -14,7 +14,7 @@ from univention.config_registry import handler_set
 
 
 def main():
-	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, univention.admindiary.backend.get_client(version=1) as client:
+	with ucr_test.UCSTestConfigRegistry(), udm_test.UCSTestUDM() as udm, univention.admindiary.backend.get_client(version=1) as client:
 		limit = 2
 		for _ in range(limit + 1):
 			udm.create_user()
@@ -24,6 +24,7 @@ def main():
 		len_with_limit = len(client.query())
 		assert len_with_limit == limit, 'The length of the query result is not that of admin/diary/query/limit'
 		assert len_with_limit != len_without_limit, 'The length of the query result without a limit and with a limit of %s are the same. Functionality of limit cannot be tested'
+
 
 if __name__ == '__main__':
 	main()
