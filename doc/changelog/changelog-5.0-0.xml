@@ -29,6 +29,7 @@
 				which more clearly convey their inherent purpose as providing directory services or not.
 				The Microsoft terms <emphasis>domain controller</emphasis>, <emphasis>DC</emphasis> and <emphasis>member server</emphasis>
 				are still applicable in case Microsoft compatible services are provided by Samba on the respective Node (<u:bug>42374</u:bug>).
+				To reduce potential for confusion, the IP managed client has been renamed to IP client.
 			</simpara></listitem>
 			<listitem><simpara>
 				The "base system" is no longer a valid system role,
