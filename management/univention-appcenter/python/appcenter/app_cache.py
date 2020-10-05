@@ -58,9 +58,9 @@ cache_logger = get_base_logger().getChild('cache')
 
 
 def _cmp_mtimes(mtime1, mtime2):
-	if mtime1 is None or mtime2 is None:
-		return cmp(mtime1, mtime2)
-	return cmp(float('{:.3f}'.format(mtime1)), float('{:.3f}'.format(mtime2)))
+	mtime1 = float('{:.3f}'.format(mtime1)) if mtime1 is not None else 0.0
+	mtime2 = float('{:.3f}'.format(mtime2)) if mtime2 is not None else 0.0
+	return 0 if mtime1 == mtime2 else (-1 if mtime1 < mtime2 else 1)
 
 
 class _AppCache(object):
@@ -579,6 +579,7 @@ class Apps(_AppCache):
 			server = None
 		ucs_version = ucs_version or None
 		return app_id, app_version, ucs_version, server
+
 
 class AllApps(Apps):
 	def include_app(self, app):
