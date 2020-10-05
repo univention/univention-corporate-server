@@ -979,13 +979,24 @@
 					<listitem><simpara>
 						This variable configured the <emphasis>UDM</emphasis> attributes a user can modify.
 						The names of the attributes must be separated by comma.
-						This variable must be set on the hosts, where the Self Service app is installed.
+						This variable must be set on the hosts, where the Self Service app is installed (incl. &ucsMaster;).
 					</simpara></listitem>
 				</varlistentry>
 				<varlistentry>
 					<term><envar>umc/self-service/profiledata/enabled</envar></term>
 					<listitem><simpara>
 						This variable must be set to <literal>true</literal> on all involved server systems to enable the mechanism.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/allow-authenticated-use</envar></term>
+					<listitem><simpara>
+						This variable defines whether the specification of user name and password is necessary when opening and modifying your own user profile if you are already logged in to Univention Portal.
+						As of UCS 4.4-7, this &ucsUCRV; is automatically set to <literal>true</literal> when the <foreignphrase>Self Service</foreignphrase> is installed for the first time. The <literal>true</literal>
+						value activates the use of an existing Univention Portal session.
+						The fields <guimenu>Username</guimenu> and <guimenu>Password</guimenu> are then automatically filled in or no longer displayed.
+						Systems upgraded to UCS 4.4-7 will retain the old behavior by automatically setting the value to <literal>false</literal>.
+						Note that this variable must be set to the same value on all participating systems where the Self Service app is installed (incl. &ucsMaster;).
 					</simpara></listitem>
 				</varlistentry>
 			</variablelist>
