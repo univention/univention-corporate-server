@@ -43,6 +43,7 @@ from Crypto.Cipher import DES, ARC4
 import Crypto
 from samba.dcerpc import drsuapi, lsa, misc, security, drsblobs
 from samba.ndr import ndr_unpack
+from samba import NTSTATUSError
 from struct import pack
 import struct
 import traceback
@@ -388,7 +389,7 @@ def password_sync_ucs(connector, key, object):
 	pwd_set = False
 	try:
 		nt_hash, krb5Key = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
-	except Exception as e:
+	except NTSTATUSError as e:
 		ud.debug(ud.LDAP, ud.PROCESS, "password_sync_ucs: get_password_from_ad failed with %s, retry with reconnect" % str(e))
 		nt_hash, krb5Key = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']), reconnect=True)
 
@@ -403,7 +404,7 @@ def password_sync_ucs(connector, key, object):
 
 		try:
 			res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
-		except Exception as e:
+		except NTSTATUSError as e:
 			ud.debug(ud.LDAP, ud.PROCESS, "password_sync: set_password_in_ad failed with %s, retry with reconnect" % str(e))
 			res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd, reconnect=True)
 
