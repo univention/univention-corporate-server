@@ -272,14 +272,10 @@ class Instance(Base):
 				univention.admin.modules.init(lo, po, self._usersmod)
 		return self._usersmod
 
-<<<<<<< HEAD
 	@forward_to_master
-=======
-	@forward_to_master_if_authentication_disabled
->>>>>>> Bug #51607: allow use of the self service without reentering credentials
 	@sanitize(
-		username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
-		password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
 	@simple_response
 	def get_contact(self, username, password):
 		"""
