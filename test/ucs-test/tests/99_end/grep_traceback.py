@@ -167,6 +167,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs']),  # Bug #50279
 	(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), []),  # Bug #45787
 	(r'pg.InternalError: FATAL:\s*PAM-Authentifizierung für Benutzer ».*$« fehlgeschlagen', ['univention-pkgdb-scan']),  # Bug #50937
+	("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist']),  # Bug #47440
 ])
 
 
