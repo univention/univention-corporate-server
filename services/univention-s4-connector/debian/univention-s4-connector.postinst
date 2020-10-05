@@ -101,7 +101,7 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 
 	# bug 45210
 	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.8-8; then
-		# deactivate sambaDomain sync to ucs for slaves in ucs@school
+		# deactivate sambaDomain sync to ucs for Replica Directory Nodes in ucs@school
 		if [ "$server_role" = "domaincontroller_slave" ]; then
 			if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
 				ucr set connector/s4/mapping/dc/syncmode?'write'

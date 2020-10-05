@@ -1,6 +1,6 @@
 [ldap/server/type]
-Description[de]=Für UCS-LDAP-Server gibt es zwei Betriebsmodi, die mit dieser Variable konfiguriert werden: Der Server vom Typ 'master' nimmt schreibende Änderungen entgegen, 'slave' enthält eine Nur-Lese-Kopie. Diese Variable wird intern konfiguriert und sollte nicht angepasst werden.
-Description[en]=Two operational modes exist for UCS LDAP servers, which are configured by this variable: The server of the type 'master' accepts write changes, while 'slave' only contains a read-only copy. This variable is configured internally and should not be modified.
+Description[de]=Für UCS-LDAP-Server gibt es zwei Betriebsmodi, die mit dieser Variable konfiguriert werden: Der Server vom Typ 'master' nimmt schreibende Änderungen entgegen, 'slave' enthält eine Nur-Lese-Kopie. Diese Variable wird intern konfiguriert und sollte nicht angepasst werden. 'master' entspricht einem Primary Directory Node und 'slave' sowohl Backup als auch Replica Directory Nodes.
+Description[en]=Two operational modes exist for UCS LDAP servers, which are configured by this variable: The server of the type 'master' accepts write changes, while 'slave' only contains a read-only copy. This variable is configured internally and should not be modified. 'master' corresponds to a Primary Directory Node and 'slave' corresponds to Backup as well as Replica Directory Nodes.
 Type=str
 Categories=service-ldap
 ReadOnly=yes

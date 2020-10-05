@@ -20,8 +20,8 @@ Depends:
  univention-ldap-server (>= 1.8),
  ${misc:Depends},
 Description: UCS - Directory replication
- This package implements a client initiated LDAP master/slave
- replication, based on the UCS Directory Notifier/Listener.
+ This package implements a client initiated LDAP replication,
+ based on the UCS Directory Notifier/Listener.
  .
  It is part of Univention Corporate Server (UCS), an integrated,
  directory driven solution for managing corporate environments.
