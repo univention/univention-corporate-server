@@ -29,33 +29,11 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+UPDATE_NEXT_VERSION="$1"
 UPDATER_LOG="/var/log/univention/updater.log"
 exec 3>>"$UPDATER_LOG"
-UPDATE_NEXT_VERSION="$1"
 
-echo "Running preup.sh script" >&3
-date >&3
-
-eval "$(univention-config-registry shell)" >&3 2>&3
-# shellcheck source=/dev/null
-. /usr/share/univention-lib/ucr.sh || exit $?
-
-conffile_is_unmodified () {
-	# conffile_is_unmodified <conffile>
-	# returns exitcode 0 if given conffile is unmodified
-	if [ ! -f "$1" ]; then
-		return 1
-	fi
-	local chksum fnregex
-	chksum="$(md5sum "$1" | awk '{ print $1 }')"
-	fnregex="$(python -c 'import re,sys;print re.escape(sys.argv[1])' "$1")"
-	for testchksum in $(dpkg-query -W -f '${Conffiles}\n' | sed -nre "s,^ $fnregex ([0-9a-f]+)( .*)?$,\\1,p") ; do
-		if [ "$testchksum" = "$chksum" ] ; then
-			return 0
-		fi
-	done
-	return 1
-}
+###CHECKS###
 
 readcontinue () {
 	local var
@@ -71,19 +49,6 @@ readcontinue () {
 	done
 }
 
-have () {
-	command -v "$1" >/dev/null 2>&1
-}
-
-die () {
-	echo "$*" >&2
-	exit 1
-}
-
-###########################################################################
-# RELEASE NOTES SECTION (Bug #19584)
-# Please update URL to release notes and changelog on every release update
-###########################################################################
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
@@ -93,7 +58,7 @@ echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
 echo
-if [ "${update_warning_releasenotes:-}" != "no" ] && [ "${update_warning_releasenotes:-}" != "false" ] && [ "${update_warning_releasenotes_internal:-}" != "no" ]
+if ! is_ucr_false update/warning/releasenotes && [ "${update_warning_releasenotes_internal:-}" != "no" ]
 then
 	if [ "$UCS_FRONTEND" = "noninteractive" ]; then
 		echo "Update will wait here for 60 seconds..."
@@ -108,40 +73,21 @@ fi
 
 echo ""
 
-case "${server_role:=}" in
-	domaincontroller_master) ;;
-	domaincontroller_backup) ;;
-	domaincontroller_slave) ;;
-	memberserver) ;;
-	'') ;;  # unconfigured
-	basesystem) die "The server role '$server_role' is not supported anymore with UCS-5!" ;;
-	*) die "The server role '$server_role' is not supported!" ;;
-esac
+update_check_ssh () {
+	[ -n "$SSH_CLIENT" ] || return 0
+	[ "${update50_ignoressh:-}" = "yes" ] && return 0
+	echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
+	echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
+	return 1
+}
 
-# check if user is logged in using ssh
-if [ -n "$SSH_CLIENT" ]; then
-	if [ "${update50_ignoressh:-}" != "yes" ]; then
-		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
-		exit 1
-	fi
-fi
-
-if [ "$TERM" = "xterm" ]; then
-	if [ "${update50_ignoreterm:-}" != "yes" ]; then
-		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
-		exit 1
-	fi
-fi
-
-# save ucr settings
-updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
-if [ ! -d "$updateLogDir" ]; then
-	mkdir -p "$updateLogDir"
-fi
-cp /etc/univention/base*.conf "$updateLogDir/"
-ucr dump > "$updateLogDir/ucr.dump"
+update_check_term () {
+	[ "$TERM" = "xterm" ] || return 0
+	[ "${update50_ignoreterm:-}" = "yes" ] && return 0
+	echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
+	echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
+	return 1
+}
 
 # call custom preup script if configured
 if [ -n "${update_custom_preup:-}" ]; then
@@ -158,303 +104,21 @@ if [ -n "${update_custom_preup:-}" ]; then
 	fi
 fi
 
-## check for hold packages
-hold_packages="$(dpkg-query -W -f '${db:Status-Want} ${Package}\n' | awk '$1=="hold"{print " - " $2}')"
-if [ -n "$hold_packages" ]; then
-	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
-	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR 'variable update50/ignore'_hold to 'yes'"
-	echo "$hold_packages"
-	if is_ucr_true update50/ignore_hold; then
-		echo "WARNING: update50/ignore_hold is set to true. Skipped as requested."
-	else
-		exit 1
-	fi
+update_check_kernel () {
+	local var="update$VERSION/pruneoldkernel"
+	is_ucr_true "update${VERSION}/pruneoldkernel" &&
+		univention-prune-kernels
+}
+
+checks
+
+# save ucr settings
+updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
+if [ ! -d "$updateLogDir" ]; then
+	mkdir -p "$updateLogDir"
 fi
-
-## Bug #44650 begin - check slapd on Managed Node
-if have slapd && [ "$server_role" = "memberserver" ]; then
-	echo "WARNING: The ldap server is installed on your Managed Node. This is not supported"
-	echo "         and may lead to problems during the update. Please deinstall the package"
-	echo "         *slapd* from this system with either the command line tool univention-remove "
-	echo "           -> univention-remove slapd"
-	echo "         or via the package management in the Univention Management Console."
-	echo "         Make sure that only the package slapd gets removed!"
-	echo "         This check can be disabled by setting the UCR variable"
-	echo "         update50/ignore_slapd_on_member to yes."
-	if is_ucr_true update50/ignore_slapd_on_member; then
-		echo "WARNING: update50/ignore_slapd_on_member is set to true. Skipped as requested."
-	else
-		exit 1
-	fi
-fi
-## Bug #44650 end
-
-#################### Bug #22093
-
-list_passive_kernels () {
-	local kernel_version
-	kernel_version="$1"
-	dpkg-query -W -f '${Package}\n' "linux-image-${kernel_version}-ucs*" 2>/dev/null |
-		grep -Fv "linux-image-$(uname -r)"
-}
-
-get_latest_kernel_pkg () {
-	# returns latest kernel package for given kernel version
-	# currently running kernel is NOT included!
-	local kernel_version latest_dpkg latest_kver kver
-	kernel_version="$1"
-	latest_dpkg=""
-	latest_kver=""
-	for kver in $(list_passive_kernels "$kernel_version") ; do
-		dpkgver="$(apt-cache show "$kver" 2>/dev/null | sed -nre 's/Version: //p')"
-		if dpkg --compare-versions "$dpkgver" gt "$latest_dpkg" ; then
-			latest_dpkg="$dpkgver"
-			latest_kver="$kver"
-		fi
-	done
-	echo "$latest_kver"
-}
-
-pruneOldKernel () {
-	# removes all kernel packages of given kernel version
-	# EXCEPT currently running kernel and latest kernel package
-	# ==> at least one and at most two kernel should remain for given kernel version
-	local kernel_version
-	kernel_version="$1"
-	echo "Pruning old kernels $kernel_version" >&3
-	list_passive_kernels "$kernel_version" |
-		grep -Fv "$(get_latest_kernel_pkg "$kernel_version")" |
-		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
-}
-
-if is_ucr_true 'update50/pruneoldkernel'
-then
-	echo -n "Purging old kernel... "
-	for kernel_version in 2.6.\* 3.2.0 3.10.0 3.16 3.16.0 4.1.0 4.9.0
-	do
-		pruneOldKernel "$kernel_version" >&3 2>&3
-	done
-	echo "done"
-fi
-
-#####################
-
-if mountpoint -q /usr
-then
-	echo "failed"
-	echo "ERROR:   /usr/ seems to be a separate file system, which is no longer supported."
-	echo "         Mounting file systems nowadays requires many helpers, which use libraries"
-	echo "         and other resources from /usr/ by default. With a separate /usr/ they"
-	echo "         often break in subtle ways or lead to hard to debug boot problems."
-	echo "         As such the content of /usr/ must be moved to the root file system before"
-	echo "         the system can be upgraded to UCS-4.2. This procedure should be performed"
-	echo "         manually and might require resizing the file systems. It is described at"
-	echo "         <https://help.univention.com/t/6382>."
-	echo ""
-	exit 1
-fi
-
-check_space () {
-	local partition size usersize
-	partition="$1"
-	size="$2"
-	usersize="$3"
-	echo -n "Checking for space on $partition: "
-	if [ "$(($(stat -f -c '%a*%S' "$partition")/1024))" -gt "$size" ]
-	then
-		echo "OK"
-	else
-		echo "failed"
-		echo "ERROR:   Not enough space in $partition, need at least $usersize."
-		echo "         This may interrupt the update and result in an inconsistent system!"
-		echo "         If necessary you can skip this check by setting the value of the"
-		echo "         config registry variable update50/checkfilesystems to \"no\"."
-		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" ] && ! is_ucr_true 'update50/pruneoldkernel'
-		then
-			echo "         Old kernel versions on /boot can be pruned automatically during"
-			echo "         next update attempt by setting config registry variable"
-			echo "         update50/pruneoldkernel to \"yes\"."
-		fi
-		echo ""
-		# kill the running univention-updater process
-		exit 1
-	fi
-}
-
-fail_if_role_package_will_be_removed () {
-	local role_package
-
-	case "$server_role" in
-		domaincontroller_master) role_package="univention-server-master" ;;
-		domaincontroller_backup) role_package="univention-server-backup" ;;
-		domaincontroller_slave) role_package="univention-server-slave" ;;
-		memberserver) role_package="univention-server-member" ;;
-		*) return ;;
-	esac
-
-	#echo "Executing: LC_ALL=C $update_commands_distupgrade_simulate | grep -q "^Remv $role_package""  >&3 2>&3
-	if LC_ALL=C ${update_commands_distupgrade_simulate:-false} 2>&1 | grep -q "^Remv $role_package"
-	then
-		echo "ERROR: The pre-check of the update calculated that the"
-		echo "       essential software package $role_package will be removed"
-		echo "       during the upgrade. This could result into a broken system."
-		echo
-		# If you really know what you are doing, you can skip this check by
-		# setting the UCR variable update/commands/distupgrade/simulate to /bin/true.
-		# But you have been warned!
-		# In this case, you have to set the UCR variable after the update back
-		# to the old value which can be get from /var/log/univention/config-registry.replog
-		echo "       Please contact the Univention Support in case you have an Enterprise"
-		echo "       Subscription. Otherwise please try the Univention Help"
-		echo "       <https://help.univention.com/>"
-		exit 1
-	fi
-}
-
-
-# begin bug 46562
-block_update_if_system_date_is_too_old() {
-	local system_year
-	system_year=$(date +%Y)
-	if [ "$system_year" -lt 2020 ] ; then
-		echo "WARNING: The system date ($(date +%Y-%m-%d)) does not seem to be correct."
-		echo "         Please set a current system time before the update, otherwise the"
-		echo "         update will fail if Spamassassin is installed."
-		echo "         "
-		echo "         This check can be disabled by setting the UCR variable"
-		echo "         update50/ignore_system_date to yes."
-		if is_ucr_true update50/ignore_system_date; then
-			echo "WARNING: update50/ignore_system_date is set to true. Skipped as requested."
-		else
-			exit 1
-		fi
-	fi
-}
-block_update_if_system_date_is_too_old
-# end bug 46562
-
-# Bug #46850: Block if failed.ldif exists
-block_update_if_failed_ldif_exists() {
-	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-		echo "WARNING: A failed.ldif exists."
-		echo "Please check <https://help.univention.com/t/6432> for further information."
-		echo "The update can be started after the failed.ldif has been removed."
-		exit 1
-	fi
-}
-block_update_if_failed_ldif_exists
-
-
-# Bug #51955
-check_old_packages () {
-	local pkg status IFS=$'\n'
-	declare -a found=() old=(
-		univention-kvm-compat
-		univention-kvm-virtio
-		univention-novnc
-		univention-virtual-machine-manager-daemon
-		python-univention-virtual-machine-manager
-		python3-univention-virtual-machine-manager
-		univention-management-console-module-uvmm
-		univention-virtual-machine-manager-node-common
-		univention-virtual-machine-manager-node-kvm
-		univention-virtual-machine-manager-schema'=See <https://help.univention.com/t/6443>'
-		python-univention-directory-manager-uvmm
-		python3-univention-directory-manager-uvmm
-		univention-nagios-libvirtd
-		univention-nagios-libvirtd-xen
-		univention-nagios-uvmmd
-		univention-pkgdb-lib
-		univention-bacula
-		univention-doc'=Now online at <https://docs.software-univention.de/ucs-python-api/>'
-		univention-mysql'=Switch to univention-mariadb'
-		univention-ftp
-		univention-management-console-module-mrtg
-		univention-kernel-image'=Use linux-image-amd64'
-		univention-kernel-headers'=Use linux-headers-amd64'
-		univention-kernel-source'=Use linux-source'
-		univention-kde
-		univention-kde-setdirs
-		univention-kdm
-		univention-mozilla-firefox
-		univention-x-core
-		univention-java'=Use default-jre or default-jdk'
-		univention-samba4wins
-	)
-	for pkg in "${old[@]}"
-	do
-		status=$(dpkg-query -W -f '${db:Status-Status}' "${pkg%%=*}" 2>/dev/null) || continue
-		[ "$status" = 'not-installed' ] && continue
-		case "$pkg" in
-		*=*) found+=("	${pkg%%=*}	${pkg#*=}") ;;
-		*) found+=("	$pkg") ;;
-		esac
-	done
-	# shellcheck disable=SC2128
-	[ -n "$found" ] || return 0
-	echo "WARNING: The following packages from UCS-4 are still installed, which are no longer supported with UCS-5:"
-	echo "${found[*]}"
-	echo
-}
-check_old_packages
-
-
-
-# Bug #51497 #51973 #31048 #51655 #51955 #51982
-check_legacy_objects () {
-	declare -a filters=(
-		'(objectClass=univentionSamba4WinsHost)'  # EA
-		'(objectClass=univentionAdminUserSettings)'
-		# UCS TCS:
-		'(objectClass=univentionPolicyAutoStart)'
-		'(objectClass=univentionPolicyThinClient)'
-		'(objectClass=univentionThinClient)'
-		'(objectClass=univentionMobileClient)'
-		'(objectClass=univentionFatClient)'
-		# UCC:
-		'(objectClass=univentionCorporateClient)'
-		'(objectClass=univentionPolicyCorporateClientUser)'
-		'(objectClass=univentionCorporateClientSession)'
-		'(objectClass=univentionCorporateClientAutostart)'
-		'(objectClass=univentionCorporateClientImage)'
-		'(objectClass=univentionPolicyCorporateClientComputer)'
-		'(objectClass=univentionPolicyCorporateClientDesktop)'
-		'(objectClass=univentionPolicySoftwareupdates)'
-		'(objectClass=univentionPolicyCorporateClient)'
-		# UVMM:
-		'(objectClass=univentionVirtualMachineCloudConnection)'
-		'(objectClass=univentionVirtualMachineCloudType)'
-		'(objectClass=univentionVirtualMachine)'
-		'(objectClass=univentionVirtualMachineProfile)'
-		'(objectClass=univentionVirtualMachineGroupOC)'  # EA
-		'(objectClass=univentionVirtualMachineHostOC)'  # EA
-		) found=()
-	local IFS=''
-	local filter="(|${filters[*]})"
-	IFS=$'\n' read -r -a found <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
-	# shellcheck disable=SC2128
-	[ -n "$found" ] || return 0
-	echo "ERROR: The following objects are no longer supported with UCS-5:"
-	local obj
-	for obj in "${found[@]}"
-	do
-		printf '\t%s\n' "${obj}"
-	done
-	echo "       They must be removed before the update can be done."
-	echo "       See <https://help.univention.com/t/16227> for details."
-	echo
-	echo "       This check can be disabled by setting the UCR variable"
-	echo "       update50/ignore_legacy_objects to yes."
-	if is_ucr_true update50/ignore_legacy_objects; then
-		echo "WARNING: update50/ignore_legacy_objects is set to true. Skipped as requested."
-	else
-		exit 1
-	fi
-}
-check_legacy_objects
-
+cp /etc/univention/base*.conf "$updateLogDir/"
+ucr dump > "$updateLogDir/ucr.dump"
 
 # move old initrd files in /boot
 initrd_backup=/var/backups/univention-initrd.bak/
@@ -462,155 +126,6 @@ if [ ! -d "$initrd_backup" ]; then
 	mkdir "$initrd_backup"
 fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
-
-# check space on filesystems
-if is_ucr_true 'update50/checkfilesystems' || [ $? -eq 2 ]
-then
-	check_space "/var/cache/apt/archives" "4000000" "4000 MB"
-	check_space "/boot" "100000" "100 MB"
-	check_space "/" "4000000" "4000 MB"
-else
-	echo "WARNING: skipped disk-usage-test as requested"
-fi
-
-echo -n "Checking for package status: "
-if dpkg -l 2>&1 | LC_ALL=C grep "^[a-zA-Z][A-Z] " >&3 2>&3
-then
-	echo "failed"
-	echo "ERROR: The package state on this system is inconsistent."
-	echo "       Please run 'dpkg --configure -a' manually"
-	exit 1
-fi
-echo "OK"
-
-if [ -x /usr/sbin/slapschema ]; then
-	echo -n "Checking LDAP schema: "
-	if ! /usr/sbin/slapschema >&3 2>&3; then
-		echo "failed"
-		echo "ERROR: There is a problem with the LDAP schema on this system."
-		echo "       Please check $UPDATER_LOG or run 'slapschema' manually."
-		exit 1
-	fi
-	echo "OK"
-fi
-
-# check for valid machine account
-if [ -f /var/univention-join/joined ] && [ ! -f /etc/machine.secret ]
-then
-	echo "ERROR: The credentials for the machine account could not be found!"
-	echo "       Please re-join this system."
-	exit 1
-fi
-
-if [ -f /var/univention-join/joined ]
-then
-	ldapsearch -x -D "${ldap_hostdn:?}" -y /etc/machine.secret -b "${ldap_base:?}" -s base &>/dev/null
-	if [ $? -eq 49 ]
-	then
-		echo "ERROR: A LDAP connection to the configured LDAP servers with the machine"
-		echo "       account has failed (invalid credentials)!"
-		echo "       This MUST be fixed before the update can continue."
-		echo
-		echo "       This problem can be corrected by setting the content of the file"
-		echo "       /etc/machine.secret to the password of the computer object using"
-		echo "       Univention Management Console."
-		exit 1
-	fi
-fi
-
-# check for Primary Directory Node UCS version
-check_master_version () {
-	local master_version ATTR=univentionOperatingSystemVersion UCRV=update50/ignore_version
-
-	[ -f /var/univention-join/joined ] || return
-	case "$server_role" in
-	domaincontroller_master) return ;;
-	esac
-
-	master_version="$(univention-ldapsearch -LLL '(univentionServerRole=master)' "$ATTR" | sed -ne "s/$ATTR: //p;T;q")"
-
-	if [ -n "$master_version" ]
-	then
-		dpkg --compare-versions "$master_version" le "${version_version:?}-${version_patchlevel:?}" || return
-
-		echo "WARNING: Your Primary Directory Node is still on version ${master_version}."
-		echo "         It is strongly recommended that the Primary Directory Node is"
-		echo "         always the first system to be updated during a release update."
-	else
-		echo "ERROR: Failed to determine UCS version of Primary Directory Node."
-	fi
-
-	is_ucr_true "$UCRV" && {
-		echo "WARNING: '$UCRV' is set to true. Skipped as requested."
-		return
-	}
-
-	echo "This check can be skipped by setting the UCR"
-	echo "variable '$UCRV' to 'yes'."
-	exit 1
-}
-check_master_version
-
-# check that no apache configuration files are manually adjusted; Bug #43520
-check_overwritten_umc_templates () {
-	if univention-check-templates 2>/dev/null | grep /etc/univention/templates/files/etc/apache2/sites-available/ >&3 2>&3
-	then
-		echo "WARNING: There are modified Apache configuration files in /etc/univention/templates/files/etc/apache2/sites-available/."
-		echo "Please restore the original configuration files before upgrading and apply the manual changes again after the upgrade succeeded."
-		if is_ucr_true update50/ignore_apache_template_checks; then
-			echo "WARNING: update50/ignore_apache_template_checks is set to true. Skipped as requested."
-		else
-			echo "This check can be skipped by setting the UCR"
-			echo "variable update50/ignore_apache_template_checks to yes."
-			exit 1
-		fi
-	fi
-}
-check_overwritten_umc_templates
-
-check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
-	[ "$server_role" != "domaincontroller_master" ] && return 0
-
-	/usr/bin/python2.7 -c '
-# -*- coding: utf-8 -*-
-from __future__ import print_function
-import sys
-from distutils.version import LooseVersion
-from univention.uldap import getMachineConnection
-
-lo = getMachineConnection()
-
-REQUIRED_VERSION = "4.4-6"
-V5 = LooseVersion("5.0-0")
-
-ATTR = "univentionOperatingSystemVersion"
-blocking_computers = [
-    "%s: %s" % (dn, attrs[ATTR][0].decode("UTF-8", "replace"))
-    for dn, attrs in lo.search("(&(%s=*)(univentionOperatingSystem=Univention Corporate Server))" % ATTR, attr=[ATTR])
-    if LooseVersion(attrs[ATTR][0].decode("UTF-8", "replace")) < LooseVersion(REQUIRED_VERSION)
-]
-
-blocking_objects = []
-ATTRS = ["univentionUCSVersionStart", "univentionUCSVersionEnd"]
-for dn, attrs in lo.search("(&(objectClass=univentionObjectMetadata)(!(objectClass=univentionLDAPExtensionSchema)))", attr=ATTRS):
-    start, end = (attrs.get(attr, [b""])[0].decode("UTF-8", "replace") for attr in ATTRS)
-    if start and LooseVersion(start) >= V5:
-        continue
-    if end and LooseVersion(end) < V5:
-        continue
-    if start and LooseVersion(start) < V5 and end:
-        continue
-    blocking_objects.append("%s: [%s..%s)" % (dn, start or "unspecified", end or "unspecified"))
-
-if blocking_computers:
-    print("The following hosts must be upgraded to UCS %s first:\n\t%s" % (REQUIRED_VERSION, "\n\t".join(blocking_computers)), file=sys.stderr)
-if blocking_objects:
-    print("The following extensions are incompatible with UCS 5.0:\n\t%s" % "\n\t".join(blocking_objects), file=sys.stderr)
-
-if blocking_computers or blocking_objects:
-    exit(1)'
-}
-check_minimum_ucs_version_of_all_systems_in_domain || die "ERROR: The upgrade to UCS 5.0 is blocked"
 
 # ensure that en_US is included in list of available locales (Bug #44150)
 case "${locale:-}" in

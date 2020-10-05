@@ -1,3 +1,9 @@
+univention-updater (15.0.1-5) unstable; urgency=low
+
+  * Bug #51655: Unify preup.sh and pre-check.sh
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 05 Oct 2020 17:11:50 +0200
+
 univention-updater (15.0.1-4) unstable; urgency=low
 
   * Bug #40027: Get Primary version from LDAP

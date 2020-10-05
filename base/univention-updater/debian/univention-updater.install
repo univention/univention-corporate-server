@@ -24,7 +24,8 @@ script/univention-prune-kernels usr/sbin/
 
 license_uuid.py usr/lib/univention-directory-listener/system/
 
-script/preup.sh usr/share/univention-updater/
+# script/preup.sh usr/share/univention-updater/
+# script/check.sh usr/share/univention-updater/
 script/postup.sh usr/share/univention-updater/
 
 appliance-hooks.d/updater usr/lib/univention-system-setup/appliance-hooks.d/
