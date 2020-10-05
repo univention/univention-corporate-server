@@ -290,7 +290,7 @@ msgid "Default Group for Client Computers"
 msgstr "Standardgruppe für Clients"
 
 #: modules/univention/admin/handlers/settings/default.py:74
-msgid "Default Computer Group"
+msgid "Default Group for Computers"
 msgstr "Standard Rechnergruppe"
 
 #: modules/univention/admin/handlers/settings/default.py:109
