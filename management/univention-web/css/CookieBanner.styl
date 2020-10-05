@@ -3,11 +3,9 @@
 @import "variables"
 
 .umc .dijitDialog.umcConfirmDialog.umcCookieBanner
-	position: fixed !important
-	bottom: 0px !important
 	top: auto !important
 	left: 0 !important
-	right: 0 !important
+	bottom: 0px
 	max-width: 100%
 
 	.umcText
@@ -15,7 +13,8 @@
 
 	.dijitDialogTitleBar,
 	.dijitDialogPaneContent
-		padding 0 52px
+		padding-left 30px
+		padding-right 30px
 
 	.dijitDialogTitleBar
 		padding-top 20px
@@ -27,15 +26,23 @@
 	.dijitDialogPaneContent
 		padding-top 5px
 		padding-bottom 25px
-		display table
 
-		.umcContainerWidget
-			display table-row
+		@media (min-width: $dialog-max-width)
+			display table
 
-			.umcText,
-			.umcButtonRow
-				display table-cell
+			.umcContainerWidget
+				display table-row
 
-			.umcButtonRow
-				padding-left 30px
-				vertical-align bottom
+				.umcText,
+				.umcButtonRow
+					display table-cell
+
+				.umcButtonRow
+					padding-left 30px
+
+		.umcContainerWidget .umcButtonRow
+			vertical-align bottom
+			text-align center
+
+			.dijitButton
+				width 100%

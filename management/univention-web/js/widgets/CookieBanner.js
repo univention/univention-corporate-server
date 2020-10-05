@@ -47,7 +47,7 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			var locale = i18nTools.defaultLang().slice(0, 2);
-			this.title = _('Cookie settings');
+			this.title = _('Cookie Settings');
 			this.message = tools.status('cookieBanner')[locale] || tools.status('cookieBannerDefault');
 			this.options = [{
 				name: 'accept',
