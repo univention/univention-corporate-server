@@ -1,3 +1,11 @@
+univention-portal (4.0.1-8) unstable; urgency=medium
+
+  * Bug #52125: Prevent a reload during the early stages of the package setup
+    write tracebacks in the logs: Just warn that we did not have a portal
+    object configured yet
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 05 Oct 2020 14:32:04 +0200
+
 univention-portal (4.0.1-7) unstable; urgency=medium
 
   * Bug #52125: add portals/* encoder for python3
