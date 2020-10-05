@@ -1,3 +1,10 @@
+univention-ad-connector (13.0.0-55) unstable; urgency=medium
+
+  * Bug #51904: Fix typo which lead to change of pwdChangeNextLogin if password resetted
+    without changing the flag
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 05 Oct 2020 19:14:28 +0200
+
 univention-ad-connector (13.0.0-54) unstable; urgency=medium
 
   * Bug #51501: fixed exception handling

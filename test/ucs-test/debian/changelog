@@ -1,3 +1,9 @@
+ucs-test (9.0.5-9) unstable; urgency=medium
+
+  * Bug #51904: extend 503test_password_change_next_logon
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 05 Oct 2020 19:13:37 +0200
+
 ucs-test (9.0.5-8) unstable; urgency=medium
 
   * Bug #52145: 41listener_module_api_test could not deal with longer waiting time - failed on s4 member and slave pdc
