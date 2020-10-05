@@ -132,8 +132,8 @@ msgid "Computer: Domain trust account"
 msgstr "Rechner: Domain Trust Account"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:54
-msgid "Computer: IP managed client"
-msgstr "Rechner: IP-Managed-Client"
+msgid "Computer: IP client"
+msgstr "Rechner: IP-Client"
 
 #: modules/univention/admin/handlers/computers/linux.py:47
 #: modules/univention/admin/handlers/computers/linux.py:53
@@ -374,16 +374,16 @@ msgid "IP address"
 msgstr "IP-Adresse"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:55
-msgid "IP managed client"
-msgstr "IP-Managed-Client"
+msgid "IP client"
+msgstr "IP-Client"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:62
-msgid "IP managed client name"
-msgstr "Name des IP-Managed-Client"
+msgid "IP client name"
+msgstr "Name des IP-Client"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:56
-msgid "IP managed clients"
-msgstr "IP-Managed-Clients"
+msgid "IP clients"
+msgstr "IP-Clients"
 
 #: modules/univention/admin/handlers/computers/windows.py:172
 msgid "Initialize password with hostname"

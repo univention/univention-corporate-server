@@ -102,7 +102,7 @@
 						<para>
 						  After creation, the computer name can only be changed for the system roles
 						  <emphasis>Windows Workstation/Server</emphasis>, <emphasis>Mac OS X
-						  Client</emphasis> and <emphasis>IP managed client</emphasis>.
+						  Client</emphasis> and <emphasis>IP client</emphasis>.
 						</para>
 					</entry>
 				</row>

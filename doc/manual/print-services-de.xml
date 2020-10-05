@@ -56,7 +56,7 @@
 		angebunden werden).
 	</para>
 	<para>
-		Netzwerkdrucker mit eigener IP-Adresse sollten als IP-Managed-Client
+		Netzwerkdrucker mit eigener IP-Adresse sollten als IP-Client
 		in der UMC-Rechnerverwaltung registriert werden (siehe
 		<xref linkend="systemrollen"/>).
 	</para>

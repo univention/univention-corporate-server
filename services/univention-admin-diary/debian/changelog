@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.1-1) unstable; urgency=medium
+
+  * Bug #42374: IP Managed Client -> IP Client
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 18:02:43 +0200
+
 univention-admin-diary (2.0.1-0) unstable; urgency=medium
 
   * Bug #51334: add python 3 compatibility

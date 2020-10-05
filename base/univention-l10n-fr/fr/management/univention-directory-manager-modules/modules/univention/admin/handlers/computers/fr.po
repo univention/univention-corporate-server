@@ -133,7 +133,7 @@ msgid "Computer: Domain trust account"
 msgstr "Ordinateur : compte d'approbation de domaine"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:52
-msgid "Computer: IP managed client"
+msgid "Computer: IP client"
 msgstr "Ordinateur : client géré par IP"
 
 #: modules/univention/admin/handlers/computers/linux.py:56
@@ -347,7 +347,7 @@ msgid "IP address"
 msgstr "Adresse IP"
 
 #: modules/univention/admin/handlers/computers/ipmanagedclient.py:58
-msgid "IP managed client name"
+msgid "IP client name"
 msgstr "Nom du client géré par IP"
 
 #: modules/univention/admin/handlers/computers/windows.py:227

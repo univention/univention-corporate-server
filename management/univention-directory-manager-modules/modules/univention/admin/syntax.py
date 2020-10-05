@@ -4689,7 +4689,7 @@ class univentionAdminModules(select):
 		('computers/domaincontroller_backup', 'Computer: Backup Directory Node'),
 		('computers/domaincontroller_master', 'Computer: Primary Directory Node'),
 		('computers/domaincontroller_slave', 'Computer: Replica Directory Node'),
-		('computers/ipmanagedclient', 'Computer: IP Managed Client'),
+		('computers/ipmanagedclient', 'Computer: IP Client'),
 		('computers/linux', 'Computer: Linux'),
 		('computers/macos', 'Computer: Mac OS X Client'),
 		('computers/memberserver', 'Computer: Managed Node'),

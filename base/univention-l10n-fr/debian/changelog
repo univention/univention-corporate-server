@@ -1,3 +1,9 @@
+univention-l10n-fr (4.0.1-5) unstable; urgency=medium
+
+  * Bug #42374: IP Managed Client -> IP Client
+
+ -- Arvid <requate@univention.de>  Mon, 05 Oct 2020 18:00:47 +0200
+
 univention-l10n-fr (4.0.1-4) unstable; urgency=medium
 
   * Bug #42374: Wording fixes

@@ -58,7 +58,7 @@
 	</para>
 	<para>
 		Network printers with their own IP address should be registered in the
-		computer administration of &ucsUMC; as an IP managed client (see
+		computer administration of &ucsUMC; as an IP client (see
 		<xref linkend="systemrollen"/>).
 	</para>
 	<para>

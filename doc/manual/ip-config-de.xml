@@ -2132,7 +2132,7 @@ client AP01 {
 					Dieses Rechnerobjekt benötigt die Option <foreignphrase>RADIUS-Authenticator</foreignphrase>
 					(<xref linkend="ip-config:radius:option"/>).
 					Für einen <foreignphrase>Access Point</foreignphrase> bietet sich ein
-					<emphasis>IP-Managed-Client</emphasis> als Rechnerobjekt an. Im <guimenu>RADIUS</guimenu>-Reiter des Objekts
+					<emphasis>IP-Client</emphasis> als Rechnerobjekt an. Im <guimenu>RADIUS</guimenu>-Reiter des Objekts
 					lassen sich nach dem Hinzufügen der Option die Eigenschaften des
 					<foreignphrase>Access Points</foreignphrase> festlegen
 					(<xref linkend="ip-config:radius:authenticator"/>).

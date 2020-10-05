@@ -105,7 +105,7 @@
                             <para>
 							  Der Rechnername kann nach dem Anlegen nur bei den Systemrollen
 							  <emphasis>Windows Workstation/Server</emphasis>, <emphasis>Mac OS X
-							  Client</emphasis> und <emphasis>IP-Managed-Client</emphasis> verändert
+							  Client</emphasis> und <emphasis>IP-Client</emphasis> verändert
 							  werden.
 							</para>
                         </entry>

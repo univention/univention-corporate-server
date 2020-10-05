@@ -557,9 +557,9 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 	</section>
 
 	<section id="domain-ldap:IP-Managed-Client">
-		<title>IP-Managed-Client</title>
+		<title>IP-Client</title>
 		<para>
-			Ein IP-Managed-Client ermöglicht die Integration von Nicht-UCS-Systemen
+			Ein IP-Client ermöglicht die Integration von Nicht-UCS-Systemen
 			in das IP-Management (DNS/DHCP), z.B. für Netzwerkdrucker oder Router.
 		</para>
 	</section>

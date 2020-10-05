@@ -2448,7 +2448,7 @@ client AP01 {
 					To configure an access point using the &ucsUMC; a computer object must exists for it.
 					This object needs the <emphasis>RADIUS-Authenticator</emphasis>	option to be set
 					(<xref linkend="ip-config:radius:option"/>).
-					An <emphasis>IP managed client</emphasis> is a good choice as a computer object for access points.
+					An <emphasis>IP client</emphasis> is a good choice as a computer object for access points.
 					The RADIUS settings can be edited on the <guimenu>RADIUS</guimenu> tab of the object
 					(<xref linkend="ip-config:radius:authenticator"/>).
 					At least the IP address and the shared secret must be configured. The virtual server

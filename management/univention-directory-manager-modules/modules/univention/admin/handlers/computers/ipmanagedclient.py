@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the ip managed clients
+#  admin module for the IP clients
 #
 # Copyright 2004-2020 Univention GmbH
 #
@@ -51,15 +51,15 @@ module = 'computers/ipmanagedclient'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
-short_description = _('Computer: IP managed client')
-object_name = _('IP managed client')
-object_name_plural = _('IP managed clients')
+short_description = _('Computer: IP client')
+object_name = _('IP client')
+object_name_plural = _('IP clients')
 long_description = ''
 options = {
 }
 property_descriptions = {
 	'name': univention.admin.property(
-		short_description=_('IP managed client name'),
+		short_description=_('IP client name'),
 		long_description='',
 		syntax=univention.admin.syntax.hostName,
 		include_in_default_search=True,

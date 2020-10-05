@@ -98,10 +98,10 @@ UDM_COMPUTERS_DOMAINCONTROLLER_SLAVE_MODIFIED = DiaryEvent('UDM_COMPUTERS_DOMAIN
 UDM_COMPUTERS_DOMAINCONTROLLER_SLAVE_MOVED = DiaryEvent('UDM_COMPUTERS_DOMAINCONTROLLER_SLAVE_MOVED', {'en': 'Replica Directory Node {name} moved to {position}', 'de': 'Replica Directory Node {name} verschoben nach {position}'}, args=['name'], icon='devices')
 UDM_COMPUTERS_DOMAINCONTROLLER_SLAVE_REMOVED = DiaryEvent('UDM_COMPUTERS_DOMAINCONTROLLER_SLAVE_REMOVED', {'en': 'Replica Directory Node {name} removed', 'de': 'Replica Directory Node {name} gelöscht'}, args=['name'], icon='devices')
 
-UDM_COMPUTERS_IPMANAGEDCLIENT_CREATED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_CREATED', {'en': 'IP managed client {name} created', 'de': 'IP-Managed-Client {name} angelegt'}, args=['name'], icon='devices')
-UDM_COMPUTERS_IPMANAGEDCLIENT_MODIFIED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_MODIFIED', {'en': 'IP managed client {name} modified', 'de': 'IP-Managed-Client {name} bearbeitet'}, args=['name'], icon='devices')
-UDM_COMPUTERS_IPMANAGEDCLIENT_MOVED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_MOVED', {'en': 'IP managed client {name} moved to {position}', 'de': 'IP-Managed-Client {name} verschoben nach {position}'}, args=['name'], icon='devices')
-UDM_COMPUTERS_IPMANAGEDCLIENT_REMOVED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_REMOVED', {'en': 'IP managed client {name} removed', 'de': 'IP-Managed-Client {name} gelöscht'}, args=['name'], icon='devices')
+UDM_COMPUTERS_IPMANAGEDCLIENT_CREATED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_CREATED', {'en': 'IP client {name} created', 'de': 'IP-Client {name} angelegt'}, args=['name'], icon='devices')
+UDM_COMPUTERS_IPMANAGEDCLIENT_MODIFIED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_MODIFIED', {'en': 'IP client {name} modified', 'de': 'IP-Client {name} bearbeitet'}, args=['name'], icon='devices')
+UDM_COMPUTERS_IPMANAGEDCLIENT_MOVED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_MOVED', {'en': 'IP client {name} moved to {position}', 'de': 'IP-Client {name} verschoben nach {position}'}, args=['name'], icon='devices')
+UDM_COMPUTERS_IPMANAGEDCLIENT_REMOVED = DiaryEvent('UDM_COMPUTERS_IPMANAGEDCLIENT_REMOVED', {'en': 'IP client {name} removed', 'de': 'IP-Client {name} gelöscht'}, args=['name'], icon='devices')
 
 UDM_COMPUTERS_LINUX_CREATED = DiaryEvent('UDM_COMPUTERS_LINUX_CREATED', {'en': 'Linux Computer {name} created', 'de': 'Linux-Rechner {name} angelegt'}, args=['name'], icon='devices')
 UDM_COMPUTERS_LINUX_MODIFIED = DiaryEvent('UDM_COMPUTERS_LINUX_MODIFIED', {'en': 'Linux Computer {name} modified', 'de': 'Linux-Rechner {name} bearbeitet'}, args=['name'], icon='devices')

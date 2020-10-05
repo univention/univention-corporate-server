@@ -132,7 +132,7 @@
 		  Univention Installer attempts to perform a DHCP request in the scope of the network
 		  configuration. The network configuration is only performed via DHCP if this is successful,
 		  i.e., an IP address must be assigned to the appliance for the duration of the setup. This
-		  can be done with an <emphasis>IP managed client</emphasis> object in the &ucsUMC;.
+		  can be done with an <emphasis>IP client</emphasis> object in the &ucsUMC;.
 		</simpara></listitem>
 
 		<listitem><simpara>
