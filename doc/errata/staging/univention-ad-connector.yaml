@@ -6,8 +6,11 @@ src: univention-ad-connector
 fix: 13.0.0-55A~4.4.0.202010051921
 desc: |
  This update addresses the following issue:
+ * If the transport connection is unexpectedly interrupted during a
+    password synchronization, the AD connector will now reopen the
+    connection and retry the sync.
  * The flag pwdChangeNextLogin was incorrectly unset during the
-   sync to UCS if the password
-   was reset without changing the flag pwdChangeNextLogin.
-   This behavior has been fixed.
-bug: [51904]
+    sync to UCS if the password
+    was reset without changing the flag pwdChangeNextLogin.
+    This behavior has been fixed.
+bug: [51904,51501]
