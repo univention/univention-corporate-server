@@ -556,10 +556,10 @@ def password_sync(connector, key, ucs_object):
 
 			# update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
 			# krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
-			if old_shadowMax or new_shadowMax and pwdLastSet != 0:
+			if (old_shadowMax or new_shadowMax) and (pwdLastSet != 0):
 				ud.debug(ud.LDAP, ud.INFO, "password_sync: update shadowMax to %s for %s" % (new_shadowMax, ucs_object['dn']))
 				modlist.append(('shadowMax', old_shadowMax, new_shadowMax))
-			if old_krb5end or new_krb5end and pwdLastSet != 0:
+			if (old_krb5end or new_krb5end) and (pwdLastSet != 0):
 				ud.debug(ud.LDAP, ud.INFO, "password_sync: update krb5PasswordEnd to %s for %s" % (new_krb5end, ucs_object['dn']))
 				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
 	else:
