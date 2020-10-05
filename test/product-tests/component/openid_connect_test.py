@@ -254,6 +254,7 @@ def test_owncloud_with_openid_login(chrome, users):
 
 	test_name = "test_owncloud_with_openid_login"
 	user = create_random_user(users)
+	time.sleep(5)
 	with chrome.capture(test_name):
 		portal_goto(chrome)
 		# make sure, that the app tiles are already loaded, then click...
@@ -291,6 +292,7 @@ def test_owncloud_with_owncloud_login(chrome, users):
 
 	test_name = "test_owncloud_with_owncloud_login"
 	user = create_random_user(users)
+	time.sleep(5)
 	with chrome.capture(test_name):
 		portal_goto(chrome)
 		# make sure, that the app tiles are already loaded, then click...
