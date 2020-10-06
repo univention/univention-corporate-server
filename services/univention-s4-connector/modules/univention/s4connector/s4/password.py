@@ -546,9 +546,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		pwdLastSet = int(s4_object_attributes['pwdLastSet'][0])
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
-	# rid = None
-	# if s4_object_attributes.has_key('objectSid'):
-	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
 	pwd_set = False
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
@@ -685,10 +682,6 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		pwdLastSet = int(s4_object_attributes['pwdLastSet'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, s4_object_attributes))
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
-
-	# rid = None
-	# if s4_object_attributes.has_key('objectSid'):
-	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
 	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])

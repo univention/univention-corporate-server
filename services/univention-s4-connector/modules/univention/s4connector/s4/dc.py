@@ -35,7 +35,7 @@ import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
-from univention.s4connector.s4 import format_escaped
+from univention.s4connector.s4 import format_escaped, decode_sid
 
 import univention.admin.handlers
 import univention.admin.handlers.settings.sambadomain
@@ -133,10 +133,11 @@ def con2ucs(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, 'dc con2ucs: Object (%s): %s' % (object['dn'], object))
 
 	# Search sambaDomainname object via sambaSID
-	sambadomainnameObject = univention.admin.handlers.settings.sambadomain.lookup(None, s4connector.lo, format_escaped('sambaSID={0!e}', object['attributes'].get('objectSid', [b''])[0].decode('ASCII')))
+	object_sid = decode_sid(object['attributes']['objectSid'][0])
+	sambadomainnameObject = univention.admin.handlers.settings.sambadomain.lookup(None, s4connector.lo, format_escaped('sambaSID={0!e}', object_sid))
 
 	if len(sambadomainnameObject) > 1:
-		ud.debug(ud.LDAP, ud.WARN, 'dc con2ucs: Found more than one sambaDomainname object with sambaSID %r' % object['attributes'].get('objectSid', [])[0])
+		ud.debug(ud.LDAP, ud.WARN, 'dc con2ucs: Found more than one sambaDomainname object with sambaSID %r' % (object_sid,))
 	elif len(sambadomainnameObject) == 1:
 
 		# Use the first sambaDomain

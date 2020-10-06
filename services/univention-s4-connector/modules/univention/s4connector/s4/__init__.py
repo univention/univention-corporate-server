@@ -120,7 +120,7 @@ def add_primary_group_to_addlist(s4connector, property_type, object, addlist, se
 		s4_group_object = s4connector._object_mapping(member_key, {'dn': ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
 		ldap_object_s4_group = s4connector.get_object(s4_group_object['dn'])
 
-		primary_group_sid = ldap_object_s4_group['objectSid'][0]
+		primary_group_sid = decode_sid(ldap_object_s4_group['objectSid'][0])
 		primary_group_rid = primary_group_sid.split('-')[-1].encode('ASCII')
 
 		# Is the primary group Domain Users (the default)?
@@ -148,9 +148,9 @@ def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_t
 	if __is_groupType_local(groupType):
 		serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID, criticality=0))
 
-		sambaSID = object.get('attributes', {}).get('sambaSID', [])[0]
-		ud.debug(ud.LDAP, ud.INFO, "sambaSID: %s" % sambaSID)
-		objectSid = ndr_pack(security.dom_sid('%s' % (sambaSID)))
+		sambaSID = object['attributes']['sambaSID'][0].decode('ASCII')
+		ud.debug(ud.LDAP, ud.INFO, "sambaSID: %r" % sambaSID)
+		objectSid = ndr_pack(security.dom_sid(sambaSID))
 		add_or_modlist.append(('objectSid', [objectSid]))
 
 
@@ -168,19 +168,6 @@ def str2dn(dn):
 		return ldap.dn.str2dn(dn)
 	except ldap.DECODING_ERROR:
 		return ldap.dn.str2dn(fix_dn(dn))
-
-
-def encode_s4_object(s4_object):
-	if isinstance(s4_object, dict) and 'objectSid' in s4_object:
-		s4_object['objectSid'] = [decode_sid(s4_object['objectSid'][0]).encode('ASCII')]
-	return s4_object
-
-
-def encode_s4_resultlist(s4_resultlist):
-	'''
-	encode an result from an python-ldap search
-	'''
-	return [(x[0], encode_s4_object(x[1])) for x in s4_resultlist]
 
 
 def unix2s4_time(ltime):
@@ -419,36 +406,11 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 
 def decode_sid(value):
-	# SID in S4
-	#
-	#   | Byte 1         | Byte 2-7           | Byte 9-12                | Byte 13-16 |
-	#   ----------------------------------------------------------------------------------------------------------------
-	#   | Der erste Wert | Gibt die Laenge    | Hier sind jetzt          | siehe 9-12 |
-	#   | der SID, also  | des restlichen     | die eiegntlichen         |            |
-	#   | der Teil nach  | Strings an, da die | SID Daten.               |            |
-	#   | S-             | SID immer relativ  | In einem int Wert        |            |
-	#   |                | kurz ist, meistens | sind die Werte           |            |
-	#   |                | nur das 2. Byte    | Hexadezimal gespeichert. |            |
-	#
-	sid = 'S-'
-	sid += "%d" % ord(value[0])
-
-	sid_len = ord(value[1])
-
-	sid += "-%d" % ord(value[7])
-
-	for i in range(0, sid_len):
-		res = ord(value[8 + (i * 4)]) + (ord(value[9 + (i * 4)]) << 8) + (ord(value[10 + (i * 4)]) << 16) + (ord(value[11 + (i * 4)]) << 24)
-		sid += "-%u" % res
-
-	return sid
+	return str(ndr_unpack(security.dom_sid, value))
 
 
 def __is_sid_string(sid):
-	if sid.startswith('S-'):
-		return True
-	else:
-		return False
+	return sid.startswith(b'S-')
 
 
 def __is_int(value):
@@ -649,12 +611,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
 			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
-		try:
-			self.s4_sid = univention.s4connector.s4.decode_sid(
-				self.s4_search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
-		except Exception as msg:
-			print("Failed to get SID from S4: %s" % msg)
-			sys.exit(1)
+		self.s4_sid = decode_sid(self.s4_search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
 
 	def s4_search_ext_s(self, *args, **kwargs):
 		return fix_dn_in_search(self.lo_s4.lo.search_ext_s(*args, **kwargs))
@@ -822,11 +779,8 @@ class s4(univention.s4connector.ucs):
 		return all_values
 
 	def get_s4_members(self, s4_dn, s4_attrs):
-		s4_members = s4_attrs.get('member')
-		if s4_members is None:
-			s4_members = []
-		elif s4_members == []:
-			del s4_attrs['member']
+		s4_members = s4_attrs.get('member', [])
+		if not s4_members:
 			s4_members = self.value_range_retrieval(s4_dn, s4_attrs, 'member')
 			s4_attrs['member'] = s4_members
 		return s4_members
@@ -836,7 +790,7 @@ class s4(univention.s4connector.ucs):
 		_d = ud.function('ldap.get_object')  # noqa: F841
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
-				dn, s4_object = encode_s4_resultlist(self.s4_search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist))[0]
+				dn, s4_object = self.s4_search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
 				ud.debug(ud.LDAP, ud.INFO, "get_object: got object: %r" % (dn,))
 				return s4_object
 			except (IndexError, ldap.NO_SUCH_OBJECT):
@@ -919,7 +873,7 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.WARN, "S4 ignores PAGE_RESULTS")
 				break
 
-		return encode_s4_resultlist(fix_dn_in_search(res))
+		return fix_dn_in_search(res)
 
 	def __search_s4_changes(self, show_deleted=False, filter=''):
 		'''
@@ -1147,12 +1101,10 @@ class s4(univention.s4connector.ucs):
 		member_key = 'group'  # FIXME: generate by identify-function ?
 		s4_group_object = self._object_mapping(member_key, {'dn': ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
 		ldap_object_s4_group = self.get_object(s4_group_object['dn'])
-		rid = "513"  # FIXME: Fallback: should be configurable
-		if ldap_object_s4_group and 'objectSid' in ldap_object_s4_group:
-			sid = ldap_object_s4_group['objectSid'][0]
-			rid = sid[sid.rfind("-") + 1:]
-		else:
-			print("no SID !!!")
+		# FIXME: default value "513" should be configurable
+		rid = b'513'
+		if 'objectSid' in ldap_object_s4_group:
+			rid = decode_sid(ldap_object_s4_group['objectSid'][0]).rsplit('-', 1)[-1].encode('ASCII')
 
 		# to set a valid primary group we need to:
 		# - check if either the primaryGroupID is already set to rid or
@@ -1387,7 +1339,7 @@ class s4(univention.s4connector.ucs):
 
 		# need to remove users from s4_members_from_ucs which have this group as primary group. may failed earlier if groupnames are mapped
 		try:
-			group_rid = decode_sid(fix_dn_in_search(self.lo_s4.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid']))[0][1]['objectSid'][0]).split('-')[-1]
+			group_rid = decode_sid(fix_dn_in_search(self.lo_s4.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid']))[0][1]['objectSid'][0]).rsplit('-', 1)[-1]
 		except ldap.NO_SUCH_OBJECT:
 			group_rid = None
 
@@ -1564,7 +1516,7 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: s4_members %s" % s4_members)
 
 		# search and add members which have this as their primaryGroup
-		group_rid = ldap_object_s4['objectSid'][0].decode('UTF-8').rsplit('-', 1)[-1]
+		group_rid = decode_sid(ldap_object_s4['objectSid'][0]).rsplit('-', 1)[-1]
 		prim_members_s4_filter = format_escaped('(primaryGroupID={0!e})', group_rid)
 		prim_members_s4 = self.__search_s4(self.lo_s4.base, ldap.SCOPE_SUBTREE, prim_members_s4_filter)
 		for prim_dn, prim_object in prim_members_s4:
@@ -2045,7 +1997,7 @@ class s4(univention.s4connector.ucs):
 				try:
 					self.lo_s4.rename(old_dn, object['dn'])
 				except ldap.NO_SUCH_OBJECT:  # check if object is already moved (we may resync now)
-					new = encode_s4_resultlist(self.s4_search_ext_s(object['dn'], ldap.SCOPE_BASE, 'objectClass=*'))
+					new = self.s4_search_ext_s(object['dn'], ldap.SCOPE_BASE, 'objectClass=*')
 					if not new:
 						raise
 				# need to actualise the GUID, group cache and DN-Mapping

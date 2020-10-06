@@ -55,17 +55,17 @@ def sid_to_s4_mapping(s4connector, key, object):
 	# Two different cases are possible, the user sid contains the
 	# domain sid or not.
 	if sambaSID[0].startswith(b'S-'):
-		new_objectSid_ndr = ndr_pack(security.dom_sid(b'%s' % (sambaSID[0])))
+		new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID[0].decode('ASCII')))
 	else:
-		new_objectSid_ndr = ndr_pack(security.dom_sid(b'%s-%s' % (s4connector.s4_sid.encode('ASCII'), sambaSID[0])))
+		new_objectSid_ndr = ndr_pack(security.dom_sid(u'%s-%s' % (s4connector.s4_sid, sambaSID[0].decode('ASCII'))))
 
 	return [new_objectSid_ndr]
 
 
 def sid_to_ucs_mapping(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs_mapping")
-	object_sid = s4_object['attributes']['objectSid'][0]
-	return object_sid.split(b'-')[-1]
+	object_sid = decode_sid(s4_object['attributes']['objectSid'][0])
+	return [object_sid.split('-')[-1].encode('ASCII')]
 
 
 def sid_to_s4(s4connector, key, object):
@@ -88,13 +88,13 @@ def sid_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: UCS object does not have a %s' % sidAttribute)
 		return
 
-	sambaSID = object['attributes'][sidAttribute]
+	sambaSID = object['attributes'][sidAttribute][0].decode('ASCII')
 	# get the ad sid
 	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectSid=*)', ['objectSid'])[0]
 	objectSid = s4_attributes.get('objectSid')
 	if objectSid:
 		decoded_s4_sid = decode_sid(objectSid[0])
-		if decoded_s4_sid == sambaSID[0]:
+		if decoded_s4_sid == sambaSID:
 			ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSid and %s are equal' % sidAttribute)
 			return
 
@@ -102,8 +102,8 @@ def sid_to_s4(s4connector, key, object):
 		#	http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
 		#	http://technet.microsoft.com/en-us/library/cc961998.aspx
 
-		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %r to %r' % (decoded_s4_sid, sambaSID[0]))
-		new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID[0]))
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %r to %r' % (decoded_s4_sid, sambaSID))
+		new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID))
 		modlist.append((ldap.MOD_REPLACE, 'objectSid', new_objectSid_ndr))
 
 		# objectSid modification for an Samba4 object is only possible with the "provision" control:
@@ -133,8 +133,10 @@ def sid_to_ucs(s4connector, key, s4_object):
 	ucs_dn = s4_object['dn']
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_s4: UCS DN %s" % ucs_dn)
 
-	if 'attributes' in s4_object and 'objectSid' in s4_object['attributes']:
-		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid found: %s' % s4_object['attributes']['objectSid'])
+	objectSid = s4_object['attributes'].get('objectSid', [None])[0]
+	if objectSid:
+		objectSid = decode_sid(objectSid)
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid found: %r' % (objectSid,))
 	else:
 		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid not found in attributes!')
 		return
@@ -145,9 +147,8 @@ def sid_to_ucs(s4connector, key, s4_object):
 		ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: UCS object (%s) not found' % ucs_dn)
 		return
 
-	objectSid = s4_object['attributes'].get('objectSid')
 	sambaSID = ucs_attributes.get(sidAttribute)
-	if not sambaSID or objectSid != sambaSID:
+	if not sambaSID or objectSid.encode('ASCII') not in sambaSID:
 		ml.append((sidAttribute, sambaSID, s4_object['attributes'].get('objectSid')))
 		s4_ocs = s4_object['attributes'].get('objectClass', [])
 		ucs_ocs = ucs_attributes.get('objectClass')
