@@ -27,18 +27,12 @@ echo $? >> /tmp/py{0}.out
 ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/usr/share/univention-management-console/meta.json',
 	'/etc/univention/templates/files/etc/aliases',
-	'/etc/univention/templates/files/etc/security/access-other.conf',
-	'/etc/univention/templates/files/etc/security/access-login.conf',
-	'/etc/univention/templates/files/etc/security/access-screen.conf',
-	'/etc/univention/templates/files/etc/security/access-rlogin.conf',
-	'/etc/univention/templates/files/etc/security/access-sshd.conf',
-	'/etc/univention/templates/files/etc/security/limits.conf',
-	'/etc/univention/templates/files/etc/security/access-ppp.conf',
 	'/etc/univention/templates/files/etc/simplesamlphp/00authsources.php',
 	'/etc/univention/templates/files/etc/univention/directory/reports/config.ini',
 	'/etc/univention/templates/files/etc/listfilter.secret',
 	'/etc/univention/templates/files/etc/security/packetfilter.d/10_univention-firewall_start.sh',
-] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*')
+	'/etc/univention/templates/files/etc/dhcp/dhclient.conf',  # different IP address received, different date
+] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*') + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 
 
 @pytest.fixture(scope="module")
