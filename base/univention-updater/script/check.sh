@@ -329,9 +329,9 @@ update_check_legacy_objects () {
 	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(grep '^dn:' "$tmp")"
 
 	# shellcheck disable=SC2128
-	[ -z "$found_structural" ] && [ -z "$found_auxiliary" ] && return 0
+	[ -z "${found_structural:-}" ] && [ -z "${found_auxiliary:-}" ] && return 0
 
-	if [ -n "$found_structural" ]
+	if [ -n "${found_structural:-}" ]
 	then
 		echo "	The following objects are no longer supported with UCS-5:"
 		local obj
@@ -342,7 +342,7 @@ update_check_legacy_objects () {
 		echo "	They must be removed before the update can be done."
 		echo
 	fi
-	if [ -n "$found_auxiliary" ]
+	if [ -n "${found_auxiliary:-}" ]
 	then
 		echo "	The following objects contain auxiliary data no longer supported with UCS-5:"
 		local obj
