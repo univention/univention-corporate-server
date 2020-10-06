@@ -1880,7 +1880,7 @@ class ucs(object):
 		# other mapping
 		if object_type == 'ucs':
 			if key in self.property:
-				for attribute, values in object['attributes'].items():
+				for attribute, values in list(object['attributes'].items()):
 					if self.property[key].attributes:
 						for attr_key in self.property[key].attributes.keys():
 							if attribute.lower() == self.property[key].attributes[attr_key].ldap_attribute.lower():
@@ -1926,7 +1926,7 @@ class ucs(object):
 			if key in self.property:
 				# Filter out Configuration objects w/o DN
 				if object['dn'] is not None:
-					for attribute, values in object['attributes'].items():
+					for attribute, values in list(object['attributes'].items()):
 						if self.property[key].attributes:
 							for attr_key in self.property[key].attributes.keys():
 								if attribute.lower() == self.property[key].attributes[attr_key].con_attribute.lower():
