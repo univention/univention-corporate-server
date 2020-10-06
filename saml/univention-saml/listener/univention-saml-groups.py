@@ -88,7 +88,7 @@ def handler(dn, new, old):
 			json.dump(data, outfile)
 
 		shutil.move(tmp_path, path)
-		os.chmod(tmp_path, 0o600)
-		os.chown(tmp_path, uid, gid)
+		os.chmod(path, 0o600)
+		os.chown(path, uid, gid)
 	finally:
 		listener.unsetuid()
