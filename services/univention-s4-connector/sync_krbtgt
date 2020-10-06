@@ -39,7 +39,7 @@ import univention.admin.uldap
 import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4.password
-from optparse import OptionParser
+from argparse import ArgumentParser
 import sys
 from six.moves import urllib_parse
 
@@ -170,13 +170,12 @@ class S4(object):
 
 
 def main():
-	usage = "usage: sync_krbtgt.py"
-	parser = OptionParser(usage=usage)
-	parser.add_option("--ucrbase", dest="ucrbase", help="", metavar="ucrbase", default="connector")
-	parser.add_option("--binddn", dest="binddn", help="Binddn for UCS LDAP connection", default=None)
-	parser.add_option("--bindpwd", dest="bindpwd", help="Bindpwd for UCS LDAP connection", default=None)
-	parser.add_option("--bindpwdfile", dest="bindpwdfile", help="Bindpwdfile for UCS LDAP connection", default=None)
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("--ucrbase", help="", metavar="ucrbase", default="connector")
+	parser.add_argument("--binddn", help="Binddn for UCS LDAP connection", default=None)
+	parser.add_argument("--bindpwd", help="Bindpwd for UCS LDAP connection", default=None)
+	parser.add_argument("--bindpwdfile", help="Bindpwdfile for UCS LDAP connection", default=None)
+	options = parser.parse_args()
 	if options.bindpwdfile:
 		with open(options.bindpwdfile) as f:
 			options.bindpwd = f.readline().strip()

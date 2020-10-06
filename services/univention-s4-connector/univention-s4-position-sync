@@ -33,7 +33,7 @@
 
 from __future__ import print_function
 
-import optparse
+from argparse import ArgumentParser
 import sys
 import imp
 from univention import config_registry
@@ -154,12 +154,12 @@ class S4Connector(univention.s4connector.s4.s4):
 
 
 if __name__ == "__main__":
-	parser = optparse.OptionParser("%prog [options]")
-	parser.add_option("--dry-run", action="store_true", dest="dryrun")
-	parser.add_option("-y", "--yes", action="store_true", dest="assume_yes")
-	parser.add_option("-v", "--verbose", action="count", dest="verbose", default=0)
-	parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-	opts, args = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("--dry-run", action="store_true", dest="dryrun")
+	parser.add_argument("-y", "--yes", action="store_true", dest="assume_yes")
+	parser.add_argument("-v", "--verbose", action="count", default=0)
+	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	opts = parser.parse_args()
 
 	if opts.dryrun:
 		print("Option --dry-run given, checking only:")

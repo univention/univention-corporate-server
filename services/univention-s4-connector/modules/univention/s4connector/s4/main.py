@@ -38,7 +38,7 @@ import imp
 import signal
 import sys
 import time
-from optparse import OptionParser
+from argparse import ArgumentParser
 import fcntl
 import traceback
 
@@ -53,10 +53,10 @@ from univention.config_registry import ConfigRegistry
 
 # parse commandline options
 
-parser = OptionParser()
-parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-parser.add_option('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
-(options, args) = parser.parse_args()
+parser = ArgumentParser()
+parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
+options = parser.parse_args()
 
 CONFIGBASENAME = "connector"
 if options.configbasename:

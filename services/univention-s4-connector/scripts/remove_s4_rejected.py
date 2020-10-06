@@ -33,7 +33,7 @@
 
 import sqlite3
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 
 class ObjectNotFound(BaseException):
@@ -53,14 +53,11 @@ def remove_s4_rejected(s4_dn):
 
 
 if __name__ == '__main__':
-	parser = OptionParser(usage='remove_s4_rejected.py dn')
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument('dn')
+	args = parser.parse_args()
 
-	if len(args) != 1:
-		parser.print_help()
-		sys.exit(2)
-
-	s4_dn = args[0]
+	s4_dn = args.dn
 
 	try:
 		remove_s4_rejected(s4_dn)

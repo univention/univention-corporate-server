@@ -36,7 +36,7 @@ import samba
 import sys
 import ldb
 import base64
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 from samba import dsdb
 from samba.samdb import SamDB
@@ -45,16 +45,11 @@ from samba.auth import system_session
 from samba.credentials import Credentials
 
 if __name__ == '__main__':
-	parser = OptionParser(usage='base64Guid2DN.py base64_guid')
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument('base64_guid')
+	args = parser.parse_args()
 
-	if len(args) != 1:
-		parser.print_help()
-		sys.exit(2)
-
-	base64_guid = args[0]
-
-	guid = base64.decodestring(base64_guid)
+	guid = base64.decodestring(args.base64_guid)
 
 	lp = LoadParm()
 	creds = Credentials()

@@ -35,7 +35,7 @@ import sqlite3 as lite
 import subprocess
 import sys
 import ldap
-from optparse import OptionParser
+from argparse import ArgumentParser
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
@@ -146,12 +146,12 @@ def trigger_sd2ldap(configRegistry):
 
 if __name__ == '__main__':
 
-	parser = OptionParser(usage='msGPOWQLFilter.py (--write2ucs|--write2samba4)')
-	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Trigger synchronization of WMI filter objects from Samba 4 to UCS", default=False)
-	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Trigger synchronization of WMI filter objects from UCS to Samba 4", default=False)
-	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
-	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser(usage='msGPOWQLFilter.py (--write2ucs|--write2samba4)')
+	parser.add_argument("--write2ucs", action="store_true", help="Trigger synchronization of WMI filter objects from Samba 4 to UCS", default=False)
+	parser.add_argument("--write2samba4", action="store_true", help="Trigger synchronization of WMI filter objects from UCS to Samba 4", default=False)
+	parser.add_argument("--binddn", action="store", help="Binddn for UCS LDAP connection")
+	parser.add_argument("--bindpwd", action="store", help="Password for UCS LDAP connection")
+	options = parser.parse_args()
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
