@@ -162,7 +162,7 @@ InitialValue = Default: @%@ldap/base@%@
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "StringSetting(name='test/setting')"
+	assert repr(setting) == "StringSetting(name=u'test/setting')"
 
 	assert setting.is_inside(app) is False
 	assert setting.is_outside(app) is True
@@ -190,7 +190,7 @@ Scope = inside, outside
 
 	app, settings = fresh_settings(content, installed_apache_docker_app, 1)
 	setting, = settings
-	assert repr(setting) == "StringSetting(name='test/setting')"
+	assert repr(setting) == "StringSetting(name=u'test/setting')"
 
 	assert setting.is_inside(app) is True
 	assert setting.is_outside(app) is True
@@ -225,7 +225,7 @@ Required = Yes
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "IntSetting(name='test/setting2')"
+	assert repr(setting) == "IntSetting(name=u'test/setting2')"
 
 	# FIXME: This should be int(123), right?
 	assert setting.get_initial_value(app) == '123'
@@ -263,9 +263,9 @@ Description = My Description 4.2
 
 	app, settings = fresh_settings(content, installed_component_app, 3)
 	status_setting, file_setting, file_setting2 = settings
-	assert repr(status_setting) == "StatusSetting(name='test/setting3')"
-	assert repr(file_setting) == "FileSetting(name='test/setting4')"
-	assert repr(file_setting2) == "FileSetting(name='test/setting4/2')"
+	assert repr(status_setting) == "StatusSetting(name=u'test/setting3')"
+	assert repr(file_setting) == "FileSetting(name=u'test/setting4')"
+	assert repr(file_setting2) == "FileSetting(name=u'test/setting4/2')"
 
 	try:
 		with Configuring(app, revert='ucr') as config:
@@ -304,7 +304,7 @@ Description = My Description 4
 
 	app, settings = fresh_settings(content, installed_apache_docker_app, 1)
 	setting, = settings
-	assert repr(setting) == "FileSetting(name='test/setting4')"
+	assert repr(setting) == "FileSetting(name=u'test/setting4')"
 
 	docker_file = Docker(app).path(setting.filename)
 
@@ -340,8 +340,8 @@ Filename = /tmp/settingdir/setting6.password
 	app, settings = fresh_settings(content, installed_component_app, 2)
 	password_setting, password_file_setting = settings
 
-	assert repr(password_setting) == "PasswordSetting(name='test/setting5')"
-	assert repr(password_file_setting) == "PasswordFileSetting(name='test/setting6')"
+	assert repr(password_setting) == "PasswordSetting(name=u'test/setting5')"
+	assert repr(password_file_setting) == "PasswordFileSetting(name=u'test/setting6')"
 
 	assert password_setting.should_go_into_image_configuration(app) is False
 	assert password_file_setting.should_go_into_image_configuration(app) is False
@@ -376,8 +376,8 @@ Filename = /tmp/settingdir/setting6.password
 	app, settings = fresh_settings(content, installed_apache_docker_app, 2)
 	password_setting, password_file_setting = settings
 
-	assert repr(password_setting) == "PasswordSetting(name='test/setting5')"
-	assert repr(password_file_setting) == "PasswordFileSetting(name='test/setting6')"
+	assert repr(password_setting) == "PasswordSetting(name=u'test/setting5')"
+	assert repr(password_file_setting) == "PasswordFileSetting(name=u'test/setting6')"
 
 	assert password_setting.should_go_into_image_configuration(app) is False
 	assert password_file_setting.should_go_into_image_configuration(app) is False
@@ -418,7 +418,7 @@ InitialValue = False
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "BoolSetting(name='test/setting7')"
+	assert repr(setting) == "BoolSetting(name=u'test/setting7')"
 
 	# FIXME: This should be bool(False), right?
 	assert setting.get_initial_value(app) == 'False'
@@ -443,7 +443,7 @@ Description = My Description 8
 
 	app, settings = fresh_settings(content, installed_component_app, 1)
 	setting, = settings
-	assert repr(setting) == "ListSetting(name='test/setting8')"
+	assert repr(setting) == "ListSetting(name=u'test/setting8')"
 
 	with Configuring(app, revert='ucr') as config:
 		with pytest.raises(Abort):

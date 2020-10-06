@@ -1,3 +1,10 @@
+ucs-test (10.0.1-13) unstable; urgency=medium
+
+  * Bug #51598: Fix some unicode assert; use a joinable appbox image; adjust
+    install call
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Oct 2020 00:13:10 +0200
+
 ucs-test (10.0.1-12) unstable; urgency=medium
 
   * Bug #52005: Skip 96rename_domain* they just fail too often and I am out of ideas
