@@ -278,65 +278,102 @@ update_check_old_packages () {
 }
 
 # Bug #51497 #51973 #31048 #51655 #51955 #51982
-declare -a legacy_ocs=(
-	'(objectClass=univentionSamba4WinsHost)'  # EA
-	'(objectClass=univentionAdminUserSettings)'
+declare -a legacy_ocs_structural=(
+	'(structuralObjectClass=univentionAdminUserSettings)'
 	# UCS TCS:
-	'(objectClass=univentionPolicyAutoStart)'
-	'(objectClass=univentionPolicyThinClient)'
-	'(objectClass=univentionThinClient)'
-	'(objectClass=univentionMobileClient)'
-	'(objectClass=univentionFatClient)'
+	'(structuralObjectClass=univentionPolicyAutoStart)'
+	'(structuralObjectClass=univentionPolicyThinClient)'
+	'(structuralObjectClass=univentionThinClient)'
+	'(structuralObjectClass=univentionMobileClient)'
+	'(structuralObjectClass=univentionFatClient)'
 	# UCC:
-	'(objectClass=univentionCorporateClient)'
-	'(objectClass=univentionPolicyCorporateClientUser)'
-	'(objectClass=univentionCorporateClientSession)'
-	'(objectClass=univentionCorporateClientAutostart)'
-	'(objectClass=univentionCorporateClientImage)'
-	'(objectClass=univentionPolicyCorporateClientComputer)'
-	'(objectClass=univentionPolicyCorporateClientDesktop)'
-	'(objectClass=univentionPolicySoftwareupdates)'
-	'(objectClass=univentionPolicyCorporateClient)'
+	'(structuralObjectClass=univentionCorporateClient)'
+	'(structuralObjectClass=univentionPolicyCorporateClientUser)'
+	'(structuralObjectClass=univentionCorporateClientSession)'
+	'(structuralObjectClass=univentionCorporateClientAutostart)'
+	'(structuralObjectClass=univentionCorporateClientImage)'
+	'(structuralObjectClass=univentionPolicyCorporateClientComputer)'
+	'(structuralObjectClass=univentionPolicyCorporateClientDesktop)'
+	'(structuralObjectClass=univentionPolicySoftwareupdates)'
+	'(structuralObjectClass=univentionPolicyCorporateClient)'
 	# UVMM:
-	'(objectClass=univentionVirtualMachineCloudConnection)'
-	'(objectClass=univentionVirtualMachineCloudType)'
-	'(objectClass=univentionVirtualMachine)'
-	'(objectClass=univentionVirtualMachineProfile)'
+	'(structuralObjectClass=univentionVirtualMachineCloudConnection)'
+	'(structuralObjectClass=univentionVirtualMachineCloudType)'
+	'(structuralObjectClass=univentionVirtualMachine)'
+	'(structuralObjectClass=univentionVirtualMachineProfile)'
+)
+declare -a legacy_ocs_auxiliary=(
+	'(objectClass=univentionSamba4WinsHost)'  # EA
 	'(objectClass=univentionVirtualMachineGroupOC)'  # EA
 	'(objectClass=univentionVirtualMachineHostOC)'  # EA
 )
 update_check_legacy_objects () {
 	local var="update$VERSION/ignore_legacy_objects"
 	ignore_check "$var" && return 100
-	declare -a found=()
+	declare -a found_structural=() found_auxiliary=()
 	local IFS=''
-	local filter="(|${legacy_ocs[*]})"
-	IFS=$'\n' read -d '' -r -a found <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
+	local filter="(|${legacy_ocs_structural[*]})"
+	IFS=$'\n' read -d '' -r -a found_structural <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
+	local filter="(|${legacy_ocs_auxiliary[*]})"
+	IFS=$'\n' read -d '' -r -a found_auxiliary <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
+
 	# shellcheck disable=SC2128
-	[ -n "$found" ] || return 0
-	echo "	The following objects are no longer supported with UCS-5:"
-	local obj
-	for obj in "${found[@]}"
-	do
-		printf '\t\t%s\n' "${obj}"
-	done
-	echo "	They must be removed before the update can be done."
+	[ -z "$found_structural" ] && [ -z "$found_auxiliary" ] && return 0
+
+	if [ -n "$found_structural" ]
+	then
+		echo "	The following objects are no longer supported with UCS-5:"
+		local obj
+		for obj in "${found_structural[@]}"
+		do
+			printf '\t\t%s\n' "${obj}"
+		done
+		echo "	They must be removed before the update can be done."
+		echo
+	fi
+	if [ -n "$found_auxiliary" ]
+	then
+		echo "	The following objects contain auxiliary data no longer supported with UCS-5:"
+		local obj
+		for obj in "${found_auxiliary[@]}"
+		do
+			printf '\t\t%s\n' "${obj}"
+		done
+		echo "	They must be cleaned up before the update can be done."
+		echo
+	fi
 	echo "	See <https://help.univention.com/t/16227> for details."
 	echo
 	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
 	return 1
 }
 delete_legacy_objects () {
-	local filter
+	local filter ldif oc
 	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
-	for filter in "${legacy_ocs[@]}"
+
+	echo "> Removing structural objects"
+	for filter in "${legacy_ocs_structural[@]}"
 	do
-		echo "> ${filter/objectClass=/structuralObjectClass=}"
-		univention-ldapsearch -LLL "${filter/objectClass=/structuralObjectClass=}" 1.1 |
+		echo ">> $filter"
+		univention-ldapsearch -LLL "$filter" 1.1 |
 			sed -ne 's/^dn: //p' |
 			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
 	done
-	# TODO: Handle EAs
+
+	echo "> Removing auxiliary data"
+	ldif="$(mktemp)"
+	for filter in "${legacy_ocs_auxiliary[@]}"
+	do
+		echo ">> $filter"
+		oc="${filter#(objectClass=}"  # the closing parenthesis is stripped below!
+		univention-ldapsearch -LLL -b 'cn=Subschema' -s base objectClasses -E mv="${filter/objectClass=/objectClasses=}" >"$ldif"
+		sed -rne 's/objectClasses: //;T;s/.* (MUST|MAY)//;s/ (MUST|MAY|[($)])//g;s/^ +| +$//g;s/ +/\n/g;s/\S+/replace: &\n-/g;a delete: objectClass\nobjectClass: '"${oc%)}" -e p -i "$ldif"
+		[ -s "$ldif" ] || continue
+		univention-ldapsearch -LLL "$filter" 1.1 |
+			sed -e "/^dn: /r $ldif" |
+			ldapmodify -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
+	done
+	rm -f "$ldif"
 }
 
 # check that no apache configuration files are manually adjusted; Bug #43520
