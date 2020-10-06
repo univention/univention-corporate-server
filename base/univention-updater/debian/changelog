@@ -1,3 +1,9 @@
+univention-updater (15.0.1-7) unstable; urgency=low
+
+  * Bug #51655: Implement delete_legacy_objects
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Oct 2020 07:35:09 +0200
+
 univention-updater (15.0.1-6) unstable; urgency=medium
 
   * Bug #51982: Fix presentation of multiple legacy objects

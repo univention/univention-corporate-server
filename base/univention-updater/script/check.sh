@@ -29,13 +29,13 @@
 
 # shellcheck disable=SC2154
 UPDATER_LOG="/var/log/univention/updater.log"
+###CHECKS_ONLY###
 if [ -z "${UPDATE_NEXT_VERSION:-}" ]
 then
 	# stdout to screen and log
 	exec > >(exec tee -ia "$UPDATER_LOG")
-	# stderr to log
-	exec 2>>"$UPDATER_LOG"
 fi
+###CHECKS_COMMON###
 
 VERSION="50"
 VERSION_NAME="5.0"
@@ -74,7 +74,7 @@ have () {
 }
 
 die () {
-	echo "${0##*/}: $*" >&2
+	echo "${0##*/}: $*"
 	exit 1
 }
 
@@ -216,8 +216,8 @@ update_check_role_package_removed () {
 	# But you have been warned!
 	# In this case, you have to set the UCR variable after the update back
 	# to the old value which can be get from /var/log/univention/config-registry.replog
-	echo "	Please contact the Univention Support in case you have an Enterprise"
-	echo "	Subscription. Otherwise please try the Univention Help"
+	echo "	Please contact Univention Support in case you have an Enterprise"
+	echo "	Subscription. Otherwise please try Univention Help"
 	echo "	<https://help.univention.com/>"
 	return 1
 }
@@ -278,38 +278,39 @@ update_check_old_packages () {
 }
 
 # Bug #51497 #51973 #31048 #51655 #51955 #51982
+declare -a legacy_ocs=(
+	'(objectClass=univentionSamba4WinsHost)'  # EA
+	'(objectClass=univentionAdminUserSettings)'
+	# UCS TCS:
+	'(objectClass=univentionPolicyAutoStart)'
+	'(objectClass=univentionPolicyThinClient)'
+	'(objectClass=univentionThinClient)'
+	'(objectClass=univentionMobileClient)'
+	'(objectClass=univentionFatClient)'
+	# UCC:
+	'(objectClass=univentionCorporateClient)'
+	'(objectClass=univentionPolicyCorporateClientUser)'
+	'(objectClass=univentionCorporateClientSession)'
+	'(objectClass=univentionCorporateClientAutostart)'
+	'(objectClass=univentionCorporateClientImage)'
+	'(objectClass=univentionPolicyCorporateClientComputer)'
+	'(objectClass=univentionPolicyCorporateClientDesktop)'
+	'(objectClass=univentionPolicySoftwareupdates)'
+	'(objectClass=univentionPolicyCorporateClient)'
+	# UVMM:
+	'(objectClass=univentionVirtualMachineCloudConnection)'
+	'(objectClass=univentionVirtualMachineCloudType)'
+	'(objectClass=univentionVirtualMachine)'
+	'(objectClass=univentionVirtualMachineProfile)'
+	'(objectClass=univentionVirtualMachineGroupOC)'  # EA
+	'(objectClass=univentionVirtualMachineHostOC)'  # EA
+)
 update_check_legacy_objects () {
 	local var="update$VERSION/ignore_legacy_objects"
 	ignore_check "$var" && return 100
-	declare -a filters=(
-		'(objectClass=univentionSamba4WinsHost)'  # EA
-		'(objectClass=univentionAdminUserSettings)'
-		# UCS TCS:
-		'(objectClass=univentionPolicyAutoStart)'
-		'(objectClass=univentionPolicyThinClient)'
-		'(objectClass=univentionThinClient)'
-		'(objectClass=univentionMobileClient)'
-		'(objectClass=univentionFatClient)'
-		# UCC:
-		'(objectClass=univentionCorporateClient)'
-		'(objectClass=univentionPolicyCorporateClientUser)'
-		'(objectClass=univentionCorporateClientSession)'
-		'(objectClass=univentionCorporateClientAutostart)'
-		'(objectClass=univentionCorporateClientImage)'
-		'(objectClass=univentionPolicyCorporateClientComputer)'
-		'(objectClass=univentionPolicyCorporateClientDesktop)'
-		'(objectClass=univentionPolicySoftwareupdates)'
-		'(objectClass=univentionPolicyCorporateClient)'
-		# UVMM:
-		'(objectClass=univentionVirtualMachineCloudConnection)'
-		'(objectClass=univentionVirtualMachineCloudType)'
-		'(objectClass=univentionVirtualMachine)'
-		'(objectClass=univentionVirtualMachineProfile)'
-		'(objectClass=univentionVirtualMachineGroupOC)'  # EA
-		'(objectClass=univentionVirtualMachineHostOC)'  # EA
-		) found=()
+	declare -a found=()
 	local IFS=''
-	local filter="(|${filters[*]})"
+	local filter="(|${legacy_ocs[*]})"
 	IFS=$'\n' read -d '' -r -a found <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
 	# shellcheck disable=SC2128
 	[ -n "$found" ] || return 0
@@ -324,6 +325,18 @@ update_check_legacy_objects () {
 	echo
 	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
 	return 1
+}
+delete_legacy_objects () {
+	local filter
+	[ -r /etc/ldap.secret ] || die "Cannot get LDAP credentials from '/etc/ldap.secret'"
+	for filter in "${legacy_ocs[@]}"
+	do
+		echo "> ${filter/objectClass=/structuralObjectClass=}"
+		univention-ldapsearch -LLL "${filter/objectClass=/structuralObjectClass=}" 1.1 |
+			sed -ne 's/^dn: //p' |
+			ldapdelete -x -D "cn=admin,${ldap_base:?}" -y /etc/ldap.secret -c
+	done
+	# TODO: Handle EAs
 }
 
 # check that no apache configuration files are manually adjusted; Bug #43520
@@ -405,7 +418,7 @@ update_check_failed_ldif() {
 	[ -e /var/lib/univention-directory-replication/failed.ldif ] || return 0
 
 	echo "	A failed.ldif exists."
-	echo "	Please check https://help.univention.com/t/what-to-do-if-a-failed-ldif-is-found/6432 for further information."
+	echo "	Please check <https://help.univention.com/t/6432> for further information."
 	echo "	The update can be started after the failed.ldif has been removed."
 	return 1
 }
@@ -427,7 +440,7 @@ update_check_md5_signature_is_used () {
 	echo "	ucr set ssl/default/hashfunction=sha256"
 	echo "	The certificate needs to be renewed afterwards. Doing that is"
 	echo "	described at:"
-	echo "	https://help.univention.com/t/renewing-the-ssl-certificates/37"
+	echo "	<https://help.univention.com/t/37>"
 	return 1
 }
 
@@ -491,7 +504,10 @@ if blocking_computers or blocking_objects:
 }
 
 checks () {
-	success=true
+	# stderr to log
+	exec 2>>"$UPDATER_LOG"
+
+	local f name stat stdout ret key success=true
 	declare -A messages
 	for f in $(declare -F)
 	do
@@ -518,7 +534,7 @@ checks () {
 	done
 
 	# summary
-	RET=0
+	ret=0
 	if ! $success
 	then
 		echo
@@ -530,11 +546,24 @@ checks () {
 			echo "${messages[$key]}" # | fmt --uniform-spacing --width="${COLUMNS:-80}"
 		done
 		echo
-		RET=1
+		ret=1
 	fi
-	[ "$RET" -gt 0 ] &&
-		exit "$RET"
+	[ "$ret" -gt 0 ] &&
+		exit "$ret"
 }
 
-[ -z "${UPDATE_NEXT_VERSION:-}" ] &&
-	checks
+###CHECKS_ONLY###
+if [ -z "${UPDATE_NEXT_VERSION:-}" ]
+then
+	main () {
+		[ $# -ge 1 ] || set checks
+		while [ $# -ge 1 ]
+		do
+			"$1"
+			shift
+		done
+	}
+
+	main "$@"
+fi
+###CHECKS_COMMON###
