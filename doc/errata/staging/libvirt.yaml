@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: libvirt
+fix: 3.0.0-4+deb9u5A~4.4.6.202010050915
+desc: |
+ This update addresses the following issue:
+ * double free in qemuAgentGetInterfaces() in qemu_agent.c (CVE-2020-25637)
+bug: [52181]
+cve:
+- CVE-2020-25637
