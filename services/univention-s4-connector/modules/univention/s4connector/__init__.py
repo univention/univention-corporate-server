@@ -41,7 +41,6 @@ import random
 import sys
 import time
 import traceback
-import types
 import pprint
 from signal import signal, SIGTERM, SIG_DFL
 
@@ -81,7 +80,7 @@ def make_lower(mlValue):
 	'''
 	if hasattr(mlValue, 'lower'):
 		return mlValue.lower()
-	if isinstance(mlValue, type([])):
+	if isinstance(mlValue, list):
 		return [make_lower(x) for x in mlValue]
 	return mlValue
 
@@ -129,22 +128,22 @@ def set_primary_group_user(s4connector, key, ucs_object):
 # helper
 
 
-def dictonary_lowercase(dict):
-	if isinstance(dict, type({})):
+def dictonary_lowercase(dict_):
+	if isinstance(dict_, dict):
 		ndict = {}
-		for key in dict.keys():
+		for key in dict_.keys():
 			ndict[key] = []
-			for val in dict[key]:
+			for val in dict_[key]:
 				ndict[key].append(val.lower())
 		return ndict
-	elif isinstance(dict, type([])):
+	elif isinstance(dict_, list):
 		nlist = []
-		for d in dict:
+		for d in dict_:
 			nlist.append(d.lower())
 		return nlist
 	else:
 		try:  # should be string
-			return dict.lower()
+			return dict_.lower()
 		except Exception:  # FIXME: which exception is to be caught?
 			pass
 
@@ -921,7 +920,7 @@ class ucs(object):
 		_d = ud.function('ldap.get_ucs_ldap_object_dn')  # noqa: F841
 
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
-			if isinstance(dn, type(u'')):
+			if isinstance(dn, unicode):
 				searchdn = dn
 			else:
 				searchdn = unicode(dn)
@@ -941,7 +940,7 @@ class ucs(object):
 		_d = ud.function('ldap.get_ucs_ldap_object')  # noqa: F841
 
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
-			if isinstance(dn, type(u'')):
+			if isinstance(dn, unicode):
 				searchdn = dn
 			else:
 				searchdn = unicode(dn)
@@ -1167,13 +1166,13 @@ class ucs(object):
 					position.setDn(object['dn'])
 					univention.admin.modules.init(self.lo, position, ucs_module)
 
-					if isinstance(value, type(types.ListType())) and len(value) == 1:
+					if isinstance(value, list) and len(value) == 1:
 						value = value[0]
 
 					# set encoding
 					compare = [ucs_object[ucs_key], value]
 					for i in [0, 1]:
-						if isinstance(compare[i], type([])):
+						if isinstance(compare[i], list):
 							compare[i] = univention.s4connector.s4.compatible_list(compare[i])
 						else:
 							compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
@@ -1634,7 +1633,7 @@ class ucs(object):
 		filter_connectors = ['!', '&', '|']
 
 		def list_lower(elements):
-			if isinstance(elements, type([])):
+			if isinstance(elements, list):
 				retlist = []
 				for l in elements:
 					retlist.append(l.lower())
@@ -1642,14 +1641,14 @@ class ucs(object):
 			else:
 				return elements
 
-		def dict_lower(dict):
-			if isinstance(dict, type({})):
+		def dict_lower(dict_):
+			if isinstance(dict_, dict):
 				retdict = {}
-				for key in dict:
-					retdict[key.lower()] = dict[key]
+				for key in dict_:
+					retdict[key.lower()] = dict_[key]
 				return retdict
 			else:
-				return dict
+				return dict_
 
 		def attribute_filter(filter, attributes):
 			attributes = dict_lower(attributes)
@@ -1668,7 +1667,7 @@ class ucs(object):
 				attribute_value = attributes.get(attribute_name)
 				if attribute_value:
 					try:
-						if isinstance(attribute_value, type([])):
+						if isinstance(attribute_value, list):
 							attribute_value = int(attribute_value[0])
 						int_value = int(value)
 						if ((attribute_value & int_value) == int_value):
@@ -1898,7 +1897,7 @@ class ucs(object):
 								# mapping_table
 								if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 									for ucsval, conval in self.property[key].mapping_table[attr_key]:
-										if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
+										if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], list):
 
 											ucsval_lower = make_lower(ucsval)
 											objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute])
@@ -1944,7 +1943,7 @@ class ucs(object):
 										# mapping_table
 									if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
 										for ucsval, conval in self.property[key].mapping_table[attr_key]:
-											if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], type([])):
+											if isinstance(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute], list):
 
 												conval_lower = make_lower(conval)
 												objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])

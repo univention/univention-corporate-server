@@ -39,7 +39,6 @@ import re
 import sys
 import time
 import calendar
-import types
 import pprint
 import warnings
 import string
@@ -82,7 +81,7 @@ def normalise_userAccountControl(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.ALL, "normalise_userAccountControl: dn: %s" % object['dn'])
 	for i in range(0, 10):
 		try:
-			s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['512'])])
+			s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', [b'512'])])
 		except ldap.NO_SUCH_OBJECT:
 			time.sleep(1)
 			continue
@@ -126,7 +125,7 @@ def add_primary_group_to_addlist(s4connector, property_type, object, addlist, se
 	gidNumber = object.get('attributes', {}).get('gidNumber')
 	primary_group_sid = object.get('attributes', {}).get('sambaPrimaryGroupSID')
 	if gidNumber:
-		if isinstance(gidNumber, type([])):
+		if isinstance(gidNumber, list):
 			gidNumber = gidNumber[0]
 		ud.debug(ud.LDAP, ud.INFO, 'add_primary_group_to_addlist: gidNumber: %s' % gidNumber)
 
@@ -176,15 +175,15 @@ def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_t
 
 def unicode_to_utf8(attrib):
 	'''The inverse of encode_attrib'''
-	if not isinstance(attrib, types.UnicodeType):
+	if isinstance(attrib, bytes):
 		return attrib
 	return attrib.encode('utf8')
 
 
 def encode_attrib(attrib):
-	if not attrib or isinstance(attrib, type(u'')):  # referral or already unicode
+	if not attrib or isinstance(attrib, unicode):  # referral or already unicode
 		return attrib
-	return unicode(attrib)
+	return attrib.decode('UTF-8')
 
 
 def fix_dn_in_search(result):
@@ -204,16 +203,14 @@ def str2dn(dn):
 
 
 def encode_attriblist(attriblist):
-	if not isinstance(attriblist, type([])):
+	if not isinstance(attriblist, list):
 		return encode_attrib(attriblist)
 	else:
-		for i in range(len(attriblist)):
-			attriblist[i] = encode_attrib(attriblist[i])
-		return attriblist
+		return [encode_attrib(x) for x in attriblist]
 
 
 def encode_s4_object(s4_object):
-	if isinstance(s4_object, type([])):
+	if isinstance(s4_object, list):
 		return encode_attriblist(s4_object)
 	else:
 		for key in s4_object.keys():
@@ -527,16 +524,16 @@ def decode_list(list, encoding):
 	if not list:
 		return list
 	for val in list:
-		if hasattr(val, 'decode') and not isinstance(val, types.UnicodeType):
+		if hasattr(val, 'decode') and not isinstance(val, unicode):
 			newlist.append(val.decode(encoding))
 		else:
 			newlist.append(val)
 	return newlist
 
 
-def encode_modlist(list, encoding):
+def encode_modlist(list_, encoding):
 	newlist = []
-	for (modtype, attr, values) in list:
+	for (modtype, attr, values) in list_:
 		if hasattr(attr, 'encode'):
 			newattr = attr.encode(encoding)
 		else:
@@ -546,17 +543,17 @@ def encode_modlist(list, encoding):
 			newlist.append((modtype, newattr, values))
 			continue
 
-		if isinstance(values, type([])):
+		if isinstance(values, list):
 			newlist.append((modtype, newattr, encode_list(values, encoding)))
 		else:
 			newlist.append((modtype, newattr, encode_list(values, encoding)))
 	return newlist
 
 
-def decode_modlist(list, encoding):
+def decode_modlist(list_, encoding):
 	newlist = []
-	for (modtype, attr, values) in list:
-		if hasattr(attr, 'decode') and not isinstance(attr, types.UnicodeType):
+	for (modtype, attr, values) in list_:
+		if hasattr(attr, 'decode') and not isinstance(attr, unicode):
 			newattr = attr.decode(encoding)
 		else:
 			newattr = attr
@@ -565,16 +562,16 @@ def decode_modlist(list, encoding):
 			newlist.append((modtype, newattr, values))
 			continue
 
-		if isinstance(values, type([])):
+		if isinstance(values, list):
 			newlist.append((modtype, newattr, decode_list(values, encoding)))
 		else:
 			newlist.append((modtype, newattr, decode_list(values, encoding)))
 	return newlist
 
 
-def encode_addlist(list, encoding):
+def encode_addlist(list_, encoding):
 	newlist = []
-	for (attr, values) in list:
+	for (attr, values) in list_:
 		if hasattr(attr, 'encode'):
 			newattr = attr.encode(encoding)
 		else:
@@ -584,17 +581,17 @@ def encode_addlist(list, encoding):
 			newlist.append((newattr, values))
 			continue
 
-		if isinstance(values, type([])):
+		if isinstance(values, list):
 			newlist.append((newattr, encode_list(values, encoding)))
 		else:
 			newlist.append((newattr, encode_list(values, encoding)))
 	return newlist
 
 
-def decode_addlist(list, encoding):
+def decode_addlist(list_, encoding):
 	newlist = []
-	for (attr, values) in list:
-		if hasattr(attr, 'decode') and not isinstance(attr, types.UnicodeType):
+	for (attr, values) in list_:
+		if hasattr(attr, 'decode') and not isinstance(attr, unicode):
 			newattr = attr.decode(encoding)
 		else:
 			newattr = attr
@@ -603,7 +600,7 @@ def decode_addlist(list, encoding):
 			newlist.append((newattr, values))
 			continue
 
-		if isinstance(values, type([])):
+		if isinstance(values, list):
 			newlist.append((newattr, decode_list(values, encoding)))
 		else:
 			newlist.append((newattr, decode_list(values, encoding)))
@@ -623,7 +620,7 @@ def compatible_addlist(list):
 
 
 def compatible_modstring(string):
-	if hasattr(string, 'decode') and not isinstance(string, types.UnicodeType):
+	if hasattr(string, 'decode') and not isinstance(string, unicode):
 		string = string.decode('latin1')
 	if hasattr(string, 'encode'):
 		string = string.encode('utf8')
