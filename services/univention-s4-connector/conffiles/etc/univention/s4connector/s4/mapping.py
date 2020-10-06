@@ -30,9 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import os
-import imp
 import base64
+import os
+import six
 
 import univention.s4connector.s4
 import univention.s4connector.s4.mapping
@@ -1935,7 +1935,15 @@ if not configRegistry.is_true('connector/s4/mapping/domainpolicy', False):
 #print 's4_mapping = %s' % (pprint.pformat(s4_mapping, indent=4, width=250),)
 
 try:
-	mapping_hook = imp.load_source('localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')).mapping_hook
+	if six.PY2:
+		import imp
+		mapping_hook = imp.load_source('localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')).mapping_hook
+	else:
+		import importlib.util
+		spec = importlib.util.spec_from_file_location('localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py'))
+		mapping = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(mapping)
+		mapping_hook = mapping.mapping_hook
 except (IOError, AttributeError):
 	pass
 else:

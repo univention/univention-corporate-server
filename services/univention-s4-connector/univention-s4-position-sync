@@ -35,11 +35,11 @@ from __future__ import print_function
 
 from argparse import ArgumentParser
 import sys
-import imp
 from univention import config_registry
 import univention.s4connector.s4
 import univention.admin.filter
 import copy
+import six
 from samba.param import LoadParm
 from samba.auth import system_session
 from samba.samdb import SamDB
@@ -172,7 +172,16 @@ if __name__ == "__main__":
 	CONFIGBASENAME = "connector"
 	if opts.configbasename:
 		CONFIGBASENAME = opts.configbasename
-	mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
+	MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME
+	if six.PY2:
+		import imp
+		mapping = imp.load_source('mapping', MAPPING_FILENAME)
+	else:
+		import os
+		import importlib.util
+		spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
+		mapping = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(mapping)
 
 	ucs_match_filter = {
 		'user': mapping.s4_mapping['user'].match_filter,

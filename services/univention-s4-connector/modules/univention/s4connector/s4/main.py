@@ -34,8 +34,8 @@
 
 from __future__ import print_function
 import os
-import imp
 import signal
+import six
 import sys
 import time
 from argparse import ArgumentParser
@@ -64,7 +64,15 @@ if options.configbasename:
 STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
 
 
-mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
+MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME
+if six.PY2:
+	import imp
+	mapping = imp.load_source('mapping', MAPPING_FILENAME)
+else:
+	import importlib.util
+	spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
+	mapping = importlib.util.module_from_spec(spec)
+	spec.loader.exec_module(mapping)
 
 
 def bind_stdout():
