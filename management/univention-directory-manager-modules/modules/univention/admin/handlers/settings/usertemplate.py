@@ -40,7 +40,7 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
-BLACKLISTED_OBJECT_CLASSES = {'inetOrgPerson'}
+BLACKLISTED_OBJECT_CLASSES = {b'inetOrgPerson'}
 
 module = 'settings/usertemplate'
 operations = ['add', 'edit', 'remove', 'search', 'move']
