@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-10-06 10:32+0200\n"
+"POT-Creation-Date: 2020-10-06 10:37+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -192,7 +192,7 @@ msgstr "Ungültige Fortschritt ID"
 
 #: src/univention/management/console/error.py:127
 #: src/univention/management/console/error.py:150
-#, fuzzy, python-format
+#, python-format
 msgid "Make sure the Primary Directory Node is running and reachable from %s"
 msgstr ""
 "Stellen Sie sicher, dass der Primary Directory Node läuft und von %s aus "
@@ -292,8 +292,8 @@ msgid ""
 "slapd restart\" on command line or with the UMC module \"System services\""
 msgstr ""
 "Starten Sie den LDAP-Dienst entweder über \"service slapd restart\" per "
-"Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
-"Primary Directory Node neu"
+"Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem Primary "
+"Directory Node neu"
 
 #: src/univention/management/console/modules/sanitizers.py:390
 #: src/univention/management/console/modules/sanitizers.py:393
