@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-saml
-fix: 6.0.2-57A~4.4.0.202010061451
+fix: 6.0.2-58A~4.4.0.202010061504
 desc: |
  This update addresses the following issues:
  * Show SAML password change dialog only for logon with
