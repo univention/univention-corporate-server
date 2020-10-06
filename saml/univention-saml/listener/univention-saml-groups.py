@@ -43,7 +43,7 @@ description = 'Write SAML enabled groups to json file, to be read by the service
 filter = '(objectClass=univentionSAMLEnabledGroup)'
 attributes = ['enabledServiceProviderIdentifierGroup']
 path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json'
-tmp_path = '/tmp/serviceprovider_enabled_groups.json'
+tmp_path = '/etc/simplesamlphp/serviceprovider_enabled_groups.json.tmp'
 uid = pwd.getpwnam("samlcgi").pw_uid
 gid = grp.getgrnam("samlcgi").gr_gid
 
@@ -86,8 +86,9 @@ def handler(dn, new, old):
 
 		with open(tmp_path, 'w+') as outfile:
 			json.dump(data, outfile)
-			os.chmod(tmp_path, 0600)
-			os.chown(tmp_path, uid, gid)
+
 		shutil.move(tmp_path, path)
+		os.chmod(path, 0o600)
+		os.chown(path, uid, gid)
 	finally:
 		listener.unsetuid()

@@ -1,3 +1,11 @@
+univention-saml (7.0.2-1) unstable; urgency=medium
+
+  * Bug #51922: Fix simplesamlphp/secrets.inc.php beeing world readable
+  * Bug #51608: Correctly set file permissions for
+    /etc/simplesamlphp/serviceprovider_enabled_groups.json to samlcgi:samlcgi
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Oct 2020 09:41:06 +0200
+
 univention-saml (7.0.1-2) unstable; urgency=medium
 
   * Bug #51903: in case of WRONGUSERPASS check for password
