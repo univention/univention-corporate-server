@@ -3,9 +3,15 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-saml
-fix: 6.0.2-55A~4.4.0.202009231402
+fix: 6.0.2-56A~4.4.0.202010061414
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Show SAML password change dialog only for logon with
    correct password.
-bug: [51903]
+ * Fix listener to set correct permissions for
+   /etc/simplesamlphp/serviceprovider_enabled_groups.json
+   This fixes a bug where SAML permissions applied to groups
+   could not be evaluated.
+ * The file /var/lib/simplesamlphp/secrets.inc.php which contains the
+   simplesamlphp adminstration password could be read by any local user.
+bug: [51903,51608,51922]
