@@ -1,4 +1,4 @@
-univention-saml (6.0.2-56) unstable; urgency=medium
+univention-saml (6.0.2-57) unstable; urgency=medium
 
   * Bug #51922: Fix simplesamlphp/secrets.inc.php beeing world readable
   * Bug #51608: Correctly set file permissions for

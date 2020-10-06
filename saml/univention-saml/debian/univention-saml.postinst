@@ -78,6 +78,8 @@ configure)
 	done
 
 	chown -R root:samlcgi /etc/simplesamlphp
+	chmod 600 /etc/simplesamlphp/serviceprovider_enabled_groups.json 
+	chown samlcgi:samlcgi /etc/simplesamlphp/serviceprovider_enabled_groups.json
 
 	if [ -x /etc/init.d/univention-directory-listener ]; then
 		invoke-rc.d univention-directory-listener restart
