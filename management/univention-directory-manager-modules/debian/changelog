@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.16-3) unstable; urgency=medium
+
+  * Bug #51364: fixed objectclass handling for usertemplate
+    (patch by Florian)
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Oct 2020 09:50:46 +0200
+
 univention-directory-manager-modules (14.0.16-2) unstable; urgency=medium
 
   * Bug #49823: Updated selection of copyable user properties

@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -37,6 +39,8 @@ import univention.admin.localization
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
+
+BLACKLISTED_OBJECT_CLASSES = {'inetOrgPerson'}
 
 module = 'settings/usertemplate'
 operations = ['add', 'edit', 'remove', 'search', 'move']
@@ -356,6 +360,23 @@ class object(univention.admin.handlers.simpleLdap):
 		super(object, self).__init__(co, lo, position, dn, superordinate, attributes=attributes)
 		univention.admin.syntax.optionsUsersUser.update_choices()  # woraround: somehow init() didn't do it
 		self.options.extend(self['_options'])
+
+	def _ldap_object_classes(self, ml):
+		ml = super(object, self)._ldap_object_classes(ml)
+		return self.filter_object_classes(ml)
+
+	def _ldap_object_classes_add(self, al):
+		al = super(object, self)._ldap_object_classes_add(al)
+		return self.filter_object_classes(al)
+
+	def filter_object_classes(self, ml):
+		"""Remove blacklisted object classes
+		>>> object.filter_object_classes([('objectClass', 'inetOrgPerson'), ('objectClass', 'foo', ['inetOrgPerson'])])
+		[['objectClass', 'foo', []]]
+		"""
+		ml = [x for x in ml if x[0] != 'objectClass' or not isinstance(x[-1], six.string_types) or x[-1] not in BLACKLISTED_OBJECT_CLASSES]
+		ml = [x if x[0] != 'objectClass' and not isinstance(x[-1], (list, tuple)) else list(x[:-1]) + [list(set(x[-1]) - BLACKLISTED_OBJECT_CLASSES)] for x in ml]
+		return ml
 
 	def _ldap_pre_modify(self):
 		super(object, self)._ldap_pre_modify()

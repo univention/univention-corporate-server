@@ -1239,35 +1239,7 @@ class simpleLdap(object):
 
 		al = self._ldap_addlist()
 		al.extend(self._ldap_modlist())
-		m = univention.admin.modules.get(self.module)
-
-		# evaluate extended attributes
-		ocs = set()
-		for prop in getattr(m, 'extended_udm_attributes', []):
-			ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
-			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
-				continue
-			if self.has_property(prop.name) and self.info.get(prop.name):
-				ocs.add(prop.objClass)
-
-		module_options = univention.admin.modules.options(self.module)
-		# add object classes of (especially extended) options
-		for option in ['default'] + self.options:
-			try:
-				opt = module_options[option]
-			except KeyError:
-				ud.debug(ud.ADMIN, ud.INFO, '%r does not specify option %r' % (m.module, option))
-				continue
-			ocs |= set(opt.objectClasses)
-
-		# remove duplicated object classes
-		for i in al:
-			key, val = i[0], i[-1]  # might be a triple
-			if val and key.lower() == 'objectclass':
-				ocs -= set([val] if isinstance(val, basestring) else val)
-		if ocs:
-			al.append(('objectClass', list(ocs)))
-
+		al = self._ldap_object_classes_add(al)
 		al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
 
 		# ensure univentionObject is set
@@ -1301,6 +1273,37 @@ class simpleLdap(object):
 
 		self.save()
 		return self.dn
+
+	def _ldap_object_classes_add(self, al):
+		m = univention.admin.modules.get(self.module)
+		# evaluate extended attributes
+		ocs = set()
+		for prop in getattr(m, 'extended_udm_attributes', []):
+			ud.debug(ud.ADMIN, ud.INFO, 'simpleLdap._create: info[%s]:%r = %r' % (prop.name, self.has_property(prop.name), self.info.get(prop.name)))
+			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
+				continue
+			if self.has_property(prop.name) and self.info.get(prop.name):
+				ocs.add(prop.objClass)
+
+		module_options = univention.admin.modules.options(self.module)
+		# add object classes of (especially extended) options
+		for option in ['default'] + self.options:
+			try:
+				opt = module_options[option]
+			except KeyError:
+				ud.debug(ud.ADMIN, ud.INFO, '%r does not specify option %r' % (m.module, option))
+				continue
+			ocs |= set(opt.objectClasses)
+
+		# remove duplicated object classes
+		for i in al:
+			key, val = i[0], i[-1]  # might be a triple
+			if val and key.lower() == 'objectclass':
+				ocs -= set([val] if isinstance(val, basestring) else val)
+		if ocs:
+			al.append(('objectClass', list(ocs)))
+
+		return al
 
 	def _modify(self, modify_childs=1, ignore_license=0, response=None, serverctrls=None):
 		"""Modify the object. Should only be called by :func:`univention.admin.handlers.simpleLdap.modify`."""
