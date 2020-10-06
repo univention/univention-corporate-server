@@ -40,6 +40,8 @@ import univention.admin.localization
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
 
+BLACKLISTED_OBJECT_CLASSES = {'inetOrgPerson'}
+
 module = 'settings/usertemplate'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
@@ -372,7 +374,6 @@ class object(univention.admin.handlers.simpleLdap):
 	@classmethod
 	def filter_object_classes(cls, ml):
 		"""Remove blacklisted object classes
-
 		>>> object.filter_object_classes([('objectClass', 'inetOrgPerson'), ('objectClass', 'foo', ['inetOrgPerson'])])
 		[['objectClass', 'foo', []]]
 		"""
