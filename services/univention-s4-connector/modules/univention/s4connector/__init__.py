@@ -299,11 +299,9 @@ class configsaver(object):
 	def __init__(self, filename):
 		self.filename = filename
 		try:
-			f = open(filename, 'r')
-			self.config = pickle.load(f)
-		except IOError:
-			self.config = {}
-		except EOFError:
+			with open(filename, 'r') as fd:
+				self.config = pickle.load(fd)
+		except (IOError, EOFError):
 			self.config = {}
 
 	def write(self, ignore=''):
@@ -313,10 +311,8 @@ class configsaver(object):
 
 		signal(SIGTERM, signal_handler)
 
-		f = open(self.filename, 'w')
-		pickle.dump(self.config, f)
-		f.flush()
-		f.close()
+		with open(self.filename, 'w') as fd:
+			pickle.dump(self.config, fd)
 
 		signal(SIGTERM, SIG_DFL)
 
@@ -758,8 +754,11 @@ class ucs(object):
 		'''
 
 		try:
-			with open(filename) as fob:
-				(dn, new, old, old_dn) = pickle.load(fob)
+			with open(filename, 'rb') as fob:
+				(dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
+				dn = dn.decode('utf-8')
+				if old_dn is not None:
+					old_dn = old_dn.decode('utf-8')
 		except IOError:
 			return True  # file not found so there's nothing to sync
 		except (pickle.UnpicklingError, EOFError) as e:
@@ -1099,8 +1098,11 @@ class ucs(object):
 			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
 				if filename not in self.rejected_files:
 					try:
-						with open(filename) as fob:
-							(dn, new, old, old_dn) = pickle.load(fob)
+						with open(filename, 'rb') as fob:
+							(dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
+							dn = dn.decode('utf-8')
+							if old_dn is not None:
+								old_dn = old_dn.decode('utf-8')
 					except IOError:
 						continue  # file not found so there's nothing to sync
 					except (pickle.UnpicklingError, EOFError) as e:
