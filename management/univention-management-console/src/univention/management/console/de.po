@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2020-05-06 21:04+0200\n"
+"POT-Creation-Date: 2020-10-06 10:32+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "%d error(s) occurred"
 msgstr "%d Fehler aufgetreten"
 
-#: src/univention/management/console/modules/decorators.py:610
+#: src/univention/management/console/modules/decorators.py:611
 #, python-format
 msgid "%s can only be used as UPLOAD"
 msgstr "%s kann nur als UPLOAD genutzt werden"
@@ -26,7 +26,7 @@ msgstr "%s kann nur als UPLOAD genutzt werden"
 msgid "An option has the wrong type."
 msgstr "Eine Option hat den falschen Typ."
 
-#: src/univention/management/console/protocol/session.py:498
+#: src/univention/management/console/protocol/session.py:502
 #, python-format
 msgid "An unknown operating system error occurred (%s)."
 msgstr "Ein unbekannter Betriebssystemfehler ist aufgetreten (%s)."
@@ -53,16 +53,16 @@ msgstr "Kann nicht in eine Zahl umgewandelt werden"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: src/univention/management/console/pam.py:250
+#: src/univention/management/console/pam.py:262
 msgid "Changing password failed."
 msgstr "Passwort ändern fehlgeschlagen."
 
 #: src/univention/management/console/error.py:128
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server and"
-" on the domain controller master or free some resources"
+" on the Primary Directory Node or free some resources"
 msgstr ""
-"Überprüfen Sie, ob auf diesem Server und auf dem Domänencontroller Master "
+"Überprüfen Sie, ob auf diesem Server und auf dem Primary Directory Node "
 "genügend Festplattenspeicher und Arbeitsspeicher (RAM) verfügbar sind"
 
 #: src/univention/management/console/error.py:125
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Check the SSL certificates, proxy and firewall settings"
 msgstr "Überprüfen Sie die SSL Zertifikate, Proxy- und Firewall-Einstellungen"
 
-#: src/univention/management/console/pam.py:345
+#: src/univention/management/console/pam.py:362
 #, python-format
 msgid "Choose a password which does not match any of your last %s passwords."
 msgstr ""
@@ -87,12 +87,12 @@ msgstr ""
 msgid "Connection to module process failed"
 msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 
-#: src/univention/management/console/protocol/session.py:493
+#: src/univention/management/console/protocol/session.py:497
 #, python-format
 msgid "Could not open the module. %s Please try again later."
 msgstr "Konnte das Modul nicht öffnen. %s Bitte später erneut versuchen."
 
-#: univention-management-console-web-server:578
+#: univention-management-console-web-server:601
 #, python-format
 msgid ""
 "Could not pick an identity provider. You can specify one via the query "
@@ -101,7 +101,7 @@ msgstr ""
 "Konnte keinen Identity Provider auswählen. Sie können über den Query-String-"
 "Parameter %(param)r einen der folgenden %(idps)r auswählen."
 
-#: src/univention/management/console/base.py:283
+#: src/univention/management/console/base.py:284
 msgid ""
 "Cross Site Request Forgery attack detected. Please provide the "
 "\"UMCSessionId\" cookie value as HTTP request header \"X-Xsrf-Protection\"."
@@ -125,7 +125,7 @@ msgstr ""
 "Konnte das Modul %(module)s nicht laden: %(error)s\n"
 "%(traceback)s"
 
-#: src/univention/management/console/protocol/session.py:232
+#: src/univention/management/console/protocol/session.py:235
 msgid "For using this request a login is required."
 msgstr ""
 
@@ -143,7 +143,7 @@ msgstr "Weitere Informationen können der Protokolldatei %s entnommen werden."
 msgid "Has more than the allowed keys"
 msgstr "Hat mehr Schlüssel als erlaubt"
 
-#: src/univention/management/console/pam.py:312
+#: src/univention/management/console/pam.py:329
 msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 
@@ -165,7 +165,7 @@ msgstr "Installieren Sie alle Softwareaktualisierungen"
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: src/univention/management/console/base.py:386
+#: src/univention/management/console/base.py:387
 #, python-format
 msgid "Internal server error during \"%(command)s\"."
 msgstr "Interner Server-Fehler in \"%(command)s\"."
@@ -192,11 +192,10 @@ msgstr "Ungültige Fortschritt ID"
 
 #: src/univention/management/console/error.py:127
 #: src/univention/management/console/error.py:150
-#, python-format
-msgid ""
-"Make sure the domain controller master is running and reachable from %s"
+#, fuzzy, python-format
+msgid "Make sure the Primary Directory Node is running and reachable from %s"
 msgstr ""
-"Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s aus "
+"Stellen Sie sicher, dass der Primary Directory Node läuft und von %s aus "
 "erreichbar ist"
 
 #: src/univention/management/console/pam.py:67
@@ -211,7 +210,7 @@ msgstr ""
 msgid "May have at most %(max_elements)d element(s)"
 msgstr "Darf höchstens %(max_elements)d Element(e) haben"
 
-#: src/univention/management/console/base.py:252
+#: src/univention/management/console/base.py:253
 #, python-format
 msgid ""
 "Method %(method)r (%(path)r) in %(module)r does not exist.\n"
@@ -257,11 +256,11 @@ msgstr "OK, Operation erfolgreich"
 msgid "One or more options are missing."
 msgstr "Eine oder mehrere Optionen fehlen."
 
-#: src/univention/management/console/protocol/session.py:844
+#: src/univention/management/console/protocol/session.py:854
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
-#: src/univention/management/console/pam.py:225
+#: src/univention/management/console/pam.py:237
 msgid "Please insert your one time password (OTP)."
 msgstr "Bitte geben Sie ihr Einmalpasswort (OTP) ein."
 
@@ -277,7 +276,7 @@ msgstr ""
 msgid "Please wait for operation to finish"
 msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
 
-#: univention-management-console-web-server:554
+#: univention-management-console-web-server:577
 #, python-format
 msgid ""
 "Received an unsolicited SAML response. Please try to single sign on again by"
@@ -289,13 +288,12 @@ msgstr ""
 #: src/univention/management/console/error.py:129
 #: src/univention/management/console/error.py:153
 msgid ""
-"Restart the LDAP service on the domain controller master either via "
-"\"service slapd restart\" on command line or with the UMC module \"System "
-"services\""
+"Restart the LDAP service on the Primary Directory Node either via \"service "
+"slapd restart\" on command line or with the UMC module \"System services\""
 msgstr ""
 "Starten Sie den LDAP-Dienst entweder über \"service slapd restart\" per "
 "Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
-"Domänencontroller Master neu"
+"Primary Directory Node neu"
 
 #: src/univention/management/console/modules/sanitizers.py:390
 #: src/univention/management/console/modules/sanitizers.py:393
@@ -305,41 +303,41 @@ msgstr ""
 msgid "Should stay %s"
 msgstr "Sollte %s bleiben"
 
-#: src/univention/management/console/base.py:188
+#: src/univention/management/console/base.py:189
 msgid "Specified locale is not available"
 msgstr "Angegebene Sprache ist nicht verfügbar"
 
-#: src/univention/management/console/base.py:287
+#: src/univention/management/console/base.py:288
 msgid "The \"Referer\" HTTP header must start with \"/univention/\"."
 msgstr ""
 
-#: univention-management-console-web-server:570
+#: univention-management-console-web-server:593
 msgid "The SAML message is invalid for this service provider."
 msgstr "Die SAML Nachricht ist ungültig für diesen Service Provider."
 
-#: univention-management-console-web-server:566
+#: univention-management-console-web-server:589
 #, python-format
 msgid "The SAML response contained a invalid signature: %s"
 msgstr "Die SAML-Antwort enthält eine ungültige Signatur: %s"
 
-#: univention-management-console-web-server:550
+#: univention-management-console-web-server:573
 #, python-format
 msgid "The SAML response could not be verified: %s"
 msgstr "Die SAML-Antwort konnte nicht verifiziert werden: %s"
 
-#: src/univention/management/console/base.py:263
+#: src/univention/management/console/base.py:264
 msgid ""
 "The UMC service is currently shutting down or restarting. Please retry soon."
 msgstr ""
 "Der UMC-Dienst ist gerade am Neustarten oder Herunterfahren. Bitte später "
 "erneut versuchen."
 
-#: src/univention/management/console/pam.py:319
+#: src/univention/management/console/pam.py:336
 msgid "The account is expired and can not be used anymore."
 msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden."
 
-#: src/univention/management/console/pam.py:320
-#: src/univention/management/console/pam.py:321
+#: src/univention/management/console/pam.py:337
+#: src/univention/management/console/pam.py:338
 msgid "The authentication has failed, please login again."
 msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 
@@ -347,7 +345,7 @@ msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 msgid "The command has failed."
 msgstr "Das Kommando ist fehlgeschlagen."
 
-#: src/univention/management/console/pam.py:323
+#: src/univention/management/console/pam.py:340
 msgid "The entered password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
 
@@ -360,7 +358,7 @@ msgstr "Die Ausführung eines Kommandos hat zu einem fatalen Fehler geführt"
 msgid "The following steps can help to solve this problem:"
 msgstr "Die folgenden Schritte können helfen, das Problem zu beheben:"
 
-#: univention-management-console-web-server:558
+#: univention-management-console-web-server:581
 #, python-format
 msgid "The identity provider reported a status error: %s"
 msgstr "Der Identity Provider hat einen Status-Fehler gemeldet: %s"
@@ -369,12 +367,12 @@ msgstr "Der Identity Provider hat einen Status-Fehler gemeldet: %s"
 msgid "The initialization of the module caused a fatal error"
 msgstr "Die Initialisierung des Moduls führte zu einem fatalen Fehler"
 
-#: src/univention/management/console/protocol/modserver.py:226
+#: src/univention/management/console/protocol/modserver.py:224
 #, python-format
 msgid "The initialization of the module failed: %s"
 msgstr "Die Initialisierung des Moduls ist fehlgeschlagen: %s"
 
-#: univention-management-console-web-server:562
+#: univention-management-console-web-server:585
 #, python-format
 msgid ""
 "The issuer %r is now known to the SAML service provider. This is probably a "
@@ -385,7 +383,7 @@ msgstr ""
 "wahrscheinlich eine Miskonfiguration und könnte durch einen Neustart des "
 "univention-management-console-web-server behoben werden."
 
-#: univention-management-console-web-server:546
+#: univention-management-console-web-server:569
 msgid "The logout binding is not known."
 msgstr "Das SAML-Logout Binding ist unbekannt."
 
@@ -413,20 +411,28 @@ msgstr "Das minimale Passwortalter wurde noch nicht erreicht."
 msgid "The module may have been removed recently."
 msgstr "Das Modul könnte kürzlich entfernt worden sein."
 
-#: src/univention/management/console/pam.py:322
+#: src/univention/management/console/pam.py:339
 msgid "The new password could not be set."
 msgstr "Das neue Passwort konnte nicht gesetzt werden."
+
+#: src/univention/management/console/pam.py:71
+msgid "The password contains parts of the full user name."
+msgstr "Das Passwort enthält Teile des vollen Benutzer*innennamens."
+
+#: src/univention/management/console/pam.py:70
+msgid "The password contains user account name."
+msgstr "Das Passwort enthält den Benutzerkontonamen."
 
 #: src/univention/management/console/pam.py:64
 msgid "The password does not contain enough different characters."
 msgstr "Das Passwort enthält nicht genügend unterschiedliche Zeichen."
 
-#: src/univention/management/console/pam.py:64
-msgid "The password does not meet the password policy requirements. Check the minimum password length, password complexity and password history requirements."
-msgstr "Der Wert, der als neues Kennwort angegeben wurde, entspricht nicht den Kennwortrichtlinien der Domäne. Überprüfen Sie die Kennwortlänge, die Komplexität des Kennworts und die Anforderungen bezüglich früherer Kennwörter."
+#: src/univention/management/console/pam.py:69
+msgid "The password does not meet the password complexity requirements."
+msgstr "Das Passwort entspricht nicht den Komplexitätsanforderungen."
 
 #: src/univention/management/console/pam.py:65
-#: src/univention/management/console/pam.py:318
+#: src/univention/management/console/pam.py:335
 msgid "The password has expired and must be renewed."
 msgstr "Das Passwort ist abgelaufen und muss erneuert werden."
 
@@ -450,23 +456,11 @@ msgstr "Das Passwort ist zu kurz."
 msgid "The password is too similar to the old one."
 msgstr "Das Passwort ist dem aktuellen zu ähnlich."
 
-#: src/univention/management/console/pam.py:69
-msgid "The password does not meet the password complexity requirements."
-msgstr "Das Passwort entspricht nicht den Komplexitätsanforderungen."
-
-#: src/univention/management/console/pam.py:70
-msgid "The password contains user account name."
-msgstr "Das Passwort enthält den Benutzerkontonamen."
-
-#: src/univention/management/console/pam.py:71
-msgid "The password contains parts of the full user name."
-msgstr "Das Passwort enthält Teile des vollen Benutzer*innennamens."
-
 #: src/univention/management/console/pam.py:60
 msgid "The password is too simple."
 msgstr "Das Passwort ist zu einfach."
 
-#: src/univention/management/console/pam.py:344
+#: src/univention/management/console/pam.py:361
 #, python-format
 msgid "The password must consist of at least %s characters."
 msgstr "Das Passwort muss mindestens %s Zeichen lang sein."
@@ -475,25 +469,25 @@ msgstr "Das Passwort muss mindestens %s Zeichen lang sein."
 msgid "The password was already used."
 msgstr "Das Passwort wurde bereits genutzt."
 
-#: univention-management-console-web-server:538
+#: univention-management-console-web-server:561
 #, python-format
 msgid "The principal is unknown: %s"
 msgstr "Der SAML-Prinzipal ist unbekannt: %s"
 
-#: src/univention/management/console/pam.py:311
+#: src/univention/management/console/pam.py:328
 msgid "The reason could not be determined"
 msgstr "Der Grund konnte nicht festgestellt werden"
 
-#: src/univention/management/console/base.py:293
+#: src/univention/management/console/base.py:294
 #, python-format
 msgid "The requested Content-Type is not acceptable. Please use one of %s."
 msgstr ""
 
-#: src/univention/management/console/base.py:280
+#: src/univention/management/console/base.py:281
 msgid "The requested HTTP method is not allowed on this resource."
 msgstr ""
 
-#: univention-management-console-web-server:542
+#: univention-management-console-web-server:565
 #, python-format
 msgid "The requested SAML binding is not known: %s"
 msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
@@ -503,12 +497,19 @@ msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
 msgid "The requested module %r does not exist."
 msgstr "Das angefragte Modul %r existiert nicht."
 
-#: src/univention/management/console/protocol/session.py:495
-#: src/univention/management/console/protocol/session.py:496
+#: univention-management-console-web-server:557
+#, python-format
+msgid ""
+"The response lifetime is exceeded:: %s. Please make sure the server times "
+"are in sync."
+msgstr ""
+
+#: src/univention/management/console/protocol/session.py:499
+#: src/univention/management/console/protocol/session.py:500
 msgid "There are too many opened files on the server."
 msgstr "Auf dem Server sind zu viele offene Dateien."
 
-#: univention-management-console-web-server:574
+#: univention-management-console-web-server:597
 msgid ""
 "There is a configuration error in the service provider: No identity provider"
 " are set up for use."
@@ -516,11 +517,11 @@ msgstr ""
 "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind zur "
 "Benutzung eingerichtet."
 
-#: src/univention/management/console/protocol/session.py:497
+#: src/univention/management/console/protocol/session.py:501
 msgid "There is not enough free space on the server."
 msgstr "Auf dem Server ist nicht genügt freier Speicherplatz."
 
-#: src/univention/management/console/protocol/session.py:494
+#: src/univention/management/console/protocol/session.py:498
 msgid "There is not enough memory available on the server."
 msgstr "Auf dem Server ist nicht genügend freier Arbeitsspeicher verfügbar."
 
@@ -582,3 +583,13 @@ msgstr ""
 #: src/univention/management/console/protocol/message.py:271
 msgid "error parsing UMCP message body"
 msgstr "Fehler beim Parsen des UMCP-Nachrichtenrumpfes"
+
+#~ msgid ""
+#~ "The password does not meet the password policy requirements. Check the "
+#~ "minimum password length, password complexity and password history "
+#~ "requirements."
+#~ msgstr ""
+#~ "Der Wert, der als neues Kennwort angegeben wurde, entspricht nicht den "
+#~ "Kennwortrichtlinien der Domäne. Überprüfen Sie die Kennwortlänge, die "
+#~ "Komplexität des Kennworts und die Anforderungen bezüglich früherer "
+#~ "Kennwörter."

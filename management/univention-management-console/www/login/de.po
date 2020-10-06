@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-login\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2017-02-13 15:30+0100\n"
+"POT-Creation-Date: 2020-10-06 10:32+0200\n"
 "PO-Revision-Date: 2017-02-13 15:30+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,136 +12,146 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Login at %(hostname)s.%(domainname)s"
-msgstr "Anmelden auf %(hostname)s.%(domainname)s"
+#: www/login/main.js:458
+msgid "Authentication required"
+msgstr "Authentifizierung notwendig"
 
-msgid "Login with your domain account."
-msgstr "Melden Sie sich mit ihrem Domänen-Konto an."
+#: www/login/main.js:515
+msgid "Cancel"
+msgstr "Abbrechen"
 
-#: www/login/LoginDialog.js:61 www/login/LoginDialog.js:251
-#: www/login/main.js:326
-msgid "Username"
-msgstr "Benutzername"
+#: www/login/LoginDialog.js:246
+msgid ""
+"Changing password failed. The passwords do not match, please retype again."
+msgstr ""
+"Passwortänderung fehlgeschlagen. Die Passwörter stimmen nicht überein. Bitte"
+" versuchen Sie es erneut."
 
-#: www/login/LoginDialog.js:62 www/login/LoginDialog.js:252
-#: www/login/main.js:331
-msgid "Password"
-msgstr "Passwort"
+#: www/login/main.js:514
+msgid "Do you really want to logout?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: www/login/dialog.js:125
+msgid "How do I login?"
+msgstr "Wie melde ich mich an?"
+
+#: www/login/LoginDialog.js:65 www/login/LoginDialog.js:259
+#: www/login/main.js:193 www/login/main.js:478
+msgid "Login"
+msgstr "Anmelden"
+
+#: www/login/config.js:25
+msgid "Login at %(domainname)s"
+msgstr "Anmelden bei %(domainname)s"
+
+#: www/login/main.js:520
+msgid "Logout"
+msgstr "Abmelden"
 
 #: www/login/LoginDialog.js:63
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: www/login/LoginDialog.js:64 www/login/LoginDialog.js:254
+#: www/login/LoginDialog.js:64 www/login/LoginDialog.js:266
 msgid "New Password (retype)"
 msgstr "Neues Passwort (wiederholen)"
 
-#: www/login/LoginDialog.js:65 www/login/LoginDialog.js:247
-#: www/login/main.js:335
-msgid "Login"
-msgstr "Anmelden"
-
-#: www/login/LoginDialog.js:66 www/login/LoginDialog.js:255
-msgid "One time password"
-msgstr "Einmalpasswort"
-
-#: www/login/LoginDialog.js:234
-msgid ""
-"Changing password failed. The passwords do not match, please retype again."
-msgstr ""
-"Passwortänderung fehlgeschlagen. Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
-
-#: www/login/LoginDialog.js:248
-msgid "Set password"
-msgstr "Passwort setzen"
-
-#: www/login/LoginDialog.js:253
+#: www/login/LoginDialog.js:265
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: www/login/dialog.js:86
-msgid ""
-"This network connection is not encrypted. All personal or sensitive data "
-"such as passwords will be transmitted in plain text. Please follow this link "
-"to use a secure SSL connection."
-msgstr ""
-"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
-"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie diesen"
-" Link für eine verschlüsselte SSL-Verbindung."
+#: www/login/LoginDialog.js:66 www/login/LoginDialog.js:267
+msgid "One time password"
+msgstr "Einmalpasswort"
 
-#: www/login/dialog.js:87
-msgid ""
-"This network connection is not encrypted.<br/>Click here for an HTTPS "
-"connection."
-msgstr ""
-"Diese Netzwerkverbindung ist nicht verschlüsselt.<br/>Klicken Sie hier für eine HTTPS-Verbindung."
+#: www/login/LoginDialog.js:62 www/login/LoginDialog.js:264
+#: www/login/main.js:473
+msgid "Password"
+msgstr "Passwort"
 
-#: www/login/dialog.js:106
-msgid ""
-"Your browser is outdated! You may experience performance issues and other "
-"problems when using Univention Services."
-msgstr ""
-"Ihr Browser ist veraltet! Dadurch kann es zu Geschwindigkeits- "
-"und anderen Problemen bei der Verwendung von Univention Diensten kommen."
-
-#: www/login/dialog.js:111
-msgid "Please login with a valid username and password."
-msgstr "Bitte geben Sie einen gültigen Benutzernamen und Passwort ein."
-
-#: www/login/dialog.js:113
-#, javascript-format
-msgid "Use the %s user for the initial system configuration."
-msgstr "Verwenden Sie den Benutzer %s für die initiale Systemeinrichtung."
-
-#: www/login/dialog.js:115
-#, javascript-format
-msgid "The default user to manage the domain is %s which has the same initial password as the <i>root</i> account."
-msgstr "Der Standardbenutzer zum Verwalten dieser Domäne ist %s mit demselben initialen Passwort des <i>root</i> Benutzers."
-
-#: www/login/dialog.js:117
-msgid "How do I login?"
-msgstr "Wie melde ich mich an?"
-
-#: www/login/dialog.js:140
+#: www/login/dialog.js:203
 msgid ""
 "Please enable your browser cookies which are necessary for using Univention "
 "Services."
-msgstr "Bitte aktivieren sie Cookies in Ihrem Browser. Diese sind notwendig "
-"für Univention Dienste."
+msgstr ""
+"Bitte aktivieren sie Cookies in Ihrem Browser. Diese sind notwendig für "
+"Univention Dienste."
 
-#: www/login/config.js:12
-msgid "Login at %(domainname)s"
-msgstr "Anmelden bei %(domainname)s"
+#: www/login/dialog.js:118
+msgid "Please login with a valid username and password."
+msgstr "Bitte geben Sie einen gültigen Benutzernamen und Passwort ein."
 
-#: www/login/main.js:87
-msgid "The current session timed out. Please login again."
-msgstr "Die aktuelle Sitzung ist abgelaufen. Bitte melden Sie sich wieder an."
+#: www/login/LoginDialog.js:260
+msgid "Set password"
+msgstr "Passwort setzen"
 
-#: www/login/main.js:235
+#: www/login/main.js:370
 msgid "So far the authentication failed. Continuing nevertheless."
 msgstr ""
 "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
 "probiert."
 
-#: www/login/main.js:312
+#: www/login/dialog.js:173
+msgid ""
+"The <i>root</i> user neither has access to the domain administration nor to "
+"the App Center."
+msgstr ""
+"Der <i>root</i>-Benutzer hat weder Zugriff auf die Domänenadministration "
+"noch auf das App Center."
+
+#: www/login/main.js:193
+msgid "The current session timed out. Please login again."
+msgstr "Die aktuelle Sitzung ist abgelaufen. Bitte melden Sie sich wieder an."
+
+#: www/login/dialog.js:122 www/login/dialog.js:173
+#, javascript-format
+msgid ""
+"The default user to manage the domain is %s which has the same initial "
+"password as the <i>root</i> account."
+msgstr ""
+"Der Standardbenutzer zum Verwalten dieser Domäne ist %s mit demselben "
+"initialen Passwort des <i>root</i> Benutzers."
+
+#: www/login/main.js:453
 msgid "This action requires you to supply your password."
 msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
 
-#: www/login/main.js:317
-msgid "Authentication required"
-msgstr "Authentifizierung notwendig"
+#: www/login/dialog.js:155
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"such as passwords will be transmitted in plain text. Please follow this link"
+" to use a secure SSL connection."
+msgstr ""
+"Die Netzwerkverbindung ist nicht verschlüsselt. Alle persönlichen und "
+"sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie diesen "
+"Link für eine verschlüsselte SSL-Verbindung."
 
-#: www/login/main.js:371
-msgid "Do you really want to logout?"
-msgstr "Möchten Sie sich wirklich abmelden?"
+#: www/login/dialog.js:156
+msgid ""
+"This network connection is not encrypted.<br/>Click here for an HTTPS "
+"connection."
+msgstr ""
+"Diese Netzwerkverbindung ist nicht verschlüsselt.<br/>Klicken Sie hier für "
+"eine HTTPS-Verbindung."
 
-#: www/login/main.js:372
-msgid "Cancel"
-msgstr "Abbrechen"
+#: www/login/dialog.js:120
+#, javascript-format
+msgid "Use the %s user for the initial system configuration."
+msgstr "Verwenden Sie den Benutzer %s für die initiale Systemeinrichtung."
 
-#: www/login/main.js:377
-msgid "Logout"
-msgstr "Abmelden"
+#: www/login/LoginDialog.js:61 www/login/LoginDialog.js:263
+msgid "Username"
+msgstr "Benutzername"
 
-msgid "The <i>root</i> user neither has access to the domain administration nor to the App Center."
-msgstr "Der <i>root</i>-Benutzer hat weder Zugriff auf die Domänenadministration noch auf das App Center."
+#~ msgid "Login at %(hostname)s.%(domainname)s"
+#~ msgstr "Anmelden auf %(hostname)s.%(domainname)s"
+
+#~ msgid "Login with your domain account."
+#~ msgstr "Melden Sie sich mit ihrem Domänen-Konto an."
+
+#~ msgid ""
+#~ "Your browser is outdated! You may experience performance issues and other "
+#~ "problems when using Univention Services."
+#~ msgstr ""
+#~ "Ihr Browser ist veraltet! Dadurch kann es zu Geschwindigkeits- und anderen "
+#~ "Problemen bei der Verwendung von Univention Diensten kommen."
