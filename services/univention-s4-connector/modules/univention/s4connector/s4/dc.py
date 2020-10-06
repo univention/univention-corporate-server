@@ -35,6 +35,7 @@ import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
 import univention.admin.uldap
+from univention.s4connector.s4 import format_escaped
 
 import univention.admin.handlers
 import univention.admin.handlers.settings.sambadomain
@@ -42,14 +43,14 @@ import univention.admin.handlers.container.dc
 
 
 def _unixTimeInverval2seconds(unixTime):
-	if not isinstance(unixTime, type([])):
+	if not isinstance(unixTime, list):
 		return unixTime
 
 	if len(unixTime) != 2:
 		ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time format: %s' % unixTime)
 		return 0
 
-	if unixTime[0] < 0:
+	if int(unixTime[0]) < 0:
 		return 0
 
 	if unixTime[1] == 'seconds':
@@ -81,10 +82,10 @@ def ucs2con(s4connector, key, object):
 
 	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: Object (%s): %s' % (object['dn'], object))
 	s4base_dn, s4base_attr = s4connector.lo_s4.lo.search_s(s4connector.s4_ldap_base, ldap.SCOPE_BASE, '(objectClass=*)')[0]
-	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %s' % (s4base_dn))
-	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %s' % (s4base_attr))
+	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %r' % (s4base_dn,))
+	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object: %r' % (s4base_attr,))
 
-	if 'univentionBase' in object['attributes'].get('objectClass'):
+	if b'univentionBase' in object['attributes'].get('objectClass'):
 		# DC object → sync GPO
 		if s4connector.configRegistry.is_true('connector/s4/mapping/gpo', True):
 			ucs_val = object['attributes'].get('msGPOLink', [None])[0]  # msGPOLink is a single value
@@ -92,7 +93,7 @@ def ucs2con(s4connector, key, object):
 			if ucs_val != s4_val:
 				s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, [(ldap.MOD_REPLACE, 'gPLink', univention.s4connector.s4.compatible_modstring(ucs_val))])
 
-	elif 'sambaDomain' in object['attributes'].get('objectClass'):
+	elif b'sambaDomain' in object['attributes'].get('objectClass'):
 		# Samba Domain object
 
 		ml = []
@@ -110,12 +111,12 @@ def ucs2con(s4connector, key, object):
 					s4_time = str(_s2nano(ucs_time) * -1)
 				else:
 					s4_time = "0"
-				ml.append((ldap.MOD_REPLACE, s4_attr, [s4_time]))
+				ml.append((ldap.MOD_REPLACE, s4_attr, [s4_time.encode('ASCII')]))
 
 		sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength'), ('univentionSamba4pwdProperties', 'pwdProperties')]
 		for (ucs_attr, s4_attr) in sync_integers:
-			ucs_val = object['attributes'].get(ucs_attr, str(0))
-			s4_val = s4base_attr.get(s4_attr, [0])[0]
+			ucs_val = object['attributes'].get(ucs_attr, b'0')
+			s4_val = s4base_attr.get(s4_attr, [b'0'])[0]
 			if ucs_val != s4_val:
 				ml.append((ldap.MOD_REPLACE, s4_attr, ucs_val))
 
@@ -132,10 +133,10 @@ def con2ucs(s4connector, key, object):
 	ud.debug(ud.LDAP, ud.INFO, 'dc con2ucs: Object (%s): %s' % (object['dn'], object))
 
 	# Search sambaDomainname object via sambaSID
-	sambadomainnameObject = univention.admin.handlers.settings.sambadomain.lookup(None, s4connector.lo, 'sambaSID=%s' % object['attributes'].get('objectSid', [])[0])
+	sambadomainnameObject = univention.admin.handlers.settings.sambadomain.lookup(None, s4connector.lo, format_escaped('sambaSID={0!e}', object['attributes'].get('objectSid', [b''])[0].decode('ASCII')))
 
 	if len(sambadomainnameObject) > 1:
-		ud.debug(ud.LDAP, ud.WARN, 'dc con2ucs: Found more than one sambaDomainname object with sambaSID %s' % object['attributes'].get('objectSid', [])[0])
+		ud.debug(ud.LDAP, ud.WARN, 'dc con2ucs: Found more than one sambaDomainname object with sambaSID %r' % object['attributes'].get('objectSid', [])[0])
 	elif len(sambadomainnameObject) == 1:
 
 		# Use the first sambaDomain
@@ -158,7 +159,7 @@ def con2ucs(s4connector, key, object):
 			ucs_val = sambadomainnameObject.get(ucs_attr, 0)
 			s4_val = object['attributes'].get(s4_attr, [None])[0]
 			if ucs_val != s4_val:
-				sambadomainnameObject[ucs_attr] = s4_val
+				sambadomainnameObject[ucs_attr] = s4_val.decode('UTF-8')
 				modify = True
 
 		if modify:
