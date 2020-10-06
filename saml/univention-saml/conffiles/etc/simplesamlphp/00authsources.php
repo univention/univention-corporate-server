@@ -63,7 +63,7 @@ print("	'enable_tls'		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap
 print("	'debug' 		=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/ldap/debug', False) else 'FALSE'))
 print("	'attributes'		=> array(%s)," % attributes)
 print("	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null'))
-print("	'search.attributes' 	=> array(%s)," % (search_attributes,)),
+print("	'search.attributes' 	=> array(%s)," % (search_attributes,))
 print("	'selfservice.check_email_verification' 	=> %s," % ('TRUE' if configRegistry.is_true('saml/idp/selfservice/check_email_verification', False) else 'FALSE'))
 
 ldap_user = 'uid=sys-idp-user,cn=users,%s' % configRegistry.get('ldap/base', 'null')
@@ -74,10 +74,11 @@ print("	'search.username'	=> '%s'," % ldap_user)
 
 password = ''
 try:
-	password = open('/etc/idp-ldap-user.secret', 'r').read().strip()
+	with open('/etc/idp-ldap-user.secret', 'r') as fd:
+		password = fd.read().strip()
 except EnvironmentError:
 	import sys
-	print >> sys.stderr, '/etc/idp-ldap-user.secret could not be read!'
+	sys.stderr.write('/etc/idp-ldap-user.secret could not be read!\n')
 
 print("	'search.password'	=> '%s'," % password)
 @!@
