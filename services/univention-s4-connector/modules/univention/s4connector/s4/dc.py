@@ -91,7 +91,7 @@ def ucs2con(s4connector, key, object):
 			ucs_val = object['attributes'].get('msGPOLink', [None])[0]  # msGPOLink is a single value
 			s4_val = s4base_attr.get('msGPOLink')
 			if ucs_val != s4_val:
-				s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, [(ldap.MOD_REPLACE, 'gPLink', univention.s4connector.s4.compatible_modstring(ucs_val))])
+				s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, [(ldap.MOD_REPLACE, 'gPLink', ucs_val)])
 
 	elif b'sambaDomain' in object['attributes'].get('objectClass'):
 		# Samba Domain object
@@ -122,7 +122,7 @@ def ucs2con(s4connector, key, object):
 
 		if ml:
 			ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: S4 object modlist: %s' % (ml))
-			s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, univention.s4connector.s4.compatible_modlist(ml))
+			s4connector.lo_s4.lo.modify_s(s4connector.s4_ldap_base, ml)
 
 	return True
 

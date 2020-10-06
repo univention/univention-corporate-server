@@ -134,8 +134,8 @@ def main():
 	print("\nUCS rejected\n")
 	for filename, dn in s4.list_rejected_ucs():
 		found_rejected = True
-		print("%5d:   UCS DN: %s" % (i, univention.s4connector.s4.encode_attrib(dn)))
-		s4_dn = univention.s4connector.s4.encode_attrib(s4.get_dn_by_ucs(dn))
+		print("%5d:   UCS DN: %s" % (i, dn))
+		s4_dn = s4.get_dn_by_ucs(dn)
 		if s4_dn:
 			print("          S4 DN: %s" % s4_dn)
 		else:
@@ -147,8 +147,8 @@ def main():
 	print("\nS4 rejected\n")
 	for id, dn in s4.list_rejected():
 		found_rejected = True
-		print("%5d:    S4 DN: %s" % (i, univention.s4connector.s4.encode_attrib(dn)))
-		ucs_dn = univention.s4connector.s4.encode_attrib(s4.get_dn_by_con(dn))
+		print("%5d:    S4 DN: %s" % (i, dn))
+		ucs_dn = s4.get_dn_by_con(dn)
 		if ucs_dn:
 			print("         UCS DN: %s" % ucs_dn)
 		else:

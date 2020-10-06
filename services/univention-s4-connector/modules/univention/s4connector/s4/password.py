@@ -36,7 +36,6 @@ import time
 import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
-from univention.s4connector.s4 import compatible_modstring
 from univention.s4connector.s4 import format_escaped
 import binascii
 
@@ -541,7 +540,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
-	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['pwdLastSet', 'objectSid'])
+	s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
 	if 'pwdLastSet' in s4_object_attributes:
 		pwdLastSet = int(s4_object_attributes['pwdLastSet'][0])
@@ -661,7 +660,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	ctrl_bypass_password_hash = LDAPControl('1.3.6.1.4.1.7165.4.3.12', criticality=0)
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: modlist: %s" % modlist)
 	if modlist:
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist, serverctrls=[ctrl_bypass_password_hash])
+		s4connector.lo_s4.lo.modify_ext_s(object['dn'], modlist, serverctrls=[ctrl_bypass_password_hash])
 
 
 def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=True):
@@ -674,7 +673,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			return
 
 	object = s4connector._object_mapping(key, ucs_object, 'ucs')
-	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['objectSid', 'pwdLastSet'])
+	s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['objectSid', 'pwdLastSet'])
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
@@ -938,7 +937,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
 	modlist = []
 	if not is_locked:
-		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
+		s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['lockoutTime', 'badPasswordTime'])
 		if 'lockoutTime' not in s4_object_attributes:
 			return
 
@@ -972,7 +971,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", b"0"))
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as unlocked in Samba/AD" % (function_name,))
 	else:
-		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
+		s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['lockoutTime', 'badPasswordTime'])
 		lockoutTime = s4_object_attributes.get('lockoutTime', [b'0'])[0]
 
 		# Now object.get('new_ucs_object') may be a stale pickled state, so let's lookup the current OpenLDAP object state
@@ -1009,4 +1008,4 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
 	if modlist:
 		ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
+		s4connector.lo_s4.lo.modify_ext_s(object['dn'], modlist)
