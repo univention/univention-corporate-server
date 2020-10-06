@@ -34,15 +34,6 @@
 
 eval "$(univention-config-registry shell)"
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 4.0.3-39; then
-	univention-config-registry set \
-		"umc/self-service/allow-authenticated-use?false"
-fi
-if dpkg --compare-versions "${version_version:-4.4}-${version_patchlevel:-7}" gt-nl "4.4-6"; then  # apply new default in UCS 4.4-7
-	univention-config-registry set \
-		"umc/self-service/allow-authenticated-use?true"
-fi
-
 a2ensite univention-self-service.conf
 univention-config-registry set \
 	"umc/web/hooks/univention-self-service?passwordreset" \
