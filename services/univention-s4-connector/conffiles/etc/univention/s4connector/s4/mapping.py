@@ -46,6 +46,8 @@ import univention.s4connector.s4.user
 
 from univention.s4connector.s4.mapping import ignore_filter_from_tmpl, ignore_filter_from_attr, configRegistry
 
+from six import text_type as _text_type
+
 global_ignore_subtree = [
 	'cn=univention,@%@ldap/base@%@',
 	'cn=policies,@%@ldap/base@%@',
@@ -103,7 +105,7 @@ if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
 
 key_prefix = "connector/s4/mapping/group/table/"
 group_mapping_table = {
-	'cn': [(unicode(key[len(key_prefix):]), unicode(value)) for key, value in configRegistry.items() if key.startswith(key_prefix)]
+	'cn': [(_text_type(key[len(key_prefix):]), _text_type(value)) for key, value in configRegistry.items() if key.startswith(key_prefix)]
 }
 if not group_mapping_table['cn']:
 	group_mapping_table = {}
@@ -138,7 +140,7 @@ def get_sid_mapping():
 
 def _map_s4_to_udm_base64(property_name):
 	def mapping(connector, key, obj):
-		return list(map(lambda x: base64.encodestring(x).rstrip('\n'), obj['attributes'][property_name]))
+		return [base64.b64encode(x) for x in obj['attributes'][property_name]]
 	return mapping
 
 
@@ -202,29 +204,29 @@ s4_mapping = {
 		con_create_extenstions=[
 			univention.s4connector.s4.add_primary_group_to_addlist,
 		],
-		ucs_create_functions=filter(None, [
+		ucs_create_functions=list(filter(None, [
 			univention.s4connector.set_ucs_passwd_user,
 			univention.s4connector.check_ucs_lastname_user,
 			univention.s4connector.set_primary_group_user,
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
-		]),
-		con_create_attributes=[('userAccountControl', ['512'])],  # accounts synced to samba4 alpha17 had userAccountControl == 544
-		post_con_modify_functions=filter(None, [
+		])),
+		con_create_attributes=[('userAccountControl', [b'512'])],  # accounts synced to samba4 alpha17 had userAccountControl == 544
+		post_con_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_ucs_to_s4,
 			univention.s4connector.s4.password.lockout_sync_ucs_to_s4,
 			univention.s4connector.s4.primary_group_sync_from_ucs,
 			univention.s4connector.s4.object_memberships_sync_from_ucs,
 			univention.s4connector.s4.disable_user_from_ucs,
-		]),
-		post_ucs_modify_functions=filter(None, [
+		])),
+		post_ucs_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_s4_to_ucs,
 			univention.s4connector.s4.password.lockout_sync_s4_to_ucs,
 			univention.s4connector.s4.primary_group_sync_to_ucs,
 			univention.s4connector.s4.object_memberships_sync_to_ucs if configRegistry.get('connector/s4/mapping/group/syncmode') != 'write' else None,
 			univention.s4connector.s4.disable_user_to_ucs,
-		]),
+		])),
 		post_attributes=dict((key, value) for key, value in {
 			'organisation': univention.s4connector.attribute(
 				ucs_attribute='organisation',
@@ -457,16 +459,16 @@ s4_mapping = {
 		con_create_extenstions=[
 			univention.s4connector.s4.check_for_local_group_and_extend_serverctrls_and_sid,
 		],
-		post_con_modify_functions=filter(None, [
+		post_con_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.group_members_sync_from_ucs,
 			univention.s4connector.s4.object_memberships_sync_from_ucs
-		]),
-		post_ucs_modify_functions=filter(None, [
+		])),
+		post_ucs_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.group_members_sync_to_ucs,
 			univention.s4connector.s4.object_memberships_sync_to_ucs
-		]),
+		])),
 		dn_mapping_function=[univention.s4connector.s4.group_dn_mapping],
 		attributes={
 			'cn': univention.s4connector.attribute(
@@ -520,17 +522,17 @@ s4_mapping = {
 		sync_mode=configRegistry.get('connector/s4/mapping/computer_dc/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
 		con_create_objectclass=['top', 'computer'],
 		con_create_attributes=[
-			('userAccountControl', ['532480']),
+			('userAccountControl', [b'532480']),
 		],
-		post_con_modify_functions=filter(None, [
+		post_con_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_ucs_to_s4,
-		]),
-		post_ucs_modify_functions=filter(None, [
+		])),
+		post_ucs_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 			univention.s4connector.s4.computer.checkAndConvertToMacOSX,
-		]),
+		])),
 		attributes={
 			'cn': univention.s4connector.attribute(
 				ucs_attribute='name',
@@ -582,18 +584,18 @@ s4_mapping = {
 		con_subtree_delete_objects=['objectClass=rIDSet', 'objectClass=connectionPoint', 'objectclass=nTFRSMember'],
 		ignore_filter=ignore_filter_from_attr('cn', 'connector/s4/mapping/windowscomputer/ignorelist'),
 		con_create_objectclass=['top', 'computer'],
-		con_create_attributes=[('userAccountControl', ['4096'])],
+		con_create_attributes=[('userAccountControl', [b'4096'])],
 		#post_con_create_functions=[univention.connector.s4.computers.
-		post_con_modify_functions=filter(None, [
+		post_con_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_ucs_to_s4,
-		]),
-		post_ucs_modify_functions=filter(None, [
+		])),
+		post_ucs_modify_functions=list(filter(None, [
 			univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
 			univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
 			univention.s4connector.s4.computer.checkAndConvertToMacOSX,
 			univention.s4connector.s4.computer.windowscomputer_sync_s4_to_ucs_check_rename,
-		]),
+		])),
 		attributes={
 			'cn': univention.s4connector.attribute(
 				ucs_attribute='name',
@@ -1930,9 +1932,6 @@ if not configRegistry.is_true('connector/s4/mapping/msgpsi', False):
 	s4_mapping.pop('ms/gpsi-package-registration')
 if not configRegistry.is_true('connector/s4/mapping/domainpolicy', False):
 	s4_mapping.pop('ms/domainpolicy')
-
-#print 'global_ignore_subtree = %r' % (global_ignore_subtree,)
-#print 's4_mapping = %s' % (pprint.pformat(s4_mapping, indent=4, width=250),)
 
 try:
 	if six.PY2:
