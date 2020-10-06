@@ -18,6 +18,9 @@ for file in /etc/simplesamlphp/authsources.php /etc/simplesamlphp/ucs-sso.$(ucr 
 done
 
 check_perm -e /etc/simplesamlphp/ucs-sso.$(ucr get domainname)-idp-certificate.crt 0644 root samlcgi || RETVAL=110
+check_perm -e /etc/simplesamlphp/serviceprovider_enabled_groups.json 0600 samlcgi samlcgi || RETVAL=110
+
+check_perm -e /var/lib/simplesamlphp/secrets.inc.php 0640 samlcgi samlcgi || RETVAL=110
 
 exit $RETVAL
 
