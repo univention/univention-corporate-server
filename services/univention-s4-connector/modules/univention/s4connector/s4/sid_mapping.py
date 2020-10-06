@@ -37,7 +37,8 @@ import ldap
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from samba.dcerpc import security
-from samba.ndr import ndr_pack, ndr_unpack
+from samba.ndr import ndr_pack
+from univention.s4connector.s4 import decode_sid
 
 '''
 	Helper function to create the SID mapping definition.
@@ -84,10 +85,10 @@ def sid_to_s4_mapping(s4connector, key, object):
 
 	# Two different cases are possible, the user sid contains the
 	# domain sid or not.
-	if sambaSID[0].startswith('S-'):
-		new_objectSid_ndr = ndr_pack(security.dom_sid('%s' % (sambaSID[0])))
+	if sambaSID[0].startswith(b'S-'):
+		new_objectSid_ndr = ndr_pack(security.dom_sid(b'%s' % (sambaSID[0])))
 	else:
-		new_objectSid_ndr = ndr_pack(security.dom_sid('%s-%s' % (s4connector.s4_sid, sambaSID[0])))
+		new_objectSid_ndr = ndr_pack(security.dom_sid(b'%s-%s' % (s4connector.s4_sid.encode('ASCII'), sambaSID[0])))
 
 	return [new_objectSid_ndr]
 
@@ -95,7 +96,7 @@ def sid_to_s4_mapping(s4connector, key, object):
 def sid_to_ucs_mapping(s4connector, key, s4_object):
 	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs_mapping")
 	object_sid = s4_object['attributes']['objectSid'][0]
-	return object_sid.split('-')[-1]
+	return object_sid.split(b'-')[-1]
 
 
 def sid_to_s4(s4connector, key, object):
@@ -123,9 +124,7 @@ def sid_to_s4(s4connector, key, object):
 	(s4_dn, s4_attributes) = s4connector.lo_s4.lo.search_s(s4_dn, ldap.SCOPE_BASE, '(objectSid=*)', ['objectSid'])[0]
 	objectSid = s4_attributes.get('objectSid')
 	if objectSid:
-		# decoded_s4_sid = univention.s4connector.s4.decode_sid(objectSid[0])
-		s4_objectSid = ndr_unpack(security.dom_sid, objectSid[0])
-		decoded_s4_sid = str(s4_objectSid)
+		decoded_s4_sid = decode_sid(objectSid[0])
 		if decoded_s4_sid == sambaSID[0]:
 			ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSid and %s are equal' % sidAttribute)
 			return
@@ -134,7 +133,7 @@ def sid_to_s4(s4connector, key, object):
 		#	http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
 		#	http://technet.microsoft.com/en-us/library/cc961998.aspx
 
-		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %s to %s' % (decoded_s4_sid, sambaSID[0]))
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %r to %r' % (decoded_s4_sid, sambaSID[0]))
 		new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID[0]))
 		modlist.append((ldap.MOD_REPLACE, 'objectSid', new_objectSid_ndr))
 
@@ -145,8 +144,8 @@ def sid_to_s4(s4connector, key, object):
 
 
 def sid_to_ucs(s4connector, key, s4_object):
-	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 object: %s" % s4_object)
-	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 key: %s" % key)
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 object: %r" % s4_object)
+	ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 key: %r" % key)
 
 	sidAttribute = 'sambaSID'
 	if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
@@ -181,14 +180,14 @@ def sid_to_ucs(s4connector, key, s4_object):
 	sambaSID = ucs_attributes.get(sidAttribute)
 	if not sambaSID or objectSid != sambaSID:
 		ml.append((sidAttribute, sambaSID, s4_object['attributes'].get('objectSid')))
-		if 'user' in s4_object['attributes'].get('objectClass', []):
-			if 'sambaSamAccount' not in ucs_attributes.get('objectClass'):
-				ml.append(('objectClass', ucs_attributes.get('objectClass'), ucs_attributes.get('objectClass') + ['sambaSamAccount']))
-		if 'group' in s4_object['attributes'].get('objectClass', []):
-			if 'sambaGroupMapping' not in ucs_attributes.get('objectClass'):
-				ml.append(('objectClass', ucs_attributes.get('objectClass'), ucs_attributes.get('objectClass') + ['sambaGroupMapping']))
+		s4_ocs = s4_object['attributes'].get('objectClass', [])
+		ucs_ocs = ucs_attributes.get('objectClass')
+		if b'user' in s4_ocs:
+			if b'sambaSamAccount' not in ucs_ocs:
+				ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaSamAccount']))
+		if b'group' in s4_ocs:
+			if b'sambaGroupMapping' not in ucs_ocs:
+				ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaGroupMapping']))
 	if ml:
-		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: modlist = %s' % ml)
+		ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: modlist = %r' % (ml,))
 		s4connector.lo.lo.modify(ucs_dn, ml)
-
-	return
