@@ -1,10 +1,10 @@
-univention-saml (6.0.2-57) unstable; urgency=medium
+univention-saml (6.0.2-58) unstable; urgency=medium
 
   * Bug #51922: Fix simplesamlphp/secrets.inc.php beeing world readable
   * Bug #51608: Correctly set file permissions for
     /etc/simplesamlphp/serviceprovider_enabled_groups.json to samlcgi:samlcgi
 
- -- Erik Damrose <damrose@univention.de>  Tue, 06 Oct 2020 14:10:59 +0200
+ -- Erik Damrose <damrose@univention.de>  Tue, 06 Oct 2020 15:03:18 +0200
 
 univention-saml (6.0.2-55) unstable; urgency=medium
 
