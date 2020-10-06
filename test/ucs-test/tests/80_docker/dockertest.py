@@ -145,7 +145,7 @@ def get_docker_appbox_ucs():
 
 
 def get_docker_appbox_image():
-	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:{}-6'.format(get_docker_appbox_ucs())
+	image_name = 'docker-test.software-univention.de/ucs-appbox-amd64:{}-3'.format(get_docker_appbox_ucs())
 	print('Using %s' % image_name)
 	return image_name
 

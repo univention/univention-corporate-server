@@ -147,7 +147,7 @@ def test_section_object(valid_ini_file):
 	assert obj2.to_dict() == {'a_key': 'Another Value', 'a_bool': False, 'a_default': 'The default', 'name': 'Another section'}
 
 	assert obj3.a_key is None
-	assert repr(obj3) == 'TestSectionObject(name=u\'A third section\')'
+	assert repr(obj3) == 'TestSectionObject(name=\'A third section\')'
 
 
 class AdvancedTestSectionObject(TestSectionObject):
