@@ -310,7 +310,7 @@ update_check_legacy_objects () {
 		) found=()
 	local IFS=''
 	local filter="(|${filters[*]})"
-	IFS=$'\n' read -r -a found <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
+	IFS=$'\n' read -d '' -r -a found <<<"$(univention-ldapsearch -LLL "$filter" 1.1 | grep '^dn:')"
 	# shellcheck disable=SC2128
 	[ -n "$found" ] || return 0
 	echo "	The following objects are no longer supported with UCS-5:"

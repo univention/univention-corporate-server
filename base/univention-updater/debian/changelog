@@ -1,3 +1,9 @@
+univention-updater (15.0.1-6) unstable; urgency=medium
+
+  * Bug #51982: Fix presentation of multiple legacy objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 06 Oct 2020 03:49:54 +0200
+
 univention-updater (15.0.1-5) unstable; urgency=low
 
   * Bug #51655: Unify preup.sh and pre-check.sh
