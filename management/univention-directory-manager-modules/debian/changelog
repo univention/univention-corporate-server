@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.16-4) unstable; urgency=medium
+
+  * Bug #51364: fixed objectclass handling for usertemplate
+    (patch by Florian)
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Oct 2020 10:18:17 +0200
+
 univention-directory-manager-modules (14.0.16-3) unstable; urgency=medium
 
   * Bug #51364: fixed objectclass handling for usertemplate
