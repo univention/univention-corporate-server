@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # sync_krbtgt
@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 from univention.config_registry import ConfigRegistry
 import univention.uldap
 import univention.admin.uldap
@@ -39,9 +41,10 @@ import univention.debug2 as ud
 import univention.s4connector.s4.password
 from optparse import OptionParser
 import sys
+from six.moves import urllib_parse
 
 
-class S4:
+class S4(object):
 
 	def __init__(self, ucrbase, binddn, bindpwd, ucr=None):
 		self.ucrbase = ucrbase
@@ -59,7 +62,7 @@ class S4:
 		_d = ud.function('init_debug')  # noqa: F841
 		try:
 			function_level = int(self.ucr.get('%s/debug/function' % self.ucrbase, 0))
-		except:
+		except ValueError:
 			function_level = 0
 		ud.init('/var/log/univention/%s-s4.log' % self.ucrbase, 1, function_level)
 		debug_level = self.ucr.get('%s/debug/level' % self.ucrbase, 2)
@@ -81,8 +84,7 @@ class S4:
 			ldap_bindpw_s4 = open(self.ucr['%s/s4/ldap/bindpw' % self.ucrbase]).read().strip('\n')
 		ldap_certificate_s4 = self.ucr.get('%s/s4/ldap/certificate' % self.ucrbase)
 		if protocol == 'ldapi':
-			import urllib
-			socket = urllib.quote(self.ucr.get('%s/s4/ldap/socket' % self.ucrbase, ''), '')
+			socket = urllib_parse.quote(self.ucr.get('%s/s4/ldap/socket' % self.ucrbase, ''), '')
 			ldap_uri_s4 = "%s://%s" % (protocol, socket)
 		else:
 			ldap_uri_s4 = "%s://%s:%d" % (protocol, ldap_host_s4, ldap_port_s4)
@@ -91,7 +93,7 @@ class S4:
 			self.lo_s4 = univention.uldap.access(host=ldap_host_s4, port=ldap_port_s4, base=self.ldap_base_s4, binddn=ldap_binddn_s4, bindpw=ldap_bindpw_s4, start_tls=tls_mode, ca_certfile=ldap_certificate_s4, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member', 'unicodePwd'], uri=ldap_uri_s4)
 			self.lo_s4.lo.set_option(ldap.OPT_REFERRALS, 0)
 		except ldap.SERVER_DOWN:
-			print "Can't initialize Samba4 LDAP connection"
+			print("Can't initialize Samba4 LDAP connection")
 			raise ldap.SERVER_DOWN
 
 	def open_ucs(self, binddn, bindpwd):
@@ -109,7 +111,7 @@ class S4:
 		try:
 			self.lo = univention.admin.uldap.access(host=self.ucr['ldap/master'], base=self.ucr['ldap/base'], binddn=binddn, bindpw=bindpwd, start_tls=2)
 		except ldap.SERVER_DOWN:
-			print "Can't initialize UCS LDAP connection"
+			print("Can't initialize UCS LDAP connection")
 			raise ldap.SERVER_DOWN
 
 	def _object_mapping(self, key, object, connection):
@@ -120,25 +122,25 @@ class S4:
 			res_ucs = self.lo.lo.search(base=self.ucs_ldap_base, scope='sub', filter='(uid=krbtgt/%s)' % (self.ucr.get('kerberos/realm')))
 		except ldap.NO_SUCH_OBJECT:
 			ud.debug(ud.LDAP, ud.PROCESS, "The UCS object (uid=krbtgt/%s) was not found" % (self.ucr.get('kerberos/realm')))
-			print "The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm')
+			print("The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm'))
 			return
 		if not res_ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "The UCS object (uid=krbtgt/%s) was not found" % (self.ucr.get('kerberos/realm')))
-			print "The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm')
+			print("The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm'))
 			return
 
 		try:
 			res_s4 = self.lo_s4.lo.search_s(self.ldap_base_s4, ldap.SCOPE_SUBTREE, '(&(objectClass=user)(!(objectClass=computer))(cn=krbtgt))', ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 		except ldap.NO_SUCH_OBJECT:
 			ud.debug(ud.LDAP, ud.PROCESS, "The Samba4 user (krbtgt) was not found.")
-			print "The Samba4 user (krbtgt) was not found."
+			print("The Samba4 user (krbtgt) was not found.")
 			return
 		except ldap.SERVER_DOWN:
-			print "Can't initialize Samba4 LDAP connection"
+			print("Can't initialize Samba4 LDAP connection")
 			raise ldap.SERVER_DOWN
 		if not res_s4:
 			ud.debug(ud.LDAP, ud.PROCESS, " The Samba4 user (krbtgt) was not found.")
-			print "\nThe Samba4 user (krbtgt) was not found."
+			print("\nThe Samba4 user (krbtgt) was not found.")
 			return
 
 		modlist = []

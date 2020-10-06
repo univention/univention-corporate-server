@@ -58,7 +58,7 @@ def _isAlreadyMac(attributes):
 
 
 def _replaceListElement(l, oldValue, newValue):
-	return map(lambda x: x if x != oldValue else newValue, l)
+	return [x if x != oldValue else newValue for x in l]
 
 
 def _convertWinToMac(s4connector, sync_object):
@@ -100,7 +100,7 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
 		return
 
 	try:
-		sAMAccountName_vals = [_v for _k, _v in attrs.iteritems() if 'samaccountname' == _k.lower()][0]
+		sAMAccountName_vals = [_v for _k, _v in attrs.items() if 'samaccountname' == _k.lower()][0]
 	except IndexError:
 		raise ValueError("%s has no sAMAccountName" % (sync_object['dn'],))
 	else:

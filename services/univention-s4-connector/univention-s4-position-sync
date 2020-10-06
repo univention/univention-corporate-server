@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import optparse
 import sys
 import imp
@@ -43,10 +45,12 @@ from samba.auth import system_session
 from samba.samdb import SamDB
 import ldb
 
+from six.moves import input
+
 
 def log(level, string):
 	if opts.verbose >= level:
-		print string
+		print(string)
 
 # the following functions are modified versions of the ones in univention.s4connector.s4
 # the only difference is that they use a non-matching objectClass (None)
@@ -158,11 +162,11 @@ if __name__ == "__main__":
 	opts, args = parser.parse_args()
 
 	if opts.dryrun:
-		print "Option --dry-run given, checking only:"
+		print("Option --dry-run given, checking only:")
 	elif not opts.assume_yes:
-		answer = raw_input("Really modify Samba4 object positions? [yN]: ")
+		answer = input("Really modify Samba4 object positions? [yN]: ")
 		if answer.lower() != 'y':
-			print >>sys.stderr, "Use --dry-run to check what would be done"
+			print("Use --dry-run to check what would be done", file=sys.stderr)
 			sys.exit(1)
 
 	CONFIGBASENAME = "connector"
@@ -172,7 +176,7 @@ if __name__ == "__main__":
 
 	ucs_match_filter = {
 		'user': mapping.s4_mapping['user'].match_filter,
-		'group': unicode(  # filter copied from UDM groups/group
+		'group': str(  # filter copied from UDM groups/group
 			univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('cn', '*'),
 				univention.admin.filter.conjunction('|', [
@@ -206,13 +210,13 @@ if __name__ == "__main__":
 			log(1, "UCS: %s" % dn)
 
 			# use the S4 Connector to lookup the current location of the corresponding object
-			object = {'dn': unicode(dn), 'modtype': 'modify', 'attributes': attrs}
+			object = {'dn': str(dn), 'modtype': 'modify', 'attributes': attrs}
 			object = s4._object_mapping(key, object, 'ucs')
 
 			if not s4._ignore_object(key, object):
 				# determine the plain_mapped_dn, i.e. where the S4 Connector would create the object
 				mapped_dn = s4.plain_mapped_dn(key, object, dn)
 				if object['dn'].lower() != mapped_dn.lower():
-					print "RENAME: ", object['dn'], " to ", mapped_dn
+					print("RENAME: ", object['dn'], " to ", mapped_dn)
 					if not opts.dryrun:
 						samdb.rename(ldb.Dn(samdb, object['dn']), ldb.Dn(samdb, mapped_dn))

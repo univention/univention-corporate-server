@@ -33,9 +33,8 @@
 
 
 from __future__ import print_function
-import ConfigParser
-import cPickle
 import os
+from six.moves import configparser
 
 
 def fixup(s):
@@ -49,7 +48,7 @@ def fixup(s):
 configfile = '/etc/univention/s4connector/s4internal.cfg'
 if not os.path.exists(configfile):
 	print("ERROR: Config-File not found, maybe connector was never started")
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.readfp(open(configfile))
 
 for section in config.sections():

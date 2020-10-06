@@ -44,6 +44,8 @@ import pprint
 import warnings
 import string
 
+import six
+from six.moves import urllib_parse
 import ldap
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
@@ -66,6 +68,11 @@ DSDB_CONTROL_REPLICATED_UPDATE_OID = '1.3.6.1.4.1.7165.4.3.3'
 
 # page results
 PAGE_SIZE = 1000
+
+try:
+	unicode
+except NameError:
+	unicode = str
 
 
 def normalise_userAccountControl(s4connector, key, object):
@@ -238,26 +245,26 @@ def encode_s4_resultlist(s4_resultlist):
 	return s4_resultlist
 
 
-def unix2s4_time(l):
+def unix2s4_time(ltime):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(calendar.timegm(time.strptime(l, "%Y-%m-%d")) - 86400) * 10000000 + d  # AD stores end of day in accountExpires
+	return int(calendar.timegm(time.strptime(ltime, "%Y-%m-%d")) - 86400) * 10000000 + d  # AD stores end of day in accountExpires
 
 
-def s42unix_time(l):
+def s42unix_time(ltime):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return time.strftime("%Y-%m-%d", time.gmtime((l - d) / 10000000 + 86400))  # shadowExpire treats day of expiry as exclusive
+	return time.strftime("%Y-%m-%d", time.gmtime((ltime - d) / 10000000 + 86400))  # shadowExpire treats day of expiry as exclusive
 
 
-def samba2s4_time(l):
+def samba2s4_time(ltime):
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(time.mktime(time.localtime(l))) * 10000000 + d
+	return int(time.mktime(time.localtime(ltime))) * 10000000 + d
 
 
-def s42samba_time(l):
-	if l == 0:
-		return l
+def s42samba_time(ltime):
+	if ltime == 0:
+		return ltime
 	d = 116444736000000000  # difference between 1601 and 1970
-	return int(((l - d)) / 10000000)
+	return int(((ltime - d)) / 10000000)
 
 
 # mapping funtions
@@ -276,7 +283,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 			samaccountname = object['attributes']['sAMAccountName'][0]
 		if dn_attr:
 			try:
-				dn_attr_vals = [value for key, value in object['attributes'].iteritems() if dn_attr.lower() == key.lower()][0]
+				dn_attr_vals = [value for key, value in object['attributes'].items() if dn_attr.lower() == key.lower()][0]
 			except IndexError:
 				pass
 			else:
@@ -360,7 +367,7 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 					filter_parts_s4.append(format_escaped('(samaccountname={0!e})', value))
 				else:
 					alternative_samaccountnames.append(value)
-					samaccountname_filter_parts = map(lambda x: format_escaped('(samaccountname={0!e})', x), alternative_samaccountnames)
+					samaccountname_filter_parts = [format_escaped('(samaccountname={0!e})', x) for x in alternative_samaccountnames]
 					filter_parts_s4.append(unicode_to_utf8(u'(|{})'.format(''.join(samaccountname_filter_parts))))
 
 				if dn_attr and dn_attr_val:
@@ -690,7 +697,7 @@ class LDAPEscapeFormatter(string.Formatter):
 	"""
 	def convert_field(self, value, conversion):
 		if conversion == 'e':
-			if isinstance(value, basestring):
+			if isinstance(value, six.string_types):
 				return escape_filter_chars(value)
 			return escape_filter_chars(str(value))
 		return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
@@ -710,7 +717,7 @@ def format_escaped(format_string, *args, **kwargs):
 
 
 class s4(univention.s4connector.ucs):
-	RANGE_RETRIEVAL_PATTERN = re.compile("^([^;]+);range=(\d+)-(\d+|\*)$")
+	RANGE_RETRIEVAL_PATTERN = re.compile(r"^([^;]+);range=(\d+)-(\d+|\*)$")
 
 	def __init__(self, CONFIGBASENAME, property, baseConfig, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
 		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
@@ -861,8 +868,7 @@ class s4(univention.s4connector.ucs):
 
 		protocol = self.baseConfig.get('%s/s4/ldap/protocol' % self.CONFIGBASENAME, 'ldap').lower()
 		if protocol == 'ldapi':
-			import urllib
-			socket = urllib.quote(self.baseConfig.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
+			socket = urllib_parse.quote(self.baseConfig.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
 			ldapuri = "%s://%s" % (protocol, socket)
 		else:
 			ldapuri = "%s://%s:%d" % (protocol, self.baseConfig['%s/s4/ldap/host' % self.CONFIGBASENAME], int(self.baseConfig['%s/s4/ldap/port' % self.CONFIGBASENAME]))
@@ -2070,7 +2076,7 @@ class s4(univention.s4connector.ucs):
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 
 			# poll for all objects without deleted objects
-			polled = self.poll(show_deleted=False)
+			self.poll(show_deleted=False)
 
 			# compare highest USN from poll with highest before poll, if the last changes deletes
 			# the highest USN from poll is to low
@@ -2080,7 +2086,7 @@ class s4(univention.s4connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO, "initialize S4: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
 		else:
 			self.resync_rejected()
-			polled = self.poll()
+			self.poll()
 			self._commit_lastUSN()
 		print("--------------------------------------")
 
@@ -2421,7 +2427,7 @@ class s4(univention.s4connector.ucs):
 					self.lo_s4.lo.modify_ext_s(compatible_modstring(result[0][0]), reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1), ])
 					# and try the sync again
 					return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
-				except:
+				except Exception:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
 					raise
@@ -2439,7 +2445,7 @@ class s4(univention.s4connector.ucs):
 					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 					try:
 						self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=ctrls)
-					except:
+					except Exception:
 						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
 						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
 						raise
@@ -2524,13 +2530,13 @@ class s4(univention.s4connector.ucs):
 									# its value as long as that value is not removed. If removed the primary
 									# attribute is assigned a random value from the UCS attribute.
 									try:
-										current_s4_values = set([v for k, v in s4_object.iteritems() if s4_attribute.lower() == k.lower()][0])
+										current_s4_values = set([v for k, v in s4_object.items() if s4_attribute.lower() == k.lower()][0])
 									except IndexError:
 										current_s4_values = set([])
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 values: %s" % current_s4_values)
 
 									try:
-										current_s4_other_values = set([v for k, v in s4_object.iteritems() if s4_other_attribute.lower() == k.lower()][0])
+										current_s4_other_values = set([v for k, v in s4_object.items() if s4_other_attribute.lower() == k.lower()][0])
 									except IndexError:
 										current_s4_other_values = set([])
 									ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: The current S4 other values: %s" % current_s4_other_values)
@@ -2554,7 +2560,7 @@ class s4(univention.s4connector.ucs):
 										modlist.append((ldap.MOD_REPLACE, s4_other_attribute, new_s4_other_values))
 								else:
 									try:
-										current_s4_values = set([v for k, v in s4_object.iteritems() if s4_attribute.lower() == k.lower()][0])
+										current_s4_values = set([v for k, v in s4_object.items() if s4_attribute.lower() == k.lower()][0])
 									except IndexError:
 										current_s4_values = set([])
 
@@ -2599,7 +2605,7 @@ class s4(univention.s4connector.ucs):
 					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
 					try:
 						self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
-					except:
+					except Exception:
 						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
 						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
 						raise

@@ -284,7 +284,7 @@ def main():
 		except (KeyboardInterrupt, SystemExit):
 			lock_file.close()
 			raise
-		except:
+		except Exception:
 			print(time.ctime())
 
 			print(" --- connect failed, failure was: ---")

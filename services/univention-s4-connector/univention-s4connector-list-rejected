@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -32,6 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from __future__ import print_function
 import sys
 import imp
 
@@ -45,15 +46,15 @@ CONFIGBASENAME = "connector"
 
 
 def usage():
-	print ""
-	print "This is univention-connector-list-rejected"
-	print ""
-	print "Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures"
-	print ""
-	print "Usage:"
-	print "univention-connector-list-rejected [-c configbase]"
-	print ""
-	print "The default configbase is \"s4connector\"."
+	print("")
+	print("This is univention-connector-list-rejected")
+	print("")
+	print("Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures")
+	print("")
+	print("Usage:")
+	print("univention-connector-list-rejected [-c configbase]")
+	print("")
+	print("The default configbase is \"s4connector\".")
 
 
 if len(sys.argv) > 1:
@@ -62,12 +63,12 @@ if len(sys.argv) > 1:
 		sys.exit(0)
 	if sys.argv[1] == '-c':
 		if len(sys.argv) != 3:
-			print "ERROR: option \"-c\" needs an argument!"
+			print("ERROR: option \"-c\" needs an argument!")
 			usage()
 			sys.exit(1)
 		else:
 			CONFIGBASENAME = sys.argv[2]
-			print "use configbase %s" % CONFIGBASENAME
+			print("use configbase %s" % CONFIGBASENAME)
 
 
 mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
@@ -78,35 +79,28 @@ def main():
 	configRegistry.load()
 
 	if '%s/s4/ldap/host' % CONFIGBASENAME not in configRegistry:
-		print '%s/s4/ldap/host not set' % CONFIGBASENAME
+		print('%s/s4/ldap/host not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/s4/ldap/port' % CONFIGBASENAME not in configRegistry:
-		print '%s/s4/ldap/port not set' % CONFIGBASENAME
+		print('%s/s4/ldap/port not set' % CONFIGBASENAME)
 		sys.exit(1)
 	if '%s/s4/ldap/base' % CONFIGBASENAME not in configRegistry:
-		print '%s/s4/ldap/base not set' % CONFIGBASENAME
+		print('%s/s4/ldap/base not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in configRegistry and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in configRegistry and configRegistry['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
-		print '%s/s4/ldap/certificate not set' % CONFIGBASENAME
+		print('%s/s4/ldap/certificate not set' % CONFIGBASENAME)
 		sys.exit(1)
 
 	if '%s/s4/listener/dir' % CONFIGBASENAME not in configRegistry:
-		print '%s/s4/listener/dir not set' % CONFIGBASENAME
+		print('%s/s4/listener/dir not set' % CONFIGBASENAME)
 		sys.exit(1)
-
-	if '%s/s4/retryrejected' % CONFIGBASENAME not in configRegistry:
-		baseconfig_retry_rejected = 10
-	else:
-		baseconfig_retry_rejected = configRegistry['%s/s4/retryrejected' % CONFIGBASENAME]
 
 	s4_ldap_bindpw = None
 	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME):
 		s4_ldap_bindpw = open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
 		if s4_ldap_bindpw[-1] == '\n':
 			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
-
-	poll_sleep = int(configRegistry['%s/s4/poll/sleep' % CONFIGBASENAME])
 
 	# try:
 	s4 = univention.s4connector.s4.s4(
@@ -128,34 +122,34 @@ def main():
 
 	found_rejected = False
 	i = 1
-	print "\nUCS rejected\n"
+	print("\nUCS rejected\n")
 	for filename, dn in s4.list_rejected_ucs():
 		found_rejected = True
-		print "%5d:   UCS DN: %s" % (i, univention.s4connector.s4.encode_attrib(dn))
+		print("%5d:   UCS DN: %s" % (i, univention.s4connector.s4.encode_attrib(dn)))
 		s4_dn = univention.s4connector.s4.encode_attrib(s4.get_dn_by_ucs(dn))
 		if s4_dn:
-			print "          S4 DN: %s" % s4_dn
+			print("          S4 DN: %s" % s4_dn)
 		else:
-			print "          S4 DN: <not found>"
-		print "         Filename: %s\n" % filename
+			print("          S4 DN: <not found>")
+		print("         Filename: %s\n" % filename)
 		i += 1
 
 	i = 1
-	print "\nS4 rejected\n"
+	print("\nS4 rejected\n")
 	for id, dn in s4.list_rejected():
 		found_rejected = True
-		print "%5d:    S4 DN: %s" % (i, univention.s4connector.s4.encode_attrib(dn))
+		print("%5d:    S4 DN: %s" % (i, univention.s4connector.s4.encode_attrib(dn)))
 		ucs_dn = univention.s4connector.s4.encode_attrib(s4.get_dn_by_con(dn))
 		if ucs_dn:
-			print "         UCS DN: %s" % ucs_dn
+			print("         UCS DN: %s" % ucs_dn)
 		else:
-			print "         UCS DN: <not found>"
+			print("         UCS DN: <not found>")
 		i += 1
 
 	if not found_rejected:
-		print "\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n"
+		print("\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n")
 
-	print "\n\tlast synced USN: %s" % s4.get_lastUSN()
+	print("\n\tlast synced USN: %s" % s4.get_lastUSN())
 
 
 if __name__ == "__main__":

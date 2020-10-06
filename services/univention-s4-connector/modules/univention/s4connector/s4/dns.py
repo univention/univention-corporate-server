@@ -81,6 +81,11 @@ import univention.admin.handlers.dns.srv_record
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.ptr_record
 
+try:
+	unicode
+except NameError:
+	unicode = str
+
 
 class PTRRecord(dnsp.DnssrvRpcRecord):
 
@@ -125,7 +130,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 	if obj['dn'] is not None:
 		try:
-			s4_RR_val = [_value for _key, _value in obj['attributes'].iteritems() if s4_RR_attr.lower() == _key.lower()][0][0]
+			s4_RR_val = [_value for _key, _value in obj['attributes'].items() if s4_RR_attr.lower() == _key.lower()][0][0]
 		except (KeyError, IndexError):
 			s4_RR_val = ''
 
@@ -419,7 +424,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: mapping for key '%s':" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: source DN: %s" % dn)
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: mapped DN: %s" % newdn)
-			except:  # FIXME: which exception is to be caught?
+			except Exception:  # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "dns_dn_mapping: dn-print failed")
 
 			obj[dn_key] = newdn
@@ -618,7 +623,6 @@ def __unpack_mxRecord(object):
 
 
 def __pack_txtRecord(object, dnsRecords):
-	slist = []
 	for txtRecord in object['attributes'].get('tXTRecord', []):
 		if txtRecord:
 			ud.debug(ud.LDAP, ud.INFO, '__pack_txtRecord: %s' % txtRecord)
@@ -821,7 +825,6 @@ def s4_zone_msdcs_sync(s4connector, object):
 	msdcs_soa_dn = msdcs_soa_obj['dn']
 
 	dnsRecords = []
-	msdcs_soa = {}
 	old_dnsRecords = msdcs_soa_obj['attributes'].get('dnsRecord', [])
 	found = False
 	for dnsRecord in old_dnsRecords:
@@ -872,12 +875,12 @@ def s4_zone_delete(s4connector, object):
 	zone_dn = s4connector.lo.parentDn(soa_dn)
 
 	try:
-		res = s4connector.lo_s4.lo.delete_s(soa_dn)
+		s4connector.lo_s4.lo.delete_s(soa_dn)
 	except ldap.NO_SUCH_OBJECT:
 		pass  # the object was already removed
 
 	try:
-		res = s4connector.lo_s4.lo.delete_s(zone_dn)
+		s4connector.lo_s4.lo.delete_s(zone_dn)
 	except ldap.NO_SUCH_OBJECT:
 		pass  # the object was already removed
 
@@ -899,7 +902,7 @@ def s4_dns_node_base_create(s4connector, object, dnsRecords):
 	except ldap.NO_SUCH_OBJECT:
 		__create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords)
 	else:
-		_res = s4connector.lo_s4.modify(dnsNodeDn, [('dnsRecord', old_dnsRecords, dnsRecords)])
+		s4connector.lo_s4.modify(dnsNodeDn, [('dnsRecord', old_dnsRecords, dnsRecords)])
 
 	return dnsNodeDn
 
@@ -912,7 +915,7 @@ def s4_dns_node_base_delete(s4connector, object):
 
 	dnsNodeDn = object['dn']
 	try:
-		res = s4connector.lo_s4.lo.delete_s(dnsNodeDn)
+		s4connector.lo_s4.lo.delete_s(dnsNodeDn)
 	except ldap.NO_SUCH_OBJECT:
 		pass  # the object was already removed
 
@@ -952,7 +955,7 @@ def s4_host_record_create(s4connector, object):
 	__pack_mxRecord(object, dnsRecords)
 	__pack_txtRecord(object, dnsRecords)
 
-	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+	s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 	return True
 
@@ -1027,7 +1030,7 @@ def s4_ptr_record_create(s4connector, object):
 
 	__pack_ptrRecord(object, dnsRecords)
 
-	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+	s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 	return True
 
@@ -1143,7 +1146,7 @@ def s4_cname_create(s4connector, object):
 
 	__pack_cName(object, dnsRecords)
 
-	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+	s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 
 def ucs_srv_record_create(s4connector, object):
@@ -1264,7 +1267,7 @@ def s4_srv_record_create(s4connector, object):
 	else:
 		__pack_sRVrecord(object, dnsRecords)
 
-	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+	s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 
 def ucs_txt_record_create(s4connector, object):
@@ -1334,7 +1337,7 @@ def s4_txt_record_create(s4connector, object):
 
 	__pack_txtRecord(object, dnsRecords)
 
-	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+	s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 
 def ucs_ns_record_create(s4connector, object):
@@ -1397,7 +1400,7 @@ def s4_ns_record_create(s4connector, object):
 
 	__pack_nsRecord(object, dnsRecords)
 
-	dnsNodeDn = s4_dns_node_base_create(s4connector, object, dnsRecords)
+	s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 
 def ucs_zone_create(s4connector, object, dns_type):

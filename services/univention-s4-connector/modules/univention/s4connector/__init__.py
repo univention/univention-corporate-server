@@ -33,7 +33,7 @@
 
 from __future__ import print_function
 
-import cPickle
+from six.moves import cPickle as pickle
 import copy
 import os
 import re
@@ -68,9 +68,13 @@ univention.admin.modules.update()
 # update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
 
+try:
+	unicode
+except NameError:
+	unicode = str
+
 
 # util functions defined during mapping
-
 def make_lower(mlValue):
 	'''
 	lower string cases for mlValue which can be string or a list of values which can be given to mlValue
@@ -161,7 +165,7 @@ def compare_lowercase(val1, val2):
 # helper classes
 
 
-class configdb:
+class configdb(object):
 
 	def __init__(self, filename):
 		self.filename = filename
@@ -291,13 +295,13 @@ class configdb:
 				self._dbcon = lite.connect(self.filename)
 
 
-class configsaver:
+class configsaver(object):
 
 	def __init__(self, filename):
 		self.filename = filename
 		try:
 			f = open(filename, 'r')
-			self.config = cPickle.load(f)
+			self.config = pickle.load(f)
 		except IOError:
 			self.config = {}
 		except EOFError:
@@ -311,7 +315,7 @@ class configsaver:
 		signal(SIGTERM, signal_handler)
 
 		f = open(self.filename, 'w')
-		cPickle.dump(self.config, f)
+		pickle.dump(self.config, f)
 		f.flush()
 		f.close()
 
@@ -353,7 +357,7 @@ class configsaver:
 		return section in self.config and option in self.config[section]
 
 
-class attribute:
+class attribute(object):
 
 	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', udm_option=None):
 		self.ucs_attribute = ucs_attribute
@@ -380,7 +384,7 @@ class attribute:
 		return 'univention.s4connector.attribute(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
-class property:
+class property(object):
 
 	def __init__(
 		self,
@@ -464,7 +468,7 @@ class property:
 		return 'univention.s4connector.property(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
-class ucs:
+class ucs(object):
 
 	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):
 		_d = ud.function('ldap.__init__')  # noqa: F841
@@ -756,10 +760,10 @@ class ucs:
 
 		try:
 			with open(filename) as fob:
-				(dn, new, old, old_dn) = cPickle.load(fob)
+				(dn, new, old, old_dn) = pickle.load(fob)
 		except IOError:
 			return True  # file not found so there's nothing to sync
-		except (cPickle.UnpicklingError, EOFError) as e:
+		except (pickle.UnpicklingError, EOFError) as e:
 			message = 'file emtpy' if isinstance(e, EOFError) else e.message
 			ud.debug(ud.LDAP, ud.ERROR, '__sync_file_from_ucs: invalid pickle file {}: {}'.format(filename, message))
 			# ignore corrupted pickle file, but save as rejected to not try again
@@ -1097,10 +1101,10 @@ class ucs:
 				if filename not in self.rejected_files:
 					try:
 						with open(filename) as fob:
-							(dn, new, old, old_dn) = cPickle.load(fob)
+							(dn, new, old, old_dn) = pickle.load(fob)
 					except IOError:
 						continue  # file not found so there's nothing to sync
-					except (cPickle.UnpicklingError, EOFError) as e:
+					except (pickle.UnpicklingError, EOFError) as e:
 						message = 'file emtpy' if isinstance(e, EOFError) else e.message
 						ud.debug(ud.LDAP, ud.ERROR, 'poll_ucs: invalid pickle file {}: {}'.format(filename, message))
 						# ignore corrupted pickle file, but save as rejected to not try again

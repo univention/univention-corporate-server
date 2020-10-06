@@ -73,7 +73,7 @@ class EntryDiff(object):
 		return set(o for o in self.intersect if set(self.old[o]) != set(self.new[o]))
 
 
-class S4Cache:
+class S4Cache(object):
 
 	"""
 			Local cache for the current Samba 4 state of the s4connector.
@@ -224,7 +224,7 @@ class S4Cache:
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
 		]
 
-		rows = self.__execute_sql_commands(sql_commands, fetch_result=False)
+		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id(self, attr):
 		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841

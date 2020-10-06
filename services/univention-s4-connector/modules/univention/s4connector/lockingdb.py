@@ -41,7 +41,7 @@ def func_name():
 	return inspect.currentframe().f_back.f_code.co_name
 
 
-class LockingDB:
+class LockingDB(object):
 
 	"""
 			A local database which includes the list of objects
@@ -189,67 +189,67 @@ if __name__ == '__main__':
 
 	print('Starting LockingDB test example ')
 
-	l = LockingDB('lock.sqlite')
+	lock = LockingDB('lock.sqlite')
 
 	uuid1 = random.random()
 
 	guid1 = random.random()
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
-	l.lock_s4(guid1)
+	lock.lock_s4(guid1)
 
-	if not l.is_s4_locked(guid1):
+	if not lock.is_s4_locked(guid1):
 		print('E: guid1 is not locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
-	l.unlock_s4(guid1)
+	lock.unlock_s4(guid1)
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if not l.is_ucs_locked(uuid1):
+	if not lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is not locked for UCS')
 
-	l.unlock_ucs(uuid1)
+	lock.unlock_ucs(uuid1)
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
 	print('done')

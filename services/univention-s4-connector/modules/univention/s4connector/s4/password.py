@@ -91,7 +91,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
-							except:
+							except Exception:  # FIXME: which exception?
 								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
@@ -114,7 +114,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
-							except:
+							except Exception:  # FIXME: which exception?
 								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
@@ -152,7 +152,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 					old_krb['ctr3'] = krb.ctr
 					for k in krb.ctr.keys:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
-				except:
+				except Exception:  # FIXME: which exception?
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos blob failed. Traceback:")
 					traceback.print_exc()
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos (DES keys) blob will be missing in supplementalCredentials ctr3.old_keys.")
@@ -164,7 +164,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 					old_krb['ctr4'] = krb.ctr
 					for k in krb.ctr.keys:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
-				except:
+				except Exception:  # FIXME: which exception?
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos-Newer-Keys blob failed. Traceback:")
 					traceback.print_exc()
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos-Newer-Keys (AES and DES keys) blob will be missing in supplementalCredentials ctr4.old_keys.")
@@ -479,11 +479,11 @@ def extract_NThash_from_krb5key(ucs_krb5key):
 
 
 def _append_length(a, str):
-	l = len(str)
-	a.append(chr((l & 0xff)))
-	a.append(chr((l & 0xff00) >> 8))
-	a.append(chr((l & 0xff0000) >> 16))
-	a.append(chr((l & 0xff000000) >> 24))
+	lenght = len(str)
+	a.append(chr((lenght & 0xff)))
+	a.append(chr((lenght & 0xff00) >> 8))
+	a.append(chr((lenght & 0xff0000) >> 16))
+	a.append(chr((lenght & 0xff000000) >> 24))
 
 
 def password_sync_ucs_to_s4(s4connector, key, object):
@@ -508,17 +508,11 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'password_sync_ucs_to_s4: the password for %s has not been changed. Skipping password sync.' % (object['dn']))
 		return
 
-	try:
-		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
-	except:  # FIXME: which exception is to be caught?
-		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
+	ud.debug(ud.LDAP, ud.INFO, "Object DN=%r" % (object['dn'],))
 
 	ucs_object = s4connector._object_mapping(key, object, 'con')
 
-	try:
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
-	except:  # FIXME: which exception is to be caught?
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
+	ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %r" % (ucs_object['dn'],))
 
 	try:
 		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet', 'sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'], required=True)
@@ -573,7 +567,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	dBCSPwd_attr = s4_search_attributes.get('dBCSPwd', [None])[0]
 	userPrincipalName_attr = s4_search_attributes.get('userPrincipalName', [None])[0]
 	supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
-	msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
+	#msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
 
 	s4NThash = None
@@ -611,7 +605,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if ucsNThash:
 				try:
 					unicodePwd_new = binascii.a2b_hex(ucsNThash)
-				except TypeError as exc:
+				except TypeError:
 					if ucsNThash.startswith("NO PASSWORD"):
 						pwd_set = False
 					else:
@@ -723,7 +717,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		ntPwd_ucs = ''
 		lmPwd_ucs = ''
 		krb5Principal = ''
-		userPassword = ''
+		#userPassword = ''
 		modlist = []
 		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
 
@@ -738,8 +732,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			lmPwd_ucs = ucs_object_attributes['sambaLMPassword'][0]
 		if 'krb5PrincipalName' in ucs_object_attributes:
 			krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
-		if 'userPassword' in ucs_object_attributes:
-			userPassword = ucs_object_attributes['userPassword'][0]
+		#if 'userPassword' in ucs_object_attributes:
+		#	userPassword = ucs_object_attributes['userPassword'][0]
 		sambaPwdLastSet = None
 		if 'sambaPwdLastSet' in ucs_object_attributes:
 			sambaPwdLastSet = ucs_object_attributes['sambaPwdLastSet'][0]
@@ -801,8 +795,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				expiry = int(time.time())
 				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
 				# we need to expire the password. Since shadowMax=1 is its minimum value, we need to set shadowLastChange = today-2days
-				two_days_ago = long(time.time()) - 86400*2
-				new_shadowLastChange = str(two_days_ago/ 3600 / 24)
+				two_days_ago = int(time.time()) - 86400 * 2
+				new_shadowLastChange = str(two_days_ago / 3600 / 24)
 			else:                # not pwd change on next login
 				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
 				userobject = s4connector.get_ucs_object(key, ucs_object['dn'])

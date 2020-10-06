@@ -51,7 +51,7 @@ def prefdev_sync_s4_to_ucs(s4connector, key, s4_object):
 	for pref in s4_prefdev:
 		try:
 			ucs_pref += map_prefdev[int(pref)] + ' $ '
-		except (IndexError, ValueError) as exc:
+		except (IndexError, ValueError):
 			ud.debug(ud.LDAP, ud.WARN, "Ignoring invalid value %r of attribute preferredDeliveryMethod. Value must be a number between 0 and 10." % (pref,))
 	ucs_pref = ucs_pref[:-3]
 	return [ucs_pref]
