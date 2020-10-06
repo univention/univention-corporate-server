@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-directory-manager-modules
+fix: 14.0.16-4A~4.4.0.202010061020
+desc: |
+ This update addresses the following issue(s):
+ * LDPA objectclass handling in the UDM module usertemplate
+   has been fixed. 
+bug: [51364]
