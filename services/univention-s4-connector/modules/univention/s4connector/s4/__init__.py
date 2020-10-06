@@ -42,6 +42,7 @@ import calendar
 import pprint
 import warnings
 import string
+import base64
 
 import six
 from six.moves import urllib_parse
@@ -911,10 +912,9 @@ class s4(univention.s4connector.ucs):
 
 	def __encode_GUID(self, GUID):
 		# GUID may be unicode
-		if isinstance(GUID, type(u'')):
-			return GUID.encode('latin1').encode('base64')
-		else:
-			return GUID.encode('base64')
+		if isinstance(GUID, unicode):
+			GUID = GUID.encode('latin1')
+		return base64.b64encode(GUID).decode('ASCII')
 
 	def _get_DN_for_GUID(self, GUID):
 		_d = ud.function('ldap._get_DN_for_GUID')  # noqa: F841
@@ -1229,7 +1229,7 @@ class s4(univention.s4connector.ucs):
 
 		return self.__search_s4_partitions(filter=usn_filter, show_deleted=show_deleted)
 
-	def __dn_from_deleted_object(self, object, GUID):
+	def __dn_from_deleted_object(self, object):
 		'''
 		gets dn for deleted object (original dn before the object was moved into the deleted objects container)
 		'''
@@ -1239,7 +1239,7 @@ class s4(univention.s4connector.ucs):
 		last_known_parent = object['attributes'].get('lastKnownParent', [None])[0]
 		if last_known_parent and '\\0ADEL:' in last_known_parent:
 			dn, attr = self.__get_s4_deleted(last_known_parent)
-			last_known_parent = self.__dn_from_deleted_object({'dn': dn, 'attributes': attr}, GUID)
+			last_known_parent = self.__dn_from_deleted_object({'dn': dn, 'attributes': attr})
 
 		if last_known_parent:
 			ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%r) and rdn (%r)" % (last_known_parent, rdn))
@@ -1266,7 +1266,6 @@ class s4(univention.s4connector.ucs):
 		object = {}
 		object['dn'] = self.encode(element[0])
 		deleted_object = False
-		GUID = element[1]['objectGUID'][0]  # don't send this GUID to univention-debug
 
 		# modtype
 		if 'isDeleted' in element[1] and element[1]['isDeleted'][0] == 'TRUE':
@@ -1274,7 +1273,7 @@ class s4(univention.s4connector.ucs):
 			deleted_object = True
 		else:
 			# check if is moved
-			olddn = self.encode(self._get_DN_for_GUID(GUID))
+			olddn = self.encode(self._get_DN_for_GUID(element[1]['objectGUID'][0]))
 			ud.debug(ud.LDAP, ud.INFO, "object_from_element: olddn: %s" % olddn)
 			if olddn and not compatible_modstring(olddn).lower() == compatible_modstring(self.encode(element[0])).lower() and ldap.explode_rdn(compatible_modstring(olddn).lower()) == ldap.explode_rdn(compatible_modstring(self.encode(element[0])).lower()):
 				object['modtype'] = 'move'
@@ -1294,9 +1293,9 @@ class s4(univention.s4connector.ucs):
 
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
 			object['deleted_dn'] = object['dn']
-			object['dn'] = self.__dn_from_deleted_object(object, GUID)
+			object['dn'] = self.__dn_from_deleted_object(object)
 			ud.debug(ud.LDAP, ud.PROCESS, "object_from_element: DN of removed object: %r" % (object['dn'],))
-			# self._remove_GUID(GUID) # cache is not needed anymore?
+			# self._remove_GUID(element[1]['objectGUID'][0]) # cache is not needed anymore?
 
 			if not object['dn']:
 				return None
