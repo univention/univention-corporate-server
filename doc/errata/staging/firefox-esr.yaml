@@ -3,15 +3,16 @@ release: "4.4"
 version: [5, 6]
 scope: ucs_4.4-0-errata4.4-6
 src: firefox-esr
-fix: 78.3.0esr-1~deb9u1
+fix: 78.3.0esr-1~deb9u2
 desc: |
  This update addresses the following issues:
  * Memory safety bugs fixed (CVE-2020-15673)
- * XSS when pasting attacker-controlled data into a contenteditable element
-   (CVE-2020-15676)
+ * XSS when pasting attacker-controlled data into a contenteditable element (CVE-2020-15676)
  * Download origin spoofing via redirect (CVE-2020-15677)
- * When recursing through layers while scrolling, an iterator may have become
-   invalid, resulting in a potential use-after-free scenario (CVE-2020-15678)
+ * When recursing through layers while scrolling, an iterator may have become invalid, resulting in a potential use-after-free scenario (CVE-2020-15678)
+
+ * 78.3.0esr-1~deb9u2 (Tue, 29 Sep 2020 10:01:59 +0200)
+  * Don't set NASM on non-x86.
 bug: [52160]
 cve:
 - CVE-2020-15673
