@@ -53,13 +53,21 @@ configure)
 		umc/login/links/login_without_sso/text?"Login without Single Sign On" \
 		umc/login/links/login_without_sso/text/de?"Ohne Single Sign-On anmelden"
 
-	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
+	for i in /var/www/saml /var/www/saml/php-cgi
 	do
 		# only do something when no setting exists
 		if ! dpkg-statoverride --list $i >/dev/null 2>&1; then
 			dpkg-statoverride --update --add samlcgi samlcgi 755 $i
 		fi
 	done
+
+	if dpkg --compare-versions "$2" lt 6.0.2-56; then
+		dpkg-statoverride --remove /var/lib/simplesamlphp/secrets.inc.php
+	fi
+
+	if ! dpkg-statoverride --list /var/lib/simplesamlphp/secrets.inc.php >/dev/null 2>&1; then
+		dpkg-statoverride --update --add samlcgi samlcgi 640 /var/lib/simplesamlphp/secrets.inc.php
+	fi
 
 	call_joinscript 91univention-saml.inst
 
