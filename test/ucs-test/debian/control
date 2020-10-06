@@ -196,6 +196,7 @@ Depends:
  python,
  python-netifaces,
  python-pexpect,
+ python-pytest,
  swaks,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},

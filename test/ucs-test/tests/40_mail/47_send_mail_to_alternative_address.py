@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner /usr/bin/pytest -l -v
 ## desc: Test unionmap
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -16,7 +16,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token, mail_delivered
+from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token
 
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -26,22 +26,12 @@ with ucr_test.UCSTestConfigRegistry() as ucr:
 
 
 class Bunch(object):
-	"""
-	>>> y = Bunch(foo=42, bar='TEST')
-	>>> print repr(y.foo), repr(y.bar)
-	42 'TEST'
-
-	>>> x = Bunch()
-	>>> x.a = 4
-	>>> print x.a
-	4
-	"""
 	def __init__(self, **kwds):
 		self.__dict__.update(kwds)
 
 	def __str__(self):
 		result = []
-		for key, value in self.__dict__.iteritems():
+		for key, value in self.__dict__.items():
 			result.append('%s=%r' % (key, value))
 		return 'Bunch(' + ', '.join(result) + ')'
 
@@ -84,7 +74,7 @@ def test_group_mail_equal_user_mail_alt():
 		udm.create_group(
 			set={
 				'mailAddress': group_mail,
-				'users': [user_a.dn, user_b.dn]
+				'users': [user_b.dn]
 			}
 		)
 		token = make_token()
@@ -105,7 +95,7 @@ def test_mail_list_equal_user_mail_alt():
 			set={
 				'name': list_name,
 				'mailAddress': mailing_list_mail,
-				'members': [user_a.mailPrimaryAddress, user_b.mailPrimaryAddress],
+				'members': [user_b.mailPrimaryAddress],
 			}
 		)
 		token = make_token()
@@ -114,7 +104,7 @@ def test_mail_list_equal_user_mail_alt():
 		check_delivery(token, user_b.mailPrimaryAddress, True)
 
 
-def test_user_mail_alt_eqals_shared_folder_mail_address():
+def test_user_mail_alt_equals_shared_folder_mail_address():
 	print("### A user has mail@shared_folder as mail_alternative_address address.")
 	with udm_test.UCSTestUDM() as udm:
 		folder_name = uts.random_name()
@@ -152,11 +142,10 @@ def test_group_mail_in_mailing_list():
 		list_mail = '%s@%s' % (list_name, DOMAIN)
 		udm.create_object(
 			'mail/lists',
-			members=group_mail,
 			set={
 				'name': list_name,
 				'mailAddress': list_mail,
-				'members': group_mail
+				'members': [group_mail]
 			},
 			wait_for_drs_replication=True
 		)
@@ -164,12 +153,3 @@ def test_group_mail_in_mailing_list():
 		send_mail(recipients=list_mail, msg=token, debuglevel=0)
 		for mail in group_mails:
 			check_delivery(token, mail, True)
-
-
-if __name__ == '__main__':
-	test_user_b_mail_alt_equal_user_a_mail_primary()
-	test_group_mail_equal_user_mail_alt()
-	test_mail_list_equal_user_mail_alt()
-	test_user_mail_alt_eqals_shared_folder_mail_address()
-	test_group_mail_in_mailing_list()
-
