@@ -39,22 +39,14 @@ def _shouldBeMacClient(attributes):
 	if not attributes:
 		return False
 
-	os = attributes.get('operatingSystem', [None])[0]
-
-	if os == 'Mac OS X':
-		return True
-
-	return False
+	return b'Mac OS X' in attributes.get('operatingSystem', [])  # FIXME: shouldn't it be univentionOperationSystem?!
 
 
 def _isAlreadyMac(attributes):
 	if not attributes:
 		return False
 
-	if attributes.get('univentionObjectType', [None])[0] == 'computers/macos':
-		return True
-
-	return False
+	return b'computers/macos' in attributes.get('univentionObjectType', [])
 
 
 def _replaceListElement(l, oldValue, newValue):
@@ -67,19 +59,19 @@ def _convertWinToMac(s4connector, sync_object):
 	ucs_object = s4connector.get_ucs_ldap_object(sync_object['dn'])
 
 	oldObjectClass = ucs_object.get('objectClass')
-	newObjectClass = _replaceListElement(oldObjectClass, 'univentionWindows', 'univentionMacOSClient')
+	newObjectClass = _replaceListElement(oldObjectClass, b'univentionWindows', b'univentionMacOSClient')
 
-	modlist.append(('univentionObjectType', ucs_object.get('univentionObjectType'), ['computers/macos']))
+	modlist.append(('univentionObjectType', ucs_object.get('univentionObjectType'), [b'computers/macos']))
 	modlist.append(('objectClass', oldObjectClass, newObjectClass))
 	modlist.append(('univentionServerRole', ucs_object.get('univentionServerRole'), []))
 
-	ud.debug(ud.LDAP, ud.PROCESS, "Convert Windows client to Mac OS X: %s", sync_object['dn'])
+	ud.debug(ud.LDAP, ud.PROCESS, "Convert Windows client to Mac OS X: %r", sync_object['dn'])
 
 	s4connector.lo.lo.modify(sync_object['dn'], modlist)
 
 
 def checkAndConvertToMacOSX(s4connector, key, sync_object):
-	ud.debug(ud.LDAP, ud.INFO, "checkAndConvertToMacOSX: ucs_object: %s" % sync_object)
+	ud.debug(ud.LDAP, ud.INFO, "checkAndConvertToMacOSX: ucs_object: %r" % sync_object)
 
 	if _isAlreadyMac(sync_object.get('attributes')):
 		ud.debug(ud.LDAP, ud.INFO, "checkAndConvertToMacOSX: The client is already a mac client, nothing to do")
@@ -121,5 +113,5 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
 	ud.debug(ud.LDAP, ud.PROCESS, "con_check_rename: Renaming client from %s to %s" % (ucs_uid, sAMAccountName))
 	ucs_admin_object = univention.admin.objects.get(s4connector.modules['windowscomputer'], co='', lo=s4connector.lo, position='', dn=sync_object['dn'])
 	ucs_admin_object.open()
-	ucs_admin_object['name'] = sAMAccountName.rstrip('$')
+	ucs_admin_object['name'] = sAMAccountName.decode('UTF-8').rstrip(u'$')
 	ucs_admin_object.modify()
