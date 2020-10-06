@@ -30,7 +30,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
+'''
+	Helper function to create the SID mapping definition.
+'''
 
 from __future__ import print_function
 import ldap
@@ -39,39 +41,6 @@ from ldap.controls import LDAPControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack
 from univention.s4connector.s4 import decode_sid
-
-'''
-	Helper function to create the SID mapping definition.
-'''
-
-
-def print_sid_mapping(configRegistry):
-	"""
-		.. deprecated:: UCS 4.4
-	"""
-	# TODO: remove this function, it's not used anymore (but maybe by customers?)
-	sync_mode = 'sync'
-	if configRegistry.is_true('connector/s4/mapping/sid', True):
-		if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False):
-			mapping_str = 'univention.s4connector.s4.sid_mapping.sid_to_s4_mapping,'
-		else:
-			mapping_str = 'None, '
-			sync_mode = 'read'
-		if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True):
-			mapping_str += 'univention.s4connector.s4.sid_mapping.sid_to_ucs_mapping'
-		else:
-			mapping_str += 'None'
-			sync_mode = 'write'
-		print('''
-					'sid': univention.s4connector.attribute (
-						sync_mode='%s',
-						mapping=(%s),
-						ldap_attribute='sambaSID',
-						ucs_attribute='sambaRID',
-						con_attribute='objectSid',
-						single_value=True,
-						compare_function=univention.s4connector.s4.compare_sid_lists,
-					), ''' % (sync_mode, mapping_str))
 
 
 def sid_to_s4_mapping(s4connector, key, object):
