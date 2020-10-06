@@ -58,6 +58,7 @@ Architecture: all
 Depends:
  attr,
  python-univention-connector-s4 (= ${binary:Version}),
+ python3-univention-connector-s4 (= ${binary:Version}),
  python-univention-lib (>= 8.0.0-6),
  samba-common-bin,
  shell-univention-lib (>= 3.0.26-25),
