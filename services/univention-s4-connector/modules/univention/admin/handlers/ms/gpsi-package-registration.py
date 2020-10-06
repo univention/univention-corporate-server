@@ -270,13 +270,13 @@ layout = [
 ]
 
 
-def multivalueMapBase64(data):
+def multivalueMapBase64(data, encoding=()):
 	if data:
 		return [univention.admin.mapping.mapBase64(d) for d in data]
 	return []
 
 
-def multivalueUnmapBase64(data):
+def multivalueUnmapBase64(data, encoding=()):
 	if data:
 		return [univention.admin.mapping.unmapBase64(data)]  # stupid broken function in UDM
 	return []
