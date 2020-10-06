@@ -1,3 +1,10 @@
+ucs-test (9.0.4-76) unstable; urgency=medium
+
+  * Bug #51598: Fix some unicode assert; use a joinable appbox image; adjust
+    install call
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Oct 2020 00:13:10 +0200
+
 ucs-test (9.0.4-75) unstable; urgency=medium
 
   * Bug #52005: Hopefully fix 96rename* again.
