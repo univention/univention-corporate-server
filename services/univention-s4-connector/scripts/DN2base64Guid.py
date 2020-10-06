@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,13 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import samba
+from __future__ import print_function
 import sys
 import ldb
 import base64
 from argparse import ArgumentParser
 
-from samba import dsdb
 from samba.samdb import SamDB
 from samba.param import LoadParm
 from samba.auth import system_session
@@ -58,6 +57,6 @@ if __name__ == '__main__':
 
 	for msg in res:
 		guid = msg.get("objectGuid", idx=0)
-		print base64.encodestring(guid),
+		print(base64.b64encode(guid).decode('ASCII'), end=' ')
 
 	sys.exit(0)

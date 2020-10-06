@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import subprocess
 import sys
 import ldap
@@ -55,8 +56,8 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
 	try:
-		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port')))
-	except:
+		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port', 7389)))
+	except ValueError:
 		port = 7389
 
 	lo = univention.admin.uldap.access(host=host, port=port, base=configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
@@ -75,13 +76,13 @@ def search_s4():
 	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode != 0:
-		print stderr
+		print(stderr.decode('UTF-8', 'replace'))
 		sys.exit(p1.returncode)
 
 	result = {}
 	dn = None
 
-	for line in stdout.split('\n'):
+	for line in stdout.decode('UTF-8').split('\n'):
 		line = line.strip()
 		if line.startswith('dn: '):
 			dn = line[4:]
@@ -93,37 +94,12 @@ def search_s4():
 	return result
 
 
-def _get_s4_object(dn):
-	''' Search for a Samba 4 object and put it into one dictonary '''
-	result = {}
-
-	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb -b "%s" -s base | ldapsearch-wrapper' % dn], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout, stderr) = p1.communicate()
-
-	if p1.returncode == 0:
-		for line in stdout.split('\n'):
-			line = line.strip()
-			if not line or line.startswith('#'):
-				continue
-			key = line.split(':')[0]
-			value = line[len(key) + 2:]
-			if result.get(key):
-				result[key].append(value)
-			else:
-				result[key] = []
-	return result
-
-
 def write_to_s4(configRegistry, ucs_result):
 	''' Write the result from search_ucs to Samba LDAP '''
 	s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
 	ucs_ldap_base = configRegistry.get('ldap/base').lower()
 	for ucs_dn in ucs_result.keys():
 		s4_dn = ucs_dn.lower().replace(ucs_ldap_base, s4_ldap_base)
-
-		# This search is not necessary at the moment
-		# s4_object = _get_s4_object(s4_dn)
-		# if s4_object:
 
 		if True:
 			mod_str = 'dn: %s\nchangetype: modify\n' % s4_dn
@@ -132,9 +108,9 @@ def write_to_s4(configRegistry, ucs_result):
 			p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
 			(stdout, stderr) = p1.communicate(mod_str)
 			if p1.returncode != 0:
-				print 'Failed to set gPLink for Samba 4 object (%s)' % (s4_dn)
+				print('Failed to set gPLink for Samba 4 object (%s)' % (s4_dn))
 			else:
-				print 'Set gPLink for Samba 4 object (%s)' % (s4_dn)
+				print('Set gPLink for Samba 4 object (%s)' % (s4_dn))
 
 
 def search_ucs(configRegistry, binddn, bindpwd):
@@ -170,12 +146,12 @@ def write_to_ucs(configRegistry, s4_result, binddn, bindpwd, only_override_empty
 					ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']))
 				ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
 			if ml:
-				print 'Set msGPOLink for UCS object (%s)' % (ucs_dn)
+				print('Set msGPOLink for UCS object (%s)' % (ucs_dn))
 				lo.modify(ucs_dn, ml)
 		except univention.admin.uexceptions.noObject:
 			pass
-		except:
-			print 'Failed to set msGPOLink for UCS object (%s)' % (ucs_dn)
+		except Exception:
+			print('Failed to set msGPOLink for UCS object (%s)' % (ucs_dn))
 
 
 if __name__ == '__main__':

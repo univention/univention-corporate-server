@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -32,13 +32,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import samba
-import sys
+from __future__ import print_function
 import ldb
 import base64
 from argparse import ArgumentParser
 
-from samba import dsdb
+from ldap.filter import filter_format
+
 from samba.samdb import SamDB
 from samba.param import LoadParm
 from samba.auth import system_session
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 	parser.add_argument('base64_guid')
 	args = parser.parse_args()
 
-	guid = base64.decodestring(args.base64_guid)
+	guid = base64.b64decode(args.base64_guid).decode('ASCII')
 
 	lp = LoadParm()
 	creds = Credentials()
@@ -57,6 +57,6 @@ if __name__ == '__main__':
 	samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
 	domain_dn = samdb.domain_dn()
-	res = samdb.search(domain_dn, scope=ldb.SCOPE_SUBTREE, expression=("(objectGuid=%s)" % (guid)), attrs=["dn"])
+	res = samdb.search(domain_dn, scope=ldb.SCOPE_SUBTREE, expression=(filter_format("(objectGuid=%s)", (guid,))), attrs=["dn"])
 	for msg in res:
-		print msg.get("dn", idx=0)
+		print(msg.get("dn", idx=0))

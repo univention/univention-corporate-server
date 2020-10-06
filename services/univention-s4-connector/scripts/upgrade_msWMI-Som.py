@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sqlite3 as lite
 import subprocess
 import sys
@@ -49,15 +51,14 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 	else:
 		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
 		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
-		bindpw = open(bindpw_file).read()
-		if bindpw[-1] == '\n':
-			bindpw = bindpw[0:-1]
+		with open(bindpw_file) as fd:
+			bindpw = fd.read().rstrip()
 
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
 	try:
-		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port')))
-	except:
+		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port', 7389)))
+	except ValueError:
 		port = 7389
 
 	lo = univention.admin.uldap.access(host=host, port=port, base=configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
@@ -74,13 +75,13 @@ def search_s4(filter, attribute):
 	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode != 0:
-		print stderr
+		print(stderr.decode('UTF-8', 'replace'))
 		sys.exit(p1.returncode)
 
 	result = {}
 	dn = None
 
-	for line in stdout.split('\n'):
+	for line in stdout.decode('UTF-8').split('\n'):
 		line = line.strip()
 		if line.startswith('dn: '):
 			dn = line[4:]
@@ -96,7 +97,7 @@ def add_to_sqlite(result):
 	dbcon = lite.connect('/etc/univention/connector/s4internal.sqlite')
 	cur = dbcon.cursor()
 	for dn in result.keys():
-		print 'Add (%s) to the Samba 4 reject list.' % (dn)
+		print('Add (%s) to the Samba 4 reject list.' % (dn))
 		cur.execute("""
 			INSERT OR REPLACE INTO '%(table)s' (key,value)
 				VALUES (  '%(key)s', '%(value)s'
@@ -112,18 +113,17 @@ def trigger_ldap2sd(configRegistry, binddn, bindpwd):
 
 	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
-	result = {}
 	ldap_result = lo.search('(objectClass=msWMISom)')
 	for dn, attributes in ldap_result:
 		msWMIID = attributes.get('msWMIID', [])[0]
 		ml = [(ldap.MOD_REPLACE, 'msWMIID', msWMIID)]
 		try:
-			print 'Touch UCS object %s' % (dn)
+			print('Touch UCS object %s' % (dn))
 			lo.lo.modify_s(dn, ml)
-		except ldap.NO_SUCH_OBJECT, ex:
+		except ldap.NO_SUCH_OBJECT:
 			pass
-		except ldap.LDAPError, ex:
-			print 'Failure touching UCS object %s (%s)' % (dn, str(ex))
+		except ldap.LDAPError as ex:
+			print('Failure touching UCS object %s (%s)' % (dn, str(ex)))
 
 
 def trigger_sd2ldap(configRegistry):

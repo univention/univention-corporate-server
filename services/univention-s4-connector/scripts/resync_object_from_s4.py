@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 from argparse import ArgumentParser
 from univention.config_registry import ConfigRegistry
@@ -50,7 +51,7 @@ class GuidNotFound(BaseException):
 	pass
 
 
-class S4Resync:
+class S4Resync(object):
 
 	def __init__(self):
 		self.configRegistry = ConfigRegistry()
@@ -64,26 +65,23 @@ class S4Resync:
 	def _remove_cache_entries(self, guid):
 		cache_db = sqlite3.connect('/etc/univention/connector/s4cache.sqlite')
 		c = cache_db.cursor()
-		c.execute("SELECT id FROM GUIDS WHERE guid='%s'" % guid)
+		c.execute("SELECT id FROM GUIDS WHERE guid=?", (str(guid),))
 		guid_ids = c.fetchone()
 		if guid_ids:
 			guid_id = guid_ids[0]
-			c.execute("DELETE from DATA where guid_id = '%s'" % guid_id)
-			c.execute("DELETE from GUIDS where id = '%s'" % guid_id)
+			c.execute("DELETE from DATA where guid_id = ?", (guid_id,))
+			c.execute("DELETE from GUIDS where id = ?", (guid_id,))
 			cache_db.commit()
 		cache_db.close()
 
 	def _add_object_to_rejected(self, s4_dn, usn):
 		db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 		c = db.cursor()
-		c.execute("INSERT OR REPLACE INTO 'S4 rejected' (key,value) VALUES ('%(key)s', '%(value)s');" % {'key': usn, 'value': s4_dn})
+		c.execute("INSERT OR REPLACE INTO 'S4 rejected' (key, value) VALUES (?, ?);", (usn, s4_dn))
 		db.commit()
 		db.close()
 
 	def resync(self, s4_dns=None, ldapfilter=None):
-		if s4_dns and not type(s4_dns) in (type(()), type([])):
-			raise ValueError("'s4_dns' is of type %s, must be list or tuple" % type(s4_dns))
-
 		treated_dns = []
 		for s4_dn, guid, usn in self.search_samdb(s4_dns, ldapfilter):
 			self._remove_cache_entries(guid)
@@ -93,11 +91,8 @@ class S4Resync:
 		return treated_dns
 
 	def search_samdb(self, s4_dns=None, ldapfilter=None):
-
 		search_result = []
 		if s4_dns:
-			if not type(s4_dns) in (type(()), type([])):
-				raise ValueError("'s4_dns' is of type %s, must be list or tuple" % type(s4_dns))
 			if not ldapfilter:
 				ldapfilter = '(objectClass=*)'
 
@@ -111,7 +106,7 @@ class S4Resync:
 					for msg in res:
 						guid_blob = msg.get("objectGuid", idx=0)
 						guid = ndr_unpack(misc.GUID, guid_blob)
-						usn = msg.get("uSNChanged", idx=0)
+						usn = msg.get("uSNChanged", idx=0).decode('ASCII')
 						search_result.append((targetdn, guid, usn))
 					if not guid:
 						missing_dns.append(targetdn)
@@ -138,10 +133,9 @@ class S4Resync:
 
 
 if __name__ == '__main__':
-
 	parser = ArgumentParser(usage='resync_object_from_s4.py [--filter <LDAP filter>] [dn]')
 	parser.add_argument("--filter", dest="ldapfilter", help="LDAP Filter")
-	parser.add_argument('dn', default=None)
+	parser.add_argument('dn', nargs='?', default=None)
 	options = parser.parse_args()
 
 	if not options.dn and not options.ldapfilter:
@@ -155,18 +149,18 @@ if __name__ == '__main__':
 		resync = S4Resync()
 		treated_dns = resync.resync(s4_dns, options.ldapfilter)
 	except ldb.LdbError as ex:
-		print 'ERROR: The S4 object was not found: %s' % (ex.args[1],)
+		print('ERROR: The S4 object was not found: %s' % (ex.args[1],))
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)
 	except GuidNotFound as ex:
-		print 'ERROR: The S4 search for objectGUID failed: %s' % (ex.args[1],)
+		print('ERROR: The S4 search for objectGUID failed: %s' % (ex.args[1],))
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)
 	finally:
 		for dn in treated_dns:
-			print 'resync triggered for %s' % dn
+			print('resync triggered for %s' % dn)
 
 	if treated_dns:
 		estimated_delay = 60
@@ -175,8 +169,8 @@ if __name__ == '__main__':
 		except ValueError:
 			pass
 
-		print 'Estimated sync in %s seconds.' % (estimated_delay,)
+		print('Estimated sync in %s seconds.' % (estimated_delay,))
 	else:
-		print 'No matching objects.'
+		print('No matching objects.')
 
 	sys.exit(0)

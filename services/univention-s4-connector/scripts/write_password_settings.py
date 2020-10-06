@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,13 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import subprocess
 import sys
-import ldap
 from argparse import ArgumentParser
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
+
+from ldap.filter import filter_format
 
 
 def _connect_ucs(configRegistry, binddn, bindpwd):
@@ -48,15 +51,14 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 	else:
 		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
 		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
-		bindpw = open(bindpw_file).read()
-		if bindpw[-1] == '\n':
-			bindpw = bindpw[0:-1]
+		with open(bindpw_file) as fd:
+			bindpw = fd.read().rstrip()
 
 	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
 
 	try:
-		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port')))
-	except:
+		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port', 7389)))
+	except ValueError:
 		port = 7389
 
 	lo = univention.admin.uldap.access(host=host, port=port, base=configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
@@ -72,11 +74,11 @@ def _get_s4_object(dn):
 	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode == 0:
-		for line in stdout.split('\n'):
+		for line in stdout.split(b'\n'):
 			line = line.strip()
-			if not line or line.startswith('#'):
+			if not line or line.startswith(b'#'):
 				continue
-			key = line.split(':')[0]
+			key = line.split(b':')[0].decode('UTF-8')
 			value = line[len(key) + 2:]
 			if result.get(key):
 				result[key].append(value)
@@ -87,27 +89,25 @@ def _get_s4_object(dn):
 
 def write_to_s4(configRegistry, mod_str):
 	''' Write the mod_str to Samba LDAP '''
-	s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
-	ucs_ldap_base = configRegistry.get('ldap/base').lower()
 	p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
 	(stdout, stderr) = p1.communicate(mod_str)
 	if p1.returncode != 0:
-		print 'Failed to write to Samba 4: %s' % (mod_str)
+		print('Failed to write to Samba 4: %s' % (mod_str))
 	else:
-		print 'Synchronization of password setting attributes from UCS to Samba 4 was successful.'
+		print('Synchronization of password setting attributes from UCS to Samba 4 was successful.')
 
 
 def search_ucs_sambadomain_object(configRegistry, lo, SID):
 	''' Search all UCS samba domain object
 	'''
 
-	ldap_result = lo.search(filter='sambaSID=%s' % SID)
+	ldap_result = lo.search(filter=filter_format('sambaSID=%s', [SID]))
 	if len(ldap_result) == 1:
 		return ldap_result[0]
 	elif len(ldap_result) > 0:
-		print 'ERROR: Found more than one sambaDomain object with sambaSID %s' % SID
+		print('ERROR: Found more than one sambaDomain object with sambaSID %s' % SID)
 	else:
-		print 'ERROR: Did not find a sambaDomain object with sambaSID %s' % SID
+		print('ERROR: Did not find a sambaDomain object with sambaSID %s' % SID)
 
 # Time interval in S4 / AD is often 100-nanosecond intervals:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
@@ -118,7 +118,7 @@ def _s2nano(seconds):
 
 
 def _nano2s(nanoseconds):
-	return nanoseconds / 10000000
+	return nanoseconds // 10000000
 
 
 if __name__ == '__main__':
@@ -144,11 +144,11 @@ if __name__ == '__main__':
 		ml = []
 		sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
-			s4_time = _nano2s(long(s4_object.get(s4_attr, [0])[0]) * -1)
-			ml.append((ucs_attr, ucs_object_attr.get(ucs_attr), [str(s4_time)]))
+			s4_time = _nano2s(int(s4_object.get(s4_attr, [0])[0]) * -1)
+			ml.append((ucs_attr, ucs_object_attr.get(ucs_attr), [str(s4_time).encode('ASCII')]))
 		sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength')]
 		for (ucs_attr, s4_attr) in sync_integers:
-			ml.append((ucs_attr, ucs_object_attr.get(ucs_attr), s4_object.get(s4_attr, [0])))
+			ml.append((ucs_attr, ucs_object_attr.get(ucs_attr), s4_object.get(s4_attr, [b'0'])))
 		lo.modify(ucs_object_dn, ml)
 	elif options.write2samba4:
 		s4_object = _get_s4_object(configRegistry.get('samba4/ldap/base'))
@@ -158,7 +158,7 @@ if __name__ == '__main__':
 		mod_str = 'dn: %s\nchangetype: modify\n' % configRegistry.get('samba4/ldap/base')
 		sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
 		for (ucs_attr, s4_attr) in sync_times:
-			ucs_value = long(ucs_object[1].get(ucs_attr, [0])[0])
+			ucs_value = int(ucs_object[1].get(ucs_attr, [0])[0])
 			new_value = str(_s2nano(ucs_value) * -1)
 			mod_str += 'replace: %s\n%s: %s\n' % (s4_attr, s4_attr, new_value)
 		sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength')]

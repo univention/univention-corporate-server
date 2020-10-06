@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sqlite3 as lite
 import subprocess
 import sys
@@ -46,13 +48,13 @@ def search_s4(filter, attribute):
 	(stdout, stderr) = p1.communicate()
 
 	if p1.returncode != 0:
-		print stderr
+		print(stderr.decode('UTF-8', 'replace'))
 		sys.exit(p1.returncode)
 
 	result = {}
 	dn = None
 
-	for line in stdout.split('\n'):
+	for line in stdout.decode('UTF-8').split('\n'):
 		line = line.strip()
 		if line.startswith('dn: '):
 			dn = line[4:]
@@ -68,7 +70,7 @@ def add_to_sqlite(result):
 	dbcon = lite.connect('/etc/univention/connector/s4internal.sqlite')
 	cur = dbcon.cursor()
 	for dn in result.keys():
-		print 'Add (%s) to the Samba 4 reject list.' % (dn)
+		print('Add (%s) to the Samba 4 reject list.' % (dn))
 		cur.execute("""
 			INSERT OR REPLACE INTO '%(table)s' (key,value)
 				VALUES (  '%(key)s', '%(value)s'
