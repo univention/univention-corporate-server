@@ -180,5 +180,5 @@ for i in ucr_vars:
 	for key, value in get_ucr_entry(*i):
 		data[key] = value
 
-print(json.dumps(data, indent=2))
+print(json.dumps(data, indent=2, sort_keys=True))
 @!@
