@@ -1,4 +1,4 @@
-ucs-test (9.0.5-9) unstable; urgency=medium
+ucs-test (9.0.5-10) unstable; urgency=medium
 
   * Bug #51904: extend 503test_password_change_next_logon
 
