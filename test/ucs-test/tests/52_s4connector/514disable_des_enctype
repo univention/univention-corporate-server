@@ -1,0 +1,78 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check if disabling DES keys leads to login problems/rejects"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## tags:
+##  - basic
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+eval "$(ucr shell)"
+
+ucr set kerberos/defaults/enctypes/permitted="aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5"
+ucr set kerberos/allow/weak/crypto="false"
+/etc/init.d/samba restart
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="Univention.99"
+
+#UDM_users_user_password="U$(random_chars)123"
+echo "$UDM_users_user_password" >> "/tmp/$UDM_users_user_username"
+udm_create "users/user" || fail_test 110
+
+## Cleanup
+cleanup () {
+	rm "514kinit.log"
+	udm_remove "users/user" || fail_test 110
+	ucr unset kerberos/defaults/enctypes/permitted
+	ucr unset kerberos/allow/weak/crypto=
+	ad_wait_for_synchronization; fail_bool 0 110
+	/etc/init.d/samba restart
+}
+
+trap cleanup EXIT
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+rejects="$(univention-s4connector-list-rejected)"
+echo "$rejects" | grep "$UDM_users_user_username" && fail_fast "$UDM_users_user_username rejected"
+
+kdestroy
+# test if user really cant acquire an des-cbc-crc ticket
+kinit -e "des-cbc-crc" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
+cat 514kinit.log | grep "no valid enctype" || fail_fast "$UDM_users_user_username was able to acquire des-cbc-crc ticket"
+# test if user really cant acquire an des-cbc-md5 ticket
+kinit -e "des-cbc-md5" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
+cat 514kinit.log | grep "no valid enctype" || fail_fast "$UDM_users_user_username was able to acquire des-cbc-md5 ticket"
+kdestroy
+# test if user is still able to acquire an aes128 ticket
+kinit -e "aes128-cts-hmac-sha1-96" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
+cat 514kinit.log | grep "no valid enctype" && fail_fast "$UDM_users_user_username was not able to acquire aes128 ticket"
+klist | grep "$UDM_users_user_username" || fail_fast "$UDM_users_user_username was not able to acquire aes128 ticket"
+kdestroy
+# test if user is still able to acquire an aes256 ticket
+kinit -e "aes256-cts-hmac-sha1-96" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
+cat 514kinit.log | grep "no valid enctype" && fail_fast "$UDM_users_user_username was not able to acquire aes128 ticket"
+klist | grep "$UDM_users_user_username" || fail_fast "$UDM_users_user_username was not able to acquire aes256 ticket"
+kinit -e "aes256-cts-hmac-sha1-96" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username"
+kdestroy
+# test if user is still able to acquire an arcfour ticket
+kinit -e "arcfour-hmac-md5" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
+cat 514kinit.log | grep "no valid enctype" && fail_fast "$UDM_users_user_username was not able to acquire aes128 ticket"
+klist | grep "$UDM_users_user_username" || fail_fast "$UDM_users_user_username was not able to acquire arcfour ticket"
+kdestroy
+
+exit "$RETVAL"
+
+
