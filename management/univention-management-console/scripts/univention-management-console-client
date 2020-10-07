@@ -34,7 +34,7 @@ from __future__ import print_function
 from argparse import ArgumentParser
 from getpass import getpass
 
-import datetime
+from datetime import datetime
 import os
 import ast
 import pprint
@@ -80,7 +80,7 @@ class CLI_Client(Client):
 			self.__wait = self.create(options.arguments[0], options.arguments[1:], options)
 		if options.authenticate:
 			if self._options.timing:
-				self.__started = datetime.datetime.now()
+				self.__started = datetime.now()
 			self.authenticate(options.username, options.password)
 		else:
 			if self.__wait:
@@ -162,7 +162,7 @@ class CLI_Client(Client):
 		if success:
 			if self.__wait:
 				if self._options.timing:
-					self.__started = datetime.datetime.now()
+					self.__started = datetime.now()
 				self.request(self.__wait)
 				self.__wait = None
 		else:
