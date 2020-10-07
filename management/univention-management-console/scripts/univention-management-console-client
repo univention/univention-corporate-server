@@ -64,7 +64,6 @@ class CLI_Client(Client):
 		self.__wait = None
 		self._options = options
 		self.__started = None
-		self.__finished = None
 		self.language = (locale.getlocale()[0] or locale.getdefaultlocale()[0] or 'en-US').replace('_', '-')
 
 		try:
@@ -143,23 +142,23 @@ class CLI_Client(Client):
 		sys.exit(1)
 
 	def print_timing(self, response=None):
-		if self.__started is not None and self.__finished is not None:
-			diff = self.__finished - self.__started
+		if self._options.timing:
+			return
+		if self.__started is not None:
+			finished = datetime.now()
+			diff = finished - self.__started
 			if response is not None:
 				print('>>> Timing:', response.command, ' '.join(response.arguments))
 			else:
 				print('>>> Timing (Authentication):')
 			print(' Request send at', self.__started)
-			print(' Response received at', self.__finished)
+			print(' Response received at', finished)
 			print(' Elapsed time', diff)
 
 		self.__started = None
-		self.__finished = None
 
 	def _authenticated(self, success, response):
-		if self._options.timing:
-			self.__finished = datetime.datetime.now()
-			self.print_timing()
+		self.print_timing()
 		if success:
 			if self.__wait:
 				if self._options.timing:
@@ -171,9 +170,7 @@ class CLI_Client(Client):
 			sys.exit(1)
 
 	def _response(self, msg):
-		if self._options.timing:
-			self.__finished = datetime.datetime.now()
-			self.print_timing(msg)
+		self.print_timing(msg)
 		if self._options.quiet:
 			raise ClientExit(msg.status - 200)
 		print('Response: %s' % msg.command)
