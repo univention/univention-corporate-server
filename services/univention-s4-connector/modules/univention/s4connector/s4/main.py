@@ -41,6 +41,7 @@ import time
 from argparse import ArgumentParser
 import fcntl
 import traceback
+import contextlib
 
 import ldap
 
@@ -50,37 +51,17 @@ import univention.s4connector.s4
 
 from univention.config_registry import ConfigRegistry
 
-# parse commandline options
 
-parser = ArgumentParser()
-parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
-options = parser.parse_args()
-
-CONFIGBASENAME = "connector"
-if options.configbasename:
-	CONFIGBASENAME = options.configbasename
-STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
-
-
-MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME
-if six.PY2:
-	import imp
-	mapping = imp.load_source('mapping', MAPPING_FILENAME)
-else:
-	import importlib.util
-	spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
-	mapping = importlib.util.module_from_spec(spec)
-	spec.loader.exec_module(mapping)
-
-
-def bind_stdout():
+@contextlib.contextmanager
+def bind_stdout(options, statuslogfile):
 	if options.daemonize:
-		sys.stdout = open(STATUSLOGFILE, 'w+')
-	return sys.stdout
+		with open(statuslogfile, 'w+') as sys.stdout:
+			yield
+	else:
+		yield
 
 
-def daemon(lock_file):
+def daemon(lock_file, options):
 	try:
 		pid = os.fork()
 	except OSError as e:
@@ -97,7 +78,7 @@ def daemon(lock_file):
 			os.chdir("/")
 			os.umask(0)
 		else:
-			pf = open('/var/run/univention-s4-%s' % CONFIGBASENAME, 'w+')
+			pf = open('/var/run/univention-s4-%s' % options.configbasename, 'w+')
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
@@ -107,14 +88,14 @@ def daemon(lock_file):
 	try:
 		maxfd = os.sysconf("SC_OPEN_MAX")
 	except (AttributeError, ValueError):
-		maxfd = 256       # default maximum
+		maxfd = 256  # default maximum
 
 	for fd in range(0, maxfd):
 		if fd == lock_file.fileno():
 			continue
 		try:
 			os.close(fd)
-		except OSError:   # ERROR (ignore)
+		except OSError:  # ERROR (ignore)
 			pass
 
 	os.open("/dev/null", os.O_RDONLY)
@@ -122,57 +103,57 @@ def daemon(lock_file):
 	os.open("/dev/null", os.O_RDWR)
 
 
-def connect():
+def connect(options, mapping):
 	print(time.ctime())
 
-	baseConfig = ConfigRegistry()
-	baseConfig.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 
-	if '%s/s4/ldap/host' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/ldap/host not set' % CONFIGBASENAME)
+	if '%s/s4/ldap/host' % options.configbasename not in ucr:
+		print('%s/s4/ldap/host not set' % options.configbasename)
 		sys.exit(1)
-	if '%s/s4/ldap/port' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/ldap/port not set' % CONFIGBASENAME)
+	if '%s/s4/ldap/port' % options.configbasename not in ucr:
+		print('%s/s4/ldap/port not set' % options.configbasename)
 		sys.exit(1)
-	if '%s/s4/ldap/base' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/ldap/base not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in baseConfig and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in baseConfig and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
-		print('%s/s4/ldap/certificate not set' % CONFIGBASENAME)
+	if '%s/s4/ldap/base' % options.configbasename not in ucr:
+		print('%s/s4/ldap/base not set' % options.configbasename)
 		sys.exit(1)
 
-	if '%s/s4/listener/dir' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/listener/dir not set' % CONFIGBASENAME)
+	if '%s/s4/ldap/certificate' % options.configbasename not in ucr and not ('%s/s4/ldap/ssl' % options.configbasename in ucr and ucr['%s/s4/ldap/ssl' % options.configbasename] == 'no'):
+		print('%s/s4/ldap/certificate not set' % options.configbasename)
 		sys.exit(1)
 
-	if '%s/s4/retryrejected' % CONFIGBASENAME not in baseConfig:
+	if '%s/s4/listener/dir' % options.configbasename not in ucr:
+		print('%s/s4/listener/dir not set' % options.configbasename)
+		sys.exit(1)
+
+	if '%s/s4/retryrejected' % options.configbasename not in ucr:
 		baseconfig_retry_rejected = 10
 	else:
-		baseconfig_retry_rejected = baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]
+		baseconfig_retry_rejected = ucr['%s/s4/retryrejected' % options.configbasename]
 
-	if baseConfig.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
-		s4_ldap_bindpw = open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
+	if ucr.get('%s/s4/ldap/bindpw' % options.configbasename) and os.path.exists(ucr['%s/s4/ldap/bindpw' % options.configbasename]):
+		s4_ldap_bindpw = open(ucr['%s/s4/ldap/bindpw' % options.configbasename]).read()
 		if s4_ldap_bindpw[-1] == '\n':
 			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
 	else:
 		s4_ldap_bindpw = None
 
-	poll_sleep = int(baseConfig['%s/s4/poll/sleep' % CONFIGBASENAME])
+	poll_sleep = int(ucr['%s/s4/poll/sleep' % options.configbasename])
 	s4_init = None
 	while not s4_init:
 		try:
 			s4 = univention.s4connector.s4.s4(
-				CONFIGBASENAME,
+				options.configbasename,
 				mapping.s4_mapping,
-				baseConfig,
-				baseConfig['%s/s4/ldap/host' % CONFIGBASENAME],
-				baseConfig['%s/s4/ldap/port' % CONFIGBASENAME],
-				baseConfig['%s/s4/ldap/base' % CONFIGBASENAME],
-				baseConfig.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
+				ucr,
+				ucr['%s/s4/ldap/host' % options.configbasename],
+				ucr['%s/s4/ldap/port' % options.configbasename],
+				ucr['%s/s4/ldap/base' % options.configbasename],
+				ucr.get('%s/s4/ldap/binddn' % options.configbasename, None),
 				s4_ldap_bindpw,
-				baseConfig['%s/s4/ldap/certificate' % CONFIGBASENAME],
-				baseConfig['%s/s4/listener/dir' % CONFIGBASENAME]
+				ucr['%s/s4/ldap/certificate' % options.configbasename],
+				ucr['%s/s4/listener/dir' % options.configbasename]
 			)
 			s4_init = True
 		except ldap.SERVER_DOWN:
@@ -265,39 +246,50 @@ def connect():
 	s4.close_debug()
 
 
+@contextlib.contextmanager
 def lock(filename):
-	lock_file = open(filename, "a+")
-	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-	return lock_file
-
-
-def main():
 	try:
-		lock_file = lock('/var/lock/univention-s4-%s' % CONFIGBASENAME)
+		lock_file = open(filename, "a+")
+		fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
 	except IOError:
 		print('Error: Another S4 connector process is already running.', file=sys.stderr)
 		sys.exit(1)
+	with lock_file as lock_file:
+		yield lock_file
 
-	if options.daemonize:
-		daemon(lock_file)
-	f = bind_stdout()
 
-	while True:
-		try:
-			connect()
-		except (KeyboardInterrupt, SystemExit):
-			lock_file.close()
-			raise
-		except Exception:
-			print(time.ctime())
+def main():
+	parser = ArgumentParser()
+	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
+	options = parser.parse_args()
 
-			print(" --- connect failed, failure was: ---")
-			print(traceback.format_exc())
-			print(" ---     retry in 30 seconds      ---")
-			sys.stdout.flush()
-			time.sleep(30)
-	f.close()
-	lock_file.close()
+	MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % options.configbasename
+	if six.PY2:
+		import imp
+		mapping = imp.load_source('mapping', MAPPING_FILENAME)
+	else:
+		import importlib.util
+		spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
+		mapping = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(mapping)
+
+	with lock('/var/lock/univention-s4-%s' % options.configbasename) as lock_file:
+		if options.daemonize:
+			daemon(lock_file, options)
+
+		with bind_stdout(options, "/var/log/univention/%s-s4-status.log" % options.configbasename):
+			while True:
+				try:
+					connect(options, mapping)
+				except Exception:
+					print(time.ctime())
+
+					print(" --- connect failed, failure was: ---")
+					print(traceback.format_exc())
+					print(" ---     retry in 30 seconds      ---")
+					sys.stdout.flush()
+					time.sleep(30)
 
 
 if __name__ == "__main__":
