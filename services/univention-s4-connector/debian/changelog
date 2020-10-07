@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.2-3) unstable; urgency=medium
+
+  * Bug #46745: Replace DES keys with Dummy hash type if missing (filled with NT hash)
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 13 Oct 2020 11:48:37 +0200
+
 univention-s4-connector (14.0.2-2) unstable; urgency=medium
 
   * Bug #51782: Add synchronization of domainpolicy
