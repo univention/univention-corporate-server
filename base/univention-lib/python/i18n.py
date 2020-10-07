@@ -36,6 +36,11 @@ import re
 
 import six
 
+try:
+	from typing import Optional  # noqa F401
+except ImportError:
+	pass
+
 
 class I18N_Error(Exception):
 	"""
@@ -53,20 +58,26 @@ class Locale(object):
 	:type locale: str or None
 	"""
 
-	REGEX = re.compile('(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?')
+	REGEX = re.compile(
+		r'^'
+		r'(?P<language>([a-z]{2}|C|POSIX))'
+		r'(?:_(?P<territory>[A-Z]{2}))?'
+		r'(?:\.(?P<codeset>[a-zA-Z-0-9]+)?'
+		r'(?:@(?P<modifier>.+))?'
+		r'$')
 
-	def __init__(self, locale=None):
-		# type: (Optional[str]) -> None
+	def __init__(self, locale=''):
+		# type: (str) -> None
 		self.__reset()
-		if locale is not None:
+		if locale:
 			self.parse(locale)
 
 	def __reset(self):
 		# type: () -> None
-		self.language = None  # type: Optional[str]
-		self.territory = None  # type: Optional[str]
-		self.codeset = None  # type: Optional[str]
-		self.modifier = None  # type: Optional[str]
+		self.language = ""
+		self.territory = ""
+		self.codeset = ""
+		self.modifier = ""
 
 	def parse(self, locale):
 		# type: (str) -> None
@@ -92,20 +103,20 @@ class Locale(object):
 
 	def __bool__(self):
 		# type: () -> bool
-		return self.language is not None
+		return bool(self.language)
 	__nonzero__ = __bool__
 
 	def __str__(self):
 		# type: () -> str
-		text = self.language
+		text = self.language or ''
 		if self.language not in ('C', 'POSIX'):
-			if self.territory is not None:
+			if self.territory:
 				text += '_%s' % self.territory
-			if self.codeset is not None:
-				text += '.%s' % self.codeset
-			if self.modifier is not None:
-				text += '@%s' % self.modifier
-		return text is None and '' or text
+		if self.codeset:
+			text += '.%s' % self.codeset
+		if self.modifier:
+			text += '@%s' % self.modifier
+		return text
 
 
 class NullTranslation(object):
@@ -119,7 +130,7 @@ class NullTranslation(object):
 
 	def __init__(self, namespace, locale_spec=None, localedir=None):
 		# type: (str, Optional[str], Optional[str]) -> None
-		self.domain = namespace  # type: Optional[str]
+		self._set_domain(namespace)  # type: Optional[str]
 		self._translation = None  # type: Optional[gettext.NullTranslations]
 		self._localedir = localedir  # type: Optional[str]
 		self._localespec = None  # type: Optional[Locale]
@@ -141,8 +152,8 @@ class NullTranslation(object):
 
 	domain = property(fset=_set_domain)
 
-	def set_language(self, language=None):
-		# type: (Optional[str]) -> None
+	def set_language(self, language=""):
+		# type: (str) -> None
 		"""
 		Select language.
 
@@ -196,26 +207,23 @@ class Translation(NullTranslation):
 	"""
 	Translation.
 	"""
-	locale = Locale()
+	locale = Locale()  # type: Locale # type: ignore
 
-	def set_language(self, language=None):
-		# type: (Optional[str]) -> None
+	def set_language(self, language=""):
+		# type: (str) -> None
 		"""
 		Select language.
 
 		:param str language: The language code.
 		:raises I18N_Error: if the given locale is not valid.
 		"""
-		if language is not None:
+		if language:
 			Translation.locale.parse(language)
 
 		if not Translation.locale:
 			try:
 				lang = getlocale(LC_MESSAGES)
-				if lang[0] is None:
-					language = 'C'
-				else:
-					language = lang[0]
+				language = lang[0] or "C"
 				Translation.locale.parse(language)
 			except Error as exc:
 				raise I18N_Error('The given locale is not valid: %s' % (exc,))
