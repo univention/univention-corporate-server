@@ -1501,8 +1501,9 @@ class ucs(object):
 		if old_object:
 			uuid = self.lo.getAttr(old_object.dn, 'entryUUID')
 			if uuid:
-				if self.lockingdb.is_ucs_locked(uuid[0]):
-					ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %s (UUID: %s). The object is currently locked." % (old_object.dn, uuid[0]))
+				uuid = uuid[0].decode('ASCII')
+				if self.lockingdb.is_ucs_locked(uuid):
+					ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %r (UUID: %r). The object is currently locked." % (old_object.dn, uuid))
 					return False
 
 		try:
@@ -1529,7 +1530,7 @@ class ucs(object):
 
 			result = False
 			if object['modtype'] == 'add':
-				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: lock S4 guid: %s" % guid)
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: lock S4 guid: %r" % (guid,))
 				if not self.lockingdb.is_s4_locked(guid):
 					self.lockingdb.lock_s4(guid)
 
@@ -1581,7 +1582,7 @@ class ucs(object):
 
 			if result:
 				# Always unlock if the sync was successful
-				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: unlock S4 guid: %s" % guid)
+				ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: unlock S4 guid: %r" % (guid,))
 				self.lockingdb.unlock_s4(guid)
 
 			ud.debug(ud.LDAP, ud.INFO, "Return  result for DN (%s)" % object['dn'])

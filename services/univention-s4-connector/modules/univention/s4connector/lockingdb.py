@@ -151,28 +151,27 @@ class LockingDB(object):
 				cur = self._dbcon.cursor()
 				for sql_command in sql_commands:
 					if isinstance(sql_command, tuple):
-						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]))
+						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: %r, %r" % (sql_command[0], sql_command[1]))
 						cur.execute(sql_command[0], sql_command[1])
 					else:
-						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: '%s'" % sql_command)
+						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: %r" % (sql_command,))
 						cur.execute(sql_command)
 				self._dbcon.commit()
 				if fetch_result:
 					rows = cur.fetchall()
 				cur.close()
 				if fetch_result:
-					ud.debug(ud.LDAP, ud.INFO, "LockingDB: Return SQL result: '%s'" % rows)
+					ud.debug(ud.LDAP, ud.INFO, "LockingDB: Return SQL result: %r" % (rows,))
 					return rows
 				return None
 			except sqlite3.Error as exp:
-				ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %s. SQL command was: %s" % (exp, sql_commands))
+				ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %r. SQL command was: %r" % (exp, sql_commands))
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = sqlite3.connect(self.filename)
 
 
 if __name__ == '__main__':
-
 	import random
 
 	print('Starting LockingDB test example ')
@@ -180,7 +179,6 @@ if __name__ == '__main__':
 	lock = LockingDB('lock.sqlite')
 
 	uuid1 = random.random()
-
 	guid1 = random.random()
 
 	if lock.is_s4_locked(guid1):
