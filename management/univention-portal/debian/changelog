@@ -1,3 +1,9 @@
+univention-portal (3.1.0-36) unstable; urgency=medium
+
+  * Bug #52206: allow use of microphone and camera in portal iframes
+
+ -- Florian Best <best@univention.de>  Mon, 12 Oct 2020 12:46:07 +0200
+
 univention-portal (3.1.0-35) unstable; urgency=medium
 
   * Bug #52186: Fix multiple links in user menu and misc menu
