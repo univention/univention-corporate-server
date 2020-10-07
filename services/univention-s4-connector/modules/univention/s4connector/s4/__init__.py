@@ -2166,16 +2166,8 @@ class s4(univention.s4connector.ucs):
 			self.open_ucs()
 
 		for element in changes:
-			try:
-				if element[0] == 'None':  # referrals
-					continue
-				old_element = copy.deepcopy(element)
-				samba_object = self.__object_from_element(element)
-			except Exception:  # FIXME: which exception is to be caught?
-				# ud.debug(ud.LDAP, ud.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
-				# ud.debug(ud.LDAP, ud.ERROR, "This object will not be synced again!")
-				# debug-trace may lead to a segfault here :(
-				self._debug_traceback(ud.ERROR, "Exception during poll/object-mapping, object will not be synced again!")
+			old_element = copy.deepcopy(element)
+			samba_object = self.__object_from_element(element)
 
 			if samba_object:
 				property_key = self.__identify_s4_type(samba_object)
