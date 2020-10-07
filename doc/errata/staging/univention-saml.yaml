@@ -6,8 +6,9 @@ src: univention-saml
 fix: 6.0.2-58A~4.4.0.202010061504
 desc: |
  This update addresses the following issues:
- * Show SAML password change dialog only for logon with
-   correct password.
+ * The password change dialog was incorrectly shown even if an
+   incorrect password was entered and the password was expired.
+   This has been fixed.
  * Fix listener to set correct permissions for
    /etc/simplesamlphp/serviceprovider_enabled_groups.json
    This fixes a bug where SAML permissions applied to groups
