@@ -1769,15 +1769,15 @@ class ucs(object):
 		if self.property.get(key):
 			for subtree in self.property[key].ignore_subtree:
 				if self._subtree_match(object['dn'], subtree):
-					ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%s]" % object['dn'])
+					ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%r]" % object['dn'])
 					return True
 
 			if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter, object['attributes']):
-				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of ignore_filter")
+				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of ignore_filter: [%r]" % object['dn'])
 				return True
 
 			if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter, object['attributes']):
-				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter")
+				ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter: [%r]" % object['dn'])
 				return True
 
 		ud.debug(ud.LDAP, ud.INFO, "_ignore_object: Do not ignore %s" % object['dn'])
