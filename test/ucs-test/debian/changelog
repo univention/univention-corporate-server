@@ -1,3 +1,9 @@
+ucs-test (9.0.5-12) unstable; urgency=medium
+
+  * Bug #46745: Add test for disabling DES keys
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 07 Oct 2020 10:15:42 +0200
+
 ucs-test (9.0.5-11) unstable; urgency=medium
 
   * Bug #51922, 51608: Add saml file permission check

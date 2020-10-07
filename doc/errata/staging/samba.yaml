@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: samba
+fix: 2:4.10.1-1A~4.4.0.202010071533
+desc: |
+ This update addresses the following issue:
+ * Samba has been adjusted so that disabling insecure DES encryption
+   will not create any rejects in the s4 connector at user creation
+   or password change any more
+bug: [46745]
