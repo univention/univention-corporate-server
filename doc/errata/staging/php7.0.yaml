@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: php7.0
+fix: 7.0.33-0+deb9u10
+desc: |
+ This update addresses the following issue:
+ * PHP parses encoded cookie names so malicious `__Host-` cookies can be sent
+   (CVE-2020-7070)
+bug: [52193]
+cve:
+- CVE-2020-7070
