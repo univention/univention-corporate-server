@@ -16,3 +16,5 @@ desc: |
  * The file /var/lib/simplesamlphp/secrets.inc.php which contains the
    simplesamlphp adminstration password could be read by any local user.
 bug: [51903,51608,51922]
+erratum: 766
+announced: 2020-10-07
