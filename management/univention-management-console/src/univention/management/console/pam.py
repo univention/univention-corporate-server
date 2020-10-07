@@ -53,6 +53,13 @@ from PAM import (
 from univention.management.console.log import AUTH
 
 from univention.lib.i18n import Translation, I18N_Error
+
+try:
+	from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Text, Tuple, Union  # noqa F401
+except ImportError:
+	pass
+
+
 _ = Translation('univention.management.console').translate
 
 _('The password is too short.')
@@ -81,7 +88,7 @@ class AuthenticationFailed(AuthenticationError):
 
 class AuthenticationInformationMissing(AuthenticationError):
 
-	def __init__(self, message, missing_prompts):
+	def __init__(self, message, missing_prompts):  # type: (str, Any) -> None
 		self.missing_prompts = missing_prompts
 		super(AuthenticationInformationMissing, self).__init__(message)
 
@@ -100,7 +107,7 @@ class PasswordChangeFailed(AuthenticationError):
 
 class PamAuth(object):
 
-	known_errors = {
+	_known_errors = {
 		'Make sure the kerberos service is functioning or inform an Administrator.': [
 			'Unable to reach any changepw server  in realm %s'
 		],
@@ -196,16 +203,16 @@ class PamAuth(object):
 		': The password contains parts of the full user name.': [
 			'Password contains parts of the full user name.',
 		]
-	}
+	}  # type: Dict[str, List[Union[str, Pattern[str]]]]
 	known_errors = dict(
 		(response_message, user_friendly_response)
-		for user_friendly_response, possible_responses in known_errors.items()
+		for user_friendly_response, possible_responses in _known_errors.items()
 		for response_message in possible_responses
-	)
+	)  # type: Dict[Union[str, Pattern[str]], str]
 
-	custom_prompts = ('OTP',)
+	custom_prompts = ('OTP',)  # type: Tuple[str, ...]
 
-	def __init__(self, locale=None):
+	def __init__(self, locale=None):  # type: (Optional[str]) -> None
 		i18n = Translation('univention-management-console')
 		try:
 			i18n.set_language(locale or 'C')
@@ -214,14 +221,14 @@ class PamAuth(object):
 		self._ = i18n.translate
 		self.pam = self.init()
 
-	def authenticate(self, username, password, **answers):
+	def authenticate(self, username, password, **answers):  # type: (str, str, **Any) -> None
 		answers.update({
 			PAM_TEXT_INFO: '',
 			PAM_ERROR_MSG: '',
 			PAM_PROMPT_ECHO_ON: username,
 			PAM_PROMPT_ECHO_OFF: password,
 		})
-		missing = []
+		missing = []  # type: List
 		self.start(username, (answers, [], missing))
 
 		try:
@@ -238,7 +245,7 @@ class PamAuth(object):
 				raise AuthenticationInformationMissing(message, missing)
 			raise AuthenticationFailed(self.error_message(pam_err.args))
 
-	def change_password(self, username, old_password, new_password):
+	def change_password(self, username, old_password, new_password):  # type: (str, str, str) -> None
 		answers = {
 			PAM_TEXT_INFO: '',
 			PAM_ERROR_MSG: '',
@@ -247,7 +254,7 @@ class PamAuth(object):
 			# pam_kerberos asks for the old password first and then twice for the new password.
 			# 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
 		}
-		prompts = []
+		prompts = []  # type: List
 		self.start(username, (answers, prompts, []))
 		# we are parsing error messages. Best to get the english version. Unfortionately not all pam modules evaluate these variables
 		self.pam.putenv('LC_ALL=en_US.UTF-8')
@@ -261,29 +268,29 @@ class PamAuth(object):
 			message = self._parse_error_message_from(pam_err.args, prompts)
 			raise PasswordChangeFailed('%s %s' % (self._('Changing password failed.'), message))
 
-	def init(self):
+	def init(self):  # type: () -> PAM
 		pam = PAM()
 		pam.start('univention-management-console')
 		return pam
 
-	def start(self, username, data):
+	def start(self, username, data):  # type: (str, Any) -> None
 		self.pam.set_item(PAM_CONV, self.conversation)
 		self.pam.set_item(PAM_USER, username)
 		self.pam.setUserData(data)
 
-	def end(self):
+	def end(self):  # type: () -> None
 		# TODO: call pam_end() instead
 		self.pam.set_item(PAM_CONV, lambda a, b, c: None)  # free self.conversation leaking
 		del self.pam  # causes pam_end() to be called to free ldap connections
 
-	def conversation(self, auth, query_list, data):
+	def conversation(self, auth, query_list, data):  # type: (Any, Any, Any) -> List
 		try:
 			return list(self._conversation(auth, query_list, data))
 		except:
 			AUTH.error('Unexpected error during PAM conversation: %s' % (traceback.format_exc(),))
 			raise
 
-	def _conversation(self, auth, query_list, data):
+	def _conversation(self, auth, query_list, data):  # type: (Any, List[Tuple[Any, Any]], Any) -> Iterator[Tuple[str, int]]
 		answers, prompts, missing = data
 		prompts.extend(query_list)
 		for query, qt in query_list:
@@ -307,7 +314,7 @@ class PamAuth(object):
 			# AUTH.error('# PAM(%d) %s: answer=%r' % (qt, repr(query).strip("':\" "), response))
 			yield (response, 0)
 
-	def _parse_error_message_from(self, pam_err, prompts):
+	def _parse_error_message_from(self, pam_err, prompts):  # type: (Tuple[Any, int], Sequence[Tuple[str, int]]) -> str
 		# okay, check prompts, maybe they have a hint why it failed?
 		# most often the last prompt contains a error message
 		# prompts are localised, i.e. if the operating system uses German, the prompts are German!
@@ -330,7 +337,7 @@ class PamAuth(object):
 			' '.join(messages)
 		)
 
-	def error_message(self, pam_err):
+	def error_message(self, pam_err):  # type: (Tuple[Any, int]) -> str
 		errors = {
 			PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed.'),
 			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore.'),
@@ -341,7 +348,7 @@ class PamAuth(object):
 		}
 		return errors.get(pam_err[1], self._(str(pam_err[0])))
 
-	def _parse_password_change_fail_reason(self, prompt):
+	def _parse_password_change_fail_reason(self, prompt):  # type: (Union[Text, bytes]) -> str
 		if prompt in self.known_errors:
 			return self._(self.known_errors[prompt])
 		for pattern, error_message in self.known_errors.items():
@@ -353,9 +360,9 @@ class PamAuth(object):
 
 			match = pattern.search(prompt) or pattern.search(prompt.encode('UTF-8').decode('latin-1')) or pattern.search(prompt.encode('latin-1', 'ignore').decode('utf-8', 'ignore'))
 			if match:
-				match = match.groupdict()
+				groups = match.groupdict()
 				additional_message = ''
-				for x, y in match.items():
+				for x, y in groups.items():
 					try:
 						additional_message = {
 							'minlen': ' ' + self._('The password must consist of at least %s characters.'),

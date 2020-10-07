@@ -71,6 +71,11 @@ from ..ldap import get_machine_connection, reset_cache as reset_ldap_connection_
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, sanitize_args, simple_response, allow_get_request
 
+try:
+	from typing import Any, Dict, Iterable, List, Optional  # noqa F401
+except ImportError:
+	pass
+
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
 
@@ -84,6 +89,7 @@ class ModuleProcess(Client):
 	"""
 
 	def __init__(self, module, debug='0', locale=None):
+		# type: (str, str, str) -> None
 		socket = '/var/run/univention-management-console/%u-%lu.socket' % (os.getpid(), int(time.time() * 1000))
 		# determine locale settings
 		modxmllist = moduleManager[module]
@@ -95,7 +101,7 @@ class ModuleProcess(Client):
 				break
 		if locale:
 			args.extend(('-l', '%s' % locale))
-			self.__locale = locale
+			self.__locale = locale  # type: Optional[str]
 		else:
 			self.__locale = None
 		Client.__init__(self, unix=socket, ssl=False)
@@ -109,12 +115,13 @@ class ModuleProcess(Client):
 		self.signal_new('finished')
 		self.name = module
 		self.running = False
-		self._queued_requests = []
+		self._queued_requests = []  # type: List
 		self._inactivity_timer = None
 		self._inactivity_counter = 0
 		self._connect_timer = None
 
 	def stop(self):
+		# type: () -> None
 		CORE.process('ModuleProcess: stopping %r' % (self.__pid,))
 		notifier.timer_remove(self._connect_timer)
 		if self.__process:
@@ -125,10 +132,12 @@ class ModuleProcess(Client):
 			CORE.info('ModuleProcess: child stopped')
 
 	def _died(self, pid, status):
+		# type: (int, Any) -> None
 		CORE.process('ModuleProcess: child %d exited with %d' % (pid, status))
 		self.signal_emit('finished', pid, status)
 
 	def _response(self, msg):
+		# type: (Response) -> None
 		# these responses must not be send to the external client as
 		# this commands were generated within the server
 		if msg.command == 'EXIT' and 'internal' in msg.arguments:
@@ -137,6 +146,7 @@ class ModuleProcess(Client):
 		self.signal_emit('result', msg)
 
 	def pid(self):
+		# type: () -> int
 		"""Returns process ID of module process"""
 		return self.__pid
 
