@@ -49,6 +49,11 @@ from OpenSSL import SSL
 import notifier
 import notifier.signals as signals
 
+try:
+	from typing import Any, Dict, Iterable, List, Optional  # noqa F401
+except ImportError:
+	pass
+
 
 class UnknownRequestError(Exception):
 	pass
@@ -81,6 +86,7 @@ class Client(signals.Provider, Translation):
 	"""
 
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
+		# type: (Any, Any, Any, Any, Any) -> Any
 		CORE.info('__verify_cert_cb: Got certificate subject: %s' % cert.get_subject())
 		CORE.info('__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer())
 		CORE.info('__verify_cert_cb: errnum=%d depth=%d ok=%d' % (errnum, depth, ok))
@@ -92,10 +98,11 @@ class Client(signals.Provider, Translation):
 		return ok
 
 	def __init__(self, servername='localhost', port=6670, unix=None, ssl=True):
+		# type: (str, int, Optional[str], bool) -> None
 		'''Initialize a socket-connection to the server.'''
 		signals.Provider.__init__(self)
 		self.__authenticated = False
-		self.__auth_ids = []
+		self.__auth_ids = []  # type: List[Any]
 		self.__ssl = ssl
 		self.__unix = unix
 		if self.__ssl and not self.__unix:
@@ -114,13 +121,13 @@ class Client(signals.Provider, Translation):
 				self.__ssl = False
 		self.__port = port
 		self.__server = servername
-		self.__resend_queue = {}
+		self.__resend_queue = {}  # type: Dict[Any, Any]
 
-		self.__realsocket = self.__socket = None
+		self.__realsocket = self.__socket = None  # type: Optional[socket.socket]
 		self._init_socket()
 
 		self.__buffer = b''
-		self.__unfinishedRequests = {}
+		self.__unfinishedRequests = {}  # type: Dict[int, Request]
 		self.signal_new('response')
 		self.signal_new('authenticated')
 		self.signal_new('error')
@@ -129,15 +136,18 @@ class Client(signals.Provider, Translation):
 
 	@property
 	def openRequests(self):
+		# type: () -> Iterable[int]
 		"""Returns a list of open UMCP requests"""
 		return self.__unfinishedRequests.keys()
 
 	def __nonzero__(self):
+		# type: () -> bool
 		if self.__ssl and not self.__crypto_context:
 			return False
 		return True
 
 	def _init_socket(self):
+		# type: () -> None
 		if self.__unix:
 			self.__realsocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 		else:
@@ -154,6 +164,7 @@ class Client(signals.Provider, Translation):
 			self.__socket = None
 
 	def disconnect(self, force=True):
+		# type: (bool) -> bool
 		"""Shutdown the connection. If there are still open requests and
 		*force* is False the connection is kept."""
 		if not force and self.__unfinishedRequests:
@@ -162,11 +173,14 @@ class Client(signals.Provider, Translation):
 		return True
 
 	def connect(self):
+		# type: () -> None
 		"""Connects to the UMC server"""
 		if not self.__realsocket and not self.__socket:
 			self._init_socket()
+		assert self.__realsocket
 		try:
 			if self.__ssl and not self.__unix:
+				assert self.__socket
 				self.__socket.connect((self.__server, self.__port))
 				self.__socket.setblocking(0)
 				try:
@@ -193,6 +207,7 @@ class Client(signals.Provider, Translation):
 			raise
 
 	def _resend(self, sock):
+		# type: (socket.socket) -> bool
 		while self.__resend_queue.get(sock):
 			data = bytes(self.__resend_queue[sock][0])
 			try:
@@ -254,14 +269,17 @@ class Client(signals.Provider, Translation):
 		return False
 
 	def __reconnect_without_ssl(self):
+		# type: () -> None
 		CORE.process('Client: Communication will not be encrypted!')
 		self.__ssl = False
 		self._init_socket()
+		assert self.__realsocket
 		self.__realsocket.connect((self.__server, self.__port))
 		self.__realsocket.setblocking(0)
 		CORE.info('Client.connect: connection established')
 
 	def request(self, msg):
+		# type: (Request) -> None
 		"""Sends an UMCP request to the UMC server
 
 		:param Request msg: the UMCP request to send
@@ -282,6 +300,7 @@ class Client(signals.Provider, Translation):
 		self.__unfinishedRequests[msg.id] = msg
 
 	def invalidate_all_requests(self, status=500, message=None):
+		# type: (int, Request) -> None
 		"""Checks for open UMCP requests and invalidates these by faking
 		a response with the given status code"""
 
@@ -297,6 +316,7 @@ class Client(signals.Provider, Translation):
 		self.__unfinishedRequests = {}
 
 	def _recv(self, sock):
+		# type: (socket.socket) -> bool
 		try:
 			recv = b''
 			while True:
@@ -308,15 +328,15 @@ class Client(signals.Provider, Translation):
 					break
 		except socket.error as exc:
 			CORE.warn('Client: _recv: error on socket: %s' % (exc,))
-			recv = None
+			recv = b''
 		except SSL.SysCallError:
 			# lost connection or any other unfixable error
-			recv = None
+			recv = b''
 		except SSL.Error:
 			error = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
 			# lost connection: UMC daemon died probably
 			if error == errno.EPIPE:
-				recv = None
+				recv = b''
 			else:
 				return True
 
@@ -347,6 +367,7 @@ class Client(signals.Provider, Translation):
 		return True
 
 	def _handle(self, response):
+		# type: (Response) -> None
 		PROTOCOL.info('Received UMCP RESPONSE %s' % response.id)
 		if response.command == 'AUTH' and response.id in self.__auth_ids:
 			self.__authenticated = response.status == SUCCESS
@@ -362,12 +383,14 @@ class Client(signals.Provider, Translation):
 			self.signal_emit('error', UnknownRequestError(500, 'Received an unknown response.'))
 
 	def authenticate(self, msg):
+		# type: (Request) -> None
 		"""Authenticate against the UMC server"""
 		if msg.command != 'AUTH':
 			raise TypeError('Must be AUTH command!')
 		self.request(msg)
 
 	def __closed(self):
+		# type: () -> None
 		for socket_ in (self.__realsocket, self.__socket):
 			if socket_:
 				notifier.socket_remove(socket_)

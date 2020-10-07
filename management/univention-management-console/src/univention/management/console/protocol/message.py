@@ -52,7 +52,7 @@ from univention.management.console.log import PARSER, PROTOCOL
 from univention.lib.i18n import Translation
 
 try:
-	from typing import Any, Dict, List, Optional, Union  # noqa F401
+	from typing import Any, Dict, List, Optional, Text, Union  # noqa F401
 	RequestType = int
 	UmcpBody = Union[dict, str, bytes]
 except ImportError:
@@ -95,8 +95,8 @@ class Message(object):
 	__counter = 0
 
 	def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
-		# type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
-		self._id = None
+		# type: (RequestType, Text, str, bytes, List[str], Dict[str, Any]) -> None
+		self._id = None  # type: Optional[Text]
 		self._length = 0
 		self._type = type
 		if mime_type == MIMETYPE_JSON:
@@ -113,7 +113,7 @@ class Message(object):
 
 	@staticmethod
 	def _formattedMessage(_id, _type, mimetype, command, body, arguments):
-		# type: (int, RequestType, str, str, UmcpBody, List[str]) -> bytes
+		# type: (Text, RequestType, str, str, UmcpBody, List[str]) -> bytes
 		'''Returns formatted message.'''
 		type = b'RESPONSE'
 		if _type == Message.REQUEST:
@@ -130,33 +130,40 @@ class Message(object):
 		return b'%s/%s/%d/%s: %s %s\n%s' % (type, _id.encode('utf-8'), len(data), mimetype.encode('utf-8'), (command or u'NONE').encode('utf-8'), args, data)
 
 	def __bytes__(self):
+		# type: () -> bytes
 		'''Returns the formatted message'''
 		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, self.body, self.arguments)
 
 	if six.PY2:
 		def __str__(self):
+			# type: () -> str
 			return self.__bytes__()
 
 	def _create_id(self):
+		# type: () -> None
 		# cut off 'L' for long
 		self._id = u'%lu-%d' % (int(time.time() * 100000), Message.__counter)
 		Message.__counter += 1
 
 	def recreate_id(self):
+		# type: () -> None
 		"""Creates a new unique ID for the message"""
 		self._create_id()
 
 	def is_type(self, type):
+		# type: (Any) -> bool
 		"""Checks the message type"""
 		return (self._type == type)
 
 	#: The property id contains the unique identifier for the message
 	@property
 	def id(self):
+		# type: () -> Optional[Text]
 		return self._id
 
 	@id.setter
 	def id(self, id):
+		# type: (Text) -> None
 		self._id = id
 
 	# JSON body properties
@@ -208,17 +215,17 @@ class Message(object):
 	http_method = property(lambda self: self._get_key('method'), lambda self, value: self._set_key('method', value))
 
 	def parse(self, msg):
-		# type: (bytes) -> None
+		# type: (bytes) -> bytes
 		"""Parses data and creates in case of a valid UMCP message the
 		corresponding object. If the data contains more than the message
 		the rest of the data is returned.
 
 		:raises: :class:`.ParseError`
 		"""
-		header, nl, body = msg.partition(b'\n')
+		_header, nl, body = msg.partition(b'\n')
 
 		try:
-			header = header.decode('utf-8')
+			header = _header.decode('utf-8')
 		except ValueError:
 			PARSER.error('Error decoding UMCP message header: %r' % (header[:100],))
 			raise ParseError(UMCP_ERR_UNPARSABLE_HEADER, _('Invalid message header encoding.'))
@@ -280,6 +287,7 @@ class Request(Message):
 	'''Represents an UMCP request message'''
 
 	def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON):
+		# type: (str, Any, Any, str) -> None
 		Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type)
 		self._create_id()
 
@@ -306,7 +314,7 @@ class Response(Message):
 	recreate_id = None
 
 	def set_body(self, filename, mimetype=None):
-		# type: (str, str) -> None
+		# type: (str, Optional[str]) -> None
 		'''Set body of response by guessing the mime type of the given
 		file if not specified and adding the content of the file to the body. The mime
 		type is guessed using the extension of the filename.'''
