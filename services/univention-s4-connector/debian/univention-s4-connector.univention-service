@@ -1,7 +1,7 @@
 [univention-s4-connector]
 Description[de]=Univention S4 Connector
 Description[en]=Univention S4 Connector
-programs=/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main
+programs=/usr/bin/python3 -W ignore -m univention.s4connector.s4.main
 icon=service/s4-connector
 start_type=connector/s4/autostart
 systemd=univention-s4-connector.service
