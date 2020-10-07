@@ -705,8 +705,7 @@ class HookManager:
 
 	How to use HookManager::
 
-	>>> import univention.hooks
-	>>> hm = univention.hooks.HookManager('./test')
+	>>> hm = HookManager('./test')
 	>>> hm.get_hook_list()
 	['test_hook', 'pre_hook']
 	>>> hm.call_hook('test_hook', 'abc', 123, x=1, y='B')
