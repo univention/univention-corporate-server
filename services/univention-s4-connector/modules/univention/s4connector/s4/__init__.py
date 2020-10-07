@@ -40,7 +40,6 @@ import sys
 import time
 import calendar
 import pprint
-import warnings
 import string
 import base64
 
@@ -68,21 +67,6 @@ DSDB_CONTROL_REPLICATED_UPDATE_OID = '1.3.6.1.4.1.7165.4.3.3'
 
 # page results
 PAGE_SIZE = 1000
-
-
-def normalise_userAccountControl(s4connector, key, object):
-	"""deprecated unused function, should be removed in the future!"""
-	warnings.warn('The function normalise_userAccountControl() is deprecated and should not be used in the mapping anymore. Use con_create_attributes instead.')
-	# set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
-	ud.debug(ud.LDAP, ud.ALL, "normalise_userAccountControl: dn: %s" % object['dn'])
-	for i in range(0, 10):
-		try:
-			s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', [b'512'])])
-		except ldap.NO_SUCH_OBJECT:
-			time.sleep(1)
-			continue
-		return True
-	return False
 
 
 def group_members_sync_from_ucs(s4connector, key, object):
