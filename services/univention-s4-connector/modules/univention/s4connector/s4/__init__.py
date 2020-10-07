@@ -2207,22 +2207,21 @@ class s4(univention.s4connector.ucs):
 
 					sync_successfull = False
 					try:
-						mapped_object = self._object_mapping(property_key, samba_object)
-						if not self._ignore_object(property_key, mapped_object):
-							sync_successfull = self.sync_to_ucs(property_key, mapped_object, samba_object['dn'], samba_object)
-						else:
-							sync_successfull = True
+						try:
+							mapped_object = self._object_mapping(property_key, samba_object)
+							if not self._ignore_object(property_key, mapped_object):
+								sync_successfull = self.sync_to_ucs(property_key, mapped_object, samba_object['dn'], samba_object)
+							else:
+								sync_successfull = True
+						except univention.admin.uexceptions.ldapError as msg:
+							if isinstance(msg.original_exception, ldap.SERVER_DOWN):
+								raise msg.original_exception
+							raise
 					except ldap.SERVER_DOWN:
 						ud.debug(ud.LDAP, ud.ERROR, "Got server down during sync, re-open the connection to UCS and S4")
 						time.sleep(1)
 						self.open_ucs()
 						self.open_s4()
-					except univention.admin.uexceptions.ldapError as msg:
-						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s" % msg)
-						if msg == "Can't contact LDAP server":
-							raise ldap.SERVER_DOWN
-						else:
-							self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 					except Exception:  # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
