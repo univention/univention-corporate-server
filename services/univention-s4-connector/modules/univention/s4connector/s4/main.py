@@ -43,7 +43,6 @@ import fcntl
 import traceback
 
 import ldap
-import setproctitle
 
 import univention
 import univention.s4connector
@@ -102,9 +101,6 @@ def daemon(lock_file):
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
-
-		# backwards compatibility for nagios checks not updated to UCS 4.4
-		setproctitle.setproctitle('%s # /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py' % (setproctitle.getproctitle(),))
 	else:
 		os._exit(0)
 

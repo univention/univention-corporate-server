@@ -15,7 +15,6 @@ Package: python-univention-connector-s4
 Architecture: all
 Depends:
  python-pyasn1-modules,
- python-setproctitle,
  python-univention (>=12.0.0-5),
  python-univention-directory-manager (>= 14.0.14-14),
  python-univention-heimdal (>= 4.0.2-2),
@@ -36,7 +35,6 @@ Package: python3-univention-connector-s4
 Architecture: all
 Depends:
  python3-pyasn1-modules,
- python3-setproctitle,
  python3-univention,
  python3-univention-directory-manager,
  python3-univention-heimdal,
