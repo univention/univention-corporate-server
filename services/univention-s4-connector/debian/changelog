@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 univention-s4-connector (14.0.4-2) unstable; urgency=medium
 
   * Bug #52364: update group member cache after move
