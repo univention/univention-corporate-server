@@ -37,12 +37,8 @@ import sqlite3
 import base64
 
 
-def _decode_base64(val):
-	return base64.decodestring(val)
-
-
 def _encode_base64(val):
-	return base64.encodestring(val)
+	return base64.b64encode(val).decode('ASCII')
 
 
 class EntryDiff(object):
@@ -132,7 +128,7 @@ class S4Cache(object):
 		for line in rows:
 			if not entry.get(line[0]):
 				entry[str(line[0])] = []
-			entry[line[0]].append(_decode_base64(line[1]))
+			entry[line[0]].append(base64.b64decode(line[1]))
 
 		return entry
 
@@ -322,8 +318,8 @@ if __name__ == '__main__':
 	guid = '1234'
 
 	entry = {
-		'attr1': ['foobar'],
-		'attr2': ['val1', 'val2', 'val3']
+		'attr1': [b'foobar'],
+		'attr2': [b'val1', b'val2', b'val3']
 	}
 
 	s4cache.add_entry(guid, entry)
@@ -333,8 +329,8 @@ if __name__ == '__main__':
 		raise Exception('Test 1 failed: %s' % diff_entry)
 	print('.', end=' ')
 
-	entry['attr3'] = ['val2']
-	entry['attr2'] = ['val1', 'val3']
+	entry['attr3'] = [b'val2']
+	entry['attr2'] = [b'val1', b'val3']
 
 	diff_entry = s4cache.diff_entry(entry_old, entry)
 	if diff_entry.get('changed') != set(['attr2']) or diff_entry.get('removed') or diff_entry.get('added') != set(['attr3']):
