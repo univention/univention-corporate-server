@@ -63,8 +63,8 @@ def dump_modules(cfg, module=None, out=sys.stdout):
 
 def main():
 	# important! set locale before importing
-	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
-	translation.set_language(locale.getdefaultlocale()[0])
+	locale.setlocale(locale.LC_ALL, "")
+	translation.set_language()
 	from univention.directory.reports import Report, ReportError, Config
 
 	cfg = Config()

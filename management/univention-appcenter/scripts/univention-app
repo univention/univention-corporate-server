@@ -38,7 +38,7 @@ import locale
 
 # do it immediately before univention.appcenter.utils loads Translation
 try:
-	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
+	locale.setlocale(locale.LC_ALL, "")
 except locale.Error:
 	pass
 

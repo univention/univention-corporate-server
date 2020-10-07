@@ -47,11 +47,10 @@ from univention.management.console.modules.setup.util import PATH_SETUP_SCRIPTS,
 
 def setup_i18n():
 	import locale
-	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
-	language = locale.getdefaultlocale()[0]
+	locale.setlocale(locale.LC_ALL, "")
 	from univention.lib.i18n import Translation
 	translation = Translation('univention-system-setup-scripts')
-	translation.set_language(language)
+	translation.set_language()
 	return translation.translate
 
 

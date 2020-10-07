@@ -284,8 +284,8 @@ if __name__ == '__main__':
 	arguments = parser.parse_args()
 
 	try:
-		locale.setlocale(locale.LC_ALL, os.environ['LC_ALL'])
-	except (locale.Error, KeyError):
+		locale.setlocale(locale.LC_ALL, "")
+	except locale.Error:
 		pass
 
 	prog = os.path.basename(sys.argv[0])
