@@ -31,7 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-from argparse import ArgumentParser
+
+from argparse import ArgumentParser, FileType, Namespace  # noqa F401
 from getpass import getpass
 
 from datetime import datetime
@@ -76,8 +77,8 @@ class CLI_Client(Client):
 		self.signal_connect('authenticated', self._authenticated)
 		self.signal_connect('closed', self._closed)
 		self.signal_connect('error', self._error)
-		if options.arguments:
-			self.__wait = self.create(options.arguments[0], options.arguments[1:], options)
+		if options.command:
+			self.__wait = self.create(options.command, options.arguments, options)
 		if options.authenticate:
 			if self._options.timing:
 				self.__started = datetime.now()
@@ -114,7 +115,7 @@ class CLI_Client(Client):
 		if options.list_options and not options.eval_options:
 			msg.options = options.options
 		elif options.filename:
-			msg.body = open(options.filename).read()
+			msg.body = options.filename.read()
 			msg.mimetype = options.mimetype
 		elif options.eval_options:
 			if not options.list_options:
@@ -210,98 +211,103 @@ class CLI_Client(Client):
 		raise ClientExit()
 
 
-if __name__ == '__main__':
-	notifier.init(notifier.GENERIC)
-
-	parser = ArgumentParser(usage="usage: %(prog)s [options] command <arguments>")
+def parse_args(argv=sys.argv):
+	parser = ArgumentParser()
 	group = parser.add_argument_group('General')
 	group.add_argument(
-		'-d', '--debug', action='store', type=int, dest='debug', default=0,
+		'-d', '--debug', type=int, default=0,
 		help='if given than debugging is activated and set to the specified level [default: %(default)s]')
 	group.add_argument(
-		'-q', '--quiet', action='store_true', dest='quiet',
+		'-q', '--quiet', action='store_true',
 		help='if given no output is generated')
 	group.add_argument(
-		'-r', '--pretty-print', action='store_true', dest='prettyprint', default=False,
+		'-r', '--pretty-print', action='store_true', dest='prettyprint',
 		help='if given the output will be printed out using pretty print')
 	group.add_argument(
-		'-t', '--timing', action='store_true', dest='timing',
+		'-t', '--timing', action='store_true',
 		help='if given the amount of time required for the UMCP request is measured. -q will not suppress the output')
 	parser.add_argument_group(group)
 
 	group = parser.add_argument_group('Connection')
 	group.add_argument(
-		'-n', '--no-auth', action='store_false', dest='authenticate', default=True,
+		'-n', '--no-auth', action='store_false', dest='authenticate',
 		help='if given the client do not try to authenticate first')
 	group.add_argument(
-		'-p', '--port', type=int, action='store', dest='port', default='6670',
+		'-p', '--port', type=int, default=6670,
 		help='defines the port to connect to [default: %(default)s]')
 	group.add_argument(
-		'-P', '--password', action='store', dest='password',
+		'-P', '--password',
 		help='set password for authentication')
 	group.add_argument(
-		'-y', '--password_file', action='store', dest='password_file',
+		'-y', '--password_file', type=FileType("r"),
 		help='read password for authentication from given file')
 	group.add_argument(
-		'-s', '--server', action='store', dest='server', default='localhost',
+		'-s', '--server', default='localhost',
 		help='defines the host of the UMC daemon to connect to [default: %(default)s]')
 	group.add_argument(
-		'-u', '--unix-socket', action='store', dest='unix_socket',
+		'-u', '--unix-socket',
 		help='defines the filename of the UNIX socket')
 	group.add_argument(
-		'-U', '--username', action='store', dest='username',
+		'-U', '--username',
 		help='set username for authentication')
 	group.add_argument(
-		'-x', '--exit', action='store_true', dest='exit',
+		'-x', '--exit', action='store_true',
 		help='if given, the client send the request to the server and exits directly after it without waiting for the response')
 	parser.add_argument_group(group)
 
 	group = parser.add_argument_group('Request arguments')
 	group.add_argument(
-		'-e', '--eval-option', action='store_true', dest='eval_options',
+		'-e', '--eval-option', action='store_true',
 		help='if set the only given option is evalulated as python code')
 	group.add_argument(
-		'-f', '--flavor', action='store', dest='flavor', default=None,
+		'-f', '--flavor',
 		help='set the required flavor')
 	group.add_argument(
-		'-F', '--filename', action='store', dest='filename',
+		'-F', '--filename', type=FileType("r"),
 		help='if given the content of the file is send as the body of the UMCP request. Additionally the mime type must be given')
 	group.add_argument(
-		'-l', '--list-options', action='store_true', dest='list_options',
+		'-l', '--list-options', action='store_true',
 		help='if set all specified options will be assembled in a list')
 	group.add_argument(
-		'-m', '--mimetype', action='store', dest='mimetype', default=umcp.MIMETYPE_JSON,
+		'-m', '--mimetype', default=umcp.MIMETYPE_JSON,
 		help='defines the mime type of the UMCP request body [default: %(default)s].')
 	group.add_argument(
 		'-o', '--option', default=[], action='append', dest='options',
 		help='append an option to the request')
 	parser.add_argument_group(group)
-	parser.add_argument('arguments', nargs='*', default=[])
+
+	prog = os.path.basename(sys.argv[0])
+	command = prog[4:] if prog.startswith("umc-") and not prog != "umc-client" else ""
+	if command:
+		parser.set_defaults(command=command)
+	else:
+		parser.add_argument('command', help="UMC command")
+	parser.add_argument('arguments', nargs='*', default=[], help="UMC command arguments")
 
 	arguments = parser.parse_args()
 
+	return arguments
+
+
+if __name__ == '__main__':
+	arguments = parse_args()
+
+	notifier.init(notifier.GENERIC)
 	try:
 		locale.setlocale(locale.LC_ALL, "")
 	except locale.Error:
 		pass
 
-	prog = os.path.basename(sys.argv[0])
-	if prog.startswith('umc-'):
-		command = prog[4:]
-		if command != 'client':
-			arguments.arguments.insert(0, command)
-
 	log_init('/dev/stderr', arguments.debug)
 
-	if not arguments.arguments:
-		parser.error('command is missing')
 	if arguments.authenticate:
 		if not arguments.username:
 			arguments.username = input('Username:')
 		if arguments.password_file:
-			arguments.password = open(arguments.password_file).read().strip()
+			arguments.password = arguments.password_file.read().strip()
 		if not arguments.password:
 			arguments.password = getpass('Password:')
+
 	try:
 		client = CLI_Client(arguments)
 	except Exception as exc:
