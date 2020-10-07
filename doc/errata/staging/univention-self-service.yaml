@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-self-service
 fix: 4.0.3-46A~4.4.0.202010060907
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The Self-Service module "Your Profile" can now be used while logged in
    (e.g via SAML) without re-entering credentials. The behavior will only be
    activated on new installations with UCS 4.4-7 and can be enabled manually
