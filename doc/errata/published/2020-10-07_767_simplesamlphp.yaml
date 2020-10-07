@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Expose LDAP extended error message.
 bug: [51903]
+erratum: 767
+announced: 2020-10-07
