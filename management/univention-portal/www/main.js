@@ -831,7 +831,7 @@ define([
 		__createIframe: function(id, title, logoUrl, url) {
 			var iframeWrapper = put('div.iframeWrapper');
 			var iframeStatus = put('span.iframeStatus.loadingSpinner.loadingSpinner--visible');
-			var iframe = put('iframe[src=$]', url);
+			var iframe = put('iframe[src=$][allow=$]', url, 'microphone; camera');
 			var tab = put('div.sidebar__tab');
 			var tabSelect = put('div.sidebar__tab__select div.sidebar__tab__select__icon.$ <', portalTools.getIconClass(logoUrl));
 			var tabClose = put('div.sidebar__tab__close div.umcCrossIconWhite <');
