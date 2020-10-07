@@ -38,95 +38,90 @@ i18n = import_lib_module('i18n')
 
 
 class TestLocale(object):
-	def test_init(self):
-		locale = i18n.Locale()
-		assert locale.language is None
-		assert locale.territory is None
-		assert locale.codeset is None
-		assert locale.modifier is None
-		locale = i18n.Locale('de_DE.UTF-8:UTF-8@euro')
-		assert locale.language == 'de'
-		assert locale.territory == 'DE'
-		assert locale.codeset == 'UTF-8'
-		assert locale.modifier == 'euro'
-		locale = i18n.Locale('en_US')
-		assert locale.language == 'en'
-		assert locale.territory == 'US'
-		assert locale.codeset == 'UTF-8'
-		assert locale.modifier is None
+	@pytest.mark.parametrize("spec,language,territory,codeset,modifier", [
+		(None, "", "", "", ""),
+		("de_DE.UTF-8@euro", "de", "DE", "UTF-8", "euro"),
+		("en_US", "en", "US", "UTF-8", ""),
+		("C", "C", "", "UTF-8", ""),
+		("C.UTF-8", "C", "", "UTF-8", ""),
+		("POSIX", "POSIX", "", "UTF-8", ""),
+		("POSIX.UTF-8", "POSIX", "", "UTF-8", ""),
+	])
+	def test_init(self, spec, language, territory, codeset, modifier):
+		locale = i18n.Locale(spec)
+		assert locale.language == language
+		assert locale.territory == territory
+		assert locale.codeset == codeset
+		assert locale.modifier == modifier
 
-	def test_malformed(self):
-		with pytest.raises(i18n.I18N_Error):
-			i18n.Locale('')
-		with pytest.raises(TypeError):
-			i18n.Locale(0)
+	@pytest.mark.parametrize("spec,exc_type", [
+		("", i18n.I18N_Error),
+		(0, TypeError),
+		("deu_GER", i18n.I18N_Error),
+		("german", i18n.I18N_Error),
+	])
+	def test_malformed(self, spec, exc_type):
+		with pytest.raises(exc_type):
+			i18n.Locale(spec)
 
-	def test_malformed2(self):
-		with pytest.raises(i18n.I18N_Error):
-			i18n.Locale('deu_GER')
-		with pytest.raises(i18n.I18N_Error):
-			i18n.Locale('german')
+	@pytest.mark.parametrize("spec,value", [
+		(None, False),
+		("de_DE.UTF-8", True),
+		("C", True),
+	])
+	def test_bool(self, spec, value):
+		locale = i18n.Locale(spec)
+		assert bool(locale) is value
 
-	def test_bool(self):
-		locale = i18n.Locale()
-		assert bool(locale) is False
-		locale = i18n.Locale('de_DE.UTF-8')
-		assert bool(locale) is True
-		locale = i18n.Locale('C')
-		assert bool(locale) is True
-
-	def test_str(self):
-		locale = i18n.Locale('de_DE.UTF-8')
-		assert str(locale) == 'de_DE.UTF-8'
-		locale = i18n.Locale('be_BY.UTF-8@latin')
-		assert str(locale) == 'be_BY.UTF-8@latin'
-
-	def test_str_modifier(self):
-		locale = i18n.Locale('ca_ES@valencia')
-		assert str(locale) == 'ca_ES.UTF-8@valencia'
-		locale = i18n.Locale('C')
-		assert str(locale) == 'C'
-
-	def test_str_empty(self):
-		locale = i18n.Locale()
-		assert str(locale) == ''
+	@pytest.mark.parametrize("spec,txt", [
+		("de_DE.UTF-8", "de_DE.UTF-8"),
+		("be_BY.UTF-8@latin", "be_BY.UTF-8@latin"),
+		("C.UTF-8", "C.UTF-8"),
+		("ca_ES@valencia", "ca_ES.UTF-8@valencia"),
+		(None, "")
+	])
+	def test_str(self, spec, txt):
+		locale = i18n.Locale(spec)
+		assert str(locale) == txt
 
 
 class TestNullTranslation(object):
-	def test_init(self):
-		translation = i18n.NullTranslation(None)
-		assert translation._domain is None
-		assert translation.locale is None
-		translation = i18n.NullTranslation('univention')
-		assert translation._domain == 'univention'
-		assert translation._translation is None
-		assert translation.locale is None
-		translation = i18n.NullTranslation('univention.lib', 'de_DE')
-		assert translation._domain == 'univention-lib'
+	@pytest.mark.parametrize("args,domain", [
+		((None,), None),
+		(("univention",), "univention"),
+		(("univention.lib", "de_DE"), "univention-lib"),
+	])
+	def test_init(self, args, domain):
+		translation = i18n.NullTranslation(*args)
+		assert translation._domain == domain
 		assert translation._translation is None
 		assert translation.locale is None
 
 
 class TestTranslation(object):
-	def test_init(self):
+	@pytest.mark.parametrize("spec,domain,language", [
+		(None, None, "C"),
+		("univention", "univention", "C"),
+		("univention.lib", "univention-lib", "C"),
+	])
+	def test_init(self, spec, domain, language):
 		i18n.Translation.locale = i18n.Locale()
-		translation = i18n.Translation(None)
-		assert translation._domain is None
-		assert translation.locale.language == 'C'
-		translation = i18n.Translation('univention')
-		assert translation._domain == 'univention'
-		assert translation.locale.language == 'C'
-		translation = i18n.Translation('univention.lib')
-		assert translation._domain == 'univention-lib'
 
-	def test_set_language(self):
+		translation = i18n.Translation(spec)
+		assert translation._domain == domain
+		assert translation.locale.language == language
+
+	@pytest.mark.parametrize("spec,locale,trans", [
+		("de_DE", "de_DE.UTF-8", True),
+		("en_US", "en_US.UTF-8", False),
+	])
+	def test_set_language(self, spec, locale, trans):
 		i18n.Translation.locale = i18n.Locale()
 		translation = i18n.Translation("univention-lib-unittest", localedir=dirname(__file__))
 
-		translation.set_language('de_DE')
-		assert str(translation.locale) == 'de_DE.UTF-8'
-		assert translation._translation is not None
-
-		translation.set_language('en_US')
-		assert str(translation.locale) == 'en_US.UTF-8'
-		assert translation._translation is None
+		translation.set_language(spec)
+		assert str(translation.locale) == locale
+		if trans:
+			assert translation._translation is not None
+		else:
+			assert translation._translation is None
