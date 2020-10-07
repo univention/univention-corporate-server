@@ -50,10 +50,15 @@ from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
+try:
+	from typing import Any, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
+
 
 class AuthenticationResult(object):
 
-	def __init__(self, result, locale):
+	def __init__(self, result, locale):  # type: (Any, Any) -> None
 		from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST_UNAUTH
 		self.credentials = None
 		self.status = SUCCESS
@@ -84,7 +89,7 @@ class AuthenticationResult(object):
 		else:
 			self.result = {'username': result['username']}
 
-	def __bool__(self):
+	def __bool__(self):  # type: () -> bool
 		return self.authenticated
 
 	__nonzero__ = __bool__  # Python 2
@@ -92,11 +97,11 @@ class AuthenticationResult(object):
 
 class AuthHandler(signals.Provider):
 
-	def __init__(self):
+	def __init__(self):  # type: () -> None
 		signals.Provider.__init__(self)
 		self.signal_new('authenticated')
 
-	def authenticate(self, msg):
+	def authenticate(self, msg):  # type: (Any) -> None
 		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so.
 		# See http://pam-python.sourceforge.net/doc/html/#bugs
 
@@ -111,7 +116,7 @@ class AuthHandler(signals.Provider):
 		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, pam, **args), notifier.Callback(self.__authentication_result, pam, msg, locale))
 		thread.run()
 
-	def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
+	def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):  # type: (PamAuth, str, str, str, Optional[Any], **Any) -> Tuple[str, str]
 		AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
 		username = self.__canonicalize_username(username)
 		try:
@@ -136,7 +141,7 @@ class AuthHandler(signals.Provider):
 			AUTH.info('Authentication for %r was successful' % (username,))
 			return (username, password)
 
-	def __canonicalize_username(self, username):
+	def __canonicalize_username(self, username):  # type: (str) -> str
 		try:
 			lo, po = get_machine_connection(write=False)
 			result = None
@@ -154,7 +159,7 @@ class AuthHandler(signals.Provider):
 			AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
 		return username
 
-	def __authentication_result(self, thread, result, pam, request, locale):
+	def __authentication_result(self, thread, result, pam, request, locale):  # type: (threads.Simple, Any, PamAuth, Any, Any) -> None
 		pam.end()
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed, AccountExpired)):
 			msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
