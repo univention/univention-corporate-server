@@ -618,17 +618,6 @@ define([
 					content: _('This system will become part of an existing non-UCS Active Directory domain.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
-					type: RadioButton,
-					radioButtonGroup: 'role',
-					name: '_noDomain',
-					label: _('Do not use any domain'),
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
-				}, {
-					type: Text,
-					name: 'noDomainHelpText',
-					content: _('This should only be used in rare use cases, for example as firewall systems.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
-				}, {
 					type: Text,
 					name: 'ifUnsureHelpText',
 					content: _('If unsure, select <i>%s</i>.', creatDomainLabel),
@@ -774,10 +763,6 @@ define([
 					label: _('Password'),
 					required: true
 				}]
-			}), lang.mixin({}, pageConf, {
-				name: 'warning-basesystem',
-				headerText: _('No domain warning'),
-				helpText: _('The installed UCS system will not offer any web-based domain management functions and will not be able to be a domain member. Such an UCS system should only be used in some rare use cases, for example as firewall system.')
 			}), lang.mixin({}, pageConf, {
 				name: 'fqdn-master',
 				headerText: _('Host settings'),
@@ -1045,9 +1030,6 @@ define([
 					disable.push(['locale', 'locale/default']);
 					disable.push(['locale', 'xorg/keyboard/options/XkbLayout']);
 					disable.push(['locale', 'timezone']);
-				} else if (field == 'basesystem') {
-					disable.push(['role', '_noDomain']);
-					disable.push(['role', 'noDomainHelpText']);
 				} else if (field == 'ad') {
 					disable.push(['role', '_adDomain']);
 					disable.push(['role', 'adDomainHelpText']);
@@ -1276,7 +1258,7 @@ define([
 				// specified server role
 				server_role: {
 					test: function(val) {
-						return serverRole != 'basesystem' && (!val.length || array.indexOf(val, serverRole) >= 0);
+						return !val.length || array.indexOf(val, serverRole) >= 0;
 					}
 				}
 			};
@@ -1458,7 +1440,7 @@ define([
 				}
 				tools.loadMetaData().then(lang.hitch(this, function(data) {
 					// verify whether a valid system UUID has been generated for the system
-					var hasLicenseBase = data.has_license_base || this._isRoleBaseSystem();
+					var hasLicenseBase = data.has_license_base;
 					var isReady = hasLicenseBase && data.has_system_uuid;
 					if (!isReady) {
 						return;
@@ -1837,8 +1819,6 @@ define([
 				msg += _('A new UCS domain will be created.');
 			} else if (this._isUsingPreconfiguredSetup()) {
 				msg += _('A preconfigured test domain will be instantiated.');
-			} else if (role == 'basesystem') {
-				msg += _('This system will be a base system without domain integration and without the capabilities to join one in the future.');
 			} else {
 				var roleLabel = {
 					'domaincontroller_backup': _('Backup Directory Node'),
@@ -2017,12 +1997,6 @@ define([
 
 					infoMsg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet created a new UCS domain:') + '</p>';
 					infoMsg += this._getUMCLinks();
-				} else if (isBaseSystem) {
-					var fqdn = this._getFQDN();
-					var ips = this._getIPAdresses();
-					infoMsg += '<p>';
-					infoMsg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems at a later point.') + ' ';
-					infoMsg += _('The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) <i>%(addresses)s</i>.', {fqdn: fqdn, addresses: ips.join(', ')});
 				} else { // if (isNonMaster || isAdMemberMaster || isAdMember) {
 					infoMsg += '<p>';
 					infoMsg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
@@ -2071,7 +2045,6 @@ define([
 			});
 
 			var isMaster = this._isRoleMaster();
-			var isBaseSystem = this._isRoleBaseSystem();
 			var helpText = '<p>' + _('The system configuration could not be completed. Please choose to retry the configuration process or finish the wizard.') + '</p>';
 			var errorMsgHeader = _('The following errors occurred while applying the settings.');
 
@@ -2082,7 +2055,6 @@ define([
 		},
 
 		_updateDonePage: function() {
-			var isBaseSystem = this._isRoleBaseSystem();
 			var isMaster = this._isRoleMaster();
 			var isUniventionApp = Boolean(this.ucr['umc/web/appliance/name']);
 
@@ -2176,7 +2148,7 @@ define([
 		},
 
 		_isRoleNonMaster: function() {
-			return !this._isRoleMaster() && !this._isRoleBaseSystem() && !this._isAdMember();
+			return !this._isRoleMaster() && !this._isAdMember();
 		},
 
 		_isUsingPreconfiguredSetup: function() {
@@ -2191,18 +2163,11 @@ define([
 			return this._isAdMember() && !this._domainHasMaster;
 		},
 
-		_isRoleBaseSystem: function() {
-			return this.getWidget('role', '_noDomain').get('value');
-		},
-
 		_isDocker: function() {
 			return !!this.ucr['docker/container/uuid'];
 		},
 
 		_isPageForRole: function(pageName) {
-			if (pageName == 'software') {
-				return !this._isRoleBaseSystem();
-			}
 			if (pageName.indexOf('-master') >= 0) {
 				return this._isRoleMaster();
 			}
@@ -2217,9 +2182,6 @@ define([
 			}
 			if (pageName.indexOf('-ad') >= 0) {
 				return this._isAdMember();
-			}
-			if (pageName.indexOf('-basesystem') >= 0) {
-				return this._isRoleBaseSystem();
 			}
 			return true;
 		},
@@ -2556,7 +2518,7 @@ define([
 			var joinDeferred = null;
 			var values = this.getValues();
 			var role = values['server/role'];
-			if (role == 'domaincontroller_master' || role == 'basesystem') {
+			if (role == 'domaincontroller_master') {
 				joinDeferred = _join(values);
 			} else {
 				// for any other role, we need domain admin credentials
@@ -2598,9 +2560,6 @@ define([
 		},
 
 		_wantsToJoin: function() {
-			if (this._isRoleBaseSystem()) {
-				return false;
-			}
 			if (this._isRoleNonMaster()) {
 				var vals = this.getValues();
 				return vals['start/join'];
@@ -2620,8 +2579,6 @@ define([
 						role = 'none';
 					}
 				}
-			} else if (this._isRoleBaseSystem()) {
-				role = 'basesystem';
 			}
 			return role;
 		},
@@ -2894,7 +2851,7 @@ define([
 			}
 
 			if (pageName == 'role' || (pageName == 'network' && !this.isPageVisible('role'))) {
-				if (this._isRoleMaster() || this._isRoleBaseSystem()) {
+				if (this._isRoleMaster()) {
 					// no further checks regarding the domain need to done
 					return this._forcePageTemporarily(nextPage);
 				}
@@ -3169,10 +3126,6 @@ define([
 				this._domainHasMaster = null;
 			}
 
-			if (previousPage == 'warning-basesystem') {
-				previousPage = this.previous(previousPage);
-			}
-
 			if (pageName == 'credentials-ad') {
 				if (this._domainHasMaster) {
 					previousPage = 'role-nonmaster-ad';
@@ -3255,9 +3208,6 @@ define([
 				return 'domaincontroller_slave';
 			} else if (_vals._roleMember) {
 				return 'memberserver';
-			} else if (_vals._noDomain) {
-				return 'basesystem';
-			}
 		},
 
 		getValues: function() {
