@@ -34,12 +34,7 @@
 from __future__ import print_function
 import univention.debug2 as ud
 import sqlite3
-import inspect
 import base64
-
-
-def func_name():
-	return inspect.currentframe().f_back.f_code.co_name
 
 
 def _decode_base64(val):
@@ -82,26 +77,24 @@ class S4Cache(object):
 			cache.
 	"""
 
+	@ud.trace(False)
 	def __init__(self, filename):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
 		self.s4cache = {}
 
 		self.__create_tables()
 
+	@ud.trace(False)
 	def add_entry(self, guid, entry):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		if not self._guid_exists(guid):
 			self._add_entry(guid, entry)
 		else:
 			self._update_entry(guid, entry)
 		self.s4cache[guid] = entry
 
+	@ud.trace(False)
 	def diff_entry(self, old_entry, new_entry):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		result = {'added': None, 'removed': None, 'changed': None}
 
 		diff = EntryDiff(old_entry, new_entry)
@@ -112,9 +105,8 @@ class S4Cache(object):
 
 		return result
 
+	@ud.trace(False)
 	def get_entry(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		entry = {}
 
 		guid_id = self._get_guid_id(guid)
@@ -144,9 +136,8 @@ class S4Cache(object):
 
 		return entry
 
+	@ud.trace(False)
 	def remove_entry(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		guid_id = self._get_guid_id(guid)
 
 		if not guid_id:
@@ -184,9 +175,8 @@ class S4Cache(object):
 					self._dbcon.close()
 				self._dbcon = sqlite3.connect(self.filename)
 
+	@ud.trace(False)
 	def __create_tables(self):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS GUIDS (id INTEGER PRIMARY KEY, guid TEXT);",
 			"CREATE TABLE IF NOT EXISTS ATTRIBUTES (id INTEGER PRIMARY KEY, attribute TEXT);",
@@ -198,14 +188,12 @@ class S4Cache(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def _guid_exists(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		return self._get_guid_id(guid.strip()) is not None
 
+	@ud.trace(False)
 	def _get_guid_id(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		sql_commands = [
 			("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
 		]
@@ -217,18 +205,16 @@ class S4Cache(object):
 
 		return None
 
+	@ud.trace(False)
 	def _append_guid(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		sql_commands = [
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def _get_attr_id(self, attr):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		sql_commands = [
 			("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
 		]
@@ -240,22 +226,20 @@ class S4Cache(object):
 
 		return None
 
+	@ud.trace(False)
 	def _attr_exists(self, guid):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		return self._get_attr_id(guid) is not None
 
+	@ud.trace(False)
 	def _create_attr(self, attr):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		sql_commands = [
 			("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def _get_attr_id_and_create_if_not_exists(self, attr):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
 		attr_id = self._get_attr_id(attr)
 		if not attr_id:
 			self._create_attr(attr)
@@ -263,9 +247,8 @@ class S4Cache(object):
 
 		return attr_id
 
+	@ud.trace(False)
 	def _add_entry(self, guid, entry):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		guid = guid.strip()
 
 		self._append_guid(guid)
@@ -284,9 +267,8 @@ class S4Cache(object):
 		if sql_commands:
 			self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def _update_entry(self, guid, entry):
-		_d = ud.function('S4Cache.%s' % func_name())  # noqa: F841
-
 		guid = guid.strip()
 		guid_id = self._get_guid_id(guid)
 		old_entry = self.get_entry(guid)
@@ -333,7 +315,6 @@ class S4Cache(object):
 
 
 if __name__ == '__main__':
-
 	print('Starting S4cache test example ', end=' ')
 
 	s4cache = S4Cache('cache.sqlite')
