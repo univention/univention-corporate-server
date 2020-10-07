@@ -2153,10 +2153,16 @@ class s4(univention.s4connector.ucs):
 		print("try to sync %s changes from S4" % len(changes))
 		print("done:", end=' ')
 		sys.stdout.flush()
-		done_counter = 0
+		done = {'counter': 0}
 		samba_object = None
 		lastUSN = self._get_lastUSN()
 		newUSN = lastUSN
+
+		def print_progress(ignore=False):
+			done['counter'] += 1
+			message = '(%s)' if ignore else '%s'
+			print(message % (done['counter'],), end=' ')
+			sys.stdout.flush()
 
 		# Check if the connection to UCS ldap exists. Otherwise re-create the session.
 		try:
@@ -2169,10 +2175,18 @@ class s4(univention.s4connector.ucs):
 			old_element = copy.deepcopy(element)
 			samba_object = self.__object_from_element(element)
 
-			if samba_object:
-				property_key = self.__identify_s4_type(samba_object)
-				if property_key:
+			if not samba_object:
+				print_progress(True)
+				continue
 
+			property_key = self.__identify_s4_type(samba_object)
+			if not property_key:
+				ud.debug(ud.LDAP, ud.INFO, "ignoring not identified object dn: %r" % (samba_object['dn'],))
+				newUSN = max(self.__get_change_usn(samba_object), newUSN)
+				print_progress(True)
+				continue
+
+			if True:
 					if self._ignore_object(property_key, samba_object):
 						if samba_object['modtype'] == 'move':
 							ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an S4 object into a ignored tree: dn: %s" % samba_object['dn'])
@@ -2182,15 +2196,13 @@ class s4(univention.s4connector.ucs):
 							# check the move target
 						else:
 							self.__update_lastUSN(samba_object)
-							done_counter += 1
-							print("%s" % done_counter, end=' ')
+							print_progress()
 							continue
 
 					if samba_object['dn'].find('\\0ACNF:') > 0:
 						ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % samba_object['dn'])
 						self.__update_lastUSN(samba_object)
-						done_counter += 1
-						print("%s" % done_counter, end=' ')
+						print_progress()
 						continue
 
 					sync_successfull = False
@@ -2214,10 +2226,6 @@ class s4(univention.s4connector.ucs):
 					except Exception:  # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
 
-					if not sync_successfull:
-						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
-						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % samba_object['dn'])
-
 					if sync_successfull:
 						change_count += 1
 						newUSN = max(self.__get_change_usn(samba_object), newUSN)
@@ -2228,19 +2236,13 @@ class s4(univention.s4connector.ucs):
 							raise
 						except Exception:  # FIXME: which exception is to be caught?
 							self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
-
 					else:
+						ud.debug(ud.LDAP, ud.WARN, "sync to ucs was not successful, save rejected")
+						ud.debug(ud.LDAP, ud.WARN, "object was: %s" % samba_object['dn'])
 						self.save_rejected(samba_object)
 						self.__update_lastUSN(samba_object)
-				else:
-					newUSN = max(self.__get_change_usn(samba_object), newUSN)
 
-				done_counter += 1
-				print("%s" % done_counter, end=' ')
-			else:
-				done_counter += 1
-				print("(%s)" % done_counter, end=' ')
-			sys.stdout.flush()
+					print_progress()
 
 		print("")
 
