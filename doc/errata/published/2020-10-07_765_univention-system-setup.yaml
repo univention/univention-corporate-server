@@ -10,3 +10,5 @@ desc: |
    toolkit.legacyUserProfileCustomizations.stylesheets has to be set to yes
    in order to make firefox load the system setup specific file userChrome.css
 bug: [52160]
+erratum: 765
+announced: 2020-10-07
