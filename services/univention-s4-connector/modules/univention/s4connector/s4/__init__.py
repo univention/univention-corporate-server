@@ -760,10 +760,7 @@ class s4(univention.s4connector.ucs):
 	def _list_rejected(self):
 		"""Returns rejected Samba4-objects"""
 		_d = ud.function('ldap._list_rejected')  # noqa: F841
-		result = []
-		for i in self._get_config_items('S4 rejected'):
-			result.append(i)
-		return result
+		return self._get_config_items('S4 rejected')[:]
 
 	def list_rejected(self):
 		return self._list_rejected()
@@ -2019,10 +2016,7 @@ class s4(univention.s4connector.ucs):
 
 		# return number of synced objects
 		rejected = self._list_rejected()
-		if rejected:
-			print("Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected)))
-		else:
-			print("Changes from S4:  %s (%s saved rejected)" % (change_count, '0'))
+		print("Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected)))
 		print("--------------------------------------")
 		sys.stdout.flush()
 		return change_count
