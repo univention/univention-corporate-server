@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-s4-connector
-fix: 13.0.2-80A~4.4.0.20201007163
+fix: 13.0.2-80A~4.4.0.202010071635
 desc: |
  This update addresses the following issue:
  * The S4 connector has been adjusted so that disabling insecure DES
