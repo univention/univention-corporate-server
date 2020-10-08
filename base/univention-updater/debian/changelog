@@ -1,3 +1,9 @@
+univention-updater (15.0.1-9) unstable; urgency=low
+
+  * Bug #52197: add phase to univention-updater.status
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Oct 2020 16:37:00 +0200
+
 univention-updater (15.0.1-8) unstable; urgency=low
 
   * Bug #51655: Improve delete_legacy_objects
