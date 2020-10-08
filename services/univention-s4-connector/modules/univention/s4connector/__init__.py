@@ -346,10 +346,11 @@ class configsaver(object):
 
 class attribute(object):
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', udm_option=None):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', udm_option=None, con_attribute_encoding='UTF-8'):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
+		self.con_attribute_encoding = con_attribute_encoding
 		self.con_other_attribute = con_other_attribute
 		self.udm_option = udm_option
 		self.required = required
@@ -1118,6 +1119,9 @@ class ucs(object):
 
 					if isinstance(value, list) and len(value) == 1:
 						value = value[0]
+
+					if attributes.con_attribute_encoding:
+						value = [x.decode(attributes.con_attribute_encoding) for x in value] if isinstance(value, list) else value.decode(attributes.con_attribute_encoding)
 
 					# set encoding
 					compare = [ucs_object[ucs_key], value]
