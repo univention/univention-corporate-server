@@ -21,10 +21,12 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 
-def to_bytes(string):
-	if not isinstance(string, bytes):
-		string = string.encode('utf-8')
-	return string
+def to_bytes(value):
+	if isinstance(value, list):
+		return [to_bytes(item) for item in value]
+	if not isinstance(value, bytes):
+		return value.encode('utf-8')
+	return value
 
 
 class S4Connection(ldap_glue_s4.LDAPConnection):
