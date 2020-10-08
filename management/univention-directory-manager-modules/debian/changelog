@@ -65,6 +65,13 @@ univention-directory-manager-modules (15.0.0-1) unstable; urgency=medium
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:16 +0200
 
+univention-directory-manager-modules (14.0.16-5) unstable; urgency=medium
+
+  * Bug #51907: fix crash in users/user if mailPrimaryAddress property default
+  	value is set in open()
+
+ -- Florian Best <best@univention.de>  Thu, 08 Oct 2020 12:49:32 +0200
+
 univention-directory-manager-modules (14.0.16-1) unstable; urgency=medium
 
   * Bug #51994: Update versioned dependency on python-univention
