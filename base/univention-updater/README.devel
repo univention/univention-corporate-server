@@ -168,7 +168,7 @@ Assumptions
 * A version depends on all previous versions of the same major version
 * The next patch-level update incorporated all previous errata updates
 
-Check scipts
+Check scripts
 ============
 
 `script/preup.sh` and `script/postup.sh` are extracted during announce to the server and signed.
@@ -185,3 +185,26 @@ The final `preup.sh` script is created by this command in `debian/rules`:
 Each check should be in a separate function, whos name starts with `update_check_`.
 Each check should be self-contained.
 The order of execution is not deterministic.
+
+univention-updater.status
+=========================
+
+The file `/var/lib/univention-updater/univention-updater.status` contains the current status of the update process.
+Each line of the file consists of a key-value pair which may have the following values:
+
+* `current_version` ==> UCS_Version ==> `2.3-1`
+* `next_version` ==> UCS_Version ==> `2.3-2`
+* `target_version` ==> UCS_Version ==> `2.4-0`
+* `type` ==> `(LOCAL|NET|CDROM)`
+* `status` ==> `(RUNNING|FAILED|DONE)`
+* `phase` ==> `(PREPARATION|PREUP|UPDATE|POSTUP)` ==> only valid if `status=RUNNING`
+* `errorsource` ==> `(SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)`
+
+Example:
+
+    current_version=4.4-3
+    next_version=4.4-4
+    target_version=4.4-7
+    type=LOCAL
+    status=RUNNING
+    phase=UPDATE
