@@ -35,6 +35,7 @@ define([
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/on",
+	"dojo/dom-class",
 	"dojox/html/entities",
 	"login",
 	"umc/render",
@@ -47,19 +48,37 @@ define([
 	"put-selector/put",
 	"umc/i18n/tools",
 	"umc/i18n!."
-], function(lang, array, keys, Deferred, all, on, entities, login, render, tools, dialog, Form, Button, TextBox, PasswordBox, put, i18nTools, _) {
+], function(lang, array, keys, Deferred, all, on, domClass, entities, login, render, tools, dialog, Form, Button, TextBox, PasswordBox, put, i18nTools, _) {
 
 	return {
 		hash: 'profiledata',
 		enabledViaUcr: 'umc/self-service/profiledata/enabled',
 		visible: true,
+		allowAuthenticated: function() {
+			return tools.isTrue(tools.status('umc/self-service/allow-authenticated-use'));
+		},
 
 		title: _('Your profile'),
 		desc: _('Customize your profile'),
 		contentContainer: null,
 		steps: null,
+		_autoLoaded: false,
 
 		startup: function() {
+			login.onInitialLogin(lang.hitch(this, function(username) {
+				if (this._autoLoaded) {
+					return;
+				}
+				this._autoLoaded = true;
+				this._forceLoginChange = true;
+				this._username.set('value', tools.status('username'));
+				this._username.set('disabled', true);
+				if (this.allowAuthenticated()) {
+					this._password.set('disabled', true);
+					domClass.toggle(this._passwordStep, 'dijitDisplayNone', true);
+					this._getUserAttributes(true);
+				}
+			}));
 			if (this._username.value !== '') {
 				this._password.focus();
 			} else {
@@ -123,10 +142,6 @@ define([
 			put(this.steps, 'li.step div.stepLabel $ <', _('Username'), this._username.domNode);
 
 			this._username.startup();
-			login.onInitialLogin(lang.hitch(this, function(username) {
-				this._username.set('value', tools.status('username'));
-				this._username.set('disabled', true);
-			}));
 		},
 
 		/**
@@ -143,7 +158,7 @@ define([
 				}
 			}));
 
-			put(this.steps, 'li.step div.stepLabel $ <', _('Password'), this._password.domNode);
+			this._passwordStep = put(this.steps, 'li.step div.stepLabel.stepLabelProfilePassword $ <', _('Password'), this._password.domNode);
 
 			this._password.startup();
 		},
@@ -164,20 +179,19 @@ define([
 		 * */
 		_getUserAttributes: function() {
 			var validCredentials = this._username.isValid() && this._password.isValid();
-			if (validCredentials) {
+			if (validCredentials || this._forceLoginChange) {
 				this.standby(true);
-				var data = {
-					'username': this._username.get('value'),
-					'password': this._password.get('value')
-				};
-				tools.umcpCommand('passwordreset/get_user_attributes', data)
+				tools.umcpCommand('passwordreset/get_user_attributes_descriptions', this.getCredentials())
 					.then(lang.hitch(this, function(data) {
-						this._username.set('disabled', true);
-						this._password.set('disabled', true);
-						this._getUserAttributesButton.hide();
-						this._createUserAttributesStep(data.result);
+						var layout = array.map(data.result, function(item) { return item.id; });
+						return tools.umcpCommand('passwordreset/get_user_attributes_values', lang.mixin(this.getCredentials(), {attributes: layout})).then(lang.hitch(this, function(data2) {
+							this._username.set('disabled', true);
+							this._password.set('disabled', true);
+							this._getUserAttributesButton.hide();
+							this._createUserAttributesStep({ widget_descriptions: data.result, layout: layout, values: data2.result });
+						}));
 					}))
-					.otherwise(lang.hitch(this, function(data) {
+					.otherwise(lang.hitch(this, function() {
 						this._username.reset();
 						this._password.reset();
 						this.standby(false);
@@ -189,6 +203,16 @@ define([
 					this._password.focusInvalid();
 				}
 			}
+		},
+
+		getCredentials: function() {
+			if (this._forceLoginChange && this.allowAuthenticated()) {
+				return {};
+			}
+			return {
+				'username': this._username.get('value'),
+				'password': this._password.get('value')
+			};
 		},
 
 		_createUserAttributesStep: function(data) {
@@ -278,11 +302,8 @@ define([
 
 			// backend validation
 			this.standby(true);
-			var data = {
-				username: this._username.get('value'),
-				password: this._password.get('value'),
-				attributes: alteredValues
-			};
+			var data = this.getCredentials();
+			data.attributes = alteredValues;
 			tools.umcpCommand('passwordreset/validate_user_attributes', data)
 				.then(lang.hitch(this, function(data) {
 					var isValid = function(v) {

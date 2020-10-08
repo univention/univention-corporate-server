@@ -15,3 +15,9 @@ Description[de]=Eine durch Komma getrennte Liste von UDM Attributen, die ein Ben
 Description[en]=A comma separated list of UDM attributes that a user is shown and able to modify in the frontend.
 Type=str
 Categories=self-service
+
+[umc/self-service/allow-authenticated-use]
+Description[de]=Aktiviert, dass keine erneute Passworteingabe notwendig ist, um das Self-Service "Profil" Modul benutzen zu können (Standardwert: true).
+Description[en]=Activates that no new password submission is required, to use the self service "Your profile" module (default value: true).
+Type=bool
+Categories=self-service

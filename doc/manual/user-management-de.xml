@@ -993,7 +993,7 @@
 		<section id="user-management:password-changes-by-users:contact-data">
 			<title>Benutzerprofilselbstverwaltung</title>
 			<para>
-				Am Benutzerkonto im LDAP Verzeichnisdienst können weitere personenbezogene Daten gespeichert werden.
+				Am Benutzerkonto im LDAP-Verzeichnisdienst können weitere personenbezogene Daten gespeichert werden.
 				Dies beinhaltet u.a. ein Bild, private Adressen und weitere Kontaktinformationen.
 				Standardmäßig können diese nur von Administratoren aktualisiert werden.
 				Alternativ können aber auch ausgewählte Felder für den Benutzer selber freigeschaltet werden.
@@ -1020,13 +1020,23 @@
 					<listitem><simpara>
 						Über diese Variable werden die <emphasis>UDM</emphasis> Attribute konfiguriert, die ein Benutzer modifizieren kann.
 						Die Namen der Attribute sind durch Komma zu trennen.
-						Diese Variable ist auf dem Rechnern zu setzen, auf denen die <foreignphrase>Self Service-App</foreignphrase> installiert ist.
+						Diese Variable ist auf allen beteiligten Server-Systemen zu setzen, auf denen die <foreignphrase>Self Service-App</foreignphrase> installiert ist (ebenso auf dem &ucsPrimaryDN;).
 					</simpara></listitem>
 				</varlistentry>
 				<varlistentry>
 					<term><envar>umc/self-service/profiledata/enabled</envar></term>
 					<listitem><simpara>
 						Diese Variable muss auf allen beteiligten Server-Systemen auf <literal>true</literal> gesetzt werden, um den Mechanismus zu aktivieren.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><envar>umc/self-service/allow-authenticated-use</envar></term>
+					<listitem><simpara>
+						Diese Variable definiert, ob beim Öffnen und Modifizieren des eigenen Benutzerprofils die Angabe von Benutzername und Passwort notwendig ist, wenn man bereits am Univention Portal angemeldet ist.
+						Ab UCS 4.4-7 wird diese &ucsUCRV; bei Erstinstallationen des <foreignphrase>Self Service</foreignphrase> automatisch auf <literal>true</literal> gesetzt, was die Verwendung einer vorhandenen
+						Portalsitzung aktiviert. Die Felder <guimenu>Benutzername</guimenu> und <guimenu>Passwort</guimenu> werden dann automatisch ausgefüllt bzw. nicht mehr angezeigt.
+						Systeme, die auf UCS 4.4-7 aktualisiert werden, behalten die alte Verhaltensweise bei, indem automatisch der Wert auf <literal>false</literal> gesetzt wird.
+						Es ist zu beachten, dass diese Variable auf allen beteiligen Systemen inkl. &ucsPrimaryDN; auf den gleichen Wert gesetzt sein muss.
 					</simpara></listitem>
 				</varlistentry>
 			</variablelist>
