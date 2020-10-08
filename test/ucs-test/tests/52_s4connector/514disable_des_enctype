@@ -36,7 +36,7 @@ cleanup () {
 	rm "514kinit.log"
 	udm_remove "users/user" || fail_test 110
 	ucr unset kerberos/defaults/enctypes/permitted
-	ucr unset kerberos/allow/weak/crypto=
+	ucr unset kerberos/allow/weak/crypto
 	ad_wait_for_synchronization; fail_bool 0 110
 	/etc/init.d/samba restart
 }
@@ -65,7 +65,6 @@ kdestroy
 kinit -e "aes256-cts-hmac-sha1-96" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
 cat 514kinit.log | grep "no valid enctype" && fail_fast "$UDM_users_user_username was not able to acquire aes128 ticket"
 klist | grep "$UDM_users_user_username" || fail_fast "$UDM_users_user_username was not able to acquire aes256 ticket"
-kinit -e "aes256-cts-hmac-sha1-96" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username"
 kdestroy
 # test if user is still able to acquire an arcfour ticket
 kinit -e "arcfour-hmac-md5" --password-file="/tmp/$UDM_users_user_username" "$UDM_users_user_username" > 514kinit.log 2>&1
