@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test in-container updates
-## tags: [docker]
+## tags: [docker, SKIP]
+## bugs: [51847]
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
