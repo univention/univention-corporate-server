@@ -557,32 +557,26 @@ class ucs(object):
 
 	def init_debug(self):
 		_d = ud.function('ldap.init_debug')  # noqa: F841
-		if '%s/debug/function' % self.CONFIGBASENAME in self.baseConfig:
-			try:
-				function_level = int(self.baseConfig['%s/debug/function' % self.CONFIGBASENAME])
-			except ValueError:
-				function_level = 0
-		else:
-			function_level = 0
-		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, 1, function_level)
-		if '%s/debug/level' % self.CONFIGBASENAME in self.baseConfig:
-			debug_level = self.baseConfig['%s/debug/level' % self.CONFIGBASENAME]
-		else:
-			debug_level = 2
-		ud.set_level(ud.LDAP, int(debug_level))
+		try:
+			function_level = int(self.baseConfig.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
+		except ValueError:
+			function_level = ud.NO_FUNCTION
+		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, ud.WARN, function_level)
+		debug_level = int(self.baseConfig.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
+		ud.set_level(ud.LDAP, debug_level)
 
 		try:
-			udm_function_level = int(self.baseConfig.get('%s/debug/udm/function' % self.CONFIGBASENAME, 0))
+			udm_function_level = int(self.baseConfig.get('%s/debug/udm/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
 		except ValueError:
-			udm_function_level = 0
-		ud_c.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, 1, udm_function_level)
+			udm_function_level = ud.NO_FUNCTION
+		ud_c.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, ud.WARN, udm_function_level)
 
 		try:
-			udm_debug_level = int(self.baseConfig.get('%s/debug/udm/level' % self.CONFIGBASENAME, 1))
+			udm_debug_level = int(self.baseConfig.get('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN))
 		except ValueError:
-			udm_debug_level = 1
+			udm_debug_level = ud.WARN
 		for category in (ud.ADMIN, ud.LDAP):
-			ud_c.set_level(category, int(udm_debug_level))
+			ud_c.set_level(category, udm_debug_level)
 
 	def close_debug(self):
 		_d = ud.function('ldap.close_debug')  # noqa: F841
