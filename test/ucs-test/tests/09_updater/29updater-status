@@ -1,0 +1,85 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check univention-updater.status during different update phases
+## bugs: [52197]
+## tags: [basic]
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+CHECK_REGEX="${BASEDIR}/sh.log"
+
+setup_apache "${repoprefix}"
+
+mkpdir "${_version_version}-0" maintained all
+mkdeb "${pkgname}" 1 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+version1="${_version_version}-1"
+mkpdir "$version1" maintained all
+mkdeb "${pkgname}" 2 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+minor+=1
+version2="${major}.${minor}-0"
+mkpdir "$version2" maintained all
+mkdeb "${pkgname}" 3 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+major+=1
+version3="${major}.0-0"
+mkpdir "$version3" maintained all
+mkdeb "${pkgname}" 4 all "${DIR}"
+mkpkg "${DIR}"
+mksh "${DIR}" preup postup
+
+config_repo version/patchlevel=0 version/erratalevel=0
+
+(
+	set -e
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+
+	univention-upgrade --noninteractive
+	echo "done.sh $version3 $(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\n" " ")" >>"${BASEDIR}/install-status.log"
+
+	cat >"${CHECK_REGEX}" <<__SH__
+${pkgname}.postinst status=DONE
+preup.sh $version1 phase=PREUP status=RUNNING
+${pkgname}.postinst phase=UPDATE status=RUNNING
+postup.sh $version1 phase=POSTUP status=RUNNING
+preup.sh $version2 phase=PREUP status=RUNNING
+${pkgname}.postinst phase=UPDATE status=RUNNING
+postup.sh $version2 phase=POSTUP status=RUNNING
+preup.sh $version3 phase=PREUP status=RUNNING
+${pkgname}.postinst phase=UPDATE status=RUNNING
+postup.sh $version3 phase=POSTUP status=RUNNING
+done.sh $version3 status=DONE
+__SH__
+
+	echo "------------install-status.log--------------"
+	cat "${BASEDIR}/install-status.log"
+	echo "----------------check regex------------------"
+	cat "$CHECK_REGEX"
+	echo "---------------------------------------------"
+
+	# check if univention-updater.status is set correctly during different update phases
+	grep -Eqf "${CHECK_REGEX}" "${BASEDIR}/install-status.log"
+	# quick test: update performed?
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	4"
+	test "${major}.0" = "$(ucr get version/version)"
+	test 0 = "$(ucr get version/patchlevel)"
+	test -n "$(ucr get update/available)"  # make sure update/available has been updated
+	ucr set update/available=""  # unset update/available
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:
