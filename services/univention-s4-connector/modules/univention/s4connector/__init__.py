@@ -1632,7 +1632,7 @@ class ucs(object):
 			if value == '*':
 				return attribute in list_lower(attributes.keys())
 			elif attribute in attributes:
-				return value.lower() in list_lower(attributes[attribute])
+				return value.lower().encode('UTF-8') in list_lower(attributes[attribute])
 			else:
 				return False
 
