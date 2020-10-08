@@ -409,6 +409,7 @@ mkdeb () { # Create dummy package: [name [version [arch [dir [postinst]]]]]
 	cat <<-EOF >"${BASEDIR}/${name}-${version}/DEBIAN/postinst"
 	#!/bin/sh
 	echo "${name}-${version}" >>"${BASEDIR}/install.log"
+	echo "${name}-${version}.postinst \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\n" " ")" >>"${BASEDIR}/install-status.log"
 	${5}
 	EOF
 	chmod 755 "${BASEDIR}/${name}-${version}/DEBIAN/postinst"
@@ -637,6 +638,7 @@ mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup>
 		cat <<-EOF >"${dir}/${1}.sh"
 		#!/bin/sh
 		echo "${dir}/${1}.sh ${RANDOM}" "\$@" >>"${BASEDIR}/install.log"
+		echo "${1}.sh "\$@" \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\n" " ")" >>"${BASEDIR}/install-status.log"
 		exit ${ret}
 		EOF
 		chmod 755 "${dir}/${1}.sh"
