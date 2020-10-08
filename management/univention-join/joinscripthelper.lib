@@ -230,6 +230,17 @@ joinscript_extern_init() {
 	return 0
 }
 
+joinscript_is_update_running() {
+	# Checks if a system update to UCS 5++ is currently running.
+	local FN_STATUS="/var/lib/univention-updater/univention-updater.status"
+	# if the status file is missing, assume that no update is running
+	[ -f "$FN_STATUS" ] || return 1
+	# if the next_version is lower than 5.0-0, then assume that no update is running
+	grep -Eq "^next_version=[0-4][.]" "$FN_STATUS" && return 1
+	# only assume a running update if status=RUNNING and phase is PREUP or UPDATE
+	grep -Eq "^status=RUNNING$" "$FN_STATUS" && grep -Eq "^phase=(PREUP|UPDATE)$" "$FN_STATUS"
+}
+
 joinscript_init() {
 
 	joinscript_check_status_file
@@ -248,6 +259,11 @@ joinscript_init() {
 
 	if ! joinscript_check_joinstatus; then
 		joinscript_abort "The server has not joined yet"
+	fi
+
+	# Do not execute join scripts during a running system update (only effective if update's target version is UCS 5.0-0 or higher)
+	if joinscript_is_update_running ; then
+		joinscript_abort "A system update is currently being performed. The execution of the join script $JS_SCRIPT_FULLNAME is therefore postponed."
 	fi
 
 	if [ -z "$JOIN_FORCE" ] && joinscript_check_already_executed; then
