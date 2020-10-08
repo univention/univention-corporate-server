@@ -1,3 +1,9 @@
+ucs-test (9.0.5-16) unstable; urgency=medium
+
+  * Bug #52197: add test for phase in univention-updater.status
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Oct 2020 18:25:33 +0200
+
 ucs-test (9.0.5-15) unstable; urgency=medium
 
   * Bug #51364: test ObjectClass filter for usertemplates
