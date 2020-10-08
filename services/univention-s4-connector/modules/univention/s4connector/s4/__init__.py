@@ -513,6 +513,8 @@ class LDAPEscapeFormatter(string.Formatter):
 		if conversion == 'e':
 			if isinstance(value, six.string_types):
 				return escape_filter_chars(value)
+			if isinstance(value, bytes):
+				raise TypeError('Filter must be string, not bytes: %r' % (value,))
 			return escape_filter_chars(str(value))
 		return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
 
