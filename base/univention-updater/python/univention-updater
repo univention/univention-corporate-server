@@ -120,7 +120,7 @@ def log(str):
     fd_log.flush()
 
 
-def dprint(str):
+def dprint(str):  # type: (str) -> None
     """ Print message to stdout and LOGNAME. """
     if nostdout:
         print(str, file=fd_log)
@@ -132,7 +132,7 @@ def dprint(str):
         fd.flush()
 
 
-def update_status(**kwargs):
+def update_status(**kwargs):  # type: (**str) -> None
     '''
     update updater_status and write status to disk
 
