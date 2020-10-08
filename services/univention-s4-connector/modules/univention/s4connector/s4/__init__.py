@@ -1061,20 +1061,15 @@ class s4(univention.s4connector.ucs):
 			except Exception:  # FIXME: which exception is to be caught?
 				self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
-	def __get_change_usn(self, object):
+	def __get_change_usn(self, samba_object):
 		'''
-		get change usn as max(uSNCreated,uSNChanged)
+		get change USN as max(uSNCreated, uSNChanged)
 		'''
 		_d = ud.function('ldap.__get_change_usn')  # noqa: F841
-		if not object:
+		if not samba_object:
 			return 0
-		usnchanged = 0
-		usncreated = 0
-		if 'uSNCreated' in object['attributes']:
-			usncreated = int(object['attributes']['uSNCreated'][0])
-		if 'uSNChanged' in object['attributes']:
-			usnchanged = int(object['attributes']['uSNChanged'][0])
-
+		usncreated = int(samba_object['attributes'].get('uSNCreated', [b'0'])[0])
+		usnchanged = int(samba_object['attributes'].get('uSNChanged', [b'0'])[0])
 		return max(usnchanged, usncreated)
 
 	def __search_s4_partitions(self, scope=ldap.SCOPE_SUBTREE, filter='', attrlist=[], show_deleted=False):
@@ -1138,17 +1133,6 @@ class s4(univention.s4connector.ucs):
 
 		return encode_s4_resultlist(fix_dn_in_search(res))
 
-	def __remove_duplicates_with_order_preserving(self, searchResult, idFunction):
-		seen = {}
-		result = []
-		for item in searchResult:
-			marker = idFunction(item)
-			if marker in seen:
-				continue
-			seen[marker] = 1
-			result.append(item)
-		return result
-
 	def __search_s4_changes(self, show_deleted=False, filter=''):
 		'''
 		search s4 for changes since last update (changes greater lastUSN)
@@ -1158,33 +1142,35 @@ class s4(univention.s4connector.ucs):
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
 		# +1 da suche nur nach '>=', nicht nach '>' möglich
 
-		def search_s4_changes_by_attribute(attribute, lowerUSN, higherUSN=''):
+		def _s4_changes_filter(attribute, lowerUSN, higherUSN=''):
 			if higherUSN:
 				usn_filter_format = '(&({attribute}>={lower_usn!e})({attribute}<={higher_usn!e}))'
 			else:
 				usn_filter_format = '({attribute}>={lower_usn!e})'
 
-			usnFilter = format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
+			return format_escaped(usn_filter_format, attribute=attribute, lower_usn=lowerUSN, higher_usn=higherUSN)
 
+		def search_s4_changes_by_attribute(usnFilter, last_usn):
 			if filter != '':
 				usnFilter = '(&(%s)(%s))' % (filter, usnFilter)
 
 			res = self.__search_s4_partitions(filter=usnFilter, show_deleted=show_deleted)
-			return sorted(res, key=lambda element: element[1][attribute][0])
+
+			def _sortkey(element):
+				usn_changed = int(element[1]['uSNChanged'][0])
+				usn_created = int(element[1]['uSNCreated'][0])
+				if last_usn <= 0:
+					return usn_created
+				return usn_created if usn_created > last_usn else usn_changed
+			return sorted(res, key=_sortkey)
 
 		# search for objects with uSNCreated and uSNChanged in the known range
-		returnObjects = []
 		try:
+			usn_filter = _s4_changes_filter('uSNCreated', lastUSN + 1)
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
-				# but we need to sync the objects only once
-				returnObjects = search_s4_changes_by_attribute('uSNCreated', lastUSN + 1)
-				returnObjects += search_s4_changes_by_attribute('uSNChanged', lastUSN + 1)
-
-				returnObjects = self.__remove_duplicates_with_order_preserving(returnObjects, lambda x: x[0])
-			else:
-				# Every object has got a uSNCreated
-				returnObjects = search_s4_changes_by_attribute('uSNCreated', lastUSN + 1)
+				usn_filter = '(|%s%s)' % (_s4_changes_filter('uSNChanged', lastUSN + 1), usn_filter)
+			return search_s4_changes_by_attribute(usn_filter, lastUSN)
 		except (ldap.SERVER_DOWN, SystemExit):
 			raise
 		except ldap.SIZELIMIT_EXCEEDED:
@@ -1194,6 +1180,7 @@ class s4(univention.s4connector.ucs):
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 			tmpUSN = lastUSN
 			ud.debug(ud.LDAP, ud.PROCESS, "Need to split results. highest USN is %s, lastUSN is %s" % (highestCommittedUSN, lastUSN))
+			returnObjects = []
 			while (tmpUSN != highestCommittedUSN):
 				lastUSN = tmpUSN
 				tmpUSN += 999
@@ -1202,16 +1189,13 @@ class s4(univention.s4connector.ucs):
 
 				ud.debug(ud.LDAP, ud.INFO, "__search_s4_changes: search between USNs %s and %s" % (lastUSN + 1, tmpUSN))
 
+				usn_filter = _s4_changes_filter('uSNCreated', lastUSN + 1, tmpUSN)
 				if lastUSN > 0:
-					returnObjects += search_s4_changes_by_attribute('uSNCreated', lastUSN + 1, tmpUSN)
-					for changedObject in search_s4_changes_by_attribute('uSNChanged', lastUSN + 1, tmpUSN):
-						if changedObject not in returnObjects:
-							returnObjects.append(changedObject)
-				else:
-					# Every object has got a uSNCreated
-					returnObjects += search_s4_changes_by_attribute('uSNCreated', lastUSN + 1, tmpUSN)
+					# During the init phase we have to search for created and changed objects
+					usn_filter = '(|%s%s)' % (_s4_changes_filter('uSNChanged', lastUSN + 1, tmpUSN), usn_filter)
+				returnObjects += search_s4_changes_by_attribute(usn_filter, lastUSN)
 
-		return returnObjects
+			return returnObjects
 
 	def __search_s4_changeUSN(self, changeUSN, show_deleted=True, filter=''):
 		'''
@@ -1320,15 +1304,13 @@ class s4(univention.s4connector.ucs):
 		'''
 		_d = ud.function('ldap.__get_highestCommittedUSN')  # noqa: F841
 		try:
-			res = self.s4_search_ext_s(
+			return int(self.s4_search_ext_s(
 				'',  # base
 				ldap.SCOPE_BASE,
 				'objectclass=*',  # filter
 				['highestCommittedUSN'],
-			)[0][1]['highestCommittedUSN'][0]
-
-			return int(res)
-		except Exception:
+			)[0][1]['highestCommittedUSN'][0].decode('ASCII'))
+		except ldap.LDAPError:
 			self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
 			print("ERROR: initial search in S4 failed, check network and configuration")
 			return 0
