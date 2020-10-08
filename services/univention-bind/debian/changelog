@@ -1,3 +1,9 @@
+univention-bind (14.0.0-9) unstable; urgency=medium
+
+  * Bug #52042: UCS 5 will ship bindi 9.11
+
+ -- Arvid <requate@univention.de>  Thu, 08 Oct 2020 13:48:36 +0200
+
 univention-bind (14.0.0-8) unstable; urgency=medium
 
   * Bug #42374: Wording
