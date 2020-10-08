@@ -1,3 +1,9 @@
+univention-updater (14.0.3-4) unstable; urgency=low
+
+  * Bug #52197: add phase to univention-updater.status
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 08 Oct 2020 16:37:00 +0200
+
 univention-updater (14.0.3-3) unstable; urgency=low
 
   * Bug #51769: Add univention-prune-kernels
