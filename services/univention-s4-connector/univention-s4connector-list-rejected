@@ -33,7 +33,6 @@
 
 
 from __future__ import print_function
-import six
 import sys
 
 import univention
@@ -71,62 +70,14 @@ if len(sys.argv) > 1:
 			print("use configbase %s" % CONFIGBASENAME)
 
 
-MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME
-if six.PY2:
-	import imp
-	mapping = imp.load_source('mapping', MAPPING_FILENAME)
-else:
-	import os
-	import importlib.util
-	spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
-	mapping = importlib.util.module_from_spec(spec)
-	spec.loader.exec_module(mapping)
-
-
 def main():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if '%s/s4/ldap/host' % CONFIGBASENAME not in configRegistry:
-		print('%s/s4/ldap/host not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/s4/ldap/port' % CONFIGBASENAME not in configRegistry:
-		print('%s/s4/ldap/port not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/s4/ldap/base' % CONFIGBASENAME not in configRegistry:
-		print('%s/s4/ldap/base not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in configRegistry and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in configRegistry and configRegistry['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
-		print('%s/s4/ldap/certificate not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/s4/listener/dir' % CONFIGBASENAME not in configRegistry:
-		print('%s/s4/listener/dir not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	s4_ldap_bindpw = None
-	if configRegistry.get('%s/s4/ldap/bindpw' % CONFIGBASENAME):
-		s4_ldap_bindpw = open(configRegistry['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
-		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
-
 	# try:
-	s4 = univention.s4connector.s4.s4(
-		CONFIGBASENAME,
-		mapping.s4_mapping,
-		configRegistry,
-		configRegistry['%s/s4/ldap/host' % CONFIGBASENAME],
-		configRegistry['%s/s4/ldap/port' % CONFIGBASENAME],
-		configRegistry['%s/s4/ldap/base' % CONFIGBASENAME],
-		configRegistry.get('%s/s4/ldap/binddn' % CONFIGBASENAME),
-		s4_ldap_bindpw,
-		configRegistry['%s/s4/ldap/certificate' % CONFIGBASENAME],
-		configRegistry['%s/s4/listener/dir' % CONFIGBASENAME],
-		False
-	)
+	s4 = univention.s4connector.s4.s4.main(configRegistry, CONFIGBASENAME, init_group_cache=False)
 	# except:
-	#	print "Failed to read Connector-Config. This may happen if the connector is running."
+	#	print("Failed to read Connector-Config. This may happen if the connector is running.")
 	#	sys.exit(1)
 
 	found_rejected = False

@@ -518,14 +518,13 @@ class ucs(object):
 	def open_ucs(self):
 		bindpw_file = self.configRegistry.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
 		binddn = self.configRegistry.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,' + self.configRegistry['ldap/base'])
-		bindpw = open(bindpw_file).read()
-		if bindpw[-1] == '\n':
-			bindpw = bindpw[0:-1]
+		with open(bindpw_file) as fd:
+			bindpw = fd.read().rstrip()
 
 		host = self.configRegistry.get('%s/ldap/server' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master'))
 
 		try:
-			port = int(self.configRegistry.get('%s/ldap/port' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master/port')))
+			port = int(self.configRegistry.get('%s/ldap/port' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master/port', 7389)))
 		except ValueError:
 			port = 7389
 

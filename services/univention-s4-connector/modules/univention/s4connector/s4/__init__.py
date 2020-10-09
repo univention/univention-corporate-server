@@ -34,6 +34,7 @@
 
 from __future__ import print_function
 
+import os
 import copy
 import re
 import sys
@@ -496,6 +497,51 @@ def format_escaped(format_string, *args, **kwargs):
 
 class s4(univention.s4connector.ucs):
 	RANGE_RETRIEVAL_PATTERN = re.compile(r"^([^;]+);range=(\d+)-(\d+|\*)$")
+
+	@classmethod
+	def main(cls, ucr, configbasename, **kwargs):
+		MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % configbasename
+		if six.PY2:
+			import imp
+			mapping = imp.load_source('mapping', MAPPING_FILENAME)
+		else:
+			import importlib.util
+			spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
+			mapping = importlib.util.module_from_spec(spec)
+			spec.loader.exec_module(mapping)
+
+		_ucr = dict(ucr)
+		try:
+			s4_ldap_host = _ucr['%s/s4/ldap/host' % configbasename]
+			s4_ldap_port = _ucr['%s/s4/ldap/port' % configbasename]
+			s4_ldap_base = _ucr['%s/s4/ldap/base' % configbasename]
+			s4_ldap_binddn = _ucr.get('%s/s4/ldap/binddn' % configbasename, None)
+			s4_ldap_certificate = _ucr.get('%s/s4/ldap/certificate' % configbasename)
+			if not s4_ldap_certificate and ucr.is_true('%s/s4/ldap/ssl' % configbasename):
+				raise KeyError('%s/s4/ldap/certificate' % configbasename)
+			listener_dir = _ucr['%s/s4/listener/dir' % configbasename]
+		except KeyError as exc:
+			print('UCR variable %s is not set' % (exc,))
+			sys.exit(1)
+
+		s4_ldap_bindpw = None
+		if ucr.get('%s/s4/ldap/bindpw' % configbasename) and os.path.exists(ucr['%s/s4/ldap/bindpw' % configbasename]):
+			with open(ucr['%s/s4/ldap/bindpw' % configbasename]) as fd:
+				s4_ldap_bindpw = fd.read().rstrip()
+
+		return cls(
+			configbasename,
+			mapping.s4_mapping,
+			ucr,
+			s4_ldap_host,
+			s4_ldap_port,
+			s4_ldap_base,
+			s4_ldap_binddn,
+			s4_ldap_bindpw,
+			s4_ldap_certificate,
+			listener_dir,
+			**kwargs
+		)
 
 	def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
 		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir)

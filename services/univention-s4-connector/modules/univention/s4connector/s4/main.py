@@ -35,7 +35,6 @@
 from __future__ import print_function
 import os
 import signal
-import six
 import sys
 import time
 from argparse import ArgumentParser
@@ -103,58 +102,19 @@ def daemon(lock_file, options):
 	os.open("/dev/null", os.O_RDWR)
 
 
-def connect(options, mapping):
+def connect(options):
 	print(time.ctime())
 
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	if '%s/s4/ldap/host' % options.configbasename not in ucr:
-		print('%s/s4/ldap/host not set' % options.configbasename)
-		sys.exit(1)
-	if '%s/s4/ldap/port' % options.configbasename not in ucr:
-		print('%s/s4/ldap/port not set' % options.configbasename)
-		sys.exit(1)
-	if '%s/s4/ldap/base' % options.configbasename not in ucr:
-		print('%s/s4/ldap/base not set' % options.configbasename)
-		sys.exit(1)
-
-	if '%s/s4/ldap/certificate' % options.configbasename not in ucr and not ('%s/s4/ldap/ssl' % options.configbasename in ucr and ucr['%s/s4/ldap/ssl' % options.configbasename] == 'no'):
-		print('%s/s4/ldap/certificate not set' % options.configbasename)
-		sys.exit(1)
-
-	if '%s/s4/listener/dir' % options.configbasename not in ucr:
-		print('%s/s4/listener/dir not set' % options.configbasename)
-		sys.exit(1)
-
-	if '%s/s4/retryrejected' % options.configbasename not in ucr:
-		baseconfig_retry_rejected = 10
-	else:
-		baseconfig_retry_rejected = ucr['%s/s4/retryrejected' % options.configbasename]
-
-	if ucr.get('%s/s4/ldap/bindpw' % options.configbasename) and os.path.exists(ucr['%s/s4/ldap/bindpw' % options.configbasename]):
-		s4_ldap_bindpw = open(ucr['%s/s4/ldap/bindpw' % options.configbasename]).read()
-		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
-	else:
-		s4_ldap_bindpw = None
+	baseconfig_retry_rejected = ucr.get('%s/s4/retryrejected' % options.configbasename, 10)
 
 	poll_sleep = int(ucr['%s/s4/poll/sleep' % options.configbasename])
 	s4_init = None
 	while not s4_init:
 		try:
-			s4 = univention.s4connector.s4.s4(
-				options.configbasename,
-				mapping.s4_mapping,
-				ucr,
-				ucr['%s/s4/ldap/host' % options.configbasename],
-				ucr['%s/s4/ldap/port' % options.configbasename],
-				ucr['%s/s4/ldap/base' % options.configbasename],
-				ucr.get('%s/s4/ldap/binddn' % options.configbasename, None),
-				s4_ldap_bindpw,
-				ucr['%s/s4/ldap/certificate' % options.configbasename],
-				ucr['%s/s4/listener/dir' % options.configbasename]
-			)
+			s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename)
 			s4_init = True
 		except ldap.SERVER_DOWN:
 			print("Warning: Can't initialize LDAP-Connections, wait...")
@@ -264,16 +224,6 @@ def main():
 	parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
 	options = parser.parse_args()
 
-	MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % options.configbasename
-	if six.PY2:
-		import imp
-		mapping = imp.load_source('mapping', MAPPING_FILENAME)
-	else:
-		import importlib.util
-		spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
-		mapping = importlib.util.module_from_spec(spec)
-		spec.loader.exec_module(mapping)
-
 	with lock('/var/lock/univention-s4-%s' % options.configbasename) as lock_file:
 		if options.daemonize:
 			daemon(lock_file, options)
@@ -281,7 +231,7 @@ def main():
 		with bind_stdout(options, "/var/log/univention/%s-s4-status.log" % options.configbasename):
 			while True:
 				try:
-					connect(options, mapping)
+					connect(options)
 				except Exception:
 					print(time.ctime())
 
