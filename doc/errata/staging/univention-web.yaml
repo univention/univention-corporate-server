@@ -2,11 +2,11 @@ product: ucs
 release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
-src: univention-management-console
+src: univention-web
 fix: 
 desc: |
  This update addresses the following issue(s):
- * Adjustments for the Self-Service have been added.
  * A Cookie Banner can now be shown in the Portal and
-   on the login page.
-bug: [51607, 50302]
+   on the login page. It can be enabled by setting the
+   UCR variable "umc/cookie-banner/show" to true.
+bug: [50302]
