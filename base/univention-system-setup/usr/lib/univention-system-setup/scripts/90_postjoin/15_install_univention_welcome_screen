@@ -38,8 +38,6 @@ class WelcomeScreenInstaller(AptScript):
 	brutal_apt_options = False
 
 	def inner_run(self):
-		if self.current_server_role == 'basesystem':
-			return True  # do not install on basesystem
 		self.steps(100)
 		self.install('univention-welcome-screen')
 		self.finish_task()

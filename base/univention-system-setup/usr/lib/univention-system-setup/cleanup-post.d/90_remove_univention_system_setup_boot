@@ -30,11 +30,6 @@
 # <https://www.gnu.org/licenses/>.
 
 # Remove univention-system-setup-boot after successful run
-role=$(ucr get server/role)
-if [ "${role}" = "basesystem" ]
-then
-	apt-mark manual python-psutil
-fi
 
 apt-mark auto univention-management-console-web-server univention-management-console-module-setup
 dpkg -r univention-system-setup-boot

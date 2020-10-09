@@ -46,9 +46,6 @@ class SoftwareScript(AptScript):
 		self.packages_install = self.profile.get_list('packages_install')
 
 	def inner_run(self):
-		if self.current_server_role == 'basesystem':
-			# do not install anything on basesystem
-			return True
 		if not (self.packages_remove or self.packages_install):
 			# nothing to do. don't autoremove either
 			return True
