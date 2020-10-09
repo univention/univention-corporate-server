@@ -1,3 +1,9 @@
+univention-portal (3.1.0-34) unstable; urgency=medium
+
+  * Bug #52201: rebase to current UCS 4.4-6
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2020 12:38:53 +0200
+
 univention-portal (3.1.0-33) unstable; urgency=medium
 
   * Bug #51856: Version bump
