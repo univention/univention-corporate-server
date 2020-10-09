@@ -11,8 +11,8 @@ Type=bool
 Categories=system-base
 
 [system/setup/boot/fields/blacklist]
-Description[de]=Diese Variable konfiguriert eine Negativliste für die im Appliance-Konfigurations-Modus dargestellten Bereiche. Bereiche, die hier aufgeführt werden, werden nicht angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Mögliche Werte: 'network', 'proxy', 'locale', 'password', 'hostname', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem', 'ad'. Wenn die Variable nicht gesetzt ist, werden alle Bereiche angezeigt.
-Description[en]=This variable configures a blacklist for the fields present in appliance configuration mode. Fields listed here are not shown. Multiple entries need to be separated by a blank. Possible values: 'network', 'proxy', 'locale', 'password', 'hostname', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem', 'ad'. If the variable is unset, all fields are shown.
+Description[de]=Diese Variable konfiguriert eine Negativliste für die im Appliance-Konfigurations-Modus dargestellten Bereiche. Bereiche, die hier aufgeführt werden, werden nicht angezeigt. Mehrere Einträge müssen mit Leerzeichen getrennt werden. Mögliche Werte: 'network', 'proxy', 'locale', 'password', 'hostname', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'ad'. Wenn die Variable nicht gesetzt ist, werden alle Bereiche angezeigt.
+Description[en]=This variable configures a blacklist for the fields present in appliance configuration mode. Fields listed here are not shown. Multiple entries need to be separated by a blank. Possible values: 'network', 'proxy', 'locale', 'password', 'hostname', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'ad'. If the variable is unset, all fields are shown.
 Type=str
 Categories=system-base
 
