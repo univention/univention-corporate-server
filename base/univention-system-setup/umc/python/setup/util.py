@@ -173,8 +173,8 @@ def load_values(lang=None):
 
 
 def auto_complete_values_for_join(newValues, current_locale=None):
-	# try to automatically determine the domain, except on a dcmaster and basesystem
-	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname') and newValues['server/role'] != 'basesystem':
+	# try to automatically determine the domain, except on a dcmaster
+	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
 		ucr.load()
 		for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
 			if newValues.get('domainname'):
@@ -183,7 +183,6 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		if not newValues['domainname']:
 			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 
-	# The check "and 'domainname' in newValues" is solely for basesystems
 	isAdMember = 'ad/member' in newValues and 'ad/address' in newValues
 	if 'windows/domain' not in newValues:
 		if isAdMember:
@@ -210,7 +209,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		selectedComponents.add('univention-ad-connector')
 
 	# make sure to install the memberof overlay if it is installed on the Primary Directory Node
-	if newValues['server/role'] not in ('domaincontroller_master', 'basesystem', 'memberserver'):
+	if newValues['server/role'] not in ('domaincontroller_master', 'memberserver'):
 		if newValues.pop('install_memberof_overlay', None):
 			selectedComponents.add('univention-ldap-overlay-memberof')
 

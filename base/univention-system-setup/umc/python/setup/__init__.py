@@ -219,7 +219,7 @@ class Instance(Base, ProgressMixin):
 							break
 					MODULE.info('Restart servers: %s' % restart)
 
-				# on a joined system or on a basesystem, we can run the setup scripts
+				# on a joined system we can run the setup scripts
 				MODULE.info('runnning system setup scripts (flavor %r)' % (request.flavor,))
 
 				util.run_scripts(self._progressParser, restart, subfolders, lang=str(self.locale), args=script_args)
@@ -287,7 +287,7 @@ class Instance(Base, ProgressMixin):
 				MODULE.info('saving profile values')
 				util.write_profile(values)
 
-				# unjoined Primary Directory Node (that is not being converted to a basesystem) -> run the join script
+				# unjoined Primary Directory Node -> run the join script
 				MODULE.info('runnning system setup join script')
 				util.run_joinscript(self._progressParser, values, username, password, dcname, lang=str(self.locale))
 
@@ -478,7 +478,7 @@ class Instance(Base, ProgressMixin):
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%(name)s) is not valid: %(value)s') % {'name': iname, 'value': jval})
 
-		if is_wizard_mode and not util.is_system_joined() and (newrole not in ['domaincontroller_master', 'basesystem'] or ad_member):
+		if is_wizard_mode and not util.is_system_joined() and (newrole not in ['domaincontroller_master'] or ad_member):
 			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
 				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):
@@ -802,7 +802,7 @@ class Instance(Base, ProgressMixin):
 		elif domain_check_role == 'nonmaster':
 			result.update(receive_domaincontroller_master_information(dns, nameserver, address, username, password))
 			set_role_and_check_if_join_will_work(role, address, username, password)
-		# Primary Directory Node? basesystem? no domain check necessary
+		# Primary Directory Node? no domain check necessary
 		return result
 
 	@simple_response
