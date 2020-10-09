@@ -4,7 +4,6 @@
 "Primary → Backup Directory Node"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja + required"	"ja"	"nein"	"nein"	"via UMC Modul"
 "Primary → Replica Directory Node"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"ja"	"ja + required"	"ja"	"nein"	"nein"	"via UMC Modul"
 "Primary Directory Node → Managed Node"	"---"	"---"	"Leer + required"	"Leer + required + autofill"	"nein"	"required"	"ja"	"nein"	"nein"	"ja + required"	"nein"	"nein"	"nein"	"via UMC Modul"
-"Primary Directory Node → Basesystem"	"---"	"---"	"Leer + required"	"Leer + optional"	"Leer + optional"	"required"	"ja"	"nein"	"nein"	"ja"	"nein"	"nein"	"nein"	"via UMC Modul"
 														
 "joined, local"														
 "Primary Directory Node"	"nein"	"nein"	"disabled"	"disabled"	"disabled"	"optional"	"ja"	"ja, mit Warnung"	"ja"	"ja + required"	"nein"	"nein"	"nein"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
@@ -16,10 +15,8 @@
 "Backup Directory Node"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 "Replica Directory Node"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 "Managed Node"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
-"Basesystem"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"	"---"
 														
 "joined or unjoined, external"														
 "Backup Directory Node"	"nein"	"nein"	"disabled"	"disabled"	"nein"	"optional"	"nein"	"nein"	"ja"	"ja + required"	"ja"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
 "Replica Directory Node"	"nein"	"nein"	"disabled"	"disabled"	"nein"	"optional"	"nein"	"nein"	"ja"	"ja + required"	"ja"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
 "Managed Node"	"nein"	"nein"	"disabled"	"disabled"	"nein"	"optional"	"nein"	"nein"	"nein"	"ja + required"	"nein"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
-"Basesystem"	"nein"	"nein"	"Gesetzt + required"	"Gesetzt + optional"	"Gesetzt + optional"	"optional"	"nein"	"nein"	"nein"	"ja"	"nein"	"ja"	"ja"	"nur bei IP-Addr.- und SSL-Änderungen via Modul"
