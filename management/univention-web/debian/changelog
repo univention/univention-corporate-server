@@ -1,3 +1,9 @@
+univention-web (3.0.5-44) unstable; urgency=medium
+
+  * Bug #50302: add cookie banner
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2020 10:51:14 +0200
+
 univention-web (3.0.5-43) unstable; urgency=medium
 
   * Bug #51401: fix size of login notices

@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-3) unstable; urgency=medium
+
+  * Bug #50302: add cookie banner
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2020 10:51:08 +0200
+
 univention-management-console (11.0.5-2) unstable; urgency=medium
 
   * Bug #51607: make connections to DC Master possible

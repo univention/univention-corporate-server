@@ -1,0 +1,48 @@
+/* CookieBanner */
+
+@import "variables"
+
+.umc .dijitDialog.umcConfirmDialog.umcCookieBanner
+	top: auto !important
+	left: 0 !important
+	bottom: 0px
+	max-width: 100%
+
+	.umcText
+		font-size 13pt
+
+	.dijitDialogTitleBar,
+	.dijitDialogPaneContent
+		padding-left 30px
+		padding-right 30px
+
+	.dijitDialogTitleBar
+		padding-top 30px
+		padding-bottom 5px
+
+		.dijitDialogTitle
+			font-size 16pt
+
+	.dijitDialogPaneContent
+		padding-top 5px
+		padding-bottom 40px
+
+		@media (min-width: $dialog-max-width)
+			display table
+
+			.umcContainerWidget
+				display table-row
+
+				.umcText,
+				.umcButtonRow
+					display table-cell
+
+				.umcButtonRow
+					padding-left 30px
+
+		.umcContainerWidget .umcButtonRow
+			vertical-align bottom
+			text-align center
+
+			.dijitButton
+				width 100%
