@@ -1473,7 +1473,7 @@ class ucs(object):
 							if attr not in object['changed_attributes']:
 								object['changed_attributes'].append(attr)
 				else:
-					object['changed_attributes'] = original_object['attributes'].keys()
+					object['changed_attributes'] = list(original_object['attributes'].keys())
 			ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
 
 			result = False
