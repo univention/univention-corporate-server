@@ -61,7 +61,6 @@ Provides:
  univention-setup-boot,
  univention-system-setup-appliance,
 Conflicts:
- univention-basesystem,
  univention-server-backup,
  univention-server-member,
  univention-server-slave,
