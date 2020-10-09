@@ -46,11 +46,17 @@ univention-portal (4.0.2-1) unstable; urgency=medium
 
  -- Florian Best <best@univention.de>  Tue, 10 Nov 2020 20:09:20 +0100
 
-univention-portal (4.0.1-10) unstable; urgency=low
+univention-portal (4.0.1-11) unstable; urgency=low
 
   * Bug #52211: Convert to univention-join-dev
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 15 Oct 2020 09:59:10 +0200
+
+univention-portal (4.0.1-10) unstable; urgency=medium
+
+  * Bug #50302: add cookie banner
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2020 10:51:21 +0200
 
 univention-portal (4.0.1-9) unstable; urgency=medium
 
