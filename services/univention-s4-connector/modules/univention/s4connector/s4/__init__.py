@@ -543,8 +543,8 @@ class s4(univention.s4connector.ucs):
 			**kwargs
 		)
 
-	def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
-		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir)
+	def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True, logfilename=None, debug_level=None):
+		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir, logfilename, debug_level)
 
 		self.s4_ldap_host = s4_ldap_host
 		self.s4_ldap_port = s4_ldap_port

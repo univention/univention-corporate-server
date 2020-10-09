@@ -114,7 +114,7 @@ def connect(options):
 	s4_init = None
 	while not s4_init:
 		try:
-			s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename)
+			s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
 			s4_init = True
 		except ldap.SERVER_DOWN:
 			print("Warning: Can't initialize LDAP-Connections, wait...")
@@ -222,6 +222,8 @@ def main():
 	parser = ArgumentParser()
 	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
 	parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
+	parser.add_argument('-d', '--debug', help='debug level', type=int)
+	parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
 	options = parser.parse_args()
 
 	with lock('/var/lock/univention-s4-%s' % options.configbasename) as lock_file:

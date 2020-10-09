@@ -458,7 +458,7 @@ class property(object):
 
 class ucs(object):
 
-	def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir):
+	def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
 		_d = ud.function('ldap.__init__')  # noqa: F841
 
 		self.CONFIGBASENAME = CONFIGBASENAME
@@ -466,6 +466,8 @@ class ucs(object):
 		self.configRegistry = configRegistry
 		self.property = _property  # this is the mapping!
 
+		self._logfile = logfilename or '/var/log/univention/%s-s4.log' % self.CONFIGBASENAME
+		self._debug_level = debug_level or int(self.configRegistry.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
 		self.init_debug()
 
 		self.listener_dir = listener_dir
@@ -550,15 +552,14 @@ class ucs(object):
 			function_level = int(self.configRegistry.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
 		except ValueError:
 			function_level = ud.NO_FUNCTION
-		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, ud.WARN, function_level)
-		debug_level = int(self.configRegistry.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
-		ud.set_level(ud.LDAP, debug_level)
+		ud.init(self._logfile, ud.WARN, function_level)
+		ud.set_level(ud.LDAP, self._debug_level)
 
 		try:
 			udm_function_level = int(self.configRegistry.get('%s/debug/udm/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
 		except ValueError:
 			udm_function_level = ud.NO_FUNCTION
-		ud_c.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, ud.WARN, udm_function_level)
+		ud_c.init(self._logfile, ud.WARN, udm_function_level)
 
 		try:
 			udm_debug_level = int(self.configRegistry.get('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN))
