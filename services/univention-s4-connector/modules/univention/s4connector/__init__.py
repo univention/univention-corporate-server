@@ -457,12 +457,12 @@ class property(object):
 
 class ucs(object):
 
-	def __init__(self, CONFIGBASENAME, _property, baseConfig, listener_dir):
+	def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir):
 		_d = ud.function('ldap.__init__')  # noqa: F841
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
-		self.baseConfig = baseConfig
+		self.configRegistry = configRegistry
 		self.property = _property  # this is the mapping!
 
 		self.init_debug()
@@ -516,20 +516,20 @@ class ucs(object):
 			return dn
 
 	def open_ucs(self):
-		bindpw_file = self.baseConfig.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
-		binddn = self.baseConfig.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,' + self.baseConfig['ldap/base'])
+		bindpw_file = self.configRegistry.get('%s/ldap/bindpw' % self.CONFIGBASENAME, '/etc/ldap.secret')
+		binddn = self.configRegistry.get('%s/ldap/binddn' % self.CONFIGBASENAME, 'cn=admin,' + self.configRegistry['ldap/base'])
 		bindpw = open(bindpw_file).read()
 		if bindpw[-1] == '\n':
 			bindpw = bindpw[0:-1]
 
-		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
+		host = self.configRegistry.get('%s/ldap/server' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master'))
 
 		try:
-			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
+			port = int(self.configRegistry.get('%s/ldap/port' % self.CONFIGBASENAME, self.configRegistry.get('ldap/master/port')))
 		except ValueError:
 			port = 7389
 
-		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.baseConfig['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
+		self.lo = univention.admin.uldap.access(host=host, port=port, base=self.configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
 
 	def search_ucs(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
@@ -548,21 +548,21 @@ class ucs(object):
 	def init_debug(self):
 		_d = ud.function('ldap.init_debug')  # noqa: F841
 		try:
-			function_level = int(self.baseConfig.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
+			function_level = int(self.configRegistry.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
 		except ValueError:
 			function_level = ud.NO_FUNCTION
 		ud.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, ud.WARN, function_level)
-		debug_level = int(self.baseConfig.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
+		debug_level = int(self.configRegistry.get('%s/debug/level' % self.CONFIGBASENAME, ud.PROCESS))
 		ud.set_level(ud.LDAP, debug_level)
 
 		try:
-			udm_function_level = int(self.baseConfig.get('%s/debug/udm/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
+			udm_function_level = int(self.configRegistry.get('%s/debug/udm/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
 		except ValueError:
 			udm_function_level = ud.NO_FUNCTION
 		ud_c.init('/var/log/univention/%s-s4.log' % self.CONFIGBASENAME, ud.WARN, udm_function_level)
 
 		try:
-			udm_debug_level = int(self.baseConfig.get('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN))
+			udm_debug_level = int(self.configRegistry.get('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN))
 		except ValueError:
 			udm_debug_level = ud.WARN
 		for category in (ud.ADMIN, ud.LDAP):
@@ -1049,7 +1049,7 @@ class ucs(object):
 		for listener_file in files:
 			sync_successfull = False
 			filename = os.path.join(self.listener_dir, listener_file)
-			if not filename == "%s/tmp" % self.baseConfig['%s/s4/listener/dir' % self.CONFIGBASENAME]:
+			if not filename == "%s/tmp" % self.configRegistry['%s/s4/listener/dir' % self.CONFIGBASENAME]:
 				if filename not in self.rejected_files:
 					try:
 						with open(filename, 'rb') as fob:
@@ -1436,9 +1436,9 @@ class ucs(object):
 			except KeyError:
 				pass
 
-		position = univention.admin.uldap.position(self.baseConfig['ldap/base'])
+		position = univention.admin.uldap.position(self.configRegistry['ldap/base'])
 
-		if object['dn'] != self.baseConfig['ldap/base']:
+		if object['dn'] != self.configRegistry['ldap/base']:
 			try:
 				parent_dn = self.lo.parentDn(object['dn'])
 				position.setDn(parent_dn)

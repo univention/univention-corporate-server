@@ -533,10 +533,8 @@ def format_escaped(format_string, *args, **kwargs):
 class s4(univention.s4connector.ucs):
 	RANGE_RETRIEVAL_PATTERN = re.compile(r"^([^;]+);range=(\d+)-(\d+|\*)$")
 
-	def __init__(self, CONFIGBASENAME, property, baseConfig, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
-		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
-
-		self.CONFIGBASENAME = CONFIGBASENAME
+	def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True):
+		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir)
 
 		self.s4_ldap_host = s4_ldap_host
 		self.s4_ldap_port = s4_ldap_port
@@ -544,7 +542,6 @@ class s4(univention.s4connector.ucs):
 		self.s4_ldap_binddn = s4_ldap_binddn
 		self.s4_ldap_bindpw = s4_ldap_bindpw
 		self.s4_ldap_certificate = s4_ldap_certificate
-		self.baseConfig = self.configRegistry = baseConfig
 
 		self.open_s4()
 		if self._debug_level >= 4:
@@ -670,16 +667,16 @@ class s4(univention.s4connector.ucs):
 
 	def open_s4(self):
 		tls_mode = 2
-		if '%s/s4/ldap/ssl' % self.CONFIGBASENAME in self.baseConfig and self.baseConfig['%s/s4/ldap/ssl' % self.CONFIGBASENAME] == "no":
+		if '%s/s4/ldap/ssl' % self.CONFIGBASENAME in self.configRegistry and self.configRegistry['%s/s4/ldap/ssl' % self.CONFIGBASENAME] == "no":
 			ud.debug(ud.LDAP, ud.INFO, "__init__: The LDAP connection to S4 does not use SSL (switched off by UCR \"%s/s4/ldap/ssl\")." % self.CONFIGBASENAME)
 			tls_mode = 0
 
-		protocol = self.baseConfig.get('%s/s4/ldap/protocol' % self.CONFIGBASENAME, 'ldap').lower()
+		protocol = self.configRegistry.get('%s/s4/ldap/protocol' % self.CONFIGBASENAME, 'ldap').lower()
 		if protocol == 'ldapi':
-			socket = urllib_parse.quote(self.baseConfig.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
+			socket = urllib_parse.quote(self.configRegistry.get('%s/s4/ldap/socket' % self.CONFIGBASENAME, ''), '')
 			ldapuri = "%s://%s" % (protocol, socket)
 		else:
-			ldapuri = "%s://%s:%d" % (protocol, self.baseConfig['%s/s4/ldap/host' % self.CONFIGBASENAME], int(self.baseConfig['%s/s4/ldap/port' % self.CONFIGBASENAME]))
+			ldapuri = "%s://%s:%d" % (protocol, self.configRegistry['%s/s4/ldap/host' % self.CONFIGBASENAME], int(self.configRegistry['%s/s4/ldap/port' % self.CONFIGBASENAME]))
 
 		# Determine s4_ldap_base with exact case
 		try:
