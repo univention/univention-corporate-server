@@ -153,9 +153,9 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 
 	formatter = logging.Formatter(_outfmt, _datefmt)
 	exit()
-	if logfile == 'stderr' or logfile == 'stdout':
+	if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
 		# add stderr or stdout handler
-		_handler_console = logging.StreamHandler(sys.stdout if logfile == 'stdout' else sys.stderr)
+		_handler_console = logging.StreamHandler(sys.stdout if logfile in ('stdout', '/dev/stdout') else sys.stderr)
 		_handler_console.setLevel(logging.DEBUG)
 		_handler_console.setFormatter(formatter)
 		logging.getLogger('').addHandler(_handler_console)
