@@ -98,8 +98,7 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 									else:  # unknown special case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, p.name))
 								else:
-									traceback.print_exc()
-									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, p.name))
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype.\n%s" % (k.keytype, p.name, traceback.format_exc()))
 
 				elif p.name == "Primary:Kerberos-Newer-Keys":
 					krb_blob = binascii.unhexlify(p.data)
@@ -121,18 +120,14 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 									else:  # unknown special case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, p.name))
 								else:
-									traceback.print_exc()
-									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, p.name))
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype.\n%s" % (k.keytype, p.name, traceback.format_exc()))
 
-		except Exception:
-			import sys
-			exc = sys.exc_info()[1]
-			if isinstance(exc.args, type(())) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error':
+		except Exception as exc:
+			if isinstance(exc, RuntimeError) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error' or exc.args[0] == 11:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: '%s' while unpacking supplementalCredentials:: %s" % (exc, binascii.b2a_base64(sc_blob)))
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
 			else:
-				traceback.print_exc()
-				ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
+				ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.\n%s" % (traceback.format_exc(),))
 
 	return keys
 
@@ -153,8 +148,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 					for k in krb.ctr.keys:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
 				except Exception:  # FIXME: which exception?
-					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos blob failed. Traceback:")
-					traceback.print_exc()
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos blob failed.\n%s" % (traceback.format_exc(),))
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos (DES keys) blob will be missing in supplementalCredentials ctr3.old_keys.")
 			elif p.name == "Primary:Kerberos-Newer-Keys":
 				krb_blob = binascii.unhexlify(p.data)
@@ -165,8 +159,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 					for k in krb.ctr.keys:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
 				except Exception:  # FIXME: which exception?
-					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos-Newer-Keys blob failed. Traceback:")
-					traceback.print_exc()
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos-Newer-Keys blob failed.\n%s" % (traceback.format_exc(),))
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos-Newer-Keys (AES and DES keys) blob will be missing in supplementalCredentials ctr4.old_keys.")
 
 	krb5_aes256 = ''
