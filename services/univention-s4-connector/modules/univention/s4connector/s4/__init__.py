@@ -2234,12 +2234,12 @@ class s4(univention.s4connector.ucs):
 									new_s4_other_values = (current_s4_other_values | to_add) - to_remove - current_s4_values
 									if current_s4_values != new_s4_values:
 										if new_s4_values:
-											modlist.append((ldap.MOD_REPLACE, s4_attribute, new_s4_values))
+											modlist.append((ldap.MOD_REPLACE, s4_attribute, list(new_s4_values)))
 										else:
 											modlist.append((ldap.MOD_REPLACE, s4_attribute, []))
 
 									if current_s4_other_values != new_s4_other_values:
-										modlist.append((ldap.MOD_REPLACE, s4_other_attribute, new_s4_other_values))
+										modlist.append((ldap.MOD_REPLACE, s4_other_attribute, list(new_s4_other_values)))
 								else:
 									try:
 										current_s4_values = set([v for k, v in s4_object.items() if s4_attribute.lower() == k.lower()][0])
@@ -2267,7 +2267,7 @@ class s4(univention.s4connector.ucs):
 														if attribute_type[attribute].compare_function([_value], [org]):  # values are equal
 															r.add(org)
 											if r:
-												modlist.append((ldap.MOD_DELETE, s4_attribute, r))
+												modlist.append((ldap.MOD_DELETE, s4_attribute, list(r)))
 										if to_add:
 											to_really_add = copy.copy(to_add)
 											if attribute_type[attribute].compare_function:
@@ -2278,7 +2278,7 @@ class s4(univention.s4connector.ucs):
 											to_add = to_really_add
 											a = to_add - current_s4_values
 											if a:
-												modlist.append((ldap.MOD_ADD, s4_attribute, a))
+												modlist.append((ldap.MOD_ADD, s4_attribute, list(a)))
 
 				if not modlist:
 					ud.debug(ud.LDAP, ud.ALL, "nothing to modify: %s" % object['dn'])
