@@ -31,13 +31,12 @@
 #
 
 
+import pytest
 from univentionunittests import import_module
 
-import pytest
 
-
-def test_setup_logger(portal_lib):
-	use_installed = pytest.config.getoption('--installed-portal')
+def test_setup_logger(portal_lib, request):
+	use_installed = request.config.getoption('--installed-portal')
 	module = import_module('univention.portal.log', 'python/', 'univention.portal.log', use_installed=use_installed)
 	module.setup_logger()
 	unittest_logger = module.get_logger('unittest')
