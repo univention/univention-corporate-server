@@ -1990,23 +1990,23 @@ define([
 					linkPrio = links[x].$priority;
 				}
 				topic.publish("/portal/menu", menu, "addItem", {
-					onClick: lang.hitch(link, function() {
-						var linkTarget = this.linkTarget;
+					onClick: function() {
+						var linkTarget = link.linkTarget;
 						if (linkTarget == "useportaldefault") {
 							linkTarget = portalJson.portal.defaultLinkTarget;
 						}
 						switch (linkTarget) {
 							case 'samewindow':
-								window.location = this.web_interface;
+								window.location = link.web_interface;
 								break;
 							case 'newwindow':
-								window.open(this.web_interface);
+								window.open(link.web_interface);
 								break;
 							case 'embedded':
-								topic.publish('/portal/iframes/open', this.id, this.name, this.logo_name, this.web_interface);
+								topic.publish('/portal/iframes/open', link.id, link.name, link.logo_name, link.web_interface);
 								break;
 						}
-					}),
+					},
 					title: link.description,
 					label: link.name,
 					$id: link.dn, // use link.dn instead of link.id. link.dn does not change across multiple
