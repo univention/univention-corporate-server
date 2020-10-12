@@ -1266,8 +1266,9 @@ class ucs(object):
 		else:
 			ucs_object.open()
 		self.__set_values(property_type, object, ucs_object, modtype='add')
-		for function in self.property[property_type].ucs_create_functions:
-			function(self, property_type, ucs_object)
+		for ucs_create_function in self.property[property_type].ucs_create_functions:
+			ud.debug(ud.LDAP, ud.INFO, "Call ucs_create_functions: %s" % ucs_create_function)
+			ucs_create_function(self, property_type, ucs_object)
 
 		serverctrls = []
 		response = {}
@@ -1564,10 +1565,10 @@ class ucs(object):
 
 			try:
 				if object['modtype'] in ['add', 'modify']:
-					for f in self.property[property_type].post_ucs_modify_functions:
-						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % f)
-						f(self, property_type, object)
-						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % f)
+					for post_ucs_modify_function in self.property[property_type].post_ucs_modify_functions:
+						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s" % post_ucs_modify_function)
+						post_ucs_modify_function(self, property_type, object)
+						ud.debug(ud.LDAP, ud.INFO, "Call post_ucs_modify_functions: %s (done)" % post_ucs_modify_function)
 			except ldap.SERVER_DOWN:
 				raise
 			except Exception:  # FIXME: which exception is to be caught?
