@@ -1,3 +1,9 @@
+univention-portal (3.1.0-37) unstable; urgency=medium
+
+  * Bug #52207: Allow anonymous entries
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Oct 2020 13:03:39 +0200
+
 univention-portal (3.1.0-36) unstable; urgency=medium
 
   * Bug #52206: allow use of microphone and camera in portal iframes
