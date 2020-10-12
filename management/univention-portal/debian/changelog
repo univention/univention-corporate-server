@@ -1,3 +1,9 @@
+univention-portal (3.1.0-38) unstable; urgency=medium
+
+  * Bug #52207: Increase joinscript version
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Oct 2020 14:13:17 +0200
+
 univention-portal (3.1.0-37) unstable; urgency=medium
 
   * Bug #52207: Allow anonymous entries
