@@ -91,6 +91,12 @@ property_descriptions = {
 		syntax=univention.admin.syntax.TrueFalseUp,
 		default='TRUE',
 	),
+	'anonymous': univention.admin.property(
+		short_description=_('Only visible if not logged in'),
+		long_description='',
+		syntax=univention.admin.syntax.TrueFalseUp,
+		default='FALSE',
+	),
 	'icon': univention.admin.property(
 		short_description=_('Icon'),
 		long_description='',
@@ -122,7 +128,7 @@ layout = [
 			["link"],
 		]),
 		Group(_('Advanced'), layout=[
-			["activated"],
+			["activated", "anonymous"],
 			["allowedGroups"],
 		]),
 	]),
@@ -144,6 +150,7 @@ mapping.register('description', 'univentionNewPortalEntryDescription', mapTransl
 mapping.register('link', 'univentionNewPortalEntryLink')
 mapping.register('linkTarget', 'univentionNewPortalEntryLinkTarget', None, univention.admin.mapping.ListToString)
 mapping.register('activated', 'univentionNewPortalEntryActivate', None, univention.admin.mapping.ListToString)
+mapping.register('anonymous', 'univentionNewPortalEntryOnlyAnonymous', None, univention.admin.mapping.ListToString)
 mapping.register('allowedGroups', 'univentionNewPortalEntryAllowedUserGroup')
 mapping.register('icon', 'univentionNewPortalEntryIcon', None, univention.admin.mapping.ListToString)
 

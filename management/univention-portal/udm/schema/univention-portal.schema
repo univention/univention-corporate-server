@@ -178,6 +178,12 @@ attributetype ( univentionNewPortalEntryAttributeType:7 NAME 'univentionNewPorta
 	SINGLE-VALUE
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
 
+attributetype ( univentionNewPortalEntryAttributeType:8 NAME 'univentionNewPortalEntryOnlyAnonymous'
+	DESC 'Portal entry not visible when logged in'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
 objectclass ( univentionNewPortalEntryObjectClass:1 NAME 'univentionNewPortalEntry'
 	DESC 'Portal Entry data'
 	SUP top
@@ -190,6 +196,7 @@ objectclass ( univentionNewPortalEntryObjectClass:1 NAME 'univentionNewPortalEnt
 			$ univentionNewPortalEntryActivate
 			$ univentionNewPortalEntryAllowedUserGroup
 			$ univentionNewPortalEntryIcon
+			$ univentionNewPortalEntryOnlyAnonymous
 		)
 	)
 
