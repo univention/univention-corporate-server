@@ -1210,12 +1210,10 @@ class ucs(object):
 		univention.admin.modules.init(self.lo, univention.admin.uldap.position(self.lo.base), module)
 
 		ucs_object = module.object(None, self.lo, position=position)
+		ucs_object.open()
 		if property_type == 'group':
-			ucs_object.open()
 			ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: remove %s from ucs group cache" % object['dn'])
 			self.group_members_cache_ucs[object['dn'].lower()] = set()
-		else:
-			ucs_object.open()
 
 		self.__set_values(property_type, object, ucs_object, modtype='add')
 		for ucs_create_function in self.property[property_type].ucs_create_functions:
