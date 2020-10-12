@@ -2,7 +2,7 @@ ucs-test (10.0.1-15) unstable; urgency=medium
 
   * Bug #50631 Fix test regression
 
- -- Arvid <requate@univention.de>  Wed, 07 Oct 2020 21:14:22 +0200
+ -- Arvid <requate@univention.de>  Thu, 08 Oct 2020 09:23:18 +0200
 
 ucs-test (10.0.1-14) unstable; urgency=medium
 
