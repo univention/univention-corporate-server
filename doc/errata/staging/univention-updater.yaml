@@ -3,9 +3,11 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-updater
-fix: 14.0.3-3A~4.4.0.202010051531
+fix:
 desc: |
  This update addresses the following issue:
  * Add command `univention-prune-kernels` to remove no longer needed kernel
    packages.
-bug: [51769]
+ * The status information "phase" has been added to the status file of the
+   Univention Updater /var/lib/univention-updater/univention-updater.status.
+bug: [51769,52197]
