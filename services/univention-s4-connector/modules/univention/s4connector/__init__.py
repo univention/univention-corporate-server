@@ -1208,14 +1208,14 @@ class ucs(object):
 					if attributes.con_other_attribute:
 						if object['attributes'].get(attributes.con_other_attribute):
 							ucs_object[ucs_key] = object['attributes'].get(attributes.con_other_attribute)
-							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %s, we set the key %s in the ucs-object to con_other_attribute %s' % (attributes, ucs_key, attributes.con_other_attribute))
+							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we set the key %r in the ucs-object to con_other_attribute %r' % (object['dn'], ucs_key, attributes.con_other_attribute))
 						elif ucs_key not in mandatory_attrs:
 							ucs_object[ucs_key] = []
-							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
+							ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object' % (object['dn'], ucs_key))
 						else:
 							ud.debug(ud.LDAP, ud.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
 					else:
-						ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
+						ud.debug(ud.LDAP, ud.INFO, '__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object' % (object['dn'], ucs_key))
 
 						if ucs_key not in mandatory_attrs:
 							ucs_object[ucs_key] = []
