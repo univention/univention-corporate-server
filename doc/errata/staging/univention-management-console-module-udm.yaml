@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console-module-udm
-fix: 
+fix: 9.0.15-8A~4.4.0.202010011536
 desc: |
  This update addresses the following issue(s):
  * The users/user wizard can now be configured to enable the checkbox
