@@ -1,3 +1,9 @@
+univention-management-console-module-top (9.0.0-3) unstable; urgency=medium
+
+  * Bug #51323: Dependencies for Python 3
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Oct 2020 11:50:41 +0200
+
 univention-management-console-module-top (9.0.0-2) unstable; urgency=medium
 
   * Bug #51323: use Python 3

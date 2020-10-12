@@ -13,6 +13,7 @@ Standards-Version: 3.5.2
 Package: univention-management-console-module-top
 Architecture: all
 Depends:
+ python3-psutil,
  python-psutil,
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server (>= 11.0.4-37),
