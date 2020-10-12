@@ -56,6 +56,7 @@ class LDAPConnection:
 		if no_starttls:
 			use_starttls = 0
 
+		login_pw = ""
 		if self.pw_file:
 			with open(self.pw_file, 'r') as fp:
 				login_pw = fp.readline().rstrip('\n')
@@ -66,8 +67,8 @@ class LDAPConnection:
 				tls_mode = 0
 
 			if self.protocol == 'ldapi':
-				import urllib
-				socket = urllib.quote(self.socket, '')
+				from six.moves import urllib_parse
+				socket = urllib_parse.quote(self.socket, '')
 				ldapuri = "%s://%s" % (self.protocol, socket)
 			else:
 				ldapuri = "%s://%s:%d" % (self.protocol, self.adldapbase, int(self.port))

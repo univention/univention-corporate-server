@@ -13,13 +13,13 @@ test -n "$connector_s4_ldap_host" || exit 137
 connector_running_on_this_host || exit 137
 
 echo "Check for a running connector"
-pgrep -f "/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main" || fail_test 1
+pgrep -f "/usr/bin/python3 -W ignore -m univention.s4connector.s4.main" || fail_test 1
 
 echo "Try to start a second connector instance"
-/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main && fail_test 110
+/usr/bin/python3 -W ignore -m univention.s4connector.s4.main && fail_test 110
 
 if [ "$RETVAL" = 110 ]; then
-	pkill -f "/usr/bin/python2.7 -W ignore -m univention.s4connector.s4.main"
+	pkill -f "/usr/bin/python3 -W ignore -m univention.s4connector.s4.main"
 	/etc/init.d/univention-s4-connector restart
 fi
 

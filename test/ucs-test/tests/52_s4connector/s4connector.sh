@@ -251,7 +251,7 @@ import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
 if $treat_value_as_base64:
 	import base64
-	value = base64.decodestring('$value')
+	value = base64.b64decode('$value')
 else:
 	value = '$value'
 adconnection.set_attribute ('$dn', '$name', value)
@@ -480,7 +480,7 @@ sys.path.append('$TESTLIBPATH')
 import s4connector
 adconnection = s4connector.S4Connection ('$configbase')
 for value in adconnection.get_attribute ('$dn', '$attribute'):
-	print value
+	print(value)
 sys.exit (42)
 "
 	local retval="$?"
@@ -659,7 +659,7 @@ function ad_connector_restart ()
 
 function connector_mapping_adjust ()
 {
-	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/s4connector/s4/main.py"
+	MAIN_FILE="/usr/lib/python3/dist-packages/univention/s4connector/s4/main.py"
 	cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
 	if [ -n "$3" ]; then
 		sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.s4_mapping['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter = ucs_test_filter + '(uid=$2))'\nmapping.s4_mapping['$1'].ignore_filter = ucs_test_filter" "$MAIN_FILE"
@@ -672,7 +672,7 @@ function connector_mapping_adjust ()
 
 function connector_mapping_restore ()
 {
-	MAIN_FILE="/usr/lib/python2.7/dist-packages/univention/s4connector/s4/main.py"
+	MAIN_FILE="/usr/lib/python3/dist-packages/univention/s4connector/s4/main.py"
 	mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
 }
 
