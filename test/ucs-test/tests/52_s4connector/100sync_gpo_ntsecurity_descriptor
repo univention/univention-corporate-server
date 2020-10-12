@@ -280,8 +280,7 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		self.assert_owner(sam_ntsd, self.DA_SID, logtag=PHASE)
 
 		# we need the exact case of the DN otherwise udm cli will fail
-		temp_dn = str(ldb_msg.dn).lower()
-		temp_dn.replace(self.ucr["samba4/ldap/base"].lower(), self.ucr["ldap/base"])
+		temp_dn = str(ldb_msg.dn).lower().replace(self.ucr["samba4/ldap/base"].lower(), self.ucr["ldap/base"])
 		ucs_dn = self.machine_ucs_ldap.searchDn(base=temp_dn, scope='base')[0]
 
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
@@ -350,7 +349,7 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 		sam_ntsd = self.get_ntsd(ldb_msg)
 		self.assert_owner(sam_ntsd, self.DA_SID, logtag=PHASE)
 
-		ucs_dn = str(ldb_msg.dn).replace(self.ucr["samba4/ldap/base"], self.ucr["ldap/base"]).lower()
+		ucs_dn = str(ldb_msg.dn).lower().replace(self.ucr["samba4/ldap/base"].lower(), self.ucr["ldap/base"].lower())
 		uldap_msg = self.get_ucs_ldap_object(ucs_dn)
 		try:
 			ucs_ntsd = self.get_ntsd(uldap_msg)
