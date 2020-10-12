@@ -1,6 +1,6 @@
 --- dojo/dijit/Dialog.js.orig	2013-03-11 18:45:21.000000000 +0100
 +++ dojo/dijit/Dialog.js	2013-03-11 18:45:24.000000000 +0100
-@@ -83,8 +83,9 @@
+@@ -74,8 +74,9 @@
  		// autofocus: Boolean
  		//		A Toggle to modify the default focus behavior of a Dialog, which
  		//		is to focus on the first dialog element after opening the dialog.

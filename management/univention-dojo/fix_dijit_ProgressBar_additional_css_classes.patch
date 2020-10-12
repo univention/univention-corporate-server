@@ -1,6 +1,6 @@
 --- univention-dojo/dijit/ProgressBar.js.orig	2014-10-21 12:30:44.980000000 +0200
 +++ univention-dojo/dijit/ProgressBar.js	2014-10-21 12:33:12.112000000 +0200
-@@ -123,6 +123,8 @@
+@@ -124,6 +124,8 @@
  
  			domClass.toggle(this.domNode, "dijitProgressBarIndeterminate", this.indeterminate);
  			domClass.toggle(this.domNode, "dijitProgressBarIndeterminateRtl", this.indeterminate && !this.isLeftToRight());

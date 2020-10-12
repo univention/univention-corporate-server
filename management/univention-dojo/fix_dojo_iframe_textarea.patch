@@ -1,6 +1,6 @@
 --- dojo-release-1.8.1rc3-src/dojo/request/iframe.js.orig	2012-09-12 16:45:01.000000000 +0200
 +++ dojo-release-1.8.1rc3-src/dojo/request/iframe.js	2012-10-09 08:20:30.363935952 +0200
-@@ -311,7 +311,11 @@
+@@ -319,7 +319,11 @@
  						}
  					}else{
  						// 'json' and 'javascript' and 'text'

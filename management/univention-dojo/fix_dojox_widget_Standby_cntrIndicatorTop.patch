@@ -1,6 +1,6 @@
 --- dojo/dojox/widget/Standby.js.orig	2016-12-20 22:06:43.000000000 +0100
 +++ dojo/dojox/widget/Standby.js	2017-03-24 15:08:30.674713330 +0100
-@@ -501,7 +501,27 @@
+@@ -509,7 +509,27 @@
  					];
  					this._cloneStyles(styles, this);
  				}

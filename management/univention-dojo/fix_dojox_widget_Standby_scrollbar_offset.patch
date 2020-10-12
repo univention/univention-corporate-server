@@ -1,9 +1,9 @@
 see also Dojo bug: https://bugs.dojotoolkit.org/ticket/17296
 --- dojo/dojox/widget/Standby.js.orig	2013-07-02 14:41:28.600000006 +0200
 +++ dojo/dojox/widget/Standby.js	2013-07-02 14:42:59.104000012 +0200
-@@ -372,9 +372,13 @@
+@@ -386,9 +386,13 @@
  				}
- 				
+ 
  				//Shift the parent width/height a bit if scollers are present.
 +				var pnOverflowX = domStyle.get(pn, 'overflow-x') || domStyle.get(pn, 'overflow');
 +				var pnOverflowY = domStyle.get(pn, 'overflow-y') || domStyle.get(pn, 'overflow');

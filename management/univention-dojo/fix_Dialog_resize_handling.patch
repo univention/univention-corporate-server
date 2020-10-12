@@ -1,6 +1,6 @@
 --- dojo/dijit/Dialog.js.orig	2014-10-24 21:05:07.596000000 +0200
 +++ dojo/dijit/Dialog.js	2014-10-30 10:48:37.512000000 +0100
-@@ -161,8 +161,8 @@
+@@ -167,8 +167,8 @@
  			//		and also adjust position to be fully within the viewport, so user doesn't lose access to handle
  			var nodePosition = domGeometry.position(this.domNode),
  				viewport = winUtils.getBox(this.ownerDocument);
@@ -11,12 +11,10 @@
  			this._relativePosition = nodePosition;
  			this._position();
  		},
-@@ -213,14 +213,15 @@
- 				var node = this.domNode,
- 					viewport = winUtils.getBox(this.ownerDocument),
+@@ -220,12 +220,13 @@
  					p = this._relativePosition,
-					bb = domGeometry.position(node),
-					l = Math.floor(viewport.l + (p ? Math.min(p.x, viewport.w - bb.w) : (viewport.w - bb.w) / 2)),
+ 					bb = domGeometry.position(node),
+ 					l = Math.floor(viewport.l + (p ? Math.min(p.x, viewport.w - bb.w) : (viewport.w - bb.w) / 2)),
 -					t = Math.floor(viewport.t + (p ? Math.min(p.y, viewport.h - bb.h) : (viewport.h - bb.h) / 2));
 +					t = Math.floor(viewport.t + (p ? Math.min(p.y, viewport.h - bb.h) : Math.max(0, (viewport.h - bb.h) / 2)));
 
@@ -28,7 +26,7 @@
  			}
  		},
  
-@@ -284,6 +285,7 @@
+@@ -292,6 +293,7 @@
  			// {w: ..., h:...} arg.
  			var win = winUtils.get(this.ownerDocument);
  			this._modalconnects.push(on(win, "scroll", lang.hitch(this, "resize", null)));
@@ -36,7 +34,7 @@
  
  			this._modalconnects.push(on(this.domNode, "keydown", lang.hitch(this, "_onKey")));
  
-@@ -396,6 +398,9 @@
+@@ -406,6 +408,9 @@
  			// dim: Object?
  			//		Optional dimension object like {w: 200, h: 300}
  
