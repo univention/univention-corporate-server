@@ -458,7 +458,7 @@ class JsonHandler(tornado.web.RequestHandler):
 			if not admin_mode:
 				if not entry['activated']:
 					continue
-				if not entry['anonymous'] and username:
+				if entry['anonymous'] and username:
 					continue
 				if entry['allowedGroups']:
 					checked_groups = []

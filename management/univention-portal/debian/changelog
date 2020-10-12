@@ -1,3 +1,9 @@
+univention-portal (3.1.0-39) unstable; urgency=medium
+
+  * Bug #52207: Fix simple API
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Oct 2020 15:00:15 +0200
+
 univention-portal (3.1.0-38) unstable; urgency=medium
 
   * Bug #52207: Increase joinscript version
