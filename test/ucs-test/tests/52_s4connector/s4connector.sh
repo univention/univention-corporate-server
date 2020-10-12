@@ -659,12 +659,22 @@ function ad_connector_restart ()
 
 function connector_mapping_adjust ()
 {
-	MAIN_FILE="/usr/lib/python3/dist-packages/univention/s4connector/s4/main.py"
-	cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+
 	if [ -n "$3" ]; then
-		sed -i "/^mapping = imp.*/a ucs_test_filter = mapping.s4_mapping['$1'].ignore_filter\nucs_test_filter = ucs_test_filter[0:len(ucs_test_filter)-1]\nucs_test_filter = ucs_test_filter + '(uid=$2))'\nmapping.s4_mapping['$1'].ignore_filter = ucs_test_filter" "$MAIN_FILE"
+		cat > /etc/univention/connector/s4/localmapping.py <<EOF
+def mapping_hook(s4_mapping):
+	ucs_test_filter = s4_mapping['$1'].ignore_filter
+	ucs_test_filter = ucs_test_filter[0:len(ucs_test_filter) - 1]
+	ucs_test_filter = ucs_test_filter + '(uid=$2))'
+	s4_mapping['$1'].ignore_filter = ucs_test_filter
+	return s4_mapping
+EOF
 	else
-		sed -i "/^mapping = imp.*/a mapping.s4_mapping['$1'].ignore_subtree = mapping.s4_mapping['$1'].ignore_subtree + ['$2']" "$MAIN_FILE"
+		cat > /etc/univention/connector/s4/localmapping.py <<EOF
+def mapping_hook(s4_mapping):
+	s4_mapping['$1'].ignore_subtree = s4_mapping['$1'].ignore_subtree + ['$2']
+	return s4_mapping
+EOF
 	fi
 
 }
@@ -672,8 +682,7 @@ function connector_mapping_adjust ()
 
 function connector_mapping_restore ()
 {
-	MAIN_FILE="/usr/lib/python3/dist-packages/univention/s4connector/s4/main.py"
-	mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+	rm -f /etc/univention/connector/s4/localmapping.py
 }
 
 
