@@ -260,6 +260,7 @@ class LDAPCache(object):
 				'description': entry.props.description,
 				'logo_name': self._save_image(portal, entry),
 				'activated': entry.props.activated,
+				'anonymous': entry.props.anonymous,
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
@@ -276,6 +277,7 @@ class LDAPCache(object):
 				'description': entry.props.description,
 				'logo_name': self._save_image(portal, entry),
 				'activated': entry.props.activated,
+				'anonymous': entry.props.anonymous,
 				'allowedGroups': entry.props.allowedGroups,
 				'links': entry.props.link,
 				'linkTarget': entry.props.linkTarget,
@@ -310,6 +312,7 @@ class LDAPCache(object):
 					'description': entry.props.description,
 					'logo_name': self._save_image(portal, entry),
 					'activated': entry.props.activated,
+					'anonymous': entry.props.anonymous,
 					'allowedGroups': entry.props.allowedGroups,
 					'links': entry.props.link,
 					'linkTarget': entry.props.linkTarget,
@@ -480,6 +483,8 @@ class JsonHandler(tornado.web.RequestHandler):
 				continue
 			if not admin_mode:
 				if not entry['activated']:
+					continue
+				if not entry['anonymous'] and username:
 					continue
 				if entry['allowedGroups']:
 					checked_groups = []

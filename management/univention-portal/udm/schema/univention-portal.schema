@@ -181,7 +181,13 @@ attributetype ( univentionNewPortalEntryAttributeType:7 NAME 'univentionNewPorta
 	EQUALITY octetStringMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
 
-attributetype ( univentionNewPortalEntryAttributeType:8 NAME 'univentionNewPortalEntryBackgroundColor'
+attributetype ( univentionNewPortalEntryAttributeType:8 NAME 'univentionNewPortalEntryOnlyAnonymous'
+	DESC 'Portal entry not visible when logged in'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionNewPortalEntryAttributeType:9 NAME 'univentionNewPortalEntryBackgroundColor'
 	DESC 'Portal entry background color'
 	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
@@ -200,6 +206,7 @@ objectclass ( univentionNewPortalEntryObjectClass:1 NAME 'univentionNewPortalEnt
 			$ univentionNewPortalEntryActivate
 			$ univentionNewPortalEntryAllowedUserGroup
 			$ univentionNewPortalEntryIcon
+			$ univentionNewPortalEntryOnlyAnonymous
 			$ univentionNewPortalEntryBackgroundColor
 		)
 	)
