@@ -281,22 +281,6 @@ if [ -z "$s4connector_dc" ] \
 	if [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
 		## Block for update code
 
-		if [ $JS_LAST_EXECUTED_VERSION -lt 4 ] && is_ucr_true connector/s4/mapping/wmifilter; then
-			## errata3.2-0 update code
-
-			# Add existing WMI filter objects to S4 rejected table, this will resync these objects to UCS
-			/usr/share/univention-s4-connector/upgrade_msWMI-Som.py --write2ucs "$@"
-			# Write MS WMI filter links from Samba 4 to UCS, in UCS@school this could be done with hostdn
-			/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2ucs "$@"
-
-			if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
-				# Touch existing WMI filter objects existing in UCS, this will resync these objects to S4
-				/usr/share/univention-s4-connector/upgrade_msWMI-Som.py --write2samba4 "$@"
-				# Write MS WMI filter links from UCS to Samba 4
-				/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2samba4 "$@"
-			fi
-		fi
-
 		if [ $JS_LAST_EXECUTED_VERSION -lt 6 ] && is_ucr_true connector/s4/mapping/msprintconnectionpolicy; then
 			# resync msPrint-ConnectionPolicy objects from samba to ucs
 			/usr/share/univention-s4-connector/resync_object_from_s4.py --filter '(objectClass=msPrint-ConnectionPolicy)'
