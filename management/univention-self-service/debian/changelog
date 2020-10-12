@@ -21,13 +21,13 @@ univention-self-service (4.0.3-45) unstable; urgency=medium
   * Bug #51607: allow use of the self service without reentering
     credentials
 
- -- Florian Best <best@univention.de>  Wed, 30 Sep 2020 17:47:45 +0200
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2020 17:55:16 +0200
 
 univention-self-service (4.0.3-38) unstable; urgency=medium
 
   * Bug #51496: fix error message in case password changing failed
 
- -- Florian Best <best@univention.de>  Fri, 04 Sep 2020 10:07:47 +0200
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2020 17:55:15 +0200
 
 univention-self-service (4.0.3-37) unstable; urgency=medium
 
