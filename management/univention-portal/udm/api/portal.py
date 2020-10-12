@@ -98,6 +98,7 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 
 	_encoders = {
 		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
+		'anonymous': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
 		'description': ListOfListOflTextToDictPropertyEncoder,
 		'displayName': ListOfListOflTextToDictPropertyEncoder,
 		'icon': Base64BinaryPropertyEncoder,
