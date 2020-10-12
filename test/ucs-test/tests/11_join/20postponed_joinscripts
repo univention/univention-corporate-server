@@ -1,0 +1,99 @@
+#!/usr/share/ucs-test/runner bash
+## desc: test postponed join scripts
+## bugs: [51624]
+## packages:
+##  - univention-join
+## roles:
+##  - domaincontroller_master
+## exposure: dangerous
+
+eval "$(ucr shell)"
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+cleanup() {
+	rm -f /tmp/99ucs-test-postponed-joinscripts.inst.test
+	rm -f /usr/lib/univention-install/99ucs-test-postponed-joinscripts.inst
+	cleanup_status
+}
+
+cleanup_status() {
+	if [ -f /var/univention-join/status ] ; then
+		grep -v "^ucs-test-postponed-joinscripts" < /var/univention-join/status > /var/univention-join/status.$$
+		mv /var/univention-join/status.$$ /var/univention-join/status
+	fi
+}
+# first, get into a clean state
+cleanup
+
+# add test join script
+cat > /usr/lib/univention-install/99ucs-test-postponed-joinscripts.inst <<EOF
+#/bin/bash
+VERSION=5
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+touch /tmp/99ucs-test-postponed-joinscripts.inst.test
+joinscript_save_current_version
+exit 0
+EOF
+chmod a+x /usr/lib/univention-install/99ucs-test-postponed-joinscripts.inst
+trap cleanup EXIT
+
+# test 1: UCS 5.0-0 PREUP
+cat > /var/lib/univention-updater/univention-updater.status <<EOF
+status=RUNNING
+phase=PREUP
+next_version=5.0-0
+target_version=5.1-99
+current_version=4.4-7
+type=NET
+EOF
+univention-run-join-scripts
+[ -f "/tmp/99ucs-test-postponed-joinscripts.inst.test" ] && fail_test 1 "Join script should not have been executed in PREUP when updating to UCS 5.0-0."
+cleanup_status
+
+# test 2: UCS 5.1-15 POSTUP
+cat > /var/lib/univention-updater/univention-updater.status <<EOF
+status=RUNNING
+phase=POSTUP
+next_version=5.1-15
+target_version=5.1-15
+current_version=5.1-14
+type=NET
+EOF
+univention-run-join-scripts
+[ -f "/tmp/99ucs-test-postponed-joinscripts.inst.test" ] || fail_test 1 "Join script should have been executed in POSTUP when updating to UCS 5.1-15."
+cleanup_status
+
+# test 3: UCS 4.4-7 UPDATE
+cat > /var/lib/univention-updater/univention-updater.status <<EOF
+status=RUNNING
+phase=UPDATE
+next_version=4.4-7
+target_version=4.4-8
+current_version=4.4-6
+type=NET
+EOF
+univention-run-join-scripts
+[ -f "/tmp/99ucs-test-postponed-joinscripts.inst.test" ] || fail_test 1 "Join script should have been executed in UPDATE when updating to UCS 4.4-7."
+cleanup_status
+
+if [[ "$version_version" =~ ^[0-4] ]] ; then
+	echo "INFO: Skipping last test: only meant for UCS 5.0-0 or higher"
+else
+	let next_pl=$version_patchlevel+1
+	# test 4: current version to next version
+	cat > /var/lib/univention-updater/univention-updater.status <<EOF
+status=RUNNING
+phase=UPDATE
+next_version=${version_version}-${next_pl}
+target_version=${version_version}-${next_pl}
+current_version=${version_version}-${version_patchlevel}
+type=NET
+EOF
+	univention-run-join-scripts
+	[ -f "/tmp/99ucs-test-postponed-joinscripts.inst.test" ] && fail_test 1 "Join script should not have been executed in UPDATE when updating to UCS ${version_version}-${next_pl}."
+	cleanup_status
+fi
+
+exit "$RETVAL"
