@@ -1,5 +1,6 @@
 ucs-test (10.0.1-20) unstable; urgency=medium
 
+  * Bug #51624: add test for postponed join scripts
   * Bug #52197: add test for phase in univention-updater.status
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 19 Oct 2020 13:27:12 +0200
