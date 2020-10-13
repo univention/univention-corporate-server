@@ -938,13 +938,14 @@ def ucs_host_record_delete(s4connector, object):
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/host_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_delete: Object was not found, filter was: %s' % ol_filter)
+    else:
+        newRecord.update_zone = False
         newRecord.open()
         newRecord.delete()
-    else:
-        ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_delete: Object was not found, filter was: %s' % ol_filter)
 
     return True
 
@@ -1002,13 +1003,14 @@ def ucs_ptr_record_delete(s4connector, object):
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/ptr_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_delete: Object was not found, filter was: %s' % ol_filter)
+    else:
+        newRecord.update_zone = False
         newRecord.open()
         newRecord.delete()
-    else:
-        ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_delete: Object was not found, filter was: %s' % ol_filter)
 
     return True
 
@@ -1055,13 +1057,14 @@ def ucs_cname_delete(s4connector, object):
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/alias', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_delete: Object was not found, filter was: %s' % ol_filter)
+    else:
+        newRecord.update_zone = False
         newRecord.open()
         newRecord.delete()
-    else:
-        ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_delete: Object was not found, filter was: %s' % ol_filter)
 
     return True
 
@@ -1141,13 +1144,14 @@ def ucs_srv_record_delete(s4connector, object):
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/srv_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_delete: Object was not found, filter was: %s' % ol_filter)
+    else:
+        newRecord.update_zone = False
         newRecord.open()
         newRecord.delete()
-    else:
-        ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_delete: Object was not found, filter was: %s' % ol_filter)
 
     return True
 
@@ -1246,13 +1250,14 @@ def ucs_txt_record_delete(s4connector, object):
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/txt_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_delete: Object was not found, filter was: %s' % ol_filter)
+    else:
+        newRecord.update_zone = False
         newRecord.open()
         newRecord.delete()
-    else:
-        ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_delete: Object was not found, filter was: %s' % ol_filter)
 
     return True
 
@@ -1309,13 +1314,14 @@ def ucs_ns_record_delete(s4connector, object):
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/ns_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_delete: Object was not found, filter was: %s' % ol_filter)
+    else:
+        newRecord.update_zone = False
         newRecord.open()
         newRecord.delete()
-    else:
-        ud.debug(ud.LDAP, ud.INFO, 'ucs_ns_record_delete: Object was not found, filter was: %s' % ol_filter)
 
     return True
 
@@ -1440,12 +1446,12 @@ def ucs_zone_delete(s4connector, object, dns_type):
         return
 
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        if dns_type == 'forward_zone':
-            zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
-        elif dns_type == 'reverse_zone':
-            zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        zone = univention.admin.modules.lookup('dns/%s' % (dns_type,), None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        pass
+    else:
+        zone.update_zone = False
         zone.open()
         zone.delete()
 
