@@ -35,6 +35,8 @@
 from __future__ import print_function
 import sys
 
+import ldap
+
 import univention
 import univention.s4connector
 import univention.s4connector.s4
@@ -75,6 +77,10 @@ def main():
 	configRegistry.load()
 
 	s4 = univention.s4connector.s4.s4.main(configRegistry, CONFIGBASENAME)
+	try:
+		s4.init_ldap_connections()
+	except ldap.SERVER_DOWN as exc:
+		print('WARNING: LDAP server could not be reached: %s' % (exc,), file=sys.stderr)
 
 	found_rejected = False
 	i = 1

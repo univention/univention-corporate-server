@@ -497,13 +497,12 @@ class ucs(object):
 			os.rename(configfile, new_file)
 			ud.debug(ud.LDAP, ud.PROCESS, "Converting done")
 
-		self.open_ucs()
-
 		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
 			if not self.config.has_section(section):
 				self.config.add_section(section)
 
-		ud.debug(ud.LDAP, ud.INFO, "init finished")
+	def init_ldap_connections(self):
+		self.open_ucs()
 
 	def __del__(self):
 		self.close_debug()

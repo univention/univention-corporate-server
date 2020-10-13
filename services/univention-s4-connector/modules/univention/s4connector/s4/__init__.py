@@ -54,6 +54,7 @@ from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 from samba.dcerpc import misc
 
+from univention.config_registry import ConfigRegistry
 import univention.uldap
 import univention.s4connector
 import univention.debug2 as ud
@@ -499,7 +500,10 @@ class s4(univention.s4connector.ucs):
 	RANGE_RETRIEVAL_PATTERN = re.compile(r"^([^;]+);range=(\d+)-(\d+|\*)$")
 
 	@classmethod
-	def main(cls, ucr, configbasename, **kwargs):
+	def main(cls, ucr=None, configbasename='connector', **kwargs):
+		if ucr is None:
+			ucr = ConfigRegistry()
+			ucr.load()
 		MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % configbasename
 		if six.PY2:
 			import imp
@@ -552,16 +556,6 @@ class s4(univention.s4connector.ucs):
 		self.s4_ldap_binddn = s4_ldap_binddn
 		self.s4_ldap_bindpw = s4_ldap_bindpw
 		self.s4_ldap_certificate = s4_ldap_certificate
-
-		if self._debug_level >= 4:
-			ud.debug(ud.LDAP, ud.ALL, 'Mapping is: %s' % (pprint.pformat(property, indent=4, width=250)))
-
-		self.open_s4()
-
-		self.s4_sid = decode_sid(self.s4_search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
-
-		for prop in self.property.values():
-			prop.con_default_dn = self.dn_mapped_to_base(prop.con_default_dn, self.lo_s4.base)
 
 		if not self.config.has_section('S4'):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'S4'")
@@ -633,6 +627,17 @@ class s4(univention.s4connector.ucs):
 		# * entry flushed for group object in sync_from_ucs / ADD
 		# * entry used for decision in group_members_sync_from_ucs
 		self.group_members_cache_con = {}
+
+	def init_ldap_connections(self):
+		super(s4, self).init_ldap_connections()
+		if self._debug_level >= 4:
+			ud.debug(ud.LDAP, ud.ALL, 'Mapping is: %s' % (pprint.pformat(self.property, indent=4, width=250)))
+
+		self.open_s4()
+		self.s4_sid = decode_sid(self.s4_search_ext_s(self.s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
+
+		for prop in self.property.values():
+			prop.con_default_dn = self.dn_mapped_to_base(prop.con_default_dn, self.lo_s4.base)
 
 	def init_group_cache(self):
 		ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
