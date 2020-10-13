@@ -94,7 +94,7 @@ class PortalsCategoryModule(GenericModule):
 
 
 class PortalsPortalEntryObjectProperties(GenericObjectProperties):
-	"""portals/portal_entry UDM properties."""
+	"""portals/entry UDM properties."""
 
 	_encoders = {
 		'activated': StringCaseInsensitiveResultUpperBooleanPropertyEncoder,
@@ -108,7 +108,7 @@ class PortalsPortalEntryObjectProperties(GenericObjectProperties):
 
 
 class PortalsPortalEntryObject(GenericObject):
-	"""Better representation of portals/portal_entry properties."""
+	"""Better representation of portals/entry properties."""
 	udm_prop_class = PortalsPortalEntryObjectProperties
 
 
