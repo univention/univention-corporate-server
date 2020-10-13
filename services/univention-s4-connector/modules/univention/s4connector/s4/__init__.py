@@ -568,14 +568,6 @@ class s4(univention.s4connector.ucs):
 		if not self.config.has_section('S4 GUID'):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: init add config section 'S4 GUID'")
 			self.config.add_section('S4 GUID')
-		try:
-			self.ctrl_show_deleted = LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)
-			self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', [], serverctrls=[self.ctrl_show_deleted])
-		except ldap.UNAVAILABLE_CRITICAL_EXTENSION:
-			# e.g. Samba4:
-			#   ldapsearch -x -H ldap://localhost -b '' -s base '(objectClass=*)' supportedControl
-			# shows that it's supported, but currently it is unhappy if you mark it critical
-			self.ctrl_show_deleted = LDAPControl('1.2.840.113556.1.4.417', criticality=0)
 
 		self.serverctrls_for_add_and_modify = []
 		if 'univention_samaccountname_ldap_check' in self.configRegistry.get('samba4/ldb/sam/module/prepend', '').split():
