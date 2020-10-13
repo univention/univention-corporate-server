@@ -853,7 +853,7 @@ class ucs(object):
 				if not self._ignore_object(key, object) or ignore_subtree_match:
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: finished mapping")
 					try:
-						if ((old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new)) or (not old_dn and not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new))):
+						if not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new):
 							self._save_rejected_ucs(filename, dn)
 							return False
 						else:
