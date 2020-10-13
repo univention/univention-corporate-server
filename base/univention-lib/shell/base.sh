@@ -28,6 +28,9 @@
 # <https://www.gnu.org/licenses/>.
 
 . /usr/share/univention-lib/ucr.sh
+# shellcheck source=/dev/null
+[ -e /usr/share/univention-lib/join.sh ] &&
+. /usr/share/univention-lib/join.sh
 
 #
 # creates an empty file with given owner/group and permissions
@@ -48,103 +51,6 @@ create_logfile () {
 create_logfile_if_missing () {
 	if [ ! -e "$1" ] ; then
 		create_logfile "$@"
-	fi
-}
-
-#
-# calls the given joinscript
-# call_joinscript <joinscript>
-# e.g. call_joinscript 99my-custom-joinscript.inst
-# e.g. call_joinscript 99my-custom-joinscript.inst --binddn ... --bindpwd ...
-#
-call_joinscript () {
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-	if [ -x "$joinscript" ] ; then
-		local namejoinscript
-		namejoinscript="$1"
-		shift
-		local role="$(/usr/sbin/univention-config-registry get server/role)"
-		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
-			echo "Calling joinscript $namejoinscript ..."
-			"$joinscript" "$@"
-			echo "Joinscript $namejoinscript finished with exitcode $?"
-		fi
-	fi
-}
-
-#
-# deletes the given unjoinscript if it does not belong to any package
-# delete_unjoinscript <joinscript>
-# e.g. call_unjoinscript 99my-custom-joinscript.uinst
-#
-delete_unjoinscript ()
-{
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-
-	# Nothing to do if it does not exist
-	test -e "$joinscript" || return 1
-
-	# Does the script ends with uinst?
-	echo "$joinscript" | grep -q ".uinst$" || return 1
-
-	# Remove the script only if it is not part of a package
-	dpkg -S "$joinscript" >/dev/null 2>&1 && return 1
-
-	# Do it
-	rm -f "$joinscript"
-
-	return 0
-}
-
-# removes the given joinscript from the join script status file
-# remove_joinscript_status <name>
-# e.g. remove_joinscript_status univention-pkgdb-tools
-#
-remove_joinscript_status ()
-{
-	local name="$1"
-
-	sed -i "/^${name} /d" /var/univention-join/status
-}
-
-#
-# calls the given unjoinscript
-# call_unjoinscript <joinscript>
-# e.g. call_unjoinscript 99my-custom-joinscript.uinst
-# e.g. call_unjoinscript 99my-custom-joinscript.uinst --binddn ... --bindpwd ...
-#
-call_unjoinscript () {
-	local joinscript
-	local joinscript_name
-
-	joinscript_name="$1"
-	joinscript="/usr/lib/univention-install/${joinscript_name}"
-
-	if [ -x "$joinscript" ] ; then
-		shift
-		local role="$(/usr/sbin/univention-config-registry get server/role)"
-		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
-			"$joinscript" "$@" && delete_unjoinscript "${joinscript_name}"
-		fi
-	fi
-}
-
-#
-# calls the given joinscript ONLY on Primary Directory Node
-# call_joinscript_on_dcmaster <joinscript>
-# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst
-# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst --binddn ... --bindpwd ...
-#
-call_joinscript_on_dcmaster () {
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-	if [ -x "$joinscript" ] ; then
-		shift
-		if [ "$(/usr/sbin/univention-config-registry get server/role)" = "domaincontroller_master" ] ; then
-			"$joinscript" "$@"
-		fi
 	fi
 }
 

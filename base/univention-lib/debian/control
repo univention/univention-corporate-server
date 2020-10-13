@@ -86,6 +86,8 @@ Depends:
  python3-univention-lib (= ${binary:Version}),
  univention-config (>= 15),
  ${misc:Depends},
+Recommends:
+ univention-join,
 Description: UCS - common scripting functions for shell scripts
  This package contains shell functions used by various
  components of UCS.

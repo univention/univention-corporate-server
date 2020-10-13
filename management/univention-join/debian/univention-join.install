@@ -1,8 +1,9 @@
-univention-server-join usr/share/univention-join/
-univention-join usr/share/univention-join/
-univention-run-join-scripts usr/share/univention-join/
-joinscripthelper.lib usr/share/univention-join/
-check_join_status.sh usr/share/univention-join/
-20univention-join.inst usr/lib/univention-install/
-univention-join-hooks usr/share/univention-join/
-ensure-minmum-ucs-version usr/share/univention-join/
+20univention-join.inst	usr/lib/univention-install/
+check_join_status.sh	usr/share/univention-join/
+ensure-minmum-ucs-version	usr/share/univention-join/
+joinscripthelper.lib	usr/share/univention-join/
+join.sh	usr/share/univention-lib/
+univention-join-hooks	usr/share/univention-join/
+univention-join	usr/share/univention-join/
+univention-run-join-scripts	usr/share/univention-join/
+univention-server-join	usr/share/univention-join/
