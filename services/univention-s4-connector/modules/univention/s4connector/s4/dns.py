@@ -905,9 +905,12 @@ def ucs_host_record_create(s4connector, object):
 
     # Does a host record for this zone already exist?
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.host_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/host_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        newRecord = None
+    if newRecord:
+        newRecord.update_zone = False
         newRecord.open()
         if set(newRecord['a']) != set(a):
             newRecord['a'] = a
@@ -968,9 +971,12 @@ def ucs_ptr_record_create(s4connector, object):
 
     # Does a host record for this zone already exist?
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.ptr_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/ptr_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        newRecord = None
+    if newRecord:
+        newRecord.update_zone = False
         newRecord.open()
         if set(newRecord['ptr_record']) != set(ptr):
             newRecord['ptr_record'] = ptr[0]
@@ -1018,9 +1024,12 @@ def ucs_cname_create(s4connector, object):
 
     # Does a host record for this zone already exist?
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.alias.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/alias', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        newRecord = None
+    if newRecord:
+        newRecord.update_zone = False
         newRecord.open()
         if set(newRecord['cname']) != set(c):
             newRecord['cname'] = c[0]
@@ -1084,9 +1093,12 @@ def ucs_srv_record_create(s4connector, object):
 
     # Does a host record for this zone already exist?
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        newRecord = univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        newRecord = univention.admin.modules.lookup('dns/srv_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        newRecord = None
+    if newRecord:
+        newRecord.update_zone = False
         newRecord.open()
         if ucr_locations:
             ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
@@ -1196,9 +1208,12 @@ def ucs_txt_record_create(s4connector, object):
 
     # Does a host record for this zone already exist?
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        foundRecord = univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        foundRecord = univention.admin.modules.lookup('dns/txt_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        foundRecord = None
+    if foundRecord:
+        foundRecord.update_zone = False
         foundRecord.open()
 
         # use normalized TXT records for comparison
@@ -1263,9 +1278,12 @@ def ucs_ns_record_create(s4connector, object):
 
     # Does a host record for this zone already exist?
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        foundRecord = univention.admin.handlers.dns.ns_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], update_zone=False)
+    try:
+        foundRecord = univention.admin.modules.lookup('dns/ns_record', None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        foundRecord = None
+    if foundRecord:
+        foundRecord.update_zone = False
         foundRecord.open()
 
         if set(foundRecord[udm_property]) != set(c):
@@ -1349,12 +1367,12 @@ def ucs_zone_create(s4connector, object, dns_type):
     # Does a zone already exist?
     modify = False
     ol_filter = format_escaped('(&(relativeDomainName={0!e})(zoneName={1!e}))', relativeDomainName, zoneName)
-    searchResult = s4connector.lo.search(filter=ol_filter, unique=True)
-    if len(searchResult) > 0:
-        if dns_type == 'forward_zone':
-            zone = univention.admin.handlers.dns.forward_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0])
-        elif dns_type == 'reverse_zone':
-            zone = univention.admin.handlers.dns.reverse_zone.object(None, s4connector.lo, position=None, dn=searchResult[0][0])
+    try:
+        zone = univention.admin.modules.lookup('dns/%s' % (dns_type,), None, s4connector.lo, ol_filter, unique=True)[0]
+    except (univention.admin.uexceptions.noObject, IndexError):
+        zone = None
+    if zone:
+        zone.update_zone = False
         zone.open()
         udm_zone_nameservers_lower = [x.lower() for x in zone['nameserver']]
         if set(ns_lower) != set(udm_zone_nameservers_lower):
