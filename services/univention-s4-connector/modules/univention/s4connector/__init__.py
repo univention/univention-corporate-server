@@ -504,7 +504,10 @@ class ucs(object):
 	def init_ldap_connections(self):
 		self.open_ucs()
 
-	def __del__(self):
+	def __enter__(self):
+		return self
+
+	def __exit__(self, etype=None, exc=None, etraceback=None):
 		self.close_debug()
 
 	def dn_mapped_to_base(self, dn, base):

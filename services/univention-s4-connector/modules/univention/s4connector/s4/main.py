@@ -108,8 +108,6 @@ def connect(options):
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	baseconfig_retry_rejected = ucr.get('%s/s4/retryrejected' % options.configbasename, 10)
-
 	poll_sleep = int(ucr['%s/s4/poll/sleep' % options.configbasename])
 	s4_init = None
 	while not s4_init:
@@ -123,6 +121,11 @@ def connect(options):
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
+	with s4 as s4:
+		_connect(s4, poll_sleep, ucr.get('%s/s4/retryrejected' % options.configbasename, 10))
+
+
+def _connect(s4, poll_sleep, baseconfig_retry_rejected):
 	# Initialisierung auf UCS und S4 Seite durchfuehren
 	s4_init = None
 	ucs_init = None
@@ -189,7 +192,7 @@ def connect(options):
 				break
 
 		try:
-			if str(retry_rejected) == baseconfig_retry_rejected:
+			if str(retry_rejected) == baseconfig_retry_rejected:  # FIXME: if the UCR variable is not set this compares string with integer (default value)
 				s4.resync_rejected_ucs()
 				s4.resync_rejected()
 				retry_rejected = 0
@@ -205,7 +208,6 @@ def connect(options):
 		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
-	s4.close_debug()
 
 
 @contextlib.contextmanager
