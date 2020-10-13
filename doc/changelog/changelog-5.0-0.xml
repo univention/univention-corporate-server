@@ -116,6 +116,9 @@
 					The return code of <command>univention-run-join-scripts</command> indicates errors now (<u:bug>35561</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					Join scripts are only executed if the host is already joined (<u:bug>48730</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>

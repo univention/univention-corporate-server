@@ -1,6 +1,7 @@
 univention-join (12.0.0-7) unstable; urgency=low
 
   * Bug #52211: Move join function to separate join.sh
+  * Bug #48730: Only call join scripts on joined system
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 13 Oct 2020 16:43:19 +0200
 

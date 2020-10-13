@@ -55,6 +55,8 @@ _join_call () {  # <role-check> <joinscript> [<args>...]
 	local role_check="${1:?}" js_path="${UCS_JS_DIR}/${2:?}" js_name="${2:?}" rv=0
 	[ -x "$js_path" ] ||
 		return 0
+	[ -f "$UCS_JS_STATUS" ] ||
+		return 0
 
 	"$role_check"
 
