@@ -2118,9 +2118,9 @@ class s4(univention.s4connector.ucs):
 						for attribute in self.property[property_type].attributes.keys():
 							if attr in (self.property[property_type].attributes[attribute].con_attribute, self.property[property_type].attributes[attribute].con_other_attribute):
 								addlist.append((attr, value))
-				if hasattr(self.property[property_type], 'con_create_extenstions') and self.property[property_type].con_create_extenstions is not None:
-					for con_create_extension in self.property[property_type].con_create_extenstions:
-						ud.debug(ud.LDAP, ud.INFO, "Call con_create_extenstions: %s" % con_create_extension)
+				if hasattr(self.property[property_type], 'con_create_extensions') and self.property[property_type].con_create_extensions is not None:
+					for con_create_extension in self.property[property_type].con_create_extensions:
+						ud.debug(ud.LDAP, ud.INFO, "Call con_create_extensions: %s" % con_create_extension)
 						con_create_extension(self, property_type, object, addlist, ctrls)
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes is not None:
 					for attr, value in object['attributes'].items():

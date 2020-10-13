@@ -432,7 +432,7 @@ class property(object):
 		dn_mapping_function=[],
 		attributes=None,
 		ucs_create_functions=[],
-		con_create_extenstions=[],
+		con_create_extensions=[],
 		post_con_create_functions=[],
 		post_con_modify_functions=[],
 		post_ucs_modify_functions=[],
@@ -470,7 +470,7 @@ class property(object):
 		self.attributes = attributes
 
 		self.ucs_create_functions = ucs_create_functions
-		self.con_create_extenstions = con_create_extenstions
+		self.con_create_extensions = con_create_extensions
 
 		self.post_con_create_functions = post_con_create_functions
 		self.post_con_modify_functions = post_con_modify_functions
