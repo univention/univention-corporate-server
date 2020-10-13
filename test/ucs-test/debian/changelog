@@ -1,3 +1,9 @@
+ucs-test (10.0.1-19) unstable; urgency=medium
+
+  * Bug #51364: test ObjectClass filter for usertemplates
+
+ -- Christian Castens <castens@univention.de>  Fri, 16 Oct 2020 12:03:28 +0200
+
 ucs-test (10.0.1-18) unstable; urgency=medium
 
   * Bug #50631: Adjust tests/52_s4connector python interpreter version
