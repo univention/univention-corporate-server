@@ -204,10 +204,7 @@ class configdb(object):
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("""
-		INSERT OR REPLACE INTO '%s' (key,value)
-			VALUES (  ?, ?
-		);""" % section, [option, value])
+				cur.execute("INSERT OR REPLACE INTO '%s' (key, value) VALUES (?, ?);" % section, [option, value])
 				self._dbcon.commit()
 				cur.close()
 				return
@@ -249,7 +246,7 @@ class configdb(object):
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
+				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (section,))
 				rows = cur.fetchone()
 				cur.close()
 				if rows:
@@ -266,7 +263,7 @@ class configdb(object):
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("CREATE TABLE IF NOT EXISTS '%s'(Key TEXT PRIMARY KEY, Value TEXT)" % section)
+				cur.execute("CREATE TABLE IF NOT EXISTS '%s' (Key TEXT PRIMARY KEY, Value TEXT)" % section)
 				self._dbcon.commit()
 				cur.close()
 				return
