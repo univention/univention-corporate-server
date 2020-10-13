@@ -65,7 +65,7 @@ def ntsd_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'ntsd_to_s4: UCS object does not have a msNTSecurityDescriptor')
 		return
 
-	ucs_ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0]
+	ucs_ntsd_sddl = object['attributes']['msNTSecurityDescriptor'][0].decode('ASCII')
 	s4_attributes = s4connector.lo_s4.get(s4_dn, attr=['nTSecurityDescriptor'])
 	ntsd_ndr = s4_attributes.get('nTSecurityDescriptor')
 
@@ -117,7 +117,7 @@ def ntsd_to_ucs(s4connector, key, s4_object):
 		return
 
 	domain_sid = security.dom_sid(s4connector.s4_sid)
-	s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr[0])
+	s4_ntsd_sddl = decode_sd_in_ndr_to_sddl(domain_sid, ntsd_ndr[0]).encode('ASCII')
 	ucs_ntsd_sddl = ucs_attributes.get('msNTSecurityDescriptor', [None])[0]
 	if not ucs_ntsd_sddl or ucs_ntsd_sddl != s4_ntsd_sddl:
 		ml.append(('msNTSecurityDescriptor', ucs_ntsd_sddl, s4_ntsd_sddl))
