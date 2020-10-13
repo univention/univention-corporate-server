@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Univention Common Shell Library
 #
 # Copyright 2011-2020 Univention GmbH
@@ -27,10 +28,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
+[ -e /usr/share/univention-lib/ucr.sh ] &&
 . /usr/share/univention-lib/ucr.sh
 # shellcheck source=/dev/null
 [ -e /usr/share/univention-lib/join.sh ] &&
 . /usr/share/univention-lib/join.sh
+
+die () {
+	echo "${0##*/}: $*" >&2
+	exit 1
+}
+
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
 
 #
 # creates an empty file with given owner/group and permissions
@@ -49,9 +61,8 @@ create_logfile () {
 # e.g. create_logfile_if_missing /tmp/foo.log root:adm 0750
 #
 create_logfile_if_missing () {
-	if [ ! -e "$1" ] ; then
+	[ -e "$1" ] ||
 		create_logfile "$@"
-	fi
 }
 
 #
@@ -61,6 +72,7 @@ stop_udm_cli_server () {
 	local pids signal=SIGTERM
 	pids=$(pgrep -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server") || return 0
 	# As long as one of the processes remains, try to kill it.
+	# shellcheck disable=SC2086
 	while /bin/kill -"$signal" $pids 2>/dev/null # IFS
 	do
 		sleep 1
@@ -122,32 +134,25 @@ get_default_network () {
 #
 # check whether a package is installed or not
 #
-check_package_status ()
-{
-        echo "$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+check_package_status () {
+	dpkg-query -W -f '${db:Status-Status}\n' "$1" 2>/dev/null
 }
 
 #
 # create passwort
 #
 create_machine_password () {
-	local length="$(/usr/sbin/univention-config-registry get machine/password/length)"
-	local compl="$(/usr/sbin/univention-config-registry get machine/password/complexity)"
-	
-	if [ -z "$length" ]; then
-		length=20
-	fi
-	if [ -z "$compl" ]; then
-		compl="scn"
-	fi
-	
-	pwgen -1 -${compl} ${length} | tr -d '\n'
+	local length compl
+	length="$(/usr/sbin/univention-config-registry get machine/password/length)"
+	compl="$(/usr/sbin/univention-config-registry get machine/password/complexity)"
+	pwgen -1 -"${compl:-scn}" "${length:-20}" | tr -d '\n'
 }
 
 #
 # Update the NSS group cache
 #
 update_nss_group_cache () {
+	local ldap_group_to_file_param
 	if is_ucr_true nss/group/cachefile; then
 		is_ucr_true nss/group/cachefile/check_member && ldap_group_to_file_param="--check_member"
 		/usr/lib/univention-pam/ldap-group-to-file.py $ldap_group_to_file_param
@@ -160,38 +165,22 @@ update_nss_group_cache () {
 # Get to localized name for a user
 #
 custom_username() {
-	local name
-	local ucr_varname
-	local result
-	name="${1:?Usage: custom_username <username>}"
-	ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
-	ucr_varname="users/default/$ucr_varname"
+	local ucr_varname result name="${1:?Usage: custom_username <username>}"
+	ucr_varname="users/default/$(echo "$name" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 
 	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
-	if [ -n "$result" ]; then
-		echo -n "$result"
-	else
-		echo -n "$name"
-	fi
+	echo -n "${result:-$name}"
 }
 
 #
 # Get to localized name for a group
 #
 custom_groupname() {
-	local name
-	local ucr_varname
-	local result
-	name="${1:?Usage: custom_groupname <groupname>}"
-	ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
-	ucr_varname="groups/default/$ucr_varname"
+	local ucr_varname result name="${1:?Usage: custom_groupname <groupname>}"
+	ucr_varname="groups/default/$(echo "$name" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 
 	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
-	if [ -n "$result" ]; then
-		echo -n "$result"
-	else
-		echo -n "$name"
-	fi
+	echo -n "${result:-$name}"
 }
 
 # vim:set sw=4 ts=4 noet:
