@@ -394,7 +394,6 @@ s4_mapping = {
 				ucs_attribute='userCertificate',
 				ldap_attribute='userCertificate;binary',
 				con_attribute='userCertificate',
-				udm_option='pki',
 				single_value=True,
 			),
 			# Do not sync secretary, because we currently have no way to verify the existence of the DN which would cause rejects

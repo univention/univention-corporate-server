@@ -386,19 +386,14 @@ class attribute(object):
 		:param sync_mode:
 			The syncronization direction (read, write, sync)
 		:ptype sync_mode: str
-
-		:param udm_option:
-			The UDM option which is required by :attr:`ucs_attribute` and gets enabled when setting this attribute
-		:type udm_option: None or str
 	"""
 
-	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', udm_option=None, con_attribute_encoding='UTF-8'):
+	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', con_attribute_encoding='UTF-8'):
 		self.ucs_attribute = ucs_attribute
 		self.ldap_attribute = ldap_attribute
 		self.con_attribute = con_attribute
 		self.con_attribute_encoding = con_attribute_encoding
 		self.con_other_attribute = con_other_attribute
-		self.udm_option = udm_option
 		self.required = required
 		# If no compare_function is given, we default to `compare_normal()`
 		self.compare_function = compare_function or compare_normal
@@ -1180,12 +1175,8 @@ class ucs(object):
 						# (this is not guaranteed by LDAP).
 						# See the MODIFY-case in `sync_from_ucs()` for more.
 						ud.debug(ud.LDAP, ud.INFO, "set key in ucs-object %s to value: %r" % (ucs_key, value))
-						try:
-							if attributes.udm_option not in ucs_object.options:
-								ud.debug(ud.LDAP, ud.INFO, "set option in ucs-object %s to value: %r" % (ucs_key, attributes.udm_option))
-								ucs_object.options.append(attributes.udm_option)
-						except AttributeError:
-							pass
+						if not ucs_object.has_property(ucs_key) and ucs_key in ucs_object:
+							ucs_object.options.extend(ucs_object.descriptions[ucs_key].options)
 						if isinstance(value, list):
 							ucs_object[ucs_key] = list(set(value))
 						else:
