@@ -467,7 +467,6 @@ class ucs(object):
 
 		self.init_debug()
 
-		self.co = None
 		self.listener_dir = listener_dir
 
 		configdbfile = '/etc/univention/%s/s4internal.sqlite' % self.CONFIGBASENAME
