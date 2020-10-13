@@ -74,11 +74,7 @@ def main():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	# try:
-	s4 = univention.s4connector.s4.s4.main(configRegistry, CONFIGBASENAME, init_group_cache=False)
-	# except:
-	#	print("Failed to read Connector-Config. This may happen if the connector is running.")
-	#	sys.exit(1)
+	s4 = univention.s4connector.s4.s4.main(configRegistry, CONFIGBASENAME)
 
 	found_rejected = False
 	i = 1

@@ -543,7 +543,7 @@ class s4(univention.s4connector.ucs):
 			**kwargs
 		)
 
-	def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, init_group_cache=True, logfilename=None, debug_level=None):
+	def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, logfilename=None, debug_level=None):
 		univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir, logfilename, debug_level)
 
 		self.s4_ldap_host = s4_ldap_host
@@ -553,9 +553,12 @@ class s4(univention.s4connector.ucs):
 		self.s4_ldap_bindpw = s4_ldap_bindpw
 		self.s4_ldap_certificate = s4_ldap_certificate
 
-		self.open_s4()
 		if self._debug_level >= 4:
 			ud.debug(ud.LDAP, ud.ALL, 'Mapping is: %s' % (pprint.pformat(property, indent=4, width=250)))
+
+		self.open_s4()
+
+		self.s4_sid = decode_sid(self.s4_search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
 
 		for prop in self.property.values():
 			prop.con_default_dn = self.dn_mapped_to_base(prop.con_default_dn, self.lo_s4.base)
@@ -631,33 +634,31 @@ class s4(univention.s4connector.ucs):
 		# * entry used for decision in group_members_sync_from_ucs
 		self.group_members_cache_con = {}
 
-		if init_group_cache:
-			ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
-			s4_groups = self.__search_s4(filter='objectClass=group', attrlist=['member'])
-			ud.debug(ud.LDAP, ud.ALL, "__init__: s4_groups: %s" % s4_groups)
-			for s4_group in s4_groups:
-				if not s4_group or not s4_group[0]:
-					continue
+	def init_group_cache(self):
+		ud.debug(ud.LDAP, ud.PROCESS, 'Building internal group membership cache')
+		s4_groups = self.__search_s4(filter='objectClass=group', attrlist=['member'])
+		ud.debug(ud.LDAP, ud.ALL, "__init__: s4_groups: %s" % s4_groups)
+		for s4_group in s4_groups:
+			if not s4_group or not s4_group[0]:
+				continue
 
-				s4_group_dn, s4_group_attrs = s4_group
-				self.group_members_cache_con[s4_group_dn.lower()] = set()
-				if s4_group_attrs:
-					s4_members = self.get_s4_members(s4_group_dn, s4_group_attrs)
-					member_cache = self.group_members_cache_con[s4_group_dn.lower()]
-					member_cache.update(m.lower() for m in s4_members)
+			s4_group_dn, s4_group_attrs = s4_group
+			self.group_members_cache_con[s4_group_dn.lower()] = set()
+			if s4_group_attrs:
+				s4_members = self.get_s4_members(s4_group_dn, s4_group_attrs)
+				member_cache = self.group_members_cache_con[s4_group_dn.lower()]
+				member_cache.update(m.lower() for m in s4_members)
 
-			ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
+		ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
-			for ucs_group in self.search_ucs(filter='objectClass=univentionGroup', attr=['uniqueMember']):
-				group_lower = ucs_group[0].lower()
-				self.group_members_cache_ucs[group_lower] = set()
-				if ucs_group[1]:
-					for member in ucs_group[1].get('uniqueMember'):
-						self.group_members_cache_ucs[group_lower].add(member.decode('UTF-8').lower())
-			ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
-			ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
-
-		self.s4_sid = decode_sid(self.s4_search_ext_s(s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
+		for ucs_group in self.search_ucs(filter='objectClass=univentionGroup', attr=['uniqueMember']):
+			group_lower = ucs_group[0].lower()
+			self.group_members_cache_ucs[group_lower] = set()
+			if ucs_group[1]:
+				for member in ucs_group[1].get('uniqueMember'):
+					self.group_members_cache_ucs[group_lower].add(member.decode('UTF-8').lower())
+		ud.debug(ud.LDAP, ud.ALL, "__init__: self.group_members_cache_ucs: %s" % self.group_members_cache_ucs)
+		ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
 	def s4_search_ext_s(self, *args, **kwargs):
 		return fix_dn_in_search(self.lo_s4.lo.search_ext_s(*args, **kwargs))

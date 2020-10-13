@@ -115,6 +115,7 @@ def connect(options):
 	while not s4_init:
 		try:
 			s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
+			s4.init_group_cache()
 			s4_init = True
 		except ldap.SERVER_DOWN:
 			print("Warning: Can't initialize LDAP-Connections, wait...")
