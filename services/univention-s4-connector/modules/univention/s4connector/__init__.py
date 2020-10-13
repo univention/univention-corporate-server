@@ -345,6 +345,52 @@ class configsaver(object):
 
 
 class attribute(object):
+	"""A mapping attribute description
+
+		:param ucs_attribute:
+			The property name of the object in UDM
+		:type ucs_attribute: str
+
+		:param ldap_attribute:
+			The LDAP attribute name of the object in UCS LDAP
+		:type ldap_attribute: str
+
+		:param con_attribute:
+			The LDAP attribute name of the object in Samba 4 LDAP
+		:type con_attribute: str
+
+		:param con_other_attribute:
+			Further LDAP attribute name of the object in Samba 4 LDAP.
+		:type con_other_attribute: str
+
+		:param required:
+			unused
+		:type required: bool
+
+		:param single_value:
+			Whether the attribute is single_value in the Samba 4 LDAP.
+		:type single_value: bool
+
+		:param compare_function:
+			A comparision function which compares raw ldap attribute values.
+		:type compare_function: callable
+
+		:param mapping:
+			Mapping functions for (sync_to_s4, sync_to_ucs)
+		:ptype mapping: tuple
+
+		:param reverse_attribute_check:
+			Make a reverse check of this mapping, if the mapping is not 1:1.
+		:ptype reverse_attribute_check: bool
+
+		:param sync_mode:
+			The syncronization direction (read, write, sync)
+		:ptype sync_mode: str
+
+		:param udm_option:
+			The UDM option which is required by :attr:`ucs_attribute` and gets enabled when setting this attribute
+		:type udm_option: None or str
+	"""
 
 	def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', udm_option=None, con_attribute_encoding='UTF-8'):
 		self.ucs_attribute = ucs_attribute
@@ -358,7 +404,7 @@ class attribute(object):
 		self.compare_function = compare_function or compare_normal
 		if mapping:
 			self.mapping = mapping
-		# Make a reverse check of this mapping. This is necassary if the attribute is
+		# Make a reverse check of this mapping. This is neccessary if the attribute is
 		# available in UCS and in AD but the mapping is not 1:1.
 		# For example the homeDirectory attribute is in UCS and in AD, but the mapping is
 		# from homeDirectory in AD to sambaHomePath in UCS. The homeDirectory in UCS is not
