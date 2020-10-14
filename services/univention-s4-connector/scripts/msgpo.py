@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,131 +31,52 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import subprocess
+from __future__ import print_function
 import sys
 import ldap
-from optparse import OptionParser
+from argparse import ArgumentParser
 import univention.config_registry
 import univention.admin.uldap
 import univention.admin.uexceptions
+import univention.s4connector.s4
 
 
-def _connect_ucs(configRegistry, binddn, bindpwd):
-	''' Connect to OpenLDAP '''
-
-	if binddn and bindpwd:
-		bindpw = bindpwd
-	else:
-		bindpw_file = configRegistry.get('connector/ldap/bindpw', '/etc/ldap.secret')
-		binddn = configRegistry.get('connector/ldap/binddn', 'cn=admin,' + configRegistry['ldap/base'])
-		bindpw = open(bindpw_file).read()
-		if bindpw[-1] == '\n':
-			bindpw = bindpw[0:-1]
-
-	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
-
-	try:
-		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port')))
-	except:
-		port = 7389
-
-	lo = univention.admin.uldap.access(host=host, port=port, base=configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
-
-	return lo
-
-
-def search_s4():
+def search_s4(s4):
 	''' Search all S4 objects with gPLink attribute and return a
 			dictonary with dn as key and gPLink as result. The gPLink
 			will only be set on containers, OUs and DCs, therefore
 			is a mapping not necessary.
 	'''
 
-	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb gPLink=* dn gPLink | ldapsearch-wrapper'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout, stderr) = p1.communicate()
-
-	if p1.returncode != 0:
-		print stderr
-		sys.exit(p1.returncode)
-
-	result = {}
-	dn = None
-
-	for line in stdout.split('\n'):
-		line = line.strip()
-		if line.startswith('dn: '):
-			dn = line[4:]
-		if line.startswith('gPLink: '):
-			gPLink = line[len('gPLink: '):]
-			result[dn] = gPLink
-			dn = None
-
-	return result
+	return dict((x[0], x[1]['gPLink'][0]) for x in s4.lo_s4.search('gPLink=*', attr=['gPLink']) if x[0] is not None)
 
 
-def _get_s4_object(dn):
-	''' Search for a Samba 4 object and put it into one dictonary '''
-	result = {}
+def search_ucs(s4):
+	''' Search all UCS objects with msGPOLink attribute and return a
+			dictonary with dn as key and msGPOLink as result
+	'''
 
-	p1 = subprocess.Popen(['ldbsearch -H /var/lib/samba/private/sam.ldb -b "%s" -s base | ldapsearch-wrapper' % dn], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdout, stderr) = p1.communicate()
-
-	if p1.returncode == 0:
-		for line in stdout.split('\n'):
-			line = line.strip()
-			if not line or line.startswith('#'):
-				continue
-			key = line.split(':')[0]
-			value = line[len(key) + 2:]
-			if result.get(key):
-				result[key].append(value)
-			else:
-				result[key] = []
-	return result
+	return dict((x[0], x[1]['msGPOLink'][0]) for x in s4.lo.search('msGPOLink=*', attr=['msGPOLink']))
 
 
-def write_to_s4(configRegistry, ucs_result):
+def write_to_s4(lo_s4, configRegistry, ucs_result):
 	''' Write the result from search_ucs to Samba LDAP '''
 	s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
 	ucs_ldap_base = configRegistry.get('ldap/base').lower()
 	for ucs_dn in ucs_result.keys():
 		s4_dn = ucs_dn.lower().replace(ucs_ldap_base, s4_ldap_base)
 
-		# This search is not necessary at the moment
-		# s4_object = _get_s4_object(s4_dn)
-		# if s4_object:
-
-		if True:
-			mod_str = 'dn: %s\nchangetype: modify\n' % s4_dn
-			mod_str += 'replace: gPLink\ngPLink: %s\n' % ucs_result[ucs_dn]
-			mod_str += '\n'
-			p1 = subprocess.Popen(['ldbmodify', '-H', '/var/lib/samba/private/sam.ldb'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=False)
-			(stdout, stderr) = p1.communicate(mod_str)
-			if p1.returncode != 0:
-				print 'Failed to set gPLink for Samba 4 object (%s)' % (s4_dn)
-			else:
-				print 'Set gPLink for Samba 4 object (%s)' % (s4_dn)
+		ml = [('gPLink', [b'OLD'], ucs_result[ucs_dn])]
+		try:
+			lo_s4.modify(s4_dn, ml)
+		except (ldap.LDAPError, univention.admin.uexceptions.base) as exc:
+			print('Failed to set gPLink for Samba 4 object (%s): %s' % (s4_dn, exc))
+		else:
+			print('Set gPLink for Samba 4 object (%s)' % (s4_dn))
 
 
-def search_ucs(configRegistry, binddn, bindpwd):
-	''' Search all UCS objects with msGPOLink attribute and return a
-			dictonary with dn as key and msGPOLink as result
-	'''
-
-	lo = _connect_ucs(configRegistry, binddn, bindpwd)
-
-	result = {}
-	ldap_result = lo.search('(msGPOLink=*)')
-	for dn, attributes in ldap_result:
-		result[dn] = attributes.get('msGPOLink', [])[0]
-
-	return result
-
-
-def write_to_ucs(configRegistry, s4_result, binddn, bindpwd, only_override_empty=False):
+def write_to_ucs(lo, configRegistry, s4_result, only_override_empty=False):
 	''' Write the result from search_s4 to UCS LDAP '''
-
-	lo = _connect_ucs(configRegistry, binddn, bindpwd)
 
 	s4_ldap_base = configRegistry.get('connector/s4/ldap/base').lower()
 	ucs_ldap_base = configRegistry.get('ldap/base').lower()
@@ -166,41 +87,35 @@ def write_to_ucs(configRegistry, s4_result, binddn, bindpwd, only_override_empty
 			for dn, attributes in lo.search(base=ucs_dn, scope=ldap.SCOPE_BASE):
 				if only_override_empty and attributes.get('msGPOLink'):
 					continue
-				if 'msGPO' not in attributes.get('objectClass'):
-					ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + ['msGPO']))
+				if b'msGPO' not in attributes.get('objectClass'):
+					ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + [b'msGPO']))
 				ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
 			if ml:
-				print 'Set msGPOLink for UCS object (%s)' % (ucs_dn)
+				print('Set msGPOLink for UCS object (%s)' % (ucs_dn))
 				lo.modify(ucs_dn, ml)
 		except univention.admin.uexceptions.noObject:
 			pass
-		except:
-			print 'Failed to set msGPOLink for UCS object (%s)' % (ucs_dn)
+		except Exception:
+			print('Failed to set msGPOLink for UCS object (%s)' % (ucs_dn))
 
 
 if __name__ == '__main__':
-
-	parser = OptionParser(usage='msgpo.py (--write2ucs|--write2samba4)')
-	parser.add_option("--write2ucs", dest="write2ucs", action="store_true", help="Write MS GPO settings from Samba 4 to UCS", default=False)
-	parser.add_option("--write2samba4", dest="write2samba4", action="store_true", help="Write MS GPO settings from UCS to Samba 4", default=False)
-	parser.add_option("--only-override-empty", dest="only_override_empty", action="store_true", help="The parameter controls that the attribute is only overwritten in case it is empty. This can only be used in write2ucs mode.", default=False)
-	parser.add_option("--binddn", dest="binddn", action="store", help="Binddn for UCS LDAP connection")
-	parser.add_option("--bindpwd", dest="bindpwd", action="store", help="Password for UCS LDAP connection")
-	parser.add_option("--bindpwdfile", dest="bindpwdfile", action="store", help="Password file for UCS LDAP connection")
-	(options, args) = parser.parse_args()
-	if options.bindpwdfile:
-		with open(options.bindpwdfile) as f:
-			options.bindpwd = f.readline().strip()
+	parser = ArgumentParser(usage='msgpo.py (--write2ucs|--write2samba4)')
+	parser.add_argument("--write2ucs", action="store_true", help="Write MS GPO settings from Samba 4 to UCS", default=False)
+	parser.add_argument("--write2samba4", action="store_true", help="Write MS GPO settings from UCS to Samba 4", default=False)
+	parser.add_argument("--only-override-empty", action="store_true", help="The parameter controls that the attribute is only overwritten in case it is empty. This can only be used in write2ucs mode.", default=False)
+	options = parser.parse_args()
 
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
+	s4 = univention.s4connector.s4.s4.main()
+	s4.init_ldap_connections()
+
 	if options.write2ucs:
-		result = search_s4()
-		write_to_ucs(configRegistry, result, options.binddn, options.bindpwd, options.only_override_empty)
+		write_to_ucs(s4.lo, configRegistry, search_s4(s4), options.only_override_empty)
 	elif options.write2samba4:
-		result = search_ucs(configRegistry, options.binddn, options.bindpwd)
-		write_to_s4(configRegistry, result)
+		write_to_s4(s4.lo_s4, configRegistry, search_ucs(s4))
 	else:
 		parser.print_help()
 		sys.exit(1)

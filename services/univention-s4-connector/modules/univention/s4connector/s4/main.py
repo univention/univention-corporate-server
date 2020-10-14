@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -34,16 +34,15 @@
 
 from __future__ import print_function
 import os
-import imp
 import signal
 import sys
 import time
-from optparse import OptionParser
+from argparse import ArgumentParser
 import fcntl
 import traceback
+import contextlib
 
 import ldap
-import setproctitle
 
 import univention
 import univention.s4connector
@@ -51,29 +50,17 @@ import univention.s4connector.s4
 
 from univention.config_registry import ConfigRegistry
 
-# parse commandline options
 
-parser = OptionParser()
-parser.add_option("--configbasename", dest="configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-parser.add_option('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
-(options, args) = parser.parse_args()
-
-CONFIGBASENAME = "connector"
-if options.configbasename:
-	CONFIGBASENAME = options.configbasename
-STATUSLOGFILE = "/var/log/univention/%s-s4-status.log" % CONFIGBASENAME
-
-
-mapping = imp.load_source('mapping', '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME)
-
-
-def bind_stdout():
+@contextlib.contextmanager
+def bind_stdout(options, statuslogfile):
 	if options.daemonize:
-		sys.stdout = open(STATUSLOGFILE, 'w+')
-	return sys.stdout
+		with open(statuslogfile, 'w+') as sys.stdout:
+			yield
+	else:
+		yield
 
 
-def daemon(lock_file):
+def daemon(lock_file, options):
 	try:
 		pid = os.fork()
 	except OSError as e:
@@ -90,27 +77,24 @@ def daemon(lock_file):
 			os.chdir("/")
 			os.umask(0)
 		else:
-			pf = open('/var/run/univention-s4-%s' % CONFIGBASENAME, 'w+')
+			pf = open('/var/run/univention-s4-%s' % options.configbasename, 'w+')
 			pf.write(str(pid))
 			pf.close()
 			os._exit(0)
-
-		# backwards compatibility for nagios checks not updated to UCS 4.4
-		setproctitle.setproctitle('%s # /usr/lib/pymodules/python2.7/univention/s4connector/s4/main.py' % (setproctitle.getproctitle(),))
 	else:
 		os._exit(0)
 
 	try:
 		maxfd = os.sysconf("SC_OPEN_MAX")
 	except (AttributeError, ValueError):
-		maxfd = 256       # default maximum
+		maxfd = 256  # default maximum
 
 	for fd in range(0, maxfd):
 		if fd == lock_file.fileno():
 			continue
 		try:
 			os.close(fd)
-		except OSError:   # ERROR (ignore)
+		except OSError:  # ERROR (ignore)
 			pass
 
 	os.open("/dev/null", os.O_RDONLY)
@@ -118,64 +102,30 @@ def daemon(lock_file):
 	os.open("/dev/null", os.O_RDWR)
 
 
-def connect():
+def connect(options):
 	print(time.ctime())
 
-	baseConfig = ConfigRegistry()
-	baseConfig.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 
-	if '%s/s4/ldap/host' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/ldap/host not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/s4/ldap/port' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/ldap/port not set' % CONFIGBASENAME)
-		sys.exit(1)
-	if '%s/s4/ldap/base' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/ldap/base not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/s4/ldap/certificate' % CONFIGBASENAME not in baseConfig and not ('%s/s4/ldap/ssl' % CONFIGBASENAME in baseConfig and baseConfig['%s/s4/ldap/ssl' % CONFIGBASENAME] == 'no'):
-		print('%s/s4/ldap/certificate not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/s4/listener/dir' % CONFIGBASENAME not in baseConfig:
-		print('%s/s4/listener/dir not set' % CONFIGBASENAME)
-		sys.exit(1)
-
-	if '%s/s4/retryrejected' % CONFIGBASENAME not in baseConfig:
-		baseconfig_retry_rejected = 10
-	else:
-		baseconfig_retry_rejected = baseConfig['%s/s4/retryrejected' % CONFIGBASENAME]
-
-	if baseConfig.get('%s/s4/ldap/bindpw' % CONFIGBASENAME) and os.path.exists(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]):
-		s4_ldap_bindpw = open(baseConfig['%s/s4/ldap/bindpw' % CONFIGBASENAME]).read()
-		if s4_ldap_bindpw[-1] == '\n':
-			s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
-	else:
-		s4_ldap_bindpw = None
-
-	poll_sleep = int(baseConfig['%s/s4/poll/sleep' % CONFIGBASENAME])
+	poll_sleep = int(ucr['%s/s4/poll/sleep' % options.configbasename])
 	s4_init = None
 	while not s4_init:
 		try:
-			s4 = univention.s4connector.s4.s4(
-				CONFIGBASENAME,
-				mapping.s4_mapping,
-				baseConfig,
-				baseConfig['%s/s4/ldap/host' % CONFIGBASENAME],
-				baseConfig['%s/s4/ldap/port' % CONFIGBASENAME],
-				baseConfig['%s/s4/ldap/base' % CONFIGBASENAME],
-				baseConfig.get('%s/s4/ldap/binddn' % CONFIGBASENAME, None),
-				s4_ldap_bindpw,
-				baseConfig['%s/s4/ldap/certificate' % CONFIGBASENAME],
-				baseConfig['%s/s4/listener/dir' % CONFIGBASENAME]
-			)
+			s4 = univention.s4connector.s4.s4.main(ucr, options.configbasename, logfilename=options.log_file, debug_level=options.debug)
+			s4.init_ldap_connections()
+			s4.init_group_cache()
 			s4_init = True
 		except ldap.SERVER_DOWN:
 			print("Warning: Can't initialize LDAP-Connections, wait...")
 			sys.stdout.flush()
 			time.sleep(poll_sleep)
 
+	with s4 as s4:
+		_connect(s4, poll_sleep, ucr.get('%s/s4/retryrejected' % options.configbasename, 10))
+
+
+def _connect(s4, poll_sleep, baseconfig_retry_rejected):
 	# Initialisierung auf UCS und S4 Seite durchfuehren
 	s4_init = None
 	ucs_init = None
@@ -242,7 +192,7 @@ def connect():
 				break
 
 		try:
-			if str(retry_rejected) == baseconfig_retry_rejected:
+			if str(retry_rejected) == baseconfig_retry_rejected:  # FIXME: if the UCR variable is not set this compares string with integer (default value)
 				s4.resync_rejected_ucs()
 				s4.resync_rejected()
 				retry_rejected = 0
@@ -258,42 +208,44 @@ def connect():
 		print('- sleep %s seconds (%s/%s until resync) -' % (poll_sleep, retry_rejected, baseconfig_retry_rejected))
 		sys.stdout.flush()
 		time.sleep(poll_sleep)
-	s4.close_debug()
 
 
+@contextlib.contextmanager
 def lock(filename):
-	lock_file = open(filename, "a+")
-	fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-	return lock_file
-
-
-def main():
 	try:
-		lock_file = lock('/var/lock/univention-s4-%s' % CONFIGBASENAME)
+		lock_file = open(filename, "a+")
+		fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
 	except IOError:
 		print('Error: Another S4 connector process is already running.', file=sys.stderr)
 		sys.exit(1)
+	with lock_file as lock_file:
+		yield lock_file
 
-	if options.daemonize:
-		daemon(lock_file)
-	f = bind_stdout()
 
-	while True:
-		try:
-			connect()
-		except (KeyboardInterrupt, SystemExit):
-			lock_file.close()
-			raise
-		except:
-			print(time.ctime())
+def main():
+	parser = ArgumentParser()
+	parser.add_argument("--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
+	parser.add_argument('-n', '--no-daemon', dest='daemonize', default=True, action='store_false', help='Start process in foreground')
+	parser.add_argument('-d', '--debug', help='debug level', type=int)
+	parser.add_argument('-L', '--log-file', metavar='LOGFILE', help='Specifies an alternative logfile')
+	options = parser.parse_args()
 
-			print(" --- connect failed, failure was: ---")
-			print(traceback.format_exc())
-			print(" ---     retry in 30 seconds      ---")
-			sys.stdout.flush()
-			time.sleep(30)
-	f.close()
-	lock_file.close()
+	with lock('/var/lock/univention-s4-%s' % options.configbasename) as lock_file:
+		if options.daemonize:
+			daemon(lock_file, options)
+
+		with bind_stdout(options, "/var/log/univention/%s-s4-status.log" % options.configbasename):
+			while True:
+				try:
+					connect(options)
+				except Exception:
+					print(time.ctime())
+
+					print(" --- connect failed, failure was: ---")
+					print(traceback.format_exc())
+					print(" ---     retry in 30 seconds      ---")
+					sys.stdout.flush()
+					time.sleep(30)
 
 
 if __name__ == "__main__":

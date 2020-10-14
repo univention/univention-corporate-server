@@ -9,14 +9,9 @@ sync_krbtgt usr/share/univention-s4-connector/
 univention-s4-position-sync usr/share/univention-s4-connector/
 ldap/*.schema usr/share/univention-s4-connector/ldap/
 scripts/msgpo.py usr/share/univention-s4-connector/
-scripts/upgrade_groupPolicyContainer.py usr/share/univention-s4-connector/
-scripts/msGPOWQLFilter.py usr/share/univention-s4-connector/
-scripts/upgrade_msWMI-Som.py usr/share/univention-s4-connector/
-scripts/write_password_settings.py usr/share/univention-s4-connector/
 scripts/resync_object_from_ucs.py  usr/share/univention-s4-connector/
 scripts/resync_object_from_s4.py  usr/share/univention-s4-connector/
 scripts/remove_s4_rejected.py usr/share/univention-s4-connector/
 scripts/remove_ucs_rejected.py usr/share/univention-s4-connector/
-scripts/adjust_obsolete_gpo_and_wmi_rejects usr/share/univention-s4-connector/
 etc/network/if-post-down.d/univention-s4-connector etc/network/if-post-down.d/
 server_password_change.d/univention-s4-connector usr/lib/univention-server/server_password_change.d/

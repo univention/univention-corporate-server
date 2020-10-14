@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,27 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import samba
+from __future__ import print_function
 import sys
 import ldb
 import base64
-from optparse import OptionParser
+from argparse import ArgumentParser
 
-from samba import dsdb
 from samba.samdb import SamDB
 from samba.param import LoadParm
 from samba.auth import system_session
 from samba.credentials import Credentials
 
 if __name__ == '__main__':
-	parser = OptionParser(usage='DN2base64Guid.py dn')
-	(options, args) = parser.parse_args()
-
-	if len(args) != 1:
-		parser.print_help()
-		sys.exit(2)
-
-	dn = args[0]
+	parser = ArgumentParser()
+	parser.add_argument('dn')
+	args = parser.parse_args()
 
 	lp = LoadParm()
 	creds = Credentials()
@@ -59,10 +53,10 @@ if __name__ == '__main__':
 	samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
 	domain_dn = samdb.domain_dn()
-	res = samdb.search(dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid"])
+	res = samdb.search(args.dn, scope=ldb.SCOPE_BASE, attrs=["objectGuid"])
 
 	for msg in res:
 		guid = msg.get("objectGuid", idx=0)
-		print base64.encodestring(guid),
+		print(base64.b64encode(guid).decode('ASCII'), end=' ')
 
 	sys.exit(0)

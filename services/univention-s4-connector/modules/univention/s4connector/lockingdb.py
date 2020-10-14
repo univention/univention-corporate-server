@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -34,14 +34,9 @@
 from __future__ import print_function
 import univention.debug2 as ud
 import sqlite3
-import inspect
 
 
-def func_name():
-	return inspect.currentframe().f_back.f_code.co_name
-
-
-class LockingDB:
+class LockingDB(object):
 
 	"""
 			A local database which includes the list of objects
@@ -50,17 +45,16 @@ class LockingDB:
 			https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
 	"""
 
+	@ud.trace(False)
 	def __init__(self, filename):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
 		self.s4cache = {}
 
 		self.__create_tables()
 
+	@ud.trace(False)
 	def lock_ucs(self, uuid):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		if not uuid:
 			return None
 
@@ -75,9 +69,8 @@ class LockingDB:
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def unlock_ucs(self, uuid):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		if not uuid:
 			return None
 
@@ -87,9 +80,8 @@ class LockingDB:
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def lock_s4(self, guid):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		if not guid:
 			return None
 
@@ -99,9 +91,8 @@ class LockingDB:
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def unlock_s4(self, guid):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		if not guid:
 			return None
 
@@ -111,9 +102,8 @@ class LockingDB:
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
+	@ud.trace(False)
 	def is_ucs_locked(self, uuid):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		if not uuid:
 			return False
 
@@ -128,9 +118,8 @@ class LockingDB:
 
 		return False
 
+	@ud.trace(False)
 	def is_s4_locked(self, guid):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		if not guid:
 			return False
 
@@ -145,9 +134,8 @@ class LockingDB:
 
 		return False
 
+	@ud.trace(False)
 	def __create_tables(self):
-		_d = ud.function('LockingDB.%s' % func_name())  # noqa: F841
-
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS S4_LOCK (id INTEGER PRIMARY KEY, guid TEXT);",
 			"CREATE TABLE IF NOT EXISTS UCS_LOCK (id INTEGER PRIMARY KEY, uuid TEXT);",
@@ -163,93 +151,91 @@ class LockingDB:
 				cur = self._dbcon.cursor()
 				for sql_command in sql_commands:
 					if isinstance(sql_command, tuple):
-						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]))
+						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: %r, %r" % (sql_command[0], sql_command[1]))
 						cur.execute(sql_command[0], sql_command[1])
 					else:
-						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: '%s'" % sql_command)
+						ud.debug(ud.LDAP, ud.INFO, "LockingDB: Execute SQL command: %r" % (sql_command,))
 						cur.execute(sql_command)
 				self._dbcon.commit()
 				if fetch_result:
 					rows = cur.fetchall()
 				cur.close()
 				if fetch_result:
-					ud.debug(ud.LDAP, ud.INFO, "LockingDB: Return SQL result: '%s'" % rows)
+					ud.debug(ud.LDAP, ud.INFO, "LockingDB: Return SQL result: %r" % (rows,))
 					return rows
 				return None
 			except sqlite3.Error as exp:
-				ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %s. SQL command was: %s" % (exp, sql_commands))
+				ud.debug(ud.LDAP, ud.WARN, "LockingDB: sqlite: %r. SQL command was: %r" % (exp, sql_commands))
 				if self._dbcon:
 					self._dbcon.close()
 				self._dbcon = sqlite3.connect(self.filename)
 
 
 if __name__ == '__main__':
-
 	import random
 
 	print('Starting LockingDB test example ')
 
-	l = LockingDB('lock.sqlite')
+	lock = LockingDB('lock.sqlite')
 
 	uuid1 = random.random()
-
 	guid1 = random.random()
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
-	l.lock_s4(guid1)
+	lock.lock_s4(guid1)
 
-	if not l.is_s4_locked(guid1):
+	if not lock.is_s4_locked(guid1):
 		print('E: guid1 is not locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
-	l.unlock_s4(guid1)
+	lock.unlock_s4(guid1)
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
-	l.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
+	lock.lock_ucs(uuid1)
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if not l.is_ucs_locked(uuid1):
+	if not lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is not locked for UCS')
 
-	l.unlock_ucs(uuid1)
+	lock.unlock_ucs(uuid1)
 
-	if l.is_s4_locked(guid1):
+	if lock.is_s4_locked(guid1):
 		print('E: guid1 is locked for S4')
-	if l.is_s4_locked(uuid1):
+	if lock.is_s4_locked(uuid1):
 		print('E: uuid1 is locked for S4')
-	if l.is_ucs_locked(guid1):
+	if lock.is_ucs_locked(guid1):
 		print('E: guid1 is locked for UCS')
-	if l.is_ucs_locked(uuid1):
+	if lock.is_ucs_locked(uuid1):
 		print('E: uuid1 is locked for UCS')
 
 	print('done')

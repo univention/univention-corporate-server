@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,9 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sqlite3
 import sys
-from optparse import OptionParser
+from argparse import ArgumentParser
+
+import univention.s4connector
+import univention.uldap
 
 
 class ObjectNotFound(BaseException):
@@ -41,33 +43,29 @@ class ObjectNotFound(BaseException):
 
 
 def remove_s4_rejected(s4_dn):
-	cache_db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
-	c = cache_db.cursor()
-	c.execute("SELECT key FROM 'S4 rejected' WHERE value=?", [unicode(s4_dn)])
-	key = c.fetchone()
-	if not key:
-		raise ObjectNotFound
-	c.execute("DELETE FROM 'S4 rejected' WHERE value=?", [unicode(s4_dn)])
-	cache_db.commit()
-	cache_db.close()
+	config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
+	found = False
+	for usn, rejected_dn in config.items('S4 rejected'):
+		if univention.uldap.access.compare_dn(s4_dn, rejected_dn):
+			config.remove_option('S4 rejected', usn)
+			found = True
+
+	if not found:
+		raise ObjectNotFound()
 
 
 if __name__ == '__main__':
-	parser = OptionParser(usage='remove_s4_rejected.py dn')
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument('dn')
+	args = parser.parse_args()
 
-	if len(args) != 1:
-		parser.print_help()
-		sys.exit(2)
-
-	s4_dn = args[0]
+	s4_dn = args.dn
 
 	try:
 		remove_s4_rejected(s4_dn)
 	except ObjectNotFound:
-		print 'ERROR: The object %s was not found.' % s4_dn
+		print('ERROR: The object %s was not found.' % s4_dn)
 		sys.exit(1)
 
-	print 'The rejected S4 object %s has been removed.' % s4_dn
-
+	print('The rejected S4 object %s has been removed.' % s4_dn)
 	sys.exit(0)

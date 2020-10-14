@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -32,7 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-import cPickle
+
+from six.moves import cPickle as pickle
 import listener
 import os
 import time
@@ -67,8 +68,8 @@ def _save_old_object(directory, dn, old):
 	filename = os.path.join(directory, 'tmp', 'old_dn')
 
 	f = open(filename, 'w+')
-	os.chmod(filename, 0600)
-	p = cPickle.Pickler(f)
+	os.chmod(filename, 0o600)
+	p = pickle.Pickler(f)
 	p.dump((dn, old))
 	p.clear_memo()
 	f.close()
@@ -76,7 +77,7 @@ def _save_old_object(directory, dn, old):
 
 def _load_old_object(directory):
 	f = open(os.path.join(directory, 'tmp', 'old_dn'), 'r')
-	p = cPickle.Unpickler(f)
+	p = pickle.Unpickler(f)
 	(old_dn, old_object) = p.load()
 	f.close()
 
@@ -91,8 +92,8 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 	filepath = os.path.join(tmpdir, filename)
 
 	with open(filepath, 'w+') as fd:
-		os.chmod(filepath, 0600)
-		p = cPickle.Pickler(fd)
+		os.chmod(filepath, 0o600)
+		p = pickle.Pickler(fd)
 		p.dump(ob)
 		p.clear_memo()
 
@@ -198,8 +199,8 @@ def postrun():
 				for directory in dirs:
 					filename = os.path.join(directory, "%f" % time.time())
 					f = open(filename, 'w+')
-					os.chmod(filename, 0600)
-					p = cPickle.Pickler(f)
+					os.chmod(filename, 0o600)
+					p = pickle.Pickler(f)
 					p.dump(ob)
 					p.clear_memo()
 					f.close()

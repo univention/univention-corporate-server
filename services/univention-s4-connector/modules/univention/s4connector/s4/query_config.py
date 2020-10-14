@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -33,9 +33,9 @@
 
 
 from __future__ import print_function
-import ConfigParser
-import cPickle
 import os
+import base64
+from six.moves import configparser
 
 
 def fixup(s):
@@ -49,7 +49,7 @@ def fixup(s):
 configfile = '/etc/univention/s4connector/s4internal.cfg'
 if not os.path.exists(configfile):
 	print("ERROR: Config-File not found, maybe connector was never started")
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.readfp(open(configfile))
 
 for section in config.sections():
@@ -57,6 +57,6 @@ for section in config.sections():
 	for name, value in config.items(section):
 		if section == "S4 GUID":
 			print(" --%s: %s" % (name, value))
-			print(" --%s: %s" % (fixup(name).decode('base64'), fixup(value).decode('base64')))
+			print(" --%s: %s" % (base64.b64decode(fixup(name).encode('ASCII')).decode('ASCII'), base64.b64decode(fixup(value).encode('ASCII')).decode('ASCII')))
 		else:
 			print(" -- %50s : %s" % (name, value))

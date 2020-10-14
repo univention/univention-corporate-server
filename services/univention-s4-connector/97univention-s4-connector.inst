@@ -150,24 +150,24 @@ udm container/cn create "$@" --ignore_exists \
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
-	--udm_syntax /usr/lib/python2.7/dist-packages/univention/admin/syntax.d/s4_connector.py || die
+	--udm_syntax /usr/lib/python3/dist-packages/univention/admin/syntax.d/s4_connector.py || die
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
-	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/container/msgpo.py || die
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/container/msgpo.py || die
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema || die
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
-	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/mswmifilter.py || die
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/settings/mswmifilter.py || die
 
 ucs_registerLDAPExtension "$@" \
 	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-s4-connector/ldap/msprintconnectionpolicy.schema \
-	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
+	--udm_module /usr/lib/python3/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpwl.schema || die
@@ -175,7 +175,7 @@ ucs_registerLDAPExtension "$@" \
 for udm_module in gpwl-wireless.py gpwl-wired.py gpwl-wireless-blob.py; do
 	ucs_registerLDAPExtension "$@" \
 		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
-		--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module"  || die
+		--udm_module "/usr/lib/python3/dist-packages/univention/admin/handlers/ms/$udm_module"  || die
 done
 
 ucs_registerLDAPExtension "$@" \
@@ -184,7 +184,7 @@ ucs_registerLDAPExtension "$@" \
 for udm_module in gpipsec-filter.py gpipsec-isakmp-policy.py gpipsec-nfa.py gpipsec-negotiation-policy.py gpipsec-policy.py; do
 	ucs_registerLDAPExtension "$@" \
 		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
-		--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module"  || die
+		--udm_module "/usr/lib/python3/dist-packages/univention/admin/handlers/ms/$udm_module"  || die
 done
 
 ucs_registerLDAPExtension "$@" \
@@ -193,7 +193,7 @@ ucs_registerLDAPExtension "$@" \
 for udm_module in gpsi-category-registration.py  gpsi-class-store.py  gpsi-package-registration.py; do
 	ucs_registerLDAPExtension "$@" \
 		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
-		--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" || die
+		--udm_module "/usr/lib/python3/dist-packages/univention/admin/handlers/ms/$udm_module" || die
 done
 
 #ucs_registerLDAPExtension "$@" \
@@ -231,7 +231,7 @@ if [ -z "$s4connector_dc" ] \
 
 	LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
 
-	domaindn="DC=${kerberos_realm//./,DC=}" # that's what /usr/lib/python2.7/dist-packages/samba/provision/__init__.py uses
+	domaindn="DC=${kerberos_realm//./,DC=}" # that's what /usr/lib/python3/dist-packages/samba/provision/__init__.py uses
 	if ! ldbsearch -H "$LDB_URI" -b $domaindn -s base dn 2>/dev/null| grep -qi ^"dn: $domaindn"; then
 		echo "Samba4 does not seem to be provisioned, exiting $0"
 		exit 1
@@ -275,27 +275,11 @@ if [ -z "$s4connector_dc" ] \
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=45439
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=43478
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=26926
-		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty "$@"
+		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
 		## Block for update code
-
-		if [ $JS_LAST_EXECUTED_VERSION -lt 4 ] && is_ucr_true connector/s4/mapping/wmifilter; then
-			## errata3.2-0 update code
-
-			# Add existing WMI filter objects to S4 rejected table, this will resync these objects to UCS
-			/usr/share/univention-s4-connector/upgrade_msWMI-Som.py --write2ucs "$@"
-			# Write MS WMI filter links from Samba 4 to UCS, in UCS@school this could be done with hostdn
-			/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2ucs "$@"
-
-			if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
-				# Touch existing WMI filter objects existing in UCS, this will resync these objects to S4
-				/usr/share/univention-s4-connector/upgrade_msWMI-Som.py --write2samba4 "$@"
-				# Write MS WMI filter links from UCS to Samba 4
-				/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2samba4 "$@"
-			fi
-		fi
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 6 ] && is_ucr_true connector/s4/mapping/msprintconnectionpolicy; then
 			# resync msPrint-ConnectionPolicy objects from samba to ucs

@@ -40,30 +40,6 @@ create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
 
 eval "$(ucr shell)"
 
-if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-22; then
-		/usr/share/univention-s4-connector/adjust_obsolete_gpo_and_wmi_rejects
-	fi
-fi
-
-# Bug 49092, 50033 synchronize more attributes in s4-connector
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.2-20; then
-	univention-config-registry set connector/s4/mapping/user/attributes/ignorelist?"unixhome,employeeType,employeeNumber,loginShell,title,gidNumber,uidNumber,departmentNumber,roomNumber"
-fi
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.2-43; then
-		univention-config-registry set connector/s4/mapping/user/attributes/ignorelist="$connector_s4_mapping_user_attributes_ignorelist,jpegPhoto,userCertificate,initials,physicalDeliveryOfficeName,postOfficeBox,preferredLanguage"
-fi
-
-# Bug 46107, add Console Logon builtin to group ignore list
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-3; then
-	univention-config-registry set connector/s4/mapping/group/ignorelist?"${connector_s4_mapping_group_ignorelist},Console Logon"
-fi
-
-# This S4-connector update depends on a Heimdal update, which needs a restart of the umc-server (Bug 51462)
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 13.0.2-76; then
-	service univention-management-console-server restart
-fi
-
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
 							   connector/s4/poll/sleep?5 \
 							   connector/s4/retryrejected?10 \
@@ -98,106 +74,14 @@ call_joinscript 97univention-s4-connector.inst
 stop_udm_cli_server
 
 if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
+	## This would be the location for errata bugfixes
 
-	# bug 45210
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.8-8; then
-		# deactivate sambaDomain sync to ucs for Replica Directory Nodes in ucs@school
-		if [ "$server_role" = "domaincontroller_slave" ]; then
-			if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
-				ucr set connector/s4/mapping/dc/syncmode?'write'
-			fi
-		fi
-	fi
-
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.128-1  && is_ucr_true connector/s4/mapping/gpo; then
-		## Write the MS GPO settings from Samba 4 to UCS
-		/etc/init.d/univention-s4-connector stop
-		# Sync the MS GPO Links from Samba 4 to UCS
-		/usr/share/univention-s4-connector/msgpo.py --write2ucs
-		# Add existing GPO filter objects to S4 rejected table to resync these objects to UCS
-		/usr/share/univention-s4-connector/upgrade_groupPolicyContainer.py
-		/etc/init.d/univention-s4-connector start
-		skip_final_restart=true
-	fi
-
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.3-1; then
-		/etc/init.d/univention-s4-connector stop
-		/usr/share/univention-s4-connector/write_password_settings.py --write2ucs
-		/etc/init.d/univention-s4-connector start
-		skip_final_restart=true
-	fi
-
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-5 && is_ucr_true connector/s4/mapping/gpo && is_ucr_true connector/s4/mapping/gpo/ntsd; then
-		## Write the GPO Security Descriptors from Samba 4 to UCS
-		if is_ucr_true 'connector/s4/allow/secondary'; then # Slave PDC
-			# First sync from UCS to S4 to avoid surprises for already upgraded Slave PDCs
-			/usr/share/univention-s4-connector/resync_object_from_ucs.py \
-				--filter "(&(objectClass=msGPOContainer)(msNTSecurityDescriptor=*))"
-		fi
-		/usr/share/univention-s4-connector/resync_object_from_s4.py \
-			--filter "(objectClass=groupPolicyContainer)"
-	fi
-
-	# Bug 28331
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-15; then
-		# resync sambaDomain object from s4 to ucs (initial setup of pwdProperties in UCS)
-		if ! is_ucr_true 'connector/s4/allow/secondary'; then
-			if [ -n "$connector_s4_ldap_base" ]; then
-				/usr/share/univention-s4-connector/resync_object_from_s4.py "$connector_s4_ldap_base"
-			fi
-		fi
-	fi
-
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.16-50; then
-		univention-config-registry set connector/s4/mapping/dns/position?'legacy'
-	fi
-
-	if [ "$1" = "configure" -a -n "$2" ]; then
-		if dpkg --compare-versions "$2" eq 10.0.1-7.598.201512220956 \
-			|| dpkg --compare-versions "$2" eq 10.0.1-8.601.201601071718; then
-			if is_ucr_true 'connector/s4/autostart' \
-				&& [ "$connector_s4_listener_disabled" = 'true' ]; then
-					univention-config-registry unset connector/s4/listener/disabled
-					/etc/init.d/univention-directory-listener crestart
-			fi
-		fi
-	fi
-
-	# Bug 43397
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.6-4 ; then
-      # cleanup wrong formatted `connector/s4/mapping/dns/ignorelist`
-      ucr set connector/s4/mapping/dns/ignorelist=$(echo "$connector_s4_mapping_dns_ignorelist" | sed -e 's/^DC=//i' -e 's/,DC=/,/gi')
-	fi
-
-	# Bug 44333
-	if [ "$1" = "configure" -a -n "$2" ] \
-		&& dpkg --compare-versions "$2" lt 11.0.8-14 \
-		&& [ "$server_role" = "domaincontroller_master"  -o "$server_role" = "domaincontroller_backup" ] \
-		&& [ -f /var/univention-join/joined ] \
-		&& [ -n "$(pgrep slapd)" ]; then
-			ldif=$(univention-ldapsearch -LLL -o ldif-wrap=no uid=krbtgt sambaSID)
-			dn=$(sed -n "s/^dn: //p" <<<"$ldif")
-			if [ -n "$dn" ]; then
-				sambaSID=$(sed -n "s/^sambaSID: //p" <<<"$ldif")
-				rid=$(sed -nr "s/(.*)-([0-9]+)/\2/p" <<<"$sambaSID")
-				if [ "$rid" != 502 ]; then
-					domainsid=$(sed -nr "s/(.*)-([0-9]+)/\1/p" <<<"$sambaSID")
-					ldapmodify -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<-%EOR
-					dn: $dn
-					changetype: modify
-					replace: sambaSID
-					sambaSID: $domainsid-502
-					%EOR
-				fi
-			fi
-	fi
-
-	# Bug 40419 - fix samba SID in case to ucs SID takes precedence
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.2-8 ; then
-		if is_ucr_true 'connector/s4/mapping/sid_to_s4'; then
-			/usr/share/univention-s4-connector/resync_object_from_ucs.py "$ldap_hostdn"
-		fi
-	fi
+	# Bug $BUGNR
+	# if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 14.1.0-1; then
+	# 	# Fix goes here
+	# 	/etc/init.d/univention-s4-connector start
+	# 	skip_final_restart=true
+	# fi
 
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart

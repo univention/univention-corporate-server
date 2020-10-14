@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -36,7 +36,6 @@ import time
 import ldap
 import univention.debug2 as ud
 import univention.s4connector.s4
-from univention.s4connector.s4 import compatible_modstring
 from univention.s4connector.s4 import format_escaped
 import binascii
 
@@ -91,15 +90,14 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
-							except:
+							except Exception:  # FIXME: which exception?
 								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
 									else:  # unknown special case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, p.name))
 								else:
-									traceback.print_exc()
-									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, p.name))
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype.\n%s" % (k.keytype, p.name, traceback.format_exc()))
 
 				elif p.name == "Primary:Kerberos-Newer-Keys":
 					krb_blob = binascii.unhexlify(p.data)
@@ -114,25 +112,21 @@ def calculate_krb5key(unicodePwd, supplementalCredentials, kvno=0):
 								krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
 								keys.append(heimdal.asn1_encode_key(key, krb5SaltObject, kvno))
 								keytypes.append(k.keytype)
-							except:
+							except Exception:  # FIXME: which exception?
 								if k.keytype == 4294967156:  # in all known cases W2k8 AD uses keytype 4294967156 (=-140L) for this
 									if k.value == up_blob:  # the known case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring arc4 NThash with special keytype %s in %s" % (k.keytype, p.name))
 									else:  # unknown special case
 										ud.debug(ud.LDAP, ud.INFO, "calculate_krb5key: ignoring unknown key with special keytype %s in %s" % (k.keytype, p.name))
 								else:
-									traceback.print_exc()
-									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype." % (k.keytype, p.name))
+									ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: krb5Key with keytype %s could not be parsed in %s. Ignoring this keytype.\n%s" % (k.keytype, p.name, traceback.format_exc()))
 
-		except Exception:
-			import sys
-			exc = sys.exc_info()[1]
-			if isinstance(exc.args, type(())) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error':
+		except Exception as exc:
+			if isinstance(exc, RuntimeError) and len(exc.args) == 2 and exc.args[1] == 'Buffer Size Error' or exc.args[0] == 11:
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: '%s' while unpacking supplementalCredentials:: %s" % (exc, binascii.b2a_base64(sc_blob)))
 				ud.debug(ud.LDAP, ud.WARN, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
 			else:
-				traceback.print_exc()
-				ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.")
+				ud.debug(ud.LDAP, ud.ERROR, "calculate_krb5key: the krb5Keys from the PrimaryKerberosBlob could not be parsed. Continuing anyway.\n%s" % (traceback.format_exc(),))
 
 	return keys
 
@@ -152,9 +146,8 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 					old_krb['ctr3'] = krb.ctr
 					for k in krb.ctr.keys:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr3.key.keytype: %s" % k.keytype)
-				except:
-					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos blob failed. Traceback:")
-					traceback.print_exc()
+				except Exception:  # FIXME: which exception?
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos blob failed.\n%s" % (traceback.format_exc(),))
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos (DES keys) blob will be missing in supplementalCredentials ctr3.old_keys.")
 			elif p.name == "Primary:Kerberos-Newer-Keys":
 				krb_blob = binascii.unhexlify(p.data)
@@ -164,9 +157,8 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 					old_krb['ctr4'] = krb.ctr
 					for k in krb.ctr.keys:
 						ud.debug(ud.LDAP, ud.INFO, "calculate_supplementalCredentials: ctr4.key.keytype: %s" % k.keytype)
-				except:
-					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos-Newer-Keys blob failed. Traceback:")
-					traceback.print_exc()
+				except Exception:  # FIXME: which exception?
+					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: ndr_unpack of S4 Primary:Kerberos-Newer-Keys blob failed.\n%s" % (traceback.format_exc(),))
 					ud.debug(ud.LDAP, ud.ERROR, "calculate_supplementalCredentials: Continuing anyway, Primary:Kerberos-Newer-Keys (AES and DES keys) blob will be missing in supplementalCredentials ctr4.old_keys.")
 
 	krb5_aes256 = ''
@@ -436,7 +428,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 		package_names.append('Kerberos')
 
 	if package_names:
-		krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')
+		krb_blob_Packages = u'\0'.join(package_names).encode('utf-16le')
 		cred_PackagesBlob_data = binascii.hexlify(krb_blob_Packages).upper()
 		cred_PackagesBlob_name = "Packages"
 		cred_PackagesBlob = drsblobs.supplementalCredentialsPackage()
@@ -479,11 +471,11 @@ def extract_NThash_from_krb5key(ucs_krb5key):
 
 
 def _append_length(a, str):
-	l = len(str)
-	a.append(chr((l & 0xff)))
-	a.append(chr((l & 0xff00) >> 8))
-	a.append(chr((l & 0xff0000) >> 16))
-	a.append(chr((l & 0xff000000) >> 24))
+	lenght = len(str)
+	a.append(chr((lenght & 0xff)))
+	a.append(chr((lenght & 0xff00) >> 8))
+	a.append(chr((lenght & 0xff0000) >> 16))
+	a.append(chr((lenght & 0xff000000) >> 24))
 
 
 def password_sync_ucs_to_s4(s4connector, key, object):
@@ -508,17 +500,11 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'password_sync_ucs_to_s4: the password for %s has not been changed. Skipping password sync.' % (object['dn']))
 		return
 
-	try:
-		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
-	except:  # FIXME: which exception is to be caught?
-		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
+	ud.debug(ud.LDAP, ud.INFO, "Object DN=%r" % (object['dn'],))
 
 	ucs_object = s4connector._object_mapping(key, object, 'con')
 
-	try:
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
-	except:  # FIXME: which exception is to be caught?
-		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
+	ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %r" % (ucs_object['dn'],))
 
 	try:
 		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaLMPassword', 'sambaNTPassword', 'sambaPwdLastSet', 'sambaPwdMustChange', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'], required=True)
@@ -527,7 +513,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		return
 
 	services = ucs_object_attributes.get('univentionService', [])
-	if 'Samba 4' in services:
+	if b'Samba 4' in services:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: %s is a S4 server, skip password sync" % ucs_object['dn'])
 		return
 
@@ -554,15 +540,12 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
-	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['pwdLastSet', 'objectSid'])
+	s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['pwdLastSet', 'objectSid'])
 	pwdLastSet = None
 	if 'pwdLastSet' in s4_object_attributes:
 		pwdLastSet = int(s4_object_attributes['pwdLastSet'][0])
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet from S4 : %s" % pwdLastSet)
-	# rid = None
-	# if s4_object_attributes.has_key('objectSid'):
-	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
 
 	pwd_set = False
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
@@ -573,7 +556,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 	dBCSPwd_attr = s4_search_attributes.get('dBCSPwd', [None])[0]
 	userPrincipalName_attr = s4_search_attributes.get('userPrincipalName', [None])[0]
 	supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
-	msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
+	#msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 	# ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: Password-Hash from S4: %s" % unicodePwd_attr)
 
 	s4NThash = None
@@ -595,14 +578,14 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 				modlist.append((ldap.MOD_ADD, 'userPrincipalName', krb5Principal))
 			else:  # new and old differ
 				if krb5Principal.lower() != userPrincipalName_attr.lower():
-					ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: userPrincipalName != krb5Principal: '%s' != '%s'" % (userPrincipalName_attr, krb5Principal))
+					ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs_to_s4: userPrincipalName != krb5Principal: %r != %r" % (userPrincipalName_attr, krb5Principal))
 				modlist.append((ldap.MOD_REPLACE, 'userPrincipalName', krb5Principal))
 		else:
 			if userPrincipalName_attr:  # old and not new
 				modlist.append((ldap.MOD_DELETE, 'userPrincipalName', userPrincipalName_attr))
 	unicodePwd_new = None
 	if not ucsNThash == s4NThash:
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %r NT Hash UCS: %r" % (s4NThash, ucsNThash))
 		# Now if ucsNThash is empty there should at least some timestamp in UCS,
 		# otherwise it's probably not a good idea to remove the unicodePwd.
 		# Usecase: LDB module on ucs_3.0-0-ucsschool slaves creates XP computers/windows in UDM without password
@@ -611,15 +594,15 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			if ucsNThash:
 				try:
 					unicodePwd_new = binascii.a2b_hex(ucsNThash)
-				except TypeError as exc:
-					if ucsNThash.startswith("NO PASSWORD"):
+				except TypeError:
+					if ucsNThash.startswith(b"NO PASSWORD"):
 						pwd_set = False
 					else:
 						raise
 			if pwd_set and unicodePwd_new:
 				modlist.append((ldap.MOD_REPLACE, 'unicodePwd', unicodePwd_new))
-	if not ucsLMhash == s4LMhash:
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %s LM Hash UCS: %s" % (s4LMhash, ucsLMhash))
+	if ucsLMhash != s4LMhash:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: LM Hash S4: %r LM Hash UCS: %r" % (s4LMhash, ucsLMhash))
 		pwd_set = True
 		if ucsLMhash:
 			dBCSPwd_new = binascii.a2b_hex(ucsLMhash)
@@ -649,11 +632,11 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			newpwdlastset = 0
 		else:
 			newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet in modlist: %s" % newpwdlastset)
-		modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset)))
-		modlist.append((ldap.MOD_REPLACE, 'badPwdCount', '0'))
-		modlist.append((ldap.MOD_REPLACE, 'badPasswordTime', '0'))
-		modlist.append((ldap.MOD_REPLACE, 'lockoutTime', '0'))
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet in modlist: %r" % newpwdlastset)
+		modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset).encode('ASCII')))
+		modlist.append((ldap.MOD_REPLACE, 'badPwdCount', b'0'))
+		modlist.append((ldap.MOD_REPLACE, 'badPasswordTime', b'0'))
+		modlist.append((ldap.MOD_REPLACE, 'lockoutTime', b'0'))
 
 	else:
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: No password change to sync to S4 ")
@@ -665,16 +648,16 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 			else:
 				newpwdlastset = univention.s4connector.s4.samba2s4_time(sambaPwdLastSet)
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: sambaPwdLastSet: %d" % sambaPwdLastSet)
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %s" % newpwdlastset)
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet (AD): %s" % pwdLastSet)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: newpwdlastset  : %r" % newpwdlastset)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: pwdLastSet (AD): %r" % pwdLastSet)
 			if newpwdlastset != pwdLastSet and abs(newpwdlastset - pwdLastSet) >= 10000000:
-				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset)))
+				modlist.append((ldap.MOD_REPLACE, 'pwdLastSet', str(newpwdlastset).encode('ASCII')))
 
 	# TODO: Password History
 	ctrl_bypass_password_hash = LDAPControl('1.3.6.1.4.1.7165.4.3.12', criticality=0)
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: modlist: %s" % modlist)
 	if modlist:
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist, serverctrls=[ctrl_bypass_password_hash])
+		s4connector.lo_s4.lo.modify_ext_s(object['dn'], modlist, serverctrls=[ctrl_bypass_password_hash])
 
 
 def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=True):
@@ -687,7 +670,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			return
 
 	object = s4connector._object_mapping(key, ucs_object, 'ucs')
-	s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['objectSid', 'pwdLastSet'])
+	s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['objectSid', 'pwdLastSet'])
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
@@ -700,10 +683,6 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: pwdLastSet from S4: %s (%s)" % (pwdLastSet, s4_object_attributes))
 	objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 
-	# rid = None
-	# if s4_object_attributes.has_key('objectSid'):
-	# 	rid = str(univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0]).split('-')[-1])
-
 	filter_expr = format_escaped('(objectSid={0!e})', objectSid)
 	res = s4connector.lo_s4.search(filter=filter_expr, attr=['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
 	s4_search_attributes = res[0][1]
@@ -712,7 +691,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	if unicodePwd_attr:
 		ntPwd = binascii.b2a_hex(unicodePwd_attr).upper()
 
-		lmPwd = ''
+		lmPwd = b''
 		dBCSPwd = s4_search_attributes.get('dBCSPwd', [None])[0]
 		if dBCSPwd:
 			lmPwd = binascii.b2a_hex(dBCSPwd).upper()
@@ -720,10 +699,10 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		supplementalCredentials = s4_search_attributes.get('supplementalCredentials', [None])[0]
 		msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 
-		ntPwd_ucs = ''
-		lmPwd_ucs = ''
-		krb5Principal = ''
-		userPassword = ''
+		ntPwd_ucs = b''
+		lmPwd_ucs = b''
+		krb5Principal = b''
+		#userPassword = b''
 		modlist = []
 		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
 
@@ -738,16 +717,16 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			lmPwd_ucs = ucs_object_attributes['sambaLMPassword'][0]
 		if 'krb5PrincipalName' in ucs_object_attributes:
 			krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
-		if 'userPassword' in ucs_object_attributes:
-			userPassword = ucs_object_attributes['userPassword'][0]
+		#if 'userPassword' in ucs_object_attributes:
+		#	userPassword = ucs_object_attributes['userPassword'][0]
 		sambaPwdLastSet = None
 		if 'sambaPwdLastSet' in ucs_object_attributes:
 			sambaPwdLastSet = ucs_object_attributes['sambaPwdLastSet'][0]
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet: %r" % sambaPwdLastSet)
 		sambaPwdMustChange = ''
 		if 'sambaPwdMustChange' in ucs_object_attributes:
 			sambaPwdMustChange = ucs_object_attributes['sambaPwdMustChange'][0]
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Found sambaPwdMustChange: %s" % sambaPwdMustChange)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Found sambaPwdMustChange: %r" % sambaPwdMustChange)
 		krb5Key_ucs = ucs_object_attributes.get('krb5Key', [])
 		userPassword_ucs = ucs_object_attributes.get('userPassword', [None])[0]
 		krb5KeyVersionNumber = ucs_object_attributes.get('krb5KeyVersionNumber', [None])[0]
@@ -755,11 +734,11 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		pwd_changed = False
 		if ntPwd != ntPwd_ucs:
 			pwd_changed = True
-			modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd)))
+			modlist.append(('sambaNTPassword', ntPwd_ucs, ntPwd))
 
 		if lmPwd != lmPwd_ucs:
 			pwd_changed = True
-			modlist.append(('sambaLMPassword', lmPwd_ucs, str(lmPwd)))
+			modlist.append(('sambaLMPassword', lmPwd_ucs, lmPwd))
 
 		if pwd_changed:
 			if krb5Principal:
@@ -772,7 +751,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 			# Append modification as well to modlist, to apply in one transaction
 			if modifyUserPassword:
-				modlist.append(('userPassword', userPassword_ucs, '{K5KEY}'))
+				modlist.append(('userPassword', userPassword_ucs, b'{K5KEY}'))
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
 
@@ -794,17 +773,17 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			new_krb5end = old_krb5end
 
 			pwdLastSet_unix = univention.s4connector.s4.s42samba_time(pwdLastSet)
-			newSambaPwdLastSet = str(pwdLastSet_unix)
+			newSambaPwdLastSet = str(pwdLastSet_unix).encode('ASCII')
 
 			if pwdLastSet == 0:  # pwd change on next login
-				new_shadowMax = '1'
+				new_shadowMax = b'1'
 				expiry = int(time.time())
-				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+				new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry)).encode('ASCII')
 				# we need to expire the password. Since shadowMax=1 is its minimum value, we need to set shadowLastChange = today-2days
-				two_days_ago = long(time.time()) - 86400*2
-				new_shadowLastChange = str(two_days_ago/ 3600 / 24)
+				two_days_ago = int(time.time()) - 86400 * 2
+				new_shadowLastChange = str(two_days_ago // 3600 // 24).encode('ASCII')
 			else:                # not pwd change on next login
-				new_shadowLastChange = str(pwdLastSet_unix / 3600 / 24)
+				new_shadowLastChange = str(pwdLastSet_unix // 3600 // 24).encode('ASCII')
 				userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
 				if not userobject:
 					ud.debug(ud.LDAP, ud.ERROR, "password_sync_s4_to_ucs: couldn't get user-object from UCS")
@@ -815,16 +794,16 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 					expiryInterval = int(pwhistoryPolicy['expiryInterval'])
 				except (TypeError, ValueError):
 					# expiryInterval is empty or no legal int-string
-					pwhistoryPolicy['expiryInterval'] = ''
+					pwhistoryPolicy['expiryInterval'] = u''
 					expiryInterval = -1
 
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiryInterval for %s is %s" % (ucs_object['dn'], expiryInterval))
 				if expiryInterval in (-1, 0):
-					new_shadowMax = ''
-					new_krb5end = ''
+					new_shadowMax = b''
+					new_krb5end = b''
 				else:
-					new_shadowMax = str(expiryInterval)
-					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(expiryInterval) * 3600 * 24))))
+					new_shadowMax = str(expiryInterval).encode('ASCII')
+					new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime((pwdLastSet_unix + (int(expiryInterval) * 3600 * 24)))).encode('ASCII')
 
 			if new_shadowLastChange != old_shadowLastChange:
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: update shadowLastChange to %s for %s" % (new_shadowLastChange, ucs_object['dn']))
@@ -841,11 +820,11 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 					modlist.append(('sambaPwdLastSet', sambaPwdLastSet, newSambaPwdLastSet))
 					ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet in modlist (replace): %s" % newSambaPwdLastSet)
 			else:
-				modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet))
+				modlist.append(('sambaPwdLastSet', b'', newSambaPwdLastSet))
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: sambaPwdLastSet in modlist (set): %s" % newSambaPwdLastSet)
 
 			if sambaPwdMustChange:
-				modlist.append(('sambaPwdMustChange', sambaPwdMustChange, ''))
+				modlist.append(('sambaPwdMustChange', sambaPwdMustChange, b''))
 				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Removing sambaPwdMustChange")
 
 		if len(modlist) > 0:
@@ -881,33 +860,33 @@ def lockout_sync_s4_to_ucs(s4connector, key, ucs_object):
 	except ldap.NO_SUCH_OBJECT:
 		ud.debug(ud.LDAP, ud.WARN, "%s: The UCS object (%s) was not found. The object was removed." % (function_name, ucs_object['dn']))
 		return
-	sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [''])[0]
-	sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', ["0"])[0]
+	sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [b''])[0]
+	sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [b"0"])[0]
 
-	lockoutTime = ucs_object['attributes'].get('lockoutTime', ['0'])[0]
-	if lockoutTime != "0":
-		if "L" not in sambaAcctFlags:
+	lockoutTime = ucs_object['attributes'].get('lockoutTime', [b'0'])[0]
+	if lockoutTime != b"0":
+		if b"L" not in sambaAcctFlags:
 			acctFlags = univention.admin.samba.acctFlags(sambaAcctFlags)
-			new_sambaAcctFlags = acctFlags.set('L')
+			new_sambaAcctFlags = acctFlags.set('L').encode('ASCII')
 			ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking Samba account as locked in OpenLDAP" % (function_name,))
 			modlist.append(('sambaAcctFlags', sambaAcctFlags, new_sambaAcctFlags))
 
-		badPasswordTime = ucs_object['attributes'].get('badPasswordTime', ["0"])[0]
+		badPasswordTime = ucs_object['attributes'].get('badPasswordTime', [b"0"])[0]
 		if badPasswordTime != sambaBadPasswordTime:
 			ud.debug(ud.LDAP, ud.PROCESS, "%s: Copying badPasswordTime from S4: %s" % (function_name, badPasswordTime))
 			if sambaBadPasswordTime:
 				ud.debug(ud.LDAP, ud.INFO, "%s: Old sambaBadPasswordTime: %s" % (function_name, sambaBadPasswordTime))
 			modlist.append(('sambaBadPasswordTime', sambaBadPasswordTime, badPasswordTime))
 	else:
-		if "L" in sambaAcctFlags:
+		if b"L" in sambaAcctFlags:
 			acctFlags = univention.admin.samba.acctFlags(sambaAcctFlags)
-			new_sambaAcctFlags = acctFlags.unset('L')
+			new_sambaAcctFlags = acctFlags.unset('L').encode('ASCII')
 			ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking Samba account as unlocked in OpenLDAP" % (function_name,))
 			modlist.append(('sambaAcctFlags', sambaAcctFlags, new_sambaAcctFlags))
 
-		if sambaBadPasswordTime and sambaBadPasswordTime != "0":
+		if sambaBadPasswordTime and sambaBadPasswordTime != b"0":
 			ud.debug(ud.LDAP, ud.PROCESS, "%s: Unsetting sambaBadPasswordTime: %s" % (function_name, sambaBadPasswordTime))
-			modlist.append(('sambaBadPasswordTime', sambaBadPasswordTime, "0"))
+			modlist.append(('sambaBadPasswordTime', sambaBadPasswordTime, b"0"))
 
 	if modlist:
 		ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
@@ -939,11 +918,11 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		# only set by sync_from_ucs in MODIFY case
 		return
 
-	new_sambaAcctFlags = new_ucs_object.get('sambaAcctFlags', [''])[0]
-	is_locked = "L" in new_sambaAcctFlags
+	new_sambaAcctFlags = new_ucs_object.get('sambaAcctFlags', [b''])[0]
+	is_locked = b"L" in new_sambaAcctFlags
 
-	old_sambaAcctFlags = old_ucs_object.get('sambaAcctFlags', [''])[0]
-	was_locked = "L" in old_sambaAcctFlags
+	old_sambaAcctFlags = old_ucs_object.get('sambaAcctFlags', [b''])[0]
+	was_locked = b"L" in old_sambaAcctFlags
 
 	if is_locked == was_locked:
 		# Require a change in the pickled state
@@ -951,12 +930,12 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
 	modlist = []
 	if not is_locked:
-		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
+		s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['lockoutTime', 'badPasswordTime'])
 		if 'lockoutTime' not in s4_object_attributes:
 			return
 
 		lockoutTime = s4_object_attributes['lockoutTime'][0]
-		if lockoutTime == "0":
+		if lockoutTime == b"0":
 			return
 
 		# Now object.get('new_ucs_object') may be a stale pickled state, so let's lookup the current OpenLDAP object state
@@ -967,26 +946,26 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		except ldap.NO_SUCH_OBJECT:
 			ud.debug(ud.LDAP, ud.WARN, "%s: The UCS object (%s) was not found. The object was removed." % (function_name, ucs_object['dn']))
 			return
-		sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [''])[0]
+		sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [b''])[0]
 
-		if "L" in sambaAcctFlags:
+		if b"L" in sambaAcctFlags:
 			# currently locked again
 			return
 
-		sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [''])[0]
-		if sambaBadPasswordTime and sambaBadPasswordTime != "0":
+		sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [b''])[0]
+		if sambaBadPasswordTime and sambaBadPasswordTime != b"0":
 			ud.debug(ud.LDAP, ud.ERROR, "%s: The UCS object (%s) is unlocked, but sambaBadPasswordTime is set." % (function_name, ucs_object['dn']))
 			return
 
 		# Ok here we have:
 		# 1. Account currently not locked in OpenLDAP but in Samba/AD
 		# 2. Lockout state has changed to unlocked at some pickled point in the past
-		modlist.append((ldap.MOD_REPLACE, "lockoutTime", "0"))
-		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", "0"))
+		modlist.append((ldap.MOD_REPLACE, "lockoutTime", b"0"))
+		modlist.append((ldap.MOD_REPLACE, "badPasswordTime", b"0"))
 		ud.debug(ud.LDAP, ud.PROCESS, "%s: Marking account as unlocked in Samba/AD" % (function_name,))
 	else:
-		s4_object_attributes = s4connector.lo_s4.get(compatible_modstring(object['dn']), ['lockoutTime', 'badPasswordTime'])
-		lockoutTime = s4_object_attributes.get('lockoutTime', ['0'])[0]
+		s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['lockoutTime', 'badPasswordTime'])
+		lockoutTime = s4_object_attributes.get('lockoutTime', [b'0'])[0]
 
 		# Now object.get('new_ucs_object') may be a stale pickled state, so let's lookup the current OpenLDAP object state
 		# Unfortunately "object" doesn't hold the current OpenLDAP DN, so we need to map back first
@@ -996,16 +975,16 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		except ldap.NO_SUCH_OBJECT:
 			ud.debug(ud.LDAP, ud.WARN, "%s: The UCS object (%s) was not found. The object was removed." % (function_name, ucs_object['dn']))
 			return
-		sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [''])[0]
-		if "L" not in sambaAcctFlags:
+		sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [b''])[0]
+		if b"L" not in sambaAcctFlags:
 			# currently not locked any longer
 			return
 
-		sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [''])[0]
+		sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [b''])[0]
 		if not sambaBadPasswordTime:
 			ud.debug(ud.LDAP, ud.ERROR, "%s: The UCS object (%s) is locked, but sambaBadPasswordTime is missing." % (function_name, ucs_object['dn']))
 			return
-		if sambaBadPasswordTime == "0":
+		if sambaBadPasswordTime == b"0":
 			ud.debug(ud.LDAP, ud.ERROR, "%s: The UCS object (%s) is locked, but sambaBadPasswordTime is 0." % (function_name, ucs_object['dn']))
 			return
 		if sambaBadPasswordTime == lockoutTime:
@@ -1022,4 +1001,4 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
 	if modlist:
 		ud.debug(ud.LDAP, ud.ALL, "%s: modlist: %s" % (function_name, modlist))
-		s4connector.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), modlist)
+		s4connector.lo_s4.lo.modify_ext_s(object['dn'], modlist)

@@ -13,7 +13,7 @@ import univention.testing.utils as utils
 import dnstests
 import s4connector
 import subprocess
-import os
+
 
 if __name__ == '__main__':
 	s4connector.exit_if_connector_not_running()
@@ -26,19 +26,9 @@ if __name__ == '__main__':
 	fqdn = ".".join((hostname, domainname))
 	location = "0 100 389 %s." % fqdn
 
-	try:
-		admin_dn = os.environ["tests_domainadmin_account"]
-	except KeyError as exc:
-		print("No Domain Administrator credentials given, trying cn=admin")
-		try:
-			with open("/etc/ldap.secret", "r") as f:
-				admin_pwd = f.read().strip()
-				admin_dn = "cn=admin,%s" % dnstests.ucr["ldap/base"]
-		except IOError as exc2:
-			utils.fail("Domain Administrator credentials required")
-			print(str(exc))
+	account = utils.UCSTestDomainAdminCredentials()
 
-	cmd = ["/usr/share/univention-directory-manager-tools/univention-dnsedit", "--binddn=%s" % admin_dn, "--bindpwd=%s" % admin_pwd, "--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs"] + location.split(" ")
+	cmd = ["/usr/share/univention-directory-manager-tools/univention-dnsedit", "--binddn=%s" % (account.binddn,), "--bindpwd=%s" % (account.bindpw,), "--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs"] + location.split(" ")
 	print(" ".join(cmd))
 	p = subprocess.Popen(cmd)
 	p.wait()

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
@@ -31,17 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import cPickle
+from __future__ import print_function
+
+from six.moves import cPickle as pickle
 import time
 import os
 import ldap
 import sys
 import univention.uldap
-from optparse import OptionParser
+from argparse import ArgumentParser
 from univention.config_registry import ConfigRegistry
 
 
-class UCSResync:
+class UCSResync(object):
 
 	def __init__(self):
 		self.configRegistry = ConfigRegistry()
@@ -58,21 +60,16 @@ class UCSResync:
 
 	def _dump_object_to_file(self, object_data):
 		filename = self._generate_filename()
-		f = open(filename, 'w+')
-		os.chmod(filename, 0600)
-		p = cPickle.Pickler(f)
-		p.dump(object_data)
-		p.clear_memo()
-		f.close()
+		with open(filename, 'wb+') as fd:
+			os.chmod(filename, 0o600)
+			p = pickle.Pickler(fd)
+			p.dump(object_data)
+			p.clear_memo()
 
 	def _search_ldap_object_orig(self, ucs_dn):
 		return self.lo.get(ucs_dn, attr=['*', '+'], required=True)
 
 	def resync(self, ucs_dns=None, ldapfilter=None):
-
-		if ucs_dns and not type(ucs_dns) in (type(()), type([])):
-			raise ValueError("'ucs_dns' is of type %s, must be list or tuple" % type(ucs_dns))
-
 		treated_dns = []
 		for dn, new in self.search_ldap(ucs_dns, ldapfilter):
 			object_data = (dn, new, {}, None)
@@ -81,19 +78,10 @@ class UCSResync:
 
 		return treated_dns
 
-	def search_ldap(self, ucs_dns=None, ldapfilter=None, attr=None):
-
-		if not attr:
-			attr = ('*', '+')
-		elif type(attr) in (type(""), type(u'')):
-			attr = (attr,)
-		elif not type(attr) in (type(()), type([])):
-			raise ValueError("'attribute' is of type %s" % type(attr))
+	def search_ldap(self, ucs_dns=None, ldapfilter=None):
+		attr = ('*', '+')
 
 		if ucs_dns:
-			if not type(ucs_dns) in (type(()), type([])):
-				raise ValueError("'ucs_dns' is of type %s, must be list or tuple" % type(ucs_dns))
-
 			if not ldapfilter:
 				ldapfilter = '(objectClass=*)'
 
@@ -114,33 +102,31 @@ class UCSResync:
 
 
 if __name__ == '__main__':
+	parser = ArgumentParser()
+	parser.add_argument("--filter", dest="ldapfilter", help="LDAP Filter")
+	parser.add_argument("dn", nargs='?', default=None)
+	options = parser.parse_args()
 
-	parser = OptionParser(usage='resync_object_from_ucs.py [--filter <LDAP filter>] [dn]')
-	parser.add_option("--filter", dest="ldapfilter", help="LDAP Filter")
-	(options, args) = parser.parse_args()
-
-	if len(args) != 1 and not options.ldapfilter:
+	if not options.dn and not options.ldapfilter:
 		parser.print_help()
 		sys.exit(2)
 
-	ucs_dns = []
-	if len(args) == 1:
-		ucs_dns.append(args[0])
+	ucs_dns = list(filter(None, [options.dn]))
 
 	treated_dns = []
 	try:
 		resync = UCSResync()
 		treated_dns = resync.resync(ucs_dns, options.ldapfilter)
 	except ldap.NO_SUCH_OBJECT as ex:
-		print 'ERROR: The LDAP object not found : %s' % ex.args[1]
+		print('ERROR: The LDAP object not found : %s' % ex.args[1])
 		if len(ex.args) == 3:
 			treated_dns = ex.args[2]
 		sys.exit(1)
 	finally:
 		for dn in treated_dns:
-			print 'resync triggered for %s' % dn
+			print('resync triggered for %s' % dn)
 
 	if not treated_dns:
-		print 'No matching objects.'
+		print('No matching objects.')
 
 	sys.exit(0)
