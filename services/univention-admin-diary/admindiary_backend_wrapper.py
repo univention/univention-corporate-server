@@ -42,6 +42,7 @@ import sys
 from datetime import datetime
 from functools import partial
 
+import sqlalchemy.exc
 from pyparsing import Combine, ParseException, Regex, Suppress, Word, alphas, nums, string
 
 from univention.admindiary import DiaryEntry, get_events_to_reject, get_logger
@@ -133,6 +134,8 @@ def stdin_to_storage():
 if __name__ == "__main__":
     try:
         stdin_to_storage()
+    except sqlalchemy.exc.OperationalError as exc:
+        get_logger().error('Processing entry failed: %s', exc)
     except Exception as exc:
         get_logger().error('Processing entry failed!')
         get_logger().exception(exc)
