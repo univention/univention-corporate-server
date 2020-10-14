@@ -9,13 +9,15 @@
 
 from __future__ import print_function
 import os
+import subprocess
+import time
 import samltest
 import univention.testing.utils as utils
-import subprocess
 
 
 def restart_umc():
 	subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
+	time.sleep(3)  # Wait for the umc to be ready to answer requests. 
 
 
 class move_idp_metadata(object):
