@@ -13,3 +13,5 @@ desc: |
    sync to UCS if the password was reset without changing the flag
    pwdChangeNextLogin. This behavior has been fixed.
 bug: [51904,51501]
+erratum: 769
+announced: 2020-10-14
