@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-web
-fix: 3.0.5-45A~4.4.0.202010141112
+fix: 3.0.5-46A~4.4.0.202010141257
 desc: |
  This update addresses the following issue(s):
  * A Cookie Banner can now be shown in the Portal and
