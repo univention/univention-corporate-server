@@ -139,7 +139,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'gaierror: \[Errno -5\] No address associated with hostname', None),
 	('.*moduleCreationFailed: Target directory.*not below.*', None),
 	# Tracebacks caused by specific bugs:
-	(r'^OperationalError: \(psycopg2.OperationalError\) FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py']),  # Bug #51671
+	(r'.*OperationalError: \(psycopg2.OperationalError\) FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py']),  # Bug #51671
 	(r"OSError: \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py']),  # Bug #51670
 	("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4']),  # Bug #50282
 	("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs']),  # Bug #49879
