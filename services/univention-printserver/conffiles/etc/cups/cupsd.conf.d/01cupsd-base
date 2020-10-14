@@ -551,7 +551,7 @@ if allow and allow != "networks":
 else:
 	interfaces = Interfaces(configRegistry)
 	for _name, iface in interfaces.ipv4_interfaces:
-		print('    Allow From %s' % (iface.ipv4_address().with_netmask,))
+		print('    Allow From %s' % (iface.ipv4_address().network,))
 @!@
     Allow From 127.0.0.1
     Deny From All
@@ -648,7 +648,7 @@ if allow and allow != "networks":
 else:
 	interfaces = Interfaces(configRegistry)
 	for _name, iface in interfaces.ipv4_interfaces:
-		print('    Allow From %s' % (iface.ipv4_address().with_netmask,))
+		print('    Allow From %s' % (iface.ipv4_address().network,))
 @!@
     Allow From 127.0.0.1
     Deny From All
