@@ -25,6 +25,7 @@ rootdelay = configRegistry.get('grub/rootdelay', '5')
 defoptions += ' rootdelay=%s' % rootdelay
 
 defoptions += ' %s' % configRegistry.get('grub/bootsplash', 'splash')
+defoptions += ' apparmor=0'  # Disable apparmor, the debian profiles do not work out of the box with ucs.
 print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)
 @!@
 
