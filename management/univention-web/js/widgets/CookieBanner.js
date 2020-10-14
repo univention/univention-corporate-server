@@ -48,9 +48,11 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			var banner = tools.status('cookieBanner');
+			this.cookieName = banner['cookie'] || 'univentionCookieSettingsAccepted';
 			var locale = i18nTools.defaultLang().slice(0, 2);
-			this.title = _('Cookie Settings');
-			this.message = tools.status('cookieBanner')[locale] || tools.status('cookieBannerDefault');
+			this.title = banner['title'][locale] || _('Cookie Settings');
+			this.message = banner['text'][locale] || _('We use cookies in order to provide you with certain functions and to be able to guarantee an unrestricted service. By clicking on "Accept", you consent to the collection of information on this portal.');
 			this.options = [{
 				name: 'accept',
 				label: _('Accept'),
@@ -62,7 +64,7 @@ define([
 			if (!tools.status('cookieBanner')['show']) {
 				return;
 			}
-			if (cookie('univentionCookieSettingsAccepted')) {
+			if (cookie(this.cookieName)) {
 				return;
 			}
 			this.inherited(arguments);
@@ -74,7 +76,7 @@ define([
 				this.close();
 				if (response === 'accept') {
 					var d = new Date();
-					cookie('univentionCookieSettingsAccepted', d.toUTCString());
+					cookie(this.cookieName, d.toUTCString());
 				};
 			});
 		}
