@@ -10,3 +10,5 @@ desc: |
    encryption types for Samba Kerberos will not create rejects on
    user creation or password change any more.
 bug: [46745]
+erratum: 773
+announced: 2020-10-14
