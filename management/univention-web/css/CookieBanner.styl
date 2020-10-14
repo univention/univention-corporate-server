@@ -3,10 +3,12 @@
 @import "variables"
 
 .umc .dijitDialog.umcConfirmDialog.umcCookieBanner
-	position: fixed
+	position: fixed !important
 	top: auto !important
 	left: 0 !important
-	bottom: 0
+	bottom: 0 !important
+	right: 0 !important
+	width: 100%
 	max-width: 100%
 
 	.umcText
@@ -43,7 +45,7 @@
 
 		.umcContainerWidget .umcButtonRow
 			vertical-align bottom
-			text-align center
+			text-align right
 
-			.dijitButton
-				width 100%
+		//	.dijitButton
+		//		width 100%
