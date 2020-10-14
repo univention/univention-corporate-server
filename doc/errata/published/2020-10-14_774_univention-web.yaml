@@ -10,3 +10,5 @@ desc: |
    on the login page. It can be enabled by setting the
    UCR variable "umc/cookie-banner/show" to true.
 bug: [50302]
+erratum: 774
+announced: 2020-10-14
