@@ -132,8 +132,12 @@ def get_login_texts():
 
 def get_cookie_banner():
 	base = 'umc/cookie-banner/'
-	banner = {k[len(base):]: v for k, v in configRegistry.items() if k.startswith(base)}
+	banner = {}
+	for name in ('text', 'title'):
+		prefix = '%s%s/' % (base, name)
+		banner[name] = {k[len(prefix):]: v for k, v in configRegistry.items() if k.startswith(prefix)}
 	banner['show'] = configRegistry.is_true('%sshow' % (base,))
+	banner['cookie'] = configRegistry.get('%scookie' % (base,))
 	return banner
 
 

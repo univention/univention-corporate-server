@@ -130,8 +130,14 @@ Description[en]=Defines, whether a cookie banner is shown in the Portal and duri
 Type=bool
 Categories=management-umc
 
-[umc/cookie-banner/.*]
-Description[de]=Definiert, den lokalisierten Text für den Cookie-Banner (z.B.: umc/cookie-banner/de).
-Description[en]=Defines, the localized text for the cookie banner (e.g.: umc/cookie-banner/en).
+[umc/cookie-banner/cookie]
+Description[de]=Definiert den Cookie Namen der im Cookie-Banner beim Aktivieren von Cookies gesetzt wird.
+Description[en]=Defines the cookie name which is set by the cookie banner when accepting cookies.
+Type=str
+Categories=management-umc
+
+[umc/cookie-banner/.*/.*]
+Description[de]=Definiert den lokalisierten Text für die Cookie-Banner Texte. Platzhalter sind "text" und "title" (z.B.: umc/cookie-banner/text/de).
+Description[en]=Defines the localized text for the cookie banner texts. Placeholders are "text" and "title" (e.g.: umc/cookie-banner/text/en).
 Type=str
 Categories=management-umc
