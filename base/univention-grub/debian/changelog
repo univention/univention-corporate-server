@@ -1,3 +1,9 @@
+univention-grub (13.0.0-3) unstable; urgency=medium
+
+  * Bug #51786: Disable apparmor
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 14 Oct 2020 16:16:23 +0200
+
 univention-grub (13.0.0-2) unstable; urgency=low
 
   * Bug #51419: Update UCR template
