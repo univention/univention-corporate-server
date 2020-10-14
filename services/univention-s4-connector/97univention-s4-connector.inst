@@ -275,7 +275,7 @@ if [ -z "$s4connector_dc" ] \
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=45439
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=43478
 		#	https://forge.univention.org/bugzilla/show_bug.cgi?id=26926
-		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty "$@"
+		/usr/share/univention-s4-connector/msgpo.py --write2ucs --only-override-empty
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -gt 0 ]; then
