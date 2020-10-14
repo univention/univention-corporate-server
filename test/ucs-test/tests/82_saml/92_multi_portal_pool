@@ -1,0 +1,60 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test portal performance and login
+## tags: [saml]
+## join: true
+## exposure: safe
+## packages:
+##   - python-requests
+## tags:
+##  - skip_admember
+
+from __future__ import print_function
+from multiprocessing import Pool
+import traceback
+import time
+import sys
+import samltest
+import univention.testing.utils as utils
+
+
+parallel_logins = 8
+sps = ('ucs-8201.dp.intranet', 'dppb1.dp.intranet', 'dppb2.dp.intranet', )
+number_of_runs_per_sp = 32
+
+
+def test_portal(sp):
+	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	SamlSession.target_sp_hostname = sp
+	try:
+		SamlSession.login_with_new_session_at_IdP()
+		SamlSession.test_login()
+		# SamlSession.test_portal()
+		# SamlSession.logout_at_IdP()
+		# SamlSession.test_logout_at_IdP()
+		# SamlSession.test_logout()
+	except Exception:
+		return traceback.format_exc()
+	return None
+
+
+def main():
+	pool = Pool(processes=parallel_logins)
+	start = time.time()
+	errors = pool.map(test_portal, sps * number_of_runs_per_sp)
+	runtime = time.time() - start
+	print("####\n" * 5)
+	print("Mean time per portal login {}".format(runtime / (number_of_runs_per_sp * float(len(sps)))))
+	print("####\n" * 5)
+	if not any(errors):
+		print("####Success: SSO login is working####")
+	else:
+		print("####FAIL: SSO login failed####")
+		for error in errors:
+			if error is not None:
+				print(error)
+			sys.exit(1)
+
+
+if __name__ == '__main__':
+	main()

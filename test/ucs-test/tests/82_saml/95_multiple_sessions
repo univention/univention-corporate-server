@@ -1,0 +1,109 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test performance with open sessions
+## tags: [saml]
+## join: true
+## exposure: safe
+## packages:
+##   - python-requests
+## tags:
+##  - skip_admember
+
+from __future__ import print_function
+import threading
+import sys
+import traceback
+import gc
+import samltest
+import univention.testing.utils as utils
+
+o_stdout = sys.stdout
+o_stderr = sys.stderr
+dev_null = open('/dev/null', 'w')
+
+
+def main(i):
+	global exc_store
+	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	try:
+		SamlSession.login_with_new_session_at_IdP()
+		print("logged in")
+		yield
+		SamlSession.test_login()
+		print("tested")
+		yield
+		SamlSession.logout_at_IdP()
+		SamlSession.test_logout_at_IdP()
+		SamlSession.test_logout()
+		print("logged out")
+	except Exception as exc:
+		exc_store[i].append(traceback.format_exc())
+		raise
+
+
+if __name__ == '__main__':
+	max_sessions = 3200
+	sessions = [main(i) for i in range(max_sessions)]
+	exc_store = [[] for _ in range(max_sessions)]
+	step_width = 128
+	for x in range(max_sessions / step_width + 1):
+		tmp_sessions = sessions[x * step_width:x * step_width + step_width]
+		test_threads = [threading.Thread(target=next, args=(session, ) ) for session in tmp_sessions]
+		gc.collect()
+		sys.stderr = dev_null
+		sys.stdout = dev_null
+		for test_thread in test_threads:
+			test_thread.start()
+		for test_thread in test_threads:
+			test_thread.join()
+		sys.stderr = o_stderr
+		sys.stdout = o_stdout
+		print(x * step_width + step_width)
+		if any(exc_store):
+			for exc_drawer in exc_store:
+				if exc_drawer:
+					print(exc_drawer[0])
+	print("####\n" * 5)
+	print("All logged in")
+	print("####\n" * 5)
+	for x in range(max_sessions / step_width + 1):
+		tmp_sessions = sessions[x * step_width:x * step_width + step_width]
+		test_threads = [threading.Thread(target=next, args=(session, ) ) for session in tmp_sessions]
+		gc.collect()
+		sys.stderr = dev_null
+		sys.stdout = dev_null
+		for test_thread in test_threads:
+			test_thread.start()
+		for test_thread in test_threads:
+			test_thread.join()
+		sys.stderr = o_stderr
+		sys.stdout = o_stdout
+		print(x * step_width + step_width)
+	print("####\n" * 5)
+	print("All tested")
+	print("####\n" * 5)
+	for x in range(max_sessions / step_width + 1):
+		tmp_sessions = sessions[x * step_width:x * step_width + step_width]
+		test_threads = [threading.Thread(target=next, args=(session, ) ) for session in tmp_sessions]
+		gc.collect()
+		sys.stderr = dev_null
+		sys.stdout = dev_null
+		for test_thread in test_threads:
+			test_thread.start()
+		for test_thread in test_threads:
+			test_thread.join()
+		sys.stderr = o_stderr
+		sys.stdout = o_stdout
+		print(x * step_width + step_width)
+	print("####\n" * 5)
+	print("All logged out")
+	print("####\n" * 5)
+	if not any(exc_store):
+		print("####Success: SSO login is working####")
+	else:
+		print("####FAIL: SSO login failed####")
+		for exc_drawer in exc_store:
+			if exc_drawer:
+				for tb_str in exc_drawer:
+					print(tb_str)
+				print('-----------')

@@ -1,0 +1,70 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test portal performance and login
+## tags: [saml]
+## join: true
+## exposure: safe
+## packages:
+##   - python-requests
+## tags:
+##  - skip_admember
+
+from __future__ import print_function
+import samltest
+import threading
+import timeit
+import sys
+import univention.testing.utils as utils
+
+
+parallel_logins = 24
+number_of_runs = 5
+exc_store = None
+sps = ('ucs-8201.dp.intranet', 'dppb1.dp.intranet', 'dppb2.dp.intranet', )
+exc_store = [None for _ in range(parallel_logins)]
+prepared_test_threads = []
+
+def main(i, sp):
+	global exc_store
+	account = utils.UCSTestDomainAdminCredentials()
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	SamlSession.target_sp_hostname = sp
+	try:
+		SamlSession.login_with_new_session_at_IdP()
+		SamlSession.test_login()
+		# SamlSession.test_portal()
+		# SamlSession.logout_at_IdP()
+		# SamlSession.test_logout_at_IdP()
+		# SamlSession.test_logout()
+	except Exception as exc:
+		exc_store[i] = exc
+
+
+for _ in range(number_of_runs):
+	prepared_test_threads.append([threading.Thread(target=main, args=(i, (sps * parallel_logins)[i], )) for i in range(parallel_logins)])
+
+
+def get_test_threads():
+	for test_threads in prepared_test_threads:
+		yield test_threads
+
+test_threads = get_test_threads()
+def parallel_main():
+	tt = next(test_threads)
+	for test_thread in tt:
+		test_thread.start()
+	for test_thread in tt:
+		test_thread.join()
+	print("####\n" * 5)
+	if not any(exc_store):
+		print("####Success: SSO login is working####")
+	else:
+		print("####FAIL: SSO login failed####")
+		for exc_drawer in exc_store:
+			if exc_drawer is not None:
+				print(exc_drawer)
+			sys.exit(1)
+
+
+if __name__ == '__main__':
+	runtime = timeit.timeit('parallel_main()', setup='from __main__ import parallel_main', number=number_of_runs)
+	print("Mean time per portal login {}".format(runtime / number_of_runs / float(parallel_logins)))
