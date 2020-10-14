@@ -1,8 +1,12 @@
-univention-admin-diary (4.6.0) UNRELEASED; urgency=medium
+univention-admin-diary (4.6.0) unstable; urgency=medium
 
+  [ Florian Best ]
+  * Bug #51671: suppress tracebacks for database connection failures
+
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:26 +0200
+ -- Florian Best <best@univention.de>  Mon, 13 Jul 2026 12:13:10 +0200
 
 univention-admin-diary (4.5.0) UNRELEASED; urgency=medium
 
