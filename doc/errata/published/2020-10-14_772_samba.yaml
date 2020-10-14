@@ -10,3 +10,5 @@ desc: |
    will not create any rejects in the s4 connector at user creation
    or password change any more
 bug: [46745]
+erratum: 772
+announced: 2020-10-14
