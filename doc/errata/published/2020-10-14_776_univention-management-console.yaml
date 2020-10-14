@@ -10,3 +10,5 @@ desc: |
  * A Cookie Banner can now be shown in the Portal and
    on the login page.
 bug: [51607, 50302]
+erratum: 776
+announced: 2020-10-14
