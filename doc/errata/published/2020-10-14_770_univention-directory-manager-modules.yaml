@@ -11,3 +11,5 @@ desc: |
  * An error while creating users with a mailPrimaryAddress has been
    corrected which occurred when the app "Open-Xchange" is installed.
 bug: [51364, 51907]
+erratum: 770
+announced: 2020-10-14
