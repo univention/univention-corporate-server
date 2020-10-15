@@ -76,7 +76,7 @@ define([
 				this.close();
 				if (response === 'accept') {
 					var d = new Date();
-					cookie(this.cookieName, d.toUTCString());
+					cookie(this.cookieName, d.toUTCString(), { path: '/' });
 				};
 			});
 		}
