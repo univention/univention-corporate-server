@@ -275,6 +275,12 @@
 				<listitem><simpara>
 					Old references to <property>TCP</property> in the <filename>univention-cli-server</filename> have been removed (<u:bug>34836</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					If an error occurs during object creation in the post-create phase the object is now removed correctly (<u:bug>51669</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					 (<u:bug>00000</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
