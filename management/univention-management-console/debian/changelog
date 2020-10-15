@@ -1,3 +1,9 @@
+univention-management-console (12.0.2-4) unstable; urgency=low
+
+  * Bug #52211: Fix duplicate join script registration
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Oct 2020 14:51:15 +0200
+
 univention-management-console (12.0.2-3) unstable; urgency=medium
 
   * Bug #42374: Wording: Fix fuzzy entries

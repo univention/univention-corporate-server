@@ -31,6 +31,8 @@ use strict;
 use Debian::Debhelper::Dh_Lib;
 
 insert_before("dh_auto_build", "dh-umc-module-build");
+remove_command("dh-univention-join-install");
+insert_before("dh_auto_install", "dh-univention-join-install");
 insert_before("dh_auto_install", "dh-umc-module-install");
 
 1;
