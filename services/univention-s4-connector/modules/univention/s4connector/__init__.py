@@ -39,10 +39,8 @@ import os
 import re
 import random
 import sys
-import time
 import traceback
 import pprint
-from signal import signal, SIGTERM, SIG_DFL
 
 import ldap
 from ldap.controls.readentry import PostReadControl
@@ -286,64 +284,6 @@ class configdb(object):
 				self._dbcon = lite.connect(self.filename)
 
 
-class configsaver(object):
-
-	def __init__(self, filename):
-		self.filename = filename
-		try:
-			with open(filename, 'r') as fd:
-				self.config = pickle.load(fd)
-		except (IOError, EOFError):
-			self.config = {}
-
-	def write(self, ignore=''):
-		def signal_handler(sig, frame):
-			ud.debug(ud.LDAP, ud.INFO, "configsaver.write: SIGTERM caught")
-			univention.s4connector.term_signal_caught = True
-
-		signal(SIGTERM, signal_handler)
-
-		with open(self.filename, 'w') as fd:
-			pickle.dump(self.config, fd)
-
-		signal(SIGTERM, SIG_DFL)
-
-		if univention.s4connector.term_signal_caught:
-			ud.debug(ud.LDAP, ud.INFO, "configsaver.write: exit on SIGTERM")
-			sys.exit(0)
-
-	def get(self, section, option):
-		try:
-			return self.config[section][option]
-		except KeyError:
-			return ''
-
-	def set(self, section, option, value):
-		self.config[section][option] = value
-		self.write()
-
-	def items(self, section):
-		ret = []
-		for key in self.config[section].keys():
-			ret.append((key, self.config[section][key]))
-		return ret
-
-	def remove_option(self, section, option):
-		if option in self.config[section]:
-			self.config[section].pop(option)
-		self.write()
-
-	def has_section(self, section):
-		return section in self.config
-
-	def add_section(self, section):
-		self.config[section] = {}
-		self.write()
-
-	def has_option(self, section, option):
-		return section in self.config and option in self.config[section]
-
-
 class attribute(object):
 	"""A mapping attribute description
 
@@ -521,22 +461,6 @@ class ucs(object):
 
 		lockingdbfile = '/etc/univention/%s/lockingdb.sqlite' % self.CONFIGBASENAME
 		self.lockingdb = LockingDB(lockingdbfile)
-
-		configfile = '/etc/univention/%s/s4internal.cfg' % self.CONFIGBASENAME
-		if os.path.exists(configfile):
-			ud.debug(ud.LDAP, ud.PROCESS, "Converting %s into a sqlite database" % configfile)
-			config = configsaver(configfile)
-			ud.debug(ud.LDAP, ud.INFO, "Sections to convert: %s" % config.config.keys())
-			for section in config.config.keys():
-				ud.debug(ud.LDAP, ud.PROCESS, "Converting section %s" % section)
-				self.config.add_section(section)
-				for key in config.config[section].keys():
-					ud.debug(ud.LDAP, ud.INFO, "Adding key: %s" % key)
-					self.config.set(section, key, config.get(section, key))
-
-			new_file = '%s_converted_%f' % (configfile, time.time())
-			os.rename(configfile, new_file)
-			ud.debug(ud.LDAP, ud.PROCESS, "Converting done")
 
 		for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
 			if not self.config.has_section(section):
