@@ -1,0 +1,200 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Copyright 2020 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+"""
+Debian Helper sequence to install UCS join and un-join scripts.
+"""
+
+from __future__ import print_function
+
+from argparse import ArgumentParser
+from os import environ, listdir
+from os.path import join
+from pipes import quote
+
+from univention.debhelper import binary_packages, doIt, parser_dh_sequence
+
+try:
+	from typing import IO  # noqa F401
+	from typing_extensions import Literal  # noqa F401
+except ImportError:
+	pass
+
+
+VER = "12.0.0-7"
+
+POSTINST_UNJOIN = '''
+# remove left-over previous unjoin script
+if [ "$1" = "configure" ]; then
+	rm -f /usr/lib/univention-install/{script}
+fi
+'''
+POSTINST_JOIN = '''
+# run join script on Primary Directory Node and Backup Directory Node
+if [ "$1" = "configure" ]; then
+	. /usr/share/univention-lib/join.sh &&
+		call_joinscript {script} ||
+		:
+fi
+'''
+PRERM_UNJOIN = '''
+# arm unjoin script on package removal
+if [ "$1" = "remove" ]; then
+	cp /usr/lib/univention-uninstall/{script} /usr/lib/univention-install/
+fi
+'''
+POSTRM_UNJOIN = '''
+# run unjoin script
+if [ "$1" = "remove" ]; then
+	. /usr/share/univention-lib/join.sh &&
+		call_unjoinscript {script} ||
+		:
+fi
+'''
+
+
+class JoinDebhelper(object):
+
+	def __init__(self, package):
+		# type: (str) -> None
+		self.package = package
+		self.destdir = join('debian', self.package)
+
+	def dh_install(self):
+		# type: () -> None
+		"""
+		Install existing join and unjoin scripts.
+		"""
+		joinscript = self.install_joinscript()
+		unjoin_script = self.install_unjoinscript()
+		self.setup_scripts(joinscript, unjoin_script)
+
+	def install_joinscript(self):
+		# type: () -> str
+		"""
+		Install existing join script.
+
+		:returns: The name of the join script or the empty sting.
+		"""
+		return self.install_script("inst", "usr/lib/univention-install")
+
+	def install_unjoinscript(self):
+		# type: () -> str
+		"""
+		Install existing unjoin script.
+
+		:returns: The name of the unjoin script or the empty sting.
+		"""
+		return self.install_script("uinst", "usr/lib/univention-uninstall")
+
+	def install_script(self, suffix, dstdir):
+		# type: (str, str) -> str
+		"""
+		Install existing file with suffix to destination directory.
+
+		:param suffix: File name suffix.
+		:param dstdir: Relative destination directory name.
+		:returns: The name of the script or the empty sting.
+		"""
+		script_base = '%s.%s' % (self.package, suffix)
+		scripts = [filename for filename in listdir('.') if filename.endswith(script_base)]
+		if not scripts:
+			return ""
+
+		script = scripts[0]
+		dest = join(self.destdir, dstdir)
+		doIt('install', '-d', dest)
+		doIt('install', '-p', '-t', dest, '-m', '755', script)
+		return script
+
+	def setup_scripts(self, join_script, unjoin_script):
+		# type: (str, str) -> None
+		"""
+		Augment Debian maintainer scripts to hand join and unjoin scripts.
+
+		:param join_script: Optional name of join script.
+		:param unjoin_script: Optional name of unjoin script.
+		"""
+		if not any((join_script, unjoin_script)):
+			return
+
+		with self.dh_file("postinst") as f_postinst:
+			if unjoin_script:
+				f_postinst.write(POSTINST_UNJOIN.format(script=quote(unjoin_script)))
+
+			if join_script:
+				f_postinst.write(POSTINST_JOIN.format(script=quote(join_script)))
+
+		if unjoin_script:
+			with self.dh_file("prerm") as f_prerm:
+				f_prerm.write(PRERM_UNJOIN.format(script=quote(unjoin_script)))
+
+			with self.dh_file("postrm") as f_postrm:
+				f_postrm.write(POSTRM_UNJOIN.format(script=quote(unjoin_script)))
+
+		self.setup_depends()
+
+	def dh_file(self, phase):
+		# type: (Literal["preinst", "postinst", "prerm", "postrm"]) -> IO[str]
+		"""
+		Open Debhelper file for appending.
+
+		:param phase: Package installation phase, e.g. `preinst`, `postinst`, `prerm`, `postrm`.
+		:return: Opened file.
+		"""
+		fn = join("debian", "%s.%s.debhelper" % (self.package, phase))
+		return open(fn, "a")
+
+	def setup_depends(self):
+		# type: () -> None
+		"""
+		Add inter package dependencies.
+		"""
+		cmd = [
+			'perl', '-e',
+			'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-join (>= %s)");' % (self.package, VER)
+		]
+		doIt(*cmd)
+
+
+def main():
+	# type: () -> None
+	"""
+	Run Debian helper sequence.
+	"""
+	parser = ArgumentParser(description=__doc__)
+	options = parser_dh_sequence(parser)
+
+	for package in binary_packages():
+		JoinDebhelper(package).dh_install()
+
+
+if __name__ == '__main__':
+	main()

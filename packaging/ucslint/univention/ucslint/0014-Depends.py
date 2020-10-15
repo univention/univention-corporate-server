@@ -81,19 +81,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except Exception as ex:
 			self.debug('failed to load APT cache: %s' % (ex,))
 
-	def _split_field(self, s: str) -> Iterator[str]:
-		"""Split control field into parts. Returns generator."""
-		for con in s.split(','):
-			con = con.strip()
-			for dis in con.split('|'):
-				i = dis.find('(')
-				if i >= 0:
-					dis = dis[:i]
-
-				pkg = dis.strip()
-				if pkg:
-					yield pkg
-
 	def _scan_script(self, fn: str) -> Set[str]:
 		"""find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
 		need = set()
@@ -111,17 +98,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		return need
 
-	def check_source(self, source_section: Dict[str, str]) -> Set[str]:
+	def check_source(self, source_section: uub.DebianControlSource) -> Set[str]:
 		"""Check source package for dependencies."""
-		src_arch_str = source_section.get('Build-Depends', '')
-		src_arch = self._split_field(src_arch_str)
-		src_arch_set = set(src_arch)
-		self.debug('Build-Depends: %s' % (src_arch,))
-		src_indep_str = source_section.get('Build-Depends-Indep', '')
-		src_indep = self._split_field(src_indep_str)
-		src_indep_set = set(src_indep)
-		self.debug('Build-Depends-Indep: %s' % (src_indep,))
-		src_deps = src_arch_set | src_indep_set
+		src_deps = source_section.dep_all
 
 		fn_rules = join(self.path, 'debian', 'rules')
 		need = self._scan_script(fn_rules)
@@ -137,28 +116,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		return src_deps
 
-	def check_package(self, section: Dict[str, str]) -> Set[str]:
+	def check_package(self, section: uub.DebianControlBinary) -> Set[str]:
 		"""Check binary package for dependencies."""
 		pkg = section['Package']
 		self.debug('Package: %s' % (pkg,))
 
-		bin_pre_str = section.get('Pre-Depends', '')
-		bin_pre = self._split_field(bin_pre_str)
-		bin_pre_set = set(bin_pre)
-		self.debug('Pre-Depends: %s' % (bin_pre,))
-		bin_dep_str = section.get('Depends', '')
-		bin_dep = self._split_field(bin_dep_str)
-		bin_dep_set = set(bin_dep)
-		self.debug('Depends: %s' % (bin_dep,))
-		bin_rec_str = section.get('Recommends', '')
-		bin_rec = self._split_field(bin_rec_str)
-		bin_rec_set = set(bin_rec)
-		self.debug('Recommends: %s' % (bin_rec,))
-		bin_sug_str = section.get('Suggests', '')
-		bin_sug = self._split_field(bin_sug_str)
-		bin_sug_set = set(bin_sug)
-		self.debug('Suggests: %s' % (bin_sug,))
-		bin_deps = bin_pre_set | bin_dep_set
+		bin_pre_set = section.pre
+		bin_deps = bin_pre_set | section.dep
 
 		# Assert packages using "ucr" in preinst pre-depend on "univention-config"
 		for ms in ('preinst',):
@@ -209,7 +173,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if 'ial' in need and not bin_deps & self.DEPS['ial'][1]:
 				self.addmsg('0014-6', 'Missing Depends: univention-base-files', fn)
 
-		return bin_deps | bin_rec_set | bin_sug_set
+		return bin_deps | section.rec | section.sug
 
 	def check(self, path: str) -> None:
 		""" the real check """

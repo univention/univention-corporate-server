@@ -29,7 +29,7 @@
 
 import os
 import re
-from typing import Callable, Dict, Iterable, Iterator, List, Match, Optional, Pattern, Tuple  # noqa F401
+from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Match, Optional, Pattern, Set, Tuple  # noqa F401
 
 try:
 	from junit_xml import TestCase  # type: ignore
@@ -291,28 +291,67 @@ class DebianControlEntry(Dict[str, str]):
 	:param content: String content of paragraph.
 	"""
 
+	RE_MULTILINE = re.compile(r'$\n\s', re.MULTILINE)
+
 	def __init__(self, content: str) -> None:
 		dict.__init__(self)
 
-		lines = content.splitlines()
-		i = 0
-		# handle multiline entries and merge them into one line
-		while i < len(lines):
-			if not lines[i] or lines[i].startswith('#'):
-				del lines[i]
-				continue
-			if lines[i].startswith(' ') or lines[i].startswith('\t'):
-				lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
-				del lines[i]
-				continue
-			i += 1
-
-		# split lines into dictionary
-		for line in lines:
-			if ':' not in line:
+		content = self.RE_MULTILINE.sub(' ', content)
+		for line in content.splitlines():
+			try:
+				key, val = line.split(':', 1)
+			except ValueError:
 				raise DebianControlParsingError(line)
-			key, val = line.split(': ', 1)
-			self[key] = val
+			self[key.strip()] = val.strip()
+
+	def _split_field(self, s: str) -> Iterator[str]:
+		"""Split control field into parts. Returns generator."""
+		for con in s.split(','):
+			con = con.strip()
+			for dis in con.split('|'):
+				i = dis.find('(')
+				if i >= 0:
+					dis = dis[:i]
+
+				pkg = dis.strip()
+				if pkg:
+					yield pkg
+
+	def _pkgs(self, key: str) -> Set[str]:
+		"""
+		Return package list.
+		"""
+		return set(self._split_field(self.get(key, "")))
+
+
+class DebianControlSource(DebianControlEntry):
+	"""
+	Source package entry from :file:`debian/control`.
+	"""
+	dep = property(lambda self: self._pkgs('Build-Depends'))
+	dep_indep = property(lambda self: self._pkgs('Build-Depends-Indep'))
+	dep_arch = property(lambda self: self._pkgs('Build-Depends-Arch'))
+	dep_all = property(lambda self: self.dep | self.dep_indep | self.dep_arch)
+	conf = property(lambda self: self._pkgs('Build-Conflicts'))
+	conf_indep = property(lambda self: self._pkgs('Build-Conflicts-Indep'))
+	conf_arch = property(lambda self: self._pkgs('Build-Conflicts-Arch'))
+	conf_all = property(lambda self: self.conf | self.conf_indep | self.conf_arch)
+
+
+class DebianControlBinary(DebianControlEntry):
+	"""
+	Binary package entry from :file:`debian/control`.
+	"""
+	pre = property(lambda self: self._pkgs('Pre-Depends'))
+	dep = property(lambda self: self._pkgs('Depends'))
+	rec = property(lambda self: self._pkgs('Recommends'))
+	sug = property(lambda self: self._pkgs('Suggests'))
+	all = property(lambda self: self.pre | self.dep | self.rec | self.sug)
+	bre = property(lambda self: self._pkgs('Breaks'))
+	enh = property(lambda self: self._pkgs('Enhances'))
+	repl = property(lambda self: self._pkgs('Replaces'))
+	conf = property(lambda self: self._pkgs('Conflicts'))
+	pro = property(lambda self: self._pkgs('Provides'))
 
 
 class ParserDebianControl(object):
@@ -322,24 +361,25 @@ class ParserDebianControl(object):
 	:param filename: Full path.
 	"""
 
+	RE_COMMENT = re.compile(r'^#.*$', re.MULTILINE)
+	RE_SECTION = re.compile(r'\n{2,}', re.MULTILINE)
+
 	def __init__(self, filename: str) -> None:
 		self.filename = filename
-		self.binary_sections = []  # type: List[DebianControlEntry]
 
 		try:
 			content = open(self.filename, 'r').read()
 		except EnvironmentError:
 			raise FailedToReadFile(self.filename)
 
-		parts = content.split('\n\n')
-		if len(parts) < 2:
-			raise DebianControlNotEnoughSections()
+		content = self.RE_COMMENT.sub('', content)
 
-		self.source_section = DebianControlEntry(parts[0])
-		for part in parts[1:]:
-			package = DebianControlEntry(part)
-			if package:
-				self.binary_sections.append(package)
+		parts = [part for part in self.RE_SECTION.split(content) if part]
+		try:
+			self.source_section = DebianControlSource(parts.pop(0))
+			self.binary_sections = [DebianControlBinary(part) for part in parts]
+		except IndexError:
+			raise DebianControlNotEnoughSections()
 
 
 class RegExTest(object):

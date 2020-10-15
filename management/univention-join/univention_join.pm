@@ -1,5 +1,4 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
+#!/usr/bin/perl
 #
 # Copyright 2020 Univention GmbH
 #
@@ -27,19 +26,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-from distutils.core import setup
+use warnings;
+use strict;
+use Debian::Debhelper::Dh_Lib;
 
-setup(
-	py_modules=[
-		'univention.debhelper',
-	],
-	description='Univention helper programs for debian/rules',
+insert_before("dh_auto_install", "dh-univention-join-install");
 
-	url='https://www.univention.de/',
-	license='GNU Affero General Public License v3',
-
-	name='univention-debhelper',
-	version='1.0.0',
-	maintainer='Univention GmbH',
-	maintainer_email='packages@univention.de',
-)
+1;

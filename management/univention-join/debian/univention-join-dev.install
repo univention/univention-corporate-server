@@ -1,0 +1,2 @@
+dh-univention-join-install	usr/bin/
+univention_join.pm	usr/share/perl5/Debian/Debhelper/Sequence/

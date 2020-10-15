@@ -6,7 +6,7 @@ Build-Depends:
  debhelper,
  node-stylus,
  univention-config-dev (>= 15.0.3),
- univention-debhelper,
+ univention-join-dev,
  univention-l10n-dev (>= 7.0.1),
 Standards-Version: 3.9.5
 

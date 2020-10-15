@@ -425,10 +425,6 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			<para>
 w				The schema is shipped as <filename>/usr/share/extended-attribute/extended-attribute.schema</filename> and installed by calling <command>ucs_registerLDAPExtension</command> from the join-script <filename>50extended-attribute.inst</filename>.
 			</para>
-			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ea/debian/extended-attribute.postinst" parse="text"/></programlisting>
-			<para>
-				This script calls the join-script <filename>50extended-attribute.inst</filename>, which also creates an Extended Attribute by using the <command>udm</command> command line interface:
-			</para>
 			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ea/50extended-attribute.inst" parse="text"/></programlisting>
 			<para>
 				This example is deliberately missing an unjoin-script (see <xref linkend="join:unjoin"/>)  to keep this example simple.

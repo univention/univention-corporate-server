@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Univention Common Shell Library
 #
 # Copyright 2011-2020 Univention GmbH
@@ -27,7 +28,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
+[ -e /usr/share/univention-lib/ucr.sh ] &&
 . /usr/share/univention-lib/ucr.sh
+# shellcheck source=/dev/null
+[ -e /usr/share/univention-lib/join.sh ] &&
+. /usr/share/univention-lib/join.sh
+
+die () {
+	echo "${0##*/}: $*" >&2
+	exit 1
+}
+
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
 
 #
 # creates an empty file with given owner/group and permissions
@@ -46,106 +61,8 @@ create_logfile () {
 # e.g. create_logfile_if_missing /tmp/foo.log root:adm 0750
 #
 create_logfile_if_missing () {
-	if [ ! -e "$1" ] ; then
+	[ -e "$1" ] ||
 		create_logfile "$@"
-	fi
-}
-
-#
-# calls the given joinscript
-# call_joinscript <joinscript>
-# e.g. call_joinscript 99my-custom-joinscript.inst
-# e.g. call_joinscript 99my-custom-joinscript.inst --binddn ... --bindpwd ...
-#
-call_joinscript () {
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-	if [ -x "$joinscript" ] ; then
-		local namejoinscript
-		namejoinscript="$1"
-		shift
-		local role="$(/usr/sbin/univention-config-registry get server/role)"
-		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
-			echo "Calling joinscript $namejoinscript ..."
-			"$joinscript" "$@"
-			echo "Joinscript $namejoinscript finished with exitcode $?"
-		fi
-	fi
-}
-
-#
-# deletes the given unjoinscript if it does not belong to any package
-# delete_unjoinscript <joinscript>
-# e.g. call_unjoinscript 99my-custom-joinscript.uinst
-#
-delete_unjoinscript ()
-{
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-
-	# Nothing to do if it does not exist
-	test -e "$joinscript" || return 1
-
-	# Does the script ends with uinst?
-	echo "$joinscript" | grep -q ".uinst$" || return 1
-
-	# Remove the script only if it is not part of a package
-	dpkg -S "$joinscript" >/dev/null 2>&1 && return 1
-
-	# Do it
-	rm -f "$joinscript"
-
-	return 0
-}
-
-# removes the given joinscript from the join script status file
-# remove_joinscript_status <name>
-# e.g. remove_joinscript_status univention-pkgdb-tools
-#
-remove_joinscript_status ()
-{
-	local name="$1"
-
-	sed -i "/^${name} /d" /var/univention-join/status
-}
-
-#
-# calls the given unjoinscript
-# call_unjoinscript <joinscript>
-# e.g. call_unjoinscript 99my-custom-joinscript.uinst
-# e.g. call_unjoinscript 99my-custom-joinscript.uinst --binddn ... --bindpwd ...
-#
-call_unjoinscript () {
-	local joinscript
-	local joinscript_name
-
-	joinscript_name="$1"
-	joinscript="/usr/lib/univention-install/${joinscript_name}"
-
-	if [ -x "$joinscript" ] ; then
-		shift
-		local role="$(/usr/sbin/univention-config-registry get server/role)"
-		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
-			"$joinscript" "$@" && delete_unjoinscript "${joinscript_name}"
-		fi
-	fi
-}
-
-#
-# calls the given joinscript ONLY on Primary Directory Node
-# call_joinscript_on_dcmaster <joinscript>
-# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst
-# e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst --binddn ... --bindpwd ...
-#
-call_joinscript_on_dcmaster () {
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-	if [ -x "$joinscript" ] ; then
-		shift
-		if [ "$(/usr/sbin/univention-config-registry get server/role)" = "domaincontroller_master" ] ; then
-			"$joinscript" "$@"
-		fi
-	fi
 }
 
 #
@@ -155,6 +72,7 @@ stop_udm_cli_server () {
 	local pids signal=SIGTERM
 	pids=$(pgrep -f "/usr/bin/python.* /usr/share/univention-directory-manager-tools/univention-cli-server") || return 0
 	# As long as one of the processes remains, try to kill it.
+	# shellcheck disable=SC2086
 	while /bin/kill -"$signal" $pids 2>/dev/null # IFS
 	do
 		sleep 1
@@ -216,32 +134,25 @@ get_default_network () {
 #
 # check whether a package is installed or not
 #
-check_package_status ()
-{
-        echo "$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
+check_package_status () {
+	dpkg-query -W -f '${db:Status-Status}\n' "$1" 2>/dev/null
 }
 
 #
 # create passwort
 #
 create_machine_password () {
-	local length="$(/usr/sbin/univention-config-registry get machine/password/length)"
-	local compl="$(/usr/sbin/univention-config-registry get machine/password/complexity)"
-	
-	if [ -z "$length" ]; then
-		length=20
-	fi
-	if [ -z "$compl" ]; then
-		compl="scn"
-	fi
-	
-	pwgen -1 -${compl} ${length} | tr -d '\n'
+	local length compl
+	length="$(/usr/sbin/univention-config-registry get machine/password/length)"
+	compl="$(/usr/sbin/univention-config-registry get machine/password/complexity)"
+	pwgen -1 -"${compl:-scn}" "${length:-20}" | tr -d '\n'
 }
 
 #
 # Update the NSS group cache
 #
 update_nss_group_cache () {
+	local ldap_group_to_file_param
 	if is_ucr_true nss/group/cachefile; then
 		is_ucr_true nss/group/cachefile/check_member && ldap_group_to_file_param="--check_member"
 		/usr/lib/univention-pam/ldap-group-to-file.py $ldap_group_to_file_param
@@ -254,38 +165,22 @@ update_nss_group_cache () {
 # Get to localized name for a user
 #
 custom_username() {
-	local name
-	local ucr_varname
-	local result
-	name="${1:?Usage: custom_username <username>}"
-	ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
-	ucr_varname="users/default/$ucr_varname"
+	local ucr_varname result name="${1:?Usage: custom_username <username>}"
+	ucr_varname="users/default/$(echo "$name" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 
 	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
-	if [ -n "$result" ]; then
-		echo -n "$result"
-	else
-		echo -n "$name"
-	fi
+	echo -n "${result:-$name}"
 }
 
 #
 # Get to localized name for a group
 #
 custom_groupname() {
-	local name
-	local ucr_varname
-	local result
-	name="${1:?Usage: custom_groupname <groupname>}"
-	ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
-	ucr_varname="groups/default/$ucr_varname"
+	local ucr_varname result name="${1:?Usage: custom_groupname <groupname>}"
+	ucr_varname="groups/default/$(echo "$name" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
 
 	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
-	if [ -n "$result" ]; then
-		echo -n "$result"
-	else
-		echo -n "$name"
-	fi
+	echo -n "${result:-$name}"
 }
 
 # vim:set sw=4 ts=4 noet:

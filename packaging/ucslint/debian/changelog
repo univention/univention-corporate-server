@@ -1,3 +1,9 @@
+ucslint (9.0.0-2) unstable; urgency=low
+
+  * Bug #52211: Check for univention-join dh sequence
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 14 Oct 2020 18:07:33 +0200
+
 ucslint (9.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

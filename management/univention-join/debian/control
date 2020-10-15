@@ -27,8 +27,8 @@ Breaks:
  univention-ldap-server (<< 14.0.2-35),
 Recommends:
  univention-admin-diary-client (>= 1.0.0-44),
-Description: UCS - join domains
- This packages allows for the joining of UCS computers to a
+Description: UCS domain join
+ This packages allows UCS computers to join a
  UCS domain.
  .
  It is part of Univention Corporate Server (UCS), an
@@ -49,8 +49,24 @@ Depends:
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
-Description: UMC module for system join
- This package contains the UMC module for system join actions.
+Description: UMC module for domain join
+ This package contains the UMC module for domain join actions.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-join-dev
+Architecture: all
+Depends:
+ python3-univention-debhelper (>= 2.0.0-3),
+ ${misc:Depends},
+ ${perl:Depends},
+ ${python:Depends},
+Description: UCS - domain join development files
+ This package contains the files needed to develop packages
+ that use univention-join.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

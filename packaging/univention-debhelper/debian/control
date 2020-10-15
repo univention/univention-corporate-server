@@ -12,16 +12,12 @@ Build-Depends-Indep:
 Package: univention-debhelper
 Architecture: all
 Depends:
- python-univention-debhelper,
- ${misc:Depends},
- ${python:Depends},
-Enhances:
- debhelper,
+ univention-join-dev,
 Breaks:
  univention-join (<< 11.0.1-30),
 Replaces:
  univention-join (<< 11.0.1-30),
-Description: Univention helper programs for debian/rules
+Description: transitional dummy Univention helper programs for debian/rules
  A collection of programs that can be used in a debian/rules file to
  automate common tasks related to building UCS packages. Programs
  are included to install various files into your package. Most Univention
