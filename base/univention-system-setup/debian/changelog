@@ -1,3 +1,9 @@
+univention-system-setup (13.0.1-5) unstable; urgency=low
+
+  * Bug #33029: Re-add empty hook directories
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Oct 2020 17:38:45 +0200
+
 univention-system-setup (13.0.1-4) unstable; urgency=medium
 
   * Bug #52137: remove univention-basesystem

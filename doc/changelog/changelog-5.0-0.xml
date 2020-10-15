@@ -292,7 +292,7 @@
 					The unused script <filename>ldap_available.sh</filename> has been removed (<u:bug>33008</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					Unused script calls have been removed (<u:bug>33029</u:bug>)
+					The directories for hook scripts have been restored (<u:bug>33029</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

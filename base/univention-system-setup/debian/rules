@@ -43,5 +43,11 @@ endif
 override_dh_auto_test:
 	run-parts -a -v tests
 
+override_dh_python2:
+	dh_python2 --skip-private
+
+override_dh_python3:
+	dh_python3 --skip-private
+
 %:
 	dh $@ --with python2,python3,univention-l10n,umc,ucr
