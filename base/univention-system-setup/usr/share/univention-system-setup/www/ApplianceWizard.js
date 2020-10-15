@@ -3208,6 +3208,7 @@ define([
 				return 'domaincontroller_slave';
 			} else if (_vals._roleMember) {
 				return 'memberserver';
+			}
 		},
 
 		getValues: function() {
