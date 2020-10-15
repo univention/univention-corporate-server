@@ -29,9 +29,5 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 
-override_dh_auto_install:
-	univention-install-joinscript
-	dh_auto_install
-
 %:
-	dh $@ --with univention-l10n,ucr
+	dh $@ --with univention-l10n,ucr,univention-join

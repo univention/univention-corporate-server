@@ -6,7 +6,7 @@ Standards-Version: 3.8.2
 Build-Depends:
  debhelper,
  univention-config-dev (>= 15.0.3),
- univention-debhelper,
+ univention-join-dev,
 
 Package: univention-postgresql
 Architecture: all

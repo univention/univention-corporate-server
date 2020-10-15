@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.1-2) unstable; urgency=low
+
+  * Bug #52211: Convert to univention-join-dev
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Oct 2020 09:59:10 +0200
+
 univention-admin-diary (2.0.1-1) unstable; urgency=medium
 
   * Bug #42374: IP Managed Client -> IP Client

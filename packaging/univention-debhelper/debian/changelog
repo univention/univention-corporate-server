@@ -1,3 +1,9 @@
+univention-debhelper (2.0.0-3) unstable; urgency=low
+
+  * Bug #52211: Migrate to univention-join-dev
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Oct 2020 06:55:07 +0200
+
 univention-debhelper (2.0.0-2) unstable; urgency=medium
 
   * Bug #50100: use check_call for error handling in doIt()

@@ -33,9 +33,6 @@ setup(
 	py_modules=[
 		'univention.debhelper',
 	],
-	scripts=[
-		'univention-install-joinscript',
-	],
 	description='Univention helper programs for debian/rules',
 
 	url='https://www.univention.de/',
