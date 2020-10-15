@@ -44,12 +44,16 @@ from samba.param import LoadParm
 from samba.auth import system_session
 from samba.credentials import Credentials
 
+from samba.ndr import ndr_unpack
+from samba.dcerpc import misc
+
+
 if __name__ == '__main__':
 	parser = ArgumentParser()
 	parser.add_argument('base64_guid')
 	args = parser.parse_args()
 
-	guid = base64.b64decode(args.base64_guid).decode('ASCII')
+	guid = str(ndr_unpack(misc.GUID, base64.b64decode(args.base64_guid)))
 
 	lp = LoadParm()
 	creds = Credentials()
