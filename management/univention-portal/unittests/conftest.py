@@ -62,3 +62,11 @@ def portal_lib(request):
 @pytest.fixture
 def dynamic_class(portal_lib):
 	return portal_lib.get_dynamic_classes
+
+
+@pytest.fixture
+def patch_object_module(mocker):
+	""" Helper to patch imports in objects module file """
+	def _(obj, module_name):
+		return mocker.patch("{}.{}".format(obj.__module__, module_name))
+	return _
