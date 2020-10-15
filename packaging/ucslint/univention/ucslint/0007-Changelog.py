@@ -42,7 +42,7 @@ REticket = re.compile(
 	|Ticket(\#:[ ]|:?[ ]\#)2[0-9]{3}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(?:1[0-9]{7}|21[0-9]{6})) # OTRS
 	(?![0-9]) # not followed by additional digits
 	''', re.VERBOSE)
-RECENT_ENTRIES = 5
+RECENT_ENTRIES = 2
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
