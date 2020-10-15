@@ -33,7 +33,14 @@
 from os import path
 
 import pytest
+import requests
 from univentionunittests import import_module
+
+
+@pytest.fixture
+def user_module(request):
+	use_installed = request.config.getoption('--installed-portal')
+	return import_module('univention.portal.user', 'python/', 'univention.portal.user', use_installed=use_installed)
 
 
 def test_imports(dynamic_class):
@@ -50,39 +57,15 @@ class TestUmcAuthenticator:
 	_username = "TestUser"
 	_groups = ["TestGroup"]
 
-	@pytest.fixture
-	def user_module(self, request):
-		use_installed = request.config.getoption('--installed-portal')
-		return import_module('univention.portal.user', 'python/', 'univention.portal.user', use_installed=use_installed)
 
 	@pytest.fixture
-	def mocked_umc_authenticator(self, dynamic_class, mocker):
+	def mocked_umc_authenticator(self, dynamic_class, patch_object_module, mocker):
 		UMCAuthenticator = dynamic_class('UMCAuthenticator')
 		mocked_group_cache = mocker.Mock()
 		mocked_group_cache.get.return_value = {self._username: self._groups}
-		return UMCAuthenticator(self._umc_session_url, mocked_group_cache, self._portal_cookie_name, self._umc_cookie_name)
-
-	def mock_requests_get(self, mocker, mocked_authenticator, json_return_value):
-		def _requests_get_success(url, cookies={}):
-			""" Get mocked response with test json load """
-			print("Making a request to '%s'" % url)
-			response_mock = mocker.Mock()
-			response_mock.status_code = 200
-			response_mock.json.return_value = json_return_value
-			print("Received response with status 200")
-			return response_mock
-
-		def _get_error(url, cookies={}):
-			""" Get mocked response with http error """
-			print("Making a request to '%s'" % url)
-			response_mock = mocker.Mock()
-			response_mock.status_code = 404
-			response_mock.json.return_value = {}
-			print("Received response with status 404")
-			return response_mock
-
-		side_effects = [requests.ConnectionError, KeyError, _get_error, _get_success]
-		return mocker.patch("{}.requests.get".format(mocked_authenticator.__module__), side_effect=side_effects)
+		mocked_authenticator = UMCAuthenticator(self._umc_session_url, mocked_group_cache, self._portal_cookie_name, self._umc_cookie_name)
+		mocked_authenticator.requests_get = patch_object_module(mocked_authenticator, "requests.get")
+		return mocked_authenticator
 
 
 	def test_default_init(self, dynamic_class):
@@ -127,6 +110,73 @@ class TestUmcAuthenticator:
 		assert isinstance(user, user_module.User)
 		assert user.username == None
 		assert user.groups == []
+
+
+	def test_get_username(self, mocked_umc_authenticator, mocker):
+		mocked_umc_authenticator._ask_umc = mocker.Mock()
+		mocked_umc_authenticator._ask_umc.return_value = self._username
+		assert mocked_umc_authenticator._get_username("test_session") == self._username.lower()
+		assert mocked_umc_authenticator._get_username(None) == None
+		mocked_umc_authenticator._ask_umc.return_value = None
+		assert mocked_umc_authenticator._get_username("test_session") == None
+
+
+	def test_ask_umc_request_success(self, mocked_umc_authenticator, mocker):
+
+		def _side_effect(url, cookies={}):
+			""" Side effect to simulate successful request with different response data """
+			print("Making a request to '%s'" % url)
+			response_mock = mocker.Mock()
+			test_cookie = cookies.get(self._umc_cookie_name, "")
+			response_mock.status_code = 200
+			if test_cookie:
+				response_mock.json.return_value = {
+					'result': {
+						'username': self._username
+					}
+				}
+			else:
+				response_mock.json.return_value = {}
+			print("Received response with status 200")
+			return response_mock
+
+		mocked_umc_authenticator.requests_get.side_effect = _side_effect
+		test_session = "test_session"
+		# Execute with valid session expecting username to be returned
+		assert mocked_umc_authenticator._ask_umc(test_session) == self._username
+		mocked_umc_authenticator.requests_get.assert_called_once_with(
+			self._umc_session_url, 
+			cookies={self._umc_cookie_name: test_session}
+		)
+		# Execute with unknown session expecting username to be None due to KeyError
+		assert mocked_umc_authenticator._ask_umc("") == None
+		assert mocked_umc_authenticator.requests_get.call_count == 2
+
+	
+	def test_ask_umc_request_error(self, mocked_umc_authenticator, mocker):
+
+		def _side_effect(url, cookies={}):
+			""" Side effect to simulate request with a http error """
+			print("Making a request to '%s'" % url)
+			response_mock = mocker.Mock()
+			response_mock.status_code = 404
+			response_mock.json.side_effect = ValueError
+			print("Received response with status 404")
+			return response_mock
+
+		mocked_umc_authenticator.requests_get.side_effect = _side_effect
+		test_session = "test_session"
+		# Execute while expecting a catched internal ValueError
+		assert mocked_umc_authenticator._ask_umc(test_session) == None
+		mocked_umc_authenticator.requests_get.assert_called_once_with(
+			self._umc_session_url,
+			cookies={self._umc_cookie_name: test_session}
+		)
+		# Execute while expecting catched internal RequestException
+		mocked_umc_authenticator.requests_get.side_effect = [requests.exceptions.ConnectionError, requests.exceptions.MissingSchema]
+		assert mocked_umc_authenticator._ask_umc(test_session) == None
+		assert mocked_umc_authenticator._ask_umc(test_session) == None
+		assert mocked_umc_authenticator.requests_get.call_count == 3
 
 
 class TestOpenIdAuthenticator:
