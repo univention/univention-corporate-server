@@ -196,8 +196,8 @@ class UMCAuthenticator(Authenticator):
 			response = requests.get(self.umc_session_url, cookies={self.umc_cookie_name: session})
 			data = response.json()
 			username = data["result"]["username"]
-		except requests.ConnectionError as exc:
-			get_logger("user").error("connection failed: %s" % exc)
+		except requests.RequestException as e:
+			get_logger("user").error("connection failed: %s" % e)
 		except ValueError:
 			get_logger("user").error("malformed answer!")
 		except KeyError:
