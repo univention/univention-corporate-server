@@ -15,7 +15,10 @@ from distutils.version import LooseVersion
 
 class Coverage(object):
 
-	COVERAGE_PTH = '/usr/lib/python2.7/dist-packages/ucstest-coverage.pth'
+	COVERAGE_PTHS = [
+		'/usr/lib/python2.7/dist-packages/ucstest-coverage.pth',
+		'/usr/lib/python3/dist-packages/ucstest-coverage.pth',
+	]
 	COVERAGE_PTH_CONTENT = '''import univention.testing.coverage; univention.testing.coverage.Coverage.startup()'''
 	COVERAGE_DEBUG_PATH = '/tmp/ucs-test-coverage'
 	COVERAGE_DEBUG = os.path.exists(COVERAGE_DEBUG_PATH)
@@ -85,10 +88,11 @@ class Coverage(object):
 
 	def write_config_file(self):
 		"""Write a python .pth file which is invoked before any python process"""
-		with open(self.COVERAGE_PTH, 'wb') as fd:
-			fd.write(self.COVERAGE_PTH_CONTENT)
+		for COVERAGE_PTH in self.COVERAGE_PTHS:
+			with open(COVERAGE_PTH, 'w') as fd:
+				fd.write(self.COVERAGE_PTH_CONTENT)
 
-		with open(self.coverage_config, 'wb') as fd:
+		with open(self.coverage_config, 'w') as fd:
 			fd.write('''[run]
 data_file = {data_file}
 branch = {branch}
@@ -137,8 +141,9 @@ directory = {directory}
 		subprocess.call([coverage_bin, 'html'])
 		subprocess.call([coverage_bin, 'report'])
 		subprocess.call([coverage_bin, 'erase'])
-		if os.path.exists(self.COVERAGE_PTH):
-			os.remove(self.COVERAGE_PTH)
+		for COVERAGE_PTH in self.COVERAGE_PTHS:
+			if os.path.exists(COVERAGE_PTH):
+				os.remove(COVERAGE_PTH)
 		if os.path.exists(self.coverage_config):
 			os.remove(self.coverage_config)
 
