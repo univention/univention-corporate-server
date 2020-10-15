@@ -4,12 +4,20 @@ import sys
 from univention.testing.data import TestFormatInterface
 from univention.testing.codes import TestCodes
 from xml.sax.saxutils import XMLGenerator
-from codecs import encode
+from codecs import encode as _encode
 from datetime import datetime
 import os
 import errno
 
+import six
+
 __all__ = ['Junit']
+
+
+def encode(string, *args):
+	if six.PY2:
+		return _encode(string, *args)
+	return string
 
 
 class Junit(TestFormatInterface):
@@ -157,7 +165,7 @@ class Junit(TestFormatInterface):
 		super(Junit, self).end_test(result)
 
 	def utf8(self, data):
-		if isinstance(data, unicode):
+		if isinstance(data, six.text_type):
 			data = data.encode('utf-8', 'replace').decode('utf-8')
 		elif isinstance(data, bytes):
 			data = data.decode('utf-8', 'replace').encode('utf-8')
