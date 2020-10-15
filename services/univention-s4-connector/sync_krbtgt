@@ -36,125 +36,55 @@ from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 import univention.uldap
 import univention.admin.uldap
-import ldap
+import ldap.filter
 import univention.debug2 as ud
 import univention.s4connector.s4.password
 from argparse import ArgumentParser
 import sys
-from six.moves import urllib_parse
 
 
 class S4(object):
 
-	def __init__(self, ucrbase, binddn, bindpwd, ucr=None):
+	def __init__(self, ucrbase, binddn, bindpwdfile):
 		self.ucrbase = ucrbase
-		if ucr:
-			self.ucr = ucr
-		else:
-			self.ucr = ConfigRegistry()
-			self.ucr.load()
+		self.ucr = ConfigRegistry()
+		self.ucr.load()
 
-		self.init_debug()
-		self.open_s4()
-		self.open_ucs(binddn, bindpwd)
+		if binddn:
+			self.ucr['%s/ldap/binddn' % (ucrbase,)] = binddn
+		if bindpwdfile:
+			self.ucr['%s/ldap/bindpw' % (ucrbase,)] = bindpwdfile
 
-	def init_debug(self):
-		_d = ud.function('init_debug')  # noqa: F841
-		try:
-			function_level = int(self.ucr.get('%s/debug/function' % self.ucrbase, ud.NO_FUNCTION))
-		except:
-			function_level = ud.NO_FUNCTION
-		ud.init('/var/log/univention/%s-s4.log' % self.ucrbase, ud.FLUSH, function_level)
-		debug_level = self.ucr.get('%s/debug/level' % self.ucrbase, 2)
-		ud.set_level(ud.LDAP, int(debug_level))
-
-	def open_s4(self):
-		tls_mode = 2
-		if self.ucr.get('%s/s4/ldap/ssl' % self.ucrbase) == "no":
-			ud.debug(ud.LDAP, ud.INFO, "__init__: LDAPS-connection to S4 switched of by UCR.")
-			tls_mode = 0
-
-		protocol = self.ucr.get('%s/s4/ldap/protocol' % self.ucrbase, 'ldap').lower()
-		ldap_host_s4 = self.ucr.get('%s/s4/ldap/host' % self.ucrbase)
-		ldap_port_s4 = int(self.ucr.get('%s/s4/ldap/port' % self.ucrbase))
-		self.ldap_base_s4 = self.ucr.get('%s/s4/ldap/base' % self.ucrbase)
-		ldap_binddn_s4 = self.ucr.get('%s/s4/ldap/binddn' % self.ucrbase)
-		ldap_bindpw_s4 = None
-		if self.ucr.get('%s/s4/ldap/bindpw' % self.ucrbase):
-			ldap_bindpw_s4 = open(self.ucr['%s/s4/ldap/bindpw' % self.ucrbase]).read().strip('\n')
-		ldap_certificate_s4 = self.ucr.get('%s/s4/ldap/certificate' % self.ucrbase)
-		if protocol == 'ldapi':
-			socket = urllib_parse.quote(self.ucr.get('%s/s4/ldap/socket' % self.ucrbase, ''), '')
-			ldap_uri_s4 = "%s://%s" % (protocol, socket)
-		else:
-			ldap_uri_s4 = "%s://%s:%d" % (protocol, ldap_host_s4, ldap_port_s4)
-
-		try:
-			self.lo_s4 = univention.uldap.access(host=ldap_host_s4, port=ldap_port_s4, base=self.ldap_base_s4, binddn=ldap_binddn_s4, bindpw=ldap_bindpw_s4, start_tls=tls_mode, ca_certfile=ldap_certificate_s4, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member', 'unicodePwd'], uri=ldap_uri_s4)
-			self.lo_s4.lo.set_option(ldap.OPT_REFERRALS, 0)
-		except ldap.SERVER_DOWN:
-			print("Can't initialize Samba4 LDAP connection")
-			raise ldap.SERVER_DOWN
-
-	def open_ucs(self, binddn, bindpwd):
-		if not binddn:
-			binddn = 'cn=admin,' + self.ucr['ldap/base']
-
-		# read password from file
-		if not bindpwd:
-			bindpwd = open('/etc/ldap.secret').read()
-			if bindpwd[-1] == '\n':
-				bindpwd = bindpwd[0:-1]
-
-		self.ucs_ldap_base = self.ucr.get('ldap/base')
-
-		try:
-			self.lo = univention.admin.uldap.access(host=self.ucr['ldap/master'], base=self.ucr['ldap/base'], binddn=binddn, bindpw=bindpwd, start_tls=2)
-		except ldap.SERVER_DOWN:
-			print("Can't initialize UCS LDAP connection")
-			raise ldap.SERVER_DOWN
-
-	def _object_mapping(self, key, object, connection):
-		return key
+		self.s4 = univention.s4connector.s4.s4.main(self.ucr, ucrbase)
+		self.s4.init_ldap_connections()
 
 	def sync_password(self):
 		try:
-			res_ucs = self.lo.lo.search(base=self.ucs_ldap_base, scope='sub', filter='(uid=krbtgt/%s)' % (self.ucr.get('kerberos/realm')))
-		except ldap.NO_SUCH_OBJECT:
-			ud.debug(ud.LDAP, ud.PROCESS, "The UCS object (uid=krbtgt/%s) was not found" % (self.ucr.get('kerberos/realm')))
-			print("The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm'))
-			return
-		if not res_ucs:
+			ucs_dn, ucs_attr = self.s4.lo.lo.search(base=self.s4.lo.base, scope='sub', filter=ldap.filter.filter_format('(uid=krbtgt/%s)', (self.ucr.get('kerberos/realm'),)))[0]
+		except (ldap.NO_SUCH_OBJECT, IndexError):
 			ud.debug(ud.LDAP, ud.PROCESS, "The UCS object (uid=krbtgt/%s) was not found" % (self.ucr.get('kerberos/realm')))
 			print("The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm'))
 			return
 
 		try:
-			res_s4 = self.lo_s4.lo.search_s(self.ldap_base_s4, ldap.SCOPE_SUBTREE, '(&(objectClass=user)(!(objectClass=computer))(cn=krbtgt))', ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])
-		except ldap.NO_SUCH_OBJECT:
+			s4_dn, s4_attr = self.s4.lo_s4.lo.search_s(self.s4.lo_s4.base, ldap.SCOPE_SUBTREE, '(&(objectClass=user)(!(objectClass=computer))(cn=krbtgt))', ['unicodePwd', 'supplementalCredentials', 'msDS-KeyVersionNumber', 'dBCSPwd'])[0]
+		except (ldap.NO_SUCH_OBJECT, IndexError):
 			ud.debug(ud.LDAP, ud.PROCESS, "The Samba4 user (krbtgt) was not found.")
 			print("The Samba4 user (krbtgt) was not found.")
 			return
 		except ldap.SERVER_DOWN:
 			print("Can't initialize Samba4 LDAP connection")
-			raise ldap.SERVER_DOWN
-		if not res_s4:
-			ud.debug(ud.LDAP, ud.PROCESS, " The Samba4 user (krbtgt) was not found.")
-			print("\nThe Samba4 user (krbtgt) was not found.")
-			return
+			raise
 
 		modlist = []
-		unicodePwd_attr = res_s4[0][1].get('unicodePwd', [None])[0]
+		unicodePwd_attr = s4_attr.get('unicodePwd', [None])[0]
 		if unicodePwd_attr:
-			supplementalCredentials = res_s4[0][1].get('supplementalCredentials', [None])[0]
-			msDS_KeyVersionNumber = res_s4[0][1].get('msDS-KeyVersionNumber', [0])[0]
+			supplementalCredentials = s4_attr.get('supplementalCredentials', [None])[0]
+			msDS_KeyVersionNumber = s4_attr.get('msDS-KeyVersionNumber', [0])[0]
 
-			krb5Principal = ''
-
-			if 'krb5PrincipalName' in res_ucs[0][1]:
-				krb5Principal = res_ucs[0][1]['krb5PrincipalName'][0]
-			krb5Key_ucs = res_ucs[0][1].get('krb5Key', [])
-			krb5KeyVersionNumber = res_ucs[0][1].get('krb5KeyVersionNumber', [None])[0]
+			krb5Principal = ucs_attr.get('krb5PrincipalName', [b''])[0]
+			krb5Key_ucs = ucs_attr.get('krb5Key', [])
+			krb5KeyVersionNumber = ucs_attr.get('krb5KeyVersionNumber', [None])[0]
 
 			if krb5Principal:
 				# decoding of Samba4 supplementalCredentials
@@ -164,24 +94,23 @@ class S4(object):
 				if int(msDS_KeyVersionNumber) != int(krb5KeyVersionNumber):
 					modlist.append(('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber))
 
-		if len(modlist) > 0:
+		if modlist:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: modlist: %s" % modlist)
-			self.lo.lo.modify(res_ucs[0][0], modlist)
+			self.s4.lo.lo.modify(ucs_dn, modlist)
 
 
 def main():
 	parser = ArgumentParser()
 	parser.add_argument("--ucrbase", help="", metavar="ucrbase", default="connector")
 	parser.add_argument("--binddn", help="Binddn for UCS LDAP connection", default=None)
-	parser.add_argument("--bindpwd", help="Bindpwd for UCS LDAP connection", default=None)
+	parser.add_argument("--bindpwd", help="Not supported anymore.", default=None)
 	parser.add_argument("--bindpwdfile", help="Bindpwdfile for UCS LDAP connection", default=None)
 	options = parser.parse_args()
-	if options.bindpwdfile:
-		with open(options.bindpwdfile) as f:
-			options.bindpwd = f.readline().strip()
+	if options.bindpwd:
+		parser.error('--bindpwd is not supported anymore!')  # joinscript api: bindpwdfile
 
 	try:
-		s4 = S4(options.ucrbase, options.binddn, options.bindpwd)
+		s4 = S4(options.ucrbase, options.binddn, options.bindpwdfile)
 		s4.sync_password()
 	except ldap.SERVER_DOWN:
 		sys.exit(1)
