@@ -32,8 +32,9 @@
 				To reduce potential for confusion, the IP managed client has been renamed to IP client.
 			</simpara></listitem>
 			<listitem><simpara>
-				The "base system" is no longer a valid system role,
-				so the corresponding meta package <package>univention-basesystem</package> has
+				The "base system" is no longer a valid system role. It is not posible to choose that role in system setup
+				or update a base system to UCS 5.
+				The corresponding meta package <package>univention-basesystem</package> has
 				been removed. (<u:bug>52137</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
