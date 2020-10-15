@@ -210,8 +210,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			match = self.RE_DH_JOIN.search(c_rules)
 			if match:
 				self.debug('Detected use of %s' % (match.group(0),))
-				if match.group(1):
-						self.addmsg('0001-23', 'Consider switchting to "univention-join" debhelper sequence', fn_rules)
+				is_old = bool(match.group(1))
+				if is_old:
+					self.addmsg('0001-23', 'Consider switchting to "univention-join" debhelper sequence', fn_rules)
 				if ctrl:
 					for binary_package in ctrl.binary_sections:
 						package = binary_package['Package']
@@ -221,7 +222,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 								fnlist_joinscripts[js] = 0
 								found[js] = found.get(js, 0) + 1
 
-					if 'univention-join-dev' not in ctrl.source_section.dep:
+					if 'univention-join-dev' not in ctrl.source_section.dep and not is_old:
 						self.addmsg('0001-22', '"dh --with univention-join" is used in "debian/rules" without "Build-Depends: univention-join-dev" in "debian/rules"', fn_control)
 
 			if self.RE_DH_UMC.search(c_rules):

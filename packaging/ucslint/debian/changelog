@@ -1,4 +1,4 @@
-ucslint (9.0.0-2) unstable; urgency=low
+ucslint (9.0.0-3) unstable; urgency=low
 
   * Bug #52211: Check for univention-join dh sequence
 
