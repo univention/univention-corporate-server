@@ -57,6 +57,6 @@ if __name__ == '__main__':
 
 	for msg in res:
 		guid = msg.get("objectGuid", idx=0)
-		print(base64.b64encode(guid).decode('ASCII'), end=' ')
+		print(base64.b64encode(guid).decode('ASCII'))
 
 	sys.exit(0)
