@@ -39,7 +39,6 @@ from univention import config_registry
 import univention.s4connector.s4
 import univention.admin.filter
 import copy
-import six
 from samba.param import LoadParm
 from samba.auth import system_session
 from samba.samdb import SamDB
@@ -106,33 +105,6 @@ overload_dn_mapping_function = {
 
 class S4Connector(univention.s4connector.s4.s4):
 
-	def __init__(self, ucr=None):
-
-		if not ucr:
-			ucr = config_registry.ConfigRegistry()
-			ucr.load()
-
-		s4_ldap_bindpw = None
-		bindpw_file = ucr['%s/s4/ldap/bindpw' % CONFIGBASENAME]
-		if bindpw_file:
-			s4_ldap_bindpw = open(bindpw_file).read()
-			if s4_ldap_bindpw[-1] == '\n':
-				s4_ldap_bindpw = s4_ldap_bindpw[0:-1]
-
-		univention.s4connector.s4.s4.__init__(
-			self,
-			CONFIGBASENAME,
-			mapping.s4_mapping,
-			ucr,
-			ucr['%s/s4/ldap/host' % CONFIGBASENAME],
-			ucr['%s/s4/ldap/port' % CONFIGBASENAME],
-			ucr['%s/s4/ldap/base' % CONFIGBASENAME],
-			ucr['%s/s4/ldap/binddn' % CONFIGBASENAME],
-			s4_ldap_bindpw,
-			ucr['%s/s4/ldap/certificate' % CONFIGBASENAME],
-			ucr['%s/s4/listener/dir' % CONFIGBASENAME]
-		)
-
 	def plain_mapped_dn(self, property_type, object, old_dn):
 		# determine the dn where the S4 Connector would have created the object
 		if hasattr(self.property[property_type], 'dn_mapping_function'):
@@ -169,22 +141,15 @@ if __name__ == "__main__":
 			print("Use --dry-run to check what would be done", file=sys.stderr)
 			sys.exit(1)
 
-	CONFIGBASENAME = "connector"
-	if opts.configbasename:
-		CONFIGBASENAME = opts.configbasename
-	MAPPING_FILENAME = '/etc/univention/%s/s4/mapping.py' % CONFIGBASENAME
-	if six.PY2:
-		import imp
-		mapping = imp.load_source('mapping', MAPPING_FILENAME)
-	else:
-		import os
-		import importlib.util
-		spec = importlib.util.spec_from_file_location(os.path.basename(MAPPING_FILENAME).rsplit('.', 1)[0], MAPPING_FILENAME)
-		mapping = importlib.util.module_from_spec(spec)
-		spec.loader.exec_module(mapping)
+	ucr = config_registry.ConfigRegistry()
+	ucr.load()
+
+	s4 = S4Connector.main(ucr, opts.configbasename)
+	s4.init_ldap_connections()
+	mapping = s4.property
 
 	ucs_match_filter = {
-		'user': mapping.s4_mapping['user'].match_filter,
+		'user': mapping['user'].match_filter,
 		'group': str(  # filter copied from UDM groups/group
 			univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('cn', '*'),
@@ -198,14 +163,9 @@ if __name__ == "__main__":
 				])
 			])
 		),
-		'dc': mapping.s4_mapping['dc'].match_filter,
-		'windowscomputer': mapping.s4_mapping['windowscomputer'].match_filter,
+		'dc': mapping['dc'].match_filter,
+		'windowscomputer': mapping['windowscomputer'].match_filter,
 	}
-
-	ucr = config_registry.ConfigRegistry()
-	ucr.load()
-
-	s4 = S4Connector(ucr)
 
 	lp = LoadParm()
 	lp.load('/etc/samba/smb.conf')
