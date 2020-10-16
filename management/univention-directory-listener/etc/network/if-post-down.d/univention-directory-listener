@@ -30,11 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-[ -x /etc/init.d/univention-directory-listener ] || exit 0
 
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-sv t univention-directory-listener
+systemctl try-restart univention-directory-listener
 
 exit 0

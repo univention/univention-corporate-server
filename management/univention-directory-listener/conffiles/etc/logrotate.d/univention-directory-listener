@@ -13,7 +13,7 @@ for setting in sorted(settings):
 @!@
 
 	lastaction
-		test -x /usr/bin/sv && test -e /etc/runit/univention/univention-directory-listener && sv term univention-directory-listener || true
+		systemctl try-restart univention-directory-listener.service || true
 	endscript
 }
 
