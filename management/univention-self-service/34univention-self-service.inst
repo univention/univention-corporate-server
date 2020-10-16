@@ -38,6 +38,7 @@ VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
 . /usr/share/univention-lib/base.sh
+. /usr/share/univention-lib/umc.sh
 
 joinscript_init
 
@@ -45,6 +46,7 @@ ucs_addServiceToLocalhost "univention-self-service" "$@"
 
 eval "$(ucr shell)"
 
+umc_init  # Ensure "cn=UMC,cn=policies,$ldap_base" has been created
 udm policies/umc create "$@" \
 	--ignore_exists \
 	--position="cn=UMC,cn=policies,$ldap_base" \
