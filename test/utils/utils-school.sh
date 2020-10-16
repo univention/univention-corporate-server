@@ -50,7 +50,7 @@ install_kelvin_api () {
 }
 
 patch_school_pre_join_script_to_install_from_test_appcenter () {
-  sed 's#log.info("Updating app center information...")#log.info("Updating app center information...")\n        subprocess.call("/usr/sbin/univention-install univention-appcenter-dev")\n        subprocess.call("/usr/bin/univention-app dev-use-test-appcenter")#g' /usr/share/ucs-school-metapackage/ucsschool-join-hook.py > /tmp/ucsschool-join-hook.py
+  sed 's#log.info("Updating app center information...")#log.info("Updating app center information...")\n        subprocess.call(["/usr/sbin/univention-install", "univention-appcenter-dev"])\n        subprocess.call(["/usr/bin/univention-app", "dev-use-test-appcenter"])#g' /usr/share/ucs-school-metapackage/ucsschool-join-hook.py > /tmp/ucsschool-join-hook.py
   package_version="$(univention-ldapsearch -LLL cn=ucsschool-join-hook.py univentionOwnedByPackageVersion | grep univentionOwnedByPackageVersion | cut -f 2 -d ' ')"
  . /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --binddn "cn=admin,$(ucr get ldap/base)" --bindpwdfile=/etc/ldap.secret --packagename ucs-school-master --packageversion "$package_version" --data /tmp/ucsschool-join-hook.py --data_type="join/pre-joinscripts"
 }
