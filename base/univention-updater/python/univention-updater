@@ -120,7 +120,7 @@ def log(str):
     fd_log.flush()
 
 
-def dprint(str):
+def dprint(str):  # type: (str) -> None
     """ Print message to stdout and LOGNAME. """
     if nostdout:
         print(str, file=fd_log)
@@ -132,7 +132,7 @@ def dprint(str):
         fd.flush()
 
 
-def update_status(**kwargs):
+def update_status(**kwargs):  # type: (**str) -> None
     '''
     update updater_status and write status to disk
 
@@ -142,10 +142,13 @@ def update_status(**kwargs):
     - target_version  ==> UCS_Version ==> 2.4-0
     - type            ==> (LOCAL|NET|CDROM)
     - status          ==> (RUNNING|FAILED|DONE)
+    - phase           ==> (PREPARATION|PREUP|UPDATE|POSTUP)     ==> only valid if status=RUNNING
     - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
     '''
     global updater_status
     updater_status.update(kwargs)
+    if updater_status.get('status') != 'RUNNING':
+        updater_status.pop('phase', None)
     # write temporary file
     fn = '%s.new' % FN_STATUS
     try:
@@ -482,7 +485,7 @@ def main():
         dprint("       /var/lib/univention-updater/univention-updater.status has been removed.")
         sys.exit(1)
 
-    update_status(current_version=lastversion, type=command.upper(), status='RUNNING')
+    update_status(current_version=lastversion, type=command.upper(), status='RUNNING', phase='PREPARATION')
 
     log('Version=%s' % vv)
     log('Patchlevel=%s' % vp)
@@ -562,6 +565,7 @@ def main():
     add_temporary_sources_list(updater.release_update_temporary_sources_list(nextversion))
     try:
         phase = 'preup'
+        update_status(phase='PREUP')
 
         rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), [])
 
@@ -572,6 +576,13 @@ def main():
         repos = itertools.chain(rel, com)
         scripts = updater.get_sh_files(repos, ucr.is_true('repository/online/verify', True))
         for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
+            # do not switch back and forth between PRE and UPDATE phase resp. UPDATE and POST phase.
+            if (phase, order) not in (
+                    ('update', 'pre'),
+                    ('update', 'post'),
+            ):
+                update_status(phase=phase.upper())
+
             if (phase, order) == ('update', 'pre'):
                 log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
             elif (phase, order) == ('preup', 'pre'):
