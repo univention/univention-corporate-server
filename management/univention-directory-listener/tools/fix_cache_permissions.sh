@@ -1,7 +1,6 @@
 #!/bin/sh -e
-@%@UCRWARNING=# @%@
 #
-# Copyright 2004-2020 Univention GmbH
+# Copyright 2020-2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -28,33 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# check if startup is in progress, need to wait then
-test ! -f /etc/nologin || exit 0
-
 cachedir=/var/lib/univention-directory-listener
 for dir in "$cachedir" /var/lib/univention-ldap/listener; do
 	find "$dir" ! -user listener -exec chown listener {} \;
 done
-
-eval "$(univention-config-registry shell)"
-write_translog= ignore_master= dn= secret=
-[ "$server_role" != "domaincontroller_master" ] && command -v univention-directory-notifier >/dev/null 2>&1 &&
-	write_translog=1
-[ "${listener_ignoremaster:-}" = "yes" ] &&
-	ignore_master=1
-case "$server_role" in
-domaincontroller_master|domaincontroller_backup) dn="cn=admin,$ldap_base" secret=/etc/ldap.secret ;;
-?*) dn="$ldap_hostdn" secret=/etc/machine.secret ;;
-esac
-
-tty -s || exec >>/var/log/univention/listener.log 2>&1
-exec /usr/sbin/univention-directory-listener -F \
-	${listener_debug_level:+-d "$listener_debug_level"} \
-	-b "$ldap_base" \
-	-m /usr/lib/univention-directory-listener/system \
-	-c "$cachedir" \
-	${write_translog:+-o} \
-	${ignore_master:+-B} \
-	-ZZ \
-	-x \
-	${dn:+-D "$dn"} ${secret:+-y "$secret"}

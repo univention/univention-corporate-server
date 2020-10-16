@@ -1,6 +1,11 @@
 Type: file
-File: etc/runit/univention-directory-listener/run
-
-Type: file
 File: etc/logrotate.d/univention-directory-listener
 Variables: logrotate/.*
+
+Type: file
+File: etc/default/univention-directory-listener
+Variables: server/role
+Variables: listener/ignoremaster
+Variables: listener/debug/level
+Variables: ldap/base
+Variables: ldap/hostdn

@@ -56,7 +56,6 @@ fi
 [ -n "${server_role:-}" ] ||
 	die "UCR variable 'server/role' is not set or empty"
 
-ln -snf /etc/runit/univention-directory-listener /etc/runit/univention/univention-directory-listener
 service univention-directory-listener stop
 
 if [ -e "/var/lib/univention-directory-listener" ]; then
@@ -219,7 +218,7 @@ then
 fi
 
 # The samba join script needs a running listener. Bug #19128
-/etc/init.d/univention-directory-listener restart
+systemctl restart univention-directory-listener
 
 # 3: fake listener initialization on non Primary Nodes
 # wait until local notifier id is equal to notifier id of the Primary Node

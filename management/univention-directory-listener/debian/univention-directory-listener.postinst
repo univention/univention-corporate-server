@@ -49,6 +49,15 @@ fi
 
 #DEBHELPER#
 
+if dpkg --compare-versions "$2" lt-nl 14.0.1-1; then
+	# cleanup runsv and switch to systemd unit
+	sv -w 30 exit univention-directory-listener || true
+	rm /etc/runit/univention/univention-directory-listener
+	rm -r /etc/runit/univention-directory-listener/
+	rm -r /etc/univention/templates/files/etc/runit/univention-directory-listener/
+	systemctl try-restart univention-directory-listener
+fi
+
 univention-config-registry set listener/debug/level?2 \
 	listener/freespace?10 \
 								listener/network/protocol=all
@@ -64,9 +73,5 @@ touch /var/lib/univention-ldap/schema/id/id
 chown listener:root /var/lib/univention-ldap/schema/id/id
 
 call_joinscript 03univention-directory-listener.inst
-
-if [ "$1" = "configure" ] && [ -n "$2" ]; then
-		/etc/init.d/univention-directory-listener crestart
-fi
 
 exit 0

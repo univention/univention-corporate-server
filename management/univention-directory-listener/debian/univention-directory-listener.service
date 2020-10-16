@@ -1,0 +1,15 @@
+[Unit]
+Description=Univention Directory Listener Daemon
+After=network.target univention-directory-notifier.service slapd.service
+Documentation=man:univention-directory-listener(1)
+
+[Service]
+EnvironmentFile=/etc/default/univention-directory-listener
+ExecStartPre=/usr/share/univention-directory-listener/fix_cache_permissions.sh
+ExecStart=/usr/sbin/univention-directory-listener -F $UDL_OPTS
+Restart=always
+StandardOutput=append:/var/log/univention/listener.log
+StandardError=append:/var/log/univention/listener.log
+
+[Install]
+WantedBy=multi-user.target

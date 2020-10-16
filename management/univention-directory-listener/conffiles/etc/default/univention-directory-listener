@@ -1,0 +1,27 @@
+@%@UCRWARNING=# @%@
+@!@
+
+from distutils.spawn import find_executable
+
+server_role = configRegistry.get('server/role', '')
+write_translog = server_role != 'domaincontroller_master' and find_executable('univention-directory-notifier')
+ignore_master = configRegistry.is_true('listener/ignoremaster')
+debug_level = configRegistry.get('listener/debug/level', None)
+if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
+	dn = 'cn=admin,{}'.format(configRegistry['ldap/base'])
+	secret = '/etc/ldap.secret'
+else:
+	dn = configRegistry['ldap/hostdn']
+	secret = '/etc/machine.secret'
+udl_opts = '{debug_level} {ldap_base} {listener_modules} {cachedir} {write_translog} {ignore_master} -ZZ -x {dn} {secret}'.format(
+	debug_level='-d {}'.format(debug_level) if debug_level is not None else '',
+	ldap_base='-b {}'.format(configRegistry['ldap/base']),
+	listener_modules='-m /usr/lib/univention-directory-listener/system',
+	cachedir='-c /var/lib/univention-directory-listener',
+	write_translog='-o' if write_translog else '',
+	ignore_master='-B' if ignore_master else '',
+	dn='-D {}'.format(dn),
+	secret='-y {}'.format(secret),
+)
+print('UDL_OPTS="{}"'.format(udl_opts))
+@!@

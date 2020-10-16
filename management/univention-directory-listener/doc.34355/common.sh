@@ -217,7 +217,7 @@ listener () {
 		start) pkill -CONT "$DEBUGPROCNAME" ; return ;;
 		esac
 	fi
-	/etc/init.d/univention-directory-listener "$@"
+	systemctl "$@" univention-directory-listener
 }
 uuid () {
 	local dn="$1"

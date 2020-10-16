@@ -1,0 +1,1 @@
+rm_conffile /etc/init.d/univention-directory-listener 14.0.1~

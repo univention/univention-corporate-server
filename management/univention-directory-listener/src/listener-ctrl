@@ -62,34 +62,20 @@ resync () {
 		[ -f "$STATE_DIR/$i" ] || modules 2
 	done
 
-	sv down univention-directory-listener
-	i=0
-	while ! sv status univention-directory-listener | grep -q '^down:'
-	do
-		i=$((i+1))
-		if [ $i -gt 300 ]; then
-			echo "Sending SIGKILL"
-			pids=`pidof univention-directory-listener`
-			if [ -n "$pids" ]; then
-				kill -9 $pids
-				i=0
-			fi
-		fi
-		sleep 1
-		echo "waiting for listener modules to finish"
-	done
+	systemctl stop univention-directory-listener
 	echo "listener shutdown done"
 	for i in "$@"
 	do
 		rm -f "$STATE_DIR/$i"
 	done
-	sv up univention-directory-listener
+	systemctl start univention-directory-listener
 }
 
 state () {
 	local rc state master_id local_id last_trans rv module_name module_file module_state
 
-	rv= state=$(sv status univention-directory-listener) || rv="$FAIL"
+	rv= state=$(systemctl show univention-directory-listener.service --property SubState --value)
+	systemctl is-active univention-directory-listener.service || rv="$FAIL"
 	printf 'Listener status:\n %s%s%s\n\n' "${rv:-$OKAY}" "$state" "$RSET"
 
 	rv= master_id=$(/usr/share/univention-directory-listener/get_notifier_id.py) || rv="$FAIL"
