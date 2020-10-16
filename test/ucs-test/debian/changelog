@@ -1,4 +1,4 @@
-ucs-test (9.0.5-14) unstable; urgency=medium
+ucs-test (9.0.5-15) unstable; urgency=medium
 
   * Bug #51364: test ObjectClass filter for usertemplates
 
