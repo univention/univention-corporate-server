@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-join
-fix: 
+fix: 11.0.1-31A~4.4.0.202010161743
 desc: |
  This update addresses the following issue(s):
  * During the update from UCS 4.4 to UCS 5.0 the execution of joinscripts is
