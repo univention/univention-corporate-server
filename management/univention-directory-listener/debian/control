@@ -33,7 +33,6 @@ Depends:
  python2.7-univention-debug,
  shell-univention-lib (>= 1.0.6),
  univention-base-files,
- univention-runit,
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
