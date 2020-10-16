@@ -4,7 +4,7 @@
 ## roles:
 ##  - domaincontroller_master
 ## packages:
-##   - univention-directory-manager-modules
+##   - univention-directory-manager-tools
 ## exposure: dangerous
 
 import pytest
