@@ -125,6 +125,11 @@
 					It replaces <command>univention-install-joinscript</command> from the package <package>univention-debhelper</package>, which will be removed with UCS 5.1  (<u:bug>52211</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
+					To prevent problems with UCS components that are only partly updated at the time join scripts are executed,
+                    the execution of join scripts is from now on postponed until the end of the update process (postup phase).
+					This change has been implemented with UCS 4.4-6 but becomes now active (<u:bug>51624</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
