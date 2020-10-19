@@ -118,6 +118,8 @@ directory = {directory}
 		self.restart_python_services()
 		coverage_bin = distutils.spawn.find_executable("coverage")
 		if not coverage_bin:
+			coverage_bin = distutils.spawn.find_executable("python3-coverage")
+		if not coverage_bin:
 			coverage_bin = distutils.spawn.find_executable("python-coverage")
 		subprocess.call([coverage_bin, '--version'])
 		subprocess.call([coverage_bin, 'combine'])
@@ -148,7 +150,7 @@ directory = {directory}
 		"""Startup function which is invoked by every(!) python process during coverage measurement. If the process is relevant we start measuring coverage."""
 		argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')
 		if os.getuid() != 0 or not any('univention' in arg or 'udm' in arg or 'ucs' in arg or 'ucr' in arg for arg in argv):
-			if argv != ['/usr/bin/python2.7', '']:
+			if argv != ['/usr/bin/python2.7', ''] and argv != ['/usr/bin/python3', '']:
 				cls.debug_message('skip non-ucs process', argv)
 			return  # don't change non UCS-python scripts
 		if any('listener' in arg or 'notifier' in arg for arg in argv[2:]):
@@ -163,13 +165,15 @@ directory = {directory}
 			cls.debug_message('ENVIRON WAS CLEARED BY PARENT PROCESS', argv)
 
 		import coverage
-		cls.coverage = coverage.process_startup()
-		if not cls.coverage:
-			cls.debug_message('no coverage startup (already started?, environ cleared?)')
+		cov = coverage.process_startup()
+		if not cov:
+			cls.debug_message('no coverage startup (already started?, environ cleared?): %r' % (os.environ.get('COVERAGE_PROCESS_START'),))
 			return
 
+		cls.coverage = cov
+
 		# FIXME: univention-cli-server calls os.fork() which causes the coverage measurement not to start in the forked process
-		# https://bitbucket.org/ned/coveragepy/issues/310/coverage-fails-with-osfork-and-os_exit
+		# https://github.com/nedbat/coveragepy/issues/310  # Coverage fails with os.fork and os._exit
 		osfork = getattr(os, 'fork')
 
 		def fork(*args, **kwargs):
@@ -183,7 +187,7 @@ directory = {directory}
 			return pid
 		os.fork = fork
 
-		# https://bitbucket.org/ned/coveragepy/issues/43/coverage-measurement-fails-on-code
+		# https://github.com/nedbat/coveragepy/issues/43  # Coverage measurement fails on code containing os.exec* methods
 		# if the process calls one of the process-replacement functions the coverage must be started in the new process
 		for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe', '_exit']:
 			if isinstance(getattr(os, method), StopCoverageDecorator):
