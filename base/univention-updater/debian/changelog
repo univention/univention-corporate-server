@@ -1,8 +1,14 @@
-univention-updater (15.0.1-10) unstable; urgency=low
+univention-updater (15.0.1-11) unstable; urgency=low
 
   * Bug #52474: Switch to updates-test for now.
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Dec 2020 10:09:58 +0100
+
+univention-updater (15.0.1-10) unstable; urgency=medium
+
+  * Bug #51769: Small adjustments univention-prune-kernels
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 19 Oct 2020 11:58:14 +0200
 
 univention-updater (15.0.1-9) unstable; urgency=low
 
