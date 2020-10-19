@@ -261,6 +261,8 @@ update_check_old_packages () {
 		univention-debootstrap
 		univention-debootstrap-3
 		univention-check-printers
+		univention-snmp
+		univention-snmpd
 	)
 	for pkg in "${old[@]}"
 	do
