@@ -31,7 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import six
-import cgi
 
 import univention.admin.uldap as ua_ldap
 import univention.admin.objects as ua_objects
@@ -43,6 +42,10 @@ from univention.config_registry import ConfigRegistry
 import univention.debug as ud
 
 from univention.directory.reports.filter import filter_get
+try:
+	from html import escape
+except ImportError:
+	from cgi import escape
 
 __all__ = ['connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format']
 
@@ -59,7 +62,7 @@ TEX_ESCAPE = {
 	'{': '\\{',
 	'}': '\\}',
 	'~': '\\textasciitilde{}',
-	'^': '\\^{\,}',
+	'^': '\\^{\\,}',
 	'$': '\\$',
 	u'°': '$^{\\circ}$',
 	u'´': '',
@@ -156,12 +159,7 @@ class AdminConnection(object):
 			import traceback
 
 			ud.debug(ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn)
-			try:
-				tb = traceback.format_exc().encode('ascii', 'replace').replace('%', '?')
-				# this might fail because of problems with univention.debug
-				ud.debug(ud.ADMIN, ud.ERROR, 'Traceback: %s' % tb)
-			except:
-				pass
+			ud.debug(ud.ADMIN, ud.ERROR, 'Traceback: %s' % (traceback.format_exc(),))
 		for key, value in new.items():
 			from univention.directory.reports.document import Document
 			if self._format in (Document.TYPE_LATEX, Document.TYPE_RML):
@@ -233,7 +231,7 @@ class AdminConnection(object):
 		if self._format == Document.TYPE_LATEX:
 			return texClean(value)
 		elif self._format == Document.TYPE_RML:
-			return cgi.escape(value, quote=True)
+			return escape(value, quote=True)
 		return value
 
 	def _get_policies(self, obj):
