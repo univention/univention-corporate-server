@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (5.0.1-50) unstable; urgency=low
+
+  * Bug #51942: Improved usability of univention-run-diagnostic-checks
+
+ -- Max Christian Pohle <pohle@univention.de>  Mon, 19 Oct 2020 16:46:07 +0200
+
 univention-management-console-module-diagnostic (5.0.1-49) unstable; urgency=medium
 
   * Bug #50887: Check radius permissions via diagnostic module

@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-management-console-module-diagnostic
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * improved usability of the `univention-run-diagnostic-checks` command line
+   tool. It can now be called without parameters to execute all tests and
+   it does not require a username and password to access --help any more.
+bug: [51942]
