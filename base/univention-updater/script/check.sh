@@ -260,6 +260,7 @@ update_check_old_packages () {
 		univention-samba4wins
 		univention-debootstrap
 		univention-debootstrap-3
+		univention-check-printers
 	)
 	for pkg in "${old[@]}"
 	do
