@@ -258,6 +258,8 @@ update_check_old_packages () {
 		univention-x-core
 		univention-java'=Use default-jre or default-jdk'
 		univention-samba4wins
+		univention-debootstrap
+		univention-debootstrap-3
 	)
 	for pkg in "${old[@]}"
 	do
