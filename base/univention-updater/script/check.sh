@@ -263,6 +263,7 @@ update_check_old_packages () {
 		univention-check-printers
 		univention-snmp
 		univention-snmpd
+		univention-remote-backup
 	)
 	for pkg in "${old[@]}"
 	do
