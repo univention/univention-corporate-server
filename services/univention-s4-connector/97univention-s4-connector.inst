@@ -237,6 +237,7 @@ if [ -z "$s4connector_dc" ] \
 		exit 1
 	fi
 
+	[ -e "/etc/univention/connector/s4/mapping.py" ] || univention-config-registry filter --encode-utf8 > /etc/univention/connector/s4/mapping.py < /etc/univention/connector/s4/mapping
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 
