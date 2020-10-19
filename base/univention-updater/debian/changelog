@@ -1,3 +1,9 @@
+univention-updater (14.0.3-5) unstable; urgency=medium
+
+  * Bug #51769: Small adjustments univention-prune-kernels
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 19 Oct 2020 11:58:14 +0200
+
 univention-updater (14.0.3-4) unstable; urgency=low
 
   * Bug #52197: add phase to univention-updater.status
