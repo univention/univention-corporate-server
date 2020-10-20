@@ -818,7 +818,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					The <application>univention-s4-connector</application> is now running with Python 3 (<u:bug>52043</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
