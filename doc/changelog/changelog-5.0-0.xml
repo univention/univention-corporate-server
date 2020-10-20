@@ -799,6 +799,9 @@
 				<listitem><simpara>
 					The package <package>cifs-utils</package> is now installed by default(<u:bug>39259</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The scripts in <package>univention-samba</package> and <package>univention-samba4</package> are now running with Python 3 (<u:bug>52045</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
