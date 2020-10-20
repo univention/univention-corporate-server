@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
@@ -49,11 +49,13 @@ from datetime import datetime
 
 krb5_context = None
 
+
 class Krb5Context(object):
 	def __init__(self):
 		self.ctx = heimdal.context()
 		self.etypes = self.ctx.get_permitted_enctypes()
 		self.etype_ids = [et.toint() for et in self.etypes]
+
 
 keytypes = {
 	1: 'des_crc',
@@ -63,6 +65,7 @@ keytypes = {
 }
 
 regEx = re.compile('^([a-zA-Z0-9-]*):?: (.*)')
+
 
 def decode_unicodePwd(value, kvno=0):
 	global krb5_context

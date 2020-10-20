@@ -1,5 +1,5 @@
-#!/usr/bin/python2.7
-# coding: utf-8
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Copyright 2016-2020 Univention GmbH
 #
@@ -38,22 +38,18 @@ import subprocess
 _LDBSEARCH_PATTERNS = {
 	"dn": re.compile("dn: (.*)"),
 	"name": re.compile("sAMAccountName: (.*)"),
-	"lockout": re.compile("lockoutTime: (\d+)")
+	"lockout": re.compile(r"lockoutTime: (\d+)")
 }
 
-_NT_UNIX_DELTA = (datetime.datetime(1970, 1, 1) -
-	datetime.datetime(1601, 1, 1)).total_seconds()
+_NT_UNIX_DELTA = (datetime.datetime(1970, 1, 1) - datetime.datetime(1601, 1, 1)).total_seconds()
 
 
 def parse_arguments():
 	parser = argparse.ArgumentParser()
 
-	parser.add_argument("filter", nargs="?", default="(objectClass=User)",
-		help="Search filter (default: \"(objectClass=User)\")")
-	parser.add_argument("--debug", action="store_true",
-		help="Print debug univention-s4search call to stdout and exit")
-	parser.add_argument("--verbose", action="store_true",
-		help="Print remaining time per user")
+	parser.add_argument("filter", nargs="?", default="(objectClass=User)", help="Search filter (default: %(default)r")
+	parser.add_argument("--debug", action="store_true", help="Print debug univention-s4search call to stdout and exit")
+	parser.add_argument("--verbose", action="store_true", help="Print remaining time per user")
 
 	general = parser.add_argument_group("General options (as in ldbsearch)")
 	general.add_argument("-H", "--url", help="database URL")
@@ -62,39 +58,32 @@ def parse_arguments():
 
 	auth = parser.add_argument_group("Authentication options (as in ldbsearch)")
 	auth.add_argument("-U", "--user", help="Set the network username")
-	auth.add_argument("-N", "--no-pass", action="store_true",
-		help="Don't ask for a password")
+	auth.add_argument("-N", "--no-pass", action="store_true", help="Don't ask for a password")
 	auth.add_argument("--password", metavar="STRING", help="Password")
-	auth.add_argument("-A", "--authentication-file", metavar="FILE",
-		help="Get the credentials from a file")
-	auth.add_argument("-P", "--machine-pass", action="store_true",
-		help="Use stored machine account password")
-	auth.add_argument("--simple-bind-dn", metavar="STRING",
-		help="DN to use for a simple bind")
-	auth.add_argument("-k", "--kerberos", metavar="STRING", choices=["yes", "no"],
-		help="Use Kerbos")
-	auth.add_argument("--krb5-ccache", metavar="STRING",
-		help="Credentials cache location for Kerberos")
-	auth.add_argument("-S", "--sign", action="store_true",
-		help="Sign connection to prevent modificationi in transit")
-	auth.add_argument("-e", "--encrypt", action="store_true",
-		help="Encrypt connection for privacy")
+	auth.add_argument("-A", "--authentication-file", metavar="FILE", help="Get the credentials from a file")
+	auth.add_argument("-P", "--machine-pass", action="store_true", help="Use stored machine account password")
+	auth.add_argument("--simple-bind-dn", metavar="STRING", help="DN to use for a simple bind")
+	auth.add_argument("-k", "--kerberos", metavar="STRING", choices=["yes", "no"], help="Use Kerbos")
+	auth.add_argument("--krb5-ccache", metavar="STRING", help="Credentials cache location for Kerberos")
+	auth.add_argument("-S", "--sign", action="store_true", help="Sign connection to prevent modificationi in transit")
+	auth.add_argument("-e", "--encrypt", action="store_true", help="Encrypt connection for privacy")
 
 	return parser.parse_args()
 
 
 def build_search_command(parsed):
 	arguments = ["univention-s4search"]
-	options = ("url", "basedn", "scope", "user", "password",
-		"authentication-file", "simple-bind-dn", "kerberos", "krb5-ccache")
+	options = ("url", "basedn", "scope", "user", "password", "authentication-file", "simple-bind-dn", "kerberos", "krb5-ccache")
 
 	for option in options:
 		value = getattr(parsed, option.replace("-", "_"))
-		if value: arguments.append("--{}={}".format(option, value))
+		if value:
+			arguments.append("--{}={}".format(option, value))
 
 	for option in ("no-pass", "machine-pass", "sign", "encrypt"):
 		value = getattr(parsed, option.replace("-", "_"))
-		if value: arguments.append("--{}".format(option))
+		if value:
+			arguments.append("--{}".format(option))
 
 	arguments.extend([parsed.filter, "lockoutTime", "samAccountName"])
 	return arguments
@@ -102,14 +91,11 @@ def build_search_command(parsed):
 
 def get_lockout_duration():
 	try:
-		output = subprocess.check_output(["samba-tool", "domain",
-			"passwordsettings", "show"])
+		output = subprocess.check_output(["samba-tool", "domain", "passwordsettings", "show"]).decode('UTF-8', 'replace')
 	except (OSError, subprocess.CalledProcessError) as error:
 		exit("Error calling samba-tool: " + str(error))
 
-	matches = re.findall("^Account lockout duration \(mins\): (\d+)$",
-		output, re.MULTILINE)
-
+	matches = re.findall(r"^Account lockout duration \(mins\): (\d+)$", output, re.MULTILINE)
 	try:
 		return int(matches[0]) or 30
 	except (IndexError, ValueError):
@@ -121,9 +107,11 @@ def parse_ldbsearch_entry(entry):
 	for line in entry.splitlines():
 		for (key, pattern) in _LDBSEARCH_PATTERNS.items():
 			match = pattern.search(line)
-			if match is None: continue
+			if match is None:
+				continue
 			value = match.group(1)
-			if value is None: continue
+			if value is None:
+				continue
 			user[key] = value
 	return user
 
@@ -136,10 +124,11 @@ def nt_to_unix(nt_timestamp):
 
 
 def get_remaining_locktime(lockout_duration, lockout_time):
-	if lockout_duration == -1: return -1
-	if lockout_time == 0: return 0
-	delta = datetime.datetime.utcnow() - \
-			datetime.datetime.utcfromtimestamp(lockout_time)
+	if lockout_duration == -1:
+		return -1
+	if lockout_time == 0:
+		return 0
+	delta = datetime.datetime.utcnow() - datetime.datetime.utcfromtimestamp(lockout_time)
 	locked_out_seconds = delta.total_seconds()
 	remaining = int(lockout_duration * 60 - locked_out_seconds)
 	return max(0, remaining)
@@ -147,7 +136,7 @@ def get_remaining_locktime(lockout_duration, lockout_time):
 
 def get_users(search_command, lockout_duration):
 	try:
-		output = subprocess.check_output(search_command)
+		output = subprocess.check_output(search_command).decode('UTF-8', 'replace')
 	except (OSError, subprocess.CalledProcessError) as error:
 		exit("Error calling univention-s4search: " + str(error))
 
@@ -178,6 +167,7 @@ def main():
 	template = "{} remaining: {} seconds" if arguments.verbose else "{}"
 	for user in lockout:
 		print(template.format(user["name"], user["remaining"]))
+
 
 if __name__ == "__main__":
 	main()

@@ -1,5 +1,5 @@
-#!/usr/bin/python2.7
-# coding: utf-8
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
 # Copyright 2016-2020 Univention GmbH
 #
@@ -34,6 +34,8 @@ import re
 import argparse
 import subprocess
 
+from ldap.filter import filter_format
+
 import univention.config_registry as configRegistry
 
 
@@ -44,53 +46,43 @@ def get_ldap_server_name():
 
 
 def parse_arguments():
-	description = ("Unlock a Samba account by setting lockoutTime to 0. "
-		"This requires authentication as in ldbmodify.")
+	description = ("Unlock a Samba account by setting lockoutTime to 0. " "This requires authentication as in ldbmodify.")
 	parser = argparse.ArgumentParser(description=description)
-	parser.add_argument("--is-dn", action="store_true",
-		help="ACCOUNT is DN (no additional lookup needed)")
+	parser.add_argument("--is-dn", action="store_true", help="ACCOUNT is DN (no additional lookup needed)")
 	parser.add_argument("account", help="account to unlock (or DN)")
 
 	general = parser.add_argument_group("General options (as in ldbmodify)")
 	ldap_server_name = get_ldap_server_name()
-	general.add_argument("-H", "--url", nargs="?", default=ldap_server_name,
-		help="database URL (default: {})".format(ldap_server_name))
+	general.add_argument("-H", "--url", nargs="?", default=ldap_server_name, help="database URL (default: {})".format(ldap_server_name))
 
 	auth = parser.add_argument_group("Authentication options (as in ldbmodify)")
 	auth.add_argument("-U", "--user", help="Set the network username")
-	auth.add_argument("-N", "--no-pass", action="store_true",
-		help="Don't ask for a password")
+	auth.add_argument("-N", "--no-pass", action="store_true", help="Don't ask for a password")
 	auth.add_argument("--password", metavar="STRING", help="Password")
-	auth.add_argument("-A", "--authentication-file", metavar="FILE",
-		help="Get the credentials from a file")
-	auth.add_argument("-P", "--machine-pass", action="store_true",
-		help="Use stored machine account password")
-	auth.add_argument("--simple-bind-dn", metavar="STRING",
-		help="DN to use for a simple bind")
-	auth.add_argument("-k", "--kerberos", metavar="STRING",
-		choices=["yes", "no"], help="Use Kerbos")
-	auth.add_argument("--krb5-ccache", metavar="STRING",
-		help="Credentials cache location for Kerberos")
-	auth.add_argument("-S", "--sign", action="store_true",
-		help="Sign connection to prevent modification in transit")
-	auth.add_argument("-e", "--encrypt", action="store_true",
-		help="Encrypt connection for privacy")
+	auth.add_argument("-A", "--authentication-file", metavar="FILE", help="Get the credentials from a file")
+	auth.add_argument("-P", "--machine-pass", action="store_true", help="Use stored machine account password")
+	auth.add_argument("--simple-bind-dn", metavar="STRING", help="DN to use for a simple bind")
+	auth.add_argument("-k", "--kerberos", metavar="STRING", choices=["yes", "no"], help="Use Kerbos")
+	auth.add_argument("--krb5-ccache", metavar="STRING", help="Credentials cache location for Kerberos")
+	auth.add_argument("-S", "--sign", action="store_true", help="Sign connection to prevent modification in transit")
+	auth.add_argument("-e", "--encrypt", action="store_true", help="Encrypt connection for privacy")
 
 	return parser.parse_args()
 
 
 def build_modify_command(parsed):
 	arguments = ["ldbmodify"]
-	options = ("url", "user", "password", "authentication-file",
-		"simple-bind-dn", "kerberos", "krb5-ccache")
+	options = ("url", "user", "password", "authentication-file", "simple-bind-dn", "kerberos", "krb5-ccache")
 
 	for option in options:
 		value = getattr(parsed, option.replace("-", "_"))
-		if value: arguments.append("--{}={}".format(option, value))
+		if value:
+			arguments.append("--{}={}".format(option, value))
 
 	for option in ("no-pass", "machine-pass", "sign", "encrypt"):
 		value = getattr(parsed, option.replace("-", "_"))
-		if value: arguments.append("--{}".format(option))
+		if value:
+			arguments.append("--{}".format(option))
 
 	# Hack to convince lbdmodify to read the ldif from stdin
 	arguments.append("/dev/stdin")
@@ -99,8 +91,7 @@ def build_modify_command(parsed):
 
 def lookup_dn(user):
 	try:
-		output = subprocess.check_output(["univention-s4search",
-			"samaccountname=" + user, "dn"])
+		output = subprocess.check_output(["univention-s4search", filter_format("samaccountname=", [user]), "dn"]).decode('UTF-8', 'replace')
 	except (OSError, subprocess.CalledProcessError) as error:
 		exit("Error calling univention-s4search: " + str(error))
 
@@ -113,7 +104,7 @@ def lookup_dn(user):
 def unlock_user(arguments, dn):
 	cmd = subprocess.Popen(arguments, stdin=subprocess.PIPE)
 	modify = "dn: {}\nchangetype: modify\nreplace: lockoutTime\nlockoutTime: 0\n"
-	cmd.communicate(modify.format(dn))
+	cmd.communicate(modify.format(dn).encode('UTF-8'))
 	if cmd.returncode != 0:
 		exit("Error unlocking user " + dn)
 
@@ -122,10 +113,13 @@ def main():
 	arguments = parse_arguments()
 
 	modify = build_modify_command(arguments)
-	if arguments.is_dn: dn = arguments.account
-	else: dn = lookup_dn(arguments.account)
+	if arguments.is_dn:
+		dn = arguments.account
+	else:
+		dn = lookup_dn(arguments.account)
 
 	unlock_user(modify, dn)
+
 
 if __name__ == "__main__":
 	main()

@@ -97,12 +97,12 @@ univention_samba4_append_to_ucr() {
 	value="${2?append_to_ucr needs two parameters, called only with \""$@"\"}"
 	separator=','
 
-	python <<-%EOF
+	python3 <<-%EOF
 	from univention.config_registry import ConfigRegistry
 	ucr = ConfigRegistry()
 	ucr.load()
 	valuelist = ucr.get('$key', '').split('$separator')
-	if not '$value' in valuelist:
+	if '$value' not in valuelist:
 	    valuelist.append('$value')
 	    ucr['$key'] = '$separator'.join(valuelist)
 	    ucr.save()

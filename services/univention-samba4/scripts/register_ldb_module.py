@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Samba
@@ -33,25 +33,26 @@
 
 from __future__ import print_function
 
-import optparse
+import argparse
 import sys
+
 from samba.param import LoadParm
 from samba.auth import system_session
 from samba import Ldb
 import ldb
 
-if __name__ == "__main__":
 
-	parser = optparse.OptionParser("%prog [options]")
-	parser.add_option("-v", "--verbose", action="store_true", dest="verbose")
-	parser.add_option("-H", dest="ldburl", help="LDB Url")
-	parser.add_option("--prepend", dest="prepend", action="append", help="Prepend LDB module", default=[])
-	parser.add_option("--append", dest="append", action="append", help="Append LDB module", default=[])
-	parser.add_option("--remove", dest="remove", action="append", help="Append LDB module", default=[])
-	parser.add_option("--check", dest="check", action="store_true", help="Check registered LDB modules", default=[])
-	parser.add_option("--ignore-exists", dest="ignore_exists", action="store_true", help="Don't add LDB modules already registered")
-	parser.add_option("--dry-run", dest="dry_run", action="store_true", help="Dry run")
-	opts, args = parser.parse_args()
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-v", "--verbose", action="store_true")
+	parser.add_argument("-H", dest="ldburl", help="LDB Url")
+	parser.add_argument("--prepend", action="append", help="Prepend LDB module", default=[])
+	parser.add_argument("--append", action="append", help="Append LDB module", default=[])
+	parser.add_argument("--remove", action="append", help="Append LDB module", default=[])
+	parser.add_argument("--check", action="store_true", help="Check registered LDB modules", default=[])
+	parser.add_argument("--ignore-exists", action="store_true", help="Don't add LDB modules already registered")
+	parser.add_argument("--dry-run", action="store_true", help="Dry run")
+	opts = parser.parse_args()
 
 	if not (opts.prepend or opts.append or opts.remove or opts.check):
 		parser.print_help()
@@ -72,7 +73,7 @@ if __name__ == "__main__":
 		sys.exit(0)
 
 	if len(msg[0]["@LIST"]) == 1:
-		modules_0 = msg[0]["@LIST"][0]
+		modules_0 = msg[0]["@LIST"][0].decode('UTF-8')
 		modules_list_0 = modules_0.split(',')
 
 		if opts.remove:
@@ -105,7 +106,7 @@ if __name__ == "__main__":
 
 		modify_msg = ldb.Message()
 		modify_msg.dn = ldb.Dn(ldb_object, "@MODULES")
-		modify_msg["@LIST"] = ldb.MessageElement([updated_modules_str], ldb.FLAG_MOD_REPLACE, "@LIST")
+		modify_msg["@LIST"] = ldb.MessageElement([updated_modules_str.encode('UTF-8')], ldb.FLAG_MOD_REPLACE, "@LIST")
 		ldb_object.modify(modify_msg)
 		if opts.verbose:
 			msg = ldb_object.search(base="@MODULES", scope=ldb.SCOPE_BASE, attrs=['@LIST'])

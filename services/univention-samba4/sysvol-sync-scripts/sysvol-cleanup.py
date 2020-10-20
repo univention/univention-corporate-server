@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Copyright 2013-2020 Univention GmbH
 #
@@ -34,7 +34,7 @@
 from __future__ import print_function
 
 from univention import config_registry
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 import os
 import shutil
@@ -51,18 +51,16 @@ def getLDAPGPOs(options):
 	ldapGPOs = []
 
 	p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	res = p1.communicate()
+	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
 		if options.verbose:
 			print('Failed to search via univention-s4search.')
-			print(res[1])
+			print(stderr.decode('UTF-8', 'replace'))
 		return None
-
-	stdout = res[0]
 
 	plainGPOAttribute = []
 	currentGPO = None
-	for line in stdout.split('\n'):
+	for line in stdout.decode('UTF-8', 'replace').split('\n'):
 		# The result looks like this:
 		# record 1
 		#   dn: CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=deadlock50,DC=local
@@ -82,7 +80,6 @@ def getLDAPGPOs(options):
 
 	# Get GPO ID
 	for gpo in plainGPOAttribute:
-
 		bracketOpen = gpo.find('{')
 		bracketClose = gpo.find('}')
 
@@ -101,13 +98,10 @@ def getFileSystemGPOs(sysvolDirectory):
 
 
 if __name__ == '__main__':
-	usage = '''%s [options]''' % sys.argv[0]
-	parser = OptionParser(usage=usage)
-
-	parser.add_option("--move", action="store", dest="target_directory", help="Move unused GPOs to given directory")
-	parser.add_option("--verbose", action="store_true", dest="verbose", default=False, help="Print verbose messages")
-
-	(options, args) = parser.parse_args()
+	parser = ArgumentParser()
+	parser.add_argument("--move", action="store", dest="target_directory", help="Move unused GPOs to given directory")
+	parser.add_argument("--verbose", action="store_true", default=False, help="Print verbose messages")
+	options = parser.parse_args()
 
 	# load UCR
 	ucr = config_registry.ConfigRegistry()
@@ -127,15 +121,14 @@ if __name__ == '__main__':
 		print('The following LDAP GPOs were found:')
 		for ldapGPO in ldapGPOs:
 			print(' - %s' % ldapGPO)
-		print()
+		print('')
 
 		print('The following file system GPOs were found:')
 		for fileSystemGPO in fileSystemGPOs:
 			print(' - %s' % fileSystemGPO)
-		print()
+		print('')
 
 	for fileSystemGPO in fileSystemGPOs:
-
 		if fileSystemGPO in ldapGPOs:
 			# LDAP GPO is also available in sysvol directory
 			continue
@@ -151,5 +144,3 @@ if __name__ == '__main__':
 		if options.verbose:
 			print('Move unused GPO %s to %s' % (fileSystemGPO, dest))
 		shutil.move(src, dest)
-
-	sys.exit(0)
