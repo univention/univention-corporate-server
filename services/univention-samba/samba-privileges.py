@@ -37,15 +37,15 @@ import univention.debug
 import tdb
 
 SAMBA_PRIVILEGES = {
-	"SeMachineAccountPrivilege": {"number": 16, "index": 0},
-	"SeAddUsersPrivilege": {"number": 64, "index": 0},
-	"SeTakeOwnershipPrivilege": {"number": 8, "index": 1},
-	"SeBackupPrivilege": {"number": 2, "index": 1},
-	"SeRestorePrivilege": {"number": 4, "index": 1},
-	"SeRemoteShutdownPrivilege": {"number": 1, "index": 1},
-	"SeSecurityPrivilege": {"number": 16, "index": 1},
-	"SePrintOperatorPrivilege": {"number": 32, "index": 0},
-	"SeDiskOperatorPrivilege": {"number": 128, "index": 0},
+	b"SeMachineAccountPrivilege": {"number": 16, "index": 0},
+	b"SeAddUsersPrivilege": {"number": 64, "index": 0},
+	b"SeTakeOwnershipPrivilege": {"number": 8, "index": 1},
+	b"SeBackupPrivilege": {"number": 2, "index": 1},
+	b"SeRestorePrivilege": {"number": 4, "index": 1},
+	b"SeRemoteShutdownPrivilege": {"number": 1, "index": 1},
+	b"SeSecurityPrivilege": {"number": 16, "index": 1},
+	b"SePrintOperatorPrivilege": {"number": 32, "index": 0},
+	b"SeDiskOperatorPrivilege": {"number": 128, "index": 0},
 }
 
 ALL_SAMBA_PRIVILEGES = SAMBA_PRIVILEGES.keys()
@@ -66,13 +66,13 @@ def handler(dn, new, old):
 	# deleted -> remove all privileges
 	if old and not new:
 		if old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
-			univention.debug.debug(where, level, "%s: remove all samba privs (%s)" % (name, old["sambaSID"][0]))
+			univention.debug.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
 			removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
 
 	# created
 	if new and not old:
 		if new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
-			univention.debug.debug(where, level, "%s: add new samba privs (%s)" % (name, new["sambaSID"][0]))
+			univention.debug.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
 			addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
 
 	# modified
@@ -111,23 +111,24 @@ def postrun():
 
 
 def addPrivileges(sambaSID, privileges):
-
 	listener.setuid(0)
 
 	try:
-		tdbKey = 'PRIV_%s\x00' % (sambaSID)
+		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
 		tdbFile.lock_all()
 		privs = tdbFile.get(tdbKey)
 		if not privs:
-			privs = '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+			privs = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
 		for privilege in privileges:
-			if SAMBA_PRIVILEGES.get(privilege, ""):
-				index = SAMBA_PRIVILEGES[privilege].get("index", 0)
-				number = SAMBA_PRIVILEGES[privilege].get("number", 0)
+			if SAMBA_PRIVILEGES.get(privilege):
+				index = SAMBA_PRIVILEGES[privilege]["index"]
+				number = SAMBA_PRIVILEGES[privilege]["number"]
 				if (ord(privs[index]) & number) == 0:
 					new = chr(ord(privs[index]) + number)
+					if not isinstance(new, bytes):  # Py 2
+						new = new.encode('ISO8859-1')
 					privs = privs[0:index] + new + privs[(index + 1):len(privs)]
 
 		tdbFile[tdbKey] = privs
@@ -138,27 +139,28 @@ def addPrivileges(sambaSID, privileges):
 
 
 def removePrivileges(sambaSID, privileges):
-
 	listener.setuid(0)
 
 	try:
-		tdbKey = 'PRIV_%s\x00' % (sambaSID)
+		tdbKey = b'PRIV_%s\x00' % (sambaSID,)
 		tdbFile = tdb.Tdb(SAMBA_POLICY_TDB)
 		tdbFile.lock_all()
 		privs = tdbFile.get(tdbKey)
 
 		if privs:
 			for privilege in privileges:
-				if SAMBA_PRIVILEGES.get(privilege, ""):
-					index = SAMBA_PRIVILEGES[privilege].get("index", "")
-					number = SAMBA_PRIVILEGES[privilege].get("number", "")
+				if SAMBA_PRIVILEGES.get(privilege):
+					index = SAMBA_PRIVILEGES[privilege]["index"]
+					number = SAMBA_PRIVILEGES[privilege]["number"]
 					if ord(privs[index]) & number:
 						new = chr(ord(privs[index]) - number)
+						if not isinstance(new, bytes):  # Py 2
+							new = new.encode('ISO8859-1')
 						privs = privs[0:index] + new + privs[(index + 1):len(privs)]
 						tdbFile[tdbKey] = privs
 
 			# delete key if no privileges are assigned
-			if privs == '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00':
+			if privs == b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00':
 				tdbFile.delete(tdbKey)
 
 		tdbFile.unlock_all()
