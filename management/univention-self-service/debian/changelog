@@ -1,3 +1,10 @@
+univention-self-service (4.0.3-47) unstable; urgency=medium
+
+  * Bug #51287: evaluate UCR variable umc/self-
+    service/passwordreset/token_validity_period
+
+ -- Florian Best <best@univention.de>  Tue, 20 Oct 2020 17:26:18 +0200
+
 univention-self-service (4.0.3-46) unstable; urgency=medium
 
   * Bug #51607: allow use of the self service without reentering
