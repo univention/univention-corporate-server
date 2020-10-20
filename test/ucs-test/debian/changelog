@@ -1,3 +1,9 @@
+ucs-test (10.0.1-21) unstable; urgency=low
+
+  * Bug #51624: fix test for postponed join scripts
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 20 Oct 2020 16:11:32 +0200
+
 ucs-test (10.0.1-20) unstable; urgency=medium
 
   * Bug #51624: add test for postponed join scripts
