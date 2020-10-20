@@ -34,7 +34,8 @@ PFS_CIPHERS = (
 	'ECDHE-ECDSA-AES128-SHA',
 	'AECDH-RC4-SHA',
 	'ECDHE-RSA-RC4-SHA',
-	'ECDHE-ECDSA-RC4-SHA'
+	'ECDHE-ECDSA-RC4-SHA',
+	'TLSv1.3, Cipher is'   # TLSv1.3 always uses forward-secrecy!
 )
 
 
@@ -44,6 +45,9 @@ def check_pfs_cipher():
 	"""
 	print("\nExpecting one of the following ciphers to be used:", PFS_CIPHERS)
 	openssl_out = run_openssl()
+	print('-----------CUTCUTCUT----------------')
+	print(openssl_out)
+	print('-----------CUTCUTCUT----------------')
 
 	for possible_cipher in PFS_CIPHERS:
 		if possible_cipher in openssl_out:

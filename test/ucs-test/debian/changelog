@@ -1,3 +1,9 @@
+ucs-test (10.0.1-22) unstable; urgency=low
+
+  * Bug #52241: fix 40_mail.00check_forward_secrecy
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 20 Oct 2020 16:42:59 +0200
+
 ucs-test (10.0.1-21) unstable; urgency=low
 
   * Bug #51624: fix test for postponed join scripts
