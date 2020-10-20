@@ -65,7 +65,6 @@ from .sending import get_plugins as get_sending_plugins
 
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
-TOKEN_VALIDITY_TIME = 3600
 MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 MEMCACHED_MAX_KEY = 250
 
@@ -240,7 +239,6 @@ class Instance(Base):
 				return default
 
 		self.token_validity_period = ucr_try_int("umc/self-service/passwordreset/token_validity_period", 3600)
-
 		limit_total_minute = ucr_try_int("umc/self-service/passwordreset/limit/total/minute", 0)
 		limit_total_hour = ucr_try_int("umc/self-service/passwordreset/limit/total/hour", 0)
 		limit_total_day = ucr_try_int("umc/self-service/passwordreset/limit/total/day", 0)
@@ -880,7 +878,7 @@ class Instance(Base):
 			MODULE.info("Token not found in DB for user '{}'.".format(username))
 			raise TokenNotFound()
 
-		if (datetime.datetime.now() - token_from_db["timestamp"]).seconds >= TOKEN_VALIDITY_TIME:
+		if (datetime.datetime.now() - token_from_db["timestamp"]).seconds >= self.token_validity_period:
 			# token is correct but expired
 			MODULE.info("Receive correct but expired token for '{}'.".format(username))
 			self.db.delete_tokens(token=token, username=username)
