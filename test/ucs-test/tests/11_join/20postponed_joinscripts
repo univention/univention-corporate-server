@@ -15,10 +15,12 @@ JS_NAME='ucs-test-postponed-joinscripts'
 JS_FILE="99${JS_NAME}.inst"
 JS_PATH="/usr/lib/univention-install/${JS_FILE}"
 JS_FLAG="/tmp/${JS_FILE}.test"
+UU_STATUS="/var/lib/univention-updater/univention-updater.status"
 
 cleanup() {
 	rm -f "${JS_PATH}"
 	cleanup_status
+	rm -f "$UU_STATUS"
 }
 
 cleanup_status() {
@@ -45,7 +47,7 @@ chmod a+x "$JS_PATH"
 trap cleanup EXIT
 
 # test 1: UCS 5.0-0 PREUP
-cat > /var/lib/univention-updater/univention-updater.status <<EOF
+cat > "${UU_STATUS}" <<EOF
 status=RUNNING
 phase=PREUP
 next_version=5.0-0
@@ -58,7 +60,7 @@ univention-run-join-scripts --run-scripts "$JS_FILE" || echo "EXIT STATUS $?"
 cleanup_status
 
 # test 2: UCS 5.1-15 POSTUP
-cat > /var/lib/univention-updater/univention-updater.status <<EOF
+cat > "${UU_STATUS}" <<EOF
 status=RUNNING
 phase=POSTUP
 next_version=5.1-15
@@ -71,7 +73,7 @@ univention-run-join-scripts --run-scripts "$JS_FILE" || echo "EXIT STATUS $?"
 cleanup_status
 
 # test 3: UCS 4.4-7 UPDATE
-cat > /var/lib/univention-updater/univention-updater.status <<EOF
+cat > "${UU_STATUS}" <<EOF
 status=RUNNING
 phase=UPDATE
 next_version=4.4-7
@@ -88,7 +90,7 @@ if [ "${version_version%%.*}" -le 4 ] ; then
 else
 	next_pl="$((version_patchlevel+1))"
 	# test 4: current version to next version
-	cat > /var/lib/univention-updater/univention-updater.status <<EOF
+	cat > "${UU_STATUS}" <<EOF
 status=RUNNING
 phase=UPDATE
 next_version=${version_version}-${next_pl}
