@@ -563,10 +563,6 @@ class ucs(object):
 			dn = '<NORESYNC{}:{}>;{}'.format('=' + reason if reason else '', os.path.basename(filename), dn)
 		self._set_config_option('UCS rejected', filename, dn)
 
-	def _get_rejected_ucs(self, filename):
-		_d = ud.function('ldap._get_rejected_ucs')  # noqa: F841
-		return self._get_config_option('UCS rejected', filename)
-
 	def _remove_rejected_ucs(self, filename):
 		_d = ud.function('ldap._remove_rejected_ucs')  # noqa: F841
 		self._remove_config_option('UCS rejected', filename)
@@ -616,11 +612,6 @@ class ucs(object):
 		else:
 			value = entryCSN
 		self._set_config_option('UCS entryCSN', entryUUID, value)
-
-	def _get_last_entryCSN_commited_by_connector(self, entryUUID):
-		"""Remember the entryCSN of a change committed by the S4-Connector itself"""
-		_d = ud.function('ldap._get_last_entryCSN_commited_by_connector')  # noqa: F841
-		return self._get_config_option('UCS entryCSN', entryUUID)
 
 	def _forget_entryCSN(self, entryUUID, entryCSN):
 		_d = ud.function('ldap._forget_entryCSN')  # noqa: F841
@@ -676,20 +667,6 @@ class ucs(object):
 		_d = ud.function('ldap._debug_traceback')  # noqa: F841
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
-
-	def _get_rdn(self, dn):
-		_d = ud.function('ldap._get_rdn')  # noqa: F841
-		'''
-		return rdn from dn
-		'''
-		return dn.split(',', 1)[0]  # FIXME
-
-	def _get_subtree(self, dn):
-		_d = ud.function('ldap._get_subtree')  # noqa: F841
-		'''
-		return subtree from dn
-		'''
-		return dn.split(',', 1)[1]  # FIXME
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
 		_d = ud.function('ldap._sync_file_from_ucs')  # noqa: F841

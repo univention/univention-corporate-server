@@ -470,14 +470,6 @@ def extract_NThash_from_krb5key(ucs_krb5key):
 	return NThash
 
 
-def _append_length(a, str):
-	lenght = len(str)
-	a.append(chr((lenght & 0xff)))
-	a.append(chr((lenght & 0xff00) >> 8))
-	a.append(chr((lenght & 0xff0000) >> 16))
-	a.append(chr((lenght & 0xff000000) >> 24))
-
-
 def password_sync_ucs_to_s4(s4connector, key, object):
 	_d = ud.function('ldap.s4.password_sync_ucs_to_s4')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4 called")
