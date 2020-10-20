@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Samba Machine Password Rotation Script
 #
@@ -30,22 +30,25 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import tdb
+
 import struct
 import sys
 import os
 import time
 import traceback
 import subprocess
-from univention.config_registry import ConfigRegistry
 from datetime import datetime, timedelta
+
+import tdb
+
+from univention.config_registry import ConfigRegistry
 import univention.lib.admember
 
 
 def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
-	machine_password_key = 'SECRETS/MACHINE_PASSWORD/%s' % windows_domain
-	previous_machine_password_key = 'SECRETS/MACHINE_PASSWORD.PREV/%s' % windows_domain
-	machine_last_change_key = 'SECRETS/MACHINE_LAST_CHANGE_TIME/%s' % windows_domain
+	machine_password_key = b'SECRETS/MACHINE_PASSWORD/%s' % windows_domain.encode('UTF-8')
+	previous_machine_password_key = b'SECRETS/MACHINE_PASSWORD.PREV/%s' % windows_domain.encode('UTF-8')
+	machine_last_change_key = b'SECRETS/MACHINE_LAST_CHANGE_TIME/%s' % windows_domain.encode('UTF-8')
 
 	if os.path.exists('/var/lib/samba/private/secrets.tdb'):
 		secrets_tdb_filename = '/var/lib/samba/private/secrets.tdb'
@@ -56,9 +59,9 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 	secrets_tdb.transaction_start()
 	try:
 		previous_machine_password = secrets_tdb.get(machine_password_key)
-		secrets_tdb.store(previous_machine_password_key, "%s" % previous_machine_password)
+		secrets_tdb.store(previous_machine_password_key, previous_machine_password)
 
-		secrets_tdb.store(machine_password_key, "%s\0" % machine_password)
+		secrets_tdb.store(machine_password_key, b"%s\0" % (machine_password,))
 
 		seconds_since_epoch = int(time.mktime(time.localtime()))
 		seconds_since_epoch_uint32 = struct.pack("<L", seconds_since_epoch)
@@ -66,7 +69,7 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 		secrets_tdb.store(machine_last_change_key, seconds_since_epoch_uint32)
 
 		secrets_tdb.transaction_commit()
-	except:
+	except BaseException:
 		secrets_tdb.transaction_cancel()
 		raise
 	finally:
@@ -75,7 +78,8 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 
 def run_postchange():
 	windows_domain = ucr.get('windows/domain', '').upper()
-	machine_password = open('/etc/machine.secret', 'r').read().strip()
+	with open('/etc/machine.secret', 'r') as fd:
+		machine_password = fd.read().strip()
 	ldap_hostdn = ucr.get('ldap/hostdn')
 	samba_user = ucr.get('samba/user')
 	samba_role = ucr.get('samba/role')
@@ -90,14 +94,14 @@ def run_postchange():
 	if samba_role == 'memberserver' and univention.lib.admember.is_localhost_in_admember_mode(ucr=ucr):
 		cmd = ['/usr/bin/net', 'ads', 'password', '-P']
 		cmd.append('%s$' % ucr.get('hostname', '').upper())
-		cmd.append('%s' % machine_password)
+		cmd.append(machine_password)
 		process = subprocess.Popen(cmd)
 		process.wait()
 
 	# store machine.secret in secrets.tdb
 	try:
 		write_machine_secret_to_secrets_tdb(machine_password, windows_domain)
-	except:
+	except BaseException:
 		sys.stdout.write(traceback.format_exc())
 		sys.stdout.flush()
 		return 1
@@ -112,7 +116,8 @@ def run_postchange():
 
 	if (server_role == 'domaincontroller_slave') or (samba_role == 'memberserver'):  # this is the criterion used in 26univention-samba.inst
 		if samba_user == ldap_hostdn:
-			samba_user_secret = open('/etc/machine.secret', 'r').read().strip()
+			with open('/etc/machine.secret', 'r') as fd:
+				samba_user_secret = fd.read().strip()
 
 			# store new machine secret as ldap bind password for passdb LDAP
 			process = subprocess.Popen(['/usr/bin/smbpasswd', '-w', samba_user_secret])
@@ -175,15 +180,15 @@ def run_prechange():
 		stdout, stderr = p1.communicate()
 
 		if p1.returncode:
-			sys.stderr.write('could not check time in AD DC (%s) - %s\n' % (info['DC IP'], stderr))
+			sys.stderr.write('could not check time in AD DC (%s) - %s\n' % (info['DC IP'], stderr.decode('UTF-8', 'replace')))
 			return 1
 
 		local_datetime = datetime.today()
-		remote_datetime = datetime.strptime(stdout.strip(), TIME_FORMAT)
+		remote_datetime = datetime.strptime(stdout.decode('UTF-8', 'replace').strip(), TIME_FORMAT)
 		delta_t = local_datetime - remote_datetime
 
 		if abs(delta_t) > timedelta(0, tolerance):
-			sys.stderr.write('Time difference with AD server (%s) is too big. Can not change password via net ads.\n' % (info['DC IP']))
+			sys.stderr.write('Time difference with AD server (%s) is too big. Can not change password via net ads.\n' % (info['DC IP'],))
 			return 1
 	return 0
 

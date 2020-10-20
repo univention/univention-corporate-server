@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 #
 # Copyright 2011-2020 Univention GmbH
@@ -44,8 +44,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-
 """Set user_xattr option on ext3/ext4 filesystems, remount if necessary"""
+
 from __future__ import print_function
 
 from univention.lib import fstab

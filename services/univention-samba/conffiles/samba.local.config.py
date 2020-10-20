@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Samba
@@ -46,10 +46,10 @@ if __name__ == '__main__':
 
 	# DEBUGGING
 	# import pprint
-	# pp = pprint.PrettyPrinter( indent = 4 )
-	# pp.pprint( conf.shares )
-	# pp.pprint( conf.globals )
-	# pp.pprint( conf.printers )
+	# pp = pprint.PrettyPrinter(indent=4)
+	# pp.pprint(conf.shares)
+	# pp.pprint(conf.globals)
+	# pp.pprint(conf.printers)
 	# sys.exit(0)
 
 	conf.write()

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Samba
@@ -31,12 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# This file is part of univention-lib and have to contain python2.4 valid code
-
 from __future__ import print_function
 from univention.config_registry import ConfigRegistry
 
-from ConfigParser import ConfigParser
+from six.moves.configparser import ConfigParser
 import os
 import re
 import shlex
@@ -71,7 +69,7 @@ class Restrictions(dict):
 	def _add(self, key, value):
 		if not isinstance(value, (tuple, list, set)):
 			value = [value]
-		value = map(lambda x: ' ' in x and '"%s"' % x or x, value)
+		value = [' ' in x and '"%s"' % x or x for x in value]
 		if self[key] is None:
 			self[key] = set(value)
 		else:
@@ -155,9 +153,9 @@ class ShareConfiguration(object):
 			os.remove(ShareConfiguration.GLOBAL_CONF)
 
 		for item in os.listdir(ShareConfiguration.SHARES_DIR):
-			file = os.path.join(ShareConfiguration.SHARES_DIR, item)
-			if os.path.isfile(file) and file.endswith(ShareConfiguration.POSTFIX):
-				os.remove(file)
+			filename = os.path.join(ShareConfiguration.SHARES_DIR, item)
+			if os.path.isfile(filename) and filename.endswith(ShareConfiguration.POSTFIX):
+				os.remove(filename)
 
 	def read_shares(self):
 		"""get invalid user from samba share conf"""
@@ -165,8 +163,8 @@ class ShareConfiguration(object):
 		if not os.path.isdir(ShareConfiguration.SHARES_UDM_DIR):
 			return
 
-		for file in os.listdir(ShareConfiguration.SHARES_UDM_DIR):
-			filename = os.path.join(ShareConfiguration.SHARES_UDM_DIR, file)
+		for filename in os.listdir(ShareConfiguration.SHARES_UDM_DIR):
+			filename = os.path.join(ShareConfiguration.SHARES_UDM_DIR, filename)
 			cfg = ConfigParser()
 			cfg.read(filename)
 			try:
@@ -186,18 +184,15 @@ class ShareConfiguration(object):
 
 		# read CUPS configuration
 		if os.path.isfile(ShareConfiguration.CUPS_CONF):
-			reg_cups = re.compile('\s*<Printer\s+([^>]+)>')
+			reg_cups = re.compile(r'\s*<Printer\s+([^>]+)>')
 
-			fd = open("/etc/cups/printers.conf")
-			try:
+			with open("/etc/cups/printers.conf") as fd:
 				for line in fd.readlines():
 					m_cups = reg_cups.match(line)
 
 					if m_cups:
 						prt = Printer(m_cups.group(1).strip())
 						self._printers[prt.name] = prt
-			finally:
-				fd.close()
 
 		# samba
 		if not os.path.exists(ShareConfiguration.PRINTERS_UDM_DIR):
@@ -311,13 +306,13 @@ class ShareConfiguration(object):
 	# parse ucr
 	def read_ucr(self):
 		_map = dict(
-			options=(re.compile('samba/share/([^\/]+)/options/(.*)'), self._set_options),
+			options=(re.compile(r'samba/share/([^\/]+)/options/(.*)'), self._set_options),
 			globals=(re.compile('samba/global/options/(.*)'), self._set_globals),
-			hosts=(re.compile('samba/share/([^\/]+)/hosts/deny'), self._set_denied_hosts),
-			users=(re.compile('samba/share/([^\/]+)/usergroup/([^\/]+)/invalid'), self._set_invalids),
-			printmode_groups=(re.compile('samba/printmode/usergroup/(.*)'), self._set_printmode_group),
+			hosts=(re.compile(r'samba/share/([^\/]+)/hosts/deny'), self._set_denied_hosts),
+			users=(re.compile(r'samba/share/([^\/]+)/usergroup/([^\/]+)/invalid'), self._set_invalids),
+			printmode_groups=(re.compile(r'samba/printmode/usergroup/(.*)'), self._set_printmode_group),
 			printmode_hosts=(re.compile('samba/printmode/hosts/(.*)'), self._set_printmode_hosts),
-			othershares=(re.compile('samba/othershares/usergroup/([^\/]+)/invalid'), self._set_othershares),
+			othershares=(re.compile(r'samba/othershares/usergroup/([^\/]+)/invalid'), self._set_othershares),
 			othershares_hosts=(re.compile('samba/othershares/hosts/deny'), self._set_othershares_hosts)
 		)
 
@@ -343,13 +338,10 @@ class ShareConfiguration(object):
 		self.delete()
 
 		# write conf file with global options
-		if len(self.globals):
-			fd = open(ShareConfiguration.GLOBAL_CONF, 'w')
-			try:
+		if self.globals:
+			with open(ShareConfiguration.GLOBAL_CONF, 'w') as fd:
 				fd.write("[global]\n")
-				fd.write(''.join(map(lambda item: '%s = %s\n' % item, self.globals.items())))
-			finally:
-				fd.close()
+				fd.write(''.join('%s = %s\n' % item for item in self.globals.items()))
 
 			includes.add('include = %s' % ShareConfiguration.GLOBAL_CONF)
 
@@ -360,8 +352,7 @@ class ShareConfiguration(object):
 				continue
 
 			share_filename = os.path.join(ShareConfiguration.SHARES_DIR, share.name + ShareConfiguration.POSTFIX)
-			fd = open(share_filename, "w")
-			try:
+			with open(share_filename, "w") as fd:
 				fd.write("[" + share.name + "]\n")
 				for option in share:
 					if share[option] is None:
@@ -369,8 +360,6 @@ class ShareConfiguration(object):
 					fd.write('%s = ' % option)
 					fd.write(' '.join(share[option]))
 					fd.write('\n')
-			finally:
-				fd.close()
 			includes.add('include = %s' % share_filename)
 
 		# write print share configs
@@ -382,8 +371,7 @@ class ShareConfiguration(object):
 			filename = os.path.join(ShareConfiguration.SHARES_DIR, ShareConfiguration.PREFIX + prt.name + ShareConfiguration.POSTFIX)
 			includes.add('include = %s' % filename)
 
-			fd = open(filename, 'w')
-			try:
+			with open(filename, 'w') as fd:
 				if not prt.smbname:
 					fd.write('[%s]\n' % prt.name)
 				else:
@@ -398,15 +386,10 @@ class ShareConfiguration(object):
 						fd.write('%s = ' % option)
 						fd.write(' '.join(prt[option]))
 						fd.write('\n')
-			finally:
-				fd.close()
 
 		# all include statements go to this file (create file een if there is no include
-		f = open(ShareConfiguration.INCLUDE_CONF, 'w')
-		try:
+		with open(ShareConfiguration.INCLUDE_CONF, 'w') as f:
 			f.write('\n'.join(includes) + '\n')
-		finally:
-			f.close()
 
 	@property
 	def globals(self):
