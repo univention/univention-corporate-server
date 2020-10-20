@@ -13,9 +13,10 @@ Pre-Depends:
  univention-config,
 Depends:
  expect,
- python-netifaces,
  python-tdb,
  python-univention-lib (>= 3.0.26-45),
+ python3-tdb,
+ python3-univention-lib,
  rsync,
  samba-common-bin,
  shell-univention-lib (>= 4.0.3-5),

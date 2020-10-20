@@ -39,8 +39,10 @@ import re
 import subprocess
 import univention.debug
 import univention.lib.listenerSharePath
-import pickle
+
+from six.moves import cPickle as pickle
 from six.moves.urllib_parse import quote
+
 # for the ucr commit below in postrun we need ucr configHandlers
 from univention.config_registry import configHandlers, ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
@@ -61,7 +63,7 @@ tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'
 def _validate_smb_share_name(name):
 	if not name or len(name) > 80:
 		return False
-	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, list(range(0x1F + 1)))))
+	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
 	if set(str(name)) & illegal_chars:
 		return False
 	return True
@@ -112,14 +114,12 @@ def handler(dn, new, old, command):
 	try:
 		# object was renamed -> save old object
 		if command == "r" and old:
-			f = open(tmpFile, "w+")
-			os.chmod(tmpFile, 0o600)
-			pickle.dump({"dn": dn, "old": old}, f)
-			f.close()
+			with open(tmpFile, "w+") as fd:
+				os.chmod(tmpFile, 0o600)
+				pickle.dump({"dn": dn, "old": old}, fd)
 		elif command == "a" and not old and os.path.isfile(tmpFile):
-			f = open(tmpFile, "r")
-			p = pickle.load(f)
-			f.close()
+			with open(tmpFile, "r") as fd:
+				p = pickle.load(fd)
 			oldObject = p.get("old", {})
 			os.remove(tmpFile)
 	except Exception as e:
