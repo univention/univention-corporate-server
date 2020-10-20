@@ -525,8 +525,7 @@ class s4(univention.s4connector.ucs):
 				raise KeyError('%s/s4/ldap/certificate' % configbasename)
 			listener_dir = _ucr['%s/s4/listener/dir' % configbasename]
 		except KeyError as exc:
-			print('UCR variable %s is not set' % (exc,))
-			sys.exit(1)
+			raise SystemExit('UCR variable %s is not set' % (exc,))
 
 		s4_ldap_bindpw = None
 		if ucr.get('%s/s4/ldap/bindpw' % configbasename) and os.path.exists(ucr['%s/s4/ldap/bindpw' % configbasename]):

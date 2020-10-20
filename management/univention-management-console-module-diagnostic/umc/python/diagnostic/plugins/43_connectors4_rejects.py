@@ -31,8 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import sys
-
 import univention
 import univention.uldap
 from univention.management.console.modules.diagnostic import Critical, Warning, MODULE
@@ -56,68 +54,30 @@ class MissingConfigurationKey(KeyError):
 		return '{}: {}'.format(self.__class__.__name__, self.message)
 
 
-def load_mapping(configbasename='connector'):
-	'''
-	Load the s4-connector mappings as defined in
-	`/etc/univention/<configbasename>/s4/mapping.py` (`s4_mapping` dictionary).
-	'''
-	old_sys_path = sys.path[:]
-	sys.path.append('/etc/univention/{}/s4/'.format(configbasename))
-	try:
-		import mapping
-	finally:
-		sys.path = old_sys_path
-	return mapping.s4_mapping
-
-
 def get_s4_connector(configbasename='connector'):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if '%s/s4/ldap/certificate' % configbasename not in configRegistry or True:
-		if configRegistry.is_true('%s/s4/ldap/ssl' % configbasename):
-			MODULE.error('Missing Configuration Key %s/s4/ldap/certificate' % configbasename)
-			raise MissingConfigurationKey('%s/s4/ldap/certificate' % configbasename)
-
-	if configRegistry.get('%s/s4/ldap/bindpw' % configbasename):
-		with open(configRegistry['%s/s4/ldap/bindpw' % configbasename]) as fob:
-			s4_ldap_bindpw = fob.read().rstrip('\n')
-	else:
-		s4_ldap_bindpw = None
-
 	try:
-		s4 = univention.s4connector.s4.s4(
-			configbasename,
-			load_mapping(configbasename),
-			configRegistry,
-			configRegistry['%s/s4/ldap/host' % configbasename],
-			configRegistry['%s/s4/ldap/port' % configbasename],
-			configRegistry['%s/s4/ldap/base' % configbasename],
-			configRegistry.get('%s/s4/ldap/binddn' % configbasename),
-			s4_ldap_bindpw,
-			configRegistry['%s/s4/ldap/certificate' % configbasename],
-			configRegistry['%s/s4/listener/dir' % configbasename],
-			False
-		)
-	except KeyError as error:
-		MODULE.error('Missing Configuration key %s' % error.message)
-		raise MissingConfigurationKey(error.message)
+		s4 = univention.s4connector.s4.s4.main(configRegistry, configbasename)
+	except SystemExit as error:
+		MODULE.error('Missing Configuration key %s' % (error,))
+		raise MissingConfigurationKey(error.code)
 	else:
+		s4.init_ldap_connections()
 		return s4
 
 
 def get_ucs_rejected(s4):
 	for (filename, dn) in s4.list_rejected_ucs():
-		encoded_dn = univention.s4connector.s4.encode_attrib(dn)
-		encoded_s4_dn = univention.s4connector.s4.encode_attrib(s4.get_dn_by_ucs(dn))
-		yield (filename, encoded_dn.strip(), encoded_s4_dn.strip())
+		s4_dn = s4.get_dn_by_ucs(dn)
+		yield (filename, dn.strip(), s4_dn.strip())
 
 
 def get_s4_rejected(s4):
 	for (s4_id, dn) in s4.list_rejected():
-		encoded_dn = univention.s4connector.s4.encode_attrib(dn)
-		encoded_ucs_dn = univention.s4connector.s4.encode_attrib(s4.get_dn_by_con(dn))
-		yield (s4_id, encoded_dn.strip(), encoded_ucs_dn.strip())
+		ucs_dn = s4.get_dn_by_con(dn)
+		yield (s4_id, dn.strip(), ucs_dn.strip())
 
 
 def run(_umc_instance):
