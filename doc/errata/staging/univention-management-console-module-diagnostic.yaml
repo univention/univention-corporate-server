@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console-module-diagnostic
-fix: 5.0.1-50A~4.4.6.202010191724
+fix: 5.0.1-51A~4.4.6.202010201525
 desc: |
  This update addresses the following issue(s):
  * improved usability of the `univention-run-diagnostic-checks` command line
