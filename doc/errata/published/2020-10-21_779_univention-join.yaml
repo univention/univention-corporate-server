@@ -10,3 +10,5 @@ desc: |
    postponed depending on the phase read from the updater status file. This
    change is a preparation for the upcoming update.
 bug: [51624]
+erratum: 779
+announced: 2020-10-21
