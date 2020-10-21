@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner python3
+## desc: "Find traceback in ucs-test logfile"
+## exposure: safe
+
+from __future__ import print_function
+
+import os
+import psutil
+import argparse
+
+from univention.testing.utils import fail
+import grep_traceback
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--logfile')
+
+ucs_test = psutil.Process(os.getppid())
+args = parser.parse_known_args(ucs_test.cmdline())[0]
+
+if not args.logfile:
+	for pfile in ucs_test.open_files():
+		if pfile.path.startswith('/var/log/univention/test') and pfile.path.endswith('.log'):
+			args.logfile = pfile.path
+			break
+
+if args.logfile and os.path.isfile(args.logfile):
+	if not grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+		fail('logfiles contain tracebacks')
