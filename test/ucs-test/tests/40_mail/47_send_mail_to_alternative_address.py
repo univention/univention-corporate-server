@@ -80,6 +80,7 @@ def test_user_b_mail_alt_equal_user_a_mail_forward(mail_forward_copy_to_self, de
 			"mailHomeServer": a_user.mailHomeServer,
 			"mailPrimaryAddress": a_user.mailPrimaryAddress,
 			"mailForwardAddress": a_user.mailForwardAddress,
+			"postcode": mail_forward_copy_to_self,
 			"mailForwardCopyToSelf": mail_forward_copy_to_self,
 		})
 		b_user = Bunch()
@@ -88,10 +89,10 @@ def test_user_b_mail_alt_equal_user_a_mail_forward(mail_forward_copy_to_self, de
 		b_user.dn, a_user.username = udm.create_user(set={
 			"mailHomeServer": b_user.mailHomeServer,
 			"mailPrimaryAddress": b_user.mailPrimaryAddress,
-			"mailAlternativeAddress": a_user.mailForwardAddress,
+			"mailAlternativeAddress": a_user.mailPrimaryAddress,
 		})
 		token = make_token()
-		send_mail(recipients=a_user.mailForwardAddress, msg=token, debuglevel=DEBUG_LEVEL)
+		send_mail(recipients=a_user.mailPrimaryAddress, msg=token, debuglevel=DEBUG_LEVEL)
 		check_delivery(token, a_user.mailPrimaryAddress, delivered)
 		check_delivery(token, b_user.mailPrimaryAddress, True)
 
