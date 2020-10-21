@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-self-service
 fix: 4.0.3-47A~4.4.0.202010201728
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The UCR Variable umc/self-service/passwordreset/token_validity_period
    is now evaluated correctly.
 bug: [51287]
