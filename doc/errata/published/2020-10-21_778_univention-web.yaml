@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The cookie's path of the cookie banner is now valid for the whole domain.
 bug: [52222]
+erratum: 778
+announced: 2020-10-21
