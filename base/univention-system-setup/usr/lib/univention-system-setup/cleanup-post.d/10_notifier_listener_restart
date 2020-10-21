@@ -41,9 +41,6 @@ if [ -x /etc/init.d/univention-directory-notifier ]; then
 	invoke-rc.d univention-directory-notifier crestart
 fi
 
-if [ -n "$(systemctl list-unit-files  --type=service --state enabled,disabled \
-		--no-legend univention-directory-listener.service)" ]; then
-	systemctl try-restart univention-directory-listener
-fi
+systemctl try-restart univention-directory-listener
 
 exit 0

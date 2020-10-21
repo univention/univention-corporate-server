@@ -113,10 +113,7 @@ if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
 fi
 
 # Restart listener
-if [ -n "$(systemctl list-unit-files  --type=service --state enabled,disabled \
-		--no-legend univention-directory-listener.service)" ]; then
-	systemctl try-restart univention-directory-listener
-fi
+systemctl try-restart univention-directory-listener
 
 # Reload cron
 test -x /etc/init.d/cron && /etc/init.d/cron reload

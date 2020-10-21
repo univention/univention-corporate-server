@@ -74,10 +74,7 @@ if [ "$1" = "configure" ]; then
 		invoke-rc.d heimdal-kdc restart
 	fi
 
-	if [ -n "$(systemctl list-units --all --type=service \
-			--no-legend univention-directory-listener.service)" ]; then
-		systemctl try-restart univention-directory-listener
-	fi
+	systemctl try-restart univention-directory-listener
 fi
 
 hdbdir='/var/lib/heimdal-kdc'	## configured by heimdal/debian/rules

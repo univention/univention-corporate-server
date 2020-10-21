@@ -114,10 +114,7 @@ then
 		update-ca-certificates --fresh || return $?
 	fi
 
-	if [ -n "$(systemctl list-units --all --type=service \
-			--no-legend univention-directory-listener.service)" ]; then
-		systemctl try-restart univention-directory-listener
-	fi
+	systemctl try-restart univention-directory-listener
 fi
 
 if dpkg --compare-versions "$2" lt-nl 10.0.0-12 && [ -e '/usr/local/share/ca-certificates/ucsCA.crt' ]; then
