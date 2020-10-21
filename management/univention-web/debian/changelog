@@ -1,3 +1,9 @@
+univention-web (3.0.5-48) unstable; urgency=medium
+
+  * Bug #52222: add max-age of 1 year to CookieBanner
+
+ -- Florian Best <best@univention.de>  Wed, 21 Oct 2020 09:02:34 +0200
+
 univention-web (3.0.5-47) unstable; urgency=medium
 
   * Bug #52222: limit cookie banner cookie to path=/
