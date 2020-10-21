@@ -61,7 +61,7 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 		previous_machine_password = secrets_tdb.get(machine_password_key)
 		secrets_tdb.store(previous_machine_password_key, previous_machine_password)
 
-		secrets_tdb.store(machine_password_key, b"%s\0" % (machine_password,))
+		secrets_tdb.store(machine_password_key, b"%s\0" % (machine_password.encode('UTF-8'),))
 
 		seconds_since_epoch = int(time.mktime(time.localtime()))
 		seconds_since_epoch_uint32 = struct.pack("<L", seconds_since_epoch)
