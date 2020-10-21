@@ -9,3 +9,5 @@ desc: |
  * The UCR Variable umc/self-service/passwordreset/token_validity_period
    is now evaluated correctly.
 bug: [51287]
+erratum: 777
+announced: 2020-10-21
