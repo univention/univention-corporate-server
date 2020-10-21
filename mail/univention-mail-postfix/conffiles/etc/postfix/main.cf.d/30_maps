@@ -45,11 +45,7 @@ if configRegistry.is_true('mail/postfix/virtual/enabled', False):
 	virtual_alias_maps = re.split(',\s*', configRegistry.get('mail/postfix/virtual/alias/maps', default_virtual_alias_maps))
 	if 'ldap' in val:
 		virtual_alias_maps.append('ldap:/etc/postfix/ldap.virtualwithcanonical')
-	prefix = ''
-	if 'ldap:/etc/postfix/ldap.external_aliases' in virtual_alias_maps:
-		virtual_alias_maps.remove('ldap:/etc/postfix/ldap.external_aliases')
-		prefix = 'ldap:/etc/postfix/ldap.external_aliases,'
-	print('\nvirtual_alias_maps = %s unionmap:{%s}' % (prefix,',\n        '.join(virtual_alias_maps)))
+	print('\nvirtual_alias_maps = unionmap:{%s}' % ',\n        '.join(virtual_alias_maps))
 
 	virtual_mailbox_domains = re.split(',\s*', configRegistry.get('mail/postfix/virtual/mailbox/domains', default_virtual_domains ))
 	print('\nvirtual_mailbox_domains = %s' % ',\n        '.join(virtual_mailbox_domains))
