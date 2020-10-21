@@ -74,9 +74,9 @@ if [ "$1" = "configure" ]; then
 		invoke-rc.d heimdal-kdc restart
 	fi
 
-	if test -x /etc/init.d/univention-directory-listener
-	then
-		invoke-rc.d univention-directory-listener crestart
+	if [ -n "$(systemctl list-units --all --type=service \
+			--no-legend univention-directory-listener.service)" ]; then
+		systemctl try-restart univention-directory-listener
 	fi
 fi
 

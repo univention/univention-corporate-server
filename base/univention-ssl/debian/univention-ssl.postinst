@@ -113,9 +113,10 @@ then
 		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" || return $?
 		update-ca-certificates --fresh || return $?
 	fi
-	if test -f /etc/init.d/univention-directory-listener
-	then
-		/etc/init.d/univention-directory-listener crestart || true
+
+	if [ -n "$(systemctl list-units --all --type=service \
+			--no-legend univention-directory-listener.service)" ]; then
+		systemctl try-restart univention-directory-listener
 	fi
 fi
 
