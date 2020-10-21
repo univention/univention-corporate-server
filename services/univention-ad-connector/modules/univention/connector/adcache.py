@@ -76,7 +76,6 @@ class ADCache(object):
 	"""
 
 	def __init__(self, filename):
-		_d = ud.function('ADCache.%s' % func_name())
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
 		self.adcache = {}
@@ -84,7 +83,6 @@ class ADCache(object):
 		self.__create_tables()
 
 	def add_entry(self, guid, entry):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		if not self._guid_exists(guid):
 			self._add_entry(guid, entry)
@@ -93,7 +91,6 @@ class ADCache(object):
 		self.adcache[guid] = entry
 
 	def diff_entry(self, old_entry, new_entry):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		result = {'added': None, 'removed': None, 'changed': None}
 
@@ -106,7 +103,6 @@ class ADCache(object):
 		return result
 
 	def get_entry(self, guid):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		entry = {}
 
@@ -138,7 +134,6 @@ class ADCache(object):
 		return entry
 
 	def remove_entry(self, guid):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		guid_id = self._get_guid_id(guid)
 
@@ -178,7 +173,6 @@ class ADCache(object):
 				self._dbcon = sqlite3.connect(self.filename)
 
 	def __create_tables(self):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS GUIDS (id INTEGER PRIMARY KEY, guid TEXT);",
@@ -192,12 +186,10 @@ class ADCache(object):
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _guid_exists(self, guid):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		return self._get_guid_id(guid.strip()) is not None
 
 	def _get_guid_id(self, guid):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		sql_commands = [
 			("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
@@ -211,7 +203,6 @@ class ADCache(object):
 		return None
 
 	def _append_guid(self, guid):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		sql_commands = [
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
@@ -220,7 +211,6 @@ class ADCache(object):
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id(self, attr):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		sql_commands = [
 			("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
@@ -234,12 +224,10 @@ class ADCache(object):
 		return None
 
 	def _attr_exists(self, guid):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		return self._get_attr_id(guid) is not None
 
 	def _create_attr(self, attr):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		sql_commands = [
 			("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
@@ -248,7 +236,6 @@ class ADCache(object):
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _get_attr_id_and_create_if_not_exists(self, attr):
-		_d = ud.function('ADCache.%s' % func_name())
 		attr_id = self._get_attr_id(attr)
 		if not attr_id:
 			self._create_attr(attr)
@@ -257,7 +244,6 @@ class ADCache(object):
 		return attr_id
 
 	def _add_entry(self, guid, entry):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		guid = guid.strip()
 
@@ -278,7 +264,6 @@ class ADCache(object):
 			self.__execute_sql_commands(sql_commands, fetch_result=False)
 
 	def _update_entry(self, guid, entry):
-		_d = ud.function('ADCache.%s' % func_name())
 
 		guid = guid.strip()
 		guid_id = self._get_guid_id(guid)

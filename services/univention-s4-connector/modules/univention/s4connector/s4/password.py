@@ -471,7 +471,6 @@ def extract_NThash_from_krb5key(ucs_krb5key):
 
 
 def password_sync_ucs_to_s4(s4connector, key, object):
-	_d = ud.function('ldap.s4.password_sync_ucs_to_s4')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4 called")
 
 	modify = False
@@ -653,7 +652,6 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 
 
 def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=True):
-	_d = ud.function('ldap.s4.password_sync_s4_to_ucs')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs called")
 
 	if ucs_object['modtype'] == 'modify':
@@ -839,7 +837,6 @@ def lockout_sync_s4_to_ucs(s4connector, key, ucs_object):
 		and  Samba/AD badPasswordTime         ->  OpenLDAP sambaBadPasswordTime
 	"""
 	function_name = 'lockout_sync_s4_to_ucs'
-	_d = ud.function('ldap.s4.%s' % function_name)  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "%s called" % function_name)
 
 	if ucs_object['modtype'] not in ('modify', 'add'):
@@ -894,7 +891,6 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 		and  OpenLDAP sambaBadPasswordTime    ->  Samba/AD badPasswordTime
 	"""
 	function_name = 'lockout_sync_ucs_to_s4'
-	_d = ud.function('ldap.s4.%s' % function_name)  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "%s called" % function_name)
 
 	if object['modtype'] not in ('modify', 'add'):

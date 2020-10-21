@@ -440,7 +440,6 @@ class property(object):
 class ucs(object):
 
 	def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
-		_d = ud.function('ldap.__init__')  # noqa: F841
 
 		self.CONFIGBASENAME = CONFIGBASENAME
 
@@ -514,7 +513,6 @@ class ucs(object):
 				raise search_exception
 
 	def init_debug(self):
-		_d = ud.function('ldap.init_debug')  # noqa: F841
 		try:
 			function_level = int(self.configRegistry.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
 		except ValueError:
@@ -536,27 +534,21 @@ class ucs(object):
 			ud_c.set_level(category, udm_debug_level)
 
 	def close_debug(self):
-		_d = ud.function('ldap.close_debug')  # noqa: F841
 		ud.debug(ud.LDAP, ud.INFO, "close debug")
 
 	def _get_config_option(self, section, option):
-		_d = ud.function('ldap._get_config_option')  # noqa: F841
 		return self.config.get(section, option)
 
 	def _set_config_option(self, section, option, value):
-		_d = ud.function('ldap._set_config_option')  # noqa: F841
 		self.config.set(section, option, value)
 
 	def _remove_config_option(self, section, option):
-		_d = ud.function('ldap._remove_config_option')  # noqa: F841
 		self.config.remove_option(section, option)
 
 	def _get_config_items(self, section):
-		_d = ud.function('ldap._get_config_items')  # noqa: F841
 		return self.config.items(section)
 
 	def _save_rejected_ucs(self, filename, dn, resync=True, reason=''):
-		_d = ud.function('ldap._save_rejected_ucs')  # noqa: F841
 		if not resync:
 			# Note that unescaped <> are invalid in DNs. See also:
 			# `_list_rejected_ucs()`.
@@ -564,7 +556,6 @@ class ucs(object):
 		self._set_config_option('UCS rejected', filename, dn)
 
 	def _remove_rejected_ucs(self, filename):
-		_d = ud.function('ldap._remove_rejected_ucs')  # noqa: F841
 		self._remove_config_option('UCS rejected', filename)
 
 	def list_rejected_ucs(self, filter_noresync=False):
@@ -575,20 +566,16 @@ class ucs(object):
 		return rejected
 
 	def _list_rejected_ucs(self):
-		_d = ud.function('ldap._list_rejected_ucs')  # noqa: F841
 		return self.list_rejected_ucs(filter_noresync=True)
 
 	def _list_rejected_filenames_ucs(self):
-		_d = ud.function('ldap._list_rejected_filenames_ucs')  # noqa: F841
 		return [fn for (fn, dn) in self.list_rejected_ucs()]
 
 	def _set_dn_mapping(self, dn_ucs, dn_con):
-		_d = ud.function('ldap._set_dn_mapping')  # noqa: F841
 		self._set_config_option('DN Mapping UCS', dn_ucs.lower(), dn_con.lower())
 		self._set_config_option('DN Mapping CON', dn_con.lower(), dn_ucs.lower())
 
 	def _remove_dn_mapping(self, dn_ucs, dn_con):
-		_d = ud.function('ldap._remove_dn_mapping')  # noqa: F841
 		# delete all if mapping failed in the past
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
@@ -603,7 +590,6 @@ class ucs(object):
 
 	def _remember_entryCSN_commited_by_connector(self, entryUUID, entryCSN):
 		"""Remember the entryCSN of a change committed by the S4-Connector itself"""
-		_d = ud.function('ldap._remember_entryCSN_commited_by_connector')  # noqa: F841
 		value = self._get_config_option('UCS entryCSN', entryUUID)
 		if value:
 			entryCSN_set = set(value.split(','))
@@ -614,7 +600,6 @@ class ucs(object):
 		self._set_config_option('UCS entryCSN', entryUUID, value)
 
 	def _forget_entryCSN(self, entryUUID, entryCSN):
-		_d = ud.function('ldap._forget_entryCSN')  # noqa: F841
 		value = self._get_config_option('UCS entryCSN', entryUUID)
 		if not value:
 			return False
@@ -632,7 +617,6 @@ class ucs(object):
 		return True
 
 	def _get_dn_by_ucs(self, dn_ucs):
-		_d = ud.function('ldap._get_dn_by_ucs')  # noqa: F841
 		return self._get_config_option('DN Mapping UCS', dn_ucs.lower())
 
 	def get_dn_by_ucs(self, dn_ucs):
@@ -642,7 +626,6 @@ class ucs(object):
 		return self.dn_mapped_to_base(dn, self.lo_s4.base)
 
 	def _get_dn_by_con(self, dn_con):
-		_d = ud.function('ldap._get_dn_by_con')  # noqa: F841
 		if not dn_con:
 			return dn_con
 		return self._get_config_option('DN Mapping CON', dn_con.lower())
@@ -652,7 +635,6 @@ class ucs(object):
 		return self.dn_mapped_to_base(dn, self.lo.base)
 
 	def _check_dn_mapping(self, dn_ucs, dn_con):
-		_d = ud.function('ldap._check_dn_mapping')  # noqa: F841
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
 		if dn_con_mapped != dn_con.lower() or dn_ucs_mapped != dn_ucs.lower():
@@ -664,12 +646,10 @@ class ucs(object):
 		'''
 		print traceback with ud.debug, level is i.e. ud.INFO
 		'''
-		_d = ud.function('ldap._debug_traceback')  # noqa: F841
 		ud.debug(ud.LDAP, level, text)
 		ud.debug(ud.LDAP, level, traceback.format_exc())
 
 	def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
-		_d = ud.function('ldap._sync_file_from_ucs')  # noqa: F841
 		'''
 		sync changes from UCS stored in given file
 		'''
@@ -825,7 +805,6 @@ class ucs(object):
 			return True
 
 	def get_ucs_ldap_object_dn(self, dn):
-		_d = ud.function('ldap.get_ucs_ldap_object_dn')  # noqa: F841
 
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
@@ -841,7 +820,6 @@ class ucs(object):
 				continue
 
 	def get_ucs_ldap_object(self, dn):
-		_d = ud.function('ldap.get_ucs_ldap_object')  # noqa: F841
 
 		for i in [0, 1]:  # do it twice if the LDAP connection was closed
 			try:
@@ -857,7 +835,6 @@ class ucs(object):
 				continue
 
 	def get_ucs_object(self, property_type, dn):
-		_d = ud.function('ldap.get_ucs_object')  # noqa: F841
 		ucs_object = None
 		searchdn = dn
 		try:
@@ -888,7 +865,6 @@ class ucs(object):
 		return ucs_object
 
 	def initialize_ucs(self):
-		_d = ud.function('ldap.initialize_ucs')  # noqa: F841
 		print("--------------------------------------")
 		print("Initialize sync from UCS")
 		sys.stdout.flush()
@@ -932,7 +908,6 @@ class ucs(object):
 		'''
 		tries to resync rejected changes from UCS
 		'''
-		_d = ud.function('ldap.resync_rejected_ucs')  # noqa: F841
 		rejected = self._list_rejected_ucs()
 		change_counter = 0
 		print("--------------------------------------")
@@ -968,7 +943,6 @@ class ucs(object):
 		'''
 		poll changes from UCS: iterates over files exported by directory-listener module
 		'''
-		_d = ud.function('ldap.poll_ucs')  # noqa: F841
 		# check for changes from ucs ldap directory
 
 		change_counter = 0
@@ -1049,7 +1023,6 @@ class ucs(object):
 		pass
 
 	def __set_values(self, property_type, object, ucs_object, modtype='modify'):
-		_d = ud.function('ldap.__set_value')  # noqa: F841
 		if not modtype == 'add':
 			ucs_object.open()
 		ud.debug(ud.LDAP, ud.INFO, '__set_values: object: %s' % object)
@@ -1147,7 +1120,6 @@ class ucs(object):
 				ud.debug(ud.LDAP, ud.INFO, '__set_values: Skip: %s' % con_attribute)
 
 	def add_in_ucs(self, property_type, object, module, position):
-		_d = ud.function('ldap.add_in_ucs')  # noqa: F841
 
 		# reload extended attributes  # FIXME: maybe not necessary
 		univention.admin.modules.init(self.lo, univention.admin.uldap.position(self.lo.base), module)
@@ -1178,7 +1150,6 @@ class ucs(object):
 		return res
 
 	def modify_in_ucs(self, property_type, object, module, position):
-		_d = ud.function('ldap.modify_in_ucs')  # noqa: F841
 
 		# reload extended attributes  # FIXME: maybe not necessary
 		univention.admin.modules.init(self.lo, univention.admin.uldap.position(self.lo.base), module)
@@ -1202,7 +1173,6 @@ class ucs(object):
 		return res
 
 	def move_in_ucs(self, property_type, object, module, position):
-		_d = ud.function('ldap.move_in_ucs')  # noqa: F841
 		if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):
 			ud.debug(ud.LDAP, ud.WARN, "move_in_ucs: cancel move, old and new dn are the same (%r to %r)" % (object['olddn'], object['dn']))
 			return True
@@ -1253,7 +1223,6 @@ class ucs(object):
 
 	def delete_in_ucs(self, property_type, object, module, position):
 		"""Removes an Samba-4 object in UCS-LDAP"""
-		_d = ud.function('ldap.delete_in_ucs')  # noqa: F841
 
 		if self.property[property_type].disable_delete_in_ucs:
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
@@ -1344,7 +1313,6 @@ class ucs(object):
 			pass
 		"""
 		# NOTE: pre_mapped_s4_dn means: original s4_dn (i.e. before _object_mapping)
-		_d = ud.function('ldap.sync_to_ucs')  # noqa: F841
 		# this function gets an object from the s4 class, which should be converted into a ucs module
 
 		# if sync is write (sync to S4) or none, there is nothing to do
@@ -1498,7 +1466,6 @@ class ucs(object):
 	# internal functions
 
 	def _subtree_match(self, dn, subtree):
-		_d = ud.function('ldap._subtree_match')  # noqa: F841
 		if len(subtree) > len(dn):
 			return False
 		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
@@ -1506,7 +1473,6 @@ class ucs(object):
 		return False
 
 	def _subtree_replace(self, dn, subtree, subtreereplace):  # FIXME: may raise an exception if called with umlauts
-		_d = ud.function('ldap._subtree_replace')  # noqa: F841
 		if len(subtree) > len(dn):
 			return dn
 		if subtree.lower() == dn[-len(subtree):].lower():  # FIXME
@@ -1522,7 +1488,6 @@ class ucs(object):
 		- nur * als Wildcard
 		- geht "lachser" mit Verschachtelten Klammern um
 		'''
-		_d = ud.function('ldap._filter_match')  # noqa: F841
 
 		filter_connectors = ['!', '&', '|']
 
@@ -1652,7 +1617,6 @@ class ucs(object):
 		:param key: the property_type from the mapping
 		:param object: a mapped or unmapped S4 or UCS object
 		'''
-		_d = ud.function('ldap._ignore_object')  # noqa: F841
 		if 'dn' not in object:
 			ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object without DN")
 			return True  # ignore not existing object
@@ -1688,7 +1652,6 @@ class ucs(object):
 			"ucs" if `old_object` is a UCS object.
 		:ptype object_type: str
 		"""
-		_d = ud.function('ldap._object_mapping')  # noqa: F841
 		ud.debug(ud.LDAP, ud.INFO, "_object_mapping: map with key %s and type %s" % (key, object_type))
 		# ingoing object format:
 		#	'dn': dn

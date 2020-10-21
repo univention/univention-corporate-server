@@ -78,7 +78,6 @@ def _nano2s(nanoseconds):
 
 
 def ucs2con(s4connector, key, object):
-	_d = ud.function('dc: ucs2con')  # noqa: F841
 
 	ud.debug(ud.LDAP, ud.INFO, 'dc ucs2con: Object (%s): %s' % (object['dn'], object))
 	s4base_dn, s4base_attr = s4connector.lo_s4.lo.search_s(s4connector.s4_ldap_base, ldap.SCOPE_BASE, '(objectClass=*)')[0]
@@ -128,7 +127,6 @@ def ucs2con(s4connector, key, object):
 
 
 def con2ucs(s4connector, key, object):
-	_d = ud.function('dns: con2ucs')  # noqa: F841
 
 	ud.debug(ud.LDAP, ud.INFO, 'dc con2ucs: Object (%s): %s' % (object['dn'], object))
 

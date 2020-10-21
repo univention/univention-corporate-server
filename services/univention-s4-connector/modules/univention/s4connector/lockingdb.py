@@ -45,7 +45,6 @@ class LockingDB(object):
 			https://forge.univention.org/bugzilla/show_bug.cgi?id=35391
 	"""
 
-	@ud.trace(False)
 	def __init__(self, filename):
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
@@ -53,7 +52,6 @@ class LockingDB(object):
 
 		self.__create_tables()
 
-	@ud.trace(False)
 	def lock_ucs(self, uuid):
 		if not uuid:
 			return None
@@ -69,7 +67,6 @@ class LockingDB(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def unlock_ucs(self, uuid):
 		if not uuid:
 			return None
@@ -80,7 +77,6 @@ class LockingDB(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def lock_s4(self, guid):
 		if not guid:
 			return None
@@ -91,7 +87,6 @@ class LockingDB(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def unlock_s4(self, guid):
 		if not guid:
 			return None
@@ -102,7 +97,6 @@ class LockingDB(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def is_ucs_locked(self, uuid):
 		if not uuid:
 			return False
@@ -118,7 +112,6 @@ class LockingDB(object):
 
 		return False
 
-	@ud.trace(False)
 	def is_s4_locked(self, guid):
 		if not guid:
 			return False
@@ -134,7 +127,6 @@ class LockingDB(object):
 
 		return False
 
-	@ud.trace(False)
 	def __create_tables(self):
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS S4_LOCK (id INTEGER PRIMARY KEY, guid TEXT);",

@@ -162,7 +162,6 @@ def activate_user(connector, key, object):
 
 
 def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
-	_d = ud.function('set_univentionObjectFlag_to_synced')  # noqa: F841
 
 	if connector.baseConfig.is_true('ad/member', False):
 		connector._object_mapping(key, ucs_object, 'ucs')
@@ -1149,18 +1148,15 @@ class ad(univention.connector.ucs):
 			return unicode(string, 'Latin-1')
 
 	def _get_lastUSN(self):
-		_d = ud.function('ldap._get_lastUSN')  # noqa: F841
 		return max(self.__lastUSN, int(self._get_config_option('AD', 'lastUSN')))
 
 	def get_lastUSN(self):
 		return self._get_lastUSN()
 
 	def _commit_lastUSN(self):
-		_d = ud.function('ldap._commit_lastUSN')  # noqa: F841
 		self._set_config_option('AD', 'lastUSN', str(self.__lastUSN))
 
 	def _set_lastUSN(self, lastUSN):
-		_d = ud.function('ldap._set_lastUSN')  # noqa: F841
 		ud.debug(ud.LDAP, ud.INFO, "_set_lastUSN: new lastUSN is: %s" % lastUSN)
 		self.__lastUSN = lastUSN
 
@@ -1179,21 +1175,17 @@ class ad(univention.connector.ucs):
 			return unicode(GUID, 'latin').encode('ISO-8859-1').encode('base64')
 
 	def _get_DN_for_GUID(self, GUID):
-		_d = ud.function('ldap._get_DN_for_GUID')  # noqa: F841
 		return self._decode_dn_from_config_option(self._get_config_option('AD GUID', self.__encode_GUID(GUID)))
 
 	def _set_DN_for_GUID(self, GUID, DN):
-		_d = ud.function('ldap._set_DN_for_GUID')  # noqa: F841
 		self._set_config_option('AD GUID', self.__encode_GUID(GUID), self._encode_dn_as_config_option(DN))
 
 	def _remove_GUID(self, GUID):
-		_d = ud.function('ldap._remove_GUID')  # noqa: F841
 		self._remove_config_option('AD GUID', self.__encode_GUID(GUID))
 
 # handle rejected Objects
 
 	def _save_rejected(self, id, dn):
-		_d = ud.function('ldap._save_rejected')  # noqa: F841
 		try:
 			self._set_config_option('AD rejected', str(id), encode_attrib(dn))
 		except UnicodeEncodeError:
@@ -1201,15 +1193,12 @@ class ad(univention.connector.ucs):
 			self._debug_traceback(ud.WARN, "failed to set dn in configfile (AD rejected)")
 
 	def _get_rejected(self, id):
-		_d = ud.function('ldap._get_rejected')  # noqa: F841
 		return self._get_config_option('AD rejected', str(id))
 
 	def _remove_rejected(self, id):
-		_d = ud.function('ldap._remove_rejected')  # noqa: F841
 		self._remove_config_option('AD rejected', str(id))
 
 	def _list_rejected(self):
-		_d = ud.function('ldap._list_rejected')  # noqa: F841
 		result = []
 		for i in self._get_config_items('AD rejected'):
 			result.append(i)
@@ -1222,14 +1211,12 @@ class ad(univention.connector.ucs):
 		"""
 		save object as rejected
 		"""
-		_d = ud.function('ldap.save_rejected')  # noqa: F841
 		self._save_rejected(self.__get_change_usn(object), object['dn'])
 
 	def remove_rejected(self, object):
 		"""
 		remove object from rejected
 		"""
-		_d = ud.function('ldap.remove_rejected')  # noqa: F841
 		self._remove_rejected(self.__get_change_usn(object), object['dn'])
 
 	def addToCreationList(self, dn):
@@ -1293,7 +1280,6 @@ class ad(univention.connector.ucs):
 		return ad_members
 
 	def get_object(self, dn, attrlist=None):
-		_d = ud.function('ldap.get_object')  # noqa: F841
 		try:
 			ad_object = self.lo_ad.get(compatible_modstring(dn), attr=attrlist)
 			try:
@@ -1310,7 +1296,6 @@ class ad(univention.connector.ucs):
 		'''
 		get change usn as max(uSNCreated,uSNChanged)
 		'''
-		_d = ud.function('ldap.__get_change_usn')  # noqa: F841
 		if not object:
 			return 0
 		usnchanged = 0
@@ -1326,7 +1311,6 @@ class ad(univention.connector.ucs):
 		'''
 		search ad
 		'''
-		_d = ud.function('ldap.__search_ad')  # noqa: F841
 		if not base:
 			base = self.lo_ad.base
 
@@ -1373,7 +1357,6 @@ class ad(univention.connector.ucs):
 		'''
 		search ad for changes since last update (changes greater lastUSN)
 		'''
-		_d = ud.function('ldap.__search_ad_changes')  # noqa: F841
 		lastUSN = self._get_lastUSN()
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
 		# +1 da suche nur nach '>=', nicht nach '>' möglich
@@ -1437,7 +1420,6 @@ class ad(univention.connector.ucs):
 		'''
 		search ad for change with id
 		'''
-		_d = ud.function('ldap.__search_ad_changeUSN')  # noqa: F841
 		search_filter = format_escaped('(|(uSNChanged={0!e})(uSNCreated={0!e}))', changeUSN)
 		if filter != '':
 			search_filter = '(&({}){})'.format(filter, search_filter)
@@ -1447,7 +1429,6 @@ class ad(univention.connector.ucs):
 		'''
 		gets dn for deleted object (original dn before the object was moved into the deleted objects container)
 		'''
-		_d = ud.function('ldap.__dn_from_deleted_object')  # noqa: F841
 
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
 		rdn = object['dn'][:object['dn'].find('DEL:') - 3]
@@ -1466,7 +1447,6 @@ class ad(univention.connector.ucs):
 		gets an object from an LDAP-element, implements necessary mapping
 
 		"""
-		_d = ud.function('ldap.__object_from_element')  # noqa: F841
 		if element[0] == 'None' or element[0] is None:
 			return None  # referrals
 		object = {}
@@ -1510,7 +1490,6 @@ class ad(univention.connector.ucs):
 		return object
 
 	def __identify(self, object):
-		_d = ud.function('ldap.__identify')  # noqa: F841
 		if not object or 'attributes' not in object:
 			return None
 		for key in self.property.keys():
@@ -1521,7 +1500,6 @@ class ad(univention.connector.ucs):
 		"""
 		Update der lastUSN
 		"""
-		_d = ud.function('ldap.__update_lastUSN')  # noqa: F841
 		if self.__get_change_usn(object) > self._get_lastUSN():
 			self._set_lastUSN(self.__get_change_usn(object))
 
@@ -1529,7 +1507,6 @@ class ad(univention.connector.ucs):
 		'''
 		Get attributes from the `rootDSE` from AD.
 		'''
-		_d = ud.function('ldap._get_from_root_dse')  # noqa: F841
 		# This will search for the `rootDSE` object. `uldap.get{Attr}()`
 		# are not usable, as they don't permit emtpy DNs.
 		result = self.lo_ad.lo.search_s('', ldap.SCOPE_BASE, '(objectClass=*)', attributes)
@@ -1542,7 +1519,6 @@ class ad(univention.connector.ucs):
 		'''
 		get highestCommittedUSN stored in AD
 		'''
-		_d = ud.function('ldap.__get_highestCommittedUSN')  # noqa: F841
 		try:
 			result = self._get_from_root_dse(['highestCommittedUSN'])
 			usn = result['highestCommittedUSN'][0]
@@ -1556,7 +1532,6 @@ class ad(univention.connector.ucs):
 		'''
 		check if correct primary group is set to a fresh UCS-User
 		'''
-		_d = ud.function('ldap.set_primary_group_to_ucs_user')  # noqa: F841
 
 		search_filter = format_escaped('(samaccountname={0!e})', compatible_modstring(object_ucs['username']))
 		ad_group_rid_resultlist = self.__search_ad(filter=search_filter, attrlist=['dn', 'primaryGroupID'])
@@ -1581,7 +1556,6 @@ class ad(univention.connector.ucs):
 		'''
 		sync primary group of an ucs-object to ad
 		'''
-		_d = ud.function('ldap.primary_group_sync_from_ucs')  # noqa: F841
 
 		object_key = key
 		object_ucs = self._object_mapping(object_key, object)
@@ -1666,7 +1640,6 @@ class ad(univention.connector.ucs):
 		'''
 		sync primary group of an ad-object to ucs
 		'''
-		_d = ud.function('ldap.primary_group_sync_to_ucs')  # noqa: F841
 
 		object_key = key
 
@@ -1701,7 +1674,6 @@ class ad(univention.connector.ucs):
 		"""
 		sync group membership in AD if object was changend in UCS
 		"""
-		_d = ud.function('ldap.object_memberships_sync_from_ucs')  # noqa: F841
 		ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
 
 		# search groups in UCS which have this object as member
@@ -1743,7 +1715,6 @@ class ad(univention.connector.ucs):
 		"""
 		sync groupmembers in AD if changend in UCS
 		"""
-		_d = ud.function('ldap.group_members_sync_from_ucs')  # noqa: F841
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: %s" % object)
 
@@ -1913,7 +1884,6 @@ class ad(univention.connector.ucs):
 		"""
 		sync group membership in UCS if object was changend in AD
 		"""
-		_d = ud.function('ldap.object_memberships_sync_to_ucs')  # noqa: F841
 		# disable this debug line, see Bug #12031
 		# ud.debug(ud.LDAP, ud.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
@@ -2011,7 +1981,6 @@ class ad(univention.connector.ucs):
 		"""
 		sync groupmembers in UCS if changend in AD
 		"""
-		_d = ud.function('ldap.group_members_sync_to_ucs')  # noqa: F841
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: object: %s" % object)
 
 		object_key = key
@@ -2299,7 +2268,6 @@ class ad(univention.connector.ucs):
 			ucs_admin_object.modify()
 
 	def initialize(self):
-		_d = ud.function('ldap.initialize')  # noqa: F841
 		print("--------------------------------------")
 		print("Initialize sync from AD")
 		if self._get_lastUSN() == 0:  # we startup new
@@ -2328,7 +2296,6 @@ class ad(univention.connector.ucs):
 		'''
 		print("--------------------------------------")
 
-		_d = ud.function('ldap.resync_rejected')  # noqa: F841
 		change_count = 0
 		rejected = self._list_rejected()
 		print("Sync %s rejected changes from AD to UCS" % len(rejected))
@@ -2379,7 +2346,6 @@ class ad(univention.connector.ucs):
 		'''
 		poll for changes in AD
 		'''
-		_d = ud.function('ldap.poll')  # noqa: F841
 		# search from last_usn for changes
 
 		change_count = 0
@@ -2513,7 +2479,6 @@ class ad(univention.connector.ucs):
 		return not object_old['attributes'].get(attribute) == new_object['attributes'].get(attribute)
 
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
-		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
 		# object ist brereits vom eingelesenen UCS-Objekt nach AD gemappt, old_dn ist die alte UCS-DN
@@ -2817,7 +2782,6 @@ class ad(univention.connector.ucs):
 		return ad_object.get('objectGUID')[0]
 
 	def delete_in_ad(self, object):
-		_d = ud.function('ldap.delete_in_ad')  # noqa: F841
 		try:
 			objectGUID = self._get_objectGUID(object['dn'])
 			self.lo_ad.lo.delete_s(compatible_modstring(object['dn']))

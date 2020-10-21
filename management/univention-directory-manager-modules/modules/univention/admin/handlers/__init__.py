@@ -1603,7 +1603,6 @@ class simpleLdap(object):
 					policy.mapping.unregister(pname, False)
 
 	def _update_policies(self):  # type: () -> None
-		_d = ud.function('admin.handlers.simpleLdap._update_policies')  # noqa  # noqa: F841
 		for policy_type, policy_object in self.policyObjects.items():
 			ud.debug(ud.ADMIN, ud.INFO, "simpleLdap._update_policies: processing policy of type: %s" % policy_type)
 			if policy_object.changes:
@@ -3354,7 +3353,6 @@ class simplePolicy(simpleLdap):
 				return key
 
 	def __makeUnique(self):
-		_d = ud.function('admin.handlers.simplePolicy.__makeUnique')  # noqa  # noqa: F841
 		identifier = self.getIdentifier()
 		components = self.info[identifier].split("_uv")
 		if len(components) > 1:

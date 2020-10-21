@@ -38,8 +38,6 @@ import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 
-import univention.debug as ud
-
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
 _ = translation.translate
 
@@ -113,7 +111,6 @@ layout = [
 
 
 def unmapMX(old, encoding=()):
-	_d = ud.function('admin.handlers.dns.host_record.unmapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
 		new.append(i.decode(*encoding).split(u' '))
@@ -121,7 +118,6 @@ def unmapMX(old, encoding=()):
 
 
 def mapMX(old, encoding=()):
-	_d = ud.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))  # noqa: F841
 	new = []
 	for i in old:
 		new.append(u' '.join(i).encode(*encoding))

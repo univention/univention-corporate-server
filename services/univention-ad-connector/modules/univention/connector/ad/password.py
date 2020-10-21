@@ -198,7 +198,6 @@ def calculate_krb5keys(supplementalCredentialsblob):
 
 
 def set_password_in_ad(connector, samaccountname, pwd, reconnect=False):
-	_d = ud.function('ldap.ad.set_password_in_ad')  # noqa: F841
 
 	# print "Static Session Key: %s" % (samr.session_key,)
 
@@ -261,7 +260,6 @@ def decrypt_supplementalCredentials(connector, spl_crypt):
 
 
 def get_password_from_ad(connector, user_dn, reconnect=False):
-	_d = ud.function('ldap.ad.get_password_from_ad')  # noqa: F841
 	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Read password from AD: %s" % user_dn)
 	nt_hash = None
 
@@ -318,7 +316,6 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
 
 
 def password_sync_ucs(connector, key, object):
-	_d = ud.function('ldap.ad.password_sync_ucs')  # noqa: F841
 	# externes Programm zum Überptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
 
@@ -425,7 +422,6 @@ def password_sync_ucs(connector, key, object):
 
 
 def password_sync_kinit(connector, key, ucs_object):
-	_d = ud.function('ldap.ad.password_sync_kinit')  # noqa: F841
 
 	connector._object_mapping(key, ucs_object, 'ucs')
 
@@ -446,7 +442,6 @@ def password_sync_kinit(connector, key, ucs_object):
 
 
 def password_sync(connector, key, ucs_object):
-	_d = ud.function('ldap.ad.password_sync')  # noqa: F841
 	# externes Programm zum holen des Hash aufrufen
 	# "kerberos_now"
 

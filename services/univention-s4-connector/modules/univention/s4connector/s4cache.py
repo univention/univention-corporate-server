@@ -73,7 +73,6 @@ class S4Cache(object):
 			cache.
 	"""
 
-	@ud.trace(False)
 	def __init__(self, filename):
 		self.filename = filename
 		self._dbcon = sqlite3.connect(self.filename)
@@ -81,7 +80,6 @@ class S4Cache(object):
 
 		self.__create_tables()
 
-	@ud.trace(False)
 	def add_entry(self, guid, entry):
 		if not self._guid_exists(guid):
 			self._add_entry(guid, entry)
@@ -89,7 +87,6 @@ class S4Cache(object):
 			self._update_entry(guid, entry)
 		self.s4cache[guid] = entry
 
-	@ud.trace(False)
 	def diff_entry(self, old_entry, new_entry):
 		result = {'added': None, 'removed': None, 'changed': None}
 
@@ -101,7 +98,6 @@ class S4Cache(object):
 
 		return result
 
-	@ud.trace(False)
 	def get_entry(self, guid):
 		entry = {}
 
@@ -132,7 +128,6 @@ class S4Cache(object):
 
 		return entry
 
-	@ud.trace(False)
 	def remove_entry(self, guid):
 		guid_id = self._get_guid_id(guid)
 
@@ -171,7 +166,6 @@ class S4Cache(object):
 					self._dbcon.close()
 				self._dbcon = sqlite3.connect(self.filename)
 
-	@ud.trace(False)
 	def __create_tables(self):
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS GUIDS (id INTEGER PRIMARY KEY, guid TEXT);",
@@ -184,11 +178,9 @@ class S4Cache(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def _guid_exists(self, guid):
 		return self._get_guid_id(guid.strip()) is not None
 
-	@ud.trace(False)
 	def _get_guid_id(self, guid):
 		sql_commands = [
 			("SELECT id FROM GUIDS WHERE guid=?;", (str(guid),))
@@ -201,7 +193,6 @@ class S4Cache(object):
 
 		return None
 
-	@ud.trace(False)
 	def _append_guid(self, guid):
 		sql_commands = [
 			("INSERT INTO GUIDS(guid) VALUES(?);", (str(guid),))
@@ -209,7 +200,6 @@ class S4Cache(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def _get_attr_id(self, attr):
 		sql_commands = [
 			("SELECT id FROM ATTRIBUTES WHERE attribute=?;", (str(attr),))
@@ -222,11 +212,9 @@ class S4Cache(object):
 
 		return None
 
-	@ud.trace(False)
 	def _attr_exists(self, guid):
 		return self._get_attr_id(guid) is not None
 
-	@ud.trace(False)
 	def _create_attr(self, attr):
 		sql_commands = [
 			("INSERT INTO ATTRIBUTES(attribute) VALUES(?);", (str(attr),))
@@ -234,7 +222,6 @@ class S4Cache(object):
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def _get_attr_id_and_create_if_not_exists(self, attr):
 		attr_id = self._get_attr_id(attr)
 		if not attr_id:
@@ -243,7 +230,6 @@ class S4Cache(object):
 
 		return attr_id
 
-	@ud.trace(False)
 	def _add_entry(self, guid, entry):
 		guid = guid.strip()
 
@@ -263,7 +249,6 @@ class S4Cache(object):
 		if sql_commands:
 			self.__execute_sql_commands(sql_commands, fetch_result=False)
 
-	@ud.trace(False)
 	def _update_entry(self, guid, entry):
 		guid = guid.strip()
 		guid_id = self._get_guid_id(guid)

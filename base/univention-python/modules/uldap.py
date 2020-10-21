@@ -344,7 +344,6 @@ class access(object):
 
 	def __open(self, ca_certfile):
 		# type: (Optional[str]) -> None
-		_d = univention.debug.function('uldap.__open host=%s port=%s base=%s' % (self.host, self.port, self.base))  # noqa F841
 
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
@@ -465,7 +464,6 @@ class access(object):
 
 		.. warning:: when `required=True` it raises `ldap.NO_SUCH_OBJECT` even if the object exists but the attribute is not set
 		"""
-		_d = univention.debug.function('uldap.getAttr %s %s' % (dn, attr))  # noqa F841
 		if dn:
 			try:
 				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
@@ -543,7 +541,6 @@ class access(object):
 		:raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
 		:raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
 		"""
-		_d = univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))  # noqa F841
 		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
 
 	@_fix_reconnect_handling
@@ -563,8 +560,6 @@ class access(object):
 			attrs = {}
 		if policies is None:
 			policies = []
-		_d = univention.debug.function('uldap.getPolicies dn=%s policies=%s attrs=%s' % (  # noqa F841
-			dn, policies, attrs))
 		if not dn and not policies:  # if policies is set apply a fictionally referenced list of policies
 			return {}
 

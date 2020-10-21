@@ -32,7 +32,6 @@
 import ldap
 import time
 
-import univention.debug as ud
 import univention.admin.uexceptions
 from univention.admin import localization
 
@@ -78,7 +77,6 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 	:raises univention.admin.uexceptions.noLock: if the lock cannot be acquired.
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
 	"""
-	_d = ud.function('admin.locking.lock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))  # noqa: F841
 	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
 	now = int(time.time())
@@ -135,7 +133,6 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 	:raises univention.admin.uexceptions.noLock: if the lock was not acquired.
 	:returns: Number of seconds since the UNIX epoch until which the lock is acquired.
 	"""
-	_d = ud.function('admin.locking.relock type=%s value=%s scope=%s timeout=%d' % (type, value, scope, timeout))  # noqa: F841
 	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 
 	now = int(time.time())
@@ -166,7 +163,6 @@ def unlock(lo, position, type, value, scope='domain'):
 	:param value: A unique value for the object, e.g. `uid`.
 	:param scope: The scope for the lock, e.g. `domain`.
 	"""
-	_d = ud.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))  # noqa: F841
 	dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
 	try:
 		lo.delete(dn, exceptions=True)
