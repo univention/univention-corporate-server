@@ -76,7 +76,7 @@ define([
 				this.close();
 				if (response === 'accept') {
 					var d = new Date();
-					cookie(this.cookieName, d.toUTCString(), { path: '/' });
+					cookie(this.cookieName, d.toUTCString(), { path: '/', 'max-age': 60 * 60 * 24 * 365 });
 				};
 			});
 		}
