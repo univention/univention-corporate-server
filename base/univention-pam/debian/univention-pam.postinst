@@ -113,9 +113,7 @@ if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
 fi
 
 # Restart listener
-if [ -x "/etc/init.d/univention-directory-listener" ] ; then
-	/etc/init.d/univention-directory-listener crestart
-fi
+systemctl try-restart univention-directory-listener
 
 # Reload cron
 test -x /etc/init.d/cron && /etc/init.d/cron reload

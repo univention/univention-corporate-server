@@ -113,10 +113,8 @@ then
 		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" || return $?
 		update-ca-certificates --fresh || return $?
 	fi
-	if test -f /etc/init.d/univention-directory-listener
-	then
-		/etc/init.d/univention-directory-listener crestart || true
-	fi
+
+	systemctl try-restart univention-directory-listener
 fi
 
 if dpkg --compare-versions "$2" lt-nl 10.0.0-12 && [ -e '/usr/local/share/ca-certificates/ucsCA.crt' ]; then

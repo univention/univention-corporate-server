@@ -90,8 +90,8 @@ call_joinscript 41univention-updater.inst
 # force the listener module license_uuid to be executed
 if [ -x /usr/sbin/univention-directory-listener-ctrl ]; then
 	/usr/sbin/univention-directory-listener-ctrl resync license_uuid || true
-elif [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener crestart
+else
+	systemctl try-restart univention-directory-listener
 fi
 
 exit 0
