@@ -39,7 +39,7 @@ if __name__ == '__main__':
 		s4connector.wait_for_sync(30)
 
 		serial = get_serial_number(test_zone_dn)
-		print ("Forward zone serial : " + serial)
+		print("Forward zone serial : " + serial)
 		dnstests.test_dns_serial(test_zone, serial)
 		# dnstests.check_ldap_object(test_zone_dn, 'forward zone')
 

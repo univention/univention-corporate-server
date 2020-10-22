@@ -13,8 +13,6 @@
 
 
 import univention.testing.udm as udm_test
-import univention.testing.strings as uts
-import univention.testing.utils as utils
 import random
 import dnstests
 import s4connector

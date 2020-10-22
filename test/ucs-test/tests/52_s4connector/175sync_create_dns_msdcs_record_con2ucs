@@ -9,7 +9,6 @@
 
 from __future__ import print_function
 import univention.testing.strings as uts
-import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 import dnstests
 import s4connector
@@ -57,7 +56,7 @@ quit''' % {
 
 	sys.stdout.flush()
 
-	## TODO: remove again
+	# TODO: remove again
 	nsupdate_del_request = '''server %(hostname)s.%(domainname)s
 zone %(zonename)s.
 ; debug yes
@@ -76,8 +75,8 @@ quit''' % {
 	dnstests.nsupdate(nsupdate_del_request)
 	dnstests.test_dns_service_record(test_fqdn, ".*", should_exist=False)
 
-	## TODO: DDNS/con2ucs removal sync doesn't work (Bug #39161)
-	## Workaround: Remove via UDM instead:
+	# TODO: DDNS/con2ucs removal sync doesn't work (Bug #39161)
+	# Workaround: Remove via UDM instead:
 	dnstests.udm_remove_dns_record_object('dns/srv_record', test_srv_record_dn)
 
 	s4connector.wait_for_sync()
