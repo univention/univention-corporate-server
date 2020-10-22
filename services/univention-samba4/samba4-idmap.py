@@ -358,7 +358,7 @@ if __name__ == '__main__':
 		def handle(self, dn, entry):
 			handler(dn, entry, {}, 'a')
 
-	parser = ListenerHandler(io.StringIO(stdout))
+	parser = ListenerHandler(io.BytesIO(stdout))
 	parser.parse()
 
 	subprocess.call(['net', 'cache', 'flush'])
