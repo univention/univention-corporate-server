@@ -54,7 +54,6 @@ Depends:
  at,
  dnsutils,
  pwgen,
- python-univention-lib,
  python3-apt,
  python3-dnspython,
  python3-ldap | python3-pyldap,
@@ -69,6 +68,10 @@ Depends:
  ${python3:Depends},
 Provides:
  ${python3:Provides},
+Breaks:
+ python-univention-lib (<< 9.0.9-6)
+Replaces:
+ python-univention-lib (<< 9.0.9-6)
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various
  components of UCS.
