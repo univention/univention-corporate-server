@@ -17,5 +17,5 @@ for iucr, ival in configRegistry.items():
 		'package': package,
 	})
 
-print(json.dumps(hooks))
+print(json.dumps(hooks, sort_keys=True))
 @!@
