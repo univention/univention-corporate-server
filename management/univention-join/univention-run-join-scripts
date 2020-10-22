@@ -241,6 +241,7 @@ echo
 echo "univention-run-join-scripts started"
 date
 echo
+EXITCODE=0
 joinscript_check_status_file >&3
 if [ -e "/usr/lib/univention-install/" ]
 then
