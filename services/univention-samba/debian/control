@@ -60,6 +60,8 @@ Package: univention-samba-local-config
 Architecture: all
 Depends:
  samba (>= 3.0.20) | samba-ad-dc,
+ python-six,
+ python3-six,
  ${misc:Depends},
 Breaks:
  univention-samba4 (<< 1.0.118-2),
