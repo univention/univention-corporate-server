@@ -4,6 +4,7 @@ univention-management-console (11.0.5-24) unstable; urgency=medium
   * Bug #52443: Remove expired sessions from saml cache
   * Bug #52442: store SAML identities in BDB database
   * Bug #52444: Clean up outstanding queries when receiving SAML response
+  * Bug #52293: make starting UMC-Webserver with multiple processes possible
 
  -- Florian Best <best@univention.de>  Mon, 30 Nov 2020 13:42:49 +0100
 

@@ -90,6 +90,7 @@ _ = NullTranslation('univention-management-console-frontend').translate
 
 _session_timeout = get_int('umc/http/session/timeout', 300)
 
+PORT = None
 REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE = int(REQUEST_ENTITY_TOO_LARGE), int(LENGTH_REQUIRED), int(NOT_FOUND), int(BAD_REQUEST), int(UNAUTHORIZED), int(SERVICE_UNAVAILABLE)
 
 
@@ -1177,7 +1178,7 @@ def get_ip_address():
 class SAML(Ressource):
 
 	SP = None
-	identity_cache = '/var/cache/univention-management-console/saml.bdb'
+	identity_cache = '/var/cache/univention-management-console/saml-%d.bdb'
 	state_cache = None
 	configfile = '/usr/share/univention-management-console/saml/sp.py'
 	idp_query_param = "IdpQuery"
@@ -1198,7 +1199,7 @@ class SAML(Ressource):
 		CORE.info('Reloading SAML service provider configuration')
 		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
 		try:
-			cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=cls.identity_cache, state_cache=cls.state_cache)
+			cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=cls.identity_cache % (PORT,), state_cache=cls.state_cache)
 			return True
 		except Exception:
 			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
@@ -1446,7 +1447,7 @@ def run_cherrypy(options):
 	cherrypy.tools.umcp_auth = cherrypy.Tool('before_handler', root.auth.basic, priority=1)
 	cherrypy.config.update({
 		'log.screen': not options.daemon_mode,
-		'server.socket_port': get_int('umc/http/port', 8090),
+		'server.socket_port': options.port,
 		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
 		'server.request_queue_size': get_int('umc/http/requestqueuesize', 100),
 		'server.thread_pool': get_int('umc/http/maxthreads', 35),
@@ -1495,7 +1496,13 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			'-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
 			help='specifies an alternative log file [default: %default]'
 		)
+		self.parser.add_option(
+			'-p', '--port', action='store', type='int',
+			dest='port', default=get_int('umc/http/port', 8090),
+			help='defines an alternative port number [default %(default)s]')
 		(self.options, self.arguments) = self.parser.parse_args()
+
+		processes = get_int('umc/http/processes', 1)
 
 		# cleanup environment
 		os.environ.clear()
@@ -1503,9 +1510,9 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 		# init logging
 		if not self.options.daemon_mode:
-			debug_fd = log_init('/dev/stderr', self.options.debug)
+			debug_fd = log_init('/dev/stderr', self.options.debug, processes > 1)
 		else:
-			debug_fd = log_init(self.options.logfile, self.options.debug)
+			debug_fd = log_init(self.options.logfile, self.options.debug, processes > 1)
 
 		# default action: start
 		if not self.arguments:
@@ -1522,8 +1529,11 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			self.stdin_path = '/dev/stdin'
 			self.stdout_path = '/dev/stdout'
 			self.stderr_path = '/dev/stderr'
-		self.pidfile_path = '/var/run/umc-web-server.pid'
+		self.pidfile_path = '/var/run/umc-web-server{}.pid'.format(self.options.port if self.options.port != 8090 else '')
 		self.pidfile_timeout = 10
+
+		global PORT
+		PORT = self.options.port
 
 		# init daemon runner
 		DaemonRunner.__init__(self, self)
