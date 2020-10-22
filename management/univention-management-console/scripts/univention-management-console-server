@@ -102,7 +102,7 @@ class UMC_Daemon(DaemonRunner):
 			self.stdin_path = '/dev/stdin'
 			self.stdout_path = '/dev/stderr'
 			self.stderr_path = '/dev/stderr'
-		self.pidfile_path = '/var/run/umc-server.pid'
+		self.pidfile_path = '/var/run/umc-server{}.pid'.format(self.options.port if self.options.port != 6670 else '')
 		self.pidfile_timeout = 3
 
 		# init daemon runner

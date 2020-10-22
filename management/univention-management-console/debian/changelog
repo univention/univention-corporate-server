@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-5) unstable; urgency=medium
+
+  * Bug #00000: POC run umc in parallel
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 23 Oct 2020 10:07:55 +0200
+
 univention-management-console (11.0.5-4) unstable; urgency=medium
 
   * Bug #50302: make cookie banner settings more configurable
