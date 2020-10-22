@@ -43,9 +43,9 @@ display_help() {
 	  univention-run-join-scripts [options] [script, ...]
 
 	Options:
-	  -dcaccount <account>:    name of DC master account
-	  -dcpwd <password file>:  file with DC master password
-	  --ask-pass            :  ask for DC master account and password
+	  -dcaccount <account>:    name of Primary Directory Node account
+	  -dcpwd <password file>:  file with Primary Directory Node password
+	  --ask-pass            :  ask for Primary Directory Node account and password
 	  --run-scripts         :  run only the scripts given as parameters
 	  --force               :  force execution of joinscripts which are already executed
 
@@ -100,6 +100,7 @@ do
 			;;
 		"--run-scripts")
 			RUN_SCRIPTS=1
+			SCRIPTS_TO_RUN=()
 			shift
 			;;
 		"--version")
@@ -110,8 +111,19 @@ do
 			display_help
 			exit 0
 			;;
+		-*)
+			echo "Unknown argument: $1"
+			display_help
+			exit 1
+			;;
 		*)
-			break
+			if [ "$RUN_SCRIPTS" != "1" ]; then
+				echo "Unknown argument: $1"
+				display_help
+				exit 1
+			fi
+			SCRIPTS_TO_RUN+=("$1")
+			shift
 			;;
 	esac
 done
@@ -127,7 +139,7 @@ if [ ! -e /var/univention-join/joined ]; then
 	exit 1
 fi
 
-# don't ask for join credentials until UMC supports this for master systems 
+# don't ask for join credentials until UMC supports this for Primary Nodes
 #if [ "$samba_role" = "memberserver" ]; then
 #	if [ -z "$DCACCOUNT" ] || [ -z "$DCPWD" ]; then
 #		ASK_PASS=1
@@ -136,11 +148,11 @@ fi
 
 if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	if [ -z "$DCACCOUNT" ]; then
-		echo -n "Enter DC Master Account : "
+		echo -n "Enter Primary Directory Node Account : "
 		read DCACCOUNT
 	fi
 	if [ -z "$DCPWD" ]; then
-		echo -n "Enter DC Master Password: "
+		echo -n "Enter Primary Directory Node Password: "
 		read -s password
 		DCPWD=$(mktemp)
 		trap "rm -f '$DCPWD' /var/run/univention-join/binddn /var/run/univention-join/bindpwd" EXIT
@@ -188,15 +200,16 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		fi
 	fi
 fi
+EXITCODE=0
 
 # get list of join scripts to be executed
 # fallback to all existing join scripts
 LC_COLLATE="C"
 SCRIPTS=(/usr/lib/univention-install/*.{inst,uinst})
 if [ -n "$RUN_SCRIPTS" ]; then
-	# evaluate specified join scripts
 	SCRIPTS=()
-	for iscript in "$@"
+	# evaluate specified join scripts
+	for iscript in "${SCRIPTS_TO_RUN[@]}"
 	do
 		# guess full path of join script
 		iscript="/usr/lib/univention-install/$iscript"
@@ -208,9 +221,14 @@ if [ -n "$RUN_SCRIPTS" ]; then
 		if [ ! -e "$iscript" ]; then
 			# error ... join script does not exist
 			failed_message "The given joinscript '$iscript' does not exists"
+			EXITCODE=1
 		fi
 		SCRIPTS+=("$iscript")
 	done
+fi
+
+if [ "$EXITCODE" != "0" ]; then
+	exit "$EXITCODE"
 fi
 
 # Save STDOUT to fd3, redirect to logfile
@@ -263,6 +281,7 @@ then
 		if [ $RET != 0 ]; then
 			[ -x /usr/sbin/univention-admin-diary-entry-create ] &&
 			/usr/sbin/univention-admin-diary-entry-create --event JOIN_SCRIPT_FAILED --arg "joinscript=$(basename "$i")"
+			EXITCODE=1
 			echo -e "\033[60Gfailed (exitcode: $RET)" >&3
 		else
 			echo -e "\033[60Gdone" >&3
@@ -281,4 +300,4 @@ date
 echo "univention-run-join-scripts finished"
 echo
 
-exit 0
+exit $EXITCODE
