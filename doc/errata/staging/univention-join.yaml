@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-join
+fix: 11.0.1-32A~4.4.0.202010221227
+desc: |
+ This update addresses the following issue(s):
+ * `univention-run-join-scripts` now validates command line arguments.
+bug: [46985]
