@@ -29,12 +29,19 @@ univention-join (12.0.1-1) unstable; urgency=medium
 
  -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 12:08:20 +0100
 
-univention-join (12.0.0-9) unstable; urgency=medium
+univention-join (12.0.0-10) unstable; urgency=medium
 
   * Bug #49898: univention-join-hooks cannot use python2.7 any longer
     because it uses udm which requires python3-samba.
 
  -- Arvid <requate@univention.de>  Fri, 23 Oct 2020 09:55:38 +0200
+
+univention-join (12.0.0-9) unstable; urgency=medium
+
+  * Bug #46985: improve univention-run-join-scripts. Wrong arguments wont
+    trigger execution of all joinscripts anymore.
+
+ -- Christian Castens <castens@univention.de>  Thu, 22 Oct 2020 12:17:06 +0200
 
 univention-join (12.0.0-8) unstable; urgency=low
 

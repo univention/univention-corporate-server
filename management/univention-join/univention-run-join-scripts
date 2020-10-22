@@ -200,6 +200,7 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		fi
 	fi
 fi
+EXITCODE=0
 
 EXITCODE=0
 
@@ -208,7 +209,6 @@ EXITCODE=0
 LC_COLLATE="C"
 SCRIPTS=(/usr/lib/univention-install/*.{inst,uinst})
 if [ -n "$RUN_SCRIPTS" ]; then
-	# evaluate specified join scripts
 	SCRIPTS=()
 	if [ -z $SCRIPTS_TO_RUN ]; then
 		display_help
