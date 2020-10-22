@@ -18,6 +18,8 @@ Variables: umc/web/piwik
 Variables: updater/maintenance
 Variables: umc/login/content-security-policy/.*
 Variables: ucs/server/sso/fqdn
+Variables: umc/http/processes
+Variables: umc/http/processes/start-port
 
 Type: file
 File: etc/apache2/sso-vhost.conf.d/01redirect.conf
@@ -29,3 +31,8 @@ Variables: ucs/server/sso/virtualhost
 Type: module
 Module: setup_saml_sp.py
 Variables: umc/saml/idp-server
+
+Type: module
+Module: configure_umc_multiprocessing.py
+Variables: umc/http/processes
+Variables: umc/http/processes/start-port
