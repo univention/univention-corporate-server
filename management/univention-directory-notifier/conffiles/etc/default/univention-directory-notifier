@@ -1,0 +1,18 @@
+@%@UCRWARNING=# @%@
+@!@
+
+debug_level = configRegistry.get('notifier/debug/level', None)
+cache_size = configRegistry.get('notifier/cache/size', None)
+lock_count = configRegistry.get('notifier/lock/count', None)
+lock_time = configRegistry.get('notifier/lock/time', None)
+protocol_version = configRegistry.get('notifier/protocol/version', None)
+
+udn_opts = ' '.join(arg for args in [
+	() if debug_level is None else ('-d', debug_level),
+	() if cache_size is None else ('-C', cache_size),
+	() if lock_count is None else ('-L', lock_count),
+	() if lock_time is None else ('-T', lock_time),
+	() if protocol_version is None else ('-v' protocol_version),
+] for arg in args)
+print('UDN_OPTS="{}"'.format(udn_opts))
+@!@

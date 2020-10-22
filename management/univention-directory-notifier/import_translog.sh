@@ -1,7 +1,6 @@
-#!/bin/sh -e
-@%@UCRWARNING=# @%@
+#!/bin/sh
 #
-# Copyright 2004-2020 Univention GmbH
+# Copyright 2020 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -27,9 +26,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-exec >>/var/log/univention/notifier.log 2>&1
-
-eval "$(univention-config-registry shell)"
+set -e
 
 t='/var/lib/univention-ldap/notify/transaction'
 if [ -s "$t" ] &&
@@ -40,27 +37,3 @@ if [ -s "$t" ] &&
 then
 	/usr/share/univention-directory-notifier/univention-translog --lenient import
 fi
-
-options=""
-
-if [ "$notifier_debug_level" != 0 ]; then
-	options="$options -d $notifier_debug_level"
-fi
-if [ -n "$notifier_cache_size" ]; then
-	options="$options -C $notifier_cache_size"
-fi
-
-if [ -n "$notifier_lock_count" ]; then
-	options="$options -L $notifier_lock_count"
-fi
-if [ -n "$notifier_lock_time" ]; then
-	options="$options -T $notifier_lock_time"
-fi
-if [ -n "$notifier_protocol_version" ]; then
-	options="$options -v $notifier_protocol_version"
-fi
-
-# run in foreground
-options="$options -F"
-
-exec /usr/sbin/univention-directory-notifier $options

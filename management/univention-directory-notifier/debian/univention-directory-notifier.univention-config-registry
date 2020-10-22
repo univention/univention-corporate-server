@@ -1,10 +1,10 @@
 Type: file
-File: etc/runit/univention-directory-notifier/run
+File: etc/default/univention-directory-notifier
 Variables: notifier/debug/level
-Variables: server/role
 Variables: notifier/cache/size
 Variables: notifier/lock/count
 Variables: notifier/lock/time
+Variables: notifier/protocol/version
 
 Type: file
 File: etc/logrotate.d/univention-directory-notifier

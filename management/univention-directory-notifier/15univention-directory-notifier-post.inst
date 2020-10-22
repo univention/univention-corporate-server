@@ -32,12 +32,22 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=1
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
+
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+
+have univention-directory-listener ||
+	exit 1
 
 eval "$(univention-config-registry shell)"
 
@@ -45,48 +55,30 @@ test -x /usr/sbin/nscd && nscd -i passwd
 if is_ucr_true nss/group/cachefile; then
 	/usr/lib/univention-pam/ldap-group-to-file.py
 else
-	test -x /usr/sbin/nscd && nscd -i group
+	have nscd && nscd -i group
 fi
 
 sleep 2
 
 i=notify/transaction
-if [ ! -e /var/lib/univention-ldap/$i ]; then
-	touch /var/lib/univention-ldap/$i
+if [ ! -e "/var/lib/univention-ldap/$i" ]; then
+	touch "/var/lib/univention-ldap/$i"
 fi
-if [ -e /var/lib/univention-ldap/$i ]; then
-	chmod 640 /var/lib/univention-ldap/$i
-	chgrp "DC Backup Hosts" /var/lib/univention-ldap/$i
+if [ -e "/var/lib/univention-ldap/$i" ]; then
+	chmod 640 "/var/lib/univention-ldap/$i"
+	chgrp "DC Backup Hosts" "/var/lib/univention-ldap/$i"
 fi
-if [ ! -e /var/lib/univention-ldap/$i.lock ]; then
-	touch /var/lib/univention-ldap/$i.lock
-	chmod 600 /var/lib/univention-ldap/$i.lock
-fi
-
-if [ -x /etc/init.d/univention-directory-notifier ]; then
-	/etc/init.d/univention-directory-notifier restart
+if [ ! -e "/var/lib/univention-ldap/$i.lock" ]; then
+	touch "/var/lib/univention-ldap/$i.lock"
+	chmod 600 "/var/lib/univention-ldap/$i.lock"
 fi
 
-start_listener()
-{
-	systemctl start univention-directory-listener
-}
 
-stop_listener()
-{
-	systemctl stop univention-directory-listener
-}
-
-restart_listener()
-{
-	systemctl restart univention-directory-listener
-}
-
-if [ "$server_role" = "domaincontroller_master" ]; then
+if [ "${server_role:-}" = "domaincontroller_master" ]; then
 	# Wait for the listener initialization on Primary Directory Node
 	# https://forge.univention.org/bugzilla/show_bug.cgi?id=35723
 
-	stop_listener
+	systemctl stop univention-directory-listener
 
 	# Notifier need some seconds ...
 	echo -n "Waiting for notifier: "
@@ -100,18 +92,13 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	cachedir=/var/lib/univention-directory-listener
 	moduledir=/usr/lib/univention-directory-listener/system
 
-	debugLevel=1
-	test -n "$listener_debug_level" && \
-		debugLevel="$listener_debug_level"
+	univention-directory-listener -x -ZZ -d "${listener_debug_level:-1}" -i \
+		-h "${ldap_master:?}" -b "${ldap_base:?}" -m "$moduledir" -c "$cachedir" \
+		-D "cn=admin,$ldap_base" -y /etc/ldap.secret
 
-	test -x /usr/sbin/univention-directory-listener && \
-		/usr/sbin/univention-directory-listener -x -ZZ -d $debugLevel -i \
-			-h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir \
-			-D "cn=admin,$ldap_base" -y /etc/ldap.secret
-	
-	start_listener
+	systemctl start univention-directory-listener
 else
-	restart_listener
+	systemctl restart univention-directory-listener
 fi
 
 

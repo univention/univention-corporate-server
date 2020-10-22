@@ -30,9 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 univention-config-registry set notifier/autostart?yes
+
+if dpkg --compare-versions "$2" lt-nl 14.0.1-1; then
+	# cleanup runsv and switch to systemd unit
+	sv -w 30 exit univention-directory-notifier || true
+	rm -f /etc/runit/univention/univention-directory-notifier
+	rm -rf /etc/runit/univention-directory-notifier/
+	rm -rf /etc/univention/templates/files/etc/runit/univention-directory-notifier/
+fi
 
 #DEBHELPER#
 
@@ -46,16 +55,16 @@ if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
 fi
 
 i=notify/transaction
-if [ ! -e /var/lib/univention-ldap/$i ]; then
-	touch /var/lib/univention-ldap/$i
+if [ ! -e "/var/lib/univention-ldap/$i" ]; then
+	touch "/var/lib/univention-ldap/$i"
 fi
-if [ -e /var/lib/univention-ldap/$i ]; then
-	chmod 640 /var/lib/univention-ldap/$i
-	chgrp "DC Backup Hosts" /var/lib/univention-ldap/$i
+if [ -e "/var/lib/univention-ldap/$i" ]; then
+	chmod 640 "/var/lib/univention-ldap/$i"
+	chgrp "DC Backup Hosts" "/var/lib/univention-ldap/$i"
 fi
-if [ ! -e /var/lib/univention-ldap/$i.lock ]; then
-	touch /var/lib/univention-ldap/$i.lock
-	chmod 600 /var/lib/univention-ldap/$i.lock
+if [ ! -e "/var/lib/univention-ldap/$i.lock" ]; then
+	touch "/var/lib/univention-ldap/$i.lock"
+	chmod 600 "/var/lib/univention-ldap/$i.lock"
 fi
 
 
@@ -70,17 +79,12 @@ ucr set security/packetfilter/package/univention-directory-notifier/tcp/6669/all
 
 call_joinscript 02univention-directory-notifier.inst
 
-if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
-	ln -snf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
-    rm /etc/runit/univention/univention-ldap-notifier
-fi
-
 if [ "$1" = "configure" ]
 then
 	if [ -z "${2:-}" ]
 	then  # new installation
 		ucr set notifier/protocol/version?3
-		/etc/init.d/univention-directory-notifier restart || :
+		systemctl restart univention-directory-notifier || :
 	else  # upgrade
 		ucr set notifier/protocol/version?2
 
@@ -88,16 +92,16 @@ then
 			[ -s /var/lib/univention-ldap/notify/transaction ] &&
 			dpkg --compare-versions "$2" lt-nl 12.0.1-3
 		then
-			if /etc/init.d/univention-directory-notifier status >/dev/null
+			if systemctl is-active univention-directory-notifier >/dev/null
 			then
-				/etc/init.d/univention-directory-notifier stop
+				systemctl stop univention-directory-notifier
 				/usr/share/univention-directory-notifier/univention-translog --lenient import
-				/etc/init.d/univention-directory-notifier start
+				systemctl start univention-directory-notifier
 			else
 				/usr/share/univention-directory-notifier/univention-translog --lenient import
 			fi
 		else
-			/etc/init.d/univention-directory-notifier crestart || :
+			systemctl try-restart univention-directory-notifier || :
 		fi
 	fi
 fi

@@ -13,6 +13,6 @@ for setting in sorted(settings):
 @!@
 
 	lastaction
-		test -x /usr/bin/sv && test -e /etc/runit/univention/univention-directory-notifier && sv term univention-directory-notifier || true
+		systemctl try-restart univention-directory-notifier || true
 	endscript
 }

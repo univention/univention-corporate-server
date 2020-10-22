@@ -18,7 +18,6 @@ Depends:
  shell-univention-lib (>= 1.0.6),
  univention-base-files,
  univention-ldap-server (>= 14.0.2-35),
- univention-runit,
  univention-ssl,
  ${misc:Depends},
  ${shlibs:Depends},

@@ -37,9 +37,7 @@ VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
-ln -snf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
-
-/etc/init.d/univention-directory-notifier start
+systemctl start univention-directory-notifier
 
 joinscript_save_current_version
 exit 0

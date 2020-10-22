@@ -5,3 +5,4 @@ univention-replicate-one usr/sbin/
 univention-replicate-many usr/sbin/
 etc/network/if-post-down.d/univention-directory-notifier etc/network/if-post-down.d/
 univention-translog	usr/share/univention-directory-notifier/
+import_translog.sh	usr/share/univention-directory-notifier/

@@ -30,11 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-[ -x /etc/init.d/univention-directory-notifier ] || exit 0
+have () {
+	command -v "$1" >/dev/null 2>&1
+}
+have univention-directory-notifier || exit 0
 
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
-sv t univention-directory-notifier
+systemctl try-restart univention-directory-notifier
 
 exit 0

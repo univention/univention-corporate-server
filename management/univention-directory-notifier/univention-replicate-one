@@ -63,7 +63,7 @@ RESTART_NOTIFIER=0
 if pidof univention-directory-notifier >/dev/null ; then
 	echo -n "Stopping notifier: "
 	RESTART_NOTIFIER=1
-	/etc/init.d/univention-directory-notifier stop >/dev/null
+	systemctl stop univention-directory-notifier
 	sleep 1
 	if pidof univention-directory-notifier >/dev/null ; then
 		echo "failed"
@@ -110,7 +110,7 @@ rc=0
 
 if [ "$RESTART_NOTIFIER" = 1 ]; then
 	echo -n "Starting notifier: "
-	/etc/init.d/univention-directory-notifier start >/dev/null || rc=1
+	systemctl start univention-directory-notifier >/dev/null || rc=1
 	echo "done"
 fi
 
