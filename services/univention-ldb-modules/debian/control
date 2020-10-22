@@ -20,7 +20,7 @@ Architecture: any
 Section: libs
 Depends:
  ldb-tools,
- libldb1,
+ libldb2,
  libunivention-config0,
  libunivention-policy0,
  python-samba,
