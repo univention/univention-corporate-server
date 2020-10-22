@@ -30,17 +30,14 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-from os import path
-
 import pytest
 from univentionunittests import import_module
 
 
 @pytest.fixture
-def mocked_portal_config(portal_config, request):
+def mocked_portal_config(portal_config, get_file_path):
 	reload(portal_config)
-	test_path = request.fspath.dirname
-	portal_config._CONF = path.join(test_path, "configs", "*.json")
+	portal_config._CONF = get_file_path("config*.json")
 	return portal_config
 
 

@@ -30,53 +30,58 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import pytest
 
-def test_import(dynamic_class):
+
+def test_imports(dynamic_class):
 	assert dynamic_class('Cache')
 	assert dynamic_class('PortalFileCache')
 	assert dynamic_class('GroupFileCache')
 
 
-def test_portal_cache_missing_file(dynamic_class):
-	cache = dynamic_class('PortalFileCache')('/tmp/a/file/that/does/not/exist')
-	assert cache.get() == {}
+class TestPortalFileCache:
+
+	@pytest.fixture
+	def cache_file_path(self, get_file_path):
+		return get_file_path("portal_cache.json")
+
+	def test_portal_cache_missing_file(self, dynamic_class):
+		cache = dynamic_class('PortalFileCache')('/tmp/a/file/that/does/not/exist')
+		assert cache.get() == {}
+
+	def test_portal_cache(self, dynamic_class, cache_file_path):
+		Cache = dynamic_class('PortalFileCache')
+		cache = Cache(cache_file_path)
+		assert cache.get_user_links() == []
+		assert sorted(cache.get_entries().keys()) == [
+				'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+				'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+				'cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+			]
+		assert cache.get_folders() == {}
+		assert cache.get_portal()['dn'] == 'cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'
+		assert sorted(cache.get_categories().keys()) == ['cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de']
+		assert cache.get_menu_links() == []
 
 
-def test_portal_cache(dynamic_class):
-	Cache = dynamic_class('PortalFileCache')
-	# import sys
-	# import json
-	# cache_module = sys.modules[Cache.__module__]
-	# content = {1: 2}
-	# mock = mocker.mock_open(read_data=json.dumps(content))
-	# mocker.patch.object(cache_module, 'open', mock)
-	cache = Cache('unittests/caches/portal.json')
-	assert cache.get_user_links() == []
-	assert sorted(cache.get_entries().keys()) == [
-			'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			'cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-		]
-	assert cache.get_folders() == {}
-	assert cache.get_portal()['dn'] == 'cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'
-	assert sorted(cache.get_categories().keys()) == ['cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de']
-	assert cache.get_menu_links() == []
+	def test_cache_reload(self, dynamic_class, cache_file_path, mocker):
+		Cache = dynamic_class('PortalFileCache')
+		mock = mocker.Mock()
+		cache = Cache(cache_file_path, reloader=mock)
+		content = cache.get()
+		mock.refresh.assert_called_with(reason=None, content=content)
+		cache.refresh(reason='force')
+		mock.refresh.assert_called_with(reason='force', content=content)
 
 
-def test_cache_reload(dynamic_class, mocker):
-	Cache = dynamic_class('PortalFileCache')
-	mock = mocker.Mock()
-	cache = Cache('unittests/caches/portal.json', reloader=mock)
-	content = cache.get()
-	mock.refresh.assert_called_with(reason=None, content=content)
-	cache.refresh(reason='force')
-	mock.refresh.assert_called_with(reason='force', content=content)
+	def test_cache_reload_on_get(self, dynamic_class, cache_file_path, mocker):
+		Cache = dynamic_class('PortalFileCache')
+		mock = mocker.Mock()
+		cache = Cache(cache_file_path, reloader=mock)
+		mock.refresh.call_count == 1
+		cache.get()
+		mock.refresh.call_count == 2
 
 
-def test_cache_reload_on_get(dynamic_class, mocker):
-	Cache = dynamic_class('PortalFileCache')
-	mock = mocker.Mock()
-	cache = Cache('unittests/caches/portal.json', reloader=mock)
-	mock.refresh.call_count == 1
-	cache.get()
-	mock.refresh.call_count == 2
+class TestGroupFileCache:
+	pass

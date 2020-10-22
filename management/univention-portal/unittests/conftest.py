@@ -30,6 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from os import path
+
 import pytest
 from univentionunittests import import_module
 
@@ -64,9 +66,22 @@ def dynamic_class(portal_lib):
 	return portal_lib.get_dynamic_classes
 
 
+# Helper function fixtures
+
 @pytest.fixture
 def patch_object_module(mocker):
-	""" Helper to patch imports in objects module file """
+	""" Helper to patch module level library imports of a concrete object """
 	def _(obj, module_name):
 		return mocker.patch("{}.{}".format(obj.__module__, module_name))
 	return _
+
+
+@pytest.fixture
+def get_file_path(request):
+	""" Helper to get the absolute path of test files in the unittests directory """
+	unittest_path = request.fspath.dirname
+	files_directory = "files"
+	def _(file_name):		
+		return path.join(unittest_path, files_directory, file_name)
+	return _
+		
