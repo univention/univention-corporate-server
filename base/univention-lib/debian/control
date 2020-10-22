@@ -82,7 +82,6 @@ Package: shell-univention-lib
 Architecture: all
 Depends:
  pwgen,
- python-univention-lib (= ${binary:Version}),
  python3-univention-lib (= ${binary:Version}),
  univention-config (>= 15),
  ${misc:Depends},

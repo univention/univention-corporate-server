@@ -1,3 +1,10 @@
+univention-lib (9.0.9-3) unstable; urgency=medium
+
+  * Bug #49898: shell-univention-lib should only depend on
+    python3-univention-lib not on python-univention-lib
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 20:01:05 +0200
+
 univention-lib (9.0.9-2) unstable; urgency=low
 
   * Bug #52211: Move join function to separate join.sh
