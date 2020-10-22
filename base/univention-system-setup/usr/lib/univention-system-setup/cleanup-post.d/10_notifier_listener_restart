@@ -37,8 +37,7 @@ if is_ucr_true system/setup/boot/installer; then
 	exit 0
 fi
 
-if [ -x /etc/init.d/univention-directory-notifier ]; then
-	invoke-rc.d univention-directory-notifier crestart
+systemctl try-restart univention-directory-notifier
 fi
 
 systemctl try-restart univention-directory-listener
