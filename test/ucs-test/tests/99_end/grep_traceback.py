@@ -98,13 +98,13 @@ def main(filenames, ignore_exceptions={}):
 
 COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) else z for z in (y or [])]) for x, y in [
 	# Errors from UCS 4.4-5 Jenkins runs:
-	('^SERVER_DOWN: .*', None),
+	(r'^(ldap\.)?SERVER_DOWN: .*', None),
 	(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
 	('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
 	('^permissionDenied$', ['_create']),
-	('^noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
+	(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
 	('^ldapError: No such object', ['in _create']),
-	('^ldap.NO_SUCH_OBJECT: .*', [r'quota\.py']),
+	(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py']),
 	(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
 	(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
 	('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
@@ -129,7 +129,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	# various test cases:
 	('^(univention.management.console.modules.ucstest.)?NonThreadedError$', None),
 	('^INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
-	('^INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
+	(r'^(ldap\.)?INVALID_SYNTAX: .*telephoneNumber.*', ['sync_from_ucs']),  # Bug #35391 52_s4connector/134sync_incomplete_attribute_ucs
 	('^OTHER: .*[cC]annot rename.*', ['sync_from_ucs']),
 	('univention.lib.umc.ConnectionError:.*machine.secret.*', None),
 	('univention.lib.umc.ConnectionError:.*CERTIFICATE_VERIFY_FAILED.*', None),
@@ -153,7 +153,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ImportError: No module named service', ['univention-app']),  # Bug #50381
 	('^ImportError: No module named ldap_extension', ['get_action']),  # Bug #50381
 	('^AttributeError: __exit__', ['with Server']),  # Bug #50583
-	('^primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
+	(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
 	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
 	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
 	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
