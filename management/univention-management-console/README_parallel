@@ -1,0 +1,27 @@
+First enable parallel UMC support by defining the number of parallel processes ("0" or "1" ==> only one process):
+`ucr set umc/parallel=5`
+
+Start UMC in parallel:
+`systemctl restart univention-management-console-web-server-multiprocessing.target`
+
+Restart apache2:
+`systemctl restart apache2`
+
+Enable the target if it should start on boot
+`systemctl enable univention-management-console-web-server-multiprocessing.target`
+
+
+Check status of all services in target:
+`systemctl list-dependencies univention-management-console-web-server-multiprocessing.target`
+
+To go back to one UMC process, just use:
+`ucr unset umc/parallel`
+`systemctl stop univention-management-console-web-server-multiprocessing.target`
+`systemctl restart apache2`
+
+
+TODOs
+- Documentation
+- Cleanup univention-management-console-web-server-parallel-wrapper
+- TBD: Even in parallel mode, keep one process each on old port/pidfile/socket/... to maintain some sort of backward compatibility.
+- TBD: Merge into UCS mainline

@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 # SIGHUP for UMC-server and UMC-web-server
-for file in "/var/run/umc-server.pid" "/var/run/umc-web-server.pid"; do
+for file in "/var/run/umc-server.pid" "/var/run/umc-web-server"*".pid"; do
 	if [ -e "$file" ]; then
 		pkill -1 -F "$file"
 	fi

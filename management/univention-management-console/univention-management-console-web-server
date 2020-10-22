@@ -1404,7 +1404,7 @@ def run_cherrypy(options):
 	cherrypy.tools.umcp_auth = cherrypy.Tool('before_handler', root.auth.basic, priority=1)
 	cherrypy.config.update({
 		'log.screen': not options.daemon_mode,
-		'server.socket_port': get_int('umc/http/port', 8090),
+		'server.socket_port': options.port,
 		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
 		'server.request_queue_size': get_int('umc/http/requestqueuesize', 100),
 		'server.thread_pool': get_int('umc/http/maxthreads', 35),
@@ -1453,6 +1453,10 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			'-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
 			help='specifies an alternative log file [default: %default]'
 		)
+		self.parser.add_option(
+			'-p', '--port', action='store', type='int',
+			dest='port', default=get_int('umc/http/port', 8090),
+			help='defines an alternative port number [default %(default)s]')
 		(self.options, self.arguments) = self.parser.parse_args()
 
 		# cleanup environment
@@ -1480,7 +1484,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			self.stdin_path = '/dev/stdin'
 			self.stdout_path = '/dev/stdout'
 			self.stderr_path = '/dev/stderr'
-		self.pidfile_path = '/var/run/umc-web-server.pid'
+		self.pidfile_path = '/var/run/umc-web-server{}.pid'.format(self.options.port if self.options.port != 8090 else '')
 		self.pidfile_timeout = 10
 
 		# init daemon runner
