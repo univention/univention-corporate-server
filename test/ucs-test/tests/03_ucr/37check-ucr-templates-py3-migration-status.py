@@ -32,6 +32,7 @@ ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/etc/listfilter.secret',
 	'/etc/univention/templates/files/etc/security/packetfilter.d/10_univention-firewall_start.sh',
 	'/etc/univention/templates/files/etc/dhcp/dhclient.conf',  # different IP address received, different date
+	'/etc/univention/templates/files/var/lib/dovecot/sieve/default.sieve',  # different date if not commited in the same second
 ] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*') + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 
 
