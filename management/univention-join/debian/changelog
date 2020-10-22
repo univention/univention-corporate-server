@@ -1,9 +1,9 @@
-univention-join (11.0.1-32) unstable; urgency=medium
+univention-join (11.0.1-33) unstable; urgency=medium
 
   * Bug #46985: improve univention-run-join-scripts. Wrong arguments wont
     trigger execution of all joinscripts anymore.
 
- -- Christian Castens <castens@univention.de>  Thu, 22 Oct 2020 12:17:06 +0200
+ -- Christian Castens <castens@univention.de>  Thu, 22 Oct 2020 14:28:42 +0200
 
 univention-join (11.0.1-31) unstable; urgency=low
 
