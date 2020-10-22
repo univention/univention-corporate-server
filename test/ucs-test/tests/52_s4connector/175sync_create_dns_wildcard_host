@@ -28,5 +28,5 @@ if __name__ == '__main__':
 		dnstests.check_ldap_object(dns_record_dn, 'host_record', 'aRecord', test_ipv4address)
 
 	s4connector.wait_for_sync()
-	## Removing a DNS zone triggers bind reload in postrun, better check:
-	dnstests.fail_if_cant_resolve_own_hostname()    # wait up to 17 seconds
+	# Removing a DNS zone triggers bind reload in postrun, better check:
+	dnstests.fail_if_cant_resolve_own_hostname()  # wait up to 17 seconds
