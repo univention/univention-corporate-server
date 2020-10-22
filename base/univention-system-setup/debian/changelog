@@ -1,3 +1,9 @@
+univention-system-setup (13.0.2-1) unstable; urgency=medium
+
+  * Bug #43686: Convert init.d to systemctl commands for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Thu, 22 Oct 2020 15:08:05 +0200
+
 univention-system-setup (13.0.1-5) unstable; urgency=low
 
   * Bug #33029: Re-add empty hook directories
