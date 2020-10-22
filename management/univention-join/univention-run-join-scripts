@@ -100,6 +100,7 @@ do
 			;;
 		"--run-scripts")
 			RUN_SCRIPTS=1
+			SCRIPTS_TO_RUN=()
 			shift
 			;;
 		"--version")
@@ -110,8 +111,19 @@ do
 			display_help
 			exit 0
 			;;
+		-*)
+			echo "Unknown argument: $1"
+			display_help
+			exit 1
+			;;
 		*)
-			break
+			if [ "$RUN_SCRIPTS" != "1" ]; then
+				echo "Unknown argument: $1"
+				display_help
+				exit 1
+			fi
+			SCRIPTS_TO_RUN+=("$1")
+			shift
 			;;
 	esac
 done
@@ -189,6 +201,8 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	fi
 fi
 
+EXITCODE=0
+
 # get list of join scripts to be executed
 # fallback to all existing join scripts
 LC_COLLATE="C"
@@ -196,7 +210,12 @@ SCRIPTS=(/usr/lib/univention-install/*.{inst,uinst})
 if [ -n "$RUN_SCRIPTS" ]; then
 	# evaluate specified join scripts
 	SCRIPTS=()
-	for iscript in "$@"
+	if [ -z $SCRIPTS_TO_RUN ]; then
+		display_help
+		failed_message "The option --run-scripts was used, but no scripts were provided"
+		EXITCODE=1
+	fi
+	for iscript in "${SCRIPTS_TO_RUN[@]}"
 	do
 		# guess full path of join script
 		iscript="/usr/lib/univention-install/$iscript"
@@ -208,9 +227,14 @@ if [ -n "$RUN_SCRIPTS" ]; then
 		if [ ! -e "$iscript" ]; then
 			# error ... join script does not exist
 			failed_message "The given joinscript '$iscript' does not exists"
+			EXITCODE=1
 		fi
 		SCRIPTS+=("$iscript")
 	done
+fi
+
+if [ "$EXITCODE" != "0" ]; then
+	exit "$EXITCODE"
 fi
 
 # Save STDOUT to fd3, redirect to logfile

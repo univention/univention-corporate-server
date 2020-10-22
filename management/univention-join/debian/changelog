@@ -1,3 +1,9 @@
+univention-join (12.0.1-2) unstable; urgency=medium
+
+  * Bug #46985: Show an error and help if no scripts were provided with --run-scripts
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 19 Nov 2020 09:44:44 +0100
+
 univention-join (12.0.1-1) unstable; urgency=medium
 
   * Bug #43686: use systemctl to restart univention-directory-listener
