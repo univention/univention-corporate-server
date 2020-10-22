@@ -13,8 +13,10 @@ Pre-Depends:
  univention-config,
 Depends:
  expect,
+ python-six,
  python-tdb,
  python-univention-lib (>= 3.0.26-45),
+ python3-six,
  python3-tdb,
  python3-univention-lib,
  rsync,
