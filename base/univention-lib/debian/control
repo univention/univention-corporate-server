@@ -29,7 +29,6 @@ Depends:
  python-ldb,
  python-magic,
  python-pil,
- python-samba,
  python-six,
  python-univention (>= 12.0.0-4),
  python-univention-config-registry (>= 15),

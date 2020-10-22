@@ -1,3 +1,9 @@
+univention-lib (9.0.9-6) unstable; urgency=medium
+
+  * Bug #49898: python-univention-lib cannot depend on python-samba
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 21:54:33 +0200
+
 univention-lib (9.0.9-5) unstable; urgency=medium
 
   * Bug #49898: python3-univention-lib should not depend on
