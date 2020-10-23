@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention PAM
@@ -31,28 +31,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
+import listener
+import univention.debug as ud
+from univention.admin.handlers.users.user import unmapLocked
+
 name = 'faillog'
 description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'
 attributes = []
 
-__package__ = ''  # workaround for PEP 366
-import listener
-import univention.debug as ud
-from univention.admin.handlers.users.user import unmapLocked
-
 
 def __login_is_locked(attrs):
 	return unmapLocked(attrs) == '1'
+
 
 def handler(dn, new, old):
 	if new and old:
 		if __login_is_locked(old) and not __login_is_locked(new):
 			# reset local bad password count
+			ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0].decode('UTF-8'))
 			listener.setuid(0)
 			try:
-				ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0])
-				listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0], '--reset'])
+				listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0].decode('UTF-8'), '--reset'])
 			finally:
 				listener.unsetuid()
 

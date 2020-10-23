@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention nscd Updater
@@ -31,15 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
+import listener
+from univention.config_registry import ConfigRegistry
+import univention.debug as ud
+
 name = 'nscd_update'
 description = 'Invalidate the NSCD group cache whenever a group membership has been modified.'
 filter = '(objectClass=univentionGroup)'
 attributes = ['uniqueMember', 'cn']
-
-__package__ = ''  # workaround for PEP 366
-import listener
-from univention.config_registry import ConfigRegistry
-import univention.debug
 
 
 def handler(dn, new, old):
@@ -47,14 +48,15 @@ def handler(dn, new, old):
 
 
 def postrun():
-	baseConfig = ConfigRegistry()
-	baseConfig.load()
+	configRegistry = ConfigRegistry()  # TODO: why not listener.configRegistry?
+	configRegistry.load()
 
-	if baseConfig.is_true('nscd/group/invalidate_cache_on_changes', False) and baseConfig.is_false('nss/group/cachefile', True):
+	if configRegistry.is_true('nscd/group/invalidate_cache_on_changes', False) and configRegistry.is_false('nss/group/cachefile', True):
 		listener.setuid(0)
 		try:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "calling 'nscd -i group'")
+			ud.debug(ud.LISTENER, ud.INFO, "calling 'nscd -i group'")
 			listener.run('/usr/sbin/nscd', ['nscd', '-i', 'group'], uid=0)
-		except:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "nscd -i group was not successful")
-		listener.unsetuid()
+		except Exception:
+			ud.debug(ud.LISTENER, ud.ERROR, "nscd -i group was not successful")
+		finally:
+			listener.unsetuid()
