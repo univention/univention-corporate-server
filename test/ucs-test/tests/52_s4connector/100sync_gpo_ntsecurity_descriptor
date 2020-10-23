@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: "GPO Security Descriptor sync"
 ## exposure: dangerous
 ## packages:
@@ -11,25 +11,28 @@
 
 
 from __future__ import print_function
+
+import time
+import subprocess
+import re
+
+import univention.uldap
+from univention.config_registry import ConfigRegistry
+from univention.s4connector import configdb
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 import univention.testing.udm as udm_test
 import s4connector
 
+from ldap.filter import filter_format
+import ldb
 from samba.param import LoadParm
 from samba.credentials import Credentials
 from samba.samdb import SamDB
 from samba.auth import system_session
-from univention.config_registry import ConfigRegistry
-from univention.s4connector import configdb
 from samba.sd_utils import SDUtils
 from samba.ndr import ndr_unpack
 from samba.dcerpc import security
-import univention.uldap
-import time
-import ldb
-import subprocess
-import re
 
 
 def set_ucr(ucr_set, ucr_unset=None, ucr=None):
@@ -41,7 +44,7 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 	previous_ucr_unset = []
 
 	if ucr_set:
-		if isinstance(ucr_set, type("")):
+		if isinstance(ucr_set, str):
 			ucr_set = (ucr_set,)
 
 		for setting in ucr_set:
@@ -59,7 +62,7 @@ def set_ucr(ucr_set, ucr_unset=None, ucr=None):
 		univention.config_registry.handler_set(ucr_set)
 
 	if ucr_unset:
-		if isinstance(ucr_unset, type("")):
+		if isinstance(ucr_unset, str):
 			ucr_unset = (ucr_unset,)
 
 		for var in ucr_unset:
@@ -115,8 +118,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-			utils.fail("Error restarting S4 Connector: %s"
-			"\nCommand was: %s" % (stdout, cmd))
+			utils.fail("Error restarting S4 Connector: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
 
 	def activate_ntsd_sync(self):
 		ucr_set = ["connector/s4/mapping/gpo/ntsd=true", ]
@@ -151,13 +153,12 @@ class Testclass_GPO_Security_Descriptor(object):
 			return ldb_msg
 
 	def get_ldb_gpo(self, gponame):
-		ldap_filter = self.SAM_LDAP_FILTER_GPO % (gponame,)
+		ldap_filter = filter_format(self.SAM_LDAP_FILTER_GPO, (gponame,))
 		attrs = ["nTSecurityDescriptor", "uSNChanged"]
 		ldb_msg = self.get_ldb_object(ldap_filter=ldap_filter, attrs=attrs)
 		return ldb_msg
 
 	def get_ntsd(self, obj):
-
 		if isinstance(obj, ldb.Message):
 			ntsd_ndr = obj["nTSecurityDescriptor"][0]
 			ntsd = ndr_unpack(security.descriptor, ntsd_ndr)
@@ -211,7 +212,8 @@ class Testclass_GPO_Security_Descriptor(object):
 
 	def remove_gpo(self, critical=True):
 		if self.gponame:
-			cmd = ("samba-tool", "gpo", "del", self.gponame,
+			cmd = (
+				"samba-tool", "gpo", "del", self.gponame,
 				"-k", "no",
 				"-H", "ldap://%s" % (self.fqdn,),
 				"--username", self.adminaccount.username,
@@ -221,15 +223,15 @@ class Testclass_GPO_Security_Descriptor(object):
 			stdout, stderr = p1.communicate()
 			if p1.returncode != 0:
 				if critical:
-					utils.fail("Error removing GPO using samba-tool: %s"
-					"\nCommand was: %s" % (stdout, cmd))
+					utils.fail("Error removing GPO using samba-tool: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
 			else:
 				self.gponame = None
 
 	def create_gpo(self, logtag="create_gpo"):
 		display_name = 'ucs_test_gpo_' + random_username(8)
 
-		cmd = ("samba-tool", "gpo", "create", display_name,
+		cmd = (
+			"samba-tool", "gpo", "create", display_name,
 			"-k", "no",
 			"-H", "ldap://%s" % (self.fqdn,),
 			"--username", self.adminaccount.username,
@@ -238,16 +240,14 @@ class Testclass_GPO_Security_Descriptor(object):
 		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-			utils.fail("ERROR: %s: creating GPO using samba-tool: %s"
-			"\nCommand was: %s" % (logtag, stdout, cmd))
+			utils.fail("ERROR: %s: creating GPO using samba-tool: %s\nCommand was: %s" % (logtag, stdout.decode('UTF-8', 'replace'), cmd))
 
-		stdout = stdout.rstrip()
+		stdout = stdout.decode('UTF-8', 'replace').rstrip()
 		try:
 			self.gponame = '{' + re.search('{(.+?)}', stdout).group(1) + '}'
-			self.gpo_ldap_filter = self.SAM_LDAP_FILTER_GPO % (self.gponame,)
+			self.gpo_ldap_filter = filter_format(self.SAM_LDAP_FILTER_GPO, (self.gponame,))
 		except AttributeError as ex:
-			utils.fail("Could not find the GPO reference in the STDOUT "
-			"'%s' of the 'samba-tool', error: '%s'" % (stdout, ex))
+			utils.fail("Could not find the GPO reference in the STDOUT '%s' of the 'samba-tool', error: '%s'" % (stdout, ex))
 
 	def modify_udm_object(self, modulename, **kwargs):
 		cmd = self.udm._build_udm_cmdline(modulename, 'modify', kwargs)
@@ -255,7 +255,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			raise udm_test.UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
+			raise udm_test.UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout.decode('UTF-8', 'replace'), 'stderr': stderr.decode('UTF-8', 'replace')})
 
 	def modify_sd_on_ucs_ldap_gpo(self, ucs_dn, ucs_ntsd):
 		self.modify_udm_object('container/msgpo', dn=ucs_dn, msNTSecurityDescriptor=ucs_ntsd.as_sddl())
