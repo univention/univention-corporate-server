@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-5) unstable; urgency=low
+
+  * Bug #51942: Improved usability of univention-run-diagnostic-checks
+
+ -- Max Christian Pohle <pohle@univention.de>  Wed, 11 Nov 2020 15:30:20 +0100
+
 univention-management-console-module-diagnostic (6.0.0-4) unstable; urgency=medium
 
   * Bug #51332: Migrate to Python3

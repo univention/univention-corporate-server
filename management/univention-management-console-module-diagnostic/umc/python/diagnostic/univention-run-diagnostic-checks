@@ -36,6 +36,7 @@ import time
 import argparse
 import traceback
 from getpass import getpass
+from six.moves import input
 
 from univention.lib.umc import Client, Unauthorized
 
@@ -50,13 +51,20 @@ class CLIClient(object):
 		parser.add_argument("--username", help='Domain Admin username for Authentication')
 		args = parser.parse_known_args()[0]
 
+		list_choices = ['all', 'list']
+		parser.add_argument(
+			"-t", dest='tests', choices=list_choices, nargs='+',
+			default='all', help='''Choose tests to run by using `-t
+			<testname>`, where <testname> can be any of the tests
+			from `-t list` or run `-t all` to execute all
+			diagnostic checks''')
+
 		if args.help:
-			parser.add_argument("-t", dest='tests', nargs='+', help='Choose tests to run by using "{-t <testname>}" or "-t all" to execute all diagnostic checks', required=True)
 			parser.print_help()
 			sys.exit(0)
 
 		if not args.username:
-			args.username = raw_input('Domain Admin Login: ')
+			args.username = input('Domain Admin Login: ')
 		args.password = None
 		if args.bindpwdfile:
 			with open(args.bindpwdfile) as fd:
@@ -70,8 +78,13 @@ class CLIClient(object):
 			parser.error('Login failed: %s' % (exc.message,))
 
 		plugins = [plugin['id'] for plugin in client.umc_command('diagnostic/query').result]
-		parser.add_argument("-t", dest='tests', nargs='+', choices=['all'] + plugins, help='Choose tests to run by using "{-t <testname>}" or "-t all" to execute all diagnostic checks', required=True)
+		list_choices += plugins
+
 		args = parser.parse_args()
+
+		if 'list' in args.tests:
+			print("\n\t".join(['Available tests:'] + plugins))
+			sys.exit(0)
 
 		if 'all' in args.tests:
 			args.tests = plugins
