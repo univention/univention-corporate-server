@@ -1,3 +1,10 @@
+univention-join (12.0.0-9) unstable; urgency=medium
+
+  * Bug #49898: univention-join-hooks cannot use python2.7 any longer
+    because it uses udm which requires python3-samba.
+
+ -- Arvid <requate@univention.de>  Fri, 23 Oct 2020 09:55:38 +0200
+
 univention-join (12.0.0-8) unstable; urgency=low
 
   * Bug #51624: During the update from UCS 4.4 to UCS 5.0 the execution of
