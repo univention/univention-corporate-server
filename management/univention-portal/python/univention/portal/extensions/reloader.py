@@ -30,6 +30,7 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import importlib
 import json
 import os.path
 import shutil
@@ -115,8 +116,7 @@ class MtimeBasedLazyFileReloader(Reloader):
 					return True
 		return self._file_was_updated()
 
-	def _refresh(self):
-		raise NotImplementedError()
+	def _refresh(self): pass
 
 
 class PortalReloaderUDM(MtimeBasedLazyFileReloader):
@@ -129,12 +129,16 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 	cache_file:
 		Filename this object is responsible for
 	"""
+	udm_udm = importlib.import_module("univention.udm.udm")
+	udm_modules = importlib.import_module("univention.udm.modules")
+
 	def __init__(self, portal_dn, cache_file):
 		super(PortalReloaderUDM, self).__init__(cache_file)
 		self._portal_dn = portal_dn
 
-	def _check_reason(self, reason, content):
-		if super(PortalReloaderUDM, self)._check_reason(reason, content):
+
+	def _check_reason(self, reason, content=None):
+		if super(PortalReloaderUDM, self)._check_reason(reason):
 			return True
 		if reason is None:
 			return False
@@ -168,8 +172,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return False
 
 	def _refresh(self):
-		from univention.udm import UDM
-
+		UDM = self.udm_udm.UDM
 		udm = UDM.machine().version(2)
 		try:
 			portal = udm.get('portals/portal').get(self._portal_dn)
@@ -255,8 +258,9 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_entries(self, portal):
-		from univention.udm.modules.portal import (PortalsPortalEntryObject,
-		                                           PortalsPortalFolderObject)
+		PortalsPortalEntryObject = self.udm_modules.PortalsPortalEntryObject
+		PortalsPortalFolderObject = self.udm_modules.PortalsPortalFolderObject
+
 		def _add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
@@ -289,7 +293,7 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_folders(self, portal):
-		from univention.udm.modules.portal import PortalsPortalFolderObject
+		PortalsPortalFolderObject = self.udm_modules.PortalsPortalFolderObject
 		def _add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
@@ -401,15 +405,15 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 	cache_file:
 		Filename this object is responsible for
 	"""
-	def __init__(self, ldap_uri, bind_dn, password_file, ldap_base, cache_file):
+	def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
 		super(GroupsReloaderLDAP, self).__init__(cache_file)
 		self._ldap_uri = ldap_uri
-		self._bind_dn = bind_dn
+		self._bind_dn = binddn
 		self._password_file = password_file
 		self._ldap_base = ldap_base
 
-	def _check_reason(self, reason, content):
-		if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
+	def _check_reason(self, reason):
+		if super(GroupsReloaderLDAP, self)._check_reason(reason):
 			return True
 		if reason is None:
 			return False
@@ -458,3 +462,11 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 			ret.update(self._nested_groups(group_dn, ldap_content, nested_groups_cache))
 		nested_groups_cache[dn] = ret
 		return ret
+
+
+
+if __name__ == '__main__':
+	print "Test Reloader"
+	reloader = PortalReloaderUDM("test", "test_cache")
+	reloader.refresh(reason="force")
+
