@@ -26,7 +26,6 @@ Depends:
  python-dnspython,
  python-ipaddress,
  python-ldap,
- python-ldb,
  python-magic,
  python-pil,
  python-six,

@@ -1,3 +1,10 @@
+univention-lib (9.0.9-7) unstable; urgency=medium
+
+  * Bug #49898: python-univention-lib cannot depend on python-ldb
+    as that does not exist any longer
+
+ -- Arvid <requate@univention.de>  Fri, 23 Oct 2020 08:29:40 +0200
+
 univention-lib (9.0.9-6) unstable; urgency=medium
 
   * Bug #49898: python-univention-lib cannot depend on python-samba
