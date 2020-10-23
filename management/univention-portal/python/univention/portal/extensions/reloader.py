@@ -30,20 +30,18 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import json
+import os.path
 import shutil
 import tempfile
-import os.path
-import json
 from imghdr import what
 
 import ldap
 from ldap.dn import explode_dn
-
-from univention.portal.log import get_logger
-from univention.portal import Plugin
-
-from six import with_metaclass, StringIO
+from six import StringIO, with_metaclass
 from six.moves.urllib.parse import quote
+from univention.portal import Plugin
+from univention.portal.log import get_logger
 
 
 class Reloader(with_metaclass(Plugin)):
@@ -61,8 +59,7 @@ class Reloader(with_metaclass(Plugin)):
 	If the reloader refreshed the content, the overlying cache will reload
 	itself.
 	"""
-	def refresh(self, reason=None):
-		pass
+	def refresh(self, reason=None): pass
 
 
 class MtimeBasedLazyFileReloader(Reloader):
@@ -92,14 +89,14 @@ class MtimeBasedLazyFileReloader(Reloader):
 			self._mtime = mtime
 			return True
 
-	def _check_reason(self, reason, content):
+	def _check_reason(self, reason):
 		if reason is None:
 			return False
 		if reason == 'force':
 			return True
 
 	def refresh(self, reason=None, content=None):
-		if self._check_reason(reason, content):
+		if self._check_reason(reason):
 			get_logger('cache').info('refreshing cache')
 			fd = None
 			try:
@@ -120,6 +117,7 @@ class MtimeBasedLazyFileReloader(Reloader):
 
 	def _refresh(self):
 		raise NotImplementedError()
+
 
 class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 	"""
@@ -257,7 +255,8 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
 		return ret
 
 	def _extract_entries(self, portal):
-		from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
+		from univention.udm.modules.portal import (PortalsPortalEntryObject,
+		                                           PortalsPortalFolderObject)
 		def _add(entry, ret):
 			if entry.dn not in ret:
 				ret[entry.dn] = {
@@ -402,10 +401,10 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
 	cache_file:
 		Filename this object is responsible for
 	"""
-	def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
+	def __init__(self, ldap_uri, bind_dn, password_file, ldap_base, cache_file):
 		super(GroupsReloaderLDAP, self).__init__(cache_file)
 		self._ldap_uri = ldap_uri
-		self._bind_dn = binddn
+		self._bind_dn = bind_dn
 		self._password_file = password_file
 		self._ldap_base = ldap_base
 
