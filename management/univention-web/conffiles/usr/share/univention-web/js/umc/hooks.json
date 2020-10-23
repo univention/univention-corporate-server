@@ -5,7 +5,7 @@ import re
 regHook = re.compile(r'^umc/web/hooks/(?P<package>[^/]+)$')
 
 hooks = []
-for iucr, ival in configRegistry.items():
+for iucr, ival in sorted(configRegistry.items()):
 	# find all UCR variables starting with umc/web/hooks
 	match = regHook.match(iucr)
 	if not match or not ival:
