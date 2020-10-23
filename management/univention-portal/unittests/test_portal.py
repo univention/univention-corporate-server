@@ -30,153 +30,176 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-
 import pytest
 
-@pytest.fixture
-def hindenkampp(mocker):
-	user = mocker.Mock()
-	user.username = 'hindenkampp'
-	user.groups = []
-	return user
+
+def test_imports(dynamic_class):
+	assert dynamic_class('Portal')
 
 
-@pytest.fixture
-def standard_portal(dynamic_class, mocker):
-	Portal = dynamic_class('Portal')
-	Scorer = dynamic_class('Scorer')
-	PortalFileCache = dynamic_class('PortalFileCache')
-	GroupFileCache = dynamic_class('GroupFileCache')
-	return Portal(Scorer(), PortalFileCache('unittests/caches/portal.json'), GroupFileCache('unittests/caches.groups.json'))
+class TestPortal:
+
+	@pytest.fixture
+	def mocked_user(self, mocker):
+		user = mocker.Mock()
+		user.username = 'hindenkampp'
+		user.groups = []
+		return user
 
 
-@pytest.fixture
-def mocked_portal(dynamic_class, mocker):
-	Portal = dynamic_class('Portal')
-	scorer = mocker.Mock()
-	portal_cache = mocker.Mock()
-	portal_cache.refresh = mocker.Mock(return_value=None)
-	authenticator = mocker.Mock()
-	authenticator.refresh = mocker.Mock(return_value=None)
-	return Portal(scorer, portal_cache, authenticator)
+	@pytest.fixture
+	def standard_portal(self, dynamic_class, mocker, get_file_path):
+		Portal = dynamic_class('Portal')
+		cache_file_path = get_file_path('portal_cache.json')
+		scorer = dynamic_class('Scorer')()
+		portal_cache = dynamic_class('PortalFileCache')(cache_file_path)
+		authenticator = dynamic_class('UMCAuthenticator')('session_url', 'group_cache')
+		return Portal(scorer, portal_cache, authenticator)
 
 
-def test_portal_content(hindenkampp, standard_portal):
-	content = standard_portal.get_visible_content(hindenkampp, False)
-	expected_content = {
-		'category_dns': ['cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
-		'entry_dns': [
-			'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
-		'folder_dns': []
-	}
-	assert content == expected_content
+	@pytest.fixture
+	def mocked_portal(self, dynamic_class, mocker):
+		Portal = dynamic_class('Portal')
+		scorer = mocker.Mock()
+		portal_cache = mocker.Mock()
+		authenticator = mocker.Mock()
+		return Portal(scorer, portal_cache, authenticator)
 
 
-def test_portal_user_links(hindenkampp, standard_portal):
-	content = standard_portal.get_user_links(hindenkampp, False)
-	expected_content = []
-	assert content == expected_content
+	def test_user(self, mocked_portal, mocker):
+		request = "request"
+		mocked_portal.get_user(request)
+		mocked_portal.authenticator.get_user.assert_called_once_with(request)
+
+	
+	def test_login(self, mocked_portal, mocker):
+		request = "request"
+		mocked_portal.login_user(request)
+		mocked_portal.login_request(request)
+		mocked_portal.authenticator.login_user.assert_called_once_with(request)
+		mocked_portal.authenticator.login_request.assert_called_once_with(request)
 
 
-def test_portal_menu_links(hindenkampp, standard_portal):
-	content = standard_portal.get_menu_links(hindenkampp, False)
-	expected_content = []
-	assert content == expected_content
-
-
-def test_portal_entries(hindenkampp, standard_portal):
-	content = standard_portal.get_visible_content(hindenkampp, False)
-	content = standard_portal.get_entries(content)
-	expected_content = {
-		'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
-			'activated': True,
-			'allowedGroups': [],
-			'description': {
-				'de_DE': u'Zeigt eine \xdcbersicht aller UCS Server in der Dom\xe4ne',
-				'en_US': u'Provide an overview of all UCS server in the domain',
-				'fr_FR': u"Vue d'ensemble de tous les serveurs UCS du domaine"},
-			'dn': 'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			'linkTarget': 'useportaldefault',
-			'links': ['/univention/server-overview/'],
-			'logo_name': '/univention/portal/icons/entries/server-overview.svg',
-			'name': {
-				'de_DE': u'Server\xfcbersicht',
-				'en_US': u'Server overview',
-				'fr_FR': u"Vue d'ensemble de serveurs"}},
-		'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
-			'activated': True,
-			'allowedGroups': [],
-			'description': {
-				'de_DE': u'Univention Management Console zur Ver\xadwal\xadtung der UCS-Dom\xe4ne und des lokalen Systems',
-				'en_US': u'Univention Management Console for admin\xadis\xadtra\xadting the UCS domain and the local system',
-				'fr_FR': u'Console de gestion Univention pour admin\xadis\xadtrer le domaine UCS et le syst\xe8me local'},
-			'dn': 'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			'linkTarget': 'useportaldefault',
-			'links': ['/univention/management/'],
-			'logo_name': '/univention/portal/icons/entries/umc-domain.svg',
-			'name': {
-				'de_DE': u'System- und Dom\xe4neneinstellungen',
-				'en_US': u'System and domain settings',
-				'fr_FR': u'R\xe9glages du syst\xe8me et du domaine'}}}
-	assert content == expected_content
-
-
-def test_portal_folders(hindenkampp, standard_portal):
-	content = standard_portal.get_visible_content(hindenkampp, False)
-	content = standard_portal.get_folders(content)
-	expected_content = {}
-	assert content == expected_content
-
-
-def test_portal_categories(hindenkampp, standard_portal):
-	content = standard_portal.get_visible_content(hindenkampp, False)
-	content = standard_portal.get_categories(content)
-	expected_content = {
-		u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
-			'display_name': {
-				'de_DE': u'Verwaltung',
-				'en_US': u'Administration'},
-			'dn': u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			'entries': [
+	def test_visible_content(self, mocked_user, standard_portal):
+		content = standard_portal.get_visible_content(mocked_user, False)
+		expected_content = {
+			'category_dns': ['cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
+			'entry_dns': [
 				'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-				'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de']}}
-	assert content == expected_content
+				'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
+			'folder_dns': []
+		}
+		assert content == expected_content
 
 
-def test_portal_meta(hindenkampp, standard_portal):
-	content = standard_portal.get_visible_content(hindenkampp, False)
-	categories = standard_portal.get_categories(content)
-	content = standard_portal.get_meta(content, categories)
-	expected_content = {
-		'anonymousEmpty': [],
-		'autoLayoutCategories': False,
-		'categories': [u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
-		'content': [[u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			    [u'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-			     u'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de']]],
-		'defaultLinkTarget': u'embedded',
-		'dn': u'cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
-		'ensureLogin': False,
-		'fontColor': u'black',
-		'logo': None,
-		'name': {u'de_DE': u'Univention Portal',
-			 u'en_US': u'Univention Portal',
-			 u'fr_FR': u'Portail Univention'},
-		'showApps': False
-	}
-	assert content == expected_content
+	def test_user_links(self, mocked_user, standard_portal):
+		content_no_user = standard_portal.get_user_links(None, False)
+		content_with_user = standard_portal.get_user_links(mocked_user, False)
+		expected_content = []
+		assert content_no_user == expected_content
+		assert content_with_user == expected_content
 
 
-def test_portal_refresh(mocked_portal):
-	assert mocked_portal.refresh() is None
-	mocked_portal.portal_cache.refresh.assert_called_once()
-	mocked_portal.authenticator.refresh.assert_called_once()
+	def test_menu_links(self, mocked_user, standard_portal):
+		content = standard_portal.get_menu_links(mocked_user, False)
+		expected_content = []
+		assert content == expected_content
 
 
-def test_portal_score(mocked_portal, mocker):
-	mocked_portal.scorer.score = mocker.Mock(return_value=5)
-	request = mocker.Mock()
-	assert mocked_portal.score(request) == 5
-	mocked_portal.scorer.score.assert_called_once()
-	mocked_portal.scorer.score.assert_called_with(request)
+	def test_portal_entries(self, mocked_user, standard_portal):
+		content = standard_portal.get_visible_content(mocked_user, False)
+		content = standard_portal.get_entries(content)
+		expected_content = {
+			'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
+				'activated': True,
+				'allowedGroups': [],
+				'description': {
+					'de_DE': u'Zeigt eine \xdcbersicht aller UCS Server in der Dom\xe4ne',
+					'en_US': u'Provide an overview of all UCS server in the domain',
+					'fr_FR': u"Vue d'ensemble de tous les serveurs UCS du domaine"},
+				'dn': 'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+				'linkTarget': 'useportaldefault',
+				'links': ['/univention/server-overview/'],
+				'logo_name': '/univention/portal/icons/entries/server-overview.svg',
+				'name': {
+					'de_DE': u'Server\xfcbersicht',
+					'en_US': u'Server overview',
+					'fr_FR': u"Vue d'ensemble de serveurs"}},
+			'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
+				'activated': True,
+				'allowedGroups': [],
+				'description': {
+					'de_DE': u'Univention Management Console zur Ver\xadwal\xadtung der UCS-Dom\xe4ne und des lokalen Systems',
+					'en_US': u'Univention Management Console for admin\xadis\xadtra\xadting the UCS domain and the local system',
+					'fr_FR': u'Console de gestion Univention pour admin\xadis\xadtrer le domaine UCS et le syst\xe8me local'},
+				'dn': 'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+				'linkTarget': 'useportaldefault',
+				'links': ['/univention/management/'],
+				'logo_name': '/univention/portal/icons/entries/umc-domain.svg',
+				'name': {
+					'de_DE': u'System- und Dom\xe4neneinstellungen',
+					'en_US': u'System and domain settings',
+					'fr_FR': u'R\xe9glages du syst\xe8me et du domaine'}}}
+		assert content == expected_content
+
+
+	def test_folders(self, mocked_user, standard_portal):
+		content = standard_portal.get_visible_content(mocked_user, False)
+		content = standard_portal.get_folders(content)
+		expected_content = {}
+		assert content == expected_content
+
+
+	def test_categories(self, mocked_user, standard_portal):
+		content = standard_portal.get_visible_content(mocked_user, False)
+		content = standard_portal.get_categories(content)
+		expected_content = {
+			u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de': {
+				'display_name': {
+					'de_DE': u'Verwaltung',
+					'en_US': u'Administration'},
+				'dn': u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+				'entries': [
+					'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+					'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de']}}
+		assert content == expected_content
+
+
+	def test_meta(self, mocked_user, standard_portal):
+		content = standard_portal.get_visible_content(mocked_user, False)
+		categories = standard_portal.get_categories(content)
+		content = standard_portal.get_meta(content, categories)
+		expected_content = {
+			'anonymousEmpty': [],
+			'autoLayoutCategories': False,
+			'categories': [u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de'],
+			'content': [[u'cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+					[u'cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+					u'cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de']]],
+			'defaultLinkTarget': u'embedded',
+			'dn': u'cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de',
+			'ensureLogin': False,
+			'fontColor': u'black',
+			'logo': None,
+			'name': {u'de_DE': u'Univention Portal',
+				u'en_US': u'Univention Portal',
+				u'fr_FR': u'Portail Univention'},
+			'showApps': False
+		}
+		assert content == expected_content
+
+
+	def test_refresh(self, mocked_portal, mocker):
+		mocked_portal.portal_cache.refresh = mocker.Mock(return_value=None)
+		mocked_portal.authenticator.refresh = mocker.Mock(return_value=None)
+		assert mocked_portal.refresh() is None
+		mocked_portal.portal_cache.refresh.assert_called_once()
+		mocked_portal.authenticator.refresh.assert_called_once()
+
+
+	def test_score(self, mocked_portal, mocker):
+		mocked_portal.scorer.score = mocker.Mock(return_value=5)
+		request = mocker.Mock()
+		assert mocked_portal.score(request) == 5
+		mocked_portal.scorer.score.assert_called_once()
+		mocked_portal.scorer.score.assert_called_with(request)
