@@ -7,7 +7,7 @@ fix: 5.0.1-51A~4.4.6.202010201525
 desc: |
  This update addresses the following issue(s):
  * The usability of the `univention-run-diagnostic-checks` command line tool
-   hast been improved. It can now be called without parameters to execute all
+   has been improved. It can now be called without parameters to execute all
    tests and it does not require a username and password to access `--help`
    any more.
 bug: [51942]
