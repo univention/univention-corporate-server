@@ -45,11 +45,13 @@ class TestPortalFileCache:
 	def cache_file_path(self, get_file_path):
 		return get_file_path("portal_cache.json")
 
-	def test_portal_cache_missing_file(self, dynamic_class):
+
+	def test_missing_file(self, dynamic_class):
 		cache = dynamic_class('PortalFileCache')('/tmp/a/file/that/does/not/exist')
 		assert cache.get() == {}
 
-	def test_portal_cache(self, dynamic_class, cache_file_path):
+
+	def test_getter(self, dynamic_class, cache_file_path):
 		Cache = dynamic_class('PortalFileCache')
 		cache = Cache(cache_file_path)
 		assert cache.get_user_links() == []
@@ -64,23 +66,23 @@ class TestPortalFileCache:
 		assert cache.get_menu_links() == []
 
 
-	def test_cache_reload(self, dynamic_class, cache_file_path, mocker):
+	def test_reload(self, dynamic_class, cache_file_path, mocker):
 		Cache = dynamic_class('PortalFileCache')
-		mock = mocker.Mock()
-		cache = Cache(cache_file_path, reloader=mock)
+		mocked_reloader = mocker.Mock()
+		cache = Cache(cache_file_path, reloader=mocked_reloader)
 		content = cache.get()
-		mock.refresh.assert_called_with(reason=None, content=content)
+		mocked_reloader.refresh.assert_called_with(reason=None, content=content)
 		cache.refresh(reason='force')
-		mock.refresh.assert_called_with(reason='force', content=content)
+		mocked_reloader.refresh.assert_called_with(reason='force', content=content)
 
 
-	def test_cache_reload_on_get(self, dynamic_class, cache_file_path, mocker):
+	def test_reload_on_get(self, dynamic_class, cache_file_path, mocker):
 		Cache = dynamic_class('PortalFileCache')
-		mock = mocker.Mock()
-		cache = Cache(cache_file_path, reloader=mock)
-		mock.refresh.call_count == 1
+		mocked_reloader = mocker.Mock()
+		cache = Cache(cache_file_path, reloader=mocked_reloader)
+		assert mocked_reloader.refresh.call_count == 0
 		cache.get()
-		mock.refresh.call_count == 2
+		assert mocked_reloader.refresh.call_count == 1
 
 
 class TestGroupFileCache:

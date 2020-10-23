@@ -33,10 +33,10 @@
 import json
 from copy import deepcopy
 
-from univention.portal.log import get_logger
-from univention.portal import Plugin
-
 from six import with_metaclass
+from univention.portal import Plugin
+from univention.portal.log import get_logger
+
 
 class Cache(with_metaclass(Plugin)):
 	"""

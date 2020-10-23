@@ -70,7 +70,7 @@ def dynamic_class(portal_lib):
 
 @pytest.fixture
 def patch_object_module(mocker):
-	""" Helper to patch module level library imports of a concrete object """
+	""" Helper to patch module level library imports of an object or class """
 	def _(obj, module_name):
 		return mocker.patch("{}.{}".format(obj.__module__, module_name))
 	return _
