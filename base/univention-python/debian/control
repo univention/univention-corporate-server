@@ -37,7 +37,6 @@ Depends:
  python-dns,
  python-ipaddress,
  python-ldap,
- python-samba,
  python-univention-debug,
  python-univention-namespace,
  ${misc:Depends},

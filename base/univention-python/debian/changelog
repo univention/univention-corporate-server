@@ -1,3 +1,10 @@
+univention-python (13.0.2-2) unstable; urgency=medium
+
+  * Bug #49898: python-univention cannot depend on python-samba
+    as that does not exist any longer
+
+ -- Arvid <requate@univention.de>  Fri, 23 Oct 2020 08:57:24 +0200
+
 univention-python (13.0.2-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by
