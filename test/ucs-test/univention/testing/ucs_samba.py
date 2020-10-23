@@ -7,11 +7,18 @@ import contextlib
 
 import six
 import sqlite3
-import ldb
 import ldap
-from samba.auth import system_session
-from samba.samdb import SamDB
-from samba.param import LoadParm
+if not six.PY2:
+	import ldb
+	from samba.auth import system_session
+	from samba.samdb import SamDB
+	from samba.param import LoadParm
+else:
+	class ldb(object):
+		LdbError = None
+		SCOPE_SUBTREE = 2
+		ERR_NO_SUCH_OBJECT = 32
+		ERR_INVALID_DN_SYNTAX = 34
 
 from univention.testing.utils import package_installed
 import univention.config_registry as config_registry
@@ -44,7 +51,30 @@ def password_policy(complexity=False, minimum_password_age=0, maximum_password_a
 		subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
+def wait_for_drs_replication(*args, **kwargs):
+	if six.PY2:
+			process = subprocess.Popen(['/usr/bin/python3', '-'], stdin=subprocess.PIPE)
+			stdout, stderr = process.communicate(b'''
+import ldb
+from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
+try:
+	wait_for_drs_replication(*%s, **%s)
+except DRSReplicationFailed as exc:
+	print(repr(exc), file=sys.stderr)
+	sys.exit(2)
+except ldb.LdbError as exc:
+	print(repr(exc), file=sys.stderr)
+	sys.exit(3)
+			''' % (repr(args).encode('UTF-8'), repr(kwargs).encode('UTF-8')))
+			if process.returncode == 2:
+				raise DRSReplicationFailed((stderr or b'').decode('UTF-8', 'replace'))
+			elif process.returncode:
+				raise Exception((stderr or b'').decode('UTF-8', 'replace'))
+			return
+	return _wait_for_drs_replication(*args, **kwargs)
+
+
+def _wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True, should_exist=True, controls=None):
 	if not package_installed('univention-samba4'):
 		if package_installed('univention-samba'):
 			time.sleep(15)
@@ -52,19 +82,21 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		elif verbose:
 			print('wait_for_drs_replication(): skip, univention-samba4 not installed.')
 		return
-	if not lp:
-		lp = LoadParm()
-		lp.load('/etc/samba/smb.conf')
 	if not attrs:
 		attrs = ['dn']
 	elif not isinstance(attrs, list):
 		attrs = [attrs]
 
+	if not lp:
+		lp = LoadParm()
+		lp.load('/etc/samba/smb.conf')
 	samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
 	if not controls:
 		controls = ["domain_scope:0"]
 	if base is None:
-		base = samdb.domain_dn()
+		ucr = config_registry.ConfigRegistry()
+		ucr.load()
+		base = str(ucr.get('samba4/ldap/base'))
 	else:
 		if len(ldap.dn.str2dn(base)[0]) > 1:
 			if verbose:
@@ -84,11 +116,11 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 			if res and should_exist:
 				if verbose:
 					print("\nDRS replication took %d seconds" % (t - t0, ))
-				return res
+				return  # res
 			if not res and not should_exist:
 				if verbose:
 					print("\nDRS replication took %d seconds" % (t - t0, ))
-				return res
+				return  # res
 		except ldb.LdbError as exc:
 			(_num, msg) = exc.args
 			if _num == ldb.ERR_INVALID_DN_SYNTAX:
@@ -112,7 +144,7 @@ def get_available_s4connector_dc():
 	if not stdout:
 		print("WARNING: Automatic S4 Connector host detection failed")
 		return
-	matches = re.compile('^uid: (.*)\$$', re.M).findall(stdout)
+	matches = re.compile(r'^uid: (.*)\$$', re.M).findall(stdout)
 	if len(matches) == 1:
 		return matches[0]
 	elif len(matches) == 0:
@@ -158,10 +190,9 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 		return
 
 	if not partition_dn:
-		lp = LoadParm()
-		lp.load('/etc/samba/smb.conf')
-		samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
-		partition_dn = str(samdb.domain_dn())
+		ucr = config_registry.ConfigRegistry()
+		ucr.load()
+		partition_dn = str(ucr.get('samba4/ldap/base'))
 		print("USING partition_dn:", partition_dn)
 
 	if direction == "in":
