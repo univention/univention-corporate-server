@@ -102,7 +102,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 			res = self.lo.search_ext_s(user_dn, ldap.SCOPE_BASE, timeout=10)
 		except Exception:
 			return None
-		primaryGroupID = res[0][1]['primaryGroupID'][0]
+		primaryGroupID = res[0][1]['primaryGroupID'][0].decode('UTF-8')
 		res = self.lo.search_ext_s(
 			self.adldapbase,
 			ldap.SCOPE_SUBTREE,
@@ -205,8 +205,8 @@ def get_object_sid(dn):
 
 
 def _replace_uid_with_cn(dn):
-	if dn.startswith('uid') or dn.startswith('UID'):
-		dn_modified = 'cn' + dn[3:]
+	if dn.lower().startswith('uid='):
+		dn_modified = 'cn=' + dn[4:]
 	else:
 		dn_modified = dn
 	return dn_modified
