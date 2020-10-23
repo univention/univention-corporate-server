@@ -55,6 +55,7 @@ class TestMtimeBasedLazyFileReloader:
 	_cache_file = "path/to/cache/file"
 	_mtime = 2.3
 	_rtime = 4.2
+	_reason = "force"
 
 	_os = None
 	_shutil = None
@@ -102,13 +103,13 @@ class TestMtimeBasedLazyFileReloader:
 	
 	def test_refresh_with_reason(self, mocked_reloader, patch_object_module, mocker):
 		# Set up
-		mocked_reloader._refresh = mocker.Mock()  # Mock inner _refresh because not implemented in base class
+		mocked_reloader._refresh = mocker.Mock()  # Mock _refresh because not implemented in base class
 		mocked_reloader._refresh.return_value.name = "fd"
 		mocked_reloader._get_mtime = mocker.Mock(return_value = self._rtime)
 		# Execute
 		mocked_reloader.refresh("unknown_reason")
 		mocked_reloader._refresh.assert_not_called()
-		mocked_reloader.refresh(reason="force")
+		mocked_reloader.refresh(reason=self._reason)
 		mocked_reloader._refresh.assert_called_once()
 		self._os.makedirs.assert_called_once_with(self._os.path.dirname())
 		self._shutil.move.assert_called_once_with("fd", self._cache_file)
@@ -118,11 +119,18 @@ class TestPortalReloaderUDM(TestMtimeBasedLazyFileReloader):
 	_portal_dn = "cn=domain,cn=portal,cn=univention"
 
 	@pytest.fixture
-	def mocked_portal_reloader(self, dynamic_class, patch_object_module):
+	def mocked_portal_reloader(self, dynamic_class, patch_object_module, mocker):
 		Reloader = dynamic_class('PortalReloaderUDM')
 		self.patch_reloader_modules(Reloader, patch_object_module)
 		reloader = Reloader(self._portal_dn, self._cache_file)
+		reloader.udm_udm = mocker.Mock()
+		reloader.udm_modules = mocker.Mock()
 		return reloader
+
+
+	def generate_mocked_portal(self, mocker):
+		# ToDo Generate sample portal object for reloader
+		return mocker.Mock()
 
 
 	def test_default_init(self, mocked_portal_reloader):
@@ -132,20 +140,19 @@ class TestPortalReloaderUDM(TestMtimeBasedLazyFileReloader):
 		assert mocked_portal_reloader._portal_dn == self._portal_dn
 
 
-	def test_refresh(self, mocked_portal_reloader):
-		refreshed = mocked_portal_reloader.refresh()
+	def test_refresh(self, mocked_portal_reloader, mocker):
+		mocked_udm = mocked_portal_reloader.udm_udm.UDM.machine.return_value.version.return_value
+		mocked_portal = mocked_udm.get.return_value.get.return_value = self.generate_mocked_portal(mocker)
+		refreshed = mocked_portal_reloader.refresh(reason=self._reason)
+		mocked_udm.get.return_value.get.assert_called_once_with(self._portal_dn)
 		assert not refreshed
-		self._os.stat.return_value.st_mtime = self._rtime
-		refreshed = mocked_portal_reloader.refresh()
-		assert refreshed
 
 
 class TestGroupsReloaderLDAP(TestMtimeBasedLazyFileReloader):
-	_portal_dn = "cn=domain,cn=portal,cn=univention"
-	_ldap_uri = "ldap_uri"
-	_ldap_base = "ldap_base"
-	_bind_dn = "binddn"
-	_password_file = "path/to/password/file"
+	_ldap_uri = "ldap://ucs:7369"
+	_ldap_base = "dc=base,dc=com"
+	_bind_dn = "cn=ucs,cn=computers"
+	_password_file = "path/to/password/file.secret"
 
 	@pytest.fixture
 	def mocked_portal_reloader(self, dynamic_class, patch_object_module):
@@ -170,5 +177,5 @@ class TestGroupsReloaderLDAP(TestMtimeBasedLazyFileReloader):
 		refreshed = mocked_portal_reloader.refresh()
 		assert not refreshed
 		self._os.stat.return_value.st_mtime = self._rtime
-		refreshed = mocked_portal_reloader.refresh()
+		refreshed = mocked_portal_reloader.refresh(reason=self._reason)
 		assert refreshed
