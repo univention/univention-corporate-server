@@ -729,6 +729,9 @@
 				<listitem><simpara>
 					The packages <package>univention-passwd-cache</package> and <package>univention-passwd-store</package> have been removed (<u:bug>52056</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-pam</package> has been migrated to Python 3 (<u:bug>52250</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
