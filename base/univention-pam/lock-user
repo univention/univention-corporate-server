@@ -53,7 +53,7 @@ then
 			exit 1
 		fi
 
-		HOME=/ python -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
+		HOME=/ python3 -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"
 		### Just locking would be good, but requires ppolicy LDAP overlay
 		### active and configured properly to temporarily block LDAP
 		### authentication too. For now we additionally disable the user in this case:

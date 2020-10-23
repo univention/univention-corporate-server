@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention nss updater
@@ -31,14 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
+import listener
+import univention.config_registry
+
 name = 'nss'
 description = 'Invalidate the nss group cache whenever a group membership has been modified.'
 filter = '(objectClass=univentionGroup)'
 attributes = ['uniqueMember', 'cn']
-
-__package__ = ''  # workaround for PEP 366
-import listener
-import univention.config_registry
 
 
 def handler(dn, new, old):
@@ -46,13 +47,15 @@ def handler(dn, new, old):
 
 
 def postrun():
-	ucr = univention.config_registry.ConfigRegistry()
+	ucr = univention.config_registry.ConfigRegistry()  # TODO: why not listener.configRegistry?
 	ucr.load()
 
 	if ucr.is_true('nss/group/cachefile', False) and ucr.is_true('nss/group/cachefile/invalidate_on_changes', True):
 		listener.setuid(0)
-		param = ['ldap-group-to-file.py']
-		if ucr.is_true('nss/group/cachefile/check_member', False):
-			param.append('--check_member')
-		listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)
-		listener.unsetuid()
+		try:
+			param = ['ldap-group-to-file.py']
+			if ucr.is_true('nss/group/cachefile/check_member', False):
+				param.append('--check_member')
+			listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)
+		finally:
+			listener.unsetuid()

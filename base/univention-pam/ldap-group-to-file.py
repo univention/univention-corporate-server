@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention PAM
@@ -31,58 +31,46 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import optparse
-import ldap
+import argparse
 import shutil
 import sys
 import os
 import tempfile
 import subprocess
 
+import ldap.dn
 import univention.uldap
 import univention.lib.locking
 
 
-def _get_members(lo, g, recursion_list, check_member=False):
+def _get_members(lo, groupdn, gattr, recursion_list, check_member=False):
 	result = []
-	for m in g[1].get('uniqueMember', []):
-		if m.startswith('uid='):
+	for member_dn in gattr.get('uniqueMember', []):
+		member_dn = member_dn.decode('UTF-8')
+		if member_dn.startswith('uid='):
 			# Does the member exist?
 			if check_member:
 				try:
-					res = lo.search(base=m, scope=ldap.SCOPE_BASE, filter='uid=*', attr=['uid'])
-					if len(res) < 1:
-						# Not found
-						continue
+					lo.search(base=member_dn, scope='base', filter='uid=*', attr=['uid'], required=True)
 				except ldap.NO_SUCH_OBJECT:
 					continue
-			mrdn = ldap.explode_rdn(m)
-			mname = '='.join(mrdn[0].split('=')[1:])
-			result.append(mname)
-		elif m.startswith('cn='):
+			result.append(ldap.dn.str2dn(member_dn)[0][0][1])
+		elif member_dn.startswith('cn='):
 			try:
-				members = lo.search(base=m, scope=ldap.SCOPE_BASE, filter='objectClass=*', attr=['uniqueMember', 'gidNumber', 'objectClass', 'cn'])
+				memberdn, memberattr = lo.search(base=member_dn, scope='base', filter='objectClass=*', attr=['uniqueMember', 'gidNumber', 'objectClass', 'cn'], unique=True, required=True)[0]
 			except ldap.NO_SUCH_OBJECT:
 				# Member not found
 				continue
 
-			if len(members) == 1:
-				member = members[0]
-			elif len(members) > 1:
-				# Not possible
-				continue
-			else:
-				# Member not found
-				continue
-			if 'univentionGroup' in member[1].get('objectClass', []):
-				if member[0] not in recursion_list:
-					recursion_list.append(g[0])
-					result += _get_members(lo, member, recursion_list, check_member)
+			if b'univentionGroup' in memberattr.get('objectClass', []):
+				if memberdn not in recursion_list:
+					recursion_list.append(groupdn)
+					result += _get_members(lo, memberdn, memberattr, recursion_list, check_member)
 				else:
 					# Recursion !!!
 					pass
 			else:
-				result.append(member[1].get('cn')[0] + '$')
+				result.append(memberattr['cn'][0].decode('UTF-8') + '$')
 	return result
 
 
@@ -90,22 +78,21 @@ def _run_hooks(options):
 	HOOK_DIR = '/var/lib/ldap-group-to-file-hooks.d'
 	if os.path.exists(HOOK_DIR):
 		cmd = ['/bin/run-parts', '--verbose', HOOK_DIR]
-		with open(os.path.devnull, 'w+') as null:
+		with open(os.path.devnull, 'wb+') as null:
 			if options.verbose:
-				p = subprocess.Popen(cmd, stdin=null, shell=False)
+				subprocess.call(cmd, stdin=null)
 			else:
-				p = subprocess.Popen(cmd, stdin=null, stdout=null, stderr=null, shell=False)
-		_stdout, _stderr = p.communicate()
+				subprocess.call(cmd, stdin=null, stdout=null, stderr=null)
 	elif options.verbose:
-		print('%s does not exist' % HOOK_DIR)
+		print('%s does not exist' % (HOOK_DIR,))
 
 
 def main():
-	parser = optparse.OptionParser()
-	parser.add_option("--file", dest="file", default='/var/lib/extrausers/group', action="store", help="write result to the given file, default is /var/lib/extrausers/group")
-	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")
-	parser.add_option("--check_member", dest="check_member", default=False, action="store_true", help="checks if the member exists")
-	(options, args) = parser.parse_args()
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--file", default='/var/lib/extrausers/group', help="write result to the given file, default is /var/lib/extrausers/group")
+	parser.add_argument("--verbose", default=False, action="store_true", help="verbose output")
+	parser.add_argument("--check_member", default=False, action="store_true", help="checks if the member exists")
+	options = parser.parse_args()
 
 	try:
 		lo = univention.uldap.getMachineConnection(ldap_master=False, random_server=True)
@@ -137,12 +124,11 @@ def doit(options, lo):
 	(fdtemp, fdname) = tempfile.mkstemp()
 	fd = os.fdopen(fdtemp, 'w')
 
-	for group in groups:
-		rdn = ldap.explode_rdn(group[0])
-		groupname = '='.join(rdn[0].split('=')[1:])
-		members = _get_members(lo, group, [], options.check_member)
+	for groupdn, group in groups:
+		groupname = ldap.dn.str2dn(groupdn)[0][0][1]
+		members = _get_members(lo, groupdn, group, [], options.check_member)
 		# The list(set(members)) call removes all duplicates from the group members
-		fd.write('%s:*:%s:%s\n' % (groupname, group[1].get('gidNumber', [''])[0], ','.join(set(members))))
+		fd.write('%s:*:%s:%s\n' % (groupname, group.get('gidNumber', [b''])[0].decode('ASCII'), ','.join(set(members))))
 	fd.close()
 
 	os.chmod(fdname, 0o644)

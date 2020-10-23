@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention custom user and group name mapping
@@ -31,16 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 
 import os
-import cPickle
+import os.path
 
 import listener
-import univention.debug
+import six
+from six.moves import cPickle as pickle
+import univention.debug as ud
 import univention.lib.s4
 import univention.config_registry
-import imp
 
 name = "well-known-sid-name-mapping"
 description = "map user and group names for well known sids"
@@ -64,7 +65,6 @@ def sidToName(sid):
 
 
 def checkAndSet(new, old):
-
 	obj = new or old
 	if not obj:
 		return
@@ -74,7 +74,7 @@ def checkAndSet(new, old):
 	for candidate in (new, old):
 		if not candidate:
 			continue
-		sambaSid = candidate.get("sambaSID", [None])[0]
+		sambaSid = candidate.get("sambaSID", [b''])[0].decode('ASCII')
 		if not sambaSid:
 			continue
 		default_name = sidToName(sambaSid)
@@ -87,24 +87,20 @@ def checkAndSet(new, old):
 
 	unset = False
 	if new:
-		if new.get("sambaSID", [None])[0] != well_known_sid:
+		if new.get("sambaSID", [b''])[0].decode('ASCII') != well_known_sid:
 			unset = True
 	else:
 		unset = True
 
 	ocs = obj.get('objectClass', [])
-	if 'sambaSamAccount' in ocs:
-		obj_name = obj.get('uid', [None])[0]
+	if b'sambaSamAccount' in ocs:
+		obj_name = obj.get('uid', [b''])[0].decode('UTF-8')
 		ucr_base = 'users/default'
-	elif 'sambaGroupMapping' in ocs:
-		obj_name = obj.get('cn', [None])[0]
+	elif b'sambaGroupMapping' in ocs:
+		obj_name = obj.get('cn', [b''])[0].decode('UTF-8')
 		ucr_base = 'groups/default'
 	else:
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.ERROR,
-			"%s: invalid object: %s" % (name, obj)
-		)
+		ud.debug(ud.LISTENER, ud.ERROR, "%s: invalid object: %s" % (name, obj))
 		return
 
 	if not obj_name:
@@ -119,11 +115,7 @@ def checkAndSet(new, old):
 		ucr.load()
 		ucr_value = ucr.get(unset_ucr_key)
 		if ucr_value:
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.PROCESS,
-				"%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value)
-			)
+			ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value))
 			listener.setuid(0)
 			try:
 				univention.config_registry.handler_unset([unset_ucr_key])
@@ -132,11 +124,7 @@ def checkAndSet(new, old):
 				listener.unsetuid()
 	else:
 		ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.PROCESS,
-			"%s: ucr set %s" % (name, ucr_key_value)
-		)
+		ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr set %s" % (name, ucr_key_value))
 		listener.setuid(0)
 		try:
 			univention.config_registry.handler_set([ucr_key_value])
@@ -146,86 +134,60 @@ def checkAndSet(new, old):
 
 
 def no_relevant_change(new, old):
-		assert new
-		assert old
+	assert new
+	assert old
 
-		ocs = new.get('objectClass', [])
+	ocs = new.get('objectClass', [])
 
-		if 'sambaSamAccount' in ocs:
-			name_attr = 'uid'
-		else:
-			name_attr = 'cn'
+	if b'sambaSamAccount' in ocs:
+		name_attr = 'uid'
+	else:
+		name_attr = 'cn'
 
-		old_name = old.get(name_attr, [])
-		new_name = new.get(name_attr, [])
-		old_sid = old.get("sambaSID", [])
-		new_sid = new.get("sambaSID", [])
+	old_name = old.get(name_attr, [])
+	new_name = new.get(name_attr, [])
+	old_sid = old.get("sambaSID", [])
+	new_sid = new.get("sambaSID", [])
 
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			"%s: mod (old=%r, oldSid=%s) to (new=%r, newSid=%s)" % (name, old_name, old_sid, new_name, new_sid)
-		)
+	ud.debug(ud.LISTENER, ud.INFO, "%s: mod (old=%r, oldSid=%s) to (new=%r, newSid=%s)" % (name, old_name, old_sid, new_name, new_sid))
 
-		return (set(old_name) == set(new_name)) and (set(old_sid) == set(new_sid))
+	return (set(old_name) == set(new_name)) and (set(old_sid) == set(new_sid))
 
 
 def handler(dn, new, old, command):
 	global modified_default_names
 
 	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			'%s: deactivated by listener/module/wellknownsidnamemapping' % (name,)
-		)
+		ud.debug(ud.LISTENER, ud.INFO, '%s: deactivated by listener/module/wellknownsidnamemapping' % (name,))
 		return
 
 	if command == 'r':  # modrdn phase I: store old object
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			'%s: modrdn phase I: %s' % (name, dn))
+		ud.debug(ud.LISTENER, ud.INFO, '%s: modrdn phase I: %s' % (name, dn))
 		listener.setuid(0)
 		try:
-			with open(FN_CACHE, 'w+') as f:
+			with open(FN_CACHE, 'wb+') as fd:
 				os.chmod(FN_CACHE, 0o600)
-				cPickle.dump(old, f)
-		except Exception as e:
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.ERROR,
-				'%s: failed to open/write pickle file: %s' % (name, str(e)))
+				pickle.dump(old, fd)
+		except Exception as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/write pickle file: %s' % (name, exc))
 		finally:
 			listener.unsetuid()
 		return
 
 	# check for modrdn phase II in case of an add
 	if new and os.path.exists(FN_CACHE) and not old:
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			'%s: modrdn phase II: %s' % (name, dn))
+		ud.debug(ud.LISTENER, ud.INFO, '%s: modrdn phase II: %s' % (name, dn))
 		listener.setuid(0)
 		try:
-			with open(FN_CACHE, 'r') as f:
-				pickled_object = cPickle.load(f)
-		except Exception as e:
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.ERROR,
-				'%s: failed to open/read pickle file: %s' % (name, str(e)))
+			with open(FN_CACHE, 'rb') as fd:
+				pickled_object = pickle.load(fd, encoding='bytes')
+		except Exception as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/read pickle file: %s' % (name, exc))
 		try:
 			os.remove(FN_CACHE)
-		except Exception as e:
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.ERROR,
-				'%s: cannot remove pickle file: %s' % (name, str(e)))
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.ERROR,
-				'%s: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: %s' % (name, dn))
+		except Exception as exc:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: cannot remove pickle file: %s' % (name, exc))
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: for safety reasons well-known-sid-name-mapping ignores change of LDAP object: %s' % (name, dn))
 			listener.unsetuid()
 			return
 		listener.unsetuid()
@@ -236,16 +198,12 @@ def handler(dn, new, old, command):
 		if pickled_object and new.get('entryUUID') == pickled_object.get('entryUUID'):
 			old = pickled_object
 		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (pickled_object.get('entryDN'), dn))
+			ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%r) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (pickled_object.get('entryDN'), dn))
 
 	# handle all the usual cases: add, modify, delete
 	if new:
 		if not old:  # add
-			univention.debug.debug(
-				univention.debug.LISTENER,
-				univention.debug.INFO,
-				"%s: new %s" % (name, new.get("sambaSID"))
-			)
+			ud.debug(ud.LISTENER, ud.INFO, "%s: new %r" % (name, new.get("sambaSID")))
 			changed_default_name = checkAndSet(new, old)
 			if changed_default_name:
 				modified_default_names.append(changed_default_name)
@@ -259,11 +217,7 @@ def handler(dn, new, old, command):
 				modified_default_names.append(changed_default_name)
 
 	elif old:  # delete
-		univention.debug.debug(
-			univention.debug.LISTENER,
-			univention.debug.INFO,
-			"%s: del %s" % (name, old.get("sambaSID"))
-		)
+		ud.debug(ud.LISTENER, ud.INFO, "%s: del %r" % (name, old.get("sambaSID")))
 		changed_default_name = checkAndSet(new, old)
 		if changed_default_name:
 			modified_default_names.append(changed_default_name)
@@ -281,10 +235,17 @@ def postrun():
 	listener.setuid(0)
 	try:
 		for filename in os.listdir(hook_dir):
-			filename_parts = filename.split('.')
-			if filename_parts[1] == 'py' and not filename.startswith('__'):
+			filename_parts = os.path.splitext(filename)
+			if filename_parts[1] == '.py' and not filename.startswith('__'):
 				hook_filepath = os.path.join(hook_dir, filename)
-				hook_module = imp.load_source(filename_parts[0], hook_filepath)
+				if six.PY2:
+					import imp
+					hook_module = imp.load_source(filename_parts[0], hook_filepath)
+				else:
+					import importlib.util
+					spec = importlib.util.spec_from_file_location(filename_parts[0], hook_filepath)
+					mapping = importlib.util.module_from_spec(spec)
+					spec.loader.exec_module(mapping)
 				if hasattr(hook_module, 'postrun'):
 					hook_module.postrun(modified_default_names)
 	finally:
