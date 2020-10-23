@@ -60,15 +60,15 @@ set_new_rid_in_s4 ()
 {
 	next_rid
 	new_sid="${domain_sid}-${rid}"
-	python2.7 -c "
+	python3 -c "
 import sys
 sys.path.append('$TESTLIBPATH')
 import s4connector
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
-sid=ndr_pack(security.dom_sid('$new_sid'))
-adconnection = s4connector.S4Connection ('connector')
-adconnection.set_attribute_with_provision_ctrl ('$AD_DN', 'objectSid', sid)
+sid = ndr_pack(security.dom_sid('$new_sid'))
+adconnection = s4connector.S4Connection('connector')
+adconnection.set_attribute_with_provision_ctrl('$AD_DN', 'objectSid', sid)
 "
 	ad_wait_for_synchronization; fail_bool 0 110
 }
