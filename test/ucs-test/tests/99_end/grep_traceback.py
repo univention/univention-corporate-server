@@ -155,14 +155,14 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^AttributeError: __exit__', ['with Server']),  # Bug #50583
 	(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs']),  # Bug #49881
 	(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python
-	('^insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
+	(r'^(univention\.admin\.uexceptions\.)?insufficientInformation: No superordinate object given', ['sync_to_ucs']),  # Bug #49880
 	("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
 	('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups']),  # Bug #46932, Bug #48943
 	(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups']),  # Bug #48943
 	("^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*", [r'license_uuid\.py']),  # 45787
 	("^KeyError: 'gidNumber'", ['_ldap_pre_remove']),  # Bug #51669
 	(r'^IOError: \[Errno 32\] Broken pipe', ['process_output']),  # Bug #32532
-	('^NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete']),  # Bug #43722 Bug #47343
+	(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete']),  # Bug #43722 Bug #47343
 	('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 	(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket", None),
 	(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None),  # Bug #51808
