@@ -180,7 +180,10 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			with open(FN_CACHE, 'rb') as fd:
-				pickled_object = pickle.load(fd, encoding='bytes')
+				if six.PY2:
+					pickled_object = pickle.load(fd)
+				else:
+					pickled_object = pickle.load(fd, encoding='bytes')
 		except Exception as exc:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: failed to open/read pickle file: %s' % (name, exc))
 		try:
