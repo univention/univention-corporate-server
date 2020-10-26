@@ -269,7 +269,7 @@ define([
 				}
 				var passiveLogin = this.passiveSingleSignOn({ timeout: 3000 });
 				return passiveLogin.then(lang.hitch(this, 'sessioninfo')).otherwise(lang.hitch(this, function() {
-					var saml = !passiveLogin.isCanceled();
+					var saml = !passiveLogin.isCanceled() || passiveLogin.isRejected();
 					if (!withoutRedirect) {
 						this.redirectToLogin(saml);
 					} else {
@@ -284,7 +284,7 @@ define([
 		},
 
 		redirectToLogin: function(saml) {
-			var target = saml ? '/univention/saml/' : '/univention/login/';
+			var target = saml ? '/univention/portal/saml/' : '/univention/login/';
 			window.location = target + '?' + ioQuery.objectToQuery({
 				'location': window.location.pathname + window.location.search + window.location.hash,
 				username: tools.status('username'),
@@ -304,7 +304,7 @@ define([
 		},
 
 		sessioninfo: function() {
-			return xhr.post('/univention/get/session-info', {
+			return xhr.post('/univention/portal/session-info', {
 				handleAs: 'json',
 				headers: {
 					'Accept-Language': i18nTools.defaultLang(),
@@ -434,7 +434,7 @@ define([
 					}
 				}
 			};
-			_iframe = iframe.create(iframeid, entities.encode(iframeid + '_onload()'), '/univention/saml/iframe/');
+			_iframe = iframe.create(iframeid, entities.encode(iframeid + '_onload()'), '/univention/portal/saml/iframe/');
 			if (args && args.timeout) {
 				setTimeout(function() {
 					deferred.cancel();
@@ -493,7 +493,7 @@ define([
 		logout: function() {
 			this._askLogout().then(lang.hitch(this, function() {
 				tools.checkSession(false);
-				window.location = '/univention/logout';
+				window.location = '/univention/portal/logout';
 			}));
 		},
 

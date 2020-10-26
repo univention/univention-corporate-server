@@ -6,3 +6,5 @@ univention-portal-server usr/bin/
 univention-portal-server.service /lib/systemd/system
 portal-server-password-rotate usr/lib/univention-server/server_password_change.d/
 univention-system-setup/cleanup-post.d/11_portal_restart usr/lib/univention-system-setup/cleanup-post.d
+sp.py usr/share/univention-portal-server/
+update_saml_metadata usr/share/univention-portal-server/

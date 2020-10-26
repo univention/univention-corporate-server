@@ -191,6 +191,25 @@ if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 	cp /usr/share/univention-portal/custom.css.example /usr/share/univention-portal/custom.css
 fi
 
+eval "$(ucr shell)"
+# FIXME s/umc/portal/g
+if [ -n "$umc_saml_sp_server" ]; then
+	fqdn="$umc_saml_sp_server"
+else
+	fqdn="$hostname.$domainname"
+fi
+
+udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set Identifier="https://$fqdn/univention/portal/saml/metadata" \
+	--set AssertionConsumerService="https://$fqdn/univention/portal/saml/" \
+	--set serviceProviderOrganizationName="Univention Portal $fqdn" \
+	--set isActivated=TRUE \
+	--set simplesamlAttributes=TRUE \
+	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
+	--append LDAPattributes=uid || die
+
+/usr/share/univention-portal-server/update_saml_metadata "$@" || die
+
 joinscript_save_current_version
 
 exit 0
