@@ -29,16 +29,20 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-__package__ = ''  # workaround for PEP 366
+
+from __future__ import absolute_import
+
 import listener
 import os
 import time
-import univention.debug as ud
 from subprocess import call
+
+import ldap.dn
+import univention.debug as ud
 
 hostname = listener.configRegistry['hostname']
 domainname = listener.configRegistry['domainname']
-base_domain = listener.configRegistry['ldap/base'].replace('dc=', '').replace(',', '.')
+base_domain = '.'.join(x[0][1] for x in ldap.dn.str2dn(listener.configRegistry['ldap/base']))
 realm = listener.configRegistry['kerberos/realm']
 server_role = listener.configRegistry['server/role']
 ldap_master = listener.configRegistry['ldap/master']
@@ -112,9 +116,9 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			if old:
-				call(['ktutil', 'remove', '-p', old['krb5PrincipalName'][0]])
+				call(['ktutil', 'remove', '-p', old['krb5PrincipalName'][0].decode('UTF-8')])
 			if new:
-				call(['kadmin', '-l', 'ext', new['krb5PrincipalName'][0]])
+				call(['kadmin', '-l', 'ext', new['krb5PrincipalName'][0].decode('UTF-8')])
 		finally:
 			listener.unsetuid()
 

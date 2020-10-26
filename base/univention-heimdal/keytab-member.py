@@ -29,7 +29,9 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-__package__ = ''  # workaround for PEP 366
+
+from __future__ import absolute_import
+
 import listener
 import os
 import pwd
@@ -59,7 +61,7 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			if old:
-				cn = old['cn'][0]
+				cn = old['cn'][0].decode('UTF-8')
 				ud.debug(ud.LISTENER, ud.PROCESS, 'Purging krb5.keytab of %s' % (cn,))
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				try:
@@ -67,11 +69,11 @@ def handler(dn, new, old):
 				except EnvironmentError:
 					pass
 			if new:
-				cn = new['cn'][0]
+				cn = new['cn'][0].decode('UTF-8')
 				ud.debug(ud.LISTENER, ud.PROCESS, 'Generating krb5.keytab for %s' % (cn,))
 				ktab = '/var/lib/univention-heimdal/%s' % (cn,)
 				# FIXME: otherwise the keytab entry is duplicated
-				call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0]])
+				call(['kadmin', '-l', 'ext', '--keytab=%s' % (ktab,), new['krb5PrincipalName'][0].decode('UTF-8')])
 				try:
 					userID = pwd.getpwnam('%s$' % cn)[2]
 					os.chown(ktab, userID, 0)
