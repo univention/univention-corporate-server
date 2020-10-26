@@ -30,10 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import univention.config_registry
-import os
 import re
 import univention.debug
 
@@ -56,11 +56,11 @@ def handler(dn, new, old):
 
 	# remove old add new
 	if old.get('cn'):
-		hosteddomains.discard(old.get('cn')[0])
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: removed %s" % old.get('cn')[0])
+		hosteddomains.discard(old['cn'][0].decode('UTF-8'))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: removed %r" % old['cn'][0])
 	if new.get('cn'):
-		hosteddomains.add(new.get('cn')[0])
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: added %s" % new.get('cn')[0])
+		hosteddomains.add(new['cn'][0].decode('UTF-8'))
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: added %r" % new['cn'][0])
 
 	# if something changed then set UCR variable
 	if old_hosteddomains != hosteddomains:
