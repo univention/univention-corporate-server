@@ -30,6 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+
+import listener
+from univention.config_registry import ConfigRegistry
+import univention.debug as ud
+
+
 name = 'dhcp'
 description = 'Restart the dhcp service if a dhcp subnet or a policy was changed'
 filter = '''(|
@@ -48,11 +55,6 @@ filter = '''(|
 	(objectClass=domain)
 	)'''.replace('\n', '').replace('\t', '')
 attributes = []
-
-__package__ = ''  # workaround for PEP 366
-import listener
-from univention.config_registry import ConfigRegistry
-import univention.debug as ud
 
 
 def handler(dn, new, old):
