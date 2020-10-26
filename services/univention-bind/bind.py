@@ -45,7 +45,7 @@ import time
 import errno
 import signal
 import grp
-import urllib
+from six.moves.urllib_parse import quote
 
 name = 'bind'
 description = 'Update BIND zones'
@@ -152,14 +152,14 @@ def handler(dn, new, old):
 	try:
 		if new and not old:
 			# Add
-			_new_zone(listener.configRegistry, new['zoneName'][0], dn)
+			_new_zone(listener.configRegistry, new['zoneName'][0].decode('UTF-8'), dn)
 		elif old and not new:
 			# Remove
-			_remove_zone(old['zoneName'][0])
+			_remove_zone(old['zoneName'][0].decode('UTF-8'))
 		if new.get('zoneName'):
 			# Change
 			# Create an empty file to trigger the postrun()
-			zonename = new['zoneName'][0]
+			zonename = new['zoneName'][0].decode('UTF-8')
 			zonename = validate_zonename(zonename)
 			zonefile = safe_path_join(PROXY_CACHE_DIR, "%s.zone" % (zonename,))
 			proxy_cache = open(zonefile, 'w')
@@ -178,7 +178,7 @@ def _ldap_auth_string(ucr):
 
 	pwdfile = ucr.get('bind/bindpw', '/etc/machine.secret')
 	with open(pwdfile) as fd:
-		return '????!bindname=%s,!x-bindpw=%s,x-tls' % (urllib.quote(account), urllib.quote(fd.readline().rstrip()))
+		return '????!bindname=%s,!x-bindpw=%s,x-tls' % (quote(account), quote(fd.readline().rstrip()))
 
 
 def _new_zone(ucr, zonename, dn):
