@@ -941,7 +941,7 @@ define([
 
 		showLoginInIframe: function(saml) {
 			if (!this._iframeMap.$__login__$) {
-				var target = saml ? '/univention/saml/' : '/univention/login/';
+				var target = saml ? '/univention/portal/saml/' : '/univention/login/';
 				var url = target + '?' + ioQuery.objectToQuery({
 					'location': '/univention/portal/loggedin/',
 					username: tools.status('username'),

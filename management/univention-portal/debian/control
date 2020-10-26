@@ -15,7 +15,6 @@ Package: univention-portal
 Architecture: all
 Depends:
  netcat-openbsd,
- python-requests,
  python-tornado,
  python-univention-appcenter,
  python-univention-directory-manager,

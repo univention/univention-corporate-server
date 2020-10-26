@@ -29,12 +29,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import re
 import json
 import grp
 import sys
 import os
 import os.path
 import shutil
+import traceback
 from imghdr import what
 from StringIO import StringIO
 from copy import deepcopy
@@ -42,16 +44,46 @@ import tempfile
 import logging
 import signal
 from urllib import quote
+import time
+import zlib
+import base64
+import hashlib
+import uuid
+import datetime
+import functools
+import six
+from cherrypy.lib.httputil import valid_status
+from six.moves.http_client import UNAUTHORIZED
+from six.moves.urllib_parse import urlparse, urlunsplit
 
-import requests
 import tornado.ioloop
-import tornado.web
+import tornado.log
+from tornado.web import HTTPError, RequestHandler, Application
 import ldap
 
+from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
+from saml2.client import Saml2Client
+from saml2.metadata import create_metadata_string
+from saml2.response import VerificationError, UnsolicitedResponse, StatusError
+from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
+from saml2.sigver import MissingKey, SignatureError
+
+from univention.lib.i18n import NullTranslation
+from univention.management.console.log import CORE
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 from univention.udm.modules.portal import PortalsPortalEntryObject, PortalsPortalFolderObject
 from univention.config_registry.handler import run_filter
+
+try:
+	from html import escape, unescape
+except ImportError:  # Python 2
+	import HTMLParser
+	html_parser = HTMLParser.HTMLParser()
+	unescape = html_parser.unescape
+	from cgi import escape
+
+_ = NullTranslation('univention-portal').translate
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -60,6 +92,8 @@ LOG_FILE = '/var/log/univention/portal.log'
 _umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
 _umc_port = int(ucr.get('umc/http/port', 8090))
 UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
+
+_session_timeout = int(ucr.get('umc/http/session/timeout', 300))
 
 
 class ShortNameFormatter(logging.Formatter):
@@ -73,6 +107,12 @@ class ShortNameFormatter(logging.Formatter):
 
 
 def setup_logger():
+	channel = logging.StreamHandler()
+	channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+	logger = logging.getLogger()
+	logger.setLevel(logging.INFO)
+	logger.addHandler(channel)
+
 	logger = logging.getLogger('univention.portal')
 	log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: ' \
 		'%(message)s'
@@ -102,6 +142,387 @@ def flatten(list_of_lists):
 		else:
 			ret.append(sublist)
 	return ret
+
+
+traceback_pattern = re.compile(r'(Traceback.*most recent call|File.*line.*in.*\d)')
+
+
+class SamlError(HTTPError):
+
+	def __init__(self, _=_):
+		self._ = _
+
+	def error(func=None, status=400):  # noqa: N805
+		def _decorator(func):
+			def _decorated(self, *args, **kwargs):
+				message = func(self, *args, **kwargs) or ()
+				super(SamlError, self).__init__(status, message)
+				if "Passive authentication not supported." not in message:
+					# "Passive authentication not supported." just means an active login is required. That is expected and needs no logging. It still needs to be raised though.
+					CORE.warn('SamlError: %s %s' % (status, message))
+				return self
+			return _decorated
+		if func is None:
+			return _decorator
+		return _decorator(func)
+
+	def from_exception(self, etype, exc, etraceback):
+		if isinstance(exc, UnknownPrincipal):
+			return self.unknown_principal(exc)
+		if isinstance(exc, UnsupportedBinding):
+			return self.unsupported_binding(exc)
+		if isinstance(exc, VerificationError):
+			return self.verification_error(exc)
+		if isinstance(exc, UnsolicitedResponse):
+			return self.unsolicited_response(exc)
+		if isinstance(exc, StatusError):
+			return self.status_error(exc)
+		if isinstance(exc, MissingKey):
+			return self.missing_key(exc)
+		if isinstance(exc, SignatureError):
+			return self.signature_error(exc)
+		six.reraise(etype, exc, etraceback)
+
+	@error
+	def unknown_principal(self, exc):
+		return self._('The principal is unknown: %s') % (exc,)
+
+	@error
+	def unsupported_binding(self, exc):
+		return self._('The requested SAML binding is not known: %s') % (exc,)
+
+	@error
+	def unknown_logout_binding(self, binding):
+		return self._('The logout binding is not known.')
+
+	@error
+	def verification_error(self, exc):
+		return self._('The SAML response could not be verified: %s') % (exc,)
+
+	@error
+	def unsolicited_response(self, exc):
+		return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention/portal/saml/. Error message: %s') % (exc,)
+
+	@error
+	def status_error(self, exc):
+		return self._('The identity provider reported a status error: %s') % (exc,)
+
+	@error(status=500)
+	def missing_key(self, exc):
+		return self._('The issuer %r is now known to the SAML service provider. This is probably a misconfiguration and might be resolved by restarting the univention-management-console-web-server.') % (str(exc),)
+
+	@error
+	def signature_error(self, exc):
+		return self._('The SAML response contained a invalid signature: %s') % (exc,)
+
+	@error
+	def unparsed_saml_response(self):
+		return self._("The SAML message is invalid for this service provider.")
+
+	@error(status=500)
+	def no_identity_provider(self):
+		return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
+
+	@error  # TODO: multiple choices redirection status
+	def multiple_identity_provider(self, idps, idp_query_param):
+		return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
+
+
+class User(object):
+
+	def __init__(self, sessionid, username, password, saml=None, data=None):
+		self.sessionid = sessionid
+		self.username = username
+		self.password = password
+		self.saml = saml
+		self._time_remaining = _session_timeout
+		self.reset_timeout()
+		self.data = data or {}
+
+	def reset_timeout(self):
+		self._time_remaining = self.session_validity
+
+	@property
+	def session_validity(self):
+		if self.saml is not None:
+			return self.time_remaining
+		return _session_timeout
+
+	@property
+	def time_remaining(self):
+		remaining = []
+		if self.saml is not None:
+			remaining.append(self.saml.time_remaining)
+		remaining.append(self._time_remaining)
+		try:
+			return min(remaining)
+		except ValueError:  # no SAML, no client
+			return 0
+
+	def is_saml_user(self):
+		# self.saml indicates that it was originally a
+		# saml user. but it may have upgraded and got a
+		# real password. the saml user object is still there,
+		# though
+		return self.password is None and self.saml
+
+	def get_umc_password(self):
+		if self.is_saml_user():
+			return self.saml.message
+		else:
+			return self.password
+
+	def get_umc_auth_type(self):
+		if self.is_saml_user():
+			return "SAML"
+		else:
+			return None
+
+	def timed_out(self):
+		return self.saml.timed_out()
+
+	def __repr__(self):
+		return '<User(%s, %s, %s)>' % (self.username, self.sessionid, self.saml is not None)
+
+
+class SAMLUser(object):
+
+	def __init__(self, response, message):
+		self.response = response
+		self.message = message
+		self.data = response.ava
+		self.username = u''.join(self.data['uid'])
+
+	@property
+	def time_remaining(self):
+		if self.response.not_on_or_after == 0:
+			return 0
+		return int(self.response.not_on_or_after - time.time())
+
+	def timed_out(self):
+		if self.response.not_on_or_after == 0:
+			return False
+		return self.time_remaining < 0
+
+
+class Resource(RequestHandler):
+
+	def prepare(self):
+		self._proxy_uri()
+
+	def _proxy_uri(self):
+		# if self.request.headers.get('X-UMC-HTTPS') == 'on':
+		self.request.protocol = 'https'
+		# self.request.uri = '/univention%s' % (self.request.uri,)
+
+	def get_ip_address(self):
+		"""get the IP address of client by last entry (from apache) in X-FORWARDED-FOR header"""
+		return self.request.headers.get('X-Forwarded-For', self.request.remote_ip).rsplit(', ', 1).pop()
+
+	def sessionidhash(self):
+		session = u'%s%s%s%s' % (self.request.headers.get('Authorization', ''), self.request.headers.get('Accept-Language', ''), self.get_ip_address(), self.sessionidhash.salt)
+		return hashlib.sha256(session.encode('UTF-8')).hexdigest()[:36]
+
+	sessionidhash.salt = rndstr()
+
+	def write_error(self, status_code, exc_info=None, **kwargs):
+		if exc_info and isinstance(exc_info[1], HTTPError):
+			exc = exc_info[1]
+			_traceback = None
+			if self.settings.get("serve_traceback") and isinstance(exc.error, dict) and exc.error.get('traceback'):
+				_traceback = '%s\nRequest: %s\n\n%s' % (exc.log_message, exc.error.get('command'), exc.error.get('traceback'))
+				_traceback = traceback.strip()
+			content = self.default_error_page(exc.status_code, exc.log_message, _traceback, getattr(exc, 'body', None))
+			self.finish(content.encode('utf-8'))
+			return
+
+		if exc_info:
+			kwargs['exc_info'] = exc_info
+		super(Resource, self).write_error(status_code, **kwargs)
+
+	def default_error_page(self, status, message, traceback, result=None):
+		if message and not traceback and traceback_pattern.search(message):
+			index = message.find('Traceback') if 'Traceback' in message else message.find('File')
+			message, traceback = message[:index].strip(), message[index:].strip()
+		if traceback:
+			CORE.error('%s' % (traceback,))
+		if ucr.is_false('umc/http/show_tracebacks', False):
+			traceback = None
+
+		accept_json, accept_html = 0, 0
+		for mimetype, qvalue in self.check_acceptable('Accept', 'text/html'):
+			if mimetype in ('text/*', 'text/html'):
+				accept_html = max(accept_html, qvalue)
+			if mimetype in ('application/*', 'application/json'):
+				accept_json = max(accept_json, qvalue)
+		if accept_json < accept_html:
+			return self.default_error_page_html(status, message, traceback, result)
+		page = self.default_error_page_json(status, message, traceback, result)
+		if self.request.headers.get('X-Iframe-Response'):
+			self.set_header('Content-Type', 'text/html')
+			return '<html><body><textarea>%s</textarea></body></html>' % (escape(page, False),)
+		return page
+
+	def default_error_page_html(self, status, message, traceback, result=None):
+		content = self.default_error_page_json(status, message, traceback, result)
+		try:
+			with open('/usr/share/univention-management-console-frontend/error.html', 'r') as fd:
+				content = fd.read().replace('%ERROR%', json.dumps(escape(content, True)))
+			self.set_header('Content-Type', 'text/html; charset=UTF-8')
+		except (OSError, IOError):
+			pass
+		return content
+
+	def default_error_page_json(self, status, message, traceback, result=None):
+		""" The default error page for UMCP responses """
+		status, _, description = valid_status(status)
+		if status == 401 and message == description:
+			message = ''
+		location = self.request.full_url().rsplit('/', 1)[0]
+		if status == 404:
+			traceback = None
+		response = {
+			'status': status,
+			'message': message,
+			'traceback': unescape(traceback) if traceback else traceback,
+			'location': location,
+		}
+		if result:
+			response['result'] = result
+		self.set_header('Content-Type', 'application/json')
+		return json.dumps(response)
+
+	def check_acceptable(self, header, default=''):
+		accept = self.request.headers.get(header, default).split(',')
+		langs = []
+		for language in accept:
+			if not language.strip():
+				continue
+			score = 1.0
+			parts = language.strip().split(";")
+			for part in (x for x in parts[1:] if x.strip().startswith("q=")):
+				try:
+					score = float(part.strip()[2:])
+					break
+				except (ValueError, TypeError):
+					raise
+					score = 0.0
+			langs.append((parts[0].strip(), score))
+		langs.sort(key=lambda pair: pair[1], reverse=True)
+		return langs
+
+	sessions = {}
+
+	@property
+	def name(self):
+		"""returns class name"""
+		return self.__class__.__name__
+
+	def suffixed_cookie_name(self, name):
+		host, _, port = self.request.headers.get('Host', '').partition(':')
+		if port:
+			try:
+				port = '-%d' % (int(port),)
+			except ValueError:
+				port = ''
+		return '%s%s' % (name, port)
+
+	def create_sessionid(self, random=True):
+		if self.get_session():
+			# if the user is already authenticated at the UMC-Server
+			# we must not change the session ID cookie as this might cause
+			# race conditions in the frontend during login, especially when logged in via SAML
+			return self.get_session_id()
+		user = self.get_user()
+		if user:
+			# If the user was already authenticated at the UMC-Server
+			# and the connection was lost (e.g. due to a module timeout)
+			# we must not change the session ID cookie, as there might be multiple concurrent
+			# requests from the same client during a new initialization of the connection to the UMC-Server.
+			# They must cause that the session has one singleton connection!
+			return user.sessionid
+		if random:
+			return str(uuid.uuid4())
+		return self.sessionidhash()
+
+	def get_session_id(self):
+		"""get the current session ID from cookie (or basic auth hash)."""
+		# caution: use this function wisely: do not create a new session with this ID!
+		# because it is an arbitrary value coming from the Client!
+		return self.get_cookie('UMCPortalSessionId') or self.sessionidhash()
+
+	def get_session(self):
+		return self.sessions.get(self.get_session_id())
+
+	def check_saml_session_validity(self):
+		user = self.get_user()
+		if user and user.saml is not None and user.time_remaining < 1:
+			raise HTTPError(UNAUTHORIZED)
+
+	def set_cookies(self, *cookies, **kwargs):
+		# TODO: use expiration from session timeout?
+		# set the cookie once during successful authentication
+		# force expiration of cookie in 5 years from now on...
+		# IE does not support max-age
+		expires = kwargs.get('expires') or (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
+		for name, value in cookies:
+			name = self.suffixed_cookie_name(name)
+			self.set_cookie(name, value, expires=expires, path='/univention/', version=1)
+
+	def get_cookie(self, name):
+		cookie = self.request.cookies.get
+		morsel = cookie(self.suffixed_cookie_name(name)) or cookie(name)
+		if morsel:
+			return morsel.value
+
+	def set_session(self, sessionid, username, password=None, saml=None, **kwargs):
+		olduser = self.get_user()
+
+		user = User(sessionid, username, password, saml or olduser and olduser.saml, kwargs)
+		self._session_timeout_timer(user)
+
+		get_logger('session').info('Setting sessionid=%r to %r', sessionid, user)
+		self.sessions[sessionid] = user
+		self.set_cookies(('UMCPortalSessionId', sessionid), ('UMCUsername', username))
+		return user
+
+	def expire_session(self):
+		sessionid = self.get_session_id()
+		if sessionid:
+			self.sessions.pop(sessionid, None)
+			self.set_cookies(('UMCPortalSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
+
+	def get_user(self):
+		value = self.get_session_id()
+		if not value or value not in self.sessions:
+			return
+		user = self.sessions[value]
+		if user.time_remaining <= 0:
+			return
+		return user
+
+	def _session_timeout_timer(self, user):
+		"""In order to avoid problems when the system time is changed (e.g.,
+		via rdate), we register a timer event that counts down the session
+		timeout second-wise."""
+
+		# count down the remaining time
+		user._time_remaining -= 1
+
+		session = self.sessions.get(user.sessionid)
+		if user._time_remaining <= 0 and (not session or not session._requestid2response_queue):
+			get_logger('server').info('session timed out')
+			self.sessions.pop(user.sessionid, None)
+			return
+
+		return  # FIXME
+		# count down the timer second-wise (in order to avoid problems when
+		# changing the system time, e.g. via rdate)
+		notifier.timer_add(1000, lambda: self._session_timeout_timer(user))
+
+
+class ReloadExtendedAttributes(Exception):
+	pass
 
 
 class LDAPCache(object):
@@ -406,7 +827,8 @@ class LDAPCache(object):
 			return self._write_image(entry.props.name, img.raw, 'entries')
 
 
-class JsonHandler(tornado.web.RequestHandler):
+class JsonHandler(Resource):
+
 	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
 		if username in group['usernames']:
 			return True
@@ -506,31 +928,13 @@ class JsonHandler(tornado.web.RequestHandler):
 		entries = cache.get('entries')
 		return {entry_dn: entries[entry_dn] for entry_dn in visible_content['entry_dns']}
 
-	def _ask_umc(self, session):
-		try:
-			response = requests.get(UMC_SESSION_URL, cookies={'UMCSessionId': session})
-			data = response.json()
-			username = data['result']['username']
-		except requests.ConnectionError as exc:
-			get_logger('user').error('connection failed: %s' % exc)
-		except ValueError:
-			get_logger('user').error('malformed answer!')
-		except KeyError:
-			get_logger('user').warn('session unknown!')
-		else:
-			return username
-
-	def _get_username(self, session):
-		if session is None:
+	def _get_username(self):
+		user = self.get_user()
+		if user is None:
 			get_logger('user').debug('no user given')
-			return None
-		get_logger('user').debug('searching user for %s' % session)
-		username = self._ask_umc(session)
-		if username is None:
-			get_logger('user').debug('no user found')
-		else:
-			get_logger('user').debug('found %s' % username)
-			return username.lower()
+			return
+		get_logger('user').debug('found %s' % user.username)
+		return user.username.lower()
 
 	def write_error(self, status_code, **kwargs):
 		if 'exc_info' in kwargs:
@@ -573,8 +977,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		}
 
 	def get(self):
-		session = self.get_cookie('UMCSessionId')
-		username = self._get_username(session)
+		username = self._get_username()
 		admin_mode = False
 		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
 			get_logger('admin').info('Admin mode requested')
@@ -598,6 +1001,334 @@ class JsonHandler(tornado.web.RequestHandler):
 		self.write(answer)
 
 
+class SAMLBase(Resource):
+
+	SP = None
+	configfile = '/usr/share/univention-portal-server/sp.py'
+
+
+class SamlMetadata(SAMLBase):
+
+	def get(self):
+		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
+		self.set_header('Content-Type', 'application/xml')
+		self.finish(metadata)
+
+
+class SamlACS(SAMLBase):
+
+	idp_query_param = "IdpQuery"
+	bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
+
+	outstanding_queries = {}
+	relay_state = {}
+	_acs_callbacks = {}
+
+	@property
+	def sp(self):
+		if not self.SP and not self.reload():
+			raise HTTPError(503, 'Single sign on is not available due to misconfiguration. See logfiles.')
+		return self.SP
+
+	@classmethod
+	def reload(cls):
+		CORE.info('Reloading SAML service provider configuration')
+		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
+		try:
+			cls.SP = Saml2Client(config_file=cls.configfile)
+			return True
+		except Exception:
+			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
+		return False
+
+	def get(self, *args, **kwargs):
+		binding, message, relay_state = self._get_saml_message()
+
+		if message is None:
+			return self.do_single_sign_on(relay_state=rndstr())
+
+		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)
+		acs(binding, message, relay_state)
+
+	def post(self):
+		return self.get()
+
+	def attribute_consuming_service(self, binding, message, relay_state):
+		response = self.acs(message, binding)
+		saml = SAMLUser(response, message)
+		self.set_session(self.create_sessionid(), saml.username, saml=saml, relay_state=self.relay_state.get(relay_state))
+		location = self.relay_state.get(relay_state, {}).get('referer') or '/univention/portal/'
+		self.redirect(location, status=303)
+
+	def attribute_consuming_service_iframe(self, binding, message, relay_state):
+		self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
+		self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
+		response = self.acs(message, binding)
+		saml = SAMLUser(response, message)
+		sessionid = self.create_sessionid()
+		auth_response = json.dumps({"result": {'username': saml.username}}).encode('ASCII')
+		self.set_session(sessionid, saml.username, saml=saml)
+		self.set_header('Content-Type', 'text/html')
+		try:
+			self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (auth_response,))
+		except RuntimeError:
+			print(''.join(traceback.format_stack()))
+			raise
+			return
+			import pdb; pdb.post_mortem()
+			raise
+
+	def _logout_success(self):
+		user = self.get_user()
+		if user:
+			user.saml = None
+		self.redirect('/univention/portal/logout', status=303)
+
+	def _get_saml_message(self):
+		"""Get the SAML message and corresponding binding from the HTTP request"""
+		if self.request.method not in ('GET', 'POST'):
+			self.set_header('Allow', 'GET, HEAD, POST')
+			raise HTTPError(405)
+
+		if self.request.method == 'GET':
+			binding = BINDING_HTTP_REDIRECT
+			args = self.request.query_arguments
+		elif self.request.method == "POST":
+			binding = BINDING_HTTP_POST
+			args = self.request.body_arguments
+
+		relay_state = args.get('RelayState', [''])[0]
+		try:
+			message = args['SAMLResponse'][0]
+		except KeyError:
+			try:
+				message = args['SAMLRequest'][0]
+			except KeyError:
+				try:
+					message = args['SAMLart'][0]
+				except KeyError:
+					return None, None, None
+				message = self.sp.artifact2message(message, 'spsso')
+				binding = BINDING_HTTP_ARTIFACT
+
+		return binding, message, relay_state
+
+	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
+		try:
+			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
+		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
+			raise SamlError().from_exception(*sys.exc_info())
+		if response is None:
+			raise SamlError().unparsed_saml_response()
+		return response
+
+	def do_single_sign_on(self, **kwargs):
+		binding, http_args = self.create_authn_request(**kwargs)
+		self.http_response(binding, http_args)
+
+	def create_authn_request(self, **kwargs):
+		"""Creates the SAML <AuthnRequest> request and returns the SAML binding and HTTP response.
+
+			Returns (binding, http-arguments)
+		"""
+		identity_provider_entity_id = self.select_identity_provider()
+		binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
+
+		relay_state = kwargs.pop('relay_state', None)
+
+		reply_binding, service_provider_url = self.select_service_provider()
+		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
+
+		if relay_state:
+			# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+			location = urlparse(self.get_query_argument('location', ''))
+			if location.path.startswith('//'):
+				location = urlparse('')
+			location = urlunsplit(('', '', location.path, location.query, location.fragment))
+			self.relay_state[relay_state] = {
+				'uri': self.request.full_url(),
+				'referer': location,
+			}
+
+		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
+		self.outstanding_queries[sid] = service_provider_url  # self.request.full_url()  # TODO: shouldn't this contain service_provider_url?
+		return binding, http_args
+
+	def select_identity_provider(self):
+		"""Select an identity provider based on the available identity providers.
+			If multiple IDP's are set up the client might have specified one in the query string.
+			Otherwise an error is raised where the user can choose one.
+
+			Returns the EntityID of the IDP.
+		"""
+		idps = self.sp.metadata.with_descriptor("idpsso")
+		if not idps and self.reload():
+			idps = self.sp.metadata.with_descriptor("idpsso")
+		if self.get_query_argument(self.idp_query_param, None) in idps:
+			return self.get_query_argument(self.idp_query_param)
+		if len(idps) == 1:
+			return list(idps.keys())[0]
+		if not idps:
+			raise SamlError().no_identity_provider()
+		raise SamlError().multiple_identity_provider(list(idps.keys()), self.idp_query_param)
+
+	def get_identity_provider_destination(self, entity_id):
+		"""Get the destination (with SAML binding) of the specified entity_id.
+
+			Returns (binding, destination-URI)
+		"""
+		return self.sp.pick_binding("single_sign_on_service", self.bindings, "idpsso", entity_id=entity_id)
+
+	def select_service_provider(self):
+		"""Select the ACS-URI and binding of this service provider based on the request uri.
+			Tries to preserve the current scheme (HTTP/HTTPS) and netloc (host/IP) but falls back to FQDN if it is not set up.
+
+			Returns (binding, service-provider-URI)
+		"""
+		acs = self.sp.config.getattr("endpoints", "sp")["assertion_consumer_service"]
+		service_url, reply_binding = acs[0]
+		netloc = False
+		p2 = urlparse(self.request.full_url())
+		for _url, _binding in acs:
+			p1 = urlparse(_url)
+			if p1.scheme == p2.scheme and p1.netloc == p2.netloc:
+				netloc = True
+				service_url, reply_binding = _url, _binding
+				if p1.path == p2.path:
+					break
+			elif not netloc and p1.netloc == p2.netloc:
+				service_url, reply_binding = _url, _binding
+		CORE.info('SAML: picked %r for %r with binding %r' % (service_url, self.request.full_url(), reply_binding))
+		return reply_binding, service_url
+
+	def http_response(self, binding, http_args):
+		"""Converts the HTTP arguments from pysaml2 into the tornado response."""
+		body = u''.join(http_args["data"])
+		for key, value in http_args["headers"]:
+			self.set_header(key, value)
+
+		if binding in (BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT):
+			self.set_status(303 if self.request.supports_http_1_1() and self.request.method == 'POST' else 302)
+			if not body:
+				self.redirect(self._headers['Location'], status=self.get_status())
+				return
+
+		self.finish(body.encode('UTF-8'))
+
+
+class SamlSingleLogout(SamlACS):
+
+	def get(self, *args, **kwargs):  # single logout service
+		binding, message, relay_state = self._get_saml_message()
+		if message is None:
+			raise HTTPError(400, 'The HTTP request is missing required SAML parameter.')
+
+		try:
+			is_logout_request = b'LogoutRequest' in zlib.decompress(base64.b64decode(message.encode('UTF-8')), -15).split(b'>', 1)[0]
+		except Exception:
+			CORE.error(traceback.format_exc())
+			is_logout_request = False
+
+		if is_logout_request:
+			user = self.get_user()
+			if not user or user.saml is None:
+				# The user is either already logged out or has no cookie because he signed in via IP and gets redirected to the FQDN
+				name_id = None
+			else:
+				name_id = user.saml.response.name_id
+				user.saml = None
+			http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state)
+			self.http_response(binding, http_args)
+			return
+		else:
+			response = self.sp.parse_logout_request_response(message, binding)
+			self.sp.handle_logout_response(response)
+		self._logout_success()
+
+
+class SamlLogout(SamlACS):
+
+	def get(self):
+		user = self.get_user()
+
+		if user is None or user.saml is None:
+			return self._logout_success()
+
+		# What if more than one
+		try:
+			data = self.sp.global_logout(user.saml.response.name_id)
+		except KeyError:
+			try:
+				tb = sys.exc_info()[2]
+				while tb.tb_next:
+					tb = tb.tb_next
+				if tb.tb_frame.f_code.co_name != 'entities':
+					raise
+			finally:
+				tb = None
+			# already logged out or UMC-Webserver restart
+			user.saml = None
+			data = {}
+
+		for entity_id, logout_info in data.items():
+			if not isinstance(logout_info, tuple):
+				continue  # result from logout, should be OK
+
+			binding, http_args = logout_info
+			if binding not in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT):
+				raise SamlError().unknown_logout_binding(binding)
+
+			self.http_response(binding, http_args)
+			return
+		self._logout_success()
+
+
+class SamlIframeACS(SamlACS):
+
+	def get(self):
+		self.request.uri = self.request.uri.replace('/iframe', '')
+		relay_state = rndstr()
+		self._acs_callbacks[relay_state] = self.attribute_consuming_service_iframe
+		self.do_single_sign_on(is_passive='true', relay_state=relay_state)
+
+
+def json_response(func):
+	@functools.wraps(func)
+	def decorator(self):
+		result = func(self)
+		self.set_header('Content-Type', 'application/json')
+		self.finish(json.dumps(result).encode('ASCII'))
+	return decorator
+
+
+class Logout(Resource):
+
+	def get(self, **kwargs):
+		user = self.get_user()
+		if user and user.saml is not None:
+			return self.redirect('/univention/portal/saml/logout', status=303)
+		self.expire_session()
+		self.redirect(ucr.get('umc/logout/location') or '/univention/', status=303)
+
+
+class SessionInfo(Resource):
+
+	@json_response
+	def get(self):
+		info = {}
+		user = self.get_user()
+		if user is None:
+			raise HTTPError(UNAUTHORIZED)
+		info['username'] = user.username
+		info['auth_type'] = user.saml and 'SAML'
+		info['remaining'] = user.time_remaining
+		info['validity'] = user.session_validity
+		return {"status": 200, "result": info, "message": ""}
+
+	def post(self):
+		return self.get()
+
+
 cache = LDAPCache()
 
 
@@ -607,8 +1338,15 @@ def signal_handler_reload(signo, frame):
 
 
 def make_app():
-	return tornado.web.Application([
-		(r'/', JsonHandler),
+	return Application([
+		(r'^/univention/portal/portal.json', JsonHandler),
+		(r'^/univention/portal/saml/?', SamlACS),
+		(r'^/univention/portal/saml/metadata/?', SamlMetadata),
+		(r'^/univention/portal/saml/slo/?', SamlSingleLogout),
+		(r'^/univention/portal/saml/logout/?', SamlLogout),
+		(r'^/univention/portal/saml/iframe/?', SamlIframeACS),
+		(r'^/univention/portal/session-info/?', SessionInfo),
+		(r'^/univention/portal/logout/?', Logout),
 	])
 
 
