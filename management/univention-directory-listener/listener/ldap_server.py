@@ -55,16 +55,16 @@ def handler(dn, new, old):
 	try:
 		if 'univentionServerRole' in new:
 			try:
-				domain = new['associatedDomain'][0]
+				domain = new['associatedDomain'][0].decode('UTF-8')
 			except LookupError:
 				domain = ucr['domainname']
-			add_ldap_server(ucr, new['cn'][0], domain, new['univentionServerRole'][0])
+			add_ldap_server(ucr, new['cn'][0].decode('UTF-8'), domain, new['univentionServerRole'][0].decode('UTF-8'))
 		elif 'univentionServerRole' in old and not new:
 			try:
-				domain = old['associatedDomain'][0]
+				domain = old['associatedDomain'][0].decode('UTF-8')
 			except LookupError:
 				domain = ucr['domainname']
-			remove_ldap_server(ucr, old['cn'][0], domain, old['univentionServerRole'][0])
+			remove_ldap_server(ucr, old['cn'][0].decode('UTF-8'), domain, old['univentionServerRole'][0].decode('UTF-8'))
 	finally:
 		listener.unsetuid()
 
