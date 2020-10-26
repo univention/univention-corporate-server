@@ -33,7 +33,7 @@ from __future__ import absolute_import
 import subprocess
 import json
 
-from ldap.dn import explode_dn
+from ldap.dn import explode_rdn
 
 from univention.listener import ListenerModuleHandler, ListenerModuleConfiguration
 
@@ -50,8 +50,8 @@ class PortalGroups(ListenerModuleHandler):
 	def create(self, dn, new):
 		groups = self._load()
 		groups[dn] = {
-			'usernames': [username.lower() for username in new.get('memberUid', []) if not username.endswith('$')],
-			'groups': [member.lower() for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
+			'usernames': [username.decode('UTF-8').lower() for username in new.get('memberUid', []) if not username.endswith(b'$')],
+			'groups': [member.decode('UTF-8').lower() for member in new.get('uniqueMember', []) if member.startswith(b'cn=') and not (b'%s$' % explode_rdn(member, True)[0].encode('UTF-8')) in new.get('memberUid', [])],
 		}
 		self._save(groups)
 		self._refresh_cache()
@@ -60,8 +60,8 @@ class PortalGroups(ListenerModuleHandler):
 		groups = self._load()
 		groups.pop(old_dn, None)
 		groups[dn] = {
-			'usernames': [username.lower() for username in new.get('memberUid', []) if not username.endswith('$')],
-			'groups': [member.lower() for member in new.get('uniqueMember', []) if member.startswith('cn=') and not ('%s$' % explode_dn(member, True)[0]) in new.get('memberUid', [])],
+			'usernames': [username.decode('UTF-8').lower() for username in new.get('memberUid', []) if not username.endswith(b'$')],
+			'groups': [member.decode('UTF-8').lower() for member in new.get('uniqueMember', []) if member.startswith(b'cn=') and not (b'%s$' % explode_rdn(member, True)[0].encode('UTF-8')) in new.get('memberUid', [])],
 		}
 		self._save(groups)
 		self._refresh_cache()
@@ -83,7 +83,7 @@ class PortalGroups(ListenerModuleHandler):
 
 	def _save(self, groups):
 		with self.as_root():
-			with open(GROUP_CACHE, 'wb') as fd:
+			with open(GROUP_CACHE, 'w') as fd:
 				json.dump(groups, fd)
 
 	def _refresh_cache(self):
