@@ -1,3 +1,10 @@
+ucs-test (9.0.5-17) unstable; urgency=medium
+
+  * Bug #52130: Restart before 53samba-common tests. Some of the tests where a share is accessed
+    via smbclient dont work on slave pdc anymore.
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 26 Oct 2020 17:03:55 +0100
+
 ucs-test (9.0.5-16) unstable; urgency=medium
 
   * Bug #51624: add test for postponed join scripts
