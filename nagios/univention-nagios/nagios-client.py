@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import os
 import re
@@ -50,7 +51,6 @@ __pluginconfig = {}
 
 
 def readPluginConfig():
-	global __pluginconfig
 	global __pluginconfdirstat
 
 	if __pluginconfdirstat != os.stat(__pluginconfdir)[8]:
@@ -62,12 +62,11 @@ def readPluginConfig():
 		listener.setuid(0)
 		try:
 			for fn in os.listdir(__pluginconfdir):
-				fp = open(os.path.join(__pluginconfdir, fn), 'r')
-				content = fp.read()
-				fp.close()
-				for cmddef in re.split('\s*define\s+command\s*\{', content):
-					mcmdname = re.search('^\s+command_name\s+(.*?)\s*$', cmddef, re.MULTILINE)
-					mcmdline = re.search('^\s+command_line\s+(.*?)\s*$', cmddef, re.MULTILINE)
+				with open(os.path.join(__pluginconfdir, fn), 'rb') as fp:
+					content = fp.read()
+				for cmddef in re.split(r'\s*define\s+command\s*\{'.encode('ASCII'), content):
+					mcmdname = re.search(r'^\s+command_name\s+(.*?)\s*$'.encode('ASCII'), cmddef, re.MULTILINE)
+					mcmdline = re.search(r'^\s+command_line\s+(.*?)\s*$'.encode('ASCII'), cmddef, re.MULTILINE)
 					if mcmdname and mcmdline:
 						__pluginconfig[mcmdname.group(1)] = mcmdline.group(1)
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: read configline for plugin %s ==> %s' % (mcmdname.group(1), mcmdline.group(1)))
@@ -78,20 +77,17 @@ def readPluginConfig():
 def replaceArguments(cmdline, args):
 	for i in range(9):
 		if i < len(args):
-			cmdline = re.sub('\$ARG%s\$' % (i + 1), args[i], cmdline)
+			cmdline = re.sub(r'\$ARG%s\$'.encode('ASCII') % (i + 1), args[i], cmdline)
 		else:
-			cmdline = re.sub('\$ARG%s\$' % (i + 1), '', cmdline)
+			cmdline = re.sub(r'\$ARG%s\$'.encode('ASCII') % (i + 1), b'', cmdline)
 	return cmdline
 
 
 def writeConfig(fqdn, new):
-	global __confdir
-	global __pluginconfig
-
 	readPluginConfig()
 
-	name = new['cn'][0]
-	cmdline = 'PluginNameNotFoundError'
+	name = new['cn'][0].decode('UTF-8')
+	cmdline = b'PluginNameNotFoundError'
 
 	# if no univentionNagiosHostname is present or current host is no member then quit
 	if 'univentionNagiosHostname' in new and new['univentionNagiosHostname']:
@@ -104,9 +100,9 @@ def writeConfig(fqdn, new):
 		if new['univentionNagiosCheckCommand'][0] in __pluginconfig:
 			cmdline = __pluginconfig[new['univentionNagiosCheckCommand'][0]]
 	if 'univentionNagiosCheckArgs' in new and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
-		cmdline = replaceArguments(cmdline, new['univentionNagiosCheckArgs'][0].split('!'))
-	cmdline = re.sub('\$HOSTADDRESS\$', fqdn, cmdline)
-	cmdline = re.sub('\$HOSTNAME\$', fqdn, cmdline)
+		cmdline = replaceArguments(cmdline, new['univentionNagiosCheckArgs'][0].split(b'!'))
+	cmdline = re.sub(r'\$HOSTADDRESS\$'.encode('ASCII'), fqdn, cmdline)
+	cmdline = re.sub(r'\$HOSTNAME\$'.encode('ASCII'), fqdn, cmdline)
 
 	listener.setuid(0)
 	try:
@@ -137,43 +133,43 @@ def removeConfig(name):
 
 
 def handler(dn, new, old):
+	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN dn=%r' % (dn,))
+	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
+	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
 
-	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN dn=%s' % str(dn))
-	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%s' % str(old))
-	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%s' % str(new))
-
-	fqdn = listener.baseConfig['hostname'] + '.' + listener.baseConfig['domainname']
+	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+	fqdn = fqdn.encode('UTF-8')
 
 	if old and not new:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: service %s deleted' % str(old['cn'][0]))
-		removeConfig(old['cn'][0])
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: service %r deleted' % (old['cn'][0],))
+		removeConfig(old['cn'][0].decode('UTF-8'))
 
 	if old and \
-		'univentionNagiosHostname' in old and old['univentionNagiosHostname'] and fqdn in old['univentionNagiosHostname'] and \
-		not('univentionNagiosHostname' in new and new['univentionNagiosHostname'] and fqdn in new['univentionNagiosHostname']):
+		fqdn in old.get('univentionNagiosHostname', []) and \
+		fqdn not in new.get('univentionNagiosHostname', []):
 		# object changed and
 		# local fqdn was in old object and
 		# local fqdn is not in new object
 		# ==> fqdn was deleted from list
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: host removed from service %s' % str(old['cn'][0]))
-		removeConfig(old['cn'][0])
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: host removed from service %s' % (old['cn'][0],))
+		removeConfig(old['cn'][0].decode('UTF-8'))
 	elif old and \
-		'univentionNagiosUseNRPE' in old and old['univentionNagiosUseNRPE'] and (old['univentionNagiosUseNRPE'][0] == '1') and \
-		not('univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == '1')):
+		old.get('univentionNagiosUseNRPE', [None])[0] == b'1' and \
+		new.get('univentionNagiosUseNRPE', [None])[0] != b'1':
 		# object changed and
 		# local fqdn is in new object  (otherwise previous if-statement matches)
 		# NRPE was enabled in old object
 		# NRPE is disabled in new object
 		# ==> remove config
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: nrpe disabled for service %s' % str(old['cn'][0]))
-		removeConfig(old['cn'][0])
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: nrpe disabled for service %r' % (old['cn'][0],))
+		removeConfig(old['cn'][0].decode('UTF-8'))
 	else:
 		# otherwise:
 		# - this host was configure in old and new object or
 		# - this host is newly added to list or
 		# - this object is new
-		if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == '1'):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: writing service %s' % str(new['cn'][0]))
+		if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == b'1'):
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: writing service %r' % (new['cn'][0],))
 			writeConfig(fqdn, new)
 
 
@@ -213,7 +209,7 @@ def clean():
 def postrun():
 	global __initscript
 	initscript = __initscript
-	if "nagios/client/autostart" in listener.baseConfig and (listener.baseConfig["nagios/client/autostart"] in ["yes", "true", '1']):
+	if listener.configRegistry.is_true("nagios/client/autostart"):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NRPED: Restarting server')
 		listener.setuid(0)
 		try:
