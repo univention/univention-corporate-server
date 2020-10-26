@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 
 import os
-import cPickle
+from six.moves import cPickle as pickle
 
 import listener
 from univention.mail.dovecot import DovecotListener
@@ -94,10 +94,9 @@ class DovecotUserListener(DovecotListener):
 
 def load_old(old):
 	if os.path.exists(DOVECOT_OLD_PICKLE):
-		f = open(DOVECOT_OLD_PICKLE, "r")
-		p = cPickle.Unpickler(f)
-		old = p.load()
-		f.close()
+		with open(DOVECOT_OLD_PICKLE, "rb") as fd:
+			p = pickle.Unpickler(fd)
+			old = p.load()
 		os.unlink(DOVECOT_OLD_PICKLE)
 		return old
 	else:
@@ -105,12 +104,11 @@ def load_old(old):
 
 
 def save_old(old):
-	f = open(DOVECOT_OLD_PICKLE, "w+")
-	os.chmod(DOVECOT_OLD_PICKLE, 0o600)
-	p = cPickle.Pickler(f)
-	p.dump(old)
-	p.clear_memo()
-	f.close()
+	with open(DOVECOT_OLD_PICKLE, "wb+") as fd:
+		os.chmod(DOVECOT_OLD_PICKLE, 0o600)
+		p = pickle.Pickler(fd)
+		p.dump(old)
+		p.clear_memo()
 
 
 def handler(dn, new, old, command):
@@ -125,10 +123,10 @@ def handler(dn, new, old, command):
 
 	listener.configRegistry.load()
 	dl = DovecotUserListener(listener, name)
-	oldMailPrimaryAddress = old.get('mailPrimaryAddress', [""])[0].lower()
-	newMailPrimaryAddress = new.get('mailPrimaryAddress', [""])[0].lower()
-	oldHomeServer = old.get('univentionMailHomeServer', [''])[0].lower()
-	newHomeServer = new.get('univentionMailHomeServer', [''])[0].lower()
+	oldMailPrimaryAddress = old.get('mailPrimaryAddress', [b""])[0].decode('UTF-8').lower()
+	newMailPrimaryAddress = new.get('mailPrimaryAddress', [b""])[0].decode('UTF-8').lower()
+	oldHomeServer = old.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
+	newHomeServer = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()
 	fqdn = '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
 	fqdn = fqdn.lower()
 	# If univentionMailHomeServer is not set, all servers are responsible.
