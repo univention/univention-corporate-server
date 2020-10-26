@@ -52,11 +52,11 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		try:
-			fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
+			fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('UTF-8'))
 		except (KeyError, IndexError):
 			return
-		umc_service_active = 'Univention Management Console' in new.get('univentionService', [])
-		umc_service_was_active = 'Univention Management Console' in old.get('univentionService', [])
+		umc_service_active = b'Univention Management Console' in new.get('univentionService', [])
+		umc_service_was_active = b'Univention Management Console' in old.get('univentionService', [])
 		domain_added = 'associatedDomain' in new and 'associatedDomain' not in old and umc_service_active
 		if umc_service_active and (domain_added or not umc_service_was_active):
 			handler_set(['umc/saml/trusted/sp/%s=%s' % (fqdn, fqdn)])
