@@ -122,7 +122,7 @@ import os
 import sys
 import re
 import xml.parsers.expat
-import xml.etree.ElementTree as ET
+import xml.etree.cElementTree as ET
 
 from .tools import JSON_Object, JSON_List
 from .log import RESOURCES
