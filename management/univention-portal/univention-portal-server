@@ -110,7 +110,7 @@ def setup_logger():
 	channel = logging.StreamHandler()
 	channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
 	logger = logging.getLogger()
-	logger.setLevel(logging.INFO)
+	logger.setLevel(logging.ERROR)
 	logger.addHandler(channel)
 
 	logger = logging.getLogger('univention.portal')
@@ -123,7 +123,7 @@ def setup_logger():
 	logger.addHandler(handler)
 	handler = logging.StreamHandler(sys.stdout)
 	logger.addHandler(handler)
-	logger.setLevel(logging.DEBUG)
+	logger.setLevel(logging.ERROR)
 
 
 def get_logger(name):
