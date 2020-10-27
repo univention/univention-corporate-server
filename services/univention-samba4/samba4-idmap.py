@@ -134,7 +134,7 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 		else:
 			record = res.msgs[0]
 
-			if record["type"][0] != type_string:
+			if record["type"][0].decode('ASCII') != type_string:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string))
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID))
 				return False
@@ -170,9 +170,9 @@ def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 		msg = ldb.Message()
 		msg.dn = ldb.Dn(idmap, str(record.dn))
-		if record["type"][0] != type_string:
+		if record["type"][0].decode('ASCII') != type_string:
 			msg["type"] = ldb.MessageElement([type_string], ldb.FLAG_MOD_REPLACE, "type")
-		if record["xidNumber"][0] != str(xidNumber):
+		if record["xidNumber"][0].decode('ASCII') != str(xidNumber):
 			msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
 
 		if len(msg) != 0:
@@ -233,9 +233,9 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 			idmap.delete(ldb.Dn(idmap, str(record.dn)))
 
-			if record["xidNumber"][0] != str(xidNumber):
+			if record["xidNumber"][0].decode('ASCII') != str(xidNumber):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber))
-			if record["type"][0] != type_string:
+			if record["type"][0].decode('ASCII') != type_string:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
 
 	except ldb.LdbError as exc:
