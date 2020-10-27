@@ -47,7 +47,7 @@ from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunn
 # from daemon.daemon import set_signal_handlers
 
 from univention.management.console.log import CORE, log_init, log_reopen
-from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
+from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr, get_int
 # don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
 
 server = None
@@ -212,6 +212,7 @@ class UMC_Daemon(DaemonRunner):
 		except (ValueError, resource.error) as exc:
 			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 		notifier.init(notifier.GENERIC)
+		notifier.dispatch.MIN_TIMER = get_int('umc/server/dispatch-interval', notifier.dispatch.MIN_TIMER)
 
 		with Server(port=self.options.port) as self.server:
 			CORE.process('Server started')

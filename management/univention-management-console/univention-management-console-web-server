@@ -1635,6 +1635,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		try:
 			# start notifier loop
 			notifier.init(notifier.GENERIC)
+			notifier.dispatch.MIN_TIMER = get_int('umc/http/dispatch-interval', notifier.dispatch.MIN_TIMER)
 			notifier.dispatcher_add(UMCP_Dispatcher.check_queue)
 			notifier.loop()
 		except (SystemExit, KeyboardInterrupt) as exc:
