@@ -210,6 +210,9 @@ udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-service
 
 /usr/share/univention-portal-server/update_saml_metadata "$@" || die
 
+# curl http://localhost/univention/portal/saml/metadata/ > /usr/share/univention-portal-server/metadata.xml
+# univention-ldapsearch -LLLb 'SAMLServiceProviderIdentifier=https://master80.school.dev/univention/portal/saml/metadata,cn=saml-serviceprovider,cn=univention,l=school,l=dev' serviceProviderMetadata | grep serviceProviderMetadata: | ldapsearch-decode64  | sed 's/^serviceProviderMetadata: //g' > /usr/share/univention-portal-server/metadata.xml
+
 joinscript_save_current_version
 
 exit 0

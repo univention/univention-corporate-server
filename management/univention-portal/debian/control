@@ -13,6 +13,7 @@ Standards-Version: 3.9.5
 Package: univention-portal
 Architecture: all
 Depends:
+ libapache2-mod-auth-mellon,
  netcat-openbsd,
  python-tornado,
  python-univention-appcenter,
