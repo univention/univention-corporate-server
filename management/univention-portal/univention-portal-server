@@ -59,6 +59,7 @@ from six.moves.urllib_parse import urlparse, urlunsplit
 import tornado.ioloop
 import tornado.log
 from tornado.web import HTTPError, RequestHandler, Application
+from tornado.httpserver import HTTPServer
 import ldap
 from ldap.filter import filter_format
 
@@ -1220,9 +1221,10 @@ def make_app():
 
 if __name__ == "__main__":
 	setup_logger()
-	app = make_app()
+	server = HTTPServer(make_app())
 	port = int(ucr.get('portal/port', 8095))
 	get_logger('server').info('firing up portal server at port %s' % port)
-	app.listen(port)
+	server.bind(port)
+	server.start(int(ucr.get('portal/cpus', 1)))
 	signal.signal(signal.SIGHUP, signal_handler_reload)
 	tornado.ioloop.IOLoop.current().start()
