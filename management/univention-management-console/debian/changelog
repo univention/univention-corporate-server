@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-6) unstable; urgency=medium
+
+  * Bug #52271: make dispatcher interval configurable
+
+ -- Florian Best <best@univention.de>  Tue, 27 Oct 2020 15:26:22 +0100
+
 univention-management-console (11.0.5-5) unstable; urgency=medium
 
   * Bug #52253: prefer cElementTree over ElementTree for performance

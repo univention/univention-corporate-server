@@ -40,6 +40,12 @@ Description[en]=Defines the number of unaccepted connections that the UMC web se
 Type=int
 Categories=management-umc
 
+[umc/http/dispatch-interval]
+Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Web-Server in Millisekunden (Standard: 100).
+Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC web server in milliseconds (default: 100)
+Type=int
+Categories=management-umc
+
 [umc/saml/idp-server]
 Description[de]=Definiert den SAML 2.0 Identity Provider, der vom UMC-Web-Server für Single sign on verwendet wird.
 Description[en]=Defines the SAML 2.0 identity provider which is used for single sign on by the UMC web server.
