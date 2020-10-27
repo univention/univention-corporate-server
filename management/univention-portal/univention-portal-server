@@ -38,12 +38,11 @@ import os.path
 import shutil
 import traceback
 from imghdr import what
-from StringIO import StringIO
+from io import StringIO
 from copy import deepcopy
 import tempfile
 import logging
 import signal
-from urllib import quote
 import time
 import zlib
 import base64
@@ -54,7 +53,7 @@ import functools
 import six
 from cherrypy.lib.httputil import valid_status
 from six.moves.http_client import UNAUTHORIZED
-from six.moves.urllib_parse import urlparse, urlunsplit
+from six.moves.urllib_parse import quote, urlparse, urlunsplit
 
 import tornado.ioloop
 import tornado.log
