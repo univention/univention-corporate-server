@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: sane-backends
+fix: 1.0.25-4.1+deb9u2
+desc: |
+ Fix regression from erratum 719 loosing almost all files from package
+ libsane-common.
+bug: [51831]
+cve:
+- CVE-2020-12862
+- CVE-2020-12863
+- CVE-2020-12865
+- CVE-2020-12867
+ignore:
+- cve.CVE-2020-12862
+- cve.CVE-2020-12863
+- cve.CVE-2020-12865
+- cve.CVE-2020-12867
