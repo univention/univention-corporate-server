@@ -49,6 +49,148 @@ install_kelvin_api () {
   univention-app shell ucsschool-kelvin-rest-api ps aux
 }
 
+install_mv_idm_gw_sender_ext_attrs () {
+  udm settings/extended_attribute create \
+    --ignore_exists \
+    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --set name="mvDst" \
+    --set CLIName="mvDst" \
+    --set shortDescription="mvDst" \
+    --set module="users/user" \
+    --set syntax=string \
+    --set default="" \
+    --set multivalue=1 \
+    --set valueRequired=0 \
+    --set mayChange=1 \
+    --set doNotSearch=1 \
+    --set objectClass=univentionFreeAttributes \
+    --set ldapMapping=univentionFreeAttribute13 \
+    --set deleteObjectClass=0 \
+    --set overwriteTab=0 \
+    --set fullWidth=1 \
+    --set disableUDMWeb=1
+  udm settings/extended_attribute create \
+    --ignore_exists \
+    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --set name="UUID" \
+    --set CLIName="UUID" \
+    --set shortDescription="UUID" \
+    --set module="users/user" \
+    --set syntax=string \
+    --set default="" \
+    --set multivalue=0 \
+    --set valueRequired=0 \
+    --set mayChange=1 \
+    --set doNotSearch=1 \
+    --set objectClass=univentionFreeAttributes \
+    --set ldapMapping=univentionFreeAttribute14 \
+    --set deleteObjectClass=0 \
+    --set overwriteTab=0 \
+    --set fullWidth=1 \
+    --set disableUDMWeb=0
+  udm settings/extended_attribute create \
+    --ignore_exists \
+    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --set name="mvStaffType" \
+    --set CLIName="mvStaffType" \
+    --set shortDescription="mvStaffType" \
+    --set module="users/user" \
+    --set syntax=string \
+    --set default="" \
+    --set multivalue=1 \
+    --set valueRequired=0 \
+    --set mayChange=1 \
+    --set doNotSearch=1 \
+    --set objectClass=univentionFreeAttributes \
+    --set ldapMapping=univentionFreeAttribute15 \
+    --set deleteObjectClass=0 \
+    --set overwriteTab=0 \
+    --set fullWidth=1 \
+    --set disableUDMWeb=0
+}
+
+install_mv_idm_gw_receiver_ext_attrs () {
+  udm settings/extended_attribute create \
+    --ignore_exists \
+    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --set name="stamm_dienststelle" \
+    --set CLIName="stamm_dienststelle" \
+    --set shortDescription="Stammdienststelle" \
+    --set module="users/user" \
+    --append options="ucsschoolStudent" \
+    --append options="ucsschoolTeacher" \
+    --append options="ucsschoolStaff" \
+    --append options="ucsschoolAdministrator" \
+    --set tabName="UCS@school" \
+    --set tabPosition=9 \
+    --set groupName="IDM Gateway" \
+    --set groupPosition="1" \
+    --set translationGroupName='"de_DE" "IDM Gateway"' \
+    --set syntax=string \
+    --set default="" \
+    --set multivalue=0 \
+    --set valueRequired=0 \
+    --set mayChange=1 \
+    --set doNotSearch=1 \
+    --set objectClass=univentionFreeAttributes \
+    --set ldapMapping=univentionFreeAttribute13 \
+    --set deleteObjectClass=0 \
+    --set overwriteTab=0 \
+    --set fullWidth=1 \
+    --set disableUDMWeb=0
+  udm settings/extended_attribute create \
+    --ignore_exists \
+    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --set name="idm_gw_last_update" \
+    --set CLIName="idm_gw_last_update" \
+    --set shortDescription="Date of last update by the IDM GW" \
+    --set module="users/user" \
+    --append options="ucsschoolStudent" \
+    --append options="ucsschoolTeacher" \
+    --append options="ucsschoolStaff" \
+    --append options="ucsschoolAdministrator" \
+    --set tabName="UCS@school" \
+    --set tabPosition=9 \
+    --set groupName="IDM Gateway" \
+    --set groupPosition="2" \
+    --set translationGroupName='"de_DE" "IDM Gateway"' \
+    --set syntax=string \
+    --set default="" \
+    --set multivalue=0 \
+    --set valueRequired=0 \
+    --set mayChange=1 \
+    --set doNotSearch=1 \
+    --set objectClass=univentionFreeAttributes \
+    --set ldapMapping=univentionFreeAttribute14 \
+    --set deleteObjectClass=0 \
+    --set overwriteTab=0 \
+    --set fullWidth=1 \
+    --set disableUDMWeb=0
+  udm settings/extended_attribute create \
+    --ignore_exists \
+    --position "cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+    --set name="idm_gw_pw_sync" \
+    --set CLIName="idm_gw_pw_sync" \
+    --set shortDescription="IDM Gateway password sync" \
+    --set module="users/user" \
+    --append options="ucsschoolStudent" \
+    --append options="ucsschoolTeacher" \
+    --append options="ucsschoolStaff" \
+    --append options="ucsschoolAdministrator" \
+    --set syntax=string \
+    --set default="" \
+    --set multivalue=0 \
+    --set valueRequired=0 \
+    --set mayChange=1 \
+    --set doNotSearch=1 \
+    --set objectClass=univentionFreeAttributes \
+    --set ldapMapping=univentionFreeAttribute15 \
+    --set deleteObjectClass=0 \
+    --set overwriteTab=0 \
+    --set fullWidth=1 \
+    --set disableUDMWeb=1
+}
+
 patch_school_pre_join_script_to_install_from_test_appcenter () {
   sed 's#log.info("Updating app center information...")#log.info("Updating app center information...")\n        subprocess.call(["/usr/sbin/univention-install", "univention-appcenter-dev"])\n        subprocess.call(["/usr/bin/univention-app", "dev-use-test-appcenter"])#g' /usr/share/ucs-school-metapackage/ucsschool-join-hook.py > /tmp/ucsschool-join-hook.py
   package_version="$(univention-ldapsearch -LLL cn=ucsschool-join-hook.py univentionOwnedByPackageVersion | grep univentionOwnedByPackageVersion | cut -f 2 -d ' ')"
