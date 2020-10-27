@@ -1,3 +1,10 @@
+univention-management-console (11.0.5-5) unstable; urgency=medium
+
+  * Bug #52253: prefer cElementTree over ElementTree for performance
+    reasons
+
+ -- Florian Best <best@univention.de>  Tue, 27 Oct 2020 13:18:35 +0100
+
 univention-management-console (11.0.5-4) unstable; urgency=medium
 
   * Bug #50302: make cookie banner settings more configurable
