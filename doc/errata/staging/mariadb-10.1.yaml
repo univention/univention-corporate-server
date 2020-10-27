@@ -6,16 +6,7 @@ src: mariadb-10.1
 fix: 10.1.47-0+deb9u1
 desc: |
  This update addresses the following issue:
-
- * 10.1.47-0+deb9u1 (Mon, 12 Oct 2020 20:40:35 +0300) * SECURITY UPDATE: New
-   upstream version 10.1.47. Includes fixes for the following security
-   vulnerabilities: - CVE-2020-15180 * Salsa-CI: Update to be compatible with
-   latest master/salsa-ci.yml
-
- * 10.1.47-0+deb9u1 (Mon, 12 Oct 2020 20:40:35 +0300) * SECURITY UPDATE: New
-   upstream version 10.1.47. Includes fixes for the following security
-   vulnerabilities: - CVE-2020-15180 * Salsa-CI: Update to be compatible with
-   latest master/salsa-ci.yml
+ - Fixed arbitrary code execution (CVE-2020-15180)
 bug: [52264]
 cve:
 - CVE-2020-15180
