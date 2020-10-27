@@ -6,7 +6,7 @@ src: bluez
 fix: 5.43-2+deb9u3
 desc: |
  This update addresses the following issue:
- * double free in gatttool client disconnect callback handler in
+ * Double free in gatttool() client disconnect callback handler in
    src/shared/att.c could lead to DoS or RCE (CVE-2020-27153)
 bug: [52265]
 cve:
