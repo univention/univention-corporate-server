@@ -231,9 +231,12 @@ class SamlTest(object):
 		self.position = "posting SAML message"
 		self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
-	def test_login(self):
+	def test_login(self, use_portal=False):
 		"""Test login on umc"""
-		url = "https://%s/univention/get/session-info" % self.target_sp_hostname
+		url = "https://{}/univention/{}/session-info".format(
+			self.target_sp_hostname,
+			'portal' if use_portal else 'get'
+		)
 		print("Test login @ %s" % url)
 		self.position = "testing login"
 		self._request('GET', url, 200, expected_format='json')
@@ -268,12 +271,15 @@ class SamlTest(object):
 		else:
 			utils.fail("Session not closed at IdP after logout")
 
-	def login_with_existing_session_at_IdP(self):
+	def login_with_existing_session_at_IdP(self, use_portal=False):
 		"""Use Identity Provider to log in to a Service Provider.
 		If the IdP already knows the session and doesn't ask for username and password"""
 
 		# Open login prompt. Redirects to IdP. IdP answers with SAML message
-		url = "https://%s/univention/saml/" % self.target_sp_hostname
+		url = "https://{}/univention{}saml/".format(
+			self.target_sp_hostname,
+			'/portal/' if use_portal else '/'
+		)
 		print("GET SAML login form at: %s" % url)
 		self.position = "requesting SAML message"
 		self._request('GET', url, 200)
@@ -311,9 +317,12 @@ class SamlTest(object):
 		relay_state = self._extract_relay_state()
 		self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
-	def logout_at_IdP(self):
+	def logout_at_IdP(self, use_portal=False):
 		"""Logout from session"""
-		url = "https://%s/univention/logout" % self.target_sp_hostname
+		url = "https://{}/univention{}logout".format(
+			self.target_sp_hostname,
+			'/portal/' if use_portal else '/'
+		)
 		print("Logging out at url: %s" % url)
 		self.position = "trying to logout"
 		self._request('GET', url, 200)
