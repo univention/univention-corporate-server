@@ -30,10 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 
 import listener
-import univention.debug
+import univention.debug as ud
 
 import os
 import stat
@@ -49,13 +49,11 @@ attributes = ["uid", "automountInformation", "gidNumber", "uidNumber"]
 
 
 def handler(dn, new, old):
-
 	if not listener.configRegistry.is_true("nfs/create/homesharepath"):
 		return
 
 	# new and modify
 	if new and new.get("uid"):
-
 		uid = new.get("uid")
 		uidNumber = new.get("uidNumber")
 		gidNumber = new.get("gidNumber")
@@ -70,15 +68,15 @@ def handler(dn, new, old):
 		if not automountInformation or not len(automountInformation) == 1:
 			return
 
-		uid = uid[0]
-		automountInformation = automountInformation[0]
-		gidNumber = gidNumber[0]
-		uidNumber = uidNumber[0]
+		uid = uid[0].decode('UTF-8')
+		automountInformation = automountInformation[0].decode('ASCII')
+		gidNumber = gidNumber[0].decode('ASCII')
+		uidNumber = uidNumber[0].decode('ASCII')
 
 		try:
 			gidNumber = int(gidNumber)
 			uidNumber = int(uidNumber)
-		except:
+		except ValueError:
 			return
 
 		unc = automountInformation
@@ -88,17 +86,13 @@ def handler(dn, new, old):
 			host, path = unc.split(':', 1)
 			if host and host == fqdn:
 				if not os.path.exists(path):
-					univention.debug.debug(
-						univention.debug.LISTENER, univention.debug.INFO,
-						"%s: creating share path %s for user %s" % (name, path, uid))
+					ud.debug(ud.LISTENER, ud.INFO, "%s: creating share path %s for user %s" % (name, path, uid))
 					listener.setuid(0)
 					try:
 						os.makedirs(path)
 						os.chmod(path, stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH)
 						os.chown(path, uidNumber, gidNumber)
-					except Exception as e:
-						univention.debug.debug(
-							univention.debug.LISTENER, univention.debug.ERROR,
-							"%s: failed to create home path %s for user %s (%s)" % (name, path, uid, e))
+					except Exception as exc:
+						ud.debug(ud.LISTENER, ud.ERROR, "%s: failed to create home path %s for user %s (%s)" % (name, path, uid, exc))
 					finally:
 						listener.unsetuid()
