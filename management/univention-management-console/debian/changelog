@@ -1,3 +1,9 @@
+univention-management-console (11.2.0-1) unstable; urgency=medium
+
+  * 
+
+ -- Florian Best <best@univention.de>  Tue, 27 Oct 2020 11:42:25 +0100
+
 univention-management-console (11.0.5-4) unstable; urgency=medium
 
   * Bug #50302: make cookie banner settings more configurable
