@@ -9,3 +9,4 @@
 ## join: true
 
 /etc/init.d/samba restart
+kdestroy || true
