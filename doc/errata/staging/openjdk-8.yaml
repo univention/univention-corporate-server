@@ -1,0 +1,34 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: openjdk-8
+fix: 8u272-b10-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * High memory usage during deserialization of Proxy class with many
+   interfaces (Serialization, 8236862) (CVE-2020-14779)
+ * Credentials sent over unencrypted LDAP connection (JNDI, 8237990)
+   (CVE-2020-14781)
+ * Certificate blacklist bypass via alternate certificate encodings
+   (Libraries, 8237995) (CVE-2020-14782)
+ * Integer overflow leading to out-of-bounds access (Hotspot, 8241114)
+   (CVE-2020-14792)
+ * Missing permission check in path to URI conversion (Libraries, 8242680)
+   (CVE-2020-14796)
+ * Incomplete check for invalid characters in URI to path conversion
+   (Libraries, 8242685) (CVE-2020-14797)
+ * Missing maximum length check in WindowsNativeDispatcher.asNativeBuffer()
+   (Libraries, 8242695) (CVE-2020-14798)
+ * Race condition in NIO Buffer boundary checks (Libraries, 8244136)
+   (CVE-2020-14803)
+bug: [52268]
+cve:
+- CVE-2020-14779
+- CVE-2020-14781
+- CVE-2020-14782
+- CVE-2020-14792
+- CVE-2020-14796
+- CVE-2020-14797
+- CVE-2020-14798
+- CVE-2020-14803
