@@ -31,16 +31,18 @@
 # <https://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+
 import listener
 import os
 import re
-import univention.debug
+from six.moves import cPickle as pickle
+
+import univention.debug as ud
 import univention.lib.listenerSharePath
-import cPickle
 from univention.config_registry.interfaces import Interfaces
 
-hostname = listener.baseConfig['hostname']
-domainname = listener.baseConfig['domainname']
+hostname = listener.configRegistry['hostname']
+domainname = listener.configRegistry['domainname']
 interfaces = Interfaces(listener.configRegistry)
 ip = interfaces.get_default_ip_address().ip
 
@@ -62,10 +64,8 @@ def handler(dn, new, old, command):
 	try:
 		if not os.path.exists(tmpDir):
 			os.makedirs(tmpDir)
-	except Exception as e:
-		univention.debug.debug(
-			univention.debug.LISTENER, univention.debug.ERROR,
-			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, str(e)))
+	except Exception as exc:
+		ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
 		return
 	finally:
 		listener.unsetuid()
@@ -83,37 +83,35 @@ def handler(dn, new, old, command):
 		if command == "r" and old:
 			with open(tmpFile, "wb") as fp:
 				os.chmod(tmpFile, 0o600)
-				cPickle.dump({"dn": dn, "old": old}, fp)
+				pickle.dump({"dn": dn, "old": old}, fp)
 		elif command == "a" and not old:
 			if os.path.isfile(tmpFile):
 				with open(tmpFile, "rb") as fp:
-					p = cPickle.load(fp)
+					p = pickle.load(fp)
 				oldObject = p.get("old", {})
 				os.remove(tmpFile)
-	except Exception as e:
+	except Exception as exc:
 		if os.path.isfile(tmpFile):
 			os.remove(tmpFile)
-		univention.debug.debug(
-			univention.debug.LISTENER, univention.debug.ERROR,
-			"%s: could not read/write tmp file %s (%s)" % (name, tmpFile, str(e)))
+		ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, exc))
 	finally:
 		listener.unsetuid()
 
 	# update exports file
 	lines = _read(lambda match: not match or match.group(1) != _quote(dn))
 
-	if new and 'objectClass' in new and 'univentionShareNFS' in new['objectClass']:
-		path = new['univentionSharePath'][0]
+	if new and b'univentionShareNFS' in new.get('objectClass', []):
+		path = new['univentionSharePath'][0].decode('UTF-8')
 		options = [
-			'rw' if new.get('univentionShareWriteable', [''])[0] == 'yes' else 'ro',
-			'root_squash' if new.get('univentionShareNFSRootSquash', [''])[0] == 'yes' else 'no_root_squash',
-			'async' if new.get('univentionShareNFSSync', [''])[0] == 'async' else 'sync',
-			'subtree_check' if new.get('univentionShareNFSSubTree', [''])[0] == 'yes' else 'no_subtree_check',
-		] + new.get('univentionShareNFSCustomSetting', [])
+			'rw' if new.get('univentionShareWriteable', [b''])[0] == b'yes' else 'ro',
+			'root_squash' if new.get('univentionShareNFSRootSquash', [b''])[0] == b'yes' else 'no_root_squash',
+			'async' if new.get('univentionShareNFSSync', [b''])[0] == b'async' else 'sync',
+			'subtree_check' if new.get('univentionShareNFSSubTree', [b''])[0] == b'yes' else 'no_subtree_check',
+		] + [cs.decode('UTF-8') for cs in new.get('univentionShareNFSCustomSetting', [])]
 		lines.append('%s -%s %s # LDAP:%s' % (
 			_exports_escape(path),
 			_quote(','.join(options)),
-			_quote(' '.join(new.get('univentionShareNFSAllowed', ['*']))),
+			_quote(' '.join(nfs_allowed.decode('ASCII') for nfs_allowed in new.get('univentionShareNFSAllowed', [b'*']))),
 			_quote(dn)
 		))
 
@@ -126,9 +124,7 @@ def handler(dn, new, old, command):
 				old = oldObject
 			ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
 			if ret:
-				univention.debug.debug(
-					univention.debug.LISTENER, univention.debug.ERROR,
-					"%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
+				ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 		finally:
 			listener.unsetuid()
 	else:
@@ -149,7 +145,7 @@ def _read(keep=lambda match: True):
 def _write(lines):
 	listener.setuid(0)
 	try:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
+		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
 		with open(__exports, 'w') as fp:
 			fp.write('\n'.join(lines) + '\n')
 	finally:
