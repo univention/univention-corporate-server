@@ -210,6 +210,11 @@ SCRIPTS=(/usr/lib/univention-install/*.{inst,uinst})
 if [ -n "$RUN_SCRIPTS" ]; then
 	# evaluate specified join scripts
 	SCRIPTS=()
+	if [ -z $SCRIPTS_TO_RUN ]; then
+		display_help
+		failed_message "The option --run-scripts was used, but no scripts were provided"
+		EXITCODE=1
+	fi
 	for iscript in "${SCRIPTS_TO_RUN[@]}"
 	do
 		# guess full path of join script
