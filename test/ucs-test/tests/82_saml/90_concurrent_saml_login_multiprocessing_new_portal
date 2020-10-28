@@ -16,22 +16,23 @@ import random
 import univention.testing.utils as utils
 
 
-parallel_logins = 50
-number_of_logins = parallel_logins * 10
+parallel_logins = 100
+number_of_logins = parallel_logins * 20
 exc_store = None
 
 
 def main(i):
 	global exc_store
-	time.sleep(random.randint(0, 50)/100.0)
+	# time.sleep(random.randint(0, 200)/100.0)
 	account = utils.UCSTestDomainAdminCredentials()
-	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+#	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	SamlSession = samltest.SamlTest('test', 'univention')
 	SamlSession.target_sp_hostname = SamlSession.ucr['ldap/master']
 	try:
-		SamlSession.login_with_new_session_at_IdP(portal=True)
-		SamlSession.test_login(portal=True)
+		SamlSession.login_with_new_session_at_IdP(use_portal=True)
+		SamlSession.test_login(use_portal=True)
 		# SamlSession.test_portal()
-		# SamlSession.logout_at_IdP(portal=True)
+		# SamlSession.logout_at_IdP(use_portal=True)
 		# SamlSession.test_logout_at_IdP()
 		# SamlSession.test_logout()
 	except Exception as exc:
@@ -45,23 +46,29 @@ def parallel_main():
 	pool = Pool(parallel_logins)
 
 	result = pool.map(main, range(number_of_logins))
-	fail = False
+	failed = 0
 	for i, item in enumerate(result):
 		if item is None:
 			# print("####Success {}: SSO login is working####".format(i))
 			pass
 		else:
 			print("####FAIL {}: SSO login failed####".format(i))
-			fail = True
-	return fail
+			print(item)
+			failed += 1
+	return failed
 
 
 if __name__ == '__main__':
 	start_time = time.time()
-	fail = parallel_main()
+	failed = parallel_main()
 	runtime = time.time() - start_time
+	print("Workers: {}    Total number of logins: {}   Failed logins: {}".format(
+		parallel_logins,
+		number_of_logins,
+		failed
+	))
 	print("Mean time per portal login {}".format(runtime / float(number_of_logins)))
 	print("Number of logins per second: {}".format(1 / (runtime / float(number_of_logins))))
-	if fail:
+	if failed:
 		sys.exit(1)
 
