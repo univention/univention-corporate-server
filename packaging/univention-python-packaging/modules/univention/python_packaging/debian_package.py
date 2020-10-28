@@ -5,10 +5,11 @@
 #
 
 """
+import os.path
 import setuptools
-from debian_package import DebianPackage
+from univention.python_packaging.debian_package import DebianPackage
 
-dp = DebianPackage("../git/ucs/../univention-..")
+dp = DebianPackage(os.path.dirname(__file__))
 
 setuptools.setup(
     name=dp.name,
