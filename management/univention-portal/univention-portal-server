@@ -70,7 +70,7 @@ from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
 
 from univention.lib.i18n import NullTranslation
-from univention.management.console.log import CORE
+from univention.management.console.log import CORE, log_init
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.handler import run_filter
@@ -107,6 +107,7 @@ class ShortNameFormatter(logging.Formatter):
 
 
 def setup_logger():
+	log_init(LOG_FILE, 4)
 	channel = logging.StreamHandler()
 	channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
 	logger = logging.getLogger()
@@ -292,6 +293,9 @@ class SAMLUser(object):
 		self.message = message
 		self.data = response.ava
 		self.username = u''.join(self.data['uid'])
+		print(self.response.not_on_or_after)
+		print(time.time())
+		print(self.response.not_on_or_after - time.time())
 
 	@property
 	def time_remaining(self):
