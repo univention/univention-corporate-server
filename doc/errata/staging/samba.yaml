@@ -13,6 +13,6 @@ desc: |
      server require schannel:triceratops$ = no
      server require schannel:greywacke$ = no
  * tdb
-bug: [52130,52230]
+bug: [52130,52233]
 cve:
 - CVE-2020-1472
