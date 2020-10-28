@@ -1,3 +1,3 @@
 [build-system]
-requires = ["setuptools >= 40.6.0", "wheel", "univention-python-packaging"]
+requires = ["setuptools >= 40.6.0", "wheel", "univention-python-packaging >= 0.1.1"]
 build-backend = "setuptools.build_meta"

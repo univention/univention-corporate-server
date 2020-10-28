@@ -27,14 +27,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os.path
 from distutils.core import setup
-import os
 from univention.python_packaging.debian_package import DebianPackage
 
 dp = DebianPackage(os.path.dirname(__file__))
 
 setup(
 	packages=['univention'],
-	package_dir={'': 'modules'},
+	package_dir={'univention': 'modules'},
+	license='GNU Affero General Public License v3',
 	**dp.as_setuptools_setup_kwargs()
 )
