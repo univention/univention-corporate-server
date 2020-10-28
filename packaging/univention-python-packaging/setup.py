@@ -30,13 +30,13 @@
 from distutils.core import setup
 
 setup(
-	packages=['univention.python_packaging'],
+	packages=['univention'],
 	package_dir={'': 'modules'},
 	description='Univention Python Packaging Tools',
 	license='GNU Affero General Public License v3',
 
 	name="univention-python-packaging",
-	version="1.0.0",
+	version="0.1.1",
 	maintainer="Univention GmbH",
 	maintainer_email="packages@univention.de",
 	url='https://www.univention.de/',

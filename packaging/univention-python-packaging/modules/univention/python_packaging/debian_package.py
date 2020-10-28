@@ -29,7 +29,7 @@ import io
 import json
 import os
 try:
-    from typing import Dict, Set
+    from typing import Dict, Set, List
 except ImportError:
     pass
 
@@ -133,10 +133,10 @@ class DebianPackage(object):
         return self._name
 
     @property
-    def python_dependencies(self):  # type: () -> Set[str]
+    def python_dependencies(self):  # type: () -> List[str]
         if not self._python_dependencies:
             self._parse_control()
-        return self._python_dependencies
+        return list(self._python_dependencies)
 
     @property
     def version(self):
