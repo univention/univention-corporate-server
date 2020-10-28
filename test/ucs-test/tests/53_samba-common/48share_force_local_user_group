@@ -19,6 +19,8 @@ RETVAL=0
 
 eval "$(ucr shell)"
 
+kdestroy || true # see Bug 52130
+
 ADMINISTRATOR_NAME=$(univention-ldapsearch -b "$tests_domainadmin_account" uid | sed -ne 's/^uid: //p')
 
 sharename="$(random_chars)"
