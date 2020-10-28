@@ -187,6 +187,7 @@ Depends:
  python-daemon,
  python-defusedxml,
  python-ipaddress,
+ python-monotonic,
  python-pysaml2,
  python-six,
  python-univention-management-console (= ${source:Version}),
