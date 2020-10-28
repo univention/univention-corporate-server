@@ -70,6 +70,60 @@ Description[en]=This variable configures the maximum number of HTTP requests whi
 Type=int
 Categories=service-apache
 
+[apache2/server-limit]
+Description[de]=Definiert den Wert der Apache Konfiguration "ServerLimit".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#serverlimit>.
+Description[en]=Defines the value of the apache configuration "ServerLimit". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#serverlimit>.
+Type=int
+Categories=service-apache
+
+[apache2/start-servers]
+Description[de]=Definiert den Wert der Apache Konfiguration "StartServers".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#startservers>.
+Description[en]=Defines the value of the apache configuration "StartServers". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#startservers>.
+Type=int
+Categories=service-apache
+
+[apache2/max-request-workers]
+Description[de]=Definiert den Wert der Apache Konfiguration "MaxRequestWorkers".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#maxrequestworkers>.
+Description[en]=Defines the value of the apache configuration "MaxRequestWorkers". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#maxrequestworkers>.
+Type=int
+Categories=service-apache
+
+[apache2/min-spare-threads]
+Description[de]=Definiert den Wert der Apache Konfiguration "MinSpareThreads".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#minsparethreads>.
+Description[en]=Defines the value of the apache configuration "MinSpareThreads". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#minsparethreads>.
+Type=int
+Categories=service-apache
+
+[apache2/max-spare-threads]
+Description[de]=Definiert den Wert der Apache Konfiguration "MaxSpareThreads".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#maxsparethreads>.
+Description[en]=Defines the value of the apache configuration "MaxSpareThreads". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#maxsparethreads>.
+Type=int
+Categories=service-apache
+
+[apache2/threads-per-child]
+Description[de]=Definiert den Wert der Apache Konfiguration "ThreadsPerChild".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#threadsperchild>.
+Description[en]=Defines the value of the apache configuration "ThreadsPerChild". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#threadsperchild>.
+Type=int
+Categories=service-apache
+
+[apache2/server-signature]
+Description[de]=Definiert den Wert der Apache Konfiguration "ServerSignature".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/mod/core.html#serversignature>.
+Description[en]=Defines the value of the apache configuration "ServerSignature". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/core.html#serversignature>.
+Type=str
+Categories=service-apache
+
+[apache2/server-tokens]
+Description[de]=Definiert den Wert der Apache Konfiguration "ServerTokens".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/mod/core.html#servertokens>.
+Description[en]=Defines the value of the apache configuration "ServerTokens". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/core.html#servertokens>.
+Type=str
+Categories=service-apache
+
+[apache2/server-admin]
+Description[de]=Definiert den Wert der Apache Konfiguration "ServerAdmin".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/mod/core.html#serveradmin>.
+Description[en]=Defines the value of the apache configuration "ServerAdmin". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/core.html#serveradmin>.
+Type=str
+Categories=service-apache
+
 [apache2/ssl/certificate]
 Description[de]=Der absolute Pfad zur SSL-Zertifikatsdatei für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/FQDN/cert.pem).
 Description[en]=The absolute path to the SSL certificate file for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/FQDN/cert.pem).
