@@ -299,6 +299,16 @@ class UMCP_Dispatcher(object):
 		except KeyError:
 			CORE.info('Session %r not found' % (sessionid,))
 
+	@classmethod
+	def clean_sessions(cls):
+		now = time.time()
+		for sessionid, user in list(Ressource.sessions.items()):
+			session = UMCP_Dispatcher.sessions.get(sessionid)
+			if (not session or not session._requestid2response_queue) and user.timed_out(now):
+				CORE.info('session %r timed out' % (sessionid,))
+				Ressource.sessions.pop(user.sessionid, None)
+		return True  # execute again!
+
 
 class UploadManager(dict):
 
@@ -357,29 +367,20 @@ class User(object):
 		self.username = username
 		self.password = password
 		self.saml = saml
-		self._time_remaining = _session_timeout
 		self.reset_timeout()
 		self.data = data or {}
 
 	def reset_timeout(self):
-		self._time_remaining = self.session_validity
+		self._timeout = time.time() + _session_timeout
+
+	def timed_out(self, now):
+		return self.session_end_time < now
 
 	@property
-	def session_validity(self):
-		if self.saml is not None:
-			return self.time_remaining
-		return _session_timeout
-
-	@property
-	def time_remaining(self):
-		remaining = []
-		if self.saml is not None:
-			remaining.append(self.saml.time_remaining)
-		remaining.append(self._time_remaining)
-		try:
-			return min(remaining)
-		except ValueError:  # no SAML, no client
-			return 0
+	def session_end_time(self):
+		if self.is_saml_user() and self.saml.response.not_on_or_after:
+			return self.saml.response.not_on_or_after
+		return self._timeout
 
 	def is_saml_user(self):
 		# self.saml indicates that it was originally a
@@ -400,9 +401,6 @@ class User(object):
 		else:
 			return None
 
-	def timed_out(self):
-		return self.saml.timed_out()
-
 	def __repr__(self):
 		return '<User(%s, %s, %s)>' % (self.username, self.sessionid, self.saml is not None)
 
@@ -414,17 +412,6 @@ class SAMLUser(object):
 		self.message = message
 		self.data = response.ava
 		self.username = u''.join(self.data['uid'])
-
-	@property
-	def time_remaining(self):
-		if self.response.not_on_or_after == 0:
-			return 0
-		return int(self.response.not_on_or_after - time.time())
-
-	def timed_out(self):
-		if self.response.not_on_or_after == 0:
-			return False
-		return self.time_remaining < 0
 
 
 traceback_pattern = re.compile(r'(Traceback.*most recent call|File.*line.*in.*\d)')
@@ -654,7 +641,7 @@ class Ressource(object):
 
 	def check_saml_session_validity(self):
 		user = self.get_user()
-		if user and user.saml is not None and user.time_remaining < 1:
+		if user and user.saml is not None and user.timed_out(time.time()):
 			raise UMC_HTTPError(UNAUTHORIZED)
 
 	def set_cookies(self, *cookies, **kwargs):
@@ -681,8 +668,6 @@ class Ressource(object):
 		olduser = self.get_user()
 
 		user = User(sessionid, username, password, saml or olduser and olduser.saml, kwargs)
-		self._session_timeout_timer(user)
-
 		self.sessions[sessionid] = user
 		self.set_cookies(('UMCSessionId', sessionid), ('UMCUsername', username))
 		return user
@@ -699,27 +684,9 @@ class Ressource(object):
 		if not value or value not in self.sessions:
 			return
 		user = self.sessions[value]
-		if user.time_remaining <= 0:
+		if user.timed_out(time.time()):
 			return
 		return user
-
-	def _session_timeout_timer(self, user):
-		"""In order to avoid problems when the system time is changed (e.g.,
-		via rdate), we register a timer event that counts down the session
-		timeout second-wise."""
-
-		# count down the remaining time
-		user._time_remaining -= 1
-
-		session = UMCP_Dispatcher.sessions.get(user.sessionid)
-		if user._time_remaining <= 0 and (not session or not session._requestid2response_queue):
-			self._log('info', 'session timed out')
-			self.sessions.pop(user.sessionid, None)
-			return
-
-		# count down the timer second-wise (in order to avoid problems when
-		# changing the system time, e.g. via rdate)
-		notifier.timer_add(1000, lambda: self._session_timeout_timer(user))
 
 
 class CPgeneric(Ressource):
@@ -884,8 +851,7 @@ class CPGet(CPgeneric):
 			raise UMC_HTTPError(UNAUTHORIZED)
 		info['username'] = user.username
 		info['auth_type'] = user.saml and 'SAML'
-		info['remaining'] = user.time_remaining
-		info['validity'] = user.session_validity
+		info['remaining'] = user.session_end_time - time.time()
 		return json.dumps({"status": 200, "result": info, "message": ""}).encode('ASCII')
 
 	@cherrypy.expose
@@ -1017,7 +983,7 @@ class CPAuth(CPgeneric):
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
 		user = self.get_user()
-		if not user or not user.saml or user.timed_out():
+		if not user or not user.saml or user.timed_out(time.time()):
 			# redirect user to login page in case he's not authenticated or his session timed out
 			raise HTTPRedirect('/univention/saml/')
 
@@ -1619,6 +1585,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			notifier.init(notifier.GENERIC)
 			notifier.dispatch.MIN_TIMER = get_int('umc/http/dispatch-interval', notifier.dispatch.MIN_TIMER)
 			notifier.dispatcher_add(UMCP_Dispatcher.check_queue)
+			notifier.timer_add(1000, UMCP_Dispatcher.clean_sessions)
 			notifier.loop()
 		except (SystemExit, KeyboardInterrupt) as exc:
 			# stop the web server
