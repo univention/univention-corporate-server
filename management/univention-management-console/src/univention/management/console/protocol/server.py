@@ -266,23 +266,28 @@ class Server(signals.Provider):
 		CORE.info('Initialising server process')
 		self.__port = port
 		self.__unix = unix
+		self.__realtcpsocket = None
+		self.__realunixsocket = None
 		self.__ssl = ssl
 		if self.__unix:
 			CORE.info('Using a UNIX socket')
-			self.__realsocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-		else:
+			self.__realunixsocket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+		if self.__port:
 			CORE.info('Using a TCP socket')
 			try:
-				self.__realsocket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+				self.__realtcpsocket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
 			except:
 				CORE.warn('Cannot open socket with AF_INET6 (Python reports socket.has_ipv6 is %s), trying AF_INET' % socket.has_ipv6)
-				self.__realsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+				self.__realtcpsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-		self.__realsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		self.__realsocket.setblocking(0)
-		fcntl.fcntl(self.__realsocket.fileno(), fcntl.F_SETFD, 1)
+		for sock in (self.__realtcpsocket, self.__realunixsocket):
+			if sock is None:
+				continue
+			sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+			sock.setblocking(0)
+			fcntl.fcntl(sock.fileno(), fcntl.F_SETFD, 1)
 
-		if self.__ssl and not self.__unix:
+		if self.__ssl and self.__port:
 			CORE.info('Setting up SSL configuration')
 			self.crypto_context = SSL.Context(SSL.TLSv1_METHOD)
 			self.crypto_context.set_cipher_list(ucr.get('umc/server/ssl/ciphers', 'DEFAULT'))
@@ -300,32 +305,36 @@ class Server(signals.Provider):
 				CRYPT.warn('Communication will not be encrypted!')
 				self.__ssl = False
 				self.crypto_context = None
-				self.__realsocket.bind(('', self.__port))
+				self.__realtcpsocket.bind(('', self.__port))
 				CRYPT.info('Server listening to unencrypted connections')
-				self.__realsocket.listen(SERVER_MAX_CONNECTIONS)
+				self.__realtcpsocket.listen(SERVER_MAX_CONNECTIONS)
 
 			if self.crypto_context:
-				self.connection = SSL.Connection(self.crypto_context, self.__realsocket)
+				self.connection = SSL.Connection(self.crypto_context, self.__realtcpsocket)
 				self.connection.setblocking(0)
 				self.connection.bind(('', self.__port))
 				self.connection.set_accept_state()
 				CRYPT.info('Server listening to SSL connections')
 				self.connection.listen(SERVER_MAX_CONNECTIONS)
-		else:
+		elif not self.__ssl and self.__port:
 			self.crypto_context = None
-			if self.__unix:
-				try:
-					# ensure that the UNIX socket is only accessible by root
-					old_umask = os.umask(0o077)
-					self.__realsocket.bind(self.__unix)
-					# restore old umask
-					os.umask(old_umask)
-				except EnvironmentError:
+			self.__realtcpsocket.bind(('', self.__port))
+			CRYPT.info('Server listening to TCP connections')
+			self.__realtcpsocket.listen(SERVER_MAX_CONNECTIONS)
+
+		if self.__unix:
+			# ensure that the UNIX socket is only accessible by root
+			old_umask = os.umask(0o077)
+			try:
+				self.__realunixsocket.bind(self.__unix)
+			except EnvironmentError:
+				if os.path.exists(self.__unix):
 					os.unlink(self.__unix)
-			else:
-				self.__realsocket.bind(('', self.__port))
-			CRYPT.info('Server listening to connections')
-			self.__realsocket.listen(SERVER_MAX_CONNECTIONS)
+			finally:
+				# restore old umask
+				os.umask(old_umask)
+			CRYPT.info('Server listening to UNIX connections')
+			self.__realunixsocket.listen(SERVER_MAX_CONNECTIONS)
 
 		self.__magic = magic
 		self.__magicClass = magicClass
@@ -335,10 +344,12 @@ class Server(signals.Provider):
 		else:
 			self.signal_new('session_new')
 
-		if self.__ssl and not self.__unix:
+		if self.__ssl:
 			notifier.socket_add(self.connection, self._connection)
-		else:
-			notifier.socket_add(self.__realsocket, self._connection)
+		if (not self.__ssl and self.__port):
+			notifier.socket_add(self.__realtcpsocket, self._connection)
+		if self.__unix:
+			notifier.socket_add(self.__realunixsocket, self._connection)
 
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
@@ -381,15 +392,20 @@ class Server(signals.Provider):
 		if self.__bucket:
 			self.__bucket.exit()
 
-		if self.__ssl and not self.__unix:
+		if self.__ssl and self.__port:
 			notifier.socket_remove(self.connection)
 			self.connection.close()
-		elif self.__realsocket:
-			notifier.socket_remove(self.__realsocket)
-			self.__realsocket.close()
-			self.__realsocket = None
+		elif not self.__ssl and self.__port and self.__realtcpsocket:
+			notifier.socket_remove(self.__realtcpsocket)
+			self.__realtcpsocket.close()
+			self.__realtcpsocket = None
 		if self.__unix:
-			os.unlink(self.__unix)
+			if self.__realunixsocket is not None:
+				notifier.socket_remove(self.__realunixsocket)
+				self.__realunixsocket.close()
+				self.__realunixsocket = None
+			if os.path.exists(self.__unix):
+				os.unlink(self.__unix)
 			self.__unix = None
 
 		self.__bucket = None

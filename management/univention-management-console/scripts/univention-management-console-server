@@ -68,6 +68,10 @@ class UMC_Daemon(DaemonRunner):
 			dest='port', default=6670,
 			help='defines an alternative port number [default %(default)s]')
 		self.parser.add_argument(
+			'-u', '--unix-socket', action='store',
+			default='/var/run/univention-management-console/server.socket',
+			help='defines an alternative UNIX socket [default %(default)s]')
+		self.parser.add_argument(
 			'-l', '--language', action='store',
 			dest='language', default=default_locale,
 			help='defines the language to use [default: %(default)s]')
@@ -211,7 +215,11 @@ class UMC_Daemon(DaemonRunner):
 		notifier.init(notifier.GENERIC)
 		notifier.dispatch.MIN_TIMER = get_int('umc/server/dispatch-interval', notifier.dispatch.MIN_TIMER)
 
-		with Server(port=self.options.port) as self.server:
+		# make sure the directory where to place socket files exists
+		if not os.path.exists('/var/run/univention-management-console'):
+			os.mkdir('/var/run/univention-management-console')
+
+		with Server(port=self.options.port, unix=self.options.unix_socket) as self.server:
 			CORE.process('Server started')
 			notifier.loop()
 

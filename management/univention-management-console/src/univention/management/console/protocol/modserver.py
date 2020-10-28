@@ -95,7 +95,7 @@ class ModuleServer(Server):
 		self.__init_etraceback = None
 		self.__handler = None
 		self._load_module()
-		Server.__init__(self, ssl=False, unix=socket, magic=False, load_ressources=False)
+		Server.__init__(self, port=None, ssl=False, unix=socket, magic=False, load_ressources=False)
 		MODULE.process('Module socket initialized.')
 		self.signal_connect('session_new', self._client)
 
