@@ -810,7 +810,7 @@ class access:
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
+	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None, ldap_filter=None):
 		# type: (str, Optional[List[str]], Optional[Dict[str, List[Any]]], Any, Any) -> Dict[str, Dict[str, Any]]
 		"""
 		Return |UCS| policies for |LDAP| entry.
@@ -823,7 +823,7 @@ class access:
 		:returns: A mapping of policy names to
 		"""
 		ud.debug(ud.ADMIN, ud.INFO, 'getPolicies modules dn %s result' % dn)
-		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
+		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs, ldap_filter)
 
 	def add(self, dn, al, exceptions=False, serverctrls=None, response=None):
 		# type: (str, List[Tuple], bool, Optional[List[ldap.controls.LDAPControl]], Optional[Dict]) -> None

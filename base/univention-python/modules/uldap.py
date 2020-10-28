@@ -420,7 +420,7 @@ class access(object):
 		return self.__recode_attribute(attr, val)
 
 	@_fix_reconnect_handling
-	def get(self, dn, attr=[], required=False):
+	def get(self, dn, attr=[], required=False, ldap_filter=None):
 		# type: (str, List[str], bool) -> Dict[str, List[str]]
 		"""
 		Return multiple attributes of a single LDAP object.
@@ -435,7 +435,7 @@ class access(object):
 		"""
 		if dn:
 			try:
-				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
+				result = self.lo.search_s(dn, ldap.SCOPE_BASE, ldap_filter or '(objectClass=*)', attr)
 			except ldap.NO_SUCH_OBJECT:
 				result = []
 			if result:
@@ -544,13 +544,13 @@ class access(object):
 		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls, response)]
 
 	@_fix_reconnect_handling
-	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
+	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None, ldap_filter=None):
 		# type: (str, List[str], Dict[str, List[Any]], Any, Any) -> Dict[str, Dict[str, Any]]
 		"""
 		Return |UCS| policies for |LDAP| entry.
 
 		:param str dn: The distinguished name of the |LDAP| entry.
-		:param list policies: List of policy object classes...
+		:param list policies: List of policy DNs...
 		:param dict attrs: |LDAP| attributes. If not given, the data is fetched from LDAP.
 		:param result: UNUSED!
 		:param fixedattrs: UNUSED!
@@ -582,12 +582,12 @@ class access(object):
 			obj_dn = dn
 			while True:
 				for policy_dn in policies:
-					self._merge_policy(policy_dn, obj_dn, object_classes, result)
+					self._merge_policy(policy_dn, obj_dn, object_classes, result, ldap_filter)
 				dn = self.parentDn(dn)
 				if not dn:
 					break
 				try:
-					parent = self.get(dn, attr=['univentionPolicyReference'], required=True)
+					parent = self.get(dn, attr=['univentionPolicyReference'], required=True, ldap_filter=ldap_filter)
 				except ldap.NO_SUCH_OBJECT:
 					break
 				policies = parent.get('univentionPolicyReference', [])
@@ -597,7 +597,7 @@ class access(object):
 			"getPolicies: result: %s" % result)
 		return result
 
-	def _merge_policy(self, policy_dn, obj_dn, object_classes, result):
+	def _merge_policy(self, policy_dn, obj_dn, object_classes, result, ldap_filter):
 		# type: (str, str, Set[str], Dict[str, Dict[str, Any]]) -> None
 		"""
 		Merge policies into result.
@@ -607,7 +607,7 @@ class access(object):
 		:param object_classes set: the set of object classes of the LDAP object.
 		:param result list: A mapping, into which the policy is merged.
 		"""
-		pattrs = self.get(policy_dn)
+		pattrs = self.get(policy_dn, ldap_filter=ldap_filter)
 		if not pattrs:
 			return
 

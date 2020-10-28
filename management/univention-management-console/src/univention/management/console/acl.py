@@ -373,7 +373,7 @@ class LDAP_ACLs(ACLs):
 		self._dump()
 
 	def _get_policy_for_dn(self, dn):
-		policy = self.lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={})
+		policy = self.lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={}, ldap_filter='(&(objectClass=umcPolicy)(umcPolicyGrantedOperationSet=*))')
 
 		return policy.get('umcPolicy', None)
 
@@ -390,7 +390,7 @@ class LDAP_ACLs(ACLs):
 
 		if policy and 'umcPolicyGrantedOperationSet' in policy:
 			for value in policy['umcPolicyGrantedOperationSet']['value']:
-				self._append(LDAP_ACLs.FROM_USER, self.lo.get(value))
+				self._append(LDAP_ACLs.FROM_USER, self.lo.get(value, ['umcOperationSetHost', 'umcOperationSetFlavor', 'umcOperationSetCommand']))
 
 		# TODO: check for nested groups
 		groupDNs = self.lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
@@ -401,7 +401,7 @@ class LDAP_ACLs(ACLs):
 				continue
 			if 'umcPolicyGrantedOperationSet' in policy:
 				for value in policy['umcPolicyGrantedOperationSet']['value']:
-					self._append(LDAP_ACLs.FROM_GROUP, self.lo.get(value))
+					self._append(LDAP_ACLs.FROM_GROUP, self.lo.get(value, ['umcOperationSetHost', 'umcOperationSetFlavor', 'umcOperationSetCommand']))
 
 		# make the ACLs unique
 		getvals = operator.itemgetter('fromUser', 'host', 'command', 'options', 'flavor')
