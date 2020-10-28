@@ -52,7 +52,7 @@ import functools
 import threading
 from errno import ESRCH
 from optparse import OptionParser
-from six.moves.urllib_parse import urlparse, urlunsplit, quote
+from six.moves.urllib_parse import urlparse, urlunsplit
 from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
 import six
@@ -1222,24 +1222,24 @@ class SAML(Ressource):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		self.set_session(self.create_sessionid(), saml.username, saml=saml)
-		raise HTTPRedirect('/univention/auth/sso?return=%s' % (quote(relay_state),))
+
+		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+		location = urlparse(relay_state)
+		if location.path.startswith('//'):
+			location = urlparse('')
+		location = urlunsplit(('', '', location.path, location.query, location.fragment))
+		raise HTTPRedirect(location, 303)
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
 		cherrypy.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
 		cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
-		req = Request('AUTH')
-		req.body = {
-			"auth_type": "SAML",
-			"username": saml.username,
-			"password": saml.message
-		}
 		sessionid = self.create_sessionid()
-		auth_response = cherrypy.request.app.root.auth._auth_request(req, sessionid)
 		self.set_session(sessionid, saml.username, saml=saml)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return b'<html><body><textarea>%s</textarea></body></html>' % (auth_response,)
+		data = {"status": 200, "result": {"username": saml.username}}
+		return b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),)
 
 	@cherrypy.expose
 	def slo(self, *args, **kwargs):  # single logout service
