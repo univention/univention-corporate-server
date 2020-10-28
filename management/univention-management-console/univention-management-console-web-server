@@ -294,7 +294,6 @@ class UMCP_Dispatcher(object):
 	@classmethod
 	def cleanup_session(cls, sessionid):
 		"""Removes a session when the connection to the UMC server has died or the session is expired"""
-		CORE.info('Open sessions: %s' % (','.join(cls.sessions.keys())))
 		try:
 			del cls.sessions[sessionid]
 			CORE.info('Cleaning up session %r' % (sessionid,))

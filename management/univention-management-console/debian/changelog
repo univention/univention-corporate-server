@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-8) unstable; urgency=medium
+
+  * Bug #52295: remove log message which exposes all sessions
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2020 13:01:16 +0100
+
 univention-management-console (11.0.5-7) unstable; urgency=medium
 
   * Bug #52294: add __slots__ to session objects
