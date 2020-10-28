@@ -101,7 +101,7 @@ class MagicBucket(object):
 			CORE.info('Shutting down connection %s' % sock)
 			self._cleanup(sock)
 
-	def _receive(self, socket):
+	def _receive(self, sock):
 		"""Signal callback: Handles incoming data. Processes SSL events
 		and parses the incoming data. If a valid UMCP was found it is
 		passed to _handle.
@@ -111,7 +111,7 @@ class MagicBucket(object):
 		data = ''
 
 		try:
-			data = socket.recv(RECV_BUFFER_SIZE)
+			data = sock.recv(RECV_BUFFER_SIZE)
 		except SSL.WantReadError:
 			# this error can be ignored (SSL need to do something)
 			return True
@@ -120,15 +120,19 @@ class MagicBucket(object):
 				CRYPT.warn('The socket was closed by the client.')
 			else:
 				CRYPT.error('SSL error in _receive: %s.' % (exc,))
-			self._cleanup(socket)
+			self._cleanup(sock)
+			return False
+		except socket.error as exc:
+			CORE.warn('Socket error in _receive: %s. Probably close (114).' % (exc,))
+			self._cleanup(sock)
 			return False
 
 		if not data:
-			self._cleanup(socket)
+			self._cleanup(sock)
 			return False
 
 		try:
-			state = self.__states[socket]
+			state = self.__states[sock]
 		except KeyError:
 			return False
 		state.buffer += data
@@ -149,16 +153,16 @@ class MagicBucket(object):
 			CORE.process('Parse error: %r' % (exc,))
 			if msg.id is None:
 				# close the connection in case we use could not parse the header
-				self._cleanup(socket)
+				self._cleanup(sock)
 				return False
 			state.requests[msg.id] = msg
 			state.session.execute('parse_error', msg, exc)
 
 		return True
 
-	def _do_send(self, socket):
+	def _do_send(self, sock):
 		try:
-			state = self.__states[socket]
+			state = self.__states[sock]
 		except KeyError:
 			CORE.warn('The socket was already removed.')
 			return False
@@ -168,7 +172,7 @@ class MagicBucket(object):
 			CORE.error('The response queue for %r is empty.' % (state,))
 			return False
 		try:
-			ret = socket.send(first)
+			ret = sock.send(first)
 			if ret < len(first):
 				state.resend_queue.insert(0, (id, first[ret:]))
 			else:
@@ -180,7 +184,11 @@ class MagicBucket(object):
 			return True
 		except (SSL.SysCallError, SSL.Error) as error:
 			CRYPT.warn('SSL error in _do_send: %s. Probably the socket was closed by the client.' % str(error))
-			self._cleanup(socket)
+			self._cleanup(sock)
+			return False
+		except socket.error as exc:
+			CORE.warn('socket.error in _do_send: %s. Probably the socket was closed by the client.' % (exc,))
+			self._cleanup(sock)
 			return False
 
 		return (len(state.resend_queue) > 0)
@@ -220,7 +228,10 @@ class MagicBucket(object):
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
 			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
 			self._cleanup(state.socket)
-		except:  # close the connection to the client. we can't do anything else
+		except socket.error as exc:
+			CORE.warn('socket error in _response: %s. Probably the socket was closed by the client.' % (exc,))
+			self._cleanup(state.socket)
+		except Exception:  # close the connection to the client. we can't do anything else
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
 
@@ -276,7 +287,7 @@ class Server(signals.Provider):
 			CORE.info('Using a TCP socket')
 			try:
 				self.__realtcpsocket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-			except:
+			except Exception:
 				CORE.warn('Cannot open socket with AF_INET6 (Python reports socket.has_ipv6 is %s), trying AF_INET' % socket.has_ipv6)
 				self.__realtcpsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
