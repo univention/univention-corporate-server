@@ -139,6 +139,8 @@ cherrypy.tools.fix_uri = cherrypy.Tool('before_request_body', _proxy_uri, priori
 
 class SessionClient(object):
 
+	__slots__ = ('authenticated', 'client', '_requestid2response_queue', '_lock', 'ip')
+
 	def __init__(self, ip=None):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.authenticated = False
@@ -345,6 +347,8 @@ class QueueRequest(object):
 	:param timeout: int
 	"""
 
+	__slots__ = ('sessionid', 'request', 'response_queue', 'ip')
+
 	def __init__(self, sessionid, request, response_queue, ip):
 		self.sessionid = sessionid
 		self.request = request
@@ -353,6 +357,8 @@ class QueueRequest(object):
 
 
 class User(object):
+
+	__slots__ = ('sessionid', 'username', 'password', 'saml', 'data', '_time_remaining')
 
 	def __init__(self, sessionid, username, password, saml=None, data=None):
 		self.sessionid = sessionid
@@ -410,6 +416,8 @@ class User(object):
 
 
 class SAMLUser(object):
+
+	__slots__ = ('response', 'message', 'data', 'username')
 
 	def __init__(self, response, message):
 		self.response = response
