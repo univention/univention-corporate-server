@@ -198,7 +198,7 @@ class SamlTest(object):
 		saml_message = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
 		if saml_message is None:
 			raise SamlLoginError(self)
-		print("The SAML message is:\n%s" % saml_message)
+		# print("The SAML message is:\n%s" % saml_message)
 		return saml_message
 
 	def _extract_sp_url(self):
@@ -222,12 +222,12 @@ class SamlTest(object):
 				pass
 		if not auth_state:
 			raise SamlError("No AuthState field found.\nSAML response:\n%s" % self.page.text)
-		print("The SAML AuthState is:\n%s" % auth_state)
+		# print("The SAML AuthState is:\n%s" % auth_state)
 		return auth_state
 
 	def _send_saml_response_to_sp(self, url, saml_msg, relay_state):
 		# POST the SAML message to SP, thus logging in.
-		print("POST SAML message to: %s" % url)
+		# print("POST SAML message to: %s" % url)
 		self.position = "posting SAML message"
 		self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
