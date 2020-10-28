@@ -116,17 +116,17 @@ for FS in xfs ext2 ext3 ext4; do
 		chown $user "$mountpoint/file$i"
 		sync
 
- 		echo "Running: smbcquotas --max-protocol=NT1 -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share"
- 		result=$(smbcquotas --max-protocol=NT1 -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share")
+		echo "Running: smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share"
+		result=$(smbcquotas -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share")
 		echo "result: $result"
- 		res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
+		res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
 		echo "smbcquotas result: $res_smbcquota"
 		if [ -z "$res_smbcquota" ]; then
 			echo "Warning: The login failed for some reason. Wait 10 seconds and try again."
 			sleep 10
-			res_smbcquota=$(smbcquotas --max-protocol=NT1 -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share" | awk '{print $3 $4 $5}')
+			res_smbcquota=$(smbcquotas -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share" | awk '{print $3 $4 $5}')
 		fi
-	
+
 		res_repquota=$(repquota -v $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
 		echo "Result smbcquotas: $res_smbcquota"
 		echo "Result repquota  : $res_repquota"
@@ -159,4 +159,3 @@ done
 wait_for_replication_and_postrun
 
 exit $RETVAL
-
