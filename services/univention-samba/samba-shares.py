@@ -196,7 +196,6 @@ def handler(dn, new, old, command):
 				('univentionShareSambaForceCreateMode', 'force create mode', 'ASCII'),
 				('univentionShareSambaForceDirectoryMode', 'force directory mode', 'ASCII'),
 				('univentionShareSambaLocking', 'locking', 'ASCII'),
-				('univentionShareSambaBlockingLocks', 'blocking locks', 'ASCII'),
 				('univentionShareSambaStrictLocking', 'strict locking', 'ASCII'),
 				('univentionShareSambaOplocks', 'oplocks', 'ASCII'),
 				('univentionShareSambaLevel2Oplocks', 'level2 oplocks', 'ASCII'),

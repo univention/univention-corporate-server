@@ -1,3 +1,14 @@
+univention-samba4 (9.0.2-2) unstable; urgency=medium
+
+  * Bug #49898: Remove deprecated parameter "encrypt passwords"
+    and corresponding UCR variable samba/encrypt_passwords.
+  * Don't write deprecated parameter "blocking locks" into
+    shares definitions any longer.
+  * Don't set deprecated parameter "domain logons = yes" any longer,
+    it's for NT4 style domains.
+
+ -- Arvid <requate@univention.de>  Wed, 28 Oct 2020 16:42:47 +0100
+
 univention-samba4 (9.0.2-1) unstable; urgency=medium
 
   * Bug #52045: migrate scripts to Python 3

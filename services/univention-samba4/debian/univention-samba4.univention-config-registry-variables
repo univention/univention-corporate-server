@@ -34,12 +34,6 @@ Description[en]=If this option is activated, Samba supports the Distributed File
 Type=bool
 Categories=service-samba
 
-[samba/encrypt_passwords]
-Description[de]=Ist diese Variable nicht oder auf 'yes' gesetzt, werden verschlüsselte Passwörter mit Windows-Clients ausgehandelt.
-Description[en]=If this variable is not set or set to 'yes', encrypted passwords are negotiated with Windows clients.
-Type=str
-Categories=service-samba
-
 [samba/large_readwrite]
 Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, unterstützt der Samba-Server das CIFS-Feature CAP_W2K_SMBS. Er erhöht die Performance für Clients, die diese Protokollerweiterung unterstützen.
 Description[en]=If this variable is set to 'yes' or unset, Samba supports the CIFS feature CAP_W2K_SMBS. It increases the performance for clients supporting it.

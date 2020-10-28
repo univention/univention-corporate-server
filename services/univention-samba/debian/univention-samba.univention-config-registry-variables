@@ -46,12 +46,6 @@ Description[en]=If this variable is set to 'yes' users can be assigned additiona
 Type=str
 Categories=service-samba
 
-[samba/encrypt_passwords]
-Description[de]=Ist diese Variable nicht oder auf 'yes' gesetzt, werden verschlüsselte Passwörter mit Windows-Clients ausgehandelt.
-Description[en]=If this variable is not set or set to 'yes', encrypted passwords are negotiated with Windows clients.
-Type=str
-Categories=service-samba
-
 [samba/getwd_cache]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, versucht Samba getwd()-Aufrufe durch einen internen Cache zu minimieren. Ist die Variable nicht gesetzt, wird der Cache verwendet.
 Description[en]=If this variable is set to 'yes', Samba tries to minimise getwd() calls through an internal cache. If the variable is unset, the cache is used.
