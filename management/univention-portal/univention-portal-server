@@ -50,6 +50,7 @@ import hashlib
 import uuid
 import datetime
 import functools
+import resource
 import six
 from cherrypy.lib.httputil import valid_status
 from six.moves.http_client import UNAUTHORIZED
@@ -1223,6 +1224,7 @@ def make_app():
 
 
 if __name__ == "__main__":
+	resource.setrlimit(resource.RLIMIT_NOFILE, (64512, 64512))
 	setup_logger()
 	server = HTTPServer(make_app())
 	port = int(ucr.get('portal/port', 8095))
