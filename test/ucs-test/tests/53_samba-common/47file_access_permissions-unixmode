@@ -16,6 +16,8 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/samba.sh" || exit 137
 
+kdestroy || true # see Bug 52130
+
 listener_replication_sleep_seconds=1
 listener_replication_retry_max=30
 
