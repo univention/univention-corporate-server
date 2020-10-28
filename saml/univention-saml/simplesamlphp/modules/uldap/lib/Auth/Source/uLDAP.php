@@ -33,10 +33,10 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		/* Call the parent constructor first, as required by the interface. */
 		parent::__construct($info, $config);
 
-	//	$this->ldapConfig = new sspmod_ldap_ConfigHelper($config,
-	//		'Authentication source ' . var_export($this->authId, TRUE));
-	//	$this->ldap = new SimpleSAML_Auth_LDAP($config['hostname'], $config['enable_tls'], $config['debug'], $config['timeout']);
-	//	$this->ldap->bind($config['search.username'], $config['search.password']);
+		$this->ldapConfig = new sspmod_ldap_ConfigHelper($config,
+			'Authentication source ' . var_export($this->authId, TRUE));
+		$this->ldap = new SimpleSAML_Auth_LDAP($config['hostname'], $config['enable_tls'], $config['debug'], $config['timeout']);
+		$this->ldap->bind($config['search.username'], $config['search.password']);
 		$this->config = $config;
 	}
 
@@ -53,9 +53,8 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		assert('is_string($username)');
 		assert('is_string($password)');
 
-		$attributes = array("uid" => array("Administrator"), "sambaAcctFlags" => array("U"), "sambaPwdLastSet" => array("1603811563"), "memberOf" => array("cn=Domain Admins,cn=groups,l=school,l=dev", "cn=DC Backup Hosts,cn=groups,l=school,l=dev", "cn=Domain Users,cn=groups,l=school,l=dev"));
-		return $attributes;
 		$new_password = $this->checkPasswordChange($username, $password);
+
 		try {
 			$attributes = $this->ldapConfig->login($username, $new_password, $sasl_args);
 		} catch (SimpleSAML_Error_Error $e) {
