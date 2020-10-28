@@ -1,3 +1,9 @@
+univention-apache (11.0.1-20) unstable; urgency=medium
+
+  * Bug #51294: add more apache settings configurable via UCR
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2020 12:20:44 +0100
+
 univention-apache (11.0.1-19) unstable; urgency=medium
 
   * Bug #51077: make UCR templates python3-compatible
