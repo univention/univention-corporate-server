@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-7) unstable; urgency=medium
+
+  * Bug #52294: add __slots__ to session objects
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2020 12:55:53 +0100
+
 univention-management-console (11.0.5-6) unstable; urgency=medium
 
   * Bug #52271: make dispatcher interval configurable

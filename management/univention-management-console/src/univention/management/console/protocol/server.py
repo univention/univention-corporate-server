@@ -446,6 +446,8 @@ class State(object):
 	:param fd socket: file descriptor or socket object
 	"""
 
+	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'session_end_time')
+
 	def __init__(self, client, socket):
 		self.client = client
 		self.socket = socket
