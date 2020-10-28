@@ -85,7 +85,7 @@ class DebianPackage(object):
                             print("Ignoring unknown dependency {!r}.".format(dep))
                             continue
                         if py_dep != "__ignore":
-                            self._python_dependencies.add(dep)
+                            self._python_dependencies.add(py_dep)
                     self._description = stanza["Description"].split("\n")[0]
                     try:
                         self._long_description = "\n".join(stanza["Description"].split("\n")[1:])
