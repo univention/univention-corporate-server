@@ -1,0 +1,1 @@
+include modules/univention/python_packaging/debian_to_python_package.json
