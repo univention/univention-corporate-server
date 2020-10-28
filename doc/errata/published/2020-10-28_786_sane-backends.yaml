@@ -18,3 +18,5 @@ ignore:
 - cve.CVE-2020-12863
 - cve.CVE-2020-12865
 - cve.CVE-2020-12867
+erratum: 786
+announced: 2020-10-28
