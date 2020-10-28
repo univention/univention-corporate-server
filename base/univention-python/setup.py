@@ -35,7 +35,7 @@ dp = DebianPackage(os.path.dirname(__file__))
 
 setup(
 	packages=['univention'],
-	package_dir={'univention': 'modules'},
+	package_dir={'': 'modules'},
 	license='GNU Affero General Public License v3',
 	**dp.as_setuptools_setup_kwargs()
 )
