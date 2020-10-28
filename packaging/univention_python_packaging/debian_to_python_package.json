@@ -1,0 +1,7 @@
+{
+  "python-univention": "python-univention",
+  "python-univention-lib":  "univention-lib",
+  "python-lazy-object-proxy":  "lazy-object-proxy",
+  "python-ldap":  "python-ldap",
+  "python-univention-config-registry": "univention-config-registry"
+}
