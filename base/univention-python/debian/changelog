@@ -1,3 +1,10 @@
+univention-python (13.0.2-3) unstable; urgency=medium
+
+  * Bug #49898: make univention.password import samba.check_password_quality
+    only for Python3
+
+ -- Arvid <requate@univention.de>  Wed, 28 Oct 2020 16:06:52 +0100
+
 univention-python (13.0.2-2) unstable; urgency=medium
 
   * Bug #49898: python-univention cannot depend on python-samba

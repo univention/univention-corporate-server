@@ -32,9 +32,10 @@ import os
 import re
 import univention.uldap
 import univention.config_registry as ucr
-from samba import check_password_quality as samba_check_password_quality
-
 from ldap.filter import filter_format
+import six
+if not six.PY2:
+	from samba import check_password_quality as samba_check_password_quality
 
 
 class CheckFailed(Exception):
