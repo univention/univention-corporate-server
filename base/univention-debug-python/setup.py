@@ -31,9 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+#
+# If you get "fatal error: univention/debug.h: No such file or directory", the
+# "libunivention-debug-dev" package is not installed. Build and install it:
+# cd ../univention-debug
+# dpkg-buildpackage -us -uc -b
+# dpkg -i ../*.deb
+# cd -
+#
+
 import os
 from distutils.core import setup, Extension
 from univention.python_packaging.debian_package import DebianPackage
+
 dp = DebianPackage(os.path.dirname(__file__))
 
 setup(
