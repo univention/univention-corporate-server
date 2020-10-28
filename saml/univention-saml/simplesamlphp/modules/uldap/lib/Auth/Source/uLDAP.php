@@ -16,7 +16,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 	 * A LDAP configuration object.
 	 */
 	private $ldapConfig;
-	private $ldap;
+	private static $_ldap = NULL;
 	private $config;
 
 
@@ -35,11 +35,16 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 
 		$this->ldapConfig = new sspmod_ldap_ConfigHelper($config,
 			'Authentication source ' . var_export($this->authId, TRUE));
-		$this->ldap = new SimpleSAML_Auth_LDAP($config['hostname'], $config['enable_tls'], $config['debug'], $config['timeout']);
-		$this->ldap->bind($config['search.username'], $config['search.password']);
 		$this->config = $config;
 	}
 
+	private function ldap() {
+		if (self::$_ldap === NULL) {
+			self::$_ldap = new SimpleSAML_Auth_LDAP($this->config['hostname'], $this->config['enable_tls'], $this->config['debug'], $this->config['timeout']);
+			self::$_ldap->bind($this->config['search.username'], $this->config['search.password']);
+		}
+		return self::$_ldap;
+	}
 
 	/**
 	 * Attempt to log in using the given username and password.
@@ -71,8 +76,8 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 				$expired_messages = array("password expired", "The password has expired.", "account expired");
 				if (in_array($this->ldapConfig->extended_error, $expired_messages)) {
 					SimpleSAML\Logger::debug('password is expired, checking for password change');
-					$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
-					$attributes = $this->ldap->getAttributes($user_dn);
+					$user_dn = $this->ldap()->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
+					$attributes = $this->ldap()->getAttributes($user_dn);
 					$this->throw_common_login_errors($attributes);
 				}
 			}
