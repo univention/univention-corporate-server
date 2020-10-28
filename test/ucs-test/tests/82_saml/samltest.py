@@ -289,12 +289,15 @@ class SamlTest(object):
 		relay_state = self._extract_relay_state()
 		self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
-	def login_with_new_session_at_IdP(self):
+	def login_with_new_session_at_IdP(self, use_portal=False):
 		"""Use Identity Provider to log in to a Service Provider.
 		The IdP doesn't know the session and has to ask for username and password"""
 
 		# Open login prompt. Redirects to IdP. IdP answers with login prompt
-		url = "https://%s/univention/saml/" % self.target_sp_hostname
+		url = "https://{}/univention{}saml/".format(
+			self.target_sp_hostname,
+			'/portal/' if use_portal else '/'
+		)
 		print("GET SAML login form at: %s" % url)
 		self.position = "reaching login dialog"
 		# Login at IdP. IdP answers with SAML message and url to SP in body
