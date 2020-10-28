@@ -38,6 +38,7 @@ Defines the basic class for an UMC server.
 import os
 import errno
 import fcntl
+import time
 import socket
 import resource
 import traceback
@@ -70,6 +71,7 @@ class MagicBucket(object):
 
 	def __init__(self):
 		self.__states = {}
+		notifier.timer_add(10000, self._timeout_connections)
 
 	def new(self, client, socket):
 		"""Is called by the Server object to announce a new incoming
@@ -83,19 +85,15 @@ class MagicBucket(object):
 		state.session.signal_connect('success', notifier.Callback(self._response, state))
 		self.__states[socket] = state
 		notifier.socket_add(socket, self._receive)
-		self._timeout_connection(state)
 
-	def _timeout_connection(self, state):
+	def _timeout_connections(self):
 		"""Closes the connection after a specified timeout"""
-		state.time_remaining -= 1
+		timed_out = [sock for sock, state in self.__states.items() if state.timed_out()]
+		for sock in timed_out:
+			CORE.process('Session timed out.')  # TODO: do we want to log which session timed out?
+			self._cleanup(sock)
 
-		if state.time_remaining <= 0 and not state.requests and not state.session.has_active_module_processes():
-			CORE.process('Session timed out.')
-			self._cleanup(state.socket)
-		else:
-			# count down the timer second-wise (in order to avoid problems when
-			# changing the system time, e.g. via rdate)
-			notifier.timer_add(1000, lambda: self._timeout_connection(state))
+		return True
 
 	def exit(self):
 		'''Closes all open connections.'''
@@ -513,7 +511,7 @@ class State(object):
 	:param fd socket: file descriptor or socket object
 	"""
 
-	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'time_remaining')
+	__slots__ = ('client', 'socket', 'buffer', 'requests', 'resend_queue', 'session', 'session_end_time')
 
 	def __init__(self, client, socket):
 		self.client = client
@@ -525,7 +523,14 @@ class State(object):
 		self.reset_connection_timeout()
 
 	def reset_connection_timeout(self):
-		self.time_remaining = SERVER_CONNECTION_TIMEOUT
+		self.session_end_time = time.time() + SERVER_CONNECTION_TIMEOUT
+
+	def timed_out(self):
+		return not self.requests and not self.session.has_active_module_processes() and self.time_remaining <= 0
+
+	@property
+	def time_remaining(self):
+		return self.session_end_time - time.time()
 
 	def __repr__(self):
 		return '<State(%s %r buffer=%d requests=%d time_remaining=%r)>' % (self.client, self.socket, len(self.buffer), len(self.requests), self.time_remaining)
