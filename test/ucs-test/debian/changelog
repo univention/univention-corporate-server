@@ -1,3 +1,9 @@
+ucs-test (9.0.5-19) unstable; urgency=medium
+
+  * Bug #52130: some changes for the new samba version
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Oct 2020 15:00:34 +0100
+
 ucs-test (9.0.5-18) unstable; urgency=medium
 
   * Bug #52130: kdestroy before 53samba-common tests
