@@ -31,6 +31,12 @@ import os.path
 from distutils.core import setup
 from univention.python_packaging.debian_package import DebianPackage
 
+#
+# If you get "fatal error: crack.h: No such file or directory", the "dev"
+# package of cracklib is not installed. Install it:
+# apt install libcrack2-dev
+#
+
 dp = DebianPackage(os.path.dirname(__file__))
 
 setup(
