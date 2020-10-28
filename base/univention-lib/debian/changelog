@@ -1,3 +1,9 @@
+univention-lib (9.0.9-8) unstable; urgency=medium
+
+  * Bug #49898: Temporary workaround for admember.py with Python2
+
+ -- Arvid <requate@univention.de>  Wed, 28 Oct 2020 23:45:30 +0100
+
 univention-lib (9.0.9-7) unstable; urgency=medium
 
   * Bug #49898: python-univention-lib cannot depend on python-ldb
