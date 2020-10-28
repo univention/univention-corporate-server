@@ -46,6 +46,45 @@ do
 	sleep 3
 done
 
+## Wait until the real domain sambaSID has been synchronized back from Samba/AD to OpenLDAP
+output=$(univention-ldapsearch "uid=$username" sambaSID uidnumber)
+uidNumber=$(sed -n 's/^uidNumber: //p' <<<"$output")
+tmpSID="S-1-4-$uidNumber"
+sambaSID=$(sed -n 's/^sambaSID: //p' <<<"$output")
+i=0
+while [ "$sambaSID" = "$tmpSID" ]; do
+	if [ "$i" = 10 ]; then
+		echo "ERROR: Waiting for SID replication from Samba still fails after 10 attempts"
+		break
+	fi
+	echo "Waiting for SID replication from Samba, currently the sambaSID in OpenLDAP is still $tmpSID"
+	sleep 1
+	let i=$i+1
+	## and check again
+	output=$(univention-ldapsearch "uid=$username" sambaSID)
+	sambaSID=$(sed -n 's/^sambaSID: //p' <<<"$output")
+done
+
+## Flushing the cache is only necessary if we do a wbinfo/smbclient before the real domain sambaSID has been written to idmap.ldb
+## Let's check:
+output=$(wbinfo --uid-to-sid "$uidNumber")
+if [ "$output" = "$tmpSID" ]; then
+	# echo "uidNumber: $uidNumber"
+	# echo "wbinfo --uid-to-sid: $(wbinfo --uid-to-sid "$uidNumber")"
+	# echo "wbinfo --sid-to-uid: $(wbinfo --sid-to-uid "$sambaSID")"
+	# echo "wbinfo --sid-to-uid: $(wbinfo --sid-to-uid "$tmpSID")"
+	echo "============================================"
+	echo "Flushing Samba cache entry:"
+	net cache list | grep "IDMAP/UID2SID/$uidNumber"
+	net cache del "IDMAP/UID2SID/$uidNumber"
+	net cache del "IDMAP/SID2XID/$sambaSID"
+	# net cache del "IDMAP/SID2XID/$tmpSID"  # not necesssary, but cleaner
+	echo "============================================"
+fi
+## Let's clean it anyway, for the sake of a clean test.
+net cache del "IDMAP/UID2SID/$uidNumber" >/dev/null
+net cache del "IDMAP/SID2XID/$sambaSID" >/dev/null
+
 ## Access sysvol using smbclient
 echo "----Access sysvol using smbclient"
 i=0
@@ -54,10 +93,17 @@ do
 	let i=$i+1
 	if [ "$i" = 10 ]; then
 		echo "$output"
+		echo "================================================================"
+		echo "Could not access Policies on sysvol with Kerberos authentication:"
+		echo "============================================"
+		echo "kinit $username"
+		echo "smbclient \"//$(hostname -f)/sysvol\" -k -c \"ls $domainname/Policies\""
+		echo "============================================"
+		net cache list | grep "IDMAP/UID2SID/$uidNumber"
+		echo "============================================"
 		fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
-		break
 	fi
-	sleep 3
+	sleep 1
 done
 
 exit $RETVAL
