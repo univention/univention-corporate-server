@@ -49,15 +49,15 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		try:
-			fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
+			fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
 		except (KeyError, IndexError):
 			return
 
 		change = False
-		if 'univention-saml' in new.get('univentionService', []):
+		if b'univention-saml' in new.get('univentionService', []):
 			handler_set(['ucs/server/saml-idp-server/%s=%s' % (fqdn, fqdn)])
 			change = True
-		elif 'univention-saml' in old.get('univentionService', []):
+		elif b'univention-saml' in old.get('univentionService', []):
 			handler_unset(['ucs/server/saml-idp-server/%s' % (fqdn,)])
 			change = True
 
@@ -65,6 +65,6 @@ def handler(dn, new, old):
 			path_to_cert = ucr.get('saml/idp/certificate/certificate')
 			path_to_key = ucr.get('saml/idp/certificate/privatekey')
 			if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
-				subprocess.call(['invoke-rc.d', 'univention-saml', 'restart'])
+				subprocess.call(['systemctl', 'restart', 'univention-saml'])
 	finally:
 		listener.unsetuid()

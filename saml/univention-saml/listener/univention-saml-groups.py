@@ -71,18 +71,16 @@ def handler(dn, new, old):
 				for sp in list(set(old_sp) - set(new_sp)):
 					sp_to_rm.append(sp)
 
-		if sp_to_add:
-			for sp in sp_to_add:
-				if sp not in data:
-					data[sp] = []
-				if dn not in data[sp]:
-					data[sp].append(dn)
-		if sp_to_rm:
-			for sp in sp_to_rm:
-				if sp not in data:
-					data[sp] = []
-				if dn in data[sp]:
-					data[sp].remove(dn)
+		for sp in sp_to_add:
+			sp = sp.decode('UTF-8')
+			data.setdefault(sp, [])
+			if dn not in data[sp]:
+				data[sp].append(dn)
+		for sp in sp_to_rm:
+			sp = sp.decode('UTF-8')
+			data.setdefault(sp, [])
+			if dn in data[sp]:
+				data[sp].remove(dn)
 
 		with open(tmp_path, 'w+') as outfile:
 			json.dump(data, outfile)
