@@ -29,7 +29,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
+import listener
+import os
+import univention.debug as ud
+from textwrap import dedent
+from six.moves.urllib_parse import urljoin
 
 name = 'serverinstallerpxe'
 description = 'PXE configuration for the Server installer'
@@ -41,13 +47,7 @@ attributes = [
 	'univentionServerInstallationOption',
 ]
 
-import listener
-import os
-import univention.debug as ud
-from textwrap import dedent
-from urlparse import urljoin
-
-EMPTY = ('',)
+EMPTY = (b'',)
 PXEBASE = '/var/lib/univention-client-boot/pxelinux.cfg'
 FQDN = '%(hostname)s.%(domainname)s' % listener.configRegistry
 URLBASE = listener.configRegistry.get(
@@ -73,7 +73,7 @@ def handler(dn, new, old):
 def gen_pxe(new):
 	args = [listener.configRegistry.get('pxe/installer/append')]
 	if args[0] is None:
-		profile = new.get('univentionServerInstallationProfile', EMPTY)[0]
+		profile = new.get('univentionServerInstallationProfile', EMPTY)[0].decode('UTF-8')
 		if not profile:
 			return
 		url = urljoin(URLBASE, profile)
@@ -100,7 +100,7 @@ def gen_pxe(new):
 			'mirror/http/hostname=%s' % (listener.configRegistry.get("repository/online/server", FQDN),),
 			# 'DEBCONF_DEBUG=5',
 		]
-	args.append(new.get('univentionServerInstallationOption', EMPTY)[0])
+	args.append(new.get('univentionServerInstallationOption', EMPTY)[0].decode('UTF-8'))
 	# <http://www.syslinux.org/wiki/index.php/SYSLINUX>: The entire APPEND
 	# statement must be on a single line. A feature to break up a long line
 	# into multiple lines will be added eventually.
@@ -130,12 +130,12 @@ def gen_pxe(new):
 
 def remove_pxe(old):
 	try:
-		basename = ip_to_hex(old['aRecord'][0])
+		basename = ip_to_hex(old['aRecord'][0].decode('ASCII'))
 	except LookupError:
 		return
 	else:
 		if not basename:
-			ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid old IP address %s' % old['aRecord'][0])
+			ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid old IP address %r' % (old['aRecord'][0],))
 			return
 		filename = os.path.join(PXEBASE, basename)
 		listener.setuid(0)
@@ -148,11 +148,11 @@ def remove_pxe(old):
 
 def create_pxe(new, pxeconfig):
 	try:
-		basename = ip_to_hex(new['aRecord'][0])
+		basename = ip_to_hex(new['aRecord'][0].decode('ASCII'))
 	except LookupError:
 		return
 	else:
-		cn = new['cn'][0]
+		cn = new['cn'][0].decode('UTF-8')
 		ud.debug(ud.LISTENER, ud.INFO, 'PXE: writing configuration for host %s' % cn)
 
 		if not basename:
@@ -160,7 +160,7 @@ def create_pxe(new, pxeconfig):
 			return
 		filename = os.path.join(PXEBASE, basename)
 
-		if new.get('univentionServerReinstall', EMPTY)[0] == '1':
+		if new.get('univentionServerReinstall', EMPTY)[0] == b'1':
 			listener.setuid(0)
 			try:
 				with open(filename, 'w') as fd:
