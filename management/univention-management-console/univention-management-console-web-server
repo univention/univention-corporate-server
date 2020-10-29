@@ -137,10 +137,15 @@ cherrypy.tools.fix_uri = cherrypy.Tool('before_request_body', _proxy_uri, priori
 
 class SessionClient(object):
 
+	umc_port = None
+
 	def __init__(self, ip=None):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
 		self.authenticated = False
-		self.client = Client(port=6670 + PORT - 8090)
+		client_kw = {}
+		if self.umc_port is not None:
+			client_kw['port'] = self.umc_port
+		self.client = Client(**client_kw)
 		self.client.signal_connect('authenticated', self._authenticated)
 		self.client.signal_connect('response', self._response)
 		self.client.signal_connect('closed', self._closed)
@@ -1494,11 +1499,19 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		)
 		self.parser.add_option(
 			'-p', '--port', action='store', type='int',
-			dest='port', default=PORT,
+			dest='port', default=8090,
 			help='defines an alternative port number [default %(default)s]')
+		self.parser.add_option(
+			'-u', '--umc-port', action='store', type='int',  #TODO Support unix socket?
+			dest='umc_port', default=-1,
+			help='alternative umc server port number to connect')
 		(self.options, self.arguments) = self.parser.parse_args()
 
-		PORT = self.options.port
+		if self.options.port != 8090:
+			self.options.logfile += '.{}'.format(self.options.port)
+
+		if self.options.umc_port > 0:
+			SessionClient.umc_port = self.options.umc_port
 
 		# cleanup environment
 		os.environ.clear()

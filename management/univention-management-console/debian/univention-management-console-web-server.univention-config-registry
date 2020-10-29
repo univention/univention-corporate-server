@@ -18,6 +18,8 @@ Variables: umc/web/piwik
 Variables: updater/maintenance
 Variables: umc/login/content-security-policy/.*
 Variables: ucs/server/sso/fqdn
+Variables: umc/parallel
+Variables: umc/parallel/port-start
 
 Type: file
 File: etc/apache2/sites-available/univention-proxy.conf

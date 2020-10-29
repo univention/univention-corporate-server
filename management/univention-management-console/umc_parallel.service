@@ -1,0 +1,9 @@
+[Unit]
+Description=Start multiple UMC-Webserver and UMC-Server
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/start_parallel_umc.py
+
+[Install]
+WantedBy=multi-user.target
