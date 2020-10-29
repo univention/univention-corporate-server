@@ -38,11 +38,16 @@ import shutil
 import json
 from datetime import datetime
 
+from ldap.filter import filter_format
+
 from univention.appcenter.app_cache import Apps
 from univention.listener.handler import ListenerModuleHandler
 
 LISTENER_DUMP_DIR = '/var/lib/univention-appcenter/listener/'
+
+
 class AppListener(ListenerModuleHandler):
+
 	def _get_new_file_name(self):
 		timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S-%f')
 		return '%s/%s/%s.json' % (LISTENER_DUMP_DIR, self.config.get_name(), timestamp)
@@ -61,14 +66,14 @@ class AppListener(ListenerModuleHandler):
 		entry_uuid = obj.get('entryUUID', [None])[0]
 		object_type = obj.get('univentionObjectType', [None])[0]
 		attrs = {
-			'entry_uuid': entry_uuid,
+			'entry_uuid': entry_uuid.decode('UTF-8') if entry_uuid is not None else entry_uuid,
 			'dn': dn,
-			'object_type': object_type,
+			'object_type': object_type.decode('UTF-8') if object_type is not None else object_type,
 			'command': command,
-			}
+		}
 		with self.as_root():
 			filename = self._get_new_file_name()
-			with open(filename, 'wb') as fd:
+			with open(filename, 'w') as fd:
 				json.dump(attrs, fd, sort_keys=True, indent=4)
 			self.logger.info('%s of %s (id: %s, file: %s)' % (log_as or command, dn, entry_uuid, filename))
 
@@ -87,4 +92,4 @@ class AppListener(ListenerModuleHandler):
 
 		def get_ldap_filter(self):
 			app = Apps().find(self.get_name())
-			return '(|%s)' % ''.join('(univentionObjectType=%s)' % udm_module for udm_module in app.listener_udm_modules)
+			return '(|%s)' % ''.join(filter_format('(univentionObjectType=%s)', [udm_module]) for udm_module in app.listener_udm_modules)
