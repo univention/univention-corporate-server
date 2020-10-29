@@ -1,3 +1,9 @@
+univention-fetchmail (13.0.1-1) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Thu, 29 Oct 2020 13:15:38 +0100
+
 univention-fetchmail (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

@@ -56,6 +56,6 @@ fi
 
 call_joinscript 92univention-fetchmail.inst
 
-/etc/init.d/univention-directory-listener crestart
+systemctl try-reload-or-restart univention-directory-listener
 
 exit 0
