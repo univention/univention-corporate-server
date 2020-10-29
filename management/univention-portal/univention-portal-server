@@ -72,6 +72,7 @@ from saml2.metadata import create_metadata_string
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
+from saml2.ident import code
 
 from univention.lib.i18n import NullTranslation
 from univention.management.console.log import CORE, log_init
@@ -358,12 +359,13 @@ class User(object):
 
 class SAMLUser(object):
 
-	__slots__ = ('response', 'message', 'data', 'username')
+	__slots__ = ('not_on_or_after', 'name_id', 'message', 'data', 'username')
 
 	def __init__(self, response, message):
-		self.response = response
+		self.not_on_or_after = response.not_on_or_after
+		self.name_id = code(response.name_id)
 		self.message = message
-		self.data = response.ava
+		self.data = response.ava.copy()
 		self.username = u''.join(self.data['uid'])
 
 
@@ -1145,7 +1147,7 @@ class SamlSingleLogout(SamlACS):
 				# The user is either already logged out or has no cookie because he signed in via IP and gets redirected to the FQDN
 				name_id = None
 			else:
-				name_id = user.saml.response.name_id
+				name_id = user.saml.name_id
 				user.saml = None
 			http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state)
 			self.http_response(binding, http_args)
@@ -1166,7 +1168,7 @@ class SamlLogout(SamlACS):
 
 		# What if more than one
 		try:
-			data = self.sp.global_logout(user.saml.response.name_id)
+			data = self.sp.global_logout(user.saml.name_id)
 		except KeyError:
 			try:
 				tb = sys.exc_info()[2]
