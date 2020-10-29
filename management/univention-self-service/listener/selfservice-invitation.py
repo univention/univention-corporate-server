@@ -44,7 +44,6 @@ cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
 def handler(dn, new, old, command):
-
 	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
 		return
 
@@ -52,12 +51,12 @@ def handler(dn, new, old, command):
 		return
 
 	if new and not old and command == 'a':
-		filename = os.path.join(cache_dir, new.get('uid')[0] + '.send')
-		ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %s' % (name, dn))
+		filename = os.path.join(cache_dir, new.get('uid')[0].decode('UTF-8').replace('/', '') + '.send')
+		ud.debug(ud.LISTENER, ud.PROCESS, '%s: trigger selfservice invitation for %r' % (name, dn))
 		try:
 			os.mknod(filename)
-		except OSError as e:
-			if hasattr(e, 'errno') and e.errno == 17:
+		except OSError as exc:
+			if hasattr(exc, 'errno') and exc.errno == 17:
 				pass
 			else:
 				raise
