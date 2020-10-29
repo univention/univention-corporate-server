@@ -49,7 +49,10 @@ from univention.appcenter.udm import search_objects
 name = 'app_attributes'
 
 FNAME = '/var/lib/univention-appcenter/attributes/mapping.json'
+
+
 class AppAttributes(ListenerModuleHandler):
+
 	def initialize(self):
 		dirname = os.path.dirname(FNAME)
 		if os.path.exists(dirname):
@@ -87,7 +90,7 @@ class AppAttributes(ListenerModuleHandler):
 						if apps[app.id] > app:
 							continue
 					apps[app.id] = app
-			for app in apps.itervalues():
+			for app in apps.values():
 				for attribute in app.umc_options_attributes:
 					attribute, option_name = (attribute.split(':', 1) * 2)[:2]
 					objs = search_objects('settings/extended_attribute', self.lo, self.po, custom_attributes_base, CLIName=attribute)
