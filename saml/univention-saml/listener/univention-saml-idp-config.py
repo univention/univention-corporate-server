@@ -49,18 +49,17 @@ def handler(dn, new, old):
 	idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
 	listener.setuid(0)
 	try:
-		if idp_config_objectdn == new['entryDN'][0]:
+		if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
 			for key in LDAP_UCR_MAPPING.keys():
 				if key in new:
 					ucr_value = ""
 					if key == 'LdapGetAttributes':
-						ucr_value = "'" + "', '".join(new[key]) + "'"
+						ucr_value = "'" + "', '".join(x.decode('ASCII') for x in new[key]) + "'"
 
 					handler_set(['%s=%s' % (LDAP_UCR_MAPPING[key], ucr_value)])
 				else:
 					handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
 		else:
-			ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %s' % (idp_config_objectdn, new['entryDN']))
-
+			ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'].decode('UTF-8')))
 	finally:
 		listener.unsetuid()
