@@ -152,9 +152,7 @@ fi
 
 chown listener:root /var/spool/univention-mail-dovecot
 
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	deb-systemd-invoke restart univention-directory-listener
-fi
+systemctl try-reload-or-restart univention-directory-listener
 
 if [ "$1" = "configure" ]
 then
