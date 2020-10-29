@@ -2,8 +2,18 @@ include: '/.gitlab-ci/base.yml'
 
 generate-config:
   stage: build
+  image:
+    name: $BUILD
+    entrypoint: [""]
   script:
     - .gitlab-ci/build-ci
+    - >
+      deb-builder
+      --yaml .gitlab-ci/base.yml
+      --yaml .gitlab-ci/base-deb.yml
+      --out generated-config-deb.yml
+      --skip src:python-notifier
+      */*/debian/control
   artifacts:
     paths:
       - generated-config-doc.yml

@@ -20,3 +20,4 @@ build/
 *.py[co]
 doc/*/*.xml.err.d
 doc/*/*.xml.err
+generated-config-*.yml
