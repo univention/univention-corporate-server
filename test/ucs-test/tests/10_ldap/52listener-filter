@@ -7,7 +7,7 @@
 ## exposure: dangerous
 
 from __future__ import print_function
-__package__ = ''
+from __future__ import absolute_import
 from tempfile import mkdtemp
 from shutil import rmtree
 from os import mkdir, chown
