@@ -55,6 +55,13 @@ import six
 from cherrypy.lib.httputil import valid_status
 from six.moves.http_client import UNAUTHORIZED
 from six.moves.urllib_parse import quote, urlparse, urlunsplit
+import mmap
+from six.moves import cPickle as pickle
+from collections import OrderedDict
+from contextlib import contextmanager
+from functools import wraps
+
+from multiprocessing import Lock
 
 import tornado.ioloop
 import tornado.log
@@ -95,6 +102,104 @@ _umc_port = int(ucr.get('umc/http/port', 8090))
 UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
 
 _session_timeout = int(ucr.get('umc/http/session/timeout', 300))
+
+
+_lock = Lock()
+
+
+def lock(func):
+	@wraps(func)
+	def wrapper(*args, **kwargs):
+		_lock.acquire()
+		try:
+			return func(*args, **kwargs)
+		finally:
+			_lock.release()
+	return wrapper
+
+
+class SharedMemoryDict(OrderedDict):
+
+	def __init__(self, *args, **kwargs):
+		super(SharedMemoryDict, self).__init__(*args, **kwargs)
+		self._fd = tempfile.NamedTemporaryFile()
+		self._fd.write(pickle.dumps({}, pickle.HIGHEST_PROTOCOL))
+		self._fd.flush()
+		self._mm = mmap.mmap(self._fd.fileno(), 0, access=mmap.ACCESS_WRITE)
+
+	def cleanup(self):
+		self._mm.close()
+		self._fd.close()
+
+	@lock
+	def clear(self):
+		self._save_memory(OrderedDict())
+
+	def popitem(self, last=True):
+		with self._modify_db() as db:
+			return db.popitem(last)
+
+	@contextmanager
+	@lock
+	def _modify_db(self):
+		db = self._read_memory()
+		yield db
+		self._save_memory(db)
+
+	def get(self, key, default=None):
+		return self._read_memory().get(key, default)
+
+	def __getitem__(self, key):
+		return self._read_memory()[key]
+
+	def __setitem__(self, key, value):
+		with self._modify_db() as db:
+			db[key] = value
+
+	def __len__(self):
+		return len(self._read_memory())
+
+	def __delitem__(self, key):
+		with self._modify_db() as db:
+			del db[key]
+
+	def __del__(self):
+		self.cleanup()
+
+	def __contains__(self, key):
+		return key in self._read_memory()
+
+	def keys(self):
+		return self._read_memory().keys()
+
+	def items(self):
+		return self._read_memory().items()
+
+	def values(self):
+		return self._read_memory().values()
+
+	if six.PY2:
+		def iterkeys(self):
+			return self._read_memory().iterkeys()
+
+		def iteritems(self):
+			return self._read_memory().iteritems()
+
+		def itervalues(self):
+			return self._read_memory().itervalues()
+
+	def _save_memory(self, db):
+		data = pickle.dumps(db, pickle.HIGHEST_PROTOCOL)
+		self._mm.seek(0)
+		self._mm.resize(len(data))
+		self._mm.write(data)
+
+	def _read_memory(self):
+		try:
+			self._mm.seek(0)
+			return pickle.loads(self._mm.read(self._mm.size()))
+		except pickle.UnpicklingError:
+			return OrderedDict()
 
 
 class ShortNameFormatter(logging.Formatter):
@@ -893,9 +998,9 @@ class SamlACS(SAMLBase):
 	idp_query_param = "IdpQuery"
 	bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
 
-	outstanding_queries = {}
-	relay_state = {}
-	_acs_callbacks = {}
+	outstanding_queries = SharedMemoryDict()
+	relay_state = SharedMemoryDict()
+	_acs_callbacks = SharedMemoryDict()
 
 	@property
 	def sp(self):
@@ -908,7 +1013,7 @@ class SamlACS(SAMLBase):
 		CORE.info('Reloading SAML service provider configuration')
 		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
 		try:
-			cls.SP = Saml2Client(config_file=cls.configfile)
+			cls.SP = Saml2Client(config_file=cls.configfile, state_cache=SharedMemoryDict(), identity_cache=SharedMemoryDict())
 			return True
 		except Exception:
 			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
@@ -1230,6 +1335,6 @@ if __name__ == "__main__":
 	port = int(ucr.get('portal/port', 8095))
 	get_logger('server').info('firing up portal server at port %s' % port)
 	server.bind(port)
-	server.start(int(ucr.get('portal/cpus', 1)))
+	server.start(int(ucr.get('portal/cpus', 0)))
 	signal.signal(signal.SIGHUP, signal_handler_reload)
 	tornado.ioloop.IOLoop.current().start()
