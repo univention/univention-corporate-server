@@ -8,8 +8,7 @@ ReloadPropagatedFrom=univention-management-console-web-server-multiprocessing.ta
 
 [Service]
 Type=exec
-PIDFile=/var/run/umc-web-server%i.pid
-ExecStart=/usr/sbin/univention-management-console-web-server start --port=%i
+ExecStart=/usr/sbin/univention-management-console-web-server --port=%i
 ExecReload=/bin/kill -HUP $MAINPID
 User=root
 Group=root
