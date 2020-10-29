@@ -42,7 +42,7 @@ def create_listener_module_for_computer(computer_name):
 	filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
 	fd = open(filename, 'w')
 	fd.write('''
-__package__ = ''
+from __future__ import absolute_import
 modrdn = "1"
 name="%(computer_name)s-test"
 description="%(computer_name)s"
