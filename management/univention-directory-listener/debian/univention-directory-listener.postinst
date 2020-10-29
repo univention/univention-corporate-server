@@ -74,4 +74,6 @@ chown listener:root /var/lib/univention-ldap/schema/id/id
 
 call_joinscript 03univention-directory-listener.inst
 
+systemctl try-restart univention-directory-listener
+
 exit 0
