@@ -1,3 +1,9 @@
+ucs-test (10.0.1-23) unstable; urgency=medium
+
+  * Bug #52130: some changes for the new samba version
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Oct 2020 11:42:59 +0100
+
 ucs-test (10.0.1-22) unstable; urgency=low
 
   * Bug #52241: fix 40_mail.00check_forward_secrecy
