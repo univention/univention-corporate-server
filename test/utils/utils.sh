@@ -509,7 +509,11 @@ install_ucsschool () {
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
-			univention-app install --noninteractive ucsschool || rv=$?
+			if ! assert_app_is_installed ucsschool; then
+			  univention-app install --noninteractive ucsschool || rv=$?
+			else
+			  univention-app upgrade --noninteractive ucsschool || rv=$?
+			fi
 			echo "install_ucsschool - DEBUG2"
 			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
