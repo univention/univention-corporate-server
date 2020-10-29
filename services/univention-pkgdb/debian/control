@@ -78,6 +78,7 @@ Package: univention-pkgdb-tools
 Architecture: all
 Depends:
  python-univention-pkgdb,
+ python3-univention-pkgdb,
  univention-config,
  ${misc:Depends},
 Recommends:
