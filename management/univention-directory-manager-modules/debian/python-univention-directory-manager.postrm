@@ -35,7 +35,7 @@
 case "$1" in
 	"remove")
 		## unload the listener module
-		/etc/init.d/univention-directory-listener crestart
+		systemctl try-restart univention-directory-listener
 		;;
 	"purge")
 		;;

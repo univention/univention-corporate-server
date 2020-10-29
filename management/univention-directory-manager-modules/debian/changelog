@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.4-1) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Thu, 29 Oct 2020 17:12:31 +0100
+
 univention-directory-manager-modules (15.0.3-7) unstable; urgency=medium
 
   * Bug #42374: IP Managed Client -> IP Client
