@@ -947,7 +947,7 @@ class SamlACS(SAMLBase):
 		CORE.info('Reloading SAML service provider configuration')
 		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
 		try:
-			cls.SP = Saml2Client(config_file=cls.configfile, state_cache=SharedMemoryDict(), identity_cache=SharedMemoryDict())
+			cls.SP = Saml2Client(config_file=cls.configfile, state_cache=SharedMemoryDict())  # , identity_cache=SharedMemoryDict())
 			return True
 		except Exception:
 			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
