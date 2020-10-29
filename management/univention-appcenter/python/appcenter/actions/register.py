@@ -289,7 +289,7 @@ class Register(CredentialsAction):
 			with open(listener_file, 'w') as fd:
 				fd.write('''#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 
 
 from univention.appcenter.listener import AppListener
