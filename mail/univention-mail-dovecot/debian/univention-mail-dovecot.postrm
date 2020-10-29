@@ -49,9 +49,7 @@ case "$1" in
 	;;
 esac
 
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	deb-systemd-invoke restart univention-directory-listener
-fi
+systemctl try-reload-or-restart univention-directory-listener
 
 case "$1" in
 	purge)
