@@ -34,7 +34,7 @@ drop aptly:
     name: $CI_COMMIT_REF_NAME
     action: stop
 
-.doc-pipeline:
+doc-pipeline:
   stage: test
   rules:
     - changes:
