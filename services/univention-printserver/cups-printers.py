@@ -48,17 +48,17 @@ ucr_handlers = configHandlers()
 ucr_handlers.load()
 interfaces = Interfaces(listener.configRegistry)
 
-hostname = listener.baseConfig['hostname']
-domainname = listener.baseConfig['domainname']
+hostname = listener.configRegistry['hostname']
+domainname = listener.configRegistry['domainname']
 ip = str(interfaces.get_default_ip_address().ip)
-ldap_base = listener.baseConfig['ldap/base']
+ldap_base = listener.configRegistry['ldap/base']
 
 name = 'cups-printers'
 description = 'Manage CUPS printer configuration'
 filter = '(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
 attributes = ['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName', 'univentionPrinterPricePerPage', 'univentionPrinterPricePerJob', 'univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype']
 
-EMPTY = ('',)
+EMPTY = (b'',)
 reload_samba_in_postrun = None
 
 
@@ -114,7 +114,7 @@ def lpadmin(args):
 def filter_match(object):
 	fqdn = ('%s.%s' % (hostname, domainname)).lower()
 	for host in object.get('univentionPrinterSpoolHost', ()):
-		if host.lower() in (ip.lower(), fqdn):
+		if host.decode('ASCII').lower() in (ip.lower(), fqdn):
 			return True
 	return False
 
@@ -126,7 +126,7 @@ def get_testparm_var(smbconf, sectionname, varname):
 	cmd = ["/usr/bin/testparm", "-s", "-l", "--section-name=%s" % sectionname, "--parameter-name=%s" % varname, smbconf]
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 	(out, err) = p1.communicate()
-	return out.strip()
+	return out.decode('UTF-8').strip()
 
 
 def testparm_is_true(smbconf, sectionname, varname):
@@ -139,7 +139,7 @@ def handler(dn, new, old):
 	need_to_reload_samba = False
 	need_to_reload_cups = False
 	printer_is_group = False
-	samba_force_printername = listener.baseConfig.is_true('samba/force_printername', True)
+	samba_force_printername = listener.configRegistry.is_true('samba/force_printername', True)
 	global reload_samba_in_postrun
 	reload_samba_in_postrun = True
 
@@ -148,17 +148,17 @@ def handler(dn, new, old):
 	if old:
 		if filter_match(old):
 			if old.get('univentionPrinterSambaName'):
-				old_sharename = old['univentionPrinterSambaName'][0]
+				old_sharename = old['univentionPrinterSambaName'][0].decode('UTF-8')
 			else:
-				old_sharename = old['cn'][0]
+				old_sharename = old['cn'][0].decode('UTF-8')
 			old_filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old_sharename)
 			samba_force_printername = testparm_is_true(old_filename, old_sharename, 'force printername')
 
-		if 'univentionPrinterGroup' in old.get('objectClass', ()):
+		if b'univentionPrinterGroup' in old.get('objectClass', ()):
 			printer_is_group = True
 
 	if new:
-		if 'univentionPrinterGroup' in new.get('objectClass', ()):
+		if b'univentionPrinterGroup' in new.get('objectClass', ()):
 			printer_is_group = True
 
 	modified_uri = ''
@@ -166,12 +166,12 @@ def handler(dn, new, old):
 		if new.get(n, []) != old.get(n, []):
 			changes.append(n)
 		if n == 'univentionPrinterURI':
-				modified_uri = new['univentionPrinterURI'][0]
+			modified_uri = new['univentionPrinterURI'][0].decode('ASCII')
 	for o in old.keys():
 		if o not in changes and new.get(o, []) != old.get(o, []):
 			changes.append(o)
 		if o == 'univentionPrinterURI' and not modified_uri:
-				modified_uri = old['univentionPrinterURI'][0]
+			modified_uri = old['univentionPrinterURI'][0].decode('ASCII')
 
 	options = {
 		'univentionPrinterURI': '-v',
@@ -187,26 +187,26 @@ def handler(dn, new, old):
 	if filter_match(old):
 		if 'cn' in changes or not filter_match(new):
 			# Deletions done via UCR-Variables
-			printer_name = old['cn'][0]
-			listener.baseConfig.load()
-			printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
+			printer_name = old['cn'][0].decode('UTF-8')
+			listener.configRegistry.load()
+			printer_list = listener.configRegistry.get('cups/restrictedprinters', '').split()
 			printer_is_restricted = printer_name in printer_list
-			if printer_is_restricted and not listener.baseConfig.is_false('cups/automaticrestrict', False):
+			if printer_is_restricted and not listener.configRegistry.is_false('cups/automaticrestrict', False):
 				printer_list.remove(printer_name)
 				keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
 				listener.setuid(0)
 				try:
-					univention.config_registry.handler_set([keyval.encode()])
+					univention.config_registry.handler_set([keyval])
 				finally:
 					listener.unsetuid()
 
 			# Deletions done via lpadmin
-			lpadmin(['-x', old['cn'][0]])
+			lpadmin(['-x', old['cn'][0].decode('UTF-8')])
 			need_to_reload_samba = True
 
 		# Deletions done via editing the Samba config
 		if old.get('univentionPrinterSambaName'):
-			filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['univentionPrinterSambaName'][0])
+			filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['univentionPrinterSambaName'][0].decode('UTF-8'))
 			listener.setuid(0)
 			try:
 				if os.path.exists(filename):
@@ -214,7 +214,7 @@ def handler(dn, new, old):
 			finally:
 				listener.unsetuid()
 
-		filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['cn'][0])
+		filename = _join_basedir_filename('/etc/samba/printers.conf.d/', old['cn'][0].decode('UTF-8'))
 		listener.setuid(0)
 		try:
 			if os.path.exists(filename):
@@ -224,11 +224,11 @@ def handler(dn, new, old):
 
 	if filter_match(new):
 		# Modifications done via UCR-Variables
-		printer_name = new['cn'][0]
-		listener.baseConfig.load()
-		printer_list = listener.baseConfig.get('cups/restrictedprinters', '').split()
+		printer_name = new['cn'][0].decode('UTF-8')
+		listener.configRegistry.load()
+		printer_list = listener.configRegistry.get('cups/restrictedprinters', '').split()
 		printer_is_restricted = printer_name in printer_list
-		restrict_printer = (new.get('univentionPrinterACLUsers', []) or new.get('univentionPrinterACLGroups', [])) and not (new['univentionPrinterACLtype'][0] == 'allow all')
+		restrict_printer = (new.get('univentionPrinterACLUsers', []) or new.get('univentionPrinterACLGroups', [])) and new['univentionPrinterACLtype'][0] != b'allow all'
 
 		update_restricted_printers = False
 		if printer_is_restricted and not restrict_printer:
@@ -238,68 +238,61 @@ def handler(dn, new, old):
 			printer_list.append(printer_name)
 			update_restricted_printers = True
 
-		if update_restricted_printers and not listener.baseConfig.is_false('cups/automaticrestrict', False):
+		if update_restricted_printers and not listener.configRegistry.is_false('cups/automaticrestrict', False):
 			keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
 			listener.setuid(0)
 			try:
-				univention.config_registry.handler_set([keyval.encode()])
+				univention.config_registry.handler_set([keyval])
 			finally:
 				listener.unsetuid()
 			need_to_reload_cups = True
 
 		# Modifications done via lpadmin
-		description = ""
-		page_price = 0
-		job_price = 0
-
 		args = []  # lpadmin args
 
-		if new.get('univentionPrinterSambaName'):
-			description = new['univentionPrinterSambaName'][0]
-		if new.get('univentionPrinterPricePerPage'):
-			page_price = new['univentionPrinterPricePerPage'][0]
-		if new.get('univentionPrinterPricePerJob'):
-			job_price = new['univentionPrinterPricePerJob'][0]
+		# description = new.get('univentionPrinterSambaName', [b''])[0].decode('UTF-8')
+		# page_price = int(new.get('univentionPrinterPricePerPage', [b'0'])[0])
+		# job_price = int(new.get('univentionPrinterPricePerJob', [b'0'])[0])
 
 		if new.get('univentionPrinterACLtype'):
-			if new['univentionPrinterACLtype'][0] == 'allow all':
+			if new['univentionPrinterACLtype'][0] == b'allow all':
 				args += ['-u', 'allow:all', '-o', 'auth-info-required=none']
 			elif new.get('univentionPrinterACLUsers') or new.get('univentionPrinterACLGroups'):
 				args.append('-u')
-				argument = "%s:" % new['univentionPrinterACLtype'][0]
+				argument = "%s:" % new['univentionPrinterACLtype'][0].decode('ASCII')
 				for userDn in new.get('univentionPrinterACLUsers', ()):
-					argument += '%s,' % (_rdn(userDn),)
+					argument += '%s,' % (_rdn(userDn.decode('UTF-8')),)
 				for groupDn in new.get('univentionPrinterACLGroups', ()):
-					argument += '@%s,' % (_rdn(groupDn),)
-				args.append(argument[:-1])
+					argument += '@%s,' % (_rdn(groupDn.decode('UTF-8')),)
+				args.append(argument.rstrip(','))
 		else:
 			args += ['-o', 'auth-info-required=none']
 
 		# Add/Modify Printergroup
 		if printer_is_group:
-			add = []
-			if old:  # Diff old <==> new
-				rem = old['univentionPrinterGroupMember']
-				for el in new['univentionPrinterGroupMember']:
-					if el not in old['univentionPrinterGroupMember']:
-						add.append(el)
-					else:
-						rem.remove(el)
+			#add = []
+			#if old:  # Diff old <==> new
+			#	rem = old['univentionPrinterGroupMember']
+			#	for el in new['univentionPrinterGroupMember']:
+			#		if el not in old['univentionPrinterGroupMember']:
+			#			add.append(el)
+			#		else:
+			#			rem.remove(el)
 
-			else:  # Create new group
-				add = new['univentionPrinterGroupMember']
+			#else:  # Create new group
+			#	add = new['univentionPrinterGroupMember']
 
 			lpadmin(args)
 		# Add/Modify Printer
 		else:
 			args.append('-p')
-			args.append(new['cn'][0])
+			args.append(new['cn'][0].decode('UTF-8'))
 			for a in changes:
 				if a == 'univentionPrinterURI':
 					continue
 
 				if a == 'univentionPrinterSpoolHost' and 'univentionPrinterModel' not in changes:
-					model = new.get('univentionPrinterModel', EMPTY)[0]
+					model = new.get('univentionPrinterModel', EMPTY)[0].decode('ASCII')
 					if model in ['None', 'smb']:
 						model = 'raw'
 					args += [options['univentionPrinterModel'], model]
@@ -308,12 +301,12 @@ def handler(dn, new, old):
 					continue
 
 				if a == 'univentionPrinterModel':
-					model = new.get(a, EMPTY)[0]
+					model = new.get(a, EMPTY)[0].decode('ASCII')
 					if model in ['None', 'smb']:
 						model = 'raw'
 					args += [options[a], model]
 				else:
-					args += [options[a], new.get(a, EMPTY)[0]]
+					args += [options[a], new.get(a, EMPTY)[0].decode('UTF-8')]
 
 			args += [options['univentionPrinterURI'], modified_uri]
 			args += ['-E']
@@ -323,10 +316,10 @@ def handler(dn, new, old):
 			need_to_reload_samba = True
 
 			# Modifications done via editing Samba config
-			printername = new['cn'][0]
-			cups_printername = new['cn'][0]
+			printername = new['cn'][0].decode('UTF-8')
+			cups_printername = new['cn'][0].decode('UTF-8')
 			if new.get('univentionPrinterSambaName'):
-				printername = new['univentionPrinterSambaName'][0]
+				printername = new['univentionPrinterSambaName'][0].decode('UTF-8')
 
 			filename = _join_basedir_filename('/etc/samba/printers.conf.d/', printername)
 
@@ -339,8 +332,8 @@ def handler(dn, new, old):
 					arg = '"%s"' % (arg.replace('"', '\\"'),)
 				return arg.replace('\n', '')
 
-			user_and_groups = [_quote(_rdn(_dn)) for _dn in new.get('univentionPrinterACLUsers', ())]
-			user_and_groups.extend(_quote("@" + _rdn(_dn)) for _dn in new.get('univentionPrinterACLGroups', ()))
+			user_and_groups = [_quote(_rdn(_dn.decode('UTF-8'))) for _dn in new.get('univentionPrinterACLUsers', ())]
+			user_and_groups.extend(_quote("@" + _rdn(_dn.decode('UTF-8'))) for _dn in new.get('univentionPrinterACLGroups', ()))
 			perm = ' '.join(user_and_groups)
 
 			# samba permissions
@@ -355,9 +348,9 @@ def handler(dn, new, old):
 					if samba_force_printername:
 						fp.write('force printername = yes\n')
 					if perm:
-						if new['univentionPrinterACLtype'][0] == 'allow':
+						if new['univentionPrinterACLtype'][0] == b'allow':
 							fp.write('valid users = %s\n' % perm)
-						if new['univentionPrinterACLtype'][0] == 'deny':
+						if new['univentionPrinterACLtype'][0] == b'deny':
 							fp.write('invalid users = %s\n' % perm)
 
 				os.chmod(filename, 0o755)
@@ -400,7 +393,7 @@ def reload_cups_daemon():
 def reload_printer_restrictions():
 	listener.setuid(0)
 	try:
-		subprocess.call(['python', '-m', 'univention.lib.share_restrictions'])
+		subprocess.call(['python3', '-m', 'univention.lib.share_restrictions'])
 	finally:
 		listener.unsetuid()
 

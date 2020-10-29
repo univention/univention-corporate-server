@@ -46,20 +46,19 @@ sharename = "pdfPrinterShare"
 
 
 def handler(dn, new, old):
-
-	if new.get('cn', ('',))[0] == sharename:
+	if new.get('cn', [b''])[0].decode('UTF-8') == sharename:
 		if new.get('univentionSharePath') and new.get('univentionShareHost'):
-			path = new['univentionSharePath'][0]
-			server = new['univentionShareHost'][0]
-			me = listener.baseConfig.get('hostname') + "." + listener.baseConfig.get('domainname')
+			path = new['univentionSharePath'][0].decode('UTF-8')
+			server = new['univentionShareHost'][0].decode('ASCII')
+			me = listener.configRegistry.get('hostname') + "." + listener.configRegistry.get('domainname')
 
 			if me == server:
 				ud.debug(ud.LISTENER, ud.INFO, "cups-pdf: setting cups-pdf path to %s according to sharepath in %s on %s" % (path, sharename, server))
-				list = []
-				list.append('cups/cups-pdf/directory=%s' % (path))
-				list.append('cups/cups-pdf/anonymous=%s' % (path))
+				list_ = []
+				list_.append('cups/cups-pdf/directory=%s' % (path,))
+				list_.append('cups/cups-pdf/anonymous=%s' % (path,))
 				listener.setuid(0)
 				try:
-					univention.config_registry.handler_set(list)
+					univention.config_registry.handler_set(list_)
 				finally:
 					listener.unsetuid()
