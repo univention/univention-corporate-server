@@ -7,8 +7,8 @@ fix: 2:4.10.18-1A~4.4.0.202010271637
 desc: |
  This update addresses the following issues:
  * With Samba 4.10.18 a mitigation for Zerologin is available (CVE-2020-1472).
-   "Secure Channel" (`Schannel`) can be deactivated for individual hosts, but
-   must not to be deactivated globally. An example `smb.conf` looks like this:
+   "Secure Channel" (`Schannel`) can be deactivated for individual hosts, and 
+   must not be deactivated globally. An example `smb.conf` looks like this:
      server schannel = yes
      server require schannel:host1$ = no
      server require schannel:host2$ = no
