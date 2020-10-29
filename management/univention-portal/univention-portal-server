@@ -82,8 +82,6 @@ from univention.config_registry.handler import run_filter
 
 import lmdb
 
-mdb_env = lmdb.open('t1', map_size=104857600, max_dbs=10)
-mdb_db = mdb_env.open_db('db1')
 try:
 	from html import escape, unescape
 except ImportError:  # Python 2
@@ -107,9 +105,17 @@ _session_timeout = int(ucr.get('umc/http/session/timeout', 300))
 
 class SharedMemoryDict(OrderedDict):
 
+	def __init__(self):
+		self.mdb_env = lmdb.open('t1', map_size=104857600, max_dbs=10)
+		self.mdb_db = self.mdb_env.open_db('db%d' % (uuid.uuid4(),))
+		self.clear()
 	#@lock
 	def clear(self):
 		self._save_memory(OrderedDict())
+
+#	def pop(self, item, *default):
+#		with self._modify_db() as db:
+#			return db.pop(item, *default)
 
 	def popitem(self, last=True):
 		with self._modify_db() as db:
@@ -139,9 +145,6 @@ class SharedMemoryDict(OrderedDict):
 		with self._modify_db() as db:
 			del db[key]
 
-	def __del__(self):
-		self.cleanup()
-
 	def __contains__(self, key):
 		return key in self._read_memory()
 
@@ -165,14 +168,14 @@ class SharedMemoryDict(OrderedDict):
 			return self._read_memory().itervalues()
 
 	def _save_memory(self, db):
-		with mdb_env.begin(write=True) as txn:
+		with self.mdb_env.begin(write=True) as txn:
 			data = pickle.dumps(db, pickle.HIGHEST_PROTOCOL)
-			txn.put("1", data, db=mdb_db)
+			txn.put("1", data, db=self.mdb_db)
 
 	def _read_memory(self):
 		try:
-			with mdb_env.begin(write=False) as txn:
-				return pickle.loads(txn.get("1", db=mdb_db))
+			with self.mdb_env.begin(write=False) as txn:
+				return pickle.loads(txn.get("1", db=self.mdb_db))
 		except pickle.UnpicklingError:
 			return OrderedDict()
 
