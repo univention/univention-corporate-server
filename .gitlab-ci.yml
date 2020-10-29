@@ -2,8 +2,23 @@ include: '/.gitlab-ci/base.yml'
 
 generate-config:
   stage: build
+  image:
+    name: $BUILD
+    entrypoint: [""]
   script:
     - .gitlab-ci/build-ci
+    - >
+      deb-builder
+      --yaml .gitlab-ci/base.yml
+      --yaml .gitlab-ci/base-deb.yml
+      --out generated-config-deb.yml
+      --skip src:univention-kernel-image-signed
+      --skip src:grub-efi-amd64-signed
+      --skip src:shim
+      --skip src:python-notifier
+      --skip src:univention-kvm-compat
+      --skip src:univention-foomatic-ppds
+      */*/debian/control
   artifacts:
     paths:
       - generated-config-doc.yml

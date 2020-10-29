@@ -2,57 +2,6 @@
 # shellcheck disable=SC2016
 set -e -u
 
-exec >generated-config-deb.yml
-cat "${0%/*}/base.yml"
-cat "${0%/*}/base-deb.yml"
-
-for cl in */*/debian/changelog
-do
-	[ -f "$cl" ] || continue
-	path="${cl%/debian/changelog}"
-	pkg="${path##*/}"
-	echo
-	echo "lint ${pkg}:"
-	echo '  variables:'
-	echo "    base: $path"
-	echo '  extends: .lint'
-	echo '  rules:'
-	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-ucslint/ || $pipeline =~ /skip-ucslint/"'
-	echo '      when: never'
-	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-ucslint/ || $pipeline =~ /force-ucslint/"'
-	echo '      when: always'
-	echo '    - changes:'
-	echo "      - ${path}/**/*"
-	echo '      - packaging/ucslint/**/*'
-	echo '      when: always'
-
-	case "${path##*/}" in
-		univention-kernel-image-signed) continue ;;  # EFI
-		grub-efi-amd64-signed) continue ;;  # EFI
-		shim) continue ;;  # Depends on scope ucs_3.2-0-uefi-secureboot-tools
-		python-notifier) continue ;;  # Depends on git submodule
-		univention-kvm-compat) continue ;;  # Depends on very old ipxe-qemu not in dist/Packages
-		univention-foomatic-ppds)  continue ;;  # build-time >1h
-	esac
-
-	echo
-	echo "build ${pkg}:"
-	echo '  variables:'
-	echo "    base: $path"
-	echo '  extends: .deb'
-	echo '  rules:'
-	echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-build/ || $pipeline =~ /skip-build/"'
-	echo '      when: never'
-	echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-build/ || $pipeline =~ /force-build/"'
-	echo '      when: always'
-	echo '    - changes:'
-	echo "      - ${path}/**/*"
-	echo '      when: always'
-	# echo '  needs:'
-	# echo "    - job: ${dep}
-done
-
-
 exec >generated-config-doc.yml
 cat "${0%/*}/base.yml"
 cat "${0%/*}/base-doc.yml"
