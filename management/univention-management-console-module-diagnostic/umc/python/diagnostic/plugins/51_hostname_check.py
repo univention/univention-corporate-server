@@ -56,7 +56,7 @@ def univention_hostnames():
 	for (dn, attr) in lo.search('(objectClass=univentionHost)', attr=['cn']):
 		if dn is not None:
 			for hostname in attr.get('cn'):
-				yield hostname
+				yield hostname.decode('UTF-8')
 
 
 def compliant_hostname(hostname):

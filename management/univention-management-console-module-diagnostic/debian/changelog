@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.0-4) unstable; urgency=medium
+
+  * Bug #51332: Migrate to Python3
+
+ -- Arvid <requate@univention.de>  Thu, 29 Oct 2020 12:23:06 +0100
+
 univention-management-console-module-diagnostic (6.0.0-3) unstable; urgency=medium
 
   * Bug #42374: Wording fixes

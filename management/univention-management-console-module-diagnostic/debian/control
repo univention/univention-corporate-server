@@ -24,10 +24,22 @@ Depends:
  python-pyasn1,
  python-pycurl,
  python-requests,
+ python3-dateutil,
+ python3-dnspython,
+ python3-openssl,
+ python3-paramiko,
+ python3-pexpect,
+ python3-psutil,
+ python3-pyasn1,
+ python3-pycurl,
+ python3-requests,
  univention-management-console-server (>= 11.0.4-37),
  ${misc:Depends},
  ${python3:Depends},
  ${python:Depends},
+Provides:
+ ${python:Provides},
+ ${python3:Provides},
 Description: System Diagnosis UMC module
  .
  It is part of Univention Corporate Server (UCS), an

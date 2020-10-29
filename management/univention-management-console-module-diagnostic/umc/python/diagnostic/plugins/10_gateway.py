@@ -30,10 +30,10 @@ def run(_umc_instance):
 		MODULE.error('There is no gateway configured.')
 		raise Critical(_('There is no gateway configured.'))
 	process = Popen(['/bin/ping', '-c3', '-w4', '-W4', gateway], stdout=PIPE, stderr=STDOUT)
-	stdout, stderr = process.communicate()
+	stdout, _ = process.communicate()
 	if process.returncode:
 		MODULE.error('\n'.join(description))
-		raise Critical('\n'.join([description % (gateway,), '', stdout]))
+		raise Critical('\n'.join([description % (gateway,), '', stdout.decode('UTF-8', 'replace')]))
 
 
 if __name__ == '__main__':

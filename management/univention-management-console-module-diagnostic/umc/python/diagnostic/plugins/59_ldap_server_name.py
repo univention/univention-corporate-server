@@ -43,14 +43,14 @@ def run(_umc_instance):
 	lo = univention.uldap.getMachineConnection()
 	master = lo.search(base=ucr.get('ldap/base'), filter='(univentionServerRole=master)', attr=['cn'])
 	try:
-		master_cn = master[0][1].get('cn')[0]
+		master_cn = master[0][1].get('cn')[0].decode('UTF-8')
 	except IndexError:
 		raise Critical('Could not find a Primary Directory Node %s' % (master,))
 
 	master_fqdn = '.'.join([master_cn, domainname])
 
 	if master_fqdn == ldap_server_name:
-		res = lo.search(base=ucr.get('ldap/base'), filter='univentionServerRole=backup', attr=['cn'])
+		res = lo.searchDn(base=ucr.get('ldap/base'), filter='univentionServerRole=backup')
 
 		# Case: ldap/server/name is the Primary Directory Node and there are Backup Directory Nodes available.
 		if res:

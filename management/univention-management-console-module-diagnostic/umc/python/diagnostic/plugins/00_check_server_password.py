@@ -111,7 +111,7 @@ def change_server_password(configRegistry):
 		MODULE.process('Output of server_password_change:\n%s' % (output,))
 	except subprocess.CalledProcessError:
 		MODULE.error('Error running server_password_change')
-		MODULE.error('Output:\n%s' % (output,))
+		MODULE.error('Output:\n%s' % (output.decode('UTF-8', 'replace'),))
 		error_descriptions = [
 			_('Calling /usr/lib/univention-server/server_password_change failed.'),
 			_('Please see {sdb} for more information.'),

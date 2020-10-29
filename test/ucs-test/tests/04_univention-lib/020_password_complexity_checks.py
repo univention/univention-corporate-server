@@ -1,9 +1,9 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -s
 # -*- coding: utf-8 -*-
 ## desc: Test univention.password.Check()
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
-## packages: [python-univention]
+## packages: [python3-univention]
 
 from __future__ import print_function
 

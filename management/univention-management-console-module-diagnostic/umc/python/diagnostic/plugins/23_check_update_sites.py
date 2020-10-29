@@ -32,7 +32,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import socket
-import urlparse
+import six.moves.urllib_parse as urlparse
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, MODULE
 

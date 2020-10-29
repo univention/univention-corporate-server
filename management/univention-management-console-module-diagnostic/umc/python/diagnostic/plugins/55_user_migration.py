@@ -21,9 +21,9 @@ def run(_umc_instance):
 		return
 
 	process = Popen(['/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3', '--check'], stderr=STDOUT, stdout=PIPE)
-	stdout, stderr = process.communicate()
+	stdout, _ = process.communicate()
 	if process.returncode:
-		MODULE.error(description + stdout)
+		MODULE.error(description + stdout.decode('UTF-8'))
 		raise Critical(description + stdout, buttons=[{
 			'action': 'migrate_users',
 			'label': _('Migrate user objects'),
@@ -32,12 +32,12 @@ def run(_umc_instance):
 
 def migrate_users(_umc_instance):
 	process = Popen(['/usr/share/univention-directory-manager-tools/univention-migrate-users-to-ucs4.3'], stderr=STDOUT, stdout=PIPE)
-	stdout, stderr = process.communicate()
+	stdout, _ = process.communicate()
 	if process.returncode:
-		MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
-		raise Critical(_('The migration failed: %s') % (stdout,))
+		MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s' % (stdout.decode('UTF-8'),))
+		raise Critical(_('The migration failed: %s') % (stdout.decode('UTF-8'),))
 	else:
-		MODULE.process('Output of univention-migrate-users-to-ucs4.3:\n%s' % (stdout,))
+		MODULE.process('Output of univention-migrate-users-to-ucs4.3:\n%s' % (stdout.decode('UTF-8'),))
 	raise ProblemFixed(buttons=[])
 
 

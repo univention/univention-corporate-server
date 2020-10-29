@@ -3,7 +3,7 @@
 
 from univention.management.console.config import ucr
 from univention.management.console.modules.diagnostic import Warning, Critical, MODULE
-from urlparse import urlparse
+from six.moves.urllib_parse import urlparse
 import pycurl
 import io
 import traceback
