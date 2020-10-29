@@ -6,12 +6,12 @@ src: samba
 fix: 2:4.10.18-1A~4.4.0.202010271532
 desc: |
  This update addresses the following issues:
- * With Samba 4.10.18 a mitigation for Zerologin is available. Schannel can
-   be deactivated for individual hosts, and has not to be deactivated
-   globally. Example smb.conf options can be found below.
+ * With Samba 4.10.18 a mitigation for Zerologin is available. "Secure
+   Channel" (`Schannel`) can be deactivated for individual hosts, but must
+   not to be deactivated globally. An example `smb.conf` looks like this:
      server schannel = yes
-     server require schannel:triceratops$ = no
-     server require schannel:greywacke$ = no
+     server require schannel:host1$ = no
+     server require schannel:host2$ = no
  * tdb
 bug: [52130,52233]
 cve:
