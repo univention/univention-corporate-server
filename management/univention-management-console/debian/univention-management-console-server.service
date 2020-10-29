@@ -5,10 +5,10 @@ Wants=slapd.service
 
 [Service]
 Type=exec
-PIDFile=/var/run/umc-server.pid
-ExecStart=/usr/sbin/univention-management-console-server start
-ExecStop=/usr/sbin/univention-management-console-server stop
-ExecReload=/usr/sbin/univention-management-console-server reload
+KillMode=mixed
+UMask=0077
+ExecStart=/usr/sbin/univention-management-console-server
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
 User=root
 Group=root
 

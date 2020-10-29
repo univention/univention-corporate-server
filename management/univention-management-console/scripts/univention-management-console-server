@@ -35,99 +35,59 @@ from __future__ import print_function
 
 import locale
 import os
-import sys
-import signal
-import traceback
-import time
 import resource
-from errno import ESRCH
+import signal
+import sys
+import traceback
 from argparse import ArgumentParser
 
-import six
 import notifier
-from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
-# from daemon.daemon import set_signal_handlers
 
+from univention.management.console.config import SERVER_DEBUG_LEVEL, get_int, ucr
 from univention.management.console.log import CORE, log_init, log_reopen
-from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr, get_int
+
 # don't import univention.management.console.{modules,protocol} here as the locale is not yet set!
 
 server = None
 
 
-class UMC_Daemon(DaemonRunner):
+class UMC_Daemon(object):
 
 	def __init__(self):
 		self.server = None
-		default_debug = SERVER_DEBUG_LEVEL
-		default_locale = ucr.get('locale/default', 'C').split(':', 1)[0]
 		self.parser = ArgumentParser()
 		self.parser.add_argument(
-			'-n', '--no-daemon', action='store_false',
-			dest='daemon_mode', default=True,
-			help='if set the process will not fork into the background')
-		self.parser.add_argument(
-			'-p', '--port', action='store', type=int,
-			dest='port', default=6670,
+			'-p', '--port', type=int, default=6670,
 			help='defines an alternative port number [default %(default)s]')
 		self.parser.add_argument(
-			'-u', '--unix-socket', action='store',
+			'-u', '--unix-socket',
 			default='/var/run/univention-management-console/server.socket',
 			help='defines an alternative UNIX socket [default %(default)s]')
 		self.parser.add_argument(
-			'-l', '--language', action='store',
-			dest='language', default=default_locale,
+			'-l', '--language',
+			default=ucr.get('locale/default', 'C').split(':', 1)[0],
 			help='defines the language to use [default: %(default)s]')
 		self.parser.add_argument(
-			'-d', '--debug', action='store', type=int, dest='debug', default=default_debug,
+			'-d', '--debug', type=int, default=SERVER_DEBUG_LEVEL,
 			help='if given than debugging is activated and set to the specified level [default: %(default)s]')
 		self.parser.add_argument(
-			'-L', '--log-file', action='store', dest='logfile', default='management-console-server',
+			'-L', '--log-file', default='management-console-server',
 			help='specifies an alternative log file [default: %(default)s]')
 		self.parser.add_argument(
-			'-c', '--processes', default=ucr.get('umc/server/processes', 1), type=int,
+			'-c', '--processes', default=ucr.get_int('umc/server/processes', 1), type=int,
 			help='How many processes to fork. 0 means auto detection (default: %(default)s).')
 		self.parser.add_argument('action', default='start', nargs='?', choices=['start', 'stop', 'restart', 'crestart', 'reload'])
 		self.options = self.parser.parse_args()
 
-		# cleanup environment
-		os.environ.clear()
-		os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
-		os.environ['LANG'] = default_locale
+		os.environ['LANG'] = locale.normalize(self.options.language)
 
 		# init logging
-		if not self.options.daemon_mode:
-			debug_fd = log_init('/dev/stderr', self.options.debug, self.options.processes != 1)
-		else:
-			debug_fd = log_init(self.options.logfile, self.options.debug, self.options.processes != 1)
-
-		sys.argv[1] = self.options.action
-
-		# for daemon runner
-		if self.options.daemon_mode:
-			self.stdin_path = os.path.devnull
-			self.stdout_path = os.path.devnull
-			self.stderr_path = os.path.devnull
-		else:
-			self.stdin_path = '/dev/stdin'
-			self.stdout_path = '/dev/stderr'
-			self.stderr_path = '/dev/stderr'
-		self.pidfile_path = '/var/run/umc-server.pid'
-		self.pidfile_timeout = 3
+		log_init(self.options.log_file, self.options.debug, self.options.processes != 1)
 
 		# init daemon runner
-		DaemonRunner.__init__(self, self)
-		self.daemon_context.prevent_core = False
-		self.daemon_context.detach_process = self.options.daemon_mode
-		self.daemon_context.umask = 0o077
-		self.daemon_context.files_preserve = [debug_fd]
-		self.daemon_context.signal_map = {
-			signal.SIGHUP: self.signal_hang_up,
-			signal.SIGUSR1: self.signal_user1,
-			signal.SIGTERM: self.signal_terminate,
-			# signal.SIGSEGV: self.signal_segfault,
-		}
-		# set_signal_handlers(signal_map)
+		signal.signal(signal.SIGHUP, self.signal_hang_up)
+		signal.signal(signal.SIGUSR1, self.signal_user1)
+		signal.signal(signal.SIGTERM, self.signal_terminate)
 
 		# set locale
 		try:
@@ -135,82 +95,6 @@ class UMC_Daemon(DaemonRunner):
 			locale.setlocale(locale.LC_CTYPE, locale.normalize(self.options.language))
 		except locale.Error:
 			CORE.process('Specified locale is not available (%s)' % self.options.language)
-
-	def _open_streams_from_app_stream_paths(self, app):
-		# Workaround for Python 3 Problem:
-		# python-daemon does `open('/dev/null', 'w+t', buffering=0)`
-		# which causes `ValueError: can't have unbuffered text I/O`
-		if six.PY3:
-			self.daemon_context.stdin = open(app.stdin_path, 'r') if app.stdin_path != '/dev/stdin' else sys.stdin
-			self.daemon_context.stdout = open(app.stdout_path, 'w') if app.stdout_path != '/dev/stdout' else sys.stdout
-			self.daemon_context.stderr = open(app.stderr_path, 'w') if app.stderr_path != '/dev/stderr' else sys.stderr
-			return
-		return super(UMC_Daemon, self)._open_streams_from_app_stream_paths(app)
-
-	def _reload(self):
-		"""Handler for the reload action"""
-		if self.pidfile.is_locked():
-			pid = self.pidfile.read_pid()
-			try:
-				os.kill(pid, signal.SIGUSR1)
-			except OSError as exc:
-				if exc.errno == ESRCH:
-					CORE.process('Reload failed: UMC-Server is not running')
-					return
-				raise
-		else:
-			CORE.process('Reload failed: server is not running')
-
-	DaemonRunner.action_funcs['reload'] = _reload
-
-	def _restart(self):
-		"""Handler for the restart action. """
-		if self.pidfile.is_locked():
-			CORE.process('Stopping UMC server ...')
-			self._stop()
-
-		CORE.process('Starting UMC server ...')
-		self._start()
-
-	def _crestart(self):
-		"""Handler for the crestart action. """
-		if not self.pidfile.is_locked():
-			CORE.process('The UMC server will not be restarted as it is not running currently')
-			return
-
-		CORE.process('Stopping UMC server ...')
-		self._stop()
-		CORE.process('Starting UMC server ...')
-		self._start()
-
-	def _terminate_daemon_process(self):
-		""" Terminate the daemon process specified in the current PID file.
-			"""
-		pid = self.pidfile.read_pid()
-		try:
-			os.kill(pid, signal.SIGTERM)
-		except OSError as exc:
-			raise DaemonRunnerStopFailureError("Failed to terminate %(pid)d: %(exc)s" % dict(pid=pid, exc=exc))
-
-		if self.pidfile.is_locked():
-			CORE.process('The UMC server is still running. Will wait for 5 seconds')
-			count = 10
-			while count:
-				time.sleep(0.5)
-				if not self.pidfile.is_locked():
-					break
-				count -= 1
-			if self.pidfile.is_locked():
-				CORE.process('The UMC server is still running. Kill it!')
-				os.kill(pid, signal.SIGKILL)
-				self.pidfile.break_lock()
-
-	DaemonRunner.action_funcs['restart'] = _restart
-	DaemonRunner.action_funcs['crestart'] = _crestart
-
-	def _usage_exit(self, argv):
-		self.parser.error('invalid action')
-		sys.exit(1)
 
 	def run(self):
 		from univention.management.console.protocol.server import Server
@@ -229,8 +113,6 @@ class UMC_Daemon(DaemonRunner):
 		self.server = Server(port=self.options.port, unix=self.options.unix_socket, processes=self.options.processes)
 		with self.server:
 			CORE.process('Server started')
-			if self.server._child_number is not None:
-				self.daemon_context.pidfile = None
 			notifier.loop()
 
 	def signal_hang_up(self, signal, frame):
@@ -275,22 +157,11 @@ class UMC_Daemon(DaemonRunner):
 			except EnvironmentError as exc:
 				CORE.process('Failed sending signal %d to process %d: %s' % (signal, pid, exc))
 
-	def signal_segfault(self, signal, frame):
-		CORE.error('SEGFAULT! %s' % (''.join(traceback.format_stack(frame),)))
-		signal.signal(signal.SIGSEGV, signal.SIG_DFL)
-		os.kill(os.getpid(), signal.SIGSEGV)
-
 
 if __name__ == "__main__":
 	try:
 		umc_daemon = UMC_Daemon()
-		umc_daemon.do_action()
-	except DaemonRunnerStopFailureError as exc:
-		CORE.process('Failed to shutdown server gracefully (may be its already dead): %s' % (exc,))
-	except DaemonRunnerStartFailureError as exc:
-		CORE.process('Failed to start server: %s' % (exc,))
-	except (SystemExit, KeyboardInterrupt):
-		raise
-	except BaseException:
+		umc_daemon.run()
+	except Exception:
 		CORE.error(traceback.format_exc())
 		raise

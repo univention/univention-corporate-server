@@ -77,8 +77,8 @@ def log_init(filename, log_level=2, log_pid=None):
 		filename = '/var/log/univention/%s.log' % filename
 	fd = ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
 	adm = grp.getgrnam('adm')
-	os.chown(filename, 0, adm.gr_gid)
-	os.chmod(filename, 0o640)
+	os.fchown(fd.fileno(), 0, adm.gr_gid)
+	os.fchmod(fd.fileno(), 0o640)
 	log_set_level(log_level)
 
 	global _debug_ready, _log_pid
