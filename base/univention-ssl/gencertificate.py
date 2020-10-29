@@ -30,9 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# pylint: disable-msg=C0103,W0704
+from __future__ import absolute_import
 
-__package__ = ''  # workaround for PEP 366
 from listener import configRegistry, setuid, unsetuid
 import grp
 import os
@@ -72,7 +71,7 @@ def domain(info):
 	:param info: LDAP attribute values.
 	"""
 	try:
-		return info['associatedDomain'][0]
+		return info['associatedDomain'][0].decode('ASCII')
 	except LookupError:
 		return configRegistry['domainname']
 
@@ -85,10 +84,7 @@ def wildcard_certificate(info):
 	:param info: LDAP attribute values.
 	:returns: `True` for a wildcard name, `False` otherwise.
 	"""
-	if 'univentionService' in info:
-		if 'Wildcard Certificate' in info['univentionService']:
-			return True
-	return False
+	return b'Wildcard Certificate' in info.get('univentionService', [])
 
 
 def handler(dn, new, old, command=''):
@@ -114,42 +110,44 @@ def handler(dn, new, old, command=''):
 				(old_dn, old) = (None, None)
 		_delay = None
 
+		old_cn = old['cn'][0].decode('UTF-8') if old else None
+		new_cn = new['cn'][0].decode('UTF-8') if new else None
 		if new and not old:
 			# changeType: add
-			create_certificate(new['cn'][0], domain(new))
+			create_certificate(new_cn, domain(new))
 			if wildcard_certificate(new):
-				create_certificate('*.%s' % new['cn'][0], domain(new))
+				create_certificate('*.%s' % new_cn, domain(new))
 		elif old and not new:
 			# changeType: delete
 			if 'r' == command:
 				_delay = (dn, old)
 			else:
-				remove_certificate(old['cn'][0], domainname=domain(old))
-				remove_certificate('*.%s' % old['cn'][0], domainname=domain(old))
+				remove_certificate(old_cn, domainname=domain(old))
+				remove_certificate('*.%s' % old_cn, domainname=domain(old))
 		elif old and new:
 			# changeType: modify
 			old_domain = domain(old)
 			new_domain = domain(new)
 
 			if new_domain != old_domain:
-				remove_certificate(old['cn'][0], old_domain)
-				create_certificate(new['cn'][0], new_domain)
-				remove_certificate('*.%s' % old['cn'][0], old_domain)
+				remove_certificate(old_cn, old_domain)
+				create_certificate(new_cn, new_domain)
+				remove_certificate('*.%s' % old_cn, old_domain)
 				if wildcard_certificate(new):
-					create_certificate('*.%s' % new['cn'][0], new_domain)
+					create_certificate('*.%s' % new_cn, new_domain)
 			else:
 				if wildcard_certificate(new) and not wildcard_certificate(old):
-					create_certificate('*.%s' % new['cn'][0], domain(new))
+					create_certificate('*.%s' % new_cn, domain(new))
 				if not wildcard_certificate(new) and wildcard_certificate(old):
-					remove_certificate('*.%s' % old['cn'][0], domainname=domain(old))
+					remove_certificate('*.%s' % old_cn, domainname=domain(old))
 
 		if new:
 			# Reset permissions
-			fqdn = "%s.%s" % (new['cn'][0], domain(new))
+			fqdn = "%s.%s" % (new_cn, domain(new))
 			certpath = os.path.join(SSLDIR, fqdn)
 			fix_permissions(certpath, dn, new)
 			if wildcard_certificate(new):
-				fqdn = "*.%s.%s" % (new['cn'][0], domain(new))
+				fqdn = "*.%s.%s" % (new_cn, domain(new))
 				certpath = os.path.join(SSLDIR, fqdn)
 				fix_permissions(certpath, dn, new)
 	finally:
@@ -166,7 +164,7 @@ def fix_permissions(certpath, dn, new):
 	:param new: LDAP attribute values.
 	"""
 	try:
-		uidNumber = int(new.get('uidNumber', ['0'])[0])
+		uidNumber = int(new.get('uidNumber', [b'0'])[0].decode('ASCII'))
 	except (LookupError, TypeError, ValueError):
 		uidNumber = 0
 
