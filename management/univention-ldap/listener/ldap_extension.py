@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
+
 import listener
 import univention.debug as ud
 import univention.lib.ldap_extension as ldap_extension
@@ -55,9 +56,9 @@ def handler(dn, new, old):
 	elif old:
 		ocs = old.get('objectClass', [])
 
-	if 'univentionLDAPExtensionSchema' in ocs:
+	if b'univentionLDAPExtensionSchema' in ocs:
 		schema_handler.handler(dn, new, old, name=name)
-	elif 'univentionLDAPExtensionACL' in ocs:
+	elif b'univentionLDAPExtensionACL' in ocs:
 		acl_handler.handler(dn, new, old, name=name)
 	else:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
@@ -88,6 +89,7 @@ def postrun():
 				p = subprocess.Popen(
 					[initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				stdout, stderr = p.communicate()
+				stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '{}: LDAP server restart returned {} {} ({}).'.format(name, stderr, stdout, p.returncode))
 					for handler_object in (schema_handler, acl_handler,):
