@@ -41,7 +41,6 @@ import uuid
 import json
 import zlib
 import base64
-import signal
 import hashlib
 import resource
 import tempfile
@@ -50,8 +49,7 @@ import datetime
 import traceback
 import functools
 import threading
-from errno import ESRCH
-from optparse import OptionParser
+from argparse import ArgumentParser
 from six.moves.urllib_parse import urlparse, urlunsplit
 from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
@@ -63,7 +61,6 @@ import cherrypy
 from ipaddress import ip_address
 from cherrypy import HTTPError, HTTPRedirect, NotFound
 from cherrypy.lib.httputil import valid_status
-from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
 import univention.debug as ud
 from univention.management.console.protocol import Request, Response, Client, NoSocketError, TEMPUPLOADDIR
@@ -1489,7 +1486,7 @@ def run_cherrypy(options):
 	root = Root()
 	cherrypy.tools.umcp_auth = cherrypy.Tool('before_handler', root.auth.basic, priority=1)
 	cherrypy.config.update({
-		'log.screen': not options.daemon_mode,
+		'log.screen': True,
 		'server.socket_port': options.port,
 		'server.socket_host': ucr.get('umc/http/interface', '127.0.0.1'),
 		'server.request_queue_size': get_int('umc/http/requestqueuesize', 100),
@@ -1518,147 +1515,31 @@ def reload_webserver():
 reload_webserver.callbacks = [log_reopen]
 
 
-class UMC_HTTP_Daemon(DaemonRunner):
+class UMC_HTTP_Daemon(object):
 
 	def __init__(self):
-		self.parser = OptionParser()
-		self.parser.add_option(
-			'-n', '--no-daemon', action='store_false',
-			dest='daemon_mode', default=True,
-			help='if set the process will not fork into the background'
+		self.parser = ArgumentParser()
+		self.parser.add_argument(
+			'-d', '--debug', type=int, default=ucr.get_int('umc/server/debug/level', 1),
+			help='if given than debugging is activated and set to the specified level [default: %(default)s]'
 		)
-		try:
-			default_debug = int(ucr.get('umc/server/debug/level', '1'))
-		except (TypeError, ValueError):
-			default_debug = 1
-		self.parser.add_option(
-			'-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
-			help='if given than debugging is activated and set to the specified level [default: %default]'
+		self.parser.add_argument(
+			'-L', '--log-file', default='management-console-web-server',
+			help='specifies an alternative log file [default: %(default)s]'
 		)
-		self.parser.add_option(
-			'-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
-			help='specifies an alternative log file [default: %default]'
-		)
-		self.parser.add_option(
-			'-p', '--port', action='store', type='int',
-			dest='port', default=get_int('umc/http/port', 8090),
+		self.parser.add_argument(
+			'-p', '--port', type=int,
+			default=get_int('umc/http/port', 8090),
 			help='defines an alternative port number [default %(default)s]')
-		(self.options, self.arguments) = self.parser.parse_args()
+		self.options = self.parser.parse_args()
 
 		processes = get_int('umc/http/processes', 1)
 
-		# cleanup environment
-		os.environ.clear()
-		os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
-
 		# init logging
-		if not self.options.daemon_mode:
-			debug_fd = log_init('/dev/stderr', self.options.debug, processes > 1)
-		else:
-			debug_fd = log_init(self.options.logfile, self.options.debug, processes > 1)
-
-		# default action: start
-		if not self.arguments:
-			sys.argv[1:] = ['start']
-		elif self.arguments:
-			sys.argv[1:] = self.arguments
-
-		# for daemon runner
-		if self.options.daemon_mode:
-			self.stdin_path = os.path.devnull
-			self.stdout_path = os.path.devnull
-			self.stderr_path = os.path.devnull
-		else:
-			self.stdin_path = '/dev/stdin'
-			self.stdout_path = '/dev/stdout'
-			self.stderr_path = '/dev/stderr'
-		self.pidfile_path = '/var/run/umc-web-server{}.pid'.format(self.options.port if self.options.port != 8090 else '')
-		self.pidfile_timeout = 10
+		log_init(self.options.log_file, self.options.debug, processes > 1)
 
 		global PORT
 		PORT = self.options.port
-
-		# init daemon runner
-		DaemonRunner.__init__(self, self)
-		self.daemon_context.prevent_core = False
-		self.daemon_context.detach_process = self.options.daemon_mode
-		self.daemon_context.umask = 0o077
-		self.daemon_context.files_preserve = [debug_fd]
-
-	def _open_streams_from_app_stream_paths(self, app):
-		# Workaround for Python 3 Problem:
-		# python-daemon does `open('/dev/null', 'w+t', buffering=0)`
-		# which causes `ValueError: can't have unbuffered text I/O`
-		if six.PY3:
-			self.daemon_context.stdin = open(app.stdin_path, 'r') if app.stdin_path != '/dev/stdin' else sys.stdin
-			self.daemon_context.stdout = open(app.stdout_path, 'w') if app.stdout_path != '/dev/stdout' else sys.stdout
-			self.daemon_context.stderr = open(app.stderr_path, 'w') if app.stderr_path != '/dev/stderr' else sys.stderr
-			return
-		return super(UMC_HTTP_Daemon, self)._open_streams_from_app_stream_paths(app)
-
-	def _restart(self):
-		"""Handler for the restart action. """
-		if self.pidfile.is_locked():
-			CORE.process('Stopping UMC web server ...')
-			self._stop()
-
-		CORE.process('Starting UMC web server ...')
-		self._start()
-
-	def _crestart(self):
-		"""Handler for the crestart action. """
-		if not self.pidfile.is_locked():
-			CORE.process('The UMC web server will not be restarted as it is not running currently')
-			return
-
-		CORE.process('Stopping UMC web server ...')
-		self._stop()
-		CORE.process('Starting UMC web server ...')
-		self._start()
-
-	def _reload(self):
-		"""Handler for the reload action"""
-		if self.pidfile.is_locked():
-			pid = self.pidfile.read_pid()
-			try:
-				os.kill(pid, signal.SIGUSR1)
-			except OSError as exc:
-				if exc.errno == ESRCH:
-					CORE.process('Reload failed: UMC-WebServer is not running')
-					return
-				raise
-		else:
-			CORE.process('Reload failed: webserver is not running')
-
-	DaemonRunner.action_funcs['restart'] = _restart
-	DaemonRunner.action_funcs['crestart'] = _crestart
-	DaemonRunner.action_funcs['reload'] = _reload
-
-	def _terminate_daemon_process(self):
-		""" Terminate the daemon process specified in the current PID file.
-			"""
-		pid = self.pidfile.read_pid()
-		try:
-			os.kill(pid, signal.SIGTERM)
-		except OSError as exc:
-			raise DaemonRunnerStopFailureError("Failed to terminate %d: %s" % (pid, exc))
-
-		if self.pidfile.is_locked():
-			CORE.process('The UMC web server is still running. Will wait for 5 seconds')
-			count = 10
-			while count:
-				time.sleep(0.5)
-				if not self.pidfile.is_locked():
-					break
-				count -= 1
-			if self.pidfile.is_locked():
-				CORE.process('The UMC web server is still running. Kill it!')
-				os.kill(pid, signal.SIGKILL)
-				self.pidfile.break_lock()
-
-	def _usage_exit(self, argv):
-		self.parser.error('invalid action')
-		sys.exit(1)
 
 	def run(self):
 		# cherrypy runs in a thread. signals can only be registered in the main thread
@@ -1697,9 +1578,4 @@ class UMC_HTTP_Daemon(DaemonRunner):
 
 if __name__ == '__main__':
 	http_daemon = UMC_HTTP_Daemon()
-	try:
-		http_daemon.do_action()
-	except DaemonRunnerStopFailureError as exc:
-		CORE.process('Failed to shutdown server gracefully (may be its already dead): %s' % (exc,))
-	except DaemonRunnerStartFailureError as exc:
-		CORE.process('Failed to start server: %s' % (exc,))
+	http_daemon.run()

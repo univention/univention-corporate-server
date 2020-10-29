@@ -5,10 +5,9 @@ Before=apache2.service
 
 [Service]
 Type=exec
-PIDFile=/var/run/umc-web-server.pid
-ExecStart=/usr/sbin/univention-management-console-web-server start
-ExecStop=/usr/sbin/univention-management-console-web-server stop
-ExecReload=/usr/sbin/univention-management-console-web-server reload
+UMask=0077
+ExecStart=/usr/sbin/univention-management-console-web-server
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
 User=root
 Group=root
 
