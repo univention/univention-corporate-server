@@ -48,7 +48,7 @@ def handler(dn, new, old):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 		if not ucr.get(UCRV):
-			fqdn = '%s.%s' % (new['cn'][0], new.get('associatedDomain')[0])
+			fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new.get('associatedDomain')[0].decode('ASCII'))
 			listener.setuid(0)
 			try:
 				univention.config_registry.handler_set(['%s=%s' % (UCRV, fqdn)])
