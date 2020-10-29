@@ -55,13 +55,9 @@ import six
 from cherrypy.lib.httputil import valid_status
 from six.moves.http_client import UNAUTHORIZED
 from six.moves.urllib_parse import quote, urlparse, urlunsplit
-import mmap
 from six.moves import cPickle as pickle
 from collections import OrderedDict
 from contextlib import contextmanager
-from functools import wraps
-
-from multiprocessing import Lock
 
 import tornado.ioloop
 import tornado.log
@@ -83,6 +79,10 @@ from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.handler import run_filter
 
+import lmdb
+
+mdb_env = lmdb.open('t1', map_size=104857600, max_dbs=10)
+mdb_db = mdb_env.open_db('db1')
 try:
 	from html import escape, unescape
 except ImportError:  # Python 2
@@ -104,34 +104,9 @@ UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
 _session_timeout = int(ucr.get('umc/http/session/timeout', 300))
 
 
-_lock = Lock()
-
-
-def lock(func):
-	@wraps(func)
-	def wrapper(*args, **kwargs):
-		_lock.acquire()
-		try:
-			return func(*args, **kwargs)
-		finally:
-			_lock.release()
-	return wrapper
-
-
 class SharedMemoryDict(OrderedDict):
 
-	def __init__(self, *args, **kwargs):
-		super(SharedMemoryDict, self).__init__(*args, **kwargs)
-		self._fd = tempfile.NamedTemporaryFile()
-		self._fd.write(pickle.dumps({}, pickle.HIGHEST_PROTOCOL))
-		self._fd.flush()
-		self._mm = mmap.mmap(self._fd.fileno(), 0, access=mmap.ACCESS_WRITE)
-
-	def cleanup(self):
-		self._mm.close()
-		self._fd.close()
-
-	@lock
+	#@lock
 	def clear(self):
 		self._save_memory(OrderedDict())
 
@@ -140,7 +115,7 @@ class SharedMemoryDict(OrderedDict):
 			return db.popitem(last)
 
 	@contextmanager
-	@lock
+	#@lock
 	def _modify_db(self):
 		db = self._read_memory()
 		yield db
@@ -189,15 +164,14 @@ class SharedMemoryDict(OrderedDict):
 			return self._read_memory().itervalues()
 
 	def _save_memory(self, db):
-		data = pickle.dumps(db, pickle.HIGHEST_PROTOCOL)
-		self._mm.seek(0)
-		self._mm.resize(len(data))
-		self._mm.write(data)
+		with mdb_env.begin(write=True) as txn:
+			data = pickle.dumps(db, pickle.HIGHEST_PROTOCOL)
+			txn.put("1", data, db=mdb_db)
 
 	def _read_memory(self):
 		try:
-			self._mm.seek(0)
-			return pickle.loads(self._mm.read(self._mm.size()))
+			with mdb_env.begin(write=False) as txn:
+				return pickle.loads(txn.get("1", db=mdb_db))
 		except pickle.UnpicklingError:
 			return OrderedDict()
 
