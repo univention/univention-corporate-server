@@ -34,6 +34,7 @@
 from __future__ import absolute_import
 
 import ldap
+from ldap.filter import filter_format
 import pickle
 import os
 
@@ -61,12 +62,11 @@ SHARE_CACHE_TODO_DIR = '/var/cache/univention-quota/todo'
 def _dump_share_and_policy_result(dn, share_object, policy_result):
 	filename = os.path.join(SHARE_CACHE_DIR, dn)
 
-	f = open(filename, 'w+')
-	os.chmod(filename, 0o600)
-	p = pickle.Pickler(f)
-	p.dump((dn, share_object, policy_result))
-	p.clear_memo()
-	f.close()
+	with open(filename, 'wb+') as fd:
+		os.chmod(filename, 0o600)
+		p = pickle.Pickler(fd)
+		p.dump((dn, share_object, policy_result))
+		p.clear_memo()
 
 
 def _read_share_and_policy_result(dn):
@@ -75,9 +75,8 @@ def _read_share_and_policy_result(dn):
 	if not os.path.exists(filename):
 		return (None, None)
 
-	f = open(filename, 'r')
-	(tdn, share_object, policy_result) = pickle.load(f)
-	f.close()
+	with open(filename, 'rb') as fd:
+		(tdn, share_object, policy_result) = pickle.load(fd)
 
 	return (share_object, policy_result)
 
@@ -90,26 +89,26 @@ def _remove_cache_for_share(dn):
 
 
 def _is_share(new, old):
-	if new and 'univentionShare' in new.get('objectClass'):
+	if new and b'univentionShare' in new['objectClass']:
 		return True
-	if old and 'univentionShare' in old.get('objectClass'):
+	if old and b'univentionShare' in old['objectClass']:
 		return True
 	return False
 
 
 def _is_quota_policy(new, old):
-	if new and 'univentionPolicyShareUserQuota' in new.get('objectClass'):
+	if new and b'univentionPolicyShareUserQuota' in new['objectClass']:
 		return True
-	if old and 'univentionPolicyShareUserQuota' in old.get('objectClass'):
+	if old and b'univentionPolicyShareUserQuota' in old['objectClass']:
 		return True
 	return False
 
 
 def _is_container(new, old):
-	for oc in ['organizationalRole', 'organizationalUnit', 'univentionBase']:
-		if new and oc in new.get('objectClass'):
+	for oc in [b'organizationalRole', b'organizationalUnit', b'univentionBase']:
+		if new and oc in new['objectClass']:
 			return True
-		if old and oc in old.get('objectClass'):
+		if old and oc in old['objectClass']:
 			return True
 	return False
 
@@ -142,7 +141,7 @@ def _is_container_change_relevant(new, old):
 	lo = _get_ldap_connection()
 	# Check if one policy is a quota policy
 	for dn in old_reference + new_reference:
-		ldap_object = lo.get(dn)
+		ldap_object = lo.get(dn.decode('UTF-8'))
 		# If the policy doesn't exist, we don't know if the policy was a quota policy
 		if not ldap_object:
 			result = True
@@ -156,21 +155,21 @@ def _is_container_change_relevant(new, old):
 
 
 def _get_fqdn():
-	return '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+	return '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
 
 
 def _is_share_used_on_this_server(new, old):
-	fqdn = _get_fqdn()
-	if new and fqdn in new.get('univentionShareHost'):
+	fqdn = _get_fqdn().encode('ASCII')
+	if new and fqdn in new['univentionShareHost']:
 		return True
-	if old and fqdn in old.get('univentionShareHost'):
+	if old and fqdn in old['univentionShareHost']:
 		return True
 	return False
 
 
 def _add_all_shares_below_this_container_to_dn_list(container_dn):
 	lo = _get_ldap_connection()
-	for dn, attr in lo.search(base=container_dn, filter='(&(objectClass=univentionShare)(univentionShareHost=%s))' % _get_fqdn(), attr=['dn']):
+	for dn in lo.searchDn(base=container_dn, filter='(&(objectClass=univentionShare)(univentionShareHost=%s))' % _get_fqdn()):
 		_add_share_to_dn_list(dn)
 	lo.lo.unbind()
 
@@ -185,38 +184,36 @@ def _add_share_to_dn_list(dn):
 def _get_all_quota_references(dn):
 	references = []
 	lo = _get_ldap_connection()
-	for ddn, attr in lo.search(filter='(univentionPolicyReference=%s)' % dn):
+	for ddn, attr in lo.search(filter=filter_format('(univentionPolicyReference=%s)', [dn])):
 		references.append((ddn, attr))
 	lo.lo.unbind()
 	return references
 
 
 def handler(dn, new, old):
-
-	ud.debug(ud.LISTENER, ud.INFO, 'Run handler for dn: %s' % dn)
+	ud.debug(ud.LISTENER, ud.INFO, 'Run handler for dn: %r' % dn)
 	listener.setuid(0)
 	try:
 		if _is_share(new, old):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: is share' % dn)
+			ud.debug(ud.LISTENER, ud.INFO, '%r: is share' % dn)
 			if _is_share_used_on_this_server(new, old):
 				_add_share_to_dn_list(dn)
-			ud.debug(ud.LISTENER, ud.INFO, '%s: is share (done)' % dn)
+			ud.debug(ud.LISTENER, ud.INFO, '%r: is share (done)' % dn)
 
 		elif _is_quota_policy(new, old):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: is quota policy' % dn)
+			ud.debug(ud.LISTENER, ud.INFO, '%r: is quota policy' % dn)
 			references = _get_all_quota_references(dn)
 			if references:
 				for ndn, attrs in references:
-					ud.debug(ud.LISTENER, ud.INFO, '%s: recursion: %s' % (dn, ndn))
+					ud.debug(ud.LISTENER, ud.INFO, '%r: recursion: %r' % (dn, ndn))
 					handler(ndn, attrs, None)
-			ud.debug(ud.LISTENER, ud.INFO, '%s: is quota policy (done)' % dn)
+			ud.debug(ud.LISTENER, ud.INFO, '%r: is quota policy (done)' % dn)
 
 		elif _is_container(new, old):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: is container' % dn)
+			ud.debug(ud.LISTENER, ud.INFO, '%r: is container' % dn)
 			if _is_container_change_relevant(new, old):
 				_add_all_shares_below_this_container_to_dn_list(dn)
-			ud.debug(ud.LISTENER, ud.INFO, '%s: is container (done)' % dn)
-
+			ud.debug(ud.LISTENER, ud.INFO, '%r: is container (done)' % dn)
 	finally:
 		listener.unsetuid()
 
@@ -245,15 +242,15 @@ def postrun():
 			if not lo:
 				lo = _get_ldap_connection()
 			attrs = lo.get(dn)
-			ud.debug(ud.LISTENER, ud.INFO, '%s: attrs: %s' % (dn, attrs))
+			ud.debug(ud.LISTENER, ud.INFO, '%r: attrs: %r' % (dn, attrs))
 
-			if not attrs or not _get_fqdn() in attrs.get('univentionShareHost'):
+			if not attrs or _get_fqdn().encode('ASCII') not in attrs.get('univentionShareHost'):
 				os.remove(filename)
 				_remove_cache_for_share(dn)
 				continue
 
 			policy_result = univention.lib.policy_result.policy_result(dn)[0]
-			ud.debug(ud.LISTENER, ud.INFO, '%s: policy_result: %s' % (dn, policy_result))
+			ud.debug(ud.LISTENER, ud.INFO, '%r: policy_result: %r' % (dn, policy_result))
 			_dump_share_and_policy_result(dn, attrs, policy_result)
 
 			os.remove(filename)
