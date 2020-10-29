@@ -75,7 +75,6 @@ def daemon(lock_file, options):
 			print('Daemon Mode Error: %s' % e.strerror)
 		if (pid == 0):
 			os.chdir("/")
-			os.umask(0)
 		else:
 			pf = open('/var/run/univention-s4-%s' % options.configbasename, 'w+')
 			pf.write(str(pid))
