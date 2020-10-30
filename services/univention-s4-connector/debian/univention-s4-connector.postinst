@@ -62,7 +62,7 @@ if [ ! -d /var/lib/univention-connector/s4 ]; then
 	chown 0.0 /var/lib/univention-connector/s4
 fi
 
-/etc/init.d/univention-directory-listener crestart || true
+systemctl try-restart univention-directory-listener || true
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/03univention-s4-connector.uinst
