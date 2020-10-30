@@ -156,7 +156,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 				default = getattr(_namespace, action.dest)
 			args[action.dest] = default
 		args.update(kwargs)
-		for key, value in args.iteritems():
+		for key, value in args.items():
 			setattr(namespace, key, value)
 		return namespace
 
@@ -213,7 +213,7 @@ class UniventionAppAction(with_metaclass(UniventionAppActionMeta, object)):
 			self.debug('%s does not exist' % _script)
 			return None
 		subprocess_args = [_script] + list(args)
-		for key, value in kwargs.iteritems():
+		for key, value in kwargs.items():
 			if value is None or value is False:
 				continue
 			key = '--%s' % key.replace('_', '-')

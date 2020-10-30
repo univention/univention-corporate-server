@@ -281,7 +281,7 @@ class Docker(object):
 
 	def execute_with_output(self, *args, **kwargs):
 		args = list(args)
-		for key, value in kwargs.iteritems():
+		for key, value in kwargs.items():
 			args.extend(['--%s' % key, value])
 		return execute_with_output(self.container, args)
 
@@ -291,7 +291,7 @@ class Docker(object):
 		logger = logger.getChild('container.%s' % self.container[:4])
 		tty = kwargs.pop('_tty', None)
 		logger.debug('Using container.%s for container %s' % (self.container[:4], self.container))
-		for key, value in kwargs.iteritems():
+		for key, value in kwargs.items():
 			args.extend(['--%s' % key.replace('_', '-'), value])
 		return execute_with_process(self.container, args, logger=logger, tty=tty)
 
@@ -319,7 +319,7 @@ class Docker(object):
 					outfile.write(ucr_run_filter(infile.read()))
 					outfile.write('\n')
 			# env variables from appcenter
-			for key, value in env.iteritems():
+			for key, value in env.items():
 				if value is None:
 					continue
 				if self.app.docker_ucr_style_env:
@@ -506,7 +506,7 @@ class MultiDocker(Docker):
 				ucr_save({self.app.ucr_ip_key: str(network)})
 				ip_addresses = network.hosts()  # iterator!
 				ip_addresses.next()  # first one for docker gateway
-		for service_name, service in content['services'].iteritems():
+		for service_name, service in content['services'].items():
 			exposed_ports[service_name] = (int(port) for port in service.get('expose', []))
 			used_ports[service_name] = {}
 			for port in service.get('ports', []):
@@ -529,33 +529,33 @@ class MultiDocker(Docker):
 		if 'environment' not in container_def:
 			container_def['environment'] = {}
 		if isinstance(container_def['environment'], list):
-			for key, val in env.iteritems():
+			for key, val in env.items():
 				container_def['environment'].append('{}={}'.format(key, val))
 		else:
 			container_def['environment'].update(env)
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.app.id:
 				continue
-			for service_name, ports in exposed_ports.iteritems():
+			for service_name, ports in exposed_ports.items():
 				if container_port in ports:
 					used_ports[service_name][container_port] = host_port
 					break
 			else:
-				for service_name, ports in used_ports.iteritems():
+				for service_name, ports in used_ports.items():
 					if container_port in ports:
 						used_ports[service_name][container_port] = host_port
 						break
 				else:
 					used_ports[self.app.docker_main_service][container_port] = host_port
-		for service_name, ports in used_ports.iteritems():
+		for service_name, ports in used_ports.items():
 			content['services'][service_name]['ports'] = list()
-			for container_port, host_port in ports.iteritems():
+			for container_port, host_port in ports.items():
 				if prots.get(container_port):
 					container_port = '{}/{}'.format(container_port, prots[container_port])
 				content['services'][service_name]['ports'].append('{}:{}'.format(host_port, container_port))
 
 		if self.env_file_created and self.app.docker_inject_env_file is not None:
-			for service_name, service in content['services'].iteritems():
+			for service_name, service in content['services'].items():
 				if (self.app.docker_inject_env_file == 'main' and service_name == self.app.docker_main_service) or (self.app.docker_inject_env_file == 'all'):
 					if service.get('env_file'):
 						if self.env_file_created not in service['env_file']:
@@ -621,11 +621,11 @@ class MultiDocker(Docker):
 		return None
 
 	def create(self, hostname, env):
-		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.iteritems() if v is not None}
+		env = {k: yaml.scalarstring.DoubleQuotedScalarString(v) for k, v in env.items() if v is not None}
 		if self.app.docker_ucr_style_env:
-			env.update({shell_safe(k).upper(): v for k, v in env.iteritems()})
+			env.update({shell_safe(k).upper(): v for k, v in env.items()})
 		else:
-			env = {shell_safe(k).upper(): v for k, v in env.iteritems()}
+			env = {shell_safe(k).upper(): v for k, v in env.items()}
 		self._setup_env(env=env)
 		self._setup_yml(recreate=True, env=env)
 		ret, out_up = call_process2(['docker-compose', '-p', self.app.id, 'up', '-d', '--no-build', '--no-recreate'], cwd=self.app.get_compose_dir())
@@ -664,7 +664,7 @@ class MultiDocker(Docker):
 		yml_file = self.app.get_compose_file('docker-compose.yml.bak')
 		content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
 		services = content.get('services', {})
-		for service in services.itervalues():
+		for service in services.values():
 			image = service.get('image')
 			if image not in images:
 				images.append(image)

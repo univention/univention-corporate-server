@@ -108,7 +108,7 @@ class Domain(CredentialsAction):
 			else:
 				app_dict = get.to_dict(app)
 				app_dict['installations'] = self._get_installations(app, hosts, app_ldap_objects)
-				app_dict['is_installed_anywhere'] = any(inst['version'] for inst in app_dict['installations'].itervalues())
+				app_dict['is_installed_anywhere'] = any(inst['version'] for inst in app_dict['installations'].values())
 				app_dict['fully_loaded'] = True
 				ret.append(app_dict)
 		return ret

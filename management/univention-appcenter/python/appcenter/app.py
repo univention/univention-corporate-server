@@ -316,7 +316,7 @@ class AppLocalisedListAttribute(AppListAttribute):
 		translations = cls._cache[fname].get(locale)
 		if translations:
 			if reverse:
-				for k, v in translations.iteritems():
+				for k, v in translations.items():
 					if v == value:
 						value = k
 						break
@@ -1544,7 +1544,7 @@ class App(with_metaclass(AppMetaClass, object)):
 			domain = get_action('domain')
 			self_info = domain.to_dict([self])[0]
 			hostname = ucr_get('hostname')
-			if not any(inst['version'] for host, inst in self_info['installations'].iteritems() if host != hostname):
+			if not any(inst['version'] for host, inst in self_info['installations'].items() if host != hostname):
 				# this is the only installation
 				apps_info = domain.to_dict(apps)
 				for app in apps_info:

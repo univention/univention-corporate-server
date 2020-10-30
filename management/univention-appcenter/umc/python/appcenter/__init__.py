@@ -1290,7 +1290,7 @@ class Instance(umcm.Base, ProgressMixin):
 		try:
 			with set_save_commit_load(self.ucr) as super_ucr:
 				for object, in iterator:
-					for key, value in object.iteritems():
+					for key, value in object.items():
 						MODULE.info("   ++ Setting new value for '%s' to '%s'" % (key, value))
 						super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
 				changed = super_ucr.changed()

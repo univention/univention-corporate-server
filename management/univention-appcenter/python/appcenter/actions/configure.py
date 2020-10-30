@@ -93,7 +93,7 @@ class Configure(UniventionAppAction):
 		settings = app.get_settings()
 		other_settings = {}
 		together_config_settings = {}
-		for key, value in set_vars.iteritems():
+		for key, value in set_vars.items():
 			for setting in settings:
 				if setting.name == key:
 					try:

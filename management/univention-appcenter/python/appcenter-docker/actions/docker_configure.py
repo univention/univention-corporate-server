@@ -83,7 +83,7 @@ class Configure(Configure, DockerActionMixin):
 		self.log('Setting registry variables for %s' % app.id)
 		set_args = []
 		unset_args = []
-		for key, value in set_vars.iteritems():
+		for key, value in set_vars.items():
 			if value is None:
 				unset_args.append(key)
 			else:
@@ -122,7 +122,7 @@ class Configure(Configure, DockerActionMixin):
 
 	def _set_config_directly(self, app, set_vars):
 		with self._locked_app_ucr(app) as _ucr:
-			for key, value in set_vars.iteritems():
+			for key, value in set_vars.items():
 				if value is None:
 					_ucr.pop(key, None)
 				else:

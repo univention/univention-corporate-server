@@ -396,7 +396,7 @@ class ComponentManager(object):
 		try:
 			name = data.pop('name')
 			named_component_base = '%s/%s' % (COMPONENT_BASE, name)
-			for key, val in data.iteritems():
+			for key, val in data.items():
 				if val is None:
 					# was not given, so don't update
 					continue

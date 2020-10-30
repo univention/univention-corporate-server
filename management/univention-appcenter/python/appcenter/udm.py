@@ -78,7 +78,7 @@ def init_object(module, lo, pos, dn='', attrs=None):
 	if attrs:
 		if 'policies' in attrs:
 			obj.policies = attrs.pop('policies')
-		for key, value in attrs.iteritems():
+		for key, value in attrs.items():
 			obj[key] = value
 	return obj
 
@@ -120,7 +120,7 @@ def search_objects(_module, _lo, _pos, _base='', **kwargs):
 	module = _get_module(_module, _lo, _pos)
 	expressions = []
 	conj = udm_filter.conjunction('&', expressions)
-	for key, value in kwargs.iteritems():
+	for key, value in kwargs.items():
 		expressions.append(udm_filter.expression(key, escape_filter_chars(value), '='))
 	try:
 		objs = module.lookup(None, _lo, str(conj), base=_base)

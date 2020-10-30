@@ -553,7 +553,7 @@ class AppListener(AppListener):
 					ports_taken.add(next_port)
 					value = str(next_port)
 				updates[key] = value
-		for container_port, host_port in current_port_config.iteritems():
+		for container_port, host_port in current_port_config.items():
 			if container_port in updates:
 				if updates[container_port] == host_port:
 					updates.pop(container_port)
@@ -612,7 +612,7 @@ class AppListener(AppListener):
 				'description/de': app.get_localised('description', 'de'),
 				'link': app.web_interface,
 			}
-			for key, value in variables.iteritems():
+			for key, value in variables.items():
 				updates[registry_key % key] = value
 		return updates
 

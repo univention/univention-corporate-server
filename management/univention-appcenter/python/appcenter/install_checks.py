@@ -389,7 +389,7 @@ class MustNotBeDependedOn(SingleRequirement, HardRequirement):
 			domain = get_action('domain')
 			self_info = domain.to_dict([app])[0]
 			hostname = ucr_get('hostname')
-			if not any(inst['version'] for host, inst in self_info['installations'].iteritems() if host != hostname):
+			if not any(inst['version'] for host, inst in self_info['installations'].items() if host != hostname):
 				# this is the only installation
 				apps_info = domain.to_dict(apps)
 				for _app in apps_info:
