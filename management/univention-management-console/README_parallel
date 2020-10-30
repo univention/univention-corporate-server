@@ -13,3 +13,12 @@ To go back to one umc just use:
 `ucr unset umc/parallel`
 `systemctl stop umc_parallel.target`
 `systemctl restart apache2`
+
+
+TODOs
+- Documentation
+- Cleanup univention-management-console-web-server-parallel-wrapper
+- TBD: Use predictable unix socket for umc-server <-> umc-web-server connection to avoid needing to set "--umc-port"
+- TBD: Split into two targets for umc-server and umc-web-server?
+- TBD: Merge behaviour from parallel umc and single umc
+- TBB: Merge into UCS mainline
