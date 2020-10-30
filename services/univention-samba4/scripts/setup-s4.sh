@@ -286,7 +286,7 @@ fi
 ## restart processes with adjusted ports
 stop_udm_cli_server
 /etc/init.d/slapd restart 2>&1 | tee -a "$LOGFILE"
-/etc/init.d/univention-directory-listener restart 2>&1 | tee -a "$LOGFILE"
+systemctl restart univention-directory-listener 2>&1 | tee -a "$LOGFILE"
 /etc/init.d/univention-management-console-server restart 2>&1 | tee -a "$LOGFILE"
 
 exit 0
