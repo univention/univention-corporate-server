@@ -36,7 +36,7 @@ if [ "$1" = "remove" ]; then
 	. /usr/share/univention-lib/all.sh
 	call_unjoinscript 03univention-s4-connector.uinst
 
-	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 
 	handler_file=/var/lib/univention-directory-listener/handlers/s4-connector
 	test -e "$handler_file" && rm -f "$handler_file"
