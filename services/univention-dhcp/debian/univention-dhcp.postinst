@@ -64,10 +64,7 @@ else
 fi
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener
-	then
-		invoke-rc.d univention-directory-listener crestart || true
-	fi
+	systemctl try-restart univention-directory-listener || true
 fi
 
 # configure firewall
