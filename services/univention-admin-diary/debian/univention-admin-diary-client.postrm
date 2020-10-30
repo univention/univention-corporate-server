@@ -31,9 +31,7 @@
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener crestart
-fi
+systemctl try-restart univention-directory-listener
 
 if [ "$1" = "remove" ]; then
 	univention-config-registry unset admin/diary/backend

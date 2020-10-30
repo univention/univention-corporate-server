@@ -1,3 +1,9 @@
+univention-admin-diary (2.0.2-1) unstable; urgency=medium
+
+  * Bug #43686: use systemctl to start, stop or restart univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 15:09:31 +0100
+
 univention-admin-diary (2.0.1-2) unstable; urgency=low
 
   * Bug #52211: Convert to univention-join-dev
