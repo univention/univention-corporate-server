@@ -199,9 +199,7 @@ if [ -n "$s4setup" ] || is_ucr_true ad/member; then
 	/usr/share/univention-samba/mount_extfs_with_user_xattr.py
 	if [ -z "$samba4_ntacl_backend" ]; then
 		univention-config-registry set samba4/ntacl/backend='native'
-		if [ -x /etc/init.d/univention-directory-listener ]; then
-			/etc/init.d/univention-directory-listener restart
-		fi
+		systemctl restart univention-directory-listener
 	fi
 
 	## set samba/share/home=yes on a managed node, if it is a join into a samba4 domain and if it is the first join
