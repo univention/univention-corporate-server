@@ -51,10 +51,7 @@ chmod 0700 /usr/lib/cups/backend/cups-pdf
 
 # reload listener
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener; then
-		/etc/init.d/univention-directory-listener crestart
-	fi
-
+	systemctl try-restart univention-directory-listener
 	univention-config-registry set \
 		cups/cups-pdf/cleanup/enabled?no \
 		cups/cups-pdf/cleanup/interval"?* * 1 * *" \
