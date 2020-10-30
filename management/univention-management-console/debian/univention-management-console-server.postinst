@@ -67,9 +67,7 @@ eval "$(ucr shell server/role)"
 /usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor "*" \
 			--command 'setup/*'
 
-if [ -x /etc/init.d/univention-directory-listener ]; then
-	invoke-rc.d univention-directory-listener restart
-fi
+systemctl restart univention-directory-listener
 
 # configure firewall
 ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \
