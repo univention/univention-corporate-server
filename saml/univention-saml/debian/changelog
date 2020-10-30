@@ -1,3 +1,9 @@
+univention-saml (7.0.3-2) unstable; urgency=medium
+
+  * Bug #43686: use systemctl calls for univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
 univention-saml (7.0.3-1) unstable; urgency=medium
 
   * Bug #52278: defer LDAP bind when it is needed
