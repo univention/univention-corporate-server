@@ -1,3 +1,9 @@
+univention-dhcp (14.0.1-1) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 15:15:35 +0100
+
 univention-dhcp (14.0.0-2) unstable; urgency=low
 
   * Bug #32462: Remove references to dhcp3
