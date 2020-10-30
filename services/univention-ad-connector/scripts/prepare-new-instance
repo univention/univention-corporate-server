@@ -180,7 +180,7 @@ then
     /etc/init.d/univention-ad-"$CONFIGBASENAME" stop
 
     echo "-- stop listener"
-    /etc/init.d/univention-directory-listener stop
+    systemctl stop univention-directory-listener
 
     echo "-- unregister initscript"
     update-rc.d -f univention-ad-"$CONFIGBASENAME" remove
@@ -221,6 +221,6 @@ then
     rm -r /var/lib/univention-"$CONFIGBASENAME"
 
     echo "-- start listener"
-    /etc/init.d/univention-directory-listener start
+    systemctl start univention-directory-listener
 
 fi
