@@ -46,7 +46,7 @@ case "$1" in
 		ucr set --force \
 			listener/autostart=yes \
 			umc/server/autostart=no
-		/etc/init.d/univention-directory-listener restart
+		systemctl restart univention-directory-listener
 
 		# update system to latest package status
 		ucr commit /etc/apt/sources.list.d/*
@@ -60,7 +60,7 @@ case "$1" in
 
 		# disable the listener after an update to make sure that LDAP changes
 		# do not affect the actual system ... re-enable the UMC server
-		/etc/init.d/univention-directory-listener stop
+		systemctl stop univention-directory-listener
 		ucr set --force listener/autostart=no
 		ucr unset --force umc/server/autostart
 		/etc/init.d/univention-management-console-server start
