@@ -871,7 +871,7 @@ class AD_Takeover(object):
 				"samba4/ignore/mixsetup=yes",
 			], log.debug)
 			run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
-			run_and_output_to_log(["/etc/init.d/univention-directory-listener", "crestart"], log.debug)
+			run_and_output_to_log(["/usr/bin/systemctl", "try-restart", "univention-directory-listener"], log.debug)
 			# And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
 			# Due to Bug #35561 the script needs to be run directly to determine its exit status.
 			returncode = run_and_output_to_log(["/usr/lib/univention-install/96univention-samba4.inst"], log.debug)
@@ -1377,7 +1377,7 @@ class AD_Takeover(object):
 		log.info("Restarting Univention Directory Listener")
 
 		# Reset S4 Connector and handler state
-		run_and_output_to_log(["/etc/init.d/univention-directory-listener", "stop"], log.debug)
+		run_and_output_to_log(["/usr/bin/systemctl","stop", "univention-directory-listener"], log.debug)
 
 		for i in range(30):
 			time.sleep(1)
@@ -1399,7 +1399,7 @@ class AD_Takeover(object):
 				except Exception as e:
 					log.error("Error removing file: %s" % str(e))
 
-		returncode = run_and_output_to_log(["/etc/init.d/univention-directory-listener", "start"], log.debug)
+		returncode = run_and_output_to_log(["/usr/bin/systemctl", "start", "univention-directory-listener"], log.debug)
 		if returncode != 0:
 			log.error("Start of univention-directory-listener failed. See %s for details." % (LOGFILE_NAME,))
 
