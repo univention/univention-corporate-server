@@ -657,8 +657,10 @@ class ucs(object):
 		try:
 			with open(filename, 'rb') as fob:
 				(dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
-				dn = dn.decode('utf-8')
-				if old_dn is not None:
+				# With the Python 2 listener pickle files we got bytes here, otherwise already string
+				if isinstance(dn, bytes):
+					dn = dn.decode('utf-8')
+				if isinstance(old_dn, bytes):
 					old_dn = old_dn.decode('utf-8')
 		except IOError:
 			return True  # file not found so there's nothing to sync
@@ -673,7 +675,7 @@ class ucs(object):
 			return True
 
 		def recode_attribs(attribs):
-			return dict((key.decode('UTF-8'), value) for key, value in attribs.items())
+			return dict((key.decode('UTF-8') if isinstance(key, bytes) else key, value) for key, value in attribs.items())
 
 		new = recode_attribs(new)
 		old = recode_attribs(old)
@@ -972,8 +974,9 @@ class ucs(object):
 					try:
 						with open(filename, 'rb') as fob:
 							(dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
-							dn = dn.decode('utf-8')
-							if old_dn is not None:
+							if isinstance(dn, bytes):
+								dn = dn.decode('utf-8')
+							if isinstance(old_dn, bytes):
 								old_dn = old_dn.decode('utf-8')
 					except IOError:
 						continue  # file not found so there's nothing to sync
