@@ -88,9 +88,7 @@ case "$1" in
 
 		call_joinscript 50univention-pkgdb.inst || true
 
-		if [ -x "/etc/init.d/univention-directory-listener" ]; then
-			/etc/init.d/univention-directory-listener crestart
-		fi
+		systemctl try-restart univention-directory-listener
 
 		if [ -x "/etc/init.d/univention-management-console-server" ] ; then
 			/etc/init.d/univention-management-console-server crestart
