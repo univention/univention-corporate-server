@@ -1066,7 +1066,7 @@ if [ -d /etc/runit/univention-directory-notifier ]; then
 fi
 
 if [ -d /etc/runit/univention-directory-listener ]; then
-	/etc/init.d/univention-directory-listener restart >>/var/log/univention/join.log 2>&1
+	systemctl restart univention-directory-listener >>/var/log/univention/join.log 2>&1
 fi
 
 if [ "$interfaces_${interfaces_primary:-eth0}_type" != "dhcp" ]; then
