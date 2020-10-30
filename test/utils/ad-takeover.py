@@ -31,6 +31,7 @@
 import subprocess
 import socket
 import univention.lib.umc
+import sys
 
 from optparse import OptionParser
 from univention.lib.umc import Client
@@ -127,14 +128,34 @@ finished = True
 while not domainhost_unreachable(options.domain_host):
 	sleep(2)
 
-sleep(5)
+sleep(10)
 
-print('starting takeover')
-response = client.umc_command("adtakeover/run/takeover", request_options)
-print(response.status)
-assert response.status == 200
+try:
+	print('starting takeover')
+	response = client.umc_command("adtakeover/run/takeover", request_options)
+	print(response.status)
+	assert response.status == 200
+except Exception as e:
+	print('got {}'.format(e))
+	pass
 
-print('starting done')
-response = client.umc_command("adtakeover/status/done", request_options)
-print(response.status)
-assert response.status == 200
+try:
+	print('starting done')
+	response = client.umc_command("adtakeover/status/done", request_options)
+	print(response.status)
+	assert response.status == 200
+except Exception as e:
+	print('got {}'.format(e))
+	pass
+
+# wait until finished
+for i in range(90):
+	sleep(10)
+	response = client.umc_command("adtakeover/check/status", request_options)
+	print('waiting got finished - {}'.format(response.data))
+	if response.result == 'finished':
+		print('OK - finished')
+		sys.exit(0)
+
+print("FAIL - not finished - {}".format(response.data))
+sys.exit(1)
