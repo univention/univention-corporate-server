@@ -24,9 +24,9 @@ fi
 GROUPNAME="$(group_randomname)"
 
 ucr set nss/group/cachefile="yes"
-undo /etc/init.d/univention-directory-listener crestart # reversed order
+undo systemctl try-restart univention-directory-listener # reversed order
 undo ucr_restore
-/etc/init.d/univention-directory-listener restart
+systemctl restart univention-directory-listener
 
 # create domain part in configured mail domains list
 undo wait_for_replication_and_postrun # Reversed order

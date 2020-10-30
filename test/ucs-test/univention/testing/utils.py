@@ -55,7 +55,6 @@ except ImportError:
 	pass
 
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
-LISTENER_INIT_SCRIPT = '/etc/init.d/univention-directory-listener'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
 SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 
@@ -283,15 +282,15 @@ def restart_slapd():
 
 
 def stop_listener():
-	subprocess.call((LISTENER_INIT_SCRIPT, 'stop'))
+	subprocess.call(('/usr/bin/systemctl', 'stop', 'univention-directory-listener'))
 
 
 def start_listener():
-	subprocess.call((LISTENER_INIT_SCRIPT, 'start'))
+	subprocess.call(('/usr/bin/systemctl', 'start', 'univention-directory-listener'))
 
 
 def restart_listener():
-	subprocess.call((LISTENER_INIT_SCRIPT, 'restart'))
+	subprocess.call(('/usr/bin/systemctl', 'restart', 'univention-directory-listener'))
 
 
 def restart_firewall():

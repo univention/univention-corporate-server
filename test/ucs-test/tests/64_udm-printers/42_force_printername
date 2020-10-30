@@ -71,7 +71,7 @@ def test_run(ucr, test_ucr_value):
 		univention.config_registry.handler_set([keyval])
 
 	if test_ucr_value != previous_value:
-		p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"], close_fds=True)
+		p1 = subprocess.Popen(["/usr/bin/systemctl", "restart", "univention-directory-listener"], close_fds=True)
 		p1.wait()
 
 	ucr.load()
@@ -114,7 +114,7 @@ def test_run(ucr, test_ucr_value):
 			keyval = "%s=%s" % (ucr_var, "no")
 			univention.config_registry.handler_set([keyval])
 
-		p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"], close_fds=True)
+		p1 = subprocess.Popen(["/usr/bin/systemctl", "restart", "univention-directory-listener"], close_fds=True)
 		p1.wait()
 
 		rename_share_and_check(udm, printer, expected_value)
@@ -126,5 +126,5 @@ if __name__ == '__main__':
 		test_run(ucr, "false")
 
 	# restart listener with original UCR values:
-	p1 = subprocess.Popen(["/etc/init.d/univention-directory-listener", "restart"], close_fds=True)
+	p1 = subprocess.Popen(["/usr/bin/systemctl", "restart", "univention-directory-listener"], close_fds=True)
 	p1.wait()
