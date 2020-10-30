@@ -62,7 +62,7 @@ class DovecotListener(object):
 			and spam_folder and spam_folder.lower() != "none":
 			try:
 				self.upload_activate_sieve_script(email, default_sieve_script)
-			except:
+			except Exception:
 				self.log_e("dovecot: Could not upload sieve script to account '%s'." % email)
 				raise
 			finally:
@@ -75,14 +75,14 @@ class DovecotListener(object):
 				old_localpart, old_domainpart = email.split("@")
 				global_mail_home = self.get_maillocation()
 				old_home_calc = str(global_mail_home).replace("%Ld", old_domainpart).replace("%Ln", old_localpart)
-			except:
+			except Exception:
 				self.log_e("dovecot: Delete mailbox: Configuration error. Could not remove mailbox (dn:'%s' old mail: '%s')." % (dn, email))
 				raise
 			self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "kick", email])
 			try:
 				self.listener.setuid(0)
 				shutil.rmtree(old_home_calc, ignore_errors=True)
-			except:
+			except Exception:
 				self.log_e("dovecot: Delete mailbox: Error removing directory '%s' from disk." % old_home_calc)
 				raise
 			finally:
@@ -103,14 +103,14 @@ class DovecotListener(object):
 		try:
 			self.listener.setuid(0)
 			cmd_proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
-			cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input)
+			cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input.encode('UTF-8'))
 			cmd_exit = cmd_proc.wait()
 			if cmd_out and not cmd_err and cmd_exit == 0:
 				if regexp:
-					res = re.findall(regexp, cmd_out)
+					res = re.findall(regexp, cmd_out.decode('UTF-8'))
 					return res[0]
 				else:
-					return cmd_out.rstrip()
+					return cmd_out.decode('UTF-8').rstrip()
 		finally:
 			self.listener.unsetuid()
 
@@ -125,7 +125,7 @@ class DovecotListener(object):
 			global_mail_home = self.get_maillocation()
 			old_home_calc = str(global_mail_home).replace("%Ld", old_domainpart).replace("%Ln", old_localpart)
 			new_home_dove = self.get_user_home(newMailPrimaryAddress)
-		except:
+		except Exception:
 			self.log_e("Move mailbox: Configuration error. Could not move mailbox ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
 			return
 
@@ -145,13 +145,13 @@ class DovecotListener(object):
 
 		try:
 			self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "kick", oldMailPrimaryAddress])
-		except:
+		except Exception:
 			# ignore
 			pass
 
 		try:
 			self.move_mail_home(old_home_calc, new_home_dove, newMailPrimaryAddress, force_rename)
-		except:
+		except Exception:
 			self.log_e("Move mailbox: Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
 				newMailPrimaryAddress, old_home_calc, new_home_dove, traceback.format_exc()))
 			return
@@ -170,7 +170,7 @@ class DovecotListener(object):
 			st = os.stat(old_path)
 			shutil.move(old_path, new_path)
 			self.chown_r(new_path, st[stat.ST_UID], st[stat.ST_GID])
-		except:
+		except Exception:
 			self.log_e("Failed to move mail home (of mail '%s') from '%s' to '%s'.\n%s" % (
 				email, old_path, new_path, traceback.format_exc()))
 			raise
@@ -179,8 +179,8 @@ class DovecotListener(object):
 
 	def get_maillocation(self):
 		try:
-			return self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_location"], "\S+:(\S+)/Maildir")
-		except:
+			return self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_location"], r"\S+:(\S+)/Maildir")
+		except Exception:
 			self.log_e("Failed to get mail_location from Dovecot configuration.\n%s" % traceback.format_exc())
 			raise
 
@@ -202,22 +202,22 @@ class DovecotListener(object):
 			cmd_activate = list(_cmd)
 			cmd_activate.extend(["--activate"])
 			self.read_from_ext_proc_as_root(cmd_activate, stdin=subprocess.PIPE, stdin_input=master_pw)
-		except:
+		except Exception:
 			self.log_e("upload_activate_sieve_script(): Could not upload sieve script '%s' to mailbox '%s'. Exception:\n%s" % (file, email, traceback.format_exc()))
 			raise
 
 	def get_user_home(self, username):
 		try:
 			return self.read_from_ext_proc_as_root(["/usr/bin/doveadm", 'user', "-f", "home", username]).lower()
-		except:
+		except Exception:
 			self.log_e("Failed to get mail home for user '%s'.\n%s" % (username, traceback.format_exc()))
 			raise
 
 	def get_masteruser_credentials(self):
 		try:
 			self.listener.setuid(0)
-			return re.findall("(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
-		except:
+			return re.findall(r"(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
+		except Exception:
 			self.log_e("Failed to get masteruser password.\n%s" % traceback.format_exc())
 			raise
 		finally:
@@ -228,7 +228,7 @@ class DovecotListener(object):
 			try:
 				uid = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_uid"])
 				gid = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_gid"])
-			except:
+			except Exception:
 				uid = "dovemail"
 				gid = "dovemail"
 			self.dovecot_user = uid
@@ -253,7 +253,7 @@ class DovecotListener(object):
 			if not os.path.exists(dir):
 				os.mkdir(dir, 0o2700)
 				os.chown(dir, dovecot_uid, dovecot_gid)
-		except:
+		except Exception:
 			self.log_e("Failed to create directory '%s'.\n%s" % (dir, traceback.format_exc()))
 			raise
 		finally:
