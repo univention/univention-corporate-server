@@ -74,10 +74,7 @@ case "$1" in
 			systemctl mask rpc-svcgssd.service
 		fi
 
-		if test -f /etc/init.d/univention-directory-listener
-		then
-			/etc/init.d/univention-directory-listener crestart
-		fi
+		systemctl try-restart univention-directory-listener
 
 		call_joinscript 81univention-nfs-server.inst
 		;;
