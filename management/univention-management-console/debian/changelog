@@ -1,3 +1,9 @@
+univention-management-console (12.0.3-4) unstable; urgency=medium
+
+  * Bug #43686: use systemctl to restart univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
 univention-management-console (12.0.3-3) unstable; urgency=medium
 
   * Bug #52296: store only relevant SAML data, which we use, in the session
