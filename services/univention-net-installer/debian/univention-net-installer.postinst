@@ -81,9 +81,7 @@ install_template () {
 }
 
 restart_listener () {
-	if [ -x /etc/init.d/univention-directory-listener ]; then
-		invoke-rc.d univention-directory-listener crestart
-	fi
+	systemctl try-restart univention-directory-listener
 }
 
 . /usr/share/univention-lib/all.sh
