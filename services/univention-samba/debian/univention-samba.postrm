@@ -95,7 +95,7 @@ if [ "$1" = "remove" ]; then
 			windows/wins-support \
 			samba/role
 
-	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 fi
 
 exit 0

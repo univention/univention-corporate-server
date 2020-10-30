@@ -1,3 +1,9 @@
+univention-samba (14.0.2-1) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
 univention-samba (14.0.1-4) unstable; urgency=medium
 
   * Bug #47367: Fix samba crestart
