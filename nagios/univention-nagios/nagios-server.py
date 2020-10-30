@@ -30,12 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-__package__ = ''  # workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import os
 import re
+import pipes
 import stat
-import univention.debug
+import univention.debug as ud
 import subprocess
 
 name = 'nagios-server'
@@ -149,18 +150,16 @@ def writeTimeperiod(filename, name, alias, periods):
 		fp.write('}\n')
 		fp.close()
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: timeperiod %s written' % name)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: timeperiod %s written' % name)
 	finally:
 		listener.unsetuid()
 
 
 def handleTimeperiod(dn, new, old):
-
-	global __timeperiodsdir
 	conffilename = __timeperiodsdir + '%s.cfg'
 
 	if old:
-		filename = conffilename % old['cn'][0]
+		filename = conffilename % old['cn'][0].decode('UTF-8')
 		listener.setuid(0)
 		try:
 			if os.path.exists(filename):
@@ -169,17 +168,16 @@ def handleTimeperiod(dn, new, old):
 			listener.unsetuid()
 
 	if new:
-		filename = conffilename % new['cn'][0]
+		cn = new['cn'][0].decode('UTF-8')
+		filename = conffilename % (cn,)
 		listener.setuid(0)
 
-		periods = new['univentionNagiosTimeperiod'][0].split('#')
+		periods = new['univentionNagiosTimeperiod'][0].decode('UTF-8').split('#')
 
-		writeTimeperiod(filename, new['cn'][0], new['description'][0], periods)
+		writeTimeperiod(filename, cn, new['description'][0].decode('UTF-8'), periods)
 
 
 def createDefaultTimeperiod():
-	global __timeperiodsdir
-	global __predefinedTimeperiod
 	filename = __timeperiodsdir + __predefinedTimeperiod + '.cfg'
 	if not os.path.exists(filename):
 		periods = ['00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00']
@@ -193,10 +191,10 @@ def hostDeleted(new, old):
 	if not new:
 		# host object has been deleted
 		return True
-	if old and old.get('univentionNagiosEnabled', ['0'])[0] == '1':
+	if old and old.get('univentionNagiosEnabled', [b'0'])[0] == b'1':
 		# old host object had enabled nagios support
 
-		if not new.get('univentionNagiosEnabled', ['0'])[0] == '1':
+		if not new.get('univentionNagiosEnabled', [b'0'])[0] == b'1':
 			# new host object is not enabled ==> delete nagios host config
 			return True
 		if not new.get('aRecord'):
@@ -208,9 +206,6 @@ def hostDeleted(new, old):
 
 
 def createContact(contact):
-	global __contactsdir
-	global __predefinedTimeperiod
-
 	listener.setuid(0)
 	try:
 		filename = '%s%s.cfg' % (__contactsdir, contact)
@@ -234,33 +229,28 @@ def createContact(contact):
 		fp.write('}\n')
 		fp.close()
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: contact %s written' % contact)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: contact %s written' % contact)
 	finally:
 		listener.unsetuid()
 
 
 def removeContactIfUnused(contact):
-	global __contactsdir
-
 	contact_filename = os.path.join(__contactsdir, "%s.cfg" % contact)
 	if os.path.exists(contact_filename):
 		listener.setuid(0)
 		try:
 			# check if email address is still in use
-			result = os.system('grep -c "%s" %s* 2> /dev/null > /dev/null' % (contact, __contactgrpsdir))
+			result = os.system('grep -c "%s" %s* 2> /dev/null > /dev/null' % (pipes.quote(contact), __contactgrpsdir))
 			if result == 1:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: removing contact %s' % contact_filename)
+				ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: removing contact %s' % contact_filename)
 				os.unlink(contact_filename)
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: contact %s is in use' % contact_filename)
+				ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: contact %s is in use' % contact_filename)
 		finally:
 			listener.unsetuid()
 
 
 def createContactGroup(grpname, contactlist):
-	global __contactgrpsdir
-	global __contactsdir
-
 	listener.setuid(0)
 	try:
 		filename = '%s%s.cfg' % (__contactgrpsdir, grpname)
@@ -278,7 +268,7 @@ def createContactGroup(grpname, contactlist):
 		fp.write('}\n')
 		fp.close()
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: contactgroup %s written: members=%s' % (grpname, contactlist))
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: contactgroup %s written: members=%s' % (grpname, contactlist))
 		# create missing contacts
 		for contact in contactlist:
 			if not os.path.exists(os.path.join(__contactsdir, '%s.cfg' % contact)):
@@ -292,12 +282,8 @@ def createContactGroup(grpname, contactlist):
 
 
 def updateContactGroup(fqdn, new, old):
-	cg_old = [__fallbackContact]
-	cg_new = [__fallbackContact]
-	if old and 'univentionNagiosEmail' in old and old['univentionNagiosEmail']:
-		cg_old = old['univentionNagiosEmail']
-	if new and 'univentionNagiosEmail' in new and new['univentionNagiosEmail']:
-		cg_new = new['univentionNagiosEmail']
+	cg_old = old.get('univentionNagiosEmail', [__fallbackContact.encode('UTF-8')])
+	cg_new = new.get('univentionNagiosEmail', [__fallbackContact.encode('UTF-8')])
 
 	if hostDeleted(new, old):
 		# host deleted --> remove contact group
@@ -310,34 +296,32 @@ def updateContactGroup(fqdn, new, old):
 			finally:
 				listener.unsetuid()
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: removed contactgroup for host %s' % fqdn)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: removed contactgroup for host %s' % fqdn)
 
 		# remove old contacts if unused
 		for contact in cg_old:
-			removeContactIfUnused(contact)
+			removeContactIfUnused(contact.decode('UTF-8'))
 	else:
 		# host has been updated
-		createContactGroup('cg-%s' % fqdn, cg_new)
+		createContactGroup('cg-%s' % fqdn, [x.decode('UTF-8') for x in cg_new])
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: wrote contactgroup for host %s' % fqdn)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: wrote contactgroup for host %s' % fqdn)
 
 		# find deleted contacts
 		for contact in cg_old:
 			if contact not in cg_new:
-				removeContactIfUnused(contact)
+				removeContactIfUnused(contact.decode('UTF-8'))
 
 
 def readHostGroup(grpname):
-	global __hostgrpsdir
 	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
 	try:
 		if not os.path.exists(grp_filename):
 			return []
-		fp = open(grp_filename, 'r')
-		content = fp.read()
-		fp.close()
+		with open(grp_filename, 'r') as fp:
+			content = fp.read()
 		res = re.search(r'\W+members\W+(.*?)\W*$', content, re.MULTILINE)
 		if res:
 			return res.group(1).split(', ')
@@ -347,7 +331,6 @@ def readHostGroup(grpname):
 
 
 def writeHostGroup(grpname, members):
-	global __hostgrpsdir
 	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
@@ -364,7 +347,6 @@ def writeHostGroup(grpname, members):
 
 
 def deleteHostGroup(grpname):
-	global __hostgrpsdir
 	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
@@ -378,8 +360,6 @@ def deleteHostGroup(grpname):
 def removeFromHostGroup(grpname, fqdn):
 	old_members = readHostGroup(grpname)
 	if old_members:
-		new_members = []
-		# replacement for:    new_members = filter(lambda x: x != fqdn, old_members)
 		new_members = [item for item in old_members if item != fqdn]
 
 		if new_members:
@@ -396,13 +376,11 @@ def addToHostGroup(grpname, fqdn):
 
 
 def handleService(dn, new, old):
-	global __servicesdir
-	global __contactgrpsdir
 	if old:
 		listener.setuid(0)
 		try:
 			for fn in os.listdir(__servicesdir):
-				if fn.find("%s," % old['cn'][0]) == 0:
+				if fn.find("%s," % old['cn'][0].decode('UTF-8')) == 0:
 					os.unlink(os.path.join(__servicesdir, fn))
 		finally:
 			listener.unsetuid()
@@ -410,9 +388,9 @@ def handleService(dn, new, old):
 	if new:
 		listener.setuid(0)
 		try:
-			if 'univentionNagiosHostname' in new and new['univentionNagiosHostname']:
-				for host in new['univentionNagiosHostname']:
-					filename = os.path.join(__servicesdir, '%s,%s.cfg' % (new['cn'][0], host))
+			for host in new.get('univentionNagiosHostname', []):
+					new_cn = new['cn'][0].decode('UTF-8')
+					filename = os.path.join(__servicesdir, '%s,%s.cfg' % (new_cn, host.decode('UTF-8')))
 					fp = open(filename, 'w')
 					fp.write('# Warning: This file is auto-generated and might be overwritten.\n')
 					fp.write('#          Please use univention-admin instead.\n')
@@ -421,31 +399,31 @@ def handleService(dn, new, old):
 					fp.write('#          stattdessen den Univention Admin.\n')
 					fp.write('\n')
 					fp.write('define service {\n')
-					fp.write('    host_name               %s\n' % host)
-					fp.write('    service_description     %s\n' % new['cn'][0])
+					fp.write('    host_name               %s\n' % host.decode('UTF-8'))
+					fp.write('    service_description     %s\n' % new_cn)
 
-					if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and new['univentionNagiosUseNRPE'][0] == '1':
-						fp.write('    check_command           check_nrpe_1arg!%s\n' % new['cn'][0])
+					if new.get('univentionNagiosUseNRPE', [b''])[0] == b'1':
+						fp.write('    check_command           check_nrpe_1arg!%s\n' % new_cn)
 					else:
-						if 'univentionNagiosCheckArgs' in new and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
-							fp.write('    check_command           %s!%s\n' % (new['univentionNagiosCheckCommand'][0], new['univentionNagiosCheckArgs'][0]))
+						if new.get('univentionNagiosCheckArgs', [b''])[0]:
+							fp.write('    check_command           %s!%s\n' % (new['univentionNagiosCheckCommand'][0].decode('UTF-8'), new['univentionNagiosCheckArgs'][0].decode('UTF-8')))
 						else:
-							fp.write('    check_command           %s\n' % new['univentionNagiosCheckCommand'][0])
+							fp.write('    check_command           %s\n' % new['univentionNagiosCheckCommand'][0].decode('UTF-8'))
 
-					fp.write('    normal_check_interval   %s\n' % new['univentionNagiosNormalCheckInterval'][0])
-					fp.write('    retry_check_interval    %s\n' % new['univentionNagiosRetryCheckInterval'][0])
-					fp.write('    max_check_attempts      %s\n' % new['univentionNagiosMaxCheckAttempts'][0])
-					fp.write('    check_period            %s\n' % new['univentionNagiosCheckPeriod'][0])
-					fp.write('    notification_interval   %s\n' % new['univentionNagiosNotificationInterval'][0])
-					fp.write('    notification_period     %s\n' % new['univentionNagiosNotificationPeriod'][0])
-					fp.write('    notification_options    %s\n' % new['univentionNagiosNotificationOptions'][0])
+					fp.write('    normal_check_interval   %s\n' % new['univentionNagiosNormalCheckInterval'][0].decode('UTF-8'))
+					fp.write('    retry_check_interval    %s\n' % new['univentionNagiosRetryCheckInterval'][0].decode('UTF-8'))
+					fp.write('    max_check_attempts      %s\n' % new['univentionNagiosMaxCheckAttempts'][0].decode('UTF-8'))
+					fp.write('    check_period            %s\n' % new['univentionNagiosCheckPeriod'][0].decode('UTF-8'))
+					fp.write('    notification_interval   %s\n' % new['univentionNagiosNotificationInterval'][0].decode('UTF-8'))
+					fp.write('    notification_period     %s\n' % new['univentionNagiosNotificationPeriod'][0].decode('UTF-8'))
+					fp.write('    notification_options    %s\n' % new['univentionNagiosNotificationOptions'][0].decode('UTF-8'))
 					fp.write('    contact_groups          cg-%s\n' % host)
 					fp.write('}\n')
 					fp.close()
 
 					cg_filename = os.path.join(__contactgrpsdir, 'cg-%s.cfg' % host)
 					if not os.path.exists(cg_filename):
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: handleService: contactgrp for host %s does not exist - using fallback' % host)
+						ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: handleService: contactgrp for host %s does not exist - using fallback' % host)
 
 						createContactGroup('cg-%s' % host, [__fallbackContact])
 						listener.setuid(0)
@@ -459,37 +437,34 @@ def getUniventionComputerType(new):
 		return 'unknown'
 
 	if new and 'objectClass' in new:
-		if 'univentionClient' in new['objectClass']:
-			if 'posixAccount' in new['objectClass'] or 'shadowAccount' in new['objectClass']:
+		if b'univentionClient' in new['objectClass']:
+			if b'posixAccount' in new['objectClass'] or b'shadowAccount' in new['objectClass']:
 				return 'client'
 			else:
 				return 'ipmanagedclient'
-		elif 'univentionMacOSClient' in new['objectClass']:
+		elif b'univentionMacOSClient' in new['objectClass']:
 			return 'macos'
-		elif 'univentionWindows' in new['objectClass']:
+		elif b'univentionWindows' in new['objectClass']:
 			return 'windows'
-		elif 'univentionWindows' in new['objectClass']:
+		elif b'univentionWindows' in new['objectClass']:
 			return 'windows'
-		elif 'univentionMemberServer' in new['objectClass']:
+		elif b'univentionMemberServer' in new['objectClass']:
 			return 'memberserver'
-		elif 'univentionDomainController' in new['objectClass']:
+		elif b'univentionDomainController' in new['objectClass']:
 			if 'univentionServerRole' in new:
-				for role in ['master', 'backup', 'slave']:
+				for role in [b'master', b'backup', b'slave']:
 					if role in new['univentionServerRole']:
-						return 'domaincontroller_%s' % role
+						return 'domaincontroller_%s' % role.decode('UTF-8')
 	return 'unknown'
 
 
 def createHostExtInfo(fqdn, new):
-	global __exthostinfo_mapping
-	global __hostextinfodir
-
 	fn = os.path.join(__hostextinfodir, '%s.cfg' % fqdn)
 
 	if new:
 		hosttype = getUniventionComputerType(new)
 		if hosttype not in __exthostinfo_mapping:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: createHostExtInfo: unknown host type "%s" of %s' % (hosttype, fqdn))
+			ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: createHostExtInfo: unknown host type "%s" of %s' % (hosttype, fqdn))
 			return
 
 		listener.setuid(0)
@@ -512,11 +487,10 @@ def createHostExtInfo(fqdn, new):
 		finally:
 			listener.unsetuid()
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: extended info for host %s written' % fqdn)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: extended info for host %s written' % fqdn)
 
 
 def removeHostExtInfo(fqdn):
-	global __hostextinfodir
 	fn = os.path.join(__hostextinfodir, '%s.cfg' % fqdn)
 	if os.path.exists(fn):
 		listener.setuid(0)
@@ -527,7 +501,6 @@ def removeHostExtInfo(fqdn):
 
 
 def removeHost(fqdn):
-	global __hostextinfodir
 	fn = os.path.join(__hostsdir, '%s.cfg' % fqdn)
 	if os.path.exists(fn):
 		listener.setuid(0)
@@ -538,37 +511,33 @@ def removeHost(fqdn):
 
 
 def handleHost(dn, new, old):
-	global __hostsdir
-	global __contactgrpsdir
-	global __predefinedTimeperiod
-
 	# avoid additional ldap requests - building fqdn by combining "cn" and baseconfig variable "domainname"
 	host = ''
 	oldfqdn = 'unknown'
 	newfqdn = 'unknown'
 
-	olddomain = listener.baseConfig['domainname']
+	olddomain = listener.configRegistry['domainname']
 	if old and 'associatedDomain' in old and old['associatedDomain']:
-		olddomain = old['associatedDomain'][0]
+		olddomain = old['associatedDomain'][0].decode('ASCII')
 	if old:
 		if 'cn' in old and old['cn']:
-			host = old['cn'][0]
+			host = old['cn'][0].decode('UTF-8')
 			oldfqdn = host + '.' + olddomain
 		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: unable to determine old fqdn for %s' % str(dn))
+			ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: unable to determine old fqdn for %s' % str(dn))
 			host = 'unknown'
 			oldfqdn = host + '.unknown'
 	old_host_filename = os.path.join(__hostsdir, '%s.cfg' % oldfqdn)
 
-	newdomain = listener.baseConfig['domainname']
+	newdomain = listener.configRegistry['domainname']
 	if new and 'associatedDomain' in new and new['associatedDomain']:
-		newdomain = new['associatedDomain'][0]
+		newdomain = new['associatedDomain'][0].decode('ASCII')
 	if new:
 		if 'cn' in new and new['cn']:
-			host = new['cn'][0]
+			host = new['cn'][0].decode('UTF-8')
 			newfqdn = host + '.' + newdomain
 		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: unable to determine new fqdn for %s' % str(dn))
+			ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: unable to determine new fqdn for %s' % str(dn))
 			host = 'unknown'
 			newfqdn = host + '.unknown'
 	new_host_filename = os.path.join(__hostsdir, '%s.cfg' % newfqdn)
@@ -577,10 +546,10 @@ def handleHost(dn, new, old):
 	# default: AllHosts
 	# if host object resides within ou or container then parts of ou/container's dn is used as groupname
 	grpname = 'AllHosts'
-	ldapbase = listener.baseConfig['ldap/base']
+	ldapbase = listener.configRegistry['ldap/base']
 	result = re.search('^cn=%s(,.*?)?,%s$' % (host, ldapbase), dn)
 	if result and result.group(1):
-		grpname = re.sub(',\w+=', '_', result.group(1))[1:]
+		grpname = re.sub(r',\w+=', '_', result.group(1))[1:]
 
 	# fqdn changed ==> remove old entry and create new ones
 	if oldfqdn != newfqdn and new and old:
@@ -590,7 +559,7 @@ def handleHost(dn, new, old):
 				os.unlink(old_host_filename)
 		finally:
 			listener.unsetuid()
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: fqdn changed: host %s deleted' % oldfqdn)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: fqdn changed: host %s deleted' % oldfqdn)
 
 		# remove contact group and contacts
 		updateContactGroup(oldfqdn, {}, old)
@@ -609,7 +578,7 @@ def handleHost(dn, new, old):
 				os.unlink(old_host_filename)
 		finally:
 			listener.unsetuid()
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: host %s deleted' % oldfqdn)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: host %s deleted' % oldfqdn)
 
 		# remove contact group and contacts
 		updateContactGroup(oldfqdn, new, old)
@@ -623,7 +592,7 @@ def handleHost(dn, new, old):
 
 	elif new:
 		if not ('aRecord' in new and new['aRecord']):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: missing aRecord (%s)' % dn)
+			ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: missing aRecord (%s)' % dn)
 			return
 
 		listener.setuid(0)
@@ -638,22 +607,22 @@ def handleHost(dn, new, old):
 			fp.write('define host {\n')
 			fp.write('    host_name               %s\n' % newfqdn)
 			if 'description' in new and new['description']:
-				fp.write('    alias                   %s (%s)\n' % (newfqdn, new['description'][0]))
+				fp.write('    alias                   %s (%s)\n' % (newfqdn, new['description'][0].decode('UTF-8')))
 			else:
 				fp.write('    alias                   %s\n' % newfqdn)
-			fp.write('    address                 %s\n' % new['aRecord'][0])
+			fp.write('    address                 %s\n' % new['aRecord'][0].decode('ASCII'))
 			if 'univentionNagiosParent' in new and new['univentionNagiosParent']:
-				fp.write('    parents                 %s\n' % ', '.join(new['univentionNagiosParent']))
+				fp.write('    parents                 %s\n' % b', '.join(new['univentionNagiosParent']).decode('UTF-8'))
 
-			if listener.baseConfig.is_true("nagios/server/hostcheck/enable", False):
+			if listener.configRegistry.is_true("nagios/server/hostcheck/enable", False):
 				fp.write('    check_command           check-host-alive\n')
 
 			fp.write('    max_check_attempts      10\n')
 			fp.write('    contact_groups          cg-%s\n' % newfqdn)
 
 			notification_interval = 0
-			if "nagios/server/hostcheck/notificationinterval" in listener.baseConfig and listener.baseConfig["nagios/server/hostcheck/notificationinterval"]:
-				notification_interval = listener.baseConfig["nagios/server/hostcheck/notificationinterval"]
+			if "nagios/server/hostcheck/notificationinterval" in listener.configRegistry and listener.configRegistry["nagios/server/hostcheck/notificationinterval"]:
+				notification_interval = listener.configRegistry["nagios/server/hostcheck/notificationinterval"]
 
 			fp.write('    notification_interval   %s\n' % notification_interval)
 			fp.write('    notification_period     %s\n' % __predefinedTimeperiod)
@@ -664,7 +633,7 @@ def handleHost(dn, new, old):
 		finally:
 			listener.unsetuid()
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: host %s written' % newfqdn)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: host %s written' % newfqdn)
 
 		if oldfqdn == newfqdn:
 			updateContactGroup(newfqdn, new, old)
@@ -677,20 +646,17 @@ def handleHost(dn, new, old):
 
 
 def handler(dn, new, old):
-
 	global __reload
 
-#	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN dn=%s' % str(dn))
-#	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN old=%s' % str(old))
-#	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN new=%s' % str(new))
+#	ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: IN dn=%s' % str(dn))
+#	ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: IN old=%s' % str(old))
+#	ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: IN new=%s' % str(new))
 
-	if ((old and 'objectClass' in old and 'univentionNagiosServiceClass' in old['objectClass']) or
-		(new and 'objectClass' in new and 'univentionNagiosServiceClass' in new['objectClass'])):
+	if b'univentionNagiosServiceClass' in old.get('objectClass', []) or b'univentionNagiosServiceClass' in new.get('objectClass', []):
 		handleService(dn, new, old)
 		__reload = True
 
-	elif ((old and 'objectClass' in old and 'univentionNagiosHostClass' in old['objectClass']) or
-		(new and 'objectClass' in new and 'univentionNagiosHostClass' in new['objectClass'])):
+	elif b'univentionNagiosHostClass' in old.get('objectClass', []) or b'univentionNagiosHostClass' in new.get('objectClass', []):
 		# check if the nagios related attributes were changed
 		for attr in ['aRecord', 'associatedDomain', 'uid', 'cn', 'description', 'univentionNagiosParent', 'univentionNagiosEnabled', 'univentionNagiosEmail']:
 			if not (new.get(attr, None) == old.get(attr, None)):
@@ -698,20 +664,18 @@ def handler(dn, new, old):
 				__reload = True
 				break
 
-	elif ((old and 'objectClass' in old and 'univentionNagiosTimeperiodClass' in old['objectClass']) or
-		(new and 'objectClass' in new and 'univentionNagiosTimeperiodClass' in new['objectClass'])):
+	elif b'univentionNagiosTimeperiodClass' in old.get('objectClass', []) or b'univentionNagiosTimeperiodClass' in new.get('objectClass', []):
 		handleTimeperiod(dn, new, old)
 		__reload = True
 
 
 def initialize():
-	global __confsubdirs
 	dirs = ['']
 	dirs.extend(__confsubdirs)
 
-	for dir in dirs:
-		dirname = os.path.join('/etc/nagios/conf.univention.d', dir)
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: creating dir: %s' % dirname)
+	for dirname in dirs:
+		dirname = os.path.join('/etc/nagios/conf.univention.d', dirname)
+		ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: creating dir: %s' % dirname)
 		if not os.path.exists(dirname):
 			listener.setuid(0)
 			try:
@@ -746,7 +710,6 @@ def postrun():
 	global __reload
 
 	if __reload:
-		global __initscript
 		initscript = __initscript
 		# restart nagios if not running and nagios/server/autostart is set to yes/true/1
 		# otherwise if nagios is running, ask nagios to reload config
@@ -761,8 +724,8 @@ def postrun():
 		listener.unsetuid()
 		if not pidlist.strip():
 			if retcode == 0:
-				if listener.baseConfig.is_true("nagios/server/autostart", False):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios not running - restarting server')
+				if listener.configRegistry.is_true("nagios/server/autostart", False):
+					ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: nagios not running - restarting server')
 
 					listener.setuid(0)
 					try:
@@ -770,18 +733,18 @@ def postrun():
 					finally:
 						listener.unsetuid()
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios reported an error in configfile /etc/nagios/nagios.cfg. Please restart nagios manually: "%s restart".' % initscript)
+				ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: nagios reported an error in configfile /etc/nagios/nagios.cfg. Please restart nagios manually: "%s restart".' % initscript)
 				listener.unsetuid()
 
 		else:
 			if retcode == 0:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
+				ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: reloading server')
 				listener.setuid(0)
 				try:
 					listener.run(initscript, ['nagios', 'reload'], uid=0)
 				finally:
 					listener.unsetuid()
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios reported an error in configfile /etc/nagios/nagios.cfg. Please restart nagios manually: "%s restart".' % initscript)
+				ud.debug(ud.LISTENER, ud.ERROR, 'NAGIOS-SERVER: nagios reported an error in configfile /etc/nagios/nagios.cfg. Please restart nagios manually: "%s restart".' % initscript)
 				listener.unsetuid()
 		__reload = False
