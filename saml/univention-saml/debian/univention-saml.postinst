@@ -81,9 +81,7 @@ configure)
 	chmod 600 /etc/simplesamlphp/serviceprovider_enabled_groups.json
 	chown samlcgi:samlcgi /etc/simplesamlphp/serviceprovider_enabled_groups.json
 
-	if [ -x /etc/init.d/univention-directory-listener ]; then
-		invoke-rc.d univention-directory-listener restart
-	fi
+	systemctl restart univention-directory-listener
 
 	for file in /var/log/apache2/suexec.log /var/log/memcached.log /var/log/memcached-saml.log; do
 		touch "$file"
