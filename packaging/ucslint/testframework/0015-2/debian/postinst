@@ -77,10 +77,7 @@ if [ "$1" = "$configure" -a -z "$2" ]; then
 fi
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart || true
-	fi
+	systemctl try-restart univention-directory-listener || true
 fi
 
 #DEBHELPER#
