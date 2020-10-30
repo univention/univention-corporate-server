@@ -1,3 +1,9 @@
+univention-net-installer (13.0.1-1) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 15:20:41 +0100
+
 univention-net-installer (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
