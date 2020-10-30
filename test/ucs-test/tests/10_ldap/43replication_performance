@@ -37,9 +37,9 @@ fi
 info "Stopping replication..."
 wait_for_replication ||
 	fail_fast 1 "Initial replication failed"
-/etc/init.d/univention-directory-listener stop
+systemctl stop univention-directory-listener
 undo wait_for_replication # wait at end
-undo /etc/init.d/univention-directory-listener start
+undo systemctl start univention-directory-listener
 
 
 declare -r unique="${0##*/}_${$}_${RANDOM}"
@@ -85,7 +85,7 @@ section "Restarting replication..."
 starttime=$(date +%s%N)
 info "Start: $(printf "%'d" $starttime) ns"
 
-/etc/init.d/univention-directory-listener start
+systemctl start univention-directory-listener
 wait_for_replication ||
 	fail_test 1 "Replication timed out"
 

@@ -44,10 +44,10 @@ undo wait_for_replication # wait at end
 
 if [ "${listener_debug_level:-0}" -le 2 ]
 then
-	undo /etc/init.d/univention-directory-listener restart # Reversed order
+	undo systemctl restart univention-directory-listener # Reversed order
 	ucr set listener/debug/level=2
 	undo ucr_restore
-	/etc/init.d/univention-directory-listener restart
+	systemctl restart univention-directory-listener
 fi
 log_lines=$(wc -l /var/log/univention/listener.log)
 
