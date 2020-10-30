@@ -93,7 +93,6 @@ UDM_users_user_pager3="$(random_chars 4 $_ciphers)"
 
 if $ext_mapping; then
 	UDM_users_user_jpegPhoto="/9j/4AAQSkZJRgABAQEBLAEsAAD/4Se4"
-	AD_users_user_jpegPhoto="$(echo $UDM_users_user_jpegPhoto | base64 --decode)"
 	UDM_users_user_employeeNumber="$(random_chars)"
 	UDM_users_user_employeeType="$(random_chars)"
 	UDM_users_user_loginShell="$(random_chars)"
@@ -114,7 +113,6 @@ if $ext_mapping; then
 	UDM_users_user_postOfficeBox2="$(random_chars)"
 	UDM_users_user_preferredLanguage="$(random_chars)"
 	UDM_users_user_userCert="MIICEjCCAXsCAg36MA0GCSqGSIb3DQEBBQUAMIGbMQswCQYDVQQGEwJKUDEOMAwGA1UECBMFVG9reW8xEDAOBgNVBAcTB0NodW8ta3UxETAPBgNVBAoTCEZyYW5rNEREMRgwFgYDVQQLEw9XZWJDZXJ0IFN1cHBvcnQxGDAWBgNVBAMTD0ZyYW5rNEREIFdlYiBDQTEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBmcmFuazRkZC5jb20wHhcNMTIwODIyMDUyNjU0WhcNMTcwODIxMDUyNjU0WjBKMQswCQYDVQQGEwJKUDEOMAwGA1UECAwFVG9reW8xETAPBgNVBAoMCEZyYW5rNEREMRgwFgYDVQQDDA93d3cuZXhhbXBsZS5jb20wXDANBgkqhkiG9w0BAQEFAANLADBIAkEAm/xmkHmEQrurE/0re/jeFRLl8ZPjBop7uLHhnia7lQG/5zDtZIUC3RVpqDSwBuw/NTweGyuP+o8AG98HxqxTBwIDAQABMA0GCSqGSIb3DQEBBQUAA4GBABS2TLuBeTPmcaTaUW/LCB2NYOy8GMdzR1mx8iBIu2H6/E2tiY3RIevV2OW61qY2/XRQg7YPxx3ffeUugX9F4J/iPnnu1zAxxyBy2VguKv4SWjRFoRkIfIlHX0qVviMhSlNy2ioFLy7JcPZb+v3ftDGywUqcBiVDoea0Hn+GmxZACg=="
-	AD_users_user_userCert="$(echo $UDM_users_user_userCert | base64 --decode)"
 fi
 
 udm_modify "users/user" "" "" "" "" \
@@ -146,6 +144,7 @@ if $ext_mapping; then
 			   --set unixhome="$UDM_users_user_unixhome" \
 			   --set title="$UDM_users_user_title" \
 			   --set jpegPhoto="$UDM_users_user_jpegPhoto" \
+			   --append-option pki \
 			   --set userCertificate="$UDM_users_user_userCert" \
 			   --set initials="$UDM_users_user_initials" \
 			   --set physicalDeliveryOfficeName="$UDM_users_user_physicalDeliveryOfficeName" \
@@ -184,7 +183,7 @@ ad_verify_attribute "$AD_DN" "pager" "$UDM_users_user_pager1"; fail_bool 0 121 "
 ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager2"; fail_bool 0 121 "See #18501"
 ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager3"; fail_bool 0 121 "See #18501"
 if $ext_mapping; then
-	ad_verify_attribute "$AD_DN" "jpegPhoto" "$AD_users_user_jpegPhoto"; fail_bool 0 121
+	ad_verify_attribute "$AD_DN" "jpegPhoto" "$UDM_users_user_jpegPhoto" "" "" "base64"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "employeeNumber" "$UDM_users_user_employeeNumber"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "employeeType" "$UDM_users_user_employeeType"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "loginShell" "$UDM_users_user_loginShell"; fail_bool 0 121
@@ -192,7 +191,7 @@ if $ext_mapping; then
 	ad_verify_attribute "$AD_DN" "personalTitle" "$UDM_users_user_title"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "gidNumber" "$UDM_users_user_gidNumber"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "uidNumber" "$UDM_users_user_uidNumber"; fail_bool 0 121
-	ad_verify_attribute "$AD_DN" "userCertificate" "$AD_users_user_userCert"; fail_bool 0 121
+	ad_verify_attribute "$AD_DN" "userCertificate" "$UDM_users_user_userCert" "" "" "base64"; fail_bool 0 121
 	ad_verify_multi_value_attribute_contains "$AD_DN" "preferredDeliveryMethod" "$AD_users_user_prefdev"; fail_bool 0 121 "See #18501"
 	ad_verify_multi_value_attribute_contains "$AD_DN" "departmentNumber" "$UDM_users_user_departmentNumber1"; fail_bool 0 121 "See #18501"
 	ad_verify_multi_value_attribute_contains "$AD_DN" "departmentNumber" "$UDM_users_user_departmentNumber2"; fail_bool 0 121 "See #18501"
@@ -283,6 +282,7 @@ if $ext_mapping;then
 			   --set preferredDeliveryMethod="" \
 			   --set postOfficeBox="" \
 			   --set preferredLanguage=""|| fail_test 110
+			   #--remove-option pki # TODO: test
 	ad_wait_for_synchronization; fail_bool 0 110
 fi
 
@@ -307,7 +307,7 @@ ad_verify_attribute "$AD_DN" "otherMobile" ""; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "pager" ""; fail_bool 0 121 "See #18501"
 ad_verify_attribute "$AD_DN" "otherPager" ""; fail_bool 0 121 "See #18501"
 if $ext_mapping; then
-	ad_verify_attribute "$AD_DN" "jpegPhoto" ""; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
+	ad_verify_attribute "$AD_DN" "jpegPhoto" "" "" "" "ISO8859-1"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "employeeNumber" ""; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "employeeType" ""; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "loginShell" "" ; fail_bool 1 121
@@ -315,7 +315,7 @@ if $ext_mapping; then
 	ad_verify_attribute "$AD_DN" "personalTitle" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "departmentNumber" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "roomNumber" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
-	ad_verify_attribute "$AD_DN" "userCertificate" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
+	ad_verify_attribute "$AD_DN" "userCertificate" "" "" "" "ISO8859-1"; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "initials" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "physicalDeliveryOfficeName" ""; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'
 	ad_verify_attribute "$AD_DN" "postOfficeBox" "" ; fail_bool 1 121 'connector/s4/mapping/user/attributes/ignorelist does not apply'

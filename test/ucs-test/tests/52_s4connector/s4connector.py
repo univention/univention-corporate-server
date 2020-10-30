@@ -122,7 +122,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		res = self.lo.search_ext_s(group_dn, ldap.SCOPE_BASE, timeout=10)
 		import re
 		groupid = (re.search('^(.*)-(.*?)$', s4.decode_sid(res[0][1]['objectSid'][0]))).group(2)
-		self.set_attribute(user_dn, 'primaryGroupID', groupid)
+		self.set_attribute(user_dn, 'primaryGroupID', groupid.encode('UTF-8'))
 
 	def container_create(self, name, position=None, description=None):
 

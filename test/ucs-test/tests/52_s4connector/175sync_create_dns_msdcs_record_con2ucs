@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: s4connector con2ucs sync of _msdcs DNS SRV record
 ## exposure: dangerous
 ## packages:

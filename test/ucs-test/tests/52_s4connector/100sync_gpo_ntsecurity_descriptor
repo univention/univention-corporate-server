@@ -166,9 +166,11 @@ class Testclass_GPO_Security_Descriptor(object):
 			ntsd_sddl = obj[1].get("msNTSecurityDescriptor", [None])[0]
 			if not ntsd_sddl:
 				raise ValueError("No msNTSecurityDescriptor synchronized")
-			ntsd = security.descriptor.from_sddl(ntsd_sddl, self.domain_sid)
+			ntsd = security.descriptor.from_sddl(ntsd_sddl.decode('ASCII'), self.domain_sid)
 		elif isinstance(obj, str):
 			ntsd = security.descriptor.from_sddl(obj, self.domain_sid)
+		elif isinstance(obj, bytes):
+			ntsd = security.descriptor.from_sddl(obj.decode('ASCII'), self.domain_sid)
 		else:
 			raise ValueError("General ValueError")
 

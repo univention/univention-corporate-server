@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/bin/py.test -s
+#!/usr/share/ucs-test/runner /usr/bin/py.test3 -s
 # coding: utf-8
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with users"
 ## exposure: dangerous

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: "Rename a group and test sync"
 ## exposure: dangerous
 ## packages:

@@ -115,6 +115,7 @@ class LDAPConnection:
 		return {}
 
 	def create(self, dn, attrs):
+		#attrs = dict((key, [value] if isinstance(value, (str, bytes)) else value) for key, value in attrs.items())
 		ldif = modlist.addModlist(attrs)
 		self.lo.add_ext_s(dn, ldif, serverctrls=self.serverctrls_for_add_and_modify)
 
