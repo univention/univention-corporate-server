@@ -1,3 +1,9 @@
+univention-directory-replication (13.0.2-1) unstable; urgency=medium
+
+  * Bug #43686: use systemctl for univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 12:02:01 +0100
+
 univention-directory-replication (13.0.1-6) unstable; urgency=medium
 
   * Bug #42374: Package description fix
