@@ -34,7 +34,7 @@
 case "$1" in
 	"remove")
 		## unload the listener modules
-		/etc/init.d/univention-directory-listener crestart
+		systemctl try-restart univention-directory-listener
 		;;
 	"purge")
 		# Subdirectories belonging directly to package univention-ldap-server

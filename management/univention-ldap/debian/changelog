@@ -1,3 +1,9 @@
+univention-ldap (16.0.2-1) unstable; urgency=medium
+
+  * Bug #43686: use systemctl to start stop or restart univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
 univention-ldap (16.0.1-5) unstable; urgency=medium
 
   * Bug #51765: setting max_age ucr variable

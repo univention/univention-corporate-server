@@ -233,7 +233,7 @@ if [ "$1" = "configure" ]; then
 	fi
 
 	## load the listener module
-	/etc/init.d/univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 
 	# Bug #48530: resync listener module ldap_extension on Backup Directory Node/Replica Directory Node updating from older version
 	# to fix replication/activation issue in older versions of the listener module.
