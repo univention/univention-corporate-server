@@ -38,7 +38,9 @@
 #    use existing database
 
 from __future__ import print_function, absolute_import
+
 import listener
+
 import os
 import ldap
 import ldap.schema
@@ -48,11 +50,13 @@ import re
 import time
 import base64
 import subprocess
-import univention.debug as ud
 import smtplib
-from email.MIMEText import MIMEText
 import sys
 from errno import ENOENT
+
+from six.moves.email_mime_text import MIMEText
+
+import univention.debug as ud
 
 
 name = 'replication'
@@ -61,10 +65,10 @@ filter = '(objectClass=*)'  # default filter - may be overwritten later
 attributes = []
 modrdn = '1'
 
-slave = listener.baseConfig['ldap/server/type'] == 'slave'
+slave = listener.configRegistry['ldap/server/type'] == 'slave'
 
-if listener.baseConfig['ldap/slave/filter']:
-	filter = listener.baseConfig['ldap/slave/filter']
+if listener.configRegistry['ldap/slave/filter']:
+	filter = listener.configRegistry['ldap/slave/filter']
 
 LDAP_DIR = '/var/lib/univention-ldap/'
 STATE_DIR = '/var/lib/univention-directory-replication'
@@ -85,7 +89,7 @@ EXCLUDE_ATTRIBUTES = set(attr.lower() for attr in {
 	'pwdGraceUseTime',
 	'pwdReset',
 	'pwdPolicySubentry',
-} | (set() if listener.baseConfig.is_true('ldap/overlay/memberof') else {'memberOf'}))
+} | (set() if listener.configRegistry.is_true('ldap/overlay/memberof') else {'memberOf'}))
 ud.debug(ud.LISTENER, ud.ALL, 'replication: EXCLUDE_ATTRIBUTES=%r' % (EXCLUDE_ATTRIBUTES,))
 
 # don't use built-in OIDs from slapd
@@ -441,17 +445,15 @@ BUILTIN_OIDS = [
 ]
 
 
-class LDIFObject:
+class LDIFObject(object):
 
 	def __init__(self, filename):
-		self.fp = open(filename, 'a')
+		self.fp = open(filename, 'ab')
 		os.chmod(filename, 0o600)
 
 	def __print_attribute(self, attribute, value):
 		pos = len(attribute) + 2  # +colon+space
-		encode = 0
-		if '\n' in value:
-			encode = 1
+		encode = b'\n' in value
 		try:
 			if isinstance(value, tuple):
 				(newval, leng) = value
@@ -459,41 +461,41 @@ class LDIFObject:
 				newval = value
 			newval = newval.encode('ascii')
 		except UnicodeError:
-			encode = 1
+			encode = True
 		if encode:
 			pos += 1  # value will be base64 encoded, thus two colons
-			self.fp.write('%s::' % attribute)
-			value = base64.encodestring(value).replace('\n', '')
+			self.fp.write(b'%s::' % attribute.encode('UTF-8'))
+			value = base64.b64encode(value)
 		else:
-			self.fp.write('%s:' % attribute)
+			self.fp.write(b'%s:' % attribute.encode('UTF-8'))
 
 		if not value:
-			self.fp.write('\n')
+			self.fp.write(b'\n')
 
 		while value:
 			if pos == 1:
 				# first column is space
-				self.fp.write(' ')
+				self.fp.write(b' ')
 			print(value[0:60 - pos], file=self.fp)
 			value = value[60 - pos:]
 			pos = 1
 
 	def __new_entry(self, dn):
-		self.__print_attribute('dn', dn)
+		self.__print_attribute('dn', dn.encode('UTF-8'))
 
 	def __end_entry(self):
-		self.fp.write('\n')
+		self.fp.write(b'\n')
 		self.fp.flush()
 
 	def __new_section(self):
 		pass
 
 	def __end_section(self):
-		self.fp.write('-\n')
+		self.fp.write(b'-\n')
 
 	def add_s(self, dn, al):
 		self.__new_entry(dn)
-		self.__print_attribute('changetype', 'add')
+		self.__print_attribute('changetype', b'add')
 		for attr, vals in al:
 			for val in vals:
 				self.__print_attribute(attr, val)
@@ -501,7 +503,7 @@ class LDIFObject:
 
 	def modify_s(self, dn, ml):
 		self.__new_entry(dn)
-		self.__print_attribute('changetype', 'modify')
+		self.__print_attribute('changetype', b'modify')
 		for ldap_op, attr, vals in ml:
 			self.__new_section()
 			if ldap_op == ldap.MOD_REPLACE:
@@ -510,7 +512,7 @@ class LDIFObject:
 				op = 'add'
 			elif ldap_op == ldap.MOD_DELETE:
 				op = 'delete'
-			self.__print_attribute(op, attr)
+			self.__print_attribute(op, attr.encode('UTF-8'))
 			for val in vals:
 				self.__print_attribute(attr, val)
 			self.__end_section()
@@ -518,24 +520,24 @@ class LDIFObject:
 
 	def delete_s(self, dn):
 		self.__new_entry(dn)
-		self.__print_attribute('changetype', 'delete')
+		self.__print_attribute('changetype', b'delete')
 		self.__end_entry()
 
 	def rename_s(self, dn, newrdn, newsuperior=None, delold=1, serverctrls=None, clientctrls=None):
 		self.__new_entry(dn)
-		self.__print_attribute('changetype', 'modrdn')
-		self.__print_attribute('newrdn', newrdn)
+		self.__print_attribute('changetype', b'modrdn')
+		self.__print_attribute('newrdn', newrdn.encode('UTF-8'))
 		if newsuperior:
-			self.__print_attribute('newsuperior', newsuperior)
-		self.__print_attribute('deleteoldrdn', '1' if delold else '0')
+			self.__print_attribute('newsuperior', newsuperior.encode('UTF-8'))
+		self.__print_attribute('deleteoldrdn', b'1' if delold else b'0')
 		self.__end_entry()
 
 
-reconnect = 0
+reconnect = False
 connection = None
 
 
-def connect(ldif=0):
+def connect(ldif=False):
 	global connection
 	global reconnect
 
@@ -553,13 +555,13 @@ def connect(ldif=0):
 				pw = new_password()
 				init_slapd('restart')
 
-		local_port = int(listener.baseConfig.get('slapd/port', '7389').split(',')[0])
+		local_port = int(listener.configRegistry.get('slapd/port', '7389').split(',')[0])
 		connection = ldap.initialize('ldap://127.0.0.1:%d' % (local_port,))
-		connection.simple_bind_s('cn=update,' + listener.baseConfig['ldap/base'], pw)
+		connection.simple_bind_s('cn=update,' + listener.configRegistry['ldap/base'], pw)
 	else:
 		connection = LDIFObject(LDIF_FILE)
 
-	reconnect = 0
+	reconnect = False
 	return connection
 
 
@@ -582,7 +584,7 @@ def modlist(old, new):
 		if set_old == set_new:
 			continue
 
-		if key == listener.baseConfig.get('ldap/overlay/memberof/member', 'uniqueMember'):
+		if key == listener.configRegistry.get('ldap/overlay/memberof/member', 'uniqueMember'):
 			# triggers slapd-memberof, where REPLACE is inefficient (Bug #48545)
 			added_items = set_new - set_old
 			removed_items = set_old - set_new
@@ -684,7 +686,7 @@ def getOldValues(ldapconn, dn):
 				entryCSN = old.get('entryCSN', None)
 				ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL found result: %s %s" % (dn, entryCSN))
 			except (TypeError, ValueError) as ex:
-				ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL empty result: %s" % (dn,))
+				ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL empty result: %s: %s" % (dn, ex))
 				old = {}
 	else:
 		ud.debug(ud.LISTENER, ud.ALL, "replication: LDIF empty result: %s" % (dn,))
@@ -693,21 +695,21 @@ def getOldValues(ldapconn, dn):
 	return old
 
 
-def _delete_dn_recursive(l, dn):
+def _delete_dn_recursive(lo, dn):
 	try:
-		l.delete_s(dn)
+		lo.delete_s(dn)
 	except ldap.NOT_ALLOWED_ON_NONLEAF:
 		ud.debug(ud.LISTENER, ud.WARN, 'replication: Failed to delete non leaf object: dn=[%s];' % dn)
-		dns = [dn2 for dn2, _attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['dn'], attrsonly=1)]
+		dns = [dn2 for dn2, _attr in lo.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['dn'], attrsonly=1)]
 		dns.reverse()
 		for dn in dns:
-			l.delete_s(dn)
+			lo.delete_s(dn)
 	except ldap.NO_SUCH_OBJECT:
 		pass
 
 
-def _backup_dn_recursive(l, dn):
-	if isinstance(l, LDIFObject):
+def _backup_dn_recursive(lo, dn):
+	if isinstance(lo, LDIFObject):
 		return
 
 	backup_file = os.path.join(BACKUP_DIR, str(time.time()))
@@ -715,7 +717,7 @@ def _backup_dn_recursive(l, dn):
 	with open(backup_file, 'w+') as fd:
 		os.fchmod(fd.fileno(), 0o600)
 		ldif_writer = ldifparser.LDIFWriter(fd)
-		for dn, entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
+		for dn, entry in lo.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
 			ldif_writer.unparse(dn, entry)
 
 
@@ -728,27 +730,27 @@ def _remove_file(pathname):
 			ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
 
 
-def _add_object_from_new(l, dn, new):
+def _add_object_from_new(lo, dn, new):
 	al = addlist(new)
 	try:
-		l.add_s(dn, al)
+		lo.add_s(dn, al)
 	except ldap.OBJECT_CLASS_VIOLATION as ex:
 		log_ldap(ud.ERROR, 'object class violation while adding', ex, dn=dn)
 
 
-def _modify_object_from_old_and_new(l, dn, old, new):
+def _modify_object_from_old_and_new(lo, dn, old, new):
 	ml = modlist(old, new)
 	if ml:
 		ud.debug(ud.LISTENER, ud.ALL, 'replication: modify: %s' % dn)
-		l.modify_s(dn, ml)
+		lo.modify_s(dn, ml)
 
 
 def _read_dn_from_file(filename):
 	old_dn = None
 
 	try:
-		with open(filename, 'r') as f:
-			old_dn = f.read()
+		with open(filename, 'r') as fd:
+			old_dn = fd.read()
 	except EnvironmentError as ex:
 		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, ex))
 
@@ -756,16 +758,16 @@ def _read_dn_from_file(filename):
 
 
 def check_file_system_space():
-	if not listener.baseConfig.is_true('ldap/replication/filesystem/check'):
+	if not listener.configRegistry.is_true('ldap/replication/filesystem/check'):
 		return
 
 	stat = os.statvfs(LDAP_DIR)
 	free_space = stat.f_bavail * stat.f_frsize
-	limit = float(listener.baseConfig.get('ldap/replication/filesystem/limit', '10')) * 1024.0 * 1024.0
+	limit = float(listener.configRegistry.get('ldap/replication/filesystem/limit', '10')) * 1024.0 * 1024.0
 	if free_space >= limit:
 		return
 
-	fqdn = '%(hostname)s.%(domainname)s' % listener.baseConfig
+	fqdn = '%(hostname)s.%(domainname)s' % listener.configRegistry
 	ud.debug(ud.LISTENER, ud.ERROR, 'replication: Critical disk space. The Univention LDAP Listener was stopped')
 	msg = MIMEText(
 		'The Univention LDAP Listener process was stopped on %s.\n\n\n'
@@ -775,7 +777,7 @@ def check_file_system_space():
 		' /etc/init.d/univention-directory-listener start' % (fqdn, LDAP_DIR, stat))
 	msg['Subject'] = 'Alert: Critical disk space on %s' % (fqdn,)
 	sender = 'root'
-	recipient = listener.baseConfig.get('ldap/replication/filesystem/recipient', sender)
+	recipient = listener.configRegistry.get('ldap/replication/filesystem/recipient', sender)
 
 	msg['From'] = sender
 	msg['To'] = recipient
@@ -804,51 +806,51 @@ def handler(dn, new, listener_old, operation):
 
 	while connect_count < 31 and not connected:
 		try:
-			l = connect()
+			lo = connect()
 		except ldap.LDAPError as ex:
 			connect_count += 1
 			if connect_count >= 30:
 				log_ldap(ud.ERROR, 'going into LDIF mode', ex)
-				reconnect = 1
-				l = connect(ldif=1)
+				reconnect = True
+				lo = connect(ldif=True)
 			else:
 				log_ldap(ud.WARN, 'Can not connect LDAP Server, retry in 10 seconds', ex)
-				reconnect = 1
+				reconnect = True
 				time.sleep(10)
 		else:
 			connected = 1
 
 	if 'pwdAttribute' in new:
-		if new['pwdAttribute'][0] == 'userPassword':
-			new['pwdAttribute'] = ['2.5.4.35']
+		if new['pwdAttribute'][0] == b'userPassword':
+			new['pwdAttribute'] = [b'2.5.4.35']
 
 	try:
 		# Read old entry directly from LDAP server
-		if not isinstance(l, LDIFObject):
-			old = getOldValues(l, dn)
+		if not isinstance(lo, LDIFObject):
+			old = getOldValues(lo, dn)
 
 			if ud.get_level(ud.LISTENER) >= ud.INFO:
 				# Check if both entries really match
-				match = 1
+				match = True
 				if len(old) != len(listener_old):
 					ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (list(old.keys()), list(listener_old.keys())))
-					match = 0
+					match = False
 				else:
 					for k in old:
 						if k in EXCLUDE_ATTRIBUTES:
 							continue
 						if k not in listener_old:
 							ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
-							match = 0
+							match = False
 							break
 						if len(old[k]) != len(listener_old[k]):
 							ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
-							match = 0
+							match = False
 							break
 						for v in old[k]:
 							if v not in listener_old[k]:
 								ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
-								match = 0
+								match = False
 								break
 				if not match:
 					ud.debug(ud.LISTENER, ud.INFO, 'replication: old entries from LDAP server and Listener do not match')
@@ -857,11 +859,11 @@ def handler(dn, new, listener_old, operation):
 
 		# add
 		if new:
-			if os.path.exists(CURRENT_MODRDN) and not isinstance(l, LDIFObject):
+			if os.path.exists(CURRENT_MODRDN) and not isinstance(lo, LDIFObject):
 				target_uuid_file = os.readlink(CURRENT_MODRDN)
 				old_dn = _read_dn_from_file(CURRENT_MODRDN)
 
-				new_entryUUID = new['entryUUID'][0]
+				new_entryUUID = new['entryUUID'][0].decode('ASCII')
 				modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
 				if modrdn_cache == target_uuid_file:
 					ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
@@ -869,10 +871,10 @@ def handler(dn, new, listener_old, operation):
 					if old:
 						# this means the target already exists, we have to delete this old object
 						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn,))
-						_backup_dn_recursive(l, dn)
-						_delete_dn_recursive(l, dn)
+						_backup_dn_recursive(lo, dn)
+						_delete_dn_recursive(lo, dn)
 
-					if getOldValues(l, old_dn):
+					if getOldValues(lo, old_dn):
 						# the normal rename is possible
 						new_dn = ldap.dn.str2dn(dn)
 						new_parent = ldap.dn.dn2str(new_dn[1:])
@@ -888,46 +890,46 @@ def handler(dn, new, listener_old, operation):
 								delold = 1
 
 						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s' % (old_dn, dn))
-						l.rename_s(old_dn, new_rdn, new_parent, delold=delold)
+						lo.rename_s(old_dn, new_rdn, new_parent, delold=delold)
 						_remove_file(modrdn_cache)
 					else:
 						# the old object does not exists, so we have to re-create the new object
 						ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
-						_add_object_from_new(l, dn, new)
+						_add_object_from_new(lo, dn, new)
 						_remove_file(modrdn_cache)
 				else:  # current_modrdn points to a different file
 					ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % (target_uuid_file,))
 
 					if old_dn:
 						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the %s has to be backuped and removed' % (old_dn, CURRENT_MODRDN))
-						_backup_dn_recursive(l, old_dn)
-						_delete_dn_recursive(l, old_dn)
+						_backup_dn_recursive(lo, old_dn)
+						_delete_dn_recursive(lo, old_dn)
 					else:
 						ud.debug(ud.LISTENER, ud.WARN, 'replication: no old dn has been found')
 
 					if not old:
-						_add_object_from_new(l, dn, new)
+						_add_object_from_new(lo, dn, new)
 					elif old:
-						_modify_object_from_old_and_new(l, dn, old, new)
+						_modify_object_from_old_and_new(lo, dn, old, new)
 
 				_remove_file(CURRENT_MODRDN)
 
 			elif old:  # modify: new and old
-				_modify_object_from_old_and_new(l, dn, old, new)
+				_modify_object_from_old_and_new(lo, dn, old, new)
 
 			else:  # add: new and not old
-				_add_object_from_new(l, dn, new)
+				_add_object_from_new(lo, dn, new)
 
 		# delete
 		elif old and not new:
 			if operation == 'r':  # check for modrdn phase 1
-				old_entryUUID = old['entryUUID'][0]
+				old_entryUUID = old['entryUUID'][0].decode('ASCII')
 				ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
 				modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
 				try:
-					with open(modrdn_cache, 'w') as f:
-						os.fchmod(f.fileno(), 0o600)
-						f.write(dn)
+					with open(modrdn_cache, 'w') as fd:
+						os.fchmod(fd.fileno(), 0o600)
+						fd.write(dn)
 					_remove_file(CURRENT_MODRDN)
 					os.symlink(modrdn_cache, CURRENT_MODRDN)
 					# that's it for now for command 'r' ==> modrdn will follow in the next step
@@ -937,19 +939,19 @@ def handler(dn, new, listener_old, operation):
 					ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, ex))
 
 			ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
-			_delete_dn_recursive(l, dn)
+			_delete_dn_recursive(lo, dn)
 	except ldap.SERVER_DOWN as ex:
 		log_ldap(ud.WARN, 'retrying', ex)
-		reconnect = 1
+		reconnect = True
 		handler(dn, new, listener_old, operation)
 	except ldap.ALREADY_EXISTS as ex:
 		log_ldap(ud.WARN, 'trying to apply changes', ex, dn=dn)
 		try:
-			cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
+			cur = lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
 		except ldap.LDAPError as ex:
 			log_ldap(ud.ERROR, 'going into LDIF mode', ex)
-			reconnect = 1
-			connect(ldif=1)
+			reconnect = True
+			connect(ldif=True)
 			handler(dn, new, listener_old, operation)
 		else:
 			handler(dn, new, cur, operation)
@@ -957,12 +959,12 @@ def handler(dn, new, listener_old, operation):
 		log_ldap(ud.ERROR, 'Constraint violation', ex, dn=dn)
 	except ldap.LDAPError as ex:
 		log_ldap(ud.ERROR, 'Error', ex, dn=dn)
-		if listener.baseConfig.get('ldap/replication/fallback', 'ldif') == 'restart':
+		if listener.configRegistry.get('ldap/replication/fallback', 'ldif') == 'restart':
 			ud.debug(ud.LISTENER, ud.ERROR, 'replication: Uncaught LDAPError. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
 			sys.exit(1)  # retry a bit later after restart via runsv
 		else:
-			reconnect = 1
-			connect(ldif=1)
+			reconnect = True
+			connect(ldif=True)
 			handler(dn, new, listener_old, operation)
 
 
@@ -1032,8 +1034,8 @@ def clean():
 	dirname = '/var/lib/univention-ldap/ldap'
 	listener.setuid(0)
 	try:
-		for f in os.listdir(dirname):
-			filename = os.path.join(dirname, f)
+		for filename in os.listdir(dirname):
+			filename = os.path.join(dirname, filename)
 			try:
 				os.unlink(filename)
 			except OSError:
@@ -1068,7 +1070,7 @@ def randpw(length=64):
 		'--secure',
 		str(length),
 		'1',
-	]).strip()
+	]).decode('ASCII').strip()
 	return password
 
 
