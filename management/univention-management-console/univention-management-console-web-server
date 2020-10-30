@@ -52,7 +52,7 @@ import functools
 import threading
 from errno import ESRCH
 from optparse import OptionParser
-from six.moves.urllib_parse import urlparse, urlunsplit
+from six.moves.urllib_parse import urlparse, urlunsplit, quote
 from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
 import six
@@ -1206,6 +1206,8 @@ class SAML(Ressource):
 		binding, message, relay_state = self._get_saml_message()
 
 		if message is None:
+			if cherrypy.request.method == 'GET':
+				raise HTTPRedirect('https://%s/simplesamlphp/saml2/idp/SSOService.php?spentityid=%s&RelayState=%s' % (ucr['ucs/server/sso/fqdn'], quote(self.sp.config.entityid), quote(kwargs.get('location', '/univention/management/'))))
 			return self.do_single_sign_on(relay_state=kwargs.get('location', '/univention/management/'))
 
 		acs = self.attribute_consuming_service
