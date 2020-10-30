@@ -71,10 +71,7 @@ ucr set security/packetfilter/package/univention-nagios-client/tcp/5666/all="ACC
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener
-		then
-		/etc/init.d/univention-directory-listener crestart
-	fi
+	systemctl try-restart univention-directory-listener
 fi
 
 /etc/init.d/nagios-nrpe-server restart

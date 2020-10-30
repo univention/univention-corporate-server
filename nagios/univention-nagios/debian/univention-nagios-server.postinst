@@ -91,7 +91,7 @@ call_joinscript 30univention-nagios-client.inst
 
 
 if [ "$1" = "configure" ]; then
-	test -f /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 	if [ -e /usr/share/apache2/apache2-maintscript-helper ]; then
 		. /usr/share/apache2/apache2-maintscript-helper
 		apache2_invoke enconf nagios
