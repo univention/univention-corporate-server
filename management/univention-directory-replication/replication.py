@@ -772,7 +772,7 @@ def check_file_system_space():
 		'The result of statvfs(%s):\n'
 		' %r\n\n'
 		'Please free up some disk space and restart the Univention LDAP Listener with the following command:\n'
-		' /etc/init.d/univention-directory-listener start' % (fqdn, LDAP_DIR, stat))
+		'systemctl restart univention-directory-listener' % (fqdn, LDAP_DIR, stat))
 	msg['Subject'] = 'Alert: Critical disk space on %s' % (fqdn,)
 	sender = 'root'
 	recipient = listener.baseConfig.get('ldap/replication/filesystem/recipient', sender)
@@ -785,7 +785,7 @@ def check_file_system_space():
 	s.sendmail(sender, [recipient], msg.as_string())
 	s.close()
 
-	listener.run('/etc/init.d/univention-directory-listener', ['univention-directory-listener', 'stop'], uid=0, wait=True)
+	listener.run('/usr/bin/systemctl', ['systemctl', 'stop', 'univention-directory-listener'], uid=0, wait=True)
 
 
 def handler(dn, new, listener_old, operation):

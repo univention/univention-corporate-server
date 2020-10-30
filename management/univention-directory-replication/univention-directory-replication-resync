@@ -134,6 +134,6 @@ else
 	echo ""
 	echo "You can find the failed modifications in ${faileddns}"
 	echo "Check them for being sync with the Primary LDAP, then delete $1 and start the listener again typing:"
-	echo "/etc/init.d/univention-directory-listener start"
+	echo "systemctl start univention-directory-listener"
 	exit 1
 fi
