@@ -68,7 +68,7 @@ if is_domain_in_admember_mode; then
 	/etc/init.d/univention-s4-connector stop
 	univention-config-registry set	connector/s4/autostart?no \
 						connector/s4/listener/disabled=true
-	/etc/init.d/univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 	exit 1
 fi
 
@@ -365,7 +365,7 @@ else
 		/etc/init.d/univention-s4-connector stop
 		univention-config-registry set	connector/s4/autostart?no \
 						connector/s4/listener/disabled=true
-		/etc/init.d/univention-directory-listener crestart
+		systemctl try-restart univention-directory-listener
 	fi
 fi
 

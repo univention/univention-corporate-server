@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.4-1) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
 univention-s4-connector (14.0.3-2) unstable; urgency=medium
 
   * Bug #52043: s4connector.s4.dc._nano2s should return int with Python 3 too
