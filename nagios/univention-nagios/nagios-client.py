@@ -77,9 +77,9 @@ def readPluginConfig():
 def replaceArguments(cmdline, args):
 	for i in range(9):
 		if i < len(args):
-			cmdline = re.sub(r'\$ARG%s\$'.encode('ASCII') % (i + 1), args[i], cmdline)
+			cmdline = re.sub(r'\$ARG%d\$'.encode('ASCII') % (i + 1), args[i], cmdline)
 		else:
-			cmdline = re.sub(r'\$ARG%s\$'.encode('ASCII') % (i + 1), b'', cmdline)
+			cmdline = re.sub(r'\$ARG%d\$'.encode('ASCII') % (i + 1), b'', cmdline)
 	return cmdline
 
 
