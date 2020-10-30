@@ -47,7 +47,7 @@ import syslog
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from collections import Mapping
-from six import string_types, text_type
+from six import string_types, text_type, PY2
 
 import listener
 import univention.debug as ud
@@ -104,7 +104,7 @@ class ModuleHandler(logging.Handler):
 
 	def emit(self, record):
 		msg = self.format(record)
-		if isinstance(msg, text_type):
+		if PY2 and isinstance(msg, text_type):
 			msg = msg.encode('utf-8')
 		msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
 		udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
