@@ -32,9 +32,9 @@ def handler(dn, new, old):
 		f.close()
 		listener.unsetuid()
 __HERE__
-undo /etc/init.d/univention-directory-listener restart # Reversed order
+undo systemctl restart univention-directory-listener # Reversed order
 undo rm -f "$listener"
-/etc/init.d/univention-directory-listener restart
+systemctl restart univention-directory-listener
 
 # create domain part in configured mail domains list
 create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
