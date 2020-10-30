@@ -286,7 +286,7 @@ reset ()
 {
 echo -e "\v ------ resetting all needed daemon  ------"
 
-cmd="/etc/init.d/univention-directory-listener start"
+cmd="systemctl start univention-directory-listener"
 echo -e "\v===>primary:"
 univention-ssh -timeout 60 "$pw" "root@$primary" $cmd
 echo -e "\v===>backup:"
