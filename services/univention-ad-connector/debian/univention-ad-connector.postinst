@@ -84,7 +84,7 @@ if [ ! -d /var/lib/univention-connector/ad ]; then
 fi
 
 /etc/init.d/univention-ad-connector crestart || true
-/etc/init.d/univention-directory-listener crestart || true
+systemctl try-restart univention-directory-listener || true
 
 
 if [ "$1" = "configure" ]; then

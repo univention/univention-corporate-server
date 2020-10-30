@@ -44,7 +44,7 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/ldap.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
-test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
+systemctl restart univention-directory-listener
 
 if [ "$connector_ad_listener_dir" = "/var/lib/univention-connector/ad" ]; then
 	find /var/lib/univention-connector/ad /var/lib/univention-connector/ad/tmp/ \
