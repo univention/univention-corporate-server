@@ -1,11 +1,15 @@
 First enable parallel UMC support:
 `ucr set umc/parallel=10`
 Start umc in paralle:
-`systemctl restart umc_parallel.service`
+`systemctl restart umc_parallel.target`
 Restart apache:
 `systemctl restart apache2`
 
 
+Check status of all services in target:
+`systemctl list-dependencies umc_parallel.target`
+
 To go back to one umc just use:
 `ucr unset umc/parallel`
+`systemctl stop umc_parallel.target`
 `systemctl restart apache2`

@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+import sys
+import subprocess
+
+from univention.config_registry import ConfigRegistry
+
+ucr = ConfigRegistry()
+ucr.load()
+
+port_umcws = int(sys.argv[1])
+port_umcs = ucr.get('umc/parallel/start_port', 16070) + (port_umcws - ucr.get('umc/parallel/start_port', 18090))
+subprocess.call(['univention-management-console-web-server', '--port={}'.format(port_umcws), '--umc-port={}'.format(port_umcs)])

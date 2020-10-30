@@ -3,5 +3,7 @@ univention-management-console-web-server	usr/sbin/
 09univention-management-console-web-server.uinst usr/lib/univention-uninstall/
 usr/share/univention-management-console/
 systemd/system/univention-management-console-web-server.service.d lib/systemd/system/
-start_parallel_umc.py usr/sbin/
-umc_parallel.service lib/systemd/system/
+umc_parallel.target lib/systemd/system/
+univention-management-console-web-server-parallel-wrapper /usr/sbin/
+univention-management-console-web-server@.service lib/systemd/system/
+univention-management-console-server@.service lib/systemd/system/

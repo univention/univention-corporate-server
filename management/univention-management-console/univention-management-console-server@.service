@@ -1,0 +1,17 @@
+[Unit]
+Description=Univention Management Console Server
+After=network.target remote-fs.target
+Wants=slapd.service
+PartOf=umc_parallel.target
+ReloadPropagatedFrom=umc_parallel.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/umc-server%i.pid
+ExecStart=/usr/sbin/univention-management-console-server --port %i
+ExecReload=/bin/kill -HUP $MAINPID
+User=root
+Group=root
+
+[Install]
+WantedBy=umc_parallel.target
