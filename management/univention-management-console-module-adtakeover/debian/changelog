@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (7.0.1-1) unstable; urgency=medium
+
+  * Bug #43686: use systemctl to start, stop or restart univention-directory-listener
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Fri, 30 Oct 2020 13:28:00 +0100
+
 univention-management-console-module-adtakeover (7.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
