@@ -52,7 +52,7 @@ class AppListener(ListenerModuleHandler):
 		attributes = []
 
 	def create(self, dn, new):
-		if 'univentionRadiusClient' in new.get('objectClass', []):
+		if b'univentionRadiusClient' in new.get('objectClass', []):
 			self.run_update = True
 			self.logger.info('config update triggered')
 
@@ -73,7 +73,7 @@ class AppListener(ListenerModuleHandler):
 				self.logger.info('config update triggered')
 
 	def remove(self, dn, old):
-		if 'univentionRadiusClient' in old.get('objectClass', []):
+		if b'univentionRadiusClient' in old.get('objectClass', []):
 			self.run_update = True
 			self.logger.info('config update triggered')
 
