@@ -21,6 +21,9 @@ TODOs
 - Documentation
 - Cleanup univention-management-console-web-server-parallel-wrapper
 - TBD: Use predictable unix socket for umc-server <-> umc-web-server connection to avoid needing to set "--umc-port"
+- TBD: Move port logic into UMC processes (e.g. "--processindex %i" → start-port + %i for UMC-web-server and unix socket name for UMC-server → no additional wrapper required)
 - TBD: Split into two targets for umc-server and umc-web-server?
-- TBD: Merge behaviour from parallel umc and single umc
-- TBB: Merge into UCS mainline
+- TBD: Even in parallel mode, keep one process each on old port/pidfile/socket/... to maintain some sort of backward compatibility.
+- TBD: Merge behaviour from parallel UMC and single UMC
+- TBD: Merge into UCS mainline
+- TBD: remove "Environment=UMC_PORTS=%i" from univention-management-console-web-server@.service?
