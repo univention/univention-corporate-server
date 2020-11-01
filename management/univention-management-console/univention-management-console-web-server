@@ -1470,13 +1470,9 @@ def reload_webserver():
 reload_webserver.callbacks = [log_reopen]
 
 
-PORT=8090
-
-
 class UMC_HTTP_Daemon(DaemonRunner):
 
 	def __init__(self):
-		global PORT
 		self.parser = OptionParser()
 		self.parser.add_option(
 			'-n', '--no-daemon', action='store_false',
