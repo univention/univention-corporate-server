@@ -1,5 +1,6 @@
+from __future__ import print_function
 import univention.testing.utils as utils
-import cPickle
+from six.moves import cPickle as pickle
 import os
 import time
 
@@ -13,7 +14,7 @@ def cache_must_exists(dn):
 	while not os.path.exists(filename):
 		if i > TIMEOUT:
 			utils.fail('%s does not exist' % filename)
-		print 'Waiting for quota cache removing (%d) ...' % i
+		print('Waiting for quota cache removing (%d) ...' % i)
 		time.sleep(1)
 		i += 1
 
@@ -25,7 +26,7 @@ def cache_must_not_exists(dn):
 		if i > TIMEOUT:
 			utils.fail('%s exists' % filename)
 			break
-		print 'Waiting for quota cache creating (%d) ...' % i
+		print('Waiting for quota cache creating (%d) ...' % i)
 		time.sleep(1)
 		i += 1
 
@@ -36,9 +37,8 @@ def get_cache_values(dn):
 		utils.fail('%s does not exist' % filename)
 		return None
 
-	f = open(filename, 'r')
-	dn, attrs, policy_result = cPickle.load(f)
-	f.close()
+	with open(filename, 'rb') as fd:
+		dn, attrs, policy_result = pickle.load(fd)
 
 	share = {}
 	share['univentionSharePath'] = attrs['univentionSharePath'][0]
@@ -47,6 +47,7 @@ def get_cache_values(dn):
 	share['spaceSoftLimit'] = policy_result.get('univentionQuotaSoftLimitSpace', [None])[0]
 	share['spaceHardLimit'] = policy_result.get('univentionQuotaHardLimitSpace', [None])[0]
 	share['reapplyQuota'] = policy_result.get('univentionQuotaReapplyEveryLogin', [None])[0]
+	share = dict((key, value.decode('UTF-8') if isinstance(value, bytes) else value) for key, value in share.items())
 
 	return share
 
@@ -54,9 +55,9 @@ def get_cache_values(dn):
 def check_values(dn, inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):
 	cache = get_cache_values(dn)
 
-	#if cache['univentionSharePath'] != path:
-	#	utils.fail('univentionSharePath is set to %s. Expected: %s' % (cache['univentionSharePath'], path))
-	print cache
+	# if cache['univentionSharePath'] != path:
+	# 	utils.fail('univentionSharePath is set to %s. Expected: %s' % (cache['univentionSharePath'], path))
+	print(cache)
 	if cache['inodeSoftLimit'] != inodeSoftLimit:
 		utils.fail('inodeSoftLimit is set to %s. Expected: %s' % (cache['inodeSoftLimit'], inodeSoftLimit))
 	if cache['inodeHardLimit'] != inodeHardLimit:

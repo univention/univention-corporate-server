@@ -257,7 +257,7 @@ class TempFilesystem(object):
 	def _mount_filesystem(self):
 		os.mkdir(self.mount_point)
 		print("Setup loop device")
-		self.loop_dev = subprocess.check_output(["losetup", "--find"]).strip("\n")
+		self.loop_dev = subprocess.check_output(["losetup", "--find"]).decode('UTF-8').strip("\n")
 		subprocess.check_call(["losetup", self.loop_dev, self.filename])
 		print("Mount file")
 		file_mntent = Entry(self.loop_dev, self.mount_point, self.fs_type, options=[self.quota_type])

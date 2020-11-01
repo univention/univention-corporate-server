@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Quota share cache; create different policies
 ## roles-not: [basesystem]
 ## exposure: dangerous
@@ -10,7 +10,6 @@ import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
-import cPickle
 import quota_cache as qc
 
 SHARE_CACHE_DIR = '/var/cache/univention-quota/'
@@ -26,12 +25,13 @@ def create_share(position):
 def create_policy(inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):
 	name = uts.random_name()
 	position = 'cn=userquota,cn=shares,cn=policies,%s' % ucr.get('ldap/base')
-	return udm.create_object('policies/share_userquota', position=position, name=name,
-				softLimitSpace=spaceSoftLimit,
-				hardLimitSpace=spaceHardLimit,
-				softLimitInodes=inodeSoftLimit,
-				hardLimitInodes=inodeHardLimit,
-				reapplyeverylogin=reapplyQuota)
+	return udm.create_object(
+		'policies/share_userquota', position=position, name=name,
+		softLimitSpace=spaceSoftLimit,
+		hardLimitSpace=spaceHardLimit,
+		softLimitInodes=inodeSoftLimit,
+		hardLimitInodes=inodeHardLimit,
+		reapplyeverylogin=reapplyQuota)
 
 
 def append_policy(dn, udm_type, policy):
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
-		ou_dn = udm.create_object('container/ou', name=uts.random_name(), position='%s' % ucr.get('ldap/base'))
+		ou_dn = udm.create_object('container/ou', name=uts.random_name())
 		share1 = create_share(ou_dn)
 
 		container_dn = udm.create_object('container/cn', name=uts.random_name(), position=ou_dn)

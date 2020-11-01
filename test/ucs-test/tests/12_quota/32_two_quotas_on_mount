@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Test setting two different quotas on the same mountpoint
 ## roles-not: [basesystem]
 ## exposure: dangerous
