@@ -103,7 +103,7 @@ class DovecotListener(object):
 		try:
 			self.listener.setuid(0)
 			cmd_proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
-			cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input.encode('UTF-8'))
+			cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input and stdin_input.encode('UTF-8'))
 			cmd_exit = cmd_proc.wait()
 			if cmd_out and not cmd_err and cmd_exit == 0:
 				if regexp:
