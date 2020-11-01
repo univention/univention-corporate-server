@@ -139,9 +139,9 @@ def handler(dn, new, old):
 
 def write_configuration_file(dn, new, filename):
 	if new.get('serviceProviderMetadata') and new['serviceProviderMetadata'][0]:
-		metadata = new['serviceProviderMetadata'][0].decode('ASCII')
+		metadata = new['serviceProviderMetadata'][0]
 		try:
-			root = xml.etree.ElementTree.fromstring(metadata)
+			root = xml.etree.ElementTree.fromstring(metadata.decode('ASCII'))
 			entityid = root.get('entityID')
 		except xml.etree.ElementTree.ParseError as exc:
 			ud.debug(ud.LISTENER, ud.ERROR, 'Parsing metadata failed: %s' % (exc,))
@@ -167,7 +167,7 @@ def write_configuration_file(dn, new, filename):
 		fd.write("}\n")
 
 		if metadata:
-			with NamedTemporaryFile() as temp:
+			with NamedTemporaryFile(mode='w+') as temp:
 				temp.write(raw_metadata_generator)
 				temp.flush()
 
