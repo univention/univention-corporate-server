@@ -21,7 +21,7 @@ $config['univention-negotiate'] = array(
 		password = open('/etc/idp-ldap-user.secret','r').read().strip()
 	except (IOError, OSError):
 		import sys
-		print >> sys.stderr, '/etc/idp-ldap-user.secret could not be read!'
+		sys.stderr.write('/etc/idp-ldap-user.secret could not be read!')
 	print("	'adminPassword' => '%s'," % (password,))
 	subnets = [x.strip() for x in configRegistry.get('saml/idp/negotiate/filter-subnets', '').split(',') if x.strip()]
 	if subnets:
