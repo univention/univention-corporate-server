@@ -106,7 +106,7 @@ Description[en]=Defines the first port for parallel UMC-Server (default: 16070).
 Type=int
 Categories=management-umc
 
-[umc/parallel/port-start]
+[umc/parallel/port-start-web]
 Description[de]=Definiert den ersten port für parallele UMC-Webserver (Standard: 18090).
 Description[en]=Defines the first port for parallel UMC-Webserver (default: 18090).
 Type=int
