@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-10) unstable; urgency=medium
+
+  * Bug #52294: remove not yet existing __slots__
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2020 16:52:35 +0100
+
 univention-management-console (11.0.5-9) unstable; urgency=medium
 
   * Bug #52296: store only relevant SAML data, which we use, in the session

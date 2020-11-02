@@ -356,7 +356,7 @@ class QueueRequest(object):
 
 class User(object):
 
-	__slots__ = ('sessionid', 'username', 'password', 'saml', 'data', '_timeout')
+	__slots__ = ('sessionid', 'username', 'password', 'saml', 'data', '_time_remaining')
 
 	def __init__(self, sessionid, username, password, saml=None, data=None):
 		self.sessionid = sessionid
