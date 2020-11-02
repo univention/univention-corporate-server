@@ -3,11 +3,13 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console
-fix: 11.0.5-6A~4.4.0.202010271548
+fix: 
 desc: |
  This update addresses the following issue(s):
  * The performance during login at UMC has been improoved by using the
    C implementation of ElementTree for parsing module and category definitions.
  * The regular interval for the processing of recurring tasks in the
    UMC-Server and UMC-Web-Server can now be configured via UCR.
-bug: [52253, 52271]
+ * Objects stored in sessions now define Python `__slots__`, to minimize the
+   used memory.
+bug: [52253, 52271, 52294]
