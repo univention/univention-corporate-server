@@ -12,7 +12,11 @@
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import s4connector
-import itertools
+
+try:
+	from itertools import izip as zip
+except ImportError:  # Py3
+	pass
 
 
 if __name__ == '__main__':
@@ -35,14 +39,14 @@ if __name__ == '__main__':
 
 		# modify users
 		modified_users = []
-		for user, new_user in itertools.izip(users, new_users):
+		for user, new_user in zip(users, new_users):
 			modified_users.append(s4connector.modify_username(user, new_user, udm))
 		s4connector.wait_for_sync()
 
 		# check group and users again (ldap objects and if synced)
 		s4connector.check_object(group_dn)
 		s4connector.verify_users(group_dn, modified_users)
-		for modified_user, user_sid, user in itertools.izip(modified_users, user_sids, users):
+		for modified_user, user_sid, user in zip(modified_users, user_sids, users):
 			s4connector.check_object(modified_user, user_sid, user)
 
 	s4connector.wait_for_sync()
