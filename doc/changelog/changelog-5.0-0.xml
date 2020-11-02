@@ -682,7 +682,7 @@
 			<title>Kerberos</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					 Heimdal is now compiled with <package>python3-univention-lib</package> (<u:bug>52249</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
