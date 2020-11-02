@@ -12,4 +12,6 @@ desc: |
    UMC-Server and UMC-Web-Server can now be configured via UCR.
  * Objects stored in sessions now define Python `__slots__`, to minimize the
    used memory.
-bug: [52253, 52271, 52294]
+ * A log message has been removed which logged every session ID when cleaning
+   up one session.
+bug: [52253, 52271, 52294, 52295]
