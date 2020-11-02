@@ -386,10 +386,10 @@ class DovecotSharedFolderListener(DovecotListener):
 			cmd_exit = cmd_proc.wait()
 			if cmd_out and not cmd_err and cmd_exit == 0:
 				if regexp:
-					res = re.findall(regexp, cmd_out)
+					res = re.findall(regexp, cmd_out.decode('UTF-8'))
 					return res[0]
 				else:
-					return cmd_out.rstrip()
+					return cmd_out.decode('UTF-8').rstrip()
 		finally:
 			self.listener.unsetuid()
 
