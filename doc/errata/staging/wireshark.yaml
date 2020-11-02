@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: wireshark
+fix: 2.6.8-1.1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * GSS-API dissector crash (wnpa-sec-2019-14) (CVE-2019-10894)
+ * NetScaler file parser crash (wnpa-sec-2019-09) (CVE-2019-10895)
+ * DOF dissector crash (wnpa-sec-2019-15) (CVE-2019-10896)
+ * SRVLOC dissector crash (wnpa-sec-2019-10) (CVE-2019-10899)
+ * LDSS dissector crash (wnpa-sec-2019-17) (CVE-2019-10901)
+ * DCERPC SPOOLSS dissector crash (wnpa-sec-2019-18) (CVE-2019-10903)
+ * missing dissection recursion checks leads to denial of service
+   (CVE-2019-12295)
+bug: [52289]
+cve:
+- CVE-2019-10894
+- CVE-2019-10895
+- CVE-2019-10896
+- CVE-2019-10899
+- CVE-2019-10901
+- CVE-2019-10903
+- CVE-2019-12295
