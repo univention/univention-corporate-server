@@ -14,4 +14,5 @@ desc: |
    used memory.
  * A log message has been removed which logged every session ID when cleaning
    up one session.
-bug: [52253, 52271, 52294, 52295]
+ * Only relevant information about the SAML response is stored in the session.
+bug: [52253, 52271, 52294, 52295, 52296]
