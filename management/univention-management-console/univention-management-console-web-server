@@ -420,7 +420,6 @@ class SAMLUser(object):
 	def __init__(self, response, message):
 		self.not_on_or_after = response.not_on_or_after
 		self.name_id = code(response.name_id)
-		self.response = response
 		self.message = message
 		self.username = u''.join(response.ava['uid'])
 
