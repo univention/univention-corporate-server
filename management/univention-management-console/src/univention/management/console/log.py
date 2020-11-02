@@ -53,6 +53,7 @@ COMPONENTS = (ud.MAIN, ud.LDAP, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH
 _ucr = ConfigRegistry()
 _debug_ready = False
 _debug_loglevel = 2
+_log_pid = None
 
 
 def _reset_debug_loglevel():
@@ -64,11 +65,12 @@ def _reset_debug_loglevel():
 _reset_debug_loglevel()
 
 
-def log_init(filename, log_level=2):
+def log_init(filename, log_level=2, log_pid=None):
 	"""Initializes Univention debug.
 
 	:param str filename: The filename just needs to be a relative name. The directory /var/log/univention/ is prepended and the suffix '.log' is appended.
 	:param int log_level: log level to use (1-4)
+	:param bool log_pid: Prefix log message with process ID
 	"""
 
 	if filename[0] != '/':
@@ -79,8 +81,10 @@ def log_init(filename, log_level=2):
 	os.chmod(filename, 0o640)
 	log_set_level(log_level)
 
-	global _debug_ready
+	global _debug_ready, _log_pid
 	_debug_ready = True
+	if log_pid is not None:
+		_log_pid = log_pid
 
 	return fd
 
@@ -143,6 +147,8 @@ class ILogger(object):
 		self.__log(ud.INFO, message, self._fallbackLogger.debug)
 
 	def __log(self, level, message, logger):
+		if _log_pid:
+			message = '%s: %s' % (os.getpid(), message)
 		if _debug_ready:
 			try:
 				ud.debug(self._id, level, message)
