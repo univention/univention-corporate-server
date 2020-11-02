@@ -56,7 +56,7 @@ def run(_umc_instance):
 		]
 		if error.output:
 			MODULE.error('\n'.join(error_description))
-			error_description.extend(('\n\n', error.output))
+			error_description.extend(('\n\n', error.output.decode('UTF-8', 'replace')))
 		raise Warning(' '.join(error_description))
 
 

@@ -54,9 +54,9 @@ def run(_umc_instance):
 	if process.returncode != 0:
 		errors = [_('"univention-check-join-status" returned a problem with the domain join.')]
 		if stdout:
-			errors.append("\nSTDOUT:\n{}".format(stdout))
+			errors.append("\nSTDOUT:\n{}".format(stdout.decode('UTF-8', 'replace')))
 		if stderr:
-			errors.append("\nSTDERR:\n{}".format(stderr))
+			errors.append("\nSTDERR:\n{}".format(stderr.decode('UTF-8', 'replace')))
 		errors.append(_('See {erroranalysis} or run the join-scripts via {join}.'))
 		MODULE.error('\n'.join(errors))
 		raise Critical(description='\n'.join(errors))

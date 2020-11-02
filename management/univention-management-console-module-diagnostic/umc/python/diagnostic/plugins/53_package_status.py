@@ -20,9 +20,9 @@ run_descr = ['This can be checked by running: dpkg --audit']
 
 def run(_umc_instance):
 	proccess = Popen(['dpkg', '--audit'], stdout=PIPE, env={'LANG': 'C'})
-	stdout, stderr = proccess.communicate()
+	stdout, _ = proccess.communicate()
 
-	if 'The following packages' in stdout:
+	if b'The following packages' in stdout:
 		num = len([line for line in stdout.splitlines() if line.startswith(' ')])
 		raise Warning(description % num)
 

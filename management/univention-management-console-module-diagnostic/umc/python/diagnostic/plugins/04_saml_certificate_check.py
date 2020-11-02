@@ -114,7 +114,7 @@ def test_service_provider_certificate():
 	MODULE.process("Checking certificates of /etc/univention/ssl/%s.%s/cert.pem" % (ucr.get('hostname'), ucr.get('domainname')))
 	with open('/etc/univention/ssl/%s.%s/cert.pem' % (ucr.get('hostname'), ucr.get('domainname'))) as fd:
 		for cert in certs:
-			cert = find_node(fromstring(cert[1]['serviceProviderMetadata'][0]), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
+			cert = find_node(fromstring(cert[1]['serviceProviderMetadata'][0].decode('UTF-8')), '{http://www.w3.org/2000/09/xmldsig#}X509Certificate')
 			if cert.text.strip() not in fd.read():
 				MODULE.error('The certificate of the SAML service provider does not match.')
 				raise Critical(_('The certificate of the SAML service provider does not match.'))

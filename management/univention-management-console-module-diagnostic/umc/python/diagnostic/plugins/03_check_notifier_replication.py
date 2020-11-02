@@ -51,11 +51,11 @@ links = [{
 def get_id(master, cmd='GET_ID'):
 	sock = socket.create_connection((master, 6669), 60.0)
 
-	sock.send('Version: 3\nCapabilities: \n\n')
+	sock.send(b'Version: 3\nCapabilities: \n\n')
 	sock.recv(100)
 
-	sock.send('MSGID: 1\n{cmd}\n\n'.format(cmd=cmd))
-	notifier_result = sock.recv(100).strip()
+	sock.send('MSGID: 1\n{cmd}\n\n'.format(cmd=cmd).encode('ASCII'))
+	notifier_result = sock.recv(100).strip().decode('ASCII')
 
 	(msg_id, notifier_id) = notifier_result.split('\n', 1)
 	return notifier_id

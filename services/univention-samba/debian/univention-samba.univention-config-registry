@@ -61,7 +61,6 @@ Subfile: etc/samba/smb.conf.d/31univention-samba_password
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
-Variables: samba/encrypt_passwords
 Variables: samba/use_spnego
 Variables: samba/client_use_spnego
 

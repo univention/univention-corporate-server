@@ -251,16 +251,16 @@ def send_and_receive(kdc, port, protocol, as_req):
 		sock.close()
 		raise ServerUnreachable()
 
-	received = ''
+	received = b''
 	num_received = 0
 	if protocol == 'udp':  # fake the length field
-		received += '\x00\x00\x00\x00'
+		received += b'\x00\x00\x00\x00'
 		num_received += 4
 	while num_received < 128:
 		try:
 			(buf, addr) = sock.recvfrom(128)
 		except (socket.error, socket.timeout):
-			buf = ''
+			buf = b''
 		if not buf:
 			break
 		received += buf
@@ -283,7 +283,7 @@ def probe_kdc(kdc, port, protocol, target_realm, user_name):
 	except KerberosException:
 		return False
 
-	if target_realm in received:
+	if target_realm.encode('UTF-8') in received:
 		return True
 
 	return False

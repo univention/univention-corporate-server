@@ -53,68 +53,7 @@ if [ -z "$2" ]; then
 	done
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 11.0.1-12; then
-	python - <<EOF
-# coding: utf-8
-import os
-import urllib
-rewrite = False
-dir = '/etc/samba/shares.conf.d'
-for f in os.listdir(dir):
-	name = urllib.quote(f, safe='')
-	if name != f:
-		os.rename(os.path.join(dir, f), os.path.join(dir, name))
-		rewrite = True
-
-if rewrite:
-	with open('/etc/samba/shares.conf.temp2', 'w') as fp:
-		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
-		for f in os.listdir('/etc/samba/shares.conf.d'):
-			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
-	os.rename('/etc/samba/shares.conf.temp2', '/etc/samba/shares.conf')
-EOF
-fi
-
-if [ "$1" = "configure" ]; then
-
-	if [ -n "$2" ]; then
-		if dpkg --compare-versions "$2" lt 6.0.37-1 ; then
-			mkdir -p /etc/univention/skel/windows-profiles/default
-			mkdir -p /etc/univention/skel/windows-profiles/default.V2
-		fi
-
-		# Set default samba/role on updates (Bug #34091), may be removed after ucs3.x
-		if dpkg --compare-versions "$2" lt-nl '8.0.19-11'; then
-			case "${server_role}" in
-				domaincontroller_*)
-					univention-config-registry set samba/role?"domaincontroller"
-					;;
-				*)
-					univention-config-registry set samba/role?"memberserver"
-					;;
-			esac
-		fi
-
-		if dpkg --compare-versions "$2" lt 9.0.5-2 ; then
-			univention-config-registry set samba/spoolss/architecture?"Windows NT x86"
-		fi
-
-		if dpkg --compare-versions "$2" lt 9.0.5-6; then
-			for dname in default.V3 default.V4 default.V5; do
-				mkdir -p "/etc/univention/skel/windows-profiles/$dname"
-			done
-		fi
-	fi
-fi
-
 #DEBHELPER#
-
-if [ "$1" = "configure" ]; then
-	if [ -z "$2" ]; then
-		# only set this for new installations
-		univention-config-registry set samba/autostart="no"
-	fi
-fi
 
 univention-config-registry set \
 	samba/debug/level?0 \
@@ -164,8 +103,18 @@ fi
 call_joinscript_on_dcmaster 26univention-samba.inst
 
 if [ "$1" = "configure" ]; then
+	if [ -z "$2" ]; then
+		# only set this for new installations
+		univention-config-registry set samba/autostart="no"
+	fi
 
 	if [ -n "$2" ]; then
+		### The following block of code may be removed after ucs_5.0-0
+		if dpkg --compare-versions "$2" lt-nl "14.0.1-2"; then
+			univention-config-registry commit /etc/samba/smb.conf
+			smbpasswd -w "$(< /etc/machine.secret)"
+		fi
+
 		/etc/init.d/samba crestart
 		if [ -x /etc/init.d/winbind ]; then
 			if [ -n "$(pgrep -fx /usr/sbin/winbindd)" ]; then
@@ -173,13 +122,6 @@ if [ "$1" = "configure" ]; then
 					sleep 3
 				fi
 				/etc/init.d/winbind restart
-			fi
-		fi
-
-		### The following block of code may be removed after ucs_4.1-0
-		if dpkg --compare-versions "$2" lt-nl "10.0.1-2"; then
-			if [ "$samba_max_protocol" = "SMB2" ]; then
-				univention-config-registry unset samba/max/protocol
 			fi
 		fi
 	fi

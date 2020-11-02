@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Joinscripts
@@ -151,9 +151,9 @@ def main():
 			print(new_object_data)
 			print("###")
 
-		with os.fdopen(filepath_fd, "w") as f:
+		with os.fdopen(filepath_fd, "wb") as f:
 			f.write(new_object_data)
-		os.chmod(filepath, 0755)
+		os.chmod(filepath, 0o755)
 		cmd = [filepath]
 		cmd.extend(hook_options)
 		sys.stdout.flush()
@@ -165,6 +165,7 @@ def main():
 			sys.exit(1)
 		os.unlink(filepath)
 	shutil.rmtree(tempdir)
+
 
 if __name__ == "__main__":
 	main()

@@ -30,10 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-univention-config-registry set windows/wins-support=yes \
-							   samba/share/home=yes \
-							   samba/domainmaster=yes \
-							   samba/ldap/replication/sleep?4000
+univention-config-registry set \
+	windows/wins-support=yes \
+	samba/share/home=yes \
+	samba/domainmaster=yes \
+	samba/ldap/replication/sleep?4000
 
 #DEBHELPER#
 

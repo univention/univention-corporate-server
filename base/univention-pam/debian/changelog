@@ -4,6 +4,12 @@ univention-pam (13.0.2-1) unstable; urgency=medium
 
  -- Florian Best <best@univention.de>  Fri, 23 Oct 2020 12:39:58 +0200
 
+univention-pam (13.0.1-2) unstable; urgency=medium
+
+  * Bug #49898: Switch to Python3
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 21:49:10 +0200
+
 univention-pam (13.0.1-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by

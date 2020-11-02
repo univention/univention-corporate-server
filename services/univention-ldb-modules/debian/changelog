@@ -1,3 +1,15 @@
+univention-ldb-modules (8.0.0-3) unstable; urgency=medium
+
+  * Bug #49898: Update dependency on python3-samba
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 20:29:15 +0200
+
+univention-ldb-modules (8.0.0-2) unstable; urgency=medium
+
+  * Bug #49898: Update dependency on libldb2
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 12:34:31 +0200
+
 univention-ldb-modules (8.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

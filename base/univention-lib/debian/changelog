@@ -1,3 +1,36 @@
+univention-lib (9.0.9-8) unstable; urgency=medium
+
+  * Bug #49898: Temporary workaround for admember.py with Python2
+
+ -- Arvid <requate@univention.de>  Wed, 28 Oct 2020 23:45:30 +0100
+
+univention-lib (9.0.9-7) unstable; urgency=medium
+
+  * Bug #49898: python-univention-lib cannot depend on python-ldb
+    as that does not exist any longer
+
+ -- Arvid <requate@univention.de>  Fri, 23 Oct 2020 08:29:40 +0200
+
+univention-lib (9.0.9-6) unstable; urgency=medium
+
+  * Bug #49898: python-univention-lib cannot depend on python-samba
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 21:54:33 +0200
+
+univention-lib (9.0.9-5) unstable; urgency=medium
+
+  * Bug #49898: python3-univention-lib should not depend on
+    python-univention-lib
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 20:11:01 +0200
+
+univention-lib (9.0.9-3) unstable; urgency=medium
+
+  * Bug #49898: shell-univention-lib should only depend on
+    python3-univention-lib not on python-univention-lib
+
+ -- Arvid <requate@univention.de>  Thu, 22 Oct 2020 20:01:05 +0200
+
 univention-lib (9.0.9-2) unstable; urgency=low
 
   * Bug #52211: Move join function to separate join.sh

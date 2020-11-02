@@ -800,6 +800,83 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Samba has been updated to version 4.13 (<u:bug>49898</u:bug>).
+					Some highlights, quoting upstream release notes:
+					<itemizedlist>
+					<listitem><simpara>
+						Extensive efforts have been made to optimise Samba for use in organisations (for example) targeting 100,000 users, plus 120,000 computer objects, as well as large number of group memberships. Many of the specific efforts are detailed below, but the net results is to remove barriers to significantly larger Samba deployments compared to previous releases.
+					</simpara></listitem>
+					<listitem><simpara>
+						The LDAP server has improved memory efficiency, ensuring that large LDAP responses (for example a search for all objects) is not copied multiple times into memory.
+					</simpara></listitem>
+					<listitem><simpara>
+						Search performance on large LDB databases has been improved by reducing memory allocations made on each object.
+					</simpara></listitem>
+					<listitem><simpara>
+						Samba uses a new index format allowing Samba to efficiently select objects changed since the last replication cycle, using LDAP search filter relations &lt;= and &gt=;. This in turn improves performance during replication of large domains.
+					</simpara></listitem>
+					<listitem><simpara>
+						To improve performance during batch operations i.e. joins, ldb now accepts a "batch_mode" option. However to prevent any index or database inconsistencies if an operation fails, the entire transaction will be aborted at commit.
+					</simpara></listitem>
+					<listitem><simpara>
+						Default AD schema for new installations changed from <literal>2008_R2</literal> to <literal>2012_R2</literal>. <literal>2012_R2</literal> <emphasis>functional level</emphasis> is not yet available.
+					</simpara></listitem>
+					</itemizedlist>
+					Some notable changes:
+					<itemizedlist>
+					<listitem><simpara>
+					SMB1 is disabled by default. The default for the <filename>smb.conf</filename> parameters <literal>server min protocol</literal>
+					and <literal>server min protocol</literal> has been increased from <literal>NT1</literal> to <literal>SMB2_02</literal>.
+					This means clients without support for <literal>SMB2</literal> or <literal>SMB3</literal> are no longer able to connect to smbd (by default).
+					It also means client tools like <command>smbclient</command> and other are no longer able to connect to servers without <literal>SMB2</literal> or <literal>SMB3</literal> support (by default).
+					As Microsoft no longer installs SMB1 support in recent releases or uninstalls it after 30 days without usage, the Samba Team tries to get remove the SMB1 usage as much as possible.
+					<literal>SMB1</literal> is officially deprecated and might be removed step by step in the following years.
+					</simpara></listitem>
+					<listitem><simpara>
+					The default for the <literal>--model</literal> argument passed to the samba executable has changed from <literal>standard</literal> to <literal>prefork</literal>. This means a difference in the number of samba child processes that are created to handle client connections. The previous default would create a separate process for every <literal>LDAP</literal> or <literal>NETLOGON</literal> client connection. For a network with a lot of persistent client connections, this could result in significant memory overhead. Now, with the new default of <literal>prefork</literal>, the <literal>LDAP</literal>, <literal>NETLOGON</literal>, and <literal>KDC</literal> services will create a fixed number of worker processes at startup and share the client connections amongst these workers. The number of worker processes can be configured by the <literal>prefork children</literal> setting in the smb.conf (the default is 4). Currently this is not yet configurable via &ucsUCRV;, but can be adjusted via <filename>/etc/samba/local.conf</filename>. If this becomes a popular request, adding the configuration option via &ucsUCRV; may be useful in the future.
+					</simpara></listitem>
+					<listitem><simpara>
+						Samba 4.11 has changed how the AD database is stored on disk. Samba/AD users should not really be affected by this change when upgrading from 4.10. The database will automatically get rewritten in the new 4.11 format when you first start the upgraded samba executable. However, when downgrading from 4.11 you will need to manually downgrade the AD database yourself. When either upgrading or downgrading, users should also avoid making any database modifications between installing the new Samba packages and starting the samba executable.
+					</simpara></listitem>
+					<listitem><simpara>
+						Since the Samba 4.12 release, support for <literal>DES</literal> encryption types has been removed, and setting <literal>DES_ONLY</literal> flag for an account will cause Kerberos authentication to fail for that account (see RFC-6649).
+						DES keys no longer saved in the AD DB.  When a new password is set for an account, Samba DCs will store random keys in DB instead of <literal>DES</literal> keys derived from the password.
+					</simpara></listitem>
+					<listitem><simpara>
+					The <filename>smb.conf</filename> parameter <literal>encrypt passwords</literal> is deprecated (Default: <literal>yes</literal>).
+					The &ucsUCRV; <envar>samba/encrypt_passwords</envar> has been obsoleted by this.
+					</simpara></listitem>
+					<listitem><simpara>
+					The default for the <filename>smb.conf</filename> parameter <literal>mangled names</literal>
+					has changed from <literal>yes</literal> to <literal>illegal</literal>.
+					</simpara></listitem>
+					<listitem><simpara>
+					The <filename>smb.conf</filename> parameter <literal>blocking locks</literal> is deprecated and
+					the <filename>samba-shares.py</filename> listener module doesn't write it into share
+					configurations any longer.
+					</simpara></listitem>
+					</itemizedlist>
+					For more information see also:
+					<itemizedlist>
+					<listitem>
+						<ulink url="https://wiki.samba.org/index.php/Samba_4.11_Features_added/changed#NEW_FEATURES.2FCHANGES">Samba 4.11 Features added/changed</ulink>
+					</listitem>
+					<listitem>
+						<ulink url="https://wiki.samba.org/index.php/Samba_4.12_Features_added/changed#NEW_FEATURES.2FCHANGES">Samba 4.12 Features added/changed</ulink>
+					</listitem>
+					<listitem>
+						<ulink url="https://wiki.samba.org/index.php/Samba_4.13_Features_added/changed#NEW_FEATURES.2FCHANGES">Samba 4.13 Features added/changed</ulink>
+					</listitem>
+					</itemizedlist>
+					<warning>
+						Please avoid to set <literal>server schannel = no</literal> and <literal>server schannel= auto</literal> on all Samba domain controllers due to the wellknown ZeroLogon issue. For details see <ulink url="https://wiki.samba.org/index.php/CVE-2020-1472">CVE-2020-1472</ulink>.
+					</warning>
+					<warning>
+						Please consult UCS documentation sources before attempting to change settings from the UCS defaults, which are not (yet) accessible via &ucsUCRV;s.
+						Only settings described in the UCS manual are officially supported.
+					</warning>
+				</simpara></listitem>
+				<listitem><simpara>
 					The package <package>cifs-utils</package> is now installed by default(<u:bug>39259</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>

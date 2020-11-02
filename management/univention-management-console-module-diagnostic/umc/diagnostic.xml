@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="diagnostic" version="1.0">
+	<module id="diagnostic" version="1.0" python="3">
 		<name>System diagnostic</name>
 		<description>Analyse the system for known problems</description>
 		<keywords>support</keywords>

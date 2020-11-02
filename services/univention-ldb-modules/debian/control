@@ -10,7 +10,7 @@ Build-Depends:
  libtevent-dev,
  libunivention-config-dev,
  libunivention-policy-dev,
- python,
+ python3,
  samba-dev,
  univention-config-dev (>= 15.0.3),
 Standards-Version: 3.9.1
@@ -20,10 +20,10 @@ Architecture: any
 Section: libs
 Depends:
  ldb-tools,
- libldb1,
+ libldb2,
  libunivention-config0,
  libunivention-policy0,
- python-samba,
+ python3-samba,
  ${misc:Depends},
  ${shlibs:Depends},
 Description: Univention LDB modules

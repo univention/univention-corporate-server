@@ -33,7 +33,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-import ldb
 import ldap
 import ldap.sasl
 from ldap.filter import filter_format
@@ -49,10 +48,13 @@ import time
 from datetime import datetime, timedelta
 import pipes
 
-from samba.dcerpc import nbt, security
-from samba.ndr import ndr_unpack
-from samba.net import Net
-from samba.param import LoadParm
+import six
+if not six.PY2:
+	import ldb
+	from samba.dcerpc import nbt, security
+	from samba.ndr import ndr_unpack
+	from samba.net import Net
+	from samba.param import LoadParm
 
 import univention.config_registry
 import univention.uldap

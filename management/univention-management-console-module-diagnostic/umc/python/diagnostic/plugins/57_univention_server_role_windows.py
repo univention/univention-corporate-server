@@ -60,7 +60,7 @@ def udm_objects_without_ServerRole(lo):
 			if dn.endswith(',cn=temporary,cn=univention,%s' % ldap_base):
 				continue
 			try:
-				univentionObjectType = attrs['univentionObjectType'][0]
+				univentionObjectType = attrs['univentionObjectType'][0].decode('UTF-8')
 			except KeyError:
 				univentionObjectType = None
 

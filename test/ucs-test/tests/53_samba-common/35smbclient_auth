@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner python3
 ## desc: Check whether several parallel smbclient authentifications are possible
 ## roles:
 ##  - domaincontroller_master
@@ -85,7 +85,7 @@ class Test(object):
 	def checkResult(expectedResult, max_wait=30):
 		for i in range(max_wait):
 			proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-			count = len([line for line in proc.stdout if line.startswith('netlogon')])
+			count = len([line for line in proc.stdout if line.startswith(b'netlogon')])
 			if count == expectedResult:
 				return count
 			print("%d: %d < %d" % (i, count, expectedResult))

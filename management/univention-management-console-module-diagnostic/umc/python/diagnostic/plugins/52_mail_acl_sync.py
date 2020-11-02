@@ -190,7 +190,7 @@ class DovecotACL(ACL):
 		mailbox = 'shared/{pm}' if folder.mail_address else '{cn}/INBOX'
 		cmd = ('doveadm', 'acl', 'get', '-u', 'Administrator', mailbox.format(cn=folder.common_name, pm=folder.mail_address))
 		output = subprocess.check_output(cmd, stderr=subprocess.PIPE).splitlines()
-		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output)}
+		return {identifier.strip(): set(rights.strip().split()) for (identifier, rights) in (line.rsplit('  ', 1) for line in output.decode('UTF-8', 'replace'))}
 
 
 def all_differences(acl_class):

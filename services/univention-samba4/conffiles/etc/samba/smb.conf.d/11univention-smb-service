@@ -24,7 +24,6 @@ elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 		dcerpc_endpoints.append('-drsuapi')
 	print '\tdcerpc endpoint servers\t=', ' '.join(dcerpc_endpoints)
 
-	domain logons = yes
 	passdb backend = samba4
 	auth methods = guest samba4
 	server signing = on
