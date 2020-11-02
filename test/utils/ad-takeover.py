@@ -144,6 +144,8 @@ try:
 	response = client.umc_command("adtakeover/status/done", request_options)
 	print(response.status)
 	assert response.status == 200
+	print('OK - finished')
+	sys.exit(0)
 except Exception as e:
 	print('got {}'.format(e))
 	pass
