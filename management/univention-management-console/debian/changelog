@@ -49,7 +49,7 @@ univention-management-console (12.0.4-1) unstable; urgency=medium
 
  -- Florian Best <best@univention.de>  Thu, 19 Nov 2020 14:38:15 +0100
 
-univention-management-console (12.0.3-10) unstable; urgency=medium
+univention-management-console (12.0.3-11) unstable; urgency=medium
 
   * Bug #52316: prevent dropped connections between UMC web server and UMC
     server due to a racing condition in UMC server if the multi process
@@ -57,42 +57,48 @@ univention-management-console (12.0.3-10) unstable; urgency=medium
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 17 Nov 2020 16:25:36 +0100
 
-univention-management-console (12.0.3-9) unstable; urgency=medium
+univention-management-console (12.0.3-10) unstable; urgency=medium
 
   * Bug #52274: run UMC-Server with addditional UNIX socket
 
  -- Florian Best <best@univention.de>  Fri, 13 Nov 2020 14:38:08 +0100
 
-univention-management-console (12.0.3-8) unstable; urgency=medium
+univention-management-console (12.0.3-9) unstable; urgency=medium
 
   * Bug #52318: add HTTP reason phrase for 502+503 errors if UMC-Web-
     Server is unreachable
 
  -- Florian Best <best@univention.de>  Wed, 11 Nov 2020 15:10:18 +0100
 
-univention-management-console (12.0.3-7) unstable; urgency=medium
+univention-management-console (12.0.3-8) unstable; urgency=medium
 
   * Bug #52321: return all session infos instead of only the username
 
  -- Florian Best <best@univention.de>  Mon, 09 Nov 2020 17:26:50 +0100
 
-univention-management-console (12.0.3-6) unstable; urgency=medium
+univention-management-console (12.0.3-7) unstable; urgency=medium
 
   * Bug #52318: add HTTP reason phrase for 503 Service Unavailable errors
 
  -- Florian Best <best@univention.de>  Mon, 09 Nov 2020 17:17:21 +0100
 
-univention-management-console (12.0.3-5) unstable; urgency=medium
+univention-management-console (12.0.3-6) unstable; urgency=medium
 
   * Bug #52338: do not store relay state between requests
 
  -- Florian Best <best@univention.de>  Mon, 09 Nov 2020 16:59:03 +0100
 
-univention-management-console (12.0.3-4) unstable; urgency=medium
+univention-management-console (12.0.3-5) unstable; urgency=medium
 
   * Bug #43686: use systemctl to restart univention-directory-listener
 
  -- Sebastian Lobinger <lobinger@univention.de>  Fri, 13 Nov 2020 11:15:37 +0100
+
+univention-management-console (12.0.3-4) unstable; urgency=medium
+
+  * Bug #52294: remove not yet existing __slots__
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2020 16:52:35 +0100
 
 univention-management-console (12.0.3-3) unstable; urgency=medium
 
