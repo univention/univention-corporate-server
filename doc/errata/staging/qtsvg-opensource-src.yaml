@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: qtsvg-opensource-src
+fix: 5.7.1~20161021-2.1
+desc: |
+ This update addresses the following issue:
+ * Invalid parsing of malformed url reference resulting in a denial of service
+   (CVE-2018-19869)
+bug: [52290]
+cve:
+- CVE-2018-19869
