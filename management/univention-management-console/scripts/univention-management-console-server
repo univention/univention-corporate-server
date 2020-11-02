@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import locale
 import os
 import sys
@@ -56,6 +58,7 @@ server = None
 class UMC_Daemon(DaemonRunner):
 
 	def __init__(self):
+		self.server = None
 		default_debug = SERVER_DEBUG_LEVEL
 		default_locale = ucr.get('locale/default', 'C').split(':', 1)[0]
 		self.parser = ArgumentParser()
@@ -81,6 +84,9 @@ class UMC_Daemon(DaemonRunner):
 		self.parser.add_argument(
 			'-L', '--log-file', action='store', dest='logfile', default='management-console-server',
 			help='specifies an alternative log file [default: %(default)s]')
+		self.parser.add_argument(
+			'-c', '--processes', default=ucr.get('umc/server/processes', 1), type=int,
+			help='How many processes to fork. 0 means auto detection (default: %(default)s).')
 		self.parser.add_argument('action', default='start', nargs='?', choices=['start', 'stop', 'restart', 'crestart', 'reload'])
 		self.options = self.parser.parse_args()
 
@@ -91,9 +97,9 @@ class UMC_Daemon(DaemonRunner):
 
 		# init logging
 		if not self.options.daemon_mode:
-			debug_fd = log_init('/dev/stderr', self.options.debug)
+			debug_fd = log_init('/dev/stderr', self.options.debug, self.options.processes != 1)
 		else:
-			debug_fd = log_init(self.options.logfile, self.options.debug)
+			debug_fd = log_init(self.options.logfile, self.options.debug, self.options.processes != 1)
 
 		sys.argv[1] = self.options.action
 
@@ -142,7 +148,6 @@ class UMC_Daemon(DaemonRunner):
 	def _reload(self):
 		"""Handler for the reload action"""
 		if self.pidfile.is_locked():
-			CORE.process('Reloading configuration ...')
 			pid = self.pidfile.read_pid()
 			try:
 				os.kill(pid, signal.SIGUSR1)
@@ -219,12 +224,17 @@ class UMC_Daemon(DaemonRunner):
 		if not os.path.exists('/var/run/univention-management-console'):
 			os.mkdir('/var/run/univention-management-console')
 
-		with Server(port=self.options.port, unix=self.options.unix_socket) as self.server:
+		self.server = Server(port=self.options.port, unix=self.options.unix_socket, processes=self.options.processes)
+		with self.server:
 			CORE.process('Server started')
+			if self.server._child_number is not None:
+				self.daemon_context.pidfile = None
 			notifier.loop()
 
 	def signal_hang_up(self, signal, frame):
-		if hasattr(self, 'server'):
+		if self.server is not None:
+			CORE.process('Reloading configuration ...')
+			self._inform_childs(signal)
 			try:
 				self.server.reload()
 			except EnvironmentError as exc:
@@ -235,15 +245,33 @@ class UMC_Daemon(DaemonRunner):
 			CORE.error('Could not reopen logfile: %s' % (exc,))
 
 	def signal_user1(self, signal, frame):
-		if hasattr(self, 'server'):
+		if self.server is not None:
+			CORE.process('Reloading configuration ...')
+			self._inform_childs(signal)
 			try:
 				self.server.reload()
 			except EnvironmentError as exc:
 				CORE.error('Could not reload server: %s' % (exc,))
 
 	def signal_terminate(self, signal, frame):
-		self.server.exit()
-		raise SystemExit('Shutting down UMC server')
+		print('Shutting down UMC server', file=sys.stderr)
+		if self.server is not None:
+			self._inform_childs(signal)
+			self.server.exit()
+		raise SystemExit(0)
+
+	def _inform_childs(self, signal):
+		if self.server._child_number is not None:
+			return  # we are the child process
+		try:
+			children = list(self.server._children.items())
+		except EnvironmentError:
+			children = []
+		for child, pid in children:
+			try:
+				os.kill(pid, signal)
+			except EnvironmentError as exc:
+				CORE.process('Failed sending signal %d to process %d: %s' % (signal, pid, exc))
 
 	def signal_segfault(self, signal, frame):
 		CORE.error('SEGFAULT! %s' % (''.join(traceback.format_stack(frame),)))
