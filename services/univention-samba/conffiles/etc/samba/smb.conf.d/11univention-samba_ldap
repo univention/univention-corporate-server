@@ -26,11 +26,11 @@ if len(configRegistry.get('samba/ldap/timeout', '')):
 
 print('\tldap suffix = %s' % configRegistry['ldap/base'])
 if configRegistry.get('samba/user'):
-	print('\tldap admin dn = "%s"' % configRegistry['samba/user'])
+	print('\tldap admin dn = %s' % configRegistry['samba/user'])
 elif configRegistry['server/role'] == 'domaincontroller_master':
-	print('\tldap admin dn = "cn=admin,%s"' % (configRegistry['ldap/base']))
+	print('\tldap admin dn = cn=admin,%s' % (configRegistry['ldap/base']))
 else:
-	print('\tldap admin dn = "cn=backup,%s"' % (configRegistry['ldap/base']))
+	print('\tldap admin dn = cn=backup,%s' % (configRegistry['ldap/base']))
 
 print('\tldap ssl = start tls')
 
