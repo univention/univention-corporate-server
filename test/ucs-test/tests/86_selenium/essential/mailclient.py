@@ -2,7 +2,6 @@
 .. module:: mailclient
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
-from itertools import izip
 from pexpect import spawn, EOF
 import email
 import imaplib
@@ -10,6 +9,11 @@ import sys
 import time
 import univention.testing.strings as uts
 import univention.config_registry
+
+try:
+	from itertools import izip as zip
+except ImportError:  # py3
+	pass
 
 
 class WrongAcls(Exception):
@@ -112,7 +116,7 @@ class BaseMailClient(object):
 			acl[0] = "%s %s" % (x, y)
 			del(acl[1])
 		i = iter(acl[1:])
-		d = dict(izip(i, i))
+		d = dict(zip(i, i))
 		return {acl[0]: d}
 
 	def check_acls(self, expected_acls):

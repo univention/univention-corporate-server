@@ -3,11 +3,15 @@
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
 from __future__ import print_function
-from itertools import izip
 import email
 import imaplib
 import time
 import univention.testing.strings as uts
+
+try:
+	from itertools import izip as zip
+except ImportError:  # py3
+	pass
 
 
 class WrongAcls(Exception):
@@ -111,7 +115,7 @@ class BaseMailClient(object):
 			acl[0] = "%s %s" % (x, y)
 			del(acl[1])
 		i = iter(acl[1:])
-		d = dict(izip(i, i))
+		d = dict(zip(i, i))
 		return {acl[0]: d}
 
 	def check_acls(self, expected_acls):
