@@ -26,4 +26,3 @@ TODOs
 - TBD: Even in parallel mode, keep one process each on old port/pidfile/socket/... to maintain some sort of backward compatibility.
 - TBD: Merge behaviour from parallel UMC and single UMC
 - TBD: Merge into UCS mainline
-- TBD: remove "Environment=UMC_PORTS=%i" from univention-management-console-web-server@.service?

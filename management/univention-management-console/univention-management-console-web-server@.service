@@ -8,7 +8,6 @@ ReloadPropagatedFrom=umc_parallel.target
 [Service]
 Type=forking
 PIDFile=/var/run/umc-web-server%i.pid
-Environment=UMC_PORTS=%i
 ExecStart=/usr/sbin/univention-management-console-web-server-parallel-wrapper %i
 ExecReload=/bin/kill -HUP $MAINPID
 User=root
