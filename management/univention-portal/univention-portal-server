@@ -58,9 +58,7 @@ ucr = ConfigRegistry()
 ucr.load()
 
 LOG_FILE = '/var/log/univention/portal.log'
-_umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
-_umc_port = int(ucr.get('umc/http/port', 8090))
-UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
+UMC_SESSION_URL = 'http://localhost/univention/get/session-info'
 
 
 class ShortNameFormatter(logging.Formatter):
@@ -418,26 +416,26 @@ class JsonHandler(tornado.web.RequestHandler):
 				ret.pop(dn)
 		return ret
 
-	def _ask_umc(self, session):
+	def _ask_umc(self, cookies):
 		try:
-			response = requests.get(UMC_SESSION_URL, cookies={'UMCSessionId': session})
+			response = requests.get(UMC_SESSION_URL, cookies=cookies)
 			data = response.json()
 			username = data['result']['username']
 		except requests.ConnectionError as exc:
 			get_logger('user').error('connection failed: %s' % exc)
 		except ValueError:
-			get_logger('user').error('malformed answer!')
+			get_logger('user').error('malformed answer: %s' % (response.text,))
 		except KeyError:
 			get_logger('user').warn('session unknown!')
 		else:
 			return username
 
-	def _get_username(self, session):
-		if session is None:
+	def _get_username(self, cookies):
+		if not any(cookie.startswith('UMCSessionId') for cookie in cookies):
 			get_logger('user').debug('no user given')
 			return None
-		get_logger('user').debug('searching user for %s' % session)
-		username = self._ask_umc(session)
+		get_logger('user').debug('searching user for cookies=%r' % (cookies,))
+		username = self._ask_umc(cookies)
 		if username is None:
 			get_logger('user').debug('no user found')
 		else:
@@ -456,8 +454,8 @@ class JsonHandler(tornado.web.RequestHandler):
 		return super(JsonHandler, self).log_exception(typ, value, tb)
 
 	def get(self):
-		session = self.get_cookie('UMCSessionId')
-		username = self._get_username(session)
+		cookies = dict((key, morsel.value) for key, morsel in self.cookies.items())
+		username = self._get_username(cookies)
 		admin_mode = False
 		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
 			get_logger('admin').info('Admin mode requested')
