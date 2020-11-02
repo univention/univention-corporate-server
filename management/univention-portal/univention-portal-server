@@ -58,9 +58,8 @@ ucr = ConfigRegistry()
 ucr.load()
 
 LOG_FILE = '/var/log/univention/portal.log'
-_umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
-_umc_port = int(ucr.get('umc/http/port', 8090))
-UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
+UMC_SESSION_URL = 'http://127.0.0.1/univention/get/session-info'
+UMCWEB_ROUTEID_COOKIE_NAME = 'UMCWEB_ROUTEID'
 
 
 class ShortNameFormatter(logging.Formatter):
@@ -418,26 +417,29 @@ class JsonHandler(tornado.web.RequestHandler):
 				ret.pop(dn)
 		return ret
 
-	def _ask_umc(self, session):
+	def _ask_umc(self, session, umcweb_routeid):
+		cookies = {'UMCSessionId': session}
+		if umcweb_routeid is not None:
+			cookies[UMCWEB_ROUTEID_COOKIE_NAME] = umcweb_routeid
 		try:
-			response = requests.get(UMC_SESSION_URL, cookies={'UMCSessionId': session})
+			response = requests.get(UMC_SESSION_URL, cookies=cookies)
 			data = response.json()
 			username = data['result']['username']
 		except requests.ConnectionError as exc:
 			get_logger('user').error('connection failed: %s' % exc)
 		except ValueError:
-			get_logger('user').error('malformed answer!')
+			get_logger('user').error('malformed answer: %s' % response.text)
 		except KeyError:
 			get_logger('user').warn('session unknown!')
 		else:
 			return username
 
-	def _get_username(self, session):
+	def _get_username(self, session, umcweb_routeid):
 		if session is None:
 			get_logger('user').debug('no user given')
 			return None
-		get_logger('user').debug('searching user for %s' % session)
-		username = self._ask_umc(session)
+		get_logger('user').debug('searching user for %s on route %s' % (session, umcweb_routeid))
+		username = self._ask_umc(session, umcweb_routeid)
 		if username is None:
 			get_logger('user').debug('no user found')
 		else:
@@ -457,7 +459,12 @@ class JsonHandler(tornado.web.RequestHandler):
 
 	def get(self):
 		session = self.get_cookie('UMCSessionId')
-		username = self._get_username(session)
+
+		# In case load balancing is used the UMCWEB_ROUTEID cookie ensures the umc-web-server instance at which the
+		# user is logged in is asked for session information. (Bug #52293)
+		umcweb_routeid = self.get_cookie(UMCWEB_ROUTEID_COOKIE_NAME, None)
+
+		username = self._get_username(session, umcweb_routeid)
 		admin_mode = False
 		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
 			get_logger('admin').info('Admin mode requested')
