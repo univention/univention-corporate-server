@@ -60,15 +60,15 @@
 			visibility: hidden
 			&.umcEmptyValue
 				visibility: visible
-
-// (TODO) maybe put this to the labelpane styles
-.umcLabelPane .umcLabelPaneLabelNode
-	transition: color 250ms
-.umcLabelPaneError .umcLabelPaneLabelNode
-	color: var(--color-error)
-.umcLabelPaneDisabled .umcLabelPaneLabelNode
-	color: var(--color-grey40)
 //// textbox end
+
+
+//// textarea
+.dijitTextArea
+	padding: 0.5rem
+	height: 110px
+//// textarea end
+
 
 .dijitComboBox
 	.dijitDownArrowButton
@@ -96,7 +96,7 @@
 	&Disabled .dijitArrowButton
 		opacity: 0.4
 
-// validation icon
+//// validation icon
 .dijitTextBox
 	.dijitValidationContainer
 		background-image: url("../form/images/error.svg")
@@ -109,4 +109,4 @@
 
 .dijitComboBox .dijitValidationContainer
 	margin-right: 0.5em
-
+//// validation icon end

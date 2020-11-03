@@ -3,9 +3,12 @@
 	display: inline-block
 
 	.umcLabelPaneLabelNode
+		--local-color: inherit
 		display: inline-flex
 		align-items: center
 		font-size: var(--font-size-small)
+		color: var(--local-color)
+		transition: color 250ms
 
 		&Top
 			margin-bottom: 0.5rem
@@ -14,6 +17,15 @@
 		&Bottom
 			margin-top: 0.5rem
 
+	&Error .umcLabelPaneLabelNode
+		--local-color: var(--color-error)
+	&Disabled
+		.umcLabelPaneLabelNode
+			--local-color: var(--color-grey40)
+		.umcDescriptionIcon
+			opacity: 0.4
+
+// TODO what is this
 .umcLabelPane .umcToolTip
 	background-position: 0 -36px
 
@@ -30,8 +42,10 @@
 	height: 1em
 	width: @height
 	margin-left: 0.5rem
+	transition: opacity 250ms
 	cursor: pointer
 
+// widget specific styles
 .umcLabelPane-dijitCheckBox
 	display: inline-flex
 	align-items: flex-start
