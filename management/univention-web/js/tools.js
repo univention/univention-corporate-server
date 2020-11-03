@@ -137,10 +137,14 @@ define([
 
 			// use a time stamp as query string to make sure that we reload the file
 			var timestamp = (new Date()).getTime();
-			require(['umc/json!/univention/get/meta?' + timestamp], lang.hitch(this, function(meta) {
-				lang.mixin(this._status, meta.result);
+			if (umcConfig.anonymousMeta) {
 				deferred.resolve(tools.status());
-			}));
+			} else {
+				require(['umc/json!/univention/get/meta?' + timestamp], lang.hitch(this, function(meta) {
+					lang.mixin(this._status, meta.result);
+					deferred.resolve(tools.status());
+				}));
+			}
 			return deferred.promise;
 		},
 

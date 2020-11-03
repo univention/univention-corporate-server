@@ -105,7 +105,7 @@ umcConfig = mixin({
 }, _customUmcConfig);
 
 // prepare all needed dependencies and evaluate umcConfig settings
-var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/get/meta", "umc/i18n/tools", "umc/menu/Button", "umc/widgets/LoginButton"];
+var _deps = ["dojo/parser", "login", "umc/tools", "umc/json!/univention/meta.json", "umc/i18n/tools", "umc/menu/Button", "umc/widgets/LoginButton"];
 _deps.push("dojo/domReady!");
 var _ndeps = _deps.length; // save current number of dependencies
 
@@ -137,7 +137,7 @@ dojoConfig = mixin({
 	map: {},
 	deps: _deps,
 	callback: function(parser, login, tools, meta, i18nTools) {
-		mixin(tools._status, meta.result);
+		mixin(tools._status, meta);
 		i18nTools.saveLangCookie(i18nTools.defaultLang());
 		if (umcConfig.loadHooks) {
 			require(["umc/hooks!", "umc/piwik"]);

@@ -35,7 +35,7 @@ WHITELIST = {
 	'/etc/welcome.msg',
 	'/usr/share/apps/ksmserver/pics/shutdownkonq.png',
 	'/usr/share/univention-management-console/i18n/de/apps.mo',
-	'/usr/share/univention-management-console/meta.json',
+	'/var/www/univention/meta.json',
 	'/usr/share/univention-portal/apps.json',
 	'/usr/share/univention-web/js/umc/hooks.json',
 	'/var/lib/univention-windows-installer/install/bin/mapznrun.bat',

@@ -55,7 +55,7 @@ case "$1" in
 		xargs -r ucr unset
 
 		# Show correct EC2 server address in motd and meta.json
-		for i in /etc/motd.setup /usr/share/univention-management-console/meta.json; do
+		for i in /etc/motd.setup /var/www/univention/meta.json; do
 			if [ -e "$i" ]; then
 				ucr commit "$i" >/dev/null 2>&1
 			fi
