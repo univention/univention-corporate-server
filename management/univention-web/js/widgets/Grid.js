@@ -872,7 +872,6 @@ define([
 				var ilabel = typeof iaction.label === "function" ? iaction.label() : iaction.label;
 
 				var props = {
-					'class': 'ucsTextButton',
 					iconClass: iiconClass || 'umcIconNoIcon',
 					label: ilabel,
 					_action: iaction,
@@ -881,7 +880,7 @@ define([
 
 				if (iaction.isStandardAction) {
 					// add action to the context toolbar
-					var btn = new Button(lang.mixin(props, getCallback('')));
+					var btn = new Button(lang.mixin({}, props, getCallback(''), { 'class': 'ucsTextButton' }));
 					if (iaction.description) {
 						try {
 						var idescription = typeof iaction.description === "function" ? iaction.description(undefined) : iaction.description;
@@ -902,11 +901,11 @@ define([
 					this._contextActionsToolbar.addChild(btn);
 				}
 
-				var menuItem = new MenuItem(lang.mixin(props, getCallback('multi-')));
+				var menuItem = new MenuItem(lang.mixin({}, props, getCallback('multi-')));
 				this._contextActionsMenuMap[iaction.name] = menuItem;
 				this._contextActionsMenu.addChild(menuItem);
 
-				this._contextMenu.addChild(new MenuItem(lang.mixin(props, getCallback('menu-'))));
+				this._contextMenu.addChild(new MenuItem(lang.mixin({}, props, getCallback('menu-'))));
 			}, this);
 
 			this._contextActionsMenuButton = new _DropDownButton({

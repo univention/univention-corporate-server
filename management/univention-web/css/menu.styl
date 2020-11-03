@@ -1,0 +1,36 @@
+.dijitPopup
+	box-shadow: var(--box-shadow)
+	border-radius: 8px
+	overflow: hidden
+
+.dijitMenu
+	border: none
+	background: var(--color-grey0)
+	font-size: var(--font-size-small)
+
+.dijitMenuItem td
+	padding: 0.3em 0.1em
+
+	&.dijitMenuItemIconCell
+		padding-left: 0.8em
+	&.dijitMenuArrowCell
+		padding-right: 0.8em
+
+.dijitMenuPassive .dijitMenuItemHover,
+.dijitMenuItemSelected
+	background-color: rgba(255, 255, 255, 0.04)
+	color: inherit
+
+.dijitMenuItemIcon:not(.dijitNoIcon)
+	display: block
+	width: 1em
+	height: 1em
+
+.dijitMenuArrowCell > span
+	display: flex
+	align-items: center
+
+	.dijitIcon
+		@extends .iconChevronRight
+		width: 1em
+		height: 1em

@@ -1201,14 +1201,9 @@ body .dijitAlignClient { position: absolute; }
 
 /* Menu */
 
-.dijitMenu {
-	border:1px solid black;
-	background-color:white;
-}
 .dijitMenuTable {
 	border-collapse:collapse;
 	border-width:0;
-	background-color:white;
 }
 
 /* workaround for webkit bug #8427, remove this when it is fixed upstream */
