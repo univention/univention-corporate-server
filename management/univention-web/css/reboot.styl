@@ -14,3 +14,8 @@ input
 
 input[type="checkbox"]
 	cursor: pointer
+
+// overwrite bootstrap.css:137
+button[disabled],
+html input[disabled]
+	cursor: var(--cursor-disabled)

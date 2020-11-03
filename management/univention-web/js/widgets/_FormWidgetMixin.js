@@ -67,6 +67,13 @@ define([
 					domClass.toggle(refLabel.domNode, refLabel.baseClass + 'Error', !!newVal);
 				}
 			});
+
+			this.watch('disabled', function(_name, _oldVal, newVal) {
+				var refLabel = this.$refLabel$;
+				if (refLabel) {
+					domClass.toggle(refLabel.domNode, refLabel.baseClass + 'Disabled', newVal);
+				}
+			});
 		},
 
 		//
