@@ -178,6 +178,10 @@ $(TMP_THEME_DIR)/dijit.css: css/dijit.css
 	mkdir -p $(@D)
 	ln -fs $(CURDIR)/css/dijit.css* $(@D)
 
+$(TMP_THEME_DIR)/bootstrap.css: css/bootstrap.css
+	mkdir -p $(@D)
+	ln -fs $(CURDIR)/css/bootstrap.css* $(@D)
+
 $(TMP_THEME_DIR)/globalCustom.css:
 	touch $@
 
@@ -198,9 +202,9 @@ $(TMP_IMG_FILES): $(TMP_THEME_DIR)/%: css/%
 	mkdir -p $(@D)
 	cp $< $@
 
-%/bootstrap.css: bootstrap.zip
-	unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
-	sed -i '/font-size: 10px/d' $@
+# %/bootstrap.css: bootstrap.zip
+	# unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
+	# sed -i '/font-size: 10px/d' $@
 
 $(TMP_FONT_FILES): roboto.zip
 	mkdir -p $(@D)
