@@ -1744,10 +1744,6 @@ define([
 				lang.replace('.umc .umcModuleTab-{0}.dijitTabChecked, .umc .umcModuleTab-{0}.dijitTabHover, .umc .umcModuleTab-{0}.dijitTabActive', [module_flavor_css]),
 				lang.replace('background-color: {0} !important;', [dijitTabColor])
 			);
-
-			// color the grid header when items are selected
-			var gridHeaderColor = dojo.blendColors(dojo.colorFromHex(color), dojo.colorFromHex('#ffffff'), 0.7);
-			styles.insertCssRule(lang.replace('.umcModule.color-{0} .umcGrid .umcGridHeader--items-selected', [tab.categoryColor]), lang.replace('background-color: {0}', [gridHeaderColor.toHex()]));
 		},
 
 		__getModuleColor: function(module) {

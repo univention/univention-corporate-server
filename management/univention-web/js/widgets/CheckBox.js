@@ -31,10 +31,11 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/dom-class",
 	"dijit/form/CheckBox",
 	"umc/tools",
 	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, CheckBox, tools, _FormWidgetMixin) {
+], function(declare, lang, domClass, CheckBox, tools, _FormWidgetMixin) {
 	return declare("umc.widgets.CheckBox", [ CheckBox, _FormWidgetMixin ], {
 		// by default, the checkbox is turned off
 		value: false,
@@ -55,9 +56,12 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			this.watch("checked", lang.hitch(this, function(attr, oldVal, newVal) {
-				this.set("value", newVal);
-			}));
+			this.own(
+				this.watch("checked", lang.hitch(this, function(attr, oldVal, newVal) {
+					this.set('indeterminate', false);
+					this.set("value", newVal);
+				}))
+			);
 		},
 
 		_setValueAttr: function(/*String|Boolean*/ newValue, /*Boolean*/ priorityChange){
@@ -69,6 +73,15 @@ define([
 				this.set('checked', newValue, priorityChange);
 			}
 			this._set("value", newValue);
+		},
+
+		indeterminate: false,
+		_setIndeterminateAttr: function(indeterminate) {
+			this.focusNode.indeterminate = indeterminate;
+			var ariaValue = indeterminate ? 'mixed' : this.get('checked').toString();
+			this.focusNode.setAttribute('aria-checked', ariaValue);
+			domClass.toggle(this.domNode, 'dijitCheckBoxIndeterminate', indeterminate);
+			this._set('indeterminate', indeterminate);
 		},
 
 		_getValueAttr: function() {

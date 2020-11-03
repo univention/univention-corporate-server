@@ -52,7 +52,7 @@ icon-rule(DoubleUp, -260, -20, expandRule: false)
 icon-rule(DoubleLeft, -280, -20, expandRule: false)
 icon-rule(DoubleRight, -300, -20, expandRule: false)
 
-icon-rule(Plus, -160, -40, expandRule: false, alternativeName: umcIconAdd)
+// icon-rule(Plus, -160, -40, expandRule: false, alternativeName: umcIconAdd)
 icon-rule(Minus, -180, -40, expandRule: false, alternativeName: umcIconDelete)
 icon-rule(Edit, -200, -40, expandRule: false, alternativeName: umcIconEdit)
 icon-rule(Report, -220, -40, expandRule: false, alternativeName: umcIconReport)
@@ -154,10 +154,16 @@ icon-rule(Trash, -240, -120, expandRule: false)
 ////
 $icon
 	background-size: contain
+	// background-position: initial
 
+.umcIconAdd,
 .iconPlus
 	@extends $icon
 	background-image: url(images/plus_white.svg)
+
+.iconEdit
+	@extends $icon
+	background-image: url(images/edit_white.svg)
 
 .iconTrash
 	@extends $icon
@@ -166,3 +172,15 @@ $icon
 .iconUpload
 	@extends $icon
 	background-image: url(images/upload_white.svg)
+
+.iconMore
+	@extends $icon
+	background-image: url(images/more-horizontal_white.svg)
+
+.iconChevronDown
+	@extends $icon
+	background-image: url(images/chevron-down_white.svg)
+
+.iconChevronUp
+	@extends $icon
+	background-image: url(images/chevron-up_white.svg)

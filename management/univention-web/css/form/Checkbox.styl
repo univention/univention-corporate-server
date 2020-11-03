@@ -32,7 +32,8 @@
 	transition: opacity 250ms, background-color 250ms, border-color 250ms
 	position: relative
 
-	&:before
+	&:before,
+	&:after
 		content: ''
 		display: block
 		width: 100%
@@ -40,14 +41,25 @@
 		position: absolute
 		top: 0
 		left: 0
-		background: url(images/check_checked.svg)
 		background-size: contain
 		opacity: 0
 		transition: opacity 250ms
+		pointer-events: none
+	&:before
+		background-image: url(images/check_checked.svg)
+	&:after
+		background-image: url(images/minus_green.svg)
 
 	&Checked
 		--local-border-color: var(--color-primary)
 		&:before
+			opacity: 1
+	
+	&Indeterminate
+		--local-border-color: var(--color-primary)
+		&:before
+			opacity: 0
+		&:after
 			opacity: 1
 
 	/.dojoxGridCellOver &,

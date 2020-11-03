@@ -42,6 +42,7 @@ define([
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/on",
+	"dijit/registry",
 	"dijit/Destroyable",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -54,6 +55,7 @@ define([
 	"dstore/legacy/StoreAdapter",
 	"dstore/Memory",
 	"./Button",
+	"./CheckBox",
 	"./Text",
 	"./ContainerWidget",
 	"./StandbyMixin",
@@ -63,9 +65,9 @@ define([
 	"../render",
 	"../i18n!"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
-		topic, aspect, on, Destroyable, Menu, MenuItem, DropDownButton, entities,
-		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, Text, ContainerWidget,
-		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
+		topic, aspect, on, dijitRegistry, Destroyable, Menu, MenuItem, DropDownButton, entities,
+		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, CheckBox, Text,
+		ContainerWidget, StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
 	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
 		getItem: function(item) {
@@ -94,7 +96,69 @@ define([
 			var selectedIDs = this.getSelectedIDs();
 			this.inherited(arguments);
 			this.selectIDs(selectedIDs);
-		}
+		},
+
+		// copy pasted from dgrid/Selector.js
+		_updateRowSelectors: function(value, event) {
+			var rows = event.rows;
+			var lenRows = rows.length;
+			var lenCols = this._selectorColumns.length;
+
+			for (var iRows = 0; iRows < lenRows; iRows++) {
+				for (var iCols = 0; iCols < lenCols; iCols++) {
+					var column = this._selectorColumns[iCols];
+					var element = this.cell(rows[iRows], column.id).element;
+					if (!element) {
+						// Skip if row has been entirely removed
+						continue;
+					}
+					element.$checkbox.set('checked', value);
+				}
+			}
+		},
+		
+		_updateHeaderCheckboxes: function () {
+			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
+			this.allSelected = array.every(this.collection.fetchSync(), function(item) {
+				return this.isSelected(item);
+			}, this);
+
+			/* jshint eqeqeq: false */
+			var lenCols = this._selectorColumns.length;
+			for (var iCols = 0; iCols < lenCols; iCols++) {
+				var column = this._selectorColumns[iCols];
+				var state = 'false';
+				var selection;
+				var mixed;
+				var selectorHeaderCheckbox = column._selectorHeaderCheckbox;
+				if (selectorHeaderCheckbox) {
+					selection = this.selection;
+					mixed = false;
+					// See if the header checkbox needs to be indeterminate
+					for (var i in selection) {
+						// If there is anything in the selection, than it is indeterminate
+						// (Intentionally coerce since selection[i] can be undefined)
+						if (selection[i] != this.allSelected) {
+							mixed = true;
+							break;
+						}
+					}
+
+					selectorHeaderCheckbox.$checkbox.set('indeterminate', mixed);
+					selectorHeaderCheckbox.$checkbox.set('checked', this.allSelected);
+
+					// selectorHeaderCheckbox.indeterminate = mixed;
+					// selectorHeaderCheckbox.checked = this.allSelected;
+					// if (mixed) {
+						// state = 'mixed';
+					// }
+					// else if (this.allSelected) {
+						// state = 'true';
+					// }
+					// selectorHeaderCheckbox.setAttribute('aria-checked', state);
+				}
+			}
+		},
 	});
 
 	var _DropDownButton = declare([DropDownButton], {
@@ -240,7 +304,7 @@ define([
 				var iconName = item[iconField];
 
 				// create an HTML image that contains the icon
-				var html = lang.replace('<img src="{src}" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
+				var html = lang.replace('<img class="umcGridRowIcon" src="{src}" height="{height}" width="{width}"" /> {value}', {
 					icon: iconName, //dojo.moduleUrl("dojo", "resources/blank.gif").toString(),
 					height: '16px',
 					width: '16px',
@@ -393,6 +457,7 @@ define([
 				selectAll: function() {
 					if (this.getSelectedIDs().length === 0) {
 						this.inherited(arguments);
+						// TODO check
 						this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
 					} else {
 						this.clearSelection();
@@ -432,8 +497,8 @@ define([
 
 			this._grid.on('dgrid-refresh-complete', lang.hitch(this, '_cleanupWidgets'));
 
-			aspect.after(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateHeaderSelectClass'));
-			aspect.before(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateAllSelectedStatus'));
+			// aspect.after(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateHeaderSelectClass'));
+			// aspect.before(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateAllSelectedStatus'));
 
 			if (this.query) {
 				this.filter(this.query);
@@ -462,10 +527,14 @@ define([
 				baseClass: 'umcGrid__contextActionsToolbar',
 				'class': 'dijitDisplayNone'
 			});
+			var statusMessageWrapper = new ContainerWidget({
+				'class': 'umcGridStatusWrapper'
+			});
 			this._statusMessage = new Text({
 				'class': 'umcGridStatus',
 				content: this.initialStatusMessage
 			});
+			statusMessageWrapper.addChild(this._statusMessage);
 			var tooltip = new Tooltip({
 				label: this._statusMessage.content,
 				connectId: [this._statusMessage.domNode]
@@ -475,7 +544,7 @@ define([
 			});
 
 			this._contextWrapper.addChild(this._contextActionsToolbar);
-			this._contextWrapper.addChild(this._statusMessage);
+			this._contextWrapper.addChild(statusMessageWrapper);
 			this._header.addChild(this._toolbar);
 			this._header.addChild(this._contextWrapper);
 			this.addChild(this._header);
@@ -669,10 +738,23 @@ define([
 			var showCheckboxColumn = !this.gridOptions || !this.gridOptions.selectionMode || this.gridOptions.selectionMode !== 'none';
 
 			if (showCheckboxColumn) {
+				var _this = this;
 				var selectionColumn = {
-					selector: 'checkbox',
-					label: 'Selector',
-					width: '30px'
+					selector: function(column, selected, cell, object) {
+						domClass.add(cell, 'dgrid-selector');
+						var checkbox = new CheckBox({
+							'class': 'umcGridRowSelectorCheckBox',
+						});
+						// FIXME since not all entries are rendered at once old rows are destroyed and new rows
+						// are created when scrolling. Atm the checkbox widgets stay in memory until the whole grid is
+						// destroyed
+						_this.own(checkbox);
+						cell.appendChild(checkbox.domNode);
+						cell.$checkbox = checkbox;
+						checkbox.focusNode.$checkbox = checkbox;
+						return checkbox.focusNode;
+					},
+					label: 'Selector'
 				};
 				gridColumns.unshift(selectionColumn);
 			}
@@ -789,11 +871,17 @@ define([
 				var iiconClass = typeof iaction.iconClass === "function" ? iaction.iconClass() : iaction.iconClass;
 				var ilabel = typeof iaction.label === "function" ? iaction.label() : iaction.label;
 
-				var props = { iconClass: iiconClass, label: ilabel, _action: iaction, name: iaction.name };
+				var props = {
+					'class': 'ucsTextButton',
+					iconClass: iiconClass || 'umcIconNoIcon',
+					label: ilabel,
+					_action: iaction,
+					name: iaction.name
+				};
 
 				if (iaction.isStandardAction) {
 					// add action to the context toolbar
-					var btn = new Button(lang.mixin(props, getCallback(''), { iconClass: props.iconClass || 'umcIconNoIcon' }));
+					var btn = new Button(lang.mixin(props, getCallback('')));
 					if (iaction.description) {
 						try {
 						var idescription = typeof iaction.description === "function" ? iaction.description(undefined) : iaction.description;
@@ -822,6 +910,7 @@ define([
 			}, this);
 
 			this._contextActionsMenuButton = new _DropDownButton({
+				'class': 'ucsTextButton',
 				label: _('more'),
 				dropDown: this._contextActionsMenu
 			});
@@ -848,6 +937,7 @@ define([
 						iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 					});
 				}
+				jaction.class = (jaction.class || '') + ' ucsTextButton';
 				return jaction;
 			}, this);
 
@@ -1177,13 +1267,6 @@ define([
 				domClass.remove(selectNode, "dgrid-allSelected");
 				return;
 			}
-		},
-
-		_updateAllSelectedStatus: function() {
-			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
-			this._grid.allSelected = array.every(this.getAllItems(), function(item) {
-				return this._grid.isSelected(item);
-			}, this);
 		},
 
 		_refresh: function() {

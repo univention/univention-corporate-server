@@ -1,4 +1,8 @@
-.dijitButton
+@require "icons.styl"
+
+//// overarching button styling
+.dijitButton,
+.dijitDropDownButton
 	margin: 0
 	font-size: var(--button-font-size)
 	border-radius: var(--button-border-radius)
@@ -7,7 +11,7 @@
 
 .dijitButtonNode
 	border: none
-	border-radius: var(--button-border-radius)
+	border-radius: inherit
 	display: flex
 	align-items: center // mainly for umc/widgets/NumberSpinner arrows
 	justify-content: center
@@ -25,6 +29,16 @@
 	font-weight: 600
 	text-transform: uppercase
 
+
+//// specific button styling
+.dijitDropDownButton .dijitArrowButtonInner
+	display: none
+.dijitDropDownButton .dijitNoIcon
+	@extends .iconMore
+	display: block
+
+
+//// button types
 .ucsPrimaryButton
 	--bgc: var(--button-primary-bgc)
 	--bgc-state: transparent
@@ -74,7 +88,7 @@
 		font-size: var(--font-size-button-icon, 1.2em)
 		width: 1em
 		height: @width
-		margin-right: 0.5em
+		margin-right: 0.4em
 
 .ucsPrimaryButton,
 .ucsButton
@@ -117,5 +131,6 @@
 		height: 1rem
 		width: 1rem
 
+//// misc
 .dijitUploader input
 	cursor: pointer
