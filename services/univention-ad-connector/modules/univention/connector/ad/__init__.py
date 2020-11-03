@@ -1793,7 +1793,7 @@ class ad(univention.connector.ucs):
 		for member_dn in ucs_members:
 			ad_dn = self.group_mapping_cache_ucs.get(member_dn.lower())
 			if ad_dn and self.lo_ad.get(ad_dn, attr=['cn']):
-				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ucs" % member_dn)
+				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ucs: %s" % (member_dn, ad_dn))
 				ad_members_from_ucs.append(ad_dn.lower())
 				self.__group_cache_ucs_append_member(object_ucs['dn'], member_dn)
 			else:
@@ -1821,6 +1821,7 @@ class ad(univention.connector.ucs):
 				try:
 					if self.lo_ad.get(ad_dn, attr=['cn']):  # search only for cn to suppress coding errors
 						ad_members_from_ucs.append(ad_dn.lower())
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: Adding %s to UCS group member cache, value: %s" % (member_dn.lower(), ad_dn))
 						self.group_mapping_cache_ucs[member_dn.lower()] = ad_dn
 						self.__group_cache_ucs_append_member(object_ucs['dn'], member_dn)
 				except (ldap.SERVER_DOWN, SystemExit):
@@ -2512,6 +2513,38 @@ class ad(univention.connector.ucs):
 	def __has_attribute_value_changed(self, attribute, object_old, new_object):
 		return not object_old['attributes'].get(attribute) == new_object['attributes'].get(attribute)
 
+	def _remove_dn_from_group_cache(self, con_dn=None, ucs_dn=None):
+		if con_dn:
+			try:
+				ud.debug(ud.LDAP, ud.INFO, "_remove_dn_from_group_cache: Removing %s from CON group member mapping cache" % con_dn)
+				del self.group_mapping_cache_con[con_dn.lower()]
+			except KeyError:
+				ud.debug(ud.LDAP, ud.ALL, "_remove_dn_from_group_cache: %s was not present in CON group member mapping cache" % con_dn)
+				pass
+		if ucs_dn:
+			try:
+				ud.debug(ud.LDAP, ud.INFO, "_remove_dn_from_group_cache: Removing %s from UCS group member mapping cache" % ucs_dn)
+				del self.group_mapping_cache_ucs[ucs_dn.lower()]
+			except KeyError:
+				ud.debug(ud.LDAP, ud.ALL, "_remove_dn_from_group_cache: %s was not present in UCS group member mapping cache" % ucs_dn)
+				pass
+
+	def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
+		for group in self.group_members_cache_con:
+			if remove_con_dn and remove_con_dn in self.group_members_cache_con[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: remove %s from con cache for group %s" % (remove_con_dn, group))
+				self.group_members_cache_con[group].remove(remove_con_dn)
+			if add_con_dn and add_con_dn not in self.group_members_cache_con[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: add %s to con cache for group %s" % (add_con_dn, group))
+				self.group_members_cache_con[group].add(add_con_dn)
+		for group in self.group_members_cache_ucs:
+			if remove_ucs_dn and remove_ucs_dn in self.group_members_cache_ucs[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: remove %s from ucs cache for group %s" % (remove_ucs_dn, group))
+				self.group_members_cache_ucs[group].remove(remove_ucs_dn)
+			if add_ucs_dn and add_ucs_dn not in self.group_members_cache_ucs[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: add %s to ucs cache for group %s" % (add_ucs_dn, group))
+				self.group_members_cache_ucs[group].add(add_ucs_dn)
+
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
 		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
 		# Diese Methode erhaelt von der UCS Klasse ein Objekt,
@@ -2555,7 +2588,17 @@ class ad(univention.connector.ucs):
 					new = self.lo_ad.get(compatible_modstring(object['dn']))
 					if not new:
 						raise
-				# need to actualise the GUID and DN-Mapping
+				# need to actualise the GUID, group cache, group mapping cache and DN-Mapping
+				object['modtype'] = 'move'
+				self._remove_dn_from_group_cache(con_dn=old_dn, ucs_dn=pre_mapped_ucs_old_dn)
+				self._update_group_member_cache(
+						remove_con_dn=old_dn.lower(),
+						remove_ucs_dn=pre_mapped_ucs_old_dn.lower(),
+						add_con_dn=object['dn'].lower(),
+						add_ucs_dn=pre_mapped_ucs_dn.lower())
+				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and CON group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
+				self.group_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
+				self.group_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
 				guid = self.lo_ad.getAttr(compatible_modstring(object['dn']), 'objectGUID')[0]
 				self._set_DN_for_GUID(guid, object['dn'])
 				self._remove_dn_mapping(pre_mapped_ucs_old_dn, unicode(old_dn))
@@ -2570,16 +2613,13 @@ class ad(univention.connector.ucs):
 		addlist = []
 		modlist = []
 
-		if self.group_mapping_cache_con.get(object['dn'].lower()) and object['modtype'] != 'delete':
-			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: remove %s from group cache" % object['dn'])
-			self.group_mapping_cache_con[object['dn'].lower()] = None
-
+		# get current object
 		ad_object = self.get_object(object['dn'])
 
 		#
 		# ADD
 		#
-		if (object['modtype'] == 'add' and not ad_object) or (object['modtype'] == 'modify' and not ad_object):
+		if not ad_object and object['modtype'] in ('add', 'modify', 'move'):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s" % object['dn'])
 
 			self.addToCreationList(object['dn'])
@@ -2643,7 +2683,7 @@ class ad(univention.connector.ucs):
 		#
 		# MODIFY
 		#
-		elif (object['modtype'] == 'modify' and ad_object) or (object['modtype'] == 'add' and ad_object):
+		elif ad_object and object['modtype'] in ('add', 'modify', 'move'):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s" % object['dn'])
 
 			ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: object: %s" % object)
@@ -2799,7 +2839,9 @@ class ad(univention.connector.ucs):
 		#
 		elif object['modtype'] == 'delete':
 			self.delete_in_ad(object)
-
+			# update group cache
+			self._remove_dn_from_group_cache(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
+			self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
 		else:
 			ud.debug(ud.LDAP, ud.WARN, "unknown modtype (%s : %s)" % (object['dn'], object['modtype']))
 			return False
