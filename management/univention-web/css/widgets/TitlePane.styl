@@ -1,0 +1,103 @@
+/* TitlePane and Fieldset
+ * 
+ * Styling TitlePane means styling the TitlePane title and its content container  (dijitTitlePane)
+ * 
+ * TitlePane title:
+ * 1. TitlePane title (default styling): 
+ * 		.dijitTitlePaneTitle - TitlePane's title div style: background-color, border
+ *
+ * 2. hovered TitlePane title (ie, mouse hover on a title bar)
+ * 		.dijitTitlePaneTitleHover - styles when mouse hover on the title div
+ * 
+ * 3. active TitlePane title (ie, mouse down on a title bar)
+ * 		.dijitTitlePaneTitleActive - styles when mouse down on the title div
+ * 
+ * 
+ * TitlePane Content Container:
+ * 1. outer/inner container: 
+ * 		.dijitTitlePaneContentOuter / dijitTitlePaneContentInner - styles for the content outer div
+ */
+
+ @require "../HTMLElements.styl"
+
+
+.dijitTitlePane
+	flex: 0 0 auto // needed for udm flex layout
+	background-color: var(--color-grey0)
+	border-radius: var(--border-radius-container)
+
+.dijitTitlePane:not(:last-child)
+	margin-bottom: 3em
+
+
+// TitlePane title
+.dijitTitlePaneTitle
+	padding: 1.5rem
+	transition: background-color 250ms
+
+	&Hover
+		background-color: rgba(255, 255, 255, 0.04)
+
+.dijitTitlePaneTitleFocus
+	padding: 0.5rem
+	display: flex
+	align-items: center
+
+	.dijitArrowNode
+		display: none
+
+	.dijitTitlePaneTextNode
+		@extends h2
+		flex: 1 0 auto
+
+	.umcTitlePaneTitleFocus__arrowIcon
+		flex: 0 0 auto
+		transition: transform 250ms
+
+.dijitTitlePaneTitleOpen
+	.umcTitlePaneTitleFocus__arrowIcon
+		transform: rotate(180deg)
+// TitlePane title (end)
+
+
+// TitlePane content
+.dijitTitlePaneContentInner
+	padding: 0.5rem 2rem 2rem // add padding to inner element so the wipeIn/wipeOut does not jump
+// TitlePane content (end)
+
+
+
+// nested TitlePanes (?)
+.dijitTitlePane .dijitTitlePane
+	  margin-left: 3em
+	  margin-top: 3em
+	  margin-bottom: 0
+
+	.dijitTitlePaneTitle
+		font-size: 1.4em
+// nested TitlePanes (?) (end)
+
+
+/* special styling of tracebacks */
+.umc .umcTracebackPane
+	.dijitTitlePaneTitle
+		font-weight: normal
+		border: none
+		font-size: $font-size-button
+
+
+	.dijitArrowNode
+		float: left
+		margin-right: 5px
+
+
+	.dijitTitlePaneTitleHover
+		text-decoration: underline
+
+
+	.dijitTitlePaneTitleClosed .dijitArrowNode
+		background-position: -120px 0
+
+
+	.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode
+		background-position: -140px 0
