@@ -67,7 +67,7 @@ def get_blocks(size):
 	if size.endswith('B'):
 		return int(size.strip('B')) / 1024
 	if int(size[-1]) in range(0, 10):
-		return int(int(size) / 1024)
+		return int(size / 1024)
 
 
 def get_shares():
@@ -198,7 +198,6 @@ class Mountpoints(object):
 					'device': line.split()[0],  # quotas are defined on devices
 					'quotaenabled': quota_enabled(line)
 				})
-		# print('DDD mtab: %s\n' % mounts)
 		return mounts
 
 
@@ -237,10 +236,9 @@ if __name__ == '__main__':
 	else:
 		log.write('Found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)))
 		for mountpoint_path, attrs in mountpoints.items():
-			if True: #attrs['reapplyQuota']:
+			if attrs['reapplyQuota']:
 				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
 				command = ['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path]
-				print('CMD: %s\n' % ' '.join(command))
 				set_quota = subprocess.Popen(command, stderr=log)
 				set_quota.wait()
 			else:
