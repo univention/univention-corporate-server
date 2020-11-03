@@ -23,62 +23,59 @@
  * 		.dijitTreeNode .dojoDndItemBefore/.dojoDndItemAfter - use border style simulate a separate line
  */
 
-@import "variables"
+@require "variables.styl"
+@require "icons.styl"
 
 .umc .umcPageNav .umcGridTree
 	margin-bottom: 30px
 
 .umc .umcGridTree
-	background-color: #fff
-	material-shadow(1)
+	background-color: var(--color-grey0)
+	border-radius: var(--border-radius-container)
+	overflow: hidden // clip the scrollbar
 
 	.dgrid
 		border: none
 
-		.dgrid-cell
-			border: none
-			padding: 0
-			word-break: break-all
+	.dgrid-cell
+		border: none
+		padding: 0.25em 0
+		// word-break: break-all
+		text-overflow: ellipsis
+		white-space: nowrap
 
-		.dgrid-row
-			color: rgba(0, 0, 0, 0.87)
-			line-height: 32px
-			box-sizing: content-box
-			transition: background-color 0.2s
+	.dgrid-row
+		// line-height: 32px
+		box-sizing: content-box
+		transition: background-color 0.2s
 
-			&:hover
-				background-color: #eeeeee
+		&:hover,
+		&.dgrid-selected
+			background-color: rgba(255, 255, 255, 0.04)
 
-			&.dgrid-selected
-				background-color: #f5f5f5
+	.dgrid-expando-icon
+		height: 1em
+		width: @height
+		padding: 0.25em
+		position: relative
+		box-sizing: content-box
 
-			.ui-icon
-				background: none
+		&:after
+			content: ''
+			display: block
+			width: 1em
+			height: 1em
+			position: absolute
+			top: 0.25em
+			left: 0.25em
+			@extends .iconChevronRight
+	.dgrid-row-expanded .dgrid-expando-icon:after
+		@extends .iconChevronDown
+	.dgrid-row.childrenUnknown .dgrid-expando-icon:after
+		background: url($image-loading-animation) !important
+	.dgrid-row.noChildren .dgrid-expando-icon:after
+		background: none !important
 
-			.dgrid-expando-icon
-				height: 32px
-				padding: ((@height - 20px)/2) // icon-image height and width is 20px
-				width: @height
-				position: relative
-
-				&:after
-					content: ''
-					display: block
-					position: absolute
-					top: @padding
-					left: @padding
-					// styling of expando icons
-					// default
-					icon-image(-220, -20)
-					// expanded row
-					^[-2].dgrid-row-expanded ^[-2..-1]
-						icon-image(-160, -20)
-					// loading
-					^[-2].childrenUnknown ^[-2..-1]
-						background: url($image-loading-animation) !important
-					// empty container
-					^[-2].noChildren ^[-2..-1]
-						background: none !important
 
 .umc .dijitTreeNode
     zoom: 1	/* force layout on IE (TODO: may not be needed anymore) */
