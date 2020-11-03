@@ -5,17 +5,21 @@
 p,
 label,
 h1, h2, h3, h4, h5, h6,
-input
+input,
+.dijitReset
 	margin: 0
 	padding: 0
 	border: 0
 	font: inherit
 	color: inherit
 
-input[type="checkbox"]
+.dijitReset
+	line-height: inherit
+
+input[type="checkbox"],
+input[type="radio"]
 	cursor: pointer
 
-// overwrite bootstrap.css:137
 button[disabled],
 html input[disabled]
 	cursor: var(--cursor-disabled)

@@ -9,18 +9,6 @@
 		GENERIC PIECES
  ****/
 
-.dijitReset {
-	/* Use this style to null out padding, margin, border in your template elements
-		so that page specific styles don't break them.
-		- Use in all TABLE, TR and TD tags.
-	*/
-	margin:0;
-	border:0;
-	padding:0;
-	font: inherit;
-	line-height:normal;
-	color: inherit;
-}
 .dj_a11y .dijitReset {
 	-moz-appearance: none; /* remove predefined high-contrast styling in Firefox */
 }
@@ -657,34 +645,6 @@ div.dijitArrowButton {
  	 &
   		dijit.form.RadioButton
  ****/
-
-.dijitCheckBox,
-.dijitRadio,
-.dijitCheckBoxInput {
-	padding: 0;
-	border: 0;
-	width: 16px;
-	height: 16px;
-	background-position:center center;
-	background-repeat:no-repeat;
-	overflow: hidden;
-}
-
-.dijitCheckBox input,
-.dijitRadio input {
-	margin: 0;
-	padding: 0;
-	display: block;
-}
-
-.dijitCheckBoxInput {
-	/* place the actual input on top, but invisible */
-	opacity: 0;
-}
-
-.dj_ie .dijitCheckBoxInput {
-	filter: alpha(opacity=0);
-}
 
 .dj_a11y .dijitCheckBox,
 .dj_a11y .dijitRadio {

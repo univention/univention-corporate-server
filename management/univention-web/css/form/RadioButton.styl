@@ -21,68 +21,40 @@
 
 @import "../variables"
 
-.umc .dijitToggleButton .dijitRadio,
-.umc .dijitToggleButton .dijitRadioIcon
-	//background-image: url("../" + $image-form-checkbox-and-radios)
-	icon-image(0, -36, "../", "-small", 12px, 12px)
+.dijitRadio
+	--local-border-color: var(--color-grey40)
+	--local-background-color: transparent
+	width: 1.2em
+	height: @width
+	border: 2px solid var(--local-border-color)
+	border-radius: var(--border-radius-circles)
+	background-color: var(--local-background-color)
+	transition: opacity 250ms, background-color 250ms, border-color 250ms
+	position: relative
 
+	&:before
+		content: ''
+		display: block
+		width: 50%
+		height: @width
+		position: absolute
+		top: 25%
+		left: 25%
+		background: var(--local-border-color)
+		opacity: 0
+		transition: opacity 250ms
+		border-radius: inherit
 
-.dj_ie6 .umc .dijitToggleButton .dijitRadio,
-.dj_ie6 .umc .dijitToggleButton .dijitRadioIcon
-	//background-image: url("../" + $image-form-checkbox-and-radios-ie6)
+	&Checked
+		--local-border-color: var(--color-primary)
+		&:before
+			opacity: 1
 
+	&Hover,
+	&Focus,
+	&Active
+		--local-background-color: rgba(255, 255, 255, 0.14)
 
-.umc .dijitRadio,
-.umc .dijitRadioIcon		/* inside a toggle button */
-	//background-image: url("../" + $image-form-checkbox-and-radios) /* checkbox sprite image */
-	//background-repeat: no-repeat
-	//width: 15px
-	//height: 15px
-	icon-image(0, -36, "../", "-small", 12px, 12px)
-	margin: -1px 0.3em 0 0
-	padding: 0
-
-
-.dj_ie6 .umc .dijitRadio,
-.dj_ie6 .umc .dijitRadioIcon		/* inside a toggle button */
-	//background-image: url("../" + $image-form-checkbox-and-radios-ie6) /* checkbox sprite image */
-
-
-.umc .dijitRadio
-	/* unselected */
-	background-position: 0 -36px
-
-
-.umc .dijitToggleButton .dijitRadioIcon
-	/* unselected */
-	background-position: 0 -36px
-
-
-.umc .dijitRadioDisabled
-	/* unselected and disabled */
-	background-position: -24px -36px
-
-
-.umc .dijitRadioHover
-	/* hovering over an unselected enabled radio button */
-	background-position: -12px -36px
-	opacity: 0.66
-
-
-.umc .dijitRadioChecked
-	background-position: -48px -36px
-
-
-.umc .dijitToggleButtonChecked .dijitRadioIcon
-	background-position: -48px -36px
-
-
-.umc .dijitRadioCheckedHover
-	background-position: -60px -36px
-	opacity: 0.66
-
-
-.umc .dijitRadioCheckedDisabled
-	/* selected but disabled */
-	background-position: -72px -36px
+	&Disabled
+		opacity: 0.4
 
