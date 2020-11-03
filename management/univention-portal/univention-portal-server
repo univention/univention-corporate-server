@@ -348,6 +348,10 @@ class LDAPCache(object):
 
 
 class JsonHandler(tornado.web.RequestHandler):
+
+	def initialize(self, admins):
+		self.admins = admins
+
 	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
 		if username is None:
 			return False
@@ -456,9 +460,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		admin_mode = False
 		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
 			get_logger('admin').info('Admin mode requested')
-			admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
-			admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
-			admin_mode = username in admins
+			admin_mode = username in self.admins
 			if admin_mode:
 				get_logger('admin').info('Admin mode granted')
 			else:
@@ -469,6 +471,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
 		answer['filtered'] = not admin_mode
+		answer['may_edit_portal'] = username in self.admins
 		self.write(answer)
 
 
@@ -481,8 +484,10 @@ def signal_handler_reload(signo, frame):
 
 
 def make_app():
+	admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
+	admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
 	return tornado.web.Application([
-		(r'/', JsonHandler),
+		(r'/', JsonHandler, {"admins": admins}),
 	])
 
 
