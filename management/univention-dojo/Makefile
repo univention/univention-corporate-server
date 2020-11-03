@@ -64,6 +64,7 @@ dojo: dojo-release-$(VER)-src.tar.gz
 	patch -d $@.tmp -p1 -i ../fix_dojox_widget_Standby_scrollbar_offset.patch
 	patch -d $@.tmp -p1 -i ../fix_dojox_widget_Standby_cntrIndicatorTop.patch
 	patch -d $@.tmp -p1 -i ../fix_dijit_ProgressBar_additional_css_classes.patch
+	patch -d $@.tmp -p0 -i ../fix_dijit_PopupMenuItem_arrow_hidden.patch
 	mv $@.tmp $@
 
 # all other JS packages
