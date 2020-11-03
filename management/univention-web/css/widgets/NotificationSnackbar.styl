@@ -26,14 +26,14 @@
 	font-size: var(--font-size)
 	position: relative
 
-.umcNotificationMessageContainer
+.umcSnackbarNotificationMessage
 	transition: opacity 0s 0.3s
 
-.umcNotificationMessageContainer
+.umcSnackbarNotificationMessage
 	display: grid
 	grid-gap: 0.5em
 	grid-template-columns: auto auto
-	grid-template-areas: "message close"
+	grid-template-areas: "text close"
 
 .umcSnackbarNotification
 	&Warning
@@ -43,33 +43,33 @@
 
 	&Warning,
 	&Success
-		.umcNotificationMessageContainer
-			grid-template-columns: auto auto auto
-			grid-template-areas: "icon message close"
+		.umcSnackbarNotificationMessage
+			grid-template-columns: min-content auto auto
+			grid-template-areas: "icon text close"
 
-		.umcNotificationMessageIconContainer
+		.umcSnackbarNotificationMessageIconContainer
 			grid-area: icon
 			display: flex
 			align-items: center
 			height: calc(var(--font-size) * var(--font-lineheight-normal))
-			.umcNotificationMessageIcon
+			.umcSnackbarNotificationMessageIcon
 				display: inline-block
 				width: 1em
 				height: 1em
 
 
-.umcNotificationMessageIcon
+.umcSnackbarNotificationMessageIcon
 	grid-area: icon
 
-.umcNotificationMessage
-	grid-area: message
+.umcSnackbarNotificationMessageText
+	grid-area: text
 
-.umcNotificationMessageClose
+.umcSnackbarNotificationMessageClose
 	grid-area: close
 	margin-left: 1em
 	justify-self: end
 
-.umcNotificationActionButton
+.umcSnackbarNotificationMessageActionButton
 	grid-column: 1 / 3
 	text-align: right
 	text-transform: uppercase
@@ -80,12 +80,12 @@
 	background-color: transparent
 	color: green
 	
-	// &.multiLineWithActionButton	.umcNotificationMessageContainer .umcNotificationActionButton
+	// &.multiLineWithActionButton	.umcSnackbarNotificationMessage .umcSnackbarNotificationMessageActionButton
 		// margin: 24px 0 0 0
 
 	// &.umcSnackbarNotificationWarning
 		// background-color: red
 
-		// .umcNotificationMessageContainer .umcNotificationActionButton
+		// .umcSnackbarNotificationMessage .umcSnackbarNotificationMessageActionButton
 				// color: inherit
 

@@ -68,15 +68,15 @@ define([
 		templateString: '' +
 			'<div class="umcNotificationSnackbar" data-dojo-attach-point="domNode">' +
 				'<div class="umcSnackbarNotification dijitOffScreen" data-dojo-attach-point="notificationNode">' +
-					'<div class="umcNotificationMessageContainer">' +
-						'<div class="umcNotificationMessageIconContainer dijitDisplayNone" data-dojo-attach-point="iconContainerNode">' +
-							'<div class="umcNotificationMessageIcon" data-dojo-attach-point="iconNode"></div>' +
+					'<div class="umcSnackbarNotificationMessage">' +
+						'<div class="umcSnackbarNotificationMessageIconContainer dijitDisplayNone" data-dojo-attach-point="iconContainerNode">' +
+							'<div class="umcSnackbarNotificationMessageIcon" data-dojo-attach-point="iconNode"></div>' +
 						'</div>' +
-						'<span class="umcNotificationMessage" data-dojo-attach-point="messageNode"></span>' +
-						'<div class="umcNotificationMessageClose">' +
+						'<span class="umcSnackbarNotificationMessageText" data-dojo-attach-point="messageNode"></span>' +
+						'<div class="umcSnackbarNotificationMessageClose">' +
 							'<button data-dojo-type="umc/widgets/Button" data-dojo-attach-event="click: onClose" data-dojo-props="iconClass: \'iconX\', class: \'ucsIconButton ucsIconButtonCompact\'"></button>' +
 						'</div>' +
-						'<button type="button" class="umcNotificationActionButton dijitDisplayNone" data-dojo-attach-point="actionButtonNode" data-dojo-attach-event="onclick: onNotificationActionClick"></button>' +
+						'<button type="button" class="umcSnackbarNotificationMessageActionButton dijitDisplayNone" data-dojo-attach-point="actionButtonNode" data-dojo-attach-event="onclick: onNotificationActionClick"></button>' +
 					'</div>' +
 				'</div>' +
 			'</div>',
@@ -91,9 +91,9 @@ define([
 			}
 
 			tools.toggleVisibility(this.iconContainerNode, !!type);
-			domClass.remove(this.iconNode, 'iconWarningTriangle iconCheckCircle');
+			domClass.remove(this.iconNode, 'iconAlertTriangle iconCheckCircle');
 			if (type === 'warning') {
-				domClass.add(this.iconNode, 'iconWarningTriangle');
+				domClass.add(this.iconNode, 'iconAlertTriangle');
 			} else if (type === 'success') {
 				domClass.add(this.iconNode, 'iconCheckCircle');
 			}
@@ -281,7 +281,6 @@ define([
 		},
 
 		_notify: function(notification) {
-			window.foo = this;
 			this._queue.push(lang.mixin({
 				message: '',
 				action: null,
