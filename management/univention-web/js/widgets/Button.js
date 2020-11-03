@@ -59,15 +59,18 @@ define([
 
 		constructor: function(props) {
 			lang.mixin(this, props);
-			if (this.defaultButton) {
-				this.baseClass += ' dijitDefaultButton';
-			}
+			// if (this.defaultButton) {
+				// this.baseClass += ' dijitDefaultButton';
+			// }
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			this.set('iconClass', this.iconClass);
+			if (this.defaultButton) {
+				domClass.add(this.domNode, 'ucsPrimaryButton');
+			}
 		},
 
 		postCreate: function() {

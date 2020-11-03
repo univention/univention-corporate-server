@@ -39,19 +39,6 @@
 
 
 //// button types
-.ucsPrimaryButton
-	--bgc: var(--button-primary-bgc)
-	--bgc-state: transparent
-	&.dijit
-		&Hover,
-		&Focused
-			--bgc-state: var(--button-primary-bgc-overlay-hover)
-		&Active
-			--bgc-state: var(--button-primary-bgc-overlay-active)
-		&Disabled
-			--bgc-state: var(--button-primary-bgc-overlay-disabled)
-			opacity: 0.4
-
 .ucsButton
 	--bgc: var(--button-bgc)
 	--bgc-state: transparent
@@ -63,6 +50,19 @@
 			--bgc-state: var(--button-bgc-overlay-active)
 		&Disabled
 			--bgc-state: var(--button-bgc-overlay-disabled)
+			opacity: 0.4
+
+.ucsPrimaryButton
+	--bgc: var(--button-primary-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-primary-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-primary-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-primary-bgc-overlay-disabled)
 			opacity: 0.4
 
 .ucsTextButton
@@ -108,11 +108,6 @@
 			--bgc-state: var(--button-icon-bgc-overlay-disabled)
 			opacity: 0.4
 
-	// font-size: 1rem
-	// --button-icon-length: 2em
-	// &Compact
-		// --button-icon-length: 1em
-
 	border-radius: var(--border-radius-circles)
 	.dijitButtonNode
 		border-radius: var(--border-radius-circles)
@@ -123,9 +118,6 @@
 		width: @height
 
 	.dijitButtonContents
-		// outline: 0 // TODO do this generally or case by case?
-		// width: var(--button-icon-length)
-		// height: @width
 		width: 2rem
 	&Compact .dijitButtonContents
 		height: 1rem
