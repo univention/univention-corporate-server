@@ -27,7 +27,7 @@ prepare aptly:
     - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
   environment:
     name: $CI_COMMIT_REF_NAME
-    url: $APT/dists/$CI_COMMIT_REF_SLUG/
+    url: $APT/$CI_COMMIT_REF_SLUG/
     on_stop: drop aptly
     auto_stop_in: 6 month
 
