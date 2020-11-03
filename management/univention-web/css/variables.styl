@@ -343,55 +343,55 @@ material-shadow(level)
 		box-shadow: none
 
 
-material-flat-button()
-	.dijitButtonNode
-		box-shadow: none
-		background-color: rgba(255, 255, 255, 0)
-		padding: 0 material-grid(1)
+// material-flat-button()
+	// .dijitButtonNode
+		// box-shadow: none
+		// background-color: rgba(255, 255, 255, 0)
+		// padding: 0 material-grid(1)
 
-	&^[-1..-1]Hover,
-	&^[-1..-1]Focused
-		.dijitButtonNode
-			background-color: $button-hovered-background-color
-	&^[-1..-1]Active
-		.dijitButtonNode
-			background-color: $button-pressed-background-color
-	&^[-1..-1]Disabled
-		.dijitButtonNode
-			background-color: rgba(255, 255, 255, 0)
-	&^[-1..-1]Checked
-		.dijitButtonNode
-			background-color: $button-checked-background-color
+	// &^[-1..-1]Hover,
+	// &^[-1..-1]Focused
+		// .dijitButtonNode
+			// background-color: $button-hovered-background-color
+	// &^[-1..-1]Active
+		// .dijitButtonNode
+			// background-color: $button-pressed-background-color
+	// &^[-1..-1]Disabled
+		// .dijitButtonNode
+			// background-color: rgba(255, 255, 255, 0)
+	// &^[-1..-1]Checked
+		// .dijitButtonNode
+			// background-color: $button-checked-background-color
 
-	.dijitArrowButtonInner
-		margin-right: 0
-	.dijitIcon
-		margin-left: 0
+	// .dijitArrowButtonInner
+		// margin-right: 0
+	// .dijitIcon
+		// margin-left: 0
 
-material-outlined-button()
-	material-flat-button()
-	.dijitButtonNode
-		border: 1px solid #c8c8c8 // TODO
-		padding: 0 material-grid(2)
+// material-outlined-button()
+	// material-flat-button()
+	// .dijitButtonNode
+		// border: 1px solid #c8c8c8 // TODO
+		// padding: 0 material-grid(2)
 
-	.dijitArrowButtonInner
-		margin-right: material-grid(-1, true)
-	.dijitIcon
-		margin-left: material-grid(-1, true)
+	// .dijitArrowButtonInner
+		// margin-right: material-grid(-1, true)
+	// .dijitIcon
+		// margin-left: material-grid(-1, true)
 
-umc-icon-button(side-length=$material-button-height)
-	.dijitButtonNode
-		padding: 0
-		height: side-length
-		width: side-length
-	.dijitButtonText,
-	.dijitArrowButtonInner
-		display: none
-	.dijitIcon
-		margin: 0
+// umc-icon-button(side-length=$material-button-height)
+	// .dijitButtonNode
+		// padding: 0
+		// height: side-length
+		// width: side-length
+	// .dijitButtonText,
+	// .dijitArrowButtonInner
+		// display: none
+	// .dijitIcon
+		// margin: 0
 
-umc-icon-button-aligned-to-textfield()
-	umc-icon-button($material-textfield-height)
+// umc-icon-button-aligned-to-textfield()
+	// umc-icon-button($material-textfield-height)
 
 
 icon-image(xoffset=0, yoffset=0, dirprefix="", filesuffix="", width=20px, height=20px)
