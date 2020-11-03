@@ -1380,14 +1380,14 @@ define([
 			var buttonDefinitions = [
 			{
 				name: 'submit',
-				iconClass: 'umcSaveIconWhite',
+				iconClass: 'iconSave',
 				label: createLabel,
 				callback: lang.hitch(this, function() {
 					this._form.onSubmit();
 				})
 			}, {
 				name: 'help',
-				iconClass: 'umcHelpIconWhite',
+				// iconClass: 'umcHelpIconWhite',
 				label: _('Help'),
 				'class': 'dijitDisplayNone',
 				callback: lang.hitch(this, function() {
@@ -1396,7 +1396,6 @@ define([
 			}, {
 				name: 'close',
 				label: closeLabel,
-				iconClass: 'umcCloseIconWhite',
 				callback: lang.hitch(this, 'confirmClose')
 			}];
 
@@ -1408,7 +1407,7 @@ define([
 			if (array.indexOf(extendableModules, this.moduleFlavor) >= 0) {
 				buttonDefinitions.unshift({
 					name: 'extendedAttr',
-					iconClass: 'umcExtendedAttrIconWhite',
+					// iconClass: 'umcExtendedAttrIconWhite',
 					label: _('Customize this page'),
 					callback: lang.hitch(this, function() {
 						var version = tools.status('ucsVersion').split('-')[0];

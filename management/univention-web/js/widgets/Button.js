@@ -57,24 +57,18 @@ define([
 
 		_tooltip: null,
 
-		constructor: function(props) {
-			lang.mixin(this, props);
-			// if (this.defaultButton) {
-				// this.baseClass += ' dijitDefaultButton';
-			// }
-		},
-
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			this.set('iconClass', this.iconClass);
-			if (this.defaultButton) {
-				domClass.add(this.domNode, 'ucsPrimaryButton');
-			}
 		},
 
 		postCreate: function() {
 			this.inherited(arguments);
+
+			if (this.defaultButton) {
+				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsButton');
+			}
 
 			if (typeof this.callback == "function") {
 				this.on('click', lang.hitch(this, 'callback'));
