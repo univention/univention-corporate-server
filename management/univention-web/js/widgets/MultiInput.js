@@ -584,13 +584,15 @@ define([
 				// add widget to row container (wrapped by a LabelPane)
 				// only keep the label for the first row
 				var iwidget = widgets[iname];
-				rowContainer.addChild(new LabelPane({
+				var labelPane = new LabelPane({
 					disabled: this.disabled,
 					content: iwidget,
 					usesHoverTooltip: iwidget.usesHoverTooltip || false,
 					// mark last element in a row
 					'class': idx == order.length - 1 ? 'umcMultiInputLastRowEntry' : null
-				}));
+				});
+				iwidget.$refLabel$ = labelPane;
+				rowContainer.addChild(labelPane);
 
 				// register to value changes
 				this.own(iwidget.watch('value', lang.hitch(this, function() {
