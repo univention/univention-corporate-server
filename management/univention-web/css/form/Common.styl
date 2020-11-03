@@ -14,12 +14,6 @@
 		border-width: 1px
 		border-style: solid
 
-.umc
-	.dijitSelect,
-	.dijitComboBox
-		.dijitArrowButtonInner
-			transition: opacity 250ms
-
 /* hover */
 // TODO
 // .umc
@@ -63,42 +57,6 @@
 /*========================= for special widgets =========================*/
 
 /* Input boxes with an arrow (for a drop down) */
-
-.umc .dijitSelect,
-.umc .dijitComboBox
-	.dijitArrowButtonContainer
-		margin-right: material-grid(3, true)
-		border: none
-
-		.dijitArrowButtonInner
-			icon-image(0, 0, "../")
-			height: 20px !important  // override dijit.css CSS rule
-
-.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner
-	border: none
-
-
-.umc .dijitToolbar .dijitComboBox .dijitArrowButtonInner
-	border: none
-
-.umc
-	.dijitComboBoxOpenOnClickHover,
-	.dijitComboBox .dijitDownArrowButtonHover
-		.dijitArrowButtonInner
-			background-position: -20px 0
-			opacity: 0.66
-
-.umc .dijitComboBox .dijitDownArrowButtonActive .dijitArrowButtonInner
-	background-position: -20px 0
-	opacity: 1
-
-
-.dj_iequirks .umc .dijitComboBox .dijitHasDropDownOpen
-	padding: 1px 0
-
-.umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner
-	//background-position:-70px 53%
-	border: 0 none
 
 /* labels for form elements */
 .umc .umcLabelPane
@@ -178,12 +136,3 @@
 				margin-left: 0
 			&:last-of-type
 				margin-right: 0
-
-
-
-/*========================= hacks for browsers =========================*/
-.dj_borderbox .umc .dijitComboBox .dijitHasDropDownOpen .dijitArrowButtonInner
-	width:18px				// quirks mode means border-box sizing, so 18px with the border (same as 16px without border)
-
-.dj_borderbox .umc .dijitComboBoxFocused .dijitHasDropDownOpen .dijitArrowButtonInner
-	width:16px				// when no border, then back to 16px just like content-box sizing

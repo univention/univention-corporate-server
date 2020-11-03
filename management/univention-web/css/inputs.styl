@@ -61,6 +61,42 @@
 			&.umcEmptyValue
 				visibility: visible
 
+// (TODO) maybe put this to the labelpane styles
+.umcLabelPane .umcLabelPaneLabelNode
+	transition: color 250ms
+.umcLabelPaneError .umcLabelPaneLabelNode
+	color: var(--color-error)
+.umcLabelPaneDisabled .umcLabelPaneLabelNode
+	color: var(--color-grey40)
+//// textbox end
+
+.dijitComboBox
+	.dijitDownArrowButton
+		--bgc: transparent
+		width: 1.5em
+		height: @width
+		margin-right: 0.5rem
+		background: var(--bgc)
+		border-radius: 50%
+		transition: opacity 250ms, var(--button-bgc-transition)
+		display: flex
+		align-items: center
+
+		&Hover
+			--bgc: var(--button-icon-bgc-overlay-hover)
+		&Active
+			--bgc: var(--button-icon-bgc-overlay-active)
+
+		.dijitArrowButtonInner
+			width: 1em
+			height: 1em !important
+			background: url(images/chevron-down_white.svg)
+			background-size: contain
+
+	&Disabled .dijitArrowButton
+		opacity: 0.4
+
+// validation icon
 .dijitTextBox
 	.dijitValidationContainer
 		background-image: url("../form/images/error.svg")
@@ -71,35 +107,6 @@
 	.dijitValidationIcon
 		display: none
 
-// (TODO) maybe put this to the labelpane styles
-.umcLabelPane .umcLabelPaneLabelNode
-	transition: color 250ms
-.umcLabelPaneError .umcLabelPaneLabelNode
-	color: var(--color-error)
-.umcLabelPaneDisabled .umcLabelPaneLabelNode
-	color: var(--color-grey40)
-//// textbox end
-
-.dijitComboBox .dijitDownArrowButton
-	--bgc: transparent
-	width: 2em
-	height: @width
-	margin-right: 0.5rem
-	background: var(--bgc)
-	border-radius: 50%
-	transition: var(--button-bgc-transition)
-	display: flex
-	align-items: center
-
-	&Hover
-		--bgc: var(--button-icon-bgc-overlay-hover)
-	&Active
-		--bgc: var(--button-icon-bgc-overlay-active)
-
-	.dijitArrowButtonInner
-		width: 1em
-		height: 1em !important
-		background: url(images/chevron-down_white.svg)
-		background-size: contain
-
+.dijitComboBox .dijitValidationContainer
+	margin-right: 0.5em
 
