@@ -1,0 +1,46 @@
+.umcMultiSelect
+	border-radius: 8px
+	background-color: var(--color-grey8)
+
+	.dojoxGridScrollbox,
+	.dojoxGridRow,
+	.dojoxGrowOdd,
+	.dojoxGridHeader
+		background-color: inherit
+
+	.dojoxGridArrowButtonChar
+		display: none
+
+	.dojoxGridCell
+		border: none
+		background: inherit
+		line-height: 1em
+
+	.dojoxGridCell
+		padding: 0.5rem 0
+	.dojoxGridHeader .dojoxGridCell
+		padding: 1rem 0
+
+	.dojoxGridCell:first-child
+		width: 3rem !important
+
+	.dojoxGridCell
+		outline: none
+
+	.dojoxGridMasterHeader
+		border-bottom: 1px solid var(--color-grey0)
+	.dojoxGridRow
+		border: none
+
+	.dojoxGridContent
+		margin: 0.5rem 0
+
+	.dojoxGridRowSelector
+		outline: none
+	.dojoxGridRowSelectorStatusText
+		display: none
+
+.umcMultiSelect:not(.umcMultiSelectWithContent),
+.umcMultiSelectNoHeader
+	.dojoxGridHeader
+		display: none

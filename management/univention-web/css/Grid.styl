@@ -1,58 +1,8 @@
 @import "variables"
 
-.umcGrid .dojoxGridScrollbox
-	overflow-y: scroll
-	overflow-x: hidden
-
-.umc .umcMultiSelect
-	.dojoxGridMasterHeader
-		background-color: white
-
-		.dojoxGridHeader
-			background-color: @background-color
-			display: none
-
-			^[-2].umcMultiSelectWithContent ^[-2..-1]
-				display: block
-
-			.dojoxGridCell
-				background-color: @background-color
-				color: $text-color
-				^[-3].umcMultiSelectDisabled ^[-3..-1]
-					color: $text-color-lightest
-
-			.dijitCheckBox
-				icon-image(0, -48, "", "-small", 12px, 12px)
-
-				&.dijitCheckBoxChecked
-					background-position: -48px -48px
-
-	.dojoxGridView
-		min-width: 100%
-		max-width: 100%
-
-		^[-1].umcMultiSelectWithContent ^[-1..-1]
-			border-top: 1px solid rgba(0, 0, 0, 1)
-		^[-1].umcMultiSelectDisabled ^[-1..-1]
-			border-color: rgba(0, 0, 0, 0.2)
-
-		.dojoxGridContent
-			min-width: 100%
-			max-width: 100%
-
-			div[role="presentation"]
-				max-width: 100%
-
-				.dojoxGridRow
-					max-width: 100%
-
-					.dojoxGridRowTable
-						width: 100% !important
-	&.umcMultiSelectNoHeader
-		.dojoxGridMasterHeader .dojoxGridHeader
-			display: none
-		.dojoxGridView
-			border-top: none
+// .umcGrid .dojoxGridScrollbox
+	// overflow-y: scroll
+	// overflow-x: hidden
 
 $umcGrid-edge-padding = 24px
 .umc .umcGrid
@@ -204,65 +154,6 @@ $umcGrid-edge-padding = 24px
 		max-height: 0px !important
 
 
-.umc .dojoxGridHeader
-	background-color: $text-color
-	.dojoxGridCell
-		background-color: $text-color
-		color: $text-color-dark-background
-
-	.dojoxGridCellOver
-		background-color: $primary-color
-
-	.dojoxGridCellFocus,
-	.dojoxGridCell,
-	.dojoxGridCellOver
-		border: none
-
-	.dijitCheckBox
-		$_iconImage = replace("^(.*)(\.\w*)$", "$1-small-white$2", $image-icons)
-		_urlPNG = replace("\.svg$", ".png", $_iconImage)
-		background-image: url($_iconImage)
-		html.dj_trident &,
-		html.dj_ie &
-			background-image: url(_urlPNG)
-
-.umc .dojoxGrid
-	font-family: inherit
-	background: none
-
-	.dojoxGridRow
-		background-color: white
-		border: none
-
-	.dojoxGridRowOdd
-		background-color: $grey-lightest
-
-	.dojoxGridRowSelected
-		background-color: $grey-medium
-
-	.dojoxGridCell
-		background-image: none
-		border: none
-		-webkit-user-select: text
-		-moz-user-select: text
-		-ms-user-select: text
-		user-select: text
-
-		.dijitButton
-			.dijitIcon
-				margin-top: -3px
-				margin-bottom: -2px
-
-			.dijitButtonText
-				font-size: 1em
-				margin-top: -3px
-				margin-bottom: 0px
-				padding: 0
-
-			.dijitButtonNode
-				padding-top: 0
-				padding-bottom: 0
-
 .umcGrid .dgrid-scroller
 	max-height: inherit
 
@@ -281,19 +172,3 @@ $umcGrid-edge-padding = 24px
 	white-space: nowrap
 	overflow: hidden
 	text-overflow: ellipsis
-
-.umc .dojoxGridArrowButtonChar
-	display: none
-	float: right
-
-.umc .dojoxGridSortUp .dojoxGridArrowButtonNode
-	background-position: -60px 0px
-
-.umc .dojoxGridArrowButtonNode
-	background: url("images/icons-small-white.svg") -48px 0px no-repeat
-	display: block
-	float: right
-	margin: 2px 4px 0 5px
-	padding-left: 0
-	width: 12px
-	height: 12px

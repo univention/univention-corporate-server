@@ -80,7 +80,7 @@ define([
 		baseClass: EnhancedGrid.prototype.baseClass + ' umcMultiSelect',
 
 		// force the height of the widget
-		height: '110px',
+		height: '250px',
 
 		postMixInProperties: function() {
 			// initiate a new Deferred object
