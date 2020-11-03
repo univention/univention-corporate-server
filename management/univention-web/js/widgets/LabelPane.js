@@ -63,10 +63,10 @@ define([
 		//		Simple widget that displays a widget/HTML code with a label above.
 
 		templateString: '<div class="umcLabelPane">' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeTop" dojoAttachPoint="labelNodeTopWrapper"><label dojoAttachPoint="labelNodeTop" for=""></label></span>' +
 			'<span class="umcLabelPaneContainerNode" dojoAttachPoint="containerNode,contentNode"></span>' +
-			'<span class="umcLabelPaneLabelNode umcLabelPaneLabeNodeRight"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
-			'<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeBottom"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
+			'<span class="umcLabelPaneLabelNode umcLabelPaneLabelNodeRight" dojoAttachPoint="labelNodeRightWrapper"><label dojoAttachPoint="labelNodeRight" for=""></label></span>' +
+			'<div class="umcLabelPaneLabelNode umcLabelPaneLabelNodeBottom" dojoAttachPoint="labelNodeBottomWrapper"><label dojoAttachPoint="labelNodeBottom" for=""></label></div>' +
 			'</div>',
 
 		// content: String|dijit/_WidgetBase
@@ -213,12 +213,27 @@ define([
 		},
 
 		_forEachLabeNode: function(callback) {
-			array.forEach([this.labelNodeTop, this.labelNodeRight, this.labelNodeBottom], callback, this);
+			array.forEach([
+				{
+					labelNode: this.labelNodeTop,
+					wrapperNode: this.labelNodeTopWrapper
+				},
+				{
+					labelNode: this.labelNodeRight,
+					wrapperNode: this.labelNodeRightWrapper
+				},
+				{
+					labelNode: this.labelNodeBottom,
+					wrapperNode: this.labelNodeBottomWrapper
+				},
+			], callback, this);
 		},
 
 		_hideNodes: function(exceptOfThisNode) {
-			this._forEachLabeNode(function(inode) {
-				domClass.toggle(inode, 'dijitDisplayNone', exceptOfThisNode != inode);
+			this._forEachLabeNode(function(o) {
+				var labelNode = o.labelNode;
+				var wrapperNode = o.wrapperNode;
+				domClass.toggle(wrapperNode, 'dijitDisplayNone', exceptOfThisNode != labelNode);
 			});
 		},
 

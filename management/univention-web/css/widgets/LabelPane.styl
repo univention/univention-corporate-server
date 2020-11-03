@@ -1,0 +1,41 @@
+/* labels for form elements */
+.umcLabelPane
+	display: inline-block
+
+	.umcLabelPaneLabelNode
+		display: inline-flex
+		align-items: center
+		font-size: var(--font-size-small)
+
+		&Top
+			margin-bottom: 0.5rem
+		&Right
+			margin-left: 0.5rem
+		&Bottom
+			margin-top: 0.5rem
+
+.umcLabelPane .umcToolTip
+	background-position: 0 -36px
+
+	.umcToolTipHover
+		background-position: -12px -36px
+		opacity: 0.66
+
+	.umcToolTipClicked
+		background-position: -48px -36px
+
+.umcDescriptionIcon
+	background: url(images/help-circle_white.svg)
+	background-size: contain
+	height: 1em
+	width: @height
+	margin-left: 0.5rem
+	cursor: pointer
+
+.umcLabelPane-dijitCheckBox
+	display: inline-flex
+	align-items: flex-start
+
+	.umcLabelPaneContainerNode
+		display: flex
+
