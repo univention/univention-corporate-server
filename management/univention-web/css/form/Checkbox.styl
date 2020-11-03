@@ -21,65 +21,66 @@
 
 @import "../variables"
 
-.umc .dijitToggleButton .dijitCheckBoxIcon
-	icon-image(0, -36, "../", "-small", 12px, 12px)
-
-
-.umc .dijitCheckBox,
-.umc .dijitCheckBoxIcon		/* inside a toggle button */
-	icon-image(0, -36, "../", "-small", 12px, 12px)
-
-
-/* unchecked */
-.umc .dijitCheckBox,
-.umc .dijitToggleButton .dijitCheckBoxIcon
-	background-position: 0 -48px
-
-
-/* checked */
-.umc .dijitCheckBoxChecked,
-.umc .dijitToggleButtonChecked .dijitCheckBoxIcon
-	background-position: -48px -48px
-
-
-/* disabled */
-.umc .dijitCheckBoxDisabled
-	background-position: -24px -48px
-
-
-/* disabled but checked */
-.umc .dijitCheckBoxCheckedDisabled
-	background-position: -72px -48px
-
-
-/* hovering over an unchecked enabled checkbox */
-.umc .dijitCheckBoxHover
-	background-position: -12px -48px
-	opacity: 0.66
-
-
-/* hovering over an checked enabled checkbox */
-.umc .dijitCheckBoxCheckedHover
-	background-position: -60px -48px
-	opacity: 0.66
-
-
 .umc .umcLabelPane-dijitCheckBox
-	display: inline-flex
-	align-items: flex-start
+	// display: inline-flex
+	// align-items: flex-start
 
 	.umcLabelPaneContainerNode
-		font-size: $font-size-caption
+		// font-size: $font-size-caption
 
 		.dijitCheckBox
-			vertical-align: baseline
+			// vertical-align: baseline
 			margin-right: 0.3em
 
-	.umcLabelPaneLabelNode
-		display: flex
+	// .umcLabelPaneLabelNode
+		// display: flex
 
-		label
-			padding: 0
-		.umcDescription
-			flex: 0 0 auto
-			margin: 0 0 0 0.6em
+		// label
+			// padding: 0
+		// .umcDescription
+			// flex: 0 0 auto
+			// margin: 0 0 0 0.6em
+
+.dijitCheckBox
+	--local-border-color: var(--color-grey40)
+	--local-background-color: transparent
+	width: 1em
+	height: @width
+	border: 2px solid var(--local-border-color)
+	border-radius: 2px
+	background-color: var(--local-background-color)
+	transition: opacity 250ms, background-color 250ms, border-color 250ms
+	box-sizing: content-box
+	position: relative
+
+	&:before
+		content: ''
+		display: block
+		width: @width
+		height: @width
+		position: absolute
+		top: 0
+		left: 0
+		background: url(images/check_checked.svg)
+		background-size: contain
+		opacity: 0
+		transition: opacity 250ms
+
+	&Checked
+		--local-border-color: var(--color-primary)
+		&:before
+			opacity: 1
+
+	/.dojoxGridCellOver &,
+	&Hover,
+	&Focus,
+	&Active
+		--local-background-color: rgba(255, 255, 255, 0.14)
+
+	&Disabled
+		--local-border-color: var(--color-grey40)
+		opacity: 0.4
+		
+.dijitCheckBoxInput
+	width: 100%
+	height: 100%
