@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Quota
 #  read default quota-settings and write into quota-table
@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import cPickle
+from six.moves import cPickle as pickle
 import sys
 import os
 import re
@@ -67,7 +67,7 @@ def get_blocks(size):
 	if size.endswith('B'):
 		return int(size.strip('B')) / 1024
 	if int(size[-1]) in range(0, 10):
-		return int(size) / 1024
+		return int(int(size) / 1024)
 
 
 def get_shares():
@@ -78,16 +78,17 @@ def get_shares():
 		filename = os.path.join(SHARE_CACHE_DIR, f)
 		if os.path.isdir(filename):
 			continue
-		f = open(filename, 'r')
-		dn, attrs, policy_result = cPickle.load(f)
+		f = open(filename, 'rb')
+		dn, attrs, policy_result = pickle.load(f)
 		f.close()
-		shares[attrs['univentionSharePath'][0]] = {
+		sharepath = attrs['univentionSharePath'][0].decode('UTF-8')
+		shares[sharepath] = {
 			'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
 			'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0]),
 			'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
 			'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
 			'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
-			'mountpoint': get_mountpoint_from_share_path(attrs['univentionSharePath'][0])
+			'mountpoint': get_mountpoint_from_share_path(sharepath)
 		}
 
 	return shares
@@ -115,7 +116,7 @@ class Mountpoints(object):
 				continue
 
 			quotas = self.get_quota()
-			for quota in quotas.itervalues():
+			for quota in quotas.values():
 				if quota['device'] == mount['device']:
 					# If quota is unset, set flag that the quota should be set:
 					initialValue = quota['bsoft'] == '0' and quota['bhard'] == '0' and quota['fsoft'] == '0' and quota['fhard'] == '0'
@@ -133,7 +134,7 @@ class Mountpoints(object):
 			if share['mountpoint'] not in self.mountpoints_with_quota.keys():
 				self.mountpoints_with_quota[share['mountpoint']] = share
 
-		for mountpoint, attrs in self.mountpoints_with_quota.iteritems():
+		for mountpoint, attrs in self.mountpoints_with_quota.items():
 			shares_on_mount = self.get_shares_with_mountpoint(mountpoint)
 			if not shares_on_mount:
 				self.mountpoints_with_quota[mountpoint]['reapplyQuota'] = False
@@ -176,9 +177,9 @@ class Mountpoints(object):
 		# Dateisystem Bloecke   Quota   LimitGnadenfrist Dateien   Quota   LimitGnadenfrist
 		# /dev/mapper/vg_ucs-rootfs      24  307200  409600       0       8       0       0       0
 		# /dev/vda2       0       0       0       0       0       0       0       0
-		quota_stdout, stderr_empty = p.communicate()
+		quota_stdout, _ = p.communicate()
 		regex = re.compile('^ *(?P<device>[^ ]*) *(?P<bused>[0-9]*). *(?P<bsoft>[0-9]*) *(?P<bhard>[0-9]*) *(?P<btime>[0-9]*) *(?P<fused>[0-9]*). *(?P<fsoft>[0-9]*) *(?P<fhard>[0-9]*) *(?P<ftime>[0-9]*)$')
-		for quotaline in quota_stdout.split('\n'):
+		for quotaline in quota_stdout.decode('UTF-8').split('\n'):
 			matches = regex.match(quotaline)
 			if not matches:
 				continue
@@ -197,19 +198,20 @@ class Mountpoints(object):
 					'device': line.split()[0],  # quotas are defined on devices
 					'quotaenabled': quota_enabled(line)
 				})
+		# print('DDD mtab: %s\n' % mounts)
 		return mounts
 
 
 if __name__ == '__main__':
 	if '-h' in sys.argv or '--help' in sys.argv:
-		print '%s - write user quota from shares into quota-table' % sys.argv[0]
-		print 'Usage: %s [username]' % sys.argv[0]
-		print '    username defaults to $USER\n'
-		print 'Example:'
-		print '  %s someuser' % sys.argv[0]
-		print '     set up quota for someuser'
-		print '  %s' % sys.argv[0]
-		print '     set up quota for $USER'
+		print('%s - write user quota from shares into quota-table' % sys.argv[0])
+		print('Usage: %s [username]' % sys.argv[0])
+		print('    username defaults to $USER\n')
+		print('Example:')
+		print('  %s someuser' % sys.argv[0])
+		print('     set up quota for someuser')
+		print('  %s' % sys.argv[0])
+		print('     set up quota for $USER')
 		sys.exit(0)
 
 	ucr = univention.config_registry.ConfigRegistry()
@@ -234,10 +236,11 @@ if __name__ == '__main__':
 		log.write('No mountpoints available on this host to configure any quota\n')
 	else:
 		log.write('Found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)))
-		for mountpoint_path, attrs in mountpoints.iteritems():
-			if attrs['reapplyQuota']:
+		for mountpoint_path, attrs in mountpoints.items():
+			if True: #attrs['reapplyQuota']:
 				log.write('Set quota on mountpoint "%s": /usr/sbin/setquota -u %s %s %s %s %s %s\n' % (mountpoint_path, user, attrs['spaceSoftLimit'], attrs['spaceHardLimit'], attrs['inodeSoftLimit'], attrs['inodeHardLimit'], mountpoint_path))
 				command = ['/usr/sbin/setquota', '-u', user, str(attrs['spaceSoftLimit']), str(attrs['spaceHardLimit']), str(attrs['inodeSoftLimit']), str(attrs['inodeHardLimit']), mountpoint_path]
+				print('CMD: %s\n' % ' '.join(command))
 				set_quota = subprocess.Popen(command, stderr=log)
 				set_quota.wait()
 			else:

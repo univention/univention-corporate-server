@@ -1,3 +1,10 @@
+univention-quota (14.0.0-2) unstable; urgency=medium
+
+  * Bug #52310: Migrate listener module and univention-user-quota
+    script to Python3
+
+ -- Arvid <requate@univention.de>  Tue, 03 Nov 2020 17:45:07 +0100
+
 univention-quota (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

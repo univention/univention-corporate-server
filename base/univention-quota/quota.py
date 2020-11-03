@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Quota
@@ -35,7 +35,7 @@ from __future__ import absolute_import
 
 import ldap
 from ldap.filter import filter_format
-import pickle
+from six.moves import cPickle as pickle
 import os
 
 import univention.debug as ud
