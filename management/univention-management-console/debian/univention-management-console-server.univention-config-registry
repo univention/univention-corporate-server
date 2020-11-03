@@ -57,7 +57,7 @@ Variables: umc/saml/grace_time
 Variables: umc/saml/trusted/sp/.*
 
 Type: file
-File: usr/share/univention-management-console/meta.json
+File: var/www/univention/meta.json
 Variables: domainname
 Variables: interfaces/
 Variables: locale

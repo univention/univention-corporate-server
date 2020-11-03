@@ -24,7 +24,8 @@
 				}
 			};
 			dojoConfig.cacheBust = "v=2.0.2-4";
-			umcConfig.callback =function() {
+			umcConfig.anonymousMeta = true;
+			umcConfig.callback = function() {
 				require(["portal", "umc/widgets/LiveSearch"], function(portal) {
 					portal.start();
 				});

@@ -275,7 +275,7 @@ class ProcessorBase(Base):
 				return
 		raise NotFound()
 
-	META_JSON_PATH = '/usr/share/univention-management-console/meta.json'
+	META_JSON_PATH = '/var/www/univention/meta.json'
 
 	def handle_request_get_meta(self, request):
 		try:

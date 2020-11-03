@@ -1,0 +1,1 @@
+mv_conffile /etc/univention/templates/files/usr/share/univention-management-console/meta.json /etc/univention/templates/files/var/www/univention/meta.json 3.0.5-48~
