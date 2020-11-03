@@ -1,0 +1,183 @@
+univention-skel (12.0.0-1) unstable; urgency=medium
+
+  * Bug #51419: UCS-5.0-0 version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jun 2020 18:06:16 +0200
+
+univention-skel (11.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:32 +0100
+
+univention-skel (10.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:46 +0100
+
+univention-skel (9.0.0-2) unstable; urgency=low
+
+  * fix link handling in univention-skell (Bug #42493)
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2016 12:59:00 +0200
+
+univention-skel (9.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:40 +0200
+
+univention-skel (8.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:03:25 +0100
+
+univention-skel (7.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2014 09:14:57 +0200
+
+univention-skel (6.0.0-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Sep 2013 10:21:24 +0200
+
+univention-skel (6.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 18 Jun 2013 16:30:23 +0200
+
+univention-skel (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 10 Jun 2013 16:19:44 +0200
+
+univention-skel (5.0.1-1) unstable; urgency=low
+
+  * added /etc/skel/.profile to univention skel (Bug #15754)
+
+ -- Felix Botner <botner@univention.de>  Wed, 31 Oct 2012 13:03:37 +0100
+
+univention-skel (5.0.0-1) unstable; urgency=low
+
+  * Version bump for UCS-3.1.
+  * Add UCR variable description.(Bug #28134)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 02 Aug 2012 08:21:57 +0200
+
+univention-skel (4.0.2-1) unstable; urgency=low
+
+  * Use hash algorithm md5, no other algorithm like sha224 because we
+    want to make sure that our script univention-skel keeps on working
+    with existing hash values on existing servers (Bug #23116).
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 15 Jun 2012 13:44:28 +0200
+
+univention-skel (4.0.1-1) unstable; urgency=low
+
+  * Python library md5 is not used any longer, hashlib is used now (Bug #23116)
+
+  * Updated Copyright to keep ucslint happy
+
+  * Python cleanup: replaced "if dict.has_key:" with "if key in dict:"
+    to keep ucslint happy
+
+ -- Juergen Kahrs <Kahrs@univention.de>  Fri, 15 Jun 2012 11:22:47 +0200
+
+univention-skel (4.0.0-1) unstable; urgency=low
+
+  * Package cleanup for UCS 3.0 (Bug #22433)
+    * Bump version for UCS 3.0
+    * Update copyright to 2011
+    * Update to debhelper 7
+    * Add ucslint
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 May 2011 08:54:03 +0200
+
+univention-skel (3.0.0-1) unstable; urgency=low
+
+  * convert to GNU APGL V3 (Bug #17543)
+  * bump version for UCS 2.4
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 22 Jun 2010 14:22:37 +0200
+
+univention-skel (2.0.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.3
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+
+univention-skel (1.0.2-1) unstable; urgency=low
+
+  * removed debug message 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  4 Nov 2008 14:38:29 +0100
+
+univention-skel (1.0.1-1) unstable; urgency=low
+
+  * new UCR variables skel/permissions/directory and
+    skel/permissions/file to define default permissions for new skel files
+  * add directory /etc/univention/skel.meta: may contain scripts invoked after
+    creation of new skel files and directories in $HOME
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Oct 2008 10:54:59 +0200
+
+univention-skel (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 11:21:47 +0200
+
+univention-skel (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 15:33:19 +0200
+
+univention-skel (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 10:47:13 +0100
+
+univention-skel (0.6) unstable; urgency=low
+
+  * postinst return 0, also if .bashrc is not available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jul 2005 10:13:23 +0200
+
+univention-skel (0.4) unstable; urgency=low
+
+  * copy bashrc and bash_profile from existing skel
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 13 Apr 2005 19:35:15 +0200
+
+univention-skel (0.3) unstable; urgency=low
+
+  * change condition to create a new file, no path exist should be a secure
+    condition to provide a new file
+
+ -- Thomas Kaminski <kaminski@univention.de>  Tue, 15 Feb 2005 12:54:57 +0100
+
+univention-skel (0.2) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 11:23:26 +0200
+
+univention-skel (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Gerold Janssen <gerold@ds-work.office.univention.de>  Wed, 19 Nov 2003 15:21:10 +0100
+
+Local variables:
+mode: debian-changelog
+End:

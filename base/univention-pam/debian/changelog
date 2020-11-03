@@ -1,3 +1,9 @@
+univention-pam (13.0.2-2) unstable; urgency=low
+
+  * Bug #43211: reanimate univention-skel for bash-completion
+
+ -- Arvid <requate@univention.de>  Tue, 03 Nov 2020 09:24:15 +0100
+
 univention-pam (13.0.2-1) unstable; urgency=medium
 
   * Bug #52250: migrate univention-pam to Python 3

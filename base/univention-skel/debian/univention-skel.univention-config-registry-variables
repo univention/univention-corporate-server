@@ -1,0 +1,18 @@
+[skel/lock/retry]
+Description[de]=Um gegenseitiges Überschreiben zu vermeiden, wird mittels Locking sichergestellt, das nur ein Prozess auf eine Datei zugreift. Diese Variable legt fest, wie viele zusätzliche Versuche nach einer Wartezeit von je 50ms probiert werden, wenn eine Datei einem Lock unterliegt.
+Description[en]=Locking ensure exclusive access to prevent accidental overwrites from two processes accessing a file at once. This variable configures how many retries are attempted - after waiting 50ms each - to acquire exclusive access again.
+Type=int
+Categories=system-base
+
+[skel/permissions/directory]
+Description[de]=Neu angelegte Verzeichnisses werden mit diesen Berechtigungen angelegt. Die Angabe erfolgt als oktale Berechtigungsmaske, siehe 'man chmod'.
+Description[en]=Newly created directories are created with these permissions. The value is specified as an octal permission set, see 'man chown'.
+Type=int
+Categories=system-base
+
+[skel/permissions/file]
+Description[de]=Neu angelegte Dateien werden mit diesen Berechtigungen angelegt. Die Angabe erfolgt als oktale Berechtigungsmaske, siehe 'man chmod'.
+Description[en]=Newly created files are created with these permissions. The value is specified as an octal permission set, see 'man chown'.
+Type=int
+Categories=system-base
+

@@ -724,7 +724,7 @@
 					Several potential buffer overruns have been fixed in <package>pam-univentionmailcyru</package> (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The package <package>univention-skel</package> has been removed (<u:bug>43211</u:bug>)
+					 (<u:bug>00000</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 					The packages <package>univention-passwd-cache</package> and <package>univention-passwd-store</package> have been removed (<u:bug>52056</u:bug>)
