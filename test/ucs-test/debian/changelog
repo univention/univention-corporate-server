@@ -1,3 +1,9 @@
+ucs-test (9.0.5-20) unstable; urgency=medium
+
+  * Bug #51929: added 55_adconnector/504_test_group_cache_after_move
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Nov 2020 15:37:36 +0100
+
 ucs-test (9.0.5-19) unstable; urgency=medium
 
   * Bug #52130: some changes for the new samba version
