@@ -1,3 +1,9 @@
+univention-ldap (16.0.1-5) unstable; urgency=medium
+
+  * Bug #51765: setting max_age ucr variable
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 04 Nov 2020 09:54:40 +0100
+
 univention-ldap (16.0.1-4) unstable; urgency=medium
 
   * Bug #42374: Explain new wording in UCR variable description
