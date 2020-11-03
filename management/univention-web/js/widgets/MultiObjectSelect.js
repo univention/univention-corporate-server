@@ -314,7 +314,9 @@ define([
 			this.addChild(container);
 
 			// add the Buttons
-			container = new ContainerWidget({});
+			container = new ContainerWidget({
+				'class': this.baseClass + '__buttons'
+			});
 			this._addButton = new Button({
 				label: _('Add'),
 				iconClass: 'iconPlus',
