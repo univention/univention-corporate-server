@@ -44,7 +44,6 @@ from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.config_registry import handler_set
 
-from . import mtab
 from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate
@@ -128,19 +127,16 @@ class QuotaActivationError(Exception):
 def usrquota_is_active(fstab_entry, mt=None):
 	if not mt:
 		try:
-			mt = mtab.File()
+			mt = fstab.File('/etc/mtab')
 		except IOError as error:
 			raise QuotaActivationError(_('Could not open %s') % error.filename)
 
-	mtab_entry = mt.get(fstab_entry.spec)
+	mtab_entry = mt.find(spec=fstab_entry.spec)
 	if not mtab_entry:
 		raise QuotaActivationError(_('Device is not mounted'))
 
 	# First remount the partition with option "usrquota" if it isn't already
-	if 'usrquota' in mtab_entry.options:
-		return True
-	else:
-		return False
+	return bool(mt.hasopt('usrquota'))
 
 
 def quota_is_enabled(fstab_entry):

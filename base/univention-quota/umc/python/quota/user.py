@@ -43,7 +43,6 @@ from univention.management.console.base import UMC_Error
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer, PatternSanitizer
 
-from . import mtab
 from . import tools
 
 _ = Translation('univention-management-console-module-quota').translate
@@ -146,17 +145,17 @@ class Commands(object):
 
 	def _check_error(self, request, partition_name):  # TODO
 		try:
-			fs = fstab.File()
-			mt = mtab.File()
+			fs = fstab.File('/etc/fstab')
+			mt = fstab.File('/etc/mtab')
 		except IOError as error:
 			MODULE.error('Could not open %s' % error.filename)
 			raise ValueError(_('Could not open %s') % error.filename)
 
 		partition = fs.find(spec=partition_name)
 		if partition:
-			mounted_partition = mt.get(partition.spec)
+			mounted_partition = mt.find(spec=partition.spec)
 			if mounted_partition:
-				if 'usrquota' not in mounted_partition.options and 'usrjquota=aquota.user' not in mounted_partition.options:
+				if not mt.hasopt('usrquota') and not mt.hasopt('usrjquota=aquota.user'):
 					raise UMC_Error(_('The following partition is mounted without quota support: %s') % partition_name)
 			else:
 				raise UMC_Error(_('The following partition is currently not mounted: %s') % partition_name)

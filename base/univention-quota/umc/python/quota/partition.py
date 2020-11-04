@@ -39,7 +39,6 @@ from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
 
 from . import df
-from . import mtab
 from . import tools
 
 from univention.lib import fstab
@@ -53,8 +52,8 @@ class Commands(object):
 		result = []
 		message = None
 		try:
-			fs = fstab.File()
-			mt = mtab.File()
+			fs = fstab.File('/etc/fstab')
+			mt = fstab.File('/etc/mtab')
 		except IOError as error:
 			MODULE.error('Could not open %s' % error.filename)
 			message = _('Could not open %s') % error.filename
@@ -68,7 +67,7 @@ class Commands(object):
 				list_entry['partitionSize'] = None
 				list_entry['freeSpace'] = None
 				list_entry['inUse'] = tools.quota_is_enabled(partition)
-				mounted_partition = mt.get(partition.spec)
+				mounted_partition = mt.find(spec=partition.spec)
 				if mounted_partition:
 					partition_info = df.DeviceInfo(partition.mount_point)
 					list_entry['partitionSize'] = tools.block2byte(partition_info.size(), 'GB', 1)
@@ -81,8 +80,8 @@ class Commands(object):
 		result = {}
 		message = None
 		try:
-			fs = fstab.File()
-			mt = mtab.File()
+			fs = fstab.File('/etc/fstab')
+			mt = fstab.File('/etc/mtab')
 		except IOError as error:
 			MODULE.error('Could not open %s' % error.filename)
 			message = _('Could not open %s') % error.filename
@@ -90,7 +89,7 @@ class Commands(object):
 		else:
 			partition = fs.find(spec=request.options['partitionDevice'])
 			if partition:
-				mounted_partition = mt.get(partition.spec)
+				mounted_partition = mt.find(spec=partition.spec)
 				if mounted_partition:
 					result['mountPoint'] = mounted_partition.mount_point
 					result['filesystem'] = mounted_partition.type

@@ -39,6 +39,7 @@ import subprocess
 import pwd
 import time
 import univention.config_registry
+import univention.lib.fstab
 
 
 def get_mountpoint_from_share_path(sharepath):
@@ -90,14 +91,6 @@ def get_shares():
 		}
 
 	return shares
-
-
-def quota_enabled(mtab_line):
-	if 'usrquota' in mtab_line:
-		return True
-	if 'usrjquota=' in mtab_line and 'jqfmt=vfsv' in mtab_line:
-		return True
-	return False
 
 
 class Mountpoints(object):
@@ -185,18 +178,12 @@ class Mountpoints(object):
 			devices[grp['device']] = grp
 		return devices
 
-	def mtab(self):  # FIXME: use a real parser! this ignores comments, encoding, etc.
-		# parses /etc/mtab
-		mounts = []
-		with open('/etc/mtab', 'r') as etc_mtab:
-			mtab = etc_mtab.readlines()
-			for line in mtab:
-				mounts.append({
-					'mountpoint': line.split()[1],  # shares are defined on mountpoints
-					'device': line.split()[0],  # quotas are defined on devices
-					'quotaenabled': quota_enabled(line)
-				})
-		return mounts
+	def mtab(self):
+		return [{
+			'mountpoint': mt.mount_point,
+			'device': mt.spec,
+			'quotaenabled': mt.hasopt('usrquota') or (mt.hasopt('usrjquota=') and mt.hasopt('jqfmt=vfsv'))
+		} for mt in univention.lib.fstab.File('/etc/mtab')]
 
 
 if __name__ == '__main__':
