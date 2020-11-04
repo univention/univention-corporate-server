@@ -9,3 +9,5 @@ desc: |
  * `univention-run-join-scripts` now validates command line arguments and
    does not run all scripts if an unknown parameter is given.
 bug: [46985]
+erratum: 793
+announced: 2020-11-04
