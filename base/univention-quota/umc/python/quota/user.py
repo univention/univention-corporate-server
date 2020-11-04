@@ -99,7 +99,7 @@ class Commands(object):
 		def _thread(request):
 			partition = request.options['partitionDevice']
 			user = request.options['user']
-			if isinstance(user, unicode):
+			if not isinstance(user, str):  # Py2
 				user = user.encode('utf-8')
 
 			size_soft = request.options['sizeLimitSoft']
@@ -130,8 +130,9 @@ class Commands(object):
 
 			# Remove user quota
 			for obj in request.options:
-				(unicode_user, partition) = obj['object'].split('@', 1)
-				user = unicode_user.encode('utf-8')
+				(user, partition) = obj['object'].split('@', 1)
+				if not isinstance(user, str):  # Py2
+					user = user.encode('utf-8')
 				if tools.setquota(partition, user, 0, 0, 0, 0):
 					objects.append({'id': obj['object'], 'success': False})
 					success = False

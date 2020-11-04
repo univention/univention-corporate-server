@@ -149,7 +149,7 @@ def quota_is_enabled(fstab_entry):
 		return False
 	else:
 		# match lines like "quota on / (/dev/disk/by-uuid/5bf2a723-b25a) is on"
-		pattern = re.compile("user quota on %s \([^)]*\) is (on|off)" % fstab_entry.mount_point)
+		pattern = re.compile(r"user quota on %s \([^)]*\) is (on|off)" % fstab_entry.mount_point)
 		match = pattern.match(stdout)
 		if match:
 			if match.group(1) == "on":
@@ -315,7 +315,7 @@ _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
 
 
 def block2byte(size, convertTo, block_size=1024):
-	size = long(size) * float(block_size)
+	size = int(size) * float(block_size)
 	unit = 0
 	if convertTo in _units:
 		while _units[unit] != convertTo:
@@ -330,6 +330,6 @@ def byte2block(size, unit='MB', block_size=1024):
 		while _units[factor] != unit:
 			factor += 1
 		size = float(size) * math.pow(1024, factor)
-		return long(size / float(block_size))
+		return int(size / float(block_size))
 	else:
 		return ''
