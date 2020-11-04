@@ -17,3 +17,5 @@ desc: |
    `apache2/server-tokens`
    `apache2/server-admin`
 bug: [51294]
+erratum: 792
+announced: 2020-11-04
