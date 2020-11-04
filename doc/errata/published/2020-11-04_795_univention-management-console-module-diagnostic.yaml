@@ -11,3 +11,5 @@ desc: |
    tests and it does not require a username and password to access `--help`
    any more.
 bug: [51942]
+erratum: 795
+announced: 2020-11-04
