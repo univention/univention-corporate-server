@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * `univention-run-join-scripts` now validates command line arguments.
 bug: [46985]
+erratum: 793
+announced: 2020-11-04
