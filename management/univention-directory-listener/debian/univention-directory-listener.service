@@ -1,13 +1,17 @@
 [Unit]
 Description=Univention Directory Listener Daemon
-After=network.target univention-directory-notifier.service slapd.service
+After=network.target slapd.service
 Documentation=man:univention-directory-listener(1)
+ConditionPathExists=/var/univention-join/joined
+StartLimitBurst=0
+StartLimitIntervalSec=0
 
 [Service]
 EnvironmentFile=/etc/default/univention-directory-listener
 ExecStartPre=/usr/share/univention-directory-listener/fix_cache_permissions.sh
 ExecStart=/usr/sbin/univention-directory-listener -F $UDL_OPTS
 Restart=always
+RestartSec=10s
 StandardOutput=append:/var/log/univention/listener.log
 StandardError=append:/var/log/univention/listener.log
 

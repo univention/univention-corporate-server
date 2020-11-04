@@ -1,1 +1,4 @@
 rm_conffile /etc/init.d/univention-directory-listener 14.0.1~
+rm_conffile /etc/init.d/univention-directory-listener 14.0.1~
+rm_conffile /etc/runit/univention-directory-listener/down 14.0.1~
+rm_conffile /etc/runit/univention-directory-listener/finish 14.0.1~

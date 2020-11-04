@@ -9,3 +9,7 @@ Variables: listener/ignoremaster
 Variables: listener/debug/level
 Variables: ldap/base
 Variables: ldap/hostdn
+
+Type: file
+File: etc/systemd/system/univention-directory-listener.service.d/20_start_order.conf
+Variables: server/role
