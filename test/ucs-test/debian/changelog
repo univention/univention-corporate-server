@@ -1,3 +1,11 @@
+ucs-test (10.0.1-24) unstable; urgency=medium
+
+  * Bug #52310: Improve test output of 50quota
+  * Bug #51332: Migrate diagnostic UMC module to Python3
+  * Bug #49898: Adjust tests to Python3 Samba
+
+ -- Arvid <requate@univention.de>  Wed, 04 Nov 2020 13:23:17 +0100
+
 ucs-test (10.0.1-23) unstable; urgency=medium
 
   * Bug #52130: some changes for the new samba version

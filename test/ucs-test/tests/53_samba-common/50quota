@@ -111,7 +111,8 @@ for FS in xfs ext2 ext3 ext4; do
 	metadata=0
 	test ${FS} = "ext2" -o ${FS} = "ext3" && metadata=5120
 
-	for((i=0;i<15;i++)); do
+	max_files=15
+	for((i=0;i<max_files;i++)); do
 		dd if=/dev/zero of="${mountpoint}/file$i"  bs=1M count=1 seek=0
 		chown $user "$mountpoint/file$i"
 		sync
@@ -122,15 +123,23 @@ for FS in xfs ext2 ext3 ext4; do
 		res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
 		echo "smbcquotas result: $res_smbcquota"
 		if [ -z "$res_smbcquota" ]; then
-			echo "Warning: The login failed for some reason. Wait 10 seconds and try again."
+			echo "Warning: The login failed for some reason. Wait 10 seconds and try once again."
 			sleep 10
-			res_smbcquota=$(smbcquotas -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share" | awk '{print $3 $4 $5}')
+			result=$(smbcquotas -u "$user" -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share")
+			res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
 		fi
 
 		res_repquota=$(repquota -v $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
 		echo "Result smbcquotas: $res_smbcquota"
 		echo "Result repquota  : $res_repquota"
-		test "$res_smbcquota" != "$res_repquota" && fail_test 110
+		if [ "$res_smbcquota" != "$res_repquota" ]; then
+			fail_test 110
+			echo "Error: Maybe the output of this command helps debugging: univention-user-quota \"$user\""
+			printf '=%.0s' {1..80}
+			univention-user-quota "$user"
+			printf '=%.0s' {1..80}
+			break
+		fi
 
 		used=$(echo "$res_smbcquota" | awk -F '/' '{print $1}')
 		used=$((used-(metadata*(i+1))))
