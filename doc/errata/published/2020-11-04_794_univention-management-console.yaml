@@ -16,3 +16,5 @@ desc: |
    up one session.
  * Only relevant information about the SAML response is stored in the session.
 bug: [52253, 52271, 52294, 52295, 52296]
+erratum: 794
+announced: 2020-11-04
