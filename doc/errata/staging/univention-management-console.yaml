@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console
 fix: 11.0.5-10A~4.4.0.202011021658
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The performance during login at UMC has been improved by using the C
    implementation of ElementTree for parsing module and category definitions.
  * The regular interval for the processing of recurring tasks in the

@@ -7,4 +7,13 @@ fix: 11.0.1-20A~4.4.0.202011021246
 desc: |
  This update addresses the following issue:
  * Various Apache configurations may now be configured via UCR variables.
+   See the UCR variable information for more details.
+   `apache2/server-limit`
+   `apache2/start-servers`
+   `apache2/min-spare-threads`
+   `apache2/max-spare-threads`
+   `apache2/threads-per-child`
+   `apache2/server-signature`
+   `apache2/server-tokens`
+   `apache2/server-admin`
 bug: [51294]

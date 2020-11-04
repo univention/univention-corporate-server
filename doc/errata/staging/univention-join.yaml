@@ -5,6 +5,7 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-join
 fix: 11.0.1-34A~4.4.0.202010281155
 desc: |
- This update addresses the following issue(s):
- * `univention-run-join-scripts` now validates command line arguments.
+ This update addresses the following issue:
+ * `univention-run-join-scripts` now validates command line arguments and
+   does not run all scripts if an unknown parameter is given.
 bug: [46985]

@@ -7,5 +7,5 @@ fix: 6.0.2-59A~4.4.0.202011021331
 desc: |
  This update addresses the following issue:
  * Two unnecessary LDAP bind calls have been deferred to when they are
-   acutally needed.
+   actually needed.
 bug: [52278]
