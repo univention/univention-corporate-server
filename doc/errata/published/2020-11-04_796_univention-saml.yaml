@@ -9,3 +9,5 @@ desc: |
  * Two unnecessary LDAP bind calls have been deferred to when they are
    actually needed.
 bug: [52278]
+erratum: 796
+announced: 2020-11-04
