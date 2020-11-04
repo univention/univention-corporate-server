@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Various Apache configurations may now be configured via UCR variables.
 bug: [51294]
+erratum: 792
+announced: 2020-11-04
