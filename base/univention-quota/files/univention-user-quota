@@ -39,8 +39,6 @@ import subprocess
 import pwd
 import time
 import univention.config_registry
-import univention.uldap
-import univention.lib.policy_result
 
 
 def get_mountpoint_from_share_path(sharepath):
@@ -59,15 +57,16 @@ def get_blocks(size):
 	size = size.upper()
 
 	if size.endswith('KB'):
-		return int(size.strip('KB'))
+		return int(size[:-2])
 	if size.endswith('MB'):
-		return int(size.strip('MB')) * 1024
+		return int(size[:-2]) * 1024
 	if size.endswith('GB'):
-		return int(size.strip('GB')) * 1024 * 1024
+		return int(size[:-2]) * 1024 * 1024
+	if size.endswith('TB'):
+		return int(size[:-2]) * 1024 * 1024 * 1024
 	if size.endswith('B'):
-		return int(size.strip('B')) / 1024
-	if int(size[-1]) in range(0, 10):
-		return int(size / 1024)
+		return int(size[:-1]) // 1024
+	return int(size) // 1024
 
 
 def get_shares():
@@ -78,16 +77,15 @@ def get_shares():
 		filename = os.path.join(SHARE_CACHE_DIR, f)
 		if os.path.isdir(filename):
 			continue
-		f = open(filename, 'rb')
-		dn, attrs, policy_result = pickle.load(f)
-		f.close()
+		with open(filename, 'rb') as fd:
+			dn, attrs, policy_result = pickle.load(fd)
 		sharepath = attrs['univentionSharePath'][0].decode('UTF-8')
 		shares[sharepath] = {
-			'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
-			'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0]),
-			'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
-			'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
-			'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
+			'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', [b'0'])[0].decode('UTF-8')),
+			'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', [b'0'])[0].decode('UTF-8')),
+			'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', [b'0'])[0].decode('UTF-8')),
+			'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', [b'0'])[0].decode('UTF-8')),
+			'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', [b'FALSE'])[0].decode('ASCII')),
 			'mountpoint': get_mountpoint_from_share_path(sharepath)
 		}
 
@@ -187,7 +185,7 @@ class Mountpoints(object):
 			devices[grp['device']] = grp
 		return devices
 
-	def mtab(self):
+	def mtab(self):  # FIXME: use a real parser! this ignores comments, encoding, etc.
 		# parses /etc/mtab
 		mounts = []
 		with open('/etc/mtab', 'r') as etc_mtab:
