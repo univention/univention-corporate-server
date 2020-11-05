@@ -40,6 +40,7 @@ import math
 
 import notifier.popen
 import univention.management.console as umc
+from univention.management.console.error import UMC_Error
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.config_registry import handler_set
@@ -116,8 +117,7 @@ def repquota_parse(partition, output):
 
 
 def setquota(partition, user, bsoft, bhard, fsoft, fhard):
-	cmd = ('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition)
-	return subprocess.call(cmd)
+	return subprocess.call('/usr/sbin/setquota', '-u', user, str(bsoft), str(bhard), str(fsoft), str(fhard), partition)
 
 
 class QuotaActivationError(Exception):
@@ -175,34 +175,42 @@ def _do_activate_quota(partitions, activate):
 	try:
 		fs = fstab.File()
 	except IOError as error:
-		result.append({'partitionDevice': None, 'success': False, 'message': _('Could not open %s') % error.filename})
+		raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
+	failed = []
 	for device in partitions:
 		fstab_entry = fs.find(spec=device)
 		if not fstab_entry:
-			result.append({'partitionDevice': device, 'success': False, 'message': _('Device could not be found')})
+			failed.append(_('Device %r could not be found') % (device,))
 			continue
 
 		try:
 			status = _do_activate_quota_partition(fs, fstab_entry, activate)
 		except QuotaActivationError as exc:
-			result.append({'partitionDevice': fstab_entry.spec, 'success': False, 'message': str(exc)})
+			failed.append('%s: %s' % (fstab_entry.spec, exc))
 			continue
 
 		if fstab_entry.mount_point == '/' and fstab_entry.type == 'xfs':
 			try:
 				enable_quota_in_kernel(activate)
 			except QuotaActivationError as exc:
-				result.append({'partitionDevice': fstab_entry.spec, 'success': False, 'message': str(exc)})
+				failed.append('%s: %s' % (fstab_entry.spec, exc))
 				continue
 		result.append(status)
-	return result
+
+	if failed:
+		message = _('Failed to activate quota support: ') if activate else _('Failed to deactivate quota support: ')
+		message += '\n'.join(failed)
+		raise UMC_Error(message)
+
+	message = _('Quota support successfully activated') if activate else _('Quota support successfully deactivated')
+	raise UMC_Error(message, 200, {'objects': result})
 
 
 def _do_activate_quota_partition(fs, fstab_entry, activate):
 	quota_enabled = quota_is_enabled(fstab_entry)
 	if not (activate ^ quota_enabled):
-		return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Quota already en/disabled')}
+		return {'partitionDevice': fstab_entry.spec, 'message': _('Quota already en/disabled')}
 
 	# persistently change the option in /etc/fstab:
 	if activate:
@@ -218,14 +226,11 @@ def _do_activate_quota_partition(fs, fstab_entry, activate):
 	elif fstab_entry.type in ('ext2', 'ext3', 'ext4'):
 		activation_function = _activate_quota_ext
 	else:
-		return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Unknown filesystem')}
+		return {'partitionDevice': fstab_entry.spec, 'message': _('Unknown filesystem')}
 
-	try:
-		activation_function(fstab_entry, activate)
-	except QuotaActivationError as exc:
-		return {'partitionDevice': fstab_entry.spec, 'success': False, 'message': str(exc)}
+	activation_function(fstab_entry, activate)
 
-	return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Operation was successful')}
+	return {'partitionDevice': fstab_entry.spec, 'message': _('Operation was successful')}
 
 
 def _activate_quota_xfs(fstab_entry, activate=True):

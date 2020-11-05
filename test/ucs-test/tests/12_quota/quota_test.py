@@ -28,9 +28,7 @@ class QuotaCheck(object):
 	def _activate_quota(self, loop_dev):
 		print("Enable quota")
 		options = {"partitionDevice": loop_dev}
-		result = self.umc_client.umc_command('quota/partitions/activate', options).result
-		if not result.get('success'):
-			utils.fail("Activating quota failed:\n{}".format(result))
+		self.umc_client.umc_command('quota/partitions/activate', options).result
 
 	def _check_quota_settings(self, loop_dev, expected_values={}):
 		print("Check quota settings")

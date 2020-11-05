@@ -205,14 +205,8 @@ define([
 			}, {
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
-					var cmd = 'quota/partitions/' + (doActivate ? 'activate' : 'deactivate');
-					var opts = {"partitionDevice" : partitionDevice};
-					this.standbyDuring(tools.umcpCommand(cmd, opts)).then(lang.hitch(this, function(data) {
-						if (data.result.success === true) {
-							this.refreshGrid();
-						} else {
-							this._showActivateQuotaDialog(data.result, doActivate);
-						}
+					this.standbyDuring(tools.umcpCommand('quota/partitions/' + (doActivate ? 'activate' : 'deactivate'), {"partitionDevice" : partitionDevice})).then(lang.hitch(this, function(data) {
+						this.refreshGrid();
 					}));
 				})
 			}]);
@@ -220,23 +214,6 @@ define([
 
 		refreshGrid: function() {
 			this._grid.filter({'dummy': 'dummy'});
-		},
-
-		_showActivateQuotaDialog: function(result, doActivate) {
-			var message = [];
-			if (doActivate === true) {
-				message = _('Failed to activate quota support: ');
-			} else {
-				message = _('Failed to deactivate quota support: ');
-			}
-			array.forEach(result.objects, function(item) {
-				if (item.success === false) {
-					message = message + item.message;
-				}
-			});
-			dialog.confirm(message, [{
-				label: _('OK')
-			}]);
 		},
 
 		editPartition: function(partitionDevice) {
@@ -275,10 +252,8 @@ define([
 			}));
 			this._detailPage.on('SetQuota', lang.hitch(this, function(values) {
 				this.standbyDuring(tools.umcpCommand('quota/users/set', values)).then(lang.hitch(this, function(data) {
-					if (data.result.success === true) {
-						this.selectChild(this._partitionPage);
-						this._partitionPage.filter();
-					}
+					this.selectChild(this._partitionPage);
+					this._partitionPage.filter();
 				}));
 			}));
 		},

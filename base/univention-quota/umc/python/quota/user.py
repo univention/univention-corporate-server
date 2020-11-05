@@ -39,11 +39,11 @@ import notifier.threads
 from univention.lib import fstab
 from univention.management.console import Translation
 from univention.management.console.log import MODULE
-from univention.management.console.base import UMC_Error
+from univention.management.console.error import UMC_Error
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer, IntegerSanitizer, PatternSanitizer
 
-from . import tools
+from univention.management.console.modules.quota import tools
 
 _ = Translation('univention-management-console-module-quota').translate
 
@@ -66,12 +66,14 @@ class Commands(object):
 		partitionDevice = request.options['partitionDevice']
 		self._check_error(request, partitionDevice)
 
-		callback = notifier.Callback(self._users_query, request.id, partitionDevice, request)
+		callback = notifier.Callback(self._users_query, partitionDevice, request)
 		tools.repquota(request.options['partitionDevice'], callback)
 
-	def _users_query(self, pid, status, callbackResult, id, partition, request):
+	def _users_query(self, pid, status, callbackResult, partition, request):
 		'''This function is invoked when a repquota process has died and
 		there is output to parse that is restructured as UMC Dialog'''
+		if status != 0:
+			MODULE.warn('repquota failed with exit code: %s' % (status,))
 		# general information
 		devs = fstab.File()
 		devs.find(spec=partition)
@@ -111,16 +113,13 @@ class Commands(object):
 			if tools.setquota(partition, user, tools.byte2block(size_soft), tools.byte2block(size_hard), file_soft, file_hard):
 				raise UMC_Error(_('Failed to modify quota settings for user %(user)s on partition %(partition)s.') % {'user': user, 'partition': partition})
 
-			return {'objects': [], 'success': True}
-
 		thread = notifier.threads.Simple('Set', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	def users_remove(self, request):
 		def _thread(request):
 			partitions = []
-			success = True
-			objects = []
+			failed = []
 
 			# Determine different partitions
 			for obj in request.options:
@@ -130,27 +129,25 @@ class Commands(object):
 
 			# Remove user quota
 			for obj in request.options:
-				(user, partition) = obj['object'].split('@', 1)
+				(user, partition) = obj['object'].partition('@')
 				if not isinstance(user, str):  # Py2
 					user = user.encode('utf-8')
 				if tools.setquota(partition, user, 0, 0, 0, 0):
-					objects.append({'id': obj['object'], 'success': False})
-					success = False
-				else:
-					objects.append({'id': obj['object'], 'success': True})
+					failed.append(user)
 
-			return {'objects': objects, 'success': success}
+			if failed:
+				raise UMC_Error(_('Could not remove the following user: %s') % ', '.join(failed))
 
 		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
-	def _check_error(self, request, partition_name):  # TODO
+	def _check_error(self, request, partition_name):
 		try:
 			fs = fstab.File('/etc/fstab')
 			mt = fstab.File('/etc/mtab')
 		except IOError as error:
 			MODULE.error('Could not open %s' % error.filename)
-			raise ValueError(_('Could not open %s') % error.filename)
+			raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
 		partition = fs.find(spec=partition_name)
 		if partition:

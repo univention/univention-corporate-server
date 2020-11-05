@@ -224,21 +224,7 @@ define([
 					array.forEach(ids, function(iid) {
 						this.moduleStore.remove(iid);
 					}, this);
-					this.standbyDuring(transaction.commit()).then(lang.hitch(this, function(data) {
-						if (data.success === false) {
-							var failed = [];
-							array.forEach(data.objects, function(item) {
-								if (item.success === false) {
-									var gridItem = this._grid.getItem(item.id);
-									failed.push(gridItem.user);
-								}
-							});
-							var message = _('Could not remove the following user: %s', failed);
-							dialog.confirm(message, [{
-								label: _('OK')
-							}]);
-						}
-					}));
+					this.standbyDuring(transaction.commit());
 				})
 			}]);
 		}
