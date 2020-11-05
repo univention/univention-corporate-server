@@ -286,7 +286,7 @@ def stop_listener():
 
 
 def start_listener():
-	subprocess.call(('/usr/bin/systemctl', 'start', 'univention-directory-listener'))
+	subprocess.call(('systemctl', 'start', 'univention-directory-listener'))
 
 
 def restart_listener():
