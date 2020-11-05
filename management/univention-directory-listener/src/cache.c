@@ -157,7 +157,7 @@ int cache_lock(void) {
 
 static size_t determine_mapsize_from_ucr() {
 #if __SIZEOF_POINTER__ == 8
-	const size_t default_mapsize = 2147483648;  // 2 GB
+	const size_t default_mapsize = 4295000000;  // 4 GB
 #else
 	const size_t default_mapsize = 1992294400;  // 1.9 GB
 #endif

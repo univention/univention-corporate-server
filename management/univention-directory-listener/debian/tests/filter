@@ -134,7 +134,7 @@ rootdn          "cn=admin,$BASE"
 rootpw          "$SECRET"
 overlay         translog
 translog        /var/lib/univention-ldap/listener/listener
-maxsize         2147483648
+maxsize         4295000000
 threads         16
 tool-threads    1
 limits users    time.soft=-1 time.hard=-1
