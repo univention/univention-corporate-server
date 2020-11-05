@@ -290,7 +290,7 @@ def start_listener():
 
 
 def restart_listener():
-	subprocess.call(('/usr/bin/systemctl', 'restart', 'univention-directory-listener'))
+	subprocess.call(('systemctl', 'restart', 'univention-directory-listener'))
 
 
 def restart_firewall():
