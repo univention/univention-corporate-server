@@ -105,6 +105,9 @@ define([
 	var _WizardDialog = declare('WizardDialog', [Dialog, StandbyMixin]);
 
 	// var locale = i18nTools.defaultLang().replace(/-/, '_');
+
+	var _portalLoadDeferred = null;
+
 	return {
 		// always
 		_search: null,
@@ -147,8 +150,12 @@ define([
 		// Maybe it would be better to save changes made after the
 		// initial load into a cache and if cached data is available
 		// use that instead of the initial portal.json data
-		_reloadPortalContent: function(admin_mode) {
-			var loadDeferred = new Deferred();
+		_reloadPortalContent: function(admin_mode, wait_for_listener) {
+			if (_portalLoadDeferred && !_portalLoadDeferred.isFulfilled()) {
+				return _portalLoadDeferred;
+			}
+
+			_portalLoadDeferred = new Deferred();
 
 			var headers = null;
 			if (admin_mode) {
@@ -163,18 +170,18 @@ define([
 
 			var _load = function() {
 				if (waitedTime >= 3000) {
-					loadDeferred.resolve();
+					_portalLoadDeferred.resolve();
 					return;
 				}
 
 				setTimeout(function() {
 					json.load('/univention/portal/portal.json', require, function(result) {
 						if (result && result.portal && result.entries && result.categories) {
-							if (tools.isEqual(result, previousPortalJson)) {
+							if (wait_for_listener && tools.isEqual(result, previousPortalJson)) {
 								_load();
 							} else {
 								portalJson = result;
-								loadDeferred.resolve();
+								_portalLoadDeferred.resolve();
 							}
 						} else {
 							_load();
@@ -185,12 +192,12 @@ define([
 			};
 
 			_load();
-			return loadDeferred;
+			return _portalLoadDeferred;
 		},
 
-		_refresh: function(renderModeAfterRefresh) {
+		_refresh: function(renderModeAfterRefresh, wait_for_listener) {
 			var deferred = new Deferred();
-			this._reloadPortalContent(renderModeAfterRefresh != portalTools.RenderMode.NORMAL).then(lang.hitch(this, function() {
+			this._reloadPortalContent(renderModeAfterRefresh != portalTools.RenderMode.NORMAL, wait_for_listener).then(lang.hitch(this, function() {
 				domClass.toggle(dom.byId('umcHeader'), 'umcWhiteIcons', lang.getObject('portal.fontColor', false, portalJson) === 'white');
 				this._reloadCss(); // FIXME only reload css if it is necessary (cssBackground / background / fontColor changed)
 				this._render(renderModeAfterRefresh);
@@ -362,7 +369,7 @@ define([
 										content.push([result.$dn$, []]);
 										this._saveEntryOrder(content);
 									} else {
-										this._refresh(portalTools.RenderMode.EDIT);
+										this._refresh(portalTools.RenderMode.EDIT, true);
 									}
 								} else {
 									var errmsg = '';
@@ -882,7 +889,7 @@ define([
 									}
 
 									// reload categories and close wizard dialog
-									this._refresh(portalTools.RenderMode.EDIT).then(function() {
+									this._refresh(portalTools.RenderMode.EDIT, true).then(function() {
 										wizardDialog.hide().then(function() {
 											wizardDialog.destroyRecursive();
 											dialog.contextNotify(_('Changes saved'));
@@ -1056,7 +1063,7 @@ define([
 				connectId: [portalEditFloatingButton],
 				position: ['above']
 			});
-			on(portalEditFloatingButton, 'click', lang.hitch(this, '_refresh', portalTools.RenderMode.EDIT));
+			on(portalEditFloatingButton, 'click', lang.hitch(this, '_refresh', portalTools.RenderMode.EDIT, false));
 		},
 
 		_createToolbar: function() {
@@ -1092,7 +1099,7 @@ define([
 				'class': 'portalEditBarCloseButton umcIconButton',
 				description: _('Stop editing this portal'),
 				callback: lang.hitch(this, function() {
-					this._refresh(portalTools.RenderMode.NORMAL);
+					this._refresh(portalTools.RenderMode.NORMAL, true/*?*/);
 					if (closeButton.focusNode.blur) {
 						closeButton.focusNode.blur();
 					}
@@ -1468,7 +1475,7 @@ define([
 				content: newContent
 			}).then(lang.hitch(this, function(result) {
 				if (result.success) {
-					this._refresh(portalTools.RenderMode.EDIT).then(lang.hitch(this, function() {
+					this._refresh(portalTools.RenderMode.EDIT, true).then(lang.hitch(this, function() {
 						this._standby.hide();
 						dialog.contextNotify(_('Changes saved'));
 					}));

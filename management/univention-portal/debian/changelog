@@ -1,3 +1,9 @@
+univention-portal (4.0.2-1) unstable; urgency=medium
+
+  * Bug #52345: do not fetch portal.json multiple times
+
+ -- Florian Best <best@univention.de>  Tue, 10 Nov 2020 20:09:20 +0100
+
 univention-portal (4.0.1-10) unstable; urgency=low
 
   * Bug #52211: Convert to univention-join-dev
