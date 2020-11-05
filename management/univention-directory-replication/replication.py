@@ -785,7 +785,7 @@ def check_file_system_space():
 	s.sendmail(sender, [recipient], msg.as_string())
 	s.close()
 
-	listener.run('/usr/bin/systemctl', ['stop', 'univention-directory-listener'], uid=0, wait=True)
+	listener.run('/usr/bin/systemctl', ['systemctl', 'stop', 'univention-directory-listener'], uid=0, wait=True)
 
 
 def handler(dn, new, listener_old, operation):
