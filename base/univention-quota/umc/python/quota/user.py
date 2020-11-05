@@ -153,7 +153,7 @@ class Commands(object):
 		if partition:
 			mounted_partition = mt.find(spec=partition.spec)
 			if mounted_partition:
-				if not mt.hasopt('usrquota') and not mt.hasopt('usrjquota=aquota.user'):
+				if not mounted_partition.hasopt('usrquota') and not mounted_partition.hasopt('usrjquota=aquota.user'):
 					raise UMC_Error(_('The following partition is mounted without quota support: %s') % partition_name)
 			else:
 				raise UMC_Error(_('The following partition is currently not mounted: %s') % partition_name)

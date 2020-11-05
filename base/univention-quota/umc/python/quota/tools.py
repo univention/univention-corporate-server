@@ -136,7 +136,7 @@ def usrquota_is_active(fstab_entry, mt=None):
 		raise QuotaActivationError(_('Device is not mounted'))
 
 	# First remount the partition with option "usrquota" if it isn't already
-	return bool(mt.hasopt('usrquota'))
+	return bool(mtab_entry.hasopt('usrquota'))
 
 
 def quota_is_enabled(fstab_entry):
