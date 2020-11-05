@@ -83,19 +83,34 @@ for FS in xfs ext2 ext3 ext4; do
 	wait_for_replication_and_postrun
 
 	# wait for the quota cache
-	for((i=0;i<60;i++)); do
-		if [ -e "/var/cache/univention-quota/cn=$share,cn=shares,$ldap_base" ]; then
+	max_attempts=60
+	for((i=1;i<=max_attempts;i++)); do
+		share_quota_cache="/var/cache/univention-quota/cn=$share,cn=shares,$ldap_base"
+		if [ -e "$share_quota_cache" ]; then
 			break
 		fi
-		echo "Waiting for share cache ..."
-		sleep 1
+		if [ "$i" -lt "$max_attempts" ]; then
+			echo "Waiting for share cache ..."
+			sleep 1
+		else
+			echo "Error: share cache not created: $share_quota_cache"
+			fail_fast 110
+		fi
 	done
 
 
 	# wait until the share is ready
-	for((i=0;i<60;i++)); do
+	max_attempts=60
+	for((i=1;i<=max_attempts;i++)); do
 		if smbclient -U "${account}%${tests_domainadmin_pwd}" "//$hostname/$share" -c quit; then
 			break
+		fi
+		if [ "$i" -lt "$max_attempts" ]; then
+			echo "Waiting smbd to expose UMC path //$hostname/$share"
+			sleep 1
+		else
+			echo "Error: smbd did not expose share"
+			fail_fast 110
 		fi
 	done
 
