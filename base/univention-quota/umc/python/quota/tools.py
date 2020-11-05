@@ -78,22 +78,18 @@ class UserQuota(dict):
 			self[time] = value
 
 
-def repquota(partition, callback, user=None):
-	args = ''
-
+def repquota(partition, callback):
 	# find filesystem type
 	fs = fstab.File()
 	part = fs.find(spec=partition)
+	args = []
 	if part.type == 'xfs':
-		args += '--format xfs '
+		args = ['--format', 'xfs']
 
-	# grep a single user
-	if user:
-		args += "| /bin/grep '^%s '" % user
 	# -C == do not try to resolve all users at once
 	# -v == verbose
-	cmd = '/usr/sbin/repquota -C -v %s %s' % (partition, args)
-	proc = notifier.popen.Shell(cmd, stdout=True)
+	cmd = ['/usr/sbin/repquota', '-C', '-v', partition] + args
+	proc = notifier.popen.RunIt(cmd, stdout=True)
 	proc.signal_connect('finished', callback)
 	proc.start()
 
