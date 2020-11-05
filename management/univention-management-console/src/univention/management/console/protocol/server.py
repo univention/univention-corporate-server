@@ -36,6 +36,7 @@ Defines the basic class for an UMC server.
 """
 
 import os
+import errno
 import fcntl
 import socket
 import resource
@@ -373,16 +374,29 @@ class Server(signals.Provider):
 		try:
 			socket, addr = socket.accept()
 		except EnvironmentError as exc:
+			if exc.errno == errno.EAGAIN:
+				# got an EAGAIN --> try again later
+				return True
 			CORE.error('Cannot accept new connection: %s' % (exc,))
-			soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-			resource.setrlimit(resource.RLIMIT_NOFILE, (soft + 2, hard + 2))
-			try:
-				socket, addr = socket.accept()
-				socket.close()
-			except EnvironmentError:
-				pass
-			finally:
-				resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
+			if exc.errno == errno.EMFILE:
+				# got an EMFILE --> Too many open files
+				# If the process permanently lacks free file descriptors, incoming
+				# connections waiting in the listening socket backlog will starve.
+				# Therefore the limit is temporarily increased by 2 and the connection
+				# waiting in the backlog is temporarily accepted and immediately
+				# closed again to provoke an error message in the user's browser.
+				soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+				resource.setrlimit(resource.RLIMIT_NOFILE, (soft + 2, hard + 2))
+				try:
+					socket, addr = socket.accept()
+					socket.close()
+				except EnvironmentError:
+					pass
+				finally:
+					resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
+			else:
+				# unknown errno - log traceback and continue
+				CORE.error(traceback.format_exc())
 			return True
 		socket.setblocking(0)
 		if addr:
