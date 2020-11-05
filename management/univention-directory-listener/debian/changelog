@@ -1,3 +1,9 @@
+univention-directory-listener (13.0.3-2) unstable; urgency=medium
+
+  * Bug #39167: Setting the default mdb maxsize to 4GB
+
+ -- Jan Luttermann <luttermann@univention.de>  Thu, 05 Nov 2020 15:20:25 +0100
+
 univention-directory-listener (13.0.3-1) unstable; urgency=medium
 
   * Bug #51087: make UCR templates compatible to python3
