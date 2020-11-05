@@ -1,3 +1,10 @@
+univention-portal (3.1.0-40) unstable; urgency=medium
+
+  * Bug #52314: do not disable session polling during portal usage
+  * Bug #52314: do not fetch portal.json multiple times
+
+ -- Florian Best <best@univention.de>  Thu, 05 Nov 2020 18:58:22 +0100
+
 univention-portal (3.1.0-39) unstable; urgency=medium
 
   * Bug #52207: Fix simple API
