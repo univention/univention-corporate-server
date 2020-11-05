@@ -1479,6 +1479,7 @@ define([
 				this._handleWindowResize();
 			}));
 			on(document, 'visibilitychange', lang.hitch(this, function() {
+				// the browser window was switched
 				this._handleVisibilityChange();
 			}));
 
@@ -1487,8 +1488,6 @@ define([
 				this._refresh(portalTools.RenderMode.NORMAL).then(lang.hitch(this, function() {
 					this._addLinks();
 				}));
-				// Do not force a relogin on the portal
-				tools.checkSession(false);
 			}));
 		},
 
@@ -2259,7 +2258,7 @@ define([
 		},
 
 		_handleVisibilityChange: function() {
-			if (!document.hidden) {
+			if (!document.hidden) {  // the browser tab is the active one.
 				this._updateSessionState();
 			}
 		},
