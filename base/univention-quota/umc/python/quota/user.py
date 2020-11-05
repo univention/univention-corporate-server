@@ -129,7 +129,7 @@ class Commands(object):
 
 			# Remove user quota
 			for obj in request.options:
-				(user, partition) = obj['object'].partition('@')
+				(user, _, partition) = obj['object'].partition('@')
 				if not isinstance(user, str):  # Py2
 					user = user.encode('utf-8')
 				if tools.setquota(partition, user, 0, 0, 0, 0):
