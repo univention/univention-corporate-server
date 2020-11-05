@@ -1399,7 +1399,7 @@ class AD_Takeover(object):
 				except Exception as e:
 					log.error("Error removing file: %s" % str(e))
 
-		returncode = run_and_output_to_log(["/usr/bin/systemctl", "start", "univention-directory-listener"], log.debug)
+		returncode = run_and_output_to_log(["systemctl", "start", "univention-directory-listener"], log.debug)
 		if returncode != 0:
 			log.error("Start of univention-directory-listener failed. See %s for details." % (LOGFILE_NAME,))
 
