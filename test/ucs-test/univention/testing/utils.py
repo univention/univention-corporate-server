@@ -282,7 +282,7 @@ def restart_slapd():
 
 
 def stop_listener():
-	subprocess.call(('/usr/bin/systemctl', 'stop', 'univention-directory-listener'))
+	subprocess.call(('systemctl', 'stop', 'univention-directory-listener'))
 
 
 def start_listener():
