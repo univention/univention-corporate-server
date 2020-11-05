@@ -53,8 +53,8 @@ Type=int
 Categories=service-ln
 
 [listener/cache/mdb/maxsize]
-Description[de]=Die maximale Größe der Cache-Datenbank in Bytes. Auf 64 Bit Systemen ist der Default 2 GiB. Auf 32 Bit Systemen ist der Default 1.9 GiB.
-Description[en]=The maximum size of the cache database in bytes. On 64 bit systems the default is 2 GiB. On 32 bit systems the default is 1.9 GiB.
+Description[de]=Die maximale Größe der Cache-Datenbank in Bytes. Auf 64 Bit Systemen ist der Default 4 GiB. Auf 32 Bit Systemen ist der Default 1.9 GiB.
+Description[en]=The maximum size of the cache database in bytes. On 64 bit systems the default is 4 GiB. On 32 bit systems the default is 1.9 GiB.
 Type=str
 Categories=service-ln
 

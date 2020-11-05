@@ -1,3 +1,9 @@
+univention-ldap (16.0.3-1) unstable; urgency=medium
+
+  * Bug #39167: Setting the default mdb maxsize to 4GB
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 18 Nov 2020 19:15:03 +0100
+
 univention-ldap (16.0.2-1) unstable; urgency=medium
 
   * Bug #43686: use systemctl to start stop or restart univention-directory-listener

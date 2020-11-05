@@ -31,7 +31,7 @@ else:
 
 print('\n')
 if configRegistry['ldap/database/type'] == "mdb":
-	print("maxsize\t%s" % configRegistry.get("ldap/database/mdb/maxsize", "2147483648")) # 2GB default (sparse!)
+	print("maxsize\t%s" % configRegistry.get("ldap/database/mdb/maxsize", "4295000000")) # 4GB default (sparse!)
 else:
 	print("cachesize\t%s" % configRegistry.get("ldap/cachesize"))
 	print("idlcachesize\t%s" % configRegistry.get("ldap/idlcachesize"))

@@ -105,7 +105,7 @@ fi
 
 [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 15.0.0-33 && systemctl daemon-reload
 
-mdb_max=2147483648 # 2 GB
+mdb_max=4295000000 # 4 GB
 if [ "i686" = "$(uname -m)" ]; then
 	mdb_max=1992294400 # 1.9 GB
 fi
