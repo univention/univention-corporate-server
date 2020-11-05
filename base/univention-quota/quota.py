@@ -76,7 +76,7 @@ def _read_share_and_policy_result(dn):
 		return (None, None)
 
 	with open(filename, 'rb') as fd:
-		(tdn, share_object, policy_result) = pickle.load(fd)
+		(tdn, share_object, policy_result) = pickle.load(fd, encoding='bytes')
 
 	return (share_object, policy_result)
 
