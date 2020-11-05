@@ -1,24 +1,17 @@
-<?xml version="1.0" ?><domain type="kvm">
+<?xml version="1.0"?>
+<domain type="kvm">
   <name>${NAME}</name>
-  
-  <memory unit="KiB">2097152</memory>
-  <currentMemory unit="KiB">2097152</currentMemory>
+  <memory unit="GiB">2</memory>
   <vcpu placement="static">1</vcpu>
-  <resource>
-    <partition>/machine</partition>
-  </resource>
   <os>
-    <type arch="x86_64" machine="pc-1.1">hvm</type>
-    <boot dev="cdrom"/>
+    <type arch="x86_64" machine="pc">hvm</type>
     <boot dev="hd"/>
   </os>
   <features>
     <acpi/>
     <apic/>
   </features>
-  <cpu mode="host-model">
-    <model fallback="allow"/>
-  </cpu>
+  <cpu mode="host-model"/>
   <clock offset="utc"/>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
@@ -29,29 +22,23 @@
       <driver cache="unsafe" name="qemu" type="qcow2"/>
       <source file="${QCOW_FILENAME}"/>
       <target bus="virtio" dev="vda"/>
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x04" type="pci"/>
     </disk>
-    <controller index="0" type="ide">
-      <address bus="0x00" domain="0x0000" function="0x1" slot="0x01" type="pci"/>
-    </controller>
-    <controller index="0" model="piix3-uhci" type="usb">
-      <address bus="0x00" domain="0x0000" function="0x2" slot="0x01" type="pci"/>
-    </controller>
-    <controller index="0" model="pci-root" type="pci"/>
-    <input bus="usb" type="tablet">
-      <address bus="0" port="1" type="usb"/>
-    </input>
+    <input bus="usb" type="tablet"/>
     <input bus="ps2" type="mouse"/>
     <input bus="ps2" type="keyboard"/>
-    <graphics autoport="yes" keymap="de" listen="0.0.0.0" port="-1" type="vnc">
-      <listen address="0.0.0.0" type="address"/>
-    </graphics>
+    <console type="pty"/>
+    <channel type="unix">
+      <source mode="bind"/>
+      <target type="virtio" name="org.qemu.guest_agent.0"/>
+    </channel>
+    <graphics autoport="yes" keymap="de" listen="0.0.0.0" port="-1" type="vnc"/>
     <video>
-      <model heads="1" primary="yes" type="cirrus" vram="16384"/>
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x02" type="pci"/>
+      <model heads="1" primary="yes" type="virtio" vram="16384"/>
     </video>
-    <memballoon model="virtio">
-      <address bus="0x00" domain="0x0000" function="0x0" slot="0x05" type="pci"/>
-    </memballoon>
+    <watchdog model="i6300esb" action="reset"/>
+    <memballoon model="virtio"/>
+    <rng model="virtio">
+      <backend model="random">/dev/urandom</backend>
+    </rng>
   </devices>
 </domain>

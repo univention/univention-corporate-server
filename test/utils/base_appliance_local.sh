@@ -34,11 +34,9 @@ _ssh () {
 	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes -n "$@"
 }
 
-
 _scp () {
 	scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
 }
-
 
 _kvm_image () {
 	local identify="$1"
@@ -56,7 +54,6 @@ _kvm_image () {
 	"
 }
 
-
 _vmplayer_image () {
 	local identify="$1"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
@@ -73,10 +70,9 @@ _vmplayer_image () {
 	"
 }
 
-
 _virtualbox_image () {
 	local identify="$1"
-	_scp utils/install-vbox-guesttools.sh ${KVM_USER}@${IMAGE_SERVER}:/tmp
+	_scp utils/install-vbox-guesttools.sh "${KVM_USER}@${IMAGE_SERVER}:/tmp"
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "
 		set -e -x
 		cd $APPS_BASE
@@ -91,7 +87,6 @@ _virtualbox_image () {
 		rm -f ${TMP_KVM_IMAGE}.vb
 	"
 }
-
 
 _esxi () {
 	local identify="$1"
@@ -108,7 +103,6 @@ _esxi () {
 		rm -f ${TMP_KVM_IMAGE}.es
 	"
 }
-
 
 _hyperv_image () {
 	local identify="$1"
@@ -127,17 +121,16 @@ _hyperv_image () {
 	"
 }
 
-
 _ec2_image () {
 	# Identifier already set
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "generate_appliance --only --ec2-ebs -s /tmp/master-ec2-appliance/master.qcow2 -v '${UCS_VERSION_INFO}'"
 }
 
 _set_global_vars () {
-	APP_ID=$1
-	KVM_USER=$2
-	KVM_SERVER=$3
-	UCS_VERSION=$4
+	APP_ID="$1"
+	KVM_USER="$2"
+	KVM_SERVER="$3"
+	UCS_VERSION="$4"
 	UCS_VERSION_INFO="$5"
 
 	KT_CREATE_IMAGE="/var/lib/libvirt/images/${KVM_USER}_app-appliance-${APP_ID}.qcow2"
@@ -170,10 +163,11 @@ create_app_images () {
 	"
 
 	# get memory specification (is saved in /tmp/.memory in image)
-	export MEMORY=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 2048")
+	MEMORY="$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.memory 2>/dev/null || echo 2048")"
 
 	# get appliance identifier (is saved in /tmp/.identifier in image)
-	export IDENTIFIER=$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.identifier 2>/dev/null || echo $APP_ID")
+	IDENTIFIER="$(_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "virt-cat -a ${TMP_KVM_IMAGE} /.identifier 2>/dev/null || echo $APP_ID")"
+	export MEMORY IDENTIFIER
 
 	_kvm_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (KVM)"
 	_vmplayer_image "Univention App ${UCS_VERSION} Appliance ${IDENTIFIER} (VMware)"
@@ -191,11 +185,9 @@ create_app_images () {
 		ln -s ../${UCS_VERSION}/${APP_ID} ${APP_ID}
 		sudo update_mirror.sh -v appcenter.test/univention-apps/${UCS_VERSION}/${APP_ID} appcenter.test/univention-apps/current/${APP_ID}
 	"
-
 }
 
 create_ucs_images () {
-
 	UPDATER_ID="$1"
 	KVM_USER="$2"
 	KVM_SERVER="$3"
@@ -215,8 +207,8 @@ create_ucs_images () {
 	ESX_IMAGE="UCS-VMware-ESX-Image.ova"
 	HYPERV_IMAGE_BASE="UCS-Hyper-V-Image"
 
-    export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
-    export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE MEMORY IMAGE_VERSION
+	export APP_ID KVM_USER KVM_SERVER UCS_VERSION KT_CREATE_IMAGE APPS_BASE APPS_SERVER IMAGE_SERVER
+	export TMP_DIR VMPLAYER_IMAGE KVM_IMAGE TMP_KVM_IMAGE VBOX_IMAGE ESX_IMAGE MEMORY IMAGE_VERSION
 
 	# convert image
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
@@ -226,7 +218,7 @@ create_ucs_images () {
 	# copy to image convert server for later steps and remove tmp image from kvm server
 	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "test -d $TMP_DIR && rm -rf $TMP_DIR || true"
 	_ssh -l "$KVM_USER" "$IMAGE_SERVER" "mkdir -p $TMP_DIR"
-	_scp -r ${KVM_USER}@${KVM_SERVER}:/${TMP_KVM_IMAGE} ${KVM_USER}@${IMAGE_SERVER}:${TMP_DIR}
+	_scp -r "${KVM_USER}@${KVM_SERVER}:/${TMP_KVM_IMAGE}" "${KVM_USER}@${IMAGE_SERVER}:${TMP_DIR}"
 	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf ${TMP_DIR}"
 
 	# create apps dir
@@ -240,7 +232,6 @@ create_ucs_images () {
 
 	# cleanup
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"
-
 }
 
 create_ec2_image () {
@@ -253,7 +244,7 @@ create_ec2_image () {
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $KT_CREATE_IMAGE $TMP_KVM_IMAGE"
 
 	# copy to image convert server for later steps and remove tmp image from kvm server
-	_scp -r ${KVM_USER}@${KVM_SERVER}:/${TMP_DIR} ${KVM_USER}@${IMAGE_SERVER}:/tmp
+	_scp -r "${KVM_USER}@${KVM_SERVER}:/${TMP_DIR}" "${KVM_USER}@${IMAGE_SERVER}:/tmp"
 	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf ${TMP_DIR}"
 
 	_ec2_image
@@ -263,11 +254,12 @@ create_ec2_image () {
 }
 
 create_internal_template () {
-	SERVERROLE=$1
-	KVM_USER=$2
-	KVM_SERVER=$3
-	UCS_VERSION=$4
+	SERVERROLE="$1"
+	KVM_USER="$2"
+	KVM_SERVER="$3"
+	UCS_VERSION="$4"
 	UCS_VERSION_INFO="$5"
+
 	QCOW_PATH="/var/lib/libvirt/images/${KVM_USER}_${SERVERROLE}.qcow2"
 	TMP_DIR="/var/univention/buildsystem2/temp/build-branch-test-template"
 	KVM_SERVER_LOCAL_TMP_IMAGE="${SERVERROLE}-${UCS_VERSION}.qcow2"
@@ -280,7 +272,7 @@ create_internal_template () {
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "qemu-img convert -p -c -O qcow2 $QCOW_PATH $TMP_DIR/$KVM_SERVER_LOCAL_TMP_IMAGE"
 	#test _ssh -l "$KVM_USER" "$KVM_SERVER" "cp $QCOW_PATH $TMP_DIR/$KVM_SERVER_LOCAL_TMP_IMAGE"
 
-	_scp utils/kvm_template.xml ${KVM_USER}@${KVM_SERVER}:"$TMP_DIR"
+	_scp utils/kvm_template.xml "${KVM_USER}@${KVM_SERVER}:$TMP_DIR"
 	ssh -l "$KVM_USER" "$KVM_SERVER" "QCOW_FILENAME=$KVM_SERVER_LOCAL_TMP_IMAGE NAME=$NAME envsubst <'$TMP_DIR/kvm_template.xml' >'$TMP_DIR/${SERVERROLE}-${UCS_VERSION}.xml'"
 	ssh -l "$KVM_USER" "$KVM_SERVER" "rm $TMP_DIR/kvm_template.xml"
 
@@ -289,5 +281,4 @@ create_internal_template () {
 	# copy to template directory, cleanup kvm server
 	_ssh -l "$KVM_USER" "$KVM_SERVER" "cp ${KVM_TEMPLATE_TGZ_PATH} /mnt/omar/vmwares/kvm/single/Others/"
 	_ssh -l "$KVM_USER" "${KVM_SERVER}" "rm -rf ${TMP_DIR}"
-
 }

@@ -76,7 +76,7 @@ download_packages ()
 	install_cmd="$(univention-config-registry get update/commands/install)"
 
 	for package in "$1"; do
-		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
+		LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} |
 		apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
 		check_returnvalue $? "Failed to download required packages for ${package}"
@@ -190,7 +190,7 @@ app_has_no_repository ()
 	local app="$1"
 	[ -z "$app" ] && return 1
 	local value="$(get_app_attr $app WithoutRepository)"
-	echo "$value" | grep -qs True 
+	echo "$value" | grep -qs True
 	return $?
 }
 
@@ -655,10 +655,10 @@ appliance_preinstall_non_univention_packages ()
 
 install_haveged ()
 {
-    _unmaintained_setting=$(ucr get repository/online/unmaintained)
-    ucr set repository/online/unmaintained="yes"
-    univention-install -y haveged
-    ucr set repository/online/unmaintained="$_unmaintained_setting"
+	_unmaintained_setting=$(ucr get repository/online/unmaintained)
+	ucr set repository/online/unmaintained="yes"
+	univention-install -y haveged
+	ucr set repository/online/unmaintained="$_unmaintained_setting"
 }
 
 backup_current_local_packagecache ()
@@ -797,7 +797,7 @@ setup_appliance ()
 	[ "updates-test.software-univention.de" = "$(ucr get repository/online/server)" ] && ucr set update/secure_apt=no
 	apt-get update
 	apt-get -y autoremove
-	download_system_setup_packages $@
+	download_system_setup_packages "$@"
 
 	# Cleanup apt archive
 	apt-get update
@@ -841,7 +841,7 @@ ucr set xorg/autodetect=yes
 exit 0
 __EOF__
 	chmod +x /usr/lib/univention-system-setup/appliance-hooks.d/20_remove_xorg_config
-	 
+
 	# deactivate kernel module; prevents bootsplash from appearing/freezing in vmware and virtualbox
 	ucr set kernel/blacklist="$(ucr get kernel/blacklist);vmwgfx;vboxvideo"
 
@@ -868,7 +868,7 @@ __EOF__
 	# Activate DHCP
 	ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
 	ucr unset gateway
-	 
+
 	# Set a default nameserver and remove all local configured nameserver
 	ucr set nameserver1=208.67.222.222
 	ucr unset nameserver2 nameserver3
@@ -882,7 +882,7 @@ __EOF__
 
 	ucr unset interfaces/primary
 
-    ucr set update/secure_apt=yes
+	ucr set update/secure_apt=yes
 	# Manual cleanup
 	rm -rf /tmp/*
 	for dir in python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev texlive-doc; do
@@ -899,7 +899,7 @@ __EOF__
 
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
-	 
+
 	ucr set system/setup/boot/start=true
 }
 
@@ -914,7 +914,7 @@ appliance_basesettings ()
 	univention-install -y univention-app-appliance
 	ucr set repository/online/unmaintained='no'
 	apt-get update
-	
+
 	/usr/sbin/univention-app-appliance --not-configure-portal $main_app
 	ucr set grub/title="Start $main_app"
 
@@ -1022,11 +1022,11 @@ setup_ec2 ()
 	ucr set grub/append="$(ucr get grub/append) console=tty0 console=ttyS0"
 
 	DEV='/dev/xvda' GRUB='(hd0)'
-    echo "${GRUB} ${DEV}" >/boot/grub/device.map
+	echo "${GRUB} ${DEV}" >/boot/grub/device.map
 	debconf-communicate <<<"set grub-pc/install_devices $DEV"
 
 	append="$(ucr get grub/append |
-	    sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
+		sed -re "s|/dev/sda|${DEV}|g;s|(no)?splash||g")"
 
 	ucr set server/amazon=true \
 		updater/identify="UCS (EC2)" \
@@ -1132,7 +1132,7 @@ appliance_reset_servers ()
 	if [ "$reset" = true ]; then
 		ucr set repository/online/server="https://updates.software-univention.de/"
 		ucr unset appcenter/index/verify
-			ucr set update/secure_apt=yes
+		ucr set update/secure_apt=yes
 
 		ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
 			ucr set "$key=appcenter.software-univention.de"
