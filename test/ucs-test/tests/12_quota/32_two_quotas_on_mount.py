@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svvv
 ## desc: Test setting two different quotas on the same mountpoint
 ## roles-not: [basesystem]
 ## exposure: dangerous
@@ -77,9 +77,3 @@ def test_one_policy():
 		print("Now checking fs type: {}".format(fs_type))
 		quotaCheck = QuotaCheck(quota_type="usrquota", fs_type=fs_type)
 		quotaCheck.test_two_shares_on_one_mount_only_one_policy()
-
-
-if __name__ == '__main__':
-	test_nonzero()
-	test_zero()
-	test_one_policy()

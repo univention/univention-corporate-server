@@ -47,8 +47,8 @@ class QuotaCheck(object):
 			u'sizeLimitUsed': float(0),
 			u'user': u'{}'.format(self.username),
 		}
-		if expected_user_quota not in user_quotas:
-			utils.fail("Quota was not set through pam")
+		print(expected_user_quota)
+		assert expected_user_quota in user_quotas, "Quota was not set through pam"
 
 	def test_quota_pam(self):
 		with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:

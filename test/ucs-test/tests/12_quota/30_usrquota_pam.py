@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner /usr/bin/py.test-3 -svvv
 ## desc: Test setting the quota through pam with usrquota
 ## roles-not: [basesystem]
 ## exposure: dangerous
@@ -21,8 +21,3 @@ def test_quota_pam_policy_removal():
 		print("Now checking fs type: {}".format(fs_type))
 		quotaCheck = QuotaCheck(quota_type="usrquota", fs_type=fs_type)
 		quotaCheck.test_quota_pam_policy_removal()
-
-
-if __name__ == '__main__':
-	test_quota_pam()
-	test_quota_pam_policy_removal()
