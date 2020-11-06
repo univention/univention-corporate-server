@@ -44,7 +44,7 @@ class UMC_Error(Exception):
 	msg = None
 	include_traceback = False
 
-	def __init__(self, message=None, status=None, result=None, headers=None, traceback=None):
+	def __init__(self, message=None, status=None, result=None, headers=None, traceback=None, reason=None):
 		message = message or self.msg
 		super(UMC_Error, self).__init__(message)
 		self.msg = message
@@ -53,6 +53,7 @@ class UMC_Error(Exception):
 		self.traceback = traceback
 		if isinstance(status, int):
 			self.status = status
+		self.reason = reason
 
 
 class BadRequest(UMC_Error):
@@ -116,7 +117,7 @@ class LDAP_ServerDown(UMC_Error):
 		self._updates_available = ucr.is_true('update/available')
 		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 		message = '\n'.join(self._error_msg())
-		super(LDAP_ServerDown, self).__init__(message, status=503)
+		super(LDAP_ServerDown, self).__init__(message, status=503, reason='LDAP Service Unavailable')
 
 	def _error_msg(self):
 		yield _('Cannot connect to the LDAP service.')

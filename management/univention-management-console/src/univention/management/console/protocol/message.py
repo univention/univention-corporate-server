@@ -192,6 +192,9 @@ class Message(object):
 	#: contains the status code defining the success or failure of a request (see also :mod:`univention.management.console.protocol.definitions.STATUS`)
 	status = property(lambda self: self._get_key('status'), lambda self, value: self._set_key('status', value, int))
 
+	#: contains the reason phrase for the status code
+	reason = property(lambda self: self._get_key('reason'), lambda self, value: self._set_key('reason', value))
+
 	#: defines options to pass on to the module command
 	options = property(lambda self: self._get_key('options'), lambda self, value: self._set_key('options', value))
 
