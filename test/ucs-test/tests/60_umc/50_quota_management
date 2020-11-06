@@ -8,12 +8,13 @@
 
 from __future__ import print_function
 import sys
-sys.path.insert(0, '.')
-from umc import UMCBase
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
+
+sys.path.insert(0, '.')
+from umc import UMCBase  # noqa: E402
 
 
 class TestUMCQuotasManagement(UMCBase):
@@ -80,14 +81,7 @@ class TestUMCQuotasManagement(UMCBase):
         options = {"filter": "*", "partitionDevice": self.partition_dev}
 
         user_quotas = self.client.umc_command('quota/users/query', options).result
-        if user_quotas:
-            try:
-                for quota in user_quotas:
-                    if quota['user'] == username:
-                        return True
-            except KeyError as exc:
-                utils.fail("KeyError exception while searching for '%s' "
-                           "user quota: '%s'" % (username, exc))
+        return any(quota['user'] == username for quota in user_quotas)
 
     def activate_deactivate_quota(self, command):
         """
@@ -95,21 +89,7 @@ class TestUMCQuotasManagement(UMCBase):
         'self.partition_dev' quota by making a UMC request 'quota/partitions/'
         """
         options = {"partitionDevice": self.partition_dev}
-        try:
-            request_result = self.client.umc_command('quota/partitions/' + command, options).result
-            if not request_result:
-                utils.fail("Request 'quota/partitions/%s' with options '%s' "
-                           " failed, no response result, hostname %s"
-                           % (command, options, self.hostname))
-            if not request_result.get('success'):
-                utils.fail("Request 'quota/partitions/%s' with options '%s' "
-                           "failed, no 'success'=True in response, "
-                           "hostname '%s', response '%s'" % (command,
-                           options, self.hostname, request_result))
-        except Exception as exc:
-            utils.fail("Exception while making 'quota/partitions/%s' "
-                       "request with options '%s': %s"
-                       % (command, options, exc))
+        self.client.umc_command('quota/partitions/' + command, options).result
 
     def set_remove_user_quota(self, command, username,
                               size_limit_soft=10, size_limit_hard=10,
@@ -131,20 +111,7 @@ class TestUMCQuotasManagement(UMCBase):
         else:
             utils.fail("The provided command '%s' is not supported, request "
                        "or/and its options are unknown" % command)
-        try:
-            request_result = self.client.umc_command('quota/users/' + command, options).result
-            if not request_result:
-                utils.fail("Request 'quota/users/%s' with options '%s' "
-                           "failed, no response result, hostname %s"
-                           % (command, options, self.hostname))
-            if not request_result.get('success'):
-                utils.fail("Request 'quota/users/%s' with options '%s' "
-                           "failed, no 'success'=True in response, "
-                           "hostname '%s', response '%s'"
-                           % (command, options, self.hostname, request_result))
-        except Exception as exc:
-            utils.fail("Exception while making 'quota/users/%s' request "
-                       "with options '%s': %s" % (command, options, exc))
+        self.client.umc_command('quota/users/' + command, options).result
 
     def main(self):
         """
