@@ -94,6 +94,10 @@ for FS in xfs ext2 ext3 ext4; do
 			sleep 1
 		else
 			echo "Error: share cache not created: $share_quota_cache"
+			echo "/var/cache/univention-quota/:"
+			ls /var/cache/univention-quota/
+			echo "/var/cache/univention-quota/todo/:"
+			ls /var/cache/univention-quota/todo/
 			fail_fast 110
 		fi
 	done
