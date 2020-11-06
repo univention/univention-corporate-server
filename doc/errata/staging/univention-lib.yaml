@@ -6,5 +6,5 @@ src: univention-lib
 fix: 8.0.1-39A~4.4.0.202011041334
 desc: |
  This update addresses the following issue(s):
- * Evaluation of ucr vaiables for the backup script was fixed.
+ * Evaluation of ucr vaiables in the function clean_old_backups has been fixed.
 bug: [51765]
