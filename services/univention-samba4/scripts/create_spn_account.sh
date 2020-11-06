@@ -197,6 +197,6 @@ create_spn_account () {
 }
 
 if [ "$(basename $0)" = "$scriptname" ]; then
-	eval "$(ucr shell hostname domainname kerberos/realm ldap/base)"
+	eval "$(ucr shell hostname domainname kerberos/realm ldap/base create/spn/account/timeout)"
 	create_spn_account "$@"
 fi
