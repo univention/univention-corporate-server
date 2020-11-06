@@ -7,6 +7,9 @@ Variables: apache2/loglevel
 Variables: apache2/allowoverride
 Variables: apache2/server-limit
 Variables: apache2/start-servers
+Variables: apache2/min-spare-servers
+Variables: apache2/max-spare-servers
+Variables: apache2/start-threads
 Variables: apache2/min-spare-threads
 Variables: apache2/max-spare-threads
 Variables: apache2/threads-per-child

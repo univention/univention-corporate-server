@@ -82,9 +82,27 @@ Description[en]=Defines the value of the apache configuration "StartServers". A 
 Type=int
 Categories=service-apache
 
+[apache2/min-spare-servers]
+Description[de]=Definiert den Wert der Apache Konfiguration "MinSpareServers".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/prefork.html#minspareservers>.
+Description[en]=Defines the value of the apache configuration "MinSpareServers". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/prefork.html#minspareservers>.
+Type=int
+Categories=service-apache
+
+[apache2/max-spare-servers]
+Description[de]=Definiert den Wert der Apache Konfiguration "MaxSpareServers".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/prefork.html#maxspareservers>.
+Description[en]=Defines the value of the apache configuration "MaxSpareServers". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/prefork.html#maxspareservers>.
+Type=int
+Categories=service-apache
+
 [apache2/max-request-workers]
 Description[de]=Definiert den Wert der Apache Konfiguration "MaxRequestWorkers".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#maxrequestworkers>.
 Description[en]=Defines the value of the apache configuration "MaxRequestWorkers". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#maxrequestworkers>.
+Type=int
+Categories=service-apache
+
+[apache2/start-threads]
+Description[de]=Definiert den Wert der Apache Konfiguration "StartThreads".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#startthreads>.
+Description[en]=Defines the value of the apache configuration "StartThreads". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#startthreads>.
 Type=int
 Categories=service-apache
 

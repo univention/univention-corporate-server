@@ -1,3 +1,9 @@
+univention-apache (11.0.1-21) unstable; urgency=medium
+
+  * Bug #52320: add configuration for StartThreads and Max/MinSpareServers
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2020 14:26:09 +0100
+
 univention-apache (11.0.1-20) unstable; urgency=medium
 
   * Bug #51294: add more apache settings configurable via UCR
