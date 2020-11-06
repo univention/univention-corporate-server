@@ -553,3 +553,9 @@ Description[de]=Ist diese Variable auf 'yes' gesetzt, dann verwendet Samba/AD di
 Description[en]=If this variable is set to 'yes', Samba/AD uses the new implementation of the KCC, which supports sparse network replication. If the variable is unset, the the older full mesh replication is used.
 Type=bool
 Categories=service-samba
+
+[create/spn/account/timeout]
+Description[de]=Diese Variable bestimmt die Dauer (in Sekunden), mit welcher auf die Synchronisation des SPN-Accounts zwischen UCS-System und Samba gewartet wird. Der Standardwert beträgt 1200 Sekunden. Bei sehr großen Umgebungen sollte dieser Wert erhöht werden, um einen erfolgreichen Domänenbeitritt zu gewährleisten.
+Description[en]=This variable sets the duration (in seconds) the system waits for synchronisation of the SPN account between UCS system and Samba. Its default value is 1200 seconds. On bigger environments it is recommended to increase this value to ensure a successful domain join.
+Type=int
+Categories=service-samba
