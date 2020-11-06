@@ -6,6 +6,6 @@ src: univention-ldap
 fix: 15.0.1-3A~4.4.0.202011051708
 desc: |
  This update addresses the following issue(s):
- * Setting of ucr max/age variable for new installations with default 365.
- * Changing the mdb maxsize variable to 4 GB
+ * Setting of ucr backup/clean/max/age variable for new installations with default 365.
+ * Changing the value of the mdb maxsize variables (ldap/database/mdb/maxsize and listener/cache/mdb/maxsize) to 4 GB
 bug: [51765, 39167]
