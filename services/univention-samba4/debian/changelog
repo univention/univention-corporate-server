@@ -1,3 +1,10 @@
+univention-samba4 (9.0.4-1) unstable; urgency=medium
+
+  * Bug #51835: add new ucr variable "create/spn/account/timeout".
+  * Bug #51835: default timeout in create_spn_account.sh to 10800s
+
+ -- Christian Castens <castens@univention.de>  Fri, 06 Nov 2020 14:02:01 +0100
+
 univention-samba4 (9.0.3-1) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL

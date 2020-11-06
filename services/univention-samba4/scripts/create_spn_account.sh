@@ -128,7 +128,7 @@ create_spn_account () {
 	fi
 
 	## wait for S4 Connector and possibly DRS until the service_accountname is available
-	timeout=${create_spn_account_timeout:-1200}
+	timeout=${create_spn_account_timeout:-10800}
 	for i in $(seq 1 10 $timeout); do
 		echo "looking for spn account \"$samAccountName\" in local samba"
 		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$samAccountName" dn | sed -n 's/^dn: \(.*\)/\1/p')
@@ -197,6 +197,6 @@ create_spn_account () {
 }
 
 if [ "$(basename $0)" = "$scriptname" ]; then
-	eval "$(ucr shell hostname domainname kerberos/realm ldap/base)"
+	eval "$(ucr shell hostname domainname kerberos/realm ldap/base create/spn/account/timeout)"
 	create_spn_account "$@"
 fi
