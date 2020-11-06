@@ -489,6 +489,9 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailForwardSetting,
 		dontsearch=True,
 		copyable=True,
+		default='0',
+		required=False,
+		prevent_umc_default_popup=True,
 	),
 	'overridePWHistory': univention.admin.property(
 		short_description=_('Override password history'),
@@ -1177,6 +1180,8 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', encoding='ASCII')
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailForwardAddress', 'mailForwardAddress')
+if configRegistry.is_true('directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf', False):
+	mapping.register('mailForwardCopyToSelf', 'mailForwardCopyToSelf', None, univention.admin.mapping.ListToString)
 
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
@@ -1328,10 +1333,14 @@ class object(univention.admin.handlers.simpleLdap):
 				self['pwdChangeNextLogin'] = '1'
 
 	def _unmap_mail_forward(self):
+		if configRegistry.is_true('directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf', False):
+			return
 		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
 		# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
-		# is removed from info for correct display in CLI/UMC and for proper detection of changes.
+		# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
+		# Remark: By setting the ucr-v the attribute is saved directly to LDAP.
 		if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
+			self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
 			self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
 			self['mailForwardCopyToSelf'] = '1'
 		else:
@@ -1631,6 +1640,9 @@ class object(univention.admin.handlers.simpleLdap):
 		self.__primary_group()
 
 	def _ldap_pre_modify(self):
+		if not self.oldattr.get('mailForwardCopyToSelf') and self['mailForwardCopyToSelf'] == '0' and not self['mailForwardAddress']:
+			self['mailForwardCopyToSelf'] = None
+
 		if self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
@@ -1965,6 +1977,8 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if messages should be forwarded for it.'))
 		if self.get('mailForwardCopyToSelf') == '1' and not self['mailPrimaryAddress']:
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
+		if configRegistry.is_true('directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf', False):
+			return ml
 
 		try:
 			new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]

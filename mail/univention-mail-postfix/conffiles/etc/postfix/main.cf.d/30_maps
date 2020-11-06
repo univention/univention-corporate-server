@@ -33,9 +33,14 @@ print('')
 
 # enable virtual tables if requested
 if configRegistry.is_true('mail/postfix/virtual/enabled', False):
-
-	default_virtual_alias_maps = 'hash:/etc/postfix/virtual, ldap:/etc/postfix/ldap.groups, ldap:/etc/postfix/ldap.distlist, ldap:/etc/postfix/ldap.virtual, ldap:/etc/postfix/ldap.external_aliases, ldap:/etc/postfix/ldap.sharedfolderremote, ldap:/etc/postfix/ldap.sharedfolderlocal_aliases'
 	default_virtual_mailbox_maps = 'ldap:/etc/postfix/ldap.virtual_mailbox, ldap:/etc/postfix/ldap.sharedfolderlocal'
+	# Bug #45205: adding mailbox_maps to alias_maps, so both will be together in the unionmap below
+	use_unionmap_in_virtual_alias_maps = configRegistry.is_true('mail/postfix/activate_unionmap_in_virtual_alias_maps', False)
+	if use_unionmap_in_virtual_alias_maps:
+		default_virtual_alias_maps = 'hash:/etc/postfix/virtual, ldap:/etc/postfix/ldap.groups, ldap:/etc/postfix/ldap.distlist, ldap:/etc/postfix/ldap.virtual, ldap:/etc/postfix/ldap.external_aliases, ldap:/etc/postfix/ldap.sharedfolderremote, ldap:/etc/postfix/ldap.sharedfolderlocal_aliases, {}'.format(default_virtual_mailbox_maps)
+	else:
+		default_virtual_alias_maps = 'hash:/etc/postfix/virtual, ldap:/etc/postfix/ldap.groups, ldap:/etc/postfix/ldap.distlist, ldap:/etc/postfix/ldap.virtual, ldap:/etc/postfix/ldap.external_aliases, ldap:/etc/postfix/ldap.sharedfolderremote, ldap:/etc/postfix/ldap.sharedfolderlocal_aliases'
+
 	default_virtual_domains = 'ldap:/etc/postfix/ldap.virtualdomains'
 
 	virtual_alias_domains = re.split(',\s*', configRegistry.get('mail/postfix/virtual/alias/domains', '' ))
@@ -44,7 +49,11 @@ if configRegistry.is_true('mail/postfix/virtual/enabled', False):
 	virtual_alias_maps = re.split(',\s*', configRegistry.get('mail/postfix/virtual/alias/maps', default_virtual_alias_maps))
 	if 'ldap' in val:
 		virtual_alias_maps.append('ldap:/etc/postfix/ldap.virtualwithcanonical')
-	print('\nvirtual_alias_maps = %s' % ',\n        '.join(virtual_alias_maps))
+	if use_unionmap_in_virtual_alias_maps:
+		print('\nvirtual_alias_maps = unionmap:{%s}' % ',\n        '.join(virtual_alias_maps))
+	else:
+		print('\nvirtual_alias_maps = %s' % ',\n        '.join(virtual_alias_maps))
+
 
 	virtual_mailbox_domains = re.split(',\s*', configRegistry.get('mail/postfix/virtual/mailbox/domains', default_virtual_domains ))
 	print('\nvirtual_mailbox_domains = %s' % ',\n        '.join(virtual_mailbox_domains))

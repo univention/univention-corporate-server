@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.5-1) unstable; urgency=low
+
+  * Bug #45205: readd support for email forwarding setting
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:29:33 +0100
+
 univention-directory-manager-modules (15.0.4-1) unstable; urgency=medium
 
   * Bug #43686: replace init.d with systemctl calls for UDL

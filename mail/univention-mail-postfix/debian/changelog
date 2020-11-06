@@ -1,3 +1,9 @@
+univention-mail-postfix (14.0.0-2) unstable; urgency=low
+
+  * Bug #45205: readd unionmap support
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:28:05 +0100
+
 univention-mail-postfix (14.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

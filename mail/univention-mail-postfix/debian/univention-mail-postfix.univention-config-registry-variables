@@ -472,3 +472,15 @@ Description[de]=Permanente Whiteliste/Blacklist für IP-Adressen von SMTP-Client
 Description[en]=Permanent white/blacklist for remote SMTP client IP addresses (see also <http://www.postfix.org/postconf.5.html#postscreen_access_list>) (Default: "permit_mynetworks, cidr:/etc/postfix/postscreen_access.cidr")
 Type=str
 Categories=service-mail
+
+[mail/postfix/activate_unionmap_in_virtual_alias_maps]
+Description[de]=Gibt an, ob für die Berechnung der virtual_alias_maps die Vereinigung der angegebenen Abfragen verwendet werden soll. Ist die Variable nicht gesetzt, wird das erste gefundene Resultat in der Liste der Abfragen zurückgegeben (Für mehr Informationen siehe <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, siehe auch directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf und mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps) (Standard: no)
+Description[en]=Defines whether the union of the configured queries should be used for the calculation of virtual_alias_maps. Otherwise the first result of the list of queries is returned (Please visit <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, see also directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf and mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps) (Default: no)
+Type=bool
+Categories=service-mail
+
+[mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps]
+Description[de]=Gibt an, ob bei der Abfrage virtual_alias_maps das LDAP Attribut mailForwardCopyToSelf mit einbezogen werden soll. Wenn der Wert nicht gesetzt wird, ändert sich die Abfrage nicht (Für mehr Informationen siehe <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, siehe auch directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf und mail/postfix/activate_unionmap_in_virtual_alias_maps) (Standard: no)
+Description[en]=Specifies whether the LDAP attribute mailForwardCopyToSelf should be included in the query virtual_alias_maps. If the value is not set, the query does not change (Please visit: <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, see also directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf and mail/postfix/activate_unionmap_in_virtual_alias_maps) (Default: no)
+Type=bool
+Categories=service-mail

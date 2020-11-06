@@ -1,3 +1,9 @@
+univention-ldap (16.0.4-2) unstable; urgency=low
+
+  * Bug #45205: readd LDAP attribute for email forwarding setting
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:28:47 +0100
+
 univention-ldap (16.0.4-1) unstable; urgency=medium
 
   * Bug #43687: use systemctl instead of init.d to restart UDL

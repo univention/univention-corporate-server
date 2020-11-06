@@ -1,3 +1,10 @@
+ucs-test (10.0.1-33) unstable; urgency=low
+
+  * Bug #45205: readd tests for mail forwarding settings
+  * Bug #45205: make IMAP folder testing more rebust against timing issues
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:30:04 +0100
+
 ucs-test (10.0.1-32) unstable; urgency=medium
 
   * Bug #52005: Reactivate 96rename* and work around Bug#51804
