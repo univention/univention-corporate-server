@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-samba4
+fix: 8.0.0-33A~4.4.0.202011061228
+desc: |
+ This update addresses the following issue(s):
+ * The new UCR variable create/spn/account/timeout sets the timeout for how
+   long the system waits for successful synchronisation of the SPN account
+   during a domain join.
+bug: [51835]
