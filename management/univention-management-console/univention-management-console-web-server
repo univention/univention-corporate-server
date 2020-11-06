@@ -207,6 +207,7 @@ class SessionClient(object):
 			self._requestid2response_queue.pop(id)
 			response = Response(request)
 			response.status = SERVICE_UNAVAILABLE
+			response.reason = 'UMC Service restarting'
 			response.message = message
 			queue.put(response)
 
@@ -256,6 +257,7 @@ class UMCP_Dispatcher(object):
 				CORE.process('Failed to create UMC connection: %s' % (exc,))
 				response = Response(queuerequest.request)
 				response.status = SERVICE_UNAVAILABLE
+				response.reason = 'UMC Service Unavailable'
 				response.message = '\n'.join((
 					'The Univention Management Console Server is currently not running. ',
 					'If you have root permissions on the system you can restart it by executing the following command:',
@@ -500,8 +502,8 @@ class UMC_HTTPError(HTTPError):
 
 	""" HTTPError which sets a error result """
 
-	def __init__(self, status=500, message=None, body=None, error=None):
-		HTTPError.__init__(self, status, message)
+	def __init__(self, status=500, message=None, body=None, error=None, reason=None):
+		HTTPError.__init__(self, status if not reason else '%s %s' % (status, reason), message)
 		self.body = body
 		self.error = error
 
@@ -864,11 +866,12 @@ class CPgeneric(Ressource):
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % (response.status,))
+		self._log('error', 'response reason : %s' % (response.reason,))
 		self._log('error', 'response message: %s' % (response.message,))
 		self._log('error', 'response result: %s' % (response.result,))
 		if response.error:
 			self._log('error', 'response error: %r' % (response.error,))
-		raise UMC_HTTPError(response.status, response.message, response.result, response.error)
+		raise UMC_HTTPError(response.status, response.message, response.result, response.error, response.reason)
 
 	def set_accept_language(self, request):
 		# set language based on Accept-Language header
@@ -1187,7 +1190,7 @@ class SAML(Ressource):
 	@property
 	def sp(self):
 		if not self.__sp and not self.reload():
-			raise UMC_HTTPError(503, 'Single sign on is not available due to misconfiguration. See logfiles.')
+			raise UMC_HTTPError(SERVICE_UNAVAILABLE, 'Single sign on is not available due to misconfiguration. See logfiles.', reason='SSO Service Unavailable')
 		return self.__sp
 
 	def reload(self):

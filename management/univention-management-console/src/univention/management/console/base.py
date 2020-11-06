@@ -353,7 +353,7 @@ class Base(signals.Provider, Translation):
 		try:
 			try:
 				self.error_handling(etype, exc, etraceback)
-			except BaseException:
+			except Exception:
 				raise
 			else:
 				six.reraise(etype, exc, etraceback)
@@ -361,6 +361,7 @@ class Base(signals.Provider, Translation):
 			status = exc.status
 			result = exc.result
 			headers = exc.headers
+			reason = exc.reason
 			message = str(exc)
 			if not exc.traceback and exc.include_traceback:
 				exc.traceback = traceback.format_exc()
@@ -370,8 +371,9 @@ class Base(signals.Provider, Translation):
 				'command': method,
 				'traceback': exc.traceback,
 			}
-		except BaseException:
+		except Exception:
 			status = MODULE_ERR_COMMAND_FAILED
+			reason = None
 			if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
 				tb_str = ''.join(trace + traceback.format_exception_only(*sys.exc_info()[:2]))
 			else:
@@ -386,7 +388,7 @@ class Base(signals.Provider, Translation):
 				error['command'] = error['command'].decode('utf-8', 'replace')
 			message = self._('Internal server error during "%(command)s".') % error
 		MODULE.process(str(message))
-		self.finished(request.id, result, message, status=status, headers=headers, error=error)
+		self.finished(request.id, result, message, status=status, headers=headers, error=error, reason=reason)
 
 	def default_response_headers(self):
 		headers = {
@@ -455,7 +457,7 @@ class Base(signals.Provider, Translation):
 			return False
 		return self.__acls.is_command_allowed(command, options=options, flavor=flavor)
 
-	def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None):
+	def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None, error=None, reason=None):
 		"""Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
 
 		if id not in self.__requests:
@@ -473,6 +475,7 @@ class Base(signals.Provider, Translation):
 				res.message = message
 				res.headers = dict(self.default_response_headers(), **headers or {})
 				res.error = error
+				res.reason = reason
 		else:
 			res = response
 

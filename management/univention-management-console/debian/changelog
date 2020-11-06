@@ -1,3 +1,9 @@
+univention-management-console (12.0.3-6) unstable; urgency=medium
+
+  * Bug #52318: add HTTP reason phrase for 503 Service Unavailable errors
+
+ -- Florian Best <best@univention.de>  Mon, 09 Nov 2020 17:17:21 +0100
+
 univention-management-console (12.0.3-5) unstable; urgency=medium
 
   * Bug #52338: do not store relay state between requests
