@@ -1,3 +1,9 @@
+univention-samba4 (8.0.0-33) unstable; urgency=medium
+
+  * Bug #51835: new ucrv "create/spn/account/timeout"
+
+ -- Christian Castens <castens@univention.de>  Fri, 06 Nov 2020 12:21:41 +0100
+
 univention-samba4 (8.0.0-32) unstable; urgency=medium
 
   * Bug #42182: apply additional aces from appendACL on share folders
