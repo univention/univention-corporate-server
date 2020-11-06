@@ -32,6 +32,7 @@ import subprocess
 import socket
 import univention.lib.umc
 import sys
+import traceback
 
 from optparse import OptionParser
 from univention.lib.umc import Client
@@ -130,25 +131,25 @@ while not domainhost_unreachable(options.domain_host):
 
 sleep(10)
 
+# This works for "normal" ad-takeover, but if we ad-takeover from an
+# ad-member mode there seems to be an issue with the umc connection
+# .../run/takeover|.../status/done in this case fail (not sure why),
+# so as a fallback adtakeover/check/status until finished or fail
 try:
 	print('starting takeover')
 	response = client.umc_command("adtakeover/run/takeover", request_options)
 	print(response.status)
 	assert response.status == 200
-except Exception as e:
-	print('got {}'.format(e))
-	pass
 
-try:
 	print('starting done')
 	response = client.umc_command("adtakeover/status/done", request_options)
 	print(response.status)
 	assert response.status == 200
+
 	print('OK - finished')
 	sys.exit(0)
 except Exception as e:
-	print('got {}'.format(e))
-	pass
+	print(traceback.format_exc())
 
 # wait until finished
 for i in range(90):
