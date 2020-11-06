@@ -1,3 +1,9 @@
+univention-web (4.0.0-4) unstable; urgency=medium
+
+  * Bug #52321: reduce polling of get/session-info
+
+ -- Florian Best <best@univention.de>  Mon, 09 Nov 2020 17:27:02 +0100
+
 univention-web (4.0.0-3) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica

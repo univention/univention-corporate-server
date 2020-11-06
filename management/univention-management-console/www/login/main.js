@@ -313,7 +313,8 @@ define([
 			}).then(lang.hitch(this, function(response) {
 				tools.status('authType', response.result.auth_type);
 				tools.status('loggedIn', true);
-				return this.authenticated(response.result.username);
+				this.authenticated(response.result.username);
+				return response.result;
 			}), function(error) {
 				if (tools.status('loggedIn')) {
 					tools.status('loggedIn', false);

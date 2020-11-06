@@ -256,7 +256,14 @@ define([
 				this._checkSessionTimer = new timing.Timer(30000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
 					// check whether session is still valid
-					this._checkSessionRequest = login.sessioninfo().otherwise(lang.hitch(this, function(error) {
+					this._checkSessionRequest = login.sessioninfo().then(lang.hitch(this, function(result) {
+						if (result.remaining <= 30) {
+							this._checkSessionTimer.setInterval(30000);
+						} else {
+							this._checkSessionTimer.setInterval((result.remaining + 1) * 1000);
+						}
+					}), lang.hitch(this, function(error) {
+						this._checkSessionTimer.setInterval(30000);
 						error = tools.parseError(error);
 						if (error.status !== 401) {
 							// ignore any other error than unauthenticated (e.g. not reachable)
