@@ -675,7 +675,7 @@ class ConfigHandlers:
 		# type: () -> None
 		"""Load cached `.info` data or force update."""
 		try:
-			with open(ConfigHandlers.CACHE_FILE, 'rb', **encoding) as cache_file:
+			with open(ConfigHandlers.CACHE_FILE, 'rb') as cache_file:
 				version = self._get_cache_version(cache_file)
 				chv = ConfigHandlers
 				if not chv.VERSION_MIN <= version <= chv.VERSION_MAX:
@@ -945,7 +945,7 @@ class ConfigHandlers:
 		# type: () -> None
 		"""Write cache file."""
 		try:
-			with open(ConfigHandlers.CACHE_FILE, 'wb', **encoding) as cache_file:
+			with open(ConfigHandlers.CACHE_FILE, 'wb') as cache_file:
 				cache_file.write(ConfigHandlers.VERSION_NOTICE.encode('utf-8'))
 				pickler = pickle.Pickler(cache_file)
 				pickler.dump(self._handlers)
