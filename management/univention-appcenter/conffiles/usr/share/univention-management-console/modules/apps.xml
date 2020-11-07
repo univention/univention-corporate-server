@@ -5,6 +5,10 @@
 	-->
 	<module id="apps" icon="apps-module" priority="-100" version="1.0">
 @!@
+# make sure locale is always original english
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
 # A flavor is required so that apps/get UMC call is allowed if no apps are available
 # the flavor and this module must not have a category so that no empty icon is displayed on the overview
 print('''
