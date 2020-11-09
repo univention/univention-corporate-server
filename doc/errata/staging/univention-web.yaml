@@ -2,14 +2,10 @@ product: ucs
 release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
-src: univention-management-console
+src: univention-web
 fix: 
 desc: |
  This update addresses the following issue(s):
- * A memory optimization for SAML based sessions has been done in the
-   UMC web server.
- * The UMC web server now sets the HTTP reason phrase for 503 Service
-   Unavailable errors.
  * The interval for polling of session infos has been changed from every
    30 seconds to the time the session will end to reduce network workload.
-bug: [52338, 52318, 52321]
+bug: [52321]
