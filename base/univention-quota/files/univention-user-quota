@@ -82,11 +82,11 @@ def get_shares():
 			dn, attrs, policy_result = pickle.load(fd, encoding='bytes')
 		sharepath = attrs['univentionSharePath'][0].decode('UTF-8')
 		shares[sharepath] = {
-			'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', [b'0'])[0].decode('UTF-8')),
-			'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', [b'0'])[0].decode('UTF-8')),
-			'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', [b'0'])[0].decode('UTF-8')),
-			'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', [b'0'])[0].decode('UTF-8')),
-			'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', [b'FALSE'])[0].decode('ASCII')),
+			'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
+			'inodeHardLimit': int(policy_result.get('univentionQuotaHardLimitInodes', ['0'])[0]),
+			'spaceSoftLimit': get_blocks(policy_result.get('univentionQuotaSoftLimitSpace', ['0'])[0]),
+			'spaceHardLimit': get_blocks(policy_result.get('univentionQuotaHardLimitSpace', ['0'])[0]),
+			'reapplyQuota': test_for_true(policy_result.get('univentionQuotaReapplyEveryLogin', ['FALSE'])[0]),
 			'mountpoint': get_mountpoint_from_share_path(sharepath)
 		}
 
