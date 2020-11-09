@@ -30,7 +30,12 @@ body
 
 #umcLoginTitle
 	text-align: center
-	margin-bottom: calc(5 * var(--layout-spacing-unit)) // 2.5rem // 50px
+	margin-bottom: 2.5rem
+
+#umcLoginPrivacyPolicyHeader
+	text-align: center
+	margin-top: -1.5rem
+	margin-bottom: 1.5rem
 
 #umcLoginDialog
 	background-color: var(--color-grey0)
@@ -73,11 +78,40 @@ body
 		left: 1rem
 		transform-origin: left center
 		transition: transform .3s, color .3s
+		pointer-events: none
 
 	input:not(:placeholder-shown) + label,
 	input:focus + label
 		transform: translateY(-0.7rem) scale(0.65)
 		color: var(--font-color-contrast-low)
+
+.umcLoginFormSelect
+	position: relative
+
+	select
+		--border-color: transparent
+		width: 100%
+		margin-bottom: 1rem
+		padding: 0.75rem 2rem 0.75rem 1rem
+		background-color: var(--inputfield-bgc)
+		background-image: url(/univention/js/dijit/themes/umc/images/chevron-down_white.svg)
+		background-repeat: no-repeat
+		background-position: right 0.5em center
+		outline: none
+		-moz-appearance: none
+		-webkit-appearance: none
+		appearance: none
+		border: 1px solid var(--border-color)
+		border-radius: var(--border-radius-interactable)
+		cursor: pointer
+
+		&:hover,
+		&:focus
+			--border-color: var(--color-grey40)
+
+	label
+		font-size: var(--font-size-small)
+		margin-bottom: 0.5rem
 
 .umcLoginFormButton
 	--bgc: var(--button-primary-bgc)
@@ -90,6 +124,12 @@ body
 	color: var(--font-color-contrast-high)
 	background-color: var(--bgc)
 	transition: var(--button-primary-bgc-transition)
+	display: inline-flex
+	align-items: center
+	justify-content: center
+
+	.featherIcon
+		margin-right: 0.4rem
 
 	&:hover,
 	&:focus

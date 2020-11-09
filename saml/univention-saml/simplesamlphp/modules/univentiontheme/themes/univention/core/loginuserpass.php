@@ -22,11 +22,12 @@ if ($this->data['errorcode'] === 'univention:ERROR') {
 			//-->
 		</script>
 <?php } ?>
-		<div id="umcLoginWrapper">
-			<h1 style="text-align: center;"><?php echo htmlspecialchars($this->t('{univentiontheme:login:loginat}', array('%s' => $this->configuration->getValue('domainname', '')))); ?></h1>
+		<div id="umcLoginContent">
+			<div id="umcLoginWrapper">
+				<h2 id="umcLoginTitle"><?php echo htmlspecialchars($this->t('{univentiontheme:login:loginat}', array('%s' => $this->configuration->getValue('domainname', '')))); ?></h2>
 <?php
 if (isset($this->data['SPMetadata']['privacypolicy'])) {
-	printf('<h3 style="text-align: center;"><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy'], ENT_QUOTES), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
+	printf('<h3 id="umcLoginPrivacyPolicyHeader"><a href="%s">%s</a></h3>', htmlspecialchars($this->data['SPMetadata']['privacypolicy'], ENT_QUOTES), htmlspecialchars($this->t('{consent:consent:consent_privacypolicy}')));
 }
 // TODO: do we want to display $this->data['SPMetadata']['OrganizationName']) and $this->data['SPMetadata']['description']) ?
 // both might be unset, description might be an array -> use is_array() && implode()!
@@ -80,9 +81,9 @@ if ($this->data['rememberUsernameEnabled']) {
 }
 if (array_key_exists('organizations', $this->data)) {
 ?>
-				<div class="organization">
-				<span style="padding: .3em;"><?php echo htmlspecialchars($this->t('{login:organization}')); ?></span>
-				<span><select name="organization" tabindex="3">
+								<div class="umcLoginFormSelect">
+									<label id="umcLoginOrganizationLabel" for="umcLoginOrganization"><?php echo htmlspecialchars($this->t('{login:organization}')); ?></label>
+									<select id="umcLoginOrganization" name="organization" tabindex="3">
 <?php
 $selectedOrg = array_key_exists('selectedOrg', $this->data) ? $this->data['selectedOrg'] : NULL;
 foreach ($this->data['organizations'] as $orgId => $orgDesc) {
@@ -99,42 +100,52 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 	printf('<option %s value="%s">%s</option>', $selected, htmlspecialchars($orgId, ENT_QUOTES), htmlspecialchars($orgDesc));
 }
 ?>
-				</select></span>
-				</div>
+									</select>
+								</div>
 <?php
 }
 ?>
-						<input id="umcLoginSubmit" type="submit" name="submit" value="<?php echo htmlspecialchars($this->t('{login:login_button}'), ENT_QUOTES); ?>"/>
-					</form>
+								<button class="umcLoginFormButton" type="submit" name="submit">
+									<div class="umcLoginFormButton__background"></div>
+									<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg">
+										<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#log-in" />
+									</svg>
+									<span class="umcLoginFormButton__label"><?php echo htmlspecialchars($this->t('{login:login_button}'), ENT_QUOTES); ?></span>
+								</button>
+							</form>
 
 <?php
 if ($PW_EXPIRED) {
 ?>
-					<form id="umcNewPasswordForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="off" style="display: block;">
-						<input name="username" type="hidden" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" />
-						<input name="password" type="hidden" value="<?php echo htmlspecialchars($_REQUEST['password'], ENT_QUOTES); /* TODO: store instead in the session? */ ?>" />
-						<label for="umcLoginNewPassword">
-							<input id="umcLoginNewPassword" name="new_password" type="password" autocomplete="new-password" placeholder="<?php echo htmlspecialchars($this->t('{pwchange:new_password}'), ENT_QUOTES); ?>" />
-						</label>
-						<label for="umcLoginNewPasswordRetype">
-							<input id="umcLoginNewPasswordRetype" name="new_password_retype" type="password" autocomplete="new-password" placeholder="<?php echo htmlspecialchars($this->t('{pwchange:new_password_retype}'), ENT_QUOTES); ?>" />
-						</label>
-						<input id="umcNewPasswordSubmit" type="submit" name="submit" value="<?php echo htmlspecialchars($this->t('{pwchange:change_password}'), ENT_QUOTES); ?>" />
+							<form id="umcNewPasswordForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="off" style="display: block;">
+								<input name="username" type="hidden" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" />
+								<input name="password" type="hidden" value="<?php echo htmlspecialchars($_REQUEST['password'], ENT_QUOTES); /* TODO: store instead in the session? */ ?>" />
+								<div class="umcLoginFormInput">
+									<input id="umcLoginNewPassword" name="new_password" type="password" autocomplete="new-password" placeholder=" " />
+									<label id="umcLoginNewPasswordLabel" for="umcLoginNewPassword"><?php echo htmlspecialchars($this->t('{pwchange:new_password}'), ENT_QUOTES); ?></label>
+								</div>
+								<div class="umcLoginFormInput">
+									<input id="umcLoginNewPasswordRetype" name="new_password_retype" type="password" autocomplete="new-password" placeholder=" " />
+									<label id="umcLoginNewPasswordRetypeLabel" for="umcLoginNewPasswordRetype"><?php echo htmlspecialchars($this->t('{pwchange:new_password_retype}'), ENT_QUOTES); ?></label>
+								</div>
+								<button class="umcLoginFormButton" type="submit" name="submit">
+									<div class="umcLoginFormButton__background"></div>
+									<span class="umcLoginFormButton__label"><?php echo htmlspecialchars($this->t('{pwchange:change_password}'), ENT_QUOTES); ?></span>
+								</button>
+		<?php
+		foreach ($this->data['stateparams'] as $name => $value) {
+			echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '" />';
+		}
+		?>
+							</form>
 <?php
-foreach ($this->data['stateparams'] as $name => $value) {
-	echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '" />';
 }
 ?>
 						</div>
 					</div>
-<?php
-}
-?>
 				</div>
 			</div>
 			<div id="umcLoginLinks"></div>
-			<!-- preload the image! -->
-			<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;"/>
 <?php
 
 if (!empty($this->data['links'])) {

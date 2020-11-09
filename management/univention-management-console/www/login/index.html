@@ -24,7 +24,7 @@
 		</div>
 		<div id="umcLoginContent">
 			<div id="umcLoginWrapper">
-				<h2 id="umcLoginTitle">&nbsp;aksdj</h2>
+				<h2 id="umcLoginTitle">&nbsp;</h2>
 				<div id="umcLoginDialog">
 					<div id="umcLoginLogoWrapper">
 						<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg" />
@@ -48,6 +48,9 @@
 								</div>
 								<button class="umcLoginFormButton" type="submit" name="submit">
 									<div class="umcLoginFormButton__background"></div>
+									<svg class="featherIcon" xmlns="http://www.w3.org/2000/svg">
+										<use xlink:href="/univention/js/dijit/themes/umc/images/feather-sprite.svg#log-in" />
+									</svg>
 									<span class="umcLoginFormButton__label">Login</span>
 								</button>
 							</form>
@@ -81,8 +84,5 @@
 			</div>
 			<div id="umcLoginLinks"></div>
 		</div>
-
-		<!-- preload the image! -->
-		<img src="/univention/js/dijit/themes/umc/images/login_bg.gif" style="height: 0; width: 0;" />
 	</body>
 </html>
