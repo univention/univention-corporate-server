@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * A memory optimization for SAML based sessions has been done in the
    UMC web server.
-bug: [52338]
+ * The UMC web server now sets the HTTP reason phrase for 503 Service
+   Unavailable errors.
+bug: [52338, 52318]
