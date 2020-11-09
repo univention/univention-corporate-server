@@ -21,19 +21,19 @@ SH_LOG="${BASEDIR}/sh.log"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${_version_version}-0" maintained all
+mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 all "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
-mkpdir "${_version_version}-1" maintained all
+mkpdir "${_version_version}-1" maintained "${ARCH}"
 mkdeb "${pkgname}" 2 all "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 cat >"${SH_LOG}" <<__SH__
-${DIRS[1]}/preup.sh [0-9]\\+ ${major}.${minor}-1
-${DIRS[1]}/postup.sh [0-9]\\+ ${major}.${minor}-1
+${DIR}/preup.sh [0-9]\\+ ${major}.${minor}-1
+${DIR}/postup.sh [0-9]\\+ ${major}.${minor}-1
 __SH__
 
 config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=yes
@@ -46,30 +46,30 @@ config_repo version/patchlevel=0 version/erratalevel=0 repository/online/verify=
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 
 	info "missing signature for postup"
-	mv "${DIRS[1]}/postup.sh.gpg" "${DIRS[1]}/postup.sh.GPG"
+	mv "${DIR}/postup.sh.gpg" "${DIR}/postup.sh.GPG"
 	/usr/share/univention-updater/univention-updater net && fail_fast 1 "Should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
-	mv "${DIRS[1]}/postup.sh.GPG" "${DIRS[1]}/postup.sh.gpg"
+	mv "${DIR}/postup.sh.GPG" "${DIR}/postup.sh.gpg"
 
 	info "missing signature for pretup"
-	mv "${DIRS[1]}/preup.sh.gpg" "${DIRS[1]}/preup.sh.GPG"
+	mv "${DIR}/preup.sh.gpg" "${DIR}/preup.sh.GPG"
 	/usr/share/univention-updater/univention-updater net && fail_fast 1 "should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
-	mv "${DIRS[1]}/preup.sh.GPG" "${DIRS[1]}/preup.sh.gpg"
+	mv "${DIR}/preup.sh.GPG" "${DIR}/preup.sh.gpg"
 
 	info "wrong signature for postup"
-	mv "${DIRS[1]}/postup.sh" "${DIRS[1]}/postup.SH"
-	echo '#!/bin/sh' >"${DIRS[1]}/postup.sh"
+	mv "${DIR}/postup.sh" "${DIR}/postup.SH"
+	echo '#!/bin/sh' >"${DIR}/postup.sh"
 	/usr/share/univention-updater/univention-updater net && fail_fast 1 "should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
-	mv "${DIRS[1]}/postup.SH" "${DIRS[1]}/postup.sh"
+	mv "${DIR}/postup.SH" "${DIR}/postup.sh"
 
 	info "wrong signature for preup"
-	mv "${DIRS[1]}/preup.sh" "${DIRS[1]}/preup.SH"
-	echo '#!/bin/sh' >"${DIRS[1]}/preup.sh"
+	mv "${DIR}/preup.sh" "${DIR}/preup.SH"
+	echo '#!/bin/sh' >"${DIR}/preup.sh"
 	/usr/share/univention-updater/univention-updater net && fail_fast 1 "should not update"
 	grep -xf "${SH_LOG}" "${BASEDIR}/install.log" && fail "should not exec"
-	mv "${DIRS[1]}/preup.SH" "${DIRS[1]}/preup.sh"
+	mv "${DIR}/preup.SH" "${DIR}/preup.sh"
 
 	info "rightly prpared"
 	/usr/share/univention-updater/univention-updater net

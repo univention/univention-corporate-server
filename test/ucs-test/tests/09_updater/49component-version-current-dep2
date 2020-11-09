@@ -18,6 +18,7 @@ compname2="test2${RANDOM}"
 
 setup_apache "${repoprefix}"
 
+version1="${major}.${minor}-0"
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
@@ -29,13 +30,10 @@ mkpdir "${major}.${minor}--component/${compname2}" maintained "${ARCH}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 
-version1="${major}.${minor}-0"
-
 minor+=1
+version2="${major}.${minor}-0"
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkpkg "${DIR}" "${DIR_POOL}"
-
-version2="${major}.${minor}-0"
 
 python2.7 create_releases_json.py "${REPODIR}" "$version1" "$version2"
 

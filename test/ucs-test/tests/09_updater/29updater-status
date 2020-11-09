@@ -13,29 +13,37 @@ CHECK_REGEX="${BASEDIR}/sh.log"
 
 setup_apache "${repoprefix}"
 
-mkpdir "${_version_version}-0" maintained all
-mkdeb "${pkgname}" 1 all "${DIR}"
-mkpkg "${DIR}"
+mkpdir "${_version_version}-0" maintained "${ARCH}"
+# 0: dists/ucs500/main/binary-amd64/
+# 1: dists/errata500/main/binary-amd64/
+mkdeb "${pkgname}" 1 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 version1="${_version_version}-1"
-mkpdir "$version1" maintained all
-mkdeb "${pkgname}" 2 all "${DIR}"
-mkpkg "${DIR}"
+mkpdir "$version1" maintained "${ARCH}"
+# 2: dists/ucs501/main/binary-amd64/
+# 3: dists/errata501/main/binary-amd64/
+mkdeb "${pkgname}" 2 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 minor+=1
 version2="${major}.${minor}-0"
-mkpdir "$version2" maintained all
-mkdeb "${pkgname}" 3 all "${DIR}"
-mkpkg "${DIR}"
+mkpdir "$version2" maintained "${ARCH}"
+# 4: dists/ucs510/main/binary-amd64/
+# 5: dists/errata510/main/binary-amd64/
+mkdeb "${pkgname}" 3 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 major+=1
 version3="${major}.0-0"
-mkpdir "$version3" maintained all
-mkdeb "${pkgname}" 4 all "${DIR}"
-mkpkg "${DIR}"
+mkpdir "$version3" maintained "${ARCH}"
+# 6: dists/ucs600/main/binary-amd64/
+# 7: dists/errata600/main/binary-amd64/
+mkdeb "${pkgname}" 4 all "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 mksh "${DIR}" preup postup
 
 config_repo version/patchlevel=0 version/erratalevel=0
@@ -47,7 +55,7 @@ config_repo version/patchlevel=0 version/erratalevel=0
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 
 	univention-upgrade --noninteractive
-	echo "done.sh $version3 $(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\n" " ")" >>"${BASEDIR}/install-status.log"
+	echo "done.sh $version3 $(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\\n" " ")" >>"${BASEDIR}/install-status.log"
 
 	cat >"${CHECK_REGEX}" <<__SH__
 ${pkgname}.postinst status=DONE

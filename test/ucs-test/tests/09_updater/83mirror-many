@@ -20,30 +20,78 @@ setup_apache "${repoprefix}"
 
 # Create a package that will be used for all subsequent releases
 mkpdir "1.0-0" maintained "${ARCH}"
+# 0:dists/ucs500/main/binary-amd64/
+# 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
-mksh "${DIRS[0]}"/../.. preup postup
+mksh "${DIR%/main/binary-*}" preup postup
 declare -a DOKAY=()
 
 echo -n "Creating patchlevel..."
 for ((pat=1;pat<=9;pat+=1)) # 0 created by minor
 do
 	mkpdir "${major}.${minor}-${pat}" maintained "${ARCH}"
-	mksh "${DIRS[-2]}"/../.. preup postup
+	# 2:dists/ucs501/main/binary-amd64/
+	# 3:dists/errata501/main/binary-amd64/
+	# 4:dists/ucs502/main/binary-amd64/
+	# 5:dists/errata502/main/binary-amd64/
+	# 6:dists/ucs503/main/binary-amd64/
+	# 7:dists/errata503/main/binary-amd64/
+	# 8:dists/ucs504/main/binary-amd64/
+	# 9:dists/errata504/main/binary-amd64/
+	# 10:dists/ucs505/main/binary-amd64/
+	# 11:dists/errata505/main/binary-amd64/
+	# 12:dists/ucs506/main/binary-amd64/
+	# 13:dists/errata506/main/binary-amd64/
+	# 14:dists/ucs507/main/binary-amd64/
+	# 15:dists/errata507/main/binary-amd64/
+	# 16:dists/ucs508/main/binary-amd64/
+	# 17:dists/errata508/main/binary-amd64/
+	# 18:dists/ucs509/main/binary-amd64/
+	# 19:dists/errata509/main/binary-amd64/
+	mksh "${DIR%/main/binary-*}" preup postup
 	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo -n " minor..."
 for ((min=1;min<=9;min+=1)) # 0 is major
 do
 	mkpdir "${major}.${min}-0" maintained "${ARCH}"
-	mksh "${DIRS[-2]}"/../.. preup postup
+	# 20:dists/ucs510/main/binary-amd64/
+	# 21:dists/errata510/main/binary-amd64/
+	# 22:dists/ucs511/main/binary-amd64/
+	# 23:dists/errata511/main/binary-amd64/
+	# 24:dists/ucs512/main/binary-amd64/
+	# 25:dists/errata512/main/binary-amd64/
+	# 26:dists/ucs513/main/binary-amd64/
+	# 27:dists/errata513/main/binary-amd64/
+	# 28:dists/ucs514/main/binary-amd64/
+	# 29:dists/errata514/main/binary-amd64/
+	# 30:dists/ucs515/main/binary-amd64/
+	# 31:dists/errata515/main/binary-amd64/
+	# 32:dists/ucs516/main/binary-amd64/
+	# 33:dists/errata516/main/binary-amd64/
+	# 34:dists/ucs517/main/binary-amd64/
+	# 35:dists/errata517/main/binary-amd64/
+	# 36:dists/ucs518/main/binary-amd64/
+	# 37:dists/errata518/main/binary-amd64/
+	# 38:dists/ucs519/main/binary-amd64/
+	# 39:dists/errata519/main/binary-amd64/
+	mksh "${DIR%/main/binary-*}" preup postup
 	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo -n " major..."
 for ((maj=5;maj<=9;maj+=1)) # major < 5 was using a different repo structure
 do
 	mkpdir "${maj}.0-0" maintained "${ARCH}"
-	mksh "${DIRS[-2]}"/../.. preup postup
+	# 40:dists/ucs600/main/binary-amd64/
+	# 41:dists/errata600/main/binary-amd64/
+	# 42:dists/ucs700/main/binary-amd64/
+	# 43:dists/errata700/main/binary-amd64/
+	# 44:dists/ucs800/main/binary-amd64/
+	# 45:dists/errata800/main/binary-amd64/
+	# 46:dists/ucs900/main/binary-amd64/
+	# 47:dists/errata900/main/binary-amd64/
+	mksh "${DIR%/main/binary-*}" preup postup
 	DOKAY+=("${DIRS[-2]}" "${DIRS[-1]}")
 done
 echo " done."

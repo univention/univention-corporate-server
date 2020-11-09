@@ -49,7 +49,7 @@ BUG31733 () { # expected-value cmd...
 	echo "### Initiate the repository (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 	mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 	mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
-	mkpkg "${DIRS[0]}" "${DIR_POOL}"
+	mkpkg "${DIR}" "${DIR_POOL}"
 
 	# reset to X.X-0 without errata patches
 	config_repo version/patchlevel=0 version/erratalevel=0
@@ -68,7 +68,7 @@ BUG31733 () { # expected-value cmd...
 		echo "### Create a new patchlevel release (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
 		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
 		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR_POOL}"
-		mkpkg "${DIRS[2]}" "${DIR_POOL}"
+		mkpkg "${DIR}" "${DIR_POOL}"
 		python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-${patchlevel}"
 
 		# an update should be available

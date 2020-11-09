@@ -40,8 +40,8 @@ def main():  # type: () -> None
     parser = argparse.ArgumentParser(
         description='Generates a valid releases.json.'
     )
-    parser.add_argument('repodir', metavar='REPODIR', type=str, help='path to repository, where releases.json is created/updated.')
-    parser.add_argument('versions', metavar='VERSION', type=str, nargs='*', help='a UCS version to be added to the releases.json. If omitted, the  automatic UCS version detection is activated!')
+    parser.add_argument('repodir', help='path to repository, where releases.json is created/updated.')
+    parser.add_argument('versions', nargs='*', help='a UCS version to be added to the releases.json. If omitted, the  automatic UCS version detection is activated!')
     args = parser.parse_args()
     releases = []
     if args.versions:

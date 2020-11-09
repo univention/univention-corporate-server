@@ -141,7 +141,7 @@ cleanup () { # Undo all changes
 	[ -f "${BASEDIR}/reenable_mirror" ] && a2ensite univention-repository >&3 2>&3
 	find -P /etc/apache2 -lname "${BASEDIR}/*" -delete
 	[ "$apache_mod_groupfile_enabled" -eq 0 ] ||
-		a2dismode authz_groupfile
+		a2dismod authz_groupfile
 	apache2ctl restart >&3 2>&3
 	sleep 3
 
@@ -164,6 +164,7 @@ cleanup () { # Undo all changes
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
 	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
+	find /var/lib/apt/lists/ -type f -not -name lock -delete
 
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
 
@@ -180,8 +181,18 @@ failure () { # Report failed command
 	echo "**************** Test failed above this line ****************" >&2
 	echo "ERROR ${0}:${BASH_LINENO[*]}" >&2
 	echo "ERROR ${BASH_COMMAND}" >&2
+	dump_repo
 	[ -s "${BASEDIR}/apache2.log" ] && cat "${BASEDIR}/apache2.log"
-	cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/mirror.list || :
+	grep -nHvFxf- --color=auto /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/mirror.list <<__GREP__ || :
+#Warning: This file is auto-generated and might be overwritten by
+#         univention-config-registry.
+#         Please edit the following file(s) instead:
+#Warnung: Diese Datei wurde automatisch generiert und kann durch
+#         univention-config-registry ueberschrieben werden.
+#         Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+#
+
+__GREP__
 	sleep "${UT_DELAY:-0}"
 	exit "${RETVAL:-140}" # internal error
 }
@@ -207,9 +218,9 @@ setup_apache () { # Setup apache for repository: [--port ${port}] [${prefix}]
 	CustomLog ${BASEDIR}/apache2.log "%>s (%b bytes) %r %u %l"
 	${alias}
 	<Directory ${REPODIR}>
-			   AllowOverride All
-			   Options +Indexes
-			   Require all granted
+		AllowOverride All
+		Options +Indexes
+		Require all granted
 	</Directory>
 	</VirtualHost>
 	EOF
@@ -222,7 +233,7 @@ setup_apache () { # Setup apache for repository: [--port ${port}] [${prefix}]
 	fi
 	truncate -s 0 "${BASEDIR}/apache2.log"
 
-	apache2ctl -M | grep -q authz_groupfile
+	apache2ctl -M | grep -q authz_groupfile && :
 	apache_mod_groupfile_enabled="$?"
 
 	a2enmod authz_groupfile
@@ -245,11 +256,6 @@ config_repo () { # Configure use of repository from local apache: [[server]:port
 		esac
 		shift
 	done
-	if [ -x /etc/init.d/cron ] && pidof cron >/dev/null
-	then
-		touch "${BASEDIR}/reenable_cron"
-		invoke-rc.d cron stop
-	fi
 	ucr set \
 		update/available= \
 		local/repository=no \
@@ -258,7 +264,11 @@ config_repo () { # Configure use of repository from local apache: [[server]:port
 		repository/online/server="${server}" \
 		repository/online/port="${port}" \
 		repository/online/prefix="${prefix}" \
+		repository/online/sources=no \
+		repository/online/unmaintained=no \
 		"${extra[@]}" >&3 2>&3
+	find /var/lib/apt/lists/ -type f -not -name lock -delete
+	_config_common
 }
 
 config_mirror () { # Configure mirror to use repository from local apache: [[server]:port] [/prefix] [ucrv=value]...
@@ -279,11 +289,6 @@ config_mirror () { # Configure mirror to use repository from local apache: [[ser
 		shift
 	done
 	mkdir -p "${mirror}"
-	if [ -x /etc/init.d/cron ] && pidof cron >/dev/null
-	then
-		touch "${BASEDIR}/reenable_cron"
-		invoke-rc.d cron stop
-	fi
 	ucr set \
 		local/repository=yes \
 		repository/online=no \
@@ -293,6 +298,17 @@ config_mirror () { # Configure mirror to use repository from local apache: [[ser
 		repository/mirror/port="${port}" \
 		repository/mirror/prefix="${prefix}" \
 		"${extra[@]}" >&3 2>&3
+	_config_common
+}
+
+_config_common () { # Setup done for testing
+	if [ -x /etc/init.d/cron ] && pidof cron >/dev/null
+	then
+		touch "${BASEDIR}/reenable_cron"
+		invoke-rc.d cron stop
+	fi
+
+	dump_repo
 }
 
 allpatchlevels () { # All ${major}.${minor}-0 ... ${major}.${minor}-${patchlevel}
@@ -318,21 +334,40 @@ allminors () { # All ${major}.0-0 ... ${major}.${minor}-0 ... ${major}.${minor}-
 
 have () { command -v "$1" >/dev/null 2>&1; }
 
+dump_repo () { # Dump direcory $REPODIR
+	local i
+
+	if have tree
+	then
+		tree -h -U "${REPODIR}"
+	else
+		find "${REPODIR}"
+	fi >&3 2>&3
+
+	# dump_repo
+	for ((i=0;i<${#DIRS[@]};i++))
+	do
+		printf '%2d: %q\n' "$i" "${DIRS[i]#${REPODIR}/}"
+	done >&3
+}
+
 declare -a DIRS
-mkpdir () { # Create pool directory ${dir}
-	declare -a versions release_types component_versions parts archs
-	local dir
+mkpdir () { # Create package directory ${dir}
+	declare -a versions component_versions parts archs
+	local dir suite='ucs'
 	while [ $# -ge 1 ]
 	do
 		case "${1}" in
-			[1-9]*.[0-9]*-[0-9]*|[1-9]*.[0-9]*--errata[0-9]*)
+			[1-9]*.[0-9]*-[0-9]*)
 				versions+=("${1%--*}")
-				release_types+=(ucs errata)
+				;;
+			[1-9]*.[0-9]*--errata[0-9]*)
+				versions+=("${1%--*}")
+				suite='errata'
 				;;
 			[1-9]*.[0-9]*--component/*)
 				versions+=("${1%--*}-0")
 				component_versions+=("${1}")
-				release_types+=(ucs errata)
 			;;
 			maintained|unmaintained) parts+=("${1}") ;;
 			all|i386|amd64) archs+=("${1}") ;;
@@ -342,28 +377,33 @@ mkpdir () { # Create pool directory ${dir}
 		shift
 	done
 
-	DIR_POOL="${REPODIR}/pool/main/"
+	DIR_POOL="${REPODIR}/pool/main"
 	mkdir -p "${DIR_POOL}"
 
 	local version arch release_type version_stripped
 	for version in "${versions[@]}"
 	do
 		echo "Creating for $version"
-		for release_type in "${release_types[@]}"
+		for release_type in 'ucs' 'errata'
 		do
 			version_stripped="${version%--*}"
 			version_stripped="${version_stripped//[^0-9]/}"
 			for arch in "${archs[@]}"
 			do
+				# `all` packages are listed within the `binary-$ARCH` section unless
+				# 'Release.Architectures' explicitly includes 'all'
+				[ "$arch" = 'all' ] &&
+					continue
 				dir="${REPODIR}/dists/${release_type}${version_stripped}/main/binary-${arch}/"
+				[ "$release_type" = "$suite" ] &&
+					DIR="${dir}"
 				# shellcheck disable=SC2076
 				if [[ ! " ${DIRS[*]} " =~ " $dir " ]]
 				then
-					DIR="${dir}"
-					DIRS+=("${DIR}")
-					mkdir -p "${DIR}"
-					touch "${DIR}/Packages"
-					mkpkg "${DIR}" "${DIR_POOL}"
+					DIRS+=("${dir}")
+					mkdir -p "${dir}"
+					touch "${dir}/Packages"
+					mkpkg "${dir}" "${DIR_POOL}"
 				fi
 			done
 		done
@@ -371,7 +411,7 @@ mkpdir () { # Create pool directory ${dir}
 	for version in "${component_versions[@]}"
 	do
 		echo "Creating for $version"
-		for part in "${parts[@]}";
+		for part in "${parts[@]}"
 		do
 			for arch in "${archs[@]}"
 			do
@@ -382,12 +422,6 @@ mkpdir () { # Create pool directory ${dir}
 			done
 		done
 	done
-
-	# find "${REPODIR}" >&3 2>&3
-
-	python2.7 ./create_releases_json.py "$REPODIR"
-
-	return 0
 }
 
 mkdeb () { # Create dummy package: [name [version [arch [dir [postinst]]]]]
@@ -409,7 +443,7 @@ mkdeb () { # Create dummy package: [name [version [arch [dir [postinst]]]]]
 	cat <<-EOF >"${BASEDIR}/${name}-${version}/DEBIAN/postinst"
 	#!/bin/sh
 	echo "${name}-${version}" >>"${BASEDIR}/install.log"
-	echo "${name}-${version}.postinst \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\n" " ")" >>"${BASEDIR}/install-status.log"
+	echo "${name}-${version}.postinst \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\\n" ' ')" >>"${BASEDIR}/install-status.log"
 	${5}
 	EOF
 	chmod 755 "${BASEDIR}/${name}-${version}/DEBIAN/postinst"
@@ -421,8 +455,6 @@ mkdeb () { # Create dummy package: [name [version [arch [dir [postinst]]]]]
 	*/pool/*) install -m 644 -t "${dir}/${name:0:1}/" -D "${DEB}" ;;
 	*) install -m 644 -t "${dir}/" -D "${DEB}" ;;
 	esac
-
-	find "${REPODIR}" >&3 2>&3
 }
 
 mkdsc () { # Create dummy source package: [name [version [arch [dir]]]]
@@ -471,22 +503,23 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 	shift
 	local dir_pool="${1:-${DIR_POOL}}"
 	shift
-	local rel_pool_dir="${dir_pool//${REPODIR}\/}"
-	rel_pool_dir="${rel_pool_dir//*\/component\//}"
-	cd "${dir_pool//${rel_pool_dir}/}" || return $?
+	local rel_pool_dir="${dir_pool#${REPODIR}/}"
+	rel_pool_dir="${rel_pool_dir#*/component/}"
+	cd "${dir_pool%${rel_pool_dir}}" || return $?
 	dpkg-scanpackages "${@}" "${rel_pool_dir}" > "${dir}/Packages" 2>&3 # || return $?
 	compress "${dir}/Packages"
 	cd "${OLDPWD}" || return $?
 
 	mkgpg
-	cd "${dir//\/main\/binary-*/}" || return $?
+	cd "${dir%/main/binary-*}" || return $?
 	rm -f Release Release.tmp Release.gpg
-	local codename=${dir//${REPODIR}/}
-	codename="${codename//\/main\/binary-*/}"
+	local codename=${dir#${REPODIR}/}
+	codename="${codename#dists/}"
+	codename="${codename%/main/binary-*}"
 	apt-ftparchive \
 		-o "APT::FTPArchive::Release::Architectures=${ARCH}" \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
-		-o "APT::FTPArchive::Release::Label=Univention" \
+		-o "APT::FTPArchive::Release::Label=Univention Corporate Server" \
 		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
 		-o "APT::FTPArchive::Release::Codename=${codename}" \
 		release . >Release.tmp 2>&3
@@ -498,23 +531,24 @@ mkpkg () { # Create Package files in ${1} for packages in ${2}. Optional argumen
 
 	for destname in "main" "non-free" "contrib"
 	do
-		local targetdir="${dir//\/main\/binary-*/}/$destname/binary-${ARCH}"
+		local targetdir="${dir%/main/binary-*}/$destname/binary-${ARCH}"
 		[ ! -e "$targetdir" ] && continue
 		cd "$targetdir" || return $?
 		codename="$destname/binary-${ARCH}"
 		apt-ftparchive \
 			-o "APT::FTPArchive::Release::Architectures=${ARCH}" \
 			-o "APT::FTPArchive::Release::Origin=Univention" \
-			-o "APT::FTPArchive::Release::Label=Univention" \
+			-o "APT::FTPArchive::Release::Label=Univention Corporate Server" \
 			-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
 			-o "APT::FTPArchive::Release::Codename=${codename}" \
+			-o "APT::FTPArchive::Release::Components=main non-free contrib" \
 			release . >Release.tmp 2>&3
 		mv Release.tmp Release
 		gpgsign Release
 		cd "${OLDPWD}" || return $?
 	done
 
-	find "${REPODIR}" >&3 2>&3
+	python2.7 ./create_releases_json.py "$REPODIR"
 }
 
 compress () { # compress file: <Packages|Sources>
@@ -557,6 +591,7 @@ gpgsign () { # sign file: [InRelease|Release|*.sh|-|*.dsc]
 	rm -f "${GPG_DIR}/out"
 	chroot "${GPG_DIR}" "${GPG_BIN}" \
 		--batch \
+		--quiet \
 		--pinentry-mode=loopback \
 		--passphrase '' \
 		--armor \
@@ -571,21 +606,22 @@ mksrc () { # Create Sources files in ${1} for packages in ${2}. Optional argumen
 	shift
 	local dir_pool="${1:-${DIR_POOL}}"
 	shift
-	local rel_pool_dir="${dir_pool//${REPODIR}\/}"
-	rel_pool_dir="${rel_pool_dir//*\/component\//}"
-	cd "${dir_pool//${rel_pool_dir}/}" || return $?
+	local rel_pool_dir="${dir_pool#${REPODIR}/}"
+	rel_pool_dir="${rel_pool_dir#*/component/}"
+	cd "${dir_pool%${rel_pool_dir}}" || return $?
 	dpkg-scansources "${@}" "${rel_pool_dir}" > "${dir}/Sources" 2>&3 # || return $?
 	compress "${dir}/Sources"
 	cd "${OLDPWD}" || return $?
 
 	mkgpg
-	cd "${dir//\/main\/source/}" || return $?
+	cd "${dir%/main/source}" || return $?
 	rm -f Release Release.tmp Release.gpg
-	local codename=${dir//${REPODIR}/}
-	codename="${codename//\/main\/source/}"
+	local codename=${dir#${REPODIR}/}
+	codename="${codename#dists/}"
+	codename="${codename%/main/source}"
 	apt-ftparchive \
 		-o "APT::FTPArchive::Release::Origin=Univention" \
-		-o "APT::FTPArchive::Release::Label=Univention" \
+		-o "APT::FTPArchive::Release::Label=Univention Corporate Server" \
 		-o "APT::FTPArchive::Release::Version=${REPODIR%%/*}" \
 		-o "APT::FTPArchive::Release::Codename=${codename}" \
 		release . >Release.tmp 2>&3
@@ -614,11 +650,12 @@ mkgpg () { # Create GPG-key for secure APT
 	GPGSTATUS="${GPG_DIR}/test.status"
 	chroot "${GPG_DIR}" "${GPG_BIN}" \
 		--batch \
+		--quiet \
 		--yes \
 		--pinentry-mode=loopback \
 		--passphrase '' \
 		--status-fd 3 \
-		--quick-generate-key 'ucs-test@univention.de' dsa default 1d 3>"${GPGSTATUS}"
+		--quick-generate-key 'ucs-test@univention.de' rsa default never 3>"${GPGSTATUS}"
 	GPGID=$(sed -ne 's/^\[GNUPG:\] KEY_CREATED P //p' "${GPGSTATUS}")
 	GPGPUB="${GPG_DIR}/test.pub"
 	chroot "${GPG_DIR}" "${GPG_BIN}" --armor --export "$GPGID" >"$GPGPUB"
@@ -638,7 +675,7 @@ mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup>
 		cat <<-EOF >"${dir}/${1}.sh"
 		#!/bin/sh
 		echo "${dir}/${1}.sh ${RANDOM}" "\$@" >>"${BASEDIR}/install.log"
-		echo "${1}.sh "\$@" \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\n" " ")" >>"${BASEDIR}/install-status.log"
+		echo "${1}.sh "\$@" \$(grep -Er "^(status|phase)=" /var/lib/univention-updater/univention-updater.status | sort | tr "\\n" ' ')" >>"${BASEDIR}/install-status.log"
 		exit ${ret}
 		EOF
 		chmod 755 "${dir}/${1}.sh"
@@ -654,6 +691,7 @@ mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup>
 }
 
 split_repo_path () { # Split repository path `$mm/$part/($mmp|component/$comp)/$arch` into atoms `($mmp|$mm--$comp,$part,$arch)`
+	# shellcheck disable=SC2016
 	python -c '
 from __future__ import print_function
 from os.path import relpath
@@ -724,7 +762,6 @@ checkdeb () { # Check is package was installed in versions $@
 checkmirror () { # Check mirror for completeness: required-dirs... -- forbidden-dirs...
 	# Have a look at https://git.knut.univention.de/univention/internal/repo-ng/-/blob/master/doc/struct.rst
 	# for the current repository layout.
-
 	local mirror="${BASEDIR}/mirror/mirror"
 	local port=80
 

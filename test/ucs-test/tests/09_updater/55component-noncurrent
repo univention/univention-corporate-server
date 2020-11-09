@@ -24,14 +24,19 @@ setup_apache "${repoprefix}"
 htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
+# 0:dists/ucs500/main/binary-amd64/
+# 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${_version_version}-1" maintained "${ARCH}"
+# 2:dists/ucs501/main/binary-amd64/
+# 3:dists/errata501/main/binary-amd64/
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[2]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
+# 4:5.0/maintained/component/test00000/all
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 

@@ -26,11 +26,11 @@ htpasswd -c -m -b "${REPODIR}/.htpasswd" "${username}" "${password}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${_version_version}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}c" 1 "${ARCH}" "${DIR}"
-mkpkg "${DIRS[2]}" "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 
 cat <<-EOF >"${DIR}/../.htaccess"
 AuthType Basic
@@ -43,11 +43,11 @@ EOF
 minor+=1
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[3]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
 mkdeb "${pkgname}c" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIRS[5]}" "${DIR}"
+mkpkg "${DIR}" "${DIR}"
 
 python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${major}.${minor}-0"
 

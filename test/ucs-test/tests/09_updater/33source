@@ -19,7 +19,7 @@ mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIR}" "${DIR_POOL}"
 
-SDIR="${DIRS[0]//binary-*/source}"
+SDIR="${DIR//binary-*/source}"
 mkdir -p "$SDIR"
 mkdsc "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
 mksrc "${SDIR}" "${DIR_POOL}"

@@ -55,8 +55,8 @@ have dselect && _dselect () { "$1" dselect update; }
 
 	echo "=== sec=no  key=no ==="
 	apt-key del "${GPGPUB}"
-	rm "${DIR//\/main\/binary-*/}/Release.gpg"
-	rm "${DIR//\/main\/binary-*/}/InRelease"
+	rm "${DIR%/main/binary-*}/Release.gpg"
+	rm "${DIR%/main/binary-*}/InRelease"
 	tests pos
 
 	echo "=== sec=yes  key=no ==="

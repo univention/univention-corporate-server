@@ -15,16 +15,17 @@ port=81
 setup_apache --port "${port}" "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
+# 0:dists/ucs500/main/binary-amd64/
+# 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"   # "${DIRS[0]}" ==> ucsXYZ
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
-mkpkg "${DIRS[1]}" "${DIR_POOL}"   # "${DIRS[1]}" ==> errataXYZ
+mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
-mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
-find "${REPODIR}" -ls >&2
+mksh "${DIR%/main/binary-*}" preup postup
 
 config_mirror :${port}
 
@@ -33,7 +34,6 @@ config_mirror :${port}
 	checkapt --mirror "http://localhost:${port}/${repoprefix}/" "${DIRS[@]}"
 	wait_for_updater_lock
 	univention-repository-update net
-	find "${BASEDIR}" -ls >&2
 	checkmirror
 )
 # shellcheck disable=SC2181

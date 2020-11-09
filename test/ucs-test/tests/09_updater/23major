@@ -18,22 +18,22 @@ setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${_version_version}-1" maintained "${ARCH}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[2]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 minor+=1
 minor_update_version="${major}.${minor}-0"
 mkpdir "${major}.${minor}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[4]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 major+=1
 mkpdir "${major}.0-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 4 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[6]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${_version_version}-1" "${minor_update_version}" "${major}.0-0"
 

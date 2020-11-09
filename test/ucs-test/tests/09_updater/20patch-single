@@ -16,11 +16,11 @@ setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
 mkdeb "${pkgname}" 1 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 mkpdir "${_version_version}-1" maintained "${ARCH}"
 mkdeb "${pkgname}" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[2]}" "${DIR_POOL}"
+mkpkg "${DIR}" "${DIR_POOL}"
 
 python2.7 create_releases_json.py "${REPODIR}" "${_version_version}-0" "${_version_version}-1"
 

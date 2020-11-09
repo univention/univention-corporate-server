@@ -13,16 +13,17 @@ RETVAL=110 # Test fehlgeschlagen
 setup_apache "${repoprefix}"
 
 mkpdir "${_version_version}-0" maintained "${ARCH}"
+# 0:dists/ucs500/main/binary-amd64/
+# 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"   # "${DIRS[0]}" ==> ucsXYZ
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
-mkpkg "${DIRS[1]}" "${DIR_POOL}"   # "${DIRS[1]}" ==> errataXYZ
+mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
-mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
-find "${REPODIR}" -ls >&2
+mksh "${DIR%/main/binary-*}" preup postup
 
 config_mirror repository/mirror=no
 
@@ -30,13 +31,11 @@ config_mirror repository/mirror=no
 	set -e
 	grep -v '^#\|^[[:space:]]*$\|^set ' /etc/apt/mirror.list && false
 	ucr set repository/mirror=yes
-	cat /etc/apt/mirror.list >&2
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[@]}"
 	echo "MARKER START for 09_updater/70mirror" >> /var/log/univention/repository.log
 	wait_for_updater_lock
 	univention-repository-update net
 	echo "MARKER END for 09_updater/70mirror" >> /var/log/univention/repository.log
-	find "${BASEDIR}" -ls >&2
 	checkmirror
 )
 # shellcheck disable=SC2181

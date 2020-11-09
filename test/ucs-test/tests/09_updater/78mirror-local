@@ -17,11 +17,6 @@ RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 FIXED_18225=false
 
-# Installing a local package conflicts with secure_apt; skip the test Bug #26668
-# shellcheck source=/dev/null
-. /usr/share/univention-lib/ucr.sh
-is_ucr_true update/secure_apt && exit 77
-
 # Change repoprefix, because both repositories are hosted on the same server
 srcprefix="source-repository-$$-${RANDOM}"
 repoprefix="mirrored-repository-$$-${RANDOM}"
@@ -33,68 +28,78 @@ setup_apache "" # setup server to / for ${repoprefix} and ${srcprefix}
 REPODIR="${REPODIR}/${srcprefix}"
 mkdir -p "${REPODIR}"
 
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # DIRS 0 + 1
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+# 0:dists/ucs500/main/binary-amd64/
+# 1:dists/errata500/main/binary-amd64/
 mkdeb "${pkgname}ua" 1 all "${DIR_POOL}"
-mkpkg "${DIRS[0]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkpkg "${DIRS[0]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[0]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
 mkdeb "${pkgname}ea" 1 all "${DIR_POOL}"
-mkpkg "${DIRS[1]}" "${DIR_POOL}"   # ==> errataXYZ
+mkpkg "${DIRS[1]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 1 "${ARCH}" "${DIR_POOL}"
 mkpkg "${DIRS[1]}" "${DIR_POOL}"
 BDIR+=("${DIR}")
-mksh "${DIRS[0]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all  # DIRS 2 + 3
-mkdeb "${pkgname}ca" 1 all "${DIR}"  # ==> X.Y/maintained/component/${compname}/all
+mkpdir "${major}.${minor}--component/${compname}" maintained all
+# 2:5.0/maintained/component/test00000/all
+mkdeb "${pkgname}ca" 1 all "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 BDIR+=("${DIR}")
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"  # DIRS 4 + 5
-mkdeb "${pkgname}cb" 1 "${ARCH}" "${DIR}"  # ==> X.Y/maintained/component/${compname}/${ARCH}
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+# 3:5.0/maintained/component/test00000/amd64
+mkdeb "${pkgname}cb" 1 "${ARCH}" "${DIR}"
 mkpkg "${DIR}" "${DIR}"
 BDIR+=("${DIR}")
 
 minor+=1
 
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # DIRS 6 + 7
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+# 4:dists/ucs510/main/binary-amd64/
+# 5:dists/errata510/main/binary-amd64/
 mkdeb "${pkgname}ua" 2 all "${DIR_POOL}"
-mkpkg "${DIRS[6]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkpkg "${DIRS[4]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[6]}" "${DIR_POOL}"
+mkpkg "${DIRS[4]}" "${DIR_POOL}"
 CDIR+=("${DIR}")
 mkdeb "${pkgname}ea" 2 all "${DIR_POOL}"
-mkpkg "${DIRS[7]}" "${DIR_POOL}"   # ==> errataXYZ
+mkpkg "${DIRS[5]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 2 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[7]}" "${DIR_POOL}"
+mkpkg "${DIRS[5]}" "${DIR_POOL}"
 CDIR+=("${DIR}")
-mksh "${DIRS[6]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+mksh "${DIR%/main/binary-*}" preup postup
 
-mkpdir "${major}.${minor}--component/${compname}" maintained all  # DIRS 8 + 9
+mkpdir "${major}.${minor}--component/${compname}" maintained all
+# 6:5.1/maintained/component/test00000/all
 mkdeb "${pkgname}ca" 2 all "${DIR}"
-mkpkg "${DIR}" "${DIR}"  # ==> X.Y/maintained/component/${compname}/all
+mkpkg "${DIR}" "${DIR}"
 mksh "${DIR}" preup postup
 CDIR+=("${DIR}")
-mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"  # DIRS 10 + 11
+mkpdir "${major}.${minor}--component/${compname}" maintained "${ARCH}"
+# 7:5.1/maintained/component/test00000/amd64
 mkdeb "${pkgname}cb" 2 "${ARCH}" "${DIR}"
-mkpkg "${DIR}" "${DIR}"  # ==> X.Y/maintained/component/${compname}/${ARCH}
+mkpkg "${DIR}" "${DIR}"
 CDIR+=("${DIR}")
 
 minor+=1
 
-mkpdir "${major}.${minor}-0" maintained "${ARCH}"  # DIRS 12 + 13
+mkpdir "${major}.${minor}-0" maintained "${ARCH}"
+# 8:dists/ucs520/main/binary-amd64/
+# 9:dists/errata520/main/binary-amd64/
 mkdeb "${pkgname}ua" 3 all "${DIR_POOL}"
-mkpkg "${DIRS[12]}" "${DIR_POOL}"   # ==> ucsXYZ
+mkpkg "${DIRS[8]}" "${DIR_POOL}"
 mkdeb "${pkgname}ub" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[12]}" "${DIR_POOL}"
+mkpkg "${DIRS[8]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
 mkdeb "${pkgname}ea" 3 all "${DIR_POOL}"
-mkpkg "${DIRS[13]}" "${DIR_POOL}"   # ==> errataXYZ
+mkpkg "${DIRS[9]}" "${DIR_POOL}"
 mkdeb "${pkgname}eb" 3 "${ARCH}" "${DIR_POOL}"
-mkpkg "${DIRS[13]}" "${DIR_POOL}"
+mkpkg "${DIRS[9]}" "${DIR_POOL}"
 ADIR+=("${DIR}")
-mksh "${DIRS[12]//\/main\/binary-*/}" preup postup  # hint: preup/postup are not required for errataXYZ
+mksh "${DIR%/main/binary-*}" preup postup
 
 minor+=-1
 
