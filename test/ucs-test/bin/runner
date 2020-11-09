@@ -4,36 +4,67 @@
 """UCS Testrunner - run UCS test in sane environment."""
 #
 import sys
-from optparse import OptionParser
-from univention.testing.internal import setup_environment, setup_debug
-from univention.testing.data import TestEnvironment, TestCase, TestResult
+from argparse import ArgumentParser, FileType, Namespace, REMAINDER  # noqa F401
+try:
+	from typing import Optional, Sequence  # noqa F401
+except ImportError:
+	pass
+
 import univention.testing.format
+from univention.testing.data import TestEnvironment, TestCase, TestResult
+from univention.testing.internal import setup_environment, setup_debug
 
 
-def main():
+def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
+	"""
+	Parse command line arguments.
+
+	This is used as a hash-bang like
+	> #!/usr/share/ucs-test/runner bash -e
+	When test "./00_foo -vf" is executed this gets translated to
+	> /usr/share/ucs-test/runner "bash -e" ./00_foo -v -f
+	"-v -f" are collected in `args` and must be pased again to get applied to `runner` itself.
+
+	>>> parse_args(["bash", "/dev/null"]) #doctest: +ELLIPSIS
+	Namespace(args=[], force=False, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=None)
+	>>> parse_args(["--verbose", "--force", "--format=text", "bash", "/dev/null"]) #doctest: +ELLIPSIS
+	Namespace(args=[], force=True, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=1)
+	>>> parse_args(["bash", "/dev/null", "--verbose", "--force", "--format=text"]) #doctest: +ELLIPSIS
+	Namespace(args=[], force=True, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=1)
+	"""
+	common = ArgumentParser(add_help=False)
+	common.add_argument("--verbose", "-v", action="count", help="Increase verbosity")
+	common.add_argument("--force", "-f", action="store_true", help="Disable pre-condition check")
+	common.add_argument("--format", "-F", choices=univention.testing.format.FORMATS, default='text', help="Select output format [%(default)s]")
+
+	parser = ArgumentParser(parents=[common])
+	parser.add_argument("interpreter", help="Command interpreter")
+	parser.add_argument("test", type=FileType("r"), help="ucs-test filename")
+	parser.add_argument('args', nargs=REMAINDER, help="Additional arguments")
+
+	options = parser.parse_args(args)
+	if options.args:
+		options = common.parse_args(args=options.args, namespace=options)
+		del options.args[:]
+
+	return options
+
+
+def main():  # type: () -> int
 	"""Run single UCS test."""
-	usage = "Usage: %prog [options] <lang> <file>"
-	parser = OptionParser(usage=usage)
-	parser.add_option("-v", "--verbose", dest="verbose", action="count", help="Increase verbosity")
-	parser.add_option("-f", "--force", dest="force", action="store_true", help="Disable pre-condition check")
-	parser.add_option("-F", "--format", dest="format", action="store", choices=univention.testing.format.FORMATS, default='text', help="Select output format [%default]")
-	(options, args) = parser.parse_args()
+	options = parse_args()
+
 	setup_environment()
 	setup_debug(options.verbose)
 
-	try:
-		lang, filename = args[0:2]  # pylint: disable-msg=W0612
-		del sys.argv[0:2]
-	except ValueError:
-		parser.print_usage(sys.stderr)
-		sys.exit(2)
+	del sys.argv[0:2]
 
 	formatter = getattr(univention.testing.format, 'format_%s' % (options.format,))
 	format = formatter()
 	test_env = TestEnvironment(interactive=True)
 	if options.force:
 		test_env.set_exposure('dangerous')
-	test_case = TestCase().load(filename)
+	test_case = TestCase().load(options.test.name)
 	test_result = TestResult(test_case, test_env).run()
 	format.format(test_result)
 	return 0 if test_result.eofs in 'OS' else 1

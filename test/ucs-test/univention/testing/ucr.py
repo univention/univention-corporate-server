@@ -15,7 +15,6 @@ and therefore changes in configuration files created by UCR!
 WARNING2:
 The API is currently under development and may change before next UCS release!
 """
-from __future__ import print_function
 #
 # Copyright 2013-2020 Univention GmbH
 #
@@ -43,9 +42,12 @@ from __future__ import print_function
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+from __future__ import print_function
 
 import copy
+
 import univention.config_registry
+from univention.config_registry import ConfigRegistry
 
 ConfigRegistry = univention.config_registry.ConfigRegistry
 

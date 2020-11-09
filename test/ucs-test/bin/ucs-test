@@ -2,32 +2,33 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 noet :
 """UCS Testrunner - run UCS test in sane environment."""
 
-import sys
+import argparse
 import logging
 import operator
+import sys
 from time import time
-import argparse
+try:
+	from typing import Iterable, List, Mapping, Optional, Sequence, Tuple  # noqa F401
+except ImportError:
+	pass
 
 import univention.testing.format
-from univention.testing.internal import setup_environment, setup_debug, \
-	LOG_BASE, get_sections, get_tests
-from univention.testing.data import TestEnvironment, TestCase, TestResult
-from univention.testing.errors import TestError
 from univention.testing.coverage import Coverage
-from functools import reduce
+from univention.testing.data import TestEnvironment, TestCase, TestResult, TestFormatInterface  # noqa F401
+from univention.testing.errors import TestError
+from univention.testing.internal import setup_environment, setup_debug, LOG_BASE, get_sections, get_tests
 
 
-def parse_options(sections):
+def parse_options(sections):  # type: (Sequence[str]) -> Tuple[argparse.Namespace, List[str]]
 	"""Parse command line options."""
-	usage = "%(prog)s [options]"
-	parser = argparse.ArgumentParser(usage=usage)
+	parser = argparse.ArgumentParser()
 	parser.add_argument(
 		"-H", "--hold",
-		dest="hold", action="store_true", default=False,
+		action="store_true",
 		help="Stop execution after the first failed test")
 	parser.add_argument(
 		"-t", "--timeout",
-		dest="timeout", action="store", default=3600, type=int,
+		default=3600, type=int,
 		help="Abort single test after [%(default)s]s")
 
 	selection_group = parser.add_argument_group('Test selection')
@@ -49,7 +50,6 @@ def parse_options(sections):
 		help="Neither require nor prohibit this tag", metavar="TAG")
 	selection_group.add_argument(
 		"-E", "--exposure",
-		dest="exposure", action="store",
 		choices=('safe', 'careful', 'dangerous'),
 		help="Run more dangerous tests")
 
@@ -64,24 +64,23 @@ def parse_options(sections):
 		help="Hide tests with unmatched pre-conditions")
 	output_group.add_argument(
 		"-F", "--format",
-		dest="format", action="store",
 		choices=univention.testing.format.FORMATS, default='text',
 		help="Select output format [%(default)s]")
 	output_group.add_argument(
 		"-v", "--verbose",
-		dest="verbose", action="count",
+		action="count",
 		help="Increase verbosity")
 	output_group.add_argument(
 		"-i", "--interactive",
-		dest="interactive", action="store_true", default=False,
+		action="store_true",
 		help="Run test connected to terminal")
 	output_group.add_argument(
 		"-c", "--count",
-		dest="count", action="store_true", default=False,
+		action="store_true",
 		help="Prefix tests by count")
 	output_group.add_argument(
 		"-l", "--logfile",
-		dest="logfile", action="store", default=LOG_BASE % (time(),),
+		default=LOG_BASE % (time(),),
 		help="Path to log file [%(default)s]")
 
 	Coverage.get_argument_group(parser)
@@ -92,23 +91,23 @@ class TestSet(object):
 
 	"""Container for tests."""
 
-	def __init__(self, tests):
+	def __init__(self, tests):  # type: (Mapping[str, Iterable[TestCase]]) -> None
 		self.tests = tests
-		self.max_count = reduce(operator.add, [len(_) for _ in tests.values()])
-		self.test_environment = None
-		self.format = None
+		self.max_count = sum(1 for tests in tests.values() for test in tests)
+		self.test_environment = None  # type: Optional[TestEnvironment]
+		self.format = None  # type: Optional[TestFormatInterface]
 		self.prefix = ''
 
-	def set_environment(self, test_environment):
+	def set_environment(self, test_environment):  # type: (TestEnvironment) -> None
 		"""Set environment for running tests."""
 		self.test_environment = test_environment
 
-	def set_format(self, format):
+	def set_format(self, format):  # type: (str) -> None
 		"""Select output format."""
 		formatter = getattr(univention.testing.format, 'format_%s' % (format,))
 		self.format = formatter()
 
-	def set_prefix(self, prefix):
+	def set_prefix(self, prefix):  # type: (bool) -> None
 		"""Enable or disable test numbering."""
 		if prefix:
 			count_width = len('%d' % (self.max_count,))
@@ -116,8 +115,10 @@ class TestSet(object):
 		else:
 			self.prefix = ''
 
-	def run_tests(self, filter_condition=False, dry_run=False, stop_on_failure=False):
+	def run_tests(self, filter_condition=False, dry_run=False, stop_on_failure=False):  # type: (bool, bool, bool) -> Optional[int]
 		"""Run selected tests."""
+		assert self.format
+		assert self.test_environment
 		self.format.begin_run(self.test_environment, self.max_count)
 		try:
 			count = 0
@@ -154,9 +155,10 @@ class TestSet(object):
 					self.format.end_section()
 		finally:
 			self.format.end_run()
+		return 0
 
 
-def main():
+def main():  # type: () -> Optional[int]
 	"""Run UCS test suite."""
 	all_sections = get_sections()
 

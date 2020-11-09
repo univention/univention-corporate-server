@@ -1,10 +1,17 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as HTML."""
+
 from __future__ import print_function
+
 import sys
-from univention.testing.codes import TestCodes
 from xml.sax.saxutils import escape as escape_xml
-from univention.testing.data import TestFormatInterface
+try:
+	from typing import IO  # noqa F401
+except ImportError:
+	pass
+
+from univention.testing.codes import TestCodes
+from univention.testing.data import TestFormatInterface, TestEnvironment, TestResult  # noqa F401
 
 __all__ = ['HTML']
 
@@ -19,10 +26,10 @@ class HTML(TestFormatInterface):
 	Create simple HTML report.
 	"""
 
-	def __init__(self, stream=sys.stdout):
+	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
 		super(HTML, self).__init__(stream)
 
-	def begin_run(self, environment, count=1):
+	def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
 		"""Called before first test."""
 		super(HTML, self).begin_run(environment, count)
 		print('<html>', file=self.stream)
@@ -31,13 +38,13 @@ class HTML(TestFormatInterface):
 		print('</head>', file=self.stream)
 		print('<body>', file=self.stream)
 
-	def begin_section(self, section):
+	def begin_section(self, section):  # type: (str) -> None
 		"""Called before each section."""
 		super(HTML, self).begin_section(section)
 		print('<h2>Section %s</h2>' % (escape_xml(section),), file=self.stream)
 		print('<table>', file=self.stream)
 
-	def end_test(self, result):
+	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
 		title = escape_xml(result.case.uid)
 		if result.case.description:
@@ -61,22 +68,21 @@ class HTML(TestFormatInterface):
 		print('<tr><td>%s</td><td>%s</td></tr>' % (title, msg), file=self.stream)
 		super(HTML, self).end_test(result)
 
-	def end_section(self):
+	def end_section(self):  # type: () -> None
 		"""Called after each section."""
 		print('</table>', file=self.stream)
 		super(HTML, self).end_section()
 
-	def end_run(self):
+	def end_run(self):  # type: () -> None
 		"""Called after all test."""
 		print('</body>', file=self.stream)
 		print('</html>', file=self.stream)
 		super(HTML, self).end_run()
 
-	def format(self, result):
+	def format(self, result):  # type: (TestResult) -> None
 		"""Format single test.
 
-		>>> from univention.testing.data import TestCase, TestEnvironment, \
-						TestResult
+		>>> from univention.testing.data import TestCase
 		>>> te = TestEnvironment()
 		>>> tc = TestCase()
 		>>> tc.uid = 'python/data.py'

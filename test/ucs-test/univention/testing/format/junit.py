@@ -1,20 +1,26 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as JUnit report."""
+
+import errno
+import os
 import sys
-from univention.testing.data import TestFormatInterface
-from univention.testing.codes import TestCodes
-from xml.sax.saxutils import XMLGenerator
 from codecs import encode as _encode
 from datetime import datetime
-import os
-import errno
+from xml.sax.saxutils import XMLGenerator
+try:
+	from typing import Any, IO  # noqa F401
+except ImportError:
+	pass
 
 import six
+
+from univention.testing.codes import TestCodes
+from univention.testing.data import TestFormatInterface, TestCase, TestResult  # noqa F401
 
 __all__ = ['Junit']
 
 
-def encode(string, *args):
+def encode(string, *args):  # type: (str, *Any) -> str
 	if six.PY2:
 		return _encode(string, *args)
 	return string
@@ -27,17 +33,17 @@ class Junit(TestFormatInterface):
 	<http://windyroad.org/dl/Open%20Source/JUnit.xsd>
 	"""
 
-	def __init__(self, stream=sys.stdout):
+	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
 		super(Junit, self).__init__(stream)
 		self.outdir = "test-reports"
 		self.now = datetime.today()
 
-	def begin_test(self, case, prefix=''):
+	def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
 		"""Called before each test."""
 		super(Junit, self).begin_test(case, prefix)
 		self.now = datetime.today().replace(microsecond=0)
 
-	def end_test(self, result):
+	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
 		failures = errors = skipped = disabled = 0
 		if result.eofs == 'O':
@@ -164,17 +170,16 @@ class Junit(TestFormatInterface):
 			f_report.close()
 		super(Junit, self).end_test(result)
 
-	def utf8(self, data):
+	def utf8(self, data):  # type: (Any) -> str
 		if isinstance(data, six.text_type):
 			data = data.encode('utf-8', 'replace').decode('utf-8')
 		elif isinstance(data, bytes):
 			data = data.decode('utf-8', 'replace').encode('utf-8')
 		return data
 
-	def format(self, result):
+	def format(self, result):  # type: (TestResult) -> None
 		"""
-		>>> from univention.testing.data import TestCase, TestEnvironment, \
-						TestResult
+		>>> from univention.testing.data import TestEnvironment
 		>>> te = TestEnvironment()
 		>>> tc = TestCase()
 		>>> tc.uid = 'python/data.py'

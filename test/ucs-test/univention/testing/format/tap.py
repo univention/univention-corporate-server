@@ -1,9 +1,16 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Format UCS Test results as Test Anything Protocol report."""
+
 from __future__ import print_function
+
 import sys
-from univention.testing.data import TestFormatInterface
+try:
+	from typing import Any, IO  # noqa F401
+except ImportError:
+	pass
+
 from univention.testing.codes import TestCodes
+from univention.testing.data import TestFormatInterface, TestEnvironment, TestResult  # noqa F401
 
 __all__ = ['TAP']
 
@@ -15,15 +22,15 @@ class TAP(TestFormatInterface):
 	<http://testanything.org/wiki/index.php/Main_Page>
 	"""
 
-	def __init__(self, stream=sys.stdout):
+	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
 		super(TAP, self).__init__(stream)
 
-	def begin_run(self, environment, count=1):
+	def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
 		"""Called before first test."""
 		super(TAP, self).begin_run(environment, count)
 		print("1..%d" % (count,))
 
-	def end_test(self, result):
+	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
 		if result.result == TestCodes.RESULT_OKAY:
 			prefix = 'ok'
@@ -37,10 +44,9 @@ class TAP(TestFormatInterface):
 		print('%s %s%s' % (prefix, result.case.uid, suffix), file=self.stream)
 		super(TAP, self).end_test(result)
 
-	def format(self, result):
+	def format(self, result):  # type: (TestResult) -> None
 		"""
-		>>> from univention.testing.data import TestCase, TestEnvironment, \
-						TestResult
+		>>> from univention.testing.data import TestCase
 		>>> te = TestEnvironment()
 		>>> tc = TestCase()
 		>>> tc.uid = 'python/data.py'

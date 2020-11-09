@@ -1,5 +1,11 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Public interface for test resultes."""
+
+try:
+	from typing import Dict, Optional  # noqa F401
+except ImportError:
+	pass
+
 __all__ = ['TestCodes']
 
 
@@ -41,7 +47,7 @@ class TestCodes(object):
 		RESULT_OKAY: 'O',
 		RESULT_FAIL: 'F',
 		RESULT_SKIP: 'S',
-	}
+	}  # type: Dict[Optional[int], str]
 	for (code, (eofs, name, msg, color)) in __REASONS.items():
 		locals()[name] = code
 		MESSAGE[code] = msg

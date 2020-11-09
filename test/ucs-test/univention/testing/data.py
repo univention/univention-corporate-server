@@ -1,28 +1,37 @@
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 :
 """Test case, environment, result and related classes."""
-from __future__ import print_function
+
 # pylint: disable-msg=R0902,W0201,R0903,E1101,E0611
-import sys
+
+from __future__ import print_function
+
+import apt
+import errno
+import logging
+import hashlib
 import os
-from univention.config_registry import ConfigRegistry
+import re
+import select
+import signal
+import six
+import sys
 import yaml
+from datetime import datetime
+from functools import reduce
+from operator import and_, or_
+from subprocess import call, Popen, PIPE
+from time import time
+try:
+	from typing import Any, Dict, IO, Iterable, Iterator, List, Optional, Sequence, Set, TypeVar  # noqa F401
+	T = TypeVar("T")
+except ImportError:
+	pass
+
+from univention.config_registry import ConfigRegistry
+
 from univention.testing.codes import TestCodes
 from univention.testing.internal import UCSVersion
 from univention.testing.errors import TestError
-from operator import and_, or_
-from subprocess import call, Popen, PIPE
-import apt
-from datetime import datetime
-import logging
-import signal
-import select
-import errno
-import re
-import six
-from hashlib import md5
-from time import time
-from functools import reduce
-
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
 
@@ -41,9 +50,7 @@ ILLEGAL_XML_UNICHR = (
 RE_ILLEGAL_XML = re.compile(u'[%s]' % u''.join((u'%s-%s' % (six.unichr(low), six.unichr(high)) for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode)))
 
 
-def checked_set(values):
-	if values is None:
-		return None
+def checked_set(values):  # type: (Optional[Iterable[T]]) -> Set[T]
 	if not isinstance(values, (list, tuple, set, frozenset)):
 		raise TypeError('"%r" not a list or tuple' % values)
 	return set(values)
@@ -58,7 +65,7 @@ class TestEnvironment(object):
 
 	logger = logging.getLogger('test.env')
 
-	def __init__(self, interactive=True, logfile=None):
+	def __init__(self, interactive=True, logfile=None):  # type: (bool, Optional[str]) -> None
 		self.exposure = 'safe'
 		self.interactive = interactive
 		self.timeout = 0
@@ -69,21 +76,21 @@ class TestEnvironment(object):
 		self._load_apt()
 
 		if interactive:
-			self.tags_required = None
-			self.tags_prohibited = None
+			self.tags_required = None  # type: Optional[Set[str]]
+			self.tags_prohibited = None  # type: Optional[Set[str]]
 		else:
 			self.tags_required = set()
 			self.tags_prohibited = set(('SKIP', 'WIP'))
 
 		self.log = open(logfile or os.path.devnull, 'a')
 
-	def _load_host(self):
+	def _load_host(self):  # type: () -> None
 		"""Load host system information."""
 		(_sysname, nodename, _release, _version, machine) = os.uname()
 		self.hostname = nodename
 		self.architecture = machine
 
-	def _load_ucr(self):
+	def _load_ucr(self):  # type: () -> None
 		"""Load Univention Config Registry information."""
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
@@ -101,7 +108,7 @@ class TestEnvironment(object):
 			self.ucs_version = UCSVersion((major, minor, patchlevel, erratalevel))
 		TestEnvironment.logger.debug('Version=%r' % self.ucs_version)
 
-	def _load_join(self):
+	def _load_join(self):  # type: () -> None
 		"""Load join status."""
 		devnull = open(os.path.devnull, 'w+')
 		try:
@@ -116,22 +123,22 @@ class TestEnvironment(object):
 			devnull.close()
 		TestEnvironment.logger.debug('Join=%r' % self.joined)
 
-	def _load_apt(self):
+	def _load_apt(self):  # type: () -> None
 		"""Load package information."""
 		self.apt = apt.Cache()
 
-	def dump(self, stream=sys.stdout):
+	def dump(self, stream=sys.stdout):  # type: (IO[str]) -> None
 		"""Dump environment information."""
 		print('hostname: %s' % (self.hostname,), file=stream)
 		print('architecture: %s' % (self.architecture,), file=stream)
 		print('version: %s' % (self.ucs_version,), file=stream)
 		print('role: %s' % (self.role,), file=stream)
 		print('joined: %s' % (self.joined,), file=stream)
-		print('tags_required: %s' % (' '.join(self.tags_required) or '-',), file=stream)
-		print('tags_prohibited: %s' % (' '.join(self.tags_prohibited) or '-',), file=stream)
+		print('tags_required: %s' % (' '.join(self.tags_required or set()) or '-',), file=stream)
+		print('tags_prohibited: %s' % (' '.join(self.tags_prohibited or set()) or '-',), file=stream)
 		print('timeout: %d' % (self.timeout,), file=stream)
 
-	def tag(self, require=set(), ignore=set(), prohibit=set()):
+	def tag(self, require=set(), ignore=set(), prohibit=set()):  # type: (Set[str], Set[str], Set[str]) -> None
 		"""Update required, ignored, prohibited tags."""
 		if self.tags_required is not None:
 			self.tags_required -= set(ignore)
@@ -141,11 +148,11 @@ class TestEnvironment(object):
 			self.tags_prohibited |= set(prohibit)
 		TestEnvironment.logger.debug('tags_required=%r tags_prohibited=%r' % (self.tags_required, self.tags_prohibited))
 
-	def set_exposure(self, exposure):
+	def set_exposure(self, exposure):  # type: (str) -> None
 		"""Set maximum allowed exposure level."""
 		self.exposure = exposure
 
-	def set_timeout(self, timeout):
+	def set_timeout(self, timeout):  # type: (int) -> None
 		"""Set maximum allowed time for single test."""
 		self.timeout = timeout
 
@@ -156,7 +163,7 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 	Read test case header lines starting with ##.
 	"""
 
-	def __init__(self, stream, digest):
+	def __init__(self, stream, digest):  # type: (IO[bytes], hashlib._Hash) -> None
 		self.stream = stream
 		self.digest = digest
 
@@ -186,19 +193,19 @@ class Verdict(object):
 
 	logger = logging.getLogger('test.cond')
 
-	def __init__(self, level, message, reason=None):
+	def __init__(self, level, message, reason=None):  # type: (int, str, Optional[Any]) -> None
 		self.level = level
 		self.message = message
 		self.reason = reason
 		Verdict.logger.debug(self)
 
-	def __nonzero__(self):
+	def __nonzero__(self):  # type: () -> bool
 		return self.level < Verdict.ERROR
 
-	def __str__(self):
+	def __str__(self):  # type: () -> str
 		return '%s: %s' % ('IWE'[self.level], self.message)
 
-	def __repr__(self):
+	def __repr__(self):  # type: () -> str
 		return '%s(level=%r, message=%r)' % (self.__class__.__name__, self.level, self.message)
 
 
@@ -208,7 +215,7 @@ class Check(object):
 	Abstract check.
 	"""
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check if precondition to run test is met."""
 		raise NotImplementedError()
 
@@ -219,11 +226,11 @@ class CheckExecutable(Check):
 	Check language.
 	"""
 
-	def __init__(self, filename):
+	def __init__(self, filename):  # type: (str) -> None
 		super(CheckExecutable, self).__init__()
 		self.filename = filename
 
-	def check(self, _environment):
+	def check(self, _environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required executable."""
 		if not os.path.isabs(self.filename):
 			if self.filename.startswith('python'):
@@ -238,7 +245,7 @@ class CheckExecutable(Check):
 		else:
 			yield Verdict(Verdict.ERROR, 'Missing executable: %s' % (self.filename,), TestCodes.REASON_INSTALL)
 
-	def __str__(self):
+	def __str__(self):  # type: () -> str
 		return self.filename
 
 
@@ -250,12 +257,12 @@ class CheckVersion(Check):
 
 	STATES = frozenset(('found', 'fixed', 'skip', 'run'))
 
-	def __init__(self, versions):
+	def __init__(self, versions):  # type: (Dict[str, str]) -> None
 		super(CheckVersion, self).__init__()
 		self.versions = versions
 		self.state = 'run'
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for expected version."""
 		versions = []
 		for version, state in self.versions.items():
@@ -278,11 +285,11 @@ class CheckTags(Check):
 	Check for required / prohibited tags.
 	"""
 
-	def __init__(self, tags):
+	def __init__(self, tags):  # type: (Iterable[str]) -> None
 		super(CheckTags, self).__init__()
 		self.tags = checked_set(tags)
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required / prohibited tags."""
 		if environment.tags_required is None or environment.tags_prohibited is None:
 			yield Verdict(Verdict.INFO, 'Tags disabled')
@@ -312,12 +319,12 @@ class CheckRoles(Check):
 		'basesystem',
 	))
 
-	def __init__(self, roles_required=(), roles_prohibited=()):
+	def __init__(self, roles_required=(), roles_prohibited=()):  # type: (Iterable[str], Iterable[str]) -> None
 		super(CheckRoles, self).__init__()
 		self.roles_required = checked_set(roles_required)
 		self.roles_prohibited = checked_set(roles_prohibited)
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required / prohibited server role."""
 		overlap = self.roles_required & self.roles_prohibited
 		if overlap:
@@ -326,7 +333,7 @@ class CheckRoles(Check):
 		elif self.roles_required:
 			roles = set(self.roles_required)
 		else:
-			roles = CheckRoles.ROLES - set(self.roles_prohibited)
+			roles = set(CheckRoles.ROLES) - set(self.roles_prohibited)
 
 		unknown_roles = roles - CheckRoles.ROLES
 		if unknown_roles:
@@ -342,11 +349,11 @@ class CheckJoin(Check):
 	Check join status.
 	"""
 
-	def __init__(self, joined):
+	def __init__(self, joined):  # type: (Optional[bool]) -> None
 		super(CheckJoin, self).__init__()
 		self.joined = joined
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for join status."""
 		if self.joined is None:
 			yield Verdict(Verdict.INFO, 'No required join status')
@@ -364,11 +371,11 @@ class CheckComponents(Check):
 	Check for required / prohibited components.
 	"""
 
-	def __init__(self, components):
+	def __init__(self, components):  # type: (Dict[str, str]) -> None
 		super(CheckComponents, self).__init__()
 		self.components = components
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required / prohibited components."""
 		for component, required in self.components.items():
 			key = 'repository/online/component/%s' % (component,)
@@ -391,12 +398,12 @@ class CheckPackages(Check):
 	Check for required packages.
 	"""
 
-	def __init__(self, packages, packages_not):
+	def __init__(self, packages, packages_not):  # type: (Sequence[str], Sequence[str]) -> None
 		super(CheckPackages, self).__init__()
 		self.packages = packages
 		self.packages_not = packages_not
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for required / prohibited packages."""
 		def check_disjunction(conjunction):
 			"""Check is any of the alternative packages is installed."""
@@ -447,12 +454,12 @@ class CheckExposure(Check):
 
 	STATES = ['safe', 'careful', 'dangerous']
 
-	def __init__(self, exposure, digest):
+	def __init__(self, exposure, digest):  # type: (str, hashlib._Hash) -> None
 		super(CheckExposure, self).__init__()
 		self.exposure = exposure
 		self.digest = digest
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> Iterator[Verdict]
 		"""Check environment for permitted exposure level."""
 		exposure = 'DANGEROUS'
 		try:
@@ -481,23 +488,23 @@ class TestCase(object):
 	logger = logging.getLogger('test.case')
 	RE_NL = re.compile(r'[\r\n]+'.encode('utf-8'))
 
-	def __init__(self):
-		self.exe = None
-		self.args = []
-		self.filename = None
-		self.uid = None
-		self.description = None
-		self.bugs = set()
-		self.otrs = set()
-		self.timeout = None
-		self.signaled = None
+	def __init__(self):  # type: () -> None
+		self.exe = None  # type: Optional[CheckExecutable]
+		self.args = []  # type: List[str]
+		self.filename = None  # type: Optional[str]
+		self.uid = None  # type: Optional[str]
+		self.description = None  # type: Optional[str]
+		self.bugs = set()  # type: Set[str]
+		self.otrs = set()  # type: Set[str]
+		self.timeout = None  # type: Optional[int]
+		self.signaled = None  # type: Optional[int]
 
-	def load(self, filename):
+	def load(self, filename):  # type: (str) -> TestCase
 		"""
 		Load test case from stream.
 		"""
 		TestCase.logger.info('Loading test %s' % (filename,))
-		digest = md5()
+		digest = hashlib.md5()
 		try:
 			tc_file = open(filename, 'rb')
 		except IOError as ex:
@@ -562,7 +569,7 @@ class TestCase(object):
 
 		return self
 
-	def check(self, environment):
+	def check(self, environment):  # type: (TestEnvironment) -> List[Check]
 		"""
 		Check if the test case should run.
 		"""
@@ -683,7 +690,7 @@ class TestCase(object):
 		clean = RE_ILLEGAL_XML.sub(u'\uFFFD', dirty)
 		result.attach(part, 'text/plain', clean)
 
-	def _translate_result(self, result):
+	def _translate_result(self, result):  # type: (TestResult) -> None
 		"""Translate exit code into result."""
 		if result.result == TestCodes.RESULT_OKAY:
 			result.reason = {
@@ -704,7 +711,7 @@ class TestCase(object):
 				}.get(self.versions.state, result.result)
 		result.eofs = TestCodes.EOFS.get(result.reason, 'E')
 
-	def run(self, result):
+	def run(self, result):  # type: (TestResult) -> None
 		"""Run the test case and fill in result."""
 		base = os.path.basename(self.filename)
 		dirname = os.path.dirname(self.filename)
@@ -721,14 +728,14 @@ class TestCase(object):
 		result.environment.log.flush()
 
 		# Protect wrapper from Ctrl-C as long as test case is running
-		def handle_int(_signal, _frame):
+		def handle_int(_signal, _frame):  # type: (int, Any) -> None
 			"""Handle Ctrl-C signal."""
 			result.result = TestCodes.RESULT_SKIP
 			result.reason = TestCodes.REASON_ABORT
 		old_sig_int = signal.signal(signal.SIGINT, handle_int)
 		old_sig_alrm = signal.getsignal(signal.SIGALRM)
 
-		def prepare_child():
+		def prepare_child():  # type: () -> None
 			"""Setup child process."""
 			os.setsid()
 			signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -791,7 +798,7 @@ class TestCase(object):
 
 		self._translate_result(result)
 
-	def handle_shutdown(self, signal, _frame):
+	def handle_shutdown(self, signal, _frame):  # type: (int, Any) -> None
 		TestCase.logger.debug('Received SIG%d', signal)
 		self.signaled = signal
 
@@ -869,48 +876,48 @@ class TestFormatInterface(object):  # pylint: disable-msg=R0921
 
 	"""Format UCS Test result."""
 
-	def __init__(self, stream=sys.stdout):
-		self.stream = stream
-		self.environment = None
-		self.count = None
-		self.section = None
-		self.case = None
-		self.prefix = None
+	def __init__(self, stream=sys.stdout):  # type: (IO[str]) -> None
+		self.stream = stream  # type: IO[str]
+		self.environment = None  # type: Optional[TestEnvironment]
+		self.count = 0
+		self.section = ''
+		self.case = None  # type: Optional[TestCase]
+		self.prefix = ''
 
-	def begin_run(self, environment, count=1):
+	def begin_run(self, environment, count=1):  # type: (TestEnvironment, int) -> None
 		"""Called before first test."""
 		self.environment = environment
 		self.count = count
 
-	def begin_section(self, section):
+	def begin_section(self, section):  # type: (str) -> None
 		"""Called before each section."""
 		self.section = section
 
-	def begin_test(self, case, prefix=''):
+	def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
 		"""Called before each test."""
 		self.case = case
 		self.prefix = prefix
 
-	def end_test(self, result):
+	def end_test(self, result):  # type: (TestResult) -> None
 		"""Called after each test."""
 		self.case = None
-		self.prefix = None
+		self.prefix = ''
 
-	def end_section(self):
+	def end_section(self):  # type: () -> None
 		"""Called after each section."""
-		self.section = None
+		self.section = ''
 
-	def end_run(self):
+	def end_run(self):  # type: () -> None
 		"""Called after all test."""
 		self.environment = None
-		self.count = None
+		self.count = 0
 
-	def format(self, result):
+	def format(self, result):  # type: (TestResult) -> None
 		"""Format single test."""
 		raise NotImplementedError()
 
 
-def __run_test(filename):
+def __run_test(filename):  # type: (str) -> None
 	"""Run local test."""
 	test_env = TestEnvironment()
 	# test_env.dump()
