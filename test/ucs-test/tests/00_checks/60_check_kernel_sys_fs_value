@@ -1,0 +1,14 @@
+#!/usr/share/ucs-test/runner bash
+## desc: check kernel sys/fs values
+## tags:
+##  - basic
+##  - apptest
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+if [ "$(cat /proc/sys/fs/protected_symlinks)" -ne 1 ]; then
+	fail_fast 110 "protected_symlinks value not equal to 1"
+fi
+
+exit "$RETVAL"

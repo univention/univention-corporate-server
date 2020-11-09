@@ -1,3 +1,9 @@
+ucs-test (9.0.5-21) unstable; urgency=medium
+
+  * Bug #37103: added 00_checks/60_check_kernel_sys_fs_value
+
+ -- Jan Luttermann <luttermann@univention.de>  Mon, 09 Nov 2020 14:40:30 +0100
+
 ucs-test (9.0.5-20) unstable; urgency=medium
 
   * Bug #51929: added 55_adconnector/504_test_group_cache_after_move
