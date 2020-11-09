@@ -81,7 +81,7 @@ usage () {
 	# TODO see RELEASE_UPDATE
 	echo "    errata_update        - public, testing or none for errata updates (default: testing)"
 	echo "    UCSSCHOOL_RELEASE    - ucs school release (default: $ucsschool_release)"
-	echo "    COMPONENT_UPDATE     - TODO Not implemented should indicate dev/released version of non ucs component (app, ...)"
+	echo "    COMPONENT_VERSION    - update component? should indicate dev/released version of non ucs component (app, ...) (default: testing)"
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    UCS_TEST_RUN         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
@@ -158,6 +158,7 @@ declare -a env_vars=(
 	OLD_AMI
 	OLD_VERSION
 	RELEASE_UPDATE
+	COMPONENT_VERSION
 	REPLACE
 	SHUTDOWN
 	TARGET_VERSION
@@ -185,6 +186,7 @@ export EXACT_MATCH="${EXACT_MATCH:=$exact_match}"
 export SHUTDOWN="${SHUTDOWN:=$shutdown}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
+export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=$ucsschool_release}
 export CFG="$1"
 
