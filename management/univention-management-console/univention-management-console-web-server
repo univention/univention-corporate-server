@@ -52,7 +52,7 @@ import functools
 import threading
 from errno import ESRCH
 from optparse import OptionParser
-from six.moves.urllib_parse import urlparse, urlunsplit
+from six.moves.urllib_parse import urlparse, urlunsplit, quote
 from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
 import six
@@ -358,16 +358,15 @@ class QueueRequest(object):
 
 class User(object):
 
-	__slots__ = ('sessionid', 'username', 'password', 'saml', 'data', '_time_remaining')
+	__slots__ = ('sessionid', 'username', 'password', 'saml', '_time_remaining')
 
-	def __init__(self, sessionid, username, password, saml=None, data=None):
+	def __init__(self, sessionid, username, password, saml=None):
 		self.sessionid = sessionid
 		self.username = username
 		self.password = password
 		self.saml = saml
 		self._time_remaining = _session_timeout
 		self.reset_timeout()
-		self.data = data or {}
 
 	def reset_timeout(self):
 		self._time_remaining = self.session_validity
@@ -693,10 +692,10 @@ class Ressource(object):
 		if morsel:
 			return morsel.value
 
-	def set_session(self, sessionid, username, password=None, saml=None, **kwargs):
+	def set_session(self, sessionid, username, password=None, saml=None):
 		olduser = self.get_user()
 
-		user = User(sessionid, username, password, saml or olduser and olduser.saml, kwargs)
+		user = User(sessionid, username, password, saml or olduser and olduser.saml)
 		self._session_timeout_timer(user)
 
 		self.sessions[sessionid] = user
@@ -1059,10 +1058,12 @@ class CPAuth(CPgeneric):
 				)
 			raise
 
+		# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
+		location = urlparse(kwargs.get('return', '/univention/management/'))
+		if location.path.startswith('//'):
+			location = urlparse('')
+		location = urlunsplit((None, None, location.path, location.query, location.fragment))
 		cherrypy.response.status = 303
-		location = '/univention/management/'
-		if user and user.data and user.data.get('relay_state') and user.data['relay_state'].get('referer'):
-			location = user.data['relay_state']['referer']
 		cherrypy.response.headers['Location'] = location
 
 	@cherrypy.config(**{'tools.umcp_auth.on': False})
@@ -1181,8 +1182,6 @@ class SAML(Ressource):
 		self.bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
 
 		self.outstanding_queries = {}
-		self.relay_state = {}
-		self._acs_callbacks = {}
 		self.reload()
 
 	@property
@@ -1212,23 +1211,23 @@ class SAML(Ressource):
 		binding, message, relay_state = self._get_saml_message()
 
 		if message is None:
-			return self.do_single_sign_on(relay_state=rndstr())
+			return self.do_single_sign_on(relay_state=kwargs.get('location', '/univention/management/'))
 
-		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)
+		acs = self.attribute_consuming_service
+		if relay_state == 'iframe-passive':
+			acs = self.attribute_consuming_service_iframe
 		return acs(binding, message, relay_state)
 
 	@cherrypy.expose
 	def iframe(self, *args, **kwargs):
 		cherrypy.request.uri = cherrypy.request.uri.replace('/iframe', '')
-		relay_state = rndstr()
-		self._acs_callbacks[relay_state] = self.attribute_consuming_service_iframe
-		return self.do_single_sign_on(is_passive='true', relay_state=relay_state)
+		return self.do_single_sign_on(is_passive='true', relay_state='iframe-passive')
 
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
-		self.set_session(self.create_sessionid(), saml.username, saml=saml, relay_state=self.relay_state.get(relay_state))
-		raise HTTPRedirect('/univention/auth/sso')
+		self.set_session(self.create_sessionid(), saml.username, saml=saml)
+		raise HTTPRedirect('/univention/auth/sso?return=%s' % (quote(relay_state),))
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
 		cherrypy.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
@@ -1368,17 +1367,6 @@ class SAML(Ressource):
 
 		reply_binding, service_provider_url = self.select_service_provider()
 		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
-
-		if relay_state:
-			# protect against javascript:alert('XSS'), mailto:foo and other non relative links!
-			location = urlparse(cherrypy.request.query.get('location', ''))
-			if location.path.startswith('//'):
-				location = urlparse('')
-			location = urlunsplit(('', '', location.path, location.query, location.fragment))
-			self.relay_state[relay_state] = {
-				'uri': cherrypy.request.uri,
-				'referer': location,
-			}
 
 		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
 		self.outstanding_queries[sid] = service_provider_url  # cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
