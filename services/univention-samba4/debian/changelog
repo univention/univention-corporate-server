@@ -3,6 +3,12 @@ univention-samba4 (9.0.5-1) unstable; urgency=medium
   * Bug #52485: Depend on samba-dsdb-modules
 
  -- Arvid <requate@univention.de>  Fri, 11 Dec 2020 23:13:29 +0100
+ 
+univention-samba4 (9.0.4-2) unstable; urgency=medium
+
+  * Bug #51835: fixed ucr description
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Nov 2020 11:28:30 +0100
 
 univention-samba4 (9.0.4-1) unstable; urgency=medium
 
