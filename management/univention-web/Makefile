@@ -107,7 +107,7 @@ TMP_DOJO_PACKAGES := $(DOJO_PACKAGES:$(DOJO_DIR)/%=$(TMP_DIR)/%)
 TMP_I18N_FILES := $(addprefix $(TMP_I18N_DIR)/, en/app.json de/app.json en/branding.json de/branding.json)
 
 # font files
-FONT_FILES := $(shell unzip -l roboto.zip | sed -n 's/^.*\s*\(Roboto.*\.woff\).*$$/\1/p')
+FONT_FILES := $(shell unzip -Z1 Open_Sans.zip | grep "ttf\|woff")
 TMP_FONT_FILES := $(addprefix $(TMP_THEME_DIR)/fonts/, $(FONT_FILES))
 
 # image files
@@ -206,7 +206,7 @@ $(TMP_IMG_FILES): $(TMP_THEME_DIR)/%: css/%
 	# unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
 	# sed -i '/font-size: 10px/d' $@
 
-$(TMP_FONT_FILES): roboto.zip
+$(TMP_FONT_FILES): Open_Sans.zip
 	mkdir -p $(@D)
 	unzip -o $< $(@F) -d $(@D)
 	touch $@
