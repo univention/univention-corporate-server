@@ -1,0 +1,35 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: poppler
+fix: 0.48.0-2+deb9u4
+desc: |
+ This update addresses the following issues:
+ * NULL pointer dereference in the AnnotRichMedia::Content::Content
+   (CVE-2017-14926)
+ * NULL pointer dereference in the
+   AnnotRichMedia::Configuration::Configuration (CVE-2017-14928)
+ * reachable abort in Object.h (CVE-2018-19058)
+ * reachable Object::dictLookup assertion in FileSpec class in FileSpec.cc
+   (CVE-2018-20650)
+ * SIGABRT PDFDoc::setup class in PDFDoc.cc (CVE-2018-20662)
+ * heap-based buffer over-read in XRef::getEntry in XRef.cc (CVE-2019-7310)
+ * integer overflow in JPXStream::init function leading to memory consumption
+   (CVE-2019-9959)
+ * An issue was discovered in Xpdf 4.01.01. There is an FPE in the function
+   PostScriptFunction::exec at Function.cc for the psOpIdiv case.
+   (CVE-2019-10018)
+ * divide-by-zero in function SplashOutputDev::tilingPatternFill in
+   SplashOutputDev.cc (CVE-2019-14494)
+bug: [52327]
+cve:
+- CVE-2017-14926
+- CVE-2017-14928
+- CVE-2018-19058
+- CVE-2018-20650
+- CVE-2018-20662
+- CVE-2019-7310
+- CVE-2019-9959
+- CVE-2019-10018
+- CVE-2019-14494
