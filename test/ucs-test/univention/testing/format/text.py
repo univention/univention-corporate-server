@@ -18,7 +18,7 @@ import univention.config_registry
 
 from univention.testing.data import TestFormatInterface, TestCodes, TestCase, TestEnvironment, TestResult  # noqa F401
 
-__all__ = ['Text']
+__all__ = ['Text', 'Raw']
 
 
 class _Term(object):  # pylint: disable-msg=R0903
@@ -134,6 +134,27 @@ class Text(TestFormatInterface):
 		self.end_test(result)
 		self.end_section()
 		self.end_run()
+
+
+class Raw(Text):
+	"""
+	Create simple text report with raw file names.
+	"""
+
+	def begin_test(self, case, prefix=''):  # type: (TestCase, str) -> None
+		"""Called before each test."""
+		super(Text, self).begin_test(case, prefix)
+		title = prefix + case.uid
+
+		cols = self.term.COLS - TestCodes.MAX_MESSAGE_LEN - 1
+		if cols < 1:
+			cols = self.term.COLS
+		while len(title) > cols:
+			print(title[:cols], file=self.stream)
+			title = title[cols:]
+		ruler = '.' * (cols - len(title))
+		print('%s%s' % (title, ruler), end=' ', file=self.stream)
+		self.stream.flush()
 
 
 if __name__ == '__main__':

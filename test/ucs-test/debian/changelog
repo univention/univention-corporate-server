@@ -1,6 +1,7 @@
 ucs-test (10.0.1-25) unstable; urgency=low
 
   * Bug #51588: Fix 09_updater/ tests
+  * Bug #52210: Add `Raw` output format
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 09 Nov 2020 18:43:55 +0100
 
