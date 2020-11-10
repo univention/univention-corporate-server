@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: krb5
+fix: 1.15-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * MIT Kerberos 5 (aka krb5) before 1.17.2 and 1.18.x before 1.18.3 allows
+   unbounded recursion via an ASN.1-encoded Kerberos message because the
+   lib/krb5/asn.1/asn1_encode.c support for BER indefinite lengths lacks a
+   recursion limit. (CVE-2020-28196)
+bug: [52325]
+cve:
+- CVE-2020-28196
