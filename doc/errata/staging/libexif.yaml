@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: libexif
+fix: 0.6.21-2+deb9u5
+desc: |
+ This update addresses the following issue:
+ * libexif overflow check could be optimized away (CVE-2020-16125)
+bug: [52329]
+cve:
+- CVE-2020-16125
