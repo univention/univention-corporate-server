@@ -23,7 +23,7 @@ def parse_args(args=None):  # type: (Optional[Sequence[str]]) -> Namespace
 	> #!/usr/share/ucs-test/runner bash -e
 	When test "./00_foo -vf" is executed this gets translated to
 	> /usr/share/ucs-test/runner "bash -e" ./00_foo -v -f
-	"-v -f" are collected in `args` and must be pased again to get applied to `runner` itself.
+	"-v -f" are collected in `args` and must be passed again to get applied to `runner` itself.
 
 	>>> parse_args(["bash", "/dev/null"]) #doctest: +ELLIPSIS
 	Namespace(args=[], force=False, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=None)
