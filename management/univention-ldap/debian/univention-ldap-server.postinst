@@ -237,7 +237,7 @@ if [ "$1" = "configure" ]; then
 		if test -x /etc/init.d/slapd; then
 			/etc/init.d/slapd start
 		fi
-		ucr set backup/clean/max/age?365
+		ucr set backup/clean/max_age?365
 	fi
 
 	## load the listener module
