@@ -64,7 +64,7 @@ def main():  # type: () -> int
 	test_env = TestEnvironment(interactive=True)
 	if options.force:
 		test_env.set_exposure('dangerous')
-	test_case = TestCase().load(options.test.name)
+	test_case = TestCase(options.test.name).load()
 	test_result = TestResult(test_case, test_env).run()
 	format.format(test_result)
 	return 0 if test_result.eofs in 'OS' else 1

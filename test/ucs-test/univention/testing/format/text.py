@@ -122,8 +122,7 @@ class Text(TestFormatInterface):
 	def format(self, result):  # type: (TestResult) -> None
 		"""
 		>>> te = TestEnvironment()
-		>>> tc = TestCase()
-		>>> tc.uid = 'python/data.py'
+		>>> tc = TestCase('python/data.py')
 		>>> tr = TestResult(tc, te)
 		>>> tr.success()
 		>>> Text().format(tr)

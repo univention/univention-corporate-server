@@ -181,8 +181,7 @@ class Junit(TestFormatInterface):
 		"""
 		>>> from univention.testing.data import TestEnvironment
 		>>> te = TestEnvironment()
-		>>> tc = TestCase()
-		>>> tc.uid = 'python/data.py'
+		>>> tc = TestCase('python/data.py')
 		>>> tr = TestResult(tc, te)
 		>>> tr.success()
 		>>> Junit().format(tr)

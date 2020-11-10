@@ -488,29 +488,30 @@ class TestCase(object):
 	logger = logging.getLogger('test.case')
 	RE_NL = re.compile(r'[\r\n]+'.encode('utf-8'))
 
-	def __init__(self):  # type: () -> None
+	def __init__(self, filename):  # type: (str) -> None
+		self.filename = os.path.abspath(filename)
+		self.uid = os.path.sep.join(filename.rsplit(os.path.sep, 2)[-2:])
+
 		self.exe = None  # type: Optional[CheckExecutable]
 		self.args = []  # type: List[str]
-		self.filename = None  # type: Optional[str]
-		self.uid = None  # type: Optional[str]
 		self.description = None  # type: Optional[str]
 		self.bugs = set()  # type: Set[str]
 		self.otrs = set()  # type: Set[str]
 		self.timeout = None  # type: Optional[int]
 		self.signaled = None  # type: Optional[int]
 
-	def load(self, filename):  # type: (str) -> TestCase
+	def load(self):  # type: () -> TestCase
 		"""
 		Load test case from stream.
 		"""
-		TestCase.logger.info('Loading test %s' % (filename,))
+		TestCase.logger.info('Loading test %s', self.filename)
 		digest = hashlib.md5()
 		try:
-			tc_file = open(filename, 'rb')
+			tc_file = open(self.filename, 'rb')
 		except IOError as ex:
 			TestCase.logger.critical(
 				'Failed to read "%s": %s',
-				filename, ex)
+				self.filename, ex)
 			raise TestError('Failed to open file')
 
 		try:
@@ -532,14 +533,11 @@ class TestCase(object):
 			except yaml.scanner.ScannerError as ex:
 				TestCase.logger.critical(
 					'Failed to read "%s": %s',
-					filename, ex,
+					self.filename, ex,
 					exc_info=True)
 				raise TestError('Invalid test YAML data')
 		finally:
 			tc_file.close()
-
-		self.filename = os.path.abspath(filename)
-		self.uid = os.path.sep.join(self.filename.rsplit(os.path.sep, 2)[-2:])
 
 		try:
 			self.description = header.get('desc', '').strip()
@@ -563,7 +561,7 @@ class TestCase(object):
 		except (TypeError, ValueError) as ex:
 			TestCase.logger.critical(
 				'Tag error in "%s": %s',
-				filename, ex,
+				self.filename, ex,
 				exc_info=True)
 			raise TestError(ex)
 

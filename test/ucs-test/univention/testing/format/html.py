@@ -84,8 +84,7 @@ class HTML(TestFormatInterface):
 
 		>>> from univention.testing.data import TestCase
 		>>> te = TestEnvironment()
-		>>> tc = TestCase()
-		>>> tc.uid = 'python/data.py'
+		>>> tc = TestCase('python/data.py')
 		>>> tr = TestResult(tc, te)
 		>>> tr.success()
 		>>> HTML().format(tr)

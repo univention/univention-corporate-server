@@ -128,7 +128,7 @@ class TestSet(object):
 					for fname in cases:
 						count += 1
 						try:
-							test_case = TestCase().load(fname)
+							test_case = TestCase(fname).load()
 						except TestError as ex:
 							logger = logging.getLogger('test')
 							logger.critical(
