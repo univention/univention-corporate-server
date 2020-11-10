@@ -978,14 +978,24 @@ slapcat &gt; ldapdaten.txt
 	  <title>Tägliche Sicherung der LDAP-Daten</title>
 	  <para>
 		Auf dem &ucsMaster; und allen &ucsBackup;-Systemen wird der Inhalt des LDAP-Verzeichnisses
-		durch einen Cron-Job täglich gesichert.
+		durch einen Cron-Job täglich gesichert. Falls Samba 4 eingesetzt wird, wird auch dessen
+		Daten-Verzeichnis gesichert.
 	  </para>
 
 	  <para>
 		Die LDAP-Daten werden im LDIF-Format im Verzeichnis <filename class="directory">/var/univention-backup/</filename> im
 		Namensschema <filename>ldap-backup_DATUM.ldif.gz</filename> gespeichert. Sie sind nur für
-		den Benutzer <systemitem class="username">root</systemitem> lesbar.
+		den Benutzer <systemitem class="username">root</systemitem> lesbar. Die Samba 4 Backup-Dateien werden im
+		Verzeichnis <filename class="directory">/var/univention-backup/samba/</filename> gesichert.
 	  </para>
+
+	  <para>
+		Mit der &ucsUCRV; <envar>backup/clean/max_age</envar> kann definiert werden, wie lange alte Backup-Dateien
+		aufgehoben werden (z.B. backup/clean/max_age=365, alle Dateien älter als 365 Tage werden automatisch gelöscht).
+		Diese Variable wird bei Neuinstallationen ab UCS 4.4-7 automatisch auf 365 gesetzt. Falls die Variable nicht
+		gesetzt ist, werden keine Backup-Dateien gelöscht.
+	  </para>
+
 	</section>
 
 </section>
