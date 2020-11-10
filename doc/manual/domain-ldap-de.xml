@@ -991,7 +991,7 @@ slapcat &gt; ldapdaten.txt
 
 	  <para>
 		Mit der &ucsUCRV; <envar>backup/clean/max_age</envar> kann definiert werden, wie lange alte Backup-Dateien
-		aufgehoben werden (z.B. backup/clean/max_age=365, alle Dateien älter als 365 Tage werden automatisch gelöscht).
+		aufgehoben werden (z.B. <envar>backup/clean/max_age=365</envar>, alle Dateien älter als 365 Tage werden automatisch gelöscht).
 		Diese Variable wird bei Neuinstallationen ab UCS 4.4-7 automatisch auf 365 gesetzt. Falls die Variable nicht
 		gesetzt ist, werden keine Backup-Dateien gelöscht.
 	  </para>
