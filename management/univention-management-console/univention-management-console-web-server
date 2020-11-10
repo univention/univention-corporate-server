@@ -92,6 +92,8 @@ _session_timeout = get_int('umc/http/session/timeout', 300)
 
 REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE = int(REQUEST_ENTITY_TOO_LARGE), int(LENGTH_REQUIRED), int(NOT_FOUND), int(BAD_REQUEST), int(UNAUTHORIZED), int(SERVICE_UNAVAILABLE)
 
+PORT = None
+
 
 def sessionidhash():
 	session = u'%s%s%s%s' % (cherrypy.request.headers.get('Authorization', ''), cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)
@@ -1135,6 +1137,8 @@ def get_ip_address():
 
 class SAML(Ressource):
 
+	identity_cache = '/var/cache/univention-management-console/saml-%s.bdb' % (PORT,)
+
 	def __init__(self):
 		self.configfile = '/usr/share/univention-management-console/saml/sp.py'
 		self.__sp = None
@@ -1155,7 +1159,7 @@ class SAML(Ressource):
 		CORE.info('Reloading SAML service provider configuration')
 		sys.modules.pop(os.path.splitext(os.path.basename(self.configfile))[0], None)
 		try:
-			self.__sp = Saml2Client(config_file=self.configfile)
+			self.__sp = Saml2Client(config_file=self.configfile, identity_cache=self.identity_cache)
 			return True
 		except Exception:
 			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
@@ -1487,6 +1491,9 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			self.stderr_path = '/dev/stderr'
 		self.pidfile_path = '/var/run/umc-web-server{}.pid'.format(self.options.port if self.options.port != 8090 else '')
 		self.pidfile_timeout = 10
+
+		global PORT
+		PORT = self.options.port
 
 		# init daemon runner
 		DaemonRunner.__init__(self, self)
