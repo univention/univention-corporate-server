@@ -146,6 +146,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py']),  # Bug #49866
 	('^ImportError: No module named types', [r'import univention\.admin\.types']),  # Bug #50381
 	('^ImportError: No module named docker_upgrade', ['univention-app']),  # Bug #50381
+	('^ImportError: No module named docker_base', ['univention-app']),  # Bug #50381
 	('^ImportError: No module named service', ['univention-app']),  # Bug #50381
 	('^ImportError: No module named ldap_extension', ['get_action']),  # Bug #50381
 	('^AttributeError: __exit__', ['with Server']),  # Bug #50583
