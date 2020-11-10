@@ -1353,6 +1353,7 @@ class SAML(Ressource):
 			raise SamlError().from_exception(*sys.exc_info())
 		if response is None:
 			raise SamlError().unparsed_saml_response()
+		self.outstanding_queries.pop(response.in_response_to, None)
 		return response
 
 	def do_single_sign_on(self, **kwargs):
