@@ -76,7 +76,7 @@ from saml2.metadata import create_metadata_string
 from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
-from saml2.ident import code
+from saml2.ident import code as encode_name_id, decode as decode_name_id
 from saml2.validate import ResponseLifetimeExceed
 
 from univention.lib.i18n import NullTranslation
@@ -398,6 +398,10 @@ class User(object):
 		# though
 		return self.password is None and self.saml
 
+	def on_logout(self):
+		if SAML.SP and self.saml:
+			SAML.SP.local_logout(decode_name_id(self.saml.name_id))
+
 	def get_umc_password(self):
 		if self.is_saml_user():
 			return self.saml.message
@@ -423,7 +427,7 @@ class SAMLUser(object):
 
 	def __init__(self, response, message):
 		self.not_on_or_after = response.not_on_or_after
-		self.name_id = code(response.name_id)
+		self.name_id = encode_name_id(response.name_id)
 		self.message = message
 		self.username = u''.join(response.ava['uid'])
 
@@ -715,7 +719,9 @@ class Ressource(object):
 	def expire_session(self):
 		sessionid = self.get_session_id()
 		if sessionid:
-			self.sessions.pop(sessionid, None)
+			user = self.sessions.pop(sessionid, None)
+			if user:
+				user.on_logout()
 			UMCP_Dispatcher.cleanup_session(sessionid)
 			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
 
@@ -740,6 +746,7 @@ class Ressource(object):
 		if user._time_remaining <= 0 and (not session or not session._requestid2response_queue):
 			self._log('info', 'session timed out')
 			self.sessions.pop(user.sessionid, None)
+			user.on_logout()
 			return
 
 		# count down the timer second-wise (in order to avoid problems when
@@ -1185,27 +1192,29 @@ def get_ip_address():
 
 class SAML(Ressource):
 
+	SP = None
+	identity_cache = None
+	state_cache = None
+	configfile = '/usr/share/univention-management-console/saml/sp.py'
+	idp_query_param = "IdpQuery"
+	bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
+	outstanding_queries = {}
+
 	def __init__(self):
-		self.configfile = '/usr/share/univention-management-console/saml/sp.py'
-		self.__sp = None
-
-		self.idp_query_param = "IdpQuery"
-		self.bindings = [BINDING_HTTP_REDIRECT, BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT]
-
-		self.outstanding_queries = {}
 		self.reload()
 
 	@property
 	def sp(self):
-		if not self.__sp and not self.reload():
+		if not self.SP and not self.reload():
 			raise UMC_HTTPError(SERVICE_UNAVAILABLE, 'Single sign on is not available due to misconfiguration. See logfiles.', reason='SSO Service Unavailable')
-		return self.__sp
+		return self.SP
 
-	def reload(self):
+	@classmethod
+	def reload(cls):
 		CORE.info('Reloading SAML service provider configuration')
-		sys.modules.pop(os.path.splitext(os.path.basename(self.configfile))[0], None)
+		sys.modules.pop(os.path.splitext(os.path.basename(cls.configfile))[0], None)
 		try:
-			self.__sp = Saml2Client(config_file=self.configfile)
+			cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=cls.identity_cache, state_cache=cls.state_cache)
 			return True
 		except Exception:
 			CORE.warn('Startup of SAML2.0 service provider failed:\n%s' % (traceback.format_exc(),))
