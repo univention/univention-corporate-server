@@ -882,6 +882,9 @@
 				<listitem><simpara>
 					The scripts in <package>univention-samba</package> and <package>univention-samba4</package> are now running with Python 3 (<u:bug>52045</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-samba</package> has been adjusted to properly restart samba during package updates in case <application>smbd</application> was running (<u:bug>47367</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
