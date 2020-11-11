@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-ldap
-fix: 15.0.1-3A~4.4.0.202011051708
+fix: 15.0.1-3A~4.4.0.202011110949
 desc: |
  This update addresses the following issue(s):
  * Setting of ucr backup/clean/max_age variable for 

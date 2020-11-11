@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-lib
-fix: 8.0.1-39A~4.4.0.202011041334
+fix: 8.0.1-39A~4.4.0.202011110937
 desc: |
  This update addresses the following issue(s):
  * Evaluation of ucr vaiables in the function clean_old_backups
