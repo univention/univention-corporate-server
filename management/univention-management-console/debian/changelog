@@ -1,3 +1,10 @@
+univention-management-console (11.0.5-14) unstable; urgency=medium
+
+  * Bug #52318: add HTTP reason phrase for 502+503 errors if UMC-Web-
+    Server is unreachable
+
+ -- Florian Best <best@univention.de>  Wed, 11 Nov 2020 15:10:18 +0100
+
 univention-management-console (11.0.5-13) unstable; urgency=medium
 
   * Bug #52321: return all session infos instead of only the username
