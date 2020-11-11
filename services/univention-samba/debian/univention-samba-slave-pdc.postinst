@@ -40,7 +40,11 @@ univention-config-registry set \
 
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then
-		/etc/init.d/samba crestart
+		if [ -x /etc/init.d/samba ]; then
+			if [ -n "$(pgrep -f /usr/sbin/smbd)" ]; then
+				/etc/init.d/samba restart
+			fi
+		fi
 	elif [ -x /etc/init.d/samba ]; then
 		/etc/init.d/samba start
 	fi
