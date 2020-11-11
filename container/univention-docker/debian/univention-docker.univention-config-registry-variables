@@ -10,6 +10,12 @@ Description[en]=Options for the docker daemon.
 Type=str
 Categories=service-container
 
+[docker/daemon/default/json]
+Description[de]=Zusätzliche JSON Daten, die in '/etc/docker/daemon.json' integriert werden.
+Description[en]=Additional JSON data to be mixed into '/etc/docker/daemon.json'.
+Type=str
+Categories=service-container
+
 [docker/daemon/default/parameter/.*]
 Description[de]=Optionen für den Docker Daemon. Diese Parameter werden ohne einen Wert an den Docker Daemon übertragen.
 Description[en]=Options for the docker daemon. These parameters will be given to the docker without a value.

@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-docker
+fix: 4.0.1-9
+desc: |
+ This update addresses the following issue:
+ * The new UCR variable `docker/daemon/default/json` can be used to configure
+   arbitrary JSON encoded data, which gets mixed into the Docker daemon
+   configuration file `/etc/docker/daemon.json`.
+bug: [52344]

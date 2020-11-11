@@ -1,3 +1,10 @@
+univention-docker (5.0.0-2) unstable; urgency=low
+
+  * Bug #52344: Add UCR variable `docker/daemon/default/json` for JSON mixin
+    into /etc/docker/daemon.json.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 13 Nov 2020 16:47:06 +0100
+
 univention-docker (5.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump

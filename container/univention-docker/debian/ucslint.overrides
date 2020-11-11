@@ -1,4 +1,5 @@
 0010-2: conffiles/etc/init.d/docker
 0013-2: conffiles/etc/init.d/docker
-0004-16: container/univention-docker/conffiles/etc/docker/daemon.json
-0004-16: container/univention-docker/conffiles/etc/docker/seccomp-systemd.json
+0004-16: conffiles/etc/docker/daemon.json
+0004-16: conffiles/etc/docker/seccomp-systemd.json
+0004-56: conffiles/etc/docker/seccomp-systemd.json
