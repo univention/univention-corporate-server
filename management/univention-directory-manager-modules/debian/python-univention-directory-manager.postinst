@@ -51,7 +51,7 @@ if [ "$1" = "configure" ]; then
 		password/hashing/method?MD5 # for update keep old behavior
 
 	if [ -n "$2" ]; then
-		elif dpkg --compare-versions "$2" lt-nl 14.0.14-20; then
+		if dpkg --compare-versions "$2" lt-nl 14.0.14-20; then
 			univention-directory-listener-ctrl resync udm_extension
 		fi
 	fi
