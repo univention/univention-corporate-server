@@ -74,7 +74,7 @@ def _s2nano(seconds):
 
 
 def _nano2s(nanoseconds):
-	return nanoseconds / 10000000
+	return int(nanoseconds / 10000000)
 
 
 def ucs2con(s4connector, key, object):

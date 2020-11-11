@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.3-2) unstable; urgency=medium
+
+  * Bug #52043: s4connector.s4.dc._nano2s should return int with Python 3 too
+
+ -- Arvid <requate@univention.de>  Wed, 11 Nov 2020 19:43:34 +0100
+
 univention-s4-connector (14.0.3-1) unstable; urgency=medium
 
   * Bug #52043: migrate univention-s4-connector to Python 3
