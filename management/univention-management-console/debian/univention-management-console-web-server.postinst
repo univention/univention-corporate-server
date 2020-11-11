@@ -35,6 +35,7 @@
 . /usr/share/univention-lib/base.sh
 
 # add apache modules for redirect to UMC web server
+a2enmod wsgi
 a2enmod proxy
 a2enmod proxy_connect
 a2enmod proxy_http

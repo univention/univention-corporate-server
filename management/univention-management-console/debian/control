@@ -187,6 +187,7 @@ Package: univention-management-console-web-server
 Architecture: all
 Depends:
  curl,
+ libapache2-mod-wsgi,
  openssl,
  python-cherrypy3,
  python-daemon,
