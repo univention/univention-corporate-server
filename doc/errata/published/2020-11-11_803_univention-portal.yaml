@@ -9,3 +9,5 @@ desc: |
  * Fetching the portal entries is not done multiple times anymore if
    it is not expected that the contents changed through the edit mode.
 bug: [52345]
+erratum: 803
+announced: 2020-11-11
