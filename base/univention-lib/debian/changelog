@@ -1,3 +1,9 @@
+univention-lib (8.0.1-40) unstable; urgency=medium
+
+  * Bug #51765: fixing setting of max_age ucr variable
+
+ -- Jan Luttermann <luttermann@univention.de>  Wed, 11 Nov 2020 10:13:07 +0100
+
 univention-lib (8.0.1-39) unstable; urgency=medium
 
   * Bug #51765: setting max_age ucr variable
