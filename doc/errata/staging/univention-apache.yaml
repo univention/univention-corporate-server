@@ -11,4 +11,4 @@ desc: |
    `apache2/start-threads`
    `apache2/min-spare-servers`
    `apache2/max-spare-servers`
-bugs: [52320]
+bug: [52320]
