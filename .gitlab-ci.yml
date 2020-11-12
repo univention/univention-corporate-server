@@ -53,7 +53,13 @@ doc-pipeline:
   stage: test
   rules:
     - changes:
-      - doc/*/**/*
+      - "doc/[^e]*/**/*"
+      - "doc/e[^r]*/**/*"
+      - "doc/er[^r]*/**/*"
+      - "doc/err[^a]*/**/*"
+      - "doc/erra[^t]*/**/*"
+      - "doc/errat[^a]*/**/*"
+      - "doc/errata?*/**/*"
   trigger:
     include:
       - artifact: generated-config-doc.yml
@@ -62,6 +68,12 @@ doc-pipeline:
 
 deb-pipeline:
   stage: test
+  rules:
+    - changes:
+      - "[^d]*/*/**/*"
+      - "d[^o]*/*/**/*"
+      - "do[^c]*/*/**/*"
+      - "doc?*/*/**/*"
   trigger:
     include:
       - artifact: generated-config-deb.yml
