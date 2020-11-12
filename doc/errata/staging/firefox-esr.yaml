@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [5, 6]
+scope: ucs_4.4-0-errata4.4-6
+src: firefox-esr
+fix: 78.4.1esr-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * Write side effects in MCallGetProperty opcode not accounted for
+   (CVE-2020-26950)
+bug: [52352]
+cve:
+- CVE-2020-26950
