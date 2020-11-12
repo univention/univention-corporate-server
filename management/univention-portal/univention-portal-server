@@ -349,6 +349,8 @@ class LDAPCache(object):
 
 class JsonHandler(tornado.web.RequestHandler):
 	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
+		if username is None:
+			return False
 		if username in group['usernames']:
 			return True
 		for group_dn in group['groups']:
