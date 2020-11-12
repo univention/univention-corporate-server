@@ -327,7 +327,7 @@ test -x /etc/init.d/slapd && invoke-rc.d slapd stop
 test -x /etc/init.d/samba && /etc/init.d/samba stop
 test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc stop
 test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc stop
-test -x /etc/init.d/univention-directory-notifier && invoke-rc.d univention-directory-notifier stop
+systemctl stop univention-directory-notifier
 systemctl stop univention-directory-listener
 
 old_ldap_master="$ldap_master"
@@ -350,7 +350,7 @@ test -x /etc/init.d/slapd && invoke-rc.d slapd start
 test -x /etc/init.d/samba && /etc/init.d/samba start
 test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc start
 test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc start
-test -x /etc/init.d/univention-directory-notifier && invoke-rc.d univention-directory-notifier start
+systemctl start univention-directory-notifier
 systemctl start univention-directory-listener
 
 /usr/share/univention-directory-manager-tools/univention-dnsedit --ignore-exists "$domainname" add srv kerberos-adm tcp 0 100 88 "$hostname.$domainname."

@@ -294,7 +294,7 @@ univention-ssh -timeout 60 "$pw" "root@$backup" $cmd
 echo -e "\v===>replica:"
 univention-ssh -timeout 60 "$pw" "root@$replica" $cmd
 
-cmd="/etc/init.d/univention-directory-notifier start"
+cmd="systemctl start univention-directory-notifier"
 echo -e "\v===>primary:"
 univention-ssh -timeout 60 "$pw" "root@$primary" $cmd
 echo -e "\v===>backup:"
