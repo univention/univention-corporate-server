@@ -33,10 +33,12 @@ do
 done
 
 ## create the GPO
-echo "----create the GPO"
+echo "----create the GPO in Samba/AD with samba-tool"
 gpo_cn="$(samba-tool gpo create "$gponame" -H ldap://"$hostname.$domainname" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" | sed -n "s/GPO '$gponame' created as //p")"
+eval "$(ucr shell connector/s4/poll/sleep)"  ## Workaround for Bug #52358
 if [ -n "$gpo_cn" ]; then
-	trap 'samba-tool gpo del "$gpo_cn" -H ldap://"$hostname.$domainname" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd"' INT TERM EXIT
+	## The sleep befor the delete is a workaround for Bug #52358:
+	trap 'sleep $((connector_s4_poll_sleep*2)); samba-tool gpo del "$gpo_cn" -H ldap://"$hostname.$domainname" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd"' INT TERM EXIT
 else
 	fail_fast 1 "WARNING: samba-tool gpo create did not return a GPO cn"
 fi

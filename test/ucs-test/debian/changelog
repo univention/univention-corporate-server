@@ -1,3 +1,9 @@
+ucs-test (10.0.1-26) unstable; urgency=medium
+
+  * Workaround for Bug #52358
+
+ -- Arvid <requate@univention.de>  Thu, 12 Nov 2020 19:32:34 +0100
+
 ucs-test (10.0.1-25) unstable; urgency=low
 
   * Bug #51588: Fix 09_updater/ tests
