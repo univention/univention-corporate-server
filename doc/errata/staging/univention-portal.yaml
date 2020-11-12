@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-portal
+fix: 3.0.2-11A~4.4.0.202011121137
+desc: |
+ This update addresses the following issue(s):
+ * The evaluation whether or not a portal entry is visible now got a shortcut
+   if the user is not logged in. This can improve the performance in certain
+   situations considerably.
+bug: [52355]
