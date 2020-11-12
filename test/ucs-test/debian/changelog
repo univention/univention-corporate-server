@@ -1,3 +1,9 @@
+ucs-test (9.0.5-22) unstable; urgency=medium
+
+  * Bug #52318: test reason phrase is set
+
+ -- Florian Best <best@univention.de>  Thu, 12 Nov 2020 10:44:56 +0100
+
 ucs-test (9.0.5-21) unstable; urgency=medium
 
   * Bug #37103: added 00_checks/60_check_kernel_sys_fs_value

@@ -16,7 +16,8 @@ class Test_ServerDown_Messages(object):
 			subprocess.call(['service', 'univention-management-console-web-server', 'stop'])
 			with pytest.raises(ServiceUnavailable) as exc:
 				Client().umc_get('modules')
-			assert json.loads(exc.value.response.body)['message'] == 'The Univention Management Console Web Server could not be reached. Please restart it or try again later.'
+			assert json.loads(exc.value.response.body)['message'] == 'The Univention Management Console Web Server could not be reached. Please restart univention-management-console-web-server or try again later.'
+			assert exc.value.response.reason == 'UMC-Web-Server Unavailable'
 		finally:
 			subprocess.call(['service', 'univention-management-console-web-server', 'start'])
 
@@ -25,6 +26,7 @@ class Test_ServerDown_Messages(object):
 			subprocess.call(['service', 'univention-management-console-server', 'stop'])
 			with pytest.raises(ServiceUnavailable) as exc:
 				Client().umc_get('modules')
+			assert exc.value.response.reason == 'UMC Service Unavailable'
 			assert exc.value.message.splitlines() == [
 				'The Univention Management Console Server is currently not running. ',
 				'If you have root permissions on the system you can restart it by executing the following command:',
