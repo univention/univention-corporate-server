@@ -100,7 +100,7 @@ if __name__ == '__main__':
 				{
 					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+					'mailForwardAddress': user.mailForwardAddress,
 				},
 				strict=True)
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 				{
 					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+					'mailForwardAddress': user.mailForwardAddress,
 				},
 				strict=True)
 
@@ -177,7 +177,7 @@ if __name__ == '__main__':
 				{
 					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+					'mailForwardAddress': user.mailForwardAddress,
 				},
 				strict=True)
 
