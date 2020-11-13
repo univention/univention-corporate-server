@@ -24,12 +24,12 @@ import listener
 description = 'set up a new handler (with an new uid entry in tmp-file) for listener'
 name = 'ucstest'
 filter = '(objectClass=posixAccount)'
+
 def handler(dn, new, old):
 	if new:
 		listener.setuid(0)
-		f = open("$tempFile", 'a+')
-		f.write('New User: %s\n' % new.get('uid')[0])
-		f.close()
+		with open("$tempFile", 'a+') as fd:
+			fd.write('New User: %s\n' % (new['uid'][0].decode('UTF-8'),))
 		listener.unsetuid()
 __HERE__
 undo systemctl restart univention-directory-listener # Reversed order

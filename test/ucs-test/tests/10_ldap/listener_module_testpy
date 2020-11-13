@@ -29,40 +29,40 @@ class TestListenerModule(@@HANDLER_SUPER_CLASS@@):
 
 	@staticmethod
 	def test_log(msg, uid):
-		with open(LOGFILE, 'ab') as fp:
+		with open(LOGFILE, 'a') as fp:
 			fp.write('{} {} {}\n'.format(TEST_ID, msg, uid))
 
 	def create(self, dn, new):
-		self.uid = new['uid'][0]
-		self.logger.info('create() for user %r.', new['uid'][0])
+		self.uid = new['uid'][0].decode('UTF-8')
+		self.logger.info('create() for user %r.', self.uid)
 		self.logger.info('create() touch uid root %r.', UID_ROOT_FILE)
 		with self.as_root():
-			open(UID_ROOT_FILE, 'wb').write('test')
+			open(UID_ROOT_FILE, 'w').write('test')
 		self.logger.info('create() touch uid listener %r.', UID_DEFAULT_FILE)
-		open(UID_DEFAULT_FILE, 'wb').write('test')
+		open(UID_DEFAULT_FILE, 'w').write('test')
 		self.logger.info('create() test self.lo')
-		filter_s = filter_format('(&(objectClass=posixAccount)(uid=%s))', (new['uid'][0],))
+		filter_s = filter_format('(&(objectClass=posixAccount)(uid=%s))', (self.uid,))
 		self.logger.debug('filter_s=%r', filter_s)
 		ldap_res = self.lo.searchDn(filter=filter_s)
 		self.logger.debug('ldap_res=%r', ldap_res)
 		if not ldap_res:
 			raise Exception('self.lo.searchDn did not return a result')
-		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:
+		if ldap_res[0] != dn and ldap_res[0]['uidNumber'] != new['uidNumber']:  # FIXME: ldap_res[0] ?!
 			raise Exception('self.lo.searchDn had unexpected result: {!r}'.format(ldap_res))
 		time.sleep(random.uniform(0, 6))
-		self.test_log('create', new['uid'][0])
+		self.test_log('create', self.uid)
 		return
 
 	def modify(self, dn, old, new, old_dn):
-		self.uid = new['uid'][0]
+		self.uid = new['uid'][0].decode('UTF-8')
 		if old_dn:
-			self.logger.info('modify() MOVE for user %r. old_dn=%r | new dn=%r | diff(old, new)=%r', new['uid'][0], old_dn, dn, self.diff(old, new))
-			log_args = ('move', new['uid'][0])
-			#self.test_log('move', new['uid'][0])
+			self.logger.info('modify() MOVE for user %r. old_dn=%r | new dn=%r | diff(old, new)=%r', self.uid, old_dn, dn, self.diff(old, new))
+			log_args = ('move', self.uid)
+			#self.test_log('move', self.uid)
 		else:
-			self.logger.info('modify() for user %r. diff(old, new)=%r', new['uid'][0], self.diff(old, new))
-			log_args = ('modify {}'.format(''.join(['{} {}'.format(k, v[1][0]) for k, v in self.diff(old, new).items()])), new['uid'][0])
-			#self.test_log('modify {}'.format(''.join(['{} {}'.format(k, v[1][0]) for k, v in self.diff(old, new).items()])), new['uid'][0])
+			self.logger.info('modify() for user %r. diff(old, new)=%r', self.uid, self.diff(old, new))
+			log_args = ('modify {}'.format(''.join(['{} {}'.format(k, v[1][0].decode('UTF-8')) for k, v in self.diff(old, new).items()])), self.uid)
+			#self.test_log('modify {}'.format(''.join(['{} {}'.format(k, v[1][0]) for k, v in self.diff(old, new).items()])), self.uid)
 		time.sleep(random.uniform(0, 6))
 		self.test_log(*log_args)
 		if 'roomNumber' in self.diff(old, new).keys():
@@ -70,10 +70,10 @@ class TestListenerModule(@@HANDLER_SUPER_CLASS@@):
 		return
 
 	def remove(self, dn, old):
-		self.uid = old['uid'][0]
-		self.logger.info('remove() for user %r.', old['uid'][0])
+		self.uid = old['uid'][0].decode('UTF-8')
+		self.logger.info('remove() for user %r.', self.uid)
 		time.sleep(random.uniform(0, 6))
-		self.test_log('remove', old['uid'][0])
+		self.test_log('remove', self.uid)
 		return
 
 	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
@@ -81,7 +81,7 @@ class TestListenerModule(@@HANDLER_SUPER_CLASS@@):
 		ud.debug(ud.LISTENER, ud.ERROR, 'exc_type=%r exc_value=%r' % (exc_type, exc_value))
 		self.logger.error(''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
 		if exc_type == MyTestException:
-			self.test_log('error_handler', new.get('uid', [''])[0] or old.get('uid', [''])[0])
+			self.test_log('error_handler', new.get('uid', [b''])[0].decode('UTF-8') or old.get('uid', [b''])[0].decode('UTF-8'))
 			return
 		raise exc_type(exc_value)
 
