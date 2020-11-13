@@ -1410,10 +1410,11 @@ APP_VERSION="12.2"
 UCS_MINOR="4.4
 MY_APP="myapp"
 
-## First example for single container apps
-
 # 1. Create a new version in the app provider portal
 ./univention-appcenter-control new-version --username $my_username --pwdfile $pwd_file $UCS_MINOR/$MY_APP $UCS_MINOR/$MY_APP=$APP_VERSION
+
+
+## First example for single container apps
 
 # 2. Update the reference to the app's Docker image
 ./univention-appcenter-control set --username $my_username --pwdfile $pwd_file $UCS_MINOR/$MY_APP=$APP_VERSION --json '{"DockerImage": "my_company/$MY_APP:$APP_VERSION", "RequiredAppVersionUpgrade": "$APP_UPGRADE_FROM"}'
@@ -1424,9 +1425,25 @@ COMPONENT=$(./univention-appcenter-control status --username $my_username --pwdf
 # 3. Send the email
 SUBJECT="Regarding $UCS_MINOR/$MY_APP=$APP_VERSION ($COMPONENT)"
 
+
 ####
 
 # Second example for multi container apps
+
+# 2. Get app configuration data
+./univention-appcenter-control get $UCS_MINOR/$MY_APP=$APP_VERSION --json --username $my_username --pwdfile $pwd_file > $MY_APP.json
+
+# 3. Extract the compose content
+cat $MY_APP.json | jq -r .compose > compose
+
+# Edit the compose file accordingly. A custom script can help to automate this step.
+# This script depends on the app and the compose file content
+# Replace the "image: " lines and refer to the upstream Docker images and their respective tags
+
+# 4. Upload altered compose file
+./univention-appcenter-control upload --username $my_username --pwdfile $pwd_file --non-interactive $UCS_MINOR/$MY_APP=$APP_VERSION compose
+
+# 5. Send the mail and with subject as described above
             </programlisting>
         </para>
     </section>
