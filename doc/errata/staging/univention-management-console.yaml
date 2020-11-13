@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console
-fix: 11.0.5-14A~4.4.0.202011111511
+fix: 
 desc: |
  This update addresses the following issue(s):
  * A memory optimization for SAML based sessions has been done in the
@@ -12,4 +12,7 @@ desc: |
    Unavailable errors.
  * The interval for polling of session infos has been changed from every
    30 seconds to the time the session will end to reduce network workload.
-bug: [52338, 52318, 52321]
+ * The UMC-Server now runs with a additional UNIX socket. The communication
+   between UMC-Web-Server and UMC-Server therefore does not need to be TLS
+   encrypted anymore so that the performance is improved.
+bug: [52338, 52318, 52321, 52274]
