@@ -17,7 +17,7 @@ bind_dn = @%@ldap/hostdn@%@
 import os
 from univention.lib.misc import getLDAPURIs
 if configRegistry.is_true('mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps', False):
-	print('query_filter = (&(&(objectClass=univentionMail)(mailPrimaryAddress=%s)(!(univentionCanonicalRecipientRewriteEnabled=1)))(|(!(&(mailForwardAddress=*)(mailCopyForwardToSelf=FALSE)))(&(mailForwardAddress=*)(mailForwardCopyToSelf=TRUE))))')
+	print('query_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%s)(!(univentionCanonicalRecipientRewriteEnabled=1))(!(&(mailForwardAddress=*)(mailForwardCopyToSelf=0))))')
 else:
 	print('query_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%s)(!(univentionCanonicalRecipientRewriteEnabled=1)))')
 

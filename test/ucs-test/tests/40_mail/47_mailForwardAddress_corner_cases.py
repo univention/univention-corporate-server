@@ -17,8 +17,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
-from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token
-
+from essential.mail import send_mail, check_delivery, create_shared_mailfolder, imap_search_mail, random_email, make_token, set_mail_forward_copy_to_self_ucrv
 
 with ucr_test.UCSTestConfigRegistry() as ucr:
 	DOMAIN = ucr.get("domainname").lower()
@@ -26,6 +25,7 @@ with ucr_test.UCSTestConfigRegistry() as ucr:
 	FQDN = "%s.%s" % (HOSTNAME, DOMAIN)
 
 DEBUG_LEVEL = 1
+set_mail_forward_copy_to_self_ucrv('yes')
 
 
 class Bunch(object):
@@ -71,7 +71,6 @@ def test_user_b_mail_alt_equal_user_a_mail_primary():
 @pytest.mark.parametrize("mail_forward_copy_to_self,delivered", [("1", True), ("0", False)])
 def test_user_b_mail_alt_equal_user_a_mail_primary(mail_forward_copy_to_self, delivered):
 	print("### user_b's mail_alternative_address is equal to user_a's mail forward address")
-	# print("### mailForwardCopyToSelf:{}, expect to be delivered:{}".format(mail_forward_copy_to_self, delivered))
 	with udm_test.UCSTestUDM() as udm:
 		a_user = Bunch()
 		a_user.mailPrimaryAddress = random_email()
