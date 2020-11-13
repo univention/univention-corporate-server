@@ -1378,7 +1378,7 @@ docker-compose -p $appid logs
             <orderedlist>
                 <listitem>
                     <simpara>
-                        Create a new version in the provider portal based on the latest published version.
+                        Create a new version in the provider portal via the upload script based on the latest published version.
                     </simpara>
                 </listitem>
                 <listitem>
@@ -1392,18 +1392,27 @@ docker-compose -p $appid logs
                 </listitem>
                 <listitem>
                     <simpara>
-                        Perform the usual tests before approving an app update for release.
+                        Perform the usual tests before approving an app update
+                        for release.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Send an email to the App Center team and approve the release. Please provide information about the UCS section, the app's version and the internal component reference. It's best to provide this information in the email's subject and it should look like this: Regarding 4.4/myapp=4.74 (myapp_20201106183244)
+                        Send an email to the App Center team and approve the
+                        release. Please provide information about the UCS
+                        section, the app's version and the internal component
+                        reference. It's best to provide this information in the
+                        email's subject and it can look like this: Regarding
+                        4.4/myapp=4.74 (myapp_20201106183244)
                     </simpara>
                 </listitem>
             </orderedlist>
         </para>
         <para>
-            The following examples show how to run the steps with the upload interface. The examples assume the password to the portal stored in a password file that is given as parameter to the script:
+            The following examples show how to run the steps with the upload
+            interface. The examples assume that the password to the portal is
+            stored in a password file which is given as parameter to the
+            script:
             <programlisting language="sh">
 APP_UPGRADE_FROM="12.1"
 APP_VERSION="12.2"
