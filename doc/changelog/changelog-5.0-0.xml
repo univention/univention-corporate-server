@@ -219,7 +219,7 @@
 					<package>Dojo</package> has been upgraded to Version 1.16.3 (<u:bug>48963</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					 (<u:bug>00000</u:bug>)
+					A error message in the logfiles is now prevented when local users login into &ucsUMC; (<u:bug>46932</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
