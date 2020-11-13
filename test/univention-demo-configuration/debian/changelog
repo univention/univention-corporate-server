@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.0-3) unstable; urgency=medium
+
+  * Bug #43686: replace init.d with systemctl calls for UDL
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 13 Nov 2020 14:06:37 +0100
+
 univention-demo-configuration (8.0.0-2) unstable; urgency=medium
 
   * Bug #51419: Remove nagios from univention-demo-configuration
