@@ -56,7 +56,7 @@ fi
 [ -n "${server_role:-}" ] ||
 	die "UCR variable 'server/role' is not set or empty"
 
-service univention-directory-listener stop
+systemctl stop univention-directory-listener
 
 if [ -e "/var/lib/univention-directory-listener" ]; then
 	rm -Rf /var/lib/univention-directory-listener/*
@@ -75,6 +75,7 @@ fi
 
 case "$server_role" in
 domaincontroller_master)
+	systemctl restart univention-directory-listener
 	joinscript_save_current_version
 	exit 0
 	;;

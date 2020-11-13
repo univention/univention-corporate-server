@@ -1,3 +1,2 @@
 usr/lib/univention-directory-listener/user
-etc/runit/univention-directory-listener
 var/log/univention/listener_modules
