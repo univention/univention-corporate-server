@@ -17,7 +17,6 @@ Variables: apache2/server-signature
 Variables: apache2/server-tokens
 Variables: apache2/server-admin
 
-
 Type: file
 File: etc/apache2/ucs-sites.conf.d/ucs-sites.conf
 Variables: apache2/startsite
