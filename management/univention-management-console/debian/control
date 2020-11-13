@@ -193,7 +193,7 @@ Depends:
  shell-univention-lib,
  univention-base-files,
  univention-management-console-frontend,
- univention-management-console-server,
+ univention-management-console-server (>= 11.0.5-15),
  univention-saml-schema,
  ${misc:Depends},
 Description: UCS Management Console - Web server
