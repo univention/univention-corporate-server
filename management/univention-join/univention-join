@@ -738,7 +738,7 @@ if [ -e "/etc/univention/ssl" ]; then
 	install -m 755 -d /etc/univention/ssl
 fi
 
-for service in univention-directory-notifier univention-directory-listener
+for service in univention-directory-notifier
 do
 	if [ -e "/etc/runit/univention/$service" ]
 	then
@@ -746,6 +746,12 @@ do
 		sv force-stop "$service" >>"$LOG" 2>&1
 		echo -e "\033[60Gdone"
 	fi
+done
+for service in univention-directory-listener
+do
+	echo -n "Stopping $service daemon: "
+	systemctl stop "$service" >>"$LOG" 2>&1
+	echo -e "\033[60Gdone"
 done
 rm -Rf /var/lib/univention-directory-listener/*
 
@@ -1065,9 +1071,7 @@ if [ -d /etc/runit/univention-directory-notifier ]; then
 	sleep 3
 fi
 
-if [ -d /etc/runit/univention-directory-listener ]; then
-	systemctl restart univention-directory-listener >>/var/log/univention/join.log 2>&1
-fi
+systemctl restart univention-directory-listener >>/var/log/univention/join.log 2>&1
 
 if [ "$interfaces_${interfaces_primary:-eth0}_type" != "dhcp" ]; then
 	univention-config-registry commit /etc/resolv.conf >>/var/log/univention/join.log 2>&1
