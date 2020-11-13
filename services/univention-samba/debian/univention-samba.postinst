@@ -112,7 +112,7 @@ if [ "$1" = "configure" ]; then
 		### The following block of code may be removed after ucs_5.0-0
 		if dpkg --compare-versions "$2" lt-nl "14.0.1-2"; then
 			univention-config-registry commit /etc/samba/smb.conf
-			smbpasswd -w "$(< /etc/machine.secret)"
+			smbpasswd -W </etc/machine.secret
 		fi
 
 		if [ -x /etc/init.d/samba ]; then
@@ -147,4 +147,3 @@ ucr set \
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0
-
