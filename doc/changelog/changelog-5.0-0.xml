@@ -32,8 +32,8 @@
 				To reduce potential for confusion, the IP managed client has been renamed to IP client.
 			</simpara></listitem>
 			<listitem><simpara>
-				The <emphasis>base system</emphasis> is no longer a valid system role. It is not posible to choose that role in system setup
-				or update a base system to UCS 5.
+				The <emphasis>base system</emphasis> is no longer a valid system role.
+				It is not possible to choose that role in system setup or update a base system to UCS 5.
 				The corresponding meta package <package>univention-basesystem</package> has
 				been removed. (<u:bug>52137</u:bug>).
 			</simpara></listitem>
@@ -806,7 +806,7 @@
 					</para>
 					<itemizedlist>
 						<listitem><simpara>
-							Extensive efforts have been made to optimise Samba for use in organisations (for example) targeting 100,000 users, plus 120,000 computer objects, as well as large number of group memberships.
+							Extensive efforts have been made to optimized Samba for use in organizations (for example) targeting 100,000 users, plus 120,000 computer objects, as well as large number of group memberships.
 							Many of the specific efforts are detailed below, but the net results is to remove barriers to significantly larger Samba deployments compared to previous releases.
 						</simpara></listitem>
 						<listitem><simpara>
@@ -820,7 +820,7 @@
 							This in turn improves performance during replication of large domains.
 						</simpara></listitem>
 						<listitem><simpara>
-							To improve performance during batch operations i.e. joins, ldb now accepts a <option>batch_mode</option> option.
+							To improve performance during batch operations i.e. joins, LDB now accepts a <option>batch_mode</option> option.
 							However to prevent any index or database inconsistencies if an operation fails, the entire transaction will be aborted at commit.
 						</simpara></listitem>
 						<listitem><simpara>
@@ -836,9 +836,9 @@
 							SMB1 is disabled by default.
 							The default for the <filename>smb.conf</filename> parameters <literal>server min protocol</literal>
 							and <literal>server min protocol</literal> has been increased from <literal>NT1</literal> to <literal>SMB2_02</literal>.
-							This means clients without support for <literal>SMB2</literal> or <literal>SMB3</literal> are no longer able to connect to smbd (by default).
+							This means clients without support for <literal>SMB2</literal> or <literal>SMB3</literal> are no longer able to connect to <systemitem class="service">smbd</systemitem> (by default).
 							It also means client tools like <command>smbclient</command> and other are no longer able to connect to servers without <literal>SMB2</literal> or <literal>SMB3</literal> support (by default).
-							As Microsoft no longer installs SMB1 support in recent releases or uninstalls it after 30 days without usage, the Samba Team tries to get remove the SMB1 usage as much as possible.
+							As Microsoft no longer installs SMB1 support in recent releases or un-installs it after 30 days without usage, the Samba Team tries to get remove the SMB1 usage as much as possible.
 							<literal>SMB1</literal> is officially deprecated and might be removed step by step in the following years.
 						</simpara></listitem>
 						<listitem><simpara>
@@ -847,7 +847,7 @@
 							The previous default would create a separate process for every <literal>LDAP</literal> or <literal>NETLOGON</literal> client connection.
 							For a network with a lot of persistent client connections, this could result in significant memory overhead.
 							Now, with the new default of <literal>prefork</literal>, the <literal>LDAP</literal>, <literal>NETLOGON</literal>, and <literal>KDC</literal> services will create a fixed number of worker processes at startup and share the client connections amongst these workers.
-							The number of worker processes can be configured by the <literal>prefork children</literal> setting in the smb.conf (the default is 4).
+							The number of worker processes can be configured by the <option>prefork children</option> setting in the <filename>smb.conf</filename> (the default is 4).
 							Currently this is not yet configurable via &ucsUCRV;, but can be adjusted via <filename>/etc/samba/local.conf</filename>.
 							If this becomes a popular request, adding the configuration option via &ucsUCRV; may be useful in the future.
 						</simpara></listitem>
@@ -859,7 +859,7 @@
 							When either upgrading or downgrading, users should also avoid making any database modifications between installing the new Samba packages and starting the samba executable.
 						</simpara></listitem>
 						<listitem><simpara>
-							Since the Samba 4.12 release, support for <literal>DES</literal> encryption types has been removed, and setting <literal>DES_ONLY</literal> flag for an account will cause Kerberos authentication to fail for that account (see RFC-6649).
+							Since the Samba 4.12 release, support for <literal>DES</literal> encryption types has been removed, and setting <literal>DES_ONLY</literal> flag for an account will cause Kerberos authentication to fail for that account (see <u:rfc>6649</u:rfc>).
 							DES keys no longer saved in the AD DB.
 							When a new password is set for an account, Samba DCs will store random keys in DB instead of <literal>DES</literal> keys derived from the password.
 						</simpara></listitem>
@@ -890,7 +890,7 @@
 					</itemizedlist>
 					<warning>
 						<para>
-							Please avoid to set <literal>server schannel = no</literal> and <literal>server schannel = auto</literal> on all Samba domain controllers due to the wellknown ZeroLogon issue.
+							Please avoid to set <literal>server schannel = no</literal> and <literal>server schannel = auto</literal> on all Samba domain controllers due to the well-known <foreignphrase>ZeroLogon</foreignphrase> issue.
 							For details see <ulink url="https://wiki.samba.org/index.php/CVE-2020-1472">CVE-2020-1472</ulink>.
 						</para>
 					</warning>
