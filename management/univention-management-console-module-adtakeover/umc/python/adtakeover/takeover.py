@@ -1377,7 +1377,7 @@ class AD_Takeover(object):
 		log.info("Restarting Univention Directory Listener")
 
 		# Reset S4 Connector and handler state
-		run_and_output_to_log(["systemctl","stop", "univention-directory-listener"], log.debug)
+		run_and_output_to_log(["systemctl", "stop", "univention-directory-listener"], log.debug)
 
 		for i in range(30):
 			time.sleep(1)
