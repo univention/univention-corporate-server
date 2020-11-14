@@ -79,9 +79,8 @@ date >>"$LOG"
 echo "Try to sync changes stored in $1 into local LDAP" | tee -a "$LOG"
 
 try_stop_listener () {
-	local pid=$$ lpid pfile="/etc/runit/$UDL/supervise/pid"
-	[ -s "$pfile" ] || return 0
-	lpid=$(cat "$pfile")
+	local pid=$$ lpid
+	lpid=$(systemctl show --property MainPID --value univention-directory-listener.service)
 	while pid="$(ps -o ppid:1= "$pid")"
 	do
 		case "$pid" in
@@ -93,18 +92,8 @@ try_stop_listener () {
 		esac
 	done
 	echo -n "Shutting down ${UDL}."
-	for ((i=0; i<60; i++))
-	do
-		[ "$i" = "${i%0}" ] && sv down "$UDL"
-		sleep 1
-		if sv status "$UDL" | grep -q ^down:
-		then
-			echo " DONE."
-			return 0
-		fi
-		echo -n " ."
-	done
-	die " FAILED."
+	systemctl stop univention-directory-listener
+	echo " DONE."
 }
 try_stop_listener
 fuser -v "$1" && die "File still in use: $1"
