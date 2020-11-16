@@ -67,7 +67,7 @@ univention.admin.syntax.update_choices()
 
 
 def decode_guid(value):
-	return ndr_unpack(misc.GUID, value)
+	return str(ndr_unpack(misc.GUID, value))
 
 
 # util functions defined during mapping
