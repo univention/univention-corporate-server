@@ -1150,8 +1150,8 @@ class ucs(object):
 		if res:
 			for c in response.get('ctrls', []):
 				if c.controlType == PostReadControl.controlType:
-					entryUUID = c.entry['entryUUID'][0]
-					entryCSN = c.entry['entryCSN'][0]
+					entryUUID = c.entry['entryUUID'][0].decode('ASCII')
+					entryCSN = c.entry['entryCSN'][0].decode('ASCII')
 					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
 			res = True
 		return res
@@ -1173,8 +1173,8 @@ class ucs(object):
 		if res:
 			for c in response.get('ctrls', []):
 				if c.controlType == PostReadControl.controlType:  # If the modify actually did something
-					entryUUID = c.entry['entryUUID'][0]
-					entryCSN = c.entry['entryCSN'][0]
+					entryUUID = c.entry['entryUUID'][0].decode('ASCII')
+					entryCSN = c.entry['entryCSN'][0].decode('ASCII')
 					self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
 			res = True
 		return res
