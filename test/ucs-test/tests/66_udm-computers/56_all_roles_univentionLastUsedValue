@@ -50,4 +50,7 @@ if __name__ == '__main__':
 				if lastUsedValue_old != lastUsedValue_new:
 					utils.fail('Modified %s with specified uidNumber: univentionLastUsedValue did change, but it should not!' % (role,))
 
+				# Woraround for Bug #52358
+				utils.wait_for_replication()
+
 		utils.wait_for_replication()

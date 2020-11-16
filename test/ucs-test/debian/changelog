@@ -1,3 +1,10 @@
+ucs-test (10.0.1-29) unstable; urgency=medium
+
+  * Another workaround for Bug #52358:
+    66_udm-computers/56_all_roles_univentionLastUsedValue
+
+ -- Arvid <requate@univention.de>  Mon, 16 Nov 2020 20:07:24 +0100
+
 ucs-test (10.0.1-28) unstable; urgency=medium
 
   * Bug #52358: The 01_base/47faillog* tests should wait for
