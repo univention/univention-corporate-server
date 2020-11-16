@@ -1202,6 +1202,20 @@ log_execution_time () {
 	${LOGGER:-logger} "$BASH_EXECUTION_STRING needed $(( ($(date +%s%N) - START) / 1000000)) ms"
 }
 
+dataport_pullcord () {
+	echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-portal-performance/all/" >> /etc/apt/sources.list
+	echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-portal-performance/\$(ARCH)/" >> /etc/apt/sources.list
+	echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-dataport-schuposh-test/all/" >> /etc/apt/sources.list
+	echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-dataport-schuposh-test/\$(ARCH)/" >> /etc/apt/sources.list
+	apt update
+	apt upgrade
+	ucr set umc/parallel=5
+	ucr set umc/server/cpus=5
+	systemctl restart umc_parallel.target
+	systemctl restart univention-management-console-server
+	systemctl restart apache2
+}
+
 # trap log_execution_time EXIT
 
 # vim:set filetype=sh ts=4:
