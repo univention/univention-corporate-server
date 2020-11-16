@@ -1208,7 +1208,7 @@ dataport_pullcord () {
 	echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-dataport-schuposh-test/all/" >> /etc/apt/sources.list
 	echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_4.4-0-dataport-schuposh-test/\$(ARCH)/" >> /etc/apt/sources.list
 	apt update
-	apt upgrade
+	apt upgrade --force-yes
 	ucr set umc/parallel=5
 	ucr set umc/server/cpus=5
 	systemctl restart umc_parallel.target
