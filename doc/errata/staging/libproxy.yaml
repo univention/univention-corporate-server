@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: libproxy
+fix: 0.4.14-2+deb9u2
+desc: |
+ This update addresses the following issue:
+ * sending more than 102400 bytes in PAC without a Content-Length present
+   could result in buffer overflow (CVE-2020-26154)
+bug: [52365]
+cve:
+- CVE-2020-26154
