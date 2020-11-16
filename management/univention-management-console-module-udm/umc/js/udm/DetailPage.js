@@ -1380,7 +1380,7 @@ define([
 			var buttonDefinitions = [
 			{
 				name: 'submit',
-				iconClass: 'iconSave',
+				iconClass: 'save',
 				label: createLabel,
 				callback: lang.hitch(this, function() {
 					this._form.onSubmit();

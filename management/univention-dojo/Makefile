@@ -64,7 +64,15 @@ dojo: dojo-release-$(VER)-src.tar.gz
 	patch -d $@.tmp -p1 -i ../fix_dojox_widget_Standby_scrollbar_offset.patch
 	patch -d $@.tmp -p1 -i ../fix_dojox_widget_Standby_cntrIndicatorTop.patch
 	patch -d $@.tmp -p1 -i ../fix_dijit_ProgressBar_additional_css_classes.patch
-	patch -d $@.tmp -p0 -i ../fix_dijit_PopupMenuItem_arrow_hidden.patch
+	patch -d $@.tmp -p0 -i ../fix_dijit_MenuItem.patch
+	patch -d $@.tmp -p0 -i ../fix_dijit_PopupMenuItem.patch
+	mv $@.tmp $@
+
+libs/dgrid: dgrid-1.1.0.tar.gz
+	mkdir -p libs
+	$(RM) -r $@.tmp
+	tar -C libs --no-same-owner -xf $< --transform="s|^[^/]*|$(@F).tmp|"
+	patch -d $@.tmp -p0 -i ../../fix_dgrid_Grid_sortIcon.patch
 	mv $@.tmp $@
 
 # all other JS packages

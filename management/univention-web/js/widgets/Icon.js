@@ -30,25 +30,42 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/dom-class",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin"
-], function(declare, _WidgetBase, _TemplatedMixin) {
-	return declare("StandbyCircle", [_WidgetBase, _TemplatedMixin], {
+], function(declare, domClass, _WidgetBase, _TemplatedMixin) {
+	return declare("umc.widgets.Icon", [_WidgetBase, _TemplatedMixin], {
+		_SVG_SPRITE_PATH: '/univention/js/dijit/themes/umc/images/feather-sprite.svg',
+
 		templateString: '' +
-			// we have to wrap the svg in a div because svg elements behave differently in regards to setting style
-			// and classes (which is needed for Standby.js)
-			'<div class="umcStandbySvgWrapper">' +
-				'<svg class="umcStandbySvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-					'<circle class="umcStandbySvg__circle" cx="50" cy="50" r="45"></circle>' +
-				'</svg>' +
-			'</div>'
+			'<svg class="featherIcon dijitDisplayNone" xmlns="http://www.w3.org/2000/svg">' +
+				'<use ' +
+					'data-dojo-attach-point="useNode" ' +
+					'xlink:href="${_SVG_SPRITE_PATH}" ' +
+				'/>' +
+			'</svg>',
+
+		iconName: '',
+		_setIconNameAttr: function(iconName) {
+			/* can't use dojo/dom-class here since it does not work for svg elements */
+			this.domNode.classList.remove(`icon-${this.iconName}`);
+			if (iconName) {
+				this.useNode.setAttribute('xlink:href', `${this._SVG_SPRITE_PATH}#${iconName}`);
+				this.domNode.classList.add(`icon-${iconName}`);
+				this.domNode.classList.remove('dijitDisplayNone');
+			} else {
+				this.domNode.classList.add('dijitDisplayNone');
+			}
+			this._set('iconName', iconName);
+		},
+
+		_setClassAttr: function(classes) {
+			for (const _class of this.get('class').split(' ').filter(_ => _)) {
+				this.domNode.classList.remove(_class);
+			}
+			for (const _class of classes.split(' ').filter(_ => _)) {
+				this.domNode.classList.add(_class);
+			}
+		}
 	});
 });
-
-
-
-
-
-
-
-

@@ -700,7 +700,7 @@ define([
 				name: 'add',
 				label: _('Add'),
 				description: _addDescriptionText(),
-				iconClass: 'iconPlus',
+				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
 				callback: lang.hitch(this, 'showNewObjectDialog')
@@ -708,7 +708,7 @@ define([
 				name: 'edit',
 				label: _('Edit'),
 				description: _editDescriptionText(),
-				iconClass: 'iconEdit',
+				iconClass: 'edit-2',
 				isStandardAction: true,
 				isMultiAction: true,
 				canExecute: lang.hitch(this, '_canEdit'),
@@ -758,7 +758,7 @@ define([
 				description: _deleteDescriptionText(),
 				isStandardAction: true,
 				isMultiAction: true,
-				iconClass: 'iconTrash',
+				iconClass: 'trash',
 				canExecute: lang.hitch(this, '_canDelete'),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.removeObjects(objects);
@@ -799,7 +799,7 @@ define([
 					isStandardAction: false,
 					isMultiAction: true,
 					label: _('Create report'),
-					iconClass: 'umcIconReport',
+					iconClass: 'file-text',
 					callback: lang.hitch(this, '_createReport')
 				});
 			}

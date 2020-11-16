@@ -1,0 +1,28 @@
+Hide popup arrow with display none instead of visibility hidden to remove it from dom flow
+--- dijit/PopupMenuItem.js.orig	2020-11-16 17:38:27.096467683 +0100
++++ dijit/PopupMenuItem.js	2020-11-16 17:38:36.120471409 +0100
+@@ -1,13 +1,14 @@
+ define([
+ 	"dojo/_base/declare", // declare
+ 	"dojo/dom-style", // domStyle.set
++	"dojo/dom-class",
+ 	"dojo/_base/lang",
+ 	"dojo/query", // query
+ 	"./popup",
+ 	"./registry",	// registry.byNode
+ 	"./MenuItem",
+ 	"./hccss"
+-], function(declare, domStyle, lang, query, pm, registry, MenuItem){
++], function(declare, domStyle, domClass, lang, query, pm, registry, MenuItem){
+ 
+ 	// module:
+ 	//		dijit/PopupMenuItem
+@@ -81,7 +82,7 @@
+ 
+ 			this.popup.domNode.style.display="none";
+ 			if(this.arrowWrapper){
+-				domStyle.set(this.arrowWrapper, "visibility", "");
++				domClass.remove(this.arrowWrapper, "dijitDisplayNone");
+ 			}
+ 			this.focusNode.setAttribute("aria-haspopup", "true");
+ 		},

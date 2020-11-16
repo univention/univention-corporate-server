@@ -13,7 +13,9 @@
 
 	&.dijitMenuItemIconCell
 		padding-left: 0.8em
+		padding-right: 0.4em
 	&.dijitMenuArrowCell
+		padding-left: 0.4em
 		padding-right: 0.8em
 
 .dijitMenuPassive .dijitMenuItemHover,
@@ -21,16 +23,5 @@
 	background-color: rgba(255, 255, 255, 0.04)
 	color: inherit
 
-.dijitMenuItemIcon:not(.dijitNoIcon)
+.dijitMenuItem .featherIcon
 	display: block
-	width: 1em
-	height: 1em
-
-.dijitMenuArrowCell > span
-	display: flex
-	align-items: center
-
-	.dijitIcon
-		@extends .iconChevronRight
-		width: 1em
-		height: 1em

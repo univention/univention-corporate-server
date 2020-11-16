@@ -1,8 +1,10 @@
 //// textbox
 
+// colors
 .dijitTextBox
 	--color: var(--font-color-contrast-high)
 	--border-color: transparent
+	--local-icon-color: var(--color)
 	position: relative
 	height: 3rem
 	width: 100%
@@ -20,7 +22,16 @@
 		--color: var(--font-color-disabled)
 	&Error
 		--border-color: var(--color-error)
+		--local-icon-color: var(--border-color)
 
+.umcTextBox__validationIcon,
+.umcComboBoxDownArrow
+.dijitSpinnerButtonContainer
+	color: var(--local-icon-color)
+	pointer-events: none
+
+
+// layout
 .dijitTextBox
 	display: flex
 	flex-direction: row-reverse // put warning and dropdown icon to the right
@@ -70,43 +81,15 @@
 //// textarea end
 
 
-.dijitComboBox
-	.dijitDownArrowButton
-		--bgc: transparent
-		width: 1.5em
-		height: @width
-		margin-right: 0.5rem
-		background: var(--bgc)
-		border-radius: 50%
-		transition: opacity 250ms, var(--button-bgc-transition)
-		display: flex
-		align-items: center
-
-		&Hover
-			--bgc: var(--button-icon-bgc-overlay-hover)
-		&Active
-			--bgc: var(--button-icon-bgc-overlay-active)
-
-		.dijitArrowButtonInner
-			width: 1em
-			height: 1em !important
-			background: url(images/chevron-down_white.svg)
-			background-size: contain
-
-	&Disabled .dijitArrowButton
-		opacity: 0.4
-
 //// validation icon
-.dijitTextBox
-	.dijitValidationContainer
-		background-image: url("../form/images/error.svg")
-		width: 1em
-		height: @width
-		margin-right: 1rem
-
-	.dijitValidationIcon
+.dijitTextBox:not(.dijitTextBoxError) .umcTextBox__validationIcon
 		display: none
 
-.dijitComboBox .dijitValidationContainer
-	margin-right: 0.5em
+.dijitTextBox
+	.umcTextBox__validationIcon
+		margin-right: 1rem
+
+.dijitComboBox
+	.umcTextBox__validationIcon
+		margin-right: 0.5rem
 //// validation icon end

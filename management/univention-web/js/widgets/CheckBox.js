@@ -32,10 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dijit/form/CheckBox",
 	"umc/tools",
-	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, domClass, CheckBox, tools, _FormWidgetMixin) {
+	"umc/widgets/_FormWidgetMixin",
+	"./Icon"
+], function(declare, lang, domClass, domConstruct, CheckBox, tools, _FormWidgetMixin, Icon) {
 	return declare("umc.widgets.CheckBox", [ CheckBox, _FormWidgetMixin ], {
 		// by default, the checkbox is turned off
 		value: false,
@@ -52,6 +54,21 @@ define([
 		postMixInProperties: function() {
 			this._initialValue = this.checked = this.value;
 			this.inherited(arguments);
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			var iconCheck = new Icon({
+				iconName: 'check'
+			});
+			var iconIndeterminate = new Icon({
+				iconName: 'minus'
+			});
+			this.own(iconCheck);
+			this.own(iconIndeterminate);
+			domConstruct.place(iconCheck.domNode, this.domNode, 'first');
+			domConstruct.place(iconIndeterminate.domNode, this.domNode, 'first');
 		},
 
 		postCreate: function() {

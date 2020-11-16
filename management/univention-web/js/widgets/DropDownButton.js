@@ -26,29 +26,30 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
-	"dijit/_WidgetBase",
-	"dijit/_TemplatedMixin"
-], function(declare, _WidgetBase, _TemplatedMixin) {
-	return declare("StandbyCircle", [_WidgetBase, _TemplatedMixin], {
-		templateString: '' +
-			// we have to wrap the svg in a div because svg elements behave differently in regards to setting style
-			// and classes (which is needed for Standby.js)
-			'<div class="umcStandbySvgWrapper">' +
-				'<svg class="umcStandbySvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-					'<circle class="umcStandbySvg__circle" cx="50" cy="50" r="45"></circle>' +
-				'</svg>' +
-			'</div>'
+	"dijit/form/DropDownButton",
+	"./Icon",
+	"put-selector/put"
+], function(declare, DropDownButton, Icon, put) {
+	return declare("umc.widgets.DropDownButton", [ DropDownButton ], {
+		// do not display button labels via the LabelPane
+		displayLabel: false,
+
+		iconClass: 'more-horizontal',
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.icon = new Icon({});
+			put(this.iconNode, '+', this.icon.domNode);
+			put(this.iconNode, '!');
+		},
+
+		_setIconClassAttr: function(iconClass) {
+			this.icon.set('iconName', iconClass);
+			this._set('iconClass', iconClass);
+		}
 	});
 });
-
-
-
-
-
-
-
-

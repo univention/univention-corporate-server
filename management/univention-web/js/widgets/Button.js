@@ -33,8 +33,10 @@ define([
 	"dojo/_base/lang",
 	"dojo/dom-class",
 	"dijit/form/Button",
-	"dijit/Tooltip"
-], function(declare, lang, domClass, Button, Tooltip) {
+	"dijit/Tooltip",
+	"./Icon",
+	"put-selector/put"
+], function(declare, lang, domClass, Button, Tooltip, Icon, put) {
 	return declare("umc.widgets.Button", [ Button ], {
 		// defaultButton: Boolean
 		//		If set to 'true', button will be rendered as default, i.e., submit button.
@@ -45,8 +47,6 @@ define([
 		callback: null,
 
 		visible: true,
-
-		type: 'button',
 
 		handlesTooltips: true,
 
@@ -59,8 +59,14 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this.icon = new Icon({});
+			put(this.iconNode, '+', this.icon.domNode);
+			put(this.iconNode, '!');
+		},
 
-			this.set('iconClass', this.iconClass);
+		_setIconClassAttr: function(iconClass) {
+			this.icon.set('iconName', iconClass);
+			this._set('iconClass', iconClass);
 		},
 
 		postCreate: function() {

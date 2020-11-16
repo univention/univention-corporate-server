@@ -3,6 +3,8 @@
 //// overarching button styling
 .dijitButton,
 .dijitDropDownButton
+	--button-size: 2rem
+	--button-iconSize: 1rem
 	margin: 0
 	font-size: var(--button-font-size)
 	border-radius: var(--button-border-radius)
@@ -19,7 +21,7 @@
 	background-color: var(--bgc-state)
 
 .dijitButtonContents
-	height: 2rem
+	height: var(--button-size)
 	display: flex
 	align-items: center
 	justify-content: center
@@ -33,9 +35,6 @@
 //// specific button styling
 .dijitDropDownButton .dijitArrowButtonInner
 	display: none
-.dijitDropDownButton .dijitNoIcon
-	@extends .iconMore
-	display: block
 
 
 //// button types
@@ -84,11 +83,16 @@
 .ucsPrimaryButton,
 .ucsButton,
 .ucsTextButton
-	.dijitIcon
-		font-size: var(--font-size-button-icon, 1.2em)
-		width: 1em
+	.featherIcon
+		margin-right: 0.4rem
+
+.ucsPrimaryButton,
+.ucsButton,
+.ucsTextButton,
+.ucsIconButton
+	.featherIcon
+		width: var(--button-iconSize)
 		height: @width
-		margin-right: 0.4em
 
 .ucsPrimaryButton,
 .ucsButton
@@ -112,16 +116,10 @@
 	.dijitButtonNode
 		border-radius: var(--border-radius-circles)
 
-	.dijitIcon
-		font-size: var(--font-size-button-icon, 1.2em)
-		height: 1em
-		width: @height
-
 	.dijitButtonContents
-		width: 2rem
-	&Compact .dijitButtonContents
-		height: 1rem
-		width: 1rem
+		width: var(--button-size)
+	&ToFontSize
+		--button-size: 1em
 
 //// misc
 .dijitUploader input

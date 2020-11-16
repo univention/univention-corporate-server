@@ -1,8 +1,16 @@
+.umcStandbySvgWrapper {
+	width: 2rem;
+	height: 2rem;
+	display: flex;
+	color: rgba(255, 255, 255, 0.4);
+}
+
 .umcStandbySvg {
   animation: 2s linear infinite svg-animation;
-  max-width: 100px;
-  width: 40px;
+  width: 100%;
+  height: 100%;
 }
+
 
 // SVG animation.
 @keyframes svg-animation {
@@ -19,7 +27,7 @@
   animation: 1.4s ease-in-out infinite both circle-animation;
   display: block;
   fill: transparent;
-  stroke: rgba(255, 255, 255, 0.4);
+  stroke: currentColor;
   stroke-linecap: round;
   stroke-dasharray: 283;
   stroke-dashoffset: 280;

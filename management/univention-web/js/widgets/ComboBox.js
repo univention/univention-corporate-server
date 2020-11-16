@@ -32,10 +32,14 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/on",
+	"dojo/query",
 	"dijit/form/FilteringSelect",
 	"umc/widgets/_SelectMixin",
-	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, on, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
+	"umc/widgets/_FormWidgetMixin",
+	"umc/widgets/Icon",
+	"./Button",
+	"put-selector/put"
+], function(declare, lang, on, query, FilteringSelect, _SelectMixin, _FormWidgetMixin, Icon, Button, put) {
 	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin ], {
 		// search for the substring when typing
 		queryExpr: '*${0}*',
@@ -65,6 +69,29 @@ define([
 				var values = this.getAllItems();
 				this.set('visible', values.length > 1);
 			}
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// exchange validation icon node
+			var icon = new Icon({
+				'class': 'umcTextBox__validationIcon',
+				iconName: 'alert-circle'
+			});
+			var validationContainerNode = query('.dijitValidationContainer', this.domNode)[0];
+			put(validationContainerNode, '+', icon.domNode);
+			put(validationContainerNode, '!');
+
+			// exchange dropdown icon node
+			var button = new Button({
+				iconClass: 'chevron-down',
+				'class': 'ucsIconButton umcComboBoxDownArrow',
+				tabIndex: '-1'
+			});
+			put(this._buttonNode, '+', button.domNode);
+			put(this._buttonNode, '!');
+			this._buttonNode = button.domNode;
 		},
 
 		postCreate: function() {

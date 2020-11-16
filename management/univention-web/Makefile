@@ -114,7 +114,7 @@ TMP_FONT_FILES := $(addprefix $(TMP_THEME_DIR)/fonts/, $(FONT_FILES))
 IMG_FILES := $(shell find css -name "*.svg" -o -name "*.png" -o -name "*.gif")
 WHITE_IMG_FILES := $(addprefix css/images/,icons-white.svg icons-small-white.svg univention-white.svg univention_u-white.svg home-white.svg)
 SVG_IMG_FILES := $(shell find css -name "*.svg")
-PNG_IMG_FILES := $(filter-out css/images/login_logo.png,$(SVG_IMG_FILES:.svg=.png))
+PNG_IMG_FILES := $(filter-out css/images/login_logo.png css/images/feather-sprite.png,$(SVG_IMG_FILES:.svg=.png))
 ALL_IMG_FILES := $(IMG_FILES) $(WHITE_IMG_FILES) $(PNG_IMG_FILES)
 TMP_IMG_FILES := $(patsubst css/%,$(TMP_THEME_DIR)/%,$(ALL_IMG_FILES))
 

@@ -59,22 +59,29 @@
 		padding: 0.25em
 		position: relative
 		box-sizing: content-box
+		float: left
+		display: flex
+		margin-left: calc(var(--level) * 1.2em)
+		pointer: cursor
 
-		&:after
-			content: ''
-			display: block
-			width: 1em
-			height: 1em
+		.featherIcon
+			transition: transform 250ms
+			pointer-events: none
+
+		.umcStandbySvgWrapper
+			width: inherit
+			height: @width
 			position: absolute
-			top: 0.25em
-			left: 0.25em
-			@extends .iconChevronRight
-	.dgrid-row-expanded .dgrid-expando-icon:after
-		@extends .iconChevronDown
-	.dgrid-row.childrenUnknown .dgrid-expando-icon:after
-		background: url($image-loading-animation) !important
-	.dgrid-row.noChildren .dgrid-expando-icon:after
-		background: none !important
+			color: inherit
+			pointer-events: none
+
+	.dgrid-row-expanded .dgrid-expando-icon .featherIcon
+		transform: rotate(90deg)
+
+	.dgrid-row.noChildren .dgrid-expando-icon .featherIcon,
+	.dgrid-row.childrenUnknown .dgrid-expando-icon .featherIcon,
+	.dgrid-row:not(.childrenUnknown) .dgrid-expando-icon .umcStandbySvgWrapper
+		display: none
 
 
 .umc .dijitTreeNode
@@ -174,3 +181,5 @@
 
 .umc .dgrid-row-table .dgrid-tree-icon
 	margin-right: 5px
+	position: relative
+	bottom: 1px

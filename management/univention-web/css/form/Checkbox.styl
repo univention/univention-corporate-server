@@ -32,34 +32,27 @@
 	transition: opacity 250ms, background-color 250ms, border-color 250ms
 	position: relative
 
-	&:before,
-	&:after
-		content: ''
-		display: block
+	.featherIcon
 		width: 100%
 		height: @width
 		position: absolute
 		top: 0
 		left: 0
-		background-size: contain
 		opacity: 0
-		transition: opacity 250ms
+		transition: opacity 250ms, color 250ms
 		pointer-events: none
-	&:before
-		background-image: url(images/check_checked.svg)
-	&:after
-		background-image: url(images/minus_green.svg)
+		color: var(--local-border-color)
 
 	&Checked
 		--local-border-color: var(--color-primary)
-		&:before
+		.icon-check
 			opacity: 1
 	
 	&Indeterminate
 		--local-border-color: var(--color-primary)
-		&:before
+		.icon-check
 			opacity: 0
-		&:after
+		.icon-minus
 			opacity: 1
 
 	/.dojoxGridCellOver &,

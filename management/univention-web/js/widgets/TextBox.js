@@ -34,11 +34,14 @@ define([
 	"put-selector/put",
 	"dojo/on",
 	"dojo/when",
+	"dojo/query",
 	"dijit/form/ValidationTextBox",
+	"umc/widgets/Icon",
 	"umc/widgets/TextBoxMaxLengthChecker",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/tools"
-], function(declare, lang, put, on, when, ValidationTextBox, TextBoxMaxLengthChecker, _FormWidgetMixin, tools) {
+], function(declare, lang, put, on, when, query, ValidationTextBox, Icon, TextBoxMaxLengthChecker, _FormWidgetMixin,
+		tools) {
 	return declare("umc.widgets.TextBox", [ ValidationTextBox, _FormWidgetMixin ], {
 		// dynamicValue: String|Function
 		//		Either an UMCP command to query a value from or a javascript function.
@@ -118,6 +121,17 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
+			// replace icon
+			var icon = new Icon({
+				'class': 'umcTextBox__validationIcon',
+				iconName: 'alert-circle'
+			});
+			var validationContainerNode = query('.dijitValidationContainer', this.domNode)[0];
+			put(validationContainerNode, '+', icon.domNode);
+			put(validationContainerNode, '!');
+
+
 			if (this.inlineLabel !== null) {
 				this._createInlineLabelNode(this.inlineLabel);
 				this._registerInlineLabelEvents();

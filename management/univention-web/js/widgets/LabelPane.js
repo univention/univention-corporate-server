@@ -42,8 +42,10 @@ define([
 	"dijit/_TemplatedMixin",
 	"dijit/_Container",
 	"dijit/Tooltip",
-	"umc/tools"
-], function(declare, lang, array, event, Deferred, domClass, domConstruct, attr, on, _WidgetBase, _TemplatedMixin, _Container, Tooltip, tools) {
+	"umc/tools",
+	"umc/widgets/Icon"
+], function(declare, lang, array, event, Deferred, domClass, domConstruct, attr, on, _WidgetBase, _TemplatedMixin,
+		_Container, Tooltip, tools, Icon) {
 	lang.extend(_WidgetBase, {
 		// displayLabel: Boolean?
 		//		If specified as false, LabelPane will not display the label value.
@@ -96,7 +98,7 @@ define([
 
 		labelNodeRight: null,
 
-		tooltipNode: null,
+		_tooltipIcon: null,
 
 		usesHoverTooltip: false,
 
@@ -286,18 +288,20 @@ define([
 				if (!this.usesHoverTooltip) {
 					if (this._isLabelDisplayed() && this.label && this.label !== '&nbsp;') {
 						labelNode = this._getLabelNode();
-						this.tooltipNode = domConstruct.create("div",{
-							'class': "umcDescription umcDescriptionIcon"
+						this._tooltipIcon = new Icon({
+							'class': 'umcDescriptionIcon',
+							iconName: 'help-circle'
 						});
-						domConstruct.place(this.tooltipNode, labelNode, 'after');
+						this.own(this._tooltipIcon);
+						domConstruct.place(this._tooltipIcon.domNode, labelNode, 'after');
 						//register events to show and hide the tooltip
-						this.own(on(this.tooltipNode, "click", lang.hitch(this, function(clickEvent) {
-							Tooltip.show(description, this.tooltipNode);
+						this.own(on(this._tooltipIcon, "click", lang.hitch(this, function(clickEvent) {
+							Tooltip.show(description, this._tooltipIcon.domNode);
 							//stop onClick event
 							event.stop(clickEvent);
 							// register global onClick to close the tooltip again
 							on.once(window, "click", lang.hitch(this, function(event) {
-								Tooltip.hide(this.tooltipNode);
+								Tooltip.hide(this._tooltipIcon.domNode);
 							}));
 						})));
 					}
@@ -314,8 +318,8 @@ define([
 		},
 
 		_destroyExistingTooltipNode: function() {
-			if ((!this.usesHoverTooltip) && this.tooltipNode) {
-				domConstruct.destroy(this.tooltipNode);
+			if ((!this.usesHoverTooltip) && this._tooltipIcon) {
+				this._tooltipIcon.destroyRecursive();
 			}
 		},
 

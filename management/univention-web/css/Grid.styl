@@ -41,6 +41,7 @@ $umcGrid-edge-padding = 24px
 
 	.umcGridRowIcon
 		margin-right: 0.3em
+		margin-bottom: 0.1em
 
 	.dgrid-cell
 		border: none
@@ -57,18 +58,10 @@ $umcGrid-edge-padding = 24px
 	.dgrid-cell:not(.dgrid-selector) *
 		display: inline
 
-	.dgrid-sort-arrow
-		width: 16px // same width as the udm icons
-		height: 1em
-		line-height: 1
-		float: none
-		display: inline-block !important
-		background-position: center
-		margin: 0 0.3em 0 0
-	.dgrid-sort-up .dgrid-sort-arrow
-		@extends .iconChevronUp
-	.dgrid-sort-down .dgrid-sort-arrow
-		@extends .iconChevronDown
+	.dgrid__sortIcon
+		margin-right: 0.3em
+		position: relative
+		top: 3px
 
 	.dgrid
 		border: none

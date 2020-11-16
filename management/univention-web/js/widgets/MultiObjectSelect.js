@@ -83,7 +83,7 @@ define([
 				this.actions = [{
 					$align: 'left',
 					label: _('Cancel'),
-					iconClass: 'iconX',
+					iconClass: 'x',
 					'class': 'ucsTextButton',
 					onClick: lang.hitch(this, function() {
 						// hide the dialog
@@ -95,7 +95,7 @@ define([
 					})
 				}, {
 					label: _('Add'),
-					iconClass: 'iconCheck',
+					iconClass: 'check',
 					'class': 'ucsTextButton',
 					onClick: lang.hitch(this, function() {
 						// get all elements an trigger onAdd event
@@ -319,7 +319,7 @@ define([
 			});
 			this._addButton = new Button({
 				label: _('Add'),
-				iconClass: 'iconPlus',
+				iconClass: 'plus',
 				'class': 'ucsTextButton',
 				onClick: lang.hitch(this, function() {
 					if (!this._detailDialog) {

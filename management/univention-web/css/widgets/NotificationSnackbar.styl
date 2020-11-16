@@ -47,27 +47,19 @@
 			grid-template-columns: min-content auto auto
 			grid-template-areas: "icon text close"
 
-		.umcSnackbarNotificationMessageIconContainer
-			grid-area: icon
-			display: flex
-			align-items: center
-			height: calc(var(--font-size) * var(--font-lineheight-normal))
-			.umcSnackbarNotificationMessageIcon
-				display: inline-block
-				width: 1em
-				height: 1em
-
 
 .umcSnackbarNotificationMessageIcon
 	grid-area: icon
+	align-self: center
 
 .umcSnackbarNotificationMessageText
 	grid-area: text
 
 .umcSnackbarNotificationMessageClose
 	grid-area: close
-	margin-left: 1em
 	justify-self: end
+	align-self: center
+	font-size: 1rem
 
 .umcSnackbarNotificationMessageActionButton
 	grid-column: 1 / 3
@@ -80,12 +72,13 @@
 	background-color: transparent
 	color: green
 	
-	// &.multiLineWithActionButton	.umcSnackbarNotificationMessage .umcSnackbarNotificationMessageActionButton
-		// margin: 24px 0 0 0
+/*
+	&.multiLineWithActionButton	.umcSnackbarNotificationMessage .umcSnackbarNotificationMessageActionButton
+		margin: 24px 0 0 0
 
-	// &.umcSnackbarNotificationWarning
-		// background-color: red
+	&.umcSnackbarNotificationWarning
+		background-color: red
 
-		// .umcSnackbarNotificationMessage .umcSnackbarNotificationMessageActionButton
-				// color: inherit
-
+		.umcSnackbarNotificationMessage .umcSnackbarNotificationMessageActionButton
+				color: inherit
+*/

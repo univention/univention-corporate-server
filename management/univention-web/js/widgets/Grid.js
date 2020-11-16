@@ -46,7 +46,6 @@ define([
 	"dijit/Destroyable",
 	"dijit/Menu",
 	"dijit/MenuItem",
-	"dijit/form/DropDownButton",
 	"dojox/html/entities",
 	"dgrid/OnDemandGrid",
 	"dgrid/Selection",
@@ -55,6 +54,7 @@ define([
 	"dstore/legacy/StoreAdapter",
 	"dstore/Memory",
 	"./Button",
+	"./DropDownButton",
 	"./CheckBox",
 	"./Text",
 	"./ContainerWidget",
@@ -65,11 +65,11 @@ define([
 	"../render",
 	"../i18n!"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
-		topic, aspect, on, dijitRegistry, Destroyable, Menu, MenuItem, DropDownButton, entities,
-		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, CheckBox, Text,
+		topic, aspect, on, dijitRegistry, Destroyable, Menu, MenuItem, entities,
+		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, DropDownButton, CheckBox, Text,
 		ContainerWidget, StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
-	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
+	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry], {
 		getItem: function(item) {
 			// For legacy dojox grid compatibility
 			// e.g. formaters that expect to be working with a dojox grid
@@ -158,7 +158,7 @@ define([
 					// selectorHeaderCheckbox.setAttribute('aria-checked', state);
 				}
 			}
-		},
+		}
 	});
 
 	var _DropDownButton = declare([DropDownButton], {

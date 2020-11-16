@@ -1,0 +1,65 @@
+Exchange sort icon node with umc/widgets/Icon
+--- Grid.js.orig	2020-11-16 03:55:18.020720808 +0100
++++ Grid.js	2020-11-16 07:03:13.089332987 +0100
+@@ -7,8 +7,9 @@
+ 	'dojo/has',
+ 	'./List',
+ 	'./util/misc',
++	'umc/widgets/Icon',
+ 	'dojo/_base/sniff'
+-], function (declare, lang, domConstruct, domClass, listen, has, List, miscUtil) {
++], function (declare, lang, domConstruct, domClass, listen, has, List, miscUtil, Icon) {
+ 	function appendIfNode(parent, subNode) {
+ 		if (subNode && subNode.nodeType) {
+ 			parent.appendChild(subNode);
+@@ -354,6 +355,10 @@
+ 			if (this._sortListener) {
+ 				this._sortListener.remove();
+ 			}
++			
++			if (this._lastSortedArrow) {
++				this._lastSortedArrow.destroyRecursive();
++			}
+ 
+ 			this.inherited(arguments);
+ 		},
+@@ -400,9 +405,9 @@
+ 			// Clean up UI from any previous sort
+ 			if (this._lastSortedArrow) {
+ 				// Remove the sort classes from the parent node
+-				domClass.remove(this._lastSortedArrow.parentNode, 'dgrid-sort-up dgrid-sort-down');
++				domClass.remove(this._lastSortedArrow.$parentNode, 'dgrid-sort-up dgrid-sort-down');
+ 				// Destroy the lastSortedArrow node
+-				domConstruct.destroy(this._lastSortedArrow);
++				this._lastSortedArrow.destroyRecursive();
+ 				delete this._lastSortedArrow;
+ 			}
+ 
+@@ -416,8 +421,7 @@
+ 			var prop = sort[0].property,
+ 				desc = sort[0].descending,
+ 				// if invoked from header click, target is stashed in _sortNode
+-				target = this._sortNode || this._findSortArrowParent(prop),
+-				arrowNode;
++				target = this._sortNode || this._findSortArrowParent(prop);
+ 
+ 			delete this._sortNode;
+ 
+@@ -425,11 +429,12 @@
+ 			if (target) {
+ 				target = target.contents || target;
+ 				// Place sort arrow under clicked node, and add up/down sort class
+-				arrowNode = this._lastSortedArrow = domConstruct.create('div', {
+-					className: 'dgrid-sort-arrow ui-icon',
+-					innerHTML: '&nbsp;',
+-					role: 'presentation'
+-				}, target, 'first');
++				this._lastSortedArrow = new Icon({
++					'class': 'dgrid__sortIcon',
++					iconName: desc ? 'chevron-down' : 'chevron-up',
++					$parentNode: target
++				});
++				domConstruct.place(this._lastSortedArrow.domNode, target, 'first');
+ 				domClass.add(target, 'dgrid-sort-' + (desc ? 'down' : 'up'));
+ 				// Call resize in case relocation of sort arrow caused any height changes
+ 				this.resize();
