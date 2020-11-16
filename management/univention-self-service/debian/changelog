@@ -1,3 +1,11 @@
+univention-self-service (5.0.1-1) unstable; urgency=medium
+
+  * Bug #52362: fix token validity check if more than one day passed
+  * Bug #52362: fix checking of rate limiting
+  * Bug #52362: store timedata in UTC instead of local time
+
+ -- Florian Best <best@univention.de>  Wed, 18 Nov 2020 18:58:47 +0100
+
 univention-self-service (5.0.0-6) unstable; urgency=medium
 
   * Bug #43686: use systemctl calls for UDL

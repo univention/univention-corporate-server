@@ -54,7 +54,7 @@ def handler(configRegistry, changes):
 	profiledata_enabled = configRegistry.is_true('umc/self-service/profiledata/enabled', False)
 
 	# increment version with each change
-	version_by_date = datetime.now().strftime('%Y%m%d%H%M%S')
+	version_by_date = datetime.utcnow().strftime('%Y%m%d%H%M%S')
 
 	if profiledata_enabled and params['ldap_attributes']:
 		# remove whitespace (split at ',', map str.strip to list, join list with ','

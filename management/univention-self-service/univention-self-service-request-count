@@ -77,7 +77,7 @@ for line in lines:
 			key, tsstr = regmatch.groups()
 			if key not in entries:
 				ts = int(tsstr)
-				expdate = datetime.datetime.fromtimestamp(ts)
+				expdate = datetime.datetime.utcfromtimestamp(ts)
 				so.sendall("get {}\r\n".format(key))
 				data = so.recv(1024)
 				text = data.split("\r\n")
@@ -115,6 +115,6 @@ for key in keys:
 	else:
 		raise ValueError("key '{}' not recognized".format(key))
 
-	expdiff = entries[key][1] - datetime.datetime.now()
-	exp = "in {:>5} seconds (at {})".format(expdiff.seconds, entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
+	expdiff = entries[key][1] - datetime.datetime.utcnow()
+	exp = "in {:>5} seconds (at {})".format(expdiff.total_seconds(), entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
 	print("{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp))
