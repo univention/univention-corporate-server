@@ -193,6 +193,25 @@ slapadd -l ldif
 	</para>
 </chapter>
 
+<chapter id="join">
+	<title>Performance issues during the join process</title>
+	<para>
+		The size of the UCS domain can have an impact on the duration of the join process.
+		Here is some information how to deal with such problems.
+	</para>
+	<section id="join:samba">
+		<title>Samba</title>
+		<para>
+			One of the join scripts for samba requires that the samba connector has synchronized
+			all domain objects into samba. This script has a timeout of 3h (from UCS 4.4-7 on).
+			This is sufficient for normal sized environments. But in large environments this
+			script may hit the timeout and abort the join process.
+			To increase the timeout the &ucsUCRV; <envar>create/spn/account/timeout</envar>
+			can be set prior to the join process.
+		</para>
+	</section>
+</chapter>
+
 <chapter id="group:cache">
 	<title>Local group cache</title>
 
