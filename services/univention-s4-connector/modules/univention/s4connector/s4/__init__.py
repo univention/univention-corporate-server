@@ -52,7 +52,6 @@ from ldap.controls import SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
-from samba.dcerpc import misc
 
 from univention.config_registry import ConfigRegistry
 import univention.uldap
@@ -2040,8 +2039,7 @@ class s4(univention.s4connector.ucs):
 		# get current object
 		s4_object = self.get_object(object['dn'])
 		if s4_object:
-			guid_blob = s4_object.get('objectGUID')[0]
-			objectGUID = str(ndr_unpack(misc.GUID, guid_blob))
+			objectGUID = univention.s4connector.decode_guid(s4_object.get('objectGUID')[0])
 			if self.lockingdb.is_s4_locked(objectGUID):
 				ud.debug(ud.LDAP, ud.PROCESS, "Unable to sync %s (GUID: %s). The object is currently locked." % (object['dn'], objectGUID))
 				return False
@@ -2337,13 +2335,12 @@ class s4(univention.s4connector.ucs):
 		return True  # FIXME: return correct False if sync fails
 
 	def _get_objectGUID(self, dn):
-		objectGUID = ''
 		try:
 			s4_object = self.get_object(dn)
-			objectGUID = s4_object.get('objectGUID')[0]
-		except Exception:
+			return univention.s4connector.decode_guid(s4_object['objectGUID'][0])
+		except (KeyError, Exception):  # FIXME: catch only necessary exceptions
 			ud.debug(ud.LDAP, ud.WARN, "Failed to search objectGUID for %s" % dn)
-		return objectGUID
+			return ''
 
 	def delete_in_s4(self, object, property_type):
 		ud.debug(ud.LDAP, ud.ALL, "delete: %s" % object['dn'])
@@ -2360,7 +2357,7 @@ class s4(univention.s4connector.ucs):
 				return self.delete_in_s4(object, property_type)
 			return False
 
-		entryUUID = object.get('attributes').get('entryUUID', [None])[0]
+		entryUUID = object.get('attributes').get('entryUUID', [b''])[0].decode('ASCII')
 		if entryUUID:
 			self.update_deleted_cache_after_removal(entryUUID, objectGUID)
 		else:

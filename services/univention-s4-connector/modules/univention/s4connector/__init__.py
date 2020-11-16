@@ -66,6 +66,10 @@ univention.admin.modules.update()
 univention.admin.syntax.update_choices()
 
 
+def decode_guid(value):
+	return ndr_unpack(misc.GUID, value)
+
+
 # util functions defined during mapping
 def make_lower(mlValue):
 	'''
@@ -1199,13 +1203,10 @@ class ucs(object):
 	def update_deleted_cache_after_removal(self, entryUUID, objectGUID):
 		if not entryUUID:
 			return
-		# use a dummy value
 		if not objectGUID:
-			objectGUID_str = 'objectGUID'
-		else:
-			objectGUID_str = str(ndr_unpack(misc.GUID, objectGUID))
-		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %s as deleted to UCS deleted cache. ObjectGUUID: %s" % (entryUUID, objectGUID_str))
-		self._set_config_option('UCS deleted', entryUUID, objectGUID_str)
+			objectGUID = 'objectGUID'  # use a dummy value
+		ud.debug(ud.LDAP, ud.INFO, "update_deleted_cache_after_removal: Save entryUUID %r as deleted to UCS deleted cache. ObjectGUUID: %r" % (entryUUID, objectGUID))
+		self._set_config_option('UCS deleted', entryUUID, objectGUID)
 
 	def was_entryUUID_deleted(self, entryUUID):
 		objectGUID = self.config.get('UCS deleted', entryUUID)
@@ -1216,12 +1217,11 @@ class ucs(object):
 
 	def was_objectGUID_deleted_by_ucs(self, objectGUID):
 		try:
-			objectGUID = str(ndr_unpack(misc.GUID, objectGUID))
 			entryUUID = self.config.get_by_value('UCS deleted', objectGUID)
 			if entryUUID:
 				return True
 		except Exception as err:
-			ud.debug(ud.LDAP, ud.ERROR, "was_objectGUID_deleted_by_ucs: failed to look for objectGUID %s in 'UCS deleted': %s" % (objectGUID, str(err)))
+			ud.debug(ud.LDAP, ud.ERROR, "was_objectGUID_deleted_by_ucs: failed to look for objectGUID %r in 'UCS deleted': %s" % (objectGUID, err))
 		return False
 
 	def delete_in_ucs(self, property_type, object, module, position):
@@ -1231,7 +1231,9 @@ class ucs(object):
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 
-		objectGUID = object['attributes'].get('objectGUID', [b''])[0]  # to compensate for __object_from_element
+		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
+		if objectGUID:
+			objectGUID = decode_guid(objectGUID)
 		entryUUID = self._get_entryUUID(object['dn'])
 
 		if property_type in ['ou', 'container']:
@@ -1369,8 +1371,7 @@ class ucs(object):
 					return False
 
 		try:
-			guid_blob = original_object.get('attributes').get('objectGUID')[0]
-			guid = str(ndr_unpack(misc.GUID, guid_blob))
+			guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
 
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:
