@@ -36,7 +36,17 @@ udm mail/domain create --set name="$domainname"
 user_create "$NAME" \
 	--set password="$(<$tests_domainadmin_pwdfile)" \
 	--set primaryGroup="$(get_domain_admins_dn)"
-/usr/lib/univention-pam/ldap-group-to-file.py
+
+attempts=10
+i=0
+while ((i < attempts)) && ! /usr/lib/univention-pam/ldap-group-to-file.py; do
+	((i+=1))
+	sleep 1
+done
+if ((i==attempts)); then
+	warning "ldap-group-to-file.py failed $i times"
+fi
+
 userdn=$(user_dn "$NAME")
 
 # univention-ssh tries it 3 times
