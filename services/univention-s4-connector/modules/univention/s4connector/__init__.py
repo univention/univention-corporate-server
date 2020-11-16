@@ -1253,7 +1253,7 @@ class ucs(object):
 				ud.debug(ud.LDAP, ud.PROCESS, "The object was not found in UCS: %s" % object['dn'])
 				return True
 
-			if 'univentionDomainController' in result[0][1].get('objectClass'):
+			if b'univentionDomainController' in result[0][1].get('objectClass'):
 				ud.debug(ud.LDAP, ud.PROCESS, "The windows computer %s is a Directory Node in OpenLDAP. The deletion will be skipped." % object['dn'])
 				return True
 
