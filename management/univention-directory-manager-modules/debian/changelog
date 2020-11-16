@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.16-6) unstable; urgency=medium
+
+  * Bug #51777: fix filter functionality for multivalue attributes
+  * Bug #51777: updated the mapping functionality to handle a mapped encoding
+
+ -- Jan Luttermann <luttermann@univention.de>  Mon, 16 Nov 2020 12:07:41 +0100
+
 univention-directory-manager-modules (14.0.16-5) unstable; urgency=medium
 
   * Bug #51907: fix crash in users/user if mailPrimaryAddress property default
