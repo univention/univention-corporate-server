@@ -48,7 +48,7 @@ declare -a PACKAGES=(
 	univention-server-backup # TODO
 	univention-server-slave
 	univention-server-member
-	univention-ad-connector
+	# FIXME univention-ad-connector
 	univention-samba
 	univention-management-console-module-adtakeover
 	univention-printserver # TODO
