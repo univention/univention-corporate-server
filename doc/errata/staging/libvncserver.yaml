@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: libvncserver
+fix: 0.9.11+dfsg-1.3~deb9u6
+desc: |
+ This update addresses the following issue:
+ * libvncserver/rfbserver.c has a divide by zero which could result in DoS
+   (CVE-2020-25708)
+bug: [52366]
+cve:
+- CVE-2020-25708
