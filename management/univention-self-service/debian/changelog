@@ -1,3 +1,11 @@
+univention-self-service (4.0.3-48) unstable; urgency=medium
+
+  * Bug #52362: fix token validity check if more than one day passed
+  * Bug #52362: fix checking of rate limiting
+  * Bug #52362: store timedata in UTC instead of local time
+
+ -- Florian Best <best@univention.de>  Mon, 16 Nov 2020 23:03:44 +0100
+
 univention-self-service (4.0.3-47) unstable; urgency=medium
 
   * Bug #51287: evaluate UCR variable umc/self-

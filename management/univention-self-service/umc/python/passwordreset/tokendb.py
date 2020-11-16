@@ -54,7 +54,7 @@ class TokenDB(object):
 
 	def insert_token(self, username, method, token):
 		sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
-		data = {"username": username, "method": method, "ts": datetime.datetime.now(), "token": token}
+		data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
 		cur = self.conn.cursor()
 		cur.execute(sql, data)
 		self.conn.commit()
@@ -62,7 +62,7 @@ class TokenDB(object):
 
 	def update_token(self, username, method, token):
 		sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
-		data = {"username": username, "method": method, "ts": datetime.datetime.now(), "token": token}
+		data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
 		cur = self.conn.cursor()
 		cur.execute(sql, data)
 		self.conn.commit()
@@ -121,7 +121,7 @@ token VARCHAR(255) NOT NULL);""")
 			self.logger.info("db_open(): Connected to database '{}' on server with version {} using protocol version {}.".format(
 				DB_NAME, conn.server_version, conn.protocol_version))
 			return conn
-		except:
+		except Exception:
 			self.logger.error("db_open(): Error connecting to database '{}': {}".format(DB_NAME, traceback.format_exc()))
 			raise
 

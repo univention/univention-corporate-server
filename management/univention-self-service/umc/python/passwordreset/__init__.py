@@ -123,7 +123,7 @@ def prevent_denial_of_service(func):
 
 	def _check_limits(memcache, limits):
 		limit_reached = False
-		_max_wait = datetime.datetime.now()
+		_max_wait = datetime.datetime.utcnow()
 		for key, decay, limit in limits:
 			# Not really a "decay", as for that we'd have to store the date for
 			# each request. Then a moving window could be implemented. But
@@ -140,7 +140,7 @@ def prevent_denial_of_service(func):
 				memcache.set_multi(
 					{
 						key: count,
-						"{}:exp".format(key): datetime.datetime.now() + datetime.timedelta(seconds=decay)
+						"{}:exp".format(key): datetime.datetime.utcnow() + datetime.timedelta(seconds=decay)
 					},
 					decay
 				)
@@ -179,7 +179,7 @@ def prevent_denial_of_service(func):
 		user_limit_reached, user_max_wait = _check_limits(self.memcache, user_limits)
 
 		if total_limit_reached or user_limit_reached:
-			time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.now()).seconds)
+			time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.utcnow()).total_seconds())
 			raise ConnectionLimitReached(time_s)
 
 		return func(self, *args, **kwargs)
@@ -878,7 +878,7 @@ class Instance(Base):
 			MODULE.info("Token not found in DB for user '{}'.".format(username))
 			raise TokenNotFound()
 
-		if (datetime.datetime.now() - token_from_db["timestamp"]).seconds >= self.token_validity_period:
+		if (datetime.datetime.utcnow() - token_from_db["timestamp"]).total_seconds() >= self.token_validity_period:
 			# token is correct but expired
 			MODULE.info("Receive correct but expired token for '{}'.".format(username))
 			self.db.delete_tokens(token=token, username=username)
