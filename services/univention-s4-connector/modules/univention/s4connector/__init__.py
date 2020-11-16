@@ -693,11 +693,11 @@ class ucs(object):
 			change_type = "delete"
 			ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: object was deleted")
 			if key == 'msGPO':
-				entryUUID = old.get('entryUUID', [None])[0]
-				entryCSN = old.get('entryCSN', [None])[0]
+				entryUUID = old.get('entryUUID', [b''])[0].decode('ASCII')
+				entryCSN = old.get('entryCSN', [b''])[0].decode('ASCII')
 				self._forget_entryCSN(entryUUID, entryCSN)
 		else:
-			entryUUID = new.get('entryUUID', [None])[0]
+			entryUUID = new.get('entryUUID', [b''])[0].decode('ASCII')
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
 					if self._get_entryUUID(dn) == entryUUID:
@@ -710,7 +710,7 @@ class ucs(object):
 				return False
 
 			if key == 'msGPO':
-				entryCSN = new.get('entryCSN', [None])[0]
+				entryCSN = new.get('entryCSN', [b''])[0].decode('ASCII')
 				if self._forget_entryCSN(entryUUID, entryCSN):
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: Skipping back-sync of %s %s" % (key, dn))
 					ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: because entryCSN %s was written by sync_to_ucs" % (entryCSN,))
@@ -1190,7 +1190,7 @@ class ucs(object):
 		try:
 			result = self.search_ucs(base=dn, scope='base', attr=['entryUUID'], unique=True)
 			if result:
-				return result[0][1].get('entryUUID')[0]
+				return result[0][1].get('entryUUID')[0].decode('ASCII')
 			else:
 				return None
 		except univention.admin.uexceptions.noObject:
@@ -1231,7 +1231,7 @@ class ucs(object):
 			ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
 			return True
 
-		objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
+		objectGUID = object['attributes'].get('objectGUID', [b''])[0]  # to compensate for __object_from_element
 		entryUUID = self._get_entryUUID(object['dn'])
 
 		if property_type in ['ou', 'container']:
