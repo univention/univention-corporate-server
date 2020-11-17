@@ -47,7 +47,7 @@ case "$1" in
 				fi
 			fi
 		fi
-		invoke-rc.d univention-directory-listener crestart
+		systemctl try-restart univention-directory-listener
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		:
