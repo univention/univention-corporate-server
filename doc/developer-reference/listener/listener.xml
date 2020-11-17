@@ -538,7 +538,7 @@ def setdata(key, value): pass
 				<title><command>univention-directory-listener-dump</command></title>
 				<para>
 					The command <command>univention-directory-listener-dump</command> can be used to dump the cache file <filename>/var/lib/univention-directory-listener/cache.db</filename>.
-					The &ucsUDL; must be stopped first by invoking <command>service univention-directory-listener stop</command>.
+					The &ucsUDL; must be stopped first by invoking <command>systemctl stop univention-directory-listener</command>.
 					It outputs the cache in format compatible to the <abbrev>LDAP</abbrev> Data Interchange Format (<abbrev>LDIF</abbrev>).
 				</para>
 			</section>
@@ -549,7 +549,7 @@ def setdata(key, value): pass
 				</title>
 				<para>
 					The command <command>univention-directory-listener-verify</command> can be used to compare the content of the cache file <filename>/var/lib/univention-directory-listener/cache.db</filename> to the content of an <abbrev>LDAP</abbrev> server.
-					The &ucsUDL; must be stopped first by invoking <command>service univention-directory-listener stop</command>.
+					The &ucsUDL; must be stopped first by invoking <command>systemctl stop univention-directory-listener</command>.
 					<abbrev>LDAP</abbrev> credentials must be supplied at the command line.
 					For example, the following command would use the machine password:
 					<programlisting language="sh">

@@ -3,7 +3,7 @@ set -e
 
 case "$1" in
 configure)
-	invoke-rc.d univention-directory-listener restart
+	systemctl restart univention-directory-listener
 	;;
 abort-upgrade|abort-remove|abort-deconfigure)
 	;;

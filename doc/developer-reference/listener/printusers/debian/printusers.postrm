@@ -3,7 +3,7 @@ set -e
 
 case "$1" in
 remove)
-	invoke-rc.d univention-directory-listener restart
+	systemctl restart univention-directory-listener
 	;;
 purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 	;;
