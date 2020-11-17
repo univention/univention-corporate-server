@@ -103,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 			//-->
+			umcConfig.anonymousMeta = true;
 		</script>
 		<script type="text/javascript" src="/univention/js/dojo/dojo.js"></script>
 		<script type="text/javascript">
