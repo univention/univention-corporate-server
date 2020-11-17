@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-directory-manager-modules
-fix: 14.0.16-6A~4.4.0.202011161257
+fix: 14.0.16-6A~4.4.0.202011171303
 desc: |
  This update addresses the following issue(s):
  * Fixing filter functionality for multivalue
