@@ -38,7 +38,7 @@ univention-config-registry set \
 	'listener/shares/whitelist/italc-windows?/usr/share/italc-windows/*'
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 8.0.0-15; then
-	service univention-directory-listener force-reload 2>/dev/null || true
+	systemctl try-restart univention-directory-listener 2>/dev/null || true
 
 	fqdn="$(hostname -f)"
 	python <<EOL
