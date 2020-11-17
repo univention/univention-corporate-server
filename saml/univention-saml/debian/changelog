@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 univention-saml (7.0.4-2) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adopt the new design for the login page
@@ -9,6 +10,12 @@ univention-saml (7.0.4-1) unstable; urgency=medium
   * Bug #52323: make assertion.lifetime configurable
 
  -- Florian Best <best@univention.de>  Tue, 24 Nov 2020 18:42:47 +0100
+
+univention-saml (7.0.3-3) unstable; urgency=medium
+
+  * Bug 52303: Only fetch the inexpensive, yet sufficient anonymous meta.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 22:05:36 +0100
 
 univention-saml (7.0.3-2) unstable; urgency=medium
 
