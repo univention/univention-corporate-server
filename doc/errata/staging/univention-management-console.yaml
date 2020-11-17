@@ -20,4 +20,4 @@ desc: |
    causing an error, handling of incoming connections in the UMC server has
    been improved. This problem previously only occurred in the new
    multi-process mode of the UMC server.
-bug: [52338, 52318, 52321, 52274, 52316]
+bug: [52338, 52316, 52321, 52274, 52316]
