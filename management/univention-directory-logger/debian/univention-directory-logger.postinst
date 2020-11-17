@@ -53,7 +53,7 @@ if [ "$1" = "configure" ]; then
 
 	univention-config-registry commit /etc/ldap/slapd.conf
 	invoke-rc.d slapd crestart
-	invoke-rc.d univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 fi
 
 exit 0

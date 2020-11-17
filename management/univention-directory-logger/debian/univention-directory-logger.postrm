@@ -41,7 +41,7 @@ case "$1" in
 		univention-config-registry unset \
 			"${registrySection}/dellogdir" \
 			"${registrySection}"
-		invoke-rc.d univention-directory-listener crestart
+		systemctl try-restart univention-directory-listener
 		univention-config-registry commit /etc/ldap/slapd.conf
 		invoke-rc.d slapd crestart
 		;;
