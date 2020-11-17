@@ -1,7 +1,11 @@
-include: '/.gitlab-ci/base.yml'
+include:
+  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
+  - local: '/.gitlab-ci/base.yml'
 
 generate-config:
   stage: build
+  rules:
+    - when: always
   image:
     name: $BUILD
     entrypoint: [""]
@@ -26,6 +30,8 @@ generate-config:
 
 prepare aptly:
   stage: build
+  rules:
+    - when: always
   image: curlimages/curl
   script:
     - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
@@ -44,7 +50,9 @@ drop aptly:
   script:
     - "curl --silent --show-error -X DELETE $APTLY/publish/$CI_COMMIT_REF_SLUG/git || :"
     - "curl --silent --show-error -X DELETE $APTLY/repos/$CI_COMMIT_REF_SLUG || :"
-  when: manual
+  rules:
+    - when: manual
+      allow_failure: true
   environment:
     name: $CI_COMMIT_REF_NAME
     action: stop
