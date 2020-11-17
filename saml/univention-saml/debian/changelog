@@ -1,3 +1,9 @@
+univention-saml (6.0.2-61) unstable; urgency=medium
+
+  * Bug 52303: Fix line to put code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 22:47:15 +0100
+
 univention-saml (6.0.2-60) unstable; urgency=medium
 
   * Bug 52303: Only fetch the inexpensive, yet sufficient anonymous meta.json
