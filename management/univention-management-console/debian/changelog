@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-19) unstable; urgency=medium
+
+  * Bug 52303: Mainscript
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 18 Nov 2020 00:03:17 +0100
+
 univention-management-console (11.0.5-18) unstable; urgency=medium
 
   * Bug 52303: Mainscript
