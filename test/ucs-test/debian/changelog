@@ -1,3 +1,9 @@
+ucs-test (10.0.1-30) unstable; urgency=medium
+
+  * Bug #52364: added 52_s4connector/515test_group_cache_after_move
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Nov 2020 14:13:36 +0100
+
 ucs-test (10.0.1-29) unstable; urgency=medium
 
   * Another workaround for Bug #52358:
