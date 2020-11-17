@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.16-7) unstable; urgency=medium
+
+  * Bug #51777: removing all unicode elements that were backported
+
+ -- Florian Best <best@univention.de>  Tue, 17 Nov 2020 19:45:44 +0100
+
 univention-directory-manager-modules (14.0.16-6) unstable; urgency=medium
 
   * Bug #51777: fix filter functionality for multivalue attributes
