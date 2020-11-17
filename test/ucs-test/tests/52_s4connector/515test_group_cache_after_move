@@ -1,0 +1,91 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Test groupcache/membership after moving a user object"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## tags:
+##  - basic
+## bugs:
+##  - 52364
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+user="$(random_chars)"
+group1="$(random_chars)"
+group2="$(random_chars)"
+
+section "Create user and groups"
+
+UDM_users_user_username="$user"
+UDM_users_user_password="univention"
+UDM_users_user_lastname="$user"
+udm_create "users/user"; fail_bool 0 110
+UDM_groups_group_name="$group1"
+udm_create "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$group2"
+udm_create "groups/group"; fail_bool 0 110
+AD_USER_DN="CN=$user,CN=users,$(ad_get_base)"
+USER_DN="uid=$user,cn=users,$ldap_base"
+GROUP1_DN="cn=$group1,cn=groups,$ldap_base"
+GROUP2_DN="cn=$group2,cn=groups,$ldap_base"
+AD_GROUP1_DN="CN=$group1,CN=groups,$(ad_get_base)"
+AD_GROUP2_DN="CN=$group2,CN=groups,$(ad_get_base)"
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "add user $user to group $group1"
+UDM_users_user_username="$user"
+udm_modify "users/user" "" "" "" "" --append groups="$GROUP1_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP1_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP2_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+UDM_groups_group_name="$group1" udm_verify_multi_value_udm_attribute_contains "users" "$USER_DN" "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$group2" udm_verify_multi_value_udm_attribute_contains "users" "$USER_DN" "groups/group"; fail_bool 1 110
+
+section "move user $user, remove from group $group1 and add to $group2, all while the connector is not running"
+invoke-rc.d univention-s4-connector stop || fail_test 110
+udm users/user move --dn "$USER_DN" --position "$ldap_base" || fail_test 110
+USER_DN="uid=$user,$ldap_base"
+AD_USER_DN="CN=$user,$(ad_get_base)"
+udm_modify "users/user" "" "" "$ldap_base" "" --remove groups="$GROUP1_DN" || fail_test 110
+udm_modify "users/user" "" "" "$ldap_base" "" --append groups="$GROUP2_DN" || fail_test 110
+invoke-rc.d univention-s4-connector start || fail_test 110
+sleep 10
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "verify groupmembership"
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP1_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP2_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+UDM_groups_group_name="$group1" udm_verify_multi_value_udm_attribute_contains "users" "$USER_DN" "groups/group"; fail_bool 1 110
+UDM_groups_group_name="$group2" udm_verify_multi_value_udm_attribute_contains "users" "$USER_DN" "groups/group"; fail_bool 0 110
+
+section "Cleanup"
+UDM_users_user_username="$user"
+udm_remove "users/user" "" "" "$ldap_base" || fail_test 110
+UDM_groups_group_name="$group1"
+udm_remove "groups/group" || fail_test 110
+UDM_groups_group_name="$group2"
+udm_remove "groups/group" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+udm_exists "users/user"; fail_bool 1 110
+UDM_groups_group_name="$group1"
+udm_exists "groups/group"; fail_bool 1 110
+UDM_groups_group_name="$group2"
+udm_exists "groups/group"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+ad_exists "$AD_GROUP1_DN"; fail_bool 1 110
+ad_exists "$AD_GROUP2_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

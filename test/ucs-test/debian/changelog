@@ -1,3 +1,9 @@
+ucs-test (9.0.5-23) unstable; urgency=medium
+
+  * Bug #52364: added 52_s4connector/515test_group_cache_after_move
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Nov 2020 14:05:56 +0100
+
 ucs-test (9.0.5-22) unstable; urgency=medium
 
   * Bug #52318: test reason phrase is set
