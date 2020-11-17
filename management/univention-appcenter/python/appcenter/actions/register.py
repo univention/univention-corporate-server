@@ -342,7 +342,7 @@ class AppListener(AppListener):
 
 	def _restart_listener(self, meta_files):
 		self.log('Restarting Listener...')
-		self._subprocess(['service', 'univention-directory-listener', 'crestart'])
+		self._subprocess(['systemctl', 'try-restart', 'univention-directory-listener'])
 		for meta_file in meta_files:
 			if os.path.exists(meta_file):
 				self.debug('Removed leftover file %s. Useful for re-installations' % meta_file)
