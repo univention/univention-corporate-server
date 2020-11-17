@@ -122,7 +122,7 @@ if [ "$1" = "configure" ]; then
 		update-rc.d -f univention-bind remove
 		update-rc.d -f univention-bind-proxy remove
 	fi
-	service univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 fi
 
 deb-systemd-helper enable bind9.service
