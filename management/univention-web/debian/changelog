@@ -1,3 +1,9 @@
+univention-web (3.0.5-52) unstable; urgency=medium
+
+  * Bug 52303: rm maintscript
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 22:45:44 +0100
+
 univention-web (3.0.5-51) unstable; urgency=medium
 
   * Bug 52303: mv_conffile in maintscript
