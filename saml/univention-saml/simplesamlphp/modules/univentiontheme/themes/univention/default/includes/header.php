@@ -102,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	echo 'umcConfig.allowLanguageSwitch = false;';
 }
 ?>
-			//-->
 			umcConfig.anonymousMeta = true;
+			//-->
 		</script>
 		<script type="text/javascript" src="/univention/js/dojo/dojo.js"></script>
 		<script type="text/javascript">
