@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-self-service
-fix: 4.0.3-48A~4.4.0.202011162328
+fix: 4.0.3-49A~4.4.0.202011171036
 desc: |
  This update addresses the following issue(s):
  * The token validity check has been repaired if the token was used one day
