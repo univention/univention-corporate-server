@@ -4,6 +4,12 @@ univention-directory-manager-modules (15.0.5-3) unstable; urgency=low
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:29:33 +0100
 
+univention-directory-manager-modules (15.0.4-3) unstable; urgency=medium
+
+  * Bug #51777: removing all unicode elements that were backported
+
+ -- Florian Best <best@univention.de>  Tue, 17 Nov 2020 19:45:44 +0100
+
 univention-directory-manager-modules (15.0.4-2) unstable; urgency=medium
 
   * Bug #51777: fix filter functionality for multivalue attributes
