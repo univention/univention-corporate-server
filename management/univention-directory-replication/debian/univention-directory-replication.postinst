@@ -53,7 +53,7 @@ install -d -o listener -g root -m 0700 /var/univention-backup/replication
 if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-3 && [ -f "$rootpw_filepath" ]; then
 	listenerpid=$(pgrep -f /usr/sbin/univention-directory-listener)
 	if [ -n "$listenerpid" ]; then
-		service univention-directory-listener stop
+		systemctl stop univention-directory-listener
 	fi
 
 	new_password="$(pwgen --numerals --capitalize --secure 64 1)"
@@ -61,10 +61,10 @@ if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 12.0.0-3 && [ -f "
 	service slapd crestart
 
 	if [ -n "$listenerpid" ]; then
-		service univention-directory-listener start
+		systemctl start univention-directory-listener
 	fi
 else
-	service univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 fi
 
 exit 0

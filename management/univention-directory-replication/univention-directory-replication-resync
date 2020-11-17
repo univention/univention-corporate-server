@@ -100,7 +100,7 @@ fuser -v "$1" && die "File still in use: $1"
 if [ ! -s "$1" ]
 then
 	rm -f "$1"
-	echo "service univention-directory-listener stop; service univention-directory-listener start" | at now
+	echo "systemctl stop univention-directory-listener; systemctl start univention-directory-listener" | at now
 	die "Empty file removed: $1" 0
 fi
 
@@ -115,7 +115,7 @@ then
 	rm "${faileddns}"
 	mv "$1" "$dst"
 	chmod 600 "$dst"
-	echo "service univention-directory-listener stop; service univention-directory-listener start" | at now
+	echo "systemctl stop univention-directory-listener; systemctl start univention-directory-listener" | at now
 	exit 0
 else
 	echo "some DNs have failed and have to be synced manually:"
