@@ -35,7 +35,7 @@ a2ensite univention-server-overview.conf
 
 if [ "$1" = "configure" ]; then
 	systemctl reload apache2
-	invoke-rc.d univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 fi
 
 exit 0

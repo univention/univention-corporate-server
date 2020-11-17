@@ -1,3 +1,9 @@
+univention-server-overview (3.0.0-3) unstable; urgency=medium
+
+  * Bug #43686: use systemctl calls for UDL
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 17 Nov 2020 12:34:32 +0100
+
 univention-server-overview (3.0.0-2) unstable; urgency=medium
 
   * Bug #42374: Wording - Master -> Primary; Slave -> Replica
