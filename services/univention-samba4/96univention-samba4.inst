@@ -261,7 +261,7 @@ configure_samba_role() {
 	fi
 
 	univention-config-registry set samba4/role?"$samba4_role"
-	invoke-rc.d univention-directory-listener crestart
+	systemctl try-restart univention-directory-listener
 }
 
 set_samba4_ldap_base() {
