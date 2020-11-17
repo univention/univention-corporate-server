@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 univention-portal (4.0.4-1) unstable; urgency=medium
 
   * Bug #52512: Modularize portal
@@ -32,6 +33,12 @@ univention-portal (4.0.3-1) unstable; urgency=medium
   * Bug #52293: get session info from Apache instead of UMC-Webserver
 
  -- Florian Best <best@univention.de>  Mon, 30 Nov 2020 14:17:22 +0100
+
+univention-portal (4.0.2-4) unstable; urgency=medium
+
+  * Bug 52302: Remove call to /univention/get/modules for every page load
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 21:26:25 +0100
 
 univention-portal (4.0.2-3) unstable; urgency=medium
 
