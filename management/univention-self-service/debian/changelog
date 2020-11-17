@@ -12,11 +12,17 @@ univention-self-service (5.0.1-1) unstable; urgency=medium
 
  -- Florian Best <best@univention.de>  Wed, 18 Nov 2020 18:58:47 +0100
 
-univention-self-service (5.0.0-6) unstable; urgency=medium
+univention-self-service (5.0.0-7) unstable; urgency=medium
 
   * Bug #43686: use systemctl calls for UDL
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 17 Nov 2020 12:33:00 +0100
+
+univention-self-service (5.0.0-6) unstable; urgency=medium
+
+  * Bug #52362: fix broken handling of unicode types
+
+ -- Florian Best <best@univention.de>  Tue, 17 Nov 2020 09:42:11 +0100
 
 univention-self-service (5.0.0-5) unstable; urgency=medium
 
