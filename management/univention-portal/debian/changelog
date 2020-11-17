@@ -1,3 +1,9 @@
+univention-portal (3.0.2-12) unstable; urgency=medium
+
+  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:45:33 +0100
+
 univention-portal (3.0.2-11) unstable; urgency=medium
 
   * Bug #52355: Immediate negative result if anonymous user is checked against

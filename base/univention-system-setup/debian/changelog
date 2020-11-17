@@ -1,3 +1,9 @@
+univention-system-setup (12.0.2-29) unstable; urgency=medium
+
+  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:45:52 +0100
+
 univention-system-setup (12.0.2-28) unstable; urgency=medium
 
   * Bug #52160: Add userpref option to make new firefox esr versions load userChrome.css
