@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 univention-management-console (12.0.5-6) unstable; urgency=medium
 
   * Bug #52453: UCS 5 design - adjust header styling
@@ -49,6 +48,12 @@ univention-management-console (12.0.4-1) unstable; urgency=medium
   * Bug #52323: make assertion.lifetime configurable
 
  -- Florian Best <best@univention.de>  Thu, 19 Nov 2020 14:38:15 +0100
+
+univention-management-console (12.0.3-13) unstable; urgency=medium
+
+  * Bug 52303: Mainscript
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 22:45:32 +0100
 
 univention-management-console (12.0.3-12) unstable; urgency=medium
 
