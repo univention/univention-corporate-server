@@ -2283,6 +2283,22 @@ class s4(univention.s4connector.ucs):
 				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: %s was not present in UCS group member mapping cache" % ucs_dn)
 				pass
 
+	def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
+		for group in self.group_members_cache_con:
+			if remove_con_dn and remove_con_dn in self.group_members_cache_con[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: remove %s from con cache for group %s" % (remove_con_dn, group))
+				self.group_members_cache_con[group].remove(remove_con_dn)
+			if add_con_dn and add_con_dn not in self.group_members_cache_con[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: add %s to con cache for group %s" % (add_con_dn, group))
+				self.group_members_cache_con[group].add(add_con_dn)
+		for group in self.group_members_cache_ucs:
+			if remove_ucs_dn and remove_ucs_dn in self.group_members_cache_ucs[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: remove %s from ucs cache for group %s" % (remove_ucs_dn, group))
+				self.group_members_cache_ucs[group].remove(remove_ucs_dn)
+			if add_ucs_dn and add_ucs_dn not in self.group_members_cache_ucs[group]:
+				ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: add %s to ucs cache for group %s" % (add_ucs_dn, group))
+				self.group_members_cache_ucs[group].add(add_ucs_dn)
+
 	def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
 		# NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
 		_d = ud.function('ldap.__sync_from_ucs')  # noqa: F841
@@ -2319,6 +2335,11 @@ class s4(univention.s4connector.ucs):
 				# need to actualise the GUID, group cache and DN-Mapping
 				object['modtype'] = 'move'
 				self._remove_dn_from_group_cache(con_dn=old_dn, ucs_dn=pre_mapped_ucs_old_dn)
+				self._update_group_member_cache(
+					remove_con_dn=old_dn.lower(),
+					remove_ucs_dn=pre_mapped_ucs_old_dn.lower(),
+					add_con_dn=object['dn'].lower(),
+					add_ucs_dn=pre_mapped_ucs_dn.lower())
 				ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and S4 group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
 				self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
 				self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
@@ -2619,6 +2640,7 @@ class s4(univention.s4connector.ucs):
 				self.delete_in_s4(object, property_type)
 			# update group cache
 			self._remove_dn_from_group_cache(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
+			self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
 		else:
 			ud.debug(ud.LDAP, ud.WARN, "unknown modtype (%s : %s)" % (object['dn'], object['modtype']))
 			return False
