@@ -1,3 +1,9 @@
+univention-saml (6.0.2-60) unstable; urgency=medium
+
+  * Bug 52303: Only fetch the inexpensive, yet sufficient anonymous meta.json
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 22:05:36 +0100
+
 univention-saml (6.0.2-59) unstable; urgency=medium
 
   * Bug #52278: defer LDAP bind when it is needed
