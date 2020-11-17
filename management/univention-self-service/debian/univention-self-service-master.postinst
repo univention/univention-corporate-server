@@ -47,6 +47,6 @@ ucr set umc/self-service/profiledata/enabled?true \
 
 call_joinscript 35univention-self-service-master.inst
 
-invoke-rc.d univention-directory-listener crestart
+systemctl try-restart univention-directory-listener
 
 exit 0

@@ -37,6 +37,6 @@ eval "$(univention-config-registry shell)"
 ucr set umc/self-service/invitation/enabled?true
 mkdir -p /var/cache/univention-directory-listener/selfservice-invitation/
 chown listener /var/cache/univention-directory-listener/selfservice-invitation/
-invoke-rc.d univention-directory-listener crestart
+systemctl try-restart univention-directory-listener
 
 exit 0
