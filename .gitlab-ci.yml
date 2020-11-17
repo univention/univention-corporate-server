@@ -55,6 +55,8 @@ doc-pipeline:
       - "doc/erra[^t]*/**/*"
       - "doc/errat[^a]*/**/*"
       - "doc/errata?*/**/*"
+  needs:
+    - generate-config
   trigger:
     include:
       - artifact: generated-config-doc.yml
@@ -69,6 +71,8 @@ deb-pipeline:
       - "d[^o]*/*/**/*"
       - "do[^c]*/*/**/*"
       - "doc?*/*/**/*"
+  needs:
+    - generate-config
   trigger:
     include:
       - artifact: generated-config-deb.yml
