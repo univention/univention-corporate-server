@@ -6,8 +6,6 @@ $this->data['header'] = $this->t('{login:user_pass_header}');
 $PW_EXPIRED = $this->data['errorcode'] !== NULL && in_array($this->data['errorcode'], array('LDAP_PWCHANGE', 'KRB_PWCHANGE', 'SAMBA_PWCHANGE', 'univention:RETYPE_MISMATCH'));
 // echo '<pre>'; var_dump($this->data); echo '</pre>';
 
-$error_is_notice = !in_array($this->data['errorcode'], array('univention:PW_CHANGE_FAILED', 'univention:RETYPE_MISMATCH'));
-
 if ($this->data['errorcode'] === 'univention:ERROR') {
 ?>
 		<script type="text/javascript">
@@ -33,13 +31,21 @@ if (isset($this->data['SPMetadata']['privacypolicy'])) {
 // TODO: do we want to display $this->data['SPMetadata']['OrganizationName']) and $this->data['SPMetadata']['description']) ?
 // both might be unset, description might be an array -> use is_array() && implode()!
 ?>
-			<div id="umcLoginDialog" class="umcLoginDialog">
-				<div id="umcLoginLogo" class="umcLoginLogo">
-					<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg"/>
-				</div>
-				<div class="umcLoginFormWrapper">
-					<p id="umcLoginNotices" class="umcLoginNotices" style="display: <?php echo $this->data['errorcode'] !== NULL && $error_is_notice ? 'block' : 'none'; ?>;">
-						<?php
+				<div id="umcLoginDialog">
+					<div id="umcLoginLogoWrapper">
+						<img id="umcLoginLogo" src="/univention/js/dijit/themes/umc/images/login_logo.svg"/>
+					</div>
+					<div id="umcLoginFormWrapperWrapper">
+						<div id="umcLoginStandbyWrapper">
+							<!-- copy pasted from umc/widgets/StandbyCircle.js -->
+							<div class="umcStandbySvgWrapper">
+								<svg class="umcStandbySvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+									<circle class="umcStandbySvg__circle" cx="50" cy="50" r="45"></circle>
+								</svg>
+							</div>
+						</div>
+						<div id="umcLoginFormWrapper">
+							<div id="umcLoginNotices" <?php if (!($this->data['errorcode'] !== NULL)) { echo 'class="dijitDisplayNone"'; } ?>><?php
 $error_message = '';
 
 if ($this->data['errorcode'] !== NULL && $this->data['errorcode'] !== 'univention:ERROR') {
@@ -51,19 +57,19 @@ if ($this->data['errorcode'] !== NULL && $this->data['errorcode'] !== 'univentio
 		$error_message .= htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams']));
 	}
 
-	if ($error_is_notice) {
-		echo $error_message;
-	}
+	echo $error_message;
 }
 ?>
-					</p>
-					<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm" autocomplete="on" <?php if ($PW_EXPIRED) { echo 'style="display: none; "'; } ?>>
-						<label for="umcLoginUsername">
-							<input placeholder="<?php echo htmlspecialchars($this->t('{login:username}'), ENT_QUOTES); ?>" id="umcLoginUsername" name="username" type="text" autocomplete="username"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
-						</label>
-						<label for="umcLoginPassword">
-							<input placeholder="<?php echo htmlspecialchars($this->t('{login:password}'), ENT_QUOTES); ?>" id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="current-password"/>
-						</label>
+							</div>
+							<form id="umcLoginForm" name="umcLoginForm" action="?" method="post" class="umcLoginForm<?php if ($PW_EXPIRED) { echo ' dijitDisplayNone'; } ?>" autocomplete="on">
+								<div class="umcLoginFormInput">
+									<input placeholder=" " id="umcLoginUsername" name="username" type="text" autocomplete="username"  tabindex="1" value="<?php echo htmlspecialchars($this->data['username'], ENT_QUOTES); ?>" <?php echo $this->data['forceUsername'] ? 'readonly' : ''; ?>/>
+									<label id="umcLoginUsernameLabel" for="umcLoginUsername"><?php echo htmlspecialchars($this->t('{login:username}'), ENT_QUOTES); ?></label>
+								</div>
+								<div class="umcLoginFormInput">
+									<input placeholder=" " id="umcLoginPassword" name="password" type="password" tabindex="2" autocomplete="current-password"/>
+									<label id ="umcLoginPasswordLabel" for="umcLoginPassword"><?php echo htmlspecialchars($this->t('{login:password}'), ENT_QUOTES); ?></label>
+								</div>
 <?php
 foreach ($this->data['stateparams'] as $name => $value) {
 	echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '" />';
@@ -119,17 +125,7 @@ foreach ($this->data['stateparams'] as $name => $value) {
 	echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '" />';
 }
 ?>
-					</form>
-<?php
-}
-?>
-<?php
-if (!$error_is_notice && $error_message) {
-?>
-					<div id="umcLoginWarnings" class="umcLoginWarnings">
-						<p class="umcLoginWarning">
-							<?php echo $error_message; ?>
-						</p>
+						</div>
 					</div>
 <?php
 }

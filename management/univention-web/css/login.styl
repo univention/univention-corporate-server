@@ -48,10 +48,7 @@ body
 
 #umcLoginFormWrapper
 	position: relative
-	margin: 0 1rem
-
-#umcLoginNotices
-	font-size: var(--font-size-small)
+	padding: 0 1rem 3rem
 
 .umcLoginFormInput
 	position: relative
@@ -113,15 +110,9 @@ body
 .umcLoginFormButton__label
 	position: relative
 
-#umcLoginWarnings
+#umcLoginNotices
 	font-size: var(--font-size-small)
-	padding: 2rem 0 2rem
-
-	&:empty
-		padding: 3rem 0 0 0
-
-.umcLoginWarning
-	color: var(--color-error)
+	margin-bottom: 1rem
 
 #umcLoginLinks
 	font-size: var(--font-size-small)
@@ -129,7 +120,15 @@ body
 	margin-top: 1rem
 
 	a
-		text-decoration: none
+		margin: 0 0.5rem
+		&:hover
+			color: inherit
+			text-decoration: none
+
+.umcLoginLinkWarning
+	background-color: var(--color-error)
+	border-radius: var(--border-radius-tooltip)
+	padding: 0.4em
 
 #umcLoginFormWrapperWrapper
 	position: relative

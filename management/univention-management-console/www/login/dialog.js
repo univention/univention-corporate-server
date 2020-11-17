@@ -152,7 +152,7 @@ define([
 			if (window.location.protocol === 'https:' || window.location.host === 'localhost') {
 				return;
 			}
-			return lang.replace('<p class="umcLoginWarning"><a href="https://{url}" title="{tooltip}">{text}</a></p>', {
+			return lang.replace('<p class="umcLoginLinkWarning"><a href="https://{url}" title="{tooltip}">{text}</a></p>', {
 				url: entities.encode(window.location.href.slice(7)),
 				tooltip: entities.encode(_('This network connection is not encrypted. All personal or sensitive data such as passwords will be transmitted in plain text. Please follow this link to use a secure SSL connection.')),
 				text: _('This network connection is not encrypted.<br/>Click here for an HTTPS connection.')
@@ -161,7 +161,7 @@ define([
 
 		_warningBrowserOutdated: function() {
 			if (tools.browserIsOutdated()) {
-				return '<p class="umcLoginWarning">' + entities.encode(tools.browserIsOutdatedMessage()) + '</p>';
+				return '<p class="umcLoginLinkWarning">' + entities.encode(tools.browserIsOutdatedMessage()) + '</p>';
 			}
 		},
 
