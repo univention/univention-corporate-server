@@ -73,7 +73,7 @@ def main():
 					'mail/dovecot/mailbox/rename=%s' % (flag_rename,),
 					'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
 				])
-				subprocess.call(['invoke-rc.d', 'univention-directory-listener', 'restart'])
+				subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
 				udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, check_for_drs_replication=True)
 
 				if not os.path.exists(old_dir):

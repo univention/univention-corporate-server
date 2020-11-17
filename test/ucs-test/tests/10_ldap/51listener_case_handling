@@ -27,7 +27,7 @@ udm-test container/cn move --dn "cn=ŵnvü#ûüΩ?ĵ,$ldap_base" \
 sleep 10  ## wait_for_replication would wait for 300 seconds if listener crashes
 
 if [ "$(pgrep -cf /usr/sbin/univention-directory-listener)" = 0 ]; then
-	invoke-rc.d univention-directory-listener start
+	systemctl start univention-directory-listener
 	udm-test container/cn remove --dn "cn=ŵnvü#ûüΩ?ĵ,$ldap_base"
 	fail_fast 1 "The univention-directory-listener crashed. See Bug #35334"
 else

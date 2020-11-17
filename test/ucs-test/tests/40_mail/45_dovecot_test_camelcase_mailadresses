@@ -33,7 +33,7 @@ def get_mixed_case_maildir(addr):
 
 
 def main():
-	cmd = ['invoke-rc.d', 'univention-directory-listener', 'restart']
+	cmd = ['systemctl', 'restart', 'univention-directory-listener']
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		handler_set([
 			'mail/dovecot/mailbox/delete=yes',
