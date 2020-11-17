@@ -32,7 +32,7 @@
 
 . /usr/share/univention-lib/all.sh
 
-invoke-rc.d univention-directory-listener crestart || true
+systemctl try-restart univention-directory-listener || true
 
 univention-config-registry set 'pkgdb/requiressl?true'
 
