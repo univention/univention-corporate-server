@@ -180,6 +180,9 @@
 					<listitem><simpara>
 						Adjustments in the use of <package>python-ldap</package> have been made (<u:bug>51268</u:bug>)
 					</simpara></listitem>
+					<listitem><simpara>
+							The process supervision for the listener service has been changed from <package>runit</package> to <package>systemd</package>. Any direct calls to the <command>init</command> script or <command>runsv</command>, for example <command>/etc/init.d/univention-directory-listener start</command> or <command>sv start univention-directory-listener</command>, need to be replaced with <command>systemctl</command>, for example <command>systemctl start univention-directory-listener</command> (<u:bug>43686</u:bug>)
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 		</section>
