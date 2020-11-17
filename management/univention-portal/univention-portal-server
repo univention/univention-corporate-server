@@ -52,6 +52,7 @@ from ldap.filter import filter_format
 from univention.udm import UDM
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.handler import run_filter
+from univention.lib.misc import custom_groupname
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -471,6 +472,7 @@ class JsonHandler(tornado.web.RequestHandler):
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
 		answer['filtered'] = not admin_mode
+		get_logger('server').info('%r in %r' % (username, self.admins))
 		answer['may_edit_portal'] = username in self.admins
 		self.write(answer)
 
@@ -484,8 +486,11 @@ def signal_handler_reload(signo, frame):
 
 
 def make_app():
-	admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
-	admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
+	default_admin_groups = custom_groupname('Domain Admins', ucr)
+	admin_groups = ucr.get('portal/admin_groups', default_admin_groups).split(',')
+	admins = [grp.getgrnam(admin_group_name.strip())[3] for admin_group_name in admin_groups]  # [["Administrator"], ["admin1", "admin2"]]
+	admins = [admin.lower() for group_admins in admins for admin in group_admins]  # ["administrator", "admin1", "admin2"]
+	get_logger('server').info('Admins: %r' % admins)
 	return tornado.web.Application([
 		(r'/', JsonHandler, {"admins": admins}),
 	])

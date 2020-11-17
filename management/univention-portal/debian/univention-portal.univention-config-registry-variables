@@ -4,6 +4,12 @@ Description[en]=The port used by the Univention Portal server.
 Type=int
 Categories=portal
 
+[portal/admin_groups]
+Description[de]=Gruppen, die als Portal-Admins gelten sollen. Schaltet für diese Benutzer den Edit-Modus frei (falls verfügbar). Mehrere Gruppen werden mit Komma getrennt. Ein leerer Wert schaltet die Funktion ab. Default: "Domain Admins"
+Description[en]=Groups that are regarded as portal admins. Enables the edit mode for these users (if available). Separate multiple groups by comma. An empty value disables the edit mode. Default: "Domain Admins"
+Type=str
+Categories=portal
+
 [portal/show-outdated-browser-warning]
 Description[de]=Wenn aktiviert, wird eine Warnung angezeigt, falls die benutze Browserversion zu alt ist.
 Description[en]=If activated, a warning is displayed if the browser version used is too old.
