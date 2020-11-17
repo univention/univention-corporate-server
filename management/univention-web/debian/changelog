@@ -1,4 +1,14 @@
+<<<<<<< HEAD
 univention-web (4.0.0-12) unstable; urgency=medium
+=======
+univention-web (3.0.5-50) unstable; urgency=medium
+
+  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:43:35 +0100
+
+univention-web (3.0.5-49) unstable; urgency=medium
+>>>>>>> Bug #52303: Changelog
 
   * Bug #52453: UCS 5 design - MultiInput / Select / SearchForm
 

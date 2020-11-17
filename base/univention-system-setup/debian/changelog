@@ -34,35 +34,42 @@ univention-system-setup (13.0.3-1) unstable; urgency=low
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 08 Dec 2020 21:14:40 +0100
 
-univention-system-setup (13.0.2-6) unstable; urgency=medium
+univention-system-setup (13.0.2-7) unstable; urgency=medium
 
   * Bug #52453: fix VirtualKeyboardBox undefined error
 
  -- Johannes Keiser <keiser@univention.de>  Wed, 02 Dec 2020 13:33:24 +0100
 
-univention-system-setup (13.0.2-5) unstable; urgency=medium
+univention-system-setup (13.0.2-6) unstable; urgency=medium
 
   * Bug #52194: Bug #51633: pass valid locale to univention.i18n.Locale
 
  -- Florian Best <best@univention.de>  Wed, 02 Dec 2020 11:57:59 +0100
 
-univention-system-setup (13.0.2-4) unstable; urgency=low
+univention-system-setup (13.0.2-5) unstable; urgency=low
 
   * Bug #52448: Remove univention-runit
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 01 Dec 2020 10:22:15 +0100
 
-univention-system-setup (13.0.2-3) unstable; urgency=medium
+univention-system-setup (13.0.2-4) unstable; urgency=medium
 
   * Bug #43688: Convert DHCPd from runit to systemd
 
  -- Sebastian Lobinger <lobinger@univention.de>  Wed, 25 Nov 2020 13:53:06 +0100
+
+univention-system-setup (13.0.2-3) unstable; urgency=medium
+
+  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:45:52 +0100
 
 univention-system-setup (13.0.2-2) unstable; urgency=medium
 
   * Bug #43687: Convert init.d to systemctl commands for UDN
 
  -- Sebastian Lobinger <lobinger@univention.de>  Tue, 17 Nov 2020 10:33:31 +0100
+
 
 univention-system-setup (13.0.2-1) unstable; urgency=medium
 
