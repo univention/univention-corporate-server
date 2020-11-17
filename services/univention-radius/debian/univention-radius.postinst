@@ -68,7 +68,7 @@ case "$1" in
 		fi
 
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-		invoke-rc.d univention-directory-listener crestart
+		systemctl try-restart univention-directory-listener
 		;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
