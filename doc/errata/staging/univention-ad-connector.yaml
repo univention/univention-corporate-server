@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * The group membership synchronisation after moving
    objects has been fixed.
-bug: [51929]
+bug: [51929, 52364]
