@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: univention-system-setup
+fix: 12.0.2-29A~4.4.0.202011172052
+desc: |
+ This update addresses the following issue(s):
+ * The name of a specific meta.json file was changed. This change is internal.
+bug: [52303]
