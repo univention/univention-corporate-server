@@ -27,20 +27,11 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-@import "bootstrap-reboot.css"
-@import "../js/dijit/themes/dijit.css"
-@import "../js/dojox/grid/resources/Grid.css"
-@import "../js/dojox/grid/enhanced/resources/Common.css"
-@require "dijit.styl"
-@require "reboot.styl"
-@require "fonts.styl"
 @require "icons.styl"
-@require "buttons.styl"
 @require "widgets.styl"
 @require "Dialog.styl"
 @require "render.styl"
 @require "menu.styl"
-@require "tooltips.styl"
 @require "dnd.styl"
 @require "notifications.styl"
 @require "AddCategoryButton.styl"
@@ -48,104 +39,13 @@
 
 
 
-//// textbox
-.dijitTextBox
-	--font-color-disabled: rgba(255, 255, 255, 0.4)
-	position: relative
-	height: calc(15 * var(--layout-spacing-unit-small))
-	width: 100%
-	color: var(--font-color-contrast-high)
-	font-size: var(--font-size-normal)
-	background-color: var(--color-grey8)
-	border: 1px solid transparent
-	border-radius: 2px // TODO
-	transition: background-color, color, border
-	transition-duration: 250ms
-
-	&Disabled
-		color: var(--font-color-disabled)
-	&Error
-		border-color: var(--color-error)
-
-.dijitTextBox
-	display: flex
-	flex-direction: row-reverse
-	align-items: center
-
-	> *
-		flex: 0 0 auto
-
-	.dijitInputContainer
-		flex: 1 1 auto
-		height: 100%
-
-		.dijitInputInner,
-		.umcInlineLabel,
-		.dijitPlaceHolder
-			height: 100%
-			text-overflow: ellipsis
-			padding: calc(5 * var(--layout-spacing-unit-small)) !important
-			font-size: var(--font-size-normal)
-			line-height: var(--font-lineheight-normal)
-
-		.umcInlineLabel,
-		.dijitPlaceHolder
-			display: flex
-			align-items: center
-			position: absolute
-			top: 0
-			left: 0
-			height: 100%
-			width: 100%
-			white-space: nowrap
-			overflow: hidden
-			pointer-events: none // we want the cursor for the inputfield not these placeholder elements
-			color: var(--font-color-contrast-middle)
-
-
-		.umcInlineLabel
-			visibility: hidden
-			&.umcEmptyValue
-				visibility: visible
-
-.dijitValidationTextBox
-	.dijitValidationContainer,
-	.dijitValidationIcon
-		display: none
-
-.umcLabelPane .umcLabelPaneLabelNode
-	transition: color 250ms
-.umcLabelPaneError .umcLabelPaneLabelNode
-	color: var(--color-error)
-//// textbox end
-
-
-body
-	background-color: var(--bgc-content-body)
-	overflow-x: hidden
-
-
-.bgc-content-header {
-	background-color: var(--bgc-content-header)
-}
-
-.bgc-content-body {
-	background-color: var(--bgc-content-body)
-}
-
-
-
-
 ////// portal style (style.styl)
 :root
-	--portal-header-height: calc(14 * var(--layout-spacing-unit-small))
+	--portal-header-height: var(--layout-height-header)
 
 .portal
 	--portal-header-to-content-seperator-height: var(--layout-spacing-unit-small)
 	min-height: 100vh
-
-$blur()
-	filter: blur(8px)
 
 body.scrollLess
 	overflow: hidden
@@ -203,14 +103,10 @@ body.scrollLess
 //// portal header end
 
 
-// .portal__body
-	// background-color: var(--bgc--content-body)
-	// padding: 0 calc(2 * var(--layout-spacing-unit))
-
 .portal__categories
 	position: relative
 	top: var(--portal-header-height)
-	padding: calc(7 * var(--layout-spacing-unit)) calc(4 * var(--layout-spacing-unit))
+	padding: calc(7 * var(--layout-spacing-unit)) calc(6 * var(--layout-spacing-unit))
 
 .portal__category
 	cursor: default // this is for the dnd in edit mode
@@ -219,11 +115,10 @@ body.scrollLess
 	&:last-child
 		margin-bottom: 0
 
-$tileWidth = calc(20 * var(--layout-spacing-unit))
 .portal__category__tiles
 	display: grid
-	grid-template-columns: repeat(auto-fill, $tileWidth)
-	grid-gap: calc(7 * var(--layout-spacing-unit))
+	grid-template-columns: repeat(auto-fill, var(--app-tile-side-length))
+	grid-gap: calc(6 * var(--layout-spacing-unit))
 
 
 .portal__category__title
@@ -258,7 +153,7 @@ $tileWidth = calc(20 * var(--layout-spacing-unit))
 
 .tile
 	position: relative
-	width: $tileWidth
+	width: var(--app-tile-side-length)
 	display: flex
 	flex-direction: column
 	align-items: center
@@ -278,7 +173,7 @@ $tile__box
 	@extends $tile__box
 
 .tile__box
-	width: calc(20 * var(--layout-spacing-unit))
+	width: var(--app-tile-side-length)
 	height: @width
 	margin-bottom: calc(2 * var(--layout-spacing-unit))
 
@@ -291,7 +186,7 @@ $tile__box
 
 .tile__add
 	margin: 0
-	width: calc(20 * var(--layout-spacing-unit))
+	width: var(--app-tile-side-length)
 	height: @width
 	border-radius: 15%
 	border: 3px solid var(--color-grey40)

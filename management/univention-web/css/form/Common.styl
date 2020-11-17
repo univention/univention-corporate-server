@@ -6,81 +6,6 @@
 
 /* 'dijitTextBox' refers to 'dijit(TextBox|DateTextBox|CurrencyTextBox|...)' */
 
-.umc .dijitValidationTextBoxError
-	.dijitValidationContainer
-		background-image: url("../" + $image-form-error)
-		width: 20px
-		height: 20px
-		margin-right: material-grid(3, true)
-
-	.dijitValidationIcon
-		width: 0
-		background-color: transparent /* so the INPUT doesn't obscure the border in rtl+a11y */
-
-
-.umc .dijitTextBox,
-.umc .dijitSelect
-	border: none
-	border-color: $border-color // the border-color is not used here directly but now we can inherit it on all children
-	position: relative
-	height: $material-textfield-height
-	color: $material-text-dark-high
-	width: 100%
-	font-size: $font-size-subheading
-	background-color: #fff
-	border-radius: $material-border-radius
-	transition: background-color, color, border
-	transition-duration: 250ms
-
-	&:after
-		content: ''
-		display: block
-		position: absolute
-		top: 0
-		right: 0
-		bottom: 0
-		left: 0
-		pointer-events: none
-		border: $material-textfield-border-width-inactive solid transparent
-		border-color: inherit
-		border-radius: $material-border-radius
-
-.umc .dijitTextBox
-	display: flex
-	flex-direction: row-reverse
-	align-items: center
-
-	> *
-		flex: 0 0 auto
-
-	.dijitInputContainer
-		flex: 1 1 auto
-		height: 100%
-
-		.dijitInputInner,
-		.umcInlineLabel,
-		.dijitPlaceHolder
-			height: 100%
-			text-overflow: ellipsis
-			padding: 11px ($material-textfield-text-padding + 1px) 10px !important // add 1px to $material-textfield-text-padding since the border is overlaid with position absolute
-			line-height: 1.2em
-
-		.umcInlineLabel,
-		.dijitPlaceHolder
-			position: absolute
-			top: 0
-			left: 0
-			height: 100%
-			width: 100%
-			white-space: nowrap
-			overflow: hidden
-			pointer-events: none // we want the cursor for the inputfield not these placeholder elements
-			color: $material-text-dark-medium
-
-		.umcInlineLabel
-			visibility: hidden
-			&.umcEmptyValue
-				visibility: visible
 .umc
 	.dijitTextArea
 		padding: $textbox-padding
@@ -96,42 +21,43 @@
 			transition: opacity 250ms
 
 /* hover */
-.umc
-	.dijitSelectHover,
-	.dijitTextBoxHover
-		border-color: $hovered-border-color
+// TODO
+// .umc
+	// .dijitSelectHover,
+	// .dijitTextBoxHover
+		// border-color: $hovered-border-color
 
 /* error state */
-.umc
-	.dijitSelectError,
-	.dijitTextBoxError
-		border-color: $error-border-color
+// .umc
+	// .dijitSelectError,
+	// .dijitTextBoxError
+		// border-color: $error-border-color
 
 /* focused state */
-.umc
-	.dijitSelectFocused,
-	.dijitTextBoxFocused
-		border-color: $focused-border-color
-		&:after
-			border-width: $material-textfield-border-width-focused
-	.dijitTextAreaFocused
-		border-width: $material-textfield-border-width-focused
+// .umc
+	// .dijitSelectFocused,
+	// .dijitTextBoxFocused
+		// border-color: $focused-border-color
+		// &:after
+			// border-width: $material-textfield-border-width-focused
+	// .dijitTextAreaFocused
+		// border-width: $material-textfield-border-width-focused
 
-.umc
-	.dijitSelectErrorFocused,
-	.dijitTextBoxErrorFocused
-		border-color: $error-focused-border-color
+// .umc
+	// .dijitSelectErrorFocused,
+	// .dijitTextBoxErrorFocused
+		// border-color: $error-focused-border-color
 
 /* disabled state */
-.umc
-	.dijitSelectDisabled,
-	.dijitTextBoxDisabled
-		background-color: $textbox-disabled-background-color
-		color: $material-text-dark-medium // $material-text-dark-disabled is not readable
-		border-color: $disabled-border-color
+// .umc
+	// .dijitSelectDisabled,
+	// .dijitTextBoxDisabled
+		// background-color: $textbox-disabled-background-color
+		// color: $material-text-dark-medium // $material-text-dark-disabled is not readable
+		// border-color: $disabled-border-color
 
-		.dijitArrowButtonInner
-			opacity: $material-text-disabled-alpha
+		// .dijitArrowButtonInner
+			// opacity: $material-text-disabled-alpha
 
 
 /*========================= for special widgets =========================*/
@@ -175,10 +101,6 @@
 	border: 0 none
 
 /* labels for form elements */
-label
-	/* overwrite bootstrap bold font weight */
-	font-weight: normal
-
 .umc .umcLabelPane
 	display: inline-block
 	vertical-align: top

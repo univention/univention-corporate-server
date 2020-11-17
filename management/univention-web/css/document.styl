@@ -1,79 +1,31 @@
 /* ======= Styling for the document itself (overriding dojo.css) ======== */
 
 @import "variables"
-@import url("../../../dojo/resources/dojo.css")
 
-*:focus
+// TODO discuss if we want to hide the focus generally or should either keep it or disable it individually
+// *:focus
 	// remove outline in chromium
-	outline: 0
-
-// StackContainers used visibility: hidden; position: absolute; instead of display: none
-// to prevent losing scroll position in IE11 but this can cause orhter (more severe) problems
-// https://bugs.dojotoolkit.org/ticket/18612
-// https://github.com/dojo/dijit/commit/534157f1ce7473697bd3587d7b39248f50d0ac9e
-.dijitHidden
-	display: none !important
-
-
-.umc
-	font-family: 'Roboto', sans-serif
-	font-size: 14px
-	color: $document-text-color
-
+	// outline: 0
 
 html,
-body.umc
-	background-color: var(--document-bgc)
+body
+	background-color: var(--bgc-content-body)
 
-html
-	height: 100%
-
-body.umc
+body
 	overflow-x: hidden
-	min-height: 100%
-
-body.umc,
-.umc p
-	line-height: 1.4em
+	min-height: 100vh
 
 .umc td,
 .umc th
 	padding: 0em 1em 0.3em 0em
 
-.umc a
-	color: $text-color-lightest
-	text-decoration: underline
-
 .umc .umcGalleryItem a
 	text-decoration: none
-
-.umc a:hover
-	color: $text-color
-
-/* Headings */
-.umc h1
-	font-size: $font-size-headline
-	font-weight: normal
-	margin-bottom: 0.727em
-
-.umc h2
-	font-size: $font-size-title
-	margin-top: 1em
-	margin-bottom: 0.60em
-	font-weight: 500
-
-.umc h3, .umc h4, .umc h5, .umc h6
-	font-size:1em
-	font-weight: bold
-
 
 /* paragraphs, quotes and lists */
 
 .umc hr
 	border-top: 2px solid $border-color
-
-.umc p
-	margin-bottom: 0.7em
 
 /* pre and code */
 .umc pre, .umc code 
@@ -87,11 +39,6 @@ body.umc,
 .umc table.dojoTabular thead, .umc table.dojoTabular tfoot 
 	background-color: $document-shadedsection-background-color 
 	border: 1px solid $document-border-color 
-
-/* classes for different shadow levels */
-for i in (1..5)
-	.umc .shadow-{i}
-		material-shadow(i)
 
 /* white cards as described by Google Material Design */
 .umc .umcCard

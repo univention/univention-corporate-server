@@ -1,4 +1,5 @@
 :root
+	// colors
 	--color-primary:   #7AB51D
 	--color-grey0:     #1E1E1D
 	--color-grey0-rgb: red(@--color-grey0), green(@--color-grey0), blue(@--color-grey0)
@@ -13,13 +14,18 @@
 	--color-error:     #DD042D
 	--color-success:   #5C8916
 
+	// header
+	--layout-height-header: 3rem // 60px // calc(14 * var(--layout-spacing-unit-small))
 	--bgc-content-header: var(--color-grey0)
+
+	// body
 	--bgc-content-body:   var(--color-grey8)
 
 	// fonts
-	--font-size-big:    28px
-	--font-size-normal: 20px
-	--font-size-small:  16px
+	--font-size-html:   20px
+	--font-size-big:    1.4rem // 28px
+	--font-size-normal: 1rem // 20px
+	--font-size-small:  0.8rem // 16px
 	--font-size-header1: var(--font-size-big)
 	--font-size-header2: var(--font-size-normal)
 	--font-color-contrast-high: var(--color-white)
@@ -29,17 +35,50 @@
 	--font-lineheight-normal: 1.5
 	--font-lineheight-header1: 1.3
 
+	// border-radius
+	--border-radius-interactable: 0.25rem // 5px
+	--border-radius-container: 0.5rem // 10px
+	--border-radius-notification: var(--border-radius-container)
+	--border-radius-tooltip: 0.25rem // 5px
+	--border-radius-circles: 50%
+	--border-radius-apptile: 12.5% // 20px
+	--border-radius-apptile-in-folder: 12.5% // 5px
+	--border-radius-apptile-in-tab: 12.5% // 2px
+	--border-radius-portal-folder: 10%
 
 	// layout
-	--layout-spacing-unit: 8px
-	--layout-spacing-unit-small: 4px
+	--layout-spacing-unit: 0.5rem // 10px // old spacing was 8px
+	--layout-spacing-unit-small: calc(var(--layout-spacing-unit) / 2) // 4px
 
 	// buttons
-	--button-icon-bgc-hover: rgba(255, 255, 255, 0.08)
-	--button-icon-bgc-active: rgba(255, 255, 255, 0.12)
-	--button-icon-bgc-transition: background-color 250ms
-	--button-primary-bgc-hover: #8abe38
-	--button-primary-bgc-active: #95c44a
-	--button-primary-bgc-disabled: #5f5f5c
+	--button-font-size: var(--font-size-small)
+	--button-border-radius: var(--border-radius-interactable)
+	--button-bgc-transition: background-color 250ms
+	--button-icon-bgc: transparent
+	--button-icon-bgc-overlay-hover: rgba(255, 255, 255, 0.08)
+	--button-icon-bgc-overlay-active: rgba(255, 255, 255, 0.12)
+	--button-icon-bgc-overlay-disabled: transparent
+	--button-primary-bgc: var(--color-primary)
+	--button-primary-bgc-overlay-hover: rgba(255, 255, 255, 0.12)
+	--button-primary-bgc-overlay-active: rgba(255, 255, 255, 0.20)
+	--button-primary-bgc-overlay-disabled: var(--color-grey25)
+	--button-bgc: var(--color-grey25)
+	--button-bgc-overlay-hover: rgba(255, 255, 255, 0.08)
+	--button-bgc-overlay-active: rgba(255, 255, 255, 0.16)
+	--button-bgc-overlay-disabled: var(--color-grey25)
+	--button-text-bgc: transparent
+	--button-text-bgc-overlay-hover: rgba(255, 255, 255, 0.08)
+	--button-text-bgc-overlay-active: rgba(255, 255, 255, 0.12)
+	--button-text-bgc-overlay-disabled: var(--color-grey25)
 
+	// links
+	--link-color: var(--color-primary)
+
+	// input fields
+	--inputfield-bgc: var(--color-grey8)
+
+	// shadows
 	--box-shadow: 0 1px 1px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.12), 0 4px 4px rgba(0,0,0,0.12)
+
+	// apps
+	--app-tile-side-length: 8rem

@@ -1,0 +1,118 @@
+.dijitButton
+	margin: 0
+	font-size: var(--button-font-size)
+	border-radius: var(--button-border-radius)
+	background-color: var(--bgc)
+	transition: opacity 250ms
+
+.dijitButtonNode
+	border: none
+	border-radius: var(--button-border-radius)
+	display: flex
+	align-items: center // mainly for umc/widgets/NumberSpinner arrows
+	justify-content: center
+	transition: var(--button-bgc-transition)
+	background-color: var(--bgc-state)
+
+.dijitButtonContents
+	height: 2rem
+	display: flex
+	align-items: center
+	justify-content: center
+
+.dijitButtonText
+	color: var(--font-color-contrast-high)
+	font-weight: 600
+	text-transform: uppercase
+
+.ucsPrimaryButton
+	--bgc: var(--button-primary-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-primary-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-primary-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-primary-bgc-overlay-disabled)
+			opacity: 0.4
+
+.ucsButton
+	--bgc: var(--button-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-bgc-overlay-disabled)
+			opacity: 0.4
+
+.ucsTextButton
+	--bgc: var(--button-text-bgc)
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-text-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-text-bgc-overlay-active)
+		&Disabled
+			--bgc-state: transparent
+			opacity: 0.4
+
+	.dijitButtonContents
+		padding: 0 0.5rem
+
+.ucsPrimaryButton,
+.ucsButton,
+.ucsTextButton
+	.dijitIcon
+		font-size: var(--font-size-button-icon, 1.2em)
+		width: 1em
+		height: @width
+		margin-right: 0.5em
+
+.ucsPrimaryButton,
+.ucsButton
+	.dijitButtonContents
+		padding: 0 1rem
+
+.ucsIconButton
+	--bgc: transparent
+	--bgc-state: transparent
+	&.dijit
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-icon-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-icon-bgc-overlay-active)
+		&Disabled
+			--bgc-state: var(--button-icon-bgc-overlay-disabled)
+			opacity: 0.4
+
+	// font-size: 1rem
+	// --button-icon-length: 2em
+	// &Compact
+		// --button-icon-length: 1em
+
+	border-radius: var(--border-radius-circles)
+	.dijitButtonNode
+		border-radius: var(--border-radius-circles)
+
+	.dijitIcon
+		font-size: var(--font-size-button-icon, 1.2em)
+		height: 1em
+		width: @height
+
+	.dijitButtonContents
+		// outline: 0 // TODO do this generally or case by case?
+		// width: var(--button-icon-length)
+		// height: @width
+		width: 2rem
+	&Compact .dijitButtonContents
+		height: 1rem
+		width: 1rem

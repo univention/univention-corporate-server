@@ -4,28 +4,6 @@
 @import "MultiSelect.styl"
 @import "MultiObjectSelect.styl"
 @import "CheckBox.styl"
-@require "StandbyCircle.styl"
-
-.dijitComboBox .dijitDownArrowButton
-	--bgc: transparent
-	width: 2em
-	height: @width
-	margin-right: 0.5em
-	background: var(--bgc)
-	border-radius: 50%
-	transition: var(--button-icon-bgc-transition)
-
-	&Hover
-		--bgc: var(--button-icon-bgc-hover)
-	&Active
-		--bgc: var(--button-icon-bgc-active)
-
-	.dijitArrowButtonInner
-		width: 1em
-		height: 1em !important
-		background: url(icons/chevron-down_white.svg)
-		background-size: contain
-
 
 .dijitPopup
 	box-shadow: var(--box-shadow)

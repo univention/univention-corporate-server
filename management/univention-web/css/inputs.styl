@@ -1,0 +1,107 @@
+//// textbox
+.dijitTextBox
+	--font-color-disabled: rgba(255, 255, 255, 0.4)
+	--border-color: transparent
+	position: relative
+	height: 3rem
+	width: 100%
+	color: var(--font-color-contrast-high)
+	background-color: var(--color-grey0)
+	border: 1px solid var(--border-color)
+	border-radius: var(--border-radius-interactable)
+	transition: background-color, color, border
+	transition-duration: 250ms
+
+	&Hover,
+	&Focused
+		--border-color: var(--color-grey40)
+	&Disabled
+		color: var(--font-color-disabled)
+	&Error
+		--border-color: var(--color-error)
+
+.dijitTextBox
+	display: flex
+	flex-direction: row-reverse // put warning and dropdown icon to the right
+	align-items: center // center warning and dropdown icon
+
+	> *
+		flex: 0 0 auto
+
+	.dijitInputContainer
+		flex: 1 1 auto
+		height: 100%
+
+		.dijitInputInner,
+		.umcInlineLabel,
+		.dijitPlaceHolder
+			height: 100%
+			text-overflow: ellipsis
+			padding: 0 1rem !important
+
+		.umcInlineLabel,
+		.dijitPlaceHolder
+			display: flex
+			align-items: center
+			position: absolute
+			top: 0
+			left: 0
+			height: 100%
+			width: 100%
+			white-space: nowrap
+			overflow: hidden
+			pointer-events: none // we want the cursor for the inputfield not these placeholder elements
+			color: var(--font-color-contrast-low)
+			font-style: inherit
+
+
+		.umcInlineLabel
+			visibility: hidden
+			&.umcEmptyValue
+				visibility: visible
+
+.dijitTextBox
+	.dijitValidationContainer
+		background-image: url("../form/images/error.svg")
+		width: 1em
+		height: @width
+		margin-right: 1rem
+
+	.dijitValidationIcon
+		display: none
+
+// TODO why was this here
+// .dijitValidationTextBox
+	// .dijitValidationContainer,
+	// .dijitValidationIcon
+		// display: none
+
+.umcLabelPane .umcLabelPaneLabelNode
+	transition: color 250ms
+.umcLabelPaneError .umcLabelPaneLabelNode
+	color: var(--color-error)
+//// textbox end
+
+.dijitComboBox .dijitDownArrowButton
+	--bgc: transparent
+	width: 2em
+	height: @width
+	margin-right: 0.5rem
+	background: var(--bgc)
+	border-radius: 50%
+	transition: var(--button-bgc-transition)
+	display: flex
+	align-items: center
+
+	&Hover
+		--bgc: var(--button-icon-bgc-overlay-hover)
+	&Active
+		--bgc: var(--button-icon-bgc-overlay-active)
+
+	.dijitArrowButtonInner
+		width: 1em
+		height: 1em !important
+		background: url(images/chevron-down_white.svg)
+		background-size: contain
+
+

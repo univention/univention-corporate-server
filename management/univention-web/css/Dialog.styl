@@ -110,15 +110,6 @@
 	border-top: 1px solid $minor-border-color
 	margin: 10px -8px -10px
 
-.umc .dijitTooltipDialog .dijitDialogPaneActionBar
-	-webkit-border-bottom-right-radius: 4px
-	-webkit-border-bottom-left-radius: 4px
-	border-bottom-right-radius: 4px
-	border-bottom-left-radius: 4px
-	-moz-border-radius-bottomright: 4px
-	-moz-border-radius-bottomleft: 4px
-	margin: 10px -10px -8px
-
 .umc .dijitDialogPaneActionBar .dijitButton
 	float: none
 
@@ -134,112 +125,6 @@
 	font-weight: 500
 	line-height: 28px
 	color: $text-color
-
-/* Tooltip and TooltipDialog */
-
-.umc .dijitTooltip,
-.umc .dijitTooltipDialog
-	/* the outermost dom node, holding the connector and container */
-	background: transparent	/* make the area on the sides of the arrow transparent */
-	padding: 4px
-	//box-sizing: content-box
-
-.umc .dijitTooltip
-	box-sizing: content-box
-
-
-.umc .dijitTooltipDialog,
-.umc .dijitTooltip.dijitTooltipBelow
-	/* leave room for arrow above content */
-	padding-top: 11px
-
-
-.umc .dijitTooltip.dijitTooltipAbove
-	/* leave room for arrow below content */
-	padding-bottom: 11px
-
-.umc .dijitTooltip.dijitTooltipLeft
-	/* leave room for arrow before content */
-	padding-right: 13px
-
-.umc .dijitTooltip.dijitTooltipRight
-	padding-left: 13px
-
-.umc .dijitTooltipContainer
-	/* the part with the text */
-	background-color:$popup-background-color
-	//linear-gradient(bottom, $tooltip-gradient-color 0px, $popup-background-color 10px)
-	background-position:bottom
-	border:1px solid $popup-border-color
-	padding:6px 8px
-	border-radius: 4px
-	box-shadow: 0 0px 10px rgba(0,0,0,0.15)
-	font-size: 1em
-	color: $text-color
-	max-width: 400px
-
-
-.umc .dijitTooltipConnector
-	/* the arrow piece */
-	border: 0
-	z-index: 2
-	background-image:url($image-tooltip)
-	background-repeat:no-repeat
-	width:20px
-	height:18px
-
-.dj_ie6 .umc .dijitTooltipConnector
-	background-image:url($image-tooltip-ie6)
-
-
-.umc .dijitTooltipDialog .dijitTooltipConnector,
-.umc .dijitTooltipBelow .dijitTooltipConnector
-	/* the arrow piece for tooltips below an element */
-	top: -6px
-	//left: 3px
-	background-position:-41px -1px
-
-
-.umc .dijitTooltipDialog .dijitTooltipConnector
-	left: 12px
-
-
-.umc .dijitTooltipAbove .dijitTooltipConnector
-	/* the arrow piece for tooltips above an element */
-	bottom: -6px
-	//left: 3px
-	background-position:-21px -1px
-
-.dj_ie7 .umc .dijitTooltipAbove .dijitTooltipConnector,
-.dj_ie6 .umc .dijitTooltipAbove .dijitTooltipConnector
-	//bottom: -1px
-
-
-.umc .dijitTooltipABRight .dijitTooltipConnector
-	/* above or below tooltip, but the arrow appears on the right,
-		and the right edges of target and tooltip are aligned rather than the left.
-		Override above rules for .dijitTooltipBelow, .dijitTooltipAbove */
-	//left: auto
-	right: 4px
-
-
-.umc .dijitTooltipLeft
-	//padding-right: 14px
-
-.umc .dijitTooltipLeft .dijitTooltipConnector
-	/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
-	right: -6px
-	background-position:-1px -1px
-
-
-.umc .dijitTooltipRight
-	//padding-left: 14px
-
-.umc .dijitTooltipRight .dijitTooltipConnector
-	/* the arrow piece for tooltips to the right of an element, bottom borders aligned */
-	left: -6px
-	background-position:-61px -1px
-
 
 .umc .dijitDialogUnderlay
 	background: $dialog-underlay-color
