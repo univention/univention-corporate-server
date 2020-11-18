@@ -1,11 +1,17 @@
-univention-directory-manager-modules (14.0.16-9) unstable; urgency=low
+univention-directory-manager-modules (14.0.17-3) unstable; urgency=low
 
   * Bug #45205: revert mail forwarding changes in 4.4-6, will be readded for
     4.4-7
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 20 Nov 2020 09:02:52 +0100
 
-univention-directory-manager-modules (14.0.16-8-1) unstable; urgency=low
+univention-directory-manager-modules (14.0.17-2) unstable; urgency=low
+
+  * Bug #45205: fix typo
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2020 18:45:30 +0100
+
+univention-directory-manager-modules (14.0.17-1) unstable; urgency=low
 
   * Bug #45205: add backwards compatible support for saving the mail
     forwarding setting in a dedicated LDAP attribute
