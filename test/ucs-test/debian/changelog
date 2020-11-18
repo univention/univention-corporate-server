@@ -24,6 +24,12 @@ ucs-test (9.0.5-30) unstable; urgency=low
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 20 Nov 2020 09:10:31 +0100
 
+ucs-test (9.0.5-26) unstable; urgency=low
+
+  * Bug #45205: add tests for mail forwarding settings
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2020 18:10:39 +0100
+
 ucs-test (9.0.5-25) unstable; urgency=medium
 
   * Bug #52130: cleanup krb5 cache before using smbclient
