@@ -3,12 +3,11 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-apache
-fix: 11.0.1-21A~4.4.0.202011061444
+fix: 11.0.1-22A~4.4.0.202011181655
 desc: |
  This update addresses the following issue:
  * Various Apache configurations may now be configured via UCR variables.
    See the UCR variable information for more details.
-   `apache2/start-threads`
    `apache2/min-spare-servers`
    `apache2/max-spare-servers`
 bug: [52320]
