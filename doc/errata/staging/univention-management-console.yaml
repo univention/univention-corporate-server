@@ -16,11 +16,11 @@ desc: |
    between UMC-Web-Server and UMC-Server therefore does not need to be TLS
    encrypted anymore so that the performance is improved.
  * To prevent connections between UMC web server and UMC server from being
-   unexpectedly closed by a racing condition from the UMC server and
+   unexpectedly closed by a racing condition from the UMC server thus
    causing an error, handling of incoming connections in the UMC server has
    been improved. This problem previously only occurred in the new
    multi-process mode of the UMC server.
  * Fetching /univention/get/meta involves a call to UMC. This is not always
    necessary. Now it is possible to fetch a stripped down static version
    instead. This patch moves the meta file into a public folder.
-bug: [52338, 52316, 52321, 52274, 52316, 52303]
+bug: [52338, 52318, 52321, 52274, 52316, 52303]
