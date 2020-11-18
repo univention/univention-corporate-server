@@ -789,6 +789,8 @@ msgid ""
 "This e-mail address serves only as contact information. This address has no "
 "effect on the UCS mail stack and is not related to a local mailbox."
 msgstr ""
+"Diese E-Mail Adresse dient nur zur Kontaktinformation. Sie hat keinen "
+"Einfluss auf den UCS Mail Stack und hat nichts mit der Mailbox zu tun."
 
 #: modules/univention/admin/handlers/users/user.py:236
 msgid ""
