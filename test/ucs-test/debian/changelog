@@ -1,6 +1,12 @@
+ucs-test (9.0.5-25) unstable; urgency=medium
+
+  * Bug #52130: cleanup krb5 cache before using smbclient
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Nov 2020 16:43:25 +0100
+
 ucs-test (9.0.5-24) unstable; urgency=medium
 
-  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+  * Bug #52303: Fetching meta.json should involve UMC only if really needed
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:46:10 +0100
 
