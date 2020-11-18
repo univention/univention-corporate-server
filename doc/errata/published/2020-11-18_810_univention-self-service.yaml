@@ -10,3 +10,5 @@ desc: |
    later.
  * The timedata for token validity and rate limiting is now stored in UTC.
 bug: [52362]
+erratum: 810
+announced: 2020-11-18
