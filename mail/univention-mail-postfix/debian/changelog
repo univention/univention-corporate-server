@@ -1,3 +1,10 @@
+univention-mail-postfix (13.0.3-1) unstable; urgency=low
+
+  * Bug #45205: add backwards compatible support for using all LDAP query
+    results by using a unionmap
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2020 18:06:40 +0100
+
 univention-mail-postfix (13.0.2-2) unstable; urgency=medium
 
   * Bug #51124: added postfix UCRVs
