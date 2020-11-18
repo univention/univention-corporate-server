@@ -9,3 +9,5 @@ desc: |
  * Evaluation of ucr vaiables in the function clean_old_backups
    has been fixed.
 bug: [51765]
+erratum: 812
+announced: 2020-11-18
