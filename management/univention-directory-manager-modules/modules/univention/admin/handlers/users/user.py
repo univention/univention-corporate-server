@@ -474,14 +474,14 @@ property_descriptions = {
 	),
 	'mailPrimaryAddress': univention.admin.property(
 		short_description=_('Primary e-mail address (mailbox)'),
-		long_description='Email address that will be used to create the IMAP/POP3 mailbox and that can be used as login for SMTP/IMAP/POP3 connections. The domain must be one of the UCS hosted email domains.',
+		long_description=_('E-mail address that will be used to create the IMAP/POP3 mailbox and that can be used as login for SMTP/IMAP/POP3 connections. The domain must be one of the UCS hosted e-mail domains.'),
 		syntax=univention.admin.syntax.primaryEmailAddressValidDomain,
 		include_in_default_search=True,
 		readonly_when_synced=True,
 	),
 	'mailAlternativeAddress': univention.admin.property(
 		short_description=_('E-mail alias address'),
-		long_description='Additional email addresses for which emails will be delivered to the "Primary e-mail address". The domain must be one of the UCS hosted email domains.',
+		long_description=_('Additional e-mail addresses for which e-mails will be delivered to the "Primary e-mail address". The domain must be one of the UCS hosted e-mail domains.'),
 		syntax=univention.admin.syntax.emailAddressValidDomain,
 		multivalue=True,
 		copyable=True,
