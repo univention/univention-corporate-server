@@ -1,51 +1,57 @@
-ucs-test (10.0.1-46) unstable; urgency=medium
+ucs-test (10.0.1-47) unstable; urgency=medium
 
   * Bug #51804: Revert the workaround in 96rename* to test if the 
     problems root-cause has been resolved
 
  -- Julia Bremer <bremer@univention.de>  Wed, 09 Dec 2020 11:10:46 +0100
 
-ucs-test (10.0.1-45) unstable; urgency=medium
+ucs-test (10.0.1-46) unstable; urgency=medium
 
   * Bug #52443: add 82_saml/07_umc_session_timeout
 
  -- Jürn Brodersen <brodersen@univention.de>  Tue, 08 Dec 2020 16:12:16 +0100
 
-ucs-test (10.0.1-44) unstable; urgency=medium
+ucs-test (10.0.1-45) unstable; urgency=medium
 
   * Bug #52402: 80_docker/63_app_register_with_old_app_installed
     cleanup old app
 
  -- Felix Botner <botner@univention.de>  Fri, 04 Dec 2020 09:58:31 +0100
 
-ucs-test (10.0.1-43) unstable; urgency=medium
+ucs-test (10.0.1-44) unstable; urgency=medium
 
   * Bug #52402: use docker-test.software... images in docker tests
 
  -- Felix Botner <botner@univention.de>  Fri, 04 Dec 2020 09:52:17 +0100
 
-ucs-test (10.0.1-42) unstable; urgency=low
+ucs-test (10.0.1-43) unstable; urgency=low
 
   * Bug #45205: readd tests for mail forwarding settings
   * Bug #45205: make IMAP folder testing more rebust against timing issues
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:30:04 +0100
 
-ucs-test (10.0.1-41) unstable; urgency=medium
+ucs-test (10.0.1-42) unstable; urgency=medium
 
   * Bug #52005: Reactivate 96rename* and work around Bug#51804
 
  -- Felix Botner <botner@univention.de>  Wed, 25 Nov 2020 12:57:50 +0100
 
-ucs-test (10.0.1-40) unstable; urgency=medium
+ucs-test (10.0.1-41) unstable; urgency=medium
 
   * Bug #51929: added 55_adconnector/504_test_group_cache_after_move
 
  -- Felix Botner <botner@univention.de>  Thu, 19 Nov 2020 13:08:11 +0100
 
+ucs-test (10.0.1-40) unstable; urgency=medium
+
+  * Bug #52130: cleanup krb5 cache before using smbclient
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Nov 2020 16:43:25 +0100
+
 ucs-test (10.0.1-39) unstable; urgency=medium
 
-  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+  * Bug #52303: Fetching meta.json should involve UMC only if really needed
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:46:10 +0100
 
