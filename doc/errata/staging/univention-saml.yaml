@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-saml
-fix: 6.0.2-59A~4.4.0.202011172209
+fix: 6.0.2-61A~4.4.0.202011172248
 desc: |
  This update addresses the following issue(s):
  * The site does not download the personalized meta.json, which would
