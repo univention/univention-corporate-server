@@ -1372,6 +1372,7 @@ entsprechende Meldungen in folgenden Dateien auf dem UCS-System:
 In der Grundeinstellung werden einige Container durch Filter von der
 Synchronisation ausgeschlossen. Diese finden sich in der
 Konfigurationsdatei <filename>/etc/univention/connector/ad/mapping</filename>
+Benutzerdefinierte Mapping-Datei <filename>/etc/univention/connector/ad/localmapping</filename>
 unter der Einstellung <emphasis>global_ignore_subtree</emphasis>.
 Sollen einzelne Benutzer von der Synchronisation ausgeschlossen werden, können deren
 Benutzername der &ucsUCRV; <envar>connector/ad/mapping/user/ignorelist</envar> hinzugefügt werden.
@@ -1505,6 +1506,23 @@ Einschränkungen immer nur dort zugewiesen werden.
 </simpara>
 </listitem>
 </itemizedlist>
+</section>
+<section id="windows:gruppen:CustomMappings"><title>Benutzerdefinierte Mappings</title>
+<para>
+    Es ist auch möglich Mappings zu verändern oder neue hinzuzufügen.
+    Dazu muss eine Datei erstellt werden mit dem Namen
+    <filename>/etc/univention/connector/ad/localmapping.py</filename>
+    und mit der folgenden Funktion darin:
+
+<programlisting><![CDATA[
+def mapping_hook(ad_mapping):
+    pass
+]]>
+</programlisting>
+
+    Der Inhalt der Variablen <code>ad_mapping</code> kann damit verändert werden, 
+    um das Mapping zu beeinflussen.
+</para>
 </section>
 </section>
 

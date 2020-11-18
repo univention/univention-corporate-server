@@ -30,6 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+
+import os, sys
+
 import univention.connector.ad
 import univention.connector.ad.mapping
 import univention.connector.ad.password
@@ -461,3 +464,54 @@ if configRegistry.is_false('connector/ad/mapping/group/exchange', True):
 	ad_mapping['group'].attributes.pop('Exchange-Nickname')
 if configRegistry.get('connector/ad/mapping/group/language') not in ['de', 'DE']:
 	ad_mapping['group'].mapping_table.pop('cn')
+
+
+def apply_custom_mapping(ad_mapping):
+
+	"""
+	to allow a customer-specific mapping we want to load parts of this
+	file dynamically from another file. For that we use importlib the
+	successor of the imp module from python2. If no such localmapping.py
+	file exists this is no mistake and will be silently ignored.
+	"""
+
+	mapping = None
+	try:
+		import six
+		if six.PY3:
+			import importlib.util
+
+			spec = importlib.util.spec_from_file_location(
+				'localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')
+			)
+
+			mapping = importlib.util.module_from_spec(spec)
+			spec.loader.exec_module(mapping)
+
+			mapping = mapping.mapping_hook(ad_mapping)
+		else:
+			# deprecated with python3.4
+			import imp
+
+			mapping = imp.load_source(
+				'localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')
+			).mapping_hook
+
+	except IOError:
+		# ignore file not found and other file read errors (e.g. permissions)
+		pass
+	except AttributeError as e:
+		print(
+			"Wrong function signature. Please implement a function"
+			"mapping_hook(ad_connector_mapping) in localmapping.py: %s" % e)
+		pass
+
+	if mapping:
+		return mapping(ad_mapping)
+	else:
+		return ad_mapping
+
+ad_mapping = apply_custom_mapping(ad_mapping)
+
+
+# vim: filetype=python noexpandtab tabstop=4 shiftwidth=4 softtabstop=4

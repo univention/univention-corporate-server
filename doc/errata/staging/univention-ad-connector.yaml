@@ -3,9 +3,13 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-ad-connector
-fix: 13.0.0-56A~4.4.0.202011031532
+fix: 13.0.0-57A~4.4.6.202011181018
 desc: |
  This update addresses the following issue(s):
  * The group membership synchronization after moving
    objects has been fixed.
-bug: [51929, 52364]
+ * Mappings from LDAP to Active Directory were made
+   customizable for users. The manual has details on
+   how to write a file
+   /etc/univention/connector/localmapping.py
+bug: [51929, 52364, 49981]
