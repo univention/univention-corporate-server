@@ -1,9 +1,16 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 univention-directory-manager-modules (15.0.5-3) unstable; urgency=low
 
   * Bug #45205: readd support for email forwarding setting
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:29:33 +0100
+
+univention-directory-manager-modules (15.0.4-6) unstable; urgency=low
+
+  * Bug #45205: fix typo
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2020 18:45:30 +0100
 
 univention-directory-manager-modules (15.0.4-5) unstable; urgency=low
 
