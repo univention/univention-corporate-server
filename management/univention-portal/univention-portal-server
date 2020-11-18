@@ -472,7 +472,6 @@ class JsonHandler(tornado.web.RequestHandler):
 		answer['categories'] = self._get_categories(portal_content['content'])
 		answer['entries'] = self._get_entries(portal_content['content'])
 		answer['filtered'] = not admin_mode
-		get_logger('server').info('%r in %r' % (username, self.admins))
 		answer['may_edit_portal'] = username in self.admins
 		self.write(answer)
 
@@ -487,10 +486,14 @@ def signal_handler_reload(signo, frame):
 
 def make_app():
 	default_admin_groups = custom_groupname('Domain Admins', ucr)
-	admin_groups = ucr.get('portal/admin_groups', default_admin_groups).split(',')
-	admins = [grp.getgrnam(admin_group_name.strip())[3] for admin_group_name in admin_groups]  # [["Administrator"], ["admin1", "admin2"]]
-	admins = [admin.lower() for group_admins in admins for admin in group_admins]  # ["administrator", "admin1", "admin2"]
-	get_logger('server').info('Admins: %r' % admins)
+	admin_groups = ucr.get('portal/admin-groups', default_admin_groups).split(',')
+	try:
+		admins = [grp.getgrnam(admin_group_name.strip())[3] for admin_group_name in admin_groups]  # [["Administrator"], ["admin1", "admin2"]]
+	except KeyError:
+		get_logger('server').warn('Error getting groups. Please check `ucr get portal/admin-groups`. Admin mode will be disabled until restart.')
+		admins = []
+	else:
+		admins = [admin.lower() for group_admins in admins for admin in group_admins]  # ["administrator", "admin1", "admin2"]
 	return tornado.web.Application([
 		(r'/', JsonHandler, {"admins": admins}),
 	])

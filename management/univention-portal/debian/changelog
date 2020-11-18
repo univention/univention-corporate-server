@@ -1,12 +1,18 @@
+univention-portal (3.0.2-14) unstable; urgency=medium
+
+  * 
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 18 Nov 2020 14:22:37 +0100
+
 univention-portal (3.0.2-13) unstable; urgency=medium
 
-  * Bug 52302: Remove call to /univention/get/modules for every page load
+  * Bug #52302: Remove call to /univention/get/modules for every page load
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 21:26:25 +0100
 
 univention-portal (3.0.2-12) unstable; urgency=medium
 
-  * Bug 52303: Fetching meta.json should involve UMC only if really needed
+  * Bug #52303: Fetching meta.json should involve UMC only if really needed
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Nov 2020 20:45:33 +0100
 
