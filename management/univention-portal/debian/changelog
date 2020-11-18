@@ -1,6 +1,6 @@
 univention-portal (3.0.2-14) unstable; urgency=medium
 
-  * 
+  * Bug #52302: Some minor code fixes
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 18 Nov 2020 14:22:37 +0100
 
