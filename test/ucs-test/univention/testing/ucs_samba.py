@@ -56,6 +56,7 @@ def wait_for_drs_replication(*args, **kwargs):
 			process = subprocess.Popen(['/usr/bin/python3', '-'], stdin=subprocess.PIPE)
 			stdout, stderr = process.communicate(b'''
 import ldb
+import sys
 from univention.testing.ucs_samba import wait_for_drs_replication, DRSReplicationFailed
 try:
 	wait_for_drs_replication(*%s, **%s)
