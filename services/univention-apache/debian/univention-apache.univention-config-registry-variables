@@ -100,30 +100,6 @@ Description[en]=Defines the value of the apache configuration "MaxRequestWorkers
 Type=int
 Categories=service-apache
 
-[apache2/start-threads]
-Description[de]=Definiert den Wert der Apache Konfiguration "StartThreads".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#startthreads>.
-Description[en]=Defines the value of the apache configuration "StartThreads". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#startthreads>.
-Type=int
-Categories=service-apache
-
-[apache2/min-spare-threads]
-Description[de]=Definiert den Wert der Apache Konfiguration "MinSpareThreads".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#minsparethreads>.
-Description[en]=Defines the value of the apache configuration "MinSpareThreads". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#minsparethreads>.
-Type=int
-Categories=service-apache
-
-[apache2/max-spare-threads]
-Description[de]=Definiert den Wert der Apache Konfiguration "MaxSpareThreads".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#maxsparethreads>.
-Description[en]=Defines the value of the apache configuration "MaxSpareThreads". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#maxsparethreads>.
-Type=int
-Categories=service-apache
-
-[apache2/threads-per-child]
-Description[de]=Definiert den Wert der Apache Konfiguration "ThreadsPerChild".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/de/mod/mpm_common.html#threadsperchild>.
-Description[en]=Defines the value of the apache configuration "ThreadsPerChild". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/mpm_common.html#threadsperchild>.
-Type=int
-Categories=service-apache
-
 [apache2/server-signature]
 Description[de]=Definiert den Wert der Apache Konfiguration "ServerSignature".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/mod/core.html#serversignature>.
 Description[en]=Defines the value of the apache configuration "ServerSignature". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/core.html#serversignature>.
