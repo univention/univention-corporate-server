@@ -1,3 +1,10 @@
+univention-apache (12.0.0-2) unstable; urgency=medium
+
+  * Bug #52320: remove all thread related configuration options as the modules
+  	aren't enabled by default
+
+ -- Florian Best <best@univention.de>  Wed, 18 Nov 2020 16:53:03 +0100
+
 univention-apache (12.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
