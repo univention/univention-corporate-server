@@ -35,21 +35,20 @@ define([
 	"put-selector/put"
 ], function(declare, DropDownButton, Icon, put) {
 	return declare("umc.widgets.DropDownButton", [ DropDownButton ], {
-		// do not display button labels via the LabelPane
-		displayLabel: false,
-
+		//// overwrites
 		iconClass: 'more-horizontal',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.icon = new Icon({});
-			put(this.iconNode, '+', this.icon.domNode);
-			put(this.iconNode, '!');
+		_setIconClassAttr: function(iconClass) {
+			this._icon.set('iconName', iconClass);
+			this._set('iconClass', iconClass);
 		},
 
-		_setIconClassAttr: function(iconClass) {
-			this.icon.set('iconName', iconClass);
-			this._set('iconClass', iconClass);
-		}
+
+		//// lifecycle
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._icon = new Icon({});
+			put(this.iconNode /* from dijit/form/templates/Button.html */, '+', this._icon.domNode);
+			put(this.iconNode, '!');
+		},
 	});
 });

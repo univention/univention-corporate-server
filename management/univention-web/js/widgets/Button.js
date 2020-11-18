@@ -38,6 +38,14 @@ define([
 	"put-selector/put"
 ], function(declare, lang, domClass, Button, Tooltip, Icon, put) {
 	return declare("umc.widgets.Button", [ Button ], {
+		//// overwrites
+		_setIconClassAttr: function(iconClass) {
+			this._icon.set('iconName', iconClass);
+			this._set('iconClass', iconClass);
+		},
+
+
+		//// self
 		// defaultButton: Boolean
 		//		If set to 'true', button will be rendered as default, i.e., submit button.
 		defaultButton: false,
@@ -47,58 +55,21 @@ define([
 		callback: null,
 
 		visible: true,
-
-		handlesTooltips: true,
-
-		// do not display button labels via the LabelPane
-		displayLabel: false,
-
-		description: '',
-
-		_tooltip: null,
-
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.icon = new Icon({});
-			put(this.iconNode, '+', this.icon.domNode);
-			put(this.iconNode, '!');
-		},
-
-		_setIconClassAttr: function(iconClass) {
-			this.icon.set('iconName', iconClass);
-			this._set('iconClass', iconClass);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-
-			if (this.defaultButton) {
-				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsButton');
-			}
-
-			if (typeof this.callback == "function") {
-				this.on('click', lang.hitch(this, 'callback'));
-			}
-
-			//register onChange events for description
-			this.own(this.watch('description', lang.hitch(this, function(attr, oldVal, newVal) {
-				this._setDescriptionAttr(newVal);
-			})));
-		},
-
-		show: function() {
-			this.set( 'visible', true );
-		},
-
-		hide: function() {
-			this.set( 'visible', false );
-		},
-
 		_setVisibleAttr: function(newVal) {
 			this._set('visible', newVal);
 			domClass.toggle(this.domNode, 'dijitDisplayNone', !newVal);
 		},
+		show: function() {
+			this.set( 'visible', true );
+		},
+		hide: function() {
+			this.set( 'visible', false );
+		},
 
+		handlesTooltips: true, // digested by widgets/LabelPane
+		displayLabel: false, // digested by widgets/LabelPane - do not display button labels via the LabelPane
+
+		description: '', // show 'description' in a dijit/Tooltip widget on hover
 		_setDescriptionAttr: function(description) {
 			if (!this._tooltip) {
 				// create the tooltip for the first time
@@ -108,11 +79,30 @@ define([
 				});
 				this.own(this._tooltip);
 			}
-
 			this._tooltip.set('label', description || '');
-		}
+			this._set('description', description);
+		},
+		_tooltip: null, // dijit/Tooltip widget for the 'description'
 
+
+		//// lifecycle
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._icon = new Icon({});
+			put(this.iconNode /* from dijit/form/templates/Button.html */, '+', this._icon.domNode);
+			put(this.iconNode, '!');
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			if (this.defaultButton) {
+				domClass.replace(this.domNode, 'ucsPrimaryButton', 'ucsButton');
+			}
+
+			if (typeof this.callback === "function") {
+				this.on('click', lang.hitch(this, 'callback'));
+			}
+		}
 	});
 });
-
-
