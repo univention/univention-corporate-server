@@ -94,6 +94,10 @@ if dpkg --compare-versions "10.0.5" gt-nl "$2"; then
 	fi
 fi
 
+# Bug 52303: We renamed a UCR template, therefore the compiled file is obsolete
+if dpkg --compare-versions "11.0.5-20" gt-nl "$2"; then
+	[ -e /usr/share/univention-management-console/meta.json ] && rm /usr/share/univention-management-console/meta.json
+fi
 
 invoke-rc.d univention-management-console-server restart
 
