@@ -6,7 +6,7 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
-import unittest 
+import unittest
 import sys, os
 sys.path.append('$TESTLIBPATH')
 
