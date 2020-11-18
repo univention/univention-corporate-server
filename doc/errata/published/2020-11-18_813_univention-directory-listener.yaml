@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Setting mdb maxsize to 4GB
 bug: [39167]
+erratum: 813
+announced: 2020-11-18
