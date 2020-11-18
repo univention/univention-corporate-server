@@ -1,3 +1,10 @@
+univention-apache (11.0.1-22) unstable; urgency=medium
+
+  * Bug #52320: remove all thread related configuration options as the modules
+  	aren't enabled by default
+
+ -- Florian Best <best@univention.de>  Wed, 18 Nov 2020 16:53:03 +0100
+
 univention-apache (11.0.1-21) unstable; urgency=medium
 
   * Bug #52320: add configuration for StartThreads and Max/MinSpareServers
