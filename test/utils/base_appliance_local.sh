@@ -39,6 +39,10 @@ _scp () {
 	scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
 }
 
+die () {
+    echo "$exe: $*" >&2
+    exit 1
+}
 
 _kvm_image () {
 	local identify="$1"
@@ -262,6 +266,28 @@ create_ec2_image () {
 	_ssh -l "$KVM_USER" "${IMAGE_SERVER}" "rm -rf ${TMP_DIR}"
 }
 
+# create a ucs-kt-get ucs template for $instance_name with the name
+# mmp+e_$template_name
+create_kvm_templates () {
+	local instance_name="${1:?missing parameter}"
+	local kvm_server="${2:?missing parameter}"
+	local kvm_user="${3:?missing parameter}"
+	local template_name="${4:?missing parameter}"
+	local category="${5:?missing parameter}"
+	local system="${5:?missing parameter}"
+	local rv=0 xpath='string(//devices/disk[@device="disk"]/source/@file)' qcow_src version patchlevel erratalevel
+
+	qcow_src=$(_ssh -l "${kvm_user}" "${kvm_server}" "virsh dumpxml $instance_name | xmllint --xpath '$xpath' -") || die "virsh failed"
+	version=$(_ssh -l "${kvm_user}" "${kvm_server}" "guestfish add $qcow_src : run : mount /dev/vg_ucs/root / : command '/usr/sbin/ucr get version/version'") || die "guestfish failed"
+	patchlevel=$(_ssh -l "${kvm_user}" "${kvm_server}" "guestfish add $qcow_src : run : mount /dev/vg_ucs/root / : command '/usr/sbin/ucr get version/patchlevel'") || die "guestfish failed"
+	erratalevel=$(_ssh -l "${kvm_user}" "${kvm_server}" "guestfish add $qcow_src : run : mount /dev/vg_ucs/root / : command '/usr/sbin/ucr get version/erratalevel'") || die "guestfish failed"
+	template_name="${version}-${patchlevel}+e${erratalevel}_${template_name}"
+	_ssh -l "${kvm_user}" "${kvm_server}" "ucs-kt-put -O $system -C $category $instance_name $template_name" || die "ucs-kt-put failed"
+
+	return $rv
+}
+
+# TODO deprecated?
 create_internal_template () {
 	SERVERROLE=$1
 	KVM_USER=$2
