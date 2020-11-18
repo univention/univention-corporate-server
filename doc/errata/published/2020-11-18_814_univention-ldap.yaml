@@ -11,3 +11,5 @@ desc: |
  * Changing the value of the ldap/database/mdb/maxsize
    and listener/cache/mdb/maxsize variables to 4 GB
 bug: [51765, 39167]
+erratum: 814
+announced: 2020-11-18
