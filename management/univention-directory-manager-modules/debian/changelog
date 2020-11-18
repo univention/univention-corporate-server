@@ -4,6 +4,12 @@ univention-directory-manager-modules (15.0.5-3) unstable; urgency=low
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:29:33 +0100
 
+univention-directory-manager-modules (15.0.4-4) unstable; urgency=medium
+
+  * Bug #51777: temporary revert
+
+ -- Florian Best <best@univention.de>  Wed, 18 Nov 2020 13:24:24 +0100
+
 univention-directory-manager-modules (15.0.4-3) unstable; urgency=medium
 
   * Bug #51777: removing all unicode elements that were backported
