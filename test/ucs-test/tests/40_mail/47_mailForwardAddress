@@ -14,7 +14,7 @@ import random
 import time
 import dns.resolver
 import tempfile
-from essential.mail import send_mail, check_delivery
+from essential.mail import send_mail, check_delivery, set_mail_forward_copy_to_self_ucrv
 from univention.testing.mail import MailSink, MailSinkGuard
 from univention.testing.network import NetworkRedirector
 import univention.testing.utils as utils
@@ -66,25 +66,27 @@ def check_delivery_mailsink(token, mailsink_files, should_be_delivered):
 	if should_be_delivered != delivered:
 		utils.fail('Mail sent with token = %r, delivered to the mail sink = %r   expected=%r' % (token, delivered, should_be_delivered))
 
+
 def send_and_check(user, sink_files, in_mail_sink, in_local):
-		# send mails
-		for addr, msg in (
-			(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
-			(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
-		):
-			print('*** %s' % (msg,))
-			token = 'token: {!r}'.format(str(time.time()))
-			send_mail(
-				recipients=addr,
-				msg=token,
-			)
-			# check if mail has been delivered to mailsink AND locally
-			check_delivery_mailsink(token, [x.name for x in sink_files], in_mail_sink)
-			check_delivery(token, user.mailPrimaryAddress, in_local)
+	# send mails
+	for addr, msg in (
+		(user.mailPrimaryAddress, 'sending mail to mailPrimaryAddress'),
+		(user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress')
+	):
+		print('*** %s' % (msg,))
+		token = 'token: {!r}'.format(str(time.time()))
+		send_mail(
+			recipients=addr,
+			msg=token,
+		)
+		# check if mail has been delivered to mailsink AND locally
+		check_delivery_mailsink(token, [x.name for x in sink_files], in_mail_sink)
+		check_delivery(token, user.mailPrimaryAddress, in_local)
 
 
-if __name__ == '__main__':
-
+def test_mail_forward(mail_copy_to_self):
+	set_mail_forward_copy_to_self_ucrv(mail_copy_to_self)
+	mail_copy_to_self = mail_copy_to_self == 'yes'
 	with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm, MailSinkGuard() as mail_sink_guard, NetworkRedirector() as nethelper:
 		domain = ucr.get('domainname').lower()
 
@@ -121,15 +123,29 @@ if __name__ == '__main__':
 			'mailForwardAddress': user.mailForwardAddress,
 			'mailForwardCopyToSelf': '1',
 		})
-		utils.verify_ldap_object(
-			user.dn,
-			{
-				'univentionMailHomeServer': [user.mailHomeServer],
-				'mailPrimaryAddress': [user.mailPrimaryAddress],
-				'mailAlternativeAddress': user.mailAlternativeAddress,
-				'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-			},
-			strict=True)
+
+		if mail_copy_to_self:
+			utils.verify_ldap_object(
+				user.dn,
+				{
+					'univentionMailHomeServer': [user.mailHomeServer],
+					'mailPrimaryAddress': [user.mailPrimaryAddress],
+					'mailAlternativeAddress': user.mailAlternativeAddress,
+					'mailForwardAddress': user.mailForwardAddress,
+					'mailForwardCopyToSelf': '1',
+				},
+				strict=True)
+		else:
+			utils.verify_ldap_object(
+				user.dn,
+				{
+					'univentionMailHomeServer': [user.mailHomeServer],
+					'mailPrimaryAddress': [user.mailPrimaryAddress],
+					'mailAlternativeAddress': user.mailAlternativeAddress,
+					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+				},
+				strict=True)
+
 
 		send_and_check(user, sink_files, in_mail_sink=True, in_local=True)
 		# disable copy to self
@@ -140,4 +156,9 @@ if __name__ == '__main__':
 				'mailForwardCopyToSelf': '0'
 			})
 		send_and_check(user, sink_files, in_mail_sink=True, in_local=False)
+
+
+if __name__ == '__main__':
+	test_mail_forward('no')
+	test_mail_forward('yes')
 

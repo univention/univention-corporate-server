@@ -4,7 +4,9 @@
 #
 
 search_base = @%@ldap/base@%@
-query_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%s)(!(univentionCanonicalRecipientRewriteEnabled=1)))
+
+
+
 result_attribute = mailPrimaryAddress
 result_format = %s
 search_timeout = @%@mail/postfix/ldap/timeout@%@
@@ -14,6 +16,11 @@ bind_dn = @%@ldap/hostdn@%@
 @!@
 import os
 from univention.lib.misc import getLDAPURIs
+if configRegistry.is_true('mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps', False):
+	print('query_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%s)(!(univentionCanonicalRecipientRewriteEnabled=1))(!(&(mailForwardAddress=*)(mailForwardCopyToSelf=0))))')
+else:
+	print('query_filter = (&(objectClass=univentionMail)(mailPrimaryAddress=%s)(!(univentionCanonicalRecipientRewriteEnabled=1)))')
+
 print('server_host = %s' % getLDAPURIs(configRegistry))
 if os.path.exists('/etc/machine.secret'):
 	print('bind_pw = %s' % (open('/etc/machine.secret','r').read()))

@@ -1,0 +1,107 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Directory Manager
+#
+# Copyright 2020 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+import sys
+from argparse import ArgumentParser
+
+import univention.admin.uldap
+from univention.config_registry import ConfigRegistry
+
+
+def main(args):
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	if ucr.get("server/role") in ["domaincontroller_master", "domaincontroller_backup"]:
+		lo, po = univention.admin.uldap.getAdminConnection()
+	else:
+		print("ERROR: this script may only be called on a Primary Directory Node and Backup Directory Node ")
+		print("(previously DC master and DC backup).")
+		sys.exit(1)
+
+	modify = args.modify
+
+	for dn, attr in lo.search("mailForwardAddress=*", attr=["mailForwardAddress", "mailPrimaryAddress", "mailForwardCopyToSelf"]):
+		if not attr["mailPrimaryAddress"]:
+			continue
+		ml = []
+		old_mail_forward_copy_to_self = attr.get("mailForwardCopyToSelf", None)
+		if attr["mailPrimaryAddress"][0] in attr["mailForwardAddress"]:
+			old_mail_forward_address = attr["mailForwardAddress"][:]
+			attr["mailForwardAddress"].remove(attr["mailPrimaryAddress"][0])
+			ml.append(("mailForwardCopyToSelf", old_mail_forward_copy_to_self, ["1"]))
+			ml.append(("mailForwardAddress", old_mail_forward_address, attr["mailForwardAddress"]))
+
+		if ml:
+			print("user {}".format(dn))
+			for _attr, _old, _new in ml:
+				print("\t{} = {} -> {}".format(_attr, _old, _new))
+			if modify:
+				lo.modify(dn, ml)
+			else:
+				print("\tskipping (dry-run).")
+
+	values = [
+		"directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf",
+		"mail/postfix/activate_unionmap_in_virtual_alias_maps",
+		"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps",
+	]
+	if not(all([ucr.is_true(value) for value in values])) and modify:
+		print("Please execute the following command lines on the DC master and all mail servers, to complete the migration:")
+		print("$ ucr set directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf=yes")
+		print("$ ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes")
+		print("$ ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes")
+		print("$ /etc/init.d/postfix reload && /etc/init.d/postfix restart")
+
+
+if __name__ == "__main__":
+	usage = """
+
+With UCS 4.4-v6 errata 787  the UDM attribute mailForwardCopyToSelf is no longer calculated
+according to the values of the corresponding ldap attribute mailForwardAddress,
+but saved directly as an LDAP attribute.
+
+This script migrates the attribute values of users prior to UCS 4.4-v6 errata 787 by specifying the 
+the LDAP value mailForwardCopyToSelf and removing the redundant mailForwardAddress, which was 
+previously set implicitly.
+
+For more information please visit: https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
+"""
+	parser = ArgumentParser(usage=usage)
+	parser.add_argument(
+		'-m',
+		'--modify',
+		dest='modify',
+		action='store_true',
+		help="Commit changes to LDAP [default: %(default)s (dry run)].")
+	args = parser.parse_args()
+	main(args)

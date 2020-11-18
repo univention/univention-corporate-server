@@ -14,6 +14,7 @@ import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
+from essential.mail import set_mail_forward_copy_to_self_ucrv
 
 
 class Bunch(object):
@@ -40,7 +41,9 @@ class Bunch(object):
 		return str(self)
 
 
-if __name__ == '__main__':
+def test_mail_forward(mail_copy_to_self):
+	set_mail_forward_copy_to_self_ucrv(mail_copy_to_self)
+	mail_copy_to_self = mail_copy_to_self == 'yes'
 	with ucr_test.UCSTestConfigRegistry() as ucr:
 		with udm_test.UCSTestUDM() as udm:
 			domain = ucr.get('domainname').lower()
@@ -95,14 +98,25 @@ if __name__ == '__main__':
 
 			# set Copy2Self=1
 			udm.modify_object('users/user', dn=user.dn, mailForwardCopyToSelf='1')
-			utils.verify_ldap_object(
-				user.dn,
-				{
-					'univentionMailHomeServer': [user.mailHomeServer],
-					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-				},
-				strict=True)
+			if mail_copy_to_self:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': user.mailForwardAddress,
+						'mailForwardCopyToSelf': '1'
+					},
+					strict=True)
+			else:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+					},
+					strict=True)
 
 			# change mFA and set Copy2Self=0
 			user.mailForwardAddress = [
@@ -113,13 +127,22 @@ if __name__ == '__main__':
 				dn=user.dn,
 				set={
 					'mailForwardAddress': user.mailForwardAddress,
-					'mailForwardCopyToSelf': '0'
+					'mailForwardCopyToSelf': '0',
 				})
-			utils.verify_ldap_object(user.dn, {
-				'univentionMailHomeServer': [user.mailHomeServer],
-				'mailPrimaryAddress': [user.mailPrimaryAddress],
-				'mailForwardAddress': user.mailForwardAddress,
-				}, strict=True)
+			if mail_copy_to_self:
+				utils.verify_ldap_object(user.dn, {
+					'univentionMailHomeServer': [user.mailHomeServer],
+					'mailPrimaryAddress': [user.mailPrimaryAddress],
+					'mailForwardAddress': user.mailForwardAddress,
+					'mailForwardCopyToSelf': '0',
+					}, strict=True)
+			else:
+				utils.verify_ldap_object(user.dn, {
+					'univentionMailHomeServer': [user.mailHomeServer],
+					'mailPrimaryAddress': [user.mailPrimaryAddress],
+					'mailForwardAddress': user.mailForwardAddress,
+					},
+					strict=True)
 
 			# change mFA and set Copy2Self=1
 			user.mailForwardAddress = [
@@ -132,16 +155,27 @@ if __name__ == '__main__':
 				dn=user.dn,
 				set={
 					'mailForwardAddress': user.mailForwardAddress,
-					'mailForwardCopyToSelf': '1'
+					'mailForwardCopyToSelf': '1',
 				})
-			utils.verify_ldap_object(
-				user.dn,
-				{
-					'univentionMailHomeServer': [user.mailHomeServer],
-					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-				},
-				strict=True)
+			if mail_copy_to_self:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': user.mailForwardAddress,
+						'mailForwardCopyToSelf': '1',
+					},
+					strict=True)
+			else:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+					},
+					strict=True)
 
 			# remove mFA and keep Copy2Self=1
 			udm.modify_object(
@@ -149,14 +183,25 @@ if __name__ == '__main__':
 				dn=user.dn,
 				mailForwardCopyToSelf='1',
 				remove={'mailForwardAddress': user.mailForwardAddress})
-			utils.verify_ldap_object(
-				user.dn,
-				{
-					'univentionMailHomeServer': [user.mailHomeServer],
-					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': []
-				},
-				strict=True)
+			if mail_copy_to_self:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': [],
+						'mailForwardCopyToSelf': '1',
+					},
+					strict=True)
+			else:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': [],
+					},
+					strict=True)
 
 			# create second user with mPA, mFA and Copy2Self
 			user = Bunch()
@@ -172,14 +217,25 @@ if __name__ == '__main__':
 				'mailForwardAddress': user.mailForwardAddress,
 				'mailForwardCopyToSelf': '1',
 			})
-			utils.verify_ldap_object(
-				user.dn,
-				{
-					'univentionMailHomeServer': [user.mailHomeServer],
-					'mailPrimaryAddress': [user.mailPrimaryAddress],
-					'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
-				},
-				strict=True)
+			if mail_copy_to_self:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': user.mailForwardAddress,
+						'mailForwardCopyToSelf': '1',
+					},
+					strict=True)
+			else:
+				utils.verify_ldap_object(
+					user.dn,
+					{
+						'univentionMailHomeServer': [user.mailHomeServer],
+						'mailPrimaryAddress': [user.mailPrimaryAddress],
+						'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+					},
+					strict=True)
 
 			# create third user without mPA but mFA
 			user = Bunch()
@@ -195,3 +251,7 @@ if __name__ == '__main__':
 				print('OK: Creation of user without mPA but mFA failed as expected')
 			else:
 				utils.fail('Creation of user without mPA but mFA was unexpectedly successful')
+
+if __name__ == '__main__':
+	test_mail_forward('no')
+	test_mail_forward('yes')

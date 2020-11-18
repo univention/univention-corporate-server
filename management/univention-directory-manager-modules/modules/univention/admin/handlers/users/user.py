@@ -486,6 +486,9 @@ property_descriptions = {
 		syntax=univention.admin.syntax.emailForwardSetting,
 		dontsearch=True,
 		copyable=True,
+		default='0',
+		required=False,
+		prevent_umc_default_popup=True,
 	),
 	'overridePWHistory': univention.admin.property(
 		short_description=_('Override password history'),
@@ -1344,15 +1347,17 @@ class object(univention.admin.handlers.simpleLdap):
 				self['pwdChangeNextLogin'] = '1'
 
 	def _unmap_mail_forward(self):
-		# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
-		# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
-		# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
-		if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
-			self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
-			self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
-			self['mailForwardCopyToSelf'] = '1'
-		else:
-			self['mailForwardCopyToSelf'] = '0'
+		if not configRegistry.is_true('directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf', False):
+			# mailForwardCopyToSelf is a "virtual" property. The boolean value is set to True, if
+			# the LDAP attribute mailForwardAddress contains the mailPrimaryAddress. The mailPrimaryAddress
+			# is removed from oldattr for correct display in CLI/UMC and for proper detection of changes.
+			# Remark: By setting the ucr-v the attribute is saved directly to LDAP.
+			if self.get('mailPrimaryAddress') in self.get('mailForwardAddress', []):
+				self.oldattr['mailForwardAddress'] = self.oldattr.get('mailForwardAddress', [])[:]
+				self['mailForwardAddress'].remove(self['mailPrimaryAddress'])
+				self['mailForwardCopyToSelf'] = '1'
+			else:
+				self['mailForwardCopyToSelf'] = '0'
 
 	def _unmap_automount_information(self):
 		if 'automountInformation' not in self.oldattr:
@@ -1659,6 +1664,12 @@ class object(univention.admin.handlers.simpleLdap):
 				univention.admin.allocators.release(self.lo, self.position, 'sid', old_sid)
 
 	def _ldap_pre_modify(self):
+
+		if not self.oldattr.get('mailForwardCopyToSelf') \
+				and self['mailForwardCopyToSelf'] == '0' \
+				and not self['mailForwardAddress']:
+			self['mailForwardCopyToSelf'] = None
+
 		if self.hasChanged('mailPrimaryAddress'):
 			if self['mailPrimaryAddress']:
 				self['mailPrimaryAddress'] = self['mailPrimaryAddress'].lower()
@@ -1984,31 +1995,31 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if messages should be forwarded for it.'))
 		if self.__forward_copy_to_self and not self['mailPrimaryAddress']:
 			raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox.'))
+		if not configRegistry.is_true('directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf', False):
+			# remove virtual property mailForwardCopyToSelf from modlist
+			ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != 'mailForwardCopyToSelf']
 
-		# remove virtual property mailForwardCopyToSelf from modlist
-		ml = [(key_, old_, new_) for (key_, old_, new_) in ml if key_ != 'mailForwardCopyToSelf']
-
-		# add mailPrimaryAddress to mailForwardAddress if "mailForwardCopyToSelf" is True
-		for num_, (key_, old_, new_) in enumerate(ml[:]):
-			if key_ == 'mailForwardAddress':
-				# old in ml may be missing the mPA removed in open()
-				if old_:
-					ml[num_][1][:] = self.oldattr.get('mailForwardAddress')
-				if new_:
-					self.__remove_old_mpa(new_)
-					self.__set_mpa_for_forward_copy_to_self(new_)
-				break
-		else:
-			mod_ = (
-				'mailForwardAddress',
-				self.oldattr.get('mailForwardAddress', []),
-				self['mailForwardAddress'][:]
-			)
-			if self['mailForwardAddress']:
-				self.__remove_old_mpa(mod_[2])
-				self.__set_mpa_for_forward_copy_to_self(mod_[2])
-			if mod_[1] != mod_[2]:
-				ml.append(mod_)
+			# add mailPrimaryAddress to mailForwardAddress if "mailForwardCopyToSelf" is True
+			for num_, (key_, old_, new_) in enumerate(ml[:]):
+				if key_ == 'mailForwardAddress':
+					# old in ml may be missing the mPA removed in open()
+					if old_:
+						ml[num_][1][:] = self.oldattr.get('mailForwardAddress')
+					if new_:
+						self.__remove_old_mpa(new_)
+						self.__set_mpa_for_forward_copy_to_self(new_)
+					break
+			else:
+				mod_ = (
+					'mailForwardAddress',
+					self.oldattr.get('mailForwardAddress', []),
+					self['mailForwardAddress'][:]
+				)
+				if self['mailForwardAddress']:
+					self.__remove_old_mpa(mod_[2])
+					self.__set_mpa_for_forward_copy_to_self(mod_[2])
+				if mod_[1] != mod_[2]:
+					ml.append(mod_)
 		return ml
 
 	def _modlist_univention_person(self, ml):
