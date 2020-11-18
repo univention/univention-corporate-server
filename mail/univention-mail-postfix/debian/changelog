@@ -1,8 +1,15 @@
-univention-mail-postfix (14.0.0-3) unstable; urgency=low
+univention-mail-postfix (14.0.0-4) unstable; urgency=low
 
   * Bug #45205: readd unionmap support
 
  -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2020 11:28:05 +0100
+
+univention-mail-postfix (14.0.0-3) unstable; urgency=low
+
+  * Bug #45205: add backwards compatible support for using all LDAP query
+    results by using a unionmap
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2020 18:06:40 +0100
 
 univention-mail-postfix (14.0.0-2) unstable; urgency=medium
 
