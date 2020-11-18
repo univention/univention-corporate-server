@@ -10,3 +10,5 @@ desc: |
    long the system waits for successful synchronisation of the SPN account
    during a domain join. The default timeout has been increased to 10800s.
 bug: [51835]
+erratum: 809
+announced: 2020-11-18
