@@ -8,16 +8,19 @@
 ## packages:
 ##  - univention-ad-connector
 
-import unittest
-import sys, os
-sys.path.append('$TESTLIBPATH')
-
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
 
 from univention.testing.strings import random_username, random_string
 from univention.testing.connector_common import (NormalUser, create_udm_user)
 from adconnector import (ADConnection, restart_adconnector, wait_for_sync)
+
+import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
+
+import unittest
+import os
+import sys
+
+sys.path.append('$TESTLIBPATH')
 
 class TestADCustomMappings(unittest.TestCase):
     def setUp(self):
@@ -41,12 +44,12 @@ class TestADCustomMappings(unittest.TestCase):
                 target_attribute=self.target_attribute
                 )
 
-        print("Using as test-mapping:\n%s" % TEST_MAPPING)
+        sys.stderr.write("Using as test-mapping:\n%s\n" % TEST_MAPPING)
 
         try:
             os.mkdir(self.mapping_file_dir)
         except OSError:
-            print("Directory already exists: %s" % self.mapping_file_dir)
+            sys.stderr.write("Directory already exists: %s\n" % self.mapping_file_dir)
 
         with open(self.mapping_file, 'w') as f:
             f.write(TEST_MAPPING)
@@ -70,7 +73,7 @@ class TestADCustomMappings(unittest.TestCase):
             restart_adconnector()
 
         except OSError:
-            print("Surprising, that there is nothing to remove from this test.")
+            sys.stderr.write("Surprising, that there is nothing to remove from this test.\n")
 
 
     def create_extended_attribute(self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed"):
@@ -80,7 +83,7 @@ class TestADCustomMappings(unittest.TestCase):
         under 'user/user')
         """
 
-        print("Creating extended attribute '%s' under '%s' with default value '%s'" % (
+        sys.stderr.write("Creating extended attribute '%s' under '%s' with default value '%s'\n" % (
             ldapMapping, self.ldap_base, defaultValue))
 
         udm.create_object(
@@ -125,7 +128,7 @@ class TestADCustomMappings(unittest.TestCase):
 
         (udm_user_dn, ad_user_dn) = create_udm_user(self.udm, self.adc, udm_user, wait_for_sync)
 
-        print("Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s" % (
+        sys.stderr.write("Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s\n" % (
             udm_user_dn, ad_user_dn))
 
         # verify that the user exists on the 'ad-side'...

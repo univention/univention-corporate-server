@@ -1372,7 +1372,7 @@ entsprechende Meldungen in folgenden Dateien auf dem UCS-System:
 In der Grundeinstellung werden einige Container durch Filter von der
 Synchronisation ausgeschlossen. Diese finden sich in der
 Konfigurationsdatei <filename>/etc/univention/connector/ad/mapping</filename>
-Benutzerdefinierte Mapping-Datei <filename>/etc/univention/connector/ad/localmapping</filename>
+Benutzerdefinierte Mapping-Datei <filename>/etc/univention/connector/ad/localmapping.py</filename>
 unter der Einstellung <emphasis>global_ignore_subtree</emphasis>.
 Sollen einzelne Benutzer von der Synchronisation ausgeschlossen werden, können deren
 Benutzername der &ucsUCRV; <envar>connector/ad/mapping/user/ignorelist</envar> hinzugefügt werden.

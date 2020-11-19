@@ -31,7 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import os, sys
+import os
+import sys
 
 import univention.connector.ad
 import univention.connector.ad.mapping
@@ -501,15 +502,16 @@ def apply_custom_mapping(ad_mapping):
 		# ignore file not found and other file read errors (e.g. permissions)
 		pass
 	except AttributeError as e:
-		print(
+		sys.stderr.write(
 			"Wrong function signature. Please implement a function"
-			"mapping_hook(ad_connector_mapping) in localmapping.py: %s" % e)
+			"mapping_hook(ad_connector_mapping) in localmapping.py: %s\n" % e)
 		pass
 
 	if mapping:
 		return mapping(ad_mapping)
 	else:
 		return ad_mapping
+
 
 ad_mapping = apply_custom_mapping(ad_mapping)
 
