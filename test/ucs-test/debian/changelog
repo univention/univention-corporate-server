@@ -1,3 +1,9 @@
+ucs-test (9.0.5-28) unstable; urgency=medium
+
+  * Bug #52274: increase number of opened file descriptors by one
+
+ -- Florian Best <best@univention.de>  Thu, 19 Nov 2020 12:51:57 +0100
+
 ucs-test (9.0.5-27) unstable; urgency=low
 
   * Bug #49981: Added AD-Connector mapping customization and a test
