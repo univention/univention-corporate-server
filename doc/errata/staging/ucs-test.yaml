@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: 
+fix: 9.0.5-26A~4.4.6.202011190956
+desc: |
+ This update addresses the following issue(s):
+ * 
+bug: [49981]
