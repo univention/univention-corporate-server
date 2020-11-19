@@ -1,3 +1,9 @@
+ucs-test (10.0.1-32) unstable; urgency=medium
+
+  * Bug #52005: Reactivate 96rename* and work around Bug#51804
+
+ -- Felix Botner <botner@univention.de>  Wed, 25 Nov 2020 12:57:50 +0100
+
 ucs-test (10.0.1-31) unstable; urgency=medium
 
   * Bug #51929: added 55_adconnector/504_test_group_cache_after_move
