@@ -1065,7 +1065,7 @@ class CPAuth(CPgeneric):
 		location = urlparse(kwargs.get('return', '/univention/management/'))
 		if location.path.startswith('//'):
 			location = urlparse('')
-		location = urlunsplit((None, None, location.path, location.query, location.fragment))
+		location = urlunsplit(('', '', location.path, location.query, location.fragment))
 		cherrypy.response.status = 303
 		cherrypy.response.headers['Location'] = location
 
