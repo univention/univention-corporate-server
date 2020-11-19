@@ -84,7 +84,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-	usage = """
+	description = """
 
 With UCS 4.4-v6 errata 787  the UDM attribute mailForwardCopyToSelf is no longer calculated
 according to the values of the corresponding ldap attribute mailForwardAddress,
@@ -96,7 +96,7 @@ previously set implicitly.
 
 For more information please visit: https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
 """
-	parser = ArgumentParser(usage=usage)
+	parser = ArgumentParser(description=description)
 	parser.add_argument(
 		'-m',
 		'--modify',

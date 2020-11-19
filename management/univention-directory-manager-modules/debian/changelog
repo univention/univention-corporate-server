@@ -5,6 +5,12 @@ univention-directory-manager-modules (14.0.17-3) unstable; urgency=low
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 20 Nov 2020 09:02:52 +0100
 
+univention-directory-manager-modules (14.0.17-2-1) unstable; urgency=low
+
+  * Bug #45205: use description instead of usage in migration script
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Thu, 19 Nov 2020 09:05:43 +0100
+
 univention-directory-manager-modules (14.0.17-2) unstable; urgency=low
 
   * Bug #45205: fix typo
