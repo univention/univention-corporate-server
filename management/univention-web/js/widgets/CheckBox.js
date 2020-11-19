@@ -69,6 +69,11 @@ define([
 			this.own(iconIndeterminate);
 			domConstruct.place(iconCheck.domNode, this.domNode, 'first');
 			domConstruct.place(iconIndeterminate.domNode, this.domNode, 'first');
+
+			var node = domConstruct.create('div', {
+				'class': 'dijitCheckBoxInputStretcher'
+			}, this.focusNode, 'after');
+			domConstruct.place(this.focusNode, node);
 		},
 
 		postCreate: function() {

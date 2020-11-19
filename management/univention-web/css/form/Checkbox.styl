@@ -21,12 +21,13 @@
 
 @import "../variables"
 
+$borderWidth = 2px
 .dijitCheckBox
 	--local-border-color: var(--color-grey40)
 	--local-background-color: transparent
 	width: 1em
 	height: @width
-	border: 2px solid var(--local-border-color)
+	border: $borderWidth solid var(--local-border-color)
 	border-radius: 2px
 	background-color: var(--local-background-color)
 	transition: opacity 250ms, background-color 250ms, border-color 250ms
@@ -64,7 +65,14 @@
 	&Disabled
 		--local-border-color: var(--color-grey40)
 		opacity: 0.4
-		
+
+.dijitCheckBoxInputStretcher
+	position: absolute
+	top: -($borderWidth)
+	right: -($borderWidth)
+	bottom: -($borderWidth)
+	left: -($borderWidth)
+
 .dijitCheckBoxInput
 	display: block;
 	width: 100%
