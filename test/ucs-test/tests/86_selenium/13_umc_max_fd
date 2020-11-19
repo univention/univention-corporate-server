@@ -17,7 +17,6 @@ import univention.testing.ucr as ucr_test
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-import univention.testing.utils as utils
 from univention.testing import selenium
 import traceback
 
@@ -46,11 +45,10 @@ class UMCTester:
 		self.systemd_restart("univention-management-console-web-server")
 		time.sleep(3)
 		try:
-			retval, msg = self.test_umc_logon(udm, max_fd)
+			self.test_umc_logon(udm, max_fd)
 		finally:
 			handler_unset(['umc/http/max-open-file-descriptors'])
 			self.systemd_restart("univention-management-console-web-server")
-		return retval, msg
 
 	def count_file_descriptors(self, umc_pid):
 		return int(subprocess.check_output("ls -l /proc/" + str(umc_pid) + "/fd | wc -l", shell=True))
@@ -97,36 +95,28 @@ class UMCTester:
 		username = ""
 		login_password = "univention"
 		for i in range(0, 15):
-
 			_, username = udm.create_user(set={"password": login_password})
 			try:
 				print("Number of fd before login: %s" % self.count_file_descriptors(umc_pid))
 				self.umc_logon(username, login_password)
-			except BaseException as exc:
+			except Exception:
 				if self.count_file_descriptors(umc_pid) < max_fd - 2:
 					traceback.print_exc()
-					return False, "Got an Exception while logging in, without exceeding the number of file descriptors"
+					assert False, "Got an Exception while logging in, without exceeding the number of file descriptors"
 				else:
-					return True, ""
+					return
 			finally:
 				print("Number of fd after login: %s" % self.count_file_descriptors(umc_pid))
 
 			if self.count_file_descriptors(umc_pid) > max_fd + 1:
-				return False, "The amount of file descriptors of the univention-management-console-web-server is exceeded, but not honored"
+				assert False, "The amount of file descriptors of the univention-management-console-web-server is exceeded, but not honored"
 			self.selenium.end_umc_session()
-
-		return True, ""
 
 
 if __name__ == "__main__":
-
 	with selenium.UMCSeleniumTest() as s, ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
-		max_fd = 20
+		max_fd = 21
 		umc_tester = UMCTester(s, ucr.get("hostname"), ucr.get("domainname"))
-
-		retval, msg = umc_tester.test_umc(ucr, udm, max_fd)
-
-		if not retval:
-			utils.fail(msg)
+		umc_tester.test_umc(ucr, udm, max_fd)
 
 # vim: ft=python
