@@ -106,6 +106,7 @@ Depends:
  lsb-release,
  lsof,
  nmap,
+ sshpass,
  openssl,
  python,
  python-pexpect,

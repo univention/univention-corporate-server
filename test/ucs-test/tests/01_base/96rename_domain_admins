@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Rename Domain Admins
 ## tags:
-##  - SKIP
 ##  - basic
 ##  - rename_default_account
 ##  - skip_admember
@@ -24,6 +23,8 @@ import re
 import os
 import glob
 import time
+
+OUTPUT_SINK = open(os.devnull, 'w')
 
 
 def search_templates(old_group_name, new_group_name, server_role):
@@ -71,20 +72,35 @@ def search_templates(old_group_name, new_group_name, server_role):
 						utils.fail('FAIL: Old group name %s still in file %s' % (old_group_name, file))
 
 
-def wait_for_ucr(iterations, group_name):
+def wait_for_ucr(iterations, group_name, group_dn, ucr_test):
 	success = False
 	for i in range(iterations):
-		with UCSTestConfigRegistry() as ucr_test:
-			ucr_test.load()
-			ucr_group = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
-			if group_name != ucr_group:
-				if i == iterations - 1:
-					break
-				time.sleep(15)
-			else:
-				print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_group,))
-				success = True
+		ucr_test.load()
+		ucr_group = ucr_test.get('groups/default/domainadmins', 'Domain Admins')
+		print('ucr var is set to : %s' % (ucr_group,))
+		if group_name != ucr_group:
+			if i == iterations:
 				break
+			time.sleep(10)
+		else:
+			print('UCR variable groups/default/domainadmins is set correctly to %s' % (ucr_group,))
+			success = True
+			break
+		print('Notifier maybe hangs? See https://forge.univention.org/bugzilla/show_bug.cgi?id=51804')
+
+		# Workaround for https://forge.univention.org/bugzilla/show_bug.cgi?id=51804
+		file_name = '96rename_domainadmins_%s' % (uts.random_name(),)
+		if ucr_test.get('server/role') == 'master':
+			f = open("/var/lib/univention-ldap/listener/%s" % (file_name,), "w+")
+			f.write('blabla')
+			f.close()
+		else:
+			cmd = 'echo "test"  > /var/lib/univention-ldap/listener/%s' % (file_name,)
+			ssh_process = subprocess.Popen(
+				['sshpass', '-d0', 'ssh', '-o', 'StrictHostKeyChecking=no', 'root@%s' % (ucr_test.get('ldap/master'),), cmd],
+				stdin=subprocess.PIPE, stdout=OUTPUT_SINK, stderr=OUTPUT_SINK
+				)
+			ssh_process.communicate("univention")
 	return success, ucr_group
 
 
@@ -111,9 +127,9 @@ def test_rename_domain_users():
 		print('Checking if UCR Variable groups/default/domainadmins is set to %s' % (new_group_name,))
 		print('##################################################################\n')
 
-		success, ucr_group = wait_for_ucr(10, new_group_name)
+		success, ucr_group = wait_for_ucr(5, new_group_name, new_group_dn, ucr_test)
 		if not success:
-			utils.fail('UCR variable groups/default/domainusers was set to %s instead of %s' % (old_group_name, new_group_name))
+			utils.fail('UCR variable groups/default/domainadmins was set to %s instead of %s' % (old_group_name, new_group_name))
 
 		# Search templates
 		print('\n##################################################################')
@@ -138,10 +154,10 @@ def test_rename_domain_users():
 
 		# wait until renaming and UCR Variable is set back again
 		utils.wait_for_replication_and_postrun()
-		success, ucr_group = wait_for_ucr(10, old_group_name)
+		success, ucr_group = wait_for_ucr(5, old_group_name, old_group_dn, ucr_test)
 		if not success:
 			univention.config_registry.handler_set(['groups/default/domainadmins=Domain Admins'])
-			print('UCR variable groups/default/domainadmins was set to %s instead of %s' % (ucr_group, new_group_name))
+			utils.fail('UCR variable groups/default/domainadmins was set to %s instead of %s' % (ucr_group, old_group_name))
 
 
 if __name__ == '__main__':
