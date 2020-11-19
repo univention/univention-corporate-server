@@ -2,7 +2,7 @@ ucs-test (10.0.1-31) unstable; urgency=medium
 
   * Bug #51929: added 55_adconnector/504_test_group_cache_after_move
 
- -- Felix Botner <botner@univention.de>  Mon, 09 Nov 2020 11:40:16 +0100
+ -- Felix Botner <botner@univention.de>  Thu, 19 Nov 2020 13:08:11 +0100
 
 ucs-test (10.0.1-30) unstable; urgency=medium
 
