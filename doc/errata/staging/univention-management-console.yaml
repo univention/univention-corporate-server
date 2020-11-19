@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console
-fix: 11.0.5-21A~4.4.0.202011191446
+fix: 11.0.5-22A~4.4.0.202011191557
 desc: |
  This update addresses the following issue(s):
  * A memory optimization for SAML based sessions has been done in the
@@ -24,4 +24,6 @@ desc: |
    necessary. Now it is possible to fetch a stripped down static version
    instead. This patch moves the meta file into a public folder.
  * The SAML assertion lifetime is now configurable per service provider.
-bug: [52338, 52318, 52321, 52274, 52316, 52303, 52323]
+ * The SAML authentication at the UMC-Server has been deferred to the first
+   use of an UMC module.
+bug: [52338, 52318, 52321, 52274, 52316, 52303, 52323, 52297]
