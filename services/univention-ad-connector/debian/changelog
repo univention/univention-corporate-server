@@ -1,4 +1,4 @@
-univention-ad-connector (13.0.0-57) unstable; urgency=medium
+univention-ad-connector (13.0.0-58) unstable; urgency=medium
 
   * Bug #49981: Made mappings user configurable
 
