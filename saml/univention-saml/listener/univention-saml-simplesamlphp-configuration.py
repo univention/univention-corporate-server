@@ -205,6 +205,7 @@ def write_configuration_file(dn, new, filename):
 		if new.get('privacypolicyURL'):
 			fd.write("	'privacypolicy'	=> %s,\n" % php_string(new.get('privacypolicyURL')[0]))
 
+		fd.write("	'assertion.lifetime' => %d,\n" % (int(new.get('assertionLifetime', [b'300'])[0].decode('ASCII')),))
 		fd.write("	'authproc' => array(\n")
 		if not metadata:  # TODO: make it configurable
 			# make sure that only users that are enabled to use this service provider are allowed

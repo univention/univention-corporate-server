@@ -1,3 +1,9 @@
+univention-saml (6.0.2-62) unstable; urgency=medium
+
+  * Bug #52323: make assertion.lifetime configurable
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2020 17:39:58 +0100
+
 univention-saml (6.0.2-61) unstable; urgency=medium
 
   * Bug 52303: Fix line to put code

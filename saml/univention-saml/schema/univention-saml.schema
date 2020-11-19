@@ -108,9 +108,16 @@ attributetype ( 1.3.6.1.4.1.10176.4200.1.16
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
+attributetype ( 1.3.6.1.4.1.10176.4200.1.17
+	NAME 'assertionLifetime'
+	DESC 'The assertion lifetime'
+	SINGLE-VALUE
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+
 objectclass ( 1.3.6.1.4.1.10176.4200.1.1 NAME 'univentionSAMLServiceProvider' SUP top STRUCTURAL
 	DESC 'univention simplesamlphp service provider'
-	MAY ( NameIDFormat $ simplesamlNameIDAttribute $ simplesamlAttributes $ simplesamlLDAPattributes $ serviceproviderdescription $ serviceProviderOrganizationName $ privacypolicyURL $ attributesNameFormat $ singleLogoutService $ serviceProviderMetadata $ rawsimplesamlSPconfig $ signLogouts )
+	MAY ( NameIDFormat $ simplesamlNameIDAttribute $ simplesamlAttributes $ simplesamlLDAPattributes $ serviceproviderdescription $ serviceProviderOrganizationName $ privacypolicyURL $ attributesNameFormat $ singleLogoutService $ serviceProviderMetadata $ rawsimplesamlSPconfig $ signLogouts $ assertionLifetime )
 	MUST ( isServiceProviderActivated $ SAMLServiceProviderIdentifier $ AssertionConsumerService )
 	)
 
