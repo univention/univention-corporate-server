@@ -3,10 +3,11 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-saml
-fix: 6.0.2-61A~4.4.0.202011172248
+fix: 6.0.2-62A~4.4.0.202011191444
 desc: |
  This update addresses the following issue(s):
  * The site does not download the personalized meta.json, which would
    involve UMC. The site does not need the additional information and may
    save one expensive request.
-bug: [52321, 52303]
+ * The SAML assertion lifetime is now configurable per service provider.
+bug: [52303, 52323]

@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console
-fix: 11.0.5-20A~4.4.0.202011181430
+fix: 11.0.5-21A~4.4.0.202011191446
 desc: |
  This update addresses the following issue(s):
  * A memory optimization for SAML based sessions has been done in the
@@ -23,4 +23,5 @@ desc: |
  * Fetching /univention/get/meta involves a call to UMC. This is not always
    necessary. Now it is possible to fetch a stripped down static version
    instead. This patch moves the meta file into a public folder.
-bug: [52338, 52318, 52321, 52274, 52316, 52303]
+ * The SAML assertion lifetime is now configurable per service provider.
+bug: [52338, 52318, 52321, 52274, 52316, 52303, 52323]
