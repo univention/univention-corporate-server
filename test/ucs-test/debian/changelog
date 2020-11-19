@@ -1,3 +1,9 @@
+ucs-test (9.0.5-27) unstable; urgency=low
+
+  * Bug #49981: Added AD-Connector mapping customization and a test
+
+ -- Max Christian Pohle <pohle@univention.de>  Thu, 19 Nov 2020 10:09:36 +0100
+
 ucs-test (9.0.5-26) unstable; urgency=low
 
   * Bug #45205: add tests for mail forwarding settings
