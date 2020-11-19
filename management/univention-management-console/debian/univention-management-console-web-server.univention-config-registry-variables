@@ -58,6 +58,12 @@ Description[en]=Defines the SAML 2.0 service provider fqdn. If the variable is u
 Type=str
 Categories=management-umc,saml
 
+[umc/saml/assertion-lifetime]
+Description[de]=Definiert die Gültigkeitsdauer einer SAML-Assertion in Sekunden (Standard: 300).
+Description[en]=Defines the SAML assertion validity time in seconds (default: 300).
+Type=int
+Categories=management-umc,saml
+
 [umc/saml/grace_time]
 Description[de]=Definiert die nach Gültigkeitsende der SAML-Assertion akzeptierte Zeitabweichung (in Sekunden) für PAM und LDAP authentifizierung.
 Description[en]=Defines the accepted time difference (in seconds) of the SAML assertion validity time for PAM and LDAP authentication.

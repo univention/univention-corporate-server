@@ -1,3 +1,9 @@
+univention-management-console (12.0.4-1) unstable; urgency=medium
+
+  * Bug #52323: make assertion.lifetime configurable
+
+ -- Florian Best <best@univention.de>  Thu, 19 Nov 2020 14:38:15 +0100
+
 univention-management-console (12.0.3-10) unstable; urgency=medium
 
   * Bug #52316: prevent dropped connections between UMC web server and UMC
