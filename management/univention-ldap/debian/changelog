@@ -1,3 +1,9 @@
+univention-ldap (16.0.4-1) unstable; urgency=medium
+
+  * Bug #43687: use systemctl instead of init.d to restart UDL
+
+ -- Sebastian Lobinger <lobinger@univention.de>  Thu, 19 Nov 2020 19:14:01 +0100
+
 univention-ldap (16.0.3-1) unstable; urgency=medium
 
   * Bug #39167: Setting the default mdb maxsize to 4GB
