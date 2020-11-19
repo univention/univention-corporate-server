@@ -1,3 +1,9 @@
+univention-management-console (11.0.5-21) unstable; urgency=medium
+
+  * Bug #52323: make assertion.lifetime configurable
+
+ -- Florian Best <best@univention.de>  Thu, 19 Nov 2020 14:38:15 +0100
+
 univention-management-console (11.0.5-20) unstable; urgency=medium
 
   * Bug #52303: Mainscript

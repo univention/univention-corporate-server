@@ -33,7 +33,7 @@
 metadata=$(python -c "from saml2.metadata import create_metadata_string; import sys; sys.stdout.write(create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid=None, cert=None, keyfile=None, mid=None, name=None, sign=False))") || exit 1
 [ -z "$metadata" ] && exit 2
 
-eval "$(ucr shell hostname domainname umc/saml/sp-server ldap/base)"
+eval "$(ucr shell hostname domainname umc/saml/sp-server ldap/base umc/saml/assertion-lifetime)"
 
 if [ -n "$umc_saml_sp_server" ]; then
 	fqdn="$umc_saml_sp_server"
@@ -43,5 +43,6 @@ fi
 
 udm saml/serviceprovider modify "$@" \
 	--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
 	--set serviceProviderMetadata="$metadata"
 exit $?
