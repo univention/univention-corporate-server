@@ -5,6 +5,8 @@
 ## roles:
 ##  - domaincontroller_master
 ## exposure: dangerous
+## packages:
+##  - univention-ad-connector
 
 import unittest
 import sys, os
