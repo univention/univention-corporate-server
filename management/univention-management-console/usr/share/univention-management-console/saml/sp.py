@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.hazmat.primitives.serialization import Encoding
 from cryptography.hazmat.backends import default_backend
 
-from saml2 import BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
+from saml2 import SamlBase, BINDING_HTTP_REDIRECT, BINDING_HTTP_POST
 from saml2.saml import NAME_FORMAT_URI, NAMEID_FORMAT_TRANSIENT, NAMEID_FORMAT_PERSISTENT
 import saml2.attributemaps
 
@@ -110,3 +110,17 @@ tmpfile = NamedTemporaryFile()  # workaround for broken PEM parsing in pysaml2
 tmpfile.write(get_cert())
 tmpfile.flush()
 CONFIG['cert_file'] = tmpfile.name
+
+OASIS_DEFAULT_NS_PREFIXES = {
+	'ds': 'http://www.w3.org/2000/09/xmldsig#',
+	'md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+	'mdui': 'urn:oasis:names:tc:SAML:metadata:ui',
+	'saml': 'urn:oasis:names:tc:SAML:2.0:assertion',
+	'samlp': 'urn:oasis:names:tc:SAML:2.0:protocol',
+	'xenc': 'http://www.w3.org/2001/04/xmlenc#',
+	'xs': 'http://www.w3.org/2001/XMLSchema',
+	'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+	'alg': "urn:oasis:names:tc:SAML:metadata:algsupport",
+	'mdattr': "urn:oasis:names:tc:SAML:metadata:attribute"
+}
+SamlBase().register_prefix(OASIS_DEFAULT_NS_PREFIXES)
