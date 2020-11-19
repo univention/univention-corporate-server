@@ -143,6 +143,11 @@ property_descriptions = {
 		default="TRUE",
 		size='Two',
 	),
+	'assertionLifetime': univention.admin.property(  # don't show in layout, it's only for UMC
+		short_description=_('Assertion lifetime'),
+		long_description=_('The time in seconds how long one assertion is valid.'),
+		syntax=univention.admin.syntax.integer,
+	),
 }
 
 layout = [
@@ -194,6 +199,7 @@ mapping.register('singleLogoutService', 'singleLogoutService', None, univention.
 mapping.register('serviceProviderMetadata', 'serviceProviderMetadata', None, univention.admin.mapping.ListToString)
 mapping.register('rawsimplesamlSPconfig', 'rawsimplesamlSPconfig', None, univention.admin.mapping.ListToString)
 mapping.register('signLogouts', 'signLogouts', None, univention.admin.mapping.ListToString)
+mapping.register('assertionLifetime', 'assertionLifetime', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
