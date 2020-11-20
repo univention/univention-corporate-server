@@ -125,7 +125,7 @@ def tiny_app_apache(name=None, version=None):
 	version = version or '1'
 	app = App(name=name, version=version, build_package=False)
 	app.set_ini_parameter(
-		DockerImage='nimmis/alpine-apache',
+		DockerImage='docker-test.software-univention.de/nimmis/alpine-apache',
 		DockerScriptInit='/boot.sh',
 		DockerScriptSetup='',
 		DockerScriptStoreData='',

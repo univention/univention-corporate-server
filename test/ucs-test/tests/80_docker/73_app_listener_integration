@@ -192,7 +192,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 	with Appcenter() as appcenter:
 		app = App(name=name, version='1', build_package=False, call_join_scripts=False)
 		app.set_ini_parameter(
-			DockerImage='debian:stable',
+			DockerImage='docker-test.software-univention.de/debian:stable',
 			DockerScriptSetup='/setup',
 			DockerScriptStoreData='/store_data',
 			DockerScriptInit='/bin/bash',
@@ -220,7 +220,7 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
 		old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
 		app = App(name=name, version='2', build_package=False, call_join_scripts=False)
 		app.set_ini_parameter(
-			DockerImage='debian:testing',
+			DockerImage='docker-test.software-univention.de/debian:testing',
 			DockerScriptSetup='/setup',
 			DockerScriptStoreData='/store_data',
 			DockerScriptInit='/bin/bash',

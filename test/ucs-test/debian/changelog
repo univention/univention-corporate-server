@@ -1,3 +1,9 @@
+ucs-test (10.0.1-34) unstable; urgency=medium
+
+  * Bug #52402: use docker-test.software... images in docker tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 04 Dec 2020 09:52:17 +0100
+
 ucs-test (10.0.1-33) unstable; urgency=low
 
   * Bug #45205: readd tests for mail forwarding settings
