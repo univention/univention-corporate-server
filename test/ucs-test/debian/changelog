@@ -1,27 +1,3 @@
-ucs-test (9.0.5-29) unstable; urgency=medium
-
-  * Bug #52005: Reactivate 96rename* and work around Bug#51804
-
- -- Julia Bremer <bremer@univention.de>  Thu, 19 Nov 2020 18:35:51 +0100
-
-ucs-test (9.0.5-28) unstable; urgency=medium
-
-  * Bug #52274: increase number of opened file descriptors by one
-
- -- Florian Best <best@univention.de>  Thu, 19 Nov 2020 12:51:57 +0100
-
-ucs-test (9.0.5-27) unstable; urgency=low
-
-  * Bug #49981: Added AD-Connector mapping customization and a test
-
- -- Max Christian Pohle <pohle@univention.de>  Thu, 19 Nov 2020 10:09:36 +0100
-
-ucs-test (9.0.5-26) unstable; urgency=low
-
-  * Bug #45205: add tests for mail forwarding settings
-
- -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2020 18:10:39 +0100
-
 ucs-test (9.0.5-25) unstable; urgency=medium
 
   * Bug #52130: cleanup krb5 cache before using smbclient
