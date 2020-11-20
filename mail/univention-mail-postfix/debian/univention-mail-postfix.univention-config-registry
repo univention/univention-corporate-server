@@ -46,7 +46,6 @@ Variables: mail/maps/canonical/sender/enable
 Variables: mail/maps/canonical/sender/classes
 Variables: mail/maps/canonical/recipient/enable
 Variables: mail/maps/canonical/recipient/classes
-Variables: mail/postfix/activate_unionmap_in_virtual_alias_maps
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -284,7 +283,6 @@ Variables: mail/postfix/ldaptable/tlscacertfile
 Variables: mail/postfix/ldaptable/debuglevel
 Variables: mail/postfix/ldaptable/starttls
 Variables: mail/postfix/ldaptable/tlsrequirecert
-Variables: mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps
 
 Type: multifile
 Multifile: etc/postfix/ldap.external_aliases

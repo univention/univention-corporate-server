@@ -105,9 +105,3 @@ Description[de]=Diese Zeichenkette enthält alle (Sonder-)zeichen, die bei der N
 Description[en]=This string contains all (special) characters that shall not be removed when using the template option <:alphanum>.
 Type=str
 Categories=management-udm
-
-[directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf]
-Description[de]=Ist diese Option deaktiviert oder die Variable nicht gesetzt, wird das UDM Attribut mailForwardCopyToSelf wie bisher gesetzt: Wenn sich im LDAP Attribut mailForwardAddress die mailPrimaryAddress des Users befindet. Mit dem Setzen der Variable wird der Wert von mailForwardCopyToSelf stattdessen auf ein gleichnamiges LDAP Attribut abgebildet (Für mehr Informationen siehe <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, siehe auch mail/postfix/activate_unionmap_in_virtual_alias_maps und mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps) (Standard: no)
-Description[en]=If this option is deactivated or the variable unset, the UDM attribute mailForwardCopyToSelf will be set as before: If the mailPrimaryAddress is present in the LDAP attribute mailForwardAddress. Setting the variable maps the value of mailForwardCopyToSelf to an LDAP attribute with the same name (please visit <https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509>, see also mail/postfix/activate_unionmap_in_virtual_alias_maps and mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps) (Default: no)
-Type=bool
-Categories=management-udm
