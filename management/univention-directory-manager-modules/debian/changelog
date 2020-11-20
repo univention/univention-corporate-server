@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.8-1) unstable; urgency=medium
+
+  * Bug #51777: fixing multivalue filter and added tests
+
+ -- Jan Luttermann <luttermann@univention.de>  Tue, 26 Jan 2021 09:30:44 +0100
+
 univention-directory-manager-modules (15.0.7-2) unstable; urgency=medium
 
   * Bug #52453: adjust widget layout for shares module
