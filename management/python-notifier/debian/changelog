@@ -1,3 +1,9 @@
+python-notifier (0.9.8-1) unstable; urgency=medium
+
+  * Bug #51282: update to upstream version change
+
+ -- Florian Best <best@univention.de>  Fri, 20 Nov 2020 18:00:37 +0100
+
 python-notifier (0.9.7-10) unstable; urgency=medium
 
   * Bug #51781: unregister closed sockets
