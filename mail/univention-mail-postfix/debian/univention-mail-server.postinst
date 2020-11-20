@@ -64,11 +64,6 @@ ucr set security/packetfilter/package/univention-mail-postfix/tcp/25/all="ACCEPT
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/67univention-mail-server.uinst
 	[ -e "$uinst" ] && rm "$uinst"
-	if [ -z "$2" ]; then
-		ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes
-		ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes
-		/etc/init.d/postfix reload && /etc/init.d/postfix restart
-	fi
 fi
 
 
