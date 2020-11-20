@@ -1829,8 +1829,12 @@ class simpleLdap(object):
 			filter.value = mapping.mapValue(key, filter.value)
 
 		if isinstance(filter.value, (list, tuple)) and filter.value:
+			filter.value = list(map(lambda val: val[0] if isinstance(val, (list, tuple)) else val, list(mapping.mapValue(key, val) for val in filter.value)))
+			filter.value = [map_val[0] if isinstance(map_val, (list, tuple)) else map_val for map_val in (mapping.mapValue(key, filter_val) for filter_val in filter.value)]
 			# complex syntax
-			filter.value = filter.value[0]
+			if (len(filter.value) == 1 and isinstance(filter.value[0], (list, tuple))) or len(filter) > 1:
+				filter.transform_to_conjunction(univention.admin.filter.conjunction(u'&', [
+					univention.admin.filter.expression(filter.variable, val, escape=False) for val in filter.value]))
 
 	@classmethod
 	def identify(cls, dn, attr, canonical=False):

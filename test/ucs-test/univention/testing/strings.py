@@ -88,6 +88,14 @@ def random_groupname(length=10):
 	return random_name(length)
 
 
+def random_element_name(length=10):
+	return random_name(length)
+
+
+def random_domain_name(length=10):
+	return random_string(length=int(length/2), alpha=True, numeric=False) + ".".encode("utf-8") + random_string(length=(length - int(length/2)), alpha=True, numeric=False)
+
+
 def random_int(bottom_end=0, top_end=9):
 	return str(random.randint(bottom_end, top_end))
 

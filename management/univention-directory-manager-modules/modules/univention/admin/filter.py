@@ -85,6 +85,13 @@ class conjunction(object):
 			walk(filter_p, rewrite_function, arg=mapping)
 			self.expressions.append(filter_p)
 
+	def transform_to_expression(self, exp):
+		if not isinstance(exp, expression):
+			raise TypeError('must be expression, got %r (%r)' % (type(exp).__name__, repr(exp)))
+		self.__dict__.clear()
+		self.__dict__.update(exp.__dict__.copy())
+		self.__class__ = type(exp)
+
 
 class expression(object):
 	"""

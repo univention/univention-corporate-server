@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.19-2) UNRELEASED; urgency=medium
+
+  * Bug #51777: fixing multivalue filter and added tests
+
+ -- Jan Luttermann <luttermann@univention.de>  Mon, 11 Jan 2021 16:46:46 +0100
+
 univention-directory-manager-modules (14.0.19-1) unstable; urgency=medium
 
   * Bug #45205: increase changlog version twice
