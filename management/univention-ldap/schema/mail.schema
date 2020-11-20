@@ -97,11 +97,6 @@ attributetype ( 1.3.6.1.4.1.10176.1010.1.47 NAME 'mailForwardAddress'
 	EQUALITY caseIgnoreMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( 1.3.6.1.4.1.10176.1010.1.51 NAME 'mailForwardCopyToSelf'
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
-
 
 objectclass ( 1.3.6.1.4.1.10176.1010.2.40 NAME 'univentionMailCanonicalMaps'
 	DESC 'data for rewriting mail addresses'
@@ -206,4 +201,4 @@ objectclass ( 1.3.6.1.4.1.10176.1012.2.1
 objectclass ( 1.3.6.1.4.1.10176.1010.2.1 NAME 'univentionMail'
 	DESC 'Univention Mail Preferences' SUP top AUXILIARY
 	MUST ( uid )
-	MAY ( univentionMailHomeServer $ mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder $ univentionMailUserQuota $ mailForwardAddress $ mailForwardCopyToSelf ) )
+	MAY ( univentionMailHomeServer $ mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder $ univentionMailUserQuota $ mailForwardAddress ) )
