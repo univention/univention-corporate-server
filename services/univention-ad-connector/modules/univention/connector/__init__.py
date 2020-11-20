@@ -1088,7 +1088,7 @@ class ucs:
 					attribute.con_other_attribute in changed_attributes or \
 					attribute.con_depends in changed_attributes
 
-				if changed:
+				if changed or modtype == 'add':
 					ud.debug(ud.LDAP, ud.INFO,
 						'__set_values: Set: %s' % attribute.con_attribute)
 					set_values(attribute)
@@ -1109,7 +1109,7 @@ class ucs:
 					attribute.con_other_attribute in changed_attributes or \
 					attribute.con_depends in changed_attributes
 
-				if changed:
+				if changed or modtype == 'add':
 					ud.debug(ud.LDAP, ud.INFO,
 						'__set_values: Set: %s' % attribute.con_attribute)
 					if attribute.reverse_attribute_check:
