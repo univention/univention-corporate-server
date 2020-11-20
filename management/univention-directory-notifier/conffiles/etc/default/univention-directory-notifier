@@ -12,7 +12,7 @@ udn_opts = ' '.join(arg for args in [
 	() if cache_size is None else ('-C', cache_size),
 	() if lock_count is None else ('-L', lock_count),
 	() if lock_time is None else ('-T', lock_time),
-	() if protocol_version is None else ('-v' protocol_version),
+	() if protocol_version is None else ('-v', protocol_version),
 ] for arg in args)
 print('UDN_OPTS="{}"'.format(udn_opts))
 @!@
