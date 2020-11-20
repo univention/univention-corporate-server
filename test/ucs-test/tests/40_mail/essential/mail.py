@@ -777,18 +777,6 @@ def check_sending_mail(
 			utils.fail('Mail sent failed with exception: %s' % ex)
 
 
-def set_mail_forward_copy_to_self_ucrv(value):
-	handler_set(
-		[
-			"directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf={}".format(value),
-			"mail/postfix/activate_unionmap_in_virtual_alias_maps={}".format(value),
-			"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps={}".format(value)
-		]
-	)
-	reload_postfix()
-	restart_postfix()
-
-
 if __name__ == '__main__':
 	import doctest
 	doctest.testmod()

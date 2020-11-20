@@ -30,27 +30,30 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import optparse
 import sys
-from argparse import ArgumentParser
 
 import univention.admin.uldap
 from univention.config_registry import ConfigRegistry
 
 
-def main(args):
+def main(options):
 	ucr = ConfigRegistry()
 	ucr.load()
 
 	if ucr.get("server/role") in ["domaincontroller_master", "domaincontroller_backup"]:
 		lo, po = univention.admin.uldap.getAdminConnection()
 	else:
-		print("ERROR: this script may only be called on a Primary Directory Node and Backup Directory Node ")
-		print("(previously DC master and DC backup).")
+		print("ERROR: this script may only be called on a Primary Directory Node and Backup Directory Node "
+		      "(previously DC master and DC backup).")
 		sys.exit(1)
 
-	modify = args.modify
+	dry_run = options.dry_run.lower() == 'true'
 
-	for dn, attr in lo.search("mailForwardAddress=*", attr=["mailForwardAddress", "mailPrimaryAddress", "mailForwardCopyToSelf"]):
+	for dn, attr in lo.search(
+			"mailForwardAddress=*",
+			attr=["mailForwardAddress", "mailPrimaryAddress", "mailForwardCopyToSelf"]
+	):
 		if not attr["mailPrimaryAddress"]:
 			continue
 		ml = []
@@ -65,25 +68,23 @@ def main(args):
 			print("user {}".format(dn))
 			for _attr, _old, _new in ml:
 				print("\t{} = {} -> {}".format(_attr, _old, _new))
-			if modify:
+			if not dry_run:
 				lo.modify(dn, ml)
 			else:
 				print("\tskipping (dry-run).")
 
-	values = [
+	for value in [
 		"directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf",
 		"mail/postfix/activate_unionmap_in_virtual_alias_maps",
 		"mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps",
-	]
-	if not(all([ucr.is_true(value) for value in values])) and modify:
-		print("Please execute the following command line on the DC master and all mail servers, to complete the migration:")
-		print("$ ucr set directory/manager/user/activate_ldap_attribute_mailForwardCopyToSelf=yes")
-		print("$ ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes")
-		print("$ ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes")
+	]:
+		if not ucr.is_true(value, False):
+			print("Please set the following UCR-V to complete the migration on the master and all mail-servers.")
+			print("$ ucr set {}=yes".format(value))
 
 
 if __name__ == "__main__":
-	usage = """
+	usage = """%progname <options>
 
 With UCS 4.4-v6 errata 787  the UDM attribute mailForwardCopyToSelf is no longer calculated
 according to the values of the corresponding ldap attribute mailForwardAddress,
@@ -95,12 +96,8 @@ previously set implicitly.
 
 For more information please visit: https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
 """
-	parser = ArgumentParser(usage=usage)
-	parser.add_argument(
-		'-m',
-		'--modify',
-		dest='modify',
-		action='store_true',
-		help="Commit changes to LDAP [default: %(default)s (dry run)].")
-	args = parser.parse_args()
-	main(args)
+	parser = optparse.OptionParser(usage=usage)
+	parser.add_option("--dry-run", dest="dry_run", action="store",
+	                  default=True, help="Run the script without applying changes")
+	(options, args) = parser.parse_args()
+	main(options)
