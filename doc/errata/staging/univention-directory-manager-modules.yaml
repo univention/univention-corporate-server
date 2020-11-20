@@ -3,13 +3,8 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-directory-manager-modules
-fix: 14.0.17-3A~4.4.0.202011190908
+fix: 14.0.16-9
 desc: |
  This update addresses the following issue(s):
- * Fix filter functionality for multivalue attributes.
- * Add support for saving the mail forwarding setting in a dedicated
-   LDAP attribute. The feature will be activated by default for all new
-   installations. Existing installation must be manually migrated.
-   Please refer to the upgrade instructions in:
-   https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
-bug: [45205, 51777]
+ * Fixing filter functionality for multivalue attributes.
+bug: [51777]

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (14.0.16-9) unstable; urgency=low
+
+  * Bug #45205: revert mail forwarding changes in 4.4-6, will be readded for
+    4.4-7
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 20 Nov 2020 09:02:52 +0100
+
 univention-directory-manager-modules (14.0.16-8) unstable; urgency=medium
 
   * Bug #51777: temporary revert
