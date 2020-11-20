@@ -55,6 +55,7 @@ from optparse import OptionParser
 from six.moves.urllib_parse import urlparse, urlunsplit, quote
 from six.moves.http_client import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
+from defusedxml.common import DefusedXmlException
 import six
 from six.moves import queue as Queue
 import notifier
@@ -543,6 +544,8 @@ class SamlError(UMC_HTTPError):
 		return _decorator(func)
 
 	def from_exception(self, etype, exc, etraceback):
+		if isinstance(exc, DefusedXmlException):
+			return self.defusedxml(exc)
 		if isinstance(exc, ResponseLifetimeExceed):
 			return self.response_lifetime_exceed(exc)
 		if isinstance(exc, UnknownPrincipal):
@@ -562,8 +565,13 @@ class SamlError(UMC_HTTPError):
 		six.reraise(etype, exc, etraceback)
 
 	@error
+	def defusedxml(self, exc):
+		CORE.error('Hacking attempt: %s' % (exc,))
+		return self._('A hacking attempt was prevented.')
+
+	@error
 	def response_lifetime_exceed(self, exc):
-		return self._('The response lifetime is exceeded:: %s. Please make sure the server times are in sync.') % (exc,)
+		return self._('The response lifetime has exceeded: %s. Please make sure the server times are in sync.') % (exc,)
 
 	@error
 	def unknown_principal(self, exc):
@@ -1348,7 +1356,7 @@ class SAML(Ressource):
 	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
 		try:
 			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
-		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError, ResponseLifetimeExceed):
+		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError, ResponseLifetimeExceed, DefusedXmlException):
 			raise SamlError().from_exception(*sys.exc_info())
 		if response is None:
 			raise SamlError().unparsed_saml_response()
