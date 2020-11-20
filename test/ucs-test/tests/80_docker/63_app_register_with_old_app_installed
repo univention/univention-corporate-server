@@ -16,7 +16,7 @@ if __name__ == '__main__':
 		# install the old version
 		old_app = App(name=name, version='1', build_package=False, call_join_scripts=False, container_version="4.1")
 		old_app.set_ini_parameter(
-			DockerImage='alpine:3.6',
+			DockerImage='docker-test.software-univention.de/alpine:3.6',
 			DockerScriptSetup='/setup',
 			DockerScriptStoreData='/store_data',
 			DockerScriptInit='/sbin/init',
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 		# create a new version
 		new_app = App(name=name, version='2', build_package=False, call_join_scripts=False)
 		new_app.set_ini_parameter(
-			DockerImage='alpine:latest',
+			DockerImage='docker-test.software-univention.de/alpine:3.7',
 			DockerScriptSetup='/setup',
 			DockerScriptStoreData='/store_data',
 			DockerScriptInit='/sbin/init',
