@@ -23,3 +23,5 @@ cve:
  - CVE-2020-25694
  - CVE-2020-25695
  - CVE-2020-25696
+ignore:
+ - version.maintenance
