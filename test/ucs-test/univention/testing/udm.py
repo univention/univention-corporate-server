@@ -529,6 +529,29 @@ class UCSTestUDM(object):
 		}
 		self.remove_object('users/user', wait_for_replication, **kwargs)
 
+
+	def create_with_defaults(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		modules_dict = {
+			'appcenter': self.create_appcenter,
+			'computers': self.create_computer,
+			'container': self.create_container,
+			'dhcp': self.create_dhcp,
+			'dns': self.create_dns,
+			'groups': self.create_group,
+			'kerberos': self.create_kerberos,
+			'mail': self.create_mail,
+			'nagios': self.create_nagios,
+			'networks': self.create_networks,
+			'policies': self.create_policies,
+			'saml': self.create_saml,
+			'sba': self.create_sba,
+			'settings': self.create_settings,
+			'shares': self.create_shares,
+			'users': self.create_users,
+			'uvnm': self.create_uvmm,
+		}
+		return modules_dict[module_name.split('/')[0]](module_name, wait_for_replication, check_for_drs_replication, **kwargs)
+
 	def create_group(self, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
 		"""
 		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
@@ -545,7 +568,374 @@ class UCSTestUDM(object):
 			('name', uts.random_groupname())
 		))
 
-		return (self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr), attr['name'])
+		return self.create_object('groups/group', wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_appcenter(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr = self.__set_module_default_attr(kwargs, (('position', 'cn=appcenter,%s' % self.LDAP_BASE),
+													   ('id', -1()),
+													   ('name', uts.random_name()),
+													   ('version', '0.0.0')
+													   )
+											  )
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_sba(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr = self.__set_module_default_attr(kwargs, (('position', 'cn=sba,%s' % self.LDAP_BASE),
+													   ('name', uts.random_name()),
+													   ('displayName', uts.random_name())
+													   )
+											  )
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_kerberos(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr = self.__set_module_default_attr(kwargs, (
+			('position', 'cn=kerberos,%s' % self.LDAP_BASE),
+			('name', uts.random_element_name)
+		))
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_dns(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'alias': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+					  ('name', uts.random_name()),
+					  ('cname', uts.random_name())),
+			'dns': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+					('name', uts.random_name())),
+			'forward_zone': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+							 ('zone', uts.random_name()),
+							 ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()]),
+							 ('zonettl', uts.random_name())),
+			'host_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+							('name', uts.random_name())),
+			'ns_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+						  ('zone', uts.random_name()),
+						  ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()])),
+			'ptr_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+						   ('zone', uts.random_name()),
+						   ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()]),
+						   ('zonettl', uts.random_name())),
+			'srv_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+						   ('zone', uts.random_name()),
+						   ('nameserver', [uts.random_name + ".".format('utf-8') + uts.random_domain_name()]),
+						   ('zonettl', uts.random_name())),
+			'txt_record': (('position', 'cn=dns,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name()),
+						   ('txt', uts.random_name())),
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.spliit('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_nagios(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'service': (('position', 'cn=nagios,%s' % self.LDAP_BASE),
+						('name', uts.random_name()),
+						('checkCommand', uts.random_name())),
+			'timeperiod': (('position', 'cn=nagios,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name()),
+						   ('description', uts.random_name()))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_users(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'contact': (('position', 'cn=users,%s' % self.LDAP_BASE),
+						('lastname', uts.random_name())),
+			'ldap': (('position', 'cn=users,%s' % self.LDAP_BASE),
+					 ('username', uts.random_name()),
+					 ('password', 'univention')),
+			'user': (('position', 'cn=users,%s' % self.LDAP_BASE),
+					 ('lastname', uts.random_name()),
+					 ('username', uts.random_name()),
+					 ('password', 'univention'))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_uvmm(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'cloudconnection': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
+								('name', uts.random_name()),
+								('type', uts.random_name()),
+								('searchPattern', uts.random_name()),
+								('includeUCSimages', uts.random_name())),
+			'cloudtype': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
+						  ('name', uts.random_name())),
+			'info': (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
+					 ('uuid', uts.random_name())),
+			"profile": (('position', 'cn=uvmm,%s' % self.LDAP_BASE),
+						('name', uts.random_name()))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_policies(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'admin_container': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+								('name', uts.random_name())),
+			'autostart': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						  ('name', uts.random_name())),
+			'desktop': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						('name', uts.random_name())),
+			'dhcp_boot': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						  ('name', uts.random_name())),
+			'dhcp_dns': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						 ('name', uts.random_name())),
+			'dhcp_dnsupdate': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							   ('name', uts.random_name())),
+			'dhcp_leasetime': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							   ('name', uts.random_name())),
+			'dhcp_netbios': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name())),
+			'dhcp_routing': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name())),
+			'dhcp_scope': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name())),
+			'dhcp_statements': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+								('name', uts.random_name())),
+			'ldapserver': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name())),
+			'maintenance': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							('name', uts.random_name())),
+			'masterpackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							   ('name', uts.random_name())),
+			'memberpackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							   ('name', uts.random_name())),
+			'nfsmounts': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						  ('name', uts.random_name())),
+			'policy': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name())),
+			'print_quota': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							('name', uts.random_name())),
+			'printserver': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							('name', uts.random_name())),
+			'pwhistory': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						  ('name', uts.random_name())),
+			'registry': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						 ('name', uts.random_name())),
+			'release': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+						('name', uts.random_name())),
+			'repositoryserver': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+								 ('name', uts.random_name())),
+			'repositorysync': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							   ('name', uts.random_name())),
+			'share_userquota': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+								('name', uts.random_name())),
+			'slavepackages': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+							  ('name', uts.random_name())),
+			'umc': (('position', 'cn=policies,%s' % self.LDAP_BASE),
+					('name', uts.random_name()))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_settings(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'data': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+					 ('name', uts.random_name()),
+					 ('data_type', uts.random_name())),
+			'default': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						('name', uts.random_name())),
+			'directory': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						  ('name', uts.random_name())),
+			'extended_attributes': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+									('name', uts.random_name()),
+									('shortDescription', uts.random_name())),
+			'extended_options': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+								 ('name', uts.random_name()),
+									('shortDescription', uts.random_name()),
+								 ('module', [])),
+			'ldapacl': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						('name', uts.random_name()),
+						('filename', uts.random_name()),
+						('data', uts.random_name())),
+			'ldapschema': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name()),
+						   ('filename', uts.random_name()),
+						   ('data', uts.random_name())),
+			'license': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						('name', uts.random_name()),
+						('expires', uts.random_name()),
+						('module', uts.random_name()),
+						('base', uts.random_name()),
+						('signature', uts.random_name()),
+						('expires', uts.random_name())),
+			'lock': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+					 ('name', uts.random_name()),
+					 ('locktime', uts.random_name())),
+			'portal': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name()),
+					   ('displayName', ['de', uts.random_name()])),
+			'portal_all': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name())),
+			'portal_category': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+								('name', uts.random_name()),
+								('displayName', ['de', uts.random_name()])),
+			'portal_entry': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name()),
+							 ('displayName', ['de', uts.random_name()]),
+							 ('description', ['de', uts.random_name()]),
+							 ('link', [uts.random_name()])),
+			'printermodel': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name())),
+			'printeruri': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name())),
+			'prohibited_username': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+									('name', uts.random_name())),
+			'sambaconfig': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+							('name', uts.random_name()),
+							('SID', uts.random_name())),
+			'sambadomain': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+							('name', uts.random_name()),
+							('SID', uts.random_name())),
+			'service': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						('name', uts.random_name())),
+			'syntax': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name()),
+					   ('filter', uts.random_name())),
+			'udm_hook': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						 ('name', uts.random_name()),
+						 ('filename', uts.random_name()),
+						 ('data', uts.random_name())),
+			'udm_module': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name()),
+						   ('filename', uts.random_name()),
+						   ('data', uts.random_name())),
+			'udm_syntax': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+						   ('name', uts.random_name()),
+						   ('filename', uts.random_name()),
+						   ('data', uts.random_name())),
+			'umc_operationset': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+								 ('name', uts.random_name()),
+								 ('description', uts.random_name())),
+			'usertemplate': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name())),
+			'xconfig_choices': (('position', 'cn=settings,%s' % self.LDAP_BASE),
+								('name', uts.random_name()))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+
+	def create_saml(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'idconfig': (('position', 'cn=saml,%s' % self.LDAP_BASE),
+						 ('id', 0)),
+			'serviceprovider': (('position', 'cn=saml,%s' % self.LDAP_BASE),
+								('Identifier', 0),
+								('AssertionConsumerService', []))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_shares(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'printer': (('position', 'cn=printer,%s' % self.LDAP_BASE),
+						('name', uts.random_name()),
+						('spoolHost', [uts.random_name()]),
+						('uri', uts.random_name()),
+						('model', uts.random_name())),
+			'printergroup': (('position', 'cn=printer,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name()),
+							 ('sppoolHost', uts.random_domain_name()),
+							 ('groupMember', uts.random_name())),
+			'share': (('position', 'cn=printer,%s' % self.LDAP_BASE),
+					  ('name', uts.random_name()),
+					  ('host', uts.random_name()),
+					  ('path', uts.random_name())),
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_computer(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'domaincontroller_backup': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+										('name', uts.random_name())),
+			'domaincontroller_master': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+										('name', uts.random_name())),
+			'domaincontroller_slave': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+									   ('name', uts.random_name())),
+			'ipmanagedclient': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+								('name', uts.random_name())),
+			'linux': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+					  ('name', uts.random_name())),
+			'macos': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+					  ('name', uts.random_name())),
+			'memberserver': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name())),
+			'trustaccount': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+							 ('name', uts.random_name()),
+							 ('password', uts.random_name())),
+			'ubuntu': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name())),
+			'windows': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+						('name', uts.random_name())),
+			'wwindows_domaincontroller': (('position', 'cn=computers,%s' % self.LDAP_BASE),
+										  ('name', uts.random_name()))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_container(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'cn': (('position', 'cn=container,%s' % self.LDAP_BASE),
+				   ('name', uts.random_name())),
+			'dc': (('position', 'cn=container,%s' % self.LDAP_BASE),
+				   ('name', uts.random_name()),
+				   ('sambaSID', 0)),
+			'ou': (('position', 'cn=container,%s' % self.LDAP_BASE),
+				   ('name', uts.random_name()))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_mail(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'domain': (('position', 'cn=mail,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name())),
+			'folder': (('position', 'cn=mail,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name()),
+					   ('mailDomain', uts.random_name()),
+					   ('mailHomeServer', uts.random_domain_name())),
+			'lists': (('position', 'cn=mail,%s' % self.LDAP_BASE),
+					  ('name', uts.random_name())),
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
+
+	def create_dhcp(self, module_name, wait_for_replication=True, check_for_drs_replication=True, **kwargs):  # :pylint: disable-msg=W0613
+		attr_dict = {
+			'pool': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
+					 ('name', uts.random_name()),
+					 ('range', [])),
+			'subnet': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
+					   ('subnet', '127.0.0.1'),
+					   ('subnetmask', '255.255.255.0')),
+			'shared': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
+					   ('name', uts.random_name())),
+			'service': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
+						('service', uts.random_name())),
+			'sharedsubnet': (('position', 'cn=dhcp,%s' % self.LDAP_BASE),
+							 ('subnet', '127.0.0.1'),
+							 ('subnetmask', '255.255.255.0'))
+		}
+		attr = self.__set_module_default_attr(kwargs, attr_dict[module_name.split('/')[1]])
+
+		return self.create_object(module_name, wait_for_replication, check_for_drs_replication, **attr)
 
 	def _set_module_default_attr(self, attributes, defaults):
 		"""
