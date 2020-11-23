@@ -80,10 +80,18 @@ deb-pipeline:
   stage: test
   rules:
     - changes:
-      - "[^d]*/*/**/*"
+      - "[^dt]*/*/**/*"
       - "d[^o]*/*/**/*"
       - "do[^c]*/*/**/*"
       - "doc?*/*/**/*"
+      - "t[^e]*/*/**/*"
+      - "te[^s]*/*/**/*"
+      - "tes[^t]*/*/**/*"
+      - "test?*/*/**/*"
+      - "test/generate-appliance/**/*"
+      - "test/ucs-test/**/*"
+      - "test/ucs-test-tools/**/*"
+      - "test/univention-demo-configuration/**/*"
   needs:
     - generate-config
   trigger:
