@@ -2,10 +2,6 @@
 	path = test/ucs-ec2-tools
 	url = ../ucs-ec2-tools/
 	branch = master
-[submodule "management/python-notifier/python-notifier"]
-	path = management/python-notifier/python-notifier
-	url = ../python-notifier
-	branch = ucs
 [submodule "doc/doc-common"]
 	path = doc/doc-common
 	url = ../doc-common
