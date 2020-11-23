@@ -6,12 +6,6 @@ src: firefox-esr
 fix: 78.5.0esr-1~deb9u1
 desc: |
  This update addresses the following issues:
-
- * 78.5.0esr-1~deb9u1 (Wed, 18 Nov 2020 11:59:31 +0100) * Backport to stretch.
-
- * 78.4.1esr-2 (Tue, 10 Nov 2020 10:23:12 +0900) * Cargo.lock,
-   third_party/rust/proc-macro2, third_party/rust/syn: Update to fix FTBFS
-   with rustc 1.47. bz#1663715.
  * Variable time processing of cross-origin images during drawImage calls
    (CVE-2020-16012)
  * Parsing mismatches could confuse and bypass security sanitizer for chrome
