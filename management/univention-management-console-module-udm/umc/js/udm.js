@@ -1584,7 +1584,7 @@ define([
 			// create an HTML image that contains the icon (if we have a valid iconName)
 			var result = value;
 			if (iconName) {
-				result = lang.replace('<img class="umcGridRowIcon" src="{src}" height="{height}" width="{width}" /> {value}', {
+				result = lang.replace('<img class="umcGridRowIcon" src="{src}" height="{height}" width="{width}" />{value}', {
 					icon: iconName,
 					height: '16px',
 					width: '16px',
