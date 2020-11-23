@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: python3.5
+fix: 3.5.3-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * infinite loop in the tarfile module via crafted TAR archive
+   (CVE-2019-20907)
+ * CRLF injection via HTTP request method in httplib/http.client
+   (CVE-2020-26116)
+bug: [52415]
+cve:
+- CVE-2019-20907
+- CVE-2020-26116
