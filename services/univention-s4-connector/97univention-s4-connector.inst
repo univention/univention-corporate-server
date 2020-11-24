@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=7
+VERSION=8
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -149,17 +149,21 @@ udm container/cn create "$@" --ignore_exists \
 			--set name=SOM || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--udm_syntax /usr/lib/python2.7/dist-packages/univention/admin/syntax.d/s4_connector.py
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpo.schema \
 	--schema /usr/share/univention-s4-connector/ldap/mswmi.schema \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/container/msgpo.py || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/mswmifilter.py || die
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-s4-connector/ldap/msprintconnectionpolicy.schema \
 	--udm_module /usr/lib/python2.7/dist-packages/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
 
@@ -167,26 +171,33 @@ ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpwl.schema || die
 
 for udm_module in gpwl-wireless.py gpwl-wired.py gpwl-wireless-blob.py; do
-       ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module"  --ucsversionstart "4.4-0" || die
+	ucs_registerLDAPExtension "$@" \
+		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+		--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" || die
 done
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpipsec.schema || die
 
 for udm_module in gpipsec-filter.py gpipsec-isakmp-policy.py gpipsec-nfa.py gpipsec-negotiation-policy.py gpipsec-policy.py; do
-	ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module"  --ucsversionstart "4.4-0" || die
+	ucs_registerLDAPExtension "$@" \
+		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+		--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" || die
 done
 
 ucs_registerLDAPExtension "$@" \
 	--schema /usr/share/univention-s4-connector/ldap/msgpsi.schema || die
 
 for udm_module in gpsi-category-registration.py  gpsi-class-store.py  gpsi-package-registration.py; do
-	ucs_registerLDAPExtension "$@" --udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" --ucsversionstart "4.4-0" || die
+	ucs_registerLDAPExtension "$@" \
+		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
+		--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/$udm_module" || die
 done
 
 #ucs_registerLDAPExtension "$@" \
+#	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 #	--schema /usr/share/univention-s4-connector/ldap/n_domainpolicy.schema \
-#	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" --ucsversionstart "4.4-0" || die
+#	--udm_module "/usr/lib/python2.7/dist-packages/univention/admin/handlers/ms/domainpolicy.py" || die
 
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connector_dc=$(get_available_s4connector_dc) || exit $?
