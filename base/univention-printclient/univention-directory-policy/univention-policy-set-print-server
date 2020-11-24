@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 #
 # Univention Print Client
 #  helper script: set printer server according to policy
@@ -30,9 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
-import subprocess
 import univention.config_registry
+from univention.lib.policy_result import policy_result, PolicyResultFailed
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -44,19 +45,13 @@ if configRegistry.is_true('cups/printserver', False):
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
-	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
-	result = p1.communicate()[0]
+	try:
+		result, policies = policy_result(ldap_hostdn)
+	except PolicyResultFailed as exc:
+		print(exc, file=sys.stderr)
+		sys.exit(exc.returncode)
 
-	if p1.returncode != 0:
-		print 'failed to execute univention_policy_result'
-		sys.exit(result)
-
-	for line in result.split('\n'):
-		line = line.strip(' ').strip('\n')
-		if line.startswith('univentionPrintServer='):
-			new_print_server = line.replace('univentionPrintServer=', '').replace('"', '')
-			cups_server = configRegistry.get('cups/server')
-			if not cups_server or new_print_server != cups_server:
-				out = univention.config_registry.handler_set(['cups/server=%s' % new_print_server])
-
-sys.exit(0)
+	new_print_server = result.get('univentionPrintServer', [''])[0]
+	cups_server = configRegistry.get('cups/server')
+	if not cups_server or new_print_server != cups_server:
+		univention.config_registry.handler_set(['cups/server=%s' % new_print_server])

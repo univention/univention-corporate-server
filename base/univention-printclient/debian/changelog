@@ -1,3 +1,9 @@
+univention-printclient (13.0.1-1) unstable; urgency=medium
+
+  * Bug #52423: Migrate to Python 3
+
+ -- Florian Best <best@univention.de>  Tue, 24 Nov 2020 10:57:58 +0100
+
 univention-printclient (13.0.0-1) unstable; urgency=medium
 
   * Bug #51419: UCS-5.0-0 version bump
