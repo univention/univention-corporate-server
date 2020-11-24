@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 """
 Run (uninstalled) univention.config_registry to make sure all commands work
 """
