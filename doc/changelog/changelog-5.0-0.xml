@@ -651,6 +651,9 @@
 				<listitem><simpara>
 						The package <package>univention-check-printers</package> for checking USB printers has been removed (<u:bug>52123</u:bug>)
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>univention-printclient</package> has been migrated to Python 3 (<u:bug>52423</u:bug>)
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
