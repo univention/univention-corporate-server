@@ -9,18 +9,19 @@
 ##  - univention-ad-connector
 
 
-from univention.testing.strings import random_username, random_string
-from univention.testing.connector_common import (NormalUser, create_udm_user)
-from adconnector import (ADConnection, restart_adconnector, wait_for_sync)
-
-import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
-
-import unittest
 import os
 import sys
+import unittest
+import univention.testing.ucr as ucr_test
+import univention.testing.udm as udm_test
 
-sys.path.append('$TESTLIBPATH')
+from univention.testing.connector_common import NormalUser, create_udm_user
+from univention.testing.strings import random_string, random_username
+from adconnector import ADConnection, restart_adconnector, wait_for_sync
+from __future__ import print_function
+
+sys.path.append("$TESTLIBPATH")
+
 
 class TestADCustomMappings(unittest.TestCase):
     def setUp(self):
@@ -30,28 +31,31 @@ class TestADCustomMappings(unittest.TestCase):
         self.mapping_file = "/etc/univention/connector/ad/localmapping.py"
         self.mapping_file_dir = os.path.dirname(self.mapping_file)
 
-        TEST_MAPPING = \
-            "import univention.connector\n" \
-            "def mapping_hook(ad_mapping):\n" \
-            "    ad_mapping['user'].post_attributes['organisation'] =\\\n" \
-            "        univention.connector.attribute(\n" \
-            "            ucs_attribute='{attribute}',\n" \
-            "            ldap_attribute='{attribute}',\n" \
-            "            con_attribute='{target_attribute}'\n" \
-            "        )\n" \
+        TEST_MAPPING = (
+            "import univention.connector\n"
+            "def mapping_hook(ad_mapping):\n"
+            "    ad_mapping['user'].post_attributes['organisation'] =\\\n"
+            "        univention.connector.attribute(\n"
+            "            ucs_attribute='{attribute}',\n"
+            "            ldap_attribute='{attribute}',\n"
+            "            con_attribute='{target_attribute}'\n"
+            "        )\n"
             "    return ad_mapping\n".format(
-                attribute=self.attribute,
-                target_attribute=self.target_attribute
-                )
+                attribute=self.attribute, target_attribute=self.target_attribute
+            )
+        )
 
-        sys.stderr.write("Using as test-mapping:\n%s\n" % TEST_MAPPING)
+        print("Using as test-mapping:\n%s\n" % TEST_MAPPING, file=sys.stderr)
 
         try:
             os.mkdir(self.mapping_file_dir)
         except OSError:
-            sys.stderr.write("Directory already exists: %s\n" % self.mapping_file_dir)
+            print(
+                "Directory already exists: %s\n" % self.mapping_file_dir,
+                file=sys.stderr,
+            )
 
-        with open(self.mapping_file, 'w') as f:
+        with open(self.mapping_file, "w") as f:
             f.write(TEST_MAPPING)
 
         # activate mapping by restarting the ad-connector...
@@ -59,7 +63,7 @@ class TestADCustomMappings(unittest.TestCase):
 
         with ucr_test.UCSTestConfigRegistry() as ucr:
             ucr.load()
-            self.ldap_base = ucr['ldap/base']
+            self.ldap_base = ucr["ldap/base"]
 
         self.udm = udm_test.UCSTestUDM()
         self.adc = ADConnection()
@@ -73,31 +77,38 @@ class TestADCustomMappings(unittest.TestCase):
             restart_adconnector()
 
         except OSError:
-            sys.stderr.write("Surprising, that there is nothing to remove from this test.\n")
+            print(
+                "Surprising, that there is nothing to remove from this test.\n",
+                file=sys.stderr,
+            )
 
-
-    def create_extended_attribute(self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed"):
+    def create_extended_attribute(
+        self, udm, ldapMapping, module, defaultValue="defaultValue-TestFailed"
+    ):
 
         """
         Creates an extended attribute with a default value under module (e.g.
         under 'user/user')
         """
 
-        sys.stderr.write("Creating extended attribute '%s' under '%s' with default value '%s'\n" % (
-            ldapMapping, self.ldap_base, defaultValue))
+        print(
+            "Creating extended attribute '%s' under '%s' with default value '%s'\n"
+            % (ldapMapping, self.ldap_base, defaultValue),
+            file=sys.stderr,
+        )
 
         udm.create_object(
-            'settings/extended_attribute',
-            position='cn=custom attributes,cn=univention,%s' % self.ldap_base,
+            "settings/extended_attribute",
+            position="cn=custom attributes,cn=univention,%s" % self.ldap_base,
             **dict(
                 name=ldapMapping,
-                ldapMapping=ldapMapping,                 # mandatory
-                CLIName=ldapMapping,                     # mandatory
-                objectClass='univentionFreeAttributes',  # mandatory
+                ldapMapping=ldapMapping,  # mandatory
+                CLIName=ldapMapping,  # mandatory
+                objectClass="univentionFreeAttributes",  # mandatory
                 shortDescription=("test value: %s" % defaultValue),
-                valueRequired='1',
+                valueRequired="1",
                 module=[module],
-                default=defaultValue
+                default=defaultValue,
             )
         )
 
@@ -116,7 +127,9 @@ class TestADCustomMappings(unittest.TestCase):
         # create a random user
         udm_user = NormalUser(selection=("username", "lastname"))
         udm_user.basic["password"] = "univention"
-        udm_user.basic["description"] = ("test value: '%s'" % test_string) # useful as debugging hint
+        udm_user.basic["description"] = (
+            "test value: '%s'" % test_string
+        )  # useful as debugging hint
 
         # the 'o' field in ldap is usually mapped to company in AD's
         # but we have hardcoded in our mapping, that the company should
@@ -126,16 +139,23 @@ class TestADCustomMappings(unittest.TestCase):
         # write test_string into extended attribute...
         udm_user.basic[self.attribute] = test_string
 
-        (udm_user_dn, ad_user_dn) = create_udm_user(self.udm, self.adc, udm_user, wait_for_sync)
+        (udm_user_dn, ad_user_dn) = create_udm_user(
+            self.udm, self.adc, udm_user, wait_for_sync
+        )
 
-        sys.stderr.write("Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s\n" % (
-            udm_user_dn, ad_user_dn))
+        print(
+            "Summary of users to be synchronized:\n\tudm_user_dn:\t%s,\n\ts4_user_dn:\t%s\n"
+            % (udm_user_dn, ad_user_dn),
+            file=sys.stderr,
+        )
 
         # verify that the user exists on the 'ad-side'...
         self.assertTrue(self.adc.exists(ad_user_dn))
 
         # check the value from the mapping
-        self.assertEqual(self.adc.get_attribute(ad_user_dn, self.target_attribute), [test_string])
+        self.assertEqual(
+            self.adc.get_attribute(ad_user_dn, self.target_attribute), [test_string]
+        )
 
 
 if __name__ == "__main__":

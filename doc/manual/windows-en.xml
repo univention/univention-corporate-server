@@ -1285,7 +1285,6 @@ system:
 All containers which are ignored due to corresponding filters are
 exempted from synchronization as standard. This can be found in the
 <filename>/etc/univention/connector/ad/mapping</filename> configuration file
-<filename>/etc/univention/connector/ad/localmapping.py</filename> custom mapping file
 under the <emphasis>global_ignore_subtree</emphasis> setting.
 To except users from synchronization their user name can be added to the
 &ucsUCRV; <envar>connector/ad/mapping/user/ignorelist</envar>.
@@ -1427,16 +1426,16 @@ The complete table is:
 <para>
     It is also possible to modify and append custom mappings.
     For that to work a file has to be created named
-    <filename>/etc/univention/connector/ad/localmapping.py</filename>
-    and having the following function within:
+	<filename>/etc/univention/connector/ad/localmapping.py</filename>.
+	Within that file the following function should be implemented:
 
 <programlisting><![CDATA[
 def mapping_hook(ad_mapping):
-    pass
+    return ad_mapping
 ]]>
 </programlisting>
 
-    The contents of the <code>ad_mapping</code> variable can be modified to
+    The contents of the <command>ad_mapping</command> variable can be modified to
     influence the mapping.
 </para>
 </section>

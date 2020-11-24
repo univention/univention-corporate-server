@@ -33,13 +33,19 @@
 
 import os
 import sys
+import six
 
 import univention.connector.ad
 import univention.connector.ad.mapping
 import univention.connector.ad.password
 import univention.connector.ad.proxyAddresses as proxyAddresses
 
-from univention.connector.ad.mapping import ignore_filter_from_attr, ignore_filter_from_tmpl, baseConfig as configRegistry
+from univention.connector.ad.mapping import (
+	ignore_filter_from_attr,
+	ignore_filter_from_tmpl,
+	baseConfig as configRegistry,
+)
+from __future__ import print_function
 
 global_ignore_subtree = [
 	'cn=univention,@%@ldap/base@%@',
@@ -478,12 +484,12 @@ def apply_custom_mapping(ad_mapping):
 
 	mapping = None
 	try:
-		import six
 		if six.PY3:
 			import importlib.util
 
 			spec = importlib.util.spec_from_file_location(
-				'localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')
+				"localmapping",
+				os.path.join(os.path.dirname(__file__), "localmapping.py"),
 			)
 
 			mapping = importlib.util.module_from_spec(spec)
@@ -495,17 +501,19 @@ def apply_custom_mapping(ad_mapping):
 			import imp
 
 			mapping = imp.load_source(
-				'localmapping', os.path.join(os.path.dirname(__file__), 'localmapping.py')
+				"localmapping",
+				os.path.join(os.path.dirname(__file__), "localmapping.py"),
 			).mapping_hook
 
 	except IOError:
 		# ignore file not found and other file read errors (e.g. permissions)
 		pass
-	except AttributeError as e:
-		sys.stderr.write(
+	except AttributeError as exc:
+		print(
 			"Wrong function signature. Please implement a function"
-			"mapping_hook(ad_connector_mapping) in localmapping.py: %s\n" % e)
-		pass
+			"mapping_hook(ad_connector_mapping) in localmapping.py: %s" % (exc,),
+			file=sys.stderr
+		)
 
 	if mapping:
 		return mapping(ad_mapping)
@@ -514,6 +522,4 @@ def apply_custom_mapping(ad_mapping):
 
 
 ad_mapping = apply_custom_mapping(ad_mapping)
-
-
 # vim: filetype=python noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
