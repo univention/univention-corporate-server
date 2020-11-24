@@ -1,3 +1,10 @@
+univention-join (12.0.2-2) unstable; urgency=medium
+
+  * Bug #52437: Increase joinscript version and add --ucsversionstart
+    and --ucsversionend to the ucs_registerLDAPExtension call
+
+ -- Arvid <requate@univention.de>  Thu, 26 Nov 2020 16:24:27 +0100
+
 univention-join (12.0.2-1) unstable; urgency=medium
 
   * Bug #43687: use systemctl to start stop or restart univention-directory-notifier
