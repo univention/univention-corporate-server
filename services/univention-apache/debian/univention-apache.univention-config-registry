@@ -9,10 +9,7 @@ Variables: apache2/server-limit
 Variables: apache2/start-servers
 Variables: apache2/min-spare-servers
 Variables: apache2/max-spare-servers
-Variables: apache2/start-threads
-Variables: apache2/min-spare-threads
-Variables: apache2/max-spare-threads
-Variables: apache2/threads-per-child
+Variables: apache2/max-request-workers
 Variables: apache2/server-signature
 Variables: apache2/server-tokens
 Variables: apache2/server-admin
