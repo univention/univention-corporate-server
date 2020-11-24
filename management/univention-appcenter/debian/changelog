@@ -1,3 +1,11 @@
+univention-appcenter (8.0.11-137) unstable; urgency=medium
+
+  * Bug #52429: As preparation to the UCS-5 release the UDM extensions,
+    join hooks and LDAP ACL templates that contain Python code
+    need to be marked as Python2 or Python3 compatible.
+
+ -- Arvid <requate@univention.de>  Tue, 24 Nov 2020 19:48:13 +0100
+
 univention-appcenter (8.0.11-136) unstable; urgency=low
 
   * Bug #51790: Refactored hook logic a bit
