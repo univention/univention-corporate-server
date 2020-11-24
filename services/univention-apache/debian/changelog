@@ -1,3 +1,9 @@
+univention-apache (11.0.1-23) unstable; urgency=medium
+
+  * Bug #52320: fix UCR definition
+
+ -- Florian Best <best@univention.de>  Tue, 24 Nov 2020 11:21:14 +0100
+
 univention-apache (11.0.1-22) unstable; urgency=medium
 
   * Bug #52320: remove all thread related configuration options as the modules
