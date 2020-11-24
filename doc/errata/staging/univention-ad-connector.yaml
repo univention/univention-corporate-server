@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-ad-connector
-fix: 13.0.0-58A~4.4.6.202011190952
+fix: 13.0.0-59A~4.4.6.202011241449
 desc: |
  This update addresses the following issue(s):
  * The group membership synchronization after moving
