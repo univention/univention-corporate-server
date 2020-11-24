@@ -739,7 +739,7 @@ class UCSHttpServer(_UCSServer):
             if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED:  # 407
                 raise ProxyError(uri, 'credentials not accepted')
             if res.code in (httplib.BAD_GATEWAY, httplib.GATEWAY_TIMEOUT):  # 502 504
-                self.failed_hosts.add(req.get_host())
+                self.failed_hosts.add(get_host())
                 raise ConfigurationError(uri, 'host is unresolvable')
             raise DownloadError(uri, res.code)
         except urllib_error.URLError as e:
@@ -761,8 +761,9 @@ class UCSHttpServer(_UCSServer):
                         reason = 'port is blocked'
                     elif e.reason.args[0] == errno.ECONNREFUSED:  # 111
                         reason = 'port is closed'
-            if '/' == req.get_selector()[0]:  # direct
-                self.failed_hosts.add(req.get_host())
+            selector = req.get_selector() if six.PY2 else req.selector
+            if selector.startswith('/'):  # direct
+                self.failed_hosts.add(get_host())
                 raise ConfigurationError(uri, reason)
             else:  # proxy
                 raise ProxyError(uri, reason)
