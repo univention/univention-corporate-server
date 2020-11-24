@@ -34,7 +34,14 @@ import codecs
 from subprocess import Popen, PIPE
 
 
-def policy_result(dn, binddn="", bindpw=""):
+class PolicyResultFailed(Exception):
+
+	def __init__(self, message, returncode):
+		super(PolicyResultFailed, self).__init__(message)
+		self.returncode = returncode
+
+
+def policy_result(dn, binddn="", bindpw="", encoding='UTF-8'):
 	"""
 	Return a tuple of hash-lists, mapping attributes to a list of values and
 	mapping attributes to the matching Policy-DN.
@@ -56,14 +63,13 @@ def policy_result(dn, binddn="", bindpw=""):
 	p = Popen(['univention-policy-result', '-D', binddn, '-y', bindpw, dn], stdout=PIPE, stderr=PIPE)
 	stdout, stderr = p.communicate()
 	if p.returncode != 0:
-		raise Exception("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')})
+		raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')}, returncode=p.returncode)
 
 	results = {}  # Attribute -> [Values...]
 	policies = {}  # Attribute -> Policy-DN
 	current_attribute = None
 	policy = None
-	# TODO: in theory UTF-8 is incorrect here, as every value depends on the schema defined in LDAP. but who cares in the real world ;-)
-	for line in stdout.decode('utf-8', 'replace').splitlines():
+	for line in stdout.decode(encoding, 'replace').splitlines():
 		if line.startswith('Attribute: '):
 			current_attribute = line[len('Attribute: '):]
 			if current_attribute.startswith('univentionRegistry;entry-hex-'):
