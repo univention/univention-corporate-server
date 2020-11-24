@@ -10,6 +10,7 @@
 ## join: true
 ## exposure: dangerous
 
+import os
 import subprocess
 import time
 
@@ -18,7 +19,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from univention.testing import selenium
-import traceback
 
 from univention.admin import localization
 
@@ -32,7 +32,6 @@ _ = translator.translate
 class UMCTester:
 
 	def __init__(self, sel, hostname, domainname):
-
 		self.hostname = hostname
 		self.domainname = domainname
 		self.fqdn = "%s.%s" % (hostname, domainname)
@@ -40,7 +39,10 @@ class UMCTester:
 		self.selenium = sel
 		self.browser = self.selenium.driver
 
-	def test_umc(self, ucr, udm, max_fd):
+	def test_umc(self, ucr, udm):
+		self.systemd_restart("univention-management-console-web-server")
+		time.sleep(3)
+		max_fd = self.count_file_descriptors(self.get_umc_pid()) + 9
 		handler_set(['umc/http/max-open-file-descriptors=%s' % max_fd])
 		self.systemd_restart("univention-management-console-web-server")
 		time.sleep(3)
@@ -51,7 +53,10 @@ class UMCTester:
 			self.systemd_restart("univention-management-console-web-server")
 
 	def count_file_descriptors(self, umc_pid):
-		return int(subprocess.check_output("ls -l /proc/" + str(umc_pid) + "/fd | wc -l", shell=True))
+		return len(os.listdir('/proc/%s/fd' % (umc_pid,)))
+
+	def get_umc_pid(self):
+		return int(subprocess.check_output("pidof -x univention-management-console-web-server".split(" ")))
 
 	@classmethod
 	def systemd_restart(cls, service):
@@ -64,7 +69,6 @@ class UMCTester:
 
 	def umc_logon(self, username, pw):
 		try:
-
 			self.browser.get("http://" + self.fqdn + "/univention/portal/")
 
 			WebDriverWait(self.browser, 30).until(
@@ -89,8 +93,9 @@ class UMCTester:
 			print("UMC Logon with {} done".format(username))
 
 	def test_umc_logon(self, udm, max_fd):
-		umc_pid = int(subprocess.check_output("pidof -x univention-management-console-web-server".split(" ")))
+		umc_pid = self.get_umc_pid()
 		print("\n### Increase amount of file_descriptors by logging in ###")
+		print('Max FDs=%s; Open FDs=%s' % (max_fd, self.count_file_descriptors(umc_pid)))
 
 		username = ""
 		login_password = "univention"
@@ -101,8 +106,7 @@ class UMCTester:
 				self.umc_logon(username, login_password)
 			except Exception:
 				if self.count_file_descriptors(umc_pid) < max_fd - 2:
-					traceback.print_exc()
-					assert False, "Got an Exception while logging in, without exceeding the number of file descriptors"
+					raise
 				else:
 					return
 			finally:
@@ -115,8 +119,7 @@ class UMCTester:
 
 if __name__ == "__main__":
 	with selenium.UMCSeleniumTest() as s, ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
-		max_fd = 21
 		umc_tester = UMCTester(s, ucr.get("hostname"), ucr.get("domainname"))
-		umc_tester.test_umc(ucr, udm, max_fd)
+		umc_tester.test_umc(ucr, udm)
 
 # vim: ft=python
