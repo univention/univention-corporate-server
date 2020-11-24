@@ -1,3 +1,10 @@
+ucs-test (9.0.5-32) unstable; urgency=medium
+
+  * Bug #52402: 80_docker/63_app_register_with_old_app_installed
+    cleanup old app
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Nov 2020 12:58:55 +0100
+
 ucs-test (9.0.5-31) unstable; urgency=medium
 
   * Bug #52402: use docker-test.software... images in docker tests
