@@ -33,6 +33,7 @@ ALLOWED_DIFFERENCES = [
 	'/etc/univention/templates/files/etc/security/packetfilter.d/10_univention-firewall_start.sh',
 	'/etc/univention/templates/files/etc/dhcp/dhclient.conf',  # different IP address received, different date
 	'/etc/univention/templates/files/var/lib/dovecot/sieve/default.sieve',  # different date if not commited in the same second
+	'/etc/univention/templates/files/usr/share/univention-management-console/i18n/de/apps.mo',  # po-lib adds date
 ] + glob.glob('/etc/univention/templates/files/etc/logrotate.d/*') + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
 
 
@@ -52,7 +53,7 @@ def python_versions():
 
 def pytest_generate_tests(metafunc):
 	tempfiles = [os.path.join(path, filename) for path, dirs, files in os.walk('/etc/univention/templates/files/') for filename in files]
-	tempfiles = [pytest.param(path, marks=pytest.mark.xfail) if path in ALLOWED_DIFFERENCES else path for path in tempfiles if EXECUTE_TOKEN.search(open(path).read())]
+	tempfiles = [pytest.param(path, marks=pytest.mark.xfail) if path in ALLOWED_DIFFERENCES else path for path in tempfiles if EXECUTE_TOKEN.search(open(path, 'rb').read())]
 	metafunc.parametrize('ucr_config_file', tempfiles)
 
 

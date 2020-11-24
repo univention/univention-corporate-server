@@ -26,13 +26,13 @@ import univention.config_registry.handler as ucrh
 	("1@%@baz@%@2@%@baz@%@3", "1NORMAL2NORMAL3"),
 ])
 def test_filter_var(tmpl, out, ucrf):
-	assert ucrh.run_filter(tmpl, ucrf) == out
+	assert ucrh.run_filter(tmpl, ucrf) == out.encode('ASCII')
 
 
 def test_filter_script(mocker, ucrf):
 	Popen = mocker.patch("subprocess.Popen")
-	Popen.return_value.communicate.return_value = ("42", "")
-	assert ucrh.run_filter("@!@print(42)@!@", ucrf) == "42"
+	Popen.return_value.communicate.return_value = (b"42", b"")
+	assert ucrh.run_filter("@!@print(42)@!@", ucrf) == b"42"
 	Popen.assert_called_once()
 	Popen.return_value.communicate.assert_called_once()
 
@@ -43,7 +43,7 @@ def test_filter_script(mocker, ucrf):
 	("@%@UCRWARNING_ASCII=;@%@", ";"),
 ])
 def test_filter_warning(tmpl, line, ucrf):
-	assert line in ucrh.run_filter(tmpl, ucrf, {"01head", "02tail"})
+	assert line in ucrh.run_filter(tmpl, ucrf, {"01head", "02tail"}).decode('UTF-8')
 
 
 def test_run_script(mocker):

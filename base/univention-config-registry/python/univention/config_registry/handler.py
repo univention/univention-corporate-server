@@ -62,7 +62,7 @@ __all__ = ['ConfigHandlers']
 
 VARIABLE_PATTERN = re.compile('@%@([^@]+)@%@')
 VARIABLE_TOKEN = re.compile('@%@')
-EXECUTE_TOKEN = re.compile('@!@')
+EXECUTE_TOKEN = re.compile(b'@!@')
 WARNING_PATTERN = re.compile('(UCRWARNING|BCWARNING|UCRWARNING_ASCII)=(.+)')
 
 INFO_DIR = '/etc/univention/templates/info'
@@ -86,7 +86,7 @@ if six.PY3:
 
 
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
-	# type: (str, _UCR, Iterable[str], _OPT) -> str
+	# type: (str, _UCR, Iterable[str], _OPT) -> bytes
 	"""
 	Process a template file: substitute variables.
 
@@ -125,6 +125,9 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 		except StopIteration:
 			break
 
+	if six.PY3:
+		template = template.encode('UTF-8')
+
 	if opts.get('disallow-execution', False):
 		return template
 
@@ -137,8 +140,8 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			proc = subprocess.Popen(
 				(sys.executable,),
 				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				close_fds=True, universal_newlines=six.PY3)
-			value = proc.communicate('''\
+				close_fds=True)
+			value = proc.communicate(b'''\
 # -*- coding: utf-8 -*-
 import univention.config_registry
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -426,7 +429,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		try:
 			filter_opts = {}  # type: Dict[str, Any]
 
-			with open(tmp_to_file, 'w', **encoding) as to_fp:
+			with open(tmp_to_file, 'wb') as to_fp:
 				self._set_perm(stat, tmp_to_file)
 
 				for from_file in sorted(self.from_files, key=os.path.basename):
@@ -516,7 +519,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 		try:
 			filter_opts = {}  # type: Dict[str, Any]
 
-			with open(self.from_file, 'r', **encoding) as from_fp, open(tmp_to_file, 'w', **encoding) as to_fp:
+			with open(self.from_file, 'r', **encoding) as from_fp, open(tmp_to_file, 'wb') as to_fp:
 				self._set_perm(stat, tmp_to_file)
 
 				to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))

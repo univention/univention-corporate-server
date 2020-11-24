@@ -692,9 +692,12 @@ class _DefaultConfigRegistry(_ConfigRegistry):
 	def __getitem__(self, key):  # type: ignore
 		value = super(_DefaultConfigRegistry, self).__getitem__(key)
 		try:
-			return run_filter(value, self.parent, opts={'disallow-execution': True})
+			value = run_filter(value, self.parent, opts={'disallow-execution': True})
 		except RuntimeError:  # maximum recursion depth exceeded
-			return ''
+			value = b''
+		if six.PY2:
+			return value
+		return value.decode('UTF-8')
 
 	def get(self, key, default=None):
 		try:

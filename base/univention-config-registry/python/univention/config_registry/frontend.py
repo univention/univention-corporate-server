@@ -340,7 +340,8 @@ def handler_filter(args, opts=dict()):
 	"""Run filter on STDIN to STDOUT."""
 	ucr = ConfigRegistry()
 	ucr.load()
-	sys.stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
+	stdout = sys.stdout if six.PY2 else sys.stdout.buffer
+	stdout.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
 def handler_search(args, opts=dict()):
