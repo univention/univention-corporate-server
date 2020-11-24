@@ -92,7 +92,7 @@ def main(filenames, ignore_exceptions={}):
 		print(traceback, end='')
 		for exc in exceptions:
 			print(exc.strip())
-		print('')
+		print('\n')
 	return not found
 
 
@@ -109,7 +109,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
 	('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
 	('^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax', ['_create']),
-	(re.escape("IOError: [Errno 2] No such file or directory: '/etc/machine.secret'"), ['getMachineConnection', re.escape('<stdin>')]),  # Bug #51834
+	(r"^(FileNotFoundError|IOError): \[Errno 2\] No such file or directory: '/etc/machine.secret'", ['getMachineConnection', re.escape('<stdin>')]),  # Bug #51834
 	(r'''^(cherrypy\._cperror\.)?NotFound: \(404, "The path '/(login|portal)/.*''', None),
 	(r'(lockfile\.)?LockTimeout\: Timeout waiting to acquire lock for \/var\/run\/umc-server\.pid', None),
 	("^FileExistsError:.*'/var/run/umc-server.pid'", None),
@@ -162,7 +162,7 @@ COMMON_EXCEPTIONS = dict((re.compile(x), [re.compile(z) if isinstance(z, str) el
 	(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups']),  # Bug #48943
 	("^subprocess.CalledProcessError: Command.*univention-directory-manager.*settings/portal_entry.*(create|remove).*univentionblog.*", [r'license_uuid\.py']),  # 45787
 	("^KeyError: 'gidNumber'", ['_ldap_pre_remove']),  # Bug #51669
-	(r'^IOError: \[Errno 32\] Broken pipe', ['process_output']),  # Bug #32532
+	(r'^(BrokenPipeError|IOError): \[Errno 32\] Broken pipe', ['process_output']),  # Bug #32532
 	(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete']),  # Bug #43722 Bug #47343
 	('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
 	(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket", None),
