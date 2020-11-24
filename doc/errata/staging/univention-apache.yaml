@@ -3,7 +3,7 @@ release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
 src: univention-apache
-fix: 11.0.1-22A~4.4.0.202011181655
+fix: 11.0.1-23A~4.4.0.202011241122
 desc: |
  This update addresses the following issue:
  * Various Apache configurations may now be configured via UCR variables.
