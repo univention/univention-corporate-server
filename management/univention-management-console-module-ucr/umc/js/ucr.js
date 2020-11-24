@@ -55,9 +55,74 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/widgets/Tooltip",
+	"umc/widgets/Tree",
 	"umc/i18n!umc/modules/ucr",
 	"xstyle/css!./ucr.css"
-], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
+], function(declare, lang, kernel, array, aspect, has, entities, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, SearchBox, TextBox, Text, HiddenInput, ComboBox, Tooltip, Tree, _) {
+	var TreeModel = declare('umc.modules.ucr.TreeModel', null, {
+		root: null,
+
+		constructor: function(args) {
+			lang.mixin(this, args);
+		},
+
+		getRoot: function(onItem) {
+//			this.moduleStore.query()
+			this.root = { id: '/', label: _('All UCR variables'), '$childs$': true};
+			onItem(this.root);
+		},
+
+		getLabel: function(item) {
+			return item.label;
+		},
+
+		mayHaveChildren: function(item) {
+			return item.$childs$;
+		},
+
+		getIdentity: function(item) {
+			return item.id;
+		},
+
+		getChildren: function(parentItem, onComplete) {
+			var pre_results = {};
+			var all_results = array.map(this.grid.getAllItems(), lang.hitch(this, 'transformItem'));
+			array.forEach(all_results, function(item) {
+				pre_results[item.id] = item;
+				var x = item.id.split('/');
+				while (x.length) {
+					x.pop(-1);
+					var id = x.join('/') + '/';
+					if (!pre_results[id]) {
+						pre_results[id] = {
+							id: id,
+							label: id.substring(1),
+							'$childs$': true
+						}
+					}
+				}
+
+			});
+			results = []
+			tools.forIn(pre_results, function(key, val) {
+				results.push(val);
+			});
+			results = array.filter(results, function(item) {
+				return item.id.indexOf(parentItem.id) === 0 && item.id.split('/').length == parentItem.id.split('/').length + 1 && item.id.length - 1 == item.id.lastIndexOf('/');
+			});
+//			this.moduleStore.query().forEach(lang.hitch(this, 'transformItem'));
+			results.sort(tools.cmpObjects('label'));
+			onComplete(results);
+		},
+
+		transformItem: function(item) {
+			return {
+				id: '/' + item.key,
+				label: item.key,
+				'$childs$': false
+			};
+		}
+	});
 
 	var _DetailDialog = declare([Dialog, StandbyMixin], {
 		_form: null,
@@ -232,7 +297,7 @@ define([
 
 			this._page = new Page({
 				helpText: _('The Univention Configuration Registry (UCR) is the local database for the configuration of UCS systems to access and edit system-wide properties in a unified manner. Caution: Changing UCR variables directly results in the change of the system configuration. Misconfiguration may cause an unusable system!'),
-				fullWidth: true
+				//fullWidth: true
 			});
 			this.addChild(this._page);
 
@@ -344,14 +409,27 @@ define([
 				'class': 'umcTextBoxOnBody'
 			}];
 
+			var model = new TreeModel({
+				moduleStore: this.moduleStore,
+				grid: this._grid
+			});
+
+			this._tree = new Tree({
+				model: model,
+				persist: false,
+				region: 'nav'
+			});
+
 			this._searchForm = new SearchForm({
-				region: 'nav',
+				region: 'main',
 				hideSubmitButton: true,
 				widgets: widgets,
 				layout: [[ 'category', 'key', 'pattern' ]]
 			});
 			this._searchForm.on('search', lang.hitch(this._grid, 'filter'));
 
+			this._page.addChild(this._tree);
+//			this._searchForm.addChild(this._tree);
 			this._page.addChild(this._searchForm);
 			this._page.addChild(this._grid);
 			this._page.startup();
