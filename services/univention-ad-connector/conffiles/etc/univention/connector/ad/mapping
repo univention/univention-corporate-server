@@ -30,6 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+from univention.connector.ad.mapping import (
+	ignore_filter_from_attr,
+	ignore_filter_from_tmpl,
+	baseConfig as configRegistry,
+)
 
 import os
 import sys
@@ -39,13 +45,6 @@ import univention.connector.ad
 import univention.connector.ad.mapping
 import univention.connector.ad.password
 import univention.connector.ad.proxyAddresses as proxyAddresses
-
-from univention.connector.ad.mapping import (
-	ignore_filter_from_attr,
-	ignore_filter_from_tmpl,
-	baseConfig as configRegistry,
-)
-from __future__ import print_function
 
 global_ignore_subtree = [
 	'cn=univention,@%@ldap/base@%@',
