@@ -1,8 +1,8 @@
-univention-ad-connector (13.0.0-59) unstable; urgency=medium
+univention-ad-connector (13.0.0-60) unstable; urgency=medium
 
   * Bug #49981: Made mappings user configurable
 
- -- Max Christian Pohle <pohle@univention.de>  Tue, 24 Nov 2020 15:10:00 +0100
+ -- Max Christian Pohle <pohle@univention.de>  Tue, 24 Nov 2020 15:38:05 +0100
 
 univention-ad-connector (13.0.0-56) unstable; urgency=medium
 
