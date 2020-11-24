@@ -1,4 +1,4 @@
-univention-management-console (11.0.5-22) unstable; urgency=medium
+univention-management-console (11.0.5-23) unstable; urgency=medium
 
   * Bug #52297: Delay unnecessary UMC authentication after Single Sign
     on

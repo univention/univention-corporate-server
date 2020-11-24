@@ -88,12 +88,12 @@ CONFIG = {
 	"debug": ucr.is_true('umc/saml/debug', False),
 	"contact_person": [
 		{
-			"givenname": ucr.get('umc/saml/contact_person/%s/givenname' % (type_,), ''),
-			"surname": ucr.get('umc/saml/contact_person/%s/surname' % (type_,), ''),
-			"company": ucr.get('umc/saml/contact_person/%s/company' % (type_,), ''),
-			"mail": [x.strip() for x in ucr.get('umc/saml/contact_person/%s/mail' % (type_,), '').split(',') if x.strip()],
+			"givenname": ucr.get('umc/saml/contact-person/%s/givenname' % (type_,), ''),
+			"surname": ucr.get('umc/saml/contact-person/%s/surname' % (type_,), ''),
+			"company": ucr.get('umc/saml/contact-person/%s/company' % (type_,), ''),
+			"mail": [x.strip() for x in ucr.get('umc/saml/contact-person/%s/mail' % (type_,), '').split(',') if x.strip()],
 			"type": type_,
-		} for type_ in ('technical', 'administrative') if ucr.get('umc/saml/contact_person/%s/mail' % (type_,))
+		} for type_ in ('technical', 'administrative') if ucr.get('umc/saml/contact-person/%s/mail' % (type_,))
 	],
 	"organization": {
 		"name": [
