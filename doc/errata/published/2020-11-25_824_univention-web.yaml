@@ -11,3 +11,5 @@ desc: |
  * It is now possible to not download the meta.json from UMC, but the
    inexpensive one from Apache directly.
 bug: [52321, 52303]
+erratum: 824
+announced: 2020-11-25
