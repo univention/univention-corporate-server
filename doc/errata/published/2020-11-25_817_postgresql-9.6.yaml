@@ -25,3 +25,5 @@ cve:
  - CVE-2020-25696
 ignore:
  - version.maintenance
+erratum: 817
+announced: 2020-11-25
