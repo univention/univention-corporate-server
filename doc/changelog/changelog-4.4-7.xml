@@ -19,8 +19,6 @@
 
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
-			<itemizedlist>
-			</itemizedlist>
 
 			<section id="changelog:basis:ucr:template">
 				<title>Changes to templates and modules</title>
