@@ -20,36 +20,15 @@
  * 		.dijitSpinnerDisabled .* - for background color|image
  */
 
-@import "../variables"
+.dijitSpinner
+	.dijitSpinnerButtonContainer
+		height: 100%
+		width: 1.5rem
 
-.umc .dijitSpinnerButtonContainer
-	height: 100%
-	width: $width-icon + material-grid(1)
-	box-sizing: content-box
-	border-color: inherit
-
-/* button */
-.umc .dijitSpinner .dijitArrowButton
-	border: none
-
-/* up & down button icons */
-.umc .dijitSpinner
-	.dijitUpArrowButton .dijitArrowButtonInner
-		icon-image(-180, -20, "../")
-	.dijitDownArrowButton .dijitArrowButtonInner
-		icon-image(-160, -20, "../")
-
-/* hovored state */
-.umc .dijitSpinner
-	.dijitUpArrowButtonHover,
-	.dijitDownArrowButtonHover
-		background-color: $button-hovered-background-color
-
-/* active state */
-.umc .dijitSpinner
-	.dijitUpArrowButtonActive,
-	.dijitDownArrowButtonActive
-		background-color: $button-pressed-background-color
-
-		.dijitArrowButtonInner
-			opacity: $material-text-disabled-alpha
+	.dijitUpArrowButton,
+	.dijitDownArrowButton
+		&Hover,
+		&Focused
+			--bgc-state: var(--button-bgc-overlay-hover)
+		&Active
+			--bgc-state: var(--button-bgc-overlay-active)
