@@ -11,3 +11,5 @@ desc: |
    `apache2/min-spare-servers`
    `apache2/max-spare-servers`
 bug: [52320]
+erratum: 819
+announced: 2020-11-25
