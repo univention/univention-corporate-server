@@ -1,3 +1,9 @@
+univention-lib (8.0.1-41) unstable; urgency=medium
+
+  * Bug #52433: Add --name option to ucs_registerLDAPExtension
+
+ -- Arvid <requate@univention.de>  Wed, 25 Nov 2020 18:27:22 +0100
+
 univention-lib (8.0.1-40) unstable; urgency=medium
 
   * Bug #51765: fixing setting of max_age ucr variable

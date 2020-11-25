@@ -250,12 +250,14 @@ class UniventionLDAPExtension(six.with_metaclass(ABCMeta)):
 		self.options = options
 		self.udm_passthrough_options = udm_passthrough_options
 		self.target_filename = target_filename or os.path.basename(filename)
+		self.objectname = options.objectname
 
-		target_filename_parts = os.path.splitext(self.target_filename)
-		if target_filename_parts[1] == self.filesuffix and self.filesuffix:
-			self.objectname = target_filename_parts[0]
-		else:
-			self.objectname = self.target_filename
+		if not self.objectname:
+			target_filename_parts = os.path.splitext(self.target_filename)
+			if target_filename_parts[1] == self.filesuffix and self.filesuffix:
+				self.objectname = target_filename_parts[0]
+			else:
+				self.objectname = self.target_filename
 
 		try:
 			with open(self.filename, 'rb') as f:
@@ -1196,6 +1198,10 @@ def ucs_registerLDAPExtension():
 		"--ucsversionend", dest="ucsversionend",
 		action="store", type="ucs_version",
 		help="End activation with UCS version", metavar="<UCS Version>")
+
+	parser.add_option(
+		"--name", dest="objectname",
+		help="Default LDAP object name")
 
 	data_module_options = OptionGroup(parser, "Data object specific options")
 	data_module_options.add_option(
