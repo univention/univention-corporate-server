@@ -1,3 +1,10 @@
+univention-portal (3.1.0-41) unstable; urgency=medium
+
+  * Bug #52405: Fix listner filter
+  * Bug #52430: operationset for portals/* udm objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 25 Nov 2020 10:12:30 +0100
+
 univention-portal (3.1.0-40) unstable; urgency=medium
 
   * Bug #52314: do not disable session polling during portal usage
