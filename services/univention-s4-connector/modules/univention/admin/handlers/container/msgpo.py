@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import six
+
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.handlers
@@ -183,5 +185,5 @@ except AttributeError:  # FIXME: remove module into UDM-core or drop backwards c
 
 		return [
 			object(co, lo, None, dn, attributes=attrs)
-			for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit)
+			for dn, attrs in lo.search(six.string_type(filter), base, scope, [], unique, required, timeout, sizelimit)
 		]
