@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-management-console
 fix: 11.0.5-23A~4.4.0.202011241737
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * A memory optimization for SAML based sessions has been done in the
    UMC web server.
  * The UMC web server now sets the HTTP reason phrase for 503 Service
@@ -20,10 +20,10 @@ desc: |
    causing an error, handling of incoming connections in the UMC server has
    been improved. This problem previously only occurred in the new
    multi-process mode of the UMC server.
- * Fetching /univention/get/meta involves a call to UMC. This is not always
+ * Fetching `/univention/get/meta` involves a call to UMC. This is not always
    necessary. Now it is possible to fetch a stripped down static version
    instead. This patch moves the meta file into a public folder.
  * The SAML assertion lifetime is now configurable per service provider.
- * The SAML authentication at the UMC-Server has been deferred to the first
+ * The SAML authentication at the UMC server has been deferred to the first
    use of an UMC module.
 bug: [52338, 52318, 52321, 52274, 52316, 52303, 52323, 52297]

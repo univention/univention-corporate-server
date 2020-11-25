@@ -5,14 +5,14 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-portal
 fix: 3.0.2-14A~4.4.0.202011181432
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The evaluation whether or not a portal entry is visible now got a shortcut
    if the user is not logged in. This can improve the performance in certain
    situations considerably.
  * The groups that are considered as Admins can be configured via the new UCR
-   variable portal/admin_groups. Only users of these groups do one additional
-   check whether the edit mode is available. This should improve performance
-   if many non-admin users log in.
+   variable `portal/admin_groups'. Only users of these groups do one
+   additional check whether the edit mode is available. This should improve
+   performance if many non-admin users log in.
  * The portal does not download the personalized meta.json, which would
    involve UMC. The portal does not need the additional information and may
    save one expensive request.

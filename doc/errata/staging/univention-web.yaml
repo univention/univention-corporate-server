@@ -5,7 +5,7 @@ scope: ucs_4.4-0-errata4.4-6
 src: univention-web
 fix: 3.0.5-52A~4.4.0.202011172251
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issues:
  * The interval for polling of session infos has been changed from every
    30 seconds to the time the session will end to reduce network workload.
  * It is now possible to not download the meta.json from UMC, but the
