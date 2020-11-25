@@ -310,7 +310,7 @@ define([
 
 			// validate the form values
 			tools.umcpCommand('udm/validate', {
-				objectType: 'settings/portal_entry',
+				objectType: 'portals/entry',
 				properties: alteredValuesNonEmpty
 			}).then(lang.hitch(this, function(response) {
 				// parse response and mark widgets with invalid values
