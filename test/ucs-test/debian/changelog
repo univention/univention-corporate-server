@@ -1,3 +1,9 @@
+ucs-test (9.0.5-35) unstable; urgency=medium
+
+  * Bug #52433: Test ucs_registerLDAPExtension --name option
+
+ -- Arvid <requate@univention.de>  Wed, 25 Nov 2020 18:49:50 +0100
+
 ucs-test (9.0.5-34) unstable; urgency=low
 
   * Bug #45205: readd tests for mail forwarding settings
