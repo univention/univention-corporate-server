@@ -1,0 +1,83 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: linux
+fix: 4.9.240-2
+desc: |
+ This update addresses the following issues:
+ * Out of bounds read due to missing bounds check in F2FS driver leads to
+   local information disclosure (CVE-2019-9445)
+ * Memory leaks in drivers/net/wireless/ath/ath9k/htc_hst.c in the Linux
+   kernel (DOS) (CVE-2019-19073)
+ * A memory leak in the ath9k management function in allows local DoS
+   (CVE-2019-19074)
+ * Mounting a crafted btrfs filesystem image, performing some operations, and
+   then making a syncfs system call can lead to a use-after-free in
+   try_merge_free_space in fs/btrfs/free-space-cache.c (CVE-2019-19448)
+ * net: bluetooth: type confusion while processing AMP packets
+   (CVE-2020-12351)
+ * net: bluetooth: information leak when processing certain AMP packets
+   (CVE-2020-12352)
+ * Sync of excessive duration via an XFS v5 image with crafted metadata
+   (CVE-2020-12655)
+ * Deadlock if a coalescing operation fails in btree_gc_coalesce function in
+   drivers/md/bcache/btree.c (CVE-2020-12771)
+ * vfio: access to disabled MMIO space of some devices may lead to DoS
+   scenario (CVE-2020-12888)
+ * Memory corruption in Voice over IP nf_conntrack_h323 module
+   (CVE-2020-14305)
+ * Buffer uses out of index in ext3/4 filesystem (CVE-2020-14314)
+ * kernel: buffer over write in vgacon_scroll (CVE-2020-14331)
+ * Use After Free vulnerability in cgroup BPF component (CVE-2020-14356)
+ * Memory corruption in net/packet/af_packet.c leads to elevation of privilege
+   (CVE-2020-14386)
+ * Out-of-bounds write in fbcon_redraw_softback (CVE-2020-14390)
+ * Memory leak in usbtest_disconnect function in drivers/usb/misc/usbtest.c
+   (CVE-2020-15393)
+ * Information exposure in drivers/char/random.c and kernel/time/timer.c
+   (CVE-2020-16166)
+ * net: bluetooth: heap buffer overflow when processing extended advertising
+   report events (CVE-2020-24490)
+ * Local buffer overflow in ctnetlink_parse_tuple_filter in
+   net/netfilter/nf_conntrack_netlink.c (CVE-2020-25211)
+ * TOCTOU mismatch in the NFS client code (CVE-2020-25212)
+ * Use-after-free because skcd->no_refcnt was not considered during the
+   backport of CVE-2020-14356 (CVE-2020-25220)
+ * Incomplete permission checking for access to rbd devices (CVE-2020-25284)
+ * Race condition between hugetlb sysctl handlers in mm/hugetlb.c
+   (CVE-2020-25285)
+ * Soft-lockups in iov_iter_copy_from_user_atomic() could result in DoS
+   (CVE-2020-25641)
+ * Improper input validation in ppp_cp_parse_cr function leads to memory
+   corruption and read overflow (CVE-2020-25643)
+ * Missing CAP_NET_RAW check in NFC socket creation in net/nfc/rawsock.c
+   allows local attackers to create raw sockets (CVE-2020-26088)
+bug: [52287]
+cve:
+- CVE-2019-9445
+- CVE-2019-19073
+- CVE-2019-19074
+- CVE-2019-19448
+- CVE-2020-12351
+- CVE-2020-12352
+- CVE-2020-12655
+- CVE-2020-12771
+- CVE-2020-12888
+- CVE-2020-14305
+- CVE-2020-14314
+- CVE-2020-14331
+- CVE-2020-14356
+- CVE-2020-14386
+- CVE-2020-14390
+- CVE-2020-15393
+- CVE-2020-16166
+- CVE-2020-24490
+- CVE-2020-25211
+- CVE-2020-25212
+- CVE-2020-25220
+- CVE-2020-25284
+- CVE-2020-25285
+- CVE-2020-25641
+- CVE-2020-25643
+- CVE-2020-26088
