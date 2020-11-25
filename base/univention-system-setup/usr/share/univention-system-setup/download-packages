@@ -62,12 +62,9 @@ declare -a PACKAGES=(
 	univention-samba4
 	univention-s4-connector
 	univention-squid
-	univention-welcome-screen
 	univention-self-service
 	univention-self-service-passwordreset-umc
 	univention-self-service-master # TODO
-	firefox-esr
-	firefox-esr-l10n-de
 )
 CACHE='/var/cache/univention-system-setup/packages'
 APT='/etc/apt/sources.list.d/05univention-system-setup.list'

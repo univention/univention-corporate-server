@@ -207,10 +207,13 @@ Recommends:
  man-db,
  nmap,
  univention-network-common,
+ univention-welcome-screen,
  unzip,
  vim,
  wget,
  zip,
+ memtest86+,
+ lvm2,
 Description: UCS system role common dependencies and files
  This package contains common files used by all system roles.
  .
