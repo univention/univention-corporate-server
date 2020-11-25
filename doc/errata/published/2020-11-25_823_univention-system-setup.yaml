@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issues:
  * The name of a specific meta.json file was changed. This change is internal.
 bug: [52303]
+erratum: 823
+announced: 2020-11-25
