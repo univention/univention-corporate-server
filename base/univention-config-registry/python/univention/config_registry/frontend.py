@@ -140,13 +140,14 @@ def handler_set(args, opts=dict(), quiet=False):
 			if sep_set == -1 and sep_def == -1:
 				print("W: Missing value for config registry variable '%s'" % (arg,), file=sys.stderr)
 				continue
+
+			if sep_set > 0 and sep_def == -1:
+				sep = sep_set
+			elif sep_def > 0 and sep_set == -1:
+				sep = sep_def
 			else:
-				if sep_set > 0 and sep_def == -1:
-					sep = sep_set
-				elif sep_def > 0 and sep_set == -1:
-					sep = sep_def
-				else:
-					sep = min(sep_set, sep_def)
+				sep = min(sep_set, sep_def)
+
 			key = arg[0:sep]
 			value = arg[sep + 1:]
 			key_exists = ucr.has_key(key, write_registry_only=True)  # noqa W601
