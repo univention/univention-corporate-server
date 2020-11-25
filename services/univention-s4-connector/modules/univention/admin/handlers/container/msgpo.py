@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import six
-
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.handlers
@@ -42,7 +40,7 @@ _ = translation.translate
 
 module = 'container/msgpo'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
-childs = 1
+childs = True
 short_description = _('Container: MS Group Policy')
 long_description = ''
 options = {
@@ -161,29 +159,5 @@ class object(univention.admin.handlers.simpleLdap):
 			self.move(self._ldap_dn())
 
 
-try:
-	identify = object.identify
-except AttributeError:  # FIXME: remove module into UDM-core or drop backwards compatibility
-	# UCS < 4.4-0-errata102
-	def identify(dn, attr, canonical=False):
-		return b'msGPOContainer' in attr.get('objectClass', [])
-
-try:
-	lookup = object.lookup
-except AttributeError:  # FIXME: remove module into UDM-core or drop backwards compatibility
-	# UCS < 4.2-2 errata206
-	def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-		import univention.admin.filter
-		filter = univention.admin.filter.conjunction('&', [
-			univention.admin.filter.expression('objectClass', 'msGPOContainer'),
-		])
-
-		if filter_s:
-			filter_p = univention.admin.filter.parse(filter_s)
-			univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-			filter.expressions.append(filter_p)
-
-		return [
-			object(co, lo, None, dn, attributes=attrs)
-			for dn, attrs in lo.search(six.string_type(filter), base, scope, [], unique, required, timeout, sizelimit)
-		]
+identify = object.identify
+lookup = object.lookup
