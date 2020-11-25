@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The group membership synchronization after moving objects has been fixed.
 bug: [52364]
+erratum: 820
+announced: 2020-11-25
