@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-de-4.4-6">
+<book lang="de" id="releasenotes-de-4.4-7">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-6</subtitle>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.4-7</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,7 +44,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.4-6 steht das sechste Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
+			Mit &ucsUCS; 4.4-7 steht das sechste Point-Release für &ucsUCS; (UCS) 4.4 zur Verfügung.
 			Es umfasst Funktionserweiterungen und Verbesserungen, neue Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
@@ -77,7 +77,7 @@
 					Abgelaufene Benutzerpasswörter können nun im Single Sign On Anmeldefenster direkt neu gesetzt werden.
 			</para></listitem>
 			<listitem><para>
-					Diverse Security Updates wurden in UCS 4.4-6 integriert, bspw. für QEMU, <application>bind9</application>, den Linux Kernel und PHP.
+					Diverse Security Updates wurden in UCS 4.4-7 integriert, bspw. für QEMU, <application>bind9</application>, den Linux Kernel und PHP.
 					Eine vollständige Liste von Security- und Paketupdates ist in <xref linkend="relnotes:changelog"/> zu finden.
 			</para></listitem>
 		</itemizedlist>
@@ -250,10 +250,10 @@ Checking ldap_schema ...                          OK
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-5</wordasword>:
+			Aufgeführt sind die Änderungen seit UCS <wordasword>4.4-6</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-6.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-7.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

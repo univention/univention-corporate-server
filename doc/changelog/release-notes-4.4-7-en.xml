@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-en-4.4-6">
+<book lang="en" id="releasenotes-en-4.4-7">
 	<bookinfo>
 		<title>UCS 4.4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-6</subtitle>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.4-7</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,41 +44,13 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.4-6, the sixth point release of &ucsUCS; (UCS) 4.4 is now available.
+			With &ucsUCS; 4.4-7, the seventh point release of &ucsUCS; (UCS) 4.4 is now available.
 			It provides several feature improvements and extensions, new properties as well as various improvements and bugfixes.
 			Here is an overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-					Improvements in user self management via the Self Service App.
-                    The Self Service App displays predefined texts to the user, e.g. when resetting the password.
-                    Administrators can now adjust the contents of these texts.
-                    Newly registered users are activated as soon as the user's e-mail address has been successfully verified.
-                    This behavior is disabled by default.
-                    With this option it is possible to run a UCS with Self Service Module where users register themselves and use their user account after successful validation of the email address.
-			</para></listitem>
-			<listitem><para>
-App Center: Custom hook scripts for administrators.         
-                    UCS system administrators can now store their own scripts on a UCS system with apps that are executed by the App Center for a post-installation, update or uninstallation.
-                    This allows e.g. recurring manual steps after an app update to be automated, e.g. adapting an app to individual conditions.
-                    Example: The subsequent installation of fonts in the installed Office App or the copying of an own SSL certificate into an App.
-			</para></listitem>
-			<listitem><para>
-					UCS Portal: Warning about outdated and no longer supported browsers.
-                    A warning is displayed to a user when logging in to the UCS management system if an unsupported browser, such as Internet Explorer 11, is used.
-                    The warning can also be activated for the portal.
-			</para></listitem>
-			<listitem><para>
-					Improvements in product stability.
-                    Memory Leak in UMC Server fixed. Among other things, this caused the user self service in larger environments to stop working when changing their password until the UMC Server was restarted.
-					Observed crash behavior of the LDAP server in connection with the <systemitem>ppolicy</systemitem> overlay module was fixed.
-                    The UDM REST API can now handle umlauts in the URL of an API call.
-                    Expired user passwords can now be reset directly in the Single Sign On login window.
-			</para></listitem>
-			<listitem><para>
-					Various security updates have been integrated into UCS 4.4-6, e.g. QEMU, <application>bind9</application>, the Linux Kernel and PHP.
-					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -249,10 +221,10 @@ Checking ldap_schema ...                          OK
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS <wordasword>4.4-5</wordasword>:
+			Listed are the changes since UCS <wordasword>4.4-6</wordasword>:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-6.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.4-7.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

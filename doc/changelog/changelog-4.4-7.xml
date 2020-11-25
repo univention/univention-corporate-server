@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	%extensions;
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<itemizedlist>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:basic">
+		<title>Basic system services</title>
+
+		<section id="changelog:basis:ucr">
+			<title>Univention Configuration Registry</title>
+			<itemizedlist>
+			</itemizedlist>
+
+			<section id="changelog:basis:ucr:template">
+				<title>Changes to templates and modules</title>
+			</section>
+		</section>
+		<section id="changelog:basis:univention-python">
+			<title>Univention Python</title>
+       </section>
+	</section>
+
+	<section id="changelog:domain">
+		<title>Domain services</title>
+
+		<section id="changelog:domain:openldap">
+			<title>OpenLDAP</title>
+
+			<section id="changelog:domain:openldap:replication">
+				<title>Listener/Notifier domain replication</title>
+			</section>
+		</section>
+
+		<section id="changelog:domain:dnsserver">
+			<title>DNS server</title>
+		</section>
+	</section>
+
+	<section id="changelog:umc">
+		<title>Univention Management Console</title>
+
+		<section id="changelog:umc:web">
+			<title>Univention Management Console web interface</title>
+		</section>
+
+		<section id="changelog:umc:portal">
+			<title>Univention Portal</title>
+		</section>
+
+		<section id="changelog:umc:server">
+			<title>Univention Management Console server</title>
+		</section>
+
+		<section id="changelog:umc:appcenter">
+			<title>Univention App Center</title>
+		</section>
+
+		<section id="changelog:umc:udmcli">
+			<title>&ucsUDM; UMC modules and command line interface</title>
+		</section>
+
+		<section id="changelog:umc:setup">
+			<title>Modules for system settings / setup wizard</title>
+		</section>
+
+		<section id="changelog:umc:join">
+			<title>Domain join module</title>
+		</section>
+
+		<section id="changelog:umc:reports">
+			<title>Univention Directory Reports</title>
+		</section>
+
+		<section id="changelog:umc:license">
+			<title>License module</title>
+		</section>
+
+		<section id="changelog:umc:diagnostic">
+			<title>System diagnostic module</title>
+		</section>
+
+		<section id="changelog:umc:top">
+			<title>Process overview module</title>
+		</section>
+
+		<section id="changelog:umc:quota">
+			<title>Filesystem quota module</title>
+		</section>
+
+		<section id="changelog:umc:other">
+			<title>Other modules</title>
+		</section>
+
+		<section id="changelog:umc:development">
+			<title>Development of modules for &ucsUMC;</title>
+		</section>
+	</section>
+
+	<section id="changelog:lib">
+		<title>Univention base libraries</title>
+	</section>
+
+	<section id="changelog:deployment">
+		<title>Software deployment</title>
+
+		<section id="changelog:deployment:pkgdb">
+			<title>Software monitor</title>
+		</section>
+	</section>
+
+	<section id="changelog:service">
+		<title>System services</title>
+
+		<section id="changelog:service:postgresql">
+			<title>PostgreSQL</title>
+		</section>
+
+		<section id="changelog:service:mysql">
+			<title>MySQL and MariaDB</title>
+		</section>
+
+		<section id="changelog:service:docker">
+			<title>Docker</title>
+		</section>
+
+		<section id="changelog:service:saml">
+			<title>SAML</title>
+		</section>
+
+		<section id="changelog:service:selfservice">
+			<title>Univention self service</title>
+		</section>
+
+		<section id="changelog:service:mail">
+			<title>Mail services</title>
+		</section>
+
+		<section id="changelog:service:dovecot">
+			<title>Dovecot</title>
+		</section>
+
+		<section id="changelog:service:postfix">
+			<title>Postfix</title>
+		</section>
+
+		<section id="changelog:service:virus">
+			<title>Spam/virus detection and countermeasures</title>
+		</section>
+
+		<section id="changelog:service:print">
+			<title>Printing services</title>
+		</section>
+
+		<section id="changelog:service:nagios">
+			<title>Nagios</title>
+		</section>
+
+		<section id="changelog:service:apache">
+			<title>Apache</title>
+		</section>
+
+		<section id="changelog:service:radius">
+			<title>RADIUS</title>
+		</section>
+
+		<section id="changelog:service:proxy">
+			<title>Proxy services</title>
+		</section>
+
+		<section id="changelog:service:kerberos">
+			<title>Kerberos</title>
+		</section>
+
+		<section id="changelog:service:ssl">
+			<title>SSL</title>
+		</section>
+
+		<section id="changelog:service:dhcp">
+			<title>DHCP server</title>
+		</section>
+
+		<section id="changelog:service:pam">
+			<title>PAM / Local group cache</title>
+		</section>
+
+		<section id="changelog:service:nfs">
+			<title>NFS</title>
+		</section>
+
+		<section id="changelog:service:other">
+			<title>Other services</title>
+		</section>
+	</section>
+
+	<section id="changelog:desktop">
+		<title>Desktop</title>
+	</section>
+
+	<section id="changelog:virt">
+		<title>Virtualization</title>
+
+		<section id="changelog:virt:uvmm">
+			<title>UCS Virtual Machine Manager (UVMM)</title>
+		</section>
+
+		<section id="changelog:virt:operation">
+			<title>Operate UCS as virtual machine</title>
+		</section>
+	</section>
+
+	<section id="changelog:win">
+		<title>Services for Windows</title>
+
+		<section id="changelog:win:samba">
+			<title>Samba</title>
+		</section>
+
+		<section id="changelog:win:s4c">
+			<title>Univention S4 Connector</title>
+		</section>
+
+		<section id="changelog:win:adc">
+			<title>Univention Active Directory Connection</title>
+		</section>
+	</section>
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+	</section>
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->
