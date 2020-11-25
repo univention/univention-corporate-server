@@ -11,3 +11,5 @@ desc: |
    save one expensive request.
  * The SAML assertion lifetime is now configurable per service provider.
 bug: [52303, 52323]
+erratum: 826
+announced: 2020-11-25
