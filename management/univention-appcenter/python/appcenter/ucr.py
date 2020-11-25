@@ -32,6 +32,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+import six
+
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.handler import run_filter
@@ -77,7 +79,7 @@ def ucr_keys():
 
 
 def ucr_evaluated_as_true(value):
-	if isinstance(value, basestring):
+	if isinstance(value, six.string_types):
 		value = value.lower()
 	return _UCR.is_true(value=value)
 
@@ -90,7 +92,10 @@ def ucr_run_filter(string, additional=None):
 		ucr = deepcopy(ucr)
 		for k, v in additional.items():
 			ucr[k] = v
-	return run_filter(string, ucr)
+	value = run_filter(string, ucr)
+	if six.PY2:
+		return value
+	return value.decode('UTF-8')
 
 
 def ucr_instance():
