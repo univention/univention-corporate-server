@@ -17,3 +17,5 @@ desc: |
    involve UMC. The portal does not need the additional information and may
    save one expensive request.
 bug: [52355, 52302, 52303]
+erratum: 825
+announced: 2020-11-25
