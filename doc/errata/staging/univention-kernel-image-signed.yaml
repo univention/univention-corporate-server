@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [6]
 scope: ucs_4.4-0-errata4.4-6
-src: linux
-fix: 4.9.240-2
+src: univention-kernel-image-signed
+fix: 5.0.0-13A~4.4.0.202011251617
 desc: |
  This updates the Linux kernel to version 4.9.240, which addresses (among
  others) the following security issues:
@@ -30,8 +30,6 @@ desc: |
    (CVE-2020-14305)
  * Buffer uses out of index in ext3/4 filesystem (CVE-2020-14314)
  * kernel: buffer over write in vgacon_scroll (CVE-2020-14331)
- * Use-after-free because skcd->no_refcnt was not considered during the
-   backport of CVE-2020-14356 (CVE-2020-25220)
  * Use After Free vulnerability in cgroup BPF component (CVE-2020-14356)
  * Memory corruption in net/packet/af_packet.c leads to elevation of privilege
    (CVE-2020-14386)
@@ -45,6 +43,8 @@ desc: |
  * Local buffer overflow in ctnetlink_parse_tuple_filter in
    net/netfilter/nf_conntrack_netlink.c (CVE-2020-25211)
  * TOCTOU mismatch in the NFS client code (CVE-2020-25212)
+ * Use-after-free because skcd->no_refcnt was not considered during the
+   backport of CVE-2020-14356 (CVE-2020-25220)
  * Incomplete permission checking for access to rbd devices (CVE-2020-25284)
  * Race condition between hugetlb sysctl handlers in mm/hugetlb.c
    (CVE-2020-25285)
@@ -54,7 +54,7 @@ desc: |
    corruption and read overflow (CVE-2020-25643)
  * Missing CAP_NET_RAW check in NFC socket creation in net/nfc/rawsock.c
    allows local attackers to create raw sockets (CVE-2020-26088)
-note: This is the 1st of three related updates.
+note: This is the 2nd of three related updates.
 bug: [52287]
 cve:
 - CVE-2019-9445
