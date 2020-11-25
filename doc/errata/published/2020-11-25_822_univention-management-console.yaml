@@ -27,3 +27,5 @@ desc: |
  * The SAML authentication at the UMC server has been deferred to the first
    use of an UMC module.
 bug: [52338, 52318, 52321, 52274, 52316, 52303, 52323, 52297]
+erratum: 822
+announced: 2020-11-25
