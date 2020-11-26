@@ -78,6 +78,7 @@ Depends:
  python-mysqldb,
  python-six,
  python-univention (>= 12.0.0-5),
+ python-univention-lib (>= 8.0.1-41)
  python-univention-config-registry,
  python-univention-directory-manager (>= 14.0.14-14),
  univention-admin-diary-client (>= 1.0.0-29),
@@ -106,6 +107,7 @@ Depends:
  python3-mysqldb,
  python3-six,
  python3-univention,
+ python3-univention-lib (>= 8.0.1-41)
  python3-univention-config-registry,
  python3-univention-directory-manager,
  univention-admin-diary-client,

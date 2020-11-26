@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=2
+VERSION=3
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -51,6 +51,7 @@ chmod 440 /etc/freeradius/ssl/private.key
 chmod 444 /etc/freeradius/ssl/cert.pem /etc/freeradius/ssl/dh
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-radius/networkaccess.schema \
 	--acl /usr/share/univention-radius/59univention-radius.acl \
 	--acl /usr/share/univention-radius/66univention-radius.acl || exit "$?"

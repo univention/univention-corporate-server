@@ -224,6 +224,7 @@ class Register(CredentialsAction):
 					opts.packageversion = app.version
 					opts.ucsversionstart = None
 					opts.ucsversionend = None
+					opts.objectname = None
 					os.environ['UNIVENTION_APP_IDENTIFIER'] = app.id
 					try:
 						schema_obj.register(schema_file, opts, udm_passthrough_options)

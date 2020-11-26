@@ -1,3 +1,11 @@
+univention-radius (6.0.2-26) unstable; urgency=medium
+
+  * Bug #52427: As preparation to the UCS-5 release the UDM extensions,
+    join hooks and LDAP ACL templates that contain Python code
+    need to be marked as Python2 or Python3 compatible.
+
+ -- Arvid <requate@univention.de>  Tue, 24 Nov 2020 19:45:21 +0100
+
 univention-radius (6.0.2-25) unstable; urgency=medium
 
   * Bug #50887: Permissions in radius postinst file

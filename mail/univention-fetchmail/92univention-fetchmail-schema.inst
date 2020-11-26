@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=4
+VERSION=5
 
 . /usr/share/univention-lib/base.sh
 . /usr/share/univention-lib/ldap.sh
@@ -42,6 +42,7 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 ucs_registerLDAPExtension "$@" \
+	--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 	--schema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema \
 	--acl /usr/share/univention-fetchmail-schema/58univention-fetchmail-schema.acl || die
 

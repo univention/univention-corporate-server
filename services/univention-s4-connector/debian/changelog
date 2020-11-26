@@ -1,3 +1,11 @@
+univention-s4-connector (13.0.2-82) unstable; urgency=medium
+
+  * Bug #52428: As preparation to the UCS-5 release the UDM extensions,
+    join hooks and LDAP ACL templates that contain Python code
+    need to be marked as Python2 or Python3 compatible.
+
+ -- Arvid <requate@univention.de>  Tue, 24 Nov 2020 19:47:15 +0100
+
 univention-s4-connector (13.0.2-81) unstable; urgency=medium
 
   * Bug #52364: update group member cache after move
