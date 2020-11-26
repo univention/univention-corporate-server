@@ -1,3 +1,9 @@
+univention-dvd (4.0.0-8) unstable; urgency=medium
+
+  * Bug #52382: UCS-4.4-7 DVD
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Nov 2020 08:56:14 +0100
+
 univention-dvd (4.0.0-7) unstable; urgency=medium
 
   * Bug #52027: UCS-4.4-6 DVD
