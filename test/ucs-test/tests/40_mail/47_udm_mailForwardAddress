@@ -135,14 +135,13 @@ def test_mail_forward(mail_copy_to_self):
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress,
 					'mailForwardCopyToSelf': '0',
-					}, strict=True)
+				}, strict=True)
 			else:
 				utils.verify_ldap_object(user.dn, {
 					'univentionMailHomeServer': [user.mailHomeServer],
 					'mailPrimaryAddress': [user.mailPrimaryAddress],
 					'mailForwardAddress': user.mailForwardAddress,
-					},
-					strict=True)
+				}, strict=True)
 
 			# change mFA and set Copy2Self=1
 			user.mailForwardAddress = [
@@ -251,6 +250,7 @@ def test_mail_forward(mail_copy_to_self):
 				print('OK: Creation of user without mPA but mFA failed as expected')
 			else:
 				utils.fail('Creation of user without mPA but mFA was unexpectedly successful')
+
 
 if __name__ == '__main__':
 	test_mail_forward('no')
