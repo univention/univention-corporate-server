@@ -146,7 +146,6 @@ def test_mail_forward(mail_copy_to_self):
 				},
 				strict=True)
 
-
 		send_and_check(user, sink_files, in_mail_sink=True, in_local=True)
 		# disable copy to self
 		udm.modify_object(
@@ -161,4 +160,3 @@ def test_mail_forward(mail_copy_to_self):
 if __name__ == '__main__':
 	test_mail_forward('no')
 	test_mail_forward('yes')
-
