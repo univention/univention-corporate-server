@@ -308,21 +308,13 @@ class UMCP_Dispatcher(object):
 	@classmethod
 	def clean_sessions(cls):
 		now = time.time()
-		next_timeout = 0
 		for sessionid, user in list(Ressource.sessions.items()):
 			session = UMCP_Dispatcher.sessions.get(sessionid)
-			if user.timed_out(now):
-				if session and session._requestid2response_queue:
-					next_timeout = 1
-					continue
+			if (not session or not session._requestid2response_queue) and user.timed_out(now):
 				CORE.info('session %r timed out' % (sessionid,))
 				Ressource.sessions.pop(user.sessionid, None)
 				user.on_logout()
-
-		if not next_timeout:
-			all_session_timeouts = (int(user.session_end_time - now) for user in Ressource.sessions.values())
-			next_timeout = max(min(all_session_timeouts), 1) + 1
-		notifier.timer_add(next_timeout * 1000, UMCP_Dispatcher.clean_session)
+		return True  # execute again!
 
 
 class UploadManager(dict):
@@ -390,7 +382,6 @@ class User(object):
 
 	def reset_timeout(self):
 		self._timeout = time.time() + _session_timeout
-		UMCP_Dispatcher.clean_sessions()
 
 	def timed_out(self, now):
 		return self.session_end_time < now
@@ -1614,6 +1605,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			notifier.init(notifier.GENERIC)
 			notifier.dispatch.MIN_TIMER = get_int('umc/http/dispatch-interval', notifier.dispatch.MIN_TIMER)
 			notifier.dispatcher_add(UMCP_Dispatcher.check_queue)
+			notifier.timer_add(10000, UMCP_Dispatcher.clean_sessions)
 			notifier.loop()
 		except (SystemExit, KeyboardInterrupt) as exc:
 			# stop the web server

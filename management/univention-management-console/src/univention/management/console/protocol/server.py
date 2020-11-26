@@ -71,7 +71,7 @@ class MagicBucket(object):
 
 	def __init__(self):
 		self.__states = {}
-		self.__session_timeout_timer = None
+		notifier.timer_add(10000, self._timeout_connections)
 
 	def new(self, client, socket):
 		"""Is called by the Server object to announce a new incoming
@@ -86,31 +86,14 @@ class MagicBucket(object):
 		self.__states[socket] = state
 		notifier.socket_add(socket, self._receive)
 
-	def _timeout_connection(self):
-		self.__session_timeout_timer = None
-		now = time.time()
-		next_timeout = 0
-		for sock, state in list(self.__states.items()):
-			if state.timed_out(now):
-				if state.active():
-					next_timeout = 1
-					continue
-				CORE.process('Session timed out.')  # TODO: do we want to log which session timed out?
-				self._cleanup(sock)
-		if next_timeout:
-			self.__session_timeout_timer = notifier.timer_add(next_timeout * 1000, self._timeout_connection)
+	def _timeout_connections(self):
+		"""Closes the connection after a specified timeout"""
+		timed_out = [sock for sock, state in self.__states.items() if state.timed_out()]
+		for sock in timed_out:
+			CORE.process('Session timed out.')  # TODO: do we want to log which session timed out?
+			self._cleanup(sock)
 
-	def _reset_timer(self):
-		"""Closes the connections after a specified timeout"""
-		notifier.timer_remove(self.__session_timeout_timer)
-		self.__session_timeout_timer = None
-		now = time.time()
-		next_timeout = 0
-
-		if not next_timeout:
-			all_session_timeouts = (int(state.session_end_time - now) for state in self.__states.values())
-			next_timeout = max(min(all_session_timeouts), 1) + 1
-		self.__session_timeout_timer = notifier.timer_add(next_timeout * 1000, self._timeout_connection)
+		return True
 
 	def exit(self):
 		'''Closes all open connections.'''
@@ -156,7 +139,6 @@ class MagicBucket(object):
 		state.buffer += data
 
 		state.reset_connection_timeout()
-		self._reset_timer()
 
 		try:
 			while state.buffer:
@@ -221,7 +203,6 @@ class MagicBucket(object):
 			return
 
 		state.reset_connection_timeout()
-		self._reset_timer()
 		try:
 			data = bytes(msg)
 			# there is no data from another request in the send queue
@@ -544,11 +525,8 @@ class State(object):
 	def reset_connection_timeout(self):
 		self.session_end_time = time.time() + SERVER_CONNECTION_TIMEOUT
 
-	def timed_out(self, now):
-		return self.session_end_time - now <= 0
-
-	def active(self):
-		return self.requests or self.session.has_active_module_processes()
+	def timed_out(self):
+		return not self.requests and not self.session.has_active_module_processes() and self.time_remaining <= 0
 
 	@property
 	def time_remaining(self):
