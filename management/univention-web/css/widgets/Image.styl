@@ -1,13 +1,35 @@
 .umcImage
+	width: 100%
 	border-radius: 2px
 	background: url(images/checkerboard-pattern.png)
-	width: 100%
-	padding-top: 50%
+	&Empty
+		background: var(--color-grey8)
 
-	img
-		width: auto
+	img,
+	.umcImageEmpty__message
 		max-width: 100%
-		height: auto
-		max-height: 300px
-		display: block
-		margin: 0 auto
+		max-height: 250px
+		pointer-events: none
+		box-sizing: content-box
+
+	.umcImageEmpty__message
+		min-height: 250px
+
+	.umcImage__styleWrapper
+		display: flex
+		align-items: center
+		justify-content: center
+		position: relative
+
+	&--2to1Aspect
+		img,
+		.umcImageEmpty__message
+			max-height: 100%
+			position: absolute
+			padding-bottom: 50%
+
+		.umcImageEmpty__message
+			min-height: auto
+
+		.umcImage__styleWrapper
+			padding-top: 50%

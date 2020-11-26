@@ -102,7 +102,7 @@ define([
 			if (!this.value) {
 				var content = '';
 				if (this.noImageMessage) {
-					content = put('div.umcImageEmpty__message', this.noImageMessage);
+					content = put('div.umcImage__styleWrapper div.umcImageEmpty__message $ <', this.noImageMessage);
 				}
 				this.set('content', content);
 			} else {
@@ -110,10 +110,8 @@ define([
 				if (imageType == '*') {
 					imageType = this._getImageType();
 				}
-				this.set('content', lang.replace('<img src="data:image/{imageType};base64,{value}"/>', {
-					imageType: imageType,
-					value: this.value
-				}));
+				var content = put(`div.umcImage__styleWrapper img.umcImage__img[src="data:image/${imageType};base64,${this.value}"] <`);
+				this.set('content', content);
 			}
 		},
 
