@@ -1402,8 +1402,8 @@ docker-compose -p $appid logs
                         release. Please provide information about the UCS
                         section, the app's version and the internal component
                         reference. It's best to provide this information in the
-                        email's subject and it can look like this: Regarding
-                        4.4/myapp=4.74 (myapp_20201106183244)
+                        email's subject and it can look like this: "Regarding
+                        4.4/myapp=4.74 (myapp_20201106183244)"
                     </simpara>
                 </listitem>
             </orderedlist>
