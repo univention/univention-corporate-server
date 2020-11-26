@@ -841,12 +841,13 @@ update_apps_via_umc () {
 	# Normally we do not want to update additional apps to the
 	# the test version, but if that becomes necessary, we can re-add
 	# the update
-	#for app in "$@"; do
-	#	test "$app" = "$main_app" && continue
-	#	if ! assert_app_is_installed_and_latest "${app}"; then
-	#		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u || rv=$?
-	#	fi
-	#done
+	for app in "$@"; do
+		test "$app" = "$main_app" && continue
+		if ! assert_app_is_installed_and_latest "${app}"; then
+			# try update, but do not except that an update is available
+			python -m shared-utils/apps -U "$username" -p "$password" -a $app -u -i || rv=$?
+		fi
+	done
 
 	return $rv
 }
