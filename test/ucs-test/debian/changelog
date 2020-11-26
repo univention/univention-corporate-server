@@ -1,3 +1,9 @@
+ucs-test (10.0.4-4) unstable; urgency=medium
+
+  * Bug #52274: New, minimal test to test if the ucr var for max-file-descriptors works
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 25 Feb 2021 17:48:24 +0100
+
 ucs-test (10.0.4-3) unstable; urgency=medium
 
   * Bug #47734: added Delay to selenium test 132
