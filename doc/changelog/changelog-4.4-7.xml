@@ -410,7 +410,7 @@
 					<literal>--ucsversionend</literal> option with the <command>ucs_registerLDAPExtension</command> calls.
 					This is required in preparation for UCS 5.0 (<u:bug>52426</u:bug>).
 				</simpara></listitem>
-			<itemizedlist>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:postfix">
