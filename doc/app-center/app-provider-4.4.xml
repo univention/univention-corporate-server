@@ -1426,7 +1426,7 @@ MY_APP="myapp"
 ## First example for single container apps
 
 # 2. Update the reference to the app's Docker image
-./univention-appcenter-control set --username $my_username --pwdfile $pwd_file $UCS_MINOR/$MY_APP=$APP_VERSION --json '{"DockerImage": "my_company/$MY_APP:$APP_VERSION", "RequiredAppVersionUpgrade": "$APP_UPGRADE_FROM"}'
+./univention-appcenter-control set --username $my_username --pwdfile $pwd_file $UCS_MINOR/$MY_APP=$APP_VERSION --json '{"DockerImage": "my_company/$MY_APP:$APP_VERSION"}'
 
 # 3. Obtain the component id of the new app version. The command asumes the latest component is the new app.
 COMPONENT=$(./univention-appcenter-control status --username $my_username --pwdfile $pwd_file $UCS_MINOR/$MY_APP | grep "COMPONENT" | tail -n 1 | cut -f 2 -d ':' | trim -d ' ')
