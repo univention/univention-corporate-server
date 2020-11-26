@@ -404,11 +404,13 @@
 
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
-			<listitem><simpara>
-				The joinscript of <package>univention-fetchmail</package> has been updated to specify a
-				<literal>--ucsversionend</literal> option with the <command>ucs_registerLDAPExtension</command> calls.
-				This is required in preparation for UCS 5.0 (<u:bug>52426</u:bug>).
-			</simpara></listitem>
+			<itemizedlist>
+				<listitem><simpara>
+					The joinscript of <package>univention-fetchmail</package> has been updated to specify a
+					<literal>--ucsversionend</literal> option with the <command>ucs_registerLDAPExtension</command> calls.
+					This is required in preparation for UCS 5.0 (<u:bug>52426</u:bug>).
+				</simpara></listitem>
+			<itemizedlist>
 		</section>
 
 		<section id="changelog:service:postfix">
@@ -441,50 +443,6 @@
 					(<u:bug>52427</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
-		</section>
-
-		<section id="changelog:service:proxy">
-			<title>Proxy services</title>
-		</section>
-
-		<section id="changelog:service:kerberos">
-			<title>Kerberos</title>
-		</section>
-
-		<section id="changelog:service:ssl">
-			<title>SSL</title>
-		</section>
-
-		<section id="changelog:service:dhcp">
-			<title>DHCP server</title>
-		</section>
-
-		<section id="changelog:service:pam">
-			<title>PAM / Local group cache</title>
-		</section>
-
-		<section id="changelog:service:nfs">
-			<title>NFS</title>
-		</section>
-
-		<section id="changelog:service:other">
-			<title>Other services</title>
-		</section>
-	</section>
-
-	<section id="changelog:desktop">
-		<title>Desktop</title>
-	</section>
-
-	<section id="changelog:virt">
-		<title>Virtualization</title>
-
-		<section id="changelog:virt:uvmm">
-			<title>UCS Virtual Machine Manager (UVMM)</title>
-		</section>
-
-		<section id="changelog:virt:operation">
-			<title>Operate UCS as virtual machine</title>
 		</section>
 	</section>
 
@@ -520,7 +478,6 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						The synchronization of the <property>CN=Default Domain Policy,CN=System</property> container can now be enabled with the UCR variable <envar>connector/s4/mapping/domainpolicy=yes</envar>. The schema file <filename>n_domainpolicy.schema</filename> has to be activated beforehand. See <ulink url="https://docs.software-univention.de/developer-reference-4.4.html#misc:lib:sh">the manual for more information</ulink> (<u:bug>51782</u:bug>).
->>>>>>> Stashed changes
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
