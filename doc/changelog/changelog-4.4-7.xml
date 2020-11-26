@@ -62,6 +62,14 @@
 
 		<section id="changelog:umc:appcenter">
 			<title>Univention App Center</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The UDM extension <literal>appcenter/app</literal> has been updated to be compatible to Python3.
+					The joinscript has been updated to specify a <literal>--ucsversionend</literal> option with the
+					<command>ucs_registerLDAPExtension</command> calls. This is required in preparation for UCS 5.0
+					(<u:bug>52429</u:bug>).
+				</simpara></listitem>
+		</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:udmcli">
@@ -107,6 +115,16 @@
 
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
+		<itemizedlist>
+			<listitem><simpara>
+				The <command>ucs_registerLDAPExtension</command> offers an additional option <literal>--name</literal>
+				which can be used to specify the <literal>RDN</literal> of the LDAP object. This can be useful
+				if two versions of a UDM  or LDAP extension need to be active simultaniously in the domain,
+				e.g. one being only compatible to Python2, but still required for UCS 4.4-based systems in the domain
+				and another beeing only compatible to Python3, required for the systems which at some point will
+				have updated to UCS 5. This may be useful in preparation to the UCS 5.0 release (<u:bug>52433</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 
 	<section id="changelog:deployment">
@@ -142,6 +160,11 @@
 
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
+			<listitem><simpara>
+				The joinscript of <package>univention-fetchmail</package> has been updated to specify a
+				<literal>--ucsversionend</literal> option with the <command>ucs_registerLDAPExtension</command> calls.
+				This is required in preparation for UCS 5.0 (<u:bug>52426</u:bug>).
+			</simpara></listitem>
 		</section>
 
 		<section id="changelog:service:dovecot">
@@ -170,6 +193,13 @@
 
 		<section id="changelog:service:radius">
 			<title>RADIUS</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The joinscript has been updated to specify a <literal>--ucsversionend</literal> option with the
+					<command>ucs_registerLDAPExtension</command> calls. This is required in preparation for UCS 5.0
+					(<u:bug>52427</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:proxy">
@@ -226,6 +256,14 @@
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The UDM extensions have been updated to be compatible to Python3.
+					The joinscript has been updated to specify a <literal>--ucsversionend</literal> option with the
+					<command>ucs_registerLDAPExtension</command> calls. This is required in preparation for UCS 5.0
+					(<u:bug>52428</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:win:adc">
