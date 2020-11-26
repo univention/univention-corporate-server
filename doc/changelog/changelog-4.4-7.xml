@@ -11,22 +11,136 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<itemizedlist>
+			<listitem>
+				<para>
+					All security updates issued for UCS <productnumber>4.x-y</productnumber> are included:
+				</para>
+				<itemizedlist id="_security">
+					<listitem><simpara>
+						<package>bluez</package> (<u:cve>2020-27153</u:cve>) (<u:bug>52265</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>curl</package> (<u:cve>2020-8231</u:cve>) (<u:bug>52142</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-esr</package> (<u:cve>2020-15673</u:cve> <u:cve>2020-15676</u:cve> <u:cve>2020-15677</u:cve> <u:cve>2020-15678</u:cve> <u:cve>2020-15683</u:cve> <u:cve>2020-15969</u:cve> <u:cve>2020-16012</u:cve> <u:cve>2020-26950</u:cve> <u:cve>2020-26951</u:cve> <u:cve>2020-26953</u:cve> <u:cve>2020-26956</u:cve> <u:cve>2020-26958</u:cve> <u:cve>2020-26959</u:cve> <u:cve>2020-26960</u:cve> <u:cve>2020-26961</u:cve> <u:cve>2020-26965</u:cve> <u:cve>2020-26968</u:cve>) (<u:bug>52160</u:bug> <u:bug>52266</u:bug> <u:bug>52352</u:bug> <u:bug>52414</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firmware-nonfree</package> (<u:cve>2016-0801</u:cve> <u:cve>2017-0561</u:cve> <u:cve>2017-9417</u:cve> <u:cve>2017-13077</u:cve> <u:cve>2017-13078</u:cve> <u:cve>2017-13079</u:cve> <u:cve>2017-13080</u:cve> <u:cve>2017-13081</u:cve> <u:cve>2018-5383</u:cve>) (<u:bug>52420</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>freetype</package> (<u:cve>2020-15999</u:cve>) (<u:bug>52267</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>gdm3</package> (<u:cve>2020-16125</u:cve>) (<u:bug>52329</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>krb5</package> (<u:cve>2020-28196</u:cve>) (<u:bug>52325</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libdbi-perl</package> (<u:cve>2019-20919</u:cve> <u:cve>2020-14392</u:cve> <u:cve>2020-14393</u:cve>) (<u:bug>52161</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libexif</package> (<u:cve>2020-16125</u:cve>) (<u:bug>52329</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libmaxminddb</package> (<u:cve>2020-28241</u:cve>) (<u:bug>52350</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libonig</package> (<u:cve>2019-13224</u:cve> <u:cve>2019-16163</u:cve> <u:cve>2019-19012</u:cve> <u:cve>2019-19203</u:cve> <u:cve>2019-19204</u:cve> <u:cve>2019-19246</u:cve> <u:cve>2020-26159</u:cve>) (<u:bug>52326</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libproxy</package> (<u:cve>2020-26154</u:cve>) (<u:bug>52365</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libsndfile</package> (<u:cve>2017-6892</u:cve> <u:cve>2017-14245</u:cve> <u:cve>2017-14246</u:cve> <u:cve>2017-14634</u:cve> <u:cve>2018-19661</u:cve> <u:cve>2018-19662</u:cve> <u:cve>2018-19758</u:cve> <u:cve>2019-3832</u:cve>) (<u:bug>52288</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libvirt</package> (<u:bug>52181</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libvncserver</package> (<u:cve>2020-25708</u:cve>) (<u:bug>52366</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>linux</package> (<u:cve>2019-9445</u:cve> <u:cve>2019-19073</u:cve> <u:cve>2019-19074</u:cve> <u:cve>2019-19448</u:cve> <u:cve>2020-12351</u:cve> <u:cve>2020-12352</u:cve> <u:cve>2020-12655</u:cve> <u:cve>2020-12771</u:cve> <u:cve>2020-12888</u:cve> <u:cve>2020-14305</u:cve> <u:cve>2020-14314</u:cve> <u:cve>2020-14331</u:cve> <u:cve>2020-14356</u:cve> <u:cve>2020-14386</u:cve> <u:cve>2020-14390</u:cve> <u:cve>2020-15393</u:cve> <u:cve>2020-16166</u:cve> <u:cve>2020-24490</u:cve> <u:cve>2020-25211</u:cve> <u:cve>2020-25212</u:cve> <u:cve>2020-25220</u:cve> <u:cve>2020-25284</u:cve> <u:cve>2020-25285</u:cve> <u:cve>2020-25641</u:cve> <u:cve>2020-25643</u:cve> <u:cve>2020-26088</u:cve>) (<u:bug>52287</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>lua5.3</package> (<u:cve>2020-24370</u:cve>) (<u:bug>52140</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mariadb-10.1</package> (<u:cve>2020-15180</u:cve>) (<u:bug>52264</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>nss</package> (<u:cve>2018-12404</u:cve> <u:cve>2018-18508</u:cve> <u:cve>2019-11719</u:cve> <u:cve>2019-11729</u:cve> <u:cve>2019-11745</u:cve> <u:cve>2019-17006</u:cve> <u:cve>2019-17007</u:cve> <u:cve>2020-6829</u:cve> <u:cve>2020-12399</u:cve> <u:cve>2020-12400</u:cve> <u:cve>2020-12401</u:cve> <u:cve>2020-12402</u:cve> <u:cve>2020-12403</u:cve>) (<u:bug>52190</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openjdk-8</package> (<u:cve>2020-14779</u:cve> <u:cve>2020-14781</u:cve> <u:cve>2020-14782</u:cve> <u:cve>2020-14792</u:cve> <u:cve>2020-14796</u:cve> <u:cve>2020-14797</u:cve> <u:cve>2020-14798</u:cve> <u:cve>2020-14803</u:cve>) (<u:bug>52268</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl1.0</package> (<u:cve>2020-1968</u:cve>) (<u:bug>52141</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php7.0</package> (<u:cve>2020-7070</u:cve>) (<u:bug>52193</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>poppler</package> (<u:cve>2017-14926</u:cve> <u:cve>2017-14928</u:cve> <u:cve>2018-19058</u:cve> <u:cve>2018-20650</u:cve> <u:cve>2018-20662</u:cve> <u:cve>2019-7310</u:cve> <u:cve>2019-9959</u:cve> <u:cve>2019-10018</u:cve> <u:cve>2019-14494</u:cve>) (<u:bug>52327</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>postgresql-9.6</package> (<u:cve>2020-25694</u:cve> <u:cve>2020-25695</u:cve> <u:cve>2020-25696</u:cve>) (<u:bug>52400</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>python3.5</package> (<u:cve>2019-20907</u:cve> <u:cve>2020-26116</u:cve>) (<u:bug>52415</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qt4-x11</package> (<u:cve>2018-15518</u:cve> <u:cve>2018-19869</u:cve> <u:cve>2018-19870</u:cve> <u:cve>2018-19871</u:cve> <u:cve>2018-19872</u:cve> <u:cve>2018-19873</u:cve> <u:cve>2020-17507</u:cve>) (<u:bug>52139</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qtbase-opensource-src</package> (<u:cve>2018-19872</u:cve> <u:cve>2020-17507</u:cve>) (<u:bug>52162</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qtsvg-opensource-src</package> (<u:cve>2018-19869</u:cve>) (<u:bug>52290</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>raptor2</package> (<u:cve>2017-18926</u:cve>) (<u:bug>52328</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ruby2.3</package> (<u:cve>2020-25613</u:cve>) (<u:bug>52189</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2020-1472</u:cve> <u:cve>2020-14318</u:cve> <u:cve>2020-14323</u:cve> <u:cve>2020-14383</u:cve>) (<u:bug>52130</u:bug> <u:bug>52233</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sane-backends</package> (<u:cve>2020-12862</u:cve> <u:cve>2020-12863</u:cve> <u:cve>2020-12865</u:cve> <u:cve>2020-12867</u:cve>) (<u:bug>51831</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>spice</package> (<u:cve>2020-14355</u:cve>) (<u:bug>52291</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>tcpdump</package> (<u:cve>2020-8037</u:cve>) (<u:bug>52351</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image</package> (<u:cve>2019-9445</u:cve> <u:cve>2019-19073</u:cve> <u:cve>2019-19074</u:cve> <u:cve>2019-19448</u:cve> <u:cve>2020-12351</u:cve> <u:cve>2020-12352</u:cve> <u:cve>2020-12655</u:cve> <u:cve>2020-12771</u:cve> <u:cve>2020-12888</u:cve> <u:cve>2020-14305</u:cve> <u:cve>2020-14314</u:cve> <u:cve>2020-14331</u:cve> <u:cve>2020-14356</u:cve> <u:cve>2020-14386</u:cve> <u:cve>2020-14390</u:cve> <u:cve>2020-15393</u:cve> <u:cve>2020-16166</u:cve> <u:cve>2020-24490</u:cve> <u:cve>2020-25211</u:cve> <u:cve>2020-25212</u:cve> <u:cve>2020-25220</u:cve> <u:cve>2020-25284</u:cve> <u:cve>2020-25285</u:cve> <u:cve>2020-25641</u:cve> <u:cve>2020-25643</u:cve> <u:cve>2020-26088</u:cve>) (<u:bug>52287</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>univention-kernel-image-signed</package> (<u:cve>2019-9445</u:cve> <u:cve>2019-19073</u:cve> <u:cve>2019-19074</u:cve> <u:cve>2019-19448</u:cve> <u:cve>2020-12351</u:cve> <u:cve>2020-12352</u:cve> <u:cve>2020-12655</u:cve> <u:cve>2020-12771</u:cve> <u:cve>2020-12888</u:cve> <u:cve>2020-14305</u:cve> <u:cve>2020-14314</u:cve> <u:cve>2020-14331</u:cve> <u:cve>2020-14356</u:cve> <u:cve>2020-14386</u:cve> <u:cve>2020-14390</u:cve> <u:cve>2020-15393</u:cve> <u:cve>2020-16166</u:cve> <u:cve>2020-24490</u:cve> <u:cve>2020-25211</u:cve> <u:cve>2020-25212</u:cve> <u:cve>2020-25220</u:cve> <u:cve>2020-25284</u:cve> <u:cve>2020-25285</u:cve> <u:cve>2020-25641</u:cve> <u:cve>2020-25643</u:cve> <u:cve>2020-26088</u:cve>) (<u:bug>52287</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>wireshark</package> (<u:cve>2019-10894</u:cve> <u:cve>2019-10895</u:cve> <u:cve>2019-10896</u:cve> <u:cve>2019-10899</u:cve> <u:cve>2019-10901</u:cve> <u:cve>2019-10903</u:cve> <u:cve>2019-12295</u:cve>) (<u:bug>52289</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>zeromq3</package> (<u:cve>2020-15166</u:cve>) (<u:bug>52349</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem>
+				<para>
+					The following updated packages from Debian FIXME <productnumber>0.00</productnumber> are included (<u:bug>00000</u:bug>):
+					<simplelist type="inline" id="_debian">
+						<member><package>FIXME</package></member>
+					</simplelist>
+				</para>
+			</listitem>
 		</itemizedlist>
-	</section>
-
-	<section id="changelog:basic">
-		<title>Basic system services</title>
-
-		<section id="changelog:basis:ucr">
-			<title>Univention Configuration Registry</title>
-
-			<section id="changelog:basis:ucr:template">
-				<title>Changes to templates and modules</title>
-			</section>
-		</section>
-		<section id="changelog:basis:univention-python">
-			<title>Univention Python</title>
-       </section>
 	</section>
 
 	<section id="changelog:domain">
@@ -34,14 +148,14 @@
 
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
-
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
+				<itemizedlist>
+					<listitem><simpara>
+							Setting <package>mdb</package> <property>maxsize</property> to 4GB (<u:bug>39167</u:bug>).
+					</simpara></listitem>
+				</itemizedlist>
 			</section>
-		</section>
-
-		<section id="changelog:domain:dnsserver">
-			<title>DNS server</title>
 		</section>
 	</section>
 
@@ -50,66 +164,161 @@
 
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+						It is now possible to not download the <filename>meta.json</filename> from UMC, but the inexpensive one from Apache directly (<u:bug>52303</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The interval for polling of session infos has been changed from every 30 seconds to the time the session will end to reduce network workload (<u:bug>52321</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The cookie's path of the cookie banner is now valid for the whole domain (<u:bug>52222</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						A Cookie Banner can now be shown in the Portal and on the login page. It can be enabled by setting the UCR variable <envar>umc/cookie-banner/show</envar> to true (<u:bug>50302</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:portal">
 			<title>Univention Portal</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The portal does not download the personalized <filename>meta.json</filename>, which would involve UMC. The portal does not need the additional information and may save one expensive request (<u:bug>52303</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The groups that are considered as administrators can be configured via the new UCR variable `portal/admin_groups'. Only users of these groups do one additional check whether the edit mode is available. This should improve performance if many non admin users log in (<u:bug>52302</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The evaluation whether or not a portal entry is visible now got a shortcut if the user is not logged in. This can improve the performance in certain situations considerably (<u:bug>52355</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Fetching the portal entries is not done multiple times anymore if it is not expected that the contents changed through the edit mode (<u:bug>52345</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A Cookie Banner can now be shown in the Portal and on the login page (<u:bug>50302</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The SAML authentication at the UMC server has been deferred to the first use of an UMC module (<u:bug>52297</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The SAML assertion lifetime is now configurable per service provider (<u:bug>52323</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Fetching <envar>/univention/get/meta</envar> involves a call to UMC. This is not always necessary. Now it is possible to fetch a stripped down static version instead. This patch moves the meta file into a public folder (<u:bug>52303</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					To prevent connections between UMC web server and UMC server from being unexpectedly closed by a racing condition from the UMC server thus causing an error, handling of incoming connections in the UMC server has been improved. This problem previously only occurred in the new multi-process mode of the UMC server (<u:bug>52316</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UMC server now runs with an additional UNIX socket. The communication between UMC webserver and UMC server therefore does not need to be TLS encrypted anymore so that the performance is improved (<u:bug>52274</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The interval for polling of session infos has been changed from every 30 seconds to the time the session will end to reduce network workload (<u:bug>52321</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UMC web server now sets the HTTP reason phrase for 503 Service Unavailable errors (<u:bug>52318</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A memory optimization for SAML based sessions has been done in the UMC web server (<u:bug>52338</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Only relevant information about the SAML response is stored in the session (<u:bug>52296</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A log message has been removed which logged every session ID when cleaning up one session (<u:bug>52295</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Objects stored in sessions now define Python `__slots__`, to minimize the used memory (<u:bug>52294</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The regular interval for the processing of recurring tasks in the UMC server and UMC webserver can now be configured via UCR (<u:bug>52271</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The performance during login at UMC has been improved by using the C implementation of <package>ElementTree</package> for parsing module and category definitions (<u:bug>52253</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A Cookie Banner can now be shown in the Portal and on the login page (<u:bug>50302</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Adjustments for the Self-Service have been added (<u:bug>51607</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:appcenter">
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UDM extension <literal>appcenter/app</literal> has been updated to be compatible to Python3.
+						The UDM extension <literal>appcenter/app</literal> has been updated to be compatible to <package>python3</package>.
 					The joinscript has been updated to specify a <literal>--ucsversionend</literal> option with the
 					<command>ucs_registerLDAPExtension</command> calls. This is required in preparation for UCS 5.0
 					(<u:bug>52429</u:bug>).
 				</simpara></listitem>
-		</itemizedlist>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:udmcli">
 			<title>&ucsUDM; UMC modules and command line interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+					An error while creating users with a <property>mailPrimaryAddress</property> has been corrected which occurred when the app "Open-Xchange" is installed (<u:bug>51907</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					User templates may now contain all attributes from the LDAP object class inetOrgPerson again (<u:bug>51364</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The list of copyable user attributes has been updated. Several odd attributes have been removed, e.g. <property>firstname</property>, <property>lastname</property>, <property>jpegphoto</property> (<u:bug>49823</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:setup">
 			<title>Modules for system settings / setup wizard</title>
+			<itemizedlist>
+				<listitem><simpara>
+						The name of a specific <filename>meta.json</filename> file was changed. This change is internal (<u:bug>52303</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Fix to adjust to new <package>firefox</package> behavior. The <wordasword>userpref</wordasword> option <property>toolkit.legacyUserProfileCustomizations.stylesheets</property> has to be set to yes in order to make <package>firefox</package> load the system setup specific file <filename>userChrome.css</filename> (<u:bug>52160</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:join">
 			<title>Domain join module</title>
-		</section>
-
-		<section id="changelog:umc:reports">
-			<title>Univention Directory Reports</title>
-		</section>
-
-		<section id="changelog:umc:license">
-			<title>License module</title>
+			<itemizedlist>
+				<listitem><simpara>
+						<command>univention-run-join-scripts</command> now validates command line arguments and does not run all scripts if an unknown parameter is given (<u:bug>46985</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						During the update from UCS 4.4 to UCS 5.0 the execution of <wordasword>joinscripts</wordasword> is postponed depending on the phase read from the updater status file. This change is a preparation for the upcoming update (<u:bug>51624</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:diagnostic">
 			<title>System diagnostic module</title>
-		</section>
-
-		<section id="changelog:umc:top">
-			<title>Process overview module</title>
-		</section>
-
-		<section id="changelog:umc:quota">
-			<title>Filesystem quota module</title>
+			<itemizedlist>
+				<listitem><simpara>
+						The usability of the <command>univention-run-diagnostic-checks</command> command line tool has been improved. It can now be called without parameters to execute all tests and it does not require a username and password to access `--help` any more (<u:bug>51942</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:umc:other">
 			<title>Other modules</title>
-		</section>
-
-		<section id="changelog:umc:development">
-			<title>Development of modules for &ucsUMC;</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The users/user wizard can now be configured to enable the checkbox "Invite user via e-mail" by default via the UCR variable directory/manager/web/modules/users/user/wizard/property/invite/default (<u:bug>52046</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 	</section>
 
@@ -119,43 +328,78 @@
 			<listitem><simpara>
 				The <command>ucs_registerLDAPExtension</command> offers an additional option <literal>--name</literal>
 				which can be used to specify the <literal>RDN</literal> of the LDAP object. This can be useful
-				if two versions of a UDM  or LDAP extension need to be active simultaniously in the domain,
-				e.g. one being only compatible to Python2, but still required for UCS 4.4-based systems in the domain
-				and another beeing only compatible to Python3, required for the systems which at some point will
+				if two versions of a UDM  or LDAP extension need to be active simultaneously in the domain,
+				e.g. one being only compatible to <package>python2</package>, but still required for UCS 4.4-based systems in the domain
+				and another being only compatible to <package>python3</package>, required for the systems which at some point will
 				have updated to UCS 5. This may be useful in preparation to the UCS 5.0 release (<u:bug>52433</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					Evaluation of ucr variables in the function <function>clean_old_backups</function> has been fixed (<u:bug>51765</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Changing the value of the <property>ldap/database/mdb/maxsize</property> and <property>listener/cache/mdb/maxsize</property> variables to 4 GB (<u:bug>39167</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Setting of ucr backup/clean/max_age variable for  new installations with default 365 (<u:bug>51765</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
-
-		<section id="changelog:deployment:pkgdb">
-			<title>Software monitor</title>
-		</section>
+		<itemizedlist>
+			<listitem><simpara>
+					The status information "phase" has been added to the status file of the Univention Updater <filename>/var/lib/univention-updater/univention-updater.status</filename> (<u:bug>52197</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					Add command <command>univention-prune-kernels</command> to remove no longer needed kernel packages (<u:bug>51769</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 
 	<section id="changelog:service">
 		<title>System services</title>
 
-		<section id="changelog:service:postgresql">
-			<title>PostgreSQL</title>
-		</section>
-
-		<section id="changelog:service:mysql">
-			<title>MySQL and MariaDB</title>
-		</section>
-
-		<section id="changelog:service:docker">
-			<title>Docker</title>
-		</section>
-
 		<section id="changelog:service:saml">
 			<title>SAML</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The SAML assertion lifetime is now configurable per service provider (<u:bug>52323</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The site does not download the personalized <filename>meta.json</filename>, which would involve UMC. The site does not need the additional information and may save one expensive request (<u:bug>52303</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Two unnecessary LDAP bind calls have been deferred to when they are actually needed (<u:bug>52278</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The file <filename>/var/lib/simplesamlphp/secrets.inc.php</filename> which contains the <package>simplesamlphp</package> administration password could be read by any local user (<u:bug>51922</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Fix listener to set correct permissions for <filename>/etc/simplesamlphp/serviceprovider_enabled_groups.json</filename> This fixes a bug where SAML permissions applied to groups could not be evaluated (<u:bug>51608</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The password change dialog was incorrectly shown even if an incorrect password was entered and the password was expired. This has been fixed (<u:bug>51903</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:selfservice">
 			<title>Univention self service</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The point in time for token validity and rate limiting is now stored in UTC (<u:bug>52362</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The token validity check has been repaired if the token was used one day later (<u:bug>52362</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The UCR Variable <envar>umc/self-service/passwordreset/token_validity_period</envar> is now evaluated correctly (<u:bug>51287</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The Self-Service module "Your Profile" can now be used while logged in (e.g via SAML) without re-entering credentials. The behavior will only be activated on new installations with UCS 4.4-7 and can be enabled manually by setting the UCR variable <envar>umc/self-service/allow-authenticated-use</envar> to true. When enabling the behavior all UCR variables for the Self-Service which are set on the DC Master must be set identically on the Self-Service System (<u:bug>51607</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:mail">
@@ -167,28 +411,25 @@
 			</simpara></listitem>
 		</section>
 
-		<section id="changelog:service:dovecot">
-			<title>Dovecot</title>
-		</section>
-
 		<section id="changelog:service:postfix">
 			<title>Postfix</title>
-		</section>
-
-		<section id="changelog:service:virus">
-			<title>Spam/virus detection and countermeasures</title>
-		</section>
-
-		<section id="changelog:service:print">
-			<title>Printing services</title>
-		</section>
-
-		<section id="changelog:service:nagios">
-			<title>Nagios</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The following UCR variables have been added for configuring Postfix: mail/postfix/{maximal_queue_lifetime,bounce_queue_lifetime, delay_warning_time} (<u:bug>51124</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Various Apache configurations may now be configured via UCR variables. See the UCR variable information for more details. `<package>apache2</package>/min-spare-servers` `<package>apache2</package>/max-spare-servers` (<u:bug>52320</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Various Apache configurations may now be configured via UCR variables. See the UCR variable information for more details. <envar>apache2/server-limit</envar> <envar>apache2/start-servers</envar> <envar>apache2/min-spare-threads</envar> <envar>apache2/max-spare-threads</envar> <envar>apache2/threads-per-child</envar> <envar>apache2/server-signature</envar> <envar>apache2/server-tokens</envar> <envar>apache2/server-admin</envar> (<u:bug>51294</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:service:radius">
@@ -252,27 +493,64 @@
 
 		<section id="changelog:win:samba">
 			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+						The new UCR variable <envar>create/spn/account/timeout</envar> sets the timeout for how long the system waits for successful synchronization of the SPN account during a domain join. The default timeout has been increased to 10800s (<u:bug>51835</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						Samba has been adjusted so that disabling insecure DES encryption will not create any rejects in the <package>s4-connector</package> at user creation or password change any more (<u:bug>46745</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UDM extensions have been updated to be compatible to Python3.
+						The UDM extensions have been updated to be compatible to <package>python3</package>.
 					The joinscript has been updated to specify a <literal>--ucsversionend</literal> option with the
 					<command>ucs_registerLDAPExtension</command> calls. This is required in preparation for UCS 5.0
 					(<u:bug>52428</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The group membership synchronization after moving objects has been fixed (<u:bug>52364</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The S4 connector has been adjusted so that disabling insecure DES encryption types for Samba Kerberos will not create rejects on user creation or password change any more (<u:bug>46745</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+						The synchronization of the <property>CN=Default Domain Policy,CN=System</property> container can now be enabled with the UCR variable <envar>connector/s4/mapping/domainpolicy=yes</envar>. The schema file <filename>n_domainpolicy.schema</filename> has to be activated beforehand. See <ulink url="https://docs.software-univention.de/developer-reference-4.4.html#misc:lib:sh">the manual for more information</ulink> (<u:bug>51782</u:bug>).
+>>>>>>> Stashed changes
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
+			<itemizedlist>
+				<listitem><simpara>
+						The AD Connector Mapping is now customizable via the file <filename>/etc/univention/connector/localmapping.py</filename>. The manual has details on how to write this file (<u:bug>49981</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The group membership synchronization after moving objects has been fixed (<u:bug>51929</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The flag <property>pwdChangeNextLogin</property> was incorrectly unset during the sync to UCS if the password was reset without changing the flag <property>pwdChangeNextLogin</property>. This behavior has been fixed (<u:bug>51501</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If the transport connection is unexpectedly interrupted during a password synchronization, the AD connector will now reopen the connection and retry the sync (<u:bug>51904</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
 		</section>
 	</section>
 
 	<section id="changelog:other">
 		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara>
+				Expose LDAP extended error message (<u:bug>51903</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
 	</section>
 </chapter>
 <!-- vim: set ts=4 sw=4 noet: -->
