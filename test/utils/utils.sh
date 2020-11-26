@@ -830,25 +830,24 @@ install_apps_via_umc () {
 }
 
 update_apps_via_umc () {
-	local username=${1:?missing username} password=${2:?missing password} rv=0 app
-	shift 2 || return $?
-	# check if any update is available - if not, fail the test
-	local update_available=false
-	for app in "$@"; do
-		if ! assert_app_is_installed_and_latest "${app}"; then
-			update_available=true
-			break
-		fi
-	done
+	local username=${1:?missing username} password=${2:?missing password} main_app=${3:?missing main_app} rv=0 app
+	shift 3 || return $?
 
-	if ! $update_available; then
-		echo "Apps should be updated: $@; but no app has any update available"
-		exit 1
-	fi
+	# update the main app
+	python -m shared-utils/apps -U "$username" -p "$password" -a "$main_app" -u || rv=$?
 
-	for app in "$@"; do
-		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u || rv=$?
-	done
+	# TODO, do we want to update additional apps?
+	# In app tests we want to check the new version of the main app.
+	# Normally we do not want to update additional apps to the
+	# the test version, but if that becomes necessary, we can re-add
+	# the update
+	#for app in "$@"; do
+	#	test "$app" = "$main_app" && continue
+	#	if ! assert_app_is_installed_and_latest "${app}"; then
+	#		python -m shared-utils/apps -U "$username" -p "$password" -a $app -u || rv=$?
+	#	fi
+	#done
+
 	return $rv
 }
 
