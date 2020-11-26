@@ -10,3 +10,4 @@ else:
 	print('Binary::apt-get::Acquire::AllowInsecureRepositories "true";')
 	print('Acquire::AllowInsecureRepositories "true";')
 @!@
+Acquire::Max-FutureTime 31536000;

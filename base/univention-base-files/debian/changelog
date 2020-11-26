@@ -1,3 +1,9 @@
+univention-base-files (9.0.2-2) unstable; urgency=low
+
+  * Bug #51493: Temporary work-around for time skew.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 26 Nov 2020 13:20:34 +0100
+
 univention-base-files (9.0.2-1) unstable; urgency=medium
 
   * Bug #42374: Replace legacy Master/Slave wording by
