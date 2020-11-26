@@ -56,7 +56,10 @@ def handler(config_registry, changes):
 	metadata_download_failed = []
 	metadata_validation_failed = []
 	saml_idp = config_registry.get('umc/saml/idp-server')
-	if saml_idp and not download_idp_metadata(saml_idp):
+	if not saml_idp:
+		print('umc/saml/idp-server not set, nothing to do')
+		return
+	if not download_idp_metadata(saml_idp):
 		metadata_download_failed.append(saml_idp)
 	elif not valid_metadata(saml_idp):
 		metadata_validation_failed.append(saml_idp)
