@@ -1418,6 +1418,8 @@ APP_UPGRADE_FROM="12.1"
 APP_VERSION="12.2"
 UCS_MINOR="4.4
 MY_APP="myapp"
+pwd_file="portal_password"
+
 
 # 1. Create a new version in the app provider portal
 ./univention-appcenter-control new-version --username $my_username --pwdfile $pwd_file $UCS_MINOR/$MY_APP $UCS_MINOR/$MY_APP=$APP_VERSION
