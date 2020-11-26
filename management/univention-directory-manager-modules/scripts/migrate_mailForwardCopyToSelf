@@ -90,8 +90,8 @@ With UCS 4.4-v6 errata 787  the UDM attribute mailForwardCopyToSelf is no longer
 according to the values of the corresponding ldap attribute mailForwardAddress,
 but saved directly as an LDAP attribute.
 
-This script migrates the attribute values of users prior to UCS 4.4-v6 errata 787 by specifying the 
-the LDAP value mailForwardCopyToSelf and removing the redundant mailForwardAddress, which was 
+This script migrates the attribute values of users prior to UCS 4.4-v6 errata 787 by specifying the
+the LDAP value mailForwardCopyToSelf and removing the redundant mailForwardAddress, which was
 previously set implicitly.
 
 For more information please visit: https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509
