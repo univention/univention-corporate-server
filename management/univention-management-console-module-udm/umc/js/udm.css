@@ -27,14 +27,19 @@
 	max-height: 80px;
 }
 
-.umc .umcUDMUsersModule .umcImage {
+.umc .umcUDMUsersModule__jpegPhoto {
+	margin-top: 1rem;
+}
+.umc .umcUDMUsersModule__jpegPhoto .umcImage {
 	background: none;
-	padding: 0;
+}
+.umc .umcUDMUsersModule__jpegPhoto .umcImageEmpty {
+	display: none;
+}
+.umc .umcUDMUsersModule__jpegPhoto .umcImage__styleWrapper {
+	justify-content: flex-start;
 }
 
-.umc .umcUDMUsersModule .umcImage img {
-	margin: 0;
-}
 
 .umc .umcUDMLicenseIcon,
 .umc .umcUDMLicenseImportIcon {
@@ -73,10 +78,6 @@
 .umc .umcUdmLicenseImportDialog textarea {
 	height: 150px;
 	font-size: 1em;
-}
-
-.umc .umcUDMDetailPage .umcPageNav .umcImage img {
-	max-height: 250px;
 }
 
 .umc .umcUdmNewObjectDialog .dijitStackContainer {

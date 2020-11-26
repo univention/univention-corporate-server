@@ -659,6 +659,11 @@ define([
 					return;
 				}
 
+				if (iprop.id === 'jpegPhoto') {
+					iprop.class = 'umcUDMUsersModule__jpegPhoto';
+					iprop.buttonLabel = _('Upload profile image');
+				}
+
 				if (iprop.syntax === 'PortalCategorySelection') {
 					iprop.dndOptions = {
 						type: ['PortalCategorySelection'],
