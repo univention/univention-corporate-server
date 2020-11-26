@@ -1,3 +1,9 @@
+ucs-test (9.0.7-4) unstable; urgency=medium
+
+  *  Bug #52274: New, minimal test to test if the ucr var for max-file-descriptors works
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 01 Dec 2020 17:33:37 +0100
+
 ucs-test (9.0.7-3) unstable; urgency=medium
 
   * Bug #51804: Revert the workaround in 96rename* to test if the 

@@ -1,0 +1,35 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test if max-open-file-descriptors works
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-directory-manager-tools
+##  - univention-management-console
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+max_open_files=$(ucr get umc/http/max-open-file-descriptors)
+
+cleanup() {
+ucr set umc/http/max-open-file-descriptors="$max_open_files"
+service univention-management-console-web-server restart
+sleep 5
+}
+
+trap cleanup EXIT
+
+fd_max=333
+echo "Setting umc/http/max-open-file-descriptors to $fd_max"
+ucr set umc/http/max-open-file-descriptors=$fd_max
+
+service univention-management-console-web-server restart
+sleep 5
+umc_pid="$(pidof -x /usr/sbin/univention-management-console-web-server)"
+control=$(cat /proc/$umc_pid/limits | grep "open files" | grep -o "[0-9]*" | head -1)
+echo "Checking how many fds are allowed according to /proc/$umc_pid/limits"
+
+echo "Result: $control"
+[ "$control" = "$fd_max" ] || fail_bool 110 "ERROR: max file descriptor configuration didn't work
+[ $? = 0 ] && echo "SUCCESS: the maximum amount of file descriptors has been successfully set by setting ucr variable umc/http/max-open-file-descriptors"
+
