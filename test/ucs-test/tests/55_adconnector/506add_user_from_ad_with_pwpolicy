@@ -1,0 +1,66 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Test if a user can be added from ad, when mspolicy and pwQualityCheck is enabled"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - skip_admember
+## bugs:
+##  - 52261
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+
+function ad_create_user_with_password () {
+	local username="$1"
+	local password="$2"
+	local host="$(ucr get connector/ad/ldap/host)"
+	local admin="$(ucr get connector/ad/ldap/binddn | sed 's/,.*//;s/cn=//i')"
+	local pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
+	samba-tool user create --use-username-as-cn "$username" "$password" --URL="ldap://$host" -U"$admin"%"$pass"
+	return $?
+}
+
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+mspolicy=$(ucr get password/quality/mspolicy)
+ucr set password/quality/mspolicy="yes"
+invoke-rc.d univention-ad-connector restart
+
+UDM_policies_pwhistory_name="default-settings"
+udm_modify "policies/pwhistory" "" "" "" "" \
+	--set pwQualityCheck="TRUE"
+ad_wait_for_synchronization; fail_bool 0 110
+
+user1="$(random_chars)"
+UDM_users_user_username="$user1"
+UDM_users_user_password="Univention.99"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+echo "### creating user in ad ###"
+ad_create_user_with_password "$UDM_users_user_username" "$UDM_users_user_password"
+ad_wait_for_synchronization; fail_bool 0 110
+
+output=$(univention-connector-list-rejected 2>&1)
+if echo "$output" | grep -qi "$UDM_users_user_username"; then
+	echo "$output" >&2
+	fail_test 110 ""
+fi
+
+
+# cleanup
+/usr/share/univention-ad-connector/remove_ad_rejected.py "$AD_DN"
+ad_delete "$AD_DN"
+ucr set password/quality/mspolicy="$mspolicy"
+udm_modify "policies/pwhistory" "" "" "" "" \
+	--remove pwQualityCheck
+invoke-rc.d univention-ad-connector restart
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
