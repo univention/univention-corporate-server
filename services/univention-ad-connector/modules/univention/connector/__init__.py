@@ -81,11 +81,27 @@ def make_lower(mlValue):
 	return mlValue
 
 
+password_charsets = [
+	'abcdefghijklmnopqrstuvwxyz',
+	'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+	'0123456789',
+	'^!\$%&/()=?{[]}+~#-_.:,;<>|\\',
+	]
+
+def generate_strong_password(length=24):
+	pwd = []
+	charset = random.choice(password_charsets)
+	while len(pwd) < length:
+		pwd.append(random.choice(charset))
+		charset = random.choice(list(set(password_charsets) - set([charset])))
+	return "".join(pwd)
+
+
 def set_ucs_passwd_user(connector, key, ucs_object):
 	'''
 	set random password to fulfill required values
 	'''
-	ucs_object['password'] = str(int(random.random() * 100000000)) * 20  # at least 20 characters
+	ucs_object['password'] = generate_strong_password()
 
 
 def check_ucs_lastname_user(connector, key, ucs_object):
