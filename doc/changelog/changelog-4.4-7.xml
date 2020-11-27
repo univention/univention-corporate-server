@@ -464,6 +464,15 @@
 					<literal>--ucsversionend</literal> option with the <command>ucs_registerLDAPExtension</command> calls.
 					This is required in preparation for UCS 5.0 (<u:bug>52426</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A new LDAP attribute was added to the mail schema for saving the new forwarding setting.
+					For this, support was added for saving the mail forwarding setting in a dedicated LDAP attribute when UDM is used.
+					In <package>univention-mail-postfix</package> support was added for using all LDAP query results for alias resolution,
+					using a unionmap.
+					This will be activated by default for all new  installations. Existing installation must be manually migrated.
+					Please refer to the upgrade instructions in:
+					https://help.univention.com/t/migration-of-ldap-attribute-mailforwardcopytoself/16509 (<u:bug>45205</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
