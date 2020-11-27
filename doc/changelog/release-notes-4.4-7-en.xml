@@ -51,6 +51,20 @@
 
 		<itemizedlist>
 			<listitem><para>
+					Editing your own contact information on the UCS Self Service is possible with existing Single Sign On registration.
+			</para></listitem>
+			<listitem><para>
+					Administrators can use the UCR variable <envar>umc/cookie-banner/show</envar> to control the display of a banner that informs users about the use of cookies when using the UCS portal and other services.
+			</para></listitem>
+			<listitem><para>
+					In S4 Connector and AD Connector a bug was fixed that after moving or deactivating user objects, these objects were still assigned to groups that were no longer relevant for them.
+			</para></listitem>
+			<listitem><para>
+					The update to Samba 4.10.18 mitigates the <wordasword>Zerologon</wordasword> security issue, <ulink url="https://help.univention.com/t/16107">new options allow secure configuration</ulink> in environments where <wordasword>Secure Channel</wordasword> must be used.
+			</para></listitem>
+			<listitem><para>
+					Various security updates have been integrated into UCS 4.4-6, e.g. <application>Postgresql</application>, Samba, the Linux Kernel and PHP.
+					A complete list of security and package updates is available in <xref linkend="relnotes:changelog"/>.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
