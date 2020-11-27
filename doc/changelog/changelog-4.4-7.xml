@@ -13,7 +13,7 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					All security updates issued for UCS <productnumber>4.x-y</productnumber> are included:
+					All security updates issued for UCS <productnumber>4.4-6</productnumber> are included:
 				</para>
 				<itemizedlist id="_security">
 					<listitem><simpara>
@@ -134,9 +134,63 @@
 			</listitem>
 			<listitem>
 				<para>
-					The following updated packages from Debian FIXME <productnumber>0.00</productnumber> are included (<u:bug>00000</u:bug>):
+					The following updated packages from Debian Stretch <productnumber>9.13</productnumber> are included (<u:bug>52381</u:bug>):
 					<simplelist type="inline" id="_debian">
-						<member><package>FIXME</package></member>
+						<member><package>php-pear</package></member>
+						<member><package>libdatetime-timezone-perl</package></member>
+						<member><package>linux-latest</package></member>
+						<member><package>tzdata</package></member>
+						<member><package>activemq</package></member>
+						<member><package>blueman</package></member>
+						<member><package>bouncycastle</package></member>
+						<member><package>cargo</package></member>
+						<member><package>cimg</package></member>
+						<member><package>dompurify.js</package></member>
+						<member><package>drupal7</package></member>
+						<member><package>eclipse-wtp</package></member>
+						<member><package>fastd</package></member>
+						<member><package>gcc-mozilla</package></member>
+						<member><package>golang-1.7</package></member>
+						<member><package>golang-1.8</package></member>
+						<member><package>golang-go.crypto</package></member>
+						<member><package>guacamole-server</package></member>
+						<member><package>httpcomponents-client</package></member>
+						<member><package>inspircd</package></member>
+						<member><package>jackson-databind</package></member>
+						<member><package>jruby</package></member>
+						<member><package>junit4</package></member>
+						<member><package>jupyter-notebook</package></member>
+						<member><package>linux-4.19</package></member>
+						<member><package>linux-latest-4.19</package></member>
+						<member><package>llvm-toolchain-7</package></member>
+						<member><package>mediawiki</package></member>
+						<member><package>moin</package></member>
+						<member><package>nfdump</package></member>
+						<member><package>nodejs-mozilla</package></member>
+						<member><package>obfs4proxy</package></member>
+						<member><package>pacemaker</package></member>
+						<member><package>packagekit</package></member>
+						<member><package>packer</package></member>
+						<member><package>phpmyadmin</package></member>
+						<member><package>puma</package></member>
+						<member><package>rails</package></member>
+						<member><package>rclone</package></member>
+						<member><package>restic</package></member>
+						<member><package>ruby-gon</package></member>
+						<member><package>ruby-json-jwt</package></member>
+						<member><package>ruby-rack-cors</package></member>
+						<member><package>rust-cbindgen</package></member>
+						<member><package>rustc</package></member>
+						<member><package>sddm</package></member>
+						<member><package>snmptt</package></member>
+						<member><package>spice-gtk</package></member>
+						<member><package>sympa</package></member>
+						<member><package>thunderbird</package></member>
+						<member><package>tigervnc</package></member>
+						<member><package>tomcat8</package></member>
+						<member><package>wordpress</package></member>
+						<member><package>yaws</package></member>
+						<member><package>zabbix</package></member>
 					</simplelist>
 				</para>
 			</listitem>
