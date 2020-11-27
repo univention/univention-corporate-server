@@ -1442,6 +1442,9 @@ def run_cherrypy(options):
 
 
 def reload_webserver():
+	CORE.error('RS:' + repr(Ressource.sessions))
+	CORE.error('DP:' + repr(UMCP_Dispatcher.sessions))
+	CORE.error('TT:' + repr(notifier.nf_generic.__timers))
 	for func in reload_webserver.callbacks:
 		func()
 
