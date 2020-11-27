@@ -1,3 +1,9 @@
+univention-directory-notifier (14.0.3-1) unstable; urgency=low
+
+  * Bug #43687: Remove runit files on upgrade
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Nov 2020 11:23:14 +0100
+
 univention-directory-notifier (14.0.2-1) unstable; urgency=low
 
   * Bug #43687: Remove runit files on upgrade
