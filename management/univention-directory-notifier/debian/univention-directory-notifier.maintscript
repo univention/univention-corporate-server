@@ -1,3 +1,4 @@
 rm_conffile /etc/init.d/univention-directory-notifier 14.0.3~
 rm_conffile /etc/runit/univention-directory-notifier/down 14.0.3~
 rm_conffile /etc/runit/univention-directory-notifier/finish 14.0.3~
+rm_conffile /etc/univention/templates/files/etc/runit/univention-directory-notifier/run 14.0.4~
