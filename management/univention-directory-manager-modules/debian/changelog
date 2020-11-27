@@ -1,3 +1,9 @@
+univention-directory-manager-modules (14.0.17-5) unstable; urgency=medium
+
+  * Bug #45205: remove duplicate word in migration script.
+
+ -- Tobias Wenzel <wenzel@univention.de>  Fri, 27 Nov 2020 09:57:28 +0100
+
 univention-directory-manager-modules (14.0.17-4) unstable; urgency=low
 
   * Bug #45205: readd support for email forwarding setting
