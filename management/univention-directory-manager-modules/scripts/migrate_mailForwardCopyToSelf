@@ -86,11 +86,11 @@ def main(args):
 if __name__ == "__main__":
 	description = """
 
-With UCS 4.4-v6 errata 787  the UDM attribute mailForwardCopyToSelf is no longer calculated
+With UCS 4.4-7 the UDM attribute mailForwardCopyToSelf is no longer calculated
 according to the values of the corresponding ldap attribute mailForwardAddress,
 but saved directly as an LDAP attribute.
 
-This script migrates the attribute values of users prior to UCS 4.4-v6 errata 787 by specifying
+This script migrates the attribute values of users prior to UCS 4.4-7 by specifying
 the LDAP value mailForwardCopyToSelf and removing the redundant mailForwardAddress, which was
 previously set implicitly.
 
