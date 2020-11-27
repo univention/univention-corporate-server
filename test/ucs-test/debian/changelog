@@ -1,3 +1,9 @@
+ucs-test (9.0.5-36) unstable; urgency=low
+
+  * Bug #45205: make IMAP folder testing more rebust against timing issues
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 27 Nov 2020 08:00:34 +0100
+
 ucs-test (9.0.5-35) unstable; urgency=medium
 
   * Bug #52433: Test ucs_registerLDAPExtension --name option

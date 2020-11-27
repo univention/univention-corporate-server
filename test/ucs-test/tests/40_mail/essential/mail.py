@@ -459,7 +459,19 @@ def imap_search_mail(token=None, messageid=None, server=None, imap_user=None, im
 	else:
 		conn = imaplib.IMAP4(host=server)
 	assert conn.login(imap_user, imap_password)[0] == 'OK', 'imap_search_mail: login failed'
-	assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)
+	timeout = 60
+	while True:
+		try:
+			assert conn.select(imap_folder)[0] == 'OK', 'imap_search_mail: select folder %r failed' % (imap_folder,)
+			break
+		except AssertionError as exc:
+			if timeout > 0:
+				print("Failed reading folder {!r}. Retrying in 10s. AssertionError: {!s}".format(imap_folder, exc))
+				timeout -= 10
+				time.sleep(10)
+			else:
+				print("Failed reading folder {!r} for 60s. AssertionError: {!s}".format(imap_folder, exc))
+				raise
 
 	foundcnt = 0
 	if messageid:
