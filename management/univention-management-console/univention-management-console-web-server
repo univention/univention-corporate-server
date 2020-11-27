@@ -305,17 +305,6 @@ class UMCP_Dispatcher(object):
 		except KeyError:
 			CORE.info('Session %r not found' % (sessionid,))
 
-	@classmethod
-	def clean_sessions(cls):
-		now = time.time()
-		for sessionid, user in list(Ressource.sessions.items()):
-			session = UMCP_Dispatcher.sessions.get(sessionid)
-			if (not session or not session._requestid2response_queue) and user.timed_out(now):
-				CORE.info('session %r timed out' % (sessionid,))
-				Ressource.sessions.pop(user.sessionid, None)
-				user.on_logout()
-		return True  # execute again!
-
 
 class UploadManager(dict):
 
@@ -371,17 +360,32 @@ class QueueRequest(object):
 
 class User(object):
 
-	__slots__ = ('sessionid', 'username', 'password', 'saml', '_timeout')
+	__slots__ = ('sessionid', 'username', 'password', 'saml', '_timeout', '_timeout_id')
 
 	def __init__(self, sessionid, username, password, saml=None):
 		self.sessionid = sessionid
 		self.username = username
 		self.password = password
 		self.saml = saml
+		self._timeout_id = None
 		self.reset_timeout()
 
+	def _session_timeout_timer(self):
+		session = UMCP_Dispatcher.sessions.get(self.sessionid)
+		if session and session._requestid2response_queue:
+			self._timeout = 1
+			self._timeout_id = notifier.timer_add(1000, self._session_timeout_timer)
+			return
+
+		CORE.info('session %r timed out' % (self.sessionid,))
+		Ressource.sessions.pop(self.sessionid, None)
+		self.on_logout()
+		return False
+
 	def reset_timeout(self):
+		notifier.timer_remove(self._timeout_id)
 		self._timeout = time.time() + _session_timeout
+		self._timeout_id = notifier.timer_add(int(self.session_end_time - time.time()) * 1000, self._session_timeout_timer)
 
 	def timed_out(self, now):
 		return self.session_end_time < now
@@ -412,6 +416,7 @@ class User(object):
 			return None
 
 	def on_logout(self):
+		notifier.timer_remove(self._timeout_id)
 		if SAML.SP and self.saml:
 			SAML.SP.local_logout(decode_name_id(self.saml.name_id))
 
@@ -1605,7 +1610,6 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			notifier.init(notifier.GENERIC)
 			notifier.dispatch.MIN_TIMER = get_int('umc/http/dispatch-interval', notifier.dispatch.MIN_TIMER)
 			notifier.dispatcher_add(UMCP_Dispatcher.check_queue)
-			notifier.timer_add(10000, UMCP_Dispatcher.clean_sessions)
 			notifier.loop()
 		except (SystemExit, KeyboardInterrupt) as exc:
 			# stop the web server
