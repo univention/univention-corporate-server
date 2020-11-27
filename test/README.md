@@ -1,48 +1,11 @@
 # Tests
 
-## Apps
-
-### [App testing](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/Apps/)
-
-#### [App Autotest MultiEnv](ttps://jenkins.knut.univention.de:8181/job/UCS-4.4/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv/)
-
-* [scenarios/app-testing/autotest-100-app-master-no-samba.cfg](scenarios/app-testing/autotest-100-app-master-no-samba.cfg)
-* [scenarios/app-testing/autotest-101-app-master-s4.cfg](scenarios/app-testing/autotest-101-app-master-s4.cfg)
-* [scenarios/app-testing/autotest-102-app-backup-no-samba.cfg](scenarios/app-testing/autotest-102-app-backup-no-samba.cfg)
-* [scenarios/app-testing/autotest-103-app-backup-s4.cfg](scenarios/app-testing/autotest-103-app-backup-s4.cfg)
-* [scenarios/app-testing/autotest-104-app-slave-no-samba.cfg](scenarios/app-testing/autotest-104-app-slave-no-samba.cfg)
-* [scenarios/app-testing/autotest-105-app-slave-s4.cfg](scenarios/app-testing/autotest-105-app-slave-s4.cfg)
-* [scenarios/app-testing/autotest-106-app-member-no-samba.cfg](scenarios/app-testing/autotest-106-app-member-no-samba.cfg)
-* [scenarios/app-testing/autotest-107-app-member-s4.cfg](scenarios/app-testing/autotest-107-app-member-s4.cfg)
-
-#### [App Autotest MultiEnv Release Update](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv%20Release%20Update/)
-
-* [scenarios/app-testing/autotest-110-release-appupdate-master-no-samba.cfg](scenarios/app-testing/autotest-110-release-appupdate-master-no-samba.cfg)
-* [scenarios/app-testing/autotest-111-release-appupdate-master-s4.cfg](scenarios/app-testing/autotest-111-release-appupdate-master-s4.cfg)
-* [scenarios/app-testing/autotest-112-release-appupdate-backup-no-samba.cfg](scenarios/app-testing/autotest-112-release-appupdate-backup-no-samba.cfg)
-* [scenarios/app-testing/autotest-113-release-appupdate-backup-s4.cfg](scenarios/app-testing/autotest-113-release-appupdate-backup-s4.cfg)
-* [scenarios/app-testing/autotest-114-release-appupdate-slave-no-samba.cfg](scenarios/app-testing/autotest-114-release-appupdate-slave-no-samba.cfg)
-* [scenarios/app-testing/autotest-115-release-appupdate-slave-s4.cfg](scenarios/app-testing/autotest-115-release-appupdate-slave-s4.cfg)
-* [scenarios/app-testing/autotest-116-release-appupdate-member-no-samba.cfg](scenarios/app-testing/autotest-116-release-appupdate-member-no-samba.cfg)
-* [scenarios/app-testing/autotest-117-release-appupdate-member-s4.cfg](scenarios/app-testing/autotest-117-release-appupdate-member-s4.cfg)
-
-#### [App Autotest Update MultiEnv](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/Apps/job/admin-dashboard/job/App%20Autotest%20Update%20MultiEnv/)
-
-* [scenarios/app-testing/autotest-120-appupdate-master-no-samba.cfg](scenarios/app-testing/autotest-120-appupdate-master-no-samba.cfg)
-* [scenarios/app-testing/autotest-121-appupdate-master-s4.cfg](scenarios/app-testing/autotest-121-appupdate-master-s4.cfg)
-* [scenarios/app-testing/autotest-122-appupdate-backup-no-samba.cfg](scenarios/app-testing/autotest-122-appupdate-backup-no-samba.cfg)
-* [scenarios/app-testing/autotest-123-appupdate-backup-s4.cfg](scenarios/app-testing/autotest-123-appupdate-backup-s4.cfg)
-* [scenarios/app-testing/autotest-124-appupdate-slave-no-samba.cfg](scenarios/app-testing/autotest-124-appupdate-slave-no-samba.cfg)
-* [scenarios/app-testing/autotest-125-appupdate-slave-s4.cfg](scenarios/app-testing/autotest-125-appupdate-slave-s4.cfg)
-* [scenarios/app-testing/autotest-126-appupdate-member-no-samba.cfg](scenarios/app-testing/autotest-126-appupdate-member-no-samba.cfg)
-* [scenarios/app-testing/autotest-127-appupdate-member-s4.cfg](scenarios/app-testing/autotest-127-appupdate-member-s4.cfg)
-
 
 ## UCS
 
-### [Default](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/)
+### [Default](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/)
 
-#### [MultiEnv: AMI<4.4, join, upgrade=4.4, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/AutotestUpgrade/)
+#### [MultiEnv: AMI<5.0, join, upgrade=5.0, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestUpgrade/)
 
 1. previous AMI
 2. join
@@ -60,8 +23,8 @@
 * [scenarios/autotest-077-update-member-s4.cfg](scenarios/autotest-077-update-member-s4.cfg)
 * [scenarios/autotest-078-update-slave-samba-pdc.cfg](scenarios/autotest-078-update-slave-samba-pdc.cfg)
 
-#### [MultiEnv: AMI=4.4, errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/AutotestJoin/)
-#### [MultiEnv: AMI=4.4, only released errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/AutotestJoinReleased/)
+#### [MultiEnv: AMI=5.0, errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoin/)
+#### [MultiEnv: AMI=5.0, only released errata, join, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/AutotestJoinReleased/)
 
 1. current AMI
 2. errata
@@ -79,7 +42,7 @@
 * [scenarios/autotest-097-member-s4.cfg](scenarios/autotest-097-member-s4.cfg)
 * [scenarios/autotest-098-slave-samba-pdc.cfg](scenarios/autotest-098-slave-samba-pdc.cfg)
 
-#### [Tests - AD Connector (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/ADConnectorMultiEnv/)
+#### [Tests - AD Connector (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/ADConnectorMultiEnv/)
 
 1. AD connector setups with different windows versions
 
@@ -93,7 +56,7 @@
 * [scenarios/ad-connector/autotest-237-adsync-s4connector-w2k8r2-german.cfg](scenarios/ad-connector/autotest-237-adsync-s4connector-w2k8r2-german.cfg)
 * [scenarios/ad-connector/autotest-adsync-w2012-german.cfg](scenarios/ad-connector/autotest-adsync-w2012-german.cfg)
 
-#### [Tests - AD Member Mode (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/ADMemberMultiEnv/)
+#### [Tests - AD Member Mode (ec2)](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/ADMemberMultiEnv/)
 
 1. AD member setups for installation/module with different windows versions
 
@@ -103,21 +66,14 @@
 * [scenarios/ad-membermode/autotest-224-admember-w2k12-german-other-join-user.cfg](scenarios/ad-membermode/autotest-224-admember-w2k12-german-other-join-user.cfg)
 * [scenarios/ad-membermode/autotest-225-admember-w2k12r2-france.cfg](scenarios/ad-membermode/autotest-225-admember-w2k12r2-france.cfg)
 
-#### [App Appliances Tests](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/App%20Appliances%20Tests/)
-#### [Tests - App Appliance](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/App%20Appliance%20Tests/)
+#### [Tests - App Appliance](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/App%20Appliance%20Tests/)
 
-UCS with pre-installed App
-
-* [scenarios/appliance-testing/ad-member.cfg](scenarios/appliance-testing/ad-member.cfg)
-* [scenarios/appliance-testing/master.cfg](scenarios/appliance-testing/master.cfg)
-* [scenarios/appliance-testing/master-no-internet.cfg](scenarios/appliance-testing/master-no-internet.cfg)
+UCS with pre-installed App, to check if changes in UCS break the appliance setup
 
 * [scenarios/appliance-testing/app-appliance-errata-test.cfg](scenarios/appliance-testing/app-appliance-errata-test.cfg)
 * [scenarios/appliance-testing/app-appliance-only-released.cfg](scenarios/appliance-testing/app-appliance-only-released.cfg)
 
-* [scenarios/appliance-testing/fast-demo.cfg](scenarios/appliance-testing/fast-demo.cfg)
-
-#### [Tests - DVD Installation](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/Installation%20Tests/)
+#### [Tests - DVD Installation](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/Installation%20Tests/)
 
 1. Various UCS installation tests (fail immediately if one setup step fails, only basic tests)
 
@@ -130,8 +86,9 @@ UCS with pre-installed App
 * [scenarios/install-testing/samba-env.cfg](scenarios/install-testing/samba-env.cfg)
 * [scenarios/install-testing/school.cfg](scenarios/install-testing/school.cfg)
 * [scenarios/install-testing/school-dev.cfg](scenarios/install-testing/school-dev.cfg)
+* [scenarios/install-testing/school-scope.cfg](scenarios/install-testing/school-scope.cfg)
 
-#### [Tests - S4Connector](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/S4Connector/)
+#### [Tests - S4Connector](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/S4Connector/)
 
 1. Install/Update/OnlyReleasedErrata scenario for S4Connector tests.
 
@@ -139,7 +96,7 @@ UCS with pre-installed App
 * [scenarios/s4-connector/master-s4connector.cfg](scenarios/s4-connector/master-s4connector.cfg)
 * [scenarios/s4-connector/update-master-s4connector.cfg](scenarios/s4-connector/update-master-s4connector.cfg)
 
-### [Tests - UCS update](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/job/Update%20Tests/)
+### [Tests - UCS update](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/job/Update%20Tests/)
 
 1. Various UCS update tests (fail immediately if one setup step fails, only basic tests)
 
@@ -148,25 +105,8 @@ UCS with pre-installed App
 * [scenarios/update-testing/update-from-1.2-start-4.3-4.cfg](scenarios/update-testing/update-from-1.2-start-4.3-4.cfg): Update from old UCS-1.2 system
 * [scenarios/update-testing/update-from-4.2-4.cfg](scenarios/update-testing/update-from-4.2-4.cfg): Update system with all UCS components
 
-### ???
-
-* [scenarios/ipv6/autotest-300-master46-slave46.cfg](scenarios/ipv6/autotest-300-master46-slave46.cfg)
-* [scenarios/ipv6/autotest-301-master46-backup46.cfg](scenarios/ipv6/autotest-301-master46-backup46.cfg)
-* [scenarios/ipv6/autotest-302-master46-member46.cfg](scenarios/ipv6/autotest-302-master46-member46.cfg)
-* [scenarios/ipv6/autotest-303-master46-slave6.cfg](scenarios/ipv6/autotest-303-master46-slave6.cfg)
-* [scenarios/ipv6/autotest-304-master46-backup6.cfg](scenarios/ipv6/autotest-304-master46-backup6.cfg)
-* [scenarios/ipv6/autotest-305-master46-member6.cfg](scenarios/ipv6/autotest-305-master46-member6.cfg)
-* [scenarios/ipv6/autotest-306-master6-slave46.cfg](scenarios/ipv6/autotest-306-master6-slave46.cfg)
-* [scenarios/ipv6/autotest-307-master6-backup46.cfg](scenarios/ipv6/autotest-307-master6-backup46.cfg)
-* [scenarios/ipv6/autotest-308-master6-member46.cfg](scenarios/ipv6/autotest-308-master6-member46.cfg)
-* [scenarios/ipv6/autotest-309-master6-slave6.cfg](scenarios/ipv6/autotest-309-master6-slave6.cfg)
-* [scenarios/ipv6/autotest-310-master6-backup6.cfg](scenarios/ipv6/autotest-310-master6-backup6.cfg)
-* [scenarios/ipv6/autotest-311-master6-member6.cfg](scenarios/ipv6/autotest-311-master6-member6.cfg)
-* [scenarios/ipv6/autotest-312-master46-masteronly.cfg](scenarios/ipv6/autotest-312-master46-masteronly.cfg)
-* [scenarios/ipv6/autotest-313-master6-masteronly.cfg](scenarios/ipv6/autotest-313-master6-masteronly.cfg)
-
-### [MultiEnv: IPv6 AMI\<4.4, upgrade=4.4, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/All/job/AutotestIPv6Update/)
-### [MultiEnv: IPv6 AMI=4.4, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/All/job/AutotestIPv6/)
+### [MultiEnv: IPv6 AMI\<5.0, upgrade=5.0, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/All/job/AutotestIPv6Update/)
+### [MultiEnv: IPv6 AMI=5.0, Autotest](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/All/job/AutotestIPv6/)
 
 1. (Master / Backup / Slave / Member) × (IPv4 + IPv& / IPv6 only)
 2. previous AMI
@@ -188,7 +128,57 @@ UCS with pre-installed App
 * [scenarios/ipv6/generic/autotest-312-master46-masteronly.cfg](scenarios/ipv6/generic/autotest-312-master46-masteronly.cfg)
 * [scenarios/ipv6/generic/autotest-313-master6-masteronly.cfg](scenarios/ipv6/generic/autotest-313-master6-masteronly.cfg)
 
-### ???
+-----
+
+### [Appliances](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/)
+
+* [scenarios/app-appliance.cfg](scenarios/app-appliance.cfg): Create App Appliance (Stable.ISO → $mm-99 → +App → `$BS2/mirror/appcenter.test/univention-apps/current/`KVM,VMware,ESX,VirtualBox)
+* [scenarios/ucs-appliance.cfg](scenarios/ucs-appliance.cfg): Create UCS Appliance (Stable.ISO → $mm-99 → `$BS2/temp/build/appliance/`KVM,VMware,ESX,VirtualBox,HyperV)
+* [scenarios/appliances/ec2-appliance.cfg](scenarios/appliances/ec2-appliance.cfg): Create UCS ec2 image (Stable.ISO → `$VIRT/images/`KVM → EC2)
+* [scenarios/cloud-init-image.cfg](scenarios/cloud-init-image.cfg)
+
+#### [Test UCS Appliance](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/job/TestUCSAppliance/)
+
+* [scenarios/ucs-appliance-testing/ad-member.cfg](scenarios/ucs-appliance-testing/ad-member.cfg)
+* [scenarios/ucs-appliance-testing/master.cfg](scenarios/ucs-appliance-testing/master.cfg)
+* [scenarios/ucs-appliance-testing/master-slave.cfg](scenarios/ucs-appliance-testing/master-slave.cfg)
+
+#### [Test EC2 UCS Appliance](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Appliances/job/TestEC2UCSAppliance/)
+
+* [scenarios/ucs-appliance-testing/ad-member-ec2.cfg](scenarios/ucs-appliance-testing/ad-member-ec2.cfg)
+* [scenarios/ucs-appliance-testing/master-ec2.cfg](scenarios/ucs-appliance-testing/master-ec2.cfg)
+* [scenarios/ucs-appliance-testing/master-slave-ec2.cfg](scenarios/ucs-appliance-testing/master-slave-ec2.cfg)
+
+-----
+
+### [KVM Templates](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/KVM%20Templates/)
+
+* [test/utils/create_generic_unsafe_kvm_template.sh](test/utils/create_generic_unsafe_kvm_template.sh): (`/mnt/omar/vmwares/kvm/` `ucs-appliance/UCS-$mmp-KVM-Image.qcow2` → `single/UCS/$mmp_generic-unsafe_amd64.tar.gz`)
+* [scenarios/appliances/joined-kvm-templates.cfg](scenarios/appliances/joined-kvm-templates.cfg): Create ucs-kt-get templates for joined ucs roles
+* [scenarios/appliances/role-kvm-templates.cfg](scenarios/appliances/role-kvm-templates.cfg): Create ucs-kt-get templates for ucs roles
+
+-----
+
+### VM creation
+
+* [scenarios/base/ucs-master-backup.cfg](scenarios/base/ucs-master-backup.cfg): Setup Master and Backup unjoined
+* [scenarios/base/ucs-master-backup-joined.cfg](scenarios/base/ucs-master-backup-joined.cfg): Setup Master and Backup joined
+
+-----
+
+### ??? deprecated ???
+
+* [scenarios/setup-testing/backup-no-samba.cfg](scenarios/setup-testing/backup-no-samba.cfg)
+* [scenarios/setup-testing/backup-s4.cfg](scenarios/setup-testing/backup-s4.cfg)
+* [scenarios/setup-testing/master-no-samba.cfg](scenarios/setup-testing/master-no-samba.cfg)
+* [scenarios/setup-testing/master-s4.cfg](scenarios/setup-testing/master-s4.cfg)
+* [scenarios/setup-testing/member-no-samba.cfg](scenarios/setup-testing/member-no-samba.cfg)
+* [scenarios/setup-testing/member-s4.cfg](scenarios/setup-testing/member-s4.cfg)
+* [scenarios/setup-testing/slave-no-samba.cfg](scenarios/setup-testing/slave-no-samba.cfg)
+* [scenarios/setup-testing/slave-s4.cfg](scenarios/setup-testing/slave-s4.cfg)
+* [scenarios/setup-testing/slave-samba-pdc.cfg](scenarios/setup-testing/slave-samba-pdc.cfg)
+* [scenarios/windows/win2k16-de-client.cfg](scenarios/windows/win2k16-de-client.cfg)
+* [scenarios/windows/win2k8r2-ad-level-2003.cfg](scenarios/windows/win2k8r2-ad-level-2003.cfg)
 
 * [scenarios/ipv6/update/autotest-300-master46-slave46.cfg](scenarios/ipv6/update/autotest-300-master46-slave46.cfg)
 * [scenarios/ipv6/update/autotest-301-master46-backup46.cfg](scenarios/ipv6/update/autotest-301-master46-backup46.cfg)
@@ -205,55 +195,64 @@ UCS with pre-installed App
 * [scenarios/ipv6/update/autotest-312-master46-masteronly.cfg](scenarios/ipv6/update/autotest-312-master46-masteronly.cfg)
 * [scenarios/ipv6/update/autotest-313-master6-masteronly.cfg](scenarios/ipv6/update/autotest-313-master6-masteronly.cfg)
 
------
+* [scenarios/ipv6/autotest-300-master46-slave46.cfg](scenarios/ipv6/autotest-300-master46-slave46.cfg)
+* [scenarios/ipv6/autotest-301-master46-backup46.cfg](scenarios/ipv6/autotest-301-master46-backup46.cfg)
+* [scenarios/ipv6/autotest-302-master46-member46.cfg](scenarios/ipv6/autotest-302-master46-member46.cfg)
+* [scenarios/ipv6/autotest-303-master46-slave6.cfg](scenarios/ipv6/autotest-303-master46-slave6.cfg)
+* [scenarios/ipv6/autotest-304-master46-backup6.cfg](scenarios/ipv6/autotest-304-master46-backup6.cfg)
+* [scenarios/ipv6/autotest-305-master46-member6.cfg](scenarios/ipv6/autotest-305-master46-member6.cfg)
+* [scenarios/ipv6/autotest-306-master6-slave46.cfg](scenarios/ipv6/autotest-306-master6-slave46.cfg)
+* [scenarios/ipv6/autotest-307-master6-backup46.cfg](scenarios/ipv6/autotest-307-master6-backup46.cfg)
+* [scenarios/ipv6/autotest-308-master6-member46.cfg](scenarios/ipv6/autotest-308-master6-member46.cfg)
+* [scenarios/ipv6/autotest-309-master6-slave6.cfg](scenarios/ipv6/autotest-309-master6-slave6.cfg)
+* [scenarios/ipv6/autotest-310-master6-backup6.cfg](scenarios/ipv6/autotest-310-master6-backup6.cfg)
+* [scenarios/ipv6/autotest-311-master6-member6.cfg](scenarios/ipv6/autotest-311-master6-member6.cfg)
+* [scenarios/ipv6/autotest-312-master46-masteronly.cfg](scenarios/ipv6/autotest-312-master46-masteronly.cfg)
+* [scenarios/ipv6/autotest-313-master6-masteronly.cfg](scenarios/ipv6/autotest-313-master6-masteronly.cfg)
 
-### [Appliances](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/Appliances/)
+## Apps
 
-* [scenarios/app-appliance.cfg](scenarios/app-appliance.cfg): Create App Appliance (Stable.ISO → $mm-99 → +App → `$BS2/mirror/appcenter.test/univention-apps/current/`KVM,VMware,ESX,VirtualBox)
-* [scenarios/ucs-appliance.cfg](scenarios/ucs-appliance.cfg): Create UCS Appliance (Stable.ISO → $mm-99 → `$BS2/temp/build/appliance/`KVM,VMware,ESX,VirtualBox,HyperV)
-* [scenarios/appliances/ec2-appliance.cfg](scenarios/appliances/ec2-appliance.cfg): Create UCS ec2 image (Stable.ISO → `$VIRT/images/`KVM → EC2)
-* [scenarios/cloud-init-image.cfg](scenarios/cloud-init-image.cfg)
+### [App testing](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/)
 
-#### [Test UCS Appliance](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/Appliances/job/TestUCSAppliance/)
+#### [App Autotest MultiEnv](ttps://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv/)
 
-* [scenarios/ucs-appliance-testing/ad-member.cfg](scenarios/ucs-appliance-testing/ad-member.cfg)
-* [scenarios/ucs-appliance-testing/master.cfg](scenarios/ucs-appliance-testing/master.cfg)
-* [scenarios/ucs-appliance-testing/master-slave.cfg](scenarios/ucs-appliance-testing/master-slave.cfg)
+* [scenarios/app-testing/autotest-100-app-master-no-samba.cfg](scenarios/app-testing/autotest-100-app-master-no-samba.cfg)
+* [scenarios/app-testing/autotest-101-app-master-s4.cfg](scenarios/app-testing/autotest-101-app-master-s4.cfg)
+* [scenarios/app-testing/autotest-102-app-backup-no-samba.cfg](scenarios/app-testing/autotest-102-app-backup-no-samba.cfg)
+* [scenarios/app-testing/autotest-103-app-backup-s4.cfg](scenarios/app-testing/autotest-103-app-backup-s4.cfg)
+* [scenarios/app-testing/autotest-104-app-slave-no-samba.cfg](scenarios/app-testing/autotest-104-app-slave-no-samba.cfg)
+* [scenarios/app-testing/autotest-105-app-slave-s4.cfg](scenarios/app-testing/autotest-105-app-slave-s4.cfg)
+* [scenarios/app-testing/autotest-106-app-member-no-samba.cfg](scenarios/app-testing/autotest-106-app-member-no-samba.cfg)
+* [scenarios/app-testing/autotest-107-app-member-s4.cfg](scenarios/app-testing/autotest-107-app-member-s4.cfg)
 
-#### [Test EC2 UCS Appliance](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/Appliances/job/TestEC2UCSAppliance/)
+#### [App Autotest MultiEnv Release Update](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20MultiEnv%20Release%20Update/)
 
-* [scenarios/ucs-appliance-testing/ad-member-ec2.cfg](scenarios/ucs-appliance-testing/ad-member-ec2.cfg)
-* [scenarios/ucs-appliance-testing/master-ec2.cfg](scenarios/ucs-appliance-testing/master-ec2.cfg)
-* [scenarios/ucs-appliance-testing/master-slave-ec2.cfg](scenarios/ucs-appliance-testing/master-slave-ec2.cfg)
+* [scenarios/app-testing/autotest-110-release-appupdate-master-no-samba.cfg](scenarios/app-testing/autotest-110-release-appupdate-master-no-samba.cfg)
+* [scenarios/app-testing/autotest-111-release-appupdate-master-s4.cfg](scenarios/app-testing/autotest-111-release-appupdate-master-s4.cfg)
+* [scenarios/app-testing/autotest-112-release-appupdate-backup-no-samba.cfg](scenarios/app-testing/autotest-112-release-appupdate-backup-no-samba.cfg)
+* [scenarios/app-testing/autotest-113-release-appupdate-backup-s4.cfg](scenarios/app-testing/autotest-113-release-appupdate-backup-s4.cfg)
+* [scenarios/app-testing/autotest-114-release-appupdate-slave-no-samba.cfg](scenarios/app-testing/autotest-114-release-appupdate-slave-no-samba.cfg)
+* [scenarios/app-testing/autotest-115-release-appupdate-slave-s4.cfg](scenarios/app-testing/autotest-115-release-appupdate-slave-s4.cfg)
+* [scenarios/app-testing/autotest-116-release-appupdate-member-no-samba.cfg](scenarios/app-testing/autotest-116-release-appupdate-member-no-samba.cfg)
+* [scenarios/app-testing/autotest-117-release-appupdate-member-s4.cfg](scenarios/app-testing/autotest-117-release-appupdate-member-s4.cfg)
 
-### [KVM Templates](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/KVM%20Templates/)
+#### [App Autotest Update MultiEnv](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/Apps/job/admin-dashboard/job/App%20Autotest%20Update%20MultiEnv/)
 
-* Create generic-unsafe ucs-kt-get template: (`/mnt/omar/vmwares/kvm/` `ucs-appliance/UCS-$mmp-KVM-Image.qcow2` → `single/UCS/$mmp_generic-unsafe_amd64.tar.gz`)
-* [scenarios/appliances/joined-kvm-templates.cfg](scenarios/appliances/joined-kvm-templates.cfg): Create ucs-kt-get templates for joined ucs roles
-* [scenarios/appliances/role-kvm-templates.cfg](scenarios/appliances/role-kvm-templates.cfg): Create ucs-kt-get templates for ucs roles
+* [scenarios/app-testing/autotest-120-appupdate-master-no-samba.cfg](scenarios/app-testing/autotest-120-appupdate-master-no-samba.cfg)
+* [scenarios/app-testing/autotest-121-appupdate-master-s4.cfg](scenarios/app-testing/autotest-121-appupdate-master-s4.cfg)
+* [scenarios/app-testing/autotest-122-appupdate-backup-no-samba.cfg](scenarios/app-testing/autotest-122-appupdate-backup-no-samba.cfg)
+* [scenarios/app-testing/autotest-123-appupdate-backup-s4.cfg](scenarios/app-testing/autotest-123-appupdate-backup-s4.cfg)
+* [scenarios/app-testing/autotest-124-appupdate-slave-no-samba.cfg](scenarios/app-testing/autotest-124-appupdate-slave-no-samba.cfg)
+* [scenarios/app-testing/autotest-125-appupdate-slave-s4.cfg](scenarios/app-testing/autotest-125-appupdate-slave-s4.cfg)
+* [scenarios/app-testing/autotest-126-appupdate-member-no-samba.cfg](scenarios/app-testing/autotest-126-appupdate-member-no-samba.cfg)
+* [scenarios/app-testing/autotest-127-appupdate-member-s4.cfg](scenarios/app-testing/autotest-127-appupdate-member-s4.cfg)
 
-### VM creation
+#### [App Appliances Tests](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/App%20Appliances%20Tests/)
 
-* [scenarios/base/ucs-master-backup.cfg](scenarios/base/ucs-master-backup.cfg): Setup Master and Backup unjoined
-* [scenarios/base/ucs-master-backup-joined.cfg](scenarios/base/ucs-master-backup-joined.cfg): Setup Master and Backup joined
-
-### ???
-
-* [scenarios/setup-testing/backup-no-samba.cfg](scenarios/setup-testing/backup-no-samba.cfg)
-* [scenarios/setup-testing/backup-s4.cfg](scenarios/setup-testing/backup-s4.cfg)
-* [scenarios/setup-testing/master-no-samba.cfg](scenarios/setup-testing/master-no-samba.cfg)
-* [scenarios/setup-testing/master-s4.cfg](scenarios/setup-testing/master-s4.cfg)
-* [scenarios/setup-testing/member-no-samba.cfg](scenarios/setup-testing/member-no-samba.cfg)
-* [scenarios/setup-testing/member-s4.cfg](scenarios/setup-testing/member-s4.cfg)
-* [scenarios/setup-testing/slave-no-samba.cfg](scenarios/setup-testing/slave-no-samba.cfg)
-* [scenarios/setup-testing/slave-s4.cfg](scenarios/setup-testing/slave-s4.cfg)
-* [scenarios/setup-testing/slave-samba-pdc.cfg](scenarios/setup-testing/slave-samba-pdc.cfg)
-
-
-### ???
-
-* [scenarios/windows/win2k16-de-client.cfg](scenarios/windows/win2k16-de-client.cfg)
-* [scenarios/windows/win2k8r2-ad-level-2003.cfg](scenarios/windows/win2k8r2-ad-level-2003.cfg)
+* [scenarios/appliance-testing/ad-member.cfg](scenarios/appliance-testing/ad-member.cfg)
+* [scenarios/appliance-testing/master.cfg](scenarios/appliance-testing/master.cfg)
+* [scenarios/appliance-testing/master-no-internet.cfg](scenarios/appliance-testing/master-no-internet.cfg)
+* [scenarios/appliance-testing/fast-demo.cfg](scenarios/appliance-testing/fast-demo.cfg)
 
 -----
 
@@ -280,7 +279,7 @@ UCS with pre-installed App
 
 -----
 
-## [Product tests](https://jenkins.knut.univention.de:8181/job/UCS-4.4/job/UCS-4.4-7/view/Product%20Tests/)
+## [Product tests](https://jenkins.knut.univention.de:8181/job/UCS-5.0/job/UCS-5.0-0/view/Product%20Tests/)
 
 1. Last minute tests before new release
 
@@ -318,23 +317,23 @@ UCS with pre-installed App
 
 -----
 
-## [UCS@school](https://jenkins.knut.univention.de:8181/job/UCSschool-4.4/)
+## [UCS@school](https://jenkins.knut.univention.de:8181/job/UCSschool-5.0/)
 
-### [U@S performance tests](https://jenkins.knut.univention.de:8181/job/UCSschool%204.4%20Performance/)
+### [U@S performance tests](https://jenkins.knut.univention.de:8181/job/UCSschool%205.0%20Performance/)
 
-* [scenarios/ucsschool-performance-30000.cfg](scenarios/ucsschool-performance-30000.cfg) → [UCSschool 4.4 Performance 30000](https://jenkins.knut.univention.de:8181/job/UCSschool%204.4%20Performance/job/UCSschool%204.4%20Performance%2030000/)
-* [scenarios/ucsschool-performance-500.cfg](scenarios/ucsschool-performance-500.cfg) → [UCSschool 4.4 Performance 500](https://jenkins.knut.univention.de:8181/job/UCSschool%204.4%20Performance/job/UCSschool%204.4%20Performance%20500/)
-* [scenarios/ucsschool-performance-65000.cfg](scenarios/ucsschool-performance-65000.cfg) → [UCSschool 4.4 Performance 65000](https://jenkins.knut.univention.de:8181/job/UCSschool%204.4%20Performance/job/UCSschool%204.4%20Performance%2065000/)
-* [scenarios/ucsschool-performance-new-import-10000.cfg](scenarios/ucsschool-performance-new-import-10000.cfg) → [UCSschool 4.4 Performance NewImport 10.000](https://jenkins.knut.univention.de:8181/job/UCSschool%204.4%20Performance/job/UCSschool%204.4%20Performance%20NewImport%2010.000/)
+* [scenarios/ucsschool-performance-30000.cfg](scenarios/ucsschool-performance-30000.cfg) → [UCSschool 5.0 Performance 30000](https://jenkins.knut.univention.de:8181/job/UCSschool%205.0%20Performance/job/UCSschool%205.0%20Performance%2030000/)
+* [scenarios/ucsschool-performance-500.cfg](scenarios/ucsschool-performance-500.cfg) → [UCSschool 5.0 Performance 500](https://jenkins.knut.univention.de:8181/job/UCSschool%205.0%20Performance/job/UCSschool%205.0%20Performance%20500/)
+* [scenarios/ucsschool-performance-65000.cfg](scenarios/ucsschool-performance-65000.cfg) → [UCSschool 5.0 Performance 65000](https://jenkins.knut.univention.de:8181/job/UCSschool%205.0%20Performance/job/UCSschool%205.0%20Performance%2065000/)
+* [scenarios/ucsschool-performance-new-import-10000.cfg](scenarios/ucsschool-performance-new-import-10000.cfg) → [UCSschool 5.0 Performance NewImport 10.000](https://jenkins.knut.univention.de:8181/job/UCSschool%205.0%20Performance/job/UCSschool%205.0%20Performance%20NewImport%2010.000/)
 
 ### Regular tests
 
-* [scenarios/autotest-201-ucsschool-singleserver-s4.cfg](scenarios/autotest-201-ucsschool-singleserver-s4.cfg): Install U@S 4.4 Singleserver
-* [scenarios/autotest-203-ucsschool-multiserver-s4.cfg](scenarios/autotest-203-ucsschool-multiserver-s4.cfg): Install U@S 4.4 Multiserver
-* [scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg](scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg): Update U@S 4.3 to U@S 4.4 Singleserver
-* [scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg](scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg): Update U@S 4.3 to U@S 4.4 Multiserver
+* [scenarios/autotest-201-ucsschool-singleserver-s4.cfg](scenarios/autotest-201-ucsschool-singleserver-s4.cfg): Install U@S 5.0 Singleserver
+* [scenarios/autotest-203-ucsschool-multiserver-s4.cfg](scenarios/autotest-203-ucsschool-multiserver-s4.cfg): Install U@S 5.0 Multiserver
+* [scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg](scenarios/autotest-206-ucsschool-update-singleserver-s4.cfg): Update U@S 4.3 to U@S 5.0 Singleserver
+* [scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg](scenarios/autotest-208-ucsschool-update-multiserver-s4.cfg): Update U@S 4.3 to U@S 5.0 Multiserver
 * [scenarios/autotest-241-ucsschool-HTTP-API.cfg](scenarios/autotest-241-ucsschool-HTTP-API.cfg): HTTP-APIs tests
 * [scenarios/autotest-242-ucsschool-DL-MV.cfg](scenarios/autotest-242-ucsschool-DL-MV.cfg): DL MV
 * [scenarios/autotest-243-ucsschool-DL-SH.cfg](scenarios/autotest-243-ucsschool-DL-SH.cfg): DL SH
 * [scenarios/autotest-244-ucsschool-id-sync.cfg](scenarios/autotest-244-ucsschool-id-sync.cfg): UCSschool ID Connector
-* [scenarios/autotest-300-ucsschool-large.cfg](scenarios/autotest-300-ucsschool-large.cfg): Install U@S 4.4 Multiserver Large Env
+* [scenarios/autotest-300-ucsschool-large.cfg](scenarios/autotest-300-ucsschool-large.cfg): Install U@S 5.0 Multiserver Large Env
