@@ -41,7 +41,7 @@ set -e
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --name "%(objectname)s" --ucsversionstart 5.0-0 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
+ucs_registerLDAPExtension "$@" --name "%(objectname)s" --ucsversionstart 4.4-0 --ucsversionend 4.4-99 --udm_hook /usr/share/%(package)s/%(hook)s --udm_syntax /usr/share/%(package)s/%(syntax)s --udm_module /usr/share/%(package)s/%(module)s
 joinscript_save_current_version
 exit 0
 ''' % data

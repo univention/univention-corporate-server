@@ -1,3 +1,9 @@
+ucs-test (9.0.5-38) unstable; urgency=medium
+
+  * Bug #52433: Adjust test to UCS 4.4 version
+
+ -- Arvid <requate@univention.de>  Fri, 27 Nov 2020 12:21:50 +0100
+
 ucs-test (9.0.5-37) unstable; urgency=medium
 
   * Bug #45205: rename test 
