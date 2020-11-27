@@ -69,7 +69,7 @@ def test_user_b_mail_alt_equal_user_a_mail_primary():
 
 
 @pytest.mark.parametrize("mail_forward_copy_to_self,delivered", [("1", True), ("0", False)])
-def test_user_b_mail_alt_equal_user_a_mail_primary(mail_forward_copy_to_self, delivered):
+def test_user_b_mail_alt_equal_user_a_mail_primary_with_mail_copy_to_self(mail_forward_copy_to_self, delivered):
 	print("### user_b's mail_alternative_address is equal to user_a's mail forward address")
 	with udm_test.UCSTestUDM() as udm:
 		a_user = Bunch()
