@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-portal
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Fetching of user information is now done against the Apache HTTP
+   interface instead of directly against the UMC-Webserver.
+bug: [52293]
