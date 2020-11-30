@@ -1,4 +1,4 @@
-ucs-test (9.0.5-34) unstable; urgency=medium
+ucs-test (9.0.6-1) unstable; urgency=medium
 
   * Bug #52144: Revision of selenium test 153_udm_check_properties_of_copied_users.py
 
