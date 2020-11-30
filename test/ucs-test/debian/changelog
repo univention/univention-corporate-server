@@ -1,3 +1,9 @@
+ucs-test (9.0.7-2) unstable; urgency=medium
+
+  * Bug #52144: Revision of selenium test 153_udm_check_properties_of_copied_users.py
+
+ -- Christian Castens <castens@univention.de>  Mon, 30 Nov 2020 16:41:40 +0100
+
 ucs-test (9.0.7-1) unstable; urgency=medium
 
   * Bug #45205: increase changlog version twice
