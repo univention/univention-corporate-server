@@ -2,7 +2,7 @@
 Example for a listener module, which logs changes to users.
 """
 __package__ = ""  # workaround for PEP 366
-import listener
+from listener import SetUID
 import os
 import errno
 import univention.debug as ud
@@ -86,19 +86,6 @@ def _rec(data):
 	return _Rec(*(data.get(attr, (None,))[0] for attr in attributes))
 
 
-class AsRoot(object):
-
-	"""
-	Temporarily change effective UID to 'root'.
-	"""
-
-	def __enter__(self):
-		listener.setuid(0)
-
-	def __exit__(self, exc_type, exc_value, traceback):
-		listener.unsetuid()
-
-
 def _writeit(rec, comment):
 	# type: (_Rec, str) -> None
 	"""
@@ -107,7 +94,7 @@ def _writeit(rec, comment):
 	nuid = u'*****' if rec.uid in ('root', 'spam') else rec.uidNumber
 	indent = '\t' if comment is None else ''
 	try:
-		with AsRoot():
+		with SetUID():
 			with open(USER_LIST, 'a') as out:
 				print >> out, u'%sName: "%s"' % (indent, rec.cn)
 				print >> out, u'%sUser: "%s"' % (indent, rec.uid)
@@ -127,7 +114,7 @@ def initialize():
 	This function is called when the module is forcefully reset.
 	"""
 	try:
-		with AsRoot():
+		with SetUID():
 			os.remove(USER_LIST)
 		ud.debug(
 			ud.LISTENER, ud.INFO,

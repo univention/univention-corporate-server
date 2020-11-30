@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import os
 import ldap
-import listener
+from listener import SetUID
 import univention.debug as ud
 from pwd import getpwnam
 
@@ -46,7 +46,7 @@ class LocalFile(object):
 	def initialize(self):
 		try:
 			ent = getpwnam(self.USER)
-			with AsRoot():
+			with SetUID():
 				with open(self.LOG, "wb"):
 					pass
 				os.chown(self.LOG, ent.pw_uid, -1)
@@ -59,23 +59,10 @@ class LocalFile(object):
 
 	def clean(self):
 		try:
-			with AsRoot():
+			with SetUID():
 				os.remove(self.LOG)
 		except OSError as ex:
 			ud.debug(ud.LISTENER, ud.ERROR, str(ex))
-
-
-class AsRoot(object):
-
-	"""
-	Temporarily change effective UID to 'root'.
-	"""
-
-	def __enter__(self):
-		listener.setuid(0)
-
-	def __exit__(self, exc_type, exc_value, traceback):
-		listener.unsetuid()
 
 
 class ReferentialIntegrityCheck(LocalLdap, LocalFile):
