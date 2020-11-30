@@ -295,11 +295,6 @@ def initialize():
 		listener.unsetuid()
 
 
-def clean():
-	# don't remove the cache.
-	pass
-
-
 # --- initialize on load:
 listener.setuid(0)
 try:

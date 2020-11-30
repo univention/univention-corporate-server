@@ -57,12 +57,6 @@ SSLDIR = '/etc/univention/ssl'
 _delay = None
 
 
-def initialize():
-	# type: () -> None
-	"""Initialize the module once on first start or after clean."""
-	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Initialize')
-
-
 def domain(info):
 	# type: (Dict[str, List[str]]) -> str
 	"""
@@ -243,15 +237,3 @@ def remove_certificate(hostname, domainname):
 	certpath = os.path.join(SSLDIR, fqdn)
 	if os.path.exists(certpath):
 		rmtree(certpath, ignore_errors=True)
-
-
-def clean():
-	# type: () -> None
-	"""Handle request to clean-up the module."""
-	return
-
-
-def postrun():
-	# type: () -> None
-	"""Transition from prepared-state to not-prepared."""
-	return

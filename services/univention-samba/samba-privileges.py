@@ -99,18 +99,6 @@ def handler(dn, new, old):
 			addPrivileges(sid, newPrivs)
 
 
-def initialize():
-	pass
-
-
-def clean():
-	pass
-
-
-def postrun():
-	pass
-
-
 def addPrivileges(sambaSID, privileges):
 	# type: (bytes, list) -> None
 	listener.setuid(0)

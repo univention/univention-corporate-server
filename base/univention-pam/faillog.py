@@ -59,7 +59,3 @@ def handler(dn, new, old):
 				listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0].decode('UTF-8'), '--reset'])
 			finally:
 				listener.unsetuid()
-
-
-def initialize():
-	pass

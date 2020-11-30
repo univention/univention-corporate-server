@@ -270,7 +270,3 @@ def postrun():
 			lo.lo.unbind()
 	finally:
 		listener.unsetuid()
-
-
-def initialize():
-	pass

@@ -224,10 +224,6 @@ def handler(dn, new, old, command):
 				listener.unsetuid()
 
 
-def initialize():
-	pass
-
-
 def postrun():
 	# type: () -> None
 	global __initscript

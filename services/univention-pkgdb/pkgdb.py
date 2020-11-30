@@ -111,11 +111,3 @@ def handler(dn, new, old):
 					file.close()
 	finally:
 		listener.unsetuid()
-
-
-def postrun():
-	pass
-
-
-def clean():
-	pass

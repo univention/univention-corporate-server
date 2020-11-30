@@ -123,7 +123,3 @@ def handler(dn, new, old):
 				call(['kadmin', '-l', 'ext', new['krb5PrincipalName'][0].decode('UTF-8')])
 		finally:
 			listener.unsetuid()
-
-
-def initialize():
-	ud.debug(ud.LISTENER, ud.INFO, 'init keytab')
