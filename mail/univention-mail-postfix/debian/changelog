@@ -1,3 +1,9 @@
+univention-mail-postfix (13.0.4-1) unstable; urgency=medium
+
+  * Bug #45205: increase changlog version twice
+
+ -- Tobias Wenzel <wenzel@univention.de>  Mon, 30 Nov 2020 12:52:43 +0100
+
 univention-mail-postfix (13.0.2-4) unstable; urgency=low
 
   * Bug #45205: readd unionmap support

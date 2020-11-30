@@ -1,3 +1,9 @@
+univention-ldap (15.0.3-1) unstable; urgency=medium
+
+  * Bug #45205: increase changlog version twice
+
+ -- Tobias Wenzel <wenzel@univention.de>  Mon, 30 Nov 2020 12:53:45 +0100
+
 univention-ldap (15.0.1-6) unstable; urgency=low
 
   * Bug #45205: readd LDAP attribute for email forwarding setting
