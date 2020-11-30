@@ -35,7 +35,6 @@ from __future__ import absolute_import
 import inspect
 import os
 import types  # noqa: F401
-from contextlib import contextmanager
 from typing import (  # noqa: F401
     TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast,
 )
@@ -194,9 +193,8 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         """
 
     @staticmethod
-    @contextmanager
     def as_root():
-        # type: () -> Iterator[None]
+        # type: () -> listener.SetUID
         """
         Contextmanager to temporarily change the effective UID of the current
         process to 0:
@@ -208,14 +206,7 @@ class ListenerModuleHandler(with_metaclass(HandlerMetaClass)):
         aware that :py:func:`listener.unsetuid()` will not be possible
         afterwards, as that requires root privileges.
         """
-        old_uid = os.geteuid()
-        try:
-            if old_uid != 0:
-                listener.setuid(0)
-            yield
-        finally:
-            if old_uid != 0:
-                listener.unsetuid()
+        return listener.SetUID(0)
 
     @classmethod
     def diff(cls, old, new, keys=None, ignore_metadata=True):
