@@ -61,6 +61,7 @@ tmpFile = '/var/cache/univention-directory-listener/samba-shares.oldObject'
 
 
 def _validate_smb_share_name(name):
+	# type: (str) -> bool
 	if not name or len(name) > 80:
 		return False
 	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
@@ -70,6 +71,7 @@ def _validate_smb_share_name(name):
 
 
 def handler(dn, new, old, command):
+	# type: (str, dict, dict, str) -> None
 	configRegistry = ConfigRegistry()
 	configRegistry.load()
 	interfaces = Interfaces(configRegistry)
@@ -148,6 +150,7 @@ def handler(dn, new, old, command):
 		return arg.replace('\n', '')
 
 	def _simple_quote(arg):
+		# type: (str) -> str
 		return arg.replace('\n', '')
 
 	def _map_quote(args):
@@ -340,6 +343,7 @@ def handler(dn, new, old, command):
 
 
 def initialize():
+	# type: () -> None
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		listener.setuid(0)
 		try:
@@ -349,6 +353,7 @@ def initialize():
 
 
 def prerun():
+	# type: () -> None
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		listener.setuid(0)
 		try:
@@ -358,6 +363,7 @@ def prerun():
 
 
 def clean():
+	# type: () -> None
 	global ucr_handlers
 	listener.setuid(0)
 	try:
@@ -373,6 +379,7 @@ def clean():
 
 
 def postrun():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		initscript = '/etc/init.d/samba'

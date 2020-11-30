@@ -44,6 +44,7 @@ LDAP_UCR_MAPPING = {
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	ucr = ConfigRegistry()
 	ucr.load()
 	idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))

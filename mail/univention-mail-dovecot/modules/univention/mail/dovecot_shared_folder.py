@@ -38,6 +38,10 @@ import traceback
 import imaplib
 import shutil
 import tempfile
+try:
+	from typing import Any, Dict, List, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 import univention.admin.modules
 from univention.admin.uldap import getMachineConnection
@@ -111,7 +115,7 @@ class DovecotGlobalAclFile(object):
 		self._acls = [acl for acl in self._acls if acl.folder_name != folder_name]
 		self._write()
 
-	def _fix_permissions(self, path=global_acl_path, fileno=None):  # type: (Optional[str], Optional[int]) -> None
+	def _fix_permissions(self, path=global_acl_path, fileno=None):  # type: (str, Optional[int]) -> None
 		def set_perms(fileno):  # type: (int) -> None
 			os.fchown(fileno, 0, self.dovemail_gid)
 			os.fchmod(fileno, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
@@ -426,7 +430,7 @@ class DovecotSharedFolderListener(DovecotListener):
 			if imap:
 				imap.logout()
 
-	def update_public_mailbox_configuration(self, delete_only=None):  # type: (str) -> None
+	def update_public_mailbox_configuration(self, delete_only=None):  # type: (Optional[str]) -> None
 		"""
 		Cache public folders and their quota into a UCRV.
 
@@ -500,6 +504,7 @@ class DovecotSharedFolderListener(DovecotListener):
 			self.listener.unsetuid()
 
 	def _diff_acls(self, old, new):
+		# type: (Dict[str, List[bytes]], Dict[str, List[bytes]]) -> List[str]
 		acl_diff = dict()
 		# find new ACLs
 		for acl in new.get(self.acl_key, []):

@@ -77,11 +77,13 @@ def initialize():
 
 
 def prerun():
+	# type: () -> None
 	"""Called before busy period."""
 	listener.configRegistry.load()
 
 
 def chgrp_bind(filename):
+	# type: (str) -> None
 	try:
 		bind_gid = grp.getgrnam("bind").gr_gid
 	except KeyError:
@@ -92,6 +94,7 @@ def chgrp_bind(filename):
 
 
 def safe_path_join(basedir, filename):
+	# type: (str, str) -> str
 	path = os.path.join(basedir, filename)
 	if not os.path.abspath(path).startswith(basedir):
 		raise BaseDirRestriction('basedir manipulation: %s' % (filename,))
@@ -99,6 +102,7 @@ def safe_path_join(basedir, filename):
 
 
 def validate_zonename(zonename):
+	# type: (str) -> str
 	"""
 	>>> validate_zonename('foo')
 	'foo'
@@ -139,10 +143,12 @@ def validate_zonename(zonename):
 
 
 def _quote_config_parameter(arg):
+	# type: (str) -> str
 	return arg.replace('\\', '\\\\').replace('"', '\\"')
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	"""Handle LDAP changes."""
 	base = listener.configRegistry.get('dns/ldap/base')
 	if base and not dn.endswith(base):
@@ -173,6 +179,7 @@ def handler(dn, new, old):
 
 
 def _ldap_auth_string(ucr):
+	# type: (dict) -> str
 	"""Build extended LDAP query URI part containing bind credentials."""
 	account = ucr.get('bind/binddn', ucr.get('ldap/hostdn'))
 
@@ -182,6 +189,7 @@ def _ldap_auth_string(ucr):
 
 
 def _new_zone(ucr, zonename, dn):
+	# type: (dict, str, str) -> None
 	"""Handle addition of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
 	if not os.path.exists(NAMED_CONF_DIR):
@@ -229,6 +237,7 @@ def _new_zone(ucr, zonename, dn):
 
 
 def _remove_zone(zonename):
+	# type: (str) -> None
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
 	zonename = validate_zonename(zonename)
@@ -248,6 +257,7 @@ def _remove_zone(zonename):
 
 
 def clean():
+	# type: () -> None
 	"""Reset listener state."""
 	listener.setuid(0)
 	try:
@@ -264,6 +274,7 @@ def clean():
 
 
 def _reload(zones, restart=False, dns_backend='ldap'):
+	# type: (list, bool, str) -> dict
 	"""Force reload of zones; might restart daemon; returns pids."""
 	pids = {}
 	# Try to only reload the zones if rndc is available
@@ -295,6 +306,7 @@ def _reload(zones, restart=False, dns_backend='ldap'):
 
 
 def _wait_children(pids, timeout=15):
+	# type: (dict, float) -> None
 	"""Wait for child termination."""
 	# Wait max 15 seconds for forked children
 	timeout += time.time()
@@ -329,6 +341,7 @@ def _wait_children(pids, timeout=15):
 
 
 def _kill_children(pids, timeout=5):
+	# type: (dict, float) -> None
 	"""Kill children."""
 	for pid in pids:
 		try:
@@ -347,6 +360,7 @@ def _kill_children(pids, timeout=5):
 
 
 def postrun():
+	# type: () -> None
 	"""Run pending updates."""
 	global __zone_created_or_removed
 

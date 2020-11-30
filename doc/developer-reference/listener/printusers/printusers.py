@@ -33,6 +33,7 @@ USER_LIST = '/root/UserList.txt'
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	"""
 	Write all changes into a text file.
 	This function is called on each change.
@@ -46,6 +47,7 @@ def handler(dn, new, old):
 
 
 def _handle_change(dn, new, old):
+	# type: (str, dict, dict) -> None
 	"""
 	Called when an object is modified.
 	"""
@@ -57,6 +59,7 @@ def _handle_change(dn, new, old):
 
 
 def _handle_add(dn, new):
+	# type: (str, dict) -> None
 	"""
 	Called when an object is newly created.
 	"""
@@ -66,6 +69,7 @@ def _handle_add(dn, new):
 
 
 def _handle_remove(dn, old):
+	# type: (str, dict) -> None
 	"""
 	Called when an previously existing object is removed.
 	"""
@@ -75,6 +79,7 @@ def _handle_remove(dn, old):
 
 
 def _rec(data):
+	# type (Dict[str, List[str]]) -> _Rec
 	"""
 	Retrieve symbolic, numeric ID and name from user data.
 	"""
@@ -95,6 +100,7 @@ class AsRoot(object):
 
 
 def _writeit(rec, comment):
+	# type: (_Rec, str) -> None
 	"""
 	Append CommonName, symbolic and numeric User-IDentifier, and comment to file.
 	"""
@@ -115,6 +121,7 @@ def _writeit(rec, comment):
 
 
 def initialize():
+	# type: () -> None
 	"""
 	Remove the log file.
 	This function is called when the module is forcefully reset.

@@ -45,6 +45,7 @@ ldap_info = {}
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if new and b'Software Monitor' in new.get('univentionService', ()):
 		listener.setuid(0)
 		ucr.handler_set(('pkgdb/scan=yes', ))
@@ -59,6 +60,7 @@ def handler(dn, new, old):
 
 
 def ldap_reconnect():
+	# type: () -> None
 	ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: ldap reconnect triggered')
 	if 'ldapserver' in ldap_info and 'basedn' in ldap_info and 'binddn' in ldap_info and 'bindpw' in ldap_info:
 		try:
@@ -72,6 +74,7 @@ def ldap_reconnect():
 
 
 def setdata(key, value):
+	# type: (str, str) -> None
 	if key == 'bindpw':
 		ud.debug(ud.LISTENER, ud.INFO, 'pkgdb-watch: listener passed key="%s" value="<HIDDEN>"' % key)
 	else:

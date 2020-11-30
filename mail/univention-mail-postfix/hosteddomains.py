@@ -48,6 +48,7 @@ def initialize():
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 

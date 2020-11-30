@@ -67,24 +67,29 @@ include_file = '/etc/simplesamlphp/metadata/metadata_include.php'
 
 
 def _decode(x):
+	# type: (Text) -> str
 	return x.decode('ASCII') if isinstance(x, bytes) else x
 
 
 def escape_php_string(string):
+	# type: (str) -> str
 	return string.replace('\x00', '').replace("\\", "\\\\").replace("'", r"\'")
 
 
 def php_string(string):
+	# type: (str) -> str
 	return "'%s'" % (escape_php_string(_decode(string)),)
 
 
 def php_array(list_):
+	# type: (list) -> str
 	if not list_:
 		return 'array()'
 	return "array('%s')" % "', '".join(escape_php_string(_decode(x).strip()) for x in list_)
 
 
 def ldap_attribute_join(old):
+	# type: (dict) -> list
 	result_keys = {}
 	for attr in old:
 		if attr[0] not in result_keys.keys() and len(attr) > 1:
@@ -97,6 +102,7 @@ def ldap_attribute_join(old):
 
 
 def php_bool(bool_):
+	# type: (str) -> str
 	bool_ = _decode(bool_)
 	mapped = {
 		'true': True,
@@ -110,6 +116,7 @@ def php_bool(bool_):
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	listener.setuid(0)
 	try:
 		if old:
@@ -138,6 +145,7 @@ def handler(dn, new, old):
 
 
 def write_configuration_file(dn, new, filename):
+	# type: (str, dict, str) -> bool
 	if new.get('serviceProviderMetadata') and new['serviceProviderMetadata'][0]:
 		metadata = new['serviceProviderMetadata'][0]
 		try:

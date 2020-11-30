@@ -37,16 +37,21 @@ import ldap
 from ldap.filter import filter_format
 from six.moves import cPickle as pickle
 import os
+try:
+	from typing import Dict, List, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 import univention.debug as ud
 import univention.lib.policy_result
+import univention.uldap
 
 import listener
 
 name = 'quota'
 description = 'Dump quota settings into a cache directory'
 filter = '(|(objectClass=univentionPolicyShareUserQuota)(objectClass=organizationalRole)(objectClass=organizationalUnit)(objectClass=univentionBase)(objectClass=univentionShare))'
-attributes = []
+attributes = []  # type: List[str]
 
 '''
 The listener module has to re-create the cache for one share if the share
@@ -70,6 +75,7 @@ def _dump_share_and_policy_result(dn, share_object, policy_result):
 
 
 def _read_share_and_policy_result(dn):
+	# type: (str) -> Tuple
 	filename = os.path.join(SHARE_CACHE_DIR, dn)
 
 	if not os.path.exists(filename):
@@ -82,6 +88,7 @@ def _read_share_and_policy_result(dn):
 
 
 def _remove_cache_for_share(dn):
+	# type: (str) -> None
 	filename = os.path.join(SHARE_CACHE_DIR, dn)
 	ud.debug(ud.LISTENER, ud.INFO, 'Remove "%s"' % filename)
 	if os.path.exists(filename):
@@ -89,6 +96,7 @@ def _remove_cache_for_share(dn):
 
 
 def _is_share(new, old):
+	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
 	if new and b'univentionShare' in new['objectClass']:
 		return True
 	if old and b'univentionShare' in old['objectClass']:
@@ -97,6 +105,7 @@ def _is_share(new, old):
 
 
 def _is_quota_policy(new, old):
+	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
 	if new and b'univentionPolicyShareUserQuota' in new['objectClass']:
 		return True
 	if old and b'univentionPolicyShareUserQuota' in old['objectClass']:
@@ -105,6 +114,7 @@ def _is_quota_policy(new, old):
 
 
 def _is_container(new, old):
+	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
 	for oc in [b'organizationalRole', b'organizationalUnit', b'univentionBase']:
 		if new and oc in new['objectClass']:
 			return True
@@ -114,6 +124,7 @@ def _is_container(new, old):
 
 
 def _get_ldap_connection():
+	# type: () -> univention.uldap.access
 	try:
 		connection = univention.uldap.getMachineConnection(ldap_master=False)
 	except ldap.SERVER_DOWN:
@@ -123,15 +134,9 @@ def _get_ldap_connection():
 
 
 def _is_container_change_relevant(new, old):
-	try:
-		new_reference = new.get('univentionPolicyReference', [])
-	except AttributeError:
-		new_reference = []
-
-	try:
-		old_reference = old.get('univentionPolicyReference', [])
-	except AttributeError:
-		old_reference = []
+	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
+	new_reference = new.get('univentionPolicyReference', []) if new else []
+	old_reference = old.get('univentionPolicyReference', []) if old else []
 
 	if not old_reference and not new_reference:
 		return False
@@ -155,10 +160,12 @@ def _is_container_change_relevant(new, old):
 
 
 def _get_fqdn():
+	# type: () -> str
 	return '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
 
 
 def _is_share_used_on_this_server(new, old):
+	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
 	fqdn = _get_fqdn().encode('ASCII')
 	if new and fqdn in new['univentionShareHost']:
 		return True
@@ -168,6 +175,7 @@ def _is_share_used_on_this_server(new, old):
 
 
 def _add_all_shares_below_this_container_to_dn_list(container_dn):
+	# type: (str) -> None
 	lo = _get_ldap_connection()
 	for dn in lo.searchDn(base=container_dn, filter='(&(objectClass=univentionShare)(univentionShareHost=%s))' % _get_fqdn()):
 		_add_share_to_dn_list(dn)
@@ -175,6 +183,7 @@ def _add_all_shares_below_this_container_to_dn_list(container_dn):
 
 
 def _add_share_to_dn_list(dn):
+	# type: (str) -> None
 	ud.debug(ud.LISTENER, ud.INFO, 'Add %s to share list' % dn)
 	filename = os.path.join(SHARE_CACHE_TODO_DIR, dn)
 	# Create todo file
@@ -182,7 +191,8 @@ def _add_share_to_dn_list(dn):
 
 
 def _get_all_quota_references(dn):
-	references = []
+	# type: (str) -> List[Tuple[str, Dict[str, List[bytes]]]]
+	references = []  # type: List[Tuple[str, Dict[str, List[bytes]]]]
 	lo = _get_ldap_connection()
 	for ddn, attr in lo.search(filter=filter_format('(univentionPolicyReference=%s)', [dn])):
 		references.append((ddn, attr))
@@ -191,6 +201,7 @@ def _get_all_quota_references(dn):
 
 
 def handler(dn, new, old):
+	# type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> None
 	ud.debug(ud.LISTENER, ud.INFO, 'Run handler for dn: %r' % dn)
 	listener.setuid(0)
 	try:
@@ -219,6 +230,7 @@ def handler(dn, new, old):
 
 
 def clean():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		if os.path.exists(SHARE_CACHE_DIR):
@@ -234,7 +246,7 @@ def clean():
 
 
 def postrun():
-	listener.setuid(0)
+	# type: () -> None
 	lo = None
 	try:
 		for dn in os.listdir(SHARE_CACHE_TODO_DIR):

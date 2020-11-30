@@ -134,6 +134,7 @@ def checkAndSet(new, old):
 
 
 def no_relevant_change(new, old):
+	# type: (dict, dict) -> bool
 	assert new
 	assert old
 
@@ -155,6 +156,7 @@ def no_relevant_change(new, old):
 
 
 def handler(dn, new, old, command):
+	# type: (str, dict, dict, str) -> None
 	global modified_default_names
 
 	if ucr.is_false("listener/module/wellknownsidnamemapping", False):
@@ -227,6 +229,7 @@ def handler(dn, new, old, command):
 
 
 def postrun():
+	# type: () -> None
 	global modified_default_names
 	if not modified_default_names:
 		return

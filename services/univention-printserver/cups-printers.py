@@ -63,10 +63,12 @@ reload_samba_in_postrun = None
 
 
 def _rdn(_dn):
+	# type: (str) -> str
 	return str2dn(_dn)[0][0][1]
 
 
 def _validate_smb_share_name(name):
+	# type: (str) -> bool
 	if len(name) > 80:
 		return False
 	illegal_chars = set('\\/[]:|<>+=;,*?"' + ''.join(map(chr, range(0x1F + 1))))
@@ -80,6 +82,7 @@ class BasedirLimit(Exception):
 
 
 def _escape_filename(name):
+	# type: (str) -> str
 	name = name.replace('/', '').replace('\x00', '')
 	if name in ('.', '..', ''):
 		ud.debug(ud.LISTENER, ud.ERROR, "Invalid filename: %r" % (name,))
@@ -88,6 +91,7 @@ def _escape_filename(name):
 
 
 def _join_basedir_filename(basedir, filename):
+	# type: (str, str) -> str
 	_filename = os.path.join(basedir, _escape_filename(filename))
 	if not os.path.abspath(_filename).startswith(basedir):
 		ud.debug(ud.LISTENER, ud.ERROR, "Basedir manipulation: %r" % (filename,))
@@ -96,6 +100,7 @@ def _join_basedir_filename(basedir, filename):
 
 
 def lpadmin(args):
+	# type: (list) -> None
 	quoted_args = [pipes.quote(x) for x in args]
 
 	# Show this info message by default
@@ -112,6 +117,7 @@ def lpadmin(args):
 
 
 def filter_match(object):
+	# type: (dict) -> bool
 	fqdn = ('%s.%s' % (hostname, domainname)).lower()
 	for host in object.get('univentionPrinterSpoolHost', ()):
 		if host.decode('ASCII').lower() in (ip.lower(), fqdn):
@@ -120,6 +126,7 @@ def filter_match(object):
 
 
 def get_testparm_var(smbconf, sectionname, varname):
+	# type: (str, str, str) -> str
 	if not os.path.exists("/usr/bin/testparm"):
 		return
 
@@ -130,11 +137,13 @@ def get_testparm_var(smbconf, sectionname, varname):
 
 
 def testparm_is_true(smbconf, sectionname, varname):
+	# type: (str, str, str) -> bool
 	testpram_output = get_testparm_var(smbconf, sectionname, varname)
 	return testpram_output.lower() in ('yes', 'true', '1', 'on')
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	change_affects_this_host = False
 	need_to_reload_samba = False
 	need_to_reload_cups = False
@@ -381,6 +390,7 @@ def handler(dn, new, old):
 
 
 def reload_cups_daemon():
+	# type: () -> None
 	script = '/etc/init.d/cups'
 	daemon = 'cups'
 	if os.path.exists(script):
@@ -391,6 +401,7 @@ def reload_cups_daemon():
 
 
 def reload_printer_restrictions():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		subprocess.call(['python3', '-m', 'univention.lib.share_restrictions'])
@@ -399,6 +410,7 @@ def reload_printer_restrictions():
 
 
 def reload_smbd():
+	# type: () -> None
 	global reload_samba_in_postrun
 	listener.setuid(0)
 	try:
@@ -416,6 +428,7 @@ def reload_smbd():
 
 
 def initialize():
+	# type: () -> None
 	if not os.path.exists('/etc/samba/printers.conf.d'):
 		listener.setuid(0)
 		try:
@@ -426,6 +439,7 @@ def initialize():
 
 
 def clean():
+	# type: () -> None
 	global ucr_handlers
 	listener.setuid(0)
 	try:
@@ -441,6 +455,7 @@ def clean():
 
 
 def postrun():
+	# type: () -> None
 	global reload_samba_in_postrun
 	if reload_samba_in_postrun:
 		reload_smbd()

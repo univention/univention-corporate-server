@@ -49,6 +49,7 @@ DELETE_DIR = '/var/lib/univention-pkgdb/delete'
 
 
 def exec_pkgdb(args):
+	# type: (list) -> int
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "exec_pkgdb args=%s" % args)
 
 	listener.setuid(0)
@@ -64,6 +65,7 @@ def exec_pkgdb(args):
 
 
 def add_system(sysname):
+	# type: (str) -> int
 	retcode = exec_pkgdb(['--add-system', sysname])
 	if retcode != 0:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "error while adding system=%s to pkgdb" % sysname)
@@ -73,6 +75,7 @@ def add_system(sysname):
 
 
 def del_system(sysname):
+	# type: (str) -> int
 	retcode = exec_pkgdb(['--del-system', sysname])
 	if retcode != 0:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "error while deleting system=%s to pkgdb" % sysname)
@@ -87,6 +90,7 @@ def initialize():
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "pkgdb handler dn=%s" % (dn))
 
 	try:

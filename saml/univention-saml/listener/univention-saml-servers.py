@@ -44,6 +44,7 @@ attributes = ['univentionService']
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	ucr = ConfigRegistry()
 	ucr.load()
 	listener.setuid(0)

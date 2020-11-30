@@ -44,10 +44,12 @@ attributes = ['uniqueMember', 'cn']
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	pass
 
 
 def postrun():
+	# type: () -> None
 	configRegistry = ConfigRegistry()  # TODO: why not listener.configRegistry?
 	configRegistry.load()
 

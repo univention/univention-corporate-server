@@ -44,10 +44,12 @@ attributes = []
 
 
 def __login_is_locked(attrs):
+	# type: (dict) -> bool
 	return unmapLocked(attrs) == '1'
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if new and old:
 		if __login_is_locked(old) and not __login_is_locked(new):
 			# reset local bad password count

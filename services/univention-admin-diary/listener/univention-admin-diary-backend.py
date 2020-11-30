@@ -45,6 +45,7 @@ service_name = b"Admin Diary Backend"
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	listener.setuid(0)
 	try:
 		change = False

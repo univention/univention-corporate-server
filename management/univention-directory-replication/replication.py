@@ -722,6 +722,7 @@ def _backup_dn_recursive(lo, dn):
 
 
 def _remove_file(pathname):
+	# type: (str) -> None
 	ud.debug(ud.LISTENER, ud.ALL, 'replication: removing %s' % (pathname,))
 	try:
 		os.remove(pathname)
@@ -746,6 +747,7 @@ def _modify_object_from_old_and_new(lo, dn, old, new):
 
 
 def _read_dn_from_file(filename):
+	# type: (str) -> Optional[str]
 	old_dn = None
 
 	try:
@@ -758,6 +760,7 @@ def _read_dn_from_file(filename):
 
 
 def check_file_system_space():
+	# type: () -> None
 	if not listener.configRegistry.is_true('ldap/replication/filesystem/check'):
 		return
 
@@ -791,6 +794,7 @@ def check_file_system_space():
 
 
 def handler(dn, new, listener_old, operation):
+	# type: (str, dict, dict, str) -> int
 	global reconnect
 	if not slave:
 		return 1
@@ -1021,6 +1025,7 @@ def log_ldap(severity, msg, ex, dn=None):
 
 
 def clean():
+	# type: () -> None
 	global slave
 	if not slave:
 		return 1
@@ -1048,6 +1053,7 @@ def clean():
 
 
 def initialize():
+	# type: () -> None
 	ud.debug(ud.LISTENER, ud.INFO, 'replication: initialize')
 	if not slave:
 		ud.debug(ud.LISTENER, ud.INFO, 'replication: not a Replica Node')
@@ -1059,6 +1065,7 @@ def initialize():
 
 
 def randpw(length=64):
+	# type: (int) -> str
 	"""Create random password.
 	>>> randpw().isalnum()
 	True
@@ -1075,6 +1082,7 @@ def randpw(length=64):
 
 
 def new_password():
+	# type: () -> str
 	pw = randpw()
 
 	listener.setuid(0)
@@ -1089,6 +1097,7 @@ def new_password():
 
 
 def get_password():
+	# type: () -> str
 	listener.setuid(0)
 	try:
 		with open(ROOTPW_FILE, 'r') as fd:
@@ -1106,5 +1115,6 @@ get_password.RE_ROOTDN = re.compile(r'^rootpw[ \t]+"((?:[^"\\]|\\["\\])+)"')
 
 
 def init_slapd(arg):
+	# type: (str) -> None
 	listener.run('/etc/init.d/slapd', ['slapd', arg], uid=0)
 	time.sleep(1)

@@ -98,6 +98,7 @@ __SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())
 
 
 def open_idmap():
+	# type: () -> IDmapDB
 	global lp
 
 	if open_idmap.instance:
@@ -244,6 +245,7 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 
 def initialize():
+	# type: () -> None
 	idmap_ldb = '/var/lib/samba/private/idmap.ldb'
 	listener.setuid(0)
 	try:
@@ -257,6 +259,7 @@ def initialize():
 
 
 def handler(dn, new, old, operation):
+	# type: (str, dict, dict, str) -> None
 
 	idmap = open_idmap()
 	if new:

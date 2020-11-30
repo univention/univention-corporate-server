@@ -71,6 +71,7 @@ SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$')
 
 
 def ldapEntry2string(entry):
+	# type: (dict) -> str
 	return ''.join(
 		'%s:: %s\n' % (key, base64.standard_b64encode(value))
 		if SAFE_STRING_RE.search(value) else
@@ -81,6 +82,7 @@ def ldapEntry2string(entry):
 
 
 def ldapTime2string(timestamp):
+	# type: (str) -> str
 	try:
 		timestruct = time.strptime(timestamp, "%Y%m%d%H%M%SZ")
 	except ValueError:
@@ -143,6 +145,7 @@ def prefix_record(record, identifier):
 
 
 def handler(dn, new_copy, old_copy):
+	# type: (str, dict, dict) -> None
 	if not listener.configRegistry.is_true('ldap/logging'):
 		return
 
@@ -227,6 +230,7 @@ def handler(dn, new_copy, old_copy):
 
 
 def createFile(filename):
+	# type: (str) -> int
 	global gidNumber
 
 	if gidNumber == 0:
@@ -249,6 +253,7 @@ def createFile(filename):
 
 
 def initialize():
+	# type: () -> None
 	timestamp = time.strftime(timestampfmt, time.gmtime())
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init %s' % name)
 

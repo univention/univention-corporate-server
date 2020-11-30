@@ -48,6 +48,7 @@ __changed_trusted_sp = False
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	global __changed_trusted_sp
 	listener.setuid(0)
 	try:
@@ -70,6 +71,7 @@ def handler(dn, new, old):
 
 
 def postrun():
+	# type: () -> None
 	global __changed_trusted_sp
 
 	if __changed_trusted_sp:

@@ -59,6 +59,7 @@ atributes = ['univentionSambaPrivilegeList', 'sambaSID']
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 
 	where = univention.debug.LISTENER
 	level = univention.debug.INFO
@@ -111,6 +112,7 @@ def postrun():
 
 
 def addPrivileges(sambaSID, privileges):
+	# type: (bytes, list) -> None
 	listener.setuid(0)
 
 	try:
@@ -139,6 +141,7 @@ def addPrivileges(sambaSID, privileges):
 
 
 def removePrivileges(sambaSID, privileges):
+	# type: (bytes, list) -> None
 	listener.setuid(0)
 
 	try:

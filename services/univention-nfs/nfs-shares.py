@@ -58,6 +58,7 @@ tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 
 
 def handler(dn, new, old, command):
+	# type: (str, dict, dict, str) -> None
 	# create tmp dir
 	tmpDir = os.path.dirname(tmpFile)
 	listener.setuid(0)
@@ -132,6 +133,7 @@ def handler(dn, new, old, command):
 
 
 def clean():
+	# type: () -> None
 	# clear exports file
 	lines = _read(lambda match: not match)
 	_write(lines)
@@ -143,6 +145,7 @@ def _read(keep=lambda match: True):
 
 
 def _write(lines):
+	# type: (list) -> None
 	listener.setuid(0)
 	try:
 		ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
@@ -153,6 +156,7 @@ def _write(lines):
 
 
 def _exports_escape(text):
+	# type: (str) -> str
 	r"""
 	Escape path for /etc/exports.
 
@@ -170,8 +174,10 @@ def _exports_escape(text):
 
 
 def _quote(text):
+	# type: (str) -> str
 	return _exports_escape(text)[1:-1]
 
 
 def postrun():
+	# type: () -> None
 	listener.run('/bin/systemctl', ['systemctl', 'reload-or-restart', 'nfs-kernel-server.service'], uid=0)

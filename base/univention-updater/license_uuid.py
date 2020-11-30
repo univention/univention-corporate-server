@@ -42,6 +42,7 @@ filter = '(&(objectClass=univentionLicense)(cn=admin))'
 
 
 def handler(dn, new, old):
+    # type: (str, dict, dict) -> None
     if new:
         listener.setuid(0)
         try:

@@ -39,11 +39,15 @@ import os
 import univention.debug
 import shutil
 import subprocess
+try:
+	from typing import Dict, List, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 name = 'ad-connector'
 description = 'AD Connector replication'
 filter = '(objectClass=*)'
-attributes = []
+attributes = []  # type: List[str]
 
 
 # use the modrdn listener extension
@@ -65,6 +69,7 @@ if 'connector/listener/additionalbasenames' in listener.baseConfig and listener.
 
 
 def _save_old_object(directory, dn, old):
+	# type: (str, str, Dict[str, List[bytes]]) -> None
 	filename = os.path.join(directory, 'tmp', 'old_dn')
 
 	f = open(filename, 'w+')
@@ -76,6 +81,7 @@ def _save_old_object(directory, dn, old):
 
 
 def _load_old_object(directory):
+	# type: (str) -> Tuple[str, Dict[str, List[bytes]]]
 	f = open(os.path.join(directory, 'tmp', 'old_dn'), 'r')
 	p = cPickle.Unpickler(f)
 	(old_dn, old_object) = p.load()
@@ -85,6 +91,7 @@ def _load_old_object(directory):
 
 
 def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
+	# type: (str, str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
 	ob = (dn, new, old, old_dn)
 
 	tmpdir = os.path.join(directory, 'tmp')
@@ -103,6 +110,7 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
 
 def _restart_connector():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		if not subprocess.call(['pgrep', '-f', 'python.*connector.ad.main']):
@@ -114,7 +122,7 @@ def _restart_connector():
 
 
 def handler(dn, new, old, command):
-
+	# type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
 	global group_objects
 	global init_mode
 	global connector_needs_restart
@@ -134,7 +142,7 @@ def handler(dn, new, old, command):
 				os.makedirs(os.path.join(directory, 'tmp'))
 
 			old_dn = None
-			old_object = {}
+			old_object = {}  # type: Dict[str, List[bytes]]
 
 			if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
 				(old_dn, old_object) = _load_old_object(directory)
@@ -163,6 +171,7 @@ def handler(dn, new, old, command):
 
 
 def clean():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		for directory in dirs:
@@ -177,6 +186,7 @@ def clean():
 
 
 def postrun():
+	# type: () -> None
 	global init_mode
 	global group_objects
 	global connector_needs_restart
@@ -203,6 +213,7 @@ def postrun():
 
 
 def initialize():
+	# type: () -> None
 	global init_mode
 	init_mode = True
 	clean()

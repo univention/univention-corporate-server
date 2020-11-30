@@ -38,6 +38,10 @@ import pwd
 import grp
 import shutil
 import stat
+try:
+	from typing import Any, Optional, Sequence, Tuple  # noqa F401
+except ImportError:
+	pass
 
 import univention.debug as ud
 
@@ -47,16 +51,20 @@ default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 class DovecotListener(object):
 
 	def __init__(self, listener, name):
+		# type: (str) -> None
 		self.listener = listener
 		self.name = name
 
 	def log_p(self, msg):
+		# type: (str) -> None
 		ud.debug(ud.LISTENER, ud.PROCESS, "%s: %s" % (self.name, msg))
 
 	def log_e(self, msg):
+		# type: (str) -> None
 		ud.debug(ud.LISTENER, ud.ERROR, "%s: %s" % (self.name, msg))
 
 	def new_email_account(self, email):
+		# type: (str) -> None
 		spam_folder = self.listener.configRegistry.get("mail/dovecot/folder/spam")
 		if self.listener.configRegistry.is_true("mail/dovecot/sieve/spam", True)\
 			and spam_folder and spam_folder.lower() != "none":
@@ -70,6 +78,7 @@ class DovecotListener(object):
 		return
 
 	def delete_email_account(self, dn, email):
+		# type: (str, str) -> None
 		if self.listener.configRegistry.is_true('mail/dovecot/mailbox/delete', False):
 			try:
 				old_localpart, old_domainpart = email.split("@")
@@ -92,6 +101,7 @@ class DovecotListener(object):
 		return
 
 	def read_from_ext_proc_as_root(self, cmd, regexp=None, stdin=None, stdout=subprocess.PIPE, stderr=None, stdin_input=None):
+		# type; (Sequence[str], Optional[str], Optional[str], Any, Any, Any) -> str
 		"""
 		Wrapper around Popen(), runs external command as root and return its
 		output, optionally the first hit of a regexp. May raise an exception.
@@ -115,6 +125,7 @@ class DovecotListener(object):
 			self.listener.unsetuid()
 
 	def move_user_home(self, newMailPrimaryAddress, oldMailPrimaryAddress, force_rename=False):
+		# type: (str, str, bool) -> None
 		if not force_rename and not self.listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
 			self.log_p("Renaming of mailboxes disabled, not moving ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
 			return
@@ -160,6 +171,7 @@ class DovecotListener(object):
 		return
 
 	def move_mail_home(self, old_path, new_path, email, force_rename=False):
+		# type: (str, str, str, bool) -> None
 		# create parent path in any case to make sure it has correct ownership
 		self.mkdir_p(os.path.dirname(new_path))
 		if not force_rename and not self.listener.configRegistry.is_true("mail/dovecot/mailbox/rename", False):
@@ -178,6 +190,7 @@ class DovecotListener(object):
 			self.listener.unsetuid()
 
 	def get_maillocation(self):
+		# type: () -> str
 		try:
 			return self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_location"], r"\S+:(\S+)/Maildir")
 		except Exception:
@@ -185,6 +198,7 @@ class DovecotListener(object):
 			raise
 
 	def upload_activate_sieve_script(self, email, file):
+		# type: (str, str) -> None
 		try:
 			master_name, master_pw = self.get_masteruser_credentials()
 			ca_file = self.listener.configRegistry.get("mail/dovecot/sieve/client/cafile", "/etc/univention/ssl/ucsCA/CAcert.pem")
@@ -207,6 +221,7 @@ class DovecotListener(object):
 			raise
 
 	def get_user_home(self, username):
+		# type: (str) -> str
 		try:
 			return self.read_from_ext_proc_as_root(["/usr/bin/doveadm", 'user', "-f", "home", username]).lower()
 		except Exception:
@@ -214,6 +229,7 @@ class DovecotListener(object):
 			raise
 
 	def get_masteruser_credentials(self):
+		# type: () -> Tuple[str, str]
 		try:
 			self.listener.setuid(0)
 			return re.findall(r"(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
@@ -224,6 +240,7 @@ class DovecotListener(object):
 			self.listener.unsetuid()
 
 	def get_dovecot_user(self):
+		# type: () -> Tuple[str, str]
 		if not hasattr(self, "dovecot_user") or not hasattr(self, "dovecot_group"):
 			try:
 				uid = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_uid"])
@@ -236,6 +253,7 @@ class DovecotListener(object):
 		return self.dovecot_user, self.dovecot_group
 
 	def mkdir_p(self, dir):
+		# type: (str) -> None
 		user, group = self.get_dovecot_user()
 		dovecot_uid = pwd.getpwnam(user).pw_uid
 		dovecot_gid = grp.getgrnam(group).gr_gid
@@ -260,7 +278,8 @@ class DovecotListener(object):
 			self.listener.unsetuid()
 
 	@classmethod
-	def chown_r(cls, path, uid, gid):  # type: (str, int, int) -> None
+	def chown_r(cls, path, uid, gid):
+		# type: (str, int, int) -> None
 		"""
 		Recursively set owner and group on a file/directory and its
 		subdirectories.

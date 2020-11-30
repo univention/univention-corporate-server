@@ -49,6 +49,7 @@ attributes = ["uid", "automountInformation", "gidNumber", "uidNumber"]
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if not listener.configRegistry.is_true("nfs/create/homesharepath"):
 		return
 

@@ -48,6 +48,7 @@ acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	"""Handle LDAP schema extensions on Primary and Backup"""
 	global schema_handler, acl_handler
 
@@ -65,6 +66,7 @@ def handler(dn, new, old):
 
 
 def postrun():
+	# type: () -> None
 	"""Restart LDAP server Primary and mark new extension objects active"""
 	global schema_handler, acl_handler
 

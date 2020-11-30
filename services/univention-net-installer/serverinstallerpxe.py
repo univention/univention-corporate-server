@@ -56,6 +56,7 @@ URLBASE = listener.configRegistry.get(
 
 
 def ip_to_hex(ip):
+	# type: (str) -> str
 	o = ip.split('.')
 	if len(o) != 4:
 		return ''
@@ -63,6 +64,7 @@ def ip_to_hex(ip):
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	listener.configRegistry.load()
 	pxeconfig = gen_pxe(new)
 	remove_pxe(old)
@@ -71,6 +73,7 @@ def handler(dn, new, old):
 
 
 def gen_pxe(new):
+	# type: (dict) -> str
 	args = [listener.configRegistry.get('pxe/installer/append')]
 	if args[0] is None:
 		profile = new.get('univentionServerInstallationProfile', EMPTY)[0].decode('UTF-8')
@@ -129,6 +132,7 @@ def gen_pxe(new):
 
 
 def remove_pxe(old):
+	# type: (dict) -> None
 	try:
 		basename = ip_to_hex(old['aRecord'][0].decode('ASCII'))
 	except LookupError:
@@ -147,6 +151,7 @@ def remove_pxe(old):
 
 
 def create_pxe(new, pxeconfig):
+	# type: (dict, str) -> None
 	try:
 		basename = ip_to_hex(new['aRecord'][0].decode('ASCII'))
 	except LookupError:

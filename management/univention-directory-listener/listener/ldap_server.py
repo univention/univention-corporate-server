@@ -44,6 +44,7 @@ attributes = []
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	"""Handle change in LDAP."""
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -70,6 +71,7 @@ def handler(dn, new, old):
 
 
 def add_ldap_server(ucr, name, domain, role):
+	# type: (dict, str, str, str) -> None
 	"""Add LDAP server."""
 	ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Add ldap_server %s' % name)
 
@@ -96,6 +98,7 @@ def add_ldap_server(ucr, name, domain, role):
 
 
 def remove_ldap_server(ucr, name, domain, role):
+	# type: (dict, str, str, str) -> None
 	"""Remove LDAP server."""
 	ud.debug(ud.LISTENER, ud.INFO, 'LDAP_SERVER: Remove ldap_server %s' % name)
 

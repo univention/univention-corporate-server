@@ -44,6 +44,7 @@ UCRV = 'umc/self-service/passwordreset/email/webserver_address'
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if new:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()

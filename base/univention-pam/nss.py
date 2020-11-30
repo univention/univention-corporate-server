@@ -43,10 +43,12 @@ attributes = ['uniqueMember', 'cn']
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	pass
 
 
 def postrun():
+	# type: () -> None
 	ucr = univention.config_registry.ConfigRegistry()  # TODO: why not listener.configRegistry?
 	ucr.load()
 

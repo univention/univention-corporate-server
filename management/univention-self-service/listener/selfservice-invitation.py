@@ -44,6 +44,7 @@ cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
 def handler(dn, new, old, command):
+	# type: (str, dict, dict, str) -> None
 	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
 		return
 

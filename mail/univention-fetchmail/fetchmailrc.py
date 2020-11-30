@@ -34,11 +34,15 @@ import univention.config_registry
 import univention.uldap
 import os
 from six.moves import cPickle as pickle
+try:
+	from typing import Dict, Iterable, List, Optional  # noqa F401
+except ImportError:
+	pass
 
 name = 'fetchmailrc'
 description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'
-attributes = []
+attributes = []  # type: List[str]
 
 modrdn = "1"
 
@@ -51,6 +55,7 @@ REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 
 def load_rc(ofile):
+	# type: () -> Optional[int]
 	"""open an textfile with setuid(0) for root-action"""
 	rc = None
 	listener.setuid(0)
@@ -64,6 +69,7 @@ def load_rc(ofile):
 
 
 def write_rc(flist, wfile):
+	# type: (Iterable[str], str) -> None
 	"""write to an textfile with setuid(0) for root-action"""
 	listener.setuid(0)
 	try:
@@ -75,6 +81,7 @@ def write_rc(flist, wfile):
 
 
 def get_pw_from_rc(lines, uid):
+	# type: (Iterable[str], int) -> Optional[str]
 	"""get current password of a user from fetchmailrc"""
 	if not uid:
 		return None
@@ -88,6 +95,7 @@ def get_pw_from_rc(lines, uid):
 
 
 def objdelete(dlist, old):
+	# type: (Iterable[str], Dict[str, List[bytes]]) -> List[str]
 	"""delete an object in filerepresenting-list if old settings are found"""
 	if old.get('uid'):
 		return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
@@ -96,6 +104,7 @@ def objdelete(dlist, old):
 
 
 def objappend(flist, new, password=None):
+	# type: (List[str], Dict[str, List[bytes]], Optional[str]) -> None
 	"""add new entry"""
 	passwd = password
 	if details_complete(new):
@@ -118,6 +127,7 @@ def objappend(flist, new, password=None):
 
 
 def details_complete(obj, incl_password=False):
+	# type: (Optional[Dict[str, List[bytes]]], bool) -> bool
 	if not obj:
 		return False
 	attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
@@ -127,6 +137,7 @@ def details_complete(obj, incl_password=False):
 
 
 def only_password_reset(old, new):
+	# type: (Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]]) -> bool
 	# if one or both objects are missing ==> false
 	if (old and not new) or (not old and new) or (not old and not new):
 		return False
@@ -145,6 +156,7 @@ def only_password_reset(old, new):
 
 
 def handler(dn, new, old, command):
+	# type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
 	if os.path.exists(FETCHMAIL_OLD_PICKLE):
 		with open(FETCHMAIL_OLD_PICKLE, 'r') as fd:
 			p = pickle.Unpickler(fd)
@@ -217,6 +229,7 @@ def initialize():
 
 
 def postrun():
+	# type: () -> None
 	global __initscript
 	initscript = __initscript
 	ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')

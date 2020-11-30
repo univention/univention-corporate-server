@@ -71,6 +71,7 @@ K5TAB = '/etc/krb5.keytab'
 
 
 def clean():
+	# type: () -> None
 	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return
@@ -84,6 +85,7 @@ def clean():
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	# don't do anything here if this system is joined as a Samba/AD DC
 	if samba4_role.upper() in ('DC', 'RODC'):
 		return

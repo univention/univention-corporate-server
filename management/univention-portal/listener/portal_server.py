@@ -42,6 +42,7 @@ attributes = []
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	listener.setuid(0)
 	ud.debug(ud.LISTENER, ud.INFO, 'portal server handler has fired!')
 	try:
@@ -53,6 +54,7 @@ def handler(dn, new, old):
 
 
 def postrun():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		subprocess.call(['service', 'univention-portal-server', 'reload'])

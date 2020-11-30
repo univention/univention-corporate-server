@@ -156,6 +156,7 @@ def writeTimeperiod(filename, name, alias, periods):
 
 
 def handleTimeperiod(dn, new, old):
+	# type: (str, dict, dict) -> None
 	conffilename = __timeperiodsdir + '%s.cfg'
 
 	if old:
@@ -178,6 +179,7 @@ def handleTimeperiod(dn, new, old):
 
 
 def createDefaultTimeperiod():
+	# type: () -> None
 	filename = __timeperiodsdir + __predefinedTimeperiod + '.cfg'
 	if not os.path.exists(filename):
 		periods = ['00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00']
@@ -185,6 +187,7 @@ def createDefaultTimeperiod():
 
 
 def hostDeleted(new, old):
+	# type: (dict, dict) -> bool
 	"""Checks if a host was enabled for Nagios services and has now been disabled or deleted.
 	Returns True if deleted/deactivated and False if not"""
 
@@ -206,6 +209,7 @@ def hostDeleted(new, old):
 
 
 def createContact(contact):
+	# type: (str) -> None
 	listener.setuid(0)
 	try:
 		filename = '%s%s.cfg' % (__contactsdir, contact)
@@ -235,6 +239,7 @@ def createContact(contact):
 
 
 def removeContactIfUnused(contact):
+	# type: (str) -> None
 	contact_filename = os.path.join(__contactsdir, "%s.cfg" % contact)
 	if os.path.exists(contact_filename):
 		listener.setuid(0)
@@ -251,6 +256,7 @@ def removeContactIfUnused(contact):
 
 
 def createContactGroup(grpname, contactlist):
+	# type: (str, list) -> None
 	listener.setuid(0)
 	try:
 		filename = '%s%s.cfg' % (__contactgrpsdir, grpname)
@@ -282,6 +288,7 @@ def createContactGroup(grpname, contactlist):
 
 
 def updateContactGroup(fqdn, new, old):
+	# type: (str, dict, dict) -> None
 	cg_old = old.get('univentionNagiosEmail', [__fallbackContact.encode('UTF-8')])
 	cg_new = new.get('univentionNagiosEmail', [__fallbackContact.encode('UTF-8')])
 
@@ -314,6 +321,7 @@ def updateContactGroup(fqdn, new, old):
 
 
 def readHostGroup(grpname):
+	# type: (str) -> list
 	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
@@ -331,6 +339,7 @@ def readHostGroup(grpname):
 
 
 def writeHostGroup(grpname, members):
+	# type: (str, list) -> None
 	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
@@ -347,6 +356,7 @@ def writeHostGroup(grpname, members):
 
 
 def deleteHostGroup(grpname):
+	# type: (str) -> None
 	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
@@ -358,6 +368,7 @@ def deleteHostGroup(grpname):
 
 
 def removeFromHostGroup(grpname, fqdn):
+	# type: (str, str) -> None
 	old_members = readHostGroup(grpname)
 	if old_members:
 		new_members = [item for item in old_members if item != fqdn]
@@ -369,6 +380,7 @@ def removeFromHostGroup(grpname, fqdn):
 
 
 def addToHostGroup(grpname, fqdn):
+	# type: (str, str) -> None
 	members = readHostGroup(grpname)
 	if fqdn not in members:
 		members.append(fqdn)
@@ -376,6 +388,7 @@ def addToHostGroup(grpname, fqdn):
 
 
 def handleService(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if old:
 		listener.setuid(0)
 		try:
@@ -433,6 +446,7 @@ def handleService(dn, new, old):
 
 
 def getUniventionComputerType(new):
+	# type: (dict) -> str
 	if not new or 'objectClass' not in new:
 		return 'unknown'
 
@@ -459,6 +473,7 @@ def getUniventionComputerType(new):
 
 
 def createHostExtInfo(fqdn, new):
+	# type: (str, dict) -> None
 	fn = os.path.join(__hostextinfodir, '%s.cfg' % fqdn)
 
 	if new:
@@ -491,6 +506,7 @@ def createHostExtInfo(fqdn, new):
 
 
 def removeHostExtInfo(fqdn):
+	# type: (str) -> None
 	fn = os.path.join(__hostextinfodir, '%s.cfg' % fqdn)
 	if os.path.exists(fn):
 		listener.setuid(0)
@@ -501,6 +517,7 @@ def removeHostExtInfo(fqdn):
 
 
 def removeHost(fqdn):
+	# type: (str) -> None
 	fn = os.path.join(__hostsdir, '%s.cfg' % fqdn)
 	if os.path.exists(fn):
 		listener.setuid(0)
@@ -511,6 +528,7 @@ def removeHost(fqdn):
 
 
 def handleHost(dn, new, old):
+	# type: (str, dict, dict) -> None
 	# avoid additional ldap requests - building fqdn by combining "cn" and baseconfig variable "domainname"
 	host = ''
 	oldfqdn = 'unknown'
@@ -646,6 +664,7 @@ def handleHost(dn, new, old):
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	global __reload
 
 #	ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-SERVER: IN dn=%s' % str(dn))
@@ -670,6 +689,7 @@ def handler(dn, new, old):
 
 
 def initialize():
+	# type: () -> None
 	dirs = ['']
 	dirs.extend(__confsubdirs)
 
@@ -685,6 +705,7 @@ def initialize():
 
 
 def deleteTree(dirname):
+	# type: (str) -> None
 	if os.path.exists(dirname):
 		for f in os.listdir(dirname):
 			fn = os.path.join(dirname, f)
@@ -697,6 +718,7 @@ def deleteTree(dirname):
 
 
 def clean():
+	# type: () -> None
 	dirname = '/etc/nagios/conf.univention.d'
 	if os.path.exists(dirname):
 		listener.setuid(0)
@@ -707,6 +729,7 @@ def clean():
 
 
 def postrun():
+	# type: () -> None
 	global __reload
 
 	if __reload:

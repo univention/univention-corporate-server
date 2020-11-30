@@ -54,6 +54,7 @@ filter = (
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if not new.get('krb5Key'):
 		return
 

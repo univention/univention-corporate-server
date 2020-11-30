@@ -65,8 +65,8 @@ class ListenerModuleHandler(object):
 	)
 	_configuration_class = ListenerModuleConfiguration  # type: Type[ListenerModuleConfiguration]
 	_adapter_class = ListenerModuleAdapter  # type: Type[ListenerModuleAdapter]
-	config = None  # type: ListenerModuleConfiguration
-	ucr = listener.configRegistry    # type: ConfigRegistry
+	config: ListenerModuleConfiguration = ...
+	ucr: ConfigRegistry = ...
 
 	class Configuration(ListenerModuleConfiguration):
 		...

@@ -40,11 +40,15 @@ import time
 import shutil
 import univention.debug
 import subprocess
+try:
+	from typing import Dict, List, Optional, Tuple  # noqa F401
+except ImportError:
+	pass
 
 name = 's4-connector'
 description = 'S4 Connector replication'
 filter = '(objectClass=*)'
-attributes = []
+attributes = []  # type: List[str]
 
 # use the modrdn listener extension
 modrdn = "1"
@@ -65,6 +69,7 @@ if 'connector/listener/additionalbasenames' in listener.configRegistry and liste
 
 
 def _save_old_object(directory, dn, old):
+	# type: (str, str, Optional[Dict[str, List[bytes]]]) -> None
 	filename = os.path.join(directory, 'tmp', 'old_dn')
 
 	with open(filename, 'wb+') as fd:
@@ -75,6 +80,7 @@ def _save_old_object(directory, dn, old):
 
 
 def _load_old_object(directory):
+	# type: (str) -> Tuple[str, Dict[str, List[bytes]]]
 	with open(os.path.join(directory, 'tmp', 'old_dn'), 'rb') as fd:
 		p = pickle.Unpickler(fd)
 		(old_dn, old_object) = p.load()
@@ -83,6 +89,7 @@ def _load_old_object(directory):
 
 
 def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
+	# type: (str, str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], Optional[str]) -> None
 	ob = (dn, new, old, old_dn)
 
 	tmpdir = os.path.join(directory, 'tmp')
@@ -101,10 +108,12 @@ def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
 
 
 def _is_module_disabled():
+	# type: () -> bool
 	return listener.baseConfig.is_true('connector/s4/listener/disabled', False)
 
 
 def _restart_connector():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		if not subprocess.call(['pgrep', '-f', 'python.*s4connector.s4.main']):
@@ -116,7 +125,7 @@ def _restart_connector():
 
 
 def handler(dn, new, old, command):
-
+	# type: (str, Optional[Dict[str, List[bytes]]], Optional[Dict[str, List[bytes]]], str) -> None
 	global group_objects
 	global s4_init_mode
 	global connector_needs_restart
@@ -140,7 +149,7 @@ def handler(dn, new, old, command):
 				os.makedirs(os.path.join(directory, 'tmp'))
 
 			old_dn = None
-			old_object = {}
+			old_object = {}  # type: Dict[str, List[bytes]]
 
 			if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
 				(old_dn, old_object) = _load_old_object(directory)
@@ -169,6 +178,7 @@ def handler(dn, new, old, command):
 
 
 def clean():
+	# type: () -> None
 	listener.setuid(0)
 	try:
 		for directory in dirs:
@@ -185,6 +195,7 @@ def clean():
 
 
 def postrun():
+	# type: () -> None
 	global s4_init_mode
 	global group_objects
 	global connector_needs_restart
@@ -212,6 +223,7 @@ def postrun():
 
 
 def initialize():
+	# type: () -> None
 	global s4_init_mode
 	s4_init_mode = True
 	clean()

@@ -51,6 +51,7 @@ __pluginconfig = {}
 
 
 def readPluginConfig():
+	# type: () -> None
 	global __pluginconfdirstat
 
 	if __pluginconfdirstat != os.stat(__pluginconfdir)[8]:
@@ -75,6 +76,7 @@ def readPluginConfig():
 
 
 def replaceArguments(cmdline, args):
+	# type: (str, list) -> str
 	for i in range(9):
 		if i < len(args):
 			cmdline = re.sub(r'\$ARG%d\$'.encode('ASCII') % (i + 1), args[i], cmdline)
@@ -84,6 +86,7 @@ def replaceArguments(cmdline, args):
 
 
 def writeConfig(fqdn, new):
+	# type: (str, dict) -> None
 	readPluginConfig()
 
 	name = new['cn'][0].decode('UTF-8')
@@ -123,6 +126,7 @@ def writeConfig(fqdn, new):
 
 
 def removeConfig(name):
+	# type: (str) -> None
 	filename = os.path.join(__confdir, "%s.cfg" % name)
 	listener.setuid(0)
 	try:
@@ -133,6 +137,7 @@ def removeConfig(name):
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN dn=%r' % (dn,))
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
 	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))
@@ -174,6 +179,7 @@ def handler(dn, new, old):
 
 
 def initialize():
+	# type: () -> None
 	dirname = '/etc/nagios/nrpe.univention.d'
 
 	if not os.path.exists(dirname):
@@ -185,6 +191,7 @@ def initialize():
 
 
 def deleteTree(dirname):
+	# type: (str) -> None
 	if os.path.exists(dirname):
 		for f in os.listdir(dirname):
 			fn = os.path.join(dirname, f)
@@ -197,6 +204,7 @@ def deleteTree(dirname):
 
 
 def clean():
+	# type: () -> None
 	dirname = '/etc/nagios/nrpe.univention.d'
 	if os.path.exists(dirname):
 		listener.setuid(0)
@@ -207,6 +215,7 @@ def clean():
 
 
 def postrun():
+	# type: () -> None
 	global __initscript
 	initscript = __initscript
 	if listener.configRegistry.is_true("nagios/client/autostart"):

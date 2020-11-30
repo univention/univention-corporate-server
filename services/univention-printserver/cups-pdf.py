@@ -46,6 +46,7 @@ sharename = "pdfPrinterShare"
 
 
 def handler(dn, new, old):
+	# type: (str, dict, dict) -> None
 	if new.get('cn', [b''])[0].decode('UTF-8') == sharename:
 		if new.get('univentionSharePath') and new.get('univentionShareHost'):
 			path = new['univentionSharePath'][0].decode('UTF-8')

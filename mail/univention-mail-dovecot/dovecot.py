@@ -51,6 +51,7 @@ DOVECOT_OLD_PICKLE = "/var/spool/univention-mail-dovecot/dovecot_old_dn"
 class DovecotUserListener(DovecotListener):
 
 	def new_email_account2(self, email):
+		# type: (str) -> None
 		try:
 			self.new_email_account(email)
 		except Exception as ex:
@@ -59,6 +60,7 @@ class DovecotUserListener(DovecotListener):
 		self.log_p("Added mail account %r." % (email,))
 
 	def delete_email_account2(self, dn, email):
+		# type: (str, str) -> None
 		try:
 			self.delete_email_account(dn, email)
 		except Exception as ex:
@@ -67,6 +69,7 @@ class DovecotUserListener(DovecotListener):
 		self.log_p("Deleted mail home of %r." % (email,))
 
 	def move_email_account2(self, dn, old_mail, new_mail):
+		# type: (str, str, str) -> None
 		if listener.configRegistry.is_true('mail/dovecot/mailbox/rename', False):
 			# rename/move
 			try:
@@ -85,6 +88,7 @@ class DovecotUserListener(DovecotListener):
 
 	@staticmethod
 	def flush_auth_cache():
+		# type: () -> None
 		try:
 			listener.setuid(0)
 			listener.run('/usr/bin/doveadm', ["/usr/bin/doveadm", "auth", "cache", "flush"], uid=0)
@@ -93,6 +97,7 @@ class DovecotUserListener(DovecotListener):
 
 
 def load_old(old):
+	# type: (dict) -> dict
 	if os.path.exists(DOVECOT_OLD_PICKLE):
 		with open(DOVECOT_OLD_PICKLE, "rb") as fd:
 			p = pickle.Unpickler(fd)
@@ -104,6 +109,7 @@ def load_old(old):
 
 
 def save_old(old):
+	# type: (dict) -> None
 	with open(DOVECOT_OLD_PICKLE, "wb+") as fd:
 		os.chmod(DOVECOT_OLD_PICKLE, 0o600)
 		p = pickle.Pickler(fd)
@@ -112,6 +118,7 @@ def save_old(old):
 
 
 def handler(dn, new, old, command):
+	# type: (str, dict, dict, str) -> None
 	if command == 'r':
 		save_old(old)
 		# flush auth cache in case of modrdn: the cached PAM entry would
