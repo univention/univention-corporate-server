@@ -25,9 +25,19 @@
 		--local-icon-color: var(--border-color)
 
 .umcTextBox__validationIcon,
-.umcComboBoxDownArrow
+.umcTextBox__downArrowButton,
 .dijitSpinnerButtonContainer
 	color: var(--local-icon-color)
+
+.umcTextBox__downArrowButton
+	--button-size: 1.5em
+	margin-right: 0.5rem
+
+	.dijitButtonContents
+		outline: none
+
+.dijitTextBoxDisabled .umcTextBox__downArrowButton,
+.umcTextBox__validationIcon
 	pointer-events: none
 
 

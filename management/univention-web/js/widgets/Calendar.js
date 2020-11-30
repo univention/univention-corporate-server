@@ -33,12 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/query",
 	"dijit/Tooltip",
 	"dijit/Calendar",
 	"umc/widgets/NumberSpinner",
+	"umc/widgets/Icon",
 	"put-selector/put",
 	"umc/i18n!"
-], function(declare, lang, array, on, Tooltip, Calendar, NumberSpinner, put, _) {
+], function(declare, lang, array, on, query, Tooltip, Calendar, NumberSpinner, Icon, put, _) {
 	return declare("umc.widgets.Calendar", [ Calendar ], {
 		// string that is shown as tooltip when '?' key is pressed
 		tooltipString: null,
@@ -60,6 +62,19 @@ define([
 			});
 			put(this.currentYearLabelNode, '+', this._yearInput.domNode, '.currentYearInput');
 			put(this.currentYearLabelNode, '!');
+
+			var decreaseImageNode = query('.dijitCalendarDecrease', this.domNode)[0];
+			var icon = new Icon({
+				iconName: 'chevron-left'
+			});
+			put(decreaseImageNode, '+', icon.domNode);
+			put(decreaseImageNode, '!');
+			var increaseImageNode = query('.dijitCalendarIncrease', this.domNode)[0];
+			var icon = new Icon({
+				iconName: 'chevron-right'
+			});
+			put(increaseImageNode, '+', icon.domNode);
+			put(increaseImageNode, '!');
 
 			var yearInputKeyDownHandler = on(this._yearInput, 'keyDown', lang.hitch(this, function(evt) {
 				if (evt.key === 'Enter') {

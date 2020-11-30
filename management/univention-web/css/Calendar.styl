@@ -33,13 +33,13 @@
  */
 
 @import "variables"
+@require "HTMLElements.styl"
 
 /* Styling of Calendar container */
 .umc .dijitCalendar
-	border: solid 1px $base-border-color
-	vertical-gradient-and-filter($secondary-color, $grey-medium)
-	material-shadow(1)
-	padding: 6px 0px 3px
+	background-color: var(--color-grey0)
+	box-shadow: var(--box-shadow)
+	padding: 0.5em 0
 
 	/* Styling for month container (previous/next month and month dropdown button) */
 	.dijitCalendarMonthContainer
@@ -107,56 +107,44 @@
 		/* day label style (monday - sunday) */
 		.dijitCalendarDayLabelTemplate
 			text-align: center
-			border-bottom: 1px solid $border-color
-			padding: 0 3px 2px
-			font-weight: bold
+			border-bottom: 1px solid var(--color-grey40)
+			padding: 0 0 2px
 
 			.dijitCalendarDayLabel
-				font-size:0.909em
+				@extends h2
 
 		/* date cells style - basic*/
 		.dijitCalendarDateTemplate
-			font-size: 0.909em
-			letter-spacing: 0.05em
 			text-align: center
-			padding: 0
-
-			&:focus
-				outline: 1px solid $text-color
+			border-radius: var(--border-radius-interactable)
 
 			.dijitCalendarDateLabel
 				display: block
-				padding: 6px
+				padding: 0.5em
 
 		/* Dates of previous next months */
 		.dijitCalendarPreviousMonth,
 		.dijitCalendarNextMonth
-			background-color: $primary-color
-			
 			.dijitCalendarDateLabel
-				color: $calendar-adjacentmonth-text-color
+				color: var(--font-color-contrast-middle)
 
 		/* Hovored date */
 		.dijitCalendarHoveredDate
-			background-color: $base-border-color
+			background-color: var(--color-grey8)
 
-			.dijitCalendarDateLabel
-				color: $hovered-text-color
+		/* :focus date */
+		.dijitCalendarDateTemplate:focus
+			outline: none
+			background-color: var(--color-grey8)
 
 		/* Active date */
 		.dijitCalendarActiveDate
-			background-color: $calendar-date-pressed-background-color
-
-			.dijitCalendarDateLabel
-				color: $hovered-text-color
+			background-color: var(--color-grey25)
 
 		/* Selected date */
 		.dijitCalendarSelectedDate
-			background-color: $calendar-date-selected-background-color
-
-			.dijitCalendarDateLabel
-				color: $selected-text-color
-				font-weight: bold
+			background-color: var(--color-grey8)
+			box-shadow: inset 0 0 0 1px var(--font-color-contrast-high)
 
 		/* Disabled Calendar Style*/
 		.dijitCalendarDisabledDate
@@ -170,27 +158,19 @@
 
 		.dijitCalendarYearLabel
 			display: flex
-			align-items: center
 
 			.dijitCalendarNextYear,
 			.dijitCalendarPreviousYear
-				text-align: center
+				display: flex
+				align-items: center
+				justify-content: center
 				width: 100%
-				font-size: $font-size-button
-				color: $text-color-lighter
-				font-weight: 500
-				text-transform: uppercase
-				letter-spacing: 1.25px
-
-				&Hover
-					color: $text-color-dark-background
-
-				&Active
-					background-color: $primary-color
+				font-size: var(--font-size-small)
+				color: var(--font-color-contrast-middle)
 
 			.currentYearInput
 				background-color: transparent
-				border-color: #5a5a5a
+				border-color: var(--color-grey25)
 
 				.dijitInputInner
 					text-align: center

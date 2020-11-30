@@ -86,7 +86,7 @@ define([
 			// exchange dropdown icon node
 			var button = new Button({
 				iconClass: 'chevron-down',
-				'class': 'ucsIconButton umcComboBoxDownArrow',
+				'class': 'ucsIconButton umcTextBox__downArrowButton',
 				tabIndex: '-1'
 			});
 			put(this._buttonNode, '+', button.domNode);
