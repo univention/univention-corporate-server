@@ -56,8 +56,4 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     if new and old and __login_is_locked(old) and not __login_is_locked(new):
         # reset local bad password count
         ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0].decode('UTF-8'))
-        listener.setuid(0)
-        try:
-            listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0].decode('UTF-8'), '--reset'])
-        finally:
-            listener.unsetuid()
+        listener.run('/sbin/pam_tally', ['pam_tally', '--user', new['uid'][0].decode('UTF-8'), '--reset'], uid=0)

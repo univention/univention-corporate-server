@@ -92,11 +92,7 @@ class DovecotUserListener(DovecotListener):
 
     @staticmethod
     def flush_auth_cache() -> None:
-        try:
-            listener.setuid(0)
-            listener.run('/usr/bin/doveadm', ["/usr/bin/doveadm", "auth", "cache", "flush"], uid=0)
-        finally:
-            listener.unsetuid()
+        listener.run('/usr/bin/doveadm', ["/usr/bin/doveadm", "auth", "cache", "flush"], uid=0)
 
 
 def load_old(old: Dict[str, List[bytes]]) -> Dict[str, List[bytes]]:
