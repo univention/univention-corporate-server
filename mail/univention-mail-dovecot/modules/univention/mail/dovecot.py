@@ -51,6 +51,8 @@ except ImportError:
 
 import univention.debug as ud
 
+from listener import SetUID
+
 
 default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 
@@ -117,8 +119,7 @@ class DovecotListener(object):
         :param regexp: string: regexp for re.findall()
         :return: string
         """
-        try:
-            self.listener.setuid(0)
+        with SetUID(0):
             cmd_proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
             cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input and stdin_input.encode('UTF-8'))
             cmd_exit = cmd_proc.wait()
@@ -128,8 +129,6 @@ class DovecotListener(object):
                     return res[0]
                 else:
                     return cmd_out.decode('UTF-8').rstrip()
-        finally:
-            self.listener.unsetuid()
 
     def move_user_home(self, newMailPrimaryAddress, oldMailPrimaryAddress, force_rename=False):
         # type: (str, str, bool) -> None
@@ -147,8 +146,7 @@ class DovecotListener(object):
             self.log_e("Move mailbox: Configuration error. Could not move mailbox ('%s' -> '%s')." % (oldMailPrimaryAddress, newMailPrimaryAddress))
             return
 
-        try:
-            self.listener.setuid(0)
+        with SetUID(0):
             if not os.path.isdir(old_home_calc):
                 # Either the user never logged in or never got any email, and thus no maildir was ever created,
                 # or it was moved manually. In any case: ignore.
@@ -158,8 +156,6 @@ class DovecotListener(object):
                 # We don't know why there is a file or directory already. For security reasons we don't do anything.
                 self.log_e("Move mailbox: Target directory ('%s') exists.  For security reasons not moving mailbox for mailbox move ('%s' -> '%s')." % (new_home_dove, oldMailPrimaryAddress, newMailPrimaryAddress))
                 return
-        finally:
-            self.listener.unsetuid()
 
         try:
             self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "kick", oldMailPrimaryAddress])

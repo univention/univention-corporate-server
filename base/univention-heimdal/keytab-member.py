@@ -44,6 +44,7 @@ from typing import Dict, List
 import univention.debug as ud
 
 import listener
+from listener import SetUID
 
 
 server_role = listener.configRegistry['server/role']
@@ -65,8 +66,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         return
 
     if server_role == 'domaincontroller_master':
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             if old:
                 cn = old['cn'][0].decode('UTF-8')
                 ud.debug(ud.LISTENER, ud.PROCESS, 'Purging krb5.keytab of %s' % (cn,))
@@ -87,5 +87,3 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                     os.chmod(ktab, 0o660)
                 except (KeyError, EnvironmentError):
                     pass
-        finally:
-            listener.unsetuid()

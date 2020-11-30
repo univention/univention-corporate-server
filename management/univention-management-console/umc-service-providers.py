@@ -42,7 +42,7 @@ from typing import Dict, List
 import univention.debug as ud
 from univention.config_registry import handler_set, handler_unset
 
-import listener
+from listener import SetUID
 
 
 name = 'umc-service-providers'
@@ -55,8 +55,7 @@ __changed_trusted_sp = False
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     global __changed_trusted_sp
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         try:
             fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('UTF-8'))
         except (KeyError, IndexError):
@@ -71,9 +70,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             handler_unset(['umc/saml/trusted/sp/%s' % (fqdn,)])
             __changed_trusted_sp = True
 
-    finally:
-        listener.unsetuid()
-
 
 def postrun() -> None:
     global __changed_trusted_sp
@@ -83,12 +79,9 @@ def postrun() -> None:
         slapd_running = not subprocess.call(['pidof', 'slapd'])
         initscript = '/etc/init.d/slapd'
         if os.path.exists(initscript) and slapd_running:
-            listener.setuid(0)
-            try:
+            with SetUID(0):
                 ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
                 p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
                 p.wait()
                 if p.returncode != 0:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
-            finally:
-                listener.unsetuid()

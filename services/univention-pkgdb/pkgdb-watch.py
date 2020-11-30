@@ -42,7 +42,7 @@ import univention.debug as ud
 import univention.pkgdb
 import univention.uldap
 
-from listener import SetUID
+import listener
 
 
 description = 'watches the availability of the software monitor service'
@@ -54,13 +54,13 @@ ldap_info: Dict[str, Any] = {}
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     if new and b'Software Monitor' in new.get('univentionService', ()):
-        with SetUID(0):
+        with listener.SetUID(0):
             ucr.handler_set(('pkgdb/scan=yes', ))
     elif old and b'Software Monitor' in old.get('univentionService', ()):
         if not ldap_info['lo']:
             ldap_reconnect()
         if ldap_info['lo'] and not ldap_info['lo'].search(filter='(&%s(univentionService=Software Monitor))' % filter, attr=['univentionService']):
-            with SetUID(0):
+            with listener.SetUID(0):
                 ucr.handler_set(('pkgdb/scan=no', ))
 
 

@@ -42,7 +42,7 @@ from typing import Dict, List
 import univention.config_registry
 import univention.debug as ud
 
-import listener
+from listener import SetUID
 
 
 description = 'Update upstream LDAP server list'
@@ -57,8 +57,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     if ucr['server/role'] == 'domaincontroller_master':
         return
 
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         if 'univentionServerRole' in new:
             try:
                 domain = new['associatedDomain'][0].decode('UTF-8')
@@ -71,8 +70,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             except LookupError:
                 domain = ucr['domainname']
             remove_ldap_server(ucr, old['cn'][0].decode('UTF-8'), domain, old['univentionServerRole'][0].decode('UTF-8'))
-    finally:
-        listener.unsetuid()
 
 
 def add_ldap_server(ucr: Dict[str, str], name: str, domain: str, role: str) -> None:

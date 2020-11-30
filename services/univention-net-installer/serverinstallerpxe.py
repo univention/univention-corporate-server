@@ -44,6 +44,7 @@ from six.moves.urllib_parse import urljoin
 import univention.debug as ud
 
 import listener
+from listener import SetUID
 
 
 description = 'PXE configuration for the Server installer'
@@ -146,12 +147,9 @@ def remove_pxe(old: Dict[str, List[bytes]]) -> None:
             ud.debug(ud.LISTENER, ud.ERROR, 'PXE: invalid old IP address %r' % (old['aRecord'][0],))
             return
         filename = os.path.join(PXEBASE, basename)
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             if os.path.exists(filename):
                 os.unlink(filename)
-        finally:
-            listener.unsetuid()
 
 
 def create_pxe(new: Dict[str, List[bytes]], pxeconfig: str) -> None:
@@ -169,9 +167,6 @@ def create_pxe(new: Dict[str, List[bytes]], pxeconfig: str) -> None:
         filename = os.path.join(PXEBASE, basename)
 
         if new.get('univentionServerReinstall', EMPTY)[0] == b'1':
-            listener.setuid(0)
-            try:
+            with SetUID(0):
                 with open(filename, 'w') as fd:
                     fd.write(pxeconfig)
-            finally:
-                listener.unsetuid()

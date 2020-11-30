@@ -46,6 +46,7 @@ import ldap.dn
 import univention.debug as ud
 
 import listener
+from listener import SetUID
 
 
 hostname = listener.configRegistry['hostname']
@@ -82,12 +83,9 @@ def clean() -> None:
     if samba4_role.upper() in ('DC', 'RODC'):
         return
 
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         if os.path.exists(K5TAB):
             os.unlink(K5TAB)
-    finally:
-        listener.unsetuid()
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> Any:
@@ -100,8 +98,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
     if server_role == 'memberserver':
         ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_master))
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             if os.path.exists(K5TAB):
                 os.remove(K5TAB)
             count = 0
@@ -116,15 +113,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                     time.sleep(2)
             os.chown(K5TAB, 0, 0)
             os.chmod(K5TAB, 0o600)
-        finally:
-            listener.unsetuid()
     else:
         ud.debug(ud.LISTENER, ud.PROCESS, 'Exporting %s on %s' % (K5TAB, server_role))
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             if old:
                 call(['ktutil', 'remove', '-p', old['krb5PrincipalName'][0].decode('UTF-8')])
             if new:
                 call(['kadmin', '-l', 'ext', new['krb5PrincipalName'][0].decode('UTF-8')])
-        finally:
-            listener.unsetuid()

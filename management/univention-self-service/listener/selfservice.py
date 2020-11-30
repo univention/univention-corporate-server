@@ -40,7 +40,7 @@ from typing import Dict, List
 
 import univention.config_registry
 
-import listener
+from listener import SetUID
 
 
 description = 'Set umc/self-service/passwordreset/email/webserver_address.'
@@ -55,8 +55,5 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         ucr.load()
         if not ucr.get(UCRV):
             fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new.get('associatedDomain')[0].decode('ASCII'))
-            listener.setuid(0)
-            try:
+            with SetUID(0):
                 univention.config_registry.handler_set(['%s=%s' % (UCRV, fqdn)])
-            finally:
-                listener.unsetuid()

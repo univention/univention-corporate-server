@@ -43,6 +43,7 @@ import univention.config_registry
 import univention.debug
 
 import listener
+from listener import SetUID
 
 
 description = 'update mail/hosteddomains'
@@ -66,9 +67,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
     # if something changed then set UCR variable
     if old_hosteddomains != hosteddomains:
-        try:
-            listener.setuid(0)
+        with SetUID(0):
             univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: %s" % u'mail/hosteddomains=%s' % ' '.join(hosteddomains))
             univention.config_registry.handler_set([u'mail/hosteddomains=%s' % ' '.join(hosteddomains)])
-        finally:
-            listener.unsetuid()

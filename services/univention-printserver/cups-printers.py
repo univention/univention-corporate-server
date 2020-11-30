@@ -50,6 +50,7 @@ from univention.config_registry import configHandlers
 from univention.config_registry.interfaces import Interfaces
 
 import listener
+from listener import SetUID
 
 
 ucr_handlers = configHandlers()
@@ -197,11 +198,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             if printer_is_restricted and not listener.configRegistry.is_false('cups/automaticrestrict', False):
                 printer_list.remove(printer_name)
                 keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
-                listener.setuid(0)
-                try:
+                with SetUID(0):
                     univention.config_registry.handler_set([keyval])
-                finally:
-                    listener.unsetuid()
 
             # Deletions done via lpadmin
             lpadmin(['-x', old['cn'][0].decode('UTF-8')])
@@ -235,11 +233,8 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
         if update_restricted_printers and not listener.configRegistry.is_false('cups/automaticrestrict', False):
             keyval = 'cups/restrictedprinters=%s' % ' '.join(printer_list)
-            listener.setuid(0)
-            try:
+            with SetUID(0):
                 univention.config_registry.handler_set([keyval])
-            finally:
-                listener.unsetuid()
             need_to_reload_cups = True
 
         # Modifications done via lpadmin
@@ -330,8 +325,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             perm = ' '.join(user_and_groups)
 
             # samba permissions
-            listener.setuid(0)
-            try:
+            with SetUID(0):
                 with open(filename, 'w') as fp:
                     fp.write('[%s]\n' % (printername,))
                     fp.write('printer name = %s\n' % (cups_printername,))
@@ -348,8 +342,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
                 os.chmod(filename, 0o755)
                 os.chown(filename, 0, 0)
-            finally:
-                listener.unsetuid()
 
     update_samba_printers_conf()
     reload_printer_restrictions()
@@ -416,12 +408,9 @@ def reload_smbd() -> None:
 
 def initialize() -> None:
     if not os.path.exists('/etc/samba/printers.conf.d'):
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             os.mkdir('/etc/samba/printers.conf.d')
             os.chmod('/etc/samba/printers.conf.d', 0o755)
-        finally:
-            listener.unsetuid()
 
 
 @listener.SetUID(0)

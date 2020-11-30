@@ -44,6 +44,7 @@ import univention.debug as ud
 from univention.lib import ldap_extension
 
 import listener
+from listener import SetUID
 
 
 name = 'ldap_extension'
@@ -83,8 +84,7 @@ def postrun() -> None:
     slapd_running = not subprocess.call(['pidof', 'slapd'])
     initscript = '/etc/init.d/slapd'
     if os.path.exists(initscript) and slapd_running:
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             if schema_handler._do_reload or acl_handler._do_reload:
                 ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
                 for handler_object in (schema_handler, acl_handler):
@@ -105,5 +105,3 @@ def postrun() -> None:
             if server_role == 'domaincontroller_master':
                 for handler_object in (schema_handler, acl_handler):
                     handler_object.mark_active(handler_name=name)
-        finally:
-            listener.unsetuid()

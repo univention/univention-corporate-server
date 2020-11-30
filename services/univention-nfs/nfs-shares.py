@@ -124,16 +124,13 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
         _write(lines)
 
-        listener.setuid(0)
-        try:
+        with listener.SetUID(0):
             # object was renamed
             if not old and oldObject and command == "a":
                 old = oldObject
             ret = univention.lib.listenerSharePath.createOrRename(old, new, listener.configRegistry)
             if ret:
                 ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
-        finally:
-            listener.unsetuid()
     else:
         _write(lines)
 
@@ -150,13 +147,10 @@ def _read(keep=lambda match: True):
 
 
 def _write(lines: List[str]) -> None:
-    listener.setuid(0)
-    try:
+    with listener.SetUID(0):
         ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))
         with open(__exports, 'w') as fp:
             fp.write('\n'.join(lines) + '\n')
-    finally:
-        listener.unsetuid()
 
 
 def _exports_escape(text: str) -> str:

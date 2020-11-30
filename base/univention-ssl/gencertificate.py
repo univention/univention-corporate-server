@@ -45,7 +45,7 @@ from typing import Dict, List
 
 import univention.debug as ud
 
-from listener import configRegistry, setuid, unsetuid
+from listener import SetUID, configRegistry
 
 
 description = 'Generate new Certificates'
@@ -92,8 +92,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
     if configRegistry['server/role'] != 'domaincontroller_master':
         return
 
-    setuid(0)
-    try:
+    with SetUID(0):
         global _delay
         if _delay:
             (old_dn, old) = _delay
@@ -142,8 +141,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
                 fqdn = "*.%s.%s" % (new_cn, domain(new))
                 certpath = os.path.join(SSLDIR, fqdn)
                 fix_permissions(certpath, dn, new)
-    finally:
-        unsetuid()
 
 
 def fix_permissions(certpath: str, dn: str, new: Dict[str, List[bytes]]) -> None:

@@ -47,6 +47,7 @@ from six.moves import cPickle as pickle
 import univention.debug as ud
 
 import listener
+from listener import SetUID
 
 
 description = 'S4 Connector replication'
@@ -109,14 +110,11 @@ def _is_module_disabled() -> bool:
 
 
 def _restart_connector() -> None:
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         if not subprocess.call(['pgrep', '-f', 'python3.*s4connector.s4.main']):
             ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: restarting connector ...")
             subprocess.call(('systemctl', 'restart', 'univention-s4-connector'))
             ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: ... done")
-    finally:
-        listener.unsetuid()
 
 
 def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, command: str) -> None:
@@ -134,8 +132,7 @@ def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[byt
             _restart_connector()
             connector_needs_restart = False
 
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         for directory in dirs:
             if not os.path.exists(os.path.join(directory, 'tmp')):
                 os.makedirs(os.path.join(directory, 'tmp'))
@@ -164,13 +161,9 @@ def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[byt
                 if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
                     os.unlink(os.path.join(directory, 'tmp', 'old_dn'))
 
-    finally:
-        listener.unsetuid()
-
 
 def clean() -> None:
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         for directory in dirs:
             if not os.path.exists(directory):
                 continue
@@ -180,8 +173,6 @@ def clean() -> None:
             if os.path.exists(os.path.join(directory, 'tmp')):
                 for filename in os.listdir(os.path.join(directory, 'tmp')):
                     os.remove(os.path.join(directory, filename))
-    finally:
-        listener.unsetuid()
 
 
 def postrun() -> None:
@@ -190,8 +181,7 @@ def postrun() -> None:
     global connector_needs_restart
 
     if s4_init_mode:
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             s4_init_mode = False
             for ob in group_objects:
                 for directory in dirs:
@@ -203,8 +193,6 @@ def postrun() -> None:
                         p.clear_memo()
             del group_objects
             group_objects = []
-        finally:
-            listener.unsetuid()
 
     if connector_needs_restart:
         _restart_connector()

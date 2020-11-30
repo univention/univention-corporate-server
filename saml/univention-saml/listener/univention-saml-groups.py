@@ -42,7 +42,7 @@ import pwd
 import shutil
 from typing import Dict, List
 
-import listener
+from listener import SetUID
 
 
 description = 'Write SAML enabled groups to json file, to be read by the services metadata.php'
@@ -56,9 +56,7 @@ gid = grp.getgrnam("samlcgi").gr_gid
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    listener.setuid(0)
-
-    try:
+    with SetUID(0):
         if os.path.exists(path):
             with open(path) as group_file:
                 data = json.load(group_file)
@@ -94,5 +92,3 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         shutil.move(tmp_path, path)
         os.chmod(path, 0o600)
         os.chown(path, uid, gid)
-    finally:
-        listener.unsetuid()

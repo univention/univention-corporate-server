@@ -46,7 +46,7 @@ from typing import Dict, List, Tuple
 import univention.debug as ud
 from univention.saml.lib import php_array, php_bool, php_string
 
-import listener
+from listener import SetUID
 
 
 description = 'Manage simpleSAMLphp service providers'
@@ -85,8 +85,7 @@ def ldap_attribute_join(old: List[str | List[str]]) -> List[Tuple[str, str]]:
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         if old and old.get('SAMLServiceProviderIdentifier'):
             # delete old service provider config file
             old_filename = os.path.join(sp_config_dir, '%s.php' % old.get('SAMLServiceProviderIdentifier')[0].decode('ASCII').replace('/', '_'))
@@ -107,8 +106,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             fd.write('<?php\n')
             for filename in glob.glob(os.path.join(sp_config_dir, '*.php')):
                 fd.write("require_once(%s);\n" % (php_string(filename),))
-    finally:
-        listener.unsetuid()
 
 
 def write_configuration_file(dn: str, new: Dict[str, List[bytes]], filename: str) -> bool:

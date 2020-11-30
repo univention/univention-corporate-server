@@ -38,7 +38,7 @@ from typing import Dict, List
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
-import listener
+from listener import SetUID
 
 
 description = 'Replication of identity provider settings'
@@ -53,8 +53,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     ucr = ConfigRegistry()
     ucr.load()
     idp_config_objectdn = ucr.get('saml/idp/configobject', 'id=default-saml-idp,cn=univention,%s' % ucr.get('ldap/base'))
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         if idp_config_objectdn == new['entryDN'][0].decode('UTF-8'):
             for key in LDAP_UCR_MAPPING.keys():
                 if key in new:
@@ -67,5 +66,3 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
                     handler_unset(['%s' % LDAP_UCR_MAPPING[key]])
         else:
             ud.debug(ud.LISTENER, ud.WARN, 'An IdP config object was modified, but it is not the object the listener is configured for (%s). Ignoring changes. DN of modified object: %r' % (idp_config_objectdn, new['entryDN'][0].decode('UTF-8')))
-    finally:
-        listener.unsetuid()

@@ -51,6 +51,7 @@ from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import UMC_ICON_BASEDIR, default_filename_suffix_for_mime_type, imagecategory_of_buffer
 
 import listener
+from listener import SetUID
 
 
 name = 'udm_extension'
@@ -167,8 +168,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             return
 
         new_relative_filename = new['%sFilename' % objectclass][0].decode('UTF-8')
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             if old_relative_filename and old_relative_filename != new_relative_filename:
                 remove_python_file(objectclass, target_subdir, old_relative_filename)
             if not install_python_file(objectclass, target_subdir, new_relative_filename, new_object_data):
@@ -178,28 +178,22 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             if objectclass == 'univentionUDMModule':
                 install_umcregistration(dn, new)
                 install_umcicons(dn, new)
-        finally:
-            listener.unsetuid()
 
     elif old:
 
         # ok, basic checks passed, handle the change
-        listener.setuid(0)
-        try:
+        with SetUID(0):
             remove_python_file(objectclass, target_subdir, old_relative_filename)
             remove_messagecatalog(dn, old, objectclass)
             remove_umcmessagecatalogs(old)
             if objectclass == 'univentionUDMModule':
                 remove_umcicons(dn, old)
                 remove_umcregistration(dn, old)
-        finally:
-            listener.unsetuid()
 
     # TODO: Kill running univention-cli-server?
 
     # Mark new extension object active
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         if new:
             if listener.configRegistry.get("server/role") != "domaincontroller_master":
                 # Only set active flag on Primary
@@ -224,13 +218,10 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             except udm_errors.ldapError as exc:
                 ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, exc))
 
-    finally:
-        listener.unsetuid()
 
 
 def remove_object(udm_module_name: str, object_dn: str) -> None:
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         try:
             ldap_connection, ldap_position = udm_uldap.getAdminConnection()
             udm_modules.update()
@@ -246,8 +237,6 @@ def remove_object(udm_module_name: str, object_dn: str) -> None:
         except (udm_errors.ldapError, udm_errors.noObject) as exc:
             ud.debug(ud.LISTENER, ud.ERROR, '%s: Error deleting %s: %s.' % (name, object_dn, exc))
             raise exc
-    finally:
-        listener.unsetuid()
 
 
 def install_python_file(objectclass: str, target_subdir: str, target_filename: str, data: bytes) -> bool:

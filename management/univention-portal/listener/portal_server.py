@@ -46,8 +46,7 @@ filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/c
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    listener.setuid(0)
-    try:
+    with listener.SetUID(0):
         attrs = new if new else old
         object_type = attrs.get('univentionObjectType', [])
         if object_type:
@@ -57,5 +56,3 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
         reason = f'ldap:{module}:{dn}'
         ud.debug(ud.LISTENER, ud.PROCESS, "Updating portal. Reason: %s" % reason)
         subprocess.call(['/usr/sbin/univention-portal', 'update', '--reason', reason], stdout=subprocess.PIPE)
-    finally:
-        listener.unsetuid()

@@ -250,15 +250,12 @@ def remove_idmap_entry(sambaSID: str, xidNumber: str, type_string: str, idmap: I
 
 def initialize() -> None:
     idmap_ldb = '/var/lib/samba/private/idmap.ldb'
-    listener.setuid(0)
-    try:
+    with listener.SetUID(0):
         if os.path.exists(idmap_ldb):
             idmap_ldb_backup = '%s_%d' % (idmap_ldb, time.time())
             ud.debug(ud.LISTENER, ud.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
             os.rename(idmap_ldb, idmap_ldb_backup)
         setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
-    finally:
-        listener.unsetuid()
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], operation: str) -> None:

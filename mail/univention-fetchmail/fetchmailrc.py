@@ -71,28 +71,26 @@ def _split_file(fetch_list, new_line):
     return fetch_list
 
 
+@listener.SetUID(0)
 def load_rc(ofile: str) -> List[str] | None:
     """open an textfile with setuid(0) for root-action"""
     rc = None
-    listener.setuid(0)
     try:
         with open(ofile) as fd:
             rc = reduce(_split_file, fd, [])
     except EnvironmentError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to open "%s": %s' % (ofile, exc))
-    listener.unsetuid()
     return rc
 
 
+@listener.SetUID(0)
 def write_rc(flist: Iterable[str], wfile: str) -> None:
     """write to an textfile with setuid(0) for root-action"""
-    listener.setuid(0)
     try:
         with open(wfile, "w") as fd:
             fd.writelines(flist)
     except EnvironmentError as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'Failed to write to file "%s": %s' % (wfile, exc))
-    listener.unsetuid()
 
 
 def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
@@ -222,8 +220,5 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 def postrun() -> None:
     initscript = __initscript
     ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         listener.run(initscript, ['fetchmail', 'restart'], uid=0)
-    finally:
-        listener.unsetuid()

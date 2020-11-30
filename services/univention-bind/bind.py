@@ -145,13 +145,13 @@ def _quote_config_parameter(arg: str) -> str:
     return arg.replace('\\', '\\\\').replace('"', '\\"')
 
 
+@listener.SetUID(0)
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     """Handle LDAP changes."""
     base = listener.configRegistry.get('dns/ldap/base')
     if base and not dn.endswith(base):
         return
 
-    listener.setuid(0)
     try:
         if new and not old:
             # Add
@@ -171,8 +171,6 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             chgrp_bind(zonefile)
     except InvalidZone as exc:
         ud.debug(ud.LISTENER, ud.ERROR, '%s is invalid: %s' % (dn, exc))
-    finally:
-        listener.unsetuid()
 
 
 def _ldap_auth_string(ucr: Dict[str, str]) -> str:
@@ -252,8 +250,7 @@ def _remove_zone(zonename: str) -> None:
 
 def clean() -> None:
     """Reset listener state."""
-    listener.setuid(0)
-    try:
+    with listener.SetUID(0):
         if os.path.exists(NAMED_CONF_FILE):
             os.unlink(NAMED_CONF_FILE)
         open(NAMED_CONF_FILE, 'w').close()
@@ -262,8 +259,6 @@ def clean() -> None:
             for f in os.listdir(NAMED_CONF_DIR):
                 os.unlink(os.path.join(NAMED_CONF_DIR, f))
             os.rmdir(NAMED_CONF_DIR)
-    finally:
-        listener.unsetuid()
 
 
 def _reload(zones: List[str], restart: bool = False, dns_backend: str = 'ldap') -> Dict[int, List[str]]:
@@ -349,6 +344,7 @@ def _kill_children(pids: Dict[int, List[str]], timeout: float = 5) -> None:
     _wait_children(pids, timeout)
 
 
+@listener.SetUID(0)
 def postrun() -> None:
     """Run pending updates."""
     global __zone_created_or_removed
@@ -356,7 +352,6 @@ def postrun() -> None:
     # Reload UCR
     listener.configRegistry.load()
 
-    listener.setuid(0)
     try:
         # Re-create named and proxy inclusion file
         named_conf = open(NAMED_CONF_FILE, 'w')
@@ -409,5 +404,3 @@ def postrun() -> None:
         _kill_children(pids)
     except InvalidZone as exc:
         ud.debug(ud.LISTENER, ud.ERROR, 'postrun: invalid: %s' % (exc,))
-    finally:
-        listener.unsetuid()

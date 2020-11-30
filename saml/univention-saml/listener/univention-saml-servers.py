@@ -41,7 +41,7 @@ from typing import Dict, List
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
-import listener
+from listener import SetUID
 
 
 description = 'Manage ucs/server/saml-idp-server/* variables'
@@ -52,8 +52,7 @@ attributes = ['univentionService']
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
     ucr = ConfigRegistry()
     ucr.load()
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         try:
             fqdn = '%s.%s' % (new['cn'][0].decode('UTF-8'), new['associatedDomain'][0].decode('ASCII'))
         except (KeyError, IndexError):
@@ -72,5 +71,3 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             path_to_key = ucr.get('saml/idp/certificate/privatekey')
             if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
                 subprocess.call(['systemctl', 'restart', 'univention-saml'])
-    finally:
-        listener.unsetuid()

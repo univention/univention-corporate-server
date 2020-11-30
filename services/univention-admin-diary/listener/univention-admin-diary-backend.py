@@ -40,7 +40,7 @@ from typing import Dict, List
 
 from univention.config_registry import ConfigRegistry, handler_set
 
-import listener
+from listener import SetUID
 
 
 description = 'Manage admin/diary/backend variable'
@@ -51,8 +51,7 @@ service_name = b"Admin Diary Backend"
 
 
 def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
-    listener.setuid(0)
-    try:
+    with SetUID(0):
         change = False
         new_has_service = service_name in new.get('univentionService', [])
         old_has_service = service_name in old.get('univentionService', [])
@@ -87,5 +86,3 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
         if change:
             subprocess.call(['invoke-rc.d', 'rsyslog', 'try-restart'])
-    finally:
-        listener.unsetuid()

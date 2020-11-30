@@ -41,6 +41,7 @@ import univention.config_registry
 import univention.debug as ud
 
 import listener
+from listener import SetUID
 
 
 description = 'Manage Samba share for CUPS pdf printer'
@@ -64,8 +65,5 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
             list_ = []
             list_.append('cups/cups-pdf/directory=%s' % (path,))
             list_.append('cups/cups-pdf/anonymous=%s' % (path,))
-            listener.setuid(0)
-            try:
+            with SetUID(0):
                 univention.config_registry.handler_set(list_)
-            finally:
-                listener.unsetuid()

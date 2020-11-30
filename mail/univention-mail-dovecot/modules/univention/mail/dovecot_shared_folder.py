@@ -55,6 +55,8 @@ from univention.config_registry import handler_set
 from univention.lib.misc import custom_username
 from univention.mail.dovecot import DovecotListener
 
+from listener import SetUID
+
 
 # UDM name → (IMAP, doveadm)
 dovecot_acls = {
@@ -126,25 +128,19 @@ class DovecotGlobalAclFile(object):
             os.fchown(fileno, 0, self.dovemail_gid)
             os.fchmod(fileno, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
 
-        try:
-            self.listener.setuid(0)
+        with SetUID(0):
             if fileno:
                 set_perms(fileno)
             else:
                 mode = 'rb' if os.path.exists(path) else 'wb'
                 with open(path, mode) as fp:
                     set_perms(fp.fileno())
-        finally:
-            self.listener.unsetuid()
 
     def _read(self):  # type: () -> None
         self._acls = []
-        try:
-            self.listener.setuid(0)
+        with SetUID(0):
             for line in open(global_acl_path):
                 self._acls.append(DovecotFolderAclEntry.from_str(line))
-        finally:
-            self.listener.unsetuid()
 
     def _write(self):  # type: () -> None
         fileno, filename = tempfile.mkstemp(prefix='.global-acls')
@@ -152,11 +148,8 @@ class DovecotGlobalAclFile(object):
             os.write(fileno, f'{acl}\n'.encode('UTF-8'))
         self._fix_permissions(fileno=fileno)
         os.close(fileno)
-        try:
-            self.listener.setuid(0)
+        with SetUID(0):
             shutil.move(filename, global_acl_path)
-        finally:
-            self.listener.unsetuid()
 
 
 class DovecotSharedFolderListener(DovecotListener):
@@ -229,14 +222,12 @@ class DovecotSharedFolderListener(DovecotListener):
 
         # remove mailbox from disk
         if self.listener.configRegistry.is_true("mail/dovecot/mailbox/delete", False):
-            try:
-                self.listener.setuid(0)
-                shutil.rmtree(path, ignore_errors=True)
-            except Exception:
-                self.log_e("Error deleting mailbox '%s'." % old_mailbox)
-                return
-            finally:
-                self.listener.unsetuid()
+            with SetUID(0):
+                try:
+                    shutil.rmtree(path, ignore_errors=True)
+                except Exception:
+                    self.log_e("Error deleting mailbox '%s'." % old_mailbox)
+                    return
             self.log_p("Deleted mailbox '%s'." % old_mailbox)
         else:
             self.log_p("Deleting of mailboxes disabled (mailbox '%s')." % old_mailbox)
@@ -276,16 +267,14 @@ class DovecotSharedFolderListener(DovecotListener):
                     self.move_mail_home(pub_loc, new_user_home, new_mailbox, True)
                     old_maildir = os.path.join(new_user_home, ".INBOX")
                     new_maildir = os.path.join(new_user_home, "Maildir")
-                    try:
-                        # rename mailbox
-                        self.listener.setuid(0)
-                        shutil.move(old_maildir, new_maildir)
-                    except Exception:
-                        self.log_e("Failed to move mail home (of '%s') from '%s' to '%s'.\n%s" % (
-                            new_mailbox, old_maildir, new_maildir, traceback.format_exc()))
-                        raise
-                    finally:
-                        self.listener.unsetuid()
+                    with SetUID(0):
+                        try:
+                            # rename mailbox
+                            shutil.move(old_maildir, new_maildir)
+                        except Exception:
+                            self.log_e("Failed to move mail home (of '%s') from '%s' to '%s'.\n%s" % (
+                                new_mailbox, old_maildir, new_maildir, traceback.format_exc()))
+                            raise
                 except Exception:
                     self.log_e("Could not rename/move mailbox ('%s' -> '%s').\n%s" % (old_mailbox, new_mailbox, traceback.format_exc()))
                     return
@@ -328,16 +317,14 @@ class DovecotSharedFolderListener(DovecotListener):
                     self.move_mail_home(old_path, pub_loc, new_mailbox, True)
                     old_maildir = os.path.join(pub_loc, "Maildir")
                     new_maildir = os.path.join(pub_loc, ".INBOX")
-                    try:
-                        # rename mailbox
-                        self.listener.setuid(0)
-                        shutil.move(old_maildir, new_maildir)
-                    except Exception:
-                        self.log_e("Failed to move mail home (of '%s') from '%s' to '%s'.\n%s" % (
-                            new_mailbox, old_maildir, new_maildir, traceback.format_exc()))
-                        raise
-                    finally:
-                        self.listener.unsetuid()
+                    with SetUID(0):
+                        try:
+                            # rename mailbox
+                            shutil.move(old_maildir, new_maildir)
+                        except Exception:
+                            self.log_e("Failed to move mail home (of '%s') from '%s' to '%s'.\n%s" % (
+                                new_mailbox, old_maildir, new_maildir, traceback.format_exc()))
+                            raise
                     self.remove_global_acls(old)
                 except Exception:
                     self.log_e("Could not rename/move mailbox ('%s' -> '%s').\n%s" % (old_mailbox, new_mailbox, traceback.format_exc()))
@@ -389,8 +376,7 @@ class DovecotSharedFolderListener(DovecotListener):
         :param regexp: string: regexp for re.findall()
         :return: string
         """
-        try:
-            self.listener.setuid(0)
+        with SetUID(0):
             cmd_proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
             cmd_out, cmd_err = cmd_proc.communicate(input=stdin_input and stdin_input.encode('UTF-8'))
             cmd_exit = cmd_proc.wait()
@@ -400,8 +386,6 @@ class DovecotSharedFolderListener(DovecotListener):
                     return res[0]
                 else:
                     return cmd_out.decode('UTF-8').rstrip()
-        finally:
-            self.listener.unsetuid()
 
     def doveadm_set_mailbox_acls(self, mailbox, acls):  # type: (str, List[str]) -> None
         for acl in acls:
@@ -479,15 +463,13 @@ class DovecotSharedFolderListener(DovecotListener):
                 )
                 for pf in public_folders
             ]
-        try:
-            self.listener.setuid(0)
-            handler_set(["mail/dovecot/internal/sharedfolders=%s" % " ".join(emails_quota)])
-            self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "reload"])
-        except Exception:
-            self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
-            raise
-        finally:
-            self.listener.unsetuid()
+        with SetUID(0):
+            try:
+                handler_set(["mail/dovecot/internal/sharedfolders=%s" % " ".join(emails_quota)])
+                self.read_from_ext_proc_as_root(["/usr/bin/doveadm", "reload"])
+            except Exception:
+                self.log_e("update_public_mailbox_configuration(): Failed to update public mailbox configuration:\n%s" % traceback.format_exc())
+                raise
         self.log_p("Updated shared mailbox configuration.")
 
     def unsubscribe_from_mailbox(self, users, mailbox):  # type: (List[str], str) -> None
@@ -497,9 +479,9 @@ class DovecotSharedFolderListener(DovecotListener):
             except Exception:
                 self.log_e("Failed to unsubscribe user '%s' from mailbox '%s'." % (user, mailbox))
 
+    @SetUID(0)
     def get_udm_infos(self, udm_module, udm_filter):  # type: (Any, str) -> List[Any]
         try:
-            self.listener.setuid(0)
             univention.admin.modules.update()
             lo, po = getMachineConnection()
             mod = univention.admin.modules.get(udm_module)
@@ -507,8 +489,6 @@ class DovecotSharedFolderListener(DovecotListener):
         except Exception:
             self.log_e("get_udm_infos(%s, %s): Failed to retrieve UDM info:\n%s" % (udm_module, udm_filter, traceback.format_exc()))
             raise
-        finally:
-            self.listener.unsetuid()
 
     def _diff_acls(self, old, new):
         # type: (Dict[str, List[bytes]], Dict[str, List[bytes]]) -> List[str]

@@ -123,21 +123,15 @@ def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str
         ucr_value = ucr.get(unset_ucr_key)
         if ucr_value:
             ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr unset %s=%s" % (name, unset_ucr_key, ucr_value))
-            listener.setuid(0)
-            try:
+            with listener.SetUID(0):
                 univention.config_registry.handler_unset([unset_ucr_key])
                 return default_name
-            finally:
-                listener.unsetuid()
     else:
         ucr_key_value = "%s/%s=%s" % (ucr_base, default_name_lower, obj_name)
         ud.debug(ud.LISTENER, ud.PROCESS, "%s: ucr set %s" % (name, ucr_key_value))
-        listener.setuid(0)
-        try:
+        with listener.SetUID(0):
             univention.config_registry.handler_set([ucr_key_value])
             return default_name
-        finally:
-            listener.unsetuid()
 
 
 def no_relevant_change(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
@@ -228,6 +222,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
             modified_default_names.append(changed_default_name)
 
 
+@listener.SetUID(0)
 def postrun() -> None:
     global modified_default_names
     if not modified_default_names:
@@ -237,7 +232,6 @@ def postrun() -> None:
     if not os.path.isdir(hook_dir):
         return
 
-    listener.setuid(0)
     try:
         for filename in os.listdir(hook_dir):
             filename_parts = os.path.splitext(filename)
@@ -255,4 +249,3 @@ def postrun() -> None:
                     hook_module.postrun(modified_default_names)
     finally:
         modified_default_names = []
-        listener.unsetuid()
