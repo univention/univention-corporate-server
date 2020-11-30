@@ -303,8 +303,8 @@ class object(univention.admin.handlers.simpleLdap):
 			pwdCheck.enableQualityCheck = True
 			try:
 				pwdCheck.check(self['password'], username=self['username'], displayname=self['displayName'])
-			except ValueError as e:
-				raise univention.admin.uexceptions.pwQuality(str(e).replace('W?rterbucheintrag', 'Wörterbucheintrag').replace('enth?lt', 'enthält'))
+			except univention.password.CheckFailed as exc:
+				raise univention.admin.uexceptions.pwQuality(str(exc))
 
 	def _ldap_post_remove(self):
 		super(object, self)._ldap_post_remove()
