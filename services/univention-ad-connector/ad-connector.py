@@ -36,7 +36,7 @@ import listener
 from six.moves import cPickle as pickle
 import time
 import os
-import univention.debug
+import univention.debug as ud
 import shutil
 import subprocess
 try:
@@ -65,7 +65,7 @@ if 'connector/listener/additionalbasenames' in listener.configRegistry and liste
 		if '%s/ad/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/ad/listener/dir' % configbasename]:
 			dirs.append(listener.configRegistry['%s/ad/listener/dir' % configbasename])
 		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
+			ud.debug(ud.LISTENER, ud.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
 dirs = [dir_ for dir_ in dirs if dir_]
 if not dirs:
 	raise ImportError('UCR variable connector/ad/listener/dir needs to be set!')
@@ -115,9 +115,9 @@ def _restart_connector():
 	listener.setuid(0)
 	try:
 		if not subprocess.call(['pgrep', '-f', 'python.*connector.ad.main']):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "ad-connector: restarting connector ...")
+			ud.debug(ud.LISTENER, ud.PROCESS, "ad-connector: restarting connector ...")
 			subprocess.call(('service', 'univention-ad-connector', 'restart'))
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "ad-connector: ... done")
+			ud.debug(ud.LISTENER, ud.PROCESS, "ad-connector: ... done")
 	finally:
 		listener.unsetuid()
 
@@ -154,7 +154,7 @@ def handler(dn, new, old, command):
 				# might only see the first step.
 				#  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
 				if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
+					ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
 					_dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
 					old_dn = None
 

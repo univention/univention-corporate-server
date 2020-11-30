@@ -34,7 +34,7 @@ from __future__ import absolute_import
 import os
 import listener
 import subprocess
-import univention.debug
+import univention.debug as ud
 
 name = 'pkgdb'
 description = 'Package-Database'
@@ -50,7 +50,7 @@ DELETE_DIR = '/var/lib/univention-pkgdb/delete'
 
 def exec_pkgdb(args):
 	# type: (list) -> int
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "exec_pkgdb args=%s" % args)
+	ud.debug(ud.LISTENER, ud.INFO, "exec_pkgdb args=%s" % args)
 
 	listener.setuid(0)
 	try:
@@ -60,7 +60,7 @@ def exec_pkgdb(args):
 	finally:
 		listener.unsetuid()
 
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "pkgdb: return code %d" % retcode)
+	ud.debug(ud.LISTENER, ud.INFO, "pkgdb: return code %d" % retcode)
 	return retcode
 
 
@@ -68,9 +68,9 @@ def add_system(sysname):
 	# type: (str) -> int
 	retcode = exec_pkgdb(['--add-system', sysname])
 	if retcode != 0:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "error while adding system=%s to pkgdb" % sysname)
+		ud.debug(ud.LISTENER, ud.ERROR, "error while adding system=%s to pkgdb" % sysname)
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "successful added system=%s" % sysname)
+		ud.debug(ud.LISTENER, ud.INFO, "successful added system=%s" % sysname)
 	return retcode
 
 
@@ -78,9 +78,9 @@ def del_system(sysname):
 	# type: (str) -> int
 	retcode = exec_pkgdb(['--del-system', sysname])
 	if retcode != 0:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "error while deleting system=%s to pkgdb" % sysname)
+		ud.debug(ud.LISTENER, ud.ERROR, "error while deleting system=%s to pkgdb" % sysname)
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "successful added system=%s" % sysname)
+		ud.debug(ud.LISTENER, ud.INFO, "successful added system=%s" % sysname)
 	return retcode
 
 
@@ -91,7 +91,7 @@ def initialize():
 
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "pkgdb handler dn=%s" % (dn))
+	ud.debug(ud.LISTENER, ud.INFO, "pkgdb handler dn=%s" % (dn))
 
 	try:
 		if old and not new:

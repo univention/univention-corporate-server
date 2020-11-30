@@ -37,7 +37,7 @@ import listener
 import os
 import re
 import subprocess
-import univention.debug
+import univention.debug as ud
 import univention.lib.listenerSharePath
 
 from six.moves import cPickle as pickle
@@ -98,9 +98,7 @@ def handler(dn, new, old, command):
 		if not os.path.exists(tmpDir):
 			os.makedirs(tmpDir)
 	except Exception as exc:
-		univention.debug.debug(
-			univention.debug.LISTENER, univention.debug.ERROR,
-			"%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
+		ud.debug(ud.LISTENER, ud.ERROR, "%s: could not create tmp dir %s (%s)" % (name, tmpDir, exc))
 		return
 	finally:
 		listener.unsetuid()
@@ -127,9 +125,7 @@ def handler(dn, new, old, command):
 	except Exception as e:
 		if os.path.isfile(tmpFile):
 			os.remove(tmpFile)
-		univention.debug.debug(
-			univention.debug.LISTENER, univention.debug.ERROR,
-			"%s: could not read/write tmp file %s (%s)" % (name, tmpFile, str(e)))
+		ud.debug(ud.LISTENER, ud.ERROR, "%s: could not read/write tmp file %s (%s)" % (name, tmpFile, e))
 	finally:
 		listener.unsetuid()
 
@@ -159,7 +155,7 @@ def handler(dn, new, old, command):
 	if new:
 		share_name = new['univentionShareSambaName'][0].decode('UTF-8', 'ignore')
 		if not _validate_smb_share_name(share_name):
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "invalid samba share name: %r" % (share_name,))
+			ud.debug(ud.LISTENER, ud.ERROR, "invalid samba share name: %r" % (share_name,))
 			return
 		share_name_mapped = quote(share_name, safe='')
 		filename = '/etc/samba/shares.conf.d/%s' % (share_name_mapped,)
@@ -176,7 +172,7 @@ def handler(dn, new, old, command):
 			finally:
 				listener.unsetuid()
 			if ret:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
+				ud.debug(ud.LISTENER, ud.ERROR, "%s: rename/create of sharePath for %s failed (%s)" % (name, dn, ret))
 				return
 
 		listener.setuid(0)
@@ -325,8 +321,8 @@ def handler(dn, new, old, command):
 					if new_aces:
 						dacl_flags = "PAI"
 					sddl = "{}D:{}{}{}".format(owner, dacl_flags, deny_aces.strip(), allow_aces.strip())
-					univention.debug.debug(
-						univention.debug.LISTENER, univention.debug.PROCESS,
+					ud.debug(
+						ud.LISTENER, ud.PROCESS,
 						"Set new nt %s acl for dir %s" % (sddl, new['univentionSharePath'][0]))
 					proc = subprocess.Popen(
 						['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]],
@@ -335,8 +331,8 @@ def handler(dn, new, old, command):
 					)
 					_, stderr = proc.communicate()
 					if stderr:
-						univention.debug.debug(
-							univention.debug.LISTENER, univention.debug.ERROR,
+						ud.debug(
+							ud.LISTENER, ud.ERROR,
 							"could not set nt acl for dir %s (%s)" % (new['univentionSharePath'][0], stderr))
 		finally:
 			listener.unsetuid()

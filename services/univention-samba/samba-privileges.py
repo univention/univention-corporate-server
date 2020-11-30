@@ -33,7 +33,7 @@
 from __future__ import absolute_import
 
 import listener
-import univention.debug
+import univention.debug as ud
 import tdb
 
 SAMBA_PRIVILEGES = {
@@ -61,19 +61,19 @@ atributes = ['univentionSambaPrivilegeList', 'sambaSID']
 def handler(dn, new, old):
 	# type: (str, dict, dict) -> None
 
-	where = univention.debug.LISTENER
-	level = univention.debug.INFO
+	where = ud.LISTENER
+	level = ud.INFO
 
 	# deleted -> remove all privileges
 	if old and not new:
 		if old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
-			univention.debug.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
+			ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
 			removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
 
 	# created
 	if new and not old:
 		if new.get("univentionSambaPrivilegeList") and new.get("sambaSID"):
-			univention.debug.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
+			ud.debug(where, level, "%s: add new samba privs (%r)" % (name, new["sambaSID"][0]))
 			addPrivileges(new["sambaSID"][0], new["univentionSambaPrivilegeList"])
 
 	# modified
@@ -85,16 +85,16 @@ def handler(dn, new, old):
 
 		# removed
 		if not newPrivs and oldPrivs:
-			univention.debug.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid))
+			ud.debug(where, level, "%s: remove all samba privs (%s)" % (name, sid))
 			removePrivileges(sid, oldPrivs)
 		# added
 		if newPrivs and not oldPrivs:
-			univention.debug.debug(where, level, "%s: add new samba privs (%s)" % (name, sid))
+			ud.debug(where, level, "%s: add new samba privs (%s)" % (name, sid))
 			addPrivileges(sid, newPrivs)
 
 		# modified
 		if newPrivs and oldPrivs and not newPrivs == oldPrivs:
-			univention.debug.debug(where, level, "%s: modify samba privs (%s)" % (name, sid))
+			ud.debug(where, level, "%s: modify samba privs (%s)" % (name, sid))
 			removePrivileges(sid, oldPrivs)
 			addPrivileges(sid, newPrivs)
 

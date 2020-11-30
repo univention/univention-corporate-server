@@ -36,7 +36,7 @@ from __future__ import absolute_import
 import listener
 import os
 import time
-import univention.debug
+import univention.debug as ud
 
 import ldb
 from samba.ndr import ndr_pack
@@ -111,7 +111,7 @@ def open_idmap():
 			setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
 		open_idmap.instance = IDmapDB(idmap_ldb, session_info=system_session(), lp=lp)
 	except ldb.LdbError:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
+		ud.debug(ud.LISTENER, ud.ERROR, "%s: /var/lib/samba/private/idmap.ldb could not be opened" % name)
 		raise
 	finally:
 		listener.unsetuid()
@@ -130,17 +130,17 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % old_sambaSID, attrs=["objectSid", "type"])
 		if not res:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID))
+			ud.debug(ud.LISTENER, ud.INFO, "%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID))
 			add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
 		else:
 			record = res.msgs[0]
 
 			if record["type"][0].decode('ASCII') != type_string:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string))
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID))
+				ud.debug(ud.LISTENER, ud.ERROR, "%s: %s entry type %s does not match object type %s" % (name, old_sambaSID, record["type"][0], type_string))
+				ud.debug(ud.LISTENER, ud.ERROR, "%s: skipping rename of %s to %s" % (name, old_sambaSID, new_sambaSID))
 				return False
 
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID))
+			ud.debug(ud.LISTENER, ud.PROCESS, "%s: renaming entry for %s to %s" % (name, old_sambaSID, new_sambaSID))
 
 			# try a modrdn
 			idmap.rename(str(record.dn), "CN=%s" % new_sambaSID)
@@ -154,7 +154,7 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 
 	except ldb.LdbError as exc:
 		(enum, estr) = exc.args
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, estr)
+		ud.debug(ud.LISTENER, ud.WARN, estr)
 		# ok, there is an entry for the target sambaSID, let's remove the old sambaSID and modify the target
 		remove_idmap_entry(old_sambaSID, xidNumber, type_string, idmap)
 		modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
@@ -177,17 +177,17 @@ def modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 			msg["xidNumber"] = ldb.MessageElement([str(xidNumber)], ldb.FLAG_MOD_REPLACE, "xidNumber")
 
 		if len(msg) != 0:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "%s: modifying entry for %s" % (name, sambaSID))
+			ud.debug(ud.LISTENER, ud.PROCESS, "%s: modifying entry for %s" % (name, sambaSID))
 			if "xidNumber" in msg:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber))
+				ud.debug(ud.LISTENER, ud.INFO, "%s: changing xidNumber from %s to %s" % (name, record["xidNumber"][0], xidNumber))
 			if "type" in msg:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s: changing type from %s to %s" % (name, record["type"][0], type_string))
+				ud.debug(ud.LISTENER, ud.INFO, "%s: changing type from %s to %s" % (name, record["type"][0], type_string))
 
 		idmap.modify(msg)
 
 	except ldb.LdbError as exc:
 		(enum, estr) = exc.args
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
+		ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
 def add_or_modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
@@ -209,7 +209,7 @@ def add_or_modify_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 		# "cn": sambaSID, "objectSid": [ndr_pack(security.dom_sid(sambaSID))],
 		# "xidNumber": [str(xidNumber)], "type": [type_string]})
 
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "%s: added entry for %s" % (name, sambaSID))
+		ud.debug(ud.LISTENER, ud.PROCESS, "%s: added entry for %s" % (name, sambaSID))
 
 	except ldb.LdbError as exc:
 		# ok, there is an entry for this sambaSID, let's replace it
@@ -226,22 +226,22 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 	try:
 		res = idmap.search('', ldb.SCOPE_SUBTREE, "(&(objectClass=sidMap)(cn=%s))" % sambaSID, attrs=["objectSid", "xidNumber", "type"])
 		if not res:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "%s: remove_idmap_entry: no mapping for objectSid %s, skipping", (name, sambaSID))
+			ud.debug(ud.LISTENER, ud.INFO, "%s: remove_idmap_entry: no mapping for objectSid %s, skipping", (name, sambaSID))
 		else:
 			record = res.msgs[0]
 
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "%s: removing entry for %s" % (name, sambaSID))
+			ud.debug(ud.LISTENER, ud.PROCESS, "%s: removing entry for %s" % (name, sambaSID))
 
 			idmap.delete(ldb.Dn(idmap, str(record.dn)))
 
 			if record["xidNumber"][0].decode('ASCII') != str(xidNumber):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber))
+				ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry xidNumber %s did not match object xidNumber %s" % (name, record["xidNumber"][0], xidNumber))
 			if record["type"][0].decode('ASCII') != type_string:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
+				ud.debug(ud.LISTENER, ud.WARN, "%s: removed entry type %s did not match object type %s" % (name, record["type"][0], type_string))
 
 	except ldb.LdbError as exc:
 		(enum, estr) = exc.args
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
+		ud.debug(ud.LISTENER, ud.ERROR, estr)
 
 
 def initialize():
@@ -251,7 +251,7 @@ def initialize():
 	try:
 		if os.path.exists(idmap_ldb):
 			idmap_ldb_backup = '%s_%d' % (idmap_ldb, time.time())
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
+			ud.debug(ud.LISTENER, ud.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
 			os.rename(idmap_ldb, idmap_ldb_backup)
 		setup_idmapdb(idmap_ldb, session_info=system_session(), lp=lp)
 	finally:
@@ -281,7 +281,7 @@ def handler(dn, new, old, operation):
 				old_sambaSID = old.get(sidAttribute, [b''])[0]
 				if old and old_sambaSID:
 					if not new_sambaSID:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account %r has no attribute '%s', cannot update" % (samaccountname, sidAttribute))
+						ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot update" % (samaccountname, sidAttribute))
 						return
 					if new_sambaSID != old_sambaSID:
 						rename_or_modify_idmap_entry(old_sambaSID.decode('ASCII'), new_sambaSID.decode('ASCII'), new_xid, xid_type, idmap)
@@ -290,12 +290,12 @@ def handler(dn, new, old, operation):
 						add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid.decode('ASCII'), xid_type, idmap)
 				else:
 					if not new_sambaSID:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account %r has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
+						ud.debug(ud.LISTENER, ud.WARN, "Samba account %r has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
 						return
 					add_or_modify_idmap_entry(new_sambaSID.decode('ASCII'), new_xid.decode('ASCII'), xid_type, idmap)
 		except ldb.LdbError as exc:
 			(enum, estr) = exc.args
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: entry for %r could not be updated" % (name, new[sidAttribute][0]))
+			ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, new[sidAttribute][0]))
 	elif old:
 		if operation == 'r':  # modrdn
 			return
@@ -314,14 +314,14 @@ def handler(dn, new, old, operation):
 			if old_xid:
 				old_sambaSID = old.get(sidAttribute, [b''])[0]
 				if not old_sambaSID:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot remove" % (samaccountname, sidAttribute))
+					ud.debug(ud.LISTENER, ud.WARN, "Samba account '%s' has no attribute '%s', cannot remove" % (samaccountname, sidAttribute))
 					return
 				if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
 					xid_type = 'ID_TYPE_BOTH'
 				remove_idmap_entry(old_sambaSID.decode('ASCII'), old_xid.decode('ASCII'), xid_type, idmap)
 		except ldb.LdbError as exc:
 			(enum, estr) = exc.args
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "%s: entry for %r could not be updated" % (name, old[sidAttribute][0]))
+			ud.debug(ud.LISTENER, ud.ERROR, "%s: entry for %r could not be updated" % (name, old[sidAttribute][0]))
 
 
 if __name__ == '__main__':
@@ -343,10 +343,10 @@ if __name__ == '__main__':
 		parser.error("The option --direct-resync is required to run this module directly")
 		sys.exit(1)
 
-	univention.debug.init("stderr", univention.debug.NO_FLUSH, univention.debug.NO_FUNCTION)
+	ud.init("stderr", ud.NO_FLUSH, ud.NO_FUNCTION)
 	ucr = ConfigRegistry()
 	ucr.load()
-	univention.debug.set_level(univention.debug.LISTENER, int(ucr.get('listener/debug/level', 2)))
+	ud.set_level(ud.LISTENER, int(ucr.get('listener/debug/level', 2)))
 
 	cmd = ['/usr/bin/univention-ldapsearch', '-LLL', filter, 'objectClass']
 	cmd.extend(attributes)
