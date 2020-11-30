@@ -8,9 +8,11 @@
 	background: var(--color-grey0)
 	font-size: var(--font-size-small)
 
-.dijitMenuItem td
+.dijitMenuItem td,
+.dijitComboBoxMenu .dijitMenuItem
 	padding: 0.3em 0.1em
 
+.dijitMenuItem td
 	&.dijitMenuItemIconCell
 		padding-left: 0.8em
 		padding-right: 0.4em
@@ -18,7 +20,7 @@
 		padding-left: 0.4em
 		padding-right: 0.8em
 
-.dijitMenuPassive .dijitMenuItemHover,
+.dijitMenuItemHover,
 .dijitMenuItemSelected
 	background-color: rgba(255, 255, 255, 0.04)
 	color: inherit
