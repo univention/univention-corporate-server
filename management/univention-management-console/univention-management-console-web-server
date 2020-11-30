@@ -1193,7 +1193,7 @@ def get_ip_address():
 class SAML(Ressource):
 
 	SP = None
-	identity_cache = None
+	identity_cache = '/var/cache/univention-management-console/saml.bdb'
 	state_cache = None
 	configfile = '/usr/share/univention-management-console/saml/sp.py'
 	idp_query_param = "IdpQuery"
