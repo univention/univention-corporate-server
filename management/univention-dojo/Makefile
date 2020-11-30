@@ -66,6 +66,7 @@ dojo: dojo-release-$(VER)-src.tar.gz
 	patch -d $@.tmp -p1 -i ../fix_dijit_ProgressBar_additional_css_classes.patch
 	patch -d $@.tmp -p0 -i ../fix_dijit_MenuItem.patch
 	patch -d $@.tmp -p0 -i ../fix_dijit_PopupMenuItem.patch
+	patch -d $@.tmp -p0 -i ../fix_dojox_enhancedgrid_selection_icon.patch
 	mv $@.tmp $@
 
 libs/dgrid: dgrid-1.1.0.tar.gz
