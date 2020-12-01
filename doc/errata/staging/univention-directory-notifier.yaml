@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [7]
+scope: ucs_4.4-0-errata4.4-7
+src: univention-directory-notifier
+fix: 13.0.3-3A~4.4.0.202012011723
+desc: |
+ This update addresses the following issue:
+ * The notifier sometimes did not recognize a transaction until
+   the next one occured. Two causes for this behavior have been
+   fixed.
+ bug: [51804]
