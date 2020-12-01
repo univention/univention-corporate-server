@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [6]
+scope: ucs_4.4-0-errata4.4-6
+src: lxml
+fix: 3.7.1-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * XSS in lxml.html.clean module in lxml/html/clean.py (CVE-2018-19787)
+ * mXSS due to the use of improper parser (CVE-2020-27783)
+bug: [52451]
+cve:
+- CVE-2018-19787
+- CVE-2020-27783
