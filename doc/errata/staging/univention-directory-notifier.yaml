@@ -9,4 +9,4 @@ desc: |
  * The notifier sometimes did not recognize a transaction until
    the next one occured. Two causes for this behavior have been
    fixed.
- bug: [51804]
+bug: [51804]
