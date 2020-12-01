@@ -3,6 +3,8 @@
 //// overarching button styling
 .dijitButton,
 .dijitDropDownButton
+	--bgc: transparent
+	--bgc-state: transparent
 	--button-size: 2rem
 	--button-iconSize: 1rem
 	margin: 0
@@ -126,5 +128,5 @@
 	cursor: pointer
 
 
-.dijitButton:not(.ucsButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton)
+.dijitButton:not(.ucsButton):not(.ucsTextButton):not(.ucsPrimaryButton):not(.ucsIconButton):not(.umcCategoryButton)
 	@extends .ucsButton

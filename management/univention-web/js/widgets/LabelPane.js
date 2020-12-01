@@ -203,10 +203,21 @@ define([
 					domClass.toggle(this.domNode, 'dijitDisplayNone', !newVal);
 				})));
 
-				if (Object.hasOwnProperty.call(this.content, 'disabled')) {
+				if ('disabled' in this.content) {
 					domClass.toggle(this.domNode, this.baseClass + 'Disabled', this.content.disabled);
 					this.own(this.content.watch('disabled', lang.hitch(this, function(attr, oldVal, newVal) {
 						domClass.toggle(this.domNode, this.baseClass + 'Disabled', newVal);
+					})));
+				}
+				if ('state' in this.content) {
+					if (!!this.content.state) {
+						domClass.add(this.domNode, this.baseClass + this.content.state);
+					}
+					this.own(this.content.watch('state', lang.hitch(this, function(attr, oldVal, newVal) {
+						domClass.remove(this.domNode, [this.baseClass + 'Incomplete', this.baseClass + 'Error']);
+						if (newVal) {
+							domClass.add(this.domNode, this.baseClass + newVal);
+						}
 					})));
 				}
 			}
